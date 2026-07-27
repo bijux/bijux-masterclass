@@ -21,6 +21,21 @@ For each repair step:
 If you skip the ownership question, the example turns into code extraction theater instead
 of reproducibility work.
 
+## If you are learning this without the live class
+
+Use the example in five passes instead of trying to absorb the whole software boundary in
+one read:
+
+1. label the current rule by contract, implementation, reuse, and runtime assumptions
+2. stop after the `script:` extraction and check whether the rule still tells the truth
+3. promote code into `src/` only after you can explain the reuse argument plainly
+4. write the runtime contract before you discuss machine portability in the abstract
+5. finish by explaining one rebuild with provenance instead of memory
+
+If you cannot explain the shorter rule after pass 2, do not move more code yet. Most
+Module 05 confusion starts when learners chase smaller files before they have named the
+ownership boundary.
+
 ## The one-day teaching goal
 
 By the end of this example, a learner should be able to rebuild one workflow step so that:
@@ -50,6 +65,9 @@ Keep a small software packet as you go:
 - one runtime contract note naming the environment surface in play
 - one provenance note explaining why a rebuild should now be trusted
 
+That packet is not overhead. It is the thing that turns "I extracted the code" into
+"another maintainer can review why the software boundary is now clearer."
+
 ## What to keep beside you while you work
 
 Keep these four surfaces visible while you move through the example:
@@ -61,6 +79,19 @@ Keep these four surfaces visible while you move through the example:
 
 Those four surfaces are enough to explain whether the repository gained clarity or only
 moved code around.
+
+## The evidence packet you should keep visible
+
+By the end of the example, keep one small packet that contains:
+
+- one before-and-after rule view showing what still stays visible
+- one script excerpt that acts as an adapter instead of a second hidden program
+- one package-boundary note naming the reuse argument
+- one runtime-contract note marking the step-execution surface
+- one provenance note that explains why a rebuild should now be trusted
+
+If one of those pieces is missing, the repository may look cleaner, but the learner still
+cannot defend the move across the software boundary.
 
 ## The starting situation
 
@@ -81,6 +112,20 @@ The maintainers currently live with:
 
 That is a good Module 05 starting point because the step still works. It is the trust
 story around the step that is weak.
+
+## What goes wrong when a learner trusts the starting situation
+
+Use this card before you repair anything:
+
+| If you notice... | The repository is hiding... | Smallest review surface |
+| --- | --- | --- |
+| a long `run:` block mixes path declarations and business logic | the rule boundary has not been named clearly | one ownership map on the current rule |
+| a script wants to read undeclared files or globals | the workflow contract is becoming less honest after extraction | compare the rule contract with the script reads |
+| helpers are copied between steps | reusable logic is trapped in step-local code | one call-site comparison with direct-test potential |
+| the step works only on one machine | the runtime contract is ambient instead of declared | one environment note plus a rerun on the declared surface |
+| a rebuild happened but nobody can explain why | provenance is missing or too weak to defend trust | one rebuild note tied to code or runtime drift |
+
+If you can name the hidden defect first, the extraction stops feeling cosmetic.
 
 ```mermaid
 flowchart LR
@@ -125,6 +170,19 @@ extraction failed.
 Shorter is not automatically better. The shorter rule is only an improvement if the file
 contract and runtime boundary became easier to review than they were inside the original
 inline implementation.
+
+## The rule-boundary audit before you celebrate
+
+Before you call the extraction healthy, make sure you can answer all four of these:
+
+| Question | Healthy answer |
+| --- | --- |
+| What stayed visible? | inputs, outputs, runtime contract, and other orchestration facts |
+| What moved safely? | step-local implementation details that no longer belong in the rule |
+| What would count as a hidden dependency? | undeclared reads, ambient globals, or runtime assumptions only visible in the script |
+| What evidence proves the move stayed honest? | before-and-after rule view plus one focused run or planning surface |
+
+If any row stays vague, keep repairing. The rule may be shorter, but the contract may be weaker.
 
 ## Why this first move matters educationally
 
@@ -252,6 +310,18 @@ Use a simple drift table when you explain rebuilds:
 | `workflow/envs/python.yaml` | runtime behavior may differ because dependencies or versions changed |
 | `src/capstone/` helper code | reusable logic may now compute or format metadata differently |
 
+## The rebuild audit before you move on
+
+Do not just say "software changed." Test whether you can name the exact trust surface:
+
+| Changed surface | Smallest honest evidence route |
+| --- | --- |
+| workflow-adjacent script code | `--list-changes code` plus the rule that owns the output |
+| rule-scoped runtime declaration | environment diff plus rebuilt output evidence |
+| reusable package code | direct tests plus rebuild evidence for the affected output |
+
+If you cannot fill this table, the provenance story is still too vague for another maintainer.
+
 ## What the learner should notice now
 
 The rebuild story is the real proof that the software boundary is working.
@@ -276,6 +346,17 @@ By the end of the repair, the workflow can be described cleanly:
 
 That is what it means to move a workflow across the software boundary safely.
 
+```mermaid
+flowchart LR
+  rule["visible rule contract"] --> script["step-local adapter"]
+  script --> package["reusable package code"]
+  package --> runtime["declared runtime contract"]
+  runtime --> provenance["rebuild trust evidence"]
+```
+
+Read that diagram literally. If one step is missing, the repository may still run, but
+the software-boundary story is not yet teachable.
+
 ## Review questions for the repaired design
 
 When you inspect a repository shaped like this, ask:
@@ -287,6 +368,19 @@ When you inspect a repository shaped like this, ask:
 5. how would a later maintainer explain a rebuild from provenance rather than memory
 
 If those answers are visible, the module’s software-boundary story has landed.
+
+## If the module still feels abstract
+
+Do this recovery loop in order:
+
+1. print the current rule and label what still belongs there
+2. point to the script and say what makes it an adapter rather than a dumping ground
+3. name one helper and say why it does or does not belong in `src/`
+4. mark the exact runtime surface the step now depends on
+5. connect one rebuild to one changed software surface and one provenance note
+
+Most Module 05 confusion is not about Python itself. It is about losing track of which
+layer owns which behavior once code starts moving.
 
 Before leaving the module, make sure you can say all five of these out loud:
 

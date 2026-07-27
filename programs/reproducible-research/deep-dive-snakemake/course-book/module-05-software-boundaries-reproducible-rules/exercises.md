@@ -80,6 +80,21 @@ flowchart LR
 Use that order deliberately. It prevents the day from collapsing into "make the code look
 cleaner" instead of "make the workflow boundary more truthful."
 
+## What a strong day packet looks like
+
+By the time you finish all ten exercises, your work should leave behind one small,
+reviewable packet instead of ten disconnected refactor fragments:
+
+- one ownership map for a long rule
+- one before-and-after rule comparison showing the visible contract
+- one script-versus-package decision note with a real reuse argument
+- one runtime-contract note separating step execution from broader portability
+- one rebuild note tied to code or runtime drift
+- one maintainer-style review note for a mixed software-boundary change
+
+If you cannot point to those artifacts, the exercise day is still too dependent on tacit
+classroom guidance.
+
 ## Exercise 1: Map one long rule by ownership
 
 Take a rule with a long `run:` block or shell pipeline and label each part as one of
@@ -178,6 +193,19 @@ answer all of these:
 
 If you cannot answer those four questions cleanly, return to the earlier exercises and
 make the ownership packet more explicit before moving on.
+
+## When you get stuck, diagnose the missing boundary first
+
+Use this table before you start moving more code:
+
+| If you are stuck on... | Check whether you are missing... | Typical repair |
+| --- | --- | --- |
+| Exercise 1 or 2 | one explicit map of what the rule still owns | relabel the rule before extracting more code |
+| Exercise 3 or 5 | one honest contract for dependencies or runtime | declare the missing file or environment surface first |
+| Exercise 4 or 6 | one real reuse argument with direct testability | compare the call sites and keep workflow-specific details out of `src/` |
+| Exercise 7, 9, or 10 | one rebuild explanation tied to one changed software surface | connect provenance, drift evidence, and output trust explicitly |
+
+Most weak Module 05 answers are not short on code motion. They are short on named boundaries.
 
 ## Exercise 6: Test reusable code directly
 
