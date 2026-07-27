@@ -25,9 +25,13 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-After resolution comes the next design question:
+After resolution comes the next design question learners usually answer too vaguely:
 
 once the metaclass is in control, where should its work actually happen?
+
+Many readers can repeat "`__new__` is earlier" and "`__init__` is later" without being able
+to review real code honestly. This page is about the ownership boundary, not only the
+order of hooks.
 
 This core separates the two most commonly blurred hooks:
 
@@ -41,6 +45,21 @@ created, and use metaclass `__init__` for final bookkeeping or registration on t
 object after it already exists.
 
 That split prevents a lot of vague metaclass code.
+
+If you cannot name whether a rule changes class structure or only records the finished
+class, you are not ready to place it in either hook.
+
+## Evidence route for metaclass hook reviews
+
+Work through each hook question in this order:
+
+| Review step | What to inspect | What strong evidence looks like |
+| --- | --- | --- |
+| Name the rule | What is the metaclass trying to guarantee? | A structural invariant, a registry update, or another precise claim |
+| Locate the earliest honest owner | Does the rule need the raw namespace or the finished class object? | The answer points clearly to `__new__` or `__init__` |
+| Reject the wrong hook | What becomes harder if the hook placement is swapped? | You can name the lost input or the blurred responsibility |
+| Reject the lower-power owner | Could a decorator or explicit helper still own the behavior? | A concrete reason class-creation ownership is still required |
+| Audit the blast radius | What import-time or hierarchy-wide side effects follow? | Registration, mutation, or test setup costs are named directly |
 
 ## What metaclass `__new__` owns
 
@@ -57,6 +76,14 @@ That makes it the right place for work such as:
 - injecting or rewriting attributes before the class object exists
 - structural edits that depend on the class body itself
 
+Typical signs that `__new__` is the honest owner:
+
+| Signal | Why it points to `__new__` |
+| --- | --- |
+| The rule depends on names written in the class body | The namespace is still the direct source of truth |
+| The class must be rejected before it exists | `__init__` is already too late for clean refusal |
+| Helpers or wrappers must be inserted as part of class construction | The class shape is still being decided |
+
 This is still the mutability window where the construction inputs are most direct.
 
 ## What metaclass `__init__` owns
@@ -68,6 +95,14 @@ That makes it a better fit for:
 - registration
 - final bookkeeping
 - post-creation checks that need the finished class object
+
+Typical signs that `__init__` is the honest owner:
+
+| Signal | Why it points to `__init__` |
+| --- | --- |
+| The rule needs the final class identity | Registration and bookkeeping reference the finished object |
+| The MRO or inherited attributes matter in final form | The class already exists and can be inspected directly |
+| The work should be easy to reverse or reset in tests | Bookkeeping surfaces can be separated from structural edits |
 
 It is usually the wrong place for heavy structural surgery, because the class has already
 been constructed.
@@ -116,6 +151,19 @@ This example keeps the split honest:
 
 That is exactly the division of labor the module wants.
 
+## What to reject before you argue about hook style
+
+Some metaclass proposals are weak before hook placement even matters.
+
+Reject these first:
+
+| Weak claim | Why it is weak |
+| --- | --- |
+| "We can just put all metaclass logic in `__init__`." | It hides structural mutation after the class already exists |
+| "We can do everything in `__new__` and avoid thinking about the split." | It mixes class-shape work with bookkeeping and global side effects |
+| "The earlier hook is safer because it runs first." | Earlier is not safer; it is only more appropriate for structural ownership |
+| "Hook choice is mostly style." | Hook choice changes reviewability, failure timing, and reset behavior |
+
 ## Why structural edits belong earlier
 
 If a decision depends on the namespace before class creation finishes, `__new__` is the
@@ -144,6 +192,17 @@ That makes `__init__` the more natural place for:
 - attaching class-family bookkeeping
 
 The rule is not absolute, but it is a very strong default.
+
+## Failure modes for hook placement
+
+Watch for these review failures:
+
+| Failure mode | What goes wrong |
+| --- | --- |
+| Structural mutation postponed into `__init__` | Reviewers must reason about a class changing after creation |
+| Registration buried in `__new__` | Global side effects disappear inside structure code |
+| One hook doing both jobs | The metaclass becomes harder to explain and test |
+| Hook choice justified only by "convenience" | No real ownership boundary has been established |
 
 ## What this split is trying to prevent
 
@@ -178,6 +237,10 @@ When reviewing metaclass hooks, keep these questions close:
 - is the metaclass doing work here that a lower-power tool could still own?
 - would a reviewer be able to explain the class-creation effects in one pass?
 
+Add one more question in strong reviews:
+
+- what exact evidence would become unavailable or less honest if this work moved to the other hook?
+
 ## What to practice from this page
 
 Try these before moving on:
@@ -185,6 +248,15 @@ Try these before moving on:
 1. Put one interface or namespace validation rule in `__new__` and explain why it belongs there.
 2. Add one registry append in `__init__` and explain why it belongs after class creation.
 3. Write one short review note rejecting a metaclass that mutates structure in `__init__` for no clear reason.
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of the following in plain language:
+
+- point to one rule that truly needs raw namespace access
+- point to one rule that only needs the finished class object
+- explain why swapping those two rules would blur ownership
+- reject at least one lower-power alternative or one misplaced hook honestly
 
 If those feel ordinary, the next step is `__prepare__`, the one hook that can observe and
 control assignments during class body execution itself.
