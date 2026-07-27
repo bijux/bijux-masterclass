@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 
 from scripts.program_validation import (
     PROGRAM_TARGETS,
@@ -89,6 +90,38 @@ class ProgramValidationSelectionTests(unittest.TestCase):
             ]
         )
         self.assertEqual(names, ["series-site", "python-meta-programming"])
+
+
+class WorkflowEconomyTests(unittest.TestCase):
+    repository_root = Path(__file__).resolve().parents[2]
+
+    def workflow_text(self, name: str) -> str:
+        return (
+            self.repository_root / ".github" / "workflows" / name
+        ).read_text(encoding="utf-8")
+
+    def test_program_validation_does_not_repeat_after_merge(self) -> None:
+        workflow = self.workflow_text("program-validation.yml")
+        self.assertNotIn("\n  push:\n", workflow)
+        self.assertIn("\n  pull_request:\n", workflow)
+        self.assertIn("cancel-in-progress: true", workflow)
+
+    def test_program_validation_uses_affected_target_matrix(self) -> None:
+        workflow = self.workflow_text("program-validation.yml")
+        self.assertIn("scripts/program_validation.py", workflow)
+        self.assertIn("fromJSON(needs.select.outputs.matrix)", workflow)
+        self.assertNotIn("matrix:\n        include:", workflow)
+
+    def test_pages_only_runs_for_publication_inputs(self) -> None:
+        workflow = self.workflow_text("pages.yml")
+        self.assertIn('"programs/*/*/course-book/**"', workflow)
+        self.assertIn('"programs/*/*/capstone/docs/**"', workflow)
+        self.assertNotIn('"programs/**"', workflow)
+
+    def test_pages_does_not_install_dependencies_twice(self) -> None:
+        workflow = self.workflow_text("pages.yml")
+        self.assertNotIn("Install documentation dependencies", workflow)
+        self.assertEqual(workflow.count("make series-docs-build"), 1)
 
 
 if __name__ == "__main__":
