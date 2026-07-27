@@ -29,11 +29,11 @@ ideas.
 
 The goal is to answer:
 
-Which boundaries are strong enough to preserve on purpose, and which path will feel
-operational pressure first?
+- which boundaries are strong enough to preserve on purpose?
+- which path will feel operational pressure first?
 
-If you cannot answer that from one route through the system, the architecture story is
-still too scattered.
+If you cannot answer those questions from one route through the system, the architecture
+story is still too scattered.
 
 ## Keep one review path visible
 
@@ -57,7 +57,7 @@ This path is useful because it crosses:
 If the architecture still reads coherently across that path, the course has done real
 work.
 
-## Step 1: restate the design promises before reviewing pressure
+## Step 1: restate the design promises first
 
 Do not start with performance, logging, or infrastructure.
 
@@ -75,7 +75,7 @@ system.
 
 ## Step 2: name the strongest boundaries worth protecting
 
-A useful architecture review should leave behind explicit protected strengths.
+A useful architecture review should leave behind explicit strengths to preserve.
 
 For this capstone, likely examples are:
 
@@ -89,15 +89,15 @@ Write at least one sentence like:
 > This boundary is strong and must not be weakened by later optimization, extension, or
 > recovery shortcuts.
 
-Without that sentence, review often slides into vague appreciation rather than design
+Without that sentence, review often slides into vague appreciation instead of design
 stewardship.
 
 ## Step 3: find the first bending boundary
 
 Now ask where the path will feel real pressure first.
 
-Do not ask for distant hypotheticals.
-Ask where the first costly confusion or distortion would likely appear.
+Do not ask for distant hypotheticals. Ask where the first costly confusion or distortion
+would likely appear.
 
 In this capstone, honest candidates include:
 
@@ -130,7 +130,7 @@ Use the same workflow and ask four different questions.
 
 - what signal or runbook would another maintainer need first when this path misbehaves?
 
-These lenses keep the review coherent instead of turning it into separate checklists.
+These lenses keep the review coherent instead of turning it into unrelated checklists.
 
 ## Step 5: separate preserved strengths from next risks
 
@@ -156,27 +156,27 @@ harden next.
 
 An honest short review note might say:
 
-> The capstone remains strongest where authority stays close to domain state: workshop
-> enrollment still owns seat truth, and repositories still translate rather than define
-> meaning. The first bending boundary is the persistence-and-downstream path, where
-> contention, retries, and lag can produce confusing visible behavior before the domain
-> model itself breaks. The next hardening pass should preserve aggregate ownership while
-> tightening idempotency, operator signals, and public-surface discipline.
+> The capstone remains strongest where authority stays close to domain state:
+> `WorkshopEnrollment` still owns seat truth, and repositories still translate rather
+> than define meaning. The first bending boundary is the persistence-and-downstream path,
+> where contention, retries, and lag can produce confusing visible behavior before the
+> domain model itself breaks. The next hardening pass should preserve aggregate ownership
+> while tightening idempotency, operator signals, and public-surface discipline.
 
 This note is useful because it protects one strength and names one pressure route.
 
-## Capstone review worksheet
+## Build an architecture review packet
 
-Use this four-line worksheet when you review the capstone yourself:
+For the capstone, keep a short review packet with:
 
-| Review question | Your answer |
-| --- | --- |
-| strongest boundary worth protecting | |
-| first boundary likely to bend | |
-| operator signal needed first | |
-| next hardening move that does not weaken ownership | |
+- whole-system review path
+- strongest boundary worth preserving
+- first boundary likely to bend
+- first operator signal needed
+- next hardening move that does not weaken ownership
 
-If you cannot fill the table with concrete answers, the review is still too general.
+That packet is small, but it forces the review to stay architectural instead of becoming
+only a list of concerns.
 
 ## Capstone connection
 
@@ -186,6 +186,7 @@ Use this page directly and answer all of these:
   inconvenient?
 - which one path is most likely to create confusing visible behavior first?
 - which next change would improve operability without moving truth to the wrong place?
+- which operator artifact would help another maintainer explain failure fastest?
 
 That is the whole goal of the architecture review.
 
