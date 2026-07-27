@@ -1,5 +1,4 @@
-# Refactor 2: Configs and Rules → Dataclasses, Null-Safe APIs, Typestate & Hypothesis
-
+# Refactor Dataclasses, Null Safety, and Typestate
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["State Validation Typestate"]
-  page["Refactor 2: Configs and Rules → Dataclasses, Null-Safe APIs, Typestate & Hypothesis"]
+  page["Refactor Dataclasses, Null Safety, and Typestate"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,113 +24,122 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Goal
+## Why this refactor matters
 
-Apply Module 3 as an engineering refactor: make the monitoring system’s configuration and rule model *structurally correct*.
+Module 03 is not really about isolated Python features. It is about turning state-handling
+code into a model that is harder to misuse and easier to trust.
 
-Deliverables:
-- dataclass-based domain model with semantic value types,
-- typestate for rule lifecycle (Draft/Active/Retired),
-- boundary DTO validation + translation,
-- null-safe APIs (no `Optional` in core collections),
-- tests including **property-based tests** for invariants and transitions.
+This refactor page exists to combine the module’s main moves:
 
-## Where This Fits
+- boundary validation
+- honest dataclass use
+- construction-time invariants
+- explicit absence handling
+- lifecycle-aware modeling
+- typestate-aware APIs
+- careful attribute surfaces
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+If those ideas stay separate, the learner leaves with trivia. If they come together, the
+learner leaves with a design method.
 
-## 1. Starting Point: What We’re Fixing
+## The starting design smell
 
-Typical baseline symptoms (from M01–M02 style code):
-- rules are dicts: `{"metric": "...", "threshold": ...}`
-- optional fields are everywhere: `activated_at: Optional[float]`
-- `None` leaks into lists and lookups return `None`
-- lifecycle is encoded as ad-hoc flags (`enabled`, `deleted`, `status="active"`)
+A weak pre-refactor design usually looks like this:
 
-These are correctness hazards because the model permits invalid combinations.
+- raw input becomes domain state too early
+- objects are created before they are really valid
+- `Optional` spreads because lifecycle is blurry
+- dataclasses are used for convenience without semantic review
+- all methods stay callable regardless of state
 
-## 2. Target Shape (High-Level)
+That design may run, but it makes trust and review difficult.
 
-Your end state should look like:
+## The target shape
 
-- **Domain value types**: `MetricName`, `Threshold`, `Window`
-- **Typestate rules**: `DraftRule`, `ActiveRule`, `RetiredRule`
-- **Boundary DTOs**: `RuleConfigDTO` (Pydantic or similar)
-- **Translator**: `to_draft_rule(dto) -> DraftRule`
-- **Services** accept only valid types:
-  - evaluator evaluates `ActiveRule` only
-  - orchestrator holds `list[ActiveRule]`, not mixed states
+After a good Module 03 refactor, the design should feel like this:
 
-## 3. Step-by-Step Plan (Do It in Small, Safe Commits)
+- boundary input is validated before core object creation
+- dataclasses are used where they clarify the model
+- invariants are checked when objects come into existence
+- absence is modeled deliberately instead of by habit
+- lifecycle stages are named and enforced
+- the API surface tells a stronger truth about legal operations
 
-### Step 1 — Introduce semantic value types
-- Add `domain/types.py` with `MetricName`, `Threshold`, `Window`.
-- Enforce invariants in `__post_init__`.
-- Add unit tests per invariant.
+The target is not maximum abstraction. The target is stronger state honesty.
 
-### Step 2 — Introduce DTO validation at the boundary
-- Add `boundary/dto.py` (Pydantic).
-- Validate raw config inputs there.
-- Add translator `application/translate.py`.
+## A practical refactor order
 
-### Step 3 — Replace dict rules with typestate dataclasses
-- Add `domain/rules.py` with `DraftRule`, `ActiveRule`, `RetiredRule`.
-- Implement transitions: `DraftRule.activate`, `ActiveRule.retire`.
-- Update services to accept the correct state type.
+Use this order when repairing a weak design:
 
-### Step 4 — Remove `Optional` from the core
-- Replace `Optional` returns with exceptions or a `Result`.
-- Remove `list[Optional[T]]` by ensuring parsing/lookup errors are explicit.
+1. separate boundary parsing from domain construction
+2. identify the real invariants of each core object
+3. remove fake optionality from required fields
+4. distinguish true absence from earlier lifecycle state
+5. model the lifecycle explicitly
+6. tighten the public API around valid state transitions
+7. only then add or keep supporting machinery that genuinely helps
 
-### Step 5 — Add property-based tests with Hypothesis
-Target properties:
-- constructing values with invalid inputs always fails,
-- activating a draft always yields an active with required fields,
-- retiring an active always yields a retired,
-- illegal state combinations cannot be constructed.
+This order matters because later improvements depend on earlier clarity.
 
-Keep property tests small and focused; they complement unit tests.
+## How to tell whether the refactor worked
 
-## 4. Concrete Test Checklist
+Ask whether the design is now better at answering:
 
-Minimum test suite:
+- can this object exist in this shape?
+- what state is it in?
+- which operations are legal now?
+- is this field absent by meaning or by design weakness?
+- where is input uncertainty resolved?
 
-- **Unit tests**
-  - each semantic type invariant
-  - each lifecycle transition
-  - boundary DTO rejects invalid shapes
-  - translator DTO → domain works
+If those answers are still fuzzy, more feature use will not save the design.
 
-- **Property tests (Hypothesis)**
-  - for any valid `MetricName`, equality is stable and hash works (if frozen)
-  - for any valid threshold/window, domain construction succeeds
-  - for random drafts, `activate()` yields an active that can be evaluated
+## What not to preserve
 
-- **Integration test**
-  - orchestrator cycle uses `list[ActiveRule]` only
-  - no runtime `if state == ...` inside evaluation loop
+Do not preserve weak patterns because they already exist.
 
-## 5. “Done” Definition
+Refactoring this module may require:
 
-You are done when:
+- removing casual optionals
+- replacing partial objects with clearer states
+- simplifying dataclass usage
+- moving validation earlier
+- making some operations impossible instead of merely discouraged
 
-- the domain layer has **no dependency** on validation libraries,
-- no domain collection contains `None`,
-- evaluating rules requires an `ActiveRule` by signature,
-- configs are validated at the boundary and translated into domain types,
-- the test suite makes it hard to reintroduce invalid states.
+The module’s standard is not "works somehow." It is "teaches correct state ownership."
 
-## Practical Guidelines
+## Review checklist
 
-- Refactor in thin slices: introduce new types alongside old code, then migrate callers, then delete old shapes.
-- Keep boundary validation separate from domain invariants (DTO vs dataclass).
-- Use typestate types to reduce conditional checks in core loops.
-- Use Hypothesis for invariants and transitions, not for everything.
+| Question | Better answer after refactor |
+| --- | --- |
+| is raw input kept separate from core state long enough? | yes |
+| do objects begin life valid? | yes |
+| is absence modeled intentionally? | yes |
+| are lifecycle stages explicit and enforceable? | yes |
+| does the public API reflect legal state? | yes |
 
-## Exercises for Mastery
+## Capstone connection
 
-1. Implement Step 1–3 for at least one rule type end-to-end, including translator and tests.
-2. Remove one `Optional` field from the rule model by splitting typestates.
-3. Add at least two Hypothesis properties: one for value construction, one for lifecycle transitions.
+This page is the direct bridge from Module 03 into the capstone.
+
+Use it when the capstone still has:
+
+- half-ready objects
+- fields that are optional for no honest reason
+- lifecycle labels that do not affect the API
+- dataclass convenience hiding weak state boundaries
+
+If those problems remain, the module has not yet been absorbed deeply enough.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- describe the target Module 03 design shape in your own words
+- explain an order for refactoring a weak state model into a stronger one
+- identify one capstone area that still needs this state-modeling refactor
