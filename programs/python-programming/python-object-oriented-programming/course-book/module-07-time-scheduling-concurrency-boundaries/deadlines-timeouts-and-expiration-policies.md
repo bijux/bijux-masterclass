@@ -1,6 +1,5 @@
 # Deadlines, Timeouts, and Expiration Policies
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,45 +24,131 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Represent time-based rules as explicit domain concepts instead of ad hoc integer
-arguments scattered across call sites.
+Students often mix three different ideas:
 
-## 1. Deadlines and Timeouts Are Not the Same
+- a timeout
+- a deadline
+- an expiration policy
 
-A deadline is an absolute moment.
-A timeout is a duration budget.
+They sound similar, but they answer different questions. If the code treats them as one
+generic number of seconds, the system becomes harder to reason about and easier to get
+wrong under retry or scheduling pressure.
 
-Convert between them deliberately. Do not let every caller improvise that math.
+## A timeout is usually a boundary-control limit
 
-## 2. Expiration Deserves a Policy Object
+A timeout usually means:
 
-If a rule expires after thirty minutes or an incident must be acknowledged within a
-service-level window, represent that policy explicitly. Temporal business rules are
-still business rules.
+- stop waiting after this duration
+- give the caller or coordinator a chance to decide what happens next
 
-## 3. Keep Timeout Budgets at the Boundary
+Timeouts are often owned by the runtime or integration boundary, not by deep domain
+objects.
 
-Infrastructure adapters may need timeout settings for HTTP or database calls. Domain
-objects usually should not know socket-level timeout details.
+That is why a timeout often belongs near:
 
-## 4. Make “Timed Out” a Real Outcome
+- network calls
+- worker coordination
+- boundary adapters
+- orchestration code
 
-Do not collapse timeout, cancellation, and domain rejection into one generic exception.
-They often need different recovery behavior.
+## A deadline is a point beyond which work is no longer useful
 
-## Practical Guidelines
+A deadline usually means:
 
-- Model deadlines and durations as distinct types or fields.
-- Represent expiration logic in named policies when it matters to the domain.
-- Keep low-level adapter timeouts at the boundary layer.
-- Return or raise timeout outcomes explicitly enough to support correct recovery.
+- this operation or decision stops being acceptable after a specific moment
 
-## Exercises for Mastery
+Unlike a timeout, a deadline is often easier to pass around explicitly because it can be
+compared by downstream coordinators that share the same constraint.
 
-1. Introduce a named expiration policy into one workflow that currently uses raw integers.
-2. Separate timeout failures from business-rule failures in one API.
-3. Review one adapter and decide whether its timeout configuration leaks too far inward.
+Deadlines help systems avoid each layer inventing its own local waiting budget.
+
+## Expiration is about state meaning
+
+Expiration policy usually answers:
+
+- when does this value, token, lease, or cached result stop being valid?
+
+That is closer to business or data meaning than a timeout is.
+
+A cache entry, suppression window, or temporary capability may genuinely have a semantic
+expiration rule. That rule should be modeled where the meaning belongs, not only where
+the timer happens to run.
+
+## Do not push runtime waiting policy into the wrong object
+
+One common design failure is letting deep objects decide:
+
+- how long to wait
+- when to give up
+- how to retry after timeout
+
+Those are often runtime coordination concerns.
+
+The domain may know:
+
+- whether an object is expired
+- whether a rule stops being valid after a time boundary
+
+But the runtime boundary usually knows:
+
+- how long a call may block
+- which coordinator owns cancellation
+- what waiting budget remains
+
+## Absolute and relative time should be chosen deliberately
+
+A timeout is often expressed as duration.
+
+A deadline is often easier to express as an absolute "not after this moment" constraint.
+
+Expiration may need:
+
+- absolute timestamps for human or contract meaning
+- monotonic duration rules for safe runtime measurement
+
+The right representation depends on what question the system is actually answering.
+
+## Common mistakes
+
+- using one `timeout_seconds` value to mean timeout, deadline, and expiration at once
+- putting network wait policy inside domain methods
+- using wall-clock arithmetic for elapsed waiting budgets
+- treating expiration as a scheduling detail instead of a validity rule
+- allowing each nested layer to invent a new timeout instead of respecting one owned deadline
+
+These mistakes make temporal behavior feel random instead of owned.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is the code clear about whether it models timeout, deadline, or expiration? | yes |
+| does waiting policy stay near runtime coordination boundaries? | yes |
+| does semantic expiration live where validity meaning belongs? | yes |
+| are downstream components reusing owned time constraints instead of inventing new ones? | yes |
+
+## Capstone connection
+
+Use the capstone runtime and polling path to ask:
+
+- where should a worker stop waiting for input?
+- where should a rule or suppression window become invalid?
+- which boundary should carry an absolute deadline if a full operation has a fixed budget?
+
+Those questions keep runtime pressure from becoming ambient behavior.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain the difference between a timeout, a deadline, and an expiration policy
+- identify one place where waiting policy belongs at the edge rather than in the model
+- point to one capstone time rule that is truly about validity rather than about waiting
