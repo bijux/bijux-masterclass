@@ -59,13 +59,14 @@ Read:
 
 1. `route.txt` for the question and limits
 2. `scenarios.tsv` for the exact state, job count, and route contract
-3. `incremental-policy.tsv` for the declared input and expected rebuild scope
-4. `incremental-work.json` for observed, missing, and unexpected rebuilds
-5. `evidence.json` for provenance, the bound incremental result, every timing sample, and
+3. `incremental-policy.tsv` for every declared input class and expected impact
+4. `incremental-summary.tsv` for the observed change-impact matrix
+5. `incremental-work.json` for per-case traces, missing work, and unexpected work
+6. `evidence.json` for provenance, the bound incremental matrix, every timing sample, and
    trusted-output inventories
-6. `summary.tsv` for min, median, max, spread, and convergence
-7. `logs/` for command output and exit status from each timing sample
-8. `manifest.json` for the bundle member inventory
+7. `summary.tsv` for min, median, max, spread, and convergence
+8. `logs/` for command output and exit status from each timing sample
+9. `manifest.json` for the bundle member inventory
 
 This order is deliberate. A median is interpretable only after you know what ran, where it
 ran, and whether it did the same work.
@@ -117,16 +118,41 @@ After every scenario, the collector requires `make -q all` to pass and inventori
 A candidate that omits work may be faster. It is not comparable if those trusted outputs
 change unexpectedly or the route stops converging.
 
-Final bytes are not enough. The incremental route advances `src/util.c` without changing
-its contents, runs the real build, then restores the source timestamp. The policy requires
-`build/util.o`, `app`, and `all` to rebuild while unrelated objects, dynamic binaries, and
-the generated header remain untouched. Missing work exposes stale-output risk; unexpected
-work exposes an overbroad graph.
+Final bytes are not enough. The incremental route executes a change-impact matrix:
+
+| Input advanced | Must rebuild | Must remain unchanged | Edge class under review |
+| --- | --- | --- | --- |
+| `src/util.c` | `build/util.o`, `app`, `all` | other objects and dynamic pipeline | direct source dependency |
+| `include/util.h` | `build/main.o`, `build/util.o`, `app`, `all` | sub object and dynamic pipeline | depfile-discovered shared header |
+| `include/sub.h` | `build/main.o`, `build/sub/sub.o`, `app`, `all` | util object and dynamic pipeline | depfile-discovered shared header |
+| `scripts/gen_dynamic_h.py` | generated header, both dynamic binaries, `all` | application and ordinary objects | generated producer fan-out |
+| `src/dynamic/dyn1.c` | `build/bin/dyn1`, `all` | application, ordinary objects, sibling binary, generated header | independent dynamic source |
+
+Every row classifies the same governed output universe. That completeness rule matters. If
+an output appeared in neither column, the runner would not observe it and a false pass
+would be possible.
+
+For each row, the runner:
+
+1. converges `all`
+2. snapshots every governed output timestamp
+3. advances only the declared input beyond all outputs
+4. executes `make --trace all`
+5. restores the input timestamp even when the case fails
+6. classifies observed, missing, and unexpected rebuilds
+
+The next case starts from a converged build, not from the previous case's artificial input
+timestamp. Passing cases remain in the report when a later case fails, so reviewers can see
+the exact stopping evidence without losing earlier observations.
+
+Missing work exposes stale-output risk. Unexpected work exposes an overbroad graph. The two
+failures lead to different repairs: restore a required edge versus narrow an unnecessary
+one.
 
 The collector copies the passing semantic fields into `evidence.json`. This binding matters:
 the comparator does not look for a conveniently named sibling file and hope it belongs to the
-timings. It compares the policy digest, input, expected rebuild set, and observed rebuild set
-carried by each evidence document.
+timings. It compares the policy digest, complete input set, and each case's expected and
+observed rebuild sets carried by both evidence documents.
 
 Run that proof alone with:
 
@@ -154,7 +180,8 @@ The comparison rejects:
 - failed evidence
 - failed convergence
 - changed trusted-output inventories
-- different incremental policy, input, expected work, or observed work
+- different incremental policy or input-case set
+- different expected or observed work in any case, including a non-first case
 - missing or unexpected incremental rebuilds
 
 It deliberately permits different clean revision identifiers and records both in
@@ -174,7 +201,9 @@ The tests prove that:
 
 - resolved tool and repository identity are captured
 - clean, dirty, and unavailable repository states remain distinguishable
-- incremental policy and observed rebuild scope are enforced
+- every policy case classifies one complete governed output set
+- later failing cases remain attributable and restore their inputs
+- missing cases and non-first-case rebuild drift are rejected
 - a complete governed capture passes
 - fewer than three samples are rejected
 - a failed command produces failed evidence
