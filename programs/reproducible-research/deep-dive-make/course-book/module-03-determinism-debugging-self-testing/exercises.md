@@ -28,7 +28,7 @@ Keep one determinism packet as you go. By the end of the day it should contain:
 - one claim table with healthy and failing observations
 - one rooted discovery policy
 - one rebuild explanation anchored to a real trace line
-- one selftest checklist with a meaningful negative case
+- one passing selftest report and one rejected harness-test report
 - one example where product tests pass but the build graph still lies
 - one bounded diagnostic report another maintainer could trust
 
@@ -124,21 +124,28 @@ What to hand in:
 Study note:
 CI does not consume target names alone. It consumes the promises those names carry.
 
-## Exercise 4: Design the selftest
+## Exercise 4: Audit a complete selftest report
 
-Describe the exact checks your selftest should run to prove convergence and
-serial/parallel equivalence.
+From the capstone directory, run:
+
+```sh
+gmake selftest-report
+```
+
+Read the saved evidence without opening `tests/run.sh` first. Reconstruct what the
+harness proved from the report, then compare your reconstruction with the script.
 
 What to hand in:
 
-- the ordered selftest checklist
-- the artifact set it compares
-- one negative test and why it is meaningful
-- one sentence explaining how the check avoids relying on local machine state
+- a table mapping each summary check to its command transcript and evidence file
+- the 13 paths in the declared artifact inventory, grouped by role
+- the schedule-comparison result and aggregate identities
+- the hidden-input mechanism, query exit, and why that exit counts as a pass
+- two claims the report does not support
 
 Study note:
-A selftest that only passes in your current shell session is not a selftest. It is an
-accidentally helpful environment.
+A green summary is the start of review, not the whole answer. If you cannot connect each
+claim to a command and evidence file, you are still trusting the harness by reputation.
 
 ## Exercise 5: Quarantine `eval`
 
@@ -164,7 +171,7 @@ answer these questions cleanly:
 - which build claim you are protecting first and how you would falsify it
 - which discovery surface in your lab could drift silently without an explicit rule
 - which public target promises matter to CI consumers
-- which negative case your future selftest must catch to be worth keeping
+- which rejected case proves that the current selftest closes a real gate
 
 If you cannot answer those four questions in plain language, return to Exercises 1-5 and
 make the packet more explicit before continuing.
@@ -211,19 +218,24 @@ reason to run again.
 
 ## Exercise 8: Separate product tests from build tests
 
-Design two targets:
+Run these separately:
 
-- `test`, which checks the built program’s behavior
-- `selftest`, which checks incremental convergence and serial/parallel equivalence
+```sh
+gmake test
+gmake selftest
+gmake selftest-harness-tests
+```
 
-Introduce a graph defect that product tests miss but `selftest` catches.
+The final command includes a controlled `parallel-artifact-drift` case. Inspect its saved
+report and explain why the product test cannot answer the same question.
 
 What to hand in:
 
-- the target contracts
-- the deliberate defect
-- transcripts showing the different outcomes
-- one sentence explaining why runtime correctness alone does not prove build correctness
+- one contract sentence for each target
+- the result of the truthful product and build-system routes
+- the failed check and changed path from the rejected harness case
+- the checks marked `NOT_RUN` and why that state matters
+- one graph defect that a clean product test could miss
 
 Study note:
 This is one of the most important distinctions in the whole course. A product can be
@@ -248,28 +260,31 @@ Study note:
 The best `ci` target does not contain cleverness. It composes already-documented
 contracts and makes them easy to invoke consistently.
 
-## Exercise 10: Build a diagnostic report
+## Exercise 10: Review a rejected selftest without rerunning
 
-For one surprising rebuild, collect a bounded report containing:
+Run `gmake selftest-harness-tests`, then work only from the saved
+`parallel-artifact-drift` report. Do not rerun while reviewing it.
 
-- the command and GNU Make version
-- `make --trace TARGET`
-- relevant target and prerequisite timestamps
-- the variable values that shape the rule
-- your causal explanation
+Build a bounded review note containing:
 
-Then repair the defect and collect the same evidence again.
+- the result and stopping boundary from `summary.txt`
+- the exact parallel-build command from `commands.txt`
+- the semantic diagnostic category from `schedule-comparison.json`
+- the serial and parallel digest and byte count for the changed path
+- the relevant command log
+- the preserved workspace path
+- one supported conclusion and two unsupported conclusions
 
 What to hand in:
 
-- before and after reports
-- the Makefile change
-- a two-sentence explanation suitable for a teammate who did not witness the failure
-- one sentence explaining why your report is bounded enough to remain readable
+- the review note
+- a five-sentence handoff to a maintainer who did not witness the run
+- the next narrow experiment you would run after preserving this report
+- one sentence explaining why immediate rerun would weaken the review
 
 Study note:
-The goal is not to dump everything Make knows. The goal is to gather the smallest packet
-that proves the diagnosis.
+The report already contains more evidence than your handoff needs. Select the files that
+support the stopping-boundary diagnosis; do not dump the whole workspace.
 
 ## Before you open the answers
 
@@ -279,7 +294,7 @@ Stop before `exercise-answers.md` and check that you can already point to:
 - one trace line that explains a rebuild
 - one defect that product tests missed
 - one selftest that would have caught it
-- one diagnostic report you would be willing to send to a teammate
+- one rejected selftest review you would be willing to send to a teammate
 
 If you do not yet have those five things, the answer page will feel useful but will not
 teach much.

@@ -51,7 +51,7 @@ The strongest self-study packets also leave behind six concrete artifacts:
 - one claim table
 - one rebuild explanation tied to a real trace line
 - one CI contract list
-- one selftest with a meaningful negative case
+- one passing selftest report and one rejected harness-test report
 - one example where product tests miss a graph defect
 - one bounded diagnostic report
 
@@ -125,27 +125,48 @@ The key explanatory sentence is:
 > CI depends on target meaning, not target names alone, so a semantic change in a public
 > target is a contract change even if the name stays the same.
 
-## Exercise 4: Design the selftest
+## Exercise 4: Audit a complete selftest report
 
-A strong selftest includes:
+A strong answer starts from `summary.txt` and reconstructs this route:
 
-- convergence:
-  - a successful second run performs no build work
-- serial/parallel equivalence:
-  - declared outputs match under `-j1` and `-jN`
-- negative proof:
-  - one injected defect makes the check fail
-- isolation:
-  - the result does not depend on untracked local state
+| Summary check | Command or mechanism | Evidence |
+| --- | --- | --- |
+| convergence | clean serial build, then `gmake -q all` | `convergence.txt`, convergence logs |
+| serial/parallel equivalence | independent clean builds and governed inventories | `schedule-comparison.json`, both inventory files |
+| trace guardrail | `gmake --trace -n all` | `trace-count.txt`, `logs/trace-plan.log` |
+| hidden-input detection | parse-time counter changes outside the graph | `hidden-input.txt`, hidden-input logs |
+| quarantined eval | explicit `USE_EVAL=yes eval-demo` | `eval-demo.txt`, its log |
 
-The strongest answers also name the artifact set explicitly instead of saying "compare the
-build outputs."
+The two inventories should each declare 13 paths: `app`; two dynamic binaries; the
+generated header; three object files; five dependency files; and `build/flags.stamp`.
+Grouping by role matters because it shows that the comparison policy is intentional,
+not a directory dump.
+
+For a truthful run, `schedule-comparison.json` should contain:
+
+```json
+{
+  "result": "PASS",
+  "missing_paths": [],
+  "unexpected_paths": [],
+  "changed_artifacts": []
+}
+```
+
+The serial and parallel aggregate identities should match. The hidden-input evidence
+should report query exit `1`: that is a pass because the deliberately changing counter
+makes work necessary, proving the harness detects false convergence.
+
+Two honest non-claims are:
+
+- the report does not prove equivalence for artifacts outside the declared inventory
+- the report does not prove cross-compiler or cross-platform reproducibility
 
 Weak answer pattern:
 
-- "Run the build again and make sure it still passes"
+- "`summary.txt` says PASS, so the build is deterministic"
 
-That is too soft. What exactly is being compared, and what failure would count?
+That skips the command and evidence chain and overstates one recorded environment.
 
 ## Exercise 5: Quarantine `eval`
 
@@ -213,26 +234,28 @@ does not remain a mysterious global feeling.
 
 ## Exercise 8: Separate product tests from build tests
 
-A useful split is:
+The three target contracts are:
 
-```make
-.PHONY: test selftest
+- `test` checks output from the application and generated binaries.
+- `selftest` checks convergence, schedule equivalence, trace cost, hidden-input
+  detection, and the optional eval boundary.
+- `selftest-harness-tests` proves that the selftest accepts truthful schedules and
+  rejects controlled schedule drift.
 
-test: app
-	@./app --check
+In the rejected case, `summary.txt` should name
+`serial_parallel_equivalence`; `schedule-comparison.json` should classify
+`build/include/dynamic.h` under `changed_artifacts`. Trace, hidden-input, and eval checks
+should be `NOT_RUN` because the harness stopped at the first broken contract.
 
-selftest:
-	@tests/build-system.sh
-```
+A clean product test cannot detect this injected drift: the binaries were built before
+the header was altered, and their runtime assertions can still pass. A comparable real
+defect is a missing header prerequisite that remains invisible after a clean build but
+leaves stale objects after an incremental header change.
 
 The core lesson is:
 
-> A product test can pass after a clean rebuild even when the incremental graph is
-> missing an edge and therefore dishonest.
-
-For example, a missing header prerequisite may be invisible after `clean`, but it will
-surface once the header changes and stale objects remain in place. That is why the module
-separates runtime proof from build-system proof.
+> Product behavior and build truth are separate claims, and the proof harness needs its
+> own rejection test.
 
 ## Exercise 9: Make a CI target boring
 
@@ -254,31 +277,43 @@ The strongest answers also show a clean-room run such as a fresh clone, tracked-
 copy, or isolated working directory, so no hidden local state can make CI look stronger
 than it is.
 
-## Exercise 10: Build a diagnostic report
+## Exercise 10: Review a rejected selftest without rerunning
 
-A strong report is bounded, reproducible, and calm.
+A strong review note follows evidence causally:
 
 Example shape:
 
 ```text
-Command: make --trace report.pdf
-GNU Make: 4.4.1
-Observed reason: data.csv is newer than report.pdf
-Relevant variable: FORMAT=pdf (origin: command line)
-Diagnosis: report.pdf rebuilt because a declared data prerequisite changed.
-Repair: none; the rebuild is correct.
+Result: FAIL
+Stopping boundary: serial_parallel_equivalence
+Parallel command: gmake -j2 all (or the recorded timeout wrapper)
+Diagnostic: changed_artifacts
+Changed path: build/include/dynamic.h
+Serial identity: 78 bytes, recorded SHA-256
+Parallel identity: 119 bytes, recorded SHA-256
+Preserved state: workspace/build/include/dynamic.h
+Supported conclusion: the two schedules did not preserve the declared artifact identity.
+Unsupported: the compiler is nondeterministic.
+Unsupported: every parallel build is unsafe.
 ```
 
-For a real defect, the before report should expose missing or unstable evidence, and the
-after report should show the repaired edge or stabilized variable behavior.
+The handoff should say that convergence passed before schedule comparison failed, name
+the changed generated header, state that later checks did not run, point to the comparison
+and workspace, and recommend inspecting the controlled writer before broadening the
+investigation.
 
-The missing but important sentence is:
+The next narrow experiment could compare the header immediately before and after the
+fault seam or rerun the truthful harness after preserving the rejected bundle. Immediate
+rerun would replace the fixed report directory and destroy the easiest path back to the
+observed stopping state.
 
-> The report is bounded because only the rule, variables, timestamps, and trace lines that
-> answer the question are included.
+Weak answer pattern:
 
-That sentence protects learners from dumping the whole `make -p` world when three facts
-would do.
+- copying the whole manifest and workspace listing into the handoff
+- claiming a root cause from the changed path alone
+
+The report localizes the failed contract. Root-cause work begins there; it is not already
+finished.
 
 ## What a mastery-level answer set looks like
 
