@@ -53,6 +53,7 @@ start narrower.
 | clean planning evidence retains causal attribution | `make trace-report` | trace report, raw trace, and manifest |
 | proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `commands.txt`, `logs/` |
 | missing generated-producer edges cause stale consumers and declared edges recover | `make incremental-fault-audit` | fault summary, paired producer models, traces, and mutated workspaces |
+| clock state, false order-only edges, and overlapping patterns change successful output meaning | `make semantic-fault-audit` | seven-row summary, report observations, paired traces, and specimens |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
 | variable and execution-policy assumptions are reviewable | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `origins.txt` |
 | concurrency specimens exhibit their promised failure mechanisms | `make incident-audit` | incident summary, report, semantic evidence, raw logs, and preserved workspaces |
@@ -90,6 +91,7 @@ That keeps claim, route, and evidence ahead of implementation detail.
 - choose `performance-selftest` when the question is whether provenance, requested-work, capture, and comparison gates close
 - choose `verify-report` when the proof needs to be saved
 - choose `incident-audit` when process status and semantic artifact state must jointly prove a concurrency failure class
+- choose `semantic-fault-audit` when exit status succeeds but state, freshness, or rule selection may still be dishonest
 - choose `profile-audit` for portability, policy, and precedence questions
 - choose `proof` only when the question genuinely spans multiple bundles
 - choose `confirm` when stewardship review needs the strongest built-in route
@@ -108,4 +110,5 @@ Read these with this guide:
 - [INCIDENT_REVIEW_GUIDE.md](incident-review-guide.md)
 - [PERFORMANCE_EVIDENCE_GUIDE.md](performance-evidence-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](profile-audit-guide.md)
+- [SEMANTIC_FAULT_AUDIT_GUIDE.md](semantic-fault-audit-guide.md)
 - [SELFTEST_GUIDE.md](selftest-guide.md)

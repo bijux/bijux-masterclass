@@ -47,7 +47,7 @@ edges, unsafe publication, or ownership drift.
 
 | Failure class | Why it matters | Where the course teaches the repair |
 | --- | --- | --- |
-| phony ordering used instead of real file edges | it hides truth about what causes work | Modules 01-02, `repro/order-only-dependency-misuse.mk` |
+| phony ordering used instead of real file edges | it hides truth about what causes work | Modules 01-02, `semantic-fault-audit` and `repro/semantic-faults/order-only-edge/` |
 | stamps used to hide meaningful state | it trades explicit inputs for wishful thinking | Modules 05-06, `mk/stamps.mk` |
 | recursive or fragmented ownership by default | it makes the graph harder to reason about than the product | Modules 05 and 07, `ARCHITECTURE.md` |
 | generated files treated as incidental | it breaks rebuild truth and downstream causality | Module 06, `incremental-fault-audit` and `repro/incremental-edges/generated-producer/` |

@@ -91,11 +91,14 @@ capstone/
   repro/
     shared-log-interleaving.mk
     shared-staging-collision.mk
-    clock-based-stamp.mk
     directory-creation-race.mk
     incremental-edges/
       authored-header/
       generated-producer/
+    semantic-faults/
+      clock-state/
+      order-only-edge/
+      pattern-selection/
 ```
 
 From the repository root, run capstone commands through:

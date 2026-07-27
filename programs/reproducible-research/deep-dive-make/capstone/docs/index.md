@@ -38,6 +38,7 @@ Use this page as the stable entry route for the Make capstone docs.
 | how to establish or compare local build-cost evidence | `PERFORMANCE_EVIDENCE_GUIDE.md` | `make perf` and `make performance-compare` |
 | how the capstone proves distinct concurrency failure mechanisms | `INCIDENT_REVIEW_GUIDE.md` | `make incident-audit`, then `REPRO_GUIDE.md` |
 | why missing edges can produce successful stale builds | `INCREMENTAL_FAULT_AUDIT_GUIDE.md` | `make incremental-fault-audit` |
+| how hidden state, false order-only edges, and overlapping rules change meaning | `SEMANTIC_FAULT_AUDIT_GUIDE.md` | `make semantic-fault-audit` |
 | how the system is layered | `ARCHITECTURE.md` | `PROFILE_AUDIT_GUIDE.md` and `make proof` |
 
 ## Stable local doc surface
@@ -51,6 +52,7 @@ Use this page as the stable entry route for the Make capstone docs.
 - [Proof Guide](proof-guide.md)
 - [Release Acceptance Guide](release-guide.md)
 - [Repro Guide](repro-guide.md)
+- [Semantic Fault Audit Guide](semantic-fault-audit-guide.md)
 - [Selftest Guide](selftest-guide.md)
 - [Target Guide](target-guide.md)
 - [Walkthrough Guide](walkthrough-guide.md)

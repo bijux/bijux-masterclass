@@ -46,6 +46,7 @@ question honestly.
 | what do the governed build states cost in this attributable context | `make perf` | inspect provenance and requested work before timings |
 | do all governed input classes select exactly the necessary work | `make performance-incremental` | inspect the policy, complete summary, and any failing case trace |
 | why can a successful incremental run leave stale behavior | `make incremental-fault-audit` | compare paired findings, traces, edge models, and mutated workspaces |
+| can hidden state, false ordering, or rule overlap change successful output meaning | `make semantic-fault-audit` | compare all seven broken and control rows |
 | did cost change under compatible context and equivalent work | `make performance-compare` | inspect both bundles and the comparison report |
 | do performance evidence gates reject dishonest inputs | `make performance-selftest` | inspect the rejection tests |
 | is the clean planning trace bounded and attributable | `make trace-report` | inspect trace evidence and raw trace |
@@ -76,6 +77,8 @@ question honestly.
 | `perf` | provenance, complete requested-work matrix, repeated timings, convergence, and inventories | you need an attributable local baseline |
 | `performance-incremental` | per-input missing and unexpected rebuild classifications across one output universe | you need requested-work proof |
 | `incremental-fault-audit` | stale missing-edge models and refreshed declared-edge controls | you need to study how incremental graph lies manifest |
+| `semantic-fault-audit` | paired state, order-only, and pattern-selection observations | you need to prove a successful graph can still encode false meaning |
+| `semantic-fault-selftest` | five acceptance and rejection tests for the semantic audit | you need to verify the audit discriminates dishonest evidence |
 | `performance-compare` | timing deltas guarded by context and semantic equivalence | you have a compatible prior evidence bundle |
 | `performance-selftest` | context, rebuild, capture, and comparison gate tests | you need to review the evidence gate |
 | `trace-report` | clean-plan trace, semantic checks, and bundle manifest | you need causality evidence without execution |
@@ -107,7 +110,8 @@ question honestly.
 - `selftest-report` and `verify-report` are the same saved evidence bundle, including on failure
 - `profile-audit` is about declared execution boundary and variable sources, not raw performance benchmarking
 - `proof` is not "better selftest"; it is the point where one review question has become several
-- `hardened` and `confirm` are the strongest built-in routes, not the default starting point
+- `semantic-fault-audit` proves the specimens; `semantic-fault-selftest` proves the gate rejects altered evidence
+- `hardened` and `confirm` include both semantic routes but remain final review tools, not the default starting point
 
 ---
 
@@ -154,3 +158,4 @@ What belongs in the source bundle:
 - [CONTRACT_AUDIT_GUIDE.md](contract-audit-guide.md)
 - [INCIDENT_REVIEW_GUIDE.md](incident-review-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](profile-audit-guide.md)
+- [SEMANTIC_FAULT_AUDIT_GUIDE.md](semantic-fault-audit-guide.md)
