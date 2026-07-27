@@ -32,6 +32,25 @@ The story is intentionally simple.
 
 That helps the module show the important boundaries without burying them in platform detail.
 
+## Run the bounded incident
+
+From the repository root:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone data-identity-audit
+```
+
+Before reading `summary.tsv`, predict the outcomes:
+
+| Case | Workspace deleted? | Cache deleted? | Remote populated? | Expected recovery |
+| --- | --- | --- | --- | --- |
+| cache recovery | yes | no | no | checkout succeeds |
+| remote recovery | yes | yes | yes | pull and checkout succeed |
+| pointer only | yes | yes | no | checkout fails |
+
+If your prediction makes cache recovery and pointer-only recovery equivalent, stop and
+revisit the distinction between pointer metadata and stored content.
+
 ## The situation
 
 Suppose you have a DVC-tracked dataset in the workspace and say:
@@ -75,6 +94,24 @@ What matters most is that:
 
 The missing workspace file is serious, but it is not the whole story.
 
+## Step 2A: Establish the original identity
+
+Open:
+
+```text
+workspace/remote-recovery/data/observations.csv.dvc
+report.json
+```
+
+Record:
+
+- pointer `md5`
+- pointer size
+- audit SHA-256
+
+This is the pre-loss identity packet. Without it, a file appearing after recovery proves
+only that some bytes exist at the path.
+
 ## Step 3: Use the command model honestly
 
 The recovery explanation is:
@@ -88,6 +125,23 @@ That is stronger than saying:
 
 The restored file matters because it came back through a recorded identity path, not only
 through luck or a teammate copying something over Slack.
+
+## Step 3A: Prove the loss was real
+
+The remote case removes both the workspace projection and `.dvc/cache/` before pulling.
+The audit checks the resulting filesystem, not merely the intended deletion commands.
+
+This matters because a surviving local cache would weaken the remote claim. Pull could
+appear successful while reusing local content.
+
+Read these receipts in order:
+
+1. `remote-recovery-push.stdout.txt`
+2. `remote-recovery-pull.stdout.txt`
+3. `remote-recovery-checkout.stdout.txt`
+
+Then inspect the regenerated cache object and workspace file. The receipts explain what
+DVC attempted; the files and digests establish the resulting state.
 
 ## Step 4: Ask what this proves
 
@@ -105,6 +159,20 @@ But Module 02 keeps the scope honest:
 - this does not replace the downstream publish contract
 - this does not mean every internal file in the project is equally recoverable
 
+## Step 4A: Compare the counterexample
+
+Now inspect `pointer-only-checkout.stderr.txt`.
+
+The pointer-only case begins with the same recorded content identity but has no cache and
+no remote. Checkout fails. This counterexample strengthens the remote-recovery argument:
+
+- a pointer did not supply the bytes
+- a path did not supply the bytes
+- the populated remote was the relevant difference
+
+The comparison is causal because the specimen bytes and DVC version are held constant
+while the available storage layer changes.
+
 ## Step 5: Compare the layers explicitly
 
 This is the moment where the module's state-layer vocabulary becomes useful:
@@ -116,6 +184,22 @@ This is the moment where the module's state-layer vocabulary becomes useful:
 - publish: a narrower downstream trust surface, not the whole recovery story
 
 Once you can say that in plain language, Module 02 is doing real work.
+
+## Build the review packet
+
+Hand another reviewer:
+
+| Surface | Why it is included |
+| --- | --- |
+| `summary.tsv` | one-line result and decision for each claim |
+| remote pointer | original content ID, path, and size |
+| push and pull receipts | attempted cache-to-remote and remote-to-local moves |
+| restored cache object | local availability after pull |
+| restored workspace digest | byte equality after recovery |
+| pointer-only stderr | negative control showing metadata alone is insufficient |
+
+The packet is deliberately smaller than the whole generated workspace. Each item closes a
+specific inference.
 
 ## What you should not say anymore
 
@@ -138,6 +222,19 @@ The module is succeeding when you now notice those shortcuts on your own.
 > release boundary.
 
 That is the level of precision Module 02 is trying to teach.
+
+## Write the acceptance argument
+
+A defensible conclusion is:
+
+> The test removed the tracked workspace projection and local DVC cache after pushing
+> content ID `X`. Pull repopulated the cache, checkout materialized the workspace, and the
+> recovered SHA-256 matched the immutable source. The pointer-only control failed under
+> the same local loss, so pointer metadata was not the recovery source. This proves remote
+> recoverability for `X`; it does not prove dataset meaning or publish approval.
+
+Replace `X` with the actual generated pointer ID. If the conclusion cannot name the
+tested loss and matching digest, it is still relying on the command narrative.
 
 ## Why this is a mastery example
 
