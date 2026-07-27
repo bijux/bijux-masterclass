@@ -26,8 +26,8 @@ flowchart LR
 <!-- page-maps:end -->
 
 Use this page when you remember a metaprogramming mechanism but not where it sits in the
-course's escalation order. The goal is to keep higher-power tools attached to the lower
-power tools they are supposed to replace only when necessary.
+course's escalation order. The goal is to keep higher-power tools attached to the lower-power
+tools they are supposed to replace only when necessary.
 
 ## Main sequence
 
@@ -71,3 +71,22 @@ graph TD
 - new to metaprogramming: read Modules 01 through 10 in order
 - working maintainer: start with Modules 03, 04, 07, and 09, then backfill when the lower-power alternative is unclear
 - runtime steward: start with Modules 05, 08, 09, and 10, then revisit earlier modules when transparency or blast radius questions appear
+
+## If you are lost in the sequence
+
+| If you are stuck on... | Return to... | Because... |
+| --- | --- | --- |
+| observation versus execution | 01 and 02 | you need the inspection floor first |
+| decorator honesty | 03 and 04 | wrapper trust depends on evidence surviving |
+| descriptor ownership | 06 and 07 | attribute rules need lower-power class groundwork |
+| descriptor systems | 07 and 08 | reusable field design is clearer after single-field behavior |
+| metaclass justification | 06, 08, and 09 | the missed lower-power tools matter as much as the final hook |
+| governance and rejection decisions | 05, 09, and 10 | review judgment needs the whole escalation ladder |
+
+## Good stopping point
+
+Stop when you can explain:
+
+- what lower-power knowledge one module depends on
+- why Modules 09 and 10 arrive late
+- which earlier module you would revisit if a later mechanism still feels magical
