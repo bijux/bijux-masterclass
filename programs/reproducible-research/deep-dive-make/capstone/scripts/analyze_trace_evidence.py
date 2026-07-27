@@ -8,15 +8,18 @@ import re
 import sys
 from pathlib import Path
 
-
 UPDATE_PATTERN = re.compile(
     r"^(?P<rule>[^:\n]+:\d+): update target '(?P<target>[^']+)' due to:"
 )
 
 
-def analyze(trace: str, *, route: str, state: str, focus: str, maximum: int) -> dict[str, object]:
+def analyze(
+    trace: str, *, route: str, state: str, focus: str, maximum: int
+) -> dict[str, object]:
     lines = trace.splitlines()
-    updates = [match.groupdict() for line in lines if (match := UPDATE_PATTERN.match(line))]
+    updates = [
+        match.groupdict() for line in lines if (match := UPDATE_PATTERN.match(line))
+    ]
     focus_updates = [update for update in updates if update["target"] == focus]
     checks = {
         "bounded_volume": len(lines) <= maximum,
