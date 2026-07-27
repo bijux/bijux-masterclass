@@ -72,6 +72,32 @@ def compare_context(
     }
 
 
+def compare_incremental_work(
+    baseline: dict[str, object], candidate: dict[str, object]
+) -> dict[str, object]:
+    for key in (
+        "schema",
+        "policy_sha256",
+        "input",
+        "expected_rebuild",
+        "observed_rebuild",
+        "missing_rebuild",
+        "unexpected_rebuild",
+        "result",
+    ):
+        require_equal(baseline, candidate, key)
+    if baseline.get("result") != "PASS":
+        raise ValueError("incremental work did not pass")
+    if baseline.get("missing_rebuild") or baseline.get("unexpected_rebuild"):
+        raise ValueError("incremental work contains rebuild drift")
+    return {
+        "expected_rebuild": baseline["expected_rebuild"],
+        "input": baseline["input"],
+        "observed_rebuild": baseline["observed_rebuild"],
+        "result": "PASS",
+    }
+
+
 def compare_scenario(
     name: str,
     baseline: dict[str, object],
@@ -115,6 +141,15 @@ def compare(
     ):
         raise TypeError("execution context is missing")
     context = compare_context(baseline_context, candidate_context)
+    baseline_incremental = baseline.get("incremental_work")
+    candidate_incremental = candidate.get("incremental_work")
+    if not isinstance(baseline_incremental, dict) or not isinstance(
+        candidate_incremental, dict
+    ):
+        raise TypeError("incremental work evidence is missing")
+    incremental_work = compare_incremental_work(
+        baseline_incremental, candidate_incremental
+    )
     baseline_scenarios = baseline["scenarios"]
     candidate_scenarios = candidate["scenarios"]
     assert isinstance(baseline_scenarios, dict)
@@ -138,6 +173,7 @@ def compare(
             "and an explicit operational objective before claiming an improvement."
         ),
         "execution_context": context,
+        "incremental_work": incremental_work,
         "result": "PASS",
         "scenarios": comparisons,
         "schema": COMPARISON_SCHEMA,
