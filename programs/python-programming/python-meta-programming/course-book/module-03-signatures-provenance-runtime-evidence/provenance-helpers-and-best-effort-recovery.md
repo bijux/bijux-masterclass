@@ -39,6 +39,10 @@ They are useful, but Module 03 needs one discipline to stay firm:
 
 > provenance helpers are best-effort evidence, not correctness-grade truth.
 
+This page matters because provenance is one of the easiest surfaces to overpraise.
+Beginners often see a file path or source snippet and start talking as if they have
+proved ownership, authority, or semantic safety. They have not.
+
 ## The sentence to keep
 
 When using provenance helpers, ask:
@@ -47,6 +51,10 @@ When using provenance helpers, ask:
 > depends on this lookup always succeeding?
 
 The first is healthy. The second is usually not.
+
+Keep one second question beside it:
+
+> if this provenance lookup fails or returns something partial, does my tool still tell the truth?
 
 ## What the helpers try to recover
 
@@ -58,6 +66,11 @@ At a high level:
 
 These are helpful because they add context around runtime objects. They are limited
 because source layout, loading mode, and runtime environment can all get in the way.
+
+Use that difference explicitly:
+
+- contract evidence helps answer "can this callable be invoked this way?"
+- provenance evidence helps answer "what context can I recover about where this object seems to come from?"
 
 ## Why the evidence is best-effort
 
@@ -76,6 +89,14 @@ That means the helpers answer:
 They do not answer:
 
 > what source or file must exist for correctness?
+
+Review table:
+
+| Claim | Provenance status | Why |
+| --- | --- | --- |
+| "This helper appears to come from module X." | often reasonable best-effort context | module recovery commonly works, but is still environment-dependent |
+| "This file path proves stable deployment ownership." | too strong | packaging, generated code, or synthetic filenames can weaken the path |
+| "This source snippet is helpful for review." | reasonable best-effort context | source recovery may fail or mismatch transformed runtime state |
 
 ## One picture of provenance recovery
 
@@ -117,6 +138,10 @@ except (OSError, TypeError) as exc:
 The exact result depends on where the code is running. That variability is part of the
 lesson, not a flaw in the lesson.
 
+Self-study learners should pause here and name the point clearly: if the same helper can
+succeed in one environment and fail in another, then the evidence class is convenience
+context, not a correctness foundation.
+
 ## Typical failure situations
 
 Some common sources of failure include:
@@ -128,6 +153,9 @@ Some common sources of failure include:
 
 This is why robust helpers around provenance should not let these failures leak as if they
 were impossible edge cases.
+
+It is better to return an honest partial manifest than to crash while pretending recovery
+was guaranteed.
 
 ## `getmodule` is useful but not absolute
 
@@ -141,6 +169,9 @@ In review language:
 
 - useful: "this appears to come from module X"
 - too strong: "this module lookup is guaranteed and safe to build correctness on"
+
+That wording discipline is part of the education goal. Module 03 should train the learner
+to hear "appears to" and "best effort" as precision, not weakness.
 
 ## Wrap provenance lookups in best-effort helpers
 
@@ -175,6 +206,12 @@ The wrapper does not promise too much:
 
 That is exactly the stance Module 03 wants.
 
+Review checkpoint:
+
+- if the helper returns `None`, is the result still usable?
+- if a file path is synthetic, does the caller still understand the limitation?
+- if source text is missing, does the surrounding tool keep working honestly?
+
 ## Provenance helps humans and tooling, not core semantics
 
 Good uses of provenance helpers include:
@@ -190,6 +227,10 @@ Weak uses include:
 - production logic that assumes file paths are always stable
 - authorization or routing logic tied to source recovery
 
+Add one more weak pattern to reject:
+
+- tests or manifests that treat recovered source text as the canonical proof of runtime identity
+
 The line here is straightforward: provenance is context, not a contract.
 
 ## Review rules for provenance helpers
@@ -201,6 +242,17 @@ When reviewing provenance-aware code, keep these questions close:
 - does the tool still behave sensibly in REPL, generated, or packaged environments?
 - is a file path being treated as more stable or meaningful than it really is?
 - would a simple fallback message be better than surfacing provenance failure as a crash?
+
+## Self-study lab
+
+Before leaving this page, write one provenance note in this format:
+
+- the object under review
+- the module, file, or source context you recovered
+- the exact limitation statement that stops the note from becoming an overclaim
+- one sentence explaining why the surrounding tool can still work when that context is absent
+
+If the limitation statement feels optional, the page has not done enough work yet.
 
 ## What to practice from this page
 
