@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,182 +24,232 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These are model answers for the capstone hardening lab from the exercise page. They use
+the course-wide path built across earlier modules:
 
-## How to use the answer page well
+- `WorkshopEnrollment` owns seat truth
+- the repository boundary persists it
+- projections and notifications run downstream
+- `CertificateIssuanceService` later consumes confirmed state
 
-Do not read the model answers first and then reduce Module 10 to "profile first, log
-carefully, and keep secrets safe."
+The point of the answers is to show what a final operational packet looks like when
+performance, trust, and recovery pressure are treated as design questions rather than as
+detached checklists.
 
-A better rhythm is:
+## Answer 1: Measure one hot path first
 
-1. finish the exercise with your own operational-review packet
-2. name the pressure, the semantic contract, and the boundary that should absorb it
-3. compare your reasoning with the model answer
-4. revise anywhere your answer still treats hardening as separate from design
+Suppose the team suspects seat-confirmation requests are slow during registration spikes.
 
-What matters is whether the reasoning improves production readiness while preserving the
-ownership model built throughout the course.
+A strong measurement plan says:
 
-Strong Module 10 answers usually do five things:
+- measure end-to-end confirmation latency
+- break the trace into aggregate decision time, repository save time, and downstream
+  projection/notification time
+- capture contention frequency from optimistic concurrency failures
 
-- they require evidence before performance change
-- they evaluate optimizations against semantic drift, not only speed
-- they add observability that clarifies behavior without leaking too much
-- they treat input, serialization, and secrets as trust-boundary design work
-- they translate likely failures into runbooks, drills, and final review artifacts
+What intuition to reject without evidence:
 
-The strongest self-study packets also leave behind six concrete artifacts:
+- "the aggregate logic must be the bottleneck because it feels busy"
 
-- one measurement plan
-- one semantics-safe optimization note
-- one observability review
-- one trust-boundary hardening note
-- one runbook or drill recommendation
-- one full-system audit summary
+The aggregate may be cheap while storage or projection lag is expensive. The profiler or
+trace should decide, not aesthetics.
 
-If your answers rely mostly on "ops should monitor this," the reasoning is still too
-vague.
+## Answer 2: Review optimization for semantic drift
 
-## Answer 1: Measure one suspected hot path
+Possible optimization:
 
-A strong answer identifies:
+- cache "remaining seat count" for read-heavy screens
 
-- the suspected expensive workflow
-- the metric or profile evidence needed first
-- the boundary where the cost appears
-- the intuition-based optimization story that should be rejected without proof
+Semantic contract that must remain true:
 
-The main lesson is:
+- seat-confirmation decisions still use authoritative aggregate state
 
-- speed claims are design claims only after measurement makes them real
+Drift risk:
 
-## Answer 2: Review one optimization for semantic drift
+- stale cached counts may leak into write decisions or operator trust
 
-The important pieces are:
+Boundary that should absorb it:
 
-- the contract that must stay true
-- the semantic risk introduced by the optimization
-- the test, benchmark, or review route that would expose drift
-- the boundary that should absorb the change
+- read-model or projection boundary, not the aggregate itself
 
-The weakness to avoid is:
+Proof route:
 
-- making the system faster by quietly changing freshness, ordering, or authority
+- tests that writes still consult authoritative state
+- trace or audit output proving the cache only serves reads
 
 ## Answer 3: Compare caching, batching, and lazy work
 
-A strong answer explains:
+For projection updates after enrollment events:
 
-- what each technique would trade away
-- which ownership boundary it pressures
-- what evidence justifies the chosen technique
-- what semantic rule must stay explicit afterward
+- caching helps repeated reads but risks stale dashboards
+- batching lowers write pressure but risks delayed operator visibility
+- lazy work defers cost but may move latency into surprising later paths
 
-The main lesson is that:
+Best choice here:
 
-- not all performance techniques distort the model in the same way
+- batching projection updates if the system can tolerate short lag
 
-## Answer 4: Design one observability addition
+Rejected option:
 
-Good answers usually show:
+- caching authoritative seat availability for writes
 
-- the signal being added
-- the behavior it clarifies
-- the sensitive or noisy data it excludes
-- the operator decision it supports
+Why reject it:
 
-Observability is strongest when:
+- it pressures the truth boundary and risks semantic drift under concurrency
 
-- it makes collaboration and failure easier to interpret rather than simply louder
+## Answer 4: Observability addition
+
+Useful signal set:
+
+- metric: `enrollment_confirmation_latency_ms`
+- counter: `enrollment_concurrency_conflicts_total`
+- structured log on failure with workshop id, attendee id, and boundary name
+
+Safe identifier to include:
+
+- workshop id
+
+Detail to exclude:
+
+- full attendee payload or private payment metadata
+
+Operator question supported:
+
+- "Are slow confirmations coming from domain work, persistence contention, or downstream
+  fan-out?"
+
+That is observability serving diagnosis, not just verbosity.
 
 ## Answer 5: Harden one input or default
 
-A strong answer names:
+Choose the payment callback boundary.
 
-- the trust boundary crossed by the input or default
-- the validation or safe-default rule that belongs there
-- the convenience shortcut that should be refused
-- the proof route that should fail first if the hardening regresses
+Hardening rule:
 
-The main lesson is that:
+- accept only the small normalized fields required to associate a payment confirmation
+  with an enrollment request
 
-- secure defaults are a boundary promise, not just a security team preference
+Safe default:
+
+- reject unknown callback states unless explicitly mapped
+
+Unsafe convenience to reject:
+
+- passing the whole remote payload through to the aggregate because "we might need it
+  later"
+
+Proof that should fail first:
+
+- boundary tests feeding malformed or extra fields
+- review artifact showing only normalized data crosses into the domain
 
 ## Answer 6: Review one serialization or secret boundary
 
-The important pieces are:
+Choose certificate issuance logging.
 
-- what data is untrusted
-- what data is sensitive
-- what handling, redaction, or persistence rule is required
-- what damage debugging convenience could cause if it overrides the rule
+Sensitive or risky data:
 
-The key review question is:
+- storage keys containing personal information
+- full certificate file paths
+- raw notification payloads
 
-- what would leak or become executable in the wrong context if this path stayed casual
+Rule:
 
-## Answer 7: Write one runbook or failure drill entry
+- log stable issuance ids and boundary outcome, not the full artifact location or
+  rendered content
 
-A strong answer explains:
+Damage if debugging convenience wins:
 
-- what failure mode the runbook covers
-- what signal should be checked first
-- what command, artifact, or review path operators should use
-- what design assumption the runbook makes visible
+- sensitive storage details become searchable in logs
+- operators and developers begin using logs as an accidental data export surface
 
-Runbooks are strongest when:
+## Answer 7: Runbook entry
 
-- they turn system knowledge into deliberate operator action
+Failure mode:
 
-## Answer 8: Rehearse one failure drill
+- certificate generation succeeds in persistence but upload latency spikes and delivery
+  stalls
 
-A strong answer identifies:
+First signal:
 
-- the scenario being drilled
-- the first boundary that should fail loudly
-- the evidence that proves the drill worked
-- the design weakness the drill is meant to reveal
+- rising certificate issuance latency and object-storage error rate
 
-The main lesson is that:
+First safe step:
 
-- drills reveal hidden assumptions long before an incident does
+- verify whether authoritative issuance records committed before attempting reruns
 
-## Answer 9: Perform one full-system operational audit
+Useful artifact:
 
-A strong review names:
+- issuance workflow trace or run-specific audit row keyed by issuance id
 
-- the semantic contract
-- the performance pressure
-- the required observability
-- the trust boundary
-- the recovery artifact
-- the remaining operational weakness
+Design assumption made visible:
 
-The strongest final note points to one risk that still needs explicit stewardship before
-calling the system ready.
+- persistence of issuance truth is separate from downstream artifact delivery
 
-## Answer 10: Produce a final hardening packet
+That assumption must be explicit, or operators will guess wrong under pressure.
 
-The packet is strong when another maintainer can answer:
+## Answer 8: Failure drill
+
+Scenario:
+
+- duplicate payment callbacks arrive for the same attendee
+
+Boundary that should fail loudly first:
+
+- the workflow boundary that maps callback to enrollment confirmation path
+
+Evidence the drill worked:
+
+- one confirmation succeeds
+- duplicates are rejected or ignored idempotently
+- projections and notifications do not duplicate visible outcomes
+
+Weakness expected to surface:
+
+- hidden coupling between callback handling and downstream side effects
+
+That is exactly why the drill is worth running before production teaches the lesson more
+expensively.
+
+## Answer 9: Full operational audit
+
+A strong audit paragraph might read:
+
+> The core semantic contract is that seat truth lives in `WorkshopEnrollment` and later
+> certificate issuance depends on confirmed state only. The main performance pressure is
+> the persistence and downstream fan-out path under bursts, not the aggregate alone.
+> Operators need confirmation latency, conflict counts, and issuance outcome signals.
+> The most important trust boundary is external callback and artifact-logging behavior.
+> Recovery depends on a runbook that distinguishes authoritative writes from downstream
+> publication or upload delays. The main remaining weakness is duplicate side-effect risk
+> under retries and callback duplication.
+
+That is stronger than a checklist because it preserves one coherent story about meaning,
+measurement, and recovery.
+
+## Answer 10: Final hardening packet
+
+A strong closing packet includes:
+
+- one measurement table for the confirmation and issuance path
+- one trust-boundary table for callbacks, artifact logs, and notifications
+- one observability note tying signals to operator questions
+- one runbook or drill entry for duplicate callbacks or delayed artifact upload
+- one audit summary naming the remaining operational weakness
+
+If another maintainer can answer all of these, the packet is doing real work:
 
 - what must be measured before tuning
-- what optimization can happen without changing semantics
-- what signals should exist for operators
-- what trust boundary carries the highest risk
-- what artifact should guide diagnosis or recovery under failure
-
-If different readers infer different operational priorities, the packet is still too
-ambiguous.
+- what optimization is safe only in read or derived paths
+- what boundary carries the highest trust risk
+- how a bad night in production should be diagnosed first
 
 ## Self-check
 
-If your answers consistently explain:
+You are using Module 10 correctly when another maintainer can answer these from your
+packet without asking for oral background:
 
-- how one performance decision starts with evidence
-- why one hardening move belongs at one boundary
-- what one signal clarifies without oversharing
-- how one trust boundary is defended
-- what one runbook or drill exposes before production does
-
-then you are using Module 10 correctly.
+- what evidence justifies one optimization
+- what must never cross a trust boundary casually
+- what signal operators should inspect first
+- what remaining risk still needs explicit stewardship
