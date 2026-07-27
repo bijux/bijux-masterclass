@@ -29,6 +29,10 @@ not to add one last collection of dangerous tricks. The goal is to decide which 
 defensible, which ones belong only to tooling or exceptional cases, and how a reviewer can
 ask for evidence instead of admiring cleverness.
 
+This module is weakest when it is read as a tour of dangerous mechanisms. It becomes
+useful only when it is read as a decision course: what to approve, what to constrain, what
+to reject, and what evidence those calls require.
+
 This module now uses the same ten-file learning surface as the deep-dive series and the
 other strong metaprogramming modules: overview, five core lessons, worked example,
 exercises, answer key, and glossary.
@@ -42,6 +46,30 @@ By the end of Module 10, you should be able to explain five things clearly:
 - how dynamic behavior stays observable, reversible, and testable
 - why import hooks and AST transforms usually belong to tooling-grade problems
 - how to choose the lowest-power mechanism and justify escalation only when ownership demands it
+
+## The review route through the module
+
+Use the module in this order when you are reviewing a dynamic design:
+
+| If the design pressure starts with... | Read this first | Then ask... |
+| --- | --- | --- |
+| untrusted expressions, generated code, or "safe eval" claims | [Dynamic Execution, Trust Boundaries, and Process Isolation](dynamic-execution-trust-boundaries-and-process-isolation.md) | where is the real process boundary, and what lower-power model was rejected? |
+| interface language, duck typing, or runtime capability checks | [Interface Contracts with ABCs, Protocols, and `__subclasshook__`](interface-contracts-with-abcs-protocols-and-subclasshook.md) | what is nominal, structural, shallow, or truly behavioral here? |
+| wrappers, registries, flags, patches, or tracing layers | [Observability, Reversibility, and Monkey-Patching Boundaries](observability-reversibility-and-monkey-patching-boundaries.md) | what stays visible, what resets cleanly, and what hot path pays the cost? |
+| import machinery, code rewriting, or "automatic discovery" | [Import Hooks, AST Transforms, and Tooling Boundaries](import-hooks-ast-transforms-and-tooling-boundaries.md) | is this tooling-grade, and how does it preserve cleanup and evidence? |
+| a final choice between two or more mechanisms | [Mechanism Selection, Review Gates, and Escalation Boundaries](mechanism-selection-review-gates-and-escalation-boundaries.md) | what is the lowest-power honest owner, and what proves escalation is earned? |
+
+## Weak answers to reject early
+
+Do not let the module collapse into any of these:
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "The runtime can enforce it automatically." | Automation is not ownership, observability, or reversibility. |
+| "We restricted globals, so it is safe enough." | Namespace control is not a real hostile-input boundary. |
+| "The protocol or ABC proves the contract." | Interface surfaces do not prove deep behavior by themselves. |
+| "The import hook is worth it because it feels seamless." | Seamlessness is often hidden blast radius in disguise. |
+| "The wrapper is tiny, so rollback does not matter." | Small dynamic surfaces still need visibility and cleanup. |
 
 ## Keep these pages open
 
@@ -77,6 +105,18 @@ By the end of Module 10, you should be able to explain five things clearly:
 | compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
 | stabilize the governance vocabulary used in this directory | [Glossary](glossary.md) |
 
+## Evidence packet to build while you learn
+
+Keep one packet beside the module as you work:
+
+| Surface | What to record |
+| --- | --- |
+| trust boundary notes | where safety claims stop and where real isolation begins |
+| contract notes | what each interface surface proves and what it does not |
+| reset and disable notes | how registries, wrappers, hooks, or patches restore baseline state |
+| escalation notes | which lower-power owner was rejected first and why |
+| review notes | one explicit rejection rule and one explicit approval rule |
+
 ## The running question
 
 Carry this question through every page:
@@ -90,6 +130,10 @@ Strong Module 10 answers usually mention one or more of these:
 - explicit cleanup, reset, and disable paths
 - tooling-grade powers rejected for ordinary application behavior
 - an escalation decision defended by timing and ownership rather than taste
+
+Carry one more question through every page:
+
+> If this mechanism fails at runtime, what evidence would let another engineer explain the failure quickly and restore baseline behavior safely?
 
 ## Learning outcomes
 
@@ -109,6 +153,7 @@ Do not leave the course until all of these are true:
 - you can explain why restricted globals are not a security boundary
 - you can distinguish shallow interface checks from real behavioral proof
 - you can point to one reset, cleanup, or disable surface that makes a dynamic design reviewable
+- you can name one explicit rejection rule for a higher-power mechanism and one approval rule that still stays narrow
 
 When those feel ordinary, Module 10 has done its job and the course can end with judgment
 instead of with one more pile of mechanisms.
