@@ -1,0 +1,6 @@
+name: missing-memory
+scheduler: slurm
+drop_resources:
+  - mem_mb
+memory_scale: 1.0
+semantic_overrides: {}

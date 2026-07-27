@@ -1,0 +1,5 @@
+name: underprovisioned-memory
+scheduler: slurm
+drop_resources: []
+memory_scale: 0.5
+semantic_overrides: {}

@@ -1,0 +1,13 @@
+{
+  "job_name": "summarize_records",
+  "threads": 4,
+  "resources": {
+    "mem_mb": 8000,
+    "runtime": 30
+  },
+  "semantic_contract": {
+    "input": "data/records.tsv",
+    "output": "results/summary.tsv",
+    "minimum_score": 10
+  }
+}

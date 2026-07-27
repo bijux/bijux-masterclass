@@ -1,0 +1,30 @@
+import json
+from pathlib import Path
+
+
+JOB = json.loads(Path("job-contract.json").read_text(encoding="utf-8"))
+
+
+rule all:
+    input:
+        JOB["semantic_contract"]["output"]
+
+
+rule summarize_records:
+    input:
+        JOB["semantic_contract"]["input"]
+    output:
+        JOB["semantic_contract"]["output"]
+    threads:
+        JOB["threads"]
+    resources:
+        mem_mb=JOB["resources"]["mem_mb"],
+        runtime=JOB["resources"]["runtime"]
+    params:
+        minimum_score=JOB["semantic_contract"]["minimum_score"]
+    shell:
+        """
+        mkdir -p results
+        awk -F '\\t' -v minimum={params.minimum_score} \
+            'NR == 1 || $2 >= minimum' {input} > {output}
+        """
