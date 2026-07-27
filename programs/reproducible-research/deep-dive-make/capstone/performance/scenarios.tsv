@@ -1,0 +1,4 @@
+# scenario	state	jobs	route
+clean-build	clean	4	all
+converged-noop	converged	1	all
+converged-dry-run	converged	1	dry-run-all
