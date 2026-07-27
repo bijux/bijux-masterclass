@@ -46,6 +46,8 @@ INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-mak
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
 PERFORMANCE_DIR ?= $(ARTIFACTS_DIR)/performance/reproducible-research/deep-dive-make/current
 PERFORMANCE_POLICY := performance/scenarios.tsv
+INCREMENTAL_POLICY := performance/incremental-policy.tsv
+INCREMENTAL_EVIDENCE ?= $(PERFORMANCE_DIR)/incremental-work.json
 PERFORMANCE_EVIDENCE ?= $(PERFORMANCE_DIR)/evidence.json
 PERFORMANCE_COMPARISON ?= $(PERFORMANCE_DIR)/comparison.json
 PERFORMANCE_BASELINE ?=
@@ -77,7 +79,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit clean submake-demo perf performance-evidence performance-compare performance-selftest trace-count hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-count hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -180,6 +182,7 @@ help:
 >     '  attest            write build/attest.txt (not a dependency of all)' \
 >     '  perf              write governed performance evidence under artifacts/' \
 >     '  performance-evidence write the same governed evidence bundle' \
+>     '  performance-incremental prove requested work for one declared input' \
 >     '  performance-compare compare current evidence with PERFORMANCE_BASELINE' \
 >     '  performance-selftest prove capture and comparison rejection behavior' \
 >     '  trace-count       count trace lines (heuristic)' \
@@ -574,6 +577,12 @@ performance-evidence:
 >     $(PYTHON) scripts/write_bundle_manifest.py \
 >       --bundle-dir "$(PERFORMANCE_DIR)" \
 >       --output "$(PERFORMANCE_DIR)/manifest.json"
+
+performance-incremental:
+>     $(PYTHON) scripts/capture_incremental_work.py \
+>       --policy "$(INCREMENTAL_POLICY)" \
+>       --output "$(abspath $(INCREMENTAL_EVIDENCE))" \
+>       --make "$(MAKE)"
 
 performance-compare:
 >     test -n "$(PERFORMANCE_BASELINE)" || { \
