@@ -187,7 +187,7 @@ help:
 >     '  performance-evidence write the same governed evidence bundle' \
 >     '  performance-incremental prove requested work for one declared input' \
 >     '  performance-compare compare current evidence with PERFORMANCE_BASELINE' \
->     '  performance-selftest prove capture and comparison rejection behavior' \
+>     '  performance-selftest prove context, rebuild, capture, and comparison gates' \
 >     '  trace-report      write bounded, attributable clean-plan trace evidence' \
 >     '  portability-audit probe tool/feature availability' \
 >     '  eval-demo         optional quarantined eval demo (USE_EVAL=yes)' \
@@ -607,6 +607,8 @@ performance-compare:
 >       --output "$(PERFORMANCE_DIR)/manifest.json"
 
 performance-selftest:
+>     $(PYTHON) -m unittest discover -s $(TST_DIR) -p 'test_execution_context.py'
+>     $(PYTHON) -m unittest discover -s $(TST_DIR) -p 'test_incremental_*.py'
 >     $(PYTHON) -m unittest discover -s $(TST_DIR) -p 'test_performance_*.py'
 
 trace-report:
