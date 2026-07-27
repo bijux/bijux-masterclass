@@ -25,157 +25,199 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This example shows how Module 06 fits together when a candidate run looks promising but
-still needs a promotion decision.
+This example uses the executable experiment specimen rather than invented terminal output.
+You will review the same intervention under three conditions:
 
-The goal is not to promote the best-looking number. The goal is to decide whether the
-candidate should become part of history.
+- a controlled candidate
+- a candidate with population drift
+- a valid comparison with an unsafe promotion request
 
-## The situation
+The goal is to locate the exact gate where each path stops.
 
-The current baseline says:
+## Build the evidence
 
-```yaml
-evaluate:
-  threshold: 0.65
-```
-
-and reports:
-
-```json
-{
-  "incident_escalation": {
-    "positive_class_f1_at_fixed_threshold": 0.81,
-    "precision_at_fixed_threshold": 0.78,
-    "recall_at_fixed_threshold": 0.84,
-    "evaluation_population_size": 420
-  }
-}
-```
-
-The release objective is to reduce missed escalations, even if precision drops slightly.
-
-You write the candidate intent before running it:
-
-> Lower `evaluate.threshold` to `0.50` to test whether recall improves enough to justify a
-> precision tradeoff.
-
-That sentence keeps the candidate narrow.
-
-## Step 1: Run a declared candidate
-
-You run a candidate by changing the declared control:
+From the repository root:
 
 ```bash
-dvc exp run --set-param evaluate.threshold=0.50
+make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
 ```
 
-The important part is not the exact command syntax. The important part is that the
-threshold change is visible in the parameter surface.
-
-This is better than editing a Python literal and hoping everyone remembers what changed.
-
-## Step 2: Compare against the baseline
-
-The candidate reports:
-
-```json
-{
-  "incident_escalation": {
-    "positive_class_f1_at_fixed_threshold": 0.84,
-    "precision_at_fixed_threshold": 0.75,
-    "recall_at_fixed_threshold": 0.95,
-    "evaluation_population_size": 420
-  }
-}
-```
-
-You compare the whole review surface:
+The command creates isolated Git and DVC repositories and executes a real `dvc exp run`
+inside each one. Locate the generated audit directory, then open:
 
 ```text
-baseline threshold: 0.65
-candidate threshold: 0.50
-
-f1:        0.81 -> 0.84
-precision: 0.78 -> 0.75
-recall:    0.84 -> 0.95
-population size: 420 -> 420
+summary.tsv
+workspace/controlled-threshold/finding.json
+workspace/population-drift/finding.json
+workspace/unsafe-promotion-request/finding.json
 ```
 
-This is not a generic model improvement. It is a threshold tradeoff: recall improves,
-precision decreases, and the population size appears stable.
+Start with `summary.tsv`. Do not inspect the candidate metrics yet.
 
-## Step 3: Check scope
+## Establish the approved anchor
 
-You confirm:
+Open the controlled case's:
 
-- no model family change
-- no evaluation population change
-- no metric key change
-- no unrelated workspace edits
-- only the threshold control moved
-
-That gives the candidate a coherent story.
-
-If you had also changed feature filtering and metric definition, the candidate
-would not be a clean threshold experiment anymore. It might still be useful, but it would
-need a different review claim.
-
-## Step 4: Decide whether promotion is justified
-
-The release objective favors recall. The candidate improves recall from `0.84` to `0.95`.
-Precision drops from `0.78` to `0.75`.
-
-You write a promotion argument:
-
-> Promote the lower-threshold candidate because it substantially reduces missed
-> escalations under the same metric schema and apparent population size. The precision
-> drop is acceptable for this release objective.
-
-That is a decision, not just a metric observation.
-
-## Step 5: Apply and inspect before committing
-
-You apply the candidate:
-
-```bash
-dvc exp apply <candidate-id>
-git diff
-git status
+```text
+workspace/evidence/baseline-params.json
+workspace/evidence/baseline-metrics.json
 ```
 
-You check that the workspace contains only intended changes:
+The baseline control is:
 
-- `params.yaml` threshold change
-- updated metric evidence
-- any expected lock or output evidence
+```json
+{"decision": {"threshold": 0.65}}
+```
 
-If unrelated local files appear, you stop and clean up before committing.
+The baseline result includes:
 
-Applying is not promotion by itself. Promotion happens when the reviewed state is committed
-with a clear rationale.
+```json
+{
+  "metric_schema": "classification-v1",
+  "metrics": {
+    "f1": 0.75,
+    "precision": 1.0,
+    "recall": 0.6
+  },
+  "population": {
+    "id": "incident-review-v1",
+    "record_count": 8
+  }
+}
+```
 
-## The review note you would want
+The population record also carries a digest of sorted incident IDs. Count and label alone
+are not enough; the digest lets the audit detect a changed cohort with the same friendly
+name.
 
-> Promote the threshold candidate that changes `evaluate.threshold` from `0.65` to `0.50`.
-> Compared with the baseline, fixed-threshold F1 moves from `0.81` to `0.84`, recall moves
-> from `0.84` to `0.95`, and precision moves from `0.78` to `0.75` on the same reported
-> evaluation population size. This is a recall-oriented policy tradeoff, not a pure model
-> improvement claim. Promotion is justified only because the current release objective
-> prioritizes reducing missed escalations.
+The contract permits exactly one candidate change:
 
-That note is strong because it names the control change, metric movement, tradeoff, and
-release basis.
+```text
+decision.threshold
+```
 
-## Why this is a mastery example
+The planned target is `0.50`.
 
-This one story exercises the whole module:
+## Confirm execution without overclaiming it
 
-- Core 1: the baseline anchored the comparison
-- Core 2: the candidate stayed scoped to one review question
-- Core 3: DVC experiment mechanics preserved a candidate record
-- Core 4: selection considered tradeoffs, not only best F1
-- Core 5: promotion happened only after applying and inspecting the workspace
+Open `workspace/evidence/receipts.json` and find:
 
-The candidate became part of history because the review argument was defensible, not
-because the number looked better.
+```text
+candidate_run
+experiment_show
+experiment_diff
+```
+
+The candidate run has return code zero. That proves DVC executed the candidate. It does
+not prove the result is comparable.
+
+Next inspect `finding.json`. The controlled case verifies:
+
+- the baseline still matches its recorded contract
+- the intent is present
+- the actual changed paths match the allowed change set
+- the population is stable
+- the metric schema is stable
+- the experiment reproduced
+- the baseline Git commit did not move
+
+Only now is it reasonable to read the metric movement.
+
+## Interpret the controlled tradeoff
+
+Open `candidate-metrics.json`:
+
+| Metric | Baseline | Candidate | Delta |
+| --- | ---: | ---: | ---: |
+| recall | `0.6000` | `1.0000` | `+0.4000` |
+| precision | `1.0000` | `0.8333` | `-0.1667` |
+| F1 | `0.7500` | `0.9091` | `+0.1591` |
+
+The change means two previously missed positive incidents are now escalated, while one
+negative incident becomes a false escalation.
+
+The promotion policy requires:
+
+```text
+minimum recall gain: 0.15
+minimum precision:   0.60
+```
+
+The candidate passes those safeguards. The finding is:
+
+```text
+KEEP_FOR_PROMOTION_REVIEW
+```
+
+That decision is intentionally weaker than promotion.
+
+## Contrast population drift
+
+Now open the corresponding baseline and candidate metrics for `population-drift`.
+
+The candidate still:
+
+- changes threshold from `0.65` to `0.50`
+- executes successfully
+- emits metrics
+- keeps the same friendly population ID
+
+But the candidate population contains a ninth incident. Both record count and ID digest
+change. The audit fails `evaluation_population_is_stable` and returns:
+
+```text
+BLOCK_COMPARISON
+```
+
+Do not rank this candidate below the controlled one. It is outside the comparison because
+the threshold intervention and cohort change are confounded.
+
+The repair is not “accept the larger sample.” The team must decide whether the ninth record
+belongs in a newly approved baseline, record that anchor, and rerun candidates against it.
+
+## Contrast unsafe promotion
+
+Finally inspect `unsafe-promotion-request`.
+
+Every comparison check passes. Its metric evidence is the same as the controlled case.
+The workspace also contains:
+
+```text
+promotion-request.json
+```
+
+It does not contain a durable decision with an owner and evidence. Therefore the audit
+returns:
+
+```text
+BLOCK_PROMOTION
+```
+
+This is not a comparison defect. Re-running the experiment will not repair it. The missing
+work is governance: a reviewer must decide, record why, attach evidence, and identify the
+resulting governed state.
+
+## Write the review record
+
+A defensible record would say:
+
+> Keep the threshold `0.50` candidate for promotion review from baseline
+> `approved-incident-triage`. The candidate changes only `decision.threshold`, preserves
+> the `incident-review-v1` population digest and `classification-v1` metric schema, raises
+> recall from `0.60` to `1.00`, and lowers precision from `1.00` to `0.8333`. It passes
+> the stated recall-gain and precision safeguards. No promotion is authorized until an
+> owner records the decision, the candidate is applied to a clean workspace, and the
+> resulting state is verified and committed.
+
+This note separates observation, comparison eligibility, policy judgment, and authority.
+
+## Reconstruct the three stopping points
+
+| Case | Execution | Comparison | Promotion |
+| --- | --- | --- | --- |
+| controlled threshold | passes | passes | awaiting review |
+| population drift | passes | blocks | not reached |
+| unsafe promotion request | passes | passes | blocks |
+
+If you can explain why the same successful command leads to these three outcomes, you have
+the core reasoning this module was previously missing.
