@@ -194,16 +194,23 @@ Trace usability review:
 | causal usefulness | selected prerequisites are visible |
 | side effects | `-n` avoids ordinary recipes, subject to recursive-Make caveat |
 
-A defensible `trace-count` decision is "keep as a heuristic guardrail" when:
+A passing `trace-report` should establish:
 
-- the target has a documented question
-- it remains non-semantic
-- selftest uses the threshold as a review signal rather than universal performance truth
+| Check | Evidence |
+| --- | --- |
+| declared question | route `all` from `clean-plan` state |
+| focus visibility | `all` appears among planned targets |
+| attribution | rule locations identify Makefile lines |
+| bounded volume | line count stays below the declared review boundary |
 
-Line count alone cannot show whether evidence is understandable.
+Changing the focus to an absent target should fail `focus_target_visible` while leaving the
+other observations inspectable. That is stronger than a generic nonzero status because it
+names the lost usability property.
 
-It also cannot replace `perf`. The performance bundle answers cost and semantic-preservation
-questions. `trace-count` answers only how many lines one trace emitted from one state.
+A one-line converged trace answers “is this route currently up to date?” A clean-plan trace
+answers “which producers would run and why from no outputs?” Their line counts are not
+comparable performance observations. The performance bundle answers cost and semantic
+preservation; the trace report answers planning causality and usability.
 
 ## Exercise 5: Generate and preserve a parallel incident
 
