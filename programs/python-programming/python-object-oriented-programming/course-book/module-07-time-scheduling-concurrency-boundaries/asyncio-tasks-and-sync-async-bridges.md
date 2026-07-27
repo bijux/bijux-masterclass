@@ -1,6 +1,5 @@
 # Asyncio Tasks and Sync-Async Bridges
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,49 +24,112 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Introduce async boundaries deliberately so `async` improves coordination without forcing
-the whole object model to become coroutine-shaped.
+Async boundaries often spread farther than they should.
 
-## 1. Async Is a Boundary Strategy
+Students add one async dependency and suddenly:
 
-`asyncio` helps coordinate many waiting operations. It is not a reason to rewrite pure
-domain logic as coroutines.
+- every public method becomes `async`
+- blocking work hides inside coroutines
+- task ownership becomes unclear
 
-Keep the core synchronous unless the domain itself needs asynchronous composition.
+The real lesson is not "use asyncio everywhere." The real lesson is to decide where
+async coordination belongs and how synchronous and asynchronous surfaces meet honestly.
 
-## 2. Blocking Work Must Stay Visible
+## A task is owned work
 
-An `async` wrapper around blocking I/O is still blocking unless you move that work to a
-thread pool or a real async client. Hidden blocking breaks latency expectations.
+An asyncio task is not just a lighter thread. It is a unit of scheduled work that needs
+an owner who decides:
 
-## 3. Bridge at the Edge
+- when it starts
+- how it is awaited or supervised
+- how cancellation is handled
+- what happens if it fails
 
-Common pattern:
+If no one owns those answers, tasks become ambient background behavior.
 
-- sync domain and application commands
-- async runtime adapters
-- a bridge layer that awaits external calls and then invokes synchronous domain logic
+## A bridge is a boundary, not a rewrite mandate
 
-That keeps async concerns localized.
+Most systems need a bridge somewhere between:
 
-## 4. Async APIs Need Lifecycle Rules
+- synchronous domain logic
+- asynchronous I/O or runtime integration
 
-Tasks can be cancelled, awaited twice, or leaked. Objects that create tasks must own
-their lifetime and shutdown semantics.
+That bridge may:
 
-## Practical Guidelines
+- call sync code from async orchestration
+- isolate blocking work away from the event loop
+- translate async results into synchronous state changes
 
-- Keep pure domain logic synchronous unless there is a strong reason otherwise.
-- Make blocking behavior explicit inside async code.
-- Bridge sync and async concerns near integration boundaries.
-- Document who owns created tasks and how they are shut down.
+The important rule is that the bridge should stay near the edge where the two worlds
+meet. It should not force the whole model to adopt the scheduler vocabulary.
 
-## Exercises for Mastery
+## Blocking behavior must stay visible
 
-1. Identify one part of your codebase that should stay synchronous even if adapters become async.
-2. Replace one hidden blocking call inside async code with an explicit bridge.
-3. Add shutdown ownership for one object that creates background tasks.
+One of the most dangerous async mistakes is hiding blocking work inside a coroutine as if
+`async def` made it non-blocking automatically.
+
+Students should ask:
+
+- does this operation still block a thread or loop?
+- where is that cost documented?
+- should it be isolated at the boundary instead of widened through the whole API?
+
+That honesty matters more than surface syntax.
+
+## Keep the core model scheduler-agnostic when possible
+
+A domain rule usually does not care whether it was called from:
+
+- a thread
+- an asyncio task
+- a worker loop
+
+It usually cares about inputs, state, and invariants.
+
+That is why pushing task handles, event loop details, and async control semantics into
+core objects often weakens the design instead of modernizing it.
+
+## Common mistakes
+
+- widening async all the way into the model because one adapter needed it
+- creating background tasks with no clear supervision
+- hiding blocking calls inside coroutines
+- confusing task ownership with domain ownership
+- treating sync-async bridges as if they were mere boilerplate instead of contract boundaries
+
+These mistakes spread runtime mechanics farther than necessary.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is task lifetime and failure owned explicitly? | yes |
+| does the sync-async bridge stay near the runtime edge? | yes |
+| is blocking behavior still visible and honest? | yes |
+| does the core model avoid unnecessary scheduler vocabulary? | yes |
+
+## Capstone connection
+
+Use the capstone runtime to ask:
+
+- where would an async adapter enter?
+- which boundary should supervise tasks it starts?
+- which core objects should remain unchanged even if the integration path becomes async?
+
+That keeps async integration from becoming architectural sprawl.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why a sync-async bridge should stay near the edge
+- identify one hidden-blocking risk inside coroutine-based code
+- point to one capstone surface that may become async without forcing the whole model to do the same
