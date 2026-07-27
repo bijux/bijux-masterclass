@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,174 +24,230 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These are model answers for the `WorkshopEnrollment` persistence scenario from the
+exercise page. They are meant to show how one aggregate can cross storage, schema
+history, and conflict pressure without letting persistence details quietly become domain
+truth.
 
-## How to use the answer page well
+## Running scenario recap
 
-Do not read the model answers first and then reduce Module 06 to "keep storage separate
-from the domain."
+`WorkshopEnrollment` owns:
 
-A better rhythm is:
+- workshop identifier
+- seat limit
+- confirmed attendees
+- waitlist order
+- version for optimistic concurrency
 
-1. finish the exercise with your own translation packet
-2. name the repository promise, storage representation, and compatibility burden
-3. compare your reasoning with the model answer
-4. revise anywhere your answer still lets stored shape or session behavior redefine the
-   model
+The repository boundary must preserve the invariant that confirmed attendees never exceed
+capacity, even when records are old, partially migrated, or written concurrently.
 
-What matters is whether the reasoning protects domain meaning while data moves across
-time, backends, and serialized forms.
+## Answer 1: Repository contract
 
-Strong Module 06 answers usually do five things:
+A good repository contract speaks domain language:
 
-- they keep repository contracts narrow and domain-shaped
-- they distinguish domain meaning from storage convenience explicitly
-- they use codecs and rehydration paths instead of leaking wire or ORM shapes inward
-- they plan compatibility before schema change reaches production data
-- they review conflicts, transactions, and migrations as part of persistence semantics
+```text
+load(workshop_id) -> WorkshopEnrollment | None
+save(enrollment, expected_version) -> None
+```
 
-The strongest self-study packets also leave behind six concrete artifacts:
+What callers should not need to know:
 
-- one repository-contract note
-- one mapping table
-- one codec-boundary review
-- one compatibility and upcast plan
-- one conflict and transaction note
-- one migration-safe persistence recommendation
+- whether the data lives in one table or several
+- whether waitlist entries are normalized rows or serialized arrays
+- how indexes support queries
 
-If your answers rely mostly on "the repository hides the database," the reasoning is
-still too thin.
+If the contract grows into "fetch rows," "save relation list," or "update join table,"
+storage convenience has leaked through the boundary.
 
-## Answer 1: Define one repository contract
+## Answer 2: Rehydration
 
-A strong answer identifies:
+The repository must rebuild the aggregate through an honest boundary, not by mutating a
+half-constructed object.
 
-- the domain operations callers actually need
-- the translation freedom the repository may keep internally
-- the storage details that must never become caller assumptions
+Strong path:
 
-What goes wrong when the contract is too wide:
+- fetch stored shape
+- decode through codec or mapper
+- call an aggregate constructor or rehydration factory that still enforces invariants
 
-- callers start depending on query mechanics, storage identifiers, or nullability rules
-  that should remain replaceable
+Weak path:
 
-## Answer 2: Rehydrate one aggregate honestly
+- instantiate an empty object
+- set fields directly
+- hope historical data was valid
 
-The important pieces are:
+Loading old data does not suspend the domain contract. It only means the rehydration path
+may need compatibility logic before the aggregate is created.
 
-- which constructor or rehydration path recreates the object
-- which invariants still apply at load time
-- which malformed states must be rejected or repaired before object creation
+## Answer 3: Domain meaning versus storage convenience
 
-The main lesson is:
+Example split:
 
-- reading old data does not suspend domain rules
+| Stored value | Domain meaning or storage convenience | Why |
+| --- | --- | --- |
+| `seat_limit` | domain meaning | affects capacity invariant |
+| ordered waitlist ids | domain meaning | promotion order changes behavior |
+| row `updated_at` | storage convenience | useful operationally but not central to the model |
+| join-table surrogate ids | storage convenience | internal persistence mechanics only |
+| version number | boundary meaning | not domain behavior itself, but part of persistence contract |
 
-## Answer 3: Separate domain fields from storage convenience
+The main rule is:
 
-A strong answer distinguishes:
+- fields that exist only to help the database must not widen the public object model
 
-- fields that carry domain meaning
-- fields that exist for indexing, joins, sorting, batching, or other storage concerns
+## Answer 4: Codec boundary
 
-The danger of blurring them is:
+A clean codec may know:
 
-- storage convenience starts leaking into public APIs and decision logic
+- table layout
+- column names
+- JSON shape details
+- historical field aliases
 
-## Answer 4: Draw a real codec boundary
+The aggregate should remain ignorant of:
 
-A strong answer explains:
+- whether attendees were stored as CSV in an old version
+- whether rows came from a join table
+- whether a snapshot or event stream was the source
 
-- where encoding and decoding belong
-- what format-specific details the codec may absorb
-- what the domain object must stay ignorant of
+If the wire or row shape changes tomorrow, the codec should absorb most of the change. If
+the aggregate must change just to understand column trivia, the boundary is too weak.
 
-The key review question is:
+## Answer 5: Session and identity-map pressure
 
-- if the wire format changed tomorrow, how much domain code would notice
+Callers may reasonably assume:
 
-## Answer 5: Review session and identity-map pressure
+- loading the same workshop twice inside one unit of work refers to one logical
+  enrollment state
 
-Good answers usually show:
+Callers should not be surprised by:
 
-- what identity caching or lazy loading changes for object behavior
-- which surprises are acceptable and which would violate the apparent contract
-- where that behavior should be made explicit to callers
+- lazy loading that mutates visible behavior when a property is first read
+- hidden round-trips triggered by innocent attribute access
 
-The main lesson is that:
+If the persistence stack offers identity caching or lazy loading, the boundary should
+either:
 
-- persistence convenience must not quietly redefine what an object means when it is read
+- hide it completely
+- or document where it changes observable behavior
 
-## Answer 6: Compare snapshot and event storage choices
+Unexpected storage-driven behavior is a contract bug, not just an ORM quirk.
 
-A strong answer names:
+## Answer 6: Snapshot versus event storage
 
-- the audit or rebuild need that justifies event history
-- the simplicity or speed case that makes snapshots enough
-- the migration and compatibility costs attached to each choice
+For this aggregate, a hybrid is often sensible:
 
-The main lesson is that persistence strategy commits future readers to a shape of history.
+- current-state snapshot for the main write path
+- optional event records for audit or rebuild needs
 
-## Answer 7: Plan one schema evolution path
+Why not events only?
 
-A strong answer identifies:
+- rebuilding simple enrollment state may add unnecessary operational complexity
 
-- the old representation that still exists in the world
-- the new shape the code now expects
-- whether to use migration, upcast, fallback decode, or a mix
-- the proof surface that should catch compatibility drift first
+Why not snapshots only?
 
-The weakness to avoid is:
+- you may lose useful audit detail about promotion, rejection, or reopening paths
 
-- assuming all stored data changes at the same time as the code
+The choice is not ideological. It is about how much history future readers need and how
+much compatibility burden the team is willing to carry.
 
-## Answer 8: Review conflict and transaction boundaries
+## Answer 7: Schema evolution path
 
-The important pieces are:
+Old shape:
 
-- what counts as a conflicting write
-- where concurrency detection belongs
-- what should happen if persistence and downstream publication diverge
-- what coherent outcome the transaction boundary promises
+- `confirmed_attendees_csv`
+- no explicit waitlist order
 
-The main lesson is that:
+New shape:
 
-- write success is not enough if the surrounding boundary tells a contradictory story
+- normalized attendee rows
+- ordered waitlist records
+- explicit version
 
-## Answer 9: Migrate stored data without domain corruption
+Strong compatibility plan:
 
-A strong answer explains:
+- detect old version at read time
+- decode old CSV carefully
+- construct normalized in-memory representation
+- optionally run a forward migration for durable cleanup
 
-- how old records or events are identified
-- how invalid intermediate states are avoided
-- what tests or rehearsal surface prove the migration is safe
-- what rollback, replay, or recovery plan exists if assumptions fail
+Proof surface:
 
-Migration is strong when:
+- fixtures for old records
+- rehydration tests that compare loaded aggregate behavior, not just row counts
 
-- it preserves domain discipline while acknowledging historical data reality
+If old records only "mostly load," the contract is not good enough.
 
-## Answer 10: Produce a persistence translation packet
+## Answer 8: Conflict and transaction boundaries
 
-The packet is strong when another maintainer can answer:
+Race:
+
+- two administrators confirm different waitlisted attendees at the same time
+
+Conflict handling:
+
+- repository save includes `expected_version`
+- if stored version has changed, save fails with a concurrency conflict
+
+Caller meaning:
+
+- "your update was based on stale state; reload and decide again"
+
+If persistence succeeds but publication lags, the boundary promise should still be
+coherent:
+
+- authoritative aggregate write succeeded
+- downstream publication is now a delivery concern, not a truth concern
+
+That split must be visible in logs and recovery procedure.
+
+## Answer 9: Migration without corruption
+
+A safe migration plan:
+
+1. identify records by schema version
+2. decode old representations through compatibility logic
+3. reconstruct aggregates through honest constructors
+4. re-encode into the new shape
+5. verify invariants during rehearsal and on migration runs
+
+Bad migration pattern:
+
+- writing transitional rows directly because "the data is already trusted"
+
+Good migration proof:
+
+- fixture replay
+- round-trip tests
+- sample rollback or rerun story
+
+The migration is only safe if invalid intermediate states never become durable truth.
+
+## Answer 10: Translation packet
+
+A compact final packet might read:
+
+> `WorkshopEnrollmentRepository` promises load and save in domain language only. The
+> codec isolates table and serialization details, including historical CSV-based attendee
+> storage. The aggregate is always rebuilt through an invariant-enforcing path. Write
+> conflicts surface via optimistic concurrency on versioned saves. The main remaining
+> pressure is compatibility around older waitlist records, so replay fixtures and schema
+> version tests must stay in the verification path.
+
+That note is strong because it tells the next maintainer:
 
 - what the repository promises
 - where translation lives
-- which stored shapes are still supported
-- how conflicting writes are detected
-- how the next schema or backend change can land without flattening the model
-
-If different readers infer different compatibility promises, the packet is still too
-ambiguous.
+- how old data survives
+- where conflict becomes explicit
 
 ## Self-check
 
-If your answers consistently explain:
+You are using Module 06 correctly when another maintainer can answer all of these from
+your packet:
 
-- how one repository contract protects the model
-- which parts of a shape are meaning versus storage convenience
-- where one codec or rehydration boundary stops
-- how old data remains readable under new code
-- how conflict, transaction, and migration pressure stay reviewable
-
-then you are using Module 06 correctly.
+- what the repository contract protects
+- which data belongs to domain meaning versus storage convenience
+- where schema history is absorbed
+- how stale writes fail instead of silently overwriting truth
