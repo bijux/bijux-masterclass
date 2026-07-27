@@ -248,13 +248,19 @@ checkpoint discover_samples:
         outdir = Path(output[0])
         outdir.mkdir(parents=True, exist_ok=True)
         samples = [f"sample{random.randint(1, 99)}" for _ in range(2)]
-        (outdir / "samples.json").write_text(json.dumps({"samples": samples}))
+        (outdir / "accepted_samples.json").write_text(
+            json.dumps({"samples": samples})
+        )
+        (outdir / "rejected_samples.json").write_text(
+            json.dumps({"samples": []})
+        )
 ```
 
 This code proves the point:
 
 - the checkpoint output is not a fact about declared inputs
 - reruns can change the discovered set without any honest cause
+- even the accepted and rejected records become theater instead of evidence
 - downstream results become impossible to defend
 
 The fix is never "dynamic DAGs are flaky." The fix is "discovery must be a deterministic
@@ -265,9 +271,9 @@ function of declared inputs."
 When you review a checkpoint, ask:
 
 - what exact question is this checkpoint answering
-- what file records the answer
-- could I inspect that file after the run and understand the discovered set
-- do downstream rules read that file or perform their own fresh discovery
+- which accepted and rejected records capture the answer
+- could I inspect those files after the run and understand the discovered set
+- do downstream rules read the accepted registry or perform their own fresh discovery
 - would the same declared inputs produce the same answer again
 
 If those questions are easy to answer, the checkpoint is probably healthy.
@@ -277,7 +283,8 @@ If those questions are easy to answer, the checkpoint is probably healthy.
 Pause here and say one sentence like this:
 
 > The checkpoint exists because validation execution decides which declared candidates are
-> usable, and it records that answer in one registry that downstream rules reuse.
+> usable, and it records that answer in accepted and rejected discovery records that
+> downstream rules reuse.
 
 If that sentence feels hard to produce, revisit the discovery ladder before using more
 checkpoint code.
