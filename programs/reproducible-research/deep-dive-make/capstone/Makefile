@@ -185,7 +185,7 @@ help:
 >     '  attest            write build/attest.txt (not a dependency of all)' \
 >     '  perf              write governed performance evidence under artifacts/' \
 >     '  performance-evidence write the same governed evidence bundle' \
->     '  performance-incremental prove requested work for one declared input' \
+>     '  performance-incremental prove requested work for declared input classes' \
 >     '  performance-compare compare current evidence with PERFORMANCE_BASELINE' \
 >     '  performance-selftest prove context, rebuild, capture, and comparison gates' \
 >     '  trace-report      write bounded, attributable clean-plan trace evidence' \
@@ -571,10 +571,11 @@ performance-evidence:
 >       'Performance evidence route:' \
 >       '  1. Read PERFORMANCE_EVIDENCE_GUIDE.md for the question, limits, and comparison rules.' \
 >       '  2. Read scenarios.tsv and incremental-policy.tsv for the experiment contracts.' \
->       '  3. Read incremental-work.json for observed, missing, and unexpected rebuilds.' \
->       '  4. Read evidence.json for provenance, bound requested work, raw samples, and trusted outputs.' \
->       '  5. Read summary.tsv and logs/ only after compatibility and semantics are established.' \
->       '  6. Read manifest.json to review the complete bundle.' > "$(PERFORMANCE_DIR)/route.txt"
+>       '  3. Read incremental-summary.tsv across all declared input classes.' \
+>       '  4. Use incremental-work.json for per-case traces, missing work, and unexpected work.' \
+>       '  5. Read evidence.json for provenance, bound requested work, raw samples, and trusted outputs.' \
+>       '  6. Read summary.tsv and logs/ only after compatibility and semantics are established.' \
+>       '  7. Read manifest.json to review the complete bundle.' > "$(PERFORMANCE_DIR)/route.txt"
 >     $(MAKE) --no-print-directory performance-incremental
 >     $(PYTHON) scripts/collect_performance_evidence.py \
 >       --policy "$(PERFORMANCE_POLICY)" \
