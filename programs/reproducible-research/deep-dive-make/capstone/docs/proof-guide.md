@@ -52,7 +52,7 @@ start narrower.
 | performance gates reject dishonest evidence | `make performance-selftest` | context, incremental, capture, and comparison rejection tests |
 | clean planning evidence retains causal attribution | `make trace-report` | trace report, raw trace, and manifest |
 | proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `commands.txt`, `logs/` |
-| generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/generated-header-edge.mk` |
+| missing generated-producer edges cause stale consumers and declared edges recover | `make incremental-fault-audit` | fault summary, paired producer models, traces, and mutated workspaces |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
 | variable and execution-policy assumptions are reviewable | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `origins.txt` |
 | one failure class can be studied with captured evidence | `make incident-audit` | `INCIDENT_REVIEW_GUIDE.md`, `command.txt`, `run.txt`, copied repro file |

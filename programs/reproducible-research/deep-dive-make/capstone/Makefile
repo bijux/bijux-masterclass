@@ -481,7 +481,6 @@ repro:
 >     '  make -f repro/shared-log-interleaving.mk -j2 all       shared mutable log output' \
 >     '  make -f repro/shared-staging-collision.mk -j2 all      shared staging-path collision' \
 >     '  make -f repro/clock-based-stamp.mk -j2 all             dishonest stamp boundary' \
->     '  make -f repro/generated-header-edge.mk all             generated-file modeling' \
 >     '  make -f repro/directory-creation-race.mk -j2 all       directory creation race' \
 >     '  make -f repro/order-only-dependency-misuse.mk all      order-only prerequisite misuse' \
 >     '  make -f repro/pattern-rule-ambiguity.mk all             ambiguous pattern rule selection' \

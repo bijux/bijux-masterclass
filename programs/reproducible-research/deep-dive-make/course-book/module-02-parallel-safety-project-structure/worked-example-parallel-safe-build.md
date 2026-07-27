@@ -92,8 +92,10 @@ capstone/
     shared-log-interleaving.mk
     shared-staging-collision.mk
     clock-based-stamp.mk
-    generated-header-edge.mk
     directory-creation-race.mk
+    incremental-edges/
+      authored-header/
+      generated-producer/
 ```
 
 From the repository root, run capstone commands through:

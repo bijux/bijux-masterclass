@@ -96,7 +96,8 @@ graph TD
 
 1. `scripts/gen_dynamic_h.py`
 2. `Makefile` rule for `build/include/dynamic.h`
-3. `repro/generated-header-edge.mk`
+3. `make incremental-fault-audit`
+4. `repro/incremental-edges/generated-producer/`
 
 ### If the question is incident learning
 
