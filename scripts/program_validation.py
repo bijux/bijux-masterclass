@@ -25,6 +25,11 @@ SERIES_SITE = ValidationTarget(
     command="make series-docs-build",
 )
 
+ROOT_CONTRACT = ValidationTarget(
+    name="root-contract",
+    command="make help >/dev/null\nmake programs >/dev/null\nmake program-help >/dev/null",
+)
+
 PROGRAM_TARGETS = (
     ValidationTarget(
         name="deep-dive-make",
@@ -78,25 +83,34 @@ PROGRAM_TARGETS = (
 )
 
 SHARED_VALIDATION_PATHS = {
-    "Makefile",
     "mkdocs.shared.yml",
     ".github/workflows/program-validation.yml",
+    "makes/docs.mk",
+    "makes/root.mk",
     "scripts/program_validation.py",
 }
 SHARED_VALIDATION_PREFIXES = (
-    "makes/",
     "configs/docs/",
 )
+ROOT_CONTRACT_PATHS = {
+    "Makefile",
+    "makes/bijux-docs.mk",
+    "makes/bijux-std.mk",
+    "makes/docs.mk",
+    "makes/program.mk",
+    "makes/root.mk",
+    "makes/series-docs.mk",
+}
 SERIES_SITE_PATHS = {
     "mkdocs.yml",
+    "makes/bijux-docs.mk",
+    "makes/series-docs.mk",
     "scripts/render_root_mkdocs.py",
     "scripts/sync_series_docs.py",
 }
 SERIES_SITE_PREFIXES = (
+    ".bijux/shared/bijux-docs/",
     "docs/",
-    "docs/assets/",
-    "docs/hooks/",
-    "docs/overrides/",
 )
 PROGRAM_DOCUMENTATION_PARTS = (
     "/course-book/",
@@ -146,16 +160,19 @@ def select_validation_targets(
 
     if select_all or any(affects_all_programs(path) for path in changed_paths):
         selected_names.update(target.name for target in PROGRAM_TARGETS)
+        selected_names.add(ROOT_CONTRACT.name)
         selected_names.add(SERIES_SITE.name)
     else:
         for target in PROGRAM_TARGETS:
             assert target.program_prefix is not None
             if any(path.startswith(target.program_prefix) for path in changed_paths):
                 selected_names.add(target.name)
+        if any(path in ROOT_CONTRACT_PATHS for path in changed_paths):
+            selected_names.add(ROOT_CONTRACT.name)
         if any(affects_series_site(path) for path in changed_paths):
             selected_names.add(SERIES_SITE.name)
 
-    ordered_targets = (SERIES_SITE, *PROGRAM_TARGETS)
+    ordered_targets = (ROOT_CONTRACT, SERIES_SITE, *PROGRAM_TARGETS)
     return [
         target.matrix_entry()
         for target in ordered_targets
