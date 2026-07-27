@@ -33,6 +33,16 @@ up quickly:
 Python answers that with `callable(obj)`, but the answer is narrower than many people
 expect. This page makes that boundary explicit.
 
+This is another place where beginner language gets dangerously loose. "It is callable"
+often gets used to mean all of these at once:
+
+- the runtime permits a call attempt
+- the signature will match
+- the call is safe to run now
+- the object is function-like in the way the surrounding code expects
+
+Those are four different claims. This page keeps them apart.
+
 ## The sentence to keep
 
 When you see `callable(obj)`, ask:
@@ -41,6 +51,11 @@ When you see `callable(obj)`, ask:
 > much?
 
 `callable()` is a useful gate. It is not a complete safety proof.
+
+Add one more repair sentence:
+
+> callability is permission to attempt invocation, not evidence that invocation is valid,
+> cheap, reversible, or appropriate during observation.
 
 ## What `callable(obj)` actually means
 
@@ -58,6 +73,15 @@ Common examples include:
 That last phrase matters. Callability is tied to the object's type-level call protocol,
 not to any random attribute named `__call__` attached later.
 
+Use this quick matrix while you read:
+
+| If your question is... | First tool | Why |
+| --- | --- | --- |
+| "May the runtime attempt `obj(...)`?" | `callable(obj)` | it answers the gate question directly |
+| "What kind of callable is this?" | classification after the gate | functions, classes, bound methods, and callable instances behave differently |
+| "Will this call accept these arguments?" | signature or explicit call validation later | callability alone cannot answer argument fitness |
+| "Should this tool execute the call right now?" | policy review | observation and execution are still different boundaries |
+
 ## `callable()` does not promise success
 
 A `True` result does not mean:
@@ -70,6 +94,10 @@ A `True` result does not mean:
 It means only that the runtime will let you attempt `obj(...)`.
 
 That is a valuable but limited observation.
+
+The limit matters most in tooling. A plugin loader, admin panel, serializer, or debug
+helper may only need to know whether invocation is possible, not whether it is wise to
+perform it during inspection.
 
 ## The type provides the call protocol
 
@@ -105,6 +133,10 @@ assert obj() == 1
 This is a clean Module 02 lesson because it separates a visible attribute name from the
 protocol the runtime actually uses.
 
+It also corrects a false analogy from earlier pages: just as a visible name is not proof
+of local storage, an instance attribute named `__call__` is not proof that the runtime
+treats the object as callable.
+
 ## Classes are callable too
 
 A class object is callable because calling it constructs an instance.
@@ -121,6 +153,10 @@ assert isinstance(instance, Service)
 
 This is another reminder that callability is broader than "ordinary function."
 
+It is also why review comments should avoid saying "function" when they really mean
+"callable." Classes, bound methods, and callable instances may all pass the same gate but
+carry different semantics for construction, binding, or stateful invocation.
+
 ## One picture of the observation boundary
 
 ```text
@@ -134,6 +170,36 @@ It does not answer:
 ```
 
 That distinction matters in tooling, plugin discovery, and generic wrappers.
+
+## A repair table for common callability mistakes
+
+These are the mistakes this page should remove from your reviews:
+
+| Weak move | Why it is weak | Better repair |
+| --- | --- | --- |
+| treating `callable(obj)` as proof the call will succeed | argument validity and runtime failures are separate questions | use `callable` as the gate, then validate arguments or handle failures honestly |
+| calling something during inspection because it is callable | observation and execution have different risk budgets | make invocation an explicit later step |
+| saying "function" when the object might be a class or callable instance | callable categories differ in semantics and review expectations | classify the callable after the gate |
+| attaching `obj.__call__ = ...` and assuming the runtime now sees a callable object | callability depends on type-level protocol support | provide `__call__` on the class or use another explicit wrapper design |
+
+## One realistic self-study lab
+
+Build four values:
+
+- a plain Python function
+- a class object
+- a bound method
+- an instance with type-level `__call__`
+
+Then write one row for each:
+
+- what `callable(...)` tells you
+- what it still does not tell you
+- what category the value belongs to
+- one reason a review tool might care about that category
+
+If your rows all sound the same, you are still treating "callable" as one uniform runtime
+surface.
 
 ## `callable()` versus callable categories
 
@@ -169,6 +235,9 @@ def guarded_call(func, *args, **kwargs):
 This helper is still executing behavior when the object is callable. That is the point.
 It keeps "cannot be called" separate from "can be called, but the call failed."
 
+That is the reader-first teaching move here: name the exact boundary crossed by the
+helper. The boolean gate is observational. The attempted call is behavioral.
+
 ## Review rules for callability checks
 
 When reviewing callability logic, keep these questions close:
@@ -178,6 +247,11 @@ When reviewing callability logic, keep these questions close:
 - is the code assuming an instance-level `__call__` attribute makes the object callable when it does not?
 - is a call attempt happening during observation when the tool should have remained non-executing?
 - are call failures kept distinct from non-callable inputs?
+
+One final pressure question:
+
+> If a plugin registry says it accepts "callables," does it really mean any callable, or
+> does it mean one narrower callable category with a particular signature and lifecycle?
 
 ## What to practice from this page
 
