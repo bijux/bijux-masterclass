@@ -107,9 +107,13 @@ instead of engineering decisions.
 
 ## Exercises
 
-- Take one object from the capstone and explain whether it is identity-bearing, value-oriented, or an accidental mix of both.
-- Write a small example that distinguishes aliasing from copying, then state which bug that distinction prevents in production code.
-- Review one class and explain whether its equality and hashing behavior is a real contract or an accident of defaults.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete semantic review route: identity,
+state, equality, copying, representation, and the "should this even be a class?" decision.
 
 ## Capstone connection
 
