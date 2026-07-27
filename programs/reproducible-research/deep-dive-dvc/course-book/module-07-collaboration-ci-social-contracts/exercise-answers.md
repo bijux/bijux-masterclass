@@ -51,14 +51,15 @@ Strong Module 07 answers usually do five things:
 - they treat remotes as governed infrastructure
 - they use handoffs and drills to reveal missing contracts
 
-The strongest self-study packets also leave behind six concrete artifacts:
+The strongest self-study packets also leave behind seven concrete artifacts:
 
 - one rewritten team rule
 - one DVC-aware CI route
 - one merge-blocking review comment
 - one stewardship table
 - one recovery drill
-- one handoff repair list
+- one seven-case handoff classification
+- one no-oral-history handoff decision record
 
 If your answers rely only on "the team should be careful," the reasoning is still too
 thin.
@@ -87,10 +88,10 @@ Why memory is not enough:
 Reasonable route:
 
 ```bash
+dvc remote list
 dvc pull
-dvc status
+dvc status --json
 dvc repro
-dvc metrics show
 ```
 
 If the repository has a governed wrapper, that may be the stronger surface:
@@ -183,74 +184,171 @@ Recommended cadence:
 
 - rehearse on a scheduled basis and after important remote, release, or CI changes
 
-## Answer 6: Review a data-changing pull request
+## Answer 6: Predict the clean handoff outcomes
 
-A strong checklist asks:
+The generated result is:
 
-- where the new data came from
-- whether the object is recoverable from the governed remote
-- which stages or outputs change because of it
-- how metrics or decisions moved
-- how the team would roll back if the change is rejected later
+| Finding | Result | Decision | Failed checks |
+| --- | --- | --- | --- |
+| `COMPLETE_HANDOFF` | `PASS` | `ACCEPT` | none |
+| `MISSING_REMOTE_OBJECT` | `PASS` | `BLOCK` | pull, clean status, repro, result match |
+| `UNDISCOVERABLE_REMOTE` | `PASS` | `BLOCK` | discovery, pull, clean status, repro, result match |
+| `UNTRACKED_STAGE_DEPENDENCY` | `PASS` | `BLOCK` | clean status, repro, result match |
+| `STALE_EXECUTION_RECORD` | `PASS` | `BLOCK` | clean status, result match |
+| `MUTATING_REVIEW_ROUTE` | `PASS` | `BLOCK` | read-only review authority |
+| `MISSING_RESULT_CONTRACT` | `PASS` | `BLOCK` | result contract, result match |
 
-The main lesson is that pointer diffs are evidence handles, not complete review packets.
+`PASS / BLOCK` means the audit successfully reproduced evidence that should block the
+handoff. Audit correctness and handoff acceptance are different decisions.
 
-## Answer 7: Build a remote-presence CI check
+The complete case is accepted because its clean reviewer can:
 
-CI should:
+- discover the tracked remote route
+- pull the recorded input and output
+- observe clean pre-reproduction status
+- reproduce without private files
+- avoid remote writes
+- read an expected claim
+- match the restored result to that claim
 
-- use read-only credentials when possible
-- verify object availability without destructive operations
-- report exact missing object identities or paths
-- explain clearly when forked pull requests cannot access the remote-backed route
+Do not reduce this to “all commands exited zero.” The authority and interpretation checks
+are not command exit codes.
 
-The check must never mutate, delete, or garbage-collect the remote. Strong failure output
-tells the team which shared-state promise failed and what evidence is missing.
+## Answer 7: Separate remote discovery from object availability
 
-## Answer 8: Resolve a pointer merge conflict
+### Missing remote object
 
-Legitimate conflict story:
+Evidence:
 
-- two branches both regenerate or replace the same governed artifact from different
-  inputs, policies, or code states
+- `remote_list` succeeds and names `shared`
+- `pull` fails
+- the reviewer cannot recover the input or recorded result
 
-Safe resolution route:
+Review comment:
 
-- decide which content is authoritative or regenerate from the intended merged state
-- record the resulting object through normal DVC workflow
-- commit the resulting pointer as a reference to real content
+> The clone discovers the configured shared remote, but the DVC objects named by this Git
+> revision are absent. The change author or trusted publication job must push those
+> objects. Unblock when a new cache-cold clone pulls successfully, reports clean
+> pre-reproduction status, and matches the result contract.
 
-Why manual hash editing is unsafe:
+### Undiscoverable remote
 
-- it can create metadata that names no meaningful or recoverable artifact
+Evidence:
 
-## Answer 9: Define ownership for shared artifacts
+- the author used local-only remote configuration
+- the reviewer remote list does not name `shared`
+- the object store contains bytes, but the clone has no route to them
 
-Healthy separation often looks like:
+Review comment:
 
-- repository maintainers own pointer and declaration review
-- storage or platform owners manage remote durability and credentials
-- domain reviewers own scientific or release acceptance
-- incident owners coordinate recovery when shared evidence breaks
+> The required objects exist, but the repository does not carry a discoverable shared
+> remote route. A repository maintainer must track the non-secret route or a documented
+> environment mapping. Unblock when a new clone discovers the expected remote without
+> inheriting author-local configuration.
 
-Why one person should not silently own every boundary:
+Both cases fail pull. The first lacks content; the second lacks discovery. Their owners and
+repairs differ.
 
-- concentrated implicit ownership fails under absence, role change, or incident pressure
+## Answer 8: Distinguish incomplete source from stale execution
 
-## Answer 10: Conduct a no-oral-history handoff
+| Case | Pull | Pre-repro status | Repro | Missing or stale evidence | Repair |
+| --- | --- | --- | --- | --- | --- |
+| untracked dependency | succeeds | not clean | fails | `policy/severity-policy.json` is absent from Git | track or replace the dependency |
+| stale execution | succeeds | not clean | succeeds | pointer changed without matching execution record and result | reproduce, then submit lock and output evidence |
 
-Every undocumented credential path, recovery command, data origin, expected metric, or
-release assumption discovered by the teammate is a real finding.
+The untracked dependency cannot be recreated from DVC storage because it is a Git-owned
+pipeline input. The stale case has all required source and objects; the reviewer can
+rebuild it.
 
-High-value repair examples:
+Successful reproduction does not accept the stale handoff because the question is:
 
-- add the missing command to the runbook
-- automate a repeated manual check
-- clarify the expected output or metric location
-- document where release evidence lives and who owns it
+> Was the submitted revision coherent before the reviewer repaired it?
 
-The highest-value missing contract is usually the first place where the teammate must ask,
-"What am I supposed to trust here?"
+The required receipt is `dvc status --json` captured after pull and before reproduction.
+After reproduction, status describes the repaired reviewer workspace, not the submitted
+state.
+
+Evidence-complete blockers:
+
+> Pull succeeds, but the declared policy dependency is absent from the clone, so status
+> and reproduction fail. Track the policy or declare a recoverable source, then rerun from
+> a new clone.
+
+> Pull succeeds and reproduction can repair the workspace, but pre-reproduction status is
+> stale and the restored submitted result does not match the handoff claim. Submit
+> matching execution evidence, then rerun from a new clone.
+
+## Answer 9: Review authority and result meaning
+
+A reasonable authority table is:
+
+| Operation | Pull-request reviewer | Trusted publication job |
+| --- | --- | --- |
+| discover configured remote | allowed | allowed |
+| pull objects | allowed | allowed |
+| inspect status | allowed | allowed |
+| reproduce locally | allowed | allowed |
+| push objects | denied | allowed after gates |
+| delete or garbage-collect shared objects | denied | separate governed maintenance only |
+
+Corrected review route:
+
+```bash
+dvc remote list
+dvc pull
+dvc status --json
+dvc repro
+```
+
+Publication remains a separate trusted operation:
+
+```bash
+dvc push
+```
+
+The incident result contract should name:
+
+```json
+{
+  "record_count": 4,
+  "severity_total": 11,
+  "weekend_handoffs": 2
+}
+```
+
+It should also name the pointer, pipeline declaration, and generated result path used as
+evidence. Executable output is not automatically reviewable because an exit code does not
+say what values are expected or which conclusion they support.
+
+An untrusted fork should run checks that require no secrets and report the remote-backed
+route as unavailable, not passed. Trusted post-fork CI must resolve that limitation before
+merge.
+
+## Answer 10: Conduct a no-oral-history handoff review
+
+A complete decision record for the accepted case can say:
+
+> **Claim:** the selected sample has four records, severity total 11, and two weekend
+> handoffs. **Revision:** the generated reviewer clone's checked-out commit.
+> **Starting state:** cache-cold clone with no author workspace files. **Discovery:** the
+> remote-list receipt names `shared`. **Availability:** pull succeeds and restores the
+> tracked input and result. **Submitted state:** status is clean before reproduction.
+> **Reproducibility:** reproduction succeeds without private dependencies. **Meaning:** the
+> restored summary matches the handoff claim. **Authority:** read-only remote operations
+> plus local workspace writes. **Decision:** `ACCEPT` for independent recovery and review
+> of this bounded result; no release or scientific-validity claim is made.
+
+Author-only facts to exclude include:
+
+- warm cache contents
+- local-only remote configuration
+- untracked policy files
+- shell history showing which command the author intended
+- generated output that was never recorded or published
+
+If any excluded fact is required to decide, it is a contract gap. The highest-value repair
+is the one that moves that fact into tracked configuration, recoverable data, automated
+evidence, or a bounded result contract.
 
 ## Self-check
 
@@ -259,6 +357,9 @@ If your answers consistently explain:
 - which human expectation needs an enforceable check
 - how CI proves shared state from a clean context
 - why incomplete DVC evidence blocks merge
+- why pre-reproduction status preserves the submitted-state claim
+- how discovery differs from availability
+- why review authority and result interpretation are separate contracts
 - how remote policies protect collaboration and release evidence
 - how recovery drills produce fixes
 
