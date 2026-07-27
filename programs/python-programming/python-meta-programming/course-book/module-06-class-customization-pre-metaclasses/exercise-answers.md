@@ -158,6 +158,73 @@ That remaining mutability does not make the example dishonest as long as the dec
 defines frozen as a surface-level attribute rule rather than as universal deep
 immutability.
 
+## Answer 7: Separate repeated field policy from class-wide policy
+
+Example answer:
+
+Suppose several classes each need normalized email fields and trimmed name fields.
+
+Strong assessment:
+
+- `__post_init__` can work when the rule is local to one dataclass instance boundary
+- a property is good when one field in one class needs a visible read/write boundary
+- a descriptor is stronger when the same attribute rule repeats across several classes or fields
+
+Good conclusion:
+
+The owner should follow the repetition pattern. Repeated field policy belongs at the
+attribute boundary, not in copied class-local code or a broader class-wide mechanism.
+
+## Answer 8: Reject one unnecessary escalation to metaclass power
+
+Example answer:
+
+Requirement:
+
+- register classes after definition and enforce one naming convention
+
+Better owner:
+
+- a class decorator plus ordinary validation logic
+
+Strong explanation:
+
+- the requirement does not need custom namespace preparation
+- it does not need to change class creation protocol itself
+- the class already exists before the rule needs to run
+
+Good conclusion:
+
+A real metaclass need is still missing because nothing here depends on controlling how the
+class object is built. Post-construction customization is enough.
+
+## Answer 9: Compare honest class claims with overstated class claims
+
+Example answer:
+
+Honest description:
+
+- "This decorator prevents reassignment of top-level instance attributes after initialization."
+
+Overstated description:
+
+- "This makes instances fully immutable."
+
+Good conclusion:
+
+The second version is misleading because words such as "fully" and "immutable" imply deep
+and universal guarantees the tool does not actually provide. Honest language keeps the
+attribute-surface boundary visible.
+
+## Answer 10: Produce a class-boundary packet
+
+The packet is strong when another learner can answer:
+
+- which invariant is being enforced
+- which owner carries it directly
+- which stronger mechanism was rejected and why
+- where generated convenience ends and real policy ownership begins
+
 ## What strong Module 06 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -166,6 +233,8 @@ Across the whole set, strong answers share the same habits:
 - they keep rules at the smallest honest boundary
 - they treat descriptors as reusable attribute owners, not as a shortcut to extra prestige
 - they reject metaclass escalation unless class-creation-time control is truly required
+- they distinguish repeated field policy from real class-creation policy
+- they leave behind a packet another learner can review without guessing
 
 If an answer still sounds like "a more advanced class feature could handle it," revise it
 until you can say why the chosen owner is the clearest one.
