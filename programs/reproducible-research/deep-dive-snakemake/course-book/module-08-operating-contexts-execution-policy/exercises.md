@@ -1,271 +1,372 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is to make
-operating-context judgment visible through profile comparisons, failure models, and
-storage-boundary evidence, not through a pile of flags.
+These ten exercises form one context-review lab. Work from the executable specimen and
+retain one evidence packet rather than writing ten disconnected explanations.
 
-## How to work through this set
+## Prepare the lab
 
-Treat this set as one full operating-context audit day.
+From the course directory, run:
 
-For each exercise, keep three things together:
-
-- the boundary you are protecting
-- the evidence route you actually used
-- one plain-language note about why the decision belongs to operating policy or to
-  workflow meaning
-
-If your answer cannot say what stayed semantically invariant and what changed only in
-operations, the exercise is not finished yet.
-
-Before each answer:
-
-1. name the semantic invariant before you evaluate any profile difference
-2. classify the setting or incident before you propose retries, latency changes, or new
-   executor policy
-3. keep the exact comparison route, log, or storage note that justified the decision
-
-If you skip that order, the day turns into flag tuning instead of operating-context
-review.
-
-Do them in order. The set is one day-long progression:
-
-- Exercises 1-3 establish profile and semantic boundaries.
-- Exercises 4-6 compare contexts and classify settings.
-- Exercises 7-8 test resource and storage policy honestly.
-- Exercises 9-10 audit drift like a maintainer.
-
-For every answer, keep three things:
-
-- the boundary you are protecting
-- the evidence route you actually used
-- one short sentence explaining why the decision belongs to operating policy or to
-  workflow meaning
-
-## Recommended working layout
-
-Build one small policy-review packet as you go:
-
-- a profile comparison sheet
-- one dry-run comparison
-- one failure-class note
-- one storage lifecycle diagram
-- one focused drift gate with a deliberate failing example
-
-If you prefer a concrete audit tree, keep it inside something like:
-
-```text
-module08-lab/
-├── profiles/
-├── comparisons/
-├── storage/
-├── drift/
-└── artifacts/
-    ├── dry-runs/
-    ├── policy-matrix/
-    ├── failures/
-    └── reviews/
+```bash
+make capstone-context-invariance-audit
 ```
 
-That structure helps separate context comparisons, storage-boundary evidence, and drift
-checks instead of collapsing them into one loose profile note.
+Use this generated root:
 
-## What a strong day packet looks like
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/context-invariance/
+```
 
-By the time you finish all ten exercises, your work should leave behind one small,
-reviewable packet instead of ten disconnected profile tweaks:
+Keep your own notes under the repository `artifacts/` tree:
 
-- one classified profile matrix
-- one normalized dry-run comparison across contexts
-- one failure-class note tied to retries or latency
-- one storage lifecycle diagram
-- one focused drift gate with a failing example
-- one maintainer-style review note ordered by semantic risk
+```text
+artifacts/study/reproducible-research/deep-dive-snakemake/context-review/
+├── profile-matrix.md
+├── plan-comparison.md
+├── leak-findings.md
+├── resource-map.md
+├── failure-policy.md
+├── storage-contract.md
+└── maintainer-review.md
+```
 
-If you cannot point to those artifacts, the exercise day is still too dependent on tacit
-classroom guidance.
+Do not edit the tracked specimen for these exercises. The rejection suite creates its own
+disposable copies.
 
-## Exercise 1: Decide whether a profile change is safe
+## Evidence progression
 
-Review a small set of proposed profile edits and decide which are operating policy and
-which are semantic leaks.
+```mermaid
+flowchart LR
+  source["Profile source"]
+  plan["DAG and output plan"]
+  artifact["Manifest and results"]
+  mutation["Rejected mutation"]
+  review["Maintainer decision"]
 
-What to hand in:
+  source --> plan --> artifact --> mutation --> review
+```
 
-- the proposed changes
-- one sentence per change explaining your classification
-- one change you reject immediately
-- one reason the distinction matters to downstream trust
+Every conclusion must cite the smallest evidence surface that supports it.
 
-Study note:
-If you cannot classify a profile key cleanly, the profile boundary is already under
-defined.
+## Exercise 1: Classify all profile keys
 
-## Exercise 2: Review retries honestly
+Read the five profile files under:
 
-Choose a recurring failure and decide whether raising retries is justified.
+```text
+specimen/profiles/
+```
 
-What to hand in:
+Build a matrix with:
 
-- the failure symptom
-- the failure class you suspect first
-- the evidence you inspect before approving retries
-- one case where retries would hide a real defect
+- profile name
+- key
+- value
+- policy class
+- allowed to vary across preserving contexts
+- semantic effect if misused
 
-Study note:
-Do not start with “how many retries?” Start with “what kind of failure is this?”
+Use these classes:
 
-## Exercise 3: Diagnose a storage-boundary problem
-
-Choose or simulate a workflow that stages outputs through scratch or intermediate storage.
-
-What to hand in:
-
-- the storage route
-- the point where an output becomes trusted
-- one trust problem created by checking scratch directly
-- the policy or documentation boundary that repairs it
-
-Study note:
-This exercise is about when trust starts, not when bytes first appear.
-
-## Exercise 4: Compare three contexts
-
-Run the same target through local, CI, and scheduler-oriented profiles and compare the
-planned work.
+- capacity
+- observability
+- recovery
+- filesystem tolerance
+- executor mapping
+- semantic override
+- unknown
 
 What to hand in:
 
-- the capture commands
-- the normalized comparison
-- one harmless policy difference
-- one semantic difference the comparison would catch
+- `profile-matrix.md`
+- one sentence explaining why classification depends on effect, not file location
+- every semantic key used by the two counterexamples
+- confirmation that preserving profiles contain no semantic or unknown keys
 
-Study note:
-Do not normalize away the very things that prove semantic drift.
+Acceptance check:
 
-## Exercise 5: Escalate a semantic profile leak
+Your matrix must distinguish `latency-wait` from `config` and must not label every
+profile-local value as policy.
 
-Create or study a profile change that alters config, sample filtering, publish paths, or
-some other semantic surface.
+## Exercise 2: Prove the preserving semantic plan
 
-What to hand in:
+Compare local, CI, and scheduler evidence under:
 
-- the leak
-- why it is not just a profile choice
-- which repository surface should own that decision instead
-- what must happen before approval
+```text
+workspace/evidence/<profile>/
+```
 
-Study note:
-If the change affects trusted outputs or path contracts, it has already escaped pure
-policy.
+Use both:
 
-## Exercise 6: Build a governed policy matrix
-
-Inventory local, CI, and scheduler profile keys and classify each as capacity,
-observability, recovery, filesystem, executor mapping, or semantic leak.
+- `summary.stdout.txt`
+- `d3dag.stdout.txt`
 
 What to hand in:
 
-- the full matrix
-- disagreements that are justified by context
-- duplicate defaults that should be centralized or documented
-- every key that should be removed from profile policy
+- `plan-comparison.md`
+- the output paths shared by all three profiles
+- the job labels and dependency edges shared by all three profiles
+- a list of fields you ignored as volatile
+- a reason each ignored field is outside the semantic claim
 
-Study note:
-This is where policy review stops being anecdotal and becomes auditable.
+Acceptance check:
 
-## Exercise 7: Map resources to two executors
+Your comparison must retain wildcard-specific job labels and trusted output paths. A list
+of rule names alone is insufficient.
 
-Declare threads, memory, runtime, and temporary disk for a heavy rule family, then map
-those abstract needs into two operating contexts.
+## Exercise 3: Prove executed artifact equivalence
 
-What to hand in:
+Inspect the three preserving run directories:
 
-- the workflow-side resource declarations
-- both policy mappings
-- an explanation of units and defaults
-- evidence that changing the mapping does not change output meaning
+```text
+workspace/runs/local/
+workspace/runs/ci/
+workspace/runs/scheduler/
+```
 
-Study note:
-The mapping may vary. The trusted contract may not.
+Compare:
 
-## Exercise 8: Verify scratch promotion
-
-Execute or simulate a job through scratch, validation, atomic promotion, and cleanup.
-Interrupt it before promotion and inspect every location.
-
-What to hand in:
-
-- the storage lifecycle diagram
-- success and interruption inventories
-- the point where the output becomes trusted
-- recovery behavior that cannot mistake scratch for publication
-
-Study note:
-If reviewers could trust the wrong location after interruption, the storage boundary is
-too weak.
-
-## Exercise 9: Write an operating-context drift gate
-
-Implement a focused audit that compares governed profile keys and semantic dry-run
-surfaces.
+- manifest path
+- manifest content
+- `results/alpha.txt`
+- `results/beta.txt`
 
 What to hand in:
 
-- the governed invariants
-- passing and failing evidence
-- a precise failure message
-- an explanation of what remains intentionally context-specific
+- an artifact comparison table added to `plan-comparison.md`
+- the exact invariant claim supported by byte agreement
+- one performance or infrastructure claim this evidence does not support
 
-Study note:
-A good gate tells the maintainer exactly which invariant leaked and where.
+Acceptance check:
 
-## When you get stuck, diagnose the missing boundary first
+Do not infer equal runtime or real scheduler submission from equal artifacts.
 
-Use this table before you start changing more profile keys:
+## Exercise 4: Diagnose the trusted-path leak
 
-| If you are stuck on... | Check whether you are missing... | Typical repair |
-| --- | --- | --- |
-| Exercise 1 or 4 | one explicit semantic invariant | write what must stay the same before comparing contexts |
-| Exercise 2 or 5 | one named failure class or semantic leak | classify the incident before changing retries or policy |
-| Exercise 3 or 8 | one exact trust boundary in storage | draw scratch, staging, and promotion before judging outputs |
-| Exercise 6, 9, or 10 | one governed policy matrix or drift claim | define which differences are allowed before writing the audit |
+Read:
 
-Most weak Module 08 answers are not short on flags. They are short on named invariants.
+```text
+specimen/profiles/trusted-path-leak/config.yaml
+workspace/evidence/trusted-path-leak/summary.stdout.txt
+workspace/evidence/trusted-path-leak/d3dag.stdout.txt
+```
 
-## Exercise 10: Review a policy change like a maintainer
-
-Review a change that touches local, CI, and scheduler profiles together with an audit
-route.
+Compare them with local evidence.
 
 What to hand in:
 
-- findings ordered by semantic risk
-- one accepted policy difference
-- one rejected leak
-- the narrow verification route supporting each decision
+- one high-severity finding in `leak-findings.md`
+- source evidence showing the override
+- plan evidence showing the changed path
+- evidence showing sample jobs and result bytes stayed stable
+- an explanation of why DAG-only comparison would miss the defect
 
-Study note:
-This is a maintainership exercise, not a “profiles differ by environment” exercise.
+Acceptance check:
 
-## Mastery standard for this exercise set
+Quote `TRUSTED_PATH_LEAK_REPRODUCED` and explain why PASS means successful defect
+reproduction.
 
-Across all ten answers, Module 08 wants the same habits:
+## Exercise 5: Diagnose the sample-scope leak
 
-- profiles own policy, not workflow meaning
-- context comparisons protect trusted outputs
-- retries and latency changes require a failure model
-- storage and visibility assumptions are part of review, not folklore
+Read:
 
-If your answer says only "the profiles are different," keep going.
+```text
+specimen/profiles/sample-scope-leak/config.yaml
+workspace/evidence/sample-scope-leak/summary.stdout.txt
+workspace/evidence/sample-scope-leak/d3dag.stdout.txt
+workspace/runs/sample-scope-leak/publish/stable/manifest.tsv
+```
 
-## Exit standard for the exercise day
+What to hand in:
 
-You are done only when you can defend all of these clearly:
+- a second high-severity finding in `leak-findings.md`
+- the missing job label
+- the missing output path
+- the missing manifest member
+- evidence that the trusted manifest location remained stable
+- an explanation of why path-only comparison would miss the defect
 
-- which settings belong in profiles and which do not
-- which outputs and paths stay semantically invariant across contexts
-- which failure class justifies one retry or latency change
-- where temporary storage ends and trusted output begins
-- which drift difference is harmless policy and which is a leak
+Acceptance check:
+
+Quote `SAMPLE_SCOPE_LEAK_REPRODUCED` and identify the semantic owner that should replace
+profile ownership.
+
+## Exercise 6: Map rule resources into two contexts
+
+Read the `normalize` rule and the local, CI, and scheduler profiles.
+
+Build `resource-map.md` with:
+
+- rule-level threads, memory, and runtime
+- local and scheduler run-level capacity
+- one hypothetical site overlay for account and partition
+- units for every resource
+- an explanation of what happens when available cores are below requested threads
+
+Then inspect the three execution traces.
+
+What to hand in:
+
+- the three-layer ownership table
+- one semantic invariant
+- one performance property that may differ
+- one case where thread scaling would require explicit equivalence testing
+
+Acceptance check:
+
+Queue and account values must not appear in the rule, and algorithm parameters must not
+appear in the profile mapping.
+
+## Exercise 7: Decide policy for three failures
+
+Classify these incident cards:
+
+### Incident A
+
+The application exits `127` with `aligner: command not found` on every attempt.
+
+### Incident B
+
+The executor reports `PREEMPTED`; the application never starts.
+
+### Incident C
+
+The producer exits zero, and repeated measurements show its declared output becomes visible
+after 3, 7, 4, and 6 seconds.
+
+Write `failure-policy.md` with:
+
+- failure class
+- evidence
+- correct first response
+- whether retry or latency wait is justified
+- maximum attempts or wait
+- stop condition
+- added cost or delay
+
+Acceptance check:
+
+Only Incident B may receive a retry. Only Incident C may justify latency wait. Incident A
+requires environment repair.
+
+## Exercise 8: Design cross-filesystem publication
+
+Assume a job computes on node-local scratch and publishes to a shared `results/` filesystem.
+
+Draw:
+
+```mermaid
+flowchart LR
+  input["Declared input"]
+  scratch["Node-local result"]
+  candidate["Destination candidate"]
+  validate["Destination validation"]
+  final["Declared final output"]
+
+  input --> scratch
+  scratch --> candidate
+  candidate --> validate --> final
+```
+
+Create `storage-contract.md` containing:
+
+- scratch owner
+- cross-filesystem copy
+- destination candidate path
+- validation
+- same-filesystem rename
+- failure residue and cleanup owner
+- point where trust begins
+
+Add expected inventories for failure:
+
+- during scratch computation
+- during destination copy
+- after validation but before rename
+- after rename
+
+Acceptance check:
+
+Do not describe a direct move from node-local scratch to the final path as atomic.
+
+## Exercise 9: Trace one rejected mutation
+
+Run:
+
+```bash
+make capstone-context-invariance-selftest
+```
+
+Open:
+
+```text
+capstone/tests/test_context_invariance_audit.py
+```
+
+Choose one test that mutates a preserving profile and trace:
+
+- the source mutation
+- the plan or artifact effect
+- the named finding that fails
+- the assertion proving rejection
+
+Then choose the isolation test that substitutes a path leak for a sample leak.
+
+What to hand in:
+
+- a rejection section in `leak-findings.md`
+- one acceptance behavior
+- one rejection behavior
+- one isolation behavior
+- why stale workspace replacement matters
+
+Acceptance check:
+
+Do not report only that seven tests pass. Explain what incorrect evidence one test rejects.
+
+## Exercise 10: Write the maintainer review
+
+Write `maintainer-review.md` for a proposed change containing:
+
+```yaml
+# ci profile
+cores: 1
+latency-wait: 30
+config:
+  samples:
+    - alpha
+```
+
+Order the review as:
+
+- findings by semantic risk
+- accepted policy differences
+- required repair
+- verification evidence
+- explicit limits
+
+The review must answer:
+
+- which setting is harmless policy
+- which setting changes workflow meaning
+- which plan and artifact facts prove the change
+- where the sample selection should live instead
+- which scheduler, retry, and storage claims remain untested
+
+Acceptance check:
+
+Your conclusion must not use “CI is different” as justification. It must cite the missing
+job, output, and manifest member.
+
+## Completion standard
+
+Your packet is complete when another learner can:
+
+- reconstruct all three preserving invariants
+- distinguish the two semantic leaks
+- see why rule resources and profile capacity have different owners
+- reproduce your failure-policy decisions
+- identify the exact storage publication event
+- trace one mutation from source to failed finding
+- approve or reject the proposed profile change without instructor explanation
+
+Keep the packet under `artifacts/`. It is study evidence, not a new durable course source.
