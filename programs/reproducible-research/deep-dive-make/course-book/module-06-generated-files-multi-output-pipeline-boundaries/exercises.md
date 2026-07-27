@@ -151,27 +151,33 @@ Study note:
 Partial temporary leftovers can be acceptable for diagnosis. Partial trusted publication
 is not.
 
-## Exercise 5: Diagnose one generator failure mode
+## Exercise 5: Discriminate producer and consumer edge failures
 
-Pick one of these symptoms:
+Run the capstone's paired fault laboratory:
 
-- stale generated output
-- duplicate execution under `-j`
-- unstable manifest
-- partial outputs after failure
-- confused consumer edge
+```sh
+cd programs/reproducible-research/deep-dive-make/capstone
+gmake incremental-fault-audit
+```
 
-Write the repair loop you would use to diagnose and fix it.
+Before reading `summary.tsv`, predict the changed outputs and final binary text for all
+four specimen/model pairs. Then review the summary, JSON report, and matching traces.
 
 What to hand in:
 
-- the failure class
-- the command that would give you the first useful evidence
-- the graph or publication repair you would try next
-- one sentence explaining why that probe is less disruptive than jumping to cleanup
+- your predicted and observed four-row table
+- one sentence explaining why `PASS` plus `FAULT_REPRODUCED` means the harness worked but
+  the missing-edge graph is dishonest
+- the absent edge in the authored-header model
+- the complete causal path in the declared generated-producer model
+- an explanation of why the missing-edge trace can say “Nothing to be done” while the
+  binary is semantically stale
+- a production repair route for each specimen: compiler dependency data for consumed
+  headers, and an explicit generator-script prerequisite for generated output
 
 Study note:
-The first probe should reveal which truth is broken, not just force the build through.
+Do not answer “add the generator script to the binary.” That bypasses the published-header
+boundary instead of repairing the graph layer that owns the content.
 
 ## Midday self-check
 
@@ -255,22 +261,31 @@ Study note:
 This is where the course moves from "files were updated" to "consumers observed one
 consistent generation."
 
-## Exercise 10: Repair a complete generator pipeline
+## Exercise 10: Repair and prove a complete generator pipeline
 
 Build a small pipeline with source input, generator, two coupled outputs, validator,
-manifest, and consumer. Demonstrate a clean build, no-op build, source edit, parallel
-build, deleted-output recovery, and injected failure.
+manifest, and consumer. Demonstrate a clean build, no-op build, source edit, generator
+script edit, consumed-header edit, parallel build, deleted-output recovery, and injected
+failure.
 
 What to hand in:
 
 - the Makefile and generator
-- the six command transcripts
+- an eight-row command and observation table
 - a graph drawing that distinguishes generation, validation, publication, and consumption
+- changed-output predictions and observations for the generator script and consumed-header
+  rows
+- proof that the generator row follows producer input to published outputs to consumer
+- proof that the consumed-header row rebuilds the consumer without rerunning an unrelated
+  producer
 - one paragraph identifying the remaining publication guarantee and its limits
 - one sentence naming which boundary artifact was truly necessary and which would have
   been decorative
 
 Study note:
+Directly changing the published header is a controlled consumer-edge probe, not a normal
+authoring workflow. Restore the generated state after the observation.
+
 The goal is not to make the pipeline perfect. The goal is to make its guarantees explicit
 and honest enough that another maintainer can reason about them.
 
