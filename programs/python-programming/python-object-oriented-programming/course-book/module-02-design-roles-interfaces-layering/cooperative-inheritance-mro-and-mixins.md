@@ -1,6 +1,5 @@
 # Cooperative Inheritance, MRO, and Mixins
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,123 +24,83 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Inheritance is already risky when the hierarchy is shallow. It becomes much worse when
-multiple bases, mixins, and `super()` calls are involved and nobody can explain the
-method resolution order. This page gives the missing runtime model and the design rules
-that keep cooperative inheritance from turning into folklore.
+Python makes multiple inheritance possible. That does not make it cheap.
 
-## Why this topic matters
+The real cost appears when a reviewer cannot answer:
 
-Many Python courses say “prefer composition over inheritance” and stop there. That is
-not enough for real codebases. You will still encounter:
+- which implementation runs next?
+- which constructor is responsible for what?
+- which mixin owns real state, and which only adds one narrow behavior?
 
-- framework base classes
-- mixins for opt-in behavior
-- cooperative `super()` chains
-- bugs caused by one base class silently skipping another
+If the method resolution order is mysterious, the hierarchy is already more expensive
+than it looks.
 
-If you do not understand MRO and cooperative method design, you cannot review or repair
-these systems honestly.
+## `super()` is not "call the parent"
 
-## The runtime model you must know
+The core runtime fact is simple:
 
-Python resolves methods using the method resolution order, or MRO. For a class with
-multiple bases, Python computes one linear order that preserves local base ordering and
-monotonicity. When you call `super()`, you are not calling “the parent.” You are asking
-Python for the next implementation in that linear order.
+- `super()` means "call the next implementation in Python's method resolution order"
 
-That means two things:
+That matters because cooperative inheritance works only when every participating class is
+designed for that chain.
 
-- `super()` is about cooperation across the whole chain, not direct ancestry
-- one class that does not participate correctly can break the whole chain
+One class that:
 
-## A small mental model
+- skips `super()`
+- hard-codes a direct base call
+- consumes arguments inconsistently
 
-Think of a cooperative hierarchy as a pipeline:
+can make the whole chain misleading or broken.
 
-1. each class receives the call
-2. it does its local work
-3. it forwards the call with `super()`
+## Mixins should add one narrow role
 
-If a class consumes arguments incorrectly, fails to call `super()`, or assumes a
-particular parent layout, the pipeline stops being trustworthy.
+A mixin is safest when it contributes:
 
-## What mixins are for
+- one small behavior
+- little or no authoritative state
+- a clear requirement on the receiving class
 
-A mixin should contribute one narrow behavior without pretending to be the center of the
-domain model. Good mixins are:
+Bad mixins quietly depend on:
 
-- small
-- role-specific
-- light on state
-- explicit about required attributes or hooks
+- hidden constructor order
+- internal instance layout
+- private state they do not own
 
-Bad mixins quietly require deep knowledge of instance layout, constructor order, or
-hidden lifecycle guarantees.
+At that point they stop being reusable roles and start becoming partial subclasses with
+unclear authority.
 
-## Rules for cooperative `super()`
+## Use cooperative inheritance only when the review cost stays low
 
-- Use `super()` consistently across the whole cooperative chain.
-- Accept keyword arguments in constructors when multiple bases may participate.
-- Keep constructor side effects small and explicit.
-- Do not hard-code one direct parent name when the class is meant to cooperate in a chain.
-- Design methods so each class adds local behavior and forwards responsibility.
+Good use cases usually share these traits:
 
-If one class uses explicit base calls while the others use `super()`, the chain becomes
-fragile fast.
+- the hierarchy is shallow
+- the cooperation rule is explicit
+- each class adds one understandable step
+- composition would be materially more awkward
 
-## Example pressure
+If you need a whiteboard to explain the chain every time, the design is already too
+expensive for the value it provides.
 
-Suppose you have:
+## Capstone connection
 
-- one base class for repository-backed loading
-- one mixin for caching
-- one mixin for audit logging
-- one concrete subclass for the specific service
+Use the capstone to ask:
 
-The question is not only “does this run?” The real question is:
+- which behaviors are better expressed as composed collaborators instead of mixins?
+- where would a mixin stay narrow enough to be honest?
+- which future extension idea would become brittle if it depended on a hard-to-explain MRO?
 
-> Can another maintainer explain the call order and the constructor contract without reading the whole hierarchy twice?
+## Exit check
 
-If not, the inheritance design is already too expensive.
+Leave this lesson only when you can do all of these:
 
-## When mixins are a good fit
-
-Mixins can be appropriate when:
-
-- the added behavior is orthogonal, such as formatting, lightweight caching, or audit hooks
-- the receiving class already has a stable responsibility
-- the mixin does not need to own authoritative domain state
-
-They are a poor fit when the added behavior:
-
-- changes who owns the invariant
-- needs lots of internal state
-- depends on exact constructor timing
-- hides critical side effects
-
-In those cases, composition is usually the clearer choice.
-
-## Review questions
-
-- Can you write the MRO down and explain why it is safe?
-- Does every participating method use `super()` coherently?
-- Is each mixin small enough that removing it would be easy to reason about?
-- Would composition make the ownership boundary clearer?
-
-## Practical guidelines
-
-- Use shallow inheritance for stable abstraction, not for “free reuse.”
-- Keep mixins narrow and name them for the one behavior they add.
-- Treat cooperative constructors as an explicit contract, not as magic.
-- Prefer composition when behavior needs rich state, domain authority, or high review cost.
-
-## Exercises for mastery
-
-1. Take a multiple-inheritance example and write out its MRO before running it.
-2. Refactor one explicit base-class call chain into a consistent cooperative `super()` chain.
-3. Replace one large mixin with a composed collaborator and compare the review cost.
+- explain what `super()` really means in a multiple-inheritance chain
+- identify one sign that a mixin is taking on too much authority
+- explain when composition is clearer than cooperative inheritance
