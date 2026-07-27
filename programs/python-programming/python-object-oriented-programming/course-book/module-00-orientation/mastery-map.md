@@ -17,111 +17,115 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  judgment["Turn design intuition into judgment"] --> proof["Choose proof that matches the claim"]
+  proof --> boundary["Mark what is public, internal, and operationally risky"]
+  boundary --> review["Review the whole system under real pressure"]
+  review --> decision["Leave with one defensible keep or change decision"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Use this map when the question is no longer "can I model this object?" but "can I defend
+this design to another engineer, keep it healthy under change, and know what evidence is
+strong enough to trust it?" The final stretch of the course is about stewardship, not
+feature accumulation.
 
-Use this map when you are no longer asking "how do I write this object?" and are now
-asking "is this design trustworthy enough to ship, extend, and defend?" The final
-stretch of the course is about stewardship: proof, public contracts, and operational
-honesty.
+## What mastery means here
 
-## What mastery means in this course
+Mastery in this course does not mean collecting the most patterns or the most Python
+tricks. It means you can do three hard things repeatedly:
 
-Mastery here does not mean knowing the most patterns, the most decorators, or the most
-Python tricks. It means you can do three hard things reliably:
+1. choose evidence that matches the strength of the claim
+2. decide what should be public, internal, extensible, or unsupported
+3. review the design under operational pressure without flattering yourself
 
-1. choose an evidence route that matches the strength of your claim
-2. decide what is public, extensible, and safe to depend on
-3. judge whether the system is ready for production pressure without lying to yourself
+These are the skills that distinguish "I can write objects" from "I can steward a
+system."
 
-These closing modules exist to turn design intuition into reviewable judgment.
+## Read modules 8 to 10 as one stewardship sequence
 
-## Read these modules as a stewardship sequence
-
-| Module | Main question | Common late-course mistake | Completion signal |
+| Module | Main question | Late-course trap it prevents | What you should be able to say afterward |
 | --- | --- | --- | --- |
-| Module 8: testing, contracts, and verification depth | how do I prove this design honestly? | using heavyweight tests everywhere or shallow tests for serious claims | you can choose the narrowest proof that still tells the truth |
-| Module 9: public APIs and extension governance | what should others be allowed to rely on? | exposing convenient internals and calling them extension points later | you can state what is public, what is internal, and why |
-| Module 10: performance, observability, security, and capstone review | can this design survive real operational pressure? | treating operations, trust, and performance as bolt-on concerns | you can defend one keep/change decision with concrete evidence |
+| Module 8: testing, contracts, verification depth | what proof is honest for this claim | using heavy proof everywhere or weak proof for serious claims | "I know the first honest route and why stronger routes are unnecessary or necessary." |
+| Module 9: public APIs and extension governance | what others may safely rely on | exposing convenience internals and calling them supported later | "I know what is public, what is internal, and what support promise each choice implies." |
+| Module 10: performance, observability, security, capstone review | can this design survive real operational pressure | treating operations, trust, and performance as bolt-on concerns | "I can name one real risk, the signal that reveals it, and the judgment it forces." |
 
-## Module 8: make proof proportional to the claim
+## Module 8: make proof proportionate
 
-This module teaches mature verification, not test accumulation. The question is never
-"do we have tests?" The question is "does the current proof surface actually cover the
-claim we are making?"
+Module 8 is where confidence stops being emotional and becomes reviewable. The main
+question is not "do we have tests?" It is:
 
-Read this module with these questions:
+- what claim are we making?
+- what is the first honest route that can test it?
+- which stronger route would be wasteful, and which weaker route would be misleading?
 
-- Is this a behavior claim, a state-transition claim, a boundary contract, or a system claim?
-- Which proof route is the first honest one?
-- Which route would be wasteful, misleading, or too weak?
+Stay here until you can explain why one route is right and another one is wrong. That is
+stronger evidence of mastery than any raw test count.
 
-Stay here until you can explain why one proof route is right and another one is wrong.
-That is a stronger sign of mastery than test-count comfort.
+## Module 9: govern public dependence deliberately
 
-## Module 9: govern what becomes public
+Module 9 matters because systems become fragile when every useful seam quietly becomes a
+supported contract. This module teaches deliberate permission.
 
-This module matters because systems rot when every convenient seam quietly becomes a
-supported contract. A learner who skips this module often writes designs that work
-locally but become unmaintainable once others build on them.
+Keep asking:
 
-Read Module 9 with these questions:
+- which names, modules, behaviors, and protocols are intentionally public?
+- which customization seam is narrow enough to support without exposing internals?
+- which compatibility promise must be visible before change pressure arrives?
 
-- Which names, modules, protocols, and behaviors are intentionally public?
-- Which customization seam is narrow enough to support without exposing internals?
-- Which deprecation or compatibility rule should be visible before change pressure arrives?
+If your answer is "we can always clean it up later," the governance decision is not yet
+made.
 
-This is where you move from "my code works" to "other people can depend on this
-without guessing."
+## Module 10: review the whole design under operational pressure
 
-## Module 10: review the whole design under real pressure
+Module 10 brings the course together. It is not just a performance chapter and not just
+a security chapter. It is a system judgment chapter.
 
-The final module brings the whole course together. It is not a performance-only unit
-and not a security-only unit. It is a stewardship review of the whole system.
+Ask:
 
-Read this module when you need to answer:
+- what should be measured before optimized?
+- which signals would reveal ownership drift in production?
+- where are the trust boundaries, serialization hazards, or operational weak points?
+- which current design choice is acceptable today but dangerous under extension pressure?
 
-- What should be measured before optimized?
-- Which signals tell me the object model is drifting in production?
-- Where are the trust boundaries, serialization hazards, and operational weak points?
+The point is to leave with explicit review judgment, not with a vague feeling that the
+design is "good enough."
 
-The capstone review chapters matter because they force one explicit judgment backed by
-named evidence rather than by a vague feeling that the design is "pretty good."
+## A strong final-pass route for independent learners
 
-## A good final-pass route
+1. Finish Module 8 and write one sentence beginning with `The first honest evidence is...`.
+2. Finish Module 9 and write one sentence beginning with `The supported public boundary is...`.
+3. Finish Module 10 and write one sentence beginning with `The operational risk I would watch first is...`.
+4. Use the capstone review surfaces to defend one keep decision and one change decision.
 
-1. Complete Module 8 before making strong claims about confidence.
-2. Complete Module 9 before proposing plugins, public hooks, or reusable facades.
-3. Complete Module 10 before declaring the capstone or your own design review-ready.
-4. After each module, write one sentence beginning with `The evidence I would show first is...`.
+This final-pass route turns understanding into judgment you can actually communicate.
+
+## Best capstone checks for this stage
+
+| Module | Best first capstone surface | Why |
+| --- | --- | --- |
+| Module 8 | verification bundle, walkthrough bundle, proof guide | they show how evidence strength changes with claim scope |
+| Module 9 | `application.py`, public tests, extension guidance | they expose what others might depend on and what should stay private |
+| Module 10 | review worksheet, saved bundles, architecture surfaces | they force a whole-system judgment with named evidence |
 
 ## Late-course traps
 
-| Trap | Better move |
-| --- | --- |
-| treating mocks as proof of architecture | ask which contract or ownership claim they actually prove |
-| exposing an internal helper because it feels useful | decide whether you are willing to support it over time |
-| optimizing before naming the hot path | measure first and document why that path matters |
-| calling the design secure because tests pass | inspect trust boundaries, serialization paths, and defaults directly |
-| assuming observability belongs only to operations | decide which signals reveal object drift, not just process health |
+- treating mocks or helper assertions as proof of architecture by default
+- exposing an internal helper because it feels useful today
+- optimizing before naming the hot path or the user-facing cost
+- calling the design secure because tests pass
+- assuming observability is only about process health rather than object-model drift
 
-## Questions to carry into the capstone
+## Signs you are ready to leave the course
 
-- Which proof route would fail first if the ownership model drifted?
-- Which public entrypoint would you be willing to support for a year?
-- Which runtime signal would expose a broken lifecycle or boundary fastest?
-- Which current design choice is acceptable today but dangerous under extension pressure?
+You are ready to leave the course only when you can do all of these without hand-waving:
+
+- defend a proof route as proportionate to the claim
+- mark a boundary public or internal with reasons and support implications
+- name one operational, performance, or trust risk and the evidence that would reveal it
 
 ## Exit check
 
-You are ready to leave the course when you can do all of these without hand-waving:
+Leave this map only when you can say:
 
-- defend a proof route as proportionate
-- mark a boundary public or internal with reasons
-- name one operational, performance, or trust risk and the evidence that reveals it
+> The current judgment I need to make is `____`, the evidence I would show first is
+> `____`, and the boundary or risk I can now defend is `____`.
