@@ -201,12 +201,25 @@ context correctly. The report records:
 This is much easier to explain, test, and retire than a hundred one-off debug prints.
 
 The capstone's `perf` target is a different kind of bounded surface. It binds repository
-provenance, runner and tool identities, scenario policy, requested-work proof, repeated
-timings, convergence, and trusted-output inventories into one review bundle. That route
-answers a cost question without separating the number from the work it represents.
+provenance, runner and tool identities, scenario policy, a multi-input requested-work
+proof, repeated timings, convergence, and trusted-output inventories into one review
+bundle. That route answers a cost question without separating the number from the work it
+represents.
 `trace-report` answers a planning causality and usability question. Keeping both
 distinctions visible prevents one convenient integer from carrying claims it cannot
 support.
+
+The requested-work proof has its own bounded surface:
+
+```sh
+gmake performance-incremental
+```
+
+Its summary is not a substitute for trace, and one trace is not a substitute for the
+summary. `incremental-summary.tsv` answers whether every governed input class produced its
+declared rebuild set. The matching case in `incremental-work.json` answers why Make selected
+that set. A reviewer needs both when a row fails: classification identifies the contract
+breach, while trace provides causal evidence for diagnosis.
 
 A converged trace may contain only “all is up to date.” A clean-plan trace contains every
 planned producer. Comparing those line counts without the state label is invalid. Fewer
@@ -250,7 +263,8 @@ Here is a practical split:
 | what variable or rule is resolved | `make -np <target>` | command and focused excerpt |
 | which target emitted output under `-j` | `--output-sync=target` | target-attributed failure block |
 | is a clean plan bounded and attributable | `trace-report` | state, focus, checks, planned targets, raw trace |
-| what do declared build states cost | `perf` | provenance, policy, requested work, all samples, convergence, inventories |
+| does each governed input class select only its required rebuild path | `performance-incremental` | policy, complete summary, and per-case trace |
+| what do declared build states cost | `perf` | provenance, complete requested-work matrix, all samples, convergence, inventories |
 | did cost change under compatible context and equivalent work | `performance-compare` | both bundles and comparison report |
 | what discovery resolved | discovery audit or stable manifest | sorted resolved list |
 | what changed between serial and parallel output | artifact hashes or comparison selftest | both commands and comparison result |
