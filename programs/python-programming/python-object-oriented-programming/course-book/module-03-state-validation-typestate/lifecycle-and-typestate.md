@@ -1,5 +1,4 @@
-# Lifecycle and Typestate: Draft → Active → Retired Objects
-
+# Lifecycle and Typestate
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["State Validation Typestate"]
-  page["Lifecycle and Typestate: Draft → Active → Retired Objects"]
+  page["Lifecycle and Typestate"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,122 +24,118 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Model lifecycle explicitly as a **state machine** so your codebase can enforce “what operations are allowed when”.
+Many objects are not just "there." They move through stages:
 
-You will learn:
-- how to represent typestate (distinct types vs state field),
-- how to define legal transitions,
-- and how to test lifecycle correctness.
+- draft
+- active
+- paused
+- retired
+- expired
 
-## Where This Fits
+If the code ignores those stages, operations stay callable long after they should have
+become illegal.
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+Typestate is the design idea that the available operations should depend on the object’s
+current state.
 
-## 1. Typestate: The Contract Depends on State
+## What lifecycle means
 
-A rule in our monitoring system has phases:
+Lifecycle means the object’s meaning changes over time in ways the program should care
+about.
 
-- **Draft**: defined but not evaluated.
-- **Active**: evaluated on every cycle.
-- **Retired**: preserved for history but not evaluated.
+A draft object and an active object may share many fields, but they do not necessarily
+support the same actions.
 
-Each phase has different allowed operations and required data.
+That difference is not cosmetic. It is a correctness boundary.
 
-If you model all phases with one class and a `state` field, you invite invalid combos:
-- `state=ACTIVE` but `activated_at=None`.
+## What typestate means
 
-Typestate says: **different state, different type (often)**.
+Typestate means state is not only data to inspect. It affects which operations are valid.
 
-## 2. Two Representations: Field-Based vs Type-Based
+Examples:
 
-### 2.1 Field-based (one class + enum)
+- a draft can be activated
+- an active object can be retired
+- a retired object should not accept ordinary updates
 
-Pros:
-- fewer classes,
-- easy serialization.
+If all those actions are available all the time, the model is telling a weaker story than
+the domain really needs.
 
-Cons:
-- invariants are conditional,
-- runtime checks everywhere.
+## Why a plain status field is not enough by itself
 
-### 2.2 Type-based (recommended)
+A status field is useful, but by itself it can still leave the API weak.
 
-Pros:
-- invariants are structural (unrepresentable invalid states),
-- method signatures can enforce allowed operations.
+Why?
 
-Cons:
-- more types,
-- conversion between states must be explicit.
+- every method stays visible even when it is illegal in the current state
+- callers learn rules only by trial, docs, or runtime errors
+- transition discipline gets scattered
 
-For pedagogy and correctness, type-based typestate is usually superior in Python.
+A plain field is often the start of lifecycle modeling, not the end of it.
 
-## 3. A Minimal State Machine for Rules
+## A good teaching test
 
-Define legal transitions:
+Ask:
 
-- `DraftRule.activate(...) -> ActiveRule`
-- `ActiveRule.retire(...) -> RetiredRule`
+1. Does this object really have distinct stages with different legal operations?
+2. Are callers currently able to ask for nonsense operations too easily?
+3. Would clearer states make the code easier to review and teach?
 
-No other transitions exist.
+If yes, the lifecycle should become more explicit.
 
-```python
-from dataclasses import dataclass
-import time
+## Common mistakes
 
-@dataclass(frozen=True, slots=True)
-class DraftRule:
-    metric: MetricName
-    threshold: Threshold
+- storing a status field but never enforcing transition legality
+- allowing impossible transitions because "the caller should know better"
+- modeling several lifecycle stages inside one baggy object with many optional fields
+- treating typestate as too advanced when the real issue is just unmodeled rules
 
-    def activate(self, rule_id: str) -> "ActiveRule":
-        return ActiveRule(rule_id, self.metric, self.threshold, activated_at=time.time())
+The important move is not fancy type theory. It is honest state-aware design.
 
-@dataclass(frozen=True, slots=True)
-class ActiveRule:
-    rule_id: str
-    metric: MetricName
-    threshold: Threshold
-    activated_at: float
+## Practical modeling choices
 
-    def retire(self, reason: str) -> "RetiredRule":
-        return RetiredRule(self.rule_id, self.metric, retired_reason=reason)
+You can model lifecycle more clearly by:
 
-@dataclass(frozen=True, slots=True)
-class RetiredRule:
-    rule_id: str
-    metric: MetricName
-    retired_reason: str
-```
+- guarding transitions centrally
+- separating state-specific operations
+- using distinct types or wrappers when the difference is strong enough
+- removing operations that should not exist in later states
 
-Now “active implies activated_at exists” is structurally guaranteed.
+The right level depends on how much misuse risk the state change creates.
 
-## 4. Testing Transitions and Illegal Operations
+## Review checklist
 
-Test both:
-- correct transitions,
-- and impossible operations (which should not exist).
+| Question | Good sign |
+| --- | --- |
+| are lifecycle stages named clearly? | yes |
+| are illegal transitions blocked somewhere explicit? | yes |
+| do operations reflect state meaning instead of ignoring it? | yes |
+| is the model more than a passive status label? | yes |
 
-Example tests:
-- Draft can activate → Active.
-- Active can retire → Retired.
-- Retired has no `.activate()` method (type system + runtime prevents it).
+## Capstone connection
 
-Even without static typing, the absence of methods is a real enforcement mechanism.
+In the capstone, this lesson matters anywhere an object changes phase:
 
-## Practical Guidelines
+- draft to active
+- pending to approved
+- scheduled to executed
+- open to closed or retired
 
-- Use typestate when lifecycle affects allowed operations or required fields.
-- Prefer type-based typestate for domain clarity; keep serialization in infrastructure.
-- Make transitions explicit methods returning the next-state type.
-- Write tests for transitions and ensure invalid combos are unconstructable.
+If the capstone still exposes the same API regardless of state, its lifecycle model is
+probably still too weak.
 
-## Exercises for Mastery
+## Exit check
 
-1. Implement Draft/Active/Retired types for one domain entity. Ensure you cannot create an Active instance without required fields.
-2. Add a new lifecycle phase (e.g., `PausedRule`) and define legal transitions. Update tests.
-3. Write a unit test that proves retired rules are not evaluated in the orchestrator.
+Leave this lesson only when you can do all of these:
+
+- explain typestate in plain language
+- name one capstone object whose valid operations should change by state
+- explain why a status field alone may be too weak for an honest lifecycle design
