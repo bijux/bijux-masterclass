@@ -374,6 +374,7 @@ incremental-fault-audit:
 >     rm -rf "$(INCREMENTAL_FAULT_AUDIT_DIR)"
 >     mkdir -p "$(INCREMENTAL_FAULT_AUDIT_DIR)"
 >     cp -R "$(REP_DIR)/incremental-edges" "$(INCREMENTAL_FAULT_AUDIT_DIR)/specimens"
+>     cp "$(DOCS_DIR)/incremental-fault-audit-guide.md" "$(INCREMENTAL_FAULT_AUDIT_DIR)/INCREMENTAL_FAULT_AUDIT_GUIDE.md"
 >     cp "$(DOCS_DIR)/repro-guide.md" "$(INCREMENTAL_FAULT_AUDIT_DIR)/REPRO_GUIDE.md"
 >     $(PYTHON) scripts/audit_incremental_faults.py \
 >       --specimens "$(REP_DIR)/incremental-edges" \
@@ -384,11 +385,12 @@ incremental-fault-audit:
 >       --python "$(PYTHON)"
 >     printf '%s\n' \
 >       'Incremental fault audit route:' \
->       '  1. Read summary.tsv across both specimens and both edge models.' \
->       '  2. Read report.json for expected and observed outputs.' \
->       '  3. Read traces/ to contrast no selected work with causal rebuild paths.' \
->       '  4. Compare specimens/ with the mutated workspace/ copies.' \
->       '  5. Read REPRO_GUIDE.md to connect the fault to graph repair.' > "$(INCREMENTAL_FAULT_AUDIT_DIR)/route.txt"
+>       '  1. Read INCREMENTAL_FAULT_AUDIT_GUIDE.md for the claim and PASS semantics.' \
+>       '  2. Read summary.tsv across both specimens and both edge models.' \
+>       '  3. Read report.json for expected and observed outputs.' \
+>       '  4. Read traces/ to contrast no selected work with causal rebuild paths.' \
+>       '  5. Compare specimens/ with the mutated workspace/ copies.' \
+>       '  6. Read REPRO_GUIDE.md to connect the fault to graph repair.' > "$(INCREMENTAL_FAULT_AUDIT_DIR)/route.txt"
 >     $(PYTHON) scripts/write_bundle_manifest.py \
 >       --bundle-dir "$(INCREMENTAL_FAULT_AUDIT_DIR)" \
 >       --output "$(INCREMENTAL_FAULT_AUDIT_DIR)/manifest.json"
