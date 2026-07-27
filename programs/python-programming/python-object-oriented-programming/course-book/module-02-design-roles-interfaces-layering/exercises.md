@@ -18,106 +18,69 @@ graph LR
 
 ```mermaid
 flowchart LR
-  role["assign the right owner"] --> shape["compare composition and inheritance"]
+  owner["choose the least surprising owner"] --> shape["compare composition and inheritance"]
   shape --> boundary["separate domain, application, and infrastructure"]
-  boundary --> assemble["control construction and object graphs"]
-  assemble --> govern["justify the collaboration boundary"]
+  boundary --> assembly["move construction to the edge"]
+  assembly --> review["defend the collaboration map"]
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice role-assignment judgment, not only design vocabulary.
+Use these exercises as one full lab day on role assignment, collaboration boundaries, and
+assembly discipline. The goal is not to collect pattern names. The goal is to make each
+responsibility placement explicit enough that another maintainer could challenge it.
 
-The goal of the day is to make responsibility placement explicit. By the end, you should
-be able to say not only that a behavior belongs somewhere, but also why nearby objects,
-services, mixins, or layers should not own it instead.
+## Running lab rule
 
-## How to work through this set
+Use one workflow or subsystem throughout the day instead of changing examples constantly.
+Good choices:
 
-Treat the ten exercises as one full lab day on collaboration boundaries.
+- one capstone workflow such as rule evaluation, incident publication, or persistence coordination
+- one subsystem from your own code where ownership already feels blurry
+- one toy workflow with domain decisions, orchestration, and external I/O
 
-Before each answer:
+If you reset the example every time, you will practice labels rather than design
+governance.
 
-1. name the behavior under review
-2. name the object or layer that should own it
-3. say what coupling or confusion appears if you place it somewhere else
+## What to keep open while you work
 
-Do the exercises in order. The day is one progression:
+Maintain one ownership packet from the start. By the end it should contain:
 
-- Exercises 1-3 classify roles, cohesion, and semantic types
-- Exercises 4-5 compare inheritance, composition, and interface choices
-- Exercises 6-8 design layering and composition-root discipline
-- Exercises 9-10 review the whole collaboration boundary as a defendable design
-
-Keep one role packet as you go. By the end of the day it should contain:
-
-- one owner-selection judgment
+- one owner-selection table
 - one cohesion or object-smell review
 - one composition-versus-inheritance decision
-- one layering map
-- one composition-root design
-- one full collaboration review note
+- one interface-choice note
+- one layer map
+- one composition-root sketch
+- one collaboration review memo
 
-If those six artifacts are missing, you are probably still naming patterns instead of
-governing responsibilities.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module02-lab/
-├── artifacts/
-├── notes/
-├── scratch/
-└── tests/
-```
-
-Keep one ownership table while you work:
+Use these tables directly:
 
 | Behavior | Best owner | Nearby wrong owner | Why the wrong owner is tempting | Why it stays wrong |
 | --- | --- | --- | --- | --- |
 
-Also keep one layering table:
-
 | Concern | Domain | Application | Infrastructure | Composition root |
 | --- | --- | --- | --- | --- |
 
-```mermaid
-flowchart LR
-  smell["spot misplaced responsibility"]
-  choose["choose entity, value, policy, service, or adapter"]
-  compose["prefer composition when reuse pressure appears"]
-  layer["place collaboration across layers"]
-  root["assemble the graph once"]
-  review["justify the design to another maintainer"]
+## Exercise 1: Choose the least surprising owner
 
-  smell --> choose --> compose --> layer --> root --> review
-```
-
-Use that route on purpose. It keeps the day centered on ownership and coupling rather
-than on directory naming or pattern recall.
-
-## Exercise 1: Choose the right owner
-
-Take one behavior from the capstone and justify why it belongs in:
+Take one behavior from the running example and decide whether it belongs in:
 
 - a domain object
-- a policy object
-- a runtime facade
-- or another clearly named role
+- a value or policy object
+- an application service
+- an adapter or runtime facade
+- another clearly named role
 
-Your answer should explain:
+Write:
 
 - why this owner is the least surprising place
-- which nearby role would be a tempting wrong owner
+- which nearby role is the most tempting wrong owner
 - what confusion that wrong placement would create
-
-Study note:
-Correct behavior in the wrong owner is still bad design.
+- what proof route would show the boundary more clearly
 
 ## Exercise 2: Review cohesion and object smells
 
-Pick one object and explain whether it shows signs of:
+Pick one object or service and explain whether it shows signs of:
 
 - mixed responsibilities
 - accidental god-object growth
@@ -127,41 +90,38 @@ Pick one object and explain whether it shows signs of:
 Then state:
 
 - what boundary you would split or reinforce
-- what single test would prove the redesign improved cohesion
+- what one test or review question would prove the redesign improved cohesion
 
-Study note:
-Cohesion gets clearer when you describe pressure, not just size.
+Do not answer only with "the class is too big." Name the pressure it is mixing.
 
-## Exercise 3: Replace raw primitives with semantic types
+## Exercise 3: Replace raw primitives with semantic roles
 
-Take one area where raw strings, ints, or dicts carry domain meaning. Redesign it using a
-small semantic type or value object.
+Take one place where raw strings, ints, dicts, or untyped callables are carrying domain
+meaning. Redesign it using a semantic type, value object, or clearer collaborator.
 
 Explain:
 
 - what mistake the primitive version invites
-- what the semantic type makes explicit
-- what would be over-engineering in this redesign
+- what the semantic role makes explicit
+- what would become over-engineering if you went too far
 
-Study note:
-The best semantic types reduce ambiguity without inventing ceremony.
+This exercise is about role clarity, not ceremony.
 
 ## Exercise 4: Compare composition and inheritance honestly
 
-Choose one example where inheritance seems convenient. Explain:
+Choose one example where inheritance feels convenient. Explain:
 
 - what reuse pressure makes it tempting
-- whether composition is the safer default
+- whether composition is the safer default here
 - when a small inheritance hierarchy would still be acceptable
-- one sentence naming the fragile-base-class risk if the hierarchy grows
+- one sentence naming the fragile-base-class risk if the hierarchy grew
 
-Study note:
-This exercise matters because "prefer composition" is useless unless you can justify it
-case by case.
+The important thing is not the slogan "prefer composition." It is the case-by-case
+judgment.
 
 ## Exercise 5: Review interfaces, ABCs, and protocols
 
-Take one collaborator boundary and explain whether it is best modeled with:
+Take one collaborator boundary and decide whether it is best modeled with:
 
 - duck typing alone
 - an abstract base class
@@ -169,25 +129,10 @@ Take one collaborator boundary and explain whether it is best modeled with:
 
 Explain:
 
-- what pressure each option addresses
-- what would be over-specified
-- what would be too loose for safe review
-
-Study note:
-Interface choices should answer design pressure, not taste.
-
-## Midday self-check
-
-Before you move into layering and composition-root work, make sure your packet can
-already answer these questions clearly:
-
-- why one owner is better than a tempting nearby owner
-- what cohesion failure you are trying to prevent
-- when composition is safer than inheritance
-- how interface choices relate to real collaboration pressure
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
+- what collaboration pressure each option answers
+- what would be too loose
+- what would be too rigid
+- what another maintainer would need to understand to use the boundary safely
 
 ## Exercise 6: Draw a layered boundary
 
@@ -198,73 +143,77 @@ Map one workflow into:
 - infrastructure
 - composition root
 
-For each layer, name one thing it must own and one thing it must not own.
+For each layer, name:
 
-Study note:
-Layering is useful only when it changes ownership, not when it merely changes folders.
+- one thing it must own
+- one thing it must not own
+- one leak that would tell you the boundary is failing
+
+Layering is only useful when it changes ownership, not when it only changes folders.
 
 ## Exercise 7: Design a composition root
 
-Sketch a composition root for one capstone workflow and explain:
+Sketch a composition root for the running example and explain:
 
 - where objects are assembled
 - what dependencies are injected
+- what should stay configurable at the edge
 - why the rest of the system should not assemble the graph itself
 
-Study note:
-Construction discipline is one of the fastest ways to stop architecture from leaking
-everywhere.
+If your sketch can be scattered across multiple inner modules without any pain, the
+composition edge is still too blurry.
 
 ## Exercise 8: Repair a service-versus-entity mistake
 
-Take one behavior that currently looks like it could live in a broad service object.
-Decide whether it belongs in:
+Take one behavior that currently looks like it might live in a broad service object.
+Decide whether it actually belongs in:
 
 - an entity
 - a policy
 - an application service
 - or an adapter
 
-Then explain what would go wrong if the service layer absorbed it by default.
+Then explain what goes wrong if the service layer absorbs it by default.
 
-Study note:
-This is where students often discover that "service" can become a trash can role.
+This is where many learners discover that "service" can become a trash can role.
 
 ## Exercise 9: Review a full collaboration surface
 
 Take a small subsystem and write a short review that names:
 
-- each major role
+- the major roles
 - how they collaborate
 - where data crosses layer boundaries
 - where the design is safe
 - where the boundary is still too fuzzy
+- which next refactor would give the biggest clarity gain
 
-Study note:
-This final review should sound like architecture review language, not pattern vocabulary.
+Write this as if it were an architecture review note, not a module summary.
 
-## Exercise 10: Produce a role-and-layer decision packet
+## Exercise 10: Produce the full owner packet
 
 Assemble:
 
-- one owner table
-- one layering table
+- one owner-selection table
+- one layer map
+- one interface-choice note
 - one composition-root sketch
-- one paragraph defending the overall design
+- one paragraph defending the overall collaboration design
 
-Ask another learner to challenge one placement decision and revise the packet if needed.
+Then challenge one placement yourself:
 
-Study note:
-This exercise matters because role assignment is only durable when it survives review
-pressure from another maintainer.
+- what if that behavior moved one role outward?
+- what if that behavior moved one role inward?
 
-## Mastery check
+Revise the packet only if the challenge reveals a real weakness.
 
-You have a strong grasp of this module if your answers consistently keep five ideas
-visible:
+## Done means defendable
 
-- behavior should live in the least surprising owner
-- cohesion matters more than style labels
-- composition is the default when inheritance adds coupling risk
-- layers are ownership boundaries, not folder names
-- construction should be visible in one assembly boundary instead of leaking across the system
+You are done with the exercise day only when another reader could answer:
+
+- why this role owns that behavior
+- why the nearby role does not
+- where the workflow crosses layers
+- where the object graph is assembled
+
+If those answers are still vague, the packet needs more work before you open the answer page.
