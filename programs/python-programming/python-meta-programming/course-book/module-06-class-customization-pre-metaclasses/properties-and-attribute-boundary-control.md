@@ -33,6 +33,10 @@ Properties are the friendliest place in the course to say something very importa
 That is why this page matters in Module 06. It keeps one attribute boundary visible
 without yet escalating into broader descriptor systems.
 
+This page should also correct a common reading mistake: pleasant attribute syntax often
+makes the owner disappear. A property is valuable precisely because it puts one owner back
+on the boundary between stored state and public attribute access.
+
 ## The sentence to keep
 
 When you see `@property`, ask:
@@ -40,6 +44,10 @@ When you see `@property`, ask:
 > what invariant or computation is being owned at this one attribute boundary?
 
 That question keeps properties from being mistaken for ordinary stored values.
+
+Keep a second question beside it:
+
+> if the same rule appeared on five fields tomorrow, would this still be the right owner?
 
 ## A property is still a descriptor
 
@@ -51,6 +59,10 @@ The course has already hinted at this earlier. Here it becomes concrete:
 
 So a property is not a special beginner feature separate from descriptor machinery. It is
 the most approachable descriptor form most Python developers meet.
+
+That is one reason Module 06 places properties before the reusable descriptor pages.
+Readers need to see that the runtime machinery is already here before the course increases
+its reuse power.
 
 ## Properties are data descriptors
 
@@ -64,6 +76,14 @@ shadowed the way a non-data descriptor can.
 That is one of the most useful lookup corrections Module 06 can make before the descriptor
 modules arrive.
 
+Use this quick table to keep the lookup consequence concrete:
+
+| Situation | What wins in normal lookup |
+| --- | --- |
+| property on the class and same-named key in `obj.__dict__` | the property |
+| plain instance attribute with no descriptor on the class | the instance attribute |
+| non-data descriptor with same-named instance attribute | the instance attribute |
+
 ## One picture of the lookup boundary
 
 ```text
@@ -76,6 +96,9 @@ obj.x
 For properties, the first step wins.
 
 That is why a read-only property still beats `obj.__dict__["x"]` during normal lookup.
+
+That sentence is worth testing directly when you practice. Readers often believe it only
+after seeing the failed shadowing attempt.
 
 ## A standard validation example
 
@@ -103,6 +126,10 @@ This is a good Module 06 example because:
 
 That is exactly the sort of lower-power ownership decision the module is trying to teach.
 
+It also shows a review habit worth keeping: the public name and the storage name should
+tell the same story. If the public boundary is `radius`, the backing storage should not
+turn into a confusing second policy surface.
+
 ## Read-only does not mean shadowable
 
 ```python
@@ -116,6 +143,18 @@ Even without a custom setter, this property still wins over instance state durin
 
 That is a crucial correction because many people assume "no setter" means the property is
 like a method-like computed attribute that can be shadowed. It is not.
+
+## Storage patterns to review explicitly
+
+Properties often look simple while hiding awkward storage choices. Review these patterns
+plainly:
+
+| Pattern | Why it matters |
+| --- | --- |
+| dedicated backing field such as `_radius` | keeps the owner story explicit |
+| computed getter with no storage | means the attribute is a boundary over behavior, not state |
+| setter that normalizes values before storing | makes mutation policy visible at one attribute |
+| read-only property with hidden mutable backing object | may still expose mutation through the returned object |
 
 ## Properties can also be extended in subclasses
 
@@ -141,6 +180,9 @@ class Sub(Base):
 This is a good reminder that properties are first-class objects on the class, not only
 syntax decorations on methods.
 
+It is also a reminder that inheritance can sharpen or blur the owner story. A subclassed
+property should make the new boundary clearer, not just more surprising.
+
 ## Properties are strongest when the boundary is truly one attribute
 
 A property is a great fit when:
@@ -157,6 +199,28 @@ A property is a weaker fit when:
 
 Those are clues that later descriptor tools may be the more honest owner.
 
+## Common overclaims to reject
+
+Reject these sentences when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "it's just an attribute" | "it is an attribute-shaped access point with runtime behavior behind it" |
+| "read-only means immutable" | "read-only means ordinary assignment is blocked at this boundary" |
+| "a property is simpler than a descriptor" | "a property is a focused built-in descriptor for one attribute boundary" |
+| "we can keep copying this property pattern" | "repetition may be evidence that a reusable descriptor is the clearer owner" |
+
+## Failure modes for property design
+
+These are the most common ways a property stops being the clearest owner:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| copied property logic across many fields | the real owner becomes repetition rather than one boundary | promote the repeated rule to a descriptor |
+| property returns a mutable object while sounding immutable | readers overtrust the surface | name the mutability limit explicitly |
+| backing storage names become inconsistent or magical | the state boundary gets harder to inspect | keep storage explicit and stable |
+| property exists where a plain method would be clearer | attribute syntax hides that this is not really attribute-like behavior | switch to a method when no attribute boundary is being protected |
+
 ## Review rules for properties
 
 When reviewing `@property` usage, keep these questions close:
@@ -166,6 +230,16 @@ When reviewing `@property` usage, keep these questions close:
 - does the review understand that the property is a data descriptor?
 - is this still a one-attribute rule, or is the code starting to want reusable field machinery?
 - would a plain method be clearer if no true attribute-boundary semantics are needed?
+- can another reviewer point to the exact storage or computation owner without guessing?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- explain why a property beats same-named instance state during lookup
+- name one case where a property is the right owner and one where repetition should push you toward a descriptor
+- explain why read-only is weaker than deep immutability
+- describe the backing-storage story for one property in plain language
 
 ## What to practice from this page
 
