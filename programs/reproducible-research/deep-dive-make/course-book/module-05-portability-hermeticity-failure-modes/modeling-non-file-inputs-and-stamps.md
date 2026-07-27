@@ -115,7 +115,10 @@ One honest pattern is:
 ```make
 TOOLCHAIN_STAMP := build/toolchain.stamp
 
-$(TOOLCHAIN_STAMP): | build/
+.PHONY: FORCE
+FORCE:
+
+$(TOOLCHAIN_STAMP): FORCE | build/
 	@$(CC) --version | sed -n '1p' > $@.tmp
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
@@ -126,11 +129,17 @@ app: $(TOOLCHAIN_STAMP) main.o util.o
 
 This pattern matters because it converges:
 
+- `FORCE` makes Make re-evaluate a fact that has no natural file prerequisite
 - the stamp content changes only when the semantic fact changes
 - the file is not rewritten pointlessly every run
 - the application target now has an explicit edge to that build fact
 
 That is a much healthier design than hiding the compiler identity entirely.
+
+Do not remove `FORCE` just because the stamp is a file. Without an evaluation trigger,
+Make sees an existing target with no newer prerequisite and never runs the recipe that
+could discover a changed compiler. `FORCE` controls evaluation; `cmp` controls
+publication. Both parts are required.
 
 ## Compare clock-derived state with declared state
 
@@ -244,7 +253,10 @@ inputs produce equal artifacts.
 Beginners often try to "prove" rigor by writing timestamps into manifests or stamps:
 
 ```make
-build/env.stamp:
+.PHONY: FORCE
+FORCE:
+
+build/env.stamp: FORCE
 	@date > $@
 ```
 
@@ -257,13 +269,17 @@ fact in a stable way?"
 A better shape is:
 
 ```make
-build/env.stamp:
+.PHONY: FORCE
+FORCE:
+
+build/env.stamp: FORCE
 	@printf 'CC=%s\nLC_ALL=%s\n' '$(CC)' '$(LC_ALL)' > $@.tmp
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
 ```
 
-Now the file changes only when the declared inputs change.
+Now the candidate is evaluated on every invocation, but the durable file changes only
+when the declared inputs change.
 
 ## Stamps are not junk files
 
@@ -324,7 +340,10 @@ That is a real non-file input. You can model it with a small mode manifest:
 ```make
 MODE_MANIFEST := build/mode.manifest
 
-$(MODE_MANIFEST): | build/
+.PHONY: FORCE
+FORCE:
+
+$(MODE_MANIFEST): FORCE | build/
 	@printf 'MODE=%s\n' '$(MODE)' > $@.tmp
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
@@ -337,6 +356,11 @@ This has two teaching benefits:
 
 - the mode becomes a visible build fact
 - the manifest gives you a stable place to inspect what the build believed
+
+It also has two distinct runtime behaviors worth testing:
+
+- `make MODE=release` twice evaluates twice but publishes once
+- changing to `make MODE=debug` publishes new manifest content and invalidates `app`
 
 ## Failure signatures worth recognizing
 
