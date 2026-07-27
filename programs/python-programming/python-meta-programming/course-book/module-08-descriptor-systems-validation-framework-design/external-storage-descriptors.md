@@ -55,6 +55,12 @@ Keep one more sentence beside it:
 
 > the descriptor may shape access, but it does not get to pretend it became the database.
 
+Turn that sentence into three checks any time you inspect one of these fields:
+
+- can I name the authoritative backend slot without reading three helpers?
+- can I say what local cache may disagree with that slot?
+- can I explain what the caller sees when the backend is missing, stale, or unavailable?
+
 ## What changes when storage becomes external
 
 Once storage moves out of the instance, the descriptor usually has to own more than one
@@ -194,6 +200,14 @@ That means `obj.field` may now imply:
 If that cost is not visible in docs, review, or instrumentation, the design is easy to
 misread.
 
+Keep one quick visibility card beside every backend-backed field:
+
+| Access path | Hidden work | Why the reviewer should care |
+| --- | --- | --- |
+| cache miss read | key derivation, backend lookup, deserialization | latency, stale schema, and missing-key behavior all become part of `obj.field` |
+| assignment | serialization, backend write, cache update | write ordering and persistence failure now matter to ordinary attribute syntax |
+| invalidation | cache clear only or cache plus backend refresh policy | tells you whether local state can drift quietly |
+
 ## Evidence route for external field reviews
 
 Use this route whenever a backend-backed descriptor sounds smaller than its blast radius:
@@ -224,6 +238,18 @@ Keep the distinction explicit:
 
 The second case carries a stronger truth question because the source of truth lives
 elsewhere.
+
+## Backend authority worksheet
+
+Fill out this worksheet for any external-storage field before you trust it:
+
+| Question | Example answer shape |
+| --- | --- |
+| what exact key names the field value? | `field:Post:12:title` |
+| what representation is stored there? | JSON string containing one scalar title |
+| what local state may mirror it? | `obj.__dict__["_title_cached"]` |
+| what event makes that local state untrustworthy? | backend write by another actor or local assignment bypass |
+| who owns the repair? | explicit invalidation helper, reload helper, or wider persistence layer |
 
 ## Serialization is part of the contract
 
@@ -263,6 +289,7 @@ Strong educational examples in this zone can answer, in one sentence each:
 - where the authoritative value lives
 - why attribute access is still acceptable syntax
 - what stale local state is allowed and how it is cleared
+- what wider persistence claim the field explicitly refuses to make
 
 ## When they are a poor fit
 
@@ -285,6 +312,15 @@ Reject these descriptions when they appear in review:
 | "reads are normal attribute access" | "reads may trigger cache checks, backend I/O, and decoding" |
 | "the backend details are abstracted away" | "the backend is hidden syntactically but still owns the source of truth" |
 | "the field stays fresh automatically" | "freshness depends on an explicit cache and invalidation story" |
+
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "it stores somewhere in the backend" | somewhere hides the authoritative slot |
+| "reads are transparent" | transparency usually means hidden I/O stayed unreviewed |
+| "the cache should stay close enough" | close enough is not a source-of-truth rule |
+| "backend failure is outside the field discussion" | backend failure is part of what ordinary attribute access now means |
 
 ## Failure modes for external descriptors
 
@@ -329,6 +365,13 @@ Try these before moving on:
 
 If those feel ordinary, the next step is composition: layering field behavior without
 turning every variation into a new subclass.
+
+Before you move on, make sure your own notes include:
+
+- one backend key shape
+- one hidden-I/O warning
+- one invalidation owner
+- one refused claim such as "this field now handles persistence in general"
 
 ## Continue through Module 08
 
