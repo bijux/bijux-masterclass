@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,179 +24,216 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These are model answers for the `WorkshopEnrollment` scenario from the exercise page.
+They are meant to show what an honest authority packet looks like when the learner has to
+follow one scarce-resource decision all the way from command to projection.
 
-## How to use the answer page well
+## Running scenario recap
 
-Do not read the model answer first and then reduce the module to "aggregates own the
-truth and events are downstream."
+`WorkshopEnrollment` manages:
 
-A better rhythm is:
+- a seat limit
+- confirmed attendees
+- a waitlist
+- payment confirmation from outside the aggregate
+- downstream notifications and roster projections
 
-1. finish the exercise with your own authority packet
-2. name the invariant, authoritative boundary, and derived artifacts
-3. compare your reasoning with the model answer
-4. revise anywhere your answer still lets projections, policies, or orchestration blur
-   into authority
+The central invariant is simple but non-negotiable:
 
-What matters is whether the reasoning makes multi-object authority explicit and auditable.
+> confirmed attendees must never exceed available seats
 
-Strong Module 04 answers usually do five things:
+Everything in the answers should make that rule easier to enforce and easier to review.
 
-- they identify one authoritative boundary per cross-object rule
-- they separate aggregates from manager-object shortcuts
-- they keep events and projections downstream of truth
-- they use policies and adapters for variation without giving them authority
-- they review collaboration surfaces for tangle and leakage
+## Answer 1: Authoritative boundary
 
-The strongest self-study packets also leave behind six concrete artifacts:
+A strong answer begins with one sentence:
 
-- one authority statement
-- one invariant map
-- one event-versus-truth review
-- one projection review
-- one collaboration-surface repair
-- one full authority-path review
+> The authoritative owner of seat assignment is the `WorkshopEnrollment` aggregate root.
 
-If your answers rely only on "this feels domain-driven," the reasoning is still too thin.
+Why not the payment callback handler?
 
-## Answer 1: Name the authoritative boundary
+- it knows transport timing, not seat truth
+- it may arrive twice
+- it should translate external facts, not decide capacity
 
-A strong answer identifies:
+Why not a broad `EnrollmentManager`?
 
-- the cross-object behavior
-- the one boundary allowed to accept or reject the change
-- a nearby object that may observe or help but must not share authority
+- it usually centralizes orchestration, not owned state
+- it tends to blur aggregate responsibilities into scripts
 
-What goes wrong when authority is split:
+The rule "who gets a seat" belongs next to the state that counts seats.
 
-- invariants become convention, retries become ambiguous, and no one object can reject an
-  inconsistent change cleanly
+## Answer 2: Cross-object invariant
 
-## Answer 2: Map one cross-object invariant
+A useful invariant map looks like this:
 
-The important pieces are:
+| Rule | Owner | Helper | Why helper stays subordinate |
+| --- | --- | --- | --- |
+| confirmed count must stay within seat limit | `WorkshopEnrollment` aggregate | payment adapter, notification handler | helpers do not own seat state |
+| waitlisted attendees are not confirmed | `WorkshopEnrollment` aggregate | roster projection | projection is derived output only |
+| promoted attendee must leave waitlist before joining confirmed list | `WorkshopEnrollment` aggregate | promotion policy | policy suggests order; aggregate applies it |
 
-- which objects participate
-- where the invariant is enforced
-- which workflow or method applies it
-- which downstream artifacts only reflect the outcome
+The key lesson is that several objects participate, but one boundary still decides.
 
-The main lesson is that multi-object consistency requires one named home.
+## Answer 3: Aggregate versus manager object
 
-## Answer 3: Compare aggregate and manager-object designs
+Aggregate-centered design wins here because:
 
-Aggregate-centered design is stronger when:
+- the seat count and attendee lists live with the code that mutates them
+- invariants are visible at the moment of change
+- reviewers can inspect one authority boundary first
 
-- the authoritative boundary remains close to the real state it protects
-- invariants are visible where change happens
+A manager-object design feels tempting because it gathers all workflow steps together.
+Its cost is that state and authority drift apart:
 
-Manager-object design feels tempting because:
+- the manager starts deciding rules for objects it does not own
+- the aggregate becomes a passive data container
+- future maintainers must understand orchestration scripts before they can verify truth
 
-- it centralizes knowledge quickly
+That is usually a worse trade.
 
-But it often harms review because:
+## Answer 4: Domain event
 
-- it turns domain rules into orchestration scripts and weakens object meaning
+Good event:
 
-## Answer 4: Review one domain event honestly
+- `attendee_confirmed`
 
-A domain event should:
+What must be true before it exists:
 
-- be emitted after an authoritative state change
-- describe something that already became true in the aggregate or authority boundary
-- inform downstream consumers without giving them permission to rewrite truth
+- seat count has already been updated
+- attendee state is already confirmed
+- the aggregate has already accepted the change
 
-The key review question is:
+What downstream consumers may do:
 
-- what authoritative change happened before this event existed at all
+- update a roster projection
+- send an email
+- record an audit entry
 
-## Answer 5: Distinguish projection from authority
+What they must not do:
 
-A projection:
+- decide that the attendee counts as confirmed before the aggregate did
+- modify seat ownership directly
 
-- summarizes or reshapes authoritative state
-- supports queries, debugging, or reporting
-- must never become the place where write decisions originate
+The event reports truth. It does not negotiate truth.
 
-Its operational value can be speed, observability, or convenience. Its limitation is that
-it inherits truth; it does not own it.
+## Answer 5: Projection versus truth
 
-## Answer 6: Place strategy and policy objects carefully
+A roster projection may:
 
-A strong answer distinguishes:
+- show confirmed attendees
+- show current waitlist order
+- power read-heavy pages
 
-- authority over state
-- variation in decision rules
+It must not:
 
-Policy objects are strongest when:
+- be edited directly to "fix" capacity
+- become the write path for promotion decisions
+- override the aggregate because it looks easier to query
 
-- they encapsulate replaceable decision logic
+The convenience it provides is speed and operator readability. The price is that it can
+lag. That lag is acceptable precisely because the projection is not the authority.
 
-They become misleading when:
+## Answer 6: Policy placement
 
-- the team starts treating them as if they own the state boundary instead of influencing a
-  decision inside it
+Suppose VIP attendees should be promoted before standard attendees.
 
-## Answer 7: Review a collaboration surface without tangle
+Good split:
 
-Good collaboration means:
+- policy object: decides ordering strategy among waitlisted candidates
+- aggregate: applies the chosen candidate only if a seat is truly available
 
-- necessary neighbors know each other explicitly
-- distant concerns communicate through stable boundaries
-- no object must understand the whole subsystem to do local work
+Why policy is not authority:
 
-A tangle smell appears when:
+- it influences *which* candidate to choose
+- it does not decide whether the system may exceed capacity
 
-- objects reach across several layers or roles to mutate or inspect each other directly
+The aggregate still owns the invariant. The policy only shapes one internal decision.
 
-## Answer 8: Place adapters and bridges
+## Answer 7: Collaboration surface
 
-An adapter may:
+A clean collaboration path:
 
-- translate storage, transport, or protocol concerns
+1. command handler calls `WorkshopEnrollment.request_seat(...)`
+2. aggregate consults a promotion or priority policy if needed
+3. aggregate mutates confirmed or waitlisted state
+4. aggregate emits event
+5. outbound handlers update projection or notifications
 
-The aggregate must stay ignorant of:
+Tangle smell:
 
-- connection details
-- serialization quirks
-- transport-specific error shapes
+- notification handler calls back into attendee internals
+- projection writer changes aggregate-owned state
+- payment adapter reaches into seat collections directly
 
-The bug from leakage is usually domain corruption: storage or transport assumptions begin
-deciding domain behavior.
+When objects start skipping the aggregate to "help," the authority surface is breaking.
 
-## Answer 9: Review one full authority path
+## Answer 8: Adapter boundary
 
-A strong review names:
+Payment callback adapter may:
 
-- the authoritative boundary
-- how events flow outward
-- which projections remain derived
-- where policy variation enters
-- where orchestration coordinates without owning truth
+- parse external payloads
+- normalize transaction identifiers
+- map remote statuses into a small internal result
 
-The best final note points to one fuzzy boundary that still risks confusion under change.
+Aggregate should receive something like:
 
-## Answer 10: Produce an aggregate-boundary decision packet
+- `payment_confirmed_for(attendee_id, transaction_id)`
 
-The packet is strong when another maintainer can answer:
+It should not see:
 
-- who owns the main rule
-- what is merely derived
-- where variation enters
-- what boundary still needs repair
+- webhook header quirks
+- vendor retry formats
+- raw transport status codes
 
-If readers guess different authoritative owners, the design or explanation is still too
-ambiguous.
+The bug from leakage is simple: transport oddities start influencing enrollment rules.
+
+## Answer 9: Full authority path
+
+A compact review of the path:
+
+- registration request enters the command boundary
+- `WorkshopEnrollment` decides confirm versus waitlist
+- aggregate emits `attendee_confirmed` or `attendee_waitlisted`
+- roster projection updates from the event
+- notification handler sends the email
+
+Authority exists only in the aggregate step.
+
+Derivation begins at the event.
+
+Failure should be most visible first where:
+
+- the aggregate cannot preserve capacity
+- event handling fails after truth already changed
+
+That split tells operators whether they are facing a domain rejection or a downstream
+delivery problem.
+
+## Answer 10: Authority packet
+
+A strong closing packet includes:
+
+- one sentence naming the aggregate root as the authoritative owner
+- one invariant table proving where capacity is enforced
+- one event/projection table showing what is derived
+- one collaboration review note warning against manager-object collapse
+
+A compact final note might read:
+
+> `WorkshopEnrollment` owns seat truth. Payment callbacks, projections, and
+> notifications are all subordinate boundaries. Priority policy influences selection but
+> never capacity. The main remaining risk is downstream duplication under retries, so the
+> event-handling path must be idempotent and clearly separated from seat ownership.
+
+That is the level of reasoning another maintainer should be able to review without
+guessing who really owns the scarce resource.
 
 ## Self-check
 
-If your answers consistently explain:
+You are using Module 04 correctly when another maintainer can answer all three of these
+without hesitation:
 
-- which boundary owns one cross-object rule
-- why events and projections stay downstream
-- how to resist both tangle and manager-object collapse
-- where strategies and adapters stop
-- what review evidence proves the authority path
-
-then you are using Module 04 correctly.
+- who can reject an over-capacity enrollment
+- which event happened only after truth was already decided
+- which collaborator helps without owning authority
