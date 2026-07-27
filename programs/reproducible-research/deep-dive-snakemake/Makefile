@@ -50,6 +50,12 @@ capstone-proof: ## Run the sanctioned learner-facing capstone proof route
 capstone-profile-audit: ## Package execution profile review evidence
 	$(MAKE) -C capstone profile-audit
 
+capstone-module-interface-audit: ## Compare explicit and hidden module interface contracts
+	$(MAKE) -C capstone module-interface-audit
+
+capstone-module-interface-selftest: ## Reject dishonest module interface evidence
+	$(MAKE) -C capstone module-interface-selftest
+
 check: capstone-check ## Run capstone fast checks
 
 test: check ## Run the course's default verification target
