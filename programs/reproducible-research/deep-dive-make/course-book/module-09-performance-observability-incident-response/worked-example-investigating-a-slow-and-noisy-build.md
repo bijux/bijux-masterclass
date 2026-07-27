@@ -103,7 +103,7 @@ gmake -C "$CAPSTONE" perf \
 The relevant target meanings are:
 
 - `all` builds the application, dynamic binaries, and a convergence sentinel
-- `trace-count` reports a heuristic size for a non-executing trace
+- `trace-report` records a clean planning trace with attribution and usability checks
 - `selftest` checks convergence and serial/parallel equivalence
 - `incident-audit` executes one controlled failure specimen and saves a review bundle
 - `perf` executes governed clean, no-op, and dry-run scenarios and writes review evidence
@@ -213,29 +213,26 @@ fi
 Read the captured output. The failure is correct because a candidate timing cannot compare
 itself with an unstated past.
 
-## Inspect the evidence guardrail
+## Inspect the trace evidence
 
 Run:
 
 ```sh
-gmake -C "$CAPSTONE" trace-count \
-  > artifacts/module09-incident/trace-count.txt
-gmake -C "$CAPSTONE" --trace -n all \
-  > artifacts/module09-incident/trace.txt 2>&1
+gmake -C "$CAPSTONE" trace-report
 ```
 
-Your count changes with build state and as the capstone evolves. Record the state alongside
-the count. The number is a guardrail, not a universal target. Inspect the trace itself:
+Read `trace-evidence.json` before `trace.log`. Confirm the report says `state=clean-plan`,
+`focus_target=all`, and `result=PASS`. Then inspect:
 
-- can you find the `all` target quickly
-- are rule locations visible
-- can you identify why work would or would not run
-- does the trace avoid changing semantic outputs
+- whether `all` appears among planned targets
+- whether rule locations identify the owning Makefiles
+- whether the line count is below the declared boundary
+- whether the raw trace explains why representative targets would run
 
-If the trace is searchable and bounded, "noisy" has not been established. If it is hard to
-use, redesign the surface around a specific responder question rather than deleting it.
-Do not merge this conclusion with the timing result: trace usability and route cost are
-separate claims.
+The target establishes clean state, so do not compare its count with a trace captured after
+convergence. If focus or attribution fails, the evidence is unusable even when it is short.
+If volume alone fails, inspect repeated low-value lines before changing the boundary. Do not
+merge this conclusion with timing: trace usability and route cost remain separate claims.
 
 ## Generate a controlled incident
 
@@ -398,7 +395,7 @@ You have completed the example when you can point to:
 - convergence and trusted-output evidence beside every timing distribution
 - the declared and observed incremental rebuild scope
 - one performance-gate rejection you can explain
-- the trace count and one usability judgment
+- the trace state, focus target, semantic checks, and one raw causal line
 - the incident bundle's command, output, status, and copied makefile
 - a classification that does not rely on exit status alone
 - the selftest report that represents the repaired proof shape
