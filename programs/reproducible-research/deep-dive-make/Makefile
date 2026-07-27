@@ -55,6 +55,7 @@ typecheck: install-dev ## Run mypy on Python helper scripts
         capstone-profile-audit capstone-discovery-audit capstone-portability-audit \
         capstone-semantic-fault-audit capstone-environment-contract-audit \
         capstone-architecture-contract-audit \
+        capstone-abstraction-contract-audit \
         capstone-source-bundle capstone-release-check \
         capstone-confirm capstone-clean demo inspect proof
 capstone: ## Build the capstone (writes ./all sentinel inside capstone)
@@ -86,6 +87,9 @@ capstone-environment-contract-audit: ## Prove non-file, recursion, and tool cont
 
 capstone-architecture-contract-audit: ## Prove public API, layer, and output ownership contracts
 > $(MAKE) -C $(CAPSTONE_DIR) architecture-contract-audit
+
+capstone-abstraction-contract-audit: ## Prove explicit and generated rule contracts
+> $(MAKE) -C $(CAPSTONE_DIR) abstraction-contract-audit
 
 capstone-verify-report: ## Build the capstone verification report bundle
 > $(MAKE) -C $(CAPSTONE_DIR) verify-report
