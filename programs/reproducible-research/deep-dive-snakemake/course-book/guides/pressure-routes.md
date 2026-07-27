@@ -4,19 +4,8 @@ Use this page when you cannot study the whole course in order because urgency is
 what you can realistically read. The goal is not to excuse shallow understanding. The
 goal is to keep the route honest under pressure.
 
-## How to use this page
-
-Use this page only after you can state the pressure in one sentence.
-
-Read it in this order:
-
-1. name the pressure plainly
-2. choose one bounded route from the table
-3. use only the first proof surface that matches that route
-4. stop as soon as the owning workflow boundary is visible
-
-If you keep widening the route because the situation feels stressful, this page is being
-used against its purpose.
+Pressure usually makes learners widen the surface too early. This page exists to stop
+that.
 
 ## The rule under pressure
 
@@ -27,7 +16,8 @@ Under pressure, do four things in order:
 3. use one matching proof surface
 4. stop as soon as the owning workflow boundary becomes visible
 
-If you keep widening the reading surface, pressure usually gets worse rather than better.
+If you keep widening the reading surface because the situation feels stressful, pressure
+usually gets worse rather than better.
 
 ## Start by naming the pressure without drama
 
@@ -41,18 +31,32 @@ A better opening sounds like:
 
 - I missed class and need an honest first entry tonight
 - CI and local behavior differ and I need the owning boundary first
-- I need to explain publish trust without reading the whole course again
+- I need to explain publish trust without rereading the whole course
+- I need to tell whether this is workflow semantics or policy drift
 
 Once the pressure is named that precisely, the first route becomes much easier to choose.
+
+## How to use this page
+
+Work in this order:
+
+1. write the pressure in one sentence
+2. choose one route from the table
+3. use only the first proof surface that matches that route
+4. stop as soon as you can name the owning workflow boundary
+
+If you keep widening the route because the situation feels urgent, this page is being
+used against its own purpose.
 
 ## Choose the route that matches the pressure
 
 | Pressure | First page | First module or reference | First proof surface | Stop when you can name... |
 | --- | --- | --- | --- | --- |
 | first contact | [Start Here](start-here.md) | [Module 00](../module-00-orientation/index.md), [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md) | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) | one truthful file contract and one reason the capstone is not first contact |
-| inherited workflow repair | [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) | [Module 03](../module-03-production-operations-policy-boundaries/index.md), [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md) | [Command Guide](../capstone/command-guide.md) | whether the failure is workflow semantics, policy drift, interface sprawl, or execution context |
+| inherited workflow repair | [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) | [Module 03](../module-03-production-operations-policy-boundaries/index.md), [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md) | [Command Guide](../capstone/command-guide.md) |
+ whether the failure is workflow semantics, policy drift, interface sprawl, or execution context |
 | publish and stewardship review | [Course Guide](course-guide.md) | [Module 06](../module-06-publishing-downstream-contracts/index.md), [Module 07](../module-07-workflow-architecture-file-apis/index.md), [Module 10](../module-10-governance-migration-tool-boundaries/index.md) | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) | what downstream trust depends on and which route is strong enough to defend it |
-| incident pressure | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) | [Module 09](../module-09-performance-observability-incident-response/index.md), [Topic Boundaries](../reference/topic-boundaries.md) | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) | the symptom, the owning workflow boundary, and the next smallest confirming command |
+| incident pressure | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) | [Module 09](../module-09-performance-observability-incident-response/index.md), [Topic Boundaries](../reference/topic-boundaries.md) | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) | the symptom, the owning boundary, and the next smallest confirming command |
 
 ## Read the table correctly
 
@@ -61,8 +65,10 @@ giving you a first stable foothold.
 
 - The first page should help you frame the problem.
 - The first module or reference should teach the boundary that owns the problem.
-- The first proof surface should give you evidence without overcommitting to a heavier run.
-- The stopping point matters because pressure work expands fast when there is no explicit exit.
+- The first proof surface should give you evidence without overcommitting to a heavier
+  run.
+- The stopping point matters because pressure work expands fast when there is no explicit
+  exit.
 
 ## Quick examples
 
@@ -91,7 +97,7 @@ Most of the time urgency demands the opposite:
 - one proof surface
 - one explicit stopping point
 
-## Good companion pages
+## Companion pages
 
 - [Module Promise Map](module-promise-map.md) when the route needs a sharper module contract
 - [Proof Ladder](proof-ladder.md) when the current command still feels too heavy
@@ -100,6 +106,11 @@ Most of the time urgency demands the opposite:
 
 ## Good stopping point
 
-Stop when you know which workflow boundary owns the current problem and which next page
-or command would test that claim directly. If you still cannot name the boundary, return
-to the table above instead of widening the reading surface.
+Stop when you know:
+
+- which workflow boundary owns the current problem
+- which next page or command would test that claim directly
+- why a broader route would be unnecessary right now
+
+If you still cannot name the boundary, return to the table above instead of widening the
+reading surface.

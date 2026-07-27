@@ -4,11 +4,24 @@ Use this page before your first local run or when setup failures are blurring th
 The goal is simple: get to one truthful workflow proof route without treating toolchain
 problems as Snakemake concepts.
 
+This page is about setup honesty, not about deep workflow reasoning.
+
+## The main distinction
+
+Before you do anything else, ask:
+
+- is the failure happening before a supported toolchain exists
+- or is it happening after setup succeeded and the workflow is now making a real claim
+
+That distinction changes everything.
+
+If setup is still broken, do not draw workflow conclusions yet. If setup is already
+honest and the proof route fails, stop reinstalling and start reading the workflow
+evidence.
+
 ## How to use this page
 
-Use this page only for setup and environment honesty.
-
-Read it in this order:
+Work in this order:
 
 1. choose the safest first route
 2. identify the command surface you are actually on
@@ -20,8 +33,8 @@ workflow questions as setup questions.
 
 ## The safest first route
 
-If the machine is fresh, use the repository-managed toolchain instead of trusting a
-random global Snakemake install.
+If the machine is fresh, prefer the repository-managed toolchain over a random global
+Snakemake install.
 
 From `programs/reproducible-research/deep-dive-snakemake/capstone/`:
 
@@ -46,19 +59,6 @@ make bootstrap-confirm
 That target creates the supported toolchain and then runs the strongest confirmation path
 without depending on a preinstalled global `snakemake`.
 
-## Start by deciding whether the problem is setup or workflow truth
-
-Beginners often lose time because every early failure feels like a Snakemake lesson.
-
-This page is here to prevent that confusion.
-
-Ask:
-
-- does the failure happen before a supported toolchain exists
-- or does it happen after setup succeeded and the workflow is now making a real claim
-
-That distinction changes what you should inspect next.
-
 ## What you actually need
 
 You do not need a perfect workstation. You need a small, explicit platform contract:
@@ -80,7 +80,7 @@ If you are unsure about the global Snakemake version, prefer the local bootstrap
 | capstone directory | `make help` | seeing the local capstone targets directly |
 | capstone directory | `make bootstrap` | creating the local toolchain before the first workflow run |
 
-## Version policy without the confusion
+## Version policy without confusion
 
 The teaching baseline stays on Snakemake 9.14.x for clean-room reproducibility, while the
 supported working window is `>=9.14,<9.24` for compatible local setups.
@@ -88,7 +88,8 @@ supported working window is `>=9.14,<9.24` for compatible local setups.
 That split exists for a reason:
 
 - the pinned baseline keeps classroom and container behavior stable
-- the broader window lets local development stay usable without pretending every 9.x build is identical
+- the broader window lets local development stay usable without pretending every 9.x
+  build is identical
 
 If your machine falls outside that window, fix the toolchain first. Do not debug course
 material against an unsupported Snakemake version and call the result a lesson failure.
@@ -107,11 +108,12 @@ That order matters:
 
 - `help` confirms you are on the right command surface
 - `bootstrap` creates the supported toolchain
-- `verify` checks that the workflow can execute, publish, and validate its promoted outputs
+- `verify` checks that the workflow can execute, publish, and validate its promoted
+  outputs
 
-If `bootstrap` succeeds and `verify` fails, you are past setup and into workflow evidence.
-Inspect the failing rule, logs, profile assumptions, or config surfaces before changing
-lesson conclusions.
+If `bootstrap` succeeds and `verify` fails, you are past setup and into workflow
+evidence. Inspect the failing rule, logs, profile assumptions, or config surfaces before
+changing lesson conclusions.
 
 ## Common setup failures
 
@@ -123,16 +125,9 @@ lesson conclusions.
 | `dag` or `rulegraph` fails | Graphviz `dot` is missing | install Graphviz only if you need graph rendering |
 | `verify` fails after a successful dry-run | runtime dependencies or filesystem assumptions differ from the planning surface | inspect `profiles/`, `config/`, and the failing rule logs before editing workflow code |
 
-## Good stopping point
+## The most common beginner mistake
 
-Stop when you can do two things:
-
-1. name which command surface you are on
-2. run one honest proof route without wondering whether the toolchain itself is lying
-
-## The beginner mistake to catch early
-
-The most common beginner mistake is continuing to widen setup work after the course
+The most common beginner mistake is continuing to widen setup work after the course has
 already reached a truthful workflow failure.
 
 Once `bootstrap` works and a proof route fails honestly, the next move is usually:
@@ -142,3 +137,12 @@ Once `bootstrap` works and a proof route fails honestly, the next move is usuall
 - inspect the saved evidence route
 
 It is usually not "reinstall everything again."
+
+## Good stopping point
+
+Stop when you can do both:
+
+1. name which command surface you are on
+2. run one honest proof route without wondering whether the toolchain itself is lying
+
+At that point, return to the actual workflow lesson.
