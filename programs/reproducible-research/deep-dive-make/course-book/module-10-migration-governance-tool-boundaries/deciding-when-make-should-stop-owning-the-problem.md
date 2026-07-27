@@ -1,6 +1,5 @@
 # Deciding When Make Should Stop Owning the Problem
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,259 +17,266 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  duty["name the responsibility"] --> truth["ask where its truth lives"]
+  truth --> fit["test whether Make models that truth honestly"]
+  fit --> handoff["define the handoff contract if another owner fits better"]
+  handoff --> proof["keep proof alive on both sides of the boundary"]
 ```
 <!-- page-maps:end -->
 
-This page is about tool boundaries.
+This page is about ownership, not fashion.
 
-Make is excellent within its natural territory, but many inherited systems become painful
-because the team never decides which concerns still belong in Make and which ones do not.
+Teams usually get boundary decisions wrong in one of two ways:
 
-## The false choice to avoid
+- they keep work inside Make because it is already there
+- they move work out of Make because another tool feels more modern
 
-Boundary conversations often collapse into one of two slogans:
-
-- "Make can do anything if you are clever enough"
-- "Make is old, so we should replace it"
-
-Both are weak positions.
-
-The first ignores modeling limits. The second ignores the places where Make remains a
-strong, honest tool.
-
-Module 10 asks for a better question.
+Both mistakes come from the same failure: nobody names what kind of responsibility is
+actually being owned.
 
 ## The sentence to keep
 
 When you are unsure about a boundary, ask:
 
-> is Make still the most honest owner of this responsibility, or are we forcing it to
-> imitate a different kind of system?
+> where does the truth of this responsibility live, and is Make still the most honest
+> owner of that truth?
 
-That wording matters because ownership is the real issue.
+That question is stronger than asking whether Make is "capable." Many tools are capable.
+The real issue is whether the chosen owner makes the responsibility reviewable.
 
-## What Make is naturally good at
+## Start with the responsibility, not the tool
 
-Make is especially strong when the problem has these properties:
+Do not begin with:
 
-- work can be explained as dependencies between named outputs
-- the build benefits from incremental rebuild behavior
-- correctness depends on explicit inputs and outputs
-- local file or manifest publication is central
-- humans need to inspect why a route ran and what it produced
+- "can Make call the script?"
+- "does the new system have a feature for this?"
+- "what do other teams usually use?"
 
-Typical good fits include:
+Begin with a one-sentence responsibility statement:
 
-- compilation and local build graph orchestration
-- generated-file pipelines with explicit outputs
-- deterministic packaging steps
-- audit and selftest routes tied to repository-local evidence
+- build a binary from declared source inputs
+- generate a manifest that describes package contents
+- sign a release using controlled external authority
+- coordinate staged deployment across remote environments
 
-These are not accidental successes. They align with what Make models well.
+If you cannot state the responsibility in one sentence, you are not ready to assign an
+owner.
 
-## What Make is often forced to fake
+## What Make owns well
 
-Make becomes uncomfortable when the responsibility is dominated by things it cannot model
-cleanly:
+Make is a strong owner when the responsibility is dominated by repository-local truth:
+
+- explicit inputs produce explicit outputs
+- publication happens through files, manifests, or package artifacts
+- incremental rebuild logic is meaningful
+- review requires seeing why a route ran and what it produced
+- failures can be diagnosed from repository-local evidence
+
+Typical strong fits:
+
+- compilation
+- generated-file pipelines
+- package assembly
+- checksums and manifests tied to produced artifacts
+- local audit and comparison routes
+
+This is not nostalgia. It is a match between model and problem.
+
+## What Make often only imitates
+
+Make is a weak owner when the responsibility is dominated by truth it cannot observe or
+govern honestly:
 
 - long-lived remote state
-- dynamic workflow scheduling over distributed systems
-- approval processes with external authorities
-- deployment coordination with rollback and live service state
-- provenance graphs whose truth lives outside repository-local files and manifests
+- approvals granted by external systems or humans
+- staged deployment controllers with rollback state
+- service health, live traffic, and environment drift
+- policy engines that encode authority, timing, or access control
 
-Make can still invoke the tools that own those concerns. That is different from Make being
-the owner.
+Make can still trigger those systems. Triggering is not the same as owning.
 
-## A simple boundary rubric
+## Use one ownership test
 
-Use these questions:
+Answer these questions in order:
 
-1. can the responsibility be expressed truthfully as local inputs, outputs, and publication
-   events
-2. can failures be diagnosed with repository-local evidence
-3. does incremental rebuild behavior make sense here
-4. does the concern rely on external state Make cannot observe honestly
-5. would Make be orchestrating, or pretending to be a scheduler, deployment controller, or
-   policy engine
+1. what is the published truth of this responsibility?
+2. where does that truth live while the responsibility is active?
+3. can Make model the important inputs, outputs, and state transitions directly?
+4. can failures be explained without hidden remote state?
+5. would another tool clarify the ownership boundary rather than just hide it?
 
-The more often questions 4 and 5 dominate, the more likely another tool should own the
-concern.
+If questions 2 through 4 keep pointing to remote mutable state or external authority,
+Make should probably stop owning the problem.
 
-## Keep orchestration distinct from ownership
+## A quick decision table
 
-A boundary mistake many teams make is confusing "Make calls it" with "Make owns it."
+| Responsibility shape | Better owner | Why |
+| --- | --- | --- |
+| build graph over local files | Make | edges, outputs, and incremental rebuilds are first-class |
+| package artifact creation | Make | publication can stay file-oriented and reviewable |
+| artifact signing with external authority | hybrid | Make owns artifact production; signer owns authority |
+| staged remote deployment | deployment system | truth lives in remote state and operational control loops |
+| approval workflow with roles and windows | policy or release system | Make cannot honestly own the governing state |
+| distributed workflow scheduling | workflow engine | scheduler state is the real truth, not local prerequisites |
 
-For example:
+The table is useful because it forces you to name the dominant truth boundary.
+
+## Do not confuse orchestration with ownership
+
+This target does not tell you who owns deployment truth:
 
 ```make
 deploy:
 	@./scripts/deploy-prod.sh
 ```
 
-This target tells us almost nothing about ownership.
+It only tells you that Make can start something.
 
-Possible interpretations:
+A reviewable ownership statement is more explicit:
 
-- Make owns deployment semantics
-- Make merely offers a convenience wrapper
-- the real deployment controller lives elsewhere
-- the script is managing state Make cannot see
+- Make owns artifact build, package assembly, and local verification
+- the deployment system owns rollout state, health checks, approval gates, and rollback
+- the handoff boundary is a named artifact plus release metadata
 
-Those are not equivalent.
+That distinction removes a large amount of inherited ambiguity.
 
-A healthier pattern is to state the ownership plainly:
+## Define the handoff contract when ownership changes
 
-- Make owns build, package, and local verification
-- deployment is owned by a separate system with its own state and approval model
-- Make may expose a convenience entrypoint for initiating that system, but not pretend to
-  define deployment truth
+A boundary change is incomplete until the handoff contract is written down. The contract
+should answer:
 
-This sounds subtle. In practice it removes a lot of confusion.
+- what produced thing is being handed over
+- what evidence must travel with it
+- who validates the handoff
+- what failure means on each side of the boundary
 
-## A good boundary handoff is explicit
+Example:
 
-Suppose a team decides release metadata generation belongs in a dedicated tool rather than
-custom Make macros.
+| Question | Example answer |
+| --- | --- |
+| handoff object | `dist/report-bundle.tar.gz` |
+| attached evidence | checksum manifest, build metadata, package contents manifest |
+| sending owner | Make-driven package build |
+| receiving owner | release signer and publication service |
+| sender failure | artifact or evidence was not produced truthfully |
+| receiver failure | signing, approval, or publication failed after handoff |
 
-An explicit handoff looks like this:
+Without this contract, teams end up with vague "release failed" incidents that mix build
+truth and remote-state truth together.
 
-- Make still defines when metadata generation is needed
-- the dedicated tool produces a declared manifest or metadata file
-- downstream Make targets depend on that published result
-- errors surface as failed production of a known artifact
+## Keep proof alive on both sides of the boundary
 
-An implicit handoff looks like this:
+Boundary work often gets harder because the team moves ownership and deletes the evidence
+that used to make the old route understandable.
 
-- a shell wrapper calls several tools
-- the final files appear somewhere in `dist/`
-- nobody can say where metadata truth actually lives
+Protect one proof route for each side:
 
-The first is a boundary. The second is an excuse.
+- before handoff: a route that proves Make produced the expected artifact or manifest
+- after handoff: a route that proves the external owner accepted, signed, published, or
+  deployed the intended object
 
-## Make should not remain owner out of habit
+If either side lacks proof, the ownership split is not yet healthy.
 
-Many long-lived builds keep concerns inside Make for reasons that are no longer technical:
+## Good reasons to keep ownership in Make
 
-- "it is already there"
-- "the maintainer knows how it works"
-- "rewriting would be annoying"
-- "CI already calls the target"
+Keep the responsibility in Make when all of these remain true:
 
-Those may be real constraints. They are not ownership arguments.
+- the truth is still primarily file-oriented
+- the outputs can be named and reviewed
+- another tool would add indirection but not better modeling
+- incremental rebuild behavior is still meaningful
+- repository-local debugging remains a major advantage
 
-A real ownership argument sounds like this:
+Example:
 
-- the concern is still file-oriented and local
-- Make still exposes the meaningful edges clearly
-- observability remains sufficient
-- another tool would add indirection without solving a modeling problem
+- code generation from declared schemas
+- compilation
+- packaging a reproducible archive with checksums
 
-That is a much higher standard.
+That is classic Make territory and should not be handed away casually.
 
-## Another tool should not become owner out of fashion
+## Good reasons to hand ownership off
 
-The opposite error is also common:
+Move ownership away from Make when these begin to dominate:
 
-- a team adopts a workflow system because it feels modern
-- Make is removed from places where it was already doing honest graph work
-- repository-local truth becomes harder to inspect
-- the new system takes on more responsibility than anyone can explain
+- the responsibility depends on remote mutable state
+- approvals or authorities live elsewhere
+- the workflow is really about controllers, not prerequisites
+- failure diagnosis depends on information Make cannot represent clearly
+- the convenience wrapper is obscuring, not clarifying, the system
 
-Migration to another tool is justified when it solves a real ownership mismatch, not when
-it merely changes aesthetics.
+Example:
 
-If a new tool cannot answer "what exactly is it better at modeling," the handoff is
-probably premature.
+- progressive production deployment with approvals, health checks, pauses, and rollback
 
-## Small examples of honest boundaries
+Make may still provide a launch or audit entrypoint. It should not pretend to be the
+source of operational truth.
 
-### Keep it in Make
+## Hybrid ownership is often the strongest answer
 
-Case:
+Many healthy systems are neither "all Make" nor "no Make."
 
-- generating headers from schema files
-- compiling binaries
-- packaging a tarball with a manifest and checksum
+Example hybrid:
 
-Why Keep it:
+- Make builds and packages the artifact
+- a signing service attaches trusted release authority
+- a release controller publishes or deploys the signed object
 
-- inputs and outputs are explicit
-- local publication matters
-- incremental rebuild behavior is valuable
+This works when the boundary is explicit:
 
-### Hand it off
+- Make owns artifact truth
+- the signer owns authority
+- the release controller owns remote rollout state
 
-Case:
+Hybrid answers usually fail only when the handoff object or proof route is vague.
 
-- coordinating staged production deployment with approvals and rollback state
+## Failure signatures that reveal the wrong owner
 
-Why hand it off:
+These sentences are strong warning signs:
 
-- the truth lives in remote state and operational policy
-- the concern needs a controller, not just local dependency evaluation
-- Make can start or validate the process, but it should not own it
+### "Our Makefile mostly waits for remote systems now"
 
-### Hybrid boundary
+Make is probably acting as a weak wrapper around the real owner.
 
-Case:
+### "We moved packaging out, but now nobody can inspect what actually shipped"
 
-- Make builds and packages an artifact
-- a release service signs and publishes it
+The handoff improved fashion but damaged evidence.
 
-Why hybrid:
+### "Deploy failures and build failures look identical in review"
 
-- Make remains the owner of artifact production
-- the release service owns signing authority and publication policy
-- the handoff is the produced artifact plus declared metadata
+The boundary mixes two different truths under one target name.
 
-Hybrid boundaries are often the clearest ones.
+### "The new platform is powerful, but local review got much harder"
 
-## A warning sign: Make is becoming a policy engine
+The team may have handed off a responsibility that was still naturally local.
 
-Be careful when Make starts encoding:
+## A practical review route
 
-- environment approval rules
-- user roles
-- deployment windows
-- multi-stage remote workflows
-- long-lived mutable state machines
+When you audit a suspicious boundary, write a short packet:
 
-Those are usually signs that Make is being stretched into a policy or orchestration system
-rather than used as a build graph engine.
+1. responsibility statement
+2. current owner
+3. where truth lives
+4. proof route before handoff
+5. proof route after handoff
+6. recommended owner and why
 
-At that point the question is no longer "can we script it?" The question is "should this
-responsibility have a different owner?"
+If you cannot fill all six lines, the boundary is still under-described.
 
-## Failure signatures worth recognizing
+## Review drill
 
-### "Our Makefile now mostly calls APIs and waits for remote systems"
+Take one target from an inherited repository and answer:
 
-That usually means Make is no longer the real owner of the workflow.
+1. what responsibility does this target actually own?
+2. where does the truth of that responsibility live?
+3. is Make modeling that truth directly or hiding another owner?
+4. what handoff object and evidence would exist if ownership moved?
 
-### "We moved packaging out of Make and lost clear artifact evidence"
+## Exit check
 
-That often means the handoff was done for fashion rather than for a real modeling reason.
+You are ready to use this lesson when you can:
 
-### "Nobody can tell whether deployment failed because of build truth or remote state"
-
-That is usually a boundary problem: too many kinds of truth were hidden behind one target.
-
-### "The new system is powerful, but local review got harder"
-
-That can mean the team handed off responsibility too eagerly and lost repository-local
-legibility.
-
-## What this page wants you to say
-
-A strong Module 10 boundary answer sounds like this:
-
-> Make should keep owning the local build graph, generated outputs, and package production,
-> but it should stop pretending to own remote deployment state and approval policy. The
-> handoff boundary is the published artifact and its evidence.
-
-That is a much better answer than either "keep Make for everything" or "replace Make."
+- explain why ownership is not the same as invocation
+- identify when Make is still the most honest owner of a responsibility
+- identify when another tool should own remote state, approval, or policy truth
+- write a concrete handoff contract instead of saying "the other system handles it"
