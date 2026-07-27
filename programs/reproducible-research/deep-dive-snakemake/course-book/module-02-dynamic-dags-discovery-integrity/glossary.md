@@ -1,10 +1,11 @@
 # Glossary
 
-Use this glossary to keep the language of Module 02 stable while you move between the
-core lessons, worked example, exercises, and capstone evidence.
+Dynamic workflows feel harder than static ones mostly because people stop naming what is
+being discovered, when it is being discovered, and where that fact gets recorded. This
+glossary exists to stop that slide into hand-waving.
 
-The goal is not extra jargon. The goal is to make sure dynamic behavior is described with
-clear nouns instead of mystical shortcuts.
+Keep it open while you work through the module. If a sentence starts sounding mystical,
+this page should give you the concrete noun that restores clarity.
 
 ## When to stop and check the glossary
 
@@ -46,6 +47,33 @@ When you explain a Module 02 situation, aim to say things like:
 - "the workflow is slow because scheduler cost dominates useful work"
 
 Those sentences are much more useful than saying only "Snakemake gets weird with dynamic workflows."
+
+## Confusion pairs worth fixing early
+
+These pairs matter because Module 02 becomes muddy the moment discovery language gets
+lazy:
+
+- `checkpoint` versus `parse-time discovery`: a checkpoint delays downstream expansion
+  until after a run artifact exists; parse-time discovery happens before execution starts.
+- `discovered set` versus `target list`: the discovered set is what the workflow learned
+  exists; the target list is what the workflow is trying to build.
+- `registry` versus `manifest`: a registry records discovery facts; a manifest records the
+  contents of a publish boundary.
+- `fanout` versus `scheduler cost`: fanout names the expansion shape; scheduler cost names
+  the overhead of managing that shape.
+
+## Quick self-check
+
+Before you leave Module 02, make sure you can answer these in a full sentence:
+
+- Why is one JSON file of discovered samples easier to review than repeated ad hoc
+  directory scans across rules?
+- What term should you use if downstream jobs cannot be known honestly before one earlier
+  rule finishes?
+- If a workflow publishes outputs but no durable file records what was discovered for this
+  run, which evidence surface is missing?
+- If a workflow is technically correct but painfully slow because it launches thousands of
+  tiny jobs, what cost class inside this module are you naming?
 
 ## Terms you should be able to use by the end of the day
 

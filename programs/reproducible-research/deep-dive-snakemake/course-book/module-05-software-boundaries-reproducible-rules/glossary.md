@@ -1,8 +1,11 @@
 # Glossary
 
-This glossary keeps the language of Module 05 stable. The goal is not to impress you with
-terminology. The goal is to make sure the same words keep the same meaning across lessons,
-reviews, exercises, and capstone work.
+Module 05 is where many workflows either become durable software systems or collapse into
+unreviewable glue. This glossary helps you say which layer owns orchestration, which
+layer owns implementation, and which layer owns runtime trust.
+
+The aim is not impressive vocabulary. The aim is to make software-boundary decisions easy
+to explain and defend.
 
 ## When to stop and check the glossary
 
@@ -43,6 +46,35 @@ If a workflow change becomes hard to review, ask which term has become vague:
 - is the provenance artifact too weak?
 
 That habit keeps the module practical.
+
+## Confusion pairs worth fixing early
+
+These pairs matter because they decide where code belongs and how a reviewer should trust
+it:
+
+- `step-local code` versus `reusable package code`: step-local code serves one workflow
+  step; reusable package code deserves imports, tests, and ownership beyond one rule.
+- `repository environment` versus `rule-scoped environment`: the repository environment is
+  the project baseline; a rule-scoped environment narrows runtime requirements for one
+  step or one rule family.
+- `runtime contract` versus `provenance artifact`: the runtime contract declares what a
+  step needs to run; a provenance artifact records what actually produced the outputs.
+- `hidden dependency` versus `software drift`: the hidden dependency is the missing
+  declared influence; software drift is the trust problem that appears when code or
+  runtime changes over time.
+
+## Quick self-check
+
+Before you leave Module 05, make sure you can answer these in a full sentence:
+
+- If one Python helper is used by five rules and needs direct unit tests, which ownership
+  surface should probably hold it?
+- If a rule relies on a reference file or helper binary that never appears in its declared
+  inputs or runtime boundary, what exact problem are you naming?
+- If outputs changed after a package update even though input files stayed the same, which
+  module term explains why reviewers should still care?
+- If a release bundle includes the software context that produced it, which evidence
+  artifact inside this module is doing that trust work?
 
 ## Terms you should be able to use by the end of the day
 

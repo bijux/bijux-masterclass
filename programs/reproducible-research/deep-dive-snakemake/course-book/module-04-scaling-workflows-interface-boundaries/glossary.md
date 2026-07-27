@@ -1,10 +1,10 @@
 # Glossary
 
-Use this glossary to keep the language of Module 04 stable while you move between the
-core lessons, worked example, exercises, and capstone evidence.
+Scaling a workflow is not only about adding more rules. It is about keeping the workflow
+understandable while the repository grows. This glossary helps you describe that growth in
+terms of boundaries a reviewer can actually inspect.
 
-The goal is not extra jargon. The goal is to make scaling and interface decisions sound
-like clear repository boundaries instead of vague architecture talk.
+Use it whenever architecture discussion starts sounding abstract instead of concrete.
 
 ## When to stop and check the glossary
 
@@ -43,6 +43,32 @@ When you explain a Module 04 situation, aim to say things like:
 - "the executor-facing policy adapts a workflow-side resource distinction"
 
 Those sentences are much more useful than saying only "the repo should be more modular."
+
+## Confusion pairs worth fixing early
+
+These pairs matter because they separate helpful structure from architecture theater:
+
+- `include boundary` versus `module boundary`: an include split groups files inside one
+  graph; a module boundary implies a stronger reusable interface.
+- `public contract` versus `internal state`: public contract is what consumers may rely
+  on; internal state may exist only to help execution or review.
+- `file API` versus `visible graph`: a file API explains stable paths and meanings; the
+  visible graph explains how the top-level workflow remains understandable.
+- `review surface` versus `gate`: a review surface is any inspectable artifact or command;
+  a gate is a named check that actively protects a boundary.
+
+## Quick self-check
+
+Before you leave Module 04, make sure you can answer these in a full sentence:
+
+- If you split one long Snakefile into smaller files but reviewers can still see the whole
+  workflow story easily, which visibility term fits that design?
+- If another workflow can import a boundary only because you documented stable inputs,
+  outputs, and semantics, what stronger concept have you created beyond an include file?
+- If a path helps internal debugging but should never be promised downstream, which side
+  of the contract line does it belong to?
+- If a CI check fails whenever a public artifact disappears from the publish tree, what
+  kind of protective surface is that check serving as?
 
 ## Terms you should be able to use by the end of the day
 

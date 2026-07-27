@@ -1,10 +1,11 @@
 # Glossary
 
-Use this glossary to keep the language of Module 01 stable while you move between the core
-lessons, worked example, and exercises.
+This glossary is part of the teaching material for Module 01, not a side appendix. Keep
+it nearby while you work through the first lessons, the worked example, and the
+exercises.
 
-The goal is not extra jargon. The goal is to make sure the same beginner-level workflow
-facts keep the same names whenever you explain them.
+The point is simple: beginner confusion drops fast when the important workflow facts have
+stable names. If you can name a problem precisely, you can usually fix it much faster.
 
 ## How to use this glossary
 
@@ -55,6 +56,33 @@ When you explain a Module 01 situation, aim to say things like:
 - "the final path is a poison artifact because it was published before success"
 
 Those sentences are much more useful than saying only "Snakemake is confusing."
+
+## Confusion pairs worth fixing early
+
+These pairs cause trouble on the first day because they sound similar but answer
+different questions:
+
+- `rule` versus `job`: a rule is the reusable pattern; a job is one concrete execution of
+  that pattern after wildcards are bound.
+- `config` versus `profile`: config changes workflow meaning; a profile changes how the
+  workflow runs.
+- `rerun cause` versus `failure symptom`: the symptom is what you noticed; the rerun cause
+  is the specific tracked reason Snakemake decided work was needed again.
+- `requested target` versus `rule all`: a requested target is what you asked Snakemake to
+  build now; `rule all` is the repository's normal definition of done.
+
+## Quick self-check
+
+Before you leave Module 01, make sure you can answer these in a full sentence:
+
+- If two rules can both produce `results/A/report.txt`, what is the exact ownership
+  problem called?
+- If a run finishes but leaves a final-looking file that was written before the command
+  failed, what should you call that file?
+- If changing core count affects runtime but should not change biological or analytic
+  meaning, which boundary owns that setting?
+- If `snakemake -n` still wants more work after a successful run, which term tells you the
+  workflow has not reached a stable finished state yet?
 
 ## Terms you should be able to use by the end of the day
 
