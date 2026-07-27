@@ -121,10 +121,10 @@ cp \
   "$PACKET/evidence/capstone-first.tar.gz"
 ```
 
-`mkdist.py` sorts members, fixes modification times, normalizes uid and gid, and sets the
-gzip header time. It also gives gzip the output pathname, whose basename is recorded in the
-header. Reproducibility must therefore use the same publication pathname on each run.
-Changing only the output filename would change the candidate bytes.
+`mkdist.py` sorts members, fixes modification times, normalizes uid and gid, fixes the gzip
+header time, and clears the gzip filename field. Those controls make output basename
+irrelevant to candidate bytes. They create a reproducibility claim that you still need to
+test.
 
 Compute the exact candidate identity:
 
@@ -139,7 +139,9 @@ The algorithm and sidecar format are part of the local tool contract.
 
 ## Produce independently again
 
-Recreate the payload tree and produce another candidate under a different name:
+Recreate the payload tree and produce another candidate. The archive is published through
+the same candidate path, while each observation is retained under a different evidence
+name:
 
 ```sh
 gmake -C "$CAPSTONE" clean all

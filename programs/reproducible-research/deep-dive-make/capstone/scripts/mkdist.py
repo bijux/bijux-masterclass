@@ -117,18 +117,26 @@ def write_archive(
     policy_members: list[PackageMember] | None = None,
 ) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
-    with gzip.GzipFile(filename=str(output), mode="wb", mtime=0) as gz:
-        with tarfile.open(fileobj=gz, mode="w") as tf:
-            cwd = Path.cwd().resolve()
-            if policy_members is not None:
-                for member in policy_members:
-                    add_policy_member(tf, member, cwd)
-            else:
-                assert inputs is not None
-                for input_path in inputs:
-                    for path in iter_paths(input_path):
-                        relative_path = path.resolve().relative_to(cwd)
-                        add_path(tf, path, relative_path.as_posix())
+    staged_output = output.with_name(f".{output.name}.candidate.{os.getpid()}")
+    try:
+        with staged_output.open("xb") as raw_output:
+            with gzip.GzipFile(
+                fileobj=raw_output, filename="", mode="wb", mtime=0
+            ) as compressed:
+                with tarfile.open(fileobj=compressed, mode="w") as archive:
+                    cwd = Path.cwd().resolve()
+                    if policy_members is not None:
+                        for member in policy_members:
+                            add_policy_member(archive, member, cwd)
+                    else:
+                        assert inputs is not None
+                        for input_path in inputs:
+                            for path in iter_paths(input_path):
+                                relative_path = path.resolve().relative_to(cwd)
+                                add_path(archive, path, relative_path.as_posix())
+        os.replace(staged_output, output)
+    finally:
+        staged_output.unlink(missing_ok=True)
 
 
 def main(argv: list[str]) -> int:

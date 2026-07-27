@@ -123,11 +123,12 @@ Compare the two byte for byte and write the command plus status to
 `evidence/repeat-production.txt`.
 
 Then perform one controlled contrast: produce equivalent payloads under a different output
-basename and compare that archive with the candidate. Explain the result by inspecting
-`mkdist.py` and the gzip header contract. Keep the contrast archive under `failures/`.
+basename and compare that archive with the candidate. Explain why `mkdist.py` clears the
+gzip filename field and why output location should not redefine candidate identity. Keep
+the contrast archive as supporting evidence.
 
 **Acceptance test:** the two same-path candidates are identical; the explanation does not
-claim that reproducibility is independent of output basename.
+assume basename neutrality without connecting it to the producer implementation.
 
 ## Exercise 5: Compare declared and observed archive members
 

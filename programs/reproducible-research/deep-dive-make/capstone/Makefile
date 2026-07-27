@@ -353,10 +353,13 @@ test: app dyn
 >     $(call assert_stdout_eq,$(BLD_DIR)/bin/dyn1,Hello from generated header)
 >     $(call assert_stdout_eq,$(BLD_DIR)/bin/dyn2,42)
 
-dist: dist.tar.gz
+dist: dist.tar.gz dist.tar.gz.sha256
 
 dist.tar.gz: $(RELEASE_INPUTS) $(RELEASE_POLICY) scripts/mkdist.py scripts/release_policy.py
 >     $(PYTHON) scripts/mkdist.py --policy "$(RELEASE_POLICY)" --output "$@"
+
+dist.tar.gz.sha256: dist.tar.gz scripts/write_release_checksum.py
+>     $(PYTHON) scripts/write_release_checksum.py --candidate "$<" --output "$@"
 
 repro:
 >     @printf '%s\n' \
@@ -483,7 +486,7 @@ confirm: hardened
 # ---- source baseline ----
 source-baseline-check:
 >     @paths=''; \
->     for path in build stamps app all dist.tar.gz; do \
+>     for path in build stamps app all dist.tar.gz dist.tar.gz.sha256; do \
 >         if [ -e "$$path" ]; then \
 >             paths="$$paths./$$path\n"; \
 >         fi; \
@@ -518,7 +521,7 @@ show-origins:
 >     @echo "CFLAGS origin=$(origin CFLAGS) flavor=$(flavor CFLAGS)"
 
 clean:
->     rm -rf $(BLD_DIR) stamps app all dist.tar.gz
+>     rm -rf $(BLD_DIR) stamps app all dist.tar.gz dist.tar.gz.sha256
 >     find . -type f \( -name '*.tmp.*' -o -name '*.tmp' -o -name '*.d.tmp' -o -name '*.tmp.d' \) -delete 2>/dev/null || true
 
 FORCE:

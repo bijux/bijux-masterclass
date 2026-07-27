@@ -156,16 +156,14 @@ cmp \
   "$PACKET/evidence/capstone-second.tar.gz"
 ```
 
-Why the same path? `mkdist.py` passes its output pathname to `gzip.GzipFile`. Gzip records a
-filename field even though the script fixes the gzip modification time. Different output
-basenames therefore produce different bytes for equivalent payloads.
+The capstone producer clears the gzip filename field as well as fixing the gzip modification
+time. Equivalent payloads should therefore remain byte-identical when only the output
+basename changes. That contrast checks whether the implementation actually honors its
+filename-neutral contract.
 
-That contrast is useful evidence about the producer contract, not proof of payload drift.
-Inspect uncompressed members before blaming the build.
-
-**Insufficient answer:** produce `first.tar.gz` and `second.tar.gz`, observe different
-digests, and conclude that normalization failed. The experiment changed an undeclared
-input: output basename.
+**Insufficient answer:** assume different output names cannot affect bytes without
+inspecting the compressor call. Gzip can record a filename unless the producer deliberately
+clears it.
 
 ## Exercise 5: Compare declared and observed archive members
 
