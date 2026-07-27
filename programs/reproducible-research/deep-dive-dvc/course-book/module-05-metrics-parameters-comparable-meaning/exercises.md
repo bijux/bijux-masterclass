@@ -232,97 +232,187 @@ your packet can already answer these questions clearly:
 If you cannot answer those four questions in plain language, return to Exercises 1-5 and
 make the packet more explicit before continuing.
 
-## Exercise 6: Design a stable metric schema
+## Exercise 6: Predict the metric contract audit
 
-Define a machine-readable metric document with:
+Inspect these files without running the audit:
 
-- units
-- population
-- aggregation
-- direction
+```text
+capstone/repro/metric-contracts/
+├── dvc.yaml
+├── params.yaml
+└── cases/
+```
+
+For each non-baseline case, predict:
+
+- the primary numeric delta
+- whether `dvc params diff` will be empty
+- which semantic field changes or disappears
+- `ACCEPT`, `REJECT`, or `ABSTAIN`
+
+Then run:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone metric-contract-audit
+```
+
+What to hand in:
+
+- prediction table
+- generated `summary.tsv`
+- corrected classifications with evidence paths
+- explanation of why `PASS / REJECT` is not contradictory
+
+Study note:
+Prediction forces you to reason from the contract instead of memorizing the generated
+labels.
+
+## Exercise 7: Reconstruct and recompute the accepted claim
+
+Use:
+
+```text
+workspace/comparable-candidate/evidence/
+```
+
+Recompute F1 from each confusion matrix:
+
+```text
+precision = TP / (TP + FP)
+recall    = TP / (TP + FN)
+F1        = 2 * precision * recall / (precision + recall)
+```
+
+Then independently calculate the delta and compare it with
+`dvc-metrics-diff.json`.
+
+Do not stop at arithmetic. Reconstruct the full claim from:
+
 - schema version
-
-Produce two valid records and one intentionally incompatible record.
-
-What to hand in:
-
-- the schema shape
-- the two comparable records
-- the one incompatible record
-- one sentence explaining how a reviewer should detect incompatibility quickly
-
-Study note:
-Stable schemas reduce accidental semantic drift before release review even begins.
-
-## Exercise 7: Separate tuning controls from run policy
-
-Classify ten settings from a real experiment as one of:
-
-- model parameter
-- data-selection control
-- evaluation rule
-- execution policy
-
-Explain which belong in `params.yaml` and which should stay elsewhere.
-
-Study note:
-This exercise matters because comparison packets become noisy or incomplete when semantic
-and operational settings are mixed carelessly.
-
-## Exercise 8: Recompute a comparison manually
-
-Use two metric files and calculate the reported change independently. Check:
-
-- sign
-- denominator
-- rounding
-- missing values
-- whether the compared populations match
+- population identity and row count
+- threshold
+- metric name and definition
+- unit and aggregation
 
 What to hand in:
 
-- the manual computation
-- the final comparison judgment
-- one sentence naming the most likely hidden mistake in this kind of review
+- baseline precision, recall, and F1
+- candidate precision, recall, and F1
+- independently calculated delta
+- one bounded same-contract comparison sentence
+- list of release claims this packet still cannot support
 
 Study note:
-If you never recompute by hand, you will eventually trust a neat diff that compares the
-wrong things correctly.
+A correct recomputation proves arithmetic. Contract continuity is the separate reason the
+arithmetic can enter one comparison.
 
-## Exercise 9: Set a decision threshold before seeing results
+## Exercise 8: Defeat two plausible shortcuts
 
-Write an acceptance rule for one metric before running a candidate. Include:
+Investigate:
 
-- tolerance
-- secondary safeguards
-- what happens when evidence is incomplete
-- the abstain condition
+```text
+workspace/population-drift/evidence/
+workspace/unit-drift/evidence/
+```
 
-Study note:
-Precommitment matters because it keeps the decision rule from moving to match a favored
-candidate.
+Shortcut A says:
 
-## Exercise 10: Build a reviewable comparison packet
+> Both populations contain 120 rows, so they are comparable.
 
-Assemble:
+Shortcut B says:
 
-- parameter diff
-- metric diff
-- data identity
-- environment identity
-- a short interpretation for two runs
+> The primary metric key stayed the same, so the `77.5241` increase is valid.
 
-Ask another learner to decide whether the comparison is valid without verbal context.
+For each shortcut:
+
+- quote the evidence that makes it tempting
+- quote the evidence that defeats it
+- explain why DVC still reports a numeric delta
+- write the strongest safe review note
+- name the repair needed before direct comparison
 
 What to hand in:
 
-- the packet itself
-- one sentence describing what the other learner could judge confidently
-- one sentence naming what confusion remained, if any
+- two evidence tables
+- two bounded review notes
+- one paragraph distinguishing arithmetic validity from semantic validity
 
 Study note:
-This final exercise matters because a strong comparison should survive outside the memory
-of the person who ran it.
+The dangerous shortcut usually contains one true observation. Your job is to show why it
+is insufficient.
+
+## Exercise 9: Separate policy change, schema evolution, and missing evidence
+
+Compare:
+
+```text
+workspace/control-drift/evidence/
+workspace/additive-metric/evidence/
+workspace/schema-version-drift/evidence/
+workspace/missing-population-identity/evidence/
+```
+
+Classify each as:
+
+- compatible extension
+- incompatible direct comparison
+- useful result that answers a different policy question
+- abstention because required evidence is missing
+
+For control drift, join `dvc-metrics-diff.json` to `dvc-params-diff.json`.
+
+For schema cases, inspect `metric_keys.added`, `metric_keys.removed`, and the contract
+version. Explain why adding a field differs from crossing a version boundary without a
+mapping.
+
+What to hand in:
+
+- four-row classification table
+- threshold-policy question the control-drift result can answer
+- compatibility rule for the additive metric
+- repair for the version boundary
+- evidence request for the missing-population case
+
+Study note:
+“Reject direct comparison” does not mean “discard the run.” State which new question or
+repair makes the result useful.
+
+## Exercise 10: Produce an independent comparison review
+
+Build a packet another learner can review without oral context. Include:
+
+- the baseline claim
+- predictions and corrections from Exercise 6
+- manual recomputation from Exercise 7
+- rejected shortcuts from Exercise 8
+- classifications and repairs from Exercise 9
+- a predeclared release rule for the accepted candidate
+
+Your release rule must name:
+
+- minimum primary improvement
+- at least two secondary safeguards
+- required population and contract continuity
+- behavior when evidence is incomplete
+- explicit abstention condition
+
+Ask the reviewer to answer:
+
+1. Which comparisons are semantically valid?
+2. Which valid comparison, if any, passes the release rule?
+3. Which rejected result could answer a different question?
+4. Which evidence defect requires abstention rather than a negative conclusion?
+
+What to hand in:
+
+- packet index with relative paths
+- reviewer decisions
+- disagreements and the evidence used to resolve them
+- one sentence naming any judgment the packet still cannot support
+
+Study note:
+A strong packet does not make every decision automatic. It makes the remaining judgment
+and its evidence boundary explicit.
 
 ## Mastery check
 
