@@ -1,125 +1,138 @@
 # Module 09: Performance, Observability, and Incident Response
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Module 09: Performance, Observability, and Incident Response"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 A workflow can be correct, portable, and still become painful to trust once runs get
 slow, noisy, or unpredictable.
 
 That is the problem this module addresses.
 
 Module 09 is not about tuning for sport. It is about keeping a workflow reviewable under
-pressure:
+pressure.
 
-- naming where time is actually spent
-- adding evidence surfaces that answer real review questions
-- diagnosing incidents before touching the workflow
-- improving feedback loops without hiding semantic drift
-- leaving behind a route another maintainer can follow
+## What this day must accomplish
+
+By the end of Module 09, you should be able to do five things without sacrificing
+workflow truth:
+
+- separate planning cost, queue delay, storage drag, and tool runtime
+- choose the smallest honest evidence surface for the question in front of you
+- triage a slow or flaky run before editing anything
+- tune one boundary at a time while preserving semantic outputs
+- leave behind a runbook another maintainer can use without oral explanation
+
+## The incident ladder for the whole module
+
+Keep this order in front of you all day:
+
+```mermaid
+flowchart TD
+  cost["name the cost class"] --> evidence["choose the right evidence surface"]
+  evidence --> triage["classify incident before editing"]
+  triage --> tuning["tune one boundary without drift"]
+  tuning --> runbook["leave a reusable incident route"]
+```
+
+If “slow” remains one undifferentiated complaint, the next action will usually be sloppy.
+If tuning changes trusted outputs, it was not tuning.
+
+## The running lab for the whole day
+
+Use one repository story all day instead of several unrelated performance anecdotes:
+
+- one workflow feels slower and noisier than last week
+- one evidence packet must separate planning, execution, and rebuild scope
+- one incident route must classify the problem before touching configuration
+- one bounded optimization must be measured honestly
+- one runbook must let a second learner follow the route safely
+
+Every page should help you answer one concrete incident question.
 
 ## Plan for the day
 
 | Session | What you do | Evidence you keep |
 | --- | --- | --- |
 | baseline | measure planning, queue, storage, and tool-runtime surfaces separately | cost model |
-| repeated measurement | compare distributions rather than one fast or slow run | benchmark table |
-| incident triage | classify one injected slow or flaky behavior before editing | evidence packet |
+| repeated measurement | compare distributions rather than one lucky run | benchmark table |
+| incident triage | classify one slow or flaky symptom before editing | evidence packet |
 | controlled tuning | change one boundary and preserve semantic outputs | before/after proof |
-| runbook rehearsal | hand the incident route to another learner | usability findings |
+| runbook rehearsal | hand the route to another learner and revise it | usability findings |
 | independent practice | complete all ten exercises | incident review record |
 
-Performance claims need a baseline, repeated measurements, and an unchanged semantic
-contract. A single elapsed time cannot tell you which boundary improved.
-
-The capstone corroboration surface for this module is the execution evidence and incident
-review route around it: `logs/`, `benchmarks/`, `publish/v1/provenance.json`,
-`make evidence-summary`, `make tour`, `make verify-report`, and
-`capstone/docs/tour.md`.
-
-## Why this module exists
-
-Many workflow teams eventually hit the same failure pattern:
-
-- a run feels slow, but nobody can say whether the cost is planning, scheduling, storage,
-  or tool runtime
-- logs exist, but they do not answer the question maintainers actually have
-- the first response to a flaky run is to change retries, threads, or grouping
-- performance work quietly changes workflow meaning and gets called optimization
-- the only incident playbook lives in one person's memory
-
-This module repairs those problems by teaching observability and performance as part of
-workflow stewardship rather than as cleanup after the real work.
+The day is successful when you can explain why a run felt wrong, what boundary caused it,
+and what proof shows the repair was honest.
 
 ## Study route
 
 ```mermaid
-flowchart LR
-  overview["Overview"] --> core1["Core 1: workflow cost model"]
-  core1 --> core2["Core 2: evidence surfaces"]
-  core2 --> core3["Core 3: incident triage"]
-  core3 --> core4["Core 4: tuning without drift"]
-  core4 --> core5["Core 5: runbooks and escalation"]
-  core5 --> example["Worked example"]
-  example --> practice["Exercises and answers"]
-  practice --> glossary["Glossary"]
+flowchart TD
+  start["Overview"] --> core1["Workflow Cost Models and Timing Surfaces"]
+  core1 --> core2["Logs, Benchmarks, Summaries, and Provenance"]
+  core2 --> core3["Incident Triage for Slow and Flaky Runs"]
+  core3 --> core4["Performance Tuning without Semantic Drift"]
+  core4 --> core5["Runbooks, Escalation, and Operational Review"]
+  core5 --> example["Worked Example: Investigating a Slow and Noisy Workflow"]
+  example --> practice["Exercises"]
+  practice --> answers["Exercise Answers"]
+  answers --> glossary["Glossary"]
 ```
 
 Read the module in that order the first time.
 
-If the problem is already clear, use this shortcut:
+The route matters:
 
-- open Core 1 when the question is mostly "where is the cost?"
-- open Core 2 when the question is mostly "which artifact should I inspect?"
-- open Core 3 when the question is mostly "what do I do first in an incident?"
-- open Core 4 when the question is mostly "is this optimization honest?"
-- open Core 5 when the question is mostly "how do we make this reviewable for others?"
+- split the cost classes before you inspect rule-local timings
+- choose evidence surfaces before you change policy or workflow code
+- rehearse the runbook only after the incident route already makes sense
 
-## Module map
+## The ten files in this module
 
-| Page | Purpose |
+1. Overview (`index.md`)
+2. [Workflow Cost Models and Timing Surfaces](workflow-cost-models-and-timing-surfaces.md)
+3. [Logs, Benchmarks, Summaries, and Provenance](logs-benchmarks-summaries-and-provenance.md)
+4. [Incident Triage for Slow and Flaky Runs](incident-triage-for-slow-and-flaky-runs.md)
+5. [Performance Tuning without Semantic Drift](performance-tuning-without-semantic-drift.md)
+6. [Runbooks, Escalation, and Operational Review](runbooks-escalation-and-operational-review.md)
+7. [Worked Example: Investigating a Slow and Noisy Workflow](worked-example-investigating-a-slow-and-noisy-workflow.md)
+8. [Exercises](exercises.md)
+9. [Exercise Answers](exercise-answers.md)
+10. [Glossary](glossary.md)
+
+## How to use the file set
+
+| If you need to... | Start here |
 | --- | --- |
-| [Overview](index.md) | explains the module promise and study route |
-| [Workflow Cost Models and Timing Surfaces](workflow-cost-models-and-timing-surfaces.md) | teaches how to separate planning, scheduling, storage, and tool cost |
-| [Logs, Benchmarks, Summaries, and Provenance](logs-benchmarks-summaries-and-provenance.md) | teaches which evidence surface answers which question |
-| [Incident Triage for Slow and Flaky Runs](incident-triage-for-slow-and-flaky-runs.md) | teaches an evidence-first diagnosis ladder |
-| [Performance Tuning without Semantic Drift](performance-tuning-without-semantic-drift.md) | teaches how to improve speed without making the workflow lie |
-| [Runbooks, Escalation, and Operational Review](runbooks-escalation-and-operational-review.md) | teaches how to leave behind a usable operating route |
-| [Worked Example: Investigating a Slow and Noisy Workflow](worked-example-investigating-a-slow-and-noisy-workflow.md) | walks through one realistic incident from symptom to repair |
-| [Exercises](exercises.md) | gives ten mastery exercises |
-| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
-| [Glossary](glossary.md) | keeps the module vocabulary stable |
+| separate planning, scheduling, storage, and tool cost | [Workflow Cost Models and Timing Surfaces](workflow-cost-models-and-timing-surfaces.md) |
+| decide which artifact answers the current question | [Logs, Benchmarks, Summaries, and Provenance](logs-benchmarks-summaries-and-provenance.md) |
+| diagnose a slow or flaky run before editing | [Incident Triage for Slow and Flaky Runs](incident-triage-for-slow-and-flaky-runs.md) |
+| measure one honest optimization | [Performance Tuning without Semantic Drift](performance-tuning-without-semantic-drift.md) |
+| leave behind a route others can follow under pressure | [Runbooks, Escalation, and Operational Review](runbooks-escalation-and-operational-review.md) |
+| see the whole module as one incident investigation | [Worked Example: Investigating a Slow and Noisy Workflow](worked-example-investigating-a-slow-and-noisy-workflow.md) |
+| test your own understanding | [Exercises](exercises.md) |
+| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
+| stabilize the module vocabulary | [Glossary](glossary.md) |
 
-## What should be clear by the end
+## The running question
 
-By the end of this module, you should be able to explain:
+Carry this question through every page:
 
-- how Snakemake planning cost differs from tool runtime and filesystem drag
-- why logs, benchmarks, summaries, and provenance need distinct jobs
-- how to triage a slow or flaky run without editing first
-- which performance changes preserve workflow truth and which ones only hide trouble
-- what belongs in a runbook for local use, CI review, and incident escalation
+> if this run feels slow or wrong today, which evidence surface should I trust first, and what exactly is it proving?
+
+Good Module 09 answers usually mention one or more of these:
+
+- a named cost class rather than a generic slowdown complaint
+- a log, benchmark, summary, or provenance surface chosen for a specific reason
+- an incident route that classifies before it edits
+- an optimization measured against unchanged semantic outputs
+- a runbook another maintainer can use under pressure
+
+## What the module should change in your head
+
+If the day is working, you should feel these transitions:
+
+- “the workflow is slow” stops sounding specific enough
+- logs stop looking interchangeable with benchmarks or summaries
+- the first response to a flaky run stops being retries or thread changes
+- optimization stops sounding respectable when it hides semantic drift
+- an incident note becomes part of reproducibility rather than an afterthought
 
 ## Commands to keep close
 
@@ -134,33 +147,24 @@ make -C capstone evidence-summary
 make -C capstone tour
 ```
 
-The point of that route is not to collect output for its own sake. It is to choose the
-smallest honest artifact that answers the current question.
+They answer different questions:
 
-## Capstone route
+- what the workflow currently plans
+- what the repository believes is stale or fresh
+- which declared surfaces justify rebuilds
+- how the capstone packages planning evidence
+- how execution evidence is summarized
+- how the repository explains itself during review
 
-Use the capstone only after the local module ideas are already legible.
+## Exit standard
 
-Best corroboration surfaces for this module:
+Do not move on until all of these are true:
 
-- `capstone/logs/`
-- `capstone/benchmarks/`
-- `capstone/publish/v1/provenance.json`
-- `capstone/Makefile`
-- `capstone/docs/proof-guide.md`
-- `capstone/docs/tour.md`
+- you can name the dominant cost class for one slowdown report
+- you can justify one evidence surface as the right first place to look
+- you can classify one slow or flaky incident before proposing any edit
+- you can measure one bounded optimization against unchanged semantic outputs
+- you can hand another learner a runbook that reaches the right proof route
+- you have completed all ten exercises and recorded at least one incident route another maintainer can follow
 
-Useful proof route:
-
-```bash
-make -C capstone wf-dryrun
-make -C capstone evidence-summary
-make -C capstone tour
-make -C capstone verify-report
-```
-
-The point of that route is to confirm that workflow evidence stays reviewable before and
-after the workflow runs.
-
-Do not move on until all ten exercises are complete and another learner can follow your
-incident record without an oral explanation.
+When those become ordinary, Module 09 has done its job.

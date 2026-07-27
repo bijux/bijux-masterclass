@@ -1,98 +1,73 @@
 # Exercises
 
+Use these after reading the five core lessons and the worked example. The goal is to make
+evidence-first incident judgment visible through measurements, classifications, and
+runbooks, not through generic performance talk.
 
-<!-- page-maps:start -->
-## Page Maps
+Do them in order. The set is one day-long progression:
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+- Exercises 1-3 establish cost classes and evidence surfaces.
+- Exercises 4-6 practice triage and baseline measurement.
+- Exercises 7-8 collect incident packets and test one honest optimization.
+- Exercises 9-10 revise runbooks and review like a maintainer.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+For every answer, keep three things:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use these exercises to practice evidence-first workflow judgment, not only performance
-vocabulary.
-
-The strongest answers will keep workflow truth visible while diagnosing speed or incident
-problems.
+- the boundary or cost class you are naming
+- the evidence route you actually used
+- one short sentence explaining why the response preserves workflow truth
 
 ## Exercise 1: Name the dominant cost class
 
-A workflow now takes 40 minutes instead of 25.
+Choose a slowdown report and decide which cost class is the strongest lead first.
 
-You collect three observations:
+What to hand in:
 
-- `snakemake -n -p` already feels noticeably slower than before
-- benchmark files for the heavy rules look unchanged
-- the discovered sample list is much larger than last week
-
-Write a short review note that explains:
-
-- which cost class looks dominant
-- which cost classes are not the strongest lead right now
-- what you would inspect next before proposing any fix
+- the slowdown symptom
+- the cost class you suspect first
+- the cost classes that are weaker leads right now
+- the next artifact you inspect before proposing any fix
 
 ## Exercise 2: Choose the right evidence surface
 
-A teammate says:
+Take a claim about slower execution, surprising rebuilds, or noisy logs and choose the
+first evidence surface you would inspect.
 
-> The latest run rebuilt `summary.tsv`, and I think the aligner has become slower.
+What to hand in:
 
-Explain which artifact you would inspect first and why.
+- the claim
+- the first artifact you inspect and why
+- the second artifact you inspect if the first one does not support the claim
+- one artifact that would be the wrong starting point
 
-Then explain which artifact you would inspect second if the first artifact does not support
-the claim.
+## Exercise 3: Triage a flaky context-specific incident
 
-Your answer should distinguish workflow-state evidence from rule-local runtime evidence.
+Choose a run that passes in one context but is slow or flaky in another.
 
-## Exercise 3: Triage a flaky cluster-only incident
+What to hand in:
 
-A workflow passes locally and in CI, but one scheduler-backed profile now fails
-intermittently. The proposed fix is to raise retries and increase `latency-wait`.
-
-Describe:
-
-- why this is not yet a sufficient response
-- which incident class you would test first
-- which two or three evidence surfaces you would consult before approving any policy change
+- the observed symptom
+- the incident class you test first
+- two or three evidence surfaces you inspect before approving any policy change
+- one change you refuse to make without better evidence
 
 ## Exercise 4: Review a suspicious optimization
 
-A pull request claims to "speed up the workflow" by doing all of the following:
+Evaluate an optimization proposal that changes workflow structure, evidence surfaces, or
+declared dependencies in the name of speed.
 
-- removing one declared input from a slow rule because it "rarely matters"
-- deleting benchmark files because they create clutter
-- grouping several tiny QC jobs into one aggregation step
+What to hand in:
 
-Write a short review note that explains:
+- the proposed changes
+- which part may be legitimate tuning
+- which part is semantic or evidence regression
+- the proof you require before accepting the legitimate part
 
-- which change may be a valid tuning move
-- which changes are semantic or evidence regressions
-- what proof you would require before approving the valid part
+## Exercise 5: Draft a minimal runbook entry
 
-## Exercise 5: Draft a runbook entry
+Write a runbook entry for a recurring slowdown or noisy-review problem.
 
-Write a minimal runbook entry for this recurring problem:
-
-> `make tour` is slower than expected, and a reviewer is unsure whether the issue is
-> workflow shape, operating context, or tool runtime.
-
-Your runbook entry should include:
+What to hand in:
 
 - the first command to run
 - the next evidence surfaces to inspect
@@ -102,7 +77,7 @@ Your runbook entry should include:
 ## Exercise 6: Establish a measured baseline
 
 Measure planning time, total execution time, and one heavy rule across at least five
-comparable runs. Record input size, operating context, and software identity.
+comparable runs.
 
 What to hand in:
 
@@ -113,20 +88,20 @@ What to hand in:
 
 ## Exercise 7: Build an incident evidence packet
 
-Inject a slow rule or intermittent failure into a disposable workflow and collect only
-the evidence needed for another maintainer to reproduce and classify it.
+Inject or study one slow or flaky incident and collect only the evidence another
+maintainer needs to reproduce and classify it safely.
 
 What to hand in:
 
-- precise symptom, scope, and first observed time
+- precise symptom, scope, and first-observed time
 - dry-run, summary, relevant log, benchmark, and provenance excerpts
 - current incident classification
 - facts still unknown
 
 ## Exercise 8: Tune one boundary at a time
 
-Choose a justified optimization such as grouping tiny jobs or reusing an environment.
-Measure before and after without changing inputs, target membership, or output semantics.
+Choose one justified optimization such as grouping tiny jobs, reducing needless fan-out,
+or reusing an environment.
 
 What to hand in:
 
@@ -135,10 +110,11 @@ What to hand in:
 - semantic output comparison
 - a decision to keep or revert the change
 
-## Exercise 9: Diagnose a context-specific regression
+## Exercise 9: Diagnose a context-specific regression honestly
 
-Create or study a run that is healthy locally but slow or flaky under a scheduler profile.
-Separate queue delay, launch overhead, filesystem latency, resource pressure, and tool time.
+Study a run that is healthy locally but slow or flaky under a scheduler or CI context.
+Separate queue delay, launch overhead, filesystem latency, resource pressure, and tool
+time.
 
 What to hand in:
 
@@ -149,22 +125,23 @@ What to hand in:
 
 ## Exercise 10: Rehearse and revise a runbook
 
-Give your runbook to someone who did not write it. Ask them to diagnose the incident from
-the recorded state without additional verbal instructions.
+Give your runbook to someone who did not write it and ask them to follow it from the
+recorded incident state without extra verbal help.
 
 What to hand in:
 
 - the original runbook
-- points where the reader stalled or made an unsafe assumption
+- places where the reader stalled or made an unsafe assumption
 - the revised route and escalation criteria
 - evidence that the revised route reaches the correct proof command
 
-## Mastery check
+## Mastery standard for this exercise set
 
-You have a strong grasp of this module if all ten answers consistently keep four ideas
-visible:
+Across all ten answers, Module 09 wants the same habits:
 
-- "slow" must be split into named cost classes
-- evidence surfaces should be chosen by question, not by habit
-- incident response should classify before it edits
-- performance work must preserve workflow meaning and reviewability
+- slow and noisy symptoms are split into named cost classes
+- evidence surfaces are chosen by question, not by habit
+- incidents are classified before edits are proposed
+- performance work preserves workflow meaning and reviewability
+
+If your answer says only "the workflow is slow," keep going.
