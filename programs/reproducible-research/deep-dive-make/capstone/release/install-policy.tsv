@@ -1,0 +1,5 @@
+# archive_path	install_path	mode
+deep-dive-make-capstone/app	usr/local/bin/deep-dive-make-capstone	0755
+deep-dive-make-capstone/bin/dyn1	usr/local/libexec/deep-dive-make-capstone/dyn1	0755
+deep-dive-make-capstone/bin/dyn2	usr/local/libexec/deep-dive-make-capstone/dyn2	0755
+deep-dive-make-capstone/include/dynamic.h	usr/local/include/deep-dive-make-capstone/dynamic.h	0644
