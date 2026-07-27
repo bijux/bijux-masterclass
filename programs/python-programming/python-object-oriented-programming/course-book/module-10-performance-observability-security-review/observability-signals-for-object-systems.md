@@ -26,188 +26,255 @@ flowchart LR
 
 This lesson is about making the system explain itself under pressure.
 
-Observability is not "add more logs."
-It is the discipline of choosing signals that let another maintainer answer:
+The weak version of observability is:
 
-- which workflow is in trouble
-- which boundary is slow or failing
-- what outcome the system believed it had produced
-- what retry, conflict, or lag path is growing
+- add more logs
+- emit a few counters
+- hope traces are useful later
 
-If the signals cannot answer those questions, operators are forced to reverse-engineer
-the codebase during an incident.
+The stronger version is:
+
+- decide which workflow matters
+- decide which boundary can fail, slow, retry, or duplicate
+- choose signals that help another maintainer answer the first real operator questions
+
+If the signals cannot help somebody diagnose Monday-morning trouble without reverse
+engineering the whole codebase, the signal plan is still weak.
 
 ## Keep one workflow visible
 
-Use one capstone path:
+Use one capstone path throughout this lesson:
 
 1. a seat request enters
 2. `WorkshopEnrollment` confirms or waitlists
-3. the repository saves authoritative truth or rejects a stale write
-4. downstream publication, projection, or artifact work begins
-5. later workflows consume the visible result
+3. authoritative state is persisted or rejected under contention
+4. derived projections, notifications, or artifacts publish the visible outcome
+5. later workflows such as certificate issuance consume that visible result
 
-Now ask:
+Now ask one practical question:
 
-What signals would let another maintainer explain this path quickly on Monday, July 27,
-2026 if users reported delay, duplication, or failure?
+- if users report delay, duplication, or missing output, what evidence would help another
+  maintainer explain where the workflow went off course?
 
-That is the real observability question.
+That is the observability question worth answering.
 
-## Signals should follow design boundaries
+## Start from operator questions, not from tools
 
-The strongest signals usually sit at collaboration points the architecture already cares
-about:
+Before choosing a log, metric, or trace, write the operator question.
 
-- command or workflow start and finish
+Good questions:
+
+- is the slowdown happening before or after authoritative persistence?
+- are conflict retries growing during burst registration?
+- are downstream notifications lagging even though seat truth is already saved?
+- are duplicate callbacks being absorbed or creating duplicate visible work?
+
+Weak questions:
+
+- what can we log here?
+- what metric should this service have?
+- should we add tracing?
+
+The stronger questions are better because they tell you:
+
+- what boundary deserves observation
+- what kind of signal would help
+- what action the signal should support
+
+Without that framing, signal design becomes decorative instrumentation.
+
+## Signals should follow architecture boundaries
+
+The most useful signals usually sit where the design already distinguishes
+responsibilities:
+
+- workflow start and finish
 - aggregate acceptance or rejection
-- repository save, conflict, or retry
-- adapter publish, timeout, or failure
-- artifact or notification completion
+- repository save and concurrency conflict
+- projection or notification publication
+- artifact creation or delivery
 
-These are easier to interpret than low-level chatter because they map to the same
-boundary language used in design review.
+These signals are valuable because they match the same vocabulary you use in design and
+code review.
 
-If a signal cannot be tied back to a meaningful boundary, it is harder to use when time
-is short.
+Signals placed at arbitrary internal lines or helper calls often produce noise without
+improving diagnosis. Operators usually need to know which boundary is in trouble before
+they care which helper was hot.
 
-## Different signal types answer different questions
+## Logs, metrics, and traces have different jobs
 
-Keep the roles clear:
+Keep the roles explicit.
 
-- logs explain one event with local context
-- metrics summarize counts, rates, and durations
-- traces connect one workflow across boundaries
+Logs are best when you need:
 
-That means:
+- one event with bounded local context
+- a rejection reason
+- a state transition that needs explanation
 
-- a metric is not a narrative explanation
-- a log is not a latency graph
-- a trace is not a permanent audit store
+Metrics are best when you need:
 
-Mixing their jobs carelessly creates noise and weakens diagnosis.
+- rate
+- duration
+- lag
+- retry or error growth over time
 
-## Correlation turns fragments into one story
+Traces are best when you need:
 
-Cross-boundary systems need identifiers that let operators connect related signals.
+- one end-to-end workflow story
+- timing across several boundaries
+- evidence about where latency or failure accumulates
 
-Useful identifiers might include:
+When you mix those jobs carelessly, you get bad outcomes:
 
-- request or command id
-- workshop id
-- enrollment id
-- issuance id
-- sink identifier
+- logs that try to act like dashboards
+- metrics that are too detailed to summarize anything
+- traces that carry the wrong identifiers and cannot be joined to decisions
 
-Choose them so an operator can move between logs, metrics, and traces without guessing
-which events belong together.
+Use the right tool for the question instead of asking one tool to do all of them.
 
-Correlation is what turns several signals into one debuggable story.
+## Correlation is what makes signals usable
+
+Cross-boundary workflows need stable identifiers so one maintainer can connect fragments
+of evidence.
+
+In the capstone, useful identifiers might include:
+
+- `enrollment_id`
+- `workshop_id`
+- `issuance_id`
+- a bounded sink or workflow name
+
+Choose identifiers that support diagnosis without leaking more than you need.
+
+Correlation turns these scattered observations into one readable story:
+
+- request accepted
+- aggregate decided
+- repository save conflicted twice
+- final persistence succeeded
+- downstream publication timed out
+
+Without correlation, those events may all exist and still be too expensive to reason
+about during an incident.
 
 ## Noise is an operational bug
 
-Too much signal is not neutral.
+Over-instrumentation is not neutral.
 
 Examples of noisy design:
 
-- logging every expected retry as an error
-- dumping large payloads where one bounded field would do
-- publishing many metrics that answer no operator question
-- duplicating the same event at several layers with little extra value
+- logging every expected retry at error level
+- duplicating the same event at several layers without new meaning
+- storing large payload fragments because they "might help later"
+- adding counters that answer no operator question
 
-If the interesting event is buried in signal volume, observability stops clarifying the
-system and starts obscuring it.
+Noise harms operations in at least three ways:
 
-Noise should be reviewed with the same seriousness as missing signals.
+- it hides the signal that matters
+- it increases review surface without increasing clarity
+- it normalizes unsafe or unbounded output
 
-## Sensitive data changes the signal design
+Treat noisy instrumentation as a real defect, not as harmless enthusiasm.
 
-Signals cross trust boundaries too.
+## Sensitive data changes signal design
 
-Review them for:
+Observability crosses trust boundaries too.
 
-- secret exposure
-- personal or sensitive identifiers
-- payload detail that exceeds what diagnosis needs
-- object dumps that reveal internal or replayable state
+The signal plan must ask:
 
-Useful observability is never an excuse to leak data that the runtime was supposed to
+- who can read this output?
+- how long will it live?
+- can it be copied, searched, or replayed later?
+- what diagnosis value do we lose if we redact or omit the risky field?
+
+In practice, this often means:
+
+- keep raw attendee payloads out of logs
+- keep artifact storage locations out of general diagnostics
+- use stable ids instead of personal or replayable detail
+- prefer bounded error categories over large dumps
+
+Useful observability is never an excuse to leak information the runtime was supposed to
 protect.
 
-This is why observability design belongs close to trust-boundary review.
+## Worked capstone signal packet
 
-## A worked capstone signal set
+Suppose operators complain that confirmations are slow and certificate issuance sometimes
+seems delayed.
 
-For the capstone path, an honest first-pass signal set might include:
+A strong first-pass signal packet might include:
 
-- one trace span for the full confirmation workflow
-- one structured log when an enrollment transition is rejected
-- one metric for repository conflict rate
-- one duration metric for artifact or notification completion
-- one bounded log or counter for sink retry or failure pressure
-- one correlation identifier tying together the authoritative write and the downstream
-  visible outcome
+- metric: `enrollment_confirmation_latency_ms`
+- counter: `enrollment_conflict_retries_total`
+- counter: `certificate_issuance_publication_failures_total`
+- trace path: request acceptance -> aggregate decision -> repository save ->
+  visible publication
+- structured log: bounded rejection record for invalid callback or sink refusal
+- correlation identifier: `enrollment_id` or `issuance_id`
 
-This set is useful because each signal answers a different operator question.
+Now attach the operator questions:
 
-## A signal should justify itself by action
+| Signal | Operator question |
+| --- | --- |
+| confirmation latency | where is user-visible slowness growing? |
+| conflict retry count | is contention the main source of delay? |
+| issuance publication failures | is truth saved but visible completion failing? |
+| end-to-end trace | which boundary is stretching or failing in this one workflow? |
+| bounded rejection log | why was this one transition rejected? |
 
-For each signal, ask:
+This packet is strong because every signal supports a decision, not merely output.
 
-- what operator question does this answer?
-- what design boundary does it illuminate?
-- what first action becomes easier because this signal exists?
-
-If the answer is fuzzy, the signal is probably decorative.
-
-A smaller, more actionable set is often stronger than a large unreviewed one.
-
-## Build a small signal packet
+## Build a signal review packet
 
 For each important workflow, keep a short packet with:
 
+- workflow name
 - signal name
-- type: log, metric, or trace
-- correlation identifier used
+- signal type
+- correlation identifier
 - operator question answered
-- one thing deliberately left out because it would be noisy or sensitive
+- one field deliberately left out because it is noisy or sensitive
+- first action the signal supports
 
-That packet keeps observability teachable and reviewable.
+That last line matters. If a signal does not make a first action clearer, its value is
+probably lower than it looks.
 
 ## Common failure modes
 
-- placing signals at arbitrary code points instead of meaningful boundaries
-- using one signal type for every question
-- omitting correlation identifiers on cross-boundary workflows
-- flooding the system with low-value logs or metrics
-- logging sensitive data because it was convenient during debugging
+- choosing instrumentation before naming the operator question
+- placing signals at arbitrary implementation points instead of architecture boundaries
+- omitting stable identifiers for cross-boundary workflows
+- confusing logs, metrics, and traces by making one carry the job of another
+- leaking payload detail because it was easier than designing a bounded diagnostic shape
 
 ## Observability review card
 
-Use this short card when reviewing a signal plan:
+Use this review card for each workflow:
 
-| Question | What you want to see |
+| Question | What a strong answer sounds like |
 | --- | --- |
-| do the main signals align with meaningful workflow and boundary events? | yes |
-| can operators connect related events through correlation identifiers? | yes |
-| is each signal type answering the right kind of question? | yes |
-| have noisy or sensitive signals been reduced, removed, or redesigned? | yes |
+| what operator question is this signal answering? | "is persistence or downstream publication causing the delay?" |
+| what boundary does it illuminate? | "repository conflict handling" or "artifact publication" |
+| how is this signal correlated to the rest of the workflow? | "with `enrollment_id` across logs and trace spans" |
+| what detail is intentionally omitted? | "raw attendee payload and storage keys" |
+| what first action does it support? | "inspect conflict pressure before redesigning domain logic" |
 
 ## Capstone connection
 
-Use this page to ask:
+Use this page to decide all of these:
 
-- which capstone workflow needs one trace or correlation path first
-- which boundary deserves a duration or failure-rate metric
-- which current or proposed log would create more noise or leakage than clarity
+- which one capstone workflow deserves the first full trace path
+- which boundary needs a lag or failure metric first
+- which current or proposed log is too noisy or too revealing to keep
+- which identifier gives enough correlation without widening exposure
 
-That is where observability becomes part of the architecture rather than a logging
-afterthought.
+That is when observability becomes part of the architecture instead of an afterthought.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain one difference between a useful log, metric, and trace
-- identify one capstone workflow that needs better correlation
-- identify one noisy or unsafe signal that should be removed, reduced, or redesigned
+- start signal design from an operator question instead of a tool choice
+- explain one difference in the jobs of logs, metrics, and traces
+- propose one capstone signal packet that would make the workflow easier to diagnose
+  under pressure
