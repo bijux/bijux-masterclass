@@ -18,154 +18,156 @@ graph LR
 
 ```mermaid
 flowchart LR
-  role["assign the right owner"] --> shape["compare composition and inheritance"]
+  owner["choose the least surprising owner"] --> shape["compare composition and inheritance"]
   shape --> boundary["separate domain, application, and infrastructure"]
-  boundary --> assemble["control construction and object graphs"]
-  assemble --> govern["justify the collaboration boundary"]
+  boundary --> assembly["move construction to the edge"]
+  assembly --> review["defend the collaboration map"]
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These answers are model reasoning, not a fixed script. The most important question is not
+"did I name the same role?" It is "did I make the placement decision and the rejected
+alternatives visible enough that another maintainer could challenge them?"
 
-## How to use the answer page well
+## How to use this page well
 
-Do not read the model answer first and then reduce the module to "put business logic in
-the domain layer."
+Compare your own packet against this answer page using four checks:
 
-A better rhythm is:
+- did I name the chosen owner and the most tempting wrong owner?
+- did I explain why the wrong owner is tempting?
+- did I make the boundary effect visible, not only the pattern name?
+- did I leave behind a map another engineer could review?
 
-1. finish the exercise with your own role packet
-2. name the behavior, best owner, and tempting wrong owner
-3. compare your reasoning with the model answer
-4. revise anywhere your answer still hides coupling behind generic service or layer names
+If your answer reaches the same verdict but does not survive challenge, it is still too weak.
 
-What matters is whether the reasoning makes ownership and collaboration boundaries
-explicit.
+## What strong Module 02 answers have in common
 
-Strong Module 02 answers usually do five things:
+Across the whole packet, strong answers usually show all of these:
 
-- they choose the least surprising owner for each behavior
-- they explain cohesion problems in terms of responsibility pressure
-- they treat composition as the default and justify exceptions carefully
-- they keep layers tied to ownership instead of folder naming
-- they isolate construction in a visible composition root
+- behavior placed in the least surprising owner
+- cohesion discussed as responsibility pressure, not as line count
+- composition treated as the default and inheritance justified case by case
+- interface choices tied to collaboration pressure rather than preference
+- layers treated as ownership boundaries, not folder names
+- construction isolated at a visible composition edge
 
-The strongest self-study packets also leave behind six concrete artifacts:
+If your packet sounds like architecture slogans without contested decisions, the module
+has not landed deeply enough yet.
 
-- one owner-selection note
-- one cohesion review
-- one composition-versus-inheritance decision
-- one layering map
-- one composition-root sketch
-- one full collaboration review
-
-If your answers rely only on "this follows clean architecture," the reasoning is still too
-thin.
-
-## Answer 1: Choose the right owner
+## Answer 1: Choose the least surprising owner
 
 A strong answer names:
 
 - the behavior under review
-- the object or role that is the least surprising owner
-- a nearby wrong owner that tempts people because it is already "in the area"
+- the chosen owner
+- the nearby wrong owner
+- the confusion created by the wrong placement
 
-For example, a policy decision usually belongs in a policy object rather than in a runtime
-facade, because the runtime facade should coordinate rather than absorb domain rules.
+Good answer pattern:
+
+- "the policy object owns the rule because the decision varies by evaluation strategy, while the runtime facade should only coordinate execution after the rule is chosen"
+
+Weak answer pattern:
+
+- "put business logic in the domain layer"
+
+The second sentence is not false, but it is too generic to guide real design work.
 
 ## Answer 2: Review cohesion and object smells
 
-The key question is not whether an object is long, but whether it owns one coherent kind
-of decision pressure.
+The key question is not whether an object is long. The key question is whether it owns
+one coherent kind of pressure.
 
 Strong smell signals include:
 
 - an entity that also formats output, fetches data, and applies policy
-- a service that grows because no one wants to decide a better owner
-- utility modules collecting behavior that actually belongs to meaningful objects
+- a service that grows because no one will decide a better owner
+- utility modules that collect behavior belonging to meaningful objects
 
-A strong redesign note names one boundary to split and one test that proves the split
-clarified behavior.
+A strong redesign note names one boundary to split and one test or review question that
+would prove the split improved cohesion.
 
-## Answer 3: Replace raw primitives with semantic types
+## Answer 3: Replace raw primitives with semantic roles
 
-Good semantic types:
+Good semantic-role answers make domain meaning harder to ignore. They often:
 
-- make domain meaning explicit
-- reject invalid combinations earlier
-- reduce argument confusion and unit mistakes
+- remove unit confusion
+- make wrong argument order harder to write
+- stop hidden meaning from leaking through raw dictionaries or strings
 
-Over-engineering begins when the type adds ceremony without protecting meaning, invariants,
-or review clarity.
+The answer is strongest when it also says what would become over-engineering. Not every
+primitive needs a type; the type must earn its existence by reducing ambiguity.
 
 ## Answer 4: Compare composition and inheritance honestly
 
 Composition is safer by default because:
 
-- it keeps reuse local and explicit
-- it avoids surprising base-class coupling
-- it allows behavior substitution without committing to one fragile hierarchy
+- reuse stays explicit
+- coupling stays local
+- change pressure does not spread silently across a base class
 
-Small inheritance remains acceptable when:
+Small inheritance is still acceptable when:
 
-- the hierarchy expresses real semantic specialization
+- the specialization is semantically real
 - the call chain is understandable
-- the base class contract is stable and reviewable
+- the base contract is narrow and stable
 
-Fragile-base-class risk appears when:
-
-- subclasses depend on hidden sequencing, partial overrides, or incidental base behavior
+Fragile-base-class risk appears when subclasses depend on hidden sequencing, incidental
+state, or partial overrides no one can explain cleanly.
 
 ## Answer 5: Review interfaces, ABCs, and protocols
 
 Strong answer pattern:
 
-- use duck typing when the collaboration pressure is light and explicit nominal control is
-  unnecessary
-- use an ABC when shared behavior and explicit inheritance contract matter
-- use a protocol when structural compatibility is what the design really wants
+- use duck typing when collaboration is light and explicit nominal control adds little
+- use an ABC when shared behavior and explicit inheritance contract really matter
+- use a protocol when structural compatibility is what the design wants
 
-What matters is not which term sounds more advanced, but which one matches the real
-collaboration constraint without overspecifying the design.
+The choice is correct only when it answers real collaboration pressure without making the
+boundary either too loose to review or too rigid to evolve.
 
 ## Answer 6: Draw a layered boundary
 
-A strong map shows:
+A strong layer map shows:
 
-- domain owns core meaning and invariants
-- application owns use-case orchestration
-- infrastructure owns external systems and persistence mechanics
-- composition root owns object assembly
+- domain owning core meaning and invariants
+- application owning use-case sequencing
+- infrastructure owning external systems and persistence mechanics
+- composition root owning object assembly
 
-Each layer should also name one thing it must not own, because boundaries become clearer
-when exclusion is explicit.
+The best maps also say what each layer must not own. Exclusion sharpens boundary
+reasoning faster than inclusion alone.
 
 ## Answer 7: Design a composition root
 
-A composition root is the one place where the object graph is assembled deliberately.
+A composition root matters because:
 
-Why it matters:
+- object assembly becomes visible
+- dependencies remain legible
+- lower layers stop constructing collaborators ad hoc
 
-- the rest of the system can stay focused on behavior rather than assembly
-- dependencies remain visible
-- construction policy does not leak across modules
+A strong answer names what is injected, what stays configurable at the edge, and why the
+rest of the system should not assemble the graph itself.
 
-A strong answer names injected collaborators and explains why lower layers should not
-construct them ad hoc.
+Weak answer pattern:
+
+- "dependency injection improves testability"
+
+Better answer pattern:
+
+- "the composition root keeps construction policy from leaking into the domain and makes outer substitutions visible in one place"
 
 ## Answer 8: Repair a service-versus-entity mistake
 
-The repair usually depends on what kind of decision the behavior really is:
+The repair depends on what kind of decision the behavior really is:
 
 - entity if it depends on owned state and invariants
 - policy if it is a replaceable rule
-- application service if it coordinates a use case
+- application service if it sequences a use case
 - adapter if it translates to an external system
 
-What goes wrong with a broad service layer:
-
-- it becomes a second god object that owns behavior simply because no one chose a better
-  place
+The danger of a broad service layer is that it becomes the place where behavior goes
+when ownership was never actually decided.
 
 ## Answer 9: Review a full collaboration surface
 
@@ -175,29 +177,38 @@ A strong subsystem review names:
 - how data and decisions cross boundaries
 - where the design is stable
 - where one object or layer is still doing too much
+- which next refactor would buy clarity rather than ceremony
 
-The best closing sentence sounds like an architecture review finding, not like a pattern
-catalog entry.
+The best closing sentence sounds like a real architecture finding, not like a pattern catalog.
 
-## Answer 10: Produce a role-and-layer decision packet
+## Answer 10: Produce the full owner packet
 
-The packet should let another maintainer challenge a placement decision directly:
+The packet should let another maintainer challenge the design directly:
 
 - why this owner
 - why not the nearby one
-- what evidence proves the boundary works
+- what layer each concern belongs to
+- where the graph is assembled
+- what proof would expose boundary drift first
 
-If another learner cannot challenge the packet meaningfully, the explanation is probably
-too generic to be useful.
+If another reader cannot meaningfully disagree with the packet because it is too vague,
+the packet is not yet useful.
 
-## Self-check
+## What a strong packet sounds like overall
 
-If your answers consistently explain:
+A strong final packet usually sounds like this:
 
-- why one owner is the least surprising place for the behavior
-- what cohesion failure you are preventing
-- when inheritance is justified instead of merely convenient
-- how layers protect ownership boundaries
-- why the composition root keeps construction from leaking
+> This behavior belongs in the policy object because the rule itself varies while the
+> application service only sequences the workflow. Composition keeps reuse local. The
+> domain owns meaning, the application layer owns orchestration, infrastructure owns
+> external translation, and the composition root owns assembly.
 
-then you are using Module 02 correctly.
+That is the level of explicitness a missed-class learner should be aiming for.
+
+## Exit check
+
+Leave this answer page only when you can say:
+
+> My answers now survive challenge: I can defend the chosen owner, reject the nearby
+> wrong owner, explain the layer boundary, and say where construction belongs without
+> hiding behind pattern vocabulary.
