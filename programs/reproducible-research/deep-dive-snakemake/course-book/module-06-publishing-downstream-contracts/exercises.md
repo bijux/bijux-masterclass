@@ -70,6 +70,34 @@ module06-lab/
 That makes it easier to prove which files are public, which checks belong to integrity,
 and which notes belong to compatibility review.
 
+Build one small downstream-contract review packet as you go:
+
+- one artifact-role table classifying internal, diagnostic, human-facing, and
+  machine-facing surfaces
+- one public-tree sketch for the current versioned bundle
+- one manifest and verification transcript
+- one consumer test transcript that uses only the bundle
+- one compatibility note for an additive or breaking change
+- one maintainer-style review note ordered by downstream trust impact
+
+If those six artifacts are missing, the day usually turns into "files moved into
+`publish/`" instead of "a contract became reviewable."
+
+```mermaid
+flowchart LR
+  roles["classify artifact roles"]
+  boundary["draw the smallest honest public boundary"]
+  integrity["add integrity surfaces"]
+  consumer["prove a consumer can use only the bundle"]
+  compatibility["classify change from the consumer view"]
+  review["review publish drift in trust order"]
+
+  roles --> boundary --> integrity --> consumer --> compatibility --> review
+```
+
+Use that route on purpose. It keeps the day centered on downstream trust rather than on
+producer convenience.
+
 ## Exercise 1: Classify the current outputs
 
 Take a workflow that produces internal results, logs, reports, and one or more structured
@@ -101,6 +129,7 @@ What to hand in:
 - the rules that own publication
 - one sentence for each included file explaining its job
 - one sentence for each excluded file explaining why it stays internal
+- one short sentence saying which downstream user the bundle is actually for
 
 Study note:
 The goal is not to publish many files. The goal is to publish the smallest honest
@@ -133,6 +162,7 @@ What to hand in:
 - the ordering rule for entries
 - one successful verification transcript
 - one reason absolute paths do not belong in the contract
+- one sentence explaining why the manifest proves identity but not scientific meaning
 
 Study note:
 If your manifest cannot travel with the bundle to another machine, it is not yet a good
@@ -165,10 +195,24 @@ What to hand in:
 - the schema or validation route it relies on
 - a successful run against the bundle
 - one producer detail the consumer intentionally does not know
+- one sentence explaining why reading `results/` would weaken the contract
 
 Study note:
 This is the first exercise where the public contract has to prove it is real from the
 outside.
+
+## Midday self-check
+
+Before you move into corruption, compatibility, and migration, make sure your packet can
+already answer all of these:
+
+- which outputs are internal workflow state and which outputs are part of the public promise
+- which machine-facing artifact is authoritative for consumers
+- which human-facing artifact is for inspection rather than programmatic use
+- which artifact proves inventory and identity without pretending to prove semantic meaning
+
+If you cannot answer those four questions cleanly, return to the earlier exercises and
+make the contract packet more explicit before moving on.
 
 ## Exercise 7: Corrupt the bundle and detect it
 
@@ -196,6 +240,7 @@ What to hand in:
 - the consumer outcome
 - your compatibility classification
 - whether the fix belongs in the current version or in a new public version
+- one sentence written from the surviving consumer’s point of view, not the producer’s
 
 Study note:
 Do not classify from the author's perspective. Classify from the surviving consumer's
@@ -231,6 +276,16 @@ What to hand in:
 Study note:
 Treat this as a downstream-maintainer review, not as a celebration that the workflow has
 many outputs.
+
+## What weak completion looks like
+
+Do not call the day complete if your answers do any of these:
+
+- use `publish/` as proof that a contract exists without naming the consumer surface
+- treat a report as sufficient for machine consumption
+- use provenance as if it replaces the manifest or the file API
+- classify a change from the producer’s convenience instead of the consumer’s survival
+- review a publish diff without ordering findings by downstream trust impact
 
 ## Mastery standard for this exercise set
 

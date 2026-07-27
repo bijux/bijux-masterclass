@@ -18,6 +18,18 @@ A stronger rhythm is:
 
 The target is not identical wording. The target is durable downstream reasoning.
 
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one artifact-role table
+- one public-tree sketch
+- one manifest verification transcript
+- one consumer test transcript
+- one compatibility note
+- one downstream-review note
+
+If your answers rely only on the fact that files now sit under `publish/`, the reasoning
+is still too thin.
+
 ## Exercise 1: Classify the current outputs
 
 What should remain internal:
@@ -58,6 +70,11 @@ surfaces internal. Each included file should have a one-sentence role explanatio
 signal is not how many files move; it is whether a downstream user can rely on the public
 bundle without learning the internal workflow tree.
 
+The missing but important sentence is usually this one:
+
+> This bundle is for a downstream reader or program that needs the published summary,
+> report, and integrity surfaces, not the producer’s intermediate workflow state.
+
 Weak answers celebrate a larger publish tree without proving why every added file belongs
 to the contract.
 
@@ -92,6 +109,11 @@ Example answer shape:
 - explanation:
   - "relative paths keep the contract portable; absolute paths would change when the
     bundle moves even if the bundle meaning does not"
+
+The key explanatory sentence is:
+
+> The manifest proves that the inventoried bytes are the same bundle; it does not prove
+> that the bundle is scientifically correct or semantically compatible with every consumer.
 
 ## Exercise 5: Add provenance without confusing its role
 
@@ -128,6 +150,11 @@ Why this is strong:
 - it proves the bundle is self-contained enough for downstream use
 - it forces the machine-facing surface to behave like a real API
 
+The deliberate boundary sentence is:
+
+> Reading `results/` would weaken the contract because it asks the consumer to depend on
+> producer-only workflow layout that the public bundle was meant to hide.
+
 ## Exercise 7: Corrupt the bundle and detect it
 
 The failed verification should identify the changed path and report a checksum mismatch or
@@ -154,6 +181,11 @@ Why:
 
 An additive field can preserve the old contract if existing consumers still work. Path
 changes and field removals often alter the public promise directly.
+
+The strongest answers also write one sentence from the consumer’s point of view, such as:
+
+> My existing parser still succeeds without modification, so this additive field is
+> compatible within `v1`; a renamed path would not be.
 
 Weak answers classify compatibility from the producer's convenience instead of from the
 surviving consumer's experience.
@@ -182,6 +214,13 @@ that proves the repair, such as rerunning the bundle verifier, rerunning the con
 test, or diffing the published role table. One appropriate outcome is to say a change
 should be versioned, postponed, or removed rather than merged under the current contract.
 
+A useful review order often looks like this:
+
+1. check whether the public artifact roles still tell the truth
+2. verify that the consumer still reads only documented bundle surfaces
+3. inspect whether manifest and provenance still match their intended jobs
+4. classify whether any changed path or field remains compatible inside the current version
+
 Weak reviews start with low-value style notes before naming contract breakage or
 verification gaps.
 
@@ -195,3 +234,10 @@ If your answers consistently explain:
 - what evidence supports downstream trust
 
 then you are using the module correctly.
+
+Weak answer pattern:
+
+- "the bundle is better now because it has more files and more metadata"
+
+That sentence skips the consumer surface, the artifact roles, and the compatibility
+question all at once. If your answers still sound like that, keep revising.
