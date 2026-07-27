@@ -85,7 +85,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit environment-contract-selftest clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -185,6 +185,7 @@ help:
 >     '  semantic-fault-audit prove state, edge, and rule-selection semantics' \
 >     '  semantic-fault-selftest reject dishonest semantic-audit evidence' \
 >     '  environment-contract-audit prove non-file, recursion, and tool contracts' \
+>     '  environment-contract-selftest reject dishonest environment evidence' \
 >     '  profile-audit     build the execution-profile review bundle' \
 >     '  confirm           alias for hardened with shared catalog naming' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
@@ -459,6 +460,9 @@ environment-contract-audit:
 >       --output "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/manifest.json"
 >     @echo "PASS: wrote environment contract audit to $(ENVIRONMENT_CONTRACT_AUDIT_DIR)"
 
+environment-contract-selftest:
+>     $(PYTHON) -m unittest $(TST_DIR)/test_environment_contract_audit.py
+
 profile-audit:
 >     rm -rf "$(PROFILE_AUDIT_DIR)"
 >     mkdir -p "$(PROFILE_AUDIT_DIR)/mk"
@@ -613,7 +617,7 @@ selftest-report:
 verify-report: selftest-report
 >     @echo "PASS: verify-report completed via $(SELFTEST_REPORT_DIR_ABS)"
 
-proof: walkthrough selftest-report contract-audit incident-audit incremental-fault-audit semantic-fault-audit profile-audit
+proof: walkthrough selftest-report contract-audit incident-audit incremental-fault-audit semantic-fault-audit environment-contract-audit profile-audit
 >     @printf '%s\n' \
 >       'PASS: wrote learner-facing proof bundles:' \
 >       "  walkthrough: $(WALKTHROUGH_DIR)" \
@@ -622,6 +626,7 @@ proof: walkthrough selftest-report contract-audit incident-audit incremental-fau
 >       "  incident audit: $(INCIDENT_AUDIT_DIR)" \
 >       "  incremental fault audit: $(INCREMENTAL_FAULT_AUDIT_DIR)" \
 >       "  semantic fault audit: $(SEMANTIC_FAULT_AUDIT_DIR)" \
+>       "  environment contract audit: $(ENVIRONMENT_CONTRACT_AUDIT_DIR)" \
 >       "  profile audit: $(PROFILE_AUDIT_DIR)"
 
 # ---- quarantined rule-generation demo (optional) ----
@@ -720,7 +725,7 @@ trace-report:
 >       --output "$(TRACE_EVIDENCE_DIR)/manifest.json"
 
 # ---- hardened build verification ----
-hardened: selftest selftest-harness-tests incremental-fault-audit semantic-fault-audit semantic-fault-selftest discovery-audit attest test release-check
+hardened: selftest selftest-harness-tests incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit environment-contract-selftest discovery-audit attest test release-check
 >     @$(MAKE) -q all || { echo "FAIL: non-convergent" >&2; exit 1; }
 >     @echo "PASS: hardened invariants"
 
