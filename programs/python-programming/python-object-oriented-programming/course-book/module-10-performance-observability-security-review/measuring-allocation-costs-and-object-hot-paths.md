@@ -24,157 +24,256 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+Read the first diagram as placement: this page belongs to the final review module, where
+performance claims must be defended with evidence instead of style preferences. Read the
+second diagram as method: identify one user-facing workflow, inspect where objects are
+created inside it, measure the cost, and only then discuss redesign.
 
 ## Why this lesson matters
 
-Performance arguments become dangerous when they are detached from evidence.
+Object-oriented systems create many short-lived values:
 
-Students often say:
+- request models
+- domain entities
+- snapshots
+- view models
+- serialization payloads
+- error wrappers
 
-- this object model must be too allocation-heavy
-- these wrappers look expensive
-- this copy probably hurts throughput
+That is not a defect. It is often the price of clear boundaries.
 
-Sometimes they are right. Often they are optimizing what feels expensive instead of what
-the system actually does a lot.
+The real question is narrower and more demanding:
 
-Measurement matters because operational hardening should begin with observed pressure,
-not aesthetic suspicion.
+- where does object creation become expensive enough, frequent enough, and visible enough
+  that it harms a workflow people actually care about?
 
-## A hot path is about repetition and cost together
+Many weak performance conversations fail because they start with a belief such as:
 
-Most allocations in a program are harmless because they happen rarely or outside
-latency-sensitive work.
+- too many dataclasses must be the problem
+- copying must be slow
+- wrapping values must be wasteful
 
-A path becomes interesting when several conditions meet:
+Those claims are architecture-shaped guesses. This lesson teaches you how to turn them
+into reviewable evidence.
 
-- it runs often
-- it sits inside a workflow users feel
-- it allocates or copies large or repeated structures
-- it adds enough overhead to matter compared with surrounding work
+## Keep one workflow visible
 
-That is why one elegant object wrapper is not automatically a problem, while one
-repeated wrapper in a tight loop might be.
+Never begin allocation analysis with a type in isolation. Begin with a workflow.
 
-## Allocation cost is a design signal, not a moral failure
+In the capstone, a useful target might be:
 
-Extra objects can be worth the cost when they buy:
+- operator opens a filtered incident review report
+- the application loads incidents
+- domain objects are normalized
+- report rows and summary objects are built
+- the result is serialized for output
 
-- clarity
-- safer ownership
-- easier testing
-- better boundaries
+Now you have something a learner can reason about:
 
-The right question is not:
+- who feels the slowness
+- where repetition may happen
+- which objects are probably short-lived
+- what correctness rules must survive any optimization
 
-- how do we eliminate object creation?
+Without that workflow, "allocation cost" becomes a vague complaint about abstraction.
 
-It is:
+## A hot path means repetition plus visibility
 
-- where is object creation now materially harming a real workflow, and what semantic
-  discipline must survive any change?
+One allocation is almost never interesting.
 
-This keeps performance work tied to design tradeoffs rather than to anti-allocation
-folklore.
+A path becomes hot when three things meet:
 
-## Measure representative workflows, not isolated trivia
+1. It runs many times in one workflow or across many requests.
+2. The workflow is visible to users, operators, or system throughput.
+3. The work done there is meaningful compared with the rest of the path.
 
-A microbenchmark can help answer a narrow question, but many real costs appear only when
-the full workflow runs:
+That means:
 
-- repository loads
-- decoding or serialization
-- projections or view-building
-- repeated transitions across boundaries
+- a large object built once during startup may not matter
+- a small wrapper built hundreds of thousands of times in a report loop might matter a lot
+- an elegant conversion inside a cold admin command may be fine forever
 
-If the production latency is dominated by boundary work, proving that one helper
-allocates less may not matter.
+Hotness is not about whether code looks busy. Hotness is about repeated cost in a
+pressure-bearing path.
 
-That is why hot-path measurement should usually start from a representative scenario and
-then zoom inward when needed.
+## Measure object churn, not only elapsed time
 
-## Separate local object cost from workflow cost
+Elapsed time answers one question:
 
-Two useful questions are often being mixed together:
+- how long did the workflow take?
 
-1. Is this specific type or conversion allocating more than expected?
-2. Does that allocation materially affect the whole workflow under realistic load?
+Allocation analysis answers a different question:
 
-You need both answers eventually, but not at the same time.
+- what kinds of objects are being created repeatedly, and how much churn do they create?
 
-Start by finding out whether the workflow is slow enough, frequent enough, or expensive
-enough to justify deeper object-level analysis. Then narrow the measurement target.
+You usually need both views.
 
-## Preserve semantics while measuring
+Use elapsed time to decide whether the workflow deserves attention.
+Use allocation evidence to explain where the pressure comes from.
 
-Every performance discussion in this course should keep one design guardrail visible:
+That distinction matters because a path may be:
 
-- what semantic behavior must not change?
+- slow because of I/O, not object churn
+- memory-heavy because of repeated transient projections, even when CPU time looks modest
+- allocation-heavy but operationally irrelevant because it runs rarely
 
-For example:
+Do not confuse "many objects were created" with "this is our problem."
 
-- freshness rules must stay honest
-- ordering guarantees must stay the same
-- object authority must not move casually across boundaries
+## Keep semantic contracts visible while measuring
 
-Without that guardrail, teams sometimes "optimize" by removing the very structure that
-made the system correct or reviewable.
+Performance work becomes dangerous when it strips away the very structures that keep the
+system honest.
 
-## A worked example
+Before measuring a hot path, name the truths that must survive:
 
-Suppose the capstone repeatedly:
+- incident ordering must remain stable
+- freshness rules must stay explicit
+- permission-filtered fields must not leak
+- aggregate invariants must remain enforced in the domain layer
 
-- loads incidents
-- builds transient report shapes
-- serializes summaries
+This protects you from fake wins such as:
 
-If operators report slow review output, a good first measurement route is:
+- skipping normalization that used to guarantee consistency
+- reusing mutable objects across boundaries that should stay isolated
+- caching stale projections without documenting staleness rules
 
-1. run the whole reporting workflow with representative data
-2. identify which step dominates time or allocation
-3. inspect whether transient object creation is concentrated in one hot projection path
-4. only then ask whether fewer copies or different boundaries would help
+The right optimization keeps the truth and removes only the unnecessary cost.
 
-That is much stronger than declaring, up front, that "object orientation is probably too
-slow here."
+## A practical measurement route
 
-## Common mistakes
+Use this route when you suspect object churn in an OOP workflow.
 
-- optimizing a type because it looks allocation-heavy without checking whether the path is hot
-- measuring one helper in isolation while the real cost lives at a boundary
-- treating all object creation as a problem instead of a tradeoff
-- changing semantics such as freshness or ownership while claiming to optimize only performance
-- stopping at one timing number without understanding what part of the workflow it represents
+1. Name the user-facing workflow.
+2. Capture representative input size.
+3. Measure whole-workflow duration first.
+4. Identify the stage that repeats most heavily.
+5. Inspect where transient objects are built inside that stage.
+6. Count or sample allocations with a tool that fits the question.
+7. Propose the smallest design change that could remove waste without weakening meaning.
+8. Re-run the same workflow under the same conditions.
 
-## Review checklist
+The order matters. If you jump straight to step 5, you are already optimizing before you
+know whether the path deserves that attention.
 
-| Question | Good sign |
+## Worked capstone example
+
+Assume operators say the incident review report feels slow for large data sets.
+
+A disciplined investigation might look like this:
+
+1. Run the full report generation against representative incident volume.
+2. Confirm that report generation, not repository latency, dominates the workflow.
+3. Inspect the report-building stage and find that each incident becomes:
+   - a domain object
+   - a policy-filtered presentation object
+   - a summary row object
+   - a serialized dictionary
+4. Measure allocation churn and discover that the summary row object is rebuilt twice for
+   two adjacent export steps.
+5. Check the semantic contract:
+   - the summary row is immutable
+   - field filtering must remain explicit
+   - ordering must remain stable
+6. Change the workflow so the summary row is built once and consumed by both export steps.
+7. Re-run the same workload and compare time and allocation evidence.
+
+This is a real optimization candidate because:
+
+- the path is user-visible
+- the churn is repeated
+- the waste is specific
+- the semantic contract remains intact
+
+## Local object cost versus architectural cost
+
+Sometimes the measured problem is not the object itself. It is the workflow shape around
+it.
+
+Compare these two diagnoses:
+
+| Observation | Weak diagnosis | Better diagnosis |
+| --- | --- | --- |
+| many row objects are created | row objects are bad | projection is repeated across two export branches |
+| many permission wrappers appear | wrappers are overhead | permission filtering is happening too late and too often |
+| many serialization payloads exist | dict conversion is slow | the system serializes the same logical report for multiple sinks |
+
+This is the architectural move you must learn:
+
+- do not blame the nearest object
+- explain why the workflow keeps needing that object
+
+Good optimization often comes from changing repetition boundaries, not from deleting
+abstractions blindly.
+
+## When extra allocations are worth paying for
+
+Some allocations should remain even after careful measurement.
+
+Keep them when they buy something important:
+
+- clearer ownership
+- immutable handoff across layers
+- stronger testability
+- easier reasoning about permissions, ordering, or freshness
+
+If removing the allocation would make the design harder to review, easier to misuse, or
+more mutation-prone, the cost may be justified.
+
+Performance review is not a contest to create the fewest objects. It is a judgment about
+whether each repeated object still earns its cost on a hot path.
+
+## Common failure modes
+
+- declaring a hot path without proving repetition
+- measuring a tiny helper while ignoring the workflow that calls it
+- treating all object creation as suspicious
+- removing isolation boundaries to reduce copies
+- comparing before and after runs under different workloads
+- presenting one timing number without explaining what stage it represents
+
+## Build an allocation evidence packet
+
+When you present a performance claim, package it so another engineer can review it.
+
+Include:
+
+- the named workflow
+- representative input size
+- the semantic contracts that must survive
+- before measurement
+- the stage where churn concentrates
+- the proposed change
+- after measurement
+- what remained unchanged in behavior
+
+This turns performance discussion into engineering review instead of folklore.
+
+## Allocation review card
+
+| Review question | What a strong answer sounds like |
 | --- | --- |
-| is the claimed hot path tied to a representative workload? | yes |
-| do you know whether the cost is local or workflow-wide? | yes |
-| is the measured cost large enough to justify design change? | yes |
-| is the semantic contract that must survive the optimization stated clearly? | yes |
+| which workflow is under pressure? | "large incident review report generation" |
+| why is this path hot? | "it runs per incident across operator-facing report generation" |
+| what objects are repeated? | "summary rows and export payloads for the same logical report" |
+| what contract must survive? | "stable ordering and explicit permission-filtered fields" |
+| what changed? | "duplicate projection step removed, semantics unchanged" |
 
 ## Capstone connection
 
-Use the capstone to ask:
+Use this page to inspect one capstone workflow and answer all of these:
 
-- which workflow feels operationally expensive enough to measure first?
-- where are transient objects or copies likely clustered inside that workflow?
-- what semantic rule must remain intact even if the implementation becomes leaner?
+- where does repeated object creation actually cluster?
+- which of those objects are paying for real clarity or safety?
+- which ones exist only because the workflow repeats work unnecessarily?
+- what proof would show that a redesign improved cost without weakening meaning?
 
-This is the first discipline of the final module: measure pressure honestly before
-changing the design.
+If you cannot answer those questions yet, you are not ready to optimize the capstone.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain what makes a path hot in operational rather than purely stylistic terms
-- identify one capstone workflow that deserves representative measurement
-- state one semantic contract that an optimization on that workflow must not change
+- define a hot path in terms of repeated visible cost rather than stylistic suspicion
+- distinguish whole-workflow timing from allocation churn evidence
+- explain one capstone optimization candidate without weakening the semantic contract it
+  depends on
