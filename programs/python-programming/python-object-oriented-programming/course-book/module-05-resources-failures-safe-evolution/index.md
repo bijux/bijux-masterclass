@@ -116,9 +116,14 @@ while retries, cleanup, publication, and rollback stay reviewable at the surroun
 
 ## Exercises
 
-- Pick one operation and explain who owns cleanup, who owns retry policy, and which failures should remain visible to callers.
-- Review one public surface and state which modules are contract and which modules should remain implementation detail.
-- Describe one feature addition that should extend the existing model and one that would be a bypass around current invariants.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete survivability review route:
+resource ownership, unit-of-work failure boundaries, retry discipline, propagation,
+public surface, and compatibility-safe extension.
 
 ## Capstone connection
 
