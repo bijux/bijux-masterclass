@@ -5,7 +5,19 @@ MAKE_BIN="${MAKE:-make}"
 SELFTEST_REPORT_DIR="${SELFTEST_REPORT_DIR:-}"
 SELFTEST_WORK_DIR="${SELFTEST_WORK_DIR:-../../../../artifacts/proof/reproducible-research/deep-dive-make/selftest/workspace}"
 
-fail() { echo "selftest: FAIL: $*" >&2; exit 1; }
+CURRENT_CHECK="setup"
+FAILURE_REASON="command exited unexpectedly"
+CONVERGENCE="NOT_RUN"
+SERIAL_PARALLEL_EQUIVALENCE="NOT_RUN"
+TRACE_GUARDRAIL="NOT_RUN"
+HIDDEN_INPUT_DETECTION="NOT_RUN"
+QUARANTINED_EVAL_DEMO="NOT_RUN"
+
+fail() {
+  FAILURE_REASON="$*"
+  echo "selftest: FAIL: $*" >&2
+  exit 1
+}
 pass() { echo "selftest: PASS: $*"; }
 step() { echo "selftest: STEP: $*"; }
 
@@ -14,6 +26,43 @@ record() {
   mkdir -p "${SELFTEST_REPORT_DIR}"
   printf '%s\n' "$2" > "${SELFTEST_REPORT_DIR}/$1"
 }
+
+finish() {
+  status=$?
+  trap - EXIT INT TERM
+  if [ "$status" -eq 0 ]; then
+    result="PASS"
+    failed_check="none"
+    failure_reason="none"
+  else
+    result="FAIL"
+    failed_check="$CURRENT_CHECK"
+    failure_reason="$FAILURE_REASON"
+    case "$CURRENT_CHECK" in
+      convergence) CONVERGENCE="FAIL" ;;
+      serial_parallel_equivalence) SERIAL_PARALLEL_EQUIVALENCE="FAIL" ;;
+      trace_guardrail) TRACE_GUARDRAIL="FAIL" ;;
+      hidden_input_detection) HIDDEN_INPUT_DETECTION="FAIL" ;;
+      quarantined_eval_demo) QUARANTINED_EVAL_DEMO="FAIL" ;;
+    esac
+  fi
+  record summary.txt "result=${result}
+failed_check=${failed_check}
+failure_reason=${failure_reason}
+convergence=${CONVERGENCE}
+serial_parallel_equivalence=${SERIAL_PARALLEL_EQUIVALENCE}
+trace_guardrail=${TRACE_GUARDRAIL}
+hidden_input_detection=${HIDDEN_INPUT_DETECTION}
+quarantined_eval_demo=${QUARANTINED_EVAL_DEMO}
+workspace=${SELFTEST_WORK_DIR}"
+  if [ "$status" -ne 0 ]; then
+    echo "selftest: INFO: preserved workspace at ${SELFTEST_WORK_DIR}" >&2
+  fi
+  exit "$status"
+}
+
+trap finish EXIT
+trap 'FAILURE_REASON="selftest interrupted"; exit 130' INT TERM
 
 hash_cmd() {
   if [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
@@ -47,14 +96,17 @@ TRACE_MAX=${TRACE_MAX}
 SELFTEST_WORK_DIR=${SELFTEST_WORK_DIR}"
 
 # 1) Convergence
+CURRENT_CHECK="convergence"
 step "convergence"
 "$MAKE_BIN" clean >/dev/null
 "$MAKE_BIN" -j1 all >/dev/null
 "$MAKE_BIN" -q all || fail "convergence: repo not up-to-date after build (exit $(($?)))"
 record convergence.txt "PASS"
+CONVERGENCE="PASS"
 pass "convergence"
 
 # 2) Serial vs parallel equivalence
+CURRENT_CHECK="serial_parallel_equivalence"
 step "serial-parallel equivalence"
 "$MAKE_BIN" clean >/dev/null
 "$MAKE_BIN" -j1 all >/dev/null
@@ -97,18 +149,22 @@ echo "selftest: INFO: parallel hash complete"
 diff -u serial.sum parallel.sum >/dev/null || fail "serial/parallel: artifact mismatch"
 record serial.sum "$(cat serial.sum)"
 record parallel.sum "$(cat parallel.sum)"
+SERIAL_PARALLEL_EQUIVALENCE="PASS"
 pass "serial-parallel equivalence"
 
 # Performance baseline guardrail (trace expansions <500)
+CURRENT_CHECK="trace_guardrail"
 step "trace guardrail"
 TRACE_LINES=$("$MAKE_BIN" --trace -n all 2>&1 | wc -l)
 if [ "$TRACE_MAX" -ne 0 ] && [ "$TRACE_LINES" -gt "$TRACE_MAX" ]; then
   fail "performance: trace lines exceed TRACE_MAX=$TRACE_MAX (got $TRACE_LINES). Use: make trace-count; and see: make perf. (TRACE_MAX is a guardrail; set TRACE_MAX=0 to disable.)"
 fi
 record trace-count.txt "trace-lines=${TRACE_LINES}"
+TRACE_GUARDRAIL="PASS"
 pass "performance: trace within TRACE_MAX=$TRACE_MAX"
 
 # 3) Negative test: hidden input must break convergence
+CURRENT_CHECK="hidden_input_detection"
 step "hidden input detection"
 test -f config.mk || : > config.mk
 cp config.mk config.mk.bak
@@ -121,21 +177,20 @@ if "$MAKE_BIN" -q all; then
   fail "negative: converged despite hidden input"
 fi
 record hidden-input.txt "PASS"
+HIDDEN_INPUT_DETECTION="PASS"
 pass "negative: hidden input detected (non-convergence)"
 
 mv config.mk.bak config.mk
 
 # 4) Optional eval demo must remain executable without controlling the core build
+CURRENT_CHECK="quarantined_eval_demo"
 step "quarantined eval demo"
 "$MAKE_BIN" USE_EVAL=yes eval-demo >/dev/null
 test -s build/include/multi.h || fail "eval demo did not publish multi.h"
 test -s build/include/multi.c || fail "eval demo did not publish multi.c"
 record eval-demo.txt "PASS"
+QUARANTINED_EVAL_DEMO="PASS"
 pass "quarantined eval demo"
 
-record summary.txt "convergence=PASS
-serial_parallel_equivalence=PASS
-trace_guardrail=PASS
-hidden_input_detection=PASS
-quarantined_eval_demo=PASS"
+CURRENT_CHECK="complete"
 echo "selftest: PASS: all checks completed"
