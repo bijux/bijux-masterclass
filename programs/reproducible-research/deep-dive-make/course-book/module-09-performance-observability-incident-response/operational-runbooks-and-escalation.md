@@ -18,10 +18,11 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  enter["recognize entry condition"] --> preserve["preserve incident state"]
+  preserve --> branch["follow evidence branches"]
+  branch --> contain["contain without hiding cause"]
+  contain --> verify["verify recovery and invariants"]
+  verify --> handoff["close or escalate with packet"]
 ```
 <!-- page-maps:end -->
 
@@ -38,10 +39,10 @@ This page is about turning build knowledge into a runbook that transfers.
 
 When you write a runbook, ask:
 
-> what exact sequence should another engineer follow before they edit the build or escalate
-> the incident?
+> What should a responder observe, decide, and preserve at each point before they edit,
+> contain, recover, or escalate?
 
-That is the difference between operational support and folklore.
+That is the difference between an executable runbook and a list of familiar commands.
 
 ## A runbook is not a memoir
 
@@ -55,15 +56,36 @@ That is institutional memory, not an operational tool.
 
 A useful runbook should give:
 
-- a reproducible starting point
-- a fixed evidence ladder
-- a set of expected outputs or interpretations
-- an escalation rule when the ladder stops helping
+- a precise entry condition and scope
+- safety warnings and state-preservation instructions
+- commands with expected observations
+- branches that change the next action
+- containment and recovery routes
+- verification after recovery
+- an owner and escalation packet
 
 This is why Module 09 ends here. The module is not complete until the knowledge becomes
 transferable.
 
-## What a build runbook should usually answer
+## Start with a runbook contract
+
+The first screen should tell a responder whether this is the right document:
+
+```text
+Title: Parallel release bundle failure
+Use when: `make -j8 dist` fails, publishes a partial bundle, or differs from `-j1`
+Do not use when: upload authentication or remote publication has failed
+Trusted outputs at risk: dist/report.tar.gz and checksum
+First safety action: stop publication; do not clean or rerun yet
+Owner: build maintainers
+Escalation owner: release engineering
+Last verified: <date and repository revision>
+```
+
+A runbook without entry and exit boundaries becomes a catch-all. A runbook without an
+owner becomes historical prose.
+
+## What a build runbook should answer
 
 A serious build runbook often needs to answer at least these questions:
 
@@ -71,50 +93,89 @@ A serious build runbook often needs to answer at least these questions:
 - how do I compare serial and parallel behavior
 - how do I inspect resolved variables or rules
 - how do I collect evidence without mutating the system
+- what observations change the next action
+- what containment is safe while diagnosis continues
+- how do I know service or feedback has recovered
 - when is the incident large enough to escalate
 
 Those questions are stable even as the exact repository evolves.
 
-## A simple runbook skeleton
+## Use an executable structure
 
 One practical shape is:
 
-1. symptom confirmation
-2. standard evidence commands
-3. interpretation hints
-4. common boundary classifications
-5. escalation criteria
+1. purpose, entry condition, and owner
+2. trusted outputs and safety warnings
+3. state-preservation commands
+4. symptom confirmation
+5. decision branches with expected observations
+6. containment options labeled as temporary
+7. recovery and invariant checks
+8. escalation criteria and packet
+9. closure evidence and follow-up owner
 
 That keeps the runbook short enough to use while still being concrete enough to matter.
 
-## Convergence belongs near the top
+## Commands need expected observations
+
+This is weak:
+
+```text
+Run `make --trace all`.
+```
+
+This is operational:
+
+```text
+Run `make --trace -n dist > artifacts/incident/trace.txt 2>&1`.
+Expected: one declared writer for `dist/report.tar.gz`.
+If two targets name the same output, classify as graph/publication ownership and stop.
+If one writer is present, continue to the prerequisite-completion branch.
+```
+
+The command, expected observation, and branch form one unit. Removing any one of them
+forces the responder to improvise.
+
+## Convergence belongs near the top of recovery checks
 
 One of the most useful operational checks is still:
 
 ```sh
 make all
-make -q all; echo $?
+if make -q all; then
+  printf '%s\n' 'converged'
+else
+  status=$?
+  printf 'not converged or query failed: %s\n' "$status"
+fi
 ```
 
-This belongs in a runbook because it answers a very important question quickly:
+Do not reduce every nonzero status to "not converged." GNU Make uses query-mode status to
+distinguish up-to-date work from pending work and errors. The runbook should say which
+status and output are expected in this repository.
 
-- did the build settle after a successful run
+Convergence belongs in recovery verification because it asks whether the repaired build
+settles after a successful run. If the incident itself is an unexplained rebuild, preserve
+state and trace first rather than running `make all` immediately.
 
-That is not the answer to every incident. It is one of the fastest sanity checks you can
-teach another engineer to use.
-
-## Serial and parallel comparison should be explicit
+## Compare serial and parallel routes without contaminating them
 
 Many build incidents become clearer when the runbook teaches a comparison like:
 
 ```sh
-make clean
-make all
-make clean
-make -j4 all
+make -j1 dist
+sha256sum dist/report.tar.gz > artifacts/incident/serial.sha256
+
+make -j8 dist
+sha256sum dist/report.tar.gz > artifacts/incident/parallel.sha256
+
+cmp artifacts/incident/serial.sha256 artifacts/incident/parallel.sha256
 ```
 
-followed by an artifact or behavior comparison.
+These commands are illustrative, not safe to run back-to-back in the same build tree
+unless the repository provides a documented reset that recreates identical starting
+state. A real runbook should use isolated workspaces or a governed fixture so the serial
+run cannot warm or mutate the parallel run's inputs.
 
 This is operationally valuable because it gives the responder a standard test for:
 
@@ -131,11 +192,11 @@ One strong habit is to pair questions with the right surface:
 
 | If you need to know... | Start with... |
 | --- | --- |
-| why a target rebuilt | `make --trace <target>` |
-| what Make believes about variables and rules | `make -p` |
+| why a target would rebuild | `make --trace -n <target>` |
+| what Make believes about variables and rules | `make -np <target>` plus a focused search |
 | whether the build converges | `make -q` after a successful run |
 | whether the issue is parse-time or recipe-time | timed `make -n` versus timed `make all` |
-| whether parallelism changes behavior | serial versus `-j` comparison |
+| whether parallelism changes behavior | isolated serial versus `-j` artifact comparison |
 
 This is a very practical way to make the runbook teach judgment rather than just list tools.
 
@@ -144,28 +205,84 @@ This is a very practical way to make the runbook teach judgment rather than just
 A good runbook also says when the responder should stop treating the incident as a local
 repair and escalate.
 
-Reasonable escalation triggers might include:
+Reasonable escalation triggers include:
 
 - the incident cannot be reproduced with a stable route
 - the likely failure boundary crosses tool ownership lines
 - the evidence suggests environment or infrastructure drift beyond the repository contract
 - the fix would require weakening correctness to recover speed
+- the incident affects a trusted release or published research result
+- logs may contain secrets or protected data
+- the responder has repeated the same branch without narrowing the boundary
 
 These criteria matter because they protect the build from panicked shortcuts under pressure.
 
-## A small runbook example
+## A branched runbook example
 
 ```text
-1. Confirm the symptom with the reported target and parallelism level.
-2. Run `make -n <target>` if the question is about intended work.
-3. Run `make --trace <target>` if the question is about causality.
-4. Run `make -p > build/make.dump` if the question is about resolved state.
-5. Compare serial and parallel behavior if flakiness is reported.
-6. Escalate if the issue cannot be reproduced or if the likely cause crosses repository boundaries.
+Entry: `make -j8 dist` failed or produced a bundle that differs from `-j1`.
+
+Safety:
+- stop `publish`
+- do not clean either workspace
+- retain both bundles, checksums, command output, revision, and Make version
+
+Confirm:
+- repeat only in the governed fixture or isolated workspace
+- record pass/fail counts and target-attributed output
+
+Branch A: two routes write the same trusted path
+- classify as graph/publication ownership
+- containment: use the documented serial route, labeled as temporary
+- escalate to build maintainers with both traces
+
+Branch B: one writer starts before a prerequisite completes
+- classify as missing graph edge
+- do not publish either bundle
+- repair the edge, then repeat serial/parallel comparison and convergence
+
+Branch C: artifacts match and only output is interleaved
+- classify as evidence attribution
+- test `--output-sync=target`
+- keep semantic outputs unchanged
+
+Close only when:
+- original pressure route passes the stated repetition count
+- serial and parallel artifact comparisons satisfy the contract
+- the next run converges
+- incident packet and follow-up owner are recorded
 ```
 
-This is not a full runbook. It is already much more operational than "debug it like last
-time."
+This is still compact, but each observation has a different next action.
+
+## Separate containment, recovery, and repair
+
+These words describe different responsibilities:
+
+| Action | Purpose | Example |
+| --- | --- | --- |
+| containment | prevent further harm | stop publication of suspect bundles |
+| mitigation | restore a usable route temporarily | document `-j1 dist` while preserving the parallel reproducer |
+| recovery | return the route to a verified service state | rebuild from a governed input state and verify the artifact |
+| repair | remove the root cause | declare the missing edge or establish one writer |
+
+A runbook should label each action. Otherwise a temporary workaround quietly becomes the
+permanent architecture.
+
+## Make escalation packets actionable
+
+An escalation packet should answer:
+
+- what happened and what impact remains
+- which state was preserved
+- what containment is active
+- which commands and branches were completed
+- which explanations were weakened or strengthened
+- which boundary appears to own the problem
+- what exact question the next owner must answer
+
+The packet should not require the next owner to reread every log before understanding why
+they were contacted.
 
 ## Runbooks should preserve evidence discipline
 
@@ -181,6 +298,9 @@ Those steps may eventually be necessary. They should not be the first moves.
 The runbook should teach responders to gather evidence before changing conditions so that
 the investigation remains explainable.
 
+Destructive recovery commands belong after explicit evidence preservation, and only when
+the runbook names what they remove and how the starting state will be recreated.
+
 ## A runbook should have a human reader in mind
 
 The audience for a runbook is not the original author on their best day. It is usually:
@@ -195,6 +315,8 @@ That means the runbook should:
 - use stable target names
 - explain what success or failure of a command means
 - avoid depending on history lessons
+- define abbreviations and repository-specific assumptions
+- state how the runbook itself is verified
 
 This is a pedagogy issue as much as an operations issue.
 
@@ -220,11 +342,13 @@ That means it is not yet teaching interpretation.
 
 Take one build runbook and ask:
 
-1. whether a teammate could follow it without private context
-2. whether the first commands gather evidence or destroy it
-3. whether each command is tied to a specific question
-4. whether escalation criteria are visible
-5. whether the runbook uses stable target names and surfaces
+1. whether its entry and exit conditions are unambiguous
+2. whether a teammate could follow it without private context
+3. whether the first commands preserve evidence
+4. whether each command has an expected observation and branch
+5. whether containment, recovery, and repair are labeled correctly
+6. whether escalation names an owner and packet
+7. when the runbook was last exercised against a governed fixture
 
 If those answers are weak, the runbook is weak too.
 
@@ -232,11 +356,13 @@ If those answers are weak, the runbook is weak too.
 
 Write a small runbook for one build route that includes:
 
-1. one convergence check
-2. one serial/parallel comparison
-3. one resolved-state inspection command
-4. one escalation trigger
-5. one sentence explaining what the responder should avoid doing too early
+1. a precise entry condition and trusted outputs at risk
+2. the first preservation and containment actions
+3. two evidence branches with different next actions
+4. one safe convergence check
+5. one isolated serial/parallel comparison
+6. one escalation trigger, owner, and packet requirement
+7. closure criteria and a date for the next runbook exercise
 
 If you can do that cleanly, you are moving from personal debugging skill to operational
 support skill.
@@ -246,7 +372,9 @@ support skill.
 Before leaving this lesson, make sure you can explain:
 
 - why runbooks are part of build health
-- what a useful runbook usually needs to answer
-- why convergence and serial/parallel comparison belong near the top
+- why commands require expected observations and branches
+- why containment, mitigation, recovery, and repair must stay distinct
+- how to compare serial and parallel routes without contaminating the experiment
 - why escalation criteria should be explicit
+- what makes an escalation packet actionable
 - why operational transfer is different from one maintainer "just knowing the system"
