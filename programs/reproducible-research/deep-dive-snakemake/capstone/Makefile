@@ -27,6 +27,7 @@ PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snak
 MODULE_INTERFACE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/module-interfaces
 CONTEXT_INVARIANCE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/context-invariance
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/performance-diagnostics
+SCHEDULER_POLICY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/scheduler-policy
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -45,6 +46,7 @@ PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 MODULE_INTERFACE_AUDIT_DIR_ABS := $(abspath $(MODULE_INTERFACE_AUDIT_DIR))
 CONTEXT_INVARIANCE_AUDIT_DIR_ABS := $(abspath $(CONTEXT_INVARIANCE_AUDIT_DIR))
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS := $(abspath $(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR))
+SCHEDULER_POLICY_AUDIT_DIR_ABS := $(abspath $(SCHEDULER_POLICY_AUDIT_DIR))
 TOOLS_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-snakemake/capstone
 TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
 TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
@@ -69,6 +71,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	verify-report profile-audit module-interface-audit module-interface-selftest \
 	context-invariance-audit context-invariance-selftest \
 	performance-diagnostics-audit performance-diagnostics-selftest \
+	scheduler-policy-audit scheduler-policy-selftest \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
 
@@ -332,6 +335,34 @@ performance-diagnostics-audit: ## Classify honest tuning, semantic drift, and re
 performance-diagnostics-selftest: ## Reject dishonest performance evidence
 	$(PYTEST) -q tests/test_performance_diagnostics_audit.py
 
+scheduler-policy-audit: ## Record and classify scheduler resource translation
+	rm -rf "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)"
+	mkdir -p "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)"
+	cp -R repro/scheduler-policy "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/specimen"
+	$(PYTHON) scripts/audit_scheduler_policy.py \
+		--specimen repro/scheduler-policy \
+		--workspace "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/workspace" \
+		--output "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)" \
+		--python "$(PYTHON)"
+	cp docs/scheduler-policy-audit-guide.md "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/SCHEDULER_POLICY_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Scheduler policy audit route:' \
+		'  1. Read SCHEDULER_POLICY_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and distinguish PASS from ACCEPT or REJECT.' \
+		'  3. Compare job-contract.json with the Snakemake dry-run.' \
+		'  4. Inspect the accepted receipt before the three rejected receipts.' \
+		'  5. Confirm every receipt states whether a scheduler was contacted.' \
+		'  6. Use PROOF_GUIDE.md only if the claim expands beyond policy translation.' > "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)" \
+		--output "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote scheduler policy audit to $(SCHEDULER_POLICY_AUDIT_DIR_ABS)"
+
+scheduler-policy-selftest: ## Reject unsafe scheduler mapping evidence
+	$(PYTEST) -q tests/test_scheduler_policy_audit.py
+
 config-summary: verify ## Write a compact summary of the materialized workflow configuration
 	@mkdir -p "$(VERIFY_REPORT_DIR)"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
@@ -367,11 +398,11 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
-confirm: clean purge-dsstore ci module-interface-audit module-interface-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest verify ## Clean-room confirmation (strict)
+confirm: clean purge-dsstore ci module-interface-audit module-interface-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
-proof: tour verify-report profile-audit module-interface-audit context-invariance-audit performance-diagnostics-audit ## Run the sanctioned learner-facing proof route
+proof: tour verify-report profile-audit module-interface-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p \
