@@ -29,15 +29,15 @@ This lesson is about making extension safe enough to support.
 A stable extension point should let outside code do one bounded job without learning or
 owning the host's internals.
 
-That is what a capability protocol is for.
-It answers:
+That is what a capability protocol is for. It answers:
 
 - what work may the extension perform?
-- what input will the host provide?
-- what meaning must stay stable for outside implementers?
+- what shaped input will the host provide?
+- what bounded outcome may the extension report?
+- what meaning must remain stable for outside implementers?
 
-If the seam instead requires privileged intimacy, it is not yet stable enough to
-publish.
+If the seam instead requires privileged intimacy with the host, it is not yet stable
+enough to publish.
 
 ## Keep one extension need visible
 
@@ -47,65 +47,75 @@ Use one capstone need:
 
 The extension should be able to do one thing:
 
-- accept already-shaped incident information and report a bounded outcome
+- accept already-shaped incident information and report a bounded result
 
 It should not need to:
 
 - inspect aggregate internals
 - mutate repository state
-- wire itself into runtime control flow
+- control runtime scheduling
+- rewire host-owned policy decisions
 
-That contrast is the whole lesson.
+That contrast is the whole lesson. A stable extension point gives useful work without
+leaking ownership.
 
-## Capability protocols describe work, not host structure
+## Capability protocols describe roles, not host structure
 
-A good extension seam is written around a role.
-
-Examples:
+A good extension seam is written around a role:
 
 - publish this normalized incident
 - transform this stable result shape
 - provide these metric samples
 
-A weak extension seam is written around internal ownership leaks:
+A weak seam is written around internal structure:
 
 - subclass this concrete coordinator
 - override these helper methods
-- mutate this internal cache
-- access this hidden registry
+- mutate this cache
+- access this registry and lifetime manager
 
-The first set describes capability.
-The second set describes privileged access.
+The first group describes a capability.
+The second group describes privileged access.
+
+This distinction matters because only the first group is usually defensible as a public
+promise.
 
 ## Stable seams are usually narrow seams
 
-Every public method, argument meaning, and result guarantee becomes governance work.
+Every public method, parameter meaning, and result guarantee creates governance work.
 
-That is why a good capability protocol should be:
+That is why a stable capability protocol should be:
 
 - small enough to explain in one sitting
 - explicit about input and output meaning
 - decoupled from internal object wiring
 - narrow enough that host internals can still move
 
-Small seams are easier to document, version, test, and deprecate honestly.
+Small seams are easier to:
+
+- document
+- version
+- test
+- deprecate honestly
+
+Large seams often start as convenience and end as maintenance debt.
 
 ## Capability usually beats inheritance for outsiders
 
-Inheritance feels natural in object-oriented code, but it is often the wrong default for
-external extension.
+Inheritance often feels natural in object-oriented code, but it is frequently the wrong
+default for external extension.
 
 Inheritance tends to leak:
 
 - lifecycle assumptions
-- protected internals
 - constructor details
+- protected internals
 - method-overriding requirements that were never meant to be public
 
 A capability protocol is usually safer because it asks for one replaceable role without
-publishing the host's composition.
+publishing the host's composition or hierarchy.
 
-That keeps the public promise focused on work, not on internal hierarchy.
+This keeps the public promise focused on work instead of exposing half the host design.
 
 ## The composition root should own the wiring
 
@@ -115,69 +125,77 @@ The host should decide:
 - when the capability is instantiated
 - how configuration is validated
 - what fallback or disablement policy applies
-- what surrounding services and retries are used
+- what retries and surrounding services exist
 
-If the extension has to wire itself deep into the object graph, the seam is too intimate
-to govern well.
+If the extension has to wire itself deep into the object graph, the seam is already too
+intimate to govern well.
 
-The host owns orchestration.
-The extension owns the bounded role.
+The rule is simple:
 
-## Example: `IncidentSink` as a stable seam
+- the host owns orchestration
+- the extension owns the bounded role
+
+That split is what keeps authority from drifting outward.
+
+## Worked capstone seam
 
 An honest `IncidentSink` seam could promise:
 
-- the host will provide a normalized incident payload
+- the host provides a normalized incident payload
 - the sink may return a bounded success or failure meaning
-- the host remains responsible for retry, disablement, and workflow truth
+- the host remains responsible for retries, disablement, and workflow truth
 
 What stays outside the seam:
 
 - aggregate mutation
 - repository access
-- private scheduler control
-- host-owned policy decisions
+- scheduler control
+- host-owned policy choices
 
-This is exactly what makes the seam stable:
+Why this seam is stable:
 
-- the extension gets useful work
+- outsiders get useful work
 - the host keeps authority
+- the seam can evolve more slowly than the private orchestration beneath it
 
-## Stable extension points still need policy
-
-The protocol shape is only one part of the story.
-
-A real stable extension point also needs:
-
-- documentation that teaches the intended role
-- compatibility proof or review routes
-- version and deprecation expectations
-- registration or construction rules if several implementations will be supported
-
-Without these, the seam may be elegant but still operationally weak.
-
-## Honest capability gaps should change the design
+## Capability gaps should change the design, not widen the seam blindly
 
 If one proposed extension needs:
 
 - repository access
 - scheduling control
 - deep lifecycle awareness
+- private retry state
 
 then one of two things is probably true:
 
-- the seam is still too small for the real use case
+- the seam is too small for the real use case
 - the use case should not be externalized yet
 
-The wrong move is to keep widening a public protocol until it leaks half the host.
+The wrong move is to keep widening the public protocol until it leaks half the host.
 
-Stable extension points are strong because they resist that pressure.
+Stable extension points are strong because they resist that pressure and make the host
+ask harder design questions first.
+
+## Build a capability packet
+
+For each extension seam, keep a short packet with:
+
+- supported use case
+- bounded role description
+- stable input shape
+- bounded result meaning
+- what authority stays with the host
+- what proof route keeps the seam honest
+
+This packet helps another maintainer review the seam without rediscovering the same
+boundary reasoning from scratch.
 
 ## Common failure modes
 
 - calling a seam stable even though it requires deep internal imports
 - exposing large interfaces because future plugins "might need them"
-- using inheritance where a narrow role contract would be clearer
+- using inheritance when a narrow role contract would be clearer
 - letting extensions mutate host state directly
 - changing public capability requirements as though they were local refactors
 
@@ -185,21 +203,23 @@ Stable extension points are strong because they resist that pressure.
 
 Use this card when reviewing an extension seam:
 
-| Question | What you want to see |
+| Question | What a strong answer sounds like |
 | --- | --- |
-| does the seam describe a bounded external role? | yes |
-| can the host evolve internally without forcing extension rewrites? | yes |
-| does the extension avoid direct mutation of host internals? | yes |
-| is the wiring owned by the composition root rather than the extension? | yes |
+| what bounded role does the seam publish? | "publish one normalized incident" |
+| what input and result meanings are stable? | "shaped incident payload in, bounded outcome out" |
+| what authority stays with the host? | "truth, retries, disablement, orchestration" |
+| could the host evolve internally without forcing extension rewrites? | "yes, because the seam does not expose internals" |
+| what proof keeps the seam honest? | "compatibility packet and facade example" |
 
 ## Capstone connection
 
-Use this page to ask:
+Use this page to decide:
 
 - which customization need is best expressed as one narrow capability
 - where a current extension idea is still reaching past the ownership boundary
-- which stable inputs and outcomes would make `IncidentSink` externally implementable
-  without leaking internals
+- which stable inputs and outcomes would let `IncidentSink` stay implementable without
+  leaking internals
+- which proposed extension should remain internal because it demands too much authority
 
 That is where extensibility becomes a governed contract instead of wishful public
 exposure.
@@ -210,5 +230,4 @@ Leave this lesson only when you can do all of these:
 
 - explain why a capability protocol is safer than privileged internal access
 - identify one capstone customization point that should become a narrow protocol
-- identify one inheritance-based idea that should be replaced by a smaller capability
-  seam
+- identify one extension idea that should remain internal until the host design changes
