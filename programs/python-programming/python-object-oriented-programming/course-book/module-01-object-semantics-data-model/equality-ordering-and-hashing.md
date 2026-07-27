@@ -1,5 +1,4 @@
-# Equality, Ordering, and Hashing – Contracts with Containers
-
+# Equality, Ordering, and Hashing as Container Contracts
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Object Semantics Data Model"]
-  page["Equality, Ordering, and Hashing – Contracts with Containers"]
+  page["Equality, Ordering, and Hashing as Container Contracts"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,106 +24,165 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Introduction
+## Why this lesson matters
 
-This core elucidates the design of equality (`__eq__`), ordering (`__lt__` et al.), and hashing (`__hash__`) in Python objects, emphasizing their interplay with container types such as dictionaries and sets. Extending the identity and state foundations from M01C01 and attribute resolution from M01C02, we delineate value-based versus identity-based equality, the invariants governing hashable objects, and criteria for implementing—or abstaining from—ordering protocols. Correct implementation ensures seamless integration with collections while preserving semantic consistency.
+Equality and hashing stop being "just operator behavior" the moment an object enters a
+set, becomes a dictionary key, or participates in deduplication logic.
 
-The layered structure persists: language-level semantics outline guarantees, CPython notes detail optimizations, design semantics guide modeling choices, and practical guidelines furnish prescriptive rules. This framework yields a portable model for equality and hashing, resilient across implementations.
+This lesson exists because many bugs come from half-made decisions:
 
-Cross-references link to prerequisites: identity contracts from M01C01; mutable key hazards in M01C06; dataclass defaults in M03C23. Proficiency here fortifies types against container misuse, enabling reliable value semantics without compromising performance.
+- value equality is implemented, but hashing is forgotten
+- ordering is added because sorting seems convenient, not because the type has a real order
+- mutable objects are treated as stable keys
+- identity-based and value-based reasoning are mixed without being named
 
-## 1. Language-Level Model
+## Start with the real question
 
-Python's data model defines equality and hashing as protocols invoked by operators and built-ins, with ordering supporting rich comparisons. These form binding contracts with containers; violating them does not crash the interpreter, but leads to semantically ill-defined container behavior (e.g., keys that cannot be found or duplicate equal keys that both appear to be present).
+Before writing `__eq__`, ask:
 
-### Equality: `__eq__` Protocol and `__ne__`
+> When should two instances count as the same for the purposes of this program?
 
-**Guarantees**:
-- `a == b` invokes `a.__eq__(b)` if defined on `type(a)`; if that returns `NotImplemented`, the interpreter may consult `b.__eq__(a)` according to the usual rich comparison rules (e.g., giving preference to methods on a strict subclass).
-- Default (`object.__eq__`) is identity-based: `a == b` if `a is b`.
-- For user-defined classes overriding `__eq__` without `__hash__`, Python automatically sets `__hash__ = None`, rendering instances unhashable.
-- No reflexivity or symmetry guarantee: User overrides must enforce these for correctness.
-- If `__ne__` is not defined, Python derives it from `__eq__` by logical negation; overriding `__ne__` independently can easily break consistency and is rarely necessary.
+That answer should come from meaning, not from convenience.
 
-Example (portable, contrasting defaults):
+## Identity equality versus value equality
+
+### Identity-oriented equality
+
+This is right when continuity matters more than current field values.
+
+Examples:
+
+- active sessions
+- tracked alerts
+- workflow objects with lifecycle
+
+In these cases, two objects that look similar may still be different things.
+
+### Value-oriented equality
+
+This is right when content is the meaning.
+
+Examples:
+
+- coordinates
+- thresholds
+- units or names
+- immutable configuration fragments
+
+In these cases, equal content usually means interchangeable values.
+
+## The hashing rule that must stay true
+
+If two objects compare equal and are hashable, they must produce the same hash.
+
+That is the contract container code is relying on.
+
+You do not need a mathematical lecture here. You need one durable rule:
+
+- if equality changes, hashing must be reviewed too
+
+And one strong warning:
+
+- if equality depends on mutable state, hashing is usually a trap
+
+## Ordering is optional, not a badge of completeness
+
+Do not add ordering because the type "might be sortable."
+
+Add ordering only when the type has a natural and reviewable order.
+
+Good candidates:
+
+- timestamps
+- semantic version pieces with clear rules
+- value types where less-than has obvious meaning
+
+Bad candidates:
+
+- rich entities whose lifecycle matters more than field comparison
+- objects where several orderings are plausible
+- domain objects where sorting is only a UI convenience
+
+If a type has no obvious single order, use an explicit sort key at the call site.
+
+## A small example with good value semantics
 
 ```python
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+from dataclasses import dataclass
 
-    def __eq__(self, other):
-        if not isinstance(other, Point):
-            return NotImplemented
-        return self.x == other.x and self.y == other.y
 
-p1 = Point(1, 2)
-p2 = Point(1, 2)
-print(p1 == p2)  # True (value equality)
-print(p1 is p2)  # False (distinct identity)
+@dataclass(frozen=True)
+class Threshold:
+    metric_name: str
+    limit: int
 ```
 
-Equality overrides enable value semantics but demand paired hashing adjustments.
+This is value-oriented:
 
-### Hashing: `__hash__` Protocol
+- two thresholds with the same fields mean the same thing
+- hashability is safe because the fields are frozen
+- set membership or deduplication becomes predictable
 
-**Guarantees**:
-- `hash(obj)` invokes `obj.__hash__()`. The hash is an integer and is stable for the object's lifetime.
-- Core invariant (a requirement on your implementation): if `a == b` and both are hashable, then `hash(a) == hash(b)` must hold for the lifetime of both objects. In particular, for any object used as a dict/set key, both its equality and its hash must be effectively immutable for as long as it remains in the container.
-- Unhashable objects (e.g., `__hash__ = None`) raise `TypeError` in containers.
-- Hash values are integers; collisions are permitted and resolved by equality checks, provided the equality/hash contract is respected.
+## A small example where identity should stay primary
 
-### Ordering: Rich Comparison Protocols
+```python
+class Alert:
+    def __init__(self, alert_id: str, threshold):
+        self.alert_id = alert_id
+        self.threshold = threshold
+        self.active = False
+```
 
-**Guarantees**:
-- Operators (`<`, `<=`, `>`, `>=`) invoke `__lt__`, `__le__`, `__gt__`, `__ge__`; returning `NotImplemented` delegates to reflected counterparts.
-- For user-defined classes that simply inherit from `object` and do not override rich comparison methods, there is effectively no ordering: comparisons defer to `object` and return `NotImplemented`, raising `TypeError` in contexts like `sorted()`. Many built-in types (numbers, strings, tuples) *do* provide a total order within their own type.
-- No totality guarantee: User implementations define partial or total orders.
+If `Alert` is a tracked workflow object, forcing value equality on its fields may be a
+mistake. Two alerts can look similar and still represent different lifecycles.
 
-These protocols underpin container operations: dict/set keys rely on `(hash, equality)` pairs; sorting uses ordering.
+That is why this lesson begins with meaning, not with dunder methods.
 
-## 2. Implementation Notes (CPython, non-normative)
+## Review checklist for equality and hashing
 
-CPython dispatches equality and hashing via C slots (`tp_richcompare`, `tp_hash`).
+| Question | Good sign | Warning sign |
+| --- | --- | --- |
+| What does equality mean? | one clear domain story | "it depends on context" but nothing is modeled |
+| Should the type be hashable? | stable value semantics | mutable fields participate in equality |
+| Does ordering exist naturally? | a reviewer can explain the less-than meaning | ordering added only because sorting felt useful |
+| Will a set or dict rely on this type? | semantics are explicit and tested | container use is accidental |
 
-- **Equality Dispatch**: `__eq__` is implemented via the rich comparison slot (`tp_richcompare`); returning `NotImplemented` triggers the reflected comparison on the other operand where applicable.
-- **Hashing**: The default hash for user-defined objects is derived from identity (typically the object's address); dict/set use open addressing with perturbations for better distribution.
-- **Ordering**: Rich comparisons chain via `PyObject_RichCompare`; unresolved pairs raise `TypeError`.
-- **Performance Nuances**: Hash computations should be O(1); cached hashes (e.g., tuples) amortize costs. If a key's fields that participate in equality and hashing are mutated while it is stored in a dict or set, future lookups may fail even though the container itself remains internally consistent.
+## Common mistakes
 
-These optimize container lookups but expose no privacy—equality probes state directly.
+| Mistake | Why it fails |
+| --- | --- |
+| overriding `__eq__` without thinking about hashability | container behavior becomes unsafe or surprising |
+| keeping hashability on a mutable value-like object | the object can drift after insertion into a set or dict |
+| implementing ordering for a type with no natural order | code becomes readable only to the original author |
+| using equality to model lifecycle identity | distinct entities collapse into one semantic bucket |
 
-## 3. Design Semantics
+## Practical rules for this course
 
-Equality and hashing integrate with the value/entity lens (M01C01): value-like objects implement value equality and consistent hashing for interchangeability; entity-like ones retain identity defaults to prioritize uniqueness.
+- Prefer value equality for small immutable meaning-carrying types.
+- Prefer identity-based behavior for lifecycle-bearing entities unless you have a very strong reason not to.
+- Make mutable equality-bearing types unhashable unless the design story is exceptionally clear.
+- Use explicit sort keys instead of fake total ordering when the type has several plausible orderings.
 
-- **Value vs Identity Equality**: Override `__eq__` for state comparison in values (e.g., `Point` coordinates); keep default for entities (e.g., `Session` ID). Always check `isinstance` or use `type(self)` to avoid unintended coercion.
-- **Hashing Invariants**: For custom `__eq__`, compute `__hash__` from equality-relevant fields (e.g., `hash((self.x, self.y))`); disable for mutables to prevent key errors.
-- **Ordering Restraint**: Implement rich comparisons only for natural total orders (e.g., timestamps); abstain for partial or cyclic relations to avoid `TypeError` surprises.
+## Capstone connection
 
-**Choosing Protocols**: Query: Does the type's semantics favor interchangeability (value: full protocols) or uniqueness (entity: minimal)? Align with encapsulation (M01C04): expose only hashable invariants.
+This lesson underpins questions like:
 
-Interaction with Containers: Value equality enables safe keying; mutable hashing risks lost entries (M01C06).
+- should rule definitions compare by content?
+- should workflow objects keep identity semantics?
+- can this type safely be deduplicated or used in set membership?
 
-## 4. Practical Guidelines
+If those answers are fuzzy, the later architecture will inherit the fuzziness.
 
-- **Equality Implementation**: Return `NotImplemented` for incompatible types; test reflexivity, symmetry, and transitivity. For entities, document identity reliance.
-- **Hashing Discipline**: Override `__hash__` only when you also define `__eq__`; compute the hash from exactly the fields that participate in equality (e.g., `return hash((self.x, self.y))`); set `__hash__ = None` for mutables whose equality depends on mutable state.
-- **Ordering Caution**: Provide a coherent total order only when the type has a natural one (e.g., timestamps); in practice, implement `__lt__` (and `__eq__`) and, if you need all comparison operators, consider `functools.total_ordering`. Abstain entirely if no natural total order exists.
-- **Container Contracts**: Verify post-mutation containment; use `frozenset` for immutable keys. Profile hash distributions for uniformity.
-- **Testing Rigor**: Assert `a == b` implies `hash(a) == hash(b)`; fuzz with unequal-but-hash-equal pairs; test unhashable raises appropriately.
+## Exit check
 
-**Impacts on Design and Containers**:
-- **Design**: Value protocols decouple from identity; inconsistent hashing erodes trust.
-- **Containers**: Robust contracts ensure predictable lookups; violations yield silent data loss.
+Leave this lesson only when you can do all of these:
 
-## Exercises for Mastery
-
-1. Implement value equality and hashing for a `Vector` class; test dict keying with equal-but-distinct instances and verify contract holds.
-2. Design an entity-like `Transaction` with identity equality; demonstrate unhashability prevents mutable key misuse.
-3. Add total ordering to `Point` via rich comparisons; verify `sorted()` stability and antisymmetry; contrast with a partial-order class that abstains.
-
-This core secures equality for container fidelity. Next, M01C06 exposes collection hazards.
+- explain whether one type should compare by identity or by value
+- say whether that type should be hashable and why
+- reject one case where adding ordering would only create false precision
