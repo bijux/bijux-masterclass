@@ -24,23 +24,63 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This glossary belongs to **Module 01: Object Semantics and the Python Data Model** in **Python Object-Oriented Programming**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+This glossary belongs to **Module 01: Object Semantics and the Python Data Model** in
+**Python Object-Oriented Programming**. Use it to keep the module's language stable
+while moving between lessons, exercises, and capstone review.
 
 ## How to use this glossary
 
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
+Return here when two semantic ideas start sounding similar even though they should lead
+to different design choices.
 
-## Terms in this directory
+Examples:
 
-| Term | Meaning in this directory |
-| --- | --- |
-| Attribute Layout – `__dict__`, Class vs Instance, Descriptors in the Chain | the module's treatment of attribute layout – `__dict__`, class vs instance, descriptors in the chain, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Collections Hazards – Aliasing, Mutable Keys, and Shared State | the module's treatment of collections hazards – aliasing, mutable keys, and shared state, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Construction Discipline – `__init__`, Required State, and Half-Baked Objects | the module's treatment of construction discipline – `__init__`, required state, and half-baked objects, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Copying and Cloning – Shallow, Deep, and Custom Semantics | the module's treatment of copying and cloning – shallow, deep, and custom semantics, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Encapsulation and Public Surface – Representations, Debuggability, and Leaks | the module's treatment of encapsulation and public surface – representations, debuggability, and leaks, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Equality, Ordering, and Hashing – Contracts with Containers | the module's treatment of equality, ordering, and hashing – contracts with containers, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Object Identity, State, and Behavior – Python’s Real Model | the module's treatment of object identity, state, and behavior – python’s real model, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Python Data Model as Design Surface – Iteration, Containers, Context, Numeric | the module's treatment of python data model as design surface – iteration, containers, context, numeric, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Refactor 0 – Script → Object Model with Correct Identity/Data-Model Semantics | the module's treatment of refactor 0 – script → object model with correct identity/data-model semantics, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| When OOP Is the Wrong Tool in Python | the module's treatment of when oop is the wrong tool in python, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
+- identity versus equality
+- representation detail versus real state
+- safe sharing versus aliasing
+- class form versus plain data and functions
+
+If those distinctions blur, later modules become harder for the wrong reason.
+
+## Terms in this module
+
+| Term | Meaning in this module | Why it matters |
+| --- | --- | --- |
+| aliasing | two names or containers referring to the same mutable object | creates non-local bugs when one update surprises distant code |
+| attribute lookup | the path Python follows when resolving `obj.name`, including instance state, class state, descriptors, and fallback rules | shapes what another maintainer thinks an object is actually exposing |
+| class attribute | state stored on the class object and shared unless shadowed | can create accidental shared state if mistaken for instance state |
+| entity | an object whose continuity and lifecycle matter over time | usually should not pretend to be a plain interchangeable value |
+| equality contract | the rule for when two objects count as equal | affects sets, dict keys, tests, and review reasoning |
+| half-baked object | an object that exists before its required truth is established | makes later failure and invalid state much harder to control |
+| hash contract | the promise that objects used in hashed collections keep equality and hash behavior aligned | prevents subtle container corruption |
+| identity | the question of whether this specific object instance matters as itself | separates entities from value-like objects |
+| immutable value | a value-oriented object whose content does not change after construction | enables safe sharing and predictable hashing |
+| public surface | the fields, methods, and representations another part of the code is supposed to rely on | should be deliberate, not accidental |
+| representation detail | data or structure used internally to implement an object | should not be confused with the object's real meaning |
+| semantic type | a small class or object that gives explicit meaning to data that would otherwise be raw primitives | makes later design and validation more readable |
+| shallow copy | a copy that duplicates the outer container but still shares nested mutable members | often preserves aliasing risk |
+| value object | an object defined primarily by its content rather than by continuity over time | usually wants clear equality and often wants immutability |
+
+## Fast contrasts
+
+| Do not confuse | With | Better distinction |
+| --- | --- | --- |
+| identity | equality | identity is about this specific instance; equality is about whether two instances count as the same by contract |
+| class attribute | instance attribute | class attributes are shared at the class level; instance attributes belong to one object |
+| representation detail | real state | representation detail is an implementation choice; real state is part of the object's contract |
+| shallow copy | independent state | shallow copies often still share nested mutable objects |
+| class form | good design | a class is only justified when it protects meaning or ownership better than plainer tools |
+
+## Review prompts
+
+- Which current types in the capstone are values, which are entities, and which should never have become classes?
+- Where could aliasing or shallow copying still surprise a reader?
+- Which object surface would be misread if someone confused representation detail with real semantic state?
+
+## Exit check
+
+Leave this glossary only when you can do all of these:
+
+- explain the difference between identity and equality
+- explain why aliasing can survive a refactor into prettier-looking classes
+- identify one capstone type whose meaning depends on clear value semantics
