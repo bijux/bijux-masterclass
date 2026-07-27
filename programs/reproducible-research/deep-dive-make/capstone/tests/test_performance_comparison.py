@@ -47,6 +47,24 @@ def passing_evidence() -> dict[str, Any]:
                     "observed_rebuild": ["all", "app", "build/util.o"],
                     "result": "PASS",
                     "unexpected_rebuild": [],
+                },
+                {
+                    "expected_rebuild": [
+                        "all",
+                        "app",
+                        "build/main.o",
+                        "build/util.o",
+                    ],
+                    "input": "include/util.h",
+                    "missing_rebuild": [],
+                    "observed_rebuild": [
+                        "all",
+                        "app",
+                        "build/main.o",
+                        "build/util.o",
+                    ],
+                    "result": "PASS",
+                    "unexpected_rebuild": [],
                 }
             ],
             "policy_sha256": "incremental-policy-digest",
@@ -128,19 +146,30 @@ class PerformanceComparisonTests(unittest.TestCase):
         self.assertEqual(report["execution_context"]["baseline_revision"], "a" * 40)
         self.assertEqual(report["execution_context"]["candidate_revision"], "b" * 40)
         self.assertEqual(report["incremental_work"]["result"], "PASS")
+        self.assertEqual(len(report["incremental_work"]["cases"]), 2)
         self.assertEqual(report["scenarios"]["converged-noop"]["delta_seconds"], -0.2)
 
-    def test_rejects_requested_work_drift(self) -> None:
+    def test_rejects_requested_work_drift_in_nonfirst_case(self) -> None:
         baseline = passing_evidence()
         candidate = copy.deepcopy(baseline)
-        candidate["incremental_work"]["cases"][0]["observed_rebuild"].append(
-            "build/main.o"
+        candidate["incremental_work"]["cases"][1]["observed_rebuild"].append(
+            "build/sub/sub.o"
         )
 
         result, report = self.compare(baseline, candidate)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("src/util.c observed_rebuild mismatch", report["failure"])
+        self.assertIn("include/util.h observed_rebuild mismatch", report["failure"])
+
+    def test_rejects_missing_incremental_case(self) -> None:
+        baseline = passing_evidence()
+        candidate = copy.deepcopy(baseline)
+        candidate["incremental_work"]["cases"].pop()
+
+        result, report = self.compare(baseline, candidate)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("incremental input set mismatch", report["failure"])
 
     def test_rejects_changed_incremental_policy(self) -> None:
         baseline = passing_evidence()
