@@ -99,190 +99,264 @@ flowchart LR
 Use that route on purpose. It keeps the day centered on controlled learning instead of on
 accumulating ungoverned experiment history.
 
-## Exercise 1: Name the baseline
+## Exercise 1: Predict the decision gates
 
-You have a published baseline with:
+Before running the audit, copy this table into your experiment packet:
 
-```yaml
-evaluate:
-  threshold: 0.65
+| Case | Will DVC run? | Comparable? | Promotable now? | Expected decision |
+| --- | --- | --- | --- | --- |
+| controlled threshold |  |  |  |  |
+| mixed control change |  |  |  |  |
+| mutated baseline contract |  |  |  |  |
+| population drift |  |  |  |  |
+| metric schema drift |  |  |  |  |
+| missing candidate intent |  |  |  |  |
+| unsafe promotion request |  |  |  |  |
+
+Fill it from the case names alone. For every “no,” name the claim you expect to fail.
+
+Then run:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
 ```
 
-and:
+Compare your predictions with `summary.tsv`. Do not change a prediction silently; annotate
+why your original model was wrong.
 
-```json
-{
-  "f1": 0.81,
-  "precision": 0.78,
-  "recall": 0.84
-}
-```
+What to hand in:
 
-Write a short baseline description that explains:
+- completed prediction table
+- corrected table
+- one paragraph about the most important mistaken assumption
 
-- what state the candidate experiments compare against
-- which evidence files a reviewer should inspect
-- what would make this baseline no longer clean
-- one sentence explaining why baseline must be evidence, not memory
+## Exercise 2: Prove the baseline anchor
 
-Study note:
-If the baseline is vague, every candidate discussion becomes vague too.
+Use `controlled-threshold` and `mutated-baseline-contract`.
 
-## Exercise 2: Scope a candidate
-
-Suppose you want to try:
-
-- lower `evaluate.threshold` from `0.65` to `0.50`
-- switch `fit.model_family` from logistic regression to tree boosting
-- remove weekends from the evaluation data
-
-Decide whether this should be one candidate run or separate candidate runs.
-
-Explain your reasoning and state what the team would lose if all three were combined too
-early.
-
-Study note:
-Focused intent is one of the simplest ways to make experiments educational instead of
-confusing.
-
-## Exercise 3: Interpret a candidate table
-
-You see:
+For each case, inspect:
 
 ```text
-candidate                   threshold    f1     precision    recall
-baseline                    0.65         0.81   0.78         0.84
-lower-threshold-for-recall  0.50         0.84   0.75         0.95
+experiment-contract.json
+evidence/baseline-params.json
+evidence/baseline-metrics.json
+finding.json
 ```
 
-Write a review note that explains:
+Build a baseline proof table:
 
-- what changed
-- what improved
-- what got worse
-- what release objective would make the candidate promising
-- what objective would make it unattractive
+| Required fact | Contract claim | Recorded evidence | Match? |
+| --- | --- | --- | --- |
+| threshold |  |  |  |
+| population ID |  |  |  |
+| metric schema |  |  |  |
+| expected metrics |  |  |  |
 
-Study note:
-The strongest note names the tradeoff directly instead of celebrating whichever number is
-largest.
+Explain why an unchanged Git commit does not rescue the mutated contract.
 
-## Exercise 4: Identify what DVC experiments do not prove
+What to hand in:
 
-A teammate says:
+- both proof tables
+- the exact failed check
+- a repair that does not rewrite the old baseline claim
 
-> We used `dvc exp run`, so the winning candidate is automatically valid.
+## Exercise 3: Audit the changed paths
 
-Write a response that explains:
+Compare:
 
-- what DVC experiments help record
-- what still requires human review
-- one example of a candidate that could be well-recorded but still not promotable
+```text
+CONTROLLED_THRESHOLD
+MIXED_CONTROL_CHANGE
+METRIC_SCHEMA_DRIFT
+```
 
-Study note:
-Tools can preserve evidence without deciding what the evidence means.
+For each candidate, classify every changed path as:
 
-## Exercise 5: Decide promotion or discard
+- planned intervention
+- comparison control
+- unrelated control
+- deterministic consequence
 
-A candidate changes `evaluate.threshold` from `0.65` to `0.50`.
+Then compare the actual changed paths with `allowed_changes` in the experiment contract.
 
-It improves recall, reduces precision, keeps the same reported evaluation population size,
-and matches the release objective of reducing missed escalations.
+What to hand in:
 
-Describe:
+- one change-role table per candidate
+- a decision to split, rebaseline, or continue
+- one sentence explaining why “declared” is weaker than “allowed”
 
-- what you would inspect before applying the candidate
-- what you would check after applying it
-- what a strong promotion note should include
-- one reason you would still reject promotion even if recall improved
+## Exercise 4: Bound the DVC receipts
 
-Study note:
-Applying and promoting are different acts. This exercise is about keeping them separate.
+Open `receipts.json` for `controlled-threshold` and `population-drift`.
+
+For `candidate_run`, `experiment_show`, and `experiment_diff`, record:
+
+| Receipt | Return code | What it proves | What it cannot prove |
+| --- | ---: | --- | --- |
+| candidate run |  |  |  |
+| experiment show |  |  |  |
+| experiment diff |  |  |  |
+
+Explain why the two cases can have similar successful receipts but different comparison
+decisions.
+
+What to hand in:
+
+- both receipt tables
+- one precise claim that only the surrounding population evidence can establish
+
+## Exercise 5: Interpret the controlled tradeoff
+
+Use the controlled baseline and candidate metric files. Calculate:
+
+- recall delta
+- precision delta
+- F1 delta
+- number of additional true escalations
+- number of additional false escalations
+
+Check the result against:
+
+```text
+minimum recall gain: 0.15
+minimum precision:   0.60
+```
+
+Write two decision notes:
+
+1. a policy that prioritizes missed-escalation reduction
+2. a policy that tolerates no additional false escalations
+
+The evidence is identical. The policy judgment should differ.
+
+What to hand in:
+
+- calculations
+- both decision notes
+- the strongest decision the audit itself is allowed to make
 
 ## Midday self-check
 
 Before you move into sweeps, contamination, and retention policy, make sure your packet
 can already answer these questions clearly:
 
-- what baseline state anchors the comparison
-- why a candidate needs a focused intent
-- what experiment recording does and does not prove
-- why promotion needs post-apply inspection and a written reason
+- why the baseline contract and baseline evidence must agree
+- why actual changed paths must match candidate intent
+- what successful DVC receipts do and do not prove
+- why metric policy is reviewed only after comparability
 
 If you cannot answer those four questions in plain language, return to Exercises 1-5 and
 make the packet more explicit before continuing.
 
-## Exercise 6: Queue a controlled parameter sweep
+## Exercise 6: Diagnose continuity failures
 
-Choose two parameters with three meaningful values each. Queue the candidates, predict the
-comparison table shape, and explain why the search space is scientifically justified.
+Compare `population-drift` and `metric-schema-drift`.
 
-What to hand in:
+Complete:
 
-- the sweep grid
-- the hypothesis behind it
-- one sentence explaining why wider search would be noise rather than learning
+| Case | Friendly ID or name | Deeper identity evidence | What changed | Why ranking blocks |
+| --- | --- | --- | --- | --- |
+| population drift |  |  |  |  |
+| metric schema drift |  |  |  |  |
 
-Study note:
-A sweep without a hypothesis is usually just expensive curiosity.
-
-## Exercise 7: Reproduce one experiment outside the queue
-
-Select a candidate and reconstruct it from its recorded code, data, parameters, and
-environment. Compare the reproduced metrics with the experiment record.
+Explain why a stable population ID does not prove stable records and why a familiar metric
+key does not prove stable meaning.
 
 What to hand in:
 
-- the reconstruction route
-- the compared evidence
-- one sentence naming what mismatch would force a deeper audit
+- completed continuity table
+- exact evidence needed to approve a new baseline for each case
 
-Study note:
-This is where experiment evidence stops being local convenience and becomes independent
-proof.
+## Exercise 7: Design bounded repairs
 
-## Exercise 8: Detect a contaminated baseline
+Write a repair plan for:
 
-Introduce one uncommitted semantic change before running a candidate. Use status and
-experiment evidence to show why comparison with the named baseline is no longer clean.
+- mixed control change
+- mutated baseline contract
+- population drift
+- metric schema drift
+- missing candidate intent
 
-Then explain how you would repair the situation without rewriting the story after the
-fact.
+Each plan must choose one:
 
-Study note:
-Contaminated baselines create impressive-looking candidates with weak provenance.
+```text
+split candidate
+restore approved baseline
+establish new baseline
+rewrite intent before rerun
+```
 
-## Exercise 9: Write a promotion review
+Do not propose editing `finding.json` or weakening an audit check.
 
-Prepare a promotion note that names:
+What to hand in:
 
-- baseline
-- candidate
-- changed controls
-- metric outcome
-- known limitations
-- exact Git state to preserve
+- failure, owner, repair, and new evidence for all five cases
+- one explanation of why rerunning alone cannot repair semantic continuity
 
-Include one reason to reject promotion.
+## Exercise 8: Separate comparison from promotion
 
-Study note:
-A good promotion note should still make sense months later to someone who never saw the
-live experiment table.
+Inspect `controlled-threshold` and `unsafe-promotion-request`.
 
-## Exercise 10: Manage experiment retention
+List every comparison check that both cases pass. Then identify the single promotion check
+that differs.
 
-Classify a set of experiments as:
+Draft a promotion decision record with:
 
-- disposable
-- reproducible
-- decision-relevant
-- release-relevant
+```text
+candidate
+baseline
+decision
+owner
+observed tradeoff
+comparison evidence
+reason
+resulting commit or rejection
+```
 
-Define what metadata and artifacts each class must retain and when cleanup is allowed.
+What to hand in:
 
-Study note:
-Retention policy matters because not every experiment deserves the same long-term weight,
-but the important ones do need deliberate preservation.
+- shared comparison evidence
+- completed decision record
+- one sentence explaining why `promotion-request.json` is insufficient
+
+## Exercise 9: Plan a safe apply
+
+Assume the controlled candidate receives approval.
+
+Write the exact observation sequence for:
+
+- before `dvc exp apply`
+- immediately after apply
+- after reproduction and verification
+- after the promotion commit
+
+For each observation, state what would make you stop.
+
+What to hand in:
+
+- ordered command and evidence route
+- stop conditions
+- the fields needed to name the resulting state as the next approved baseline
+
+## Exercise 10: Retain evidence by decision value
+
+Classify all seven audit cases as:
+
+- retain active candidate
+- retain decision summary only
+- retain as regression specimen
+- discard after review
+
+For every classification, name:
+
+- durable learning value
+- minimum retained evidence
+- cleanup trigger
+- owner
+
+There is no single required retention class for every case. Your policy must be internally
+consistent and preserve the evidence needed to defend promotion, rejection, or future
+regression tests.
 
 ## Mastery check
 
@@ -294,3 +368,5 @@ visible:
 - DVC experiments preserve candidate evidence without replacing review judgment
 - selection should describe tradeoffs, not only best metrics
 - promotion should happen only after applying, inspecting, and committing an intended state
+- invalid candidates stay outside metric rankings
+- a valid comparison can still be blocked at the promotion boundary
