@@ -1,35 +1,29 @@
 # CI Gates, Drift Control, and Review Surfaces
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Scaling Workflows Interface Boundaries"]
-  page["CI Gates, Drift Control, and Review Surfaces"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Scaling does not stay safe because people intend to be careful.
 
 It stays safe because the repository makes the risky boundaries visible early.
 
 That is what CI gates and review surfaces are for.
+
+## How to read this page
+
+Read this page with one review question in mind:
+
+> what exact structural claim should fail first if this refactor quietly drifts?
+
+That question keeps gating honest. The page is not about adding more CI. It is about
+teaching the repository to defend named boundaries.
+
+## Why this lesson belongs late in the module
+
+Gates make sense only after the repository has named what it is protecting.
+
+That is why this page comes after ownership, interfaces, and file contracts:
+
+- first decide the boundary
+- then decide how a reviewer should inspect it
+- only then decide which automated surface should fail when it drifts
 
 ## A gate should defend a named contract
 
@@ -44,6 +38,14 @@ Strong gating culture says:
 That difference matters. Otherwise the repository accumulates noisy checks without
 teaching what they protect.
 
+## A strong beginner habit
+
+When you propose a new gate, finish this sentence first:
+
+> This gate exists to protect...
+
+If the ending is vague, the gate is probably vague too.
+
 ## What good scaling gates usually defend
 
 In Module 04, gates are most useful when they protect things like:
@@ -56,6 +58,18 @@ In Module 04, gates are most useful when they protect things like:
 
 These are scaling questions, not merely "did one command exit zero" questions.
 
+## A quick self-check before you keep reading
+
+Think about one CI job you have seen in another repository.
+
+Could you say all three of these clearly?
+
+- what boundary it protects
+- what question it answers
+- what weaker route it intentionally does not replace
+
+If not, the job may be producing more anxiety than clarity.
+
 ## A practical gate ladder
 
 Useful gates often build on one another:
@@ -67,6 +81,16 @@ Useful gates often build on one another:
 - stronger end-to-end proof routes when the change claims repository-level safety
 
 The ladder matters because not every diff deserves the heaviest route first.
+
+## The common bad repair
+
+A common bad repair is to respond to repository growth by adding one more heavy end-to-end
+check every time someone feels uneasy.
+
+That creates two problems:
+
+- failures become harder to localize
+- reviewers still do not know which contract the gate was meant to defend
 
 ## Drift control is part of the same story
 
@@ -103,6 +127,17 @@ Examples:
 - a verification bundle helps review whether the publish contract still aligns
 
 Those are stronger than "we ran CI and it passed" because they teach what passed.
+
+## What a good explanation sounds like
+
+Strong:
+
+> The rulegraph review exists because the split introduced new rule families, while the
+> contract validation exists because one path family became public to consumers.
+
+Weak:
+
+> We added more checks because the repo is larger now.
 
 ## Common failure modes
 

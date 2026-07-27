@@ -7,6 +7,31 @@ This file ties the whole module together around one realistic problem:
 The question is not "how do we create more files?" The question is how to make growth
 land in named places without hiding the graph.
 
+## How to use this worked example
+
+Treat this page like a repository refactor lab, not like a tidy after-action report.
+
+For each repair step:
+
+1. name the ownership or interface boundary you are changing
+2. predict which review surface should prove the change stayed honest
+3. keep the before-and-after evidence next to the structural decision
+
+If you skip the ownership question, the example turns into folder choreography instead of
+workflow design.
+
+## The one-day teaching goal
+
+By the end of this example, a learner should be able to refactor a growing workflow so
+that:
+
+- rule families land in named places
+- the top-level graph stays visible
+- only real interfaces become modules
+- public paths stay distinct from internal state
+
+That is the educational goal. The number of files is not the goal.
+
 ## The lab route
 
 Work through the example in this order:
@@ -16,6 +41,18 @@ Work through the example in this order:
 3. decide whether one candidate boundary is only an include or a true module
 4. document the public file contract the refactor must preserve
 5. finish by choosing gates that prove the new structure still tells the truth
+
+## What to keep beside you while you work
+
+Keep these four surfaces visible while you move through the example:
+
+- the top-level `Snakefile`
+- the current rule list or rulegraph
+- the public file contract note
+- the gate or review surface you are using for each claim
+
+Those four views are enough to explain whether the repository became clearer or only more
+abstract.
 
 ## The starting situation
 
@@ -60,6 +97,16 @@ Each file now owns one coherent concern:
 The repository improves because a reviewer can explain each boundary quickly, not because
 the file count increased.
 
+## Why this first move matters educationally
+
+Many learners jump straight to modules because modules sound more advanced.
+
+Module 04 needs the opposite instinct:
+
+- first name the owned concerns
+- then split one visible graph by those concerns
+- only then ask whether any boundary deserves reuse as an interface
+
 ## Keep the entrypoint short and honest
 
 The top-level `Snakefile` should still reveal orchestration:
@@ -95,6 +142,15 @@ snakemake -n
 The structural refactor is not successful unless those surfaces still tell the same
 workflow story.
 
+## A short checkpoint before you continue
+
+Pause here and say one sentence like this:
+
+> The entrypoint is shorter now, but it still explains configuration, major concerns, and
+> the final promised contract.
+
+If that sentence is hard to defend, the split may already be hiding too much.
+
 ## Promote only a real reusable boundary
 
 Now inspect one candidate concern more closely.
@@ -116,6 +172,12 @@ That is the key distinction:
 - modules expose a reusable boundary with an interface
 
 Do not promote a module just because a file is long.
+
+## What the learner should notice now
+
+The hard part of modularity is not moving code. The hard part is deciding whether another
+caller could understand and trust the interface without knowing the private repository
+story.
 
 ## Write the public contract before the gate
 
@@ -152,6 +214,17 @@ That usually leads to a gate set like this:
 - `snakemake --lint` for design smells that the split exposed
 
 This is the difference between a meaningful gate and generic CI noise.
+
+## What a strong summary sounds like
+
+Strong:
+
+> The repository split by ownership first, promoted only explicit interfaces, documented
+> the public contract, and chose gates that defend those exact structural claims.
+
+Weak:
+
+> We made it more modular and added some CI.
 
 ## Keep resource assumptions portable
 

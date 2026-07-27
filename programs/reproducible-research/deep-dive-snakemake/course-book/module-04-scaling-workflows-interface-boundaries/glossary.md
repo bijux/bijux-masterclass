@@ -1,35 +1,19 @@
 # Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Scaling Workflows Interface Boundaries"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this glossary to keep the language of Module 04 stable while you move between the
 core lessons, worked example, exercises, and capstone evidence.
 
 The goal is not extra jargon. The goal is to make scaling and interface decisions sound
 like clear repository boundaries instead of vague architecture talk.
+
+## When to stop and check the glossary
+
+Pause and check a term when:
+
+- your explanation depends on "modular" without naming the actual ownership boundary
+- you are treating an include split and a reusable module as if they were the same thing
+- you can tell a path matters to consumers but cannot yet say whether it is public or internal
+- you are calling a gate useful without saying what contract it protects
 
 ## Terms in this module
 
@@ -59,3 +43,18 @@ When you explain a Module 04 situation, aim to say things like:
 - "the executor-facing policy adapts a workflow-side resource distinction"
 
 Those sentences are much more useful than saying only "the repo should be more modular."
+
+## Terms you should be able to use by the end of the day
+
+If Module 04 is landing properly, these terms should feel ordinary by the end:
+
+- rule family
+- named ownership
+- visible graph
+- file API
+- module boundary
+- public contract
+- review surface
+
+If those still feel decorative rather than useful, revisit the worked example and the
+first seven exercises before moving on.
