@@ -25,6 +25,20 @@ Now ask one question repeatedly:
 
 That is the question versioning exists to answer honestly.
 
+## If you are learning this without the live class
+
+Turn this page into a compatibility lab instead of reading it as theory.
+
+Use it in four passes:
+
+1. write the current `publish/v1/` promise in one plain sentence
+2. choose one additive change and one breaking change before you read the examples below
+3. test each change from the consumer's point of view, not the author's convenience
+4. finish by writing one note that says whether `v1` still tells the truth
+
+If you cannot state the current promise in one sentence, you are not ready to judge
+whether it still survives the change.
+
 ## `publish/v1/` is a promise, not a convenience path
 
 When a workflow publishes under a path such as `publish/v1/`, it is saying:
@@ -81,6 +95,20 @@ Some changes are usually contract changes:
 
 That is the judgment this page is trying to sharpen.
 
+## The compatibility card to keep beside you
+
+Use this table before you call any change "small":
+
+| Proposed change | What the old consumer asks | Likely classification |
+| --- | --- | --- |
+| add optional field to `summary.json` | can I still parse the old structure without code changes | often compatible |
+| rename `publish/v1/summary.json` | can I still find the same path | usually contract change |
+| keep path but change field meaning | can I still trust my old interpretation | usually contract change |
+| add reviewed discovery evidence beside existing files | does this preserve the old promise while giving more explanation | often compatible if existing paths and meanings survive |
+
+If the old consumer cannot answer yes to path and meaning survival, stop calling the
+change compatible.
+
 ## A simple compatibility map
 
 ```mermaid
@@ -93,6 +121,19 @@ flowchart TD
 ```
 
 This is not a legal standard. It is a practical review tool.
+
+## A consumer-first audit loop
+
+Run this loop whenever you propose a publish change:
+
+1. name one existing consumer and the exact file it reads
+2. say what that consumer assumes about the path and meaning today
+3. describe the proposed change without using Git language first
+4. decide whether the old assumption still survives
+5. only then ask whether the diff "looks small"
+
+That order matters because teams often start from the author-visible diff and only later
+remember that another program was depending on the old contract.
 
 ## A learner-friendly rule of thumb
 
@@ -124,7 +165,8 @@ That means files such as:
 - `report/index.html`
 - `manifest.json`
 - `provenance.json`
-- `discovered_samples.json`
+- `accepted_samples.json`
+- `rejected_samples.json`
 
 are expected to be reviewed as part of a versioned surface, not as loose outputs.
 
@@ -196,6 +238,17 @@ Ask these questions:
 
 If the answer to the first or second question is no, treat the change as a contract change
 unless you can defend compatibility clearly.
+
+## One migration note you should be able to write
+
+Before you leave the page, practice writing one note like this:
+
+> `publish/v1/summary.json` keeps the same path and field meanings, so current consumers
+> survive unchanged. The bundle adds `accepted_samples.json` and `rejected_samples.json`
+> to make membership review easier, which is additive rather than breaking.
+
+If you cannot write a note at that level of specificity, your compatibility reasoning is
+still too vague.
 
 ## Common failure modes
 
