@@ -1,39 +1,87 @@
 # Exercises
+
 Use these after reading the five core lessons and the worked example. The goal is not to
-show off Make syntax. The goal is to make your generation and pipeline reasoning visible.
+show off Make syntax. The goal is to make your generation, publication, and consumer
+boundary reasoning visible.
 
-## How to work this exercise set
+## How to work through this set
 
-Treat these as publication-design exercises, not just as codegen exercises.
+Treat the ten exercises as one full lab day on publication design for generated outputs.
 
-Work in this order:
+Before each answer:
 
-- Exercises 1-3: name generated boundaries and decide what the graph should represent
-- Exercises 4-6: create small truthful generation rules
-- Exercises 7-8: test recovery and failure behavior
-- Exercises 9-10: defend a full publication protocol under pressure
+1. name the publication or boundary truth you are trying to protect
+2. decide which artifact or transcript would prove that truth
+3. state exactly when downstream consumers are allowed to trust the output set
 
-Each exercise asks for three things:
+If you skip the trust question, generators start to look like magical side effects instead
+of publication events with real contracts.
 
-- the generator fact you are trying to prove
-- the evidence or command that would prove it
-- the repair or design choice that follows from that evidence
+Do the exercises in order. The day is one progression:
 
-For every generator, include a publication record:
+- Exercises 1-3 teach you to name generated boundaries, coupled outputs, and justified
+  manifests
+- Exercises 4-6 turn those ideas into truthful staging and first-generation rules
+- Exercises 7-8 test deletion recovery and failure preservation
+- Exercises 9-10 defend complete publication protocols under realistic pressure
+
+Keep one generator packet as you go. By the end of the day it should contain:
+
+- one graph story for a generated file
+- one honest repair for a coupled-output generator
+- one publication record describing trust boundaries
+- one convergent first-generation example
+- one failure drill that preserves trusted outputs
+- one full pipeline demonstration with explicit limits
+
+If those six artifacts are missing, you are probably discussing code generation in general
+instead of learning how to publish generated artifacts honestly.
+
+## Recommended working layout
+
+If you want one lab tree that can support the whole day, use something like:
+
+```text
+module06-lab/
+├── Makefile
+├── schema/
+├── scripts/
+├── build/
+├── publish/
+├── notes/
+└── artifacts/
+```
+
+For every generator, keep one publication record:
 
 | Complete output set | Candidate location | Validation | Commit event | Allowed failure leftovers |
 | --- | --- | --- | --- | --- |
 
-If the “commit event” column names several unrelated moves, explain how consumers are
+If the `commit event` column names several unrelated moves, explain how consumers are
 protected from observing a mixed generation.
 
-## Minimum evidence for every answer
+Also keep one consumer table:
 
-Try to include:
+| Consumer | Depends on published file | Depends on manifest | Why |
+| --- | --- | --- | --- |
 
-- one graph or pipeline sketch
-- one trace or run transcript
-- one clear description of when outputs become trustworthy
+That second table matters because not every consumer should depend on every boundary
+artifact.
+
+```mermaid
+flowchart LR
+  inputs["identify semantic inputs"]
+  stage["generate into staging space"]
+  validate["validate the whole output set"]
+  publish["publish one trusted generation"]
+  consume["let downstream targets read published outputs"]
+  recover["recover cleanly from deletion or failure"]
+
+  inputs --> stage --> validate --> publish --> consume --> recover
+```
+
+Use that route on purpose. It keeps the day centered on publication truth instead of on
+generator implementation details alone.
 
 ## Exercise 1: Tell the graph story of one generated file
 
@@ -45,11 +93,16 @@ What to hand in:
 - the generated file path
 - the semantic inputs that define its meaning
 - one consumer target and why it should depend on that published output
+- one sentence explaining why the generator itself is not the right dependency edge
+
+Study note:
+This exercise is about published artifacts, not vague claims that "the code generator
+runs." Downstream targets read files, so the graph should name those files.
 
 ## Exercise 2: Repair a coupled output rule
 
-A single generator invocation produces both `api.h` and `api.json`, but the current rule is
-naive and occasionally runs twice under `-j`.
+A single generator invocation produces both `api.h` and `api.json`, but the current rule
+is naive and occasionally runs twice under `-j`.
 
 Design a repair that gives the build one honest publication event.
 
@@ -58,11 +111,16 @@ What to hand in:
 - the bug explanation in plain language
 - either a grouped-target repair or a stamp-based repair
 - one command you would run to prove single invocation under pressure
+- one sentence naming the complete output set the event publishes
+
+Study note:
+The problem is not merely "parallelism." The problem is that one logical generation event
+is modeled too loosely.
 
 ## Exercise 3: Decide whether a manifest is justified
 
-A teammate wants to add `build/codegen.manifest`. You are not yet convinced it represents a
-real boundary rather than a missing edge.
+A teammate wants to add `build/codegen.manifest`. You are not yet convinced it represents
+a real boundary rather than a missing edge.
 
 Explain how you would decide whether the manifest is justified.
 
@@ -71,6 +129,10 @@ What to hand in:
 - the specific boundary fact the manifest would represent
 - one example of a target that should depend on it
 - one example of a target that should still depend on a direct generated output instead
+- one sentence explaining when a manifest would only be hiding weak graph design
+
+Study note:
+This is where you learn to separate useful boundary artifacts from decorative paperwork.
 
 ## Exercise 4: Protect a pipeline from partial publication
 
@@ -83,6 +145,11 @@ What to hand in:
 - the temporary-space rule you would introduce
 - the validation step
 - the exact publication point after which outputs become trustworthy
+- one sentence explaining what may remain behind after failure
+
+Study note:
+Partial temporary leftovers can be acceptable for diagnosis. Partial trusted publication
+is not.
 
 ## Exercise 5: Diagnose one generator failure mode
 
@@ -101,6 +168,23 @@ What to hand in:
 - the failure class
 - the command that would give you the first useful evidence
 - the graph or publication repair you would try next
+- one sentence explaining why that probe is less disruptive than jumping to cleanup
+
+Study note:
+The first probe should reveal which truth is broken, not just force the build through.
+
+## Midday self-check
+
+Before you move into concrete generation and recovery behavior, make sure your packet can
+already answer these questions cleanly:
+
+- which artifact set constitutes one complete generation
+- which consumers need direct file edges and which need a boundary artifact
+- which point in your pipeline marks the start of downstream trust
+- which failure leftovers are diagnostic and which would be dangerous
+
+If you cannot answer those four questions in plain language, return to Exercises 1-5 and
+make the packet more explicit before continuing.
 
 ## Exercise 6: Build your first generated target
 
@@ -112,6 +196,11 @@ What to hand in:
 - the complete rule
 - traces from the initial, no-op, and changed-input runs
 - the generated header after the change
+- one sentence explaining why the no-op run proves convergence
+
+Study note:
+The first generated target should feel calm and inspectable. If it already feels magical,
+shrink the design until every edge is obvious again.
 
 ## Exercise 7: Recover from one deleted coupled output
 
@@ -123,6 +212,11 @@ What to hand in:
 - the grouped-target rule
 - generator invocation counts before and after deletion
 - an explanation of why the whole grouped recipe runs
+- one sentence explaining why counting starts is stronger than inferring from timestamps
+
+Study note:
+This exercise matters because coupled outputs are about publication units, not just about
+sharing a recipe body.
 
 ## Exercise 8: Inject a generator failure
 
@@ -134,6 +228,10 @@ What to hand in:
 - the failure switch or input
 - the failing command and exit status
 - proof that the previously trusted outputs were not replaced
+- one sentence explaining why temporary debris can still be useful
+
+Study note:
+A good failure drill proves both safety and diagnosability.
 
 ## Exercise 9: Choose a publication protocol
 
@@ -150,6 +248,12 @@ What to hand in:
 - the local-build design
 - the strict publication design
 - a diagram showing the point where downstream trust begins
+- one sentence explaining why set-level publication is a stronger contract than file-level
+  replacement
+
+Study note:
+This is where the course moves from "files were updated" to "consumers observed one
+consistent generation."
 
 ## Exercise 10: Repair a complete generator pipeline
 
@@ -163,6 +267,12 @@ What to hand in:
 - the six command transcripts
 - a graph drawing that distinguishes generation, validation, publication, and consumption
 - one paragraph identifying the remaining publication guarantee and its limits
+- one sentence naming which boundary artifact was truly necessary and which would have
+  been decorative
+
+Study note:
+The goal is not to make the pipeline perfect. The goal is to make its guarantees explicit
+and honest enough that another maintainer can reason about them.
 
 ## Before you read the answers
 
@@ -172,6 +282,10 @@ Do not open `exercise-answers.md` until you can already point to:
 - one coupled-output repair you can defend
 - one failure that leaves trusted outputs untouched
 - one recovery path after deleting a generated artifact
+- one publication design whose guarantee you can state precisely
+
+If you do not yet have those five things, the answer page will sound stronger than it can
+teach.
 
 ## Mastery standard for this exercise set
 

@@ -27,11 +27,35 @@ flowchart LR
 
 Use this after you have written your own answers. The point is comparison, not copying.
 
-Strong Module 06 answers do not just name a Make feature. They explain:
+## How to use the answer page well
 
-- what publication or boundary truth is at stake
-- what evidence would expose that truth
-- why the repair matches the real generator behavior better than the broken version
+Do not read a model answer first and then reshape your generator packet to sound similar.
+
+A better rhythm is:
+
+1. finish the exercise with your own graph, traces, and notes
+2. write one plain-language explanation of the publication truth
+3. compare that explanation with the model answer
+4. revise where the model answer exposes a missing boundary, weak consumer edge, or vague
+   publication rule
+
+Strong Module 06 answers do not just name a Make feature. They usually do four things:
+
+- they state what publication or boundary truth is at stake
+- they point to the evidence that exposes that truth
+- they describe the repair as a more honest publication model
+- they state when consumers may trust the result set
+
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one graph story for a generated file
+- one honest coupled-output repair
+- one justified manifest decision
+- one failure-safe staging design
+- one deletion-recovery proof
+- one complete publication protocol
+
+If your answers rely only on "generators are tricky," the reasoning is still too weak.
 
 ## Exercise 1: Tell the graph story of one generated file
 
@@ -47,8 +71,10 @@ For example:
 > modeled boundary file that records relevant generation mode. `main.o` should depend on
 > the header because that is the file the compiler actually reads.
 
-The important move is that the answer centers the published output, not the vague fact that
-"the generator runs."
+The important explanation is:
+
+> The generator itself is not the useful consumer edge; the published file is, because
+> that is the artifact the downstream rule actually reads.
 
 ## Exercise 2: Repair a coupled output rule
 
@@ -85,6 +111,11 @@ make -j2 api.h api.json
 
 or the same command with `--trace` if you want explicit rebuild reasoning.
 
+The complete output set is:
+
+> every file the single generator invocation promises to publish together, not whichever
+> path happened to be requested first.
+
 ## Exercise 3: Decide whether a manifest is justified
 
 A strong answer says a manifest is justified only if it names a real boundary fact that is
@@ -99,8 +130,13 @@ For example, a manifest may be justified if it represents:
 A stage that validates or summarizes the generated set may reasonably depend on that
 manifest.
 
-But a compile step that directly reads `api.h` should still depend on `api.h`, not only on
-the manifest. That distinction is the heart of the answer.
+But a compile step that directly reads `api.h` should still depend on `api.h`, not only
+on the manifest. That distinction is the heart of the answer.
+
+The key explanation is:
+
+> A manifest becomes decorative when it merely stands in for a direct file edge that the
+> consumer already needs honestly.
 
 ## Exercise 4: Protect a pipeline from partial publication
 
@@ -120,8 +156,12 @@ build/include/api.h build/api.json &: schema/api.yml scripts/gen_api.py | build/
 	@mv build/tmp/api.json build/api.json
 ```
 
-The key reasoning is that downstream trust begins only after validation and final
-publication, not while temporary content is still being assembled.
+The key reasoning is:
+
+> Downstream trust begins only after validation and final publication, not while temporary
+> content is still being assembled.
+
+Temporary debris may remain for diagnosis; it is not trusted output.
 
 ## Exercise 5: Diagnose one generator failure mode
 
@@ -129,22 +169,31 @@ A strong answer names one failure class and keeps the first evidence command sim
 
 For example:
 
-- failure class: duplicate execution under `-j`
-- first evidence: `make -j2 --trace all`
-- likely repair: grouped targets or a stamp representing one generation event
+- failure class:
+  - duplicate execution under `-j`
+- first evidence:
+  - `make -j2 --trace all`
+- likely repair:
+  - grouped targets or a stamp representing one generation event
 
 Or:
 
-- failure class: unstable manifest
-- first evidence: `make all && make -q all; echo $?`
-- likely repair: replace timestamp noise with a convergent manifest that records semantic facts
+- failure class:
+  - unstable manifest
+- first evidence:
+  - `make all && make -q all; echo $?`
+- likely repair:
+  - replace timestamp noise with a convergent manifest that records semantic facts
 
 The strongest answers avoid random shell edits and stay anchored to graph or publication
 truth.
 
+The first probe is strong when it reveals the broken truth without destroying the state
+you needed to inspect.
+
 ## Exercise 6: Build your first generated target
 
-A minimal answer is:
+A minimal convergent answer is:
 
 ```make
 .PHONY: all
@@ -153,15 +202,20 @@ all: build/version.h
 
 build/version.h: VERSION | build/
 	@printf '#define VERSION "%s"\n' "$$(cat $<)" > $@.candidate
-	@mv $@.candidate $@
+	@cmp -s $@.candidate $@ 2>/dev/null || mv $@.candidate $@
+	@rm -f $@.candidate
 
 build/:
 	mkdir -p $@
 ```
 
 The evidence should show one recipe on the first run, no recipe on the second, and one
-recipe after changing `VERSION`. The order-only directory prerequisite avoids rebuilding
-the header merely because the directory timestamp changed.
+recipe after changing `VERSION`.
+
+The key explanation is:
+
+> The no-op run proves convergence because unchanged semantic input produces no new
+> published artifact content and therefore no honest rebuild reason.
 
 ## Exercise 7: Recover from one deleted coupled output
 
@@ -175,6 +229,11 @@ build/api.h build/api.json &: schema.yml generate.py | build/
 After both files exist, deleting `build/api.json` makes the grouped target out of date.
 Requesting the pair causes one generator invocation that refreshes both outputs. The
 submission should count actual generator starts, not infer them from file timestamps.
+
+The important explanation is:
+
+> Counting starts is stronger than reading timestamps because it proves the build modeled
+> one publication event instead of coincidentally landing on matching file times.
 
 ## Exercise 8: Inject a generator failure
 
@@ -192,7 +251,12 @@ build/api.h build/api.json &: schema.yml generate.py | build/
 
 If generation or validation exits nonzero, the `mv` commands never run. Evidence should
 include the nonzero status and checksums proving that previously published files did not
-change. Temporary debris may remain for diagnosis; it is not trusted output.
+change.
+
+The key explanation is:
+
+> Temporary debris is useful because it helps diagnose the failure without expanding the
+> trust boundary to partial published outputs.
 
 ## Exercise 9: Choose a publication protocol
 
@@ -209,9 +273,14 @@ build/releases/sha-a/api.json
 build/current -> releases/sha-a
 ```
 
-Build and validate `sha-b`, create a new symlink, then rename that symlink over `current`.
-The pointer is the publication event. Two separate file renames cannot provide the same
-set-level guarantee.
+Build and validate `sha-b`, create a new symlink, then rename that symlink over
+`current`. The pointer is the publication event. Two separate file renames cannot provide
+the same set-level guarantee.
+
+The important explanation is:
+
+> Set-level publication is stronger than file-level replacement because consumers either
+> observe one complete generation or another, never an in-between mix.
 
 ## Exercise 10: Repair a complete generator pipeline
 
@@ -226,9 +295,14 @@ should establish:
 - an injected failure returns nonzero and preserves trusted output checksums
 
 The graph should show source and generator inputs entering one generation event,
-validation before publication, and consumers depending on published files. The final
-paragraph must state whether publication is failure-safe for ordinary command errors or
-atomic for concurrent readers; those are different guarantees.
+validation before publication, and consumers depending on published files.
+
+The final paragraph must state whether publication is:
+
+- failure-safe for ordinary command errors
+- atomic for concurrent readers
+
+Those are different guarantees, and the strongest answers name the difference explicitly.
 
 ## What mastery-level answers sound like
 
@@ -236,6 +310,7 @@ A mastery-level answer set in this module does three things well:
 
 - it treats generated outputs as graph targets rather than magical side effects
 - it models publication units honestly
-- it explains stamps, manifests, and pipeline publication as boundary decisions, not just as syntax choices
+- it explains manifests, stamps, and publication protocols as boundary decisions, not just
+  syntax choices
 
 That is the standard Module 06 is trying to build.
