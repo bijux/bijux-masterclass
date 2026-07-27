@@ -136,6 +136,70 @@ The mini relational model is educational because it exposes the mechanism clearl
 omits the infrastructure a real ORM would need, such as transactions, identity maps, and
 query planning.
 
+## Answer 7: Make one backend access path observable
+
+Example answer:
+
+Suppose a descriptor reads through a key-value store on cache miss.
+
+Strong observability additions:
+
+- increment a per-field read counter
+- emit a small trace or log line when backend access occurs
+- expose an explicit helper such as `field_stats(obj)` for teaching and review
+
+Good conclusion:
+
+Backend-backed attribute access is harder to reason about when the I/O stays invisible.
+An observation surface makes the hidden cost and lifecycle easier to teach and review.
+
+## Answer 8: Separate one field concern from one framework concern
+
+Example answer:
+
+Mixed design:
+
+- a descriptor validates one field
+- lazily loads related records
+- coordinates cross-record invalidation
+
+Strong split:
+
+- field concern that stays: validating and storing one attribute contract
+- framework concern that moves out: coordinating related-record lifecycle and invalidation
+
+Good conclusion:
+
+The split makes review easier because field semantics stay local while coordination logic
+moves to an owner that can see the wider model lifecycle.
+
+## Answer 9: Compare honest field claims with overstated framework claims
+
+Example answer:
+
+Honest description:
+
+- "This descriptor caches one computed value and invalidates it when the backing field changes."
+
+Overstated description:
+
+- "This descriptor keeps the whole model synchronized automatically."
+
+Good conclusion:
+
+The second version is misleading because words such as "whole model" and
+"automatically" imply broader orchestration than one field-level owner can honestly
+guarantee.
+
+## Answer 10: Produce a descriptor-system packet
+
+The packet is strong when another learner can answer:
+
+- what the field layer owns
+- where the real source of truth lives
+- how invalidation or observation works
+- when broader framework coordination should move out of the descriptor
+
 ## What strong Module 08 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -145,6 +209,8 @@ Across the whole set, strong answers share the same habits:
 - they keep composed fields shallow and readable
 - they name the exact hint subset a field understands
 - they say when a field system has become broader architecture
+- they make invalidation and backend access visible
+- they leave behind a packet another learner can review without guessing
 
 If an answer still sounds like "framework behavior can live in the descriptor somehow,"
 revise it until you can say exactly what the descriptor owns and what should move out of

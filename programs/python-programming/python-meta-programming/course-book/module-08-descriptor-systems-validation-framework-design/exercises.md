@@ -35,6 +35,20 @@ Each exercise asks for three things:
 - the descriptor or broader owner you chose
 - the reason that choice is the clearest one
 
+Treat the ten exercises as one full lab day on descriptor systems and framework boundaries.
+
+Do them in order:
+
+- Exercises 1-3 establish honest cache design, external storage, and shallow composition
+- Exercises 4-6 keep hint support narrow and separate field ownership from model ownership
+- Exercises 7-8 extend that discipline into backend observability and escalation out of field logic
+- Exercises 9-10 package the whole module into a reviewable descriptor-system packet
+
+Keep one descriptor-system table while you work:
+
+| Field behavior or framework pressure | Smallest honest owner | Source of truth | Invalidation or coordination rule | Review judgment |
+| --- | --- | --- | --- | --- |
+
 ## Exercise 1: Design one cached field honestly
 
 Create or inspect one descriptor that caches a computed value.
@@ -95,6 +109,69 @@ What to hand in:
 - one thing the model layer or framework layer must own instead
 - one explanation of why this example is educational rather than production-grade
 
+## Midday self-check
+
+Before moving into the final four exercises, make sure you can already answer these
+questions clearly:
+
+- why cache invalidation is part of the field contract instead of an optional extra
+- what source of truth a backend-backed descriptor is really hiding
+- when composition still keeps a field system readable and when it starts obscuring ownership
+- what pressure shows that a descriptor has crossed from field logic into architecture
+
+If you cannot answer those four questions in plain language, return to Exercises 1-6 and
+make the source of truth, invalidation rule, and escalation boundary more explicit before
+continuing.
+
+## Exercise 7: Make one backend access path observable
+
+Choose one backend-backed descriptor and design a way for learners or reviewers to see when
+attribute access crosses into I/O or shared storage.
+
+What to hand in:
+
+- the backend-backed field
+- one observation surface such as logging, counters, tracing, or explicit read helpers
+- one explanation of why hidden I/O makes the field harder to reason about
+
+## Exercise 8: Separate one field concern from one framework concern
+
+Take one descriptor design and split its responsibilities into one field-level concern and
+one wider framework or service concern.
+
+What to hand in:
+
+- the mixed design
+- the field-level concern that should stay
+- the wider concern that should move out
+- one explanation of why the split makes the architecture easier to review
+
+## Exercise 9: Compare honest field claims with overstated framework claims
+
+Choose one descriptor-system design and write both an honest description and an overstated
+description of what it guarantees.
+
+What to hand in:
+
+- the honest description
+- the overstated description
+- one explanation of which words make the overstated version misleading
+
+## Exercise 10: Produce a descriptor-system packet
+
+Assemble:
+
+- one descriptor-system table
+- one cached field with an explicit invalidation rule
+- one backend-backed field with a named source of truth
+- one escalation rule explaining when descriptor logic must move to a framework or service owner
+
+The packet is strong when another learner can use it to answer:
+
+- what the field layer owns directly
+- where data really lives
+- when the design has crossed into wider architecture
+
 ## Mastery standard for this exercise set
 
 Across all six answers, the module wants the same habits:
@@ -104,6 +181,11 @@ Across all six answers, the module wants the same habits:
 - you keep composed fields inspectable
 - you keep hint-driven validation narrow and honest
 - you name the point where field logic turns into framework architecture
+
+Across all ten answers, add two more habits:
+
+- you make backend access and invalidation visible instead of implicit
+- you leave behind a descriptor-system packet another learner could review without guessing
 
 If an answer still sounds like "the smart descriptor handles it," keep going.
 
