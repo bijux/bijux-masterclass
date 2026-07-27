@@ -29,6 +29,14 @@ Use this page after attempting the exercises yourself. The point is not to match
 example literally. The point is to compare your reasoning against answers that name the
 runtime claim first and then judge the strength of the evidence honestly.
 
+Treat these answers as a review model, not a final script to copy. A strong answer on
+this page always leaves four things visible:
+
+- the runtime claim under review
+- the evidence surface chosen for that claim
+- the strength of that evidence surface
+- the boundary statement that keeps the answer honest
+
 ## Answer 1: Describe one callable contract precisely
 
 Example answer:
@@ -57,6 +65,12 @@ Good conclusion:
 The signature is stronger than a hand-written summary because it exposes interpreter-level
 parameter rules, not just a human description of "roughly what the function takes."
 
+Reasoning checkpoint:
+
+- the runtime claim is "what call shape does Python enforce here?"
+- `inspect.signature()` is strong evidence for that claim
+- the signature still does not prove semantic behavior, side effects, or whether annotated values are meaningful
+
 ## Answer 2: Bind one call honestly
 
 Example answer:
@@ -84,6 +98,12 @@ Good conclusion:
 Binding is better than manual matching because it reuses Python's own call rules, including
 positional-only and keyword-only behavior, instead of relying on incomplete custom logic.
 
+Reasoning checkpoint:
+
+- the runtime claim is "would this call bind under Python's real argument rules?"
+- `sig.bind(...)` is stronger than home-grown tuple or dict matching because it exercises the actual binding protocol
+- `bind_partial()` belongs only when the review question explicitly allows missing required parameters
+
 ## Answer 3: Recover provenance without overclaiming
 
 Example answer:
@@ -110,6 +130,12 @@ Good limitation statement:
 Those helpers are best-effort because interactive sessions, generated code, packaged
 environments, or transformed source can break or weaken the recovery path.
 
+Reasoning checkpoint:
+
+- the runtime claim is "what ownership or source context can I recover about this object?"
+- provenance helpers support review and tracing, not correctness-grade proof
+- the honest fallback is to keep the tool useful when recovery fails, not to invent a stronger ownership story
+
 ## Answer 4: Compare dynamic members with static structure
 
 Example answer:
@@ -134,6 +160,12 @@ Good conclusion:
 
 Dynamic member enumeration is a value-oriented tool and may execute behavior. Static lookup
 is the stronger fit for framework inspection when the goal is to inspect structure safely.
+
+Reasoning checkpoint:
+
+- the runtime claim is "what member is attached here, and do I need structure or resolved value?"
+- `getmembers()` answers resolved-value questions and may trigger behavior
+- `getattr_static()` answers attached-object questions and is the safer review tool when descriptors matter
 
 ## Answer 5: Use frames only as diagnostics
 
@@ -168,6 +200,12 @@ Good conclusion:
 This belongs to diagnostics because it inspects execution context rather than explicit
 program state. It should not become ordinary application control flow.
 
+Reasoning checkpoint:
+
+- the runtime claim is "what minimal caller context helps explain this run?"
+- frame inspection is diagnostic-only evidence, even when it is accurate
+- the production repair is to pass the needed context explicitly or keep it in owned state
+
 ## Answer 6: Review a runtime-description helper
 
 Example answer:
@@ -188,6 +226,12 @@ Good repair if the helper is weaker:
 
 If the helper currently uses `getattr` over arbitrary names, replace that with direct
 storage reads and deliberate slot handling so representation stays observational.
+
+Reasoning checkpoint:
+
+- the runtime claim is "can this helper describe object state without causing new behavior?"
+- signature ordering helps with presentation order, but stored state is the stronger source for values
+- the helper becomes less honest the moment it starts pulling provenance or caller context into a value-reporting tool
 
 ## Answer 7: Compare signature evidence with annotation evidence
 
@@ -216,6 +260,12 @@ Good conclusion:
 Annotations support review, but signature evidence is stronger for runtime contract shape
 because Python enforces the binding rules directly through the call protocol.
 
+Reasoning checkpoint:
+
+- the runtime claim is "what is enforced at call time, and what is advisory metadata?"
+- annotations help explain intended value categories
+- treating annotations as full contract proof would overclaim runtime guarantees they do not enforce alone
+
 ## Answer 8: Build one provenance-and-contract manifest
 
 Example answer:
@@ -236,6 +286,12 @@ Good conclusion:
 
 A reviewer should trust the contract and ownership story first, then treat source recovery
 as helpful context rather than as the main proof.
+
+Reasoning checkpoint:
+
+- the runtime claim is "what should a reviewer trust without rerunning the whole environment?"
+- contract evidence should carry the main proof route
+- provenance and source recovery should stay explicitly marked as best-effort or convenience surfaces
 
 ## Answer 9: Separate production evidence from debugging evidence
 
@@ -260,6 +316,12 @@ Production evidence answers the durable runtime contract and ownership questions
 Debugging evidence helps explain a moment in execution but should not be promoted into the
 main correctness claim.
 
+Reasoning checkpoint:
+
+- the runtime claim is "what evidence belongs in a correctness path and what belongs only in debugging?"
+- production evidence should survive review, reruns, and automation better than stack snapshots
+- the path you refuse to place in hot logic is the one whose truth depends on transient execution context
+
 ## Answer 10: Produce a runtime evidence packet
 
 The packet is strong when another learner can answer:
@@ -268,6 +330,24 @@ The packet is strong when another learner can answer:
 - which surface proves call shape directly
 - which provenance details are strong enough for review and which are only convenience
 - where the packet drops into diagnostics instead of durable contract evidence
+
+What a strong packet also shows:
+
+- the exact sentence where signature evidence stops and semantic interpretation begins
+- the limitation statement attached to every provenance surface
+- the explicit reason a diagnostic helper stayed out of production logic
+
+## Repair table for weak answer keys
+
+Use this table when an answer still sounds polished but vague:
+
+| Weak answer pattern | Why it is weak | Repair |
+| --- | --- | --- |
+| "The signature explains the function." | it hides the exact runtime claim | state which call-shape rule the signature proves |
+| "Binding worked." | it skips the choice of evidence surface | say why binding is stronger than manual matching here |
+| "The object came from this file." | it overclaims provenance certainty | add the failure mode and label the evidence best-effort |
+| "Static lookup is safer." | it does not name what truth you needed | say whether you needed attached-object truth or resolved-value truth |
+| "The stack helped debug the issue." | it leaves the production boundary blurry | state the explicit parameter or owned state that should carry the real data |
 
 ## What strong Module 03 answers have in common
 
