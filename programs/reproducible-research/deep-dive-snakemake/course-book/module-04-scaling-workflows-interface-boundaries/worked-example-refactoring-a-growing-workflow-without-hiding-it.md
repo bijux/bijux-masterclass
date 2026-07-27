@@ -42,6 +42,14 @@ Work through the example in this order:
 4. document the public file contract the refactor must preserve
 5. finish by choosing gates that prove the new structure still tells the truth
 
+Keep a small scaling packet as you go:
+
+- one ownership note for each rule family you split out
+- one before-and-after view of the top-level entrypoint
+- one include-versus-module decision note for a real candidate boundary
+- one short public file contract excerpt
+- one gate table that ties each check to a structural claim
+
 ## What to keep beside you while you work
 
 Keep these four surfaces visible while you move through the example:
@@ -74,6 +82,20 @@ The maintainers currently live with:
 That is a good Module 04 starting point because the workflow is not broken. It is merely
 becoming exhausting to explain.
 
+```mermaid
+flowchart LR
+  entry["entrypoint still tells the story"]
+  ownership["rule-family ownership"]
+  interface["real reusable interface"]
+  contract["public file contract"]
+  gates["gates tied to claims"]
+
+  entry --> ownership --> interface --> contract --> gates
+```
+
+The order matters. Splitting files before naming ownership, or tightening CI before
+documenting the public contract, usually creates more ceremony without more clarity.
+
 ## Start with ownership, not abstraction
 
 The first repair is a rule-family split, not a module promotion.
@@ -96,6 +118,14 @@ Each file now owns one coherent concern:
 
 The repository improves because a reviewer can explain each boundary quickly, not because
 the file count increased.
+
+Capture that ownership explicitly:
+
+| Boundary | Owned concern | What it should not absorb |
+| --- | --- | --- |
+| `preprocess.smk` | declared preparation of working data | publish semantics or report presentation policy |
+| `summarize_report.smk` | transformation into reader-facing summaries | scheduler choices or unrelated path plumbing |
+| `publish.smk` | final contract assembly and checks | ad hoc preprocessing helpers or silent side outputs |
 
 ## Why this first move matters educationally
 
@@ -142,6 +172,9 @@ snakemake -n
 The structural refactor is not successful unless those surfaces still tell the same
 workflow story.
 
+That is the immediate test after every split: the rule list, the graph, and the dry-run
+should still let a new learner explain the workflow in the same order as before.
+
 ## A short checkpoint before you continue
 
 Pause here and say one sentence like this:
@@ -173,6 +206,13 @@ That is the key distinction:
 
 Do not promote a module just because a file is long.
 
+Make the decision explicit for at least one candidate:
+
+| Candidate | Include? | Module? | Why |
+| --- | --- | --- | --- |
+| local preprocessing cluster | yes | no | it clarifies one graph but is not designed for reuse elsewhere |
+| shared QC bundle used by multiple entrypoints | maybe | yes, if interface is explicit | reuse is real only when callers can name inputs, outputs, and assumptions |
+
 ## What the learner should notice now
 
 The hard part of modularity is not moving code. The hard part is deciding whether another
@@ -196,6 +236,10 @@ So add or strengthen a contract note such as `FILE_API.md`:
 This step matters because public trust should live in a small documented surface, not in
 whoever happens to know the directory tree best.
 
+This is where structural cleanup stops being private taste. Once the public contract is
+named, path promises become reviewable and later refactors can be judged against something
+more durable than preference.
+
 ## Add gates that defend the claim you just made
 
 Only now should you tighten validation.
@@ -214,6 +258,15 @@ That usually leads to a gate set like this:
 - `snakemake --lint` for design smells that the split exposed
 
 This is the difference between a meaningful gate and generic CI noise.
+
+Tie each gate to the claim it protects:
+
+| Gate | Claim defended |
+| --- | --- |
+| `snakemake --list-rules` or rulegraph review | the architecture is still legible after the split |
+| `snakemake -n` | the final target plan has not changed accidentally |
+| contract or schema validation | public outputs still match the published promise |
+| `snakemake --lint` or focused structure checks | the refactor did not introduce hidden design debt |
 
 ## What a strong summary sounds like
 
@@ -263,3 +316,11 @@ When you inspect a repository shaped like this, ask:
 5. how will the next growth change land without making the graph harder to teach
 
 If those answers are visible, the module’s scaling story has landed.
+
+Before leaving the module, make sure you can say all five of these out loud:
+
+1. the split was justified by ownership, not by file-count aesthetics
+2. the entrypoint still tells the workflow story quickly
+3. an include and a module are different because reuse requires a real interface
+4. the public contract is separate from internal rebuildable state
+5. every gate now defends a structural claim instead of adding generic CI noise

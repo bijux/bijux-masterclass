@@ -42,6 +42,14 @@ Work through the example in this order:
 4. separate scratch behavior from semantically stable outputs
 5. finish by proving the repository through a stronger confirmation route
 
+Keep a small production packet as you go:
+
+- one note comparing local, CI, and scheduler-facing profile intent
+- one note classifying failures before retries are discussed
+- one sketch separating scratch handling from trusted output identity
+- one short ladder showing which proof route answers which question
+- one final summary in language the next maintainer could repeat without you
+
 ## What to keep beside you while you work
 
 Keep these four surfaces visible while you move through the example:
@@ -72,6 +80,21 @@ The maintainers currently do this:
 - no one can explain which settings are policy and which would change workflow meaning
 
 That is a good Module 03 starting point because it is common and fixable.
+
+```mermaid
+flowchart LR
+  rituals["private shell rituals"]
+  profiles["named profile policy"]
+  failures["failure and recovery model"]
+  storage["scratch and trusted outputs"]
+  proof["proof routes and confirmation"]
+
+  rituals --> profiles --> failures --> storage --> proof
+```
+
+That sequence matters. If the team has not named operating contexts first, later debates
+about retries, scratch, or confirmation turn into arguments about private command-line
+taste rather than repository policy.
 
 ## Move stable run policy into profiles
 
@@ -140,6 +163,18 @@ The job dependencies and requested outputs should agree. Core count and latency 
 may differ because those settings describe an operating context. If a profile changes
 sample membership, algorithm choice, or publish version, it has crossed the boundary.
 
+Use a quick audit table while you compare:
+
+| Surface | Local | CI | Meaning should change? |
+| --- | --- | --- | --- |
+| target set | same declared target | same declared target | no |
+| cores | tuned for interactive work | tuned for shared automation | no |
+| latency patience | short feedback loop | more patient for slower visibility | no |
+| publish destination semantics | same publish contract | same publish contract | no |
+
+The point is not to make the profiles identical. The point is to make their
+differences obviously operational instead of semantically dangerous.
+
 ## Give failures a small honest policy
 
 The team then reviews how failed runs behave.
@@ -158,6 +193,14 @@ The repair is to state a failure policy:
 - semantic errors fail fast instead of hiding under retries
 
 This is Core 2: recovery becomes a contract, not a mood.
+
+Make the contract reviewable with a tiny matrix:
+
+| Failure class | Retry? | Keep evidence? | Why |
+| --- | --- | --- | --- |
+| transient infrastructure issue | yes, deliberately | yes | repetition may succeed without changing workflow meaning |
+| semantic workflow defect | no, fail fast | yes | retrying hides a real design or data problem |
+| publication or poison-output risk | only after cleanup plan | yes | trust in final outputs matters more than speed |
 
 ## The question every retry must answer
 
@@ -232,6 +275,11 @@ flowchart LR
 The diagram permits scratch placement to change by environment. It does not permit the
 declared input or final output identity to drift.
 
+State the distinction plainly:
+
+- scratch placement may vary by operating context
+- trusted output identity must not vary by operating context
+
 ## What the learner should notice now
 
 The workflow is not becoming "less reproducible" when scratch changes by context.
@@ -255,6 +303,15 @@ So define a proof ladder:
 - `make confirm` for the strongest clean-room repository proof
 
 This is Core 4: production trust grows by named routes, not by one giant ritual command.
+
+Write the ladder down in reviewable form:
+
+| Route | What it answers |
+| --- | --- |
+| `snakemake -n` | what does the engine plan to build from this state |
+| `make profile-audit` | do profile differences remain operational rather than semantic |
+| `make verify` | does the workflow execute correctly with evidence worth inspecting |
+| `make confirm` | can a fresh maintainer rebuild trust from a clean starting point |
 
 ## What to check before moving on
 
@@ -314,3 +371,11 @@ When you inspect a repository shaped like this, ask:
 5. how would the next maintainer review a profile diff without guesswork
 
 If those answers are visible, the module’s production story has landed.
+
+Before leaving the module, make sure you can say all five of these out loud:
+
+1. profiles exist to name operating contexts, not to change workflow meaning
+2. retries follow failure classification, not impatience
+3. scratch policy may move, but trusted outputs keep the same identity
+4. proof routes answer different questions and should stay distinct
+5. production review is strong only when the next maintainer can repeat the story unaided

@@ -42,6 +42,14 @@ Work through the example in this order:
 4. bind the rule to an explicit runtime contract
 5. finish by explaining a rebuild through provenance and drift evidence
 
+Keep a small software packet as you go:
+
+- one before-and-after note showing what the rule still owns
+- one script excerpt showing adapter behavior instead of business sprawl
+- one package helper candidate with a clear reuse argument
+- one runtime contract note naming the environment surface in play
+- one provenance note explaining why a rebuild should now be trusted
+
 ## What to keep beside you while you work
 
 Keep these four surfaces visible while you move through the example:
@@ -74,6 +82,20 @@ The maintainers currently live with:
 That is a good Module 05 starting point because the step still works. It is the trust
 story around the step that is weak.
 
+```mermaid
+flowchart LR
+  contract["rule contract and orchestration"]
+  adapter["workflow script adapter"]
+  package["reusable package code"]
+  runtime["runtime contract"]
+  provenance["rebuild and provenance evidence"]
+
+  contract --> adapter --> package --> runtime --> provenance
+```
+
+The order matters. If the repository cannot explain the rule boundary first, moving code
+into scripts or packages only hides the trust problem under a different directory.
+
 ## Keep the rule readable and honest
 
 Start by reducing the rule to orchestration and contract:
@@ -99,6 +121,10 @@ This shorter rule is better because it still answers the important questions:
 
 If the rule becomes short by hiding undeclared reads or hidden global state, the
 extraction failed.
+
+Shorter is not automatically better. The shorter rule is only an improvement if the file
+contract and runtime boundary became easier to review than they were inside the original
+inline implementation.
 
 ## Why this first move matters educationally
 
@@ -132,6 +158,14 @@ That makes the script workflow-adjacent code:
 
 The script is an adapter, not the whole software design.
 
+Keep the layer boundaries explicit:
+
+| Layer | What it knows | What it should not own |
+| --- | --- | --- |
+| rule | declared inputs, outputs, and runtime contract | implementation details or hidden ambient dependencies |
+| workflow script | `snakemake` object and step-local orchestration | reusable domain logic that should be importable elsewhere |
+| package code | ordinary Python behavior with explicit arguments | direct dependence on workflow globals or implicit path layout |
+
 ## Promote only the reusable part into package code
 
 Now inspect the implementation itself.
@@ -151,6 +185,10 @@ That is the important distinction:
 
 - `workflow/scripts/` owns step-local adapters
 - `src/` owns reusable software behavior
+
+Do not move code into `src/` just because that directory feels more serious. Promotion is
+earned only when the helper has a stable purpose outside one workflow step and can be
+tested without the workflow engine standing beside it.
 
 ## A short checkpoint before you continue
 
@@ -176,6 +214,14 @@ At the same time, keep the layers distinct:
 
 Those layers are related, but they do not replace each other.
 
+Make that contract reviewable:
+
+| Surface | What it governs |
+| --- | --- |
+| rule-scoped environment | software needed for one workflow step to execute honestly |
+| repository environment | contributor-facing editing and local development convenience |
+| container boundary | broader machine portability and deployment-level assumptions |
+
 ## Leave a rebuild trail behind
 
 Finally, the repository needs to explain rebuilt outputs after software drift.
@@ -197,6 +243,14 @@ Now imagine three edits:
 
 These are different surfaces, but each can invalidate trust in earlier outputs. The point
 of provenance is to make that rebuild story explicit instead of folkloric.
+
+Use a simple drift table when you explain rebuilds:
+
+| Changed surface | Why outputs may need trust review |
+| --- | --- |
+| `workflow/scripts/provenance.py` | step-local serialization or orchestration may have changed |
+| `workflow/envs/python.yaml` | runtime behavior may differ because dependencies or versions changed |
+| `src/capstone/` helper code | reusable logic may now compute or format metadata differently |
 
 ## What the learner should notice now
 
@@ -233,3 +287,11 @@ When you inspect a repository shaped like this, ask:
 5. how would a later maintainer explain a rebuild from provenance rather than memory
 
 If those answers are visible, the module’s software-boundary story has landed.
+
+Before leaving the module, make sure you can say all five of these out loud:
+
+1. the rule still owns the file contract even after code extraction
+2. the workflow script is an adapter, not a dumping ground
+3. package code is justified only by real reuse and direct testability
+4. the runtime contract is a reviewable input, not ambient machine luck
+5. provenance should let the next maintainer explain a rebuild without relying on memory
