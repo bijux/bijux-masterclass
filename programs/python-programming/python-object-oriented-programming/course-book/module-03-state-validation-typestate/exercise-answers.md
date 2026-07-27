@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,176 +24,208 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These are model answers for the `ReportDraft` scenario from the exercise page. They are
+not the only acceptable answers. They are here to show the level of explicitness a solo
+learner should be aiming for.
 
-## How to use the answer page well
+## Running scenario recap
 
-Do not read the model answer first and then reduce the module to "validate in
-`__post_init__` and avoid `None`."
+`ReportDraft` supports four meaningful states:
 
-A better rhythm is:
+- `draft`
+- `submitted`
+- `approved`
+- `rejected`
 
-1. finish the exercise with your own state packet
-2. name the legal states, transition rules, and proof boundary
-3. compare your reasoning with the model answer
-4. revise anywhere your answer still relies on caller discipline or overloaded meanings
+The object must preserve these truths:
 
-What matters is whether the reasoning makes legal state explicit and reviewable.
+- approval never happens before submission
+- approved reports are no longer editable
+- rejected reports may return to draft only through an explicit reopening decision
+- empty sections are acceptable in early drafting but not at submission time
 
-Strong Module 03 answers usually do five things:
+## Answer 1: Legal states
 
-- they name illegal states explicitly
-- they place validation where the contract becomes true
-- they treat properties and dataclasses as contract choices
-- they give `None` one sharp meaning at a time
-- they use lifecycle APIs to narrow what callers can do
+A strong legal-state table looks like this:
 
-The strongest self-study packets also leave behind six concrete artifacts:
+| State | What is true | Allowed operations | Forbidden operations |
+| --- | --- | --- | --- |
+| `draft` | author exists; title may still be blank; sections may still be incomplete | edit title, edit sections, submit | approve, mark approved timestamp |
+| `submitted` | title is non-blank; at least one section exists; submitted timestamp exists | approve, reject | edit content directly, resubmit |
+| `approved` | submitted timestamp exists; approved timestamp exists; content is frozen | read, publish, archive | edit, reject, resubmit |
+| `rejected` | submission exists; rejection reason exists; still not approved | reopen to draft, read review notes | approve without resubmission, edit as if still draft |
 
-- one legal-state table
-- one validation-boundary decision
-- one nullability repair
-- one property or dataclass review
-- one transition map
-- one full state review
+The most dangerous illegal state is "approved but still editable," because it lets the
+system quietly change something that other actors now trust as final.
 
-If your answers rely only on "the team knows not to do that," the reasoning is still too
-thin.
+## Answer 2: Illegal combinations
 
-## Answer 1: Define the legal states
+Five explicit illegal combinations:
 
-A strong answer:
+1. `submitted_at is None` while state is `submitted`
+2. state is `approved` but `approved_at is None`
+3. state is `approved` and `sections` may still be mutated
+4. state is `rejected` but `rejection_reason is None`
+5. state is `draft` while `approved_at` already exists
 
-- names each legal state plainly
-- names illegal combinations explicitly
-- lists allowed operations by state
+Where to reject them:
 
-The most dangerous confusion is usually the one that lets the object look usable while it
-is semantically incomplete or retired.
+- constructor or rehydration boundary for combinations that can never exist honestly
+- transition methods for combinations created during lifecycle changes
+- persistence rehydration tests for historical data that might drift into illegal shape
 
-## Answer 2: Choose the validation boundary
+## Answer 3: Construction boundary
 
-The best validation boundary is where the object or state first becomes semantically real.
+A clean constructor contract is:
 
-Typical pattern:
+- `author_id` must exist
+- `state` starts as `draft`
+- `submitted_at`, `approved_at`, and `rejection_reason` start absent
 
-- constructor for invariants that must always hold
-- transition method for lifecycle changes
-- property setter only when mutable state genuinely belongs on a supported write surface
-- separate boundary validator for external input normalization before domain construction
+The constructor should not accept an arbitrary state enum plus arbitrary timestamps,
+because that invites callers to assemble incoherent state manually.
 
-What matters is to avoid validating too late, after invalid state already exists.
+If staged assembly is real, use:
 
-## Answer 3: Repair an ambiguous `None`
+- `ReportDraft.start(author_id=...)` for creating the draft
+- explicit transition methods for `submit`, `approve`, `reject`, and `reopen`
 
-The sharp repair usually separates meanings such as:
+That keeps construction honest and moves lifecycle authority into named methods.
 
-- absent by design
-- not loaded yet
-- invalid partial state
+## Answer 4: Overloaded `None`
 
-with explicit values, variants, factories, or lifecycle states rather than one overloaded
-`None`.
+Weak design:
 
-The bug surface removed is silent confusion: callers stop guessing which interpretation of
-absence is currently in play.
+- `reviewed_at: datetime | None`
 
-## Answer 4: Review a property honestly
+Possible meanings:
 
-A strong property:
+- not submitted yet
+- submitted but not yet reviewed
+- rejected and reopened
+- broken imported state
 
-- represents stable, cheap, and conceptually attribute-like state
+Sharper design:
 
-A weak property:
+- use `state` plus `submitted_at`, `approved_at`, and `rejection_reason`
+- avoid one field pretending to encode the whole lifecycle
 
-- hides expensive work
-- mutates state invisibly
-- conceals I/O or policy that should remain explicit as a method
+The bug surface removed is "callers infer state from one nullable field and guess wrong."
 
-A reviewer should infer that attribute syntax is safe and unsurprising unless the design
-has documented a sharper contract.
+## Answer 5: Property review
 
-## Answer 5: Review a dataclass contract
+`ready_for_review` is a good property only if it is:
 
-The important questions are:
+- cheap
+- derived from current in-memory state
+- free of hidden I/O
 
-- is mutability appropriate for this object
-- are defaults semantically honest
-- do equality and hashing match intended container use
-- do inheritance, `slots`, `frozen`, or defaults create subtle brittleness
+For this scenario it can honestly mean:
 
-`dataclass` is strongest when its generated behavior matches the real value or entity
-contract instead of merely saving typing.
+- title is non-blank
+- at least one section exists
+- state is still `draft`
 
-## Answer 6: Model lifecycle transitions
+It becomes a bad property if it:
 
-A strong transition map:
+- performs validation against remote services
+- mutates internal state
+- logs or caches as a side effect
 
-- shows which moves are legal
-- names who enforces them
-- rejects illegal jumps explicitly
+Attribute syntax promises "safe to read casually." The implementation must honor that.
 
-Caller discipline is too weak when multiple callers, retries, or asynchronous paths can
-attempt state changes independently.
+## Answer 6: Dataclass review
 
-## Answer 7: Compare partial objects and explicit builders
+Using `@dataclass` is reasonable only if the generated behavior matches the contract.
 
-The best repair often depends on why the object is partial:
+Good fit:
 
-- strict constructor when all required data can be known immediately
-- builder or factory when staged assembly is real but should not leak as a half-valid
-  object
-- typestate split when draft and ready forms have genuinely different allowed operations
+- small number of fields
+- explicit post-init checks
+- equality defined deliberately
 
-The goal is to reduce semantically unusable intermediate objects.
+Danger points:
 
-## Answer 8: Design a typestate-inspired API
+- auto-generated equality may imply content equality when identity or lifecycle matters
+- defaults may let semantically incomplete state slip through
+- mutable lists such as `sections` need careful ownership
 
-A strong answer:
+Recommendation:
 
-- removes or narrows operations after transitions
-- makes illegal use harder to express from the call site
-- admits that some checks remain runtime checks in Python
+- keep a dataclass only if it is treated as a disciplined lifecycle object, not as a bag
+  of writable fields
 
-The main lesson is not perfection. It is to make the safe path the obvious path.
+## Answer 7: Lifecycle transitions
 
-## Answer 9: Review boundary validation libraries carefully
+A useful transition map:
 
-A validation library is strongest for:
+```text
+draft --submit--> submitted
+submitted --approve--> approved
+submitted --reject--> rejected
+rejected --reopen--> draft
+```
 
-- parsing and normalizing external input
-- rejecting malformed payloads at the edge
+Forbidden examples:
 
-It should not replace:
+- `draft -> approved`
+- `approved -> draft`
+- `rejected -> approved` without resubmission
 
-- domain-specific invariants
-- lifecycle semantics
-- aggregate or collaboration rules
+Each transition should live in one named method so the boundary that changes state also
+checks the rules.
 
-The false confidence appears when the team believes "validated input" automatically means
-"sound domain state."
+## Answer 8: Typestate pressure
 
-## Answer 10: Produce a full state review
+A stronger API separates what callers can do by state:
 
-A strong final review names:
+- draft methods: `edit_title`, `replace_sections`, `submit`
+- submitted methods: `approve`, `reject`
+- approved view: read-only operations only
+- rejected methods: `reopen`
 
-- legal states
-- validation placement
-- null semantics
-- lifecycle transitions
-- one remaining risk
-- one defended strength
+Even if the underlying runtime object is one class, the public API should make illegal
+operations feel obviously wrong.
 
-The best closing paragraph reads like a review note, not a feature summary.
+## Answer 9: Validation library boundary
+
+A boundary validator may:
+
+- parse raw payloads
+- normalize string timestamps
+- reject malformed types
+
+It must not decide:
+
+- whether submission is allowed with zero sections
+- whether approval may happen before submission
+- whether reopening from rejected is legal
+
+That reasoning belongs in the domain model, not in the payload parser.
+
+## Answer 10: Full state packet
+
+A compact review note might read like this:
+
+> `ReportDraft` has four legal states: draft, submitted, approved, and rejected. The
+> constructor only creates honest drafts. Submission, approval, rejection, and reopening
+> are explicit transitions. Nullable timestamps no longer stand in for lifecycle meaning.
+> The main remaining risk is accidental mutable sharing of section content, so tests
+> should prove edits cannot leak across versions or reopen paths.
+
+That paragraph is stronger than a feature summary because it names:
+
+- the legal states
+- the real boundary for change
+- the repaired ambiguity
+- the remaining risk
 
 ## Self-check
 
-If your answers consistently explain:
+You are using Module 03 correctly when your answer packet makes it easy for another
+maintainer to answer:
 
-- which states are legal and illegal
-- where validation becomes authoritative
-- when a representation tool helps or hurts
-- how transition APIs narrow misuse
-- what risk still needs explicit handling
-
-then you are using Module 03 correctly.
+- when is this object legal
+- who may change its state
+- what values are absent by meaning instead of by accident
+- which operations disappear after transitions
