@@ -77,31 +77,43 @@ claims are classified.
 
 ## Exercise 2: Capture a reproducibility context
 
-A useful context packet might contain:
+A useful evidence context has this shape inside `evidence.json`:
 
 ```text
-context/
-├── revision.txt
-├── worktree.txt
-├── make-version.txt
-├── portability.txt
-├── compiler-version.txt
-├── python-version.txt
-├── help.txt
-└── conditions.md
+context
+├── compiler: command, resolved executable, version
+├── make: command, resolved executable, version
+├── platform
+├── python
+├── repository: revision, status, status digest
+└── runner
 ```
 
-The conditions table should distinguish ownership:
+`help.txt`, `portability.txt`, and responder notes can remain companion evidence. Revision,
+worktree, and tool identities must stay in the timing document so the comparator can enforce
+them rather than trusting a reviewer to find loosely related files.
 
-| Condition | Controlled by repository? | Effect on interpretation |
+The conditions table should distinguish control and comparison behavior:
+
+| Condition | Controlled by repository? | Comparison behavior |
 | --- | ---: | --- |
-| requested target | yes | defines the contract under test |
-| checkout revision | yes | anchors source and Makefile state |
-| `-j4` | yes | fixes requested scheduling pressure |
-| GNU Make version | partly | must satisfy the course boundary |
-| compiler version | partly | may change clean recipe cost |
-| background load | no | may widen timing variation |
+| requested target | yes | must match through scenario policy |
+| checkout revision | yes | may differ; both clean revisions are reported |
+| worktree status | yes | dirty or unavailable provenance is rejected |
+| `-j4` | yes | must match through scenario policy |
+| GNU Make version | partly | must match |
+| compiler version | partly | must match |
+| runner label | operator-controlled | must match and name one stable environment |
+| background load | no | may widen timing variation despite a matching label |
 | filesystem cache | not fully | can make clean samples non-identical |
+
+Different revisions are the subject of a candidate comparison, so equality would defeat the
+experiment. A different compiler or runner changes source and environment at once, so the
+comparator cannot attribute the delta. A dirty candidate has the opposite problem: the
+reported revision does not identify all measured source.
+
+If status is `dirty`, retain the observation, establish the intended source as a clean
+revision, and recollect. Editing the JSON to say `clean` destroys evidence.
 
 A strong limitation statement is:
 
@@ -118,14 +130,20 @@ interpreting them.
 
 | Scenario | Policy evidence | Raw evidence | Semantic evidence |
 | --- | --- | --- | --- |
-| `clean-build` | `clean`, `-j4`, `all` | five elapsed samples and command log | convergence plus trusted-output inventory |
-| `converged-noop` | `converged`, `-j1`, `all` | five elapsed samples and command log | convergence plus trusted-output inventory |
-| `converged-dry-run` | `converged`, `-j1`, `dry-run-all` | five elapsed samples and command log | convergence plus trusted-output inventory |
+| `clean-build` | `clean`, `-j4`, `all` | repeated samples and command log | context, convergence, trusted outputs, bound requested work |
+| `converged-noop` | `converged`, `-j1`, `all` | repeated samples and command log | context, convergence, trusted outputs, bound requested work |
+| `converged-dry-run` | `converged`, `-j1`, `dry-run-all` | repeated samples and command log | context, convergence, trusted outputs, bound requested work |
 
 The exact sample count comes from `evidence.json`; five is the default, not a fact to copy
 without checking. Recalculate one median from the raw elapsed values and confirm it matches
 `summary.tsv`. Then verify that every exit status is zero, convergence is `PASS`, and the
 inventory names the expected outputs.
+
+Before interpreting the median, confirm the repository revision and status, tool identities,
+runner label, scenario-policy digest, and incremental-policy digest. The standalone
+`incremental-work.json` contains the raw trace; the `incremental_work` object in
+`evidence.json` carries the semantic fields used by comparison. Matching values prove that
+the timing document is bound to the requested-work result.
 
 Example reasoning:
 
@@ -295,17 +313,32 @@ the merge recipe must define it.
 
 ## Exercise 7: Write a falsifiable tuning proposal
 
-`performance-selftest` should pass thirteen tests in the current capstone. The number is
-less important than the behavior covered. Two essential rejection explanations are:
+`performance-selftest` runs the context, incremental, capture, and comparison suites. Test
+count is deliberately not part of the learner contract; rejection behavior is. Two
+essential explanations are:
 
 - policy drift is rejected because two scenario names can hide different state, route, or
   scheduling questions
 - trusted-output drift is rejected because reduced work is not a valid speedup when artifact
   meaning changed
 
-Other valid cases include failed capture, too few samples, different sample counts, and a
-failed candidate bundle. A learner should be able to explain the dishonest claim each gate
-prevents.
+Other valid cases include unavailable or dirty provenance, compiler drift, failed
+incremental evidence, requested-work drift, failed capture, too few samples, different
+sample counts, and a failed candidate bundle. A learner should explain the dishonest claim
+each gate prevents.
+
+The compatibility table is:
+
+| Pair | Decision | Deciding evidence | Repair or next action |
+| --- | --- | --- | --- |
+| A | compare | clean revisions may differ; context and semantics match | interpret deltas against spread and objective |
+| B | reject | candidate repository status is dirty | establish a clean candidate revision and recollect |
+| C | reject | compiler identity differs | recollect both with one compiler, or report separate environment observations |
+| D | reject | observed rebuild set differs | review the graph change and update policy only if the new scope is intended, then recollect both sides |
+
+Pair D may be a correct graph repair. It still blocks the old comparison because one route
+performed different work. Correctness of the change and comparability of the timings are
+separate decisions.
 
 The best answer may reject change:
 
@@ -329,9 +362,10 @@ If your measurements reveal a real candidate, the proposal must include:
 | Proof obligation | Example |
 | --- | --- |
 | cost | compatible governed bundles with every raw sample retained |
+| execution context | clean named revisions; matching compiler, Make, Python, platform, and runner |
 | experiment identity | matching policy digest, sample count, state, route, and job count |
 | critical path | graph shows the changed work delays requested completion |
-| requested work | change a declared input and inspect selected work |
+| requested work | bound policy, expected set, and observed set match across bundles |
 | convergence | successful run followed by successful `make -q` |
 | artifact meaning | domain comparison or stable hash where byte equality is expected |
 | pressure behavior | serial/parallel comparison |
@@ -341,10 +375,11 @@ An unsafe optimization is removing a prerequisite to suppress rebuilds. A cache 
 a new question: which declared inputs refresh the cached value, including additions,
 removals, policy changes, and producer changes?
 
-A passing `performance-compare` report establishes comparability, semantic equivalence for
-the inventoried outputs, and timing deltas. It does not establish materiality. The decision
-still needs the observed spread, a local operational objective, and any change-specific
-requested-work proof outside the generic bundle.
+A passing `performance-compare` report establishes execution-context compatibility,
+requested-work equivalence, semantic equivalence for the inventoried outputs, and timing
+deltas. It does not establish materiality. The decision still needs observed spread, a local
+operational objective, and any additional domain proof required by the changed recipe or
+artifact.
 
 ## Exercise 8: Audit the capstone proof route
 
