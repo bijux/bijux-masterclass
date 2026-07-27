@@ -1,5 +1,10 @@
 {
   "baseline": {
+    "expected_metrics": {
+      "f1": 0.75,
+      "precision": 1.0,
+      "recall": 0.6
+    },
     "id": "approved-incident-triage",
     "metric_schema": "classification-v1",
     "population_id": "incident-review-v1",
@@ -9,7 +14,8 @@
     "allowed_changes": [
       "decision.threshold"
     ],
-    "intent": "lower the escalation threshold to test recall gain against precision cost"
+    "intent": "lower the escalation threshold to test recall gain against precision cost",
+    "target_threshold": 0.5
   },
   "promotion": {
     "minimum_precision": 0.6,
