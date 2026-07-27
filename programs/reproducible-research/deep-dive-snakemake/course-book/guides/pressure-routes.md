@@ -1,35 +1,19 @@
 # Pressure Routes
 
-<!-- page-maps:start -->
-## Page Maps
+Use this page when you cannot study the whole course in order because urgency is shaping
+what you can realistically read. The goal is not to excuse shallow understanding. The
+goal is to keep the route honest under pressure.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Pressure Routes"]
-  capstone["Capstone evidence"]
+## The rule under pressure
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+Under pressure, do four things in order:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+1. name the pressure in plain language
+2. choose one bounded route
+3. use one matching proof surface
+4. stop as soon as the owning workflow boundary becomes visible
 
-Read the first diagram as a timing map: this page is for non-ideal reading conditions,
-not calm full-course study. Read the second diagram as the loop: name the pressure,
-choose one bounded route, use one proof surface, then stop when the owning workflow
-boundary is visible.
-
-Use this page when urgency is shaping what you can realistically read.
+If you keep widening the reading surface, pressure usually gets worse rather than better.
 
 ## Choose the route that matches the pressure
 
@@ -39,6 +23,24 @@ Use this page when urgency is shaping what you can realistically read.
 | inherited workflow repair | [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) | [Module 03](../module-03-production-operations-policy-boundaries/index.md), [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md) | [Command Guide](../capstone/command-guide.md) | whether the failure is workflow semantics, policy drift, interface sprawl, or execution context |
 | publish and stewardship review | [Course Guide](course-guide.md) | [Module 06](../module-06-publishing-downstream-contracts/index.md), [Module 07](../module-07-workflow-architecture-file-apis/index.md), [Module 10](../module-10-governance-migration-tool-boundaries/index.md) | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) | what downstream trust depends on and which route is strong enough to defend it |
 | incident pressure | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) | [Module 09](../module-09-performance-observability-incident-response/index.md), [Topic Boundaries](../reference/topic-boundaries.md) | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) | the symptom, the owning workflow boundary, and the next smallest confirming command |
+
+## Read the table correctly
+
+The table is not asking you to master a whole module sequence in one sitting. It is
+giving you a first stable foothold.
+
+- The first page should help you frame the problem.
+- The first module or reference should teach the boundary that owns the problem.
+- The first proof surface should give you evidence without overcommitting to a heavier run.
+- The stopping point matters because pressure work expands fast when there is no explicit exit.
+
+## Quick examples
+
+| Situation | Good first move | Bad first move |
+| --- | --- | --- |
+| You inherited a workflow that runs locally but behaves strangely in CI. | Start with [Module 03](../module-03-production-operations-policy-boundaries/index.md) and route into `capstone-profile-audit`. | Jump to governance language before you can explain the policy drift. |
+| You need to explain what the capstone publishes to another maintainer. | Start with [Module 06](../module-06-publishing-downstream-contracts/index.md) and the [Capstone Proof Guide](../capstone/capstone-proof-guide.md). | Treat the entire `results/` tree as the downstream contract. |
+| You missed class and need a truthful entry point tonight. | Start with [Start Here](start-here.md), then [Module 00](../module-00-orientation/index.md). | Open the whole repository and hope the structure teaches itself. |
 
 ## What not to do under pressure
 
