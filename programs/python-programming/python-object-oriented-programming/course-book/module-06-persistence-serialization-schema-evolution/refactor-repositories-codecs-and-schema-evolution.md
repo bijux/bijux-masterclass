@@ -17,167 +17,216 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  truth["name preserved truths"] --> boundary["pull persistence to a boundary"]
+  boundary --> translate["add mappers and codecs"]
+  translate --> defend["add compatibility and conflict proof"]
+  defend --> review["check that the domain stayed cleaner"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+Read the first diagram as a placement map: this page is the practical synthesis of
+Module 06. Read the second diagram as the refactor route itself: name what must survive,
+move persistence pressure to a boundary, make translation explicit, then prove that the
+system is safer instead of merely busier.
 
-## Why this lesson matters
+## Why this refactor matters
 
-This page is where Module 06 stops being a set of storage warnings and becomes a usable
-change route.
+Persistence refactors often go wrong in a predictable way:
 
-The earlier lessons taught:
+- storage support is needed quickly
+- ad hoc save logic appears in service code
+- historical schema handling is sprinkled through constructors
+- concurrency checks arrive after silent overwrite bugs
 
-- repository contracts
-- mapping boundaries
-- explicit codecs
-- session and persistence lifetime discipline
-- rebuild trade-offs
-- schema evolution
-- conflict detection
-- publication coordination
-- backend contract testing
-- migration safety
+The result looks more capable because it talks to a database, but the model is weaker
+than before.
 
-The real test is whether you can now introduce persistence or evolve it without
-rewriting the domain around storage convenience.
+This page teaches a different route: add storage power while making the system easier to
+review.
 
-## Start with the preserved truth
+## Running refactor target
 
-Before refactoring, state what must remain true.
+Use one concrete target all the way through:
 
-Usually that includes:
+- `WorkshopEnrollment`
 
-- aggregate invariants
-- public domain-facing repository contract
-- current supported persisted shapes
-- conflict behavior
-- durability and publication ordering guarantees
+Messy starting point:
 
-If those preserved truths are not named first, the refactor can easily improve storage
-plumbing while weakening the model itself.
+- service code assembles rows directly
+- constructor bypass happens during load
+- serialization logic is duplicated in many call sites
+- old data shape is handled with inline conditionals
+- write conflict is implicit last-write-wins behavior
 
-## Add persistence as a boundary, not as seepage
+Refactor goal:
 
-The safe move is not "thread storage details through the code until saving works."
+- one repository contract in aggregate language
+- one honest rehydration path
+- one explicit translation surface for storage shapes
+- one compatibility story for old data
+- one explicit conflict contract
 
-The safe move is:
+## Step 1: Name the truths that must survive
 
-1. keep aggregate authority where it already belongs
-2. introduce repository contracts in aggregate language
-3. add explicit mapping between domain and storage
-4. add codecs for serialized representations
-5. keep historical evolution and migration logic near those codec boundaries
+Before moving code, write down the truths you refuse to lose.
 
-This sequence matters because it prevents persistence pressure from changing the domain
-first and being corrected later only if someone notices.
+For `WorkshopEnrollment`, that usually includes:
 
-## Use one honest refactor route
+- confirmed attendees must never exceed capacity
+- waitlist order must stay meaningful
+- callers should still think in aggregates, not rows
+- old data must either load honestly or fail honestly
+- stale writes must not silently replace newer truth
 
-When the system is currently in-memory-only or persistence-light, a reliable route is:
+If you skip this step, the refactor easily drifts into storage cleanup that weakens the
+actual semantics.
 
-1. identify the authoritative aggregate boundary
-2. define a repository contract around that boundary
-3. introduce storage records or serialized payload shapes separately from the domain
-4. add explicit mapper and codec logic
-5. prove round-trip reconstruction
-6. add conflict detection
-7. align publication with the durable boundary
-8. add migration or upcast support only where historical data actually requires it
+## Step 2: Move repository vocabulary into aggregate language
 
-This route is intentionally boring. That is good. Persistence refactors should reduce
-risk, not perform cleverness.
+The first structural change is not a table mapper. It is a contract.
 
-## Keep historical burden out of current domain objects
+Good direction:
 
-One of the easiest mistakes is to let the present-tense domain absorb all historical
-representation concerns.
+- `load(workshop_id)`
+- `save(enrollment, expected_version)`
 
-That leads to:
+Bad direction:
 
-- constructors that know old storage trivia
-- entities that accept raw persistence shapes directly
-- version branching scattered through the model
+- `fetch_workshop_rows`
+- `save_attendee_relations`
+- `update_waitlist_table`
 
-A stronger refactor keeps historical burden at the persistence edge:
+This step matters because it defines what the rest of the refactor is trying to protect.
+If the repository still sounds like storage maintenance, the later code will follow that
+shape.
 
-- repositories
-- codecs
-- migration steps
+## Step 3: Rebuild through one honest rehydration path
+
+Now decide how stored data becomes a valid aggregate again.
+
+Strong route:
+
+1. fetch storage representation
+2. decode through one mapper or codec
+3. call a constructor or factory that enforces invariants
+
+Weak route:
+
+1. instantiate an empty object
+2. assign fields directly from rows
+3. trust the database more than the model
+
+The strong route can still support migration and historical compatibility. It simply
+refuses to teach the aggregate that persistence is allowed to bypass meaning.
+
+## Step 4: Separate translation from the domain
+
+Once the contract and rehydration path exist, introduce the storage translation surface.
+
+Keep explicit ownership for:
+
+- row mapping
+- serialization details
+- field aliases across schema versions
+- optional snapshot or event encoding
+
+Do not spread these details into:
+
+- domain methods
+- service orchestration
+- caller-side assembly code
+
+One good review question here is:
+
+> If the stored shape changed tomorrow, how many domain files would have to change?
+
+The right answer should be "very few."
+
+## Step 5: Place schema history at the persistence edge
+
+Historical burden belongs with persistence translation, not with present-tense domain
+meaning.
+
+For example, if older records store `confirmed_attendees_csv`, the refactor should move
+that burden into:
+
+- compatibility decoders
 - upcasters
+- migration scripts
 
-This preserves the domain as the place for current business meaning.
+It should not leave CSV parsing logic inside the aggregate forever.
 
-## Add proofs as you add structure
+That would freeze a temporary historical shape into the permanent object design.
 
-A persistence refactor is only trustworthy if proof grows alongside it.
+## Step 6: Add conflict handling before claiming the refactor is safe
 
-Useful proof surfaces include:
+A persistence refactor is incomplete if it only teaches the system how to save, not how
+to fail honestly under race conditions.
 
-- aggregate round-trip tests
-- schema-version load tests
+For this aggregate, add:
+
+- versioned save expectations
+- an explicit stale-write failure path
+- one test that proves a second writer cannot silently overwrite the first
+
+This is not an advanced extra. It is part of what makes persistence semantics real.
+
+## Step 7: Add proofs beside the structure
+
+The refactor is trustworthy only if proof grows alongside it.
+
+Useful proof surfaces:
+
+- round-trip aggregate reconstruction tests
+- historical record fixtures
 - stale-write conflict tests
-- publication-after-durability tests
-- backend contract tests
+- migration rehearsal fixtures
+- publication-after-durability checks when downstream work exists
 
-These proofs are what let you say the refactor preserved truth instead of merely
-rearranging files.
+Without these, the refactor may feel organized while still hiding the same risk.
 
-## Watch for false progress
+## Worked before-and-after comparison
 
-Some changes look like progress while still leaving the dangerous pressure intact:
+| Surface | Before | After |
+| --- | --- | --- |
+| repository boundary | storage-shaped helpers | aggregate-shaped contract |
+| load path | manual field assignment | invariant-preserving rehydration |
+| old data handling | inline special cases | explicit compatibility path |
+| serialization | duplicated ad hoc code | one codec or mapper surface |
+| concurrency | accidental last write wins | explicit version conflict |
 
-- introducing repositories but still returning raw storage rows
-- adding codecs but still serializing ad hoc elsewhere
-- adding version fields with no owned translation path
-- claiming backend swappability based only on a fake
+This table is worth using in code review. It forces the team to prove that the design
+actually became clearer.
 
-These changes improve vocabulary without improving the boundary.
+## Common false progress
 
-## Common mistakes
+These moves often look impressive while leaving the main risk intact:
 
-- starting with framework-specific persistence code before naming the repository contract
-- letting storage shapes become the first-class application vocabulary
-- treating migration as cleanup work for later
-- separating publication from durability without an honest coordination plan
-- adding compatibility logic everywhere instead of at the persistence edge
+- introducing repositories that still return ORM objects
+- adding codecs while leaving hand-written serialization elsewhere
+- adding version fields without making conflict part of the public save contract
+- claiming schema evolution is solved because a one-time migration script exists
 
-These mistakes are exactly what this module is supposed to prevent.
-
-## Review checklist
-
-| Question | Good sign |
-| --- | --- |
-| are the preserved domain truths named before the refactor begins? | yes |
-| does persistence enter through repositories, mappers, and codecs instead of leaking inward? | yes |
-| are conflict, migration, and publication guarantees tested as part of the refactor? | yes |
-| is historical compatibility burden kept out of present-tense domain objects? | yes |
+If the boundary is still blurry, the refactor is still incomplete.
 
 ## Capstone connection
 
-Use the capstone as the practice route for the whole module:
+Use the capstone to practice the whole route:
 
-- define the repository contract
-- decide the persisted shape
-- add explicit codec and mapping boundaries
-- test round-trip and stale-write behavior
-- state what migration policy would apply if the persisted shape changed after July 27, 2026
+1. name the aggregate truth you are protecting
+2. define the repository contract the caller should see
+3. isolate the persistence translation surface
+4. choose one historical shape to support or reject honestly
+5. state which proof should fail first if the refactor drifts
 
-If you can walk the capstone through that route, the module is doing real work.
+That sequence turns persistence refactoring into one reviewable design change instead of
+many disconnected edits.
 
 ## Exit check
 
-Leave this lesson only when you can do all of these:
+Leave this page only when you can do all of these:
 
-- describe a safe order for introducing or evolving persistence boundaries
-- explain how to keep current domain meaning separate from historical storage burden
-- identify which Module 06 proofs must exist before calling a persistence refactor trustworthy
+- describe an ordered route for adding persistence without letting storage redefine the
+  domain
+- explain where historical schema burden should live after the refactor
+- name the proof surfaces that must exist before calling the refactor safe
