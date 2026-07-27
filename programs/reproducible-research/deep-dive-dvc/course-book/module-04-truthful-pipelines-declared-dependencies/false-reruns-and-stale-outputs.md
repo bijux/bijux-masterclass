@@ -168,6 +168,124 @@ When a skipped rerun surprises you, ask:
 
 The first case is mostly contract cleanup. The second case is correctness repair.
 
+## An empty status is conditional evidence
+
+When `dvc status --json` returns `{}`, DVC is making a bounded claim:
+
+> Current declared dependencies, parameters, commands, and outputs agree with recorded
+> declared state.
+
+It is not claiming:
+
+- the command has no hidden file reads;
+- every value used by the command is listed under `params`;
+- every meaningful write is listed under `outs`;
+- the runtime environment is equivalent to the recorded run;
+- the artifact is semantically current against facts outside the graph.
+
+The stage-contract audit makes this limitation visible. After changing the policy file,
+the status receipt is:
+
+```json
+{
+  "declared_input": [
+    {
+      "changed deps": {
+        "policy/threshold.txt": "modified"
+      }
+    }
+  ]
+}
+```
+
+`hidden_input` is absent. That absence is expected from the declaration and wrong for the
+real command behavior.
+
+After deleting the undeclared receipt, status is simply:
+
+```json
+{}
+```
+
+The empty object is correct about the declared graph. It is insufficient evidence for the
+larger artifact contract.
+
+## Diagnose with a causal contrast
+
+A single surprising stage is difficult to reason about because several explanations fit:
+
+- DVC did not detect the change;
+- the command ran but ignored the new value;
+- the output was restored from cache;
+- the reviewer inspected the wrong artifact;
+- the declaration is complete and the change truly does not matter.
+
+Use a paired case to remove ambiguity:
+
+| Evidence question | Declared case | Hidden case |
+| --- | --- | --- |
+| Did status name the stage? | yes | no |
+| Did the stage rebuild? | yes | no |
+| Did the artifact adopt the current value? | yes | no |
+| Is the observed difference explained by one declaration edge? | yes | yes |
+
+The commands and input values are otherwise equivalent. The missing declaration is the
+causal difference.
+
+```mermaid
+flowchart TD
+  mutation["change one real influence"] --> status["capture dvc status --json"]
+  status --> planned{"stage marked stale?"}
+  planned -- yes --> rebuild["reproduce only that stage"]
+  planned -- no --> inspect["inspect semantic value anyway"]
+  rebuild --> inspect
+  inspect --> current{"artifact records current value?"}
+  current -- yes --> accept["accept bounded contract"]
+  current -- no --> trace["trace hidden read, control, or output"]
+```
+
+The semantic-value check belongs on both paths. A stage can run and still ignore the
+changed value, and a skipped stage can accidentally remain semantically valid.
+
+## Build a stale-output receipt
+
+For a real incident, record these fields before repairing anything:
+
+| Field | Example from the audit |
+| --- | --- |
+| mutation | `policy/threshold.txt`: `10` to `20` |
+| status result | only `declared_input` marked stale |
+| declared output before | `threshold=10` |
+| declared output after | `threshold=20` |
+| hidden output after | `threshold=10` |
+| decision | hidden stage is semantically stale |
+| contract repair | add policy path to hidden stage `deps` |
+| proof after repair | mutation marks stage stale and rebuilt value becomes `20` |
+
+This receipt is more useful than “DVC skipped unexpectedly.” It preserves the mutation,
+planner decision, artifact meaning, and intended repair.
+
+## Avoid three false repairs
+
+### Force the stage
+
+`dvc repro --force hidden_input` may produce the current value once. It does not add the
+missing edge. The next policy change can be missed again.
+
+### Delete the output
+
+Deleting a declared output creates a reason to reproduce, but the graph remains blind to
+the real file or parameter influence.
+
+### Declare an entire directory
+
+Adding the repository root or a broad parent directory may catch the hidden file, but it
+also creates unrelated reruns and obscures the intended contract. Declare the specific
+influence once you know it.
+
+The repair is complete only when the original mutation becomes visible for the right
+reason.
+
 ## Review checkpoint
 
 You understand this core when you can classify pipeline surprises without drama:
@@ -177,5 +295,7 @@ You understand this core when you can classify pipeline surprises without drama:
 - downstream reruns can be correct propagation
 - broad declarations should be narrowed only after the real read surface is understood
 - missing declarations should be fixed before performance convenience
+- an empty status is evidence about declared state, not proof that declarations are complete
+- a repair must make the original mutation visible without relying on force or deletion
 
 That distinction is one of the most important habits in Module 04.
