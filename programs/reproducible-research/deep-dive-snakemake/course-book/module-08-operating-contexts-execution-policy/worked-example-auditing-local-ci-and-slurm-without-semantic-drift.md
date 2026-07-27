@@ -1,326 +1,405 @@
-# Worked Example: Auditing Local, CI, and Slurm Without Semantic Drift
+# Worked Example: Proving Context Invariance and Catching Policy Leaks
 
-This file ties the whole module together around one realistic problem:
+This worked example answers one concrete review question:
 
-> a repository claims that local, CI, and scheduler contexts only change operating policy, but nobody has recently proved that claim.
+> Do local, CI, and scheduler-oriented policies preserve one workflow meaning, and can the
+> review route reject a profile that changes trusted paths or sample scope?
 
-The question is not "do these profiles all run?" The question is whether they preserve one
-semantic workflow while changing context honestly.
+You will inspect source, build the evidence packet, interpret all three findings, and run
+the rejection suite. No instructor-only setup is required.
 
-## If you are learning this without the live class
+## The repository claim
 
-Use the example in five passes instead of trying to absorb the whole context audit in one
-read:
+The specimen promises:
 
-1. read the profile files directly and classify what each key is allowed to own
-2. stop after the first normalized dry-run comparison and ask whether the same workflow still exists
-3. write the failure class before you discuss retries or latency changes
-4. draw the storage and promotion route before you treat any bytes as trusted
-5. finish by injecting one leak and proving the audit can catch it
+- samples `alpha` and `beta` are processed
+- each sample receives one `normalize` job
+- both jobs feed one `publish_manifest` job
+- the trusted path is `publish/stable/manifest.tsv`
+- local, CI, and scheduler policies may change capacity and observability only
 
-If you cannot explain the semantic invariants after pass 2, do not keep tuning profile
-details yet. Most Module 08 confusion starts when learners chase flags before they have
-named what must stay invariant.
-
-## How to use this worked example
-
-Work through this page with the five core lessons nearby.
-
-Do not treat it as a summary after the fact. Treat it as a guided context audit:
-
-- what to inspect first
-- what should stay invariant
-- where to classify retries and storage assumptions
-- how to catch one real policy leak
-
-## The one-day teaching goal
-
-By the end of this example, you should be able to explain one three-context repository
-without falling back on "each environment just needs different settings."
-
-You should be able to say:
-
-- which settings are policy only
-- which outputs and paths must stay invariant
-- which failure policies are justified by named failure classes
-- where temporary bytes stop and trusted outputs begin
-
-## The lab route
-
-Work through the example in this order:
-
-1. read the profile files directly and classify what they own
-2. compare the same target across all contexts
-3. inspect retries and latency through a failure model
-4. confirm where scratch ends and trusted output begins
-5. finish by injecting one semantic leak and catching it
-
-Keep one small audit packet beside you while you read:
-
-- a profile comparison sheet
-- one normalized dry-run comparison
-- one failure-class note
-- one storage lifecycle diagram
-- one drift finding with its exact proof route
-
-That packet is not overhead. It is the thing that turns "the profiles seem fine" into
-"another maintainer can review why the contexts preserve one semantic workflow."
-
-## The starting situation
-
-Assume you inherit a workflow with three operating contexts:
-
-- local development
-- CI
-- Slurm
-
-The repository claims these contexts change execution policy, not workflow meaning. That
-claim is only trustworthy if the review route can prove it.
-
-Before you read any deeper, write down the invariants the repository is claiming:
-
-- the same trusted targets should exist in every context
-- the same publish paths should remain authoritative
-- the same semantic config should mean the same work everywhere
-
-If those invariants are not explicit, every later profile comparison will feel more
-confusing than it needs to.
-
-## What goes wrong when a learner trusts the starting situation
-
-Use this card before you repair anything:
-
-| If you notice... | The repository is hiding... | Smallest review surface |
-| --- | --- | --- |
-| profiles differ but nobody can say which settings are harmless | the policy boundary is still undefined | one classified profile matrix |
-| local, CI, and Slurm all "work" but no one compared their plans | semantic invariance is being assumed, not proved | one normalized dry-run comparison |
-| retries were raised after frustration instead of diagnosis | failure policy is folklore instead of reviewable policy | one failure-class note |
-| scratch bytes are treated as done because they exist | the trust boundary is still implicit | one storage lifecycle diagram |
-
-If you can name the hidden defect first, the context audit stops feeling like YAML comparison.
-
-## What the learner should notice first
-
-The repository may already run in all three contexts.
-
-That is not yet enough.
-
-The weakness is subtler: the team is trusting an unproven claim that the contexts mean the
-same workflow. This example is about making that claim auditable.
-
-## Read the profile surfaces directly
-
-Start with the profile files themselves:
-
-- `profiles/local/config.yaml`
-- `profiles/ci/config.yaml`
-- `profiles/slurm/config.yaml`
-
-These should be small enough to compare line by line. A healthy first impression is that
-they mostly differ in:
-
-- jobs or cores
-- latency patience
-- failed-log visibility
-- executor mapping
-- rerun and recovery policy
-
-That already tells you something useful: the profiles are adjusting context rather than
-trying to smuggle the whole workflow through flags.
-
-The first profile pass is easier if you sketch it as a table:
-
-| Surface | Local | CI | Slurm | Should remain semantic invariant? |
-| --- | --- | --- | --- | --- |
-| trusted targets | same | same | same | yes |
-| publish paths | same | same | same | yes |
-| retries or latency | may differ | may differ | may differ | no |
-| executor mapping | none | CI runner | scheduler queue/account | no |
-
-## Compare the plans, not only the flags
-
-Now request the same final target through all three contexts:
-
-```sh
-snakemake --profile profiles/local --dry-run
-snakemake --profile profiles/ci --dry-run
-snakemake --profile profiles/slurm --dry-run
-```
-
-This matters because dry-runs reveal whether policy differences preserve the same
-workflow story. The right question is not only "did the profile file change?" It is:
-
-> does the planned workflow still mean the same thing?
-
-Normalize only volatile executor noise. Keep target names, rule names, wildcard bindings,
-and declared inputs and outputs. Those are the semantic facts the audit exists to defend.
-
-That is why dry-run comparison is stronger than "the profiles look similar." It tests the
-workflow story the profiles actually produce.
-
-## The context-invariance audit before you celebrate
-
-Before you call the comparison healthy, make sure you can answer all four of these:
-
-| Question | Healthy answer |
-| --- | --- |
-| What stayed invariant? | targets, trusted paths, and semantic workflow meaning |
-| What changed safely? | executor mapping, observability, latency patience, or other operating-policy details |
-| What would count as a leak? | profile changes that alter publish paths, sample scope, or other semantic surfaces |
-| What evidence proves the difference is policy only? | one normalized dry-run comparison for the same target across contexts |
-
-If any row stays vague, keep repairing. The profiles may differ legitimately, but the audit is still too weak.
-
-## A short checkpoint before you continue
-
-Pause here and ask:
-
-- do the same targets still exist in every context?
-- are the declared trusted outputs and paths unchanged?
-- have you proven invariants yet, or only listed different flags?
-
-If the answer to the third question is yes, the audit is still too shallow.
-
-## Judge retries and latency honestly
-
-Next, inspect any context-specific retry or latency settings.
-
-These are not automatically good or bad. They only make sense when paired with a failure
-model:
-
-- visibility delay may justify more `latency-wait`
-- transient infrastructure trouble may justify limited retries
-- semantic defects or broken publication boundaries should fail fast instead
-
-This is where operating policy becomes honest review rather than cargo-culted resilience.
-
-At this stage, force yourself to write the failure class before you touch any retry or
-latency setting. That one sentence is often the difference between a real policy repair
-and a superstition.
-
-## Mark where trust begins in storage
-
-Now inspect staging and storage assumptions.
-
-The workflow may use scratch or executor-local storage during execution, but a maintainer
-must still be able to say:
-
-- where temporary work lives
-- what must happen before promotion
-- when a final output becomes trusted
-
-If a reviewer starts treating scratch output as equivalent to published output, the
-repository has lost one of its most important operating boundaries.
-
-Make the storage story visible:
+Write these invariants down before opening profile files. They are the standard against
+which profile effects will be judged.
 
 ```mermaid
 flowchart LR
-  scratch["scratch or executor-local write"]
-  validate["content validation"]
-  staging["temporary destination at trusted boundary"]
-  publish["final trusted output path"]
-
-  scratch --> validate --> staging --> publish
+  alpha["alpha.txt"] --> alpha_job["normalize:alpha"]
+  beta["beta.txt"] --> beta_job["normalize:beta"]
+  alpha_job --> manifest["publish_manifest"]
+  beta_job --> manifest
+  manifest --> trusted["publish/stable/manifest.tsv"]
 ```
 
-This diagram matters because it shows exactly where bytes exist before trust begins and
-where promotion turns temporary work into contract work.
+## Read the workflow before the profiles
 
-## The storage-boundary audit before you move on
+Open:
 
-Do not just say "scratch is temporary." Test whether you can name the trust transition:
+```text
+capstone/repro/context-invariance/Snakefile
+```
 
-| Surface | Smallest honest claim |
-| --- | --- |
-| scratch or executor-local write | bytes exist, but they are not yet trusted outputs |
-| validation and staging | the repository is still deciding whether promotion is justified |
-| publish or final trusted path | downstream trust begins here, not earlier |
+The semantic values come from:
 
-If you cannot fill this table, the repository is still too vulnerable to accidental trust leaks.
+```python
+configfile: "config/base.yaml"
 
-## What the learner should notice now
+SAMPLES = sorted(config["samples"])
+PUBLISH_ROOT = config["publish_root"]
+```
 
-At this point the review is doing more than comparing profiles.
+`normalize` declares portable work shape:
 
-It is defending two different truths at once:
+```python
+threads: 2
+resources:
+    mem_mb=512,
+    runtime=5,
+```
 
-- the workflow means the same thing
-- the operating context still matters operationally
+`publish_manifest` writes the trusted output selected by `PUBLISH_ROOT`.
 
-That is the core educational move in Module 08.
+At this point you can predict two dangerous override classes:
 
-## Inject and catch one semantic leak
+- change `SAMPLES`, and jobs plus manifest membership change
+- change `PUBLISH_ROOT`, and the downstream contract path changes
 
-Now imagine three possible profile edits:
+That prediction comes from workflow source, not from the audit script.
 
-1. the Slurm profile raises `latency-wait`
-2. the CI profile changes a publish path to make artifacts easier to collect
-3. the local profile raises retries after unexplained intermittent failures
+## Read semantic config
 
-These do not mean the same thing:
+Open:
 
-- the first may be a legitimate policy response
-- the second is a semantic leak because trusted paths changed by context
-- the third may be safe or unsafe depending on the failure class
+```text
+capstone/repro/context-invariance/config/base.yaml
+```
 
-The review route should catch the second case through dry-run or governed-profile audit
-evidence instead of through memory.
+It contains:
 
-That is the teaching moment to pause on: a profile change can be small in YAML and still
-large in semantic risk.
+```yaml
+samples:
+  - alpha
+  - beta
+publish_root: publish/stable
+```
 
-## The repaired operating-context story
+This file owns workflow meaning for the specimen. A profile that injects replacements for
+these values crosses from execution policy into semantic configuration.
 
-By the end of the audit, the repository can be described cleanly:
+## Classify the preserving profiles
 
-1. profiles own operating policy rather than workflow meaning
-2. local, CI, and Slurm contexts plan the same semantic work
-3. retries and latency settings are justified by named failure classes
-4. scratch and promotion boundaries remain explicit
-5. drift review fails when policy leaks into semantics
+Compare:
 
-That is what it means to audit local, CI, and Slurm without semantic drift.
+```text
+profiles/local/config.yaml
+profiles/ci/config.yaml
+profiles/scheduler/config.yaml
+```
+
+Build this matrix before running anything:
+
+| Key | Local | CI | Scheduler | Class |
+| --- | ---: | ---: | ---: | --- |
+| `cores` | 2 | 1 | 8 | capacity |
+| `latency-wait` | 5 | 5 | 60 | filesystem tolerance |
+| `printshellcmds` | true | false | true | observability |
+| `show-failed-logs` | true | true | true | observability |
+
+None contains `config`, `configfile`, or `configfiles`.
+
+Source inspection supports the policy-only claim. It does not finish the proof because an
+indirect or misunderstood key could still alter the plan.
+
+## Build the evidence packet
+
+From the course directory:
+
+```bash
+make capstone-context-invariance-audit
+```
+
+The command creates:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/context-invariance/
+├── CONTEXT_INVARIANCE_AUDIT_GUIDE.md
+├── PROOF_GUIDE.md
+├── bundle-manifest.json
+├── report.json
+├── route.txt
+├── specimen/
+├── summary.tsv
+└── workspace/
+    ├── evidence/
+    └── runs/
+```
+
+The audit copies the specimen into isolated run directories. It does not execute inside
+the course source tree.
+
+## Read the summary without misreading PASS
+
+Open `summary.tsv`. The expected rows are:
+
+```text
+finding	result
+CONTEXT_POLICY_PRESERVED	PASS
+TRUSTED_PATH_LEAK_REPRODUCED	PASS
+SAMPLE_SCOPE_LEAK_REPRODUCED	PASS
+```
+
+Interpret them separately:
+
+- the first approves the preserving profiles for the specimen's claim
+- the second confirms that the path counterexample really changes a trusted path
+- the third confirms that the scope counterexample really removes a sample
+
+The last two are successful defect reproductions.
+
+## Compare preserving plans
+
+For each preserving profile, inspect:
+
+```text
+workspace/evidence/<profile>/summary.stdout.txt
+workspace/evidence/<profile>/d3dag.stdout.txt
+```
+
+The output summary should name:
+
+```text
+publish/stable/manifest.tsv
+results/alpha.txt
+results/beta.txt
+```
+
+The D3 DAG should contain:
+
+- `all`
+- `publish_manifest`
+- `normalize:alpha`
+- `normalize:beta`
+
+The audit removes volatile job identifiers and compares rule labels and edges. It does not
+remove wildcard labels or output paths because those are semantic evidence.
+
+## Compare preserving artifacts
+
+Inspect:
+
+```text
+workspace/runs/local/publish/stable/manifest.tsv
+workspace/runs/ci/publish/stable/manifest.tsv
+workspace/runs/scheduler/publish/stable/manifest.tsv
+```
+
+Each should contain:
+
+```text
+sample	artifact
+alpha	results/alpha.txt
+beta	results/beta.txt
+```
+
+Then compare `results/alpha.txt` and `results/beta.txt` across the three run directories.
+The audit records this comparison under each profile's `artifacts` section in
+`report.json`.
+
+You now have three kinds of agreement:
+
+- source contains only classified policy keys
+- plans contain the same jobs, edges, and paths
+- execution produces the same manifest and result bytes
+
+## Inspect the trusted-path counterexample
+
+Open:
+
+```text
+specimen/profiles/trusted-path-leak/config.yaml
+```
+
+The key addition is:
+
+```yaml
+config:
+  publish_root: publish/context-specific
+```
+
+Read its summary trace. It still plans:
+
+```text
+results/alpha.txt
+results/beta.txt
+```
+
+but its manifest path is:
+
+```text
+publish/context-specific/manifest.tsv
+```
+
+The graph topology remains familiar. The results remain byte-identical. A DAG-only or
+result-only comparison would miss the leak.
+
+The relevant report checks are:
+
+- `semantic_override_visible`
+- `trusted_path_changed`
+- `sample_results_unchanged`
+- `manifest_meaning_unchanged`
+
+All must be true for `TRUSTED_PATH_LEAK_REPRODUCED` to pass.
+
+## Inspect the sample-scope counterexample
+
+Open:
+
+```text
+specimen/profiles/sample-scope-leak/config.yaml
+```
+
+It contains:
+
+```yaml
+config:
+  samples:
+    - alpha
+```
+
+The trusted manifest path stays stable. Yet:
+
+- `normalize:beta` disappears from the D3 DAG
+- `results/beta.txt` disappears from the output summary
+- the manifest contains only `alpha`
+
+The relevant report checks are:
+
+- `semantic_override_visible`
+- `trusted_path_unchanged`
+- `beta_removed_from_plan`
+- `alpha_preserved`
+- `manifest_changed`
+
+All must be true for `SAMPLE_SCOPE_LEAK_REPRODUCED` to pass.
 
 ```mermaid
-flowchart LR
-  profiles["policy-only profiles"] --> plans["semantic plan comparison"]
-  plans --> failure["failure-model review"]
-  failure --> storage["trusted promotion boundary"]
-  storage --> drift["leak detection and drift audit"]
+flowchart TD
+  compare["Compare context with local baseline"]
+  path{"Trusted path changed?"}
+  scope{"Job or sample domain changed?"}
+  path_leak["Trusted-path leak"]
+  scope_leak["Sample-scope leak"]
+  preserve["Policy-only candidate"]
+
+  compare --> path
+  path -->|yes| path_leak
+  path -->|no| scope
+  scope -->|yes| scope_leak
+  scope -->|no| preserve
 ```
 
-Read that diagram literally. If one step is missing, the repository may still run in
-three places, but the context story is not yet teachable.
+## Connect resource policy to the result
 
-## Review questions for the repaired design
+The profiles expose 1, 2, or 8 cores. The rule requests two threads.
 
-When you inspect a repository shaped like this, ask:
+The audit proves that output meaning remains stable under these specimen executions. It
+does not prove:
 
-1. which profile differences are clearly policy and which are suspicious
-2. whether the same final target means the same thing in each context
-3. which retry or latency setting still lacks a failure model
-4. where bytes exist before trust begins
-5. which audit surface would fail first if a profile started changing semantics
+- equal runtime
+- equal parallel efficiency
+- equal scheduler queue behavior
+- numerical equivalence for a tool whose algorithm depends on thread count
 
-If those answers are visible, the module's context story has landed.
+Record the narrow conclusion:
 
-## If the module still feels abstract
+> Capacity changes preserved the specimen's plan and bytes.
 
-Do this recovery loop in order:
+Do not expand it to:
 
-1. point to one semantic invariant that all three contexts must preserve
-2. compare the same target in local, CI, and Slurm without normalizing away the real semantics
-3. name one retry or latency change and tie it to one failure class
-4. mark the exact point where scratch stops and trusted output begins
-5. inject one profile leak and say which audit surface should fail first
+> Every tool is executor-independent.
 
-Most Module 08 confusion is not about schedulers themselves. It is about losing track of
-which boundary proves policy stayed separate from workflow meaning.
+## Connect failure policy without inventing an incident
 
-If you want one final classroom-style check, explain the repository in four sentences:
+The preserving profiles vary `latency-wait`, but this local specimen does not reproduce
+shared-filesystem delay.
 
-1. which differences across contexts are clearly policy
-2. which target or path must stay invariant everywhere
-3. which retry or latency setting is justified by a named failure class
-4. where scratch ends and trusted output begins
+Therefore:
+
+- the audit may classify `latency-wait` as filesystem policy
+- it may prove that the value does not alter this semantic plan
+- it may not prove that 60 seconds is the correct scheduler wait
+
+A real wait change needs measured visibility evidence. A real retry change needs an
+executor or application failure class. Keep those claims outside this packet unless you
+have that evidence.
+
+## Connect storage trust without overclaiming
+
+The specimen executes on one local filesystem. It does not use node-local scratch.
+
+The trusted-path counterexample still teaches one storage lesson: the final contract path
+must not vary by execution context.
+
+It does not prove:
+
+- cross-filesystem copy safety
+- destination candidate validation
+- atomic rename on shared storage
+- remote-object commit semantics
+
+Use the storage lesson's path-role record for those questions.
+
+## Prove the gate can reject lies
+
+Run:
+
+```bash
+make capstone-context-invariance-selftest
+```
+
+The suite creates disposable copies and requires failure when:
+
+- CI chooses another publish root
+- scheduler policy removes `beta`
+- the path counterexample no longer changes its path
+- the scope counterexample no longer removes `beta`
+- the scope counterexample changes a path instead of scope
+- stale evidence survives a rebuild
+
+The isolation case is especially important. A gate should identify the boundary that
+failed, not merely report that two contexts differ.
+
+## Write the final review
+
+A complete review can be concise:
+
+> **Invariant:** both samples, all four jobs, the trusted manifest path, manifest
+> membership, and normalized result bytes must match across local, CI, and scheduler
+> policy.
+>
+> **Evidence:** all three preserving profiles contain only classified policy keys and have
+> identical normalized output summaries, D3 DAGs, manifests, and results.
+>
+> **Rejection:** the self-test rejects both context-specific publish paths and narrowed
+> sample domains, and it distinguishes those failure classes.
+>
+> **Decision:** accept the preserving profiles for this specimen.
+>
+> **Limit:** no real scheduler submission, shared-filesystem delay, retry incident, or
+> scratch promotion was tested.
+
+## Reproduce the reasoning independently
+
+Without reading `report.json`, use only:
+
+- the five profile files
+- output-summary traces
+- D3 DAG traces
+- executed manifests
+
+Write all three findings yourself. Then compare your result with `summary.tsv` and the
+guide.
+
+If your conclusion treats all PASS rows as approval, repeat the counterexample sections.
+If your conclusion claims scheduler or storage behavior, narrow it to the evidence that
+actually ran.
