@@ -8,6 +8,21 @@ The question is not "how do we copy more files into `publish/`?" The question is
 turn internal results into a smaller, versioned bundle that another program can use
 honestly.
 
+## If you are learning this without the live class
+
+Use the example in five passes instead of trying to absorb the whole publish boundary in
+one read:
+
+1. label which current files are internal, diagnostic, human-facing, or machine-facing
+2. stop after the first `publish/v1/` sketch and ask whether a consumer can ignore `results/`
+3. assign one clear job to each promoted artifact before you add integrity checks
+4. run the verifier and the consumer test before you discuss compatibility
+5. finish by classifying one change from the consumer's point of view instead of the producer's
+
+If you cannot explain the bundle after pass 2, do not add more promoted files yet. Most
+Module 06 confusion starts when learners chase a bigger publish tree before they have
+named the public promise.
+
 ## How to use this worked example
 
 Work through this page with the five core lessons nearby.
@@ -49,6 +64,9 @@ Keep one small review packet beside you while you read:
 - one consumer test transcript
 - one compatibility note for a simulated change
 
+That packet is not overhead. It is the thing that turns "I published the files" into
+"another maintainer can review why this bundle is a real contract."
+
 ## The starting situation
 
 Assume the workflow already produces rich internal outputs under `results/`, such as:
@@ -74,6 +92,19 @@ flowchart LR
 
 This shape is convenient for the producer and hostile to the consumer, because the
 consumer has to guess which files are stable enough to trust.
+
+## What goes wrong when a learner trusts the starting situation
+
+Use this card before you repair anything:
+
+| If you notice... | The repository is hiding... | Smallest review surface |
+| --- | --- | --- |
+| consumers browse `results/` to discover what is safe | the public contract has not been named | one artifact-role table plus current tree |
+| a report is treated as the only published output | machine and human surfaces are still blended | one consumer need and one report-inspection need side by side |
+| a manifest exists but nobody can say what it proves | integrity roles are still fuzzy | one manifest note that separates identity from meaning |
+| a compatibility discussion starts from "what changed for us" | the producer is centered instead of the consumer | one consumer test against the changed bundle |
+
+If you can name the hidden defect first, the publish repair stops feeling like folder copying.
 
 ## What the learner should notice first
 
@@ -131,6 +162,19 @@ flowchart LR
 This is the central transition of the module: the consumer no longer reads the producer's
 working tree directly. The consumer reads a smaller public bundle with named artifact
 roles.
+
+## The publish-boundary audit before you celebrate
+
+Before you call the first bundle healthy, make sure you can answer all four of these:
+
+| Question | Healthy answer |
+| --- | --- |
+| What stayed internal? | results, logs, and other workflow-operational detail not promised to downstream users |
+| What became public? | one small versioned bundle with named artifact roles |
+| What would count as a weak boundary? | a consumer still needing to inspect `results/` or infer stable files by habit |
+| What evidence proves the boundary is real? | one publish tree, one verifier run, and one consumer test using only the bundle |
+
+If any row stays vague, keep repairing. The bundle may exist, but the contract may still be weak.
 
 ## A short checkpoint before you continue
 
@@ -228,6 +272,20 @@ python scripts/verify_publish.py --publish publish/v1
 If verification only works from one original repository location, the publish contract is
 still entangled with producer-only assumptions.
 
+## The integrity audit before you move on
+
+Do not just say "the bundle verifies." Test whether you can name what each integrity
+surface actually does:
+
+| Surface | Smallest honest claim |
+| --- | --- |
+| manifest plus checksums | these public files are the ones promised, and their bytes match the inventory |
+| provenance | this software and run context produced the bundle |
+| consumer test | a downstream user can use the documented machine-facing artifact without internal knowledge |
+
+If you cannot fill this table, the bundle is still carrying an undifferentiated "metadata"
+story instead of distinct trust surfaces.
+
 ## Verify the bundle from the consumer side
 
 Now make the bundle prove itself through two routes:
@@ -296,6 +354,17 @@ By the end of the repair, the workflow can be described cleanly:
 
 That is what it means to promote results into a versioned publish bundle.
 
+```mermaid
+flowchart LR
+  internal["internal workflow state"] --> bundle["versioned public bundle"]
+  bundle --> integrity["integrity and provenance surfaces"]
+  integrity --> consumer["consumer uses only public contract"]
+  consumer --> review["compatibility review from downstream view"]
+```
+
+Read that diagram literally. If one step is missing, the repository may still publish
+files, but the downstream contract is not yet teachable.
+
 ## Review questions for the repaired design
 
 When you inspect a repository shaped like this, ask:
@@ -307,6 +376,19 @@ When you inspect a repository shaped like this, ask:
 5. how the bundle would behave for a consumer that knows nothing about `results/`
 
 If those answers are visible, the module's publish story has landed.
+
+## If the module still feels abstract
+
+Do this recovery loop in order:
+
+1. print the current artifact-role table
+2. point to one machine-facing file and one human-facing file
+3. say what the manifest proves and what it does not prove
+4. run one consumer test with access only to `publish/v1/`
+5. classify one changed file or path from the consumer's survival point of view
+
+Most Module 06 confusion is not about versioning syntax. It is about losing track of
+which bundle artifact owns which public promise.
 
 If you want one final classroom-style check, try to explain the bundle in four sentences:
 

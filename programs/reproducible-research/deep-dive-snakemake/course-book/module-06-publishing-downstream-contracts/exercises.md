@@ -98,6 +98,21 @@ flowchart LR
 Use that route on purpose. It keeps the day centered on downstream trust rather than on
 producer convenience.
 
+## What a strong day packet looks like
+
+By the time you finish all ten exercises, your work should leave behind one small,
+reviewable packet instead of ten disconnected publish fragments:
+
+- one artifact-role table
+- one public-tree sketch for the versioned bundle
+- one manifest and verification transcript
+- one consumer test that uses only the bundle
+- one compatibility note written from the consumer's point of view
+- one maintainer-style review note ordered by downstream trust impact
+
+If you cannot point to those artifacts, the exercise day is still too dependent on tacit
+classroom guidance.
+
 ## Exercise 1: Classify the current outputs
 
 Take a workflow that produces internal results, logs, reports, and one or more structured
@@ -213,6 +228,19 @@ already answer all of these:
 
 If you cannot answer those four questions cleanly, return to the earlier exercises and
 make the contract packet more explicit before moving on.
+
+## When you get stuck, diagnose the missing boundary first
+
+Use this table before you start moving more files into `publish/`:
+
+| If you are stuck on... | Check whether you are missing... | Typical repair |
+| --- | --- | --- |
+| Exercise 1 or 2 | one explicit artifact-role table | classify internal, human, and machine surfaces before promoting files |
+| Exercise 3 or 6 | one authoritative machine-facing artifact | choose the consumer entrypoint before writing more reports |
+| Exercise 4, 5, or 7 | one clear distinction between identity, context, and meaning | separate manifest, provenance, and file API roles explicitly |
+| Exercise 8, 9, or 10 | one consumer-centered compatibility note | classify the change from the surviving consumer's view before versioning it |
+
+Most weak Module 06 answers are not short on files. They are short on named public promises.
 
 ## Exercise 7: Corrupt the bundle and detect it
 
