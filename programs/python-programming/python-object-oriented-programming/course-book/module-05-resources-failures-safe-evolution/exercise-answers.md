@@ -19,28 +19,40 @@ graph LR
 flowchart LR
   own["name the owner of the resource"] --> fail["separate domain failure from boundary failure"]
   fail --> retry["justify retry and idempotency"]
-  retry --> expose["review logs and public surface"]
-  expose --> evolve["extend behavior without weakening old contracts"]
+  retry --> surface["review logs and public surface"]
+  surface --> evolve["extend behavior without weakening old contracts"]
 ```
 <!-- page-maps:end -->
 
 These are model answers for the `CertificateIssuanceService` scenario from the exercise
-page. They are meant to show how to turn resource ownership and failure reasoning into a
-packet that another maintainer can review without guessing who owns cleanup or retries.
+page. They are not here to hand you fixed wording. They are here to show what a strong
+survivability packet sounds like when another maintainer is trying to understand who
+cleans up, who may retry, and what promise callers are actually getting.
 
-## Running scenario recap
+## How to use this page well
 
-`CertificateIssuanceService`:
+Compare your own packet against this answer page using four checks:
 
-- reads a template from disk
-- fills certificate data
-- writes a PDF to object storage
-- records issuance in a repository
-- sends a confirmation email
-- may be retried by a job runner
+- did I name the cleanup owner instead of only the resource?
+- did I distinguish domain trouble from boundary trouble?
+- did I explain what makes retry safe or unsafe?
+- did I keep the public contract separate from the transport and storage details underneath it?
 
-The design question is not "can this work?" The design question is "who owns each
-resource, what happens after partial failure, and what can callers safely assume?"
+If your answer reaches the same verdict but hides those boundaries, it is still too weak.
+
+## What strong Module 05 answers have in common
+
+Across the whole packet, strong answers usually show all of these:
+
+- one explicit owner for each finite resource lifetime
+- one explicit statement of what callers are promised after failure
+- retry policy tied to idempotency rather than optimism
+- logging decisions tied to audience and recovery value
+- internal mechanics kept off the public surface
+- one honest note about what extension pressure could still break
+
+If your packet sounds like operations advice without ownership and contract language, the
+module has not landed deeply enough yet.
 
 ## Answer 1: Resource owner
 
@@ -116,7 +128,7 @@ Example split:
 
 Caller meaning:
 
-- domain error tells the caller their request contradicts current truth
+- domain error tells the caller the request contradicts current truth
 - boundary failure tells the caller the request may be valid but the environment failed
 
 Flattening them together harms both recovery and review:
@@ -126,8 +138,7 @@ Flattening them together harms both recovery and review:
 
 ## Answer 5: Retry policy
 
-Suppose the workflow crashes after the issuance record is stored but before the email is
-sent.
+Suppose the workflow crashes after the issuance record is stored but before the email is sent.
 
 Safe retry requires:
 
@@ -171,8 +182,7 @@ Internal details:
 - retry loop implementation
 
 If callers start depending on internal adapters directly, future changes such as moving
-from temp-file rendering to in-memory streaming become breaking changes for no good
-reason.
+from temp-file rendering to in-memory streaming become breaking changes for no good reason.
 
 ## Answer 8: Failure-shaped smell
 
@@ -208,7 +218,7 @@ Safe extension path:
 
 Unsafe shortcut:
 
-- let a caller generate preview separately and hope it remembers the same cleanup,
+- let a caller generate the preview separately and hope it remembers the same cleanup,
   logging, and retry rules
 
 The proof should show that:
@@ -234,12 +244,20 @@ That note is useful because it tells the next maintainer:
 - what can be retried
 - what still deserves pressure testing
 
-## Self-check
+## What a strong packet sounds like overall
 
-You are using Module 05 correctly when another maintainer can answer all of these from
-your packet:
+A strong final packet usually sounds like this:
 
-- who cleans up temp artifacts
-- whether a rerun can duplicate visible work
-- which failures mean "bad request" versus "bad environment"
-- which API callers can depend on without learning storage or email internals
+> This workflow has one visible cleanup owner, one visible commit boundary, one caller
+> contract after failure, and one explicit retry story. Internal mechanics remain hidden
+> unless they change the promise.
+
+That is the level of explicitness a missed-class learner should be aiming for.
+
+## Exit check
+
+Leave this answer page only when you can say:
+
+> My answers now survive challenge: I can name the cleanup owner, distinguish domain from
+> boundary failure, explain the retry contract, and say what callers may rely on without
+> learning the internals.
