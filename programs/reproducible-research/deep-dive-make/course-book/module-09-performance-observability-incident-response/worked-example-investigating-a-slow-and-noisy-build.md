@@ -121,6 +121,7 @@ artifacts/performance/reproducible-research/deep-dive-make/current/
 ├── PERFORMANCE_EVIDENCE_GUIDE.md
 ├── evidence.json
 ├── incremental-policy.tsv
+├── incremental-summary.tsv
 ├── incremental-work.json
 ├── logs/
 ├── manifest.json
@@ -144,6 +145,54 @@ the learner's memory, establishes each precondition.
 Cleaning is appropriate for `clean-build` because the experiment contract explicitly asks
 for a clean route. It would still be the wrong first action on an unpreserved production
 incident.
+
+## Predict and inspect the change-impact matrix
+
+Before opening generated evidence, use the graph to predict:
+
+| Input | Expected impact |
+| --- | --- |
+| `src/util.c` | util object, app, `all` |
+| `include/util.h` | main and util objects, app, `all` |
+| `include/sub.h` | main and sub objects, app, `all` |
+| `scripts/gen_dynamic_h.py` | generated header, both dynamic binaries, `all` |
+| `src/dynamic/dyn1.c` | only `dyn1` and `all` |
+
+Now read `incremental-policy.tsv`. Check both sides of every row. “Must remain” is not filler:
+it is how the policy catches collateral rebuilds.
+
+Open `incremental-summary.tsv` next. A passing local run has this shape:
+
+```text
+input                     result  missing  unexpected
+src/util.c                PASS    -        -
+include/util.h            PASS    -        -
+include/sub.h             PASS    -        -
+scripts/gen_dynamic_h.py  PASS    -        -
+src/dynamic/dyn1.c        PASS    -        -
+```
+
+Do not infer equal fan-out from equal `PASS` results. The header rows rebuild two objects
+because each header has two consumers. The generator script rebuilds a published header and
+both consumers. The isolated dynamic source should not relink `app`.
+
+Every row classifies the same governed outputs. Verify this by taking the union of
+`must_rebuild` and `must_remain` for two different rows. If the unions differ, the narrower
+row could hide an unobserved output.
+
+Use `incremental-work.json` only after the summary. Each case retains:
+
+- the input
+- expected and observed rebuild sets
+- missing and unexpected sets
+- result
+- its own raw trace
+
+If the `include/util.h` row reports `build/main.o` as missing, search that case's trace for
+`build/main.o` and inspect `build/main.d`. The likely boundary is discovered header
+dependency evidence, not timing. If the `src/dynamic/dyn1.c` row unexpectedly includes
+`app`, inspect paths between that input and the ordinary link route before accepting a
+performance claim.
 
 ## Decide whether the evidence is attributable
 
@@ -194,6 +243,7 @@ For each scenario, check:
 - no sample has a nonzero exit status in `evidence.json`
 - the trusted-output inventory names all five declared outputs
 - `incremental_work.result` is `PASS` inside the same evidence document
+- the bound incremental case set contains all five policy inputs
 
 The clean route describes full production cost. The no-op route describes an already
 converged invocation. Dry-run localizes work before ordinary recipe execution but does not
@@ -204,25 +254,6 @@ If no compatible earlier bundle exists, write:
 > A governed local baseline now exists. No performance regression has been established.
 
 That is a completed finding, not a failure to diagnose.
-
-## Check necessary incremental work
-
-Open `incremental-policy.tsv`, then `incremental-work.json`. Confirm:
-
-```text
-input=src/util.c
-missing_rebuild=[]
-unexpected_rebuild=[]
-result=PASS
-```
-
-The report should show `build/util.o`, `app`, and `all` as rebuilt, while unrelated objects
-and dynamic outputs remain untouched. This evidence answers a question the timing
-distribution cannot: did the build stay selective without becoming stale?
-
-If `build/util.o` is missing, stop the performance claim because the graph lost a required
-edge. If `build/bin/dyn1` appears unexpectedly, investigate why unrelated work was selected
-before claiming an incremental improvement.
 
 ## Prove that the gate can reject dishonesty
 
@@ -236,9 +267,10 @@ gmake -C "$CAPSTONE" performance-selftest \
 The route checks four boundaries:
 
 - execution context distinguishes clean, dirty, and unavailable provenance
-- incremental policy rejects missing requested work
+- incremental policy rejects incomplete output classification
+- the runner retains earlier cases when a later input exposes missing work
 - capture rejects too few samples, failed routes, and failed incremental evidence
-- comparison rejects context, policy, sample-count, artifact, and requested-work drift
+- comparison rejects missing input cases and non-first-case requested-work drift
 
 A useful gate needs rejection paths at every boundary, not one passing demonstration.
 
