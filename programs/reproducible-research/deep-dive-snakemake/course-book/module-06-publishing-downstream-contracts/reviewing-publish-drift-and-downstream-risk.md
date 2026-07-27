@@ -20,6 +20,20 @@ When you finish, you should be able to sit in front of a publish-related change 
 
 That is the teaching goal.
 
+## If you are learning this without the live class
+
+Use this page as a maintainer-style review simulation.
+
+Work in four passes:
+
+1. name the current public promise before you inspect any changed file
+2. list what a downstream consumer would notice first if the change landed today
+3. order your findings by downstream trust impact instead of by author convenience
+4. finish by naming the smallest verification route that proves each repair
+
+If your review starts with style or wording before contract breakage, your priority order
+is still wrong.
+
 ## Publish drift is not only about missing files
 
 Drift can look obvious:
@@ -69,6 +83,19 @@ The downstream user experiences something else:
 
 Good publish review is the discipline of preferring the second perspective.
 
+## The drift triage card to keep beside you
+
+Use this order whenever a publish-related change looks busy:
+
+| Review order | Question | Typical proof route |
+| --- | --- | --- |
+| 1 | did a trusted public path or meaning change | compare current consumer entrypoint and contract note |
+| 2 | did the bundle stop explaining its membership or integrity | check discovery records, manifest, and provenance together |
+| 3 | did a human-facing and machine-facing surface drift apart | compare report, summary, and file API roles |
+| 4 | did the change only add explanation without weakening the contract | rerun the consumer and verifier routes |
+
+If you start at row 4 before rows 1 to 3 are clear, you are reviewing from the wrong end.
+
 ## One useful review loop
 
 ```mermaid
@@ -83,6 +110,19 @@ This loop helps because teams often jump from “the workflow passed” straight
 publish bundle is fine.”
 
 That jump is exactly where drift hides.
+
+## One compact review packet
+
+Keep these six items together while you review:
+
+- one statement of the current public promise
+- one diff of the published paths or artifact roles
+- one verifier result
+- one consumer test result
+- one note about whether reviewed discovery evidence still explains bundle membership
+- one final classification: safe in current version, needs version discussion, or reject for now
+
+That packet turns review from instinct into something another maintainer can replay.
 
 ## What to inspect first
 
@@ -127,6 +167,16 @@ Strong shape:
 - version the publish boundary when the previous promise is no longer true
 
 This makes downstream trust an engineering decision rather than an accident.
+
+## One review sentence you should be able to write
+
+Before leaving this page, practice writing one finding like this:
+
+> The workflow still runs, but the public bundle lost part of its reviewed discovery
+> evidence, so downstream users can still read the result files while no longer being able
+> to defend their membership. That is a trust regression, not a cosmetic omission.
+
+If you cannot write a finding at that level, the drift is still too vague in your head.
 
 ## The beginner mistake to catch early
 
