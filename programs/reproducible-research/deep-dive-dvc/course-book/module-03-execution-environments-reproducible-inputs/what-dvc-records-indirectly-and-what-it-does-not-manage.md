@@ -94,6 +94,67 @@ about the environment boundary than about hidden data or parameter drift.
 
 That narrowing is valuable.
 
+## Read declaration and lock evidence in time order
+
+The hidden-runtime audit records hashes before and after a forced run:
+
+| Surface | Before force | After force | Meaning |
+| --- | --- | --- | --- |
+| `dvc.yaml` | unchanged | unchanged | process variable is still undeclared |
+| `dvc.lock` | old output identity | new output identity | DVC recorded what force produced |
+| fingerprint | `REPORT_STYLE=dot` | `REPORT_STYLE=comma` | runtime context changed |
+| result | `8.00` | `8,00` | hidden influence is causal |
+
+The lockfile is retrospective here. It can record the new output after execution, but it
+cannot make the process variable participate in the stale decision that happens before
+execution.
+
+This distinction prevents a common mistake:
+
+> The lock changed, so the environment is now tracked.
+
+No. The output record changed. The missing runtime edge is still missing.
+
+## Three ways to connect runtime policy
+
+| Pattern | DVC sees change? | Who enforces meaning? |
+| --- | --- | --- |
+| runtime contract file listed in `deps` | yes | DVC plus file-generation policy |
+| runtime control listed in `params` | yes | DVC plus parameter review |
+| CI or container identity only in external receipt | not directly | external gate and reviewer |
+
+All three can be legitimate. The third needs an explicit review join between DVC evidence
+and executor evidence. Merely printing versions to logs does not create that join.
+
+## Audit an environment claim
+
+For the claim “this result was produced under the governed runtime,” require:
+
+1. an environment identity or fingerprint
+2. a rule saying which fields are governed
+3. evidence that the rule was enforced before execution
+4. DVC result evidence from that execution
+
+`make platform-report` provides part 1. It does not supply parts 2 through 4 by itself.
+The runtime-contract audit demonstrates parts 1 and 4, then contrasts declared DVC
+enforcement with an intentionally missing rule.
+
+## Boundary diagram
+
+```mermaid
+flowchart LR
+  policy["runtime policy"] --> executor["environment manager or CI"]
+  executor --> fingerprint["runtime receipt"]
+  declared["declared file or param"] --> dvc["DVC stale decision"]
+  dvc --> result["result and lock evidence"]
+  fingerprint --> review["combined review"]
+  result --> review
+```
+
+DVC need not install the environment to participate in a trustworthy contract. It does
+need either a declared representation of influential runtime state or a reviewed external
+receipt joined to the result.
+
 ## Why clear boundaries matter
 
 Without a clear DVC boundary, it is easy to fall into one of two bad stories:
