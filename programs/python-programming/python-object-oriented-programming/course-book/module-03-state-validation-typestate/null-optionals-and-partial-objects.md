@@ -1,5 +1,4 @@
-# Nulls, Optionals, and Partial Objects: Designing Instead of Hoping
-
+# Nulls, Optionals, and Partial Objects
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["State Validation Typestate"]
-  page["Nulls, Optionals, and Partial Objects: Designing Instead of Hoping"]
+  page["Nulls, Optionals, and Partial Objects"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,98 +24,121 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Stop letting `None` leak into your core model.
+`None` is useful, but it becomes dangerous when it turns into the default answer for
+every absence problem.
 
-This core teaches how to represent absence *deliberately*:
-- by separating “missing at the boundary” from “missing in the domain”,
-- by using typestates, sentinels, and explicit results instead of `Optional` everywhere.
+That leads to designs where:
 
-## Where This Fits
+- required fields are maybe-present for no strong reason
+- objects spend half their life partially initialized
+- readers cannot tell whether absence is expected, temporary, or actually invalid
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+This lesson is about making absence explicit instead of hoping the reader will infer what
+each `Optional[...]` really means.
 
-## 1. `None` Is Not a Design, It’s an Unspecified State
+## Not all absence means the same thing
 
-`None` can mean many things:
-- not provided,
-- unknown,
-- not loaded yet,
-- not applicable,
-- intentionally absent.
+Several very different situations often get collapsed into `None`:
 
-When `None` reaches your domain layer, your code becomes ambiguous and error-prone.
+- data has not arrived yet
+- data is truly optional in the domain
+- data is unknown because the boundary was incomplete
+- the object is in an earlier lifecycle state
+- the field should never be absent, but the code was written loosely
 
-Teaching rule:
-> If `None` appears in domain collections (`list[Optional[T]]`), you have already lost clarity.
+Those situations should not all share one design move by default.
 
-## 2. Keep Optionality at the Boundary
+## The danger of partial objects
 
-Boundary layers deal with missing fields naturally.
+A partial object is an object that exists before it has the fields or state it really needs
+to make honest promises.
 
-Inside the domain, prefer:
-- “no such object” → raise `NotFound` / return `Result`,
-- “not applicable” → different type / different method,
-- “not loaded” → explicit state or a lazy loader object (rare; treat as infrastructure).
+That usually causes:
 
-Example: parsing config may yield missing `window_seconds`, but the domain `Window` should never be optional if rules require it.
+- repeated `if x is None` checks everywhere
+- methods that are only valid "sometimes"
+- hard-to-read transition bugs
+- objects that should have been separate states pretending to be one type
 
-## 3. Three Better Patterns Than `Optional`
+Partial objects are often a sign that lifecycle or boundary modeling is still too weak.
 
-### 3.1 Typestate types (preferred)
+## When `Optional` is legitimate
 
-Instead of `activated_at: float | None`, use `DraftRule` vs `ActiveRule` (M03C28).
+`Optional` is reasonable when absence is a real part of the domain meaning.
 
-### 3.2 Explicit sentinel for “not provided”
+Examples:
 
-```python
-_MISSING = object()
+- a note may genuinely be absent
+- an archival timestamp may not exist until retirement
+- an optional secondary field may be truly optional forever
 
-def parse_threshold(value=_MISSING):
-    if value is _MISSING:
-        ...
-```
+That is different from "we have not designed the state model carefully enough yet."
 
-This is useful in parsing code where `None` could be a valid value.
+## Better alternatives to vague absence
 
-### 3.3 Result objects for lookups
+Depending on the situation, clearer options include:
 
-Instead of returning `None` from lookups:
+- separate boundary input models from core domain objects
+- use distinct lifecycle states instead of one half-ready object
+- use sentinels only when they name a real separate meaning
+- require the field at construction if it is truly required for a valid instance
 
-```python
-class RuleNotFound(Exception): ...
+The goal is not to ban `Optional`. The goal is to stop using it as design camouflage.
 
-def get_rule(rule_id) -> Rule:
-    ...
-```
+## A practical decision test
 
-or return a small `Result` type. The important part is: absence is explicit.
+Ask:
 
-## 4. Partial Objects Are a Smell
+1. Is absence a permanent legitimate possibility here?
+2. Or is it only temporary because the object is not fully ready yet?
+3. Would a different state or type make the meaning clearer?
 
-A “partial object” is an instance that exists but is not valid yet.
+If absence is permanent and meaningful, `Optional` may be right.
 
-Example:
-- `Rule(metric=None, threshold=None)` created then filled later.
+If absence only describes an earlier stage, typestate or separate object shapes are often
+clearer.
 
-This creates an invalid intermediate state and forces every method to handle it.
+## Common mistakes
 
-Replace with:
-- a builder/factory that produces a valid object at the end, or
-- a separate `DraftRule` type, which is valid by its own contract (just a different contract).
+- marking almost every field optional to avoid constructor discipline
+- storing boundary uncertainty directly in the domain forever
+- treating "not loaded yet" as the same thing as "does not exist"
+- using `None` where a separate lifecycle state would teach more clearly
 
-## Practical Guidelines
+These are usually modeling shortcuts, not harmless convenience.
 
-- Do not store `None` inside domain collections or core graphs unless `None` has a precise, documented meaning.
-- Use typestate types to represent lifecycle phases (Draft/Active/Retired).
-- Use exceptions or `Result` to represent missing objects; avoid `Optional` returns for required lookups.
-- Use sentinels only in parsing/boundary code where `None` itself may be meaningful.
+## Review checklist
 
-## Exercises for Mastery
+| Question | Good sign |
+| --- | --- |
+| does `Optional` represent real domain absence? | yes |
+| are partial construction problems kept at the boundary or in state transitions? | yes |
+| can readers tell why a field may be absent? | yes |
+| are fake maybe-fields avoided for truly required data? | yes |
 
-1. Find an `Optional[...]` in your domain model. Replace it with either a typestate type or an explicit result.
-2. Remove a `list[Optional[T]]` by changing the API so the list is always `list[T]` and absence is handled earlier.
-3. Implement `RuleNotFound` and refactor one lookup to stop returning `None`.
+## Capstone connection
+
+In the capstone, review every optional field and ask whether it means:
+
+- truly optional forever
+- unknown at the boundary
+- unavailable until a later lifecycle state
+- or simply under-modeled design
+
+That audit usually reveals where the object model still needs sharper state boundaries.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain the difference between real optional data and a partial object
+- name one capstone field that should stay optional and one that should not
+- explain when typestate is clearer than sprinkling `Optional` everywhere
