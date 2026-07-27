@@ -31,6 +31,10 @@ design tool.
 The moment descriptors become truly useful is when one field rule needs to be reused
 across many attributes or classes.
 
+This page matters because descriptor knowledge stays shallow until storage ownership
+becomes explicit. Reuse is the draw, but storage mistakes are where many first descriptor
+designs actually fail.
+
 ## The sentence to keep
 
 A reusable field descriptor is usually a data descriptor that learns its public name with
@@ -38,6 +42,10 @@ A reusable field descriptor is usually a data descriptor that learns its public 
 of the descriptor object itself.
 
 That last part is the one that prevents the most bugs.
+
+Keep one more sentence beside it:
+
+> descriptor configuration may live on the descriptor object; descriptor-managed values usually must not.
 
 ## What a reusable field descriptor usually owns
 
@@ -49,6 +57,17 @@ In this module, a field descriptor is a small class that:
 - stores per-instance values in a safe place
 
 That pattern is what turns descriptor protocol knowledge into something practical.
+
+## Which parts belong where
+
+Use this table when a field descriptor starts blurring configuration and state:
+
+| Concern | Honest owner |
+| --- | --- |
+| field options such as `max_length` | descriptor object |
+| installed public name | learned through `__set_name__` |
+| per-instance stored value | instance storage or safe external storage |
+| read and write behavior | `__get__` and `__set__` |
 
 ## A small string field
 
@@ -75,6 +94,9 @@ class StringField:
 
 This is the standard educational shape because every important part stays visible.
 
+It is also strong because the public field declaration remains readable while the storage
+rule stays local and explicit.
+
 ## A positive integer field
 
 ```python
@@ -100,6 +122,9 @@ This is where descriptors clearly outgrow a single property:
 - the rule is reusable
 - the attribute name is discovered automatically
 - the field behavior is declarative at class definition time
+
+That last point matters for education. A learner can inspect the class body and see a
+field rule installed declaratively without needing copied property code everywhere.
 
 ## The storage rule that matters most
 
@@ -129,6 +154,17 @@ obj.__dict__[self.private_name] = value
 ```
 
 or explicit external storage when `__dict__` is not available.
+
+## Evidence route for storage reviews
+
+Use this route whenever a descriptor seems to "store its own values":
+
+| Evidence step | What it proves |
+| --- | --- |
+| the descriptor object lives on the class | descriptor instance is shared across all class instances |
+| writes go to `self.value` on the descriptor | stored values will leak across instances |
+| writes go to `obj.__dict__` or weak-key storage | values stay associated with individual instances |
+| `__set_name__` derives a storage key | field names remain reusable without hard-coding |
 
 ## Slotted classes need a different storage owner
 
@@ -162,6 +198,9 @@ class SlottedPositiveInt:
 This pattern keeps per-instance values separate while still allowing instances to be
 garbage-collected.
 
+It also forces a useful design question: if a descriptor cannot rely on `__dict__`, what
+is the narrowest external storage surface that still keeps ownership honest?
+
 ## Why `id(obj)` storage is a trap
 
 Sometimes people try:
@@ -175,6 +214,14 @@ and the mapping can easily leak stale state.
 
 If external storage is needed, weak references are the safer direction.
 
+## Storage options compared
+
+| Storage option | Good when | Main warning |
+| --- | --- | --- |
+| `obj.__dict__[private_name]` | instances expose `__dict__` and field ownership is local | requires a stable private-name convention |
+| `WeakKeyDictionary` | slotted or external-storage cases need instance separation | adds indirection and requires hashable/weak-reference-compatible instances |
+| `id(obj)` mapping | almost never | ids can be reused and stale state can leak |
+
 ## What reusable field descriptors are good at
 
 Use them when:
@@ -184,6 +231,9 @@ Use them when:
 - class-level declaration makes the model easier to read
 
 That is where descriptors start earning their complexity.
+
+Reuse pressure is the real justification. Descriptor power without repetition often turns
+into unnecessary abstraction.
 
 ## What they are not automatically good at
 
@@ -196,6 +246,28 @@ Descriptors are not automatically the right fit for:
 Those cases may still belong to properties, explicit validators, or later-course
 architectures.
 
+## Common overclaims to reject
+
+Reject these descriptions when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "the descriptor stores the field" | "the descriptor manages access while the instance or external mapping stores the value" |
+| "descriptor state is fine because the field object is small" | "shared descriptor state is still shared across instances" |
+| "weak-key storage is just an optimization detail" | "weak-key storage is a storage-ownership choice for cases without instance dictionaries" |
+| "reuse is always worth a descriptor" | "reuse must be real enough to justify a stronger owner" |
+
+## Failure modes for reusable field design
+
+These are the main ways a field descriptor can weaken:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| storing values on the descriptor object | state leaks across instances | move value storage to the instance or weak-key mapping |
+| hard-coding field names in the descriptor | reuse becomes brittle | derive names with `__set_name__` |
+| using a descriptor for a one-off local rule | abstraction cost exceeds clarity gain | keep a property or plain method instead |
+| using `id(obj)`-based storage | stale state and identity reuse risk accumulate | prefer `obj.__dict__` or weak references |
+
 ## A compact review checklist
 
 When reviewing reusable field descriptors, ask:
@@ -205,6 +277,16 @@ When reviewing reusable field descriptors, ask:
 - is `__set_name__` removing hard-coded attribute names?
 - does the descriptor clearly separate configuration from stored values?
 - would one property still be clearer if the reuse pressure is low?
+- can another reviewer identify exactly where instance state lives?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- explain why storing values on the descriptor object is usually wrong
+- name one safe `__dict__`-based storage pattern and one safe external-storage pattern
+- describe what `__set_name__` removes from the implementation
+- say when reuse pressure is strong enough to justify a descriptor
 
 ## What to practice from this page
 
