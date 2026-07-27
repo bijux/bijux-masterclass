@@ -1,4 +1,5 @@
 # Mid-Course Map
+
 Use this page when Modules 01 to 03 feel stable and you need a deliberate bridge into
 scaling, software boundaries, publish trust, and operating-context review. The goal is to
 keep the middle of the course shaped by workflow questions instead of by repository sprawl.
@@ -21,6 +22,16 @@ flowchart LR
 | where workflow orchestration ends and helper software begins | Module 05 | [Review Checklist](../reference/review-checklist.md) | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
 | what downstream users are actually allowed to trust | Modules 06 to 07 | [Proof Matrix](../guides/proof-matrix.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 | which differences across local, CI, and scheduler contexts are policy-only | Module 08 | [Topic Boundaries](../reference/topic-boundaries.md) | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
+
+## Read this map as a bridge
+
+The middle of the course is where many readers start confusing three different things:
+
+- workflow meaning
+- repository structure
+- execution context
+
+This map exists so those pressures stay separate while the course gets more realistic.
 
 ## Module clusters
 
@@ -64,6 +75,13 @@ of ownership clarity. Use this page to answer questions like:
 
 If you cannot phrase the question in one of those forms yet, go back to the smaller
 module example before opening more repository surfaces.
+
+## Mid-course mistakes to avoid
+
+- splitting files because the repository feels crowded rather than because ownership is clear
+- treating publish directories as a convenient output pile instead of a contract
+- using profiles to hide analytical differences
+- reading architecture before the current workflow claim is legible
 
 ## When to leave this route
 

@@ -1,4 +1,5 @@
 # First-Contact Map
+
 Use this page for your first honest session with the course. The goal is not to cover as
 much ground as possible. The goal is to leave the first hour coherent enough that later
 reading choices feel deliberate instead of random.
@@ -23,6 +24,17 @@ flowchart TD
 Do not open the capstone yet. Its size is useful after the basic graph is familiar, but
 at first contact it adds repository details that compete with the central idea.
 
+## Why this route works
+
+The first session should give you one durable mental model:
+
+- a target is requested
+- Snakemake plans the jobs needed to reach it
+- the workflow reruns only when file truth says it should
+
+If that model is stable, later modules have something real to build on. If it is weak,
+later pages become vocabulary without structure.
+
 ## What you should know before Module 01
 
 Before the first technical module, you should be able to answer:
@@ -42,6 +54,13 @@ Repeat the same rhythm through the first modules:
 3. change one input, output, or rule at a time
 4. explain the observed behavior in terms of files and dependencies
 5. complete the exercises before consulting their answers
+
+## First-session mistakes to avoid
+
+- treating dry-run as optional
+- jumping to the capstone because it looks more advanced
+- reading answer pages before making a prediction
+- changing multiple workflow facts at once and then guessing which one mattered
 
 ## A strong first-session outcome
 

@@ -1,32 +1,9 @@
 # Reference Glossary
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Reference"]
-  page["Reference Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-This glossary keeps Deep Dive Snakemake's recurring terms stable across modules,
-reference pages, and capstone review routes. Use it when the repository is clear enough
-to inspect, but the local meaning of a word still needs to be pinned down.
+This glossary keeps Deep Dive Snakemake's recurring support-page terms stable across
+modules, references, and capstone review routes. Use it when the workflow is already
+recognizable but the local meaning of a page or review surface still needs to be pinned
+down.
 
 ## How to use this glossary
 
@@ -43,3 +20,12 @@ to memorize.
 | Module Dependency Map | The reading-order map that shows which modules support later ones and which ideas should come first. |
 | Practice Map | The crosswalk from modules to capstone routes that corroborate the same concept. |
 | Topic Boundaries | The page that distinguishes core course material from supporting context and out-of-scope extension work. |
+
+## What this glossary is not
+
+This page is not the place to define every Snakemake term in the course. It is here to
+stabilize the support shelf itself:
+
+- which review page to open
+- what kind of judgment that page helps you make
+- why one support route is better than another for the current question

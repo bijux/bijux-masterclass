@@ -1,4 +1,5 @@
 # Mastery Map
+
 Use this page when the course is no longer about first contact or ordinary study rhythm.
 The goal here is stewardship: decide what the workflow can still promise honestly, what
 must change, and what should move outside Snakemake instead of being hidden inside it.
@@ -20,6 +21,14 @@ flowchart LR
 | what downstream users are actually allowed to trust | Modules 06 to 09 | [Boundary Review Prompts](../reference/boundary-review-prompts.md) | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
 | whether policy drift is being mistaken for workflow meaning | Modules 08 to 10 | [Topic Boundaries](../reference/topic-boundaries.md) | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
 | whether Snakemake should keep owning the concern at all | Module 10 | [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+
+## What changes at this stage
+
+Earlier in the course, the main question is usually "how does this work?" At mastery
+level, the main question becomes "what should still be trusted, changed, or handed off?"
+
+That shift matters because a repository can still run while becoming harder to review,
+migrate, or defend.
 
 ## Late-course route
 
@@ -47,6 +56,13 @@ You should be able to:
 - pick evidence that is proportionate instead of maximal
 - reject a change that merely makes the repository look more sophisticated
 - explain when another tool, service, or layer should own the concern instead
+
+## Late-course mistakes to avoid
+
+- using the strongest proof route because it feels safer than thinking
+- calling policy drift a semantic change without checking the contract
+- preserving a workflow concern inside Snakemake because moving it would be inconvenient
+- treating a running repository as a trustworthy repository by default
 
 ## Good mastery signal
 
