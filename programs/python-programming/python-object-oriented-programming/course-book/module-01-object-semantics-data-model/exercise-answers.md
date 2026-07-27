@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,173 +24,151 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These answers are model reasoning, not the only acceptable wording. A strong answer
+should sound like a review comment or design note, not like a memorized definition.
 
-## How to use the answer page well
+## How to use the answer page
 
-Do not read the model answer first and then reduce the module to "use dataclasses for
-values and regular classes for objects."
+Read your own answer first. Then compare it against this page by asking:
 
-A better rhythm is:
+- Did I name the object kind clearly?
+- Did I name the owner of mutable state?
+- Did I explain the first proof route, not only the final opinion?
+- Did I make the contract visible enough for another reviewer to follow?
 
-1. finish the exercise with your own semantics packet
-2. name the identity model, mutation rule, and proof test
-3. compare your reasoning with the model answer
-4. revise anywhere your answer still hides aliasing, fuzzy equality, or accidental class
-   usage
+If your answer reaches the same verdict but hides the reasoning, it is still weaker than
+it should be.
 
-What matters is whether the reasoning makes object contracts explicit and reviewable.
+## Answer 1: Classify one object honestly
 
-Strong Module 01 answers usually do five things:
+A strong answer names the type as value-like, entity-like, or not worth keeping as a
+class and then justifies that label with continuity and meaning.
 
-- they distinguish identity from value semantics clearly
-- they explain who owns mutable state
-- they treat equality and hashing as container contracts
-- they describe attribute lookup and representation honestly
-- they reject classes that do not protect meaning or invariants
+Good signals:
 
-The strongest self-study packets also leave behind six concrete artifacts:
+- a value-like object is equal by content and carries no meaningful lifecycle
+- an entity-like object stays distinct even when fields happen to match
+- an unnecessary class protects no invariant and owns no important state
 
-- one identity-versus-value judgment
-- one aliasing example
-- one representation review
-- one equality and hashing rule
-- one copying comparison
-- one class-rejection decision
+Weak answer pattern:
 
-If your answers rely only on "this feels object-oriented," the reasoning is still too
-thin.
+- "it is a class because it has fields"
 
-## Answer 1: Name the object contract
+## Answer 2: Explain one attribute lookup surprise
+
+A strong answer distinguishes:
+
+- class state
+- instance state
+- computed access through a property
+
+It also explains shadowing clearly. If the answer says only "Python checks the object,"
+it is still too vague.
+
+## Answer 3: Repair a weak constructor
+
+A good redesign does three things:
+
+- makes truly required inputs explicit
+- removes defaults that only stand in for missing lifecycle
+- blocks invalid states at creation time instead of later repair time
+
+The key teaching point is not nicer syntax. It is a more honest object boundary.
+
+## Answer 4: Draw a public-surface boundary
 
 A strong answer names:
 
-- whether the object is identity-bearing, value-oriented, or unnecessary as a class
-- what continuity matters over time
-- which state may change safely
-- what equality is supposed to mean
+- which names are intentionally public
+- which names are internal support detail
+- what the representation should emphasize
 
-For example, a type like `ThresholdRule` is usually value-oriented because its meaning is
-its content. A runtime registry entry or aggregate root may be identity-bearing because
-its continuity matters beyond current field values.
+The best answers explain why exposing less can make debugging clearer, not harder.
 
-## Answer 2: Review shared mutable state
+## Answer 5: Make an equality decision
 
-The key distinction:
+A good answer starts from meaning:
 
-- aliasing means two names reference one mutable object
-- equal-looking independent objects merely start with the same content
+- value-like objects usually justify value equality and often hashability
+- entity-like objects usually keep identity-centered reasoning
+- mutable equality-bearing objects are often poor key candidates
 
-The production bug is non-local mutation: code changes one path and silently changes
-another consumer's view. A strong prevention route is constructor discipline that copies
-or freezes caller-owned mutables when shared ownership is unsafe.
+The most important thing the answer should show is that equality and hashing were
+considered together.
 
-## Answer 3: Draw the public representation boundary
+## Answer 6: Find one aliasing hazard
 
-A strong answer identifies:
+A strong answer does not stop at "mutable defaults are bad." It explains:
 
-- which attributes consumers may read or reason about
-- which attributes are internal storage or caching detail
-- how `repr` supports debugging and review without dumping irrelevant internals
+- who unintentionally became a co-owner
+- how the bug would appear in ordinary maintenance work
+- what boundary repair fixes it
 
-One healthy rule is:
+That turns a Python trick into a design lesson.
 
-- other modules must not depend on private representation details or incidental field
-  names that are not part of the supported surface
+## Answer 7: Choose a copy strategy
 
-## Answer 4: Explain equality, ordering, and hashing
+A good answer explains what should stay shared and what should become independent.
 
-Content-based equality is strongest for value objects. Identity-based equality is often
-safer for entities whose continuity matters more than current field equality.
+Good reasoning often sounds like this:
 
-Hashing should exist only when:
+- no copy because sharing is intentional and safe
+- shallow copy because only outer structure should separate
+- deep copy because nested mutable state must not remain shared
+- redesign because repeated copying is masking broken ownership
 
-- the object is meaningfully hashable
-- the equality rule is stable enough to support container use
+The best answer names why the chosen strategy matches the object's contract.
 
-The classic bug is:
+## Answer 8: Reject one unnecessary class
 
-- equality says two objects are the same, but hashing disagrees, so sets or dicts behave
-  inconsistently
+A strong answer names the simpler replacement and explains what the class was pretending
+to protect.
 
-## Answer 5: Trace attribute lookup honestly
+Good replacements are often:
 
-Strong explanation:
+- a plain function for direct transformation
+- a small value object for honest data meaning
+- a module-level namespace for grouped helpers
 
-- instance attributes are checked before falling back to class-level definitions
-- class attributes can provide defaults or shared state
-- properties and descriptors can intercept access and compute results
+The key point is that fewer classes can mean clearer design, not weaker design.
 
-Why "just a field" is weak:
+## Answer 9: Mini review memo
 
-- the observed attribute may actually come from lookup rules, descriptors, inheritance, or
-  shadowing, not from a simple stored slot
+A good memo should read like a real code review:
 
-## Answer 6: Compare shallow and deep copying
+- object kind
+- mutable-state owner
+- supported public surface
+- equality and hashing story
+- shared-state risk
+- copy decision
 
-The important distinctions:
+If the memo sounds like a glossary summary, it is not yet doing review work.
 
-- assignment creates another name for the same object
-- shallow copy duplicates only the outer container or object shell
-- deep copy recursively duplicates nested content
+## Answer 10: Capstone transfer
 
-What matters is not which tool sounds stronger, but which sharing behavior the contract
-actually promises. Unplanned shared nested state is often the real surprise.
+The strongest final answer shows that Module 01 decisions shape later modules.
 
-## Answer 7: Repair constructor discipline
+Good signs:
 
-A strong redesign:
+- the learner can explain why a capstone type is value-like, entity-like, or simpler than a class
+- the learner can name which later boundary would suffer if the object semantics were wrong
+- the learner can connect identity, mutation, and public surface to later architectural clarity
 
-- replaces vague raw primitives with meaningful values or wrapper types
-- rejects invalid combinations at construction time
-- removes optional values that represent illegal partial states
+## What a strong packet looks like overall
 
-The proof test should show that invalid state cannot be created silently anymore.
+Across the whole exercise day, strong answers usually show all of these:
 
-## Answer 8: Review data-model hooks as design decisions
+- explicit naming of object kind
+- explicit ownership language for mutable state
+- one clear explanation of lookup or representation behavior
+- one equality-and-hashing judgment tied to container use
+- one aliasing or copy decision tied to boundary meaning
+- one explicit rejection of unnecessary class form
 
-Each hook is a promise:
+## Exit check
 
-- `__repr__` promises something about debug visibility
-- `__eq__` promises how sameness is judged
-- `__hash__` promises container compatibility
-- `__bool__` or `__len__` promise truthiness semantics
+Leave this answer page only when you can say:
 
-Abuse happens when a hook hides expensive work, surprising policy, or ambiguous meaning
-behind normal Python syntax.
-
-## Answer 9: Decide when a class is the wrong tool
-
-A strong answer shows:
-
-- the current class adds little beyond bundling a few values
-- a plain value, function, or small `dataclass` would be clearer
-- the class should return only if richer lifecycle, invariants, or collaboration pressure
-  appears
-
-The main lesson is that not every grouping deserves long-lived object identity.
-
-## Answer 10: Produce a full semantic review
-
-A good review should name:
-
-- identity model
-- mutation policy
-- equality and hashing contract
-- representation boundary
-- copying behavior
-- one concrete safety or risk finding
-
-The strongest final paragraph sounds like a review note, not a glossary recap.
-
-## Self-check
-
-If your answers consistently explain:
-
-- what kind of object you are looking at
-- who owns mutable state
-- what equality means in practice
-- how data-model hooks shape the public contract
-- when a class helps and when it only adds ceremony
-
-then you are using Module 01 correctly.
+> My answers now sound like design reviews: I can classify the object, name the owner,
+> describe the contract, and choose the first proof route without relying on vague OOP language.
