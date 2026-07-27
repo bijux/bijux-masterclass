@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,253 +24,161 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice object-semantics judgment, not only class syntax.
+Use these exercises as one full lab day on object meaning. The goal is not to prove that
+you recognize Python syntax. The goal is to prove that you can inspect a type and say
+what it is promising.
 
-The goal of the day is to make object meaning explicit. By the end, identity, state,
-equality, mutation, copying, and representation should feel like reviewable contracts
-rather than background Python behavior.
+## How to use this exercise day
 
-## How to work through this set
+Do the exercises in order. Each one builds a piece of the same review packet.
 
-Treat the ten exercises as one full lab day on semantic contracts.
+Before answering any exercise, write these three lines:
 
-Before each answer:
+1. `This object is...`
+2. `The owner of this mutable state is...`
+3. `The first proof I would run is...`
 
-1. name whether the object should behave like an identity-bearing entity, a value object,
-   or a plain helper
-2. name which mutation or lookup rule could surprise another maintainer
-3. say what test or example would prove the contract
+If you skip those lines, the answers often drift back into vague opinions.
 
-Do the exercises in order. The day is one progression:
+## What you should produce by the end
 
-- Exercises 1-3 define identity, state, and representation boundaries
-- Exercises 4-5 review equality, hashing, and attribute layout
-- Exercises 6-8 pressure-test aliasing, copying, and constructor discipline
-- Exercises 9-10 decide whether a class helps at all and package the full semantic review
-
-Keep one semantics packet as you go. By the end of the day it should contain:
+By the end of the exercise day, you should have a packet containing:
 
 - one identity-versus-value judgment
-- one state-sharing hazard note
-- one equality and hashing review
-- one attribute layout explanation
-- one copying and aliasing example
-- one class-versus-plain-value design decision
+- one attribute-layout explanation
+- one constructor invariant review
+- one public-surface judgment
+- one equality-and-hashing judgment
+- one aliasing or shared-state hazard note
+- one copying decision
+- one class-versus-function decision
 
-If those six artifacts are missing, you are probably still naming classes instead of
-governing their behavior.
+That packet is more important than any individual sentence.
 
-## Recommended working layout
+## Exercise 1: Classify one object honestly
 
-If you want one lab tree that can support the whole day, use something like:
+Choose one type from the capstone or from your own work. Decide whether it is:
 
-```text
-module01-lab/
-├── artifacts/
-├── notes/
-├── scratch/
-└── tests/
-```
+- value-like
+- entity-like
+- not worth keeping as a class
 
-Keep one contract table while you work:
+Write:
 
-| Object | Identity-bearing or value-oriented | Dangerous mutation surface | Test that proves the contract |
-| --- | --- | --- | --- |
+- what gives it continuity, if anything
+- what would make two instances meaningfully the same
+- whether lifecycle matters
 
-Also keep one copying table:
+## Exercise 2: Explain one attribute lookup surprise
 
-| Operation | Aliases original state? | Safe for nested mutables? | When it is misleading |
-| --- | --- | --- | --- |
-
-```mermaid
-flowchart LR
-  classify["classify the object"]
-  expose["name public versus hidden state"]
-  compare["review equality and hashing"]
-  layout["trace attribute lookup"]
-  copy["test copy behavior"]
-  reject["reject needless classes"]
-
-  classify --> expose --> compare --> layout --> copy --> reject
-```
-
-Use that route on purpose. It keeps the day centered on meaning and coupling instead of on
-surface-level Python familiarity.
-
-## Exercise 1: Name the object contract
-
-Take one class from the capstone and explain whether it should be:
-
-- an identity-bearing entity
-- a value object
-- a plain helper that does not need class form
-
-Your answer should explain:
-
-- what continuity matters, if any
-- which state is allowed to change
-- what two equal instances should mean
-
-Study note:
-Most later OOP mistakes begin with the wrong answer here.
-
-## Exercise 2: Review shared mutable state
-
-Write a small example that distinguishes:
-
-- two names pointing at one mutable object
-- two independent objects with the same content
-
-Then explain:
-
-- which production bug the confusion causes
-- what design or constructor choice would prevent it
-
-Study note:
-This exercise matters because aliasing bugs often look like "random mutation" until you
-state the ownership boundary clearly.
-
-## Exercise 3: Draw the public representation boundary
-
-Review one class and explain:
-
-- which attributes belong to the supported public surface
-- which attributes are implementation detail
-- how `repr` should help a reviewer without leaking internal clutter
-- one sentence naming what another module should never rely on
-
-Study note:
-Representation is part of the contract whenever humans debug, log, or review the object.
-
-## Exercise 4: Explain equality, ordering, and hashing
-
-Pick one object that might be used in a set or dict key and explain:
-
-- when equality should be content-based
-- when identity-based equality is safer
-- whether hashing should exist at all
-- one bug that appears when equality and hashing disagree
-
-Study note:
-Container behavior is not a convenience detail. It is a correctness contract.
-
-## Exercise 5: Trace attribute lookup honestly
-
-Create a class with:
+Create a tiny example with:
 
 - one class attribute
 - one instance attribute
-- one property or descriptor-like computed attribute
-
-Explain:
-
-- where lookup checks first
-- what can shadow what
-- why "it is just a field" is often the wrong explanation
-
-Study note:
-This is where Python's object model stops looking like folklore and starts looking like a
-real design surface.
-
-## Midday self-check
-
-Before you move into copying, constructor discipline, and class rejection, make sure your
-packet can already answer these questions clearly:
-
-- whether a given object is identity-bearing or value-oriented
-- how shared mutable state can leak through constructors or defaults
-- when equality and hashing are safe or dangerous
-- why attribute lookup is more than "find the field"
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
-
-## Exercise 6: Compare shallow and deep copying
-
-Use one object with nested mutable state and compare:
-
-- assignment
-- shallow copy
-- deep copy
+- one property
 
 Then explain:
 
-- which state stays shared
-- which behavior would surprise a reviewer
-- which copy strategy belongs in the real contract, if any
+- where each visible value comes from
+- which access is stored state
+- which access is computed
+- which name can be shadowed
 
-Study note:
-The point is not to memorize copy functions. The point is to stop promising isolation you
-did not actually create.
+## Exercise 3: Repair a weak constructor
 
-## Exercise 7: Repair constructor discipline
-
-Take a constructor that accepts too many raw primitives or optional values and redesign it
-so invariants are clearer at creation time.
+Take a constructor that accepts too many nullable or ambiguous inputs and redesign it.
 
 Explain:
 
-- what ambiguity the old constructor allowed
-- what invalid state the redesign prevents
-- what test would prove the invariant
+- which inputs are truly required
+- which defaults are real domain defaults
+- which invalid state should become impossible to construct
 
-Study note:
-Object safety often starts before the first method call.
+## Exercise 4: Draw a public-surface boundary
 
-## Exercise 8: Review data-model hooks as design decisions
+Choose one object and decide:
 
-Pick at least two hooks such as:
+- which names are intentionally public
+- which names are internal support detail
+- what the `__repr__` should emphasize
+- what another module should never rely on
 
-- `__repr__`
-- `__eq__`
-- `__hash__`
-- `__bool__`
-- `__len__`
+## Exercise 5: Make an equality decision
 
-Explain what promise each hook makes and what abuse would make the object harder to trust.
+Choose one type and decide whether equality should be:
 
-Study note:
-Magic methods are not magic. They are public behavioral promises.
+- identity-based
+- value-based
+- intentionally absent from normal comparison work
 
-## Exercise 9: Decide when a class is the wrong tool
+Then explain:
 
-Choose one example where a class could be replaced by:
+- whether hashing should exist
+- whether the object is safe in a set or as a dictionary key
+- what could go wrong if the equality story drifted
 
-- a plain value
-- a function
-- a small `dataclass`
+## Exercise 6: Find one aliasing hazard
 
-Explain:
+Show one example of accidental sharing through:
 
-- why the class version adds noise
-- what the simpler alternative clarifies
-- what behavior would have to appear before you reintroduce the class
+- a mutable default
+- a mutable class attribute
+- direct storage of caller-owned mutable state
 
-Study note:
-Good OOP in Python includes knowing when not to reach for OOP.
+Then explain:
 
-## Exercise 10: Produce a full semantic review
+- who incorrectly became a co-owner
+- how the hazard would appear in a real code review
+- what boundary repair would fix it
 
-Take one object from the capstone or a small lab example and produce a short review that
-names:
+## Exercise 7: Choose a copy strategy
 
-- identity model
-- mutation policy
-- equality and hashing contract
-- representation boundary
-- copying semantics
-- one reason the current design is safe or unsafe
+Pick one mutable object graph and decide whether you need:
 
-Study note:
-This final exercise matters because semantic review is the real exit skill of the module.
+- no copy
+- a shallow copy
+- a deep copy
+- a redesign that removes the copying need
 
-## Mastery check
+Explain what should stay shared and what should become independent.
 
-You have a strong grasp of this module if your answers consistently keep five ideas
-visible:
+## Exercise 8: Reject one unnecessary class
 
-- identity and value semantics are different contracts
-- mutable state needs an ownership story
-- equality and hashing must agree with container use
-- attribute lookup and representation choices affect real design behavior
-- classes should exist only when they clarify meaning or protect invariants
+Find one design that is better as:
+
+- a plain function
+- a small value object
+- a module-level surface
+
+Then explain what the class was pretending to protect and why that protection was not
+real.
+
+## Exercise 9: Mini review memo
+
+Write a short review memo for one type using this structure:
+
+- object kind
+- state owner
+- public surface
+- equality and hashing story
+- aliasing risk
+- copy decision
+
+Keep it to one focused page. The aim is clarity, not length.
+
+## Exercise 10: Capstone transfer
+
+Choose one capstone type and answer:
+
+- why it is a class, value object, or simpler surface
+- what invariant or meaning it protects
+- how a weak object-semantics decision here would damage later modules
+
+This exercise closes the loop between Module 01 and the rest of the course.
+
+## Exit check
+
+Leave the exercise day only when you can say:
+
+> I can now inspect one object and explain its identity model, ownership boundary,
+> public surface, equality story, shared-state risk, and whether class form is justified.
