@@ -25,15 +25,47 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this page after you have written your own answers. The value is in comparing reasoning,
-not in copying sentences.
+Use this page after you have written your own answers. The value is in comparing
+reasoning, not in copying sentences.
 
-The answers below are reference-quality examples. Your own repository and target names will
-vary. What should stay stable is the reasoning shape:
+## How to use the answer page well
+
+Do not read a model answer first and then retrofit your stewardship packet to sound
+similar.
+
+A better rhythm is:
+
+1. finish the exercise with your own review tables, proof bridges, and notes
+2. write one plain-language explanation of the stewardship question
+3. compare that explanation with the model answer
+4. revise where the model answer exposes a weaker rollback point, blurrier governance
+   rule, or handoff without proof
+
+The answers below are reference-quality examples. Your own repository and target names
+will vary. What should stay stable is the reasoning shape:
 
 - start from observable behavior
 - classify the finding before recommending a repair
 - preserve proof while changing contracts or boundaries
+
+Strong Module 10 answers usually do four things:
+
+- they describe current behavior before prescribing redesign
+- they classify findings in terms of truth, contract, or boundary
+- they keep evidence alive during migration
+- they write rules other maintainers could really use
+
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one first-pass review
+- one proof-preserving migration step
+- one enforceable governance note
+- one ownership inventory
+- one tool-boundary comparison
+- one bounded repair with honest handoff
+
+If your answers rely only on "this build should be cleaned up," the reasoning is still too
+weak.
 
 ## Exercise 1: Write a first-pass build review
 
@@ -55,7 +87,8 @@ Why this is strong:
 - it uses evidence or likely evidence
 - it ends with classified findings that can guide migration
 
-Weak answers usually say only "the Makefile is messy" or "we should use a different tool."
+Weak answers usually say only "the Makefile is messy" or "we should use a different
+tool."
 
 ## Exercise 2: Sequence a safe migration
 
@@ -63,13 +96,16 @@ A strong migration answer changes one boundary and preserves one proof route.
 
 Example:
 
-- current contract: "`release` currently means build, validate, package, and publish."
-- first boundary move: "split local package production into `dist` and keep publication
-  separate."
-- preserved proof: "record the current release layout with `find dist -type f | sort`
-  before changing the packaging route."
-- retirement condition: "the old `release` implementation can disappear once `dist`
-  produces the same declared artifact set and `publish` consumes only that artifact set."
+- current contract:
+  - "`release` currently means build, validate, package, and publish."
+- first boundary move:
+  - "Split local package production into `dist` and keep publication separate."
+- preserved proof:
+  - "Record the current release layout with `find dist -type f | sort` before changing the
+    packaging route."
+- retirement condition:
+  - "The old `release` implementation can disappear once `dist` produces the same declared
+    artifact set and `publish` consumes only that artifact set."
 
 Why this is strong:
 
@@ -101,20 +137,25 @@ Why this is strong:
 Weak governance notes use language like "try to keep things simple" because nobody can
 enforce that.
 
+Exceptions should be approved by the same maintainers responsible for public contract
+changes and proof-surface integrity.
+
 ## Exercise 4: Diagnose one recurring antipattern
 
 Choose one pattern and name the first honest recovery move.
 
 Example:
 
-- antipattern: multi-writer outputs
+- antipattern:
+  - multi-writer outputs
 - confirming signals:
-  - "`build/report.html` changes when both `all` and `release` run"
+  - "`build/report.html` changes when both `all` and `dist` run"
   - "packaging routes invoke the same generator that ordinary build routes invoke"
-- first repair: "assign one rule or route as the sole writer of `build/report.html` and
-  make packaging depend on that published output instead of regenerating it"
-- why this helps: "it restores output ownership and makes incremental behavior easier to
-  reason about"
+- first repair:
+  - "Assign one rule or route as the sole writer of `build/report.html` and make
+    packaging depend on that published output instead of regenerating it."
+- why this helps:
+  - "It restores output ownership and makes incremental behavior easier to reason about."
 
 The key is to explain why the repair restores truth or ownership clarity, not just why it
 looks cleaner.
@@ -125,15 +166,20 @@ A strong answer focuses on ownership fit.
 
 Example:
 
-- concern: remote publication
-- judgment: "Make should not remain the full owner"
-- argument: "Make is still a good owner for producing the local artifact and checksum, but
-  remote publication depends on authentication, approval, and remote state that Make cannot
-  model honestly. A dedicated service should own publication policy and status."
-- handoff artifact: "`dist/report.tar.gz` plus its checksum and metadata manifest"
-- proving the boundary works: "the build can produce and verify the local artifact without
-  talking to the remote system, and publication errors are reported by the owning service
-  rather than hidden inside packaging behavior"
+- concern:
+  - remote publication
+- judgment:
+  - "Make should not remain the full owner."
+- argument:
+  - "Make is still a good owner for producing the local artifact and checksum, but remote
+    publication depends on authentication, approval, and remote state that Make cannot
+    model honestly. A dedicated service should own publication policy and status."
+- handoff artifact:
+  - "`dist/report.tar.gz` plus its checksum and metadata manifest"
+- proving the boundary works:
+  - "The build can produce and verify the local artifact without talking to the remote
+    system, and publication errors are reported by the owning service rather than hidden
+    inside packaging behavior."
 
 Why this is strong:
 
@@ -156,6 +202,11 @@ from the table may be unowned; an output written by both `all` and `dist` is a
 multi-writer risk. The table is useful only when observed behavior and declared ownership
 agree.
 
+The key explanation is:
+
+> Ownership inventory is more useful than a plain target list because consumers rely on
+> trusted outputs and side effects, not on names alone.
+
 ## Exercise 7: Write characterization checks
 
 Durable checks might include:
@@ -173,6 +224,9 @@ The paths can follow the repository's governed artifact location. Preserve inten
 package contents and convergence. Do not enshrine partial publication or nondeterministic
 files merely because the inherited build currently produces them; characterization must
 label defects separately from contracts.
+
+These checks support rollback because they give the maintainer a concrete before-and-after
+comparison instead of a memory of how the build "used to feel."
 
 ## Exercise 8: Turn governance prose into verification
 
@@ -199,6 +253,9 @@ A defensible comparison could look like:
 The resulting boundary keeps deterministic local artifact production in Make and hands
 authentication, approval, retries, and remote status to the service. Both sides verify the
 archive checksum: Make before handoff and the service on receipt.
+
+The strongest answers also explain how each side can fail independently without blurring
+who owns the remediation.
 
 ## Exercise 10: Produce a stewardship portfolio
 
