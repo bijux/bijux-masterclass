@@ -298,23 +298,61 @@ The important explanation is:
 
 ## Exercise 9: Remove pattern-rule ambiguity
 
-The exact selected rule depends on stems, prerequisites, and implicit-rule search. That is
-why the answer must include evidence rather than a guess. A strong repair separates the
-namespaces:
+The prediction and observation table should converge on:
+
+| Model | Requested target | Selected prerequisite | Published content |
+| --- | --- | --- | --- |
+| generated rule first | `build/a.choice` | `generated/a.src` | `selected=generated` |
+| root rule first | `build/a.choice` | `root/a.src` | `selected=root` |
+| namespaced targets | two explicit paths | one prerequisite per namespace | both selections |
+
+The two ambiguous Makefiles differ only in which of these candidate rules appears first:
 
 ```make
-build/generated/%.o: generated/%.c
-	$(CC) -c $< -o $@
+build/%.choice: generated/%.src
+	printf 'selected=%s\n' "$$(cat $<)" > $@
 
-build/source/%.o: src/%.c
-	$(CC) -c $< -o $@
+build/%.choice: root/%.src
+	printf 'selected=%s\n' "$$(cat $<)" > $@
 ```
 
-The output path now communicates which source domain owns the rule. An explicit rule is
-even better when only one exceptional file exists.
+Reversing the rules reverses the content of `build/a.choice`. The trace should be used to
+show both the selected recipe location and the prerequisite bound to `$<`. The output then
+shows the semantic consequence of that selection.
 
-The semantic stage that matters most is rule selection, because that is where ambiguity
-becomes a real build decision rather than a vague maintenance concern.
+The control separates the namespaces:
+
+```make
+build/generated/%.choice: generated/%.src
+	printf 'selected=%s\n' "$$(cat $<)" > $@
+
+build/root/%.choice: root/%.src
+	printf 'selected=%s\n' "$$(cat $<)" > $@
+```
+
+The resulting paths are:
+
+```text
+build/generated/a.choice
+build/root/a.choice
+```
+
+They can coexist because each path has one reviewable source domain. An explicit rule
+would be better if only one exceptional target existed; a static pattern rule would be
+appropriate for a known finite target set.
+
+The review rule should express the contract rather than outlawing syntax:
+
+> Reject overlapping patterns when a change in Makefile text order can change the meaning
+> of one target path; keep patterns when the target namespace makes source ownership
+> unambiguous.
+
+Weak answer pattern:
+
+- "The first rule wins, so put the preferred rule first"
+
+That preserves hidden policy. It does not make a future edit safe or make target ownership
+visible.
 
 ## Exercise 10: Diagnose a compound semantic incident
 

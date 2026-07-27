@@ -268,22 +268,33 @@ Make mood swings.
 
 ## Exercise 9: Remove pattern-rule ambiguity
 
-Create two pattern rules that could both produce `build/sample.o`. Use `make -d` or
-`make -p` to determine which rule Make selects.
+Run the capstone `semantic-fault-audit` and isolate the three pattern-selection rows:
 
-Replace the ambiguity with an explicit path boundary, a static pattern rule, or one
-unambiguous pattern.
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone \
+  semantic-fault-audit
+```
+
+The first two models contain the same sources, the same requested target, and the same two
+pattern-rule candidates. Only rule order changes. Before reading the report, predict
+which source will produce `build/a.choice` in each model.
+
+Read the traces to identify the selected recipe and `$<`. Then inspect the namespaced
+control and explain why both source families can publish without competing for one target
+meaning.
 
 What to hand in:
 
-- the competing rules
-- the evidence showing rule selection
-- the repaired rule and why a future maintainer can predict it
-- one sentence naming the semantic stage where the ambiguity mattered most
+- a prediction table for all three models
+- the actual target content and selected prerequisite from each trace
+- a one-line diff summary of the two ambiguous Makefiles
+- the two target paths published by the namespaced control
+- a review rule that rejects hidden text-order policy without banning useful pattern rules
 
 Study note:
-The point is not just to remove surprise. The point is to make future rule selection
-reviewable before someone runs the build.
+Both ambiguous models succeed. Exit status cannot detect that text order changed target
+meaning. Your evidence must connect a candidate rule, its prerequisite, and the bytes it
+published.
 
 ## Exercise 10: Diagnose a compound semantic incident
 
