@@ -199,6 +199,131 @@ This is the best Module 04 outcome: not maximum YAML, but honest YAML.
 
 That note is stronger than "fixed dvc.yaml" because it names the risk and the repair.
 
+## Execute the same reasoning on the specimen
+
+The conceptual repair above names the right fields. The stage-contract audit lets you
+test the same reasoning without inventing evidence.
+
+Run:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
+```
+
+Open the generated bundle and use this order:
+
+1. `STAGE_CONTRACT_AUDIT_GUIDE.md`
+2. `workspace/baseline/dvc.yaml`
+3. `summary.tsv`
+4. `evidence/input-change-status.stdout.txt`
+5. `workspace/input-change/results/`
+6. `evidence/param-change-status.stdout.txt`
+7. `workspace/param-change/results/`
+8. `workspace/output-loss/results/`
+9. `report.json`
+
+Do not start with `report.json`. The compact report is useful after you understand the
+raw DVC and artifact evidence.
+
+### Predict the decisions
+
+Before reading `summary.tsv`, complete this table:
+
+| Finding family | Your prediction | Evidence that would change your mind |
+| --- | --- | --- |
+| baseline convergence | accept or reject | second run unexpectedly executes a stage |
+| declared file influence | accept or reject | status omits `declared_input` |
+| hidden file influence | accept or reject | hidden output adopts `20` without a declared edge |
+| declared parameter | accept or reject | status omits `declared_param` |
+| hidden parameter | accept or reject | hidden output adopts `3` without a declared key |
+| undeclared receipt | accept or reject | deletion makes the stage stale or repro restores it |
+
+The expected answer is not “all pass.” Some findings intentionally reproduce behavior
+that should be rejected.
+
+### Follow the file mutation
+
+Read `evidence/input-change-status.stdout.txt`. Its JSON names the modified policy path
+under `declared_input`.
+
+Then compare:
+
+```text
+workspace/input-change/results/declared-input.txt
+workspace/input-change/results/hidden-input.txt
+```
+
+The first contains `threshold=20`; the second contains `threshold=10`.
+
+Write the reasoning without using the words “DVC bug”:
+
+> DVC reacted consistently with each declaration. The declared stage exposed the policy
+> path, became stale, and rebuilt with the current value. The hidden stage read the same
+> path but omitted it from `deps`, so its old value remained compatible with the declared
+> graph. The defect is the stage contract.
+
+That distinction matters. Blaming the tool would hide the repair location.
+
+### Follow the parameter mutation
+
+Read `evidence/param-change-status.stdout.txt`. DVC represents the modified parameter
+under the declared stage.
+
+Then inspect:
+
+```text
+declared-param.txt  multiplier=3  score=24
+hidden-param.txt    multiplier=2  score=16
+```
+
+The arithmetic makes semantic staleness reviewable. The hidden output is not just missing
+a metadata update; it contains a score derived from an obsolete control value.
+
+### Follow the missing output
+
+In `workspace/output-loss/results/`, the main result exists and the receipt does not.
+`evidence/output-loss-status.stdout.txt` contains an empty JSON object, and
+`evidence/output-loss-repro.stdout.txt` says the stage did not change.
+
+Now make the ownership decision:
+
+- If the receipt is required for review, add it to `outs` and prove deletion is detected.
+- If it is scratch, rename or relocate it so consumers do not mistake it for durable
+  evidence.
+- If another stage consumes it, declare producer ownership and consumer dependency.
+
+“The script happens to write it” is not an ownership decision.
+
+## Write a bounded acceptance argument
+
+A strong conclusion separates observation, inference, and limit:
+
+> On the local five-stage specimen, DVC 3.67.1 detected the modified file and parameter
+> only for stages that declared those influences. Reproducing the declared stages moved
+> their stored values from `10` to `20` and from `2` to `3`; paired hidden stages retained
+> the old values. Deleting an undeclared receipt produced no status change and did not
+> restore the file. These observations support the claim that the declarations govern
+> DVC’s response. They do not prove that every stage in another repository has a complete
+> contract; that requires comparing each real command’s reads and writes against its own
+> declaration.
+
+The scope sentence prevents a useful specimen from becoming an universal claim.
+
+## Preserve a review packet
+
+Your worked-example packet should contain:
+
+- the original stage declaration;
+- a ledger of real reads, controls, and writes;
+- predicted status and rerun behavior;
+- raw status receipt;
+- before and after semantic values;
+- repaired declaration;
+- repeated mutation showing the repair works;
+- one explicit limit on what the evidence establishes.
+
+Without the repeated mutation, the repair remains plausible rather than demonstrated.
+
 ## Why this is a mastery example
 
 This one story exercises the whole module:
@@ -208,6 +333,8 @@ This one story exercises the whole module:
 - Core 3: rerun predictions were checked against lock evidence
 - Core 4: stale-output risk was prioritized before false rerun cleanup
 - Core 5: the producer-consumer edge for the prepared data was made explicit
+- executable proof: planner decisions were joined to current and stale artifact values
+- review discipline: the conclusion states both demonstrated behavior and evidence limits
 
 The pipeline became more trustworthy because the declared graph became closer to the real
 work.
