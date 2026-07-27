@@ -27,54 +27,85 @@ flowchart LR
 This lesson is about refusing to call a performance tradeoff "just an implementation
 detail."
 
-Caching, batching, and lazy work often arrive as easy wins.
-They are not free.
+Caching, batching, and lazy work often sound like easy wins:
 
-Each one changes a public or operator-facing story:
+- cache the expensive view
+- batch the repeated calls
+- defer the costly work until somebody needs it
+
+Each of those can help. Each of those also changes the behavior contract.
 
 - caches change freshness
 - batching changes timing and failure grouping
-- laziness changes when cost and failure are paid
+- laziness changes where cost and failure first appear
 
-That means these techniques belong in architectural review, not only in tuning
-discussions.
+That means these are architectural decisions, not merely performance tricks.
 
-## Keep one pressure route visible
+## Keep one pressure path visible
 
-Use one capstone path:
+Use one capstone route:
 
-1. a caller asks for derived seat, incident, or report information
-2. the system crosses one or more repository or adapter boundaries
-3. a costly repeated operation tempts you to cache, batch, or defer work
+1. a caller asks for derived seat, incident, or certificate information
+2. the system crosses one or more repository, projection, or adapter boundaries
+3. repeated cost appears
+4. somebody proposes a cache, batch, or deferred computation
 
-Now ask:
+Now hold one question in front of every choice:
 
-What meaning changes if this optimization is added carelessly?
+- what meaning changes if this optimization is added carelessly?
 
-That question keeps the lesson about contract design rather than about generic speed
-tricks.
+That question protects you from optimizing the wrong thing or hiding the wrong cost.
 
-## Every speedup creates a semantic contract
+## Start from measured pressure, not from favorite techniques
 
-Adding a cache makes promises about:
+The weak way to choose an optimization is:
 
-- how stale the data may become
+- caching sounds fast
+- batching sounds scalable
+- lazy work sounds elegant
+
+The stronger way is:
+
+- identify the repeated cost
+- identify the boundary where the cost accumulates
+- identify the user-visible behavior that could drift
+
+Only after that should you ask which technique fits.
+
+For example:
+
+- if repeated cost lives in downstream projection publication, batching may fit
+- if repeated cost lives in re-reading stable derived data, caching may fit
+- if expensive formatting is only needed on rare operator paths, laziness may fit
+
+Technique should follow diagnosis, not personal taste.
+
+## Every speedup creates a new contract
+
+The moment you add one of these techniques, you create new obligations.
+
+Caching creates promises about:
+
+- how stale data may become
 - who owns invalidation
-- what happens on cache miss or disagreement with authority
+- what source remains authoritative
+- what happens when cache and truth disagree
 
-Adding batching changes:
+Batching creates promises about:
 
-- when separate requests are grouped
+- when work is grouped
+- what ordering still holds
 - how partial failure is reported
-- what latency or ordering tradeoff callers now experience
+- how retries are interpreted
 
-Adding lazy work changes:
+Lazy work creates promises about:
 
-- which call pays the cost
-- which caller now sees the failure
-- whether expensive work is obvious or hidden
+- which call now pays the cost
+- which caller now sees the first failure
+- whether expensive work remains visible or is hidden behind harmless-looking access
 
-If those promises are not explicit, the optimization remains hard to reason about.
+If those promises are not explicit, the optimization remains difficult to review and
+hard to operate.
 
 ## Cache only when freshness can be explained honestly
 
@@ -82,135 +113,154 @@ A weak cache story starts with:
 
 - "this probably does not change often"
 
-A stronger cache story starts with:
+A stronger story answers all of these:
 
-- what is the source of truth
-- how stale may the answer become before it misleads a caller or operator
-- who refreshes or invalidates it
-- what happens when the cache and reality disagree
+- what is the source of truth?
+- how stale can the cached value become before it misleads a caller?
+- who invalidates or refreshes it?
+- what happens when cached and authoritative state diverge?
 
-If you cannot answer those questions, the cache is likely to blur authority more than it
-improves speed.
+In the capstone, caching can be acceptable for:
+
+- clearly labeled derived views
+- bounded freshness dashboards
+- expensive summaries that do not own truth
+
+It is dangerous for:
+
+- authoritative seat availability used in write decisions
+- anything that encourages callers to treat a projection as the source of truth
+
+If the cache blurs authority, the speedup is too expensive.
 
 ## Batch at the real repeated crossing
 
-Batching is most useful when cost comes from repeated crossings such as:
+Batching is strongest when the measured cost comes from repeated crossings such as:
 
-- repository loads
-- transport round trips
-- repeated metric fetches
-- repeated artifact or codec work
+- repeated repository loads
+- repeated projection publication
+- repeated transport or storage adapter calls
+- repeated codec or artifact work
 
-The batch boundary should match the real repeated cost.
+The key question is:
 
-Otherwise you risk adding complexity while optimizing the wrong layer.
+- where is the cost actually being paid?
 
-Batching also needs explicit error semantics:
+Batching at a convenient layer instead of the real crossing often adds complexity without
+meaningful improvement.
 
-- does one bad item poison the whole batch
-- can some items succeed while others fail
-- what ordering promise remains
-- how are retries handled
+Batching also needs explicit failure semantics:
+
+- does one bad item poison the whole batch?
+- can some items succeed while others fail?
+- what ordering guarantee remains?
+- how are retries tracked without duplicating visible effects?
 
 Those are contract questions, not cleanup questions.
 
-## Lazy work should stay honest about where failure moves
+## Lazy work should remain honest about cost and failure
 
 Deferred work can be useful, but it changes who experiences:
 
 - the first expensive computation
-- the first remote call
+- the first network call
+- the first timeout
 - the first delayed failure
 
-If a property or lightweight-looking call suddenly triggers expensive remote or
-serialization work, the API becomes less honest.
+If a property or innocent-looking accessor suddenly performs remote work, formatting, or
+artifact generation, the API becomes less honest.
 
-That does not mean laziness is wrong.
-It means the cost and failure shift should be visible through naming, documentation, or
-call shape.
+That does not make laziness wrong. It makes visibility essential.
+
+Honest lazy work usually needs:
+
+- naming that hints at deferred cost
+- documentation that warns about first-access expense
+- boundaries that keep deferred failure understandable
+
+The goal is not to avoid laziness. The goal is to avoid surprising callers with hidden
+behavior.
+
+## Worked capstone tradeoff review
+
+Suppose the capstone shows pressure in these places:
+
+- repeated metric-view fetching for operator reports
+- repeated projection publication after enrollment bursts
+- expensive certificate rendering that only some workflows request
+
+Now compare the options:
+
+| Pressure point | Plausible move | Main contract at risk |
+| --- | --- | --- |
+| repeated metric-view reads | cache derived view | freshness and operator trust |
+| repeated downstream publication | batch publication work | timing, ordering, and partial failure |
+| rare expensive rendering | defer rendering until requested | hidden cost and moved failure |
+
+The right design choice depends on which contract is easiest to preserve honestly.
+
+You are not choosing the most fashionable speedup. You are choosing the least dangerous
+way to reduce real measured cost.
 
 ## Prefer narrow optimizations over universal machinery
 
-Students often reach for:
+Students often reach too quickly for:
 
-- one global cache layer
-- one generic batching framework
-- one universal lazy wrapper
+- a global cache layer
+- a universal batching framework
+- one generic lazy wrapper
 
 Those tools often spread ownership confusion faster than they spread performance gains.
 
-A narrower move is usually stronger:
+A narrower change is usually stronger:
 
 - one cache with one explicit owner
 - one batch path around one repeated crossing
-- one lazily computed surface with a documented cost story
+- one deferred rendering surface with one clear first-access story
 
-This keeps the performance change tied to the real pressure instead of turning into a
-new abstraction habit.
+This keeps the optimization tied to the pressure that justified it.
 
-## A worked capstone review
+## Build a tradeoff packet
 
-Suppose the capstone repeatedly:
+For every candidate optimization, keep a short packet with:
 
-- loads incident summaries
-- fetches related metric views
-- builds operator-facing reports
-
-Possible honest changes:
-
-- batch repeated metric fetches at the adapter boundary
-- cache one derived summary with an explicitly bounded freshness window
-- defer one expensive formatting step until the report is actually requested
-
-For each change, ask:
-
-- what freshness changed
-- what failure moved later
-- which boundary now owns invalidation, grouping, or deferred recovery
-
-The right answer is not "yes to all three."
-The right answer is whichever tradeoff preserves meaning most honestly.
-
-## Build a performance-tradeoff packet
-
-For each candidate optimization, keep a short packet with:
-
-- optimization type: cache, batch, or lazy work
+- optimization type
+- measured pressure it addresses
 - boundary it touches
 - semantic contract at risk
 - owner of invalidation, grouping, or deferred failure
-- first proof or signal that should reveal drift
+- first signal or proof that would reveal drift
 
-This packet makes performance choices reviewable instead of intuitive folklore.
+This packet is what turns performance arguments into reviewable engineering decisions.
 
 ## Common failure modes
 
-- adding caches without a freshness story
-- batching at a convenient layer instead of the real repeated crossing
+- choosing a technique before measuring the real cost
+- caching a projection so aggressively that callers stop respecting authority
+- batching at a convenient layer instead of the repeated crossing that actually hurts
 - hiding expensive lazy work behind harmless-looking access
-- generalizing helpers before one narrow case is even measured
-- treating semantic drift as mere implementation detail because output still "usually
-  works"
+- adopting universal machinery before one narrow case has even been explained well
 
-## Performance review card
+## Tradeoff review card
 
-Use this short card when reviewing a speedup:
+Use this card for each proposed speedup:
 
-| Question | What you want to see |
+| Question | What a strong answer sounds like |
 | --- | --- |
-| is the semantic tradeoff of the cache, batch, or laziness stated clearly? | yes |
-| does the optimization target a measured real cost? | yes |
-| is the owner of invalidation, grouping, or deferred failure explicit? | yes |
-| would a reviewer know what user-visible behavior changed? | yes |
+| what measured pressure does this address? | "repeated projection publication dominates post-persistence latency" |
+| what behavior contract changes? | "visibility may lag briefly, but authority remains unchanged" |
+| who owns the new complexity? | "the downstream publication boundary owns grouping and retry semantics" |
+| what would reveal drift first? | "lag metrics and duplicate-publication checks" |
+| what option was rejected and why? | "caching authority was rejected because it weakens truth under contention" |
 
 ## Capstone connection
 
-Use this page to ask:
+Use this page to decide:
 
-- which repeated boundary crossing is the strongest batching candidate
-- where a cache would most endanger freshness or authority if added carelessly
-- which deferred computation should remain visible because the first access is costly or
-  failure-prone
+- which repeated crossing is the best batching candidate
+- where a cache would most endanger freshness or authority
+- which expensive step could be deferred only if the first-access cost stays visible
+- which optimization should be rejected even if it looks faster
 
 That is where performance technique becomes contract design.
 
@@ -219,5 +269,6 @@ That is where performance technique becomes contract design.
 Leave this lesson only when you can do all of these:
 
 - explain one semantic tradeoff introduced by caching, batching, or lazy work
-- identify one capstone boundary where batching may help and one rule it must preserve
-- identify one place where hidden laziness would make the API less honest
+- identify one capstone pressure point and the most honest optimization candidate for it
+- explain why a faster design can still be the wrong design if it weakens authority or
+  clarity
