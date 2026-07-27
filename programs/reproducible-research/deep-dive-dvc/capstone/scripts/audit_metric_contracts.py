@@ -76,6 +76,25 @@ def write_json(path: Path, value: object) -> None:
     )
 
 
+def write_summary(path: Path, findings: list[dict[str, object]]) -> None:
+    rows = ["finding\tresult\tdecision\tdelta"]
+    for finding in findings:
+        values = finding.get("values", {})
+        assert isinstance(values, dict)
+        delta = values.get("delta", "")
+        rows.append(
+            "\t".join(
+                [
+                    str(finding["finding"]),
+                    str(finding["result"]),
+                    str(finding["decision"]),
+                    str(delta),
+                ]
+            )
+        )
+    path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+
 def nested(document: dict[str, Any], *keys: str) -> Any:
     value: Any = document
     for key in keys:
@@ -462,6 +481,7 @@ def main() -> None:
         "cases": case_reports,
     }
     write_json(output, report)
+    write_summary(output.with_name("summary.tsv"), report["findings"])
 
     failed = [
         finding

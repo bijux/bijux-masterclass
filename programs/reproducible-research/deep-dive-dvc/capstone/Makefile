@@ -22,6 +22,7 @@ EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive
 STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/stage-contracts
 DATA_IDENTITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/data-identity
 RUNTIME_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/runtime-contracts
+METRIC_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/metric-contracts
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-dvc
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-dvc-capstone-source.tar.gz
 
@@ -380,6 +381,38 @@ runtime-contract-audit: install ## Audit declared and hidden runtime influences
 .PHONY: runtime-contract-selftest
 runtime-contract-selftest: install ## Enforce declared and hidden runtime evidence
 	@$(PYTEST) tests/test_runtime_contract_audit.py
+
+.PHONY: metric-contract-audit
+metric-contract-audit: install ## Audit metric semantic comparability
+	@rm -rf $(METRIC_CONTRACT_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_metric_contracts.py \
+		--specimen repro/metric-contracts \
+		--workspace $(METRIC_CONTRACT_AUDIT_DIR)/workspace \
+		--output $(METRIC_CONTRACT_AUDIT_DIR)/report.json \
+		--check
+	@mkdir -p $(METRIC_CONTRACT_AUDIT_DIR)/scripts $(METRIC_CONTRACT_AUDIT_DIR)/tests
+	@cp docs/metric-contract-audit-guide.md $(METRIC_CONTRACT_AUDIT_DIR)/METRIC_CONTRACT_AUDIT_GUIDE.md
+	@cp scripts/audit_metric_contracts.py $(METRIC_CONTRACT_AUDIT_DIR)/scripts/audit_metric_contracts.py
+	@cp tests/test_metric_contract_audit.py $(METRIC_CONTRACT_AUDIT_DIR)/tests/test_metric_contract_audit.py
+	@printf '%s\n' \
+		'Metric contract audit route:' \
+		'  1. Read METRIC_CONTRACT_AUDIT_GUIDE.md for the comparability boundary.' \
+		'  2. Read summary.tsv and separate accepted comparisons from reproduced defects.' \
+		'  3. Compare comparable-candidate/evidence/baseline-metrics.json with candidate-metrics.json.' \
+		'  4. Read the matching dvc-metrics-diff.json before reading comparison.json.' \
+		'  5. Inspect population-drift and note why equal row counts do not preserve identity.' \
+		'  6. Inspect unit-drift and compare the familiar key with the changed unit.' \
+		'  7. Inspect control-drift and identify the threshold change that bounds the claim.' \
+		'  8. Compare additive-metric with schema-version-drift and missing-population-identity.' \
+		'  9. Read the audit script and tests when reviewing enforcement.' > $(METRIC_CONTRACT_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(METRIC_CONTRACT_AUDIT_DIR) \
+		--output $(METRIC_CONTRACT_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote metric contract audit to $(METRIC_CONTRACT_AUDIT_DIR)"
+
+.PHONY: metric-contract-selftest
+metric-contract-selftest: install ## Enforce metric semantic comparability evidence
+	@$(PYTEST) tests/test_metric_contract_audit.py
 
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
