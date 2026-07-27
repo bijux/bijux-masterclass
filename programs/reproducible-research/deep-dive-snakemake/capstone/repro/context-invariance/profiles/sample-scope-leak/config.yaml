@@ -1,0 +1,7 @@
+cores: 1
+latency-wait: 5
+printshellcmds: true
+show-failed-logs: true
+config:
+  samples:
+    - alpha
