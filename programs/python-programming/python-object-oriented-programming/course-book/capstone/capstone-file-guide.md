@@ -18,73 +18,94 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  question["Start with a concrete design question"] --> owner["Open the likely owner first"]
+  owner --> support["Open the nearest supporting file"]
+  support --> test["Read one confirming test or saved bundle"]
+  test --> stop["Stop when the boundary becomes legible"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Use this guide when you want a code-reading route that preserves the design. The wrong
+way to read this capstone is alphabetically. The right way is to open the file most
+likely to own the current behavior, then move outward only as far as needed.
 
-This guide gives the capstone a human reading order. The goal is not to read every file
-alphabetically. The goal is to understand how the system is partitioned.
-
-## Recommended reading order
+## Read the package from authority outward
 
 1. `src/service_monitoring/application.py`
 2. `src/service_monitoring/model.py`
 3. `src/service_monitoring/policies.py`
-4. `src/service_monitoring/runtime.py`
-5. `src/service_monitoring/repository.py`
-6. `src/service_monitoring/read_models.py`
-7. `src/service_monitoring/projections.py`
-8. `tests/`
+4. `src/service_monitoring/events.py`
+5. `src/service_monitoring/read_models.py`
+6. `src/service_monitoring/projections.py`
+7. `src/service_monitoring/runtime.py`
+8. `src/service_monitoring/repository.py`
+9. `src/service_monitoring/scenario.py`, `demo.py`, and `cli.py`
+10. `tests/`
 
-## What each area is for
+That order deliberately delays infrastructure and tooling until the domain and its
+derived views are already clear.
 
-- `application.py` gives readable use cases and keeps the entry surface clear.
-- `model.py` owns the aggregate, rule lifecycle, and domain invariants.
-- `policies.py` owns replaceable evaluation behavior.
-- `runtime.py` coordinates adapters, projections, and publication without becoming the domain.
-- `repository.py` makes persistence and rollback intent explicit.
-- `read_models.py` and `projections.py` model downstream views derived from authoritative events.
-- `tests/` prove the course claims against behavior.
+## What each file family is doing
 
-## Question to file map
-
-| If the question is... | Start here | Then inspect |
+| File or group | What it owns | What it should not own |
 | --- | --- | --- |
-| Which object actually owns the rule lifecycle? | `model.py` | `tests/test_policy_lifecycle.py` |
-| Where does evaluation variation belong? | `policies.py` | `tests/test_policy_evaluation.py` |
-| What is public-facing versus internal orchestration? | `application.py` | `runtime.py` and `tests/test_application.py` |
-| Where would persistence or rollback concerns land? | `repository.py` | `tests/test_unit_of_work.py` |
-| Which views are derived instead of authoritative? | `read_models.py` and `projections.py` | `tests/test_runtime.py` |
+| `application.py` | scenario-facing commands such as policy creation, rule registration, activation, retirement, and snapshot assembly | domain invariants or evaluation logic |
+| `model.py` | value types, rule lifecycle, aggregate ownership, alert creation, and invariant enforcement | delivery concerns, storage mechanics, or projection state |
+| `policies.py` | replaceable evaluation modes such as threshold, consecutive breach, and rate-of-change behavior | aggregate lifecycle decisions |
+| `events.py` | durable statements about what happened | orchestration or projection logic |
+| `read_models.py` | incident history and open-incident views derived from events | authoritative lifecycle decisions |
+| `projections.py` | active-rule indexes derived from activation and retirement events | the domain model itself |
+| `runtime.py` | coordination across repository, evaluator, sink, and projections after the domain has acted | the source of domain truth |
+| `repository.py` | persistence and rollback mechanics through the in-memory repository and unit of work | business meaning of a rule or policy |
+| `scenario.py`, `demo.py`, `cli.py` | review and learner-facing routes into the shipped scenarios and bundles | new ownership rules |
+| `tests/` | executable proof of the ownership story | replacement for understanding the model |
 
-## Matching local guides
+## Read by question, not by filename
 
-- Read `PACKAGE_GUIDE.md` when you want the code layout at the package boundary.
-- Read `TEST_GUIDE.md` when you want the fastest route from a claim to an executable check.
-- Read `COMMAND_GUIDE.md` when you want the command-level review route.
-- Read `PROOF_GUIDE.md` when you want the saved output route.
-- Read `EXTENSION_GUIDE.md` when you want to place a new feature in the right boundary.
+| If your question is... | Open first | Then open |
+| --- | --- | --- |
+| Who owns rule lifecycle transitions? | `model.py` | `tests/test_policy_lifecycle.py` |
+| How does a learner drive the system without reaching into internals? | `application.py` | `demo.py` and `tests/test_application.py` |
+| Where does evaluation variation live? | `policies.py` | `tests/test_policy_evaluation.py` |
+| Which surfaces are derived instead of authoritative? | `events.py`, `read_models.py`, and `projections.py` | `tests/test_runtime.py` |
+| Where does orchestration stop and domain ownership begin? | `runtime.py` | `application.py`, `model.py`, and the walkthrough bundle |
+| How is rollback or persistence pressure represented? | `repository.py` | `tests/test_unit_of_work.py` |
+| Which public routes are safe to expose or extend? | `application.py` and `cli.py` | `tests/test_public_api.py` and [Capstone Extension Guide](capstone-extension-guide.md) |
 
-## Route by module stage
+## The most common wrong reading orders
 
-- Modules 01-03: focus on `model.py` and the lifecycle-focused tests.
-- Modules 04-05: focus on `model.py`, `policies.py`, and `read_models.py`.
-- Modules 06-07: focus on `repository.py`, `runtime.py`, and the runtime tests.
-- Modules 08-10: start from `tests/`, bundles, and review guides before opening internals.
+- starting with `runtime.py`, then assuming the domain lives there
+- starting with tests and never locating the actual owner
+- starting with projections before the emitted events are clear
+- starting with CLI surfaces before the aggregate and application façade are visible
 
-## What this order prevents
+## A reader-first route for each stage of the course
 
-- starting in infrastructure and mistaking it for the core model
-- treating projections as authoritative
-- confusing orchestration with domain behavior
-- missing where a new feature should land
+| Course stage | Best first files | Why |
+| --- | --- | --- |
+| semantics and state | `model.py`, then `application.py` | the learner needs the owner of meaning before the delivery surface |
+| collaboration and change | `application.py`, `policies.py`, `events.py`, `read_models.py`, `projections.py` | the learner needs to see who collaborates without flattening the model |
+| runtime and persistence | `runtime.py`, `repository.py`, and unit-of-work tests | the learner now needs to see how support layers adapt to the model |
+| proof and governance | `tests/`, `cli.py`, `demo.py`, and saved bundles | the learner needs to see how claims are defended publicly |
 
-## Common reading mistakes
+## A strong first reading loop
 
-- Starting with `runtime.py` and assuming the domain lives there.
-- Treating tests as a final destination instead of a way to confirm file ownership claims.
-- Reading projections before you know which events or aggregate rules they derive from.
+1. Open the likely owner.
+2. Write one sentence describing what that file is authoritative for.
+3. Open the nearest support file or test.
+4. Check whether the support layer depends on the owner or tries to redefine it.
+5. Stop when the ownership answer becomes stable.
+
+## When to bring in the local capstone docs
+
+- Use the package guide when the package boundary itself is the question.
+- Use the architecture guide when ownership still feels fuzzy after reading two files.
+- Use the proof guide when you understand the files but do not know which evidence route matches the claim.
+- Use the extension guide when you can already see the owner and now need safe change placement.
+
+## Exit check
+
+Leave this page only when you can say:
+
+> I know which file owns this behavior, which nearby file only supports it, and which test
+> or bundle proves that split.
