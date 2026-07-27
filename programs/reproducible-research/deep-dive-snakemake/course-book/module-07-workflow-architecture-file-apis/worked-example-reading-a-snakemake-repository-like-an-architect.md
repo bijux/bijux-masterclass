@@ -7,6 +7,21 @@ This file ties the whole module together around one realistic problem:
 The question is not "how do we inspect every file?" The question is how to read the
 repository in an order that reveals ownership, path contracts, and drift risk quickly.
 
+## If you are learning this without the live class
+
+Use the example in five passes instead of trying to absorb the whole repository shape in
+one read:
+
+1. start at the entrypoint and write down what it visibly assembles
+2. stop after the rule-family pass and ask whether the helper layers can still wait
+3. trace one public artifact before you open deep implementation code
+4. confirm the file API before you discuss refactoring
+5. finish by deciding which drift signal matters now and which can wait
+
+If you cannot explain the repository after pass 2, do not go deeper into helpers or
+package code yet. Most Module 07 confusion starts when learners chase implementation
+detail before they have named the visible architecture.
+
 ## How to use this worked example
 
 Work through this page with the five core lessons nearby.
@@ -49,6 +64,9 @@ Keep one small architecture packet beside you as you read:
 - one file-API note
 - one drift finding with a focused proof route
 
+That packet is not overhead. It is the thing that turns "I explored the repo" into
+"another maintainer can review why this reading order and boundary map are trustworthy."
+
 ## The starting situation
 
 Assume you inherit the capstone and need to answer three questions quickly:
@@ -77,6 +95,19 @@ flowchart TD
 That sequence is not arbitrary. It protects the visible workflow story from being buried
 under implementation detail too early.
 
+## What goes wrong when a learner trusts the starting situation
+
+Use this card before you repair anything:
+
+| If you notice... | The repository is hiding... | Smallest review surface |
+| --- | --- | --- |
+| a new maintainer starts in helpers because the entrypoint teaches too little | visible assembly is too weak | one annotated entrypoint read |
+| two repository layers can be described with the same sentence | ownership boundaries are not named clearly enough | one responsibility table |
+| path stability is guessed from habit rather than docs | the file API is folklore instead of architecture | one file-API note plus one traced public path |
+| "the repo feels messy" is the only drift argument available | architecture review has no focused boundary claim yet | one artifact trace plus one concrete drift finding |
+
+If you can name the hidden defect first, the architecture review stops feeling like folder opinion.
+
 ## What the learner should notice first
 
 The repository may still run perfectly.
@@ -102,6 +133,19 @@ to inspect. That is why the first architectural read should begin there rather t
 
 If the repository does not reward that reading order, the architectural problem is real,
 not just personal preference.
+
+## The entrypoint audit before you celebrate
+
+Before you call the reading order healthy, make sure you can answer all four of these:
+
+| Question | Healthy answer |
+| --- | --- |
+| What does the entrypoint reveal immediately? | config, major includes or modules, and final target assembly |
+| What did you safely postpone? | helpers, scripts, or package code that support but do not define the visible story |
+| What would count as an architectural warning? | needing deep implementation files before the workflow shape makes sense |
+| What evidence proves the read order is honest? | an entrypoint note, rule-family pass, and one public-artifact trace |
+
+If any row stays vague, keep repairing. The repository may run, but the architecture may still teach the story in the wrong order.
 
 ## Read rule families before helpers
 
@@ -187,6 +231,18 @@ The file API is what prevents maintainers from treating every path rename as a h
 cleanup. Once path promises are documented, repository structure and public contracts stop
 blurring together.
 
+## The path-contract audit before you move on
+
+Do not just say "the file API exists." Test whether you can name what it protects:
+
+| Surface | Smallest honest claim |
+| --- | --- |
+| entrypoint and rule layers | this public path is intentionally produced from visible assembly |
+| file-API document | this path is stable because the repository says it is stable |
+| helper and package layers | these supporting files do not redefine the public promise silently |
+
+If you cannot fill this table, the architecture still depends too much on oral tradition.
+
 ## Trace one artifact through its owners
 
 Take one concrete public output such as `publish/v1/summary.json` and record the route:
@@ -249,6 +305,17 @@ By the end of the walkthrough, the repository can be described cleanly:
 
 That is what it means to read a Snakemake repository like an architect.
 
+```mermaid
+flowchart LR
+  entry["visible entrypoint"] --> ownership["named repository ownership"]
+  ownership --> artifact["public artifact trace"]
+  artifact --> api["explicit file API"]
+  api --> drift["bounded drift review"]
+```
+
+Read that diagram literally. If one step is missing, the repository may still execute,
+but the architecture story is not yet teachable.
+
 ## Review questions for the repaired design
 
 When you inspect a repository shaped like this, ask:
@@ -260,6 +327,19 @@ When you inspect a repository shaped like this, ask:
 5. which drift signal would justify the next structural refactor
 
 If those answers are visible, the module's architecture story has landed.
+
+## If the module still feels abstract
+
+Do this recovery loop in order:
+
+1. point to the entrypoint and say what it visibly assembles
+2. write one sentence per repository layer
+3. trace one public artifact backward through its owners
+4. mark which path becomes stable only because the file API says so
+5. name one drift signal that justifies action now and one that can wait
+
+Most Module 07 confusion is not about folder count. It is about losing track of which
+architectural boundary should teach the next maintainer what is safe first.
 
 If you want one final classroom-style check, summarize the repository in five lines:
 

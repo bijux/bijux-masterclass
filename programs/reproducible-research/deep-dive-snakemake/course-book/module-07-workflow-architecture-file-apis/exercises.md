@@ -96,6 +96,21 @@ flowchart LR
 Use that route on purpose. It keeps the day anchored in repository legibility instead of
 file-count aesthetics.
 
+## What a strong day packet looks like
+
+By the time you finish all ten exercises, your work should leave behind one small,
+reviewable packet instead of ten disconnected architecture opinions:
+
+- one repository reading-order note
+- one responsibility table for the main layers
+- one public-artifact trace
+- one file-API note distinguishing public from internal paths
+- one focused architecture check with a failing example
+- one maintainer-style review note ordered by reproducibility risk
+
+If you cannot point to those artifacts, the exercise day is still too dependent on tacit
+classroom guidance.
+
 ## Exercise 1: Read the repository in the right order
 
 Choose a Snakemake repository you did not design recently. Record the order in which you
@@ -203,6 +218,19 @@ can already answer all of these:
 
 If you cannot answer those four questions cleanly, return to the earlier exercises and
 make the architecture packet more explicit before moving on.
+
+## When you get stuck, diagnose the missing boundary first
+
+Use this table before you start proposing bigger refactors:
+
+| If you are stuck on... | Check whether you are missing... | Typical repair |
+| --- | --- | --- |
+| Exercise 1 or 2 | one honest entrypoint-first reading order | restart from the visible assembly instead of deep helpers |
+| Exercise 3 or 4 | one durable ownership sentence per layer | rewrite the responsibility table before renaming files |
+| Exercise 5 or 6 | one explicit public path promise | add the file-API note before judging path changes |
+| Exercise 7, 8, 9, or 10 | one focused architectural claim | choose the boundary first, then the check or review route |
+
+Most weak Module 07 answers are not short on folder ideas. They are short on named boundaries.
 
 ## Exercise 7: Diagnose hidden coupling
 
