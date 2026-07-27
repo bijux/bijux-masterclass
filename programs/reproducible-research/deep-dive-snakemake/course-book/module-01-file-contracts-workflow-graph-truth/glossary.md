@@ -27,7 +27,7 @@ Pause and check a term when:
 | Term | Meaning in this module |
 | --- | --- |
 | ambiguity | A design situation where more than one rule can claim the same target path. |
-| atomic publication | Writing to a temporary path and renaming only on success so the final output is complete or absent. |
+| atomic publication | Writing to same-filesystem scratch and renaming only after success so readers see the prior trusted final or the new complete final. |
 | config | Workflow data that changes what the workflow computes, such as samples, thresholds, or references. |
 | convergence | The state where a successful run followed by `snakemake -n` reports nothing more to do for the current tracked workflow meaning. |
 | file contract | The rule-level promise connecting declared inputs, declared outputs, and the action that produces those outputs. |
@@ -44,6 +44,10 @@ Pause and check a term when:
 | wildcard constraint | A regex restriction that narrows which filename shapes a wildcard may claim. |
 | workflow meaning | The semantic content of what the workflow computes, as distinct from execution policy. |
 | summary evidence | Output from commands such as `snakemake --summary` that helps explain which rules own which files and what state those files are in. |
+| semantic freshness | Agreement between an output's stored meaning and the current values of every real influence on that output. |
+| scratch path | An explicitly untrusted write location used before validation and promotion to the final path. |
+| trusted final | The published path whose contents have completed the writer's required validation and promotion boundary. |
+| under-rebuild | A defect where meaningful state changes but the declared graph does not schedule the work needed to refresh affected outputs. |
 
 ## The vocabulary standard for this module
 
@@ -70,6 +74,11 @@ different questions:
   is the specific tracked reason Snakemake decided work was needed again.
 - `requested target` versus `rule all`: a requested target is what you asked Snakemake to
   build now; `rule all` is the repository's normal definition of done.
+- `planner convergence` versus `semantic freshness`: a quiet dry-run says the declared
+  graph is satisfied; freshness additionally requires the graph to represent every real
+  influence.
+- `scratch path` versus `trusted final`: scratch records an unaccepted attempt; only
+  successful validation and promotion changes the final.
 
 ## Quick self-check
 
@@ -83,6 +92,8 @@ Before you leave Module 01, make sure you can answer these in a full sentence:
   meaning, which boundary owns that setting?
 - If `snakemake -n` still wants more work after a successful run, which term tells you the
   workflow has not reached a stable finished state yet?
+- If a policy file changes but the report remains stale because the file was passed only
+  through `params`, which defect occurred?
 
 ## Terms you should be able to use by the end of the day
 
