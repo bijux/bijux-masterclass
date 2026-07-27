@@ -1,35 +1,29 @@
 # Modules, Reuse, and Explicit Interfaces
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Scaling Workflows Interface Boundaries"]
-  page["Modules, Reuse, and Explicit Interfaces"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Once rule-family splits are working, the next scaling question appears:
 
 > is this still one workflow graph with clearer organization, or is one part becoming a reusable workflow boundary of its own?
 
 That is where modules enter.
+
+## How to read this page
+
+Read this page with one boundary test in mind:
+
+> could another caller understand this interface without learning the private repository
+> story first?
+
+If the answer is no, you probably do not have a real module yet. You only have moved code.
+
+## Why this lesson comes after includes
+
+Modules are easier to misuse than includes because they sound more advanced.
+
+Module 04 puts them second on purpose:
+
+- first clarify ownership inside one graph
+- then ask whether one boundary has become stable enough to reuse
+- only then promote that boundary into a module
 
 ## A module is not just a smaller file
 
@@ -42,6 +36,17 @@ It should answer a real boundary question:
 - can another reader understand the main graph without reading every implementation detail first
 
 If those answers are weak, the repository probably needs clearer includes, not a module.
+
+## A strong beginner habit
+
+Before promoting a module, write four short answers:
+
+1. what does it consume
+2. what does it produce
+3. what assumptions belong to the interface
+4. what stays private implementation detail
+
+If any of those answers are fuzzy, keep the boundary as an include for now.
 
 ## What a healthy module buys you
 
@@ -57,6 +62,16 @@ such as QC or screen logic.
 The module is useful because it has a named interface, not because the word sounds
 architectural.
 
+## The common beginner mistake
+
+People often promote a boundary to `workflow/modules/` because:
+
+- the file is long
+- the folder looks cleaner
+- the repository wants to feel "more architectural"
+
+None of those is a sufficient interface reason.
+
 ## What a module must make explicit
 
 When a boundary becomes a real module, the reader should be able to answer:
@@ -67,6 +82,15 @@ When a boundary becomes a real module, the reader should be able to answer:
 - what remains private implementation detail
 
 If the answers live only in the author's head, the module boundary is too weak.
+
+## A quick self-check before you keep reading
+
+Take one candidate boundary and ask:
+
+- do callers know the promised outputs
+- or do they still depend on hidden globals, path conventions, or shared helper trivia
+
+That contrast is the real module test.
 
 ## One healthy mental model
 
@@ -116,6 +140,17 @@ The reader should know:
 - whether a change to those outputs is a local refactor or an interface break
 
 That is why this page leads directly into file APIs and schema validation.
+
+## What a good explanation sounds like
+
+Strong:
+
+> This became a module because the interface is explicit enough that callers can name the
+> inputs, outputs, and assumptions without opening implementation files.
+
+Weak:
+
+> This became a module because it looked reusable.
 
 ## Common failure modes
 

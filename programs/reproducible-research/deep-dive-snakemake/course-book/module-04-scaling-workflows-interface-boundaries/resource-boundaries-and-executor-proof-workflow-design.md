@@ -1,30 +1,5 @@
 # Resource Boundaries and Executor-Proof Workflow Design
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Scaling Workflows Interface Boundaries"]
-  page["Resource Boundaries and Executor-Proof Workflow Design"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 As repositories grow, teams often start talking about resources as if they were only a
 scheduler problem.
 
@@ -35,6 +10,27 @@ Module 04 treats resources as part of the design question:
 > can the workflow explain its own resource assumptions without being secretly tied to one executor story?
 
 That is what executor-proof workflow design means here.
+
+## How to read this page
+
+Read this page with one boundary question in mind:
+
+> which resource assumptions should stay visible in the workflow even when the executor
+> changes?
+
+That question matters because hidden resource assumptions create the same kind of drift as
+hidden file contracts or hidden interfaces.
+
+## Why this lesson belongs in Module 04
+
+Scaling is not only about directory structure and interfaces. As repositories grow, some
+rule families become visibly heavier than others.
+
+If the resource story stays hidden:
+
+- reviewers cannot tell which boundary is expensive
+- executor changes start forcing workflow rewrites
+- portability quietly depends on cluster folklore
 
 ## Resources are a boundary between workflow intent and runtime policy
 
@@ -49,6 +45,16 @@ The exact scheduler mapping may vary by executor. The workflow-side meaning shou
 coherent.
 
 That is why resource thinking belongs in this module, not only in operations.
+
+## A strong beginner habit
+
+When a rule is meaningfully heavier than another one, make that distinction explainable in
+workflow terms before you map it to any scheduler or executor policy.
+
+For example:
+
+- this rule family is per-sample and memory-heavy
+- this rule family is orchestration-lightweight
 
 ## Executor-proof does not mean executor-agnostic in every detail
 
@@ -68,6 +74,14 @@ Executor-proof means something narrower and more useful:
 
 That is a much more realistic standard than pretending executors do not matter.
 
+## The common beginner mistake
+
+People often hear "executor-proof" and assume the workflow should avoid saying anything
+about resources at all.
+
+That is too weak. The workflow still needs to explain its own work shape. What should stay
+out of the rules is executor-specific folklore, not resource intent.
+
 ## Resource declarations should help humans review the graph
 
 A good resource story lets a reviewer say:
@@ -78,6 +92,18 @@ A good resource story lets a reviewer say:
 
 If resources live only in one scheduler template or one maintainer's shell habits, the
 workflow becomes harder to scale safely.
+
+## A quick self-check before you keep reading
+
+Think about one heavier rule family in your current repository.
+
+Could another maintainer tell:
+
+- that it is heavier
+- why it is heavier
+- which part belongs to workflow intent versus runtime policy
+
+If not, the resource story is probably still too hidden.
 
 ## One healthy model
 
@@ -123,6 +149,17 @@ boundaries:
 
 That is why resource declarations should be reviewable alongside rule splits, file APIs,
 and gates.
+
+## What a good explanation sounds like
+
+Strong:
+
+> The workflow names heavier and lighter concerns explicitly, while executor policy adapts
+> those needs by context without changing the target or algorithm story.
+
+Weak:
+
+> Resource handling lives somewhere in the cluster setup.
 
 ## Common failure modes
 
