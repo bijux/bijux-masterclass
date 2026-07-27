@@ -44,6 +44,7 @@ SELFTEST_FAULT ?= none
 CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/contract
 INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incident
 INCREMENTAL_FAULT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incremental-faults
+SEMANTIC_FAULT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/semantic-faults
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
 PERFORMANCE_DIR ?= $(ARTIFACTS_DIR)/performance/reproducible-research/deep-dive-make/current
 PERFORMANCE_POLICY := performance/scenarios.tsv
@@ -83,7 +84,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit incremental-fault-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -180,6 +181,7 @@ help:
 >     '  inspect           alias for contract-audit with learner review naming' \
 >     '  incident-audit    verify concurrency failure signatures (INCIDENT_CASE=...)' \
 >     '  incremental-fault-audit prove stale missing-edge behavior and repaired rebuilds' \
+>     '  semantic-fault-audit prove state, edge, and rule-selection semantics' \
 >     '  profile-audit     build the execution-profile review bundle' \
 >     '  confirm           alias for hardened with shared catalog naming' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
@@ -401,6 +403,30 @@ incremental-fault-audit:
 >       --output "$(INCREMENTAL_FAULT_AUDIT_DIR)/manifest.json"
 >     @echo "PASS: wrote incremental fault audit to $(INCREMENTAL_FAULT_AUDIT_DIR)"
 
+semantic-fault-audit:
+>     rm -rf "$(SEMANTIC_FAULT_AUDIT_DIR)"
+>     mkdir -p "$(SEMANTIC_FAULT_AUDIT_DIR)"
+>     cp -R "$(REP_DIR)/semantic-faults" "$(SEMANTIC_FAULT_AUDIT_DIR)/specimens"
+>     $(PYTHON) scripts/audit_semantic_faults.py \
+>       --specimens "$(REP_DIR)/semantic-faults" \
+>       --workspace "$(SEMANTIC_FAULT_AUDIT_DIR)/workspace" \
+>       --output "$(SEMANTIC_FAULT_AUDIT_DIR)/report.json" \
+>       --make "$(MAKE)" \
+>       --python "$(PYTHON)"
+>     printf '%s\n' \
+>       'Semantic fault audit route:' \
+>       '  1. Read summary.tsv across all seven broken and control models.' \
+>       '  2. Read report.json for exact stability, freshness, and selection observations.' \
+>       '  3. Read traces/ to connect each observation to selected Make rules.' \
+>       '  4. Compare specimens/ with the executed workspace/ copies.' \
+>       '  5. Read REPRO_GUIDE.md and PROOF_GUIDE.md before proposing production repairs.' > "$(SEMANTIC_FAULT_AUDIT_DIR)/route.txt"
+>     cp "$(DOCS_DIR)/repro-guide.md" "$(SEMANTIC_FAULT_AUDIT_DIR)/REPRO_GUIDE.md"
+>     cp "$(DOCS_DIR)/proof-guide.md" "$(SEMANTIC_FAULT_AUDIT_DIR)/PROOF_GUIDE.md"
+>     $(PYTHON) scripts/write_bundle_manifest.py \
+>       --bundle-dir "$(SEMANTIC_FAULT_AUDIT_DIR)" \
+>       --output "$(SEMANTIC_FAULT_AUDIT_DIR)/manifest.json"
+>     @echo "PASS: wrote semantic fault audit to $(SEMANTIC_FAULT_AUDIT_DIR)"
+
 profile-audit:
 >     rm -rf "$(PROFILE_AUDIT_DIR)"
 >     mkdir -p "$(PROFILE_AUDIT_DIR)/mk"
@@ -485,16 +511,14 @@ repro:
 >     'Repro pack:' \
 >     '  make -f repro/shared-log-interleaving.mk -j2 all       shared mutable log output' \
 >     '  make -f repro/shared-staging-collision.mk -j2 all      shared staging-path collision' \
->     '  make -f repro/clock-based-stamp.mk -j2 all             dishonest stamp boundary' \
 >     '  make -f repro/directory-creation-race.mk -j2 all       directory creation race' \
->     '  make -f repro/order-only-dependency-misuse.mk all      order-only prerequisite misuse' \
->     '  make -f repro/pattern-rule-ambiguity.mk all             ambiguous pattern rule selection' \
 >     '  make incremental-fault-audit                             missing-edge versus declared-edge proof' \
+>     '  make semantic-fault-audit                                state, order-only, and pattern-selection proof' \
 >     '' \
 >     'Suggested first route:' \
 >     '  1. repro/shared-log-interleaving.mk' \
 >     '  2. repro/directory-creation-race.mk' \
->     '  3. repro/order-only-dependency-misuse.mk' \
+>     '  3. semantic-fault-audit' \
 >     '' \
 >     'For the capstone teaching route, read docs/repro-guide.md' \
 >     'For the course route, read docs/repro-guide.md'
@@ -556,7 +580,7 @@ selftest-report:
 verify-report: selftest-report
 >     @echo "PASS: verify-report completed via $(SELFTEST_REPORT_DIR_ABS)"
 
-proof: walkthrough selftest-report contract-audit incident-audit incremental-fault-audit profile-audit
+proof: walkthrough selftest-report contract-audit incident-audit incremental-fault-audit semantic-fault-audit profile-audit
 >     @printf '%s\n' \
 >       'PASS: wrote learner-facing proof bundles:' \
 >       "  walkthrough: $(WALKTHROUGH_DIR)" \
@@ -564,6 +588,7 @@ proof: walkthrough selftest-report contract-audit incident-audit incremental-fau
 >       "  contract audit: $(CONTRACT_AUDIT_DIR)" \
 >       "  incident audit: $(INCIDENT_AUDIT_DIR)" \
 >       "  incremental fault audit: $(INCREMENTAL_FAULT_AUDIT_DIR)" \
+>       "  semantic fault audit: $(SEMANTIC_FAULT_AUDIT_DIR)" \
 >       "  profile audit: $(PROFILE_AUDIT_DIR)"
 
 # ---- quarantined rule-generation demo (optional) ----
