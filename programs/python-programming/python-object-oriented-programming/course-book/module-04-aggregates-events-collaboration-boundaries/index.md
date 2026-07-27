@@ -121,9 +121,14 @@ This module is about finding the boundary between those extremes.
 
 ## Exercises
 
-- Identify one cross-object invariant and explain which aggregate or boundary should own it.
-- Review one event flow and state which artifact is authoritative and which artifact is only a downstream projection.
-- Compare an aggregate design with a manager-object design and explain which one keeps invariants easier to audit.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete authority review route: aggregates,
+cross-object invariants, events, projections, adapters, and collaboration-boundary
+discipline.
 
 ## Capstone connection
 
