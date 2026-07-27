@@ -49,6 +49,10 @@ Keep a second question beside it:
 
 > which hint shapes are supported deliberately, and which ones must stay refused to keep the contract honest?
 
+That second question matters because a shallow runtime contract only stays trustworthy
+when refusal remains visible. A helper that quietly accepts everything teaches the wrong
+lesson.
+
 ## Hints are declarations, not enforcement
 
 At the class level, `get_type_hints(MyClass)` can resolve field annotations into runtime
@@ -69,6 +73,15 @@ still staying below metaclass power.
 That owner story is the core teaching move here. The annotation declares. The descriptor
 enforces. The class stores. If those roles blur together, the design becomes harder to
 review.
+
+Use this owner split whenever the page starts feeling abstract:
+
+| Surface | Honest owner |
+| --- | --- |
+| field annotation | declaration only |
+| `get_type_hints(...)` result | resolved evidence for the declaration |
+| descriptor `__set__` | runtime enforcement |
+| backing storage | the place validated values finally live |
 
 ## One picture of the typing bridge
 
@@ -94,6 +107,17 @@ Use this route whenever a design starts sounding like annotations are magical:
 | `get_type_hints(MyClass)` resolves them | the declarations become usable runtime objects |
 | the class caches those hints | the declaration surface is treated as stable evidence |
 | descriptor `__set__` checks assigned values | enforcement happens at the attribute boundary, not inside the annotation itself |
+
+## A diagnostic route for annotation overclaims
+
+Run this check whenever someone says "the class validates from type hints":
+
+1. point to the annotation line
+2. point to the line that resolves the annotation into runtime data
+3. point to the descriptor assignment hook that rejects a bad value
+4. remove step 3 mentally and ask what validation remains
+
+If the answer to step 4 is "none," the lesson is doing its job.
 
 ## A minimal `_is_instance` helper stays honest
 
@@ -126,6 +150,15 @@ bridge, not a full runtime typing system.
 
 It should also stay loud about what it refuses. Quiet fallback is one of the fastest ways
 to make a runtime validation story sound broader than it really is.
+
+Use this review table when you decide whether the helper is still honest:
+
+| Behavior | Honest? | Why |
+| --- | --- | --- |
+| supports plain classes and a named union subset | yes | the contract stays reviewable |
+| raises clearly on unsupported generics | yes | refusal remains visible |
+| silently skips unsupported hints | no | the surface sounds broader than enforcement |
+| keeps expanding until it imitates a framework | usually no for this module | the page stops teaching shallow ownership |
 
 ## Supported and refused hint shapes
 
@@ -183,6 +216,19 @@ It also keeps the timing honest. Class annotations are resolved once for the cla
 assignment is then checked by the descriptor at the moment the attribute boundary is
 crossed.
 
+## A quick walkthrough for the descriptor path
+
+Use this mini trace when you read or teach the example:
+
+1. class creation resolves and caches the hints
+2. the descriptor learns its public and storage names
+3. assignment hits `__set__`
+4. the descriptor compares the value against the supported hint subset
+5. validated state lands in explicit storage
+
+That sequence helps independent learners connect the declaration-time and assignment-time
+parts without smearing them together.
+
 ## Per-class caching matters
 
 One subtle but important quality point is:
@@ -215,6 +261,16 @@ It does not mean:
 
 That narrow claim is exactly what keeps the pattern useful instead of misleading.
 
+## When this page's pattern should stop
+
+Move beyond this pattern only when one of these becomes true:
+
+| Pressure | Why this pattern becomes too small |
+| --- | --- |
+| you need parameterized collection semantics such as `list[int]` with deep element checks | the contract stops being shallow |
+| you need coercion, rich error accumulation, or schema-wide reporting | assignment-time field checks are no longer enough |
+| you need shared policy across many interacting fields | the owner is no longer one descriptor boundary at a time |
+
 ## Common overclaims to reject
 
 Reject these sentences when they appear in review:
@@ -237,6 +293,12 @@ These are the main ways the design can weaken:
 | confusing annotation presence with enforcement | readers overtrust the class contract | point directly to `__set__` as the runtime owner |
 | broadening the helper until it imitates a full framework | the page stops teaching shallow boundary honesty | keep the supported surface narrow and named |
 
+One more failure mode deserves attention:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| caching hints in a place reviewers cannot find easily | the declaration-to-enforcement trail becomes harder to inspect | keep the cache explicit on the class or another clearly owned surface |
+
 ## Review rules for hint-backed validation
 
 When reviewing hint-backed class validation, keep these questions close:
@@ -247,6 +309,15 @@ When reviewing hint-backed class validation, keep these questions close:
 - is the attribute-boundary owner clear: property, descriptor, or constructor?
 - has the design grown large enough that a dedicated validation layer would be clearer?
 - can another reviewer identify the exact enforcement point without reading the whole class twice?
+
+## Evidence packet for hint-backed validation
+
+Leave this page with a small packet:
+
+- one supported hint example and one refused hint example
+- one trace from annotation to descriptor enforcement
+- one note explaining why per-class caching belongs to the review story
+- one sentence naming the first requirement that would push this design into a fuller validation layer
 
 ## Exit check for this page
 
