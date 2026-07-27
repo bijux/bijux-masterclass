@@ -45,19 +45,86 @@ It should answer:
 - can the verification route run without private local state?
 - do release or review checks fail loudly when evidence is incomplete?
 
-The exact commands vary by project, but the intent should be stable.
+The exact commands vary by project, but the intent and evidence order should be stable.
 
 Example review route:
 
 ```bash
+dvc remote list
 dvc pull
-dvc status
+dvc status --json
 dvc repro
-dvc metrics show
 ```
 
 The capstone may wrap these ideas behind `make -C capstone confirm` so you have one
 course-level command to inspect.
+
+## Order the route by claim
+
+These commands are not interchangeable:
+
+| Command | Question answered | Why it comes here |
+| --- | --- | --- |
+| `dvc remote list` | can the clone discover shared storage? | discovery must exist before availability can be tested |
+| `dvc pull` | are the recorded objects available? | recovery should happen before pipeline inspection |
+| `dvc status --json` | was the submitted state coherent? | status must be captured before a command repairs it |
+| `dvc repro` | can the clean clone execute? | reproduction is a later capability, not a substitute for submitted-state evidence |
+| governed result check | does the generated evidence match its claim? | successful execution still needs interpretation |
+
+Suppose a pull request changes a data pointer and pushes its object but leaves
+`dvc.lock` and a generated report stale. A clean clone can pull. `dvc repro` can also
+succeed by rebuilding the report. If CI runs only reproduction and checks the final exit
+code, it loses the evidence that the pull request arrived incoherent.
+
+The stronger route saves pre-reproduction status and blocks the submitted state even
+when a local rebuild is possible.
+
+## Compare real clean executors
+
+Run:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+```
+
+Compare these findings:
+
+```text
+COMPLETE_HANDOFF       PASS  ACCEPT
+MISSING_REMOTE_OBJECT  PASS  BLOCK
+STALE_EXECUTION_RECORD PASS  BLOCK
+```
+
+Then inspect:
+
+```text
+workspace/complete-handoff/evidence/receipts.json
+workspace/missing-remote-object/evidence/receipts.json
+workspace/stale-execution-record/evidence/receipts.json
+```
+
+The missing-object case fails at `dvc pull`; CI cannot obtain the state. The stale case
+passes pull and later reproduction but fails pre-reproduction status. A useful CI job
+reports those as different contract failures.
+
+## Separate review authority from publication authority
+
+The audit's `MUTATING_REVIEW_ROUTE` case is operationally complete, but its documented
+route includes `dvc push`. It blocks because routine review should not require permission
+to mutate shared storage.
+
+A practical authority split is:
+
+| Actor | Ordinary authority | Why |
+| --- | --- | --- |
+| pull-request CI | read shared objects, write local workspace | verifies without changing shared evidence |
+| trusted publication job | write promoted objects | publishes only after review gates pass |
+| untrusted fork job | no secret-backed remote access | avoids exposing credentials |
+| scheduled recovery job | read protected recovery sources | rehearses restore without publishing |
+
+When an untrusted fork cannot access remote-backed evidence, the reduced job should say
+what it skipped. A skipped secret-dependent check is not a pass; it is a limitation that
+trusted CI must resolve before merge.
 
 ## CI should fail for missing shared state
 
@@ -94,13 +161,14 @@ But it should include a meaningful route that catches broken collaboration contr
 
 If the full workflow is expensive, split checks by confidence level:
 
-| Check | Purpose |
-| --- | --- |
-| fast metadata check | catch broken declarations quickly |
-| remote pull check | prove shared objects exist |
-| small reproducibility route | prove core graph can run cleanly |
-| release audit route | prove promotion evidence is complete |
-| scheduled recovery route | prove restoration still works |
+| Check | Trigger | Purpose |
+| --- | --- | --- |
+| fast metadata check | every change | catch broken declarations quickly |
+| remote discovery and pull | pointers, lock, or DVC output changed | prove the shared route and objects exist |
+| pre-reproduction status | pipeline-relevant state changed | prove the submitted record is coherent |
+| bounded reproduction | relevant code, data, params, or runtime changed | prove the core graph runs cleanly |
+| release audit | promoted evidence changed | prove the promotion boundary is complete |
+| scheduled recovery route | schedule or storage change | prove restoration still works |
 
 This keeps CI practical without making it superficial.
 
@@ -122,6 +190,9 @@ You understand this core when you can:
 
 - explain why local success is not enough for collaboration
 - name the DVC state CI should recover or verify
+- order discovery, pull, status, reproduction, and interpretation by claim
+- explain why status captured after reproduction cannot validate the submitted state
+- separate read-only review authority from trusted publication authority
 - treat missing remote data as a correct blocking failure
 - design a practical verification route instead of an ornamental one
 - explain why CI is part of the shared proof surface
