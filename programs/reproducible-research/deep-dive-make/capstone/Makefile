@@ -39,6 +39,7 @@ REPO_ROOT := $(abspath ../../../../)
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-make
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-make
 SELFTEST_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-make/selftest
+SELFTEST_WORK_DIR ?= $(SELFTEST_REPORT_DIR)/workspace
 CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/contract
 INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incident
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
@@ -61,6 +62,7 @@ RELEASE_INSTALL_ROOT_ABS := $(abspath $(RELEASE_INSTALL_ROOT))
 RELEASE_INSTALL_REPORT_ABS := $(abspath $(RELEASE_INSTALL_REPORT))
 RELEASE_ACCEPTANCE_ABS := $(abspath $(RELEASE_ACCEPTANCE))
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
+SELFTEST_WORK_DIR_ABS := $(abspath $(SELFTEST_WORK_DIR))
 REPRO_CASE ?= $(REP_DIR)/directory-creation-race.mk
 
 DEPFLAGS := -MMD -MP
@@ -461,12 +463,15 @@ attest: all | $(BLD_DIR)/
 
 # ---- universal truth command ----
 selftest:
->     MAKE="$(MAKE)" $(TST_DIR)/run.sh
+>     MAKE="$(MAKE)" SELFTEST_WORK_DIR="$(SELFTEST_WORK_DIR_ABS)" $(TST_DIR)/run.sh
 
 selftest-report:
 >     rm -rf "$(SELFTEST_REPORT_DIR_ABS)"
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
->     MAKE="$(MAKE)" SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" $(TST_DIR)/run.sh
+>     MAKE="$(MAKE)" \
+>       SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" \
+>       SELFTEST_WORK_DIR="$(SELFTEST_WORK_DIR_ABS)" \
+>       $(TST_DIR)/run.sh
 >     cp $(DOCS_DIR)/selftest-guide.md "$(SELFTEST_REPORT_DIR_ABS)/SELFTEST_GUIDE.md"
 >     cp $(DOCS_DIR)/proof-guide.md "$(SELFTEST_REPORT_DIR_ABS)/PROOF_GUIDE.md"
 >     printf '%s\n' \

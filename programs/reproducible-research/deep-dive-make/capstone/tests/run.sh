@@ -3,6 +3,7 @@ set -eu
 
 MAKE_BIN="${MAKE:-make}"
 SELFTEST_REPORT_DIR="${SELFTEST_REPORT_DIR:-}"
+SELFTEST_WORK_DIR="${SELFTEST_WORK_DIR:-../../../../artifacts/proof/reproducible-research/deep-dive-make/selftest/workspace}"
 
 fail() { echo "selftest: FAIL: $*" >&2; exit 1; }
 pass() { echo "selftest: PASS: $*"; }
@@ -24,13 +25,16 @@ hash_cmd() {
   fi
 }
 
-tmp="${TMPDIR:-/tmp}/mkselftest.$$"
-mkdir -p "$tmp"
-trap 'rm -rf "$tmp"' EXIT INT TERM
+case "$SELFTEST_WORK_DIR" in
+  ""|"/") fail "unsafe SELFTEST_WORK_DIR: ${SELFTEST_WORK_DIR}" ;;
+esac
+rm -rf "$SELFTEST_WORK_DIR"
+mkdir -p "$SELFTEST_WORK_DIR"
+SELFTEST_WORK_DIR="$(cd "$SELFTEST_WORK_DIR" && pwd)"
 
 # Copy repo excluding build outputs and VCS data
-tar cf - --exclude=./build --exclude=./.git . | (cd "$tmp" && tar xf -)
-cd "$tmp"
+tar cf - --exclude=./build --exclude=./.git . | (cd "$SELFTEST_WORK_DIR" && tar xf -)
+cd "$SELFTEST_WORK_DIR"
 
 # Set DEBUG=0 for selftest (no -g; faster .o hashing)
 export DEBUG=0
@@ -40,7 +44,7 @@ export DEBUG=0
 TRACE_MAX="${TRACE_MAX:-500}"
 record settings.env "MAKE_BIN=${MAKE_BIN}
 TRACE_MAX=${TRACE_MAX}
-TMPDIR=${tmp}"
+SELFTEST_WORK_DIR=${SELFTEST_WORK_DIR}"
 
 # 1) Convergence
 step "convergence"
