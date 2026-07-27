@@ -19,20 +19,25 @@ graph LR
 flowchart LR
   own["name the owner of the resource"] --> fail["separate domain failure from boundary failure"]
   fail --> retry["justify retry and idempotency"]
-  retry --> expose["review logs and public surface"]
-  expose --> evolve["extend behavior without weakening old contracts"]
+  retry --> surface["review logs and public surface"]
+  surface --> evolve["extend behavior without weakening old contracts"]
 ```
 <!-- page-maps:end -->
 
-Use these exercises as one full lab on survivable design. The goal is not to repeat
-phrases such as "use context managers" or "log errors carefully." The goal is to prove
-that a learner studying alone can inspect one real workflow and explain who owns cleanup,
-who may retry, what callers are promised after failure, and how the system can evolve
-without publishing its internals by accident.
+Use these exercises as one full lab day on survivable design. The goal is not to repeat
+"use context managers" or "log carefully." The goal is to prove that you can inspect one
+workflow and explain:
 
-## Running lab scenario
+- who owns cleanup
+- what callers are promised after failure
+- whether retry is safe
+- which internal details must stay off the public surface
+- how new behavior can be added without weakening the old contract
 
-Use one workflow for the whole day:
+## Running lab rule
+
+Use one workflow for the whole day so the pressure accumulates instead of resetting every
+exercise. If you do not already have one, use this scenario:
 
 `CertificateIssuanceService`
 
@@ -50,11 +55,10 @@ Pressure points:
 - file handles and temporary files must be cleaned up
 - the repository write and storage upload must tell a coherent story
 - sending the email twice may be harmful or merely noisy depending on the design
-- public callers should not need to know about temp files, storage clients, or retry
-  loops
+- public callers should not need to know about temp files, storage clients, or retry loops
 
-If you prefer your own scenario, keep the same pressure: at least one finite resource,
-one persisted change, one external side effect, and one evolution question.
+If you use your own scenario, keep the same pressure: at least one finite resource, one
+persisted change, one external side effect, and one evolution question.
 
 ## What to keep open while you work
 
@@ -67,7 +71,7 @@ Build one survivability packet as you go. By the end it should contain:
 - one public-surface note
 - one safe-extension recommendation
 
-Useful tables:
+Use these tables directly:
 
 | Operation | Resource owner | Cleanup owner | Caller-visible contract after failure |
 | --- | --- | --- | --- |
@@ -125,12 +129,13 @@ For each one, say:
 - whether it is domain meaning or boundary trouble
 - what callers should be told
 - whether retry is reasonable
-
-If everything turns into one generic exception, the design is too blurry.
+- what wrong action a caller might take if the distinction were blurred
 
 ## Exercise 5: Justify one retry policy
 
-Pick one restart point, such as "job reruns after upload succeeded but before email sent."
+Pick one restart point, such as:
+
+"job reruns after upload succeeded but before email sent"
 
 Explain:
 
@@ -139,18 +144,18 @@ Explain:
 - what duplicate side effect must be prevented or tolerated
 - where the retry policy should live
 
-The main goal is to replace retry folklore with a contract.
+The goal is to replace retry folklore with a contract.
 
 ## Exercise 6: Review logging and propagation together
 
 Choose one failure path and decide:
 
 - what operators genuinely need logged
-- what information callers genuinely need propagated
+- what callers genuinely need propagated
 - which layer should translate raw infrastructure errors into clearer contracts
 - what duplicated noise appears if every layer logs the same fault
 
-This exercise is about audience, not verbosity.
+This exercise is about audience and contract, not verbosity.
 
 ## Exercise 7: Draw the public surface
 
@@ -182,6 +187,7 @@ Explain:
 
 - why the smell survives even if happy-path tests pass
 - what structural repair would narrow ownership
+- what evidence would show the repair actually worked
 
 ## Exercise 9: Extend behavior without bypassing the contract
 
@@ -219,9 +225,8 @@ The packet is done only when another maintainer can answer:
 
 You are done with the exercise day when your packet can survive these review questions:
 
-- "Who cleans up if the job fails after writing the temp file?"
-- "Can this path be retried without duplicating visible side effects?"
-- "What can a caller rely on without learning storage or email internals?"
+- who cleans up if the job fails after writing the temp file?
+- can this path be retried without duplicating visible side effects?
+- what can a caller rely on without learning storage or email internals?
 
-If those answers are still fuzzy, keep tightening the packet before you open the answer
-page.
+If those answers are still fuzzy, keep tightening the packet before you open the answer page.
