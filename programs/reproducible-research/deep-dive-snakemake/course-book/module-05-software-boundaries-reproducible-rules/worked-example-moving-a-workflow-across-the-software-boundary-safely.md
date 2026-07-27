@@ -7,6 +7,31 @@ This file ties the whole module together around one realistic problem:
 The question is not "how do we hide more code outside Snakemake?" The question is how to
 give each layer one clear job.
 
+## How to use this worked example
+
+Treat this page like a software-boundary lab, not like a success story you read after the
+fact.
+
+For each repair step:
+
+1. name which layer owns the behavior you are moving
+2. predict what evidence should prove the move stayed honest
+3. keep the rule contract visible while the implementation gets shorter
+
+If you skip the ownership question, the example turns into code extraction theater instead
+of reproducibility work.
+
+## The one-day teaching goal
+
+By the end of this example, a learner should be able to rebuild one workflow step so that:
+
+- the rule owns only orchestration and file contract
+- the workflow script acts only as a step-local adapter
+- reusable logic moves into package code for a reason
+- runtime and provenance explain why rebuilt outputs should be trusted
+
+That is the real outcome. Shorter files alone are not the outcome.
+
 ## The lab route
 
 Work through the example in this order:
@@ -16,6 +41,18 @@ Work through the example in this order:
 3. promote only genuinely reusable helpers into package code
 4. bind the rule to an explicit runtime contract
 5. finish by explaining a rebuild through provenance and drift evidence
+
+## What to keep beside you while you work
+
+Keep these four surfaces visible while you move through the example:
+
+- the rule boundary
+- the workflow script
+- the reusable package code
+- the provenance or rebuild evidence
+
+Those four surfaces are enough to explain whether the repository gained clarity or only
+moved code around.
 
 ## The starting situation
 
@@ -63,6 +100,16 @@ This shorter rule is better because it still answers the important questions:
 If the rule becomes short by hiding undeclared reads or hidden global state, the
 extraction failed.
 
+## Why this first move matters educationally
+
+Many learners assume the main goal is to get logic out of `run:` blocks.
+
+Module 05 needs a stricter instinct:
+
+- keep the rule honest first
+- move implementation only when ownership becomes clearer
+- treat shorter code as a side effect, not the goal
+
 ## Make the script a workflow adapter
 
 `workflow/scripts/provenance.py` should translate declared Snakemake inputs and outputs
@@ -105,6 +152,15 @@ That is the important distinction:
 - `workflow/scripts/` owns step-local adapters
 - `src/` owns reusable software behavior
 
+## A short checkpoint before you continue
+
+Pause here and say one sentence like this:
+
+> This helper belongs in `src/` because it can be imported and tested directly without a
+> Snakemake context.
+
+If that sentence is hard to defend, the code may still belong beside the workflow.
+
 ## Name the runtime contract explicitly
 
 Next, bind the step to a runtime contract such as `workflow/envs/python.yaml`.
@@ -141,6 +197,18 @@ Now imagine three edits:
 
 These are different surfaces, but each can invalidate trust in earlier outputs. The point
 of provenance is to make that rebuild story explicit instead of folkloric.
+
+## What the learner should notice now
+
+The rebuild story is the real proof that the software boundary is working.
+
+If a maintainer can explain:
+
+- which software surface changed
+- which outputs became stale
+- which new provenance now defends the rebuilt outputs
+
+then the repository has crossed the software boundary safely.
 
 ## The repaired software story
 

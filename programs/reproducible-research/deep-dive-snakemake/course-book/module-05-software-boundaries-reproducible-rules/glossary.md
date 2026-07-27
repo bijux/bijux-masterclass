@@ -1,33 +1,17 @@
 # Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Software Boundaries Reproducible Rules"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This glossary keeps the language of Module 05 stable. The goal is not to impress you with
 terminology. The goal is to make sure the same words keep the same meaning across lessons,
 reviews, exercises, and capstone work.
+
+## When to stop and check the glossary
+
+Pause and check a term when:
+
+- your explanation depends on "the code" without saying which layer owns it
+- you are treating workflow scripts and reusable package code as if they were the same thing
+- you can tell a rebuild matters but cannot yet name which software surface drifted
+- you are using runtime, provenance, and environment as if they were interchangeable
 
 ## Terms
 
@@ -59,3 +43,18 @@ If a workflow change becomes hard to review, ask which term has become vague:
 - is the provenance artifact too weak?
 
 That habit keeps the module practical.
+
+## Terms you should be able to use by the end of the day
+
+If Module 05 is landing properly, these terms should feel ordinary by the end:
+
+- file contract
+- step-local code
+- reusable package code
+- runtime contract
+- hidden dependency
+- software drift
+- provenance artifact
+
+If those still feel decorative rather than useful, revisit the worked example and the
+first seven exercises before moving on.

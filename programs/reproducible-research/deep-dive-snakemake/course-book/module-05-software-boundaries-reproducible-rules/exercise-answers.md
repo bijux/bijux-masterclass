@@ -1,59 +1,82 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Software Boundaries Reproducible Rules"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 These answers are written as model explanations, not as the only acceptable wording.
+
+## How to use the answer page well
+
+Do not read a model answer first and then bend your exercise to match it.
+
+A better rhythm is:
+
+1. complete the exercise with your own rule, script, package, or runtime evidence
+2. write one plain-language explanation of the software boundary you are defending
+3. compare that explanation with the model answer
+4. revise where the model answer exposes hidden ownership or missing rebuild evidence
 
 The standard to aim for is clear ownership reasoning.
 
-## Exercise 1: Decide what stays in the rule
+## Exercise 1: Map one long rule by ownership
 
-What should stay in the rule:
+A strong answer separates the visible contract from the software hiding behind it.
 
-- declared inputs and outputs
-- any simple parameter wiring that helps a reviewer understand file meaning
-- the visible execution boundary for the step
+Example:
 
-What should move into `workflow/scripts/`:
+> The rule should keep declared inputs, outputs, params, logs, and resources because that
+> is the visible file contract. The data transformation loop belongs in step-local
+> implementation because it is owned by this one step. A parsing helper used elsewhere is
+> reusable logic and belongs in package code. The ambient Python assumption is a runtime
+> issue and needs an explicit environment boundary.
 
-- the non-trivial transformation logic owned by this step
-- code that makes the rule hard to read but is still tightly coupled to this step
+Why this is strong:
 
-What should move into `src/`:
+- it distinguishes four ownership categories clearly
+- it starts from the visible rule boundary rather than code style
 
-- parsing logic that another reporting step will also need
-- reusable helpers that deserve direct tests outside Snakemake
+## Exercise 2: Extract step-local logic into a script
 
-Why:
+The resulting rule should still reveal every meaningful input, output, parameter, runtime,
+and log path. The script may transform those declared values but must not discover extra
+files behind the rule. A focused run proves integration, while reviewing file access or
+testing with an absent undeclared file helps establish that extraction did not hide a
+dependency.
 
-The rule should remain the place where the file contract is obvious. Step-local
-implementation belongs in a script. Reusable logic belongs in the repository's package
-surface.
+## Exercise 3: Diagnose a hidden dependency
 
-## Exercise 2: Choose the right runtime boundary
+Why it is a software-boundary problem:
+
+- the visible rule contract is smaller than the real behavior
+- a reviewer cannot trust the declared execution story
+
+Risks:
+
+- the file graph is misleading
+- rebuild behavior may ignore a meaningful input
+- publication review becomes weaker because software behavior is partially hidden
+
+Repair:
+
+- declare `config/report-style.yaml` in the rule if it materially affects the output
+- keep the script as implementation, not as a place to invent undeclared dependencies
+
+The core principle is simple: meaningful inputs should stay visible at the rule boundary.
+
+## Exercise 4: Decide whether code belongs in `workflow/scripts/` or `src/`
+
+A strong answer keeps the workflow adapter thin and promotes only the reusable part.
+
+Example:
+
+> The script should keep Snakemake-specific path wiring because that is workflow-adjacent.
+> The shared parser used by two report steps belongs in `src/` because it can be imported
+> and tested directly without a Snakemake context. I would not move publication-path
+> decisions into `src/` because those still belong to workflow ownership.
+
+Why this is strong:
+
+- it separates workflow-adjacent and reusable responsibilities cleanly
+- it resists moving too much into package code
+
+## Exercise 5: Write a runtime contract
 
 Rule-scoped environment:
 
@@ -76,27 +99,23 @@ They all describe software, but they protect different scopes. A repository envi
 too broad to explain every step. A rule-scoped environment is too narrow to replace a full
 machine boundary. A container solves portability problems an environment file alone cannot.
 
-## Exercise 3: Diagnose a hidden dependency
+## Exercise 6: Test reusable code directly
 
-Why it is a software-boundary problem:
+The package API should accept ordinary values or paths and return ordinary values rather
+than depending on the injected `snakemake` object. Both workflow scripts remain thin
+adapters. Tests cover a valid record, an empty or boundary case, and malformed input.
+Path wiring and publication remain workflow-owned; reusable parsing or calculation moves
+to the package.
 
-- the visible rule contract is smaller than the real behavior
-- a reviewer cannot trust the declared execution story
+## Exercise 7: Observe code and runtime drift
 
-Risks:
+The implementation change should mark outputs owned by that script as candidates for
+rebuilding while unrelated branches remain current. Runtime declaration changes require the
+same trust review even when source data is unchanged. After rebuilding, a dry-run
+converges and provenance records the repository revision, resolved environment, semantic
+configuration, and execution identity.
 
-- the file graph is misleading
-- rebuild behavior may ignore a meaningful input
-- publication review becomes weaker because software behavior is partially hidden
-
-Repair:
-
-- declare `config/report-style.yaml` in the rule if it materially affects the output
-- keep the script as implementation, not as a place to invent undeclared dependencies
-
-The core principle is simple: meaningful inputs should stay visible at the rule boundary.
-
-## Exercise 4: Review a wrapper adoption decision
+## Exercise 8: Review one wrapper or abstraction adoption
 
 A strong review comment would delay adoption for now:
 
@@ -111,7 +130,7 @@ Why this is the right reasoning:
 - the question is whether the wrapper increases clarity
 - if it hides behavior the team cannot review, it weakens the software boundary
 
-## Exercise 5: Plan a rebuild after software drift
+## Exercise 9: Rebuild a published artifact honestly
 
 Why outputs may no longer be trustworthy:
 
@@ -133,45 +152,14 @@ What provenance should accompany the rebuilt outputs:
 
 The main lesson is that unchanged input datasets do not cancel software drift.
 
-## Exercise 6: Extract a long rule into a script
-
-The resulting rule should still reveal every meaningful input, output, parameter, runtime,
-and log path. The script may transform those declared values but must not discover extra
-files behind the rule. A focused run proves integration, while reviewing file access or
-testing with an absent undeclared file helps establish that extraction did not hide a
-dependency.
-
-## Exercise 7: Promote reusable logic into tested code
-
-The package API should accept ordinary values or paths and return ordinary values rather
-than depending on the injected `snakemake` object. Both workflow scripts remain thin
-adapters. Tests cover a valid record, an empty or boundary case, and malformed input.
-Path wiring and publication remain workflow-owned; reusable parsing or calculation moves
-to the package.
-
-## Exercise 8: Reproduce a rule-scoped environment
-
-A strong environment pins direct dependencies closely enough to reproduce the rule and is
-created by running Snakemake with environment integration enabled. Record the resolved
-package list or explicit versions alongside run evidence. The rule no longer succeeds
-merely because a contributor happened to install a library globally.
-
-## Exercise 9: Observe code and environment drift
-
-The implementation change should mark outputs owned by that script as candidates for
-rebuilding while unrelated branches remain current. Runtime declaration changes require
-the same trust review even when source data is unchanged. After rebuilding, a dry-run
-converges and provenance records the repository revision, resolved environment, semantic
-configuration, and execution identity.
-
 ## Exercise 10: Review a complete software boundary
 
 Prioritize undeclared meaningful inputs and unrecorded runtime drift over cosmetic file
 placement. Remove duplicate implementation between scripts and packages, keep the file
-contract in the rule, and test reusable code directly. A container is justified when OS
-or compiled-runtime portability is part of the claim; if a rule-scoped environment
-already satisfies the supported contexts, another image may add maintenance without
-additional trust.
+contract in the rule, and test reusable code directly. A container is justified when OS or
+compiled-runtime portability is part of the claim; if a rule-scoped environment already
+satisfies the supported contexts, another image may add maintenance without additional
+trust.
 
 ## Self-check
 
