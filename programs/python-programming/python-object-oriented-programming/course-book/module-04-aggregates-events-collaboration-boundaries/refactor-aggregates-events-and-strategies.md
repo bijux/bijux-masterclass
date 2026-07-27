@@ -17,66 +17,69 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  truth["find the real consistency boundary"] --> invariant["move cross-object rules there"]
+  invariant --> policy["separate variation from authority"]
+  policy --> events["emit facts only after truth changes"]
+  events --> views["derive projections and debug views"]
+  views --> edge["push outer details back to adapters"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This refactor matters because Module 04 can still remain fragmented even after a learner
+understands the parts:
 
-## Why this lesson matters
+- aggregate
+- policy
+- event
+- projection
+- adapter
 
-By the end of this module, you have several tools:
+The hard part is using them together without hollowing out the aggregate or turning the
+rest of the system into a manager-object script. This page exists to show one safe route.
 
-- aggregates
-- cross-object invariants
-- policy or strategy objects
-- domain events
-- projections and debug views
-- adapters at the edge
+## The weak starting shape
 
-Students often understand each tool in isolation and still struggle when a real codebase
-contains all of them at once. This lesson is the integration lesson. Its job is to show
-how these ideas combine into one readable refactor path.
-
-## The starting shape
-
-The weak starting design usually looks familiar:
+A weak starting design usually looks familiar:
 
 - one service method loads everything
-- conditionals for every rule type pile up in one place
+- rule variation piles up in long conditionals
 - cross-object invariants are checked inconsistently
 - side effects happen in the same method that mutates core state
-- reporting needs push extra query and display logic back into the write model
+- reporting needs push extra query logic back into the write model
 
-This design may work for a while, but it is hard to extend honestly. Every new feature
-adds another branch, another exception path, and another invisible dependency.
+The design may work for a while. It becomes hard to extend honestly because every new
+feature adds one more branch, one more side effect, and one more hidden dependency.
 
-## The target shape
+## The stronger target shape
 
-The stronger design aims for a simpler set of responsibilities:
+The target is not "more patterns." The target is clearer authority:
 
-- an aggregate owns authoritative changes and invariants
-- policy or strategy objects hold decision variation
+- one aggregate owns authoritative mutation and invariants
+- policy objects hold decision variation
 - domain events announce completed business facts
-- projections and debug views serve reading and inspection
+- projections and debug views stay derived
 - adapters isolate outer systems from inner reasoning
 
-This is not about adding patterns for style points. It is about reducing mixed
-responsibility so students can predict where a change belongs.
+The final question is simple:
 
-## A practical refactor route
+> If a new rule arrives tomorrow, is there one obvious place where truth should change first?
 
-Do not try to jump from the weak shape to the final shape in one rewrite. Move in a
-sequence that keeps the system understandable.
+## Use this refactor order
 
-### 1. Find the real consistency boundary
+Follow this order on purpose:
+
+1. find the real consistency boundary
+2. move cross-object rules into that boundary
+3. separate decision variation from authority
+4. emit events only after successful authority changes
+5. move secondary reactions behind handlers
+6. build projections and debug views for reading
+7. push infrastructure details back to the edge
+
+This order matters because events and policies become confusing fast if the source of
+truth is still blurry.
+
+## Step 1: find the real consistency boundary
 
 Start by asking:
 
@@ -88,35 +91,37 @@ That gives you the aggregate boundary.
 
 If you skip this step, later event and policy work will float without an authority model.
 
-### 2. Move cross-object rules into the aggregate
+## Step 2: move cross-object rules into the aggregate
 
 Once the boundary is clear, collect rules such as:
 
 - no duplicate active rule for the same scope
 - no retirement of a rule that is already retired
-- no activation when a policy is closed
+- no activation when the policy is closed
 
 Put those checks where authoritative mutation happens.
 
-At this step, your code should become stricter before it becomes more abstract.
+At this step, the code should become stricter before it becomes more abstract.
 
-### 3. Separate decision variation from authority
+## Step 3: separate decision variation from authority
 
-Not every decision belongs as a long `if` ladder inside the aggregate.
+Not every decision belongs as an `if` ladder inside the aggregate.
 
 If the system supports multiple evaluation styles, escalation rules, or threshold
-policies, move the variation into policy or strategy objects while keeping authority in
-the aggregate.
+policies, move the variation into policy objects while keeping authority in the
+aggregate.
 
-That gives you a useful division:
+This gives you a clean split:
 
 - the aggregate decides what changes are allowed
 - policy objects help determine which option applies
 
-### 4. Emit events after successful authority changes
+If the policy object starts deciding whether the invariant itself can be broken, it has
+stolen authority.
 
-Once the authoritative mutation is owned clearly, emit domain events for the completed
-business facts:
+## Step 4: emit events only after truth changes
+
+Once authoritative mutation is clear, emit domain events for completed business facts:
 
 - rule activated
 - rule retired
@@ -124,106 +129,101 @@ business facts:
 
 These events should describe what happened, not request side effects directly.
 
-This step matters because it separates:
+This step separates:
 
 - deciding and committing the business fact
 - reacting elsewhere to the business fact
 
-### 5. Move secondary reactions behind event handlers
+## Step 5: move secondary reactions out of the aggregate
 
 After events exist, move secondary work out of the authority method:
 
 - send notifications
 - refresh summaries
-- update audit or trace views
+- update audit or debug views
 - trigger external delivery flows
 
 This does not make side effects disappear. It makes their relationship to core
 authority visible and reviewable.
 
-### 6. Build projections and debug views for reading
+## Step 6: derive read and debug views
 
-Once you have events and authoritative write models, stop overloading the aggregate with
-every read concern.
+Once you have events and authoritative write models, stop forcing every read concern into
+the aggregate.
 
 Build derived views for:
 
 - dashboards
 - operator summaries
-- trace or audit inspection
+- audit trails
 - reviewer-friendly debug snapshots
 
 The projection is not a second authority. It is a readable picture of authoritative
-state and changes.
+state and change.
 
-### 7. Push infrastructure details back to the edge
+## Step 7: push infrastructure back to the edge
 
-At this stage, remaining mess usually comes from infrastructure leakage:
+At this stage, the remaining mess usually comes from leakage:
 
 - repositories returning raw storage shapes
 - SDK exceptions escaping inward
-- transport objects appearing in application code
+- transport objects appearing in orchestration code
 
-That is the moment to add or tighten ports and adapters.
+That is the time to tighten ports and adapters.
 
 The result should be a codebase where inner reasoning is legible without reading the
 database driver or network client first.
 
-## How to know the refactor is actually better
+## A worked refactor route
 
-A refactor is not successful because it mentions several good patterns. It is successful
-when future changes become easier to place correctly.
+Imagine a system where one `Coordinator`:
 
-Good signs include:
+- loads all collaborators
+- decides activation and retirement rules
+- updates reports
+- sends notifications
+- talks directly to storage and transport code
 
-- a new business rule has one obvious aggregate home
-- a new policy variation can be added without rewriting old authority code
-- a new notification path does not require editing the mutation logic itself
-- a new read surface can be derived without polluting the write model
-- a new infrastructure implementation can be swapped at the edge
+A safer Module 04 refactor route is:
 
-If those things are still hard, the design is still mixing responsibilities somewhere.
+1. identify the aggregate that really owns the mutable truth
+2. move cross-object invariant checks there
+3. extract policy variation from the long conditional ladder
+4. emit events only after the aggregate accepts the change
+5. move reporting and notification behind handlers and projections
+6. isolate outer protocols behind adapters
 
-## Common mistakes
+The success signal is not that the code sounds more advanced. It is that the authority
+path becomes easier to point at.
 
-- introducing events before authority is clear
-- moving every decision into strategy objects and leaving the aggregate hollow
-- letting projections become operational sources of truth
-- creating handlers that quietly re-enforce invariants already owned elsewhere
-- keeping framework and storage details in application orchestration after the refactor
+## How to review the result
 
-These mistakes produce the appearance of structure without the benefit of structure.
+After refactoring, ask:
 
-## Review checklist
+- is there one clear aggregate owning authoritative mutation?
+- are cross-object invariants enforced there?
+- are policies varying decisions without replacing authority?
+- do events describe completed facts?
+- are projections clearly derived?
+- are infrastructure details pushed behind adapters?
 
-| Question | Good sign |
-| --- | --- |
-| is there a clear aggregate owning authoritative mutation? | yes |
-| are cross-object invariants enforced at that authority boundary? | yes |
-| are policy or strategy objects used for variation rather than authority replacement? | yes |
-| do events describe completed business facts? | yes |
-| are projections and debug views clearly derived? | yes |
-| are infrastructure details pushed behind adapters? | yes |
+If those answers are still fuzzy, the refactor is not finished.
 
-## Capstone connection
+## Capstone transfer
 
-Use this page as the review route for the capstone.
+Use the capstone immediately:
 
-If the capstone feels tangled, inspect it in this order:
+- where is the real consistency boundary?
+- where do policy objects vary evaluation without owning truth?
+- where do projections remain useful but subordinate?
+- where do outer adapters stop being allowed to redefine the model?
 
-1. locate the real consistency boundary
-2. move invariants there
-3. separate decision variation from authority
-4. emit facts as events
-5. derive read and debug views
-6. clean the edge with adapters
-
-That sequence is more reliable than chasing symptoms in random order.
+This page should make the capstone's architecture easier to audit, not just easier to name.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
 - explain the role of aggregates, policies, events, projections, and adapters in one story
-- describe a safe order for refactoring a tangled service toward this shape
-- identify the next capstone boundary weakness using that order instead of guesswork
+- describe a safe order for refactoring a tangled collaboration path toward this shape
+- identify one capstone boundary that would become clearer if you applied this route
