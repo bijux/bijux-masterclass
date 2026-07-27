@@ -1,11 +1,24 @@
 # Worked Example: Investigating a Slow and Noisy Workflow
 
-This file ties the whole module together around one realistic problem:
+This worked example ties the whole module together around one realistic problem:
 
 > a workflow still runs, but maintainers now describe it as slow, noisy, and unpredictable under review pressure.
 
 The question is not "how do we make it feel faster?" The question is how to move from
 symptom to explanation without losing workflow truth.
+
+## How to use this worked example
+
+Treat this page like a guided lab.
+
+Read it in order and pause after each section long enough to answer two questions for
+yourself:
+
+1. what has been learned so far
+2. what should still be considered unknown
+
+That habit matters because the biggest failure mode in incident work is collapsing clues,
+hypotheses, and conclusions into one blurred story.
 
 ## The lab route
 
@@ -32,17 +45,24 @@ That report already contains three concerns:
 A weak response would jump straight to more threads, more retries, or job grouping. The
 stronger response begins by classifying what kind of problem this might be.
 
-## Name the symptom precisely
+## Step 1: rewrite the symptom into reviewable language
 
-Rewrite the incident note into something reviewable:
+Replace the vague report with this:
 
 > `make tour` now takes roughly twice as long in CI. Summary-oriented publish artifacts
 > were rebuilt for all samples. Execution logs are much noisier than the last reviewed
 > run.
 
-That is already better than “the workflow got weird.”
+That version is better because it names:
 
-## Separate the likely cost classes
+- the affected surface
+- the comparison point
+- the scope of rebuild surprise
+
+You are no longer reacting to a feeling. You are reacting to a statement another
+maintainer can verify.
+
+## Step 2: separate likely cost classes
 
 Now inspect:
 
@@ -58,11 +78,18 @@ Suppose you learn:
 - `--summary` shows many summary outputs as stale because more upstream sample surfaces changed
 - `--list-changes` points mostly to input and code movement rather than parameter drift
 
-That suggests the dominant cost class is not yet tool runtime. The stronger lead is that
-the workflow is planning more work than before, which may also amplify scheduler or launch
+That suggests the dominant cost class is not tool runtime. The stronger lead is that the
+workflow is planning more work than before, which may also amplify scheduler or launch
 overhead.
 
-## Open the narrowest evidence surfaces
+This is the first teaching checkpoint in the example:
+
+- you have evidence of expanded work
+- you do not yet have evidence of slower tools
+
+That distinction should stop any immediate thread-tuning reflex.
+
+## Step 3: open the narrowest evidence surfaces
 
 Now inspect:
 
@@ -77,7 +104,7 @@ That is the second big clue. The workflow did not mostly get slower because the 
 changed. It got slower because the repository widened discovery and created false work and
 false noise.
 
-## Repair the boundary that actually moved
+## Step 4: repair the boundary that actually moved
 
 The honest repair is not:
 
@@ -95,7 +122,7 @@ The honest repair is:
 Only after that repair should you ask whether any remaining speed issue is still worth
 tuning.
 
-## Prove the repair honestly
+## Step 5: prove the repair honestly
 
 Use the same route again:
 
@@ -112,6 +139,11 @@ What you want to see:
 - summary evidence stops showing unnecessary rebuild scope
 - logs become quieter because they now reflect real sample identities
 - runtime improves because false work disappeared, not because truth was skipped
+
+This is the second teaching checkpoint:
+
+- the proof route should reuse the same evidence logic as the diagnosis route
+- the improvement should come from removing false work, not hiding true work
 
 ## Turn the route into a reusable incident note
 
@@ -147,4 +179,4 @@ When you inspect an incident route shaped like this, ask:
 4. how the repair preserved workflow meaning
 5. whether another maintainer could follow the route without extra oral guidance
 
-If those answers are visible, the module’s incident story has landed.
+If those answers are visible, the module's incident story has landed.

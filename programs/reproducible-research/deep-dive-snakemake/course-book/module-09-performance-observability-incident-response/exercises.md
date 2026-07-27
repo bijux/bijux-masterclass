@@ -1,21 +1,30 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is to make
-evidence-first incident judgment visible through measurements, classifications, and
+Use these after reading the five core lessons and the worked example.
+
+This set is designed as a full-day practice sequence, not as a quiz bank. The goal is to
+make evidence-first incident judgment visible through measurements, classifications, and
 runbooks, not through generic performance talk.
 
-Do them in order. The set is one day-long progression:
+## How to use this exercise set
+
+Do the ten exercises in order.
+
+The progression is deliberate:
 
 - Exercises 1-3 establish cost classes and evidence surfaces.
-- Exercises 4-6 practice triage and baseline measurement.
-- Exercises 7-8 collect incident packets and test one honest optimization.
-- Exercises 9-10 revise runbooks and review like a maintainer.
+- Exercises 4-6 practice review, runbook writing, and baseline measurement.
+- Exercises 7-8 collect incident evidence and test one honest optimization.
+- Exercises 9-10 rehearse context-specific diagnosis and operational revision.
 
-For every answer, keep three things:
+For every answer, keep three things visible:
 
 - the boundary or cost class you are naming
 - the evidence route you actually used
 - one short sentence explaining why the response preserves workflow truth
+
+If you want to get the most from the set, write every answer as if another maintainer
+must review it without asking you follow-up questions.
 
 ## Exercise 1: Name the dominant cost class
 

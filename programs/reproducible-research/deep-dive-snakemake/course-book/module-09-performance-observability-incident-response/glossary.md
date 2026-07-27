@@ -1,34 +1,17 @@
 # Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This glossary keeps the language of Module 09 stable.
 
 The goal is practical incident and performance clarity: when the same terms keep the same
 meaning, review gets faster and less argumentative.
+
+## How to use this glossary
+
+Come back to this page whenever a discussion starts drifting into vague words such as
+"slow," "flaky," "noisy," or "optimization."
+
+The glossary is not here to make the writing sound formal. It is here to keep operational
+discussion precise enough that two maintainers can mean the same thing.
 
 ## Terms
 

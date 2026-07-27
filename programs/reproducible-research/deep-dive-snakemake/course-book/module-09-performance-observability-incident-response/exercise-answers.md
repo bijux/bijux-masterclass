@@ -1,33 +1,21 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning stays evidence-first and truth-preserving.
+
+## How to use these answers
+
+Do not read this file before attempting the exercises yourself.
+
+Use it for three kinds of comparison:
+
+1. check whether you named the right boundary or cost class
+2. check whether you chose evidence in a disciplined order
+3. check whether your proposed response preserved workflow meaning
+
+If your wording differs but your reasoning is equally precise and equally honest, your
+answer can still be strong.
 
 ## Exercise 1: Name the dominant cost class
 
@@ -152,41 +140,75 @@ Why this is strong:
 
 ## Exercise 6: Establish a measured baseline
 
-Use identical inputs and context for repeated runs, retaining raw observations rather
-than only an average. Median resists one extreme value, while range reveals variability.
-Planning, end-to-end, and rule-local measurements answer different questions. The
-baseline remains conditional on input scale, cache state, storage load, software, and
-executor context.
+Use identical inputs and context for repeated runs, retaining raw observations rather than
+only an average.
+
+Why:
+
+- median resists one extreme value
+- range reveals variability
+- planning, end-to-end, and rule-local measurements answer different questions
+
+What a strong answer says explicitly:
+
+- what was held constant
+- what remained uncontrolled
+- why the baseline is informative but still conditional on context
 
 ## Exercise 7: Build an incident evidence packet
 
-The packet states an observable symptom and bounded scope before offering a theory. It
-includes the planned jobs, file status, one relevant log, timing evidence, and provenance
-needed to reproduce the state. It separates known facts from hypotheses and avoids
-dumping unrelated logs. Another maintainer should be able to classify the incident
-without asking what command was run.
+The packet states an observable symptom and bounded scope before offering a theory.
+
+It includes:
+
+- planned jobs
+- file-status evidence
+- one relevant log
+- timing evidence
+- provenance needed to reproduce the state
+
+A strong packet separates known facts from hypotheses and avoids dumping unrelated logs.
+Another maintainer should be able to classify the incident without asking what command was
+run.
 
 ## Exercise 8: Tune one boundary at a time
 
 Change only the hypothesized overhead source, repeat measurements, and compare semantic
-outputs or their governed checksums. Keep the change only when the distribution improves
-meaningfully and failure visibility, target membership, and output meaning remain intact.
+outputs or their governed checksums.
+
+Keep the change only when:
+
+- the distribution improves meaningfully
+- failure visibility remains intact
+- target membership remains intact
+- output meaning remains intact
+
 If results overlap the baseline or evidence weakens, revert rather than rationalize.
 
 ## Exercise 9: Diagnose a context-specific regression
 
 Queue timestamps distinguish waiting from execution. Job launch records reveal scheduler
 overhead, logs and latency events reveal storage behavior, resource telemetry reveals
-pressure, and benchmarks isolate tool runtime. Reject higher retries until evidence shows
-a transient class. The smallest useful experiment changes one context factor while
-preserving the target and input set.
+pressure, and benchmarks isolate tool runtime.
+
+A strong answer rejects higher retries until evidence shows a transient class. The
+smallest useful experiment changes one context factor while preserving the target and
+input set.
 
 ## Exercise 10: Rehearse and revise a runbook
 
-Observed reader stalls are evidence that the runbook assumes hidden knowledge. Revise it
-with prerequisites, exact bounded commands, expected evidence, stop conditions, and
-escalation ownership. A successful rehearsal reaches the appropriate verification route
-without destructive cleanup, indiscriminate retries, or an unrelated full-suite run.
+Observed reader stalls are evidence that the runbook assumes hidden knowledge.
+
+Revise it with:
+
+- prerequisites
+- exact bounded commands
+- expected evidence
+- stop conditions
+- escalation ownership
+
+A successful rehearsal reaches the appropriate verification route without destructive
+cleanup, indiscriminate retries, or an unrelated full-suite run.
 
 ## Self-check
 
