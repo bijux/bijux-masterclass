@@ -124,9 +124,14 @@ boundary should absorb that complexity.
 
 ## Exercises
 
-- Pick one operation and explain which clock it should depend on and why a different clock would be unsafe.
-- Review one concurrency pressure point and justify whether locking, queuing, or ownership transfer is the cleaner response.
-- Compare one sync API and one async wrapper and explain where the boundary should live to keep the domain readable.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete runtime-boundary review route:
+clock choice, deadline ownership, concurrency control, sync-async bridging, and
+cancellation-safe retries.
 
 ## Capstone connection
 
