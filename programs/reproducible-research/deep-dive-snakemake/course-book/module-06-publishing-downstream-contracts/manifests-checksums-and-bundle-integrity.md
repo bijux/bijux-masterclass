@@ -27,6 +27,20 @@ That person needs to answer at least four questions without asking the original 
 
 This page is about teaching that separation cleanly.
 
+## If you are learning this without the live class
+
+Treat this page as a verification drill, not as a metadata glossary.
+
+Use it in four passes:
+
+1. write down which files in the bundle answer inventory, identity, meaning, and context
+2. stop after the first manifest sketch and ask whether the bundle could travel to another machine unchanged
+3. run one verifier route before you keep reading
+4. finish by naming which trust question each artifact still cannot answer
+
+If you keep calling all of these files "metadata," slow down and separate their jobs
+again before you move on.
+
 ## A bundle should explain itself
 
 The capstone publish bundle includes:
@@ -36,7 +50,8 @@ The capstone publish bundle includes:
 - `summary.json`
 - `summary.tsv`
 - `report/index.html`
-- `discovered_samples.json`
+- `accepted_samples.json`
+- `rejected_samples.json`
 
 Those files do not all do the same job.
 
@@ -71,6 +86,18 @@ They help detect:
 
 Checksums are not a substitute for meaning. They are evidence of identity.
 
+## The integrity packet to keep beside you
+
+Keep one five-line packet while you work through this page:
+
+- one manifest excerpt with stable relative paths
+- one checksum verification transcript
+- one note saying what provenance answers
+- one note saying what the file API answers
+- one note saying what accepted and rejected discovery records explain that the manifest does not
+
+That packet keeps the page grounded in reviewable evidence instead of abstract integrity language.
+
 ## Start by separating inventory, identity, meaning, and context
 
 This four-way split is the main idea to keep:
@@ -84,6 +111,25 @@ This four-way split is the main idea to keep:
 
 Once learners can keep those questions apart, publish integrity stops sounding like one
 fuzzy metadata topic.
+
+## One outside-in integrity scenario
+
+Imagine a downstream reviewer receives only:
+
+- `publish/v1/manifest.json`
+- `publish/v1/provenance.json`
+- `publish/v1/summary.json`
+- `publish/v1/accepted_samples.json`
+- `publish/v1/rejected_samples.json`
+
+They should be able to answer:
+
+- which files belong in the bundle
+- whether those files match the published inventory
+- what software context produced the bundle
+- why the result set has its exact membership
+
+They should not need to browse `results/` or infer rejected membership from missing files alone.
 
 ## What a manifest does not prove by itself
 
@@ -138,6 +184,13 @@ Weak shape:
 
 This leaves a reviewer with no compact way to validate the bundle.
 
+An equally weak variant is:
+
+- the bundle publishes only accepted outputs
+- reviewers must infer rejected membership from missing files
+
+That weakens trust because membership decisions are now implied instead of recorded.
+
 ## A stronger integrity story
 
 Stronger shape:
@@ -183,6 +236,7 @@ If the answer to only the first question is yes, the integrity story is still in
 | report is treated as the integrity surface | bundle validation becomes manual and human-only | keep machine-checkable inventory and digests separate |
 | provenance is omitted because manifest exists | software context becomes untraceable | pair manifest integrity with provenance evidence |
 | manifest includes internal or unstable files | public boundary becomes noisy and brittle | inventory only the intentional publish contract |
+| reviewed discovery evidence stays internal while result membership is public-facing | consumers can see the result set but not defend its membership | publish accepted and rejected discovery records when they explain bundle membership |
 | contract meaning lives only in author memory | downstream users cannot interpret the bundle confidently | document the role of each public artifact explicitly |
 
 ## What a reviewer should hear
