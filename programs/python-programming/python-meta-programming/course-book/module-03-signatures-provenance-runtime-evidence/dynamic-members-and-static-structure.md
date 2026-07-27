@@ -36,6 +36,9 @@ This page puts that choice into concrete tooling terms with:
 - `inspect.getmembers`
 - `inspect.getattr_static`
 
+This is a high-value lesson because many weak tools do not fail loudly here. They simply
+slide from "inspection" into "execution" without admitting it.
+
 ## The sentence to keep
 
 When enumerating members, ask:
@@ -44,6 +47,10 @@ When enumerating members, ask:
 > without executing runtime behavior?
 
 That question should drive the tool choice.
+
+Keep one review question beside it:
+
+> if I use the dynamic path here, what behavior am I allowing to run while pretending to inspect?
 
 ## `inspect.getmembers` is dynamic enumeration
 
@@ -65,6 +72,14 @@ Because it uses dynamic lookup, it can:
 
 So `getmembers` is a value-oriented tool, not a structural-inspection tool.
 
+That wording matters. It is not "bad." It is simply answering a different question:
+
+- "what values does normal runtime lookup currently produce?"
+
+That is a legitimate question, but it is not the same as:
+
+- "what members are attached here before behavior runs?"
+
 ## `inspect.getattr_static` is structural inspection
 
 `inspect.getattr_static(obj, name)` tries to retrieve the raw attribute object without
@@ -81,6 +96,14 @@ without automatically executing it.
 
 That is why it fits library and framework introspection much better when the goal is
 structure rather than behavior.
+
+Use this table when the choice feels too abstract:
+
+| Real question | Better surface | Why |
+| --- | --- | --- |
+| Which descriptor object is attached under this name? | `getattr_static` | attachment truth is the goal |
+| What value would normal lookup yield right now? | `getmembers` or `getattr` | resolved runtime value is the goal |
+| Which members can I inspect without triggering application behavior? | static helper route | safety is part of the inspection contract |
 
 ## One picture of the difference
 
@@ -127,6 +150,13 @@ The printed side effect is the important boundary:
 - `getmembers` resolved the value dynamically
 - `getattr_static` revealed the attached structure without evaluation
 
+The key self-study habit is to say which truth you got:
+
+- attached-object truth
+- resolved-value truth
+
+If an answer just says "I inspected the member," it is still too vague.
+
 ## Structural enumeration often needs a custom helper
 
 Because `getmembers` is dynamic, framework or tooling code often wants its own structural
@@ -146,6 +176,10 @@ def static_getmembers(obj, predicate=None):
 That helper still inherits the lower-risk caveat around `dir(obj)`, but it avoids the
 larger mistake of resolving every name dynamically by default.
 
+That is often good enough for framework discovery, manifests, or review tooling. You do
+not always need perfect structure recovery to make a much safer choice than broad dynamic
+enumeration.
+
 ## Use the tool that matches the question
 
 Good reasons to use `getmembers`:
@@ -164,6 +198,13 @@ Good reasons to use `getattr_static`:
 The key discipline is not to use the dynamic tool by habit when the question is clearly
 structural.
 
+Weak review move to reject:
+
+- "I used `getmembers` because it shows me everything"
+
+It does not show "everything." It shows the results of dynamic lookup, which may be more
+than you wanted and less than you safely understand.
+
 ## Static structure is often the stronger review surface
 
 When reviewing framework code, the structural question is often the one that matters most:
@@ -176,6 +217,12 @@ When reviewing framework code, the structural question is often the one that mat
 Dynamic values may be interesting later, but they are not the first truth the reviewer
 needs.
 
+That order matters for standalone learners:
+
+1. ask the structural question first
+2. collect attached-object evidence
+3. cross into value resolution only when the runtime question actually requires it
+
 ## Review rules for member inspection
 
 When reviewing member-inspection code, keep these questions close:
@@ -185,6 +232,17 @@ When reviewing member-inspection code, keep these questions close:
 - does the enumeration path risk executing properties or proxy behavior unintentionally?
 - is a custom structural helper justified instead of broad dynamic enumeration?
 - does the code document when it chooses to cross from structure into value resolution?
+
+## Self-study lab
+
+Before leaving this page, write one member-review note in this format:
+
+- the member name under review
+- the structural question
+- the dynamic question
+- the exact point where you chose one over the other
+
+If you cannot name both questions separately, the tool choice is probably still accidental.
 
 ## What to practice from this page
 
