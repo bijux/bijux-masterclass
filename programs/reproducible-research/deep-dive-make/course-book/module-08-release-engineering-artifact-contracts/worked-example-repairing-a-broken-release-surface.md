@@ -1,5 +1,11 @@
-# Worked Example: Repairing a Broken Release Surface
+# Worked Example: Accepting One Capstone Release Candidate
 
+This worked example uses the course capstone rather than a hypothetical `app` and
+`LICENSE`. You will produce two candidates, inspect the archive before extraction, compare
+the member contract, rehearse installation below a repository-owned root, inject two
+failures, and write an acceptance record bound to exact bytes.
+
+No command writes to a host install path or publishes remotely.
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +15,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Make"]
   section["Release Engineering Artifact Contracts"]
-  page["Worked Example: Repairing a Broken Release Surface"]
+  page["Worked Example: Accepting One Capstone Release Candidate"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -18,363 +24,403 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  build["produce candidate twice"] --> identity["compare exact bytes"]
+  identity --> members["compare declared and observed members"]
+  members --> safety["reject unsafe archive paths and types"]
+  safety --> extract["extract under consumer root"]
+  extract --> install["rehearse install twice"]
+  install --> reject["prove corrupt and unsafe candidates fail"]
+  reject --> accept["bind acceptance to digest"]
 ```
 <!-- page-maps:end -->
 
-The five core lessons in Module 08 make the most sense when they all appear in one release
-surface that still works often enough to mislead people.
+## What this example does and does not claim
 
-## Inspect a tiny bundle
+The capstone `dist` producer is intentionally small. It creates deterministic archive bytes
+with normalized ownership and timestamps. It does not implement signing, remote
+publication, system installation, or a package-manager transaction.
 
-Start with a file named `app`, a `LICENSE`, and this rule:
+The example treats its archive as an **internal transfer candidate** with this exact
+payload:
 
-```make
-.PHONY: dist
-
-dist: dist/app.tar.gz
-
-dist/app.tar.gz: app LICENSE
-	@rm -rf dist/stage
-	@mkdir -p dist/stage/bin
-	@cp app dist/stage/bin/app
-	@cp LICENSE dist/stage/LICENSE
-	@tar -czf $@ -C dist/stage .
+```text
+app
+build/bin/dyn1
+build/bin/dyn2
+build/include/dynamic.h
 ```
 
-Build and inspect it:
+That scope matters. A public end-user package would normally add a versioned top-level
+directory, license, consumer documentation, and a supported install route. Passing this
+acceptance packet does not turn the capstone archive into that broader product.
+
+The existing `dist` target archives the whole `build/bin` directory, including dependency
+files. This example repairs that package-selection defect by invoking the same deterministic
+producer with only the four declared payloads. The resulting evidence shows why explicit
+member policy is stronger than "archive whatever is nearby."
+
+## Prepare one repository-owned packet
+
+Run every command from the `bijux-masterclass` repository root. Use GNU Make 4.3 or newer;
+on macOS that command is normally `gmake`.
 
 ```sh
-make dist
-tar -tzf dist/app.tar.gz | sort
+CAPSTONE=programs/reproducible-research/deep-dive-make/capstone
+PACKET=artifacts/module08-release
+
+test ! -e "$PACKET" || {
+  printf '%s\n' "Refusing to replace existing evidence: $PACKET" >&2
+  exit 2
+}
+mkdir -p \
+  "$PACKET/candidate" \
+  "$PACKET/evidence" \
+  "$PACKET/consumer" \
+  "$PACKET/failures"
 ```
 
-Do not treat the archive as an opaque success token. Its file list is part of the
-contract, so a learner should be able to read that list before discussing checksums,
-attestations, or publication.
+The packet separates candidate bytes, observations, consumer state, and deliberate
+failures. It can be removed after the exercise without touching source files.
 
-Extract it into an empty directory and inspect it as a consumer:
+## Declare package policy independently
+
+Create the expected regular-file list before inspecting a candidate:
 
 ```sh
-rm -rf /tmp/make-course-release
-mkdir -p /tmp/make-course-release
-tar -xzf dist/app.tar.gz -C /tmp/make-course-release
-find /tmp/make-course-release -type f -print | sort
+printf '%s\n' \
+  app \
+  build/bin/dyn1 \
+  build/bin/dyn2 \
+  build/include/dynamic.h \
+  > "$PACKET/evidence/package-members.txt"
 ```
 
-Write a two-column review before changing the release rule:
+This manifest comes from package policy. Do not replace it with output generated from the
+archive and then compare that output with itself.
 
-| Consumer expects | Archive provides |
-| --- | --- |
-| executable path |  |
-| license path |  |
-| unexpected generated state |  |
-| stable top-level layout |  |
+## Produce the first candidate
 
-This catches packaging mistakes that producer-side success messages hide.
-
-This example starts with exactly that kind of system:
-
-- the project builds successfully
-- `make dist` usually creates an archive
-- `make install` seems fine on one machine
-- but release evidence and release identity are mixed together
-- and nobody is fully sure what the release targets actually promise
-
-That is a realistic place for a team to discover it needs release engineering discipline.
-
-## The incident
-
-Assume you inherit a repository with these complaints:
-
-1. `make dist` produces an archive, but the archive contents keep drifting
-2. the checksum changes even when the binary and docs appear unchanged
-3. `make install` works under one destination and behaves oddly when rerun
-4. CI calls `dist` expecting only packaging, but the target also runs extra checks and local
-   cleanup as side effects
-
-That is enough to begin.
-
-## The starting release sketch
-
-The build roughly looks like this:
-
-```make
-.PHONY: dist install
-
-dist:
-	@mkdir -p dist
-	@cp app dist/app
-	@cp LICENSE dist/LICENSE
-	@date > dist/build-info.txt
-	@tar -czf dist/app.tar.gz -C dist app LICENSE build-info.txt
-	@sha256sum dist/app.tar.gz > dist/app.tar.gz.sha256
-
-install:
-	@cp app /usr/local/bin/app
-	@cp LICENSE /usr/local/share/licenses/app/LICENSE
-```
-
-This is not a ridiculous Makefile. It is just not yet a trustworthy release surface.
-
-## Narrow the target meaning
-
-The first repair is not in the archive contents. It is in the target contract.
-
-If `dist` is supposed to mean "produce the release archive," then it should not
-unpredictably:
-
-- clean other outputs
-- mutate local install paths
-- run unrelated checks that belong in another target
-
-So you first write down a cleaner contract:
-
-- `dist`: produce the publishable archive and its declared verification files
-- `release-check`: run the validations required before publication
-
-Now the top-level interface is already easier to reason about.
-
-This is Core 1:
-
-- target names get one stable meaning
-- composition stays visible instead of hidden in one shell ritual
-
-## Model the package layout explicitly
-
-The old `dist` target archives files directly from `dist/`, which also contains sidecar
-files and any leftovers from previous runs.
-
-A healthier pattern is to stage the bundle tree:
-
-```make
-DIST_STAGE := dist/tmp
-
-dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
-	@rm -rf $(DIST_STAGE)
-	@mkdir -p $(DIST_STAGE)/bin $(DIST_STAGE)/share/doc
-	@cp app $(DIST_STAGE)/bin/app
-	@cp LICENSE $(DIST_STAGE)/LICENSE
-	@cp capstone/README.md $(DIST_STAGE)/share/doc/README.md
-	@cp dist/manifest.txt $(DIST_STAGE)/manifest.txt
-	@tar -czf $@ -C $(DIST_STAGE) .
-```
-
-Now the bundle shape is explicit and inspectable.
-
-This is Core 2:
-
-- package contents are modeled deliberately
-- the staging tree becomes the pre-publication boundary
-- stray files stop leaking into the archive just because they happen to be nearby
-
-## Separate identity from evidence
-
-The old target wrote:
-
-```make
-@date > dist/build-info.txt
-```
-
-and then packaged that file into the archive.
-
-That means the archive identity now changes every run, even if nothing semantically
-important changed.
-
-A healthier split is:
-
-- keep the archive contents stable
-- keep a bundle manifest and checksum with the artifact
-- move unstable host or timing data into sidecar evidence if it is truly needed
-
-For example:
-
-```make
-dist/manifest.txt: app LICENSE capstone/README.md | dist/
-	@printf '%s\n' 'bin/app' 'LICENSE' 'share/doc/README.md' > $@
-
-dist/app.tar.gz.sha256: dist/app.tar.gz
-	@sha256sum $< > $@
-
-dist/app.attest.txt: dist/app.tar.gz | dist/
-	@printf 'compiler=%s\nhost=%s\n' '$(CC)' "$$(uname -s)" > $@
-```
-
-Now:
-
-- the checksum verifies the archive identity
-- the manifest describes bundle contents
-- the attestation is adjacent evidence, not part of the archive itself
-
-This is Core 3.
-
-## Make repeated archive construction deterministic
-
-A stable file list is necessary but not sufficient. Archive entry order, ownership,
-permissions, file modification times, and gzip headers can all change bytes.
-
-When GNU tar and gzip are declared release tools, a normalized rule can look like:
-
-```make
-SOURCE_DATE_EPOCH ?= 0
-
-dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
-	@rm -rf $(DIST_STAGE)
-	@mkdir -p $(DIST_STAGE)/bin $(DIST_STAGE)/share/doc
-	@cp app $(DIST_STAGE)/bin/app
-	@cp LICENSE $(DIST_STAGE)/LICENSE
-	@cp capstone/README.md $(DIST_STAGE)/share/doc/README.md
-	@cp dist/manifest.txt $(DIST_STAGE)/manifest.txt
-	@tar --sort=name --mtime="@$(SOURCE_DATE_EPOCH)" \
-	  --owner=0 --group=0 --numeric-owner \
-	  -cf - -C $(DIST_STAGE) . | gzip -n > $@.candidate
-	@mv $@.candidate $@
-```
-
-These flags are not portable to every `tar`. That is why the release toolchain must be
-declared and checked, often in a controlled release environment. Build twice from clean
-staging trees and compare checksums; reproducibility is observed evidence, not an
-adjective attached to a rule.
-
-## Repair the install boundary
-
-The old install route wrote directly into `/usr/local` during ordinary testing. That makes
-review awkward and reruns risky.
-
-A healthier install contract introduces explicit destination rooting:
-
-```make
-PREFIX ?= /usr/local
-INSTALL_ROOT := $(DESTDIR)$(PREFIX)
-
-.PHONY: install
-
-install: app LICENSE
-	@mkdir -p $(INSTALL_ROOT)/bin
-	@mkdir -p $(INSTALL_ROOT)/share/licenses/app
-	@cp app $(INSTALL_ROOT)/bin/app
-	@cp LICENSE $(INSTALL_ROOT)/share/licenses/app/LICENSE
-```
-
-Now you can test:
+Build the payloads, then call the capstone's deterministic archive producer with explicit
+inputs:
 
 ```sh
-make install DESTDIR=/tmp/release-check
-find /tmp/release-check -type f | sort
+gmake -C "$CAPSTONE" clean all
+
+(
+  cd "$CAPSTONE"
+  python3 scripts/mkdist.py \
+    "$OLDPWD/$PACKET/candidate/capstone.tar.gz" \
+    app \
+    build/bin/dyn1 \
+    build/bin/dyn2 \
+    build/include/dynamic.h
+)
+
+cp \
+  "$PACKET/candidate/capstone.tar.gz" \
+  "$PACKET/evidence/capstone-first.tar.gz"
 ```
 
-This is Core 4:
+`mkdist.py` sorts members, fixes modification times, normalizes uid and gid, and sets the
+gzip header time. It also gives gzip the output pathname, whose basename is recorded in the
+header. Reproducibility must therefore use the same publication pathname on each run.
+Changing only the output filename would change the candidate bytes.
 
-- installation becomes inspectable
-- the destination tree is explicit
-- reruns can be evaluated against an idempotence expectation
+Compute the exact candidate identity:
 
-## Debug the release by truth boundary
-
-At this point, the original complaints can be reclassified cleanly:
-
-1. drifting archive contents
-   likely class: package truth
-2. checksum drift with unchanged core files
-   likely class: identity/evidence confusion
-3. odd rerun behavior for install
-   likely class: publish truth
-4. `dist` doing too much
-   likely class: release-target contract drift
-
-That reclassification is the real payoff of Core 5. It keeps the repair from turning into
-random reruns of `dist`.
-
-## The repaired release sketch
-
-After the cleanup, the release surface is closer to this:
-
-```make
-DIST_STAGE := dist/tmp
-PREFIX ?= /usr/local
-INSTALL_ROOT := $(DESTDIR)$(PREFIX)
-SOURCE_DATE_EPOCH ?= 0
-SHA256 ?= sha256sum
-
-.PHONY: dist release-check install
-
-release-check: test selftest dist
-
-dist: dist/app.tar.gz dist/app.tar.gz.sha256
-
-dist/manifest.txt: app LICENSE capstone/README.md | dist/
-	@printf '%s\n' 'bin/app' 'LICENSE' 'share/doc/README.md' > $@
-
-dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
-	@rm -rf $(DIST_STAGE)
-	@mkdir -p $(DIST_STAGE)/bin $(DIST_STAGE)/share/doc
-	@cp app $(DIST_STAGE)/bin/app
-	@cp LICENSE $(DIST_STAGE)/LICENSE
-	@cp capstone/README.md $(DIST_STAGE)/share/doc/README.md
-	@cp dist/manifest.txt $(DIST_STAGE)/manifest.txt
-	@tar --sort=name --mtime="@$(SOURCE_DATE_EPOCH)" \
-	  --owner=0 --group=0 --numeric-owner \
-	  -cf - -C $(DIST_STAGE) . | gzip -n > $@.candidate
-	@mv $@.candidate $@
-
-dist/app.tar.gz.sha256: dist/app.tar.gz
-	@$(SHA256) $< > $@
-
-dist/app.attest.txt: dist/app.tar.gz | dist/
-	@printf 'compiler=%s\nhost=%s\n' '$(CC)' "$$(uname -s)" > $@
-
-install: app LICENSE
-	@mkdir -p $(INSTALL_ROOT)/bin
-	@mkdir -p $(INSTALL_ROOT)/share/licenses/app
-	@cp app $(INSTALL_ROOT)/bin/app
-	@cp LICENSE $(INSTALL_ROOT)/share/licenses/app/LICENSE
+```sh
+shasum -a 256 "$PACKET/candidate/capstone.tar.gz" \
+  > "$PACKET/evidence/capstone.sha256"
+cat "$PACKET/evidence/capstone.sha256"
 ```
 
-This version is not fancy. It is much easier to explain and test.
+If your environment uses `sha256sum`, use it consistently for generation and checking.
+The algorithm and sidecar format are part of the local tool contract.
 
-## What each core contributed
+## Produce independently again
 
-```mermaid
-flowchart TD
-  drift["Broken release surface"] --> targets["Core 1: targets get stable meaning"]
-  targets --> layout["Core 2: package layout becomes explicit"]
-  layout --> evidence["Core 3: identity and evidence are separated"]
-  evidence --> install["Core 4: install gets a destination contract"]
-  install --> debug["Core 5: failures are classified by truth boundary"]
-  debug --> stable["Inspectable release contract"]
+Recreate the payload tree and produce another candidate under a different name:
+
+```sh
+gmake -C "$CAPSTONE" clean all
+
+(
+  cd "$CAPSTONE"
+  python3 scripts/mkdist.py \
+    "$OLDPWD/$PACKET/candidate/capstone.tar.gz" \
+    app \
+    build/bin/dyn1 \
+    build/bin/dyn2 \
+    build/include/dynamic.h
+)
+
+cp \
+  "$PACKET/candidate/capstone.tar.gz" \
+  "$PACKET/evidence/capstone-second.tar.gz"
+cmp \
+  "$PACKET/evidence/capstone-first.tar.gz" \
+  "$PACKET/evidence/capstone-second.tar.gz"
 ```
 
-This is why the module is organized as five cores and then one worked example. The example
-is where release engineering stops sounding abstract.
+No output from `cmp` and exit status zero establish identical bytes for these two observed
+builds. They do not prove every future tool version and platform will produce the same
+bytes.
 
-## What you should say at the end
+Keep `capstone.tar.gz` as the candidate under review. Later commands must inspect that
+file without rebuilding it.
 
-A strong summary sounds like this:
+## Inspect members before extraction
 
-> The release surface was drifting because `dist` meant too much, the bundle layout was
-> assembled implicitly, unstable diagnostics were packaged into artifact identity, and
-> install wrote directly into the destination without an explicit contract. We repaired the
-> target meanings, staged the bundle tree, split identity from evidence, and made the
-> install root explicit. After that, release failures became classifiable as build truth,
-> package truth, or publish truth instead of "release weirdness."
+Record the verbose archive view:
 
-That is much stronger than "we cleaned up the dist target."
+```sh
+tar -tvzf "$PACKET/candidate/capstone.tar.gz" \
+  > "$PACKET/evidence/archive-listing.txt"
+cat "$PACKET/evidence/archive-listing.txt"
+```
 
-## What to practice after this example
+Now derive the observed regular-file paths and compare them with policy:
 
-Take one real release surface and retell it in the same order:
+```sh
+tar -tzf "$PACKET/candidate/capstone.tar.gz" \
+  | sed '/\/$/d' \
+  | LC_ALL=C sort \
+  > "$PACKET/evidence/archive-members.txt"
 
-1. define the release target meanings
-2. write down the bundle tree
-3. separate identity from evidence
-4. define the install destination contract
-5. classify one current release defect by truth boundary
+cmp \
+  "$PACKET/evidence/package-members.txt" \
+  "$PACKET/evidence/archive-members.txt"
+```
 
-If you can do that cleanly, Module 08 has started to change how you think about publication.
+The terse listing is sufficient only because the producer received regular files and the
+next gate audits member types. A general package verifier must not infer types from trailing
+slashes alone.
 
-Give only the artifact, checksum, and consumer instructions to another person. If they
-need the source checkout or a private explanation to inspect and install it safely, the
-release contract is incomplete.
+## Audit extraction safety
+
+Use Python's archive reader to reject absolute paths, traversal components, links, and
+special file types before extraction:
+
+```sh
+python3 - "$PACKET/candidate/capstone.tar.gz" <<'PY'
+from pathlib import PurePosixPath
+import sys
+import tarfile
+
+archive = sys.argv[1]
+with tarfile.open(archive, "r:gz") as bundle:
+    for member in bundle.getmembers():
+        path = PurePosixPath(member.name)
+        if path.is_absolute() or ".." in path.parts:
+            raise SystemExit(f"unsafe path: {member.name}")
+        if member.issym() or member.islnk():
+            raise SystemExit(f"links are not allowed: {member.name}")
+        if not (member.isfile() or member.isdir()):
+            raise SystemExit(f"unsupported member type: {member.name}")
+print("PASS: archive member paths and types satisfy policy")
+PY
+```
+
+This gate inspects, but does not rewrite, the candidate. An unsafe name causes rejection.
+
+## Extract under a contained consumer root
+
+Only after the safety and member-contract gates pass. The new packet guarantees this
+destination does not contain an older extraction:
+
+```sh
+mkdir -p "$PACKET/consumer/extracted"
+tar -xzf "$PACKET/candidate/capstone.tar.gz" \
+  -C "$PACKET/consumer/extracted"
+
+find "$PACKET/consumer/extracted" -type f -print \
+  | sed "s#^$PACKET/consumer/extracted/##" \
+  | LC_ALL=C sort \
+  > "$PACKET/evidence/extracted-members.txt"
+
+cmp \
+  "$PACKET/evidence/package-members.txt" \
+  "$PACKET/evidence/extracted-members.txt"
+```
+
+The second comparison proves the extracted regular-file view still matches policy. It does
+not replace the pre-extraction safety audit.
+
+## Rehearse a bounded install twice
+
+The capstone does not claim a public `install` target. For this consumer rehearsal, define a
+narrow mapping for the accepted `app` payload:
+
+```text
+app -> /usr/local/bin/make-capstone
+```
+
+Apply it below a repository-owned `DESTDIR` equivalent:
+
+```sh
+INSTALL_ROOT="$PACKET/consumer/install-root"
+SOURCE_APP="$PACKET/consumer/extracted/app"
+INSTALLED_APP="$INSTALL_ROOT/usr/local/bin/make-capstone"
+
+install -d "$(dirname "$INSTALLED_APP")"
+install -m 0755 "$SOURCE_APP" "$INSTALLED_APP"
+
+find "$INSTALL_ROOT" -type f -print \
+  | sed "s#^$INSTALL_ROOT/##" \
+  | LC_ALL=C sort \
+  > "$PACKET/evidence/install-first-paths.txt"
+shasum -a 256 "$INSTALLED_APP" \
+  > "$PACKET/evidence/install-first.sha256"
+
+install -d "$(dirname "$INSTALLED_APP")"
+install -m 0755 "$SOURCE_APP" "$INSTALLED_APP"
+
+find "$INSTALL_ROOT" -type f -print \
+  | sed "s#^$INSTALL_ROOT/##" \
+  | LC_ALL=C sort \
+  > "$PACKET/evidence/install-rerun-paths.txt"
+shasum -a 256 "$INSTALLED_APP" \
+  > "$PACKET/evidence/install-rerun.sha256"
+
+cmp \
+  "$PACKET/evidence/install-first-paths.txt" \
+  "$PACKET/evidence/install-rerun-paths.txt"
+cmp \
+  "$PACKET/evidence/install-first.sha256" \
+  "$PACKET/evidence/install-rerun.sha256"
+```
+
+The rehearsal proves convergence for this one-file mapping. It does not claim rollback,
+upgrade, removal, or package-manager ownership semantics.
+
+## Prove identity corruption is rejected
+
+Create a corrupted copy, leaving the reviewed candidate untouched:
+
+```sh
+cp \
+  "$PACKET/candidate/capstone.tar.gz" \
+  "$PACKET/failures/corrupt-capstone.tar.gz"
+printf 'corruption' >> "$PACKET/failures/corrupt-capstone.tar.gz"
+```
+
+Compare its digest with the accepted candidate's recorded digest:
+
+```sh
+accepted_digest=$(
+  awk '{print $1}' "$PACKET/evidence/capstone.sha256"
+)
+corrupt_digest=$(
+  shasum -a 256 "$PACKET/failures/corrupt-capstone.tar.gz" \
+  | awk '{print $1}'
+)
+
+test "$accepted_digest" != "$corrupt_digest"
+```
+
+Success means the test observed different identities. The corrupt copy must not receive an
+acceptance record merely because its archive parser still tolerates trailing bytes.
+
+## Prove unsafe paths are rejected
+
+Create a deliberately unsafe archive in the failures area:
+
+```sh
+python3 - "$PACKET/failures/unsafe-capstone.tar.gz" <<'PY'
+from io import BytesIO
+import sys
+import tarfile
+
+with tarfile.open(sys.argv[1], "w:gz") as bundle:
+    payload = b"must not escape\n"
+    member = tarfile.TarInfo("../escape.txt")
+    member.size = len(payload)
+    bundle.addfile(member, BytesIO(payload))
+PY
+```
+
+Run the same safety logic and expect a nonzero status:
+
+```sh
+if python3 - "$PACKET/failures/unsafe-capstone.tar.gz" <<'PY'
+from pathlib import PurePosixPath
+import sys
+import tarfile
+
+with tarfile.open(sys.argv[1], "r:gz") as bundle:
+    for member in bundle.getmembers():
+        path = PurePosixPath(member.name)
+        if path.is_absolute() or ".." in path.parts:
+            raise SystemExit(f"unsafe path: {member.name}")
+        if member.issym() or member.islnk():
+            raise SystemExit(f"links are not allowed: {member.name}")
+        if not (member.isfile() or member.isdir()):
+            raise SystemExit(f"unsupported member type: {member.name}")
+PY
+then
+  printf '%s\n' "FAIL: unsafe archive was accepted" >&2
+  exit 1
+else
+  printf '%s\n' "PASS: unsafe archive was rejected"
+fi
+```
+
+Do not extract the unsafe archive. Member inspection is enough to reject it.
+
+## Bind acceptance to exact bytes
+
+After all successful gates, write a small local record:
+
+```sh
+candidate_digest=$(
+  awk '{print $1}' "$PACKET/evidence/capstone.sha256"
+)
+
+cat > "$PACKET/evidence/acceptance.txt" <<EOF
+candidate=capstone.tar.gz
+sha256=$candidate_digest
+member_contract=PASS
+repeat_build=PASS
+extraction_safety=PASS
+contained_extraction=PASS
+install_rerun=PASS
+corruption_rejection=PASS
+unsafe_path_rejection=PASS
+publication=NOT_ATTEMPTED
+EOF
+
+cat "$PACKET/evidence/acceptance.txt"
+```
+
+The record is local evidence, not a signature. Its value is that each claim names a gate
+and the record binds those claims to one digest.
+
+## Read the result as a reviewer
+
+The candidate is accepted for the narrow internal-transfer contract because:
+
+- two clean productions yielded identical bytes
+- the archive's regular-file members matched independent package policy
+- paths and member types passed inspection before extraction
+- extraction remained below the consumer root
+- the install rehearsal converged on the same paths and content
+- controlled corrupt and unsafe candidates were rejected
+- the acceptance record names the reviewed digest
+
+The candidate is **not** accepted as a public end-user release because that contract was
+never tested. It still lacks a versioned package root, license, consumer documentation,
+supported installation interface, signature policy, and remote publication controls.
+
+That distinction is release engineering: evidence supports a bounded claim, not a vague
+feeling that the archive "looks good."
+
+## End-of-example checkpoint
+
+Before continuing, make sure you can explain:
+
+- why this example bypasses the capstone's broad `build/bin` selection
+- why the expected member list is written before archive inspection
+- why deterministic producer code still needs two observed builds
+- why member inspection must happen before extraction
+- what the one-file install rehearsal proves and what it does not
+- why the acceptance record belongs to a digest rather than a mutable filename
