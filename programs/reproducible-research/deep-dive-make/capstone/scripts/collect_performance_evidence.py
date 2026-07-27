@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import platform
+import statistics
 import subprocess
 import sys
 import time
@@ -16,6 +17,13 @@ from performance_policy import PerformanceScenario, read_performance_policy
 
 
 SCHEMA = "deep-dive-make-performance-evidence-v1"
+TRUSTED_OUTPUTS = (
+    Path("all"),
+    Path("app"),
+    Path("build/bin/dyn1"),
+    Path("build/bin/dyn2"),
+    Path("build/include/dynamic.h"),
+)
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -77,6 +85,34 @@ def establish_state(make_command: str, scenario: PerformanceScenario, cwd: Path)
     )
 
 
+def trusted_output_inventory(cwd: Path) -> list[dict[str, object]]:
+    inventory: list[dict[str, object]] = []
+    for relative_path in TRUSTED_OUTPUTS:
+        path = cwd / relative_path
+        if not path.is_file():
+            raise RuntimeError(f"trusted output is missing: {relative_path.as_posix()}")
+        inventory.append(
+            {
+                "path": relative_path.as_posix(),
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "size": path.stat().st_size,
+            }
+        )
+    return inventory
+
+
+def summarize(samples: list[dict[str, object]]) -> dict[str, float]:
+    elapsed = [float(sample["elapsed_seconds"]) for sample in samples]
+    minimum = min(elapsed)
+    maximum = max(elapsed)
+    return {
+        "maximum_seconds": round(maximum, 9),
+        "median_seconds": round(statistics.median(elapsed), 9),
+        "minimum_seconds": round(minimum, 9),
+        "spread_seconds": round(maximum - minimum, 9),
+    }
+
+
 def collect_scenario(
     make_command: str,
     scenario: PerformanceScenario,
@@ -116,15 +152,54 @@ def collect_scenario(
                 f"with status {result.returncode}"
             )
 
+    checked_command(
+        [make_command, "--no-print-directory", "-q", "all"],
+        cwd=cwd,
+        purpose=f"{scenario.name} convergence proof",
+    )
     (logs_directory / f"{scenario.name}.txt").write_text(
         "\n".join(transcript), encoding="utf-8"
     )
     return {
+        "convergence": "PASS",
+        "inventory": trusted_output_inventory(cwd),
         "jobs": scenario.jobs,
         "route": scenario.route,
         "samples": samples,
         "state": scenario.state,
+        "summary": summarize(samples),
     }
+
+
+def write_summary(evidence: dict[str, object], output: Path) -> None:
+    scenarios = evidence["scenarios"]
+    assert isinstance(scenarios, dict)
+    lines = [
+        "scenario\tstate\tjobs\tsamples\tminimum_seconds\tmedian_seconds"
+        "\tmaximum_seconds\tspread_seconds\tconvergence"
+    ]
+    for name, raw_scenario in scenarios.items():
+        assert isinstance(raw_scenario, dict)
+        summary = raw_scenario["summary"]
+        samples = raw_scenario["samples"]
+        assert isinstance(summary, dict)
+        assert isinstance(samples, list)
+        lines.append(
+            "\t".join(
+                [
+                    name,
+                    str(raw_scenario["state"]),
+                    str(raw_scenario["jobs"]),
+                    str(len(samples)),
+                    str(summary["minimum_seconds"]),
+                    str(summary["median_seconds"]),
+                    str(summary["maximum_seconds"]),
+                    str(summary["spread_seconds"]),
+                    str(raw_scenario["convergence"]),
+                ]
+            )
+        )
+    output.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main() -> int:
@@ -184,6 +259,7 @@ def main() -> int:
         json.dumps(evidence, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    write_summary(evidence, output.parent / "summary.tsv")
     print(f"PASS: wrote performance evidence to {output}")
     return 0
 
