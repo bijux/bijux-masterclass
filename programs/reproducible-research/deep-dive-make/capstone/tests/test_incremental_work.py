@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 import subprocess
@@ -10,6 +11,7 @@ from tempfile import TemporaryDirectory
 
 CAPSTONE = Path(__file__).resolve().parents[1]
 SCRIPT = CAPSTONE / "scripts" / "capture_incremental_work.py"
+POLICY = CAPSTONE / "performance" / "incremental-policy.tsv"
 
 
 class IncrementalWorkTests(unittest.TestCase):
@@ -38,12 +40,14 @@ class IncrementalWorkTests(unittest.TestCase):
         before = source.stat().st_mtime_ns
         with TemporaryDirectory() as directory:
             output = Path(directory) / "evidence.json"
-            result = self.run_case(
-                CAPSTONE / "performance" / "incremental-policy.tsv", output
-            )
+            result = self.run_case(POLICY, output)
             report = json.loads(output.read_text())
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(report["result"], "PASS")
+        self.assertEqual(report["schema"], "deep-dive-make-incremental-work-v1")
+        self.assertEqual(
+            report["policy_sha256"], hashlib.sha256(POLICY.read_bytes()).hexdigest()
+        )
         self.assertEqual(source.stat().st_mtime_ns, before)
 
     def test_rejects_missing_requested_work(self) -> None:

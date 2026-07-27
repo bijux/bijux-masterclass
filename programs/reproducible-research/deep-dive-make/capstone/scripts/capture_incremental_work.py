@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -10,6 +11,8 @@ import sys
 from pathlib import Path, PurePosixPath
 
 from incremental_policy import read_incremental_policy
+
+SCHEMA = "deep-dive-make-incremental-work-v1"
 
 
 def snapshot(root: Path, paths: tuple[PurePosixPath, ...]) -> dict[str, int]:
@@ -55,6 +58,8 @@ def main() -> int:
     unexpected = sorted(path for path in rebuilt if path not in expected)
     missing = sorted(path for path in expected if path not in rebuilt)
     report = {
+        "schema": SCHEMA,
+        "policy_sha256": hashlib.sha256(arguments.policy.read_bytes()).hexdigest(),
         "input": case.input_path.as_posix(),
         "expected_rebuild": expected,
         "observed_rebuild": rebuilt,
@@ -66,7 +71,7 @@ def main() -> int:
         "trace": run.stdout + run.stderr,
     }
     arguments.output.parent.mkdir(parents=True, exist_ok=True)
-    arguments.output.write_text(json.dumps(report, indent=2) + "\n")
+    arguments.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
     if report["result"] != "PASS":
         print("FAIL: incremental requested-work contract", file=sys.stderr)
         return 1
