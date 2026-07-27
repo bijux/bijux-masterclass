@@ -68,6 +68,28 @@ class IncrementalWorkTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("build/bin/dyn1", report["cases"][0]["missing_rebuild"])
 
+    def test_preserves_each_case_when_later_requested_work_fails(self) -> None:
+        source = CAPSTONE / "include" / "util.h"
+        before = source.stat().st_mtime_ns
+        with TemporaryDirectory() as directory:
+            policy = Path(directory) / "policy.tsv"
+            policy.write_text(
+                "src/util.c\tbuild/util.o,app,all\tbuild/main.o,build/bin/dyn1\n"
+                "include/util.h\tbuild/main.o,build/bin/dyn1,app,all\tbuild/util.o\n",
+                encoding="utf-8",
+            )
+            output = Path(directory) / "evidence.json"
+            result = self.run_case(policy, output)
+            report = json.loads(output.read_text())
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(report["result"], "FAIL")
+        self.assertEqual(report["cases"][0]["result"], "PASS")
+        self.assertEqual(report["cases"][1]["result"], "FAIL")
+        self.assertIn("build/bin/dyn1", report["cases"][1]["missing_rebuild"])
+        self.assertIn("include/util.h", result.stderr)
+        self.assertEqual(source.stat().st_mtime_ns, before)
+
 
 if __name__ == "__main__":
     unittest.main()
