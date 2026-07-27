@@ -574,14 +574,15 @@ performance-evidence:
 >       '  3. Read summary.tsv for the distribution and convergence result.' \
 >       '  4. Read evidence.json and logs/ for raw samples, context, and trusted outputs.' \
 >       '  5. Read manifest.json to review the complete bundle.' > "$(PERFORMANCE_DIR)/route.txt"
+>     $(MAKE) --no-print-directory performance-incremental
 >     $(PYTHON) scripts/collect_performance_evidence.py \
 >       --policy "$(PERFORMANCE_POLICY)" \
 >       --output "$(abspath $(PERFORMANCE_EVIDENCE))" \
 >       --samples "$(PERFORMANCE_SAMPLES)" \
 >       --make "$(MAKE)" \
 >       --compiler "$(CC)" \
+>       --incremental-evidence "$(abspath $(INCREMENTAL_EVIDENCE))" \
 >       --runner-label "$(PERFORMANCE_RUNNER)"
->     $(MAKE) --no-print-directory performance-incremental
 >     $(PYTHON) scripts/write_bundle_manifest.py \
 >       --bundle-dir "$(PERFORMANCE_DIR)" \
 >       --output "$(PERFORMANCE_DIR)/manifest.json"

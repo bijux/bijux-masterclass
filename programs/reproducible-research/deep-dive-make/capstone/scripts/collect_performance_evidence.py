@@ -11,6 +11,7 @@ import sys
 import time
 from pathlib import Path
 
+from capture_incremental_work import SCHEMA as INCREMENTAL_SCHEMA
 from execution_context import capture_execution_context
 from performance_policy import PerformanceScenario, read_performance_policy
 
@@ -31,6 +32,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--samples", type=int, default=5)
     parser.add_argument("--make", dest="make_command", required=True)
     parser.add_argument("--compiler", default="cc")
+    parser.add_argument("--incremental-evidence", type=Path, required=True)
     parser.add_argument("--runner-label", default="local")
     parser.add_argument("--workspace", type=Path)
     return parser.parse_args()
@@ -121,6 +123,31 @@ def summarize(samples: list[dict[str, object]]) -> dict[str, float]:
         "minimum_seconds": round(minimum, 9),
         "spread_seconds": round(maximum - minimum, 9),
     }
+
+
+def read_incremental_evidence(path: Path) -> dict[str, object]:
+    try:
+        report = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise ValueError(f"cannot read incremental evidence: {error}") from error
+    if report.get("schema") != INCREMENTAL_SCHEMA:
+        raise ValueError("unsupported incremental evidence schema")
+    if report.get("result") != "PASS":
+        raise ValueError("incremental evidence did not pass")
+    semantic_keys = (
+        "expected_rebuild",
+        "input",
+        "missing_rebuild",
+        "observed_rebuild",
+        "policy_sha256",
+        "result",
+        "schema",
+        "unexpected_rebuild",
+    )
+    try:
+        return {key: report[key] for key in semantic_keys}
+    except KeyError as error:
+        raise ValueError(f"incremental evidence is missing {error.args[0]}") from error
 
 
 def collect_scenario(
@@ -226,6 +253,12 @@ def main() -> int:
     )
     policy = arguments.policy.resolve()
     output = arguments.output.resolve()
+    try:
+        incremental_work = read_incremental_evidence(
+            arguments.incremental_evidence.resolve()
+        )
+    except ValueError as error:
+        raise SystemExit(str(error)) from error
     logs_directory = output.parent / "logs"
     scenarios = read_performance_policy(policy)
     try:
@@ -242,6 +275,7 @@ def main() -> int:
 
     evidence: dict[str, object] = {
         "context": context,
+        "incremental_work": incremental_work,
         "policy_sha256": hashlib.sha256(policy.read_bytes()).hexdigest(),
         "result": "PASS",
         "sample_count": arguments.samples,

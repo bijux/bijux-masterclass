@@ -62,6 +62,23 @@ class PerformanceCaptureTests(unittest.TestCase):
         self.workspace = Path(self.owned_directory.name)
         self.policy = self.workspace / "scenarios.tsv"
         self.policy.write_text("clean-build\tclean\t2\tall\n", encoding="utf-8")
+        self.incremental = self.workspace / "incremental-work.json"
+        self.incremental.write_text(
+            json.dumps(
+                {
+                    "expected_rebuild": ["app"],
+                    "input": "src/util.c",
+                    "missing_rebuild": [],
+                    "observed_rebuild": ["app"],
+                    "policy_sha256": "incremental-policy-digest",
+                    "result": "PASS",
+                    "schema": "deep-dive-make-incremental-work-v1",
+                    "trace": "omitted from combined evidence",
+                    "unexpected_rebuild": [],
+                }
+            ),
+            encoding="utf-8",
+        )
         self.output = self.workspace / "evidence" / "evidence.json"
 
     def tearDown(self) -> None:
@@ -88,6 +105,8 @@ class PerformanceCaptureTests(unittest.TestCase):
                 str(samples),
                 "--make",
                 str(make),
+                "--incremental-evidence",
+                str(self.incremental),
                 "--workspace",
                 str(self.workspace),
             ],
@@ -108,6 +127,8 @@ class PerformanceCaptureTests(unittest.TestCase):
         self.assertEqual(evidence["context"]["repository"]["status"], "unavailable")
         self.assertEqual(evidence["context"]["runner"], "local")
         self.assertIn("version", evidence["context"]["compiler"])
+        self.assertEqual(evidence["incremental_work"]["result"], "PASS")
+        self.assertNotIn("trace", evidence["incremental_work"])
         self.assertEqual(len(scenario["samples"]), 3)
         self.assertEqual(scenario["convergence"], "PASS")
         self.assertEqual(len(scenario["inventory"]), 5)
@@ -129,6 +150,17 @@ class PerformanceCaptureTests(unittest.TestCase):
         self.assertEqual(evidence["result"], "FAIL")
         self.assertIn("status 7", evidence["failure"])
         self.assertFalse((self.output.parent / "summary.tsv").exists())
+
+    def test_rejects_failed_incremental_evidence_before_timing(self) -> None:
+        report = json.loads(self.incremental.read_text(encoding="utf-8"))
+        report["result"] = "FAIL"
+        self.incremental.write_text(json.dumps(report), encoding="utf-8")
+
+        result = self.collect(self.write_make(SUCCESSFUL_MAKE))
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("incremental evidence did not pass", result.stderr)
+        self.assertFalse(self.output.exists())
 
 
 if __name__ == "__main__":
