@@ -49,6 +49,9 @@ Keep a second question beside it:
 
 > if the same rule appeared on five fields tomorrow, would this still be the right owner?
 
+That second question is what keeps a property honest. A property is not "small, so it is
+fine." It is correct only when one attribute boundary is the real surface.
+
 ## A property is still a descriptor
 
 The course has already hinted at this earlier. Here it becomes concrete:
@@ -100,6 +103,19 @@ That is why a read-only property still beats `obj.__dict__["x"]` during normal l
 That sentence is worth testing directly when you practice. Readers often believe it only
 after seeing the failed shadowing attempt.
 
+## A proof route for property precedence
+
+Use this route when you need to prove the lookup story to yourself:
+
+1. define a read-only property on the class
+2. write a same-named key into `obj.__dict__`
+3. read `obj.attr`
+4. confirm the property still wins during normal lookup
+5. explain why direct dictionary inspection is not the same as normal attribute access
+
+That route matters because many learners assume "no setter" means "shadowable." The
+runtime does not agree.
+
 ## A standard validation example
 
 ```python
@@ -129,6 +145,14 @@ That is exactly the sort of lower-power ownership decision the module is trying 
 It also shows a review habit worth keeping: the public name and the storage name should
 tell the same story. If the public boundary is `radius`, the backing storage should not
 turn into a confusing second policy surface.
+
+Use this storage review card when a property starts looking busy:
+
+| Question | Why it matters |
+| --- | --- |
+| does the backing name clearly belong to the public attribute? | storage should not become a secret second API |
+| does the setter enforce one rule or several unrelated ones? | many policies in one setter usually signal a different owner |
+| does the getter compute, normalize, or expose mutable state? | the learner needs to know whether the boundary is over state or behavior |
 
 ## Read-only does not mean shadowable
 
@@ -183,6 +207,15 @@ syntax decorations on methods.
 It is also a reminder that inheritance can sharpen or blur the owner story. A subclassed
 property should make the new boundary clearer, not just more surprising.
 
+## A debugging route for inherited properties
+
+When a property changes in a subclass, review it in this order:
+
+1. identify the base-class boundary the original property owned
+2. say whether the subclass is widening, narrowing, or redirecting that boundary
+3. confirm the storage story still makes sense after override
+4. reject the override if the learner would need hidden base-class facts to explain it
+
 ## Properties are strongest when the boundary is truly one attribute
 
 A property is a great fit when:
@@ -198,6 +231,15 @@ A property is a weaker fit when:
 - the invariant is no longer about one attribute boundary
 
 Those are clues that later descriptor tools may be the more honest owner.
+
+Use this escalation table when you feel unsure:
+
+| Pressure | Stay with property? | Why |
+| --- | --- | --- |
+| one attribute needs local validation | yes | the rule is still one boundary wide |
+| one attribute exposes a computed read view | yes | attribute-shaped access remains honest |
+| several attributes copy the same setter policy | no | repetition becomes the real smell |
+| the same field rule appears across multiple classes | no | reuse now matters more than one local boundary |
 
 ## Common overclaims to reject
 
@@ -221,6 +263,12 @@ These are the most common ways a property stops being the clearest owner:
 | backing storage names become inconsistent or magical | the state boundary gets harder to inspect | keep storage explicit and stable |
 | property exists where a plain method would be clearer | attribute syntax hides that this is not really attribute-like behavior | switch to a method when no attribute boundary is being protected |
 
+One more failure mode is worth naming:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| calling the property "read-only" while returning a mutable structure without warning | the surface sounds safer than it is | name the mutability limit and decide whether a different API shape would be clearer |
+
 ## Review rules for properties
 
 When reviewing `@property` usage, keep these questions close:
@@ -231,6 +279,15 @@ When reviewing `@property` usage, keep these questions close:
 - is this still a one-attribute rule, or is the code starting to want reusable field machinery?
 - would a plain method be clearer if no true attribute-boundary semantics are needed?
 - can another reviewer point to the exact storage or computation owner without guessing?
+
+## Evidence packet for property reviews
+
+Leave this page with a small packet:
+
+- one lookup trace showing why the property wins over same-named instance state
+- one named attribute boundary and its backing-storage story
+- one sentence explaining why the rule is still local enough to stay a property
+- one rejected escalation note describing what repeated pressure would justify a descriptor
 
 ## Exit check for this page
 
