@@ -112,6 +112,136 @@ That file is poison because it can:
 People often think of this as just an error-handling detail. It is more serious than
 that. It is a broken output contract.
 
+## Preserve a trusted final during replacement
+
+“Complete or absent” describes first publication. Replacement has a third safe state:
+
+> the prior complete final remains visible until the replacement is complete
+
+Suppose `results/report.txt` already contains a reviewed report. A new attempt begins.
+Writing directly to that path destroys the reviewed content before the replacement is
+known to be usable. If the process fails, the path exists but now contains the failed
+attempt.
+
+The atomic pattern keeps ownership separate:
+
+```text
+results/report.txt      # previously trusted final
+results/report.txt.tmp  # current untrusted attempt
+```
+
+Only successful promotion changes the final path.
+
+```mermaid
+stateDiagram-v2
+  [*] --> TrustedFinal
+  TrustedFinal --> ScratchWriting: begin replacement
+  ScratchWriting --> TrustedFinal: writer fails
+  ScratchWriting --> ValidatedScratch: checks pass
+  ValidatedScratch --> NewTrustedFinal: same-filesystem rename
+```
+
+The failure transition returns to `TrustedFinal`; it does not publish the scratch file.
+
+## Engine cleanup and atomic publication solve different problems
+
+Snakemake commonly removes declared outputs after an ordinary command exits nonzero.
+That is useful recovery behavior. It is not the same guarantee as avoiding writes to the
+final path.
+
+Cleanup happens after failure is observed. Atomic publication controls what readers can
+observe during the write.
+
+| Mechanism | When it acts | Main guarantee |
+| --- | --- | --- |
+| Snakemake failed-output cleanup | after a job reports failure | known failed outputs do not remain as apparently successful products |
+| scratch plus rename | before the final path changes | readers see the old complete final or the new complete final |
+| content validation | before promotion | complete bytes also satisfy the domain contract |
+
+You need all three when the output matters. Cleanup cannot recover a prior trusted file
+that the writer already truncated. Rename cannot prove that complete-looking content is
+semantically valid.
+
+## Run the failure boundary
+
+The capstone includes two tiny writers and one audit:
+
+```console
+make file-contract-audit
+```
+
+The in-place writer starts with:
+
+```text
+unsafe-final.txt = trusted
+```
+
+It writes `PARTIAL` to that same path and exits with code `13`. The expected finding is:
+
+```text
+IN_PLACE_FAILURE_POISONS_FINAL  PASS  REJECT
+```
+
+`PASS` means the unsafe contrast was reproduced correctly. `REJECT` is the design
+decision.
+
+The atomic writer also starts with a trusted final. It writes `complete` to a sibling
+scratch path and exits with code `17` before rename. The audit checks:
+
+```text
+atomic-final.txt      = trusted
+atomic-final.txt.tmp  = complete
+```
+
+The expected finding is:
+
+```text
+ATOMIC_FAILURE_PRESERVES_FINAL  PASS  ACCEPT
+```
+
+Finally, a successful run promotes scratch:
+
+```text
+atomic-final.txt      = complete
+atomic-final.txt.tmp  = absent
+```
+
+That is `ATOMIC_SUCCESS_PROMOTES_COMPLETE_OUTPUT`.
+
+## Same-directory scratch is part of the claim
+
+The simple rename pattern assumes scratch and final are on the same filesystem. A rename
+across filesystems may fail or degrade into copy-like behavior, losing the atomic
+visibility guarantee.
+
+Prefer a sibling scratch file when the final is a single file:
+
+```bash
+tmp="${output}.tmp"
+render > "$tmp"
+validate "$tmp"
+mv -f "$tmp" "$output"
+```
+
+For a directory or multi-file bundle, publish into a versioned directory and promote a
+manifest or pointer only after every member is validated. Do not pretend that several
+independent renames form one atomic transaction.
+
+## Scratch is evidence, not a result
+
+A failed attempt can leave scratch behind. That does not violate the public contract as
+long as downstream rules and humans know that only the final path is publishable.
+
+Scratch still needs policy:
+
+- keep it temporarily when it helps diagnose failure;
+- remove it before a clean retry if the writer cannot resume safely;
+- never include it in a published manifest;
+- make its naming relationship to the final obvious.
+
+The important boundary is not “no temporary files exist.” It is “temporary state cannot
+masquerade as accepted output.”
+
 ## Logs are part of the contract too
 
 A beginner workflow can fail in two broad ways:
