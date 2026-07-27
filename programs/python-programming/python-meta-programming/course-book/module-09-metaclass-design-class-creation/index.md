@@ -34,6 +34,11 @@ This module now uses the same ten-file learning surface as the deep-dive series 
 overview, five cores, worked example, practice set, answers, and glossary each have one
 clear job.
 
+This module matters because metaclasses are the first place in the course where learners
+can mistake power for correctness. A missed-class learner needs a route for proving what
+must happen before the class exists, what lower-power owner was rejected, and what
+import-time blast radius the design accepts on purpose.
+
 ## What this module is for
 
 By the end of Module 09, you should be able to explain five things clearly:
@@ -43,6 +48,10 @@ By the end of Module 09, you should be able to explain five things clearly:
 - what belongs in metaclass `__new__` versus metaclass `__init__`
 - why `__prepare__` is the only hook that can enforce rules during class body execution
 - when metaclasses are justified and when a class decorator, descriptor, or explicit helper still owns the problem better
+
+Add a sixth:
+
+- how to reject a metaclass design that sounds elegant but still belongs to a lower-power owner
 
 ## Keep these pages open
 
@@ -84,6 +93,10 @@ Carry this question through every page:
 
 > What must happen before the class exists, and why would a descriptor, class decorator, or explicit registration function still be the wrong owner?
 
+Carry a second question beside it:
+
+> What import-time or hierarchy-wide cost did this design accept, and what weaker or stronger owner did it reject first?
+
 Strong Module 09 answers usually mention one or more of these:
 
 - class creation as a runtime pipeline
@@ -91,6 +104,20 @@ Strong Module 09 answers usually mention one or more of these:
 - structural edits in `__new__` versus final bookkeeping in `__init__`
 - declaration-time namespace control through `__prepare__`
 - a lower-power decision that rejects metaclass escalation
+
+## The review route through the module
+
+Use this route instead of reading the module as a power tour:
+
+| Page | The review question it must answer |
+| --- | --- |
+| `type(...)` page | why is direct class creation still smaller than a metaclass? |
+| resolution page | who becomes the effective class-creation owner, and when does it act? |
+| `__new__` and `__init__` page | what belongs to class shape versus post-creation bookkeeping? |
+| `__prepare__` page | what fact exists only while the class body is still executing? |
+| boundaries page | why is a metaclass the smallest honest owner here at all? |
+| worked example | what import-time cost and reset discipline make the design acceptable? |
+| exercises and answers | can another learner review the ownership decision without guessing? |
 
 ## Learning outcomes
 
@@ -102,6 +129,21 @@ By the end of this module, you should be able to:
 - distinguish real class-creation invariants from problems that still belong to lower-power tools
 - justify one metaclass design using ownership rather than appeal to power
 
+## Weak answers to reject early
+
+Reject answers that sound like these:
+
+- "a metaclass is the cleanest place because it is powerful"
+- "the class can just register itself automatically"
+- "we can combine the metaclasses if needed"
+- "this has to happen during class creation" without naming what would be lost later
+
+Replace them with answers that name:
+
+- the exact class-creation-time fact
+- the exact lower-power owner that was tested and rejected
+- the exact import-time or hierarchy-wide consequence accepted
+
 ## Exit standard
 
 Do not move on until all of these are true:
@@ -110,6 +152,16 @@ Do not move on until all of these are true:
 - you can say why a joint metaclass is a semantic decision, not a mechanical fix
 - you can distinguish `__prepare__`, `__new__`, and `__init__` by responsibility rather than by memorized order alone
 - you can reject at least one metaclass proposal in favor of a lower-power tool for a named reason
+
+## Evidence packet to build while you learn
+
+Keep these items in your notes as you move through the module:
+
+- one class-creation pipeline sketch in your own words
+- one example of a refused lower-power owner
+- one example of an import-time side effect the design accepts
+- one example of a metaclass conflict explained as ownership collision
+- one reset or reversibility rule for global metaclass state
 
 When those feel ordinary, Module 09 has done its job and Module 10 can become a mastery
 and review surface instead of another power escalation.
