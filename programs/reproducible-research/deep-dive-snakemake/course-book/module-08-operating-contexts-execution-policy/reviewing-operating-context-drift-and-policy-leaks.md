@@ -1,30 +1,5 @@
 # Reviewing Operating-Context Drift and Policy Leaks
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Operating Contexts Execution Policy"]
-  page["Reviewing Operating-Context Drift and Policy Leaks"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Operating-context drift is rarely dramatic at first.
 
 It usually arrives through small decisions that seem harmless:
@@ -35,6 +10,18 @@ It usually arrives through small decisions that seem harmless:
 - one more undocumented storage assumption
 
 This page is about catching those leaks before they rewrite workflow behavior by accident.
+
+## How to use this page
+
+Read this page as a review checklist, not as a general warning.
+
+When you finish, you should be able to answer:
+
+- what changed between contexts
+- whether the change stayed inside policy
+- whether the evidence still supports one stable workflow meaning
+
+That is the practical skill this page is trying to build.
 
 ## Operating-context review is different from ordinary workflow review
 
@@ -63,6 +50,20 @@ That is exactly the right posture.
 
 Drift stays harder to see when each context is inspected in isolation.
 
+## Start from invariants before differences
+
+The most common review mistake is to start by cataloging every environment difference.
+
+A stronger review starts like this:
+
+1. name the semantic invariants
+2. compare dry-runs or planned work across contexts
+3. classify each remaining difference as policy or leak
+4. escalate leaks into workflow, config, or contract review
+
+This order matters because without invariants, the review becomes a loose inventory
+instead of a boundary check.
+
 ## One useful review loop
 
 ```mermaid
@@ -87,6 +88,21 @@ Start with four practical questions:
 
 These questions make policy leaks visible early.
 
+## One concrete review scenario
+
+Imagine this drift set:
+
+- CI raises `jobs` and changes log visibility
+- SLURM increases `latency-wait`
+- one profile also swaps in a different semantic config and trusted output path
+
+The first two can still be operating policy.
+
+The third is a leak because context configuration is now redefining workflow meaning and
+contract surfaces.
+
+This is the kind of comparison that turns vague unease into a clear review finding.
+
 ## A weak review posture
 
 Weak shape:
@@ -108,6 +124,16 @@ Stronger shape:
 
 Now the repository can move across contexts without losing its semantic center.
 
+## The beginner mistake to catch early
+
+Beginners often think side-by-side comparison is unnecessary because each environment is
+"supposed to be different."
+
+That is exactly why comparison matters.
+
+Without explicit comparison, policy leaks get normalized as local realism instead of being
+reviewed as boundary failures.
+
 ## Common failure modes
 
 | Failure mode | Why it is risky | Better repair |
@@ -117,6 +143,17 @@ Now the repository can move across contexts without losing its semantic center.
 | retries rise as contexts get noisier | deterministic defects stay mislabeled as transient | classify failure modes before altering policy |
 | dry-runs are never compared across contexts | semantic drift stays invisible | compare planned work across local, CI, and scheduler profiles |
 | policy review happens without evidence | context changes become anecdotal | use audit bundles, dry-runs, and guide routes as review evidence |
+
+## What a reviewer should hear
+
+A strong explanation sounds like this:
+
+> We compared the contexts side by side, confirmed that dry-run meaning and trusted
+> outputs stayed stable, and treated the remaining differences as executor, observability,
+> storage, or retry policy only.
+
+That is stronger than "each environment needs its own behavior," because it names what was
+actually checked.
 
 ## The explanation a reviewer trusts
 
@@ -141,3 +178,6 @@ Before leaving this page, you should be able to:
 - name several signs of a policy leak
 - explain why side-by-side dry-run comparison is valuable
 - describe when a profile change should escalate into semantic review
+
+If you still think context review is mostly operations housekeeping, revisit the page.
+This module treats it as part of reproducibility review.

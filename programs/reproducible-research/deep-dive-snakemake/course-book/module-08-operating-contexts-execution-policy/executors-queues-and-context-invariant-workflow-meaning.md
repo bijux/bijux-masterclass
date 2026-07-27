@@ -1,30 +1,5 @@
 # Executors, Queues, and Context-Invariant Workflow Meaning
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Operating Contexts Execution Policy"]
-  page["Executors, Queues, and Context-Invariant Workflow Meaning"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Once profiles are understood as policy surfaces, the next question appears:
 
 > what should stay true when the workflow moves from local runs to CI or a scheduler?
@@ -33,6 +8,17 @@ That is the core operating-context question.
 
 If the answer is “it depends on the machine,” the workflow contract is already weaker than
 it should be.
+
+## How to use this page
+
+Read this page while comparing at least two real contexts, such as local and CI or CI and
+SLURM.
+
+Do not ask only, "What differs?" Ask the harder question:
+
+> which differences change execution behavior only, and which differences would change the workflow's meaning if we allowed them through?
+
+That classification is the skill this page is building.
 
 ## Different execution contexts are real
 
@@ -62,6 +48,19 @@ When the execution context changes, the workflow should still answer the same qu
 
 If those answers differ by context, the repository may have multiple hidden workflows
 instead of one stable workflow with multiple operating policies.
+
+## Start with semantic invariants before operational differences
+
+The easiest way to get this review backwards is to start by listing queue names, resource
+flags, or logging details.
+
+A stronger sequence is:
+
+1. name the invariant outputs, paths, and trusted surfaces
+2. compare the dry-run or planned work across contexts
+3. only then examine how executors, queues, and concurrency differ
+
+This order matters because semantics should be defended before policy details are debated.
 
 ## The capstone profiles illustrate this boundary well
 
@@ -99,6 +98,21 @@ flowchart LR
 This diagram matters because it shows variation in operations without variation in core
 meaning.
 
+## One concrete comparison exercise
+
+Imagine these three context differences:
+
+- local uses fewer jobs than CI
+- SLURM adds queueing and scheduler delay
+- CI swaps in a smaller semantic config so the publish bundle changes
+
+The first two can still preserve one workflow meaning.
+
+The third is dangerous because executor context is no longer only affecting how the work
+runs. It is starting to redefine what work counts as the workflow.
+
+That is why side-by-side comparison matters more than vague environment familiarity.
+
 ## A weak context boundary
 
 Weak shape:
@@ -119,6 +133,19 @@ Stronger shape:
 
 This makes migrations less mysterious and profile review more honest.
 
+## The beginner mistake to catch early
+
+Beginners often treat "the cluster behaves differently" as a complete explanation.
+
+It is not.
+
+The right follow-up question is:
+
+- differently in scheduling and observation?
+- or differently in trusted outputs, contracts, and semantic claims?
+
+Only the first kind of difference is safely normal.
+
 ## A practical test
 
 Ask these questions when a context changes:
@@ -138,6 +165,16 @@ If the answer to the third question is yes, the context boundary is leaking.
 | local runs quietly skip meaningful checks | context convenience alters trust | separate optional diagnostics from contract-defining behavior |
 | scheduler migration assumes filesystem behavior equals local behavior | latent path and visibility issues appear later | review storage and latency assumptions explicitly |
 | context comparison happens only after failures | drift remains invisible until late | compare profiles and dry-runs before migration or scale-up |
+
+## What a reviewer should hear
+
+A strong explanation sounds like this:
+
+> These contexts differ in executor behavior, queueing, and observability, but the dry-run
+> plan, contract paths, and trusted outputs remain semantically the same.
+
+That is stronger than "each environment behaves a little differently," because it states
+what stayed invariant.
 
 ## The explanation a reviewer trusts
 
@@ -162,3 +199,6 @@ Before leaving this page, you should be able to:
 - explain why executor changes should not create a hidden alternate workflow
 - describe one safe context difference and one dangerous one
 - explain why comparing dry-runs across profiles is useful architecture evidence
+
+If you still describe context review mainly as environment support, keep working. This
+page is really about semantic invariants under changing operating conditions.

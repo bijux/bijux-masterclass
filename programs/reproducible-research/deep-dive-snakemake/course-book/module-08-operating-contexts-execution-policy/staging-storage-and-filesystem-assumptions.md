@@ -1,30 +1,5 @@
 # Staging, Storage, and Filesystem Assumptions
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Operating Contexts Execution Policy"]
-  page["Staging, Storage, and Filesystem Assumptions"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Operating contexts are not only about executors and profiles.
 
 They are also about where data lives while the workflow runs and when that data becomes
@@ -32,6 +7,16 @@ visible to the rest of the system.
 
 This page is about making those assumptions explicit instead of treating them as invisible
 background behavior.
+
+## How to use this page
+
+Read this page while tracing one artifact from temporary work location to trusted output.
+
+Ask:
+
+> when does this artifact stop being merely present and start being trustworthy?
+
+That question matters more than whether the bytes exist somewhere on disk already.
 
 ## Storage policy can affect operations without changing workflow meaning
 
@@ -68,6 +53,20 @@ They are not the same as:
 
 Confusing those roles is one of the fastest ways to create operating-context drift.
 
+## Start by separating temporary presence from trusted materialization
+
+Beginners often see a completed file and assume the workflow can trust it already.
+
+That is too weak.
+
+A stronger sequence is:
+
+1. identify where temporary work occurs
+2. identify when promotion into a declared contract path happens
+3. identify when another rule or downstream consumer is allowed to trust the artifact
+
+This is how storage review becomes explicit instead of anecdotal.
+
 ## Visibility assumptions must stay explicit
 
 Latency and visibility matter when:
@@ -92,6 +91,22 @@ flowchart LR
 
 This matters because a file can exist before it becomes part of a trusted contract.
 
+## One concrete storage audit
+
+Imagine a SLURM rule writes first to node-local scratch and then promotes the result into
+`results/` or `publish/v1/`.
+
+The architectural question is not whether the scratch file exists.
+
+The real questions are:
+
+- when is promotion complete?
+- which declared path should other rules or reviewers inspect?
+- what visibility or latency assumption must be true before the artifact counts as
+  trustworthy?
+
+That is the educational distinction this page is trying to sharpen.
+
 ## A weak storage posture
 
 Weak shape:
@@ -114,6 +129,20 @@ Stronger shape:
 
 Now storage differences can be reviewed as policy instead of as mystery.
 
+## The beginner mistake to catch early
+
+Beginners often treat scratch as harmless because it is temporary.
+
+That misses the real risk.
+
+Temporary locations become dangerous when:
+
+- reviewers inspect them as if they were final truth
+- other rules start depending on them implicitly
+- publish or workflow contracts are assumed before promotion is complete
+
+The storage problem is rarely that scratch exists. It is that trust starts too early.
+
 ## A practical test
 
 Ask these questions when storage policy changes:
@@ -133,6 +162,17 @@ If the first answer is fuzzy, the storage boundary is already too weak.
 | cluster or CI contexts use alternate output locations casually | operating policy leaks into path contracts | keep final contract paths stable across contexts |
 | publish boundaries depend on temporary directories implicitly | downstream trust depends on runtime accident | separate promotion into trusted outputs from temporary work locations |
 | filesystem behavior is discussed only after failures | migrations stay risky | audit storage and visibility assumptions before scale-up |
+
+## What a reviewer should hear
+
+A strong explanation sounds like this:
+
+> Scratch and staged locations are temporary execution surfaces only. Trust begins only
+> after promotion into declared workflow or publish paths, and latency assumptions are
+> reviewed explicitly.
+
+That is stronger than "the files eventually show up," because it names when and where the
+contract becomes real.
 
 ## The explanation a reviewer trusts
 
@@ -157,3 +197,6 @@ Before leaving this page, you should be able to:
 - describe when an artifact becomes trustworthy enough for review or downstream use
 - explain why latency and visibility assumptions belong in policy review
 - name one storage change that is operationally safe and one that is not
+
+If you still describe storage mainly as infrastructure detail, pause and reframe. In this
+module, storage policy is one of the places where trust begins or leaks.

@@ -1,30 +1,5 @@
 # Profiles as Policy and Semantic Boundaries
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Operating Contexts Execution Policy"]
-  page["Profiles as Policy and Semantic Boundaries"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 The first operating-context question is the most important one:
 
 > what is allowed to change when the profile changes?
@@ -32,6 +7,18 @@ The first operating-context question is the most important one:
 If that answer is vague, profiles become one of the easiest places to hide semantic drift.
 
 This page is about keeping that boundary honest.
+
+## How to use this page
+
+Read this page with one real profile file open beside you.
+
+Your job is not only to list settings. Your job is to classify each one:
+
+- policy that changes how the workflow is run
+- semantics that changes what the workflow means
+
+If you cannot make that distinction line by line, the profile boundary is already too
+weak for safe review.
 
 ## Profiles should change operations, not workflow meaning
 
@@ -54,6 +41,22 @@ They should not silently change:
 - the scientific or analytical interpretation of the run
 
 That distinction is the foundation of this module.
+
+## Start by separating policy knobs from semantic knobs
+
+The most useful beginner habit in this module is to stop calling all config-like values
+"settings."
+
+That word is too vague.
+
+A stronger reading practice is:
+
+1. identify executor and observability settings
+2. identify retry and latency settings
+3. ask whether any setting changes trusted inputs, outputs, paths, sample membership, or
+   published meaning
+
+The first two groups usually belong in profiles. The third usually does not.
 
 ## The capstone profiles are small on purpose
 
@@ -95,6 +98,21 @@ flowchart LR
 The point of this diagram is that policy and meaning are connected, but they are not the
 same boundary.
 
+## One concrete classification exercise
+
+Imagine three profile changes:
+
+1. raise `jobs` from 4 to 32
+2. increase `latency-wait` for a slower shared filesystem
+3. switch the published output path or sample-selection config inside the profile
+
+The first two are often operating-policy changes.
+
+The third is usually a semantic leak because the profile is no longer only describing how
+the workflow runs. It is starting to redefine what the repository claims to produce.
+
+That kind of comparison is how you stop profile review from becoming hand-wavy.
+
 ## A weak profile posture
 
 Weak shape:
@@ -115,6 +133,21 @@ Stronger shape:
 
 Now profiles help the workflow move across contexts without pretending to redefine it.
 
+## The beginner mistake to catch early
+
+Beginners often think every environment-specific difference belongs in the environment's
+profile.
+
+That is false.
+
+Some differences should trigger a harder question instead:
+
+- why does this context need different semantic config?
+- why is this path stable in one context and different in another?
+- why is this output trusted only under one executor?
+
+When a profile starts answering those questions, it is probably carrying too much meaning.
+
 ## A practical test
 
 Ask these questions about a profile change:
@@ -134,6 +167,16 @@ If the answer to the second question is no, the profile boundary is leaking.
 | retries and waits are used to hide unstable rules | policy masks correctness issues | repair the rule or runtime instead of normalizing the symptom |
 | profile files accumulate unrelated decisions | policy review becomes muddy | keep profile settings focused on execution context |
 | maintainers cannot explain whether a setting is semantic | drift goes unchallenged | document the policy-versus-semantics boundary and review against it |
+
+## What a reviewer should hear
+
+A strong explanation sounds like this:
+
+> These profile settings change how jobs are launched, observed, or retried, but they do
+> not change trusted inputs, output meaning, or contract paths.
+
+That is much stronger than "each environment needs its own setup," because it names the
+boundary that must remain stable.
 
 ## The explanation a reviewer trusts
 
@@ -158,3 +201,6 @@ Before leaving this page, you should be able to:
 - explain what profiles should not silently change
 - describe why profile drift can become semantic drift
 - give one example of a policy change that is safe and one that is not
+
+If you still describe profiles mainly as convenience files, pause and reframe. In this
+module they are policy surfaces that must not become hidden workflow definitions.
