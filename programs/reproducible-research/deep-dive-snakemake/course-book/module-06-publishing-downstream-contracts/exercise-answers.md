@@ -1,35 +1,24 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning protects downstream trust.
 
-## Exercise 1: Separate internal state from the public bundle
+## How to use the answer page well
+
+Do not read a model answer before you have tried the exercise yourself.
+
+A stronger rhythm is:
+
+1. complete the exercise with your own tree, manifest, consumer, or review note
+2. write one plain-language explanation of the contract you are defending
+3. compare that explanation with the model answer
+4. revise where the model answer reveals missing artifact roles, weak evidence, or a
+   downstream assumption you did not notice
+
+The target is not identical wording. The target is durable downstream reasoning.
+
+## Exercise 1: Classify the current outputs
 
 What should remain internal:
 
@@ -45,8 +34,8 @@ yet a stable downstream-facing surface.
 
 What could belong in the published contract:
 
-- `publish/summary.tsv`
-- `publish/report.html`
+- `publish/v1/summary.tsv`
+- `publish/v1/report/index.html`
 
 What is still missing:
 
@@ -57,7 +46,57 @@ What is still missing:
 
 The main lesson is that copying a few files into `publish/` is not enough by itself.
 
-## Exercise 2: Decide whether a change is compatible
+## Exercise 2: Draw the first publish boundary
+
+A strong answer promotes only the smallest honest set of downstream-facing files into
+`publish/v1/` and keeps per-sample workflow-operational detail, logs, and other debugging
+surfaces internal. Each included file should have a one-sentence role explanation such as
+"machine-facing summary," "human-facing report," or "integrity inventory." The quality
+signal is not how many files move; it is whether a downstream user can rely on the public
+bundle without learning the internal workflow tree.
+
+## Exercise 3: Separate machine and human surfaces
+
+A strong answer names one structured artifact such as `summary.json` or `summary.tsv` as
+authoritative for programmatic use and one report artifact such as `report/index.html` as
+authoritative for human inspection. The relationship should be explicit: the report is
+derived from or aligned with the structured summary, not a separate truth. Scraping the
+report weakens the contract because presentation markup is less stable than a documented
+machine-facing schema.
+
+## Exercise 4: Write a manifest for the bundle
+
+A good manifest uses stable relative paths from the bundle root, deterministic ordering,
+and digests such as SHA-256. The ordering rule should be simple and reproducible, for
+example sorted normalized relative paths. Absolute paths do not belong because the bundle
+contract must travel across machines and directories without changing meaning. A useful
+verification transcript shows both a successful pass and the exact command used.
+
+## Exercise 5: Add provenance without confusing its role
+
+A strong provenance file records the producing repository revision, workflow identity,
+runtime or environment context, and relevant configuration details that affect meaning.
+It answers questions such as "what software context produced this bundle?" It does not by
+itself answer "which published files are part of the public promise?" or "what should a
+consumer read first?" Those remain contract questions.
+
+## Exercise 6: Write a consumer test
+
+A strong consumer accepts only the bundle path, validates the documented machine-facing
+artifact, and intentionally knows nothing about `results/`, internal rule names, or
+producer-only configuration. The success condition is that the consumer can do useful
+work with no hidden repository knowledge. That is the proof that the public contract is
+real and not just a copied folder.
+
+## Exercise 7: Corrupt the bundle and detect it
+
+The failed verification should identify the changed path and report a checksum mismatch or
+equivalent integrity failure. What this proves is file identity: the bytes are no longer
+the same as the inventoried bundle. What it does not prove is semantic correctness,
+scientific validity, or whether the bundle was the right contract to publish in the first
+place.
+
+## Exercise 8: Simulate a downstream compatibility check
 
 Likely compatible within `v1`:
 
@@ -73,99 +112,22 @@ Why:
 An additive field can preserve the old contract if existing consumers still work. Path
 changes and field removals often alter the public promise directly.
 
-## Exercise 3: Diagnose a weak integrity surface
+## Exercise 9: Design a deliberate version migration
 
-What the bundle cannot answer well:
+`v1` should remain intact for supported consumers while `v2` introduces the breaking
+change under a new public boundary. A good migration note maps old paths or fields to the
+new ones, states who should move and when, and keeps separate consumer tests for both
+supported versions. The internal workflow tree still does not belong in either API,
+because versioning is about the public promise, not about exposing producer internals.
 
-- whether the bundle is complete
-- whether files were altered or corrupted
-- what software context produced the outputs
+## Exercise 10: Review a full publish change like a downstream maintainer
 
-Why the report is not enough:
-
-- it is a human-readable interpretation surface, not an inventory or identity surface
-
-What to add first:
-
-- `manifest.json` with published paths
-- checksums for the published files
-- `provenance.json` for software-context evidence
-
-The report should remain useful, but it should not be the entire trust story.
-
-## Exercise 4: Clarify artifact roles
-
-A strong response would say:
-
-> Scraping HTML is a weak machine contract because presentation markup is not a stable API.
-> Machine consumers should read a structured artifact such as `summary.json` or
-> `summary.tsv`. The report should help humans inspect and interpret the run, not serve as
-> the only machine-facing surface.
-
-Why:
-
-- machine consumers need structured, stable data
-- reports are valuable for humans but brittle as programmatic interfaces
-
-## Exercise 5: Review publish drift
-
-Risks:
-
-- the report path change may break downstream users
-- the manifest is no longer aligned with the published bundle
-- downstream code reading from `results/` means the public boundary is not doing enough work
-
-What should be repaired before approval:
-
-- either restore the stable report path or treat the rename as a contract change
-- update the manifest so it inventories the real bundle
-- repair the publish contract so downstream consumers do not depend on `results/`
-
-Does this require versioning discussion, repair, or both:
-
-- both
-
-The manifest mismatch is a repair inside the current review. The path rename and internal
-file dependency both raise versioning and contract adequacy questions.
-
-## Exercise 6: Build a minimal versioned bundle
-
-A strong bundle exposes only stable machine and human surfaces plus integrity and
-provenance evidence. Publication rules copy or render from internal results and write
-atomically. Logs and intermediates remain internal because they support operation rather
-than the consumer promise. The role table makes path, format, semantics, stability, and
-intended audience explicit.
-
-## Exercise 7: Generate and verify a manifest
-
-The manifest orders normalized relative paths deterministically and records size and
-SHA-256 for each governed artifact. Verification proves that the listed bytes match the
-inventory; it does not prove scientific correctness or authenticate an untrusted
-manifest. Altering one byte must produce a specific mismatch and a nonzero exit.
-
-## Exercise 8: Write a downstream consumer test
-
-The consumer accepts `publish/v1/` as its only location input, validates the summary
-schema, and reads documented fields. An invalid type or absent required field fails with
-a useful message. It intentionally knows nothing about rule names, `results/`, profiles,
-or how the producer computed the summary. That separation proves the public boundary is
-real.
-
-## Exercise 9: Classify compatible changes
-
-An optional additive field is usually compatible when consumers tolerate unknown fields.
-A newly required field may break existing producers or fixtures. A type change and path
-rename are breaking for consumers that follow the documented contract. Test results, not
-hope, support the classification; a breaking path or semantic change requires a new
-version or a deliberate compatibility layer.
-
-## Exercise 10: Design a version migration
-
-`v1` remains immutable or receives only documented compatible repairs while `v2` carries
-the breaking contract. Migration documentation maps old paths and fields to new ones,
-states support dates, and provides examples. Separate consumer tests prove both supported
-versions. Neither version exposes internal working paths, so workflow internals can
-evolve independently of public compatibility.
+A strong review starts with findings ordered by downstream trust impact: hidden dependency
+on `results/`, renamed public path, mismatched manifest coverage, changed artifact role,
+or unclear consumer surface. Each correction should name the narrowest verification route
+that proves the repair, such as rerunning the bundle verifier, rerunning the consumer
+test, or diffing the published role table. One appropriate outcome is to say a change
+should be versioned, postponed, or removed rather than merged under the current contract.
 
 ## Self-check
 

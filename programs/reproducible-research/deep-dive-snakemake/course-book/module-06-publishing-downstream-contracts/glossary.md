@@ -1,32 +1,19 @@
 # Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This glossary keeps the language of Module 06 stable. The goal is practical clarity:
 publish review gets much easier when the same terms keep the same meaning.
+
+## When to stop and check the glossary
+
+Use this page any time a review discussion starts to blur these boundaries:
+
+- internal versus public
+- compatible versus contract-changing
+- machine-facing versus human-facing
+- integrity evidence versus semantic meaning
+
+If the discussion feels vague, it is usually because one of those terms has started doing
+too many jobs at once.
 
 ## Terms
 
@@ -57,3 +44,16 @@ If a publish review starts to feel vague, ask which term has become unclear:
 - is this artifact for machines, humans, integrity, or provenance?
 
 That question usually reveals the real problem quickly.
+
+## Terms you should be able to use by the end of the day
+
+By the end of Module 06, you should be comfortable using these in a full sentence:
+
+- public contract
+- publish boundary
+- compatible change
+- contract change
+- manifest
+- provenance
+- machine-readable artifact
+- downstream trust

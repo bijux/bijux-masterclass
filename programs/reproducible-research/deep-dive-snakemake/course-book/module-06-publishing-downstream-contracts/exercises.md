@@ -2,7 +2,20 @@
 
 Use these after reading the five core lessons and the worked example. The goal is to make
 your publish decisions visible through bundle design, verification evidence, and consumer
-tests, not through vague claims that the output “looks ready.”
+tests, not through vague claims that the output "looks ready."
+
+## How to work through this set
+
+Treat this as one full workshop day, not as ten disconnected prompts.
+
+For each exercise, keep three things side by side:
+
+- the bundle tree you are protecting
+- the evidence route you actually ran
+- one plain-language note about how a downstream consumer benefits from the decision
+
+If your answer cannot point to a specific public artifact and a specific downstream use,
+the exercise is not finished yet.
 
 Do them in order. The set is one day-long progression:
 
@@ -16,6 +29,16 @@ For every answer, keep three things:
 - the boundary you are protecting
 - the evidence route you actually used
 - one short sentence explaining why the chosen publish surface helps a downstream user
+
+## Recommended working layout
+
+Build one small review packet as you go:
+
+- an artifact-role table
+- a public-tree sketch for `publish/v1/`
+- a manifest and verification transcript
+- one consumer test transcript
+- one compatibility note for a simulated change
 
 ## Exercise 1: Classify the current outputs
 
@@ -34,6 +57,10 @@ What to hand in:
 - one file that should become part of the public contract
 - one missing artifact that keeps the current publish story weak
 
+Study note:
+If you struggle here, you are not really stuck on Exercise 1. You are discovering that
+the workflow does not yet separate internal operational detail from public promise.
+
 ## Exercise 2: Draw the first publish boundary
 
 Promote the smallest honest set of downstream-facing artifacts into `publish/v1/`.
@@ -44,6 +71,10 @@ What to hand in:
 - the rules that own publication
 - one sentence for each included file explaining its job
 - one sentence for each excluded file explaining why it stays internal
+
+Study note:
+The goal is not to publish many files. The goal is to publish the smallest honest
+contract.
 
 ## Exercise 3: Separate machine and human surfaces
 
@@ -57,6 +88,10 @@ What to hand in:
 - the data relationship between them
 - one reason scraping the report would weaken the contract
 
+Study note:
+If the same file is trying to satisfy both the machine and the human, stop and separate
+the roles more clearly.
+
 ## Exercise 4: Write a manifest for the bundle
 
 Create a manifest that inventories the public files with stable relative paths and SHA-256
@@ -69,6 +104,10 @@ What to hand in:
 - one successful verification transcript
 - one reason absolute paths do not belong in the contract
 
+Study note:
+If your manifest cannot travel with the bundle to another machine, it is not yet a good
+publish artifact.
+
 ## Exercise 5: Add provenance without confusing its role
 
 Generate a provenance artifact for the published bundle that records enough software
@@ -80,6 +119,9 @@ What to hand in:
 - the software details it records
 - one trust question provenance answers well
 - one trust question provenance does not answer without the contract itself
+
+Study note:
+Provenance becomes much easier once you stop asking it to replace the bundle contract.
 
 ## Exercise 6: Write a consumer test
 
@@ -94,6 +136,10 @@ What to hand in:
 - a successful run against the bundle
 - one producer detail the consumer intentionally does not know
 
+Study note:
+This is the first exercise where the public contract has to prove it is real from the
+outside.
+
 ## Exercise 7: Corrupt the bundle and detect it
 
 Alter one published file after the manifest is generated and run the verifier again.
@@ -104,6 +150,10 @@ What to hand in:
 - the failed verification output
 - an explanation of what checksum verification proves
 - an explanation of what checksum verification does not prove
+
+Study note:
+Keep the distinction between identity and meaning explicit here. That distinction is one
+of the module's central habits.
 
 ## Exercise 8: Simulate a downstream compatibility check
 
@@ -117,6 +167,10 @@ What to hand in:
 - your compatibility classification
 - whether the fix belongs in the current version or in a new public version
 
+Study note:
+Do not classify from the author's perspective. Classify from the surviving consumer's
+perspective.
+
 ## Exercise 9: Design a deliberate version migration
 
 Create a `publish/v2/` contract for one breaking change while preserving a clear route for
@@ -128,6 +182,9 @@ What to hand in:
 - the migration note
 - supported-consumer tests
 - the reason internal workflow layout still does not belong to either API
+
+Study note:
+The point of `v2` is not novelty. The point is honesty about a changed promise.
 
 ## Exercise 10: Review a full publish change like a downstream maintainer
 
@@ -141,6 +198,10 @@ What to hand in:
 - the narrow verification route for each correction
 - one change that should be versioned, postponed, or removed
 
+Study note:
+Treat this as a downstream-maintainer review, not as a celebration that the workflow has
+many outputs.
+
 ## Mastery standard for this exercise set
 
 Across all ten answers, Module 06 wants the same habits:
@@ -148,6 +209,16 @@ Across all ten answers, Module 06 wants the same habits:
 - you treat internal workflow state and public contracts as different promises
 - you keep machine and human surfaces distinct
 - you use manifests, checksums, and provenance for different jobs
-- you review publish drift from the consumer’s point of view
+- you review publish drift from the consumer's point of view
 
 If your answer says only "the files are in publish now," keep going.
+
+## Exit standard for the exercise day
+
+You are done only when you can defend all of these clearly:
+
+- why a downstream consumer reads the bundle instead of `results/`
+- which artifact is authoritative for machines
+- which artifact is authoritative for humans
+- which artifact proves inventory and identity
+- which change still belongs inside `v1` and which no longer does
