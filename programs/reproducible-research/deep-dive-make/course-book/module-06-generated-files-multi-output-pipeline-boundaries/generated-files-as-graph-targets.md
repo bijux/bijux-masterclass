@@ -140,6 +140,98 @@ A weak explanation sounds like this:
 
 The whole purpose of Make is to avoid the second kind of answer.
 
+## Locate which edge layer is missing
+
+“The binary stayed stale” does not identify one unique defect. Draw the complete path
+before editing:
+
+```mermaid
+flowchart LR
+  producer_input["generator script or schema"] --> generated["generated header"]
+  generated --> consumer["object or binary"]
+  authored["authored header"] --> consumer
+```
+
+There are two different questions:
+
+1. Did every semantic producer input point to the generated output?
+2. Did every consumer point to the published file it reads?
+
+If the first edge is missing, the generated file stays old and gives its consumers no
+reason to rebuild. The downstream graph can be perfectly declared and still receive stale
+content. If the second edge is missing, the generated or authored header can change
+correctly while the consumer remains old.
+
+This distinction changes where you repair the build:
+
+| Observation after one input change | Likely missing edge | Repair boundary |
+| --- | --- | --- |
+| generator changed; generated header and binary stayed old | producer input to generated output | generated-file rule |
+| header changed; binary stayed old | published header to consumer | compile or dependency-file rule |
+| header and binary both changed | neither of these edges is missing | continue investigating the reported symptom |
+
+Do not add every upstream file directly to the binary to make the test pass. That bypasses
+the publication boundary. Restore the missing edge at the layer where the content is
+actually consumed.
+
+## Prove the distinction with paired models
+
+The capstone includes an isolated audit that executes both defects beside their repairs:
+
+```sh
+cd programs/reproducible-research/deep-dive-make/capstone
+gmake incremental-fault-audit
+```
+
+Before opening its output, predict this table:
+
+| Specimen | Missing-edge changed outputs | Declared-edge changed outputs | Final text after repair |
+| --- | --- | --- | --- |
+| authored `config.h` consumed by `app` |  |  |  |
+| generator script producing `generated.h` consumed by `app` |  |  |  |
+
+Then read
+`artifacts/audit/reproducible-research/deep-dive-make/incremental-faults/summary.tsv`.
+The intended result is:
+
+| Specimen | Missing-edge changed outputs | Declared-edge changed outputs | Final text after repair |
+| --- | --- | --- | --- |
+| authored header | none | `app` | `after` |
+| generated producer | none | `generated.h`, `app` | `after` |
+
+The missing-edge cases also report `PASS`, but their finding is
+`FAULT_REPRODUCED`. The harness passed because it successfully exposed stale behavior:
+the semantic input changed, Make selected no governed work, and the binary still printed
+`before`. The declared cases report `REPAIR_VERIFIED` because the same input mutation
+selected the complete causal path and changed final behavior.
+
+Now open one trace from each model. The missing-edge trace says there is nothing to do.
+That is not proof of convergence because the semantic input was absent from the graph. The
+declared generated-producer trace should name:
+
+```text
+scripts/render_header.py -> generated.h -> app
+```
+
+This paired control is stronger than running one repaired example. It proves that the
+evidence route can discriminate a graph lie from a truthful graph under the same mutation.
+
+## Connect the laboratory to production dependency tracking
+
+The authored-header specimen declares `config.h` directly because it is intentionally
+small. Production C builds usually ask the compiler to discover header edges and write
+dependency files. The production proof is therefore not “the teaching makefile lists one
+header.” It is:
+
+- compilation emits dependency data
+- Make includes that data on later runs
+- a header change selects exactly the objects that consumed it
+- missing and collateral rebuilds are rejected
+
+The generated-producer edge usually remains explicit because Make cannot infer which
+script or schema defines a generated file. Keep these two mechanisms separate: compiler
+dependency discovery models consumption; the generated-file rule models production.
+
 ## Generated directories still need ownership
 
 Another subtle mistake is letting directory creation and file generation blur together.
@@ -260,6 +352,7 @@ Before leaving this lesson, make sure you can explain:
 
 - why generated files are ordinary graph targets rather than ambient side effects
 - why consumers should depend on published outputs
+- how to distinguish a missing producer edge from a missing consumer edge
 - how to tell a semantic input from incidental recipe noise
 - why setup paths such as directories should stay separate from generated content
 - how to describe one generated-file rebuild in plain language
