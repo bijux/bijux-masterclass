@@ -47,6 +47,13 @@ Keep one more sentence beside it:
 
 > every wrapper layer must earn its existence by adding one clear concern without hiding the inner owner.
 
+For self-study, turn that into a written trace:
+
+- name the inner field contract in one sentence
+- name the one added concern for each wrapper
+- trace one assignment from outermost layer to stored value
+- say which layer you would remove first if readability started to slip
+
 ## Why composition shows up here
 
 By Module 08, a field might want more than one concern:
@@ -154,6 +161,20 @@ Keep a layer ledger while you review:
 | wrapper 1 | one added concern | the methods required for that concern plus correct delegation | it adds one clear behavior without hiding the base field |
 | wrapper 2 and beyond | another single concern each | same rule | only justified if the stack still stays readable |
 
+## A write-trace worksheet
+
+Use this worksheet before you accept a wrapper stack as readable:
+
+| Step in one assignment | Which layer owns it? | What value shape leaves this step? |
+| --- | --- | --- |
+| incoming public value | outermost wrapper or caller contract | raw input |
+| validation or transformation | specific wrapper layer | transformed or rejected value |
+| storage delegation | inner field | value ready for storage |
+| final storage side effect | innermost storage owner | persisted or cached value |
+
+If two adjacent rows have the same answer for ownership, one layer may not be earning its
+existence.
+
 ## What bad composition looks like
 
 Composition becomes harder to trust when:
@@ -175,6 +196,15 @@ Reject these descriptions when they appear in review:
 | "the stack is flexible" | "the stack is flexible, but each layer increases review cost" |
 | "delegation handles the rest" | "delegation must be traced method by method, especially for `__set_name__`" |
 | "we can always add one more layer later" | "another layer is acceptable only if ownership stays legible" |
+
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "the wrapper is there for flexibility" | flexibility does not name a concrete concern |
+| "all layers are lightweight" | lightweight layers can still create heavy review cost |
+| "the inner field still works somehow" | somehow means the base contract is not yet clear |
+| "delegation is standard" | standard does not prove `__set_name__`, `__get__`, and `__set__` are forwarded coherently |
 
 ## Why `__set_name__` deserves special care
 
@@ -218,6 +248,12 @@ That is the escalation boundary to keep visible:
 
 composition is for additive field concerns, not for hiding architecture behind an
 infinite decorator stack.
+
+Use a simple wrapper budget:
+
+- one inner field plus one wrapper is usually easy to justify
+- one inner field plus two wrappers needs a written layer ledger
+- beyond that, you should prove why a wider abstraction would not be clearer
 
 ## Why this is better than subclass explosion
 
