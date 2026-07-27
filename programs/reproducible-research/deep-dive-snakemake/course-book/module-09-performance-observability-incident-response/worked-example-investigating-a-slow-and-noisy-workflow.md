@@ -1,351 +1,413 @@
 # Worked Example: Investigating a Slow and Noisy Workflow
 
-This worked example ties the whole module together around one realistic problem:
+This worked example investigates four executions of one small workflow. It does
+not ask you to trust a prepared conclusion. You will generate the runs, inspect
+their plans and evidence, and derive four different review decisions.
 
-> a workflow still runs, but maintainers now describe it as slow, noisy, and unpredictable under review pressure.
+The central incident question is:
 
-The question is not "how do we make it feel faster?" The question is how to move from
-symptom to explanation without losing workflow truth.
+> When output looks correct and runtime changes, how do we distinguish honest
+> tuning, lost guarantees, and repeated work?
 
-## If you are learning this without the live class
+## Prepare the evidence
 
-Use the example in five passes instead of trying to absorb the whole incident route in
-one read:
-
-1. rewrite the symptom in bounded language before opening any logs
-2. stop after the first planning evidence and ask which cost classes are still plausible
-3. inspect the narrowest runtime evidence only after the planning surface is clear
-4. repair the moved boundary before you discuss generic speed tuning
-5. finish by turning the route into a runbook another maintainer could follow
-
-If you cannot explain the suspected cost class after pass 2, do not keep tuning settings
-yet. Most Module 09 confusion starts when learners chase speed before they have named the
-kind of slowness they are dealing with.
-
-## How to use this worked example
-
-Treat this page like a guided lab.
-
-Read it in order and pause after each section long enough to answer two questions for
-yourself:
-
-1. what has been learned so far
-2. what should still be considered unknown
-
-That habit matters because the biggest failure mode in incident work is collapsing clues,
-hypotheses, and conclusions into one blurred story.
-
-## The lab route
-
-Work through the example in this order:
-
-1. write down the symptom precisely
-2. separate likely cost classes before touching configuration
-3. inspect the narrowest evidence surfaces in order
-4. repair the boundary that actually moved
-5. prove the repair with the same route and turn it into a runbook
-
-Keep one small incident packet beside you while you read:
-
-- a symptom note written in bounded language
-- one dry-run capture
-- one summary or rerun-scope capture
-- one benchmark and one log excerpt
-- one runbook draft written after the repair
-
-That packet is not overhead. It is the thing that turns "the run felt bad" into
-"another maintainer can review why the diagnosis and repair were honest."
-
-## The starting situation
-
-Assume a maintainer reports:
-
-> CI is much slower than last week, `make tour` feels noisy, and the publish summary was rebuilt for every sample even though only one helper changed.
-
-That report already contains three concerns:
-
-- slower execution
-- noisier evidence
-- surprising rebuild scope
-
-A weak response would jump straight to more threads, more retries, or job grouping. The
-stronger response begins by classifying what kind of problem this might be.
-
-Before you touch any settings, sketch the incident as three separate review surfaces:
-
-```mermaid
-flowchart LR
-  symptom["reported symptom"]
-  plan["planning and rebuild evidence"]
-  runtime["rule runtime and logs"]
-  response["repair and rerun proof"]
-
-  symptom --> plan --> runtime --> response
-```
-
-That order is the real lesson. If you skip from symptom directly to response, you lose
-the cost-class judgment the whole module is trying to teach.
-
-## What goes wrong when a learner trusts the starting situation
-
-Use this card before you repair anything:
-
-| If you notice... | The incident route is hiding... | Smallest review surface |
-| --- | --- | --- |
-| "slow" is the only diagnosis anyone can state | the dominant cost class is still unnamed | one bounded symptom note plus a cost-class guess |
-| tuning starts before planning evidence is checked | rebuild scope and false work may be the real issue | one dry-run and summary comparison |
-| the loudest log becomes the first artifact by default | evidence surfaces are being chosen by noise, not fit | one evidence-order note |
-| a repair is defended with a different route than the diagnosis | the proof logic is drifting under pressure | one before-and-after route using the same evidence family |
-
-If you can name the hidden defect first, the investigation stops feeling like random optimization.
-
-## Step 1: rewrite the symptom into reviewable language
-
-Replace the vague report with this:
-
-> `make tour` now takes roughly twice as long in CI. Summary-oriented publish artifacts
-> were rebuilt for all samples. Execution logs are much noisier than the last reviewed
-> run.
-
-That version is better because it names:
-
-- the affected surface
-- the comparison point
-- the scope of rebuild surprise
-
-You are no longer reacting to a feeling. You are reacting to a statement another
-maintainer can verify.
-
-Write that note down before you open logs. A bounded symptom statement is part of the
-evidence packet, not disposable warm-up.
-
-## Step 2: separate likely cost classes
-
-Now inspect:
+From the repository root:
 
 ```bash
-snakemake -n -p
-snakemake --summary
-snakemake --list-changes input code params
+gmake -C programs/reproducible-research/deep-dive-snakemake \
+  capstone-performance-diagnostics-audit
 ```
 
-Suppose you learn:
+Set the bundle path mentally or in your shell:
 
-- dry-run now plans far more per-sample jobs than expected
-- `--summary` shows many summary outputs as stale because more upstream sample surfaces changed
-- `--list-changes` points mostly to input and code movement rather than parameter drift
-
-That suggests the dominant cost class is not tool runtime. The stronger lead is that the
-workflow is planning more work than before, which may also amplify scheduler or launch
-overhead.
-
-This is the first teaching checkpoint in the example:
-
-- you have evidence of expanded work
-- you do not yet have evidence of slower tools
-
-That distinction should stop any immediate thread-tuning reflex.
-
-The early classification can be summarized in one quick table:
-
-| Surface | What you learned | What is still unknown |
-| --- | --- | --- |
-| `snakemake -n -p` | more work is planned | why the work widened |
-| `--summary` | rebuild scope is larger | whether the rebuilt tools are slower |
-| `--list-changes ...` | change is mostly input or code shaped | which boundary widened the work |
-
-This table matters because it keeps clues and conclusions separate.
-
-## The evidence-order audit before you celebrate
-
-Before you call the first triage healthy, make sure you can answer all four of these:
-
-| Question | Healthy answer |
-| --- | --- |
-| What was learned first? | whether the workflow planned too much, too little, or the wrong scope of work |
-| What is still unknown? | whether tool runtime, queue delay, or another cost surface is actually dominant |
-| What would count as a premature jump? | editing threads, retries, or grouping before planning evidence is clear |
-| What evidence proves the order is honest? | one symptom note, one planning surface, and only then one narrow runtime surface |
-
-If any row stays vague, keep repairing. The investigation may still be reacting to symptoms instead of cost classes.
-
-## Step 3: open the narrowest evidence surfaces
-
-Now inspect:
-
-- one benchmark file from the previously suspicious rule family
-- one log file from a sample that should not have changed
-- the discovery artifact listing which samples were found
-
-Suppose the benchmarks show per-sample runtime is almost unchanged, while the discovery
-artifact and logs reveal unexpected sample identities such as checksum sidecars.
-
-That is the second big clue. The workflow did not mostly get slower because the tools
-changed. It got slower because the repository widened discovery and created false work and
-false noise.
-
-At this moment, pause and ask the question that most teams skip:
-
-> did the workflow become expensive because computation got heavier, or because truth got wider?
-
-That question is the hinge between honest diagnosis and random optimization.
-
-## The cost-class audit before you move on
-
-Do not just say "it got slower." Test whether you can name which class widened:
-
-| Surface | Smallest honest claim |
-| --- | --- |
-| dry-run and rebuild scope | the workflow is planning more work or wider rebuilds than expected |
-| benchmarks | per-rule tool runtime changed or stayed stable |
-| logs | execution noise reflects real or false work at a narrower boundary |
-
-If you cannot fill this table, the slowdown story is still too blended to review safely.
-
-## Step 4: repair the boundary that actually moved
-
-The honest repair is not:
-
-- add more cores
-- raise retries
-- hide the logs
-- group the jobs until the problem looks smaller
-
-The honest repair is:
-
-- restore a reviewed discovery boundary
-- keep the discovered sample list easy to inspect
-- ensure logs and benchmarks correspond only to valid sample identities
-
-Only after that repair should you ask whether any remaining speed issue is still worth
-tuning.
-
-The repaired story should look more like this:
-
-```mermaid
-flowchart LR
-  discovery["reviewed discovery boundary"]
-  jobs["only real sample jobs planned"]
-  evidence["logs and benchmarks for real identities"]
-  review["quieter and more honest review surface"]
-
-  discovery --> jobs --> evidence --> review
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/
+└── performance-diagnostics/
 ```
 
-This is important educationally because the performance improvement comes from removing
-false work, not from suppressing evidence.
+The audit has already copied the specimen and executed each configuration in an
+isolated run directory. It removed any previous audit workspace first, so an old
+result cannot satisfy a new run.
 
-## Step 5: prove the repair honestly
-
-Use the same route again:
+Read the compact classification:
 
 ```bash
-snakemake -n -p
-snakemake --summary
-make -C capstone evidence-summary
-make -C capstone tour
+sed -n '1,10p' \
+  artifacts/audit/reproducible-research/deep-dive-snakemake/performance-diagnostics/summary.tsv
 ```
 
-What you want to see:
+Expected shape:
 
-- dry-run target count falls back to the expected range
-- summary evidence stops showing unnecessary rebuild scope
-- logs become quieter because they now reflect real sample identities
-- runtime improves because false work disappeared, not because truth was skipped
+```text
+finding                                  result  decision
+BASELINE_COST_OBSERVED                   PASS    REFERENCE
+HONEST_TUNING_ACCEPTED                   PASS    ACCEPT
+VALIDATION_BYPASS_REJECTED               PASS    REJECT
+REPEATED_SCAN_REGRESSION_IDENTIFIED      PASS    REGRESSION
+```
 
-This is the second teaching checkpoint:
+Do not interpret every `PASS` as approval. It means each specimen proved its
+intended lesson. The bypass passes by being correctly rejected.
 
-- the proof route should reuse the same evidence logic as the diagnosis route
-- the improvement should come from removing false work, not hiding true work
+## Understand the source before comparing runs
 
-That reuse is the whole integrity test. If the repair can only be defended with a
-different, looser route than the diagnosis used, the repair is not yet trustworthy.
+Open:
 
-## The repair audit before you turn it into policy
+```text
+programs/reproducible-research/deep-dive-snakemake/capstone/
+└── repro/performance-diagnostics/
+    ├── Snakefile
+    ├── config/
+    ├── data/records.tsv
+    └── scripts/process_records.py
+```
 
-Before you keep the change, make sure you can answer all four of these:
+The workflow has one application rule:
 
-| Question | Healthy answer |
-| --- | --- |
-| Which workflow boundary actually moved? | one specific discovery, planning, or execution boundary |
-| What false work disappeared? | jobs, rebuild scope, or noise that no longer belong |
-| What stayed semantically unchanged? | trusted outputs and workflow meaning |
-| What evidence proves the improvement honestly? | the same proof route used before the repair |
+```python
+rule normalize_records:
+    input:
+        "data/records.tsv",
+    output:
+        normalized="results/normalized.tsv",
+        metrics="evidence/metrics.json",
+    benchmark:
+        "benchmarks/normalize.tsv",
+```
 
-If any row stays vague, the change may be faster but it is not yet a trustworthy incident repair.
+This matters because all repeated setup and scan work happens inside one job.
+The specimen is not demonstrating scheduler overhead. More Snakemake cores would
+not remove application-level setup cycles.
 
-## Turn the route into a reusable incident note
+The processing script:
 
-Now record the route so another maintainer can follow it later:
+- reads six tabular records;
+- optionally validates identifier and value shape;
+- pays fixed setup cost per configured chunk;
+- performs the configured number of scans;
+- writes normalized records;
+- writes deterministic work metrics.
 
-1. capture the symptom in concrete terms
-2. separate planning, execution, and rebuild evidence
-3. inspect benchmarks and logs only after the planning surface is clear
-4. repair the semantic boundary first
-5. rerun the same proof route after the change
-
-That turns one incident from private intuition into reusable repository knowledge.
-
-The runbook draft should be short enough that another maintainer can execute it without
-guessing:
-
-1. restate the symptom with scope
-2. run planning and rebuild evidence first
-3. inspect one benchmark and one log only after the plan is clear
-4. name the moved workflow boundary before changing settings
-5. rerun the same proof route after the repair
-
-## The repaired incident story
-
-By the end of the investigation, the workflow can be described cleanly:
-
-1. the slowdown started with widened discovery, not slower tools
-2. extra jobs created extra scheduler overhead and extra log noise
-3. the repair restored a reviewed discovery boundary
-4. the proof route showed improvement without semantic shortcuts
-5. the incident note became a usable runbook entry
-
-That is what it means to investigate a slow and noisy workflow honestly.
+The rule benchmark records execution observations. The metrics explain the
+application work that produced those observations.
 
 ```mermaid
 flowchart LR
-  symptom["bounded symptom"] --> plan["planning and rebuild evidence"]
-  plan --> runtime["narrow runtime evidence"]
-  runtime --> boundary["repair moved boundary"]
-  boundary --> runbook["reusable incident route"]
+    Config[Configuration] --> Rule[One normalize_records job]
+    Data[Six input records] --> Rule
+    Rule --> Result[normalized.tsv]
+    Rule --> Metrics[metrics.json]
+    Rule --> Benchmark[normalize.tsv benchmark]
+    Result --> Audit[Contract comparison]
+    Metrics --> Audit
+    Benchmark --> Audit
 ```
 
-Read that diagram literally. If one step is missing, the workflow may still feel faster,
-but the incident route is not yet teachable.
+## Establish the reference contract
 
-## Review questions for the repaired design
+Open:
 
-When you inspect an incident route shaped like this, ask:
+```text
+performance-diagnostics/workspace/runs/baseline/
+├── config/baseline.yaml
+├── evidence/metrics.json
+├── benchmarks/normalize.tsv
+└── results/normalized.tsv
+```
 
-1. which cost class was named first and why
-2. which evidence surface ruled out a tool-level slowdown
-3. which workflow boundary actually moved
-4. how the repair preserved workflow meaning
-5. whether another maintainer could follow the route without extra oral guidance
+The baseline configuration is:
 
-If those answers are visible, the module's incident story has landed.
+```yaml
+mode: baseline
+chunk_size: 1
+scan_passes: 1
+validate: true
+```
 
-## If the module still feels abstract
+Its deterministic evidence is:
 
-Do this recovery loop in order:
+| Field | Value | Why it matters |
+| --- | ---: | --- |
+| input records | 6 | defines admitted scope |
+| output records | 6 | proves full fixture coverage |
+| validation checks | 6 | proves every record crossed the validation boundary |
+| setup cycles | 6 | exposes repeated fixed work |
+| scan passes | 1 | exposes complete-data passes |
+| records scanned | 6 | gives scan work in record visits |
+| cost units | 34 | provides a stable specimen-local comparison |
 
-1. rewrite the symptom so another maintainer could verify it
-2. name the first cost class you are actually testing
-3. choose the narrowest evidence surface that could falsify that guess
-4. state which workflow boundary moved before you change it
-5. rerun the same route after the repair and write the runbook note immediately
+Inspect `normalized.tsv`. It should contain one header and six records. Inspect
+the benchmark next, not first. The `s` column is positive, but its exact value
+depends on the host.
 
-Most Module 09 confusion is not about timing tools. It is about losing track of which
-evidence surface should be trusted first under pressure.
+Write the reference statement:
 
-If you want one final classroom-style check, explain the incident in four sentences:
+> The baseline plans one rule job, processes and emits six records, validates
+> all six, pays six setup cycles, scans once, and records an execution
+> benchmark.
 
-1. which cost class you tested first
-2. which evidence surface ruled out a tool-runtime slowdown
-3. which workflow boundary actually widened the work
-4. how the repair improved speed without weakening truth
+That is the contract against which the other claims will be judged.
+
+## Investigate the accepted tuning
+
+Open `config/honest-tuning.yaml` in the generated run:
+
+```yaml
+mode: honest-tuning
+chunk_size: 3
+scan_passes: 1
+validate: true
+```
+
+Only chunk size changes. Predict the metrics before reading them:
+
+- six records divided into chunks of three should require two setup cycles;
+- validation should remain six;
+- scan passes should remain one;
+- output should remain six records;
+- deterministic cost should be lower than 34.
+
+Now inspect `workspace/runs/honest-tuning/evidence/metrics.json`.
+
+The cost calculation is:
+
+```text
+2 setup cycles × 5 + 1 scan pass × 4 = 14 units
+```
+
+The report's `HONEST_TUNING_ACCEPTED` finding requires:
+
+- the same result hash;
+- the same input and output record counts;
+- the same validation count;
+- the same scan contract;
+- fewer setup cycles;
+- fewer deterministic cost units;
+- a recorded benchmark.
+
+Notice what it does **not** require: a fixed timing ratio. The benchmark remains
+in the observation section. The accepted claim is removal of four setup cycles
+with all named invariants preserved.
+
+## Investigate the suspiciously cheap run
+
+Now treat `validation-bypass` as an incident.
+
+The configuration is:
+
+```yaml
+mode: validation-bypass
+chunk_size: 3
+scan_passes: 1
+validate: false
+```
+
+The result hash matches the baseline. If result equality were the only gate, the
+change would look safe. The metrics report zero validation checks.
+
+Write two competing hypotheses:
+
+1. chunking removed repeated setup while all guarantees survived;
+2. the run became cheap partly because a required guarantee disappeared.
+
+The validation counter separates them. This is evidence-integrity drift, so the
+decision is `REJECT`.
+
+Why does the output still match? Every fixture record is valid. No output value
+can reveal whether a check happened when all records would pass it.
+
+The self-test includes a mutation that turns validation back on in this specimen.
+The audit then fails `VALIDATION_BYPASS_REJECTED` because the teaching case no
+longer demonstrates missing evidence. This confirms that the decision is tied
+to the validation behavior, not the case name.
+
+## Investigate the hidden regression
+
+The repeated-scan configuration is:
+
+```yaml
+mode: repeated-scan
+chunk_size: 3
+scan_passes: 3
+validate: true
+```
+
+Compare it to the accepted tuning, not only to the original baseline.
+
+| Evidence | Honest tuning | Repeated scan |
+| --- | ---: | ---: |
+| output records | 6 | 6 |
+| validation checks | 6 | 6 |
+| setup cycles | 2 | 2 |
+| scan passes | 1 | 3 |
+| records scanned | 6 | 18 |
+| cost units | 14 | 22 |
+
+Artifact and validation contracts survive. Known work increases. The correct
+decision is `REGRESSION`.
+
+This case can fool a weak before-and-after review. Because the regression retains
+the chunking gain, it may still compare favorably with the old 34-unit baseline.
+The relevant reference is the accepted 14-unit design.
+
+## Compare benchmark observations without overclaiming
+
+Read the four `benchmarks/normalize.tsv` files. On an idle host you will likely
+see:
+
+- baseline slower than honest tuning;
+- bypass similar to honest tuning;
+- repeated scan slower than honest tuning.
+
+That pattern supports the work counters. The audit does not fail if host noise
+changes their exact order because one local trial is not a performance
+distribution.
+
+For a stronger empirical claim, design repeated trials:
+
+| Control | What to record |
+| --- | --- |
+| toolchain | Python and Snakemake versions |
+| host | CPU, memory, operating system |
+| storage | path type, cache state, bytes read and written |
+| executor | local or remote, concurrency, queue conditions |
+| input | identity, count, size distribution |
+| trials | raw rows, warm-up policy, median and spread |
+| semantics | plan, artifact, validation, and provenance gates |
+
+Do not replace the semantic gate with more timing repetitions. They answer
+different questions.
+
+## Trace the audit decision logic
+
+```mermaid
+flowchart TD
+    Run[Isolated run] --> Output{Result contract preserved?}
+    Output -- No --> RejectOutput[Reject or redesign]
+    Output -- Yes --> Validation{Required validation preserved?}
+    Validation -- No --> RejectEvidence[Reject semantic drift]
+    Validation -- Yes --> Cost{Cost relative to accepted reference}
+    Cost -- Lower --> Accept[Accept attributable tuning]
+    Cost -- Equal --> NoGain[No demonstrated gain]
+    Cost -- Higher --> Regression[Classify regression]
+    Accept --> Timing[Report benchmark observation]
+    Regression --> Timing
+```
+
+Use the diagram to explain why:
+
+- equal bytes do not rescue the bypass;
+- preserved validation does not rescue repeated work;
+- lower cost does not matter until contracts pass.
+
+## Inspect command evidence when execution is disputed
+
+Each run has:
+
+```text
+workspace/commands/<case>/
+├── dry-run.stdout.txt
+├── dry-run.stderr.txt
+├── execution.stdout.txt
+└── execution.stderr.txt
+```
+
+The report records command arguments, return codes, outer elapsed time, and
+evidence filenames.
+
+Use these files when you need to answer:
+
+- Did the dry-run use the intended config?
+- Did execution complete?
+- Was a warning emitted on stderr?
+- Which exact command produced this run?
+
+Do not infer application work from command duration alone. Return to
+`metrics.json` for setup, scan, and validation behavior.
+
+## Prove the gate is capable of failure
+
+Run:
+
+```bash
+gmake -C programs/reproducible-research/deep-dive-snakemake \
+  capstone-performance-diagnostics-selftest
+```
+
+The seven tests verify:
+
+| Mutation | Expected detection |
+| --- | --- |
+| honest tuning disables validation | acceptance fails |
+| honest tuning uses chunk size one | claimed cost reduction fails |
+| bypass validates records | rejection specimen no longer proves bypass |
+| repeated scan uses one pass | regression specimen no longer proves repeated work |
+| bypass removes a result row | equal-artifact check fails |
+| stale file is inserted in workspace | next audit removes it |
+| governed specimen is unchanged | all four decisions pass |
+
+This is not merely test coverage for the Python script. It demonstrates that the
+review gate notices the distinctions taught in the lesson.
+
+## Build the incident record
+
+For the validation bypass, write:
+
+```text
+Symptom:
+Result hash matches accepted output, but runtime work is unexpectedly low.
+
+Scope:
+validation-bypass configuration, six-record local specimen.
+
+Trust impact:
+Output cannot support the claim that all admitted records were validated.
+
+Containment:
+Decision is REJECT; do not promote the candidate.
+
+Evidence:
+Same result hash, six input and output records, zero validation checks,
+two setup cycles, one scan pass, positive benchmark observation.
+
+Classification:
+Evidence-integrity drift at the application boundary.
+
+Repair:
+Restore validation while retaining chunk size three.
+
+Recovery proof:
+HONEST_TUNING_ACCEPTED passes and the adversarial self-test still rejects
+validation removal.
+```
+
+For the repeated scan, write a separate record. Do not combine it with the
+bypass simply because both involve runtime.
+
+## State what this example does not prove
+
+The audit does not prove:
+
+- scheduler scaling;
+- remote storage throughput;
+- queue-time behavior;
+- a production data-size distribution;
+- stable percentage speedup;
+- performance of the full capstone.
+
+It proves a method for classifying performance claims against deterministic work
+and semantic evidence. A broader claim needs evidence at the broader boundary.
+
+## Explain the investigation without the page
+
+You have completed the worked example when you can explain:
+
+1. why the baseline is a reference rather than an approved optimum;
+2. which exact work the honest tuning removes;
+3. why valid fixture output cannot prove validation occurred;
+4. why the repeated scan must be compared with the accepted tuning;
+5. why benchmark seconds are observations rather than the acceptance basis;
+6. how the self-test demonstrates that the gate can fail.
+
+If one explanation depends on remembering a conclusion rather than naming a
+file and field, return to the generated bundle.
