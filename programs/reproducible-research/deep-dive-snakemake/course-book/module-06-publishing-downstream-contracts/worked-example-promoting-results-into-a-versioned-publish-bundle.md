@@ -63,6 +63,7 @@ Keep one small review packet beside you while you read:
 - one manifest verification transcript
 - one consumer test transcript
 - one compatibility note for a simulated change
+- one note naming why reviewed discovery evidence belongs in the public bundle
 
 That packet is not overhead. It is the thing that turns "I published the files" into
 "another maintainer can review why this bundle is a real contract."
@@ -125,7 +126,8 @@ Start by choosing the smallest bundle that another program can understand:
 - `publish/v1/report/index.html`
 - `publish/v1/provenance.json`
 - `publish/v1/manifest.json`
-- `publish/v1/discovered_samples.json`
+- `publish/v1/accepted_samples.json`
+- `publish/v1/rejected_samples.json`
 
 That bundle is smaller than the full workflow state, but stronger as a contract because
 each file has a named role.
@@ -153,7 +155,7 @@ The repaired shape should look more like this:
 ```mermaid
 flowchart LR
   internal["internal workflow state\nresults/ and logs/"]
-  bundle["publish/v1/\nsummary.json\nsummary.tsv\nreport/index.html\nmanifest.json\nprovenance.json\ndiscovered_samples.json"]
+  bundle["publish/v1/\nsummary.json\nsummary.tsv\nreport/index.html\nmanifest.json\nprovenance.json\naccepted_samples.json\nrejected_samples.json"]
   consumer["downstream script or notebook"]
 
   internal --> bundle --> consumer
@@ -194,7 +196,8 @@ The bundle works only if each artifact has a stable role:
 - `report/index.html`: human-facing interpretation
 - `manifest.json`: inventory and checksum evidence
 - `provenance.json`: software-context evidence
-- `discovered_samples.json`: reviewed discovery record
+- `accepted_samples.json`: reviewed accepted membership record
+- `rejected_samples.json`: reviewed rejection record that explains non-membership
 
 Once those roles are clear, a downstream maintainer can ask better questions:
 
@@ -214,7 +217,8 @@ publish/v1/
 │   └── index.html
 ├── manifest.json
 ├── provenance.json
-└── discovered_samples.json
+├── accepted_samples.json
+└── rejected_samples.json
 ```
 
 If two files still sound interchangeable in your explanation, the bundle is not ready for
@@ -239,7 +243,8 @@ rule manifest:
         summary_tsv  = rules.summarize.output.tsv,
         report_html  = rules.report.output.html,
         provenance   = rules.provenance.output.json,
-        discovered   = rules.publish_discovered_samples.output.json,
+        accepted     = rules.publish_accepted_samples.output.json,
+        rejected     = rules.publish_rejected_samples.output.json,
     output:
         json = "publish/v1/manifest.json"
 ```
@@ -281,6 +286,7 @@ surface actually does:
 | --- | --- |
 | manifest plus checksums | these public files are the ones promised, and their bytes match the inventory |
 | provenance | this software and run context produced the bundle |
+| accepted and rejected discovery records | this is why the public result set has its exact membership |
 | consumer test | a downstream user can use the documented machine-facing artifact without internal knowledge |
 
 If you cannot fill this table, the bundle is still carrying an undifferentiated "metadata"
@@ -309,6 +315,10 @@ Pause here and imagine the consumer's starting point:
 
 That is why the consumer command is educationally important. It proves the contract from
 the outside rather than from producer memory.
+
+At the same time, a human reviewer should be able to explain result membership without
+opening the internal `results/` tree, because the accepted and rejected discovery records
+now travel with the published bundle.
 
 ## What the learner should notice now
 
