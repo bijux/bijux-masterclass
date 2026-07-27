@@ -47,6 +47,9 @@ Keep a second sentence beside it:
 
 > `__set_name__` helps a descriptor configure itself, but it does not make the object a descriptor by itself.
 
+That distinction matters because "name-aware" and "descriptor" are not interchangeable.
+If a review blurs them together, the real protocol boundary disappears immediately.
+
 ## The four hooks in one place
 
 The full descriptor surface for this module is:
@@ -63,6 +66,14 @@ Only the first three participate in making an object a descriptor.
 - the owning class
 - the public attribute name
 - the private storage name they should use internally
+
+Use this split when you inspect a descriptor for the first time:
+
+| If you are asking... | Look at... |
+| --- | --- |
+| is this object actually a descriptor? | `__get__`, `__set__`, `__delete__` |
+| how did it learn the field name? | `__set_name__` |
+| what behavior does it own? | the exact read/write/delete hook that implements it |
 
 ## Which hook answers which question
 
@@ -91,6 +102,17 @@ Readers need this separation early because weak explanations often collapse all 
 behavior into one vague phrase like "it intercepts the attribute." Strong explanations
 name the exact hook and the exact boundary.
 
+## A proof route for protocol status
+
+Use this route whenever a class attribute starts sounding mystical:
+
+1. confirm the object is stored on the class
+2. inspect whether any of `__get__`, `__set__`, or `__delete__` exist
+3. inspect whether `__set_name__` also exists
+4. name which read, write, delete, or naming boundary each hook actually owns
+
+If step 2 fails, the object may still be useful, but it is not a descriptor yet.
+
 ## A small but important clarification
 
 `__set_name__` alone does not make something a descriptor.
@@ -111,6 +133,9 @@ That distinction prevents a lot of fuzzy explanations later.
 It also prevents a common teaching error: treating `__set_name__` as if it were a hidden
 activation switch. It is a configuration hook, not proof of descriptor status.
 
+That is also why returning to the class body matters. The class installs the object; the
+protocol hooks decide whether attribute access becomes descriptor-driven afterward.
+
 ## The default pipeline still begins with `__getattribute__`
 
 Even though Module 07 is about descriptors, instance lookup still begins here:
@@ -129,6 +154,10 @@ attribute access
   -> default __getattribute__
   -> descriptor / instance dictionary / class lookup rules
 ```
+
+Keep one more sentence attached to that model:
+
+> descriptor behavior is part of normal attribute access, not a separate metaprogramming subsystem that only frameworks use.
 
 Later modules may discuss overrides of `__getattribute__`, but here the goal is to master
 the default behavior first.
@@ -206,6 +235,16 @@ Returning `self` on class access matters because it leaves a review surface behi
 descriptor that hides itself on class access is often harder to inspect, debug, or explain
 to a learner reading the class definition.
 
+## A class-access review card
+
+When a descriptor chooses what to return for `Class.field`, ask:
+
+| Question | Why it matters |
+| --- | --- |
+| can a learner still inspect the configured field owner? | class access should usually leave an evidence surface behind |
+| does class access return the descriptor, metadata, or something more surprising? | reviewability depends on that choice |
+| would debugging become harder if the descriptor hid itself? | invisible owners are expensive to trace later |
+
 ## Which hooks matter most in practice
 
 The hooks are not equally common:
@@ -219,6 +258,17 @@ That matters because beginners sometimes assume a descriptor is incomplete unles
 implements every hook. It is not.
 
 Descriptors should be judged by honest ownership, not by hook count.
+
+## Minimal hook sets worth recognizing
+
+Use these as quick classification anchors:
+
+| Shape | What it usually means |
+| --- | --- |
+| `__get__` only | readable non-data descriptor surface |
+| `__get__` plus `__set__` | data descriptor with write ownership |
+| `__get__` plus `__set_name__` | readable descriptor that also derives installation metadata |
+| `__set_name__` only | name-aware helper, not a descriptor by protocol status |
 
 ## What not to do with descriptor state
 
@@ -242,6 +292,15 @@ Module 07 will come back to storage patterns in detail, but the rule starts here
 
 store per-instance state on the instance or in safe external storage, not on the
 descriptor itself.
+
+## Evidence packet for protocol reviews
+
+Leave this page with a small packet:
+
+- one object that is a descriptor and one object that is only name-aware
+- one exact hook mapped to one exact boundary it owns
+- one class-access example showing what `obj is None` returns
+- one note naming where per-instance state should live and why the descriptor object itself is the wrong place
 
 ## Common overclaims to reject
 
