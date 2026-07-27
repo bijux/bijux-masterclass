@@ -49,6 +49,12 @@ That split prevents a lot of vague metaclass code.
 If you cannot name whether a rule changes class structure or only records the finished
 class, you are not ready to place it in either hook.
 
+For self-study, turn that into a placement test:
+
+- does the rule need the raw namespace before the class exists?
+- does the rule only need the finished class object and its final identity?
+- what concrete evidence would be lost or blurred if the rule moved to the other hook?
+
 ## Evidence route for metaclass hook reviews
 
 Work through each hook question in this order:
@@ -119,6 +125,14 @@ metaclass __init__
 
 That is the practical rule most review discussions need.
 
+Keep one hook ledger beside any metaclass you review:
+
+| Proposed behavior | Needs raw namespace? | Needs finished class object? | Honest hook |
+| --- | --- | --- | --- |
+| reject missing body-defined method | yes | no | `__new__` |
+| append class to registry | no | yes | `__init__` |
+| your own case | fill this in | fill this in | fill this in |
+
 ## A small example
 
 ```python
@@ -163,6 +177,15 @@ Reject these first:
 | "We can do everything in `__new__` and avoid thinking about the split." | It mixes class-shape work with bookkeeping and global side effects |
 | "The earlier hook is safer because it runs first." | Earlier is not safer; it is only more appropriate for structural ownership |
 | "Hook choice is mostly style." | Hook choice changes reviewability, failure timing, and reset behavior |
+
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "put validation in `__new__` because it is earlier" | earlier does not explain why namespace access is required |
+| "put registration in `__init__` because it is cleaner" | cleaner is too vague unless the finished-class identity is the needed input |
+| "either hook could probably work" | probably means the owner boundary is still unclear |
+| "it is all metaclass code anyway" | that collapses structure and bookkeeping into one blurry surface |
 
 ## Why structural edits belong earlier
 
@@ -226,6 +249,11 @@ That means both still need the same questions asked first:
 - could plain explicit code be clearer?
 
 Choosing between `__new__` and `__init__` is not the first question. It is the second.
+
+Before you leave this page, write one sentence beginning:
+
+- "this rule belongs in `__new__` because..."
+- "this rule belongs in `__init__` because..."
 
 ## Review rules for `__new__` versus `__init__`
 
