@@ -59,6 +59,9 @@ Keep one more question beside it:
 
 > if I choose the stronger tool now, what missing condition am I claiming already exists?
 
+That question is the page's safeguard against prestige reasoning. If you cannot name the
+missing condition, you are not justifying escalation; you are admiring it.
+
 ## Plain class code is still the first option
 
 One of the easiest mistakes in metaprogramming work is skipping over the obvious option:
@@ -74,6 +77,15 @@ Metaprogramming does not win by default just because it is available.
 This is the page where readers should start distrusting prestige reasoning. "Advanced"
 does not mean "better." If ordinary class code owns the invariant clearly, escalation is a
 loss, not an upgrade.
+
+Use this downward rewrite route when a design already feels overpowered:
+
+1. say what invariant the current design claims to own
+2. remove one layer of mechanism in your head
+3. ask whether the invariant is still clearly enforceable
+4. stop lowering only when clarity would truly break
+
+That route helps learners practice restraint actively rather than only hearing about it.
 
 ## Class decorators are good for opt-in post-construction changes
 
@@ -141,6 +153,18 @@ If one property solves the problem honestly, stay there.
 Descriptor reuse is valuable only when reuse is the real need. It is not a reward for
 wanting a more advanced-looking solution.
 
+## A scenario clinic for the lower-power ladder
+
+Use this table when you need a concrete placement test:
+
+| Scenario | Smallest honest owner | Why |
+| --- | --- | --- |
+| one field must stay lowercase on assignment | property | the invariant lives on one named boundary |
+| three classes share the same non-empty-string rule | descriptor | repeated field policy is now the real owner story |
+| a plugin class should register itself after definition | class decorator | the class already exists when the rule needs to run |
+| the class body must be scanned before methods are finalized | metaclass territory | the requirement exists during class creation |
+| a constructor must reject one cross-field mismatch | plain class code or `__post_init__` | no reusable or creation-time surface is needed yet |
+
 ## Metaclasses should still be treated as a later escalation
 
 A metaclass becomes worth considering only when the requirement truly depends on
@@ -176,6 +200,12 @@ Plain class code
 
 This is not a prestige ladder. It is a blast-radius ladder.
 
+Another way to read it is:
+
+- every upward move increases hidden timing or reuse power
+- every upward move also increases the review burden
+- if the review burden rises faster than the clarity gained, the move was a mistake
+
 ## How to read the ladder honestly
 
 Move upward only when the lower level leaves a concrete gap:
@@ -200,6 +230,18 @@ pretending to solve every mutability problem.
 It is also why surface immutability is such a good review case. The moment someone starts
 describing it as "full immutability," the owner story has already slipped.
 
+## A boundary review worksheet
+
+Fill these blanks when a design pressure feels ambiguous:
+
+- the invariant is:
+- the smallest owner that can enforce it is:
+- the stronger tool I am rejecting first is:
+- the missing condition that stronger tool would require is:
+- the first symptom that would force me to escalate later is:
+
+If you cannot fill all five lines, keep the design lower-power until you can.
+
 ## Common overclaims to reject
 
 Reject these descriptions when they appear in review:
@@ -222,6 +264,12 @@ These are the design mistakes this page is trying to prevent:
 | leaning on dataclass flags to imply broader policy | generation and invariants blur together | state the missing owner explicitly |
 | using a class decorator for policy that needs inspection or lifecycle surfaces | compact syntax hides broader ownership | move the policy into a clearer explicit component |
 
+One more failure mode deserves attention:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| treating "reusable" as sufficient reason to escalate | the mechanism outgrows the actual invariant | show the repetition or timing pressure concretely before moving up |
+
 ## Review rules for class customization boundaries
 
 When reviewing a class-level design, keep these questions close:
@@ -232,6 +280,15 @@ When reviewing a class-level design, keep these questions close:
 - are dataclass features being used for generation, or are they carrying broader policy than they should?
 - has the design crossed the threshold where a metaclass is being proposed for prestige instead of necessity?
 - can another reviewer say which stronger mechanism was rejected and why?
+
+## Evidence packet for boundary decisions
+
+Leave this page with a small packet:
+
+- one invariant placed on the ladder with its chosen owner
+- one rejected stronger tool and the missing condition it would need
+- one downward rewrite note showing how you tested whether a lower-power design was still enough
+- one escalation symptom you would watch for later in real code
 
 ## Exit check for this page
 
