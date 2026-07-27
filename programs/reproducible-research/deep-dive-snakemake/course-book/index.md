@@ -1,41 +1,22 @@
 # Deep Dive Snakemake
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Course home"]
-  page["Deep Dive Snakemake"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as the shape of the whole book. Read the second diagram as the
-intended route so the capstone and support shelves do not become accidental first
-lessons.
-
 Deep Dive Snakemake teaches workflow design as a discipline of explicit file contracts,
 deterministic planning, safe dynamic behavior, and durable operational boundaries. The
 goal is not to collect workflow tricks. The goal is to build workflows another engineer
 can inspect, trust, and extend without folklore.
 
-No previous Snakemake experience is required. Orientation builds the first workflow;
-ten teaching modules then provide ten exercises each, for one hundred exercises from
-basic target reasoning through migration and governance.
+No previous Snakemake experience is required. Orientation builds the first workflow; ten
+teaching modules then provide ten exercises each, for one hundred exercises from basic
+target reasoning through migration and governance.
+
+## What this course must help you do
+
+By the time the course works well for you, you should be able to:
+
+- start from zero and build truthful file-contract reasoning
+- repair an existing workflow without guessing where the boundary broke
+- review publish, policy, architecture, and incident questions with proportionate proof
+- inherit a long-lived workflow and change it without losing trust
 
 ## Use this course if
 
@@ -71,7 +52,7 @@ basic target reasoning through migration and governance.
 | smallest honest proof route | [Proof Ladder](guides/proof-ladder.md) |
 | capstone entry by module and question | [Capstone Map](capstone/capstone-map.md) |
 
-## Module Table of Contents
+## Module table of contents
 
 | Module | Title | Why it matters |
 | --- | --- | --- |
@@ -84,7 +65,7 @@ basic target reasoning through migration and governance.
 | [Module 06](module-06-publishing-downstream-contracts/index.md) | Publishing and Downstream Contracts | teaches public bundle design, compatibility discipline, integrity evidence, and publish review |
 | [Module 07](module-07-workflow-architecture-file-apis/index.md) | Workflow Architecture and File APIs | teaches repository layers, file-api boundaries, helper placement, and architecture review |
 | [Module 08](module-08-operating-contexts-execution-policy/index.md) | Operating Contexts and Execution Policy | teaches profile boundaries, failure policy, storage assumptions, and context-drift review |
-| [Module 09](module-09-performance-observability-incident-response/index.md) | Performance, Observability, and Incident Response | reviews logs, benchmarks, and incidents with explicit evidence |
+| [Module 09](module-09-performance-observability-incident-response/index.md) | Performance, Observability, and Incident Response | teaches evidence-first logs, benchmarks, and incident routes |
 | [Module 10](module-10-governance-migration-tool-boundaries/index.md) | Governance, Migration, and Tool Boundaries | finishes with stewardship and tool-boundary judgment |
 
 ## How the capstone fits
@@ -103,7 +84,7 @@ Use it in this order:
 
 Each module is a full learning day:
 
-- Exercises 1-5 establish the module's core model.
+- Exercises 1-5 establish the module’s core model.
 - Exercises 6-10 require implementation, failure injection, comparison, or review.
 - The answer page is for comparison after an attempt, not for following as instructions.
 - The module checkpoint decides whether the next day will build on understanding or recognition.

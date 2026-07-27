@@ -1,39 +1,29 @@
 # Reference
 
+This shelf is for durable Snakemake vocabulary, boundary questions, review prompts, and
+completion standards.
 
-<!-- page-maps:start -->
-## Page Maps
+Use it when the workflow concept is already recognizable and you need a stable review
+surface for contracts, dynamic discovery, operating policy, publish trust, or stewardship
+decisions.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Reference"]
-  page["Reference"]
-  capstone["Capstone evidence"]
+## What this shelf is for
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+Use the reference shelf to:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+- stabilize vocabulary after the module lesson is already clear
+- turn a fuzzy workflow concern into a sharper review question
+- decide which proof route or practice move comes next
+- check whether a claimed understanding is recognition or real command of the idea
 
-This shelf is for durable Snakemake vocabulary, boundary questions, and completion
-standards. Use it when the workflow concept is already recognizable and you need a stable
-review surface for contracts, dynamic discovery, operating policy, or publish trust.
+If you are still learning the concept for the first time, go back to the module. The
+reference shelf should sharpen understanding, not replace it.
 
 ## Choose the right reference route
 
 | If your question is... | Best page |
 | --- | --- |
-| What does this term mean locally? | [Glossary](glossary.md) |
+| What does this term mean in this course? | [Glossary](glossary.md) |
 | Where does this idea sit in the course sequence? | [Module Dependency Map](module-dependency-map.md) |
 | What should I practice or prove next? | [Practice Map](practice-map.md) |
 | How should I review this workflow claim? | [Review Checklist](review-checklist.md) |
@@ -43,14 +33,18 @@ review surface for contracts, dynamic discovery, operating policy, or publish tr
 | What counts as genuinely complete understanding? | [Completion Rubric](completion-rubric.md) |
 | Does this question belong in the course center or at its edge? | [Topic Boundaries](topic-boundaries.md) |
 
-## What this shelf is for
+## How to use the shelf well
 
-- keeping workflow contracts, discovery evidence, policy, and publish language stable
-- turning workflow review into explicit keep, change, or reject calls
-- connecting module order to local proof loops and capstone follow-up
-- deciding whether a workflow claim is backed by the right contract or evidence surface
+Use this order:
 
-## Guide set
+1. name the boundary or concept you are stuck on
+2. choose the narrowest page that answers that question
+3. turn the answer into one explicit trust judgment or practice move
+4. go back to the module or capstone only if the question is now narrower and clearer
+
+That keeps the reference layer useful instead of letting it become endless browsing.
+
+## Shelf set
 
 - [Glossary](glossary.md)
 - [Module Dependency Map](module-dependency-map.md)
@@ -65,5 +59,5 @@ review surface for contracts, dynamic discovery, operating policy, or publish tr
 ## Stop here when
 
 - you know which workflow boundary owns the current question
-- you can turn that page into one explicit trust judgment
-- you know whether the next move is back to a module or into the capstone
+- you can turn the answer into one explicit trust judgment
+- you know whether the next move is back to a module, into the capstone, or into practice
