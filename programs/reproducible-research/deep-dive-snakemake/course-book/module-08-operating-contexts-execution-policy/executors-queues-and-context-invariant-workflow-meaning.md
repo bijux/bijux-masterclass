@@ -1,204 +1,285 @@
-# Executors, Queues, and Context-Invariant Workflow Meaning
+# Executors, Resources, and Context-Invariant Workflow Meaning
 
-Once profiles are understood as policy surfaces, the next question appears:
+Moving a workflow from a laptop to CI or a scheduler changes real operating conditions.
+It does not give the execution context permission to redefine the workflow.
 
-> what should stay true when the workflow moves from local runs to CI or a scheduler?
+The central question is:
 
-That is the core operating-context question.
+> Which resource and executor differences may change how jobs run while samples, rules,
+> paths, and artifact meaning stay invariant?
 
-If the answer is “it depends on the machine,” the workflow contract is already weaker than
-it should be.
+This lesson separates workflow requests, profile capacity, and site-specific executor
+mapping.
 
-## How to use this page
+## Three layers own different decisions
 
-Read this page while comparing at least two real contexts, such as local and CI or CI and
-SLURM.
+Treat resource handling as three cooperating contracts:
 
-Do not ask only, "What differs?" Ask the harder question:
+| Layer | Example | Owns |
+| --- | --- | --- |
+| workflow rule | `threads`, `mem_mb`, `runtime` | per-job work shape |
+| execution profile | `cores`, `jobs`, `latency-wait` | run-level capacity and tolerance |
+| operator overlay | executor plugin, account, partition | site-specific submission mapping |
 
-> which differences change execution behavior only, and which differences would change the workflow's meaning if we allowed them through?
-
-That classification is the skill this page is building.
-
-## Different execution contexts are real
-
-Local, CI, and scheduler-backed runs do not behave identically.
-
-They differ in practical ways:
-
-- concurrency limits
-- queueing and scheduling delay
-- filesystem latency
-- available cores and memory
-- operational logging expectations
-
-Those differences are not failures. They are part of real operating environments.
-
-The problem begins when those differences start changing workflow meaning instead of
-execution behavior.
-
-## A workflow should travel across contexts without changing its contract
-
-When the execution context changes, the workflow should still answer the same questions:
-
-- what are the declared inputs?
-- what outputs are authoritative?
-- what path contracts remain stable?
-- what rebuild or publish evidence should exist?
-
-If those answers differ by context, the repository may have multiple hidden workflows
-instead of one stable workflow with multiple operating policies.
-
-## Start with semantic invariants before operational differences
-
-The easiest way to get this review backwards is to start by listing queue names, resource
-flags, or logging details.
-
-A stronger sequence is:
-
-1. name the invariant outputs, paths, and trusted surfaces
-2. compare the dry-run or planned work across contexts
-3. only then examine how executors, queues, and concurrency differ
-
-This order matters because semantics should be defended before policy details are debated.
-
-## The capstone profiles illustrate this boundary well
-
-The capstone offers:
-
-- `profiles/local/config.yaml`
-- `profiles/ci/config.yaml`
-- `profiles/slurm/config.yaml`
-
-These profiles differ in policy surfaces such as:
-
-- job count expectations
-- latency waits
-- shell-command visibility
-
-They do not claim to redefine:
-
-- rule contracts
-- publish paths
-- workflow discovery semantics
-
-That is the right architectural posture.
-
-## One useful contrast
+The workflow says what one job needs. The profile says what the run may use. The operator
+overlay says how those needs map to a real service.
 
 ```mermaid
 flowchart LR
-  local["local profile"] --> policy["execution policy"]
-  ci["ci profile"] --> policy
-  slurm["slurm profile"] --> policy
-  policy --> run["how jobs are launched and observed"]
-  contract["workflow contract"] --> meaning["what files and semantics stay true"]
+  rule["Rule request<br/>threads, memory, runtime"]
+  profile["Profile capacity<br/>cores, jobs, latency"]
+  site["Site mapping<br/>executor, account, partition"]
+  scheduler["Execution decision"]
+
+  rule --> scheduler
+  profile --> scheduler
+  site --> scheduler
 ```
 
-This diagram matters because it shows variation in operations without variation in core
-meaning.
+Collapsing these layers creates different failure modes:
 
-## One concrete comparison exercise
+- queue names in rules tie workflow meaning to one site
+- algorithm parameters in profiles let context redefine results
+- undeclared memory needs force operators to guess from failures
 
-Imagine these three context differences:
+## Read the specimen's rule request
 
-- local uses fewer jobs than CI
-- SLURM adds queueing and scheduler delay
-- CI swaps in a smaller semantic config so the publish bundle changes
+Open:
 
-The first two can still preserve one workflow meaning.
+```text
+capstone/repro/context-invariance/Snakefile
+```
 
-The third is dangerous because executor context is no longer only affecting how the work
-runs. It is starting to redefine what work counts as the workflow.
+The `normalize` rule declares:
 
-That is why side-by-side comparison matters more than vague environment familiarity.
+```python
+threads: 2
+resources:
+    mem_mb=512,
+    runtime=5,
+```
 
-## A weak context boundary
+Those values are attached to the job, not to local, CI, or scheduler policy. Every context
+sees the same request.
 
-Weak shape:
+The rule does not declare:
 
-- CI uses different semantic config values to “make things pass”
-- cluster runs write outputs to a different contract path with no deliberate versioning
-- local runs quietly skip checks that change the trusted result story
+- a queue
+- an account
+- a partition
+- a scheduler command
+- a context-specific result path
 
-Now the operating context has become part of the workflow meaning.
+That is the intended boundary. A real scheduler profile can translate `mem_mb=512` and
+`runtime=5` into site syntax without editing the rule's inputs, outputs, or algorithm.
 
-## A stronger context boundary
+## Compare request with available capacity
 
-Stronger shape:
+The preserving profiles provide different `cores` values:
 
-- keep execution differences in profile or executor policy
-- keep workflow meaning in rule, config-contract, and publish-contract surfaces
-- compare dry-runs across contexts to confirm the workflow story remains coherent
+- local: 2
+- CI: 1
+- scheduler-oriented: 8
 
-This makes migrations less mysterious and profile review more honest.
+Run:
 
-## The beginner mistake to catch early
+```bash
+make capstone-context-invariance-audit
+```
 
-Beginners often treat "the cluster behaves differently" as a complete explanation.
+The audit proves that all three contexts retain:
 
-It is not.
+- the two-sample job domain
+- the same D3 DAG
+- the same output plan
+- the same manifest path
+- the same executed result bytes
 
-The right follow-up question is:
+It does not prove identical scheduling. CI has less available capacity, so Snakemake may
+scale thread allocation or serialize work.
 
-- differently in scheduling and observation?
-- or differently in trusted outputs, contracts, and semantic claims?
+This distinction is important:
 
-Only the first kind of difference is safely normal.
+> Semantic equivalence is not performance equivalence.
 
-## A practical test
+If a tool changes numerical results based on thread count, then thread scaling is no longer
+merely operational for that rule. The workflow must either enforce the required threads or
+test the tool's equivalence explicitly.
 
-Ask these questions when a context changes:
+## Use resource units that survive mapping
 
-1. Would the same inputs still produce the same trusted outputs?
-2. Is the dry-run plan semantically the same, even if execution settings differ?
-3. Did a context-specific change leak into path, config, or publish meaning?
+Portable declarations need documented units:
 
-If the answer to the third question is yes, the context boundary is leaking.
+- `threads` is a count
+- `mem_mb` is memory in megabytes
+- `runtime` needs a repository convention that matches the executor mapping
+- disk or scratch requests need an explicit unit and lifecycle
 
-## Common failure modes
+Avoid ambiguous names such as:
 
-| Failure mode | What goes wrong | Better repair |
+```python
+resources:
+    memory="large",
+    time="long",
+```
+
+Those labels may be useful inside one institution, but they are not self-explanatory
+workflow requests. If categories are necessary, document their mapping and ownership.
+
+The capstone uses concrete `mem_mb` declarations in processing rules. For example,
+`dedup_fastq` requests more memory than `qc_raw`. A reviewer can see the difference before
+opening a cluster configuration.
+
+## Resource functions are semantic inputs to scheduling
+
+The capstone computes some memory requests from input size:
+
+```python
+mem_mb=lambda wc, input: max(
+    2000,
+    int(1.5 * file_size_mb(input.fastq)) + 1000,
+)
+```
+
+This does not change artifact meaning directly. It changes the scheduler request derived
+from declared input state.
+
+Review a resource function for:
+
+- deterministic inputs
+- explicit units
+- a safe minimum
+- behavior when metadata is missing
+- whether the same function is visible in every context
+
+Do not hide a different sizing formula inside each executor profile. That makes capacity
+review harder and can turn resource failures into context-specific folklore.
+
+## Distinguish planning invariants from launch differences
+
+The context audit retains two planning surfaces:
+
+- D3 DAG for jobs and edges
+- output summary for declared paths
+
+These should remain invariant across preserving profiles. Launch details may differ:
+
+| Surface | Must match? | Reason |
 | --- | --- | --- |
-| CI uses a different semantic config story | tests stop representing the real workflow | keep semantic config separate from profile policy |
-| cluster context rewrites trusted paths casually | one operating surface becomes a hidden fork | keep contract paths stable or version changes deliberately |
-| local runs quietly skip meaningful checks | context convenience alters trust | separate optional diagnostics from contract-defining behavior |
-| scheduler migration assumes filesystem behavior equals local behavior | latent path and visibility issues appear later | review storage and latency assumptions explicitly |
-| context comparison happens only after failures | drift remains invisible until late | compare profiles and dry-runs before migration or scale-up |
+| sample-specific jobs | yes | sample scope is workflow meaning |
+| dependency edges | yes | graph logic is workflow meaning |
+| trusted outputs | yes | downstream contract is workflow meaning |
+| available cores | no | contexts have different capacity |
+| queue and account | no | sites have different submission policy |
+| command visibility | no | observability policy may differ |
+| result bytes | yes for this specimen | execution context must not alter the transformation |
 
-## What a reviewer should hear
+This table is more useful than saying the contexts are “the same” or “different.” It names
+the comparison boundary.
 
-A strong explanation sounds like this:
+## A scheduler-oriented profile is not a scheduler proof
 
-> These contexts differ in executor behavior, queueing, and observability, but the dry-run
-> plan, contract paths, and trusted outputs remain semantically the same.
+The course's committed scheduler profile deliberately contains portable policy only. It
+does not claim to submit to a real cluster.
 
-That is stronger than "each environment behaves a little differently," because it states
-what stayed invariant.
+That is honest because a real submission proof also depends on:
 
-## The explanation a reviewer trusts
+- an installed executor plugin
+- site identity and credentials
+- an account or allocation
+- queue or partition policy
+- shared or staged storage
+- node environment availability
 
-Strong explanation:
+The context-invariance audit proves that adding those mappings must not alter workflow
+meaning. It does not fabricate access to infrastructure.
 
-> local, CI, and SLURM change how the workflow is launched and observed, but the rule
-> contracts, config meaning, and published outputs stay the same, so the operating-context
-> differences remain policy rather than semantic drift.
+Use an operator overlay for site-owned values:
 
-Weak explanation:
+```yaml
+executor: slurm
+default-resources:
+  slurm_account: research-account
+  slurm_partition: compute
+```
 
-> the workflow behaves a little differently in each environment, which is normal.
+The exact keys depend on the executor plugin and site. What matters here is ownership:
+site mapping may translate resource requests, but it must not select samples or publish
+paths.
 
-The strong explanation distinguishes policy from meaning. The weak explanation normalizes
-drift without examining it.
+## Detect an executor leak
+
+Suppose a scheduler profile contains:
+
+```yaml
+config:
+  samples:
+    - alpha
+```
+
+The profile may be justified as a “smaller cluster test.” It is still a semantic leak:
+
+- one sample-specific job disappears
+- the manifest changes
+- the scheduler context now answers a different analytical question
+
+If a smaller smoke test is useful, make it an explicit semantic configuration with a
+separate claim. Do not call it equivalent to the full workflow.
+
+```mermaid
+flowchart TD
+  change["Context change"]
+  asks{"Changes only launch,<br/>capacity, or observation?"}
+  policy["Keep in execution policy"]
+  semantic["Move to explicit workflow config"]
+  prove["Compare plan and artifacts"]
+
+  change --> asks
+  asks -->|yes| policy --> prove
+  asks -->|no| semantic --> prove
+```
+
+## Review resource changes with evidence
+
+For a rule resource edit, keep:
+
+- the old and new declaration
+- measured or observed reason for the change
+- expected mapping in each operating context
+- a dry-run showing the resolved request
+- confirmation that targets and paths did not change
+
+For an executor-profile edit, keep:
+
+- the changed policy key
+- its owner
+- the site assumption it represents
+- the normalized plan comparison
+- one limit the local audit cannot test
+
+“The cluster needed more memory” is incomplete. Name which rule, which request, which
+evidence, and which mapping.
+
+## Common boundary failures
+
+| Failure | Why it is weak | Repair |
+| --- | --- | --- |
+| queue name appears in a rule | one site leaks into workflow source | map queue policy in an operator overlay |
+| memory exists only in scheduler config | workflow hides per-job work shape | declare portable resource needs on the rule |
+| profile changes algorithm parameters | context changes artifact meaning | move parameters to semantic config |
+| CI silently scales a sensitive tool's threads | outputs may differ despite the same graph | enforce or test thread-count equivalence |
+| scheduler smoke test is called full equivalence | reduced sample scope is hidden | give the smoke test a distinct semantic claim |
 
 ## End-of-page checkpoint
 
-Before leaving this page, you should be able to:
+You are ready to continue when you can:
 
-- explain what should remain invariant across operating contexts
-- explain why executor changes should not create a hidden alternate workflow
-- describe one safe context difference and one dangerous one
-- explain why comparing dry-runs across profiles is useful architecture evidence
+- identify the owner of rule requests, profile capacity, and site mapping
+- explain why the audit proves semantic equivalence but not performance equivalence
+- show how D3 DAG and output summary protect different invariants
+- explain why a scheduler-oriented profile is not evidence of real scheduler submission
+- classify a reduced sample set as semantic configuration even when it is operationally
+  convenient
 
-If you still describe context review mainly as environment support, keep working. This
-page is really about semantic invariants under changing operating conditions.
+If queue syntax still feels like the center of the lesson, return to the three ownership
+layers. Executor portability begins with a stable workflow contract.
