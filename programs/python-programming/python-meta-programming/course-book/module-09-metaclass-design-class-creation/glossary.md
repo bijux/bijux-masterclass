@@ -38,6 +38,11 @@ The most important use of this glossary is review discipline: if two learners us
 word to mean different ownership claims, they will disagree about metaclasses without
 realizing it.
 
+Use the glossary in both directions:
+
+- when you read a page, use it to decode what class-creation claim is actually being made
+- when you write a review note, use it to catch words that sound advanced but hide the real owner
+
 ## Terms in this directory
 
 | Term | Meaning in this directory |
@@ -65,6 +70,19 @@ realizing it.
 | `type(name, bases, namespace)` | The default class-construction primitive that shows class creation as a runtime event. |
 | Hierarchy-wide invariant | A rule that should apply automatically across every subclass in a class family and can therefore justify metaclass control more often than one-off rules. |
 
+## Terms that must trigger a proof step
+
+In this module, these words should never remain slogans.
+
+| If you use this term | You must also prove... |
+| --- | --- |
+| class-creation invariant | what exact rule must hold before or as the class is created |
+| effective metaclass | which authority Python actually resolved and why |
+| declaration-time enforcement | what class-body fact would disappear if you waited for a later hook |
+| lower-power owner | which smaller tool you tested first and what it lost |
+| import-time blast radius | what mutation, ordering pressure, or reset burden the design introduces |
+| honest metaclass claim | which narrow promise the metaclass can make now and which broader framework promise it still refuses |
+
 ## Confusing pairs to keep separate
 
 | Pair | Difference that matters in this module |
@@ -74,6 +92,16 @@ realizing it.
 | Lower-power owner vs weaker implementation | A lower-power owner is often better, not worse; it simply carries less blast radius. |
 | Honest claim vs overclaim | An honest claim names the exact scope; an overclaim smuggles in lifecycle, discovery, or framework promises the code does not own. |
 | Registration invariant vs operational support | Automatic registration may be the invariant; reset hooks and ordering helpers are the support surfaces around it. |
+
+## Translation table for sloppy wording
+
+| Sloppy wording | Stronger wording for this module |
+| --- | --- |
+| "the metaclass handles it automatically" | "the metaclass enforces one named class-creation invariant across the hierarchy" |
+| "the conflict is just a Python limitation" | "the conflict shows competing class-creation authorities without one coherent owner" |
+| "the registry is built in" | "class creation mutates one global registry and therefore needs reset discipline" |
+| "the hook is earlier so it is better" | "the hook is honest only if it sees evidence a later hook would lose" |
+| "a decorator is too manual" | "a decorator loses this specific automatic subclass-time rule" |
 
 ## Review prompts this vocabulary should unlock
 
@@ -86,6 +114,18 @@ When using these terms, another learner should be able to answer:
 
 If the glossary terms do not help answer those four questions, return to the module pages
 and make the ownership language sharper.
+
+## Fast vocabulary drills
+
+Use these when the module starts sounding familiar but still feels fuzzy:
+
+| Prompt | Short answer shape to expect |
+| --- | --- |
+| what is the invariant here? | one rule stated before the mechanism name |
+| when does it act? | one point in the class lifecycle |
+| what lower-power owner failed? | one decorator, helper, descriptor, or plain-code option and its limit |
+| what cost comes with the metaclass? | one import-time, reset, ordering, or conflict consequence |
+| what would count as overclaim? | one broader promise the current design does not truly own |
 
 ## Keep the module connected
 
