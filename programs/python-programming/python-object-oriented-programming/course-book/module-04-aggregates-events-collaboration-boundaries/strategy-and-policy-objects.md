@@ -1,5 +1,4 @@
-# Strategy and Policy Objects for Rule Evaluation and Decisions
-
+# Strategy and Policy Objects
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Aggregates Events Collaboration Boundaries"]
-  page["Strategy and Policy Objects for Rule Evaluation and Decisions"]
+  page["Strategy and Policy Objects"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,91 +24,104 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Extract “how we decide” into **strategy/policy objects** so you can add rule types without rewriting orchestration code.
+Some decisions belong inside an aggregate. Others vary by context, rule set, or mode of
+operation.
 
-This core is where your design becomes extensible *without* turning into a class explosion.
+If every variation is hard-coded into one class, you get:
 
-## Where This Fits
+- giant conditionals
+- mixed decision rules with unclear ownership
+- change that spreads through core classes
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+Strategy and policy objects are ways to separate variable decision logic without erasing
+aggregate authority.
 
-## 1. The Smell: `if/elif` Ladders for Rule Types
+## The basic distinction
 
-A common progression:
+### Strategy
 
-```python
-if rule.kind == "threshold": ...
-elif rule.kind == "rate": ...
-elif rule.kind == "anomaly": ...
-```
+A strategy is a swappable way of performing a kind of evaluation or selection.
 
-This spreads rule logic across the codebase and makes adding a new rule risky.
+The emphasis is on variation in how something is done.
 
-Instead, move the varying part behind a stable interface: a strategy.
+### Policy
 
-## 2. Strategy Object: One Interface, Many Implementations
+A policy object captures a rule or decision standard that the rest of the system can ask
+about.
 
-Define a small protocol:
+The emphasis is on declared decision criteria.
 
-```python
-from typing import Protocol
+The two ideas are close, but both are more useful when they represent real variation,
+not simply an excuse to split code.
 
-class RuleStrategy(Protocol):
-    def evaluate(self, rule: ActiveRule, metric_value: float) -> bool: ...
-```
+## Why they matter in Module 04
 
-Implementations:
-- `ThresholdStrategy`
-- `RateStrategy`
-- etc.
+Aggregates should not absorb every changing rule variation if:
 
-The orchestrator depends on `RuleStrategy`, not on each concrete kind.
+- the rule set changes independently
+- several contexts may need different decision standards
+- the aggregate should stay focused on boundary ownership
 
-## 3. Policy Objects: When Decisions Need Context
+At the same time, the aggregate should not become passive while outside policy code
+makes every important decision for it.
 
-A **policy** is a strategy with more context and possibly configuration.
+The right balance is:
 
-Example: “alert deduplication policy” that decides whether to emit a new alert given recent history.
+- aggregates own invariants and authority
+- strategy or policy objects supply controlled decision variation
 
-Separate:
-- evaluation strategy (does rule trigger?)
-- action policy (what do we do if it triggers?)
+## What not to do
 
-This separation keeps objects small and teachable.
+- do not create a strategy object for one trivial branch that will never vary
+- do not push core invariant ownership out of the aggregate just to "be flexible"
+- do not create policy objects that are really just bags of constants with no decision meaning
 
-## 4. Composition Over Inheritance
+Variation should be real, not ceremonial.
 
-Strategies are great as composable objects:
+## A practical test
 
-- a `ThresholdStrategy` can be wrapped by `DebouncePolicy`,
-- `RetryPolicy` can wrap adapters (M05C44).
+Ask:
 
-Favor composition:
-- small, single-purpose objects,
-- wired together in the composition root (Module 2).
+1. Is this decision rule likely to vary meaningfully across contexts?
+2. Does separating it keep the aggregate clearer without weakening authority?
+3. Would inlining the rule make the boundary harder to evolve or review?
 
-## 5. Testing Strategies in Isolation
+If yes, a strategy or policy object may help.
 
-Strategies are easy to test because they are pure-ish:
-- input → output
-- minimal dependencies.
+If no, keeping the rule close to the aggregate may be cleaner.
 
-Write small tests per strategy.
-Then write one integration test proving the orchestrator wires and uses the strategy correctly.
+## Review checklist
 
-## Practical Guidelines
+| Question | Good sign |
+| --- | --- |
+| is there real rule variation to justify the extra object? | yes |
+| does aggregate authority remain intact? | yes |
+| is the strategy or policy named by decision meaning, not code motion? | yes |
+| would removing it clearly make the model harder to evolve? | yes |
 
-- Replace `if/elif` ladders for behavior selection with strategy objects.
-- Keep strategy interfaces small; pass domain types, not raw dicts.
-- Separate evaluation from action policies when decisions differ.
-- Prefer composition (wrappers/decorators) over deep inheritance hierarchies.
+## Capstone connection
 
-## Exercises for Mastery
+In the capstone, this lesson matters where:
 
-1. Extract one conditional rule evaluation path into a `RuleStrategy` implementation with tests.
-2. Add a new rule kind by implementing a new strategy without modifying the orchestrator loop.
-3. Write a policy wrapper that suppresses duplicate alerts within a time window.
+- evaluation rules may vary
+- authorization or eligibility criteria may differ by mode
+- decision standards should be replaced or compared without rewriting the aggregate
+
+If the capstone still has one large decision class full of branching logic, this lesson
+points toward the next cleanup.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain the difference between aggregate authority and rule variation
+- name one capstone decision that could merit a strategy or policy object
+- explain one case where introducing such an object would be unnecessary ceremony
