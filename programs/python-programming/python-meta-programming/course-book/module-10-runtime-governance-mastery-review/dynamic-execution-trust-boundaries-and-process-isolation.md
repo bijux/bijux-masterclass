@@ -30,12 +30,31 @@ the runtime cannot honestly support.
 
 That mechanism is dynamic execution.
 
+This page fails if a reader leaves thinking the right trick is to narrow globals more
+carefully. The teaching target is stricter: decide when in-process execution is acceptable,
+when it is not, and what honest replacement owns the problem instead.
+
 ## The sentence to keep
 
 `compile`, `eval`, and `exec` are only defensible when the input is trusted and the review
 story stays honest about process boundaries, observability, and fallback designs.
 
 Everything else on this page hangs from that sentence.
+
+If the sentence gets softened into "safe enough with careful restrictions," the review
+boundary has already been lost.
+
+## Evidence route for dynamic execution reviews
+
+Use this route before approving `compile`, `eval`, or `exec`:
+
+| Review step | What to inspect | What strong evidence looks like |
+| --- | --- | --- |
+| Name the input owner | Who writes or controls the source text? | Trusted internal authorship, or an explicit hostile-input designation |
+| Name the real boundary | What protection exists outside the current interpreter? | Process isolation, operating-system controls, or an explicit admission that none exists |
+| Reject lower-power alternatives | What data-driven or explicit-dispatch model was considered first? | A concrete simpler owner was compared and either accepted or rejected for named reasons |
+| Inspect runtime scope | Is this expression-only, statement execution, or code generation on a hot path? | Timing, returned values, and state mutation scope are explicit |
+| Reject overclaim | What is intentionally not promised? | The design does not imply in-process sandboxing or semantic validation it cannot prove |
 
 ## The only honest security line
 
@@ -49,6 +68,11 @@ Not with a partial AST filter that claims to be a sandbox.
 If the trust boundary is real, the protection boundary must be real too. That means
 separate-process isolation, not wishful thinking about a namespace mapping.
 
+Keep one refusal sentence ready:
+
+if the source is untrusted and still runs in the current process, the design is already on
+the wrong side of the boundary.
+
 ## What the runtime primitives actually do
 
 The core pieces are mechanical:
@@ -58,6 +82,14 @@ The core pieces are mechanical:
 - `exec(code, globals, locals)` executes statements and returns `None`
 
 Those are powerful but limited facts. They do not imply safety.
+
+## What each primitive really buys you
+
+| Primitive | Honest use | Immediate review concern |
+| --- | --- | --- |
+| `compile(..., "eval")` | Turn a trusted expression or AST into a code object once | Whether the expression should have been data instead |
+| `eval(...)` | Compute a value from trusted source inside a named context | Whether the names imply false safety claims |
+| `compile(..., "exec")` / `exec(...)` | Execute trusted statements with wider state effects | Why explicit code or configuration did not remain the clearer owner |
 
 ## `globals` and `locals` are execution context, not a sandbox
 
@@ -75,6 +107,8 @@ One detail matters enough to remember precisely:
 That means controlled execution should always set `__builtins__` explicitly even for
 trusted internal inputs.
 
+That is an execution-hygiene rule, not a security approval.
+
 ## A narrow, honest internal use
 
 This is the sort of case the runtime can support honestly: a trusted internal expression
@@ -91,6 +125,14 @@ print(result)  # 21
 
 This example is not "safe for attackers." It is simply narrow and explicit for trusted
 configuration that the team owns.
+
+## Honest claims versus overclaims
+
+| Honest claim | Overclaim to reject |
+| --- | --- |
+| "This evaluates a trusted internal expression against a small explicit name set." | "This safely executes user formulas in process." |
+| "This removes accidental access to builtins for a trusted DSL." | "This sandboxes hostile code." |
+| "This syntax filter narrows what trusted authors may write." | "This AST filter makes code execution secure." |
 
 ## Compiling statements is a different kind of power
 
@@ -111,6 +153,8 @@ print(locals_["y"])  # 84
 
 Once statements enter the design, reviewers should ask why ordinary Python code or a
 declarative config format did not stay the clearer owner.
+
+That question should be answered before the design is admired for flexibility.
 
 ## AST filtering is about narrowing syntax, not creating safety
 
@@ -148,6 +192,18 @@ def evaluate_expression(expr: str, names: dict[str, object]) -> object:
 That pattern can prevent accidental complexity. It does not justify the sentence "we
 safely execute user code in-process."
 
+## Failure modes to name explicitly
+
+Watch for these common failures:
+
+| Failure mode | What goes wrong |
+| --- | --- |
+| Restricted globals treated as a hostile-input defense | The review story promises protection the process cannot enforce |
+| AST filtering sold as sandboxing | Syntax narrowing is confused with execution isolation |
+| `exec` used for configuration convenience | Ordinary code and data become harder to inspect and test |
+| Dynamic compilation repeated on hot paths | The mechanism becomes both risky and needlessly expensive |
+| Security language left vague | Reviewers cannot tell where trust actually stops |
+
 ## Strong alternatives are usually less magical
 
 Before approving dynamic execution, compare it against lower-power options:
@@ -160,6 +216,15 @@ Before approving dynamic execution, compare it against lower-power options:
 The right alternative is often less impressive and more maintainable. That is a benefit,
 not a loss.
 
+## Alternative-owner table
+
+| Pressure | Lower-power owner to try first |
+| --- | --- |
+| simple formulas over trusted fields | explicit expression parser or tiny DSL |
+| dynamic behavior chosen from known operations | registry plus explicit dispatch |
+| user configuration with finite options | data format plus normal program logic |
+| genuinely hostile programmable input | separate-process execution with real controls |
+
 ## What process isolation changes
 
 Separate-process execution does not make arbitrary code morally harmless. It does change
@@ -171,6 +236,9 @@ the ownership story:
 
 That is the first honest place where "sandboxing" language can start to mean something.
 
+Even there, the review still owes timeouts, cleanup, logging, and failure collection. Real
+boundaries reduce risk; they do not remove operational work.
+
 ## Review rules for dynamic execution
 
 When `compile`, `eval`, or `exec` appear in code review, ask these questions first:
@@ -181,6 +249,10 @@ When `compile`, `eval`, or `exec` appear in code review, ask these questions fir
 - is compilation happening once or inside a hot path?
 - what evidence shows forbidden syntax and failure cases are tested?
 - if the input is not fully trusted, where is the separate-process boundary?
+
+Add one more final question:
+
+- what exact sentence describes the strongest thing this mechanism can honestly promise, without using the word "safe" loosely?
 
 If those answers feel vague, the design is not ready.
 
@@ -203,6 +275,15 @@ Try these before moving on:
 1. Rewrite one `eval`-style idea as explicit data plus normal code.
 2. Build one tiny trusted-expression evaluator and name exactly what it does not promise.
 3. Write one sentence explaining why restricted globals are not a sandbox.
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of the following:
+
+- reject one in-process hostile-input design in a single sentence
+- distinguish execution hygiene from security boundary claims
+- name one lower-power alternative for expression-style configuration
+- explain why process isolation changes the review story and restricted globals do not
 
 If those feel ordinary, the next step is interface governance: which runtime contracts can
 be named honestly with ABCs, protocols, and `__subclasshook__`.
