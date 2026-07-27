@@ -77,6 +77,15 @@ def read_payloads(
 def reject_unowned_files(root: Path, mappings: list[InstallMapping]) -> None:
     if not root.exists():
         return
+    symbolic_links = sorted(
+        path.relative_to(root).as_posix()
+        for path in root.rglob("*")
+        if path.is_symlink()
+    )
+    if symbolic_links:
+        raise ValueError(
+            f"install root contains symbolic links: {symbolic_links}"
+        )
     expected = {
         destination_for(root, mapping.install_path).relative_to(root).as_posix()
         for mapping in mappings
@@ -84,7 +93,7 @@ def reject_unowned_files(root: Path, mappings: list[InstallMapping]) -> None:
     observed = {
         path.relative_to(root).as_posix()
         for path in root.rglob("*")
-        if path.is_file() or path.is_symlink()
+        if path.is_file()
     }
     unowned = sorted(observed - expected)
     if unowned:

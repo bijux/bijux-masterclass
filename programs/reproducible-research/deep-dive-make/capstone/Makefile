@@ -406,14 +406,14 @@ accept-release:
 >       --install-report "$(RELEASE_INSTALL_REPORT_ABS)" \
 >       --output "$(RELEASE_ACCEPTANCE_ABS)"
 
-release-check: test selftest dist
+release-check: test selftest release-selftest dist
 >     @$(MAKE) --no-print-directory verify-dist
 >     @$(MAKE) --no-print-directory install-rehearsal
 >     @$(MAKE) --no-print-directory accept-release
 >     @echo "PASS: local release candidate accepted"
 
 release-selftest:
->     $(PYTHON) -m unittest discover -s $(TST_DIR) -p 'test_release_candidate.py'
+>     $(PYTHON) -m unittest discover -s $(TST_DIR) -p 'test_release_*.py'
 
 repro:
 >     @printf '%s\n' \
