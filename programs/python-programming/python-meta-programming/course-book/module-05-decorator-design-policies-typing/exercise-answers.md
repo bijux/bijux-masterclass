@@ -29,6 +29,10 @@ Use this page after attempting the exercises yourself. The point is not to match
 example literally. The point is to compare your reasoning against answers that keep
 wrapper power, policy scope, and typing limits honest.
 
+Treat each answer as a review calibration, not as a single correct final form. A strong
+answer names ownership, limits, and operational consequences in plain language. A weak
+answer may still sound technically clever while hiding who actually owns the policy.
+
 ## Answer 1: Build one decorator factory with real configuration
 
 Example answer:
@@ -57,6 +61,11 @@ Good conclusion:
 This is an honest factory because the configuration is explicit and the captured policy is
 still narrow and visible.
 
+Reasoning checkpoint:
+
+- can you point to the exact captured value?
+- can you say what would make this factory too policy-heavy to stay honest?
+
 ## Answer 2: Review one resilience wrapper
 
 Example answer:
@@ -72,6 +81,11 @@ Good conclusion:
 
 That is already control-flow policy, not a thin wrapper, because the decorator now governs
 execution timing and error handling.
+
+Reasoning checkpoint:
+
+- can you name the stopping rule exactly?
+- can you explain which side effects might happen more than once?
 
 ## Answer 3: Validate one narrow hint subset
 
@@ -92,6 +106,11 @@ Good conclusion:
 
 This is an honest partial validator because it names its supported surface clearly and
 refuses unsupported hints instead of pretending to understand them.
+
+Reasoning checkpoint:
+
+- can you name the first unsupported hint a real caller might hit?
+- can you explain why silently skipping that hint would be misleading?
 
 ## Answer 4: Inspect cache policy instead of only cache speed
 
@@ -117,6 +136,11 @@ Good conclusion:
 The cache is not just a speed trick. It owns keying, eviction, and operational state, and
 those choices are part of the wrapper's public meaning.
 
+Reasoning checkpoint:
+
+- can you say which calls count as the same cached request?
+- can you name the reset or inspection hook an operator would use first?
+
 ## Answer 5: Reject one decorator that grew too large
 
 Example answer:
@@ -141,6 +165,11 @@ Good conclusion:
 Once policy becomes this broad, a single decorator hides too much state and coordination to
 stay reviewable.
 
+Reasoning checkpoint:
+
+- can you name the first responsibility that should move out of the decorator?
+- can you describe the clearer owner in one sentence?
+
 ## Answer 6: Review a partial validator honestly
 
 Example answer:
@@ -161,6 +190,11 @@ Good conclusion:
 
 Warning mode is not safety mode because the wrapped function may still fail internally even
 after the validator chooses not to raise.
+
+Reasoning checkpoint:
+
+- can you state the strongest honest claim this validator can make?
+- can you name the first threshold where it should become an explicit validator component?
 
 ## Answer 7: Separate local convenience from durable policy
 
@@ -183,6 +217,11 @@ Good conclusion:
 
 This is the kind of convenience that ages badly. A clearer owner teaches better because it
 forces each policy to become visible instead of bundling them under one callable boundary.
+
+Reasoning checkpoint:
+
+- can you say who would debug this policy six months later?
+- can you point to the hidden owner the decorator was avoiding?
 
 ## Answer 8: Design one explicit policy owner
 
@@ -208,6 +247,11 @@ Good conclusion:
 An explicit owner is better when the main teaching goal is boundary clarity rather than
 surface-level compactness.
 
+Reasoning checkpoint:
+
+- can you separate what still belongs at the call boundary from what moved away?
+- can you explain why that split teaches more honestly?
+
 ## Answer 9: Compare safe claims with overstated claims
 
 Example answer:
@@ -226,6 +270,11 @@ The second version is misleading because words such as "makes" and "type-safe" i
 much stronger guarantee than partial runtime checking can provide. Honest language keeps
 the supported surface and the unsolved space visible.
 
+Reasoning checkpoint:
+
+- can you rewrite the honest claim without losing usefulness?
+- can you point to the exact inflated words in the bad claim?
+
 ## Answer 10: Produce a decorator-governance packet
 
 The packet is strong when another learner can answer:
@@ -234,6 +283,22 @@ The packet is strong when another learner can answer:
 - what explicit control or reset surface exists for stateful behavior
 - which runtime typing claims are supported and which are intentionally refused
 - when the wrapper should be replaced by a clearer service or object boundary
+
+Add one more packet test:
+
+- could a reviewer identify the policy owner without reading your implementation twice?
+
+## Repair moves for weak answer keys
+
+If your answer key still feels shallow, use these repair moves:
+
+| Weak answer habit | Repair move |
+| --- | --- |
+| describing only the implementation shape | add the owner story and the refusal boundary |
+| praising simplicity without naming tradeoffs | state what complexity was hidden and who now owns it |
+| saying "it validates types" | list supported hints, refused hints, and one overclaim you reject |
+| treating warnings as harmless | explain what can still fail after the warning |
+| treating caches as performance magic | name key equivalence, eviction, and reset surfaces |
 
 ## What strong Module 05 answers have in common
 
@@ -248,6 +313,15 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still sounds like "the decorator can just handle it," revise it until you can
 say what policy it owns, what it refuses to own, and why that boundary is honest.
+
+## Exit check for the answer key
+
+Before leaving this page, make sure you can do all of these:
+
+- identify the policy owner in every answer
+- name one refused claim in every typing-aware answer
+- name one operational surface in every resilience or cache answer
+- explain one case where an explicit owner teaches better than another decorator layer
 
 ## Continue through Module 05
 
