@@ -57,6 +57,8 @@ start narrower.
 | non-file state, recursive planning, and required-tool checks honor their environment contracts | `make environment-contract-audit` | seven-row summary, dry-run and actual traces, publication residue, and controls |
 | public callers, include policy, and output paths preserve architecture ownership | `make architecture-contract-audit` | six-row summary, help and caller traces, policy artifacts, and source-output mappings |
 | architecture evidence rejects dishonest controls | `make architecture-contract-selftest` | five acceptance and rejection tests |
+| a macro preserves the explicit rule, policy, and publication contract | `make abstraction-contract-audit` | three-row summary, evaluated rule maps, public surfaces, policy values, and artifacts |
+| abstraction evidence rejects hidden targets and policy mutation | `make abstraction-contract-selftest` | seven acceptance and rejection tests |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
 | variable and execution-policy assumptions are reviewable | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `origins.txt` |
 | concurrency specimens exhibit their promised failure mechanisms | `make incident-audit` | incident summary, report, semantic evidence, raw logs, and preserved workspaces |
@@ -98,6 +100,8 @@ That keeps claim, route, and evidence ahead of implementation detail.
 - choose `environment-contract-audit` when command-line state, recursive intent, or tool availability sits outside ordinary file edges
 - choose `architecture-contract-audit` when callers, policy propagation, or output names may conceal ownership drift
 - choose `architecture-contract-selftest` when the question is whether that audit rejects altered controls
+- choose `abstraction-contract-audit` when generated rules may conceal target, policy, or publication drift
+- choose `abstraction-contract-selftest` when the question is whether that audit rejects altered models
 - choose `profile-audit` for portability, policy, and precedence questions
 - choose `proof` only when the question genuinely spans multiple bundles
 - choose `confirm` when stewardship review needs the strongest built-in route
@@ -117,6 +121,7 @@ Read these with this guide:
 - [PERFORMANCE_EVIDENCE_GUIDE.md](performance-evidence-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](profile-audit-guide.md)
 - [ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md](architecture-contract-audit-guide.md)
+- [ABSTRACTION_CONTRACT_AUDIT_GUIDE.md](abstraction-contract-audit-guide.md)
 - [SEMANTIC_FAULT_AUDIT_GUIDE.md](semantic-fault-audit-guide.md)
 - [ENVIRONMENT_CONTRACT_AUDIT_GUIDE.md](environment-contract-audit-guide.md)
 - [SELFTEST_GUIDE.md](selftest-guide.md)

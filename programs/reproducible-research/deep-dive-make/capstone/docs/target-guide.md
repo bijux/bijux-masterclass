@@ -49,6 +49,7 @@ question honestly.
 | can hidden state, false ordering, or rule overlap change successful output meaning | `make semantic-fault-audit` | compare all seven broken and control rows |
 | do non-file state, recursion, and required tools honor declared boundaries | `make environment-contract-audit` | compare all seven defect and control rows |
 | do callers, policy scope, and output paths preserve architecture ownership | `make architecture-contract-audit` | compare all six defect and control rows |
+| do generated rules preserve the explicit abstraction contract | `make abstraction-contract-audit` | compare explicit, bounded, and opaque evidence |
 | did cost change under compatible context and equivalent work | `make performance-compare` | inspect both bundles and the comparison report |
 | do performance evidence gates reject dishonest inputs | `make performance-selftest` | inspect the rejection tests |
 | is the clean planning trace bounded and attributable | `make trace-report` | inspect trace evidence and raw trace |
@@ -85,6 +86,8 @@ question honestly.
 | `environment-contract-selftest` | five acceptance and rejection tests for the environment audit | you need to verify the audit rejects altered evidence |
 | `architecture-contract-audit` | paired public-caller, include-policy, and output-ownership observations | you need to prove architecture boundaries despite successful execution |
 | `architecture-contract-selftest` | five acceptance and rejection tests for the architecture audit | you need to verify the audit rejects altered controls |
+| `abstraction-contract-audit` | explicit, bounded-macro, and opaque-macro rule and policy observations | you need to decide whether generated rules preserved an inspectable contract |
+| `abstraction-contract-selftest` | seven acceptance and rejection tests for the abstraction audit | you need to verify hidden targets and policy mutation cannot pass unnoticed |
 | `performance-compare` | timing deltas guarded by context and semantic equivalence | you have a compatible prior evidence bundle |
 | `performance-selftest` | context, rebuild, capture, and comparison gate tests | you need to review the evidence gate |
 | `trace-report` | clean-plan trace, semantic checks, and bundle manifest | you need causality evidence without execution |
@@ -119,7 +122,8 @@ question honestly.
 - `semantic-fault-audit` proves the specimens; `semantic-fault-selftest` proves the gate rejects altered evidence
 - `environment-contract-audit` proves external-fact specimens; its selftest proves the gate rejects altered evidence
 - `architecture-contract-audit` proves ownership specimens; its selftest proves the gate rejects altered controls
-- `hardened` and `confirm` include the semantic, environment, and architecture audit families with their rejection tests but remain final review tools, not the default starting point
+- `abstraction-contract-audit` proves generation specimens; its selftest proves the gate rejects altered models
+- `hardened` and `confirm` include the semantic, environment, architecture, and abstraction audit families with their rejection tests but remain final review tools, not the default starting point
 
 ---
 
@@ -167,5 +171,6 @@ What belongs in the source bundle:
 - [INCIDENT_REVIEW_GUIDE.md](incident-review-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](profile-audit-guide.md)
 - [ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md](architecture-contract-audit-guide.md)
+- [ABSTRACTION_CONTRACT_AUDIT_GUIDE.md](abstraction-contract-audit-guide.md)
 - [SEMANTIC_FAULT_AUDIT_GUIDE.md](semantic-fault-audit-guide.md)
 - [ENVIRONMENT_CONTRACT_AUDIT_GUIDE.md](environment-contract-audit-guide.md)
