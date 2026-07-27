@@ -24,181 +24,196 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
-
 ## Why this refactor matters
 
-Many systems become "public" by accident.
+Many systems do not choose a public API. They drift into one.
 
-Consumers start depending on:
+That drift usually looks like this:
 
-- deep imports
-- internal runtime objects
-- ad hoc helper functions
-- undocumented extension hooks
+- examples use deep imports because they are easy
+- internal helpers become consumer dependencies
+- extension code subclasses whatever is nearby
+- nobody can tell which breakage is "internal refactor" versus "consumer-facing change"
 
-Once that happens, the codebase loses refactoring freedom before anyone ever wrote down
-an API strategy.
+This refactor page turns that accidental situation into a governed one.
 
-This refactor route shows how to reverse that pattern: define a narrow supported public
-surface, give customization a safe seam, and attach governance so the package can evolve
-without teaching consumers to depend on the wrong layers.
+## Running refactor target
 
-## Start by identifying what users actually need
+Use the course capstone as the target:
 
-Before publishing anything, write down the real supported use cases.
+- package name: `service_monitoring`
+- current state: useful internals, incomplete public surface discipline
+- desired state: one small supported entry surface plus one narrow extension seam
 
-For the capstone, those might include:
+Assume consumers want to do two things:
 
-- running one monitoring workflow
-- supplying one supported customization such as a sink or metric source
-- reading one stable result or report surface
+1. run one supported monitoring workflow
+2. provide one supported incident sink customization
 
-If a surface is not tied to a real use case, it probably should not become public just
-because it is easy to import.
+That is enough need to justify a public surface. It is not enough need to publish the
+entire internal layout.
 
-## Step 1: define the narrow facade first
+## Step 1: write the supported consumer story first
 
-Choose the smallest public package surface that can support the intended use cases.
+Before moving code, write down what an outsider is actually meant to do.
 
-That facade might expose:
+For this capstone, a strong public story might be:
 
-- one application service or command layer
-- one stable result type
-- one or two documented extension protocols
+- import one package-level facade
+- provide configuration
+- run the workflow
+- optionally supply one incident sink capability
+- receive one stable result or status surface
 
-It should not expose the whole internal object graph by default.
+If a candidate public symbol does not support that story, it probably does not belong in
+the first public layer.
 
-This is the most important structural move because every later governance decision
-depends on knowing what is and is not public.
+## Step 2: choose the facade before choosing the modules
 
-## Step 2: move customization to capability seams
+Do not start with "which file should be public?"
 
-After the facade exists, identify where supported customization should happen.
+Start with:
 
-Replace deep extension intimacy with:
+- what one import should a learner copy first
+- what one call should a consumer trust
+- what one result type should remain stable enough to document
 
-- one narrow protocol
-- one stable callback role
-- one documented registration contract
+For example, the first public layer might become:
 
-The seam should ask extensions for a capability, not for access to private host state.
+```python
+from service_monitoring import run_monitoring, IncidentSink
+```
 
-If an extension still needs to mutate aggregates or reach into repositories directly,
-the seam is not ready to publish.
+That is narrow enough to teach and broad enough to support the main use case.
 
-## Step 3: make import rules enforce the boundary
+## Step 3: move customization to a capability seam
 
-Once the public surface and extension seams exist, align imports with that decision.
+The extension question is not "where can plugins reach in?"
 
-That usually means:
+It is:
 
-- consumers use the facade instead of deep modules
-- plugins depend on published protocols instead of internals
-- internal layers stop importing one another casually across boundaries
+- what capability can outsiders provide without taking ownership away from the host
 
-If the import graph still treats internal modules as normal dependencies, the public API
-story remains mostly rhetorical.
+For the capstone, a good seam is:
 
-## Step 4: attach documentation and examples to the supported path
+- one `IncidentSink` protocol or callback boundary
 
-The public surface is incomplete until the docs teach it.
+Bad seam:
 
-Add or revise:
+- direct access to repositories
+- direct mutation of aggregate state
+- deep imports into runtime worker internals
 
-- one quickstart path
-- one reference description of the supported entry surface
-- one executable example where practical
-- one explanation of extension limits or error behavior
+If customization still requires private-state intimacy, the seam is not ready to publish.
 
-This ensures that the first thing a learner copies is the right surface rather than a
-private shortcut.
+## Step 4: stop teaching deep imports immediately
 
-## Step 5: define compatibility and deprecation rules before growth
+Once the public surface is chosen, fix the teaching path before more consumers copy the
+wrong thing.
 
-Before more users depend on the facade, decide:
+Change:
 
-- how compatibility claims are expressed
-- what counts as breaking behavior
-- how deprecations are announced and migrated
-- which suites prove the external contract
+- quickstart examples
+- walkthrough snippets
+- reference imports
+- integration examples
 
-This is much easier to do while the public surface is still narrow than after the
-package has already grown around undocumented expectations.
+So they all reinforce the same supported facade.
 
-## Step 6: add change-control memory for the seam
+This step matters because the first example most learners copy becomes the accidental API
+if you leave it unchanged.
 
-Public and plugin-facing decisions should leave durable review memory.
+## Step 5: attach one compatibility rule now, not later
+
+Before the public surface grows, decide what counts as breaking.
+
+For the first version of this capstone surface, a useful rule might be:
+
+- facade names and documented sink protocol are supported
+- internal module layout is not supported
+- deep imports may change without deprecation
+- facade or protocol changes require an explicit migration path
+
+This is much easier to defend while the surface is still small.
+
+## Step 6: add one proof route for the seam
+
+A public surface is not real just because it is documented.
+
+It becomes real when one proof route protects it, such as:
+
+- one executable quickstart
+- one compatibility suite for the sink protocol
+- one import-boundary rule preventing examples from drifting back into internals
+
+Without that proof, the governance story is still aspirational.
+
+## Step 7: record why the boundary is shaped this way
+
+Leave durable change memory for the next maintainer.
 
 Record:
 
-- why this facade is public
-- why one extension seam exists and another stays private
-- what compatibility promise is being made
-- what conditions would justify broadening or narrowing the surface later
+- why the facade is small
+- why the incident sink seam is public
+- why runtime internals remain private
+- what would justify broadening the surface later
 
-That keeps later changes tied to the original reasoning rather than to convenience in
-the moment.
+That keeps future changes tied to consumer need instead of convenience in the moment.
 
-## A worked refactor route
+## Worked refactor route
 
-Imagine the capstone currently exposes:
+If the capstone currently teaches:
 
 - deep imports into runtime modules
-- one informal customization path through subclassing
-- examples that bypass the intended facade
-- no explicit compatibility suite
+- ad hoc subclassing for customization
+- no stable compatibility proof
 
-An ordered refactor route could be:
+An ordered refactor could be:
 
-1. create one package-level facade for the supported workflow
-2. stop teaching deep imports in examples
-3. replace subclass-heavy customization with one documented capability protocol
-4. add registration validation for that extension seam
-5. define import rules so consumers and plugins depend on the published surface only
-6. add one compatibility suite for the external workflow or extension contract
-7. write one decision record that explains why the seam is public and what remains private
+1. introduce one package-level monitoring facade
+2. replace example deep imports with the facade
+3. define one documented incident sink protocol
+4. validate sink registration at one explicit boundary
+5. add one compatibility suite for supported sink behavior
+6. mark runtime and adapter internals as private in docs and review rules
+7. record the public-surface decision in one governance note
 
-That turns a codebase with accidental public reachability into one with explicit
-governance.
+Each step is small, reviewable, and tied to one governance gain.
 
-## Common mistakes
+## What not to do
 
-- publishing many surfaces before identifying the real supported use cases
-- calling deep imports "temporary" while continuing to teach them in docs
-- exposing extension seams that still require private-state knowledge
-- adding version labels without compatibility proof
-- broadening the public surface without recording why the extra governance cost is worth it
+- do not publish a wider API "just in case"
+- do not keep teaching deep imports while claiming they are private
+- do not expose extension seams that still require knowledge of private host state
+- do not add deprecation language without a proof route
+- do not let documentation and code disagree about what is public
 
 ## Review checklist
 
 | Question | Good sign |
 | --- | --- |
-| can supported work be done through a narrow documented facade? | yes |
-| do extension seams ask for capabilities rather than private access? | yes |
-| do imports, docs, and examples all reinforce the same public path? | yes |
-| are compatibility and change-control rules attached before the surface grows further? | yes |
+| can the main consumer story be completed through one narrow facade? | yes |
+| does the extension seam expose capability rather than private authority? | yes |
+| do examples reinforce the supported import path? | yes |
+| does at least one compatibility or executable-proof route defend the seam? | yes |
 
 ## Capstone connection
 
-Use this refactor route to inspect the capstone today.
+Use this page to audit the capstone today.
 
 Ask:
 
-- which deep imports should be replaced by one package-level entry surface?
-- which customization need deserves one narrow public seam next?
-- which docs and tests would need to change before you could honestly call the capstone reusable by outsiders?
+- which current deep import should be replaced first by a package-level facade
+- which one customization need is worth publishing before anything else
+- which existing example would mislead a new consumer if left unchanged
 
-These questions turn Module 09 into a concrete API-governance redesign plan.
+That turns Module 09 into a real redesign path rather than a generic API warning.
 
 ## Exit check
 
 Leave this refactor page only when you can do all of these:
 
-- describe an ordered plan for shrinking an accidental public surface into a governed one
-- identify one capstone extension need that should become a documented capability seam
-- explain why docs, imports, compatibility checks, and decision records all belong to the same public-API refactor
+- describe one ordered route from accidental imports to a governed public surface
+- identify one capstone extension seam that is narrow enough to publish now
+- explain why docs, compatibility proof, and import discipline all belong to the same refactor
