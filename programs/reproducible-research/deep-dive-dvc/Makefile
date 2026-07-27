@@ -104,6 +104,14 @@ capstone-runtime-contract-audit: ## Audit declared and hidden runtime influences
 capstone-runtime-contract-selftest: ## Enforce declared and hidden runtime evidence
 	@$(RUN_CAPSTONE) runtime-contract-selftest
 
+.PHONY: capstone-metric-contract-audit
+capstone-metric-contract-audit: ## Audit metric semantic comparability
+	@$(RUN_CAPSTONE) metric-contract-audit
+
+.PHONY: capstone-metric-contract-selftest
+capstone-metric-contract-selftest: ## Enforce metric semantic comparability evidence
+	@$(RUN_CAPSTONE) metric-contract-selftest
+
 .PHONY: capstone-source-bundle
 capstone-source-bundle: ## Build the capstone tracked-source release bundle
 	@$(RUN_CAPSTONE) source-bundle

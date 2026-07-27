@@ -103,7 +103,7 @@ That judgment belongs to you and the review contract.
 Run the capstone audit:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone metric-contract-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit
 ```
 
 Open:

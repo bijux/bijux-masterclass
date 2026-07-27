@@ -45,6 +45,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | influential runtime state needs a declared edge or an enforced external contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit` | `capstone/repro/runtime-contracts/`, generated fingerprints, status receipts, semantic results, and declaration hashes |
 | params are part of recorded execution meaning | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/params.yaml`, `capstone/dvc.lock` |
 | metrics are reviewable state, not only console output | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/metrics/metrics.json`, `capstone/publish/v1/metrics.json` |
+| metric movement supports comparison only under a stable semantic contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit` | `capstone/repro/metric-contracts/`, generated metric and parameter diffs, comparison records, and `summary.tsv` |
 | promoted outputs are smaller than internal repository state | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | `capstone/publish/v1/`, `capstone/state/`, `course-book/capstone/index.md`, `capstone/publish/v1/manifest.json` |
 | repository layers have distinct reading responsibilities | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/capstone-file-guide.md`, `capstone/dvc.yaml` |
 
@@ -68,7 +69,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | Question | Best first command | Best first file |
 | --- | --- | --- |
 | what exactly changed between declaration and recorded execution | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `capstone/dvc.lock` |
-| which parameters are safe to compare across runs | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/params.yaml` |
+| which metric results are safe to compare across runs | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit` | `capstone/repro/metric-contracts/README.md` |
 | which artifacts are safe for downstream trust | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | `capstone/publish/v1/manifest.json` |
 | which state survives local cache loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | `course-book/capstone/index.md` |
 | which verification route fits my question | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `course-book/capstone/capstone-proof-guide.md` |

@@ -37,7 +37,7 @@ metric review pessimistic. It is to make the evidence say exactly what changed.
 From the repository root:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone metric-contract-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit
 ```
 
 The generated packet is:

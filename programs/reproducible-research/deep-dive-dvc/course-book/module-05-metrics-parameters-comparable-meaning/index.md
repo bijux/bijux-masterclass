@@ -47,11 +47,12 @@ The central question is:
 If the answer is unclear, `dvc metrics diff` can still show numbers, but the team does not
 yet have a defensible comparison.
 
-The capstone corroboration surface for this module is the set of files that tie
-parameters, metrics, and release evidence together: `capstone/params.yaml`,
-`capstone/metrics/metrics.json`, `capstone/plots/`, `capstone/publish/v1/metrics.json`,
-`capstone/docs/release-review-guide.md`, `capstone/docs/publish-contract.md`, and
-the `make -C capstone release-audit` route.
+The capstone corroboration surface for this module is the controlled metric-contract
+specimen in `capstone/repro/metric-contracts/`, its
+`capstone/docs/metric-contract-audit-guide.md`, the generated metric and parameter diffs,
+and the audit summary. Run that proof through the repository-root
+`capstone-metric-contract-audit` route so the lesson and executable evidence use the same
+public interface.
 
 ## Why this module exists
 
@@ -112,7 +113,7 @@ If the problem is already partly clear, use this shortcut:
 | [Metrics Diff and Review Boundaries](metrics-diff-and-review-boundaries.md) | teaches what DVC diffs can show and what humans must still judge |
 | [Plots and Release Interpretation](plots-and-release-interpretation.md) | teaches plots, visual evidence, and release-facing metric discipline |
 | [Worked Example: Repairing a Misleading Metric Comparison](worked-example-repairing-a-misleading-metric-comparison.md) | walks through one realistic comparison repair |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten cumulative exercises, ending in an executable audit |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -132,15 +133,16 @@ By the end of this module, you should be able to explain:
 These commands form the evidence loop for Module 05:
 
 ```bash
-make -C capstone release-audit
-make -C capstone prediction-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-selftest
 dvc metrics show
 dvc metrics diff
 dvc params diff
 ```
 
-Use the `make` routes for the course-provided capstone review. Use the `dvc` commands
-inside a DVC workspace when you want to inspect metric and parameter differences directly.
+Use the root `make` routes for the course-provided audit and adversarial self-test. Use
+the `dvc` commands inside a DVC workspace when you want to inspect metric and parameter
+differences directly.
 
 ## Capstone route
 
@@ -148,22 +150,20 @@ Use the capstone after the metric meaning question is clear.
 
 Best corroboration surfaces for this module:
 
-- `capstone/params.yaml`
-- `capstone/metrics/metrics.json`
-- `capstone/plots/`
-- `capstone/publish/v1/metrics.json`
-- `capstone/publish/v1/params.yaml`
-- `capstone/docs/release-review-guide.md`
-- `capstone/docs/release-review-guide.md`
-- `capstone/docs/publish-contract.md`
+- `capstone/repro/metric-contracts/README.md`
+- `capstone/repro/metric-contracts/cases/`
+- `capstone/scripts/audit_metric_contracts.py`
+- `capstone/tests/test_metric_contract_audit.py`
+- `capstone/docs/metric-contract-audit-guide.md`
+- generated `metric-contracts/summary.tsv`
+- generated per-case `dvc-metrics-diff.json`, `dvc-params-diff.json`, and `comparison.json`
 
 Useful proof route:
 
 ```bash
-make -C capstone prediction-review
-make -C capstone release-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit
 ```
 
 The point of that route is not to accept a number because it appears in a metric file. It
-is to ask whether the parameter surface, population, metric definition, and published
-evidence support the comparison a reviewer wants to make.
+is to ask whether population identity, parameter controls, metric definition, unit,
+schema, and evidence support the comparison a reviewer wants to make.

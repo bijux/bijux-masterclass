@@ -170,6 +170,14 @@ capstone-runtime-contract-audit: ## Classify selected program runtime contract e
 capstone-runtime-contract-selftest: ## Enforce selected program runtime contract evidence
 	@$(RUN_PROGRAM) capstone-runtime-contract-selftest
 
+.PHONY: capstone-metric-contract-audit
+capstone-metric-contract-audit: ## Classify selected program metric comparison evidence
+	@$(RUN_PROGRAM) capstone-metric-contract-audit
+
+.PHONY: capstone-metric-contract-selftest
+capstone-metric-contract-selftest: ## Enforce selected program metric comparison evidence
+	@$(RUN_PROGRAM) capstone-metric-contract-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit
