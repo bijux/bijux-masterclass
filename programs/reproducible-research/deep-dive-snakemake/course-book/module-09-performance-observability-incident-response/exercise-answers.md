@@ -17,6 +17,18 @@ Use it for three kinds of comparison:
 If your wording differs but your reasoning is equally precise and equally honest, your
 answer can still be strong.
 
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one cost-class note
+- one evidence-order note
+- one raw baseline record
+- one bounded incident packet
+- one single-boundary tuning note
+- one revised runbook
+
+If your answers rely only on feelings of slowness or one lucky faster run, the reasoning
+is still too thin.
+
 ## Exercise 1: Name the dominant cost class
 
 Strong diagnosis:
@@ -148,6 +160,11 @@ Why this is strong:
 Weak runbooks say "inspect logs" or "rerun with more resources" without telling the next
 maintainer how to know whether the issue is semantic, operational, or already resolved.
 
+The missing but important sentence is usually this one:
+
+> After the first command, the maintainer should expect one specific observation before
+> continuing, otherwise the runbook has already lost the thread of the incident.
+
 ## Exercise 6: Establish a measured baseline
 
 Use identical inputs and context for repeated runs, retaining raw observations rather than
@@ -183,6 +200,11 @@ Why this is strong:
 - it preserves raw evidence
 - it separates planning, total runtime, and rule-local cost
 - it keeps the baseline conditional rather than pretending it is universal
+
+The key explanatory sentence is:
+
+> A single fast run is not a baseline because it cannot tell you whether the improvement
+> was real, noisy, or accidental.
 
 ## Exercise 7: Build an incident evidence packet
 
@@ -247,6 +269,9 @@ Example answer shape:
 
 Weak answers declare victory after one lucky faster run.
 
+The strongest answers also say explicitly that a small speed gain is not worth keeping if
+the workflow’s semantic truth, failure visibility, or review surface got weaker.
+
 ## Exercise 9: Diagnose a context-specific regression
 
 Queue timestamps distinguish waiting from execution. Job launch records reveal scheduler
@@ -300,6 +325,13 @@ Why this matters:
 - a runbook is itself an evidence surface
 - if another maintainer cannot follow it safely, the repository still depends on oral
   tradition
+
+Weak answer pattern:
+
+- "the workflow is slow, so we tuned some settings and it seemed better"
+
+That sentence skips cost class, evidence order, and semantic guardrails all at once. If
+your answers still sound like that, keep revising.
 
 ## Self-check
 

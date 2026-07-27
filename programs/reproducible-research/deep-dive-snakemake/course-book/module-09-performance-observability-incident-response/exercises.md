@@ -57,6 +57,33 @@ module09-lab/
 That structure makes it easier to compare baselines, incident packets, and runbook
 revisions without losing which evidence belongs to which question.
 
+Build one small incident-review packet as you go:
+
+- one cost-class note for the first suspected slowdown or flaky symptom
+- one evidence-order note showing why you inspected one surface before another
+- one measured baseline with raw records preserved
+- one incident packet that separates known facts from unknowns
+- one single-boundary tuning note with before-and-after measurements
+- one runbook revision note after another maintainer tries to follow it
+
+If those six artifacts are missing, the day usually turns into "the workflow felt slow"
+instead of "the incident became reviewable."
+
+```mermaid
+flowchart LR
+  classify["name the cost class first"]
+  evidence["choose the right evidence surface"]
+  baseline["measure a trustworthy baseline"]
+  incident["collect a bounded incident packet"]
+  tune["change one boundary at a time"]
+  runbook["teach the next maintainer how to respond"]
+
+  classify --> evidence --> baseline --> incident --> tune --> runbook
+```
+
+Use that route on purpose. It keeps the day anchored in evidence-first diagnosis instead
+of generic performance folklore.
+
 ## Exercise 1: Name the dominant cost class
 
 Choose a slowdown report and decide which cost class is the strongest lead first.
@@ -128,6 +155,7 @@ What to hand in:
 - the next evidence surfaces to inspect
 - one escalation trigger
 - one command that proves the repair honestly
+- one expected observation after the first command so the next maintainer knows whether the runbook stayed on track
 
 Study note:
 If the runbook depends on "then inspect whatever looks wrong," it is not a runbook yet.
@@ -143,6 +171,7 @@ What to hand in:
 - median and range for each surface
 - environmental factors held constant
 - one reason the baseline may not generalize
+- one sentence explaining why a single fast run would not be enough evidence
 
 Study note:
 Do not hide the raw records. If another maintainer cannot recompute the baseline from
@@ -175,6 +204,20 @@ What to hand in:
 - repeated measurements
 - semantic output comparison
 - a decision to keep or revert the change
+- one sentence explaining why unchanged meaning matters more than a small speed gain
+
+## Midday self-check
+
+Before you move into context-specific regression and runbook rehearsal, make sure your
+packet can already answer all of these:
+
+- which cost class you are actually testing first
+- which evidence surface fits the current question better than the louder alternatives
+- what the baseline says and what it still cannot guarantee
+- which semantic truth must remain unchanged while you tune or respond
+
+If you cannot answer those four questions cleanly, return to the earlier exercises and
+make the incident packet more explicit before moving on.
 
 Study note:
 If you changed three things at once, you did not complete this exercise even if the run
@@ -212,6 +255,16 @@ What to hand in:
 Study note:
 If the second reader needed your verbal clarification, treat that as failed evidence about
 the current runbook quality, not as a reader mistake.
+
+## What weak completion looks like
+
+Do not call the day complete if your answers do any of these:
+
+- call every slowdown "runtime" without naming a narrower cost class
+- start from the loudest log instead of the evidence surface that matches the question
+- increase retries or latency without classifying the incident first
+- accept a speed gain that weakens semantic truth or reviewability
+- write a runbook that still depends on oral clarification to be safe
 
 ## Exit standard for the exercise day
 
