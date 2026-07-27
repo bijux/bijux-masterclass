@@ -66,6 +66,9 @@ Why:
 The important distinction is that `--summary` tells you what changed in workflow state,
 while the benchmark tells you what a specific rule cost.
 
+Weak answers usually start at the loudest log file and only later ask what question they
+were trying to answer.
+
 ## Exercise 3: Triage a flaky cluster-only incident
 
 Why the proposed fix is not yet sufficient:
@@ -90,6 +93,8 @@ Evidence to consult first:
 
 The main lesson is that cluster-only incidents should not be flattened into "needs more
 retries."
+
+Weak answers usually skip classification and jump straight to policy inflation.
 
 ## Exercise 4: Review a suspicious optimization
 
@@ -118,6 +123,8 @@ Proof required before approving the valid part:
 - benchmark evidence at the new grouped boundary
 - confirmation that output and failure visibility remain usable
 
+Weak answers praise the speed idea without checking whether the review surface survived.
+
 ## Exercise 5: Draft a runbook entry
 
 A strong minimal runbook entry could say:
@@ -138,6 +145,9 @@ Why this is strong:
 - it includes a real escalation trigger
 - it ends with a proof route rather than with vague advice
 
+Weak runbooks say "inspect logs" or "rerun with more resources" without telling the next
+maintainer how to know whether the issue is semantic, operational, or already resolved.
+
 ## Exercise 6: Establish a measured baseline
 
 Use identical inputs and context for repeated runs, retaining raw observations rather than
@@ -155,6 +165,25 @@ What a strong answer says explicitly:
 - what remained uncontrolled
 - why the baseline is informative but still conditional on context
 
+Example answer shape:
+
+- planning measurements:
+  - five `snakemake -n` timings written under `artifacts/baselines/planning.tsv`
+- execution measurements:
+  - five end-to-end runs on unchanged inputs
+- heavy-rule measurements:
+  - benchmark rows for the dominant align or summarize step
+- summary:
+  - "planning median was 7.2 seconds with a 1.1 second range; total runtime median was
+    88 seconds with a 6 second range; the heavy rule median was 53 seconds with a 2 second
+    range"
+
+Why this is strong:
+
+- it preserves raw evidence
+- it separates planning, total runtime, and rule-local cost
+- it keeps the baseline conditional rather than pretending it is universal
+
 ## Exercise 7: Build an incident evidence packet
 
 The packet states an observable symptom and bounded scope before offering a theory.
@@ -171,6 +200,24 @@ A strong packet separates known facts from hypotheses and avoids dumping unrelat
 Another maintainer should be able to classify the incident without asking what command was
 run.
 
+Example packet shape:
+
+- symptom:
+  - "`publish/v1/report.html` took 4x longer on CI than on local runs"
+- bounded scope:
+  - "only the reporting family, only the CI profile, first seen after commit X"
+- evidence:
+  - one dry-run, one summary, one relevant rule log, one benchmark row, one provenance or
+    profile record
+- unknowns:
+  - whether the delay is scheduler overhead or slower shared storage
+
+Why this is strong:
+
+- it makes the scope explicit
+- it avoids burying the real question inside unrelated artifacts
+- it records what is still unknown instead of pretending certainty
+
 ## Exercise 8: Tune one boundary at a time
 
 Change only the hypothesized overhead source, repeat measurements, and compare semantic
@@ -185,6 +232,21 @@ Keep the change only when:
 
 If results overlap the baseline or evidence weakens, revert rather than rationalize.
 
+Example answer shape:
+
+- hypothesis:
+  - "grouping per-fragment QC into one per-sample step will reduce scheduler overhead"
+- single change:
+  - change only the QC boundary, keep inputs, outputs, and publish rules the same
+- repeated measurements:
+  - compare five before/after runs
+- semantic comparison:
+  - compare checksummed public outputs and representative QC tables
+- decision:
+  - keep the change only if speed improves materially and the same trusted outputs remain
+
+Weak answers declare victory after one lucky faster run.
+
 ## Exercise 9: Diagnose a context-specific regression
 
 Queue timestamps distinguish waiting from execution. Job launch records reveal scheduler
@@ -194,6 +256,22 @@ pressure, and benchmarks isolate tool runtime.
 A strong answer rejects higher retries until evidence shows a transient class. The
 smallest useful experiment changes one context factor while preserving the target and
 input set.
+
+Example answer shape:
+
+- queue delay evidence:
+  - timestamps show jobs waited 90 seconds before starting
+- launch overhead evidence:
+  - many tiny jobs spend more time entering the scheduler than computing
+- storage evidence:
+  - no strong latency errors in logs
+- tool runtime evidence:
+  - benchmark medians unchanged
+- strongest supported class:
+  - scheduler overhead under the current context
+
+A strong answer rejects "increase retries" here because retries do not fix queued jobs
+that are merely too small and too numerous.
 
 ## Exercise 10: Rehearse and revise a runbook
 
@@ -209,6 +287,19 @@ Revise it with:
 
 A successful rehearsal reaches the appropriate verification route without destructive
 cleanup, indiscriminate retries, or an unrelated full-suite run.
+
+Example revision moves:
+
+- add the exact prerequisite state
+- replace "check the logs" with the specific log path family
+- add one expected observation after each command
+- add a stop condition that prevents cargo-cult retries
+
+Why this matters:
+
+- a runbook is itself an evidence surface
+- if another maintainer cannot follow it safely, the repository still depends on oral
+  tradition
 
 ## Self-check
 
