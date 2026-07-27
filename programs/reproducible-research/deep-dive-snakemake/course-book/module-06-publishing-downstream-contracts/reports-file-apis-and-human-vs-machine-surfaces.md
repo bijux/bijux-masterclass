@@ -23,6 +23,20 @@ Ask two different questions:
 If you keep answering both questions with the same file, the bundle is probably mixing
 roles.
 
+## If you are learning this without the live class
+
+Treat this page as an audience-routing exercise.
+
+Use it in four passes:
+
+1. name one machine consumer and one human reviewer before you classify any files
+2. choose which artifact each audience should open first
+3. stop and ask what would break if a script scraped the report instead
+4. finish by writing one authority note saying which artifact is authoritative for which question
+
+If you cannot name the authority relationship between artifacts, you are still describing
+outputs instead of interfaces.
+
 ## Human-readable and machine-readable are different needs
 
 Downstream consumers often need stable machine-readable artifacts such as:
@@ -64,6 +78,19 @@ This is different from both the report and the manifest.
 
 The report explains what happened in the run. The file API explains how to use the bundle.
 
+## The authority card to keep beside you
+
+Use this table before you call any file "the main output":
+
+| Question | Authoritative artifact | Supporting artifact |
+| --- | --- | --- |
+| what should a script parse | `summary.json` or `summary.tsv` | report for human interpretation |
+| what should a human open first | `report/index.html` | structured summary for exact fields |
+| what paths and meanings are stable | file API or contract note | manifest and provenance as support evidence |
+| whether the bundle is intact | manifest plus checksums | report only as a human-facing convenience |
+
+If one file keeps winning every row, the bundle is still too vague.
+
 ## One artifact should not do every job
 
 ```mermaid
@@ -75,6 +102,17 @@ flowchart LR
 ```
 
 The point of this diagram is not to create bureaucracy. It is to prevent role confusion.
+
+## One anti-scraping review loop
+
+When someone proposes scraping a report, ask these in order:
+
+1. what exact machine-facing field is missing from the structured contract
+2. whether the structured summary should be repaired instead of scraping HTML
+3. what stability promise the report markup is actually making
+
+Most of the time, the right repair is to strengthen the machine-facing contract rather
+than normalize presentation scraping.
 
 ## A concrete way to assign roles
 
@@ -128,6 +166,18 @@ They should be able to:
 
 That scenario is the reason this distinction matters.
 
+## What reviewed discovery evidence changes here
+
+When the bundle also contains `accepted_samples.json` and `rejected_samples.json`, the
+authority split becomes even clearer:
+
+- structured files explain membership and machine-facing facts
+- reports explain the run to a human
+- the file API says which of those artifacts a consumer may rely on directly
+
+This matters because a reviewer may read the report first, but a machine should still use
+the structured membership and summary artifacts.
+
 ## A practical test
 
 Ask these questions:
@@ -174,7 +224,8 @@ Strong explanation:
 
 > `summary.json` and `summary.tsv` are the machine-facing outputs, `report/index.html`
 > helps humans inspect the run, and the file API explains the meaning and stability of the
-> published artifacts.
+> published artifacts; the reviewed discovery records stay structured so machines do not
+> need to infer membership from the report.
 
 Weak explanation:
 
