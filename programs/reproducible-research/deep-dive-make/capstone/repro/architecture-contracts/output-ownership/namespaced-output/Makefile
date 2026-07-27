@@ -1,6 +1,6 @@
 .RECIPEPREFIX := >
 
-SOURCES := src/app/util.txt src/lib/util.txt
+SOURCES := src/cli/util.txt src/lib/util.txt
 OUTPUTS := $(patsubst src/%,build/%,$(SOURCES))
 
 .PHONY: all clean show-map
@@ -10,13 +10,13 @@ show-map:
 > @printf 'sources=%s\n' '$(SOURCES)'
 > @printf 'outputs=%s\n' '$(OUTPUTS)'
 
-build/app/%.txt: src/app/%.txt | build/app/
+build/cli/%.txt: src/cli/%.txt | build/cli/
 > { printf 'selected=%s\n' '$<'; cat '$<'; } > $@
 
 build/lib/%.txt: src/lib/%.txt | build/lib/
 > { printf 'selected=%s\n' '$<'; cat '$<'; } > $@
 
-build/app/ build/lib/:
+build/cli/ build/lib/:
 > mkdir -p $@
 
 clean:

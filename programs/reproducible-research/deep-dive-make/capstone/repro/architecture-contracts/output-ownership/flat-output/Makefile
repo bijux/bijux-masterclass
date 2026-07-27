@@ -1,6 +1,6 @@
 .RECIPEPREFIX := >
 
-SOURCES := src/app/util.txt src/lib/util.txt
+SOURCES := src/cli/util.txt src/lib/util.txt
 OUTPUTS := $(sort $(addprefix build/,$(notdir $(SOURCES))))
 
 .PHONY: all clean show-map
