@@ -60,7 +60,8 @@ These answer:
 
 Typical example:
 
-- `results/discovered_samples.json`
+- `results/discovery/accepted_samples.json`
+- `results/discovery/rejected_samples.json`
 
 ### 2. Provenance artifacts
 
@@ -84,7 +85,8 @@ These answer:
 
 Typical examples:
 
-- `publish/v1/discovered_samples.json`
+- `publish/v1/accepted_samples.json`
+- `publish/v1/rejected_samples.json`
 - `publish/v1/manifest.json`
 - `publish/v1/report/index.html`
 
@@ -102,7 +104,7 @@ Could they answer all of these without rummaging through internal execution stat
 
 If not, the publish boundary is probably still underspecified.
 
-## Why the discovered set deserves special treatment
+## Why accepted and rejected discovery evidence deserves special treatment
 
 The discovered sample set is not just one more intermediate file.
 
@@ -110,9 +112,10 @@ In a dynamic workflow it often explains:
 
 - why certain jobs existed at all
 - why some downstream outputs are present
+- why some candidates never became downstream outputs
 - why the publish surface contains the sample families it does
 
-If that artifact disappears or stays private forever, the run story becomes harder to
+If those artifacts disappear or stay private forever, the run story becomes harder to
 reconstruct.
 
 That is why the capstone carries discovery into the publish boundary instead of treating it
@@ -122,10 +125,13 @@ as disposable setup state.
 
 ```mermaid
 flowchart LR
-  raw["data/raw"] --> discovery["results/discovered_samples.json"]
-  discovery --> results["results/{sample}/..."]
+  manifest["config/samples.tsv"] --> raw["declared raw evidence"]
+  raw --> accepted["results/discovery/accepted_samples.json"]
+  raw --> rejected["results/discovery/rejected_samples.json"]
+  accepted --> results["results/{sample}/..."]
   results --> publish["publish/v1/"]
-  discovery --> publish
+  accepted --> publish
+  rejected --> publish
   publish --> manifest["manifest.json"]
   publish --> provenance["provenance.json"]
 ```
@@ -133,7 +139,7 @@ flowchart LR
 This design does something subtle but important:
 
 - dynamic discovery remains visible inside the run
-- the same discovery fact is preserved at the public boundary
+- both accepted and rejected decisions are preserved at the public boundary
 - manifest and provenance make the publish surface reviewable as a set
 
 ## A strong beginner habit
@@ -146,7 +152,7 @@ If the workflow is already dynamic in Module 02, start teaching the habit here:
 - public outputs should be enumerated
 - run identity should be explained while the workflow is still small enough to inspect
 
-## What belongs in a discovery artifact
+## What belongs in accepted and rejected discovery artifacts
 
 A weak registry usually lists only names.
 
@@ -155,15 +161,29 @@ A stronger registry records enough context for later review, for example:
 ```json
 {
   "schema_version": 1,
-  "source": "data/raw/*.fastq.gz",
-  "samples": {
-    "sampleA": {
-      "reads": {
-        "R1": "data/raw/sampleA_R1.fastq.gz",
-        "R2": "data/raw/sampleA_R2.fastq.gz"
-      }
+  "declared_source": "config/samples.tsv",
+  "samples": [
+    {
+      "sample": "sampleA",
+      "path": "data/raw/sampleA.fastq.gz"
     }
-  }
+  ]
+}
+```
+
+When rejection is possible, keep a companion record that explains non-membership too:
+
+```json
+{
+  "schema_version": 1,
+  "declared_source": "config/samples.tsv",
+  "samples": [
+    {
+      "sample": "sampleB",
+      "path": "data/raw/sampleB.fastq.gz",
+      "reason": "empty input file"
+    }
+  ]
 }
 ```
 
@@ -215,8 +235,8 @@ With a manifest, the boundary becomes reviewable as a declared set.
 
 Strong:
 
-> The run writes one discovery registry, one provenance record, and one manifest so the
-> publish bundle explains both its membership and its origin.
+> The run writes accepted and rejected discovery records, one provenance record, and one
+> manifest so the publish bundle explains both its membership decisions and its origin.
 
 Weak:
 
@@ -240,8 +260,8 @@ Those questions overlap, but they are not identical.
 
 | Mistake | Why it hurts | Better repair |
 | --- | --- | --- |
-| discovery artifact is overwritten or discarded | later review cannot explain the DAG | keep the registry as a durable run artifact |
-| publish boundary omits discovery | downstream users cannot tell why sample outputs exist | promote the discovered set into the publish bundle |
+| accepted or rejected discovery evidence is overwritten or discarded | later review cannot explain the DAG membership decisions | keep the discovery records as durable run artifacts |
+| publish boundary omits discovery | downstream users cannot tell why sample outputs exist or why others are missing | promote accepted and rejected records into the publish bundle |
 | provenance captures only a timestamp | run identity stays vague | record resolved config and software identity too |
 | publish directory has no inventory | reviewers cannot tell what belongs there | add a manifest with explicit paths and checksums |
 | internal and public files share the same location with no distinction | ownership and review scope blur together | keep `results/` and `publish/` responsibilities separate |
@@ -250,10 +270,13 @@ Those questions overlap, but they are not identical.
 
 Strong explanation:
 
-> the workflow records discovery in `results/discovered_samples.json`, publishes a reviewed
-> copy at `publish/v1/discovered_samples.json`, records run identity in
-> `publish/v1/provenance.json`, and inventories the bundle in `publish/v1/manifest.json`, so
-> a reviewer can explain both why the DAG changed and what the public contract now contains.
+> the workflow records accepted candidates in `results/discovery/accepted_samples.json`,
+> records rejected candidates in `results/discovery/rejected_samples.json`, publishes
+> reviewed copies at `publish/v1/accepted_samples.json` and
+> `publish/v1/rejected_samples.json`, records run identity in
+> `publish/v1/provenance.json`, and inventories the bundle in
+> `publish/v1/manifest.json`, so a reviewer can explain both why the DAG changed and what
+> the public contract now contains.
 
 Weak explanation:
 
@@ -267,6 +290,6 @@ optional decoration.
 Before leaving this page, you should be able to:
 
 - distinguish discovery artifacts from provenance artifacts from publish artifacts
-- explain why a discovered-set file may belong both inside the run and at the publish boundary
+- explain why accepted and rejected discovery records may belong both inside the run and at the publish boundary
 - describe what a manifest adds that a directory listing does not
 - explain why internal execution state should not automatically become the public contract

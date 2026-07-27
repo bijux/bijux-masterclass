@@ -30,7 +30,7 @@ Pause and check a term when:
 | parse-time discovery | Discovery that happens while the Snakefile is being read, before job execution begins. |
 | provenance | The run-identity evidence that explains which configuration and software state produced the outputs. |
 | publish boundary | The versioned output surface a downstream consumer is allowed to trust. |
-| registry | A durable file that records discovery in a structured way, such as `discovered_samples.json`. |
+| registry | A durable file that records discovery in a structured way, such as `accepted_samples.json`, `rejected_samples.json`, or `discovered_samples.json` when no validation split is needed. |
 | scheduler cost | The overhead of launching, tracking, and coordinating jobs, apart from the useful work they perform. |
 | software boundary | The declared environment or container surface that explains which tools a rule needs. |
 | target list | The explicit set of files the workflow is trying to build for a given run. |
@@ -40,7 +40,7 @@ Pause and check a term when:
 
 When you explain a Module 02 situation, aim to say things like:
 
-- "the discovered set is recorded in one owned registry"
+- "the discovered set is recorded in owned discovery registries"
 - "that checkpoint is justified because the downstream target list is not known earlier"
 - "this is a fanout-control problem, not just a syntax problem"
 - "the publish boundary preserves the discovery fact for later review"
@@ -57,8 +57,8 @@ lazy:
   until after a run artifact exists; parse-time discovery happens before execution starts.
 - `discovered set` versus `target list`: the discovered set is what the workflow learned
   exists; the target list is what the workflow is trying to build.
-- `registry` versus `manifest`: a registry records discovery facts; a manifest records the
-  contents of a publish boundary.
+- `registry` versus `manifest`: a registry records discovery facts such as accepted or
+  rejected candidates; a manifest records the contents of a publish boundary.
 - `fanout` versus `scheduler cost`: fanout names the expansion shape; scheduler cost names
   the overhead of managing that shape.
 
@@ -66,7 +66,7 @@ lazy:
 
 Before you leave Module 02, make sure you can answer these in a full sentence:
 
-- Why is one JSON file of discovered samples easier to review than repeated ad hoc
+- Why are accepted and rejected discovery records easier to review than repeated ad hoc
   directory scans across rules?
 - What term should you use if downstream jobs cannot be known honestly before one earlier
   rule finishes?
