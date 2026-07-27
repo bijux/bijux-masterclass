@@ -32,6 +32,10 @@ By the time Module 04 reaches this page, one rule should feel non-negotiable:
 
 That is why `functools.wraps` is not a style flourish. It is part of correctness.
 
+This page needs one boundary stated early: `wraps` preserves important identity and
+inspection surfaces, but it does not erase semantic drift. A stateful or policy-owning
+wrapper can still be non-transparent even when its metadata is preserved well.
+
 ## The sentence to keep
 
 When reviewing a decorator, ask:
@@ -40,6 +44,10 @@ When reviewing a decorator, ask:
 
 If the answer is "just `wrapper(*args, **kwargs)` and a lost docstring," the decorator has
 already damaged transparency.
+
+If the answer is "the metadata looks fine, but the wrapper still changes retries,
+execution, or caching policy," then the wrapper has preserved identity better than it has
+preserved semantics. That distinction matters.
 
 ## What bare wrappers lose
 
@@ -59,6 +67,10 @@ That is real breakage for:
 - debuggers
 - stack traces
 - reviewers trying to understand what was wrapped
+
+Use this as a quick repair prompt: if a wrapper claims to stay transparent, ask first what
+tools now see, then ask what runtime behavior has still changed despite that preserved
+view.
 
 ## `functools.wraps` restores the important metadata
 
@@ -80,6 +92,10 @@ and, importantly, sets:
 
 That `__wrapped__` chain is what lets inspection tools recover the logical callable under
 the wrapper.
+
+For learners who completed Module 03 first, this is the bridge back to signature
+evidence: a preserved `__wrapped__` path gives inspection tools a better chance to recover
+the logical callable contract instead of stopping at a generic forwarding shell.
 
 ## Bare versus preserved wrapping
 
@@ -124,6 +140,16 @@ That contrast is the entire lesson:
 - the bare wrapper changes what tools see
 - the preserved wrapper keeps the original callable legible
 
+It is useful to separate what `wraps` usually repairs from what it does not:
+
+| Surface or concern | `wraps` usually helps? | Why |
+| --- | --- | --- |
+| name, docstring, annotations, module, qualname | yes | metadata is copied or updated onto the wrapper |
+| `__wrapped__` path for unwrapping tools | yes | the wrapper gets an explicit pointer to the logical original callable |
+| signature recovery through unwrapping | often yes | tools can follow `__wrapped__` instead of stopping at `*args, **kwargs` |
+| hidden cache, retry, or fallback policy | no | metadata preservation does not undo semantic changes |
+| altered return-value or exception behavior | no | transparent labels cannot cancel non-transparent runtime behavior |
+
 ## One picture of preserved transparency
 
 ```text
@@ -137,6 +163,10 @@ With wraps:
 
 This is why `wraps` belongs in the definition-time part of the decorator, not as an
 optional cleanup later.
+
+That is also why "we can add `wraps` later" is weak review language. If the wrapper's
+public surface is already misleading during development or testing, the damage is already
+happening where tools and readers rely on it.
 
 ## `__wrapped__` is especially important
 
@@ -152,6 +182,11 @@ It supports tools that need to:
 
 That makes `__wrapped__` a practical inspection surface, not an obscure implementation
 detail.
+
+When a decorator stack grows, `__wrapped__` is often the difference between:
+
+- a review that can still trace logical ownership
+- a review that gets stuck at anonymous forwarding layers
 
 ## Custom preservation is possible, but the standard tool should be the default
 
@@ -171,6 +206,11 @@ That default is simple, well understood, and aligned with Python's introspection
 If a custom helper is used, the review burden goes up because the team now has to verify
 that the custom preservation is truly equivalent where it matters.
 
+That makes the default rule simple:
+
+- use `functools.wraps` unless a concrete requirement forces something else
+- if something else is used, prove which surfaces it preserves and why the standard tool was insufficient
+
 ## Signature transparency matters to later modules
 
 This page also closes the loop with Module 03:
@@ -182,6 +222,16 @@ This page also closes the loop with Module 03:
 That is why the course teaches `functools.wraps` before heavier decorator policy. If
 transparency is weak here, everything built on inspection later becomes less trustworthy.
 
+## Transparency claims that still need caution
+
+Even after `wraps`, a reviewer should still ask:
+
+| Claim | Why caution is still needed |
+| --- | --- |
+| "the wrapper is transparent" | preserved metadata does not prove preserved semantics |
+| "the signature looks right" | the visible contract may still hide changed retries, caching, or fallback behavior |
+| "tools can unwrap it" | unwrapping helps inspection, but it does not remove runtime side effects or state |
+
 ## Review rules for transparency preservation
 
 When reviewing a decorator, keep these questions close:
@@ -191,6 +241,15 @@ When reviewing a decorator, keep these questions close:
 - is `__wrapped__` preserved so unwrapping and signature recovery still work?
 - has the decorator changed the callable contract in ways `wraps` alone cannot repair?
 - if a custom preservation helper exists, is there a real reason not to use the standard tool?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- name at least two inspection surfaces that `wraps` preserves directly
+- explain one important thing `wraps` does **not** fix
+- describe why `__wrapped__` matters to `inspect`-based tooling
+- reject the claim that preserved metadata automatically means thin semantics
 
 ## What to practice from this page
 
