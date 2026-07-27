@@ -1,6 +1,5 @@
 # Designing Thread-Aware and Async-Aware APIs
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,49 +24,109 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Expose concurrency expectations clearly in public APIs so callers know the cost and
-lifecycle implications of using an object.
+An API is concurrency-aware whether you documented it or not.
 
-## 1. Concurrency Semantics Are Public Semantics
+If callers can use an object from multiple threads or async tasks, they will form
+assumptions about:
 
-If an API is safe only from one thread, or only inside an event loop, that fact belongs
-in the API contract just as much as argument types do.
+- whether calls can overlap safely
+- whether a method blocks
+- whether it must be awaited
+- whether results depend on attachment to a loop or coordinator
 
-## 2. Avoid One Interface That Lies to Everyone
+If the API does not make those expectations clear, users learn them by failure.
 
-A single class that tries to be:
+## Concurrency awareness is part of the contract
 
-- synchronous,
-- asynchronous,
-- thread-safe,
-- and cancellation-aware
+A public API should help callers understand:
 
-often becomes confusing. Separate entrypoints are usually clearer.
+- can this object be called concurrently?
+- must calls stay on one thread or one loop?
+- is this surface synchronous, asynchronous, or both through a deliberate bridge?
+- where does blocking happen?
 
-## 3. Name Blocking and Async Behavior Honestly
+Those are not implementation trivia. They affect correctness and operability.
 
-Use naming, documentation, or distinct types so callers can see whether a method blocks,
-spawns work, or must be awaited.
+## Avoid widening the whole surface by default
 
-## 4. Composition Roots Own Wiring Choices
+One risky pattern is to take one concurrency concern and spread it through every method.
 
-The place that chooses worker pools, event loops, or adapter implementations should be
-outside the domain model. Public APIs should consume those capabilities rather than
-constructing them implicitly.
+For example:
 
-## Practical Guidelines
+- one async integration need makes every method `async`
+- one shared-state concern makes every consumer manage locks
 
-- Document thread and event-loop expectations in public APIs.
-- Prefer separate sync and async entrypoints when behavior truly differs.
-- Make blocking, awaiting, and background execution visible to callers.
-- Keep concurrency wiring in composition roots and runtime layers.
+A stronger approach is to keep concurrency-specific behavior near the boundary that owns
+it and keep the rest of the API as narrow and explicit as possible.
 
-## Exercises for Mastery
+## Blocking behavior should be visible
 
-1. Rewrite one ambiguous API docstring to describe its thread or async contract clearly.
-2. Split one overloaded sync/async interface into clearer entrypoints.
-3. Identify one place where concurrency infrastructure is constructed too deep in the codebase.
+Callers need to know if a method:
+
+- performs only in-memory work
+- may block on I/O
+- may wait on a queue or lock
+- requires an event loop context
+
+Without that, "simple" method calls become hidden coordination points.
+
+That hidden cost is often more damaging than an explicit boundary method would have been.
+
+## Do not confuse availability of use with safety of use
+
+Just because an API can technically be called from many threads or tasks does not mean
+it is safe to do so.
+
+A good contract may explicitly say:
+
+- single-threaded only
+- caller must serialize access
+- safe for concurrent reads but not concurrent mutation
+- async-safe only through one supervisor boundary
+
+These are useful constraints. Hiding them helps nobody.
+
+## Common mistakes
+
+- documenting nothing about blocking or concurrency semantics
+- exposing the same method to many concurrency modes without a clear ownership story
+- turning every surface async because one adapter needed async integration
+- leaking lock or event-loop management outward to callers unnecessarily
+- implying thread safety through silence
+
+These mistakes make the API broader and less trustworthy than it needs to be.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| can callers tell whether the API is sync, async, or boundary-bridged? | yes |
+| is blocking or waiting behavior visible? | yes |
+| are concurrency guarantees and limits stated explicitly? | yes |
+| does the API avoid leaking unnecessary runtime coordination outward? | yes |
+
+## Capstone connection
+
+Use the capstone runtime and service boundaries to ask:
+
+- which surfaces should remain plain synchronous domain APIs?
+- which surfaces may honestly become async-aware?
+- where should callers be told about blocking, serialization, or supervisor requirements?
+
+Those questions keep runtime truth attached to the API contract.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why concurrency expectations are part of an API contract
+- identify one case where blocking behavior must be visible to the caller
+- point to one capstone surface that should stay narrow instead of becoming async-aware everywhere

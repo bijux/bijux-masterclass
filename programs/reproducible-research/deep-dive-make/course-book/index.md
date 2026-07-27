@@ -33,6 +33,32 @@ under change, concurrency, publication pressure, and review. The goal is not to 
 syntax. The goal is to build systems that another engineer can inspect, trust, and
 repair without folklore.
 
+## What you will build and prove
+
+Module 00 prepares your environment and study route. Modules 01-10 each provide a
+full-day learning plan, a runnable worked example, ten exercises, and detailed answer
+guidance. Across the course you will complete 100 exercises.
+
+```mermaid
+flowchart LR
+  orient["Orient and run a first Makefile"] --> foundations["01-03: graph truth and proof"]
+  foundations --> hardening["04-06: semantics, portability, generation"]
+  hardening --> systems["07-08: architecture and releases"]
+  systems --> stewardship["09-10: incidents and stewardship"]
+  stewardship --> portfolio["100-exercise evidence portfolio"]
+```
+
+Keep commands, observations, and short explanations for each exercise. The goal is not
+100 pasted snippets. The goal is a portfolio showing that you can predict behavior,
+observe what Make decided, and repair the graph without hiding a failure.
+
+The portfolio develops one concrete artifact per teaching day. Use the
+[Practice Map](reference/practice-map.md) to keep graph predictions, ownership tables,
+falsifiable selftest claims, semantic event logs, environment ledgers, publication
+records, architecture maps, consumer release packets, measured incident evidence, and
+migration proof bridges together. These artifacts show how your judgment developed;
+command transcripts alone do not.
+
 ## Use this course if
 
 - you want a correct graph model instead of memorized recipes
@@ -66,6 +92,7 @@ repair without folklore.
 | smallest honest proof route | [Proof Ladder](guides/proof-ladder.md) |
 | capstone entry by module and question | [Capstone Map](capstone/capstone-map.md) |
 | stable review shelf | [Reference](reference/index.md) |
+| cumulative evidence portfolio | [Practice Map](reference/practice-map.md) |
 
 ## Module Table of Contents
 
@@ -103,6 +130,7 @@ The course home has done its job when you know:
 - which support page answers the next question
 - why the capstone is a proof surface rather than a first-contact playground
 - why later modules are consequences of earlier graph truth and publication choices
+- how the ten exercises in each module contribute to one cumulative evidence portfolio
 
 ## Failure modes this course is designed to prevent
 

@@ -1,5 +1,4 @@
-# Unit-of-Work: Grouping Changes and Handling Failures
-
+# Unit of Work and Failure Handling
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Resources Failures Safe Evolution"]
-  page["Unit-of-Work: Grouping Changes and Handling Failures"]
+  page["Unit of Work and Failure Handling"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,102 +24,174 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Coordinate multiple writes as one logical “commit”.
+A unit of work exists because many operations are not a single change.
 
-A **Unit of Work (UoW)**:
-- collects changes (often through repositories),
-- commits them together,
-- rolls back on failure.
+One user action may need to:
 
-Even without a database transaction, UoW gives you a clean failure model and a reviewable structure.
+- load authoritative state
+- apply domain changes
+- save the aggregate
+- record outgoing events
+- update another durable boundary
 
-## Where This Fits
+If one part succeeds and another fails, the system needs a named answer to "what counts
+as committed?" Without that answer, partial failure turns into accidental behavior.
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+## The job of a unit of work
 
-## 1. Why You Need Unit-of-Work
+A unit of work groups related changes under one failure policy.
 
-If an operation does:
-- save aggregate state,
-- write events to outbox,
-- update projection,
+Its responsibility is not simply "call commit at the end." Its real responsibility is to
+make these questions explicit:
 
-…you must decide what happens when step 2 fails.
+- what state belongs to the same change boundary?
+- when does that boundary become durable?
+- what should happen if an exception occurs before durability?
+- which side effects must wait until the authoritative write succeeds?
 
-Without UoW you get partial commits and inconsistency.
+That is why this pattern belongs in a module about design discipline, not just
+persistence.
 
-UoW gives you a central place to define:
-- commit boundaries,
-- rollback behavior,
-- and resource lifetime (via context manager).
+## Authoritative versus provisional state
 
-## 2. A Minimal UoW Shape
+During an operation, some things are still provisional:
 
-Common interface:
+- in-memory object mutations
+- queued events not yet stored
+- repository changes staged in a session
 
-- `__enter__` opens resources (db connection, session)
-- `.commit()` persists changes
-- `.rollback()` discards changes
-- `__exit__` ensures rollback on exceptions
+The unit of work is the place that decides when provisional work becomes authoritative.
 
-Sketch:
+Until that boundary is crossed, callers should not behave as if the change is complete.
+
+This distinction matters because many weak designs publish, log, or notify too early and
+then pretend rollback can erase what already escaped.
+
+## A useful mental model
+
+Think of a unit of work as an agreement between three surfaces:
+
+- domain objects decide whether a change is valid
+- repositories track the state that may be persisted
+- the unit of work decides whether that tracked state becomes durable together
+
+That means repositories and aggregates are not replacements for the unit of work. They
+solve different parts of the same change path.
+
+## A minimal shape
+
+Most course examples keep the shape small on purpose:
 
 ```python
 class UnitOfWork:
-    def __enter__(self): ...
-    def __exit__(self, exc_type, exc, tb):
-        if exc_type: self.rollback()
-        self.close()
-    def commit(self): ...
-    def rollback(self): ...
+    def __enter__(self) -> "UnitOfWork":
+        ...
+
+    def commit(self) -> None:
+        ...
+
+    def rollback(self) -> None:
+        ...
+
+    def __exit__(self, exc_type, exc, tb) -> bool:
+        if exc_type is not None:
+            self.rollback()
+        return False
 ```
 
-## 3. Repositories Live Inside the UoW
+The exact implementation may change. The teaching point does not:
 
-The UoW typically exposes repositories:
+- entering begins a controlled change boundary
+- committing makes it authoritative
+- exceptions trigger the failure policy
+
+## Repositories should live inside the boundary
+
+A unit of work becomes much clearer when repositories are scoped inside it.
 
 ```python
 with uow:
     policy = uow.policies.get(policy_id)
-    policy.retire_rule(...)
+    policy.retire_rule(rule_id)
     uow.commit()
 ```
 
-This makes it hard to use repositories outside a commit boundary, which is good for correctness.
+This shape helps students see that repositories are not free-floating data helpers. They
+participate in the same ownership story as the commit boundary.
 
-## 4. Integrating Domain Events via Outbox
+If callers can casually use repositories outside a write boundary, the design invites
+partial updates and inconsistent failure handling.
 
-If your aggregate emits events, the UoW can store them in an outbox alongside saving state.
+## What happens on failure
 
-Commit then means:
-- persist state,
-- persist outbox,
-- and only then publish events.
+The failure policy should answer at least three things:
 
-This prevents “published but not saved” or “saved but not published” inconsistencies (within the limits of your persistence).
+- which in-progress changes are abandoned?
+- which already-escaped side effects cannot be rolled back?
+- what must happen next to restore coherence or signal repair?
 
-## 5. Tests: UoW Policy Matters
+That third question is usually ignored in shallow material, but it matters the most.
+Rollback is only part of the story. If an external effect already escaped, you need a
+named follow-up policy, not optimistic silence.
 
-Write tests showing:
-- exceptions trigger rollback,
-- commit persists changes,
-- events are only published after commit.
+## Events must respect the commit boundary
 
-These tests are where you teach failure semantics clearly.
+If your aggregates emit domain events, do not treat those events as if they are ready to
+publish the moment they are created.
 
-## Practical Guidelines
+Usually the safer sequence is:
 
-- Use a UoW for operations that must update multiple pieces of state consistently.
-- Make the UoW a context manager; rollback on exceptions by default.
-- Expose repositories through the UoW to enforce commit boundaries.
-- Treat domain event publication as part of the commit pipeline (often via outbox).
+1. validate and mutate domain state
+2. stage the new durable state
+3. store or queue the event as part of the same durable boundary
+4. publish only after the authoritative write succeeds
 
-## Exercises for Mastery
+That ordering prevents a common design bug: telling the outside world about a change
+that never became durable.
 
-1. Implement a fake in-memory UoW and write tests for commit/rollback behavior.
-2. Integrate event outbox storage into the UoW and prove events publish only after commit.
-3. Refactor one multi-step operation to use a UoW instead of ad-hoc writes.
+## Common mistakes
+
+- treating the unit of work as a database convenience instead of a failure contract
+- letting repositories write eagerly before the boundary is complete
+- publishing events before durability is established
+- assuming rollback solves every escaped side effect
+- hiding commit ownership inside deep helper methods so callers cannot reason about it
+
+These mistakes usually come from refusing to name the change boundary honestly.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| can you name what belongs to one authoritative change boundary? | yes |
+| do repositories participate inside that boundary rather than around it? | yes |
+| are events and side effects delayed until durability rules allow them? | yes |
+| does failure handling say more than "rollback happened"? | yes |
+
+## Capstone connection
+
+The capstone's in-memory unit of work is intentionally small, but the teaching pressure
+is real:
+
+- where does a rule change become authoritative?
+- when would an alert-side effect be allowed to escape?
+- who owns the answer if the operation fails halfway through?
+
+Use that small implementation to practice the reasoning before the persistence module
+makes the mechanics more complex.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain what a unit of work makes authoritative and what it keeps provisional
+- describe why repositories and events must respect the same failure boundary
+- identify one capstone change path and name where partial failure is handled

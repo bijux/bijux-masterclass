@@ -34,6 +34,10 @@ course:
 That timing matters because it tells you what a class decorator can still change and what
 it cannot retroactively control.
 
+This page is strongest when you read it as a timing review, not as a collection of
+decorator tricks. The question is not "can a decorator do this?" The better question is
+"what part of the class lifecycle is still visible and honest here?"
+
 ## The sentence to keep
 
 When reviewing a class decorator, ask:
@@ -42,6 +46,14 @@ When reviewing a class decorator, ask:
 > enough for this requirement?
 
 That question is the gateway to the whole module.
+
+Keep a second question beside it:
+
+> if the decorator vanished tomorrow, what explicit helper or owner would still need to exist for the behavior to make sense?
+
+That second question matters because decorator syntax is compact enough to hide weak
+ownership. If the only story you can tell is "the decorator makes it happen," the page has
+not yet done its teaching job.
 
 ## Class decorators run after the class exists
 
@@ -71,6 +83,10 @@ C = decorator(C)
 The metaclass has already done its work. The class object already exists. The decorator is
 now rewriting or extending that finished object.
 
+That one fact rules out a large amount of accidental confusion. A class decorator can
+still modify, wrap, register, or replace the finished class binding. It cannot go back in
+time and participate in namespace preparation or metaclass resolution.
+
 ## One picture of the timing
 
 ```mermaid
@@ -85,6 +101,17 @@ graph LR
 Caption: class decorators see a completed class object; they do not participate in class-body namespace construction.
 
 This timing is the most important boundary on the page.
+
+## Evidence route for timing reviews
+
+Use this route whenever a class decorator starts sounding more powerful than it really is:
+
+| Evidence step | What it proves |
+| --- | --- |
+| `class C: ...` runs first | class body execution is already over before decoration |
+| metaclass builds the class object | class creation happened before the decorator receives anything |
+| `decorator(C)` runs after creation | the decorator can only act on the finished object |
+| rebinding assigns the return value back to `C` | replacement is possible, but only after creation is complete |
 
 ## Method injection is a straightforward use
 
@@ -108,6 +135,19 @@ This is a good early example because it stays honest:
 - the decorator changes the finished class
 - the injected function becomes a descriptor when attached to the class
 - nothing about class creation timing is being hidden
+
+It also shows a useful review habit: ask whether the behavior is truly clearer as a
+decorator or whether an explicit helper call would explain the transformation more plainly.
+
+Use this comparison when you are unsure:
+
+| Form | What it makes obvious | What it can hide |
+| --- | --- | --- |
+| explicit helper call after class definition | the transformation is post-construction and opt-in | a repeated pattern that wants a named abstraction |
+| class decorator | the class advertises the transformation at definition time | the amount of policy or side effect carried by the decorator |
+
+If the helper form makes the ownership story clearer, the decorator has to earn its
+compactness rather than receiving it for free.
 
 ## Registration is another honest post-construction use
 
@@ -134,6 +174,18 @@ This is often a reasonable use of a class decorator when:
 That last point matters because registry behavior can drift upward quickly if it stops
 being explicit.
 
+Reviewers should also ask who owns cleanup. Registration that can only grow and never be
+reset may be operationally convenient in a toy example and operationally confusing in real
+tests or repeated imports.
+
+Use this quick review card for registry decorators:
+
+| Review question | Why it matters |
+| --- | --- |
+| can the registry be inspected after import? | a hidden registration surface is hard to debug |
+| can tests reset the registry cheaply? | repeated imports and order-sensitive tests otherwise become brittle |
+| is the registration policy still smaller than the decorator syntax? | large policy hidden behind `@register` stops being honest |
+
 ## Returning a non-class is legal but usually costly
 
 A class decorator can technically return something that is not a class at all:
@@ -153,6 +205,9 @@ This is legal. It also usually creates a bad surprise around:
 
 That does not make it impossible. It does make it something the design should justify
 very strongly if used at all.
+
+If the binding no longer names a class, the code now owes readers a better explanation
+than decorator elegance. Surprise replacement is expensive.
 
 ## Stacked class decorators still compose bottom-up
 
@@ -179,6 +234,21 @@ C = d2(C)
 That matters because each decorator receives the result of the previous one, not the raw
 original class.
 
+Order therefore becomes part of meaning. If one decorator registers classes and another
+replaces them, the stack may stay legal while becoming much harder to review.
+
+## A stack-order review trace
+
+Use this trace whenever two or more decorators appear:
+
+1. write the helper expansion by hand
+2. name which decorator sees the raw class and which sees an already transformed value
+3. identify whether registration, replacement, or mutation happens first
+4. ask whether a later decorator is now relying on an earlier one silently
+
+If step 3 or 4 takes more than a short paragraph to explain, the stack may be carrying
+too much policy for this surface.
+
 ## What class decorators cannot do well
 
 Because they run after class creation, class decorators are not the right tool when the
@@ -192,6 +262,43 @@ requirement depends on:
 That is exactly why this module comes before the metaclass module. This boundary should
 feel obvious, not mysterious.
 
+Use this boundary table to keep late versus early power visible:
+
+| Requirement | Honest fit | Why |
+| --- | --- | --- |
+| add one method to an already defined class | class decorator | post-construction mutation is enough |
+| register finished classes in a manifest | class decorator | the class only needs opt-in side effects after creation |
+| guarantee declaration order during class body execution | not a class decorator | the requirement exists before the class object is finished |
+| resolve metaclass conflicts or customize namespace preparation | not a class decorator | those are class-creation-time concerns |
+
+## Common overclaims to reject
+
+Reject these descriptions when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "the decorator changes how the class is created" | "the decorator changes the class after creation" |
+| "registration is automatic class infrastructure" | "registration is opt-in post-construction side effect" |
+| "returning a proxy is the same as returning a class" | "replacement changes the binding contract and must be justified" |
+| "stacking decorators is just style" | "stack order can carry real meaning" |
+
+## Failure modes for class decorators
+
+These are the main ways the design can weaken without looking obviously broken:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| hiding important side effects behind concise decorator syntax | readers lose the owner story | show the explicit helper form or document the effect directly |
+| using a class decorator for a true class-creation need | the mechanism runs too late | move to a descriptor or metaclass only if the need is real |
+| replacing the class binding with a surprising proxy | introspection and type expectations become less trustworthy | return a class unless replacement has a concrete review case |
+| stacking decorators with silent order dependence | meaning spreads across layers | reduce the stack or document the order as part of the contract |
+
+One more failure mode is worth naming directly:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| using decorator syntax to avoid naming a real helper component | the compact surface hides a larger policy owner | extract the helper openly and let the decorator become a thin adapter only if still useful |
+
 ## Review rules for class decorators
 
 When reviewing a class decorator, keep these questions close:
@@ -201,6 +308,26 @@ When reviewing a class decorator, keep these questions close:
 - is registration or method injection explicit and resettable?
 - is the decorator trying to solve a class-creation problem too late?
 - would an explicit helper call be clearer than hiding the change in decorator syntax?
+- can another reviewer describe the post-construction effect in one sentence?
+
+## Evidence packet for decorator reviews
+
+Leave this page with a small proof packet:
+
+- one helper-form expansion for a decorator you read or wrote
+- one sentence naming the post-construction effect
+- one reset, inspection, or reversal note if the decorator has side effects
+- one rejected stronger claim explaining why this is not metaclass territory
+- one stack-order note if more than one decorator appears
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- explain why class decorators run too late for namespace-preparation requirements
+- name one honest use for registration or method injection
+- explain one reason returning a non-class is usually costly
+- say when stacked decorator order becomes part of the design contract
 
 ## What to practice from this page
 
@@ -209,6 +336,12 @@ Try these before moving on:
 1. Implement a class decorator that injects one method and explain why the method still binds normally.
 2. Implement a resettable registration decorator and explain why reset behavior matters.
 3. Write down one class requirement that class decorators can solve honestly and one that already sounds like metaclass territory.
+
+If those feel ordinary, pressure-test yourself with one more question:
+
+> If I rewrote this decorator as an explicit helper call, would any claimed power disappear?
+
+If the answer is no, you are probably reviewing the timing honestly.
 
 If those feel ordinary, the next step is dataclasses, where method generation and field
 discovery automate class code without turning into metaclass control.

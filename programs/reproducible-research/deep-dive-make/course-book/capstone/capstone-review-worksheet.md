@@ -66,6 +66,8 @@ Best evidence:
 - `capstone/mk/stamps.mk`
 - `capstone/tests/run.sh`
 - `artifacts/proof/reproducible-research/deep-dive-make/selftest/summary.txt`
+- `artifacts/proof/reproducible-research/deep-dive-make/selftest/schedule-comparison.json`
+- `artifacts/proof/reproducible-research/deep-dive-make/selftest/logs/`
 
 ## Parallel safety
 
@@ -100,14 +102,19 @@ Best evidence:
 
 Ask:
 
-- what counts as publishable source versus local build residue
-- whether release evidence is adjacent to artifacts rather than mixed into their identity
+- whether package membership comes from declared policy rather than directory contents
+- whether candidate verification can run after local build outputs are cleaned
+- whether the install route remains below its controlled root and converges when repeated
+- whether candidate, install, and final acceptance records identify the same digest
+- whether the final record distinguishes local acceptance from remote publication
 - whether the build can be extended without weakening the review bar
 
 Best evidence:
 
-- `capstone/docs/target-guide.md`
-- `capstone/scripts/mkdist.py`
+- `capstone/release/package-policy.tsv`
+- `capstone/release/install-policy.tsv`
+- `artifacts/release/reproducible-research/deep-dive-make/evidence/`
+- [Capstone Release Acceptance](capstone-release-acceptance.md)
 - [Capstone Extension Guide](capstone-extension-guide.md)
 
 ## Record the result

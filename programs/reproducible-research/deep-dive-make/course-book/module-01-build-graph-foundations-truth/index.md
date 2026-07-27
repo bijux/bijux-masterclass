@@ -1,30 +1,4 @@
 # Module 01: Build Graph Foundations and Truth
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Build Graph Foundations Truth"]
-  page["Module 01: Build Graph Foundations and Truth"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Make becomes much easier once you stop treating it like a shell script runner and start
 treating it like a decision system. The central question of this module is simple:
 
@@ -34,6 +8,15 @@ treating it like a decision system. The central question of this module is simpl
 If you can answer that question, the rest of the course has a stable foundation. If you
 cannot, later topics such as parallelism, multi-output generators, and release
 publication will feel like folklore instead of engineering.
+
+## Why this day matters
+
+Most weak Make usage starts with one mistaken mental model: "Make runs commands in order."
+That is not how Make thinks. Make compares target files with the files and facts that are
+declared to produce them.
+
+This first teaching day is where you learn to see that decision process. Once you can
+predict one honest rebuild, later modules have something solid to build on.
 
 ## What this module is for
 
@@ -46,6 +29,107 @@ Module 01 gives you a durable mental model for four things:
 
 The goal is not to memorize syntax like a parser. The goal is to look at a Makefile,
 predict the next rebuild decision, and explain it in plain language.
+
+## The classroom demo for this module
+
+If you only run one demonstration before reading deeper, run this one:
+
+```mermaid
+flowchart LR
+  build["Build report.txt once"] --> change["Change title.txt only"]
+  change --> stale["Observe stale output"]
+  stale --> repair["Declare the missing edge"]
+  repair --> trust["Repeat and watch the rebuild happen"]
+```
+
+This tiny failure contains the whole module:
+
+- the recipe can read a file that the graph does not know about
+- Make can only react to declared prerequisites
+- the wrong graph can look successful until one input changes
+- a small truthful fix is stronger than a large clean rebuild
+
+## See a missing edge fail
+
+Create a fresh directory with `title.txt`, `body.txt`, and this Makefile:
+
+```make
+report.txt: body.txt
+	cat title.txt body.txt > $@
+```
+
+The recipe reads two files, but the graph names only one. Build once, change only the
+title, and ask Make what it intends to do:
+
+```sh
+printf 'First title\n' > title.txt
+printf 'Body\n' > body.txt
+make --trace report.txt
+printf 'Corrected title\n' > title.txt
+make --trace report.txt
+cat report.txt
+```
+
+The last file still contains `First title`. Make did exactly what the rule said:
+`body.txt` did not change, so `report.txt` looked current. The shell command knew about
+`title.txt`; the graph did not.
+
+Repair the rule:
+
+```make
+report.txt: title.txt body.txt
+	cat $^ > $@
+```
+
+Run the same experiment again. This is the first important failure in the course because
+it separates two ideas beginners often blend together:
+
+- a recipe can read a file
+- Make can react to that file only when the graph declares it
+
+Keep this directory. It is a smaller and better debugging tool than the C example when
+you need to recheck the meaning of an edge.
+
+## Plan for the day
+
+| Block | Activity | Evidence you should produce |
+| --- | --- | --- |
+| First contact | Write one file target and one phony target | a Makefile you can explain character by character |
+| Graph reading | Draw the target-prerequisite graph before running Make | a graph with file and action nodes marked |
+| Incremental behavior | Build twice, then change one prerequisite | a written prediction and a `--trace` transcript |
+| Rule reuse | Replace repeated compile rules with one pattern rule | the same outputs with less duplicated policy |
+| Failure safety | Interrupt or fail a recipe before publication | proof that no partial final artifact remains |
+| Practice | Complete all ten exercises | commands, outputs, and short explanations |
+
+If this is your first day with Make, stop after each command and inspect the files that
+exist. The filesystem is part of Make’s memory.
+
+## What to keep in front of you
+
+For the whole day, keep one sheet of paper or one note with four headings:
+
+- requested target
+- declared prerequisites
+- recipe reads that are not yet declared
+- prediction before the next run
+
+That note keeps the lesson anchored in graph truth instead of drifting into syntax
+memorization.
+
+## Read a rule aloud
+
+For every rule, use the same sentence:
+
+```make
+target: prerequisites
+	recipe
+```
+
+> To update **target**, first update **prerequisites**. If the target is missing or older
+> than any prerequisite, run **recipe**.
+
+This sentence is intentionally simple. It remains useful when the rules become much more
+advanced.
 
 ## Study route
 
@@ -113,6 +197,21 @@ That example is deliberately small enough to reason about by hand. You should be
 draw the dependency graph on paper, touch one file, and predict what Make ought to do
 before you run it.
 
+Do not begin by copying the reference Makefile. Build it in the layers shown by the
+worked example. At each layer, draw the graph you believe exists and compare that drawing
+with `make -n` and `make --trace`.
+
+## What a strong first session looks like
+
+By the end of the day, you should have done more than read about Make truth. You should
+have:
+
+- built a file target and rerun it without changes
+- created one hidden input bug on purpose
+- repaired that bug by changing the graph, not by cleaning
+- drawn at least one dependency graph by hand
+- explained one rebuild using trace output rather than instinct
+
 ## The five commands to keep open
 
 These commands are the evidence loop for the whole module:
@@ -147,5 +246,6 @@ Do not move on to Module 02 until all of these are true:
 - you can explain why one writer per output path matters
 - you can force a failure and prove that no broken artifact remains behind
 - you can run `make -q all` after a successful build and understand the exit code
+- you completed ten exercises and can reproduce at least eight without reading the answers
 
 When those become ordinary, not dramatic, Module 01 has done its job.

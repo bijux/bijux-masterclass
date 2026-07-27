@@ -1,138 +1,340 @@
 # CI Gates, Drift Control, and Review Surfaces
 
+A repository does not become safer because its CI file has more jobs. It becomes safer
+when each gate can name:
 
-<!-- page-maps:start -->
-## Page Maps
+- the contract it protects
+- the evidence it inspects
+- the dishonest change it rejects
+- the stronger claim it intentionally does not make
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Scaling Workflows Interface Boundaries"]
-  page["CI Gates, Drift Control, and Review Surfaces"]
-  capstone["Capstone evidence"]
+This lesson turns the module interface from the previous lesson into a reviewable gate. It
+also shows why a successful lint or dry-run cannot prove that an abstraction is honest.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## Start from one falsifiable claim
+
+Use this claim:
+
+> The normalization module receives a narrow config subtree, while the caller binds input,
+> output, and policy at the `use rule` site.
+
+The claim is falsifiable. A reviewer can reject it by finding:
+
+- `config: config` in the explicit caller
+- a missing input, output, or parameter override
+- a private module read that changes artifact meaning
+- a runtime artifact that disagrees with the caller-selected policy
+
+Compare that with:
+
+> The workflow is modular and CI passes.
+
+No specific observation can settle the second statement. It is not yet a gateable claim.
+
+## Build the claim-to-gate matrix
+
+Do not start with a CI vendor configuration. Start with this matrix:
+
+| Claim | Smallest evidence | Dishonest change | Gate |
+| --- | --- | --- | --- |
+| imported rules remain visible | `--list-rules` | expected local rule disappears | module interface audit |
+| caller paths remain bound | caller source plus dry-run | output moves or binding vanishes | module interface audit |
+| config scope stays narrow | module declaration | broad config replaces owned subtree | module interface selftest |
+| caller owns policy | `use rule` params plus artifact | private module config changes meaning | audit plus selftest |
+| public file schema stays compatible | schema and fixtures | required field changes | focused contract validator |
+| complete workflow still executes | clean workflow run | integration behavior fails | `confirm` |
+
+The matrix prevents two bad habits:
+
+- using an expensive end-to-end route for every narrow structural question
+- claiming a narrow source check proves runtime behavior
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["named contract"] --> evidence["smallest sufficient evidence"]
+  evidence --> mutation["controlled dishonest change"]
+  mutation --> gate["gate rejects it"]
+  gate --> limit["state what remains unproved"]
 ```
-<!-- page-maps:end -->
 
-Scaling does not stay safe because people intend to be careful.
+## Run the narrow module gate
 
-It stays safe because the repository makes the risky boundaries visible early.
+From the course directory:
 
-That is what CI gates and review surfaces are for.
+```bash
+make capstone-module-interface-audit
+```
 
-## A gate should defend a named contract
+The command runs two copied workflows under the repository `artifacts/` directory. It
+captures:
 
-Weak gating culture says:
+- caller and module source observations
+- visible rule names
+- dry-run plans
+- executed traces
+- artifact content
+- candidate publication residue
 
-> add more checks until the repository feels safer.
+The resulting summary is:
 
-Strong gating culture says:
+```text
+model              result  finding
+explicit-contract  PASS    EXPLICIT_MODULE_CONTRACT_PRESERVED
+hidden-coupling    PASS    HIDDEN_MODULE_COUPLING_REPRODUCED
+```
 
-> choose the smallest gate that proves one specific scaling boundary is still intact.
+This is not a two-model approval table. The finding defines the meaning of each pass.
 
-That difference matters. Otherwise the repository accumulates noisy checks without
-teaching what they protect.
+## Make pass semantics reviewable
 
-## What good scaling gates usually defend
+Every gate needs a sentence that explains its green state.
 
-In Module 04, gates are most useful when they protect things like:
+For the explicit model:
 
-- the workflow still plans correctly
-- rule families remain visible and lint-clean
-- interface paths or schemas have not drifted silently
-- public contracts still parse and align
-- repository growth did not make the graph harder to review
+> PASS means narrow config, caller-owned input/output/policy bindings, expected graph
+> visibility, matching artifact meaning, and no publication residue were all observed.
 
-These are scaling questions, not merely "did one command exit zero" questions.
+For the hidden model:
 
-## A practical gate ladder
+> PASS means broad config, an absent caller policy binding, a private module policy read,
+> and the resulting hidden policy value were all reproduced.
 
-Useful gates often build on one another:
+If a dashboard displays only green or red, preserve the finding in a review bundle or job
+summary. Without the finding, a deliberately reproduced defect looks approved.
 
-- `--lint` for immediate design hygiene
-- dry-run for plan visibility
-- rule listing or rulegraph for surface visibility
-- targeted tests or verification for interface trust
-- stronger end-to-end proof routes when the change claims repository-level safety
+## Prove the gate can fail
 
-The ladder matters because not every diff deserves the heaviest route first.
+Run:
 
-## Drift control is part of the same story
+```bash
+make capstone-module-interface-selftest
+```
 
-As the repository grows, changes become harder to see by eye alone.
+The rejection suite uses disposable copies. One mutation changes:
 
-Drift surfaces help answer:
+```python
+config: config["normalize"]
+```
 
-- did code changes affect planned outputs
-- did parameter or interface changes alter what should rerun
-- did a public contract change even though the filenames look similar
+to:
 
-Without drift evidence, scaling review becomes guesswork faster than most teams expect.
+```python
+config: config
+```
 
-## One healthy review pattern
+The workflow can still parse and run. The gate must fail because the contract became
+broader.
+
+Another mutation removes the caller's parameter binding but preserves the same artifact
+text with a literal. Runtime bytes still match. The gate fails because policy ownership
+has moved out of the declared interface.
+
+This is why golden output alone is insufficient for an architecture gate. Two designs can
+produce identical bytes while exposing different change risk.
+
+## Distinguish acceptance tests from rejection tests
+
+Acceptance tests ask:
+
+> Does honest evidence pass?
+
+Rejection tests ask:
+
+> Does a controlled lie fail for the promised reason?
+
+You need both.
+
+| Test type | Example | Failure it catches |
+| --- | --- | --- |
+| acceptance | explicit caller passes narrow config | gate that rejects valid reuse |
+| acceptance | hidden model reproduces private policy | counterexample that no longer demonstrates the defect |
+| rejection | explicit caller passes broad config | gate that checks only execution |
+| rejection | output binding changes | gate that ignores caller path ownership |
+| rejection | hidden policy becomes visible | stale defect finding after the specimen was repaired |
+| isolation | stale workspace is removed | evidence contaminated by earlier output |
+
+A gate with only acceptance cases may be permanently green. A gate with only rejection
+cases may reject useful designs without proving the control works.
+
+## Use a gate ladder, not one giant job
+
+The capstone exposes several routes:
 
 ```mermaid
 flowchart TD
-  diff["repository change"] --> lint["lint and dry-run"]
-  lint --> surface["rulegraph or list-rules"]
-  surface --> verify["targeted verification"]
-  verify --> confirm["stronger proof route if claim expands"]
+  format["format and static lint"] --> wf_lint["Snakemake lint"]
+  wf_lint --> dryrun["workflow dry-run"]
+  dryrun --> interface["module interface audit"]
+  interface --> rejection["module interface selftest"]
+  rejection --> verify["executed verification"]
+  verify --> confirm["clean-room confirmation"]
 ```
 
-This is a scaling pattern because it keeps the repository reviewable as changes get wider.
+Each route answers a different question:
 
-## What makes a review surface useful
+| Route | Primary question |
+| --- | --- |
+| `make capstone-check` | are code, unit tests, lint, and planning healthy |
+| `make capstone-module-interface-audit` | do paired module models exhibit their contracts |
+| `make capstone-module-interface-selftest` | does that audit reject dishonest evidence |
+| `make capstone-verify-report` | does the executed publish boundary satisfy its contract |
+| `make capstone-confirm` | does the complete repository survive clean-room pressure |
 
-A review surface is useful when it helps a human answer a precise question quickly.
+Do not claim `capstone-check` proves interface ownership. Do not require
+`capstone-confirm` when the only open question is a changed `use rule` binding.
 
-Examples:
+## Review drift at the right representation
 
-- `--list-rules` helps review whether a split still exposes the expected rule families
-- `--rulegraph` helps review whether relationships stayed legible after modularization
-- a verification bundle helps review whether the publish contract still aligns
+Structural drift can appear in several representations:
 
-Those are stronger than "we ran CI and it passed" because they teach what passed.
+- source declaration
+- imported rule surface
+- planned jobs and files
+- artifact semantics
+- public schema
 
-## Common failure modes
+Choose the representation closest to the claim.
 
-| Failure mode | What it looks like | Better repair |
+If a change broadens module config, source inspection is decisive. If a change renames an
+imported rule, rule listing is useful. If a changed binding selects another file, dry-run
+shows the planned path. If policy affects output meaning, inspect the artifact.
+
+Do not substitute a prettier representation for a stronger one. A rulegraph can make
+dependency drift visible, but it cannot reveal a private config read.
+
+## Design a useful CI failure
+
+A useful failure tells the reviewer:
+
+- which model failed
+- which contract observation was absent
+- where the source and runtime traces live
+- whether the failure affected the control or counterexample
+
+For example:
+
+```text
+FAIL: explicit-contract
+missing: module receives narrow config
+evidence: report.json and traces/explicit-contract-dryrun.txt
+```
+
+That message supports repair. A generic "architecture job failed" sends the learner back
+into undirected browsing.
+
+The module audit writes failure names into `report.json` even when its command exits
+nonzero. Preserving failed evidence is part of reviewability.
+
+## Keep generated evidence outside the source tree
+
+Audit workspaces, traces, and reports belong under `artifacts/`, not beside the specimen
+Snakefiles.
+
+This separation matters because:
+
+- specimens remain stable teaching inputs
+- generated outputs cannot masquerade as tracked source
+- stale output can be removed before every run
+- failed workspaces can be preserved for inspection
+
+The selftest explicitly seeds stale output and checks that the audit replaces it. A gate
+that reuses unclean evidence can pass for the wrong reason.
+
+## Add the gate to CI by ownership
+
+The smallest CI job for this contract needs:
+
+1. the supported Python/Snakemake toolchain
+2. `make capstone-module-interface-audit`
+3. `make capstone-module-interface-selftest`
+4. preservation of the module-interface bundle on failure
+
+It does not need:
+
+- a production scheduler
+- the complete capstone workflow run
+- remote data
+- performance benchmarking
+
+Those would widen cost without strengthening this claim.
+
+If the same pull request changes publish schema or profile behavior, add the corresponding
+focused routes. Escalate because the claim expanded, not because the diff feels large.
+
+## Review a structural pull request
+
+Use this order:
+
+1. Read the stated interface claim.
+2. Inspect the module declaration and config scope.
+3. Inspect every changed `use rule` binding.
+4. Compare imported rule names.
+5. Compare dry-run paths.
+6. Inspect artifacts whose meaning depends on changed policy.
+7. Read mutation-test results.
+8. State remaining limits.
+
+Record findings before a summary. A useful review packet contains:
+
+| Surface | Evidence | Judgment |
 | --- | --- | --- |
-| gates are added without named ownership | CI becomes noisy but not more informative | tie each gate to one contract question |
-| only end-to-end routes are trusted | small boundary failures are harder to localize | keep narrower review surfaces available |
-| drift is noticed only after outputs look strange | interface changes arrive too late | add earlier drift or validation evidence |
-| rule splits happen without a surface check | the repository gets bigger and less legible | review `--list-rules` or rulegraph deliberately |
-| validation exists but no one knows what it protects | the gate feels bureaucratic | state the protected boundary in docs or review comments |
+| config ownership | narrow or broad module declaration | accept, repair, or reject |
+| path ownership | caller input/output overrides | accept, repair, or reject |
+| policy ownership | caller params and module config reads | accept, repair, or reject |
+| graph visibility | rule listing and dry-run | stable or changed |
+| runtime meaning | artifact lines and publication residue | matched or drifted |
+| gate discrimination | controlled mutation results | trustworthy or ceremonial |
 
-## The explanation a reviewer trusts
+## Avoid brittle structural snapshots
 
-Strong explanation:
+Do not fail CI merely because the complete rulegraph image changed. A legitimate new
+caller should change the graph.
 
-> this gate exists because the workflow was split into new rule families; `--list-rules`
-> and the rulegraph confirm the visible surface still matches the intended architecture,
-> while verification checks the public contract only when the change reaches that boundary.
+Prefer semantic assertions:
 
-Weak explanation:
+- required imported rules remain present
+- caller bindings match documented path families
+- module config stays within an owned subtree
+- private config reads do not select consumer-visible policy
+- public artifacts satisfy their schema
 
-> we added a few more CI checks because the repository is getting larger.
+Snapshots are useful review aids. They become bad gates when any change is treated as a
+defect.
 
-The strong version names the contract. The weak version names only anxiety.
+## State the gate's limits
 
-## End-of-page checkpoint
+The module interface gate does not prove:
 
-Before leaving this page, you should be able to:
+- remote module version compatibility
+- scientific correctness of the transformation
+- executor equivalence
+- performance stability
+- downstream schema compatibility beyond the sample artifact
 
-- explain why a gate should defend a named boundary
-- name one narrow review surface and one stronger proof route
-- describe how drift evidence supports scaling review
-- explain why CI success without boundary clarity is still weak governance
+A limit is not a weakness to hide. It tells the reviewer which next route is needed when a
+claim expands.
+
+## Independent practice
+
+Add a second explicit caller to a disposable specimen. Before editing, write these
+expected observations:
+
+- rule listing gains one local rule
+- dry-run gains one job and one artifact
+- the original caller bindings remain unchanged
+- the module still receives only the `normalize` config subtree
+- both artifacts record their caller-selected prefix
+
+Then add one rejection mutation that removes the second caller's output override. The gate
+must reject the incomplete interface even if the original caller still succeeds.
+
+## Exit standard
+
+Do not leave this lesson until you can:
+
+- convert one structural claim into a claim/evidence/mutation/gate row
+- explain why both audit findings are green without approving hidden coupling
+- distinguish acceptance, rejection, and isolation tests
+- choose the smallest capstone route for an interface-only change
+- explain why dry-run, rulegraph, and artifact bytes each have limits
+- write a CI failure that directs a learner to preserved evidence

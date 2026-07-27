@@ -33,6 +33,10 @@ what does a runtime "interface" actually promise?
 Python gives several ways to name an interface, but those ways do not all guarantee the
 same thing.
 
+This page is weakest when readers remember only the syntax. The real teaching target is
+claim sizing: what a contract surface can honestly promise, what it cannot, and what other
+evidence must still carry the design.
+
 ## The sentence to keep
 
 ABCs, protocols, and `__subclasshook__` are useful only when the code review story stays
@@ -40,6 +44,27 @@ honest about whether the contract is nominal, structural, static, shallow, or tr
 behavioral.
 
 That sentence is the whole page in miniature.
+
+If the surrounding review language is larger than those five words, the contract claim is
+probably already drifting.
+
+For self-study, turn that sentence into a contract-sizing test:
+
+- is the claim nominal, structural, shallow runtime, or truly behavioral?
+- what behavior still lives outside this interface surface?
+- what test or documentation evidence must still carry that behavior?
+
+## Evidence route for interface-contract reviews
+
+Use this route before accepting an interface surface:
+
+| Review step | What to inspect | What strong evidence looks like |
+| --- | --- | --- |
+| Name the contract shape | Is this nominal, structural, static, shallow runtime, or behavioral? | One category is chosen explicitly instead of blended together |
+| Match the owner to the need | Does the design need runtime instantiation failure, flexible static typing, or a tiny structural hook? | ABC, protocol, or `__subclasshook__` is chosen for a specific reason |
+| Reject overclaim | What does this surface not prove? | Behavior, performance, cleanup, or resource semantics are left to tests and docs |
+| Inspect the runtime cost | Is this check shallow, awkward, or likely to be mistaken for certification? | The limits of runtime checks are named directly |
+| Name the missing evidence | What still has to be tested elsewhere? | Semantic invariants and failure cases are still covered outside the interface |
 
 ## ABCs name a runtime contract with real but narrow force
 
@@ -77,6 +102,13 @@ except TypeError as exc:
 This is useful, but it is not a full semantic proof. An ABC can require the presence of a
 method. It does not guarantee the method behaves well.
 
+## Honest ABC claims versus overclaims
+
+| Honest ABC claim | Overclaim to reject |
+| --- | --- |
+| "Incomplete subclasses cannot be instantiated." | "All subclasses conform correctly to the full design contract." |
+| "This runtime family owns one named method boundary." | "Inheritance proves the behavior is safe, efficient, or correct." |
+
 ## Protocols are primarily for static structural typing
 
 `typing.Protocol` shines when you want structural compatibility checked by type checkers.
@@ -98,6 +130,16 @@ inheritance.
 
 The governance trap is pretending that a protocol automatically proves runtime behavior.
 It does not.
+
+## When protocols are the right owner
+
+Protocols are strongest when:
+
+| Pressure | Why a protocol can be honest |
+| --- | --- |
+| callers care about a small capability shape | structural typing avoids artificial inheritance |
+| implementations come from multiple unrelated libraries | nominal coupling would add friction without stronger proof |
+| the strongest value comes from static analysis | runtime certification is not the real goal |
 
 ## `@runtime_checkable` is shallow on purpose
 
@@ -131,6 +173,8 @@ That can be useful at API boundaries, but the check stays shallow:
 In other words, runtime-checkable protocols are for light structural filtering, not for
 strong runtime certification.
 
+That last sentence should appear in review notes more often than "it passed `isinstance`."
+
 ## `__subclasshook__` should stay boring
 
 An abstract base class can declare virtual subclassing rules with `__subclasshook__`.
@@ -155,7 +199,23 @@ Strong uses usually look like:
 - maybe one callable check
 - `NotImplemented` for everything else
 
+Before you leave this page, write one sentence beginning:
+
+- "this interface surface proves..."
+- "this interface surface still cannot prove..."
+
 Weak uses try to smuggle business meaning into a structural shortcut.
+
+## `__subclasshook__` refusal rules
+
+Reject a hook when it tries to do any of these:
+
+| Weak hook move | Why it should be rejected |
+| --- | --- |
+| infer semantic safety from method presence | structure is being confused with behavior |
+| encode business policy in a type shortcut | runtime meaning becomes hidden in an inspection trick |
+| grow beyond a trivial attribute or callable check | the hook stops being quickly reviewable |
+| return `True` too eagerly instead of `NotImplemented` | unrelated types are pulled into the contract surface |
 
 ## The governance boundary is about claims, not syntax
 
@@ -172,6 +232,26 @@ Misleading claim:
 
 The difference is not technical cleverness. It is whether the language overstates what the
 mechanism actually proves.
+
+## Contract-surface comparison table
+
+| Mechanism | Strongest honest promise | Common misunderstanding |
+| --- | --- | --- |
+| ABC | incomplete subclasses fail clearly at runtime | behavior is now fully guaranteed |
+| Protocol | static structural compatibility can be expressed cleanly | runtime use is equivalent to semantic validation |
+| `@runtime_checkable` protocol | shallow runtime shape filtering is available | `isinstance` now proves the object is a good resource or adapter |
+| `__subclasshook__` | a tiny structural concession can be encoded in one ABC | business semantics can be inferred from a few attributes |
+
+## Interface-claim worksheet
+
+Use this worksheet before you approve any runtime interface story:
+
+| Question | Strong answer shape |
+| --- | --- |
+| what kind of contract is this? | nominal, structural, shallow runtime, or behavioral |
+| what does the surface prove directly? | missing method rejection, static compatibility, or tiny attribute presence check |
+| what does it not prove? | cleanup, performance, resource safety, or domain semantics |
+| what other evidence is still required? | tests, docs, invariants, or incident checks |
 
 ## When to pick each tool
 
@@ -202,8 +282,28 @@ None of them replaces:
 - documentation of side effects
 - review judgment about ownership and abstraction cost
 
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "the ABC proves the implementation is correct" | method presence is not semantic correctness |
+| "the protocol tells us the object is safe to use" | structure is smaller than resource or behavioral safety |
+| "runtime_checkable gives us a real runtime contract" | the runtime check is intentionally shallow |
+| "the subclass hook is enough for our domain rule" | domain rules usually exceed tiny structural shortcuts |
+
 That matters in Module 10 because interface syntax can make a design look more disciplined
 than it really is.
+
+## Failure modes to name explicitly
+
+Watch for these:
+
+| Failure mode | What goes wrong |
+| --- | --- |
+| interface name used as a substitute for tests | semantic gaps stay hidden behind nice type language |
+| protocol runtime check treated as certification | shallow structure is mistaken for behavioral safety |
+| ABC inheritance chosen where structure was enough | coupling increases without stronger proof |
+| `__subclasshook__` turned into a clever mini-policy engine | review cost rises while guarantees stay weak |
 
 ## Review rules for interface contracts
 
@@ -214,6 +314,10 @@ When reviewing ABCs, protocols, or virtual subclass hooks, ask these questions:
 - is the protocol check being asked to prove more than it can?
 - does `__subclasshook__` stay trivial and default to `NotImplemented`?
 - are semantic guarantees tested somewhere other than the interface declaration itself?
+
+Add one more strong review question:
+
+- what exact sentence would overstate this contract surface if it appeared in docs or a PR description?
 
 If the answer to the last question is "not really," the interface surface is doing too much
 reputational work.
@@ -237,6 +341,15 @@ Try these before moving on:
 1. Write one example where an ABC is clearer than a protocol.
 2. Write one example where a protocol is better because inheritance would be artificial.
 3. Reject one `__subclasshook__` idea that tries to smuggle business semantics into a structural check.
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of the following:
+
+- name what an ABC, protocol, and `__subclasshook__` each prove at their strongest
+- reject one overstated contract sentence for each of those surfaces
+- point to one behavioral guarantee that still requires tests
+- explain why a shallow runtime check is useful without pretending it is certification
 
 If those feel ordinary, the next step is to ask what happens after the interface exists:
 how to preserve observability, reversibility, and test control when runtime behavior

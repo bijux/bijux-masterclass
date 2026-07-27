@@ -18,10 +18,11 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  state["name the build state"] --> baseline["repeat one exact route"]
+  baseline --> compare["compare dry-run and real execution"]
+  compare --> localize["localize the dominant cost"]
+  localize --> challenge["run a discriminating experiment"]
+  challenge --> record["record result and confounders"]
 ```
 <!-- page-maps:end -->
 
@@ -33,6 +34,7 @@ It rarely does.
 A build can feel slow because:
 
 - Make spends too much time parsing or expanding
+- freshness decisions visit more graph state than expected
 - recipes do expensive real work
 - diagnostics and trace volume are operationally heavy
 - humans cannot tell which of those is happening, so they make the wrong changes
@@ -43,22 +45,29 @@ This page is about separating those costs before tuning begins.
 
 When someone says "the build is slow," ask:
 
-> slow in which layer: parse and evaluation, recipe execution, or evidence and diagnostics?
+> Which route and build state are slow, and which measurement can localize the cost?
 
-That question prevents a lot of wasted work.
+The build state comes first. A three-minute clean build and a three-minute no-op build have
+very different meanings.
 
 ## Not all build time lives in the same place
 
-A Make-based system has at least three performance surfaces worth naming:
+A Make-based system has at least four performance surfaces worth naming:
 
 1. parse and evaluation cost
-2. recipe execution cost
-3. evidence-surface cost
+2. freshness-decision cost
+3. recipe execution cost
+4. evidence-surface cost
 
 Each one creates a different kind of problem and needs a different kind of fix.
 
 Treating them as one undifferentiated "performance problem" is how teams end up rewriting
 the wrong layer.
+
+The first two are difficult to isolate perfectly with ordinary command-line timing because
+both happen before recipes run. In this module, dry-run and no-op timings are localization
+signals, not precise internal profiles. State that limitation instead of claiming that
+`make -n` measures parsing alone.
 
 ## Parse and evaluation cost
 
@@ -78,6 +87,21 @@ Typical warning signs:
 
 This cost is architectural. It has more to do with how the build is described than with how
 expensive the compiler or tests are.
+
+## Freshness-decision cost
+
+After parsing, Make decides whether each requested target is current and which recipes are
+runnable. Cost can grow because of:
+
+- a very large reachable graph
+- broad generated dependency files
+- repeated or recursive traversal of overlapping routes
+- expensive included makefiles that must first be remade
+
+Dry-run includes this work, so an expensive dry-run does not by itself prove that variable
+expansion is the cause. A useful next experiment changes one suspected parse-time habit
+while keeping the requested target and graph state constant. Another compares a narrow
+target with a broad aggregate target. The contrast is what narrows the boundary.
 
 ## Recipe execution cost
 
@@ -118,28 +142,106 @@ Examples:
 This is not purely cosmetic. Observability quality affects how quickly the team can debug
 the build.
 
-## A simple measurement loop
+## Name the build state before timing
 
-Start with a minimal loop:
+Use these states deliberately:
+
+| State | How to establish it | Question it answers |
+| --- | --- | --- |
+| clean | use the repository's documented clean/reset route | how expensive is full production? |
+| incremental | change one declared input while holding the governed output universe fixed | is that input class's rebuild scope proportionate? |
+| no-op | complete the route, then confirm `make -q` succeeds | what does an up-to-date invocation cost? |
+| incident | preserve the state in which the symptom appeared | why did this particular behavior occur? |
+
+Never run `clean` automatically during incident triage. Cleaning destroys timestamps,
+partial outputs, and other state that may explain the event. Establish clean state only
+when the measurement question explicitly requires it.
+
+## Run the capstone's controlled protocol
+
+The capstone turns the measurement rules into an executable contract. From `capstone/`,
+run:
 
 ```sh
-/usr/bin/time -p make -n all >/dev/null
-/usr/bin/time -p make all >/dev/null
-make --trace all > build/trace.log
-wc -l build/trace.log
+gmake perf
 ```
 
-This gives you:
+Do not read the median first. Open the bundle under
+`artifacts/performance/reproducible-research/deep-dive-make/current/` in this order:
 
-- a dry-run timing signal for parse and decision work
-- a full-build timing signal that includes real recipe cost
-- a rough trace-volume signal
+| Surface | Question |
+| --- | --- |
+| `scenarios.tsv` | which state, job count, and route did the repository declare? |
+| `incremental-policy.tsv` | which input classes share one governed output universe, and what should each change select? |
+| `incremental-summary.tsv` | did every declared input class pass, and where are missing or unexpected outputs reported? |
+| `incremental-work.json` | which trace and classification support each summary row? |
+| `evidence.json` | which revision, worktree, runner, tools, samples, and outputs belong together? |
+| `summary.tsv` | what were min, median, max, spread, and convergence? |
+| `logs/` | what command output and exit status belong to each sample? |
+| `manifest.json` | is the evidence packet complete? |
+
+The order prevents a common reasoning error: treating a number as comparable before
+checking what produced it. `evidence.json` records the clean or dirty repository state,
+revision, resolved GNU Make and compiler identities, Python, platform, and a runner label.
+Use a stable label when the same platform string can describe meaningfully different
+environments:
+
+```sh
+gmake perf PERFORMANCE_RUNNER=local-macos-arm64
+```
+
+The collector establishes clean or converged state before every sample. It requires at
+least three samples, uses five by default, and records every elapsed value. Five samples do
+not make a benchmark scientific; they make one lucky run less persuasive.
+
+After every scenario, the route proves `make -q all` and inventories the trusted outputs.
+It then executes every row in the change-impact policy. For each row it converges the
+build, snapshots the same governed outputs, advances exactly one input, classifies the
+outputs that rebuilt, restores the input timestamp, and reconverges before the next row.
+This isolation matters: without it, the first mutation could make a later case appear to
+do no work.
+
+Read `incremental-summary.tsv` vertically before opening any trace. Every declared input
+must appear exactly once and pass. Then read it horizontally:
+
+- `missing` means a required consumer did not rebuild, so the graph may be stale
+- `unexpected` means collateral work rebuilt, so a timing improvement or regression may
+  be describing different work
+- `expected` and `observed` must match even when final output bytes happen to match
+
+Only then open the failing case in `incremental-work.json` and use its trace to explain the
+classification. This semantic evidence prevents a missing recipe, incomplete graph,
+overbroad dependency edge, or incomplete test matrix from masquerading as a speedup.
+
+The machine remains a confounder. Add any notable background load or runner condition to
+the review note before comparing results. The bundle can identify a runner and reject
+known context drift; it cannot make two unlike machines equivalent.
+
+## Pair measurements that answer different questions
+
+The governed scenarios pair three questions:
+
+| Scenario | Question |
+| --- | --- |
+| `clean-build` | what does full production cost in documented clean state? |
+| `converged-noop` | what does an already up-to-date invocation cost? |
+| `converged-dry-run` | how much cost remains before ordinary recipe execution? |
+
+Compare no-op and dry-run distributions to localize overhead. Compare clean and no-op to
+see how much cost appears only when production work is required. These are contrasts, not
+internal profilers.
+
+Trace answers a different question. Use `make --trace -n all` when you need causality or a
+rough evidence-volume signal, not as another timing sample. GNU Make can still execute
+recursive Make recipe lines under `-n`; inspect the preview and use a disposable copy if
+the route contains recursion or unusual include-remake behavior.
 
 That is not a full profiler. It is enough to stop guessing blindly.
 
 ## Why `make -n` is such a useful lens
 
-`make -n` does not execute recipes, but it still performs parse and graph work.
+`make -n` normally prints recipes instead of executing them, but it still performs parse,
+evaluation, include-remake, and graph-decision work.
 
 That means:
 
@@ -150,13 +252,14 @@ This is one of the simplest and most useful distinctions in the module.
 
 It lets you say:
 
-> this complaint is about build description overhead
+> this complaint is probably before ordinary recipe execution
 
 or:
 
-> this complaint is about recipe work
+> this complaint appears only when recipes execute
 
-Those are very different diagnoses.
+Those are useful localizations, not final diagnoses. You still need a second experiment to
+separate parsing from graph decisions or to identify the expensive recipe.
 
 ## Trace volume is a real operational metric
 
@@ -169,19 +272,27 @@ A build whose evidence is too large or too noisy can still be expensive in pract
 - maintainers avoid using the evidence surfaces
 - real signals get buried under routine noise
 
-That is why a simple metric like trace line count can still be useful:
+That is why bounded trace volume belongs in the evidence contract. In the capstone, run:
 
 ```sh
-make --trace all > build/trace.log
-wc -l build/trace.log
+gmake trace-report
 ```
 
-The goal is not "fewest lines wins." The goal is to notice whether the build is producing
-an evidence surface that another engineer can actually work with.
+The analyzer requires a clean-plan state, the `all` route, the focus target, and rule
+locations before accepting the volume bound. This is stronger than counting arbitrary
+lines after convergence. A short trace from the wrong state proves very little. A longer
+trace with stable target names and a clear causal route may be useful. Also record:
+
+- whether target and prerequisite names are visible
+- whether parallel output stays attributable to one target
+- how long it takes a new responder to find the first causal line
+
+The goal is not "fewest lines wins." The goal is evidence from a named state and route that
+a responder can search, attribute, and interpret.
 
 ## A small comparison example
 
-Imagine two measurements.
+Assume both cases use the same no-op state and five repeated samples.
 
 ### Case A
 
@@ -191,7 +302,9 @@ make all      -> 3.2s
 trace lines   -> 240
 ```
 
-This suggests the build description and decision process are consuming most of the cost.
+This localizes most cost before ordinary recipes. The next experiment should compare a
+narrow and broad target or remove one suspected parse-time shell-out while preserving the
+same graph state.
 
 ### Case B
 
@@ -201,10 +314,77 @@ make all      -> 18.0s
 trace lines   -> 180
 ```
 
-This suggests the performance problem mostly lives in recipes, not in Make's own structure.
+This suggests the added cost mostly appears during recipe execution. The next experiment
+should time or profile the tools on the critical route rather than rewrite Make syntax.
 
 This is why measurement separation matters so much. It changes what a rational next move
 looks like.
+
+## Compare only compatible evidence
+
+Preserve the earlier bundle outside `current/`, collect the candidate bundle, then run:
+
+```sh
+gmake performance-compare \
+  PERFORMANCE_BASELINE=/path/to/baseline/evidence.json
+```
+
+The revisions should differ when you are measuring a candidate change. Other differences
+need classification:
+
+| Difference | Comparator decision | Reason |
+| --- | --- | --- |
+| clean baseline revision versus clean candidate revision | allow and report both | this is the intended source change |
+| compiler, GNU Make, Python, platform, or runner label | reject | environment changed with the source |
+| dirty or unavailable repository provenance | reject | measured source cannot be reconstructed |
+| scenario policy or sample count | reject | experiment contract changed |
+| trusted output inventory | reject | final semantics changed |
+| declared input-case set | reject | one side does not prove the same input classes |
+| expected or observed work for any case | reject | selected graph work changed |
+
+A requested-work rejection is not automatically a defect. A deliberate graph repair may
+need to rebuild more or less. A newly covered input class may also expose that the old
+bundle was incomplete rather than wrong. Either result means the timing delta cannot stand
+alone: review the graph change, revise the complete matrix if the new scope is correct, and
+recollect both sides under one contract.
+
+A rejected comparison is useful evidence. It identifies which assumption of comparability
+failed instead of producing a precise-looking but dishonest delta.
+
+Even a passing comparison does not automatically mean “faster” or “slower” in an
+operationally important sense. Compare the median delta with both observed spread and a
+stated objective. If the baseline is missing, the honest result is “baseline established.”
+
+## Interpret differences, not isolated numbers
+
+Use a table like this:
+
+| Observation | Plausible explanation | Discriminating next experiment |
+| --- | --- | --- |
+| dry-run and no-op are both slow | parse, evaluation, includes, or graph traversal | compare narrow and aggregate targets; audit parse-time shell-outs |
+| dry-run is cheap, clean build is slow | recipe or tool cost | capture recipe timing on the critical route |
+| no-op unexpectedly executes recipes | phony target, unstable output, or false freshness | use `--trace` and inspect timestamps or content |
+| `-j1` is stable but `-j8` fails | missing edge, shared writer, or non-atomic publication | preserve failure and compare target-attributed output |
+| trace is fast but hard to use | evidence design rather than runtime | test searchability and attribution, not only line count |
+
+A good experiment is one whose possible outcomes imply different next actions. Repeating
+the same timing with no competing explanation is activity, not diagnosis.
+
+## Control common confounders
+
+Build timings vary for reasons unrelated to the change under review:
+
+- warm filesystem or compiler caches
+- background load
+- network access
+- thermal throttling
+- antivirus or indexing activity
+- different jobserver or `-j` settings
+- changing checkout state between samples
+
+You do not need a laboratory to learn from local timings. You do need to record the
+largest known confounders, compare like with like, and avoid precision the setup cannot
+support. Report `1.3 s`, not `1.287431 s`, when the route varies by tenths of a second.
 
 ## Parse cost often comes from habits, not obvious bugs
 
@@ -272,15 +452,16 @@ That means evidence-surface cost is too high.
 
 That usually means the change targeted the wrong layer.
 
-## A review question that improves measurement work
+## A review gate for measurement claims
 
 Before anyone proposes a build-performance change, ask:
 
-1. which layer appears expensive
-2. what measurement supports that claim
-3. what command was used
-4. what a contrasting measurement would have looked like
-5. whether the proposed change actually targets that layer
+1. what exact target and state were measured
+2. whether commands, versions, job count, and all samples were retained
+3. which layer the evidence localizes and what it cannot distinguish
+4. what competing explanation was considered
+5. which next experiment can separate those explanations
+6. which correctness invariant must survive any optimization
 
 If those answers are weak, the tuning proposal is probably weak too.
 
@@ -288,11 +469,12 @@ If those answers are weak, the tuning proposal is probably weak too.
 
 Choose one build route and produce a short measurement note:
 
-1. dry-run time
-2. full-build time
-3. trace line count
-4. your best guess about which layer dominates
-5. one next experiment to validate that guess
+1. a named build state and exact route
+2. five dry-run samples and five comparable real-run samples
+3. a trace usability observation, not just its line count
+4. one leading and one competing explanation
+5. one experiment whose outcomes would distinguish them
+6. one invariant that future tuning must preserve
 
 If you can do that clearly, you have already improved the quality of performance
 discussion a lot.
@@ -302,7 +484,9 @@ discussion a lot.
 Before leaving this lesson, make sure you can explain:
 
 - why "slow build" is not a sufficient diagnosis
+- why build state must be named before timing
 - what parse and evaluation cost means
+- why dry-run cannot perfectly isolate parse cost
 - what recipe cost means
 - why evidence-surface cost is operationally real
-- how a small measurement loop can change the next engineering decision
+- how a discriminating experiment changes the next engineering decision

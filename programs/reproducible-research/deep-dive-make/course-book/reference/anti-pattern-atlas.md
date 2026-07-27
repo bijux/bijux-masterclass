@@ -47,11 +47,11 @@ edges, unsafe publication, or ownership drift.
 
 | Failure class | Why it matters | Where the course teaches the repair |
 | --- | --- | --- |
-| phony ordering used instead of real file edges | it hides truth about what causes work | Modules 01-02, `repro/06-order-only-misuse.mk` |
+| phony ordering used instead of real file edges | it hides truth about what causes work | Modules 01-02, `semantic-fault-audit` and `repro/semantic-faults/order-only-edge/` |
 | stamps used to hide meaningful state | it trades explicit inputs for wishful thinking | Modules 05-06, `mk/stamps.mk` |
 | recursive or fragmented ownership by default | it makes the graph harder to reason about than the product | Modules 05 and 07, `ARCHITECTURE.md` |
-| generated files treated as incidental | it breaks rebuild truth and downstream causality | Module 06, `repro/04-generated-header.mk` |
-| shared temp files or append-only outputs | schedule changes start changing meaning | Modules 02 and 09, `repro/01-shared-log.mk`, `repro/05-mkdir-race.mk` |
+| generated files treated as incidental | it breaks rebuild truth and downstream causality | Module 06, `incremental-fault-audit` and `repro/incremental-edges/generated-producer/` |
+| shared staging files or append-only outputs | schedule changes start changing meaning | Modules 02 and 09, `repro/shared-log-interleaving.mk`, `repro/directory-creation-race.mk` |
 | variable precedence left as folklore | a machine with different environment values tells a different story | Module 04, `show`, `show-e`, and `profile-audit` |
 | publication done directly to final paths | partial artifacts become visible as if they were finished | Module 08, `mk/macros.mk` and the top-level recipes |
 | observability bolted on after failure | incident review loses the evidence needed to explain cause | Module 09, `trace-count`, `selftest-report`, and audit bundles |

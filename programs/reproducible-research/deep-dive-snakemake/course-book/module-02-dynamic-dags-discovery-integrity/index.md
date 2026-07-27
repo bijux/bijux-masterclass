@@ -1,30 +1,5 @@
 # Module 02: Dynamic DAGs, Discovery, and Integrity
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Module 02: Dynamic DAGs, Discovery, and Integrity"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Module 01 taught you how Snakemake plans work from explicit file contracts. Module 02
 asks the harder question:
 
@@ -34,15 +9,57 @@ This module is about making that situation reviewable instead of magical.
 
 Dynamic behavior is not the enemy. Hidden discovery is.
 
-## What this module is for
+## What this day must accomplish
 
-By the end of Module 02, you should be able to explain five things in plain language:
+By the end of Module 02, you should be able to do five things without mystical language:
 
-- how a changing sample set becomes an explicit target list instead of ambient filesystem luck
-- how wildcard domains stay narrow enough to prevent accidental fanout
-- what a checkpoint is allowed to discover and what it must never hide
-- which artifacts make dynamic behavior durable enough for review and downstream trust
-- when environment design and job granularity help the workflow, and when they quietly make it worse
+- explain which exact surface decides what targets exist
+- turn a changing sample set into a deterministic target list
+- reject a checkpoint when static modeling is already enough
+- justify a checkpoint only when runtime work reveals a real new fact
+- preserve the discovered set as evidence that another person can inspect later
+
+## The decision ladder for the whole module
+
+Keep this order in front of you all day:
+
+```mermaid
+flowchart TD
+  config["Known in config or a sample sheet"] --> scan["If not, do one deterministic scan"]
+  scan --> artifact["If later steps must trust discovery, write an artifact"]
+  artifact --> checkpoint["Use a checkpoint only when execution reveals the set"]
+```
+
+If you skip straight to checkpoints, you usually hide a modeling problem. If you follow
+the ladder, dynamic behavior stays explainable.
+
+## The running lab for the whole day
+
+Use one lab story all day instead of several disconnected discovery tricks:
+
+- raw FASTQ files appear in `data/raw/`
+- a candidate registry gives each sample one stable identity
+- a validation step decides which candidates are usable
+- per-sample QC jobs fan out from the accepted set
+- the publish boundary carries the accepted and rejected sets forward
+
+That lab is small enough to run and redraw, but rich enough to teach discovery, fanout,
+dynamic reevaluation, and downstream integrity.
+
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| static baseline | replace an ambient directory scan with a sorted, validated candidate manifest | manifest diff and dry-run |
+| domain design | model paired values without accidental Cartesian products | expected and actual target lists |
+| runtime discovery | implement a checkpoint for a usable subset known only after validation | checkpoint registry |
+| DAG review | compare the graph before and after checkpoint completion | two DAG renderings |
+| integrity | carry discovery, provenance, and inventory into a publish boundary | reviewable bundle |
+| independent practice | complete all ten exercises | implementation and design notes |
+
+The important progression is **static first, dynamic only when earned**. If configuration
+or a manifest already knows the targets, use it directly. A checkpoint is appropriate
+only when execution reveals a fact that planning could not know.
 
 ## Study route
 
@@ -59,8 +76,13 @@ flowchart TD
   answers --> glossary["Glossary"]
 ```
 
-Read the module in that order the first time through. When you return later, jump to the
-page that matches the failure or design pressure in front of you.
+Read the module in that order the first time through.
+
+The route matters:
+
+- begin with deterministic discovery before you touch checkpoints
+- treat wildcard fanout as a domain-modeling problem, not only a syntax problem
+- treat provenance and publication as part of discovery honesty, not as an afterthought
 
 ## The ten files in this module
 
@@ -103,18 +125,15 @@ Good Module 02 answers usually mention one or more of these:
 - a checkpoint output that is durable enough to reread
 - a publish or provenance artifact that preserves the run story
 
-## The running example
+## What the module should change in your head
 
-This module keeps returning to one simple workflow shape:
+If the day is working, you should feel these transitions:
 
-- raw sequencing files appear in `data/raw/`
-- the workflow discovers which samples exist
-- per-sample jobs fan out from that discovery
-- the discovered set is recorded before downstream work trusts it
-- a publish surface carries that discovery forward for review
-
-That shape is small enough to teach, but realistic enough to reveal the real design
-mistakes people make with Snakemake.
+- a directory scan stops looking self-explanatory
+- `expand()` stops feeling harmless when it loses pairings or grows a Cartesian product
+- a checkpoint stops looking advanced and starts looking accountable
+- a discovered-set file becomes part of the workflow contract, not side documentation
+- dynamic DAGs stop being “magic Snakemake behavior” and become reviewable cause and effect
 
 ## Commands to keep close
 
@@ -123,7 +142,7 @@ These commands form the evidence loop for Module 02:
 ```bash
 snakemake -n
 snakemake --summary
-snakemake --dag | dot -Tpdf > dag.pdf
+snakemake --dag | dot -Tpdf > artifacts/dag.pdf
 snakemake --lint
 snakemake --list-changes params input code
 ```
@@ -136,16 +155,6 @@ They answer different questions:
 - which design smells are already visible
 - which tracked changes justify reruns
 
-## Learning outcomes
-
-By the end of this module, you should be able to:
-
-- materialize a deterministic target list from changing data
-- constrain wildcard domains so the DAG matches the real problem
-- use checkpoints to reveal dynamic structure instead of hiding it
-- explain how discovery, provenance, and publish artifacts fit together
-- recognize when too many environments or too many tiny jobs are degrading the workflow
-
 ## Exit standard
 
 Do not move on until all of these are true:
@@ -155,5 +164,6 @@ Do not move on until all of these are true:
 - you can describe one checkpoint that is justified and one that is really a smell
 - you can say which artifacts are internal execution state and which are safe to publish
 - you can explain one performance repair without weakening workflow truth
+- you have completed all ten exercises and can defend each use or rejection of a checkpoint
 
 When those become ordinary, Module 02 has done its job.

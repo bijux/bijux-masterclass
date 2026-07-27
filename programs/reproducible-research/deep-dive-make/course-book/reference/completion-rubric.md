@@ -32,6 +32,19 @@ This course should end with demonstrated judgment, not passive familiarity.
 Use this rubric to decide whether someone has actually completed Deep Dive Make in a
 meaningful way.
 
+## Exercise portfolio
+
+The course contains 100 exercises: ten in each of Modules 01-10. A completed portfolio
+does not need polished essays for every exercise, but every entry needs:
+
+- the command, Makefile, diagram, review, or artifact the exercise requested
+- the observed result, including failures
+- a plain-language explanation tied to graph or contract meaning
+- a note when the result still depends on an unresolved assumption
+
+Answers are comparison material, not completion evidence. A copied reference answer with
+no local observation does not satisfy the rubric.
+
 ---
 
 ## Core Standards
@@ -67,8 +80,8 @@ surface and proof loop.
 | Module | Primary practice surface | Main proof loop | Best capstone follow-up |
 | --- | --- | --- | --- |
 | 01 | tiny local C project | `make --trace all`, `make -q all` | inspect `capstone/Makefile` after local convergence makes sense |
-| 02 | scaling simulator plus repro pack | `make -j2 all`, repro execution | inspect `capstone/repro/` and discovery surfaces |
-| 03 | production simulator | `make selftest` | compare with `capstone/tests/run.sh` |
+| 02 | parallel-safe local build plus repro pack | `make -j2 all`, repro execution | inspect `capstone/repro/` and discovery surfaces |
+| 03 | determinism and selftest lab | `make selftest` | compare with `capstone/tests/run.sh` |
 | 04 | scratch Makefiles | `make -n`, `make --trace`, `make -p` | use `show-origins` and capstone target surfaces |
 | 05 | hardened local build | convergence, trace count, portability checks | inspect `mk/contract.mk` and `mk/stamps.mk` |
 | 06 | generator playground | `make --trace all`, `make -q all` | trace `make --trace dyn` in the capstone |
@@ -138,9 +151,9 @@ These are strong signals that more deliberate practice is needed:
 
 ---
 
-## Best Final Exercise
+## Final portfolio review
 
-A strong final exercise is a short review of a real Make-based repository with these
+A strong final portfolio ends with a short review of a real Make-based repository with these
 sections:
 
 1. public targets

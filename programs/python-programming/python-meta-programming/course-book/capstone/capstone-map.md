@@ -24,8 +24,6 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
 This map keeps the course attached to one executable system. The capstone is a plugin
 runtime for incident delivery adapters, and each major course mechanism has a clearly
 named home inside it.
@@ -34,11 +32,11 @@ named home inside it.
 
 | If you need to know... | Start with | Then inspect |
 | --- | --- | --- |
-| what the runtime exposes without execution | `make manifest` and `make registry` | `framework.py`, `manifest.json`, and [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| what the runtime exposes without execution | `capstone-manifest` and `capstone-registry` | `framework.py`, `manifest.json`, and [Capstone Architecture Guide](capstone-architecture-guide.md) |
 | where wrapper behavior really lives | [Capstone Architecture Guide](capstone-architecture-guide.md) | `actions.py` and `tests/test_runtime.py` |
 | where field ownership and validation live | [Capstone File Guide](capstone-file-guide.md) | `fields.py` and `tests/test_fields.py` |
 | whether class creation is honest | [Capstone Architecture Guide](capstone-architecture-guide.md) | `framework.py` and `tests/test_registry.py` |
-| which route to hand to another reviewer | [Capstone Walkthrough](capstone-walkthrough.md) | `make inspect`, `make tour`, or `make verify-report` |
+| which route to hand to another reviewer | [Capstone Walkthrough](capstone-walkthrough.md) | `inspect`, `capstone-tour`, or `capstone-verify-report` |
 
 ## Mechanism to file map
 
@@ -52,35 +50,22 @@ named home inside it.
 
 | Module stage | Inspect this file or surface | Why it matters | Prove it with |
 | --- | --- | --- | --- |
-| [Modules 01-03](../module-03-signatures-provenance-runtime-evidence/index.md) | `capstone/src/incident_plugins/framework.py` and `manifest` output | shows how fields and actions stay inspectable without executing plugin work | `make PROGRAM=python-programming/python-meta-programming inspect` then read `manifest.json` |
-| [Modules 04-05](../module-04-function-wrappers-transparent-decorators/index.md) | `capstone/src/incident_plugins/actions.py` | shows wrapper policy, preserved metadata, and recorded action history | `make PROGRAM=python-programming/python-meta-programming proof` then inspect `trace.json` and `capstone/tests/test_runtime.py` |
-| [Module 06](../module-06-class-customization-pre-metaclasses/index.md) | generated constructor behavior in `capstone/src/incident_plugins/framework.py` | shows what can stay honest after class creation before metaclasses become necessary | `make PROGRAM=python-programming/python-meta-programming test` then read `capstone/tests/test_runtime.py` |
-| [Modules 07-08](../module-07-descriptors-lookup-attribute-control/index.md) | `capstone/src/incident_plugins/fields.py` | shows descriptor-backed validation, coercion, and per-instance storage ownership | `make PROGRAM=python-programming/python-meta-programming test` then read `capstone/tests/test_fields.py` |
-| [Module 09](../module-09-metaclass-design-class-creation/index.md) | registration logic in `capstone/src/incident_plugins/framework.py` and `registry` output | shows definition-time registration and duplicate prevention | `make PROGRAM=python-programming/python-meta-programming inspect` then read `registry.json` and `capstone/tests/test_registry.py` |
-| [Module 10](../module-10-runtime-governance-mastery-review/index.md) | `capstone/src/incident_plugins/cli.py` plus saved proof bundles | shows that the public review surface stays observational and reviewable | `make PROGRAM=python-programming/python-meta-programming capstone-verify-report` then read `pytest.txt`, `manifest.json`, and `trace.json` |
-
-## Local review guides
-
-- Use [Capstone Architecture Guide](capstone-architecture-guide.md) when you need ownership boundaries before reading implementation detail.
-- Use [Capstone Walkthrough](capstone-walkthrough.md) when you need a guided first pass through commands and files.
-- Use [Capstone File Guide](capstone-file-guide.md) when you need a code-reading route.
-- Use [Capstone Proof Guide](capstone-proof-guide.md) when you need the shortest proof route.
-- Use [Capstone Walkthrough](capstone-walkthrough.md) when you need the public-surface narrative order.
-- Use [Command Guide](command-guide.md) when you need the smallest honest command.
-- Use [Capstone Proof Guide](capstone-proof-guide.md) and [Capstone Extension Guide](capstone-extension-guide.md) when the question is review depth or change placement.
+| Modules 01-03 | `framework.py` and manifest output | fields and actions stay inspectable without execution | `inspect` then read `manifest.json` |
+| Modules 04-05 | `actions.py` | wrapper policy, preserved metadata, and action history | `proof` then inspect `trace.json` and `test_runtime.py` |
+| Module 06 | generated constructor behavior in `framework.py` | class customization before metaclasses | `test` then read `test_runtime.py` |
+| Modules 07-08 | `fields.py` | descriptor-backed validation, coercion, and per-instance storage | `test` then read `test_fields.py` |
+| Module 09 | registration logic in `framework.py` and registry output | definition-time registration and duplicate prevention | `inspect` then read `registry.json` and `test_registry.py` |
+| Module 10 | `cli.py` plus saved proof bundles | public review surface stays observational and reviewable | `capstone-verify-report` then read `pytest.txt`, `manifest.json`, and `trace.json` |
 
 ## Practical reading order
 
 1. Start with one public surface such as `manifest`, `registry`, or `trace`.
-2. Read the matching page in this capstone shelf so the ownership claim is explicit before you widen into repository-local notes.
+2. Read the matching page in this capstone shelf so the ownership claim is explicit.
 3. Read the owning file in `framework.py`, `fields.py`, `actions.py`, or `plugins.py`.
 4. Read the matching tests only after you know what the file is claiming to own.
 5. Escalate to saved bundles only when another reviewer needs the route preserved.
 
-## Inspect, explain, prove
+## Good stopping point
 
-For each module-stage claim, use the same loop:
-
-1. Inspect one source file or saved public output.
-2. Explain which runtime boundary owns the behavior.
-3. Prove the claim with one named test or one saved bundle file.
+Stop when you can inspect one surface, explain one owning boundary, and prove one claim
+without widening into the whole repository.

@@ -32,6 +32,10 @@ they stop returning raw stored values and start managing time.
 
 Lazy computation, cached results, and invalidation all live there.
 
+This page matters because caching can make a field look simpler while making its truth
+conditions harder to see. A reader studying alone needs a way to ask not only "is it
+cached?" but also "when does this cached value stop being trustworthy?"
+
 ## The sentence to keep
 
 A cached descriptor is not only a descriptor that remembers a value. It is a descriptor
@@ -39,6 +43,17 @@ that must define when the value is computed, where it is stored, and how it beco
 invalid.
 
 That is the real design surface.
+
+Keep one more sentence beside it:
+
+> freshness is part of the field contract, not an afterthought the caller is supposed to guess.
+
+If you are studying alone, turn that sentence into a written check every time you see
+cached access:
+
+- what dependency can make the value stale?
+- what exact code path clears the old value?
+- what wrong answer would a caller get if invalidation never happened?
 
 ## Three related patterns
 
@@ -49,6 +64,14 @@ Keep these three patterns separate:
 - cached access stores a result and reuses it until something invalidates it
 
 People often blur these together, but they create different review questions.
+
+Use this table when the language around caching starts to blur:
+
+| Pattern | Review question |
+| --- | --- |
+| pure computed access | what cost do we pay every read? |
+| lazy access | when does computation happen, and is the result retained? |
+| cached access | what makes the retained result stale, and how is that state cleared? |
 
 ## A pure computed descriptor
 
@@ -92,6 +115,9 @@ This is already a stronger design because the cache policy is visible:
 - first-read computation
 - explicit invalidation hook
 
+It is also a stronger teaching shape because the invalidation surface is not hidden in a
+wider object method or some undocumented side effect.
+
 ## Why invalidation is part of the field contract
 
 Suppose a cached descriptor computes `word_count` from `text`.
@@ -108,6 +134,17 @@ It is also:
 - who is responsible for clearing it?
 
 If those answers are missing, the cache design is incomplete.
+
+## Evidence route for cache reviews
+
+Use this route whenever a cached field sounds more reliable than its code warrants:
+
+| Evidence step | What it proves |
+| --- | --- |
+| find the compute function | tells you what the cached value depends on |
+| find the cache storage slot | tells you where stale state can persist |
+| inspect the invalidation API or trigger | tells you whether freshness has an owner |
+| mutate a dependency and re-read | shows whether the design goes stale quietly or refreshes honestly |
 
 ## A dependency example
 
@@ -130,6 +167,9 @@ This is a small example, but it keeps the right instinct visible:
 
 dependencies matter just as much as the cache itself.
 
+That is the review sentence to keep. A cached field without named dependencies is already
+trying to hide a design risk.
+
 ## Where cached values should live
 
 For most course-level cached descriptors, the safest owner is still the instance:
@@ -146,6 +186,26 @@ That keeps cached state:
 
 The same storage rule from Module 07 still applies.
 
+Use this storage table when the owner story is unclear:
+
+| Storage choice | Why it helps or hurts |
+| --- | --- |
+| `obj.__dict__[cache_name]` | keeps cached state per instance and easy to inspect |
+| hidden storage on the descriptor object | risks shared or misleading state |
+| backend-wide shared cache hidden behind the field | may already be wider infrastructure, not one field concern |
+
+## A dependency ledger you should keep
+
+Many weak cache designs fail because the dependency set stays implied instead of written
+down. Keep a ledger like this while you review:
+
+| Cached field | Depends on | Where cached state lives | Invalidation owner | Stale-read symptom |
+| --- | --- | --- | --- | --- |
+| `word_count` | `text` | `obj.__dict__["_word_count_cached"]` | explicit `invalidate(obj)` or `text` setter | reports old count after text change |
+| your own field | fill this in | fill this in | fill this in | fill this in |
+
+If you cannot fill every column, the cache story is still incomplete.
+
 ## Why hidden freshness assumptions are dangerous
 
 Caching often makes code look faster and cleaner while quietly making it less truthful.
@@ -157,6 +217,39 @@ Common failure modes are:
 - no clear distinction between cached data and current data
 
 This is why cache review is really state review.
+
+## Common overclaims to reject
+
+Reject these descriptions when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "the descriptor keeps it fast" | "the descriptor reuses a cached value until its invalidation rule says otherwise" |
+| "lazy and cached mean basically the same thing" | "lazy controls compute timing; cached adds reuse and therefore freshness risk" |
+| "the cache will refresh when needed" | "the refresh trigger must be named explicitly" |
+| "stale data is unlikely" | "staleness is a field-design concern that needs an owner" |
+
+## Weak answers to reject early
+
+These answers sound practical but weaken review discipline:
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "the value is recomputed eventually" | eventually is not an invalidation owner |
+| "the setter probably clears the cache somewhere" | probably means the dependency path is still unproven |
+| "this field is safe because it is only local state" | local state can still go stale when derived inputs change |
+| "callers know they should refresh it" | the field contract has been pushed onto memory and habit |
+
+## Failure modes for cached descriptors
+
+These are the mistakes this page is trying to prevent:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| caching without a named invalidation rule | stale values become hidden behavior | add explicit invalidation ownership |
+| computing from mutable dependencies without refresh logic | correctness drifts after updates | tie invalidation to dependency changes |
+| storing cached state in a confusing shared place | inspection and isolation get worse | keep cache state per instance unless wider infrastructure is explicit |
+| treating field-level caching as distributed or cross-instance coherence | the field claims too much infrastructure power | move wider coherence to explicit architecture |
 
 ## A note on concurrency
 
@@ -193,6 +286,16 @@ Cached descriptors are a weaker fit when:
 
 Those cases usually need more architecture than a field object alone.
 
+## Review packet for one cached field
+
+Before you leave this page, make sure you can produce one packet containing:
+
+- the compute function or dependency rule
+- the cache slot name
+- the invalidation owner
+- one stale-read example
+- one refused stronger claim such as cross-instance coherence or automatic global freshness
+
 ## Review rules for cached descriptors
 
 When reviewing a cached descriptor, keep these questions close:
@@ -202,6 +305,16 @@ When reviewing a cached descriptor, keep these questions close:
 - what dependencies can make the cache stale?
 - who invalidates it and how explicitly?
 - is this still an attribute-level cache, or is it drifting toward wider caching infrastructure?
+- can another reviewer point to the exact freshness owner in one sentence?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- explain the difference between computed, lazy, and cached access
+- name one dependency that can make a cached field stale
+- identify where the cached value lives
+- say who or what clears it when it is no longer trustworthy
 
 ## What to practice from this page
 

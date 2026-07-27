@@ -25,12 +25,37 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This file gathers the module into one teaching build.
+This file gathers the module around the runnable course capstone.
+
+## First see unstable discovery in isolation
+
+Create three files in an empty directory:
+
+```sh
+mkdir -p src
+touch src/charlie.c src/alpha.c src/bravo.c
+```
+
+Compare two Make variables:
+
+```make
+SHELL_SRCS = $(shell find src -name '*.c')
+STABLE_SRCS := $(sort $(wildcard src/*.c))
+
+.PHONY: show
+show:
+	@printf 'shell:  %s\n' "$(SHELL_SRCS)"
+	@printf 'stable: %s\n' "$(STABLE_SRCS)"
+```
+
+The `find` command’s order is not a portable contract. Sorting a rooted file set gives
+the build a canonical order. Stable order matters when the list influences link order,
+manifests, generated source, or evidence comparisons.
 
 ## Layout
 
 ```text
-project/
+capstone/
   Makefile
   mk/
     common.mk
@@ -53,6 +78,9 @@ project/
 
 This simulator matters because it combines deterministic discovery, generation,
 selftesting, and an optional `eval` surface in one place you can actually inspect.
+
+The tree above is not hypothetical. It is
+`programs/reproducible-research/deep-dive-make/capstone/` in this repository.
 
 ## A graph view of the simulator
 
@@ -99,15 +127,27 @@ This worked example is the concrete home for the rest of the module.
 That order matters because it keeps the graph visible before you look at optional
 abstraction.
 
-## Four experiments to run
+## Six demonstrations to run
 
-### Experiment 1: Prove stable discovery
+### Demonstration 1: Prove stable discovery
 
 Run the build, inspect which dynamic sources are included, then reason about what would
 happen if a new `src/dynamic/*.c` file appeared. The question is whether the discovery
 policy is explicit and deterministic.
 
-### Experiment 2: Trace one rebuild properly
+### Demonstration 2: Prove a no-op run
+
+Run a clean build, then:
+
+```sh
+make --trace all
+make -q all
+printf 'query exit: %s\n' "$?"
+```
+
+The trace should contain no rebuilding work, and `make -q` should return zero.
+
+### Demonstration 3: Trace one rebuild properly
 
 Run:
 
@@ -117,18 +157,28 @@ make --trace all
 
 Pick one target and write down the exact reason Make rebuilt it.
 
-### Experiment 3: Prove the build system with `selftest`
+### Demonstration 4: Prove the build system with `selftest`
 
 Run:
 
 ```sh
-make selftest
+gmake selftest-report
 ```
 
-This should prove convergence, serial/parallel equivalence, runtime correctness, and one
-meaningful negative case.
+This should prove convergence, serial/parallel equivalence over 13 declared artifacts,
+the trace guardrail, hidden-input detection, and the quarantined `eval` check. It does
+not prove runtime correctness; `gmake test` owns that separate claim.
 
-### Experiment 4: Check that optional eval stays optional
+Open the report under:
+
+```text
+artifacts/proof/reproducible-research/deep-dive-make/selftest/
+```
+
+Read `summary.txt` before `commands.txt`, logs, inventories, or the workspace. The summary
+tells you which deeper evidence is relevant.
+
+### Demonstration 5: Check that optional eval stays optional
 
 Run:
 
@@ -140,6 +190,62 @@ make USE_EVAL=yes -n eval-demo
 The point is to prove that the core build does not depend on the optional generated demo
 surface.
 
+### Demonstration 6: Read the negative test
+
+Open `tests/run.sh` and find the hidden-input check. Before running it, explain what defect
+the test introduces and what observation should make the test pass. A negative test is
+useful only when you understand why failure is expected.
+
+## Prove that the proof rejects dishonesty
+
+Run:
+
+```sh
+gmake selftest-harness-tests
+```
+
+The test suite runs one truthful case and one controlled schedule-drift case. It does not
+ask you to edit the live Makefile or remember to restore a defect. Inspect:
+
+```text
+artifacts/tests/reproducible-research/deep-dive-make/selftest-harness/
+└── parallel-artifact-drift/
+```
+
+Start with `summary.txt`. It should name schedule equivalence as the stopping boundary.
+Then read `schedule-comparison.json`; the changed path should be
+`build/include/dynamic.h`. Confirm that trace, hidden-input, and eval checks are
+`NOT_RUN`, not `FAIL`.
+
+Finally, compare the two inventory entries for that path and inspect the preserved
+parallel file under `workspace/`. This is mutation testing at a human scale: the test
+proves that the schedule-equivalence gate is connected to the artifact contract it
+claims to protect.
+
+If you later design another controlled defect, require the same evidence shape:
+
+```text
+Claim violated:
+Expected stopping boundary:
+Expected diagnostic category:
+Observed report:
+Later checks not reached:
+Preserved evidence:
+```
+
+## Build a causality note from one trace
+
+Choose one rebuilt target and write no more than five lines:
+
+1. requested target
+2. prerequisite that changed
+3. trace line that names the reason
+4. downstream target made stale by that rebuild
+5. whether the next identical run converged
+
+This bounded note is more useful in review than a complete terminal transcript. It turns
+diagnostic output into an explanation another learner can check.
+
 ## What this example should teach you
 
 By the time you finish this file, you should be able to point at the simulator and say:
@@ -149,3 +255,5 @@ By the time you finish this file, you should be able to point at the simulator a
 - where the CI-facing target surface begins
 - where selftest proves the build
 - where abstraction is kept under control instead of controlling the build
+- which claim is proved by each selftest section
+- how a rejected selftest remains reviewable without rerunning it

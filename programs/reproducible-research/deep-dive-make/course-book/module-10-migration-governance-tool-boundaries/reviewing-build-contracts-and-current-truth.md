@@ -1,6 +1,5 @@
 # Reviewing Build Contracts and Current Truth
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,19 +17,19 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  contract["name the public contract"] --> outputs["trace trusted outputs and writers"]
+  outputs --> hidden["hunt hidden inputs and state"]
+  hidden --> pressure["compare calm and pressure behavior"]
+  pressure --> classify["classify risks before proposing repair"]
 ```
 <!-- page-maps:end -->
 
-This page is about the first pass over an inherited build: not how to rewrite it, but how
-to understand what it currently promises, what it currently breaks, and what evidence
-separates those two things.
+This page is about the first pass over an inherited build: not how to rewrite it, but
+how to understand what it currently promises, what it currently breaks, and what
+evidence separates those two things.
 
-The rest of Module 10 depends on this discipline. A migration plan is only as good as the
-review that shaped it.
+The rest of Module 10 depends on this discipline. A migration plan is only as good as
+the review that shaped it.
 
 ## The first mistake to avoid
 
@@ -43,8 +42,8 @@ Most bad build reviews begin with sentences like these:
 
 Those may or may not be true. They are still weak starting points.
 
-An inherited build is not a style puzzle. It is a contract surface. Before you talk about
-beauty, you need to know:
+An inherited build is not a style puzzle. It is a contract surface. Before you talk
+about beauty, you need to know:
 
 - which targets people rely on
 - which outputs the build claims to publish
@@ -58,7 +57,7 @@ That is the difference between criticism and review.
 
 When you open a legacy Make build, ask:
 
-> what does this build currently promise, what evidence supports that promise, and where
+> What does this build currently promise, what evidence supports that promise, and where
 > does the promise break under pressure?
 
 That one sentence keeps the review honest.
@@ -78,14 +77,14 @@ The first thing that matters is public behavior. Ask:
 
 - what targets does a developer run on purpose
 - what targets does CI call
-- what targets are documented in README or helper scripts
+- what targets are documented in the README or helper scripts
 - what files or directories are considered trusted outputs
 - what commands are used to inspect, clean, publish, or verify the build
 
-Those are the entrypoints into the system. If you do not know them, you do not yet know
-what the build is for.
+Those are the entry points into the system. If you do not know them, you do not yet
+know what the build is for.
 
-## A practical review order
+## A practical first-review order
 
 For a first review, use this order:
 
@@ -97,7 +96,7 @@ For a first review, use this order:
 
 That order works because it turns a vague build into a legible product surface.
 
-## Step 1: name the public target contract
+## Name the public target contract
 
 Take the top-level target surface and write it down in plain language.
 
@@ -105,12 +104,12 @@ Example:
 
 | Target | Likely promise | Questions to ask |
 | --- | --- | --- |
-| `all` | Build the default artifact set | What artifacts count as complete? |
-| `test` | Run ordinary validation | Does it depend on hidden setup or side effects? |
-| `clean` | Remove generated outputs | Does it delete source-like or cached inputs too? |
-| `release` | Produce publishable outputs | Does it also test, install, or mutate unrelated state? |
+| `all` | build the default artifact set | what artifacts count as complete? |
+| `test` | run ordinary validation | does it depend on hidden setup or side effects? |
+| `clean` | remove generated outputs | does it delete source-like or cache-like inputs too? |
+| `release` | produce publishable outputs | does it also test, install, or mutate unrelated state? |
 
-This is already more useful than saying "the Makefile is complicated."
+This table is already more useful than saying "the Makefile is complicated."
 
 Look for contract drift:
 
@@ -121,13 +120,13 @@ Look for contract drift:
 
 If the target contract is muddy, the review should say so explicitly.
 
-## Step 2: trace who owns each output
+## Trace who owns each trusted output
 
 The next review question is simple:
 
-> for each trusted output, who writes it exactly once?
+> For each trusted output, who writes it exactly once?
 
-This is where many legacy systems begin to fail.
+This is where many inherited systems begin to fail.
 
 Suppose you find this:
 
@@ -142,7 +141,7 @@ package:
 	@tar -czf dist/app.tar.gz build/app build/version.txt
 ```
 
-The review issue is not "this uses a script." The issue is output ownership drift:
+The issue is not "this uses a script." The issue is output ownership drift:
 
 - `build/app` is written from more than one route
 - packaging rebuilds product state as a side effect
@@ -151,10 +150,9 @@ The review issue is not "this uses a script." The issue is output ownership drif
 That is a real finding. It predicts flaky releases, confusing reruns, and bad incident
 triage later.
 
-## Step 3: look for hidden state on purpose
+## Hunt hidden state on purpose
 
-Many build reviews stop at visible prerequisites. Strong reviews also ask what the build is
-quietly depending on.
+Strong reviews ask what the build is quietly depending on.
 
 Common hidden-state sources include:
 
@@ -173,16 +171,16 @@ report.txt:
 
 The review question is not "does `MODE` exist?" It is:
 
-- where is `MODE` defined
-- what happens when it changes
-- is that change part of the declared build meaning
-- does the current graph know that `report.txt` depends on it
+- where is `MODE` defined?
+- what happens when it changes?
+- is that change part of the declared build meaning?
+- does the current graph know that `report.txt` depends on it?
 
 If the answer is no, you have found a semantic input the graph does not model.
 
-## Step 4: compare calm conditions to pressure conditions
+## Compare calm conditions to pressure conditions
 
-A legacy build often looks fine when run one way:
+A legacy build often looks fine when run only one way:
 
 ```sh
 make all
@@ -197,7 +195,7 @@ make -j1 all
 make -j8 all
 ```
 
-Those commands help answer different questions:
+Those commands answer different questions:
 
 - `-n` shows intended actions without external mutation
 - `--trace` shows why targets are considered
@@ -208,133 +206,76 @@ Many "legacy quirks" are really one of these:
 
 - the build only works serially
 - the build only works on a warm machine
-- the build only works when outputs from a previous run remain
-- the build only works because one accidental order hides the true graph problem
+- the build only works because prior outputs are already present
+- the build only works because accidental order hides a graph defect
 
 A review that never applies pressure is incomplete.
 
-## Step 5: classify findings before suggesting fixes
+## Classify findings before suggesting fixes
 
 Do not jump straight from evidence to edits. First classify the finding.
 
-A simple review rubric is:
+A practical rubric is:
 
 | Finding class | What it means |
 | --- | --- |
-| graph truth risk | the build graph hides a real dependency, writer, or publication event |
+| graph truth risk | the graph hides a real dependency, writer, or publication event |
 | contract drift | target names or output promises no longer match behavior |
 | environment risk | the build depends on host state or undeclared tools |
 | parallel-safety risk | correctness depends on serial execution or shared mutation |
 | observability risk | the build is too opaque to diagnose safely |
 | boundary risk | Make owns a concern it cannot model honestly |
 
-That classification matters because each class suggests a different repair path.
+This matters because each class suggests a different repair path.
 
 For example:
 
-- hidden input: probably a graph truth repair
+- hidden input: likely a graph-truth repair
 - release target doing too much: contract repair
-- one script maintaining long-lived deployment state: maybe a boundary repair
+- one script maintaining remote state: boundary repair
 
 Without classification, reviews turn into giant wish lists.
 
-## A small example review
+## One-page review packet
 
-Imagine you inherit this build:
+At the end of a first pass, you should be able to hand another maintainer a packet with:
 
-```make
-.PHONY: all release clean
+- public target meanings
+- trusted outputs and their writers
+- hidden inputs or stateful behavior
+- one calm-versus-pressure comparison
+- top risk classes in clear language
 
-all:
-	@./scripts/build.sh
+If your review cannot fit into that shape, it is probably still too impressionistic.
 
-release:
-	@./scripts/build.sh
-	@./scripts/test.sh
-	@./scripts/package.sh
+## Review drill
 
-clean:
-	rm -rf build dist
-```
+For any inherited build, ask:
 
-A weak review says:
+1. what is public here?
+2. what trusted outputs exist and who writes them?
+3. which hidden input or shared state changes meaning without being modeled?
+4. what breaks under pressure?
+5. which finding class should each problem be assigned to?
 
-- too script-heavy
-- not modular
-- should use more make rules
+If those answers are still fuzzy, you are not ready to plan a migration yet.
 
-A stronger review says:
+## Capstone connection
 
-1. `all` and `release` both rebuild product state through opaque scripts, so output
-   ownership is unclear.
-2. `release` mixes build, test, and packaging concerns behind one target, so its contract
-   is too broad to audit cleanly.
-3. There is no visible way to inspect which files count as trusted outputs before
-   packaging.
-4. The current structure makes serial/parallel equivalence hard to test because recipe
-   meaning is hidden behind shell wrappers.
+Use the capstone or any inherited Make repository to practice this sequence:
 
-That second review is actionable because it describes broken promises rather than taste.
+- list public targets and trusted outputs
+- run dry-run, trace, and serial/parallel comparisons
+- name one hidden input
+- classify the top two or three risks before recommending any redesign
 
-## The review artifact you should produce
+That is how you keep review work grounded in observable truth instead of intuition.
 
-A good first-pass review can be short. One page is enough if it is specific.
+## Exit check
 
-Use five sections:
+Leave this lesson only when you can do all of these:
 
-1. public target contract
-2. trusted outputs and writers
-3. hidden inputs and stateful behavior
-4. pressure findings from dry-run, trace, and serial/parallel comparison
-5. top three to five risks, each with a class
-
-If the review cannot fit on one page, the problem is often that the findings are still too
-vague.
-
-## What not to promise yet
-
-At review time, avoid sentences like:
-
-- "we should migrate to another tool"
-- "we need to rewrite the whole build"
-- "this should become a plugin system"
-
-Those may eventually be true. The review has not earned those conclusions yet.
-
-First earn these smaller claims:
-
-- which current contracts are ambiguous
-- where truth is already being lost
-- which failure surfaces are the most expensive
-- which concerns Make is currently modeling poorly
-
-Only then does migration become a design decision instead of a mood.
-
-## Failure signatures worth recognizing
-
-### "The build works, but nobody can say why"
-
-That is usually an observability and contract problem, not merely a documentation problem.
-
-### "We cannot tell if `release` is broken without actually publishing"
-
-That often means the publication boundary is too late or too opaque.
-
-### "Parallel mode exposes random file corruption"
-
-That is a parallel-safety review finding, not a strange CI anecdote.
-
-### "Every engineer describes the build differently"
-
-That usually means the public target contract was never written down.
-
-## The habit this page wants
-
-Strong maintainers do not begin with "how would I have built this?"
-
-They begin with:
-
-> what is the current product surface, what evidence makes it legible, and what exactly is
-> broken about the promises it already makes?
-
-That habit is what makes the rest of Module 10 possible.
+- explain why a build review must start from public behavior rather than taste
+- identify one trusted output and one hidden input from a real build
+- classify one real finding as graph truth, contract, environment, parallel, observability,
+  or boundary risk

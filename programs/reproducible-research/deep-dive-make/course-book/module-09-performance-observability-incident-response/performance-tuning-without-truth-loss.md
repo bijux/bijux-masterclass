@@ -18,10 +18,11 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  baseline["prove a cost exists"] --> invariant["name the truth invariant"]
+  invariant --> change["change one boundary"]
+  change --> measure["repeat the controlled baseline"]
+  measure --> prove["prove convergence and artifact meaning"]
+  prove --> decide["keep, revise, or reject"]
 ```
 <!-- page-maps:end -->
 
@@ -47,10 +48,28 @@ This page is about a stricter rule:
 
 Before calling something a performance improvement, ask:
 
-> what cost did this remove, and what part of the build's evidence or semantic model did it
-> preserve?
+> What cost did this remove, which invariant could it break, and what evidence proves that
+> invariant still holds?
 
-If the second half of that question has no answer, the change is probably risky.
+If the invariant and its proof are missing, the change is not ready for review.
+
+## Write the experiment contract before the edit
+
+Use this table before touching the Makefile:
+
+| Field | Example |
+| --- | --- |
+| measured cost | no-op `make -n all` median is `2.4 s` |
+| localized boundary | repeated source-discovery shell-outs during evaluation |
+| proposed change | resolve declared shallow roots with Make functions |
+| invariant at risk | the resolved source set must still include additions and removals |
+| controlled comparison | same revision, no-op state, machine, target, and five samples |
+| semantic proof | compare resolved source lists; add and remove one source; verify convergence |
+| rejection condition | source discovery becomes stale or timing change is within observed noise |
+
+The rejection condition prevents every implemented idea from being described as a win.
+Sometimes the responsible result is: the optimization did not reduce meaningful cost, so
+we reverted it.
 
 ## Good tuning removes waste, not responsibility
 
@@ -70,29 +89,50 @@ What it should not remove is:
 
 The distinction matters because builds are easiest to "speed up" by making them less honest.
 
-## Truth-preserving caching is allowed
+## Prefer removing repeated work before adding a cache
+
+The safest performance changes often simplify repeated work:
+
+- compute one simply expanded variable instead of repeating an expensive expansion
+- replace several identical shell probes with one declared result
+- narrow a broad aggregate route when callers need a smaller public target
+- stop rewriting a file when its content is unchanged
+
+These changes preserve the same observation contract while doing less redundant work.
+Caching adds a new freshness contract, so it needs stronger justification.
+
+## Caching is allowed only behind a truthful refresh boundary
 
 One good performance move is to cache expensive derived state behind a truthful boundary.
 
-For example, if discovery or tool probing is expensive, it may be better to generate a
-stable manifest from explicit inputs than to rerun the same shell logic on every invocation.
-
-That can look like:
+Suppose source-name discovery is expensive and the repository supports only two shallow
+source roots. A manifest can depend on the script and those directory-entry sets:
 
 ```make
-build/discovery.manifest: scripts/list_sources.py src/ | build/
-	@python3 scripts/list_sources.py src > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+SOURCE_ROOTS := src/app src/lib
+
+build/discovery.manifest: scripts/list_sources.py $(SOURCE_ROOTS) | build/
+	@set -eu; \
+	tmp="$@.tmp"; \
+	trap 'rm -f "$$tmp"' 0; \
+	python3 scripts/list_sources.py $(SOURCE_ROOTS) > "$$tmp"; \
+	if ! cmp -s "$$tmp" "$@" 2>/dev/null; then mv "$$tmp" "$@"; fi
 ```
 
 This is healthy if:
 
-- the manifest depends on the right inputs
+- additions and removals in the supported roots change a declared directory prerequisite
+- the script and supported discovery policy are explicit
 - the manifest converges
 - consumers depend on it honestly
 
-The performance win comes from removing repeated work, not from hiding a dependency.
+It is not a general recursive-discovery recipe. If nested directories can appear without
+changing one of the declared roots, the refresh boundary is incomplete. Either model every
+relevant directory, use a checked-in manifest with an explicit update policy, or reject the
+cache.
+
+The performance win must come from avoiding repeated work across invocations, not from
+silently ceasing to observe a real input.
 
 ## Moving shell work into a script can be healthy
 
@@ -112,7 +152,8 @@ The script must still be:
 
 - declared as an input where relevant
 - inspectable
-- stable enough that its output can be trusted
+- deterministic enough that unchanged inputs converge
+- explicit about the output or evidence it owns
 
 This is the same architectural discipline from earlier modules, applied to performance work.
 
@@ -124,13 +165,165 @@ Examples:
 
 - replacing scattered debug prints with one bounded diagnostic target
 - moving unstable verbose output out of the default route
-- creating a named `trace-count` or audit surface instead of flooding every run
+- creating a named `trace-report` with state and attribution instead of flooding every run
 
 This is a legitimate optimization because it reduces the cost of using the build, not only
 the wall-clock time of running it.
 
 The important condition is that the build still has a path to the evidence when an incident
 occurs.
+
+## Distinguish critical-path work from total work
+
+Removing ten seconds of work does not guarantee a ten-second wall-clock improvement. If
+that work ran in parallel beside a longer independent recipe, it may not be on the critical
+path.
+
+Use the graph before interpreting timing:
+
+```mermaid
+flowchart LR
+  start["start"] --> generate["generator: 8 s"]
+  start --> compileA["compile A: 3 s"]
+  start --> compileB["compile B: 3 s"]
+  generate --> link["link: 2 s"]
+  compileA --> link
+  compileB --> link
+```
+
+Halving either three-second compile may not change the eight-second wait for the generator.
+Speedup claims need graph context as well as local recipe timing.
+
+## Prove five dimensions after the change
+
+A performance result is reviewable when it includes:
+
+| Dimension | Question | Example proof |
+| --- | --- | --- |
+| cost | did the controlled metric improve beyond noise? | before/after samples and stated representative value |
+| requested work | does the same input change trigger the same necessary route? | touch or edit a declared input, then inspect trace |
+| convergence | does the second run become a no-op when it should? | `make all && make -q all` |
+| artifact meaning | are trusted outputs equivalent or intentionally changed? | hashes, manifests, or domain-specific comparison |
+| pressure behavior | does parallel execution remain correct? | serial/parallel selftest or artifact comparison |
+
+Byte-identical output is not always required. Timestamps inside an intentionally
+non-reproducible report may differ, for example. In that case, define the semantic
+comparison before running the experiment. "Looks fine" is not a comparison method.
+
+## Turn requested work into a change-impact matrix
+
+One input is not representative of a build graph. A direct source, shared header, generated
+producer, and independent leaf have different fan-out. The capstone makes those distinctions
+executable:
+
+```sh
+gmake -C "$CAPSTONE" performance-incremental
+```
+
+Before reading the policy, derive paths from the graph:
+
+```mermaid
+flowchart LR
+  utilc["src/util.c"] --> utilo["build/util.o"]
+  utilh["include/util.h"] --> utilo
+  utilh --> maino["build/main.o"]
+  subh["include/sub.h"] --> maino
+  subh --> subo["build/sub/sub.o"]
+  utilo --> app
+  maino --> app
+  subo --> app
+  generator["scripts/gen_dynamic_h.py"] --> dynh["build/include/dynamic.h"]
+  dynh --> dyn1["build/bin/dyn1"]
+  dynh --> dyn2["build/bin/dyn2"]
+  dyn1c["src/dynamic/dyn1.c"] --> dyn1
+  app --> all
+  dyn1 --> all
+  dyn2 --> all
+```
+
+For each input, follow every outgoing path to `all`. Targets on those paths should rebuild;
+governed outputs outside those paths should remain unchanged. That reasoning produces:
+
+| Input class | Must rebuild | Important non-work |
+| --- | --- | --- |
+| direct source `src/util.c` | util object, app, sentinel | main/sub objects and dynamic pipeline |
+| shared header `include/util.h` | main and util objects, app, sentinel | sub object and dynamic pipeline |
+| shared header `include/sub.h` | main and sub objects, app, sentinel | util object and dynamic pipeline |
+| generated producer script | generated header, both dynamic binaries, sentinel | app and ordinary objects |
+| independent dynamic source | its binary and sentinel | sibling binary, generated header, app, ordinary objects |
+
+Read `performance/incremental-policy.tsv` and compare your prediction with its exact paths.
+Every row must classify the same governed output universe. Otherwise an omitted output
+would be invisible to that case.
+
+The collector runs every row. For each case it converges the build, records output
+timestamps, advances only the declared input beyond every governed output, executes
+`--trace all`, and restores the input timestamp even when the case fails. Its report
+separates:
+
+- `missing_rebuild`: necessary work the graph failed to select
+- `unexpected_rebuild`: collateral work the graph selected without need
+- `observed_rebuild`: the actual affected scope
+
+Open `incremental-summary.tsv` first. It gives one row per input and makes fan-out differences
+visible. Open `incremental-work.json` when a row fails; each case retains its own trace.
+Passing cases remain available even when a later input fails.
+
+This catches several false optimizations. Removing a depfile edge can leave a header
+consumer stale. Hiding the generator script can leave the generated header stale.
+Broadening an edge can keep correctness while making an isolated dynamic edit relink the
+ordinary application. Final output inventory alone cannot explain any of those rebuild
+scopes.
+
+After a tuning change, the same policy must pass before and after. If the intended product
+contract changes, review and change the policy explicitly rather than weakening the
+collector until the edit passes.
+
+`make perf` runs this proof before timing and binds its semantic fields into
+`evidence.json`. `performance-compare` then requires baseline and candidate to agree on:
+
+- incremental policy digest
+- complete declared input set
+- each input's expected rebuild set
+- each input's observed rebuild set
+- empty missing and unexpected sets in every case
+
+This closes a common review loophole. A candidate cannot point to a passing incremental
+report from another run while presenting unrelated timing evidence.
+
+If a tuning edit intentionally changes requested work, do not add an exception to the
+comparison. Review the graph decision first:
+
+1. identify the affected input case and explain why its old expected set is no longer the
+   product contract
+2. update the incremental policy to the reviewed contract
+3. collect baseline and candidate under that one policy if the old revision can satisfy it
+4. if it cannot, report two different work contracts rather than one speedup percentage
+
+The last outcome may still support an engineering decision. It does not support the claim
+that equivalent work became faster.
+
+## Keep source change separate from environment change
+
+A candidate experiment is meant to vary the source revision. The capstone comparator
+therefore allows different clean revisions and records both. It rejects changes to the
+compiler, GNU Make, Python, platform, runner label, scenario policy, and sample count.
+
+That distinction supports attribution:
+
+```text
+source revision differs + context matches + work matches
+    -> timing delta may be interpreted
+
+source revision differs + compiler differs
+    -> source and toolchain effects are confounded
+
+source revision differs + worktree is dirty
+    -> the reported revision does not identify measured source
+```
+
+Do not solve either rejected case by editing evidence. Recollect under one named
+environment from clean revisions.
 
 ## Common anti-pattern: tuning by hiding prerequisites
 
@@ -148,6 +341,10 @@ This includes moves like:
 
 Fast wrong builds are still wrong. This course has been saying that since Module 01, and it
 still applies here.
+
+Test the input that the optimization is most likely to forget. For discovery changes, add
+and remove a supported source file. For generated manifests, change the producer script.
+For include restructuring, change a variable at the ownership boundary.
 
 ## Common anti-pattern: tuning by removing evidence
 
@@ -185,19 +382,37 @@ then serialization is hiding a truth problem, not solving it.
 
 This is why the module keeps tying tuning back to incident classification.
 
+Serial mode can be an incident mitigation when the alternative is a blocked release or
+feedback route. Label it as mitigation, retain the parallel reproducer, and do not present
+the slower route as the completed fix.
+
 ## A good tuning note should sound like this
 
 A strong performance change summary sounds like:
 
-> We moved repeated discovery shell-outs into a stable manifest generated from explicit
-> inputs. `make -n all` dropped from `2.4s` to `0.7s`. The manifest remains convergent and
-> the consumer edges still point at the same resolved source set.
+> Five no-op dry-run samples fell from a median of `2.4 s` to `0.8 s` after repeated
+> discovery shell-outs were replaced with one manifest refreshed from two declared shallow
+> roots. Adding and removing a source changed the manifest and rebuilt its consumers;
+> unchanged inputs converged under `make -q`; serial and parallel artifact hashes matched.
 
 That is much stronger than:
 
 > We optimized the Makefiles and now they feel faster.
 
-The difference is not style. It is evidence and semantic accountability.
+The difference is not style. It is a reproducible cost claim plus semantic accountability.
+
+## Review the diff as a changed contract
+
+For every tuning diff, mark:
+
+- work removed
+- state added, especially caches or manifests
+- dependencies added or removed
+- evidence routes changed
+- failure and cleanup behavior changed
+
+A small timing patch can have a large semantic footprint. Review the footprint, not only
+the line count.
 
 ## Failure signatures worth recognizing
 
@@ -221,11 +436,12 @@ That means the optimization is not yet trustworthy.
 
 Take one proposed performance change and ask:
 
-1. which cost layer it is reducing
-2. what measurement shows the cost exists
-3. what semantic inputs or evidence surfaces the change depends on
-4. how the truth boundary remains preserved
-5. what command would verify that the build is still honest afterward
+1. which controlled measurement proves the cost exists
+2. whether the work is on the critical path
+3. which invariant the change could break
+4. what new state or refresh contract the change introduces
+5. how requested work, convergence, artifact meaning, and pressure behavior were checked
+6. what result would cause the team to reject the optimization
 
 If those answers are weak, the tuning change is probably weak too.
 
@@ -233,11 +449,13 @@ If those answers are weak, the tuning change is probably weak too.
 
 Choose one expensive build habit and write down:
 
-1. the layer where the cost lives
-2. the current measurement
+1. the exact target, state, and measured cost
+2. the graph path that makes the cost operationally relevant
 3. the proposed truth-preserving change
-4. the evidence you would compare after the change
-5. one reason the change is safer than a shortcut that simply hides work
+4. the invariant most at risk
+5. before-and-after cost evidence
+6. requested-work, convergence, artifact, and pressure proof
+7. the rejection condition
 
 If you can do that clearly, you are doing real build tuning rather than just chasing
 "faster" feelings.
@@ -247,7 +465,10 @@ If you can do that clearly, you are doing real build tuning rather than just cha
 Before leaving this lesson, make sure you can explain:
 
 - what makes a performance change truth-preserving
+- why the experiment contract comes before the edit
+- why removing repeated work is safer than inventing an unexplained cache
 - why truthful caching is different from hiding dependencies
+- why critical-path context changes timing interpretation
 - why reducing evidence noise can be legitimate if the evidence remains available
 - why serialization is not automatically a healthy optimization
-- how to describe a performance change with both measurement and semantic accountability
+- how to prove cost, requested work, convergence, artifact meaning, and pressure behavior

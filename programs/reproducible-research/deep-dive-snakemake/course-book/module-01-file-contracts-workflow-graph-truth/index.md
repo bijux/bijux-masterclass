@@ -1,34 +1,8 @@
 # Module 01: First Principles and the File-DAG Contract
+This is the day Snakemake must stop feeling magical.
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Module 01: First Principles and the File-DAG Contract"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Module 01 is where the whole Snakemake program either becomes clear or stays mystical.
-
-This module is not about memorizing rule syntax. It is about learning the contract Snakemake
-actually enforces:
+Module 01 is not about memorizing rule syntax. It is about learning the contract
+Snakemake actually enforces:
 
 - targets declare intent
 - files define dependency truth
@@ -38,15 +12,46 @@ actually enforces:
 
 If that model is shaky, every later feature in the course becomes harder to reason about.
 
-## What this module is for
+## What this day must accomplish
 
-By the end of Module 01, you should be able to explain five things clearly:
+By the end of Module 01, you should be able to do five things without guessing:
 
-- how a rule acts as a file contract rather than a vague workflow step
-- how targets become a DAG and then concrete jobs
-- why convergence fails when hidden inputs or unstable parameters leak in
-- how wildcard binding can stay precise or become ambiguous
-- how config, profiles, logs, and atomic publication keep a small workflow trustworthy
+- explain a rule as a file contract rather than a vague step
+- predict which jobs a requested target will create
+- show why a tiny workflow converges after a clean run
+- repair one wildcard design that claims too much
+- publish one small output safely enough that a second rule could trust it
+
+The advanced boundary language begins here, but it should not dominate the day. Config,
+profiles, and publish safety matter in Module 01 only because they protect the first file
+contract model from becoming dishonest too early.
+
+## The running lab for the whole day
+
+Use one lab story all day instead of five unrelated snippets:
+
+- two source files under `data/`
+- one wildcard rule that transforms each source into `results/staged/{sample}.upper.txt`
+- one summary rule that writes `results/summary/counts.tsv`
+- one controlled failure so you can see the difference between a complete output and a lie
+
+That lab is intentionally small. It is large enough to teach a DAG, a selective rebuild,
+and a real output boundary, but still small enough to redraw on paper.
+
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| morning setup | extend the orientation workflow from one rule to a tiny three-job DAG | annotated dry-run |
+| graph reading | trace targets backward through inputs and outputs | hand-drawn DAG |
+| convergence | edit, delete, and preserve files while predicting reruns | `--summary` notes |
+| wildcard ownership | create two sample-specific jobs from one rule and narrow the path shape | concrete target list |
+| safe publication | inject a failure, inspect the damage, then repair the output contract | failed log and repaired output |
+| independent practice | complete all ten exercises in order | runnable files and short explanations |
+
+Spend more time predicting than typing. Before each command, state which jobs should
+appear and why. A correct prediction demonstrates the model; a surprising result gives
+you a precise question to investigate.
 
 ## Study route
 
@@ -63,8 +68,15 @@ flowchart TD
   answers --> glossary["Glossary"]
 ```
 
-Read the module in that order the first time. Later, jump directly to the page that matches
-the failure or design question you are facing.
+Read the module in that order the first time.
+
+The route matters. Do not begin with config or atomic publication because those later
+pages only make sense once you can already explain the first DAG. Think of the module as
+one day with three layers:
+
+- foundations: file contracts, targets, convergence
+- scaling within the day: wildcards and path ownership
+- guardrails: config boundaries and safe outputs
 
 ## The ten files in this module
 
@@ -128,15 +140,15 @@ They answer different questions:
 - how rules relate structurally
 - which design smells already exist
 
-## Learning outcomes
+## What the first-day lab should feel like
 
-By the end of this module, you should be able to:
+If the module is working, you should feel these transitions:
 
-- explain rules as file contracts and predict the resulting jobs
-- prove convergence and diagnose rerun causes
-- use wildcards precisely and recognize ambiguity early
-- validate config early and keep profiles out of semantic workflow meaning
-- publish outputs atomically and leave behind usable failure evidence
+- the second dry-run becomes meaningful instead of ceremonial
+- wildcard rules stop feeling magical and start feeling like path ownership
+- a missing or extra job becomes a graph question instead of a Snakemake mood
+- a partial output stops looking “close enough”
+- you know when a setting belongs to workflow meaning and when it belongs somewhere else
 
 ## Exit standard
 
@@ -147,5 +159,6 @@ Do not move on until all of these are true:
 - you can show one ambiguous wildcard design and repair it
 - you can distinguish config data from execution policy clearly
 - you can explain why a final output is trustworthy or why it is poison
+- you have completed all ten exercises without using the answer page as instructions
 
 When those feel ordinary, Module 01 has done its job.

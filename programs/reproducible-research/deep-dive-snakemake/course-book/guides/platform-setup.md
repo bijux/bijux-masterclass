@@ -1,87 +1,40 @@
 # Platform Setup
 
+Use this page before your first local run or when setup failures are blurring the lesson.
+The goal is simple: get to one truthful workflow proof route without treating toolchain
+problems as Snakemake concepts.
 
-<!-- page-maps:start -->
-## Page Maps
+This page is about setup honesty, not about deep workflow reasoning.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Platform Setup"]
-  capstone["Capstone evidence"]
+## The main distinction
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+Before you do anything else, ask:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+- is the failure happening before a supported toolchain exists
+- or is it happening after setup succeeded and the workflow is now making a real claim
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+That distinction changes everything.
 
-Deep Dive Snakemake depends on more than a `snakemake` binary existing somewhere on the
-machine. The course assumes a small, explicit platform contract.
+If setup is still broken, do not draw workflow conclusions yet. If setup is already
+honest and the proof route fails, stop reinstalling and start reading the workflow
+evidence.
 
-This page makes that contract clear before you hit avoidable setup failures.
+## How to use this page
 
----
+Work in this order:
 
-## Minimum Tooling
+1. choose the safest first route
+2. identify the command surface you are actually on
+3. verify the toolchain in the listed order
+4. stop when setup is no longer the thing that is failing
 
-You need:
+Once the toolchain is honest, go back to the module or proof route. Do not keep treating
+workflow questions as setup questions.
 
-* Python 3.11 or newer
-* Snakemake in the supported `>=9.14,<9.24` window if you are using a preinstalled global binary
-* a writable local filesystem for the capstone working directories
-* `dot` from Graphviz if you want DAG or rulegraph rendering
+## The safest first route
 
-The safest path on a fresh machine is still `make bootstrap-confirm`, because it creates
-the supported local toolchain instead of depending on whatever `snakemake` happens to be
-installed globally.
-
----
-
-## Version Contract
-
-The course and capstone keep **9.14.x** as the clean-room classroom baseline, and the
-packaging surfaces accept the broader supported window `>=9.14,<9.24`. That split is
-intentional:
-
-* `environment.yaml` preserves the pinned 9.14 baseline for a stable teaching and container contract
-* `pyproject.toml` and `make bootstrap` accept newer compatible 9.x releases without pretending the capstone is version-agnostic
-
-That matters because the course relies on modern behavior around profiles, modules,
-reporting, and current CLI surfaces.
-
-Use one of these two routes:
-
-* preferred: `make bootstrap-confirm` to create a repo-managed local toolchain inside the supported window and run the strongest clean-room proof route
-* acceptable: use a preinstalled `snakemake`, but verify `snakemake --version` falls inside `>=9.14,<9.24` before trusting course commands literally
-
----
-
-## Repository Root
-
-The course-level commands use the repository root Makefile:
-
-```sh
-make PROGRAM=reproducible-research/deep-dive-snakemake program-help
-make PROGRAM=reproducible-research/deep-dive-snakemake docs-build
-```
-
-Use these commands when you want docs or program-level verification.
-
----
-
-## Capstone Setup
+If the machine is fresh, prefer the repository-managed toolchain over a random global
+Snakemake install.
 
 From `programs/reproducible-research/deep-dive-snakemake/capstone/`:
 
@@ -91,27 +44,57 @@ make walkthrough
 make wf-dryrun
 ```
 
-That sequence creates the supported local toolchain under
-`artifacts/venv/reproducible-research/deep-dive-snakemake/capstone/`, prints the
-resolved versions, and proves the workflow can at least plan correctly before a full
-execution.
+That route does three useful things in order:
 
----
+1. creates the supported local toolchain
+2. gives you a guided first pass through the capstone
+3. proves the workflow can explain its plan before a full execution
 
-## One-Command Truth Path
-
-On a fresh machine, the shortest honest setup-and-proof route is:
+If you want the shortest clean-room setup-and-proof route, run:
 
 ```sh
 make bootstrap-confirm
 ```
 
-That target creates the supported local toolchain and then runs the clean-room
-confirmation route without depending on a preinstalled global `snakemake`.
+That target creates the supported toolchain and then runs the strongest confirmation path
+without depending on a preinstalled global `snakemake`.
 
----
+## What you actually need
 
-## Verify Your Setup
+You do not need a perfect workstation. You need a small, explicit platform contract:
+
+- Python 3.11 or newer
+- a writable local filesystem for the capstone working directories
+- Snakemake in the supported `>=9.14,<9.24` window if you are relying on a global binary
+- Graphviz `dot` only when you want DAG or rulegraph rendering
+
+If you are unsure about the global Snakemake version, prefer the local bootstrap route.
+
+## Choose the right command surface
+
+| Where you are working | Best starting command | Use it for |
+| --- | --- | --- |
+| repository root | `make PROGRAM=reproducible-research/deep-dive-snakemake program-help` | seeing the program-owned command surface |
+| repository root | `make PROGRAM=reproducible-research/deep-dive-snakemake program-docs-build` | building only this program's docs |
+| program root | `make capstone-bootstrap-confirm` | creating the supported capstone toolchain and running clean-room confirmation |
+| capstone directory | `make help` | seeing the local capstone targets directly |
+| capstone directory | `make bootstrap` | creating the local toolchain before the first workflow run |
+
+## Version policy without confusion
+
+The teaching baseline stays on Snakemake 9.14.x for clean-room reproducibility, while the
+supported working window is `>=9.14,<9.24` for compatible local setups.
+
+That split exists for a reason:
+
+- the pinned baseline keeps classroom and container behavior stable
+- the broader window lets local development stay usable without pretending every 9.x
+  build is identical
+
+If your machine falls outside that window, fix the toolchain first. Do not debug course
+material against an unsupported Snakemake version and call the result a lesson failure.
+
+## Verify setup in the right order
 
 From the capstone directory:
 
@@ -121,17 +104,45 @@ make bootstrap
 make verify
 ```
 
-If `make bootstrap` and `make verify` both succeed, the capstone can execute, publish
-its bundle, and validate the promoted artifacts using the supported local toolchain.
+That order matters:
 
----
+- `help` confirms you are on the right command surface
+- `bootstrap` creates the supported toolchain
+- `verify` checks that the workflow can execute, publish, and validate its promoted
+  outputs
 
-## Common Setup Failures
+If `bootstrap` succeeds and `verify` fails, you are past setup and into workflow
+evidence. Inspect the failing rule, logs, profile assumptions, or config surfaces before
+changing lesson conclusions.
 
-| Symptom | Likely cause | Fix |
+## Common setup failures
+
+| Symptom | Likely cause | First repair move |
 | --- | --- | --- |
-| `make bootstrap` fails immediately | Python 3.11+ is missing or unavailable to `python3` | install Python 3.11+ and rerun `make bootstrap` |
-| `snakemake` missing in `make info` | no global Snakemake is installed and `make bootstrap` has not been run yet | run `make bootstrap` or point `SNAKEMAKE` at the intended binary |
-| config validation skips unexpectedly | `jsonschema` or `pyyaml` missing | install the missing Python packages if you want schema validation to execute |
-| `dag` or `rulegraph` fails | Graphviz `dot` missing | install Graphviz and rerun the target |
-| `verify` fails after a successful dry-run | runtime dependencies or filesystem assumptions differ from the planning surface | inspect `profiles/`, `config/`, and the failing rule logs before changing workflow code |
+| `make bootstrap` fails immediately | Python 3.11+ is missing or unavailable to `python3` | install Python 3.11 or newer, then rerun `make bootstrap` |
+| `snakemake` is missing in `make info` | no global Snakemake is installed and the local toolchain has not been bootstrapped | run `make bootstrap` or point `SNAKEMAKE` at the intended binary |
+| config validation skips unexpectedly | `jsonschema` or `pyyaml` is missing from the active environment | repair the Python environment before trusting validation results |
+| `dag` or `rulegraph` fails | Graphviz `dot` is missing | install Graphviz only if you need graph rendering |
+| `verify` fails after a successful dry-run | runtime dependencies or filesystem assumptions differ from the planning surface | inspect `profiles/`, `config/`, and the failing rule logs before editing workflow code |
+
+## The most common beginner mistake
+
+The most common beginner mistake is continuing to widen setup work after the course has
+already reached a truthful workflow failure.
+
+Once `bootstrap` works and a proof route fails honestly, the next move is usually:
+
+- inspect the failing rule
+- inspect the config or profile surface
+- inspect the saved evidence route
+
+It is usually not "reinstall everything again."
+
+## Good stopping point
+
+Stop when you can do both:
+
+1. name which command surface you are on
+2. run one honest proof route without wondering whether the toolchain itself is lying
+
+At that point, return to the actual workflow lesson.

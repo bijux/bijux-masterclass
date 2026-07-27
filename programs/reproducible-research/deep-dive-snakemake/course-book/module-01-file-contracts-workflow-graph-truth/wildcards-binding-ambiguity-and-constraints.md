@@ -1,32 +1,13 @@
 # Wildcards, Binding, Ambiguity, and Constraints
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Wildcards, Binding, Ambiguity, and Constraints"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This page explains how Snakemake binds wildcards to concrete filenames, and why careless
 patterns quickly turn into ambiguity or accidental matches.
+
+## How to read this page
+
+Do not read wildcards as a string-substitution trick. Read them as a path-ownership rule.
+
+That shift is what keeps wildcard design educational instead of magical.
 
 ## The sentence to keep
 
@@ -75,6 +56,11 @@ data/A.txt
 ```
 
 This is why wildcards feel magical at first. But the magic is just filename matching.
+
+## The real danger
+
+The danger is usually not that Snakemake cannot bind a wildcard. The danger is that the
+rule claims a wider path space than you intended.
 
 ## The binding story in one diagram
 
@@ -131,6 +117,13 @@ These may work. The question is whether a reader can still predict:
 
 Readable workflows prefer precise path ownership over clever generality.
 
+## Good design pressure
+
+When you feel tempted to write a very flexible wildcard pattern, ask:
+
+- am I making the workflow more legible
+- or am I just avoiding a naming decision
+
 ## The classic beginner failure: ambiguity
 
 Ambiguity happens when more than one rule could produce the same target.
@@ -184,6 +177,10 @@ Constraints help with cases like:
 But constraints do not fix a fundamentally bad ownership design.
 
 If two rules still claim the same shape, the workflow is still ambiguous.
+
+## A better beginner instinct
+
+Prefer improving the path shape first. Reach for constraints second.
 
 ## Wildcard leakage is a real beginner problem
 

@@ -33,6 +33,11 @@ surface mystique:
 That sentence is the foundation for understanding stacked decorators, decorator
 factories, and the difference between one-time transformation work and per-call behavior.
 
+It is also the page where a common confusion must end:
+
+- `@decorator` is not "special syntax that runs around every call"
+- `@decorator` is a definition-time rebinding step that determines what callable later receives the call
+
 ## The sentence to keep
 
 When you see `@decorator`, ask:
@@ -41,6 +46,9 @@ When you see `@decorator`, ask:
 > returned wrapper?
 
 That question makes the timing and ownership explicit immediately.
+
+If you can answer that question clearly, stacked decorators stop feeling like folklore and
+start feeling like ordinary evaluation order.
 
 ## Single decorators desugar to assignment
 
@@ -65,6 +73,13 @@ The original function object is created first. Then the decorator is applied. Th
 name `f` is rebound to the returned callable.
 
 That sequence matters because decoration happens once, not on every later call.
+
+That one-time timing is not a side note. It affects:
+
+- import-time side effects
+- configuration capture in decorator factories
+- when failures appear
+- whether later behavior is controlled by one-time setup or per-call logic
 
 ## Stacked decorators compose predictably
 
@@ -97,6 +112,14 @@ f = d3(d2(d1(f)))
 
 That is why definition-time application order and call-time execution order are related
 but not identical.
+
+Use that distinction as a review check:
+
+| Question | Definition-time answer | Call-time answer |
+| --- | --- | --- |
+| which decorator applies first? | the lowest decorator in the stack | the outermost resulting wrapper runs first |
+| where do configuration expressions run? | once, while the function is being defined | not again unless the wrapper itself re-evaluates something |
+| where do wrapper-local side effects happen? | only if the decorator performs them during construction | on each later call if the wrapper body performs them |
 
 ## One picture of stacking
 
@@ -134,6 +157,10 @@ The important point is not the output. It is the rebinding:
 - `uppercase(greet)` produced a wrapper
 - the name `greet` now points to that wrapper
 
+For a missed-class learner, that rebinding sentence is the durable fact to keep. If the
+code is confusing later, rewrite the decorated form back into assignment form and inspect
+the returned callables one step at a time.
+
 ## Stacked wrappers show both definition-time and call-time order
 
 ```python
@@ -170,6 +197,9 @@ Call time:
 
 That is why decorator order is never cosmetic.
 
+It also explains why "the same decorators are present" is not enough to claim the same
+behavior. The stack order is part of the behavior.
+
 ## Decorator factories add one more evaluation step
 
 A factory such as `@factory(config)` means:
@@ -200,6 +230,10 @@ f = decorator(f)
 This is another useful timing lesson: both the factory call and the decoration happen once
 when the function is defined, not on every invocation.
 
+That is where import-time surprises often enter. If `factory(arg)` does expensive work,
+opens resources, or validates configuration, those costs happen while the definition is
+being evaluated, not lazily on the first later call.
+
 ## Definition time versus call time is a real review boundary
 
 By this point in the course, that boundary should stay explicit:
@@ -209,6 +243,17 @@ By this point in the course, that boundary should stay explicit:
 
 If a code review blurs those together, it becomes much harder to reason about imports,
 state initialization, and wrapper overhead.
+
+## Definition-time mistakes worth catching early
+
+The following mistakes are more common than they first appear:
+
+| Weak explanation or bug | What it confuses | Repair |
+| --- | --- | --- |
+| "the decorator runs every time I call the function" | the decorator itself versus the wrapper it returned | separate rebinding from later wrapper execution |
+| "the factory argument is dynamic per call" | captured definition-time configuration versus call-time input | show where `factory(arg)` was evaluated once |
+| "stacked decorators are basically left to right" | source order versus application order | rewrite them as nested calls or rebinding assignments |
+| "the error came from inside the function" | definition-time failure versus call-time failure | check whether the decorator expression failed before the function was ever invoked |
 
 ## Non-callable decorator expressions fail early
 
@@ -231,6 +276,15 @@ When reviewing decorator-heavy code, keep these questions close:
 - in what order did stacked decorators compose?
 - what work happens only once versus on every call?
 - is a decorator factory being treated as if it were a per-call configuration step when it is not?
+
+## Exit check for this page
+
+Before leaving this page, make sure you can do all of these without hand-waving:
+
+- rewrite one decorated function into explicit rebinding assignments
+- explain why bottom-up application still leads to outermost-first call execution
+- show where a decorator factory captured configuration once
+- name one failure that would happen at definition time rather than at call time
 
 ## What to practice from this page
 

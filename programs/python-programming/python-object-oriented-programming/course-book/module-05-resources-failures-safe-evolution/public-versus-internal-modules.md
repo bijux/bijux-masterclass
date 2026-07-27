@@ -1,5 +1,4 @@
-# Public vs Internal Modules and Facades for OOP Codebases
-
+# Public versus Internal Modules
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Resources Failures Safe Evolution"]
-  page["Public vs Internal Modules and Facades for OOP Codebases"]
+  page["Public versus Internal Modules"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,68 +24,149 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Make your codebase evolvable by defining what is **public API** vs **internal implementation**.
+Code becomes hard to evolve when every import path is treated as if it were a promise to
+the outside world.
 
-This is not about aesthetics; it is about preserving correctness under change:
-- internal refactors should not break callers,
-- public surfaces should be stable and documented.
+If students do not learn the difference between a public module and an internal one,
+they end up with two bad habits:
 
-## 1. Public API Is a Contract
+- changing internal structure becomes scary because callers may depend on anything
+- new features get attached to whatever module was convenient rather than to a governed surface
 
-In a Python package, “public” often means:
-- what you import and use from outside the package.
+This lesson teaches that module boundaries are part of the design contract, not just a
+filesystem shape.
 
-If internal modules are imported directly by many callers, you lose the ability to refactor safely.
+## A public module is a promise
 
-Goal:
-- expose a small public surface,
-- keep internals behind it.
+A public module is a surface you intend other code to depend on.
 
-## 2. Facade Modules: One Door Into the Package
+That means changes to it should be reviewed as contract changes, not just local edits.
 
-A facade module re-exports the intended public objects:
+Public modules usually carry:
 
-- `monitoring/__init__.py` or `monitoring/api.py`
+- stable names
+- clearer documentation
+- higher backward-compatibility pressure
+- more deliberate export choices
 
-Example:
-```python
-from .application.services import MonitoringService
-from .domain.types import MetricName, Threshold
-```
+The question is not whether a module is "important." The question is whether other code
+is supposed to rely on it durably.
 
-Callers import from the facade, not from deep internals.
+## An internal module is allowed to move
 
-This reduces coupling and improves clarity because you can see “the surface”, not the whole engine.
+Internal modules exist to help the implementation stay readable and maintainable.
 
-## 3. Naming Conventions and Structure
+They may still be well-designed, but they are not automatically promises.
 
-Common conventions:
-- leading underscore for internal modules/classes (`_internal.py`),
-- avoid exporting internals in `__all__`,
-- keep domain/application/infrastructure separate (Module 2).
+That distinction matters because internal structure should be refactorable without
+forcing every downstream caller to change at the same time.
 
-Conventions are not enforcement, but they are strong signals in code review.
+If everything is public, nothing is safely movable.
 
-## 4. Testing the Facade Contract
+## Accidental public APIs are common
 
-A useful practice:
-- write tests that import only from the public facade for “consumer style” tests.
+Many accidental public APIs start like this:
 
-This catches accidental dependency on internal modules and makes refactoring safer.
+- a caller imports directly from a convenient low-level module
+- a helper object becomes widely reused without an explicit decision
+- a package exports more than it intended because nobody curates the surface
 
-## Practical Guidelines
+After a while, internal structure hardens into external dependency through habit rather
+than design.
 
-- Define a small public facade for your package; discourage deep imports by callers.
-- Use module structure to reflect architecture: domain/application/infrastructure.
-- Mark internals clearly (underscores, not exported).
-- Write at least one consumer-style test that uses only the public facade.
+That is why naming and import paths are governance questions as much as coding questions.
 
-## Exercises for Mastery
+## What to make public
 
-1. Create a facade module and refactor one client import to use it.
-2. Identify an internal module imported widely. Hide it behind the facade and update imports.
-3. Add a test that ensures your public surface can be imported without pulling in infrastructure dependencies unexpectedly.
+Make a module public when you want callers to rely on it as an entry surface.
+
+Typical candidates include:
+
+- facades
+- stable protocols or contracts
+- intentionally supported value types
+- composition-root entrypoints
+
+Make a module internal when it mainly exists to support implementation detail, such as:
+
+- helpers behind a facade
+- persistence mechanics
+- local translation utilities
+- wiring details that should not define the outward contract
+
+## Exports should be deliberate
+
+One sign of a strong boundary is that exports are chosen deliberately instead of
+incidentally.
+
+That can mean:
+
+- a package `__init__` exposing only the intended surface
+- clear documentation that points readers to the supported import path
+- tests that import through the same surface your users should use
+
+The point is not ceremony. The point is that callers should not have to guess which path
+is stable and which one is only convenient today.
+
+## Why this matters for refactoring
+
+When you know which modules are public, you can refactor the internals much more
+aggressively and safely.
+
+You can:
+
+- rename helpers
+- split files
+- move implementation detail
+- replace persistence mechanisms
+
+without pretending every import path in the repository has equal compatibility status.
+
+This is exactly why module boundary teaching belongs before compatibility evolution and
+feature-preserving refactors.
+
+## Common mistakes
+
+- exposing internal modules because writing a facade felt unnecessary
+- importing around the intended surface "just this once"
+- changing public paths casually because the code still passes locally
+- documenting internal implementation modules as if they were stable entrypoints
+- using tests that depend on internals in ways real callers should not
+
+These mistakes quietly turn local structure into long-term obligation.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| can you name which modules are intended as stable entry surfaces? | yes |
+| are internal modules free to move without breaking supported callers? | yes |
+| are exports deliberate rather than incidental? | yes |
+| do tests and docs steer readers toward the intended surface? | yes |
+
+## Capstone connection
+
+Review the capstone package and ask:
+
+- which import paths should a downstream caller actually use?
+- which modules are only there to support implementation structure?
+- if you had to move internal code tomorrow, which callers should remain untouched?
+
+That review is a better measure of module design maturity than counting how many files
+exist.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why a public module is a compatibility promise
+- identify one accidental public API risk created by convenience imports
+- point to one capstone surface that should stay public and one that should stay internal

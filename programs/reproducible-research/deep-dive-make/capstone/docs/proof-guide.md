@@ -40,12 +40,28 @@ start narrower.
 | --- | --- | --- |
 | what is publicly promised here | `make inspect` | `CONTRACT_AUDIT_GUIDE.md`, `TARGET_GUIDE.md`, `help.txt` |
 | the build converges after success | `make selftest` | `tests/run.sh`, `mk/stamps.mk` |
-| serial and parallel schedules produce the same result | `make selftest` | `serial.sum`, `parallel.sum`, `tests/run.sh` |
-| proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `settings.env` |
-| generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/04-generated-header.mk` |
+| serial and parallel schedules produce the same result | `make selftest` | `schedule-comparison.json`, both inventory files, `tests/run.sh` |
+| the selftest rejects a known schedule defect | `make selftest-harness-tests` | rejected comparison report, failure summary, preserved workspace |
+| one candidate matches exact package and identity policy | `make verify-dist` | `RELEASE_GUIDE.md`, package policy, candidate acceptance report |
+| install remains contained and converges on rerun | `make install-rehearsal` | install policy, install acceptance report |
+| malformed release inputs fail at the expected boundary | `make release-selftest` | release tests and rejection output |
+| the full local release claim holds | `make release-check` | release acceptance record and `RELEASE_GUIDE.md` |
+| governed local build-cost evidence is attributable and reviewable | `make perf` | `PERFORMANCE_EVIDENCE_GUIDE.md`, impact summary, `evidence.json`, then timing summary |
+| every declared input class selects its required rebuild scope | `make performance-incremental` | policy, `incremental-summary.tsv`, then the relevant case in `incremental-work.json` |
+| two build-cost bundles have compatible context and equivalent work | `make performance-compare` | execution context, complete case sets, inventories, then scenario deltas |
+| performance gates reject dishonest evidence | `make performance-selftest` | context, incremental, capture, and comparison rejection tests |
+| clean planning evidence retains causal attribution | `make trace-report` | trace report, raw trace, and manifest |
+| proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `commands.txt`, `logs/` |
+| missing generated-producer edges cause stale consumers and declared edges recover | `make incremental-fault-audit` | fault summary, paired producer models, traces, and mutated workspaces |
+| clock state, false order-only edges, and overlapping patterns change successful output meaning | `make semantic-fault-audit` | seven-row summary, report observations, paired traces, and specimens |
+| non-file state, recursive planning, and required-tool checks honor their environment contracts | `make environment-contract-audit` | seven-row summary, dry-run and actual traces, publication residue, and controls |
+| public callers, include policy, and output paths preserve architecture ownership | `make architecture-contract-audit` | six-row summary, help and caller traces, policy artifacts, and source-output mappings |
+| architecture evidence rejects dishonest controls | `make architecture-contract-selftest` | five acceptance and rejection tests |
+| a macro preserves the explicit rule, policy, and publication contract | `make abstraction-contract-audit` | three-row summary, evaluated rule maps, public surfaces, policy values, and artifacts |
+| abstraction evidence rejects hidden targets and policy mutation | `make abstraction-contract-selftest` | seven acceptance and rejection tests |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
 | variable and execution-policy assumptions are reviewable | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `origins.txt` |
-| one failure class can be studied with captured evidence | `make incident-audit` | `INCIDENT_REVIEW_GUIDE.md`, `command.txt`, `run.txt`, copied repro file |
+| concurrency specimens exhibit their promised failure mechanisms | `make incident-audit` | incident summary, report, semantic evidence, raw logs, and preserved workspaces |
 | the capstone can be entered without browsing randomly | `make walkthrough` | `WALKTHROUGH_GUIDE.md`, `README.md`, `TARGET_GUIDE.md` |
 | this repository still deserves stewardship trust | `make confirm` | `PROOF_GUIDE.md`, `tests/run.sh`, audit bundles as needed |
 
@@ -71,8 +87,21 @@ That keeps claim, route, and evidence ahead of implementation detail.
 - choose `walkthrough` for first contact
 - choose `inspect` for contract review
 - choose `selftest` for build-truth proof
+- choose `selftest-harness-tests` when the open question is whether the proof gate rejects dishonesty
+- choose `verify-dist` for one existing candidate
+- choose `release-selftest` for acceptance and rejection behavior
+- choose `release-check` for the complete local release claim
+- choose `perf` to establish a local baseline without claiming a regression
+- choose `performance-compare` only when an earlier clean bundle from the same toolchain and runner exists
+- choose `performance-selftest` when the question is whether provenance, requested-work, capture, and comparison gates close
 - choose `verify-report` when the proof needs to be saved
-- choose `incident-audit` for one failure class with captured evidence
+- choose `incident-audit` when process status and semantic artifact state must jointly prove a concurrency failure class
+- choose `semantic-fault-audit` when exit status succeeds but state, freshness, or rule selection may still be dishonest
+- choose `environment-contract-audit` when command-line state, recursive intent, or tool availability sits outside ordinary file edges
+- choose `architecture-contract-audit` when callers, policy propagation, or output names may conceal ownership drift
+- choose `architecture-contract-selftest` when the question is whether that audit rejects altered controls
+- choose `abstraction-contract-audit` when generated rules may conceal target, policy, or publication drift
+- choose `abstraction-contract-selftest` when the question is whether that audit rejects altered models
 - choose `profile-audit` for portability, policy, and precedence questions
 - choose `proof` only when the question genuinely spans multiple bundles
 - choose `confirm` when stewardship review needs the strongest built-in route
@@ -85,8 +114,14 @@ Read these with this guide:
 
 - `README.md`
 - [TARGET_GUIDE.md](target-guide.md)
+- [RELEASE_GUIDE.md](release-guide.md)
 - [WALKTHROUGH_GUIDE.md](walkthrough-guide.md)
 - [CONTRACT_AUDIT_GUIDE.md](contract-audit-guide.md)
 - [INCIDENT_REVIEW_GUIDE.md](incident-review-guide.md)
+- [PERFORMANCE_EVIDENCE_GUIDE.md](performance-evidence-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](profile-audit-guide.md)
+- [ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md](architecture-contract-audit-guide.md)
+- [ABSTRACTION_CONTRACT_AUDIT_GUIDE.md](abstraction-contract-audit-guide.md)
+- [SEMANTIC_FAULT_AUDIT_GUIDE.md](semantic-fault-audit-guide.md)
+- [ENVIRONMENT_CONTRACT_AUDIT_GUIDE.md](environment-contract-audit-guide.md)
 - [SELFTEST_GUIDE.md](selftest-guide.md)

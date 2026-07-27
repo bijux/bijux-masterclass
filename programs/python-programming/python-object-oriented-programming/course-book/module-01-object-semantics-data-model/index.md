@@ -18,111 +18,147 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  meaning["Decide what the object means"] --> contract["Name its contract"]
+  contract --> hazard["Pressure-test mutation, equality, and sharing"]
+  hazard --> practice["Finish the exercise packet"]
+  practice --> transfer["Check one capstone type through the same lens"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+This module is the semantic floor of the whole course. Before layering, policies,
+aggregates, or extension points, you need a reliable answer to one question:
 
-This module builds the semantic floor for the rest of the course. Before talking
-about architecture, inheritance, or aggregates, you need a precise mental model of
-what Python objects are and how they behave.
+> What contract does this object expose to other code?
 
-Keep one question in view while reading:
+If that answer is vague, everything later becomes harder for the wrong reason. Learners
+often think they are blocked by architecture when they are really blocked by object
+meaning: identity, equality, mutation, representation, aliasing, and copying are still
+unclear.
 
-> What contract does this object actually expose through identity, state, equality, and mutation?
+## What this module must settle
 
-If that contract is vague, later design work becomes naming theater instead of engineering.
+By the end of the module, you should be able to inspect one type and answer all of these
+without hedging:
 
-## Preflight
+- is it value-like, entity-like, or not worth keeping as a class?
+- which state is real meaning, and which state is merely representation detail?
+- which mutations are legal, and which ones silently damage the contract?
+- what does equality mean here, and should hashing exist at all?
+- which sharing or copying choices could surprise another maintainer?
 
-- You should already be comfortable defining small classes, reading `dataclass` declarations, and writing basic pytest assertions.
-- If identity, equality, or mutable aliasing still feel fuzzy, slow down here before moving into architecture modules.
-- Keep a REPL or scratch test open while reading so you can verify attribute lookup and mutation behavior directly.
+That is the real work of Module 01. Syntax familiarity is not enough.
 
-## Learning outcomes
+## Who should slow down here
 
-- explain identity, value semantics, equality, hashing, and mutation as explicit object contracts
-- inspect attribute lookup behavior without reducing it to folklore about "fields"
-- identify when a class clarifies meaning and when a plain value or function is the better abstraction
-- review copying, aliasing, and representation choices for hidden coupling risks
+Slow down and study this module carefully if any of these still feel unstable:
 
-## Why this module matters
+- `is` versus `==`
+- mutable default values
+- why a `dict` key can become dangerous
+- why `obj.name` is not always a plain field read
+- whether a small cluster of values needs class form at all
+- why a "simple" copy bug can really be an ownership bug
 
-Most long-lived OOP mistakes are already visible at the object-model level:
+If two or more items on that list still feel fuzzy, treat this module as a full-day
+session, not as an introduction you can skim.
 
-- confusing identity with value
-- mutating state that was assumed to be isolated
-- relying on accidental attribute lookup behavior
-- treating equality and hashing as convenience instead of container contracts
-- choosing classes where plain values or functions would be clearer
+## Session outcome
 
-If these semantics are fuzzy, later architecture decisions become style debates
-instead of engineering decisions.
+Treat this module as one serious session with four stages.
 
-## Main questions
+| Stage | Main question | What you should produce |
+| --- | --- | --- |
+| orientation | what kind of object am I even looking at | one sentence beginning with `This object is...` |
+| contract building | what behavior and representation can other code rely on | short notes about identity, public surface, and mutation |
+| pressure testing | what breaks if equality, sharing, or copying are wrong | one or two tiny bug examples with explanation |
+| transfer | how this affects the capstone | one paragraph about a capstone type and why its semantics matter |
 
-- What is identity, and when should it matter?
-- What makes state safe or dangerous to share?
-- How do equality and hashing interact with containers?
-- Where does attribute lookup really happen?
-- When is a class the wrong abstraction entirely?
+If you finish reading but cannot produce those artifacts, the module is not done.
 
-## Reading path
+## Recommended study route
 
-1. Start with object identity and attribute layout.
-2. Move into construction, representation, and equality contracts.
-3. Then study aliasing, copying, and the broader data model.
-4. Finish with the "when classes are the wrong tool" chapter and the module refactor.
+Use this route unless you are returning to one narrow problem:
 
-## Lesson map
+1. [Object Identity, State, and Behavior](object-identity-state-and-behavior.md)
+2. [Attribute Layout, Class and Instance State](attribute-layout-class-and-instance-state.md)
+3. [Construction Discipline and Invariants](construction-discipline-and-invariants.md)
+4. [Encapsulation and Public Surface](encapsulation-public-surface-and-representation.md)
+5. [Equality, Ordering, and Hashing](equality-ordering-and-hashing.md)
+6. [Collections Hazards: Aliasing, Mutable Keys, and Shared State](aliasing-mutable-keys-and-shared-state.md)
+7. [Copying and Cloning](copying-cloning-and-custom-semantics.md)
+8. [Python Data Model as Design Surface](python-data-model-as-design-surface.md)
+9. [When OOP Is the Wrong Tool in Python](when-classes-are-the-wrong-tool.md)
+10. [Refactor 0: Script to Object Model](refactor-script-to-object-model.md)
 
-- [Object Identity, State, and Behavior](object-identity-state-and-behavior.md)
-- [Attribute Layout, Class and Instance State](attribute-layout-class-and-instance-state.md)
-- [Construction Discipline and Invariants](construction-discipline-and-invariants.md)
-- [Encapsulation and Public Surface](encapsulation-public-surface-and-representation.md)
-- [Equality, Ordering, and Hashing](equality-ordering-and-hashing.md)
-- [Collections Hazards: Aliasing, Mutable Keys, and Shared State](aliasing-mutable-keys-and-shared-state.md)
-- [Copying and Cloning](copying-cloning-and-custom-semantics.md)
-- [Python Data Model as Design Surface](python-data-model-as-design-surface.md)
-- [When OOP Is the Wrong Tool in Python](when-classes-are-the-wrong-tool.md)
-- [Refactor 0: Script to Object Model](refactor-script-to-object-model.md)
+Do not jump from the opening lesson to the refactor. The middle lessons are where the
+most expensive misunderstandings become visible.
+
+## Lesson map by pressure
+
+| If your current question is... | Start here | Then do this |
+| --- | --- | --- |
+| what kind of object is this | object identity, state, and behavior | classify one capstone type as value, entity, or simpler surface |
+| why did this attribute access behave that way | attribute layout, class and instance state | build one shadowing example by hand |
+| how do I stop invalid objects from existing | construction discipline and invariants | redesign one weak constructor |
+| what should stay public and what should stay hidden | encapsulation and public surface | write one public-surface note |
+| can this type live safely in a set or dict | equality, ordering, and hashing | explain hashing and equality together |
+| why did one change affect far-away code | collections hazards | trace the aliasing path explicitly |
+| do I need a copy, a clone, or a redesign | copying and cloning | say what should stay shared and why |
+| should this stay a class at all | when OOP is the wrong tool | rewrite one design using simpler structure |
+
+## What a missed-class learner should do
+
+If you are studying alone and do not have the classroom demos, use this rhythm:
+
+1. read one lesson
+2. write one short example or review note from memory
+3. compare it with the lesson
+4. move to the next lesson only after the current object contract sounds explicit
+5. end the day with the exercise packet and one capstone transfer note
+
+This rhythm is slower than casual reading, but it replaces the missing classroom back and
+forth with visible output.
+
+## Capstone transfer for this module
+
+Use the capstone's early types to test whether Module 01 is really landing. Look at:
+
+- value-oriented types such as names, severities, rule definitions, or samples
+- identity-bearing workflow objects such as the policy aggregate
+- places where copying or shared state would quietly damage later lifecycle reasoning
+
+Questions to carry into the capstone:
+
+- which types compare by meaning?
+- which types should not pretend to be plain values?
+- where would an aliasing bug become an architecture bug later?
+
+## Support surfaces
+
+Treat the practice pages as the second half of the module:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+Keep these nearby when useful:
+
+- `../guides/proof-matrix.md`
+- `../guides/module-promise-map.md`
+- `../reference/self-review-prompts.md`
 - [Glossary](glossary.md)
 
-## Keep these support surfaces open
+## Common ways learners leave too early
 
-- `../guides/proof-matrix.md` when you want the module outcome tied directly to a proof route.
-- `../guides/module-promise-map.md` when you want this module kept honest as a semantic-floor contract.
-- `../reference/self-review-prompts.md` when you want to test whether identity, equality, and mutation already sound like review language instead of vocabulary recall.
-
-## Common failure modes
-
-- using mutable objects as keys without respecting hash semantics
-- leaking shared state through default values, aliasing, or shallow copying
-- exposing too much representation detail in the public surface of an object
-- assuming attribute access is a simple field lookup when descriptors and class state are involved
-
-## Exercises
-
-- Take one object from the capstone and explain whether it is identity-bearing, value-oriented, or an accidental mix of both.
-- Write a small example that distinguishes aliasing from copying, then state which bug that distinction prevents in production code.
-- Review one class and explain whether its equality and hashing behavior is a real contract or an accident of defaults.
-
-## Capstone connection
-
-The capstone's `MetricName`, `Severity`, `MetricSample`, and `ThresholdRule` types only
-work because their value semantics are explicit. The `MonitoringPolicy` aggregate also
-depends on a precise boundary between identity-bearing entities and value-oriented rule
-definitions. Read this module as the semantic justification for those choices.
+- recognizing the syntax of `__eq__` without being able to defend the equality contract
+- saying "it is just data" without checking whether lifecycle or identity really exists
+- treating aliasing as a Python trick instead of as an ownership boundary problem
+- adding a class because it feels more object-oriented, not because meaning became clearer
 
 ## Closing criteria
 
-You should finish this module able to inspect a class or instance and explain its
-data-model contract without appealing to folklore or implementation accidents.
+You are ready to leave Module 01 only when you can do all of these in plain language:
 
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+- explain what one object promises through identity, equality, and mutation
+- name one shared-state hazard and how to neutralize it
+- justify one public surface and one hidden surface
+- decide whether one design should stay a class, become a value object, or go back to functions and plain data

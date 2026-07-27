@@ -25,221 +25,268 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Most build architectures do not fail in one dramatic moment. They drift.
+Architecture review is not a meeting where maintainers describe how the Makefiles feel.
+It is a bounded investigation that connects one architecture claim to evidence capable of
+disproving it.
 
-A new helper target appears.
-A macro grows one more parameter.
-An include layer starts mutating a variable it was never meant to own.
-CI quietly begins calling a private target because it was convenient once.
+Module 07 now provides two complementary packets:
 
-Six months later the repository still builds, but nobody can explain why the structure is
-the way it is.
+```sh
+gmake architecture-contract-audit
+gmake abstraction-contract-audit
+```
 
-This page is about preventing that drift from becoming the normal state of the build.
+Together they cover public callers, include-policy scope, output ownership, explicit rules,
+bounded generation, and opaque macro side effects.
 
-## The sentence to keep
+## Begin with a reviewable claim
 
-When reviewing a build architecture, ask:
+Weak claim:
 
-> if this design keeps evolving under ordinary team pressure, what will become ambiguous or
-> unsafe first?
+> The build architecture is modular and maintainable.
 
-That question makes reviews much sharper than "does it work today?"
+Reviewable claim:
 
-## Build architecture needs maintenance discipline
+> Automation calls only declared targets; release flags reach only release artifacts;
+> each selected source has one owner-identifiable output; the publication macro generates
+> only the target/source pairs listed at its call site.
 
-Teams often review code architecture more seriously than build architecture.
+The second claim can fail in specific ways. That makes it useful.
 
-That is a mistake because build systems accumulate the same kinds of debt:
+## Build a claim-to-evidence matrix
 
-- unclear interfaces
-- hidden mutation
-- poorly bounded reuse
-- fragile naming
-- accidental contracts
+Before opening source files, write the review packet’s index:
 
-If you do not review those explicitly, the build may remain operational while becoming
-harder and harder to change safely.
+| Claim | Consumer | Failure observation | Evidence route |
+| --- | --- | --- | --- |
+| automation uses the declared build API | CI or script | caller invokes hidden helper or misses verification | help, caller trace, artifacts |
+| release policy stays scoped | ordinary and release targets | ordinary artifact contains release flag | policy assignments and both artifacts |
+| output paths preserve ownership | downstream artifact consumer | source count exceeds unique output count | mapping trace and owner contents |
+| macro preserves explicit rule contract | Make graph and maintainer | prerequisite map differs or hidden target appears | call domain, database, artifacts |
 
-## A stable review rubric helps
+This matrix prevents a review from becoming an unbounded repository tour.
 
-One useful review rubric is:
+```mermaid
+flowchart LR
+  claim["bounded claim"] --> consumer["named consumer"]
+  consumer --> failure["falsifying observation"]
+  failure --> route["smallest evidence route"]
+  route --> decision["accept, repair, or defer"]
+```
 
-1. public API clarity
-2. layer responsibility clarity
-3. reuse opacity risk
-4. naming and discovery stability
-5. override and mutation safety
+## Read defect and control together
 
-This rubric matters because it keeps the review focused on architecture instead of on
-whoever most recently touched the Makefile.
+An isolated good example can demonstrate a pattern. It cannot prove that the review route
+detects the corresponding defect.
 
-## Review question 1: is the public surface obvious
+The architecture packet therefore pairs:
 
-Ask:
+- private caller with declared caller
+- global release mutation with target-scoped policy
+- flat output collapse with namespaced ownership
 
-- which targets are public
-- where they are documented
-- whether CI and scripts call only those targets
-- whether any internal helper has leaked into the public contract
+The abstraction packet adds:
 
-If the answers are fuzzy, refactoring the build will remain more dangerous than it needs to
-be.
+- explicit baseline
+- bounded macro control
+- opaque macro defect
 
-This is often the fastest architecture improvement available.
+Read each defect beside its control. Ask which one observation distinguishes them. For
+example:
 
-## Review question 2: does each layer have one explainable job
+```text
+global mutation:
+  default.txt = flags=-O2 -DRELEASE
 
-For each included file, ask:
+target-scoped policy:
+  default.txt = flags=-O2
+```
 
-- what it owns
-- what it may define or mutate
-- what later files may assume about it
+The include filenames are identical. The ordinary artifact is the distinguishing evidence.
 
-If a file cannot be described in one sentence, it probably owns too much or too little.
+## Separate architecture layers from evidence layers
 
-Layer review is not about whether the filenames look neat. It is about whether the
-responsibility boundaries stay legible.
+Architecture ownership and review evidence are not the same thing:
 
-## Review question 3: is reuse protecting invariants or hiding behavior
-
-Macros should be reviewed the same way functions are reviewed in code:
-
-- what rule or invariant do they encode
-- how hard is it to understand one call site
-- can the final expanded graph still be audited
-
-A macro that saves twenty lines but makes one target impossible to explain is usually a bad
-trade.
-
-This is why reuse belongs in architectural review, not only in code-style discussion.
-
-## Review question 4: will naming still work after growth
-
-Architecture should be reviewed against likely future pressure:
-
-- another subsystem
-- more generated outputs
-- another package variant
-- another test surface
-
-If the current naming scheme will collide or confuse ownership as soon as the repository
-grows, the architecture already has a visible weakness.
-
-This is much cheaper to address early than after scripts and conventions have grown around
-the ambiguity.
-
-## Review question 5: are overrides and mutations safe
-
-Builds often become risky because changes can occur from too many places:
-
-- a later include appends to a core list
-- a local optional file changes semantic flags
-- a macro changes global state as a side effect
-
-The review question is not "can variables be overridden?" Of course they can. The real
-question is:
-
-> do we know which overrides are legitimate architecture points and which ones are silent
-> mutation hazards?
-
-That distinction is crucial.
-
-## A small review worksheet
-
-Take a layered build and write down:
-
-| Review area | Question | What a strong answer sounds like |
+| Architecture surface | Typical owner | Useful evidence |
 | --- | --- | --- |
-| API | which targets are public | "all, test, selftest, clean, release-check" |
-| layering | what `mk/objects.mk` owns | "rooted discovery and object mapping" |
-| macros | why a publication macro exists | "it enforces temporary-write then move" |
-| naming | how component outputs stay distinct | "`build/app/*` and `build/lib/*` namespaces" |
-| overrides | which local file may change policy | "`mk/local.mk` may override convenience-only settings, not artifact semantics" |
+| public target meaning | top-level interface | help and external caller |
+| shared policy | policy include | evaluated assignment and target artifact |
+| graph mapping | discovery/rule layer | source-to-output map |
+| macro generation | macro plus call sites | evaluated database |
+| publication | artifact recipe | trace and final contents |
+| review gate | tests and audit runner | controlled rejection result |
 
-This kind of worksheet helps because it turns architectural intuition into reviewable text.
+A well-named owner still needs evidence. A strong test should not become the owner of
+production meaning.
 
-## Maintenance discipline is mostly about saying no early
+## Review a proposed macro change
 
-A lot of architecture rot could be prevented by rejecting small, plausible shortcuts:
+Suppose a change replaces two explicit publication rules with:
 
-- "just expose this helper target for CI"
-- "just append to this list from another include"
-- "just add one more macro argument"
-- "just let this local override change the release flags"
+```make
+$(foreach owner,$(OWNERS),$(eval $(call define_component,$(owner))))
+```
 
-Each one may be understandable in isolation. Together they slowly dissolve the structure.
+Do not begin with whether the diff is shorter. Use this sequence:
 
-Good maintenance discipline is often the ability to say:
+1. Record the explicit target, prerequisite, policy, and artifact contract.
+2. Identify the macro’s declared responsibility.
+3. List its owner arguments and generated domain.
+4. Inspect the evaluated target/prerequisite map.
+5. Compare help with every newly generated callable target.
+6. Compare artifact modes, sources, and owners.
+7. Run a rejection test that injects one hidden side effect.
 
-> if we do that, we should first clarify the contract or boundary it would be changing.
+The abstraction audit performs this sequence for the course specimens.
 
-That is not bureaucracy. It is how stable architecture survives normal team pressure.
+## Create a compact review packet
 
-## Architecture review should happen before bugs force it
+The generated abstraction bundle already has a useful shape:
 
-Many teams wait until:
+```text
+route.txt
+ABSTRACTION_CONTRACT_AUDIT_GUIDE.md
+summary.tsv
+report.json
+traces/
+specimens/
+workspace/
+manifest.json
+```
 
-- a refactor breaks CI
-- a release target means two different things
-- a new contributor adds files in the wrong place
-- a macro bug becomes impossible to localize
+For one review, preserve only what answers the claim:
 
-Then they say "we need an architecture review."
+1. the claim-to-evidence matrix
+2. summary findings
+3. exact before/after observations
+4. relevant source and evaluated-rule excerpts
+5. artifact or caller evidence
+6. rejection-test result
+7. decision and remaining risk
 
-The healthier move is to review the architecture while it is still calm, because the
-questions are easier to answer before the system is already under stress.
+Do not paste the entire Make database into a review comment. Preserve it in the bundle and
+quote the target entries that support the decision.
 
-## Failure signatures worth recognizing
+## Write observations before conclusions
 
-### "Nobody wants to touch the build architecture"
+Observation:
 
-That often means the structure has become brittle or socially opaque.
+> The bounded model’s evaluated database contains two publication targets with the same
+> prerequisites as the explicit model. It contains no `publish-*` targets. Both artifacts
+> record `mode=ordinary`.
 
-### "We only find architecture problems after release or CI breakage"
+Conclusion:
 
-That usually means the review loop is too reactive.
+> The macro preserves the reviewed publication contract.
 
-### "The build still works, but every explanation starts with history lessons"
+Limit:
 
-That is a strong sign the architecture has become folklore-driven.
+> The audit does not cover secondary expansion or generated include files.
 
-### "One engineer understands the macros, another understands the release targets, and no one understands the whole system"
+Keeping those three statements separate makes later review possible. A future maintainer
+can challenge the conclusion without reconstructing the observations.
 
-That is an architectural ownership smell, not just a staffing issue.
+## Classify architecture changes by contract impact
 
-## A practical maintenance cadence
+| Proposed change | Review required |
+| --- | --- |
+| add owner to an existing bounded macro | call domain, generated mapping, new artifact |
+| add a new public target | help, callers, promised evidence, compatibility |
+| append a global policy value | ordinary and specialized target artifacts |
+| add a source root | source/output cardinality and namespace ownership |
+| add another responsibility to a macro | explicit baseline, hidden targets, policy side effects |
+| rename an internal generated rule | public caller search and evaluated graph |
 
-For a serious Make-based system, it is reasonable to review architecture when:
+The size of the diff does not determine review depth. A one-line global assignment can
+change every target.
 
-- a new public target is proposed
-- a new layer is added
-- a macro starts generating a new family of rules
-- a subsystem grows enough to change discovery or naming policy
-- CI begins calling a different target than humans do
+## Use rejection tests as review calibration
 
-This keeps the review connected to real pressure points instead of making it a ceremonial
-exercise.
+An audit that passes only its current repository state may be ceremonial. Inject a
+controlled lie:
 
-## What to practice from this page
+- make a private caller use the public route
+- remove a defect model’s policy leak
+- collapse a control’s namespace
+- add a hidden target to a bounded macro
+- remove call-domain evidence
 
-Choose one Make architecture and perform a short review:
+The relevant case must fail. The course’s architecture and abstraction self-tests preserve
+these mutations in disposable copies.
 
-1. list the public targets
-2. name the include layers and their responsibilities
-3. point to one macro and judge whether it improves or harms clarity
-4. identify one likely future naming or discovery risk
-5. identify one override or mutation point that deserves tighter control
+```mermaid
+flowchart LR
+  control["declared control"] --> audit["audit passes"]
+  mutation["controlled lie"] --> audit
+  audit --> rejection["audit fails mutation"]
+  rejection --> trust["gate is discriminating"]
+```
 
-If you can do that concisely and concretely, you are reviewing architecture instead of only
-observing it.
+## Record a bounded decision
+
+Use one of three outcomes:
+
+### Accept
+
+The reviewed contract is preserved, the evidence route is rerunnable, and remaining limits
+are stated.
+
+### Repair
+
+The observations show a contract violation. Name the owner that must change and the
+evidence that will prove the repair.
+
+### Defer
+
+The risk is real but outside the current change. Record the trigger, owner, and required
+future evidence. “Consider later” is not a bounded deferral.
+
+Example:
+
+| Field | Decision record |
+| --- | --- |
+| decision | accept bounded publication macro |
+| basis | prerequisite maps and artifacts match explicit baseline |
+| gate | `gmake abstraction-contract-selftest` |
+| limit | generated includes not covered |
+| trigger | macro begins generating another rule family |
+| future evidence | add that family’s explicit baseline and rejection mutation |
+
+## Review on pressure, not ceremony
+
+Run a focused architecture review when:
+
+- automation changes the target it invokes
+- a public target changes meaning or evidence
+- an include starts assigning a value owned elsewhere
+- a source root or output namespace is added
+- a macro begins generating a new family of rules
+- a local override can change artifact semantics
+
+These events alter ownership or consumers. A calendar reminder alone does not identify a
+claim.
+
+## Practice: review one controlled drift
+
+Use a disposable copy of `bounded-macro`.
+
+1. Add a `publish-gamma` target inside the macro without adding it to help.
+2. Run the build and record why exit zero is insufficient.
+3. Inspect the generated database entry.
+4. Add the finding to a claim-to-evidence matrix.
+5. Run the abstraction audit and preserve the rejected case.
+6. Write a repair decision that keeps publication-rule generation bounded.
+
+Your packet is complete when another learner can reproduce the observation and understand
+why the proposed repair addresses the owner rather than the symptom.
 
 ## End-of-page checkpoint
 
-Before leaving this lesson, make sure you can explain:
+You are ready to continue when you can:
 
-- why build architecture needs periodic review even when the build still works
-- what a stable architecture review rubric includes
-- how to spot hidden mutation and accidental contract growth
-- why future growth pressure belongs in current architecture review
-- how maintenance discipline often means refusing ambiguous shortcuts before they become normal
+- turn a broad maintainability claim into falsifiable contract statements
+- choose the smallest evidence route for each statement
+- distinguish observations, conclusions, and limits
+- explain why defect/control pairs and rejection tests calibrate a review gate
+- write an accept, repair, or defer record with a future trigger

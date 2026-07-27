@@ -1,30 +1,5 @@
 # Manifests, Checksums, and Bundle Integrity
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Manifests, Checksums, and Bundle Integrity"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Publishing is not finished when files are copied into `publish/v1/`.
 
 The bundle also needs to defend itself.
@@ -38,6 +13,34 @@ That means a reviewer or downstream user should be able to answer questions like
 
 This page is about the evidence surfaces that make a publish bundle reviewable.
 
+## How to use this page
+
+Read this page while imagining the bundle has just been downloaded by someone who was not
+present when it was produced.
+
+That person needs to answer at least four questions without asking the original author:
+
+- what belongs in the bundle
+- whether the bundle is complete
+- whether the files match what was published
+- what kind of context or meaning still needs a different artifact
+
+This page is about teaching that separation cleanly.
+
+## If you are learning this without the live class
+
+Treat this page as a verification drill, not as a metadata glossary.
+
+Use it in four passes:
+
+1. write down which files in the bundle answer inventory, identity, meaning, and context
+2. stop after the first manifest sketch and ask whether the bundle could travel to another machine unchanged
+3. run one verifier route before you keep reading
+4. finish by naming which trust question each artifact still cannot answer
+
+If you keep calling all of these files "metadata," slow down and separate their jobs
+again before you move on.
+
 ## A bundle should explain itself
 
 The capstone publish bundle includes:
@@ -47,7 +50,8 @@ The capstone publish bundle includes:
 - `summary.json`
 - `summary.tsv`
 - `report/index.html`
-- `discovered_samples.json`
+- `accepted_samples.json`
+- `rejected_samples.json`
 
 Those files do not all do the same job.
 
@@ -82,6 +86,51 @@ They help detect:
 
 Checksums are not a substitute for meaning. They are evidence of identity.
 
+## The integrity packet to keep beside you
+
+Keep one five-line packet while you work through this page:
+
+- one manifest excerpt with stable relative paths
+- one checksum verification transcript
+- one note saying what provenance answers
+- one note saying what the file API answers
+- one note saying what accepted and rejected discovery records explain that the manifest does not
+
+That packet keeps the page grounded in reviewable evidence instead of abstract integrity language.
+
+## Start by separating inventory, identity, meaning, and context
+
+This four-way split is the main idea to keep:
+
+| Question | Best artifact |
+| --- | --- |
+| What files belong here? | manifest |
+| Is this exactly the file I expect? | checksum or digest |
+| What does this file mean? | file API or contract note |
+| What software context produced it? | provenance |
+
+Once learners can keep those questions apart, publish integrity stops sounding like one
+fuzzy metadata topic.
+
+## One outside-in integrity scenario
+
+Imagine a downstream reviewer receives only:
+
+- `publish/v1/manifest.json`
+- `publish/v1/provenance.json`
+- `publish/v1/summary.json`
+- `publish/v1/accepted_samples.json`
+- `publish/v1/rejected_samples.json`
+
+They should be able to answer:
+
+- which files belong in the bundle
+- whether those files match the published inventory
+- what software context produced the bundle
+- why the result set has its exact membership
+
+They should not need to browse `results/` or infer rejected membership from missing files alone.
+
 ## What a manifest does not prove by itself
 
 A manifest does not fully answer:
@@ -110,6 +159,21 @@ flowchart LR
 This separation matters because reviewers often ask the right question but check the wrong
 artifact.
 
+## One concrete teaching scenario
+
+Imagine you receive `publish/v1/` from a collaborator.
+
+- `manifest.json` tells you that `summary.json`, `summary.tsv`, and `report/index.html`
+  belong in the bundle
+- the SHA-256 digests tell you whether the files you have match the ones they published
+- `provenance.json` tells you what repository and runtime context produced them
+- a contract note tells you which file a machine should parse and which file a human
+  should open first
+
+If any one of those is missing, a different kind of confidence disappears.
+
+That is the educational point: integrity is not one check, but several distinct checks.
+
 ## A weak integrity story
 
 Weak shape:
@@ -119,6 +183,13 @@ Weak shape:
 - checksums are absent, so transfers and comparisons rely on trust alone
 
 This leaves a reviewer with no compact way to validate the bundle.
+
+An equally weak variant is:
+
+- the bundle publishes only accepted outputs
+- reviewers must infer rejected membership from missing files
+
+That weakens trust because membership decisions are now implied instead of recorded.
 
 ## A stronger integrity story
 
@@ -131,6 +202,20 @@ Stronger shape:
 
 Now the bundle can answer more than one kind of question without forcing one file to do
 everything.
+
+## The beginner mistake to catch early
+
+Beginners often assume that once a manifest exists, the bundle is self-documenting.
+
+That gives the manifest too much responsibility.
+
+A manifest can inventory and identify files without saying:
+
+- why those files are public
+- what a consumer should read first
+- whether a checksum mismatch should be interpreted as corruption or a changed version
+
+Integrity gets stronger when each artifact keeps a clear job.
 
 ## A practical review loop
 
@@ -151,7 +236,18 @@ If the answer to only the first question is yes, the integrity story is still in
 | report is treated as the integrity surface | bundle validation becomes manual and human-only | keep machine-checkable inventory and digests separate |
 | provenance is omitted because manifest exists | software context becomes untraceable | pair manifest integrity with provenance evidence |
 | manifest includes internal or unstable files | public boundary becomes noisy and brittle | inventory only the intentional publish contract |
+| reviewed discovery evidence stays internal while result membership is public-facing | consumers can see the result set but not defend its membership | publish accepted and rejected discovery records when they explain bundle membership |
 | contract meaning lives only in author memory | downstream users cannot interpret the bundle confidently | document the role of each public artifact explicitly |
+
+## What a reviewer should hear
+
+When the bundle is designed well, the explanation sounds like this:
+
+> The manifest tells us what belongs in the bundle, the checksums tell us whether those
+> files are intact, the provenance tells us what produced them, and the contract note
+> tells us how to interpret them.
+
+That sentence is strong because it does not overload any single artifact.
 
 ## The explanation a reviewer trusts
 
@@ -176,3 +272,6 @@ Before leaving this page, you should be able to:
 - explain why checksums are about identity rather than meaning
 - describe why provenance is a separate integrity surface
 - explain why a publish bundle still needs a file API or contract note
+
+If you still use “metadata” as the main explanation for all of these files, slow down and
+separate their jobs again. The whole point of the page is to make those jobs distinct.

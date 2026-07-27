@@ -25,282 +25,320 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-The five core lessons in Module 07 are easiest to trust when they appear in one build that
-still works but is getting harder to explain.
+This worked example begins with a build that exits zero in every scenario. Its architecture
+is still dishonest in three ways:
 
-This example starts with exactly that kind of build:
+- automation depends on a target the help interface does not promise
+- a release include changes an ordinary artifact
+- two subsystem sources collapse into one output
 
-- it builds successfully
-- developers rely on many target names nobody has reviewed
-- CI calls a helper target directly
-- include files have grown by habit
-- macros removed duplication but also buried ownership
+The goal is not to make the files look modular. The goal is to replace each hidden
+dependency with a contract another maintainer can verify.
 
-That is a very normal point in the life of a Make-based system.
+## Establish the baseline before editing
 
-## The incident
+From `programs/reproducible-research/deep-dive-make/capstone/`, run:
 
-Assume you inherit a build with these complaints:
-
-1. no one agrees which top-level targets are public
-2. CI calls `build-objects` because it was convenient once
-3. `mk/common.mk` and `mk/release.mk` both append to the same flags in unclear ways
-4. object discovery and naming work today, but a new subsystem is about to be added
-5. there is one macro that "defines everything," but only one maintainer feels safe
-   touching it
-
-This is enough to start a real architecture refactor.
-
-## The starting layout
-
-The repository looks like this:
-
-```text
-Makefile
-mk/
-  common.mk
-  helpers.mk
-  release.mk
-src/
-  main.c
-  util.c
-build/
+```sh
+gmake architecture-contract-audit
 ```
 
-And the top-level file roughly looks like this:
+Copy these six rows from `summary.tsv` into the review note:
+
+| Boundary | Inherited behavior | Control behavior |
+| --- | --- | --- |
+| caller to build API | `PRIVATE_TARGET_DEPENDENCE_REPRODUCED` | `PUBLIC_TARGET_CONTRACT_HONORED` |
+| release to shared policy | `CROSS_LAYER_POLICY_LEAK_REPRODUCED` | `TARGET_SCOPED_POLICY_PRESERVED` |
+| source to output | `FLAT_OUTPUT_OWNERSHIP_COLLAPSED` | `SUBSYSTEM_OUTPUT_OWNERSHIP_PRESERVED` |
+
+Do not start by renaming files. First preserve the observations that the refactor must
+change:
+
+```text
+private caller: application.txt exists; verification.txt absent
+global mutation: default.txt and release.txt both contain -DRELEASE
+flat output: two sources; one output; owner=cli survives
+```
+
+These are the baseline assertions. They prevent a structural rewrite from hiding a
+behavioral regression.
+
+## Repair the caller boundary
+
+The inherited Makefile contains both targets:
 
 ```make
-include mk/common.mk
-include mk/helpers.mk
+.PHONY: internal-build verify
+
+internal-build: build/application.txt
+
+verify: internal-build
+	@printf 'verified\n' > build/verification.txt
+```
+
+Its help output promises only:
+
+```text
+help    show the supported build interface
+verify  build and verify the application
+```
+
+The automation script nevertheless runs:
+
+```sh
+gmake internal-build
+```
+
+That command is reachable and successful. It is not a supported interface, and it bypasses
+the evidence created by `verify`.
+
+Change the caller, not the visibility of every helper:
+
+```sh
+gmake verify
+```
+
+Then rerun the caller and require both files:
+
+```text
+build/application.txt
+build/verification.txt
+```
+
+Why not add `internal-build` to help? Because that would convert an implementation detail
+into a promise merely to avoid repairing one caller. Public API growth is a compatibility
+decision, not a documentation shortcut.
+
+```mermaid
+flowchart LR
+  automation["automation"]
+  verify["verify<br/>declared promise"]
+  internal["internal-build<br/>implementation"]
+  app["application.txt"]
+  proof["verification.txt"]
+
+  automation --> verify
+  verify --> internal --> app
+  verify --> proof
+```
+
+The acceptance evidence is:
+
+- help declares `verify`
+- the external caller invokes `verify`
+- both promised artifacts exist
+- the finding is `PUBLIC_TARGET_CONTRACT_HONORED`
+
+## Repair the policy boundary
+
+The inherited include order is readable:
+
+```make
+include mk/policy.mk
 include mk/release.mk
-
-.PHONY: all test clean build-objects publish verify help
-
-all: app
-
-build-objects:
-	$(foreach obj,$(OBJS),$(MAKE) $(obj);)
-
-verify:
-	@echo verify
+include mk/artifacts.mk
 ```
 
-This is not absurd. It is just not very well-bounded.
-
-## Step 1: identify the public API
-
-The first thing to repair is not layering. It is the interface.
-
-Ask:
-
-- which targets should humans rely on
-- which targets should CI rely on
-- which targets are just implementation helpers
-
-Suppose the answer becomes:
-
-- public: `all`, `test`, `selftest`, `clean`, `help`
-- internal: `build-objects`, any object-level helper, any packaging helper
-
-Then the top-level contract should start to reflect that:
+The ownership is not. `policy.mk` establishes:
 
 ```make
-.PHONY: all test selftest clean help
+CFLAGS := -O2
 ```
 
-And CI should stop calling `build-objects` directly.
+Then `release.mk` performs a global mutation:
 
-This is Core 1:
+```make
+CFLAGS += -DRELEASE
+```
 
-- make the interface small
-- demote private helpers
-- stop letting automation depend on archaeology
+Because includes are parsed before Make updates a goal, merely loading the release layer
+changes the value seen by `all`.
 
-## Step 2: give the include layers real jobs
+Keep the file split and narrow the assignment:
 
-The old include set:
+```make
+release: CFLAGS += -DRELEASE
+```
 
-- `common.mk`
-- `helpers.mk`
-- `release.mk`
-
-does not say enough about ownership. "helpers" is usually a warning name because it can
-contain anything.
-
-A stronger split might become:
+Now run `all` and `release` independently. Accept the repair only if the artifacts say:
 
 ```text
-Makefile
-mk/
-  common.mk
-  objects.mk
-  targets.mk
-  release.mk
+build/default.txt: flags=-O2
+build/release.txt: flags=-O2 -DRELEASE
 ```
 
-With responsibilities:
+Renaming `release.mk` or moving the global append to another include would not satisfy this
+test. The repair is about the value’s propagation domain.
 
-- `common.mk`: shell discipline, tools, shared paths
-- `objects.mk`: rooted discovery and object mapping
-- `targets.mk`: core artifact graph
-- `release.mk`: optional release or publication surfaces
+## Repair the output boundary
 
-Now the include order tells a story instead of merely listing files.
+The repository now has two legitimate owners for the basename `util.txt`:
 
-This is Core 2:
+```text
+src/cli/util.txt
+src/lib/util.txt
+```
 
-- each layer gets one explainable job
-- include order becomes part of the architecture
-- hidden mutation becomes easier to spot
-
-## Step 3: shrink the macro boundary
-
-Suppose `helpers.mk` contained a macro that generated compilation, linking, and packaging
-rules together.
-
-That is usually too much abstraction in one place. The first repair is not "remove all
-macros." The first repair is to ask what invariant actually deserves reuse.
-
-Maybe the repository really only needs one bounded compile macro:
+The inherited mapping strips both ownership directories:
 
 ```make
-define compile_object
-$1: $2 include/app.h | $$(@D)/
-	$$(CC) $$(CPPFLAGS) $$(CFLAGS) -c $$< -o $$@
+OUTPUTS := $(sort $(addprefix build/,$(notdir $(SOURCES))))
+```
+
+Evaluate the graph before inspecting the recipe:
+
+```text
+2 source paths -> 2 duplicate output strings -> 1 unique target
+```
+
+Replace the lossy transformation with:
+
+```make
+OUTPUTS := $(patsubst src/%,build/%,$(SOURCES))
+```
+
+Then use pattern rules whose prerequisite roots match the output namespaces:
+
+```make
+build/cli/%.txt: src/cli/%.txt | build/cli/
+	{ printf 'selected=%s\n' '$<'; cat '$<'; } > $@
+
+build/lib/%.txt: src/lib/%.txt | build/lib/
+	{ printf 'selected=%s\n' '$<'; cat '$<'; } > $@
+```
+
+Accept the repair only when the map has equal source and unique-output counts and both
+artifacts preserve their owners:
+
+```text
+build/cli/util.txt: owner=cli
+build/lib/util.txt: owner=lib
+```
+
+This test catches an error that “the build succeeded” cannot catch.
+
+## Keep abstraction inside the proved boundary
+
+After the three repairs, repeated rules may invite a macro. Before extracting it, preserve
+the explicit rule contract:
+
+| Owner | Target pattern | Source pattern | Policy owner | Publication |
+| --- | --- | --- | --- | --- |
+| CLI | `build/cli/%.txt` | `src/cli/%.txt` | caller’s target branch | temporary file then rename |
+| library | `build/lib/%.txt` | `src/lib/%.txt` | caller’s target branch | temporary file then rename |
+
+Extract only the publication and owner-mapping invariant:
+
+```make
+define publish_owned_source
+build/$1/%.txt: src/$1/%.txt | build/$1/
+	{ printf 'selected=%s\n' '$$<'; cat '$$<'; } > $$@.tmp
+	mv $$@.tmp $$@
 endef
+
+OWNERS := cli lib
+$(foreach owner,$(OWNERS),$(eval $(call publish_owned_source,$(owner))))
 ```
 
-With explicit call sites:
+The macro has one responsibility: preserve the same owner on both sides of the mapping.
+Its call sites still expose the owner set. It does not choose public targets, mutate
+policy, or generate unrelated release rules.
 
-```make
-$(eval $(call compile_object,build/main.o,src/main.c))
-$(eval $(call compile_object,build/util.o,src/util.c))
+Inspect the expanded rules:
+
+```sh
+gmake -npRr all
 ```
 
-That is much easier to defend than one macro that effectively owns the whole build.
+Require the two target/source patterns, compare every generated callable target with help,
+and rebuild the owner artifacts. Reduced line count and matching artifact bytes are not
+enough if the macro also changed policy or generated another surface.
 
-This is Core 3:
+The course’s parallel comparison is:
 
-- use reuse to protect invariants
-- keep call sites explicit
-- refuse abstraction that becomes a second language
-
-## Step 4: fix discovery and naming before the repository grows
-
-The current discovery may be:
-
-```make
-SRCS := $(wildcard src/*.c)
-OBJS := $(patsubst src/%.c,build/%.o,$(SRCS))
+```sh
+gmake abstraction-contract-audit
+gmake abstraction-contract-selftest
 ```
 
-That works today. But the team is about to add `src/lib/*.c`.
+Use `explicit-rules` as the baseline, `bounded-macro` as the control, and `opaque-macro` as
+the side-effect counterexample.
 
-Instead of waiting for collisions, redesign now:
+## Review the combined architecture
 
-```make
-APP_SRCS := $(sort $(wildcard src/app/*.c))
-LIB_SRCS := $(sort $(wildcard src/lib/*.c))
-
-APP_OBJS := $(patsubst src/app/%.c,build/app/%.o,$(APP_SRCS))
-LIB_OBJS := $(patsubst src/lib/%.c,build/lib/%.o,$(LIB_SRCS))
-```
-
-This is not premature generality. It is a small architectural fence against obvious
-growth pressure.
-
-This is Core 4:
-
-- rooted discovery
-- sorted lists
-- namespaced outputs
-- one coherent story about how more code joins the build
-
-## Step 5: review the refactor like an architecture change
-
-At this point the refactor looks better, but Module 07 insists on one more habit:
-
-review the architecture, not only the diff.
-
-Ask:
-
-- are the public targets now obvious
-- do the layer names communicate ownership
-- can a newcomer explain the compile macro
-- will a new subsystem fit the naming rules
-- where could hidden mutation still creep in
-
-This is Core 5. The architecture is not "done" just because the build passes.
-
-## A healthier top-level shape
-
-After the refactor, the top-level file may be closer to this:
-
-```make
-include mk/common.mk
-include mk/objects.mk
-include mk/targets.mk
--include mk/local.mk
-
-.PHONY: all test selftest clean help
-
-all: app
-
-test:
-	+$(MAKE) -C tests run
-
-selftest:
-	+$(MAKE) -C tests build-invariants
-
-clean:
-	rm -rf build dist app
-```
-
-And the internal architecture becomes:
-
-- `common.mk` owns shared policy
-- `objects.mk` owns discovery and mapping
-- `targets.mk` owns the core graph
-- `local.mk` is optional and visibly optional
-
-That is a much easier system to evolve.
-
-## What each core contributed
+The repaired ownership flow is:
 
 ```mermaid
 flowchart TD
-  mess["Tangled working build"] --> api["Core 1: small public surface"]
-  api --> layers["Core 2: clear include responsibilities"]
-  layers --> macros["Core 3: bounded reuse"]
-  macros --> growth["Core 4: stable naming and discovery"]
-  growth --> review["Core 5: architecture review before drift"]
-  review --> result["Inspectable build architecture"]
+  caller["external caller"] --> api["declared target"]
+  api --> graph["artifact graph"]
+  base["shared policy"] --> graph
+  release["release target scope"] --> release_graph["release branch"]
+  sources["rooted source owners"] --> mapping["namespace-preserving mapping"]
+  mapping --> graph
+  graph --> evidence["owned artifacts and verification"]
 ```
 
-This is why the module is organized as five cores and then one worked example. The example
-is where the design advice becomes operational.
+Record each boundary in one table:
 
-## What you should say at the end
+| Contract | Owner | Consumer | Evidence |
+| --- | --- | --- | --- |
+| supported build action | top-level help and target | automation | help trace and caller trace |
+| base flags | `policy.mk` | ordinary and release graph | `default.txt` |
+| release specialization | `release` target | release prerequisites | `release.txt` |
+| source-to-output mapping | discovery/mapping layer | artifact rules | map trace and owned files |
+| generated publication rules | macro and explicit owner list | artifact graph | database map, call domain, artifacts |
+| architecture review gate | audit runner and rejection tests | future maintainers | controlled mutation results |
 
-A strong summary sounds like this:
+If the “Owner” cell says “several includes,” the refactor is not yet reviewable.
 
-> The build was not broken at the graph level, but its architecture was drifting. The
-> public surface was too large, CI depended on a helper target, include files did not have
-> clear responsibility boundaries, a macro owned too much behavior, and discovery would not
-> scale cleanly. We repaired the architecture by publishing a smaller API, splitting layers
-> by job, shrinking the macro boundary, and adopting namespaced discovery before growth
-> forced a more painful rewrite.
+## Run the acceptance sequence
 
-That is a much stronger explanation than "we cleaned up the Makefiles."
+Use this order so a later check cannot conceal an earlier contract failure:
 
-## What to practice after this example
+1. Run `gmake help` and identify the supported automation target.
+2. Run the external caller and require both application and verification evidence.
+3. Build ordinary and release artifacts separately and compare their flags.
+4. Print the source-to-output map and compare its cardinality.
+5. Read both namespaced artifacts and compare their recorded owners.
+6. Inspect generated rules and reject hidden targets or policy mutation.
+7. Clean, rerun the same checks, and confirm the observations do not depend on stale state.
 
-Take one real Make repository and retell its architecture in the same order:
+For the course specimens, the automated equivalent is:
 
-1. define the public targets
-2. name the include layers and their responsibilities
-3. identify one macro that should be reduced or one repeated pattern worth abstracting
-4. check whether discovery and naming survive one more subsystem
-5. write one short architecture review note about the remaining risk
+```sh
+gmake architecture-contract-selftest
+gmake abstraction-contract-selftest
+```
 
-If you can do that cleanly, Module 07 has started to change how you refactor build layouts.
+The self-tests mutate disposable copies of the models and confirm that dishonest caller,
+policy, output, and abstraction evidence is rejected. That matters because an audit that
+always reports success is only a demonstration script.
+
+## Write the review conclusion
+
+A defensible conclusion names changed evidence:
+
+> Automation now calls the declared `verify` target and receives both application and
+> verification artifacts. Release flags reach only the release target branch. Two sources
+> with the same basename map to two owner-identifiable outputs. The bounded macro preserves
+> the explicit prerequisite map without generating hidden targets or policy. Both audit
+> families reject dishonest controls.
+
+Avoid “the Makefiles are cleaner.” It does not identify a contract, an observation, or a
+remaining risk.
+
+## Your turn: refactor without losing the baseline
+
+Use a disposable copy of the three broken specimens.
+
+1. Record the inherited finding and artifact evidence for each defect.
+2. Apply the caller repair and rerun only the public-API cases.
+3. Apply the target-scoped policy repair and compare the two flag artifacts.
+4. Apply the namespace-preserving mapping and add a third colliding owner.
+5. Establish explicit publication rules, then introduce only the bounded macro.
+6. Rerun both audits and their rejection tests.
+7. Write a review table naming each owner, consumer, evidence path, and remaining limit.
+
+The work is complete only when all four repaired contracts are independently observable.
+A new directory layout or shorter Makefile without those observations is still a proposal.

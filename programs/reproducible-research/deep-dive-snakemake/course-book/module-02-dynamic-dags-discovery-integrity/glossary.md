@@ -1,35 +1,20 @@
 # Glossary
 
+Dynamic workflows feel harder than static ones mostly because people stop naming what is
+being discovered, when it is being discovered, and where that fact gets recorded. This
+glossary exists to stop that slide into hand-waving.
 
-<!-- page-maps:start -->
-## Page Maps
+Keep it open while you work through the module. If a sentence starts sounding mystical,
+this page should give you the concrete noun that restores clarity.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
+## When to stop and check the glossary
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+Pause and check a term when:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use this glossary to keep the language of Module 02 stable while you move between the
-core lessons, worked example, exercises, and capstone evidence.
-
-The goal is not extra jargon. The goal is to make sure dynamic behavior is described with
-clear nouns instead of mystical shortcuts.
+- your explanation depends on "Snakemake discovers it somehow"
+- you are calling a directory scan, a registry, and a checkpoint the same thing
+- you can tell a publish tree feels incomplete but cannot yet name the missing artifact
+- you are treating job expansion and domain modeling as if they were the same problem
 
 ## Terms in this module
 
@@ -45,7 +30,7 @@ clear nouns instead of mystical shortcuts.
 | parse-time discovery | Discovery that happens while the Snakefile is being read, before job execution begins. |
 | provenance | The run-identity evidence that explains which configuration and software state produced the outputs. |
 | publish boundary | The versioned output surface a downstream consumer is allowed to trust. |
-| registry | A durable file that records discovery in a structured way, such as `discovered_samples.json`. |
+| registry | A durable file that records discovery in a structured way, such as `accepted_samples.json`, `rejected_samples.json`, or `discovered_samples.json` when no validation split is needed. |
 | scheduler cost | The overhead of launching, tracking, and coordinating jobs, apart from the useful work they perform. |
 | software boundary | The declared environment or container surface that explains which tools a rule needs. |
 | target list | The explicit set of files the workflow is trying to build for a given run. |
@@ -55,10 +40,52 @@ clear nouns instead of mystical shortcuts.
 
 When you explain a Module 02 situation, aim to say things like:
 
-- "the discovered set is recorded in one owned registry"
+- "the discovered set is recorded in owned discovery registries"
 - "that checkpoint is justified because the downstream target list is not known earlier"
 - "this is a fanout-control problem, not just a syntax problem"
 - "the publish boundary preserves the discovery fact for later review"
 - "the workflow is slow because scheduler cost dominates useful work"
 
 Those sentences are much more useful than saying only "Snakemake gets weird with dynamic workflows."
+
+## Confusion pairs worth fixing early
+
+These pairs matter because Module 02 becomes muddy the moment discovery language gets
+lazy:
+
+- `checkpoint` versus `parse-time discovery`: a checkpoint delays downstream expansion
+  until after a run artifact exists; parse-time discovery happens before execution starts.
+- `discovered set` versus `target list`: the discovered set is what the workflow learned
+  exists; the target list is what the workflow is trying to build.
+- `registry` versus `manifest`: a registry records discovery facts such as accepted or
+  rejected candidates; a manifest records the contents of a publish boundary.
+- `fanout` versus `scheduler cost`: fanout names the expansion shape; scheduler cost names
+  the overhead of managing that shape.
+
+## Quick self-check
+
+Before you leave Module 02, make sure you can answer these in a full sentence:
+
+- Why are accepted and rejected discovery records easier to review than repeated ad hoc
+  directory scans across rules?
+- What term should you use if downstream jobs cannot be known honestly before one earlier
+  rule finishes?
+- If a workflow publishes outputs but no durable file records what was discovered for this
+  run, which evidence surface is missing?
+- If a workflow is technically correct but painfully slow because it launches thousands of
+  tiny jobs, what cost class inside this module are you naming?
+
+## Terms you should be able to use by the end of the day
+
+If Module 02 is landing properly, these terms should feel ordinary by the end:
+
+- discovery surface
+- discovered set
+- registry
+- fanout
+- publish boundary
+- provenance
+- scheduler cost
+
+If those still feel decorative rather than useful, revisit the worked example and the
+first eight exercises before moving on.

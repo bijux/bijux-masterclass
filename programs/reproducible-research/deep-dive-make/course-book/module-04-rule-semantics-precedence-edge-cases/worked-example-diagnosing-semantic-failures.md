@@ -38,6 +38,58 @@ An inherited Make build fails in a much messier way:
 This worked example shows a better response. We will take one small but realistic build,
 follow the evidence, and connect every repair to a lesson from the module.
 
+## Warm-up: observe expansion and origin
+
+Before the incident, create this Makefile:
+
+```make
+BASE = initial
+RECURSIVE = $(BASE)
+SIMPLE := $(BASE)
+BASE = changed
+DEFAULT ?= local
+
+.PHONY: show
+show:
+	@printf 'RECURSIVE=%s flavor=%s\n' "$(RECURSIVE)" "$(flavor RECURSIVE)"
+	@printf 'SIMPLE=%s flavor=%s\n' "$(SIMPLE)" "$(flavor SIMPLE)"
+	@printf 'DEFAULT=%s origin=%s\n' "$(DEFAULT)" "$(origin DEFAULT)"
+```
+
+Predict the output, then compare:
+
+```sh
+make show
+DEFAULT=command make show
+DEFAULT=environment make show
+```
+
+The command-line assignment wins over the makefile. The environment value does not
+replace a makefile assignment unless the makefile chooses `?=` or Make is invoked with
+`-e`. `RECURSIVE` expands after `BASE` changes; `SIMPLE` captured the earlier value.
+
+This small lab gives concrete meaning to the origin and flavor probes used in the larger
+incident.
+
+## Keep a semantic event log
+
+For the incident below, classify each observation before proposing a repair:
+
+| Observation | Read time | Expansion time | Rule selection | Recipe execution |
+| --- | ---: | ---: | ---: | ---: |
+| included file is missing | yes |  |  |  |
+| `MODE` has an unexpected origin |  | yes |  |  |
+| two output rules match one path |  |  | yes |  |
+| generator writes a partial file |  |  |  | yes |
+
+The columns are not independent implementation trivia. They tell you where to look next.
+A generated include loop is not repaired with shell quoting. A command-line override is
+not repaired by changing target timestamps. A multi-output ownership error is not
+explained by variable flavor.
+
+Add one row for every new symptom. If you cannot choose a column, write down the probe
+that would distinguish the possibilities.
+
 ## The incident
 
 Assume a repository with these facts:
@@ -89,7 +141,7 @@ mk/generated-config.mk:
 This Makefile is useful as a teaching example because none of the lines are absurd. Every
 mistake is plausible.
 
-## Step 1: prove the non-convergence
+## Prove the non-convergence
 
 Start with the smallest reliable claim:
 
@@ -104,7 +156,7 @@ thinks work remains after a successful build."
 
 This is the Core 1 habit: use `-q` to turn a vague complaint into an explicit signal.
 
-## Step 2: ask why Make still wants work
+## Ask why Make still wants work
 
 Now run:
 
@@ -119,7 +171,7 @@ This is an important emotional shift. When the binary is the thing that looks wr
 easy to inspect the link line first. The trace teaches you to follow causality instead of
 visible pain.
 
-## Step 3: inspect the included file contract
+## Inspect the included file contract
 
 Open the generator rule:
 
@@ -151,7 +203,7 @@ mk/generated-config.mk: config/mode.env
 Now the included file changes only when `config/mode.env` changes, and it is published
 atomically.
 
-## Step 4: explain the variable disagreement
+## Explain the variable disagreement
 
 You also said CI uses different flags.
 
@@ -215,7 +267,7 @@ This repair does three things:
 - makes the mode set explicit and finite
 - uses `:=` so `CFLAGS` is stable after mode selection
 
-## Step 5: repair the multi-output generator
+## Repair the multi-output generator
 
 You saw duplicate generator logs under `-j4`:
 
@@ -253,7 +305,7 @@ api.h api.json: $(API_STAMP)
 
 Now the graph contains one publication event that can be discussed and tested.
 
-## Step 6: remove the search-path ambiguity
+## Remove the search-path ambiguity
 
 The build also used:
 
@@ -351,3 +403,19 @@ Take one real build incident and rewrite it in the same order:
 5. state the final explanation in one paragraph
 
 If you can do that, Module 04 has started to change how you debug.
+
+## Keep the investigation bounded
+
+Do not attach the entire `make -p` output to an incident by default. Record:
+
+- the requested target
+- the first trace line that explains unexpected work
+- the relevant variable’s origin, flavor, raw value, and expanded value
+- the included file or selected rule that changed the graph
+- the smallest repair and its convergence check
+
+Expand the evidence only when those facts do not settle the question.
+
+At the end, repeat the warm-up commands and explain why each result follows from origin,
+flavor, and assignment ownership. The large incident is complete only when the small
+model still feels sufficient.

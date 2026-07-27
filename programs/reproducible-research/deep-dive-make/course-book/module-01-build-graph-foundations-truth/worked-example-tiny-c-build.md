@@ -110,6 +110,79 @@ Start with three questions:
 As you work through the rest of the module, keep returning here and answer those
 questions again with better precision.
 
+## Build the Makefile in layers
+
+The reference Makefile later on is intentionally defensive. Do not begin by copying it.
+Build toward it so every line has a reason to exist.
+
+### Begin with one output
+
+Compile the program directly:
+
+```make
+app: src/main.c src/util.c include/util.h
+	cc -Iinclude src/main.c src/util.c -o app
+```
+
+Run `make app` twice. The first run creates `app`; the second should report that it is up
+to date. Change `src/util.c`, predict the result, then run `make --trace app`.
+
+At this point the graph is:
+
+```mermaid
+flowchart LR
+  app --> main["src/main.c"]
+  app --> util["src/util.c"]
+  app --> header["include/util.h"]
+```
+
+This is a correct small build. It recompiles every source file after any change, but it
+does not lie.
+
+### Separate compilation from linking
+
+Next, make the intermediate object files visible:
+
+```make
+app: build/main.o build/util.o
+	cc $^ -o $@
+
+build/main.o: src/main.c include/util.h | build/
+	cc -Iinclude -c $< -o $@
+
+build/util.o: src/util.c include/util.h | build/
+	cc -Iinclude -c $< -o $@
+
+build/:
+	mkdir -p $@
+```
+
+The automatic variables remove repeated path names:
+
+| Variable | Meaning in a recipe |
+| --- | --- |
+| `$@` | the target being updated |
+| `$<` | the first prerequisite |
+| `$^` | all normal prerequisites, without duplicates |
+
+Change only `src/util.c`. Predict which compile rule runs and whether linking runs. Use
+`make --trace app` to test the prediction.
+
+### Replace repeated compile policy
+
+The two compile recipes have the same shape, so one pattern rule can own both:
+
+```make
+build/%.o: src/%.c include/util.h | build/
+	cc -Iinclude -c $< -o $@
+```
+
+`%` binds to `main` when Make needs `build/main.o` and to `util` when it needs
+`build/util.o`. The rule is reusable because the input-output mapping is unambiguous.
+
+Only after you can explain these three versions should you study the defensive reference
+Makefile below.
+
 ## A reference Makefile
 
 ```make
@@ -167,22 +240,46 @@ clean:
 This is not the last Makefile you will ever write. It is a deliberately small example with
 good instincts baked in.
 
-## Four experiments to run
+## Six demonstrations to run
 
-### Experiment 1: First build
+Before each demonstration, write one row in this table. Fill the last two columns only
+after the command finishes.
+
+| Change | Predicted targets | Observed targets | Graph fact that explains the result |
+| --- | --- | --- | --- |
+| clean checkout |  |  |  |
+| no change |  |  |  |
+| `src/util.c` |  |  |  |
+| `include/util.h` |  |  |  |
+| `CFLAGS` |  |  |  |
+
+Do not write “it rebuilt everything” as an observation. Name the targets. Precision is
+how you notice that one object rebuilt unnecessarily or failed to rebuild at all.
+
+### Demonstration 1: First build
 
 Run `make --trace all` and read which targets fire first and why.
 
-### Experiment 2: Header change
+### Demonstration 2: No-op rebuild
+
+Run `make --trace all` again without changing anything. No compile or link recipe should
+run. This is convergence, not merely speed.
+
+### Demonstration 3: Source change
+
+Change only `src/util.c`. `build/util.o` and `app` should rebuild; `build/main.o` should
+not.
+
+### Demonstration 4: Header change
 
 Edit `include/util.h` and rerun `make --trace all`. Both object files should rebuild.
 
-### Experiment 3: Flag change
+### Demonstration 5: Flag change
 
 Run `make CFLAGS=-O0 --trace all`. The flags stamp should change, and the affected object
 files should rebuild.
 
-### Experiment 4: Convergence check
+### Demonstration 6: Convergence check
 
 Run:
 
@@ -193,6 +290,19 @@ make -q all; echo $?
 
 You want exit code `0`. That is the quiet resting state the rest of the course depends
 on.
+
+## Explain one trace without Make vocabulary
+
+Choose the header-change demonstration and explain it to someone who has never seen Make:
+
+1. two compiled files both read the header
+2. the header became newer than those files
+3. both compiled files therefore became stale
+4. the application depends on them, so it became stale afterward
+
+Then translate the same explanation back into target and prerequisite language. Moving
+between ordinary language and graph language is a core course skill. If you can repeat
+the command but cannot explain the causal chain, the demonstration is not finished.
 
 ## Evidence loop
 
@@ -208,6 +318,19 @@ make -q all; echo $?
 
 This file is not the whole module. It is the place where the lessons meet one build you
 can reason about line by line.
+
+## Common beginner mistakes
+
+- **Spaces before recipes:** GNU Make normally requires a tab. If you see `missing
+  separator`, inspect indentation first.
+- **Running from the wrong directory:** Make looks for `Makefile` in the current
+  directory unless told otherwise.
+- **Creating `all` as a file:** declare action targets such as `all` and `clean` phony.
+- **Guessing after the run:** write the prediction before using `--trace`.
+- **Deleting everything to repair a graph:** `make clean` can hide missing dependencies.
+  Use it for comparison, not as the normal solution.
+- **Reading a long trace as a blur:** choose one requested target and follow only its
+  prerequisite chain before trying to explain the entire build.
 
 ## What this example should teach you
 

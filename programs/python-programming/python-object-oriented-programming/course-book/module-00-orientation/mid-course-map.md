@@ -17,78 +17,143 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  authority["Carry authority forward from modules 1 to 3"] --> pressure["Add collaboration, failure, storage, and time pressure"]
+  pressure --> boundary["Check which boundary stays authoritative"]
+  boundary --> capstone["Use one capstone surface to confirm it"]
+  capstone --> advance["Advance only when pressure no longer relocates ownership"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Use this map when you no longer struggle to name an object, but you do struggle to keep
+object ownership clear once the system gets larger. The middle stretch of the course is
+where promising designs usually start to blur:
 
-Use this map once the object model and state model are clear. These modules turn the
-course from object design into system design.
+- several objects collaborate on one rule
+- failures and rollback pressure arrive
+- persistence starts pushing on the model
+- time and concurrency threaten to dissolve authority
 
-## Module 4 – Aggregates, Domain Events, Object Graphs, and Collaboration Patterns
+This part of the course is about surviving that pressure without surrendering the design.
 
-**Theme:** Move from isolated objects to coherent domains: aggregates, events,
-patterns, and debuggable object graphs.
+## What changes after the opening stretch
 
-- **Core 31 – Aggregates and Consistency Boundaries in a Python Service**
-- **Core 32 – Cross-Object Invariants and Aggregate-Level Validation**
-- **Core 33 – Aggregate Lifecycle and Failure Semantics**
-- **Core 34 – Domain Events for Decoupling (Without Full Event Sourcing)**
-- **Core 35 – In-Process Event Dispatch: Tiny Observer and Event Bus**
-- **Core 36 – Projections, Read Models, and Object-Graph Debug Views**
-- **Core 37 – Strategy and Policy Objects for Rule Evaluation and Decisions**
-- **Core 38 – Adapter and Bridge: Wrapping External Systems and Storage**
-- **Core 39 – Designing Collaboration Surfaces: How Objects Talk Without Tangle**
-- **Core 40 – Refactor 3: Monolithic Logic → Aggregates + Events + Strategies + Debuggable Graph**
+Earlier modules mostly ask:
 
-## Module 5 – Resources, Failures, Smells, Boundaries, and Evolution
+- what is this object?
+- who owns this rule?
+- what states are legal?
 
-**Theme:** Make object systems survive: resources, failure handling, smell repair,
-copying semantics, and compatibility discipline.
+Modules 4 to 7 ask harder versions:
 
-- **Core 41 – Resources and Context Managers: Objects That Own Things**
-- **Core 42 – Unit-of-Work: Grouping Changes and Handling Failures**
-- **Core 43 – Deterministic Cleanup and Leak Prevention in Pure Python**
-- **Core 44 – Idempotent Operations and Safe Retries (Sync-Only Context)**
-- **Core 45 – Logging and Error Propagation as Part of Object Contracts**
-- **Core 46 – Public vs Internal Modules and Facades for OOP Codebases**
-- **Core 47 – Design Smells and Refactoring Patterns in OOP Python**
-- **Core 48 – Copying and Versioning of Objects and Aggregates Over Time**
-- **Core 49 – Evolution Basics and Compatibility Contracts**
-- **Core 50 – Refactor 4: Introduce New Feature, Preserve Old Behaviour, Document Smell Fixes**
+- which boundary stays authoritative when several objects participate?
+- where should failure, retry, rollback, or cleanup pressure terminate?
+- how do storage and runtime adapt to the model without becoming the real model?
+- where does time enter, and who is still allowed to mutate state safely?
 
-## Module 6 – Persistence, Repositories, Serialization, and Schema Evolution
+If those are now the questions slowing you down, you are in the right part of the course.
 
-**Theme:** Keep rich object models intact when they cross storage and wire
-boundaries: repositories, codecs, conflicts, migrations, and compatibility.
+## Read modules 4 to 7 as one systems arc
 
-- **Core 51 – Repository Contracts and Aggregate Rehydration**
-- **Core 52 – Mapping Domain Objects to Storage Models**
-- **Core 53 – Serialization Boundaries and Explicit Codecs**
-- **Core 54 – Snapshots, Events, and Rebuild Trade-Offs**
-- **Core 55 – Schema Versioning and Upcasters**
-- **Core 56 – Optimistic Concurrency and Conflict Detection**
-- **Core 57 – Transactional Boundaries and Outbox Thinking**
-- **Core 58 – Persistence Tests and Backend Swappability**
-- **Core 59 – Migrating Stored Data without Domain Corruption**
-- **Core 60 – Refactor 5: Repositories, Codecs, and Schema Evolution**
+| Module | Main pressure | Design trap it prevents | What you should be able to say afterward |
+| --- | --- | --- | --- |
+| Module 4: aggregates, events, collaboration boundaries | several objects participating in one rule | letting every participant mutate the truth | "I know which boundary is authoritative and which views are derived." |
+| Module 5: resources, failures, safe evolution | failure, rollback, cleanup, and compatibility pressure | leaking survivability concerns everywhere | "I know where this failure pressure should stop." |
+| Module 6: persistence and schema evolution | storage and serialization pressure | flattening the domain until storage becomes the real model | "I know what storage must adapt to, and what it must not redefine." |
+| Module 7: time and concurrency boundaries | multiple timelines, workers, and execution paths | moving mutation rights around until nothing is clearly safe | "I know where time enters and where mutation must stop." |
 
-## Module 7 – Time, Scheduling, Concurrency, and Async Boundaries
+## Module 4: keep one owner when many objects collaborate
 
-**Theme:** Model clocks, worker coordination, and async integration explicitly so
-concurrency pressure sharpens design instead of dissolving it.
+This module teaches a crucial upgrade: collaboration does not cancel ownership.
 
-- **Core 61 – Clocks, Timezones, and Monotonic Time**
-- **Core 62 – Deadlines, Timeouts, and Expiration Policies**
-- **Core 63 – Schedulers, Timers, and Coordination Objects**
-- **Core 64 – Threads, Locks, and Owned Mutation**
-- **Core 65 – Queues, Workers, and Backpressure Boundaries**
-- **Core 66 – `asyncio` Tasks and Sync-Async Bridges**
-- **Core 67 – Cancellation, Retries, and Resumable Operations**
-- **Core 68 – Concurrency-Safe Caches and Memoization**
-- **Core 69 – Designing Thread-Aware and Async-Aware APIs**
-- **Core 70 – Refactor 6: Runtime around Time and Concurrency Boundaries**
+Study Module 4 with these questions:
+
+- which object or aggregate gets the final say?
+- which event exists for observation rather than for ownership?
+- which projection is useful for reading but forbidden from making truth claims?
+
+If you cannot answer those distinctly, stay in Module 4 longer. Later modules assume you
+can separate authority from observation cleanly.
+
+## Module 5: make failure pressure local
+
+This module teaches survivability without design panic. The question is not "how do I
+handle every failure?" The question is "which boundary should absorb this particular
+failure pressure?"
+
+Keep asking:
+
+- which object owns cleanup?
+- where should rollback pressure terminate?
+- which compatibility promise must stay stable while internals evolve?
+
+If you answer all three with "everywhere," the design is leaking.
+
+## Module 6: make storage downstream of meaning
+
+Module 6 is where many learners accidentally let persistence rewrite the model. The
+important discipline here is distortion detection.
+
+Ask:
+
+- which fields belong to domain meaning, and which belong to storage bookkeeping only?
+- which serialized shape is operationally useful but not semantically authoritative?
+- which rehydration path preserves invariants instead of bypassing them?
+
+If storage is making your model flatter, more nullable, or less authoritative, that is
+not just an implementation detail. It is a design warning.
+
+## Module 7: add time without dissolving responsibility
+
+Concurrency is dangerous mainly because it exposes ownership lies. Module 7 is not
+about collecting async techniques. It is about preserving authority under multiple
+execution paths.
+
+Study with these questions:
+
+- where does time enter the model?
+- who owns expiration, retry, timeout, or scheduling rules?
+- which state may be observed concurrently, and who may still mutate it?
+
+If you cannot answer those concretely, the design is not ready for concurrency pressure.
+
+## A strong mid-course route for independent learners
+
+1. Complete Module 4 before you skim later modules.
+2. After Module 4, write one sentence beginning with `The source of truth is...`.
+3. Move to Module 5 and write one sentence beginning with `This failure pressure stops at...`.
+4. Move to Module 6 and write one sentence beginning with `Storage must adapt to...`.
+5. Move to Module 7 and write one sentence beginning with `Time enters at...`.
+
+These sentence stems are not busywork. They force you to carry the ownership model
+forward as the pressure changes.
+
+## Best capstone checks for this stage
+
+| Module | Best first capstone surface | Why |
+| --- | --- | --- |
+| Module 4 | `model.py`, `projections.py`, `read_models.py` | they show authority, events, and derived views in one place |
+| Module 5 | `runtime.py`, `repository.py`, and saved walkthrough or review outputs | they make survivability pressure visible without pretending runtime owns the domain |
+| Module 6 | `repository.py`, unit-of-work tests, verification artifacts | they show whether storage is adapting to the model honestly |
+| Module 7 | `runtime.py`, runtime tests, verification bundles | they expose where time and coordination enter the design |
+
+## Mid-course warning signs
+
+- you are calling everything an event because ownership feels awkward
+- you are adding persistence fields directly to the domain because it feels convenient
+- you are discussing queues, retries, or async without naming the owner of the rule first
+- you are introducing layers that do not protect any real boundary
+
+## Signs you are ready for the final stretch
+
+You are ready for Modules 8 to 10 when you can do all of these:
+
+- identify the authoritative owner in a multi-object workflow
+- explain where failure or storage pressure should terminate
+- state where time or concurrency enters and why that boundary is safe enough
+
+## Exit check
+
+Leave this map only when you can say:
+
+> The current pressure is `____`, the authoritative boundary is `____`, and I will know
+> this stage is complete when `____`.

@@ -1,29 +1,4 @@
 # Mastery Map
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Orientation"]
-  page["Mastery Map"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when the course is no longer about first contact or ordinary study rhythm.
 The goal here is stewardship: decide what still deserves trust, what must change, and
 what should move beyond Make instead of being hidden inside it.
@@ -51,6 +26,18 @@ Use Module 10 when the review question is long-lived ownership.
 - Re-read the module as a boundary decision, not as a recap.
 - Ask which responsibilities still belong in Make and which should move to a smaller,
   clearer tool boundary.
+
+## What mastery looks like in this course
+
+Mastery here does not mean memorizing obscure Make features. It means you can do careful
+work under pressure:
+
+- you can explain build behavior with evidence
+- you can refuse unsafe shortcuts even when they appear to work
+- you can review an inherited build without rewriting it blindly
+- you can decide when Make is still the right owner for the problem
+
+That is the difference between using Make and stewarding a Make-based system.
 
 ## Good mastery signal
 

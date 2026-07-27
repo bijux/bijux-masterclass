@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,124 +17,588 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["check the claim"] --> evidence["check evidence provenance"]
+  evidence --> inference["check the inference"]
+  inference --> decision["check the decision"]
+  decision --> limits["name what remains unknown"]
 ```
 <!-- page-maps:end -->
 
-Use this after you have written your own answers. The point is comparison, not copying.
+Use these answers after completing your own packet. They model reasoning shape, not
+machine-independent numeric results. Your timing values, trace count, and tool versions
+will differ.
 
-Strong Module 09 answers do not just list commands. They explain:
+For each exercise, compare four things:
 
-- what operational question is being asked
-- why the chosen evidence surface matches that question
-- how the resulting change or response preserves truth
+1. Is the observed fact reproducible from the packet?
+2. Does the inference stay within what the evidence can establish?
+3. Does the decision follow from that inference?
+4. Is the remaining uncertainty named?
 
-## Exercise 1: Split one "slow build" complaint into layers
+An answer can be technically accurate and still be operationally weak if another
+maintainer cannot reconstruct those links.
 
-A strong answer compares at least:
+## Exercise 1: Open the incident without accepting its diagnosis
 
-- a dry-run timing signal such as `/usr/bin/time -p make -n all`
-- a full-build timing signal such as `/usr/bin/time -p make all`
-- a trace or evidence-size signal such as `make --trace all > build/trace.log && wc -l build/trace.log`
+A strong `incident.md` separates the report:
 
-The key reasoning is:
+| Claim | Route and state | Expectation source | First evidence |
+| --- | --- | --- | --- |
+| clean build is slow | `gmake -j4 all` from documented clean state | controlled prior baseline, if one exists | five clean samples |
+| no-op route is slow | `gmake all` after `gmake -q all` succeeds | convergence contract | five no-op samples |
+| pre-recipe work is slow | `gmake -n all` from converged state | current or prior dry-run baseline | five dry-run samples |
+| trace is noisy | `gmake --trace -n all` | responder usability requirement and trace guardrail | line count plus inspection |
+| parallel route is wrong | governed pressure route or repro | serial/parallel equivalence contract | artifact comparison or incident bundle |
 
-- expensive dry-run suggests parse or evaluation cost
-- cheap dry-run plus expensive full build suggests recipe cost
-- huge trace output suggests observability overhead as an operational problem
+Model reasoning:
 
-The answer is strongest when it says how the next decision would differ depending on which
-layer dominates.
+```text
+Observed:
+The report contains broad claims but no route, state, samples, or comparison baseline.
 
-## Exercise 2: Add one bounded observability surface
+Inferred:
+Neither regression nor parallel root cause has been established.
 
-A strong answer names one explicit question, such as:
+Still unknown:
+Which cost layer dominates, whether trace is unusable, and whether a real capstone output
+differs by schedule.
 
-> how many lines of trace output does a normal route emit?
-
-and then proposes a bounded route such as:
-
-```make
-.PHONY: trace-count
-
-trace-count:
-	@make --trace -n all 2>&1 | wc -l
+Decision:
+Preserve context and establish separate baselines before changing diagnostics or
+parallelism.
 ```
 
-The important move is architectural:
+Immediate containment would be justified if a trusted artifact were corrupted or at risk
+of publication. In that case, stop publication and preserve the outputs before ordinary
+measurement.
 
-- the evidence surface is named
-- it answers one question
-- it does not mutate normal outputs
+The proposed remedies are premature because they alter evidence and scheduling before the
+claims are classified.
 
-A good answer usually removes some ad hoc recipe prints in exchange.
+## Exercise 2: Capture a reproducibility context
 
-## Exercise 3: Write a triage ladder for one flaky symptom
+A useful evidence context has this shape inside `evidence.json`:
 
-A strong answer usually includes:
-
-1. confirm the exact symptom
-2. reproduce the same target and assumptions
-3. preview with `-n` if intent is the question
-4. use `--trace` if causality is the question
-5. use `-p` if resolved state is the question
-
-The strongest answers explicitly say why editing the Makefile is not the first move:
-
-> editing too early changes the conditions before the failure boundary is understood.
-
-That is the real lesson.
-
-## Exercise 4: Propose one truth-preserving optimization
-
-A good answer might identify repeated parse-time discovery shell-outs and replace them with
-a stable manifest or script boundary.
-
-For example:
-
-```make
-build/discovery.manifest: scripts/list_sources.py src/ | build/
-	@python3 scripts/list_sources.py src > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+```text
+context
+├── compiler: command, resolved executable, version
+├── make: command, resolved executable, version
+├── platform
+├── python
+├── repository: revision, status, status digest
+└── runner
 ```
 
-This is strong because the optimization removes repeated work while preserving:
+`help.txt`, `portability.txt`, and responder notes can remain companion evidence. Revision,
+worktree, and tool identities must stay in the timing document so the comparator can enforce
+them rather than trusting a reviewer to find loosely related files.
 
-- explicit inputs
-- a convergent boundary
-- inspectable build meaning
+The conditions table should distinguish control and comparison behavior:
 
-The post-change proof should usually include both a timing comparison and a truth check such
-as `make -q all` or a discovery audit.
+| Condition | Controlled by repository? | Comparison behavior |
+| --- | ---: | --- |
+| requested target | yes | must match through scenario policy |
+| checkout revision | yes | may differ; both clean revisions are reported |
+| worktree status | yes | dirty or unavailable provenance is rejected |
+| `-j4` | yes | must match through scenario policy |
+| GNU Make version | partly | must match |
+| compiler version | partly | must match |
+| runner label | operator-controlled | must match and name one stable environment |
+| background load | no | may widen timing variation despite a matching label |
+| filesystem cache | not fully | can make clean samples non-identical |
 
-## Exercise 5: Write a small operational runbook entry
+Different revisions are the subject of a candidate comparison, so equality would defeat the
+experiment. A different compiler or runner changes source and environment at once, so the
+comparator cannot attribute the delta. A dirty candidate has the opposite problem: the
+reported revision does not identify all measured source.
 
-A strong runbook entry includes:
+If status is `dirty`, retain the observation, establish the intended source as a clean
+revision, and recollect. Editing the JSON to say `clean` destroys evidence.
 
-- one sanity or convergence check
-- one command for resolved-state or serial/parallel comparison
-- one escalation trigger
-- one warning against destructive first moves
+A strong limitation statement is:
 
-For example:
+> Background load and cache state were not fully controlled, so these measurements can
+> localize large cost differences and establish a local baseline, but they do not support
+> fine-grained cross-machine comparisons.
 
-> Run `make all` and `make -q all`. If flakiness is reported, compare serial and `-j`
-> behavior before editing the build. Escalate if the symptom cannot be reproduced with a
-> stable route. Avoid cleaning first unless the runbook explicitly says the question is about
-> clean-state behavior.
+Do not retain a raw environment dump without reviewing it for secrets.
 
-That is a real operational note, not just a command list.
+## Exercise 3: Establish controlled cost baselines
 
-## What mastery-level answers sound like
+The answer key cannot supply your values. It can show how to audit the bundle before
+interpreting them.
 
-A mastery-level answer set in this module does three things well:
+| Scenario | Policy evidence | Raw evidence | Semantic evidence |
+| --- | --- | --- | --- |
+| `clean-build` | `clean`, `-j4`, `all` | repeated samples and command log | context, convergence, trusted outputs, bound requested work |
+| `converged-noop` | `converged`, `-j1`, `all` | repeated samples and command log | context, convergence, trusted outputs, bound requested work |
+| `converged-dry-run` | `converged`, `-j1`, `dry-run-all` | repeated samples and command log | context, convergence, trusted outputs, bound requested work |
 
-- it separates cost and incident layers instead of using vague words like "slow" or "flaky"
-- it treats observability as a designed surface rather than as scattered prints
-- it treats performance tuning as valid only when truth and evidence quality survive the change
+The exact sample count comes from `evidence.json`; five is the default, not a fact to copy
+without checking. Recalculate one median from the raw elapsed values and confirm it matches
+`summary.tsv`. Then verify that every exit status is zero, convergence is `PASS`, and the
+inventory names the expected outputs.
 
-That is the standard Module 09 is trying to build.
+Before interpreting the median, confirm the repository revision and status, tool identities,
+runner label, scenario-policy digest, and incremental-policy digest. The standalone
+`incremental-work.json` contains per-case traces; the `incremental_work` object in
+`evidence.json` carries the semantic fields used by comparison. Matching values prove that
+the timing document is bound to the requested-work result.
+
+Example reasoning:
+
+```text
+Observed:
+Clean samples are substantially larger than both no-op and dry-run samples. No-op and
+dry-run samples overlap within the observed range.
+
+Inferred:
+Most clean-build cost appears during recipes. No-op overhead appears mostly before ordinary
+recipe execution.
+
+Still unknown:
+Which clean-build recipe lies on the critical path and whether current values regress from
+an earlier compatible baseline. Background load and cache state also remain imperfectly
+controlled.
+
+Decision:
+Record the current baseline. Do not claim a regression. Profile a recipe only if an
+operational objective makes clean-build cost worth reducing.
+```
+
+A weak answer subtracts one dry-run value from one clean value and calls the result recipe
+
+Another weak answer submits only `summary.tsv`. Without policy, raw samples, command logs,
+convergence, and output inventories, a reviewer cannot tell whether the route asked the
+same question or became faster by doing less necessary work.
+
+The change-impact prediction should be:
+
+| Input | Must rebuild | Why |
+| --- | --- | --- |
+| `src/util.c` | `build/util.o`, `app`, `all` | direct compile, then link, then sentinel |
+| `include/util.h` | `build/main.o`, `build/util.o`, `app`, `all` | both depfiles name the header; both objects feed the link |
+| `include/sub.h` | `build/main.o`, `build/sub/sub.o`, `app`, `all` | main and sub depfiles name the header |
+| `scripts/gen_dynamic_h.py` | generated header, `dyn1`, `dyn2`, `all` | producer input republishes the header consumed by both dynamic binaries |
+| `src/dynamic/dyn1.c` | `build/bin/dyn1`, `all` | direct dynamic compile and aggregate sentinel only |
+
+Representative non-work is equally important:
+
+- ordinary source and header cases leave the dynamic pipeline unchanged
+- generated-pipeline cases leave `app` and ordinary objects unchanged
+- the `dyn1` source case leaves `dyn2` and the generated header unchanged
+
+Each row's rebuild and remain sets should union to the same eight governed outputs:
+three ordinary objects, `app`, two dynamic binaries, the generated header, and `all`.
+Different unions mean one case has an observation blind spot.
+
+Empty `missing_rebuild` and `unexpected_rebuild` sets prove each observed scope matches its
+contract. For a header case, the useful trace should name the affected objects and their
+included depfiles. For the producer case, it should show the script-to-header rule followed
+by both header consumers.
+
+Restoring every input timestamp prevents the experiment from leaving tracked inputs
+artificially newer. Reconverging before each case gives every input an independent starting
+state. Generated outputs remain as evidence of executed routes and should be cleaned only
+after the report has been reviewed.
+
+## Exercise 4: Choose observability by question
+
+Good questions are narrower than "what is Make doing?"
+
+Trace question:
+
+> Why does Make consider `all` complete or in need of work from this state?
+
+Retain the smallest lines naming `all`, its relevant prerequisites, and the rule location.
+Trace can establish Make's causal decision. It cannot establish whether the modeled edge
+matches artifact meaning.
+
+Database question:
+
+> Which final rule owns `all`, or which origin and value does one chosen variable have?
+
+Use a focused search over the `-np` output. Retain the command and excerpt, not only the
+excerpt, so another maintainer can reproduce it.
+
+Trace usability review:
+
+| Property | Model judgment |
+| --- | --- |
+| searchability | target names can be found directly |
+| attribution | trace names Makefile locations and targets |
+| causal usefulness | selected prerequisites are visible |
+| side effects | `-n` avoids ordinary recipes, subject to recursive-Make caveat |
+
+A passing `trace-report` should establish:
+
+| Check | Evidence |
+| --- | --- |
+| declared question | route `all` from `clean-plan` state |
+| focus visibility | `all` appears among planned targets |
+| attribution | rule locations identify Makefile lines |
+| bounded volume | line count stays below the declared review boundary |
+
+Changing the focus to an absent target should fail `focus_target_visible` while leaving the
+other observations inspectable. That is stronger than a generic nonzero status because it
+names the lost usability property.
+
+A one-line converged trace answers “is this route currently up to date?” A clean-plan trace
+answers “which producers would run and why from no outputs?” Their line counts are not
+comparable performance observations. The performance bundle answers cost and semantic
+preservation; the trace report answers planning causality and usability.
+
+## Exercise 5: Verify three parallel incident signatures
+
+The complete audit should produce this result:
+
+| Case | Expected exit | Observed semantic invariant | Finding |
+| --- | --- | --- | --- |
+| shared log interleaving | zero | the two starts precede the two ends | `SEMANTIC_CORRUPTION_REPRODUCED` |
+| directory creation race | nonzero | exactly one of `dir/file1` and `dir/file2` survives | `DIRECTORY_RACE_REPRODUCED` |
+| shared staging collision | nonzero | `y.out` exists while `x.out` and `shared.staging` do not | `STAGING_COLLISION_REPRODUCED` |
+
+The exact ordering of the two start records can vary. The exact surviving directory file
+can also vary. Those are schedules, not contracts. The asserted invariants remain stable.
+
+### Shared-log reasoning
+
+The preserved `shared.log` contains all four expected records. A valid observation is:
+
+```text
+alpha:start
+beta:start
+alpha:end
+beta:end
+```
+
+Both logical records are split by another writer. Exit `0` proves that the append commands
+completed. It does not prove record atomicity, deterministic order, or unique ownership.
+
+A wrong failure to reject would be:
+
+- the Makefile fails to parse
+- one writer never reaches the barrier
+- the command exits zero but records are contiguous by writer
+
+None demonstrates the promised semantic interleaving.
+
+### Directory-race reasoning
+
+Both recipes reach the barrier before attempting `mkdir dir`. One creates the directory
+and writes its file; the peer fails its independent `mkdir`.
+
+A nonzero command with no surviving file would be the wrong failure. The promised
+mechanism includes partial progress from one claimant. That is why
+`surviving-files.txt`, not only the run log, belongs in the packet.
+
+### Staging-collision reasoning
+
+Both targets use `shared.staging`. The `y` recipe moves the path first, and the delayed
+`x` recipe cannot publish. The evidence is:
+
+```json
+{
+  "files": {
+    "shared.staging": false,
+    "x.out": false,
+    "y.out": true
+  }
+}
+```
+
+A nonzero exit caused by a missing shell tool would not establish this state and must fail
+the audit.
+
+### Aggregate PASS
+
+The top-level result is `PASS` because every broken specimen reproduced its declared
+fault. The findings deliberately say `_REPRODUCED`; PASS is about evidence integrity, not
+specimen health.
+
+When `INCIDENT_CASE=shared-staging-collision` is selected, `report.json` should contain
+only that case. The bundle still includes guidance and the specimen catalog so the
+single-case packet remains interpretable.
+
+## Exercise 6: Route each incident to an ownership repair
+
+A completed explanation table is:
+
+| Explanation | Evidence expected if true | Evidence that weakens it |
+| --- | --- | --- |
+| shared publication ownership | multiple runnable recipes mutate or consume one publication path | private producer paths and one declared final owner |
+| repeated setup ownership | peer recipes perform the same directory setup action | one setup target orders all consumers |
+| parallel scheduler defect | invalid behavior remains with complete edges and unique paths | ownership repair removes the fault without changing Make |
+| external filesystem failure | unrelated paths fail under the same controlled route | failure follows the modeled conflict in an isolated local workspace |
+
+The repair table should distinguish the cases:
+
+| Case | Boundary | Temporary mitigation | Durable repair | Adjacent proof |
+| --- | --- | --- | --- | --- |
+| shared log | publication ownership | serial execution | private worker logs plus one deterministic merge owner | stable merged content under repeated serial and parallel runs |
+| directory race | graph ownership | pre-create the directory outside the pressure route | one `dir/` target used as an order-only prerequisite | both files publish under pressure and the next run converges |
+| shared staging | publication ownership | serialize publishers | one private staging path per output, or private workers plus one merge | all outputs publish, failed staging is cleaned, hashes are schedule-independent |
+
+Proposal labels:
+
+| Proposal | Label | Reason |
+| --- | --- | --- |
+| force `-j1` | mitigation | reduces schedule exposure while retaining dishonest ownership |
+| add more `echo` lines | rejected action | increases evidence volume without asserting the mechanism |
+| replace every `mkdir` with `mkdir -p` | incomplete repair | may suppress the symptom while leaving setup ownership duplicated |
+| one directory target plus order-only edges | repair | setup ownership and ordering become explicit |
+| one target owns the combined output | repair when combination is intended | publication has one graph owner |
+| private staging or worker paths | repair | independently runnable recipes no longer consume one mutable path |
+
+The directory graph should look like:
+
+```mermaid
+flowchart LR
+  directory["dir/ owner"] -->|"order only"| file1["dir/file1"]
+  directory -->|"order only"| file2["dir/file2"]
+```
+
+The shared-output graph should look like:
+
+```mermaid
+flowchart LR
+  alpha["alpha owns alpha.log"] --> merge["merge owns shared.log"]
+  beta["beta owns beta.log"] --> merge
+```
+
+Closure proof needs:
+
+1. the original pressure route from a controlled state
+2. semantic artifact assertions
+3. serial and parallel equivalence where promised
+4. unique writer review
+5. convergence after success
+6. cleanup after an injected publication failure
+
+One proof cannot be substituted for another. Convergence does not prove schedule
+equivalence, and a stable happy-path hash does not prove failed staging cleanup.
+
+## Exercise 7: Write a falsifiable tuning proposal
+
+`performance-selftest` runs the context, incremental, capture, and comparison suites. Test
+count is deliberately not part of the learner contract; rejection behavior is. Two
+essential explanations are:
+
+- policy drift is rejected because two scenario names can hide different state, route, or
+  scheduling questions
+- trusted-output drift is rejected because reduced work is not a valid speedup when artifact
+  meaning changed
+
+Other valid cases include unavailable or dirty provenance, compiler drift, failed
+incremental evidence, requested-work drift, failed capture, too few samples, different
+sample counts, and a failed candidate bundle. A learner should explain the dishonest claim
+each gate prevents.
+
+The compatibility table is:
+
+| Pair | Decision | Deciding evidence | Repair or next action |
+| --- | --- | --- | --- |
+| A | compare | clean revisions may differ; context and semantics match | interpret deltas against spread and objective |
+| B | reject | candidate repository status is dirty | establish a clean candidate revision and recollect |
+| C | reject | compiler identity differs | recollect both with one compiler, or report separate environment observations |
+| D | reject | incremental input set differs | restore the omitted `include/sub.h` case; fewer observed inputs are not equivalent evidence |
+| E | reject | `src/dynamic/dyn1.c` observed rebuild set differs | explain the path to `app`; narrow a false edge or revise policy only after contract review |
+
+Pair E may reflect a deliberate graph change. It still blocks the old comparison because
+one route performed different work. Correctness of the change and comparability of the
+timings are separate decisions. Pair D is not a graph change at all; it is incomplete
+evidence coverage.
+
+The best answer may reject change:
+
+```text
+Measured cost:
+Current clean, no-op, and dry-run baselines have been established.
+
+Decision:
+No performance edit is justified because no historical regression or violated feedback
+objective has been demonstrated.
+
+Reopen when:
+No-op median exceeds the agreed objective on the same runner class for three consecutive
+baseline collections, or trace guardrail and usability review both show responder cost.
+```
+
+This is stronger than inventing a speedup to satisfy the exercise.
+
+If your measurements reveal a real candidate, the proposal must include:
+
+| Proof obligation | Example |
+| --- | --- |
+| cost | compatible governed bundles with every raw sample retained |
+| execution context | clean named revisions; matching compiler, Make, Python, platform, and runner |
+| experiment identity | matching policy digest, sample count, state, route, and job count |
+| critical path | graph shows the changed work delays requested completion |
+| requested work | bound policy, expected set, and observed set match across bundles |
+| convergence | successful run followed by successful `make -q` |
+| artifact meaning | domain comparison or stable hash where byte equality is expected |
+| pressure behavior | serial/parallel comparison |
+| rejection | revert if discovery becomes stale or effect is within noise |
+
+An unsafe optimization is removing a prerequisite to suppress rebuilds. A cache introduces
+a new question: which declared inputs refresh the cached value, including additions,
+removals, policy changes, and producer changes?
+
+A passing `performance-compare` report establishes execution-context compatibility,
+requested-work equivalence, semantic equivalence for the inventoried outputs, and timing
+deltas. It does not establish materiality. The decision still needs observed spread, a local
+operational objective, and any additional domain proof required by the changed recipe or
+artifact.
+
+## Exercise 8: Audit the capstone proof route
+
+Map the selftest bundle:
+
+| Claim | Evidence file |
+| --- | --- |
+| result, stopping boundary, and checks not reached | `summary.txt` |
+| runtime boundary and guardrails | `settings.env` |
+| exact commands and captured output | `commands.txt` and `logs/` |
+| semantic schedule-equivalence decision | `schedule-comparison.json` |
+| serial artifact contract | `serial-inventory.json` |
+| parallel artifact contract | `parallel-inventory.json` |
+| dishonest hidden input is detected | `hidden-input.txt` |
+| sandbox at the stopping boundary | `workspace/` |
+
+The semantic comparison should report no missing, unexpected, or changed artifacts for
+a passing run. The summary should report convergence and the negative hidden-input check.
+On failure, `FAIL` names the broken claim; `NOT_RUN` means the harness stopped before
+collecting that proof.
+
+Important limitation:
+
+> This bundle proves selected build-system invariants. It does not establish a performance
+> regression or prove that a proposed edit improved timing.
+
+A tuning proposal still needs controlled before/after measurements and any
+change-specific requested-work test.
+
+## Exercise 9: Write an executable runbook
+
+A model runbook is:
+
+```text
+Title:
+Parallel build route differs or fails
+
+Use when:
+A public target fails only under `-jN`, or trusted artifacts differ from the serial route.
+
+Do not use when:
+The failure is remote upload, authentication, or another external-service boundary.
+
+Trusted outputs:
+Name the repository-specific artifacts before using this runbook.
+
+Preserve:
+- revision, worktree state, GNU Make and tool versions
+- target, job count, full target-attributed output
+- suspect artifacts and prerequisite metadata
+- do not clean or rerun the first useful state
+
+Contain:
+- stop publication of suspect artifacts
+- a documented serial route may restore feedback temporarily
+- label serial mode as mitigation and retain the pressure reproducer
+
+Branch A: multiple targets write one path
+- classify graph/publication ownership
+- repair to one writer or isolated outputs plus one merge
+
+Branch B: one consumer starts before its producer completes
+- inspect non-executing trace
+- repair the missing semantic edge
+
+Branch C: artifacts match and only logs interleave
+- classify evidence attribution
+- test `--output-sync=target` without changing semantic outputs
+
+Escalate:
+- trusted release or research output may be corrupt
+- evidence points outside repository ownership
+- logs may expose sensitive data
+- repeated branches no longer narrow the cause
+
+Close:
+- original pressure route passes the stated repetition count
+- serial and parallel artifacts satisfy the contract
+- successful route converges
+- incident packet and follow-up owner are recorded
+```
+
+A command deliberately excluded from the first response is `rm -rf build`: it destroys
+incremental evidence before classification.
+
+A useful peer-review question is:
+
+> Can you choose the next branch from the stated observations without asking the original
+> author what they meant?
+
+## Exercise 10: Hand off the incident
+
+A concise handoff begins with the decision, not the diary:
+
+```text
+Summary:
+The broad complaint was split into cost, evidence, and pressure claims. Current baselines
+were established, but no historical performance regression was proven. The controlled
+parallel incident demonstrates two undeclared writers to one shared path despite exit
+status 0.
+
+Impact:
+The repro demonstrates a graph/publication failure class. No evidence currently shows the
+real capstone artifact is corrupt.
+
+Preserved:
+Revision, worktree state, versions, raw timing samples, trace and database excerpts,
+incident bundle, and selftest report.
+
+Current classification:
+Controlled incident: graph truth and publication ownership.
+Performance claim: baseline only; regression unproven.
+Evidence claim: trace retained as a bounded heuristic plus usability surface.
+
+Mitigation:
+Serial execution may be used only as a labeled temporary route for an equivalent real
+incident. It is not the repair.
+
+Verification:
+Capstone selftest report covers convergence, semantic serial/parallel comparison,
+hidden-input detection, command logs, and preserved stopping state. It does not prove a
+speedup.
+
+Unresolved question:
+Which production output, if any, currently has more than one writer or lacks an honest
+publication owner?
+
+Reading order:
+incident.md, context summary, measurement summary, observability decision, parallel
+incident, tuning decision, verification map, runbook.
+```
+
+The packet audit should remove or redact secrets, redundant full dumps, generated outputs
+that do not affect a decision, and repeated copies already addressed by a manifest.
+
+The packet shortens the next response because it transfers observations, rejected
+explanations, current classification, and one bounded question instead of requiring the
+next owner to reconstruct the investigation from shell history.
+
+## Mastery review
+
+A mastery-level packet has these properties:
+
+- numeric claims retain commands, state, samples, and limitations
+- trace and database evidence answer different questions
+- successful exit is not confused with truthful output ownership
+- no-change is accepted when tuning evidence is insufficient
+- proof surfaces are mapped to claims they actually establish
+- the runbook changes action based on observations
+- the handoff says exactly what remains unknown
+
+If your packet sounds more certain than its evidence, revise the claim rather than adding
+more confident language.

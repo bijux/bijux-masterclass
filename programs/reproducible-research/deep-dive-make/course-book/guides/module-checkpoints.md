@@ -52,7 +52,7 @@ whole module.
 | [Module 06](../module-06-generated-files-multi-output-pipeline-boundaries/index.md) | where generated outputs enter the graph and when they should publish | `gmake -C programs/reproducible-research/deep-dive-make/capstone --trace dyn` | the generator still feels like side-effect magic |
 | [Module 07](../module-07-build-architecture-layered-includes-apis/index.md) | which file owns public targets, policy, discovery, and reusable mechanics | `make PROGRAM=reproducible-research/deep-dive-make inspect` | you can name files but not responsibilities |
 | [Module 08](../module-08-release-engineering-artifact-contracts/index.md) | what belongs in a source or release artifact and why | `gmake -C programs/reproducible-research/deep-dive-make/capstone source-baseline-check` or `source-bundle` | you are still mixing proof residue with publishable source |
-| [Module 09](../module-09-performance-observability-incident-response/index.md) | which evidence would narrow a slow or flaky build before edits begin | `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` | you are changing the build before you can name the boundary |
+| [Module 09](../module-09-performance-observability-incident-response/index.md) | which process and artifact observations distinguish the promised incident mechanism | `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` | you are changing the build before you can name and prove the boundary |
 | [Module 10](../module-10-migration-governance-tool-boundaries/index.md) | how to improve an inherited build without losing proof and trust | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` | your migration plan is mostly stylistic preference |
 
 ## Common false positives
@@ -66,6 +66,16 @@ Do not call a module done just because:
 
 Those signals often mean you have seen the surface, not learned the boundary.
 
+## Keep the checkpoint evidence
+
+Passing a checkpoint should add one bounded artifact to your portfolio, not merely a
+checkmark. Save the smallest evidence that another learner could use to challenge the
+claim: a trace with your explanation, an ownership table, a failing and passing selftest,
+a consumer-side archive inspection, or a before-and-after proof bridge.
+
+Use the [Practice Map](../reference/practice-map.md) to see how these artifacts accumulate.
+If the evidence requires you to narrate undocumented context, revise it before moving on.
+
 ## Best companion pages
 
 Use these together with the checkpoints:
@@ -73,4 +83,3 @@ Use these together with the checkpoints:
 - [Module Promise Map](module-promise-map.md) when you need the module contract restated
 - [Proof Ladder](proof-ladder.md) when the proof route feels heavier than the claim
 - [Capstone Map](../capstone/capstone-map.md) when the idea is clear but the repository route is not
-

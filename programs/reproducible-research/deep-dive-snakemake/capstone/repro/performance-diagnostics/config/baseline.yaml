@@ -1,0 +1,4 @@
+mode: baseline
+chunk_size: 1
+scan_passes: 1
+validate: true

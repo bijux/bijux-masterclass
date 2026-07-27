@@ -115,7 +115,10 @@ One honest pattern is:
 ```make
 TOOLCHAIN_STAMP := build/toolchain.stamp
 
-$(TOOLCHAIN_STAMP): | build/
+.PHONY: FORCE
+FORCE:
+
+$(TOOLCHAIN_STAMP): FORCE | build/
 	@$(CC) --version | sed -n '1p' > $@.tmp
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
@@ -126,18 +129,134 @@ app: $(TOOLCHAIN_STAMP) main.o util.o
 
 This pattern matters because it converges:
 
+- `FORCE` makes Make re-evaluate a fact that has no natural file prerequisite
 - the stamp content changes only when the semantic fact changes
 - the file is not rewritten pointlessly every run
 - the application target now has an explicit edge to that build fact
 
 That is a much healthier design than hiding the compiler identity entirely.
 
+Do not remove `FORCE` just because the stamp is a file. Without an evaluation trigger,
+Make sees an existing target with no newer prerequisite and never runs the recipe that
+could discover a changed compiler. `FORCE` controls evaluation; `cmp` controls
+publication. Both parts are required.
+
+## Compare clock-derived state with declared state
+
+A no-op rebuild is not enough to prove a stamp is reproducible. Once a stamp exists in a
+workspace, Make may correctly reuse it even if the first build created it from hidden
+entropy. A stronger test starts two clean workspaces from the same declared inputs and
+compares the resulting artifacts.
+
+The capstone semantic audit performs that test. Run:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone \
+  semantic-fault-audit
+```
+
+Then inspect the clock-state rows in:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/semantic-faults/report.json
+```
+
+Both models begin with the same tracked input:
+
+```text
+mode.txt -> analysis
+```
+
+The broken model invents state at build time:
+
+```make
+artifact.txt: mode.txt state.stamp
+	printf 'mode=%s\nstate=%s\n' \
+	  "$$(cat mode.txt)" "$$(cat state.stamp)" > $@
+
+state.stamp:
+	$(PYTHON) -c 'import time; print(time.time_ns())' > $@
+```
+
+The wall clock is now part of artifact meaning even though no graph edge names or
+controls it:
+
+```mermaid
+flowchart LR
+  inputs["identical tracked inputs"]
+  first["clean workspace A"]
+  second["clean workspace B"]
+  clockA["clock reading A"]
+  clockB["clock reading B"]
+  artifactA["artifact hash A"]
+  artifactB["artifact hash B"]
+
+  inputs --> first --> artifactA
+  inputs --> second --> artifactB
+  clockA -.hidden input.-> artifactA
+  clockB -.hidden input.-> artifactB
+  artifactA -.not equal.-> artifactB
+```
+
+The control derives the stamp from declared state:
+
+```make
+artifact.txt: mode.txt state.stamp
+	printf 'mode=%s\nstate=%s\n' \
+	  "$$(cat mode.txt)" "$$(cat state.stamp)" > $@
+
+state.stamp: mode.txt
+	cp mode.txt $@
+```
+
+Predict the observations before reading the report:
+
+| Model | Tracked inputs equal? | State source | Artifact hashes |
+| --- | --- | --- | --- |
+| clock-derived | yes | independent wall-clock readings | different |
+| declared-state | yes | `mode.txt` | equal |
+
+The important report fields are `first_artifact`, `second_artifact`, `first_sha256`,
+`second_sha256`, and `hashes_equal`. The expected findings are:
+
+```text
+CLOCK_STATE_DRIFT_REPRODUCED
+DECLARED_STATE_STABLE
+```
+
+The first finding is a successful reproduction of a defect, not approval of the model.
+The second establishes a controlled contrast: identical declared state produces
+identical semantic output.
+
+### State identity must survive a clean-room question
+
+For any proposed stamp, ask:
+
+> Could another clean workspace derive the same file from the same declared inputs?
+
+If the answer depends on when the build ran, who ran it, or which random value happened
+to be chosen, the stamp is recording an event rather than representing semantic state.
+
+That distinction leads to three different destinations:
+
+| Fact | Appropriate destination | Why |
+| --- | --- | --- |
+| `MODE=analysis` changes artifact behavior | artifact-driving state file | it changes meaning and can converge |
+| build start time is useful to operators | log or sidecar run record | it describes the event, not the artifact state |
+| release timestamp is required by the product contract | declared, normalized input | it affects meaning and must be governed |
+
+Clocks are not forbidden. Undeclared clocks are incompatible with a claim that equal
+inputs produce equal artifacts.
+
 ## Why timestamps are often the wrong attestation
 
 Beginners often try to "prove" rigor by writing timestamps into manifests or stamps:
 
 ```make
-build/env.stamp:
+.PHONY: FORCE
+FORCE:
+
+build/env.stamp: FORCE
 	@date > $@
 ```
 
@@ -150,13 +269,17 @@ fact in a stable way?"
 A better shape is:
 
 ```make
-build/env.stamp:
+.PHONY: FORCE
+FORCE:
+
+build/env.stamp: FORCE
 	@printf 'CC=%s\nLC_ALL=%s\n' '$(CC)' '$(LC_ALL)' > $@.tmp
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
 ```
 
-Now the file changes only when the declared inputs change.
+Now the candidate is evaluated on every invocation, but the durable file changes only
+when the declared inputs change.
 
 ## Stamps are not junk files
 
@@ -217,7 +340,10 @@ That is a real non-file input. You can model it with a small mode manifest:
 ```make
 MODE_MANIFEST := build/mode.manifest
 
-$(MODE_MANIFEST): | build/
+.PHONY: FORCE
+FORCE:
+
+$(MODE_MANIFEST): FORCE | build/
 	@printf 'MODE=%s\n' '$(MODE)' > $@.tmp
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
@@ -230,6 +356,11 @@ This has two teaching benefits:
 
 - the mode becomes a visible build fact
 - the manifest gives you a stable place to inspect what the build believed
+
+It also has two distinct runtime behaviors worth testing:
+
+- `make MODE=release` twice evaluates twice but publishes once
+- changing to `make MODE=debug` publishes new manifest content and invalidates `app`
 
 ## Failure signatures worth recognizing
 
@@ -281,5 +412,7 @@ Before leaving this lesson, make sure you can explain:
 - why hermeticity is about declared external facts, not isolation fantasy
 - when to pin an input and when to attest it
 - why timestamps are usually poor build facts
+- why two clean workspaces are a stronger stamp test than one no-op rebuild
+- how artifact hashes reveal a hidden clock-derived input
 - why stamps and manifests can improve graph truth
 - why provenance should often live beside the artifact rather than inside it

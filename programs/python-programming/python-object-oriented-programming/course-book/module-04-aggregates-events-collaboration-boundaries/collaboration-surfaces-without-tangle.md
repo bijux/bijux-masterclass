@@ -1,5 +1,4 @@
-# Designing Collaboration Surfaces: How Objects Talk Without Tangle
-
+# Collaboration Surfaces without Tangle
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Aggregates Events Collaboration Boundaries"]
-  page["Designing Collaboration Surfaces: How Objects Talk Without Tangle"]
+  page["Collaboration Surfaces without Tangle"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,80 +24,108 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Prevent object graphs from turning into a spaghetti bowl.
+Objects have to collaborate, but uncontrolled collaboration turns into tangle quickly.
 
-This core teaches how to design *collaboration surfaces*:
-- what each object is allowed to know,
-- what it must not know,
-- and how to keep dependencies directional and reviewable.
+That usually looks like:
 
-## Where This Fits
+- everyone reaches into everyone else’s internals
+- each object knows too many details about the others
+- changes ripple because boundaries are blurry
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+The goal is not zero collaboration. The goal is explicit, narrow collaboration surfaces.
 
-## 1. The Tangle Smell
+## What a collaboration surface is
 
-A tangle looks like:
-- objects directly importing and calling each other in cycles,
-- “helper” modules that know everyone,
-- domain objects that call infrastructure services.
+A collaboration surface is the part of one object or boundary that another object is
+allowed to rely on.
 
-Symptoms:
-- small change breaks unrelated modules,
-- testing requires huge setups,
-- circular imports.
+A good collaboration surface is:
 
-This is not a Python problem; it’s a design problem.
+- small
+- explicit
+- stable enough to review
+- focused on the real interaction, not internal convenience
 
-## 2. Collaboration Surface = Methods + Data Shapes + Error Semantics
+If the only way to collaborate is to poke around inside another object’s internals, the
+surface is too weak.
 
-When object A calls object B, you have a contract:
+## Why tangle appears
 
-- method signature (inputs/outputs),
-- accepted types (domain vs DTO),
-- error behavior (exceptions/results),
-- side effects (logging, I/O, mutation).
+Tangle appears when collaboration is designed as access instead of responsibility.
 
-Make these explicit:
-- small interfaces (protocols),
-- domain types at core,
-- infrastructure hidden behind adapters.
+Examples:
 
-## 3. Orchestration vs Domain Behavior
+- callers mutate child collections directly
+- services depend on several internal details of an aggregate
+- one object reaches through another just to reach a third
 
-Two roles:
+Those are not only code smells. They are signs that ownership is being bypassed.
 
-- **Domain objects**: contain business rules and invariants.
-- **Orchestrators/services**: coordinate multiple domain objects and ports.
+## The practical design move
 
-If domain objects start coordinating other objects, they grow into “god objects”.
-If orchestrators start implementing business rules, the domain becomes anemic.
+Instead of asking "what fields do I need from that object?", ask:
 
-Keep the split clean.
+- what authority should that object expose?
+- what question or action do I actually need?
+- how can the collaboration stay at the right level of meaning?
 
-## 4. Directional Dependencies as a Design Constraint
+That shift usually turns low-level access into a clearer domain interaction.
 
-Use a simple rule:
+## What a good surface often looks like
 
-- domain imports nothing from application/infrastructure,
-- application imports domain,
-- infrastructure imports both (but is wired at the composition root).
+Good collaboration surfaces often:
 
-When this rule is violated, tangles appear. Your modules become untestable and hard to teach.
+- ask for a decision
+- request a state change through an owned method
+- publish a small result or event
+- expose a clear query that does not leak structure
 
-## Practical Guidelines
+The point is to collaborate through responsibility, not through accidental data reach.
 
-- Define small, explicit collaboration surfaces (ports/protocols).
-- Keep domain free of I/O and infrastructure dependencies.
-- Put coordination in application services; put invariants/decisions in domain objects and strategies.
-- Use dependency direction as a hard constraint to prevent tangles and circular imports.
+## Common mistakes
 
-## Exercises for Mastery
+- exposing whole collections just so callers can "help"
+- leaking internal child entities for direct mutation
+- adding broad helper methods that really just formalize boundary leaks
+- letting one service become the place that understands everyone’s internals
 
-1. Find a circular import in your project (or create a small example). Refactor to remove it using a protocol + injection.
-2. Identify one place where an orchestrator contains business logic. Move that logic into a domain object or strategy with tests.
-3. Draw (or write) the dependency graph of 5 key modules. Confirm dependencies flow inward.
+That last pattern is especially dangerous because it looks organized while actually
+concentrating tangle in one outer layer.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| can collaborators work without reaching into internals? | yes |
+| does the surface expose meaning instead of structure? | yes |
+| is the interaction small enough to review clearly? | yes |
+| do changes stay mostly local instead of rippling through many objects? | yes |
+
+## Capstone connection
+
+In the capstone, inspect every place where one object reaches deep into another and ask
+whether that should become:
+
+- an owned method
+- a clearer query
+- an event
+- or a different boundary altogether
+
+If collaboration still depends on internal reach-through, the model is not yet teaching
+good boundaries.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain a collaboration surface in plain language
+- identify one capstone interaction that is currently too tangled
+- explain how collaboration through responsibility is stronger than collaboration through internals

@@ -25,17 +25,40 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This guide keeps the capstone honest by tying each public claim to one repeatable proof path.
+Use this guide when you need to connect a claim to the smallest repeatable proof route
+that actually defends it. The capstone becomes confusing when readers collect evidence
+without first deciding what they are trying to prove.
+
+## The first proof question to ask
+
+Ask this before choosing any command or test:
+
+> Am I trying to prove public shape, runtime behavior, saved reviewability, or strongest
+> executable confidence?
+
+That question matters because different proof routes answer different kinds of claims.
 
 ## Start by claim
 
-| If the claim is... | Start with | Escalate with |
+| If the claim is... | Start with | Escalate only if needed |
 | --- | --- | --- |
 | the runtime surface is observational | `make manifest` or `make registry` | `make inspect` |
-| wrapper behavior stays visible | `make trace` | `tests/test_runtime.py` |
-| descriptor fields own validation | `make field` | `tests/test_fields.py` |
+| descriptor fields own validation and coercion | `make field` | `tests/test_fields.py` |
+| wrapper behavior stays visible | `make action` or `make trace` | `tests/test_runtime.py` or `tests/test_cli.py` |
 | registration stays deterministic | `make registry` | `tests/test_registry.py` |
-| the full review surface still agrees with tests | `make verify-report` | `make proof` |
+| one realistic invocation story is still honest | `make trace` | `make tour` or `tests/test_runtime.py` |
+| saved review artifacts still match executable proof | `make verify-report` | `make proof` |
+
+## What each proof size is good for
+
+| Proof size | Best for | Not enough for |
+| --- | --- | --- |
+| one observational command | one narrow claim about public shape | full runtime or test confidence |
+| one runtime command | one realistic invocation story | broad regression confidence |
+| one saved bundle | another reviewer reading later | proving every local regression route |
+| one test file | one focused executable claim | teaching the public review route by itself |
+| `make confirm` | strongest local executable confidence | a saved human-facing review route |
+| `make proof` | the full published review package | a quick first answer |
 
 ## Strongest local proof
 
@@ -45,8 +68,9 @@ Run:
 make confirm
 ```
 
-This runs the regression suite proving field validation, registry determinism, manifest
-export, and runtime invocation behavior.
+This is the strongest local executable confirmation route. Use it when the question is
+"does the system still satisfy its core contracts?" Do not use it as a substitute for
+understanding which contract is under pressure.
 
 ## Saved review routes
 
@@ -65,39 +89,30 @@ export, and runtime invocation behavior.
 Each bundle also includes `bundle-manifest.json`, which records stable file paths, file
 sizes, and SHA-256 hashes for the saved route.
 
-## Public-surface proof
+## Public-surface proof routes
 
-Run the public proof surface:
-
-```bash
-make proof
-```
-
-Or run the CLI pieces individually:
+Use these routes when you want evidence from the public surface before you open private internals.
 
 ```bash
 make manifest
 make registry
+make plugin
+make field
+make action
+make signatures
 make demo
 make trace
 ```
 
-These commands prove that the runtime shape and invocation path are inspectable from the
-public surface without opening private internals first.
+These commands do not all answer the same question. They exist so you can prove one claim
+without dragging in unrelated proof weight.
 
 ## Smallest honest routes
 
 - Use `manifest` before `inspect` when one public schema question is enough.
-- Use `trace` before `verify-report` when one invocation route is enough.
+- Use `field` before `tests/test_fields.py` when you still need to see the public contract first.
+- Use `trace` before `verify-report` when one invocation story is enough.
 - Use `confirm` before `proof` when the question is executable confidence rather than published review output.
-
-## Honest distinctions
-
-- `inspect` proves what the runtime exposes publicly before invocation.
-- `tour` proves that a human can follow one complete public review route.
-- `verify-report` proves that executable tests and public-surface evidence agree in one saved bundle.
-- `confirm` proves the strongest local regression surface.
-- `proof` publishes the full guided review route.
 
 ## File to proof map
 
@@ -110,34 +125,33 @@ public surface without opening private internals first.
 | `src/incident_plugins/cli.py` | `make manifest`, `make registry`, `make trace`, and `make demo` | `tests/test_cli.py` | `make inspect`, `make tour`, or `make verify-report` |
 | `scripts/write_bundle_manifest.py` | `make inspect`, `make tour`, or `make verify-report` | `tests/test_bundle_manifest.py` | the matching bundle directory under `artifacts/` |
 
+## Failure-first proof questions
+
+Ask these when you are not sure which proof route is honest enough:
+
+- Which test should fail first if registration starts doing hidden work during class creation?
+- Which test should fail first if descriptor state leaks across instances?
+- Which public route should change first if the manifest stops being observational?
+- Which saved bundle should become less trustworthy first if the CLI stops exposing real runtime facts?
+
+Those questions keep proof tied to ownership instead of to habit.
+
 ## Review pressure to route
 
 | If you need to review... | Start with | Then run or inspect | Escalate with |
 | --- | --- | --- | --- |
-| public shape without invocation | `COMMAND_GUIDE.md` | `make manifest`, `make registry`, or `make inspect` | `PROOF_GUIDE.md` |
-| one concrete field or action contract | `COMMAND_GUIDE.md` | `make field`, `make action`, or `make inspect` | `TEST_GUIDE.md` |
-| one realistic invocation story | `INDEX.md` or `COMMAND_GUIDE.md` | `make demo`, `make trace`, or `make tour` | `tests/test_runtime.py` |
-| source ownership for a change | `PACKAGE_GUIDE.md` or `EXTENSION_GUIDE.md` | the matching public route from the file map | `TEST_GUIDE.md` |
-| which proof file should fail first | `TEST_GUIDE.md` | the matching test file | `PACKAGE_GUIDE.md` |
-| a saved artifact bundle for another reviewer | `PROOF_GUIDE.md` | `make inspect`, `make tour`, or `make verify-report` | `TEST_GUIDE.md` |
-| the strongest local confidence route | `PROOF_GUIDE.md` | `make verify-report`, `make confirm`, or `make proof` | `TEST_GUIDE.md` |
+| public shape without invocation | [COMMAND_GUIDE.md](command-guide.md) | `make manifest`, `make registry`, or `make inspect` | this guide |
+| one concrete field or action contract | [COMMAND_GUIDE.md](command-guide.md) | `make field`, `make action`, or `make inspect` | [TEST_GUIDE.md](test-guide.md) |
+| one realistic invocation story | [INDEX.md](index.md) or [COMMAND_GUIDE.md](command-guide.md) | `make demo`, `make trace`, or `make tour` | `tests/test_runtime.py` |
+| source ownership for a change | [PACKAGE_GUIDE.md](package-guide.md) or [EXTENSION_GUIDE.md](extension-guide.md) | the matching public route from the file map | [TEST_GUIDE.md](test-guide.md) |
+| which proof file should fail first | [TEST_GUIDE.md](test-guide.md) | the matching test file | [PACKAGE_GUIDE.md](package-guide.md) |
+| a saved artifact bundle for another reviewer | this guide | `make inspect`, `make tour`, or `make verify-report` | `make proof` |
 
-## Read the proof route by module stage
+## Good stopping point
 
-- Observation modules: inspect `manifest` and `registry` output before running actions.
-- Decorator modules: compare `demo`, `trace`, and runtime-test expectations.
-- Descriptor modules: pair `confirm` with `tests/test_fields.py`.
-- Metaclass module: pair `registry` output with `tests/test_registry.py`.
-- Governance and mastery: use `inspect`, `tour`, and `verify-report` as the final human review surface.
+Stop when you can answer:
 
-Use [COMMAND_GUIDE.md](command-guide.md) when the proof question is mainly about
-public export shape, deterministic registration, or target choice instead of action behavior.
-
-## Review questions
-
-- Which proof demonstrates definition-time behavior?
-- Which proof demonstrates preserved callable metadata?
-- Which proof demonstrates that the manifest stays observational rather than operational?
-
-Use [TEST_GUIDE.md](test-guide.md) when the key proof question is really about wrapper
-history, visible invocation metadata, or the closest failing test file.
+- what kind of claim you are trying to prove
+- what the smallest honest route is for that claim
+- what stronger route you would choose next if the first one were not enough
+- which test file should fail first for the same claim

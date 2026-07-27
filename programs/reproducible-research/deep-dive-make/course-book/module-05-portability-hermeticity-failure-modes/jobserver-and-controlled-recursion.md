@@ -34,24 +34,24 @@ They inherit builds that:
 - behave one way under `make -n` and another way under real execution
 - recurse so deeply that nobody can explain who owns scheduling anymore
 
-That leads to a lazy conclusion:
+That can lead to a lazy conclusion:
 
 > recursion is always wrong.
 
 Module 05 needs a more precise answer.
 
-Recursive Make is acceptable only when it stays inside a declared budget, remains
-observable, and does not pretend to be one global DAG when it is really coordinating
-multiple local DAGs.
+Recursive Make can be acceptable when it coordinates an explicit boundary, stays inside
+the parent's parallel budget, and remains observable. It is still multiple local DAGs,
+not one global graph.
 
 ## The sentence to keep
 
-When you see recursion, ask this first:
+When you see recursion, ask these questions first:
 
-> does the sub-make participate in the same parallel budget and remain visible to the top
-> level, or did we just start a second unmanaged build?
+> Did the parent declare this as a recursive Make boundary? Can its dry run enter the
+> child graph? Does the child share the parallel budget?
 
-That question separates safe orchestration from accidental chaos.
+Do not infer all three answers from one successful build.
 
 ## What the jobserver actually is
 
@@ -63,11 +63,17 @@ it also owns eight independent workers. That would explode the actual concurrenc
 Instead, GNU Make coordinates through a shared token mechanism so recursive sub-makes can
 participate in the same budget.
 
-You do not need to memorize the internal pipe details to use it correctly. You do need to
-remember the practical rule:
+The transport has changed across GNU Make versions. Older jobservers commonly used an
+inherited pipe; GNU Make 4.4 can advertise a FIFO in `MAKEFLAGS`. You do not need to
+memorize the transport, but you do need to distinguish a declared contract from
+incidental inheritance.
 
-- use `$(MAKE)` for recursive invocations
-- do not replace it with plain `make`
+The practical rule is:
+
+- invoke a sub-make through `$(MAKE)`
+- use `+` so planning modes can enter the child graph
+- inspect `MAKELEVEL` and `MAKEFLAGS`, but do not treat one host's values as a portability
+  guarantee
 
 ## Why `$(MAKE)` matters
 
@@ -78,46 +84,84 @@ subdir:
 	+$(MAKE) -C thirdparty all
 ```
 
-This is the unhealthy shape:
+This is an undeclared process invocation:
 
 ```make
 subdir:
 	make -C thirdparty all
 ```
 
-The second version looks almost identical, but it throws away the special handling GNU
-Make applies to `$(MAKE)`:
+The second version looks almost identical, but the parent cannot recognize the command
+text as its recursive `$(MAKE)` invocation. It therefore cannot reliably apply recursive
+handling:
 
-- jobserver information in `MAKEFLAGS`
-- recursive invocation awareness
-- correct behavior under dry runs and higher-level orchestration
+- the line may be skipped by `-n`
+- the child's plan can disappear from top-level evidence
+- jobserver transport may be lost in invocation environments that do not expose it through
+  ordinary environment inheritance
 
-That is why this course treats `make` inside a recipe as a code smell. If it is a recursive
-Make, write `$(MAKE)` and mean it.
+On GNU Make 4.4 with a FIFO jobserver, a literal `gmake` process may happen to inherit
+`-j2` and the FIFO reference. That observation is useful, but it does not retroactively
+declare recursive intent. Older pipe-based jobservers and other launch contexts can
+behave differently.
 
 ## Why the `+` prefix matters too
 
-It is common to fix the previous mistake and stop here:
-
-```make
-subdir:
-	$(MAKE) -C thirdparty all
-```
-
-That is better, but still incomplete.
-
-The `+` prefix tells Make that the line is a recursive invocation that must still run under
-certain modes such as `-n`. Without it, dry-run behavior can become misleading because the
-sub-make does not get a chance to reveal what it would do.
-
-So the durable pattern is:
+GNU Make recognizes recipe lines containing `$(MAKE)` as recursive in important cases.
+It is still clearer to write the complete contract:
 
 ```make
 subdir:
 	+$(MAKE) -C thirdparty all
 ```
 
-That line communicates intent to both Make and the human reader.
+The `+` says that the command must run even when ordinary recipes are suppressed, such as
+under `-n`. The child Make receives the dry-run request and prints its own plan; it does
+not publish the child output. The spelling communicates intent to Make, reviewers, and
+static checks without depending on implicit recognition rules.
+
+## Prove the boundary with the course specimen
+
+Run the paired audit from the repository root:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make \
+  capstone-environment-contract-audit
+```
+
+Open:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/environment-contracts/
+```
+
+The recursive comparison has two parent Makefiles:
+
+| Model | Parent recipe | Required dry-run observation |
+| --- | --- | --- |
+| literal recursion | `$(MAKE_BIN) -C child all` | parent command prints; child plan stays hidden |
+| declared recursion | `+$(MAKE) -C child all` | child plan prints; `child.out` stays absent |
+
+The literal form uses a variable only to make the selected Make executable configurable;
+it does not use GNU Make's special `$(MAKE)` variable. The difference is semantic, not
+typographic.
+
+Read these files together:
+
+- `summary.tsv` names the two findings
+- `traces/recursive-boundary-literal-dry-run.log` shows the hidden child plan
+- `traces/recursive-boundary-declared-dry-run.log` shows the visible child plan
+- each actual-run trace records the child's `MAKELEVEL` and `MAKEFLAGS`
+
+The expected findings are:
+
+```text
+LITERAL_RECURSION_HIDES_CHILD_PLAN
+DECLARED_RECURSION_EXPOSES_CHILD_PLAN
+```
+
+Aggregate `PASS` means both models behaved as declared. It does not endorse the broken
+model.
 
 ## Controlled recursion is different from accidental nesting
 
@@ -138,22 +182,26 @@ What is not valid is accidental nesting where recursion is used because:
 Recursion is a boundary. If you use it, you owe the reader a clear explanation of what
 crosses that boundary and what stays local.
 
-## `MAKELEVEL` makes depth visible
+## Read `MAKELEVEL` relatively
 
 GNU Make exposes recursion depth through `MAKELEVEL`.
 
-That gives you a simple tool for keeping recursive structure bounded:
+Each recursive Make increments `MAKELEVEL`. A program-level wrapper can add legitimate
+levels before your boundary, so an absolute value from one command is not universal.
+State the boundary as a relative claim:
+
+> the child is exactly one Make level below this parent.
+
+You can still enforce a repository-specific ceiling when the entry route is fixed:
 
 ```make
-ifeq ($(MAKELEVEL),2)
+ifneq ($(filter 3 4 5 6 7 8 9,$(MAKELEVEL)),)
 $(error recursion depth exceeded)
 endif
 ```
 
-This is not about paranoid control. It is about refusing infinite or accidental descent.
-
-If the design expects top level plus one sub-make, then a third level should be treated as
-a bug unless someone can justify it.
+Document why that ceiling matches the public entry routes. A copied guard with an
+unexplained number is not evidence.
 
 ## A tiny recursion example
 
@@ -178,35 +226,40 @@ all:
 	@printf 'MAKEFLAGS=%s\n' '$(MAKEFLAGS)'
 ```
 
-Run:
+Run both execution and planning:
 
 ```sh
 make -j4 all
 make -n all
 ```
 
-This teaches two useful things:
+Check three separate claims:
 
-- the sub-make really is part of the recursive structure
-- the flags are propagated when recursion is modeled honestly
+- execution reaches the child and increments `MAKELEVEL`
+- the child receives the parent's parallel contract in `MAKEFLAGS`
+- dry run prints the child recipe without creating its output
 
 ## Dry-run lies are a real failure mode
 
 One reason this lesson matters is that `make -n` is often used as a trust-building tool.
 But if recursion is hidden badly, `-n` becomes less informative.
 
-Example:
+Compare:
 
 ```make
-subdir:
-	@$(MAKE) -C lib all
+literal:
+	$(MAKE_BIN) -C lib all
+
+declared:
+	+$(MAKE) -C lib all
 ```
 
-You may think the dry run proved something about the subtree when it actually
-suppressed or obscured the recursive behavior.
+With `make -n literal`, seeing the command text proves only that the parent would launch a
+process. It does not reveal the child's file decisions. With `make -n declared`, the child
+interprets `-n` and exposes those decisions.
 
-This is why Module 05 insists on observability. Hardening is not only about correctness. It
-is about being able to prove what the build is doing.
+That distinction is why dry-run visibility is stronger evidence of declared recursion
+than seeing jobserver text survive on one machine.
 
 ## Output synchronization is about readability, not truth
 
@@ -260,12 +313,13 @@ This keeps recursion from turning into unexplained ceremony.
 
 ### "`-j8` is fast at the top level but slow inside subdirectories"
 
-That often means the sub-make was invoked incorrectly and the shared budget was lost.
+The child may have lost jobserver access, or its graph may simply expose little parallel
+work. Inspect the invocation and the child's `MAKEFLAGS` before deciding.
 
 ### "`make -n` did not show what the recursive build would do"
 
-That usually points to a missing `+` prefix or a recursive call hidden in a way that dry
-run does not treat honestly.
+That points to a process invocation the parent does not treat as a recursive command.
+Use the paired audit before changing syntax by guesswork.
 
 ### "The build hangs only under parallel recursion"
 
@@ -282,22 +336,25 @@ Take any recursive invocation and ask:
 
 1. why is this a separate build boundary
 2. which outputs does the sub-make own
-3. does it consume the same `-j` budget
-4. how do we know under `-n` and `--trace`
+3. what actual-run evidence shows about its parallel budget
+4. whether `-n` enters the child graph without publishing
 5. how deep is recursion allowed to go
 
 If those answers are weak, the recursive structure is probably weak too.
 
 ## What to practice from this page
 
-Find one recursive Make boundary in the repository or in your own build and explain it in
-plain language:
+Run the environment contract audit, then explain one recursive boundary in plain
+language:
 
 1. why the recursion exists
 2. how the sub-make is invoked
-3. how the jobserver budget is preserved
-4. how dry-run and logs stay useful
+3. what the actual child reports in `MAKEFLAGS`
+4. what the dry-run trace reveals inside the child
 5. where the depth limit should live
+
+Do not write "the budget is preserved because I saw `-j2`." Explain why `+$(MAKE)` is the
+declared contract even when a literal process happens to inherit the same flags.
 
 If you can explain all five without hand-waving, the recursion is probably under control.
 

@@ -1,30 +1,5 @@
 # Deciding When Snakemake Should Stop Owning a Concern
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Deciding When Snakemake Should Stop Owning a Concern"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 One of the most mature things a workflow team can say is:
 
 > Snakemake is still the right owner here.
@@ -34,6 +9,33 @@ Another mature answer is:
 > Snakemake should stop owning this part of the system.
 
 Module 10 is about knowing the difference.
+
+## If you are learning this without the live class
+
+Read this lesson in five passes:
+
+1. name the exact concern under debate
+2. decide whether that concern is still best explained as file-based workflow truth
+3. decide what another system might own better
+4. write the handoff artifact that keeps responsibility reviewable
+5. explain why the final answer is about ownership, not novelty
+
+If you cannot name the concern precisely, you are not ready to debate tools yet.
+
+## How to use this page
+
+Read this lesson when a team starts talking about platforms, services, web front ends, or
+standardizing on another system.
+
+Keep one ownership packet beside you as you read:
+
+- one concern statement
+- one current owner and why it is strong or weak
+- one possible new owner and why it is stronger or weaker
+- one handoff artifact
+- one note on how publish truth stays independently verifiable
+
+That packet is the difference between stewardship and technology preference.
 
 ## Start with ownership, not novelty
 
@@ -49,6 +51,38 @@ Those may be real pressures, but they do not answer the main question:
 > model reviewable?
 
 That is the only question that matters here.
+
+## Start by naming the concern precisely
+
+Beginners often debate tool boundaries with fuzzy phrases:
+
+- move to the platform
+- stop doing this in Snakemake
+- centralize the workflow
+
+Those phrases hide the real question.
+
+A better opening sounds like this:
+
+> user-triggered job requests, identity, and tenancy-aware scheduling should be reviewed
+> separately from file-based orchestration and publish verification
+
+Once the concern is named precisely, the ownership discussion becomes much easier.
+
+## A concern card you should be able to fill before naming any destination tool
+
+Use a table like this:
+
+| Part | What to name |
+| --- | --- |
+| concern | the exact thing being debated |
+| current owner | which system owns it now |
+| current weakness | why that owner may be a poor fit |
+| stronger owner | which system may own it better |
+| handoff artifact | what keeps the split reviewable |
+| independent truth route | how the workflow stays verifiable after the split |
+
+If you cannot fill the first row without naming a destination tool, the conversation is still too vague.
 
 ## When Snakemake is still a strong owner
 
@@ -106,6 +140,19 @@ The important word is explicit.
 
 This table is not a scoring system. It is a way to keep the discussion concrete.
 
+## What goes wrong when learners trust the destination tool too early
+
+Use this card before you praise the platform:
+
+| If you notice... | The ownership discussion is hiding... | Smallest repair |
+| --- | --- | --- |
+| the destination tool is named before the concern | a vague problem statement | one concern card |
+| the platform dashboard explains more than the repository can | drifting workflow truth | one independent publish verification route |
+| a handoff is described only as "integration" | blurred responsibility | one request-status-result contract |
+| publish trust depends on the service UI | lost independent verification | one repository-local verification bundle |
+
+If the smallest repair feels annoyingly specific, that usually means the conversation has finally become honest.
+
 ## A small example
 
 Suppose a team has a healthy Snakemake repository for batch analysis, and now wants a web
@@ -122,6 +169,23 @@ Stronger answer:
 - define the handoff through explicit inputs, job submission metadata, and published outputs
 
 That answer respects both systems.
+
+## One concrete ownership decision
+
+Suppose a team wants a portal where users submit analyses, monitor progress, and download
+results, while the underlying workflow remains batch-oriented and file-based.
+
+A weak recommendation says:
+
+> rebuild the whole workflow on the portal platform so everything lives in one stack.
+
+A stronger recommendation says:
+
+1. Snakemake keeps ownership of sample discovery, declared file execution, provenance, and versioned publish bundles
+2. the portal owns request intake, user identity, access control, cancellation, and tenant-aware scheduling
+3. the boundary is documented through explicit request metadata, run identity, status reporting, and independently verifiable published outputs
+
+That is not a compromise. It is an ownership model another maintainer can inspect and defend.
 
 ## Warning signs that ownership is drifting
 
@@ -152,6 +216,32 @@ Example:
 > profile review, and published output verification.
 
 That is a better recommendation than "move to platform X."
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is naming the destination tool without naming the concern,
+the reason, or the handoff proof.
+
+That is not a stewardship argument. It is a technology preference.
+
+The course standard is stricter:
+
+1. name the concern being moved
+2. name why the current owner is weak for that concern
+3. name why the new owner is stronger
+4. name the artifact or route that keeps the handoff reviewable
+
+## A five-line ownership recommendation you should be able to write from memory
+
+If this lesson has landed, you should be able to write:
+
+1. which exact concern is under debate
+2. why Snakemake is still strong or is now weak for that concern
+3. what another system might own better
+4. which artifact makes the handoff inspectable
+5. how workflow truth stays independently verifiable after the split
+
+If you cannot do that, the answer is still a preference, not a stewardship judgment.
 
 ## Keep this standard
 

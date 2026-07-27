@@ -1,6 +1,5 @@
 # Governance Rules for Long-Lived Builds
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,10 +17,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  class["classify the kind of change"] --> bar["assign the right review bar"]
+  bar --> protect["protect public contracts and proof surfaces explicitly"]
+  protect --> own["name who owns exceptions and boundary changes"]
+  own --> enforce["connect prose to review or automation"]
 ```
 <!-- page-maps:end -->
 
@@ -49,12 +48,12 @@ Governance is how you keep the build from becoming a private superstition again.
 
 When a build change is proposed, ask:
 
-> what contract, ownership boundary, or proof surface does this change touch, and what is
+> What contract, ownership boundary, or proof surface does this change touch, and what is
 > the review bar for that kind of change?
 
 That question is governance in one line.
 
-## Build governance is mostly about change classes
+## Start by classifying the change
 
 Not every edit deserves the same review weight.
 
@@ -66,7 +65,7 @@ For example:
 - changing release artifact contents
 - removing a selftest or audit target
 
-Those are all "docs or build changes" in one sense. They are not equal changes.
+Those are all "build changes" in one sense. They are not equal changes.
 
 Governance starts by recognizing classes of change and assigning each class a review bar.
 
@@ -77,8 +76,8 @@ Use a matrix like this:
 | Change class | Example | Expected review bar |
 | --- | --- | --- |
 | public contract change | rename `release-check`, alter `test` meaning | explicit maintainer review and updated docs |
-| proof-surface change | remove `selftest`, alter audit target output | evidence that replacement exists and remains usable |
-| architecture change | add a new include layer or macro abstraction | justification of responsibility boundary |
+| proof-surface change | remove `selftest`, alter audit target output | evidence that a replacement exists and remains usable |
+| architecture change | add a new include layer or macro abstraction | justification of the responsibility boundary |
 | product-output change | modify package contents or install destination | output comparison or artifact evidence |
 | internal repair | fix a hidden edge in one helper rule | normal review with proof of correctness |
 
@@ -89,8 +88,8 @@ changes are interchangeable.
 
 A common source of governance drift is uncontrolled target growth.
 
-If every useful helper becomes top-level and undocumented, the build surface gets noisy and
-fragile. A better rule is:
+If every useful helper becomes top-level and undocumented, the build surface gets noisy
+and fragile. A better rule is:
 
 Before a target becomes public, it must satisfy all of these:
 
@@ -102,7 +101,7 @@ Before a target becomes public, it must satisfy all of these:
 
 That promotion rule prevents accidental APIs.
 
-## Includes and macros need boundaries too
+## Includes and macros need governance too
 
 Teams often govern target names and forget the supporting structure.
 
@@ -113,7 +112,7 @@ That is dangerous because long-lived build complexity often hides in:
 - variables whose scope is unclear
 - helper files that become dumping grounds for every new case
 
-Simple governance rules help a lot:
+Useful rules are simple:
 
 - each included file should own one responsibility
 - macros should either compute text or define a rule pattern, not both invisibly
@@ -124,8 +123,8 @@ These rules do not make the build rigid. They make it teachable.
 
 ## Proof surfaces should be protected explicitly
 
-One of the most expensive forms of drift is when teams slowly delete the very evidence that
-helps them review the system.
+One of the most expensive forms of drift is when teams slowly delete the very evidence
+that helps them review the system.
 
 Examples:
 
@@ -138,12 +137,12 @@ Governance should name proof surfaces as first-class assets.
 
 A rule worth adopting:
 
-> no proof surface may be removed unless an equivalent or better one replaces it and the
+> No proof surface may be removed unless an equivalent or better one replaces it and the
 > replacement is documented where maintainers already look.
 
 That rule saves teams from trading clarity for short-term tidiness.
 
-## Governance should define ownership, not just approval
+## Governance should define ownership, not only approval
 
 Approval is only part of governance. Ownership matters just as much.
 
@@ -159,9 +158,22 @@ If the answer is "everybody," the answer is often "nobody."
 
 This does not require one heroic maintainer. It requires named stewardship.
 
-## A small example of governance language
+## Connect prose to review or automation
 
-Here is a short build-governance note that is actually enforceable:
+A governance rule is much stronger when you can say how it is enforced:
+
+| Rule | Enforced by |
+| --- | --- |
+| CI may call only public targets | workflow review and CI lint check |
+| trusted outputs have one writer | contract review plus targeted ownership check |
+| proof routes cannot disappear silently | maintainer review and docs update |
+| new include files need one stated responsibility | code review checklist |
+
+This is the difference between policy language and real governance.
+
+## A small example of enforceable governance
+
+Here is a short build-governance note that another maintainer could actually use:
 
 ```text
 Public targets are all, test, selftest, clean, help, release-check, and dist.
@@ -176,57 +188,48 @@ without a documented replacement.
 
 That is not fancy policy writing. It is useful because another maintainer can apply it.
 
-## Review questions that make governance real
+## Add a few hard stops
 
-When reading a build change, ask:
+Teams often write permissive guidelines and leave out the prohibitions that would save
+review time.
 
-1. does this alter a public contract
-2. does this hide or remove a proof surface
-3. does this add abstraction without a clear ownership boundary
-4. does this make CI or scripts depend on internals
-5. does this change who owns a concern without naming the handoff
-
-Those questions catch most governance drift early.
-
-## Governance is also about what not to allow
-
-Teams often write permissive guidelines and leave out the hard stops.
-
-Add some clear "no" rules:
+Examples worth stating clearly:
 
 - no shared append-only log targets in parallel paths
 - no new public targets without a contract sentence
 - no release target that silently installs or deploys
 - no removal of audit outputs before a replacement exists
-- no new layer whose purpose is only to hide a messy rule
+- no new layer whose only purpose is to hide a messy rule
 
-Those rules are blunt by design. They save review time.
+These rules are blunt by design. They stop repeated damage early.
 
-## Failure signatures worth recognizing
+## Review drill
 
-### "The build keeps getting harder to explain, even though it still works"
+When reading a build change, ask:
 
-That usually means architecture growth is happening without governance.
+1. does this alter a public contract?
+2. does this hide or remove a proof surface?
+3. does this add abstraction without a clear ownership boundary?
+4. does this make CI or scripts depend on internals?
+5. does this change who owns a concern without naming the handoff?
 
-### "People are afraid to clean anything up because they do not know what is public"
+Those questions catch most governance drift early.
 
-That means public target governance is missing.
+## Capstone connection
 
-### "We lost a useful debug route during refactoring"
+Use the capstone or any long-lived Make repository to practice:
 
-That is a proof-surface governance failure, not just a missed doc update.
+- naming the public targets
+- naming the proof surfaces that must stay protected
+- assigning a review bar to one contract change and one internal repair
+- deciding which maintainer or review owner should approve exceptions
 
-### "Every maintainer uses different words for the same build concept"
+That is how governance becomes operating memory instead of abstract policy.
 
-That usually means the governance note is too vague to stabilize language.
+## Exit check
 
-## What this page wants you to leave with
+Leave this lesson only when you can do all of these:
 
-Strong governance is not bureaucracy. It is shared memory written down.
-
-A strong module answer sounds like this:
-
-> We know which targets are public, which proof surfaces are protected, which layers own
-> which responsibilities, and what review bar applies before those things can change.
-
-That sentence describes a build a team can maintain for years.
+- explain why governance is mostly about change classes and review bars
+- identify one rule that protects a public contract and one that protects a proof surface
+- describe how a governance rule would be enforced by review, automation, or both

@@ -1,35 +1,33 @@
 # Wildcard Domains and Fanout Control
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Wildcard Domains and Fanout Control"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Once a workflow has a discovered sample set, the next danger is not discovery itself.
 The next danger is accidental multiplication.
 
 This page is about keeping the DAG proportional to the real problem instead of letting
 wildcards and `expand()` invent extra work.
+
+## How to read this page
+
+Read this page with one pressure in mind:
+
+> is this target list representing the real domain, or did the workflow quietly invent
+> extra combinations?
+
+That is the real Module 02 question here. The syntax matters only because it can either
+preserve or distort the domain.
+
+## Why this lesson matters right after discovery
+
+Discovery and fanout belong together.
+
+You can have a perfectly honest discovered set and still build a dishonest DAG if the
+workflow expands that set carelessly:
+
+- one sample becomes many accidental sample-panel pairs
+- one wildcard starts claiming several artifact families
+- one validated registry is ignored while later code recreates the domain ad hoc
+
+This page teaches how to stop that drift.
 
 ## The sentence to keep
 
@@ -38,6 +36,16 @@ When you add a wildcard or an expansion, ask:
 > what exact family of paths am I allowing this rule to own?
 
 That question is better than asking only whether the syntax works.
+
+## A quick self-check before you keep reading
+
+Take one output pattern from your own workflow and ask:
+
+- what concrete file family does this rule own
+- what values are allowed to fill each wildcard
+- could another rule plausibly claim the same space later
+
+If those answers are fuzzy, the output contract is already too broad.
 
 ## Wildcards define a domain, not just a variable
 
@@ -114,6 +122,15 @@ rule all:
 
 This is less clever than `expand()`. That is exactly why it is easier to trust.
 
+## The beginner trap here
+
+Many learners think a shorter `expand()` call is automatically a better design.
+
+It is not.
+
+If the relationship is paired, nested, or otherwise domain-specific, the honest design is
+the one that keeps those relationships intact even when the code is a little more explicit.
+
 ## One wildcard should carry one idea
 
 Weak design:
@@ -159,6 +176,17 @@ That protects the workflow from:
 
 Constraints do not rescue a bad path design. They only tighten a good one.
 
+## A strong beginner habit
+
+Use constraints as a fence after you already understand the domain, not as a substitute
+for understanding it.
+
+Good order:
+
+1. decide what files the rule should own
+2. choose a path layout that expresses that ownership
+3. add constraints to protect the intended naming surface
+
 ## `glob_wildcards()` is not a free pass
 
 Learners often reach for `glob_wildcards()` because it feels very Snakemake-native:
@@ -175,6 +203,15 @@ This can be acceptable in a small workflow, but only if you still ask the real q
 - should this set now become a durable artifact instead of staying a parse-time guess
 
 The function is not the problem. Treating it like an explanation is the problem.
+
+## What a good study pause sounds like
+
+Pause and say one sentence like this out loud:
+
+> The workflow fans out from validated records, not from unrelated lists, so every target
+> corresponds to a real domain row.
+
+If that sentence sounds unnatural, the fanout model may still be too vague.
 
 ## A good fanout design starts from owned artifacts
 

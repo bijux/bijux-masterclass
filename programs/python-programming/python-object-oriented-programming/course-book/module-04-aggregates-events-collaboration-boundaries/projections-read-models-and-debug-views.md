@@ -1,5 +1,4 @@
-# Projections, Read Models, and Object-Graph Debug Views
-
+# Projections, Read Models, and Debug Views
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Aggregates Events Collaboration Boundaries"]
-  page["Projections, Read Models, and Object-Graph Debug Views"]
+  page["Projections, Read Models, and Debug Views"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,86 +24,108 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Separate “how we *write* domain state” from “how we *read* and inspect it”.
+Authoritative write models and convenient read views should not be confused.
 
-This core teaches projections/read models:
-- derived representations optimized for queries or debugging,
-- updated from domain events or from aggregate snapshots.
+If they are confused, you usually get one of two bad outcomes:
 
-## Where This Fits
+- read convenience leaks back into the authoritative domain model
+- write authority gets duplicated in reporting and debug code
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+Projections and read models help you serve visibility needs without weakening the real
+consistency boundary.
 
-## 1. Why Projections Exist
+## What a projection is
 
-Your domain model is optimized for correctness and invariants.
+A projection is a derived view built from authoritative facts.
 
-But queries often want:
-- “show all active rules by metric”
-- “show rule history”
-- “show why an alert fired (trace)”
+It exists to make something easier to:
 
-If you contort aggregates to answer every query, they bloat and lose clarity.
+- read
+- search
+- display
+- debug
 
-Projections solve this by building a derived view for reading.
+It is not the same thing as the source of truth.
 
-## 2. Event-Driven Projection Updates
+## Why read models are useful
 
-With domain events (M04C34), projection updates become natural:
+Aggregates are often optimized for safe writes and invariants, not for every reporting or
+inspection task.
 
-- `RuleActivated` updates an index of active rules.
-- `RuleRetired` moves it to history.
+Read models help by:
 
-Handlers subscribe to events and update the read model.
+- flattening complex object graphs
+- summarizing derived information
+- making debug and operational inspection simpler
 
-Key property:
-- projections can be rebuilt from source-of-truth state if corrupted (if you have snapshots or event log).
+That keeps the aggregate from carrying every presentation concern directly.
 
-## 3. Debug Views: Make Object Graphs Inspectable
+## Why they must stay subordinate
 
-A **debug view** is a structured representation of an object graph designed for humans.
+A projection should not quietly become the authority for business decisions.
 
-Example: return a dict that includes:
-- policy id,
-- active rules by metric,
-- counts,
-- last evaluation time.
+If it does, you get:
 
-Do not overload `__repr__` to do heavy debug work. Provide explicit debug methods:
+- duplicated logic
+- stale or inconsistent decision making
+- confusion about which model can truly approve a change
 
-```python
-def debug_view(self) -> dict:
-    return {
-        "policy_id": self.policy_id,
-        "active_rule_count": len(self.active_rules),
-        "active_rules": [r.rule_id for r in self.active_rules],
-    }
-```
+Read convenience is valuable, but it should not outrank the authoritative boundary.
 
-This keeps costs explicit and improves design clarity.
+## Debug views are useful too
 
-## 4. Correctness Rule: Projections Must Not Drive Domain State
+Not every projection is customer-facing.
 
-A projection is derived; it is not authoritative.
+Some exist mainly to help:
 
-- domain state → projection
-- not projection → domain state
+- operators inspect state
+- developers understand event flow
+- reviewers verify boundary behavior
 
-If you let projections mutate domain state, you invert the dependency direction and risk inconsistency.
+Those debug views are still derived views, not alternate authorities.
 
-## Practical Guidelines
+## Common mistakes
 
-- Keep write models (aggregates) focused on invariants and behavior; build separate read models for queries.
-- Update projections from domain events or snapshots; ensure rebuild is possible.
-- Use explicit debug-view methods instead of heavy `__repr__` or hidden properties.
-- Never treat projections as the source of truth.
+- letting reporting models become the place where real write decisions happen
+- overloading aggregates with every read concern instead of deriving views
+- assuming a projection is always current enough for authoritative decisions
+- making debug views so ad hoc that they quietly encode new business behavior
 
-## Exercises for Mastery
+The important distinction is still: source of truth versus helpful picture.
 
-1. Build a projection mapping metric → list of active rule IDs. Update it on `RuleActivated` and `RuleRetired`.
-2. Add a `debug_view()` to your aggregate and use it in one integration test assertion.
-3. Demonstrate how a corrupted projection can be rebuilt from the aggregate state (or from events, if you have them).
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is the authoritative write model still clearly separate? | yes |
+| does the projection exist for reading, display, or debugging? | yes |
+| can stale or delayed views be understood as views, not truth? | yes |
+| is business authority kept out of the projection? | yes |
+
+## Capstone connection
+
+In the capstone, this lesson matters wherever you need:
+
+- dashboards
+- summaries
+- trace or audit views
+- object-graph inspection
+
+If the capstone is forcing the core aggregate to serve every read shape directly, it is
+probably carrying too much presentation responsibility.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain the difference between an authoritative model and a projection
+- explain why debug views can be valuable without becoming decision authorities
+- identify one capstone read surface that should remain derived, not authoritative

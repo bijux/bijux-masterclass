@@ -18,134 +18,132 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  authority["name the authoritative boundary"] --> invariant["centralize cross-object invariants"]
+  invariant --> event["separate truth from events and projections"]
+  event --> seams["place policies and adapters without stealing authority"]
+  seams --> review["review the whole collaboration path under extension pressure"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+Systems fail when invariants are scattered. Module 04 is where the course stops asking
+"what does this object mean?" and starts asking:
 
-Systems fail when invariants are scattered. This module shifts the focus from single
-objects to coherent collaboration boundaries.
+> Which boundary is authoritative once more than one object participates in the same rule?
 
-Keep one question in view while reading:
+That question separates an aggregate from a cluster of objects that merely happen to call
+each other.
 
-> Which object or boundary is authoritative once more than one object participates in the same rule?
+## What this module must settle
 
-That question is what separates an aggregate from a cluster of objects that merely happen
-to call each other.
+By the end of this module, you should be able to do all of these with reasons:
 
-## Preflight
+- define aggregate boundaries that centralize cross-object invariants
+- distinguish authoritative state, domain events, projections, policies, and adapters
+- explain how collaboration can stay explicit without turning every object into everybody else's friend
+- defend extension seams without weakening the source-of-truth boundary
 
-- You should already be able to name ownership boundaries and state contracts from the earlier modules.
-- If event emission, projections, or policy objects still feel interchangeable, slow down before reading aggregate examples.
-- Treat every collaboration example as a test of authority: who is allowed to change what, and who only derives views.
+If those differences still sound like pattern vocabulary rather than placement judgment,
+stay here longer.
 
-## Learning outcomes
+## Session outcome
 
-- define aggregate boundaries that centralize cross-object invariants without collapsing into manager objects
-- distinguish authoritative state, domain events, projections, policies, and adapters by responsibility
-- explain how collaboration can stay explicit without letting every object know every other object
-- review extension pressure without weakening the source-of-truth boundary
+Treat Module 04 as one serious study day with four stages.
 
-## Why this module matters
+| Stage | Main pressure | What you should produce |
+| --- | --- | --- |
+| authority naming | who decides the shared rule | one sentence beginning with `The authoritative boundary is...` |
+| invariant mapping | which facts must change together | one cross-object invariant map |
+| derivation split | what is truth versus downstream view | one event-versus-projection note |
+| collaboration review | which helpers assist without owning truth | one collaboration-path review |
 
-Once more than one object collaborates, correctness stops being a local property.
-The system needs a rule for who may change what, when events are emitted, and which
-downstream views are authoritative versus merely derived.
+The module is not complete if you only remember "aggregate" or "event." It is complete
+when you can follow one multi-object workflow and say exactly where truth lives.
 
-Without that discipline, teams often end up with one of two failures:
+## Recommended study route
 
-- every object reaches into every other object, so invariants dissolve into convention
-- one "manager" object knows everything, so the model collapses into a disguised script
+Use this route unless you are returning to one narrow collaboration problem:
 
-This module is about finding the boundary between those extremes.
+1. [Aggregates and Consistency Boundaries](aggregates-and-consistency-boundaries.md)
+2. [Cross-Object Invariants](cross-object-invariants.md)
+3. [Aggregate Lifecycle and Failure Semantics](aggregate-lifecycle-and-failure-semantics.md)
+4. [Domain Events without Full Event Sourcing](domain-events-without-event-sourcing.md)
+5. [Projections, Read Models, and Debug Views](projections-read-models-and-debug-views.md)
+6. [Strategy and Policy Objects](strategy-and-policy-objects.md)
+7. [In-Process Event Bus](in-process-event-bus.md)
+8. [Collaboration Surfaces without Tangle](collaboration-surfaces-without-tangle.md)
+9. [Adapters and Bridges](adapters-and-bridges.md)
+10. [Refactor 3: Aggregates, Events, and Strategies](refactor-aggregates-events-and-strategies.md)
 
-## Main questions
+Do not start with projections or handlers before you can point to the authoritative
+write boundary.
 
-- Which objects need to stay consistent together?
-- Where should cross-object invariants be enforced?
-- How can domain events decouple behavior without collapsing into complexity theater?
-- What should a projection know, and what should it never control?
-- How do objects collaborate without every class knowing every other class?
+## Lesson map by pressure
 
-## Reading path
+| If your current question is... | Start here | Then do this |
+| --- | --- | --- |
+| what must stay consistent together | aggregates and consistency boundaries | write the scarce resource or shared truth in one sentence |
+| where should the cross-object rule be enforced | cross-object invariants | point to one mutation path that owns the check |
+| when should an event exist | domain events without full event sourcing | explain what had to become true before the event was emitted |
+| what is only derived and what is truth | projections, read models, and debug views | compare one projection with one aggregate output |
+| where does decision variation belong | strategy and policy objects | explain why policy is not authority |
+| how do external edges collaborate safely | adapters and bridges | say which external detail must stop at the boundary |
 
-1. Start with aggregates and cross-object invariants.
-2. Move through lifecycle and event emission before reading projections.
-3. Study policies, adapters, and collaboration surfaces after the boundary is clear.
-4. Use the refactor chapter as the test of whether the model stays coherent under extension.
+## What a missed-class learner should do
 
-## Lesson map
+If you are studying alone, use this rhythm:
 
-- [Aggregates and Consistency Boundaries](aggregates-and-consistency-boundaries.md)
-- [Cross-Object Invariants](cross-object-invariants.md)
-- [Aggregate Lifecycle and Failure Semantics](aggregate-lifecycle-and-failure-semantics.md)
-- [Domain Events without Full Event Sourcing](domain-events-without-event-sourcing.md)
-- [Projections, Read Models, and Debug Views](projections-read-models-and-debug-views.md)
-- [Strategy and Policy Objects](strategy-and-policy-objects.md)
-- [In-Process Event Bus](in-process-event-bus.md)
-- [Collaboration Surfaces without Tangle](collaboration-surfaces-without-tangle.md)
-- [Adapters and Bridges](adapters-and-bridges.md)
-- [Refactor 3: Aggregates, Events, and Strategies](refactor-aggregates-events-and-strategies.md)
-- [Glossary](glossary.md)
+1. read one lesson
+2. name the authoritative boundary in your own words
+3. name one derived artifact that must stay subordinate
+4. say what would go wrong if those two were swapped
+5. move on only after the authority split sounds explicit
 
-## Keep these support surfaces open
+This replaces the classroom question: "who can actually reject the change?"
 
-- `../guides/proof-matrix.md` when you want the authority and collaboration promise tied to one proof surface.
-- `../capstone/capstone-map.md` when you want this module attached to the exact capstone files and commands.
-- `../reference/self-review-prompts.md` when you want to test whether you can distinguish authority, projection, and orchestration without guessing.
+## First capstone route for this module
 
-## First capstone pass for this module
+Use the capstone in this order:
 
-1. Read [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md).
-2. Inspect `src/service_monitoring/model.py`.
-3. Inspect `src/service_monitoring/read_models.py` and `src/service_monitoring/projections.py`.
-4. Use `make inspect` or the lifecycle tests only after you can already name the authoritative boundary.
+1. read [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md)
+2. inspect `src/service_monitoring/model.py`
+3. inspect `src/service_monitoring/read_models.py` and `src/service_monitoring/projections.py`
+4. use `make inspect` or the lifecycle tests only after the authoritative boundary is already visible
+
+The capstone should confirm your authority judgment, not create it from scratch.
 
 ## If the module still feels blurry
 
-- ask which object may reject a change instead of asking which object merely hears about it
-- compare the aggregate with one projection and explain why only one of them may change domain truth
-- compare a policy seam with orchestration and explain why variation is not the same thing as authority
+- ask which boundary may reject the change rather than which boundary hears about it
+- compare the aggregate with one projection and explain why only one of them may change truth
+- compare a policy seam with orchestration and explain why variation is not the same as authority
 
-## Common failure modes
+## Support surfaces
+
+Use the practice pages as the second half of the module:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+Keep these nearby when useful:
+
+- `../guides/proof-matrix.md`
+- `../capstone/capstone-map.md`
+- `../reference/self-review-prompts.md`
+- [Glossary](glossary.md)
+
+## Common ways learners leave too early
 
 - emitting events from objects that do not own the underlying invariant
 - letting projections become write models in disguise
 - mixing orchestration concerns into aggregates because it feels convenient
-- letting adapters leak storage or transport assumptions into domain methods
 - adding strategies without a stable contract, turning extension into guesswork
-
-## Exercises
-
-- Identify one cross-object invariant and explain which aggregate or boundary should own it.
-- Review one event flow and state which artifact is authoritative and which artifact is only a downstream projection.
-- Compare an aggregate design with a manager-object design and explain which one keeps invariants easier to audit.
-
-## Capstone connection
-
-This module is the direct explanation of the capstone's architecture. The `MonitoringPolicy`
-aggregate owns registration, activation, retirement, and alert production; projections stay
-downstream of events; policies encapsulate evaluation variation; and the runtime coordinates
-without becoming the source of truth. Read this module as the justification for those edges.
-
-## Honest completion signal
-
-You are ready to move on when you can open one capstone collaboration path and answer all
-three of these without guessing:
-
-- which boundary is authoritative
-- which artifact is only derived
-- which extension should land outside the aggregate
+- reading collaboration as a network of calls instead of as a map of authority
 
 ## Closing criteria
 
-You should finish this module able to design aggregate roots, projections, policies,
-and adapters that preserve coherence without creating god objects.
+You are ready to leave Module 04 only when you can do all of these in plain language:
 
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+- point to the authoritative boundary for one multi-object workflow
+- explain which artifact is derived and why it must stay subordinate
+- show where decision variation belongs without replacing authority
+- review one collaboration path without turning it into a manager-object story

@@ -33,6 +33,9 @@ That is why this page matters. `getattr`, `setattr`, `delattr`, and `hasattr` ar
 simple dictionary helpers. They participate in the full attribute protocol and can invoke
 user-defined behavior.
 
+If you have ever said "I was only checking whether the attribute exists," this is the page
+that should interrupt that habit.
+
 ## The sentence to keep
 
 When code uses dynamic attribute access, ask:
@@ -41,6 +44,12 @@ When code uses dynamic attribute access, ask:
 > behavior?
 
 If the answer is "inspect structure," these tools are often too eager.
+
+This page is deliberately repetitive about that boundary because the mistaken mental model
+is strong:
+
+- learners see a string attribute name and assume a simple dictionary lookup
+- Python sees a protocol entry point and may run descriptors, hooks, or policy code
 
 ## These builtins are programmable dot syntax
 
@@ -54,6 +63,10 @@ The core builtins are close relatives of normal attribute syntax:
 That family resemblance is exactly why they are risky for observation. Dot syntax is not a
 storage read; it is a protocol entry point.
 
+That means dynamic attribute helpers are good when you actually want normal runtime
+semantics. They are bad when your question is narrower than "please perform lookup as the
+object defines it."
+
 ## The attribute protocol is the real story
 
 When you do `getattr(obj, "x")`, Python may:
@@ -65,6 +78,11 @@ When you do `getattr(obj, "x")`, Python may:
 - invoke `obj.__getattr__`
 
 Any of those steps can run user code.
+
+So a better review question is not "does `getattr` work?" but:
+
+> do we really want normal runtime lookup here, or do we only want to inspect attachment
+> structure without executing the object's behavior?
 
 The same warning applies to writes and deletes:
 
@@ -87,6 +105,15 @@ setattr / delattr
 ```
 
 This is why Module 02 insists that dynamic access is behavior, not neutral inspection.
+
+Keep this decision rule close:
+
+| If you need to know... | Prefer... | Why |
+| --- | --- | --- |
+| whether a name is a candidate for lookup | `dir(obj)` | discovery stays lower-risk than resolution |
+| whether state is locally stored | `vars(obj)` or storage inspection | asks the storage question directly |
+| what object is attached before descriptors run | `inspect.getattr_static` | attachment truth without normal protocol execution |
+| what runtime lookup actually produces | `getattr` | this is the honest moment to execute behavior |
 
 ## `getattr(..., default)` can hide two different situations
 
@@ -124,6 +151,10 @@ except AttributeError:
 When the distinction matters, prefer explicit `try`/`except` around `getattr` without a
 default and document what you mean by "missing."
 
+Beginners often like the default form because it looks concise. The teaching problem is
+that it also makes failures easier to misclassify. In reviewable tooling, honesty matters
+more than brevity.
+
 ## `hasattr` is not safe probing
 
 `hasattr(obj, "x")` is often treated like a harmless existence check. It is not.
@@ -149,6 +180,10 @@ assert hasattr(Risky(), "x") is True
 
 The printed line is the lesson. The existence check already executed runtime behavior.
 
+That is why `hasattr` is often the wrong first tool for debugging helpers, serializers,
+admin panels, or safety checks. It answers a broader question than those tools usually
+intend to ask.
+
 ## `hasattr` does not swallow every failure
 
 ```python
@@ -163,6 +198,12 @@ class Explodes:
 
 This is another good reminder that `hasattr` is not separate from attribute lookup. It is
 just a narrow wrapper around it.
+
+The practical review rule is simple:
+
+- if a failure should stay visible, `hasattr` is often too blunt
+- if execution should be avoided, `hasattr` is already too eager
+- if absence versus internal failure matters, `hasattr` is too lossy
 
 ## Dynamic mutation is still subject to object policy
 
@@ -189,6 +230,9 @@ except AttributeError as exc:
 The dynamic API did not bypass slots. It respected the storage and descriptor rules of
 the object.
 
+This is a healthy correction for another beginner myth: spelling the operation
+dynamically does not make it lower-level or more powerful than the object model.
+
 ## A better helper keeps exceptions informative
 
 When you need a helper around dynamic access, do not collapse every failure into "missing"
@@ -209,6 +253,37 @@ def try_get(obj, name):
 That keeps the "attribute missing" path separate from other exceptions, which should
 usually continue to surface as real failures rather than as inspection results.
 
+## A realistic beginner lab
+
+Before you move on, build one object that combines at least two of these:
+
+- a property
+- a custom `__getattr__`
+- slot-backed storage
+- a deliberate internal exception in a getter
+
+Then answer four questions separately:
+
+1. which names are discoverable?
+2. which state is locally stored?
+3. which lookup route executes behavior?
+4. which helper form would most easily blur "missing" with "failed"?
+
+If you cannot answer all four on one object, reread the page with that object open in a
+scratch file. The module becomes much more durable when one concrete object carries the
+whole boundary.
+
+## Review mistakes this page should eliminate
+
+These are the most common weak review comments this lesson should prevent:
+
+| Weak comment | What it misses | Stronger comment |
+| --- | --- | --- |
+| "We only used `hasattr`, so this is safe." | `hasattr` already executes dynamic lookup. | "This helper is still executing lookup while probing for existence." |
+| "`getattr(..., default)` handles missing values cleanly." | missing and internal `AttributeError` may be blurred together. | "The helper still needs to distinguish real absence from a failing getter." |
+| "Dynamic access is fine because we are not mutating anything." | reads can still execute behavior. | "Even read-only dynamic access can trigger descriptors and fallback hooks." |
+| "`setattr` is lower-level, so it bypasses the class policy." | dynamic mutation still respects slots and descriptor rules. | "`setattr` is still participating in the object's runtime policy." |
+
 ## Review rules for dynamic access
 
 When reviewing code that uses these builtins, keep these questions close:
@@ -218,6 +293,11 @@ When reviewing code that uses these builtins, keep these questions close:
 - does `getattr(..., default)` blur together true absence and internal getter failure?
 - is the code assuming `setattr` or `delattr` bypass descriptor or slot policy when they do not?
 - would static lookup or direct stored-state inspection answer the real question more honestly?
+
+One final self-test:
+
+> If a debug helper uses `hasattr(obj, name)` before `getattr(obj, name)`, has it really
+> reduced risk, or has it simply executed lookup twice?
 
 ## What to practice from this page
 

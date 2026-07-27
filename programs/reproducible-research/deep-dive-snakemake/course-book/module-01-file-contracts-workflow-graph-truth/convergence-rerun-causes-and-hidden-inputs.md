@@ -1,32 +1,16 @@
 # Convergence, Rerun Causes, and Hidden Inputs
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Convergence, Rerun Causes, and Hidden Inputs"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This page explains why a workflow settles down after a clean run, why some workflows rerun
 forever, and why others silently miss necessary reruns.
+
+## How to study this page
+
+Keep one contrast in view all the way through:
+
+- too many reruns
+- not enough reruns
+
+Both are workflow-truth problems. One is noisy. One is quietly wrong.
 
 ## The sentence to keep
 
@@ -64,6 +48,11 @@ That does not mean a workflow will never rerun again. It means:
 
 Convergence is one of the most useful signs that a beginner workflow is telling the truth.
 
+## Why this matters early
+
+Many people think convergence is an advanced operations topic. It is not. It is one of
+the first honest checks that your workflow contract matches reality.
+
 ## Reruns are not automatically bad
 
 People often treat reruns as evidence that Snakemake is being difficult.
@@ -91,6 +80,13 @@ Most Module 01 rerun problems fall into two groups:
 | silent staleness | the workflow claims everything is up to date even though a real influence changed |
 
 The first is noisy. The second is more dangerous because it looks calm while being wrong.
+
+## A strong reading question
+
+While you read the rest of this page, keep asking:
+
+- what fact changed
+- where should that fact have been represented
 
 ## Why non-convergence happens
 
@@ -190,6 +186,11 @@ A hidden input can be:
 
 If that thing changes output meaning, the workflow has to decide how it will be represented
 and audited.
+
+## Common bad habit
+
+The bad habit is not merely using environment state. The bad habit is letting meaningful
+state influence outputs without giving readers a place to inspect it later.
 
 Module 01 does not require solving every advanced provenance problem. It does require
 honesty.

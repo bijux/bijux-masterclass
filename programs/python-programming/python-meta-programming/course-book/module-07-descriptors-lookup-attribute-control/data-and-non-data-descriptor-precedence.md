@@ -31,12 +31,23 @@ why does one descriptor beat instance state while another can be shadowed?
 
 The answer is precedence.
 
+This page matters because descriptor protocol knowledge remains weak until a reader can
+predict lookup results without guessing. Precedence is the part that turns "Python did
+something weird" into a reviewable explanation.
+
 ## The sentence to keep
 
 Data descriptors win over the instance dictionary, while non-data descriptors yield to the
 instance dictionary when the same attribute name exists there.
 
 That one rule explains a large share of descriptor behavior.
+
+Keep a second sentence beside it:
+
+> the difference is mechanical, not emotional; the methods present on the descriptor decide the category and therefore the lookup result.
+
+That sentence matters because many weak explanations smuggle intention into the rule.
+Lookup does not care what the author meant. It cares which hooks actually exist.
 
 ## The two categories
 
@@ -47,6 +58,10 @@ The distinction is mechanical:
 
 This is why a descriptor's category is not about intention. It is about which methods are
 present.
+
+That is worth slowing down for. A descriptor does not become "data-like" because it feels
+important. It becomes a data descriptor because `__set__`, `__delete__`, or both are
+implemented.
 
 ## The default lookup order
 
@@ -61,6 +76,27 @@ is:
 
 This is the lookup rule that turns many "Python did something weird" moments into a
 reviewable explanation.
+
+## A lookup worksheet to keep nearby
+
+When you need to explain one surprising result, fill these in:
+
+- class attribute found under the public name:
+- hooks present on that class attribute:
+- same-named instance entry present or absent:
+- winning lookup step:
+- rejected alternative explanation:
+
+## Evidence route for precedence reviews
+
+Use this route whenever a lookup result feels surprising:
+
+| Evidence step | What it proves |
+| --- | --- |
+| find the class attribute in the MRO | tells you whether a descriptor is even in play |
+| inspect which descriptor hooks exist | tells you whether it is data or non-data |
+| inspect `obj.__dict__` for the same public name | tells you whether instance state can win |
+| replay the order mechanically | turns the result into a reviewable consequence instead of folklore |
 
 ## A compact data-descriptor example
 
@@ -90,6 +126,10 @@ print(s.value)  # 10
 
 The descriptor still wins because it is a data descriptor.
 
+That example is worth narrating aloud: Python finds the class attribute, sees that the
+descriptor defines `__set__`, classifies it as a data descriptor, and therefore resolves
+through the descriptor before the same-named entry in `obj.__dict__` gets a chance.
+
 ## A compact non-data example
 
 ```python
@@ -112,6 +152,19 @@ print(s.value)  # shadowed
 
 This time the instance dictionary wins because the descriptor defines only `__get__`.
 
+The important repair here is to name the exact public name that gets shadowed. A learner
+who says only "it was overridden somehow" is still missing the lookup rule.
+
+## A trace that stops the result feeling mystical
+
+Use this trace for both examples:
+
+1. identify the public attribute name Python is resolving
+2. inspect the class attribute under that name
+3. classify it as data descriptor or non-data descriptor from the hooks
+4. inspect `obj.__dict__` under the same public name
+5. narrate the winning step without skipping the instance-dictionary check
+
 ## Why `property` is important here
 
 Properties are a perfect bridge into the rule.
@@ -129,6 +182,17 @@ If `name` is a property, the property still owns the boundary.
 
 That detail connects Module 07 back to Module 06 in a concrete way.
 
+It also corrects a persistent beginner misconception: a read-only property is still a data
+descriptor and therefore still owns the attribute boundary during normal lookup.
+
+Use this property translation when the module starts splitting in a learner's head:
+
+| Property claim | Descriptor-precedence translation |
+| --- | --- |
+| read-only property still wins | it is still a data descriptor during normal lookup |
+| same-named `__dict__` entry does not bypass the property | the data descriptor wins before the instance dictionary |
+| property feels friendlier than a custom descriptor | friendly syntax does not change the precedence rule |
+
 ## Why methods are different
 
 Plain functions defined on classes are non-data descriptors.
@@ -138,6 +202,15 @@ of the reasons method binding stays flexible instead of absolutely dominant over
 state.
 
 The next core will make that more concrete.
+
+## A comparison table worth keeping open
+
+| Situation | What wins first |
+| --- | --- |
+| data descriptor plus same-named instance entry | data descriptor |
+| non-data descriptor plus same-named instance entry | instance entry |
+| plain class attribute plus instance entry | instance entry |
+| data descriptor with no instance entry | data descriptor |
 
 ## A useful diagram to keep in your head
 
@@ -153,6 +226,28 @@ non-data descriptor
 ```
 
 That is the picture most people actually need in review and debugging.
+
+## Common overclaims to reject
+
+Reject these descriptions when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "descriptors always beat instance state" | "data descriptors beat instance state; non-data descriptors do not" |
+| "read-only properties are bypassable because they have no setter" | "properties still participate as data descriptors in normal lookup" |
+| "shadowing means the descriptor stopped working" | "shadowing means a non-data descriptor yielded to a same-named instance entry" |
+| "precedence is too subtle to explain" | "precedence is a mechanical lookup order that can be traced step by step" |
+
+## Failure modes for precedence reasoning
+
+These are the mistakes this page is trying to prevent:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| forgetting to inspect `obj.__dict__` under the public name | shadowing behavior looks magical | inspect the exact name that lookup uses |
+| calling a descriptor "data" without checking hooks | category and result get disconnected | point to `__set__` or `__delete__` explicitly |
+| treating property lookup as special syntax instead of precedence | lessons stay isolated instead of connected | explain properties in descriptor-precedence language |
+| using precedence to justify a subtle API | the code becomes harder to review than it needs to be | simplify the boundary rather than relying on lookup cleverness |
 
 ## What this rule is for
 
@@ -180,6 +275,15 @@ The rule is best used for:
 
 It is a poor substitute for clear design.
 
+## Evidence packet for precedence reviews
+
+Leave this page with a small packet:
+
+- one data-descriptor lookup trace
+- one non-data-descriptor shadowing trace
+- one property example rewritten in descriptor-precedence language
+- one sentence rejecting an API that relies on precedence to stay understandable
+
 ## Review rules for precedence
 
 When reviewing descriptor lookup, keep these questions close:
@@ -189,6 +293,16 @@ When reviewing descriptor lookup, keep these questions close:
 - is the code relying on shadowing intentionally or accidentally?
 - is a property being described incorrectly as bypassable?
 - would a plainer attribute boundary be easier to review than a precedence trick?
+- can another reviewer narrate the exact winning step without saying "magic"?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- explain why a data descriptor beats a same-named instance entry
+- explain why a non-data descriptor can be shadowed
+- describe one property lookup in data-descriptor language
+- inspect one object and name the exact evidence that decides the result
 
 ## What to practice from this page
 

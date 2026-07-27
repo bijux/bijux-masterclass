@@ -1,143 +1,322 @@
 # Reviewing Operating-Context Drift and Policy Leaks
 
+Operating-context drift often arrives in a small diff:
 
-<!-- page-maps:start -->
-## Page Maps
+- one profile key
+- one higher retry count
+- one alternate path
+- one “CI-only” sample filter
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Operating Contexts Execution Policy"]
-  page["Reviewing Operating-Context Drift and Policy Leaks"]
-  capstone["Capstone evidence"]
+Review size does not predict semantic risk. This lesson shows how to turn a profile change
+into a falsifiable review rather than an environment-specific explanation.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## State the claim before reading evidence
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+A useful review claim is:
 
-Operating-context drift is rarely dramatic at first.
+> Local, CI, and scheduler policy vary execution capacity and observability while
+> preserving sample scope, planned jobs, dependencies, trusted paths, and artifact meaning.
 
-It usually arrives through small decisions that seem harmless:
+This names what may differ and what must not.
 
-- one more profile-specific tweak
-- one more context-specific path override
-- one more retry increase
-- one more undocumented storage assumption
+Weak claims are hard to test:
 
-This page is about catching those leaks before they rewrite workflow behavior by accident.
+- “the profiles are equivalent”
+- “the cluster version works”
+- “CI uses normal overrides”
 
-## Operating-context review is different from ordinary workflow review
+Equivalent in what sense? Works for which target? Normal according to which ownership
+boundary? Rewrite vague claims before approving the diff.
 
-A normal workflow review asks:
+## Read evidence in causal order
 
-- does the DAG still make sense?
-- do the rules still declare the right contracts?
+Use this order:
 
-An operating-context review asks:
-
-- do different contexts still mean the same workflow?
-- are profile differences still policy rather than semantics?
-- are storage, failure, and visibility assumptions still explicit?
-
-Those questions overlap, but they are not the same.
-
-## Drift becomes visible when contexts are compared side by side
-
-The capstone's `profile-audit` route is valuable because it compares:
-
-- profile config files
-- dry-runs under multiple contexts
-- review questions about policy versus meaning
-
-That is exactly the right posture.
-
-Drift stays harder to see when each context is inspected in isolation.
-
-## One useful review loop
+1. workflow and semantic config define intended meaning
+2. profile source introduces operating differences
+3. Snakemake plan reveals jobs, edges, and paths
+4. execution materializes artifacts
+5. review gate compares invariants
 
 ```mermaid
 flowchart LR
-  change["profile or context change"] --> compare["compare policy files and dry-runs"]
-  compare --> classify["policy difference or semantic leak?"]
-  classify --> keep["keep as operating policy"]
-  classify --> escalate["escalate to workflow, config, or contract review"]
+  contract["Workflow contract"]
+  profile["Profile change"]
+  plan["DAG and output summary"]
+  run["Executed artifacts"]
+  gate["Finding and decision"]
+
+  contract --> profile --> plan --> run --> gate
 ```
 
-This loop matters because context drift often hides behind the phrase “environment-specific
-adjustment.”
+Starting from a green gate without tracing this chain encourages circular reasoning: the
+change is safe because the audit passed, and the audit is trusted because the change looks
+safe.
 
-## What to inspect first
+## Build a comparison matrix
 
-Start with four practical questions:
+For each context, record:
 
-1. Do the context differences stay within executor, logging, latency, or retry policy?
-2. Did any context introduce different paths, different semantic config, or different trusted outputs?
-3. Are failures being explained better, or merely retried more often?
-4. Are storage and visibility assumptions named clearly enough for another maintainer to audit them?
+| Surface | Local | CI | Scheduler | Invariant? |
+| --- | --- | --- | --- | --- |
+| profile policy keys | cores, latency, visibility | cores, latency, visibility | cores, latency, visibility | no |
+| semantic profile keys | none | none | none | yes: all absent |
+| sample jobs | alpha, beta | alpha, beta | alpha, beta | yes |
+| trusted manifest | `publish/stable/manifest.tsv` | same | same | yes |
+| manifest members | alpha, beta | same | same | yes |
+| normalized bytes | same | same | same | yes |
 
-These questions make policy leaks visible early.
+The matrix prevents a harmless difference, such as `cores`, from distracting from a
+dangerous one, such as a missing sample.
 
-## A weak review posture
+## Run the discriminating audit
 
-Weak shape:
+From the course root:
 
-- profiles are approved one at a time with no cross-context comparison
-- “works on the cluster” is treated as sufficient justification
-- policy changes are merged before anyone asks whether the workflow meaning drifted
+```bash
+make capstone-context-invariance-audit
+```
 
-This lets execution context become a hidden author of workflow behavior.
+Read:
 
-## A stronger review posture
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/context-invariance/
+├── summary.tsv
+├── report.json
+├── specimen/
+└── workspace/
+```
 
-Stronger shape:
+The report contains each profile's:
 
-- compare local, CI, and scheduler contexts side by side
-- treat policy differences as acceptable only when workflow meaning remains stable
-- escalate suspicious differences into config, contract, or workflow review
-- keep evidence bundles or review notes that explain why the drift is acceptable or not
+- parsed source
+- key classification
+- normalized output plan
+- normalized D3 DAG
+- manifest path and content
+- result bytes
+- exact command and trace locations
 
-Now the repository can move across contexts without losing its semantic center.
+Do not cite the complete JSON as if volume were proof. Quote the smallest fields that
+support the claim.
 
-## Common failure modes
+## Interpret findings by name
 
-| Failure mode | Why it is risky | Better repair |
+The audit emits:
+
+| Finding | Review interpretation |
+| --- | --- |
+| `CONTEXT_POLICY_PRESERVED` | accept the three preserving profiles for this specimen claim |
+| `TRUSTED_PATH_LEAK_REPRODUCED` | reject context-specific trusted-path selection |
+| `SAMPLE_SCOPE_LEAK_REPRODUCED` | reject context-specific sample selection |
+
+All three should be `PASS`.
+
+The leak rows pass when defects are present and observable. A report that says only “three
+checks passed” is misleading.
+
+Review language should retain the distinction:
+
+> The preserving profiles passed semantic comparison. The two counterexamples also passed
+> because their named leaks were successfully reproduced and detected.
+
+## Order findings by semantic risk
+
+Use severity based on contract impact, not YAML size.
+
+### High: workflow meaning differs
+
+Examples:
+
+- sample domain changes
+- trusted path changes
+- algorithm parameter changes
+- a rule or dependency disappears
+
+These require semantic review and usually removal from profile policy.
+
+### Medium: failure or storage policy lacks evidence
+
+Examples:
+
+- retries increase without a failure class
+- latency wait increases without visibility measurements
+- scratch promotion changes without a trust-transition review
+
+These may be legitimate, but the evidence is insufficient.
+
+### Low: classified operational policy changes
+
+Examples:
+
+- command visibility changes
+- available cores change
+- a site overlay maps an account or partition
+
+These still need ownership and narrow verification. They do not need invented semantic
+risk.
+
+## Require three gate behaviors
+
+A trustworthy context gate needs:
+
+| Behavior | Question |
+| --- | --- |
+| acceptance | does known policy-only variation pass? |
+| rejection | do known semantic leaks fail the preserving claim? |
+| isolation | can the gate distinguish a path leak from a sample leak? |
+
+The context self-test covers all three:
+
+```bash
+make capstone-context-invariance-selftest
+```
+
+It mutates disposable profiles. In particular, it rejects a sample-scope specimen that
+substitutes a trusted-path leak. That isolation check matters because a generic “something
+changed” gate cannot teach a maintainer where ownership failed.
+
+```mermaid
+flowchart TD
+  change["Profile change"]
+  accept{"Policy-only plan<br/>and artifacts match?"}
+  reject{"Known semantic<br/>mutations rejected?"}
+  isolate{"Finding names the<br/>correct leak?"}
+  approve["Approve narrow policy change"]
+  repair["Repair or escalate"]
+
+  change --> accept
+  accept -->|no| repair
+  accept -->|yes| reject
+  reject -->|no| repair
+  reject -->|yes| isolate
+  isolate -->|no| repair
+  isolate -->|yes| approve
+```
+
+## Do not normalize away semantics
+
+Plan comparison usually removes volatile details:
+
+- workflow identifiers
+- timestamps
+- absolute temporary paths
+- job IDs
+
+Keep:
+
+- rule names
+- wildcard labels
+- dependency edges
+- declared outputs
+- sample membership
+
+An over-aggressive normalizer can make distinct workflows look equal. Every removed field
+needs a reason tied to the claim.
+
+The audit deliberately retains both D3 DAG labels and output paths because either surface
+alone misses one counterexample.
+
+## Review a proposed profile change
+
+Suppose a pull request changes:
+
+```yaml
+cores: 1
+config:
+  samples:
+    - alpha
+```
+
+A strong review finding is:
+
+> **High:** `profiles/ci/config.yaml` narrows the semantic sample domain. The normalized
+> plan loses `normalize:beta`, `results/beta.txt`, and the `beta` manifest row. Move this
+> decision to an explicit semantic config with a distinct test claim; do not describe the
+> CI run as equivalent to the full workflow.
+
+This finding:
+
+- names the owning surface
+- shows plan and artifact effects
+- proposes a durable repair
+- avoids vague “profile concern” language
+
+## Review a retry change
+
+Suppose another profile change raises retries after occasional failure.
+
+Do not automatically label it semantic drift. Ask for:
+
+- executor and application failure evidence
+- failure classification
+- bounded attempts and cost
+- retained attempt logs
+- stop condition
+
+The finding may be medium severity because the policy claim is under-evidenced, not because
+the workflow plan changed.
+
+## Write a review record
+
+Keep a compact record:
+
+```text
+claim:
+contexts compared:
+semantic invariants:
+allowed policy differences:
+source observations:
+plan observations:
+artifact observations:
+rejection evidence:
+decision:
+limits:
+```
+
+Example decision:
+
+> Accept the core and latency differences. Reject the CI sample override because it
+> removes a planned job and manifest member. Scheduler submission and shared-storage
+> behavior remain outside this local audit.
+
+The limit prevents a local execution packet from being misrepresented as infrastructure
+certification.
+
+## When to escalate
+
+Escalate out of profile review when a change affects:
+
+- semantic config schema
+- public file contract
+- sample discovery
+- rule input or output
+- algorithm parameters
+- manifest or report meaning
+
+Those belong to workflow, configuration, or publication review. The profile diff may have
+revealed the issue, but the profile should not own its resolution.
+
+## Common review failures
+
+| Failure | Consequence | Better review |
 | --- | --- | --- |
-| context-specific semantic knobs are hidden in profiles | one workflow becomes several hidden variants | move semantics into visible workflow or config surfaces |
-| cluster migration relies on unreviewed storage differences | path trust changes without being named | audit filesystem and visibility assumptions explicitly |
-| retries rise as contexts get noisier | deterministic defects stay mislabeled as transient | classify failure modes before altering policy |
-| dry-runs are never compared across contexts | semantic drift stays invisible | compare planned work across local, CI, and scheduler profiles |
-| policy review happens without evidence | context changes become anecdotal | use audit bundles, dry-runs, and guide routes as review evidence |
-
-## The explanation a reviewer trusts
-
-Strong explanation:
-
-> these context differences remain operating policy because the dry-run plan, contract
-> paths, config meaning, and trusted outputs stay stable across local, CI, and SLURM; the
-> remaining differences are executor and observability policy only.
-
-Weak explanation:
-
-> each environment needs its own behavior, so exact comparison is not very useful.
-
-The strong explanation checks invariants. The weak explanation excuses drift before it is
-examined.
+| compare profiles but not plans | indirect semantic effects remain hidden | retain D3 DAG and output summary |
+| compare plans but not artifacts | stable paths can contain changed meaning | execute a bounded specimen |
+| gate has no mutation tests | green result may be non-discriminating | prove rejection and isolation |
+| report says only “PASS” | reproduced defects look approved | quote finding names |
+| infrastructure limits are omitted | local proof is overclaimed | state what was not executed |
 
 ## End-of-page checkpoint
 
-Before leaving this page, you should be able to:
+You are ready to finish the module when you can:
 
-- explain how operating-context review differs from ordinary workflow review
-- name several signs of a policy leak
-- explain why side-by-side dry-run comparison is valuable
-- describe when a profile change should escalate into semantic review
+- write a falsifiable context-invariance claim
+- read source, plan, and artifact evidence in causal order
+- order findings by semantic risk
+- explain acceptance, rejection, and isolation behavior
+- state why both D3 DAG and output paths remain in the normalized comparison
+- write an explicit limit for scheduler and storage claims
+
+If your review conclusion is still “the profiles look fine,” the evidence route is not
+finished.

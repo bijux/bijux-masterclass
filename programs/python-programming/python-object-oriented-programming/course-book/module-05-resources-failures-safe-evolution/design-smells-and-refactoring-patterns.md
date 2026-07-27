@@ -1,5 +1,4 @@
-# Design Smells and Refactoring Patterns in OOP Python
-
+# Design Smells and Refactoring Patterns
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Resources Failures Safe Evolution"]
-  page["Design Smells and Refactoring Patterns in OOP Python"]
+  page["Design Smells and Refactoring Patterns"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,69 +24,142 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Build a shared vocabulary for recognizing and fixing design problems.
+Students often hear "watch for smells" without being taught what a smell is for.
 
-This core catalogs common smells and pairs them with refactoring moves that we have already developed across Modules 1–5.
+A smell is not a moral judgment. It is a clue that the current structure may be hiding:
 
-## 1. Smells: What to Look For
+- unclear ownership
+- mixed responsibilities
+- brittle extension paths
+- compatibility pressure in the wrong place
 
-Common OOP Python smells:
+The point of smell reading is not to collect buzzwords. The point is to locate the next
+honest refactor move.
 
-- **God object**: one class knows/does everything.
-- **Feature envy**: one method manipulates another object’s data heavily.
-- **Anemic domain**: domain objects are data bags; logic lives in services.
-- **Primitive obsession**: raw `str/int/float` carry domain meaning (M02C14).
-- **Boolean flags / state soup**: many flags represent lifecycle (M03C28).
-- **Tangled dependencies**: circular imports, infrastructure inside domain (M04C39).
-- **Hidden side effects**: properties that do I/O (M03C22).
-- **Leaky resources**: missing cleanup boundaries (M05C41–M05C43).
+## Smells are signals, not proofs
 
-## 2. Refactoring Moves (Patterns You Can Apply)
+One long method is not automatically wrong. One extra parameter is not automatically a
+design failure.
 
-High-leverage moves:
+What matters is what the signal suggests:
 
-- Introduce semantic types (Module 2).
-- Introduce aggregate roots for invariants (M04C31–M04C32).
-- Introduce typestate to eliminate illegal states (M03C28–M03C29).
-- Extract strategies for variation points (M04C37).
-- Introduce ports/adapters (Module 2 + M04C38).
-- Introduce UoW for commit boundaries (M05C42).
-- Introduce facades to protect public API (M05C46).
+- is one function carrying too many boundaries?
+- is a class managing policy, persistence, and transport at once?
+- is the code difficult to extend without editing many unrelated places?
 
-## 3. How to Refactor Safely
+A smell should lead to a design question, not a reflex rewrite.
 
-Correct refactoring rules:
+## Smells that matter in this module
 
-1. **Preserve behavior**: tests must stay green.
-2. **Work in thin slices**: introduce new shape alongside old, migrate, delete old.
-3. **Move one responsibility at a time**.
-4. **Add tests at the seam** when you can’t test internals directly.
+For Module 05, the highest-value smells usually point to survivability and change
+pressure.
 
-This course’s refactor cores (M02C20, M03C30, M04C40, M05C50) model this workflow.
+Examples:
 
-## 4. Teaching Lens: Smell → Failure Mode → Refactor
+- cleanup logic scattered across unrelated branches
+- retries hidden in helpers instead of owned by a workflow boundary
+- public import surfaces leaking implementation details
+- compatibility obligations spread across many files with no deliberate contract
+- new features requiring edits in many unrelated places
 
-For education, always connect:
+These smells matter because they predict long-term pain, not just local ugliness.
 
-- smell: “optional fields everywhere”
-- failure mode: “invalid active rules slip into evaluation”
-- refactor: “typestate + domain invariants”
+## Smell to refactor move
 
-This helps you see design as cause-and-effect, not taste.
+Smell reading is only useful if it leads to a bounded response.
 
-## Practical Guidelines
+Examples:
 
-- Use smells as diagnostic tools, not as insults.
-- Always connect a smell to a concrete failure mode and a concrete refactor.
-- Refactor under tests; add tests at boundaries if needed.
-- Prefer small, composable objects over clever inheritance and flag soup.
+- mixed ownership smell -> introduce or tighten a unit-of-work or context boundary
+- duplicated translation smell -> move conversion into one adapter or boundary helper
+- accidental public API smell -> add a facade or explicit export surface
+- repeated conditional extension smell -> extract a strategy or policy object
+- compatibility scatter smell -> centralize the supported contract and version policy
 
-## Exercises for Mastery
+This is the teaching move students need most: smell recognition should point toward a
+specific structural correction.
 
-1. Pick one smell in your codebase. Write the failure mode it can cause. Apply one refactor move and show the diff.
-2. Identify one variation point implemented with conditionals. Replace with a strategy.
-3. Create a “smell checklist” for code reviews in your project (5 items max).
+## Avoid cosmetic refactors
+
+Weak refactoring work often changes the shape of code without changing the ownership
+problem underneath.
+
+Examples:
+
+- renaming modules while leaving the same accidental public surface
+- splitting a long method while preserving the same mixed responsibilities
+- adding helper functions instead of fixing the boundary that causes duplication
+
+These are cosmetic improvements. They may help readability a little, but they do not
+solve the design tension the smell was signaling.
+
+## Choose the smallest durable move
+
+Good refactoring discipline means:
+
+- identify the real pressure
+- choose the smallest move that addresses that pressure
+- keep tests and behavior contracts visible
+
+The smallest durable move is not always the smallest diff. It is the move that leaves a
+clearer ownership story after the change.
+
+## Refactoring should preserve meaning
+
+A refactor is safer when you can say what must not change:
+
+- public behavior
+- domain invariants
+- compatibility promises
+- failure semantics
+
+If you cannot say what is supposed to stay the same, you are not refactoring yet. You
+are redesigning in the dark.
+
+That is why this page belongs so close to compatibility and feature-safe evolution.
+
+## Common mistakes
+
+- treating every awkward line as a high-priority smell
+- refactoring for visual tidiness instead of boundary clarity
+- making broader changes than the signal justified
+- rewriting before naming the stable behavior that must survive
+- calling a design "cleaner" when the ownership problem is still there
+
+These mistakes produce churn without trust.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| does the smell point to a real ownership or extension problem? | yes |
+| can you name the smallest durable refactor move? | yes |
+| do you know what behavior must stay unchanged? | yes |
+| will the move improve boundary clarity rather than just appearance? | yes |
+
+## Capstone connection
+
+Use the capstone to practice one honest smell-reading route:
+
+1. identify the pressure point
+2. describe the ownership problem it reveals
+3. choose one structural move
+4. state which behavior must remain stable
+
+That route is more valuable than any generic smell checklist memorized out of context.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why a smell is a signal rather than a verdict
+- map one smell to one likely refactor move
+- identify one capstone smell that points to a real ownership or extension problem

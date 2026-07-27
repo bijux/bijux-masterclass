@@ -1,41 +1,26 @@
 # Glossary
 
+This glossary is part of the teaching material for Module 01, not a side appendix. Keep
+it nearby while you work through the first lessons, the worked example, and the
+exercises.
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use this glossary to keep the language of Module 01 stable while you move between the core
-lessons, worked example, and exercises.
-
-The goal is not extra jargon. The goal is to make sure the same beginner-level workflow
-facts keep the same names whenever you explain them.
+The point is simple: beginner confusion drops fast when the important workflow facts have
+stable names. If you can name a problem precisely, you can usually fix it much faster.
 
 ## How to use this glossary
 
 If a Snakemake explanation starts drifting into phrases like "it just runs that step" or
 "the wildcard is weird," stop and look up the precise term that should replace that vague
 phrase. Module 01 becomes much clearer when the nouns are stable.
+
+## When to stop and check the glossary
+
+Pause and check a term when:
+
+- your explanation depends on "some file" instead of a named output contract
+- you are using "job" and "rule" as if they mean the same thing
+- you are treating a rerun cause and a failure symptom as the same thing
+- you can tell a path design feels wrong but cannot yet name the ownership problem
 
 ## Terms in this module
 
@@ -71,3 +56,45 @@ When you explain a Module 01 situation, aim to say things like:
 - "the final path is a poison artifact because it was published before success"
 
 Those sentences are much more useful than saying only "Snakemake is confusing."
+
+## Confusion pairs worth fixing early
+
+These pairs cause trouble on the first day because they sound similar but answer
+different questions:
+
+- `rule` versus `job`: a rule is the reusable pattern; a job is one concrete execution of
+  that pattern after wildcards are bound.
+- `config` versus `profile`: config changes workflow meaning; a profile changes how the
+  workflow runs.
+- `rerun cause` versus `failure symptom`: the symptom is what you noticed; the rerun cause
+  is the specific tracked reason Snakemake decided work was needed again.
+- `requested target` versus `rule all`: a requested target is what you asked Snakemake to
+  build now; `rule all` is the repository's normal definition of done.
+
+## Quick self-check
+
+Before you leave Module 01, make sure you can answer these in a full sentence:
+
+- If two rules can both produce `results/A/report.txt`, what is the exact ownership
+  problem called?
+- If a run finishes but leaves a final-looking file that was written before the command
+  failed, what should you call that file?
+- If changing core count affects runtime but should not change biological or analytic
+  meaning, which boundary owns that setting?
+- If `snakemake -n` still wants more work after a successful run, which term tells you the
+  workflow has not reached a stable finished state yet?
+
+## Terms you should be able to use by the end of the day
+
+If Module 01 is landing properly, these terms should feel ordinary by the end:
+
+- file contract
+- requested target
+- convergence
+- wildcard binding
+- output ownership
+- workflow meaning
+- atomic publication
+
+If those terms still feel decorative rather than useful, revisit the worked example and
+the first five exercises before moving on.

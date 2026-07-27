@@ -30,12 +30,37 @@ the cause, or cannot be turned off cleanly.
 
 Use this page to turn that operational cost into explicit review criteria.
 
+This page fails if a reader leaves with only "use `functools.wraps`" and "prefer context
+managers." The real lesson is broader: if a mechanism changes behavior, it owes a visible
+trail, a bounded blast radius, and a believable way back to baseline.
+
 ## The sentence to keep
 
 If metaprogramming changes behavior, it must also preserve observability, expose a clean
 reversal path, and keep its patch boundary narrower than its benefit.
 
 That is the minimum professional bar.
+
+If a team cannot describe the rollback path in one paragraph, the dynamic behavior is
+already too magical.
+
+For self-study, turn that sentence into a runtime audit:
+
+- what exact behavior changed?
+- what surface tells me it changed?
+- what one step restores baseline state if I need to back out now?
+
+## Evidence route for observability and reversibility reviews
+
+Use this route for wrappers, registries, patches, and tracing layers:
+
+| Review step | What to inspect | What strong evidence looks like |
+| --- | --- | --- |
+| Name the changed runtime fact | What behavior is being altered or intercepted? | One narrow dynamic surface is named clearly |
+| Name the observation surface | How do engineers see what happened afterward? | Metadata, trace output, manifests, logs, or explicit APIs stay available |
+| Name the rollback surface | How is baseline behavior restored? | Reset hook, disable path, or context-managed lifetime is explicit |
+| Audit blast radius | What symbol, module, or process scope is touched? | The patch target is local, named, and deliberately narrow |
+| Audit overhead | Is the mechanism on a hot path? | Measurement or an explicit cold-path claim is present |
 
 ## Observability starts with not lying about callables
 
@@ -47,6 +72,15 @@ Wrappers should preserve identity surfaces whenever possible:
 - `__wrapped__`
 
 That is why `functools.wraps` belongs in correctness discussions, not style debates.
+
+## Metadata preservation table
+
+| Surface | Why it matters in review |
+| --- | --- |
+| `__name__` / `__qualname__` | Humans and tooling can still identify the callable |
+| `__doc__` | Help and discovery surfaces stay truthful |
+| `__wrapped__` | Introspection tools can recover the underlying function |
+| traceback structure | Failures remain attributable instead of folklore-driven |
 
 ```python
 import functools
@@ -99,6 +133,13 @@ def add_context(func):
 
 The point is not "never wrap errors." The point is "never erase the useful evidence."
 
+## Honest wrapper claims versus overclaims
+
+| Honest claim | Overclaim to reject |
+| --- | --- |
+| "This wrapper adds context while preserving the underlying traceback." | "This wrapper makes failures easier by hiding internal exceptions." |
+| "This decorator records calls and keeps metadata visible." | "This instrumentation is transparent so debugging cost is negligible." |
+
 ## Reversibility is part of design, not incident cleanup
 
 Global state and patches need a defined way back to baseline.
@@ -130,6 +171,9 @@ def clear_registry(group: str | None = None) -> None:
 Reset hooks are not optional polish. They are what makes a global mechanism reviewable in
 tests and incidents.
 
+That same rule applies even when the registry looks tiny. Global state scales by surprise,
+not by line count.
+
 ## Monkey patches must have a boundary you can explain
 
 The word "monkey patch" covers several very different actions. Governance depends on
@@ -147,6 +191,26 @@ Higher-risk end of the spectrum:
 - leaving the patch active outside a clearly owned scope
 
 The point is not that every patch is forbidden. The point is that blast radius matters.
+
+## Patch-boundary comparison
+
+| Patch target | Review posture |
+| --- | --- |
+| local symbol inside the module under test | usually acceptable with explicit lifetime |
+| user-defined object inside a bounded context | acceptable when rollback is automatic |
+| shared library or standard-library symbol | high review bar because unrelated callers may change too |
+| builtins or process-wide default behavior | usually reject outside exceptional tooling or emergency control cases |
+
+## Rollback worksheet
+
+Use this worksheet before you approve a wrapper, patch, or registry change:
+
+| Question | Strong answer shape |
+| --- | --- |
+| what symbol or state changed? | one named callable, attribute, registry, or module surface |
+| how is the change observed? | metadata, trace output, manifest, log line, or explicit inspection API |
+| how is it reversed? | context exit, reset hook, disable flag, or restore function |
+| what scope pays the cost? | one function, one module, one process, or one hot path |
 
 ## Context-managed patches are the minimum acceptable pattern
 
@@ -172,6 +236,8 @@ That pattern is simple, but it keeps the right habit visible:
 
 Anything wider should raise the review bar immediately.
 
+That wider review bar should ask for explicit disable and restore evidence before approval.
+
 ## Patch your symbol before you patch the world
 
 If a module does `from time import time as now`, tests should usually patch that module's
@@ -181,6 +247,10 @@ That keeps the patch aligned with the code under review instead of accidentally 
 unrelated callers elsewhere in the process.
 
 This is one of the clearest examples of low-blast-radius design.
+
+Keep the practical rule visible:
+
+patch the symbol the code reads, not the largest global source you can technically reach.
 
 ## Performance claims need measurement, not vibes
 
@@ -206,6 +276,32 @@ print(timeit.timeit("wrapped(1)", globals=globals(), number=200000))
 The result does not need to be dramatic to matter. What matters is that the design states
 whether the path is hot and what overhead was observed.
 
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "the wrapper is transparent enough" | enough does not name preserved evidence or hidden cost |
+| "the patch is temporary" | temporary does not define a rollback path |
+| "the registry is tiny" | tiny global state still needs reset and inspection surfaces |
+| "performance should be fine" | should is not measurement or a named cold-path claim |
+
+Before you leave this page, write one sentence beginning:
+
+- "the observation surface here is..."
+- "the rollback surface here is..."
+
+## Failure modes to name explicitly
+
+Watch for these:
+
+| Failure mode | What goes wrong |
+| --- | --- |
+| wrapper hides original callable identity | debugging and introspection degrade quietly |
+| registry has no reset path | tests and incidents inherit stale state |
+| patch target is broader than the code under review | unrelated behavior changes and causal analysis gets harder |
+| overhead is assumed negligible | the mechanism becomes the real production bug on a hot path |
+| disable path exists only informally | operations teams cannot safely narrow behavior during incidents |
+
 ## Kill switches are part of operational honesty
 
 If the design adds global or difficult-to-debug behavior, it should usually come with a
@@ -218,6 +314,15 @@ disable path:
 
 This is not fear. It is stewardship.
 
+## Operational approval language
+
+Strong approval notes for dynamic behavior usually say things like:
+
+- "the wrapper preserves metadata and tracebacks, and the path is not hot"
+- "the registry remains deterministic because reset and ordering surfaces are explicit"
+- "the patch lifetime is bounded to one context and one symbol"
+- "the feature can be disabled without rewriting application logic"
+
 ## Review rules for observable and reversible metaprogramming
 
 When reviewing wrappers, registries, or patches, ask these questions:
@@ -228,6 +333,10 @@ When reviewing wrappers, registries, or patches, ask these questions:
 - what is the patch target and why is that blast radius acceptable?
 - do we have measurement for hot-path overhead?
 - can the feature be disabled without rewriting the application?
+
+Add one more final question:
+
+- what exact runtime fact would another engineer inspect first during an incident?
 
 If no one can answer those quickly, the mechanism is already too magical.
 
@@ -250,6 +359,15 @@ Try these before moving on:
 1. Rewrite one irreversible patch as a context-managed patch.
 2. Add one explicit reset hook to a registry design.
 3. Explain one wrapper's error behavior in terms of traceback preservation and exception chaining.
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of the following:
+
+- name one observational surface and one rollback surface for a dynamic mechanism
+- explain why a broad patch target should be rejected in favor of a narrower symbol
+- distinguish metadata preservation from semantic transparency
+- state whether the mechanism is on a hot path and what evidence would answer that honestly
 
 If those feel ordinary, the next step is the outer edge of runtime magic: import hooks and
 AST transforms, where global semantics make review costs even steeper.

@@ -1,5 +1,4 @@
-# Enforcing Typestate in Python APIs (Without Fancy Type Systems)
-
+# Typestate in Python APIs
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["State Validation Typestate"]
-  page["Enforcing Typestate in Python APIs (Without Fancy Type Systems)"]
+  page["Typestate in Python APIs"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,105 +24,105 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Make typestate *stick* by designing APIs that accept only the right state.
+It is not enough to know that an object has states. The API should help callers do the
+right thing for the current state.
 
-You will learn pragmatic enforcement techniques that work in plain Python:
-- signatures that take the correct type,
-- small runtime guards at boundaries,
-- and structural separation of collections (draft vs active).
+If callers can ask for every operation all the time, typestate remains only a comment in
+the programmer’s head.
 
-## Where This Fits
+This lesson is about making legal and illegal operations visible in ordinary Python, even
+without a fancy type system.
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+## The core design idea
 
-## 1. The Goal: Push Checks to the Edges
+A typestate-aware API tries to make misuse harder by shaping the public surface around
+state.
 
-If every method starts with:
+That can mean:
 
-```python
-if self.state != ACTIVE: raise ...
-```
+- different methods for different state objects
+- explicit transition methods
+- narrow runtime guards at the right boundaries
+- separate wrappers or types when the states are meaningfully different
 
-…your design is leaking. Typestate should reduce internal checks, not multiply them.
+The point is not perfection. The point is fewer nonsense calls and clearer reviewable
+intent.
 
-Strategy:
-- enforce state at the API boundary (method signatures / container separation),
-- keep internal code “assume valid”.
+## Why one baggy API is weak
 
-## 2. Separate Collections by State
+A single class with every method always present often creates this problem:
 
-Instead of:
+- callers can see and call actions that are currently illegal
+- mistakes are discovered late
+- state rules are repeated in several places
 
-```python
-rules: list[Rule]  # where Rule has state field
-```
+That design hides the lifecycle contract instead of expressing it.
 
-use:
+## Practical enforcement moves in Python
 
-```python
-draft_rules: list[DraftRule]
-active_rules: list[ActiveRule]
-retired_rules: list[RetiredRule]
-```
+Useful enforcement moves include:
 
-This makes it impossible to “accidentally evaluate drafts” because the evaluator only sees `active_rules`.
+- returning a new state-specific object after a transition
+- limiting certain methods to state-specific classes
+- placing runtime guards in one clear place instead of everywhere
+- designing functions to accept only the right state-bearing abstraction
 
-## 3. Accept the Right Type in the Right Place
+These are plain design tools, not advanced type theory.
 
-Make illegal calls awkward or impossible:
+## When runtime guards are enough
 
-```python
-class RuleEvaluator:
-    def evaluate(self, rule: ActiveRule, metric_value: float) -> bool:
-        ...
-```
+Sometimes a strong runtime guard is enough if:
 
-Now callers must *possess* an `ActiveRule` to evaluate.
+- the lifecycle is simple
+- illegal operations are rare and easy to explain
+- a heavier state split would add more noise than value
 
-Similarly, activation is a method on `DraftRule`, not a free function that accepts anything.
+But if misuse is common or the state differences are central, stronger API separation is
+usually worth it.
 
-## 4. Runtime Guards Where Types Are Not Enough
+## What to avoid
 
-In dynamic Python, you still need guards at system boundaries:
+- one giant class with dozens of "not allowed in this state" branches
+- repeating the same guard in many methods
+- pretending a status field alone makes the API safe
+- adding state-specific types only as labels while keeping the same weak surface
 
-- when reading from storage,
-- when receiving JSON,
-- when deserializing older versions.
+Typestate should reduce ambiguity, not merely rename it.
 
-Pattern:
-- boundary loads a “raw” record,
-- translator constructs the correct typestate object,
-- invalid records fail fast.
+## Review checklist
 
-This mirrors the DTO → domain pattern (M03C26).
+| Question | Good sign |
+| --- | --- |
+| do illegal operations become harder to call by accident? | yes |
+| are transition points explicit? | yes |
+| is state enforcement concentrated instead of duplicated everywhere? | yes |
+| does the API surface reflect real lifecycle differences? | yes |
 
-## 5. Teachability: Your Types Become Documentation
+## Capstone connection
 
-Someone reading:
+In the capstone, this lesson matters anywhere the state model is important enough that
+wrong calls should be hard to make:
 
-```python
-def evaluate(rule: ActiveRule, ...) -> ...
-```
+- approval flows
+- scheduling and execution states
+- activation and retirement boundaries
+- partially configured versus ready objects
 
-immediately learns:
-- only active rules are evaluatable,
-- state is not a comment; it is structural.
+If the capstone API still says "everything is callable, just don’t misuse it," this page
+points to the next cleanup.
 
-This is one of the strongest clarity arguments for typestate in Python.
+## Exit check
 
-## Practical Guidelines
+Leave this lesson only when you can do all of these:
 
-- Design APIs so methods naturally accept only valid states (via distinct types).
-- Keep state-separated collections in aggregates and services.
-- Use boundary translators to reconstruct typestate from storage/input; fail fast on invalid records.
-- Prefer “no method exists” over “method exists but raises” for illegal operations.
-
-## Exercises for Mastery
-
-1. Refactor a function that accepts `Rule` + `state` into one that accepts `ActiveRule` only.
-2. Split a mixed rules list into `draft_rules` and `active_rules`. Remove at least one runtime `if state == ...` check.
-3. Write a boundary translator from dict → typestate that rejects invalid combinations.
+- explain how an API can reflect state instead of only storing it
+- name one capstone transition that deserves stronger API enforcement
+- explain when a runtime guard is enough and when a state-specific surface is clearer

@@ -1,0 +1,4 @@
+mode: repeated-scan
+chunk_size: 3
+scan_passes: 3
+validate: true

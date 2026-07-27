@@ -1,5 +1,4 @@
-# Descriptors Mental Model (Without Writing Your Own)
-
+# Descriptor Mental Model
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["State Validation Typestate"]
-  page["Descriptors Mental Model (Without Writing Your Own)"]
+  page["Descriptor Mental Model"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,151 +24,100 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Build a *working* mental model of Python’s descriptor protocol so you can reason about:
+Learners often use properties, methods, and class attributes for a long time without a
+clear model of why they behave differently.
 
-- why `@property` behaves differently from a plain attribute,
-- why methods become bound methods when accessed on instances,
-- why class attributes sometimes “win” over instance attributes and sometimes don’t,
-- and where *surprising work* may be hiding in attribute access.
+Descriptors are the missing mental model behind several ordinary Python features:
 
-You will **not** write custom descriptors here. The goal is to *use* the existing ones confidently (properties, functions/methods, `staticmethod`, `classmethod`).
+- `@property`
+- bound methods
+- some validation and field-management tools
 
-## 1. Attribute Access Is a Protocol, Not a Dict Lookup
+You do not need to write custom descriptors every day, but you do need a clear model of
+what Python is doing when attribute access is no longer just "look in `__dict__`."
 
-When you write:
+## The shortest useful model
 
-```python
-obj.attr
-```
+A descriptor is an object stored on the class that participates in attribute access.
 
-Python does not simply check `obj.__dict__`. The lookup is roughly:
+That means reading `obj.name` is not always a simple field lookup. Sometimes Python
+finds a class-level object that controls what the read or write means.
 
-1. Look on the **type**: `type(obj)` (the class), following the MRO.
-2. If the class attribute is a **data descriptor** (defines `__set__` or `__delete__`), it wins immediately.
-3. Otherwise check the **instance dictionary**: `obj.__dict__`.
-4. Otherwise, if the class attribute is a **non-data descriptor** (defines `__get__` only), bind/compute it.
-5. Otherwise, return the plain class attribute.
+That is why some attributes behave like computed values or bound methods instead of
+plain stored data.
 
-This precedence explains many “why is my attribute ignored?” bugs.
+## Why this matters for ordinary code
 
-**Key terms**:
-- **descriptor**: any object with `__get__`, `__set__`, and/or `__delete__`.
-- **data descriptor**: has `__set__` or `__delete__` (often used for managed storage).
-- **non-data descriptor**: only has `__get__` (functions/methods are the classic case).
+Even if you never define your own descriptor, the concept explains:
 
-## 2. The Four Usual Descriptors You Already Use
+- why properties act like attributes with custom logic
+- why methods turn into bound methods when accessed from an instance
+- why some attribute writes are intercepted instead of simply stored
 
-### 2.1 `property` is a data descriptor
+Without this model, those behaviors feel magical. With it, they become design tools.
 
-`property` defines `__get__` and `__set__`/`__delete__` depending on how you build it. That means it can *override* an instance attribute:
+## What not to do with the concept
 
-```python
-class User:
-    def __init__(self, name: str):
-        self._name = name
+Do not turn "descriptors exist" into a reason to add cleverness.
 
-    @property
-    def name(self) -> str:
-        return self._name
+The teaching goal is:
 
-u = User("Ada")
-u.__dict__["name"] = "Evil shadow"
-assert u.name == "Ada"   # property wins (data descriptor precedence)
-```
+- understand what Python is already doing
+- avoid confusion about attribute behavior
+- recognize when a higher-level tool is powered by descriptor machinery
 
-This is why `@property` is a reliable way to expose a computed/read-only view.
+The goal is not to make every learner start inventing custom field systems.
 
-### 2.2 Functions are non-data descriptors
+## A practical review question
 
-A function stored on a class is a descriptor. Access via an instance produces a **bound method**:
+When an attribute behaves strangely, ask:
 
-```python
-class Greeter:
-    def hello(self, who: str) -> str:
-        return f"hi {who}"
+- is this plain instance data?
+- or is the class defining a descriptor-like object that changes the meaning of access?
 
-g = Greeter()
-m = g.hello            # bound method
-assert m("world") == "hi world"
-```
+That question alone clears up many property, method, and framework-field puzzles.
 
-The binding is the descriptor’s `__get__` producing a wrapper that remembers `self`.
+## Common mistakes
 
-### 2.3 `staticmethod` disables binding
+- assuming all attributes are simple stored values
+- treating properties as unrelated magic instead of descriptor-based behavior
+- writing descriptor-heavy code before the design actually needs it
+- forgetting that attribute access can be controlled at the class level
 
-```python
-class Math:
-    @staticmethod
-    def add(a, b): return a + b
+This lesson is about accurate mental models, not metaprogramming ambition.
 
-Math.add(1, 2)  # no implicit self
-```
+## Review checklist
 
-### 2.4 `classmethod` binds the class, not the instance
+| Question | Good sign |
+| --- | --- |
+| can you explain why a property is different from a plain field? | yes |
+| can you explain why methods become bound on instances? | yes |
+| can you recognize when class-level machinery is controlling attribute access? | yes |
+| are you resisting unnecessary clever descriptor use? | yes |
 
-```python
-class Rule:
-    @classmethod
-    def from_dict(cls, data: dict) -> "Rule":
-        return cls(...)
-```
+## Capstone connection
 
-This is useful for alternate constructors and factory patterns.
+In the capstone, this lesson matters wherever:
 
-## 3. The “Hidden Work” Rule for Pedagogy and Design
+- properties are used for derived facts
+- framework-backed fields or validation helpers shape attribute behavior
+- readers need to understand why attribute access is not plain storage
 
-Descriptors enable *work during attribute access*. That is powerful, but it is also a source of “invisible costs”.
+If attribute behavior is confusing in review, the descriptor model is usually the missing
+explanation.
 
-Treat attribute access as **should-be-cheap** by default.
+## Exit check
 
-Good uses:
-- exposing a **derived** value that is cheap and deterministic,
-- enforcing invariants on assignment (rare; consider explicit methods instead),
-- bridging to a cached computation.
+Leave this lesson only when you can do all of these:
 
-Dangerous uses:
-- I/O inside a property (`user.profile` hits the database),
-- time-dependent behavior (`obj.now` changes per access),
-- raising domain exceptions on “read” (surprising control flow).
-
-If the read can fail or is expensive, consider a method:
-- `obj.load_profile()` communicates “work may happen”.
-
-## 4. Debugging Descriptor Surprises
-
-When you see odd behavior, inspect where the attribute is coming from.
-
-Checklist:
-
-- Does the class define the name?
-  ```python
-  type(obj).__dict__.get("attr")
-  ```
-- Is it a descriptor?
-  ```python
-  import inspect
-  inspect.isdatadescriptor(type(obj).__dict__["attr"])
-  ```
-- Is the instance trying to shadow it?
-  ```python
-  obj.__dict__.get("attr")
-  ```
-
-Rule of thumb: if an attribute is defined on the class and seems to ignore instance assignment, you are probably looking at a **data descriptor** (often `property`).
-
-## Practical Guidelines
-
-- Use `@property` for **computed views** and **read-only surfaces**, not to hide I/O.
-- Prefer explicit methods when a read is expensive, can fail, or performs state changes.
-- Keep descriptor usage shallow: properties + methods + (rare) `classmethod` constructors is plenty for most codebases.
-- If you must override attribute behavior, document it: “accessing `x` computes …”
-
-## Exercises for Mastery
-
-1. **Precedence drill**: Create a class with a `@property` and set the same name in `__dict__`. Predict the output before running.
-2. **Binding drill**: Show the difference between `C.f`, `C().f`, `staticmethod`, and `classmethod` by printing the objects and calling them.
-3. **Smell hunt**: Find one property in your codebase that does work (I/O, mutation, exceptions). Rewrite it as a method and document why.
+- explain descriptors in plain language
+- explain why properties and bound methods are not ordinary fields
+- explain why understanding descriptors helps even if you never build one yourself

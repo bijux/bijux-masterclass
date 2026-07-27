@@ -1,43 +1,49 @@
 # Capstone Review Worksheet
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Capstone"]
-  page["Capstone Review Worksheet"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when you want to review the capstone as an inherited workflow repository,
-not just read it as course material. The point is to leave with explicit judgments you
+not just read it as course material. The goal is to leave with explicit judgments you
 could defend in code review, maintenance planning, or a handoff.
+
+This worksheet is for bounded review, not for turning every pass into a whole-repository
+audit.
 
 ## How to use the worksheet
 
-Work top to bottom. For each section:
+Use it in this order:
 
-1. answer the question in your own words
-2. name the file or saved bundle that supports the answer
-3. record one risk only if you can point to the owning boundary
+1. choose one kind of review
+2. answer the section in your own words
+3. name the file or saved bundle that supports the answer
+4. record one trust judgment
+5. widen only if the current evidence exposes another real boundary
 
 If you cannot name the evidence, the judgment is still too soft.
+
+## Start with one review question
+
+This worksheet works best when you already know what kind of review you are doing:
+
+- contract review
+- workflow-truth review
+- policy review
+- publish review
+- architecture review
+- incident review
+
+If you try to answer every section every time, the review becomes broad before it becomes
+sharp.
+
+## Review route
+
+```mermaid
+flowchart TD
+  claim["name the review question"] --> section["choose one worksheet section"]
+  section --> evidence["inspect files or saved bundle"]
+  evidence --> judgment["write one trust judgment"]
+  judgment --> next{"need another boundary?"}
+  next -- no --> stop["stop"]
+  next -- yes --> section
+```
 
 ## Repository contract
 
@@ -54,6 +60,10 @@ Best evidence:
 - `capstone/workflow/contracts/FILE_API.md`
 - [Capstone Guide](index.md)
 
+**Strong outcome**
+
+You can explain the repository promise without needing a live tour first.
+
 ## Workflow truth
 
 Ask:
@@ -67,6 +77,10 @@ Best evidence:
 - `capstone/workflow/rules/preprocess.smk`
 - `capstone/publish/v1/discovered_samples.json`
 - walkthrough or tour bundle surfaces
+
+**Strong outcome**
+
+You can point to the artifact that keeps discovery reviewable after execution.
 
 ## Policy and operating context
 
@@ -83,6 +97,11 @@ Best evidence:
 - `capstone/profiles/slurm/config.yaml`
 - [Capstone Architecture Guide](capstone-architecture-guide.md)
 
+**Strong outcome**
+
+You can say which settings change cost or placement without changing what the workflow
+means.
+
 ## Publish boundary
 
 Ask:
@@ -97,20 +116,9 @@ Best evidence:
 - `capstone/workflow/contracts/FILE_API.md`
 - verify-report bundle surfaces
 
-### Publish review route
+**Strong outcome**
 
-Use this route when the question is not merely "did the workflow run?" but "what is the
-stable published contract and how is it defended?"
-
-1. Read [Capstone File Guide](capstone-file-guide.md).
-2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`.
-3. Compare the report bundle with this worksheet and [Proof Matrix](../guides/proof-matrix.md).
-
-A good publish review should answer:
-
-- which promoted files belong to the public contract
-- which proofs are about publish trust rather than workflow execution generally
-- which future change would require a versioned publish boundary change
+You can explain what a downstream user may trust without reading the whole repository.
 
 ## Architecture and ownership
 
@@ -128,30 +136,67 @@ Best evidence:
 - `capstone/workflow/scripts/`
 - `capstone/src/capstone/`
 
+**Strong outcome**
+
+You can route the next change to one owning layer instead of to a vague part of the
+tree.
+
 ## Incident review
 
 Use this section when the question is about incident response, reproducibility under
-pressure, or workflow debugging with evidence instead of intuition.
+pressure, or debugging with evidence instead of intuition.
 
-Recommended route:
-
-1. Read [Capstone Walkthrough](capstone-walkthrough.md).
-2. Use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command for the current symptom.
-3. Compare the result with [Capstone Architecture Guide](capstone-architecture-guide.md) and the earlier sections of this worksheet if the problem spans multiple boundaries.
-
-A good incident review should answer:
+Ask:
 
 - whether the failure is about workflow semantics, execution policy, or downstream trust
 - which command gives the most honest first evidence
 - which files should remain unchanged until stronger proof exists
 
-## Record the result
+Recommended route:
 
-Finish with one of these judgments:
+1. read [Capstone Walkthrough](capstone-walkthrough.md)
+2. use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command for the
+   current symptom
+3. compare the result with [Capstone Architecture Guide](capstone-architecture-guide.md)
+   if the problem spans multiple boundaries
 
-- trust as-is
-- trust with one named follow-up boundary
+**Strong outcome**
+
+You can say what evidence comes before edits.
+
+## Strong review outcomes
+
+The worksheet is doing its job when you can end with one of these:
+
+- trust as-is because the contract and evidence are explicit
+- trust with one named follow-up because the risk is real but contained
 - do not trust yet because one specific proof or ownership question is unresolved
 
-If your conclusion is longer than a short paragraph, the review probably drifted away
-from one bounded question.
+If the result is only "this seems complicated," the review still needs sharper evidence.
+
+## One honest review pass
+
+Suppose your real question is:
+
+> Could another maintainer explain what is public here without asking the original
+> author?
+
+The honest worksheet route is:
+
+1. repository contract
+2. publish boundary
+3. strong review outcomes
+
+You do not need to turn that into a full incident or stewardship review unless the
+evidence exposes a broader problem.
+
+## Record the result
+
+Try to end with one short paragraph:
+
+- the claim you reviewed
+- the evidence you trusted
+- the judgment you reached
+
+If the conclusion is much longer, the review probably drifted away from one bounded
+question.

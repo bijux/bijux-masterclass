@@ -31,6 +31,10 @@ inspect the evidence in order, then leave with one explicit judgment about trust
 Use this guide after Module 03, or later when you need a steward-level review route
 before incident, profile, or migration questions.
 
+After Module 08, use the release acceptance route below for claims about candidate
+identity, package policy, or contained installation. The general `proof` bundle does
+not substitute for release evidence.
+
 ## Bounded proof pass
 
 1. Run `make PROGRAM=reproducible-research/deep-dive-make proof`.
@@ -39,8 +43,9 @@ before incident, profile, or migration questions.
 4. Inspect `artifacts/proof/reproducible-research/deep-dive-make/selftest/`.
 5. Inspect `artifacts/audit/reproducible-research/deep-dive-make/contract/`.
 6. Inspect `artifacts/audit/reproducible-research/deep-dive-make/incident/`.
-7. Inspect `artifacts/audit/reproducible-research/deep-dive-make/profile/`.
-8. If you still need failure-class study after the bounded proof route, step down into `programs/reproducible-research/deep-dive-make/capstone/` and run `gmake repro`.
+7. Inspect `artifacts/audit/reproducible-research/deep-dive-make/incremental-faults/`.
+8. Inspect `artifacts/audit/reproducible-research/deep-dive-make/profile/`.
+9. If you still need other failure-class study after the bounded proof route, step down into `programs/reproducible-research/deep-dive-make/capstone/` and run `gmake repro`.
 
 ## Questions this proof pass should answer
 
@@ -50,15 +55,44 @@ before incident, profile, or migration questions.
 - which saved bundle would matter most to another maintainer
 - which repro teaches a real failure class instead of a toy surprise
 
+## Release acceptance proof
+
+Run:
+
+```sh
+make PROGRAM=reproducible-research/deep-dive-make capstone-release-check
+```
+
+Then inspect these records in order:
+
+```text
+artifacts/release/reproducible-research/deep-dive-make/evidence/
+├── candidate-acceptance.json
+├── install-acceptance.json
+└── release-acceptance.json
+```
+
+The first report proves policy over existing candidate bytes. The second proves a
+contained install mapping and repeated-application convergence. The third refuses to
+compose the first two unless they identify the same candidate digest.
+
+Do not infer remote publication from these records. The final report explicitly records
+that publication was not attempted.
+
+Read [Capstone Release Acceptance](capstone-release-acceptance.md) for the complete
+learner route, including the consumer-only verification experiment and rejection tests.
+
 ## Failure-study route
 
-Use this route when the open question is about one failure class rather than the whole
-healthy build:
+Use this route when the open question is whether a controlled concurrency failure has been
+reproduced honestly:
 
-1. Start with `capstone/repro/01-shared-log.mk`.
-2. Then inspect `capstone/repro/05-mkdir-race.mk` and `capstone/repro/06-order-only-misuse.mk`.
-3. State the defect class in words before proposing a repair.
-4. Return to `capstone/tests/run.sh` to compare the broken specimen with the healthy proof harness.
+1. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit`.
+2. Read `summary.tsv` and predict why one case expects zero while two expect nonzero.
+3. Verify every finding against its file under `evidence/`, not only its raw log.
+4. Inspect the preserved workspace and copied specimen for the ownership defect.
+5. State the defect class and repair graph before reading the repair guidance.
+6. Return to `capstone/tests/run.sh` and the selftest bundle for healthy-build proof.
 
 ## Good stopping point
 
@@ -77,3 +111,5 @@ commands.
 - Read [Proof Matrix](../guides/proof-matrix.md) when the open question is claim-to-evidence routing.
 - Read [Capstone Review Worksheet](capstone-review-worksheet.md) when the open question is
   failure-class study or steward judgment.
+- Read [Capstone Release Acceptance](capstone-release-acceptance.md) when the open question
+  is one candidate's package, identity, or install contract.

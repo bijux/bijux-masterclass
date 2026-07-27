@@ -1,35 +1,32 @@
 # File APIs, Schemas, and Public Contracts
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Scaling Workflows Interface Boundaries"]
-  page["File APIs, Schemas, and Public Contracts"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Repository growth becomes dangerous when people cannot answer one basic question:
 
 > which files are part of the contract, and which ones are only internal coordination state?
 
 This page is about making that answer explicit.
+
+## How to read this page
+
+Read this page with one consumer question in mind:
+
+> if someone else reads a file from this repository, how do they know whether that file is
+> safe to depend on?
+
+That is the heart of file APIs. The page is not mainly about directory naming. It is
+about trust.
+
+## Why this lesson matters in scaling work
+
+Repositories usually become dangerous before they become broken.
+
+That danger often starts when:
+
+- internal state gets read like a public interface
+- public outputs are documented vaguely
+- schema failures arrive late because nobody named the contract early
+
+That is why Module 04 places file APIs in the middle of the scaling discussion.
 
 ## A file API is a human-facing contract
 
@@ -41,6 +38,14 @@ A file API says:
 
 That is why `FILE_API.md` matters in the capstone. It is not decorative documentation. It
 is the human description of the stable file boundary.
+
+## A strong beginner habit
+
+When you name a public path, finish this sentence:
+
+> A downstream consumer may rely on this because...
+
+If the answer is vague, the path may not be ready to count as public yet.
 
 ## Not every output is public
 
@@ -61,6 +66,15 @@ A healthy repository distinguishes at least two classes:
 
 If everything under `results/` is treated as public, the repository will become harder to
 change safely.
+
+## A quick self-check before you keep reading
+
+Take one current path in your workflow and ask:
+
+- is this file meant for workflow coordination only
+- or is it meant for another tool, report consumer, or maintainer to trust later
+
+That contrast is the real file-API boundary.
 
 ## What belongs in a file API
 
@@ -84,6 +98,16 @@ Stronger file API note:
 
 The difference is contract precision.
 
+## The common beginner mistake
+
+People often think a path becomes public because:
+
+- it looks important
+- it lives under `publish/`
+- someone happened to use it once
+
+None of those is enough on its own. Public status should be deliberate and documented.
+
 ## Schemas protect interface trust
 
 Schemas matter because they move interface failure earlier.
@@ -100,6 +124,20 @@ With validation:
 - the repository can explain which interface was violated
 
 That is not bureaucracy. It is scaling discipline.
+
+## The contrast that matters
+
+The important contrast is not:
+
+- valid file
+- invalid file
+
+The important contrast is:
+
+- parseable internal artifact
+- compatible public contract
+
+A file can be structurally parseable and still be an interface break.
 
 ## One healthy interface stack
 
@@ -130,6 +168,17 @@ A common scaling mistake is to let the public contract grow accidentally:
 This is how internal state becomes accidental API.
 
 The repair is to keep the public boundary intentionally smaller and documented.
+
+## What a good explanation sounds like
+
+Strong:
+
+> The public contract is a small documented path family with declared meaning, while the
+> rest of the repository state remains changeable internal coordination.
+
+Weak:
+
+> The public files are the ones we usually care about after the run.
 
 ## Common failure modes
 

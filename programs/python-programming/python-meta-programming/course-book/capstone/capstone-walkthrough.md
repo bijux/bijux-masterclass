@@ -24,13 +24,9 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named learning stage, not
-for wandering the whole course-book. Read the second diagram as the walkthrough rhythm:
-choose one stop, inspect the boundary, explain the owner, then prove it with one command
-or test.
-
 Use this page when you want the first honest tour through the capstone without turning it
-into a file dump.
+into a file dump. The walkthrough should let an independent learner see the runtime from
+the public surface before diving into implementation detail.
 
 ## First pass versus deeper pass
 
@@ -80,7 +76,7 @@ Use stops 5 and 6 only after the earlier stops no longer settle the question.
 ## Walkthrough stop 6: Inspect the full guided route
 
 - Run `make inspect` and `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough`.
-- Read the saved bundle under `artifacts/inspect/python-programming/python-meta-programming` and `artifacts/tour/python-programming/python-meta-programming`.
+- Read the saved bundles under `artifacts/inspect/python-programming/python-meta-programming` and `artifacts/tour/python-programming/python-meta-programming`.
 - Ask: does the public learning surface make the runtime easier to review than the raw source tree alone?
 - Prove it by following `route.txt` and `focus-areas.txt`.
 
@@ -100,7 +96,7 @@ Use stops 5 and 6 only after the earlier stops no longer settle the question.
 
 ## Good stopping point
 
-Stop with this walkthrough once you can say:
+Stop once you can say:
 
 - which public step settled the current question
 - which owning file you would open next only if needed

@@ -24,59 +24,68 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a
-first-read narrative. Read the second diagram as the reference rhythm: arrive with a
-concrete ambiguity, compare the current work against the boundary on the page, then turn
-that comparison into a decision.
+Use this page when you already know something feels wrong and need language precise enough
+to name the failure, not just complain about the vibe.
 
-During a real design review, people rarely remember a metaprogramming course by module
-title. They remember symptoms, smells, and clumsy runtime patterns.
+In real review work, people rarely remember the module title that taught them a lesson.
+They remember symptoms: "the wrapper erased the signature," "inspection triggered work,"
+"the metaclass feels impressive but unjustified." This page turns those symptoms back into
+named failure patterns and repair directions.
 
-Use this page when the question is "what kind of bad metaprogramming idea is this?" rather
-than "which module taught that?"
+## How to use the atlas
+
+1. Start from the symptom.
+2. Match it to the likeliest anti-pattern.
+3. Check the first public proof route.
+4. Choose the narrowest repair that moves behavior downward or makes it more observable.
+
+Do not start by rewriting everything. Start by naming the failure class accurately.
 
 ## Common anti-patterns
 
-| Anti-pattern | Why it is clumsy | Primary modules | First proof or review route |
-| --- | --- | --- | --- |
-| wrappers that erase signatures or metadata | tooling, debugging, and review lose the original callable surface | 03, 04, 05 | `make signatures` |
-| inspection that executes behavior accidentally | observation becomes a side-effectful runtime action | 02, 03 | `make manifest` |
-| decorators carrying hidden retry, caching, or validation policy | callable transformation turns into an unbounded policy layer | 04, 05 | `make action` |
-| descriptors owning behavior that is not really about attribute access | field machinery hides what should stay explicit | 06, 07, 08 | `make field` |
-| per-instance state stored on the descriptor itself | one instance leaks into another and the abstraction lies | 07, 08 | `make inspect` |
-| metaclasses used for prestige instead of class-creation need | higher-power hooks hide lower-power designs | 06, 09 | `make registry` |
-| import-time work that is heavy, stateful, or surprising | import order becomes a hidden runtime dependency | 01, 09, 10 | `make tour` |
-| dynamic execution treated as configurable convenience | `eval` or `exec` bypass review, safety, and observability | 10 | `make proof` |
+| Anti-pattern | What it breaks first | First proof route |
+| --- | --- | --- |
+| wrappers that erase signatures or metadata | callable evidence and tooling trust | `make signatures` |
+| inspection that executes behavior accidentally | observation discipline | `make manifest` |
+| decorators carrying hidden retry, caching, or validation policy | boundary clarity | `make action` |
+| descriptors owning behavior that is not really about attribute access | ownership clarity | `make field` |
+| per-instance state stored on the descriptor itself | runtime honesty across instances | `make inspect` |
+| metaclasses used for prestige instead of class-creation need | escalation judgment | `make registry` |
+| heavy or surprising import-time work | predictability and rollout safety | `make tour` |
+| dynamic execution treated as convenience | governance and trust boundaries | `make proof` |
 
-## Symptom to anti-pattern
+## Symptom map
 
 | Symptom | Likely anti-pattern | Better question |
 | --- | --- | --- |
-| "This decorated function works, but tools cannot tell what it accepts anymore." | wrapper erased the callable contract | what public signature should still be visible |
-| "Reading an attribute changed runtime state." | inspection and execution were collapsed | which tool would let me inspect structure without invoking behavior |
-| "Every field object knows too much about the whole model." | descriptor owns framework architecture instead of one attribute contract | what explicit layer should own the wider policy |
-| "The metaclass feels powerful, but I cannot explain why it must run before the class exists." | metaclass is covering for a lower-power alternative | which class decorator, descriptor, or helper almost solved the problem |
-| "This runtime only works when imported in one specific order." | import-time work has become hidden control flow | what definition-time behavior should become explicit or testable |
+| tools cannot tell what a decorated function accepts anymore | wrapper erased the callable contract | what public signature should still be visible |
+| reading an attribute changed runtime state | inspection and execution collapsed | which tool would let me inspect structure without invoking behavior |
+| every field object knows too much about the whole model | descriptor grew into framework architecture | what explicit layer should own the wider policy |
+| the metaclass feels powerful, but nobody can explain why it must run before the class exists | metaclass is covering for a lower-power alternative | which decorator, descriptor, or helper almost solved it |
+| the runtime only works when imported in one specific order | import-time work became hidden control flow | what behavior should become explicit or testable |
 
 ## Repair direction
 
-When you identify an anti-pattern, do not jump straight to rewriting everything.
+Once you name the anti-pattern:
 
-Use this order:
+1. locate the matching module or review page
+2. inspect the public runtime surface before editing internals
+3. move behavior to a lower-power or more explicit owner when possible
+4. tighten the proof route so the repaired design stays reviewable
 
-1. name the failure class precisely
-2. find the matching module and review route
-3. inspect the public runtime surface before editing the internals
-4. apply the narrowest repair that moves behavior to a lower-power or more observable boundary
+## Quick decisions
 
-This keeps the course aligned with real maintenance work instead of theatrical refactoring.
+- Keep a descriptor when one field contract is truly the owner and instance behavior stays legible.
+- Change a wrapper that hides signature, traceback, or traceability evidence.
+- Change a metaclass design that explicit registration could replace.
+- Reject import-hook discovery when explicit imports or entry points keep the runtime clearer.
+- Reject dynamic execution for untrusted input paths even if it feels flexible in development.
 
-## Best companion pages
+## Good stopping point
 
-Use these with the atlas:
+Leave this page when you can say:
 
-- [Review Checklist](review-checklist.md) and [Boundary Review Prompts](boundary-review-prompts.md) for the lower-power decision rule
-- [Review Checklist](review-checklist.md) for reviewer questions
-- [Topic Boundaries](topic-boundaries.md) for what belongs inside this course
-- [Module Dependency Map](module-dependency-map.md) for where the idea is taught in sequence
-- [Capstone Map](../capstone/capstone-map.md) for the module-aware repository route
+- what symptom you saw
+- what anti-pattern it most likely signals
+- what proof route should expose it first
+- what more observable or lower-power repair should be tried next

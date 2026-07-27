@@ -1,6 +1,5 @@
 # Python Object-Oriented Programming
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,127 +17,179 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  orient["Read the course promise"] --> route["Choose your entry route"]
+  route --> module["Enter the right module band"]
+  module --> capstone["Cross-check one capstone surface"]
+  capstone --> proof["Use proof only when the claim still feels weak"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so you do not mistake the capstone or reference pages for the first stop.
+This course teaches object-oriented Python as a discipline of explicit semantics, clear
+responsibilities, and durable system boundaries.
 
-This course teaches object-oriented Python as a discipline of explicit semantics,
-clear responsibilities, and long-lived system boundaries. The focus is not on class
-syntax in isolation. The focus is on how object models behave under mutation,
-inheritance, refactoring, and operational change.
+The subject is not class syntax in isolation. The subject is how Python object models
+behave when they carry:
+
+- state
+- invariants
+- collaboration boundaries
+- persistence pressure
+- runtime pressure
+- public compatibility obligations
+
+Read this home page as a contract about what kind of learning path you are entering, not
+as a decorative landing page.
+
+## What this course is trying to change
+
+By the end of the course, you should be able to answer all of these cleanly:
+
+- what does this object mean?
+- what is it allowed to decide?
+- where should that decision boundary stop?
+- what pressure would reveal that the design is lying?
+
+If those questions become easier to answer, the course is working.
+
+If you finish with only more vocabulary, it is not.
 
 ## Use this course if
 
-- you already know basic Python class syntax and now need stronger design judgment
-- you design or review systems where ownership, invariants, or lifecycle rules feel blurry
-- you want object-oriented material that stays tied to tests, capstone proof, and long-lived change
+- you already know basic Python class syntax and want stronger design judgment
+- you review systems where object meaning, ownership, or lifecycle still feel blurry
+- you want OOP material that stays tied to tests, capstone proof, and long-lived change
+- you need one course that carries the topic all the way from object semantics to
+  operational review
 
 ## Do not use this course as
 
 - a first introduction to `class`, `self`, or inheritance syntax
 - a pattern catalog detached from Python runtime behavior
-- a reason to force classes into problems that should stay plain functions or plain data
+- a reason to force classes into problems that should stay functions or plain data
+- a skim-only reference where later modules can replace earlier semantic work
 
-## Why this course exists
+These exclusions matter because they protect the course from being misread as style
+advice or pattern trivia.
 
-Many Python OOP resources stop at surface mechanics: classes, inheritance, and a few
-design patterns. That is not enough to build systems that remain readable and correct
-after a year of feature growth.
+## The one question that holds the course together
 
-This course is organized around harder questions:
+Keep this question visible from beginning to end:
 
-- What is the semantic contract of an object in Python?
-- When should identity matter more than value equality?
-- Where do invariants live when multiple objects collaborate?
-- How do you keep object-heavy systems from becoming tangled or brittle?
-- How do you evolve APIs, storage, and behaviors without breaking callers?
-- How do you add runtime pressure, verification depth, and operational hardening without losing design clarity?
+> Which object should own this decision, and what makes that ownership boundary the
+> least surprising place for it to live?
 
-## Reading contract
+That question is the thread connecting all ten modules.
 
-This is not a browse-at-random reference. The course is designed as a sequence:
+Once you stop treating the modules as isolated topics and start treating them as
+repeated pressure tests for that ownership discipline, the full course becomes much
+easier to use.
 
-1. Learn the object model before discussing architecture.
-2. Learn role assignment before discussing state transitions.
-3. Learn state transitions before discussing aggregates and cross-object invariants.
-4. Learn collaboration boundaries before discussing persistence, time, and verification.
-5. Learn public API and operational hardening after the internal model is stable.
+## The course is one argument, not ten disconnected topics
 
-If you skip that order, later chapters will still be readable, but the design trade-offs
-will feel arbitrary instead of principled.
+The argument moves in this order:
 
-If you want the shortest stable entry route, start with [Start Here](guides/start-here.md).
+1. objects must mean something before architecture advice is useful
+2. roles and states must be clear before collaboration gets complicated
+3. collaboration must be disciplined before persistence and runtime pressure arrive
+4. proof, public boundaries, and operations matter only after ownership already makes
+   sense
+
+If you skip that order, later modules feel "advanced" only because earlier ownership
+work never became stable.
+
+## The three working arcs
+
+| Arc | Modules | What you are trying to earn |
+| --- | --- | --- |
+| semantic floor | 01-03 | define what objects are, what they own, and what states are legal |
+| systems arc | 04-07 | preserve that ownership under collaboration, resources, persistence, time, and concurrency pressure |
+| trust arc | 08-10 | prove, expose, govern, and harden the design so it survives review and real use |
+
+This matters for self-study because it tells you which kind of density you are facing.
+If you struggle in the trust arc because the semantic floor is weak, the fix is usually
+to go backward, not to push harder.
 
 ## Fast entry routes
 
-- Use [Start Here](guides/start-here.md) when you need the shortest honest route into the course.
-- Use [Course Guide](guides/course-guide.md) when you want the ten-module arc explained before you start reading.
-- Use [Proof Matrix](guides/proof-matrix.md) when you want every promise tied to one evidence route.
-- Use [Pressure Routes](guides/pressure-routes.md) when you already have a concrete design or review problem.
-- Use [Capstone](capstone/index.md) only after the module idea is clear enough that you know what you are trying to prove.
+Choose one route before you open more pages.
 
-## Keep these references nearby
+| If you need... | Start with | Then |
+| --- | --- | --- |
+| the shortest honest entry | [Start Here](guides/start-here.md) | [Orientation](module-00-orientation/index.md) |
+| the full ten-module arc first | [Course Guide](guides/course-guide.md) | [Module Promise Map](guides/module-promise-map.md) |
+| a pressure-based entry | [Pressure Routes](guides/pressure-routes.md) | the smallest matching module overview |
+| a proof-sized entry | [Proof Ladder](guides/proof-ladder.md) | one capstone surface and then the smallest honest proof route |
+| a review bar before moving on | [Module Checkpoints](guides/module-checkpoints.md) | the current module overview |
 
-- [Review Checklist](reference/review-checklist.md)
-- [Boundary Review Prompts](reference/boundary-review-prompts.md)
-- [Topic Boundaries](reference/topic-boundaries.md)
-- [Anti-Pattern Atlas](reference/anti-pattern-atlas.md)
+If you do not choose a route, the book is easy to browse and harder to learn from.
 
-## Guides
+## If you missed class and are studying alone
 
-- [Guides Home](guides/index.md)
-- [Start Here](guides/start-here.md)
-- [Course Guide](guides/course-guide.md)
-- [Learning Contract](guides/learning-contract.md)
-- [Proof Matrix](guides/proof-matrix.md)
-- [Module Promise Map](guides/module-promise-map.md)
-- [Module Checkpoints](guides/module-checkpoints.md)
-- [Pressure Routes](guides/pressure-routes.md)
-- [Proof Ladder](guides/proof-ladder.md)
+Use this rhythm:
+
+1. read one module overview
+2. read one support page that narrows the question
+3. inspect one named capstone surface
+4. run one proof route only if the design claim still feels weak
+5. stop after one design question becomes materially easier
+
+That rhythm is better than trying to "cover" several modules in one sitting.
+
+## If you only have one hour
+
+Use this sequence:
+
+1. [Start Here](guides/start-here.md)
+2. [Orientation](module-00-orientation/index.md)
+3. [Module Promise Map](guides/module-promise-map.md)
+4. one row from [Pressure Routes](guides/pressure-routes.md)
+5. one capstone surface named by that row
+
+Do not jump straight to the heaviest proof command if the ownership question is still
+unclear.
 
 ## What to keep open while reading
 
-- [Module Promise Map](guides/module-promise-map.md) when you need the title of a module translated into a concrete promise
-- [Module Checkpoints](guides/module-checkpoints.md) when you want the "done" bar to stay visible
-- [Capstone Map](capstone/capstone-map.md) when you want the module-to-repository bridge
-- [Proof Ladder](guides/proof-ladder.md) when you want to choose the smallest honest proof route
+| When you need... | Keep this page open too |
+| --- | --- |
+| the course promise translated into module promises | [Module Promise Map](guides/module-promise-map.md) |
+| the move-on bar for the current module | [Module Checkpoints](guides/module-checkpoints.md) |
+| a pressure-based route into the course | [Pressure Routes](guides/pressure-routes.md) |
+| the lightest honest proof route | [Proof Ladder](guides/proof-ladder.md) |
+| the strongest review prompts nearby | [Reference Review Checklist](reference/review-checklist.md) |
 
-## Module Table of Contents
+These support pages are not filler. They are there to keep a solo learner from turning a
+reader-first course into a random shelf of pages.
 
-| Module | Title | Why it matters |
+## Module table of contents
+
+| Module | Title | What it is really doing |
 | --- | --- | --- |
-| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the reading contract, proof routes, and capstone timing |
-| [Module 01](module-01-object-semantics-data-model/index.md) | Object Semantics and the Python Data Model | defines identity, equality, copying, and object contracts |
-| [Module 02](module-02-design-roles-interfaces-layering/index.md) | Design Roles, Interfaces, and Layering | assigns responsibilities across values, services, adapters, and layers |
-| [Module 03](module-03-state-validation-typestate/index.md) | State, Validation, and Typestate | makes lifecycle rules and illegal states explicit |
-| [Module 04](module-04-aggregates-events-collaboration-boundaries/index.md) | Aggregates, Events, and Collaboration Boundaries | coordinates multiple objects without losing invariant ownership |
-| [Module 05](module-05-resources-failures-safe-evolution/index.md) | Resources, Failures, and Safe Evolution | handles cleanup, recovery, and compatibility under change |
-| [Module 06](module-06-persistence-serialization-schema-evolution/index.md) | Persistence, Serialization, and Schema Evolution | keeps storage and rehydration from flattening the domain |
-| [Module 07](module-07-time-scheduling-concurrency-boundaries/index.md) | Time, Scheduling, and Concurrency Boundaries | makes time pressure and concurrency explicit in the model |
-| [Module 08](module-08-testing-contracts-verification-depth/index.md) | Testing, Contracts, and Verification Depth | turns verification into a design discipline, not an afterthought |
-| [Module 09](module-09-public-apis-extension-governance/index.md) | Public APIs, Extension Seams, and Governance | publishes stable surfaces without losing review control |
-| [Module 10](module-10-performance-observability-security-review/index.md) | Performance, Observability, and Security Review | closes with operational hardening and full capstone review |
+| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | teaches how to read the course, use the support shelf, and reconnect every module to the capstone |
+| [Module 01](module-01-object-semantics-data-model/index.md) | Object Semantics and the Python Data Model | defines identity, equality, copying, aliasing, and representation as contracts |
+| [Module 02](module-02-design-roles-interfaces-layering/index.md) | Design Roles, Interfaces, and Layering | places behavior in values, entities, policies, services, adapters, and protocols with reasons |
+| [Module 03](module-03-state-validation-typestate/index.md) | State, Validation, and Typestate | makes legal states easier to construct than illegal ones |
+| [Module 04](module-04-aggregates-events-collaboration-boundaries/index.md) | Aggregates, Events, and Collaboration Boundaries | keeps cross-object invariants from dissolving into accidental collaboration |
+| [Module 05](module-05-resources-failures-safe-evolution/index.md) | Resources, Failures, and Safe Evolution | keeps retries, cleanup, and recovery tied to named owners |
+| [Module 06](module-06-persistence-serialization-schema-evolution/index.md) | Persistence, Serialization, and Schema Evolution | adapts storage to the domain without flattening meaning |
+| [Module 07](module-07-time-scheduling-concurrency-boundaries/index.md) | Time, Scheduling, and Concurrency Boundaries | adds clocks, tasks, queues, and concurrency without stealing ownership |
+| [Module 08](module-08-testing-contracts-verification-depth/index.md) | Testing, Contracts, and Verification Depth | turns verification into a design discipline instead of afterthought coverage |
+| [Module 09](module-09-public-apis-extension-governance/index.md) | Public APIs, Extension Seams, and Governance | publishes stable routes and narrow extension seams without losing review control |
+| [Module 10](module-10-performance-observability-security-review/index.md) | Performance, Observability, and Security Review | reviews the design under pressure, visibility, trust, and long-term stewardship |
 
-## Working model
+## The running example
 
-The course uses a monitoring-system domain as the running example. That domain is
-small enough to reason about and rich enough to force real design choices around
-state, interfaces, aggregates, events, failure handling, construction boundaries,
-and persistence-session pressure.
+The course uses a monitoring-system domain as the running capstone.
 
-## How to use the running example
+That domain is:
 
-- Read each module overview first to understand the design pressure for that stage.
-- Keep the capstone open while reading the later modules so every abstraction stays attached to one domain.
-- Use the refactor chapters as checkpoints rather than optional appendices.
-- Re-run the capstone tests after modules that materially change how you think about boundaries.
+- small enough to reason about
+- rich enough to force real design choices
+- operational enough to test persistence, runtime, governance, and review discipline
 
-## What you will build
+Use the capstone as a design mirror, not only as a sample application.
+
+## What you should be able to do by the end
 
 By the end of the course, you should be able to:
 
@@ -149,34 +200,32 @@ By the end of the course, you should be able to:
 - evolve storage, codecs, and compatibility boundaries without flattening the domain
 - keep time, concurrency, logging, retries, and observability explicit
 - publish public APIs and extension points that remain governable under change
+- review one design change across semantics, proof, public contract, and operations
 
 ## Common failure modes this course is trying to prevent
 
 - treating classes as containers instead of contracts
-- using inheritance because it feels reusable rather than because it preserves substitutability
-- using `super()`, mixins, or framework base classes without being able to explain the call chain
-- hiding invalid states behind `None`, ad hoc flags, or informal conventions
+- using inheritance because it feels reusable rather than because it preserves a stable
+  role
+- hiding invalid states behind `None`, flags, or informal conventions
 - scattering invariants across multiple objects with no clear owner
 - mixing domain rules, orchestration, persistence, and integrations in the same class
-- leaking construction, configuration, or service location into domain code
-- flattening failures into generic exceptions with no recovery contract
-- letting ORM sessions and lazy loading redefine the apparent object contract
-- introducing "small" changes that silently widen public API or lifecycle obligations
-- letting serialized shapes, async wrappers, or plugin hooks bypass the intended boundaries
-- optimizing or instrumenting the system in ways that quietly change semantics or expose secrets
+- letting serialized shapes, async wrappers, or plugin hooks bypass the intended
+  boundaries
+- optimizing or instrumenting the system in ways that quietly change semantics or expose
+  secrets
 
 ## Reading order
 
 - Start with [Start Here](guides/start-here.md).
-- Continue with [Proof Matrix](guides/proof-matrix.md), [Module Promise Map](guides/module-promise-map.md), [Course Guide](guides/course-guide.md), and [Learning Contract](guides/learning-contract.md).
-- Use [Module Checkpoints](guides/module-checkpoints.md) and [Pressure Routes](guides/pressure-routes.md) when you need a more intentional route.
-- Start with [Orientation](module-00-orientation/index.md).
-- Work through Modules 01 to 10 in order.
-- Use the [Capstone](capstone/index.md) and [Proof Ladder](guides/proof-ladder.md) to connect the prose to runnable code honestly.
+- Continue with [Orientation](module-00-orientation/index.md).
+- Keep [Course Guide](guides/course-guide.md), [Learning Contract](guides/learning-contract.md), and [Module Promise Map](guides/module-promise-map.md) nearby.
+- Work through Modules 01 to 10 in order unless [Pressure Routes](guides/pressure-routes.md) gives you a narrower honest entry.
+- Use [Capstone](capstone/index.md) and [Proof Ladder](guides/proof-ladder.md) to connect prose to runnable proof only when the claim still feels weak.
 
-## Expected reading rhythm
+## Exit check
 
-- Read one module overview before touching its chapters.
-- Read chapter prose in order unless you are deliberately reviewing.
-- Pause at each refactor chapter and explain the design shift in your own words.
-- Use the capstone as a design mirror, not only as a code sample.
+Leave this page only when you can say:
+
+> My entry route is `____`, the ownership question I am carrying is `____`, and the
+> first module band I actually need is `____`.

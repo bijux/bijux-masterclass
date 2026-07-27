@@ -1,6 +1,5 @@
 # Pressure Routes
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,73 +17,97 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  problem["Name the current design problem"] --> module["Choose the smallest module entry"]
+  module --> support["Keep one support page nearby"]
+  support --> capstone["Cross-check one capstone surface"]
+  capstone --> proof["Use one proof step only if needed"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Use this page when the module titles are slower than the real problem in front of you.
 
-Use this page when you do not want the full front-to-back route. It gives the smallest
-honest entry path based on the pressure you are under right now.
+It routes from design pressure to the smallest honest starting point.
 
-## Route by design question
+This page is especially important for a missed-class learner because it lets you enter
+by the pressure you can already name instead of pretending you always know the perfect
+module order in advance.
 
-| If the question is... | Start with | Keep nearby | Capstone cross-check |
+## Route by problem
+
+| If the real problem is... | Start with | Keep nearby | Capstone cross-check |
 | --- | --- | --- | --- |
-| What kind of object is this, and what contract should it carry? | Modules 01 to 03 | [Module Promise Map](module-promise-map.md) | model and lifecycle tests |
-| Should this be a value object, entity, service, or policy? | Module 02 | [Module Checkpoints](module-checkpoints.md) | domain objects, policies, and adapters |
-| How do I stop illegal states from leaking through? | Module 03 | [Module Checkpoints](module-checkpoints.md) | lifecycle APIs and validation surfaces |
-| Which object should own a cross-object invariant? | Module 04 | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) | aggregate root, events, and projections |
-| Where should retries, cleanup, or recovery behavior live? | Module 05 | [Proof Matrix](proof-matrix.md) | runtime facade and unit-of-work boundary |
-| How do I add persistence without flattening the model? | Module 06 | [Capstone File Guide](../capstone/capstone-file-guide.md) | repository and projection boundaries |
-| How do clocks, queues, or async work without corrupting ownership? | Module 07 | [Proof Ladder](proof-ladder.md) | runtime coordination and tests |
-| Do the tests actually prove the intended contracts? | Module 08 | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) | test suite and saved review bundles |
-| What should be public, internal, or extensible? | Module 09 | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) | facade and extension seams |
-| Is this design operationally trustworthy? | Module 10 | [Proof Ladder](proof-ladder.md) | inspect, verify-report, confirm, and proof routes |
+| I cannot explain what kind of object this is | Modules 01-03 | [Module Promise Map](module-promise-map.md) | `model.py` and lifecycle tests |
+| I do not know where behavior belongs | Module 02 | [Module Checkpoints](module-checkpoints.md) | `application.py`, `model.py`, and policies |
+| illegal states keep leaking through | Module 03 | [Module Checkpoints](module-checkpoints.md) | lifecycle tests and inspection outputs |
+| one invariant is scattered across several objects | Module 04 | [Proof Ladder](proof-ladder.md) | aggregate, projections, and architecture surfaces |
+| retries, cleanup, or error handling feel accidental | Module 05 | [Proof Ladder](proof-ladder.md) | `runtime.py`, `repository.py`, and unit-of-work tests |
+| persistence is flattening the domain | Module 06 | [Proof Ladder](proof-ladder.md) | repository boundaries and verification artifacts |
+| clocks, queues, threads, or async work are stealing ownership | Module 07 | [Proof Ladder](proof-ladder.md) | runtime tests and walkthrough artifacts |
+| tests exist, but I do not trust what they prove | Module 08 | [Module Checkpoints](module-checkpoints.md) | test suite and verification bundle |
+| I need a stable public route or extension seam | Module 09 | [Proof Ladder](proof-ladder.md) | application surface and extension guide |
+| I need to review whether the design survives production pressure | Module 10 | [Proof Ladder](proof-ladder.md) | full proof route and review worksheet |
 
-## Route by pressure
+The goal of the table is not to replace the course sequence. The goal is to stop a real
+problem from turning into random browsing.
 
-| Pressure | Start here | Then | Capstone cross-check |
-| --- | --- | --- | --- |
-| I cannot explain what this object actually means | Module 01 | Module 02 | capstone value types and entity boundaries |
-| I do not know where behavior belongs | Module 02 | Module 03 | domain objects, policies, adapters |
-| Illegal states keep leaking through | Module 03 | Module 04 | lifecycle and aggregate rules |
-| Cross-object invariants are scattered | Module 04 | Module 05 | aggregate root and projection surfaces |
-| Cleanup, retries, and errors feel random | Module 05 | Module 06 | runtime facade and unit-of-work boundary |
-| Persistence is flattening the domain | Module 06 | Module 08 | repository and projection tests |
-| Threads, queues, or async code are corrupting ownership | Module 07 | Module 08 | runtime orchestration and proof route |
-| I need to know if this system is trustworthy | Module 08 | Module 09 and 10 | proof and public review guides |
-| I need to expose a public API or plugin seam safely | Module 09 | Module 10 | facade and extension review |
-| The system is already in production and I need an operational review | Module 10 | then revisit Module 05 or 08 as needed | confirm and inspection routes |
+## Route by learner situation
 
-## Bad route choices to avoid
+| Situation | Start here | Why |
+| --- | --- | --- |
+| you missed class and only know the symptom | the table above | it lets you enter by pressure instead of by title |
+| you know the module name but the examples still feel vague | the named capstone cross-check | it forces one concrete executable surface |
+| you keep jumping to late modules | [Module Promise Map](module-promise-map.md) | it reminds you what earlier modules were supposed to settle first |
+| you keep over-proving everything | [Proof Ladder](proof-ladder.md) | it sizes the evidence to the question |
 
-- starting at Module 09 when the real problem is object semantics
-- starting at Module 10 when the system still has no clear owner for invariants
-- reading only concurrency material when the shared-state model is already broken
-- using the capstone proof route as a substitute for understanding the earlier modules
+This second table exists because learners often need a route not only by topic, but by
+study situation.
 
-## If you have only one hour
+## Fast paths that are usually safe
 
-- read [Course Home](../index.md)
-- read [Module Promise Map](module-promise-map.md)
-- pick one route from the table above
-- end with the matching capstone guide instead of the strongest proof command
+- object meaning is weak: go to Modules 01, 02, then 03
+- collaboration authority is weak: go to Modules 04, then 05
+- persistence or runtime pressure is weak: go to Modules 06, then 07
+- trust and governance are weak: go to Modules 08, then 09, then 10
 
-## If the second half of the course feels heavier than the first
+These are safe shortcuts because they still preserve the arc logic of the course.
 
-Use this shorter arc instead of treating Modules 04 to 10 as seven isolated topics:
+## Bad route choices to reject
 
-1. Start at Module 04 for cross-object authority.
-2. Move to Module 05 for failure, cleanup, and evolution cost.
-3. Move to Module 06 and Module 07 for persistence and runtime pressure.
-4. End at Modules 08 to 10 for proof depth, public boundaries, and production review.
+- starting at Module 09 when object roles are still unclear
+- starting at Module 10 when authoritative ownership is still unsettled
+- reading concurrency material when shared-state discipline is already broken
+- using the capstone proof routes as a substitute for learning the earlier ownership
+  lessons
 
-At each step, inspect one capstone surface before escalating to the strongest proof
-route.
+When one of these sounds tempting, the right move is usually to narrow the question,
+not to jump higher in the stack.
 
-This course gets stronger when you can enter from pressure honestly instead of
-pretending every route should always start from the same place.
+## One-hour rescue route
+
+If you are stuck but want one honest hour:
+
+1. read [Course Guide](course-guide.md)
+2. pick one pressure from this page
+3. read the matching module overview only
+4. inspect the named capstone surface
+5. stop after one design question becomes clearer
+
+That is a better rescue than trying to absorb several late-module pages at once.
+
+## Build a pressure note
+
+Before you leave this page, write:
+
+- my real pressure is...
+- the smallest module entry is...
+- the capstone surface I should inspect is...
+- the first proof step I might need is...
+
+That note keeps you from turning a good route into another vague intention.
+
+## Exit check
+
+Leave this page only when you can say:
+
+> My real pressure is `____`, so I should start with `____`, keep `____` nearby, and
+> cross-check it in `____`.

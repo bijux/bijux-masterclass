@@ -1,0 +1,6 @@
+# input_path	must_rebuild	must_remain
+src/util.c	build/util.o,app,all	build/main.o,build/sub/sub.o,build/bin/dyn1,build/bin/dyn2,build/include/dynamic.h
+include/util.h	build/main.o,build/util.o,app,all	build/sub/sub.o,build/bin/dyn1,build/bin/dyn2,build/include/dynamic.h
+include/sub.h	build/main.o,build/sub/sub.o,app,all	build/util.o,build/bin/dyn1,build/bin/dyn2,build/include/dynamic.h
+scripts/gen_dynamic_h.py	build/include/dynamic.h,build/bin/dyn1,build/bin/dyn2,all	build/main.o,build/util.o,build/sub/sub.o,app
+src/dynamic/dyn1.c	build/bin/dyn1,all	build/main.o,build/util.o,build/sub/sub.o,app,build/bin/dyn2,build/include/dynamic.h

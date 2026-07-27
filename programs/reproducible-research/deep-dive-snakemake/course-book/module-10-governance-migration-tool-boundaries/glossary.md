@@ -1,34 +1,16 @@
 # Glossary
 
+Module 10 is about stewardship under change. When a repository is being migrated,
+governed, or split across tools, weak language makes weak decisions. This glossary keeps
+the discussion anchored in reviewable boundaries instead of slogans.
 
-<!-- page-maps:start -->
-## Page Maps
+## How to use this glossary
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
+Come back to this page whenever a migration or governance discussion starts drifting into
+generic words like "modernize," "platform," "cleanup," or "ownership."
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-This glossary keeps the language of Module 10 stable.
-
-The goal is practical stewardship clarity: when migration, governance, and tool-boundary
-terms keep the same meaning, review gets calmer and more precise.
+The glossary is not here to sound formal. It is here to keep stewardship discussion sharp
+enough that two maintainers can mean the same thing.
 
 ## Terms
 
@@ -61,3 +43,43 @@ If a Module 10 discussion starts getting vague, ask which term has become unclea
 - is this concern still within Snakemake's tool boundary?
 
 Those questions usually turn a fuzzy migration argument into a reviewable one.
+
+## Confusion pairs worth fixing early
+
+These pairs matter because governance work often sounds responsible while still weakening
+the repository:
+
+- `current truth` versus hoped-for redesign: current truth is what the repository really
+  does now; a redesign is only a proposal until proof and migration evidence support it.
+- `policy boundary` versus semantic change: policy should change how the workflow runs, not
+  what the workflow means.
+- `migration step` versus `retirement condition`: a migration step moves one boundary; a
+  retirement condition says when an old surface may safely disappear.
+- `tool boundary` versus `hybrid ownership`: the tool boundary names what Snakemake should
+  own; hybrid ownership describes a deliberate split where another system owns adjacent
+  concerns without taking file-truth ownership away from Snakemake.
+
+## Quick self-check
+
+Before you leave Module 10, make sure you can answer these in a full sentence:
+
+- If a maintainer wants to delete an old report route before the replacement can be
+  compared honestly, which missing safety condition should stop that deletion?
+- If a profile change starts altering final artifact meaning, what governance problem has
+  crossed the line from policy into semantics?
+- If helper layers hide critical workflow behavior from normal review, which module term
+  captures that hidden stewardship risk?
+- If a platform service takes over deployment but Snakemake still owns file contracts and
+  pipeline truth, what ownership pattern are you describing?
+
+## Terms you should be able to use by the end of the day
+
+By the end of Module 10, you should be comfortable using these in a full sentence:
+
+- current truth
+- review route
+- migration step
+- preserved proof
+- retirement condition
+- tool boundary
+- hybrid ownership

@@ -53,6 +53,7 @@ be a first-contact playground for Snakemake syntax.
 | what this repository promises | `make walkthrough` | `make tour` |
 | does the workflow still hold under ordinary proof | `make verify` | `make proof` |
 | what differs across execution contexts | `make profile-audit` | `make proof` |
+| does a reusable module expose caller-owned paths and policy | `make module-interface-audit` | `make module-interface-selftest` |
 | what is safe for downstream trust | `make verify-report` | `make confirm` |
 | should I trust this as a stewardship specimen | `make proof` | `make confirm` |
 
@@ -86,6 +87,8 @@ bounded proof route without turning the capstone into a browsing exercise.
 | `tour` | the executed workflow bundle can be reviewed in one place | learners can inspect the evidence path end to end |
 | `verify-report` | publish-boundary review evidence is saved as a bundle | downstream trust can be inspected later |
 | `profile-audit` | local, CI, and scheduler policy differences stay explicit | policy does not get mistaken for semantics |
+| `module-interface-audit` | explicit and hidden module models exhibit their named config, caller, plan, and artifact contracts | successful execution does not conceal coupling |
+| `module-interface-selftest` | broad config, missing bindings, and stale evidence are rejected | the interface gate is discriminating rather than ceremonial |
 | `proof` | the sanctioned workflow review route exists and stays coherent | stewardship has a durable route |
 | `confirm` | the strongest built-in confirmation path still passes | final review is stronger than first-pass learning |
 
@@ -109,6 +112,7 @@ All capstone documentation lives under `docs/`:
 - [EXTENSION_GUIDE.md](docs/extension-guide.md)
 - [FILE_API.md](docs/file-api.md)
 - [INDEX.md](docs/index.md)
+- [MODULE_INTERFACE_AUDIT_GUIDE.md](docs/module-interface-audit-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](docs/profile-audit-guide.md)
 - [PROOF_GUIDE.md](docs/proof-guide.md)
 - [PUBLISH_REVIEW_GUIDE.md](docs/publish-review-guide.md)

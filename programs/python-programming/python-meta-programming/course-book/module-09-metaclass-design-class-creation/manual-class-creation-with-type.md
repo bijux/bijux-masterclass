@@ -31,6 +31,10 @@ primitive directly.
 That matters because metaclasses are not a separate magical system. They are an extension
 of the same class-construction story.
 
+This page matters because many learners jump from "classes are runtime values" straight to
+"therefore metaclasses must be the right owner." This page should stop that jump by making
+the smaller owner visible first.
+
 ## The sentence to keep
 
 `type(name, bases, namespace)` is the default class-construction primitive, and
@@ -38,6 +42,16 @@ understanding it makes metaclasses feel like control over class creation rather 
 mystical syntax.
 
 That is the foundation for the rest of the module.
+
+Keep one more sentence beside it:
+
+> if one explicit `type(...)` call solves the problem clearly, a repeating metaclass owner is usually too strong.
+
+For self-study, turn that into a concrete test:
+
+- can I point to the one call site that owns this dynamic construction?
+- can I name what would have to repeat across future classes before a family-wide owner became justified?
+- can I explain the generated class without using mystical language such as "meta" or "magic"?
 
 ## What the three arguments mean
 
@@ -54,6 +68,15 @@ and each part has a clear job:
 - `namespace` provides the class attributes, methods, and metadata
 
 That is enough to build a class object directly.
+
+Use this table before escalating from `type(...)` to a metaclass:
+
+| Pressure | Review question |
+| --- | --- |
+| one-off dynamic construction | is one explicit call already enough? |
+| repeated hierarchy-wide rule | does every future subclass need the same owner automatically? |
+| namespace shaping | does the rule belong to class creation or only to this one factory? |
+| blast radius | does the design affect one class or an entire family and import path? |
 
 ## A compact example
 
@@ -81,6 +104,9 @@ This example is small, but it already shows the main point:
 
 class creation is something Python can perform from data.
 
+That sentence matters because it removes the mysticism without forcing metaclass
+escalation.
+
 ## Why this matters before metaclasses
 
 Metaclasses only make sense once you see that class creation is already a runtime action.
@@ -95,6 +121,17 @@ then a metaclass is a way to intercept or customize that process.
 
 That is much easier to reason about than “metaclasses are the class of a class” by itself.
 
+## Evidence route for `type(...)` reviews
+
+Use this route whenever dynamic construction starts to sound more exotic than it is:
+
+| Evidence step | What it proves |
+| --- | --- |
+| identify the exact `name`, `bases`, and `namespace` inputs | shows the raw class-construction ingredients |
+| inspect one generated method or attribute | shows how namespace data becomes class behavior |
+| inspect metadata such as `__module__` | shows what the factory must supply manually |
+| ask whether another class needs the same logic automatically | shows whether a metaclass owner is even in scope |
+
 ## The namespace is not just a bag of attributes
 
 The `namespace` argument is where the future class body lands conceptually:
@@ -107,6 +144,15 @@ The `namespace` argument is where the future class body lands conceptually:
 
 This matters because later hooks such as metaclass `__new__` and `__prepare__` are really
 about controlling or observing that namespace at the right time.
+
+Use this namespace table when the review gets fuzzy:
+
+| Namespace item | Why it matters for ownership |
+| --- | --- |
+| methods and descriptors | show what behavior the factory is creating directly |
+| metadata such as `__module__` | shows what a plain class statement would usually supply for free |
+| helper constants | shows what belongs only to this one generated class |
+| special names | shows where dynamic construction can leave a class half-formed if details are skipped |
 
 ## A note about `__module__`
 
@@ -131,6 +177,22 @@ def make_class_in_module(name, module):
 
 This is a small detail, but it keeps dynamic classes from feeling half-formed.
 
+It also teaches a larger lesson:
+
+dynamic construction is honest only when the factory supplies the metadata a human reader
+would expect from a normal class statement.
+
+## A factory audit card
+
+Use this card whenever a `type(...)` factory starts sounding more powerful than it is:
+
+| Question | Strong answer shape |
+| --- | --- |
+| what data is truly dynamic here? | one changing name, base set, namespace rule, or metadata input |
+| what metadata must the factory supply manually? | `__module__`, docs, descriptors, or another named field |
+| what stays local to this one call site? | the entire class-construction decision |
+| what condition would force escalation later? | repeated family-wide construction policy or class-creation-time invariant |
+
 ## Why `type(...)` is still lower-power than a custom metaclass
 
 Manual `type(...)` creation is dynamic, but it is still explicit and local:
@@ -142,6 +204,37 @@ Manual `type(...)` creation is dynamic, but it is still explicit and local:
 That makes it a lower-power tool than a metaclass, even though both participate in class
 creation.
 
+## Common overclaims to reject
+
+Reject these descriptions when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "we are basically doing metaprogramming already" | "we are explicitly constructing one class from data" |
+| "dynamic classes need a metaclass next" | "a metaclass is only needed if class-creation control must repeat across a family" |
+| "the factory hides the same complexity as a metaclass" | "the factory keeps ownership local to one call site" |
+| "the namespace is just an implementation detail" | "the namespace is the class body made explicit" |
+
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "it is dynamic so a metaclass is nearby anyway" | dynamic construction alone does not create a hierarchy-wide owner |
+| "the factory is more advanced than a class statement" | advanced does not explain why the owner is still local |
+| "the namespace just contains the code" | that wording hides the explicit class-construction inputs the reader must inspect |
+| "this could scale to many classes later" | later is not a present justification for stronger ownership |
+
+## Failure modes for manual class creation
+
+These are the mistakes this page is trying to prevent:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| escalating to metaclasses before one explicit factory is tried | the design jumps to a stronger owner than needed | prove that one-off `type(...)` construction is insufficient first |
+| leaving metadata such as `__module__` implicit when it matters | generated classes feel incomplete in debugging and tooling | set the metadata deliberately |
+| using factories when no real dynamic input exists | the code becomes harder to read for no gain | replace with a normal class statement |
+| describing the factory in mystical terms | readers stop checking the actual `name`, `bases`, and `namespace` inputs | restate the construction in plain class-creation language |
+
 ## What this page makes clear
 
 The point is not “build classes dynamically all the time.”
@@ -151,6 +244,10 @@ The boundary is:
 - class creation is a runtime event
 - class objects can be built explicitly
 - metaclasses only make sense as control over that event
+
+Before you leave this page, write one sentence beginning:
+
+- "a metaclass would only become necessary here if..."
 
 Once that is clear, the rest of Module 09 becomes much less mystical.
 
@@ -163,6 +260,16 @@ When reviewing code that uses `type(...)`, keep these questions close:
 - does the class need `__module__` or other metadata set manually?
 - would a plain `class` statement still be clearer if no true dynamic construction is needed?
 - is this dynamic class creation staying local, or is it drifting toward a metaclass-level concern?
+- what exact stronger owner would be required before `type(...)` stopped being enough?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- point to what each `type(...)` argument contributes in one real example
+- name one metadata field that a dynamic factory may need to set manually
+- explain why the design is still local instead of hierarchy-wide
+- say what condition would justify escalating from `type(...)` to a metaclass
 
 ## What to practice from this page
 

@@ -1,6 +1,5 @@
 # Proof Ladder
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,58 +17,100 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["State the exact claim"] --> rung["Choose the lightest rung that could disprove it"]
+  rung --> surface["Inspect the matching page, file, or bundle"]
+  surface --> owner["Name the owning boundary"]
+  owner --> escalate["Escalate only if doubt remains"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Use this page when the question is not:
 
-Use this page when you are deciding how much proof you need. Not every OOP question
-needs the strongest capstone command, and using the heaviest route too early often
-hides the actual design issue.
+- where is the evidence?
+
+but:
+
+- how much evidence is proportionate?
+
+The wrong proof size wastes time and often hides the real design problem. Too little
+proof leaves a claim decorative. Too much proof turns every question into a full-system
+investigation when a lighter route would have answered it honestly.
 
 ## The ladder
 
-| Need | Smallest honest proof | Escalate when |
+| Need | Smallest honest rung | Move up when... |
 | --- | --- | --- |
-| understand the course promise | [Course Home](../index.md) and [Start Here](start-here.md) | you still cannot place the module you need |
-| understand one module promise | [Module Promise Map](module-promise-map.md) and the module overview | the ownership rule is still fuzzy |
-| know whether you are ready to move on | [Module Checkpoints](module-checkpoints.md) | you cannot explain the checkpoint in code |
-| inspect the capstone shape | [Capstone Map](../capstone/capstone-map.md) and [Capstone File Guide](../capstone/capstone-file-guide.md) | you need executable evidence |
-| review architecture and boundaries | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) and [Capstone Walkthrough](../capstone/capstone-walkthrough.md) | you need durable saved evidence |
-| review executable evidence | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) and `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` | you need to modify or extend the capstone itself |
+| understand the course arc | [Course Guide](course-guide.md) and [Course Map](../module-00-orientation/course-map.md) | you still cannot place the current pressure |
+| understand one module contract | [Module Promise Map](module-promise-map.md) and the module overview | the promise still sounds true only in prose |
+| decide whether a module is earned | [Module Checkpoints](module-checkpoints.md) | you cannot point to a concrete capstone surface |
+| find the right capstone surface | [Capstone Map](../capstone/capstone-map.md) and [Capstone File Guide](../capstone/capstone-file-guide.md) | you need executable evidence |
+| review ownership and architecture | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) and [Capstone Walkthrough](../capstone/capstone-walkthrough.md) | the saved or executable evidence still matters |
+| inspect saved state or scenario evidence | `make PROGRAM=python-programming/python-object-oriented-programming inspect` or `capstone-walkthrough` | the claim crosses behavior and test agreement |
+| review executable confirmation | `make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report` | you need the strongest local confirmation route |
+| confirm the full learner-facing route | `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` or `proof` | you are reviewing a public teaching artifact, not a narrow claim |
 
-## What each rung cannot prove on its own
+The ladder works only if you state the claim first. If the claim is vague, every rung
+will feel too heavy or too weak.
 
-- reading pages can explain the intended ownership, but they cannot prove current behavior
-- inspection bundles can show state and narrative clearly, but they cannot replace targeted behavioral checks
-- confirmation routes can prove the current local contract, but they cannot repair a vague question or an unclear ownership claim
-- published proof routes can prove the public review path still works, but they are too heavy for every narrow design question
+## What each rung cannot do by itself
 
-## Rules for escalation
+- reading pages can clarify intended ownership, but it cannot prove current behavior
+- maps and walkthroughs can make the design legible, but they cannot replace targeted
+  checks
+- inspection bundles can show state and sequence, but they cannot prove every contract
+- confirmation routes can prove the current local route, but they cannot rescue a vague
+  question
 
-- Read before you run when the question is architectural.
-- Run before you speculate when the question is behavioral.
-- Use the smallest proof that answers the current question.
-- Escalate one rung at a time instead of jumping directly to confirmation.
+This is why the ladder is not about proving more. It is about proving the right thing at
+the right cost.
+
+## Escalation rules
+
+- read before you run when the question is architectural
+- run before you speculate when the question is behavioral
+- use the lightest rung that could prove you wrong
+- escalate one rung at a time instead of jumping directly to the strongest command
+
+The "prove you wrong" test matters because it stops proof from becoming ceremony.
 
 ## Common misuse
 
-- using `capstone-confirm` to answer a question that a module overview already settles
-- treating saved proof artifacts as if they replace reading the design surfaces
-- reading the capstone without knowing what module promise you are trying to confirm
-- escalating to the strongest route before deciding which object or boundary is actually under review
+- using `capstone-confirm` to answer a question settled by a module checkpoint
+- reading saved artifacts before naming the owner under review
+- treating `proof` as if it were a substitute for understanding the module promise
+- escalating because the lighter route felt uncomfortable, not because it failed
 
-## Escalation checkpoints
+The goal is not to avoid strong proof. The goal is to make sure strong proof is earned.
 
-Before you move up one rung, make sure you can answer these:
+## Quick chooser
 
-- what exact claim am I trying to prove
-- which object or boundary should own that claim
-- what weaker route already failed to answer it honestly
+| If the question starts with... | Start here |
+| --- | --- |
+| "what is this module supposed to teach?" | promise map |
+| "am I ready to move on?" | checkpoints |
+| "which capstone surface matches this?" | capstone map |
+| "how does the story look?" | walkthrough |
+| "what does the current state prove?" | inspect |
+| "do tests and artifacts agree?" | verify-report |
+| "does the strongest route still hold?" | capstone-confirm |
 
-The ladder keeps the proof route proportional. That makes the capstone support the
-course instead of overshadowing it.
+Use this table when you know the question shape but not the rung name.
+
+## Build a proof note
+
+Before you use a proof route, write:
+
+- the exact claim is...
+- the lightest honest rung is...
+- I will escalate only if...
+
+This note sounds small, but it prevents one of the most common self-study mistakes:
+
+- reaching for a heavy proof route because the lighter one felt less impressive
+
+## Exit check
+
+Leave this page only when you can say:
+
+> The claim is `____`, the lightest honest rung is `____`, and I would escalate to
+> `____` only if that rung leaves doubt.

@@ -25,267 +25,233 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Small Make builds can survive with informal naming and casual discovery.
+A flat output directory can appear correct until a second subsystem introduces a familiar
+basename such as `util`, `config`, or `summary`. At that point, successful execution is a
+weak signal: Make may have built one file while the mapping silently discarded another
+owner.
 
-Larger builds usually cannot.
-
-As a repository grows, the first architectural failures often look like this:
-
-- source discovery order changes unexpectedly
-- target names collide across subsystems
-- output paths stop communicating ownership
-- every component invents its own naming conventions
-- the build slowly drifts toward disconnected local truths
-
-This page is about the rules that keep a growing repository from becoming structurally
-ambiguous.
-
-## The sentence to keep
-
-When a build starts growing, ask:
-
-> if another component adds files tomorrow, will the current discovery and naming rules keep
-> the graph stable and the ownership legible?
-
-That question is what turns growth into architecture instead of improvisation.
-
-## Discovery is an architectural choice
-
-Discovery often begins innocently:
-
-```make
-SRCS := $(wildcard src/*.c)
-```
-
-That may be enough for a tiny project. As soon as the tree grows, discovery rules become a
-policy decision:
-
-- which directories count as source roots
-- which file patterns are included
-- whether the result order is stable
-- how multiple components avoid stepping on each other
-
-This is why Module 07 treats discovery as architecture rather than convenience.
-
-## Rooted discovery beats wandering discovery
-
-One of the healthiest habits for larger repositories is rooted discovery:
-
-```make
-APP_SRCS := $(sort $(wildcard src/app/*.c))
-LIB_SRCS := $(sort $(wildcard src/lib/*.c))
-```
-
-This is better than broad, wandering discovery because it says:
-
-- these directories are part of the build contract
-- files outside them do not accidentally become build inputs
-- order is stabilized intentionally
-
-That makes the build easier to review and easier to extend.
-
-## Sorting is part of graph stability
-
-Discovery order matters more than many people expect.
-
-If source lists affect:
-
-- object ordering
-- link ordering
-- generated manifests
-- grouped publication sets
-
-then unstable ordering can change the graph or the artifact shape even when the repository
-meaning has not changed.
-
-That is why this module keeps reinforcing the same habit:
-
-```make
-SRCS := $(sort $(wildcard src/**/*.c))
-```
-
-The sort is not cosmetic. It is a small determinism fence.
-
-## Namespacing prevents target collisions
-
-As repositories grow, collisions become a real risk:
-
-- two components both want `build/main.o`
-- two generated reports both want `summary.txt`
-- two packages both want `dist.tar.gz`
-
-This is a naming problem before it becomes a runtime problem.
-
-Healthy namespacing often looks like:
-
-```make
-APP_OBJS := $(patsubst src/app/%.c,build/app/%.o,$(APP_SRCS))
-LIB_OBJS := $(patsubst src/lib/%.c,build/lib/%.o,$(LIB_SRCS))
-```
-
-Now the path communicates ownership:
-
-- `build/app/...` belongs to the app component
-- `build/lib/...` belongs to the library component
-
-That makes both debugging and code review easier.
-
-## Output paths should tell a story
-
-A good output path often answers one or more of these questions:
-
-- which component owns it
-- which stage produced it
-- whether it is generated, packaged, or final
-
-For example:
-
-- `build/app/main.o`
-- `build/generated/api.h`
-- `dist/app-linux.tar.gz`
-
-These names are useful because they communicate structure without extra commentary.
-
-That is a big architectural advantage over flat output directories where every target must
-be disambiguated mentally.
-
-## One repository does not require many disconnected DAGs
-
-When growth becomes painful, teams often reach for recursive separation too early:
-
-- `make -C app`
-- `make -C lib`
-- `make -C tools`
-
-Sometimes that boundary is real. Often it is a way of avoiding the harder work of naming
-and discovery discipline inside one coherent DAG.
-
-This page is not saying recursion is always wrong. It is saying:
-
-if the repository still wants one coherent build truth, then namespacing and rooted
-discovery are usually safer first moves than splitting reality into disconnected local
-graphs.
-
-## A small growth example
-
-Suppose the repository grows from:
+This lesson uses two source roots that deliberately collide:
 
 ```text
 src/
-  main.c
-  util.c
+  cli/util.txt    owner=cli
+  lib/util.txt    owner=lib
 ```
 
-to:
+The central architecture invariant is:
+
+> Every selected source that promises its own artifact must map to one distinct,
+> owner-identifiable output path.
+
+## Run the collision audit
+
+From `programs/reproducible-research/deep-dive-make/capstone/`, run:
+
+```sh
+gmake architecture-contract-audit
+```
+
+Open these two rows in the generated `summary.tsv`:
 
 ```text
-src/
-  app/main.c
-  app/util.c
-  lib/main.c
-  lib/io.c
+output-ownership	flat-output	...	FLAT_OUTPUT_OWNERSHIP_COLLAPSED	PASS
+output-ownership	namespaced-output	...	SUBSYSTEM_OUTPUT_OWNERSHIP_PRESERVED	PASS
 ```
 
-The old object mapping:
+The first row passes because the audit successfully reproduced a defect. Read the finding,
+not just the result column.
+
+## Broken model: erase ownership before building
+
+The flat specimen starts with two sources:
 
 ```make
-OBJS := $(patsubst src/%.c,build/%.o,$(SRCS))
+SOURCES := src/cli/util.txt src/lib/util.txt
 ```
 
-may now create collisions or confusing paths.
-
-A healthier growth-aware mapping is:
+It then discards their parent paths:
 
 ```make
-APP_SRCS := $(sort $(wildcard src/app/*.c))
-LIB_SRCS := $(sort $(wildcard src/lib/*.c))
-
-APP_OBJS := $(patsubst src/app/%.c,build/app/%.o,$(APP_SRCS))
-LIB_OBJS := $(patsubst src/lib/%.c,build/lib/%.o,$(LIB_SRCS))
+OUTPUTS := $(sort $(addprefix build/,$(notdir $(SOURCES))))
 ```
 
-The mapping grew with the repository instead of pretending the old flat model still
-explains ownership.
+Evaluate that expression from the inside:
 
-## Discovery policy should be visible, not accidental
+1. `$(notdir ...)` turns both sources into `util.txt util.txt`.
+2. `$(addprefix ...)` turns both into `build/util.txt build/util.txt`.
+3. `$(sort ...)` removes the duplicate.
 
-The build should make it easy to answer:
+Two selected sources have become one target before any recipe runs.
 
-- where do sources come from
-- why are these files included
-- how would a new component join the system
+```mermaid
+flowchart LR
+  cli["src/cli/util.txt<br/>owner=cli"]
+  lib["src/lib/util.txt<br/>owner=lib"]
+  strip["notdir"]
+  output["build/util.txt<br/>one path"]
 
-If the answer is "search around until you notice the right wildcard pattern," the
-architecture is already too implicit.
+  cli --> strip
+  lib --> strip
+  strip --> output
+```
 
-This is why some repositories keep discovery policy in a dedicated layer such as
-`mk/objects.mk` or `mk/discovery.mk`. It gives the rule a home and a review boundary.
+The rule makes the loss visible:
 
-## Naming conventions are part of the public architecture
+```make
+build/util.txt: $(SOURCES) | build/
+	{ printf 'selected=%s\n' '$<'; cat '$<'; } > $@
+```
 
-Developers often think namespacing is only a low-level path concern. It also affects the
-human-facing architecture:
+`$<` is the first prerequisite, so the output records the CLI source. The library source
+is listed as a prerequisite, but it never receives an artifact of its own. Make exits zero
+because the graph asked for exactly one target and that target was created.
 
-- target names
-- output directories
-- bundle names
-- generated artifact names
+Inspect the evaluated mapping and surviving file:
 
-Good conventions reduce explanation cost. Bad conventions create translation work in every
-conversation.
+```sh
+cat artifacts/audit/reproducible-research/deep-dive-make/architecture-contracts/traces/output-ownership-flat-output-map.log
+cat artifacts/audit/reproducible-research/deep-dive-make/architecture-contracts/workspace/output-ownership/flat-output/build/util.txt
+```
 
-For example, a repository is easier to extend if components follow one target naming model
-instead of each subsystem inventing its own build vocabulary.
+The evidence should establish all three facts:
 
-## Failure signatures worth recognizing
+- source count is two
+- unique output count is one
+- the surviving artifact says `owner=cli`
 
-### "The same target name means different things in different places"
+That is stronger than saying “flat paths might collide.”
 
-That usually means the naming system is too flat or too informal.
+## Control model: preserve the source namespace
 
-### "Adding a new component changed the order of unrelated outputs"
+The control changes one mapping:
 
-That often points to unstable discovery or unsorted lists.
+```make
+OUTPUTS := $(patsubst src/%,build/%,$(SOURCES))
+```
 
-### "We had to split into sub-builds because naming collisions got out of hand"
+The relative path below `src/` survives below `build/`:
 
-That may indicate architecture pressure that namespacing could have solved earlier.
+| Source | Output |
+| --- | --- |
+| `src/cli/util.txt` | `build/cli/util.txt` |
+| `src/lib/util.txt` | `build/lib/util.txt` |
 
-### "A newcomer cannot tell where to add files for a new subsystem"
+Separate pattern rules keep each prerequisite binding explicit:
 
-That means discovery policy is not visible enough.
+```make
+build/cli/%.txt: src/cli/%.txt | build/cli/
+	{ printf 'selected=%s\n' '$<'; cat '$<'; } > $@
 
-## A review question that improves growth discipline
+build/lib/%.txt: src/lib/%.txt | build/lib/
+	{ printf 'selected=%s\n' '$<'; cat '$<'; } > $@
+```
 
-Take one growing repository and ask:
+```mermaid
+flowchart LR
+  cli["src/cli/util.txt"] --> cli_out["build/cli/util.txt<br/>owner=cli"]
+  lib["src/lib/util.txt"] --> lib_out["build/lib/util.txt<br/>owner=lib"]
+```
 
-1. where discovery is rooted
-2. whether discovered lists are sorted
-3. how output paths communicate ownership
-4. which target names might collide as more components are added
-5. whether one coherent DAG is still possible with better naming discipline
+Now source count and unique output count are both two, and each file records the expected
+owner. The output path itself also communicates which subsystem owns the artifact.
 
-If those answers are weak, the repository is likely to get harder to reason about quickly.
+## Check cardinality before recipe correctness
 
-## What to practice from this page
+When each source is supposed to produce one output, review the mapping as a function:
 
-Choose one Make-based repository that has more than one subsystem and write down:
+```text
+source path -> output path
+```
 
-1. the discovery roots
-2. the naming pattern for outputs
-3. one likely future collision
-4. one namespacing improvement
-5. one place where a broad wildcard should become a rooted, sorted rule
+For the selected domain, ask:
 
-If you can do that cleanly, you are thinking about growth as an architectural problem
-instead of a cleanup chore.
+1. **Totality:** does every source map to an output?
+2. **Uniqueness:** do different sources map to different outputs?
+3. **Ownership:** can a reviewer recover the source owner from the output path?
+4. **Stability:** does adding an unrelated source leave existing mappings unchanged?
+
+A recipe can be perfectly written and still operate on a graph that failed the second
+question.
+
+For a small list, Make can expose a useful diagnostic surface:
+
+```make
+show-map:
+	@printf 'sources=%s\n' '$(SOURCES)'
+	@printf 'outputs=%s\n' '$(OUTPUTS)'
+```
+
+For a larger repository, publish a machine-readable source-to-output manifest and reject
+duplicate output keys before recipes execute.
+
+## Root discovery in declared ownership domains
+
+Namespacing answers where outputs belong. Rooted discovery answers which inputs belong to
+the build:
+
+```make
+CLI_SOURCES := $(sort $(wildcard src/cli/*.c))
+LIB_SOURCES := $(sort $(wildcard src/lib/*.c))
+SOURCES := $(CLI_SOURCES) $(LIB_SOURCES)
+```
+
+The explicit roots make the ownership domains reviewable. `$(sort ...)` stabilizes the
+order used by manifests, link commands, and publication lists.
+
+Do not confuse sorting with collision prevention. Sorting made the broken specimen’s
+duplicate disappear predictably; it did not make the mapping injective. Deterministic loss
+is still loss.
+
+## Decide whether one DAG still expresses the truth
+
+Colliding basenames do not automatically justify recursive builds such as:
+
+```sh
+gmake -C cli
+gmake -C lib
+```
+
+First ask whether the subsystems share a real dependency graph, tool policy, or final
+artifact. If they do, preserving ownership within one DAG keeps cross-subsystem
+dependencies visible.
+
+Use separate invocations when the boundary is operationally real and their contracts are
+explicit. Do not use them merely to hide a path-model failure that
+`build/cli/...` and `build/lib/...` would solve.
+
+## Growth review table
+
+| Review surface | Evidence | Failure signal |
+| --- | --- | --- |
+| discovery roots | sorted source list or manifest | files join through an unbounded search |
+| mapping cardinality | source and unique-output counts | fewer outputs than promised sources |
+| path ownership | output-to-subsystem mapping | owner cannot be inferred |
+| extension behavior | add one colliding basename | an existing output changes owner |
+| graph coherence | dry run or graph view | cross-subsystem dependency is hidden in recursion |
+
+Use this table before a repository adds its next subsystem, not after an artifact has been
+silently overwritten.
+
+## Practice: add a third owner
+
+Work in a disposable copy of the namespaced specimen.
+
+1. Add `src/plugin/util.txt` containing `owner=plugin`.
+2. Predict the flat model’s source count, output count, and surviving owner.
+3. Extend the namespaced model so it publishes `build/plugin/util.txt`.
+4. Run `show-map` and `all`.
+5. Prove that all three outputs exist and each records its matching owner.
+6. Explain why sorting the flat `OUTPUTS` list cannot satisfy the uniqueness invariant.
+
+A complete result contains the mapping, the three artifact paths, and their contents. A
+directory sketch without executable evidence is not complete.
 
 ## End-of-page checkpoint
 
-Before leaving this lesson, make sure you can explain:
+You are ready to continue when you can explain:
 
-- why discovery rules are part of architecture
-- why rooted and sorted discovery protects stability
-- how namespacing keeps ownership visible
-- why output paths should communicate component or stage identity
-- how repository growth can often be handled inside one coherent DAG before jumping to disconnected builds
+- exactly where the flat model turns two source paths into one output
+- why exit status zero does not establish one-output-per-source behavior
+- how `patsubst src/%,build/%` preserves subsystem ownership
+- why rooted, sorted discovery and collision-free mapping solve different problems
+- which evidence supports `SUBSYSTEM_OUTPUT_OWNERSHIP_PRESERVED`

@@ -1,30 +1,5 @@
 # Helper Code, Packages, and Reusable Boundaries
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Software Boundaries Reproducible Rules"]
-  page["Helper Code, Packages, and Reusable Boundaries"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Once you accept that some logic should move out of rules, the next question appears
 immediately:
 
@@ -37,6 +12,17 @@ code is a third-party wrapper with its own contract.
 
 If those categories blur together, the repository becomes harder to explain and harder to
 maintain.
+
+## How to use this page
+
+Read this page while looking at one real helper file or one rule that is about to grow a
+helper.
+
+Your job is not to memorize folder names. Your job is to answer one question honestly:
+
+> is this code owned by a single workflow step, by the repository's reusable software layer, or by an external command surface we are choosing to trust?
+
+If you can answer that question clearly, the file placement usually follows.
 
 ## Three different homes mean three different kinds of ownership
 
@@ -118,6 +104,36 @@ flowchart LR
 The point is not that every rule must point to all three. The point is that each route
 means something different.
 
+## Promotion is a learning process, not a status upgrade
+
+Many repositories get stuck because they treat `src/` as a badge of seriousness.
+
+That leads to two bad outcomes:
+
+- step-local code gets promoted too early and becomes awkward ceremony
+- truly reusable logic stays trapped in scripts because nobody pauses to promote it
+
+A better mental model is a promotion path:
+
+1. keep code in the rule while it is still small and obvious
+2. move it to `workflow/scripts/` when it becomes real step-local implementation
+3. promote it to `src/` when more than one step or test path genuinely needs it
+
+That path lets the repository grow by evidence instead of by status.
+
+## A concrete placement review
+
+Suppose one report rule and one QC rule both normalize sample identifiers in almost the
+same way.
+
+- if each script carries its own copy, reuse is real but hidden
+- if you move the normalization function into `src/`, both rules can import the same
+  tested logic
+- if one wrapper already performs the normalization but the team cannot explain how, then
+  the wrapper is weakening clarity rather than helping
+
+This kind of comparison is what strong repository ownership sounds like in practice.
+
 ## Weak placement
 
 Weak shape:
@@ -153,6 +169,16 @@ If the answer to the second question is yes, `workflow/scripts/` may be enough.
 
 If the third question is no, a wrapper may be the wrong abstraction.
 
+## The beginner mistake to catch early
+
+Beginners sometimes hear "avoid duplication" and immediately centralize everything.
+
+That can be as harmful as leaving everything duplicated.
+
+If centralization creates an abstraction that hides ownership or introduces a helper
+nobody can explain, the repository has not improved. Reuse is only an educational win
+when the new boundary is clearer than the old repetition.
+
 ## Common failure modes
 
 | Failure mode | What it causes | Better repair |
@@ -185,3 +211,7 @@ Before leaving this page, you should be able to:
 - explain when code should move into `src/`
 - describe what a wrapper should clarify rather than hide
 - explain why repository layout is part of clarity and reviewability
+
+If your placement decision still depends mostly on which directory "looks more proper,"
+keep working. The durable question is who owns the behavior and who must be able to test
+or review it directly.

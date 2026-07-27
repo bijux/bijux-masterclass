@@ -1,0 +1,4 @@
+cores: 2
+latency-wait: 5
+printshellcmds: true
+show-failed-logs: true

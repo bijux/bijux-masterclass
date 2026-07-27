@@ -1,6 +1,5 @@
 # Recurring Build Antipatterns and Recovery
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,22 +17,22 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  smell["spot the repeated smell"] --> class["name the form of truth loss or ownership drift"]
+  class --> smallest["choose the smallest honest recovery move"]
+  smallest --> protect["keep proof alive during the repair"]
+  protect --> prevent["write the rule that stops the smell returning"]
 ```
 <!-- page-maps:end -->
 
-This page collects the patterns that keep returning even after teams say they already know
-better.
+This page collects the patterns that keep returning even after teams say they already
+know better.
 
 The goal is not to mock bad Makefiles. The goal is to recognize familiar damage early
 enough to stop it from spreading.
 
 ## Why antipatterns matter this late in the course
 
-By Module 10, you already know a lot of individual facts:
+By Module 10, you already know many isolated facts:
 
 - honest prerequisites matter
 - parallel safety matters
@@ -41,8 +40,8 @@ By Module 10, you already know a lot of individual facts:
 - release boundaries matter
 - observability matters
 
-The problem in real repositories is not usually missing isolated facts. The problem is that
-the same bad combinations keep reappearing under new names.
+The problem in real repositories is usually not missing isolated facts. The problem is
+that the same bad combinations keep reappearing under new names.
 
 That is why this page is about patterns, not trivia.
 
@@ -50,7 +49,7 @@ That is why this page is about patterns, not trivia.
 
 When you spot a suspicious build habit, ask:
 
-> what repeated form of truth loss or ownership drift am I looking at, and what is the
+> What repeated form of truth loss or ownership drift am I looking at, and what is the
 > smallest honest recovery path?
 
 That question turns vague discomfort into action.
@@ -74,13 +73,13 @@ compile:
 This looks harmless. The deeper problem is that `compile` does not actually say what it
 needs.
 
-Symptoms:
+Signals:
 
 - a target works only because a phony step happened first
 - `-j` exposes missing directories or missing generated inputs
 - downstream targets rely on ritual order instead of real prerequisites
 
-Recovery:
+Smallest honest recovery:
 
 - make directory creation an order-only prerequisite where appropriate
 - make generated inputs first-class graph nodes
@@ -96,46 +95,47 @@ This appears in many forms:
 - a packaging target rebuilds product outputs
 - a helper script refreshes generated files during unrelated commands
 
-The team often describes this as "convenient" because it avoids repeating commands. What it
+Teams often describe this as "convenient" because it avoids repeated commands. What it
 really does is erase output ownership.
 
-Symptoms:
+Signals:
 
 - outputs change when running unrelated targets
 - incremental behavior becomes hard to trust
 - release incidents are hard to reproduce
 
-Recovery:
+Smallest honest recovery:
 
 - assign one writer to each trusted output
 - split generation from packaging or publishing
 - make convenience targets compose truthful targets instead of rewriting artifacts
 
-Single-writer discipline is not a style preference. It is a survival rule.
+Single-writer discipline is not style. It is a survival rule.
 
-## Antipattern 3: recursive or opaque orchestration hiding the graph
+## Antipattern 3: opaque orchestration hiding the graph
 
 Some inherited builds are not recursive in the strict GNU Make sense, but they still act
 like it:
 
 - shell scripts call `make` in several places
 - one target delegates to directory-local mini systems without visible edges
-- a wrapper script chooses routes dynamically based on host state
+- wrapper scripts choose routes dynamically based on host state
 
-Symptoms:
+Signals:
 
 - nobody can describe the real graph from the top level
 - `--trace` helps less than expected because the interesting work happens elsewhere
 - CI failures depend on where the wrapper script happened to branch
 
-Recovery:
+Smallest honest recovery:
 
 - keep the top-level contract small and explicit
 - expose subsystem boundaries deliberately
 - model shared outputs and inputs at the layer where they can be reviewed
 - stop hiding major orchestration decisions in shell branching
 
-The point is not "never call another tool." The point is "do not bury the ownership model."
+The point is not "never call another tool." The point is "do not bury the ownership
+model."
 
 ## Antipattern 4: stamps and manifests with no clear meaning
 
@@ -149,7 +149,7 @@ Warning signs:
 - nobody can explain what semantic boundary it proves
 - consumers depend on the stamp while the real output shape remains unclear
 
-Example of a weak stamp:
+Example:
 
 ```make
 build/generated.stamp:
@@ -157,19 +157,16 @@ build/generated.stamp:
 	@touch $@
 ```
 
-What does the stamp mean here?
+The review question is:
 
-- that code generation ran
-- that it succeeded
-- that all outputs were validated
-- that downstream consumers should trust every generated file
+- what single fact does this stamp prove?
 
-If the answer is "sort of all of those," the stamp is under-specified.
+If the answer is "sort of many things," the stamp is under-specified.
 
-Recovery:
+Smallest honest recovery:
 
 - define the boundary fact in one sentence
-- make the stamp or manifest represent that one fact only
+- make the stamp or manifest represent only that fact
 - keep consumers depending on real published outputs where direct edges are clearer
 
 ## Antipattern 5: release or install routes that do too much
@@ -187,13 +184,13 @@ release:
 The issue is not that each sub-step exists. The issue is that the target meaning is too
 broad to review.
 
-Symptoms:
+Signals:
 
 - one command mutates many different boundaries
 - failures are described as generic "release issues"
 - reruns are risky because side effects already happened
 
-Recovery:
+Smallest honest recovery:
 
 - separate validation, packaging, install, and deployment meanings
 - keep publication boundaries inspectable
@@ -203,20 +200,20 @@ When a target means everything, it usually means nothing clearly.
 
 ## Antipattern 6: performance fixes that erase truth
 
-This one shows up late, often after the team has already suffered:
+This one often appears late, after the team has already suffered:
 
-- skipping checks because they are slow
-- caching outputs without modeling the cache boundary
-- reducing rebuilds by ignoring semantic inputs
-- removing trace or audit routes to reduce noise
+- checks are skipped because they are slow
+- caches are added without modeling the cache boundary
+- rebuilds are reduced by ignoring semantic inputs
+- trace or audit routes are removed to reduce noise
 
-Symptoms:
+Signals:
 
 - the build is faster but less explainable
 - stale outputs become harder to detect
 - incidents take longer because evidence disappeared
 
-Recovery:
+Smallest honest recovery:
 
 - measure where the real cost lives first
 - remove waste, not obligations
@@ -225,13 +222,29 @@ Recovery:
 
 Speed is valuable. Truth is more valuable.
 
-## A small recovery rubric
+## Keep proof alive while you recover
 
-When you detect an antipattern, classify the recovery path:
+Antipattern repair goes wrong when the team fixes the smell and deletes the evidence that
+would prove the repair worked.
+
+Keep at least one reviewable proof route alive while you change the graph:
+
+| If the smell touches... | Keep this proof route alive |
+| --- | --- |
+| generated outputs | a comparison route between old and new generated files |
+| package or publish steps | a dry-run or staging route that exposes exactly what would ship |
+| orchestration wrappers | a traced route that shows the chosen execution path |
+| performance shortcuts | a slower but trustworthy audit path that still models full truth |
+
+If you cannot name the proof route, you are not ready to change the build yet.
+
+## Use one recovery rubric
+
+When you detect an antipattern, classify the first move:
 
 | Antipattern smell | First recovery move |
 | --- | --- |
-| ritual order dependence | expose real edge or order-only prerequisite |
+| ritual order dependence | expose a real edge or order-only prerequisite |
 | multi-writer output | assign one owner and remove hidden rewrites |
 | opaque orchestration | surface the actual boundary and contract |
 | meaningless stamp | define the represented fact before keeping the file |
@@ -240,7 +253,19 @@ When you detect an antipattern, classify the recovery path:
 
 This keeps the fix proportional to the finding.
 
-## Do not confuse familiarity with legitimacy
+## Run a diagnosis pass before you touch the file
+
+Before editing, write four short answers:
+
+1. what output, contract, or published state is currently being blurred?
+2. who should own that boundary when the repair is complete?
+3. what is the smallest change that makes the boundary more truthful?
+4. which proof route will tell you whether the repair actually helped?
+
+That short diagnosis stops you from reaching for a heroic rewrite when the real problem is
+one hidden edge or one mixed-responsibility target.
+
+## Familiarity does not make an antipattern legitimate
 
 Some patterns survive simply because teams have seen them for years:
 
@@ -253,31 +278,43 @@ Longevity does not make those healthy. It usually makes them expensive.
 
 Module 10 asks you to say that clearly.
 
-## Failure signatures worth recognizing
+## Review drill
 
-### "We have to run these targets in the right order or it breaks"
+For any suspicious build habit, ask:
 
-That is usually hidden-edge debt, not a usage quirk.
+1. which repeated smell is this?
+2. what kind of truth loss or ownership drift does it cause?
+3. what is the smallest honest recovery step?
+4. what proof route must stay alive during the repair?
 
-### "Nobody wants to touch release because it does too much"
+## Exit check
 
-That is target-contract overload.
+You are ready to move on when you can:
 
-### "The build got faster, but now weird stale states appear"
+- name the antipattern without describing the whole repository history
+- explain the specific truth loss or ownership drift it causes
+- propose one bounded repair step instead of a vague cleanup campaign
+- preserve at least one proof route while the change is happening
+5. what governance rule would stop it from returning?
 
-That is a truth-erasing performance repair.
+If those answers are fuzzy, you have recognized the smell but not yet designed the
+recovery.
 
-### "We keep adding stamps because the graph feels difficult"
+## Capstone connection
 
-That usually means the boundary facts were never clarified first.
+Use the capstone or an inherited Make system to practice:
 
-## What this page wants you to leave with
+- naming one repeated antipattern clearly
+- listing the observable signals that confirm it
+- choosing the smallest repair that restores truth or ownership clarity
+- naming the rule that would prevent the same shape from reappearing
 
-Strong maintainers can say more than "this feels brittle."
+That turns Module 10 from pattern recognition into maintenance discipline.
 
-They can say:
+## Exit check
 
-> this is a multi-writer output problem, or a hidden-edge problem, or a meaningless-stamp
-> problem, and here is the smallest recovery move that restores honest ownership.
+Leave this lesson only when you can do all of these:
 
-That is how antipattern recognition becomes useful instead of cynical.
+- explain one recurring build antipattern in terms of truth loss or ownership drift
+- identify the smallest honest recovery move for it
+- describe one rule or proof surface that would help stop it from coming back

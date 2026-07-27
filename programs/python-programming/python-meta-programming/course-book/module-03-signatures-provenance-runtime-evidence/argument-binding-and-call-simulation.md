@@ -36,6 +36,10 @@ This page focuses on the binding helpers attached to `Signature` objects:
 - `BoundArguments`
 - `.apply_defaults()`
 
+Treat this as the page where signature evidence becomes operational. A learner who
+understands signatures but still hand-matches arguments has not yet internalized the
+main discipline of the module.
+
 ## The sentence to keep
 
 When a wrapper, validator, or adapter needs to understand a call, ask:
@@ -44,6 +48,10 @@ When a wrapper, validator, or adapter needs to understand a call, ask:
 > it myself?
 
 The answer should usually be yes.
+
+Keep one second question beside it:
+
+> do I need full call validation, or am I deliberately working with a partial future call?
 
 ## Why binding matters
 
@@ -59,6 +67,14 @@ Those are argument-matching questions, not merely signature-display questions.
 `bind()` exists so tools can reuse Python's own call rules instead of inventing partial,
 inconsistent copies of them.
 
+That matters most in the places self-study learners often forget:
+
+- positional-only parameters
+- keyword-only parameters
+- duplicate value assignment
+- missing required arguments
+- the difference between explicitly provided values and default-filled values
+
 ## `bind()` versus `bind_partial()`
 
 The two binding helpers answer related but different questions:
@@ -70,6 +86,14 @@ That makes the split useful:
 
 - `bind()` is the right default for call validation and forwarding
 - `bind_partial()` is useful for staged application, partial wrappers, or progressive configuration
+
+Use this decision table when the choice feels fuzzy:
+
+| If the tool needs to know... | Better helper | Why |
+| --- | --- | --- |
+| "Would Python accept this call right now?" | `bind()` | full callability is the question |
+| "What has been supplied so far in a staged configuration?" | `bind_partial()` | partial state is intentional |
+| "Which defaults should be materialized before review or logging?" | `bind()` or `bind_partial()`, then `apply_defaults()` only if needed | default filling is a separate decision from binding itself |
 
 ## One picture of binding as call simulation
 
@@ -106,6 +130,9 @@ assert ba.arguments == {"a": 10, "b": 20, "kw": {"extra": 1}}
 The important point is not the dictionary itself. It is that the mapping came from
 interpreter-aligned matching rules rather than from hand-written parsing logic.
 
+That is the review win. The tool is not merely "using `inspect`." It is reusing the same
+binding logic the runtime itself would apply at the call boundary.
+
 ## Defaults are not applied automatically
 
 Binding and default application are separate steps:
@@ -129,6 +156,16 @@ assert ba.arguments["c"] is False
 
 That separation matters because some tools want only explicitly supplied arguments, while
 others want a complete view including defaults before validation, caching, or logging.
+
+Strong review language here sounds like:
+
+- "we bind first to establish argument truth"
+- "we apply defaults only because the next step needs a complete mapping"
+
+Weak review language sounds like:
+
+- "we fill defaults because it seemed easier"
+- "we just turn everything into one dict immediately"
 
 ## Binding failures are features, not inconveniences
 
@@ -159,6 +196,9 @@ That exception is useful evidence:
 Strong wrapper code usually preserves or lightly adapts these failures rather than
 replacing them with vague custom messages.
 
+If a wrapper changes the error text, it should still preserve the same contractual reason
+for failure. Otherwise the wrapper becomes harder to trust than the underlying callable.
+
 ## Bound arguments are useful beyond validation
 
 Once you have a `BoundArguments` object, you can use it for:
@@ -171,6 +211,12 @@ Once you have a `BoundArguments` object, you can use it for:
 
 This is why binding belongs in Module 03 before decorators. It is one of the cleanest
 ways to keep later wrapper behavior honest.
+
+Review checkpoint:
+
+- binding tells you which parameter got which value
+- it does not tell you whether the callable body will accept those values semantically
+- later validation should start from the bound mapping, not replace it with looser custom reasoning
 
 ## A small validation pattern
 
@@ -191,6 +237,9 @@ This is intentionally small, but the runtime contract is large:
 - let binding establish argument truth
 - run later validation against that established mapping
 
+That ordering matters. If validation runs before binding, the validator is often forced to
+recreate the very call rules Python already knows.
+
 ## Binding is stronger than manual tuple-and-dict reasoning
 
 Many fragile wrappers do some version of:
@@ -204,6 +253,13 @@ That is exactly the kind of low-quality reimplementation Module 03 is meant to p
 
 If the runtime already has a precise call-matching model, use the model.
 
+Common weak alternatives to reject explicitly:
+
+- counting positional arguments manually
+- merging keyword dictionaries manually
+- special-casing "optional" parameters from docstrings or annotations
+- assuming a wrapper with `*args, **kwargs` has no recoverable contract
+
 ## Review rules for binding logic
 
 When reviewing call-validation or forwarding code, keep these questions close:
@@ -213,6 +269,17 @@ When reviewing call-validation or forwarding code, keep these questions close:
 - are defaults applied only when the downstream logic actually needs them?
 - are `TypeError` failures from binding preserved clearly enough to remain useful?
 - is signature lookup cached in repeated wrapper paths where cost matters?
+
+## Self-study lab
+
+Before leaving this page, write one example in this four-step format:
+
+1. the call attempt
+2. the exact binding helper you chose
+3. the resulting bound mapping or binding failure
+4. one sentence explaining why a hand-written matcher would be weaker here
+
+If the fourth step feels optional, the main lesson has not landed yet.
 
 ## What to practice from this page
 

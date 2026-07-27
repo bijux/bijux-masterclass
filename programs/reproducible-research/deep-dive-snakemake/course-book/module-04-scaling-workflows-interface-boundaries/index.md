@@ -1,47 +1,100 @@
 # Module 04: Scaling Workflows and Interface Boundaries
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Scaling Workflows Interface Boundaries"]
-  page["Module 04: Scaling Workflows and Interface Boundaries"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Modules 01 to 03 teach truthful workflow contracts, disciplined dynamic behavior, and
 operational policy. Module 04 asks the next growth question:
 
-> how do you make the repository bigger without making the workflow harder to explain?
+> how do you make the repository larger without making the workflow harder to trust, review, or teach?
 
-This module is about scaling through boundaries. Includes, modules, file APIs, schemas,
-and CI gates matter because they keep repository growth from turning into hidden coupling.
+This module is about scaling through named boundaries. Includes, modules, file APIs,
+schemas, and review gates matter only when they keep growth legible to another human.
 
-## What this module is for
+## What this day must accomplish
 
-By the end of Module 04, you should be able to explain five things in plain language:
+By the end of Module 04, you should be able to do five things without hiding the graph:
 
-- when a workflow should stay in one visible graph and when it should split into named rule families
-- how `include:` and `module` solve different scaling problems
-- which files belong to a public file interface and which remain internal execution detail
-- how schemas and validation keep repository boundaries reviewable
-- what CI or proof gates should defend before a larger workflow change is trusted
+- split a large workflow by owned concerns instead of by file length
+- choose between `include:` and `module` for an interface reason, not an aesthetics reason
+- explain which paths are public contracts and which remain internal execution detail
+- defend one schema or validation boundary that fails early when an interface drifts
+- choose a gate that proves the repository stayed understandable after the split
+
+## The scaling ladder for the whole module
+
+Keep this order in front of you all day:
+
+```mermaid
+flowchart TD
+  ownership["named rule ownership"] --> interface["explicit interface boundary"]
+  interface --> contract["public file contract"]
+  contract --> review["review and proof gates"]
+```
+
+If a split does not improve ownership, it is noise. If a module does not expose an
+interface, it is camouflage. If a gate does not defend a named boundary, it is ceremony.
+
+## Begin with the paired module audit
+
+From the course directory:
+
+```bash
+make capstone-module-interface-audit
+```
+
+The bundle is written under:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/module-interfaces/
+```
+
+Read:
+
+1. `route.txt`
+2. `MODULE_INTERFACE_AUDIT_GUIDE.md`
+3. `summary.tsv`
+4. both caller `Snakefile` files
+5. both private module `Snakefile` files
+6. paired rule-list and dry-run traces
+7. artifact observations in `report.json`
+
+The two workflows expose the same rules, plan successfully, and publish an artifact. The
+control binds input, output, and policy while passing a narrow config subtree. The
+counterexample passes broad config and privately selects policy the caller never names.
+
+Both findings pass:
+
+```text
+EXPLICIT_MODULE_CONTRACT_PRESERVED
+HIDDEN_MODULE_COUPLING_REPRODUCED
+```
+
+Always read the finding with the result. The hidden-coupling pass reproduces a defect.
+
+## The running lab for the whole day
+
+Use one repository story all day instead of several unrelated refactors:
+
+- one top-level `Snakefile` has grown beyond comfortable review
+- two rule families clearly belong under `workflow/rules/`
+- one candidate sub-workflow might deserve `workflow/modules/`
+- one publish-facing path family must be documented as public
+- one schema and one gate prove the refactor preserved trust
+
+Every page should help you answer one concrete review question about that repository.
+
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| ownership baseline | map the current rule graph and who owns each concern | ownership table and rule list |
+| include split | move one coherent concern into `workflow/rules/` | short entrypoint plus before/after graph |
+| interface baseline | compare explicit and hidden module specimens | source, plan, and artifact observations |
+| interface decision | add a second caller without editing module internals | bindings and override matrix |
+| file contract | document public paths and internal paths separately | file contract note plus schema |
+| review gates | mutate the interface and require rejection | gate table and preserved failure |
+| independent practice | complete all ten exercises | refactored repository and review packet |
+
+The day is successful when the workflow is easier to explain after the split than before
+it, even to someone who did not watch you make the change.
 
 ## Study route
 
@@ -58,8 +111,14 @@ flowchart TD
   answers --> glossary["Glossary"]
 ```
 
-Read the module in that order the first time. When you return later, jump to the page
-that matches the scaling decision in front of you.
+Read the module in that order the first time.
+
+The route matters:
+
+- start with ownership before you talk about modules
+- compare successful explicit and hidden module models before promoting a boundary
+- document the public contract before you design the gate
+- review resource boundaries after the structural split is already clear
 
 ## The ten files in this module
 
@@ -78,12 +137,12 @@ that matches the scaling decision in front of you.
 
 | If you need to... | Start here |
 | --- | --- |
-| split one large Snakefile into named rule ownership without losing the visible DAG | [Rule Families, Includes, and Named Ownership](rule-families-includes-and-named-ownership.md) |
-| decide whether a boundary should become a real workflow module | [Modules, Reuse, and Explicit Interfaces](modules-reuse-and-explicit-interfaces.md) |
-| define which files are public workflow contracts and how to validate them | [File APIs, Schemas, and Public Contracts](file-apis-schemas-and-public-contracts.md) |
-| protect repository growth with proportionate gates and review surfaces | [CI Gates, Drift Control, and Review Surfaces](ci-gates-drift-control-and-review-surfaces.md) |
-| keep resources and executor-facing assumptions from distorting workflow meaning | [Resource Boundaries and Executor-Proof Workflow Design](resource-boundaries-and-executor-proof-workflow-design.md) |
-| see the whole module as one repository refactor | [Worked Example: Refactoring a Growing Workflow Without Hiding It](worked-example-refactoring-a-growing-workflow-without-hiding-it.md) |
+| split a crowded workflow into named concerns without losing the visible graph | [Rule Families, Includes, and Named Ownership](rule-families-includes-and-named-ownership.md) |
+| decide whether a boundary is a real reusable module or only a rule-family split | [Modules, Reuse, and Explicit Interfaces](modules-reuse-and-explicit-interfaces.md) |
+| mark which paths are safe for consumers and which remain internal | [File APIs, Schemas, and Public Contracts](file-apis-schemas-and-public-contracts.md) |
+| choose validation and CI surfaces that defend the refactor honestly | [CI Gates, Drift Control, and Review Surfaces](ci-gates-drift-control-and-review-surfaces.md) |
+| keep resource declarations portable while the repository grows | [Resource Boundaries and Executor-Proof Workflow Design](resource-boundaries-and-executor-proof-workflow-design.md) |
+| see the whole module as one repository repair | [Worked Example: Refactoring a Growing Workflow Without Hiding It](worked-example-refactoring-a-growing-workflow-without-hiding-it.md) |
 | test your own understanding | [Exercises](exercises.md) |
 | compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
 | stabilize the module vocabulary | [Glossary](glossary.md) |
@@ -92,27 +151,25 @@ that matches the scaling decision in front of you.
 
 Carry this question through every page:
 
-> if this repository grows tomorrow, which boundary should absorb the change so the workflow stays explainable?
+> if the repository grows again next month, which exact boundary should absorb the change so the workflow stays explainable?
 
 Good Module 04 answers usually mention one or more of these:
 
-- a rule-family split with clear ownership
-- a module interface with named inputs and outputs
-- a file API that marks public versus internal paths
-- a schema or validation boundary that fails early
-- a gate or proof route that protects the change before it spreads
+- a rule-family split with one sentence of ownership
+- a module interface with named inputs, outputs, and assumptions
+- a file contract that separates public from internal paths
+- a schema or validation route that catches drift early
+- a review gate that proves the structural claim you just made
 
-## The running example
+## What the module should change in your head
 
-This module keeps returning to one repository shape:
+If the day is working, you should feel these transitions:
 
-- a top-level workflow becomes too large to review comfortably
-- coherent rule families move under `workflow/rules/`
-- a reusable sub-workflow may move under `workflow/modules/`
-- the public file contract is documented separately from internal orchestration
-- CI and review gates prove the split did not weaken the workflow
-
-That is the smallest scaling story worth teaching.
+- “modular” stops meaning “many files” and starts meaning “clear ownership”
+- `include:` stops sounding weaker than `module`
+- file paths stop looking like mere folder choices and start looking like contracts
+- lint and CI stop feeling generic once they are tied to a named boundary
+- repository growth stops sounding scary when the next split already has a place to go
 
 ## Commands to keep close
 
@@ -123,35 +180,34 @@ snakemake --list-rules
 snakemake --rulegraph mermaid-js > rulegraph.mmd
 snakemake -n
 snakemake --lint
+make capstone-module-interface-audit
+make capstone-module-interface-selftest
 make capstone-tour
 ```
 
 They answer different questions:
 
-- what rule surfaces are visible now
-- how the rule relationships look after a split
-- whether the plan still matches the intended contract
-- whether obvious design smells already exist
-- how the executed capstone expresses repository boundaries
-
-## Learning outcomes
-
-By the end of this module, you should be able to:
-
-- split a growing workflow by named ownership instead of by file length alone
-- choose between `include:` and `module` with a real interface reason
-- document and validate a stable file interface
-- defend repository growth with proportionate gates and drift evidence
-- explain resource declarations as workflow-facing contracts rather than executor folklore
+- which rule surfaces are visible right now
+- whether the structural split changed the graph you intended to preserve
+- whether the planning surface still matches the contract
+- whether obvious design smells are already exposed
+- whether module callers expose config, paths, and artifact policy
+- whether the interface gate rejects dishonest evidence
+- how the capstone expresses boundaries through a complete walkthrough
 
 ## Exit standard
 
 Do not move on until all of these are true:
 
-- you can explain one split that belongs in `workflow/rules/` and one that belongs in `workflow/modules/`
-- you can name which paths are public and which are internal in one workflow family
-- you can describe one schema or validation check that protects an interface boundary
-- you can say which gate should fail first if a scaling change quietly breaks the contract
-- you can explain one resource declaration without treating it as accidental scheduler trivia
+- you can explain one split that belongs in `workflow/rules/` and one that deserves `workflow/modules/`
+- you can trace module declaration, imported rule, caller bindings, and private implementation separately
+- you can explain why identical rule lists and dry-runs do not prove identical interface ownership
+- you can name one public path family and one internal path family without hesitation
+- you can describe one schema or validation check that protects a real interface
+- you can say which gate should fail first if the structural refactor quietly breaks trust
+- you can explain one resource declaration as a portable workflow claim rather than scheduler folklore
+- you have added a second caller without editing module internals
+- the module interface audit and its rejection tests pass
+- you have completed all ten exercises and preserved behavior through at least one structural split
 
 When those become ordinary, Module 04 has done its job.

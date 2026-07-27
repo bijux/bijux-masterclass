@@ -26,8 +26,9 @@ flowchart LR
 <!-- page-maps:end -->
 
 This capstone is the executable reference build for Deep Dive Make. It keeps graph truth,
-atomic publication, parallel safety, determinism, and self-testing in one compact
-repository so the course can point to real evidence instead of slogans.
+atomic publication, parallel safety, determinism, self-testing, and local release
+acceptance in one compact repository so the course can point to real evidence instead
+of slogans.
 
 Use this guide once the local module idea is already legible. The capstone should answer
 one build question at a time, not become a full repository tour by default.
@@ -37,6 +38,7 @@ one build question at a time, not become a full repository tour by default.
 - public targets can stay small and stable
 - graph truth can survive hidden-input and generated-file pressure
 - serial and parallel execution can agree when the build deserves trust
+- one release candidate can be verified and installed in containment without replacing it
 - failure specimens can stay isolated and teachable without polluting the healthy build
 
 ## Choose the right capstone route
@@ -48,6 +50,7 @@ one build question at a time, not become a full repository tour by default.
 | Which files own the build behavior? | [Capstone File Guide](capstone-file-guide.md) |
 | Where do contract, graph, proof, and repro ownership live? | [Capstone Architecture Guide](capstone-architecture-guide.md) |
 | Which proof route is honest for this claim? | [Capstone Proof Guide](capstone-proof-guide.md) |
+| How do I review one exact release candidate after Module 08? | [Capstone Release Acceptance](capstone-release-acceptance.md) |
 | How should I review the repository as a steward? | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | Where should a new change land? | [Capstone Extension Guide](capstone-extension-guide.md) |
 
@@ -57,7 +60,7 @@ one build question at a time, not become a full repository tour by default.
 | --- | --- |
 | Modules 01-02 | truthful edges, atomic publication, and one explainable race condition |
 | Modules 03-05 | selftests, public targets, portability, and hidden-input proof |
-| Modules 06-08 | generator boundaries, layered `mk/` design, and release surfaces |
+| Modules 06-08 | generator boundaries, layered `mk/` design, and release acceptance |
 | Modules 09-10 | incident review, stewardship judgment, and extension pressure |
 
 ## Core commands
@@ -66,7 +69,9 @@ one build question at a time, not become a full repository tour by default.
 | --- | --- | --- |
 | the first bounded pass | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `gmake walkthrough` |
 | public-contract review | `make PROGRAM=reproducible-research/deep-dive-make inspect` | `gmake inspect` |
+| paired missing-edge and recovery study | enter `capstone/` for the bounded specimen workspace | `gmake incremental-fault-audit` |
 | the steward-level proof route | `make PROGRAM=reproducible-research/deep-dive-make proof` | `gmake proof` |
+| one local release acceptance | `make PROGRAM=reproducible-research/deep-dive-make capstone-release-check` | `gmake release-check` |
 
 On macOS, use `gmake` inside `capstone/` because `/usr/bin/make` is BSD Make.
 
@@ -78,6 +83,7 @@ On macOS, use `gmake` inside `capstone/` because `/usr/bin/make` is BSD Make.
 - [Capstone File Guide](capstone-file-guide.md)
 - [Capstone Architecture Guide](capstone-architecture-guide.md)
 - [Capstone Proof Guide](capstone-proof-guide.md)
+- [Capstone Release Acceptance](capstone-release-acceptance.md)
 - [Capstone Review Worksheet](capstone-review-worksheet.md)
 - [Capstone Extension Guide](capstone-extension-guide.md)
 - [Glossary](glossary.md)
@@ -87,6 +93,7 @@ On macOS, use `gmake` inside `capstone/` because `/usr/bin/make` is BSD Make.
 - Which targets are truly public, and which are only helper surfaces?
 - Which file proves convergence and parallel safety instead of merely claiming them?
 - Which failure class is the healthy build defending against right now?
+- Which exact digest do candidate, install, and final release evidence identify?
 
 ## Stop here when
 

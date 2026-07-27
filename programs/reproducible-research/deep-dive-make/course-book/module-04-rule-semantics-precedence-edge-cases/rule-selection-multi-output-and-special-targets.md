@@ -82,6 +82,101 @@ uses the second one," the design is already too murky.
 The healthy fix is usually to make the patterns non-overlapping or to use explicit/static
 pattern rules for the ambiguous cases.
 
+## Prove selection instability instead of guessing
+
+The capstone semantic audit contains two Makefiles with:
+
+- the same requested target, `build/a.choice`
+- the same root and generated source files
+- the same two overlapping target patterns
+- only the order of the pattern rules changed
+
+Run:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone \
+  semantic-fault-audit
+```
+
+Open:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/semantic-faults/
+├── summary.tsv
+├── report.json
+├── traces/
+├── specimens/pattern-selection/
+└── workspace/pattern-selection/
+```
+
+Predict the matrix before reading it:
+
+| Model | Same requested target | Expected selected content |
+| --- | --- | --- |
+| generated rule appears first | `build/a.choice` | generated |
+| root rule appears first | `build/a.choice` | root |
+| namespaced targets | two distinct paths | both source families |
+
+The first two builds both succeed. That is why this is a semantic selection problem rather
+than an ordinary failure. Reordering Makefile text changes the meaning of one target:
+
+```mermaid
+flowchart TD
+  target["build/a.choice"]
+  root["root/a.src"]
+  generated["generated/a.src"]
+  root -.candidate.-> target
+  generated -.candidate.-> target
+  order["first applicable rule"] -.hidden policy.-> target
+```
+
+The report should show:
+
+```text
+generated-rule-first -> selected=generated
+root-rule-first      -> selected=root
+```
+
+Read the trace for each model. Identify:
+
+1. the rule location Make selected
+2. the prerequisite bound to `$<`
+3. the output content published by that recipe
+
+Do not stop at “Make chooses the first rule.” The design problem is that a distant text
+reordering can change target meaning without changing the target path or source set.
+
+The control gives each source family a target namespace:
+
+```make
+build/root/%.choice: root/%.src
+	printf 'selected=%s\n' "$$(cat $<)" > $@
+
+build/generated/%.choice: generated/%.src
+	printf 'selected=%s\n' "$$(cat $<)" > $@
+```
+
+Now the graph contains:
+
+```text
+build/root/a.choice
+build/generated/a.choice
+```
+
+Both outputs coexist, and a reviewer can infer source ownership from the target path.
+
+Use this decision table during review:
+
+| Observation | Interpretation | Repair direction |
+| --- | --- | --- |
+| one target has one applicable pattern rule | selection is locally explainable | retain and test |
+| rule order changes which source family wins | text order is hidden policy | separate namespaces or write an explicit rule |
+| only a bounded target list needs the pattern | global eligibility is unnecessary | use a static pattern rule |
+| two source families intentionally converge | combination is part of the contract | add one explicit merge or selection owner |
+
+An explanatory comment is not a repair for overlap. The graph should express the policy
+that the comment claims.
+
 ## Static pattern rules are often clearer than clever generality
 
 Static pattern rules let you define a small controlled set of targets:

@@ -1,6 +1,5 @@
 # Module Checkpoints
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,96 +17,88 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  module["Finish one module"] --> claim["State what you can now explain"]
+  claim --> surface["Inspect one proving surface"]
+  surface --> gap["Name what still feels weak"]
+  gap --> next["Decide whether to move on or reread"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Use this page at the end of a module.
 
-Use this page at the end of each module. A strong course needs a clear exit bar, not
-just more reading. These checkpoints are the smallest honest claims you should be able
-to make before moving deeper into the course.
+The goal is not to feel "generally familiar." The goal is to test whether one real
+design ability has been earned.
+
+If you cannot name the ability, point to the capstone surface that proves it, and say
+what pressure the next module adds, the checkpoint is not done yet.
 
 ## Checkpoints by module
 
-### Module 01: Object Semantics and the Python Data Model
+| Module | You should now be able to... | Prove it first by... | Do not move on if... |
+| --- | --- | --- | --- |
+| 01 Object Semantics | explain when identity matters more than equality, when aliasing becomes dangerous, and when a type’s representation is part of its contract | opening `model.py`, `rules.txt`, and lifecycle tests | "object" still means only "instance of a class" to you |
+| 02 Design Roles and Layering | justify whether behavior belongs in a value, entity, policy, adapter, service, or plain function | comparing `application.py`, `model.py`, and the architecture guide | your role choices still sound like taste instead of reasons |
+| 03 State and Typestate | describe which states are legal, who guards transitions, and how the API makes bad states harder to construct | checking lifecycle tests and inspection outputs | you still accept invalid transitional objects as normal |
+| 04 Aggregates and Collaboration | name the aggregate root and defend why other objects should not own the same invariant | reviewing projections, read models, and architecture surfaces | you still confuse authoritative state with useful derived state |
+| 05 Resources and Evolution | explain who owns retries, cleanup, recovery, and extension cost | inspecting `runtime.py`, `repository.py`, and unit-of-work tests | failure handling still feels like random plumbing around the model |
+| 06 Persistence and Schema Evolution | explain how persistence adapts to the domain instead of flattening it | inspecting repository boundaries and verification artifacts | you still think storage shape and domain shape should be identical |
+| 07 Time and Concurrency | explain where clocks, queues, async tasks, or threads enter the design without stealing ownership from the model | checking runtime tests and walkthrough artifacts | concurrency still feels like permission to blur boundaries |
+| 08 Testing and Verification | choose the right proof depth for a claim instead of defaulting to the heaviest route | mapping one claim to one test file and one saved bundle | you still call any passing test "enough evidence" |
+| 09 Public APIs and Governance | name what is public, what is internal, and where extension is allowed | reviewing the application surface, extension guide, and proof routes | your extension story depends on reaching into internals casually |
+| 10 Operational Review | explain which boundaries are hottest, most observable, and most exposed to trust or failure pressure | using the full proof route and review worksheet | production pressure still sounds separate from object ownership |
 
-- You can explain when identity matters more than value equality.
-- You can describe why aliasing or mutable hashing creates non-local bugs.
-- You can justify whether a type should expose data-model hooks or stay opaque.
-- Prove it by inspecting `model.py` and `tests/test_policy_lifecycle.py`.
+## The plain-language exit test
 
-### Module 02: Design Roles, Interfaces, and Layering
+Before moving on, say the module lesson in one sentence without using the module title.
 
-- You can place behavior in values, entities, services, policies, or adapters with reasons.
-- You can explain why composition or protocols are better than inheritance in a given case.
-- You can sketch a composition root without letting wiring logic leak into the domain.
-- Prove it by comparing `application.py`, `model.py`, and `ARCHITECTURE.md`.
+Good example:
 
-### Module 03: State, Validation, and Typestate
+> This module taught me where legal lifecycle transitions must be enforced and why
+> downstream views are not allowed to decide them.
 
-- You can make illegal states hard to construct.
-- You can describe which transitions are allowed and who guards them.
-- You can explain when dataclasses, descriptors, or explicit factories fit the state model.
-- Prove it by checking lifecycle tests and the saved inspection bundle from `make inspect`.
+Weak example:
 
-### Module 04: Aggregates, Events, and Collaboration Boundaries
+> This module was about typestate and validation.
 
-- You can name the aggregate root and defend why it owns the invariant.
-- You can separate authoritative objects from projections or debug views.
-- You can explain what an event means without pretending every system needs event sourcing.
-- Prove it by reviewing `ARCHITECTURE.md`, `read_models.py`, and the `verify-report` bundle.
+If the plain-language sentence is weak, the module is not done yet.
 
-### Module 05: Resources, Failures, and Safe Evolution
+## What to do when the checkpoint fails
 
-- You can name who owns cleanup, retries, and failure translation.
-- You can describe which errors are part of the public contract and which stay internal.
-- You can extend behavior without bypassing invariants or widening the public surface casually.
-- Prove it by inspecting `runtime.py`, `repository.py`, and `tests/test_unit_of_work.py`.
+| If the failure is... | Return to... |
+| --- | --- |
+| the vocabulary is still fuzzy | the module overview and [Module Promise Map](module-promise-map.md) |
+| the design claim sounds true only in prose | one named capstone surface from the module |
+| the proof route still feels too heavy or too random | [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) |
+| the real question is different from the module title | [Pressure Routes](pressure-routes.md) |
 
-### Module 06: Persistence, Serialization, and Schema Evolution
+This is not backtracking for its own sake. It is how you stop later modules from
+resting on unearned confidence.
 
-- You can explain how a repository rehydrates aggregates without flattening the domain.
-- You can separate storage records from domain objects and query models.
-- You can describe how old stored data survives schema or codec changes.
-- Prove it by inspecting repository boundaries and the saved verification bundle before adding storage tooling.
+## Honest move-on rule
 
-### Module 07: Time, Scheduling, and Concurrency Boundaries
+Move on only when all three are true:
 
-- You can say where time enters the model and why that boundary is explicit.
-- You can explain which object owns mutation when threads, queues, or tasks appear.
-- You can show where sync and async code meet without leaking event-loop assumptions inward.
-- Prove it by checking runtime coordination tests and explaining why the aggregate stays synchronous today.
+- you can explain the checkpoint plainly
+- you can point to one capstone surface that makes it concrete
+- you know what new pressure the next module adds
 
-### Module 08: Testing, Contracts, and Verification Depth
+If only one or two are true, keep the current module open.
 
-- You can choose behavior tests, stateful tests, contract tests, or property tests deliberately.
-- You can explain what confidence each proof layer buys and what it does not.
-- You can design test fixtures that clarify ownership instead of hiding it.
-- Prove it by mapping one design claim to one test file and one saved review bundle.
+## Build a completion note
 
-### Module 09: Public APIs, Extension Seams, and Governance
+At the end of each module, write one short note with:
 
-- You can name the stable public surface and the internal surface.
-- You can explain what extension points are allowed and what must remain closed.
-- You can describe how examples, docs, and compatibility suites defend the public contract.
-- Prove it by reviewing entry surfaces plus `EXTENSION_GUIDE.md`.
+- what you can now explain
+- what capstone surface proves it
+- what still feels weak
+- what the next module is about to pressure
 
-### Module 10: Performance, Observability, and Security Review
+That note is valuable because it makes rereading honest. When you come back later, you
+can see whether the weakness was really solved or only postponed.
 
-- You can identify hot paths without changing semantics prematurely.
-- You can explain which telemetry signals help review object boundaries in production.
-- You can describe where serialization, secrets, and public inputs cross trust boundaries.
-- Prove it by using the full proof route and then naming which boundary would be riskiest to blur under production pressure.
+## Exit check
 
-## How to use these checkpoints
+Leave this page only when you can say:
 
-- If you cannot explain the checkpoint in plain language, re-read the module overview and the module refactor chapter.
-- If the checkpoint sounds true only in prose, use the named capstone surface and test or bundle route to force a concrete example.
-- If a later module feels unclear, come back here and find the first checkpoint that is still fuzzy.
-
-These checkpoints turn the course from “many advanced pages” into a sequence of earned
-design abilities.
+> I earned this module because I can now `____`, I can show it in `____`, and the next
+> pressure I am ready for is `____`.

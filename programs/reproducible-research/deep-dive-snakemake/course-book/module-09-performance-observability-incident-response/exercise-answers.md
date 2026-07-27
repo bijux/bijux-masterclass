@@ -1,162 +1,362 @@
 # Exercise Answers
 
+These are model reviews of the generated specimen. Your benchmark seconds will
+vary, so the answers name stable work counters and contract checks rather than
+inventing a universal timing result.
 
-<!-- page-maps:start -->
-## Page Maps
+Do not compare prose alone. Open your ten lab artifacts beside this page. If your
+decision differs, find the first evidence field where the reasoning diverged.
+
+## Exercise 1: Establish the baseline cost contract
+
+A strong `cost-statement.md` says:
+
+> Scope: the `baseline` configuration executes the local six-record specimen
+> with one Snakemake core and targets `results/normalized.tsv` plus
+> `evidence/metrics.json`. The dry-run plans one `normalize_records` job. The run
+> reads and emits six records, validates six, pays six setup cycles, scans once,
+> and records 34 deterministic cost units. Snakemake records a positive
+> benchmark observation for that rule. Repeated application setup is the
+> dominant avoidable cost; dispatch of six separate jobs is ruled out because
+> only one application job is planned.
+
+The exact benchmark value should be copied from your run. Do not replace it with
+the value shown in another learner's packet.
+
+Why the diagnosis is strong:
+
+- it distinguishes one Snakemake job from six internal setup cycles;
+- it names the application boundary;
+- it records an observation without promising generality;
+- it postpones tuning until the reference contract is explicit.
+
+A weak answer says "scheduler overhead is high because there are six records."
+The dry-run contradicts that claim.
+
+## Exercise 2: Map questions to evidence boundaries
+
+Model map:
+
+| Question | First evidence | Supported answer | Unsupported conclusion |
+| --- | --- | --- | --- |
+| Did output paths change? | dry-run command text and Snakefile outputs | planned paths for this run | whether file contents are correct |
+| Did every record reach output? | `input_records`, `output_records`, result rows | fixture coverage | whether validation happened |
+| Did validation occur? | `validation_checks` and config | count of performed checks | whether benchmark time is stable |
+| How many scans occurred? | `scan_passes`, `records_scanned` | known application work | why the host was busy |
+| What rule time was observed? | benchmark `s` column | local process observation | queue time or semantic preservation |
+| Did result bytes match? | report artifact hashes | byte equality | equality of hidden guarantees |
+| Which command executed? | report `commands.execution.argv` | invocation identity | all environment identity unless recorded |
+
+The evidence join is supplied by isolation:
+
+```text
+workspace/runs/baseline/
+```
+
+contains the copied configuration, result, metrics, and benchmark for one
+execution, while:
+
+```text
+workspace/commands/baseline/
+```
+
+contains its command streams. `report.json` records the command arguments and
+reads artifacts from the same run directory.
+
+In a distributed production workflow, the directory name is not enough. Add a
+run identifier, configuration digest, software identity, and rule-job identity.
+
+## Exercise 3: Derive the four decisions from raw evidence
+
+Expected table:
+
+| Configuration | Artifact contract | Evidence contract | Cost movement | Decision |
+| --- | --- | --- | --- | --- |
+| baseline | six normalized records | six validations, one scan | 34-unit reference | `REFERENCE` |
+| honest tuning | same bytes and coverage | six validations, one scan | setup 6 to 2; cost 34 to 14 | `ACCEPT` |
+| validation bypass | same bytes and coverage | validation 6 to 0 | apparent cost 34 to 14 | `REJECT` |
+| repeated scan | same bytes and coverage | six validations retained | scans 1 to 3; cost 14 to 22 | `REGRESSION` |
+
+The important comparison edges are:
 
 ```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+flowchart TD
+    Baseline[Baseline: 34 units] --> Honest[Honest tuning: 14 units]
+    Baseline --> Bypass[Validation bypass: 14 units]
+    Honest --> Repeat[Repeated scan: 22 units]
+    Honest -->|contract preserved| Accept[ACCEPT]
+    Bypass -->|validation removed| Reject[REJECT]
+    Repeat -->|work added| Regression[REGRESSION]
 ```
+
+Comparing repeated scan only with baseline yields a misleading apparent
+improvement of 12 units. Comparing it with the accepted tuning reveals an
+eight-unit regression.
+
+## Exercise 4: Review the honest tuning as a two-sided claim
+
+Model review:
+
+```text
+Cost claim:
+Increasing chunk size from one to three removes four setup cycles. Deterministic
+cost falls from 34 to 14 units.
+
+Non-change claim:
+The plan retains one normalize_records job and the same output paths. Six input
+records produce six output records, all six are validated, one scan occurs, and
+the normalized result hash matches.
+
+Evidence:
+baseline and honest-tuning config, dry-run, metrics, result hash, benchmark.
+
+Decision:
+ACCEPT the narrow chunking change.
+
+Proof boundary:
+The local six-record specimen demonstrates attributable removed work. It does
+not establish a stable percentage speedup or production-scale behavior.
+```
+
+Suitable rollback trigger:
+
+> Reject or roll back if result coverage, result hash, validation count, scan
+> count, or planned output paths differ from the reference.
+
+The broader claim "this is three times faster everywhere" is unsupported. Chunk
+size changed by a factor of three; that does not imply runtime scales by the same
+factor.
+
+## Exercise 5: Explain the validation-bypass incident
+
+Model incident:
+
+```text
+Symptom:
+The candidate result hash matches, but validation_checks falls from six to zero.
+
+Trust impact:
+The result cannot support a validated-input claim.
+
+Containment:
+Hold promotion and retain the isolated audit evidence.
+
+Hypotheses:
+Chunking removed repeated setup without semantic change.
+Validation work was removed while valid fixture output remained plausible.
+
+Discriminating field:
+validation_checks, corroborated by validate: false.
+
+Classification:
+Evidence-integrity drift at the application boundary.
+
+Repair:
+Restore validation while retaining chunk size three.
+
+Recovery:
+Six checks, two setup cycles, one scan, matching result, accepted audit finding,
+and passing adversarial self-test.
+```
+
+Why equal bytes are insufficient:
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+    Fixture[All fixture records valid] --> Checked[Checked path]
+    Fixture --> Unchecked[Unchecked path]
+    Checked --> Same[Same current result]
+    Unchecked --> Same
+    Future[Malformed future record] --> Reject[Checked path rejects]
+    Future --> Admit[Unchecked path admits]
 ```
-<!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+The self-test changes `honest-tuning` to `validate: false`. The run still emits
+plausible output, but `HONEST_TUNING_ACCEPTED` fails
+`validation_preserved`. This proves validation is part of acceptance rather than
+decorative telemetry.
 
-What matters is whether the reasoning stays evidence-first and truth-preserving.
+## Exercise 6: Detect a regression against the right reference
 
-## Answer 1: Name the dominant cost class
+Calculations:
 
-Strong diagnosis:
+```text
+repeated scan versus baseline:
+22 - 34 = -12 units
 
-- the dominant lead is planning and discovery cost
+repeated scan versus accepted tuning:
+22 - 14 = +8 units
+```
 
-Why:
+The first comparison says only that chunking still saves more than the extra
+scans cost relative to the oldest design. The second comparison asks whether the
+current candidate regressed from the accepted design.
 
-- dry-run is already slower, which means the problem begins before tool execution
-- benchmark files for the heavy rules are unchanged, which weakens the case for a tool
-  runtime regression
-- the discovered sample list is larger, which suggests the workflow is planning more work
+Model review:
 
-What is not the strongest lead right now:
+- preserved: output hash, six records, six validations, two setup cycles;
+- added work: two extra scan passes and twelve extra record visits;
+- reference: `honest-tuning`;
+- decision: `REGRESSION`;
+- repair: restore one scan pass;
+- recovery invariants: same result, six checks, two setup cycles, six record
+  visits, 14 deterministic units.
 
-- pure tool runtime
-- a benchmark-detectable slowdown in the heavy rules
+Observed time may be noisy. The decision does not depend on beating the old
+baseline.
 
-What to inspect next:
+## Exercise 7: Design a repeated measurement protocol
 
-- the discovery artifact or sample list
-- the dry-run target set
-- the recent edit that changed discovery behavior
+A strong protocol defines a narrow claim:
 
-The main lesson is to name the planning problem before touching execution settings.
+> On the declared local host and six-record fixture, chunk size three reduces
+> the median `normalize_records` rule runtime relative to chunk size one while
+> preserving plan, result, validation, and scan contracts.
 
-## Answer 2: Choose the right evidence surface
+Model controls:
 
-First artifact to inspect:
+- governed Python and Snakemake versions;
+- same host and no intentional competing workload;
+- same local filesystem and cache policy;
+- one core and same input bytes;
+- alternating or randomized case order;
+- at least enough trials to inspect spread rather than one pair;
+- raw benchmark rows retained;
+- median, range, and preferably an interquartile spread;
+- no deleted outliers without an independently recorded failure reason.
 
-- `snakemake --summary`
+Semantic gates run before timing interpretation:
 
-Why:
+- same planned outputs;
+- six input and output records;
+- six validation checks;
+- one scan pass;
+- identical normalized result.
 
-- the claim begins with a surprising rebuild of `summary.tsv`, so workflow-state evidence
-  should come before rule-runtime evidence
+The result remains inconclusive if run distributions overlap substantially, the
+host changes, a semantic gate fails, or a trial has an unexplained execution
+error.
 
-Second artifact if the first one does not support the claim:
+Why this answer is stronger than "run five times and average": it controls
+ordering and context, retains raw evidence, defines an inconclusive result, and
+keeps correctness independent of timing.
 
-- the benchmark file for the aligner rule family
+## Exercise 8: Build a bounded incident packet
 
-Why:
+Model packet for repeated scan:
 
-- once the rebuild scope is understood, benchmark evidence can test whether the aligner
-  itself became slower
+```text
+Symptom:
+Repeated-scan preserves the accepted result but reports three scan passes.
 
-The important distinction is that `--summary` tells you what changed in workflow state,
-while the benchmark tells you what a specific rule cost.
+First observed:
+Current generated performance-diagnostics audit; use report command timestamp
+or local audit time if your packet requires one.
 
-## Answer 3: Triage a flaky cluster-only incident
+Affected scope:
+Six-record local specimen, normalize_records application rule.
 
-Why the proposed fix is not yet sufficient:
+Trust impact:
+Artifact remains semantically acceptable; operational cost regressed.
 
-- raising retries and latency waits changes operating policy without first classifying the
-  failure
-- it may hide a deterministic storage, staging, or profile problem
+Containment:
+Do not replace the accepted tuning with this candidate.
 
-Incident class to test first:
+Hypotheses:
+Host timing noise; repeated application work.
 
-- operating context or storage behavior
+Evidence:
+Same result hash and validation count; scan_passes 3 versus 1;
+records_scanned 18 versus 6; cost units 22 versus 14.
 
-Why:
+Classification:
+Application-level performance regression.
 
-- the incident appears only on one scheduler-backed profile
+Repair owner:
+Processing tool or configuration owner.
 
-Evidence to consult first:
+Recovery:
+One scan, six visits, 14 units, same result and validation, self-test passes.
 
-- the relevant rule logs for failing targets
-- benchmark or timing evidence for the same rule family
-- provenance or profile evidence such as `make -C capstone profile-audit`
+Remaining uncertainty:
+One local benchmark does not quantify production impact.
+```
 
-The main lesson is that cluster-only incidents should not be flattened into "needs more
-retries."
+Rejected action:
 
-## Answer 4: Review a suspicious optimization
+> Increasing Snakemake cores does not remove repeated scans inside the one
+> planned job.
 
-Potentially valid tuning move:
+The packet should link to specific generated paths rather than pasting the full
+report.
 
-- grouping several tiny QC jobs into one aggregation step
+## Exercise 9: Write and adversarially rehearse a runbook
 
-Why it may be valid:
+A strong route begins with an isolated audit and a publication hold. Its central
+branches are:
 
-- grouping can honestly reduce scheduler overhead if the declared outputs, failure
-  visibility, and evidence surfaces stay reviewable
+| Evidence | Route |
+| --- | --- |
+| input/output count differs | scope or artifact-contract investigation |
+| validation differs | reject and assign evidence-integrity repair |
+| contracts match; work falls | review narrow tuning claim |
+| contracts match; work rises | classify regression |
+| contracts and counters match; timings vary | repeated controlled measurement |
 
-Semantic or evidence regressions:
+Expected mapping for self-tests:
 
-- removing one declared input from a slow rule
-- deleting benchmark files because they create clutter
+| Test mutation | Runbook branch |
+| --- | --- |
+| tuning disables validation | validation drift |
+| tuning stops reducing setup | unsupported performance claim |
+| bypass still validates | malformed teaching/rejection specimen |
+| repeated scan stops repeating | malformed regression specimen |
+| bypass changes output | artifact-contract drift |
+| stale workspace inserted | evidence-isolation failure if not removed |
+| unchanged specimen | reference/accept/reject/regression classifications |
 
-Why:
+Every branch should name an owner or proof route. The runbook aborts performance
+interpretation as soon as a semantic invariant fails.
 
-- removing a declared input changes workflow meaning and rerun truth
-- deleting benchmark files weakens the evidence surface needed for performance review
+## Exercise 10: Conduct an operational review
 
-Proof required before approving the valid part:
+Model judgments:
 
-- dry-run showing the same semantic target set
-- benchmark evidence at the new grouped boundary
-- confirmation that output and failure visibility remain usable
+| Review area | Judgment |
+| --- | --- |
+| reproducibility | one Make target rebuilds all four isolated runs and report |
+| isolation | audit removes its workspace before collection; a self-test proves it |
+| discrimination | six mutations target validation, work reduction, regression, bytes, and stale state |
+| semantic safety | accepted tuning requires result, coverage, validation, scan, and plan invariants |
+| performance honesty | deterministic counters gate claims; benchmark seconds remain observations |
+| incident readiness | worked example and runbook route distinguish bypass from regression |
+| proof boundary | no real scheduler, remote storage, production scale, or timing distribution is proved |
 
-## Answer 5: Draft a runbook entry
+Possible operational decision:
 
-A strong minimal runbook entry could say:
+> Retain the route as a local teaching and review gate. Require no correction for
+> its stated scope. The next experiment should run repeated accepted-reference
+> and candidate trials under a recording executor or controlled remote-storage
+> context while preserving the existing semantic gates.
 
-1. Run `snakemake -n -p` or `make -C capstone wf-dryrun` first.
-2. Check `snakemake --summary` to see whether the workflow state matches the report.
-3. Inspect one matching rule log and one benchmark file for the suspicious rule family.
-4. If the issue appears context-specific, run `make -C capstone profile-audit`.
-5. Escalate when the issue points to profile drift, publish trust, or a semantic change
-   rather than local runtime behavior.
-6. Prove the repair with `make -C capstone tour` or `make -C capstone verify-report`,
-   depending on whether execution evidence or published trust is the main question.
+An equally valid decision could require revision if your actual run exposed a
+broken command, missing bundle file, or ambiguous branch. Name the evidence.
 
-Why this is strong:
+Do not claim the route proves production performance. Retention is justified
+because its scope is narrow, reproducible, and adversarially tested.
 
-- it starts with the narrowest honest command
-- it separates workflow-state evidence from rule-local evidence
-- it includes a real escalation trigger
-- it ends with a proof route rather than with vague advice
+## Final self-review
 
-## Self-check
+Your packet demonstrates Module 09 reasoning when:
 
-If your answers consistently explain:
+- baseline is a contract, not merely a timing;
+- evidence surfaces are joined to one run;
+- accepted tuning names removed work;
+- equal bytes do not hide validation loss;
+- regression uses the current accepted reference;
+- incident repair predicts changed and unchanged evidence;
+- runbook rehearsal includes bad cases;
+- proof limits remain visible.
 
-- which cost class is dominant
-- which evidence surface fits the question
-- what incident class is under review
-- what semantic truth must remain unchanged
-
-then you are using Module 09 correctly.
+If your decisions match but your packet cannot point to generated fields, revise
+the evidence links rather than memorizing the model wording.

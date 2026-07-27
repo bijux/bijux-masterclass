@@ -24,94 +24,125 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+This guide explains what the course is trying to build inside the learner.
 
-This guide explains how the course is organized and what each part is trying to teach.
-The goal is not "know more hooks." The goal is to choose the lowest-power hook that
-solves the problem without damaging debuggability.
+The point is not to collect advanced Python mechanisms. The point is to become the kind
+of engineer who can inspect dynamic behavior calmly, choose the lowest-power tool that
+owns a problem honestly, and reject "clever" designs that become harder to debug than to
+justify.
 
-## Course spine
+If you keep that goal in view, the reading order makes sense. If you lose it, the course
+can easily collapse into a pile of tricks.
 
-The course has four linked layers:
+## The course builds four abilities
 
-1. entry pages and orientation
-2. module work from introspection to governance
-3. capstone proof in a single plugin runtime
-4. review surfaces for judgment, debugging, and extension decisions
+The course moves through four linked abilities:
 
-## The Four Arcs
+1. observe runtime behavior without guessing
+2. transform behavior without hiding what changed
+3. place ownership at the right boundary
+4. govern dynamic power with explicit review standards
 
-### Runtime observation
+Those abilities matter more than the names of the mechanisms themselves.
 
-Modules 01 to 03 build the observation floor:
+## The ten-module progression
+
+| Module range | What you are learning to do | Why it comes here |
+| --- | --- | --- |
+| Module 00 | understand the power ladder and the study stance | you need the course’s rules before the dense mechanisms arrive |
+| Modules 01 to 03 | observe runtime objects, attributes, callables, and evidence safely | higher-power tools are dangerous if observation is weak |
+| Modules 04 to 05 | wrap behavior while preserving signatures, provenance, and reviewability | wrappers are the first major temptation to hide behavior |
+| Module 06 | try lower-power class customization before escalation | learners need a real stopping point before metaclasses |
+| Modules 07 to 08 | reason about descriptors, lookup, validation, and reusable field systems | attribute ownership becomes explicit and mechanical here |
+| Module 09 | justify class-creation control only when weaker options fail honestly | metaclasses should feel earned, not glamorous |
+| Module 10 | turn mechanism knowledge into governance and review judgment | the course should end with restraint, not escalation |
+
+## The three big arcs
+
+### Observation arc
+
+Modules 01 to 03 teach the floor that everything else stands on:
 
 - what Python objects are at runtime
-- how to inspect without accidental execution
-- how `inspect` turns runtime mechanics into evidence
+- how names, attributes, and signatures can be inspected safely
+- how evidence becomes strong enough to support design or review claims
 
-### Wrapper discipline
+If this arc is weak, later modules feel magical rather than mechanical.
 
-Modules 04 to 06 move from observation to controlled transformation:
+### Control arc
 
-- wrappers preserve provenance instead of hiding it
-- decorators become explicit policy rather than ornament
-- class-level customization stops before metaclasses unless lower-power tools fail honestly
+Modules 04 to 09 teach how behavior can be changed at different boundaries:
 
-### Attribute and class control
+- wrappers at call boundaries
+- class decorators and helper patterns before stronger hooks
+- descriptors at attribute boundaries
+- metaclasses at class-creation boundaries
 
-Modules 07 to 09 explain the higher-power runtime hooks:
+This arc teaches placement and restraint, not just power.
 
-- descriptors make attribute lookup mechanical instead of mystical
-- validation and framework-shaped attribute systems gain explicit ownership
-- metaclasses stay narrow, justified, and reviewable
+### Governance arc
 
-### Governance and mastery
+Module 10 teaches what many advanced courses skip:
 
-Module 10 converts mechanism knowledge into review policy:
+- when dynamic power crosses a red line
+- how debugging cost changes the design argument
+- why an "impressive" mechanism may still be the wrong design
 
-- dynamic power gets red lines
-- debugging cost becomes part of the design argument
-- exit criteria replace sequel marketing
+## How the capstone fits the course
 
-## How The Capstone Fits
+The capstone is not an optional demo. It is the executable proof surface for the course.
 
-- Modules 01 to 03 explain the capstone's runtime model, safe inspection surfaces, and provenance handling.
-- Modules 04 to 06 explain its wrappers, decorators, and low-power class customization decisions.
-- Modules 07 to 09 explain its descriptors, validation surfaces, and class-creation choices.
-- Module 10 explains its governance rules and why stronger hooks remain narrow.
+- Early modules explain how to inspect the capstone without accidental execution.
+- Middle modules explain its wrappers, fields, and customization boundaries.
+- Later modules explain why its metaclass and registry stay narrow.
+- The final module explains how to review or reject changes to the capstone honestly.
 
-## Support pages by moment
+When you study a module, the capstone gives you one place where the module’s claim becomes
+visible in code, commands, tests, and saved evidence.
 
-### When you are choosing how to enter
+## Which support page solves which study problem
 
-- [Pressure Routes](pressure-routes.md) when you are entering from a concrete engineering pressure
-- [Start Here](start-here.md) when you need a lower-density or pressure-shaped sequence
-- [Pressure Routes](pressure-routes.md) when you can name the engineering question faster than the module
-- [Module Dependency Map](../reference/module-dependency-map.md) when you need the sequence justified
+| Study problem | Best page |
+| --- | --- |
+| I need the right entry route | [Start Here](start-here.md) |
+| I need the course’s discipline made explicit | [Learning Contract](learning-contract.md) |
+| I need to know what this module is supposed to settle | [Module Promise Map](module-promise-map.md) |
+| I need to know whether I can move on | [Module Checkpoints](module-checkpoints.md) |
+| I need a pressure-shaped reading path | [Pressure Routes](pressure-routes.md) |
+| I need the smallest honest proof route | [Proof Ladder](proof-ladder.md) |
+| I need a direct claim-to-evidence mapping | [Proof Matrix](proof-matrix.md) |
+| I need to stabilize the environment before any proof work | [Platform Setup](platform-setup.md) |
 
-### When you are checking whether a module actually landed
+## How to study the course well
 
-- [Module Promise Map](module-promise-map.md) when you want the exact contract of each module stated plainly
-- [Module Checkpoints](module-checkpoints.md) when you need a concrete exit bar before moving on
-- [Proof Matrix](proof-matrix.md) when you want course-level promises tied to proof surfaces
-- [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place
+### Before a module
 
-### When you are deciding whether a dynamic mechanism is justified
+- Read the module promise.
+- Know what the module is supposed to settle.
+- Know what it does not settle yet.
 
-- [Proof Ladder](proof-ladder.md) when you need the smallest honest command for the current claim
-- [Review Checklist](../reference/review-checklist.md) when you need the governing review bar
-- [Pressure Routes](pressure-routes.md) when you need a problem-to-tool comparison with the lowest-power alternative kept visible
-- [Topic Boundaries](../reference/topic-boundaries.md) when you need to decide what belongs inside the course center
-- [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) when you are recognizing a smell before you can name the mechanism
+### During a module
 
-### When you need the executable surface
+- Keep one lower-power alternative in view.
+- Ask what timing boundary the mechanism changes: import time, class-definition time, instance time, or call time.
+- Refuse to treat jargon as understanding.
 
-- [Command Guide](../capstone/command-guide.md) when you need the executable route
-- [Capstone Map](../capstone/capstone-map.md) when you need the module-to-repository route
-- [Capstone File Guide](../capstone/capstone-file-guide.md) when you need the owning files kept explicit
+### After a module
 
-## Honest Expectation
+- Use the checkpoints.
+- Cross into the capstone only when the course question is explicit.
+- Prove at least one claim in a real surface instead of trusting prose alone.
 
-If you rush, the course will feel like a pile of hooks. If you read it in order and keep
-the power ladder in view, the later modules should feel like consequences of earlier
-runtime mechanics rather than cleverness contests.
+## Honest expectations
+
+You should expect the course to feel slower than tutorial-style metaprogramming material.
+That is intentional. Fast metaprogramming courses often teach mechanism recognition
+without teaching boundary judgment.
+
+By the end of this course, you should be able to answer:
+
+- What changed at runtime?
+- Where does that behavior belong?
+- Which lower-power option was ruled out?
+- What evidence proves the claim?
+- What design would I reject as too magical?

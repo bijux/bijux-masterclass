@@ -28,9 +28,9 @@ flowchart LR
 
 Use this guide when the capstone still feels like a pile of Python hooks instead of a
 system with named responsibilities. The goal is to know which file owns a kind of
-metaprogramming pressure before you start chasing call stacks.
+metaprogramming pressure before you start chasing call stacks, test failures, or command output.
 
-## Recommended reading order
+## Read the package in this order
 
 1. `src/incident_plugins/framework.py`
 2. `src/incident_plugins/fields.py`
@@ -40,7 +40,18 @@ metaprogramming pressure before you start chasing call stacks.
 6. `tests/`
 
 That route keeps definition-time authority first, attribute contracts second, wrapper
-discipline third, concrete plugin behavior fourth, and proof surfaces last.
+discipline third, concrete plugin behavior fourth, public review routes fifth, and proof last.
+
+## Why that order teaches better
+
+- `framework.py` tells you what happens when classes are created.
+- `fields.py` tells you how configuration rules stay explicit.
+- `actions.py` tells you how call-time behavior gains metadata without becoming opaque.
+- `plugins.py` tells you whether the abstraction still behaves like ordinary code.
+- `cli.py` tells you how the runtime becomes publicly inspectable.
+- `tests/` tell you which claims are defended once you already know what each file owns.
+
+If you start in the reverse order, the tests and CLI can look like the system instead of evidence about the system.
 
 ## Package responsibilities
 
@@ -53,22 +64,13 @@ discipline third, concrete plugin behavior fourth, and proof surfaces last.
 | `cli.py` | public inspection and invocation commands | hidden business logic not available from the runtime helpers |
 | `tests/` | executable proof for import-time, class-definition-time, and invocation behavior | undocumented design authority |
 
-## Best questions by file
+## Start by question
 
 - Open `framework.py` when you need to know what happens at class-definition time.
 - Open `fields.py` when you need to know who validates configuration and when.
 - Open `actions.py` when you need to prove that wrappers keep signatures and history visible.
 - Open `plugins.py` when you need the concrete behavior that keeps the framework honest.
 - Open `cli.py` when you need to inspect the public surface without importing private internals yourself.
-
-Read [DESIGN_BOUNDARIES.md](design-boundaries.md) when the metaclass, descriptor, and
-generated-constructor boundaries still need a sequence view before the file-by-file route.
-
-Read [EXTENSION_GUIDE.md](extension-guide.md) when the framework is clear but the concrete
-adapter differences or next change placement still need a purpose-driven explanation.
-
-Read [COMMAND_GUIDE.md](command-guide.md) when the question is no longer only
-internal ownership, but what the package intentionally exports.
 
 ## Best class and function route
 
@@ -91,9 +93,28 @@ internal ownership, but what the package intentionally exports.
 | inspect one concrete action | `make demo` or `make trace` | how one built-in adapter keeps the framework honest |
 | inspect one saved review bundle | `make inspect`, `make tour`, or `make verify-report` | how ownership and proof surfaces stay durable for later review |
 
-## What this guide prevents
+## Common reading mistakes
 
-- starting in concrete plugins and mistaking them for the framework contract
-- burying descriptor rules inside metaclass machinery
-- treating the CLI as if it were the runtime source of truth
-- reading tests before you know which file is supposed to own the behavior
+| Mistake | Why it hurts | Better move |
+| --- | --- | --- |
+| starting in `plugins.py` first | concrete adapters are easier to misread as the whole framework | start in `framework.py` |
+| starting in `tests/` first | proof looks arbitrary before ownership is clear | read `framework.py`, `fields.py`, and `actions.py` first |
+| treating `cli.py` as the source of truth | the CLI should report the runtime, not secretly replace it | compare CLI handlers with runtime helpers |
+| reading every file end to end before asking a question | the route becomes passive and exhausting | read by question and owner |
+
+## Companion guides
+
+Read [DESIGN_BOUNDARIES.md](design-boundaries.md) when the mechanism boundaries still need a stronger sequence view.
+
+Read [EXTENSION_GUIDE.md](extension-guide.md) when the framework is clear but the next change placement is not.
+
+Read [COMMAND_GUIDE.md](command-guide.md) when the question is no longer only internal ownership, but what the package intentionally exports.
+
+## Good stopping point
+
+Stop when you can name:
+
+- which file you would open first for a class-definition question
+- which file you would open first for a descriptor question
+- which file you would open first for a wrapper question
+- why the concrete plugins come after the mechanism-owning files

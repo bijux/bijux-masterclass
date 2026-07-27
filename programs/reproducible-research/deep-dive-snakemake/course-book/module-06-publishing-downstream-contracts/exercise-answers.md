@@ -1,35 +1,37 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning protects downstream trust.
 
-## Answer 1: Separate internal state from the public bundle
+## How to use the answer page well
+
+Do not read a model answer before you have tried the exercise yourself.
+
+A stronger rhythm is:
+
+1. complete the exercise with your own tree, manifest, consumer, or review note
+2. write one plain-language explanation of the contract you are defending
+3. compare that explanation with the model answer
+4. revise where the model answer reveals missing artifact roles, weak evidence, or a
+   downstream assumption you did not notice
+
+The target is not identical wording. The target is durable downstream reasoning.
+
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one artifact-role table
+- one public-tree sketch
+- one manifest verification transcript
+- one consumer test transcript
+- one compatibility note
+- one downstream-review note
+- one note naming when reviewed discovery evidence belongs in the public contract
+
+If your answers rely only on the fact that files now sit under `publish/`, the reasoning
+is still too thin.
+
+## Exercise 1: Classify the current outputs
 
 What should remain internal:
 
@@ -45,8 +47,8 @@ yet a stable downstream-facing surface.
 
 What could belong in the published contract:
 
-- `publish/summary.tsv`
-- `publish/report.html`
+- `publish/v1/summary.tsv`
+- `publish/v1/report/index.html`
 
 What is still missing:
 
@@ -57,7 +59,129 @@ What is still missing:
 
 The main lesson is that copying a few files into `publish/` is not enough by itself.
 
-## Answer 2: Decide whether a change is compatible
+Weak answers say only "this file is useful" without naming whether it is internal,
+diagnostic, machine-facing, or human-facing.
+
+## Exercise 2: Draw the first publish boundary
+
+A strong answer promotes only the smallest honest set of downstream-facing files into
+`publish/v1/` and keeps per-sample workflow-operational detail, logs, and other debugging
+surfaces internal. Each included file should have a one-sentence role explanation such as
+"machine-facing summary," "human-facing report," or "integrity inventory." The quality
+signal is not how many files move; it is whether a downstream user can rely on the public
+bundle without learning the internal workflow tree.
+
+The strongest answers also say explicitly whether accepted and rejected discovery records
+belong in the bundle. If downstream users need to defend why the result set has exactly
+its observed membership, those records should be public rather than left implicit.
+
+The missing but important sentence is usually this one:
+
+> This bundle is for a downstream reader or program that needs the published summary,
+> report, and integrity surfaces, not the producer’s intermediate workflow state.
+
+Weak answers celebrate a larger publish tree without proving why every added file belongs
+to the contract.
+
+## Exercise 3: Separate machine and human surfaces
+
+A strong answer names one structured artifact such as `summary.json` or `summary.tsv` as
+authoritative for programmatic use and one report artifact such as `report/index.html` as
+authoritative for human inspection. The relationship should be explicit: the report is
+derived from or aligned with the structured summary, not a separate truth. Scraping the
+report weakens the contract because presentation markup is less stable than a documented
+machine-facing schema.
+
+Weak answers call both artifacts "the output" and therefore hide which one a consumer
+should trust first.
+
+## Exercise 4: Write a manifest for the bundle
+
+A good manifest uses stable relative paths from the bundle root, deterministic ordering,
+and digests such as SHA-256. The ordering rule should be simple and reproducible, for
+example sorted normalized relative paths. Absolute paths do not belong because the bundle
+contract must travel across machines and directories without changing meaning. A useful
+verification transcript shows both a successful pass and the exact command used.
+
+Example answer shape:
+
+- manifest rows:
+  - `sha256<TAB>relative/path`
+- ordering:
+  - lexicographic order on normalized relative bundle paths
+- verification:
+  - one command that rehashes the bundle and compares against the manifest
+- explanation:
+  - "relative paths keep the contract portable; absolute paths would change when the
+    bundle moves even if the bundle meaning does not"
+
+The key explanatory sentence is:
+
+> The manifest proves that the inventoried bytes are the same bundle; it does not prove
+> that the bundle is scientifically correct or semantically compatible with every consumer.
+
+An equally important companion sentence is:
+
+> The manifest can show which files belong in the bundle, but it cannot by itself explain
+> why one candidate was accepted and another was rejected from the public result set.
+
+## Exercise 5: Add provenance without confusing its role
+
+A strong provenance file records the producing repository revision, workflow identity,
+runtime or environment context, and relevant configuration details that affect meaning.
+It answers questions such as "what software context produced this bundle?" It does not by
+itself answer "which published files are part of the public promise?" or "what should a
+consumer read first?" Those remain contract questions.
+
+Weak answers ask provenance to replace the manifest, consumer contract, and file API all
+at once.
+
+## Exercise 6: Write a consumer test
+
+A strong consumer accepts only the bundle path, validates the documented machine-facing
+artifact, and intentionally knows nothing about `results/`, internal rule names, or
+producer-only configuration. The success condition is that the consumer can do useful
+work with no hidden repository knowledge. That is the proof that the public contract is
+real and not just a copied folder.
+
+Example answer shape:
+
+- input:
+  - only `publish/v1/`
+- first file read:
+  - one documented machine-facing summary
+- validation:
+  - schema or required-column check
+- deliberate ignorance:
+  - no `results/` reads, no repository-root assumptions, no producer-only helper imports
+
+Why this is strong:
+
+- it proves the bundle is self-contained enough for downstream use
+- it forces the machine-facing surface to behave like a real API
+
+The deliberate boundary sentence is:
+
+> Reading `results/` would weaken the contract because it asks the consumer to depend on
+> producer-only workflow layout that the public bundle was meant to hide.
+
+The authority sentence should also be clear:
+
+> The consumer treats the documented machine-facing summary as authoritative and uses the
+> report only for human interpretation.
+
+## Exercise 7: Corrupt the bundle and detect it
+
+The failed verification should identify the changed path and report a checksum mismatch or
+equivalent integrity failure. What this proves is file identity: the bytes are no longer
+the same as the inventoried bundle. What it does not prove is semantic correctness,
+scientific validity, or whether the bundle was the right contract to publish in the first
+place.
+
+Weak answers claim checksum failure proves the scientific result is wrong. It only proves
+the published bytes no longer match the inventoried bundle.
+
+## Exercise 8: Simulate a downstream compatibility check
 
 Likely compatible within `v1`:
 
@@ -73,60 +197,47 @@ Why:
 An additive field can preserve the old contract if existing consumers still work. Path
 changes and field removals often alter the public promise directly.
 
-## Answer 3: Diagnose a weak integrity surface
+The strongest answers also write one sentence from the consumer’s point of view, such as:
 
-What the bundle cannot answer well:
+> My existing parser still succeeds without modification, so this additive field is
+> compatible within `v1`; a renamed path would not be.
 
-- whether the bundle is complete
-- whether files were altered or corrupted
-- what software context produced the outputs
+Weak answers classify compatibility from the producer's convenience instead of from the
+surviving consumer's experience.
 
-Why the report is not enough:
+## Exercise 9: Design a deliberate version migration
 
-- it is a human-readable interpretation surface, not an inventory or identity surface
+`v1` should remain intact for supported consumers while `v2` introduces the breaking
+change under a new public boundary. A good migration note maps old paths or fields to the
+new ones, states who should move and when, and keeps separate consumer tests for both
+supported versions. The internal workflow tree still does not belong in either API,
+because versioning is about the public promise, not about exposing producer internals.
 
-What to add first:
+Example migration note elements:
 
-- `manifest.json` with published paths
-- checksums for the published files
-- `provenance.json` for software-context evidence
+- what changed in `v2`
+- which `v1` consumers are still supported and for how long
+- how one old path or field maps to the new surface
+- which verification route should be run for each supported version
 
-The report should remain useful, but it should not be the entire trust story.
+## Exercise 10: Review a full publish change like a downstream maintainer
 
-## Answer 4: Clarify artifact roles
+A strong review starts with findings ordered by downstream trust impact: hidden dependency
+on `results/`, renamed public path, mismatched manifest coverage, changed artifact role,
+or unclear consumer surface. Each correction should name the narrowest verification route
+that proves the repair, such as rerunning the bundle verifier, rerunning the consumer
+test, or diffing the published role table. One appropriate outcome is to say a change
+should be versioned, postponed, or removed rather than merged under the current contract.
 
-A strong response would say:
+A useful review order often looks like this:
 
-> Scraping HTML is a weak machine contract because presentation markup is not a stable API.
-> Machine consumers should read a structured artifact such as `summary.json` or
-> `summary.tsv`. The report should help humans inspect and interpret the run, not serve as
-> the only machine-facing surface.
+1. check whether the public artifact roles still tell the truth
+2. verify that the consumer still reads only documented bundle surfaces
+3. inspect whether manifest and provenance still match their intended jobs
+4. classify whether any changed path or field remains compatible inside the current version
 
-Why:
-
-- machine consumers need structured, stable data
-- reports are valuable for humans but brittle as programmatic interfaces
-
-## Answer 5: Review publish drift
-
-Risks:
-
-- the report path change may break downstream users
-- the manifest is no longer aligned with the published bundle
-- downstream code reading from `results/` means the public boundary is not doing enough work
-
-What should be repaired before approval:
-
-- either restore the stable report path or treat the rename as a contract change
-- update the manifest so it inventories the real bundle
-- repair the publish contract so downstream consumers do not depend on `results/`
-
-Does this require versioning discussion, repair, or both:
-
-- both
-
-The manifest mismatch is a repair inside the current review. The path rename and internal
-file dependency both raise versioning and contract adequacy questions.
+Weak reviews start with low-value style notes before naming contract breakage or
+verification gaps.
 
 ## Self-check
 
@@ -138,3 +249,10 @@ If your answers consistently explain:
 - what evidence supports downstream trust
 
 then you are using the module correctly.
+
+Weak answer pattern:
+
+- "the bundle is better now because it has more files and more metadata"
+
+That sentence skips the consumer surface, the artifact roles, and the compatibility
+question all at once. If your answers still sound like that, keep revising.

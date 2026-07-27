@@ -1,32 +1,105 @@
 # Worked Example: Repairing a Lying First Workflow
+This example is the lab version of Module 01. Do not read it like a post-mortem. Rebuild
+it as you go and predict each change before you run it.
+
+The goal is to take one small workflow from misleading first draft to a version that tells
+the truth about files, reruns, wildcard ownership, and published outputs.
+
+## How to use this worked example
+
+Treat this page like a bench exercise, not like a story you admire from a distance.
+
+For each repair step:
+
+1. predict what Snakemake should do next
+2. run the smallest command that tests that prediction
+3. write one sentence about what changed in the workflow truth
+
+If you skip the prediction step, the example becomes reading practice instead of workflow
+reasoning practice.
+
+## The one-day teaching goal
+
+By the end of this example, a missed class session should still feel recoverable. The
+reader should be able to rebuild a tiny workflow from scratch and explain:
+
+- why one rule is irrelevant to the requested target
+- why one unstable value prevents convergence
+- why one output pattern teaches ownership badly
+- why one final output is unsafe to publish directly
+
+That is the real point of the example. The code is only the vehicle.
+
+## Build an honest baseline first
+
+Before repairing a larger workflow, make the smallest multi-job graph concrete. Continue
+in the orientation directory and replace its `Snakefile` with:
+
+```python
+SAMPLES = ["A", "B"]
 
 
-<!-- page-maps:start -->
-## Page Maps
+rule all:
+    input:
+        expand("results/{sample}.upper.txt", sample=SAMPLES)
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Worked Example: Repairing a Lying First Workflow"]
-  capstone["Capstone evidence"]
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+rule uppercase:
+    input:
+        "data/{sample}.txt"
+    output:
+        "results/{sample}.upper.txt"
+    shell:
+        """
+        mkdir -p results
+        tr '[:lower:]' '[:upper:]' < {input} > {output}.building
+        mv {output}.building {output}
+        """
 ```
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+Create the inputs and inspect the plan:
 
-This example follows one small beginner workflow from misleading first draft to a version
-that tells the truth about files, reruns, and published outputs.
+```sh
+mkdir -p data
+printf 'alpha\n' > data/A.txt
+printf 'beta\n' > data/B.txt
+snakemake --dry-run --printshellcmds
+```
+
+One rule definition becomes two jobs because the concrete targets bind `{sample}` to
+`A` and `B`. Execute with `snakemake --cores 1`, then edit only `data/A.txt` and dry-run
+again. Predict that only the `A` job will run. This small observation is the foundation
+for the repair below.
+
+## What to keep beside you while you work
+
+Keep four evidence routes open all the way through the page:
+
+- `snakemake -n`
+- `snakemake --summary`
+- the current `Snakefile`
+- the actual output paths on disk
+
+Those four surfaces are enough to teach the lesson if you read them carefully.
+
+Keep one repair ledger beside them:
+
+| Repair step | What was lying before | What truth became visible after the repair | Which evidence surface proved it |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
+If you complete the example without filling the ledger, you will probably remember the
+code but forget the diagnostic habit the code was meant to teach.
+
+## The lab route
+
+Use the worked example in this order:
+
+1. build the honest baseline and prove selective rebuilds
+2. read the broken first draft and predict where it lies
+3. repair one defect at a time
+4. dry-run after every repair instead of waiting until the end
+5. finish with one output you would trust another rule to consume
 
 ## The situation
 
@@ -107,7 +180,32 @@ The first draft has at least five issues:
 
 That is a good Module 01 example because none of these problems are exotic.
 
-## Step 1: review the target story
+## Repair order matters
+
+Do not fix the shell first just because it looks concrete. Repair the workflow in this
+order:
+
+1. remove rules that are outside the target story
+2. restore convergence
+3. make output ownership easier to read
+4. add logs and atomic publication
+
+That order keeps the lesson tied to workflow truth instead of drifting straight into
+implementation details.
+
+## Why this order matters educationally
+
+Beginners often grab the shell block first because it looks concrete. That produces a bad
+habit: polishing commands before deciding whether the workflow graph says anything true.
+
+This repair order forces a stronger instinct:
+
+- first make the target story honest
+- then make reruns explainable
+- then tighten path ownership
+- only then improve publication safety and diagnostics
+
+## Review the target story
 
 The first question is not "how do I fix the shell?"
 
@@ -132,7 +230,7 @@ The honest repair is either:
 
 In this example, the right answer is removal. The flag is not real workflow truth.
 
-## Step 2: fix the rerun lie
+## Remove the unstable rerun cause
 
 You then run:
 
@@ -141,7 +239,7 @@ snakemake
 snakemake -n
 ```
 
-and notices that the dry-run still wants to execute `summarize`.
+and notice that the dry-run still wants to execute `summarize`.
 
 The reason is not mysterious:
 
@@ -152,10 +250,39 @@ The reason is not mysterious:
 This is Core 2.
 
 The repair is to remove the unstable time value from the rule's meaning. If you
-actually needs a run identifier, it should be an explicit stable config value or sidecar
+actually need a run identifier, it should be an explicit stable config value or sidecar
 audit artifact, not part of the summary's semantic content.
 
-## Step 3: make the wildcard output teach the reader
+## Snapshot the workflow after each repair
+
+Do not trust your memory for the workflow state. After each repair, write down four quick
+facts:
+
+| Checkpoint | Expected answer |
+| --- | --- |
+| requested public target | which finished file defines "done" right now |
+| wildcard-owned outputs | which concrete files the wildcard rule can publish |
+| convergence test | whether `snakemake -n` should now report more jobs or none |
+| unsafe publication remaining | whether any final output is still written in place |
+
+This snapshot habit matters for self-learners because the live class demo normally makes
+those transitions visible with repeated dry-runs. On the page, you need to create that
+visibility deliberately.
+
+## A short checkpoint before moving on
+
+Pause here and verify that you can say the problem in one sentence without mentioning
+"Snakemake weirdness."
+
+Strong sentence:
+
+> The summary rule reruns because its tracked meaning changes every parse.
+
+Weak sentence:
+
+> It keeps running again for some reason.
+
+## Make the wildcard output teach the reader
 
 The next issue is the staging path:
 
@@ -184,7 +311,7 @@ This is Core 3:
 The fix is not about pretty naming only. It is about path precision and future ambiguity
 avoidance.
 
-## Step 4: separate meaning from policy
+## Separate meaning from policy
 
 Suppose you now want to make the sample list configurable.
 
@@ -224,7 +351,10 @@ This is Core 4. You now have a clean story:
 - config changes workflow meaning
 - profile changes execution behavior
 
-## Step 5: repair publication and failure evidence
+If this still feels abstract, change `samples` and `cores` one at a time and predict which
+change should alter the target surface. That comparison usually makes the boundary click.
+
+## Repair publication and failure evidence
 
 You also notice that the summary rule writes directly to the final output.
 
@@ -355,7 +485,8 @@ The important facts should be obvious:
 DAG:
 
 ```bash
-snakemake --dag | dot -Tpdf > dag.pdf
+mkdir -p artifacts
+snakemake --dag | dot -Tpdf > artifacts/dag.pdf
 ```
 
 You should now see:
@@ -365,6 +496,34 @@ You should now see:
 - one `all` target
 
 That is a workflow you can explain, not just run.
+
+## A one-page recovery route if the example stops making sense
+
+If you lose the thread halfway through, do not reread the whole page immediately. Recover
+in this order:
+
+1. write the current public target on paper
+2. list the exact staged outputs the target depends on
+3. circle the one rule that is still unstable or misleading
+4. run `snakemake -n`
+5. compare the planned jobs against the current repair ledger
+
+That recovery route is intentionally smaller than the whole example. It gives you a way
+back into the reasoning without starting over.
+
+## What the learner should notice now
+
+The repaired workflow is still tiny. That is a feature.
+
+At this size, every improvement is visible:
+
+- the target story is short enough to redraw
+- the rerun logic is small enough to test deliberately
+- the naming is specific enough to explain aloud
+- the publication boundary is explicit enough to inspect after a forced failure
+
+If a learner cannot explain the repaired version at this size, moving to a larger project
+will only hide the confusion.
 
 ## What changed conceptually
 
@@ -405,6 +564,7 @@ Take one tiny workflow of your own and ask:
 - which path pattern is too vague
 - which setting belongs in config rather than policy
 - which final output is still published too early
+- which evidence surface would prove each repair instead of merely suggesting it
 
 If you can answer those five questions, Module 01 is becoming practical instead of only
 theoretical.

@@ -18,60 +18,90 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  surface["Pick one boundary or scenario surface"] --> owner["Name the owner"]
+  owner --> evidence["Name the first test or bundle"]
+  evidence --> risk["State the drift risk"]
+  risk --> verdict["Decide whether the design still deserves trust"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Use this page after a module, after a rewrite, or before an extension. It is not a page
+for praise. It is a page for pressure. The goal is to answer whether the capstone still
+teaches good object-oriented design under review.
 
-Use this checklist when reviewing the capstone after a module or before extending it.
+## Ownership review
 
-## Ownership
+- Can you point to one authoritative owner for rule lifecycle?
+- Can you point to one authoritative owner for alert creation?
+- Can you point to one clear seam for evaluation variation?
+- Can you explain why `runtime.py` is not the domain model?
+- Can you explain why projections and read models are useful but non-authoritative?
 
-- Can you point to one clear owner for each invariant?
-- Does the aggregate reject invalid lifecycle changes directly?
-- Are evaluation rules encapsulated in policy objects instead of condition ladders?
+## Boundary review
 
-## Authority
+| Boundary | Review question | Evidence to inspect first |
+| --- | --- | --- |
+| aggregate | Does `model.py` still decide the legal lifecycle transitions? | `tests/test_policy_lifecycle.py` and `rules.txt` |
+| evaluation seam | Can a new evaluation mode land in `policies.py` without widening the aggregate? | `tests/test_policy_evaluation.py` and `rate_of_change.txt` |
+| runtime | Does coordination stay outside domain truth? | `tests/test_runtime.py`, `timeline.txt`, and `walkthrough.txt` |
+| projections and read models | Are the derived views downstream of events instead of upstream of authority? | `history.txt`, `snapshot.json`, and retirement scenarios |
+| persistence and rollback | Would a sink or storage failure roll back state without relocating business rules? | `tests/test_unit_of_work.py`, `tests/test_runtime.py`, and `pytest.txt` |
+| public surface | Can a learner drive the scenario without reaching into internals? | `application.py`, `demo.py`, and `walkthrough.txt` |
 
-- Are read models and indexes derived from events instead of controlling domain state?
-- Does the runtime coordinate work without owning domain rules?
-- Is the repository a persistence boundary rather than a hidden source of business logic?
+## Drift warnings
 
-## Change safety
+Mark these aggressively. One "yes" is enough to justify a deeper review.
 
-- If a new rule mode appears, is the extension seam obvious?
-- If a new incident sink appears, can it stay outside the aggregate?
-- If persistence changes, do domain invariants stay intact?
+- Does the runtime now answer a question that used to belong to the aggregate?
+- Does a projection need to be consulted before the aggregate can decide?
+- Does a persistence concern now hide domain policy from a reader?
+- Does one feature force changes in aggregate, runtime, and projection code at the same time?
+- Does the strongest proof route still pass, but the owning boundary feel less legible?
 
-## Proof
+## Change-safety review
 
-- Which tests prove the current behavior?
-- Which saved bundle shows the scenario clearly before opening internals?
-- Which saved bundle captures executable verification for later review?
-- Which file would you edit first for the change you are imagining?
-- Which extension guide would stop you from placing that change in the wrong boundary?
+- If a new rule mode arrived tomorrow, would the first edit point be obvious?
+- If a new incident sink arrived tomorrow, could it stay outside the aggregate?
+- If rollback semantics changed tomorrow, would `repository.py` be the natural pressure point?
+- If a learner asked where state truth lives, would you answer with one file, not three?
 
-## Red flags
+## Proof review
 
-- The runtime starts owning lifecycle decisions that should stay in the aggregate.
-- Read models or projections begin mutating authoritative state directly.
-- New evaluation behavior lands in the aggregate as condition ladders instead of policy surfaces.
-- Persistence concerns start redefining the domain model instead of adapting to it.
-- A reviewer can no longer name the smallest test or bundle that proves a claim.
+| Question | Best first route |
+| --- | --- |
+| What state exists right now? | `inspect` |
+| How does the scenario unfold? | `capstone-walkthrough` |
+| Do tests and saved review artifacts agree? | `capstone-verify-report` |
+| Does the strongest local route still hold? | `capstone-confirm` |
+| Does the published learner route still deserve trust? | `proof` |
 
-## Evidence prompts
+## Review prompts by course stage
 
-- If you changed this boundary tomorrow, which test should fail first?
-- Which saved bundle would let another reviewer understand the claim without rerunning commands?
-- Which guide would you open before editing the file you have in mind?
-- Which object would become suspicious first if the design drifted toward procedural glue?
+| Course stage | Most important question |
+| --- | --- |
+| Modules 01-03 | Which semantic or lifecycle rule would fail first if ownership drifted? |
+| Modules 04-07 | Which boundary is authoritative once collaboration, projections, and runtime pressure are involved? |
+| Modules 08-10 | Which saved route proves the design to someone who did not watch the implementation happen? |
 
-## Module-stage prompts
+## Minimum honest review notes
 
-- Modules 01-03: Which value or lifecycle rule becomes false first if the model drifts?
-- Modules 04-07: Which boundary is authoritative once multiple objects, repositories, or runtime adapters are involved?
-- Modules 08-10: Which public bundle or command best proves the current design to another reviewer?
+When you finish a capstone review, you should be able to fill in all four blanks:
+
+1. The owner is `____`.
+2. The strongest supporting boundary is `____`.
+3. The first proof route I would show another reviewer is `____`.
+4. The first place I would expect drift is `____`.
+
+## Stop conditions
+
+Stop and reopen the architecture or extension pages if either becomes true:
+
+- you can describe behavior, but not ownership
+- you can name a route, but not why that route matches the claim
+
+## Exit check
+
+Leave this worksheet only when you have a review verdict that sounds like this:
+
+> The design still deserves trust because `____` owns `____`, `____` remains derived,
+> and `____` would fail first if that split drifted.

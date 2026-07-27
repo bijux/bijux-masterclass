@@ -1,30 +1,5 @@
 # Architecture Review, Drift, and Refactor Triggers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Workflow Architecture File Apis"]
-  page["Architecture Review, Drift, and Refactor Triggers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Architecture rarely collapses all at once.
 
 It drifts.
@@ -37,6 +12,18 @@ That drift usually looks small in the moment:
 - one more rule file with a vague name
 
 This page is about recognizing when those small moves have become an architecture problem.
+
+## How to use this page
+
+Read this page as a review tool, not as a manifesto.
+
+You should be able to sit in front of one repository change and answer:
+
+- which boundary drifted
+- whether the drift is architectural or merely stylistic
+- whether the next action is repair, refactor, or deliberate deferral
+
+That is the practical skill this page is trying to build.
 
 ## Architecture review asks whether the repository still teaches itself
 
@@ -60,6 +47,25 @@ Warning signs often appear early:
 - the rule graph is technically present, but helper layers are easier to inspect than the rules
 
 These are architecture signals, not mere tidiness complaints.
+
+## Start from review pain, not from mood
+
+Beginners often say things like:
+
+- "the repo feels messy"
+- "the structure is getting weird"
+- "we should clean this up soon"
+
+Those feelings may be pointing at something real, but they are not yet reviewable.
+
+A stronger architecture discussion names the failing boundary:
+
+- the entrypoint no longer shows visible assembly
+- the file API no longer matches the real path contract
+- the helper layer is easier to inspect than the rules
+- one rule family no longer represents a coherent concern
+
+Once the pain is named that clearly, refactoring stops being subjective.
 
 ## Refactors should be triggered by review pain, not by aesthetics alone
 
@@ -91,6 +97,21 @@ flowchart LR
 This loop matters because large refactors often fail by changing several boundaries at
 once without making any of them clearer.
 
+## One concrete architecture audit
+
+Pick one change that made the repository harder to review.
+
+Then force yourself to classify it:
+
+- entrypoint drift
+- rule-family drift
+- file-API drift
+- helper-coupling drift
+- policy or config drift
+
+If you cannot classify it, you may still be reacting to general discomfort instead of a
+specific boundary failure.
+
 ## Strong refactor triggers
 
 Strong triggers include:
@@ -113,6 +134,19 @@ Weak triggers include:
 
 These often increase churn without improving architecture.
 
+## The beginner mistake to catch early
+
+The most common beginner mistake is to launch a broad refactor before identifying the
+smallest lying boundary.
+
+That usually creates two problems:
+
+- many surfaces change at once
+- reviewers cannot tell what actually improved
+
+Architecture repair is strongest when it narrows the scope first, even if the eventual
+cleanup is larger.
+
 ## Common failure modes
 
 | Failure mode | Why it hurts | Better repair |
@@ -122,6 +156,16 @@ These often increase churn without improving architecture.
 | repository shape follows personal taste more than workflow boundaries | maintenance becomes subjective | refactor around ownership and contract questions |
 | new structure hides the visible DAG further | readability drops despite cleaner folders | preserve a clear entrypoint and named rule families |
 | teams normalize confusion because the workflow still runs | architecture debt becomes invisible | use onboarding and review pain as a real signal |
+
+## What a reviewer should hear
+
+A strong explanation sounds like this:
+
+> We are refactoring this boundary because it no longer teaches the truth: the repository
+> structure and the actual ownership or contract surface have drifted apart.
+
+That is stronger than "we want to make the tree cleaner," because it tells the reviewer
+what architectural lie is being repaired.
 
 ## The explanation a reviewer trusts
 
@@ -145,3 +189,6 @@ Before leaving this page, you should be able to:
 - name several strong triggers for architectural refactoring
 - distinguish review pain from mere style preference
 - explain why documentation lag is itself an architecture problem
+
+If you still reach for "cleanup" before you can name the failing boundary, revisit the
+page. This module wants refactor decisions to be explainable, not just intuitive.

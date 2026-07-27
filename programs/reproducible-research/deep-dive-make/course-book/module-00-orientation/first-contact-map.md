@@ -1,34 +1,17 @@
 # First-Contact Map
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Orientation"]
-  page["First-Contact Map"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page for your first honest session with the course. The goal is not to cover as
 much ground as possible. The goal is to leave the first hour coherent enough that later
 reading choices feel deliberate instead of random.
 
 ## First session route
+
+```mermaid
+flowchart TD
+  read["Read the program promise"] --> orient["Complete Module 00"]
+  orient --> trace["Run one traced file-target build"]
+  trace --> reflect["Write one plain-language explanation"]
+  reflect --> decide["Choose whether to continue into Module 01 now"]
+```
 
 1. Read `../index.md` for the program promise.
 2. Read `index.md` for the Module 00 role.
@@ -57,6 +40,17 @@ Repeat the same rhythm through the first modules:
 2. inspect one matching example, exercise, or capstone surface immediately
 3. run one bounded command instead of escalating to every proof route
 4. stop when you can state one rule and one failure mode in plain language
+
+## A strong first-session outcome
+
+Your first session is successful if you can say all three of these without guessing:
+
+- what a target is
+- what a prerequisite is
+- why Make sometimes does no work on a second run
+
+That may sound small. It is not small. It is the seed of every later topic in the
+course.
 
 ## When to leave this route
 

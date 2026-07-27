@@ -57,6 +57,84 @@ mtime.
 | Flags or build mode change output meaning | stamp or manifest | semantic input needs durable evidence |
 | You cannot yet model a clean boundary | redesign first, serialize last | hidden truth is still hidden under `.NOTPARALLEL` |
 
+## Prove what an order-only edge does not promise
+
+It is easy to memorize the syntax and still misuse it. The capstone semantic audit gives
+the same changed input to two graph models:
+
+```make
+# Broken: input.txt must exist, but its content is not allowed to invalidate output.txt.
+output.txt: | input.txt
+	cp $< $@
+```
+
+```make
+# Control: output.txt means "the current content of input.txt."
+output.txt: input.txt
+	cp $< $@
+```
+
+Run the paired models:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone \
+  semantic-fault-audit
+```
+
+Open `summary.tsv` and the two order-only traces under:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/semantic-faults/
+```
+
+Before reading them, predict both second builds. Each workspace first builds from an
+input containing `before`. The audit then changes the input to `after`, makes that input
+newer than the output, and invokes Make again.
+
+| Model | Does the input exist? | Does the changed input invalidate the output? | Expected output |
+| --- | --- | --- | --- |
+| order-only edge | yes | no | `before` |
+| semantic edge | yes | yes | `after` |
+
+The broken trace reports that there is nothing to do. Make is not ignoring a declared
+content dependency. The graph never declared one. The resulting evidence should read:
+
+```text
+order-only    input=after    output=before
+semantic-edge input=after    output=after
+```
+
+That contrast separates two questions that are often collapsed:
+
+```mermaid
+flowchart TD
+  need["What does the consumer need?"]
+  exists["Only existence or setup"]
+  meaning["Content changes artifact meaning"]
+  order["order-only prerequisite"]
+  normal["normal prerequisite"]
+
+  need --> exists --> order
+  need --> meaning --> normal
+```
+
+An order-only prerequisite can establish that a path is available before a recipe runs.
+It cannot carry semantic freshness. Moving a real input to the right of `|` therefore
+does not optimize the graph; it removes an invalidation rule.
+
+### Read the trace as a graph decision
+
+For the broken model, answer:
+
+1. which file changed
+2. whether Make scheduled the recipe after that change
+3. which old value survived in the output
+4. which declaration prevented the change from participating in freshness
+
+For the control, locate the trace line that names `input.txt` as newer than `output.txt`.
+The useful proof is not merely that the recipe ran. It is that the graph explains why it
+ran.
+
 ## Directory targets are the classic case
 
 Directories are often setup requirements rather than semantic inputs. That is why a build
@@ -69,6 +147,14 @@ than truth.
 That rebuild noise matters because it trains you to distrust Make for the wrong reason.
 The real bug is not "Make is noisy." The real bug is that the graph treated a setup path
 as if it were semantic content.
+
+Use this review table before moving a prerequisite across `|`:
+
+| Review question | If yes | If no |
+| --- | --- | --- |
+| Could changing this path change the bytes or meaning of the target? | keep a normal prerequisite | continue |
+| Does the recipe only need the path to exist before it starts? | use an order-only prerequisite | the edge may not belong |
+| Can a changed path leave a stale but successful target? | the order-only form is dishonest | verify the setup contract |
 
 ## Stamps exist to model hidden semantic state
 
@@ -114,6 +200,7 @@ If the sentence sounds vague, the rule probably is too.
 Before leaving this page, you should be able to:
 
 - explain the difference between a real and order-only prerequisite
+- use the paired trace and output to prove why a semantic input cannot be order-only
 - describe one situation where a stamp is the honest tool
 - explain why directory mtimes often create noise rather than signal
 - say why serialization is not the first repair for a lying graph

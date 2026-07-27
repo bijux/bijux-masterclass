@@ -1,32 +1,20 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page after you have written your own answers. The value is in comparing reasoning,
 not in copying wording.
+
+## How to use the answer page well
+
+Do not read an answer first and then reverse-engineer your exercise around it.
+
+A better sequence is:
+
+1. complete the exercise with your own files and commands
+2. write one plain-language explanation
+3. compare your reasoning with the model answer
+4. revise the explanation if the model answer exposes a gap
+
+The goal is not identical wording. The goal is honest workflow reasoning.
 
 The answers below are model answers. Your filenames and rule names may differ. What should
 stay stable is the shape of the explanation:
@@ -35,7 +23,18 @@ stay stable is the shape of the explanation:
 - use one piece of workflow evidence
 - explain the repair in terms of truth, ownership, or publication
 
-## Answer 1: Explain why one rule does not run
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one prediction note
+- one DAG or rulegraph snapshot
+- one convergence check
+- one wildcard-ownership note
+- one publication-safety note
+- one meaning-versus-policy review note
+
+If your answers contain only commands and outcomes, the reasoning is still too thin.
+
+## Exercise 1: Explain why one rule does not run
 
 A strong answer sounds like this:
 
@@ -53,16 +52,50 @@ Why this is strong:
 
 Weak answers usually say only "Snakemake skipped the rule."
 
-## Answer 2: Prove convergence and then break it
+## Exercise 2: Prove convergence on purpose
 
-A strong answer shows both states clearly.
+A strong answer proves that a successful run settles down.
 
 Example answer shape:
 
-- converging state:
-  - run `snakemake`
-  - then run `snakemake -n`
-  - expected evidence: "Nothing to be done."
+- run `snakemake`
+- then run `snakemake -n`
+- expected evidence: "Nothing to be done."
+- explanation:
+  - "the workflow converges because the declared inputs, outputs, and tracked rule meaning
+    have not changed since the successful run"
+
+Why this is strong:
+
+- it uses the dry-run as evidence instead of treating convergence as a feeling
+- it explains why no additional work is justified
+
+The missing but important sentence is usually this one:
+
+> The second dry-run is quiet because the declared inputs, outputs, and tracked rule
+> meaning are the same facts the successful run already satisfied.
+
+## Exercise 3: Trigger one selective rebuild
+
+A strong answer keeps the explanation tied to dependency edges.
+
+Example:
+
+> After editing `data/B.txt`, the dry-run schedules only the job that publishes
+> `results/B.upper.txt` plus any downstream target that depends on it. `results/A.upper.txt`
+> stays untouched because the changed file is not one of its ancestors in the DAG.
+
+Why this is strong:
+
+- it explains the rebuild from the changed input backward
+- it avoids the false idea that rule order controls rebuilds
+
+## Exercise 4: Break convergence and repair it
+
+A strong answer shows both the defect and the repair.
+
+Example answer shape:
+
 - broken state:
   - add a changing tracked value such as `time.time()` in `params`
   - rerun `snakemake -n`
@@ -75,10 +108,10 @@ Example answer shape:
 
 Why this is strong:
 
-- it proves both behaviors with the same evidence route
-- it explains non-convergence as unstable tracked meaning rather than as random behavior
+- it identifies unstable meaning as the cause
+- it proves the repair by restoring convergence
 
-## Answer 3: Diagnose one wildcard ownership problem
+## Exercise 5: Diagnose one wildcard ownership problem
 
 A strong answer names the ownership defect directly.
 
@@ -95,7 +128,34 @@ Why this is strong:
 - it identifies ambiguity as a file-ownership problem
 - it fixes the path design instead of hiding the issue with precedence tricks
 
-## Answer 4: Separate workflow meaning from execution policy
+## Exercise 6: Repair a poison output
+
+A strong answer contrasts the broken and repaired publication contracts.
+
+Example:
+
+- broken shape:
+  - the rule writes directly to `results/report.txt` and then exits with failure
+- repaired shape:
+  - write to `results/report.txt.tmp`
+  - rename to `results/report.txt` only after success
+- evidence route:
+  - keep a per-job log such as `logs/report.log`
+- explanation:
+  - "the repaired version is safer because downstream users either see a complete final
+    output or no final output at all"
+
+Why this is strong:
+
+- it explains publication trust, not just shell mechanics
+- it leaves behind evidence for the next investigation
+
+The key explanatory sentence is:
+
+> The final path becomes trustworthy only after the temporary output is fully written and
+> atomically promoted into its declared location.
+
+## Exercise 7: Separate workflow meaning from execution policy
 
 A strong answer shows one value on each side of the boundary.
 
@@ -118,29 +178,47 @@ Why this is strong:
 - it makes the semantic-versus-policy split explicit
 - it shows why early validation is humane, not just formal
 
-## Answer 5: Repair a poison output
+## Exercise 8: Compare a plan with execution
 
-A strong answer contrasts the broken and repaired publication contracts.
+After deleting `results/A.upper.txt`, a dry-run should plan only the `uppercase` job for
+sample `A` plus the target aggregation. It says what Snakemake *would* do from the current
+filesystem state. After execution, `--summary` should report the known outputs as current.
+That summary describes file ownership and status; it is not a record that every planned
+shell command succeeded in some earlier run.
 
-Example:
+## Exercise 9: Investigate a missing input
 
-- broken shape:
-  - the rule writes directly to `results/report.txt` and then exits with failure
-- repaired shape:
-  - write to `results/report.txt.tmp`
-  - rename to `results/report.txt` only after success
-- evidence route:
-  - keep a per-job log such as `logs/report.log`
-- explanation:
-  - "the repaired version is safer because downstream users either see a complete final
-    output or no final output at all"
+If the requested target is `results/C.upper.txt`, Snakemake can infer `sample=C` and then
+requires `data/C.txt`. The error is useful evidence: the output pattern matched, but its
+source contract could not be satisfied. Add the source if `C` is a legitimate sample,
+remove `C` from semantic configuration if it is not, or correct the path contract if the
+source lives elsewhere. Creating an empty file merely to silence the error would hide the
+real defect.
 
-Why this is strong:
+## Exercise 10: Complete a trustworthy tiny project
 
-- it explains publication trust, not just shell mechanics
-- it leaves behind evidence for the next investigation
+A strong project has three explicit source records, one wildcard transformation family,
+and one summary rule. `rule all` requests the summary and any intermediate files that are
+intended deliverables. The summary writes to a sibling temporary path and renames only
+after every row is complete. Logs are separate from published data.
 
-## What all five answers should have in common
+Verification should show:
+
+- the first dry-run plans three transformations and one summary
+- the first execution creates all expected files
+- the next dry-run converges
+- changing one source rebuilds its transformation and the dependent summary
+- an injected summary failure leaves no final partial file
+
+The final review should classify sample membership and transformation parameters as
+workflow meaning, while cores and shell-printing behavior remain execution policy.
+
+The strongest answers also say explicitly why that split matters:
+
+> A reviewer can decide whether a change alters intended outputs or only operating context
+> without reverse-engineering the whole workflow.
+
+## What all ten answers should have in common
 
 The best Module 01 answers usually do five things:
 
@@ -152,3 +230,10 @@ The best Module 01 answers usually do five things:
 5. they treat final outputs as published artifacts that must be trustworthy
 
 If your answers do those five things, you are learning the module in the right direction.
+
+Weak answer pattern:
+
+- "I ran the commands, the files appeared, so the workflow is probably fine"
+
+That sentence skips convergence, ownership, and publication trust all at once. If your
+answers still sound like that, keep revising.

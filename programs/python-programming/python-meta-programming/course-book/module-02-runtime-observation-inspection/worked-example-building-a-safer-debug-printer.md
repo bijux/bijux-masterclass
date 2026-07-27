@@ -36,6 +36,10 @@ This example uses a debugging helper because it creates exactly the right pressu
 
 That is the right place to make the static-versus-dynamic boundary concrete.
 
+For a self-study learner, the debug printer is also useful because it looks harmless. That
+is exactly why it teaches so well. Many weak runtime tools begin with a sentence like "it
+just prints fields," and then quietly become accidental execution engines.
+
 ## The incident
 
 Assume a team wants a helper called `debug_print()` for quick runtime inspection during an
@@ -55,6 +59,15 @@ The team reports four problems:
 4. recursive object graphs can loop forever
 
 Every one of those problems is a Module 02 problem, not just a formatting problem.
+
+Use the incident as a review packet, not just as a code sample:
+
+| Reported symptom | Hidden boundary mistake |
+| --- | --- |
+| properties execute during debugging | dynamic lookup was treated as passive inspection |
+| fallback hooks run unexpectedly | the helper asked for resolved values too early |
+| slotted objects feel inconsistent | the helper assumed dictionary-backed storage |
+| recursive graphs loop forever | the tool crossed into object walking without an explicit policy |
 
 ## The first mistake: treating value resolution as observation
 
@@ -76,6 +89,9 @@ So the first repair is conceptual:
 
 That is the same boundary the module has been drawing all along.
 
+If you remember only one thing from the worked example, remember that sentence. Most
+runtime-inspection bugs are policy bugs before they are implementation bugs.
+
 ## Step 1: separate name discovery from value resolution
 
 `dir(self)` can still be useful for candidate names, with one caveat: it may call a
@@ -91,6 +107,13 @@ The workflow becomes:
 3. evaluate dynamic values only when the tool is explicitly configured to do so
 
 That one shift changes the honesty of the whole helper.
+
+It also changes the user contract. The tool can now say:
+
+- "by default I will show structure"
+- "with an explicit flag I will evaluate selected runtime values"
+
+That is a much better educational and operational promise than "I print everything."
 
 ## Step 2: switch the default read path to static lookup
 
@@ -113,6 +136,9 @@ This is the core of the worked example:
 
 > debugging tools usually want attachment truth first, not execution truth.
 
+That sentence should shape your review of any future serializer, admin panel, inspector,
+or object browser. They all face the same temptation to resolve values too early.
+
 ## Step 3: decide what to do with descriptors
 
 Once static lookup is the default, the tool still needs policy.
@@ -124,6 +150,15 @@ For example:
 - read slot descriptors carefully when you want actual slot values
 
 That policy is clearer than pretending every attribute read is harmless.
+
+A good learner-facing rewrite is to make the policy visible in a table:
+
+| Surface encountered | Default behavior | Optional behavior |
+| --- | --- | --- |
+| plain stored value | show it | same |
+| property | show the property object | evaluate only behind an explicit flag |
+| slot descriptor | identify the descriptor | read the slot value deliberately |
+| fallback hook | do not trigger it by default | trigger only in a deliberate runtime mode |
 
 ## Step 4: make recursion explicit and bounded
 
@@ -250,6 +285,18 @@ The repaired helper is stronger because it makes its observation policy explicit
 It is still not magic. It is just honest about what it is observing and when it crosses
 into execution.
 
+## How to read the implementation without getting lost
+
+If the code block feels dense, walk it in this order:
+
+1. locate the visited-set guard and note that recursion has an explicit boundary
+2. find the `inspect.getattr_static` call and mark it as the default read path
+3. find the property branch and notice that evaluation is opt-in
+4. find the slot-descriptor branch and notice that slot reads are treated specially
+5. find the recursion branch and notice that only specific non-primitive values recurse
+
+That reading order turns one long code listing into five policy decisions.
+
 ## What this example teaches about Module 02
 
 This worked example ties the module together:
@@ -263,6 +310,20 @@ This worked example ties the module together:
 That is the real win. A safer debug printer is just one concrete place where the module's
 observation rules prove their value.
 
+## A review packet to leave behind after this example
+
+When you finish the worked example, you should be able to write these five short notes
+without rereading the page:
+
+- one sentence explaining why `dir` is only a discovery step
+- one sentence explaining why `inspect.getattr_static` is the default read path
+- one sentence explaining when the helper intentionally crosses into behavior
+- one sentence explaining why slot-backed objects need special handling
+- one sentence explaining how the recursion policy protects the tool from becoming an object walker
+
+If you cannot write those notes cleanly, the code probably felt more convincing than it
+was actually understood.
+
 ## The review loop to keep
 
 When you inherit a runtime-inspection helper, run this loop:
@@ -271,6 +332,11 @@ When you inherit a runtime-inspection helper, run this loop:
 2. mark every dynamic read that may execute code
 3. move default inspection paths toward static lookup where appropriate
 4. make evaluation, recursion, and display policy explicit
+
+One final pressure question:
+
+> If a team says "our debug helper is safe because it only runs in development," which
+> risk boundary from this example are they failing to name?
 
 If you can do that here, Module 02 has done its job and Module 03 can build on a much
 cleaner observation discipline.

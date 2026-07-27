@@ -34,20 +34,20 @@ This page collects that information in one place.
 
 ---
 
-## Module Practice Surfaces
+## Hundred-exercise route
 
-| Module | Primary practice surface | Main proof loop | Best capstone follow-up |
+| Module | Exercises 1-5 | Exercises 6-10 | Evidence to retain |
 | --- | --- | --- | --- |
-| 01 | thought experiments and failure analysis | identify hidden inputs and missing evidence | inspect `README.md` and `TOUR.md` as a contract specimen |
-| 02 | state-layer inspection | compare workspace, Git, lock, cache, and remote roles | inspect `dvc.lock` and promoted outputs |
-| 03 | environment declaration choices | compare lockfiles, containers, and CI authority | inspect `pyproject.toml` and repository execution targets |
-| 04 | pipeline declaration review | inspect `dvc.yaml`, rerun behavior, and `dvc.lock` | inspect stage edges in the capstone |
-| 05 | params and metrics review | compare declared controls and tracked outcomes | inspect `params.yaml`, tracked metrics, and publish evidence |
-| 06 | experiment discipline | vary params without corrupting baseline state | run or inspect experiment-oriented surfaces |
-| 07 | collaboration and CI expectations | compare human process to verification commands | inspect `confirm`, `push`, and `recovery-drill` |
-| 08 | recovery and retention thinking | rehearse loss and restoration logic | inspect remote-backed recovery and promoted bundles |
-| 09 | promotion boundary review | inspect publish contract and evidence bundle | inspect `publish/v1/` and verify it |
-| 10 | repository review | write a short stewardship review | use the capstone as the review specimen |
+| 01 | failure language, hidden state, Git and DVC boundaries, inventory | cold start, evidence ladder, classification, failure report, adoption boundary | workflow inventory and reproduction blockers |
+| 02 | path, pointer, cache, authority, recovery claims | pointer inspection, checkout, empty-cache pull, missing object, authority diagram | hashes, state transitions, recovery record |
+| 03 | environment inputs, determinism, ownership, strategy, drift | fingerprint, deliberate drift, strategy comparison, CI gate, cross-context run | environment identities and output comparison |
+| 04 | stage reading, influence placement, reruns, stale output, refactoring | complete pipeline, omitted edge, lock trace, output ownership, contract review | plans, lock diffs, graph findings |
+| 05 | metric meaning, parameter classes, schema, diffs, plots | stable schema, control classification, manual comparison, decision rule, review packet | schemas, calculations, decision evidence |
+| 06 | baseline, scope, table reading, proof limits, promotion | sweep, reproduction, contaminated baseline, promotion review, retention | candidate table and promotion record |
+| 07 | shared rules, CI, merge blockers, stewardship, recovery | data review, remote check, conflict resolution, ownership, handoff | CI output, ownership map, handoff findings |
+| 08 | durability, retention, cleanup, migration, incident note | measured objectives, reachability, outage, migration proof, tabletop | recovery timing and incident record |
+| 09 | promotion, release surface, audit gap, registry, repair | manifest, consumer verification, ownership split, release comparison, gate | deterministic bundle and consumer proof |
+| 10 | evidence review, migration, rules, intervention, ownership | current-truth audit, safe migration, expiring exception, ownership decision, handoff | stewardship review and migration evidence |
 
 ---
 
@@ -97,8 +97,9 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 For each module:
 
 1. name the state boundary the module is teaching
-2. identify the proof command before you run it
-3. inspect the capstone only after the smaller concept is legible
-4. write down what would break if the contract were false
+2. complete Exercises 1-5 without the answer page
+3. apply Exercises 6-10 and retain their requested evidence
+4. compare your reasoning with the model answers
+5. inspect the capstone only after the smaller concept is legible
 
 That keeps the course centered on comprehension instead of command accumulation.

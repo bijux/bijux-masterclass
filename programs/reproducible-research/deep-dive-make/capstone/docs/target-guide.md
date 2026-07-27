@@ -39,9 +39,23 @@ question honestly.
 | what are the stable public targets | `make help` | `make inspect` |
 | does the ordinary build succeed | `make all` | `make test` |
 | does the build graph still tell the truth | `make selftest` | `make verify-report` |
+| does the selftest close its own rejection gate | `make selftest-harness-tests` | inspect the controlled drift report |
+| does one candidate satisfy archive and install policy | `make release-check` | `make confirm` |
+| do existing candidate bytes pass without a rebuild | `make verify-dist` | `make install-rehearsal` |
+| do malformed candidates and destinations fail correctly | `make release-selftest` | `make release-check` |
+| what do the governed build states cost in this attributable context | `make perf` | inspect provenance and requested work before timings |
+| do all governed input classes select exactly the necessary work | `make performance-incremental` | inspect the policy, complete summary, and any failing case trace |
+| why can a successful incremental run leave stale behavior | `make incremental-fault-audit` | compare paired findings, traces, edge models, and mutated workspaces |
+| can hidden state, false ordering, or rule overlap change successful output meaning | `make semantic-fault-audit` | compare all seven broken and control rows |
+| do non-file state, recursion, and required tools honor declared boundaries | `make environment-contract-audit` | compare all seven defect and control rows |
+| do callers, policy scope, and output paths preserve architecture ownership | `make architecture-contract-audit` | compare all six defect and control rows |
+| do generated rules preserve the explicit abstraction contract | `make abstraction-contract-audit` | compare explicit, bounded, and opaque evidence |
+| did cost change under compatible context and equivalent work | `make performance-compare` | inspect both bundles and the comparison report |
+| do performance evidence gates reject dishonest inputs | `make performance-selftest` | inspect the rejection tests |
+| is the clean planning trace bounded and attributable | `make trace-report` | inspect trace evidence and raw trace |
 | do I need the proof saved as a review bundle | `make verify-report` | `make proof` |
 | what is the shortest human-first route into the capstone | `make walkthrough` | `make tour` |
-| which failure class does the repro pack teach | `make incident-audit` | `make repro` |
+| do the concurrency repros exhibit their promised signatures | `make incident-audit` | inspect summary, semantic evidence, then raw logs |
 | what does this repository assume about tools or variable sources | `make profile-audit` | `make portability-audit` and `make show-origins` |
 | can this tree be published as source without local residue | `make source-baseline-check` | `make source-bundle` |
 | what is the strongest shared stewardship route | `make confirm` | none; this is the top route |
@@ -55,17 +69,38 @@ question honestly.
 | `help` | the published target list and key variables | you need the supported surface |
 | `all` | the ordinary build outputs and convergence sentinel | you need the baseline build result |
 | `test` | runtime behavior checks | you need product-facing validation |
-| `selftest` | convergence, schedule equivalence, and hidden-input checks | you need build-system proof |
+| `selftest` | convergence, schedule equivalence, hidden-input checks, and raw evidence | you need build-system proof |
+| `selftest-harness-tests` | acceptance of truthful schedules and rejection of injected drift | you need proof that the harness itself discriminates |
+| `dist` | one governed candidate and SHA-256 sidecar | you need producer output |
+| `verify-dist` | existing-byte identity, member, type, mode, and metadata evidence | you need consumer verification without rebuilding |
+| `install-rehearsal` | contained installed tree and rerun comparison | you need destination evidence |
+| `accept-release` | one final record bound to candidate and install reports | you need a bounded local decision |
+| `release-selftest` | ten acceptance and rejection tests | you need executable release guardrails |
+| `release-check` | complete local candidate production and acceptance | you need the full local release claim |
+| `perf` | provenance, complete requested-work matrix, repeated timings, convergence, and inventories | you need an attributable local baseline |
+| `performance-incremental` | per-input missing and unexpected rebuild classifications across one output universe | you need requested-work proof |
+| `incremental-fault-audit` | stale missing-edge models and refreshed declared-edge controls | you need to study how incremental graph lies manifest |
+| `semantic-fault-audit` | paired state, order-only, and pattern-selection observations | you need to prove a successful graph can still encode false meaning |
+| `semantic-fault-selftest` | five acceptance and rejection tests for the semantic audit | you need to verify the audit discriminates dishonest evidence |
+| `environment-contract-audit` | paired non-file state, recursive planning, and required-tool observations | you need to prove evaluation and failure boundaries |
+| `environment-contract-selftest` | five acceptance and rejection tests for the environment audit | you need to verify the audit rejects altered evidence |
+| `architecture-contract-audit` | paired public-caller, include-policy, and output-ownership observations | you need to prove architecture boundaries despite successful execution |
+| `architecture-contract-selftest` | five acceptance and rejection tests for the architecture audit | you need to verify the audit rejects altered controls |
+| `abstraction-contract-audit` | explicit, bounded-macro, and opaque-macro rule and policy observations | you need to decide whether generated rules preserved an inspectable contract |
+| `abstraction-contract-selftest` | seven acceptance and rejection tests for the abstraction audit | you need to verify hidden targets and policy mutation cannot pass unnoticed |
+| `performance-compare` | timing deltas guarded by context and semantic equivalence | you have a compatible prior evidence bundle |
+| `performance-selftest` | context, rebuild, capture, and comparison gate tests | you need to review the evidence gate |
+| `trace-report` | clean-plan trace, semantic checks, and bundle manifest | you need causality evidence without execution |
 | `walkthrough` | the bounded first-pass bundle | you need an ordered entry route |
 | `tour` | the shortest printed walkthrough plus supporting bundle | you need quick orientation |
 | `contract-audit` | the public-contract review bundle | you are reviewing promises and boundaries |
 | `inspect` | the same contract route under review naming | you want the smallest honest review route |
-| `incident-audit` | one executed incident bundle | you want one failure class with evidence |
+| `incident-audit` | verified concurrency findings, logs, semantic artifacts, and preserved workspaces | you need to distinguish successful corruption from nonzero ownership collisions |
 | `profile-audit` | the execution-profile review bundle | you are reviewing portability and precedence |
-| `selftest-report` | the saved selftest evidence bundle | you need durable proof output |
+| `selftest-report` | a complete passing or failing selftest evidence bundle | you need durable proof output |
 | `verify-report` | the same selftest bundle under shared catalog naming | you need the catalog label used elsewhere |
-| `proof` | the sanctioned multi-bundle review set | one question now spans multiple routes |
-| `hardened` | selftest, audits, attestation, and runtime checks | you want the strongest built-in validation body |
+| `proof` | the sanctioned multi-bundle review set, including paired missing-edge controls | one question now spans multiple routes |
+| `hardened` | selftest, fault discrimination, audits, attestation, and runtime checks | you want the strongest built-in validation body |
 | `confirm` | the same strongest route under shared naming | you are closing stewardship review |
 
 ---
@@ -73,12 +108,22 @@ question honestly.
 ## Distinctions that matter
 
 - `all` builds outputs once; `selftest` proves the build contract
+- `selftest` tests the build; `selftest-harness-tests` tests whether that proof gate closes
+- `dist` produces candidate bytes; `verify-dist` observes existing bytes
+- `install-rehearsal` proves a destination mapping; `accept-release` records the bounded decision
+- `release-selftest` proves gate behavior; `release-check` applies those gates to the capstone candidate
+- `perf` establishes one baseline; `performance-compare` can support a change claim
+- `performance-compare` rejects provenance, environment, requested-work, and artifact drift before reporting timing deltas
 - `walkthrough` writes a first-pass bundle; `tour` prints the shortest route and focused follow-ups
 - `contract-audit` and `inspect` are the same route with different naming context
-- `selftest-report` and `verify-report` are the same saved evidence bundle
+- `selftest-report` and `verify-report` are the same saved evidence bundle, including on failure
 - `profile-audit` is about declared execution boundary and variable sources, not raw performance benchmarking
 - `proof` is not "better selftest"; it is the point where one review question has become several
-- `hardened` and `confirm` are the strongest built-in routes, not the default starting point
+- `semantic-fault-audit` proves the specimens; `semantic-fault-selftest` proves the gate rejects altered evidence
+- `environment-contract-audit` proves external-fact specimens; its selftest proves the gate rejects altered evidence
+- `architecture-contract-audit` proves ownership specimens; its selftest proves the gate rejects altered controls
+- `abstraction-contract-audit` proves generation specimens; its selftest proves the gate rejects altered models
+- `hardened` and `confirm` include the semantic, environment, architecture, and abstraction audit families with their rejection tests but remain final review tools, not the default starting point
 
 ---
 
@@ -104,7 +149,8 @@ They do different jobs:
 What must stay out of the source bundle:
 
 - `build/` and `stamps/` because they are derived state, not source inputs
-- `app`, `all`, and `dist.tar.gz` because they are generated deliverables
+- `app` and `all` because they are generated deliverables
+- release candidates and evidence under the repository `artifacts/` tree
 - temporary files such as `*.tmp`, `*.tmp.*`, and `*.d.tmp` because they are local residue
 
 What belongs in the source bundle:
@@ -117,9 +163,14 @@ What belongs in the source bundle:
 
 ## Useful companions
 
+- [RELEASE_GUIDE.md](release-guide.md)
 - [PROOF_GUIDE.md](proof-guide.md)
 - [WALKTHROUGH_GUIDE.md](walkthrough-guide.md)
 - [SELFTEST_GUIDE.md](selftest-guide.md)
 - [CONTRACT_AUDIT_GUIDE.md](contract-audit-guide.md)
 - [INCIDENT_REVIEW_GUIDE.md](incident-review-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](profile-audit-guide.md)
+- [ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md](architecture-contract-audit-guide.md)
+- [ABSTRACTION_CONTRACT_AUDIT_GUIDE.md](abstraction-contract-audit-guide.md)
+- [SEMANTIC_FAULT_AUDIT_GUIDE.md](semantic-fault-audit-guide.md)
+- [ENVIRONMENT_CONTRACT_AUDIT_GUIDE.md](environment-contract-audit-guide.md)

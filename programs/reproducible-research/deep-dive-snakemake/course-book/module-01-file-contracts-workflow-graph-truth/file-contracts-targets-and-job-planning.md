@@ -1,32 +1,16 @@
 # File Contracts, Targets, and Job Planning
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["File Contracts, Targets, and Job Planning"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This page explains the first mental shift you need in Snakemake: a rule is not just
 an execution step. It is a promise about files.
+
+## How to read this page
+
+Read this page with one concrete question in mind:
+
+- which files does the workflow owe me
+
+If you find yourself focusing first on shell commands, step back. Module 01 is trying to
+teach how Snakemake reasons, not how a shell pipeline happens to be written.
 
 ## The sentence to keep
 
@@ -56,6 +40,34 @@ If you keep that one idea clear, many beginner confusions disappear:
 - "why is this rule absent from the DAG?"
 
 The answer is usually in the file contract, not in the shell body.
+
+## The first review card to keep beside your keyboard
+
+Before you dry-run or execute a workflow, fill in this four-line card for the one target
+you care about:
+
+| Question | Your answer |
+| --- | --- |
+| Which concrete file am I requesting? |  |
+| Which rule output pattern can publish it? |  |
+| Which upstream files must therefore exist first? |  |
+| Which command will I use to test that claim? |  |
+
+If you cannot complete the card, the workflow is still too magical for you. That is not a
+failure. It is the signal to slow down and make the target story more explicit before you
+type more shell.
+
+## Common beginner mistake
+
+The usual beginner mistake is to explain a rule like this:
+
+> first this command runs, then that command runs, then the workflow is done
+
+That explanation sounds procedural, but it misses the thing Snakemake actually uses:
+
+- declared inputs
+- declared outputs
+- requested targets
 
 ## Targets are how intent enters the workflow
 
@@ -108,6 +120,14 @@ It asks:
 - which upstream files are therefore required
 
 That is why file naming and output precision matter so much.
+
+## A good study pause
+
+Before reading further, stop and answer this in plain language:
+
+- if I request one file, how does Snakemake decide which rule owns it
+
+If you cannot answer that yet, reread this section before moving deeper into the examples.
 
 ## A tiny truthful workflow
 
@@ -249,6 +269,15 @@ This is one of the most important habits in the whole course:
 - stop explaining workflows in terms of vague step order
 - start explaining workflows in terms of file edges
 
+## The design pressure underneath this lesson
+
+This lesson is not only about understanding one small workflow. It is also building a
+review habit that matters later:
+
+- when a rule is absent, check whether a target actually requires it
+- when execution order feels surprising, inspect the file edges
+- when a workflow feels magical, ask which file contract is missing or too vague
+
 ## The role of `rule all`
 
 `rule all` is often introduced as a default target. That is true, but incomplete.
@@ -292,6 +321,33 @@ Each one answers a different piece:
 - `--dag`: how the planned jobs depend on one another
 
 These commands are more educational than rerunning the workflow blindly.
+
+## A missed-class recovery route
+
+If you were not present for the live DAG demo, use this route without skipping steps:
+
+1. request one concrete file instead of running the whole workflow
+2. fill in the four-line review card above
+3. run `snakemake -n` and compare the planned jobs against your prediction
+4. run `snakemake --summary` and identify which rule owns each visible output
+5. draw the target and its immediate upstream files on paper before you open the shell block
+
+That route is intentionally repetitive. Repetition is the point. Module 01 is trying to
+replace vague step-order instincts with file-contract instincts.
+
+## A target-tracing worksheet
+
+Use this worksheet any time one rule feels absent, out of order, or unexplained:
+
+| Step | What you write down |
+| --- | --- |
+| target | the exact requested output path |
+| owner | the rule whose `output:` matches that path |
+| upstream contract | the exact `input:` entries that justify the next jobs |
+| evidence surface | `-n`, `--summary`, or `--dag` |
+| diagnosis | missing target edge, vague path, or correct behavior |
+
+Most beginner confusion becomes smaller once it is forced through these five boxes.
 
 ## An example of the right explanation
 

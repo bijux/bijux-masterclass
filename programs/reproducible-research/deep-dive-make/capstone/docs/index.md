@@ -34,17 +34,31 @@ Use this page as the stable entry route for the Make capstone docs.
 | what this repository promises | `WALKTHROUGH_GUIDE.md` | `TARGET_GUIDE.md` and `make walkthrough` |
 | which public targets are stable | `TARGET_GUIDE.md` | `CONTRACT_AUDIT_GUIDE.md` and `make inspect` |
 | how the build proves convergence and parallel safety | `SELFTEST_GUIDE.md` | `PROOF_GUIDE.md` and `make selftest` |
-| which failure class the capstone teaches | `REPRO_GUIDE.md` | `INCIDENT_REVIEW_GUIDE.md` and `make incident-audit` |
+| how one release candidate is accepted locally | `RELEASE_GUIDE.md` | `TARGET_GUIDE.md` and `make release-check` |
+| how to establish or compare local build-cost evidence | `PERFORMANCE_EVIDENCE_GUIDE.md` | `make perf` and `make performance-compare` |
+| how the capstone proves distinct concurrency failure mechanisms | `INCIDENT_REVIEW_GUIDE.md` | `make incident-audit`, then `REPRO_GUIDE.md` |
+| why missing edges can produce successful stale builds | `INCREMENTAL_FAULT_AUDIT_GUIDE.md` | `make incremental-fault-audit` |
+| how hidden state, false order-only edges, and overlapping rules change meaning | `SEMANTIC_FAULT_AUDIT_GUIDE.md` | `make semantic-fault-audit` |
+| how non-file state, recursion, and required tools cross the build boundary | `ENVIRONMENT_CONTRACT_AUDIT_GUIDE.md` | `make environment-contract-audit` |
+| how callers, include policy, and output paths preserve architecture ownership | `ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md` | `make architecture-contract-audit` |
+| how explicit rules compare with bounded and opaque macros | `ABSTRACTION_CONTRACT_AUDIT_GUIDE.md` | `make abstraction-contract-audit` |
 | how the system is layered | `ARCHITECTURE.md` | `PROFILE_AUDIT_GUIDE.md` and `make proof` |
 
 ## Stable local doc surface
 
 - [Architecture Guide](architecture.md)
+- [Architecture Contract Audit Guide](architecture-contract-audit-guide.md)
+- [Abstraction Contract Audit Guide](abstraction-contract-audit-guide.md)
 - [Contract Audit Guide](contract-audit-guide.md)
 - [Incident Review Guide](incident-review-guide.md)
+- [Incremental Fault Audit Guide](incremental-fault-audit-guide.md)
+- [Environment Contract Audit Guide](environment-contract-audit-guide.md)
+- [Performance Evidence Guide](performance-evidence-guide.md)
 - [Profile Audit Guide](profile-audit-guide.md)
 - [Proof Guide](proof-guide.md)
+- [Release Acceptance Guide](release-guide.md)
 - [Repro Guide](repro-guide.md)
+- [Semantic Fault Audit Guide](semantic-fault-audit-guide.md)
 - [Selftest Guide](selftest-guide.md)
 - [Target Guide](target-guide.md)
 - [Walkthrough Guide](walkthrough-guide.md)

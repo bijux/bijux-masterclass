@@ -59,6 +59,21 @@ Use this only after Modules 06-08.
 Goal: see how truthful graph modeling survives a repository with layers, generation, and
 publication boundaries.
 
+## Release acceptance pass
+
+Use this after Module 08, not as a first repository tour.
+
+1. Read [Capstone Release Acceptance](capstone-release-acceptance.md).
+2. Compare `capstone/release/package-policy.tsv` with the archive members.
+3. Run `gmake dist`, then `gmake verify-dist` from `capstone/`.
+4. Run `gmake clean verify-dist` and confirm verification did not rebuild the candidate.
+5. Run `gmake release-selftest` to study the gates from their rejection paths.
+6. Run `gmake release-check`.
+7. Compare the digest in candidate, install, and final acceptance reports.
+
+Goal: explain why release production and acceptance are separate trust roles, and state
+exactly which publication and host-installation claims remain unsupported.
+
 ## Stewardship pass
 
 Use this only after Modules 09-10.

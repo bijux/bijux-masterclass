@@ -1,5 +1,4 @@
-# In-Process Event Dispatch: Tiny Observer and Event Bus
-
+# In-Process Event Bus
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Aggregates Events Collaboration Boundaries"]
-  page["In-Process Event Dispatch: Tiny Observer and Event Bus"]
+  page["In-Process Event Bus"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,81 +24,100 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Dispatch domain events **synchronously in-process** to handlers, without frameworks.
+Once domain events exist, the next question is how nearby reactions hear about them.
 
-You will build a tiny event bus suitable for a Python service and learn the correctness constraints (ordering, error handling, reentrancy).
+An in-process event bus is one answer for local dispatch inside the same running
+application.
 
-## 1. The Minimal Event Bus Contract
+It can help reduce direct coupling, but it can also become a hiding place for confusing
+side effects if used carelessly.
 
-An event bus does two things:
-- accept an event,
-- call registered handlers for that event type.
+## What it is
 
-In-process dispatch is usually synchronous:
-- publish returns only after handlers ran.
+An in-process event bus is a local mechanism that:
 
-This is simple and easy to test, but you must decide what happens when a handler fails.
+- receives an event
+- finds interested handlers
+- dispatches the event inside the same process
 
-## 2. A Tiny, Testable Implementation
+This is not yet distributed messaging. It is local coordination.
 
-```python
-from collections import defaultdict
-from typing import Callable, Type, Any
+## Why it can help
 
-Handler = Callable[[Any], None]
+It helps when:
 
-class EventBus:
-    def __init__(self):
-        self._handlers: dict[Type[Any], list[Handler]] = defaultdict(list)
+- several local reactions should happen after one domain event
+- you want to reduce direct knowledge between publishers and handlers
+- the event flow is still small enough to reason about inside one runtime
 
-    def subscribe(self, event_type: Type[Any], handler: Handler) -> None:
-        self._handlers[event_type].append(handler)
+It gives the system one explicit place for "who reacts to what?"
 
-    def publish(self, event: Any) -> None:
-        for handler in list(self._handlers[type(event)]):
-            handler(event)
-```
+## What it does not solve
 
-Teaching note: this is intentionally small. The goal is clarity, not feature count.
+An in-process event bus does not automatically solve:
 
-## 3. Error Handling Policy (You Must Choose One)
+- delivery guarantees across processes
+- persistence and replay concerns
+- boundary ownership mistakes
+- hidden ordering problems
 
-Common policies:
+It is a local coordination tool, not a magic architecture layer.
 
-1. **Fail-fast**: first handler error aborts publish.
-   - good for correctness if handlers are critical.
-2. **Best-effort**: run all handlers, collect errors.
-   - good for side-effects like logging/metrics.
+## Common mistakes
 
-Write the policy down and test it. “Undefined policy” becomes production chaos.
+- using the event bus for every local call whether decoupling is needed or not
+- hiding critical synchronous logic in far-away handlers
+- making it impossible to tell which side effects follow an event
+- treating local dispatch as if it had the guarantees of a real durable message system
 
-## 4. Ordering and Reentrancy
+If readers cannot trace the consequences of an event, the bus is reducing clarity instead
+of improving it.
 
-- Handler ordering should be deterministic (insertion order) for testability.
-- Reentrancy: a handler may publish more events.
-  - This can be fine, but it can also create deep call stacks and cycles.
+## A practical test
 
-Rule: keep handlers small and avoid publishing the same event type recursively unless you can prove termination.
+Ask:
 
-## 5. Event Bus is Infrastructure
+1. Are there several local reactions worth decoupling?
+2. Will an event bus make those reactions easier to reason about rather than harder?
+3. Are the guarantees and ordering expectations still explicit?
 
-The bus is not “domain logic”. Keep it in infrastructure or application, and keep handlers as adapters around domain operations.
+If yes, a small in-process bus can help.
 
-Domain emits events; application wires handlers; infrastructure executes them.
+If the event flow becomes opaque, direct orchestration may still be better.
 
-## Practical Guidelines
+## Review checklist
 
-- Keep the event bus minimal and testable.
-- Choose and document an error handling policy for handler failures.
-- Make handler ordering deterministic for reproducible tests.
-- Avoid complex reentrant event graphs; keep handlers small and focused.
+| Question | Good sign |
+| --- | --- |
+| can you trace what reacts to a given event? | yes |
+| is critical invariant logic still outside the bus? | yes |
+| are local dispatch assumptions explicit? | yes |
+| is the bus used where decoupling helps, not everywhere by habit? | yes |
 
-## Exercises for Mastery
+## Capstone connection
 
-1. Extend the event bus to support multiple event types and write tests for handler ordering.
-2. Implement best-effort error collection and write a test showing both handlers run even if one fails.
-3. Create a handler that updates a projection when `RuleActivated` is published.
+In the capstone, an in-process bus may be useful for:
+
+- local projection updates
+- notifications
+- audit-style follow-up
+- non-authoritative reactions to accepted aggregate changes
+
+If the capstone currently wires every reaction directly and the call graph is becoming
+hard to follow, this page points to one possible local decoupling move.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain an in-process event bus in plain language
+- explain what it helps with and what it does not solve
+- identify one capstone reaction flow where a local bus might help or hurt clarity

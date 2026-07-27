@@ -1,30 +1,5 @@
 # Reports, File APIs, and Human Versus Machine Surfaces
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Reports, File APIs, and Human Versus Machine Surfaces"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 A strong publish bundle usually needs more than one kind of artifact.
 
 That is not a flaw. It is a sign that the bundle is serving more than one audience.
@@ -35,6 +10,32 @@ The important question is:
 
 If that answer is blurry, downstream users and reviewers start reading the wrong file for
 the wrong job.
+
+## How to use this page
+
+Keep one downstream machine and one downstream human in mind while you read.
+
+Ask two different questions:
+
+- if a script wants to consume this bundle, what should it read?
+- if a reviewer wants to understand the run quickly, what should they open first?
+
+If you keep answering both questions with the same file, the bundle is probably mixing
+roles.
+
+## If you are learning this without the live class
+
+Treat this page as an audience-routing exercise.
+
+Use it in four passes:
+
+1. name one machine consumer and one human reviewer before you classify any files
+2. choose which artifact each audience should open first
+3. stop and ask what would break if a script scraped the report instead
+4. finish by writing one authority note saying which artifact is authoritative for which question
+
+If you cannot name the authority relationship between artifacts, you are still describing
+outputs instead of interfaces.
 
 ## Human-readable and machine-readable are different needs
 
@@ -77,6 +78,19 @@ This is different from both the report and the manifest.
 
 The report explains what happened in the run. The file API explains how to use the bundle.
 
+## The authority card to keep beside you
+
+Use this table before you call any file "the main output":
+
+| Question | Authoritative artifact | Supporting artifact |
+| --- | --- | --- |
+| what should a script parse | `summary.json` or `summary.tsv` | report for human interpretation |
+| what should a human open first | `report/index.html` | structured summary for exact fields |
+| what paths and meanings are stable | file API or contract note | manifest and provenance as support evidence |
+| whether the bundle is intact | manifest plus checksums | report only as a human-facing convenience |
+
+If one file keeps winning every row, the bundle is still too vague.
+
 ## One artifact should not do every job
 
 ```mermaid
@@ -88,6 +102,30 @@ flowchart LR
 ```
 
 The point of this diagram is not to create bureaucracy. It is to prevent role confusion.
+
+## One anti-scraping review loop
+
+When someone proposes scraping a report, ask these in order:
+
+1. what exact machine-facing field is missing from the structured contract
+2. whether the structured summary should be repaired instead of scraping HTML
+3. what stability promise the report markup is actually making
+
+Most of the time, the right repair is to strengthen the machine-facing contract rather
+than normalize presentation scraping.
+
+## A concrete way to assign roles
+
+Use this pattern when you design a publish bundle:
+
+| Question | Best artifact type | Why |
+| --- | --- | --- |
+| What should another program parse? | machine-readable summary such as JSON or TSV | stable structured fields are easier to version and validate |
+| What should a human open first? | report or dashboard | people need explanation, framing, and visual context |
+| Where do path meaning and stability rules live? | file API or contract note | consumers need an explicit statement of what is safe to depend on |
+| How do we know the bundle is complete and untampered? | manifest and checksums | integrity is different from semantics |
+
+This table is simple on purpose. It stops beginners from calling every file "the output."
 
 ## A weak publish explanation
 
@@ -110,6 +148,36 @@ Stronger shape:
 
 That gives each audience a proper interface.
 
+## One teaching scenario that makes the difference obvious
+
+Suppose a colleague wants to compare two published runs programmatically.
+
+They should not need to:
+
+- scrape values out of `report/index.html`
+- guess which files inside the bundle are stable
+- infer meaning from a checksum manifest alone
+
+They should be able to:
+
+- read a documented machine-facing file such as `summary.json`
+- confirm the bundle inventory and integrity with `manifest.json` and checksums
+- use a contract note to understand which fields and paths are part of the public promise
+
+That scenario is the reason this distinction matters.
+
+## What reviewed discovery evidence changes here
+
+When the bundle also contains `accepted_samples.json` and `rejected_samples.json`, the
+authority split becomes even clearer:
+
+- structured files explain membership and machine-facing facts
+- reports explain the run to a human
+- the file API says which of those artifacts a consumer may rely on directly
+
+This matters because a reviewer may read the report first, but a machine should still use
+the structured membership and summary artifacts.
+
 ## A practical test
 
 Ask these questions:
@@ -121,6 +189,15 @@ Ask these questions:
 If one artifact is trying to answer all three questions, the publish design is probably
 too vague.
 
+## The beginner mistake to catch early
+
+The most common beginner mistake is to confuse readability with API quality.
+
+A beautiful HTML report may be excellent for humans while being a terrible machine
+interface. A raw JSON file may be excellent for machines while still needing a clear
+human-facing explanation around it. Quality comes from assigning the right role to each
+artifact, not from forcing one file to satisfy every audience.
+
 ## Common failure modes
 
 | Failure mode | What it causes | Better repair |
@@ -131,13 +208,24 @@ too vague.
 | manifest is used as a semantic guide | users know file names but not meanings | pair inventory evidence with contract explanations |
 | every artifact is called “the output” | review discussions become imprecise | name whether an artifact is for machines, humans, validation, or provenance |
 
+## What a reviewer should hear
+
+When a bundle is designed well, the explanation sounds something like this:
+
+> `summary.json` is the machine-facing contract, `report/index.html` helps people inspect
+> the run, the file API explains what is stable, and the manifest plus checksums defend
+> bundle integrity.
+
+That sentence is useful because each artifact has one primary job.
+
 ## The explanation a reviewer trusts
 
 Strong explanation:
 
 > `summary.json` and `summary.tsv` are the machine-facing outputs, `report/index.html`
 > helps humans inspect the run, and the file API explains the meaning and stability of the
-> published artifacts.
+> published artifacts; the reviewed discovery records stay structured so machines do not
+> need to infer membership from the report.
 
 Weak explanation:
 
@@ -153,3 +241,6 @@ Before leaving this page, you should be able to:
 - explain why a report should not become the only downstream surface
 - describe what a file API contributes beyond a report or manifest
 - explain how role confusion creates brittle downstream use
+
+If you still describe the report as "the main output" without naming the machine-facing
+contract separately, revisit the page. The whole point is to stop that ambiguity.

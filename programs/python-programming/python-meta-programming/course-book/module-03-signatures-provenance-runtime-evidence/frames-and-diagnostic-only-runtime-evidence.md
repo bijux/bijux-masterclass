@@ -37,6 +37,10 @@ enough that the module needs a very clear rule:
 > frames belong to diagnostics, debugging, and tooling, not to ordinary application
 > control flow.
 
+This is the place where many learners need the strongest pushback. Stack-based tricks can
+feel clever, but they almost always weaken legibility, ownership, and reviewability when
+they leak into normal program logic.
+
 ## The sentence to keep
 
 When frame inspection appears in a design, ask:
@@ -45,6 +49,10 @@ When frame inspection appears in a design, ask:
 > program logic?
 
 If it is normal program logic, skepticism should go up immediately.
+
+Add one sharper question beside it:
+
+> what explicit parameter or owned state should have carried this information instead of the stack?
 
 ## What a frame exposes
 
@@ -60,6 +68,9 @@ Useful attributes include:
 That is powerful, but it also means frames connect you to large object graphs very
 quickly.
 
+This is why the module treats frame access as high-cost evidence even when the helper
+looks tiny. The surface area is larger than the few fields you happen to read first.
+
 ## `currentframe()` versus `stack()`
 
 For this module, the key difference is:
@@ -71,6 +82,14 @@ That second tool is much heavier.
 
 If you only need a small slice of caller context, building it manually from
 `currentframe()` is often the more honest and cheaper choice.
+
+Use this choice table:
+
+| Real need | Better move | Why |
+| --- | --- | --- |
+| One or two caller names for a debug breadcrumb | `currentframe()` plus a bounded `f_back` walk | smaller scope, less packaging overhead |
+| Full developer-facing trace context during troubleshooting | `inspect.stack()` may be acceptable | the job is explicitly diagnostic |
+| Business rules based on who called the function | reject the design | caller identity should be explicit, not inferred from stack state |
 
 ## One picture of frame retention risk
 
@@ -89,6 +108,9 @@ graph TD
 Caption: holding onto one frame can keep much more than one local variable alive.
 
 This is why long-lived frame references can create leak-like retention problems.
+
+Independent learners should pause here and state the rule plainly: one stored frame can
+accidentally retain far more program state than the helper author intended.
 
 ## A small and safer caller helper
 
@@ -115,6 +137,9 @@ This helper still belongs to diagnostics, but it avoids the heavier full-stack c
 pattern.
 
 The `del frame` matters because it helps break reference cycles sooner.
+
+That small cleanup line is part of the lesson, not noise. Diagnostic code has memory and
+retention consequences that ordinary parameter-passing code does not.
 
 ## Snapshot locals instead of retaining frames
 
@@ -143,6 +168,11 @@ def snapshot_locals(limit=2):
 That is usually a healthier diagnostic pattern than holding onto frames or tracebacks
 themselves.
 
+The review gain is that snapshots are easier to reason about:
+
+- they freeze the small evidence you actually wanted
+- they do not keep live execution context around longer than necessary
+
 ## Why `inspect.stack()` deserves caution
 
 `inspect.stack()` is easy to reach for because it looks convenient. It also does more work
@@ -157,6 +187,12 @@ Costs and risks include:
 
 That does not make it forbidden. It makes it a tool for debugging and developer-facing
 reporting, not a casual utility inside hot paths.
+
+Weak pattern to reject explicitly:
+
+- "it is just a convenience helper, so using `inspect.stack()` everywhere is fine"
+
+That sentence usually hides both unnecessary work and a fuzzy ownership model.
 
 ## Diagnostic-only is a real boundary
 
@@ -175,6 +211,12 @@ The value here is not just performance. It is also legibility and reviewability.
 Code that depends on who called it, as seen through stack inspection, is much harder to
 reason about than code with explicit parameters and ownership.
 
+Review checkpoint:
+
+- can the same information be passed explicitly?
+- is the frame evidence transient and bounded?
+- if the helper disappeared, would the application contract become clearer rather than weaker?
+
 ## Review rules for frame inspection
 
 When reviewing frame or stack inspection, keep these questions close:
@@ -184,6 +226,17 @@ When reviewing frame or stack inspection, keep these questions close:
 - does the code use `currentframe()` for a small bounded need instead of `inspect.stack()` by habit?
 - are frame references released promptly instead of stored in long-lived structures?
 - would a snapshot of locals or caller names be enough instead of retaining live frame objects?
+
+## Self-study lab
+
+Before leaving this page, write one diagnostic helper note in this format:
+
+- the exact debug question the helper answers
+- the smallest frame surface it touches
+- the explicit reason it must remain diagnostic-only
+- the explicit parameter or owned state you would use instead if the feature became production logic
+
+If the last line feels hard to write, the boundary is probably still too fuzzy.
 
 ## What to practice from this page
 

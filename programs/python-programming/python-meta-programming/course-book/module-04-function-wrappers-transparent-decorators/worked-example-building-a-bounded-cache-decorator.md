@@ -38,6 +38,11 @@ between:
 
 That makes it the right worked example for this module.
 
+It is also the right example for a missed-class learner because cache decorators are
+where many teams overclaim. They start with "just a small speed-up wrapper" and end up
+owning policy about repeated work, hashability, eviction, reset, inspection, and caller
+expectations.
+
 ## The incident
 
 Assume a team wants a bounded cache decorator for small demos and local experiments.
@@ -52,6 +57,9 @@ The decorator should:
 That last goal matters most. This is where many wrappers go wrong: they look tiny and end
 up behaving like unreviewed framework features.
 
+Treat the worked example as a review packet, not a recipe to paste blindly into production
+code.
+
 ## The design boundary
 
 This worked example is deliberately bounded, not production-grade.
@@ -65,6 +73,12 @@ That means the design will:
 
 Those choices are not accidental. They make the wrapper more inspectable and easier to
 review as a small policy surface.
+
+They also let the learner practice a stronger habit:
+
+- name the non-goals early
+- expose the controls that a reviewer will need later
+- keep the wrapper small enough that the limits can still be inspected directly
 
 ## Step 1: make the decorator factory timing explicit
 
@@ -85,6 +99,9 @@ This means:
 That definition-time sequence matters because `maxsize` is configuration, not per-call
 input.
 
+It also means configuration mistakes or factory-side effects appear before the wrapped
+function is ever called. That is part of the design, not a surprising edge case.
+
 ## Step 2: admit that caching is stateful policy
 
 Caching is not a thin wrapper. It changes semantics across calls:
@@ -97,6 +114,12 @@ Caching is not a thin wrapper. It changes semantics across calls:
 That is why this worked example belongs after the stateful-wrapper core, not inside the
 thin-wrapper page.
 
+Say the governing rule out loud before you inspect the code:
+
+- repeated hashable calls may return earlier results without running the function body
+- cache order now influences later eviction behavior
+- visible state and reset routes are part of the review story
+
 ## Step 3: preserve metadata and expose state deliberately
 
 The wrapper should keep the original function inspectable:
@@ -106,6 +129,15 @@ The wrapper should keep the original function inspectable:
 - expose a `cache_clear()` hook
 
 That combination gives both transparency and testability.
+
+Use this quick design table while reading the implementation:
+
+| Review surface | Why it exists in this example |
+| --- | --- |
+| `functools.wraps` | keeps the logical callable visible to tools |
+| wrapper attributes for cache state | make policy-carrying state inspectable |
+| `cache_clear()` | gives tests and operators an explicit reset route |
+| explicit hashability failure | refuses to pretend all arguments are safely cacheable |
 
 ## A bounded implementation
 
@@ -184,6 +216,13 @@ It is useful because it makes the right tradeoffs visible:
 
 That transparency is more important here than raw cleverness.
 
+The educational win is not "here is a clever cache." The win is:
+
+- the state is visible
+- the policy rule is nameable
+- the failure path is not hidden
+- the implementation is bounded enough that a learner can still audit it
+
 ## The limitations are part of the lesson
 
 This decorator is bounded because it leaves real limitations visible:
@@ -195,6 +234,15 @@ This decorator is bounded because it leaves real limitations visible:
 
 Those limitations are not embarrassing leftovers. They are the proof that the wrapper is
 scoped honestly.
+
+## Non-goals worth stating explicitly
+
+This decorator is **not** trying to be:
+
+- a concurrency-safe cache
+- a drop-in replacement for `functools.lru_cache`
+- a generalized key-normalization framework
+- a silent optimization that reviewers never need to think about
 
 ## Order and policy still matter
 
@@ -208,6 +256,10 @@ If you stack this cache with other decorators, semantics change:
 That reinforces the module's central point: stacked decorator order is semantic, not
 ornamental.
 
+It also gives you a clean review question for later modules:
+
+> which layer owns the policy, and which layer only observes it?
+
 ## What this example makes clear about Module 04
 
 This worked example ties the module together:
@@ -216,6 +268,12 @@ This worked example ties the module together:
 - definition-time factory behavior stays separate from call-time cache behavior
 - stateful wrappers deserve policy-level review
 - `functools.wraps` and explicit state surfaces keep the wrapper inspectable
+
+It also shows one of the most important boundaries in the course so far:
+
+- metadata preservation helps the wrapper stay legible
+- explicit state surfaces help the policy stay reviewable
+- neither of those excuses an overbroad cache design
 
 That is the durable takeaway. The cache is not here as a production recommendation. It is
 here as a clear specimen of where transparency starts to give way to policy.
@@ -228,6 +286,15 @@ When you inherit or design a stateful decorator, run this loop:
 2. make reset and inspection surfaces explicit
 3. preserve metadata so tooling can still see the logical callable
 4. document limitations instead of letting the wrapper pretend to be more general than it is
+
+## Exit check for this worked example
+
+Before leaving this page, make sure you can do all of these:
+
+- name the exact cache rule this wrapper now owns across calls
+- point to the surface a tester would use to reset state
+- explain one reason this wrapper is more honest than a hidden closure-only cache
+- state one limitation that proves the example is bounded rather than pretending to be production-grade
 
 If you can do that here, Module 04 has done its job and the next decorator module can take
 on heavier policy and typing concerns with less ambiguity.

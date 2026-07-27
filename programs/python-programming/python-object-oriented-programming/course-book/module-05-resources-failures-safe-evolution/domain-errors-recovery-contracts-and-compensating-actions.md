@@ -1,6 +1,5 @@
 # Domain Errors, Recovery Contracts, and Compensating Actions
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,98 +24,168 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-An object-oriented system becomes clumsy when every failure is treated as a generic
-exception and every retry is treated as harmless. This page gives the missing design
-language for domain errors, recovery contracts, and compensating actions.
+A system becomes hard to use and hard to repair when every failure becomes "something
+went wrong."
 
-## Why this topic matters
+Students need a stronger distinction than that. They need to know:
 
-If a course covers resources and evolution but does not cover error modeling well, one of
-the most common real-world blind spots remains:
+- which failures are part of the business contract
+- which failures come from the surrounding workflow
+- which failures come from the outer system boundary
+- what the caller can safely do next
 
-- domain failures and infrastructure failures get mixed together
-- callers cannot tell which errors are part of the public contract
-- retries repeat unsafe side effects
-- partial work has no named compensation policy
+Without those distinctions, retries become reckless, logs become noisy, and repair work
+has no stable owner.
 
-That is not operational polish. It is part of the object contract.
+## Domain errors are not generic exceptions
 
-## Distinguish failure types first
+A domain error means the requested change is not allowed by the model's own rules.
 
-### Domain error
+Examples:
 
-The request violates a business rule or lifecycle rule:
+- a rule cannot be activated twice
+- a policy cannot be retired from the wrong state
+- a threshold value is outside the supported contract
 
-- a rule cannot be retired from a locked policy
-- a threshold is outside the allowed range
-- a state transition is illegal
+These failures belong to the meaning of the system itself. They are not incidental
+infrastructure accidents.
 
-These are part of the domain contract and should be modeled clearly.
+That is why domain errors should be named and limited, not buried in ad hoc strings or
+flattened into generic `ValueError` branches all over the codebase.
 
-### Application or workflow failure
+## Workflow failures are different
 
-The request was legitimate, but one step of a larger operation needs recovery logic:
+A request may be valid in the domain and still fail as part of a larger operation.
 
-- one write succeeded and a later one failed
-- an event should not be published until state is durable
-- a timeout requires retry, delay, or human review
+Examples:
 
-These belong in the application or orchestration layer, not inside random entities.
+- state was changed in memory but later persistence failed
+- a durable write succeeded but follow-up publication did not
+- an operation needs retry, delay, or repair after a boundary failure
 
-### Infrastructure failure
+These are not usually aggregate-level rules. They belong to the application or
+orchestration boundary where multi-step work is coordinated.
 
-The storage, network, or runtime boundary failed. That may still affect the public API,
-but it should not be confused with a domain rule.
+If you push them down into the wrong object, the model starts carrying repair policy
+instead of business meaning.
 
-## Recovery contract
+## Infrastructure failures are different again
 
-A recovery contract answers:
+Sometimes the real problem is outside the model:
 
-- what failed
-- what state is still authoritative
-- what the caller can retry safely
-- what compensation is required before the system is coherent again
+- storage unavailable
+- network timeout
+- dependency quota failure
+- serialization or transport corruption
 
-Without that contract, exception handling becomes guesswork.
+These may still affect the public experience, but they should not be confused with
+business rejection.
 
-## Compensating action is not rollback theater
+The user asked for something legitimate. The boundary failed to carry it out.
 
-Rollback is not always possible. Some actions have already escaped:
+## A recovery contract answers the next question
 
-- a message was sent
-- an audit record was written
-- an external system was called
+Good failure design does not stop at naming the failure. It also answers:
 
-In those cases, you need a compensating action or explicit follow-up step. The key idea
-is to name it and place ownership clearly, not to pretend the system is magically atomic.
+- what remains authoritative now?
+- what did not happen?
+- what may be retried safely?
+- what requires explicit compensation or human repair?
 
-## Design rules
+That set of answers is the recovery contract.
 
-- Model domain errors as domain concepts, not anonymous strings.
-- Translate infrastructure exceptions at the boundary where they enter the system.
-- Keep compensation policy in orchestration or unit-of-work logic, not scattered through entities.
-- Decide which errors are safe to retry and which require human review or explicit repair.
+If a caller receives an error but still cannot tell whether the system changed, the
+contract is incomplete.
 
-## Review questions
+## Compensating action is for escaped effects
 
-- Can a caller tell the difference between a business-rule failure and a transient dependency failure?
-- Does the code say what state remains authoritative after partial failure?
-- Are retries attached to idempotent operations or explicit compensation design?
-- Is the public error surface small and meaningful, or just a leak of internals?
+Rollback is only useful while work is still contained.
 
-## Practical guidelines
+Once a side effect has escaped, such as:
 
-- Use a small, named error taxonomy at the domain boundary.
-- Convert raw dependency exceptions into boundary-specific failures.
-- Write compensation rules down when side effects can escape before full success.
-- Test unhappy paths as design behavior, not as incidental logging branches.
+- a message being sent
+- a record being published externally
+- a visible notification already leaving the system
 
-## Exercises for mastery
+you may not be able to "undo" the world back to silence.
 
-1. Split one generic exception path into domain, orchestration, and infrastructure failure cases.
-2. Add a named compensation rule for one multi-step operation with an external side effect.
-3. Review one retry policy and document why it is or is not safe.
+That is where compensating action matters. A compensating action is the deliberate
+follow-up step that restores coherence as much as possible after an escaped effect.
+
+This is not a fancy extra topic. It is the honest answer to the limits of rollback.
+
+## Keep compensation policy out of entities
+
+Entities and aggregates should usually not own operational compensation choreography.
+
+Their job is to:
+
+- accept or reject valid business changes
+- emit facts about accepted changes
+
+The surrounding application boundary should decide:
+
+- whether to retry
+- whether to compensate
+- whether to escalate for repair
+
+This keeps the model readable and keeps repair ownership where the workflow actually
+exists.
+
+## What callers need from the error surface
+
+A useful public-facing failure surface is:
+
+- smaller than the raw dependency exception tree
+- meaningful in domain or workflow terms
+- explicit about what can be retried
+- honest about whether authoritative state changed
+
+If callers need to understand an SDK's internal exception taxonomy to recover safely,
+the boundary is leaking.
+
+## Common mistakes
+
+- treating business-rule rejection and dependency failure as the same kind of error
+- throwing generic exceptions with no stable meaning
+- retrying because a call failed without checking whether the effect is idempotent
+- assuming rollback erases already-escaped side effects
+- scattering compensation logic across entities, handlers, and adapters with no clear owner
+
+These mistakes make the system harder to operate because they erase the shape of the
+failure.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| can callers distinguish business rejection from boundary failure? | yes |
+| does the failure surface say what remains authoritative? | yes |
+| is retry safety explicit rather than guessed? | yes |
+| are compensating actions owned by the workflow boundary rather than random objects? | yes |
+
+## Capstone connection
+
+In the capstone, review one change path and ask:
+
+- which errors come from the domain model itself?
+- which errors would come from persistence or runtime boundaries?
+- if an effect escaped early, where would compensation or repair policy live?
+
+That review is more important than adding more exception classes for appearance.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain the difference between domain, workflow, and infrastructure failures
+- describe what a recovery contract tells the caller beyond the exception name
+- identify one situation where compensation is needed because rollback is no longer enough

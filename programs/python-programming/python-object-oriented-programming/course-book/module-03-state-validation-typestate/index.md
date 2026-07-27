@@ -18,107 +18,130 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  states["name the legal states"] --> boundary["choose where validation belongs"]
+  boundary --> absence["repair nulls and partial objects"]
+  absence --> lifecycle["make transitions explicit"]
+  lifecycle --> API["shape the API around allowed operations"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+State is where object-oriented systems usually stop feeling clean. A type can look tidy at
+the class level while hiding most of its real complexity in optional fields, invalid
+combinations, lifecycle drift, and operations that should not be callable in the current
+state. This module exists to make those pressures explicit.
 
-State is where object-oriented systems usually become ambiguous. This module treats
-state as something designed deliberately rather than accumulated incidentally.
+Keep one question in view while you study:
 
-Keep one question in view while reading:
+> Which states are legal, and how should the object make illegal states difficult to
+> construct, preserve, or call through?
 
-> Which states are legal, and how should the object make illegal states difficult to construct or preserve?
+That is the shift from "fields on a class" to "state as a contract."
 
-That question is what turns state from tolerated mess into an explicit design contract.
+## What this module must settle
 
-## Preflight
+By the end of the module, you should be able to do all of these with reasons:
 
-- You should already be able to distinguish ownership boundaries from convenience wrappers after Module 02.
-- If properties, dataclasses, or validation hooks still feel magical, verify them with small examples before moving into typestate.
-- Keep asking whether a state representation makes illegal operations harder or merely documents them after the fact.
+- model legal and illegal states explicitly
+- choose between constructor checks, properties, boundary validators, and transition APIs
+- represent absence without letting `None` mean five different things
+- explain when a dataclass clarifies the model and when it weakens it
+- shape the public API so illegal operations become harder to express
 
-## Learning outcomes
+If those choices still feel like syntax or library preferences, stay longer.
 
-- model legal and illegal states explicitly instead of relying on caller discipline
-- choose between properties, constructors, boundary validation, and lifecycle APIs with clear trade-offs
-- represent nullability, partial objects, and transitions without collapsing meaning into `None`
-- use typestate-inspired APIs to make invalid operations harder to express
+## Session outcome
 
-## Why this module matters
+Treat Module 03 as one serious study day with four stages.
 
-Object-oriented systems often look clean at the class level while hiding most of
-their real complexity in state: optional fields, invalid combinations, lifecycle
-transitions, cached values, and partial objects that "should never exist" but do.
+| Stage | Main pressure | What you should produce |
+| --- | --- | --- |
+| state naming | which states are legal and illegal | one legal-state table |
+| boundary discipline | where invalid input gets rejected | one validation-boundary note |
+| absence repair | what `None` really means and whether partial objects are honest | one nullability repair note |
+| transition governance | which operations belong to which state | one transition map and one API note |
 
-This module turns those hidden pressures into explicit design decisions so state is
-represented as a contract instead of a pile of tolerated exceptions.
+The module is not complete if you only remember `dataclass`, `property`, or `post_init`.
+It is complete when you can explain a legal lifecycle.
 
-## Main questions
+## Recommended study route
 
-- When is `@property` a clarity tool and when is it a trap?
-- Which dataclass subsets are reliable and which combinations become brittle?
-- How do you keep invalid states from leaking into the domain?
-- How should `None`, partial objects, and lifecycle transitions be represented?
-- How can Python APIs make illegal operations difficult without pretending to be a theorem prover?
+Use this route unless you are returning to one narrow state problem:
 
-## Reading path
+1. [Properties and Computed Attributes](properties-and-computed-attributes.md)
+2. [Descriptors Mental Model](descriptor-mental-model.md)
+3. [Dataclasses for Values and Entities](dataclasses-for-values-and-entities.md)
+4. [Dataclass Inheritance, Defaults, Slots, and Frozen Pitfalls](dataclass-inheritance-defaults-slots-and-frozen-pitfalls.md)
+5. [Post-Init Validation and Invariants](post-init-validation-and-invariants.md)
+6. [Boundary Validation Libraries](boundary-validation-libraries.md)
+7. [Nulls, Optionals, and Partial Objects](null-optionals-and-partial-objects.md)
+8. [Lifecycle and Typestate](lifecycle-and-typestate.md)
+9. [Typestate in Python APIs](typestate-in-python-apis.md)
+10. [Refactor 2: Dataclasses, Null Safety, and Typestate](refactor-dataclasses-null-safety-and-typestate.md)
 
-1. Start with properties, descriptors, and dataclasses so the language mechanics are clear.
-2. Move into validation, boundary schemas, and null-handling.
-3. Finish with lifecycle and typestate because they build on the earlier representation choices.
-4. Use the refactor chapter to see state constraints made explicit in one coherent model.
+Do not jump to typestate before you understand the legal states and absence rules the API
+is trying to protect.
 
-## Lesson map
+## Lesson map by pressure
 
-- [Properties and Computed Attributes](properties-and-computed-attributes.md)
-- [Descriptors Mental Model](descriptor-mental-model.md)
-- [Dataclasses for Values and Entities](dataclasses-for-values-and-entities.md)
-- [Dataclass Inheritance, Defaults, Slots, and Frozen Pitfalls](dataclass-inheritance-defaults-slots-and-frozen-pitfalls.md)
-- [Post-Init Validation and Invariants](post-init-validation-and-invariants.md)
-- [Boundary Validation Libraries](boundary-validation-libraries.md)
-- [Nulls, Optionals, and Partial Objects](null-optionals-and-partial-objects.md)
-- [Lifecycle and Typestate](lifecycle-and-typestate.md)
-- [Typestate in Python APIs](typestate-in-python-apis.md)
-- [Refactor 2: Dataclasses, Null Safety, and Typestate](refactor-dataclasses-null-safety-and-typestate.md)
+| If your current question is... | Start here | Then do this |
+| --- | --- | --- |
+| should this stay a property or become a method | properties and computed attributes | explain what casual attribute syntax promises |
+| is this dataclass helping or hiding trouble | dataclasses for values and entities | check equality, mutability, and defaults together |
+| where should invalid state be rejected | post-init validation and invariants; boundary validation libraries | separate parsing mistakes from domain mistakes |
+| why is `None` doing too much work | nulls, optionals, and partial objects | rewrite one overloaded absence case |
+| how should lifecycle transitions be enforced | lifecycle and typestate | draw the transition map before touching the API |
+
+## What a missed-class learner should do
+
+If you are studying alone, use this rhythm:
+
+1. read one lesson
+2. describe one legal state and one illegal state in your own words
+3. explain where the first rejection should happen
+4. move on only after the state language sounds explicit
+5. end the day with the exercise packet and one capstone transfer note
+
+This replaces the classroom demos with visible design output.
+
+## Capstone transfer for this module
+
+The capstone's lifecycle states, constructor checks, and rule transitions are where this
+module becomes real. Use the capstone to test yourself:
+
+- which states are legal for a policy or rule?
+- where are invalid inputs rejected first?
+- what values are absent by meaning instead of by accident?
+- which operations should disappear after activation, retirement, or approval-like transitions?
+
+If you can answer those, Module 03 is landing.
+
+## Support surfaces
+
+Use the practice pages as the second half of the module:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+Keep these nearby when useful:
+
+- `../guides/proof-matrix.md`
+- `../guides/module-checkpoints.md`
+- `../reference/self-review-prompts.md`
 - [Glossary](glossary.md)
 
-## Keep these support surfaces open
-
-- `../guides/proof-matrix.md` when you want the state and lifecycle promise connected to evidence.
-- `../guides/module-checkpoints.md` when you need a sharper bar for legal and illegal state reasoning.
-- `../reference/self-review-prompts.md` when you want to test whether nullability, validation, and transitions now sound like contract language.
-
-## Common failure modes
+## Common ways learners leave too early
 
 - hiding expensive or stateful work behind innocent-looking properties
-- treating `dataclass` as a shortcut without checking what equality, hashing, or mutability it implies
-- letting `None` mean several different things at once
-- creating objects that are technically constructible but semantically unusable
-- allowing lifecycle transitions through informal caller discipline instead of explicit APIs
-
-## Exercises
-
-- Pick one object lifecycle and list the legal transitions, the illegal transitions, and the method boundary that should enforce them.
-- Review one property or constructor and explain whether it clarifies state or hides work that should stay explicit.
-- Replace one ambiguous `None` meaning with a sharper representation and explain what bug surface that removes.
-
-## Capstone connection
-
-The capstone's lifecycle states, constructor validation, and rule definitions are examples
-of this module's core point: internal state should communicate legal operations clearly.
-The `MonitoringPolicy` aggregate is only trustworthy because draft, active, and retired
-rules are explicit, and because invalid inputs are rejected at the edges of object creation.
+- treating `dataclass` as a shortcut without checking its semantic consequences
+- letting `None` mean draft, missing, broken, and not-yet-loaded all at once
+- allowing lifecycle transitions through caller discipline instead of named APIs
+- calling an object "valid enough" when it is still only partially honest
 
 ## Closing criteria
 
-You should finish this module able to model lifecycles, validation rules, and null
-semantics with fewer hidden states and fewer ad hoc runtime checks.
+You are ready to leave Module 03 only when you can do all of these in plain language:
 
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+- name the legal states of one object and one illegal combination
+- explain where invalid state gets rejected first
+- repair one overloaded absence or partial-object design
+- show how the API changes once lifecycle transitions become explicit

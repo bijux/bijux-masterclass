@@ -1,114 +1,163 @@
 # Module 10: Migration, Governance, and Make Boundaries
 
+Module 10 is where the course stops asking, "Can you make this build run?" and starts
+asking, "Can you inherit it responsibly, change it safely, and explain when Make should
+keep or lose ownership?"
 
-<!-- page-maps:start -->
-## Page Maps
+That is a different skill.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Migration Governance Tool Boundaries"]
-  page["Module 10: Migration, Governance, and Make Boundaries"]
-  capstone["Capstone evidence"]
+A mature build steward needs to:
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+- review a Make system without collapsing into taste arguments
+- separate broken truth from ordinary design debt
+- move one boundary at a time without erasing the current proof routes
+- write governance that future maintainers can actually enforce
+- say plainly when Make is still the right owner and when another tool should take over
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+This module is about stewardship, not just repair.
 
-Module 10 is where the course stops asking, "Can you make this build work?" and starts
-asking, "Can you inherit it responsibly?"
+## Why this module matters
 
-That is a different skill. A mature build engineer needs to review a legacy Make system,
-separate design debt from broken truth, plan change without losing evidence, and say
-plainly when Make should remain the owner of a concern and when it should not.
+By the time a Make build becomes long-lived, the hard problems are rarely syntax
+problems. They are stewardship problems:
 
-This module is about stewardship:
+- CI depends on helpers that were never meant to be public
+- one release route now builds, packages, uploads, and mutates remote state
+- a migration is needed, but nobody knows what evidence must survive the move
+- maintainers can feel the build is risky, yet cannot explain exactly why
+- "replace Make" and "leave it alone" both sound simpler than honest review
 
-- reading a build as a long-lived product instead of a pile of commands
-- planning repairs in an order that preserves proof
-- defining rules future maintainers can actually follow
-- recognizing anti-patterns before they turn into team folklore
-- drawing honest tool boundaries instead of fashionable ones
-
-## What this module is for
-
-By the end of Module 10, you should be able to explain five things clearly:
-
-- how to review a Make-based build without collapsing into style arguments
-- how to stage a migration so each move keeps the build auditable
-- what governance rules keep a build teachable and maintainable over time
-- which recurring build smells are worth stopping immediately
-- when Make is still the right owner and when another tool should take over
-
-## Study route
-
-```mermaid
-flowchart TD
-  start["Overview"] --> core1["Reviewing Build Contracts and Current Truth"]
-  core1 --> core2["Migration Plans That Preserve Proof"]
-  core2 --> core3["Governance Rules for Long-Lived Builds"]
-  core3 --> core4["Recurring Build Antipatterns and Recovery"]
-  core4 --> core5["Deciding When Make Should Stop Owning the Problem"]
-  core5 --> example["Worked Example: Planning a Safe Build Migration"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
-```
-
-Read the module in that order the first time. After that, jump directly to the page that
-matches the stewardship question in front of you.
-
-## The ten files in this module
-
-1. Overview (`index.md`)
-2. [Reviewing Build Contracts and Current Truth](reviewing-build-contracts-and-current-truth.md)
-3. [Migration Plans That Preserve Proof](migration-plans-that-preserve-proof.md)
-4. [Governance Rules for Long-Lived Builds](governance-rules-for-long-lived-builds.md)
-5. [Recurring Build Antipatterns and Recovery](recurring-build-antipatterns-and-recovery.md)
-6. [Deciding When Make Should Stop Owning the Problem](deciding-when-make-should-stop-owning-the-problem.md)
-7. [Worked Example: Planning a Safe Build Migration](worked-example-planning-a-safe-build-migration.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
-10. [Glossary](glossary.md)
-
-## How to use the file set
-
-| If you need to... | Start here |
-| --- | --- |
-| review an inherited Makefile with discipline instead of taste-based debate | [Reviewing Build Contracts and Current Truth](reviewing-build-contracts-and-current-truth.md) |
-| change a build without losing your ability to prove it still works | [Migration Plans That Preserve Proof](migration-plans-that-preserve-proof.md) |
-| define what future maintainers are allowed to change casually and what they are not | [Governance Rules for Long-Lived Builds](governance-rules-for-long-lived-builds.md) |
-| identify build patterns that repeatedly produce pain | [Recurring Build Antipatterns and Recovery](recurring-build-antipatterns-and-recovery.md) |
-| choose honestly between keeping responsibility in Make or moving it elsewhere | [Deciding When Make Should Stop Owning the Problem](deciding-when-make-should-stop-owning-the-problem.md) |
-| see the whole module in one realistic migration narrative | [Worked Example: Planning a Safe Build Migration](worked-example-planning-a-safe-build-migration.md) |
-| pressure-test your own reasoning | [Exercises](exercises.md) |
-| compare your reasoning against a reference | [Exercise Answers](exercise-answers.md) |
-| keep the module vocabulary stable | [Glossary](glossary.md) |
+This module exists so those conversations stop being emotional and start becoming
+evidence-based.
 
 ## The running question
 
 Carry this question through every page:
 
-> what evidence would let me improve this build while keeping trust in its current and
+> What evidence would let me improve this build while keeping trust in its current and
 > future behavior?
 
 Strong Module 10 answers usually mention one or more of these:
 
 - a review artifact that makes the present system legible
-- a migration step that changes one boundary at a time
-- a governance rule that protects public contracts and evidence surfaces
-- an anti-pattern described in terms of truth loss or ownership drift
-- a tool-boundary argument based on responsibility, not novelty
+- a migration step that moves one boundary while keeping a comparison route alive
+- a governance rule that protects a public contract or proof surface
+- an antipattern described in terms of truth loss or ownership drift
+- a tool-boundary decision defended by modeling fit rather than novelty
+
+## What this module is really for
+
+By the end of the module, you should be able to explain five things clearly:
+
+- how to review an inherited Make build without defaulting to style complaints
+- how to stage a migration so each move keeps proof alive
+- what governance rules keep a build teachable and maintainable over time
+- which recurring build smells deserve immediate intervention
+- when Make is still the most honest owner and when it is not
+
+Those are course-closing skills. They depend on everything earlier in the program:
+graph truth, parallel safety, determinism, target contracts, release boundaries, and
+operational evidence.
+
+## How to treat this module
+
+Treat Module 10 as one serious stewardship session, not as a loose epilogue.
+
+You are not required to replace Make.
+
+You are required to understand one real Make system well enough that keeping, repairing,
+or handing off a concern becomes a defendable decision.
+
+If you finish the module with only opinions about "cleanups" or "modernization," you
+have missed the point.
+
+## The live stewardship route
+
+Use one inherited build review and one bounded handoff decision as the anchors for the
+day:
+
+```mermaid
+flowchart LR
+  review["Inventory targets, outputs, and writers"] --> characterize["Preserve current proof routes"]
+  characterize --> classify["Classify risks and ownership boundaries"]
+  classify --> move["Design one smallest responsible boundary move"]
+  move --> govern["Write rules future maintainers can actually enforce"]
+```
+
+That route keeps change tied to trust instead of taste.
+
+## Stewardship packet to build all day
+
+Keep one packet as you work through the module. By the end it should contain:
+
+- one first-pass build review
+- one target/output ownership inventory
+- one proof-preserving migration step
+- one governance note with an enforcement path
+- one tool-boundary decision record
+- one bounded repair or migration sequence
+
+If those artifacts are missing, you are probably talking about the build more than you
+are stewarding it.
+
+## Decide by responsibility, not by tool fashion
+
+For each concern, compare the ownership it needs with the ownership Make can provide:
+
+| Concern | Local file graph? | External state? | Long-running orchestration? | Likely owner |
+| --- | ---: | ---: | ---: | --- |
+| compile sources into objects | yes | no | no | Make |
+| assemble and verify a local bundle | yes | no | no | Make |
+| upload and retry against a remote service | partly | yes | possibly | workflow or publication tool |
+| coordinate a distributed research pipeline | partly | yes | yes | workflow scheduler |
+
+These are starting judgments, not universal answers. A handoff is justified when another
+tool has a clearer responsibility model for the concern, not merely because it is newer.
+
+Every proposed handoff should still have a visible contract:
+
+```mermaid
+flowchart LR
+  make["Make-owned local artifact"] --> contract["versioned file and metadata contract"]
+  contract --> external["external owner"]
+  external --> receipt["status or receipt evidence"]
+```
+
+Without that contract, "migration" often means hidden coupling moved from one script to
+another.
+
+## Study route
+
+Read the module in this order the first time:
+
+1. [Reviewing Build Contracts and Current Truth](reviewing-build-contracts-and-current-truth.md)
+2. [Migration Plans That Preserve Proof](migration-plans-that-preserve-proof.md)
+3. [Governance Rules for Long-Lived Builds](governance-rules-for-long-lived-builds.md)
+4. [Recurring Build Antipatterns and Recovery](recurring-build-antipatterns-and-recovery.md)
+5. [Deciding When Make Should Stop Owning the Problem](deciding-when-make-should-stop-owning-the-problem.md)
+6. [Worked Example: Planning a Safe Build Migration](worked-example-planning-a-safe-build-migration.md)
+7. [Exercises](exercises.md)
+8. [Exercise Answers](exercise-answers.md)
+9. [Glossary](glossary.md)
+
+That order matters because the worked example and practice surfaces are much more useful
+once the review, migration, governance, smell, and tool-boundary vocabulary is already
+stable.
+
+## The file set in this module
+
+| File | Why it exists |
+| --- | --- |
+| `index.md` | orient the stewardship day and define the packet you should leave with |
+| `reviewing-build-contracts-and-current-truth.md` | teach first-pass review without style drift |
+| `migration-plans-that-preserve-proof.md` | teach how to move one boundary while keeping evidence alive |
+| `governance-rules-for-long-lived-builds.md` | turn taste into enforceable maintainer rules |
+| `recurring-build-antipatterns-and-recovery.md` | help you recognize repeated forms of truth loss quickly |
+| `deciding-when-make-should-stop-owning-the-problem.md` | teach honest tool-boundary decisions |
+| `worked-example-planning-a-safe-build-migration.md` | show the whole module in one migration narrative |
+| `exercises.md` | pressure-test your stewardship reasoning |
+| `exercise-answers.md` | compare your reasoning against a reference shape |
+| `glossary.md` | stabilize the vocabulary for review, migration, and boundary arguments |
 
 ## Commands to keep close
 
@@ -123,7 +172,7 @@ make -j8 all
 ```
 
 The exact targets may change from repository to repository. The point is stable evidence:
-dry-run meaning, trace meaning, database meaning, and serial versus parallel behavior.
+dry-run meaning, trace meaning, database meaning, and serial-versus-parallel behavior.
 
 ## Learning outcomes
 
@@ -141,8 +190,10 @@ Do not move on until all of these are true:
 
 - you can review one real Make system without defaulting to style complaints
 - you can describe a migration sequence that preserves proof after each step
-- you can write governance rules another maintainer could enforce
+- you can write governance rules another maintainer could actually apply
 - you can name recurring anti-patterns and explain why they are costly
 - you can defend one tool-boundary choice in terms of ownership and evidence
+- you can complete the exercises and leave a durable stewardship packet another
+  maintainer could repeat
 
 When those feel ordinary, Module 10 has done its job.

@@ -1,0 +1,28 @@
+configfile: "config/baseline.yaml"
+
+
+rule all:
+    input:
+        "results/normalized.tsv",
+        "evidence/metrics.json",
+
+
+rule normalize_records:
+    input:
+        "data/records.tsv",
+    output:
+        normalized="results/normalized.tsv",
+        metrics="evidence/metrics.json",
+    benchmark:
+        "benchmarks/normalize.tsv",
+    shell:
+        """
+        python3 scripts/process_records.py \
+            --input {input} \
+            --output {output.normalized} \
+            --metrics {output.metrics} \
+            --mode {config[mode]} \
+            --chunk-size {config[chunk_size]} \
+            --scan-passes {config[scan_passes]} \
+            --validate {config[validate]}
+        """

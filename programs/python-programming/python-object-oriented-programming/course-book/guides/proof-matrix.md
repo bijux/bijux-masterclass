@@ -17,74 +17,108 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["Name the exact claim"] --> class["Classify the claim type"]
+  class --> route["Choose the first honest route"]
+  route --> artifact["Inspect the first artifact"]
+  artifact --> compare["Compare evidence to the owning boundary"]
+  compare --> escalate["Escalate only if the claim is still not settled"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide exists for claim-to-evidence routing,
-not for broad course browsing. Read the second diagram as the loop: choose the smallest
-honest route, inspect the matching surface, then stop once the claim is settled.
+Use this page when the design question is already clear and the remaining uncertainty is
+about proof. This is not the page for "what does the system do?" or "which module should
+I study?" It is the page for:
 
-Use this page when you know the object-design claim and need the fastest honest route to
-evidence.
+> I think the claim is `____`. What is the smallest honest route that can actually test
+> it?
 
-## Core design claims
+The main mistake this page is trying to prevent is proof inflation: reaching for the
+strongest command, the largest test sweep, or the most artifacts before the claim has
+earned that weight.
 
-| Claim | Best first command | Best first surface |
+## First classify the claim
+
+Most OOP proof trouble comes from mixing unlike claims. Decide which family you are in
+before choosing a route.
+
+| Claim family | Typical question | First thing you need |
 | --- | --- | --- |
-| current policy and incident state stay legible without reading internals first | `make PROGRAM=python-programming/python-object-oriented-programming inspect` | `summary.txt`, `snapshot.json` |
-| lifecycle rules remain explicit instead of spread across ad hoc flags | `make PROGRAM=python-programming/python-object-oriented-programming inspect` | `rules.txt`, `tests/test_policy_lifecycle.py`, `model.py` |
-| historical and timeline views stay derived rather than authoritative | `make PROGRAM=python-programming/python-object-oriented-programming inspect` | `history.txt`, `timeline.txt`, `read_models.py` |
-| retirement and rate-of-change scenarios stay reviewable under change | `make PROGRAM=python-programming/python-object-oriented-programming inspect` | `retirement.txt`, `rate_of_change.txt`, `runtime.py` |
-| one executable scenario still communicates the domain story honestly | `make PROGRAM=python-programming/python-object-oriented-programming demo` | terminal walkthrough plus `tests/test_demo.py` |
-| the raw executable suite still matches the ownership model | `make PROGRAM=python-programming/python-object-oriented-programming test` | `tests/`, especially lifecycle, runtime, application, and evaluation suites |
+| semantics claim | what kind of thing is this object, and what does equality or representation mean | model and lifecycle surfaces |
+| ownership claim | which object or boundary is authoritative for this rule | owner-facing files plus one supporting artifact |
+| lifecycle claim | which states are legal and where illegal transitions are blocked | lifecycle tests and inspection outputs |
+| collaboration claim | how several objects participate without stealing authority | aggregate, projection, and runtime relationship surfaces |
+| persistence or runtime claim | how storage, publication, or coordination stay downstream of truth | repository/runtime boundaries plus saved evidence |
+| public-trust claim | what is safe to expose, extend, or depend on | public route docs, extension surfaces, and stronger proof bundles |
 
-## Bundle and review claims
+If you cannot classify the claim yet, step back to [Pressure Routes](pressure-routes.md)
+or the relevant module page. Proof is premature until the claim itself is stable.
 
-| Claim | Best first command | Best first surface |
+## First honest routes by claim family
+
+| Claim family | First route | First artifact to inspect | Escalate to... |
+| --- | --- | --- | --- |
+| semantics | `inspect` | `rules.txt`, `model.py`, lifecycle-focused tests | `capstone-verify-report` if the claim reaches beyond one object contract |
+| ownership | `capstone-walkthrough` or `inspect` | `walkthrough.txt`, `application.py`, `model.py` | `capstone-verify-report` if collaboration or runtime evidence is needed |
+| lifecycle | `inspect` | `rules.txt`, `snapshot.json`, lifecycle tests | `capstone-verify-report` if the claim spans projections or persistence |
+| collaboration | `capstone-verify-report` | `history.txt`, `timeline.txt`, `projections.py`, `read_models.py` | `proof` if the claim reaches public review or stewardship level |
+| persistence or runtime | `capstone-verify-report` | `pytest.txt`, repository/runtime tests, saved bundles | `proof` if you need the full review route |
+| public trust or extension | `proof` | extension docs, public tests, complete saved bundle set | only after smaller routes have already made the boundary legible |
+
+## Concrete capstone claim routes
+
+| Exact claim | First route | First surface | Why this is the honest start |
+| --- | --- | --- | --- |
+| `MonitoringPolicy` owns lifecycle transitions | `inspect` | `rules.txt`, `model.py`, lifecycle tests | the claim is about domain legality, not full-system behavior |
+| evaluation variation does not relocate ownership | `capstone-walkthrough` | `walkthrough.txt`, `policies.py`, `model.py` | the walkthrough shows the policy in use without pretending runtime owns the decision |
+| projections stay downstream of truth | `capstone-verify-report` | `history.txt`, `timeline.txt`, `read_models.py`, `projections.py` | you need both executable confirmation and saved derived outputs |
+| repository and runtime do not become domain owners | `capstone-verify-report` | `pytest.txt`, `repository.py`, `runtime.py` | the claim reaches beyond one file and needs cross-boundary evidence |
+| the public learner route still tells the truth end to end | `proof` | walkthrough, inspection, and verification bundles together | this is an end-to-end claim and should be treated as one |
+
+## Course-outcome to proof route
+
+| Course outcome | First route | First artifact |
 | --- | --- | --- |
-| the capstone can be inspected in one bounded walkthrough | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` | `walkthrough.txt`, `TOUR.md`, `WALKTHROUGH_GUIDE.md` |
-| executable tests and saved review state still agree | `make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report` | `pytest.txt`, `summary.txt`, `history.txt`, `snapshot.json` |
-| the strongest local confirmation route still holds | `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` | executable suite plus saved review bundles |
-| the full public proof route still builds end to end | `make PROGRAM=python-programming/python-object-oriented-programming proof` | inspection, walkthrough, and verification bundles together |
+| distinguish value, entity, policy, and adapter roles | `inspect` | `model.py`, `rules.txt`, lifecycle tests |
+| defend the owner of a rule | `capstone-walkthrough` | `walkthrough.txt`, `application.py`, `model.py` |
+| make illegal states harder to construct | `inspect` | lifecycle tests and `snapshot.json` |
+| preserve invariants through collaboration | `capstone-verify-report` | `history.txt`, `timeline.txt`, aggregate and projection surfaces |
+| keep storage and runtime outside the model | `capstone-verify-report` | `repository.py`, `runtime.py`, executable review bundle |
+| defend public seams and extension governance | `proof` | public docs, extension surfaces, full saved bundle set |
 
-## Course contract to proof surface
+## Escalation rules
 
-| Course outcome | Best first route | Best first surface |
-| --- | --- | --- |
-| model value objects and entities without confusing their contracts | `inspect` | `summary.txt`, `rules.txt`, lifecycle tests |
-| choose composition, inheritance, protocols, or plain functions deliberately | `capstone-walkthrough` | `walkthrough.txt`, `application.py`, `model.py` |
-| design state transitions so illegal states are difficult to construct | `inspect` | `rules.txt`, `tests/test_policy_lifecycle.py`, `snapshot.json` |
-| enforce cross-object invariants through aggregate roots and disciplined APIs | `capstone-verify-report` | `history.txt`, `timeline.txt`, runtime and application tests |
-| evolve storage, codecs, and compatibility boundaries without flattening the domain | `capstone-verify-report` | `retirement.txt`, `rate_of_change.txt`, repository and runtime surfaces |
-| publish public APIs and extension points that remain governable under change | `proof` | saved review bundles plus the public-capstone guides |
+Move to a stronger route only when one of these is true:
 
-## Module-to-proof bridge
+- the first route answers only part of the claim
+- the claim crosses more boundaries than the first artifact can cover
+- the first artifact and the owning code disagree
+- you now need public review confidence rather than local design confidence
 
-| Module range | Main question | Best first evidence surface |
-| --- | --- | --- |
-| Modules 01 to 03 | what do identity, roles, and lifecycle rules actually own | `summary.txt`, `rules.txt`, lifecycle tests |
-| Modules 04 to 05 | where do cross-object invariants and failure boundaries actually live | `history.txt`, `timeline.txt`, `runtime.py`, `tests/test_unit_of_work.py` |
-| Modules 06 to 07 | how do persistence and runtime pressure stay outside the aggregate | `retirement.txt`, `rate_of_change.txt`, repository and runtime tests |
-| Modules 08 to 10 | which proof layer or public surface actually defends the design | `capstone-verify-report`, `capstone-confirm`, `proof` |
+Do not escalate just because a stronger route exists.
 
-## Review questions
+## Bad proof habits
 
-| Question | Best first command | Best first surface |
-| --- | --- | --- |
-| which object or boundary should own this claim | [Proof Ladder](proof-ladder.md) | this page plus [Capstone Map](../capstone/capstone-map.md) |
-| where should I start when the issue is the current scenario state | `inspect` | `summary.txt`, `snapshot.json` |
-| where should I start when the issue is lifecycle or rule ownership | `inspect` | `rules.txt`, `tests/test_policy_lifecycle.py` |
-| where should I start when the issue is a full-system review | `capstone-verify-report` | `pytest.txt`, saved review state, and [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
-| which route should I use before approving a larger change | `capstone-confirm` or `proof` | executable suite plus the saved bundles |
+- starting with `proof` because it feels safer than judgment
+- reading raw tests first when a saved bundle would answer the question faster
+- using one artifact as if it proved semantics, ownership, runtime, and public trust all at once
+- treating a green command as proof without checking whether the output actually addresses the claim
 
-## Best companion pages
+## Good proof habits
 
-- [Proof Ladder](proof-ladder.md)
-- [Pressure Routes](pressure-routes.md)
-- [Command Guide](../capstone/command-guide.md)
-- [Capstone Map](../capstone/capstone-map.md)
-- [Capstone Proof Guide](../capstone/capstone-proof-guide.md)
+- write the claim in one sentence before choosing a route
+- inspect the first artifact before opening more code
+- compare the evidence with the claimed owner directly
+- stop as soon as the claim is honestly settled
+
+## When this page is not enough
+
+If you know the claim family but still do not know which route feels proportionate, move
+to [Proof Ladder](proof-ladder.md). If you know the route but not the capstone surface,
+move to [Capstone Map](../capstone/capstone-map.md).
+
+## Exit check
+
+Leave this page only when you can say:
+
+> My claim is `____`, it is a `____` claim, the first honest route is `____`, and the
+> first artifact I should inspect is `____`.

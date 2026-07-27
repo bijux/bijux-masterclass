@@ -1,82 +1,197 @@
 # Start Here
 
-<!-- page-maps:start -->
-## Page Maps
+Use this page when Snakemake is new, when the course feels too large, or when you need
+the safest route back to first principles. This page exists to protect beginners from a
+common mistake: widening the surface before the first workflow is actually clear.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Start Here"]
-  capstone["Capstone evidence"]
+Deep Dive Snakemake does not begin with clusters, profiles, or a large repository. It
+begins with one honest rule, one target, one dry-run, and one explanation you can defend.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## If you are learning this without the live class
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+Read this page in four passes:
 
-Read the first diagram as a timing map: this page is for choosing the first honest route,
-not for replacing the course. Read the second diagram as the loop: choose one route,
-anchor in Module 00, and leave with one stable next move.
+1. confirm you are still at first contact rather than already in capstone pressure
+2. complete the first-hour route once without widening the surface
+3. write down what the first workflow proved and what it did not prove
+4. move into Module 00 and Module 01 only after the local model is stable
 
-Deep Dive Snakemake is not a syntax reference. It is a course about workflow design as an
-engineering contract: explicit file boundaries, safe dynamic behavior, publishable
-artifacts, and operationally stable execution.
+If you start opening later shelves before step 2 is honest, the course will feel larger
+and weaker at the same time.
+
+## What you need from day one
+
+On your first pass, you do not need:
+
+- the full capstone repository
+- checkpoint mechanics
+- scheduler policy
+- publish versioning
+- architecture review
+
+You do need:
+
+- a working `snakemake --version`
+- one small local example
+- one dry-run you can read
+- one rerun you can explain
+
+That is enough to start building the right model.
+
+## The first packet you should keep beside you
+
+Before you widen into the modules, keep one tiny starter packet:
+
+- one command confirming Snakemake is installed
+- one small workflow you can run locally
+- one dry-run capture
+- one explanation of why the second run does no work
+- one explanation of why changing one input changes the plan
+
+If that packet feels too small, that is a sign you are still reaching for scale instead
+of clarity.
+
+## The first-hour route
+
+If you only have one hour, do this and stop:
+
+1. Confirm `snakemake --version` works.
+2. Complete [your first workflow](../module-00-orientation/index.md#your-first-workflow).
+3. Run a dry-run and explain why Snakemake wants the planned job.
+4. Run the workflow twice and explain why the second run does no work.
+5. Edit one input and explain why the target becomes eligible again.
+
+If you can do those five things honestly, you have a real start.
+
+## The sentence to keep in your head
+
+When the course feels bigger than you want, return to this sentence:
+
+> Today I only need to understand why one target ran, why the second run did not, and
+> why changing one input changed the plan.
+
+That is not a low standard. That is the core model that everything else in the course
+keeps extending.
+
+## A first-contact card you should be able to fill quickly
+
+Use a table like this before you keep reading:
+
+| Question | Short honest answer |
+| --- | --- |
+| what target did I ask for | one file Snakemake owes me |
+| what rule can build it | one visible file contract |
+| what did the dry-run prove | what work is planned before any command runs |
+| what did the second run prove | the workflow can converge instead of repeating work forever |
+| what did changing one input prove | dependency edges, not vibes, drive rebuilds |
+
+If any row still feels vague, stay here longer. That is not falling behind. It is
+protecting the model the whole course depends on.
+
+## Read this page in order
+
+1. confirm you are still at first contact
+2. complete the first-hour route once
+3. stop before you widen the surface
+4. move into Module 00 and Module 01 while the example is still fresh
+
+This page is intentionally narrow. If it starts turning into a dashboard, you have
+already opened too much.
 
 ## Use this page when
 
-- Snakemake still feels new and you want the safest ramp
-- the workflow is already confusing and you need the smallest justifiable route
-- you steward a workflow repository and need the course without random browsing
+- Snakemake still feels unfamiliar
+- you opened too many course pages and lost the teaching sequence
+- the capstone looks tempting but the local model is still fuzzy
+- you need to restart the course without pretending you remember more than you do
 
 ## Do not use this page to
 
 - replace the module sequence with support-page browsing
-- enter the capstone before the local concept is legible
+- skip the actual first workflow
 - choose the strongest proof route by default
+- justify entering the capstone before one local rule is clear
 
-## Best first pass
+## What beginners often do wrong
 
-1. Read [Course Home](../index.md).
-2. Read [Course Guide](course-guide.md).
-3. Read [Learning Contract](learning-contract.md).
-4. Read [Platform Setup](platform-setup.md).
-5. Read [Module 00](../module-00-orientation/index.md).
-6. Continue to [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md).
+The most common early mistake is believing that a larger repository or a more advanced
+topic will somehow make the concept clearer.
 
-Stop there before opening more shelves. That is enough to make the reading contract,
-workflow contract, and capstone timing visible.
+Usually it does the opposite.
 
-## Choose the route that matches your pressure
+If one small workflow is still fuzzy, then:
+
+- more files create more hiding places
+- more profiles create more noise
+- more proof routes create more ceremony
+- more advanced pages create more vocabulary without more understanding
+
+## What goes wrong when the surface widens too early
+
+Use this card when you feel the urge to jump ahead:
+
+| If you are tempted to... | The likely hidden problem is... | Smaller move instead |
+| --- | --- | --- |
+| open the capstone first | the local model is still fuzzy | rerun one tiny workflow and explain the plan |
+| browse many guide pages at once | sequence anxiety is replacing learning | stay with Start Here, Module 00, and Module 01 |
+| choose the strongest proof route immediately | evidence appetite is outrunning the question | keep one dry-run and one rerun explanation |
+| jump to late governance or incident pages | advanced vocabulary feels safer than first principles | return to one requested target and one file contract |
+
+If the smaller move feels too humble, that usually means it is the right one.
+
+## The best first pass
+
+Use this route and stop there:
+
+1. [Platform Setup](platform-setup.md)
+2. [Module 00](../module-00-orientation/index.md)
+3. [Course Map](../module-00-orientation/course-map.md)
+4. [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md)
+
+Do not open the capstone or the reference shelf until Module 01 is making sense in your
+own words.
+
+## If your pressure is not purely beginner pressure
 
 | If you need... | Read next | Keep nearby |
 | --- | --- | --- |
-| first contact with Snakemake | [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md), [Module 02](../module-02-dynamic-dags-discovery-integrity/index.md) | [Module Checkpoints](module-checkpoints.md) |
+| first contact with Snakemake | [Module 00](../module-00-orientation/index.md), [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md), [Module 02](../module-02-dynamic-dags-discovery-integrity/index.md) | [Module Checkpoints](module-checkpoints.md) |
 | repair of an existing workflow | [Pressure Routes](pressure-routes.md), [Module 03](../module-03-production-operations-policy-boundaries/index.md), [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md) | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
-| stewardship of a long-lived workflow repository | [Module 06](../module-06-publishing-downstream-contracts/index.md), [Module 07](../module-07-workflow-architecture-file-apis/index.md), [Module 10](../module-10-governance-migration-tool-boundaries/index.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+| stewardship of a long-lived repository | [Course Guide](course-guide.md), [Module 06](../module-06-publishing-downstream-contracts/index.md), [Module 07](../module-07-workflow-architecture-file-apis/index.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 
-## What to keep open
+## What to keep open and what to keep closed
 
+Keep open:
+
+- [First-Contact Map](../module-00-orientation/first-contact-map.md)
 - [Course Guide](course-guide.md)
-- [Module Promise Map](module-promise-map.md)
 - [Module Checkpoints](module-checkpoints.md)
-- [Boundary Review Prompts](../reference/boundary-review-prompts.md)
-- [Capstone Guide](../capstone/index.md), but only as a later corroboration surface
+
+Keep closed for now:
+
+- the larger capstone surfaces
+- late-module incident and governance pages
+- reference pages you are not yet using to solve a real learning problem
+
+## A five-line beginner note you should be able to write from memory
+
+If this page has done its job, you should be able to write:
+
+1. which target your first workflow requested
+2. which rule produced it
+3. what the dry-run told you before execution
+4. why the second run did no work
+5. why the capstone is not your first lesson
+
+If you cannot do that, stay in the starter route a little longer.
 
 ## Success signal
 
-You are using the course correctly if you can explain:
+You are ready to leave this page when you can explain:
 
 - what makes a workflow contract truthful
+- why a target selects the rules Snakemake needs
+- why a second run may do no work
 - why the capstone is not your first lesson
-- which support page answers the next question without opening everything
-- which proof route is proportionate to the claim in front of you
+
+When you can say those clearly, continue into Module 00 and Module 01.

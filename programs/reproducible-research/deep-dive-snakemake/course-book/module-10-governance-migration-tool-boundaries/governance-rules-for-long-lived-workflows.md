@@ -1,34 +1,37 @@
 # Governance Rules for Long-Lived Workflows
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Governance Rules for Long-Lived Workflows"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Good governance is not bureaucracy layered on top of a workflow.
 
 Good governance is the small set of review rules that stop a repository from drifting into
 private knowledge and accidental contracts.
+
+## If you are learning this without the live class
+
+Read this lesson in five passes:
+
+1. identify what governance must protect
+2. decide which review rules are worth enforcing every time
+3. test whether each rule would reject a realistic bad change
+4. remove any rule that sounds wise but cannot be enforced
+5. leave behind one short checklist another maintainer could really use
+
+The target is not governance theater. The target is review discipline that survives busy
+weeks and staff turnover.
+
+## How to use this page
+
+Read this lesson with one real workflow team in mind, even if you have to invent the team
+for practice.
+
+Keep one small governance packet beside you as you read:
+
+- one list of the repository surfaces governance must protect
+- one short ruleset
+- one example bad change for each rule
+- one note on how each rule would be enforced
+- one note on what review habit the rule is trying to preserve
+
+If that packet cannot fit on one page, the governance is probably too vague or too heavy.
 
 ## What governance should protect
 
@@ -40,6 +43,19 @@ In a long-lived Snakemake repository, governance should protect at least four th
 - ownership clarity around helper code, modules, and downstream interfaces
 
 If governance does not protect those, it usually protects the wrong things.
+
+## Start by deciding what the team must stop forgetting
+
+Governance exists because some mistakes are too expensive to relearn repeatedly.
+
+In a long-lived workflow, those mistakes usually sound like this:
+
+- nobody noticed a new published file became a contract
+- a profile started carrying semantic settings
+- proof commands decayed because review pressure was high
+- helper ownership moved, but nobody recorded what became harder to inspect
+
+Good governance turns those recurring failures into explicit review rules.
 
 ## A simple governance model
 
@@ -53,6 +69,19 @@ flowchart TD
 
 This is enough for most workflow teams. Governance only becomes heavy when the repository
 itself is already unclear.
+
+## A governance card you should be able to fill before writing any rules
+
+Use a table like this:
+
+| Surface to protect | What keeps drifting | What rule could stop it |
+| --- | --- | --- |
+| public contract | undocumented published files or unstable consumer paths | require file-API and verification updates |
+| policy boundary | profiles carrying semantic settings | forbid semantic keys in operating policy surfaces |
+| proof route | verification, audits, or comparison commands decaying under pressure | require one surviving proof route for significant changes |
+| ownership boundary | helpers or packages becoming harder to inspect | require visible ownership and inspection consequences in review |
+
+If one row feels hard to phrase, that is usually the place where the team still relies on oral memory.
 
 ## Rule 1: Every public file needs a contract story
 
@@ -123,6 +152,19 @@ Good governance asks earlier:
 
 This is why publish review belongs inside governance, not only release engineering.
 
+## What goes wrong when learners write "good-sounding" governance
+
+Use this card before you keep a rule:
+
+| If the rule sounds like... | The real problem is... | Stronger rewrite |
+| --- | --- | --- |
+| "keep the workflow understandable" | sentiment with no review consequence | require visible ownership and proof routes for major helper moves |
+| "avoid messy profiles" | aesthetic language instead of a boundary | profiles may not change semantic workflow behavior |
+| "document important changes" | unbounded obligation | every published file must appear in the file API and verification route |
+| "keep verification healthy" | unclear enforcement | significant changes must preserve one explicit proof route |
+
+If you cannot say what change the rule would reject, it is not a governance rule yet.
+
 ## A small example
 
 Suppose a pull request:
@@ -140,6 +182,25 @@ A stronger process applies three separate rules:
 - ownership review checks whether the new package boundary is clearer or more hidden
 
 That is the difference between generic code review and workflow governance.
+
+## One concrete governance exercise
+
+Suppose a pull request:
+
+- adds a new `publish/v1/metrics.tsv`
+- moves analytical thresholds into a cluster profile
+- extracts discovery logic into a helper package
+
+A weak team review might approve the change because each edit looks reasonable in
+isolation.
+
+A governance-aware review asks three separate questions:
+
+1. does the new published file have a contract and verification story
+2. did workflow meaning leak into operating policy
+3. did helper ownership become clearer or more hidden
+
+That is the level of separation this lesson is trying to teach.
 
 ## Keep governance lightweight but sharp
 
@@ -164,6 +225,37 @@ Watch for these signals:
 - important commands still exist, but nobody can say which are canonical under pressure
 
 These are governance problems even when the repository still "works."
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is writing governance rules that sound wise but cannot be
+enforced.
+
+Examples of weak rules:
+
+- keep the workflow understandable
+- avoid messy profiles
+- document important changes
+
+Those are sentiments, not rules.
+
+Good governance language names a boundary and a review consequence. For example:
+
+- every published file must appear in the file API and verification route
+- profiles may change execution policy but not sample selection or analytical thresholds
+- major helper moves must preserve a visible proof or inspection route
+
+## A five-line governance note you should be able to write from memory
+
+If this lesson has landed, you should be able to write:
+
+1. which repository surfaces governance must protect
+2. which short rule protects each one
+3. what realistic bad change each rule would reject
+4. how a maintainer would know the rule was violated
+5. why the rules are short enough to survive real review pressure
+
+If you cannot write those five lines, the governance is still too abstract.
 
 ## Keep this standard
 

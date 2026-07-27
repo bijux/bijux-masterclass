@@ -143,13 +143,91 @@ Examples:
 - `verify-contract`
 - `build-objects`
 - `dist-raw`
-- `ci-step-3`
+- `ci-compile-cache`
 
 Those names may be useful internally, but CI should usually call a documented public target
 such as `test`, `selftest`, or `release-check`.
 
 Why? Because CI is a contract consumer. If it depends on internals, architectural cleanup
 becomes much more dangerous.
+
+## Prove the difference between reachable and public
+
+Run the architecture contract audit from the repository root:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make \
+  capstone-architecture-contract-audit
+```
+
+Open:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/architecture-contracts/
+```
+
+The public-API pair uses the same documented help surface:
+
+```text
+help    show the supported build interface
+verify  build and verify the application
+```
+
+It also contains an internal target named `internal-build`. The two automation scripts
+differ only in the target they call:
+
+| Caller | Target | Exit | Published evidence |
+| --- | --- | --- | --- |
+| private caller | `internal-build` | zero | application only |
+| declared caller | `verify` | zero | application and verification |
+
+The expected findings are:
+
+```text
+PRIVATE_TARGET_DEPENDENCE_REPRODUCED
+PUBLIC_TARGET_CONTRACT_HONORED
+```
+
+Both commands succeed. That is the point. Exit status cannot tell you whether automation
+used the supported interface or bypassed part of its meaning.
+
+```mermaid
+flowchart TD
+  automation["automation"]
+  helper["internal-build"]
+  verify["verify"]
+  product["application.txt"]
+  proof["verification.txt"]
+
+  automation --> helper --> product
+  automation -.supported route.-> verify
+  verify --> helper
+  verify --> proof
+```
+
+Read the help trace and caller trace together. The help trace establishes the promise;
+the caller trace establishes the dependency. The output files establish the consequence.
+
+## Do not repair interface drift by documenting everything
+
+When an audit finds automation calling a private helper, two repairs are possible:
+
+1. change the caller to use an existing public target
+2. deliberately promote a new public target with stable meaning
+
+The first is usually narrower. Adding every discovered helper to `help` may silence the
+mismatch while turning implementation details into permanent promises.
+
+Use this promotion test:
+
+| Question | If no |
+| --- | --- |
+| does the target express a user-facing outcome? | keep it internal |
+| can callers verify the promised outcome? | define evidence before promotion |
+| is the name independent of current implementation? | rename by durable intent |
+| will maintainers support the meaning across refactors? | repair callers instead |
+
+Public API review is therefore a caller review, not only a Makefile inventory.
 
 ## Public targets should say what they mean
 
@@ -244,6 +322,11 @@ That is why Module 07 begins here.
 
 That often means CI was depending on a private target.
 
+### "CI passes, but the verification file is missing"
+
+Automation may be calling a reachable helper that bypasses the public verification
+contract. Compare caller traces with `help` before adding another dependency edge.
+
 ### "We have `help`, but it prints thirty targets and nobody knows which ones matter"
 
 That means the public surface is not actually curated.
@@ -270,13 +353,20 @@ If those answers are weak, the build API is weak too.
 
 ## What to practice from this page
 
-Choose one Make-based repository and write its public target list in plain language:
+Run the architecture contract audit, then choose one Make-based repository and write its
+public target list in plain language:
 
 1. the public target names
 2. one sentence of contract meaning for each
-3. one target that should be demoted to internal
-4. one improvement to `help`
-5. one reason this smaller surface would make future refactors safer
+3. every automation caller and the target it actually invokes
+4. one caller that should move to a public target
+5. one helper you refuse to promote, with the reason
+
+Keep three forms of evidence:
+
+- the declared surface from `help`
+- the observed caller from search or trace
+- the promised output or verification evidence
 
 If you can do that cleanly, you are treating the Makefile as an interface rather than a
 bucket of commands.
@@ -290,3 +380,4 @@ Before leaving this lesson, make sure you can explain:
 - why CI should call documented public targets rather than private helpers
 - how `help` can reinforce the API instead of obscuring it
 - how to decide whether a target deserves promotion to the public surface
+- why a successful private caller can still violate the build API

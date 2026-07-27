@@ -24,10 +24,9 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-This guide prevents one common learning failure: opening the capstone but not knowing
-which file owns which responsibility.
+Use this guide when you opened the capstone but still do not know which file owns which
+responsibility. The goal is not to read the whole tree. The goal is to choose one source
+file, one matching proof file, and one honest next move.
 
 ## Start by question
 
@@ -37,6 +36,7 @@ which file owns which responsibility.
 | how one field validates and stores data | `fields.py` | `test_fields.py` |
 | how one wrapped action preserves metadata | `actions.py` | `test_runtime.py` |
 | how the abstractions look in a concrete plugin | `plugins.py` | `test_runtime.py` |
+| how the public review surface is assembled | `cli.py` | `test_cli.py` |
 
 ## Source files
 
@@ -57,6 +57,10 @@ Owns callable wrapping, signature preservation, and action history recording.
 
 Owns concrete delivery plugins that make the abstractions visible in realistic examples.
 
+### `cli.py`
+
+Owns public inspection and invocation commands that expose the runtime without hiding it.
+
 ## Test files
 
 ### `test_fields.py`
@@ -71,10 +75,14 @@ Proves constructor signature generation, deterministic registration, and action 
 
 Proves manifest export, runtime invocation, and action-history recording.
 
+### `test_cli.py`
+
+Proves the public command surface stays observational and reviewable.
+
 ## Reading tip
 
 When a mechanism feels too abstract, move from the owning source file to the matching
-test file immediately. The course is strongest when implementation and proof stay adjacent.
+test file immediately. The capstone teaches best when implementation and proof stay adjacent.
 
 ## What not to do first
 
@@ -88,4 +96,12 @@ test file immediately. The course is strongest when implementation and proof sta
 - Modules 04-05: `actions.py` and `test_runtime.py`
 - Modules 06-08: `fields.py` and `test_fields.py`
 - Module 09: `framework.py` and `test_registry.py`
-- Module 10 and mastery review: `README.md`, `PROOF_GUIDE.md`, and the saved bundles under `artifacts/`
+- Module 10 and mastery review: `cli.py`, `test_cli.py`, and the saved bundles under `artifacts/`
+
+## Good stopping point
+
+Stop when you can name:
+
+- one owning source file
+- one matching test file
+- one reason you do not need the rest of the tree yet

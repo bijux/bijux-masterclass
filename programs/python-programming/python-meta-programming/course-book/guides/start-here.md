@@ -24,86 +24,127 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+This page answers the first question an independent learner actually has:
 
-Start here if you are deciding whether this course matches your current problem. Python
-metaprogramming only pays for itself when the runtime behavior stays visible, testable,
-and easier to justify than a simpler alternative.
+> should I study this course, and if yes, what is the safest way to begin?
 
-## Use This Course If
+Python metaprogramming is easy to approach badly. Many learners meet decorators,
+descriptors, or metaclasses as isolated tricks and only later discover the debugging,
+review, and design costs. This course takes the opposite route. It begins with runtime
+observation, builds a ladder of increasingly powerful tools, and keeps asking whether a
+lower-power design would be more honest.
 
-- you need to inspect, wrap, validate, or register Python objects without lying about runtime behavior
-- you review frameworks or libraries that already rely on decorators, descriptors, or metaclasses
-- you want a disciplined ladder for deciding when a higher-power hook is justified
+If that is the kind of learning you want, start here.
 
-## Do Not Start Here If
+## This course is a good fit if
 
-- you still need a first introduction to classes, callables, attributes, and ordinary object design
-- you want clever tricks without the debugging and maintenance costs
-- the problem can still be solved honestly with plain functions, plain classes, or explicit composition
+- you need to inspect, wrap, validate, or register Python objects without hiding runtime behavior
+- you review libraries or frameworks that already use decorators, descriptors, or metaclasses
+- you want a principled way to reject unnecessary "magic" instead of just learning how to write it
+- you are willing to move from beginner-friendly runtime observation toward advanced class-creation control step by step
 
-## Stable first route
+## This course is not the right first stop if
 
-Use this route when you are new to the course and want the smallest honest sequence:
+- you still need a basic introduction to Python classes, methods, attributes, and ordinary object design
+- you mainly want clever tricks without paying attention to testability, observability, or maintenance cost
+- your problem is still better solved by plain functions, plain classes, or explicit composition and you are looking for permission to skip that simpler route
 
-1. Read [Course Home](../index.md) for the promise, scope, and entry choices.
-2. Read [Course Guide](course-guide.md) for the module arc and page roles.
-3. Read [Learning Contract](learning-contract.md) so the study bar is explicit before the dense modules begin.
-4. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study model.
-5. Read [First-Contact Map](../module-00-orientation/first-contact-map.md) if you want the shortest route through the foundations.
-6. Read [Platform Setup](platform-setup.md) before the first public command or after local Python drift.
-7. Start [Module 01](../module-01-runtime-objects-object-model/index.md) once you can explain what the course means by lower-power and higher-power hooks.
+## The safest way to begin
 
-## Switch routes when the pressure changes
+If you are new to the course, use this route exactly:
 
-- Use [Pressure Routes](pressure-routes.md) when you are entering from a code review, framework change, or debugging problem.
-- Use [Mid-Course Map](../module-00-orientation/mid-course-map.md) when you are resuming after a break and need the last stable module boundary.
-- Use [Platform Setup](platform-setup.md) when the environment or public command surface is the blocker.
-- Use [Capstone Guide](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) once the current module claim is clear enough to inspect in executable code.
+1. Read [Course Home](../index.md) to understand the promise and the overall terrain.
+2. Read [Course Guide](course-guide.md) to see the ten-module arc and how the support shelves fit around it.
+3. Read [Learning Contract](learning-contract.md) so the study bar is explicit before the dense material begins.
+4. Read [Module 00](../module-00-orientation/index.md) to learn the power ladder and the course’s idea of "honest escalation."
+5. Read [First-Contact Map](../module-00-orientation/first-contact-map.md) if the course still feels large and you want the shortest clean entry through foundations.
+6. Read [Platform Setup](platform-setup.md) before running public commands.
+7. Begin [Module 01](../module-01-runtime-objects-object-model/index.md).
 
-## Choose a reading route when density is the blocker
+This route matters because the later modules only make sense if import time,
+class-definition time, instance time, and call time are already distinct in your head.
 
-Use one of these instead of trying to read every module at the same speed:
+## Pick the route that matches your current pressure
 
-- Foundation first: read Modules 00 to 03 in order when the runtime ladder still feels denser than the actual mechanics.
-- Review hotspots: jump to Modules 04, 07, 09, and 10 when you already review dynamic code and need the shortest honest inspection route.
-- Attribute and validation systems: focus on Modules 06 to 08 when the real question is field ownership, lookup order, or validation design.
-- Class creation and governance: focus on Modules 09 to 10 when the pressure is registries, import-time hooks, or metaclass scope.
+### If you want full mastery
 
-Stop once you can explain what import time, class-definition time, and call time each
-mean in the current route. If those timings are still fuzzy, move back toward the
-foundation-first route instead of escalating.
+Study the course in order from [Module 00](../module-00-orientation/index.md) through
+[Module 10](../module-10-runtime-governance-mastery-review/index.md). Use the guide shelf
+to keep the promises, checkpoints, and proof routes explicit as you go.
 
-## Route By Pressure
+### If you are reviewing a dynamic codebase
 
-### Route 1: Reviewer under pressure
+Start with [Course Guide](course-guide.md), then [Module 00](../module-00-orientation/index.md),
+then use [Pressure Routes](pressure-routes.md) to choose the relevant hotspot route.
 
-1. Read [Course Guide](course-guide.md).
-2. Read [Module 00](../module-00-orientation/index.md).
-3. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md), [Module 07](../module-07-descriptors-lookup-attribute-control/index.md), and [Module 09](../module-09-metaclass-design-class-creation/index.md) as the three main review hotspots.
-4. Use [Pressure Routes](pressure-routes.md) if you need the route tuned to wrappers, descriptors, or metaclasses specifically.
-5. Cross-check the [Capstone Guide](../capstone/index.md).
+### If you are returning after a break
 
-### Route 2: Full mastery path
+Use [Module Promise Map](module-promise-map.md) and
+[Module Checkpoints](module-checkpoints.md) to find the last boundary you still understand.
+Resume there, not at the most advanced topic you remember seeing.
 
-1. Read [Course Guide](course-guide.md).
-2. Read [Learning Contract](learning-contract.md).
-3. Read every module in order from [Module 00](../module-00-orientation/index.md) through [Module 10](../module-10-runtime-governance-mastery-review/index.md).
-4. Keep [Capstone Map](../capstone/capstone-map.md) open while reading so every mechanism stays tied to one executable surface.
+### If your environment is the blocker
 
-## Success Signal
+Go directly to [Platform Setup](platform-setup.md). Do not waste time interpreting runtime
+behavior until the supported environment is stable.
 
-By the end of the course, you should be able to explain:
+## Reading routes by learner type
 
-- what happens at import time, class-definition time, and call time
-- what metadata or signatures must survive wrapping
-- why a descriptor owns an invariant better than a decorator in some cases
-- when a metaclass is justified and when it is only hiding design confusion
+### Foundation-first route
 
-## First pages to keep open
+Choose this when the power ladder still feels abstract:
 
-- [Course Home](../index.md)
-- [Course Guide](course-guide.md)
-- [Module 00](../module-00-orientation/index.md)
-- [Platform Setup](platform-setup.md)
-- [Review Checklist](../reference/review-checklist.md)
+- Read Module 00 carefully.
+- Study Modules 01 to 03 in order.
+- Do not rush toward wrappers or metaclasses until safe observation feels ordinary.
+
+### Reviewer route
+
+Choose this when you already work with dynamic code and need the shortest honest review path:
+
+- Read Module 00.
+- Focus first on Modules 04, 07, 09, and 10.
+- Keep [Pressure Routes](pressure-routes.md) open.
+- Use the capstone only after the review question is explicit.
+
+### Attribute-and-validation route
+
+Choose this when your real pressure is field ownership, lookup order, or validation design:
+
+- Read Module 06.
+- Then Modules 07 and 08.
+- Cross-check with field-related capstone surfaces.
+
+### Class-creation route
+
+Choose this when the pressure is registries, import-time behavior, or metaclass proposals:
+
+- Revisit Module 06 first.
+- Then read Module 09.
+- Finish with Module 10 before you trust your own judgment.
+
+## When to move into the capstone
+
+Move into the capstone only after you can name the current course question clearly. Good
+reasons to cross over include:
+
+- "I want to inspect one field system after Module 07."
+- "I want to see whether the action decorator keeps signatures visible after Module 04."
+- "I want to test whether the metaclass is actually justified after Module 09."
+
+Poor reasons include:
+
+- "I’m bored of theory."
+- "I want to skip ahead to the real code."
+- "Maybe the repository will explain the module for me."
+
+When the course question is clear, start with [Capstone Guide](../capstone/index.md) or
+[Capstone Map](../capstone/capstone-map.md).
+
+## Good stopping point
+
+You are ready to leave this page when you can answer:
+
+- why this course fits your current need
+- which route you will use first
+- which module or guide you will open next

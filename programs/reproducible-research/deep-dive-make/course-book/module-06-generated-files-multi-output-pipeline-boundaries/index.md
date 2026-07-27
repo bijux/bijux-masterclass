@@ -1,30 +1,4 @@
 # Module 06: Generated Files, Multi-Output Rules, and Pipeline Boundaries
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Generated Files Multi Output Pipeline Boundaries"]
-  page["Module 06: Generated Files, Multi-Output Rules, and Pipeline Boundaries"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Modules 01 to 05 teach graph truth, parallel safety, determinism, semantics, and build
 hardening. Module 06 turns that discipline toward one of the easiest places for a build to
 start lying:
@@ -33,6 +7,26 @@ start lying:
 
 This module is about treating generated outputs like real graph citizens instead of magical
 side effects that "just appear" when the build feels ready.
+
+## Why this day matters
+
+Generation is where many otherwise careful builds become vague. Outputs appear, manifests
+get added without a real boundary, and partial files leak into trusted locations.
+
+## Plan for the day
+
+| Time | Activity | Evidence you keep |
+| --- | --- | --- |
+| 45 minutes | Generate one file from one source | a visible source-to-output edge |
+| 75 minutes | Compare independent and grouped outputs | a one-invocation trace under `-j` |
+| 60 minutes | Design a meaningful manifest | stable content across a no-op rebuild |
+| 75 minutes | Inject a generator failure | proof that untrusted output was not published |
+| 75 minutes | Repair the worked pipeline | a convergence and deletion-recovery record |
+| 90 minutes | Complete the ten exercises | commands, outputs, and graph explanations |
+
+The first lab needs only `printf` and Make. Do it even if you already maintain code
+generators: a one-input, one-output graph gives you a clean baseline before grouped
+targets, manifests, and publication protocols add complexity.
 
 ## What this module is for
 
@@ -43,6 +37,58 @@ By the end of Module 06, you should be able to explain five things clearly:
 - when a stamp or manifest is a truthful boundary and when it is a shortcut hiding missing edges
 - how generator pipelines publish complete results instead of partial trust
 - how to repair broken generation behavior without blaming Make for a graph defect
+
+## The live demo for this module
+
+Use one tiny generated header and one coupled-output generator as the anchors for the day:
+
+```mermaid
+flowchart LR
+  single["Generate one file from one source"] --> pair["Generate two coupled outputs"]
+  pair --> fail["Inject a failure before publication"]
+  fail --> inspect["Inspect candidate and trusted paths"]
+  inspect --> recover["Repair deletion and rerun behavior"]
+```
+
+That sequence keeps the lesson grounded in observable publication events.
+
+## Draw the publication event, not only the files
+
+A generator that creates `api.h` and `api.json` does not necessarily represent two
+independent build events. Ask whether consumers trust the pair only when both are from
+the same generator run.
+
+```mermaid
+flowchart LR
+  schema["schema.yml"] --> run["one generator invocation"]
+  run --> candidate["candidate directory"]
+  candidate --> validate["validate the complete set"]
+  validate --> publish["one publication event"]
+  publish --> header["api.h"]
+  publish --> metadata["api.json"]
+```
+
+If the generator fails after writing one candidate, neither final output should claim the
+new state. If one final output is deleted, the graph must know how to recover the set
+without launching duplicate generators.
+
+Before choosing grouped targets, a stamp, or a manifest, write:
+
+- the complete output set
+- the event that makes the set trustworthy
+- the consumers of each output
+- the leftovers allowed after failure
+- the recovery behavior after one output disappears
+
+The Make syntax comes after this contract.
+
+## The question to keep asking
+
+Whenever you see generated output, ask:
+
+> What is the single event after which downstream consumers are allowed to trust this result?
+
+If you cannot answer that, the graph is probably hiding an important boundary.
 
 ## Study route
 
@@ -104,6 +150,16 @@ Good Module 06 answers usually mention one or more of these:
 - a pipeline that publishes too early
 - a failure mode caused by treating generator behavior like ambient magic
 
+## What a strong Module 06 day looks like
+
+By the end of the day, you should have:
+
+- modeled one generated file with explicit semantic inputs
+- designed one honest coupled-output publication event
+- justified one manifest or stamp instead of adding it automatically
+- demonstrated one failed generation that does not poison trusted outputs
+- recovered cleanly from one deleted generated artifact
+
 ## Commands to keep close
 
 These commands form the evidence loop for Module 06:
@@ -137,5 +193,6 @@ Do not move on until all of these are true:
 - you can justify one manifest or stamp as a real boundary file
 - you can explain where a pipeline publishes and why partial outputs are not trusted
 - you can repair one broken generator incident with `--trace`, convergence, and a graph change
+- you can complete all ten exercises, including a deliberate failure and recovery
 
 When those feel ordinary, Module 06 has done its job.

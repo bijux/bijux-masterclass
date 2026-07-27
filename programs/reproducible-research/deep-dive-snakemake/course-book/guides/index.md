@@ -1,35 +1,67 @@
 # Guides
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Guides"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: the guides shelf is for a named pressure, not
-for wandering the whole course-book. Read the second diagram as the guide loop: choose
-one lane, use one page, then leave with one smaller next move.
-
 Use this shelf when you need route choice, proof sizing, or capstone entry help rather
-than one module chapter.
+than another lesson page. The guides should send you back to learning quickly, not trap
+you in course-administration prose.
+
+This shelf exists to support the course, not to replace it.
+
+## What this shelf is for
+
+Use the guides shelf when you need help with one of these learner questions:
+
+- where should I start
+- which module or support page matches the pressure I have
+- what proof route is proportionate here
+- am I actually ready to move on
+- how should I enter the capstone without widening the question too early
+
+If you need the concept itself, go back to the module. These pages are for routing,
+discipline, and support, not for replacing the lesson.
+
+## How to use this shelf
+
+Open the guides only after you can already name the kind of help you need.
+
+Use them for one of five jobs:
+
+1. choose an entry route
+2. choose a support route under pressure
+3. decide whether your current proof is too heavy or too light
+4. decide whether you are actually ready to move on
+5. enter the capstone without losing the module idea
+
+If you cannot name the job yet, go back to the module. The module should teach the idea;
+the guide should only help you move through it more deliberately.
+
+## Start with one learner question, not with the whole shelf
+
+The easiest way to waste time here is to open several guide pages because they all look
+responsible.
+
+That usually means you are avoiding the narrower question that actually matters.
+
+A better habit is to say:
+
+- I am new and need the safest entry route
+- I am under pressure and need the smallest honest proof
+- I think I am ready to move on and want an exit bar
+- I know the claim and need the page that sizes the evidence
+- I need the capstone, but I do not yet know how small the route should stay
+
+Once the question sounds that specific, the shelf becomes useful instead of sprawling.
+
+## Start with the guide that matches your situation
+
+```mermaid
+flowchart TD
+  first["I am new here"] --> start["Start Here"]
+  stuck["I am stuck or under pressure"] --> pressure["Pressure Routes"]
+  plan["I want the full study plan"] --> course["Course Guide"]
+  proof["I know the claim and need evidence"] --> matrix["Proof Matrix"]
+  ready["I want to know if I can move on"] --> checkpoints["Module Checkpoints"]
+  capstone["I need the repository without losing the lesson"] --> cap["Capstone Guide"]
+```
 
 ## Choose one lane
 
@@ -44,23 +76,24 @@ than one module chapter.
 
 ## Use the shelf by job
 
-| Job | Best page |
-| --- | --- |
-| understand the module arc and support-page roles | [Course Guide](course-guide.md) |
-| see the sequence justified | [Module Dependency Map](../reference/module-dependency-map.md) |
-| rehearse the module-to-proof loop | [Practice Map](../reference/practice-map.md) |
-| hold the stable review bar steady | [Review Checklist](../reference/review-checklist.md) |
-| sharpen a keep, change, or reject boundary call | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
-| keep workflow-versus-policy scope explicit | [Topic Boundaries](../reference/topic-boundaries.md) |
-| route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
-| choose the smallest honest proof route | [Proof Ladder](proof-ladder.md) |
-| confirm the local environment before public commands | [Platform Setup](platform-setup.md) |
+| Job | Best page | What that page should help you do |
+| --- | --- | --- |
+| understand the module arc and support-page roles | [Course Guide](course-guide.md) | see the whole study system without browsing blindly |
+| hold the study discipline steady | [Learning Contract](learning-contract.md) | return to prediction, observation, and explanation |
+| see the sequence justified | [Module Dependency Map](../reference/module-dependency-map.md) | know when to go forward and when to step back |
+| rehearse the module-to-proof loop | [Practice Map](../reference/practice-map.md) | choose the next exercise or evidence move |
+| hold the review bar steady | [Review Checklist](../reference/review-checklist.md) | turn a vague concern into a keep, change, or reject judgment |
+| sharpen a boundary decision | [Boundary Review Prompts](../reference/boundary-review-prompts.md) | reduce blur across workflow, policy, publish, or ownership layers |
+| keep workflow-versus-policy scope explicit | [Topic Boundaries](../reference/topic-boundaries.md) | avoid stretching the course into a different course |
+| route a claim to executable evidence | [Proof Matrix](proof-matrix.md) | choose the first honest command and file surfaces |
+| choose the smallest honest proof route | [Proof Ladder](proof-ladder.md) | size the evidence instead of overshooting |
+| confirm the local environment before public commands | [Platform Setup](platform-setup.md) | separate setup failures from real workflow questions |
 
 ## Cross into the capstone deliberately
 
 | If you need... | Best page |
 | --- | --- |
-| the capstone's role in the course | [Capstone](../capstone/index.md) |
+| the capstone’s role in the course | [Capstone Guide](../capstone/index.md) |
 | the module-to-repository route | [Capstone Map](../capstone/capstone-map.md) |
 | a bounded first pass through the repository | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
 | file responsibilities inside the repository | [Capstone File Guide](../capstone/capstone-file-guide.md) |
@@ -69,48 +102,22 @@ than one module chapter.
 | steward-level workflow review | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 | safe evolution | [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
 
+## What a good pass through this shelf should produce
+
+After using the guides well, you should come away with one of these:
+
+- one clearer next page
+- one clearer proof route
+- one clearer exit bar
+- one clearer capstone entry
+- one clearer reason to return to the module
+
+If you come away only with more tabs open, the shelf was used too broadly.
+
 ## Good stopping point
 
-Stop when you can name the single next page you need and the question it is supposed to
-answer. If you are still opening whole shelves, go back to the table above and choose a
-smaller lane.
+Stop when you can name:
 
-## Shelf vocabulary
-
-Use this section when the support shelf starts sounding more abstract than the course
-intends. The goal is not to define Snakemake again. The goal is to keep a small set of
-course-level terms stable so you can move between guides, modules, and capstone routes
-without changing what the words mean.
-
-### Terms that matter on this shelf
-
-| Term | Meaning here | Why it matters |
-| --- | --- | --- |
-| reading route | a short reading path for one concrete question | keeps you from opening five pages when one page would do |
-| pressure | the situation shaping what you can realistically read right now | keeps the guides tied to real use instead of generic study advice |
-| proof route | the smallest command, artifact, or file that can honestly test a claim | keeps evidence proportional to the question |
-| workflow contract | the file, path, or publish promise the workflow is making | reminds you the course is about explicit agreements, not ambient behavior |
-| policy boundary | the line between workflow meaning and operational choices such as profiles or retries | helps you keep execution context from masquerading as semantics |
-| publish boundary | the smaller downstream-facing surface another person is allowed to trust | separates results that help the repository run from outputs meant to travel |
-| capstone entry | the first bounded route into the executable repository | prevents the capstone from becoming first-contact reading |
-| bounded review | an inspection pass with a clear stopping point | stops review from turning into aimless browsing |
-
-### Guide names in plain language
-
-| Page | What it is for |
-| --- | --- |
-| [Start Here](start-here.md) | safest first route into the program |
-| [Course Guide](course-guide.md) | overview of when to use guides, modules, reference pages, or capstone routes |
-| [Learning Contract](learning-contract.md) | the bar the course sets for explanation, proof, and honest progress |
-| [Module Promise Map](module-promise-map.md) | translation of module titles into concrete outcomes |
-| [Module Checkpoints](module-checkpoints.md) | readiness review before you move on |
-| [Platform Setup](platform-setup.md) | tooling and version checks before you trust local proof routes |
-| [Pressure Routes](pressure-routes.md) | shortest honest route when urgency is shaping the reading order |
-| [Proof Ladder](proof-ladder.md) | how to choose a smaller or larger proof route without guessing |
-| [Proof Matrix](proof-matrix.md) | where a specific claim is first corroborated |
-
-## Reading rule
-
-If a guide name still feels vague after you read the tables above, do not open three more
-guides. Name the job first, pick the one page that owns that job, and stop when you have
-one clear next move.
+- the single next page you need
+- the question it is supposed to answer
+- why the rest of the shelf can stay closed for now

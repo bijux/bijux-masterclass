@@ -1,6 +1,5 @@
 # Module 06: Persistence, Serialization, and Schema Evolution
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,63 +17,109 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  orient["name the aggregate truth"] --> contract["define the repository contract"]
+  contract --> translate["separate storage shape from domain meaning"]
+  translate --> evolve["plan schema history and compatibility"]
+  evolve --> prove["choose proof that catches drift first"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+Read the first diagram as a placement map: this module sits between the ownership work
+from Modules 04 and 05 and the runtime pressure work in Module 07. Read the second
+diagram as the working route for the whole session: identify what the aggregate means,
+decide what the repository is allowed to promise, separate storage shape from domain
+meaning, then prove the boundary under old-data pressure.
 
-Objects do not stop being objects when they cross a process boundary. This module
-teaches how to persist aggregates, serialize state, and evolve stored representations
-without letting storage concerns dissolve the domain model.
+This module exists because many object-oriented systems stop protecting the model the
+moment persistence appears. A good aggregate turns into a bag of rows. A careful
+transition contract turns into whatever JSON the last adapter happened to write. Old
+records become "special cases" that constructors quietly tolerate.
 
-Keep one question in view while reading:
+The central question for the entire module is:
 
-> Which part of this data shape is a domain contract, and which part is only a storage representation that should stay replaceable?
+> Which parts of this representation are domain truth, and which parts are only
+> persistence machinery that should remain replaceable?
 
-That question is what prevents persistence from flattening the model into records.
+If that line stays visible, storage remains a boundary. If that line disappears,
+persistence starts redesigning the model without permission.
 
 ## Preflight
 
-- You should already be able to describe aggregate ownership and state contracts before adding storage concerns.
-- If repository, codec, and schema boundaries still feel interchangeable, keep the domain/storage distinction visible while reading.
-- Treat persistence as translation work that must preserve meaning, not as permission to flatten the model.
+Before you start, make sure you can already do all of these:
 
-## Learning outcomes
+- describe which aggregate owns one invariant-heavy state surface
+- explain why a unit of work is not the same thing as a repository
+- tell the difference between authoritative state and downstream projections
 
-- define repository and codec contracts that preserve domain meaning across storage boundaries
-- separate domain objects from storage records, session state, and serialized representations
-- design schema evolution and compatibility strategies before old data becomes a production problem
-- review conflict detection and transactional publication as part of persistence semantics
+If those still blur together, revisit Modules 04 and 05 first. Module 06 assumes you
+already know who owns the state before asking how it survives process and time.
+
+## What you are learning to protect
+
+By the end of this module, you should be able to:
+
+- define repository contracts that speak in aggregate language instead of table language
+- rebuild valid aggregates from stored data without bypassing invariant checks
+- keep codecs, mappers, snapshots, and event shapes at the persistence edge
+- design schema evolution that keeps old data readable without teaching the domain old
+  storage trivia
+- explain where conflict detection, publication ordering, and migration proof belong
+
+These are not separate topics. They are one continuity problem: the system must keep its
+meaning while the stored representation changes around it.
 
 ## Why this module matters
 
-Many Python systems start with a clean object model and lose discipline the moment
-they touch a database, a message payload, or a file format. Repositories become
-opaque bags of side effects, JSON shapes leak into domain methods, and old data
-silently becomes incompatible with new code.
+Persistence pressure arrives in predictable ways:
 
-This module treats persistence as another design boundary that must preserve object
-semantics instead of flattening them away.
+- an aggregate needs to be saved quickly, so raw storage rows leak outward
+- a new field appears, so old records load through silent coercion
+- a serializer changes shape, so the domain starts speaking transport language
+- concurrent writes race, so versioning is bolted on after a data loss incident
 
-## Main questions
+This module teaches the earlier fix: make storage translation explicit before production
+history and operational pressure force it on you.
 
-- What contract should a repository expose to the rest of the system?
-- How do you translate between domain objects and storage records without leaking schemas inward?
-- How do sessions, identity maps, and lazy loading change the object contract?
-- When should you serialize snapshots, events, or both?
-- How do you version stored data and upgrade old representations safely?
-- How do you detect conflicting writes without pretending concurrency does not exist?
+## The full session route
+
+Treat Module 06 as one serious study day with one running review question:
+
+1. what is the authoritative aggregate contract?
+2. how does stored shape become that aggregate again?
+3. what historical data must still remain loadable?
+4. which proof should fail first if the persistence boundary drifts?
+
+If you can answer those four questions at the end of the day for one concrete scenario,
+the module worked.
+
+## Decision table: keep the boundary visible
+
+| Design question | Strong answer | Weak answer |
+| --- | --- | --- |
+| what should the repository return? | authoritative aggregate or explicit absence | rows, ORM entities, or half-built fragments |
+| where should storage translation live? | mapper or codec at the persistence edge | scattered ad hoc serialization |
+| how should old shapes load? | deliberate compatibility path, migration, or rejection | silent coercion inside the domain |
+| where should write conflict surface? | explicit persistence contract | accidental last-write-wins behavior |
+| what proves the boundary still holds? | round-trip, compatibility, and conflict tests | "the save method still ran" |
+
+Keep this table open while reading. It is the fastest way to spot when a persistence
+design sounds tidy but is already leaking storage concerns inward.
 
 ## Reading path
 
-1. Start with repository contracts, mappings, and codecs.
-2. Then study sessions, identity maps, snapshots, schema versioning, and conflict detection as one evolution cluster.
-3. Move into transactional publication, testing, and migration strategy after the storage boundary is clear.
-4. Finish with the refactor chapter to see persistence added without corrupting the domain.
+Use the lesson pages in this order:
+
+1. repository contracts and honest aggregate rehydration
+2. mapping and serialization boundaries
+3. sessions, snapshots, and rebuild trade-offs
+4. schema evolution and conflict handling
+5. transactional publication and persistence proof
+6. the refactor page
+7. the exercise day and answer packet
+
+That order matters. If you start with schema evolution or ORMs before the repository
+contract is clear, everything later feels more tool-specific and less architectural than
+it really is.
 
 ## Lesson map
 
@@ -91,65 +136,79 @@ semantics instead of flattening them away.
 - [Refactor: Repositories, Codecs, and Schema Evolution](refactor-repositories-codecs-and-schema-evolution.md)
 - [Glossary](glossary.md)
 
+## Run one audit route while you read
+
+Keep one aggregate in view for the whole module. The `WorkshopEnrollment` scenario from
+the exercises works well because it has:
+
+- invariant-heavy state
+- waitlist order that must survive storage round trips
+- version pressure under concurrent writes
+- plausible old-data shapes that no longer match the present model
+
+For that one aggregate, keep answering:
+
+- what the repository promises
+- which values are domain meaning
+- which values exist only for storage convenience
+- how old data becomes a valid aggregate again
+
+This turns the module into a single review route rather than ten disconnected lesson
+notes.
+
 ## Keep these support surfaces open
 
-- `../guides/proof-matrix.md` when you want the persistence promise tied to one evidence route.
-- `../capstone/capstone-map.md` when you want the repository and proof surfaces kept explicit.
-- `../reference/self-review-prompts.md` when you want to test whether storage translation and domain meaning still sound separable.
+- `../guides/proof-matrix.md` when you want every persistence claim tied to one proof
+  route
+- `../capstone/capstone-map.md` when you want repository and verification surfaces kept
+  explicit
+- `../reference/self-review-prompts.md` when you want to test whether storage language
+  is leaking into the model
 
-## First review route for storage boundaries
+## Capstone study route
 
-1. Read `src/service_monitoring/repository.py`.
-2. Keep [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) open while you read.
-3. Compare the repository boundary with the unit-of-work proof surface in [Capstone Proof Guide](../capstone/capstone-proof-guide.md).
+If the module feels abstract, use this route through the capstone:
 
-That route keeps the central distinction visible: the repository may translate and persist
-state, but it must not become the place where domain rules are smuggled in or constructors
-are bypassed.
+1. inspect the current repository and unit-of-work surfaces
+2. ask what contract the aggregate-facing caller thinks it has
+3. ask how malformed or old stored data would be detected today
+4. ask which proof would fail first if serialization drifted from domain meaning
+5. compare that answer with the exercise packet and refactor page
 
-## Translation checklist
+That route turns persistence into a reviewable object-design problem instead of a data
+plumbing topic.
 
-- Which fields are domain meaning, and which are only storage convenience?
-- Which part of the serialized shape may evolve without changing the object contract?
-- Which older representation would need a compatibility plan before this change could ship?
+## What independent learners should produce
 
-## Common failure modes
+By the end of the module, produce one persistence review packet containing:
 
-- letting ORM or JSON models become the domain model by default
-- allowing session state or lazy loading to redefine the apparent object contract
-- exposing storage-specific identifiers and nullable columns directly to domain code
-- changing a serialized shape without a compatibility plan for existing data
-- persisting partially valid aggregates because repository code bypasses constructors
-- treating write conflicts as impossible until production traffic proves otherwise
+- one repository contract note
+- one mapping table that separates meaning from storage convenience
+- one codec or serialization boundary note
+- one schema compatibility plan
+- one conflict and publication note
+- one migration proof route
 
-## Exercises
-
-- Map one aggregate to a storage representation and name which fields are domain meaning versus storage convenience.
-- Review one serialization change and explain how you would preserve compatibility for older persisted data.
-- Describe one repository API and justify why it is narrow enough to prevent storage assumptions from leaking inward.
-
-## Capstone connection
-
-The monitoring capstone currently uses an in-memory repository and unit of work.
-This module shows how that design can grow into file-backed, database-backed, or
-message-driven persistence without changing who owns invariants. Read it as the bridge
-between a teachable in-memory model and a production storage boundary.
+If you cannot assemble that packet without rereading half the module, you probably still
+understand the pieces separately but not the persistence boundary as one design surface.
 
 ## Honest completion signal
 
-You are ready to move on when you can explain one persistence change in terms of all
-three of these at once:
+You are ready to move on when you can take one persistence change and explain all of
+these at once:
 
-- what the domain contract is
-- what the storage representation is
-- what proof surface should fail first if those drift apart
+- what the aggregate contract is
+- what the stored representation is allowed to do
+- how old data remains readable or is rejected honestly
+- what test, rehearsal, or proof should fail first if the two drift apart
 
 ## Closing criteria
 
-You should finish this module able to add persistence, serialization, and schema
-change to an object-oriented Python system without sacrificing aggregate integrity
-or compatibility discipline.
+You should finish this module able to add storage, serialization, compatibility, and
+conflict handling to an object-oriented Python system without letting those concerns
+rewrite who owns meaning.
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+Use [Glossary](glossary.md) when you want the recurring persistence vocabulary kept
+stable while you move between lessons, lab work, and capstone review.

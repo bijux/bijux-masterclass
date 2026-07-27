@@ -1,30 +1,5 @@
 # Module 03: Production Operations and Policy Boundaries
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Module 03: Production Operations and Policy Boundaries"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Modules 01 and 02 teach workflow truth and disciplined dynamic behavior. Module 03 asks
 the next practical question:
 
@@ -34,15 +9,54 @@ This module is about making production operation explicit. Profiles, retries, st
 logs, and confirmation routes are useful only when they stay on the policy side of the
 line instead of leaking into workflow semantics.
 
-## What this module is for
+## What this day must accomplish
 
-By the end of Module 03, you should be able to explain five things in plain language:
+By the end of Module 03, you should be able to do five things without blurring policy and
+meaning:
 
-- what belongs in a profile and what belongs in workflow meaning
-- which failures may be retried and which should stop the run immediately
-- how incomplete outputs, logs, and failure evidence keep recovery honest
-- how staging and shared-filesystem assumptions affect operation without rewriting semantics
-- what proof route shows that a production workflow still deserves trust
+- explain what belongs in a profile and what belongs in workflow meaning
+- classify failures before deciding to retry anything
+- show where an incomplete output stops being trustworthy
+- compare local and CI contexts without semantic drift
+- choose a stronger production proof route than dry-run when the claim requires it
+
+## The policy ladder for the whole module
+
+Keep this order in front of you all day:
+
+```mermaid
+flowchart TD
+  meaning["workflow meaning stays stable"] --> profile["profile changes how work runs"]
+  profile --> failure["failure policy decides retry, rerun, or fail-fast"]
+  failure --> proof["proof routes confirm the repository under pressure"]
+```
+
+If a profile line changes outputs, sample membership, or published meaning, it has
+crossed the boundary. If a retry hides a semantic defect, the failure policy is lying.
+
+## The running lab for the whole day
+
+Use one repository story all day instead of several unrelated operational anecdotes:
+
+- the same workflow runs locally and in CI
+- profiles differ in cores, log visibility, and latency patience
+- one rule fails in a controlled way so you can classify the failure
+- one clean-room route proves the repository without relying on previous state
+- one policy review asks which changes are safe and which are semantic leaks
+
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| policy baseline | run the same targets through local and CI profiles | paired dry-runs |
+| failure classes | separate transient, semantic, and incomplete-output failures | written response table |
+| failure injection | crash a rule after writing temporary state and recover it | log plus filesystem inspection |
+| storage contexts | model local disk, shared storage, and node-local scratch | data-movement diagram |
+| clean-room proof | reproduce a small run without relying on previous outputs | confirmation record |
+| independent practice | complete all ten exercises | profile diffs and operational review |
+
+The day is successful when changing a profile changes *how* jobs run but not *which
+scientific outputs* define success.
 
 ## Study route
 
@@ -59,8 +73,13 @@ flowchart TD
   answers --> glossary["Glossary"]
 ```
 
-Read the module in that order the first time. When you return later, jump straight to the
-page that matches the operational pressure in front of you.
+Read the module in that order the first time.
+
+The route matters:
+
+- start with profile boundaries before you talk about retries
+- classify failures before you tune policy
+- use the clean-room route after you can already explain the smaller proof surfaces
 
 ## The ten files in this module
 
@@ -103,16 +122,15 @@ Good Module 03 answers usually mention one or more of these:
 - a selftest or confirmation route that compares runs honestly
 - a governance rule that keeps policy drift reviewable
 
-## The running example
+## What the module should change in your head
 
-This module keeps returning to one practical workflow shape:
+If the day is working, you should feel these transitions:
 
-- the workflow can run locally or in CI through different profiles
-- partial failures leave logs and rerunnable evidence instead of ambiguous state
-- a clean-room route proves the repository from the outside
-- a policy review can explain which settings changed execution context and which would have changed workflow meaning
-
-That is the smallest production story worth teaching.
+- “works in CI” stops sounding like a workflow property by itself
+- retries stop looking harmless when the failure class is unknown
+- scratch and latency stop sounding like semantics
+- a clean-room confirmation route stops feeling excessive once the repository matters to others
+- profile review becomes a boundary question instead of a flag checklist
 
 ## Commands to keep close
 
@@ -134,16 +152,6 @@ They answer different questions:
 - how the repository packages profile differences for review
 - whether the strongest built-in confirmation path still passes
 
-## Learning outcomes
-
-By the end of this module, you should be able to:
-
-- keep profile policy separate from workflow semantics
-- design retry and incomplete-output handling without hiding real failures
-- explain how staging and filesystem latency affect operational trust
-- choose a proportionate proof route for workflow operation
-- review policy changes as durable repository decisions instead of one-off shell habits
-
 ## Exit standard
 
 Do not move on until all of these are true:
@@ -153,5 +161,6 @@ Do not move on until all of these are true:
 - you can say where a partial output becomes safe to trust or must be rerun
 - you can name one proof route stronger than dry-run and one reason it matters
 - you can explain how another maintainer should review a policy change later
+- you have completed all ten exercises, including failure injection and clean-room proof
 
 When those become ordinary, Module 03 has done its job.

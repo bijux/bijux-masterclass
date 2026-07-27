@@ -18,46 +18,111 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  story["Follow the scenario as a story"] --> owner["Name the owner at each step"]
+  owner --> output["Check which outputs are derived"]
+  output --> bundle["Run or read the walkthrough bundle"]
+  bundle --> compare["Compare story, code, and saved evidence"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Use this page when you need the system story before you need the file tree. Many learners
+read code too early and then mistake orchestration or output surfaces for the domain
+center. The walkthrough exists to prevent that.
 
-Use this page when you want the capstone as a human story instead of as architecture
-alone.
+## Start with the walkthrough route
 
-## Recommended route
+From the repository root:
 
-1. Read [Capstone](index.md).
-2. Run `make tour` in the capstone directory, or `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` from the repository root.
-3. Read the saved `walkthrough.txt` output before diving into internals.
-4. Compare the walkthrough bundle with the ownership claims in [Capstone Architecture Guide](capstone-architecture-guide.md).
-5. Revisit the relevant module chapter if the flow feels surprising.
+```bash
+make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough
+```
 
-## What the walkthrough should teach
+Or inside `capstone/`:
 
-- how the application surface differs from the lower-level runtime
-- how rule lifecycle moves from draft to active before evaluation begins
-- how alerts become events and derived read models
-- how small object boundaries create a readable operational story
-- how the walkthrough bundle gives you a review surface you can revisit without rerunning ad hoc commands
+```bash
+make tour
+```
 
-## Scenario-stage map
+That route writes a walkthrough bundle containing `walkthrough.txt`, matching local docs,
+and a manifest. Read `walkthrough.txt` first. Do not start by opening five source files
+and hoping the story emerges.
 
-| Stage in the walkthrough | Main boundary to notice | Why it matters |
+## The scenario in plain language
+
+The walkthrough shows a monitoring team doing six things:
+
+1. creating one monitoring policy
+2. registering rules while they are still drafts
+3. activating those rules deliberately
+4. feeding metric samples into the system
+5. publishing incidents when rule conditions are met
+6. inspecting active-rule and incident outputs afterward
+
+The educational purpose of the walkthrough is not mere narration. It is ownership
+tracking: each step should make it easier to answer who decides, who coordinates, and
+which outputs are only downstream views.
+
+## What to notice at each step
+
+| Walkthrough step | Owner to notice first | Why it matters |
 | --- | --- | --- |
-| policy creation | `application.py` into `model.py` | the facade should not own the domain rules |
-| rule activation | aggregate lifecycle rules | invalid transitions should fail at the authoritative boundary |
-| sample evaluation | `policies.py` plus aggregate coordination | evaluation variability should not turn into condition ladders inside the aggregate |
-| alert publication | runtime orchestration and sink boundary | integration work should stay outside the domain model |
-| read-model update | projections and derived views | downstream views must not become the source of truth |
+| create policy | `application.py` handing off to `model.py` | the public route should open the path, not own the business rule |
+| register rules | `MonitoringPolicy` in `model.py` | the aggregate decides what rule setup is legal |
+| activate rules | lifecycle logic in the aggregate | legal transitions belong to the model, not to nearby helpers |
+| observe samples | aggregate plus evaluation policies | variation lives in `policies.py` without moving ownership out of the model |
+| publish incidents | `runtime.py` coordinating sink and projections | orchestration happens after the domain has made the decision |
+| inspect derived state | `read_models.py` and `projections.py` | useful views remain downstream of authoritative state |
 
-## What to compare after the walkthrough
+## Questions the walkthrough should answer
 
-- Compare the walkthrough bundle with `ARCHITECTURE.md` to see whether the story and the boundary design agree.
-- Compare the walkthrough bundle with the relevant tests if one stage still feels magical.
-- Revisit the matching module chapter only after you can name which stage of the scenario felt unclear.
+After reading the bundle, you should be able to answer:
+
+- who owns lifecycle transitions?
+- who decides whether an incident exists?
+- which outputs are derived views instead of authoritative truth?
+- which part of the story is runtime coordination rather than domain meaning?
+
+If you cannot answer those, do not escalate to stronger proof yet. Re-read the
+walkthrough and compare it with one or two source files.
+
+## Best files to keep beside the walkthrough
+
+- `capstone/src/service_monitoring/demo.py`
+- `capstone/src/service_monitoring/application.py`
+- `capstone/src/service_monitoring/model.py`
+- `capstone/src/service_monitoring/runtime.py`
+- `capstone/src/service_monitoring/read_models.py`
+
+Read them in roughly that order. The walkthrough is most useful when the story and the
+files reinforce each other.
+
+## Best companion pages
+
+| If you now need... | Go here |
+| --- | --- |
+| a disciplined file-reading order | [Capstone File Guide](capstone-file-guide.md) |
+| a sharper boundary explanation | [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| the next executable route after the story | [Command Guide](command-guide.md) |
+| stronger evidence than narrative | [Capstone Proof Guide](capstone-proof-guide.md) |
+
+## Common walkthrough mistakes
+
+- treating the bundle as if it were only demo output instead of a boundary map
+- focusing on runtime coordination before naming the aggregate owner
+- reading the read-model snapshot as if it explained the domain by itself
+- using the walkthrough as final proof when the real question is behavioral or architectural
+
+## A strong follow-up route
+
+1. Read `walkthrough.txt`.
+2. Name the owner at each step in one sentence.
+3. Open `application.py` and `model.py`.
+4. Open `runtime.py` only after the aggregate owner is clear.
+5. Escalate to the proof guide only if the current claim still needs more evidence.
+
+## Exit check
+
+Leave this page only when you can retell the scenario as:
+
+> The learner enters through `____`, domain truth lives in `____`, orchestration happens
+> in `____`, and the derived outputs live in `____`.

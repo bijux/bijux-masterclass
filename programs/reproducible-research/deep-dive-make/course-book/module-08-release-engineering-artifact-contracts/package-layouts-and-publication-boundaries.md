@@ -18,10 +18,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  contract["declare member contract"] --> assemble["assemble isolated candidate tree"]
+  assemble --> inspect["inspect paths, types, modes, and links"]
+  inspect --> archive["create candidate archive"]
+  archive --> accept["accept or reject before extraction"]
 ```
 <!-- page-maps:end -->
 
@@ -57,10 +57,10 @@ A release bundle is not just "whatever was convenient to archive." It is a publi
 
 If another system, user, or environment is expected to consume:
 
-- `bin/app`
-- `LICENSE`
-- `share/doc/README.md`
-- `manifest.txt`
+- `app-1.0/bin/app`
+- `app-1.0/LICENSE`
+- `app-1.0/share/doc/README.md`
+- `app-1.0/manifest.txt`
 
 then that layout is part of the artifact contract.
 
@@ -71,6 +71,10 @@ This means the layout should be:
 - explainable
 
 Not merely the side effect of a shell script that copies files in some order.
+
+One top-level package root gives the consumer a containment boundary. Extracting the
+archive creates `app-1.0/` rather than scattering `bin/`, `LICENSE`, and `share/` directly
+into the chosen directory.
 
 ## Ask what belongs inside the bundle
 
@@ -86,22 +90,42 @@ The strongest package decisions start with a simple separation:
 The point is not to memorize a table. The point is to stop treating every nearby file as
 equally bundle-worthy.
 
-## Bundles need a staging boundary
+## Write a member contract, not just a tree sketch
 
-One of the healthiest habits in release engineering is staging the bundle in a temporary
-tree before publishing the final artifact.
+A path list is necessary but incomplete:
+
+| Member | Type | Mode policy | Link policy | Consumer purpose |
+| --- | --- | --- | --- | --- |
+| `app-1.0/bin/app` | regular file | executable | no links | command-line program |
+| `app-1.0/LICENSE` | regular file | read-only data | no links | licensing terms |
+| `app-1.0/share/doc/README.md` | regular file | read-only data | no links | consumer instructions |
+| `app-1.0/manifest.txt` | regular file | read-only data | no links | declared package members |
+
+Archive formats can carry directories, regular files, symbolic links, hard links, device
+nodes, ownership, and modes. A consumer contract should say which types are allowed.
+
+## Bundles need an isolated assembly boundary
+
+One healthy pattern is assembling the package under a dedicated candidate tree before
+publishing the archive.
 
 For example:
 
 ```make
-dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
-	@rm -rf dist/tmp
-	@mkdir -p dist/tmp/bin dist/tmp/share/doc
-	@cp app dist/tmp/bin/app
-	@cp LICENSE dist/tmp/LICENSE
-	@cp capstone/README.md dist/tmp/share/doc/README.md
-	@cp dist/manifest.txt dist/tmp/manifest.txt
-	@tar -czf $@ -C dist/tmp .
+PACKAGE_ROOT := app-1.0
+CANDIDATE_TREE := artifacts/module08-release/producer/$(PACKAGE_ROOT)
+
+artifacts/module08-release/candidate/app-1.0.tar.gz: \
+		app LICENSE README.md packaging/manifest.txt
+	@rm -rf "$(CANDIDATE_TREE)"
+	@install -d "$(CANDIDATE_TREE)/bin" "$(CANDIDATE_TREE)/share/doc"
+	@install -m 0755 app "$(CANDIDATE_TREE)/bin/app"
+	@install -m 0644 LICENSE "$(CANDIDATE_TREE)/LICENSE"
+	@install -m 0644 README.md "$(CANDIDATE_TREE)/share/doc/README.md"
+	@install -m 0644 packaging/manifest.txt "$(CANDIDATE_TREE)/manifest.txt"
+	@tar -czf "$@.candidate" \
+	  -C artifacts/module08-release/producer "$(PACKAGE_ROOT)"
+	@mv "$@.candidate" "$@"
 ```
 
 This is healthier than archiving files from several unrelated locations directly because:
@@ -109,8 +133,12 @@ This is healthier than archiving files from several unrelated locations directly
 - the bundle shape becomes visible in one place
 - the tree can be inspected before publication
 - the archive is produced from one staged boundary
+- sidecar evidence and old candidates are outside the archive root
 
-That is easier to reason about and easier to test.
+The fixed candidate filename is still unsafe under concurrent invocations. Production code
+needs unique assembly ownership or serialization at the publication target, plus cleanup
+that removes incomplete candidates without deleting the last accepted archive. The lesson
+is the boundary, not blind copying of the recipe.
 
 ## Publication boundary matters here too
 
@@ -130,18 +158,56 @@ Usually the answer is not:
 Usually the answer is:
 
 - after the staging tree is complete
-- after the bundle archive is assembled
-- after the declared manifest or checksum matches the published tree
+- after the candidate archive is assembled at a non-public path
+- after member inspection and verification pass
+- after one rename or equivalent operation publishes accepted bytes
 
 That is the publication boundary.
+
+## Inspect before extracting
+
+Do not make extraction the first way you discover archive contents:
+
+```sh
+tar -tvzf artifacts/module08-release/candidate/app-1.0.tar.gz \
+  > artifacts/module08-release/candidate/contents.txt
+```
+
+Review at least:
+
+- every member starts with the declared top-level root
+- no member is absolute
+- no member contains a `..` path component
+- only allowed file types appear
+- executable mode is limited to intended programs
+- symbolic or hard links are absent unless policy explicitly allows and validates them
+
+A sorted name listing is useful for membership comparison, but verbose listing is needed
+to review types and modes.
+
+## Path traversal is a package-contract failure
+
+An archive member such as:
+
+```text
+app-1.0/../../outside.txt
+```
+
+can escape the intended extraction root in an unsafe extractor. Absolute paths and links
+can create similar boundary violations.
+
+The release process should reject unsafe members before extraction. "Our usual `tar`
+seemed fine" is not an acceptance policy. The consumer must know which validator or
+extractor semantics it trusts.
 
 ## A package layout should be easy to explain
 
 A strong bundle explanation sounds like this:
 
 > The release archive contains the binary under `bin/`, the license at the root, one README
-> under `share/doc/`, and a bundle manifest. Build logs and host attestations are produced
-> beside the bundle, not inside it.
+> under `share/doc/`, and a bundle manifest, all below `app-1.0/`. Only directories and
+> regular files are allowed. Build logs and host attestations are produced beside the
+> bundle, not inside it.
 
 That is a good explanation because a consumer can act on it.
 
@@ -174,32 +240,45 @@ asking it here whenever you place metadata into a staged release tree.
 Suppose the release contract is:
 
 ```text
-bundle/
-  bin/app
-  LICENSE
-  share/doc/README.md
-  manifest.txt
+app-1.0/
+├── bin/
+│   └── app
+├── LICENSE
+├── manifest.txt
+└── share/
+    └── doc/
+        └── README.md
 ```
 
-Then the Makefile should model that tree on purpose:
+The package policy should own that list. Do not generate the expected manifest by listing
+whatever happened to enter the candidate tree; that would make residue look legitimate.
 
 ```make
-DIST_ROOT := dist/tmp
+PACKAGE_MEMBERS := \
+	app-1.0/LICENSE \
+	app-1.0/bin/app \
+	app-1.0/manifest.txt \
+	app-1.0/share/doc/README.md
 
-dist/manifest.txt: app LICENSE capstone/README.md | dist/
-	@printf '%s\n' 'bin/app' 'LICENSE' 'share/doc/README.md' > $@
-
-dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
-	@rm -rf $(DIST_ROOT)
-	@mkdir -p $(DIST_ROOT)/bin $(DIST_ROOT)/share/doc
-	@cp app $(DIST_ROOT)/bin/app
-	@cp LICENSE $(DIST_ROOT)/LICENSE
-	@cp capstone/README.md $(DIST_ROOT)/share/doc/README.md
-	@cp dist/manifest.txt $(DIST_ROOT)/manifest.txt
-	@tar -czf $@ -C $(DIST_ROOT) .
+packaging/manifest.txt:
+	@printf '%s\n' $(PACKAGE_MEMBERS) > "$@.candidate"
+	@mv "$@.candidate" "$@"
 ```
 
 The important part is that the layout is no longer implicit.
+
+## Compare declared, assembled, and archived views
+
+Keep three views:
+
+| View | Evidence | Detects |
+| --- | --- | --- |
+| declared | package policy manifest | missing or unjustified contract members |
+| assembled | sorted candidate-tree listing | stale or omitted assembly files |
+| archived | archive member/type listing | producer path, type, mode, or link errors |
+
+All three should agree under the normalization policy. Comparing only the assembled tree
+with the archive can miss the fact that both contain the same unjustified residue.
 
 ## What should stay outside the bundle
 
@@ -242,11 +321,13 @@ That means publication is not modeled clearly enough.
 
 Take one release bundle and ask:
 
-1. which files are inside it
-2. why each one belongs there
+1. which member paths, types, modes, and links are allowed
+2. why each member belongs there
 3. which files are kept outside and why
-4. where the bundle is staged before publication
-5. what exact step makes the finished artifact trustworthy
+4. whether every path remains under one top-level root
+5. how the declared, assembled, and archived views are compared
+6. what exact event publishes accepted bytes
+7. how failed or concurrent production protects the last accepted candidate
 
 If those answers are weak, the release boundary is weak too.
 
@@ -254,11 +335,12 @@ If those answers are weak, the release boundary is weak too.
 
 Choose one release archive in a repository and write down:
 
-1. the intended directory tree
-2. the required files
+1. the intended directory tree and allowed member types
+2. the required modes and link policy
 3. one file currently inside the bundle that should move outside
-4. one boundary file or manifest that belongs inside
-5. the publication step after which the archive becomes trustworthy
+4. the declared, assembled, and archived listings
+5. one unsafe member path that acceptance must reject
+6. the publication event after which the archive becomes trustworthy
 
 If you can do that cleanly, you are treating bundle layout as a contract instead of a copy
 script.
@@ -268,7 +350,10 @@ script.
 Before leaving this lesson, make sure you can explain:
 
 - why package layout is part of artifact contract design
-- why staging trees improve release clarity
+- why one top-level package root improves extraction containment
+- why member types, modes, and links belong in the contract
+- why isolated assembly trees improve release clarity
+- why archives must be inspected before extraction
 - how to distinguish bundle content from adjacent diagnostics
 - why publication boundary matters for archives too
-- how to tell whether a bundle contains unjustified files
+- how three-view comparison detects unjustified files

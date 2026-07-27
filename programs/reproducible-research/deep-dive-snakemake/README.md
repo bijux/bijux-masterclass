@@ -1,6 +1,18 @@
 # Deep Dive Snakemake
 
-A program guide and executable capstone that teaches **Snakemake as a workflow engine**—not merely a collection of rules and scripts. The objective is to enable the creation of workflows that feature **explicit contracts, safe dynamic behavior, atomic outputs, reproducible execution, and built-in validation**, from first-contact workflow design to long-lived workflow stewardship.
+A free, self-contained course that starts with one input file and grows toward production
+workflow stewardship. Across ten teaching modules and one hundred exercises, you learn
+Snakemake through runnable examples, failure experiments, architecture reviews, and a
+complete capstone.
+
+This is a ten-session course for self-study as much as for classroom follow-up. Each
+session is meant to stand on its own for a learner who missed the live demos:
+
+- a plain-language overview of the day’s workflow idea
+- a smallest useful demonstration you can run quickly
+- a worked example that expands the same idea under pressure
+- ten exercises that move from warm-up to repair, design, and review
+- an exit bar so you know whether to continue or repeat the lesson
 
 > CI executes full confirmation runs including workflow execution and artifact validation.
 
@@ -8,8 +20,8 @@ A program guide and executable capstone that teaches **Snakemake as a workflow e
 
 ## Who this program is for
 
-- Engineers who already know basic Snakemake syntax and now need stronger workflow design judgment
-- Engineers and researchers who want a beginner-to-mastery path instead of scattered Snakemake snippets
+- Learners who have never used Snakemake but can edit a text file and enter terminal commands
+- Engineers and researchers who want a beginner-to-advanced path instead of scattered Snakemake snippets
 - Researchers and platform teams maintaining pipelines that must survive CI, shared filesystems, and long-lived change
 - Reviewers who want concrete criteria for deciding whether a workflow is robust or merely convenient
 
@@ -31,7 +43,10 @@ Many Snakemake workflows function adequately in simple cases but encounter issue
 - **Reproducibility**: profiles, manifests, and integrity checks for verifiable runs.
 - **Self-validation**: wrapper-driven checks confirm correctness end-to-end.
 
-This repository offers a structured beginner-to-mastery path through Snakemake semantics: understanding its guarantees, limitations, and patterns that ensure workflows remain reliable as complexity increases.
+The course explains Snakemake's guarantees and limits by asking you to predict, run,
+break, repair, and review workflows. Every module contains ten exercises: five establish
+the local concept and five apply it through implementation, failure injection, or
+repository review.
 
 The repository now separates four surfaces clearly:
 
@@ -42,14 +57,28 @@ The repository now separates four surfaces clearly:
 
 Use the course in this order:
 
-1. `course-book/guides/start-here.md`
-2. `course-book/guides/pressure-routes.md`
-3. `course-book/guides/course-guide.md`
-4. `course-book/guides/module-promise-map.md`
-5. `course-book/guides/module-checkpoints.md`
-6. `course-book/module-00-orientation/index.md`
-7. Modules `01` to `10` in order
-8. `course-book/guides/proof-ladder.md`, `course-book/capstone/index.md`, and `course-book/capstone/capstone-map.md` once the local model is clear
+1. Complete the first workflow in `course-book/module-00-orientation/index.md`.
+2. Work through Modules `01` to `10` in order.
+3. Complete all ten exercises in each module before using its answer page.
+4. Use `course-book/guides/module-checkpoints.md` at the end of each learning day.
+5. Enter the capstone only when the smaller module example is already clear.
+6. Use reference and pressure-route pages for a specific question, not as a replacement for the teaching arc.
+
+## How one study day works
+
+Every module is written to support a serious day of independent study.
+
+| Study block | What you do | What you keep |
+| --- | --- | --- |
+| first contact | run the smallest workflow example | one prediction and one observed result |
+| core lesson | read the concept pages slowly | notes on what changed in your mental model |
+| guided practice | rebuild the worked example yourself | a workflow artifact you can explain |
+| exercises 1-5 | establish the local contract and evidence loop | dry-runs, summaries, and short explanations |
+| exercises 6-10 | repair, extend, or review a stronger workflow | a small portfolio of commands and outcomes |
+| exit check | test yourself before moving on | a clear yes-or-no answer about readiness |
+
+If the course starts feeling like too many pages, return to this table. The goal is to
+learn by predicting, running, observing, and explaining, not by browsing.
 
 ---
 
@@ -67,7 +96,7 @@ Use the course in this order:
 
 ### 1) The program guide
 
-A compact, focused handbook with a full 10-module progression:
+A full ten-module progression with one hundred exercises:
 
 - **01 — First Principles**: file contracts, targets, dry-runs, and the basic Snakemake mental model
 - **02 — Dynamic DAGs**: checkpoints, deterministic discovery, integrity, and dynamic safety
@@ -78,7 +107,7 @@ A compact, focused handbook with a full 10-module progression:
 - **07 — Workflow Architecture**: modules, file APIs, repository structure, and reuse
 - **08 — Operating Contexts**: profiles, executors, storage, and staging policy
 - **09 — Incident Response**: performance, observability, and workflow debugging under pressure
-- **10 — Mastery**: governance, migration, anti-patterns, and tool-boundary judgment
+- **10 — Stewardship**: governance, migration, anti-patterns, and tool-boundary judgment
 
 Read on the website: https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-snakemake/
 
@@ -108,7 +137,7 @@ The course now includes dedicated support pages for:
 ## Recommended background
 
 - Comfortable shell usage and basic Python workflow tooling
-- Basic Snakemake familiarity: rules, wildcards, `snakemake -n`, and dry-run interpretation
+- No prior Snakemake experience; orientation teaches rules, targets, and dry-runs
 - Willingness to treat workflow design as an engineering contract rather than as glue code
 
 ---
@@ -229,11 +258,10 @@ Contributions that enhance correctness, clarity, or reproducibility are welcome 
    ```bash
    make PROGRAM=reproducible-research/deep-dive-snakemake test
    ```
-4. Open a pull request against `master` or `main`.
+4. Open a pull request against `main`.
 
 ---
 
 ## License
 
-MIT — see the repository root [LICENSE](https://github.com/bijux/bijux-masterclass/blob/master/LICENSE). © 2025 Bijan Mousavi <bijan@bijux.io>.
-
+MIT - see the repository root [LICENSE](https://github.com/bijux/bijux-masterclass/blob/main/LICENSE). Copyright 2026 Bijan Mousavi <bijan@bijux.io>.

@@ -50,6 +50,24 @@ capstone-proof: ## Run the sanctioned learner-facing capstone proof route
 capstone-profile-audit: ## Package execution profile review evidence
 	$(MAKE) -C capstone profile-audit
 
+capstone-module-interface-audit: ## Compare explicit and hidden module interface contracts
+	$(MAKE) -C capstone module-interface-audit
+
+capstone-module-interface-selftest: ## Reject dishonest module interface evidence
+	$(MAKE) -C capstone module-interface-selftest
+
+capstone-context-invariance-audit: ## Compare policy-preserving contexts with semantic leaks
+	$(MAKE) -C capstone context-invariance-audit
+
+capstone-context-invariance-selftest: ## Reject dishonest context invariance evidence
+	$(MAKE) -C capstone context-invariance-selftest
+
+capstone-performance-diagnostics-audit: ## Classify honest tuning, semantic drift, and regression evidence
+	$(MAKE) -C capstone performance-diagnostics-audit
+
+capstone-performance-diagnostics-selftest: ## Reject dishonest performance evidence
+	$(MAKE) -C capstone performance-diagnostics-selftest
+
 check: capstone-check ## Run capstone fast checks
 
 test: check ## Run the course's default verification target

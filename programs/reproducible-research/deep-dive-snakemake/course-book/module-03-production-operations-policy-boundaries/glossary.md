@@ -1,35 +1,19 @@
 # Glossary
 
+Module 03 is where many learners start saying "production" as if it were one big vague
+thing. It is not. Production work gets safer when you can separate workflow meaning,
+operating policy, recovery rules, and evidence routes.
 
-<!-- page-maps:start -->
-## Page Maps
+Use this glossary whenever an explanation starts slipping back into folklore.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
+## When to stop and check the glossary
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+Pause and check a term when:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use this glossary to keep the language of Module 03 stable while you move between the
-core lessons, worked example, exercises, and capstone evidence.
-
-The goal is not extra jargon. The goal is to make sure production operation is described
-with clear boundaries instead of folklore.
+- your explanation depends on "production stuff" without naming the actual boundary
+- you are treating profile policy and workflow meaning as if they were the same thing
+- you can tell a recovery decision feels risky but cannot yet name the failure class
+- you are mixing scratch placement and final contract paths in one explanation
 
 ## Terms in this module
 
@@ -62,3 +46,45 @@ When you explain a Module 03 situation, aim to say things like:
 - "this diff risks semantic drift even though it looks operational"
 
 Those sentences are much more useful than saying only "production is complicated."
+
+## Confusion pairs worth fixing early
+
+These pairs matter because they decide whether you are repairing operations or quietly
+changing the science:
+
+- `profile` versus `workflow meaning`: the profile changes operating context; workflow
+  meaning defines the intended outputs and semantics.
+- `transient failure` versus `fail-fast error`: transient failures may justify retry;
+  fail-fast errors should stop the run because repeating them only repeats the mistake.
+- `scratch space` versus final contract paths: scratch helps execution; final contract
+  paths are what readers and downstream tools are allowed to trust.
+- `proof route` versus `profile audit`: a profile audit is one kind of proof route focused
+  on policy differences across contexts.
+
+## Quick self-check
+
+Before you leave Module 03, make sure you can answer these in a full sentence:
+
+- If local and cluster profiles behave differently but should produce the same trusted
+  meaning, what boundary are you trying to protect?
+- If an NFS delay makes a file appear late but rerunning the same correct command usually
+  succeeds, what failure class are you naming?
+- If a repository quietly moves trusted outputs into scratch-only paths, which operational
+  mistake has crossed the line into contract risk?
+- If you want evidence that one profile changes retries and logging but not planned
+  outputs, what review route inside this module should you reach for first?
+
+## Terms you should be able to use by the end of the day
+
+If Module 03 is landing properly, these terms should feel ordinary by the end:
+
+- profile
+- failure policy
+- fail-fast error
+- transient failure
+- proof route
+- clean-room confirmation
+- semantic drift
+
+If those still feel decorative rather than useful, revisit the worked example and the
+first seven exercises before moving on.

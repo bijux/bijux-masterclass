@@ -1,5 +1,4 @@
-# Boundary Validation Libraries: Where Pydantic and Friends Belong
-
+# Boundary Validation Libraries
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["State Validation Typestate"]
-  page["Boundary Validation Libraries: Where Pydantic and Friends Belong"]
+  page["Boundary Validation Libraries"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,101 +24,124 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Use validation libraries (Pydantic, attrs validators, Marshmallow, etc.) **at the boundary**, not in the core domain.
+Validation libraries are useful, but learners often place them in the wrong part of the
+system.
 
-You want:
-- fast, strict, user-facing validation when accepting input,
-- and small, dependency-light domain objects inside the system.
+That creates two opposite problems:
 
-## Where This Fits
+- boundary input is accepted too loosely and cleaned up too late
+- domain objects become tightly coupled to a framework that is really about input parsing
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+This lesson gives the simple rule: validate raw external input at the boundary, then hand
+clean domain-friendly data inward.
 
-## 1. The Boundary Pattern: DTO → Domain
+## What a boundary is
 
-Think in two steps:
+A boundary is any place where raw outside data enters the program:
 
-1. Parse and validate input into a **DTO** (data transfer object).
-2. Convert DTO → **domain types** (semantic dataclasses) and enforce invariants (M03C25).
+- CLI arguments
+- HTTP request payloads
+- environment variables
+- config files
+- database rows or message payloads arriving from outside your object model
 
-Why two steps?
-- Input concerns: missing fields, wrong types, coercions, error formatting.
-- Domain concerns: invariants and behavior.
+At a boundary, the system still does not know whether the data is complete, well typed,
+or semantically valid enough for the domain.
 
-Keeping them separate prevents your core from being coupled to a library and to external representation choices.
+## Why validation libraries fit well there
 
-## 2. Example: Pydantic at the Edge
+Boundary libraries are good at:
 
-A typical flow for rule configuration:
+- parsing loose input
+- coercing formats
+- collecting user-facing error messages
+- checking shape before domain construction
 
-- External: JSON / dict.
-- Boundary: Pydantic model (`RuleConfigDTO`).
-- Domain: `DraftRule(metric: MetricName, threshold: Threshold, window: Window)`.
+That is exactly what boundary code needs.
 
-Sketch:
+It is not always what domain code needs.
 
-```python
-# boundary/dto.py (pydantic lives here)
-from pydantic import BaseModel, Field
+## Why they do not automatically belong in the core domain
 
-class RuleConfigDTO(BaseModel):
-    metric: str
-    threshold: float = Field(gt=0)
-    window_seconds: int = Field(gt=0)
-```
+The domain layer should usually focus on:
 
-Conversion:
+- durable concepts
+- invariants
+- legal state transitions
+- behavior that should remain understandable without a framework-specific mental model
 
-```python
-# application/translate.py
-def to_draft_rule(dto: RuleConfigDTO) -> DraftRule:
-    return DraftRule(
-        metric=MetricName(dto.metric),
-        threshold=Threshold(dto.threshold),
-        window=Window(dto.window_seconds),
-    )
-```
+If every domain object becomes a framework model, the boundary tool starts defining the
+inner design. That often makes the model heavier than it needs to be.
 
-Notice: the domain stays free of Pydantic, and invariants still live in domain constructors.
+## A practical split
 
-## 3. Don’t Leak DTOs Across Layers
+Use a validation library to turn raw input into a trustworthy input shape.
 
-A common failure mode is to let DTO types “infect” the domain:
+Then:
 
-- domain methods accept `RuleConfigDTO`,
-- storage persists DTO JSON directly,
-- tests use DTOs everywhere.
+- normalize names and formats
+- reject obviously invalid payloads
+- surface user-facing errors early
+- create the real domain object only after boundary validation succeeds
 
-That erases the boundary and makes it hard to change the external API without breaking the domain.
+The boundary model is not automatically the domain model.
 
-Rule: **DTOs may enter the application layer, but the domain should not depend on them**.
+## What still belongs in the domain
 
-## 4. Error Handling: Human-Friendly Outside, Precise Inside
+Even after boundary validation, domain rules still matter.
 
-Boundary errors should be human-friendly:
-- “threshold must be > 0”
+Examples:
 
-Domain errors should be precise and stable:
-- `ValueError("Threshold must be finite")` or a custom `DomainInvariantError`.
+- a payload may have the right fields but still describe an illegal transition
+- a number may parse correctly but violate a business invariant
+- two fields may be individually valid yet invalid in combination
 
-Keep translation explicit:
-- boundary catches and formats domain errors if needed.
+Boundary validation answers "is this well formed enough to enter?"
 
-This separation improves clarity: you can see where “bad input” ends and “domain integrity” begins.
+Domain validation answers "is this object or transition legitimate here?"
 
-## Practical Guidelines
+## Common mistakes
 
-- Use validation libraries for inbound/outbound schemas at the edges (HTTP, CLI, config files).
-- Keep domain dataclasses lightweight; avoid depending on Pydantic inside `domain/`.
-- Convert DTO → domain in a small translator function; test it.
-- Let boundary handle coercion (`"5m"` → `300`); let domain enforce invariants (`seconds > 0`).
+- treating a parsing model as the final domain object
+- letting framework-specific validation rules spread through inner layers
+- assuming boundary validation replaces domain invariants
+- duplicating the same rule in both places without clarifying why
 
-## Exercises for Mastery
+The main danger is confusing transport correctness with domain correctness.
 
-1. Define a boundary DTO for rule configuration and write a translator into your domain dataclasses.
-2. Write a test proving that malformed input fails at the boundary, and invalid-but-well-typed input fails in domain construction.
-3. Refactor one domain method that currently accepts a dict/JSON into one that accepts domain types only.
+## Review checklist
+
+| Question | Boundary validation | Domain validation |
+| --- | --- | --- |
+| parses raw external data? | yes | no |
+| reports user-facing input errors early? | yes | sometimes |
+| protects business invariants? | partly | yes |
+| should remain lightweight and framework-aware? | yes | ideally no |
+
+## Capstone connection
+
+In the capstone, this lesson matters wherever raw input crosses into the object model:
+
+- commands
+- config loading
+- request payloads
+- integration adapters
+
+If the capstone currently mixes parsing, coercion, and domain rules in the same object,
+split that boundary first.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- name one boundary in the capstone that should use strong input validation
+- explain why the boundary model should not automatically become the domain model
+- explain one domain rule that still needs enforcement after boundary parsing succeeds

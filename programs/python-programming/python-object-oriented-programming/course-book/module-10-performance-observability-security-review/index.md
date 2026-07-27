@@ -1,6 +1,5 @@
 # Module 10: Performance, Observability, and Security Review
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,58 +24,86 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+This final module is where design leaves the whiteboard and meets operational pressure.
 
-This final module brings object-oriented Python design into operational reality. It
-teaches how to measure object cost, add observability that clarifies behavior, harden
-trust boundaries, and review the full capstone with production-grade judgment.
+The question is not "how do we add performance, logs, and security?"
 
-Keep one question in view while reading:
+It is:
 
-> Which operational pressure can change the shape of the design safely, and which one would quietly corrupt the ownership model if handled carelessly?
+> Which operational pressure can be absorbed without changing the meaning of the system,
+> and which response would quietly corrupt ownership, truth, or public promises?
 
-That question is what turns operational hardening into the final design audit instead of
-an unrelated production checklist.
+If you keep that distinction visible, operational work becomes a design review instead
+of a detached production checklist.
+
+## The capstone route for this module
+
+Use one end-to-end path:
+
+1. a workshop seat request enters the system
+2. `WorkshopEnrollment` decides confirmed or waitlisted
+3. persistence saves the new truth under contention risk
+4. downstream signals, projections, or notifications make that truth visible
+5. later workflows such as certificate issuance consume the result
+
+This path is good because every major operational pressure can appear on it:
+
+- hot-path cost
+- duplicate work under retries
+- stale visibility
+- trust-boundary mistakes
+- weak runbook coverage
+
+## What this module is really about
+
+Late-stage operational review should keep five distinctions honest:
+
+- measurement versus folklore
+- semantics-preserving acceleration versus semantic drift
+- useful signals versus noisy telemetry
+- trusted data handling versus convenience shortcuts
+- hardening order versus feature sprawl
+
+If those distinctions blur, teams often ship operational complexity while weakening the
+very design they were trying to protect.
 
 ## Preflight
 
-- You should already be able to explain the semantic ownership model before tuning or hardening the system.
-- If performance, observability, or security work still feels like a collection of isolated checklists, tie each concern back to the object model while reading.
-- Keep asking which operational change preserves the design and which one silently corrupts it.
+Before going further, you should already be able to:
 
-## Learning outcomes
+- name the domain truth that must not move
+- distinguish authoritative state from projections or downstream effects
+- describe one workflow without collapsing all boundaries together
 
-- measure and improve performance without changing the object contract accidentally
-- add logs, metrics, traces, and runbooks that clarify object collaboration rather than obscuring it
-- evaluate trust boundaries, deserialization, and secret handling as design constraints
-- perform a full-system production review without abandoning the ownership model established earlier in the course
+If the ownership story is still weak, performance and security advice will sound
+disconnected.
 
-## Why this module matters
+## What you should be able to do by the end
 
-Well-structured code can still fail in production if it:
+By the end of this module, you should be able to:
 
-- allocates excessively on hot paths
-- hides failures behind weak logs and missing signals
-- deserializes untrusted input carelessly
-- exposes secrets or internal details through convenience shortcuts
+- measure real pressure before changing structure
+- choose hardening moves that preserve semantics
+- design signals that help an operator explain failure quickly
+- treat input, secrets, and serialization as trust-boundary design problems
+- review the whole capstone as one operationally credible system
 
-Mastery includes knowing how to improve those concerns without wrecking the model that
-made the system understandable in the first place.
+## Read this module as one production-readiness day
 
-## Main questions
+Use the pages in this order:
 
-- How do you measure object and allocation cost before changing design?
-- Which performance techniques preserve semantics, and which quietly change behavior?
-- What logs, metrics, and traces make object collaboration observable?
-- How should trust boundaries, secrets, and input hardening shape Python APIs?
-- How do you review a full object-oriented system for operational readiness?
+1. measurement and profiling
+2. caching, batching, and lazy work
+3. observability design
+4. input hardening and trust boundaries
+5. operational readiness and failure drills
+6. capstone architecture review
+7. capstone hardening strategy
+8. final mastery checkpoint
+9. the exercises and answer packet
 
-## Reading path
-
-1. Start with measurement, profiling, caching, and batching.
-2. Then study observability and security boundaries together as operational contracts.
-3. Finish with runbooks, capstone review, and the final mastery checkpoint.
-4. Treat the closing chapters as a full-system audit, not just another feature pass.
+That order matters because hardening should follow measured pressure and preserved
+semantics, not fashion.
 
 ## Lesson map
 
@@ -94,59 +121,57 @@ made the system understandable in the first place.
 
 ## Keep these support surfaces open
 
-- `../guides/proof-matrix.md` when you want the final operational promise tied directly to proof.
-- `../guides/proof-ladder.md` when you need to choose the smallest honest audit route.
-- `../reference/self-review-prompts.md` when you want the final review to sound like a production design audit instead of a checklist recital.
+- `../guides/proof-matrix.md` when you need to tie one operational claim to one proof
+  route
+- `../guides/proof-ladder.md` when the honest next check is smaller than a full
+  end-to-end run
+- `../reference/self-review-prompts.md` when you want to pressure-test a hardening idea
+  before widening the change
 
-## Operational audit route
+## One study route through the capstone
 
-1. Start with [Capstone Walkthrough](../capstone/capstone-walkthrough.md) and [Command Guide](../capstone/command-guide.md).
-2. Compare those review routes with [Capstone Proof Guide](../capstone/capstone-proof-guide.md).
-3. Only then inspect the implementation surfaces that make the operational claim plausible.
+If this module starts feeling too broad, use this route:
 
-This route keeps the final module honest: operational hardening should improve confidence,
-observability, and trust boundaries without forcing you to abandon the ownership model
-built earlier in the course.
+1. choose one operational pressure on the capstone path
+2. state the semantic contract that must not change
+3. name which boundary owns the response
+4. decide which signal or proof route should reveal drift first
+5. compare your answer with the lesson pages and exercises
 
-## Audit questions to keep explicit
+That route turns the module into a practical audit method.
 
-- Which performance change preserves semantics, and which one silently changes freshness, ordering, or authority?
-- Which signal should clarify collaboration rather than merely increase log volume?
-- Which trust boundary needs a stronger review artifact, command route, or runbook before the change is safe?
+## Questions to keep explicit
+
+- Which measurement would justify a design change, and which proposed optimization is
+  still only folklore?
+- Which signal would help an operator explain this path under pressure?
+- Which trust boundary is currently under-described or under-proved?
+- Which hardening move belongs at the facade, repository, or workflow boundary rather
+  than inside the domain model?
 
 ## Common failure modes
 
-- optimizing by folklore before measuring real hot paths
-- adding caches that change correctness or freshness semantics silently
-- logging sensitive payloads because it is convenient during debugging
-- treating deserialization as harmless data loading instead of a trust boundary
-- shipping a system with no runbook for the failure modes the design already predicts
-
-## Exercises
-
-- Pick one suspected hot path and explain what you would measure before changing the design.
-- Review one observability addition and state what behavior it should clarify without leaking sensitive or misleading data.
-- Describe one trust boundary in the capstone and explain which review artifact or runbook should accompany it.
-
-## Capstone connection
-
-The monitoring capstone is intentionally small, but it still exposes the same questions
-as a larger system: where performance matters, which signals operators need, how payloads
-cross trust boundaries, and what it means to evolve the design without losing clarity.
+- optimizing before measuring
+- using caches or batching in ways that quietly change freshness or authority rules
+- logging sensitive payloads because debugging feels urgent
+- treating deserialization as simple data loading instead of boundary crossing
+- hardening everything at once and losing the ability to verify what changed
 
 ## Honest completion signal
 
 You are ready to finish the course when you can review one operational change and say:
 
-- what semantic contract must not change
-- which review artifact or proof route should reveal drift first
-- which hardening move belongs at the boundary instead of inside the domain model
+- what meaning must stay fixed
+- which boundary owns the response
+- which proof route or runbook artifact should reveal the first sign of drift
 
 ## Closing criteria
 
-You should finish this module able to review and harden an object-oriented Python system
-for production use while preserving the semantic discipline built through the earlier modules.
+You should finish this module able to harden an object-oriented Python system for real
+operational use without abandoning the ownership and contract discipline built across
+the earlier modules.
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+Use [Glossary](glossary.md) when you want the module's recurring operational language
+kept stable while you move between the lessons, review pages, and final checkpoint.

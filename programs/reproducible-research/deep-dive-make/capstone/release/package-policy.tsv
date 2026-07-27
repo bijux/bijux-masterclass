@@ -1,0 +1,5 @@
+# archive_path	source_path	mode
+deep-dive-make-capstone/app	app	0755
+deep-dive-make-capstone/bin/dyn1	build/bin/dyn1	0755
+deep-dive-make-capstone/bin/dyn2	build/bin/dyn2	0755
+deep-dive-make-capstone/include/dynamic.h	build/include/dynamic.h	0644

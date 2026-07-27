@@ -30,6 +30,10 @@ that is useful, realistic, and easy to overstate.
 
 A bounded quantity descriptor is exactly that kind of example.
 
+Treat this page as a review packet, not as a production-ready units library. Its main job
+is to show where a descriptor owns field semantics honestly, where its boundaries stay
+narrow on purpose, and what evidence a reviewer should demand before believing the design.
+
 It combines:
 
 - descriptor protocol hooks
@@ -38,6 +42,17 @@ It combines:
 - a clear boundary between attribute semantics and broader unit-system ambitions
 
 That makes it the right worked example for the module.
+
+## Review questions for the page
+
+Keep two questions active while reading:
+
+1. what exact attribute behavior does this descriptor own?
+2. what broader unit-system claim must it refuse?
+
+Keep a third question beside them:
+
+3. what first requirement would make this field descriptor too weak to stay the honest owner?
 
 ## The incident
 
@@ -55,6 +70,14 @@ They also want reads to return a small helper object that can:
 
 Those are reasonable design goals. The mistake would be pretending this is now a full
 units framework.
+
+That sentence is the real incident. The syntax and demo behavior can look impressive
+quickly, so the important work is keeping the field owner narrow enough that learners do
+not mistake a bounded descriptor for a full domain model.
+
+That is why this page stays useful even if you never build a units helper. It teaches how
+to review a persuasive field abstraction without letting the claim grow faster than the
+evidence.
 
 ## The first design rule: keep the scope bounded
 
@@ -74,6 +97,19 @@ It does not claim:
 
 That refusal is part of what makes the example honest.
 
+## Non-goals to keep visible
+
+This worked example is intentionally not trying to deliver:
+
+- multi-dimension unit algebra
+- domain-wide compatibility rules across unrelated quantities
+- preservation of the original input string as authoritative state
+- framework-grade parsing, localization, or formatting policy
+- object-wide coordination across many fields
+
+If the design needs those guarantees, the descriptor is already under pressure from a
+broader owner than this module is trying to teach.
+
 ## Step 1: keep canonical storage separate from display
 
 The descriptor should store one internal representation.
@@ -88,6 +124,12 @@ That means:
 
 This separation is the backbone of the design.
 
+It also gives the reviewer a clean owner story:
+
+- assignment owns normalization into metres
+- stored state owns one canonical numeric value
+- the read surface owns presentation and lightweight conversion
+
 ## Step 2: let `__set_name__` derive storage keys
 
 Like the reusable field descriptors from the fourth core, `Quantity` should learn its name
@@ -101,6 +143,9 @@ _length_metres
 
 without hard-coding field names into the descriptor implementation.
 
+That matters because hard-coded field names would make the descriptor look reusable while
+quietly tying it to one installation surface.
+
 ## Step 3: return a helper object on reads
 
 The descriptor does not have to return a raw float.
@@ -112,6 +157,24 @@ Returning a small value object is useful here because it can hold:
 - convenience conversion methods
 
 That makes reads more expressive while still keeping storage normalized underneath.
+
+Use this read/write split to keep the contract honest:
+
+| Operation | What the descriptor owns |
+| --- | --- |
+| write `obj.length = "2 km"` | parse supported input and normalize to canonical metres |
+| read `obj.length` | return a shaped helper object with a chosen display unit |
+| store internal value | keep one canonical float in metres under a derived storage name |
+
+## A proof route for the field contract
+
+Use this route when you test or explain the example:
+
+1. assign one plain number and show canonical metres storage
+2. assign one supported string and show conversion into the same canonical surface
+3. read the field and show the shaped helper object
+4. convert through the helper and show that presentation changed while canonical storage did not
+5. name one broader unit-system behavior that still remains deliberately unsupported
 
 ## A bounded implementation
 
@@ -208,6 +271,22 @@ print(distance.length.to("cm"))  # 200000.0
 print(distance.length.in_metres) # 2000.0
 ```
 
+## What this implementation proves and what it does not
+
+Use the code block as evidence, not as marketing:
+
+| Claim | Supported by this implementation? | Why |
+| --- | --- | --- |
+| field assignment normalizes supported inputs to metres | yes | `__set__` parses numbers, strings, and existing quantity values |
+| reads expose a richer helper than the stored float | yes | `__get__` returns `QuantityValue` |
+| per-instance state stays off the descriptor object | yes | storage goes into `obj.__dict__[self.storage_name]` |
+| the descriptor is a data descriptor | yes | it defines `__set__` |
+| the design is a full units framework | no | parsing, dimensions, and algebra stay deliberately narrow |
+| the descriptor preserves every input detail exactly | no | canonical storage intentionally discards some input-surface details |
+
+Read that table as a review contract, not as decoration. If a future version wants to
+promise more, both the descriptor surface and the evidence burden have to grow.
+
 ## Why this is useful for review
 
 This example keeps the important choices visible:
@@ -218,6 +297,28 @@ This example keeps the important choices visible:
 - the read surface is richer than the stored representation
 
 That makes the example reviewable instead of magical.
+
+## A review card for adapting the example
+
+If you change this descriptor, answer these before you trust the new version:
+
+| Adaptation question | Why it matters |
+| --- | --- |
+| does the canonical storage surface stay singular? | split storage rules make reasoning harder immediately |
+| does the helper object still stay smaller than a full units system? | a convenience layer can quietly widen the claim |
+| are new operations still field-level semantics rather than domain-wide algebra? | broader math pressure may require a bigger owner |
+| does the field still belong to attribute access instead of object-wide coordination? | wider coordination means descriptor ownership is weakening |
+
+## Failure surfaces a reviewer should inspect
+
+Even this bounded design has pressure points:
+
+| Failure surface | Why it matters |
+| --- | --- |
+| string parsing | the supported input language is deliberately small and easy to overclaim |
+| canonical storage choice | reviewers must know what information is kept and what is discarded |
+| helper-object arithmetic | convenience operations can look like a broader algebra than the code really supports |
+| display-unit configuration | field-level presentation choices should not be confused with domain-wide unit policy |
 
 ## Where the boundary shows up
 
@@ -230,6 +331,20 @@ For example, this is not supported:
 - checking real-world unit compatibility beyond the declared conversion table
 
 Those limitations are not defects. They are part of the module's honesty.
+
+Use this limitations table when a review starts inflating the design:
+
+| Missing behavior | Why refusing it is honest here |
+| --- | --- |
+| arbitrary unit algebra | broader than one field descriptor should claim |
+| dimension compatibility across unrelated quantities | wants a stronger domain model than one attribute owner |
+| round-tripping the exact original input string | not necessary for the canonical storage lesson |
+
+Add one more honest refusal:
+
+| Missing behavior | Why refusing it is honest here |
+| --- | --- |
+| domain-wide unit registries or localization policy | bigger than one descriptor boundary and no longer a single-field lesson |
 
 ## Why this belongs to a descriptor
 
@@ -249,6 +364,20 @@ If the example instead needed:
 
 then the ownership would be broader than one reusable descriptor.
 
+## Evidence packet to leave behind
+
+If you adapt this example, leave behind a packet another reviewer can inspect quickly:
+
+- the supported input shapes
+- the canonical stored representation
+- one example of behavior returned on read
+- one explicit limitation the descriptor refuses
+- one sentence explaining why the design still belongs to attribute access rather than a wider units system
+
+Add one more packet note:
+
+- one change you would reject because it widens the field claim faster than the proof route can justify
+
 ## What this example makes clear about Module 07
 
 This worked example ties the module together:
@@ -261,6 +390,15 @@ This worked example ties the module together:
 
 That is the durable takeaway. The point is not to build a perfect unit system. The point
 is to make descriptor ownership visible in one coherent field design.
+
+## Exit check for this page
+
+Before leaving the worked example, make sure you can do all of these:
+
+- explain what the descriptor owns on write versus on read
+- name the canonical stored representation
+- identify one broader units feature the example deliberately refuses
+- say what missing condition would justify a wider owner than this descriptor
 
 ## Continue through Module 07
 

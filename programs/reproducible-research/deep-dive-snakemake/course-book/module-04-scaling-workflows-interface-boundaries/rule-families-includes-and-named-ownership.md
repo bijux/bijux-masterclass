@@ -1,36 +1,30 @@
 # Rule Families, Includes, and Named Ownership
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Scaling Workflows Interface Boundaries"]
-  page["Rule Families, Includes, and Named Ownership"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 The first scaling decision is usually simpler than teams make it sound:
 
 > does this workflow need more boundaries, or does it only need clearer ownership?
 
 Many repositories split too early and end up with more files but less clarity. This page
 is about the first healthy split: rule families with named ownership.
+
+## How to read this page
+
+Read this page with one question in front of you:
+
+> if this repository grows next week, which current concern should absorb the next rule?
+
+If you can answer that question clearly, the workflow probably has useful ownership
+boundaries already. If you cannot, adding more files will not save it.
+
+## Why this lesson comes first
+
+Teams often jump to modules before they have done the simpler and more important work:
+
+- naming the current concerns
+- grouping rules by those concerns
+- keeping the top-level workflow readable after the split
+
+That is why Module 04 starts with rule families instead of reusable interfaces.
 
 ## A larger file is not automatically a modularity problem
 
@@ -45,6 +39,14 @@ The real questions are:
 - does the visible DAG stay easier to read after the split
 
 If the answer is no, the split is probably cosmetic rather than architectural.
+
+## A strong beginner habit
+
+Before you create a new file, write one sentence beginning with:
+
+> This rule family owns...
+
+If that sentence sounds vague, the split is not ready yet.
 
 ## `include:` is for coherent rule families
 
@@ -63,6 +65,15 @@ Typical examples:
 That is why the capstone keeps rule families under `workflow/rules/` while still using
 one top-level `Snakefile` as the visible orchestration surface.
 
+## A quick self-check before you keep reading
+
+Take one current workflow file and ask:
+
+- can I name one dominant concern it owns
+- or is it mixing several concerns because nobody drew the boundary yet
+
+That question matters more than whether the file feels long.
+
 ## The ownership test
 
 Before creating a new rule file, try to say its job in one sentence.
@@ -76,6 +87,14 @@ Weak sentence:
 > this file has the extra stuff that did not fit anywhere else.
 
 If the sentence is weak, the split is weak too.
+
+## The common beginner mistake
+
+People often split by file size, by chronology of development, or by whatever felt messy
+last week.
+
+Those are all weak durable boundaries because they do not tell the next maintainer where a
+new rule should land.
 
 ## One healthy split
 
@@ -153,6 +172,17 @@ Stop when:
 - opening another file would add indirection more than clarity
 
 The goal is not to maximize file count. The goal is to make the workflow explainable.
+
+## What a good explanation sounds like
+
+Strong:
+
+> We split by owned workflow concern, and the top-level entrypoint still explains the whole
+> graph without forcing the reader through helper trivia.
+
+Weak:
+
+> We broke the big file into smaller files.
 
 ## Common failure modes
 

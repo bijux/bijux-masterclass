@@ -18,319 +18,293 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  preserve["preserve failed candidate"] --> identify["record candidate identity"]
+  identify --> locate["locate first failed gate"]
+  locate --> explain["compare declared and observed truth"]
+  explain --> repair["repair producer or verifier"]
+  repair --> prove["produce a new candidate and rerun all gates"]
 ```
 <!-- page-maps:end -->
 
-By the time a release goes wrong, the symptoms often sound frustratingly vague:
+When a release fails, "rerun it" is a dangerous first response. A new build can replace the
+candidate, repair a race by accident, or erase the partial destination tree. The next run
+may pass while the original defect remains unexplained.
 
-- "the archive looks wrong"
-- "install worked on one machine but not another"
-- "the checksum changed for no good reason"
-- "the manifest says one thing, the bundle shows another"
-- "rerunning `dist` fixed it, somehow"
-
-Those are not helpful explanations. They are the beginning of an investigation.
-
-This page is about turning that investigation into a repeatable release-debugging loop.
+Release debugging starts by preserving one failed candidate and locating the first trust
+boundary that rejected it.
 
 ## The sentence to keep
 
-When a release breaks, ask:
+> Keep the failed bytes, identify the first failed gate, and explain the mismatch before
+> producing another candidate.
 
-> did the failure come from build truth, package truth, or publish truth?
+A later failure may be a consequence of an earlier one. If an archive contains the wrong
+binary, an install rehearsal can faithfully install the wrong binary. Repair the first
+lying boundary.
 
-That is the question that keeps release debugging from dissolving into shell folklore.
+## Six boundaries can fail
 
-## Three truth boundaries matter here
+| Boundary | Declared truth | Observed evidence |
+| --- | --- | --- |
+| build | named source inputs produce the intended payload | tests, dependency trace, payload checksums |
+| assembly | candidate contains exactly the package policy | declared manifest, observed archive listing |
+| identity | sidecars name the exact accepted bytes | archive digest, sidecar verification |
+| extraction | candidate can be inspected and unpacked safely | member type/path audit, contained extraction |
+| installation | accepted payload maps to the declared destination tree | installed paths, modes, checksums, rerun comparison |
+| publication handoff | only an accepted candidate is eligible for remote action | acceptance record bound to candidate digest |
 
-Release engineering sits on top of earlier modules, so it inherits earlier truths and adds
-new ones.
+These boundaries are narrower than "the release failed." They tell you which producer,
+policy, or verifier to inspect first.
 
-The three boundaries to keep separate are:
+## Preserve a failure packet
 
-1. build truth
-2. package truth
-3. publish truth
-
-### Build truth
-
-Did the build produce the right outputs in the first place?
-
-Examples:
-
-- the binary is stale
-- generated release metadata was wrong before packaging started
-- tests never validated the thing that got packaged
-
-### Package truth
-
-Did the release bundle select and arrange the correct files?
-
-Examples:
-
-- the wrong files were copied into `dist/`
-- a required file is missing
-- the manifest does not match the bundle tree
-
-### Publish truth
-
-Was the bundle or install destination published safely and consistently?
-
-Examples:
-
-- the archive was produced from a half-staged tree
-- install mutated the destination in an unsafe order
-- checksums or attestations describe something different from what was actually published
-
-These categories are not academic. They tell you where to look first.
-
-## Failure mode 1: wrong bundle contents
-
-Symptom:
-
-- the archive exists
-- but a required file is missing or an unexpected file appears inside it
-
-Likely failure class:
-
-- package truth
-
-First questions:
-
-- what files were declared as release inputs
-- what did the staging tree actually contain
-- did the bundle layout drift from the intended contract
-
-Repair:
-
-- model the package layout explicitly
-- stage from declared inputs only
-- verify the bundle tree against the manifest or expected layout
-
-## Failure mode 2: checksum or manifest mismatch
-
-Symptom:
-
-- the manifest does not describe the published tree correctly
-- or checksums do not match the artifact as published
-
-Likely failure class:
-
-- package truth or publish truth, depending on where the mismatch began
-
-First questions:
-
-- was the manifest generated from the same staged tree that became the artifact
-- were checksums computed before or after the final publication boundary
-- is unstable metadata being treated as artifact identity
-
-Repair:
-
-- generate verification data from the final intended artifact boundary
-- separate unstable evidence from identity
-- ensure the manifest job is narrow and stable
-
-## Failure mode 3: unstable release identity
-
-Symptom:
-
-- repeated `make dist` runs change the release artifact even when semantic inputs did not
-
-Likely failure class:
-
-- publish truth or evidence-policy failure
-
-First questions:
-
-- what unstable metadata is entering the bundle
-- which files define artifact identity
-- which proof files should live beside the artifact instead
-
-Repair:
-
-- move host diagnostics or timestamps out of the core artifact
-- keep checksums and manifests scoped to stable identity
-- rerun convergence checks on `dist`
-
-## Failure mode 4: unsafe install behavior
-
-Symptom:
-
-- the install tree changes unpredictably on rerun
-- partial failures leave mixed old and new state
-
-Likely failure class:
-
-- publish truth
-
-First questions:
-
-- what destination tree does `install` promise
-- was the destination staged or mutated in-place
-- what is the intended overwrite or idempotence policy
-
-Repair:
-
-- make the destination boundary explicit
-- stage or preview when possible
-- define and test the rerun behavior
-
-## Failure mode 5: release target meaning drift
-
-Symptom:
-
-- `dist` means one thing to humans and another thing to CI
-- or a release target silently accreted validation, install, or deploy behavior
-
-Likely failure class:
-
-- contract drift at the target interface
-
-First questions:
-
-- what does the target name currently promise
-- which scripts or systems call it
-- what should be split into a different target instead
-
-Repair:
-
-- narrow the target meaning
-- make compositions visible through target dependencies
-- keep the public release surface small and stable
-
-## The release-debugging loop
-
-When something goes wrong, use this sequence:
-
-1. reproduce the failure with the smallest release route that still shows it
-2. identify which truth boundary most likely failed
-3. inspect the declared inputs, staging tree, or destination tree that belong to that boundary
-4. repair the boundary model
-5. rerun convergence and release verification commands
-
-This loop matters because release debugging often tempts teams into rerunning `dist` until
-the symptom disappears without ever explaining why.
-
-## Useful evidence commands
-
-Some simple commands keep release debugging grounded:
-
-```sh
-make --trace dist
-make dist
-make -q dist; echo $?
-tar -tzf dist/app.tar.gz
-make install DESTDIR=/tmp/release-check
-find /tmp/release-check -type f | sort
-```
-
-Each one answers a different question:
-
-- why did packaging run
-- did the release converge
-- what is actually inside the archive
-- what did install actually publish
-
-That is much stronger than saying "the release step seemed weird."
-
-## A small incident walkthrough
-
-Suppose you see:
-
-```sh
-make dist
-tar -tzf dist/app.tar.gz
-```
-
-and the archive unexpectedly contains:
+Before cleaning or rebuilding, retain evidence under:
 
 ```text
-build.log
-host-info.txt
-tmp/partial-report.json
+artifacts/module08-release/failures/<candidate-digest>/
 ```
 
-The right first thought is not "tar is messy." The right thought is:
+Use the full digest when practical. The directory should contain:
 
-- bundle content drifted from the intended package contract
-- this is a package-truth failure
-- the staging or inclusion model is too broad
+- the exact candidate and received sidecars
+- the computed digest
+- the failed command and exit status
+- standard output and standard error
+- declared package and install policies
+- observed archive or destination-tree listings
+- tool versions needed to interpret the evidence
+- a short statement naming the first failed gate
 
-That classification already narrows the repair a lot.
+Do not call the directory `latest` or reuse it for another candidate. A failure report that
+can silently change identity is not reviewable.
 
-## Why rerunning is not a diagnosis
+Secrets, signing keys, credentials, and private environment data do not belong in the
+packet. Preserve relevant evidence, not the entire process environment.
 
-Release bugs often feel intermittent because rebuilding or cleaning changes side effects.
+## Capture commands without rebuilding
 
-That makes it tempting to say:
+The exact commands depend on the release contract. A local packet might begin with:
 
-- rerun `dist`
-- delete `dist/`
-- try again
+```sh
+packet="$PWD/artifacts/module08-release"
+candidate="$packet/candidate/app.tar.gz"
 
-Those actions can be useful operationally. They are not explanations.
+shasum -a 256 "$candidate"
+tar -tvzf "$candidate" > "$packet/evidence/archive-listing.txt"
+git status --short > "$packet/evidence/repository-status.txt"
+gmake --version | sed -n '1p' > "$packet/evidence/make-version.txt"
+tar --version 2>&1 | sed -n '1p' > "$packet/evidence/tar-version.txt"
+```
 
-The explanation has to say which boundary lied:
+These commands inspect existing state. Do not put `gmake dist` in a consumer verification
+target: it could replace the candidate before the mismatch is recorded.
 
-- build output was wrong
-- bundle assembly was wrong
-- publication into the archive or destination was wrong
+## Diagnose assembly mismatch
 
-That is the level of clarity Module 08 is aiming for.
+**Symptom:** the archive exists, but a required member is absent or an unexpected member
+appears.
 
-## Failure signatures worth recognizing quickly
+Compare three views:
 
-### "`make dist` passes, but the archive contents are wrong"
+1. declared package-policy manifest
+2. assembled candidate tree before archiving, if preserved
+3. observed archive listing
 
-That is usually package truth, not build truth.
+Interpret the first divergence:
 
-### "Checksums differ but the source and binary are unchanged"
+| Comparison | Likely defect |
+| --- | --- |
+| policy differs from assembled tree | selection or assembly rule |
+| assembled tree differs from archive | archive producer or wrong input root |
+| policy and archive agree, consumer expectation differs | contract communication or version-selection error |
 
-That often means unstable evidence leaked into artifact identity.
+Do not generate the expected manifest from the failed archive. That makes both sides of the
+comparison repeat the same observation.
 
-### "Install worked once and failed on rerun"
+## Diagnose checksum mismatch
 
-That usually points to publish-truth problems in the destination contract.
+**Symptom:** sidecar verification rejects the received archive.
 
-### "The manifest says one thing, but the archive says another"
+First compute the digest of the preserved candidate. Then ask:
 
-That means the release verification surface is not tied tightly enough to the final bundle.
+- does the sidecar name the same path and algorithm?
+- were candidate and sidecar transferred as one immutable packet?
+- was the sidecar computed before the final archive move?
+- can both candidate and sidecar be replaced by the same untrusted actor?
 
-## A review question that improves release debugging
+A mismatch establishes that the candidate bytes differ from those named by the sidecar. It
+does not tell you which file is correct. Preserve both, retrieve an independently trusted
+identity, and reject remote handoff until the discrepancy is resolved.
 
-Take one release failure and ask:
+Never repair this incident by computing a new sidecar from unexplained candidate bytes.
 
-1. which truth boundary failed first
-2. what file tree or artifact belongs to that boundary
-3. what command would expose the mismatch
-4. what contract or publication repair would make the boundary more honest
-5. which rerun or verification command would prove the fix
+## Diagnose reproducibility drift
 
-If those answers are weak, the release investigation is still too vague.
+**Symptom:** two candidates built from equivalent declared inputs have different digests.
+
+Work from the outside inward:
+
+1. compare uncompressed archive member listings
+2. compare member paths and file types
+3. compare payload checksums
+4. compare modes, uid, gid, names, and modification times
+5. compare member order
+6. compare compression headers and producer versions
+
+If payloads differ, investigate build or assembly truth. If only archive metadata differs,
+investigate normalization and producer policy.
+
+The correct response is not automatically to normalize more fields. A mode change may be a
+real release change. Decide which metadata belongs to package identity before suppressing
+it.
+
+## Diagnose extraction rejection
+
+**Symptom:** member inspection finds an absolute path, traversal component, unsafe link, or
+unsupported member type.
+
+Reject before extraction. Record the offending member and type. Do not "clean" member names
+while extracting because that changes the package silently.
+
+Trace the member back to:
+
+- the package-policy manifest
+- candidate assembly
+- archive producer arguments
+- source-tree symlink handling
+
+If the unsafe member was declared by policy, the policy is wrong. If it was not declared,
+the assembly or archive boundary admitted unintended input.
+
+## Diagnose install escape or conflict
+
+**Symptom:** the rehearsal attempts to write outside `DESTDIR`, follows a symbolic-link
+ancestor, encounters an undeclared conflict, or produces different evidence on rerun.
+
+Preserve:
+
+- composed destination paths
+- existing ancestor types
+- first-run installed-tree evidence
+- rerun evidence
+- repository status
+- the partial root after failure
+
+Classify the defect:
+
+| Observation | Likely defect |
+| --- | --- |
+| composed path leaves `DESTDIR` | path validation or prefix policy |
+| write follows a symbolic-link ancestor | containment preflight |
+| second run appends or duplicates state | non-convergent recipe |
+| unrelated file is removed | ownership boundary |
+| one file updated before later failure | non-transactional mutation and recovery contract |
+
+Do not erase the partial root until the failure packet contains enough evidence to explain
+which paths changed.
+
+## Diagnose acceptance-record mismatch
+
+**Symptom:** an acceptance record names a digest different from the candidate offered for
+publication.
+
+This is a publication-handoff rejection, even if both candidates passed their own tests.
+Acceptance belongs to exact bytes, not to a mutable filename such as `app.tar.gz`.
+
+Require the handoff to compare:
+
+- candidate digest
+- checksum sidecar identity
+- acceptance-record digest
+- optional provenance and signature bindings
+
+Only one identity may cross the remote-action boundary.
+
+## Use a gate-oriented debugging loop
+
+1. freeze the failed candidate and all received sidecars
+2. compute and record its identity
+3. preserve the command, exit status, and observed state
+4. locate the first failed gate
+5. compare declared truth with observed evidence at that gate
+6. repair the producer, policy, or verifier that allowed the mismatch
+7. produce a new candidate with a new identity
+8. run every gate, not only the gate that previously failed
+9. retain the old failure packet for comparison
+
+A repair can alter later behavior. Passing one formerly failing command is not enough to
+accept the replacement candidate.
+
+## Choose recovery by boundary
+
+| First failed boundary | Safe immediate action | Evidence to retain |
+| --- | --- | --- |
+| build | reject candidate and repair payload production | test output, dependency trace, payload digest |
+| assembly | reject candidate and repair selection/layout | policy, candidate tree, archive listing |
+| identity | quarantine candidate and sidecar | both files, computed digest, trust source |
+| extraction | reject without unpacking | verbose member listing, offending path/type |
+| installation | stop writes and preserve partial root | path plan, before/after evidence, exit status |
+| handoff | block remote action | candidate and acceptance identities |
+
+The table distinguishes rejection from repair. A failed candidate is not repaired in place
+and then published under the same identity.
+
+## Avoid five destructive debugging habits
+
+- `clean` before preserving the failed state
+- regenerate the candidate to see whether the problem disappears
+- update a checksum to match unexplained bytes
+- extract an unsafe archive to learn what it contains
+- publish manually because the automated handoff rejected it
+
+Each habit removes or bypasses a trust boundary.
+
+## Write an incident note another reader can audit
+
+A useful note is short but exact:
+
+```text
+Candidate:
+Observed digest:
+First failed gate:
+Declared truth:
+Observed evidence:
+Rejected action:
+Likely producer, policy, or verifier defect:
+Repair:
+Replacement-candidate verification:
+Preserved packet:
+```
+
+Avoid "the release was flaky." Name the candidate, gate, mismatch, and rejected action.
 
 ## What to practice from this page
 
-Pick one release failure mode and write a short incident note:
+Choose one controlled failure:
 
-1. the symptom
-2. the likely failed truth boundary
-3. the first evidence command
-4. the likely repair
-5. the verification command after the repair
+- add an unexpected archive member
+- alter one byte after checksum creation
+- produce an archive with a traversal path
+- create a symbolic-link ancestor in the install root
+- alter the candidate after its acceptance record is written
 
-If you can do that cleanly, you are debugging release contracts instead of merely reacting
-to them.
+Then:
+
+1. preserve the failed candidate without rebuilding
+2. create a failure packet
+3. identify the first failed gate
+4. compare declared and observed truth
+5. state which action was correctly blocked
+6. repair the responsible boundary
+7. prove a new candidate through every acceptance gate
 
 ## End-of-page checkpoint
 
 Before leaving this lesson, make sure you can explain:
 
-- the difference between build truth, package truth, and publish truth
-- why wrong bundle contents are usually a package-truth problem
-- why unstable release identity often comes from mixing evidence with artifact meaning
-- why install failures belong to the same publication discipline as archive releases
-- why rerunning `dist` is not the same thing as diagnosing a release defect
+- why a failed candidate must be preserved before a rerun
+- how the six release boundaries differ
+- why expected and observed manifests need independent origins
+- how to investigate reproducibility drift from payloads outward
+- why a checksum mismatch cannot be repaired by rewriting the sidecar
+- why acceptance and publication handoff must bind to exact candidate bytes

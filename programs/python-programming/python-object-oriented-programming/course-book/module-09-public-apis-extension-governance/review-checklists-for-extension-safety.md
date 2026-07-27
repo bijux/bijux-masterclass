@@ -1,6 +1,5 @@
 # Review Checklists for Extension Safety
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,53 +24,159 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson exists because extension review often fails in a predictable way:
 
-## Purpose
+- one reviewer checks signature shape
+- another checks version language
+- another worries about startup failure
+- nobody can tell whether the seam was actually reviewed well
 
-Give reviewers a repeatable way to evaluate API and plugin changes before accidental
-surface area or unsafe extension patterns become permanent.
+Without a stable checklist, extension safety depends too much on memory and personality.
 
-## 1. Checklists Reduce Blind Spots
+The point of this page is not to replace judgment. It is to make the same hard questions
+appear every time a seam changes.
 
-Useful review questions include:
+## Keep one seam visible
 
-- is this surface truly public
-- who will depend on it
-- what invariants remain protected
-- how would we deprecate it later
-- what tests and docs prove the contract
+Use one concrete seam:
 
-## 2. Review Should Cover Behavior, Not Only Types
+`IncidentSink`
 
-A plugin hook may look small in code while still exposing timing, ordering, or
-thread-safety assumptions that become public obligations.
+That seam is narrow enough to be teachable and risky enough to make the checklist real.
 
-## 3. Safety Includes Failure Semantics
+If your checklist cannot help you review a seam this small, it will not save you on a
+larger one.
 
-Ask what happens when an extension:
+## A useful checklist must go beyond type shape
 
-- raises an error
-- blocks too long
-- returns malformed data
-- is missing at startup
+A weak checklist reviews only:
 
-Extension safety is incomplete without these cases.
+- names
+- methods
+- argument types
 
-## 4. Make the Checklist Reusable
+That is not enough.
 
-The goal is not bureaucracy. The goal is to keep high-impact reviews consistent across
-different maintainers and future iterations.
+An extension checklist must also cover:
 
-## Practical Guidelines
+- whether the seam should be public at all
+- what authority boundaries it preserves
+- what registration or construction checks exist
+- what runtime failure behavior is expected
+- what compatibility promise is created
+- what docs, examples, and proof routes defend the story
 
-- Review extension surfaces with a standard set of compatibility and safety questions.
-- Include failure semantics and lifecycle concerns in the checklist.
-- Tie checklist items to docs and tests where possible.
-- Keep the checklist short enough to be used consistently.
+Those are the real support obligations created by a public seam.
 
-## Exercises for Mastery
+## A seven-question extension-safety checklist
 
-1. Draft a six-question review checklist for a new plugin hook.
-2. Use it on one existing extension surface and note the gaps.
-3. Add one missing failure-path test discovered by the checklist.
+For `IncidentSink`, a strong short checklist is:
+
+1. Is this seam public because of a real supported use case, or only because the host
+   layout makes it easy to expose?
+2. Does the seam grant capability only, rather than aggregate, repository, or runtime
+   intimacy?
+3. What explicit registration or construction checks reject malformed or incompatible
+   implementations?
+4. What happens if the sink is missing, slow, blocking, or raises at runtime?
+5. What compatibility or deprecation promise is created by publishing this seam?
+6. Which docs, examples, and import rules teach the supported usage path?
+7. Which executable proof or review route would fail first if the seam drifted?
+
+That checklist is short enough for repeated use and broad enough to catch the real
+governance risks.
+
+## Strong answers point to evidence
+
+Good answers should point to evidence, not reassurance.
+
+Examples:
+
+- one compatibility packet for sink behavior
+- one executable or smoke-tested facade example
+- one import-discipline review rule
+- one registration-validation path
+- one governance note recording why the seam is public
+
+If a seam cannot answer the checklist with evidence, the support story is still thin.
+
+## Failure review belongs inside the checklist
+
+Do not leave operational risk outside the review.
+
+For the capstone seam, ask:
+
+- what happens if configuration is present but malformed?
+- what happens if a sink blocks longer than the host expects?
+- what happens if a sink raises after partial publication work?
+- what happens if a sink returns data the host should not trust?
+- what happens if the seam is still documented but no longer truly supported?
+
+These are extension-safety questions, not later operations work.
+
+## Build a reusable review packet
+
+A good checklist becomes stronger when paired with a tiny review packet:
+
+- seam description
+- supported use case
+- authority boundary note
+- failure-behavior note
+- compatibility promise
+- proof route
+
+That packet makes the checklist reusable across maintainers and review cycles.
+
+## Worked review pass
+
+A short review of `IncidentSink` might conclude:
+
+- the seam is justified because alternate sinks are a real supported need
+- the seam must receive already-shaped incident data and nothing with private authority
+- registration must reject malformed configuration before the workflow starts
+- runtime sink failure must not corrupt aggregate truth or duplicate visible work
+- facade examples and compatibility proof must teach the supported path consistently
+
+That is a real governance result, not just a statement that the interface "looks clean."
+
+## Common failure modes
+
+- making the checklist so long that nobody reuses it
+- reviewing only type shape and missing ownership or failure behavior
+- asking questions with no evidence route attached
+- calling private-state access acceptable because the extension is "trusted"
+- forgetting that examples and docs define how consumers will actually use the seam
+
+## Review card
+
+Use this compact review card during real changes:
+
+| Question | What a strong answer sounds like |
+| --- | --- |
+| should this seam be public at all? | one concrete supported use case |
+| does it preserve authority boundaries? | capability without private-state intimacy |
+| what rejects bad implementations early? | explicit registration or construction checks |
+| what happens under runtime trouble? | failure behavior that preserves host truth |
+| what support promise is created? | named compatibility and deprecation rule |
+| what teaches the supported path? | facade docs and examples, not deep imports |
+| what proof keeps it honest? | one executable or reviewable route |
+
+## Capstone connection
+
+Use this page to ask:
+
+- which seam needs this checklist first
+- which risk question is currently living only in reviewer memory
+- which proof route is still missing for the seam to pass review honestly
+- which failure behavior is still undocumented even though it affects support
+
+That is how governance becomes repeatable instead of personality-driven.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why extension review must ask repeatable questions beyond protocol shape
+- draft a short checklist for one concrete capstone seam
+- identify one missing failure-mode question and one missing proof route in the current
+  capstone review story

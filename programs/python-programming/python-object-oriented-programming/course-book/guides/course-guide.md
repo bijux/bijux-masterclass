@@ -1,6 +1,5 @@
 # Course Guide
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,86 +17,124 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  stage["Find your current stage"] --> goal["Choose one session-sized goal"]
+  goal --> module["Read one module with the right support page"]
+  module --> capstone["Cross-check one capstone surface"]
+  capstone --> exit["Stop when one design question becomes clearer"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+This page is the working spine of the course.
 
-This guide explains how the course is shaped and why the sequence matters. The course is
-not a pile of OOP topics. It is a pressure-tested path from object semantics to systems
-that survive integration, change, and operational stress.
+It is for readers who want to know:
 
-## Course Spine
+- how the ten modules fit together as one learning path
+- what kind of question each stage is meant to answer
+- how to keep the capstone connected without turning every session into a full-system
+  audit
 
-The course has four linked layers:
+If the course home is the promise, this page is the study plan.
 
-1. entry pages and orientation
-2. module work from object semantics to operational hardening
-3. capstone proof in one executable system
-4. review surfaces for ownership, trust, and public-boundary decisions
+## The course is one argument
 
-## The Three Arcs
+The argument moves in this order:
 
-### Semantic floor
+1. objects must mean something before architecture advice is useful
+2. roles and states must be clear before collaboration gets complicated
+3. collaboration must be disciplined before persistence and runtime pressure arrive
+4. proof, public boundaries, and operations matter only after ownership already makes
+   sense
 
-Modules 01 to 03 establish the language of the course:
+If you skip that order, later modules feel "advanced" only because earlier ownership
+work never became stable.
 
-- what an object means in Python
-- how equality, identity, and mutation interact
-- how lifecycles and typestate affect design
+## The three working arcs
 
-Without this floor, later architecture advice turns into memorized slogans.
+| Arc | Modules | What you are trying to earn |
+| --- | --- | --- |
+| semantic floor | 01-03 | define what objects are, what they own, and what states are legal |
+| systems arc | 04-07 | preserve that ownership under collaboration, resources, persistence, time, and concurrency pressure |
+| trust arc | 08-10 | prove, expose, govern, and harden the design so it survives review and real use |
 
-### Collaboration and evolution
+This split matters because it tells you what kind of reading discipline the current part
+of the course requires.
 
-Modules 04 to 07 move from single objects to systems:
+## A serious session plan for each arc
 
-- aggregates and cross-object invariants
-- projections, events, and orchestration
-- persistence and schema change
-- time, scheduling, retries, and concurrency boundaries
+| If today is about... | Do this first | Then | End by |
+| --- | --- | --- | --- |
+| semantics | read the module overview and one key lesson | inspect `model.py` or lifecycle tests | restating the ownership rule in plain language |
+| collaboration | read the module overview and the matching refactor or boundary page | inspect one capstone collaboration surface | naming the aggregate, policy, runtime, or projection owner |
+| trust | read the module overview and one proof or governance page | inspect one saved bundle or test surface | saying which proof route is proportionate and why |
 
-This is where many OOP courses become hand-wavy. This course tries to stay concrete.
+The point is not to finish a checklist. The point is to end the session with one clearer
+design claim.
 
-### Confidence and governance
+## Module-by-module study route
 
-Modules 08 to 10 ask whether the model can be trusted:
+| Module | Session goal | Best support page | Best capstone cross-check |
+| --- | --- | --- | --- |
+| 01 Object Semantics | stop confusing value, identity, mutation, and representation | [Module Promise Map](module-promise-map.md) | `model.py`, `rules.txt`, and lifecycle tests |
+| 02 Design Roles and Layering | place behavior in values, entities, policies, services, adapters, or protocols with reasons | [Module Checkpoints](module-checkpoints.md) | `application.py`, `model.py`, and the architecture guide |
+| 03 State and Typestate | make legal states easier to construct than illegal ones | [Module Checkpoints](module-checkpoints.md) | lifecycle tests and inspection outputs |
+| 04 Aggregates and Collaboration | centralize cross-object invariants without tangling authority | [Pressure Routes](pressure-routes.md) | projections, read models, and architecture surfaces |
+| 05 Resources and Evolution | keep retries, cleanup, and failure handling attached to clear owners | [Proof Ladder](proof-ladder.md) | `runtime.py`, `repository.py`, and unit-of-work tests |
+| 06 Persistence and Schema Evolution | add storage pressure without flattening the domain | [Pressure Routes](pressure-routes.md) | repository boundaries and verification artifacts |
+| 07 Time and Concurrency | keep clocks, queues, and tasks from corrupting ownership | [Proof Ladder](proof-ladder.md) | runtime tests and walkthrough artifacts |
+| 08 Testing and Verification | choose the right proof depth for the claim | [Proof Ladder](proof-ladder.md) | test suite plus verification bundle |
+| 09 Public APIs and Governance | expose stable entrypoints and extension seams deliberately | [Proof Ladder](proof-ladder.md) | application surface, extension guide, and public examples |
+| 10 Operational Review | review performance, observability, trust boundaries, and long-term change pressure together | [Module Checkpoints](module-checkpoints.md) | full proof route and capstone review worksheet |
 
-- do tests prove the real contracts
-- does the public API reflect the intended boundary
-- can the system be observed, hardened, and evolved safely
+Use this table as a route chooser, not as a reason to skim several modules at once.
 
-## How The Capstone Fits
+## If you missed class and are learning alone
 
-- Treat Modules 01 to 03 as preparation for understanding the capstone's core objects.
-- Treat Modules 04 to 07 as the explanation for the capstone's shape.
-- Treat Modules 08 to 10 as the audit of whether that shape deserves confidence.
+Use this simpler rhythm:
 
-## Route by reading state
+1. read one module overview
+2. read one support page from this shelf
+3. inspect one named capstone surface
+4. run one proof step only if the claim is still fuzzy
+5. stop after one question becomes materially easier
 
-- If object semantics still feel slippery, stay with Modules 01 to 03 before you escalate into architecture advice.
-- If your real problem is collaboration or persistence drift, start with [Pressure Routes](pressure-routes.md) and then come back to the relevant arc here.
-- If you are reviewing an existing design, keep [Module Checkpoints](module-checkpoints.md) and [Capstone Map](../capstone/capstone-map.md) open so each module stays tied to a concrete proof surface.
-- If you only need the course shape before reading, use [Course Map](../module-00-orientation/course-map.md) instead of holding the whole sequence in memory.
+That rhythm is better than trying to "cover" too many modules in one sitting.
 
-## Support Pages To Keep Open
+## What to keep open while reading
 
-- [Proof Matrix](proof-matrix.md) when you want the course promises tied directly to evidence
-- [Pressure Routes](pressure-routes.md) when the design question is clearer than the module name
-- [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit course promises
-- [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
-- [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
-- [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place
-- [Pressure Routes](pressure-routes.md) when the next useful module depends on the design pressure you are under
-- [Proof Ladder](proof-ladder.md) when you need to size proof correctly
-- [Capstone](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) when you want the repository route kept explicit
+| Situation | Keep this page open too |
+| --- | --- |
+| you forget what the current module promises | [Module Promise Map](module-promise-map.md) |
+| you think you are ready to move on | [Module Checkpoints](module-checkpoints.md) |
+| the module title is less clear than the real design pressure | [Pressure Routes](pressure-routes.md) |
+| you know the claim but not the proof route | [Proof Ladder](proof-ladder.md) |
+| you keep escalating to proof that is too heavy | [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) |
 
-## Honest Expectation
+The guides are there to keep your reading proportional, not to replace the lessons.
 
-If you rush, the course will feel heavier than necessary. If you read it in order and
-keep the capstone in view, the later modules should feel like consequences of earlier
-ownership decisions instead of unrelated advanced topics.
+## Common study mistakes this guide should prevent
+
+- reading Modules 08-10 as if they can repair weak semantics from Modules 01-03
+- treating persistence or concurrency as separate from ownership
+- opening the strongest proof route before naming the boundary under review
+- using the capstone as spectacle instead of as a pressure test for one claim
+- trying to finish a module without being able to state what new pressure it added
+
+## One-session rescue route
+
+If the course currently feels too large, do this:
+
+1. read [Course Home](../index.md)
+2. pick one pressure from [Pressure Routes](pressure-routes.md)
+3. read the matching module overview only
+4. inspect the named capstone surface
+5. stop after one design question becomes clearer
+
+This is a better rescue than wandering forward because the later modules look more
+important.
+
+## Exit check
+
+Leave this page only when you can say:
+
+> I am in the `____` arc, today’s module goal is `____`, the best support page is
+> `____`, and the capstone surface I should inspect next is `____`.

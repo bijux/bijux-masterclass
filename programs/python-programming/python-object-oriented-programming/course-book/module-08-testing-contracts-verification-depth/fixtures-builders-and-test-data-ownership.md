@@ -1,6 +1,5 @@
 # Fixtures, Builders, and Test Data Ownership
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,45 +24,195 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about keeping the important values visible enough that the test still
+teaches the claim it is supposed to prove.
 
-## Purpose
+Bad test data design makes good assertions unreadable.
+The setup becomes the real problem when it:
 
-Keep test setup readable and intentional by giving test data a clear owner instead of
-hiding everything behind sprawling shared fixtures.
+- hides which values matter
+- smuggles in accidental defaults
+- spreads semantic meaning across distant helpers
+- makes legal and illegal states equally magical
 
-## 1. Shared Fixtures Can Hide Too Much
+If the setup hides the pressure of the test, the proof weakens even when the assertions
+are correct.
 
-Large reusable fixtures often make tests shorter while making intent harder to see.
-Readers cannot tell which inputs matter because everything arrives preassembled.
+## Keep one proof visible
 
-## 2. Builders Help When Construction Is Verbose
+Use one capstone-style claim:
 
-A builder or factory can make setup explicit:
+- seat confirmation depends on visible seat count and prior attendee state
+- retry safety depends on visible durable progress and prior visible outcome state
 
-- provide good defaults
-- override the fields that matter for the test
-- keep invalid combinations difficult unless the test needs them
+Now ask:
 
-## 3. Ownership Means Local Clarity
+Could another maintainer see the values that matter for this claim without reading three
+helper modules first?
 
-The test that cares about a value should usually declare or customize it nearby. This
-reduces invisible coupling between distant fixture files and local expectations.
+If the answer is no, the data design is already weakening the proof.
 
-## 4. Do Not Recreate Production Complexity in Test Helpers
+## Test data needs an owner
 
-Test helpers should reduce accidental verbosity, not become a second object model with
-its own bugs and inheritance tree.
+The core question is:
 
-## Practical Guidelines
+- who is responsible for making this input understandable?
 
-- Prefer local clarity over maximal fixture reuse.
-- Use builders when object construction is verbose but meaningful.
-- Keep shared fixtures small and honest about what they provide.
-- Review test helpers for hidden invariants or accidental complexity.
+Usually the answer is:
 
-## Exercises for Mastery
+- the test itself, when only a few values matter
+- a small local builder, when construction is verbose but the critical overrides should
+  stay visible
+- a narrowly shared fixture, when many tests truly depend on the same stable baseline
 
-1. Replace one oversized fixture with a builder or local setup.
-2. Audit one builder and remove any fields that tests never need to vary.
-3. Identify one test where local data ownership would improve readability.
+Ownership matters because it tells the reader where the meaningful shape came from.
+
+## Shared fixtures solve one problem and create another
+
+Large shared fixtures make tests shorter.
+They also create hidden cost:
+
+- the reader no longer knows which fields are essential
+- one fixture can smuggle in accidental invariants
+- changing one default can break unrelated proofs
+
+That does not make shared fixtures always wrong.
+It means they should be treated as owned abstractions, not free convenience.
+
+## Builders are useful when construction is repetitive but meaningful
+
+Builders help when an object needs several values before it becomes valid.
+
+A good builder usually:
+
+- provides honest defaults
+- exposes the variations tests commonly need
+- keeps invalid combinations explicit when a test wants them
+- stays thin enough that the resulting object is still imaginable
+
+A bad builder becomes a second object model with:
+
+- hidden mutation
+- surprising defaults
+- helper-specific jargon
+- special cases nobody can explain quickly
+
+The builder should reduce incidental setup cost, not create another system to debug.
+
+## Keep pressure values near the assertion
+
+One strong review rule is simple:
+
+- if a value matters to the claim, let the reader see it nearby
+
+If a test proves expiry behavior, the relevant timestamps should not be buried behind
+three fixture layers.
+If a test proves retry safety, the visible progress markers should not be hidden behind a
+generic "valid issuance" helper.
+
+This is not an argument against helpers.
+It is an argument for semantic visibility.
+
+## Builders should speak domain language
+
+If the model speaks in terms such as:
+
+- confirmed attendee
+- waitlisted attendee
+- issued certificate
+- stale repository version
+
+then builders and fixtures should reflect that same vocabulary.
+
+Helpers named after raw storage fields or old constructor noise force readers to
+translate setup back into domain meaning before they can understand the proof.
+
+That is wasted effort in a learning-oriented course.
+
+## Worked capstone example
+
+Suppose an enrollment object needs:
+
+- workshop id
+- seat limit
+- attendee state
+- version
+
+A weak helper might:
+
+- build one giant default enrollment
+- let every test mutate it afterward
+
+A stronger approach could be:
+
+- a small builder with honest defaults for a normal open enrollment
+- explicit overrides such as `with_seat_limit(1)` or `with_confirmed_attendee(...)`
+- local variables in the test for the few values that actually explain the proof
+
+That way the reader can see:
+
+- what state the object started from
+- what was intentionally varied
+- why the assertion should hold
+
+## Prefer local setup when the rule is subtle
+
+Not every repeated shape deserves a shared helper.
+
+Prefer local setup when:
+
+- the object is simple enough to read directly
+- the test is teaching a subtle timing or lifecycle rule
+- the values are unlikely to recur meaningfully elsewhere
+
+Over-reuse can make the suite smaller while making each individual proof harder to
+audit.
+
+## Build a setup packet
+
+Before creating a shared helper or builder, write a short packet:
+
+- what recurring setup pain it removes
+- what important values must remain visible
+- which tests truly share the same baseline
+- what semantic jargon the helper should use
+
+If that packet is weak, the abstraction is probably premature.
+
+## Common failure modes
+
+- giant reusable fixtures that hide which inputs matter
+- builders with more complexity than the domain objects they build
+- mutating shared fixture state across tests
+- keeping important semantic values far from the assertion they explain
+- using helpers that speak storage language instead of domain language
+
+## Setup review card
+
+Use this short card when reviewing a fixture or builder:
+
+| Question | What you want to see |
+| --- | --- |
+| can the reader tell which inputs matter without chasing many helpers? | yes |
+| do builders expose meaningful overrides instead of hidden magic? | yes |
+| are shared fixtures small and honestly scoped? | yes |
+| does the setup reinforce domain language? | yes |
+
+## Capstone connection
+
+Use this page to ask:
+
+- which capstone fixtures currently hide lifecycle or timing details that matter to the
+  proof
+- where a small builder would improve readability more than another shared fixture
+- which helpers should be narrowed because they now carry too many unrelated defaults
+
+That is how test data setup becomes part of proof quality rather than invisible noise.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain what test data ownership means in practice
+- identify one case where a builder is better than a giant shared fixture
+- rewrite one capstone setup so the important values are visible near the assertion

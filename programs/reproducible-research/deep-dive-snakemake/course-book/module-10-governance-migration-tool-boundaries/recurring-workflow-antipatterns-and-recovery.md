@@ -1,35 +1,37 @@
 # Recurring Workflow Antipatterns and Recovery
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Recurring Workflow Antipatterns and Recovery"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 One sign that a workflow team is maturing is that it stops treating every painful problem
 as a one-off exception.
 
 Many of the same failures return again and again. Module 10 calls those what they are:
 recurring anti-patterns.
+
+## If you are learning this without the live class
+
+Read this lesson in five passes:
+
+1. name the anti-pattern family
+2. describe the current repository symptom
+3. identify the technical repair
+4. identify the review habit that must change
+5. write one recovery note that would stop the pattern from quietly returning
+
+This is how one repair becomes stewardship instead of temporary relief.
+
+## How to use this page
+
+Read this page when you feel tempted to describe a recurring workflow problem as bad luck
+or as a one-time awkward pull request.
+
+Keep one small recovery packet beside you as you read:
+
+- one anti-pattern family name
+- one current symptom
+- one technical repair
+- one proof route that shows the repair worked
+- one review habit or rule that would stop recurrence
+
+If your packet stops after the technical repair, the recovery is still incomplete.
 
 ## Why anti-pattern language matters
 
@@ -44,6 +46,18 @@ Anti-pattern language helps you say:
 
 That is a governance skill, not only a debugging skill.
 
+## Start by naming the habit, not only the latest breakage
+
+Beginners often focus on the newest symptom:
+
+- a rerun happened unexpectedly
+- a profile behaved differently
+- a published file drifted
+- a helper became hard to review
+
+Those symptoms matter, but Module 10 wants the deeper diagnosis: what recurring habit made
+this kind of failure likely in the first place?
+
 ## Five anti-pattern families worth stopping early
 
 | Anti-pattern | What it usually looks like | Why it keeps hurting |
@@ -55,6 +69,20 @@ That is a governance skill, not only a debugging skill.
 | evidence suppression | logs, benchmarks, or verification routes disappear when the team feels pressure | the workflow gets quieter and less trustworthy at the same time |
 
 These are worth memorizing because they recur across repositories.
+
+## An anti-pattern card you should be able to fill before proposing a fix
+
+Use a table like this:
+
+| Part | What to record |
+| --- | --- |
+| family | which anti-pattern is repeating |
+| symptom | what the repository is doing today |
+| trust damage | what review or migration question became harder to answer |
+| technical repair | what changes in code, config, or contract |
+| habit repair | what review rule or habit prevents recurrence |
+
+If you cannot fill the trust-damage row, you are still reacting to irritation instead of a pattern.
 
 ## Hidden inputs
 
@@ -143,6 +171,19 @@ Recovery:
 
 Quieter is not the same thing as clearer.
 
+## What goes wrong when learners repair only the latest symptom
+
+Use this card before you call the problem solved:
+
+| If you did only this... | The habit probably still alive is... | Missing recovery |
+| --- | --- | --- |
+| declared one missing input | hidden-input behavior elsewhere | one review rule for declared dependencies |
+| fixed one profile leak | semantic settings still socially acceptable in profiles | one policy-boundary rule |
+| moved one consumer off `results/` | contract drift elsewhere | one public-contract inventory and enforcement route |
+| restored one benchmark or verification file | evidence still treated as optional clutter | one rule that keeps the proof route non-optional |
+
+If the missing recovery is social or review-oriented, that is not a sign of weakness. It means you have reached the real problem.
+
 ## A small example
 
 Imagine a repository where:
@@ -160,6 +201,31 @@ evidence discipline.
 The right response is not one patch. It is a recovery plan that tackles the anti-pattern
 family by family.
 
+## One concrete recovery scenario
+
+Suppose a repository now has all of these at once:
+
+- notebooks read `results/` directly
+- one profile changes sample filtering
+- helper code owns most of discovery logic
+- verification only runs before releases
+
+The wrong response is to call that "a few cleanup items."
+
+The stronger response is to classify the pattern mix:
+
+1. contract drift
+2. policy leaks
+3. invisible complexity
+4. evidence suppression
+
+Once the families are named, recovery can be sequenced more honestly:
+
+- repair the public contract
+- move semantic choices out of profiles
+- expose discovery ownership
+- restore proof routes that reviewers can run under pressure
+
 ## Recovery should change the habit, not only the file
 
 For each anti-pattern, ask two questions:
@@ -168,6 +234,31 @@ For each anti-pattern, ask two questions:
 2. what review rule will stop this from quietly coming back
 
 That second question is what turns a fix into stewardship.
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is solving the last incident in a way that leaves the
+habit untouched.
+
+For example:
+
+- declaring one missing input but leaving the hidden-input pattern alive elsewhere
+- fixing one profile leak while keeping semantic keys socially acceptable in profiles
+- restoring one benchmark file while still treating evidence as optional clutter
+
+A strong recovery asks, "what rule or review habit will stop this from happening again?"
+
+## A five-line recovery note you should be able to write from memory
+
+If this lesson has landed, you should be able to write:
+
+1. which anti-pattern family is repeating
+2. what repository symptom exposes it
+3. what trust question became harder to answer because of it
+4. what technical repair is needed now
+5. what review rule or habit would stop the pattern from returning
+
+If you cannot do that, the recovery is still too local and too forgetful.
 
 ## Keep this standard
 

@@ -1,0 +1,14 @@
+rule normalize:
+    input:
+        source="unbound.txt"
+    output:
+        artifact="unbound.txt"
+    params:
+        prefix="UNBOUND"
+    shell:
+        """
+        mkdir -p "$(dirname {output.artifact})"
+        printf '%s\n' '{params.prefix}' > '{output.artifact}.candidate'
+        cat '{input.source}' >> '{output.artifact}.candidate'
+        mv '{output.artifact}.candidate' '{output.artifact}'
+        """

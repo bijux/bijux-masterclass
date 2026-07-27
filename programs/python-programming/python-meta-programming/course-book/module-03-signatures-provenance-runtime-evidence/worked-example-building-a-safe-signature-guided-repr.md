@@ -37,6 +37,13 @@ A `__repr__` mixin is a good fit because it creates exactly the right pressures:
 
 That makes it a clean worked example for signatures, structure, and evidence discipline.
 
+Treat the page as a review packet, not just an implementation walkthrough. The real
+teaching goal is to show how one helper can mix three different evidence classes:
+
+- strong contract evidence for ordering
+- strong stored-state evidence for values
+- diagnostic or convenience surfaces that should stay out of the default path
+
 ## The incident
 
 Assume a team wants a reusable `ReprMixin` that prints instances clearly for debugging and
@@ -55,6 +62,12 @@ Every one of those is a Module 03 issue:
 - which evidence is best-effort?
 - which inspection surfaces are safe by default?
 
+One more failure mode belongs beside them:
+
+5. they start adding provenance or caller-context tricks because the helper is "only for debugging"
+
+That move usually makes the helper less honest, not more helpful.
+
 ## The design goal
 
 The helper should be:
@@ -69,6 +82,12 @@ That set of goals already tells you which surfaces to trust:
 - `inspect.signature` for ordering
 - raw instance storage and slots for state
 - `object.__getattribute__` for safer direct reads
+
+It also tells you which surfaces to avoid by default:
+
+- broad `getattr` over arbitrary names
+- provenance lookups that pretend to explain runtime state
+- frame or stack inspection that drags caller context into representation
 
 ## Step 1: choose strong evidence for field order
 
@@ -95,6 +114,12 @@ That is a good use of signatures:
 - the helper is not pretending the signature proves runtime state
 - it is using the constructor contract as a strong ordering hint when available
 
+Review checkpoint:
+
+- the signature proves call-shape order, not instance completeness
+- parameters missing from storage may be normal if construction and current state diverged
+- extra stored fields may be normal if the object accumulates runtime state after construction
+
 ## Step 2: read state from storage, not from arbitrary lookup
 
 If the helper uses `getattr(self, name)` on arbitrary names, it can:
@@ -112,6 +137,14 @@ A better path is:
 - avoid broad dynamic lookup over arbitrary member names
 
 This keeps the helper attached to stored state rather than runtime behavior.
+
+That sentence is the heart of the worked example. A representation helper should answer:
+
+> what stored state can I show safely and honestly?
+
+It should not quietly switch to:
+
+> what code can I run to make the object look more informative?
 
 ## Step 3: support slotted classes honestly
 
@@ -137,6 +170,9 @@ to:
 > run arbitrary runtime behavior while printing a debug string
 
 That is a terrible default.
+
+If a team truly wants computed values in a debug view, that should be an explicit higher-
+risk mode, not the base contract of `__repr__`.
 
 ## A healthier implementation
 
@@ -201,6 +237,18 @@ class ReprMixin:
         return f"{cls.__name__}({args})"
 ```
 
+## Why each surface is in the implementation
+
+Use this table when reviewing the code:
+
+| Surface | Role in the helper | Why it belongs there |
+| --- | --- | --- |
+| `inspect.signature(cls.__init__)` | preferred field ordering | constructor contract is a strong ordering hint |
+| `object.__getattribute__(self, "__dict__")` | stored dictionary-backed state | direct storage read avoids broad dynamic lookup |
+| MRO slot walk | stored slot-backed state | supports classes without pretending everything lives in `__dict__` |
+| alphabetical extras fallback | deterministic output beyond constructor order | preserves reviewability when extra runtime state exists |
+| no frame, stack, or provenance helpers | excluded default path | context recovery is not needed to represent stored state safely |
+
 ## Why this version is better
 
 This helper is stronger because it keeps each evidence source in the right role:
@@ -212,6 +260,9 @@ This helper is stronger because it keeps each evidence source in the right role:
 - stack inspection is excluded entirely
 
 The result is still a debugging aid, but it is a disciplined debugging aid.
+
+That distinction matters. "Debugging aid" is not a license to make the evidence weaker.
+It is a reason to keep the helper bounded and reviewable.
 
 ## Regular and slotted classes both work
 
@@ -237,6 +288,11 @@ print(B(2))
 This is important because it proves the helper was built around storage evidence rather
 than around one narrow storage assumption.
 
+Independent learners should name the real win here:
+
+- the helper works across different storage layouts
+- without promoting dynamic execution into its base path
+
 ## What this example teaches about Module 03
 
 This worked example ties the module together:
@@ -249,6 +305,16 @@ This worked example ties the module together:
 That is the durable takeaway. The `__repr__` helper is just one concrete place where
 evidence discipline produces a better design.
 
+## Review packet for inherited helpers
+
+When you inherit a similar helper, sort its evidence by bucket before changing code:
+
+| Question | Strong surface | Weak surface to distrust first |
+| --- | --- | --- |
+| How should fields be ordered? | signature or deliberate explicit field list | arbitrary current dictionary order treated as meaning |
+| Which values are safe to show? | stored state, deliberate slot reads | broad `getattr` over discovered names |
+| Does the helper need context about origin or caller? | usually no | source recovery or stack recovery added "just in case" |
+
 ## The review loop to keep
 
 When you inherit a runtime-description helper, run this loop:
@@ -257,6 +323,9 @@ When you inherit a runtime-description helper, run this loop:
 2. remove dynamic reads that are not required for the helper's purpose
 3. keep provenance and signatures in the narrow roles they can support honestly
 4. reject frame inspection unless the tool is explicitly diagnostic and truly needs it
+
+If you can also explain where the helper would cross from strong evidence into
+convenience-only evidence, the module has done its job.
 
 If you can do that here, Module 03 has done its job and later wrapper modules can build on
 stronger inspection habits.

@@ -1,30 +1,5 @@
 # Migration Plans That Preserve Proof
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Migration Plans That Preserve Proof"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Migration becomes dangerous the moment a team starts treating "change" as the goal and
 "proof" as cleanup for later.
 
@@ -34,6 +9,34 @@ A safe migration plan changes one boundary at a time while keeping enough eviden
 answer a simple question:
 
 > what still works, what changed on purpose, and how do we know?
+
+## If you are learning this without the live class
+
+Read this lesson in five passes:
+
+1. name the single boundary you want to move
+2. identify the proof route you refuse to lose
+3. design the smallest comparison that can expose drift
+4. write rollback criteria before you celebrate the new owner
+5. decide only at the end when the old route can honestly be retired
+
+If you cannot name those five things, you do not have a migration plan yet.
+
+## How to use this page
+
+Read this page after you can already describe the current repository truth from the
+previous lesson.
+
+Keep one migration packet beside you as you read:
+
+- one statement of the current contract
+- one defect class
+- one single-boundary move
+- one preserved proof route
+- one comparison packet
+- one retirement condition
+
+That packet is what turns "cleanup" into something a reviewer can actually approve.
 
 ## The migration mistake that burns months
 
@@ -51,6 +54,22 @@ A large rewrite can reduce visible mess while destroying your ability to compare
 - old and new proof routes
 
 If comparison disappears, regressions get explained away instead of diagnosed.
+
+## Start by preserving the questions, not by replacing the implementation
+
+Beginners often frame migration as a design exercise:
+
+- what should the repository look like after cleanup
+- what architecture feels more modern
+- what older surface we want to stop seeing
+
+This page teaches a different frame:
+
+- what questions the current repository can still answer
+- what proof routes a reviewer already trusts
+- what comparison artifacts must stay available while the boundary moves
+
+That is what makes migration reviewable instead of aspirational.
 
 ## Preserve the questions before changing the answers
 
@@ -89,6 +108,21 @@ In Snakemake repositories, the boundaries that often move are:
 
 If a single change tries to move three of these at once, review gets vague very quickly.
 
+## A migration card you should be able to fill before editing anything
+
+Use a table like this:
+
+| Part | What to record |
+| --- | --- |
+| current contract | which files, rules, or review routes must stay trusted |
+| defect class | what is actually wrong: contract ambiguity, policy drift, hidden ownership, weak proof, or wrong tool boundary |
+| intended move | which single boundary changes next |
+| preserved proof | which command or artifact still lets you compare old and new |
+| rollback trigger | what would make the move dishonest |
+| retirement condition | what must be true before the old route disappears |
+
+If you cannot fill one cell, the step is probably too large.
+
 ## Start by strengthening proof, not by deleting the old path
 
 Suppose a team wants to redesign sample discovery and publish reporting.
@@ -123,6 +157,19 @@ Examples:
 These routes are not glamorous, but they stop migration review from becoming a debate
 about confidence and aesthetics.
 
+## What goes wrong when a learner trusts the rewrite story
+
+Use this card before you praise the new structure:
+
+| If you notice... | The migration is probably hiding... | Smallest repair |
+| --- | --- | --- |
+| the plan says "modernize" more often than it names boundaries | the move is still a mood, not a step | one one-boundary migration card |
+| the old proof route disappears before the new one is trusted | lost comparison | keep the old proof route alive |
+| several concerns change in one branch | blurred regression classes | split the move into separate boundaries |
+| rollback is not written down | confidence is replacing evidence | write one explicit rollback trigger |
+
+If the smallest repair feels annoying, that usually means it is exactly what the migration needs.
+
 ## A small example
 
 Imagine a repository where:
@@ -142,6 +189,27 @@ The safe plan is:
 5. retire the old helper only after comparison stays boring
 
 That is what it means to preserve proof.
+
+## One concrete migration scenario
+
+Suppose a team wants to:
+
+- move discovery logic into a package
+- simplify publish reporting
+- change downstream notebook entry points
+
+A weak migration plan treats those as one cleanup project.
+
+A stronger sequence is:
+
+1. keep the current publish verification route alive
+2. compare dry-run target lists before touching downstream readers
+3. move discovery behind the same contract and compare behavior
+4. move reporting only after discovery no longer shifts unexpectedly
+5. change downstream entry points only when the public contract is stable enough to version or preserve
+
+This sequence slows the work down in a useful way. It prevents one broad rewrite from
+hiding three different classes of regression.
 
 ## Hybrid stages are usually honest
 
@@ -166,17 +234,44 @@ Before approving one step, write down:
 
 If the third answer is vague, the step is probably too large.
 
-## A useful migration table
+## The rollback test
 
-| Part | What to record |
-| --- | --- |
-| current contract | which files, rules, or review routes must stay trusted |
-| defect class | what is actually wrong: contract ambiguity, policy drift, hidden ownership, weak proof, or wrong tool boundary |
-| intended move | which single boundary changes next |
-| preserved proof | which command or artifact still lets you compare old and new |
-| retirement condition | what must be true before the old route disappears |
+Before you commit a migration step, make sure you can answer:
 
-This keeps migration plans from becoming wish lists full of vague verbs.
+- what output difference would count as unacceptable
+- what consumer breakage would stop the move
+- what missing proof would block approval even if the code looks cleaner
+- what condition would let you retire the old owner honestly later
+
+If rollback still sounds embarrassing, the migration is not ready. Rollback is part of
+serious stewardship, not evidence of failure.
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is saying, "we can restore verification after the new
+design lands."
+
+That sounds efficient. It is usually how teams lose the comparison route that would have
+told them the redesign drifted.
+
+The course standard is stricter:
+
+1. keep one trusted proof route alive
+2. add the new route beside it
+3. compare calmly and repeatedly
+4. retire the old route only after the new one becomes boring to review
+
+## A five-line migration note you should be able to write from memory
+
+If this lesson has landed, you should be able to write:
+
+1. which exact boundary is moving
+2. what defect class justifies the move
+3. which proof route remains alive throughout the step
+4. what comparison artifact exposes drift
+5. what must be true before the old route disappears
+
+If you cannot write those five lines, the plan is still too abstract.
 
 ## Keep this standard
 

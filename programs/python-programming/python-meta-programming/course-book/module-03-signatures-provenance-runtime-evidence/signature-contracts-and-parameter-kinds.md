@@ -33,6 +33,14 @@ The first strong evidence surface is `inspect.signature`.
 It does not tell you everything about behavior, but it does give you a structured,
 reviewable description of how a callable presents its invocation contract.
 
+That middle sentence matters. Self-study learners often drift in one of two bad
+directions:
+
+- treating signatures as decorative summaries and missing real call-shape rules
+- treating signatures as if they prove everything important about runtime behavior
+
+This page is about keeping the evidence claim precise.
+
 ## The sentence to keep
 
 When reviewing a callable, ask:
@@ -41,6 +49,10 @@ When reviewing a callable, ask:
 > precise?
 
 That question is much stronger than "what arguments do I think it takes?"
+
+Keep one more question beside it:
+
+> which parts of the callable contract come from signature evidence, and which parts still need later runtime evidence?
 
 ## What `inspect.signature` returns
 
@@ -57,6 +69,9 @@ That object can expose:
 For this page, the important point is that the signature object turns invocation shape
 into something explicit and inspectable.
 
+That does not mean it proves side effects, return-value truth, or semantic safety. It
+proves the visible call boundary.
+
 ## Where the signature can come from
 
 `inspect.signature` may synthesize its answer from:
@@ -68,6 +83,14 @@ into something explicit and inspectable.
 
 That is why the result is strong evidence when available, but not universal evidence for
 every possible callable in the runtime.
+
+Use this review table when the claim starts to blur:
+
+| Review question | Signature evidence status | Why |
+| --- | --- | --- |
+| How must arguments be supplied? | strong | parameter kinds and defaults are interpreter-relevant |
+| Does the callable mutate state safely? | not enough | behavior lives after binding succeeds |
+| Is this wrapper still exposing the original contract? | often strong, but review the wrapper chain | `__wrapped__` and `__signature__` can preserve or distort the visible contract |
 
 ## The five parameter kinds matter
 
@@ -86,6 +109,14 @@ Those kinds matter because they encode real interpreter rules:
 - variadic parameters collect excess positional or keyword arguments
 
 That is the level of precision wrappers and validators need.
+
+It is also the level where hand-written summaries start to fail. "Takes `a`, `b`, and
+optional `c`" drops real rules immediately:
+
+- whether `a` is positional-only
+- whether `c` may be supplied positionally
+- whether excess keywords are accepted
+- whether a wrapper is silently widening or narrowing the real call surface
 
 ## One picture of a callable contract
 
@@ -139,6 +170,14 @@ That matters because signature-aware tooling often needs to distinguish:
 
 This is why Module 03 treats signatures as evidence, not decoration.
 
+Read those fields as review hooks:
+
+- `kind` answers the binding rule
+- `default` answers whether the parameter is required
+- `annotation` supplies optional intent support, not enforced call shape
+
+If a review comment mentions only parameter names, it is usually still too weak.
+
 ## Bound and unbound methods expose different callable contracts
 
 Method access changes the visible call contract:
@@ -162,6 +201,13 @@ That difference is an honest runtime fact:
 - the bound method already has an instance attached
 
 Signature-aware tooling must respect that instead of assuming the same shape everywhere.
+
+This is a common pressure point in wrapper code. Always ask:
+
+- am I reading the function stored on the class?
+- or the bound method already attached to one instance?
+
+Mixing those two surfaces leads to avoidable forwarding mistakes.
 
 ## Decorators can preserve or distort signature evidence
 
@@ -193,6 +239,11 @@ print(inspect.signature(f))
 That is one reason later decorator modules will treat `functools.wraps` as a correctness
 tool, not as mere style.
 
+The stronger review question is not just "did the wrapper use `wraps`?" It is:
+
+- did the wrapper preserve the original contract honestly?
+- or did it present a more generic surface while still looking like the original callable?
+
 ## Signature availability is strong but not universal
 
 Some callables still cannot provide a signature, and the failure modes matter:
@@ -214,6 +265,10 @@ def safe_signature(obj):
         return f"<no signature: {type(exc).__name__}: {exc}>"
 ```
 
+Failure handling is part of the teaching point, not cleanup. If signature recovery fails,
+the right conclusion is "strong contract evidence is unavailable here," not "this case is
+impossible and we can ignore it."
+
 ## Review rules for signature contracts
 
 When reviewing signature-aware code, keep these questions close:
@@ -223,6 +278,18 @@ When reviewing signature-aware code, keep these questions close:
 - does the code assume signature availability for all callables when it should handle failure honestly?
 - is decorator behavior preserving signature evidence through `__wrapped__` or `__signature__`?
 - is a bound method being treated like an unbound method, or vice versa?
+
+## Self-study lab
+
+Before leaving this page, write down one callable in this four-line format:
+
+- the exact printed signature
+- the parameter kinds that matter most
+- one thing the signature proves strongly
+- one thing the signature does not prove at all
+
+If the fourth line is hard to write, you are still treating signature evidence as broader
+than it really is.
 
 ## What to practice from this page
 

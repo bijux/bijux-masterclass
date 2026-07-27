@@ -36,6 +36,12 @@ The first sentence to make ordinary is:
 That returned callable is usually built with a nested function that closes over the
 original function and any wrapper state.
 
+That is the first mental reset for learners who have only seen decorators as syntax:
+before `@name` ever enters the picture, there is already a plain runtime object story
+happening. One function receives another function, builds a nested callable, and returns
+it. If that mechanical story is not clear yet, every later page in the module will feel
+more magical than it really is.
+
 ## The sentence to keep
 
 When you meet a decorator, ask:
@@ -44,6 +50,9 @@ When you meet a decorator, ask:
 > does that wrapper close over?
 
 That question keeps the mechanics visible before policy or style enters.
+
+It also prevents one common beginner mistake: describing the wrapper as if it were a
+special decorator-only mechanism instead of an ordinary closure-backed function.
 
 ## The wrapper skeleton
 
@@ -65,6 +74,13 @@ This is not yet useful, but it shows the whole structure:
 
 That is the entire mechanical basis of function-wrapping decorators.
 
+It is worth stating what this skeleton does **not** prove yet:
+
+- it does not preserve the visible signature
+- it does not preserve metadata automatically
+- it does not prove the wrapper is thin
+- it does not prove the wrapper is safe to stack with other behavior
+
 ## Closures make the wrapper remember the original function
 
 The nested wrapper keeps access to `func` through closure semantics:
@@ -75,6 +91,13 @@ The nested wrapper keeps access to `func` through closure semantics:
 
 That is why no global variable is required. The wrapper carries the original callable with
 it as runtime state.
+
+For self-study, this is the point where you should be able to answer a concrete question:
+
+> if the original function name is later rebound, what reference still lets the wrapper
+> call the original behavior?
+
+If the answer is not "the closed-over `func` reference," pause here before moving on.
 
 ## One picture of the structure
 
@@ -114,6 +137,11 @@ That example already teaches several important things:
 - the original return value can still flow through
 - the wrapped callable is just another function object
 
+It also teaches an important review limit:
+
+- printing a message before delegation does not make the wrapper transparent by itself
+- the wrapper is still only a mechanical shell until later pages inspect timing, metadata, and policy drift
+
 ## State can live in the closure too
 
 Wrappers do not only remember the original function. They can also remember wrapper-local
@@ -140,6 +168,14 @@ This is one of the first moments where wrapper design starts changing semantics:
 That is why later pages in this module will distinguish thin wrappers from stateful
 policy-carrying wrappers.
 
+Use the counter example as a boundary test:
+
+| Question | Thin forwarding answer | Stateful wrapper answer |
+| --- | --- | --- |
+| does this wrapper remember earlier calls? | no | yes |
+| can the same call behave differently later? | usually no | yes, because state has changed |
+| does review now need reset or inspection surfaces? | often no | often yes |
+
 ## Returning the wrapper is not optional
 
 One of the simplest decorator bugs is forgetting to return the nested function:
@@ -157,6 +193,10 @@ If that function is used as a decorator, the original function name gets rebound
 This is a good reminder that decoration is ordinary rebinding. If the decorator returns
 the wrong thing, the name now points at the wrong thing.
 
+That is one of the cleanest debugging routes in this module: if a decorated function
+suddenly becomes `None` or a non-callable object, look at the decorator's return path
+before looking for something more exotic.
+
 ## Delegation should target the closed-over original function
 
 Another common bug is accidentally calling a global name that may already have been
@@ -168,6 +208,17 @@ The safe mental model is:
 - not to a global name that could now refer to the wrapper itself or another layer
 
 That rule prevents recursion mistakes and keeps the wrapper path explicit.
+
+## Common wrapper-skeleton failure modes
+
+These bugs appear before any "advanced" decorator design enters:
+
+| Failure mode | What actually went wrong | Review repair |
+| --- | --- | --- |
+| forgot `return wrapper` | the decorator returned `None` instead of a callable | trace the rebinding result directly |
+| delegated to the global function name | the wrapper stopped trusting the closed-over callable | call the captured `func` instead |
+| mutated outer state without `nonlocal` | Python treated the name as a new local binding | make the state boundary explicit with `nonlocal` |
+| assumed the skeleton preserves transparency | forwarding was mistaken for identity preservation | postpone the transparency claim until `functools.wraps` and signature review |
 
 ## `*args, **kwargs` are a forwarding convenience, not a full story
 
@@ -186,6 +237,13 @@ For now, the important point is mechanical:
 - `*args, **kwargs` let the wrapper accept arbitrary calls
 - signature transparency is a separate concern
 
+That distinction matters because many learners incorrectly conclude:
+
+> "the wrapper can accept any call, so tooling will still understand the original callable."
+
+That is false. Accepting calls and preserving the visible callable contract are separate
+problems.
+
 ## Let exceptions propagate unless the wrapper advertises a change
 
 Thin wrappers should normally preserve the original error behavior:
@@ -196,6 +254,11 @@ Thin wrappers should normally preserve the original error behavior:
 This is a useful early wrapper rule: if you change exception behavior, that is no longer
 "just logging" or "just timing." It becomes policy.
 
+That one sentence is worth carrying into every later decorator review:
+
+- observation around failure can stay thin
+- ownership of failure behavior is already policy
+
 ## Review rules for wrapper skeletons
 
 When reviewing a decorator's basic structure, keep these questions close:
@@ -205,6 +268,15 @@ When reviewing a decorator's basic structure, keep these questions close:
 - does the wrapper delegate to the closed-over function or to a rebinding-prone name?
 - does the decorator actually return a callable wrapper?
 - is the wrapper preserving exception behavior unless it explicitly documents a change?
+
+## Exit check for this page
+
+Before you leave this page, make sure you can do all of these without guessing:
+
+- point to the exact closed-over reference the wrapper will call later
+- explain why forgetting `return wrapper` is a rebinding bug rather than a syntax bug
+- distinguish closure-held state from global state
+- say why the wrapper skeleton alone is not yet a transparency claim
 
 ## What to practice from this page
 

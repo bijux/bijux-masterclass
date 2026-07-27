@@ -40,6 +40,11 @@ It combines:
 
 That makes it the right worked example for the module.
 
+This page matters because worked examples are where readers most often over-trust the
+pattern. If the example looks like a miniature ORM, many learners will silently grant it
+ORM responsibilities that it never proved. The job of this page is to keep the proof
+route visible.
+
 ## The incident
 
 Assume a team wants a tiny model system that can:
@@ -51,6 +56,15 @@ Assume a team wants a tiny model system that can:
 
 Those are reasonable educational goals. The mistake would be pretending this is now a real
 ORM.
+
+Keep one more sentence beside it:
+
+> this example is a review packet for field ownership, not a disguised production framework.
+
+If you are studying alone, keep one more rule beside the code:
+
+- every time the example feels impressive, stop and ask what exact responsibility produced that impression
+- then decide whether that responsibility is still field-sized or already model- or framework-sized
 
 ## The first design rule: keep the “ORM” claim narrow
 
@@ -72,6 +86,15 @@ It does not claim:
 
 That refusal is what keeps the example honest.
 
+Use this non-goal table before trusting the implementation:
+
+| Tempting claim | Why this page refuses it |
+| --- | --- |
+| "this is basically an ORM" | the example does not prove transactions, identity maps, or query planning |
+| "relationships are solved" | the relationship surface is intentionally narrow and instructional |
+| "model registration completes the architecture" | registration is only one visible scaffold, not full lifecycle design |
+| "descriptor tricks replace surrounding services" | the module teaches the opposite: descriptors still need honest boundaries |
+
 ## Step 1: define a base field with visible responsibilities
 
 The base field in this example owns only a few things:
@@ -83,6 +106,31 @@ The base field in this example owns only a few things:
 
 That is already a lot of responsibility, so the page keeps those responsibilities visible
 instead of scattering them across several hidden helpers.
+
+## Review route before reading code
+
+Use this route before you inspect the implementation details:
+
+| Review question | Where the answer should appear |
+| --- | --- |
+| what belongs to one field? | `BaseField` and wrapper behavior |
+| what belongs to backend persistence? | the `DB` structure and external field branch |
+| what belongs to relationship loading? | `OneToMany` and reconstruction path |
+| what already looks framework-shaped? | `MODEL_REGISTRY`, `ModelMeta`, and reconstruction logic |
+| what is explicitly refused? | the non-goal list and final boundary notes |
+
+## Worked-example reading order
+
+Do not read the code top to bottom only once. Use this order instead:
+
+1. trace one scalar `BaseField` write from `__set__` to `DB[...]`
+2. trace one `BaseField` read on cache miss or external lookup
+3. trace one wrapper-field validation path
+4. trace one relationship load through `OneToMany`
+5. inspect `ModelMeta` only after the field and relationship responsibilities are clear
+
+That order keeps the field contract visible before the class-level machinery starts
+looking more important than it really is.
 
 ## Step 2: keep external persistence field-shaped
 
@@ -102,6 +150,10 @@ This is enough to show:
 
 without pretending to be a real storage engine.
 
+The educational win here is not realism. It is inspectability:
+
+a learner can point to where truth lives and where it does not.
+
 ## Step 3: let wrappers add narrow extra policy
 
 Validation is layered as a wrapper concern, not built into every field subclass.
@@ -113,6 +165,11 @@ That keeps the field system readable:
 
 This reuses the composition lesson instead of bypassing it.
 
+That matters because the example should reinforce the module’s earlier rule:
+
+do not solve every variation by subclass multiplication when one narrow wrapper makes the
+ownership clearer.
+
 ## Step 4: keep relationships lazy but honest
 
 A relationship field such as `OneToMany` can demonstrate:
@@ -122,6 +179,11 @@ A relationship field such as `OneToMany` can demonstrate:
 - why relationship loading is already pushing past “just one scalar field”
 
 This is exactly where the framework boundary starts to show.
+
+Keep that sentence active while reading the code:
+
+lazy relationship loading is already a warning that the system is approaching broader
+coordination concerns.
 
 ## A bounded implementation
 
@@ -294,6 +356,25 @@ class Comment(metaclass=ModelMeta):
     text: str = BaseField(external=True)
 ```
 
+## Evidence packet to extract from the code
+
+Do not read the code as a magic demonstration. Extract this packet:
+
+| Evidence item | What it proves |
+| --- | --- |
+| one scalar field write path | shows what one field can honestly own |
+| one external field read path | shows where the source of truth sits |
+| one wrapper validation path | shows how additive policy stays visible |
+| one relationship load path | shows where framework pressure begins |
+| one metaclass responsibility | shows why class-level orchestration enters the design |
+
+Add two more packet lines while you review:
+
+| Evidence item | What it proves |
+| --- | --- |
+| one refused production claim | shows the example knows its own boundary |
+| one owner that would have to widen next | shows where the current design would escalate first |
+
 ## Why this is useful for review
 
 This example keeps every major responsibility visible:
@@ -305,6 +386,28 @@ This example keeps every major responsibility visible:
 
 That makes the example usable as a boundary exercise rather than as a fake production
 recipe.
+
+## Weak readings to reject early
+
+These are the fast wrong turns a missed-class learner is likely to take:
+
+| Weak reading | Why it fails |
+| --- | --- |
+| "the descriptors built an ORM" | the example omits transactions, identity maps, and query planning |
+| "the relationship field solves coordination" | it demonstrates loading pressure, not complete relationship architecture |
+| "the metaclass finishes the framework" | registration is one class-creation service, not full model lifecycle design |
+| "external fields now own persistence" | they participate in one field-shaped path while the broader persistence story stays missing |
+
+## What to reject while reviewing this example
+
+Reject these readings of the example:
+
+| Misreading | Better reading |
+| --- | --- |
+| "the model layer is complete" | "the model layer is just complete enough to teach ownership boundaries" |
+| "relationships are solved through descriptors" | "relationships are shown narrowly to expose escalation pressure" |
+| "metaclass registration means the framework architecture is done" | "registration is one class-level mechanism, not the whole architecture" |
+| "external fields make persistence easy" | "external fields make persistence visible but still incomplete" |
 
 ## Where the framework boundary appears
 
@@ -319,6 +422,16 @@ field forever:
 That is the exact point of the exercise. The field layer is still useful, but it is no
 longer the whole architecture.
 
+Use this ownership table to keep the escalation explicit:
+
+| Concern | Honest owner in this example | Stronger owner a real system would need |
+| --- | --- | --- |
+| one field read or write | descriptor field | same unless coordination widens |
+| per-field validation | wrapper plus base field | schema or model service if rules grow cross-field |
+| backend slot storage | external field branch | repository or persistence layer if storage behavior widens |
+| relationship reconstruction | narrow relationship descriptor | identity map, session, or ORM model layer |
+| class registration | `ModelMeta` | broader model infrastructure if lifecycle grows |
+
 ## What this example makes clear about Module 08
 
 This worked example ties the module together:
@@ -332,6 +445,22 @@ This worked example ties the module together:
 That is the durable takeaway. The point is not to produce an ORM. The point is to see
 where a descriptor system stops being just a set of fields and starts becoming framework
 design.
+
+Before leaving the page, write one sentence in each of these forms:
+
+- "this field-level mechanism proves..."
+- "this model-level mechanism begins here..."
+- "this production-grade responsibility is still missing..."
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- name one responsibility the example proves at field level
+- name one responsibility the example intentionally leaves incomplete
+- trace one external read or write to the actual source of truth
+- identify where relationship logic begins to exceed simple field semantics
+- explain why the metaclass is support structure rather than proof of complete architecture
 
 ## Continue through Module 08
 

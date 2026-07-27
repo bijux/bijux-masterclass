@@ -1,36 +1,23 @@
 # File APIs, Public Paths, and Contract Docs
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Workflow Architecture File Apis"]
-  page["File APIs, Public Paths, and Contract Docs"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Repository architecture is not only about where code lives.
 
 It is also about where path promises live.
 
 That is why Module 07 includes file APIs. Once a repository grows, path stability becomes a
 team problem, not just a local implementation detail.
+
+## How to use this page
+
+Read this page while looking at one real path a rule, notebook, or downstream consumer
+depends on.
+
+Ask yourself:
+
+> is this path stable because the team decided it is stable, or only because nobody has renamed it yet?
+
+That question is the difference between an architecture contract and an accident of the
+current layout.
 
 ## A file API is an architectural boundary
 
@@ -56,6 +43,19 @@ It records:
 - compatibility rules for path and payload changes
 
 That means a reviewer does not have to infer path promises from the directory tree alone.
+
+## Start by separating workflow-facing paths from publish-facing paths
+
+One common failure is to talk about "the file API" as if every stable path serves the
+same audience.
+
+A stronger split is:
+
+- workflow-facing paths that rules inside the repository depend on
+- publish-facing paths that downstream users or repositories depend on
+
+That separation matters because one repository can carry both kinds of promises at once,
+and they should not blur together.
 
 ## File APIs are not only for downstream publishing
 
@@ -84,6 +84,19 @@ flowchart LR
 This separation matters because architecture stays healthier when path promises, meaning
 promises, and review routes each have a visible home.
 
+## One concrete review exercise
+
+Take one path rename proposal, for example changing a published report path or a
+workflow-facing discovery file.
+
+A strong review should ask:
+
+- who currently depends on this path?
+- is that dependency documented in the file API?
+- if the path changes, which contract and which tests or consumers should react?
+
+If those questions are hard to answer, the path was never fully owned.
+
 ## A weak file-API posture
 
 Weak shape:
@@ -105,6 +118,20 @@ Stronger shape:
 
 Now the repository can evolve without pretending every path is accidental.
 
+## The beginner mistake to catch early
+
+Beginners often think descriptive folder names are enough.
+
+They are not.
+
+A descriptive path may still be:
+
+- undocumented
+- relied on by hidden consumers
+- changed casually without review
+
+A file API is what turns a descriptive path into an explicit contract surface.
+
 ## A practical test
 
 Ask these questions:
@@ -124,6 +151,16 @@ If the answer to the first question is no, the architecture is relying on memory
 | tests encode implementation paths casually | architecture becomes harder to change | bind tests to declared contract paths where appropriate |
 | file API is too far from the workflow | maintainers stop using it during real reviews | keep contract docs close to the architecture they describe |
 | path renames are treated as harmless cleanup | contract changes are merged invisibly | review path changes as architecture and contract events |
+
+## What a reviewer should hear
+
+A strong explanation sounds like this:
+
+> This path is stable because the file API names it as part of the workflow or publish
+> contract, so a rename is not a cosmetic cleanup. It is a reviewable boundary change.
+
+That is much stronger than "the folder names already make the structure obvious," because
+it makes stability an explicit decision rather than a guess.
 
 ## The explanation a reviewer trusts
 
@@ -147,3 +184,6 @@ Before leaving this page, you should be able to:
 - distinguish workflow-facing and downstream-facing path contracts
 - explain why path renames should trigger review
 - describe one way file APIs reduce architecture drift
+
+If you still describe the file API as "extra docs," pause and reframe. In this module, it
+is one of the main boundaries that protects repository evolution.

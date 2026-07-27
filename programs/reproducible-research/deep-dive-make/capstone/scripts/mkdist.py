@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Create a reproducible dist.tar.gz.
+"""Create a reproducible release archive.
 
 Usage:
   scripts/mkdist.py OUT.tar.gz <path> [<path> ...]
+  scripts/mkdist.py --policy POLICY.tsv --output OUT.tar.gz
 """
 
 from __future__ import annotations
 
+import argparse
 import gzip
 import os
 import stat
@@ -14,6 +16,8 @@ import sys
 import tarfile
 from pathlib import Path
 from typing import Iterable
+
+from release_policy import PackageMember, read_package_policy
 
 # Fixed timestamp to avoid embedding "now" into the archive.
 FIXED_MTIME = 946684800  # 2000-01-01T00:00:00Z
@@ -67,25 +71,84 @@ def add_path(tf: tarfile.TarFile, p: Path, arcname: str) -> None:
     raise RuntimeError(f"Unsupported file type: {p}")
 
 
+def add_policy_member(tf: tarfile.TarFile, member: PackageMember, root: Path) -> None:
+    """Add one policy-governed regular file with declared archive metadata."""
+    source = member.source_path
+    resolved_source = source.resolve()
+    try:
+        resolved_source.relative_to(root)
+    except ValueError as error:
+        raise ValueError(f"source path escapes project root: {source}") from error
+    if source.is_symlink() or not source.is_file():
+        raise ValueError(f"release source must be a regular file: {source}")
+
+    info = tarfile.TarInfo(name=member.archive_path.as_posix())
+    info.mtime = FIXED_MTIME
+    info.uid = 0
+    info.gid = 0
+    info.uname = "root"
+    info.gname = "root"
+    info.mode = member.mode
+    info.type = tarfile.REGTYPE
+    info.size = source.stat().st_size
+    with source.open("rb") as handle:
+        tf.addfile(info, fileobj=handle)
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--policy")
+    parser.add_argument("--output")
+    parser.add_argument("paths", nargs="*")
+    args = parser.parse_args(argv[1:])
+
+    if args.policy:
+        if not args.output or args.paths:
+            parser.error("--policy requires --output and no positional paths")
+    elif args.output or len(args.paths) < 2:
+        parser.error("provide OUT.tar.gz followed by one or more paths")
+    return args
+
+
+def write_archive(
+    output: Path,
+    *,
+    inputs: list[Path] | None = None,
+    policy_members: list[PackageMember] | None = None,
+) -> None:
+    output.parent.mkdir(parents=True, exist_ok=True)
+    staged_output = output.with_name(f".{output.name}.candidate.{os.getpid()}")
+    try:
+        with staged_output.open("xb") as raw_output:
+            with gzip.GzipFile(
+                fileobj=raw_output, filename="", mode="wb", mtime=0
+            ) as compressed:
+                with tarfile.open(fileobj=compressed, mode="w") as archive:
+                    cwd = Path.cwd().resolve()
+                    if policy_members is not None:
+                        for member in policy_members:
+                            add_policy_member(archive, member, cwd)
+                    else:
+                        assert inputs is not None
+                        for input_path in inputs:
+                            for path in iter_paths(input_path):
+                                relative_path = path.resolve().relative_to(cwd)
+                                add_path(archive, path, relative_path.as_posix())
+        os.replace(staged_output, output)
+    finally:
+        staged_output.unlink(missing_ok=True)
+
+
 def main(argv: list[str]) -> int:
-    if len(argv) < 3:
-        print(__doc__.strip(), file=sys.stderr)
-        return 2
-
-    out = Path(argv[1])
-    inputs = [Path(a) for a in argv[2:]]
-
-    out.parent.mkdir(parents=True, exist_ok=True)
-
-    # gzip header also has an mtime; fix it to 0.
-    with gzip.GzipFile(filename=str(out), mode="wb", mtime=0) as gz:
-        with tarfile.open(fileobj=gz, mode="w") as tf:
-            cwd = Path.cwd().resolve()
-            for inp in inputs:
-                for p in iter_paths(inp):
-                    rel = p.resolve().relative_to(cwd)
-                    add_path(tf, p, rel.as_posix())
-
+    args = parse_args(argv)
+    if args.policy:
+        output = Path(args.output)
+        policy_members = read_package_policy(Path(args.policy))
+        write_archive(output, policy_members=policy_members)
+    else:
+        output = Path(args.paths[0])
+        inputs = [Path(path) for path in args.paths[1:]]
+        write_archive(output, inputs=inputs)
     return 0
 
 

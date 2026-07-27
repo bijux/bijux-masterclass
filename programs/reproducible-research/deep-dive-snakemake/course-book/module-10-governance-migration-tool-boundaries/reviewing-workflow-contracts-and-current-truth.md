@@ -1,30 +1,5 @@
 # Reviewing Workflow Contracts and Current Truth
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Reviewing Workflow Contracts and Current Truth"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 The fastest way to waste time in a mature repository is to propose a redesign before you
 can describe what the current system is promising.
 
@@ -32,6 +7,35 @@ That is why Module 10 starts with review.
 
 Review here does not mean style cleanup. It means naming the boundaries another maintainer
 would need to trust before changing anything.
+
+## If you are learning this without the live class
+
+Read this lesson in five passes instead of trying to absorb everything at once:
+
+1. identify what the repository is already promising today
+2. separate public contract from internal convenience
+3. separate workflow meaning from operating policy
+4. identify the proof route and the socially trusted weak spots
+5. write one current-truth note before you imagine any redesign
+
+If you skip that order, you will redesign a repository you have not yet described
+honestly.
+
+## How to use this page
+
+Read this page before you write a migration plan, propose a refactor, or argue for a new
+tool boundary.
+
+Keep one small review packet beside you as you read:
+
+- one list of trusted outputs
+- one list of internal-but-useful surfaces
+- one note on policy versus workflow meaning
+- one proof-route inventory
+- one short list of socially trusted weak spots
+
+That packet is the minimum evidence another maintainer needs before they can judge whether
+change is safe.
 
 ## What a real review should settle
 
@@ -74,6 +78,30 @@ In the capstone, this route is visible:
 
 That is a good pattern. It keeps public truth visible without forcing reviewers to infer it
 from the whole repository tree.
+
+## The first classroom question to force on yourself
+
+Before you improve anything, make yourself answer:
+
+- which files another team is safe to depend on
+- which outputs are merely useful during execution
+- which routes prove the published bundle is still trustworthy
+
+Those are not cleanup details. They are the current contract.
+
+## A current-truth card you should be able to fill quickly
+
+Use a table like this before you keep reading:
+
+| Surface | Current honest description | Why it matters |
+| --- | --- | --- |
+| publish bundle | files downstream users are safe to depend on | public trust starts here |
+| internal results | useful execution surfaces, not public promises | migration must not confuse convenience with contract |
+| policy surfaces | executor, storage, retries, placement, infrastructure | these change operation, not workflow meaning |
+| semantic surfaces | targets, discovery, thresholds, published meaning | these change what the workflow actually does |
+| proof routes | dry-run, file API, publish verification, profile audit | these keep review honest under pressure |
+
+If you cannot fill one row, that row is already a review gap.
 
 ## Separate internal usefulness from public contract
 
@@ -121,6 +149,19 @@ Look for these questions:
 If the answer is no, the governance problem may be bigger than the code-organization
 problem.
 
+## What goes wrong when learners mistake neatness for trust
+
+Use this card before you praise the structure:
+
+| If you notice... | The hidden problem may be... | Smallest review surface |
+| --- | --- | --- |
+| the tree looks clean, but downstream readers are still surprising | contract drift | file API plus consumer inventory |
+| profiles look tidy, but sample sets differ silently | policy leakage | profile audit plus dry-run comparison |
+| one helper is "known to be delicate" | socially trusted ownership | one helper-boundary note plus proof route |
+| proofs are spread across many files and manual habits | weak review route | one compact proof inventory |
+
+If the smallest review surface is missing, the repository is less mature than it looks.
+
 ## Look for socially trusted areas
 
 Every mature repository has zones people "just know" are delicate:
@@ -152,6 +193,26 @@ That repository may look professional, but the review should still flag:
 
 This is why "looks organized" is not a sufficient review outcome.
 
+## One concrete review scenario
+
+Imagine a repository where:
+
+- the publish directory is versioned and widely trusted
+- several notebooks still read internal `results/` paths
+- one profile quietly changes sample filtering
+- one helper script expands discovery in ways few reviewers can explain
+
+A weak review says, "the repository needs modernization."
+
+A strong review says:
+
+1. the public contract is partially clear because the publish bundle is versioned
+2. downstream trust is still leaking onto internal paths
+3. policy and semantics are blurred because profile settings affect sample selection
+4. discovery ownership is too social and not yet reviewable enough for safe migration
+
+That kind of review gives you a real starting point for change.
+
 ## Write the review in boundary language
 
 A helpful review note sounds like this:
@@ -165,6 +226,34 @@ A helpful review note sounds like this:
 That is much stronger than:
 
 > The repository should be cleaned up and modernized.
+
+## The beginner mistake to catch early
+
+The most common beginner mistake in repository review is confusing visible mess with real
+risk.
+
+A repository can look messy and still have a trustworthy contract. A repository can also
+look clean while hiding downstream dependence, policy leaks, and socially trusted helpers.
+
+The repair standard for this course is simple:
+
+1. name the public contract
+2. name the policy boundary
+3. name the proof route
+4. name the most dangerous socially trusted area
+5. only then discuss migration or redesign
+
+## A five-line review note you should be able to write from memory
+
+If this lesson has landed, you should be able to write:
+
+1. which files or artifacts are truly public
+2. which internal surfaces are useful but not promised
+3. which settings are policy and which are semantic
+4. which proof route another maintainer can trust today
+5. which socially trusted area creates the highest migration risk
+
+If you cannot do that, do not discuss modernization yet.
 
 ## Keep this standard
 

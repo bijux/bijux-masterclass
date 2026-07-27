@@ -1,6 +1,7 @@
-# Example SLURM profile (placeholder; adapt to your cluster).
-# Intentionally does NOT assume conda.
-# See module-03 for profile patterns.
+# Portable scheduler policy used by the course profile audit.
+# Site identity, account, partition, and executor-plugin settings belong in an
+# operator-owned overlay; they must not alter semantic config or publish paths.
+# This policy intentionally does not assume conda.
 jobs: 200
 latency-wait: 60
 printshellcmds: true

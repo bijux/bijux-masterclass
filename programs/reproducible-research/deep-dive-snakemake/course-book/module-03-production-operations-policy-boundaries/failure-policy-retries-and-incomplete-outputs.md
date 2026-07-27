@@ -1,30 +1,5 @@
 # Failure Policy, Retries, and Incomplete Outputs
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Failure Policy, Retries, and Incomplete Outputs"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Production operation is not only about getting a run to finish.
 
 It is also about deciding what the workflow should do when something goes wrong:
@@ -37,6 +12,24 @@ It is also about deciding what the workflow should do when something goes wrong:
 Those decisions form a failure policy. If that policy is vague, the repository will
 recover inconsistently and leave ambiguous state behind.
 
+## How to read this page
+
+Read this page with one pressure in mind:
+
+> when something fails, what exactly is the repository promising to trust, rebuild, or
+> reject next?
+
+That question keeps failure handling concrete. It is not mainly about convenience. It is
+about output trust.
+
+## Why this lesson matters early
+
+Teams often add retries before they can classify failures. That is backwards.
+
+If you do not know whether a failure is transient, semantic, or publication-related, any
+retry policy becomes guesswork. Module 03 needs the classification habit before it needs
+more flags.
+
 ## The sentence to keep
 
 When a job fails, ask:
@@ -44,6 +37,18 @@ When a job fails, ask:
 > should the next action be retry, rerun, or refusal to trust the output?
 
 That question is the center of this page.
+
+## A strong beginner habit
+
+Before changing retry behavior, write the failure class in plain language.
+
+For example:
+
+- transient infrastructure interruption
+- bad semantic input or config
+- incomplete publication after interruption
+
+If you cannot name the class, you are not ready to automate the response.
 
 ## Retries are for transient failure, not semantic uncertainty
 
@@ -65,6 +70,18 @@ A retry is not a fix for:
 
 If the job meaning is wrong, retrying only repeats the wrong job.
 
+## The contrast that matters
+
+The important contrast is not:
+
+- failed once
+- failed twice
+
+The important contrast is:
+
+- failure could change if the same contract is attempted again
+- failure will repeat until the contract or inputs are repaired
+
 ## Incomplete outputs are part of the contract
 
 Production workflows must be honest about partially written outputs.
@@ -76,6 +93,18 @@ The repository should answer:
 - how the next run recognizes that state
 
 This is why incomplete-output handling matters. It is not merely cleanup.
+
+## A quick self-check before you keep reading
+
+Think about one failed run you have seen.
+
+Could you say clearly:
+
+- whether the final output was trustworthy
+- whether the failure left recognizable incomplete state
+- whether rerunning would have been honest
+
+If not, the repository probably had a weak failure story.
 
 ## Keep the recovery story small and explicit
 
@@ -136,6 +165,16 @@ Per-job logs are especially important in production because they answer:
 
 Logs do not replace recovery policy. They make it reviewable.
 
+## The common bad repair
+
+A common bad repair is to raise retries until the workflow "usually passes."
+
+That can hide the exact distinction this page is trying to teach:
+
+- a transient problem that deserves retry
+- a semantic defect that deserves repair
+- a publication defect that deserves rerun from incomplete state
+
 ## One simple decision table
 
 | Situation | Better response |
@@ -160,6 +199,17 @@ It means:
 
 That is how the next maintainer can tell whether the workflow should retry, rerun, or be
 repaired.
+
+## What a good explanation sounds like
+
+Strong:
+
+> The repository retries transient failures, reruns incomplete work deliberately, and fails
+> fast on semantic defects because those three cases imply different trust decisions.
+
+Weak:
+
+> If it flakes, we keep trying until it goes green.
 
 ## Common failure modes
 

@@ -1,30 +1,5 @@
 # Rule Families, Modules, and Ownership Boundaries
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Workflow Architecture File Apis"]
-  page["Rule Families, Modules, and Ownership Boundaries"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Once a repository has more than a handful of rules, the next architecture question appears:
 
 > how should the workflow be split so the structure becomes clearer rather than more hidden?
@@ -33,6 +8,17 @@ That question matters because splitting files can either improve review or make 
 workflow harder to see.
 
 This page is about splitting by ownership, not by panic.
+
+## How to use this page
+
+Read this page with one real rule split in mind.
+
+You should be able to answer:
+
+> why do these rules live together, and what ownership boundary would be damaged if I moved them casually?
+
+If you cannot answer that clearly, the current split may be historical rather than
+architectural.
 
 ## A file split is only useful when it reveals responsibility
 
@@ -64,6 +50,20 @@ For example:
 - publish rules define the public bundle and its integrity surfaces
 
 That is easier to inspect than a split based only on file size.
+
+## Start with concern boundaries before reuse boundaries
+
+Beginners often split a workflow by asking, "How can I reduce the length of this file?"
+
+That is the wrong first question.
+
+A better sequence is:
+
+1. identify the workflow concern
+2. decide which rules share one review question or one contract surface
+3. only then decide whether the concern belongs in a local rule file or a reusable module
+
+This order matters because reuse is not the same thing as clarity.
 
 ## Modules solve a different problem than includes
 
@@ -103,6 +103,17 @@ flowchart LR
 The point is not that every repository must look exactly like this. The point is that each
 split should carry a readable reason.
 
+## One concrete reading exercise
+
+Take a crowded workflow and imagine two different splits:
+
+- one by arbitrary length, where rules are divided only to reduce line count
+- one by concern, where preprocessing, summarization, and publishing each own a coherent
+  rule family
+
+Only the second split helps a reviewer answer what a file is for before reading all its
+rules. That is the architectural advantage you are trying to create.
+
 ## Weak splitting
 
 Weak shape:
@@ -123,6 +134,19 @@ Strong shape:
 
 Now reuse supports understanding instead of fighting it.
 
+## The beginner mistake to catch early
+
+The most common beginner mistake is to treat every extra file as architectural progress.
+
+More files can easily mean:
+
+- more indirection
+- weaker ownership signaling
+- more time spent reconstructing the workflow mentally
+
+Architecture improves only when the split reveals why a reader should care about the
+boundary.
+
 ## A practical test
 
 Ask these questions:
@@ -142,6 +166,17 @@ If the third answer is the second one, the split probably needs rethinking.
 | modules introduced with no interface story | reuse hides rather than clarifies | define what the module owns and what it exposes |
 | rule assembly buried under helper indirection | visible DAG shape becomes harder to inspect | keep high-level composition near the entrypoint |
 | reuse pursued for its own sake | local readability drops before any real gain appears | reuse only when the boundary becomes clearer, not just smaller |
+
+## What a reviewer should hear
+
+A strong explanation sounds like this:
+
+> These rules live together because they share one workflow concern, one file-surface
+> family, and one review question. The module boundary is used only where the interface is
+> real enough that reuse does not hide the visible workflow.
+
+That is stronger than "we broke the workflow into smaller files," because it tells the
+reader how to inspect the split.
 
 ## The explanation a reviewer trusts
 
@@ -165,3 +200,6 @@ Before leaving this page, you should be able to:
 - distinguish local rule files from reusable workflow modules
 - describe one sign that a file split is architectural rather than cosmetic
 - explain how too much indirection can hide the visible workflow graph
+
+If you still judge the split mainly by line count, keep working. This page is really
+about reviewable ownership, not file-size management.

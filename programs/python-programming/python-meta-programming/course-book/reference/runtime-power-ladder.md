@@ -25,13 +25,15 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this page when a metaprogramming design feels impressive but the review question is
-really about blast radius, timing, and ownership.
+Use this page when the mechanism looks powerful and the real question is:
 
-The ladder is not a prestige scale. It is a way to compare how far each mechanism reaches
-into runtime behavior and how much review evidence it should owe in return.
+> how far up the runtime ladder did this design climb, and did it actually need to?
 
-## The ladder
+The ladder is not a prestige chart. It is a review tool. Each upward move buys power but
+also increases blast radius, proof cost, and the chance that a maintainer will need a live
+tour just to understand what happens.
+
+## The five rungs
 
 From lower power to higher power:
 
@@ -39,106 +41,121 @@ From lower power to higher power:
 2. wrappers and decorators
 3. descriptors and attribute-level control
 4. metaclasses and class-creation hooks
-5. import hooks, AST transforms, and dynamic execution with global consequences
+5. process-wide dynamic mechanisms such as import hooks, AST transforms, or dynamic execution
 
-Moving upward is not automatically wrong. It means the approval bar gets higher because
-the mechanism becomes harder to observe, harder to reverse, or harder to scope tightly.
+Going higher is not automatically wrong. It means the design now owes stronger answers
+about ownership, observability, reversibility, and proof.
 
-## What each rung is for
+## Read the ladder as a review sequence
 
 ### 1. Explicit code and ordinary objects
 
-Use this when a function, method, class, or helper can own the behavior directly.
+Start here first.
 
-Why it is the default:
+Choose this rung when:
 
-- the timing is visible
-- the owner is explicit
-- tests and debugging usually stay straightforward
+- a function, method, helper, or class can own the behavior directly
+- the behavior is local enough that call timing and ownership stay obvious
+
+Why this is the default:
+
+- timing is visible
+- ownership is explicit
+- debugging tends to stay straightforward
 
 ### 2. Wrappers and decorators
 
-Use this when call-time policy belongs around a callable and can stay transparent.
+Move here when call-time behavior really belongs around a callable.
 
-Typical honest cases:
+Good uses:
 
 - thin logging
 - light validation
 - explicit registration
 
-Review pressure:
+What this rung owes:
 
-- preserve metadata
-- preserve tracebacks
-- measure hot-path overhead when relevant
+- preserved metadata and signatures
+- understandable tracebacks
+- clear separation between transformation and policy sprawl
 
 ### 3. Descriptors and attribute-level control
 
-Use this when one attribute access path is the right owner for validation, coercion, or
-storage rules.
+Move here when attribute access is the real owner of the rule.
 
-Typical honest cases:
+Good uses:
 
 - field-level validation
-- attribute-backed caching
+- coercion at assignment or lookup
 - reusable per-field contracts
 
-Review pressure:
+What this rung owes:
 
-- keep source of truth explicit
-- keep per-instance behavior inspectable
-- avoid turning one field abstraction into a hidden framework
+- explicit source of truth for state
+- inspectable per-instance behavior
+- protection against turning one field abstraction into hidden framework architecture
 
 ### 4. Metaclasses and class-creation hooks
 
-Use this only when the behavior truly belongs before the class exists as a finished object.
+Move here only when the invariant must be owned before the class exists as a finished object.
 
-Typical honest cases:
+Good uses:
 
 - declaration-time namespace control
-- hierarchy-wide registration at class definition time
-- class-shape enforcement that lower-power tools cannot own
+- deterministic registration at class definition time
+- class-shape enforcement that lower rungs cannot own honestly
 
-Review pressure:
+What this rung owes:
 
-- keep import-time effects visible
-- keep registration deterministic and resettable
-- justify why a decorator or helper is insufficient
+- visible import-time effects
+- deterministic and resettable behavior
+- a clear explanation of why decorators, helpers, or explicit registration were not enough
 
-### 5. Import hooks, AST transforms, and dynamic execution
+### 5. Process-wide dynamic mechanisms
 
-Use this only for tooling-grade problems or tightly bounded trusted-runtime cases.
+Move here only for tooling-grade or tightly bounded trusted-runtime cases.
 
-Typical honest cases:
+Good uses:
 
 - instrumentation
-- coverage and tracing
-- controlled code generation for trusted inputs
+- tracing or coverage support
+- carefully bounded trusted code generation
 
-Review pressure:
+What this rung owes:
 
-- name the process-wide blast radius
-- provide cleanup and disable paths
-- stop security claims at real trust and isolation boundaries
+- explicit process-wide blast radius
+- disable and cleanup paths
+- honest trust-boundary language instead of vague flexibility claims
 
 ## The approval question
 
 For any rung above the first, ask:
 
-> What does this mechanism own that the rung below it cannot own honestly enough?
+> What does this rung own that the rung below it could not own honestly enough?
 
-If the answer is vague, ornamental, or mostly about elegance, stay lower.
+If the answer is vague, decorative, or mostly about elegance, the design should move downward.
 
-## Keep, change, reject examples
+## What to compare at each step
 
-- Keep a descriptor when one field contract is the real owner.
-- Change a wrapper that hides traceback or signature information.
-- Reject a metaclass when a decorator can register classes explicitly enough.
+| Current rung | Ask what the rung below almost solved | Ask what new cost this rung introduced |
+| --- | --- | --- |
+| decorators | could explicit code have stayed clear enough | what metadata or debugging clarity might be lost |
+| descriptors | could a property or explicit method have owned the rule | what lookup complexity and hidden storage risk appeared |
+| metaclasses | could a class decorator or explicit registration have worked | what import-time or class-creation opacity appeared |
+| process-wide mechanisms | could a bounded local mechanism have solved the problem | what global trust, rollback, or process-order risks appeared |
+
+## Quick decisions
+
+- Keep a descriptor when one field contract is truly the owner.
+- Change a wrapper that hides signature or traceback evidence.
+- Reject a metaclass when a class decorator or registration helper would stay clearer.
 - Reject import-hook discovery when explicit imports or entry points keep the runtime more visible.
 
-## Related reference pages
+## Good stopping point
 
-- [Review Checklist](review-checklist.md)
-- [Boundary Review Prompts](boundary-review-prompts.md)
-- [Topic Boundaries](topic-boundaries.md)
-- [Module Dependency Map](module-dependency-map.md)
+Leave this page when you can say:
+
+- which rung the design is on
+- what the rung below almost solved
+- what extra blast radius the chosen rung introduced
+- what proof route should pay for that extra power

@@ -24,92 +24,156 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for
-wandering the whole course-book. Read the second diagram as the guide loop: arrive with
-a concrete question, use only the matching sections, then leave with one smaller and
-more honest next move.
+Use this page at the end of a module.
 
-Use this page at the end of each module. A strong metaprogramming course needs a clear
-exit bar, not just more mechanism pages. These checkpoints are the smallest honest claims
-you should be able to make before moving deeper into the course.
+Its purpose is simple: prevent false advancement. Metaprogramming learners often move on
+because the examples felt familiar or the terminology started sounding natural. That is
+not enough. Each module needs an exit bar strong enough that later material does not rest
+on confusion.
+
+## How to use the checkpoints
+
+For each module:
+
+1. Read the checkpoint.
+2. Try to explain it in plain language without looking back.
+3. Prove one part of it in the capstone or another concrete surface.
+4. If you cannot do both, you are not done with the module.
+
+Use this page to slow yourself down, not to reassure yourself.
 
 ## Checkpoints by module
 
 ### Module 01: Runtime Objects and the Python Object Model
 
-- You can explain what Python functions, classes, modules, and instances are as runtime objects rather than as syntax alone.
-- You can distinguish supported introspection from diagnostic-only CPython surfaces.
-- You can describe what actually happens when names resolve to objects, methods, or closures.
-- Prove it by explaining one capstone object from `src/incident_plugins/` without running its business behavior.
+You are ready to move on when you can:
+
+- explain functions, classes, modules, and instances as runtime objects rather than as syntax categories
+- describe what names actually resolve to when Python binds methods or closes over values
+- distinguish supported introspection surfaces from implementation-specific curiosities
+
+Proof move:
+
+- choose one capstone object and describe it without executing its business behavior
 
 ### Module 02: Safe Runtime Observation and Inspection
 
-- You can explain why attribute access is not automatically passive.
-- You can separate visible names, stored state, and resolved values.
-- You can choose safer observation tools before resorting to risky value resolution.
-- Prove it by inspecting the capstone manifest and registry output before opening implementation files.
+You are ready to move on when you can:
+
+- explain why ordinary attribute access is not automatically passive
+- separate visible names, stored state, and resolved values
+- choose safer inspection tools before reaching for risky value resolution
+
+Proof move:
+
+- inspect manifest and registry output before opening implementation files
 
 ### Module 03: Signatures, Provenance, and Runtime Evidence
 
-- You can use signatures to explain how a callable should be invoked.
-- You can distinguish strong runtime evidence from best-effort provenance helpers.
-- You can explain why `inspect.getattr_static` and `inspect.getmembers` answer different questions.
-- Prove it by reading the capstone action signatures and describing what they reveal without invocation.
+You are ready to move on when you can:
+
+- use signatures to explain how a callable is meant to be invoked
+- distinguish strong runtime evidence from best-effort provenance hints
+- explain why two inspection helpers can answer different questions about the same object
+
+Proof move:
+
+- read the capstone action signatures and say what they reveal without invocation
 
 ### Module 04: Function Wrappers and Transparent Decorators
 
-- You can describe what runs at definition time and what runs at call time inside a decorator.
-- You can explain why `functools.wraps` is part of correctness rather than style.
-- You can tell when a wrapper is still transparent and when it has started changing semantics in a hidden way.
-- Prove it by inspecting `src/incident_plugins/actions.py` and the runtime tests for invocation recording.
+You are ready to move on when you can:
+
+- describe what happens at definition time and what happens at call time in a decorator
+- explain why `functools.wraps` is part of correctness rather than decoration
+- tell when a wrapper is still transparent and when it has started hiding semantic change
+
+Proof move:
+
+- inspect `actions.py` plus the matching runtime tests for invocation recording
 
 ### Module 05: Decorator Design, Policies, and Typing
 
-- You can judge whether policy belongs in a decorator or in an explicit object or service boundary.
-- You can explain what annotation-driven runtime behavior can and cannot promise honestly.
-- You can describe the review cost of retries, validation, or caching when they are hidden behind wrappers.
-- Prove it by comparing the capstone action decorator with one policy-heavy pattern from the module and naming why the capstone stays narrower.
+You are ready to move on when you can:
+
+- judge whether policy belongs in a decorator or should become an explicit service or object
+- explain what annotation-driven runtime behavior can promise honestly and what it cannot
+- describe the review cost of hiding retries, validation, or caching behind wrappers
+
+Proof move:
+
+- compare the capstone action decorator with one heavier policy pattern and explain why the capstone stays narrower
 
 ### Module 06: Class Customization Before Metaclasses
 
-- You can explain when a class decorator, property, or explicit helper is enough.
-- You can describe why post-creation class customization is lower-risk than class-creation control.
-- You can recognize when a design is already drifting toward descriptor or metaclass territory.
-- Prove it by inspecting constructor behavior and class-level customization inside the capstone without yet reaching for `PluginMeta`.
+You are ready to move on when you can:
+
+- explain when a class decorator, property, or explicit helper is sufficient
+- describe why post-creation customization is usually less risky than class-creation control
+- recognize when a design is drifting toward descriptor or metaclass territory
+
+Proof move:
+
+- inspect class-level customization in the capstone without reaching for `PluginMeta`
 
 ### Module 07: Descriptors, Lookup, and Attribute Control
 
-- You can explain the difference between data and non-data descriptors.
-- You can trace one attribute from class declaration to per-instance storage.
-- You can justify when a descriptor owns the invariant better than a plain method or property.
-- Prove it by inspecting `src/incident_plugins/fields.py` and the field tests for coercion and storage behavior.
+You are ready to move on when you can:
+
+- explain the difference between data and non-data descriptors
+- trace one attribute from class declaration to per-instance storage
+- justify when a descriptor owns an invariant better than a plain method or property
+
+Proof move:
+
+- inspect `fields.py` and the field tests for coercion, precedence, and storage behavior
 
 ### Module 08: Descriptor Systems, Validation, and Framework Design
 
-- You can say when a descriptor is still one field contract and when it has become framework architecture.
-- You can explain how caching, coercion, or external storage change the review cost of a field abstraction.
-- You can describe why some validation belongs at assignment while other validation belongs elsewhere.
-- Prove it by comparing the capstone field system with the richer descriptor patterns from the module and naming which extra powers were intentionally left out.
+You are ready to move on when you can:
+
+- say when a descriptor is still one field contract and when it has become architecture
+- explain how caching, coercion, or external storage change review cost
+- describe why some validation belongs at assignment while other validation belongs elsewhere
+
+Proof move:
+
+- compare the capstone field system with richer descriptor patterns and name the powers it intentionally leaves out
 
 ### Module 09: Metaclass Design and Class Creation
 
-- You can explain what must happen before the class exists for a metaclass to be justified.
-- You can compare a metaclass honestly against class decorators and explicit registration.
-- You can describe why deterministic, resettable registration matters in tests.
-- Prove it by inspecting `src/incident_plugins/framework.py` and `tests/test_registry.py`.
+You are ready to move on when you can:
+
+- explain what must happen before the class exists for a metaclass to be justified
+- compare a metaclass honestly against class decorators and explicit registration
+- describe why deterministic, resettable registration matters in tests and reviews
+
+Proof move:
+
+- inspect `framework.py` and `tests/test_registry.py` together
 
 ### Module 10: Runtime Governance and Mastery Review
 
-- You can name the red lines around dynamic execution, monkey-patching, and import-hook behavior.
-- You can explain which runtime powers may be acceptable in tooling but not in ordinary application code.
-- You can review a meta-heavy design for debuggability, observability, and reversibility.
-- Prove it by using the capstone proof route and naming one design change you would reject as making the runtime less observable.
+You are ready to finish the course when you can:
 
-## How to use these checkpoints
+- name red lines around dynamic execution, monkey-patching, and import-hook behavior
+- explain which powers may be acceptable in tooling but not in normal application code
+- review a meta-heavy design for debuggability, observability, and reversibility
 
-- If you cannot explain the checkpoint in plain language, re-read the module overview before going deeper.
-- If the checkpoint only feels true in prose, inspect the named capstone surface so the claim becomes concrete.
-- If a later module feels magical again, come back here and find the earliest checkpoint that is still fuzzy.
+Proof move:
 
-These checkpoints turn the course from "many advanced runtime pages" into a sequence of
-earned review abilities.
+- run the capstone proof route and name one design change you would reject immediately
+
+## What to do when a checkpoint fails
+
+- Re-read the module overview and the most relevant lesson page.
+- Return to the capstone proof move instead of reading more abstractions.
+- Use the previous module’s checkpoint if the current one feels magical.
+
+## Good stopping point
+
+You can leave this page when you know:
+
+- which checkpoint you can defend
+- which one still fails
+- what concrete proof move you will use next

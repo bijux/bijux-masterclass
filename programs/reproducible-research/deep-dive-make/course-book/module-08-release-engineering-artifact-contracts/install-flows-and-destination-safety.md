@@ -18,258 +18,300 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  candidate["accepted candidate"] --> preflight["preflight paths and conflicts"]
+  preflight --> stage["write below DESTDIR"]
+  stage --> inspect["record paths, modes, and checksums"]
+  inspect --> rerun["repeat into the same root"]
+  rerun --> compare["compare installed-tree evidence"]
 ```
 <!-- page-maps:end -->
 
-Many repositories treat `install` as a small appendix to the build:
+Many repositories treat `install` as a small appendix to the build: copy a binary, create a
+directory, and hope a second run is harmless. That description hides the important part.
+Installation mutates a destination owned by someone other than the build.
 
-- copy a binary somewhere
-- maybe create a directory
-- maybe overwrite files
-- hope it is fine if run twice
+An install target therefore needs a stricter contract than "the files were copied." A
+reviewer must be able to answer:
 
-That is a risky habit.
+- which accepted payload was installed
+- how logical install paths were mapped into the rehearsal root
+- which existing paths could be replaced
+- whether every write stayed inside the declared root
+- whether a second run converged on the same installed tree
+- what remained after an interrupted or rejected install
 
-`install` is not a casual copy step. It is a publication act with side effects on a real
-destination tree. That means it deserves the same design discipline as `dist`.
-
-This page is about making installation behavior safe enough to trust.
+This page builds an install rehearsal that answers those questions without writing to the
+host system.
 
 ## The sentence to keep
 
 When you define `install`, ask:
 
-> what exact destination tree am I promising to create or update, and what should happen if
-> the target is run again?
+> Given this accepted candidate, what exact tree may the install route create or replace,
+> and what evidence proves that every write stayed there?
 
-That question turns installation from shell ritual into contract design.
+The candidate identity matters. Installing ambient build residue while verifying an
+archive tests two different payloads.
 
-## Installation has a destination contract
+## Separate the logical prefix from the staging root
 
-An install step should answer at least four things:
+`PREFIX` and `DESTDIR` answer different questions:
 
-- where files go
-- which directories are created
-- what overwrite behavior is expected
-- whether rerunning the install leaves the same intended result
+| Variable | Contract question | Typical value |
+| --- | --- | --- |
+| `PREFIX` | where should the package live on the eventual system? | `/usr/local` |
+| `DESTDIR` | below which rehearsal or packaging root must this invocation write? | `artifacts/module08-release/install-root` |
 
-If those facts are not clear, the install surface is not really designed yet.
+The composed path is:
 
-This is why `DESTDIR` or other destination-root variables matter. They make the publication
-boundary explicit.
+```text
+$(DESTDIR)$(PREFIX)/bin/app
+```
 
-## Idempotence matters
+With the values above, the rehearsal writes:
 
-One of the healthiest expectations for `install` is idempotence:
+```text
+artifacts/module08-release/install-root/usr/local/bin/app
+```
 
-> running `make install` twice should not produce a meaningfully different system than
-> running it once.
+`DESTDIR` is not a replacement for `PREFIX`. Setting `PREFIX` to an artifact directory
+changes the package's logical destination and often produces the wrong archive layout.
 
-That does not mean timestamps or file metadata can never change. It means the intended
-installed tree should settle on the same content and structure.
+## Declare the installed tree before writing it
 
-If the second run:
+For a small application, the contract might be:
 
-- duplicates files
-- appends to config
-- leaves broken intermediate state
-- depends on left-over partial results from the first run
+```text
+/usr/local/bin/app                         mode 0755
+/usr/local/share/licenses/app/LICENSE      mode 0644
+```
 
-then the install contract is lying.
+This list is install policy, not an observation generated from the result. After the
+install, an independent listing can be compared with it.
 
-## `DESTDIR` makes install review safer
+The contract should also say whether:
 
-A classic safe-review pattern is:
+- undeclared existing files are preserved
+- declared files are replaced
+- conflicting directories or symbolic links cause rejection
+- ownership is preserved, normalized, or delegated to a package manager
+- removal of files from a later version is handled by `install`, `uninstall`, or an
+  external package manager
+
+Without these decisions, two successful copy commands can still implement different
+installation policies.
+
+## Model concrete installed files
+
+Let real file targets carry the destination mapping and let `install` be the alias:
+
+```make
+PREFIX ?= /usr/local
+DESTDIR ?=
+INSTALL ?= install
+INSTALL_ROOT := $(DESTDIR)$(PREFIX)
+
+INSTALLED_APP := $(INSTALL_ROOT)/bin/app
+INSTALLED_LICENSE := $(INSTALL_ROOT)/share/licenses/app/LICENSE
+
+.PHONY: install
+
+install: $(INSTALLED_APP) $(INSTALLED_LICENSE)
+
+$(INSTALLED_APP): accepted/app
+	@$(INSTALL) -d "$(@D)"
+	@$(INSTALL) -m 0755 "$<" "$@"
+
+$(INSTALLED_LICENSE): accepted/LICENSE
+	@$(INSTALL) -d "$(@D)"
+	@$(INSTALL) -m 0644 "$<" "$@"
+```
+
+This shape exposes the files Make is responsible for and gives modes an explicit policy.
+The `accepted/` directory represents payload bytes already admitted by the release gates.
+In a real repository it could be a validated extraction root.
+
+Quoting protects whitespace in path values, but quoting does not prove containment. That
+requires validation before the recipes run.
+
+## Reject unsafe destination composition
+
+A rehearsal should reject:
+
+- an empty `DESTDIR`
+- a relative `DESTDIR`
+- `..` components that escape the declared root
+- a destination ancestor that is a symbolic link
+- a `PREFIX` whose composition does not remain below `DESTDIR`
+
+Shell string-prefix checks are not sufficient because `/safe/root-other` begins with
+`/safe/root`. Resolve the parent paths that already exist, reject symbolic-link ancestors,
+and compare path components rather than raw string prefixes.
+
+For the module packet, invoke the route with an absolute repository-owned root:
 
 ```sh
-make install DESTDIR=/tmp/release-check
+repo_root=$(pwd -P)
+install_root="$repo_root/artifacts/module08-release/install-root"
+gmake -C path/to/project install \
+  DESTDIR="$install_root" \
+  PREFIX=/usr/local
 ```
 
-This matters because it lets you inspect the resulting layout without mutating a real
-system location.
+Run this only from the repository root. Afterward, verify that no tracked file changed and
+that all new paths are descendants of `install_root`.
 
-Even if the repository later supports a more privileged install route, `DESTDIR` or a
-similar staging root is a very useful discipline:
+## Preflight before the first mutation
 
-- it makes the destination explicit
-- it helps test idempotence
-- it keeps the installation tree inspectable
+Before creating directories, inspect:
 
-That is a much safer default than recipes that write straight into `/usr/local` or another
-system path during everyday testing.
+- every source payload and its checksum
+- every composed destination path
+- every existing destination ancestor
+- every declared overwrite
+- required free space and permissions when those constraints matter
 
-## A small install contract
+A preflight cannot make a multi-file copy atomic, but it can reject predictable failures
+before the destination is half changed.
 
-Suppose the install policy is:
+For complex system installation, a package manager may provide the ownership database,
+transaction, removal, and rollback semantics that a Make recipe cannot safely reproduce.
+Know where the Make contract ends.
 
-- binary goes to `$(DESTDIR)/usr/local/bin/app`
-- license goes to `$(DESTDIR)/usr/local/share/licenses/app/LICENSE`
+## Prove containment from the resulting tree
 
-Then the build should model that clearly:
+Record an installed-tree manifest after the rehearsal:
 
-```make
-PREFIX ?= /usr/local
-INSTALL_ROOT := $(DESTDIR)$(PREFIX)
+```sh
+install_root="$PWD/artifacts/module08-release/install-root"
 
-.PHONY: install
+find "$install_root" -type f -print \
+  | sed "s#^$install_root##" \
+  | LC_ALL=C sort \
+  > artifacts/module08-release/evidence/installed-files.txt
 
-install: app LICENSE
-	@mkdir -p $(INSTALL_ROOT)/bin
-	@mkdir -p $(INSTALL_ROOT)/share/licenses/app
-	@cp app $(INSTALL_ROOT)/bin/app
-	@cp LICENSE $(INSTALL_ROOT)/share/licenses/app/LICENSE
+find "$install_root" -type f -exec shasum -a 256 {} \; \
+  | sed "s#  $install_root#  #" \
+  | LC_ALL=C sort \
+  > artifacts/module08-release/evidence/installed-checksums.txt
 ```
 
-This is not exotic. It is simply explicit enough that another engineer can inspect the
-result.
+Also record modes. `find` formatting differs across platforms, so the course verification
+route should choose and document either BSD `stat`, GNU `stat`, or a small Python reader.
+Portable evidence requires a declared tool contract just as archive production does.
 
-## Stage first when the install flow is more complex
+The absence of paths outside `install_root` is not established by listing only that root.
+Pair the listing with repository status and, where practical, an isolated filesystem or
+container. The repository rehearsal provides strong local evidence, not a proof about every
+host path.
 
-For richer installs, a staging tree is often healthier than copying directly into the final
-destination layout piece by piece.
+## Test convergence, not merely two zero exit codes
 
-That may look like:
+An idempotence test should compare tree evidence:
 
-1. assemble install tree in a temporary directory
-2. validate it
-3. copy or sync it into the destination root in one controlled step
+1. start from an empty rehearsal root
+2. install the accepted candidate
+3. record paths, modes, and checksums
+4. install the same candidate into the same root again
+5. record the same evidence
+6. compare the two records
 
-This is the same publication lesson from earlier modules:
+Two successful invocations are not enough. A recipe that appends a registration line can
+succeed twice while corrupting the destination.
 
-- prepare in temporary space
-- trust only after the layout is complete
+Decide whether modification times are part of the comparison. Content and mode stability
+usually matter; timestamp preservation depends on package policy.
 
-That reduces the chance that a failed install leaves a half-updated destination that looks
-finished enough to confuse the next run.
+## Make overwrite policy observable
 
-## Overwrite behavior should be deliberate
+Exercise at least these cases:
 
-Install commands often blur three different policies:
+| Destination state | Expected decision |
+| --- | --- |
+| declared file absent | create it with the declared mode |
+| declared file has identical content | leave or replace according to policy, with same final evidence |
+| declared file has conflicting content | replace or reject explicitly |
+| destination path is a directory | reject before mutation |
+| destination ancestor is a symbolic link | reject as a containment risk |
+| unrelated file exists below the root | preserve unless package policy owns it |
 
-- always overwrite
-- overwrite only if content changed
-- fail if a conflicting file already exists
+Do not use `rm -rf "$(DESTDIR)"` inside a general install target. A caller may point
+`DESTDIR` at a tree containing other packages.
 
-Any of those can be legitimate depending on the contract.
+## Understand the partial-failure boundary
 
-The mistake is to leave the behavior accidental.
+The concrete-file targets above can still fail after installing one file and before
+installing another. Make does not turn a sequence of filesystem mutations into a
+transaction.
 
-For example, a system-level install might reasonably want stricter conflict handling than a
-`DESTDIR` staging install. The important thing is that the build and its docs make that
-choice visible.
+Choose an explicit recovery contract:
 
-## A weak install target smells like this
+- a dedicated rehearsal root may be discarded and recreated
+- a package-manager-owned transaction may roll back
+- a direct host install may require repair from an installed-file manifest
+- an interrupted upgrade may be rejected until the prior package state is restored
 
-Be suspicious when `install`:
+The release packet should retain the candidate identity, command, pre-install observation,
+and resulting partial tree. Cleaning first destroys the evidence needed to explain what was
+written.
 
-- writes directly into a real system path during everyday testing
-- depends on the current working directory or shell state
-- mixes package creation and final installation in one recipe without a clear boundary
-- cannot be rerun safely
+## Keep package assembly and installation distinct
 
-These are not only operational inconveniences. They are contract defects.
+These targets have related inputs but different consumers:
 
-## Dry-run and preview help here too
+| Target | Product | Primary consumer |
+| --- | --- | --- |
+| `dist` | portable candidate bytes | release verifier |
+| `verify-dist` | acceptance evidence | release reviewer |
+| `install` | destination-tree mutation | operator or package builder |
+| `verify-install` | containment and convergence evidence | install reviewer |
 
-Not every repository can make `install` fully dry-run capable, but preview habits still
-matter.
+An install rehearsal should consume the accepted archive extraction or exactly the same
+declared payload. It should not quietly rebuild a new binary after the archive was
+accepted.
 
-Useful review questions include:
+## Review a destination contract
 
-- what files will be copied
-- where will they go
-- which directories will be created
-- what existing paths may be overwritten
+For one install route, write down:
 
-Even when the exact preview mechanism differs, the goal is the same: make install side
-effects inspectable before they happen.
+1. accepted candidate identity
+2. logical prefix
+3. rehearsal root
+4. complete installed-path and mode policy
+5. overwrite and unrelated-file policy
+6. symbolic-link and traversal rejection policy
+7. first-run and rerun evidence
+8. partial-failure recovery route
 
-## A small staged install example
-
-```make
-INSTALL_STAGE := build/install-stage
-PREFIX ?= /usr/local
-INSTALL_ROOT := $(DESTDIR)$(PREFIX)
-
-.PHONY: install
-
-install: app LICENSE
-	@rm -rf $(INSTALL_STAGE)
-	@mkdir -p $(INSTALL_STAGE)/bin
-	@mkdir -p $(INSTALL_STAGE)/share/licenses/app
-	@cp app $(INSTALL_STAGE)/bin/app
-	@cp LICENSE $(INSTALL_STAGE)/share/licenses/app/LICENSE
-	@mkdir -p $(INSTALL_ROOT)
-	@cp -R $(INSTALL_STAGE)/* $(INSTALL_ROOT)/
-```
-
-This is often easier to review than a longer recipe that mutates the destination tree in
-many small steps.
-
-## Install and dist are related but not identical
-
-Teams sometimes blur `dist` and `install`. The healthier distinction is:
-
-- `dist` publishes a portable artifact boundary
-- `install` publishes a destination tree side effect
-
-The two may share inputs, but they do not necessarily promise the same result.
-
-That is why each deserves its own contract meaning.
-
-## Failure signatures worth recognizing
-
-### "Running install twice changes the destination unexpectedly"
-
-That means the install route is not idempotent enough for its intended contract.
-
-### "We can only test install by writing into a real machine path"
-
-That usually means the destination boundary is not explicit enough.
-
-### "A failed install leaves half the tree updated"
-
-That means publication into the destination is happening too incrementally or too early.
-
-### "No one can tell whether install overwrites or preserves existing files"
-
-That means overwrite policy is accidental rather than declared.
-
-## A review question that improves install design
-
-Take one install route and ask:
-
-1. what destination tree it promises
-2. how that destination is parameterized
-3. whether it can be tested under `DESTDIR` or an equivalent staging root
-4. what rerunning it should do
-5. how it behaves if a partial failure occurs halfway through
-
-If those answers are weak, the install contract is weak too.
+If any answer is missing, a successful install is not yet reviewable.
 
 ## What to practice from this page
 
-Choose one repository install route and write down:
+Build an install rehearsal under:
 
-1. the destination root
-2. the installed file tree
-3. one idempotence expectation
-4. one staging or preview improvement
-5. one reason the improved design would make release debugging safer
+```text
+artifacts/module08-release/install-root/
+```
 
-If you can do that cleanly, you are treating installation as contract engineering rather
-than as a copy command.
+Then produce:
+
+- the declared installed-path manifest
+- the observed first-run manifest
+- the observed rerun manifest
+- a checksum and mode comparison
+- one rejected symbolic-link or path-conflict case
+- a short recovery note for an interrupted install
+
+Do not point the exercise at `/usr/local`, a home-directory bin path, or any other live host
+destination.
 
 ## End-of-page checkpoint
 
 Before leaving this lesson, make sure you can explain:
 
-- why `install` is a publication act with side effects
-- why idempotence matters for installation routes
-- why `DESTDIR` or another explicit destination root improves reviewability
-- how staged installation can reduce half-updated trees
-- why overwrite behavior should be a visible policy decision
+- why `PREFIX` and `DESTDIR` are not interchangeable
+- why accepted candidate identity belongs in the install evidence
+- why quoting paths is necessary but insufficient for containment
+- how to compare first-run and rerun tree evidence
+- why Make recipes do not provide transactional installation
+- when a package manager should own rollback and removal semantics

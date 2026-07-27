@@ -1,77 +1,99 @@
 # Course Map
+The modules form one continuous project: you begin with a three-line rule and finish by
+reviewing a build system that other people depend on. Each day introduces a pressure
+that the previous day’s model cannot yet handle.
 
-<!-- page-maps:start -->
-## Page Maps
+## Course progression
 
 ```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Orientation"]
-  page["Course Map"]
-  capstone["Capstone evidence"]
+flowchart TD
+  m1["01 · Read and predict a build graph"]
+  m2["02 · Keep the graph true under parallel work"]
+  m3["03 · Make results deterministic and test the build"]
+  m4["04 · Understand expansion, precedence, and rule choice"]
+  m5["05 · Survive different machines and recursive builds"]
+  m6["06 · Model generators and multiple outputs"]
+  m7["07 · Design a build interface for a growing repository"]
+  m8["08 · Package, verify, and install release artifacts"]
+  m9["09 · Measure and diagnose production build behavior"]
+  m10["10 · Govern, migrate, and choose tool boundaries"]
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+  m1 --> m2 --> m3 --> m4 --> m5 --> m6 --> m7 --> m8 --> m9 --> m10
 ```
+
+## The ten study days
+
+| Module | Begin with | Finish able to | Classroom-style turning point |
+| --- | --- | --- |
+| 01 · Build graph foundations | one target, prerequisite, and recipe | predict rebuilds and explain missing dependencies | a missing edge causes a stale file |
+| 02 · Parallel safety | a correct serial build | expose and repair races without adding false ordering | `make -j` becomes a truth test |
+| 03 · Determinism and self-testing | a parallel-safe graph | prove convergence and create a useful build selftest | a passing binary stops being enough evidence |
+| 04 · Rule semantics | familiar rules and variables | explain expansion timing, precedence, includes, and rule selection | surprising behavior gets traced to a named rule |
+| 05 · Portability and failure modes | a build that works locally | define supported environments and preserve jobserver behavior | machine-specific assumptions become visible policy |
+| 06 · Generated files | one command that creates outputs | model generators, coupled outputs, manifests, and atomic publication | generators stop being side-effect magic |
+| 07 · Build architecture | one growing Makefile | split responsibilities while preserving one understandable graph | the build gains an intentional public API |
+| 08 · Release engineering | trustworthy local outputs | construct, checksum, inspect, and safely install a release bundle | artifacts are judged from the consumer side |
+| 09 · Operations | a correct production build | measure cost, investigate incidents, and write a practical runbook | evidence replaces folklore under pressure |
+| 10 · Migration and governance | an inherited system | preserve proof while changing ownership or tools | tool boundaries become explicit design decisions |
+
+## Skills accumulate
+
+Later modules do not replace earlier ones. A release target in Module 08 still needs the
+graph truth from Module 01, the race safety from Module 02, and the deterministic evidence
+from Module 03.
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  graph["Graph truth"] --> parallel["Parallel safety"]
+  graph --> deterministic["Determinism"]
+  parallel --> generated["Generated outputs"]
+  deterministic --> release["Release evidence"]
+  generated --> architecture["Build architecture"]
+  architecture --> operations["Operations"]
+  release --> operations
+  operations --> stewardship["Stewardship"]
 ```
-<!-- page-maps:end -->
 
-Use this page when you need the whole course visible on one screen before you choose a
-reading path. The goal is to stop the program from feeling like ten isolated topics.
+When a later lesson feels unclear, move backward along this diagram. Do not solve a weak
+dependency edge with a more complicated release script.
 
-## Arc 1: truthful graph thinking
+## How the course grows in difficulty
 
-Modules 01 to 02 establish the build graph as the course's semantic floor.
+The first three modules teach you how Make decides. The next three teach you how that
+decision process holds up under pressure. The last four teach you how to steward a build
+that other people will use, review, or inherit.
 
-- Module 01 teaches targets, prerequisites, recipes, and rebuild truth.
-- Module 02 teaches parallel safety, structure, and the failure classes that appear when
-  the graph is stressed.
+```mermaid
+flowchart LR
+  first["Foundations"] --> pressure["Pressure and failure"]
+  pressure --> architecture["Architecture and release"]
+  architecture --> stewardship["Operations and stewardship"]
+```
 
-Leave this arc able to explain why a rebuild happened and why `-j` can expose graph lies.
+## Exercise progression in every module
 
-## Arc 2: production discipline
+The ten exercises intentionally change character:
 
-Modules 03 to 05 turn correctness into a maintenance habit.
+- Exercises 1-2 check vocabulary and observation.
+- Exercises 3-4 ask you to predict behavior before running it.
+- Exercises 5-6 ask you to diagnose and repair a broken build.
+- Exercises 7-8 ask you to design and test a small extension.
+- Exercises 9-10 ask you to explain trade-offs and apply the skill to an unfamiliar case.
 
-- Module 03 teaches deterministic targets, selftests, and diagnostics.
-- Module 04 teaches semantics under pressure: precedence, includes, and rule behavior.
-- Module 05 teaches portability, hardening, and semantically relevant non-file inputs.
+Completing only the first half gives you recognition. Completing all ten builds transfer.
 
-Leave this arc able to debug a build with evidence instead of folklore.
+## Where the capstone enters
 
-## Arc 3: system design and release trust
+Use the small module examples first. Enter the capstone only when you can state the
+question you want it to answer.
 
-Modules 06 to 08 scale the build into a real engineered surface.
+| After module | Useful capstone question |
+| --- | --- |
+| 02 | Which declared edges make serial and parallel builds agree? |
+| 04 | Where do variable values and generated includes enter the graph? |
+| 06 | How are generated headers and multiple outputs published? |
+| 08 | Which target creates the bundle, checksum, and manifest? |
+| 10 | Which responsibilities should remain in Make? |
 
-- Module 06 teaches generated files and pipeline boundaries.
-- Module 07 teaches layered includes, macros, and stable build APIs.
-- Module 08 teaches release surfaces, manifests, and trustworthy publication.
-
-Leave this arc able to explain which surface is public, which is internal, and why.
-
-## Arc 4: operations and governance
-
-Modules 09 to 10 finish with long-lived ownership judgment.
-
-- Module 09 teaches observability, performance, and incident response.
-- Module 10 teaches migration, governance, and tool-boundary decisions.
-
-Leave this arc able to review a real Make system and justify what should change next.
-
-## Route markers
-
-- Read [First-Contact Map](first-contact-map.md) when you need the smallest honest
-  starting route.
-- Read [Mid-Course Map](mid-course-map.md) when Modules 01 to 03 already feel stable and
-  you need the bridge into semantics under pressure, hardening, release trust, and
-  incidents.
-- Read [Mastery Map](mastery-map.md) when the pressure is stewardship, migration, or
-  long-lived trust review.
+Continue to the [first-contact map](first-contact-map.md) for a short preview or begin
+[Module 01](../module-01-build-graph-foundations-truth/index.md) for the full course.

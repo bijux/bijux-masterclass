@@ -1,122 +1,337 @@
 # Exercise Answers
 
+These model answers show the required reasoning and evidence. Compare them with your packet
+only after you have run the audit and inspected the generated files.
 
-<!-- page-maps:start -->
-## Page Maps
+Different wording is acceptable. Missing source, plan, artifact, or rejection evidence is
+not.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Operating Contexts Execution Policy"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
+## Exercise 1: Classify all profile keys
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+A complete matrix includes:
+
+| Profile | Key | Class | Preserving context allowed? |
+| --- | --- | --- | --- |
+| local | `cores` | capacity | yes |
+| local | `latency-wait` | filesystem tolerance | yes |
+| local | `printshellcmds` | observability | yes |
+| local | `show-failed-logs` | observability | yes |
+| CI | same four keys | same classes | yes |
+| scheduler | same four keys | same classes | yes |
+| trusted-path leak | `config.publish_root` | semantic override | no |
+| sample-scope leak | `config.samples` | semantic override | no |
+
+The preserving profiles contain no semantic or unknown keys. Their values differ, but
+classification depends on effect:
+
+- `cores` changes available capacity
+- `latency-wait` changes visibility tolerance
+- `printshellcmds` changes terminal evidence
+- `config.publish_root` changes a contract path
+- `config.samples` changes the job domain
+
+The final two values are not safe merely because they appear in profile files. File
+location does not decide ownership.
+
+## Exercise 2: Prove the preserving semantic plan
+
+All three preserving summaries contain:
+
+```text
+publish/stable/manifest.tsv
+results/alpha.txt
+results/beta.txt
 ```
+
+The owning rules are `publish_manifest` and `normalize`.
+
+All three normalized D3 DAGs contain:
+
+```text
+all
+publish_manifest
+normalize:alpha
+normalize:beta
+```
+
+The dependency shape is:
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  alpha["normalize:alpha"] --> manifest["publish_manifest"]
+  beta["normalize:beta"] --> manifest
+  manifest --> all["all"]
 ```
-<!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+Safe volatile fields to remove include:
 
-What matters is whether the reasoning keeps policy and workflow meaning separate.
+- workflow UUID
+- date
+- host
+- absolute run directory
+- numeric job ID
 
-## Answer 1: Decide whether a profile change is safe
+These describe one invocation, not workflow meaning.
 
-Likely operating policy:
+Fields that must remain include:
 
-- local: `latency-wait: 60`
-- CI: `printshellcmds: false`
+- wildcard-specific labels
+- dependency edges
+- output paths
+- owning rules
 
-Likely semantic leak:
+Removing `normalize:beta` or `publish/stable/manifest.tsv` would normalize away the exact
+semantic leaks the gate exists to detect.
 
-- SLURM: a different `publish_dir`
+## Exercise 3: Prove executed artifact equivalence
 
-Why:
+The artifact table is:
 
-Latency waits and shell-command visibility change how the workflow is run and observed.
-A different publish directory changes a trusted contract path and therefore changes more
-than policy.
+| Surface | Local | CI | Scheduler |
+| --- | --- | --- | --- |
+| manifest path | `publish/stable/manifest.tsv` | same | same |
+| manifest members | alpha, beta | same | same |
+| alpha result | `ALPHA PAYLOAD` | same | same |
+| beta result | `BETA PAYLOAD` | same | same |
 
-## Answer 2: Review retries honestly
+This supports:
 
-Why this may be weak:
+> The preserving profiles materialize the same specimen contract and normalized result
+> bytes.
 
-- it increases policy pressure without first classifying the failure
-- it risks hiding deterministic workflow or environment defects
+It does not support:
 
-What question should be asked first:
+- equal runtime
+- equal cost
+- equal thread allocation
+- real scheduler submission
+- shared-filesystem behavior
 
-- is this failure plausibly transient, or is it deterministic?
+Equal bytes under local execution are semantic evidence for this bounded specimen, not an
+infrastructure benchmark.
 
-What evidence to request:
+## Exercise 4: Diagnose the trusted-path leak
 
-- failed logs
-- any cluster or storage evidence that explains the intermittence
-- confirmation that incomplete outputs are handled explicitly
+A model finding is:
 
-The main lesson is that retries are not a substitute for diagnosis.
+> **High:** `trusted-path-leak/config.yaml` injects
+> `publish_root=publish/context-specific`. The D3 DAG retains both sample jobs and the
+> result bytes match local, but the output summary and executed run move the manifest from
+> `publish/stable/manifest.tsv` to `publish/context-specific/manifest.tsv`. Execution
+> context now selects the downstream contract path. Remove the override from profile
+> policy and keep the path in semantic configuration.
 
-## Answer 3: Diagnose a storage-boundary problem
+The finding `TRUSTED_PATH_LEAK_REPRODUCED` is `PASS` because:
 
-What trust problem this creates:
+- the semantic override is visible
+- the manifest path changes
+- sample results remain unchanged
+- manifest content remains unchanged
 
-- reviewers are inspecting a temporary execution surface as if it were the contract surface
+A DAG-only comparison misses this defect because graph topology does not encode the
+contract-path distinction strongly enough.
 
-When a file should count as trusted:
+## Exercise 5: Diagnose the sample-scope leak
 
-- once it has been materialized onto the declared workflow or publish path that the contract
-  says reviewers and downstream users may trust
+A model finding is:
 
-What needs clarification:
+> **High:** `sample-scope-leak/config.yaml` injects `samples=[alpha]`. The trusted manifest
+> location remains stable, but `normalize:beta`, `results/beta.txt`, and the `beta`
+> manifest row disappear. The profile therefore narrows workflow meaning. Move sample
+> selection to an explicit semantic config with a distinct claim.
 
-- the boundary between scratch or staging locations and trusted output locations
-- the visibility and promotion model for outputs
+The finding `SAMPLE_SCOPE_LEAK_REPRODUCED` is `PASS` because:
 
-## Answer 4: Compare contexts
+- the semantic override is visible
+- the trusted path remains unchanged
+- `beta` is removed from the plan
+- `alpha` remains byte-identical
+- manifest meaning changes
 
-A strong argument would say:
+A path-only comparison misses this defect because the same final pathname can contain a
+different sample domain.
 
-> Side-by-side dry-run comparison matters because all three contexts can “work” while still
-> carrying different workflow meaning. Dry-runs help reveal whether profiles changed only
-> execution policy or whether one context now plans a different semantic story.
+## Exercise 6: Map rule resources into two contexts
 
-Why:
+The ownership table is:
 
-- successful execution is not enough evidence against semantic drift
-- comparison makes hidden context-specific behavior much easier to spot
+| Layer | Model value | Meaning |
+| --- | --- | --- |
+| rule | `threads=2` | preferred per-job parallelism |
+| rule | `mem_mb=512` | per-job memory request |
+| rule | `runtime=5` | per-job runtime request under the repository convention |
+| local profile | `cores=2` | run-level local capacity |
+| scheduler profile | `cores=8` | run-level capacity for the portable specimen |
+| site overlay | account and partition | operator-owned submission mapping |
 
-## Answer 5: Escalate a suspicious policy change
+When available cores are below requested threads, Snakemake can scale a rule's threads
+down for that run. In this specimen, the shell transformation does not consume the
+`threads` value, and artifacts remain equal.
 
-Why this is not just a profile difference:
+That supports semantic equivalence for the transformation. It does not support equal
+performance.
 
-- sample filtering changes workflow semantics and published meaning
+A tool whose reduction order or randomization changes with thread count requires explicit
+equivalence testing or an enforced thread count. In that case, resource allocation can
+affect semantic output.
 
-Which review surface should own that decision:
+Queue and account belong in a site overlay because they map the request to infrastructure.
+Algorithm parameters belong in semantic config because they define artifact meaning.
 
-- visible workflow or config-contract surfaces, not profile policy
+## Exercise 7: Decide policy for three failures
 
-What should happen before approval:
+### Incident A
 
-- move the semantic setting into an explicit workflow or config boundary
-- review the effect on contracts and outputs
-- compare contexts again after the change is made honest
+Classification: deterministic environment defect.
 
-## Self-check
+Evidence: exit `127` and the same missing executable on each attempt.
 
-If your answers consistently explain:
+Response:
 
-- what stays in policy
-- what belongs to workflow meaning
-- what evidence justifies retry or latency changes
-- when storage and path trust become review issues
+- repair the declared environment
+- do not retry
+- retain the failed command and environment evidence
 
-then you are using the module correctly.
+More attempts cannot install the executable.
+
+### Incident B
+
+Classification: transient executor failure.
+
+Evidence: executor reports `PREEMPTED`, and the application never starts.
+
+Response:
+
+- allow a bounded retry
+- retain the executor reason for each attempt
+- stop if the application begins and then fails deterministically
+- calculate maximum added core-time
+
+Two additional attempts are defensible only if the retry cost fits policy.
+
+### Incident C
+
+Classification: measured filesystem visibility delay.
+
+Evidence: successful producer plus delays of 3, 7, 4, and 6 seconds.
+
+Response:
+
+- document the filesystem assumption
+- choose a bounded wait above the measured maximum, such as 15 seconds
+- keep monitoring because four observations are a small sample
+- do not add job retries
+
+The wait addresses post-success visibility, not failed execution.
+
+## Exercise 8: Design cross-filesystem publication
+
+A model contract is:
+
+```text
+scratch owner: one job attempt
+scratch result: ${SCRATCH}/sample.dat
+destination candidate: results/.sample.dat.candidate
+validation: content and checksum at destination
+publication event: same-filesystem rename of candidate to results/sample.dat
+trusted output: results/sample.dat
+copy-failure residue: candidate removed or quarantined
+cleanup owner: producing rule or explicit recovery command
+```
+
+```mermaid
+sequenceDiagram
+  participant Scratch
+  participant Candidate
+  participant Final
+  participant Consumer
+
+  Scratch->>Candidate: cross-filesystem copy
+  Candidate->>Candidate: destination validation
+  Candidate->>Final: same-filesystem rename
+  Consumer->>Final: trust begins
+```
+
+Expected failure inventories:
+
+| Failure | Scratch | Candidate | Final |
+| --- | --- | --- | --- |
+| computation | partial or absent | absent | absent |
+| destination copy | complete source | partial | absent |
+| after validation | complete source | validated | absent |
+| after rename | optional residue | absent | complete |
+
+A direct move from scratch to the final path may degrade to copy-then-delete across
+filesystems. That exposes the final name before transfer completes.
+
+## Exercise 9: Trace one rejected mutation
+
+`test_preserving_profile_rejects_sample_scope_change`:
+
+1. copies the tracked specimen
+2. adds `config.samples=[alpha]` to the scheduler profile
+3. runs the complete audit
+4. requires a nonzero return code
+5. checks that scheduler `policy_only_profile` and `same_semantic_plan` are false
+
+This is rejection behavior: a preserving context becomes semantic and must fail.
+
+`test_sample_scope_specimen_cannot_substitute_a_path_leak` is isolation behavior. It
+changes the sample-scope counterexample into a path override, then requires:
+
+- `trusted_path_unchanged` to be false
+- `beta_removed_from_plan` to be false
+
+The audit cannot call a path leak proof of a sample leak.
+
+The baseline test is acceptance behavior: known policy-only variation passes.
+
+The stale-workspace test proves that a previous artifact cannot contaminate a later audit.
+Without cleanup, a removed `beta` job might appear to have produced an old result.
+
+## Exercise 10: Write the maintainer review
+
+A model review is:
+
+> **High:** The proposed CI `config.samples=[alpha]` override changes workflow meaning.
+> Compared with the local baseline, the plan loses `normalize:beta` and
+> `results/beta.txt`, while the manifest loses its `beta` row. Profile policy must not own
+> sample selection. Move the reduced sample set to a separately named semantic
+> configuration and stop claiming that run is equivalent to the full workflow.
+>
+> **Accepted policy:** `cores=1` is CI capacity. The preserving audit demonstrates that
+> lower capacity can retain the same specimen plan and artifacts.
+>
+> **Under-evidenced policy:** `latency-wait=30` does not alter the semantic plan, but the
+> pull request provides no filesystem visibility measurements. Keep the current value or
+> attach a measured visibility model.
+>
+> **Verification:** source classification, D3 DAG, output summary, executed manifest, and
+> the sample-scope rejection test support these findings.
+>
+> **Limits:** no real scheduler submission, retry incident, shared-filesystem delay, or
+> scratch promotion was tested.
+
+The review distinguishes:
+
+- harmless capacity
+- semantic sample drift
+- operational policy that may be safe but lacks evidence
+
+“CI is different” would not make any of those decisions reviewable.
+
+## Answer-key completion check
+
+Across all ten answers, require the same reasoning chain:
+
+```text
+invariant
+    -> source classification
+    -> plan effect
+    -> artifact effect
+    -> rejected mutation
+    -> bounded decision
+```
+
+If an answer skips from profile YAML directly to approval, return to the missing evidence
+surface.

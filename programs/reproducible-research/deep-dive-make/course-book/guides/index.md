@@ -1,35 +1,18 @@
 # Guides
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Guides"]
-  page["Guides"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: the guides shelf is for a named pressure, not for
-wandering the whole course-book. Read the second diagram as the guide loop: choose one
-lane, use one page, then leave with one smaller next move.
-
 Use this shelf when you need route choice, proof sizing, or capstone entry help rather
-than one module chapter.
+than another lesson page. The guides are here to keep the course readable. They should
+send you back to learning or practice quickly, not trap you in meta-navigation.
+
+## Start with the guide that matches your situation
+
+```mermaid
+flowchart TD
+  first["I am new here"] --> start["Start Here"]
+  stuck["I am stuck or under pressure"] --> pressure["Pressure Routes"]
+  plan["I want the full study plan"] --> course["Course Guide"]
+  proof["I know the claim and need evidence"] --> matrix["Proof Matrix"]
+  ready["I want to know if I can move on"] --> checkpoints["Module Checkpoints"]
+```
 
 ## Choose one lane
 
@@ -41,6 +24,19 @@ than one module chapter.
 | module promises and exit bars | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
 | proof selection | [Proof Ladder](proof-ladder.md) | [Proof Matrix](proof-matrix.md) |
 | capstone entry | [Capstone Guide](../capstone/index.md) | [Capstone Map](../capstone/capstone-map.md) |
+
+## A simple rule for using this shelf
+
+Open one guide because you have one real question:
+
+- How should I start?
+- Which module fits the failure I have?
+- What proof is proportionate here?
+- Am I actually ready to continue?
+
+If a guide does not help you answer one of those questions, leave it and return to the
+module or exercise surface. The course is about understanding builds, not about learning
+the course infrastructure.
 
 ## Use the shelf by job
 
@@ -74,43 +70,3 @@ than one module chapter.
 Stop when you can name the single next page you need and the question it is supposed to
 answer. If you are still opening whole shelves, go back to the table above and choose a
 smaller lane.
-
-## Shelf vocabulary
-
-Use this section when the support shelf starts sounding more abstract than the course
-intends. The goal is not to add theory. The goal is to keep a small set of terms stable
-so you can move between `guides/`, the modules, and the capstone without quietly
-changing what a word means.
-
-### Terms that matter on this shelf
-
-| Term | Meaning here | Why it matters |
-| --- | --- | --- |
-| reading route | a short, deliberate reading path for one question | prevents wandering through five pages when one page would do |
-| pressure | the concrete situation shaping how you read right now | keeps the guides tied to real use instead of generic study advice |
-| proof route | the smallest command, file, or bundle that can honestly answer the current claim | keeps evidence proportional to the question |
-| support shelf | the `guides/` directory as a whole | reminds you these pages are helpers, not substitute chapters |
-| module promise | the practical contract a module is supposed to deliver | helps you judge whether a module actually taught what its title implies |
-| checkpoint | the readiness bar for moving on from a module | stops recognition from masquerading as understanding |
-| capstone entry | the first bounded route into the executable repository | keeps the capstone from becoming first-contact reading |
-| bounded review | an inspection pass with a clear stopping point | keeps review from growing into unstructured browsing |
-
-### Guide names in plain language
-
-| Page | What it is for |
-| --- | --- |
-| [Start Here](start-here.md) | first entry when you need the safest route into the course |
-| [Course Guide](course-guide.md) | overview of when to use modules, guides, capstone pages, or reference maps |
-| [Learning Contract](learning-contract.md) | the bar the course sets for explanation, proof, and honest progress |
-| [Module Promise Map](module-promise-map.md) | translation of module titles into the outcomes you should reach |
-| [Module Checkpoints](module-checkpoints.md) | readiness review before you move on |
-| [Platform Setup](platform-setup.md) | tooling and command boundary checks before you rely on local results |
-| [Proof Ladder](proof-ladder.md) | how to choose a smaller or larger proof route without guessing |
-| [Proof Matrix](proof-matrix.md) | where a specific claim is first corroborated |
-| [Pressure Routes](pressure-routes.md) | shortest route when urgency, repair work, or stewardship is shaping the reading order |
-
-## Reading rule
-
-If a guide name still sounds fuzzy after you read the table above, do not open three more
-guides. Pick the page whose question most closely matches yours, use it, and stop when
-you have one clear next move.

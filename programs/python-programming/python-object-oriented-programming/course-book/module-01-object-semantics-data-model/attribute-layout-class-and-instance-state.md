@@ -1,5 +1,4 @@
-# Attribute Layout – `__dict__`, Class vs Instance, Descriptors in the Chain
-
+# Attribute Layout: Class State, Instance State, and the Lookup Chain
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Object Semantics Data Model"]
-  page["Attribute Layout – `__dict__`, Class vs Instance, Descriptors in the Chain"]
+  page["Attribute Layout: Class State, Instance State, and the Lookup Chain"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,150 +24,208 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Introduction
+## Why this lesson matters
 
-This core dissects Python's attribute resolution mechanism, revealing how attributes are stored, located, and retrieved. Building on M01C01's foundational model of identity, state, and behavior, we examine the storage of state in instance and class dictionaries, the role of the method resolution order (MRO) in inheritance hierarchies, and the pivotal influence of descriptors on access dynamics. Understanding "attribute access" as a multi-step protocol—far beyond simple dictionary lookup—enables precise control over encapsulation, polymorphism, and performance in object designs.
+Many Python learners carry a false mental model for far too long:
 
-The exposition maintains our layered approach: language-level semantics first, followed by CPython implementation notes, design semantics for informed modeling, and practical guidelines. This separation ensures a portable mental model while highlighting opportunities for optimization and pitfalls in real-world codebases.
+> `obj.name` just reads a field from the object.
 
-Cross-references connect to prior and subsequent material: identity and state from M01C01; equality impacts in M01C05; dataclass field interactions in M03C23–M03C24. Mastery here equips you to debug subtle resolution failures, select storage strategies for efficiency, and design attributes that respect invariants without unnecessary overhead.
+That model works until it does not. As soon as class attributes, inheritance,
+properties, or descriptors appear, "just a field" becomes an unreliable explanation.
+This lesson replaces that shortcut with a lookup model you can actually use in reviews
+and debugging.
 
-## 1. Language-Level Model
+## The first split: instance state versus class state
 
-Python's data model defines attributes as named values associated with objects, resolved dynamically during access (`obj.attr`). This process integrates instance state, class definitions, inheritance, and special protocols, ensuring flexibility while upholding encapsulation. The specification (language reference, section on the data model) guarantees a consistent resolution algorithm across implementations, abstracting storage details.
+Start here. Most attribute confusion is really state-placement confusion.
 
-### Storage: Instance, Class, and Shared State
+### Instance attributes
 
-Attributes are stored in two primary scopes: per-instance (unique to each object) and per-class (shared across instances of a type).
-
-**Guarantees**:
-- **Instance Attributes**: Stored in the instance's `__dict__` (a mutable mapping) or, if `__slots__` is declared on the class without including `'__dict__'`, in a fixed set of named slots. Assignment to an undeclared instance attribute creates it dynamically in `__dict__` (unless `__slots__` prohibits this).
-- **Class Attributes**: Stored in the class's `__dict__` (also a mutable mapping). These are shared among instances and serve as defaults or shared state (e.g., class constants).
-- For the default lookup behavior (`object.__getattribute__`), instance attributes shadow class-level attributes, except where data descriptors (detailed below) take precedence.
-
-Example (portable, illustrating scope precedence):
+Instance attributes belong to one object.
 
 ```python
 class Counter:
-    total = 0  # Class attribute: shared
+    def __init__(self):
+        self.count = 0
+```
+
+Each `Counter` instance gets its own `count`.
+
+### Class attributes
+
+Class attributes live on the class and are shared unless shadowed.
+
+```python
+class Counter:
+    step = 1
 
     def __init__(self):
-        self.count = 1  # Instance attribute: per-object
-
-c1 = Counter()
-c2 = Counter()
-c1.count = 5  # Assignment modifies instance only
-print(c2.count)  # 1 (from __init__, not shared)
-Counter.total += 1  # Modifies class attribute
-print(c1.total)  # 1 (shared)
+        self.count = 0
 ```
 
-Class attributes can be mutable (e.g., lists), but mutating shared containers risks aliasing across instances—a design concern deferred to M01C06.
+Every instance can read `step`, but the value lives on the class.
 
-### Resolution Chain: MRO and Lookup Order
-
-The method resolution order (MRO) defines the sequence in which class attributes are searched during inheritance. Computed via the C3 linearization algorithm for cooperative multiple inheritance, the MRO lists bases from most specific (the class itself) to least (e.g., `object`).
-
-**Guarantees**:
-- MRO is deterministic: A class's `__mro__` attribute exposes the sequence; `issubclass(A, B)` respects it.
-- No cycles: Diamond inheritance resolves without duplication via C3.
-
-Example:
+## A shadowing example worth keeping in memory
 
 ```python
-class A: pass
-class B(A): x = 1
-class C(A): x = 2
-class D(B, C): pass  # MRO: [D, B, C, A, object]
+class Service:
+    timeout = 30
 
-d = D()
-print(d.x)  # 1 (B before C in MRO)
-print(D.__mro__)  # (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>)
+
+svc = Service()
+print(svc.timeout)       # 30, read from the class
+
+svc.timeout = 10
+print(svc.timeout)       # 10, now stored on the instance
+print(Service.timeout)   # 30, unchanged on the class
 ```
 
-MRO governs class-level search but is one component of the full attribute access algorithm, which also involves instance storage and descriptors (detailed below). Access on classes themselves follows a similar path but uses the metaclass's resolution (typically `type.__getattribute__`).
+That example teaches two things:
 
-This ensures substitutability: subclasses inherit predictably, but overrides must preserve contracts.
+- reading through an instance can still be reading class state
+- assigning through an instance may create instance state instead of changing the class
 
-### Descriptors: Protocol-Driven Access
+If a bug feels like "why did only this one object change?", shadowing is often the real
+story.
 
-Descriptors are objects implementing `__get__`, `__set__`, and/or `__delete__` protocols, stored as class attributes. They intercept access, enabling computed attributes, validation, or delegation. *Data descriptors* (with `__set__`) take precedence over instance `__dict__`; *non-data descriptors* (e.g., functions) do not and behave like plain class attributes in precedence.
+## The lookup chain you should remember
 
-**Guarantees**:
-- Descriptors are consulted during the resolution chain: data descriptors before instance `__dict__`; non-data after.
-- `@property` creates a data descriptor that invokes the underlying getter on each access (no built-in caching).
-- Bound methods arise from non-data descriptors: functions in class `__dict__` return bound instances (`<bound method>`) when accessed via `obj.method`, binding `self` automatically.
+For most ordinary review work, this model is enough:
 
-The protocol is optional: plain attributes are simple dict values.
+1. check for a data descriptor on the class or its bases
+2. check the instance's own stored attributes
+3. check the class and then the rest of the method resolution order
+4. if still missing, fall back to `__getattr__` if the class defines it
 
-### The Full Access Protocol
+You do not need to memorize a language-reference paragraph. You do need to know that
+attribute access is a resolution process, not only a dictionary read.
 
-Attribute access for an object `obj` is implemented by calling `type(obj).__getattribute__(obj, name)`. The default implementation (from `object`) follows this algorithm:
+## Why properties and methods are not "just attributes"
 
-1. Check for a data descriptor in the MRO of `type(obj)`: if found, invoke `__get__`.
-2. If no data descriptor, retrieve from `obj.__dict__` if present.
-3. If missing, check for a non-data descriptor or plain attribute in the MRO: invoke `__get__` if descriptor, else return the value.
-4. If unresolved and `__getattr__` is defined on `type(obj)`, call `type(obj).__getattr__(obj, name)` as a fallback. If that also fails (e.g., raises `AttributeError`), the `AttributeError` propagates.
-
-Assignment (`obj.name = value`) and deletion follow analogous paths, using `__set__`/`__delete__` for descriptors or updating `__dict__`.
-
-**Guarantees**:
-- Transparency: Users see seamless delegation unless overridden.
-- Overridability: Custom `__getattribute__` can alter the process, but must avoid recursion (e.g., by delegating to `object.__getattribute__`).
-
-This protocol abstracts storage, enabling behaviors like lazy loading without exposing machinery. Note: even `obj.__dict__` access is mediated by this protocol.
-
-## 2. Implementation Notes (CPython, non-normative)
-
-CPython implements resolution via efficient dictionary lookups and a per-class `tp_dict` slot in `PyTypeObject`. The MRO is precomputed as a tuple in `tp_mro`.
-
-- **Storage Realization**: `__dict__` is a `PyDictObject`; `__slots__` uses descriptor objects plus a per-instance compact layout, yielding significant per-instance memory savings (often 2–5x in simple cases) but sacrificing dynamic addition.
-- **Descriptor Dispatch**: Data descriptors are flagged for early checking before dict lookup, ensuring O(1) precedence.
-- **MRO Computation**: C3 runs at class creation; errors raise `TypeError` for non-cooperative hierarchies.
-- **Performance Nuances**: Dict lookups average O(1); slots are O(1) array access. Inheritance depth impacts traversal cost linearly.
-
-Example (observing internals, non-portable):
+Properties and methods look attribute-like at the call site because Python lets class
+level objects participate in access.
 
 ```python
-# CPython introspection (for illustration; avoid in production)
-import inspect
-class E: pass
-print(inspect.getmro(E))  # Mirrors __mro__
+class User:
+    def __init__(self, first, last):
+        self.first = first
+        self.last = last
+
+    @property
+    def full_name(self):
+        return f"{self.first} {self.last}"
 ```
 
-These inform profiling (e.g., via `sys.getsizeof(obj.__dict__)`), but designs must assume only spec behavior.
+`user.first` is stored state.
 
-## 3. Design Semantics
+`user.full_name` is computed access that is intentionally shaped to look like an
+attribute.
 
-Attribute layout influences state encapsulation and polymorphism. In our value/entity lens (from M01C01), value-like objects favor explicit, immutable attributes (e.g., via data descriptors for validation); entity-like ones permit dynamic instance attributes for evolving state.
+Methods are similar: a function on the class becomes a bound method when read through an
+instance.
 
-- **Class vs Instance Choice**: Use class attributes for immutable shared data (e.g., `Point.origin = (0, 0)`); instance for per-object variance. Avoid mutable class attributes unless intentional (e.g., caches with synchronization).
-- **Descriptors as Abstraction**: Data descriptors with `__set__` raising errors enable read-only attributes; non-data descriptors returning new objects per access support computed values without full freezing.
-- **MRO Discipline**: Design shallow hierarchies; document override expectations to avoid fragile bases (detailed in M01C17).
+The lesson is simple: two things that both look like `obj.name` may have very different
+lookup stories.
 
-**Choosing Layout**: For performance-critical types, weigh `__slots__` against flexibility; for domain models, prioritize readability over micro-optimizations.
+## Method resolution order is the inheritance part of the story
 
-Interaction with Protocols: Descriptors enable value-like immutability (e.g., read-only via `__set__` raising errors) without full freezing.
+When Python cannot finish lookup on the instance, it searches the class hierarchy in
+method resolution order, or MRO.
 
-## 4. Practical Guidelines
+```python
+class A:
+    label = "A"
 
-- **Prefer Explicit Storage**: Declare instance attributes in `__init__` to signal intent; use type hints for static analysis.
-- **Descriptor Hygiene**: Implement only necessary methods (`__get__` for read-only); avoid side effects in getters unless documented.
-- **MRO Verification**: Use `super()` judiciously; test subclass compatibility early.
-- **Performance Trade-offs**: Employ `__slots__` for value-like objects in hot loops (e.g., reducing GC pressure); profile before applying, as it complicates inheritance.
-- **Overriding Hooks**: Do not override `__getattribute__` in ordinary application code; if necessary, delegate carefully to `object.__getattribute__` and keep logic minimal. Use `__getattr__` for lazy fallbacks sparingly.
-- **Debugging Aids**: Log resolutions in custom `__getattribute__` for troubleshooting, but isolate to development.
 
-**Impacts on Design and Performance**:
-- **Design**: Resolution enforces loose coupling—subclasses override without knowing caller types—but mutable descriptors can leak state.
-- **Performance**: Deep MROs or descriptor-heavy chains add overhead; slots yield significant memory savings for simple classes.
+class B(A):
+    pass
 
-## Exercises for Mastery
 
-1. Define a hierarchy with diamond inheritance; verify MRO order and attribute shadowing via `dir()` and access tests.
-2. Implement a read-only data descriptor for a validated attribute (e.g., positive integer); integrate into a value-like class and observe precedence over `__dict__`.
-3. Benchmark attribute access: Compare `__dict__` vs `__slots__` in a 10k-instance loop; quantify differences under inheritance.
+class C(A):
+    label = "C"
 
-This core illuminates the machinery behind state access, foundational for encapsulation. Next, M01C03 addresses construction discipline.
+
+class D(B, C):
+    pass
+
+print(D.__mro__)
+print(D().label)
+```
+
+You do not need to master every detail of C3 linearization to use Python well. You do
+need to remember that:
+
+- the search order is deterministic
+- the order is inspectable through `__mro__`
+- inheritance bugs should be diagnosed by inspecting lookup, not by guessing
+
+## Mutable class state is one of the easiest self-inflicted bugs
+
+This is a classic trap:
+
+```python
+class QueueConfig:
+    tags = []
+```
+
+That list is shared by every instance unless you replace it per instance. If one object
+mutates it, the others observe the change too.
+
+When you mean "shared constant", class attributes are fine.
+When you mean "per-instance mutable state", put it on `self`.
+
+## `__slots__` belongs late in the discussion
+
+`__slots__` changes layout by restricting which instance attributes can exist and by
+removing the normal per-instance dictionary in many cases. It can matter for memory and
+performance, but it is not the first thing to learn from this lesson.
+
+The main point is smaller:
+
+- ordinary Python objects usually carry per-instance state dynamically
+- some designs intentionally trade that flexibility for a tighter layout
+
+Do not reach for `__slots__` before your attribute contract is already clear.
+
+## Design rules that follow from this lesson
+
+- Put per-instance mutable state on the instance, not on the class.
+- Use class attributes for true shared constants or intentionally shared behavior.
+- Use properties when they protect or clarify a contract, not when they hide expensive work.
+- Keep inheritance shallow enough that the lookup story is still explainable.
+- Do not override `__getattribute__` in normal application code unless you can defend the complexity.
+
+## Quick diagnostic table
+
+| Symptom | Likely cause |
+| --- | --- |
+| only one instance changed | instance shadowing or per-instance state |
+| every instance changed | shared class state |
+| attribute behaves like a computation | property or descriptor |
+| inherited behavior surprises you | MRO or shadowing confusion |
+| debugging requires folklore about "Python magic" | the lookup contract was never named clearly |
+
+## Capstone connection
+
+This lesson matters in the capstone whenever a learner must distinguish:
+
+- value state stored directly on an instance
+- shared configuration or policy surfaces defined at class level
+- computed views that should stay readable without becoming deceptive
+
+If you cannot explain where an attribute comes from, you cannot review whether the
+boundary is honest.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain the difference between instance state and class state with one example
+- describe `obj.name` as lookup rather than "just a field"
+- identify one good use of a property and one place where a property would only hide complexity
