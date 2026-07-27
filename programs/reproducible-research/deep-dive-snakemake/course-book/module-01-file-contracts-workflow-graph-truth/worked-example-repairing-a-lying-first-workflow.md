@@ -82,6 +82,15 @@ Keep four evidence routes open all the way through the page:
 
 Those four surfaces are enough to teach the lesson if you read them carefully.
 
+Keep one repair ledger beside them:
+
+| Repair step | What was lying before | What truth became visible after the repair | Which evidence surface proved it |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
+If you complete the example without filling the ledger, you will probably remember the
+code but forget the diagnostic habit the code was meant to teach.
+
 ## The lab route
 
 Use the worked example in this order:
@@ -243,6 +252,22 @@ This is Core 2.
 The repair is to remove the unstable time value from the rule's meaning. If you
 actually need a run identifier, it should be an explicit stable config value or sidecar
 audit artifact, not part of the summary's semantic content.
+
+## Snapshot the workflow after each repair
+
+Do not trust your memory for the workflow state. After each repair, write down four quick
+facts:
+
+| Checkpoint | Expected answer |
+| --- | --- |
+| requested public target | which finished file defines "done" right now |
+| wildcard-owned outputs | which concrete files the wildcard rule can publish |
+| convergence test | whether `snakemake -n` should now report more jobs or none |
+| unsafe publication remaining | whether any final output is still written in place |
+
+This snapshot habit matters for self-learners because the live class demo normally makes
+those transitions visible with repeated dry-runs. On the page, you need to create that
+visibility deliberately.
 
 ## A short checkpoint before moving on
 
@@ -472,6 +497,20 @@ You should now see:
 
 That is a workflow you can explain, not just run.
 
+## A one-page recovery route if the example stops making sense
+
+If you lose the thread halfway through, do not reread the whole page immediately. Recover
+in this order:
+
+1. write the current public target on paper
+2. list the exact staged outputs the target depends on
+3. circle the one rule that is still unstable or misleading
+4. run `snakemake -n`
+5. compare the planned jobs against the current repair ledger
+
+That recovery route is intentionally smaller than the whole example. It gives you a way
+back into the reasoning without starting over.
+
 ## What the learner should notice now
 
 The repaired workflow is still tiny. That is a feature.
@@ -525,6 +564,7 @@ Take one tiny workflow of your own and ask:
 - which path pattern is too vague
 - which setting belongs in config rather than policy
 - which final output is still published too early
+- which evidence surface would prove each repair instead of merely suggesting it
 
 If you can answer those five questions, Module 01 is becoming practical instead of only
 theoretical.

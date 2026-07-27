@@ -41,6 +41,22 @@ If you keep that one idea clear, many beginner confusions disappear:
 
 The answer is usually in the file contract, not in the shell body.
 
+## The first review card to keep beside your keyboard
+
+Before you dry-run or execute a workflow, fill in this four-line card for the one target
+you care about:
+
+| Question | Your answer |
+| --- | --- |
+| Which concrete file am I requesting? |  |
+| Which rule output pattern can publish it? |  |
+| Which upstream files must therefore exist first? |  |
+| Which command will I use to test that claim? |  |
+
+If you cannot complete the card, the workflow is still too magical for you. That is not a
+failure. It is the signal to slow down and make the target story more explicit before you
+type more shell.
+
 ## Common beginner mistake
 
 The usual beginner mistake is to explain a rule like this:
@@ -305,6 +321,33 @@ Each one answers a different piece:
 - `--dag`: how the planned jobs depend on one another
 
 These commands are more educational than rerunning the workflow blindly.
+
+## A missed-class recovery route
+
+If you were not present for the live DAG demo, use this route without skipping steps:
+
+1. request one concrete file instead of running the whole workflow
+2. fill in the four-line review card above
+3. run `snakemake -n` and compare the planned jobs against your prediction
+4. run `snakemake --summary` and identify which rule owns each visible output
+5. draw the target and its immediate upstream files on paper before you open the shell block
+
+That route is intentionally repetitive. Repetition is the point. Module 01 is trying to
+replace vague step-order instincts with file-contract instincts.
+
+## A target-tracing worksheet
+
+Use this worksheet any time one rule feels absent, out of order, or unexplained:
+
+| Step | What you write down |
+| --- | --- |
+| target | the exact requested output path |
+| owner | the rule whose `output:` matches that path |
+| upstream contract | the exact `input:` entries that justify the next jobs |
+| evidence surface | `-n`, `--summary`, or `--dag` |
+| diagnosis | missing target edge, vague path, or correct behavior |
+
+Most beginner confusion becomes smaller once it is forced through these five boxes.
 
 ## An example of the right explanation
 
