@@ -194,7 +194,7 @@ flowchart LR
 Halving either three-second compile may not change the eight-second wait for the generator.
 Speedup claims need graph context as well as local recipe timing.
 
-## Prove four dimensions after the change
+## Prove five dimensions after the change
 
 A performance result is reviewable when it includes:
 
@@ -210,32 +210,70 @@ Byte-identical output is not always required. Timestamps inside an intentionally
 non-reproducible report may differ, for example. In that case, define the semantic
 comparison before running the experiment. "Looks fine" is not a comparison method.
 
-## Make requested work executable
+## Turn requested work into a change-impact matrix
 
-The capstone no longer leaves “change one input” as an informal instruction. Run:
+One input is not representative of a build graph. A direct source, shared header, generated
+producer, and independent leaf have different fan-out. The capstone makes those distinctions
+executable:
 
 ```sh
 gmake -C "$CAPSTONE" performance-incremental
 ```
 
-Read `performance/incremental-policy.tsv` before the report. It declares:
+Before reading the policy, derive paths from the graph:
 
-| Mutation | Must rebuild | Must remain untouched |
+```mermaid
+flowchart LR
+  utilc["src/util.c"] --> utilo["build/util.o"]
+  utilh["include/util.h"] --> utilo
+  utilh --> maino["build/main.o"]
+  subh["include/sub.h"] --> maino
+  subh --> subo["build/sub/sub.o"]
+  utilo --> app
+  maino --> app
+  subo --> app
+  generator["scripts/gen_dynamic_h.py"] --> dynh["build/include/dynamic.h"]
+  dynh --> dyn1["build/bin/dyn1"]
+  dynh --> dyn2["build/bin/dyn2"]
+  dyn1c["src/dynamic/dyn1.c"] --> dyn1
+  app --> all
+  dyn1 --> all
+  dyn2 --> all
+```
+
+For each input, follow every outgoing path to `all`. Targets on those paths should rebuild;
+governed outputs outside those paths should remain unchanged. That reasoning produces:
+
+| Input class | Must rebuild | Important non-work |
 | --- | --- | --- |
-| advance `src/util.c` | `build/util.o`, `app`, `all` | unrelated objects, dynamic binaries, generated header |
+| direct source `src/util.c` | util object, app, sentinel | main/sub objects and dynamic pipeline |
+| shared header `include/util.h` | main and util objects, app, sentinel | sub object and dynamic pipeline |
+| shared header `include/sub.h` | main and sub objects, app, sentinel | util object and dynamic pipeline |
+| generated producer script | generated header, both dynamic binaries, sentinel | app and ordinary objects |
+| independent dynamic source | its binary and sentinel | sibling binary, generated header, app, ordinary objects |
 
-The collector first converges the build, records output timestamps, advances the declared
-source beyond every observed output, executes `--trace all`, and restores the source
-timestamp even when the build fails. Its report separates:
+Read `performance/incremental-policy.tsv` and compare your prediction with its exact paths.
+Every row must classify the same governed output universe. Otherwise an omitted output
+would be invisible to that case.
+
+The collector runs every row. For each case it converges the build, records output
+timestamps, advances only the declared input beyond every governed output, executes
+`--trace all`, and restores the input timestamp even when the case fails. Its report
+separates:
 
 - `missing_rebuild`: necessary work the graph failed to select
 - `unexpected_rebuild`: collateral work the graph selected without need
 - `observed_rebuild`: the actual affected scope
 
-This catches two different false optimizations. Removing the `util.c` edge can improve an
-incremental timing by leaving `app` stale. Broadening the edge can keep correctness while
-making every edit rebuild unrelated binaries. Final output inventory alone cannot explain
-either rebuild scope.
+Open `incremental-summary.tsv` first. It gives one row per input and makes fan-out differences
+visible. Open `incremental-work.json` when a row fails; each case retains its own trace.
+Passing cases remain available even when a later input fails.
+
+This catches several false optimizations. Removing a depfile edge can leave a header
+consumer stale. Hiding the generator script can leave the generated header stale.
+Broadening an edge can keep correctness while making an isolated dynamic edit relink the
+ordinary application. Final output inventory alone cannot explain any of those rebuild
+scopes.
 
 After a tuning change, the same policy must pass before and after. If the intended product
 contract changes, review and change the policy explicitly rather than weakening the
@@ -245,10 +283,10 @@ collector until the edit passes.
 `evidence.json`. `performance-compare` then requires baseline and candidate to agree on:
 
 - incremental policy digest
-- declared input
-- expected rebuild set
-- observed rebuild set
-- empty missing and unexpected sets
+- complete declared input set
+- each input's expected rebuild set
+- each input's observed rebuild set
+- empty missing and unexpected sets in every case
 
 This closes a common review loophole. A candidate cannot point to a passing incremental
 report from another run while presenting unrelated timing evidence.
@@ -256,7 +294,8 @@ report from another run while presenting unrelated timing evidence.
 If a tuning edit intentionally changes requested work, do not add an exception to the
 comparison. Review the graph decision first:
 
-1. explain why the old expected set is no longer the product contract
+1. identify the affected input case and explain why its old expected set is no longer the
+   product contract
 2. update the incremental policy to the reviewed contract
 3. collect baseline and candidate under that one policy if the old revision can satisfy it
 4. if it cannot, report two different work contracts rather than one speedup percentage
