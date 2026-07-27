@@ -1,42 +1,37 @@
 # Logs, Benchmarks, Summaries, and Provenance
 
+Observability gets weak when every artifact is expected to answer every question.
 
-<!-- page-maps:start -->
-## Page Maps
+This lesson teaches the opposite habit: choose the narrowest honest artifact first.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Logs, Benchmarks, Summaries, and Provenance"]
-  capstone["Capstone evidence"]
+## How to use this page
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+Study this page with a concrete incident in mind, even if you invent one for practice.
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+Work through it in this order:
 
-Observability gets noisy when every artifact is expected to answer every question.
+1. learn what each evidence surface is for
+2. learn what each surface is not for
+3. practice choosing the first artifact for a review question
+4. only then combine multiple surfaces into an incident narrative
 
-That is not more evidence. It is less clarity.
+That sequence matters because learners often open logs too early and only later discover
+that the workflow never planned the expected work in the first place.
 
-Snakemake already gives you strong evidence surfaces, but each one has a different job:
+## Start by choosing the question before the artifact
+
+Snakemake already gives you several strong evidence surfaces:
 
 - logs explain what one rule said while it ran
 - benchmarks explain what one rule cost
 - summaries explain workflow state across outputs
 - provenance explains who and what produced the run
 
-If you keep those jobs separate, incidents become easier to explain.
+The mistake is not lacking artifacts. The mistake is using the wrong one first.
+
+If the question is "why did Snakemake plan a rebuild?" a benchmark file is the wrong place
+to start. If the question is "which rule family became slower?" provenance alone is too
+broad.
 
 ## The main evidence surfaces
 
@@ -81,7 +76,7 @@ Good rule logs answer questions such as:
 
 Good logs are specific. They name the rule-local situation.
 
-Weak logs only print generic progress lines or dump unrelated environment detail that no
+Weak logs print generic progress lines or dump unrelated environment detail that no
 reviewer asked for.
 
 ## Benchmarks: measure the rule, not the mood
@@ -92,11 +87,7 @@ Use `benchmark:` when you want a durable answer to:
 - whether a rule changed its runtime profile after an edit
 - whether tiny jobs are being overwhelmed by launch overhead
 
-Benchmarks become especially useful when a team keeps arguing from memory:
-
-> "I think trimming got slower."
-
-That claim should move quickly toward benchmark evidence, not toward a thread-count edit.
+Benchmarks matter most when a team starts arguing from memory instead of evidence.
 
 ## Summaries: keep workflow state visible
 
@@ -106,23 +97,21 @@ Use it to answer:
 
 - which outputs already exist
 - which ones are planned for rebuild
-- whether the workflow state matches what the incident report claims
+- whether workflow state matches what the incident report claims
 
-This is often the fastest way to discover that a "performance problem" is actually a
-surprise rerun caused by changed inputs or changed code.
+Many supposed performance incidents are really surprise reruns. Summary surfaces expose
+that quickly.
 
 ## Change reports: explain why Snakemake wants to rerun
 
-`snakemake --list-changes input code params` helps when reviewers need to know which change
-class triggered work.
-
-That matters because the next review question changes with the answer:
+`snakemake --list-changes input code params` matters because the next review question
+changes with the answer:
 
 - input change points toward upstream data movement or discovery
 - code change points toward scripts, wrappers, or rule logic
 - parameter change points toward config or policy review
 
-Without that distinction, teams often talk about churn without naming its source.
+Without that distinction, teams talk about churn without naming its source.
 
 ## Provenance: tie the run to its identity
 
@@ -137,21 +126,22 @@ That is the job of provenance.
 Provenance is not a replacement for logs or benchmarks. It is the identity surface that
 lets you compare runs honestly when the repository alone does not explain the difference.
 
-## A small example
+## One concrete evidence exercise
 
 Suppose a reviewer says:
 
 > The report looks different and the workflow took longer.
 
-A good evidence route might be:
+A disciplined evidence route is:
 
 1. `snakemake --summary` to confirm what rebuilt
 2. `snakemake --list-changes input code params` to classify the rerun cause
 3. one matching benchmark file for the slowest rule family
 4. one matching rule log for the suspicious target
-5. `publish/v1/provenance.json` if the change still cannot be explained
+5. `publish/v1/provenance.json` if the difference still cannot be explained
 
-That route is short, and every step has a reason.
+Notice what this exercise teaches: do not escalate to broader artifacts until the narrower
+ones stop answering the question.
 
 ## What good observability looks like
 
@@ -168,6 +158,21 @@ Bad observability usually looks like one of these:
 - benchmark files nobody reads or reviews
 - summaries collected but never compared to a claim
 - provenance missing when context differences are the real suspect
+
+## The beginner mistake to catch early
+
+Beginners often treat evidence surfaces as if "more files opened" means "better review."
+
+It usually means the opposite.
+
+If you open a benchmark, a long log, a provenance file, and a directory listing before you
+have stated the question, you are not investigating clearly. You are browsing.
+
+The repair habit is simple:
+
+1. write the question down
+2. choose the smallest artifact that can answer it
+3. move to a broader surface only if the smaller one leaves an honest gap
 
 ## Keep this standard
 

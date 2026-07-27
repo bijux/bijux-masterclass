@@ -1,36 +1,33 @@
 # Runbooks, Escalation, and Operational Review
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Runbooks, Escalation, and Operational Review"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 A workflow becomes easier to maintain when incident handling stops depending on memory.
 
 That is what a runbook is for.
 
+## How to use this page
+
+Read this lesson after the earlier Module 09 pages, because a runbook only works if you
+already know how to classify symptoms and choose evidence surfaces.
+
+Work through it in this order:
+
+1. learn what questions a runbook must answer
+2. learn the minimal shape of a good runbook
+3. practice converting repeated investigation into an explicit command path
+4. practice writing escalation that names a boundary instead of hiding uncertainty
+
+The goal is not to write long documents. The goal is to make stressful moments shorter and
+safer.
+
+## Start with the first honest command, not with the full command list
+
 A good runbook does not try to explain the whole repository. It gives the next maintainer
 the shortest reliable route through a stressful question.
+
+That means the first command matters more than a long appendix of possible commands.
+
+If a runbook opens with twenty commands, the maintainer still has to improvise. If it
+opens with one honest first step, the workflow already became easier to operate.
 
 ## What a Module 09 runbook should answer
 
@@ -113,6 +110,21 @@ make -C capstone profile-audit
 These commands are not always all required. They are the module's reliable escalation
 surfaces.
 
+## One concrete runbook test
+
+Imagine a teammate wakes up to a report that CI rebuilt published summaries and took much
+longer than the previous successful run.
+
+A runbook passes this test only if the maintainer can answer, without improvising:
+
+1. what to run first
+2. what artifact to inspect second
+3. how to decide whether this is workflow drift, context drift, or publish drift
+4. when to stop local tuning and escalate
+
+If the runbook cannot answer those four questions quickly, it is still notes, not
+operations.
+
 ## Turning recurring incidents into reviewable operations
 
 One of the best runbook improvements is converting a repeated manual check into a stable
@@ -144,13 +156,24 @@ That sentence protects the workflow from the wrong kind of "quick fix."
 Here is a minimal pattern:
 
 1. Confirm with `snakemake -n -p` or `make -C capstone wf-dryrun`.
-2. Use `snakemake --summary` to check whether the workflow state matches the report.
+2. Use `snakemake --summary` to check whether workflow state matches the report.
 3. Inspect the matching rule log and benchmark only for the affected target family.
 4. If context differs, inspect provenance or run `make -C capstone profile-audit`.
 5. If published trust is in question, run `make -C capstone verify-report`.
 6. Record the incident class before proposing a repair.
 
 That is short enough to use and strong enough to guide review.
+
+## The beginner mistake to catch early
+
+Beginners often confuse a runbook with a command inventory.
+
+Those are not the same thing.
+
+A command inventory says, "here are many things you could do." A runbook says, "start
+here, then go here, and escalate when this boundary appears."
+
+The educational target for this course is operational clarity, not command abundance.
 
 ## Common runbook mistakes
 

@@ -1,53 +1,50 @@
 # Workflow Cost Models and Timing Surfaces
 
+Slow workflows are often diagnosed badly because people start with a remedy instead of a
+model.
 
-<!-- page-maps:start -->
-## Page Maps
+This page gives you the model first.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Workflow Cost Models and Timing Surfaces"]
-  capstone["Capstone evidence"]
+## How to use this page
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+Read this lesson before you tune anything.
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+Work through it in this order:
 
-When a team says "the workflow is slow," they usually mean at least four different things.
+1. learn the four cost classes
+2. practice naming the dominant class in a simple scenario
+3. compare that claim against the evidence surfaces you already have
+4. write a one-paragraph diagnosis before proposing any repair
 
-That vagueness is the first problem to fix.
+If you skip that order, you will start guessing with threads, grouping, retries, or
+profile changes long before you understand what is actually slow.
 
-Snakemake spends time in layers, and those layers do not point to the same repair:
+## Start by separating where time is spent from what the run feels like
 
-- workflow planning and discovery
-- scheduler and job-launch overhead
-- filesystem or staging latency
-- real tool runtime
+When a teammate says, "the workflow is slow," that sentence usually hides several different
+possibilities:
 
-If you merge them into one complaint, every later decision gets worse.
+- the DAG is expensive to construct
+- thousands of tiny jobs are expensive to launch and track
+- files are slow to appear where downstream rules expect them
+- one rule or tool is genuinely expensive
+
+Those are different problems. They require different evidence and different repairs.
+
+The first educational goal of Module 09 is simple: stop collapsing all delay into one
+emotion word.
 
 ## The four cost classes
 
 | Cost class | What it means | Typical symptoms | Best first evidence |
 | --- | --- | --- | --- |
-| planning cost | time spent reading config, expanding targets, resolving wildcards, and building the DAG | dry-run feels slow before any job starts | `snakemake -n -p`, target count, discovery artifacts |
-| scheduler cost | time spent launching, tracking, and finishing many jobs | thousands of short jobs make the run feel busy but not productive | job count, per-rule runtime, executor logs |
-| storage drag | time lost to staging, filesystem latency, or slow visibility of outputs | jobs finish but downstream rules wait, rerun, or see files late | rule logs, storage-specific timings, profile settings |
+| planning cost | time spent reading config, expanding targets, resolving wildcards, and building the DAG | dry-run already feels slow before any job starts | `snakemake -n -p`, target count, discovery artifacts |
+| scheduler cost | time spent launching, tracking, and finishing many jobs | the run looks busy, but individual jobs are tiny | job count, per-rule runtime, executor logs |
+| storage drag | time lost to staging, filesystem latency, or slow visibility of outputs | jobs finish, then downstream work waits or reruns strangely | rule logs, storage timings, profile settings |
 | tool runtime | time spent inside scripts or external tools | one or two rules dominate elapsed time | `benchmark:` files, tool logs, resource usage |
 
-The job is not to memorize these names. The job is to stop reaching for the wrong fix.
+The goal is not memorization for its own sake. The goal is to name the dominant cost class
+before you touch the repository.
 
 ## A practical mental model
 
@@ -60,13 +57,14 @@ flowchart LR
   tool --> publish["declared outputs and published evidence"]
 ```
 
-This is not a strict clock trace. It is a teaching model.
+This is a teaching model, not a perfect trace.
 
-A slow run can touch more than one layer, but you should still ask which layer dominates.
+Real runs can spend time in more than one layer, but a good review still asks which layer
+dominates and which layer only contributes noise around the edges.
 
-## How to ask the first honest question
+## Ask the first honest question in the right order
 
-Start with these questions in order:
+Use this order until it becomes a habit:
 
 1. Is the workflow planning more work than expected?
 2. Are there too many tiny jobs for the chosen executor and storage context?
@@ -76,62 +74,80 @@ Start with these questions in order:
 That order matters because it keeps you from blaming a tool for a workflow-shape problem or
 blaming Snakemake for a storage problem.
 
-## A small example
+## One concrete classification exercise
 
-Imagine a workflow with 800 samples and three light preprocessing rules per sample.
+Imagine a workflow with 800 samples and three lightweight preprocessing rules per sample.
 
-Each rule takes about one second of real tool time.
+Each rule does about one second of real work.
 
 If the executor needs roughly the same amount of time to launch and finalize each job, the
-run may feel slow even though no single tool is expensive. That is a scheduler-shape
-problem, not a "buy a faster aligner" problem.
+run will feel sluggish even though no single tool is expensive. That is mainly a
+scheduler-cost problem.
 
 Now change the story:
 
 - dry-run is already slow
 - the discovered sample list doubled after a helper edit
-- benchmarks for the tools look normal
+- benchmark files still look normal
 
-That is not primarily scheduler cost. It is a planning and discovery problem.
+The dominant class has changed. This is now a planning-cost problem, not a tool-runtime
+problem and not primarily a scheduler problem.
 
-The right fix is to repair discovery or target expansion, not to tune threads.
+The educational habit you want is this: whenever the story changes, reclassify the cost
+class instead of defending your first hunch.
 
 ## Timing surfaces you can trust
 
-Use more than one surface, but keep each surface narrow.
+Use more than one evidence surface, but keep each one narrow.
 
 | Surface | What it helps you decide |
 | --- | --- |
-| `snakemake -n -p` | whether the planned work matches your mental model |
+| `snakemake -n -p` | whether planned work matches your mental model |
 | `snakemake --summary` | which outputs exist, are pending, or were rebuilt |
 | `benchmark:` files | which rules actually consume time once launched |
 | per-rule logs | whether time was spent computing, waiting, or failing |
 | `make -C capstone evidence-summary` | whether logs, benchmarks, provenance, and published paths still agree |
 
-No single artifact explains the whole run. That is normal.
+No single artifact explains the whole run. That is normal. Good review work comes from
+matching the question to the right surface.
 
 ## Common misreadings
 
-### Mistaking planner cost for tool cost
+### Mistaking planning cost for tool cost
 
-If dry-run is already surprisingly slow, launching the real run earlier will not explain
-the problem. It only adds more moving parts.
+If dry-run is already slow, starting a real run earlier will not clarify the issue. It
+will only add more moving parts.
 
-### Mistaking scheduler cost for parallel speedup opportunity
+### Mistaking scheduler cost for a simple "use more cores" problem
 
-Many tiny jobs do not automatically justify more cores. In some contexts, more concurrency
-makes the scheduler and filesystem work harder while the tools stay tiny.
+Many tiny jobs do not automatically justify more concurrency. In some contexts, more
+concurrency increases scheduler pressure and filesystem churn while the tools stay tiny.
 
 ### Mistaking storage drag for nondeterminism
 
-Late file visibility, staging delays, or slow shared storage can look random. Before you
-call a run flaky, ask whether files are arriving where the workflow expects them on the
-timeline the executor and storage actually provide.
+Late file visibility and staging delay can look random. Before you call a run flaky, ask
+whether files are arriving where the workflow expects them on the timeline the executor
+and storage actually provide.
 
-### Mistaking one noisy log for the whole cost story
+### Mistaking one loud log for the whole cost story
 
 A loud log is not the same thing as an expensive rule. Volume and runtime are different
 signals.
+
+## The beginner mistake to catch early
+
+Beginners often jump from "the workflow is slow" straight to "increase threads" or "group
+more jobs."
+
+That move feels practical because it changes something visible. It is still a weak move if
+the cost class has not been named.
+
+The repair standard in this course is stricter:
+
+1. name the dominant cost class
+2. name the artifact that supports that claim
+3. name one thing you have ruled out already
+4. only then propose a tuning direction
 
 ## What a good first note looks like
 
@@ -156,4 +172,4 @@ That note is already more useful than "workflow feels slow."
 Do not approve performance work until the review names the cost class first.
 
 If the diagnosis starts with threads, retries, grouping, or profile edits before the cost
-class is named, the workflow is already at risk of being tuned blindly.
+class is named, the workflow is already being tuned blindly.

@@ -1,34 +1,30 @@
 # Incident Triage for Slow and Flaky Runs
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Incident Triage for Slow and Flaky Runs"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 An incident is the worst time to invent a process.
 
-If the workflow is slow, flaky, or unexpectedly noisy, the fastest honest response is a
+This lesson gives you one on purpose.
+
+## How to use this page
+
+Use this page as a rehearsal guide before you need it under pressure.
+
+Work through it in this order:
+
+1. learn the incident ladder
+2. practice writing a precise symptom statement
+3. practice narrowing scope before touching logs
+4. practice ending with an incident class and next action
+
+If you only read incident material after a run has already gone bad, you will tend to
+skip straight to repository edits.
+
+## Start with planned work before runtime noise
+
+When the workflow is slow, flaky, or unexpectedly noisy, the fastest honest response is a
 fixed ladder that narrows the question before anyone edits the repository.
+
+The key beginner lesson here is that most incidents look larger than they are. The moment
+you replace a vague complaint with a precise symptom and scope, the search space shrinks.
 
 ## The incident ladder
 
@@ -61,6 +57,8 @@ That sentence gives you three anchors:
 - which scope changed
 - which comparison made the symptom visible
 
+Good incident work starts with language that another maintainer can verify.
+
 ## Define the affected scope
 
 Before opening logs, answer:
@@ -88,11 +86,11 @@ Those commands answer three early questions:
 - which outputs it considers current or stale
 - what class of change triggered reruns
 
-This often resolves the incident before you touch any runtime logs.
+This often resolves the incident before you touch runtime logs.
 
 ## Read the narrowest matching evidence
 
-Once the scope is clear, inspect only the artifacts that match it:
+Once scope is clear, inspect only the artifacts that match it:
 
 - the log for the affected rule and sample
 - the benchmark for that rule family
@@ -113,6 +111,22 @@ By this point, push the problem into one primary class:
 | tool behavior | the script or external tool is slower, noisier, or failing deterministically |
 
 The point is not perfect taxonomy. The point is to stop treating all failures as one blur.
+
+## One concrete triage scenario
+
+Suppose CI suddenly takes 18 extra minutes and rebuilds summary outputs for every sample,
+but local rule benchmarks still look normal.
+
+A disciplined triage path is:
+
+1. confirm the rebuild with `snakemake --summary`
+2. classify the trigger with `snakemake --list-changes input code params`
+3. inspect only the affected publish-oriented rule surfaces
+4. check provenance if context drift is still plausible
+5. write the incident class before changing any thread or retry setting
+
+That sequence keeps you from confusing a workflow-semantics issue with a runtime-tuning
+issue.
 
 ## Decide repair versus escalation
 
@@ -150,7 +164,7 @@ First suspects:
 - planner expansion
 - executor or storage overhead
 
-### Flaky run that only appears on one context
+### Flaky run that only appears in one context
 
 First suspects:
 
@@ -165,6 +179,22 @@ First suspects:
 - publish-boundary drift
 - missing provenance or verification evidence
 - internal results being trusted as if they were public artifacts
+
+## The beginner mistake to catch early
+
+Beginners often treat the first suspicious clue as the whole diagnosis.
+
+For example, they see one noisy rule log and immediately assume tool behavior is the root
+cause. That is a weak move if dry-run, summary, or change classification already point
+somewhere else.
+
+The discipline this course expects is:
+
+1. describe the symptom
+2. describe the scope
+3. inspect planned work
+4. inspect narrow matching evidence
+5. only then decide the incident class
 
 ## A simple incident note template
 

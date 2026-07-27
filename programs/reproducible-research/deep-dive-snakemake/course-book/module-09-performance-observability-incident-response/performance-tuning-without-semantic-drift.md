@@ -1,34 +1,38 @@
 # Performance Tuning Without Semantic Drift
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Performance Observability Incident Response"]
-  page["Performance Tuning Without Semantic Drift"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 The most dangerous performance improvement is the one that makes the workflow faster by
-teaching it to hide its own meaning.
+hiding its own meaning.
 
-That happens more often than teams admit.
+This page teaches you how to resist that kind of optimization.
+
+## How to use this page
+
+Read this lesson after you can already name a likely cost class from the earlier Module 09
+pages.
+
+Work through it in this order:
+
+1. identify the workflow boundary being tuned
+2. write down what must remain semantically unchanged
+3. compare honest and dishonest tuning moves
+4. practice writing a non-change claim as carefully as a speed claim
+
+If you cannot state what must stay true, you are not tuning safely.
+
+## Start by naming the boundary being tuned
+
+A performance change is never just "a speedup." It touches a specific boundary:
+
+- job launch and grouping
+- resource and thread policy
+- storage and scratch behavior
+- report or summary generation
+- publish or evidence surfaces
+
+Name that boundary first.
+
+Once the boundary is named, you can ask the right question: what parts of workflow meaning
+must remain unchanged if this tuning is honest?
 
 ## The rule for honest tuning
 
@@ -49,7 +53,7 @@ These can be valid when the evidence supports them:
 
 - grouping genuinely tiny jobs whose outputs still preserve the same file contract
 - reducing redundant helper work that does not change declared inputs or outputs
-- adjusting threads, resources, or executor settings when the workflow meaning stays fixed
+- adjusting threads, resources, or executor settings when workflow meaning stays fixed
 - moving heavy temporary traffic to a better storage surface when promotion boundaries stay clear
 - simplifying an expensive summary or report step while keeping the public contract intact
 
@@ -76,9 +80,10 @@ Fast wrong workflows are still wrong workflows.
 
 If a proposal cannot answer all four, it is not ready.
 
-## Example: grouping tiny jobs
+## One concrete tuning scenario
 
-Suppose a workflow launches one short QC job per sample, and executor overhead dominates.
+Suppose a workflow launches hundreds of sub-second QC jobs and executor overhead
+dominates.
 
 Grouping work can be honest if:
 
@@ -89,6 +94,9 @@ Grouping work can be honest if:
 
 Grouping becomes dishonest when it collapses output identity, hides which sample failed,
 or turns one rule into a private wrapper around undeclared work.
+
+The lesson is not "grouping is good" or "grouping is bad." The lesson is that grouping is
+only reviewable when the unchanged workflow contract is named explicitly.
 
 ## Example: tuning storage
 
@@ -127,6 +135,20 @@ Use this table in review when an optimization looks attractive:
 | how we know it stayed the same | points to a dry-run, summary, benchmark, verification, or publish artifact |
 
 This slows the conversation down in a good way.
+
+## The beginner mistake to catch early
+
+Beginners often write the speed claim and leave the non-change claim implicit.
+
+That is exactly how semantic drift gets normalized.
+
+A safe tuning review records both claims:
+
+- what became faster
+- what stayed semantically the same
+
+If only the first claim appears in the review, the second one will be assumed rather than
+tested.
 
 ## A small before-and-after note
 
