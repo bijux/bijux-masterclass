@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,32 +24,36 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises to turn extensibility into a governed contract instead of a vague
-invitation for consumers to import whatever currently works.
+Use these exercises as one governance lab on public surface design. The goal is not to
+list packaging or plugin ideas. The goal is to prove that a learner studying alone can
+take one capstone package, decide what deserves to be public, narrow the extension seam,
+and attach the review and compatibility burden that comes with publishing it.
 
-The day is not about listing packaging features. It is about deciding what deserves to be
-public, what must remain private, how plugins and integrations are constrained, and what
-evidence proves the surface is intentionally supported.
+## Running lab scenario
 
-## How to work through this set
+Use one capstone-facing surface all day:
 
-Treat the ten exercises as one full lab day on public surface design and extension
-governance.
+`service_monitoring`
 
-Before each answer:
+Assume the capstone currently has:
 
-1. name the consumer or extension use case under review
-2. name the narrowest surface that could support it safely
-3. state which internal boundary must remain protected
+- an internal application layer
+- runtime and adapter modules
+- some deep imports used in examples
+- one potential extension need for alternate incident sinks or metrics sinks
 
-Do the exercises in order. The day is one progression:
+Your job is to decide:
 
-- Exercises 1-3 define public facades, private seams, and capability boundaries
-- Exercises 4-6 review plugin governance, deprecation policy, and executable docs
-- Exercises 7-8 enforce import discipline and third-party contracts
-- Exercises 9-10 assemble a full extension-governance packet for one meaningful surface
+- what the supported package-level entrypoint should be
+- what customization seam outsiders may use
+- what must remain private even if it is technically importable
 
-Keep one governance packet as you go. By the end of the day it should contain:
+If you choose a different surface, keep the same pressure: one package that could become
+public, one plausible extension need, and one risk of accidental deep-import dependence.
+
+## What to keep open while you work
+
+Build one governance packet as you go. By the end it should contain:
 
 - one public-surface inventory
 - one private-versus-public boundary note
@@ -59,173 +62,128 @@ Keep one governance packet as you go. By the end of the day it should contain:
 - one executable-example review
 - one change-control recommendation
 
-If those six artifacts are missing, you are probably still talking about convenience
-instead of governance.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module09-lab/
-├── artifacts/
-├── notes/
-├── scratch/
-└── tests/
-```
-
-Keep one surface table while you work:
+Useful tables:
 
 | Consumer need | Public surface candidate | Why it is narrow enough | Internal boundary still protected | Governance burden introduced |
 | --- | --- | --- | --- | --- |
 
-Keep one compatibility table:
-
 | Surface or seam | Change allowed | Change forbidden without policy | Proof or review route | Consumer risk if misgoverned |
 | --- | --- | --- | --- | --- |
 
-```mermaid
-flowchart LR
-  need["name the consumer need"]
-  narrow["choose the narrowest supported surface"]
-  boundary["protect internal ownership"]
-  policy["attach versioning and review rules"]
-  promise["make examples executable"]
-  review["prove the seam is intentional"]
-
-  need --> narrow --> boundary --> policy --> promise --> review
-```
-
-Use that route on purpose. It keeps the day centered on durable support costs instead of
-on accidental import paths.
-
 ## Exercise 1: Name one true public surface
 
-Take one consumer use case and explain:
+For `service_monitoring`, decide:
 
-- what public entrypoint or facade should support it
-- why a deeper internal import should stay private
+- what one package-level entrypoint or facade should support
+- which deeper import path should stay private
 - what ownership boundary the public surface preserves
-- what future maintenance cost appears if the deeper path becomes public
+- what maintenance cost appears if the deeper import becomes public instead
 
-Study note:
-A public API is a promise you are willing to defend repeatedly.
+Start with consumer need, not with file visibility.
 
 ## Exercise 2: Compare public and private seams
 
-Choose one seam and explain:
+Pick one seam and explain:
 
-- what part should remain private
-- what part could be published safely
-- which consumer behavior each choice encourages
-- what evidence would show the seam is still being used as intended
+- what part becomes publicly supported
+- what part remains intentionally private
+- what user behavior each choice encourages
+- what refactor freedom is preserved by keeping the private part private
 
-Study note:
-Private is not a failure to share. It is often the price of keeping the model coherent.
+This is where "technically reachable" must stop pretending to mean "supported."
 
 ## Exercise 3: Design one capability boundary
 
-Pick one extension need and explain:
+Choose one extension need such as an alternate incident sink or metrics exporter.
 
-- whether a facade, protocol, callback, or narrow capability object is the right seam
-- what the capability is allowed to do
-- what it must never mutate or observe directly
-- what bug appears if the seam becomes too wide
+Decide whether the seam should be:
 
-Study note:
-Extension seams are strongest when they expose ability without surrendering ownership.
+- a facade method
+- a protocol
+- a callback
+- a registration object
+
+Then explain:
+
+- what capability the extension gets
+- what it must never mutate or inspect directly
+- what bug appears if the seam is widened
 
 ## Exercise 4: Review one plugin or registration story
 
-Take one plugin-style extension and explain:
+Assume someone asks for plugin-style registration.
 
-- whether it deserves plugin machinery at all
-- how discovery or registration should work
-- what sandbox or review rule must constrain it
-- what governance cost makes the plugin model acceptable or not
+Explain:
 
-Study note:
-Plugin support is expensive because it creates supported outsiders, not because loading
-code is technically hard.
+- whether plugin machinery is justified at all
+- how discovery or registration should work if it is justified
+- what review or sandbox rule must constrain it
+- what support cost makes the plugin model acceptable or not
+
+Do not answer from novelty. Answer from governance burden.
 
 ## Exercise 5: Write one deprecation rule honestly
 
-Choose one public behavior that may need change and explain:
+Pick one public behavior that may need to change later.
 
-- what the supported deprecation path looks like
+Explain:
+
+- what the supported migration path looks like
 - what consumers must be told
-- what compatibility suite or check should guard the promise
-- what informal removal habit would make the surface untrustworthy
+- what overlap window is promised
+- what compatibility suite or review route enforces the promise
 
-Study note:
-Deprecation is a contract transition, not a note in release text.
+Deprecation is a contract transition, not release-note theater.
 
 ## Exercise 6: Review one executable documentation promise
 
-Take one example, walkthrough, or README-style promise and explain:
+Choose one example or quickstart path and explain:
 
-- what public behavior it demonstrates
-- how to keep it executable or reviewable
-- what drift risk matters if the example becomes stale
-- what route should fail first if the promise no longer matches reality
+- what public behavior it teaches
+- how to keep it executable or continuously reviewed
+- what wrong mental model a stale example would create
+- what route should fail first if the example drifts
 
-Study note:
-Examples teach consumers what is safe. Stale examples teach them the wrong system.
-
-## Midday self-check
-
-Before moving into import discipline and third-party contracts, make sure your packet
-already answers these questions clearly:
-
-- what one consumer truly needs from the public surface
-- what one seam must remain private
-- how one capability boundary stays narrow
-- what one deprecation or documentation promise really commits you to
-
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the packet more explicit before continuing.
+This is where documentation becomes part of API governance.
 
 ## Exercise 7: Enforce one import boundary
 
-Take one package area and explain:
+Choose one package area and explain:
 
 - which imports should be supported
 - which deep imports should be considered off-limits
-- what layer rule or lint/review practice should enforce that
-- what internal drift becomes impossible to fix if deep imports spread
+- what lint, review, or packaging rule should enforce that
+- what internal change becomes difficult if deep imports spread
 
-Study note:
-Import discipline is one of the cheapest ways to keep governance real.
+Import discipline is one of the cheapest governance tools in the whole course.
 
 ## Exercise 8: Review one third-party integration contract
 
-Choose one outside consumer or integration and explain:
+Take one outsider use case and explain:
 
-- what stable contract it receives
-- what compatibility test or suite should protect it
-- what implementation detail must stay out of the contract
-- what breakage risk appears if the integration is validated only by unit mocks
+- what stable contract the integrator receives
+- what compatibility test should protect it
+- what implementation detail must stay outside the promise
+- what breakage a mock-only proof route would miss
 
-Study note:
-Third-party contracts need proof that survives implementation change.
+This exercise is about proving that the seam survives implementation change.
 
 ## Exercise 9: Build one extension-safety review packet
 
-Take one seam and write a short review that names:
+Write a short review that names:
 
 - the public entrypoint
-- the private boundary behind it
-- the versioning or deprecation rule
-- the executable documentation promise
-- the compatibility proof route
-- one governance risk that still needs attention
+- the protected private boundary
+- the extension seam
+- the deprecation or compatibility rule
+- the example or docs promise
+- one governance risk still not solved
 
-Study note:
-This review should sound like durable stewardship, not like a feature pitch.
+This should read like stewardship, not like a feature pitch.
 
-## Exercise 10: Produce a governance decision packet
+## Exercise 10: Produce the governance packet
 
-Assemble:
+Finish the lab by assembling:
 
 - one surface table
 - one compatibility table
@@ -233,20 +191,20 @@ Assemble:
 - one deprecation rule
 - one import-boundary enforcement note
 
-The packet is strong when another maintainer can answer:
+The packet is done only when another maintainer can answer:
 
 - what is public and why
 - what is private and why
-- how one extension is allowed to interact
-- how consumers are protected during change
+- how the extension is allowed to participate
 - what proof shows the surface is intentionally supported
 
-## Done means more than finishing the page
+## Done means the surface is defendable
 
-You are done with the exercise day when your packet can survive three kinds of review:
+You are done with the exercise day when your packet can survive these review questions:
 
-- a design review asking whether the surface is narrower than the internal architecture
-- a consumer review asking what promise is actually supported
-- a governance review asking how versioning, docs, and compatibility checks hold the line
+- "Why is this surface public instead of that deeper one?"
+- "What can an extension do without crossing ownership boundaries?"
+- "How will consumers survive the next change safely?"
 
-If the packet cannot survive those reviews, keep tightening the support language.
+If those answers are still fuzzy, keep tightening the support language before you open
+the answer page.
