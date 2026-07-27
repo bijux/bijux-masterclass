@@ -24,80 +24,105 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named proof question, not
-for wandering the whole course-book. Read the second diagram as the proof loop: start
-small, inspect the evidence, and escalate only when the earlier route no longer settles
-the claim.
+Use this page when you know the claim you want to verify but do not yet know how much
+proof is enough.
 
-Use this page when you know what you want to verify but do not yet know which command is
-the smallest honest one. The point of the ladder is to keep proof proportional to the
-question instead of defaulting to the largest route every time.
+That distinction matters. Learners often do one of two bad things:
+
+- run the biggest route every time and drown in output
+- run the smallest route available and claim too much from weak evidence
+
+The ladder exists to keep proof proportional to the question.
 
 ## Two kinds of proof pressure
 
-- Human-review pressure: use levels 1 to 6 when the question is what you can honestly inspect or review.
-- Executable-confidence pressure: use level 7 when the question is whether the runnable capstone still passes its strongest local confirmation route.
+There are two different pressures here:
 
-## Proof ladder
+- **human-review pressure**: you need enough evidence to inspect or explain a claim honestly
+- **executable-confidence pressure**: you need strong confirmation that the runnable system still holds together
 
-| Level | Use this when you need to prove... | Command | Evidence you get |
+Those are not the same job, so they should not always use the same route.
+
+## The ladder
+
+| Level | When to start here | Command | What this level gives you |
 | --- | --- | --- | --- |
-| 1. Public shape | what the runtime claims about plugins, fields, or actions without execution | `make manifest`, `make registry`, `make plugin`, `make field`, `make action`, `make signatures` | direct CLI output for metadata, registration, and generated signatures |
-| 2. One concrete behavior | how one plugin behaves at invocation time | `make demo` or `make trace` | one concrete action result plus traceable configuration and history |
-| 3. Saved inspection route | how the public runtime surface hangs together as a review bundle | `make inspect` | manifest, registry, one plugin, one field, one action, signatures, and route notes in `artifacts/inspect/...` |
-| 4. Guided walkthrough route | how the repository, public surface, and one invocation connect end to end | `make tour` | saved walkthrough bundle with runtime files, test files, and guided reading order |
-| 5. Executable verification route | whether the code and its public evidence still agree | `make verify-report` | pytest output plus saved public evidence in `artifacts/review/...` |
-| 6. Full public proof route | whether the capstone remains coherent across inspection, walkthrough, and verification | `make proof` | the full saved review surface |
-| 7. Strongest local confirmation | whether the runnable capstone test suite still passes | `make confirm` | direct executable confirmation through pytest |
+| 1. Public shape | you need to inspect declared runtime facts without executing business behavior | `make manifest`, `make registry`, `make plugin`, `make field`, `make action`, `make signatures` | direct public outputs for metadata, registration, field shape, and signatures |
+| 2. One concrete behavior | you need to see one action or runtime behavior actually happen | `make demo` or `make trace` | one concrete execution plus visible configuration and history |
+| 3. Saved inspection route | you need a guided review bundle without opening source first | `make inspect` | one saved bundle of public surfaces and reading notes |
+| 4. Guided walkthrough route | you need to connect commands, files, and tests across the repository | `make tour` | a broader walkthrough bundle with code-reading guidance |
+| 5. Executable verification route | you need to confirm that tests and public surfaces still agree | `make verify-report` | executable confirmation plus saved review evidence |
+| 6. Full public proof route | you need the whole inspection, walkthrough, and verification surface together | `make proof` | the broadest review bundle |
+| 7. Strongest local confirmation | you need the strongest direct runnable confirmation | `make confirm` | raw executable confidence through the test-driven confirmation route |
 
-## Choose the smallest honest route
+## Where to start
 
-### Start at level 1 when the question is about structure
+### Start at level 1 when the claim is structural
 
-Use the public-shape commands when the question sounds like:
+Good questions for level 1:
 
 - Which plugins are registered?
-- What fields does this plugin expose?
-- Did the wrapper preserve the public signature?
-- Can I inspect this runtime fact without executing the action?
+- What fields or actions does this plugin expose?
+- Did a wrapper preserve the public signature?
+- Can I inspect this fact without invoking behavior?
 
-### Start at level 2 when the question is about one behavior
+### Start at level 2 when the claim is behavioral
 
-Use `demo` or `trace` when the question sounds like:
+Good questions for level 2:
 
 - What does one action invocation look like?
-- What configuration and action history remain visible afterward?
-- Is this runtime behavior still inspectable after execution?
+- What state or history remains visible after execution?
+- Is the runtime behavior still inspectable after it happens?
 
-### Start at level 3 or 4 when the question is about pedagogy or code reading
+### Start at levels 3 or 4 when the problem is understanding
 
-Use `inspect` or `tour` when the question sounds like:
+Good questions for levels 3 and 4:
 
 - What should I read first?
-- Which saved files prove the public runtime story?
-- How do the CLI outputs connect to the source layout?
+- How do the public outputs connect to the repository layout?
+- Which files and tests support the runtime story I just saw?
 
-### Start at level 5 to 7 when the question is about confidence
+### Start at levels 5 to 7 when the problem is confidence
 
-Use `verify-report`, `proof`, or `confirm` when the question sounds like:
+Good questions for levels 5 to 7:
 
-- Did we break a contract?
-- Do the tests still agree with the public runtime surfaces?
-- Do I need the strongest local route before merging or publishing?
+- Did a recent change break a contract?
+- Do the tests still agree with the public surfaces?
+- Do I need merge-level or publication-level confidence?
 
 ## Escalation rules
 
-- Do not jump to `proof` when `manifest` or `registry` would settle the question.
-- Do not jump to `confirm` when you need a guided review bundle rather than test output.
-- Escalate from `inspect` to `tour` when you need source ownership, not just public runtime shape.
-- Escalate from `tour` to `verify-report` when you need executable confirmation instead of reading guidance.
-- Treat `confirm` as a different kind of pressure from the bundle routes: stronger confidence, but weaker guided explanation.
+- Do not jump to `proof` when `manifest`, `registry`, or `trace` would settle the claim.
+- Do not jump to `confirm` when your real need is explanation rather than raw confidence.
+- Escalate from `inspect` to `tour` only when you need file ownership and repository walkthrough, not just public outputs.
+- Escalate from `tour` to `verify-report` only when reading routes are no longer enough and executable confirmation is now required.
+- Treat `confirm` as the strongest confidence route, not the best teaching route.
 
-## Success signal
+## Common mistakes
 
-You are using the ladder well if you can say:
+Avoid these habits:
 
-- which claim you were trying to prove
-- why the chosen command was the smallest honest route
-- which saved file or output actually settled the question
-- what stronger route you deliberately chose not to run
+- using level 7 to answer a level 1 question
+- claiming design understanding from test success alone
+- claiming strong confidence from one pretty CLI output
+- treating bigger routes as automatically better routes
+
+## A practical selection rule
+
+When choosing a proof route, say:
+
+1. what claim you are trying to prove
+2. what kind of pressure you are under
+3. what the smallest honest route is
+4. what stronger route you will use only if that one fails to settle the question
+
+If you cannot say all four, you are probably picking the route by anxiety instead of by reasoning.
+
+## Good stopping point
+
+You are using the ladder well when you can say:
+
+- which claim you tested
+- why the chosen route was enough
+- which output or bundle actually settled the question
+- which stronger route you deliberately did not run
