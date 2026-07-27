@@ -1,36 +1,24 @@
 # Reviewing Publish Drift and Downstream Risk
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Reviewing Publish Drift and Downstream Risk"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 The publish boundary deserves the same seriousness as code review.
 
 If a workflow changes what it publishes, how it names files, or what those files mean,
 downstream trust can break even when the workflow still runs successfully.
 
 This page is about catching that drift before it becomes a downstream incident.
+
+## How to use this page
+
+Treat this page like a review checklist, not just a reading page.
+
+When you finish, you should be able to sit in front of a publish-related change and ask:
+
+- what changed in the public contract
+- whether the old contract still holds
+- what a downstream user would notice first
+- whether the bundle evidence still supports trust
+
+That is the teaching goal.
 
 ## Publish drift is not only about missing files
 
@@ -63,6 +51,24 @@ Publish review asks:
 
 Those questions overlap, but they are not identical.
 
+## Start from the downstream user, not the author
+
+The easiest way to miss publish drift is to review from the producer's perspective only.
+
+The author thinks:
+
+- the workflow still succeeds
+- the file move was small
+- the report still looks fine
+
+The downstream user experiences something else:
+
+- their notebook cannot find the old path
+- their parser reads the old field meaning
+- their validation step no longer matches the manifest
+
+Good publish review is the discipline of preferring the second perspective.
+
 ## One useful review loop
 
 ```mermaid
@@ -89,6 +95,17 @@ Start with four practical questions:
 
 These questions make downstream risk visible early.
 
+## A short audit you should be able to run quickly
+
+For any publish-related change, try this sequence:
+
+1. list the public files that a consumer is allowed to trust
+2. compare those files and their meanings with the previous promise
+3. check whether the manifest, provenance, report, and contract note still align
+4. decide whether the current version is still honest
+
+If any of those steps becomes vague, the review is not done yet.
+
 ## Drift often arrives through convenience
 
 Common convenience moves:
@@ -111,6 +128,16 @@ Strong shape:
 
 This makes downstream trust an engineering decision rather than an accident.
 
+## The beginner mistake to catch early
+
+Beginners often treat publish drift as a documentation chore.
+
+That is too weak.
+
+If the bundle contract is ambiguous, a downstream user can make the wrong decision even
+when every workflow job passed. That makes ambiguity a correctness issue, not a cosmetic
+issue.
+
 ## Common failure modes
 
 | Failure mode | Why it is risky | Better repair |
@@ -120,6 +147,22 @@ This makes downstream trust an engineering decision rather than an accident.
 | report and summary disagree | humans and tools see different truths | regenerate or repair the surfaces until they align |
 | manifest omits part of the public bundle | integrity review becomes incomplete | keep manifest coverage aligned with the publish contract |
 | downstream code starts reading internal files again | hidden contract escapes the publish boundary | repair the publish bundle rather than normalizing the shortcut |
+
+## What a reviewer should hear
+
+A strong publish review sounds something like this:
+
+> The workflow still runs, but that is not the only question. We checked the published
+> paths, the artifact meanings, and the supporting manifest, provenance, and contract
+> surfaces. The old downstream promise still holds, so this remains inside the current
+> version.
+
+Or, when it does not hold:
+
+> The workflow still runs, but the downstream promise changed, so the current version is
+> no longer honest.
+
+That is the mindset this page is trying to build.
 
 ## The explanation a reviewer trusts
 
@@ -144,3 +187,6 @@ Before leaving this page, you should be able to:
 - name several forms of publish drift beyond missing files
 - describe what should trigger compatibility or versioning discussion
 - explain why contract ambiguity is a real downstream risk
+
+If you still find yourself saying “the pipeline passed, so the publish bundle is probably
+fine,” read the page again. This entire module is trying to break that habit.

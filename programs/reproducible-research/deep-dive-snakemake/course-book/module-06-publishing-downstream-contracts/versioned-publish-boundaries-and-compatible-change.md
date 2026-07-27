@@ -1,30 +1,5 @@
 # Versioned Publish Boundaries and Compatible Change
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Versioned Publish Boundaries and Compatible Change"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Once you know which files belong in the public contract, the next question appears:
 
 > how do downstream users know when that contract has changed?
@@ -33,6 +8,22 @@ That is the job of versioned publish boundaries.
 
 Versioning is not a cosmetic folder name. It is how a workflow tells the downstream world
 whether paths, payloads, and expectations are still stable.
+
+## How to use this page
+
+Keep one imaginary downstream consumer in front of you while you read.
+
+That consumer might be:
+
+- a notebook written last month
+- another repository that reads `summary.json`
+- a report builder that expects a stable `report/index.html`
+
+Now ask one question repeatedly:
+
+> if I change this bundle today, what will that consumer experience tomorrow?
+
+That is the question versioning exists to answer honestly.
 
 ## `publish/v1/` is a promise, not a convenience path
 
@@ -56,6 +47,20 @@ Without a versioned boundary, small publish changes become dangerous:
 Each change may feel local to the author. To downstream users, those are contract changes.
 
 Versioning makes that change visible instead of surprising.
+
+## Start with the public promise, not with the diff
+
+Beginners often review publish changes by looking only at what changed in Git.
+
+That is too producer-centered.
+
+A better approach is:
+
+1. state the current public promise
+2. ask whether the old promise is still true after the change
+3. decide whether the current version can still carry that promise honestly
+
+This framing matters because a tiny diff can still be a major downstream change.
 
 ## One useful distinction: compatible change versus contract change
 
@@ -89,6 +94,24 @@ flowchart TD
 
 This is not a legal standard. It is a practical review tool.
 
+## A learner-friendly rule of thumb
+
+Inside one publish version, prefer changes that are clearly additive:
+
+- new optional fields
+- extra explanatory documentation
+- a new helper artifact that does not replace or rename the current contract
+
+Treat these as version-discussion triggers:
+
+- file renames
+- removed fields
+- changed field meaning
+- changed expectations about where consumers should read from
+
+The point is not to freeze the bundle forever. The point is to stop calling breaking
+changes "minor" just because they felt small to the author.
+
 ## The capstone example is already opinionated
 
 The workflow contract guide explicitly treats `publish/v1/` as the smaller public
@@ -104,6 +127,28 @@ That means files such as:
 - `discovered_samples.json`
 
 are expected to be reviewed as part of a versioned surface, not as loose outputs.
+
+## One concrete review scenario
+
+Suppose `publish/v1/summary.json` currently contains:
+
+- sample identifiers
+- a QC status field
+- a metric used by a downstream plotting notebook
+
+Now imagine three possible changes:
+
+1. add a new optional field called `cohort`
+2. rename `qc_status` to `status`
+3. keep the field name but change the meaning from per-sample QC to bundle-level QC
+
+These changes are not equally risky.
+
+- the first is often compatible
+- the second is usually a contract change
+- the third is also a contract change, even though the path and key name stayed the same
+
+This is why semantic review matters as much as file review.
 
 ## Weak version discipline
 
@@ -126,6 +171,21 @@ Strong shape:
 
 This gives a workflow the same kind of discipline that software interfaces need.
 
+## The beginner mistake to catch early
+
+The most common beginner mistake is to think a version bump is only needed when the file
+tree changes dramatically.
+
+That is false.
+
+Small-looking changes can still break downstream readers if they alter:
+
+- stable paths
+- stable field names
+- stable semantics
+
+The size of the edit is not the test. The survival of the old promise is the test.
+
 ## A practical review test
 
 Ask these questions:
@@ -146,6 +206,20 @@ unless you can defend compatibility clearly.
 | report meaning changes without documentation | humans and tools interpret the bundle inconsistently | document artifact roles and change semantics deliberately |
 | new files appear in `publish/v1/` with no review | the boundary grows by drift rather than design | require a downstream-use reason for new public artifacts |
 | version number never changes because change feels small locally | accumulated drift breaks consumer trust | use downstream compatibility, not author convenience, as the threshold |
+
+## What a reviewer should hear
+
+Good publish-version reasoning sounds like this:
+
+> The old consumer can still find the same path and interpret the same meaning, so this
+> stays inside `v1`.
+
+Or:
+
+> The old consumer would need code changes or a new semantic assumption, so we should not
+> pretend this is still the same public version.
+
+That kind of explanation teaches the team how to reason about stability.
 
 ## The explanation a reviewer trusts
 
@@ -170,3 +244,6 @@ Before leaving this page, you should be able to:
 - distinguish an additive compatible change from a contract-breaking change
 - explain why path renames are often publish-boundary changes
 - describe when a new publish version is the honest repair
+
+If you still describe versioning mainly as folder naming hygiene, pause and reframe. This
+page is really about how not to surprise downstream users.
