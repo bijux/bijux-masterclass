@@ -24,23 +24,20 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named architecture question,
-not for wandering the whole course-book. Read the second diagram as the architecture loop:
-choose the owning slice, inspect it, compare it against a lower-power alternative, then
-leave with one design judgment.
-
 Use this page when the capstone repository feels busy and you need the ownership model in
-one place before reading more code.
+one place before reading more code. The point is not to admire the runtime. The point is
+to understand where each mechanism stops, what it must not absorb, and how a reviewer can
+still see the design clearly.
 
 ## Start by architecture question
 
 | If the architecture question is... | Start with | Then inspect |
 | --- | --- | --- |
-| what the public CLI can show without hidden work | public observation | `cli.py`, manifest helpers, and `make manifest` |
-| where wrapper behavior should stop | callable transformation | `actions.py` and `make trace` |
+| what the public CLI can show without hidden work | public observation | `cli.py`, manifest helpers, and `capstone-manifest` |
+| where wrapper behavior should stop | callable transformation | `actions.py` and `capstone-trace` |
 | where validation really belongs | attribute contracts | `fields.py` and `test_fields.py` |
 | what must happen before the class exists | class-creation rules | `framework.py` and `test_registry.py` |
-| where realistic delivery behavior should stay concrete | concrete domain examples | `plugins.py`, `scenarios.py`, and `make plugin` |
+| where realistic delivery behavior should stay concrete | concrete domain examples | `plugins.py`, `scenarios.py`, and `capstone-plugin` |
 
 ## The capstone architecture in one sentence
 
@@ -49,7 +46,7 @@ metaclass each own one narrow boundary and the CLI exposes those boundaries with
 
 ## Main ownership slices
 
-| Slice | Owner | What it owns | What it does not own |
+| Slice | Owner | What it owns | What it must not own |
 | --- | --- | --- | --- |
 | public observation | `src/incident_plugins/cli.py` and manifest helpers in `framework.py` | guided inspection routes, manifest export, registry and signature reporting | business policy hidden behind private helper magic |
 | callable transformation | `src/incident_plugins/actions.py` | action wrapping, signature preservation, and action-history recording | field validation, registry design, or class creation |
@@ -74,7 +71,7 @@ metaclass each own one narrow boundary and the CLI exposes those boundaries with
 ## Best reading order for the architecture
 
 1. Read [Capstone Guide](index.md) to understand the public claim of the project.
-2. Run or inspect `make manifest` and `make registry` to see the public runtime shape first.
+2. Run or inspect `capstone-manifest` and `capstone-registry` to see the public runtime shape first.
 3. Read `src/incident_plugins/framework.py` for the class-creation and manifest boundary.
 4. Read `src/incident_plugins/fields.py` for attribute ownership.
 5. Read `src/incident_plugins/actions.py` for wrapper ownership.
@@ -87,9 +84,11 @@ metaclass each own one narrow boundary and the CLI exposes those boundaries with
 - Do not start in tests when the owning slice is not yet named.
 - Do not compare higher-power mechanisms until the lower-power alternative is explicit.
 
-## Best companion pages
+## Good stopping point
 
-- [Capstone Guide](index.md) for the capstone's role in the course
-- [Capstone Map](capstone-map.md) for the module-to-repository route
-- [Capstone File Guide](capstone-file-guide.md) for file ownership
-- [Capstone Walkthrough](capstone-walkthrough.md) for a guided first reading pass
+Stop when you can explain:
+
+- which file owns class-definition-time behavior
+- which file owns attribute ownership
+- which file owns wrapper behavior
+- which public route reveals each of those boundaries first
