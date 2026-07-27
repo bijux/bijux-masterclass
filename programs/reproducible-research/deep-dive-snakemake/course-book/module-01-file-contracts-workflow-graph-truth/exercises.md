@@ -92,20 +92,23 @@ What to hand in:
 
 ## Exercise 2: Prove convergence on purpose
 
-Start from a tiny workflow that uppercases one input file into one output file.
+Use `capstone/repro/file-contracts` as a clean specimen. Copy it into your own working
+area under `artifacts/`; do not write results into the tracked specimen.
 
-Run it, then run `snakemake -n` immediately afterward.
+Build `results/declared-report.txt`, then run the same target with `--dry-run`
+immediately afterward.
 
 What to hand in:
-- the `Snakefile`
-- the first successful run
-- the second dry-run that shows no work
-- one sentence explaining why the workflow settled down
-- one sentence explaining what specific tracked facts did not change between the two runs
+
+- the exact build command
+- the dry-run receipt containing `Nothing to be done`
+- the report’s stored threshold
+- a list of the declared facts that stayed unchanged
+- one sentence limiting the claim: what does this dry-run not prove?
 
 Study note:
 If your dry-run still plans work, do not move on until you can name the specific rerun
-cause.
+cause. If it plans nothing, do not claim that every real influence is declared yet.
 
 ## Exercise 3: Trigger one selective rebuild
 
@@ -125,23 +128,26 @@ Study note:
 If you find yourself saying "it reran because that rule comes next," stop and redraw the
 dependency chain instead.
 
-## Exercise 4: Break convergence and repair it
+## Exercise 4: Expose and repair an under-rebuild
 
-Take a working workflow and introduce one unstable influence, such as a time-based
-parameter or another changing tracked value, so the workflow stops converging.
+Build `results/hidden-report.txt` while `policy/threshold.txt` contains `10`. Change the
+policy to `20`, then request a dry-run for the hidden target.
 
-Then repair it.
+Record the stale report value before changing the Snakefile. Then repair `hidden_report`
+so policy contents are represented as an input dependency. Repeat the experiment from a
+clean output.
 
 What to hand in:
 
-- the non-converging version
-- the dry-run evidence that shows why it would rerun again
-- the repaired version
-- one sentence explaining what made the rule meaning unstable
+- the quiet dry-run from the dishonest rule
+- the current policy value and stale report value
+- a before-and-after contract diff
+- the repaired dry-run showing `hidden_report` planned after policy mutation
+- one sentence explaining why `--force` would rebuild once but not repair the defect
 
 Study note:
-This is one of the most important exercises in the module. Many later Snakemake problems
-are just harder versions of unstable workflow meaning.
+Do not change the renderer. The computation stays fixed so the dependency declaration is
+the only causal difference.
 
 ## Exercise 5: Diagnose one wildcard ownership problem
 
@@ -165,20 +171,25 @@ ownership clearer.
 
 ## Exercise 6: Repair a poison output
 
-Write a rule that fails after writing to its final output path. Then repair it so the final
-output is either complete or absent.
+Create `artifacts/module-01-publication/unsafe-final.txt` containing `trusted`. Run
+`capstone/scripts/poison.py` against that final path and record the exit code and final
+contents.
+
+Create a second trusted final. Run `atomic_writer.py --fail-before-rename`, inspect final
+and scratch, then run it successfully.
 
 What to hand in:
 
-- the broken rule shape
-- the repaired atomic-publication shape
-- the log path or evidence route you would keep for diagnosis
-- one sentence explaining why the repaired version is safer for downstream rules
-- one sentence saying exactly when the final path becomes trustworthy to consume
+- the initial and post-failure contents for both final paths
+- both nonzero exit codes
+- the scratch contents after atomic failure
+- proof that successful promotion removes scratch
+- a state diagram or table distinguishing trusted final, untrusted scratch, and promoted final
+- one limitation of the same-directory rename claim
 
 Study note:
-If a downstream rule could accidentally consume the broken file, the repair is not strong
-enough yet.
+The atomic failure is expected to leave scratch. The question is whether scratch can
+masquerade as the final result.
 
 ## Exercise 7: Separate workflow meaning from execution policy
 
@@ -244,8 +255,13 @@ What to hand in:
 - the project tree and complete `Snakefile`
 - a successful run followed by a converged dry-run
 - a DAG or rule graph written under `artifacts/`
-- one injected failure and evidence that no partial summary remained
+- one declared policy-file mutation that selectively rebuilds the summary
+- one intentionally hidden policy-file mutation that reproduces stale acceptance
+- the contract repair and repeated dry-run
+- one injected replacement failure proving the prior trusted summary survived
 - a short review of which settings are workflow meaning and which are execution policy
+- a four-sentence acceptance argument naming intervention, observation, decision, and
+  claim limit
 
 ## Midday self-check
 
