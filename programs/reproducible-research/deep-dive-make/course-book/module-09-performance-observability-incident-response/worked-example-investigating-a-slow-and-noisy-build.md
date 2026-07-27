@@ -19,7 +19,7 @@ graph LR
 flowchart LR
   claim["rewrite the complaint"] --> baseline["establish a controlled baseline"]
   baseline --> guardrail["interpret the evidence guardrail"]
-  guardrail --> incident["open one executed incident"]
+  guardrail --> incident["verify the incident signature matrix"]
   incident --> classify["classify ownership"]
   classify --> runbook["write a reusable response"]
 ```
@@ -105,7 +105,7 @@ The relevant target meanings are:
 - `all` builds the application, dynamic binaries, and a convergence sentinel
 - `trace-report` records a clean planning trace with attribution and usability checks
 - `selftest` checks convergence and serial/parallel equivalence
-- `incident-audit` executes one controlled failure specimen and saves a review bundle
+- `incident-audit` verifies three concurrency signatures and preserves their semantic evidence
 - `perf` executes governed clean, no-op, and dry-run scenarios and writes review evidence
 - `performance-selftest` proves the evidence gates accept truth and reject controlled drift
 

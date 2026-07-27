@@ -51,7 +51,7 @@ question honestly.
 | is the clean planning trace bounded and attributable | `make trace-report` | inspect trace evidence and raw trace |
 | do I need the proof saved as a review bundle | `make verify-report` | `make proof` |
 | what is the shortest human-first route into the capstone | `make walkthrough` | `make tour` |
-| which failure class does the repro pack teach | `make incident-audit` | `make repro` |
+| do the concurrency repros exhibit their promised signatures | `make incident-audit` | inspect summary, semantic evidence, then raw logs |
 | what does this repository assume about tools or variable sources | `make profile-audit` | `make portability-audit` and `make show-origins` |
 | can this tree be published as source without local residue | `make source-baseline-check` | `make source-bundle` |
 | what is the strongest shared stewardship route | `make confirm` | none; this is the top route |
@@ -83,7 +83,7 @@ question honestly.
 | `tour` | the shortest printed walkthrough plus supporting bundle | you need quick orientation |
 | `contract-audit` | the public-contract review bundle | you are reviewing promises and boundaries |
 | `inspect` | the same contract route under review naming | you want the smallest honest review route |
-| `incident-audit` | one executed incident bundle | you want one failure class with evidence |
+| `incident-audit` | verified concurrency findings, logs, semantic artifacts, and preserved workspaces | you need to distinguish successful corruption from nonzero ownership collisions |
 | `profile-audit` | the execution-profile review bundle | you are reviewing portability and precedence |
 | `selftest-report` | a complete passing or failing selftest evidence bundle | you need durable proof output |
 | `verify-report` | the same selftest bundle under shared catalog naming | you need the catalog label used elsewhere |

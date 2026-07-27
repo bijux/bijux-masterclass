@@ -264,6 +264,7 @@ By the end of this module, you should be able to:
 - measure distinct build costs instead of talking about "slowness" in the abstract
 - add observability surfaces that help incidents without changing build semantics
 - run a repeatable triage ladder for flaky or slow builds
+- distinguish process status from the semantic signature that proves an incident mechanism
 - tune shell-outs, discovery, and diagnostic overhead without hiding real graph issues
 - publish an operational runbook that others can use under pressure
 
@@ -274,6 +275,7 @@ Do not move on until all of these are true:
 - you can show one measurement that separates parse and recipe cost
 - you can point to one observability surface that meaningfully helps incidents
 - you can preserve a failing state and follow a triage ladder without skipping to edits
+- you can reject a reproducer that fails or passes for the wrong reason
 - you can justify one performance change as truth-preserving
 - you can hand another engineer an incident packet and runbook they could actually use
 - you can complete all ten exercises and reproduce an incident diagnosis from saved evidence

@@ -72,7 +72,7 @@ capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
 capstone-contract-audit: ## Build the capstone public-contract audit bundle
 > $(MAKE) -C $(CAPSTONE_DIR) contract-audit
 
-capstone-incident-audit: ## Build the capstone incident review bundle
+capstone-incident-audit: ## Verify and preserve capstone concurrency incident signatures
 > $(MAKE) -C $(CAPSTONE_DIR) incident-audit
 
 capstone-verify-report: ## Build the capstone verification report bundle

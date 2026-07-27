@@ -84,13 +84,15 @@ learner route, including the consumer-only verification experiment and rejection
 
 ## Failure-study route
 
-Use this route when the open question is about one failure class rather than the whole
-healthy build:
+Use this route when the open question is whether a controlled concurrency failure has been
+reproduced honestly:
 
-1. Start with `capstone/repro/shared-log-interleaving.mk`.
-2. Then inspect `capstone/repro/directory-creation-race.mk` and `capstone/repro/order-only-dependency-misuse.mk`.
-3. State the defect class in words before proposing a repair.
-4. Return to `capstone/tests/run.sh` to compare the broken specimen with the healthy proof harness.
+1. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit`.
+2. Read `summary.tsv` and predict why one case expects zero while two expect nonzero.
+3. Verify every finding against its file under `evidence/`, not only its raw log.
+4. Inspect the preserved workspace and copied specimen for the ownership defect.
+5. State the defect class and repair graph before reading the repair guidance.
+6. Return to `capstone/tests/run.sh` and the selftest bundle for healthy-build proof.
 
 ## Good stopping point
 

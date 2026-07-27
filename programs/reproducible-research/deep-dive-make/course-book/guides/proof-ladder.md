@@ -49,7 +49,7 @@ That means:
 | 3 | does the build stay truthful under ordinary use | `make PROGRAM=reproducible-research/deep-dive-make capstone-selftest` |
 | 4 | do I need a saved selftest bundle I can review later | `make PROGRAM=reproducible-research/deep-dive-make capstone-verify-report` |
 | 5 | do I need a focused review of the public contract or platform boundary | `make PROGRAM=reproducible-research/deep-dive-make capstone-contract-audit` or `capstone-portability-audit` |
-| 6 | do I need one executed failure specimen with repair context | `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` |
+| 6 | do I need verified process and artifact signatures for controlled concurrency faults | `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` |
 | 7 | do I need the sanctioned multi-bundle stewardship route | `make PROGRAM=reproducible-research/deep-dive-make proof` |
 | 8 | am I ready for the strongest confirmation pass | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` |
 
@@ -62,7 +62,7 @@ That means:
 | "I need to know whether the graph still behaves correctly." | capstone-selftest |
 | "I need durable proof output, not just terminal scrollback." | capstone-verify-report |
 | "I need to inspect boundary declarations and published promises." | capstone-contract-audit |
-| "I need one concrete failure class, not the whole repository." | capstone-incident-audit |
+| "I need to prove a controlled concurrency mechanism, not merely run a broken Makefile." | capstone-incident-audit |
 | "I need the full review route another maintainer could repeat." | proof |
 | "I need the strongest built-in confirmation before major change." | capstone-confirm |
 

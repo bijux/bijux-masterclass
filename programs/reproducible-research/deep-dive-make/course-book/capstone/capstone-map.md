@@ -71,7 +71,7 @@ Return to the module first if:
 | 06 Generated Files | how generation enters the graph honestly | `scripts/`, `mk/stamps.mk` | `make proof` |
 | 07 Build Architecture | how layered includes become a public build surface | `mk/*.mk`, [Capstone File Guide](capstone-file-guide.md) | `make inspect` |
 | 08 Release Engineering | how one candidate moves through production, verification, and contained installation | `release/*.tsv`, release scripts and tests, [Capstone Release Acceptance](capstone-release-acceptance.md) | `make capstone-release-check` |
-| 09 Incident Response | how failures become inspectable instead of superstitious | `repro/`, [Capstone Proof Guide](capstone-proof-guide.md) | `make incident-audit` |
+| 09 Incident Response | how process results and artifact state prove distinct failure mechanisms | incident audit bundle, [Capstone Proof Guide](capstone-proof-guide.md) | `make incident-audit` |
 | 10 Governance | whether another maintainer could extend or migrate the build safely | `mk/`, `tests/`, `repro/` | `make confirm` |
 
 ## Good stopping point

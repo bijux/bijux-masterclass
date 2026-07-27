@@ -476,7 +476,7 @@ Do not open `exercise-answers.md` until your packet contains:
 
 - one controlled baseline rather than one timing
 - one observability conclusion based on usability as well as volume
-- one executed incident classification
+- three executed incident classifications backed by semantic artifact evidence
 - one rejected false repair
 - one experiment contract or justified no-change decision
 - one claim-to-proof map

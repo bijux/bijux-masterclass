@@ -234,5 +234,5 @@ decision without pretending to be a portable benchmark.
 
 - `make trace-report` for bounded clean-plan causality and attribution evidence
 - `make selftest-report` for convergence and schedule-equivalence proof
-- `make incident-audit` for one executed failure specimen
+- `make incident-audit` for verified process and artifact signatures across concurrency specimens
 - `make profile-audit` for tool, platform, and variable-origin boundaries

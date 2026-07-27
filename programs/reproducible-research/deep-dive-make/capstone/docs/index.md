@@ -36,7 +36,7 @@ Use this page as the stable entry route for the Make capstone docs.
 | how the build proves convergence and parallel safety | `SELFTEST_GUIDE.md` | `PROOF_GUIDE.md` and `make selftest` |
 | how one release candidate is accepted locally | `RELEASE_GUIDE.md` | `TARGET_GUIDE.md` and `make release-check` |
 | how to establish or compare local build-cost evidence | `PERFORMANCE_EVIDENCE_GUIDE.md` | `make perf` and `make performance-compare` |
-| which failure class the capstone teaches | `REPRO_GUIDE.md` | `INCIDENT_REVIEW_GUIDE.md` and `make incident-audit` |
+| how the capstone proves distinct concurrency failure mechanisms | `INCIDENT_REVIEW_GUIDE.md` | `make incident-audit`, then `REPRO_GUIDE.md` |
 | why missing edges can produce successful stale builds | `INCREMENTAL_FAULT_AUDIT_GUIDE.md` | `make incremental-fault-audit` |
 | how the system is layered | `ARCHITECTURE.md` | `PROFILE_AUDIT_GUIDE.md` and `make proof` |
 

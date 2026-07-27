@@ -26,11 +26,11 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-The repro pack turns build failures into reviewable failure surfaces. Use it
-when you want to study one failure class at a time instead of treating concurrency and
-graph defects as random incidents.
-When you want one curated executed example instead of choosing a repro by hand, use
-`make incident-audit` and read `INCIDENT_REVIEW_GUIDE.md`.
+The repro pack turns build failures into reviewable failure surfaces. Use it when you
+want to study one failure class at a time instead of treating concurrency and graph
+defects as random incidents. When you need verified execution rather than source-only
+inspection, use `make incident-audit` for the three concurrency cases or
+`make incremental-fault-audit` for missing-edge cases.
 
 ---
 
@@ -65,13 +65,17 @@ rather than treating a successful build as evidence of freshness.
 
 ## Incident Bundle Route
 
-Use this when you want a saved executed incident review:
+Use this when you want a saved, asserted concurrency incident review:
 
 1. Run `make incident-audit`.
 2. Read `INCIDENT_REVIEW_GUIDE.md`.
-3. Read `command.txt`, `run.txt`, and `exit-status.txt`.
-4. Read the copied repro makefile.
-5. Return to `PROOF_GUIDE.md` to match the repair to the real capstone.
+3. Compare all rows in `summary.tsv`.
+4. Read each case in `report.json` beside its named file under `evidence/`.
+5. Use `runs/`, `workspace/`, and `specimens/` to verify the causal explanation.
+6. Return to `PROOF_GUIDE.md` to match each repair to the healthy capstone.
+
+Use `INCIDENT_CASE=<name>` only after reviewing the complete matrix. A named case retains
+its expected process and semantic contract; an arbitrary Makefile would not.
 
 ---
 

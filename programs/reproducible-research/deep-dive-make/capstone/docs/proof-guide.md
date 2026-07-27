@@ -55,7 +55,7 @@ start narrower.
 | missing generated-producer edges cause stale consumers and declared edges recover | `make incremental-fault-audit` | fault summary, paired producer models, traces, and mutated workspaces |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
 | variable and execution-policy assumptions are reviewable | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `origins.txt` |
-| one failure class can be studied with captured evidence | `make incident-audit` | `INCIDENT_REVIEW_GUIDE.md`, `command.txt`, `run.txt`, copied repro file |
+| concurrency specimens exhibit their promised failure mechanisms | `make incident-audit` | incident summary, report, semantic evidence, raw logs, and preserved workspaces |
 | the capstone can be entered without browsing randomly | `make walkthrough` | `WALKTHROUGH_GUIDE.md`, `README.md`, `TARGET_GUIDE.md` |
 | this repository still deserves stewardship trust | `make confirm` | `PROOF_GUIDE.md`, `tests/run.sh`, audit bundles as needed |
 
@@ -89,7 +89,7 @@ That keeps claim, route, and evidence ahead of implementation detail.
 - choose `performance-compare` only when an earlier clean bundle from the same toolchain and runner exists
 - choose `performance-selftest` when the question is whether provenance, requested-work, capture, and comparison gates close
 - choose `verify-report` when the proof needs to be saved
-- choose `incident-audit` for one failure class with captured evidence
+- choose `incident-audit` when process status and semantic artifact state must jointly prove a concurrency failure class
 - choose `profile-audit` for portability, policy, and precedence questions
 - choose `proof` only when the question genuinely spans multiple bundles
 - choose `confirm` when stewardship review needs the strongest built-in route

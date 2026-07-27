@@ -59,7 +59,7 @@ first-contact playground for Make syntax.
 | do source, header, generator, and generated-consumer changes select only required work | `make performance-incremental` | read the complete summary, then inspect any failing case trace |
 | how can a successful Make run leave authored or generated consumers stale | `make incremental-fault-audit` | compare missing-edge and declared-edge traces |
 | did cost change under compatible context and equivalent work | `make performance-compare` | inspect context, requested work, trusted outputs, then deltas |
-| which failure class does this repro teach | `make incident-audit` | `make proof` |
+| do controlled concurrency faults match their promised signatures | `make incident-audit` | inspect semantic evidence before `make proof` |
 | should I trust this as a stewardship specimen | `make proof` | `make confirm` |
 
 From the repository root, the matching course-level commands are:
