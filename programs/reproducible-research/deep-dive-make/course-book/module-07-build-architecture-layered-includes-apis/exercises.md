@@ -132,22 +132,21 @@ established by where a value propagates and by evidence from the affected target
 
 ## Exercise 3: Decide whether a macro is justified
 
-A teammate wants to replace three similar explicit rules with one macro plus `call` and
-`eval`.
-
-Explain how you would decide whether that abstraction improves the build or turns it into
-a private language.
+Compare the `explicit-rules` and `bounded-macro` specimens from the abstraction audit.
+Treat the explicit rules as a contract baseline, not as the automatically preferred
+implementation. Prove whether the macro preserves that contract.
 
 What to hand in:
 
-- the invariant the macro would protect
-- one reason to keep the explicit rules instead
-- one inspection command or technique you would use after the refactor
-- one sentence explaining what would make the macro too expensive cognitively
+- a target, prerequisite, policy, publication, and owner table for the explicit model
+- the bounded macro’s owner list and call-domain output
+- the evaluated target/prerequisite map from both models
+- a byte-level comparison of both artifact pairs
+- a keep/remove decision with one stated limit of the evidence
 
 Study note:
-This course does not reward abstraction for its own sake. Reuse has to justify the
-inspection cost it introduces.
+Line count is not a contract. The macro earns consideration only after its evaluated graph
+and artifacts match the explicit baseline.
 
 ## Exercise 4: Prepare the repository for growth
 
@@ -257,18 +256,21 @@ value propagated. Use both when scope is the contract under review.
 
 ## Exercise 9: Inspect a macro instead of trusting it
 
-Write or choose a bounded rule-generating macro. Inspect its expanded rules and compare
-them with equivalent explicit rules.
+Start from `bounded-macro`. Add a third owner and confirm the expected rule appears. Then
+inject one unrelated target or policy assignment into the macro body and show which
+evidence surface exposes the side effect.
 
 What to hand in:
 
-- the invariant the macro protects
-- the macro and two call sites
-- the inspection output
-- a decision to keep or remove the macro, with reasoning
+- the third owner’s source, generated target, and artifact contents
+- the relevant `gmake -npRr all` entries before and after mutation
+- help output compared with every generated callable target
+- artifact modes before and after mutation
+- the rejection-test result and a repair that restores one-responsibility generation
 
 Study note:
-This is where you prove that abstraction is reviewable rather than merely compact.
+Inspect both dispatched artifacts and undispatched target surface. A successful `all` run
+cannot prove that the macro generated nothing else.
 
 ## Exercise 10: Refactor a growing build
 

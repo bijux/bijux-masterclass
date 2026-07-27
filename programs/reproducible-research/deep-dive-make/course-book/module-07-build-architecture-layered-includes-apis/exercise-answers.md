@@ -108,19 +108,33 @@ scope determines which targets inherit a value.
 
 ## Exercise 3: Decide whether a macro is justified
 
-A strong answer says a macro is justified when it protects one repeated invariant, such as
-atomic publication or one repeated compile shape, and remains easy to audit with
-`make -p`.
+The explicit contract is:
 
-A strong reason to keep explicit rules instead is:
+| Target | Source | Mode | Publication | Owner |
+| --- | --- | --- | --- | --- |
+| `build/alpha.txt` | `data/alpha.txt` | ordinary | temporary file then rename | alpha |
+| `build/beta.txt` | `data/beta.txt` | ordinary | temporary file then rename | beta |
 
-> The repeated rules are still few, and the macro would make the call sites less readable
-> than the duplication it replaces.
+The bounded model exposes:
 
-That is a very healthy answer. Module 07 does not reward abstraction for its own sake.
+```text
+macro-calls=publish_owned_file:alpha publish_owned_file:beta
+```
 
-The macro becomes too expensive when a reader must mentally expand a private language just
-to understand one ordinary target.
+Its evaluated database must preserve:
+
+```text
+build/alpha.txt: data/alpha.txt | build/
+build/beta.txt: data/beta.txt | build/
+```
+
+Both artifact pairs must record the same mode, source, and owner. If those observations
+match, keeping the macro is defensible because it centralizes atomic publication while
+leaving the generated domain visible.
+
+Keeping the explicit rules is also defensible when two short rules are cheaper to read than
+the two-stage `eval` expansion. A required limit belongs in the answer: this evidence does
+not establish behavior for generated includes, secondary expansion, or a new rule family.
 
 ## Exercise 4: Prepare the repository for growth
 
@@ -277,24 +291,28 @@ The key explanation is:
 
 ## Exercise 9: Inspect a macro instead of trusting it
 
-A bounded macro can own one compile shape:
+Adding `gamma` to the owner list should generate exactly:
 
-```make
-define compile_object
-$1: $2 | $$(@D)/
-	$$(CC) $$(CPPFLAGS) $$(CFLAGS) -c $$< -o $$@
-endef
-
-$(eval $(call compile_object,build/app/main.o,src/app/main.c))
-$(eval $(call compile_object,build/lib/math.o,src/lib/math.c))
+```text
+build/gamma.txt: data/gamma.txt | build/
 ```
 
-Use `make -np` and search for both object targets. Keep the macro only if the expanded
-rules are predictable and the shared invariant matters. Two short rules may be clearer
-than `call` and `eval`; removing an unjustified macro is a successful answer.
+and an artifact containing:
 
-The strongest answers show that inspection, not elegance, decides whether the macro earns
-its place.
+```text
+mode=ordinary
+source=data/gamma.txt
+owner=gamma
+```
+
+If the macro also adds `publish-gamma`, the database trace exposes that target even when
+`all` never dispatches it. If it assigns `MODE := release`, all three artifacts expose the
+policy side effect. Help should be compared with the generated callable target list so an
+undocumented surface is not mistaken for a public promise.
+
+`gmake abstraction-contract-selftest` is the reference rejection route. The repair is not
+to add every generated helper to help. Remove publication-target generation and policy
+assignment from the artifact-rule macro, then give those decisions explicit owners.
 
 ## Exercise 10: Refactor a growing build
 
