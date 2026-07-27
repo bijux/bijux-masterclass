@@ -35,6 +35,20 @@ Each exercise asks for three things:
 - the governance decision you made
 - the evidence or reasoning that makes that decision defensible
 
+Treat the ten exercises as one full lab day on runtime governance and review.
+
+Do them in order:
+
+- Exercises 1-3 establish trust boundaries, interface honesty, and reversibility
+- Exercises 4-6 separate tooling-grade escalation from application defaults and review the capstone runtime
+- Exercises 7-8 extend that discipline into audit trails and rejection criteria
+- Exercises 9-10 package the whole course into a reviewable runtime-governance packet
+
+Keep one runtime-governance table while you work:
+
+| Runtime pressure or mechanism | Trust boundary | Lowest honest owner | Reset or observation surface | Governance judgment |
+| --- | --- | --- | --- | --- |
+
 ## Exercise 1: Reject one unsafe dynamic execution idea
 
 Take one proposed `eval`, `exec`, or code-generation design.
@@ -96,6 +110,68 @@ What to hand in:
 - one mechanism the capstone uses responsibly
 - one higher-power change you would reject as making the runtime less reviewable
 
+## Midday self-check
+
+Before moving into the final four exercises, make sure you can already answer these
+questions clearly:
+
+- where the real trust boundary sits for dynamic execution or generated behavior
+- why interface language must stay smaller than what ABCs, protocols, or runtime checks can actually prove
+- what reset, disable, or observation path keeps a dynamic mechanism operationally honest
+- when an escalation belongs to tooling or infrastructure instead of ordinary application design
+
+If you cannot answer those four questions in plain language, return to Exercises 1-6 and
+make the trust boundary, reset surface, and rejected lower-power alternative more explicit
+before continuing.
+
+## Exercise 7: Design one audit trail for a dynamic mechanism
+
+Choose one registry, patch, plugin runtime, or dynamic dispatch mechanism and make its
+history easier to inspect after the fact.
+
+What to hand in:
+
+- the mechanism
+- one audit surface such as logs, counters, manifests, or explicit state snapshots
+- one explanation of what incident or debugging question that audit trail would answer
+
+## Exercise 8: Write one explicit rejection rule
+
+Choose one high-power runtime idea and define a concrete review rule for when it should be
+rejected.
+
+What to hand in:
+
+- the mechanism class you are reviewing
+- the rejection rule
+- one explanation of which missing evidence or ownership signal triggers the rejection
+
+## Exercise 9: Compare honest runtime claims with overstated claims
+
+Choose one governance-sensitive runtime design and write both an honest description and an
+overstated description of what it guarantees.
+
+What to hand in:
+
+- the honest description
+- the overstated description
+- one explanation of which words make the overstated version misleading
+
+## Exercise 10: Produce a runtime-governance packet
+
+Assemble:
+
+- one runtime-governance table
+- one dynamic mechanism with a reset or disable path
+- one trust-boundary judgment for dynamic execution, import control, or plugin registration
+- one rejection rule explaining when a higher-power design should be refused
+
+The packet is strong when another learner can use it to answer:
+
+- what mechanism is being governed
+- what evidence keeps it reviewable
+- when the design should be accepted, constrained, or rejected
+
 ## Mastery standard for this exercise set
 
 Across all six answers, the module wants the same habits:
@@ -105,6 +181,11 @@ Across all six answers, the module wants the same habits:
 - you require reset and disable paths for dynamic behavior
 - you distinguish tooling-grade escalation from application defaults
 - you justify power with ownership and evidence rather than taste
+
+Across all ten answers, add two more habits:
+
+- you make audit and rejection criteria explicit instead of implied
+- you leave behind a runtime-governance packet another learner could review without guessing
 
 If an answer still sounds like "the runtime can do it, so the design is fine," keep going.
 

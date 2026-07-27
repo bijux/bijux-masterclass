@@ -106,6 +106,66 @@ Good conclusion:
 The capstone is defensible because it keeps runtime facts inspectable and rejects extra
 power it does not need.
 
+## Answer 7: Design one audit trail for a dynamic mechanism
+
+Example answer:
+
+Suppose a plugin registry runtime adds:
+
+- a manifest snapshot listing registered plugins
+- registration timestamps or sequence numbers
+- a test-visible counter for load or reset events
+
+Good conclusion:
+
+An audit trail answers questions such as "what was active at failure time?" and "did a
+test or import path leave hidden global state behind?" Reviewable runtime systems make
+those questions cheap to answer.
+
+## Answer 8: Write one explicit rejection rule
+
+Example answer:
+
+Mechanism class:
+
+- import hooks or AST transforms in ordinary application startup
+
+Rejection rule:
+
+- reject unless the problem is truly tooling-grade or infrastructure-grade, and unless reset, ordering, and location-preservation evidence is part of the design review
+
+Good conclusion:
+
+The rejection is triggered by missing ownership and missing operational proof, not by a
+general dislike of powerful mechanisms.
+
+## Answer 9: Compare honest runtime claims with overstated claims
+
+Example answer:
+
+Honest description:
+
+- "This registry makes plugin membership inspectable and resettable during tests."
+
+Overstated description:
+
+- "This runtime manages plugins safely and automatically."
+
+Good conclusion:
+
+The second version is misleading because words such as "safely" and "automatically"
+suggest broader lifecycle, trust, and recovery guarantees than the mechanism actually
+proves.
+
+## Answer 10: Produce a runtime-governance packet
+
+The packet is strong when another learner can answer:
+
+- which mechanism is under review
+- which trust boundary constrains it
+- which audit, reset, or disable surfaces keep it governable
+- which explicit rule would cause the design to be rejected
+
 ## What strong Module 10 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -115,6 +175,8 @@ Across the whole set, strong answers share the same habits:
 - they demand reset, disable, and cleanup paths for dynamic behavior
 - they distinguish application design from tooling-grade runtime control
 - they justify power with ownership, timing, and proof surfaces
+- they make audit and rejection rules explicit
+- they leave behind a packet another learner can review without guessing
 
 If an answer still sounds impressed by the mechanism itself, revise it until the judgment
 sounds operational instead.
