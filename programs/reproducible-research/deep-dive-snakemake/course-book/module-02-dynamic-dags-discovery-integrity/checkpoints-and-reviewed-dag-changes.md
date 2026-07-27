@@ -66,7 +66,7 @@ input has been inspected or produced.
 
 Good examples:
 
-- discovering which samples are present in a newly staged raw-data directory
+- deciding which declared candidates remain usable after validation
 - splitting one input into a data-dependent set of shards
 - enumerating outputs from a tool whose count depends on validated input content
 
@@ -130,22 +130,25 @@ The important lines are usually:
 
 ```mermaid
 flowchart TD
-  raw["data/raw/"] --> checkpoint["checkpoint discover_samples"]
-  checkpoint --> registry["results/discovered_samples.json"]
-  registry --> fanout["per-sample targets"]
-  fanout --> publish["publish/v1/discovered_samples.json"]
+  manifest["config/samples.tsv"] --> raw["declared raw evidence files"]
+  raw --> checkpoint["checkpoint validate_candidates"]
+  checkpoint --> accepted["results/discovery/accepted_samples.json"]
+  checkpoint --> rejected["results/discovery/rejected_samples.json"]
+  accepted --> fanout["per-sample targets"]
+  fanout --> publish["publish/v1/accepted_samples.json"]
+  rejected --> publish["publish/v1/rejected_samples.json"]
 ```
 
-This picture matters because the discovery step leaves behind a durable registry. The
-checkpoint is not trusted because it is dynamic. It is trusted because its result is
-reviewable.
+This picture matters because the discovery step leaves behind durable accepted and
+rejected records. The checkpoint is not trusted because it is dynamic. It is trusted
+because its result is reviewable.
 
 ## Minimal checkpoint pattern
 
 ```python
-checkpoint discover_samples:
+checkpoint validate_candidates:
     input:
-        directory("data/raw")
+        lambda wildcards: [SOURCE_BY_SAMPLE[sample] for sample in SAMPLES]
     output:
         directory("results/discovery")
     run:
@@ -154,13 +157,28 @@ checkpoint discover_samples:
 
         outdir = Path(output[0])
         outdir.mkdir(parents=True, exist_ok=True)
+        accepted = []
+        rejected = []
 
-        samples = sorted(
-            path.name.removesuffix(".fastq.gz")
-            for path in Path(input[0]).glob("*.fastq.gz")
+        for sample, source in sorted(SOURCE_BY_SAMPLE.items()):
+            size = Path(source).stat().st_size
+            if size > 0:
+                accepted.append({"sample": sample, "path": source})
+            else:
+                rejected.append(
+                    {
+                        "sample": sample,
+                        "path": source,
+                        "reason": "empty input file",
+                    }
+                )
+
+        (outdir / "accepted_samples.json").write_text(
+            json.dumps({"samples": accepted}, indent=2) + "\n",
+            encoding="utf-8",
         )
-        (outdir / "samples.json").write_text(
-            json.dumps({"samples": samples}, indent=2) + "\n",
+        (outdir / "rejected_samples.json").write_text(
+            json.dumps({"samples": rejected}, indent=2) + "\n",
             encoding="utf-8",
         )
 
@@ -169,9 +187,9 @@ def discovered_qc_targets(_wildcards):
     import json
     from pathlib import Path
 
-    checkpoint_job = checkpoints.discover_samples.get()
-    registry = Path(checkpoint_job.output[0]) / "samples.json"
-    samples = json.loads(registry.read_text(encoding="utf-8"))["samples"]
+    checkpoint_job = checkpoints.validate_candidates.get()
+    registry = Path(checkpoint_job.output[0]) / "accepted_samples.json"
+    samples = [row["sample"] for row in json.loads(registry.read_text(encoding="utf-8"))["samples"]]
     return expand("results/{sample}/qc.json", sample=samples)
 
 
@@ -180,10 +198,11 @@ rule all:
         discovered_qc_targets
 ```
 
-Two parts matter here:
+Three parts matter here:
 
-- the checkpoint writes one owned registry
-- downstream expansion reads that registry, not the raw directory again
+- the checkpoint writes an accepted registry and a rejection record
+- downstream expansion reads the accepted registry, not the raw directory again
+- the rejected candidates stay visible instead of disappearing from the story
 
 That is the core Module 02 pattern.
 
@@ -208,7 +227,7 @@ A checkpoint must never be used to smuggle in these facts:
 - a second private discovery pass inside downstream helper code
 
 If the downstream DAG changes, the workflow should be able to point to one declared input
-surface and one concrete checkpoint output that explain why.
+surface and concrete checkpoint outputs that explain why.
 
 ## Determinism matters more than dynamism
 
@@ -267,9 +286,10 @@ checkpoint code.
 
 Strong explanation:
 
-> the checkpoint exists because the sample set is unknown until `data/raw/` is inspected,
-> it writes `results/discovery/samples.json`, and all downstream fanout reads that file,
-> so the dynamic change to the DAG is explicit and reproducible.
+> the checkpoint exists because validation execution decides which declared candidates are
+> usable, it writes `results/discovery/accepted_samples.json` and
+> `results/discovery/rejected_samples.json`, and all downstream fanout reads the accepted
+> registry, so the dynamic change to the DAG is explicit and reproducible.
 
 Weak explanation:
 
