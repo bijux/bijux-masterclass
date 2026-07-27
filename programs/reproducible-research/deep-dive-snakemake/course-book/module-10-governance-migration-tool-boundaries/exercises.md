@@ -1,101 +1,80 @@
 # Exercises
 
+Use these after reading the five core lessons and the worked example. The goal is to make
+stewardship judgment visible through inventories, migration sequences, governance rules,
+and ownership contracts, not through vague redesign language.
 
-<!-- page-maps:start -->
-## Page Maps
+Do them in order. The set is one day-long progression:
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+- Exercises 1-3 establish current truth and governance language.
+- Exercises 4-6 classify anti-patterns and build a current-truth inventory.
+- Exercises 7-8 preserve proof through one ownership move.
+- Exercises 9-10 enforce governance and design an honest handoff.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+For every answer, keep three things:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use these exercises to practice stewardship judgment, not only migration vocabulary.
-
-The strongest answers will make the current contract, the preserved proof route, and the
-future boundary move explicit.
+- the boundary you are naming
+- the evidence route you actually used
+- one short sentence explaining why the change preserves trust instead of only improving taste
 
 ## Exercise 1: Review the current repository honestly
 
-A repository has:
+Choose a workflow repository with a mix of trusted outputs and awkward drift.
 
-- `publish/v1/summary.json`
-- several downstream notebooks that still read `results/`
-- one profile with a different sample filter
-- a helper package that owns discovery logic no reviewer can explain quickly
-
-Write a short review note that explains:
+What to hand in:
 
 - the top three risks in boundary language
 - which risk you would address first
-- which existing evidence route you would inspect before proposing migration
+- the existing evidence route you inspect before proposing migration
+- one awkward behavior you must describe honestly before changing it
 
 ## Exercise 2: Sequence a migration
 
-A team wants to:
+Choose three desired changes such as moving report logic, changing discovery, or shifting
+submission responsibility.
 
-- move report generation into package code
-- change how samples are discovered
-- migrate job submission onto an external platform
+What to hand in:
 
-Describe a safer order for these changes.
-
-Your answer should name:
-
+- the safer order for the three changes
 - which boundary moves first
-- what proof must survive that step
+- what proof must survive each step
 - which change should wait until later and why
 
-## Exercise 3: Write governance rules
+## Exercise 3: Write governance rules the team can keep using
 
-Draft three short governance rules for a workflow team that keeps repeating these mistakes:
+Draft three short governance rules for a workflow team that keeps repeating preventable
+mistakes.
 
-- published files appear without documentation updates
-- profile changes alter workflow meaning
-- helper scripts become important but remain hard to review
+What to hand in:
 
-Each rule should be short enough that a team could realistically keep using it in review.
+- the three rules
+- the repository surface each rule protects
+- one example of a change each rule would reject
+- one reason the wording is short enough to survive real review
 
-## Exercise 4: Name the anti-pattern
+## Exercise 4: Name the anti-pattern family
 
-A pull request does all of the following:
+Review a change that mixes evidence removal, undocumented publish drift, and semantic
+settings hidden inside operating policy.
 
-- removes benchmark files because they "make the repository noisy"
-- adds a new published TSV without updating verification
-- moves analytical thresholds into `profiles/slurm/config.yaml`
+What to hand in:
 
-Explain:
-
-- which anti-pattern family each change belongs to
-- which change is the most dangerous and why
-- what recovery step you would require first
+- the anti-pattern family for each change
+- which change is most dangerous and why
+- the recovery step you would require first
+- the proof route you would consult before approving anything else
 
 ## Exercise 5: Decide the tool boundary
 
-A team now wants user-triggered analysis requests, access control, and tenancy-aware job
-scheduling, but the current Snakemake repository still does a strong job of producing
-trusted publish bundles.
+Choose a request where another system wants user-triggered requests, access control,
+tenancy-aware scheduling, or service behavior layered around a Snakemake repository.
 
-Write a short recommendation that explains:
+What to hand in:
 
 - what Snakemake should keep owning
 - what another system should own
-- what handoff artifact or review surface should make the split trustworthy
+- the handoff artifact or schema that makes the split trustworthy
+- one ownership line you refuse to blur
 
 ## Exercise 6: Build a current-truth inventory
 
@@ -124,7 +103,7 @@ What to hand in:
 ## Exercise 8: Migrate one ownership boundary
 
 Move one report, helper, or discovery concern to a better owner while retaining the same
-public outputs. Run old and candidate implementations against identical fixtures.
+public outputs.
 
 What to hand in:
 
@@ -133,10 +112,13 @@ What to hand in:
 - focused proof before and after the move
 - rollback criteria
 
-## Exercise 9: Enforce a governance rule
+## Exercise 9: Enforce one governance rule
 
-Automate one recurring rule: published files require file-API coverage, profiles cannot
-own semantic keys, or important helpers require direct tests and declared inputs.
+Automate one recurring rule such as:
+
+- published files require file-API coverage
+- profiles cannot own semantic keys
+- important helpers require direct tests and declared inputs
 
 What to hand in:
 
@@ -148,7 +130,7 @@ What to hand in:
 ## Exercise 10: Design and review a tool handoff
 
 Keep Snakemake responsible for file-based execution while an external service owns user
-requests, identity, access, or tenancy-aware scheduling. Define the contract between them.
+requests, identity, access, or tenancy-aware scheduling.
 
 What to hand in:
 
@@ -157,12 +139,13 @@ What to hand in:
 - idempotency and provenance strategy
 - an end-to-end proof that the returned publish bundle remains independently verifiable
 
-## Mastery check
+## Mastery standard for this exercise set
 
-You have a strong grasp of this module if all ten answers consistently keep four ideas
-visible:
+Across all ten answers, Module 10 wants the same habits:
 
 - review comes before redesign
-- migration moves one boundary at a time
+- migrations move one boundary at a time
 - governance protects contracts, policy boundaries, proof, and ownership clarity
 - tool-boundary decisions are about responsibility and evidence, not trend-following
+
+If your answer says only "the workflow should be modernized," keep going.

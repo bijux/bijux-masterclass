@@ -1,61 +1,47 @@
 # Worked Example: Planning a Safe Workflow Migration
 
+This file ties the whole module together around one realistic problem:
 
-<!-- page-maps:start -->
-## Page Maps
+> a team wants change for real reasons, but could easily destroy trust by moving too many weak boundaries at once.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Worked Example: Planning a Safe Workflow Migration"]
-  capstone["Capstone evidence"]
+The question is not "how do we modernize the repository?" The question is how to review
+current truth, move one boundary, preserve proof, and stop before a fashionable rewrite
+erases evidence.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## The lab route
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+Work through the example in this order:
 
-This example shows how Module 10 works when a team wants change for good reasons but could
-easily damage trust by moving too fast.
+1. review current truth before proposing migration
+2. write down what must not move first
+3. sequence one ownership change at a time
+4. narrow the external handoff request to what Snakemake should no longer own
+5. finish by writing governance rules so the same drift does not return
 
-The point is not to memorize this exact sequence. The point is to see how review,
-migration, governance, and tool-boundary judgment fit together in one real story.
+## The starting situation
 
-## The situation
-
-A team inherits a Snakemake repository with these characteristics:
+Assume a team inherits a Snakemake repository with these characteristics:
 
 - the workflow itself still runs reliably
 - downstream notebooks read some files from `results/`
 - `publish/v1/summary.json` is trusted, but the file API is incomplete
-- one profile includes a sample filter that does not exist in the shared config contract
+- one profile includes a sample filter that does not belong to operating policy
 - report generation is hard to test and lives in a large helper script
-- leadership wants the system "moved onto the platform"
+- leadership wants the system “moved onto the platform”
 
-That last sentence creates risk immediately, because it sounds larger than the actual
-review has earned.
+That last sentence creates risk immediately because it is larger than the review has
+earned.
 
 ## Review current truth before proposing change
 
 The first task is not migration. It is review.
 
-The review note says:
+A strong review note might say:
 
-> The repository's strongest stable surface is the versioned publish bundle, but the public
-> contract is weakened because some downstream consumers still read from `results/`. The
-> profile boundary is also weak because one profile appears to change sample selection
-> semantics. Report generation has a clear output surface but unclear implementation
-> ownership.
+> The repository’s strongest stable surface is the versioned publish bundle, but the
+> contract is weakened because some downstream consumers still read `results/`. The
+> profile boundary is also weak because one profile changes sample-selection semantics.
+> Report generation has a clear output surface but unclear implementation ownership.
 
 That note already names three different problems:
 
@@ -63,7 +49,7 @@ That note already names three different problems:
 - policy leakage
 - hidden ownership
 
-Without that review, the migration discussion would stay vague.
+Without that review, every later migration sentence stays vague.
 
 ## Decide what must not move first
 
@@ -74,10 +60,8 @@ Before discussing platform migration, the team writes down what must remain stab
 - the publish verification route
 - the ability to compare profiles honestly
 
-This is the crucial shift.
-
-The migration is no longer "move onto the platform." It is now "keep trusted outputs and
-proof routes stable while improving weak boundaries."
+This is the crucial shift. The migration is no longer “move onto the platform.” It is now
+“keep trusted outputs and proof routes stable while improving weak boundaries.”
 
 ## Sequence the boundary moves
 
@@ -95,16 +79,16 @@ Instead, the team chooses this order:
 3. move report implementation behind the same output contract
 4. decide what the external platform should own
 
-That order matters because it fixes truth problems before it adds architectural movement.
+That order matters because it repairs truth problems before adding architectural motion.
 
 ## Repair contract drift first
 
-The team updates the file API and downstream review so that notebooks stop reading
-`results/` directly.
+The team updates the file API and downstream review so notebooks stop reading `results/`
+directly.
 
 Proof route used:
 
-- `make verify-report`
+- publish verification
 - file API review
 - downstream comparison against the publish bundle
 
@@ -113,15 +97,15 @@ consumers of internal state.
 
 ## Move semantic settings out of profiles
 
-The suspicious sample filter is moved into visible workflow or config surfaces, and the
-profile is reduced back to operating policy.
+Next, the suspicious sample filter moves into visible workflow or config surfaces, and
+the profile is reduced back to operating policy.
 
 Proof route used:
 
-- `make profile-audit`
+- profile audit
 - dry-run comparison across profiles
 
-At this point, the repository becomes easier to reason about even before any platform
+At this point the repository becomes easier to reason about even before any external
 handoff discussion.
 
 ## Migrate implementation without changing outputs
@@ -134,9 +118,8 @@ The important restraint is that they do not change:
 - published file meanings
 - verification routes
 
-They compare old and new report outputs and keep the same public boundary.
-
-This is a real migration step because ownership moved, but proof stayed visible.
+They compare old and new report outputs and keep the same public boundary. This is a real
+migration step because ownership moved, but proof stayed visible.
 
 ## Revisit the platform request honestly
 
@@ -147,12 +130,11 @@ Only now does the team ask:
 The answer turns out to be narrower than the original request:
 
 - Snakemake should keep owning sample discovery, orchestration, and publish artifacts
-- the platform should own user-triggered requests, job submission policy, and access control
+- the platform should own user-triggered requests, job-submission policy, and access control
 
-This is a hybrid answer, and it is the correct one.
-
-The repository still explains workflow truth better than the platform would. The platform
-explains service behavior better than the repository would.
+This is a hybrid answer, and it is the correct one. The repository still explains
+workflow truth better than the platform would. The platform explains service behavior
+better than the repository would.
 
 ## Write governance rules so the problem does not return
 
@@ -162,35 +144,28 @@ The team records three rules:
 2. profiles may not change workflow meaning
 3. migrations must preserve a comparison route until the new boundary earns trust
 
-That is the part many teams skip. Without it, the same drift returns in six months.
+That is the part many teams skip. Without it, the same drift returns later.
 
-## What this example teaches
+## The repaired stewardship story
 
-This migration succeeds because the team refuses three common shortcuts:
+By the end of the migration plan, the repository can be described cleanly:
 
-- they do not start with platform migration language
-- they do not move multiple weak boundaries at once
-- they do not remove proof while the repository is in transition
+1. current truth is named before redesign
+2. contract and policy drift are repaired before bigger movement
+3. implementation ownership can change without changing trusted outputs
+4. tool handoff is narrower and more honest than the original request
+5. governance rules keep the repaired boundaries from decaying again
 
-Instead, they make the current system more legible, then move one boundary at a time.
+That is what it means to plan a safe workflow migration.
 
-## The pull-request note you would want
+## Review questions for the repaired design
 
-> This change is part of a staged migration, not a repository rewrite. We first repaired
-> contract drift by moving downstream trust back onto the published bundle, then repaired a
-> semantic policy leak by removing sample selection from the profile layer. This step moves
-> report implementation ownership into package code while preserving the existing published
-> outputs and verification route. The external platform remains out of scope for workflow
-> truth and will own only request and access-control concerns in the later handoff.
+When you inspect a stewardship plan shaped like this, ask:
 
-That note is calm, specific, and reviewable.
+1. which current contract was written down before migration
+2. which proof route survives the first ownership move
+3. which boundary should move later, not now
+4. what Snakemake still owns after the external handoff
+5. which governance rule prevents the same drift from reappearing
 
-## Why this is a mastery example
-
-This one story exercises the whole module:
-
-- Core 1: the review names current truth before redesign
-- Core 2: the migration moves one boundary at a time
-- Core 3: governance rules are written down
-- Core 4: recurring anti-patterns are named as patterns
-- Core 5: the tool-boundary decision becomes hybrid for clear reasons
+If those answers are visible, the module’s stewardship story has landed.
