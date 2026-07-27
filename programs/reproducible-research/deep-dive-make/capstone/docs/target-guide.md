@@ -47,6 +47,7 @@ question honestly.
 | does one source change select exactly the necessary work | `make performance-incremental` | inspect policy and incremental report |
 | did cost change under the same semantic contract | `make performance-compare` | inspect both bundles and the comparison report |
 | do performance evidence gates reject dishonest inputs | `make performance-selftest` | inspect the rejection tests |
+| is the clean planning trace bounded and attributable | `make trace-report` | inspect trace evidence and raw trace |
 | do I need the proof saved as a review bundle | `make verify-report` | `make proof` |
 | what is the shortest human-first route into the capstone | `make walkthrough` | `make tour` |
 | which failure class does the repro pack teach | `make incident-audit` | `make repro` |
@@ -75,6 +76,7 @@ question honestly.
 | `performance-incremental` | missing and unexpected rebuild classifications | you need requested-work proof |
 | `performance-compare` | compatible timing deltas guarded by semantic equivalence | you have a prior evidence bundle |
 | `performance-selftest` | capture and comparison acceptance/rejection tests | you need to review the evidence gate |
+| `trace-report` | clean-plan trace, semantic checks, and bundle manifest | you need causality evidence without execution |
 | `walkthrough` | the bounded first-pass bundle | you need an ordered entry route |
 | `tour` | the shortest printed walkthrough plus supporting bundle | you need quick orientation |
 | `contract-audit` | the public-contract review bundle | you are reviewing promises and boundaries |

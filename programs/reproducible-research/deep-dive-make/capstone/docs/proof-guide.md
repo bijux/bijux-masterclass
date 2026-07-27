@@ -50,6 +50,7 @@ start narrower.
 | a declared input selects the required rebuild scope | `make performance-incremental` | incremental policy and requested-work report |
 | two build-cost bundles are semantically comparable | `make performance-compare` | comparison report and both evidence bundles |
 | performance gates reject dishonest evidence | `make performance-selftest` | capture and comparison rejection tests |
+| clean planning evidence retains causal attribution | `make trace-report` | trace report, raw trace, and manifest |
 | proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `commands.txt`, `logs/` |
 | generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/generated-header-edge.mk` |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
