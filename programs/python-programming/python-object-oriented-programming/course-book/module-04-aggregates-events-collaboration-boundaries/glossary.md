@@ -24,23 +24,45 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This glossary belongs to **Module 04: Aggregates, Events, and Collaboration Boundaries** in **Python Object-Oriented Programming**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+This glossary belongs to **Module 04: Aggregates, Events, and Collaboration
+Boundaries** in **Python Object-Oriented Programming**. Use it when you need to decide
+which object owns a rule, when to emit an event, and how to keep collaboration readable
+instead of tangled.
 
 ## How to use this glossary
 
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
+Return here when a use case touches several objects and you can no longer tell where the
+transactional boundary should be. Most design mistakes in this module start as ownership
+mistakes.
 
-## Terms in this directory
+## Terms that matter in this module
 
-| Term | Meaning in this directory |
-| --- | --- |
-| Adapter and Bridge: Wrapping External Systems and Storage | the module's treatment of adapter and bridge: wrapping external systems and storage, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Aggregate Lifecycle and Failure Semantics | the module's treatment of aggregate lifecycle and failure semantics, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Aggregates and Consistency Boundaries in a Python Service | the module's treatment of aggregates and consistency boundaries in a python service, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Cross-Object Invariants and Aggregate-Level Validation | the module's treatment of cross-object invariants and aggregate-level validation, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Designing Collaboration Surfaces: How Objects Talk Without Tangle | the module's treatment of designing collaboration surfaces: how objects talk without tangle, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Domain Events for Decoupling (Without Full Event Sourcing) | the module's treatment of domain events for decoupling (without full event sourcing), used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| In-Process Event Dispatch: Tiny Observer and Event Bus | the module's treatment of in-process event dispatch: tiny observer and event bus, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Projections, Read Models, and Object-Graph Debug Views | the module's treatment of projections, read models, and object-graph debug views, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Refactor 3: Monolithic Logic → Aggregates + Events + Strategies + Debuggable Graph | the module's treatment of refactor 3: monolithic logic → aggregates + events + strategies + debuggable graph, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Strategy and Policy Objects for Rule Evaluation and Decisions | the module's treatment of strategy and policy objects for rule evaluation and decisions, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
+| Term | Meaning in this module | Review question |
+| --- | --- | --- |
+| Aggregate | A cluster of objects treated as one consistency boundary for a change. | Which object graph must stay valid together when one command succeeds or fails? |
+| Aggregate root | The entry point through which callers modify the aggregate. | Are outside callers reaching into internals that should only change through the root? |
+| Consistency boundary | The line that says "inside this boundary, related rules must hold together now." | Which invariants require one atomic decision rather than eventual repair? |
+| Cross-object invariant | A rule involving multiple objects, not just one field or one entity. | If one object changes, what else must still be checked before the operation is complete? |
+| Collaboration surface | The messages, method calls, and return values that let objects cooperate. | Does this interaction reveal a clear contract, or only shared confusion? |
+| Policy object | A dedicated object for evaluating rules or strategies without burying them inside entities. | Is this decision logic stable enough to deserve its own named collaborator? |
+| Domain event | A recorded fact that something meaningful already happened in the domain. | Are you using an event to report a completed fact, not to ask permission? |
+| Event dispatch | The mechanism that forwards events to interested handlers. | Have you kept the dispatch path small enough that a reader can still trace it? |
+| Projection | A read-oriented view derived from richer domain state or emitted events. | Are you simplifying access for readers without polluting the core model? |
+| Adapter | A wrapper that translates between your model and an external interface. | Is this boundary code absorbing outside awkwardness so the domain stays clean? |
+| Bridge | A separation between an abstraction and interchangeable implementations behind it. | Are you decoupling two axes of change, or just adding one more layer of indirection? |
+| Object graph | The linked set of objects participating in one domain structure. | Can you inspect this graph and explain ownership, traversal, and update rules? |
+
+## Fast distinctions
+
+- An **aggregate** owns consistency, not just grouping.
+- An **event** reports something finished; it does not replace core command flow.
+- A **projection** helps readers; it should not become the source of truth.
+- An **adapter** protects your model from foreign shapes and APIs.
+
+## Exit check
+
+Leave this glossary only when you can do all of these:
+
+- explain why aggregate size should be driven by consistency rules rather than convenience
+- identify when an event is clearer than a direct dependency and when it is not
+- describe one collaboration surface that is explicit and one that is tangled
