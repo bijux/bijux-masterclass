@@ -1,30 +1,5 @@
 # Internal Results Versus Public Contracts
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Internal Results Versus Public Contracts"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 The first publishing decision is the most important one:
 
 > which outputs belong to the workflow, and which outputs belong to the downstream world?
@@ -33,6 +8,18 @@ If that line is vague, the workflow becomes harder to review and downstream user
 forced to guess which files are safe to trust.
 
 This page is about making that line explicit.
+
+## How to use this page
+
+Read this page with a real workflow tree in front of you.
+
+You should be able to point at each file or directory and say one of these out loud:
+
+- this exists so the workflow can keep running
+- this exists so maintainers can inspect or debug the run
+- this exists because a downstream user is allowed to trust it
+
+If you cannot sort the tree that way, your publish boundary is not ready yet.
 
 ## A workflow usually produces more files than it should publish
 
@@ -90,6 +77,22 @@ Files such as:
 
 are not just another directory. They are the deliberate public boundary.
 
+## A practical sorting rule
+
+When you are unsure whether a file belongs in the public bundle, ask these three
+questions in order:
+
+1. Would the workflow still need this file even if no downstream user ever saw it?
+2. Would a maintainer mainly use this file to debug, inspect, or validate a run?
+3. Would a downstream notebook, report pipeline, or external repository be justified in
+   treating this file as a stable interface?
+
+If the first or second answer is strongest, keep the file internal until you have a
+clearer downstream reason.
+
+If the third answer is strongest, you are no longer talking about a mere output. You are
+talking about a contract.
+
 ## One simple contrast
 
 ```mermaid
@@ -104,6 +107,27 @@ This diagram matters because many publishing mistakes begin when both directorie
 treated as if they made the same promise.
 
 They do not.
+
+## A concrete audit you should be able to perform
+
+Imagine a repository with these artifacts after a run:
+
+- `results/sample_A.tsv`
+- `results/sample_B.tsv`
+- `results/qc/coverage.png`
+- `results/logs/aggregate.log`
+- `publish/v1/summary.json`
+- `publish/v1/report/index.html`
+
+A strong learner should be able to say:
+
+- the `results/` files help the workflow execute, inspect QC, or debug
+- the `publish/v1/` files are intentionally promoted because a downstream consumer should
+  not need to reverse engineer the internal layout
+- the existence of a polished QC plot does not automatically make it part of the public
+  contract
+
+That is the beginning of publication discipline.
 
 ## A weak boundary
 
@@ -131,6 +155,17 @@ That design gives both maintainers and consumers a clear answer to the same ques
 
 > which files are safe to depend on?
 
+## The beginner mistake to catch early
+
+Many beginners think publishing means copying the most useful-looking files into a
+`publish/` directory after the run.
+
+That is still too producer-centered.
+
+The real question is not which files feel important to the workflow author. The real
+question is which files a downstream user should be encouraged to trust without learning
+the internal workflow tree.
+
 ## A practical test
 
 Ask these questions about any output:
@@ -153,6 +188,19 @@ If the answer is the third, it needs stronger naming, stability, and review.
 | reports are the only visible outputs | machine-readable contract becomes unclear | pair human-oriented reports with explicit machine-readable artifacts |
 | logs or benchmarks leak into the public surface | consumers inherit maintenance noise | keep operational evidence separate from the downstream contract |
 | no one can explain why a file is public | review becomes guesswork | require a clear downstream-use reason for promoted files |
+
+## What a reviewer should hear
+
+When a team promotes a file into `publish/v1/`, the explanation should sound like this:
+
+> We are exposing this file because a downstream user needs a stable, documented surface
+> for a real use case, and we do not want them reading internal `results/` paths.
+
+If the explanation instead sounds like:
+
+> We already had the file anyway, so we copied it over.
+
+then the boundary is still accidental.
 
 ## The explanation a reviewer trusts
 
@@ -177,3 +225,7 @@ Before leaving this page, you should be able to:
 - give one example of an internal output that should not become public
 - give one example of a file that belongs in the published contract
 - explain why downstream consumers should not need to understand the whole workflow tree
+
+If you still talk about publication mainly as "where final files go," keep working. The
+stronger idea is that publication defines which outputs other people are allowed to rely
+on.
