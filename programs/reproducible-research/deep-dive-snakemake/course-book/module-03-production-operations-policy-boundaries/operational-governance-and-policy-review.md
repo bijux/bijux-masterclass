@@ -1,30 +1,5 @@
 # Operational Governance and Policy Review
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Operational Governance and Policy Review"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Production operation does not stay healthy because one maintainer is careful once.
 
 It stays healthy when the repository makes policy changes reviewable later.
@@ -34,6 +9,29 @@ That is the governance question for Module 03:
 > if a profile, proof route, or recovery policy changes next month, how will the next maintainer know whether the change was operational, semantic, or dangerous?
 
 This page answers that question.
+
+## How to read this page
+
+Read this page with one review pressure in mind:
+
+> if this operational diff appears six months from now, what exact order should a maintainer
+> inspect it in?
+
+That question keeps governance concrete. The page is not about abstract maturity. It is
+about making the repository teach the next reviewer where to look first.
+
+## Why this lesson belongs in Module 03
+
+Production policy is not complete when the repository merely contains profiles and proof
+commands. It becomes durable only when another maintainer can review changes without
+rebuilding the whole mental model from scratch.
+
+That is why this page belongs at the end of the day:
+
+- the policy surfaces already exist
+- failure behavior already has names
+- proof routes already have purposes
+- governance now ties them into a stable review discipline
 
 ## Governance starts with naming the boundary
 
@@ -49,6 +47,18 @@ Module 03 keeps the boundary small:
 None of those should silently change workflow meaning.
 
 That is the sentence governance must keep alive.
+
+## A quick self-check before you keep reading
+
+Think about one recent operational change you have seen in any repository.
+
+Could you answer all of these quickly?
+
+- which boundary owned the change
+- which question the review was supposed to settle
+- which route or artifact should have proved the answer
+
+If not, the problem was probably governance clarity, not reviewer effort.
 
 ## What a healthy policy change looks like
 
@@ -91,6 +101,18 @@ For Module 03, the healthy review order is usually:
 
 That review order keeps operational diffs from turning into random repository archaeology.
 
+## The beginner trap here
+
+Learners often assume governance means writing more documentation somewhere else.
+
+Module 03 is teaching a different habit:
+
+- put the policy in named repository surfaces
+- put the proof routes in named repository surfaces
+- review those surfaces in a stable order
+
+That is much stronger than hoping a future maintainer remembers the team's folklore.
+
 ## One durable governance habit
 
 When a production change lands, the reviewer should be able to answer:
@@ -100,6 +122,17 @@ When a production change lands, the reviewer should be able to answer:
 - what command or artifact confirms the answer
 
 If one of those is missing, the change is harder to trust than it should be.
+
+## What a good Module 03 explanation sounds like
+
+Strong:
+
+> This diff belongs to the CI profile boundary, so review starts there; the first proof
+> question is whether execution context changed without changing workflow meaning.
+
+Weak:
+
+> It is only an ops tweak, so we can probably skim it.
 
 ## A useful governance table
 

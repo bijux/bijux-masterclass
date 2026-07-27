@@ -4,6 +4,19 @@ Use these after reading the five core lessons and the worked example. The goal i
 your operational reasoning visible through concrete runs, failure evidence, and policy
 reviews, not through a pile of flags.
 
+## How to work through this set
+
+Treat the ten exercises as one long repository-hardening lab.
+
+Before each answer:
+
+1. name the boundary you are reviewing
+2. choose the smallest honest proof route for that boundary
+3. keep the concrete evidence next to your explanation
+
+If you skip the boundary question, the work turns into command collection instead of
+production reasoning.
+
 Do them in order. The set is one day-long progression:
 
 - Exercises 1-3 establish the policy boundary.
@@ -16,6 +29,25 @@ For every answer, keep three things:
 - the setting, artifact, or failure class you are naming
 - the evidence route you actually used
 - one short sentence explaining why the decision belongs to policy or to workflow meaning
+
+## Recommended working layout
+
+If you want one small repository to support the whole day, use a lab tree like this:
+
+```text
+module03-lab/
+├── Snakefile
+├── config/
+├── profiles/
+├── data/
+├── results/
+├── publish/
+├── logs/
+└── artifacts/
+```
+
+That layout makes it easier to compare policy surfaces, failure evidence, and proof routes
+without rebuilding the project from scratch for every prompt.
 
 ## Exercise 1: Separate policy from workflow meaning
 
@@ -30,6 +62,9 @@ What to hand in:
 - one sentence per setting explaining why it belongs where you placed it
 - one short explanation of what would go wrong if a semantic setting were moved into a profile
 
+Study note:
+This is not a placement quiz. It is a reviewability quiz.
+
 ## Exercise 2: Compare the same target across two profiles
 
 Create minimal local and CI profiles for the same small workflow. Vary only operational
@@ -41,6 +76,10 @@ What to hand in:
 - paired dry-runs against the same target
 - a table classifying every differing setting
 - evidence that the target graph is semantically unchanged
+
+Study note:
+If the job graph changes for the same semantic inputs, treat that as a boundary defect
+until you can explain it honestly.
 
 ## Exercise 3: Choose the smallest honest proof route
 
@@ -54,6 +93,10 @@ What to hand in:
 
 - the command or route for each question
 - one sentence per route explaining why a stronger or weaker route would be less appropriate
+
+Study note:
+The best answer is not always the strongest route. It is the narrowest route that proves
+the claim cleanly.
 
 ## Exercise 4: Write a small failure policy
 
@@ -69,6 +112,10 @@ What to hand in:
 - the response for each one
 - one sentence explaining how logs help the reviewer tell them apart
 
+Study note:
+If two failure classes get the same response for no stated reason, the policy is probably
+too vague.
+
 ## Exercise 5: Review one staging or locality assumption
 
 Describe a workflow that runs locally and on shared infrastructure.
@@ -82,6 +129,9 @@ What to hand in:
 - the semantically stable path or boundary
 - one sentence explaining why confusing the two would create review problems
 
+Study note:
+This exercise is about holding the final contract still while the execution context moves.
+
 ## Exercise 6: Review one operational diff like a maintainer
 
 Imagine a pull request that changes a CI profile and a confirmation target.
@@ -93,6 +143,10 @@ What to hand in:
 - the first file or surface you would inspect
 - the second proof route or artifact you would check
 - two review questions you would ask before approving the change
+
+Study note:
+Review order matters. Good maintainers do not start from intuition when a named boundary
+already exists.
 
 ## Exercise 7: Inject and classify failures
 
@@ -106,6 +160,10 @@ What to hand in:
 - the log location for each case
 - an explanation of why indiscriminate retries would be harmful
 
+Study note:
+This is where policy stops being theoretical. If the failure classes blur together here,
+the repository will blur them later under pressure too.
+
 ## Exercise 8: Design a staging route
 
 Design data movement for a rule that reads shared storage, computes on node-local scratch,
@@ -117,6 +175,9 @@ What to hand in:
 - cleanup behavior after success and failure
 - the profile-owned settings or environment assumptions
 - the invariant that must remain identical across local and cluster contexts
+
+Study note:
+If scratch placement changes what a downstream consumer trusts, the route is wrong.
 
 ## Exercise 9: Prove a clean-room run
 
@@ -130,6 +191,10 @@ What to hand in:
 - expected output inventory and checksum evidence
 - one hidden dependency the clean-room run exposed or ruled out
 
+Study note:
+Clean-room proof is valuable because it punishes undeclared habits. That is the point of
+the exercise, not an annoyance.
+
 ## Exercise 10: Review a production policy change
 
 Write a review for a proposed profile change that raises resources, enables retries, and
@@ -141,6 +206,17 @@ What to hand in:
 - the failure class the retry policy is intended to cover
 - evidence that final outputs and publish boundaries remain stable
 - the narrowest verification route that supports your conclusion
+
+## Exit standard for the exercise day
+
+Do not count the day complete unless you can do all of this without leaning on the answer
+page as a command script:
+
+- separate profile policy from workflow meaning confidently
+- match a failure class to a recovery decision with evidence
+- explain one staging design without confusing scratch and final trust surfaces
+- choose one proportionate proof route for one bounded claim
+- review one production diff in a stable order
 
 ## Mastery standard for this exercise set
 

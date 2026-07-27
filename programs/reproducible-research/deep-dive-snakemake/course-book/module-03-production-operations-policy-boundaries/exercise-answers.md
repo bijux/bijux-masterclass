@@ -1,32 +1,20 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page after you have written your own answers. The point is comparison, not
 copying.
+
+## How to use the answer page well
+
+Do not read a model answer first and then retrofit your exercise around it.
+
+A better rhythm is:
+
+1. complete the exercise with your own repository state and commands
+2. write one plain-language explanation of the boundary you are reviewing
+3. compare that explanation with the model answer
+4. revise where the model answer exposes a missing proof route or a blurred policy line
+
+The goal is not identical wording. The goal is disciplined operational reasoning.
 
 The strongest Module 03 answers usually do four things:
 
@@ -50,41 +38,20 @@ Why this is strong:
 - it gives two good policy examples and two bad ones
 - it explains the review risk, not only the placement rule
 
-## Exercise 2: Write a small failure policy
+## Exercise 2: Compare the same target across two profiles
 
-A strong answer distinguishes failure classes cleanly.
-
-Example answer shape:
-
-- retryable:
-  - transient infrastructure or storage hiccup
-- fail-fast:
-  - wrong config value or invalid sample contract
-- rerun-incomplete:
-  - partial output left behind after a crashed job
-- logs:
-  - per-job logs help determine whether the failure was transient, semantic, or partial-publication related
+A strong comparison keeps targets, semantic config, and publish paths identical. Local may
+use more cores and shorter latency patience; CI may serialize work, show failed logs, and
+wait longer for filesystem visibility. The paired dry-runs should resolve the same jobs
+and dependencies for the same requested target. A line-by-line table prevents a harmless
+operational difference from concealing semantic drift.
 
 Why this is strong:
 
-- it makes retry, fail-fast, and rerun-incomplete different on purpose
-- it treats logs as evidence for the decision, not as decoration
+- it checks the boundary with the same target surface
+- it treats profile differences as reviewable lines, not intuition
 
-## Exercise 3: Review one staging or locality assumption
-
-A strong answer sounds like this:
-
-> the workflow may use a different scratch or staging location on shared infrastructure, but
-> the declared final output paths and publish boundary must stay semantically stable. If the
-> team confuses scratch placement with final output meaning, reviewers can no longer tell
-> which paths are temporary and which are part of the contract.
-
-Why this is strong:
-
-- it allows context variation honestly
-- it protects the stable trust surface
-
-## Exercise 4: Choose the smallest honest proof route
+## Exercise 3: Choose the smallest honest proof route
 
 A strong answer matches the route to the question:
 
@@ -101,7 +68,42 @@ The strongest answers also explain why the routes are not interchangeable:
 - dry-run is too weak for the strongest clean-room claim
 - profile-audit is better than intuition for context-comparison review
 
-## Exercise 5: Review one operational diff like a maintainer
+## Exercise 4: Write a small failure policy
+
+A strong answer distinguishes failure classes cleanly.
+
+Example answer shape:
+
+- retryable:
+  - transient infrastructure or storage hiccup
+- fail-fast:
+  - wrong config value or invalid sample contract
+- rerun-incomplete:
+  - partial output left behind after a crashed job
+- logs:
+  - per-job logs help determine whether the failure was transient, semantic, or
+    partial-publication related
+
+Why this is strong:
+
+- it makes retry, fail-fast, and rerun-incomplete different on purpose
+- it treats logs as evidence for the decision, not as decoration
+
+## Exercise 5: Review one staging or locality assumption
+
+A strong answer sounds like this:
+
+> The workflow may use a different scratch or staging location on shared infrastructure,
+> but the declared final output paths and publish boundary must stay semantically stable.
+> If the team confuses scratch placement with final output meaning, reviewers can no longer
+> tell which paths are temporary and which are part of the contract.
+
+Why this is strong:
+
+- it allows context variation honestly
+- it protects the stable trust surface
+
+## Exercise 6: Review one operational diff like a maintainer
 
 A strong answer begins with the owning boundary:
 
@@ -116,21 +118,13 @@ Why this is strong:
 - it reviews in boundary order
 - it does not let a policy diff drift into vague trust language
 
-## Exercise 6: Compare local and CI profiles
-
-A strong comparison keeps targets, semantic config, and publish paths identical. Local
-may use more cores and shorter latency patience; CI may serialize work, show failed logs,
-and wait longer for filesystem visibility. The paired dry-runs should resolve the same
-jobs and dependencies for the same requested target. A line-by-line table prevents a
-harmless operational difference from concealing semantic drift.
-
 ## Exercise 7: Inject and classify failures
 
 The transient simulation may be retried only if repetition can plausibly change the
-outcome, such as a temporary service or storage interruption. Invalid configuration
-fails before work and must not be retried. An interrupted write requires removal or
-replacement of incomplete state before rerun. Logs should capture the command, failure
-class, and relevant context; a retry count alone cannot explain correctness.
+outcome, such as a temporary service or storage interruption. Invalid configuration fails
+before work and must not be retried. An interrupted write requires removal or replacement
+of incomplete state before rerun. Logs should capture the command, failure class, and
+relevant context; a retry count alone cannot explain correctness.
 
 ## Exercise 8: Design a staging route
 
@@ -145,8 +139,8 @@ result content, and final contract remain stable.
 A strong clean-room route begins from documented inputs and a declared software
 environment, executes into an empty work area, and verifies an expected output inventory.
 Checksums or semantic assertions establish more than file existence. The exercise rules
-out ambient files, previously solved environments, undeclared variables, and stale
-outputs as hidden dependencies.
+out ambient files, previously solved environments, undeclared variables, and stale outputs
+as hidden dependencies.
 
 ## Exercise 10: Review a production policy change
 

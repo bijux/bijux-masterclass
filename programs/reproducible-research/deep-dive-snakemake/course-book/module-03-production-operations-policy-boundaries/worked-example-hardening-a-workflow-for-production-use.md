@@ -7,6 +7,31 @@ This file ties the whole module together around one realistic problem:
 The question is not "how do we add more flags?" The question is how to make the workflow
 operable without blurring its meaning.
 
+## How to use this worked example
+
+Treat this page like a production lab, not like a retrospective you admire after the fact.
+
+For each repair step:
+
+1. name the operational boundary being introduced
+2. predict what evidence should prove that boundary stayed operational
+3. run the smallest route that confirms the prediction
+
+If you skip the boundary question, the example turns into command accumulation instead of
+production discipline.
+
+## The one-day teaching goal
+
+By the end of this example, a learner should be able to rebuild a small repository so
+that:
+
+- profiles replace private shell rituals
+- failure handling is explained before retries are raised
+- scratch and latency assumptions stay operational
+- stronger proof routes are named instead of improvised
+
+That is the real outcome. The command count is not the outcome.
+
 ## The lab route
 
 Work through the example in this order:
@@ -16,6 +41,18 @@ Work through the example in this order:
 3. classify one controlled failure before choosing any retry policy
 4. separate scratch behavior from semantically stable outputs
 5. finish by proving the repository through a stronger confirmation route
+
+## What to keep beside you while you work
+
+Keep these four surfaces visible while you move through the example:
+
+- the current profiles
+- one failing or recovering run artifact
+- the final output or publish boundary
+- the proof route you are using at each step
+
+Those four surfaces are enough to explain whether the repository is becoming more
+reviewable or just noisier.
 
 ## The starting situation
 
@@ -59,6 +96,17 @@ This is Core 1 becoming concrete. The team stops relying on private shell habits
 
 That first move matters because production discipline begins with named operating contexts,
 not with bigger commands.
+
+## Why this first move matters educationally
+
+Many learners try to solve production readiness by adding more flags to one favorite
+command line. That creates folklore, not governance.
+
+Module 03 needs the opposite instinct:
+
+- name the context
+- version the defaults
+- compare contexts against the same workflow meaning
 
 Start with profiles whose differences are easy to explain:
 
@@ -121,6 +169,15 @@ Before raising retries, ask:
 
 If those answers are missing, the retry policy is guessing.
 
+## A short checkpoint before you continue
+
+Pause here and say one sentence like this:
+
+> Retrying is justified only when the failure class suggests repetition can change the
+> outcome without hiding a semantic defect.
+
+If that sentence feels hard to defend, the policy is not ready yet.
+
 Practice the distinction by injecting a deterministic failure into a disposable rule:
 
 ```python
@@ -175,6 +232,16 @@ flowchart LR
 The diagram permits scratch placement to change by environment. It does not permit the
 declared input or final output identity to drift.
 
+## What the learner should notice now
+
+The workflow is not becoming "less reproducible" when scratch changes by context.
+
+It becomes less reproducible only if the repository stops teaching:
+
+- which paths are temporary
+- which paths are final contracts
+- which settings own staging behavior
+
 ## Connect operation to proof routes
 
 At this point the repository has profiles and a failure story, but the team still needs a
@@ -210,6 +277,18 @@ The repository should make it obvious that:
 
 This is Core 5: the repository teaches its own review order instead of leaving it to
 memory.
+
+## What a strong summary sounds like
+
+Strong:
+
+> The repository names its operating contexts, classifies failures before choosing
+> recovery, keeps scratch separate from final trust surfaces, and matches stronger claims
+> with stronger proof routes.
+
+Weak:
+
+> We hardened it with a bunch of production flags.
 
 ## The repaired production story
 
