@@ -139,6 +139,8 @@ What to hand in:
 - the governed scenario table
 - one raw-sample-to-summary audit
 - the convergence and trusted-output result for each scenario
+- the declared incremental input and your predicted rebuild set before reading the report
+- the observed missing and unexpected rebuild sets
 - one leading and one competing explanation for the observed differences
 - one sentence stating whether a performance regression was proven
 - one machine condition that the bundle cannot fully control
@@ -147,6 +149,9 @@ Checkpoint:
 Without a controlled historical baseline, the correct conclusion is usually "current
 baseline established," not "regression confirmed." A summary without its semantic evidence
 does not complete the exercise.
+
+Explain why restoring `src/util.c` after the mutation is necessary, and why restoring it
+does not mean the generated outputs should be rolled back before evidence is reviewed.
 
 ## Exercise 4: Choose observability by question
 
@@ -269,6 +274,7 @@ If you propose a change, create `tuning-decision.md` with:
 - controlled before-and-after comparison
 - compatible scenario policy and sample count
 - requested-work test
+- explicit expected-work and expected-non-work sets
 - convergence test
 - artifact comparison
 - serial/parallel pressure test
