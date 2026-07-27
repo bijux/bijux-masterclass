@@ -213,60 +213,93 @@ Checkpoint:
 The exercise is incomplete if your judgment ignores state or collapses all checks into line
 count. Explain why a one-line converged trace cannot replace a larger clean-plan trace.
 
-## Exercise 5: Generate and preserve a parallel incident
+## Exercise 5: Verify three parallel incident signatures
 
-Create a capstone incident bundle:
+Before running anything, predict each case:
+
+| Case | Expected exit | Required artifact observation | Wrong failure to reject |
+| --- | --- | --- | --- |
+| shared log interleaving | | | |
+| directory creation race | | | |
+| shared staging collision | | | |
+
+Generate the complete capstone incident bundle:
 
 ```sh
-gmake -C "$CAPSTONE" incident-audit \
-  REPRO_CASE=repro/shared-log-interleaving.mk
+gmake -C "$CAPSTONE" incident-audit
 ```
 
-Copy or reference the generated bundle from `parallel-incident/` and read:
+Read:
 
-1. the recorded command
-2. executed output
-3. exit status
-4. copied repro Makefile
-5. incident review guide
+1. `summary.tsv`
+2. `report.json`
+3. every named file under `runs/`
+4. every named file under `evidence/`
+5. the matching workspace and specimen
 
 What to hand in:
 
-- the observed command and exit status
-- the two targets and the path they both mutate
-- one sentence explaining why exit status `0` does not prove graph truth
-- one piece of evidence to preserve before any rerun or cleanup
+- the completed prediction table with observed results added
+- the three findings reported by the audit
+- the exact semantic evidence that supports each finding
+- an explanation of why aggregate `PASS` means the broken specimens behaved as promised
+- one mismatch that should make each case fail its own audit
+- one sentence explaining why neither zero nor nonzero exit status proves the mechanism
+
+Then isolate one case:
+
+```sh
+gmake -C "$CAPSTONE" incident-audit \
+  INCIDENT_CASE=shared-staging-collision
+```
+
+Confirm that the report contains one case while the bundle retains the review guidance
+and specimen catalog.
 
 Checkpoint:
-You must describe the incident from the executed bundle before reading the repair guidance.
+You must classify from preserved semantic state before reading the repair guidance. A
+table containing only exit statuses is incomplete.
 
-## Exercise 6: Classify ownership and reject false repairs
+## Exercise 6: Route each incident to an ownership repair
 
-Build a competing-explanations table for the shared-log incident:
+Build a competing-explanations table for all three incidents:
 
 | Explanation | Evidence expected if true | Evidence that weakens it |
 | --- | --- | --- |
-| missing ownership or publication model | | |
+| shared publication ownership | | |
+| repeated setup ownership | | |
 | parallel scheduler defect | | |
 | external filesystem failure | | |
 
-Then classify the boundary and evaluate these proposals:
+Complete this repair table:
+
+| Case | Boundary | Temporary mitigation | Durable repair | Adjacent proof |
+| --- | --- | --- | --- | --- |
+| shared log | | | | |
+| directory race | | | | |
+| shared staging | | | | |
+
+Evaluate these proposals:
 
 - force `-j1`
 - add more `echo` lines
-- declare one target that owns the shared file
-- give each worker a private output and merge them through one target
+- replace every `mkdir` with `mkdir -p`
+- declare one directory setup target and use order-only edges
+- declare one target that owns a combined output
+- give each producer a private staging or worker path
 
 What to hand in:
 
 - the completed explanation table
-- the boundary owner
+- the completed repair table
 - mitigation, repair, and rejected-action labels for the proposals
-- one graph sketch of the preferred repair direction
-- the proof required before closing the incident
+- one graph sketch for directory ownership
+- one graph sketch for private worker output plus deterministic merge
+- the serial, parallel, convergence, and failure-cleanup proof required before closure
 
 Checkpoint:
-The preferred repair must make output ownership visible in the graph.
+Every preferred repair must make setup, intermediate, and final output ownership visible
+in the graph. Do not use one repair shape for all three cases.
 
 ## Mid-lab review
 
