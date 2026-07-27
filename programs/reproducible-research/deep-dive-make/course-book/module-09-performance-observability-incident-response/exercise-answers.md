@@ -27,25 +27,56 @@ flowchart LR
 
 Use this after you have written your own answers. The point is comparison, not copying.
 
-Strong Module 09 answers do not just list commands. They explain:
+## How to use the answer page well
 
-- what operational question is being asked
-- why the chosen evidence surface matches that question
-- how the resulting change or response preserves truth
+Do not read a model answer first and then retrofit your incident packet to sound similar.
+
+A better rhythm is:
+
+1. finish the exercise with your own measurements, traces, and notes
+2. write one plain-language statement of the operational question
+3. compare that statement with the model answer
+4. revise where the model answer exposes a weaker layer distinction, an unbounded
+   observability surface, or a faster-but-less-truthful tuning idea
+
+Strong Module 09 answers do not just list commands. They usually do four things:
+
+- they explain what operational question is being asked
+- they choose an evidence surface that matches that question
+- they describe the response as truth-preserving
+- they leave a packet another maintainer could reuse
+
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one layered complaint analysis
+- one bounded observability route
+- one triage ladder
+- one rejected unsafe optimization
+- one repeated timing baseline
+- one compact incident directory and runbook note
+
+If your answers rely only on "the build should be easier to debug," the reasoning is still
+too weak.
 
 ## Exercise 1: Split one "slow build" complaint into layers
 
 A strong answer compares at least:
 
-- a dry-run timing signal such as `/usr/bin/time -p make -n all`
-- a full-build timing signal such as `/usr/bin/time -p make all`
-- a trace or evidence-size signal such as `make --trace all > build/trace.log && wc -l build/trace.log`
+- a dry-run timing signal such as:
+  - `/usr/bin/time -p make -n all`
+- a full-build timing signal such as:
+  - `/usr/bin/time -p make all`
+- a trace or evidence-size signal such as:
+  - `make --trace all > build/trace.log && wc -l build/trace.log`
 
 The key reasoning is:
 
-- expensive dry-run suggests parse or evaluation cost
-- cheap dry-run plus expensive full build suggests recipe cost
-- huge trace output suggests observability overhead as an operational problem
+- expensive dry-run:
+  - suggests parse or evaluation cost
+- cheap dry-run plus expensive full build:
+  - suggests recipe cost
+- huge trace output:
+  - suggests observability overhead as an operational problem
 
 The answer is strongest when it says how the next decision would differ depending on which
 layer dominates.
@@ -54,7 +85,7 @@ layer dominates.
 
 A strong answer names one explicit question, such as:
 
-> how many lines of trace output does a normal route emit?
+> How many lines of trace output does a normal route emit?
 
 and then proposes a bounded route such as:
 
@@ -73,6 +104,9 @@ The important move is architectural:
 
 A good answer usually removes some ad hoc recipe prints in exchange.
 
+The surface is bounded because it serves one operational question instead of becoming a
+catch-all debug mode.
+
 ## Exercise 3: Write a triage ladder for one flaky symptom
 
 A strong answer usually includes:
@@ -85,9 +119,9 @@ A strong answer usually includes:
 
 The strongest answers explicitly say why editing the Makefile is not the first move:
 
-> editing too early changes the conditions before the failure boundary is understood.
+> Editing too early changes the conditions before the failure boundary is understood.
 
-That is the real lesson.
+The ladder is strong when each step narrows scope instead of broadening panic.
 
 ## Exercise 4: Propose one truth-preserving optimization
 
@@ -108,8 +142,11 @@ This is strong because the optimization removes repeated work while preserving:
 - observation of additions on the next Make invocation
 - inspectable resolved lists
 
-The post-change proof should usually include both a timing comparison and a truth check such
-as `make -q all` or a discovery audit.
+The post-change proof should usually include both a timing comparison and a truth check
+such as `make -q all` or a discovery audit.
+
+The shortcut to reject is anything that caches away real discovery without a trustworthy
+update contract.
 
 ## Exercise 5: Write a small operational runbook entry
 
@@ -124,8 +161,8 @@ For example:
 
 > Run `make all` and `make -q all`. If flakiness is reported, compare serial and `-j`
 > behavior before editing the build. Escalate if the symptom cannot be reproduced with a
-> stable route. Avoid cleaning first unless the runbook explicitly says the question is about
-> clean-state behavior.
+> stable route. Avoid cleaning first unless the runbook explicitly says the question is
+> about clean-state behavior.
 
 That is a real operational note, not just a command list.
 
@@ -145,6 +182,11 @@ submission records OS, Make version, job count, and relevant tool versions. Back
 load, filesystem cache state, thermal throttling, and network access can all add noise.
 Use a median or another stated representative value rather than selecting the fastest run.
 
+The key explanation is:
+
+> A single fastest run is weak evidence because it may describe luck more than the route’s
+> typical cost.
+
 ## Exercise 7: Explain an unexpected rebuild
 
 Start narrowly:
@@ -155,10 +197,11 @@ stat path/to/target path/to/suspected/prerequisite
 ```
 
 The answer should quote only the trace line that names the rebuild cause, then compare the
-relevant timestamps or generated content. Common repairs include restoring a missing
-edge, stopping a prerequisite from rewriting identical content, or changing an
-order-sensitive directory edge to an order-only prerequisite. If the prerequisite is
-genuinely newer, "the rebuild is correct" is a valid diagnosis.
+relevant timestamps or generated content. Common repairs include restoring a missing edge,
+stopping a prerequisite from rewriting identical content, or changing an order-sensitive
+directory edge to an order-only prerequisite.
+
+If the prerequisite is genuinely newer, "the rebuild is correct" is a valid diagnosis.
 
 ## Exercise 8: Audit parse-time shell work
 
@@ -170,9 +213,14 @@ rg -n '\$\(shell[[:space:]]' Makefile mk
 
 Classify tool lookup, source discovery, version queries, and generated configuration
 separately. For known shallow roots, `$(sort $(wildcard ...))` can replace a `find`
-subprocess. A checked-in source manifest can be appropriate when repository policy
-updates and verifies it. An untriggered generated cache is not acceptable: it can miss a
-new source file and appear fast only because its truth went stale.
+subprocess. A checked-in source manifest can be appropriate when repository policy updates
+and verifies it. An untriggered generated cache is not acceptable: it can miss a new
+source file and appear fast only because its truth went stale.
+
+The key explanation is:
+
+> Reducing shell work is worthwhile only when the replacement preserves the same discovery
+> or configuration truth.
 
 ## Exercise 9: Measure useful parallelism
 
@@ -188,6 +236,11 @@ Repeat each configuration and inspect the graph for independent prerequisites. I
 serial generator feeds every other target, increasing `-j` cannot parallelize that
 critical path. CPU count, memory, storage, network, compiler behavior, and neighboring
 workloads make the saturation point machine-specific.
+
+The important explanation is:
+
+> Parallel speedup is a graph fact plus a machine fact; either one alone gives an
+> incomplete story.
 
 ## Exercise 10: Respond to a complete build incident
 
@@ -213,8 +266,10 @@ condition.
 
 A mastery-level answer set in this module does three things well:
 
-- it separates cost and incident layers instead of using vague words like "slow" or "flaky"
+- it separates cost and incident layers instead of using vague words like "slow" or
+  "flaky"
 - it treats observability as a designed surface rather than as scattered prints
-- it treats performance tuning as valid only when truth and evidence quality survive the change
+- it treats performance tuning as valid only when truth and evidence quality survive the
+  change
 
 That is the standard Module 09 is trying to build.
