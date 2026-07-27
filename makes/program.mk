@@ -122,6 +122,14 @@ capstone-experiment-review: ## Build the selected program's capstone experiment 
 capstone-profile-audit: ## Build the selected program's capstone execution-policy audit bundle
 	@$(RUN_PROGRAM) capstone-profile-audit
 
+.PHONY: capstone-performance-diagnostics-audit
+capstone-performance-diagnostics-audit: ## Classify selected program performance evidence
+	@$(RUN_PROGRAM) capstone-performance-diagnostics-audit
+
+.PHONY: capstone-performance-diagnostics-selftest
+capstone-performance-diagnostics-selftest: ## Reject dishonest selected program performance evidence
+	@$(RUN_PROGRAM) capstone-performance-diagnostics-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit
