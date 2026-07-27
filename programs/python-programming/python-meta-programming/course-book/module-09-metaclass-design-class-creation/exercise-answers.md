@@ -131,6 +131,68 @@ Good conclusion:
 The example is justified because the metaclass owns one clear hierarchy-wide class-creation
 rule, not because registries are automatically “metaclass territory.”
 
+## Answer 7: Separate hierarchy-wide policy from post-creation bookkeeping
+
+Example answer:
+
+Suppose a plugin base wants:
+
+- every concrete subclass registered automatically
+- registration order preserved
+- test resets available
+
+Strong split:
+
+- class-creation policy: deciding that every concrete subclass is registered at creation time
+- bookkeeping: appending to the registry and exposing reset helpers
+
+Good conclusion:
+
+Keeping those concerns separate makes review easier because readers can tell which part is
+the actual metaclass invariant and which part is ordinary operational support.
+
+## Answer 8: Design one reset boundary for import-time class registration
+
+Example answer:
+
+A registry metaclass should often be paired with:
+
+- `registry.clear()`
+- a test helper that rebuilds expected entries explicitly
+- documented import-order assumptions
+
+Good conclusion:
+
+Import-time behavior without reset discipline turns test isolation into guesswork. A clear
+reset boundary makes the registration surface easier to verify and reason about.
+
+## Answer 9: Compare honest metaclass claims with overstated claims
+
+Example answer:
+
+Honest description:
+
+- "This metaclass registers concrete subclasses at class-creation time and preserves declaration order."
+
+Overstated description:
+
+- "This metaclass manages the whole plugin system automatically."
+
+Good conclusion:
+
+The second version is misleading because words such as "whole" and "automatically" imply
+discovery, lifecycle, configuration, and runtime coordination far beyond the actual
+class-creation rule.
+
+## Answer 10: Produce a metaclass-boundary packet
+
+The packet is strong when another learner can answer:
+
+- what invariant the metaclass owns
+- when that invariant is enforced in the class lifecycle
+- what declaration-time fact or hierarchy-wide rule justified the metaclass
+- which lower-power owner would have been clearer if the invariant were smaller
+
 ## What strong Module 09 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -140,6 +202,8 @@ Across the whole set, strong answers share the same habits:
 - they separate `__new__`, `__init__`, and `__prepare__` by responsibility
 - they treat conflicts as design signals
 - they reject metaclass escalation when lower-power tools still own the problem honestly
+- they separate hierarchy-wide policy from follow-up bookkeeping
+- they leave behind a packet another learner can review without guessing
 
 If an answer still sounds like "metaclasses are powerful so they fit here," revise it
 until you can name the exact class-creation invariant they own and why lower-power tools

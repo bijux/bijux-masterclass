@@ -35,6 +35,20 @@ Each exercise asks for three things:
 - the metaclass or lower-power owner you chose
 - the reason that choice is the clearest one
 
+Treat the ten exercises as one full lab day on metaclass design and class creation.
+
+Do them in order:
+
+- Exercises 1-3 establish direct class construction, metaclass conflicts, and the split between structural work and bookkeeping
+- Exercises 4-6 focus `__prepare__`, lower-power alternatives, and import-time registry limits
+- Exercises 7-8 extend that discipline into hierarchy-wide ownership and reset boundaries
+- Exercises 9-10 package the whole module into a reviewable metaclass-boundary packet
+
+Keep one metaclass-boundary table while you work:
+
+| Class-creation rule or hierarchy pressure | Honest owner | When it acts | What lower-power tool was rejected | Review judgment |
+| --- | --- | --- | --- | --- |
+
 ## Exercise 1: Build one class manually with `type(...)`
 
 Create one tiny class dynamically with `type(name, bases, namespace)`.
@@ -95,6 +109,69 @@ What to hand in:
 - one import-time or testing risk it still introduces
 - one explanation of why this is narrower than a general plugin framework
 
+## Midday self-check
+
+Before moving into the final four exercises, make sure you can already answer these
+questions clearly:
+
+- when direct `type(...)` construction is enough and when a repeating class-creation owner is actually needed
+- why a metaclass conflict is a design signal about incompatible ownership
+- what belongs in `__new__`, what belongs in `__init__`, and when `__prepare__` is justified
+- why import-time registration still needs reset and testing discipline
+
+If you cannot answer those four questions in plain language, return to Exercises 1-6 and
+make the timing, owner, and rejected lower-power alternative more explicit before
+continuing.
+
+## Exercise 7: Separate hierarchy-wide policy from post-creation bookkeeping
+
+Choose one hierarchy rule and explain which part truly requires class-creation ownership
+and which part is only follow-up bookkeeping.
+
+What to hand in:
+
+- the hierarchy rule
+- the class-creation part that belongs in the metaclass, if any
+- the bookkeeping part that could live elsewhere
+- one explanation of why keeping them separate makes the design easier to review
+
+## Exercise 8: Design one reset boundary for import-time class registration
+
+Take one import-time registry or auto-registration design and make its testing boundary
+explicit.
+
+What to hand in:
+
+- the registration design
+- one reset, clear, or reinitialization surface
+- one explanation of why import-time behavior without reset discipline becomes hard to test honestly
+
+## Exercise 9: Compare honest metaclass claims with overstated claims
+
+Choose one metaclass design and write both an honest description and an overstated
+description of what it guarantees.
+
+What to hand in:
+
+- the honest description
+- the overstated description
+- one explanation of which words make the overstated version misleading
+
+## Exercise 10: Produce a metaclass-boundary packet
+
+Assemble:
+
+- one metaclass-boundary table
+- one `__new__` versus `__init__` split
+- one `__prepare__` case with a real declaration-time need
+- one rule explaining when a lower-power owner is clearer than a metaclass
+
+The packet is strong when another learner can use it to answer:
+
+- what class-creation invariant is being enforced
+- when in the class lifecycle the rule actually acts
+- why a metaclass was necessary or unnecessary
+
 ## Mastery standard for this exercise set
 
 Across all six answers, the module wants the same habits:
@@ -104,6 +181,11 @@ Across all six answers, the module wants the same habits:
 - you separate structural hooks from bookkeeping hooks
 - you use `__prepare__` only when declaration-time facts really matter
 - you reject metaclass escalation when lower-power tools remain honest owners
+
+Across all ten answers, add two more habits:
+
+- you distinguish hierarchy-wide class-creation policy from post-creation bookkeeping
+- you leave behind a metaclass-boundary packet another learner could review without guessing
 
 If an answer still sounds like "a metaclass can just handle it," keep going.
 
