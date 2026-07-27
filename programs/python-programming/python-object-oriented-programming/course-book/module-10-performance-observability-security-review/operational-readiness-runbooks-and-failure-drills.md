@@ -1,6 +1,5 @@
 # Operational Readiness, Runbooks, and Failure Drills
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,54 +24,76 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Prepare object-oriented systems for real incidents by documenting failure handling and
-practicing the operational paths the design implies.
+A system is not operationally ready just because the code looks clean.
 
-## 1. Design Quality Includes Operability
+Readiness means the team can answer:
 
-If the system can emit conflicts, retry failures, stale caches, or plugin registration
-errors, operators need a way to recognize and respond to those situations.
+- what failure modes are expected?
+- how will operators recognize them?
+- what safe first actions are allowed?
+- what recovery path preserves the design instead of bypassing it?
 
-## 2. Runbooks Should Follow the Architecture
+Runbooks and drills matter because architecture claims should survive the first real
+incident, not only the first code review.
+
+## Runbooks should follow the boundary map
 
 A useful runbook points to:
 
-- the affected boundary
-- likely failure signals
+- the affected workflow or boundary
+- the signals that reveal the problem
+- the likely causes
 - safe first actions
-- rollback or recovery steps
+- escalation or rollback options
 
-This is much easier when the design has clear ownership.
+This is much easier when the system already has clear ownership and observability.
 
-## 3. Failure Drills Reveal Missing Signals
+## Failure drills reveal missing proof
 
-Practice scenarios such as:
+A drill is valuable when it turns one abstract risk into an operational question:
 
-- repository conflict storms
-- queue backlog growth
-- broken plugin registration
-- downstream sink timeout
+- what if repository conflicts spike?
+- what if one sink times out repeatedly?
+- what if a queue backlog grows?
+- what if plugin registration fails at startup?
 
-Drills show whether your observability and recovery paths are real.
+If the team cannot answer those questions without guessing, the design still has
+operational blind spots.
 
-## 4. Keep Recovery Boundaries Honest
+## Recovery must respect the model
 
-Do not tell operators to mutate internal tables or bypass aggregates casually. Recovery
-guidance should respect the same boundaries the design claims to enforce.
+Weak runbooks often tell operators to bypass the very invariants the design claims to
+protect.
 
-## Practical Guidelines
+For example:
 
-- Write runbooks for high-impact failure modes that the architecture predicts.
-- Tie runbooks to specific signals and ownership boundaries.
-- Rehearse failure scenarios to find missing observability or unsafe advice.
-- Keep operational recovery aligned with public and domain contracts.
+- mutate internal tables directly
+- skip validation
+- force state transitions outside the aggregate boundary
 
-## Exercises for Mastery
+That may look fast during an incident, but it creates hidden corruption debt. Recovery
+guidance should preserve the same authority and trust boundaries the code depends on.
 
-1. Draft a runbook entry for one likely failure mode in your system.
-2. Simulate one incident path and note which signal is missing.
-3. Remove one recovery instruction that bypasses important invariants unsafely.
+## Capstone connection
+
+Use the capstone to ask:
+
+- which predicted failure mode deserves a runbook first?
+- which signal would an operator need to recognize it quickly?
+- which current recovery idea would be unsafe because it bypasses too much model authority?
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain what makes a runbook useful rather than decorative
+- identify one capstone failure mode worth drilling
+- explain why safe recovery must still respect the design boundaries
