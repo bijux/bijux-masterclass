@@ -91,6 +91,129 @@ code review archaeology instead of a pipeline control surface.
 A truthful stage is not one that eliminates all judgment. It is one that puts the
 important judgment where reviewers can see it.
 
+## Put the promise under pressure
+
+Reading a stage is necessary, but it is not enough. A deceptive stage can look plausible,
+run successfully, create its output, and converge on a second run.
+
+Use the executable audit from the repository root:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
+```
+
+Before opening `summary.tsv`, predict the outcome of three changes:
+
+| Change | Declared case | Hidden case |
+| --- | --- | --- |
+| policy file changes from `10` to `20` | should appear in DVC status | should look current |
+| parameter changes from `2` to `3` | should appear in DVC status | should look current |
+| meaningful sidecar is deleted | not applicable | stage should still look current |
+
+The hidden cases are expected to look current because the specimen intentionally withholds
+the edge from DVC. “Current” describes agreement with the declared contract, not agreement
+with every fact the command used.
+
+### Read the file-influence evidence
+
+The input-change workspace begins with two outputs:
+
+```text
+declared-input.txt  threshold=10
+hidden-input.txt    threshold=10
+```
+
+After the policy file changes, `dvc status --json` names only `declared_input`. The audit
+then reproduces that stage. The resulting values are:
+
+```text
+declared-input.txt  threshold=20
+hidden-input.txt    threshold=10
+```
+
+This is the key reasoning move:
+
+1. The policy value is now `20`.
+2. The declared output records `20`.
+3. The hidden output records `10`.
+4. DVC reports no reason to rebuild the hidden stage.
+5. Therefore the hidden output is semantically stale even though the declared graph says
+   it is current.
+
+Do not replace that argument with “the file is old.” File age is not the claim. The
+artifact’s stored meaning disagrees with the current policy.
+
+### Read the parameter evidence
+
+The parameter case makes a different omission. Both commands read
+`settings.multiplier`, but only one stage lists the key under `params`.
+
+After the value changes from `2` to `3`, the rebuilt declared output says:
+
+```text
+multiplier=3
+score=24
+```
+
+The hidden output still says:
+
+```text
+multiplier=2
+score=16
+```
+
+This proves a subtle boundary:
+
+> A value does not become a DVC stage parameter merely because it lives in
+> `params.yaml`.
+
+The stage declaration must name the key. Otherwise the file may be well organized for
+humans while remaining invisible to DVC’s rerun decision.
+
+### Read the output evidence
+
+The sidecar stage writes a declared result and an undeclared receipt. The audit deletes
+only the receipt and then asks DVC for status.
+
+The empty status result means:
+
+- the declared main output still agrees with the lock record;
+- no declared dependency or command changed;
+- the missing receipt is outside DVC’s ownership model.
+
+The audit then runs `dvc repro undeclared_sidecar`. DVC skips the stage, and the receipt
+remains absent.
+
+That is acceptable only if the receipt is disposable scratch with no downstream or
+review meaning. If anyone relies on it, the stage contract is incomplete.
+
+## Separate four kinds of evidence
+
+The audit gives you four layers. Keep their claims distinct:
+
+| Evidence | Question it answers |
+| --- | --- |
+| `dvc.yaml` | What did the author declare? |
+| `dvc.lock` | What declared state was recorded after execution? |
+| `dvc status --json` | Which declared changes does DVC currently detect? |
+| result contents | Does the artifact carry current semantic values? |
+
+A trustworthy review joins all four. It does not assume that lock evidence proves the
+declaration is complete, and it does not assume that an output value explains why DVC ran
+or skipped.
+
+```mermaid
+flowchart LR
+  behavior["real command behavior"] --> compare{"matches declaration?"}
+  declaration["dvc.yaml"] --> compare
+  compare -- yes --> status["status can detect relevant change"]
+  compare -- no --> blind["graph has a blind edge"]
+  status --> value["rebuilt output adopts current value"]
+  blind --> stale["old value may look current"]
+```
+
+The graph is truthful only on the `yes` path. Baseline success exists on both paths.
+
 ## A human reading method
 
 When you inspect a stage, use this order:
@@ -163,6 +286,7 @@ You understand this core when you can take one DVC stage and explain:
 - which outputs it owns
 - which important reads or writes would make the declaration deceptive if omitted
 - why a reviewer should inspect `dvc.yaml` and `dvc.lock` together
+- which status receipt and output value would falsify the stage promise
 
 That is the foundation for the rest of Module 04. The whole DAG is only trustworthy when
 its individual stage contracts are honest enough to review.
