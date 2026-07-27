@@ -30,6 +30,14 @@ Work through the example in this order:
 4. narrow the external handoff request to what Snakemake should no longer own
 5. finish by writing governance rules so the same drift does not return
 
+Keep one small stewardship packet beside you while you read:
+
+- a current-truth note
+- one list of trusted outputs and proof routes
+- one migration sequence with rollback points
+- one ownership split for the external handoff
+- one governance note that survives after the migration
+
 ## The starting situation
 
 Assume a team inherits a Snakemake repository with these characteristics:
@@ -43,6 +51,21 @@ Assume a team inherits a Snakemake repository with these characteristics:
 
 That last sentence creates risk immediately because it is larger than the review has
 earned.
+
+Before any redesign talk, sketch the problem as three separate stewardship surfaces:
+
+```mermaid
+flowchart LR
+  truth["current truth"]
+  repair["boundary repairs"]
+  move["ownership migration"]
+  guard["governance after the move"]
+
+  truth --> repair --> move --> guard
+```
+
+That sequence is the worked example in one line. If the team jumps straight to `move`,
+the migration outruns the proof.
 
 ## Step 1: review current truth before proposing change
 
@@ -63,6 +86,9 @@ That note already names three different problems:
 
 Without that review, every later migration sentence stays vague.
 
+This is the point where many teams fail. They write a future-state plan without ever
+stating what is already relied on today.
+
 ## Step 2: decide what must not move first
 
 Before discussing platform migration, the team writes down what must remain stable:
@@ -74,6 +100,13 @@ Before discussing platform migration, the team writes down what must remain stab
 
 This is the crucial shift. The migration is no longer “move onto the platform.” It is now
 “keep trusted outputs and proof routes stable while improving weak boundaries.”
+
+Write those immovable surfaces down somewhere durable before continuing:
+
+- trusted published files
+- the proof route that verifies them
+- the context-audit route that still compares profiles honestly
+- any consumer behavior that must remain valid until a versioned replacement exists
 
 ## Step 3: sequence the boundary moves
 
@@ -93,6 +126,15 @@ Instead, the team chooses this order:
 
 That order matters because it repairs truth problems before adding architectural motion.
 
+The order can be summarized in one review table:
+
+| Move | Why now or later | What proof must survive |
+| --- | --- | --- |
+| repair publish contract drift | now | publish verification and consumer trust |
+| repair policy leak | now | dry-run and profile comparison |
+| move report implementation owner | after truth repairs | same published outputs and comparison route |
+| narrow platform handoff | later | everything above still visible |
+
 ## Step 4: repair contract drift first
 
 The team updates the file API and downstream review so notebooks stop reading `results/`
@@ -107,6 +149,9 @@ Proof route used:
 This is not glamorous work, but it removes one of the biggest migration traps: hidden
 consumers of internal state.
 
+That trap matters more than any platform discussion, because hidden consumers turn every
+later refactor into a guessing game.
+
 ## Step 5: move semantic settings out of profiles
 
 Next, the suspicious sample filter moves into visible workflow or config surfaces, and
@@ -120,6 +165,9 @@ Proof route used:
 At this point the repository becomes easier to reason about even before any external
 handoff discussion.
 
+This is an important teaching pause: the migration is already succeeding before any new
+tool enters the picture, because the repository is telling the truth more clearly.
+
 ## Step 6: migrate implementation without changing outputs
 
 Now the team moves report-generation logic from a large helper script into package code.
@@ -132,6 +180,13 @@ The important restraint is that they do not change:
 
 They compare old and new report outputs and keep the same public boundary. This is a real
 migration step because ownership moved, but proof stayed visible.
+
+That distinction is the heart of the example:
+
+- ownership can move
+- proof cannot disappear during the move
+
+If proof disappears first, the migration is no longer a reviewable boundary change.
 
 ## Step 7: revisit the platform request honestly
 
@@ -148,6 +203,16 @@ This is a hybrid answer, and it is the correct one. The repository still explain
 workflow truth better than the platform would. The platform explains service behavior
 better than the repository would.
 
+Write the split in concrete terms before you accept it:
+
+| Concern | Snakemake keeps it | external service keeps it |
+| --- | --- | --- |
+| sample discovery and target truth | yes | no |
+| publish bundle and verification | yes | no |
+| user-triggered request intake | no | yes |
+| identity and access control | no | yes |
+| tenancy-aware scheduling policy | no | yes |
+
 ## Step 8: write governance rules so the problem does not return
 
 The team records three rules:
@@ -157,6 +222,9 @@ The team records three rules:
 3. migrations must preserve a comparison route until the new boundary earns trust
 
 That is the part many teams skip. Without it, the same drift returns later.
+
+This is also where the migration stops being a heroic one-time cleanup and becomes normal
+maintainership.
 
 ## The teaching point of the whole example
 
@@ -193,3 +261,11 @@ When you inspect a stewardship plan shaped like this, ask:
 5. which governance rule prevents the same drift from reappearing
 
 If those answers are visible, the module’s stewardship story has landed.
+
+If you want one final classroom-style check, explain the migration in five lines:
+
+1. which current contract was written down before any move
+2. which repair happened before platform discussion
+3. which ownership move preserved the same public outputs
+4. what Snakemake still owns after the handoff
+5. which rule prevents the same drift from returning later

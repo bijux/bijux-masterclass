@@ -30,6 +30,14 @@ Work through the example in this order:
 4. repair the boundary that actually moved
 5. prove the repair with the same route and turn it into a runbook
 
+Keep one small incident packet beside you while you read:
+
+- a symptom note written in bounded language
+- one dry-run capture
+- one summary or rerun-scope capture
+- one benchmark and one log excerpt
+- one runbook draft written after the repair
+
 ## The starting situation
 
 Assume a maintainer reports:
@@ -44,6 +52,21 @@ That report already contains three concerns:
 
 A weak response would jump straight to more threads, more retries, or job grouping. The
 stronger response begins by classifying what kind of problem this might be.
+
+Before you touch any settings, sketch the incident as three separate review surfaces:
+
+```mermaid
+flowchart LR
+  symptom["reported symptom"]
+  plan["planning and rebuild evidence"]
+  runtime["rule runtime and logs"]
+  response["repair and rerun proof"]
+
+  symptom --> plan --> runtime --> response
+```
+
+That order is the real lesson. If you skip from symptom directly to response, you lose
+the cost-class judgment the whole module is trying to teach.
 
 ## Step 1: rewrite the symptom into reviewable language
 
@@ -61,6 +84,9 @@ That version is better because it names:
 
 You are no longer reacting to a feeling. You are reacting to a statement another
 maintainer can verify.
+
+Write that note down before you open logs. A bounded symptom statement is part of the
+evidence packet, not disposable warm-up.
 
 ## Step 2: separate likely cost classes
 
@@ -89,6 +115,16 @@ This is the first teaching checkpoint in the example:
 
 That distinction should stop any immediate thread-tuning reflex.
 
+The early classification can be summarized in one quick table:
+
+| Surface | What you learned | What is still unknown |
+| --- | --- | --- |
+| `snakemake -n -p` | more work is planned | why the work widened |
+| `--summary` | rebuild scope is larger | whether the rebuilt tools are slower |
+| `--list-changes ...` | change is mostly input or code shaped | which boundary widened the work |
+
+This table matters because it keeps clues and conclusions separate.
+
 ## Step 3: open the narrowest evidence surfaces
 
 Now inspect:
@@ -103,6 +139,12 @@ artifact and logs reveal unexpected sample identities such as checksum sidecars.
 That is the second big clue. The workflow did not mostly get slower because the tools
 changed. It got slower because the repository widened discovery and created false work and
 false noise.
+
+At this moment, pause and ask the question that most teams skip:
+
+> did the workflow become expensive because computation got heavier, or because truth got wider?
+
+That question is the hinge between honest diagnosis and random optimization.
 
 ## Step 4: repair the boundary that actually moved
 
@@ -121,6 +163,21 @@ The honest repair is:
 
 Only after that repair should you ask whether any remaining speed issue is still worth
 tuning.
+
+The repaired story should look more like this:
+
+```mermaid
+flowchart LR
+  discovery["reviewed discovery boundary"]
+  jobs["only real sample jobs planned"]
+  evidence["logs and benchmarks for real identities"]
+  review["quieter and more honest review surface"]
+
+  discovery --> jobs --> evidence --> review
+```
+
+This is important educationally because the performance improvement comes from removing
+false work, not from suppressing evidence.
 
 ## Step 5: prove the repair honestly
 
@@ -145,6 +202,9 @@ This is the second teaching checkpoint:
 - the proof route should reuse the same evidence logic as the diagnosis route
 - the improvement should come from removing false work, not hiding true work
 
+That reuse is the whole integrity test. If the repair can only be defended with a
+different, looser route than the diagnosis used, the repair is not yet trustworthy.
+
 ## Turn the route into a reusable incident note
 
 Now record the route so another maintainer can follow it later:
@@ -156,6 +216,15 @@ Now record the route so another maintainer can follow it later:
 5. rerun the same proof route after the change
 
 That turns one incident from private intuition into reusable repository knowledge.
+
+The runbook draft should be short enough that another maintainer can execute it without
+guessing:
+
+1. restate the symptom with scope
+2. run planning and rebuild evidence first
+3. inspect one benchmark and one log only after the plan is clear
+4. name the moved workflow boundary before changing settings
+5. rerun the same proof route after the repair
 
 ## The repaired incident story
 
@@ -180,3 +249,10 @@ When you inspect an incident route shaped like this, ask:
 5. whether another maintainer could follow the route without extra oral guidance
 
 If those answers are visible, the module's incident story has landed.
+
+If you want one final classroom-style check, explain the incident in four sentences:
+
+1. which cost class you tested first
+2. which evidence surface ruled out a tool-runtime slowdown
+3. which workflow boundary actually widened the work
+4. how the repair improved speed without weakening truth
