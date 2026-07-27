@@ -168,19 +168,21 @@ outputs and inspect artifact identity; do not infer safety from stable ordering.
 
 ## Exercise 5: Review a build architecture before it rots
 
-Take an existing Make architecture and write a short review note focused on future risk
-rather than current success.
+Choose one architecture claim from the course audit bundles and review the corresponding
+surface in another Make repository. Keep the investigation bounded enough that another
+learner can rerun it without your explanation.
 
 What to hand in:
 
-- one public API risk
-- one layer-boundary risk
-- one reuse or naming risk
-- one recommendation that should be made before the next growth step lands
+- one claim naming its owner and consumer
+- one observation that would falsify the claim
+- the smallest source, evaluated-graph, and runtime evidence needed
+- a defect/control comparison or controlled mutation
+- an accept, repair, or defer record with a remaining limit and future trigger
 
 Study note:
-Architecture review is not just bug finding. It is prediction about where future work
-will become harder to reason about.
+Separate observations from conclusions. Preserve complete raw evidence in the packet, but
+quote only the entries that support the decision.
 
 ## Midday self-check
 

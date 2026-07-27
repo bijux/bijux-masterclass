@@ -172,22 +172,29 @@ That assertion is appropriate when the contract promises one output per selected
 
 ## Exercise 5: Review a build architecture before it rots
 
-A strong answer names concrete risks, such as:
+A bounded macro review might begin:
 
-- public API risk:
-  - CI relies on an undocumented helper target
-- layer-boundary risk:
-  - `mk/release.mk` mutates core compile flags
-- reuse risk:
-  - one macro owns too much behavior to review comfortably
-- naming risk:
-  - output paths will collide when a new component lands
+| Field | Entry |
+| --- | --- |
+| claim | publication macro generates only listed owner-to-artifact rules |
+| owner | macro definition and explicit owner list |
+| consumer | artifact graph and maintainers extending the owner set |
+| falsifying observation | hidden target, changed policy, or mismatched prerequisite |
+| evidence | call domain, `gmake -npRr all`, help, artifact contents |
 
-The strongest answers also recommend one preventive change now rather than waiting for a
-later breakage.
+The controlled comparison can inject `publish-alpha` into the bounded macro. The ordinary
+build still succeeds, but the database gains a target that the call site and help do not
+declare. The rejection test should fail the control.
 
-Architecture review is credible when it predicts where future change will become hard to
-reason about, not just when it praises the current build for working today.
+A complete decision record could say:
+
+> Repair. Remove publication-target generation from the artifact macro and keep policy in
+> its owning layer. Accept only after the evaluated prerequisite map matches the explicit
+> baseline and the abstraction rejection suite passes. Generated includes remain outside
+> this review; adding one is the trigger for another contract case.
+
+This answer is stronger than a list of possible risks because it names the claim,
+observation, evidence, decision, limit, and rerun trigger.
 
 ## Exercise 6: Publish a useful `help` target
 
