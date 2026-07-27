@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,180 +24,238 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These are model answers for the two running claims from the exercise page:
 
-## How to use the answer page well
+- `WorkshopEnrollment` must never confirm more attendees than the seat limit
+- `CertificateIssuanceService` must not duplicate visible issuance when retried
 
-Do not read the model answers first and then reduce Module 08 to "pick better tests and
-avoid too many mocks."
+The point of the answers is to show how proof shape follows design claim, not how to
+collect more tests by reflex.
 
-A better rhythm is:
+## Answer 1: First failing suite
 
-1. finish the exercise with your own proof packet
-2. name the claim, the first failure surface, and the reason that proof depth fits
-3. compare your reasoning with the model answer
-4. revise anywhere your answer still confuses convenience with evidence
+For the seat-limit claim:
 
-What matters is whether the reasoning ties verification directly to design claims and
-operational risk.
+- first failing suite: behavior-first domain tests on `WorkshopEnrollment`
 
-Strong Module 08 answers usually do five things:
+Why:
 
-- they start from a design claim instead of from a favorite test style
-- they identify the first meaningful failure surface for that claim
-- they treat fixtures, builders, and doubles as part of proof design
-- they keep snapshots and runtime checks narrow and intentional
-- they size confidence ladders by risk instead of by habit
+- the claim belongs to aggregate-owned truth
+- the aggregate should reject over-capacity transitions directly
 
-The strongest self-study packets also leave behind six concrete artifacts:
+Why not start heavier:
 
-- one design-claim inventory
-- one first-failing-suite map
-- one fixture or builder review
-- one doubles decision note
-- one approval-boundary judgment
-- one confidence-ladder recommendation
+- an integration suite would prove more of the path, but if the aggregate itself allows
+  over-capacity confirmation, the design is already broken earlier
 
-If your answers rely mostly on "more tests would help," the reasoning is still too vague.
+For the retry claim:
 
-## Answer 1: Name the first failing test
+- first failing suite: workflow-level integration or contract-style test around issuance
+  boundary plus fake adapters
 
-A strong answer identifies:
+Why:
 
-- the design claim that matters
-- the suite or check that should fail first
-- why that surface is close enough to the claim
-- why weaker or heavier proof would be less fitting
+- duplicate-visible-work risk lives across persistence and external side effects
+- pure unit tests can miss the ordering and durable-progress story
 
-The main lesson is:
+Why not weaker:
 
-- first failure is a precision question, not a volume question
+- a mocked helper test can prove calls happened; it cannot honestly prove duplicate
+  issuance stayed impossible
 
-## Answer 2: Review one lifecycle proof path
+## Answer 2: Lifecycle proof path
 
-The important pieces are:
+For the seat-limit claim, the proof must express sequence:
 
-- what sequence of actions the design claim depends on
-- what test style can express that sequence honestly
-- what false confidence appears when the path is shortened
-- what human-facing artifact should explain the same story
+1. create an enrollment with limited seats
+2. confirm attendees up to capacity
+3. attempt one more confirmation
+4. assert the transition is rejected and prior truth remains intact
 
-Lifecycle tests are strongest when:
+Good proof shapes:
 
-- they make transition order visible instead of only inspecting final data
+- behavior-first examples for main scenarios
+- stateful or property-based tests if many orderings matter
 
-## Answer 3: Draw one repository or adapter contract surface
+What a final-count-only test misses:
 
-A strong answer names:
+- whether the object briefly entered an illegal state
+- whether the wrong side effect happened before the rejection
 
-- what the caller is truly promised
-- what contract test protects that promise
-- what backend detail must not leak into the contract
-- what drift mocks might miss
+Lifecycle rules are about allowed histories, not just final values.
 
-The important question is:
+## Answer 3: Workflow proof path
 
-- if the backend changed tomorrow, what proof would still have to remain green
+For the issuance retry claim, a useful workflow proof expresses:
 
-## Answer 4: Justify one property-based test
+1. issuance begins
+2. durable issuance state is written
+3. downstream side effect is interrupted or retried
+4. rerun occurs
+5. user-visible issuance is still not duplicated
 
-A strong answer explains:
+Mock-heavy weakness:
 
-- the invariant that spans many inputs
-- why example tests alone are too narrow
-- what generator space matters
-- what family of bugs the property test could reveal
+- you can prove one call order and still miss whether durable state actually protects the
+  next run
 
-Property-based testing is strongest when:
+Stronger route:
 
-- the rule is broader than a few remembered examples
+- fake repository plus fake storage or email boundary
+- one workflow test that reruns from an interrupted point
 
-## Answer 5: Audit one fixture or builder
+That better matches the real contract.
 
-Good answers usually show:
+## Answer 4: Repository or adapter contract surface
 
-- what setup the fixture hides
-- whether that hiding helps or harms understanding
-- who should own the test data shape
-- how the fixture could accidentally make invalid states look normal
+Take `WorkshopEnrollmentRepository`.
 
-The main lesson is that:
+Caller promise:
 
-- setup is part of the proof, not just preparation
+- load and save aggregates in domain language
+- reject stale writes through explicit concurrency semantics
 
-## Answer 6: Compare doubles honestly
+Contract suite should protect:
 
-A strong answer distinguishes:
+- save/load round-trip of meaningful aggregate state
+- conflict behavior on stale version
 
-- when a fake preserves a real interaction shape
-- when a stub is enough
-- when a mock becomes brittle or misleading
-- when a contract test is the cleaner way to protect the boundary
+Backend detail that stays outside:
 
-The weakness to avoid is:
+- table layout
+- ORM session behavior
+- serialization quirks
 
-- proving call choreography while missing contract drift
+What mock-only tests might miss:
 
-## Answer 7: Place one runtime check or assertion boundary
+- two implementations both satisfy the mock expectations while disagreeing on real
+  substitute compatibility
 
-The important pieces are:
+## Answer 5: Fixture or builder audit
 
-- which assumption deserves executable defense
-- where the check belongs
-- what test proves the check matters
-- what confusion appears if the same check is repeated everywhere
+Suppose you have `enrollment_with_waitlist(...)`.
 
-Runtime checks are strongest when:
+Good helper behavior:
 
-- they protect one meaningful boundary and teach readers what must stay true
+- default state is legal
+- overrides are explicit and domain-named
+- seat limit and attendee ordering remain visible near the test
 
-## Answer 8: Review one snapshot or approval boundary
+Bad helper behavior:
 
-A strong answer explains:
+- hidden defaults auto-fill too much state
+- helper silently creates "valid enough" objects that obscure why the test matters
 
-- what behavior the artifact is meant to protect
-- what unstable representation details should remain outside it
-- what review process keeps it trustworthy
-- what maintenance drag appears if the artifact grows too broad
+Owner:
 
-Approval artifacts are weak when:
+- the test surface closest to the invariant, not a generic shared bucket with unclear
+  semantics
 
-- they become large enough that reviewers stop noticing what changed
+Setup is part of the proof. If it hides the important shape, the test becomes harder to
+trust.
 
-## Answer 9: Build one confidence ladder
+## Answer 6: Doubles decision
 
-A strong answer names:
+For `CertificateIssuanceService`, useful choices may be:
 
-- the smallest proof that still guards the claim
-- the next stronger layer and what it adds
-- the heaviest proof route and when it becomes justified
-- how the ladder avoids both shallow comfort and expensive theater
+- fake repository to preserve meaningful state transitions
+- fake object storage boundary if you need replayable durable behavior
+- spy or fake notification sender if you only need to inspect visible outcomes
 
-The main lesson is that:
+Weak default:
 
-- confidence comes from fit between claim and proof, not from always choosing the largest
-  suite
+- using mocks everywhere because they are fast to type
 
-## Answer 10: Produce a verification decision packet
+Why weak:
 
-The packet is strong when another maintainer can answer:
+- call choreography can stay green while durable behavior drifts
 
-- which suite should fail first for one claim
-- which setup and doubles keep the claim readable
-- where runtime or approval checks help more than they hurt
-- what stronger proof exists if risk increases
-- what evidence is already enough for the current question
+Choose doubles by what truth they preserve, not by what syntax they shorten.
 
-If different readers infer different proof targets, the packet is still too ambiguous.
+## Answer 7: Runtime check or assertion boundary
+
+Example assumption:
+
+- a stored issuance record must never claim success without an artifact location once the
+  workflow says delivery completed
+
+Good boundary:
+
+- runtime assertion or defensive check at the workflow or rehydration boundary
+
+Test:
+
+- corrupt state fixture should fail loudly at the boundary
+
+Bad pattern:
+
+- repeating the same check in every helper and adapter
+
+That creates noise instead of a clear executable contract.
+
+## Answer 8: Snapshot or approval boundary
+
+Good approval candidate:
+
+- one user-facing report or exported representation whose exact shape matters
+
+Bad approval candidate:
+
+- a huge internal debug dump with unstable timestamps, ordering noise, or internal ids
+
+What stays out:
+
+- nondeterministic metadata
+- irrelevant formatting churn
+
+Review practice:
+
+- reviewer should know what stable contract the artifact is protecting
+
+Snapshots help when representation matters. They hurt when they fossilize noise.
+
+## Answer 9: Confidence ladder
+
+For the seat-limit claim:
+
+1. smallest useful proof: aggregate behavior tests around confirmation rules
+2. next stronger proof: stateful or property-based sequences around confirm/release paths
+3. heaviest proof: repository-backed integration path with concurrency conflict checks
+
+For the issuance retry claim:
+
+1. smallest useful proof: workflow test with fakes proving no duplicate visible issuance
+2. next stronger proof: contract or integration test against real substitute boundaries
+3. heaviest proof: full end-to-end retry path through durable storage and downstream side
+   effect boundaries
+
+The ladder is honest because it scales with risk instead of jumping straight to the most
+expensive proof.
+
+## Answer 10: Proof packet
+
+A compact final packet might read:
+
+> The seat-limit claim should fail first in aggregate behavior tests because the
+> invariant is aggregate-owned. The retry-no-duplication claim should fail first in a
+> workflow-level test with meaningful fakes because the risk spans durable state and
+> external side effects. Builders must keep seat and issuance state visible, not magical.
+> Contract suites protect replaceable repositories and adapters. Heavier suites are kept
+> for substitute compatibility and interruption pressure, not used by default for every
+> claim.
+
+That note is strong because another maintainer can answer:
+
+- what proof fits which claim
+- why that proof is not too weak
+- why that proof is not theater
 
 ## Self-check
 
-If your answers consistently explain:
+You are using Module 08 correctly when another maintainer can answer all of these from
+your packet:
 
-- why one claim belongs to one first-failing suite
-- how one lifecycle rule deserves sequential proof
-- what one repository or adapter contract test protects
-- why one fixture or double choice clarifies rather than hides
-- how one confidence ladder scales proof honestly
-
-then you are using Module 08 correctly.
+- which suite should fail first for one claim
+- what setup keeps the invariant visible
+- what double preserves meaningful truth
+- what stronger proof is reserved for higher risk rather than used automatically
