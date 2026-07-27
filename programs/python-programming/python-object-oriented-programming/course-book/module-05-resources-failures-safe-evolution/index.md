@@ -18,133 +18,136 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  own["name the owner of the resource"] --> fail["separate domain failure from boundary failure"]
+  fail --> retry["justify retry and idempotency"]
+  retry --> surface["review logs and public surface"]
+  surface --> evolve["extend behavior without weakening old contracts"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+Correct object models still fail if they leak resources, blur failure handling, or cannot
+evolve safely. Module 05 treats survivability as part of design quality, not as a later
+operational concern.
 
-Correct object models still fail if they leak resources, blur failure handling, or
-cannot evolve safely. This module treats survivability as part of design quality.
+Keep one question in view while you study:
 
-Keep one question in view while reading:
+> Who owns the cost when this behavior fails, retries, leaks, or needs to evolve under an
+> existing contract?
 
-> Who owns the cost when this behavior fails, retries, leaks, or needs to evolve under an existing contract?
+That question keeps operational pressure attached to ownership instead of dissolving into
+generic "infrastructure" language.
 
-That question keeps operational concerns attached to ownership instead of dissolving into
-general “infrastructure” language.
+## What this module must settle
 
-## Preflight
-
-- You should already be able to name the ownership boundary for domain behavior before attaching operational concerns to it.
-- If retries, cleanup, or public API boundaries still feel like "someone else’s layer," treat this module as design work, not operations trivia.
-- Keep asking who pays for failure, leakage, or compatibility drift when a change goes wrong.
-
-## Learning outcomes
+By the end of this module, you should be able to do all of these with reasons:
 
 - assign cleanup, failure handling, retries, and compatibility pressure to explicit owners
-- distinguish domain errors from system-boundary failures without flattening them into generic exceptions
-- evaluate idempotency, unit-of-work boundaries, and public surface discipline as long-term design contracts
-- extend behavior without bypassing invariants or widening the accidental public API
+- distinguish domain errors from boundary failures without flattening them into one exception story
+- evaluate idempotency, unit-of-work boundaries, and public-surface discipline as long-term contracts
+- add new behavior without bypassing invariants or widening the accidental public API
 
-## Why this module matters
+If those ideas still sound like implementation details rather than design decisions, stay here longer.
 
-A design can look elegant in greenfield code review and still fail in production because
-it leaks cleanup responsibilities, retries unsafely, widens public surfaces casually, or
-cannot absorb a new requirement without violating old assumptions.
+## Session outcome
 
-This module treats operational survivability as part of object-oriented design rather
-than as a later concern owned by "infrastructure people."
+Treat Module 05 as one serious study day with four stages.
 
-## Main questions
+| Stage | Main pressure | What you should produce |
+| --- | --- | --- |
+| ownership | who opens, closes, commits, and cleans up | one resource-ownership table |
+| failure meaning | what callers are told after trouble | one domain-versus-boundary failure note |
+| retry discipline | which paths may rerun safely | one retry and idempotency review |
+| safe evolution | how to add capability without widening contracts | one extension note |
 
-- Who owns files, sockets, connections, and cleanup obligations?
-- How do you group changes and failure boundaries coherently?
-- Which failures belong in the domain contract, and which belong at the system boundary?
-- What makes retries safe or unsafe?
-- Which modules are public contracts and which are implementation detail?
-- How do you add new behavior without quietly breaking old callers?
+The module is not complete if you only remember "use context managers" or "avoid broad exceptions."
+It is complete when you can explain who pays for failure and what promise survives it.
 
-## Reading path
+## Recommended study route
 
-1. Start with resource ownership and unit-of-work boundaries.
-2. Read cleanup, domain errors, retries, and error propagation as one operational cluster.
-3. Then move to public API boundaries, smells, copying, and compatibility.
-4. Finish with the refactor chapter to test whether the design can evolve without collapse.
+Use this route unless you are returning to one narrow survivability issue:
 
-## Lesson map
+1. [Resources and Context Managers](resource-ownership-and-context-managers.md)
+2. [Unit of Work and Failure Handling](unit-of-work-and-failure-handling.md)
+3. [Deterministic Cleanup and Leak Prevention](deterministic-cleanup-and-leak-prevention.md)
+4. [Domain Errors, Recovery Contracts, and Compensating Actions](domain-errors-recovery-contracts-and-compensating-actions.md)
+5. [Idempotent Operations and Safe Retries](idempotent-operations-and-safe-retries.md)
+6. [Logging and Error Propagation](logging-and-error-propagation.md)
+7. [Public versus Internal Modules](public-versus-internal-modules.md)
+8. [Design Smells and Refactoring Patterns](design-smells-and-refactoring-patterns.md)
+9. [Copying and Versioning over Time](copying-and-versioning-over-time.md)
+10. [Compatibility Contracts and Evolution](compatibility-contracts-and-evolution.md)
+11. [Refactor 4: New Feature without Breaking Behavior](refactor-new-feature-without-breaking-behavior.md)
 
-- [Resources and Context Managers](resource-ownership-and-context-managers.md)
-- [Unit of Work and Failure Handling](unit-of-work-and-failure-handling.md)
-- [Deterministic Cleanup and Leak Prevention](deterministic-cleanup-and-leak-prevention.md)
-- [Domain Errors, Recovery Contracts, and Compensating Actions](domain-errors-recovery-contracts-and-compensating-actions.md)
-- [Idempotent Operations and Safe Retries](idempotent-operations-and-safe-retries.md)
-- [Logging and Error Propagation](logging-and-error-propagation.md)
-- [Public versus Internal Modules](public-versus-internal-modules.md)
-- [Design Smells and Refactoring Patterns](design-smells-and-refactoring-patterns.md)
-- [Copying and Versioning over Time](copying-and-versioning-over-time.md)
-- [Compatibility Contracts and Evolution](compatibility-contracts-and-evolution.md)
-- [Refactor 4: New Feature without Breaking Behavior](refactor-new-feature-without-breaking-behavior.md)
-- [Glossary](glossary.md)
+Do not start with compatibility or retries before you know who owns cleanup and commit authority.
 
-## Keep these support surfaces open
+## Lesson map by pressure
 
-- `../guides/proof-matrix.md` when you want the survivability promise tied to executable evidence.
-- `../guides/pressure-routes.md` when failure ownership still feels mixed with persistence or runtime pressure.
-- `../reference/self-review-prompts.md` when you want to test whether cleanup, retry, and compatibility questions now sound like ownership decisions.
+| If your current question is... | Start here | Then do this |
+| --- | --- | --- |
+| who opens, closes, or deletes the resource | resources and context managers | draw the cleanup owner explicitly |
+| what commits together and what must roll back together | unit of work and failure handling | name the authoritative change boundary |
+| what kind of failure this is | domain errors, recovery contracts, and compensating actions | explain what callers should be told |
+| whether a rerun is safe | idempotent operations and safe retries | say what visible side effect must be prevented or tolerated |
+| what callers may depend on | public versus internal modules | draw the stable surface and the internal details beneath it |
+| how to add behavior without breaking old promises | compatibility contracts and evolution | state the promise that must survive first |
 
-## Review route for failure ownership
+## What a missed-class learner should do
 
-1. Inspect [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) and [Capstone File Guide](../capstone/capstone-file-guide.md).
-2. Read `src/service_monitoring/runtime.py` and `src/service_monitoring/repository.py`.
-3. Inspect the unit-of-work and runtime test surfaces before escalating to the strongest proof route.
+If you are studying alone, use this rhythm:
 
-Use that route to keep one distinction explicit: domain truth should stay in the model,
-while retries, cleanup, publication, and rollback stay reviewable at the surrounding boundary.
+1. read one lesson
+2. name the owner of the resource or failure under discussion
+3. say what callers are promised after trouble
+4. say whether a retry is safe and why
+5. move on only after those answers sound explicit
 
-## Common failure modes
+This replaces the classroom question: "who pays when this goes wrong?"
 
-- making callers responsible for cleanup details they cannot reliably remember
-- flattening all failures into generic exceptions with no recovery contract
-- retrying operations that are not idempotent and duplicating side effects
-- logging everywhere without deciding what contract the logs actually support
-- exposing internal modules as accidental public API
-- adding new features by bypassing existing invariants instead of extending them cleanly
+## First capstone route for this module
 
-## Exercises
+Use the capstone in this order:
 
-Use the full exercise day rather than treating these as quick prompts:
+1. read [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) and [Capstone File Guide](../capstone/capstone-file-guide.md)
+2. inspect `src/service_monitoring/runtime.py` and `src/service_monitoring/repository.py`
+3. inspect the unit-of-work and runtime test surfaces
+4. use stronger proof routes only after the cleanup and failure boundaries are already visible
+
+The capstone should confirm your survivability judgment, not substitute for it.
+
+## If the module still feels blurry
+
+- ask who must clean up if the workflow fails halfway through
+- ask whether a caller can tell "bad request" from "bad environment"
+- ask what side effect would duplicate first under retry
+- ask which internal detail would become a breaking change if callers started depending on it
+
+## Support surfaces
+
+Use the practice pages as the second half of the module:
 
 - [Exercises](exercises.md)
 - [Exercise Answers](exercise-answers.md)
 
-The exercise day turns the module into one complete survivability review route:
-resource ownership, unit-of-work failure boundaries, retry discipline, propagation,
-public surface, and compatibility-safe extension.
+Keep these nearby when useful:
 
-## Capstone connection
+- `../guides/proof-matrix.md`
+- `../guides/pressure-routes.md`
+- `../reference/self-review-prompts.md`
+- [Glossary](glossary.md)
 
-The capstone's in-memory unit of work, runtime facade, and repository boundary are
-small on purpose, but they model the pressure this module is about: who owns failure,
-who commits change, which surfaces are public, and how new rule behavior can be added
-without rewriting the rest of the system.
+## Common ways learners leave too early
 
-## Honest completion signal
-
-You are ready to move on when you can name:
-
-- who owns cleanup for one change path
-- where retry policy may live without redefining domain meaning
-- which compatibility promise belongs to the public surface rather than the repository internals
+- making callers responsible for cleanup details they cannot reliably remember
+- flattening all failures into generic exceptions with no recovery meaning
+- retrying operations that are not idempotent and duplicating visible side effects
+- logging everywhere without deciding what contract the logs actually support
+- exposing internal modules as accidental public API
 
 ## Closing criteria
 
-You should finish this module able to shape object-oriented Python systems that stay
-operable and maintainable under long-term change rather than only under greenfield conditions.
+You are ready to leave Module 05 only when you can do all of these in plain language:
 
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+- name the cleanup owner for one workflow
+- explain where retry policy may live without redefining domain meaning
+- distinguish one domain failure from one boundary failure
+- state which compatibility promise belongs to the public surface rather than the internals
