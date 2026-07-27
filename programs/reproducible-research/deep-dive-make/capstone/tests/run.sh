@@ -177,18 +177,26 @@ CURRENT_CHECK="hidden_input_detection"
 step "hidden input detection"
 test -f config.mk || : > config.mk
 cp config.mk config.mk.bak
-printf '%s\n' '' 'CPPFLAGS += -DHIDDEN_TS=$(shell date +%s)' >> config.mk
+printf '%s\n' \
+  '' \
+  'CPPFLAGS += -DHIDDEN_COUNTER=$(shell $(PYTHON) scripts/advance_hidden_input.py --state .selftest/hidden-counter)' \
+  >> config.mk
 
 run_logged hidden-input-clean "$MAKE_BIN" clean
 run_logged hidden-input-build "$MAKE_BIN" -j1 all
-sleep 1
 printf '%s:' "hidden-input-query" >> "$SELFTEST_COMMANDS"
 printf ' %s' "$MAKE_BIN" -q all >> "$SELFTEST_COMMANDS"
 printf '\n' >> "$SELFTEST_COMMANDS"
 if "$MAKE_BIN" -q all > "${SELFTEST_LOG_DIR}/hidden-input-query.log" 2>&1; then
   fail "negative: converged despite hidden input"
+else
+  hidden_query_status=$?
 fi
-record hidden-input.txt "PASS"
+hidden_counter=$(cat .selftest/hidden-counter)
+record hidden-input.txt "result=PASS
+mechanism=parse-time counter outside the declared graph
+query_exit=${hidden_query_status}
+counter_after_query=${hidden_counter}"
 HIDDEN_INPUT_DETECTION="PASS"
 pass "negative: hidden input detected (non-convergence)"
 
