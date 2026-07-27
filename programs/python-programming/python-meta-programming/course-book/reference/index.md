@@ -25,69 +25,77 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this shelf when the mechanism is already recognizable and the harder question is no
-longer "what is this?" but "should this exist, where should it live, what should prove
-it, and what should I practice next?"
+Use this shelf when the mechanism is no longer the hardest part.
 
-This is not a fallback junk drawer. It is the course's judgment layer.
+The reference shelf is for the next level of difficulty:
 
-## What this shelf is for
+- where a behavior should live
+- how much power it deserves
+- what proof would actually count
+- what smell or failure pattern you are really seeing
+- what to practice next so the course becomes usable judgment instead of stored vocabulary
 
-Use the reference shelf to:
+This shelf is the course’s review brain. It is where a learner stops asking only "what is
+this mechanism?" and starts asking "should I trust it, approve it, or move it downward?"
 
-- stabilize vocabulary across modules, review, and capstone work
-- choose the smallest honest mechanism for a runtime problem
-- identify common failure shapes before they harden into local folklore
-- decide what to practice next when one module is no longer enough
-- turn a feeling that something is wrong into a clearer keep, change, or reject decision
+## What this shelf is meant to do
 
-If you still need the basic mechanism explained from scratch, go back to the matching
-module before staying here too long.
+These pages should help you:
 
-## Start by the kind of question you have
+- stabilize the course vocabulary so one term does not carry five meanings at once
+- compare lower-power and higher-power runtime choices honestly
+- recognize familiar failure shapes before they harden into local superstition
+- turn vague unease into named review questions
+- choose the next practice loop after a module ends
+- decide whether you are actually finished or only temporarily fluent
 
-| If your question is... | Start here | Stop when you can... |
+If you still need the mechanism itself explained from scratch, go back to the matching
+module. This shelf is for judgment, not first exposure.
+
+## Choose the page by question
+
+| If your real question is... | Start here | Leave when you can... |
 | --- | --- | --- |
-| "What does this term mean in this course?" | [Glossary](glossary.md) | say the term in local course language, not vague Python folklore |
-| "Where does this mechanism sit in the course sequence?" | [Module Dependency Map](module-dependency-map.md) | explain which lower-power ideas it depends on |
-| "What should I practice or prove next?" | [Practice Map](practice-map.md) | choose one concrete practice loop and one capstone follow-up |
-| "How should I review this mechanism?" | [Review Checklist](review-checklist.md) | ask sharper review questions than "does it work?" |
-| "Which sharper boundary question should I ask?" | [Boundary Review Prompts](boundary-review-prompts.md) | name the exact boundary under pressure |
-| "How can I turn this idea into active recall?" | [Self-Review Prompts](self-review-prompts.md) | test your own understanding without rereading everything |
-| "What failure shape am I seeing?" | [Anti-Pattern Atlas](anti-pattern-atlas.md) | name the smell and the likely repair direction |
-| "What counts as genuinely complete understanding?" | [Completion Rubric](completion-rubric.md) | judge whether the knowledge has become reviewable judgment |
-| "How far up the dynamic-power ladder should I go?" | [Runtime Power Ladder](runtime-power-ladder.md) | explain why a lower rung is insufficient |
-| "Does this topic even belong in the course center?" | [Topic Boundaries](topic-boundaries.md) | say whether the topic is central, adjacent, or outside scope |
+| What does this term mean in this course? | [Glossary](glossary.md) | use the term in local course language instead of vague Python folklore |
+| Where does this mechanism sit in the learning sequence? | [Module Dependency Map](module-dependency-map.md) | name the lower-power ideas it depends on |
+| What should I practice or prove next? | [Practice Map](practice-map.md) | choose one concrete practice loop and one capstone follow-up |
+| How should I review this mechanism? | [Review Checklist](review-checklist.md) | ask sharper questions than "does it work?" |
+| Which ownership boundary is actually under pressure? | [Boundary Review Prompts](boundary-review-prompts.md) | name the specific boundary and the lower-power alternative |
+| How do I test whether I really remember this? | [Self-Review Prompts](self-review-prompts.md) | answer without rereading everything first |
+| What kind of bad dynamic design am I looking at? | [Anti-Pattern Atlas](anti-pattern-atlas.md) | name the smell and the repair direction |
+| What counts as actual completion here? | [Completion Rubric](completion-rubric.md) | judge whether understanding has become reviewable judgment |
+| How far up the power ladder should this design go? | [Runtime Power Ladder](runtime-power-ladder.md) | explain why the rung below is insufficient |
+| Does this topic even belong in the course center? | [Topic Boundaries](topic-boundaries.md) | place the topic in core, adjacent, or outside scope |
 
-## A good route for missed-class learners
+## Best entry route for a solo learner
 
-If you are studying alone and do not know where to enter this shelf, use this order:
+If you missed class and do not know where to enter the reference shelf, use this route:
 
 1. Read [Runtime Power Ladder](runtime-power-ladder.md).
 2. Read [Review Checklist](review-checklist.md).
 3. Read [Boundary Review Prompts](boundary-review-prompts.md).
 4. Read [Anti-Pattern Atlas](anti-pattern-atlas.md).
-5. Return to [Practice Map](practice-map.md) or the current module.
+5. Use [Practice Map](practice-map.md) to decide the next concrete loop.
 
-That route gives you the review logic before the reference details start to blur together.
+That route gives you review logic first, then smell recognition, then practice direction.
 
-## What this shelf should help you do better
+## What better use of this shelf should feel like
 
 | Before using the shelf | After using the shelf |
 | --- | --- |
-| "This metaprogramming idea feels advanced." | "This idea belongs on rung 2, 3, or 4, and here is why." |
-| "Something about this wrapper seems wrong." | "It erases metadata, so the callable contract is no longer reviewable." |
-| "I finished the module, but I do not know what to practice now." | "The next honest loop is descriptor storage proof, then a field-focused capstone check." |
-| "This topic might belong here, but I am not sure." | "It is adjacent support material, not central course spine." |
+| "This idea feels advanced." | "This belongs on rung 2, 3, or 4, and here is why." |
+| "Something about this wrapper seems off." | "It erased signature evidence, so the callable contract stopped being reviewable." |
+| "I finished the module, but I do not know what to do next." | "The next honest loop is field-proof practice, then a focused capstone follow-up." |
+| "This topic sounds related, so it probably belongs here." | "This is adjacent support material, not part of the course spine." |
 
-## When to leave the reference shelf
+## When to leave this shelf
 
-Do not stay here forever.
+Do not turn reference reading into avoidance.
 
-- Go back to a module when the mechanism itself is still unclear.
-- Go into the capstone when you need to see the rule under real runtime pressure.
-- Go into tests when the claim is clear and you need executable proof.
-- Leave the course center when the question is mostly framework-specific or tooling-specific.
+- Go back to a module when the mechanism itself is still blurry.
+- Go into the capstone when the rule needs real runtime pressure.
+- Go into tests or saved bundles when the claim is clear and now needs proof.
+- Leave the course center when the question is mostly framework-specific, vendor-specific, or tooling-specific.
 
 ## Shelf pages
 
@@ -104,9 +112,9 @@ Do not stay here forever.
 
 ## Good stopping point
 
-Stop here when you can answer:
+Leave this page when you can say:
 
-- what question you brought into the shelf
-- which page best answers that question
-- what concrete next move follows from that answer
-- whether the next move belongs in a module, the capstone, or a proof route
+- what question brought you into the reference shelf
+- which page solves that question best
+- what concrete next move follows
+- whether that next move belongs in a module, a proof route, or the capstone
