@@ -47,6 +47,9 @@ Keep one more sentence beside it:
 
 > descriptor configuration may live on the descriptor object; descriptor-managed values usually must not.
 
+That second sentence prevents the most common beginner storage bug in the entire module.
+If configuration and live field values blur together, reuse becomes untrustworthy fast.
+
 ## What a reusable field descriptor usually owns
 
 In this module, a field descriptor is a small class that:
@@ -57,6 +60,15 @@ In this module, a field descriptor is a small class that:
 - stores per-instance values in a safe place
 
 That pattern is what turns descriptor protocol knowledge into something practical.
+
+Use this separation card whenever field descriptors start looking elegant but suspicious:
+
+| Question | Honest owner |
+| --- | --- |
+| what options configure the field rule? | descriptor object |
+| what name was the field installed under? | `__set_name__` result |
+| what value belongs to one instance only? | instance storage or safe external storage |
+| what code enforces assignment behavior? | `__set__` |
 
 ## Which parts belong where
 
@@ -97,6 +109,16 @@ This is the standard educational shape because every important part stays visibl
 It is also strong because the public field declaration remains readable while the storage
 rule stays local and explicit.
 
+## A proof route for storage ownership
+
+Use this route when a reusable field looks correct but you do not yet trust the storage:
+
+1. locate the descriptor object on the class
+2. locate where assignment writes the actual value
+3. create or imagine two instances
+4. ask whether changing one instance can leak into the other
+5. if the answer depends on descriptor-held mutable state, the storage owner is wrong
+
 ## A positive integer field
 
 ```python
@@ -125,6 +147,15 @@ This is where descriptors clearly outgrow a single property:
 
 That last point matters for education. A learner can inspect the class body and see a
 field rule installed declaratively without needing copied property code everywhere.
+
+Use this review card before accepting reuse:
+
+| If the design pressure is... | Descriptor reuse earns itself? |
+| --- | --- |
+| one field on one class | usually no |
+| the same field rule on several attributes | yes |
+| the same field rule across several classes | yes |
+| cross-field coordination | not by itself; a wider owner may be needed |
 
 ## The storage rule that matters most
 
@@ -214,6 +245,14 @@ and the mapping can easily leak stale state.
 
 If external storage is needed, weak references are the safer direction.
 
+## A quick storage decision chart
+
+| Situation | Likely safest storage |
+| --- | --- |
+| ordinary instances with `__dict__` | `obj.__dict__[private_name]` |
+| slotted instances without `__dict__` | `WeakKeyDictionary` or another explicit external store |
+| tempting shortcut with `id(obj)` | reject unless you can prove lifecycle safety, which this module does not teach as a good default |
+
 ## Storage options compared
 
 | Storage option | Good when | Main warning |
@@ -234,6 +273,15 @@ That is where descriptors start earning their complexity.
 
 Reuse pressure is the real justification. Descriptor power without repetition often turns
 into unnecessary abstraction.
+
+## Evidence packet for reusable-field reviews
+
+Leave this page with a small packet:
+
+- one reusable field installed under two different names
+- one trace showing where the live per-instance value lands
+- one broken shared-state example and its repair
+- one sentence explaining why reuse pressure is strong enough, or not strong enough, to justify a descriptor
 
 ## What they are not automatically good at
 
