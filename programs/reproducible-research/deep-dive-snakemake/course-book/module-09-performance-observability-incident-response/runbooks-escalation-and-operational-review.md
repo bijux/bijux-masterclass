@@ -1,195 +1,310 @@
 # Runbooks, Escalation, and Operational Review
 
-A workflow becomes easier to maintain when incident handling stops depending on memory.
+A runbook is an executable decision route for a bounded operational problem. It
+is not a command catalogue, a tour of the repository, or a promise that every
+incident has one cause.
 
-That is what a runbook is for.
+The runbook should help a maintainer preserve evidence, choose a discriminating
+check, decide who owns the next action, and prove recovery. If it only lists
+commands, the maintainer still has to invent the investigation under pressure.
 
-## How to use this page
+## Use a real route before writing one
 
-Read this lesson after the earlier Module 09 pages, because a runbook only works if you
-already know how to classify symptoms and choose evidence surfaces.
+Generate the performance evidence:
 
-Work through it in this order:
+```bash
+gmake capstone-performance-diagnostics-audit
+```
 
-1. learn what questions a runbook must answer
-2. learn the minimal shape of a good runbook
-3. practice converting repeated investigation into an explicit command path
-4. practice writing escalation that names a boundary instead of hiding uncertainty
+Now imagine this alert:
 
-The goal is not to write long documents. The goal is to make stressful moments shorter and
-safer.
+> A candidate run produced the expected normalized result, but its elapsed time
+> was unexpectedly low.
 
-## Start with the first honest command, not with the full command list
+The first question is not "Which tuning flag changed?" It is:
 
-A good runbook does not try to explain the whole repository. It gives the next maintainer
-the shortest reliable route through a stressful question.
+> Did known work disappear while the artifact still looked plausible?
 
-That means the first command matters more than a long appendix of possible commands.
+The shortest safe route is:
 
-If a runbook opens with twenty commands, the maintainer still has to improvise. If it
-opens with one honest first step, the workflow already became easier to operate.
+1. stop promotion of the candidate;
+2. identify the candidate configuration and run evidence;
+3. compare `input_records`, `output_records`, `validation_checks`,
+   `setup_cycles`, and `scan_passes`;
+4. compare result hash and semantic content;
+5. classify the run before changing configuration.
 
-## What a Module 09 runbook should answer
+That route distinguishes `honest-tuning` from `validation-bypass`. A generic
+"workflow is slow" runbook would not.
 
-At minimum, the runbook should tell a maintainer:
+## Define the runbook's operating contract
 
-- how to confirm the symptom without mutating the repository
-- which command gives the narrowest honest answer first
-- where the matching logs, benchmarks, and summaries live
-- how to decide whether the issue is semantic, operational, or publish-related
-- when to escalate instead of tuning locally
+Every runbook should state:
 
-If any of those are missing, the team will fill the gap with folklore.
+| Contract field | Question it answers |
+| --- | --- |
+| purpose | Which symptom or alert does this route handle? |
+| preconditions | Which repository, toolchain, access, and evidence must exist? |
+| safety boundary | Which commands are read-only, and which mutate or rerun? |
+| trusted boundary | Which outputs must not be promoted during investigation? |
+| first check | What smallest command confirms or refutes the symptom? |
+| decision branches | Which evidence sends the maintainer down each route? |
+| owner | Who can repair each classified boundary? |
+| stop conditions | When must local experimentation end? |
+| recovery proof | Which checks permit closure? |
+| rehearsal record | When and against which specimen was the route last tested? |
 
-## A simple runbook shape
+Without preconditions, a command may be unsafe in the actual context. Without
+stop conditions, a maintainer can rerun indefinitely. Without recovery proof,
+"the next run was green" becomes the closure standard.
+
+## Start with a non-mutating check
+
+Prefer a first command that observes rather than repairs:
+
+```bash
+snakemake --dry-run --printshellcmds
+snakemake --summary
+```
+
+For the controlled Module 09 case:
+
+```bash
+gmake capstone-performance-diagnostics-audit
+```
+
+The audit executes isolated copies by design. In a production runbook, state
+whether the command reruns jobs, submits remote work, deletes candidates, or
+overwrites logs. Do not label a command "diagnostic" merely because its output is
+text.
+
+Use explicit safety labels:
+
+| Label | Meaning |
+| --- | --- |
+| read-only | reads existing state and does not submit or rewrite |
+| isolated execution | runs only in a disposable or artifact workspace |
+| controlled mutation | changes named state with a rollback route |
+| production mutation | requires owner approval and incident record |
+
+## Branch on evidence, not intuition
+
+```mermaid
+flowchart TD
+    Alert[Unexpected runtime with plausible output] --> Hold[Hold promotion]
+    Hold --> Identify[Identify run, config, and result]
+    Identify --> Counts{Record counts preserved?}
+    Counts -- No --> Scope[Investigate missing or extra entities]
+    Counts -- Yes --> Validation{Validation preserved?}
+    Validation -- No --> Reject[Reject evidence-integrity drift]
+    Validation -- Yes --> Work{Known work reduced?}
+    Work -- Yes --> Accept[Review as tuning candidate]
+    Work -- No, increased --> Regress[Classify performance regression]
+    Work -- No change --> Repeat[Collect controlled repeated timings]
+```
+
+Each branch needs:
+
+- the evidence field or command;
+- the expected values;
+- the next owner;
+- the point at which the route stops.
+
+"Inspect logs and investigate" is not a branch. It gives no stopping rule and no
+classification.
+
+## Write commands with interpretation
+
+Weak runbook line:
+
+```bash
+cat report.json
+```
+
+Operational line:
+
+> Open `report.json`, locate the finding for the candidate configuration, and
+> compare `artifact_bytes_preserved`, `validation_preserved`, and deterministic
+> cost checks. Stop performance review and classify semantic drift if any
+> required contract check is false.
+
+The command is rarely the difficult part. The runbook earns its value by
+explaining what evidence means and what decision follows.
+
+## Keep semantic, policy, and platform branches separate
+
+A runbook should route issues to their owner.
+
+| Evidence shape | Boundary | Next owner or route |
+| --- | --- | --- |
+| target or dependency set changed | workflow semantics | workflow design review |
+| samples or trusted paths differ by profile | context semantics leak | profile and workflow review |
+| plan is stable; queue or resource behavior differs | execution policy | platform or profile owner |
+| tool work counters changed | application behavior | rule or tool owner |
+| counters stable; transfer time changed | storage | storage and platform owners |
+| published contract or validation missing | trust boundary | publication and governance owners |
+
+Do not prescribe more retries for a changed target set. Do not edit the
+Snakefile to compensate for queue policy. Do not call missing validation an
+observability-only issue when the output trust claim depended on it.
+
+## Define escalation with a useful packet
+
+Escalation should transfer a bounded problem, not a pile of files.
+
+Include:
+
+```text
+Symptom and first observed run:
+Affected targets and contexts:
+Trust impact and containment:
+Competing hypotheses:
+Evidence that separated or failed to separate them:
+Current boundary classification:
+Actions already taken:
+Requested owner decision:
+Artifact bundle path:
+```
+
+Escalate immediately when:
+
+- unvalidated or incorrect artifacts may have reached consumers;
+- credentials, privacy, or regulated data may be involved;
+- evidence is being overwritten;
+- retries can amplify infrastructure load or cost;
+- the repair changes target, dependency, schema, or publish meaning;
+- no local evidence can distinguish platform from storage behavior.
+
+Escalation is a correct boundary decision. Continuing to patch outside your
+evidence and ownership is not persistence; it is uncontrolled mutation.
+
+## End with recovery gates
+
+Runbook closure should require more than successful execution.
+
+For a performance incident, require:
+
+- original symptom no longer reproduces;
+- expected targets and artifacts are present;
+- semantic comparison passes;
+- required validation and provenance remain;
+- the predicted cost counter moves;
+- benchmark observation is recorded;
+- adversarial cases still fail or classify correctly;
+- held candidates are either promoted through the normal boundary or removed by
+  the owning process.
+
+For the specimen:
+
+```bash
+gmake capstone-performance-diagnostics-audit
+gmake capstone-performance-diagnostics-selftest
+```
+
+The audit proves classification. The self-test proves that removing validation,
+removing the cost reduction, hiding the repeated scan, or changing output bytes
+causes the gate to fail.
 
 ```mermaid
 flowchart LR
-  preflight["preflight question"] --> command["first command"]
-  command --> evidence["matching evidence surface"]
-  evidence --> classify["classify the issue"]
-  classify --> repair["local repair"]
-  classify --> escalate["documented escalation route"]
+    Repair[Repair] --> Reproduce[Original symptom absent]
+    Reproduce --> Semantic[Semantic contract passes]
+    Semantic --> Evidence[Evidence contract passes]
+    Evidence --> Cost[Predicted cost movement appears]
+    Cost --> Selftest[Adversarial self-test passes]
+    Selftest --> Close[Close with remaining uncertainty recorded]
 ```
 
-That shape is enough for most teams.
+## Add rollback and abort conditions
 
-## The five sections worth keeping
+Before a mutating action, state:
 
-### 1. Symptom check
+- what is changed;
+- how previous state is preserved;
+- what signal triggers rollback;
+- whether rollback is safe after partial execution;
+- who approves continued operation if rollback fails.
 
-Name the smallest command that confirms the problem:
+For tuning, a simple abort condition is:
 
-- `snakemake -n -p`
-- `snakemake --summary`
-- `make -C capstone wf-dryrun`
+> Abort the candidate if output coverage, result meaning, validation count, or
+> provenance differs from the accepted reference.
 
-This section should prevent unnecessary real runs.
+Do not wait for timing results after a semantic gate fails. A faster broken
+candidate has no performance-review value.
 
-### 2. Evidence route
+## Rehearse against both good and bad cases
 
-Say where to look next:
+A runbook tested only on the happy path may encode the expected answer.
 
-- rule-local logs for one failing or slow target
-- benchmark files for the suspicious rule family
-- provenance or profile evidence when context differs
-- published verification evidence when trust in outputs is the real question
+Rehearse:
 
-### 3. Decision boundary
+- an accepted tuning;
+- a semantic drift with plausible output;
+- a pure performance regression;
+- stale evidence;
+- a command failure before report creation.
 
-The runbook should help a maintainer decide whether the issue belongs to:
+During rehearsal, record:
 
-- workflow semantics
-- operating context or profile policy
-- storage and staging behavior
-- tool implementation
-- publish-boundary verification
+- where the reader hesitated;
+- which term lacked a definition;
+- which command had an unstated side effect;
+- which branch did not lead to an owner;
+- how long it took to reach classification;
+- whether the recovery gate caught the bad case.
 
-This is the difference between a calm repair and an aimless investigation.
+The performance self-test supplies the first four controlled failure shapes.
+Platform-specific runbooks need additional rehearsals in their owned context.
 
-### 4. Escalation triggers
+## Review runbooks as operational code
 
-Escalate when:
+Review should ask:
 
-- the proposed fix changes workflow meaning
-- the issue appears only in one operating context and profile review is required
-- the published contract may no longer be trustworthy
-- the same incident keeps returning and should become an executable check
+| Review area | Question |
+| --- | --- |
+| correctness | Does each command exist in the supported toolchain? |
+| safety | Are mutations and trust holds explicit? |
+| discrimination | Do branches separate plausible causes? |
+| ownership | Does every terminal branch identify an owner or proof route? |
+| closure | Are recovery and rollback gates concrete? |
+| freshness | Has the route been rehearsed after relevant workflow changes? |
+| scope | Does the runbook avoid claims its evidence cannot support? |
 
-### 5. Proof route
+When a recurring manual check becomes stable, convert it into a repository
+target and self-test. That is how the Module 09 audit became part of `proof` and
+`confirm`.
 
-End the runbook with the commands that prove the repair honestly:
+## A compact runbook template
 
-```bash
-make -C capstone evidence-summary
-make -C capstone tour
-make -C capstone verify-report
-make -C capstone profile-audit
+```text
+Title and bounded symptom:
+Purpose:
+Preconditions:
+Safety and trust hold:
+Read-only confirmation:
+Evidence locations:
+Decision branches:
+Repair ownership:
+Escalation packet and triggers:
+Recovery gates:
+Rollback or abort conditions:
+Last rehearsal and known limits:
 ```
 
-These commands are not always all required. They are the module's reliable escalation
-surfaces.
+Keep the document short by linking to evidence guides rather than copying
+repository architecture into every incident route.
 
-## One concrete runbook test
+## Completion check
 
-Imagine a teammate wakes up to a report that CI rebuilt published summaries and took much
-longer than the previous successful run.
+A missed-class learner should be able to use your runbook and answer:
 
-A runbook passes this test only if the maintainer can answer, without improvising:
+- What is safe to run first?
+- Which evidence distinguishes the likely causes?
+- When must publication stop?
+- Which boundary and owner receive each branch?
+- What proves recovery?
+- Which bad case demonstrates that the gate can fail?
 
-1. what to run first
-2. what artifact to inspect second
-3. how to decide whether this is workflow drift, context drift, or publish drift
-4. when to stop local tuning and escalate
-
-If the runbook cannot answer those four questions quickly, it is still notes, not
-operations.
-
-## Turning recurring incidents into reviewable operations
-
-One of the best runbook improvements is converting a repeated manual check into a stable
-artifact or command.
-
-Examples:
-
-- a repeated "which profiles differ?" question becomes `make profile-audit`
-- a repeated "what evidence exists from the last real run?" question becomes
-  `make evidence-summary`
-- a repeated "can I review the whole execution route in one place?" question becomes
-  `make tour`
-
-This is how operations become calmer without becoming opaque.
-
-## What escalation should look like
-
-Escalation is not failure. It is boundary recognition.
-
-Escalation is healthy when a note says:
-
-> The evidence points away from rule-local runtime and toward profile or publish drift, so
-> I am moving this from local tuning into profile review and verification.
-
-That sentence protects the workflow from the wrong kind of "quick fix."
-
-## A short runbook example
-
-Here is a minimal pattern:
-
-1. Confirm with `snakemake -n -p` or `make -C capstone wf-dryrun`.
-2. Use `snakemake --summary` to check whether workflow state matches the report.
-3. Inspect the matching rule log and benchmark only for the affected target family.
-4. If context differs, inspect provenance or run `make -C capstone profile-audit`.
-5. If published trust is in question, run `make -C capstone verify-report`.
-6. Record the incident class before proposing a repair.
-
-That is short enough to use and strong enough to guide review.
-
-## The beginner mistake to catch early
-
-Beginners often confuse a runbook with a command inventory.
-
-Those are not the same thing.
-
-A command inventory says, "here are many things you could do." A runbook says, "start
-here, then go here, and escalate when this boundary appears."
-
-The educational target for this course is operational clarity, not command abundance.
-
-## Common runbook mistakes
-
-- listing every command in the repository instead of the first honest one
-- mixing semantic repair steps with profile-only operating advice
-- treating scratch or temporary outputs as if they were trusted contract surfaces
-- ending with "investigate further" instead of a real escalation route
-
-The runbook exists to remove ambiguity, not to preserve it.
-
-## Keep this standard
-
-By the end of this module, a teammate should be able to answer:
-
-- what do I run first?
-- what do I inspect second?
-- when do I stop patching and escalate?
-
-If the runbook does not answer those three questions, it is still notes, not operations.
+If the runbook answers only "which commands exist," it is still a command
+inventory.
