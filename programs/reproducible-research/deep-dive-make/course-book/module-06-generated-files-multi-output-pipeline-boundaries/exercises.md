@@ -23,7 +23,7 @@ Do the exercises in order. The day is one progression:
 
 - Exercises 1-3 teach you to name generated boundaries, coupled outputs, and justified
   manifests
-- Exercises 4-6 turn those ideas into truthful staging and first-generation rules
+- Exercises 4-6 turn those ideas into isolated candidates and first-generation rules
 - Exercises 7-8 test deletion recovery and failure preservation
 - Exercises 9-10 defend complete publication protocols under realistic pressure
 
@@ -325,7 +325,7 @@ corruption rejection, interrupted publication, and competing publisher.
 What to hand in:
 
 - the Makefile and generator
-- an eleven-row command and observation table
+- a twelve-row command and observation table
 - a graph drawing that distinguishes generation, validation, publication, and consumption
 - changed-output predictions and observations for the generator script and consumed-header
   rows
