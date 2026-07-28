@@ -1,342 +1,378 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is to make
-your publish decisions visible through bundle design, verification evidence, and consumer
-tests, not through vague claims that the output "looks ready."
+These exercises form one cumulative release review. You begin with an internal results
+tree, define a current consumer, build and corrupt candidate bundles, classify evolution,
+and finish with a versioned migration packet.
 
-## How to work through this set
+Work in the repository `artifacts/` tree or a separate learner repository. Do not edit the
+tracked compatibility specimens while experimenting.
 
-Treat this as one full workshop day, not as ten disconnected prompts.
+## Evidence rules
 
-For each exercise, keep three things side by side:
+For every exercise, retain:
 
-- the bundle tree you are protecting
-- the evidence route you actually ran
-- one plain-language note about how a downstream consumer benefits from the decision
-
-If your answer cannot point to a specific public artifact and a specific downstream use,
-the exercise is not finished yet.
-
-Before each answer:
-
-1. classify the artifact role before you decide where the file should live
-2. name the consumer who benefits from the boundary you are defending
-3. keep the exact verification command or transcript that proves the bundle still works
-
-If you skip that sequence, the day turns into folder rearrangement instead of contract
-design.
-
-Do them in order. The set is one day-long progression:
-
-- Exercises 1-3 separate internal outputs from public promises.
-- Exercises 4-6 build the versioned bundle and define artifact roles.
-- Exercises 7-8 defend integrity and consumer use.
-- Exercises 9-10 classify change and review downstream risk.
-
-For every answer, keep three things:
-
-- the boundary you are protecting
-- the evidence route you actually used
-- one short sentence explaining why the chosen publish surface helps a downstream user
-
-## Recommended working layout
-
-Build one small review packet as you go:
-
-- an artifact-role table
-- a public-tree sketch for `publish/v1/`
-- a manifest and verification transcript
-- one consumer test transcript
-- one compatibility note for a simulated change
-
-If you prefer a concrete tree, keep the day inside something like:
-
-```text
-module06-lab/
-├── Snakefile
-├── results/
-├── publish/
-│   ├── v1/
-│   └── v2/
-├── consumers/
-├── artifacts/
-│   ├── manifests/
-│   ├── verification/
-│   ├── compatibility/
-│   └── reviews/
-└── logs/
-```
-
-That makes it easier to prove which files are public, which checks belong to integrity,
-and which notes belong to compatibility review.
-
-Build one small downstream-contract review packet as you go:
-
-- one artifact-role table classifying internal, diagnostic, human-facing, and
-  machine-facing surfaces
-- one public-tree sketch for the current versioned bundle
-- one manifest and verification transcript
-- one consumer test transcript that uses only the bundle
-- one compatibility note for an additive or breaking change
-- one maintainer-style review note ordered by downstream trust impact
-- one note explaining when accepted and rejected discovery records belong in the public bundle
-
-If those six artifacts are missing, the day usually turns into "files moved into
-`publish/`" instead of "a contract became reviewable."
+- consumer or audience;
+- current promise;
+- candidate change;
+- prediction before execution;
+- exact verifier output;
+- decision: accept current, reject current, or require migration;
+- claim limit.
 
 ```mermaid
 flowchart LR
-  roles["classify artifact roles"]
-  boundary["draw the smallest honest public boundary"]
-  integrity["add integrity surfaces"]
-  consumer["prove a consumer can use only the bundle"]
-  compatibility["classify change from the consumer view"]
-  review["review publish drift in trust order"]
-
-  roles --> boundary --> integrity --> consumer --> compatibility --> review
+  contract["Freeze consumer contract"] --> candidate["Materialize isolated candidate"]
+  candidate --> integrity["Verify inventory and bytes"]
+  integrity --> compatibility["Run consumer checks"]
+  compatibility --> decision["Classify decision"]
+  decision --> mutation["Damage one causal property"]
+  mutation --> evidence["Confirm gate rejects"]
 ```
 
-Use that route on purpose. It keeps the day centered on downstream trust rather than on
-producer convenience.
+## Exercise 1: Classify an output tree by audience and promise
+
+Classify:
+
+```text
+results/discovered_samples.json
+results/alpha/qc.raw.json
+results/alpha/trimmed.fastq.gz
+results/alpha/screen.json
+results/summary.json
+results/summary.tsv
+logs/trim_alpha.log
+benchmarks/trim_alpha.txt
+report/index.html
+```
+
+For each, choose:
+
+- execution state;
+- diagnostic evidence;
+- review evidence;
+- public contract.
 
-## What a strong day packet looks like
+Then name:
 
-By the time you finish all ten exercises, your work should leave behind one small,
-reviewable packet instead of ten disconnected publish fragments:
+- primary audience;
+- decision supported;
+- proposed public path, if any;
+- stability promise;
+- verifier.
 
-- one artifact-role table
-- one public-tree sketch for the versioned bundle
-- one manifest and verification transcript
-- one consumer test that uses only the bundle
-- one compatibility note written from the consumer's point of view
-- one maintainer-style review note ordered by downstream trust impact
+Deliver an artifact-role table and a public allowlist. At least two artifacts must remain
+internal for explicit reasons. “Useful” is not a sufficient reason to publish.
 
-If you cannot point to those artifacts, the exercise day is still too dependent on tacit
-classroom guidance.
+## Exercise 2: Write an executable v1 consumer contract
 
-## Exercise 1: Classify the current outputs
+Define a consumer for:
 
-Take a workflow that produces internal results, logs, reports, and one or more structured
-summaries. Classify every output as one of these:
+```text
+publish/v1/summary.json
+```
 
-- internal workflow state
-- diagnostic artifact
-- human-facing publish artifact
-- machine-facing publish artifact
+Required record:
 
-What to hand in:
+```json
+{
+  "sample_id": "alpha",
+  "reads_count": 10
+}
+```
 
-- the artifact-role table
-- one file that must remain internal
-- one file that should become part of the public contract
-- one missing artifact that keeps the current publish story weak
+Declare:
 
-Study note:
-If you struggle here, you are not really stuck on Exercise 1. You are discovering that
-the workflow does not yet separate internal operational detail from public promise.
+- publish and artifact schema versions;
+- required path;
+- required fields and types;
+- `reads_count` definition and unit;
+- additional-field policy;
+- missing-value policy;
+- record ordering policy;
+- integrity expectations.
 
-## Exercise 2: Draw the first publish boundary
+Implement a verifier with at least these tests:
 
-Promote the smallest honest set of downstream-facing artifacts into `publish/v1/`.
+- accepted baseline;
+- missing path;
+- wrong publish version;
+- missing required field;
+- wrong type;
+- changed unit;
+- checksum mismatch.
 
-What to hand in:
+Deliver the contract fixture, verifier, tests, and receipts. The verifier must report
+specific failures rather than one generic incompatibility message.
 
-- the internal tree and public tree
-- the rules that own publication
-- one sentence for each included file explaining its job
-- one sentence for each excluded file explaining why it stays internal
-- one short sentence saying which downstream user the bundle is actually for
-- one sentence saying whether reviewed discovery evidence belongs in this public contract and why
+## Exercise 3: Assemble and inventory an isolated candidate
 
-Study note:
-The goal is not to publish many files. The goal is to publish the smallest honest
-contract.
+Create:
 
-## Exercise 3: Separate machine and human surfaces
+```text
+candidate/
+├── discovered_samples.json
+├── provenance.json
+├── report/
+│   └── index.html
+├── summary.json
+└── summary.tsv
+```
 
-Choose one machine-readable summary and one human-readable report from the same workflow.
-Explain why they are related but not interchangeable.
+Requirements:
 
-What to hand in:
+- sample IDs agree across discovery, JSON, TSV, and HTML;
+- JSON and TSV values agree;
+- public paths come from an allowlist;
+- manifest paths are relative, unique, and sorted;
+- every listed artifact has a SHA-256 digest;
+- the content manifest does not hash itself;
+- an outer packet manifest can later cover the content manifest.
 
-- the authoritative machine-facing artifact
-- the human-facing artifact
-- the data relationship between them
-- one reason scraping the report would weaken the contract
+Run the v1 consumer before treating the candidate as promotable.
 
-Study note:
-If the same file is trying to satisfy both the machine and the human, stop and separate
-the roles more clearly.
+Deliver the candidate, manifest, cross-surface verification report, consumer report, and
+a diagram of the candidate-to-promotion route.
 
-## Exercise 4: Write a manifest for the bundle
+## Exercise 4: Test additive compatibility against open and closed consumers
 
-Create a manifest that inventories the public files with stable relative paths and SHA-256
-checksums.
+Add:
 
-What to hand in:
+```json
+{
+  "qc_status": "pass"
+}
+```
 
-- the manifest format
-- the ordering rule for entries
-- one successful verification transcript
-- one reason absolute paths do not belong in the contract
-- one sentence explaining why the manifest proves identity but not scientific meaning
-- one sentence explaining which membership question still needs accepted and rejected discovery records instead of the manifest
+to each summary record without changing existing fields.
 
-Study note:
-If your manifest cannot travel with the bundle to another machine, it is not yet a good
-publish artifact.
+Create:
 
-## Exercise 5: Add provenance without confusing its role
+- an open v1 consumer that permits additional fields;
+- a closed v1 consumer that rejects undeclared fields.
 
-Generate a provenance artifact for the published bundle that records enough software
-context to explain the run later.
+Predict and then run both. Explain why:
 
-What to hand in:
+```text
+open consumer -> accept
+closed consumer -> reject
+```
 
-- the provenance file
-- the software details it records
-- one trust question provenance answers well
-- one trust question provenance does not answer without the contract itself
+is not contradictory.
 
-Study note:
-Provenance becomes much easier once you stop asking it to replace the bundle contract.
+Deliver paired contracts, paired reports, and a release decision that states exactly
+which consumers the compatibility claim covers.
 
-## Exercise 6: Write a consumer test
+## Exercise 5: Detect semantic drift that preserves shape
 
-Create a small program that receives only the bundle path and uses one documented
-machine-facing artifact. It must not read `results/`, repository configuration, or
-producer-only paths.
+Keep:
 
-What to hand in:
+```json
+{"reads_count": 40}
+```
 
-- the consumer
-- the schema or validation route it relies on
-- a successful run against the bundle
-- one producer detail the consumer intentionally does not know
-- one sentence explaining why reading `results/` would weaken the contract
-- one sentence explaining which structured publish artifact the consumer treats as authoritative
+but change its contract meaning from:
 
-Study note:
-This is the first exercise where the public contract has to prove it is real from the
-outside.
+```text
+number of sequencing reads, unit reads
+```
 
-## Midday self-check
+to:
 
-Before you move into corruption, compatibility, and migration, make sure your packet can
-already answer all of these:
+```text
+number of nucleotide bases, unit bases
+```
 
-- which outputs are internal workflow state and which outputs are part of the public promise
-- which machine-facing artifact is authoritative for consumers
-- which human-facing artifact is for inspection rather than programmatic use
-- which artifact proves inventory and identity without pretending to prove semantic meaning
-- which artifact explains bundle membership when acceptance and rejection matter downstream
+Demonstrate:
 
-If you cannot answer those four questions cleanly, return to the earlier exercises and
-make the contract packet more explicit before moving on.
+- JSON parses;
+- schema and integer type pass;
+- checksum integrity passes;
+- semantic compatibility fails.
 
-## When you get stuck, diagnose the missing boundary first
+Add a test that changes only the unit metadata. Then add a deliberately weak verifier
+that checks only types and show that it accepts the unsafe candidate.
 
-Use this table before you start moving more files into `publish/`:
+Deliver both verifier results and an explanation of why the weak verifier creates
+silent analytical risk.
 
-| If you are stuck on... | Check whether you are missing... | Typical repair |
-| --- | --- | --- |
-| Exercise 1 or 2 | one explicit artifact-role table | classify internal, human, and machine surfaces before promoting files |
-| Exercise 3 or 6 | one authoritative machine-facing artifact | choose the consumer entrypoint before writing more reports |
-| Exercise 4, 5, or 7 | one clear distinction between identity, context, and meaning | separate manifest, provenance, and file API roles explicitly |
-| Exercise 8, 9, or 10 | one consumer-centered compatibility note | classify the change from the surviving consumer's view before versioning it |
+## Exercise 6: Corrupt a bundle after inventory
 
-Most weak Module 06 answers are not short on files. They are short on named public promises.
+Using Exercise 3:
 
-## Exercise 7: Corrupt the bundle and detect it
+1. verify the clean candidate;
+2. alter `summary.json` after `manifest.json` is written;
+3. confirm JSON remains parseable;
+4. run integrity verification;
+5. independently calculate the digest;
+6. restore from a trusted candidate source;
+7. regenerate and reverify the manifest.
 
-Alter one published file after the manifest is generated and run the verifier again.
+Repeat with:
 
-What to hand in:
+- a missing manifest-listed file;
+- an unexpected file in a closed boundary;
+- a duplicate manifest path;
+- an escaping path such as `../outside.json`.
 
-- the corrupted path
-- the failed verification output
-- an explanation of what checksum verification proves
-- an explanation of what checksum verification does not prove
+Deliver separate receipts for each failure class. Do not repair corruption by replacing
+the stored digest without explaining the changed bytes.
 
-Study note:
-Keep the distinction between identity and meaning explicit here. That distinction is one
-of the module's central habits.
+## Exercise 7: Verify human and machine surfaces from one authority
 
-## Exercise 8: Simulate a downstream compatibility check
+Build one in-memory summary model for `alpha` and `beta`. Generate:
 
-Change one bundle field, path, or artifact role and test the consumer from Exercise 6
-against the new bundle.
+- `summary.json`;
+- `summary.tsv`;
+- `report/index.html`.
 
-What to hand in:
+Declare JSON authoritative for exact metric values and discovery authoritative for sample
+membership.
 
-- the specific change
-- the consumer outcome
-- your compatibility classification
-- whether the fix belongs in the current version or in a new public version
-- one sentence written from the surviving consumer’s point of view, not the producer’s
+Your verifier must compare:
 
-Study note:
-Do not classify from the author's perspective. Classify from the surviving consumer's
-perspective.
+```text
+accepted IDs = JSON IDs = TSV IDs = HTML IDs
+```
 
-## Exercise 9: Design a deliberate version migration
+and compare every shared metric after parsing.
 
-Create a `publish/v2/` contract for one breaking change while preserving a clear route for
-existing `v1` consumers.
+Introduce these faults one at a time:
 
-What to hand in:
+- omit beta from HTML;
+- round a TSV value incorrectly;
+- link the report to an internal `results/` path;
+- display reads as bases without changing the machine API.
 
-- both public trees
-- the migration note
-- supported-consumer tests
-- the reason internal workflow layout still does not belong to either API
+Deliver the authority matrix, verifier, four rejection receipts, and a short accessibility
+review of the report’s essential content.
 
-Study note:
-The point of `v2` is not novelty. The point is honesty about a changed promise.
+```mermaid
+flowchart TD
+  discovery["Discovery membership"] --> model["Governed summary model"]
+  model --> json["JSON"]
+  model --> tsv["TSV"]
+  model --> html["HTML"]
+  discovery --> compare["Identity comparison"]
+  json --> compare
+  tsv --> compare
+  html --> compare
+```
 
-## Exercise 10: Review a full publish change like a downstream maintainer
+## Exercise 8: Classify the compatibility audit and damage its evidence
 
-Review a change that touches publication rules, bundle contents, manifest logic,
-provenance, and a consumer-facing schema.
+Run:
 
-What to hand in:
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make publish-compatibility-audit
+make publish-compatibility-selftest
+```
 
-- findings ordered by downstream trust impact
-- one corrected artifact-role table
-- the narrow verification route for each correction
-- one change that should be versioned, postponed, or removed
+Before reading `summary.tsv`, predict all seven decisions from `consumer-v1.json` and
+`consumer-v2.json`.
 
-Study note:
-Treat this as a downstream-maintainer review, not as a celebration that the workflow has
-many outputs.
+Then copy specimens into your artifact workspace and apply separately:
 
-## What weak completion looks like
+1. remove `reads_count` from the additive case;
+2. restore reads semantics in the semantic-drift case;
+3. disable corruption in the integrity case;
+4. remove `reads_count` from current consumer requirements;
+5. make the v2 consumer expect the v1 path.
 
-Do not call the day complete if your answers do any of these:
+For each mutation, state:
 
-- use `publish/` as proof that a contract exists without naming the consumer surface
-- treat a report as sufficient for machine consumption
-- use provenance as if it replaces the manifest or the file API
-- classify a change from the producer’s convenience instead of the consumer’s survival
-- review a publish diff without ordering findings by downstream trust impact
+- which classification or contract check must fail;
+- whether the materialized bundle can still look plausible;
+- what a producer-only test would miss.
 
-## Mastery standard for this exercise set
+Automate at least three mutation rejections.
 
-Across all ten answers, Module 06 wants the same habits:
+## Exercise 9: Design and test a v2 migration
 
-- you treat internal workflow state and public contracts as different promises
-- you keep machine and human surfaces distinct
-- you use manifests, checksums, and provenance for different jobs
-- you review publish drift from the consumer's point of view
+Migrate:
 
-If your answer says only "the files are in publish now," keep going.
+```text
+v1: summary.json / reads_count / reads
+v2: metrics.json / read_bases / bases
+```
 
-## Exit standard for the exercise day
+Create:
 
-You are done only when you can defend all of these clearly:
+- v2 artifact schema;
+- v2 consumer fixture;
+- example v2 bundle;
+- paired reports showing v1 rejects and v2 accepts;
+- field and path mapping;
+- statement about whether v1 values can be converted;
+- overlap plan;
+- retirement owner and evidence;
+- rollback or extension condition.
 
-- why a downstream consumer reads the bundle instead of `results/`
-- which artifact is authoritative for machines
-- which artifact is authoritative for humans
-- which artifact proves inventory and identity
-- which change still belongs inside `v1` and which no longer does
+If read lengths are unavailable, do not claim `read_bases` can be reconstructed from
+`reads_count`.
+
+Deliver a migration note and a decision table for consumers that are ready, unknown, or
+unable to migrate.
+
+## Exercise 10: Submit a consumer-verifiable release packet
+
+Create:
+
+```text
+release-review/
+├── README.md
+├── candidate/
+│   └── publish/
+├── consumer-v1.json
+├── consumer-v2.json
+├── compatibility-report.json
+├── compatibility-summary.tsv
+├── integrity-report.json
+├── migration-note.md
+├── review-questions.md
+└── bundle-manifest.json
+```
+
+`README.md` must state:
+
+- public audience and authority;
+- current contract;
+- candidate change;
+- integrity result;
+- current and next consumer results;
+- decision;
+- promotion or migration route;
+- limits of the evidence.
+
+`review-questions.md` must ask:
+
+- Which exact consumer accepted or rejected the candidate?
+- Which required path, field, meaning, or digest drove the decision?
+- Do human and machine sample identities agree?
+- Is a same-version change actually tolerated?
+- Does a migration have overlap and retirement evidence?
+- Can weakening a fixture make the gate fail?
+
+Alter one packet file after writing `bundle-manifest.json` and prove outer verification
+fails. Restore it and verify again.
+
+Deliver the packet plus a one-page downstream-maintainer review. Identify at least one
+real consumer, policy, or platform not represented by your evidence.
+
+## Completion check
+
+Before reading the answers, confirm you have:
+
+- one artifact-role inventory;
+- an executable v1 consumer;
+- a canonical candidate manifest;
+- open and closed additive-field results;
+- a semantic-drift rejection that passes structural checks;
+- four distinct integrity failures;
+- cross-surface identity and value checks;
+- causal mutation tests;
+- a v2 consumer and migration note;
+- a portable release-review packet with outer integrity.
+
+If your work contains only producer files, add consumer execution. If it contains only
+consumer assertions, add the isolated candidate and exact bundle evidence they evaluated.
