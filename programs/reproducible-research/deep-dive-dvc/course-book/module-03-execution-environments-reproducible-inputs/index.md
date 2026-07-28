@@ -96,7 +96,7 @@ If the problem is already partly clear, use this shortcut:
 | [What DVC Records Indirectly and What It Does Not Manage](what-dvc-records-indirectly-and-what-it-does-not-manage.md) | teaches DVC's boundary around environments |
 | [Lockfiles, Containers, and CI as Environment Strategies](lockfiles-containers-and-ci-as-environment-strategies.md) | teaches the main environment-control approaches and their tradeoffs |
 | [Reviewing Environment Drift and Runtime Evidence](reviewing-environment-drift-and-runtime-evidence.md) | teaches how to inspect and diagnose runtime differences without guesswork |
-| [Worked Example: Explaining a Local versus CI Drift](worked-example-explaining-a-local-versus-ci-drift.md) | walks through one realistic environment drift story |
+| [Worked Investigation: Proving Hidden Runtime Drift](worked-investigation-proving-hidden-runtime-drift.md) | follows preserved receipts from runtime mismatch to causal proof and contract repair |
 | [Exercises](exercises.md) | gives ten cumulative exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
