@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -48,6 +49,22 @@ def replace(path: Path, old: str, new: str) -> None:
     text = path.read_text(encoding="utf-8")
     assert old in text
     path.write_text(text.replace(old, new), encoding="utf-8")
+
+
+def test_capstone_modules_receive_only_declared_runtime_config() -> None:
+    caller = (
+        CAPSTONE_ROOT / "workflow" / "rules" / "preprocess.smk"
+    ).read_text(encoding="utf-8")
+    assert caller.count("config: MODULE_RUNTIME_CONFIG") == 2
+    assert "config: config\n" not in caller
+
+    for module_path in (
+        CAPSTONE_ROOT / "workflow" / "modules" / "qc_module" / "Snakefile",
+        CAPSTONE_ROOT / "workflow" / "modules" / "screen_module" / "Snakefile",
+    ):
+        module_source = module_path.read_text(encoding="utf-8")
+        config_keys = set(re.findall(r'config\["([^"]+)"\]', module_source))
+        assert config_keys == {"env_python", "benchmarks_dir"}
 
 
 def test_audit_distinguishes_explicit_contract_from_hidden_coupling(tmp_path: Path) -> None:

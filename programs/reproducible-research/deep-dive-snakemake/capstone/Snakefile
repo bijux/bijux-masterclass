@@ -27,6 +27,11 @@ PUBLISH_DIR = config["publish_dir"]
 LOGS_DIR = config["logs_dir"]
 BENCH_DIR = config["benchmarks_dir"]
 
+MODULE_RUNTIME_CONFIG = {
+    "env_python": config["_env_python"],
+    "benchmarks_dir": BENCH_DIR,
+}
+
 # -----------------------------
 # Configuration defaults
 # -----------------------------
