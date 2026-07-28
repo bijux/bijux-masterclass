@@ -28,6 +28,7 @@ DATA_IDENTITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-div
 RUNTIME_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/runtime-contracts
 METRIC_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/metric-contracts
 REVIEWER_HANDOFF_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/reviewer-handoff
+WORKFLOW_EVIDENCE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/workflow-evidence
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-dvc
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-dvc-capstone-source.tar.gz
 
@@ -386,6 +387,48 @@ boundary-migration-audit: verify ## Audit a governed consumer-boundary cutover
 .PHONY: boundary-migration-selftest
 boundary-migration-selftest: install ## Enforce governed boundary cutover decisions
 	@$(PYTEST) tests/test_boundary_migration_audit.py
+
+.PHONY: workflow-evidence-audit
+workflow-evidence-audit: install ## Contrast local reruns with team reproducibility evidence
+	@rm -rf $(WORKFLOW_EVIDENCE_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_workflow_evidence.py \
+		--specimen repro/workflow-evidence \
+		--workspace $(WORKFLOW_EVIDENCE_AUDIT_DIR)/workspace \
+		--output $(WORKFLOW_EVIDENCE_AUDIT_DIR)/report.json \
+		--python $(VENV_PY) \
+		--check
+	@mkdir -p $(WORKFLOW_EVIDENCE_AUDIT_DIR)/scripts $(WORKFLOW_EVIDENCE_AUDIT_DIR)/tests $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen
+	@cp docs/workflow-evidence-audit-guide.md $(WORKFLOW_EVIDENCE_AUDIT_DIR)/WORKFLOW_EVIDENCE_AUDIT_GUIDE.md
+	@cp repro/workflow-evidence/README.md $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/README.md
+	@cp repro/workflow-evidence/workflow-contract.json $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/workflow-contract.json
+	@cp repro/workflow-evidence/params.json $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/params.json
+	@cp repro/workflow-evidence/observations.csv $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/observations.csv
+	@cp repro/workflow-evidence/score_incidents.py $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/score_incidents.py
+	@cp scripts/audit_workflow_evidence.py $(WORKFLOW_EVIDENCE_AUDIT_DIR)/scripts/audit_workflow_evidence.py
+	@cp tests/test_workflow_evidence_audit.py $(WORKFLOW_EVIDENCE_AUDIT_DIR)/tests/test_workflow_evidence_audit.py
+	@printf '%s\n' \
+		'Workflow evidence audit route:' \
+		'  1. Read WORKFLOW_EVIDENCE_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read specimen/workflow-contract.json and name every required evidence surface.' \
+		'  3. Read report.json and notice that all eight cases rerun locally.' \
+		'  4. Compare workspace/complete-evidence with one rejected case at a time.' \
+		'  5. Read workflow-record.json before opening generated results.' \
+		'  6. Inspect the audit script and tests only after reconstructing the decisions.' > $(WORKFLOW_EVIDENCE_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Workflow evidence review questions:' \
+		'  Why does equal local output fail to prove a clean reconstruction?' \
+		'  Which identity distinguishes changed bytes behind an unchanged path?' \
+		'  Why is a stable environment variable still a hidden control?' \
+		'  Which evidence belongs in Git, DVC, runtime records, and shared storage?' \
+		'  What remains outside this mechanical reproducibility claim?' > $(WORKFLOW_EVIDENCE_AUDIT_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(WORKFLOW_EVIDENCE_AUDIT_DIR) \
+		--output $(WORKFLOW_EVIDENCE_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote workflow evidence audit to $(WORKFLOW_EVIDENCE_AUDIT_DIR)"
+
+.PHONY: workflow-evidence-selftest
+workflow-evidence-selftest: install ## Enforce workflow evidence claim decisions
+	@$(PYTEST) tests/test_workflow_evidence_audit.py
 
 .PHONY: experiment-review
 experiment-review: verify ## Build a focused experiment comparison bundle

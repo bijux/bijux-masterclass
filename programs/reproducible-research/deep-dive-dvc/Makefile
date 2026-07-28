@@ -100,6 +100,14 @@ capstone-boundary-migration-audit: ## Audit a governed consumer-boundary cutover
 capstone-boundary-migration-selftest: ## Enforce governed boundary cutover decisions
 	@$(RUN_CAPSTONE) boundary-migration-selftest
 
+.PHONY: capstone-workflow-evidence-audit
+capstone-workflow-evidence-audit: ## Contrast local reruns with team reproducibility evidence
+	@$(RUN_CAPSTONE) workflow-evidence-audit
+
+.PHONY: capstone-workflow-evidence-selftest
+capstone-workflow-evidence-selftest: ## Enforce workflow evidence claim decisions
+	@$(RUN_CAPSTONE) workflow-evidence-selftest
+
 .PHONY: capstone-experiment-review
 capstone-experiment-review: ## Build the capstone experiment comparison bundle
 	@$(RUN_CAPSTONE) experiment-review

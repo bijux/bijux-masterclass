@@ -218,6 +218,14 @@ capstone-boundary-migration-audit: ## Classify selected program boundary cutover
 capstone-boundary-migration-selftest: ## Enforce selected program boundary cutover evidence
 	@$(RUN_PROGRAM) capstone-boundary-migration-selftest
 
+.PHONY: capstone-workflow-evidence-audit
+capstone-workflow-evidence-audit: ## Classify selected program workflow evidence
+	@$(RUN_PROGRAM) capstone-workflow-evidence-audit
+
+.PHONY: capstone-workflow-evidence-selftest
+capstone-workflow-evidence-selftest: ## Enforce selected program workflow evidence
+	@$(RUN_PROGRAM) capstone-workflow-evidence-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit
