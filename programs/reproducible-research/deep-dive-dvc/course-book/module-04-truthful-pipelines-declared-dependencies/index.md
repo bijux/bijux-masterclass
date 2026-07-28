@@ -107,7 +107,7 @@ If the problem is already partly clear, use this shortcut:
 | [DVC Repro, Staleness, and Lock Evidence](dvc-repro-staleness-and-lock-evidence.md) | teaches how `dvc repro` decides and how `dvc.lock` records evidence |
 | [False Reruns and Stale Outputs](false-reruns-and-stale-outputs.md) | teaches how to distinguish wasteful reruns from dangerous stale results |
 | [Safe Pipeline Refactoring and Shared Outputs](safe-pipeline-refactoring-and-shared-outputs.md) | teaches graph change, shared intermediates, and multi-output care |
-| [Worked Example: Repairing a Deceptive Pipeline](worked-example-repairing-a-deceptive-pipeline.md) | walks through one realistic pipeline review and repair |
+| [Worked Investigation: Repairing Hidden Stage Influences](worked-investigation-repairing-hidden-stage-influences.md) | predicts, observes, repairs, and replays hidden file, parameter, and output contracts |
 | [Exercises](exercises.md) | gives ten cumulative mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
