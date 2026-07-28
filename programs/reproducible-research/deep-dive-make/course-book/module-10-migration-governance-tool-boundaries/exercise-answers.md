@@ -57,6 +57,9 @@ Across the whole set, good answers usually:
 If your answer says only "clean this up" or "use a better tool," the reasoning is still
 too weak.
 
+The examples below assume the inherited report-build scenario from the worked example.
+Transfer the reasoning, not its target names.
+
 ## Exercise 1: Write a first-pass build review
 
 ### Model answer shape
@@ -68,6 +71,31 @@ too weak.
 | hidden inputs | "Environment variables alter report mode, but the graph does not model them clearly." |
 | pressure finding | "`make -j8 release` sometimes leaves partial files in `dist/`, which suggests the release boundary is not being published atomically." |
 | risk classes | "Main risks are contract drift, multi-writer output behavior, and boundary confusion between local packaging and remote publication." |
+
+Safe first-pass commands:
+
+```sh
+rg -n --glob 'Makefile*' --glob '*.mk' --glob '*.sh' \
+  '^(all|test|dist|release|publish):|report-bundle|upload' .
+rg -n --glob '*.yml' --glob '*.yaml' --glob '*.sh' \
+  'make|gmake|\\$\\(MAKE\\)' .
+make -n release
+```
+
+Before `make -pn` or `make -n`, inspect parse-time `$(shell ...)` uses and included
+Makefiles. Do not execute `publish` during discovery.
+
+The strongest finding is separated:
+
+| Field | Model entry |
+| --- | --- |
+| observation | `publish` invokes package generation before remote submission |
+| inference | a remote retry may rebuild a different handoff object |
+| confidence | high from visible recipe; external wrapper behavior still unverified |
+| disproof route | show that package command consumes an immutable existing digest and never writes it |
+
+The review boundary says that remote publication was not contacted and external callers
+outside the repository were not inventoried.
 
 ### Why this is strong
 
@@ -98,6 +126,19 @@ Add findings such as:
 - "remote publication success is trusted by callers but not represented as a repository
   artifact"
 
+Add commit-point and confidence columns:
+
+| Result | Actual writer | Commit or acceptance point | Confidence |
+| --- | --- | --- | --- |
+| `build/report.html` | report generator | same-directory rename | confirm in generator script |
+| `dist/report.tar.gz` | package rule | currently direct write | high; partial-publication risk |
+| remote release record | publication service | authenticated acceptance receipt | receiver contract not yet inspected |
+
+Two phony targets may both depend on `dist/report.tar.gz`; that is legitimate composition
+when neither writes it. Search the expanded Make database and called scripts before
+claiming exactly one writer. Generated recipes and remote systems remain explicit
+confidence limits.
+
 ### Why this is strong
 
 - it treats outputs and side effects as the real contract
@@ -113,22 +154,30 @@ Add findings such as:
 
 ### Model answer shape
 
-Possible checks:
+Possible checks use isolated workspaces owned by a harness:
 
 ```sh
-make all
-make -q all
-make -j1 dist && find dist -type f | sort > artifacts/layout-serial.txt
-make clean
-make -j8 dist && find dist -type f | sort > artifacts/layout-parallel.txt
-diff -u artifacts/layout-serial.txt artifacts/layout-parallel.txt
+scripts/capture-package-contract.sh \
+  --jobs 1 \
+  --workspace artifacts/package-contract/serial-workspace \
+  --manifest artifacts/package-contract/serial.manifest
+scripts/capture-package-contract.sh \
+  --jobs 8 \
+  --workspace artifacts/package-contract/parallel-workspace \
+  --manifest artifacts/package-contract/parallel.manifest
+diff -u \
+  artifacts/package-contract/serial.manifest \
+  artifacts/package-contract/parallel.manifest
 ```
 
 Then explain:
 
-- the no-op check proves convergence expectations
-- the layout snapshots prove what the release boundary currently contains
-- the serial-versus-parallel comparison proves whether the boundary is pressure-safe
+- each harness run copies declared inputs into its own workspace
+- the manifest normalizes workspace paths and records member path, size, and content digest
+- an unchanged request inside each workspace must converge
+- a report-input change must update the package
+- an unrelated note change must leave it current
+- serial and parallel manifests must agree
 
 Also say explicitly:
 
@@ -139,6 +188,7 @@ Also say explicitly:
 - it distinguishes characterization from approval
 - it preserves comparison routes that support rollback
 - it names which current behavior is contractual and which behavior is defective
+- it prevents one route from borrowing the other route's outputs
 
 ## Exercise 4: Choose the first safe migration move
 
@@ -151,18 +201,28 @@ Also say explicitly:
     artifact."
 - proof route that must survive:
   - "Current release-layout and serial-versus-parallel checks."
-- rollback point:
-  - "Old `publish` route remains callable until `dist` and `publish` have been compared
+- intentional divergence:
+  - "The replacement requires a checksum sidecar and no longer rebuilds during
+    publication."
+- rollback trigger:
+  - "Restore callers to `dist-shell-packager` if package membership differs outside the
+    approved checksum addition or failure safety regresses."
+- decision owner:
+  - "Release maintainers."
+- compatibility window:
+  - "The established `publish` route remains callable until package and receiver
+    evidence has been compared
     successfully."
-- retirement condition:
-  - "The old route can be removed once the new `dist` surface produces the expected
-    artifact set and `publish` uses only that set."
+- retirement gates:
+  - "No established-route callers remain; package contract passes; intentional
+    divergences have regression checks; pressure and failure tests pass; receiver
+    idempotency and receipts pass; docs and incident routes name the responsible owners."
 
 ### Why this is strong
 
 - the move is small enough to verify
 - the answer preserves proof rather than trusting memory
-- retirement depends on evidence, not on optimism
+- retirement depends on several evidence gates, not age or optimism
 
 ### Common weak version
 
@@ -184,6 +244,27 @@ Proof routes such as selftest and release audits may not be removed without a do
 Exceptions require approval from maintainers responsible for public contract integrity.
 ```
 
+Evidence obligation:
+
+> An external-handoff change must include the immutable handoff identity, a receiver
+> acceptance fixture, an unknown-outcome recovery fixture, and the named retry owner.
+
+Rejection challenge:
+
+> A fixture accepts a request and drops the connection. The client must query by
+> idempotency key and recover the same receipt without creating a second release.
+
+Bounded exception:
+
+```text
+Rule waived: CI calls only public targets.
+Scope: one release workflow may call prepare-release while caller migration is incomplete.
+Safety evidence: target contract test and package manifest remain required.
+Owner: release maintainers.
+Removal condition: workflow uses dist and repository caller search reports no
+prepare-release invocations.
+```
+
 ### Why this is strong
 
 - another maintainer can apply it during review
@@ -194,6 +275,7 @@ Exceptions require approval from maintainers responsible for public contract int
 
 The answer should also say whether each rule is enforced by review, automation, or both.
 Rules without an enforcement path are only aspirations.
+Exceptions without a repository-state removal condition are drift with paperwork.
 
 ## Exercise 6: Diagnose one recurring antipattern
 
@@ -206,9 +288,21 @@ Example:
 - confirming signals:
   - "`build/report.html` changes when both `all` and `dist` run"
   - "packaging routes invoke the same generator ordinary build routes invoke"
-- smallest honest repair:
+- controlled challenge:
+  - "Build `all`, record the report digest, then run `dist` without changing inputs and
+    trace the process that rewrites the report."
+- failure signature:
+  - "The digest or timestamp changes through a second writer during unrelated packaging."
+- smallest honest recovery:
   - "Assign one route as the sole writer of `build/report.html` and make packaging depend
     on that published output."
+- acceptance test:
+  - "Changing report input rebuilds the report and package."
+- rejection test:
+  - "Running `dist` after convergence does not invoke the report generator."
+- prevention rule:
+  - "Each trusted artifact has one declared publisher; package targets consume published
+    inputs rather than regenerating them."
 - why this helps:
   - "It restores output ownership and makes incremental behavior easier to trust."
 
@@ -217,6 +311,7 @@ Example:
 - the repair is proportional to the finding
 - it explains how truth or ownership clarity improves
 - it does not confuse a naming cleanup with a real ownership repair
+- it distinguishes a suspicious shape from a reproduced causal signature
 
 ## Exercise 7: Make the tool-boundary argument
 
@@ -235,11 +330,26 @@ Example answer:
 > handoff; the publication service verifies receipt and records remote status after
 > handoff.
 
+Ownership dimensions:
+
+| Dimension | Owner |
+| --- | --- |
+| decision to publish | release approval system |
+| local bundle execution | Make-owned package graph |
+| remote state | publication service |
+| retry and unknown outcome | receiver client using idempotency key |
+| evidence | Make produces checksum/manifest; receiver produces acceptance receipt |
+
+The idempotency identity combines the release identity and immutable bundle digest. If the
+connection drops after possible acceptance, the client queries that identity before any
+retry. A local success stamp is not authoritative remote evidence.
+
 ### Why this is strong
 
 - it does not replace Make out of fashion
 - it keeps Make where Make is still honest
 - it names a handoff object and proof route on both sides
+- it assigns the failure state that an exit code alone cannot resolve
 
 ### Common weak version
 
@@ -259,6 +369,11 @@ Rule 1:
   - "parse the public target list and fail when workflow files call anything else."
 - deliberate failure:
   - "edit one workflow to call `prepare-release` and confirm the check fails."
+- declared limit:
+  - "the check recognizes literal `make target` calls in `.github/`; variables, wrappers,
+    and generated workflows require separate review."
+- diagnostic:
+  - "`CI calls non-public Make target: prepare-release`."
 
 Rule 2:
 
@@ -268,12 +383,18 @@ Rule 2:
   - "inspect the make database or maintain a contract test for critical outputs."
 - deliberate failure:
   - "add a second route that writes the release artifact and confirm the check flags it."
+- declared limit:
+  - "literal writer search is valid only because the repository requires critical output
+    paths to appear at their publisher."
+- diagnostic:
+  - "`expected one package writer, found 2` followed by both paths."
 
 ### Why this is strong
 
 - it proves the rule can fail meaningfully
 - it identifies the owner for changing the rule
 - it separates policy from enforcement clearly
+- it does not pretend a bounded parser proves more than it inspects
 
 ## Exercise 9: Compare Make with a neighboring tool
 
@@ -286,6 +407,8 @@ Rule 2:
 | remote retry state | awkward | owned feature |
 | handoff object | archive plus checksum | accepted release record |
 | observability | strong before handoff | strong after handoff |
+| unknown outcome | cannot infer from recipe exit alone | query by idempotency key |
+| acceptance authority | none | authenticated receiver receipt |
 
 Ownership decision:
 
@@ -296,6 +419,15 @@ Independent verification:
 
 - "Make verifies the archive and checksum before handoff."
 - "The publication service verifies receipt and records acceptance after handoff."
+
+Receiver fixtures:
+
+| Fixture | Expected behavior |
+| --- | --- |
+| accept | preserve receipt tied to submitted digest |
+| reject checksum | fail without changing local bundle |
+| duplicate key | return the existing request, not a second publication |
+| accept then lose response | query key and recover receipt before resubmission |
 
 ### Why this is strong
 
@@ -313,8 +445,10 @@ A strong packet contains:
 - ownership inventory
 - proof-preserving migration step
 - before-and-after evidence
+- intentional-divergence record
 - governance note
 - boundary decision
+- retirement-gate results
 - remaining risks and next repair
 
 Example maintainer handoff sentence:
@@ -324,11 +458,24 @@ Example maintainer handoff sentence:
 > remaining multi-writer path for report generation while preserving the current layout and
 > convergence checks.
 
+The evidence index maps claims:
+
+| Claim | Exact artifact |
+| --- | --- |
+| current contract understood | `review.md` plus caller inventory |
+| ownership known | `ownership-table.md` plus writer-search evidence |
+| compatibility established | established/replacement normalized manifests |
+| failure safety improved | producer-failure trace and final-path assertions |
+| retry boundary works | duplicate-key and lost-response receiver receipts |
+| governance rejects drift | passing and deliberately failing contract-check logs |
+| retirement is warranted | completed gate table with caller-search result |
+
 ### Why this is strong
 
 - it says what improved
 - it says what is still risky
 - it gives the next maintainer a concrete next move instead of a vague promise
+- it lets a reviewer reconstruct the argument without an oral briefing
 
 ## What all ten answers have in common
 
@@ -339,5 +486,8 @@ The best answers in this module usually:
 3. keep evidence alive during migration
 4. write rules other maintainers could really use
 5. justify ownership by modeling fit and truth location
+6. distinguish contract, implementation detail, defect, and unknown behavior
+7. prove both acceptance and rejection paths
+8. assign retry and retirement ownership
 
-If your packet does those five things, you are using Module 10 the right way.
+If your packet does those eight things, it is ready for another maintainer to challenge.
