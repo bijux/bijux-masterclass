@@ -1,168 +1,196 @@
 # Module 07: Workflow Architecture and File APIs
 
-Workflow architecture becomes important as soon as one person can no longer keep the
-whole repository in their head.
+A Snakemake repository can produce correct files and still be difficult to change
+safely. The warning sign is not its line count. It is that a maintainer cannot answer
+ordinary questions without reconstructing hidden relationships:
 
-That is not a late-stage problem. It starts the moment a workflow gains:
+- Where is the workflow assembled?
+- Which policy belongs to the caller and which belongs to a reusable module?
+- Which paths may downstream code rely on?
+- Which script is an adapter and which package is independently reusable software?
+- What proof must survive when a boundary moves?
 
-- more than one rule family
-- more than one place where code can live
-- more than one audience reviewing the repository
+This module teaches how to answer those questions from repository evidence.
 
-This module is about making that repository shape legible on purpose.
+## The architecture claim
 
-## What this day must accomplish
-
-By the end of Module 07, you should be able to do five things without relying on oral
-tradition:
-
-- read a workflow repository in a stable order that reveals ownership first
-- keep the top-level `Snakefile` focused on visible assembly instead of hidden behavior
-- explain what each repository layer owns and what it must not own
-- define a file API that marks public paths as real architectural contracts
-- decide when architecture drift has become serious enough to justify refactoring
-
-## The architecture ladder for the whole module
-
-Keep this order in front of you all day:
+Architecture is the placement of decisions and contracts, not the arrangement of
+folders. A reviewable workflow makes this chain visible:
 
 ```mermaid
-flowchart TD
-  entry["entrypoint reveals assembly"] --> ownership["repository layers own distinct concerns"]
-  ownership --> paths["file API defines stable public paths"]
-  paths --> coupling["helpers and packages stay in supporting roles"]
-  coupling --> review["architecture review catches drift early"]
+flowchart LR
+  caller["Caller intent\nconfig + requested targets"]
+  assembly["Workflow assembly\nentrypoint + includes"]
+  graph["Rule ownership\ninputs + outputs + resources"]
+  execution["Execution adapters\nscripts + environments"]
+  api["File API\nstable consumer paths"]
+  proof["Review evidence\nplans + audits + consumer checks"]
+
+  caller --> assembly --> graph --> execution --> api --> proof
 ```
 
-If a reader must start in helper code to understand the workflow, the architecture is
-already telling the story in the wrong order. If public paths are undocumented, the
-repository shape is still incomplete.
+Every arrow is a boundary to inspect. If a package reads global workflow config, the
+execution boundary reaches backward into caller policy. If downstream users scrape an
+HTML report, the file API is weaker than the consumer behavior. If a module receives
+the entire parent config, its apparent reuse boundary hides coupling.
 
-## The running lab for the whole day
+## The repository you will review
 
-Use one repository story all day instead of several unrelated folder debates:
+Use the Snakemake capstone throughout the session. It is deliberately substantial
+enough to create real architectural questions:
 
-- one public artifact must be traced from the top-level target back through its owners
-- one crowded `Snakefile` must be reduced to visible assembly
-- one repository layer must be caught taking on the wrong responsibility
-- one file API gap must be repaired before a refactor spreads
-- one architecture review must say which drift matters now and which can wait
+```text
+capstone/
+├── Snakefile
+├── config/
+├── workflow/
+│   ├── CONTRACT.md
+│   ├── REVIEW.md
+│   ├── contracts/FILE_API.md
+│   ├── envs/
+│   ├── modules/
+│   ├── rules/
+│   └── scripts/
+├── src/
+├── profiles/
+├── tests/
+└── publish/
+```
 
-Every page should help you answer one concrete architectural review question.
+Do not assume the tree proves good separation. The top-level `Snakefile`, for example,
+contains configuration defaults, a checkpoint, publication rules, includes, and the
+default target. Your job is to decide which of those decisions are legitimate assembly
+and which create review pressure.
 
-## Plan for the day
+## Learning outcomes
 
-| Session | What you do | Evidence you keep |
+By the end of the session, you should be able to:
+
+1. explain Snakemake's parse-time assembly without treating includes as runtime calls
+2. distinguish a local rule-family split from a reusable `module` interface
+3. trace config, path, artifact, and rule-name ownership across a module boundary
+4. specify a file API from the consumer side, including compatibility and identity
+5. distinguish workflow adapters from reusable domain packages
+6. diagnose coupling through imports, global config reads, implicit path conventions,
+   and side effects
+7. justify a refactor with a failed review question and a preservation proof
+8. hand another maintainer an architecture packet they can audit without an oral tour
+
+## Build one architecture packet
+
+All ten exercises contribute to one packet:
+
+```text
+architecture-packet/
+├── entrypoint-inventory.md
+├── assembly-map.md
+├── responsibility-table.md
+├── module-interface-card.md
+├── artifact-trace.md
+├── file-api-ledger.md
+├── coupling-finding.md
+├── refactor-comparison.md
+├── proof-bridge.md
+└── review-decision.md
+```
+
+These names describe durable evidence roles. You may keep the packet in your course
+notebook rather than creating these files, but preserve all ten records.
+
+## Session sequence
+
+| Work block | Question | Output |
 | --- | --- | --- |
-| repository reading order | trace one published artifact backward from target to contract | path-to-owner map |
-| visible assembly | shrink the entrypoint to config, includes, and end targets | annotated `Snakefile` |
-| ownership boundaries | classify rules, modules, scripts, package code, and contracts | responsibility table |
-| coupling test | expose one undeclared file read or import-time side effect | failing architecture check |
-| drift review | compare documented architecture against actual repository shape | findings report |
-| independent practice | complete all ten exercises | architecture review packet |
+| orient | what is the exact architectural reliance under review? | one bounded claim |
+| read assembly | what happens at parse time, and where is it declared? | entrypoint inventory and assembly map |
+| classify ownership | which decisions belong to local rule families, modules, or callers? | responsibility table and module interface card |
+| trace a consumer surface | which path is public, who produces it, and how may it change? | artifact trace and file-API ledger |
+| inspect code boundaries | where does config, path, or runtime coupling cross layers? | coupling finding |
+| compare repairs | which movement improves the failed review question without losing proof? | refactor comparison and proof bridge |
+| review | what may the next maintainer rely on now? | bounded architecture decision |
 
-The day is successful when a new maintainer can understand the repository without needing
-the original author to narrate every directory.
+## Evidence before opinions
+
+Use four evidence lanes:
+
+| Lane | Useful evidence | What it can establish |
+| --- | --- | --- |
+| assembly | `Snakefile`, include statements, module declarations, rule listing | what the workflow exposes after parsing |
+| dependency direction | config slices, imports, module bindings, path parameters | which layer knows about which other layer |
+| consumer contract | file-API documentation, manifest, schema, consumer test | which outputs are intentionally stable |
+| preservation | dry-run plans, module-interface audit, tests, publish verification | whether a proposed boundary change retained required behavior |
+
+One lane cannot substitute for another. A DAG image does not define path compatibility.
+A file-API document does not prove the producer emits conforming data. A successful run
+does not prove the module avoids parent-private config.
 
 ## Study route
 
-```mermaid
-flowchart TD
-  start["Overview"] --> core1["Entrypoints, Repository Layers, and Visible Assembly"]
-  core1 --> core2["Rule Families, Modules, and Ownership Boundaries"]
-  core2 --> core3["File APIs, Public Paths, and Contract Docs"]
-  core3 --> core4["Helpers, Scripts, Packages, and Coupling Control"]
-  core4 --> core5["Architecture Review, Drift, and Refactor Triggers"]
-  core5 --> example["Worked Example: Reading a Snakemake Repository Like an Architect"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+Read in this order:
+
+1. [Entrypoints, Repository Layers, and Visible Assembly](entrypoints-repository-layers-and-visible-assembly.md)
+2. [Rule Families, Modules, and Ownership Boundaries](rule-families-modules-and-ownership-boundaries.md)
+3. [File APIs, Public Paths, and Contract Docs](file-apis-public-paths-and-contract-docs.md)
+4. [Helpers, Scripts, Packages, and Coupling Control](helpers-scripts-packages-and-coupling-control.md)
+5. [Architecture Review, Drift, and Refactor Triggers](architecture-review-drift-and-refactor-triggers.md)
+6. [Worked Example: Reading a Snakemake Repository Like an Architect](worked-example-reading-a-snakemake-repository-like-an-architect.md)
+7. [Exercises](exercises.md)
+8. [Exercise Answers](exercise-answers.md)
+9. [Glossary](glossary.md)
+
+The order moves from parse-time visibility to ownership, then to external contracts,
+internal coupling, and change judgment.
+
+## Commands and their limits
+
+Run raw workflow commands from `programs/reproducible-research/deep-dive-snakemake/capstone/`.
+
+| Command | Question | Limit |
+| --- | --- | --- |
+| `snakemake --list-rules` | which rules exist after assembly? | does not show ownership quality |
+| `snakemake -n --printshellcmds` | which jobs and commands are planned? | does not execute runtime boundaries |
+| `snakemake --dag` | which jobs and file edges are visible for requested work? | does not reveal hidden Python coupling |
+| `gmake module-interface-audit` | do paired module models expose or hide config, path, and policy contracts? | tests the supplied models, not every repository module |
+| `gmake module-interface-selftest` | can the audit reject dishonest interface evidence? | proves the gate, not the capstone's entire architecture |
+| `gmake verify-report` | does the publish-facing evidence satisfy its checks? | does not decide whether internal layering is maintainable |
+
+Record the working directory, requested target, config, and profile with every command.
+Architecture evidence without invocation context is difficult to review.
+
+## A first diagnostic
+
+Before reading the lessons, open the capstone `Snakefile` and classify each top-level
+statement:
+
+```text
+contract gate | configuration policy | assembly | rule definition | target selection
 ```
 
-Read the module in that order the first time.
+Then answer:
 
-The route matters:
+- Which classifications appear more than once?
+- Which statements must a new maintainer understand before reading included rule files?
+- Which statements could move without changing the public workflow contract?
+- What proof would distinguish a safe move from a merely successful one?
 
-- start with visible assembly before you inspect helper code
-- define repository ownership before you talk about refactoring
-- document the file API before you judge whether path drift is acceptable
-
-## The ten files in this module
-
-1. Overview (`index.md`)
-2. [Entrypoints, Repository Layers, and Visible Assembly](entrypoints-repository-layers-and-visible-assembly.md)
-3. [Rule Families, Modules, and Ownership Boundaries](rule-families-modules-and-ownership-boundaries.md)
-4. [File APIs, Public Paths, and Contract Docs](file-apis-public-paths-and-contract-docs.md)
-5. [Helpers, Scripts, Packages, and Coupling Control](helpers-scripts-packages-and-coupling-control.md)
-6. [Architecture Review, Drift, and Refactor Triggers](architecture-review-drift-and-refactor-triggers.md)
-7. [Worked Example: Reading a Snakemake Repository Like an Architect](worked-example-reading-a-snakemake-repository-like-an-architect.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
-10. [Glossary](glossary.md)
-
-## How to use the file set
-
-| If you need to... | Start here |
-| --- | --- |
-| understand how the repository should introduce itself to a new reader | [Entrypoints, Repository Layers, and Visible Assembly](entrypoints-repository-layers-and-visible-assembly.md) |
-| split workflow logic by ownership rather than panic | [Rule Families, Modules, and Ownership Boundaries](rule-families-modules-and-ownership-boundaries.md) |
-| define which paths are public architectural promises | [File APIs, Public Paths, and Contract Docs](file-apis-public-paths-and-contract-docs.md) |
-| stop helper code from swallowing the workflow story | [Helpers, Scripts, Packages, and Coupling Control](helpers-scripts-packages-and-coupling-control.md) |
-| decide whether the repository needs an architecture repair | [Architecture Review, Drift, and Refactor Triggers](architecture-review-drift-and-refactor-triggers.md) |
-| see the whole module as one architecture walkthrough | [Worked Example: Reading a Snakemake Repository Like an Architect](worked-example-reading-a-snakemake-repository-like-an-architect.md) |
-| test your own understanding | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the module vocabulary | [Glossary](glossary.md) |
-
-## The running question
-
-Carry this question through every page:
-
-> if a new maintainer must change this repository tomorrow, which architectural boundary should teach them what is safe before they touch anything?
-
-Good Module 07 answers usually mention one or more of these:
-
-- an entrypoint that shows visible assembly
-- repository layers with named responsibilities
-- a file API that marks public paths explicitly
-- helper or package placement that supports rather than hides workflow meaning
-- a review route that detects architecture drift before it hardens
-
-## What the module should change in your head
-
-If the day is working, you should feel these transitions:
-
-- a directory tree stops looking self-explanatory
-- entrypoint brevity stops sounding cosmetic and starts sounding architectural
-- file APIs stop feeling like extra docs and start feeling like ownership boundaries
-- helper code stops looking neutral once it changes what a reviewer sees first
-- “the repo is getting messy” becomes a reviewable claim instead of a vague feeling
-
-## Commands to keep close
-
-These commands form the evidence loop for Module 07:
-
-```bash
-snakemake --list-rules
-snakemake -n
-make tour
-```
-
-They answer different questions:
-
-- which visible workflow surfaces exist
-- whether the assembled target path still makes sense
-- how the repository explains itself through one guided walkthrough
+Do not refactor yet. The classification is the baseline.
 
 ## Exit standard
 
-Do not move on until all of these are true:
+You are ready to leave Module 07 when you can review one proposed architectural change
+with this structure:
 
-- you can explain what the top-level `Snakefile` owns and what it should not own
-- you can name one justified repository layer and one misplaced concern
-- you can trace one public artifact through its owners without guessing
-- you can describe one file API promise a downstream user depends on
-- you can say which architecture drift deserves refactoring now and which can wait
-- you have completed all ten exercises and performed at least one bounded architecture review
+```text
+reliance:
+current owner:
+coupling or review failure:
+proposed owner:
+contract that crosses the boundary:
+preservation evidence:
+consumer compatibility result:
+remaining limit:
+```
 
-When those become ordinary, Module 07 has done its job.
+You must also complete all ten exercises and produce the architecture packet. “The new
+tree is cleaner” is not an exit argument. The decision must identify a safer dependency
+direction, a clearer contract, or a stronger review path.
