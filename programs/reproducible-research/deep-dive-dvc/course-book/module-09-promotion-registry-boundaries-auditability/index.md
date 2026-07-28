@@ -1,162 +1,312 @@
 # Module 09: Promotion, Registry Boundaries, and Auditability
 
-
-<!-- page-maps:start -->
 ## Page Maps
 
 ```mermaid
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Promotion Registry Boundaries Auditability"]
-  page["Module 09: Promotion, Registry Boundaries, and Auditability"]
-  capstone["Capstone evidence"]
+  section["Promotion and Auditability"]
+  page["Module 09"]
+  evidence["Promotion integrity audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.demonstrated by.-> evidence
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  eligible["Eligible candidate"] --> contract["Promotion contract"]
+  contract --> verify["Integrity + semantic checks"]
+  verify --> approval["Source-bound approval"]
+  approval --> registry["Immutable registry release"]
+  registry --> consumer["Bounded consumer use"]
+  consumer --> audit["Retained audit evidence"]
 ```
-<!-- page-maps:end -->
 
-Module 09 turns recoverable state into trusted release state.
+Module 09 asks when a reproducible result earns downstream authority.
 
-By now, you know how to recover important artifacts and protect them over time. That does
-not mean every recoverable result should be trusted downstream. Promotion is a smaller,
-stronger promise: this specific bundle is approved for someone else to consume, review, or
-audit.
+A DVC pipeline may reproduce a candidate. A remote may store every required object. An
+experiment comparison may show an improvement. None of those facts alone entitles a
+consumer to depend on the result. Promotion adds a separate claim:
 
-This module is about release boundaries:
+> This exact candidate, from this exact source, passed the declared release gates, received
+> the required authority, and is available through this immutable supported interface.
 
-- what is being promoted
-- what evidence must travel with it
-- what stays internal to the pipeline
-- how a registry or published directory becomes a contract
-- how another reviewer can defend the released state later
+This module teaches how to make that claim falsifiable and how to block neat-looking
+bundles whose evidence disagrees.
 
-The central question is:
+## Prerequisites
 
-> If a downstream user trusts this promoted result, what exactly are they trusting, and
-> what evidence lets us defend it?
+Before starting, you should be able to:
 
-If the answer is "the latest files," the promotion boundary is not strong enough.
+- distinguish Git-tracked declaration from DVC-tracked artifact content;
+- read stage and output identities in `dvc.lock`;
+- explain a metric contract and a controlled candidate comparison;
+- distinguish local cache, DVC remote, and workspace output;
+- run a repository-root Make target.
 
-The capstone corroboration surface for this module is the promoted bundle and its review
-evidence: `capstone/publish/v1/`, `capstone/publish/v1/manifest.json`,
-`capstone/publish/v1/metrics.json`, `capstone/publish/v1/params.yaml`,
-`capstone/docs/publish-contract.md`, `capstone/docs/release-review-guide.md`, and the
-`make -C capstone release-audit` route.
+If one prerequisite is unfamiliar, use these routes:
 
-## Why this module exists
+| Need | Return to |
+| --- | --- |
+| pointer, cache, workspace, and remote identity | Module 02 |
+| truthful stage declarations and recorded state | Module 04 |
+| parameter and metric meaning | Module 05 |
+| candidate comparability and baseline anchoring | Module 06 |
+| recovery and retention | Module 08 |
 
-Promotion failures often look neat from the outside.
+Module 09 depends on those concepts but does not reteach them from the beginning.
 
-The directory exists. The report renders. A model file is present. A metric file has
-numbers. But the bundle may still be indefensible if:
+## The problem you will solve
 
-- promoted metrics do not match promoted parameters
-- a model is copied without a manifest
-- internal pipeline paths leak into downstream usage
-- a release bundle mixes exploratory and approved files
-- the registry entry has no audit trail back to DVC state
-- a future maintainer cannot tell which result was actually promoted
+The capstone has a healthy `publish/v1/` bundle. A healthy example alone is weak teaching
+evidence because it does not show whether the review rule rejects plausible defects.
 
-The point of Module 09 is not to copy artifacts into a prettier directory. The point is to
-define the trust boundary that downstream readers are allowed to depend on.
+The promotion integrity audit creates seven isolated cases:
 
-## Study route
+| Case | Core question |
+| --- | --- |
+| complete promotion | what must agree before authority is granted? |
+| tampered artifact | can post-review byte change be detected? |
+| unlisted artifact | is the release inventory exact or merely a minimum? |
+| threshold drift | can valid digests hide contradictory meaning? |
+| mutable registry reference | can the release identity change later? |
+| stale source approval | did reviewers approve another Git revision? |
+| missing required review | can one authority silently replace another? |
+
+Only the complete case should be accepted.
+
+## Learning outcomes
+
+After completing the reading, investigation, and packet, you should be able to:
+
+- define candidate, eligible, approved, published, superseded, and withdrawn states;
+- write a promotion contract bound to Git and DVC state;
+- derive a minimal release surface from a consumer action;
+- distinguish exact inventory, artifact integrity, semantic consistency, provenance, and
+  approval;
+- explain the separate responsibilities of a DVC remote, DVC-backed data registry,
+  promotion registry, and release bundle;
+- resolve movable aliases to immutable release identities;
+- investigate a digest-valid semantic contradiction;
+- preserve evidence while blocking, withdrawing, repairing, or superseding a release;
+- verify a release from a clean consumer perspective;
+- defend a promotion gate with explicit proof limits.
+
+## One serious self-study session
+
+Plan for roughly four hours. Split the session if needed, but keep the order because later
+work uses evidence created earlier.
+
+| Block | Time | Work | Concrete output |
+| --- | ---: | --- | --- |
+| orient | 20 min | read this page and inspect specimen contract | prediction of the complete gate |
+| authority | 35 min | study promotion contracts | lifecycle and authority notes |
+| interface | 35 min | study release surfaces | supported/audit-only/internal table |
+| evidence | 40 min | study audit evidence | claim-to-record graph |
+| registry | 30 min | separate registry and remote jobs | responsibility table |
+| failure response | 30 min | study evidence-preserving repairs | block/withdraw/supersede matrix |
+| investigation | 35 min | follow threshold-drift worked route | bounded repair decision |
+| practice | 60–120 min | complete cumulative exercises | ten-file review packet |
+
+Do not compress practice into reading the answers. The key skill is making a decision
+before seeing the model reasoning.
+
+## Generate the proof environment
+
+From the repository root:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-promotion-integrity-audit
+```
+
+Evidence is written to:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/promotion-integrity/
+```
+
+Start with:
+
+```text
+PROMOTION_INTEGRITY_AUDIT_GUIDE.md
+report.json
+route.txt
+review-questions.txt
+```
+
+Then inspect individual workspaces. Generated cases stay outside the course source tree,
+so comparison does not dirty the repository.
+
+For the enforcement route:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-promotion-integrity-selftest
+```
+
+The audit report teaches decisions. The self-test shows that the modeled decisions are
+enforced. Neither route establishes scientific suitability or real registry controls.
+
+## Reading route
+
+Read in this order on the first pass:
 
 ```mermaid
-flowchart LR
-  overview["Overview"] --> core1["Core 1: promotion contract"]
-  core1 --> core2["Core 2: release surface"]
-  core2 --> core3["Core 3: audit evidence"]
-  core3 --> core4["Core 4: registry boundary"]
-  core4 --> core5["Core 5: promotion failures"]
-  core5 --> example["Worked example"]
-  example --> practice["Exercises and answers"]
-  practice --> glossary["Glossary"]
+flowchart TD
+  home["Module orientation"] --> authority["Promotion contracts"]
+  authority --> surface["Release surfaces"]
+  surface --> evidence["Audit evidence"]
+  evidence --> registry["Registry boundaries"]
+  registry --> failures["Failures and repairs"]
+  failures --> worked["Threshold-drift investigation"]
+  worked --> exercises["Cumulative exercises"]
+  exercises --> answers["Reasoning answers"]
+  answers --> glossary["Decision vocabulary"]
 ```
 
-Read the module in that order the first time.
+Use a targeted route only after you understand the full boundary:
 
-If the problem is already partly clear, use this shortcut:
-
-- open Core 1 when the main confusion is "what makes promotion different from copying?"
-- open Core 2 when the main confusion is "what belongs in the release surface?"
-- open Core 3 when the main confusion is "what evidence must travel with the release?"
-- open Core 4 when the main confusion is "what does a registry boundary promise?"
-- open Core 5 when the main confusion is "how do promotion failures hide in neat bundles?"
+| Current confusion | Read | Inspect |
+| --- | --- | --- |
+| “The candidate has good metrics, so why block?” | promotion contracts | missing-review case |
+| “The digests pass, so how can the bundle be wrong?” | audit evidence | threshold-drift case |
+| “Why reject an extra harmless file?” | release surfaces | unlisted-artifact case |
+| “Isn't the DVC remote already the registry?” | registry boundaries | responsibility matrix |
+| “Can I just regenerate the manifest?” | failures and repairs | tampered-artifact case |
+| “How do I conduct the review?” | worked investigation | generated assessment files |
 
 ## Module map
 
-| Page | Purpose |
+| Page | Decision responsibility |
 | --- | --- |
-| [Overview](index.md) | explains the module promise and study route |
-| [Promotion Contracts and Downstream Trust](promotion-contracts-and-downstream-trust.md) | teaches promotion as a downstream trust contract |
-| [Release Surfaces and Bundle Shape](release-surfaces-and-bundle-shape.md) | teaches small, stable release surfaces and manifests |
-| [Audit Evidence: Params, Metrics, Locks, and Manifests](audit-evidence-params-metrics-locks-manifests.md) | teaches the evidence needed to defend promoted state |
-| [Registry Boundaries and Consumer Contracts](registry-boundaries-and-consumer-contracts.md) | teaches registry or publish boundaries as consumer contracts |
-| [Promotion Failures and Review Repairs](promotion-failures-and-review-repairs.md) | teaches common promotion failures and how to repair them |
-| [Worked Investigation: A Digest-Valid Release with the Wrong Threshold](worked-example-investigating-threshold-drift-before-promotion.md) | investigates semantic drift that artifact digests cannot detect |
-| [Exercises](exercises.md) | gives five mastery exercises |
-| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
-| [Glossary](glossary.md) | keeps the module vocabulary stable |
+| [Promotion Contracts and Downstream Trust](promotion-contracts-and-downstream-trust.md) | separates candidate quality, release authority, and consumer scope |
+| [Release Surfaces and Bundle Shape](release-surfaces-and-bundle-shape.md) | designs exact inventory, compatibility, atomic publication, and clean verification |
+| [Audit Evidence: Params, Metrics, Locks, Manifests, and Decisions](audit-evidence-params-metrics-locks-manifests.md) | connects atomic claims to independent evidence |
+| [Registry Boundaries and Consumer Contracts](registry-boundaries-and-consumer-contracts.md) | assigns discovery, storage, authority, lifecycle, and consumer responsibilities |
+| [Promotion Failures and Evidence-Preserving Repairs](promotion-failures-and-review-repairs.md) | chooses block, withdrawal, repair, or supersession without erasing evidence |
+| [Worked Investigation: A Digest-Valid Release with the Wrong Threshold](worked-example-investigating-threshold-drift-before-promotion.md) | follows one semantic contradiction through a reproducible investigation |
+| [Exercises](exercises.md) | builds a cumulative ten-artifact promotion review packet |
+| [Exercise Answers](exercise-answers.md) | teaches proposition-level judgment and repair reasoning |
+| [Glossary](glossary.md) | stabilizes vocabulary where similar words imply different authority |
 
-## What should be clear by the end
+## Keep the boundaries visible
 
-By the end of this module, you should be able to explain:
+Five distinctions carry the module:
 
-- why promotion is a trust contract, not a file copy
-- how promoted state differs from baseline or exploratory state
-- which files belong in a release bundle
-- why params, metrics, locks, manifests, and review notes need to agree
-- how registry boundaries protect downstream consumers from internal churn
-- how to reject or repair a promotion that cannot be audited
+| Distinction | First side | Second side |
+| --- | --- | --- |
+| quality vs authority | evidence that a candidate performs under a contract | permission for consumers to depend on it |
+| integrity vs meaning | bytes match recorded digest | records make coherent true claims |
+| storage vs registry | objects can be restored | release is named, approved, and supported |
+| immutable version vs alias | historical identity never retargets | convenience pointer may move |
+| repair vs rewriting | new evidence and new decision preserve chronology | edits make old evidence appear to agree |
 
-## Commands to keep close
+When an explanation becomes vague, identify which distinction was collapsed.
 
-These commands form the evidence loop for Module 09:
+## A promotion gate is conjunctive
 
-```bash
-make -C capstone release-audit
-make -C capstone manifest-summary
-make -C capstone verify
-dvc status
-dvc metrics diff
+The course audit models:
+
+```text
+accept =
+  immutable release identity
+  AND exact inventory
+  AND artifact integrity
+  AND promoted claim agreement
+  AND source lock agreement
+  AND decision-to-candidate agreement
+  AND required reviewer roles
+  AND bounded consumer contract
 ```
 
-Use the `make` routes for the course-provided capstone review. Use the DVC commands to
-inspect whether the promoted state has a defensible link back to the recorded pipeline
-state.
+One false term blocks. Strong evidence for another term cannot compensate.
 
-## Capstone route
+Examples:
 
-Use the capstone after you can distinguish internal pipeline state from promoted state.
+- valid digests cannot supply missing reviewer authority;
+- reviewer approval cannot repair a digest mismatch;
+- remote availability cannot make `latest` immutable;
+- exact inventory cannot prove threshold meaning.
 
-Best corroboration surfaces for this module:
+## Capstone evidence map
 
-- `capstone/publish/v1/`
-- `capstone/publish/v1/manifest.json`
-- `capstone/publish/v1/metrics.json`
-- `capstone/publish/v1/params.yaml`
-- `capstone/docs/publish-contract.md`
-- `capstone/docs/release-review-guide.md`
-- `capstone/dvc.lock`
+| Question | Source surface | Generated audit surface |
+| --- | --- | --- |
+| what is the healthy published bundle? | `capstone/publish/v1/` | `workspace/complete-promotion/publish/` |
+| which payload bytes are recorded? | `publish/v1/manifest.json` | each case `publish/manifest.json` |
+| what does promotion require? | `repro/promotion-integrity/promotion-contract.json` | each case contract |
+| who approved which source? | specimen decision | each case decision |
+| which proposition passed or failed? | audit script | `assessment.json` and `report.json` |
+| how is enforcement reviewed? | audit tests | copied script and tests in audit bundle |
+| how does ordinary release review differ? | `make ... capstone-release-audit` | healthy release evidence only |
 
-Useful proof route:
+The generated audit uses the real capstone publish bundle as its healthy candidate, then
+changes one controlled property per blocked case.
 
-```bash
-make -C capstone manifest-summary
-make -C capstone release-audit
-```
+## Proof-route decision table
 
-The point of that route is not to prove that a bundle exists. It is to prove that the
-bundle carries enough evidence for another maintainer or downstream consumer to understand
-what was promoted and why it deserves trust.
+| Question | Use | Do not infer |
+| --- | --- | --- |
+| does the current bundle satisfy schema and digest checks? | `capstone-verify` | required roles approved it |
+| can a reviewer inspect the healthy release packet? | `capstone-release-audit` | adversarial cases are rejected |
+| do modeled promotion defects reach expected decisions? | promotion integrity audit | candidate is scientifically best |
+| did experiment comparisons preserve meaning? | experiment comparability audit | release was published |
+| can protected revisions be restored? | recovery readiness audit | release has consumer authority |
+
+Run the route that matches the claim instead of using the largest command as a universal
+proof.
+
+## Common misconceptions to test early
+
+### “A DVC-tracked output is promoted”
+
+DVC tracking supplies version and content identity. Promotion requires policy, approval,
+and a supported consumer interface.
+
+### “A matching digest means the release is correct”
+
+A digest establishes byte identity. The threshold-drift case shows valid bytes with
+contradictory release meaning.
+
+### “The registry can point to `latest` because the decision is recorded”
+
+The decision would preserve what reviewers intended, but consumers resolving the alias
+later could receive another release. Record and consume an immutable identity.
+
+### “A release can be corrected under the same immutable version”
+
+Replacing files destroys the ability to determine what earlier consumers received.
+Withdraw or supersede and publish a new immutable version.
+
+### “The DVC remote proves availability and approval”
+
+It can support retrieval. Authority is a separate record and recovery needs a separate
+test.
+
+## Completion rubric
+
+Rate each dimension from 0 to 2:
+
+| Dimension | 0 | 1 | 2 |
+| --- | --- | --- | --- |
+| authority | equates success with promotion | names approval but not source binding | models lifecycle and exact authority |
+| interface | copies convenient outputs | lists files | derives supported surface from consumer action |
+| evidence | cites one file as proof | names several files | maps each atomic claim to independent evidence |
+| registry | conflates remote and release | separates them conceptually | assigns ownership, identity, verification, and failure response |
+| failure response | edits until green | proposes repair | preserves chronology, contains consumers, and renews review |
+| independent verification | depends on producer workspace | gives partial commands | clean consumer can reproduce judgment and limits |
+
+A score below 10 of 12 means return to the weakest dimension before Module 10.
+
+## Leave the module with one defensible statement
+
+You should be able to complete:
+
+> I would accept or block this release because **specific proposition**, established by
+> **named evidence**, under **declared policy**. The decision does not prove **explicit
+> limits**, and the next required evidence is **concrete action**.
+
+That sentence is the bridge from technical files to reviewable release stewardship.
