@@ -138,7 +138,7 @@ nav:
   - Governance Rules for Long-Lived Repositories: module-10-migration-governance-dvc-boundaries/governance-rules-for-long-lived-repositories.md
   - Anti-Patterns and Review Interventions: module-10-migration-governance-dvc-boundaries/anti-patterns-and-review-interventions.md
   - DVC Tool Boundaries and System Ownership: module-10-migration-governance-dvc-boundaries/dvc-tool-boundaries-and-system-ownership.md
-  - 'Worked Example: Reviewing a DVC Repository for Stewardship': module-10-migration-governance-dvc-boundaries/worked-example-reviewing-a-dvc-repository-for-stewardship.md
+  - 'Worked Investigation: Blocking an Unsafe Boundary Cutover': module-10-migration-governance-dvc-boundaries/worked-investigation-blocking-an-unsafe-boundary-cutover.md
   - Exercises: module-10-migration-governance-dvc-boundaries/exercises.md
   - Exercise Answers: module-10-migration-governance-dvc-boundaries/exercise-answers.md
   - Module Glossary: module-10-migration-governance-dvc-boundaries/glossary.md

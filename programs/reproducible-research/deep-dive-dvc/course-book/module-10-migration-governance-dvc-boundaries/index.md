@@ -100,7 +100,7 @@ If the problem is already partly clear, use this shortcut:
 | [Governance Rules for Long-Lived Repositories](governance-rules-for-long-lived-repositories.md) | teaches small durable rules for future changes |
 | [Anti-Patterns and Review Interventions](anti-patterns-and-review-interventions.md) | teaches recurring DVC shortcuts and how to stop them |
 | [DVC Tool Boundaries and System Ownership](dvc-tool-boundaries-and-system-ownership.md) | teaches where DVC should and should not be authoritative |
-| [Worked Example: Reviewing a DVC Repository for Stewardship](worked-example-reviewing-a-dvc-repository-for-stewardship.md) | walks through one final repository review |
+| [Worked Investigation: Blocking an Unsafe Boundary Cutover](worked-investigation-blocking-an-unsafe-boundary-cutover.md) | investigates one cutover decision from contract through repair proof |
 | [Exercises](exercises.md) | gives five mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
