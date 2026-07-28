@@ -57,6 +57,45 @@ mtime.
 | Flags or build mode change output meaning | stamp or manifest | semantic input needs durable evidence |
 | You cannot yet model a clean boundary | redesign first, serialize last | hidden truth is still hidden under `.NOTPARALLEL` |
 
+## Classify the relationship before choosing syntax
+
+Ask these questions in order:
+
+```mermaid
+flowchart TD
+  change{"Can X change Y's meaning?"}
+  content["normal prerequisite"]
+  exists{"Must X merely complete or exist first?"}
+  setup["order-only prerequisite or recipe-local setup"]
+  resource{"Do otherwise independent jobs share a true singleton?"}
+  serialize["bounded serialization contract"]
+  none["no edge"]
+
+  change -->|yes| content
+  change -->|no| exists
+  exists -->|yes| setup
+  exists -->|no| resource
+  resource -->|yes| serialize
+  resource -->|no| none
+```
+
+An edge claims a relationship between target meanings. Do not add one only because two
+commands happen to touch the same badly owned path; repair the ownership first.
+
+## Know what each ordering mechanism says
+
+| Mechanism | Claim | Freshness behavior | Typical use |
+| --- | --- | --- | --- |
+| `Y: X` | Y consumes the state or meaning of X | changed X can make Y stale | data, generated header, script, semantic stamp |
+| `Y: \| X` | X must be ready before Y, but its mtime is not Y’s meaning | changed X alone does not make Y stale | directory or setup path |
+| commands on one recipe line/recipe | operations form one target update | target owns their sequence | render, validate, publish |
+| `.WAIT` between prerequisites | later group waits for earlier group | does not create content semantics | supported GNU Make scheduling boundary |
+| scoped `.NOTPARALLEL` | prerequisites of named target are serialized | does not repair missing semantic edges | genuine singleton resource boundary |
+| global `.NOTPARALLEL` | broad recipe concurrency disabled | graph defects can remain hidden | exceptional containment, not ordinary design |
+
+`.WAIT` and detailed `.NOTPARALLEL` behavior depend on the supported GNU Make version.
+Probe or declare that version instead of publishing syntax the environment cannot parse.
+
 ## Prove what an order-only edge does not promise
 
 It is easy to memorize the syntax and still misuse it. The capstone semantic audit gives
@@ -156,6 +195,19 @@ Use this review table before moving a prerequisite across `|`:
 | Does the recipe only need the path to exist before it starts? | use an order-only prerequisite | the edge may not belong |
 | Can a changed path leave a stale but successful target? | the order-only form is dishonest | verify the setup contract |
 
+A recipe-local setup is often simpler:
+
+```make
+build/reports/%.json: data/%.csv scripts/report.py
+	@mkdir -p "$(@D)"
+	python3 scripts/report.py "$<" "$@"
+```
+
+Use a directory target when several rules benefit from one visible setup node. Use
+recipe-local `mkdir -p` when directory creation is cheap, idempotent, and clearer than a
+large family of directory rules. Do not let an ordinary producer remove a shared
+directory.
+
 ## Stamps exist to model hidden semantic state
 
 Sometimes a fact matters but is not naturally a file input:
@@ -178,11 +230,81 @@ That does model change, but it models change constantly. The result is non-conve
 The right question is whether the stamp changes when the semantic fact changes, not
 whether the stamp changes at all.
 
+Publish a semantic stamp only when its content changes:
+
+```make
+build/flags.stamp: FORCE | build/
+	@candidate="$@.candidate.$$$$"; \
+	printf '%s\n' '$(CC)|$(CPPFLAGS)|$(CFLAGS)' > "$$candidate"; \
+	if test -r "$@" && cmp -s "$$candidate" "$@"; then \
+	  rm -f "$$candidate"; \
+	else \
+	  mv -f "$$candidate" "$@"; \
+	fi
+
+.PHONY: FORCE
+FORCE:
+```
+
+`FORCE` causes the check to run; content-preserving publication prevents timestamp churn
+when the semantic value is unchanged. Consumers use the stamp as a normal prerequisite
+because changed flag meaning must invalidate them.
+
+The stamp should record a normalized semantic value. Recording current time, random
+identifiers, or irrelevant environment noise creates non-convergence.
+
 ## Serialization is the last resort
 
 `.NOTPARALLEL` and `.WAIT` are real tools, but they are not first-choice fixes. If you
 reach for them before understanding the missing or false edge, you are probably hiding a
 lying DAG instead of repairing it.
+
+### Review a genuine singleton
+
+Serialization can be honest when two otherwise independent targets must use a tool that
+cannot safely serve concurrent requests and cannot be given isolated state.
+
+Record:
+
+```text
+singleton resource:
+targets that use it:
+why partitioning is unavailable:
+scope of serialization:
+timeout or failure behavior:
+supported GNU Make version:
+artifact equivalence after serialization:
+removal condition:
+```
+
+Keep the serialization boundary narrower than the whole build. The contract is about the
+resource, not about distrust of parallelism.
+
+### Do not confuse recipe sequence with graph order
+
+Commands in one target recipe are part of that target’s update:
+
+```make
+build/report.json: data/input.csv
+	python3 scripts/render.py "$<" "$@.candidate"
+	python3 scripts/check.py "$@.candidate"
+	mv -f "$@.candidate" "$@"
+```
+
+They do not create relationships with another independently runnable target. Likewise,
+putting two recipes in adjacent source locations does not order their targets.
+
+## Challenge the chosen tool
+
+| Claimed relationship | Challenge | Accepted observation |
+| --- | --- | --- |
+| normal content edge | change X meaning | Y rebuilds and accepted result changes |
+| order-only setup | change setup mtime only | setup is ready; Y does not rebuild needlessly |
+| semantic stamp | change normalized fact, then repeat unchanged | one invalidation followed by convergence |
+| scoped singleton | overlap users without guard in a controlled fixture | detector rejects; bounded guard restores accepted artifacts |
+| no relationship | vary completion order repeatedly | artifacts remain equivalent |
+
+A decision is stronger when the challenge could have disproved it.
 
 ## A good review sentence
 
@@ -204,3 +326,5 @@ Before leaving this page, you should be able to:
 - describe one situation where a stamp is the honest tool
 - explain why directory mtimes often create noise rather than signal
 - say why serialization is not the first repair for a lying graph
+- distinguish graph edges, recipe sequence, and scheduler serialization
+- state the version and resource contract required by `.WAIT` or scoped `.NOTPARALLEL`
