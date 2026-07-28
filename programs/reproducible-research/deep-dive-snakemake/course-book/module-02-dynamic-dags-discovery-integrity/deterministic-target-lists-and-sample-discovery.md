@@ -69,13 +69,16 @@ It declares which raw paths have entered workflow scope.
 The corresponding checkpoint contract is:
 
 ```python
+import os
+
+
 checkpoint discover_samples:
     input:
         registry=config["arrival_registry"]
     output:
         json=f"{RESULTS_DIR}/discovered_samples.json"
     params:
-        raw_dir=config["params"]["raw_dir"],
+        raw_dir=lambda wildcards, input: os.path.dirname(input.registry),
         raw_glob=config["params"]["raw_glob"],
     shell:
         """
@@ -133,7 +136,7 @@ Then derive sample records in stable sample order:
 ```json
 {
   "schema_version": 2,
-  "arrival_registry": "data/raw-arrivals.tsv",
+  "arrival_registry": "data/raw/arrivals.tsv",
   "arrival_registry_sha256": "…",
   "samples": {
     "sampleA": {

@@ -171,8 +171,8 @@ This yields a decision table:
 
 ## Connect the specimen to the capstone
 
-The capstone uses `data/raw-arrivals.tsv` as the governed event. Its `path` column names
-candidate FASTQ files relative to `data/raw/`. The checkpoint:
+The capstone uses `data/raw/arrivals.tsv` as the governed event. Its `path` column names
+candidate FASTQ files relative to the registry's `data/raw/` directory. The checkpoint:
 
 - declares the registry as an input;
 - validates the registry structure;

@@ -74,7 +74,7 @@ sample-set observations. Mark your answers as predictions rather than executed e
 The module uses one delivery story throughout:
 
 - raw FASTQ files live under `data/raw/`;
-- `data/raw-arrivals.tsv` declares candidate arrivals;
+- `data/raw/arrivals.tsv` declares candidate arrivals;
 - discovery validates registry paths and derives sample identities;
 - a checkpoint writes `results/discovered_samples.json`;
 - downstream input functions fan out over the accepted sample set;

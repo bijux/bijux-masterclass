@@ -56,7 +56,7 @@ A useful discovery manifest might contain:
 ```json
 {
   "schema_version": 2,
-  "arrival_registry": "data/raw-arrivals.tsv",
+  "arrival_registry": "data/raw/arrivals.tsv",
   "arrival_registry_sha256": "…",
   "accepted": {
     "alpha": {

@@ -75,7 +75,6 @@ def build_summary(config_path: Path, provenance_path: Path) -> dict[str, object]
             "benchmarks_dir": materialized["benchmarks_dir"],
         },
         "materialized_params": {
-            "raw_dir": params["raw_dir"],
             "raw_glob": params["raw_glob"],
             "allow_paired_end": params["allow_paired_end"],
             "dedup_mode": params["dedup"]["mode"],

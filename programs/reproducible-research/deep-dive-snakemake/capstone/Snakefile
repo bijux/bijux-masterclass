@@ -39,7 +39,6 @@ setdefault_tree(
     config,
     "params",
     {
-        "raw_dir": "data/raw",
         "raw_glob": "*.fastq.gz",
         "allow_paired_end": False,
         "trim": {
@@ -85,7 +84,7 @@ checkpoint discover_samples:
     conda:
         config["_env_python"]
     params:
-        raw_dir=config["params"]["raw_dir"],
+        raw_dir=lambda wildcards, input: os.path.dirname(input.registry),
         raw_glob=config["params"]["raw_glob"],
         allow_pe="--allow-paired-end" if config["params"]["allow_paired_end"] else "",
         pythonpath=PYTHONPATH,
