@@ -1,302 +1,326 @@
 # Versioned Publish Boundaries and Compatible Change
 
-Once you know which files belong in the public contract, the next question appears:
+`publish/v1/` is a compatibility promise. It says that consumers written for the v1
+contract can continue finding and interpreting supported artifacts there.
 
-> how do downstream users know when that contract has changed?
+A versioned directory does not make arbitrary changes safe. This lesson classifies change
+against executable consumer expectations and builds a migration when the current
+consumer must stop accepting the candidate.
 
-That is the job of versioned publish boundaries.
+## Compatibility is a relationship
 
-Versioning is not a cosmetic folder name. It is how a workflow tells the downstream world
-whether paths, payloads, and expectations are still stable.
+Let:
 
-## How to use this page
+- `C1` be the current consumer contract;
+- `B` be a candidate bundle.
 
-Keep one imaginary downstream consumer in front of you while you read.
+Current compatibility is:
 
-That consumer might be:
+```text
+C1(B) = accept
+```
 
-- a notebook written last month
-- another repository that reads `summary.json`
-- a report builder that expects a stable `report/index.html`
+The producer’s intention does not appear in that expression. Neither does “valid JSON”
+or “workflow succeeded.”
 
-Now ask one question repeatedly:
+For a breaking v2 candidate:
 
-> if I change this bundle today, what will that consumer experience tomorrow?
+```text
+C1(B2) = reject
+C2(B2) = accept
+```
 
-That is the question versioning exists to answer honestly.
-
-## If you are learning this without the live class
-
-Turn this page into a compatibility lab instead of reading it as theory.
-
-Use it in four passes:
-
-1. write the current `publish/v1/` promise in one plain sentence
-2. choose one additive change and one breaking change before you read the examples below
-3. test each change from the consumer's point of view, not the author's convenience
-4. finish by writing one note that says whether `v1` still tells the truth
-
-If you cannot state the current promise in one sentence, you are not ready to judge
-whether it still survives the change.
-
-## `publish/v1/` is a promise, not a convenience path
-
-When a workflow publishes under a path such as `publish/v1/`, it is saying:
-
-- the files in this boundary are intentionally public
-- their paths and meanings are being treated with compatibility discipline
-- downstream users should not have to guess whether a change is safe
-
-That is much stronger than simply storing outputs in a neat folder.
-
-## Why versioning belongs to publish design
-
-Without a versioned boundary, small publish changes become dangerous:
-
-- a stable filename disappears
-- a JSON field is removed
-- a report path moves
-- a manifest changes shape
-
-Each change may feel local to the author. To downstream users, those are contract changes.
-
-Versioning makes that change visible instead of surprising.
-
-## Start with the public promise, not with the diff
-
-Beginners often review publish changes by looking only at what changed in Git.
-
-That is too producer-centered.
-
-A better approach is:
-
-1. state the current public promise
-2. ask whether the old promise is still true after the change
-3. decide whether the current version can still carry that promise honestly
-
-This framing matters because a tiny diff can still be a major downstream change.
-
-## One useful distinction: compatible change versus contract change
-
-Not every improvement requires a new publish version.
-
-Some changes are often compatible:
-
-- adding a new optional JSON field
-- improving report styling without changing report location or core purpose
-- adding more documentation around the published bundle
-
-Some changes are usually contract changes:
-
-- renaming a published file
-- removing a field consumers may already use
-- changing a path that scripts or notebooks are expected to read
-- changing the semantics of an existing artifact without signaling it
-
-That is the judgment this page is trying to sharpen.
-
-## The compatibility card to keep beside you
-
-Use this table before you call any change "small":
-
-| Proposed change | What the old consumer asks | Likely classification |
-| --- | --- | --- |
-| add optional field to `summary.json` | can I still parse the old structure without code changes | often compatible |
-| rename `publish/v1/summary.json` | can I still find the same path | usually contract change |
-| keep path but change field meaning | can I still trust my old interpretation | usually contract change |
-| add reviewed discovery evidence beside existing files | does this preserve the old promise while giving more explanation | often compatible if existing paths and meanings survive |
-
-If the old consumer cannot answer yes to path and meaning survival, stop calling the
-change compatible.
-
-## A simple compatibility map
+That is a migration-required outcome, not evidence that B2 is backward compatible.
 
 ```mermaid
 flowchart TD
-  change["publish change proposed"] --> ask1["does a stable path change?"]
-  ask1 -->|yes| version["treat as versioned contract change"]
-  ask1 -->|no| ask2["does existing meaning change?"]
-  ask2 -->|yes| version
-  ask2 -->|no| compat["likely compatible within current version"]
+  candidate["Candidate bundle"] --> old{"Current consumer accepts?"}
+  old -->|yes| meaning{"Required meaning unchanged?"}
+  meaning -->|yes| current["ACCEPT_CURRENT"]
+  meaning -->|no| reject["REJECT_CURRENT"]
+  old -->|no| next{"New version + declared next consumer accepts?"}
+  next -->|yes| migrate["REQUIRE_MIGRATION"]
+  next -->|no| reject
 ```
 
-This is not a legal standard. It is a practical review tool.
+The explicit semantic check matters because a structurally permissive consumer can accept
+bytes it will interpret incorrectly.
 
-## A consumer-first audit loop
+## What belongs in a consumer contract
 
-Run this loop whenever you propose a publish change:
+For a file-based API, declare:
 
-1. name one existing consumer and the exact file it reads
-2. say what that consumer assumes about the path and meaning today
-3. describe the proposed change without using Git language first
-4. decide whether the old assumption still survives
-5. only then ask whether the diff "looks small"
+- publish version;
+- required relative paths;
+- artifact schema versions;
+- required and optional fields;
+- field types;
+- definitions and units;
+- missing-value behavior;
+- ordering guarantees where relevant;
+- additional-field policy;
+- integrity expectations;
+- completeness policy.
 
-That order matters because teams often start from the author-visible diff and only later
-remember that another program was depending on the old contract.
+The capstone specimen expresses a focused subset in JSON:
 
-## A learner-friendly rule of thumb
+```json
+{
+  "publish_version": "v1",
+  "required_paths": ["summary.json"],
+  "artifact_path": "summary.json",
+  "artifact_schema_version": 1,
+  "required_fields": {
+    "sample_id": "string",
+    "reads_count": "integer"
+  },
+  "allow_additional_fields": true,
+  "field_semantics": {
+    "reads_count": {
+      "definition": "number of sequencing reads",
+      "unit": "reads"
+    }
+  }
+}
+```
 
-Inside one publish version, prefer changes that are clearly additive:
+This is more useful than “v1 JSON” because it tells the verifier what the consumer
+actually relies on.
 
-- new optional fields
-- extra explanatory documentation
-- a new helper artifact that does not replace or rename the current contract
+## Classify change by consumer effect
 
-Treat these as version-discussion triggers:
-
-- file renames
-- removed fields
-- changed field meaning
-- changed expectations about where consumers should read from
-
-The point is not to freeze the bundle forever. The point is to stop calling breaking
-changes "minor" just because they felt small to the author.
-
-## The capstone example is already opinionated
-
-The workflow contract guide explicitly treats `publish/v1/` as the smaller public
-boundary.
-
-That means files such as:
-
-- `summary.json`
-- `summary.tsv`
-- `report/index.html`
-- `manifest.json`
-- `provenance.json`
-- `accepted_samples.json`
-- `rejected_samples.json`
-
-are expected to be reviewed as part of a versioned surface, not as loose outputs.
-
-## One concrete review scenario
-
-Suppose `publish/v1/summary.json` currently contains:
-
-- sample identifiers
-- a QC status field
-- a metric used by a downstream plotting notebook
-
-Now imagine three possible changes:
-
-1. add a new optional field called `cohort`
-2. rename `qc_status` to `status`
-3. keep the field name but change the meaning from per-sample QC to bundle-level QC
-
-These changes are not equally risky.
-
-- the first is often compatible
-- the second is usually a contract change
-- the third is also a contract change, even though the path and key name stayed the same
-
-This is why semantic review matters as much as file review.
-
-## Weak version discipline
-
-Weak shape:
-
-- publish files are renamed casually
-- one run adds extra artifacts with no contract discussion
-- consumers are expected to “just update” when the bundle changes
-
-This creates hidden downstream work and weakens trust in the bundle.
-
-## Strong version discipline
-
-Strong shape:
-
-- treat path stability as part of the public promise
-- distinguish additive compatible change from breaking contract change
-- bump the publish version when the old promise is no longer true
-- document the meaning of the published files so reviews are concrete
-
-This gives a workflow the same kind of discipline that software interfaces need.
-
-## The beginner mistake to catch early
-
-The most common beginner mistake is to think a version bump is only needed when the file
-tree changes dramatically.
-
-That is false.
-
-Small-looking changes can still break downstream readers if they alter:
-
-- stable paths
-- stable field names
-- stable semantics
-
-The size of the edit is not the test. The survival of the old promise is the test.
-
-## A practical review test
-
-Ask these questions:
-
-1. Would an existing downstream notebook still find the same path?
-2. Would an existing parser still understand the same payload meaning?
-3. Is the change additive, or does it alter an existing promise?
-
-If the answer to the first or second question is no, treat the change as a contract change
-unless you can defend compatibility clearly.
-
-## One migration note you should be able to write
-
-Before you leave the page, practice writing one note like this:
-
-> `publish/v1/summary.json` keeps the same path and field meanings, so current consumers
-> survive unchanged. The bundle adds `accepted_samples.json` and `rejected_samples.json`
-> to make membership review easier, which is additive rather than breaking.
-
-If you cannot write a note at that level of specificity, your compatibility reasoning is
-still too vague.
-
-## Common failure modes
-
-| Failure mode | What happens | Better repair |
+| Producer change | Same-version default | Why |
 | --- | --- | --- |
-| publish path renamed casually | downstream automation breaks silently | treat path renames as versioned contract changes |
-| optional fields removed later | consumers lose information without warning | prefer additive evolution inside a version |
-| report meaning changes without documentation | humans and tools interpret the bundle inconsistently | document artifact roles and change semantics deliberately |
-| new files appear in `publish/v1/` with no review | the boundary grows by drift rather than design | require a downstream-use reason for new public artifacts |
-| version number never changes because change feels small locally | accumulated drift breaks consumer trust | use downstream compatibility, not author convenience, as the threshold |
+| add field tolerated by declared consumer | possibly compatible | required projection remains readable |
+| add field to closed-schema consumer | breaking | parser rejects unknown property |
+| remove required field | breaking | consumer cannot obtain required value |
+| rename public path | breaking | consumer cannot locate artifact |
+| widen integer to number | consumer-dependent | parser and domain assumptions may differ |
+| change unit without changing field | breaking | same syntax carries new meaning |
+| change missing value from absent to `null` | consumer-dependent | access and type behavior change |
+| reorder an explicitly unordered object | compatible | consumer promises not to depend on order |
+| reorder a documented ranked list | breaking | position has meaning |
+| add a new independent public file | consumer-dependent | inventory strictness and discovery rules matter |
 
-## What a reviewer should hear
+Words such as “additive” and “small” are not decisions. Run the current consumer.
 
-Good publish-version reasoning sounds like this:
+## The additive-field experiment
 
-> The old consumer can still find the same path and interpret the same meaning, so this
-> stays inside `v1`.
+Baseline record:
 
-Or:
+```json
+{
+  "sample_id": "alpha",
+  "reads_count": 10
+}
+```
 
-> The old consumer would need code changes or a new semantic assumption, so we should not
-> pretend this is still the same public version.
+Candidate:
 
-That kind of explanation teaches the team how to reason about stability.
+```json
+{
+  "sample_id": "alpha",
+  "reads_count": 10,
+  "qc_status": "pass"
+}
+```
 
-## The explanation a reviewer trusts
+The lab’s v1 consumer sets `allow_additional_fields: true` and therefore accepts the
+candidate. Required fields and semantics remain unchanged.
 
-Strong explanation:
+A closed consumer would reject it:
 
-> `publish/v1/summary.json` keeps the same role and core fields, so this change is
-> compatible inside the current version; if we rename the file or change the meaning of an
-> existing field, we should publish under a new versioned boundary instead.
+```json
+{
+  "allow_additional_fields": false
+}
+```
 
-Weak explanation:
+The correct conclusion is:
 
-> the structure changed a bit, but downstream users can adapt.
+> Adding `qc_status` is compatible with the declared open v1 consumer.
 
-The strong explanation starts from the contract. The weak explanation pushes the burden
-onto consumers after the fact.
+Do not generalize beyond the fixture.
 
-## End-of-page checkpoint
+## Required-field removal
 
-Before leaving this page, you should be able to:
+Candidate:
 
-- explain why versioning belongs to publish boundaries rather than only release notes
-- distinguish an additive compatible change from a contract-breaking change
-- explain why path renames are often publish-boundary changes
-- describe when a new publish version is the honest repair
+```json
+{
+  "sample_id": "alpha"
+}
+```
 
-If you still describe versioning mainly as folder naming hygiene, pause and reframe. This
-page is really about how not to surprise downstream users.
+The verifier reports:
+
+```text
+record 0 is missing required field reads_count
+```
+
+Keeping this under `publish/v1/` would make old consumers fail or invent a fallback. If
+the metric is no longer supportable, introduce a new contract and a migration plan.
+
+Deprecation before removal can help, but only when:
+
+- old and replacement fields coexist for a declared interval;
+- both meanings are documented;
+- consumer telemetry or acknowledgements support retirement;
+- a test proves the replacement consumer works.
+
+## Path rename
+
+Changing:
+
+```text
+publish/v1/summary.json
+```
+
+to:
+
+```text
+publish/v1/metrics.json
+```
+
+is breaking even when bytes are identical. Paths are part of a file API.
+
+Safer transition choices:
+
+- retain both paths in v1 with one designated authority and a retirement plan;
+- introduce only `publish/v2/metrics.json`;
+- provide a compatibility copy if duplication and divergence are controlled;
+- ship a consumer adapter with tested behavior.
+
+Avoid symlink-based promises unless every supported storage and consumer environment
+handles symlinks consistently.
+
+## Semantic drift
+
+The most dangerous same-version break may preserve path, field, and type:
+
+```text
+v1 expectation: reads_count = number of sequencing reads, unit reads
+candidate:      reads_count = number of nucleotide bases, unit bases
+```
+
+Schema shape passes. The downstream calculation is wrong.
+
+```mermaid
+sequenceDiagram
+  participant P as Producer
+  participant B as v1 bundle
+  participant C as v1 consumer
+  P->>B: write reads_count=40 meaning bases
+  B->>C: valid integer at expected path
+  C->>C: interpret 40 as reads
+  C-->>P: no parse error, wrong analytical result
+```
+
+Field semantics and units must be testable contract data, not only prose in a distant
+guide.
+
+## Design a v2 migration
+
+The specimen makes the break explicit:
+
+```text
+v1: summary.json, schema 1, reads_count, unit reads
+v2: metrics.json, schema 2, read_bases, unit bases
+```
+
+The old consumer rejects v2 because:
+
+- publish version differs;
+- required v1 path is absent;
+- v1 schema and field are absent.
+
+The new consumer accepts v2. A complete migration also needs:
+
+1. reason for the new metric and path;
+2. field mapping or statement that no direct mapping exists;
+3. example v2 bundle;
+4. executable v2 consumer fixture;
+5. overlap period for v1 and v2;
+6. owner and support window;
+7. retirement criteria based on consumer evidence;
+8. rollback or extension decision if consumers are not ready.
+
+Creating `v2/` covers only one item.
+
+## Do not overwrite old versions
+
+If `publish/v1/` is mutable, a consumer cannot infer compatibility from its path. Prefer
+immutable releases or release-addressed bundles inside each contract version:
+
+```text
+publish/
+├── v1/
+│   ├── release-2026-07-01/
+│   └── release-2026-07-15/
+└── v2/
+    └── release-2026-08-01/
+```
+
+The timestamp here identifies a release occurrence, not a transitional code name. A
+content-addressed or domain-specific release identifier may be preferable.
+
+Define whether a `latest` pointer exists, who updates it, and whether consumers may treat
+it as immutable.
+
+## Version directory and schema version are distinct
+
+`publish/v2/` identifies the file API boundary. `schema_version: 2` identifies the
+artifact structure. They may move together in a simple system, but they answer different
+questions.
+
+| Version | Scope |
+| --- | --- |
+| publish boundary version | paths, artifact set, cross-file meaning, compatibility policy |
+| artifact schema version | structure and semantics of one serialized artifact |
+| tool version | implementation identity |
+| data release identifier | one published occurrence or dataset state |
+
+Do not reuse one number to stand in for all four unless the project deliberately couples
+their lifecycle.
+
+## Run the compatibility matrix
+
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make publish-compatibility-audit
+```
+
+Focus on:
+
+```text
+baseline             ACCEPT_CURRENT
+additive-field       ACCEPT_CURRENT
+required-field-removal REJECT_CURRENT
+path-rename          REJECT_CURRENT
+semantic-drift       REJECT_CURRENT
+versioned-migration  REQUIRE_MIGRATION
+```
+
+Then inspect the exact current and next consumer failures in `report.json`. A decision
+without supporting failures is not enough for a migration review.
+
+## Migration review checklist
+
+- [ ] Current consumer expectations are executable.
+- [ ] Candidate compatibility is evaluated, not inferred from the diff.
+- [ ] Additional-field tolerance is explicit.
+- [ ] Required paths and fields remain available inside the current version.
+- [ ] Field definitions, units, and missing-value rules remain stable.
+- [ ] Breaking changes are isolated from the old boundary.
+- [ ] A new consumer fixture accepts the new contract.
+- [ ] Old consumers reject new meaning rather than silently misread it.
+- [ ] Overlap, support ownership, and retirement evidence are named.
+- [ ] Immutable release identity is separate from contract version.
+- [ ] Rollback or extension conditions are defined.
+
+## What you should carry forward
+
+Versioning is a coordination mechanism. Current compatibility requires current-consumer
+acceptance with preserved meaning. Breaking evolution requires a new boundary, a new
+consumer, and a migration whose completion can be observed. The next lesson ensures the
+bundle delivered under either version contains exactly the inventoried bytes.
