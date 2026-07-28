@@ -18,6 +18,7 @@ TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-dvc
 RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/verify
 RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
+RECOVERY_READINESS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery-readiness
 EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
 EXPERIMENT_COMPARABILITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/experiment-comparability
 STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/stage-contracts
@@ -268,6 +269,42 @@ recovery-audit: push ## Capture the remote-backed recovery route as a review bun
 
 .PHONY: recovery-review
 recovery-review: recovery-audit ## Capture the remote-backed recovery review bundle
+
+.PHONY: recovery-readiness-audit
+recovery-readiness-audit: install ## Audit protected revisions before remote cutover
+	@rm -rf $(RECOVERY_READINESS_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_recovery_readiness.py \
+		--specimen repro/recovery-readiness \
+		--workspace $(RECOVERY_READINESS_AUDIT_DIR)/workspace \
+		--output $(RECOVERY_READINESS_AUDIT_DIR)/report.json \
+		--dvc $(VENV_BIN)/dvc \
+		--check
+	@mkdir -p $(RECOVERY_READINESS_AUDIT_DIR)/scripts $(RECOVERY_READINESS_AUDIT_DIR)/tests $(RECOVERY_READINESS_AUDIT_DIR)/specimen
+	@cp docs/recovery-readiness-audit-guide.md $(RECOVERY_READINESS_AUDIT_DIR)/RECOVERY_READINESS_AUDIT_GUIDE.md
+	@cp scripts/audit_recovery_readiness.py $(RECOVERY_READINESS_AUDIT_DIR)/scripts/audit_recovery_readiness.py
+	@cp tests/test_recovery_readiness_audit.py $(RECOVERY_READINESS_AUDIT_DIR)/tests/test_recovery_readiness_audit.py
+	@cp repro/recovery-readiness/README.md $(RECOVERY_READINESS_AUDIT_DIR)/specimen/README.md
+	@cp repro/recovery-readiness/recovery-contract.json $(RECOVERY_READINESS_AUDIT_DIR)/specimen/recovery-contract.json
+	@printf '%s\n' \
+		'Recovery readiness audit route:' \
+		'  Read RECOVERY_READINESS_AUDIT_GUIDE.md for the cutover decision boundary.' \
+		'  Read summary.tsv to compare all migration and contract cases.' \
+		'  Compare complete-migration with current-only-copy and release-only-copy.' \
+		'  Read revision-evidence.json inside each case for restore, identity, and duration facts.' \
+		'  Read receipts.json only when you need the exact Git and DVC command evidence.' \
+		'  Inspect the specimen contract, audit implementation, and tests last.' > $(RECOVERY_READINESS_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Recovery readiness questions:' \
+		'  Which protected revision is absent when a migration copies only current state?' \
+		'  Why does a successful pull fail to prove the restored content claim?' \
+		'  Why must a cutover check avoid repairing the candidate remote?' \
+		'  Which measurement turns recovery speed from hope into an objective?' > $(RECOVERY_READINESS_AUDIT_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(RECOVERY_READINESS_AUDIT_DIR) --output $(RECOVERY_READINESS_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote recovery readiness audit to $(RECOVERY_READINESS_AUDIT_DIR)"
+
+.PHONY: recovery-readiness-selftest
+recovery-readiness-selftest: install ## Enforce recovery cutover evidence
+	@$(PYTEST) tests/test_recovery_readiness_audit.py
 
 .PHONY: experiment-review
 experiment-review: verify ## Build a focused experiment comparison bundle

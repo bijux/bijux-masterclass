@@ -76,6 +76,14 @@ capstone-recovery-drill: ## Rebuild the workspace from the remote after cache lo
 capstone-recovery-review: ## Build the capstone remote recovery review bundle
 	@$(RUN_CAPSTONE) recovery-review
 
+.PHONY: capstone-recovery-readiness-audit
+capstone-recovery-readiness-audit: ## Audit protected revisions before remote cutover
+	@$(RUN_CAPSTONE) recovery-readiness-audit
+
+.PHONY: capstone-recovery-readiness-selftest
+capstone-recovery-readiness-selftest: ## Enforce recovery cutover evidence
+	@$(RUN_CAPSTONE) recovery-readiness-selftest
+
 .PHONY: capstone-experiment-review
 capstone-experiment-review: ## Build the capstone experiment comparison bundle
 	@$(RUN_CAPSTONE) experiment-review
