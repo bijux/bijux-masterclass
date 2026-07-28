@@ -18,6 +18,11 @@
       "revision": "main"
     }
   ],
+  "recovery_route": [
+    "git checkout <protected-revision>",
+    "dvc pull --remote candidate data/observations.csv.dvc",
+    "sha256sum data/observations.csv"
+  ],
   "recovery_time_objective_seconds": 30,
   "verification_mode": "cache_empty_restore"
 }
