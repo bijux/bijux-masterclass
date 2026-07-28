@@ -318,6 +318,7 @@ Use the rest of Module 00 based on what you need:
 - Read [Course Map](course-map.md) if you want the full ten-session arc.
 - Read [First-Contact Map](first-contact-map.md) if you want the shortest route into the first week.
 - Read [Self-Study Guide](self-study-guide.md) if you need pacing, missed-session recovery, or answer-review discipline.
+- Read [Evidence-Reading Guide](evidence-reading-guide.md) if you need to interpret traces, dry runs, selftests, or artifacts.
 - Read [Mid-Course Map](mid-course-map.md) if you are already comfortable with the basics and want to understand the second half of the course.
 - Read [Mastery Map](mastery-map.md) if you are returning later for review, migration, or stewardship.
 
