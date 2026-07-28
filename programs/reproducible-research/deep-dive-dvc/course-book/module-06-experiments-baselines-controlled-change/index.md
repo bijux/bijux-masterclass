@@ -120,7 +120,7 @@ If the problem is already partly clear, use this shortcut:
 | [Uncertainty, Replication, and Selection Bias](uncertainty-replication-and-selection-bias.md) | separates exact-run lineage from stability, practical significance, and honest winner selection |
 | [Comparing Experiments and Selecting Candidates](comparing-experiments-and-selecting-candidates.md) | teaches candidate comparison without metric cherry-picking |
 | [Promotion, Cleanup, and History Integrity](promotion-cleanup-and-history-integrity.md) | teaches deliberate promotion, discard, and baseline protection |
-| [Worked Example: Promoting a Controlled Threshold Experiment](worked-example-promoting-a-controlled-threshold-experiment.md) | walks through one realistic experiment review |
+| [Worked Investigation: Separating Comparability, Uncertainty, and Promotion](worked-investigation-separating-comparability-uncertainty-and-promotion.md) | joins the executable deterministic audit to a distinct replicate-evidence review |
 | [Exercises](exercises.md) | provides ten cumulative evidence-based exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |

@@ -100,7 +100,7 @@ nav:
   - Uncertainty, Replication, and Selection Bias: module-06-experiments-baselines-controlled-change/uncertainty-replication-and-selection-bias.md
   - Comparing Experiments and Selecting Candidates: module-06-experiments-baselines-controlled-change/comparing-experiments-and-selecting-candidates.md
   - Promotion, Cleanup, and History Integrity: module-06-experiments-baselines-controlled-change/promotion-cleanup-and-history-integrity.md
-  - 'Worked Example: Promoting a Controlled Threshold Experiment': module-06-experiments-baselines-controlled-change/worked-example-promoting-a-controlled-threshold-experiment.md
+  - 'Worked Investigation: Separating Comparability, Uncertainty, and Promotion': module-06-experiments-baselines-controlled-change/worked-investigation-separating-comparability-uncertainty-and-promotion.md
   - Exercises: module-06-experiments-baselines-controlled-change/exercises.md
   - Exercise Answers: module-06-experiments-baselines-controlled-change/exercise-answers.md
   - Module Glossary: module-06-experiments-baselines-controlled-change/glossary.md
