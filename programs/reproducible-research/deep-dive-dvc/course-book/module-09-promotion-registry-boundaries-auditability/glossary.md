@@ -1,76 +1,281 @@
 # Module Glossary
 
-
-<!-- page-maps:start -->
 ## Page Maps
 
 ```mermaid
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Promotion Registry Boundaries Auditability"]
-  page["Module Glossary"]
-  capstone["Capstone evidence"]
+  section["Promotion and Auditability"]
+  page["Decision Vocabulary"]
+  evidence["Audit findings"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.clarifies.-> evidence
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  candidate["candidate"] --> eligible["eligible"]
+  eligible --> approved["approved"]
+  approved --> published["published"]
+  published --> superseded["superseded"]
+  published --> withdrawn["withdrawn"]
 ```
-<!-- page-maps:end -->
 
-This glossary belongs to **Module 09: Promotion, Registry Boundaries, and Auditability**
-in **Deep Dive DVC**.
+Use this glossary when two records appear to describe the same release concept but
+actually carry different authority. The distinctions are part of the review model, not
+alternative wording.
 
-Use it to keep the module language stable while you move between the core lessons, the
-worked example, the exercises, and capstone review.
+## Lifecycle terms
 
-## How to use this glossary
+| Term | Meaning in this module | Evidence expected |
+| --- | --- | --- |
+| candidate | one specific assembled result proposed for review | source identity and candidate manifest |
+| eligible | candidate that passed declared comparison and release-quality gates | comparison decision bound to candidate |
+| approved | candidate accepted by all required roles under the promotion contract | source-bound promotion decision |
+| published | approved release exposed through an immutable supported reference | registry or publication receipt |
+| superseded | valid historical release no longer preferred because another approved release replaces it | lifecycle event naming old and new immutable identities |
+| withdrawn | release whose authority for new use has been revoked | withdrawal decision, reason, and consumer containment record |
 
-Read the directory index first. Return here when a promotion, release bundle, registry, or
-audit discussion starts to feel vague.
+Eligibility is not approval. Approval is not publication. Superseded does not mean invalid;
+withdrawn does.
 
-The goal is not extra theory. The goal is shared language for deciding what downstream
-users may trust.
+## Identity and inventory terms
 
-## Terms in this directory
+### Immutable release reference
 
-| Term | Meaning in this directory |
-| --- | --- |
-| promotion | The deliberate act of approving a specific result for downstream use. |
-| promoted state | The artifact bundle and evidence that downstream users are allowed to trust. |
-| promotion contract | The claim that a promoted result is approved, bounded, and supported by evidence. |
-| downstream consumer | A person or system that uses the promoted result without depending on internal pipeline context. |
-| release surface | The small, stable set of files exposed for downstream use. |
-| release bundle | A versioned group of promoted artifacts and supporting evidence. |
-| manifest | A file that lists the contents and roles of the promoted bundle. |
-| registry boundary | The named surface, registry entry, or published directory consumers are expected to use. |
-| consumer contract | The rule that tells downstream users which files are supported and which internals are not. |
-| internal pipeline state | Intermediate, candidate, debug, or implementation files not promised to consumers. |
-| audit evidence | Params, metrics, lock evidence, manifests, and notes used to defend promoted state. |
-| promoted params | Parameter values copied or recorded as part of the promoted evidence. |
-| promoted metrics | Metric values copied or recorded as part of the promoted evidence. |
-| lock evidence | Recorded DVC execution state that links promoted artifacts back to declared pipeline state. |
-| review note | Human-readable rationale explaining why promotion was accepted and what limits apply. |
-| bundle mismatch | A release defect where files in the bundle describe different runs or incompatible evidence. |
-| unsupported file | A file present in the repository or bundle that downstream consumers should not depend on. |
-| versioned boundary | A release or registry surface with a durable name such as `v1`, not a moving label like `latest`. |
+A machine-resolvable name that continues to identify the same release bytes and metadata,
+such as `incident-escalation/2026-07`. An immutable reference can remain retrievable after
+it is superseded or withdrawn, subject to retention policy.
 
-## Stable review questions
+### Movable alias
 
-Use these questions when the module feels abstract:
+A convenience name whose target may change, such as `latest`, `approved`, or `production`.
+It can help discovery but cannot be the sole historical identity. Consumers resolve it to
+an immutable reference and record that result.
 
-- What exactly is being promoted?
-- Who may consume it?
-- Which files form the release surface?
-- Does the manifest list the supported bundle?
-- Do promoted params and metrics describe the same state?
-- Can the artifact be linked back to DVC lock evidence?
-- Which internal files are excluded from the consumer contract?
-- Would another maintainer be able to defend this promotion later?
+### Release ID
+
+The durable logical identity named by the promotion contract and decision. A release ID
+and registry reference may share a string, but reviewers still check that the records
+agree.
+
+### Exact inventory
+
+The requirement that contract-required paths, manifest-recorded paths, and present payload
+paths form the same set. It rejects missing and unexpected files.
+
+### Manifest
+
+A machine-readable inventory that records artifact-relative paths, sizes, and
+cryptographic digests, plus any explicitly defined bundle claims. A manifest proves
+recorded byte identity after independent verification. It does not grant approval or prove
+semantic correctness.
+
+### Artifact integrity
+
+Agreement between retrieved artifact bytes and the size and digest recorded in the
+manifest.
+
+## Meaning and provenance terms
+
+### Semantic consistency
+
+Agreement among independent records about release-defining meaning, such as threshold,
+metric definition, evaluation cohort, feature schema, or intended use. The threshold-drift
+case fails semantic consistency while passing artifact integrity.
+
+### Provenance
+
+The checkable connection from a release candidate to its declared and recorded source. In
+this module, that includes a full Git revision and the identity of `dvc.lock`.
+
+### Git revision
+
+The immutable project revision containing code, configuration, stage declarations,
+committed parameters, and the lock file used by the release review. A moving branch name
+is not enough for historical provenance.
+
+### Lock identity
+
+The cryptographic identity of `dvc.lock` at the reviewed source revision. It anchors the
+promotion record to DVC's recorded stage dependencies, parameters, and outputs. It does
+not itself grant authority or guarantee remote recovery.
+
+### Promoted claim
+
+A release-defining statement that must agree across named evidence surfaces. The capstone
+specimen models the decision threshold as one promoted claim.
+
+### Evidence graph
+
+A map from atomic release claims to the independent records that support or contradict
+them. An edge exists only when a stable identifier, field, or declared rule makes the
+connection checkable.
+
+## Authority terms
+
+### Promotion
+
+The governed transition that grants a specific candidate authority for a specific
+consumer use. Promotion is not a file copy and is not implied by DVC tracking.
+
+### Promotion contract
+
+The policy instance defining release identity, source, exact inventory, promoted claims,
+required reviewer roles, and consumer boundary. Its clauses are falsifiable.
+
+### Promotion decision
+
+The record that named roles approve or reject the exact release, registry reference, Git
+revision, and lock identity under the contract.
+
+### Required reviewer role
+
+A distinct authority required by policy. Presence of another role cannot satisfy it unless
+the policy explicitly permits role combination.
+
+### Source binding
+
+Field-level agreement that the decision applies to the same release and source named by
+the contract. The stale-source case breaks source binding.
+
+### Authority
+
+Permission for named consumers to depend on the release for the supported action.
+Authority can be granted, superseded, restricted, or withdrawn while historical identity
+remains intact.
+
+## Interface terms
+
+### Release surface
+
+The deliberately small set of files, schemas, and behaviors exposed to downstream
+consumers.
+
+### Supported file
+
+A release file whose schema or behavior consumers may depend on. Changes require
+compatibility review.
+
+### Audit-only file
+
+Evidence retained to explain a release but not promised as a runtime consumer interface.
+It remains integrity-protected and readable.
+
+### Internal surface
+
+A producer implementation detail, such as a workspace path, cache object, experiment
+queue entry, or intermediate output. Consumers must not depend on it.
+
+### Consumer contract
+
+Testable clauses naming immutable identity, supported action and files, verification,
+provenance, exclusions, compatibility, and lifecycle behavior.
+
+### Consumer verification
+
+Independent validation after retrieval: resolve immutable identity, compare exact
+inventory, recompute artifact digests, validate promoted claims and schemas, check source
+and approval binding, and record proof limits.
+
+### Atomic publication
+
+Publication behavior in which consumers observe either the previous complete release or
+the new complete release, never a mixture.
+
+### Compatibility
+
+Preservation of supported consumer behavior and meaning across releases. Structural
+compatibility covers paths and schemas; semantic compatibility covers definitions,
+cohorts, units, and intended use.
+
+## Storage and registry terms
+
+### DVC remote
+
+Configured storage used by DVC to push and pull content-addressed objects needed by tracked
+project state. It supplies availability, not promotion authority.
+
+### DVC-backed data registry
+
+A Git and DVC repository intentionally used as a versioned discovery and retrieval
+surface. Consumers may use routes such as `dvc get` with repository, path, and immutable
+revision. The repository still needs a consumer contract if retrieval carries a supported
+product promise.
+
+### Promotion registry
+
+A system or governed release surface that names immutable approved versions and retains
+authority and lifecycle metadata. It may also store bytes, but storage and authority
+remain distinct responsibilities.
+
+### Registry alias
+
+A movable discovery reference managed by the registry. Alias movement is a lifecycle
+event and should record the immutable old and new targets.
+
+### Recoverability
+
+Ability to restore protected release content from governed storage under the declared
+objective. Promotion integrity does not prove recoverability; Module 08 tests that
+boundary.
+
+## Failure and repair terms
+
+### Absence failure
+
+Required evidence does not exist, such as a missing reviewer role.
+
+### Integrity failure
+
+Artifact bytes disagree with the recorded manifest identity.
+
+### Consistency failure
+
+Independent records make contradictory release claims.
+
+### Provenance failure
+
+Candidate, contract, and decision do not bind to the same source.
+
+### Policy failure
+
+Evidence may be internally consistent but violates a declared release rule, such as using
+a mutable alias as the release identity.
+
+### Evidence-preserving repair
+
+A repair that retains the failed candidate and assessment, returns to authoritative
+source, creates a coherent new candidate, and obtains a new decision. It does not edit old
+records to make them appear retrospectively consistent.
+
+### In-place mutation
+
+Replacement of files or metadata under an immutable release identity. This is forbidden
+because it destroys the ability to know what earlier consumers received.
+
+## Contrasts to remember
+
+| Do not collapse | First question | Second question |
+| --- | --- | --- |
+| integrity and semantics | do bytes match? | do claims agree and mean what policy expects? |
+| DVC remote and promotion registry | can content be restored? | which release may consumers trust? |
+| candidate and approved release | was a result produced? | did required authority accept it? |
+| immutable version and alias | what exact release? | which release is currently preferred? |
+| manifest and promotion decision | which bytes are recorded? | who approved this exact candidate? |
+| withdrawal and deletion | is new use forbidden? | has historical evidence been erased? |
+| repair and rewriting | was new evidence reviewed? | were old records edited into apparent agreement? |
+
+## Review questions
+
+When terminology becomes vague, ask:
+
+- Which lifecycle state is this result in?
+- Which immutable identity names it?
+- Is this evidence about bytes, meaning, provenance, authority, or availability?
+- Which file or behavior is supported for consumers?
+- Which system owns storage, discovery, approval, and lifecycle?
+- What would disprove the claim?
+- Would the proposed repair preserve what reviewers and consumers originally saw?
