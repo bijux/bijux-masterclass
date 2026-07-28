@@ -92,7 +92,7 @@ If the problem is already partly clear, use this shortcut:
 | [Why Git and Scripts Are Not Enough](why-git-and-scripts-are-not-enough.md) | teaches what Git does well and where it stops |
 | [What DVC Does and Does Not Own](what-dvc-does-and-does-not-own.md) | teaches DVC's authority, boundaries, and non-goals |
 | [The First Honest Workflow Inventory](the-first-honest-workflow-inventory.md) | teaches how to audit your own workflow before touching DVC |
-| [Worked Example: Auditing a Fragile ML Workflow](worked-example-auditing-a-fragile-ml-workflow.md) | walks through one realistic Git-plus-script failure story |
+| [Worked Investigation: Rejecting a Repeatable Workflow Claim](worked-investigation-rejecting-a-repeatable-workflow.md) | investigates matching local reruns and the missing evidence for team reconstruction |
 | [Exercises](exercises.md) | gives five mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
