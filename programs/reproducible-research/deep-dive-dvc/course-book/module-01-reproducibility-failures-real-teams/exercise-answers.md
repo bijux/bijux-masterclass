@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Reproducibility Failures Real Teams"]
+  section["Reproducibility Failures in Real Teams"]
   page["Exercise Answers"]
   capstone["Capstone evidence"]
 
@@ -18,216 +17,288 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  observation["observation"] --> claim["bounded claim"]
+  claim --> limit["proof limit"]
+  limit --> decision["decision"]
+  decision --> repair["repair"]
+  repair --> closure["closure evidence"]
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These models show reasoning structure. Your paths and wording may differ. Keep
+your answer when it cites direct evidence, limits the inference, and gives a
+reviewable closure condition.
 
-## How to use the answer page well
-
-Do not read a model answer first and then reshape your workflow story so it sounds more
-confident.
-
-A better rhythm is:
-
-1. finish the exercise with your own claim table and notes
-2. write one plain-language explanation of the current workflow truth
-3. compare that explanation with the model answer
-4. revise where the model answer exposes missing evidence, a blurred boundary, or an
-   adoption idea that is too broad
-
-What matters is whether the reasoning makes the workflow story more honest.
-
-Strong Module 01 answers usually do four things:
-
-- they weaken claims when the evidence is still weak
-- they expose hidden inputs without pretending they are new
-- they respect Git's real authority without overloading it
-- they keep DVC adoption narrow and testable
-
-The strongest self-study packets also leave behind six concrete artifacts:
-
-- one weakened claim
-- one hidden-input inventory
-- one Git-boundary review note
-- one DVC-boundary explanation
-- one cold-start failure report
-- one narrow adoption proposal
-
-If your answers rely only on "DVC will help later," the reasoning is still too thin.
-
-## Answer 1: Separate repeatability from reproducibility
-
-What the claim does show:
-
-- one person achieved a local rerun with a matching result
-
-What it does not show yet:
-
-- whether another person could recover the same result later
-- whether the same data identity, environment, and parameters were actually preserved
-- whether the repository explains the run without relying on memory
-
-Stronger next question:
-
-- what would another teammate need in order to recover this result from the repository and
-  declared artifacts alone
-
-The main lesson is that local rerun success is useful evidence, but it is not the whole
-proof.
-
-## Answer 2: Find the hidden state
-
-Strong answers should include items like:
-
-- the exact identity of `train.csv`
-- the manual cleaning step that produced `train.csv`
-- the threshold sometimes passed via CLI
-- the environment used by the original author
-- any dependency versions in that environment
-- the command history or shell practice used to launch the run
-- the exact relationship between the dataset and `results/metrics.csv`
-
-The important point is that the real workflow already includes these influences whether or
-not the repository has described them well.
-
-The most dangerous hidden input is often the one that silently changes result meaning,
-such as a manual preprocessing step or a CLI-only threshold. The easiest first repair is
-usually the one that can be made explicit without redesigning the whole workflow, such as
-moving a CLI-only threshold into a declared config file.
-
-## Answer 3: Name Git's real boundary
-
-A strong review note would say:
-
-> Git is preserving source code, visible configs, and textual instructions well. The gap
-> is that the full result story still includes data identity, derived artifacts, and
-> execution assumptions that source history alone does not make explicit. That matters
-> because a team can version code carefully and still fail to recover or defend the result
-> later.
-
-The main lesson is to respect Git's strengths while refusing to overload its authority.
-
-## Answer 4: Draw the DVC boundary honestly
-
-What DVC is likely to help with:
-
-- tracked data and artifact identity
-- visible pipeline relationships
-- recorded stage outputs and recoverable workflow state
-
-What DVC does not settle by itself:
-
-- whether the data is scientifically valid
-- whether the workflow is fully deterministic everywhere
-- whether the team's published outputs are interpreted responsibly
-- whether undocumented manual behavior has been removed
-
-Why the distinction matters:
-
-- it keeps tool expectations honest and makes later workflow design more precise
-
-The disappointment caused by overclaiming is that teams mistake a better state-recording
-tool for a complete scientific or operational guarantee.
-
-## Answer 5: Write your first workflow inventory
-
-There is no single correct inventory, but strong answers will clearly name:
-
-- where the source data comes from
-- what parameters or defaults shape behavior
-- what environment or machine assumptions still matter
-- which outputs people actually trust
-- which parts of the story still depend on memory, luck, or undeclared state
-
-The main lesson is that the inventory should describe the present workflow truth, not an
-imagined future one.
-
-The weakest boundary is usually whichever consumer-facing output still depends on private
-memory, undocumented preprocessing, or undeclared execution assumptions.
-
-## Answer 6: Reproduce a result from a cold start
-
-A strong report names concrete blockers such as:
-
-- an unidentified dataset revision
-- an unrecorded preprocessing command
-- an implicit working directory
-- a missing dependency version
-- an unexplained output path
-
-It separates evidence found in the repository from facts supplied later by a person.
-
-What this experiment proves is the current recovery limit of the repository as given. It
-does not yet prove whether DVC would fix the gap or whether the team has agreed on the
-right ownership boundaries.
-
-## Answer 7: Build an evidence ladder
-
-The claims normally strengthen in the order given.
-
-- "the file exists"
-- "the script ran"
-- "the inputs are identified"
-- "another person recovered it"
-- "the published result is traceable"
-
-Existence proves almost nothing about origin. A successful command adds execution evidence.
-Identified inputs add provenance. Independent recovery tests the handoff. Traceable
-publication connects the recovered result to what consumers actually received.
-
-Many teams stop too early at local existence or successful rerun and call the workflow
-"reproducible" before another person has actually recovered the result.
-
-## Answer 8: Classify ten workflow facts
-
-The exact facts vary, but every classification needs an owner. Git commonly owns source
-and small text controls. DVC can own large data identity and pipeline state. Environment
-locks, runtime policy, and scientific interpretation still require explicit owners.
-
-The weakest ownership often appears in environment or process facts because teams rely on
-memory and habit there. DVC is a good later owner for large data identity, derived
-artifact identity, and pipeline state that teams need to recover reliably.
-
-## Answer 9: Write a failure report without blaming a tool
-
-A useful report states:
-
-- the expected result
-- observed command and revision
-- first difference
-- available evidence
-- next discriminating check
-
-It does not assign a cause until evidence distinguishes missing data, changed code,
-environment drift, or process error.
-
-Blame language is unhelpful because it hides what is actually known and usually collapses
-multiple possible failure layers into one dramatic sentence.
-
-## Answer 10: Design an adoption boundary
-
-A credible proposal starts narrowly, for example with raw and prepared datasets. It names
-Git as pointer-history owner, a DVC remote as durable object owner, and environment
-management as a separate concern. A clean-clone recovery drill is a better success
-criterion than merely committing `.dvc` files.
-
-The first artifact family DVC should own is usually the one that creates the biggest
-recovery gap today while still being easy to test independently. What remains outside DVC
-for now often includes environment management, scientific interpretation, and broader
-publication semantics.
-
-## Self-check
-
-If your answers consistently explain:
-
-- why team-grade reproducibility is harder than a local rerun
-- which hidden inputs are influencing the workflow
-- what Git is and is not preserving
-- what DVC can improve without pretending to own everything
-
-then you are using Module 01 correctly.
+## Answer: Bound the repeatability claim
+
+Model:
+
+> `local-run-a.json` and `local-run-b.json` have equal content and digests.
+> Both commands exited successfully. This verifies byte-level local
+> repeatability for the risk summary in the prepared case workspace. It does
+> not verify reconstruction outside that workspace because
+> `clean-rebuild.json` is absent. The accurate statement is: “The current
+> workspace reruns consistently; team reproducibility remains unverified until
+> a clean maintainer rebuilds from recorded evidence.”
+
+Local repeatability would be contradicted if the two runs used the same claimed
+inputs and contract but produced different result content beyond the allowed
+tolerance. A missing clean run does not contradict local equality.
+
+## Answer: Inventory one trusted result
+
+Model matrix:
+
+| Surface | Role | Identity | Declared? | Recoverable? | Evidence result |
+|---|---|---|---:|---:|---|
+| `observations.csv` | source records | SHA-256 in workflow record | yes | asserted yes | observed in specimen |
+| `params.json` | threshold source | file plus value `0.20` | yes | source bundle | observed |
+| `score_incidents.py` | transformation | implementation SHA-256 | yes | source bundle | observed |
+| Python runtime | execution | implementation/name/version | yes in record | environment must be recreated | bounded observation |
+| `risk-summary.json` | trusted result | output SHA-256 and schema | yes | generated | observed |
+| clean rebuild | reconstruction | matching JSON | required | n/a | observed in complete case |
+
+The likely same-path risk is `observations.csv`: its bytes can change without
+its role or location changing.
+
+Proof limits:
+
+- the specimen's `input_recoverable: true` is a modeled fact, not a production
+  remote drill;
+- Python version does not identify every package;
+- the result schema does not validate scientific threshold choice;
+- local files do not prove access policy or retention.
+
+## Answer: Diagnose the hidden threshold
+
+Model finding:
+
+> The hidden case invokes the scorer without `--threshold` and supplies
+> `RISK_THRESHOLD`. The effective value equals the declared `params.json`
+> value, so both local results happen to match the control case.
+> `workflow-record.json` nevertheless records
+> `environment:RISK_THRESHOLD` as the source, while the contract declares
+> `params.json`. This breaks the reviewed control surface. Require the CLI
+> value from the declared file, or declare and record the external control
+> identity. Close the finding with a clean rebuild whose effective threshold
+> can be reconstructed from the contract.
+
+The file-based route is preferable when the team controls and reviews the
+parameter with the repository. An external control can be appropriate when a
+governed runtime system owns it, but its effective identity and influence must
+still appear in evidence.
+
+Equal values distinguish neither provenance nor override behavior. The
+`control_source` and command receipt do.
+
+## Answer: Prove content identity beyond the path
+
+The current path is `source/observations.csv`. The workflow record contains the
+digest from result production. After an additional row is appended, the
+current digest differs and `input_identity_matches` fails.
+
+Invalid inference:
+
+> The result sits beside `observations.csv`, so the current file produced it.
+
+Repair:
+
+- if the file is small and suitable, commit the exact version to Git and link
+  the result to its revision;
+- if it belongs at an artifact boundary, track its content identity with DVC,
+  commit metadata with source, and preserve the object in a governed remote.
+
+Renaming the current changed file only creates another path. It does not
+identify the historical bytes.
+
+A known digest without reachable bytes supports diagnosis but not
+reconstruction. Identity and recovery are independent.
+
+## Answer: Turn manual preprocessing into a contract
+
+Model contract:
+
+```text
+input:
+  observations.csv with recorded content identity
+transformation:
+  explicit row-selection implementation with reviewed rule
+controls:
+  exclusion policy or list, if domain-approved
+output:
+  prepared-observations.csv with content identity
+failure:
+  no partial output; validation must pass
+verification:
+  row count, schema, source identity, exclusion receipt
+```
+
+Illustrative stage:
+
+```yaml
+stages:
+  prepare_observations:
+    cmd: python prepare_observations.py
+    deps:
+      - observations.csv
+      - prepare_observations.py
+    params:
+      - preparation.exclusion_policy
+    outs:
+      - prepared-observations.csv
+```
+
+This proves mechanical lineage only. A domain owner must approve whether
+excluding an incident is valid for the analysis.
+
+## Answer: Draw the Git and DVC responsibility boundary
+
+Model map:
+
+| Fact | Authority | Supporting system | Evidence | Not proved |
+|---|---|---|---|---|
+| scoring source revision | Git | review system | commit identity | result provenance unless linked |
+| threshold declaration | Git parameter file | DVC parameter dependency | reviewed value and stage record | scientific validity |
+| input path/content link | DVC metadata | Git | pointer at revision | object availability |
+| input bytes | governed DVC remote | storage policy | clean pull and digest | access entitlement |
+| pipeline declaration | `dvc.yaml` in Git | DVC | stage graph | absence of hidden inputs |
+| execution state | `dvc.lock` | Git and DVC | recorded identities | full runtime |
+| runtime | environment tool | Git declaration, CI | lock/image and receipt | data recovery |
+| scientific approval | domain review | decision record | approved rationale | mechanical reconstruction |
+
+If metadata reaches Git but the object does not reach the remote, collaborators
+can identify missing content but cannot materialize it.
+
+## Answer: Separate runtime reconstruction from input recovery
+
+Runtime contract:
+
+```text
+Python implementation/version
+dependency lock or image digest
+relevant locale, hardware, randomness, concurrency
+clean execution command
+result equality or tolerance
+```
+
+Recovery contract:
+
+```text
+protected input content identity
+governed remote
+authorized credential class
+empty-cache retrieval
+content verification
+retention and failure owner
+```
+
+`MISSING_RUNTIME` has available input but cannot bound execution context.
+`UNRECOVERABLE_INPUT` has runtime and content identity but cannot provide the
+bytes to another maintainer.
+
+Neither contract compensates for the other because they protect different
+premises: **how computation behaves** and **whether required state exists at
+the team boundary**.
+
+## Answer: Write a reproducibility decision
+
+Decision: `REJECT_REPRODUCIBILITY_CLAIM`.
+
+| Premise | Result |
+|---|---|
+| local outputs agree | verified |
+| input identity | verified |
+| implementation identity | verified |
+| declared controls | verified |
+| declared transformations | verified |
+| runtime identity | verified |
+| clean reconstruction | **unverified** |
+| input recovery | verified |
+
+The six recorded surfaces and local equality remain useful. They cannot supply
+the missing clean observation.
+
+Next action: reconstruct in a new directory from the recorded boundary and
+preserve command plus result verification. A passing clean receipt changes the
+bounded decision.
+
+Scientific validity, production safety, and access authorization remain out of
+scope even after acceptance.
+
+## Answer: Design a narrow DVC adoption contract
+
+Model using input identity and recovery:
+
+```text
+current gap:
+  observations.csv is referred to by path and private copy
+
+bounded claim:
+  each protected Git revision identifies exact observation bytes,
+  and an authorized maintainer can recover them from the shared remote
+
+DVC-owned evidence:
+  path/content metadata, remote transfer, materialization
+
+Git-owned evidence:
+  source revision, DVC metadata, workflow docs
+
+other owners:
+  data meaning, access entitlement, retention
+
+acceptance:
+  empty-cache checkout and pull reproduce the recorded digest
+
+adversarial test:
+  omit the object from the candidate remote and require recovery to fail
+
+proof limits:
+  no claim about runtime, scientific validity, promotion, or deployment
+```
+
+Changing input bytes should change recorded artifact state. Editing unrelated
+lesson prose should not.
+
+The adoption formalizes an incomplete story if manual preprocessing still
+creates the tracked “source” without recorded lineage.
+
+## Answer: Prepare an independent maintainer handoff
+
+Model route:
+
+| Entry | Expected evidence | Failure meaning | Owner | Proof limit |
+|---|---|---|---|---|
+| `capstone-workflow-evidence-audit` | eight expected decisions | audit or specimen contract drift | workflow maintainer | mechanical specimen only |
+| local result pair | equal JSON | local nondeterminism or changed inputs | implementation owner | one workspace |
+| same-workspace assessment | missing clean receipt | team reconstruction unverified | workflow maintainer | not contradiction of local reruns |
+| hidden-threshold record | external control source | reviewed parameter boundary bypassed | workflow maintainer | value validity not judged |
+| changed-input record | digest mismatch | path no longer identifies producing bytes | data owner | recovery separate |
+| manual-preprocessing record | undeclared prepared input | lineage gap | workflow/domain owners | domain approval separate |
+| responsibility map | one authority per fact | ownership gap or overreach | repository owner | people mapping may be external |
+| adoption contract | narrow DVC claim | tool introduced without acceptance evidence | repository maintainer | later course concerns excluded |
+
+Answers:
+
+1. Matching local files prove bounded repeatability in the prepared workspace.
+2. Recorded identities, controls, transformations, runtime, clean rebuild, and
+   shared recovery make the result transferable.
+3. Scientific validity, access policy, and release approval remain outside
+   DVC's mechanical evidence.
+
+Any “ask the author” instruction marks missing durable evidence or ownership.
+
+## Final self-check
+
+Keep your own packet if it:
+
+- distinguishes observation from inference;
+- preserves verified local evidence;
+- exposes the exact missing premise;
+- treats path, identity, and recovery separately;
+- represents manual work as influence;
+- gives Git, DVC, runtime, storage, and domain review distinct roles;
+- defines closure evidence;
+- adopts DVC around one bounded contract.
+
+The goal is not to produce the same prose. It is to make every conclusion
+reviewable from evidence.
