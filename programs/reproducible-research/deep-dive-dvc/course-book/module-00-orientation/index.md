@@ -76,6 +76,7 @@ flowchart TD
 | planning the complete beginner-to-advanced route | [Course Map](course-map.md) |
 | planning independent sessions or recovering a missed class | [Self-Study Guide](self-study-guide.md) |
 | unsure what a DVC receipt can prove | [Evidence-Reading Guide](evidence-reading-guide.md) |
+| deciding when and how to use the capstone | [Capstone Framing Guide](capstone-framing-guide.md) |
 | returning after Modules 01–04 | [Mid-Course Map](mid-course-map.md) |
 | auditing a mature repository or migration | [Mastery Map](mastery-map.md) |
 | uncertain about a recurring term | [Course Reference](../reference/index.md) |
