@@ -78,9 +78,10 @@ flowchart LR
   overview["Overview"] --> core1["Core 1: baseline authority"]
   core1 --> core2["Core 2: experiment scope"]
   core2 --> core3["Core 3: DVC experiment mechanics"]
-  core3 --> core4["Core 4: comparison and selection"]
-  core4 --> core5["Core 5: promotion and cleanup"]
-  core5 --> example["Worked example"]
+  core3 --> core4["Core 4: uncertainty and replication"]
+  core4 --> core5["Core 5: comparison and selection"]
+  core5 --> core6["Core 6: promotion and cleanup"]
+  core6 --> example["Worked example"]
   example --> practice["Exercises and answers"]
   practice --> glossary["Glossary"]
 ```
@@ -104,8 +105,9 @@ If the problem is already partly clear, use this shortcut:
 - open Core 1 when the main confusion is "what is the baseline protecting?"
 - open Core 2 when the main confusion is "what belongs in one experiment?"
 - open Core 3 when the main confusion is "what do DVC experiments record and isolate?"
-- open Core 4 when the main confusion is "which candidate is actually comparable?"
-- open Core 5 when the main confusion is "how does a candidate become history safely?"
+- open Core 4 when the main confusion is "does one reproducible run establish a stable effect?"
+- open Core 5 when the main confusion is "which candidate is actually comparable?"
+- open Core 6 when the main confusion is "how does a candidate become history safely?"
 
 ## Module map
 
@@ -115,6 +117,7 @@ If the problem is already partly clear, use this shortcut:
 | [Baseline Authority and Experiment Intent](baseline-authority-and-experiment-intent.md) | teaches how a baseline anchors controlled exploration |
 | [Experiment Scope and Change Boundaries](experiment-scope-and-change-boundaries.md) | teaches which changes belong in one experiment and which require stronger review |
 | [DVC Experiment Records and Isolation](dvc-experiment-records-and-isolation.md) | teaches what DVC experiments record, compare, and keep separate |
+| [Uncertainty, Replication, and Selection Bias](uncertainty-replication-and-selection-bias.md) | separates exact-run lineage from stability, practical significance, and honest winner selection |
 | [Comparing Experiments and Selecting Candidates](comparing-experiments-and-selecting-candidates.md) | teaches candidate comparison without metric cherry-picking |
 | [Promotion, Cleanup, and History Integrity](promotion-cleanup-and-history-integrity.md) | teaches deliberate promotion, discard, and baseline protection |
 | [Worked Example: Promoting a Controlled Threshold Experiment](worked-example-promoting-a-controlled-threshold-experiment.md) | walks through one realistic experiment review |
@@ -129,6 +132,8 @@ By the end of this module, you should be able to explain:
 - what makes a baseline authoritative enough for experiment comparison
 - how to keep one experiment focused on a reviewable change
 - what DVC experiments add beyond ordinary Git branch history
+- why one reproducible run may still be weak evidence for a stable effect
+- how replication and winner selection change the review burden
 - how to compare candidate runs without ignoring metric meaning
 - why promotion requires evidence, not only a better number
 - how cleanup protects you from stale local folklore

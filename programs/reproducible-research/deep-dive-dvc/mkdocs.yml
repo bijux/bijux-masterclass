@@ -97,6 +97,7 @@ nav:
   - Baseline Authority and Experiment Intent: module-06-experiments-baselines-controlled-change/baseline-authority-and-experiment-intent.md
   - Experiment Scope and Change Boundaries: module-06-experiments-baselines-controlled-change/experiment-scope-and-change-boundaries.md
   - DVC Experiment Records and Isolation: module-06-experiments-baselines-controlled-change/dvc-experiment-records-and-isolation.md
+  - Uncertainty, Replication, and Selection Bias: module-06-experiments-baselines-controlled-change/uncertainty-replication-and-selection-bias.md
   - Comparing Experiments and Selecting Candidates: module-06-experiments-baselines-controlled-change/comparing-experiments-and-selecting-candidates.md
   - Promotion, Cleanup, and History Integrity: module-06-experiments-baselines-controlled-change/promotion-cleanup-and-history-integrity.md
   - 'Worked Example: Promoting a Controlled Threshold Experiment': module-06-experiments-baselines-controlled-change/worked-example-promoting-a-controlled-threshold-experiment.md
