@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,310 +9,154 @@ graph LR
   program["Deep Dive DVC"]
   section["Truthful Pipelines Declared Dependencies"]
   page["Exercise Answers"]
-  capstone["Capstone evidence"]
+  packet["Reviewable reasoning"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.models.-> packet
 ```
 
 ```mermaid
 flowchart LR
-  promise["read the stage promise"] --> classify["classify real influence"]
-  classify --> predict["predict reruns from declarations"]
-  predict --> repair["repair hidden reads and mixed ownership"]
-  repair --> review["review the graph as a contract"]
+  declaration["declaration"] --> prediction["prediction"]
+  mutation["controlled mutation"] --> receipt["planner receipt"]
+  prediction --> decision["bounded decision"]
+  receipt --> decision
+  result["semantic result"] --> decision
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+Compare reasoning, not prose. A strong answer connects an actual read or write to a
+declaration edge, predicts a planner decision, checks result meaning, and limits its
+conclusion to the tested claim.
 
-## How to use the answer page well
+## Answer: State a falsifiable stage claim
 
-Do not read the model answer first and then reduce the whole module to "put more things
-in `deps`."
+A suitable claim is:
 
-A better rhythm is:
+> `declared_input` reads the probe implementation, source data, and
+> `policy/threshold.txt`; it owns `results/declared-input.txt`. Changing the policy from
+> `10` to `20` should mark the stage stale. Ordinary reproduction should write
+> `threshold=20`, and a second unchanged reproduction should skip. This claim would be
+> false if the stage skipped the policy mutation, retained `threshold=10`, failed to
+> restore its declared output, or executed again without a declared change.
 
-1. finish the exercise with your own contract packet
-2. state the stage promise and the real influences on it
-3. compare your reasoning with the model answer
-4. revise anywhere you blurred file reads, control values, or ownership boundaries
+This is falsifiable because it specifies cause, planner response, semantic result, and
+convergence. “The stage processes data correctly” specifies none of those.
 
-What matters is whether the reasoning keeps declarations, real command behavior, and lock
-evidence connected.
+## Answer: Build an influence ledger
 
-Strong Module 04 answers usually do five things:
+Representative decisive rows are:
 
-- they read a stage declaration as a promise
-- they place every influence in the right field for the right reason
-- they predict reruns from declared edges instead of intuition
-- they treat hidden reads as correctness defects
-- they improve graph shape when provenance clarity needs it
+```text
+stage	kind	name	read_or_written	declared	consequence_if_hidden
+declared_input	file	policy/threshold.txt	read	yes	policy change would be missed
+hidden_input	file	policy/threshold.txt	read	no	output can retain old threshold
+declared_param	parameter	settings.multiplier	read	yes	control change invalidates stage
+hidden_param	parameter	settings.multiplier	read	no	score can use old multiplier
+undeclared_sidecar	output	results/declared-main.txt	written	yes	loss invalidates stage
+undeclared_sidecar	output	results/undeclared-receipt.txt	written	no	loss remains invisible
+```
 
-The strongest self-study packets also leave behind six concrete artifacts:
+The ledger must be derived from command behavior. Stage names happen to signal the
+contrast in this specimen, but they are not evidence.
 
-- one stage-contract explanation
-- one influence-classification table
-- one rerun prediction sheet
-- one repaired missing-dependency example
-- one stage-boundary refactor
-- one backward review of a real pipeline
+## Answer: Predict planner decisions
 
-If your answers rely only on "DVC will figure it out," the reasoning is still too thin.
+| Change | Declared-graph prediction | Truthful-contract expectation |
+| --- | --- | --- |
+| policy `10` to `20` | only `declared_input` stale | both readers should become stale |
+| multiplier `2` to `3` | only `declared_param` stale | both readers should become stale |
+| undeclared receipt removed | no stage stale | owner should become stale if receipt is promised |
+| no change after convergence | all stages skip | all stages skip |
 
-## Answer 1: Read a stage contract
+For the file mutation, the declared result should adopt `20` and hidden result should
+retain `10`. For the parameter mutation, declared score should become `24` and hidden
+score should remain `16`.
 
-The stage promises:
+The split between prediction columns prevents a common error: reporting expected DVC
+behavior as if it were acceptable pipeline behavior.
 
-- run `python -m incident_escalation_capstone.prepare`
-- read `data/raw/service_incidents.csv`
-- produce `data/prepared/incidents.parquet`
+## Answer: Prove the hidden file influence
 
-The stage should become stale when:
+Observation:
 
-- the raw incidents file changes
-- the command text changes
-- the declared output is missing
-- the recorded state no longer matches the declared current state
+- current policy is `20`;
+- status names `declared_input` and omits `hidden_input`;
+- ordinary reproduction produces `threshold=20` for the declared stage;
+- the hidden result remains `threshold=10`.
 
-What still needs inspection:
+Inference: only the declared stage exposes the policy path to DVC, so only that stage is
+eligible for policy-driven invalidation. The paired commands read the same changed value;
+the declaration edge is the controlled difference.
 
-- whether the command reads additional files such as schemas or reference tables
-- whether it reads control values that belong in `params`
-- whether it writes side artifacts that should be declared or cleaned elsewhere
-- whether the repository convention also treats implementation files as explicit
-  dependencies
+Rejected alternative: cache behavior does not explain why status already distinguishes
+the stages before reproduction.
 
-The biggest hidden-risk category is undeclared influence: the command may depend on more
-than the contract admits.
+Decision: reject the hidden stage contract because its result disagrees with the current
+policy while the declared graph considers it current.
 
-## Answer 2: Place each influence
+## Answer: Repair and replay the file contract
 
-Strong placement:
+The repair adds the real path:
 
 ```yaml
 deps:
-  - models/escalation-model.json
-  - data/prepared/incidents.parquet
-  - data/reference/escalation_policy.csv
-params:
-  - evaluate.threshold
-outs:
-  - reports/evaluation.json
+  - policy/threshold.txt
+  - scripts/stage_contract_probe.py
 ```
 
-Why:
+Exact surrounding paths may differ in the disposable workspace. Acceptance requires:
 
-- file reads belong in `deps`
-- reviewed control values belong in `params`
-- governed durable products belong in `outs`
+1. converge with policy `10`;
+2. mutate only the policy to `20`;
+3. observe `hidden_input` under changed dependencies in status;
+4. run ordinary reproduction;
+5. observe `threshold=20`;
+6. observe a skip on the next unchanged reproduction.
 
-The temporary log usually stays outside the governed output contract if it is only
-operational residue. It can still matter for debugging or incident review without
-becoming a durable downstream artifact.
+Force is excluded because it does not test whether the repaired declaration makes the
+original cause visible. Deleting the output is excluded because it triggers a different
+cause.
 
-## Answer 3: Predict reruns
+## Answer: Prove and repair the hidden parameter
 
-If the raw incidents file changes and `prepare` produces a new prepared output:
-
-- `prepare` should rerun because its declared input changed
-- `fit` should rerun because it depends on the prepared output
-- `evaluate` should rerun because it depends on prepared data and likely on the updated
-  model produced by `fit`
-
-If `fit.model_family` changes:
-
-- `fit` should rerun because its declared parameter changed
-- `evaluate` should rerun if it consumes the model from `fit`
-- `prepare` should remain stable because none of its declared inputs or controls changed
-
-If `evaluate.threshold` changes:
-
-- `evaluate` should rerun
-- `prepare` and `fit` should remain stable
-
-If an unrelated README changes:
-
-- no stage should rerun unless the README was declared as a dependency, which would itself
-  need justification
-
-The main lesson is that rerun prediction follows declared edges, not feelings about which
-part of the project changed.
-
-## Answer 4: Diagnose stale output risk
-
-Strong review response:
-
-> The evaluation stage likely has a missing dependency. If the command reads
-> `data/reference/escalation_policy.csv`, that file belongs in the stage's `deps`. This is
-> more dangerous than an extra rerun because DVC can now skip evaluation after a
-> meaningful input change, leaving a stale report that appears current. Add the policy CSV
-> to `deps`, rerun the stage, and confirm `dvc.lock` now records the policy dependency and
-> the updated evaluation evidence.
-
-Concrete repair:
-
-```yaml
-deps:
-  - models/escalation-model.json
-  - data/prepared/incidents.parquet
-  - data/reference/escalation_policy.csv
-```
-
-What lock evidence should show:
-
-- the repaired dependency appears in the recorded stage state
-- the affected output identity is refreshed after rerun
-
-## Answer 5: Refactor a mixed stage
-
-A strong split answer:
-
-```yaml
-stages:
-  fit:
-    cmd: python -m incident_escalation_capstone.fit
-    deps:
-      - data/prepared/incidents.parquet
-    params:
-      - fit.model_family
-    outs:
-      - models/escalation-model.json
-  evaluate:
-    cmd: python -m incident_escalation_capstone.evaluate
-    deps:
-      - data/prepared/incidents.parquet
-      - models/escalation-model.json
-    params:
-      - evaluate.threshold
-    outs:
-      - reports/evaluation.json
-```
-
-Why this is often stronger:
-
-- a model control change reruns fitting and then evaluation
-- an evaluation threshold change reruns only evaluation
-- the model has clear ownership as an intermediate
-- review can separate "why did the model move?" from "why did the report move?"
-
-A defensible keep-together answer exists only if the model has no independent reuse or
-review value and the combined command truly owns one inseparable result boundary.
-
-## Answer 6: Predict the stage-contract audit
-
-A complete prediction table is:
-
-| Finding | Result | Decision | Reason |
-| --- | --- | --- | --- |
-| `BASELINE_CONVERGES` | `PASS` | `ACCEPT` | all stages build, then skip on the settled run |
-| `DECLARED_INPUT_CHANGE_IS_STALE` | `PASS` | `ACCEPT` | the changed policy path is in `deps` |
-| `DECLARED_INPUT_REBUILDS_CURRENT_VALUE` | `PASS` | `ACCEPT` | the rebuilt output moves from `10` to `20` |
-| `HIDDEN_INPUT_CHANGE_IS_INVISIBLE` | `PASS` | `REJECT` | the command reads the path but the stage omits it |
-| `DECLARED_PARAM_CHANGE_IS_STALE` | `PASS` | `ACCEPT` | `settings.multiplier` is listed under `params` |
-| `DECLARED_PARAM_REBUILDS_CURRENT_VALUE` | `PASS` | `ACCEPT` | the output moves from multiplier `2` to `3` |
-| `HIDDEN_PARAM_CHANGE_IS_INVISIBLE` | `PASS` | `REJECT` | the key exists in the file but not in the stage contract |
-| `UNDECLARED_OUTPUT_LOSS_IS_INVISIBLE` | `PASS` | `REJECT` | the deleted receipt is outside `outs` |
-
-`PASS / REJECT` means the checker successfully reproduced the defect. Calling those rows
-acceptable because they pass would reverse the purpose of the audit.
-
-Why convergence cannot settle contract truth:
-
-- DVC sees no declared change between baseline runs;
-- hidden influences also do not change between those runs;
-- undeclared products exist because the command just wrote them;
-- therefore every stage can settle even when the graph is incomplete.
-
-Convergence proves stability under unchanged declared state. It does not prove declaration
-completeness.
-
-## Answer 7: Prove file under-rebuild
-
-A strong six-sentence proof is:
-
-> The audit changes `policy/threshold.txt` from `10` to `20`.
-> `input-change-status.stdout.txt` marks `declared_input` stale and does not name
-> `hidden_input`. Reproducing the declared stage writes `threshold=20`. The hidden output
-> remains at `threshold=10`. The decisive contract difference is that only
-> `declared_input` lists the policy path in `deps`. The hidden artifact is semantically
-> stale because its stored threshold disagrees with the current policy while DVC reports
-> no declared reason to rebuild it.
-
-The durable repair is:
-
-```yaml
-hidden_input:
-  deps:
-    - data/source.txt
-    - policy/threshold.txt
-    - scripts/render.py
-```
-
-After the repair, repeat the original mutation. Expected evidence:
-
-```json
-{
-  "hidden_input": [
-    {
-      "changed deps": {
-        "policy/threshold.txt": "modified"
-      }
-    }
-  ]
-}
-```
-
-The rebuilt hidden output must contain `threshold=20`.
-
-Why force is insufficient: it refreshes one artifact without changing what DVC can detect
-next time. Why deletion is insufficient: missing declared output triggers execution for a
-different reason.
-
-## Answer 8: Prove parameter under-rebuild
-
-The declared case records:
+The evidence chain is:
 
 ```text
-before: multiplier=2 score=16
-after:  multiplier=3 score=24
+baseline control: multiplier=2
+changed control:  multiplier=3
+declared result:  multiplier=3 score=24
+hidden result:    multiplier=2 score=16
 ```
 
-The hidden case remains:
+Status identifies `settings.multiplier` only for the stage that selects the key under
+`params`. The hidden score is strong semantic evidence because the old control changes
+the calculated result, not merely metadata.
 
-```text
-multiplier=2 score=16
-```
-
-The score matters because it proves the obsolete control affected result meaning. A
-timestamp or unchanged hash could show stability without explaining semantic impact.
-
-Answers to the review questions:
-
-1. `params.yaml` is a storage surface. A stage depends only on parameter keys declared
-   under its own `params` contract.
-2. `score=16` was computed from the old multiplier, while the current control implies
-   `24`; the mismatch is direct stale-result evidence.
-3. Input-only and sidecar stages should remain stable because they do not declare or use
-   `settings.multiplier`.
-4. Treating the whole parameter file as a broad file dependency can rerun stages for
-   unrelated key changes and hides which control influenced which result.
-
-The repair is:
+Repair:
 
 ```yaml
 params:
   - settings.multiplier
 ```
 
-The repaired proof needs both a status entry and an output containing
-`multiplier=3` and `score=24`. Status alone shows detection; the output shows adoption.
+Declaring the entire parameter file as a generic file dependency would make unrelated
+key edits invalidate the stage and would conceal which control supports the result. The
+selected key documents intent and narrows invalidation.
 
-## Answer 9: Decide whether the receipt is output or scratch
+Replay acceptance is the same three-part proof: planner sees the key, output adopts
+multiplier `3` and score `24`, then the stage converges.
 
-### Governed receipt
+## Answer: Decide output ownership
 
-If the receipt is required for promotion review, the truthful declaration is:
+| Decision question | Governed receipt | Disposable scratch |
+| --- | --- | --- |
+| does absence invalidate the result? | yes | no |
+| may a consumer depend on it? | yes, through a declared edge | no |
+| must ordinary repro restore it? | yes | no |
+| where should it be written? | declared durable result path | isolated scratch or log path |
+
+For the governed design:
 
 ```yaml
 outs:
@@ -321,73 +164,95 @@ outs:
   - results/undeclared-receipt.txt
 ```
 
-After a baseline run, deleting the receipt should make `undeclared_sidecar` stale.
-Reproduction should restore `records=2`.
+After convergence, deleting the receipt should mark `undeclared_sidecar` stale and
+ordinary reproduction should restore the expected receipt value.
 
-### Disposable scratch
+For scratch, no review, release, or downstream claim may depend on the file. Operational
+use can still justify retention rules, but not pipeline ownership.
 
-If the file is only diagnostic residue:
+## Answer: Diagnose a false rerun
 
-- write it under a named scratch or operational-log boundary;
-- remove it at the end of successful execution or document retention;
-- keep every downstream stage from reading it;
-- exclude it from release and review claims.
+Suppose evaluation actually reads prepared incidents, a model, a policy, its
+implementation, and `evaluate.threshold`. A useful matrix is:
 
-A completed decision table is:
-
-| Question | Governed receipt | Scratch |
-| --- | --- | --- |
-| absence changes trust | yes | no |
-| belongs in `outs` | yes | no |
-| consumer may depend on it | only through a declared edge | no |
-| restoration required | yes | no |
-
-The `.txt` extension says nothing about ownership. The consequence of absence decides.
-
-## Answer 10: Design an adversarial contract review
-
-Consider `test_declared_file_influence_must_be_a_dependency`.
-
-- It attacks the claim that the policy file is a declared influence.
-- The unmutated audit passes because changing the policy marks `declared_input` stale.
-- Removing the policy path makes `declared_stage_is_stale` false.
-- Baseline convergence cannot catch this defect because the policy does not change during
-  baseline.
-- The semantic-value check is also necessary because a stage could run yet ignore the
-  new policy.
-
-A suitable new mutation for the main capstone would target the publish stage:
-
-| Part | Proposed evidence |
+| Mutation | Expected result |
 | --- | --- |
-| declaration mutation | remove `metrics/metrics.json` from publish `deps` |
-| retained behavior | `publish.py` still reads metrics |
-| applied mutation | change one governed metric in a disposable workspace |
-| planner receipt | capture `dvc status --json` |
-| semantic inspection | compare published metrics and manifest hash |
-| expected decision | reject if publish looks current with old promoted metrics |
+| policy content changes meaningfully | evaluation stale; report reflects new policy |
+| threshold changes | evaluation stale; reported decision counts change |
+| unrelated raw archive added | evaluation unchanged |
+| notebook prose changes | evaluation unchanged |
 
-The test should not merely corrupt the metric until parsing crashes. It should preserve a
-valid changed metric so the only issue under review is the missing stage edge.
+A narrowed declaration names the actual files and selected key. It must include imported
+helpers that can alter evaluation behavior; reducing reruns by hiding code influence is
+not precision.
+
+Positive cases prove that necessary causes remain visible. Negative cases prove that
+unrelated changes no longer create noise.
+
+## Answer: Refactor an overloaded boundary
+
+A model with independent provenance supports a split:
+
+```mermaid
+flowchart LR
+  prepared["prepared data"] --> fit["fit"]
+  family["model family"] --> fit
+  fit --> model["owned model"]
+  model --> evaluate["evaluate"]
+  prepared --> evaluate
+  threshold["evaluation threshold"] --> evaluate
+  evaluate --> report["owned report"]
+```
+
+Expected propagation:
+
+| Mutation | Fit | Evaluate |
+| --- | --- | --- |
+| model family | run | run after model changes |
+| evaluation threshold | skip | run |
+| prepared data | run | run |
+| missing model | run | run after restoration |
+| missing report | skip | run |
+
+Keeping the stage together is defensible only when the model has no independent review,
+reuse, restoration, or failure-recovery meaning. Fewer stages is not itself a reason.
+
+## Answer: Assemble the review decision
+
+A compact decision table is:
+
+| Claim | Planner evidence | Semantic or ownership evidence | Decision |
+| --- | --- | --- | --- |
+| declared file influence | status names policy dependency | output adopts `20` | accept |
+| hidden file influence | status omits stage | output retains `10` | reject |
+| declared parameter | status names selected key | score becomes `24` | accept |
+| hidden parameter | status omits stage | score remains `16` | reject |
+| undeclared receipt ownership | empty status after deletion | receipt remains absent | reject if promised |
+
+A suitable adversarial test removes a real metrics dependency from a publishing stage
+while leaving the command read intact. Change one valid metric, capture status, reproduce
+normally, and compare the published metric value or manifest identity. Reject the
+contract if publishing skips and retains the old meaning.
 
 A bounded conclusion:
 
-> The five-stage specimen proves that DVC 3.67.1 responds to declared file, parameter,
-> and output boundaries and remains blind to paired omitted boundaries. The mutation tests
-> prove the checker rejects weakened contrasts. This does not establish that the main
-> capstone or another repository has no hidden reads or writes; each command must be
-> reviewed against its own declarations and pressure-tested with meaningful mutations.
+> The specimen demonstrates that ordinary DVC planning responds to the tested declared
+> file, selected parameter, and output boundaries, while paired omitted boundaries remain
+> invisible. Replaying the original mutations demonstrates the proposed repairs. These
+> results do not establish declaration completeness for commands not inspected and
+> challenged in this packet.
 
-## Self-check
+That last sentence is part of the answer. Evidence about a specimen is not a universal
+pipeline audit.
 
-If your answers consistently explain:
+## Answer-review checklist
 
-- what the stage declaration promises
-- where each real influence belongs
-- how rerun prediction follows declared state
-- why stale outputs should be repaired before convenience cleanup
-- how graph shape affects provenance clarity
-- why planner evidence and semantic values answer different questions
-- how repeating the original mutation distinguishes a repair from a one-time refresh
+Before accepting your packet, verify that it:
 
-then you are using Module 04 correctly.
+- separates declared-graph predictions from correctness expectations;
+- preserves status before reproduction;
+- joins planner evidence to semantic or ownership evidence;
+- repairs the cause rather than forcing a result;
+- replays the exact original mutation;
+- checks convergence after repair;
+- limits conclusions to inspected commands and tested influences.
