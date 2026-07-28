@@ -1,6 +1,5 @@
 # Determinism Is a Spectrum, Not a Switch
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,195 +9,303 @@ graph LR
   program["Deep Dive DVC"]
   section["Execution Environments Reproducible Inputs"]
   page["Determinism Is a Spectrum, Not a Switch"]
-  capstone["Capstone evidence"]
+  capstone["Runtime contract audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.tested against.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  current["prove both results are current"] --> repeat["repeat within one context"]
+  repeat --> contrast["compare governed contexts"]
+  contrast --> classify["classify exact, bounded, or unexplained behavior"]
+  classify --> contract["write the supported claim"]
 ```
 <!-- page-maps:end -->
 
-Teams often talk as if workflows are either deterministic or not.
+Teams often use *deterministic* as a verdict: the workflow either is deterministic or it
+is not. That verdict hides the conditions under which the result was produced.
 
-That is usually too blunt to be useful.
+A more useful question is:
 
-Module 03 gets more accurate by treating determinism as a spectrum of control and
-sensitivity.
+> Under which declared conditions, comparison method, and tolerance does this workflow
+> produce a result we are willing to call repeatable?
 
-## Why this matters
+The answer can require exact bytes, equal semantic values, or a bounded metric difference.
+It must always require proof that the compared results were freshly produced under the
+contexts being discussed.
 
-If you imagine determinism as an all-or-nothing property, you make bad diagnoses:
+## Separate four properties
 
-- small numeric drift looks like chaos
-- any mismatch looks like user error
-- environment strategy becomes moralized instead of engineered
+These properties are related, but they are not synonyms:
 
-A spectrum model is calmer and more honest.
-
-## Three broad zones
-
-| Zone | Typical situation | What it means for review |
+| Property | Question | Evidence |
 | --- | --- | --- |
-| strongly deterministic | simple sequential logic with tightly controlled inputs | divergence is usually a strong signal of a real change |
-| conditionally deterministic | many ML and numerical workflows | divergence may reflect environment or execution differences rather than human error |
-| inherently variable | asynchronous, hardware-sensitive, or stochastic behavior | the workflow may need declared tolerance or comparison policy rather than exact sameness |
+| planner convergence | does an unchanged declared graph skip work? | settled repro receipt |
+| execution repeatability | do fresh runs in one governed context agree? | repeated clean executions |
+| cross-context stability | do fresh runs in two governed contexts agree? | paired fingerprints and results |
+| semantic acceptability | are observed differences acceptable for the claim? | comparison policy and measured delta |
 
-Most real DVC workflows live in the middle zone more often than teams admit.
+A pipeline may converge perfectly while reusing an output created under obsolete hidden
+runtime state. It may repeat exactly on one machine yet differ on another. Two results may
+differ in bytes while representing the same scientific value. “Deterministic” does not
+tell a reviewer which of these claims was tested.
 
-## A small example
+## The first gate is currency
 
-Suppose two honest runs differ by a tiny metric change.
+Before comparing values, prove that each result reflects its stated context.
 
-Weak interpretation:
+The runtime audit demonstrates why this gate matters:
 
-> someone must have changed the code or the data.
+| Result | Intended style | Stage executed after change? | Value | Current? |
+| --- | --- | --- | --- | --- |
+| declared case | `comma` | yes | `8,00` | yes |
+| hidden case after ordinary repro | `comma` | no | `8.00` | no |
+| hidden case after force | `comma` | yes | `8,00` | yes for this run only |
 
-Stronger interpretation:
-
-> the workflow may be conditionally deterministic, and the environment or execution context
-> may have shifted enough to change the result slightly.
-
-That second explanation is not hand-waving. It is often the correct starting point.
-
-## Where conditional determinism comes from
-
-Examples include:
-
-- floating-point reductions
-- threaded numerical libraries
-- GPU kernels
-- ordering-sensitive file enumeration
-- stochastic algorithms whose seeds or runtime behavior are only partly controlled
-
-These do not mean the workflow is hopeless.
-
-They mean the team needs to know what exact sameness is realistic and what evidence is
-needed when results differ.
-
-## A practical picture
+Calling the ordinary hidden result “stable across environments” would be false. The
+second environment never produced it.
 
 ```mermaid
-flowchart LR
-  strict["strict sameness"] --> conditional["small controlled divergence"]
-  conditional --> variable["declared variability or tolerance"]
+flowchart TD
+  compare["two observed results"] --> fresh{"fresh execution proved for both?"}
+  fresh -- no --> stale["investigate missing contract or stale reuse"]
+  fresh -- yes --> exact{"exactly equal?"}
+  exact -- yes --> exactClaim["support exact repeatability in tested contexts"]
+  exact -- no --> bounded{"inside declared semantic bound?"}
+  bounded -- yes --> conditional["support conditional repeatability"]
+  bounded -- no --> defect["reject or investigate"]
 ```
 
-The point of the picture is not classification for its own sake. It is to help you choose
-the right response.
+This ordering prevents a tolerance from laundering stale output.
 
-## What strong response looks like
+## Describe determinism as a contract
 
-When divergence appears, ask:
-
-1. is the workflow expected to be strongly deterministic here
-2. what environment or runtime conditions could move it into conditional behavior
-3. what level of difference is meaningful for this workflow
-
-Those questions produce better engineering choices than reflexively pinning everything or
-blaming the user.
-
-## Do not call hidden drift a tolerance
-
-The runtime audit produces an exact, deterministic difference:
-
-```text
-dot runtime:   8.00
-comma runtime: 8,00
-```
-
-No randomness is involved. The hidden case stays at `8.00` after ordinary repro because
-DVC cannot see the changed process variable.
-
-This is **under-rebuild**, not conditional determinism. A tolerance would answer whether
-two freshly executed results are acceptably close. It cannot justify reusing a result
-produced under old runtime meaning.
-
-Use this order:
-
-1. prove the stage executed under each intended environment
-2. compare the resulting values
-3. apply a declared tolerance only if exact sameness is not required
-
-Skipping the first step turns stale output into apparently stable output.
-
-## Classify divergence with evidence
-
-| Observation | Classification | Required evidence |
-| --- | --- | --- |
-| identical outputs under matching fingerprints | repeatable in tested context | both result and fingerprint receipts |
-| different outputs under one isolated runtime change | deterministic environment influence | controlled contrast |
-| bounded differences across fully executed contexts | conditional determinism candidate | repeated runs and declared tolerance |
-| old output reused after hidden context change | stale semantic result | planner receipt plus current fingerprint |
-
-The final row belongs to contract repair, not statistical tolerance design.
-
-## Use force only as a diagnostic probe
-
-In the hidden case, forced repro changes output from `8.00` to `8,00`. That establishes
-that runtime state is causal.
-
-It does not establish a durable execution contract:
-
-- `dvc.yaml` remains unchanged
-- the next environment change remains invisible
-- the lock records what happened only after force
-
-Force is useful here because it answers “would current runtime state change the result?”
-It is not the answer to “will future stale decisions be correct?”
-
-## Write a conditional determinism contract
-
-When variability is real rather than stale reuse, record:
+A useful determinism contract names six things:
 
 | Contract element | Example |
 | --- | --- |
-| governed context | Python lock hash and container digest |
-| controlled runtime values | seed, thread count, locale |
-| repeated-run method | three clean executions per context |
-| comparison measure | absolute metric delta |
-| acceptance boundary | delta no greater than `0.002` |
-| escalation route | reject release and inspect runtime evidence |
+| result | validation metric JSON |
+| governed context | lockfile hash and container digest |
+| controlled runtime values | seed `41`, thread count `1` |
+| execution method | clean DVC repro from the declared root |
+| comparison method | parse JSON and compare `f1` |
+| acceptance rule | absolute delta no greater than `0.002` |
 
-The word “conditional” should point to inspectable conditions, not provide cover for an
-unexplained difference.
+Without the result, the claim is vague. Without context, it is unbounded. Without fresh
+execution, it may describe cache reuse. Without a comparison method, “same” is ambiguous.
+Without an acceptance rule, a reviewer cannot reproduce the judgment.
 
-## Why this matters for DVC specifically
+## Exact, conditional, and uncontrolled behavior
 
-DVC helps keep data, stages, and recorded state explicit.
+Use classifications that describe evidence rather than prestige:
 
-That makes divergence easier to interpret, but it does not force the runtime world into
-perfect sameness.
+### Exact in tested contexts
 
-So you need two ideas at once:
+Fresh executions under the governed contexts produce identical comparison values.
 
-- DVC makes important parts of the workflow more inspectable
-- inspectable is not the same as mathematically identical under every runtime condition
+This does not prove identity on every possible executor. State the contexts and the
+comparison surface. For some outputs, byte identity is appropriate. For archives,
+timestamps or member ordering may make semantic comparison more useful.
 
-## A helpful discipline
+### Conditionally repeatable
 
-If a workflow is only conditionally deterministic, the team should be able to say:
+Fresh executions may differ, but the causes and acceptable boundary are declared.
 
-- which sources of variance are expected
-- which ones are unacceptable
-- which environment evidence matters most when reviewing drift
+Examples include:
 
-That is much stronger than saying only "sometimes CI is weird."
+- a stochastic algorithm with a documented seed policy;
+- parallel numerical reduction with an agreed metric tolerance;
+- hardware-specific kernels compared by a domain-relevant measure.
 
-## Keep this standard
+Conditional does not mean unexplained. The conditions are the substance of the claim.
 
-Do not force every divergence into one of two simplistic stories:
+### Uncontrolled or unexplained
 
-- perfect sameness should always happen
-- nothing can ever be trusted
+An influential fact is hidden, the compared results may not be current, or the observed
+difference has no approved bound.
 
-Most real workflows need a better sentence:
+This is an investigation state, not an acceptable form of conditional determinism.
 
-> this pipeline is deterministic only under certain declared conditions, and we need to
-> review those conditions honestly.
+## Run the audit as a classification exercise
+
+Generate the evidence:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
+```
+
+Set a short path:
+
+```bash
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts
+```
+
+Read the accepted and rejected decisions:
+
+```bash
+column -t -s $'\t' "$audit/summary.tsv"
+```
+
+`PASS / ACCEPT` means the observed behavior supports a truthful contract. `PASS / REJECT`
+means the audit successfully reproduced behavior that the production contract must reject.
+The latter is not a failed test.
+
+The important rejected finding is:
+
+```text
+ORDINARY_REPRO_PRESERVES_STALE_RUNTIME_MEANING  PASS  REJECT
+```
+
+The tool behaved consistently with its declared graph. The graph was incomplete relative
+to the result claim.
+
+## Distinguish stale reuse from tolerance
+
+Suppose a metric is `0.843` locally and `0.844` in CI, and the accepted tolerance is
+`0.002`. That numerical comparison is not enough.
+
+First request:
+
+- the runtime identity for each execution;
+- proof that both stages ran after their relevant contexts were established;
+- the data, parameter, and code identities;
+- the exact comparison rule.
+
+Only then calculate:
+
+```text
+absolute delta = |0.843 - 0.844| = 0.001
+```
+
+If both executions are current and their contexts are governed, the result is inside the
+declared bound. If CI silently reused the local result, the same numbers would say nothing
+about cross-context behavior.
+
+| Observation | Correct classification | Why |
+| --- | --- | --- |
+| equal results, both freshly executed | exact agreement in tested contexts | execution evidence supports comparison |
+| bounded difference, both freshly executed | conditional repeatability candidate | tolerance can now be applied |
+| equal results, one stage skipped after hidden drift | stale reuse candidate | equality came without a current execution |
+| unbounded difference after governed runs | rejected comparison | result exceeds contract |
+
+## Use force as a causal probe
+
+The audit forces the hidden stage:
+
+```bash
+cat "$audit/evidence/hidden-change-forced-repro.stdout.txt"
+jq '.findings[] |
+  select(.finding == "FORCED_RUN_CHANGES_OUTPUT_WITH_STABLE_DECLARATION") |
+  .evidence' "$audit/report.json"
+```
+
+The output changes to `8,00`. This closes an important causal question: the current
+process value can change the result.
+
+It does not close the future-planning question:
+
+- `dvc.yaml` is unchanged;
+- the process variable still has no graph edge;
+- another process-value change can again be invisible.
+
+Force is therefore an experiment, not an operating policy.
+
+## Design an honest repeated-run study
+
+For real variability, use a study structure that can distinguish within-context noise from
+between-context drift.
+
+```mermaid
+flowchart LR
+  contextA["governed context A"] --> a1["fresh run A1"]
+  contextA --> a2["fresh run A2"]
+  contextA --> a3["fresh run A3"]
+  contextB["governed context B"] --> b1["fresh run B1"]
+  contextB --> b2["fresh run B2"]
+  contextB --> b3["fresh run B3"]
+  a1 --> compare["apply declared measure"]
+  a2 --> compare
+  a3 --> compare
+  b1 --> compare
+  b2 --> compare
+  b3 --> compare
+```
+
+Record:
+
+1. the immutable identity of each context;
+2. the declared graph state used for every run;
+3. a receipt proving every run executed;
+4. the raw results;
+5. the comparison calculation;
+6. the predeclared acceptance boundary.
+
+Three runs are an example, not a universal sample size. Choose repetition according to the
+scientific and operational stakes. The durable principle is that the study design comes
+before the surprising result.
+
+## Choose the right equality
+
+Exact file hashes are valuable when any byte change matters. They can be misleading when
+formatting or metadata is intentionally variable.
+
+| Output | Plausible comparison | Reason |
+| --- | --- | --- |
+| trained model used for release | content hash plus behavioral tests | serialization identity and behavior may both matter |
+| metric JSON | parsed named metrics | key order and whitespace need not matter |
+| rendered report | domain values plus approved presentation rules | presentation may itself carry meaning |
+| row-oriented dataset | schema, row count, keys, and value checks | byte order may not define scientific equality |
+
+In the runtime specimen, punctuation is deliberately semantic because the claim says the
+result must adopt the current report style. Treating `8.00` and `8,00` as equivalent would
+erase the very influence being tested.
+
+## Avoid three weak conclusions
+
+### “The hashes match, so the environments are equivalent”
+
+Matching output hashes establish output identity for those observations. They do not
+establish environment identity or prove that both contexts executed.
+
+### “The numbers are close, so the workflow is conditionally deterministic”
+
+Closeness requires a predeclared measure, a boundary, current executions, and governed
+contexts.
+
+### “The results differ, so reproducibility failed”
+
+A declared, measured, accepted difference may be exactly what the workflow contract
+allows. The failure is unexplained or unsupported divergence, not difference itself.
+
+## Write the review statement
+
+A strong statement has a limited scope:
+
+> Three clean executions under each of container digests A and B used identical data,
+> code, parameters, seed, and single-thread policy. Every execution receipt confirms the
+> evaluation stage ran. The absolute `f1` delta remained below the predeclared `0.002`
+> boundary. These results support conditional repeatability for this metric under the two
+> tested contexts; they do not claim byte-identical artifacts elsewhere.
+
+For the hidden runtime audit, the honest statement is different:
+
+> The changed process policy was absent from the graph, status remained empty, and
+> ordinary repro reused the old result. A forced run changed the output, proving the
+> hidden policy was causal. No cross-context repeatability claim is supported until the
+> runtime influence is governed and both results are freshly executed.
+
+## Review checkpoint
+
+You are ready to use the term *conditionally deterministic* when you can answer:
+
+- Which result and semantic comparison does the claim cover?
+- Which contexts were governed?
+- What proves every compared result was freshly executed?
+- What difference was measured?
+- Was the acceptance boundary declared before review?
+- Which contexts and outputs remain outside the claim?
+
+The goal is not to choose a flattering label. It is to make the evidence boundary clear
+enough that another researcher can repeat both the execution and the judgment.
