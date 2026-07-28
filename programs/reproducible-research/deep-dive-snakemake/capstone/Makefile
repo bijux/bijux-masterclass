@@ -31,6 +31,7 @@ PERFORMANCE_DIAGNOSTICS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-researc
 SCHEDULER_POLICY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/scheduler-policy
 FILE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/file-contracts
 DISCOVERY_INTEGRITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/discovery-integrity
+PUBLISH_COMPATIBILITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/publish-compatibility
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -53,6 +54,7 @@ PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS := $(abspath $(PERFORMANCE_DIAGNOSTICS_AUD
 SCHEDULER_POLICY_AUDIT_DIR_ABS := $(abspath $(SCHEDULER_POLICY_AUDIT_DIR))
 FILE_CONTRACT_AUDIT_DIR_ABS := $(abspath $(FILE_CONTRACT_AUDIT_DIR))
 DISCOVERY_INTEGRITY_AUDIT_DIR_ABS := $(abspath $(DISCOVERY_INTEGRITY_AUDIT_DIR))
+PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS := $(abspath $(PUBLISH_COMPATIBILITY_AUDIT_DIR))
 TOOLS_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-snakemake/capstone
 TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
 TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
@@ -81,6 +83,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	scheduler-policy-audit scheduler-policy-selftest \
 	file-contract-audit file-contract-selftest \
 	discovery-integrity-audit discovery-integrity-selftest \
+	publish-compatibility-audit publish-compatibility-selftest \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
 
@@ -456,6 +459,32 @@ discovery-integrity-audit: ## Compare declared discovery invalidation with ambie
 discovery-integrity-selftest: ## Reject dishonest discovery invalidation evidence
 	$(PYTEST) -q tests/test_discovery_integrity_audit.py
 
+publish-compatibility-audit: ## Classify additive, breaking, semantic, and versioned publish changes
+	rm -rf "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)"
+	mkdir -p "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)"
+	cp -R repro/publish-compatibility "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/specimens"
+	$(PYTHON) scripts/audit_publish_compatibility.py \
+		--specimens repro/publish-compatibility \
+		--workspace "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/workspace" \
+		--output "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/report.json"
+	cp docs/publish-compatibility-audit-guide.md "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/PUBLISH_COMPATIBILITY_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Publish compatibility audit route:' \
+		'  1. Read PUBLISH_COMPATIBILITY_AUDIT_GUIDE.md for decision meanings.' \
+		'  2. Read consumer-v1.json before opening any candidate case.' \
+		'  3. Read summary.tsv and explain each ACCEPT, REJECT, or REQUIRE_MIGRATION decision.' \
+		'  4. Compare additive-field, required-field-removal, and semantic-drift definitions.' \
+		'  5. Inspect integrity-corruption and versioned-migration bundles in workspace/.' \
+		'  6. Use report.json for exact consumer failures and PROOF_GUIDE.md only if the claim expands.' > "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)" \
+		--output "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote publish compatibility audit to $(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)"
+
+publish-compatibility-selftest: ## Reject weakened consumers and dishonest compatibility cases
+	$(PYTEST) -q tests/test_verify_consumer_contract.py tests/test_publish_compatibility_audit.py
+
 config-summary: verify ## Write a compact summary of the materialized workflow configuration
 	@mkdir -p "$(VERIFY_REPORT_DIR)"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
@@ -491,11 +520,11 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
-confirm: clean purge-dsstore ci file-contract-audit file-contract-selftest discovery-integrity-audit discovery-integrity-selftest module-interface-audit module-interface-selftest software-boundary-audit software-boundary-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
+confirm: clean purge-dsstore ci file-contract-audit file-contract-selftest discovery-integrity-audit discovery-integrity-selftest publish-compatibility-audit publish-compatibility-selftest module-interface-audit module-interface-selftest software-boundary-audit software-boundary-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
-proof: tour verify-report file-contract-audit discovery-integrity-audit profile-audit module-interface-audit software-boundary-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
+proof: tour verify-report file-contract-audit discovery-integrity-audit publish-compatibility-audit profile-audit module-interface-audit software-boundary-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p \

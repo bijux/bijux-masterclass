@@ -1,10 +1,16 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 
-from scripts.verify_consumer_contract import verify_bundle
+SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "verify_consumer_contract.py"
+SPEC = importlib.util.spec_from_file_location("verify_consumer_contract", SCRIPT)
+assert SPEC is not None and SPEC.loader is not None
+MODULE = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(MODULE)
+verify_bundle = MODULE.verify_bundle
 
 
 def write_json(path: Path, payload: object) -> None:
