@@ -25,6 +25,7 @@ TOUR_DIR      ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-snakemake
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-snakemake/verify
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/profile
 MODULE_INTERFACE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/module-interfaces
+SOFTWARE_BOUNDARY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/software-boundaries
 CONTEXT_INVARIANCE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/context-invariance
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/performance-diagnostics
 SCHEDULER_POLICY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/scheduler-policy
@@ -45,6 +46,7 @@ TOUR_DIR_ABS      := $(abspath $(TOUR_DIR))
 MANIFEST_ABS      := $(abspath $(MANIFEST))
 PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 MODULE_INTERFACE_AUDIT_DIR_ABS := $(abspath $(MODULE_INTERFACE_AUDIT_DIR))
+SOFTWARE_BOUNDARY_AUDIT_DIR_ABS := $(abspath $(SOFTWARE_BOUNDARY_AUDIT_DIR))
 CONTEXT_INVARIANCE_AUDIT_DIR_ABS := $(abspath $(CONTEXT_INVARIANCE_AUDIT_DIR))
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS := $(abspath $(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR))
 SCHEDULER_POLICY_AUDIT_DIR_ABS := $(abspath $(SCHEDULER_POLICY_AUDIT_DIR))
@@ -71,6 +73,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	validate-config verify-artifacts walkthrough tour \
 	publish-summary profile-summary config-summary results-summary evidence-summary \
 	verify-report profile-audit module-interface-audit module-interface-selftest \
+	software-boundary-audit software-boundary-selftest \
 	context-invariance-audit context-invariance-selftest \
 	performance-diagnostics-audit performance-diagnostics-selftest \
 	scheduler-policy-audit scheduler-policy-selftest \
@@ -284,6 +287,33 @@ module-interface-audit: ## Compare explicit and hidden module interface contract
 module-interface-selftest: ## Reject dishonest module interface evidence
 	$(PYTEST) -q tests/test_module_interface_audit.py
 
+software-boundary-audit: ## Compare observable and hidden software source drift
+	rm -rf "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)"
+	mkdir -p "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)"
+	cp -R repro/software-boundaries "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/specimens"
+	$(PYTHON) scripts/audit_software_boundaries.py \
+		--specimens repro/software-boundaries \
+		--workspace "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/workspace" \
+		--output "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)"
+	cp docs/software-boundary-audit-guide.md "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/SOFTWARE_BOUNDARY_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Software boundary audit route:' \
+		'  1. Read SOFTWARE_BOUNDARY_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and keep result, decision, and finding together.' \
+		'  3. Compare script, hidden package, and declared package Snakefiles.' \
+		'  4. Compare baseline and changed dry-run traces.' \
+		'  5. Inspect artifact markers and planning observations in report.json.' \
+		'  6. Use PROOF_GUIDE.md only when the review claim expands.' > "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)" \
+		--output "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote software boundary audit to $(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)"
+
+software-boundary-selftest: ## Reject dishonest software drift evidence
+	$(PYTEST) -q tests/test_software_boundary_audit.py
+
 context-invariance-audit: ## Compare policy-preserving contexts with semantic leaks
 	rm -rf "$(CONTEXT_INVARIANCE_AUDIT_DIR_ABS)"
 	mkdir -p "$(CONTEXT_INVARIANCE_AUDIT_DIR_ABS)"
@@ -431,11 +461,11 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
-confirm: clean purge-dsstore ci file-contract-audit file-contract-selftest module-interface-audit module-interface-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
+confirm: clean purge-dsstore ci file-contract-audit file-contract-selftest module-interface-audit module-interface-selftest software-boundary-audit software-boundary-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
-proof: tour verify-report file-contract-audit profile-audit module-interface-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
+proof: tour verify-report file-contract-audit profile-audit module-interface-audit software-boundary-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p \

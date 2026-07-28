@@ -56,6 +56,12 @@ capstone-module-interface-audit: ## Compare explicit and hidden module interface
 capstone-module-interface-selftest: ## Reject dishonest module interface evidence
 	$(MAKE) -C capstone module-interface-selftest
 
+capstone-software-boundary-audit: ## Compare observable and hidden software source drift
+	$(MAKE) -C capstone software-boundary-audit
+
+capstone-software-boundary-selftest: ## Reject dishonest software drift evidence
+	$(MAKE) -C capstone software-boundary-selftest
+
 capstone-context-invariance-audit: ## Compare policy-preserving contexts with semantic leaks
 	$(MAKE) -C capstone context-invariance-audit
 
