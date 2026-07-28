@@ -16,6 +16,35 @@ A mature build steward needs to:
 
 This module is about stewardship, not just repair.
 
+## The repository you will reason about
+
+Use one inherited repository throughout the session. It may be the course capstone, a
+work repository you are allowed to inspect, or the worked report-build specimen later in
+this module. It needs at least:
+
+- one target called by humans or CI
+- one trusted file artifact
+- one helper or script boundary
+- one proof route, even if that route is currently weak
+- one ownership question that cannot be answered from the target name alone
+
+Do not choose a repository so large that you can only discuss it abstractly. A useful
+slice lets you trace one request from public target to published artifact and, if present,
+to an external side effect.
+
+The running case in this module separates three kinds of truth:
+
+```mermaid
+flowchart LR
+  source["repository inputs"] --> local["Make-owned local artifact"]
+  local --> evidence["manifest and checksum evidence"]
+  evidence --> receiver["publication-system handoff"]
+  receiver --> receipt["receiver-owned acceptance receipt"]
+```
+
+The migration and governance work will be judged by whether those truths stay distinct
+and reviewable.
+
 ## Why this module matters
 
 By the time a Make build becomes long-lived, the hard problems are rarely syntax
@@ -71,6 +100,40 @@ or handing off a concern becomes a defendable decision.
 If you finish the module with only opinions about "cleanups" or "modernization," you
 have missed the point.
 
+## Entry diagnostic
+
+Before reading the core lessons, take ten minutes and answer these without searching the
+module:
+
+1. Which targets in your chosen repository are public contracts, and what evidence makes
+   them public?
+2. Which rule or external system is the sole writer for one trusted output?
+3. What current behavior is contractual, and what observed behavior is merely a defect?
+4. What proof would have to survive if one responsibility moved to another owner?
+5. Where would a retry belong if remote publication failed after accepting the artifact?
+
+Keep the answers. Revisit them after the worked example. A changed answer is useful
+evidence that the module corrected your model; an unchanged vague answer is a signal to
+repeat the relevant lesson.
+
+## Knowledge this module assumes
+
+Module 10 combines earlier ideas rather than reteaching them from scratch:
+
+| Earlier capability | How it appears here |
+| --- | --- |
+| graph truth | deciding whether an inherited target models every meaning-changing input |
+| parallel safety | distinguishing a real contract from behavior that works only under `-j1` |
+| deterministic evidence | comparing artifact contents without confusing timestamps or paths |
+| target contracts | identifying public promises and accidental helper APIs |
+| generated-output ownership | separating one producer from packaging and publication consumers |
+| release evidence | deciding what manifest, checksum, and acceptance record cross a boundary |
+| incident evidence | preserving traces and failure signatures while implementation ownership moves |
+
+If two or more rows feel unfamiliar, use the linked core pages as a guided review and
+return here. The module assumes you can read Make; it does not assume you have led a
+migration before.
+
 ## The live stewardship route
 
 Use one inherited build review and one bounded handoff decision as the anchors for the
@@ -99,6 +162,21 @@ Keep one packet as you work through the module. By the end it should contain:
 
 If those artifacts are missing, you are probably talking about the build more than you
 are stewarding it.
+
+Add an evidence index so the packet can be reviewed without oral explanation:
+
+| Claim | Artifact that must support it |
+| --- | --- |
+| current public behavior is understood | caller inventory and target contract table |
+| current outputs have known owners | output/side-effect ownership ledger |
+| the first boundary move is safe | baseline and replacement comparison results |
+| an observed difference is intentional | explicit divergence record with approval owner |
+| rollback remains possible | executable rollback trigger and preserved baseline route |
+| the established route can be retired | retirement-gate results and caller search |
+| the handoff is complete | sender evidence plus receiver acceptance receipt |
+
+“Discussed in a meeting” is not an artifact. Record the command, output, or decision that
+lets the next maintainer reconstruct the argument.
 
 ## Decide by responsibility, not by tool fashion
 
@@ -166,13 +244,52 @@ These commands form the review loop for Module 10:
 ```sh
 make -n all
 make --trace all
-make -p > build/review.dump
+make -pn > artifacts/make-database.txt
 make -j1 all
 make -j8 all
+rg -n 'make(\\s|.*\\s)(all|test|dist|publish)(\\s|$)' .github scripts docs
 ```
 
 The exact targets may change from repository to repository. The point is stable evidence:
-dry-run meaning, trace meaning, database meaning, and serial-versus-parallel behavior.
+dry-run meaning, trace meaning, database meaning, serial-versus-parallel behavior, and
+real callers. Store diagnostic products under the repository's `artifacts/` boundary,
+not beside source or trusted outputs.
+
+Do not run an unfamiliar publication or deployment target merely to discover what it
+does. Start with source inspection, `make -n`, target-specific trace routes that are known
+to be local, and an isolated fixture. Read-only review is a safety boundary.
+
+## A full independent-study session
+
+Budget one serious session:
+
+| Work block | Approximate time | Result |
+| --- | ---: | --- |
+| entry diagnostic and repository choice | 20 minutes | bounded review subject |
+| contract and current-truth review | 60 minutes | caller, output, and risk inventory |
+| migration and governance lessons | 75 minutes | one proof bridge and enforceable rule |
+| antipattern and tool-boundary lessons | 60 minutes | recovery decision and ownership argument |
+| worked example | 60 minutes | complete migration reasoning trace |
+| exercises and answer comparison | 90 minutes | reviewer-ready stewardship packet |
+
+The times are guides. Do not shorten the evidence capture to stay on schedule. If the
+repository is unfamiliar, split the work after the review packet and resume with that
+packet as your context.
+
+## Missed-class recovery route
+
+If you are studying alone, use this order:
+
+1. run the entry diagnostic before reading the module's conclusions
+2. complete the review lesson against the chosen repository
+3. read the migration and governance lessons together
+4. reproduce the worked example's comparison and retirement reasoning
+5. complete Exercises 1–5 before reading any answers
+6. finish the ownership boundary and handoff exercises
+7. ask a reviewer to reconstruct one decision using only your packet
+
+The last check matters. Stewardship material is not standalone if its conclusions require
+the absent instructor to explain unstated evidence.
 
 ## Learning outcomes
 
@@ -195,5 +312,10 @@ Do not move on until all of these are true:
 - you can defend one tool-boundary choice in terms of ownership and evidence
 - you can complete the exercises and leave a durable stewardship packet another
   maintainer could repeat
+- another maintainer can locate the evidence for each migration claim without asking you
+  where it came from
+- you can distinguish a compatible result, an intentional divergence, and an unresolved
+  regression
+- you can say who owns retries and acceptance evidence after a handoff
 
 When those feel ordinary, Module 10 has done its job.
