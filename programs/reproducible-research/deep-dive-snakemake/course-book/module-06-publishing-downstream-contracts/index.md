@@ -1,219 +1,295 @@
 # Module 06: Publishing and Downstream Contracts
 
-A workflow run is not automatically a downstream contract.
+A workflow can finish successfully and still break every downstream user. Files may move,
+required fields may disappear, an integer may keep its type while changing its unit, or a
+bundle may be modified after its checksum inventory was written.
 
-That distinction matters because a workflow usually produces many files that help it run,
-debug, or explain itself, but only a smaller set of files should be safe for another
-human, notebook, or pipeline to trust as published outputs.
+This module teaches publication from the consumer’s side. You will define what a consumer
+is allowed to rely on, test candidate bundles against that contract, distinguish
+integrity from compatibility, and require a real migration when meaning changes.
 
-This module is about drawing that line on purpose.
+## The failure this module makes visible
 
-## What this day must accomplish
+Suppose `publish/v1/summary.json` contains:
 
-By the end of Module 06, you should be able to do five things without confusing internal
-results for public promises:
+```json
+{
+  "sample_id": "alpha",
+  "reads_count": 10
+}
+```
 
-- separate workflow-operational files from publishable downstream artifacts
-- define a versioned bundle that another program can consume without reading `results/`
-- explain the different jobs of manifests, checksums, provenance, and reports
-- classify publish changes as compatible, incompatible, or incomplete
-- review a bundle from a consumer’s point of view instead of the producer’s convenience
+A producer changes `reads_count` to mean nucleotide bases but keeps the field name and
+integer type:
 
-## The publish ladder for the whole module
+```json
+{
+  "sample_id": "alpha",
+  "reads_count": 40
+}
+```
 
-Keep this order in front of you all day:
+The workflow runs. JSON parsing succeeds. A checksum can match perfectly. The consumer is
+still wrong because it interprets bases as reads.
+
+```mermaid
+flowchart LR
+  workflow["Workflow succeeds"] --> bytes["Bundle exists"]
+  bytes --> integrity["Checksums match"]
+  integrity --> schema["Shape and types match"]
+  schema --> semantics{"Names, definitions, and units preserved?"}
+  semantics -->|yes| compatible["Current consumer can proceed"]
+  semantics -->|no| breakage["Silent contract break"]
+```
+
+Passing one layer never implies the next.
+
+## Learning outcomes you must demonstrate
+
+By the end, you should be able to:
+
+- classify workflow outputs as internal state, review evidence, or public contract;
+- write an executable consumer contract for required paths, versions, fields, types,
+  meanings, and units;
+- explain when an added field is compatible and when it is not;
+- detect path, field, semantic, version, and checksum drift separately;
+- design human and machine surfaces without making one scrape the other;
+- verify that a public inventory contains canonical relative paths and matching digests;
+- distinguish current-version acceptance, rejection, and migration-required decisions;
+- design a version overlap and retirement plan grounded in consumer evidence;
+- assemble a portable publish-review packet and prove its gate responds to causal damage.
+
+“The files look reasonable” is not an exit claim.
+
+## Prerequisites
+
+You should already understand:
+
+- declared file contracts and atomic outputs from Module 01;
+- discovered membership and publish-set equality from Module 02;
+- software identity from Module 05.
+
+This module does not reteach those mechanisms. It uses them to answer a different
+question: which completed artifacts may another system trust, and under what compatibility
+rules?
+
+## The running contract
+
+The executable lab starts with a v1 consumer that requires:
+
+| Surface | Consumer expectation |
+| --- | --- |
+| publish root | `publish/v1/` |
+| machine artifact | `summary.json` |
+| artifact schema | version `1` |
+| required identity | `sample_id` string |
+| required metric | `reads_count` integer |
+| metric meaning | number of sequencing reads |
+| metric unit | reads |
+| extension policy | additional fields allowed |
+| integrity | every manifest digest must match |
+
+A v2 consumer expects `publish/v2/metrics.json` with `read_bases` measured in bases.
+That is a migration target, not a same-version-compatible change.
+
+## The seven candidate changes
+
+The capstone audit materializes seven bundles:
+
+| Candidate | Expected decision |
+| --- | --- |
+| unchanged baseline | `ACCEPT_CURRENT` |
+| optional `qc_status` added | `ACCEPT_CURRENT` |
+| required `reads_count` removed | `REJECT_CURRENT` |
+| `summary.json` renamed inside v1 | `REJECT_CURRENT` |
+| `reads_count` meaning changes from reads to bases | `REJECT_CURRENT` |
+| artifact changes after manifest creation | `REJECT_CURRENT` |
+| breaking path and semantic changes isolated under v2 | `REQUIRE_MIGRATION` |
+
+The audit itself passes when each safe or unsafe case is classified correctly.
+
+## Run the proof route
+
+From the capstone:
+
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make publish-compatibility-audit
+```
+
+Read the generated bundle in this order:
+
+1. `route.txt`;
+2. `specimens/consumer-v1.json`;
+3. `summary.tsv`;
+4. candidate definitions under `specimens/cases/`;
+5. materialized bundles under `workspace/`;
+6. `report.json`;
+7. `bundle-manifest.json`.
+
+Then test the gate:
+
+```bash
+make publish-compatibility-selftest
+```
+
+The self-test weakens consumer expectations and damages counterexamples. A compatibility
+claim is reviewable only when those mutations turn the gate red.
+
+## Five independent review layers
 
 ```mermaid
 flowchart TD
-  internal["internal workflow state"] --> contract["versioned public contract"]
-  contract --> integrity["integrity surfaces defend the bundle"]
-  integrity --> consumer["consumer reads only the public bundle"]
-  consumer --> review["publish drift review protects trust"]
+  boundary["Boundary: which files are public?"] --> inventory["Inventory: which exact paths and bytes?"]
+  inventory --> structure["Structure: which schema and field types?"]
+  structure --> meaning["Meaning: which definitions, units, and missing-value rules?"]
+  meaning --> migration["Evolution: which consumers accept the candidate?"]
 ```
 
-If a consumer must browse `results/`, the publish boundary is still weak. If a bundle has
-no integrity surfaces, it is only a folder, not a contract.
+Use the smallest layer that answers the current question, but do not collapse layers:
 
-## The running lab for the whole day
-
-Use one repository story all day instead of several unrelated publication anecdotes:
-
-- one workflow already creates rich internal outputs under `results/`
-- one smaller publish bundle must be promoted under `publish/v1/`
-- one machine-readable summary and one human-readable report both belong in the bundle
-- one manifest and one provenance artifact must defend the bundle
-- one consumer test must prove the bundle can be used without internal knowledge
-
-Every page should help you answer one concrete downstream-trust question.
-
-## If you are learning this without the live class
-
-Treat Module 06 as a deliberate outside-in audit rather than as a bundle of publishing
-tips.
-
-Use it in five passes:
-
-1. read the overview and draw the current boundary between `results/` and `publish/`
-2. stop after the first two core lessons and write one artifact-role table from your own repository
-3. add integrity surfaces only after you can say which machine-facing and human-facing artifacts are public
-4. run one verifier and one consumer test before you decide whether the bundle is mature
-5. finish by classifying one change from the downstream consumer's point of view instead of the author's convenience
-
-If you cannot explain the public promise after pass 2, do not keep adding files to
-`publish/v1/`. The bundle is not weak because it is small. It is weak when its promise is
-unclear.
-
-## Plan for the day
-
-| Session | What you do | Evidence you keep |
-| --- | --- | --- |
-| artifact audit | classify internal, diagnostic, human, and machine-facing artifacts | artifact-role table |
-| versioned promotion | move the smallest honest contract into `publish/v1/` | public tree and publish rules |
-| integrity surfaces | add manifest, checksums, provenance, and validation | verification transcript |
-| consumer view | read the bundle from a separate program with no access to internal paths | consumer test |
-| compatibility review | simulate additive and breaking changes | compatibility note |
-| independent practice | complete all ten exercises | publish review packet |
-
-The day is successful when a downstream user can trust the bundle because the repository
-taught them exactly what it means and how to verify it.
-
-## The review packet you should build all day
-
-Keep one compact packet beside every lesson and exercise:
-
-- one artifact-role table classifying internal, diagnostic, human-facing, and machine-facing files
-- one public-tree sketch for the current `publish/v1/` bundle
-- one manifest-verification transcript
-- one consumer test transcript that reads only the bundle
-- one compatibility note written from the downstream user's point of view
-- one short review note naming the strongest remaining trust risk
-
-If those six artifacts are missing, the module is still too dependent on instructor
-explanation and too weak as standalone learning material.
+- a manifest inventories files; it does not define metric meaning;
+- a schema constrains structure; it does not prove checksum integrity;
+- a versioned directory marks a compatibility boundary; it does not migrate consumers;
+- an HTML report serves humans; it is not automatically a machine API;
+- successful generation proves producer execution; it does not prove consumer acceptance.
 
 ## Study route
 
-```mermaid
-flowchart TD
-  start["Overview"] --> core1["Internal Results versus Public Contracts"]
-  core1 --> core2["Versioned Publish Boundaries and Compatible Change"]
-  core2 --> core3["Manifests, Checksums, and Bundle Integrity"]
-  core3 --> core4["Reports, File APIs, and Human versus Machine Surfaces"]
-  core4 --> core5["Reviewing Publish Drift and Downstream Risk"]
-  core5 --> example["Worked Example: Promoting Results Into a Versioned Publish Bundle"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
-```
+Allow five to seven hours, including the exercises:
 
-Read the module in that order the first time.
-
-The route matters:
-
-- start by separating internal from public before you talk about versioning
-- define the public contract before you decide which integrity surfaces it needs
-- use the consumer test after the bundle already has a stable meaning
-
-## The ten files in this module
-
-1. Overview (`index.md`)
-2. [Internal Results versus Public Contracts](internal-results-vs-public-contracts.md)
-3. [Versioned Publish Boundaries and Compatible Change](versioned-publish-boundaries-and-compatible-change.md)
-4. [Manifests, Checksums, and Bundle Integrity](manifests-checksums-and-bundle-integrity.md)
-5. [Reports, File APIs, and Human versus Machine Surfaces](reports-file-apis-and-human-vs-machine-surfaces.md)
-6. [Reviewing Publish Drift and Downstream Risk](reviewing-publish-drift-and-downstream-risk.md)
-7. [Worked Example: Promoting Results Into a Versioned Publish Bundle](worked-example-promoting-results-into-a-versioned-publish-bundle.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
-10. [Glossary](glossary.md)
-
-## How to use the file set
-
-| If you need to... | Start here |
-| --- | --- |
-| decide which workflow outputs stay internal and which become public | [Internal Results versus Public Contracts](internal-results-vs-public-contracts.md) |
-| version a bundle and classify compatible change | [Versioned Publish Boundaries and Compatible Change](versioned-publish-boundaries-and-compatible-change.md) |
-| design manifests, checksums, and related integrity surfaces | [Manifests, Checksums, and Bundle Integrity](manifests-checksums-and-bundle-integrity.md) |
-| separate machine-facing artifacts from human-facing artifacts | [Reports, File APIs, and Human versus Machine Surfaces](reports-file-apis-and-human-vs-machine-surfaces.md) |
-| review publish drift before downstream trust is damaged | [Reviewing Publish Drift and Downstream Risk](reviewing-publish-drift-and-downstream-risk.md) |
-| see the whole module as one publication repair | [Worked Example: Promoting Results Into a Versioned Publish Bundle](worked-example-promoting-results-into-a-versioned-publish-bundle.md) |
-| test your own understanding | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the module vocabulary | [Glossary](glossary.md) |
-
-## The running question
-
-Carry this question through every page:
-
-> if another repository consumes this output next week, what exact public promise protects that use from internal workflow drift?
-
-Good Module 06 answers usually mention one or more of these:
-
-- a versioned publish path with a stable meaning
-- a machine-readable summary that does not require scraping a report
-- a manifest or checksum surface that can detect damage or mismatch
-- provenance that explains software context without replacing the contract
-- a consumer test that proves the bundle is usable without internal paths
-
-## The pressure card for the whole module
-
-Use this table when you get lost in details:
-
-| If you are unsure about... | Ask this first | Likely next file |
+| Block | Read or do | Evidence to retain |
 | --- | --- | --- |
-| whether a file belongs in `publish/v1/` | would a downstream user be justified in depending on this path next week | [Internal Results versus Public Contracts](internal-results-vs-public-contracts.md) |
-| whether one change stays inside the current version | would an old consumer still find the same path and meaning | [Versioned Publish Boundaries and Compatible Change](versioned-publish-boundaries-and-compatible-change.md) |
-| whether the bundle proves itself | which artifact covers inventory, identity, meaning, and context separately | [Manifests, Checksums, and Bundle Integrity](manifests-checksums-and-bundle-integrity.md) |
-| which file a script or human should read first | are the machine-facing and human-facing roles separate and explicit | [Reports, File APIs, and Human versus Machine Surfaces](reports-file-apis-and-human-vs-machine-surfaces.md) |
-| whether the change is safe to merge | what a downstream user would notice first if this lands | [Reviewing Publish Drift and Downstream Risk](reviewing-publish-drift-and-downstream-risk.md) |
+| boundary | internal versus public contracts | artifact-role inventory |
+| evolution | versioned boundaries and compatible change | consumer contract and decision matrix |
+| integrity | manifests and checksums | corruption receipt and canonical inventory |
+| audiences | reports and file APIs | human/machine authority table |
+| drift | downstream-risk review | classified candidate report |
+| integration | worked example | producer-to-consumer evidence ledger |
+| practice | ten cumulative exercises | fixtures, receipts, migration packet |
 
-## What the module should change in your head
+Read in this order:
 
-If the day is working, you should feel these transitions:
+1. [Internal Results Versus Public Contracts](internal-results-vs-public-contracts.md)
+2. [Versioned Publish Boundaries and Compatible Change](versioned-publish-boundaries-and-compatible-change.md)
+3. [Manifests, Checksums, and Bundle Integrity](manifests-checksums-and-bundle-integrity.md)
+4. [Reports, File APIs, and Human Versus Machine Surfaces](reports-file-apis-and-human-vs-machine-surfaces.md)
+5. [Reviewing Publish Drift and Downstream Risk](reviewing-publish-drift-and-downstream-risk.md)
+6. [Worked Example: Promoting Results Into a Versioned Publish Bundle](worked-example-promoting-results-into-a-versioned-publish-bundle.md)
+7. [Exercises](exercises.md)
+8. [Exercise Answers](exercise-answers.md)
+9. [Glossary](glossary.md)
 
-- `results/` stops feeling like a convenient API
-- a report stops sounding sufficient for machine consumers
-- manifests and provenance stop blending into one fuzzy “metadata” bucket
-- versioning stops feeling ceremonial once you try to protect downstream users
-- publish review stops being “did the workflow finish?” and becomes “does the contract still hold?”
+Write predictions before opening answers or audit reports.
 
-## Commands to keep close
+## Keep a consumer evidence ledger
 
-These commands form the evidence loop for Module 06:
+For every candidate change, record:
+
+| Field | Required content |
+| --- | --- |
+| current consumer | exact fixture or executable expectations |
+| producer change | path, structure, meaning, integrity, or version |
+| prediction | accept, reject, or migration required |
+| candidate bundle | isolated materialized artifact set |
+| current result | compatible boolean and exact failures |
+| next result | applicable consumer result for migration |
+| decision | action and version boundary |
+| claim limit | consumers or properties not covered |
+
+This ledger prevents a producer diff from becoming the only evidence.
+
+## Compatible change is consumer-relative
+
+Adding `qc_status` is compatible in the lab because the v1 consumer explicitly permits
+additional fields. Another consumer may use a closed schema and reject the same candidate.
+
+Therefore say:
+
+> This candidate is compatible with the declared v1 consumer fixture.
+
+Do not say:
+
+> Adding fields is backward compatible.
+
+The narrower statement is both more accurate and more useful.
+
+## Version decisions
+
+Use these three outcomes:
+
+### `ACCEPT_CURRENT`
+
+The current consumer accepts the candidate, integrity holds, and required meaning is
+unchanged. Retain the consumer regression test.
+
+### `REJECT_CURRENT`
+
+The candidate violates current path, version, field, semantic, or integrity expectations.
+Restore the contract or propose a versioned migration.
+
+### `REQUIRE_MIGRATION`
+
+The current consumer rejects the breaking candidate, a declared next-version consumer
+accepts it, and migration work remains explicit. This is not current compatibility.
+
+## Common wrong turns
+
+### “The schema version did not change”
+
+That can be evidence of undocumented drift, not compatibility. Compare required meaning
+and consumer behavior.
+
+### “The new field is optional”
+
+Optional to the producer is not the same as tolerated by the consumer. Read the consumer’s
+additional-field policy.
+
+### “The checksum matches”
+
+You have proved byte identity relative to an inventory, not usefulness or meaning.
+
+### “We published v2”
+
+You have created a new boundary. You still need consumer fixtures, migration guidance,
+overlap policy, and retirement criteria.
+
+### “The report still looks right”
+
+Visual plausibility does not protect machine consumers, and an HTML report may hide exact
+units or missing-value behavior.
+
+## Commands and questions
 
 ```bash
-snakemake -n
-snakemake publish/v1/manifest.json
-python scripts/verify_publish.py --publish publish/v1
-python scripts/consume_summary.py publish/v1/summary.json
+make verify-report
+make publish-compatibility-audit
+make publish-compatibility-selftest
 ```
 
-They answer different questions:
+| Command | Question |
+| --- | --- |
+| `verify-report` | does the current capstone publish bundle satisfy its built-in file contract? |
+| compatibility audit | how does a declared consumer classify controlled candidate changes? |
+| compatibility self-test | does the evidence fail when consumers or counterexamples are weakened? |
 
-- what the workflow plans to publish
-- whether the declared bundle can be built
-- whether the bundle still verifies itself as a contract
-- whether a consumer can use the documented machine-facing surface
+Use `make proof` only when a review question genuinely spans discovery, files, software,
+contexts, performance, and publication.
 
-## What strong progress feels like by midday
+## Exit proof
 
-By the middle of the day, you should already feel these shifts:
+You are ready for Module 07 when you can provide:
 
-- `publish/` stops sounding like a copy destination and starts sounding like a defended promise
-- a manifest stops sounding like generic metadata and starts sounding like bundle inventory plus identity evidence
-- a report stops sounding sufficient on its own once a machine-facing summary is present
-- compatibility review stops centering the author and starts centering the surviving consumer
-- downstream trust starts looking like something you can test instead of something you assume
+- a classified artifact inventory with named owners and audiences;
+- an executable current consumer contract;
+- an accepted additive candidate and its tolerance rationale;
+- rejected required-field, path, semantic, and checksum candidates;
+- a versioned candidate accepted by a new consumer but rejected by the old one;
+- a canonical bundle inventory and corruption receipt;
+- separate human and machine surfaces with authority rules;
+- a migration note with overlap and retirement criteria;
+- causal self-tests showing the compatibility gate cannot be weakened silently;
+- completed reasoning for all ten exercises.
 
-## Exit standard
-
-Do not move on until all of these are true:
-
-- you can explain why `results/` and `publish/v1/` are different promises
-- you can name one compatible publish change and one change that needs a version discussion
-- you can describe the distinct jobs of the manifest, report, provenance, and machine-readable summary
-- you can show one consumer that reads only the public bundle
-- you can review one publish drift scenario from the downstream user’s point of view
-- you have completed all ten exercises and verified at least one bundle without access to internal workflow state
-
-When those become ordinary, Module 06 has done its job.
+If your evidence begins and ends with producer-side success, the downstream contract is
+still untested.
