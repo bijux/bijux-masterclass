@@ -20,6 +20,7 @@ VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/
 RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
 RECOVERY_READINESS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery-readiness
 PROMOTION_INTEGRITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/promotion-integrity
+BOUNDARY_MIGRATION_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/boundary-migration
 EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
 EXPERIMENT_COMPARABILITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/experiment-comparability
 STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/stage-contracts
@@ -344,6 +345,47 @@ promotion-integrity-audit: verify ## Audit release identity, integrity, provenan
 .PHONY: promotion-integrity-selftest
 promotion-integrity-selftest: install ## Enforce promotion integrity decisions
 	@$(PYTEST) tests/test_promotion_integrity_audit.py
+
+.PHONY: boundary-migration-audit
+boundary-migration-audit: verify ## Audit a governed consumer-boundary cutover
+	@rm -rf $(BOUNDARY_MIGRATION_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_boundary_migration.py \
+		--specimen repro/boundary-migration \
+		--publish publish/v1 \
+		--workspace $(BOUNDARY_MIGRATION_AUDIT_DIR)/workspace \
+		--output $(BOUNDARY_MIGRATION_AUDIT_DIR)/report.json \
+		--evaluation-date 2026-07-28 \
+		--check
+	@mkdir -p $(BOUNDARY_MIGRATION_AUDIT_DIR)/scripts $(BOUNDARY_MIGRATION_AUDIT_DIR)/tests
+	@cp docs/boundary-migration-audit-guide.md $(BOUNDARY_MIGRATION_AUDIT_DIR)/BOUNDARY_MIGRATION_AUDIT_GUIDE.md
+	@cp repro/boundary-migration/migration-contract.json $(BOUNDARY_MIGRATION_AUDIT_DIR)/migration-contract.json
+	@cp repro/boundary-migration/migration-decision.json $(BOUNDARY_MIGRATION_AUDIT_DIR)/migration-decision.json
+	@cp scripts/audit_boundary_migration.py $(BOUNDARY_MIGRATION_AUDIT_DIR)/scripts/audit_boundary_migration.py
+	@cp tests/test_boundary_migration_audit.py $(BOUNDARY_MIGRATION_AUDIT_DIR)/tests/test_boundary_migration_audit.py
+	@printf '%s\n' \
+		'Boundary migration audit route:' \
+		'  1. Read BOUNDARY_MIGRATION_AUDIT_GUIDE.md for the cutover argument.' \
+		'  2. Read migration-contract.json and name the one permitted change.' \
+		'  3. Read report.json and explain why only COMPLETE_CUTOVER is approved.' \
+		'  4. Compare workspace/complete-cutover with one blocked case at a time.' \
+		'  5. Read assessment.json before inspecting source and target content.' \
+		'  6. Inspect migration-decision.json for rollback, consumer, owner, and exception evidence.' \
+		'  7. Read the audit script and tests when reviewing enforcement.' > $(BOUNDARY_MIGRATION_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Boundary migration review questions:' \
+		'  Which invariant proves that a location change did not become a release change?' \
+		'  Which receipt proves that a real consumer can retrieve from the target?' \
+		'  What evidence makes rollback executable rather than aspirational?' \
+		'  Why must an exception include both an expiry and a removal condition?' \
+		'  Which responsibilities belong to DVC, the registry, CI, and the release owner?' > $(BOUNDARY_MIGRATION_AUDIT_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(BOUNDARY_MIGRATION_AUDIT_DIR) \
+		--output $(BOUNDARY_MIGRATION_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote boundary migration audit to $(BOUNDARY_MIGRATION_AUDIT_DIR)"
+
+.PHONY: boundary-migration-selftest
+boundary-migration-selftest: install ## Enforce governed boundary cutover decisions
+	@$(PYTEST) tests/test_boundary_migration_audit.py
 
 .PHONY: experiment-review
 experiment-review: verify ## Build a focused experiment comparison bundle

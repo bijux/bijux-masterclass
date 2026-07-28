@@ -210,6 +210,14 @@ capstone-promotion-integrity-audit: ## Classify selected program promotion integ
 capstone-promotion-integrity-selftest: ## Enforce selected program promotion integrity evidence
 	@$(RUN_PROGRAM) capstone-promotion-integrity-selftest
 
+.PHONY: capstone-boundary-migration-audit
+capstone-boundary-migration-audit: ## Classify selected program boundary cutover evidence
+	@$(RUN_PROGRAM) capstone-boundary-migration-audit
+
+.PHONY: capstone-boundary-migration-selftest
+capstone-boundary-migration-selftest: ## Enforce selected program boundary cutover evidence
+	@$(RUN_PROGRAM) capstone-boundary-migration-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit

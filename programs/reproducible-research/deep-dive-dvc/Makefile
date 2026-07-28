@@ -92,6 +92,14 @@ capstone-promotion-integrity-audit: ## Audit release identity, integrity, proven
 capstone-promotion-integrity-selftest: ## Enforce promotion integrity decisions
 	@$(RUN_CAPSTONE) promotion-integrity-selftest
 
+.PHONY: capstone-boundary-migration-audit
+capstone-boundary-migration-audit: ## Audit a governed consumer-boundary cutover
+	@$(RUN_CAPSTONE) boundary-migration-audit
+
+.PHONY: capstone-boundary-migration-selftest
+capstone-boundary-migration-selftest: ## Enforce governed boundary cutover decisions
+	@$(RUN_CAPSTONE) boundary-migration-selftest
+
 .PHONY: capstone-experiment-review
 capstone-experiment-review: ## Build the capstone experiment comparison bundle
 	@$(RUN_CAPSTONE) experiment-review
