@@ -19,6 +19,7 @@ RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/verify
 RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
 RECOVERY_READINESS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery-readiness
+PROMOTION_INTEGRITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/promotion-integrity
 EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
 EXPERIMENT_COMPARABILITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/experiment-comparability
 STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/stage-contracts
@@ -304,6 +305,45 @@ recovery-readiness-audit: install ## Audit protected revisions before remote cut
 .PHONY: recovery-readiness-selftest
 recovery-readiness-selftest: install ## Enforce recovery cutover evidence
 	@$(PYTEST) tests/test_recovery_readiness_audit.py
+
+.PHONY: promotion-integrity-audit
+promotion-integrity-audit: verify ## Audit release identity, integrity, provenance, and approval
+	@rm -rf $(PROMOTION_INTEGRITY_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_promotion_integrity.py \
+		--specimen repro/promotion-integrity \
+		--publish publish/v1 \
+		--lock-file dvc.lock \
+		--workspace $(PROMOTION_INTEGRITY_AUDIT_DIR)/workspace \
+		--output $(PROMOTION_INTEGRITY_AUDIT_DIR)/report.json \
+		--check
+	@mkdir -p $(PROMOTION_INTEGRITY_AUDIT_DIR)/scripts $(PROMOTION_INTEGRITY_AUDIT_DIR)/tests
+	@cp docs/promotion-integrity-audit-guide.md $(PROMOTION_INTEGRITY_AUDIT_DIR)/PROMOTION_INTEGRITY_AUDIT_GUIDE.md
+	@cp repro/promotion-integrity/promotion-contract.json $(PROMOTION_INTEGRITY_AUDIT_DIR)/promotion-contract.json
+	@cp repro/promotion-integrity/promotion-decision.json $(PROMOTION_INTEGRITY_AUDIT_DIR)/promotion-decision.json
+	@cp scripts/audit_promotion_integrity.py $(PROMOTION_INTEGRITY_AUDIT_DIR)/scripts/audit_promotion_integrity.py
+	@cp tests/test_promotion_integrity_audit.py $(PROMOTION_INTEGRITY_AUDIT_DIR)/tests/test_promotion_integrity_audit.py
+	@printf '%s\n' \
+		'Promotion integrity audit route:' \
+		'  1. Read PROMOTION_INTEGRITY_AUDIT_GUIDE.md for the trust boundary.' \
+		'  2. Read report.json and explain why only COMPLETE_PROMOTION is accepted.' \
+		'  3. Compare one blocked case with workspace/complete-promotion at a time.' \
+		'  4. Read each case assessment before opening its candidate files.' \
+		'  5. Inspect promotion-contract.json, promotion-decision.json, and publish/manifest.json together.' \
+		'  6. Read the audit script and adversarial tests when reviewing enforcement.' > $(PROMOTION_INTEGRITY_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Promotion review questions:' \
+		'  Which record identifies the exact source that reviewers approved?' \
+		'  Why can a digest-valid candidate still fail its promoted claim?' \
+		'  Which registry references remain safe after another release appears?' \
+		'  What may a consumer use without depending on pipeline internals?' > $(PROMOTION_INTEGRITY_AUDIT_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(PROMOTION_INTEGRITY_AUDIT_DIR) \
+		--output $(PROMOTION_INTEGRITY_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote promotion integrity audit to $(PROMOTION_INTEGRITY_AUDIT_DIR)"
+
+.PHONY: promotion-integrity-selftest
+promotion-integrity-selftest: install ## Enforce promotion integrity decisions
+	@$(PYTEST) tests/test_promotion_integrity_audit.py
 
 .PHONY: experiment-review
 experiment-review: verify ## Build a focused experiment comparison bundle

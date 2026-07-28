@@ -202,6 +202,14 @@ capstone-recovery-readiness-audit: ## Classify selected program recovery cutover
 capstone-recovery-readiness-selftest: ## Enforce selected program recovery cutover evidence
 	@$(RUN_PROGRAM) capstone-recovery-readiness-selftest
 
+.PHONY: capstone-promotion-integrity-audit
+capstone-promotion-integrity-audit: ## Classify selected program promotion integrity evidence
+	@$(RUN_PROGRAM) capstone-promotion-integrity-audit
+
+.PHONY: capstone-promotion-integrity-selftest
+capstone-promotion-integrity-selftest: ## Enforce selected program promotion integrity evidence
+	@$(RUN_PROGRAM) capstone-promotion-integrity-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit

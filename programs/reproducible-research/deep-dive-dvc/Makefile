@@ -84,6 +84,14 @@ capstone-recovery-readiness-audit: ## Audit protected revisions before remote cu
 capstone-recovery-readiness-selftest: ## Enforce recovery cutover evidence
 	@$(RUN_CAPSTONE) recovery-readiness-selftest
 
+.PHONY: capstone-promotion-integrity-audit
+capstone-promotion-integrity-audit: ## Audit release identity, integrity, provenance, and approval
+	@$(RUN_CAPSTONE) promotion-integrity-audit
+
+.PHONY: capstone-promotion-integrity-selftest
+capstone-promotion-integrity-selftest: ## Enforce promotion integrity decisions
+	@$(RUN_CAPSTONE) promotion-integrity-selftest
+
 .PHONY: capstone-experiment-review
 capstone-experiment-review: ## Build the capstone experiment comparison bundle
 	@$(RUN_CAPSTONE) experiment-review
