@@ -1,6 +1,5 @@
 # False Reruns and Stale Outputs
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,292 +9,223 @@ graph LR
   program["Deep Dive DVC"]
   section["Truthful Pipelines Declared Dependencies"]
   page["False Reruns and Stale Outputs"]
-  capstone["Capstone evidence"]
+  specimen["Stage-contract audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.tests claims with.-> specimen
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  mutate["change one real influence"] --> status["capture status"]
+  status --> reproduce["reproduce normally"]
+  reproduce --> inspect["inspect result meaning"]
+  inspect --> classify["classify the contract failure"]
 ```
 <!-- page-maps:end -->
 
-Not every pipeline surprise has the same severity.
+A surprising rerun and a surprising skip are not symmetric problems.
 
-Module 04 separates two failure classes:
+- A **false rerun** spends compute even though the result's meaning would not change.
+- A **stale output** preserves an old result after a real influence changes.
+- An **orphaned output** disappears or drifts because no stage owns it.
 
-- false reruns: DVC reruns more than the team expected
-- stale outputs: DVC skips work even though the result should change
+All three reveal a mismatch between command behavior and declared contract. Silent
+staleness is the first correctness risk to remove; unnecessary reruns are narrowed only
+after completeness is demonstrated.
 
-Both deserve attention. They do not deserve equal fear.
+## Start from consequences, not symptoms
 
-A false rerun wastes time and can make the workflow noisy. A stale output can make the
-team trust a wrong result.
+Imagine that `policy/threshold.txt` changes from `10` to `20`.
 
-## False reruns
+| Observation after ordinary `dvc repro` | Classification | Consequence |
+| --- | --- | --- |
+| stage runs and output adopts `20` | expected invalidation | current result |
+| stage skips and output remains `10` | stale output | wrong result can look current |
+| unrelated stage runs but meaning is unchanged | false rerun | wasted time and review noise |
+| undeclared receipt was deleted and stays absent | orphaned output | incomplete deliverable |
 
-A false rerun happens when a stage reruns even though the meaningful result would not have
-changed.
+“It ran” is therefore not a verdict. “It skipped” is not one either. The verdict depends
+on whether the result should have changed and whether every promised artifact exists.
 
-Common causes:
+## Use one controlled mutation
 
-- a dependency declaration is too broad
-- a whole directory is declared when only one file matters
-- a generated log or timestamp file is declared as an output or dependency
-- a parameter key is attached to a stage that does not actually use it
-- code is organized so unrelated implementation changes touch a declared dependency
+Do not begin by deleting caches, forcing stages, or changing several inputs. Preserve the
+failure and vary one real influence.
 
-Example:
+```mermaid
+flowchart TD
+  baseline["establish converged baseline"] --> mutation["mutate one file or parameter"]
+  mutation --> before["save status and outputs before repro"]
+  before --> normal["run ordinary repro"]
+  normal --> after["save outputs and status after repro"]
+  after --> question{"does result express current meaning?"}
+  question -- yes --> noise["investigate excess invalidation"]
+  question -- no --> missing["trace missing influence or ownership"]
+```
+
+Run the module specimen:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/stage-contracts
+```
+
+The audit holds commands and input values constant while changing declaration edges.
+That paired design rules out “the commands behaved differently” as an explanation.
+
+## Read a stale-output case
+
+Both `declared_input` and `hidden_input` read `policy/threshold.txt`. Only the first lists
+the path under `deps`.
+
+After the file changes:
+
+```text
+status: declared_input is stale
+status: hidden_input is absent
+declared output after repro: threshold=20
+hidden output after repro:   threshold=10
+```
+
+The absence of `hidden_input` from status is not a DVC detection bug. DVC faithfully
+compared the graph it was given. The declaration is false because the command reads more
+than the graph declares.
+
+The same contrast appears for parameters. Both commands read `settings.multiplier`, but
+only the declared stage selects that key:
+
+```text
+declared parameter output: multiplier=3 score=24
+hidden parameter output:   multiplier=2 score=16
+```
+
+This evidence supports a precise claim: ordinary reproduction cannot refresh the hidden
+result when that hidden influence changes.
+
+## Diagnose false reruns without weakening truth
+
+Suppose evaluation declares an entire source and data tree:
 
 ```yaml
 stages:
   evaluate:
-    cmd: python -m incident_escalation_capstone.evaluate
+    cmd: python -m incident_escalation.evaluate
     deps:
       - data/
       - src/
+      - models/escalation-model.json
     params:
-      - fit.model_family
       - evaluate.threshold
     outs:
       - reports/evaluation.json
 ```
 
-This stage might rerun whenever any file under `data/` or `src/` changes, even if
-evaluation only reads `data/prepared/incidents.parquet` and
-`src/incident_escalation_capstone/evaluate.py`.
+A change to an unrelated plotting module now invalidates evaluation. That is evidence of
+a broad boundary, not permission to remove declarations casually.
 
-The fix is not to remove safety. The fix is to declare the real boundary:
+Use this order:
 
-```yaml
-deps:
-  - data/prepared/incidents.parquet
-  - models/escalation-model.json
-  - src/incident_escalation_capstone/evaluate.py
-params:
-  - evaluate.threshold
-```
+1. Trace every file opened and control value read by the command.
+2. Establish a complete, conservative declaration.
+3. Mutate each real influence and prove that the stage becomes stale.
+4. Mutate plausible non-influences and identify unwanted reruns.
+5. Narrow only those edges for which non-influence is demonstrated.
 
-That declaration gives DVC less noise and gives reviewers a clearer contract.
+A safer contract might name the prepared data, model, evaluation implementation, and
+threshold key. It should not omit shared helpers that the command actually imports merely
+to make status quieter.
 
-## Stale outputs
+## Separate planner correctness from command correctness
 
-A stale output happens when a result should change but DVC has no declared reason to
-rerun the stage.
+Four outcomes are possible:
 
-Common causes:
-
-- the command reads an undeclared file
-- the command uses a hard-coded control value that belongs in `params.yaml`
-- the command reads an environment variable that is not managed or recorded elsewhere
-- the stage writes an output that DVC does not own
-- a downstream stage reads a file produced by another stage but the file is not declared
-
-Example:
-
-```yaml
-stages:
-  inspect:
-    cmd: python -m incident_escalation_capstone.inspect
-    deps:
-      - data/prepared/incidents.parquet
-    outs:
-      - reports/inspection.json
-```
-
-If `inspect` also reads `data/reference/escalation_policy.csv`, then a policy change may
-not rerun inspection. The report can stay old while looking current.
-
-The repair is direct:
-
-```yaml
-deps:
-  - data/prepared/incidents.parquet
-  - data/reference/escalation_policy.csv
-```
-
-Now the graph has a reason to react.
-
-## A severity lens
-
-Use this table when reviewing a pipeline surprise:
-
-| Symptom | Likely class | Risk | First question |
-| --- | --- | --- | --- |
-| stage reruns after unrelated file change | false rerun | wasted time and review noise | is the dependency too broad? |
-| stage skips after a real input change | stale output | wrong result | is a real read missing from `deps` or `params`? |
-| downstream stage reruns after upstream output changed | usually correct propagation | expected recomputation | does the downstream stage depend on that output? |
-| output exists but is not in `outs` | stale or orphan risk | untracked result boundary | who owns this artifact? |
-| rerun happens after command text changes | usually correct | expected recomputation | did the command contract change? |
-
-This lens keeps you from treating every rerun as bad. Sometimes the rerun is exactly the
-proof that the graph is honest.
-
-## Prefer safe noise over silent staleness
-
-When uncertain, DVC workflows should usually prefer a visible rerun over a hidden stale
-result.
-
-That does not mean broad declarations are best. It means the review standard should be:
-
-1. eliminate stale-output risk first
-2. narrow false reruns where the boundary is understood
-3. keep the declaration explainable
-
-A pipeline that reruns too often is frustrating, but the team can observe the problem. A
-pipeline that silently skips required work can corrupt downstream decisions without an
-obvious warning.
-
-## A practical diagnosis pattern
-
-When a rerun surprises you, ask:
-
-- Which declared dependency, parameter, output, or command text changed?
-- Is that declared item truly part of this stage's result?
-- If not, can the declaration be narrowed without hiding a real influence?
-
-When a skipped rerun surprises you, ask:
-
-- What real influence changed?
-- Where should that influence be declared?
-- Did the command read a path, parameter, or environment fact that the graph cannot see?
-- Would the downstream result become stale if nobody noticed?
-
-The first case is mostly contract cleanup. The second case is correctness repair.
-
-## An empty status is conditional evidence
-
-When `dvc status --json` returns `{}`, DVC is making a bounded claim:
-
-> Current declared dependencies, parameters, commands, and outputs agree with recorded
-> declared state.
-
-It is not claiming:
-
-- the command has no hidden file reads;
-- every value used by the command is listed under `params`;
-- every meaningful write is listed under `outs`;
-- the runtime environment is equivalent to the recorded run;
-- the artifact is semantically current against facts outside the graph.
-
-The stage-contract audit makes this limitation visible. After changing the policy file,
-the status receipt is:
-
-```json
-{
-  "declared_input": [
-    {
-      "changed deps": {
-        "policy/threshold.txt": "modified"
-      }
-    }
-  ]
-}
-```
-
-`hidden_input` is absent. That absence is expected from the declaration and wrong for the
-real command behavior.
-
-After deleting the undeclared receipt, status is simply:
-
-```json
-{}
-```
-
-The empty object is correct about the declared graph. It is insufficient evidence for the
-larger artifact contract.
-
-## Diagnose with a causal contrast
-
-A single surprising stage is difficult to reason about because several explanations fit:
-
-- DVC did not detect the change;
-- the command ran but ignored the new value;
-- the output was restored from cache;
-- the reviewer inspected the wrong artifact;
-- the declaration is complete and the change truly does not matter.
-
-Use a paired case to remove ambiguity:
-
-| Evidence question | Declared case | Hidden case |
+| Planner decision | Result meaning | Interpretation |
 | --- | --- | --- |
-| Did status name the stage? | yes | no |
-| Did the stage rebuild? | yes | no |
-| Did the artifact adopt the current value? | yes | no |
-| Is the observed difference explained by one declaration edge? | yes | yes |
+| run | current | declared invalidation and execution agree |
+| run | stale | command ignored or mishandled the changed influence |
+| skip | current | change was irrelevant, or result matched by coincidence |
+| skip | stale | declaration omitted a real influence |
 
-The commands and input values are otherwise equivalent. The missing declaration is the
-causal difference.
+The second row matters: a correct rerun decision cannot prove that application code used
+the input correctly. The third also matters: one unchanged result cannot prove an input
+is irrelevant. Choose a mutation expected to alter a meaningful result.
+
+## Detect output-ownership failures
+
+The specimen's `undeclared_sidecar` command writes a main file and a receipt, but only
+declares the main file under `outs`.
+
+Delete the receipt, then inspect ordinary status and reproduction:
+
+```text
+status: {}
+repro: stage skipped
+receipt: still absent
+```
+
+The graph has no promise to restore the receipt. If the receipt is part of the
+deliverable, the repair is to declare it as an output or redesign the command so it is no
+longer promised.
 
 ```mermaid
-flowchart TD
-  mutation["change one real influence"] --> status["capture dvc status --json"]
-  status --> planned{"stage marked stale?"}
-  planned -- yes --> rebuild["reproduce only that stage"]
-  planned -- no --> inspect["inspect semantic value anyway"]
-  rebuild --> inspect
-  inspect --> current{"artifact records current value?"}
-  current -- yes --> accept["accept bounded contract"]
-  current -- no --> trace["trace hidden read, control, or output"]
+flowchart LR
+  command["command writes artifact"] --> meaningful{"part of promised result?"}
+  meaningful -- no --> scratch["keep outside durable result"]
+  meaningful -- yes --> owned{"listed in outs?"}
+  owned -- yes --> restore["loss can invalidate stage"]
+  owned -- no --> orphan["loss is invisible"]
 ```
 
-The semantic-value check belongs on both paths. A stage can run and still ignore the
-changed value, and a skipped stage can accidentally remain semantically valid.
+An existing artifact is not necessarily an owned artifact.
 
-## Build a stale-output receipt
+## Avoid repairs that erase the evidence
 
-For a real incident, record these fields before repairing anything:
-
-| Field | Example from the audit |
+| Tempting action | Why it is incomplete |
 | --- | --- |
-| mutation | `policy/threshold.txt`: `10` to `20` |
-| status result | only `declared_input` marked stale |
-| declared output before | `threshold=10` |
-| declared output after | `threshold=20` |
-| hidden output after | `threshold=10` |
-| decision | hidden stage is semantically stale |
-| contract repair | add policy path to hidden stage `deps` |
-| proof after repair | mutation marks stage stale and rebuilt value becomes `20` |
+| `dvc repro --force hidden_input` | refreshes once but leaves future changes invisible |
+| delete the declared output | triggers work through output loss, not the missing cause |
+| declare the repository root | hides the causal boundary and creates unrelated reruns |
+| clear the cache | changes execution mechanics without repairing the graph |
+| accept empty status | proves only agreement over declared state |
 
-This receipt is more useful than “DVC skipped unexpectedly.” It preserves the mutation,
-planner decision, artifact meaning, and intended repair.
+Use force only as a diagnostic contrast: if forcing the stage changes its output, you
+have evidence that an invisible influence matters. Then repair the declaration and repeat
+the original mutation under ordinary reproduction.
 
-## Avoid three false repairs
+## Write an incident receipt
 
-### Force the stage
+Before repair, record:
 
-`dvc repro --force hidden_input` may produce the current value once. It does not add the
-missing edge. The next policy change can be missed again.
+```text
+real influence:
+controlled mutation:
+expected semantic change:
+status before repro:
+stages executed:
+result after repro:
+failure class:
+declaration or command repair:
+same mutation after repair:
+second repro:
+```
 
-### Delete the output
-
-Deleting a declared output creates a reason to reproduce, but the graph remains blind to
-the real file or parameter influence.
-
-### Declare an entire directory
-
-Adding the repository root or a broad parent directory may catch the hidden file, but it
-also creates unrelated reruns and obscures the intended contract. Declare the specific
-influence once you know it.
-
-The repair is complete only when the original mutation becomes visible for the right
-reason.
+The final two fields matter. The same mutation must become visible for the intended
+reason, and a second unchanged reproduction must converge.
 
 ## Review checkpoint
 
-You understand this core when you can classify pipeline surprises without drama:
+You can diagnose this boundary when you can:
 
-- false reruns are visible inefficiency
-- stale outputs are hidden correctness risk
-- downstream reruns can be correct propagation
-- broad declarations should be narrowed only after the real read surface is understood
-- missing declarations should be fixed before performance convenience
-- an empty status is evidence about declared state, not proof that declarations are complete
-- a repair must make the original mutation visible without relying on force or deletion
+- classify false rerun, stale output, and orphaned output by consequence;
+- preserve pre-reproduction evidence;
+- use a one-variable mutation and semantic result assertion;
+- explain all four planner/result outcomes;
+- narrow broad declarations only after proving completeness;
+- reject force, deletion, and cache clearing as contract repairs;
+- repeat the original mutation to prove the repaired edge.
 
-That distinction is one of the most important habits in Module 04.
+The durable rule is:
+
+> Status tells you what the declared graph noticed. Result inspection tells you whether
+> that declaration was sufficient.
