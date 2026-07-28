@@ -1,6 +1,5 @@
 # Workspace, Git, Cache, Remote, and Published State
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,251 +9,272 @@ graph LR
   program["Deep Dive DVC"]
   section["Data Identity Content Addressing"]
   page["Workspace, Git, Cache, Remote, and Published State"]
-  capstone["Capstone evidence"]
+  capstone["Data identity cases"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.maps.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["recovery or review claim"] --> ledger["record each state layer"]
+  ledger --> authority["name claim-specific authority"]
+  authority --> loss["simulate loss"]
+  loss --> restore["restore from surviving layer"]
+  restore --> verify["compare identity and meaning"]
 ```
 <!-- page-maps:end -->
 
-One of the most important DVC habits is learning that the repository does not contain only
-one kind of state.
+A DVC project distributes state across layers. Confusion begins when a team treats one
+layer as if it contained the whole project.
 
-Different layers answer different questions.
-
-If you blur them together, recovery and trust will keep feeling magical.
-
-## The five layers that matter in practice
-
-| Layer | Main role | What it is good for |
+| Layer | Usually contains | Does not prove |
 | --- | --- | --- |
-| workspace | current local files | active editing and local execution |
-| Git | textual history and references | source review, pointer history, declared configuration |
-| local DVC cache | content-addressed local storage | restoring tracked artifacts locally |
-| remote storage | durable off-machine artifact storage | collaboration and recovery after loss |
-| published release state | downstream contract surface | reviewable outputs other people may trust |
+| workspace | materialized files used by tools | recorded identity or durable recovery |
+| Git | declarations, pointers, code, small policy | availability of DVC-managed bytes |
+| local DVC cache | managed content available on one machine | shared durability |
+| DVC remote | shared managed objects | tracked declarations or scientific meaning |
+| published state | a selected result boundary for consumers | full development reconstruction |
 
-These layers are related. They are not interchangeable.
+The useful question is not “which layer is the truth?” It is:
 
-## A clean authority picture
+> Which layer has authority for this claim, and which other layers must join it?
+
+## Draw the normal state route
 
 ```mermaid
 flowchart TD
-  remote["remote durability"] --> cache["local cache"]
-  cache --> workspace["workspace projection"]
-  git["Git references and declarations"] --> workspace
-  git --> publish["published contract meaning"]
+  git["Git: pointer and declarations"] --> workspace["workspace projection"]
+  cache["local cache: managed bytes"] --> workspace
+  remote["DVC remote: shared managed bytes"] --> cache
+  workspace --> pipeline["tools and stages"]
+  pipeline --> result["generated result"]
+  result --> cache
+  selected["selected identities and contracts"] --> published["published boundary"]
+  result --> published
 ```
 
-This is not a strict implementation graph.
+The arrows describe possible managed moves, not automatic guarantees. A remote supplies
+the cache only when configured, authorized, and holding the requested object. Published
+state contains only what its contract selects.
 
-It is a teaching picture for a more important question:
+## Inspect the audit ledger
 
-which layer is authoritative for which fact?
+Run:
 
-## What the workspace is and is not
-
-The workspace is where you see the familiar files.
-
-It is useful for:
-
-- running commands
-- reading outputs
-- editing code and configs
-
-But the workspace is not the whole trust story.
-
-Workspace files can be:
-
-- deleted
-- overwritten
-- stale
-- present without a durable recovery path
-
-That is why the working tree alone is too weak as an authority layer.
-
-## What Git is and is not
-
-Git is authoritative for:
-
-- source code history
-- pointer files
-- stage declarations
-- configs and docs
-
-Git is not authoritative for the actual bytes of tracked data artifacts.
-
-That distinction is the bridge from Module 01 into DVC thinking.
-
-## What the local cache is and is not
-
-The local DVC cache is the local content store that connects recorded identity to actual
-bytes.
-
-It is useful for:
-
-- reusing tracked artifacts
-- restoring files back into the workspace
-- keeping content identity operational rather than theoretical
-
-But local cache is still only local durability.
-
-If the machine is lost and nothing was pushed, the story is incomplete.
-
-## What the remote is and is not
-
-The remote is part of the repository's recovery story.
-
-It matters because it lets the team say:
-
-- these tracked artifacts survive local loss
-- another machine can retrieve them
-- collaboration does not depend on one laptop's cache
-
-But remote storage is not the same thing as the whole published contract. Durability and
-downstream trust are related, but they are not identical questions.
-
-## What published state is and is not
-
-Published release state such as `publish/v1/` answers a narrower question:
-
-- what may a downstream reviewer or consumer trust
-
-It is smaller than the full repository story on purpose.
-
-That means published state is not:
-
-- the entire execution history
-- the whole internal cache
-- a replacement for `dvc.lock`
-
-This separation becomes very important in later modules.
-
-## A small example
-
-Suppose you ask:
-
-> I can see `metrics.json` in my workspace. Doesn't that mean the result is safe?
-
-The answer depends on the layer question:
-
-- workspace says the file exists locally
-- Git may record how the pipeline refers to it
-- cache may make it locally restorable
-- remote may make it durably recoverable
-- published state may decide whether it is part of the downstream contract
-
-One visible file can participate in several different stories.
-
-## Separate authority from availability
-
-Two questions must be answered independently:
-
-1. Which content should exist?
-2. Which layer can supply its bytes now?
-
-The pointer is authoritative for the first question. Cache or remote storage answers the
-second. The workspace is only the current projection.
-
-The data identity audit demonstrates three useful combinations:
-
-| Pointer | Cache | Remote | Workspace | Honest conclusion |
-| --- | --- | --- | --- | --- |
-| present | present | untested | missing | identity is recorded and locally recoverable |
-| present | deleted | present | missing | identity is recorded and remotely recoverable |
-| present | deleted | absent | missing | identity is recorded but unavailable |
-
-Notice what does not change across the rows: the pointer can remain valid. Availability
-changes because storage layers change.
-
-## Read a loss event by layer
-
-Use this sequence instead of starting with whichever command you remember:
-
-```mermaid
-flowchart TD
-  question["What content should exist?"] --> pointer["Inspect pointer identity"]
-  pointer --> workspace{"Workspace bytes present?"}
-  workspace -->|yes| compare["Compare bytes with identity"]
-  workspace -->|no| cache{"Cache object present?"}
-  cache -->|yes| checkout["Checkout can project locally"]
-  cache -->|no| remote{"Remote object accessible?"}
-  remote -->|yes| pull["Pull can repopulate local state"]
-  remote -->|no| unavailable["Identity known; content unavailable"]
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/data-identity
 ```
 
-The final state is not “DVC forgot the data.” It is more precise: metadata still identifies
-the expected content, but the configured storage boundary cannot provide it.
+Build a state ledger for the recovery cases:
 
-## Match claims to evidence
+| Case moment | Pointer | Workspace | Cache | Remote | Claim |
+| --- | --- | --- | --- | --- | --- |
+| after `dvc add` | present | present | present | absent | local identity recorded |
+| workspace deleted | present | absent | present | absent | cache recovery possible |
+| after checkout | present | restored | present | absent | local projection recovered |
+| after push | present | present | present | present | remote contains object |
+| workspace and cache deleted | present | absent | absent | present | remote recovery possible |
+| after pull | present | restored | repopulated | present | remote recovery proven |
+| pointer-only loss | present | absent | absent | absent | identity known, bytes unavailable |
 
-| Claim | Minimum evidence | Common false evidence |
+This table makes failure diagnosis mechanical: identify what survives, then ask whether
+that layer can supply the claim.
+
+## Workspace is a projection
+
+The workspace gives scripts a stable, human-readable path. It may be:
+
+- present and matching recorded identity;
+- present but modified;
+- absent while cache remains;
+- restored from cache or remote;
+- generated from another stage.
+
+Workspace presence alone is weak evidence. Compare it with recorded content identity.
+
+In the cache-recovery case, deleting the workspace does not destroy content because the
+cache retains the named object. Checkout re-projects the same bytes.
+
+## Git preserves the map
+
+Git typically holds:
+
+- `.dvc` pointer files;
+- `dvc.yaml` and `dvc.lock`;
+- scripts, parameters, and policies;
+- non-secret remote configuration;
+- result and publication contracts.
+
+Git can preserve exactly which DVC object is required. It usually does not hold the large
+object itself.
+
+The pointer-only case demonstrates the limit: Git metadata survives, but no content layer
+can supply the bytes.
+
+## Local cache provides machine-local materialization
+
+The cache supports:
+
+- efficient reuse;
+- workspace checkout;
+- avoiding duplicate local managed content;
+- staging content for remote publication.
+
+It is vulnerable to:
+
+- machine loss;
+- cache cleanup;
+- workspace isolation;
+- corruption;
+- being unavailable to teammates.
+
+A warm cache can make a command succeed even when shared recovery is broken. Test remote
+durability after removing or isolating local cache state.
+
+## Remote provides shared object availability
+
+A configured remote can supply exact managed content to another cache. The audit proves
+this by:
+
+1. pushing the baseline object;
+2. deleting workspace and local cache;
+3. pulling from remote;
+4. confirming workspace and cache return;
+5. comparing restored SHA-256 and pointer ID with baseline.
+
+```bash
+jq '.findings[] |
+  select(
+    .finding == "REMOTE_RESTORES_AFTER_CACHE_LOSS" or
+    .finding == "REMOTE_RECOVERY_PRESERVES_IDENTITY"
+  )' "$audit/report.json"
+```
+
+The remote is authoritative for this bounded availability claim because local suppliers
+were removed before pull.
+
+It does not prove future retention, authorization for other identities, or completeness
+for other pointers.
+
+## Published state is a consumer contract
+
+Published state may contain:
+
+- result files;
+- manifests;
+- input and model identities;
+- metrics and parameters;
+- schema and interpretation;
+- verification instructions.
+
+It can support a consumer without exposing every intermediate artifact. That is useful,
+but different from full workflow recovery.
+
+Avoid:
+
+> The release exists, so the entire training pipeline is recoverable.
+
+Prefer:
+
+> The published bundle supports the declared consumer claim. Full pipeline reconstruction
+> additionally requires Git state, DVC inputs, intermediate dependencies, and runtime
+> evidence.
+
+## Name authority by question
+
+| Claim | Primary authority | Required corroboration |
 | --- | --- | --- |
-| file exists locally | workspace inspection | pointer exists |
-| workspace matches recorded identity | pointer plus byte comparison | path name matches |
-| content is locally recoverable | cache-backed checkout after workspace deletion | cache directory merely exists |
-| content survives local cache loss | pull after workspace and cache deletion | push exited zero |
-| artifact is approved downstream | published contract and review evidence | remote contains an object |
+| which bytes were recorded | pointer/lock | content digest inspection |
+| which path tools use | declaration and workspace | materialization check |
+| whether local checkout can recover | cache | checkout receipt and digest |
+| whether another machine can recover | remote | cache-cold pull and digest |
+| whether submitted result is current | lock/status | input and execution evidence |
+| what consumers may rely on | published contract | manifest and integrity checks |
+| whether data is scientifically suitable | domain contract | provenance, schema, validation |
 
-This table prevents a common escalation error. A remote can satisfy recovery without
-making an artifact part of the publish contract. A publish bundle can satisfy a consumer
-without retaining every internal cache object.
+There is no single “source of truth” for all rows.
 
-## Inspect the generated cases
+## Preserve negative evidence
 
-After running the audit, compare:
+A failed checkout in the pointer-only case is valuable:
 
-- `workspace/cache-recovery/`
-- `workspace/remote-recovery/`
-- `workspace/pointer-only/`
+```bash
+cat "$audit/evidence/pointer-only-checkout.stderr.txt"
+jq '.findings[] |
+  select(.finding == "POINTER_ONLY_IS_NOT_RECOVERABLE")' "$audit/report.json"
+```
 
-Do not inspect only their final files. Read the matching receipts under `evidence/`:
+It establishes:
 
-- cache checkout succeeds without proving anything about a remote
-- remote pull succeeds only after the local cache has been removed
-- pointer-only checkout fails while the `.dvc` file remains readable
+- identity metadata survived;
+- local content did not;
+- no remote supplier existed;
+- checkout failed;
+- workspace remained absent.
 
-That three-way contrast identifies which layer supplied the bytes.
+Do not repair first and then claim the pointer had been sufficient. Preserve the layer
+ledger before intervention.
 
-## State-layer review record
+## Review a loss event by layer
 
-For a real incident, write one row per claim:
+Use:
 
-| Question | Authority inspected | Availability inspected | Evidence | Conclusion |
-| --- | --- | --- | --- | --- |
-| which bytes belong at the path? | `.dvc` pointer | not yet tested | content ID and size | identity recorded |
-| can this machine restore them? | same pointer | local cache | successful clean checkout | locally recoverable |
-| can a clean machine restore them? | same pointer revision | configured remote | empty-cache pull and digest | remotely recoverable |
+```text
+Claim:
+Which recovery or review statement is being tested?
 
-The table forces “we have the data” into claims that another reviewer can challenge.
+Recorded identity:
+Which pointer or lock names the content?
 
-## A good discipline question
+Workspace:
+Does the projection exist, and does it match?
 
-Whenever you inspect a DVC repo, ask:
+Cache:
+Does the named object exist locally?
 
-1. which layer am I currently looking at
-2. what kind of authority does that layer actually have
-3. which layer would I need to inspect next to answer the full question honestly
+Remote:
+Is a route configured, readable, and proven to contain the object?
 
-That habit makes Module 02 much easier to carry forward.
+Published boundary:
+Does a selected consumer artifact survive, and what does it cover?
 
-## Keep this standard
+Intervention:
+Which command moved content from which layer to which layer?
 
-Do not let the repository collapse into one mental bucket called "the state."
+Verification:
+Which identity and semantic checks close the claim?
 
-Keep asking:
+Limits:
+Which layers, identities, or future durability remain untested?
+```
 
-- is this mutable local state
-- is this recorded reference state
-- is this recovery state
-- is this downstream trust state
+## Avoid layer substitutions
 
-That vocabulary is what keeps DVC legible rather than mystical.
+| Evidence present | Missing evidence | Wrong conclusion |
+| --- | --- | --- |
+| pointer | cache and remote | data is backed up |
+| workspace | pointer comparison | file is the recorded dataset |
+| local cache | remote test | teammates can recover |
+| remote object | tracked route | clean clone can discover storage |
+| published result | workflow dependencies | project is fully reconstructable |
+| successful checkout | remote receipt | remote recovery works |
+
+## Review checkpoint
+
+You understand the state layers when you can:
+
+- identify what survives each audit loss event;
+- explain why workspace deletion differs from content loss;
+- show how Git preserves identity without bytes;
+- prove when cache is the supplier;
+- prove when remote is the supplier;
+- separate published consumer state from workflow recovery;
+- select authority according to the exact claim.
+
+The durable model is:
+
+> Identity, materialization, shared availability, execution, and publication live in
+> different layers; trustworthy claims join the required layers without pretending one
+> owns them all.
