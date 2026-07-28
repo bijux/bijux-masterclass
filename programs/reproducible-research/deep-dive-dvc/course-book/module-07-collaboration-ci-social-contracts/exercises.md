@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,363 +7,493 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Collaboration Ci Social Contracts"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+  section["Collaboration CI Social Contracts"]
+  page["Reviewer handoff exercises"]
+  capstone["Reviewer handoff audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.uses.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  memory["replace memory with contract"] --> ci["design clean-context verification"]
-  ci --> block["name when merge must stop"]
-  block --> steward["assign remote and artifact stewardship"]
-  steward --> drill["turn handoff and recovery into routine evidence"]
+  claim["bound the handoff claim"] --> predict["predict case decisions"]
+  predict --> evidence["classify receipts"]
+  evidence --> contracts["design storage and CI contracts"]
+  contracts --> decisions["write merge decisions"]
+  decisions --> review["assemble independent review"]
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice collaboration judgment, not only DVC command vocabulary.
+These exercises produce one collaboration-review packet. You will work from the
+cache-cold handoff audit rather than inventing generic team advice.
 
-The goal of the day is to stop treating team reliability as a personality trait. Most
-collaboration failures around DVC are contract failures: someone assumed a push, a review,
-or a recovery route would happen because responsible people remember things. Mature teams
-replace that assumption with visible checks, scoped authority, and documented recovery.
+Every decision must name:
 
-## How to work through this set
+- the collaboration promise under review;
+- the exact receipt that supports or defeats it;
+- the consequence for an independent reviewer;
+- the boundary owner and repair;
+- the check that proves the repair;
+- the claim limit.
 
-Treat the ten exercises as one full lab day on social contracts for shared data state.
+## Working directory and source evidence
 
-Before each answer:
-
-1. name the shared artifact or promise at risk
-2. name the clean-context check that would verify it
-3. say who must act when the check fails
-
-Do the exercises in order. The day is one progression:
-
-- Exercises 1-3 replace memory-based habits with CI and review contracts
-- Exercises 4-5 assign stewardship and design a recovery drill
-- Exercises 6-8 review real collaboration failure surfaces around data changes and merges
-- Exercises 9-10 turn ownership and handoff into durable team practice
-
-Keep one collaboration packet as you go. By the end of the day it should contain:
-
-- one rewritten memory-based team rule
-- one DVC-aware CI route
-- one merge-blocking review comment
-- one remote stewardship note
-- one recovery drill design
-- one seven-case handoff classification
-- one no-oral-history handoff decision record
-
-If those seven artifacts are missing, you are probably still describing good team behavior
-instead of designing it.
-
-## Recommended working layout
-
-Exercises 6-10 use the generated audit tree:
-
-```text
-artifacts/audit/reproducible-research/deep-dive-dvc/reviewer-handoff/
-├── REVIEWER_HANDOFF_AUDIT_GUIDE.md
-├── route.txt
-├── summary.tsv
-└── workspace/
-    └── <case>/
-        ├── author/
-        ├── reviewer/
-        └── evidence/
-            ├── finding.json
-            └── receipts.json
-```
-
-Keep one contract table while you work:
-
-| Case | Discovery | Pull | Status before repro | Repro | Result claim | Decision |
-| --- | --- | --- | --- | --- | --- | --- |
-
-Also keep one stewardship table:
-
-| Surface | Primary owner | Backup owner | Evidence of health | Escalation path |
-| --- | --- | --- | --- | --- |
-
-```mermaid
-flowchart LR
-  promise["name the shared promise"]
-  trigger["define the state change that triggers review"]
-  verify["choose a clean-context verification"]
-  owner["assign who responds to failure"]
-  repair["document the durable repair"]
-
-  promise --> trigger --> verify --> owner --> repair
-```
-
-Use that route on purpose. It keeps the day centered on verifiable team behavior instead
-of on vague advice like "be careful with the remote."
-
-## Exercise 1: Rewrite a memory-based rule
-
-A team says:
-
-> Remember to push data before merging.
-
-Rewrite this as a stronger collaboration contract.
-
-Your answer should name:
-
-- what CI or review should verify
-- which files or state changes trigger the check
-- why memory is not enough
-- one sentence naming what happens when the check fails
-
-Study note:
-The exercise matters because memory-based rules are invisible right when the repository
-needs the most clarity.
-
-## Exercise 2: Design a DVC-aware CI route
-
-Write a short CI verification route for a DVC pull request.
-
-It should cover:
-
-- clean checkout assumptions
-- remote object availability
-- declared pipeline state
-- metric or release evidence when relevant
-
-You do not need platform-specific YAML. A command sequence and explanation are enough.
-
-What to hand in:
-
-- the route
-- one sentence about least-privilege credentials
-- one sentence about what the route should skip on untrusted forks
-
-Study note:
-The strongest route proves shared state from less local context than the author had.
-
-## Exercise 3: Review a merge blocker
-
-A pull request changes `dvc.lock` and `metrics/metrics.json`.
-
-CI passes formatting and unit tests, but nobody has checked whether DVC objects can be
-pulled from the shared remote.
-
-Write a review comment that explains:
-
-- why the merge should wait
-- what evidence is missing
-- what exact verification route would unblock it
-- one sentence explaining why "the author says they pushed it" is not enough
-
-Study note:
-This is where many students first learn that a passing code check is not the same as a
-passing shared-state check.
-
-## Exercise 4: Define remote stewardship
-
-A team has one remote that everyone can write to and delete from.
-
-Write a short note that explains:
-
-- what risks this creates
-- which permissions or ownership rules you would consider
-- why release artifacts may need stronger protection than development artifacts
-- one sentence naming who should handle credential rotation or remote incidents
-
-Study note:
-Shared storage is infrastructure, not background scenery.
-
-## Exercise 5: Plan a recovery drill
-
-Design a small recovery drill for the capstone or an equivalent DVC project.
-
-Your answer should include:
-
-- the starting condition
-- the commands or checks to run
-- what success means
-- what kind of finding should become a repository fix
-- how often the drill should be rehearsed
-
-Study note:
-Recovery claims become trustworthy only when rehearsed by someone who did not create the
-state originally.
-
-## Midday self-check
-
-Before you move into pull-request review, pointer conflicts, and handoff repair, make
-sure your packet can already answer these questions clearly:
-
-- which human expectation should become a contract
-- how CI proves shared state from a clean context
-- why some merges must block on remote-backed evidence
-- why remotes and release artifacts need explicit stewardship
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
-
-## Exercise 6: Predict the clean handoff outcomes
-
-Before running the audit, inspect:
-
-```text
-capstone/repro/reviewer-handoff/
-capstone/scripts/audit_reviewer_handoffs.py
-```
-
-For each case, predict:
-
-- whether the reviewer discovers the remote
-- whether pull succeeds
-- whether status is clean before reproduction
-- whether reproduction succeeds
-- whether the restored result matches its claim
-- `ACCEPT` or `BLOCK`
-
-Then run:
+Generate the audit:
 
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
 ```
 
-Compare your table with `summary.tsv` and each `finding.json`.
+Set paths:
 
-What to hand in:
-
-- prediction table
-- corrected table
-- one explanation of why `PASS / BLOCK` is not contradictory
-
-Study note:
-Prediction makes you reason from the handoff contracts instead of memorizing labels.
-
-## Exercise 7: Separate remote discovery from object availability
-
-Compare:
-
-```text
-workspace/missing-remote-object/evidence/receipts.json
-workspace/undiscoverable-remote/evidence/receipts.json
+```bash
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/reviewer-handoff
+cases="$audit/workspace"
+learning=artifacts/learning/deep-dive-dvc/collaboration-handoff
+mkdir -p "$learning"
 ```
 
-For each case:
-
-1. read `remote_list`
-2. read `pull`
-3. identify whether the remote route or the required bytes are missing
-4. assign the repair to an owner
-5. write an unblock condition
-
-What to hand in:
-
-- two short evidence records
-- two different review comments
-- one sentence explaining why both should not be reported as “remote failure”
-
-Study note:
-The same failed command can sit behind different contracts and different repairs.
-
-## Exercise 8: Distinguish incomplete source from stale execution
-
-Compare:
+Build:
 
 ```text
-workspace/untracked-stage-dependency/evidence/receipts.json
-workspace/stale-execution-record/evidence/receipts.json
+collaboration-handoff/
+├── handoff-claim.md
+├── boundary-predictions.tsv
+├── case-evidence.tsv
+├── remote-stewardship.md
+├── submitted-state-review.md
+├── ci-contract.md
+├── merge-decisions.md
+├── recovery-drill.md
+├── handoff-manifest.json
+└── review-packet.md
 ```
 
-Build this table:
+These names describe durable purpose. Keep generated learning work under `artifacts/`.
 
-| Case | Pull | Pre-repro status | Repro | Missing or stale evidence | Repair |
+## Exercise: Bound the reviewer handoff claim
+
+Write `handoff-claim.md`.
+
+Include:
+
+- the exact incident-summary claim;
+- the reviewer's initial state;
+- the Git-tracked surfaces required;
+- the DVC-remote surfaces required;
+- allowed read and local-write authority;
+- forbidden shared-storage mutation;
+- the seven acceptance checks;
+- four claims the audit does not prove.
+
+Add:
+
+| Surface | Required state | Evidence | Owner |
+| --- | --- | --- | --- |
+| Git repository | | | |
+| tracked remote route | | | |
+| DVC objects | | | |
+| execution record | | | |
+| result contract | | | |
+| reviewer permissions | | | |
+
+**Evidence to inspect**
+
+```bash
+cat "$audit/REVIEWER_HANDOFF_AUDIT_GUIDE.md"
+jq '.' \
+  programs/reproducible-research/deep-dive-dvc/capstone/repro/reviewer-handoff/handoff-contract.json
+```
+
+**Success condition**
+
+A new reviewer can distinguish operational handoff acceptance from scientific,
+retention, security, and promotion claims.
+
+**If you are stuck**
+
+Complete the sentence: “Using only tracked state and authorized read access, a reviewer
+can…”
+
+## Exercise: Predict all seven handoff decisions
+
+Before reading `summary.tsv`, inspect:
+
+```bash
+sed -n '1,260p' \
+  programs/reproducible-research/deep-dive-dvc/capstone/scripts/audit_reviewer_handoffs.py
+```
+
+Write `boundary-predictions.tsv`:
+
+```text
+case	first_boundary	expected_decision	expected_failed_checks	reason
+```
+
+Add all seven cases. Then reveal:
+
+```bash
+column -t -s $'\t' "$audit/summary.tsv"
+```
+
+Append:
+
+```text
+observed_decision	observed_failed_checks	prediction_match	correction
+```
+
+Do not erase an incorrect prediction. Explain which prerequisite or evidence boundary you
+misread.
+
+**Success condition**
+
+The first boundary is causal rather than merely the last failed command. Missing object
+and undiscoverable remote must have different primary classifications.
+
+**If you are stuck**
+
+Ask which reviewer operation can no longer begin truthfully after the earliest failure.
+
+## Exercise: Map receipts to collaboration promises
+
+Write `case-evidence.tsv`:
+
+```text
+case	evidence_path	observation	inference	not_proved
+```
+
+For each case, include:
+
+- `finding.json`;
+- the decisive command receipt from `receipts.json`;
+- the handoff contract when relevant;
+- the result when relevant.
+
+Extract concise reviewer receipts:
+
+```bash
+for case in \
+  complete-handoff \
+  missing-remote-object \
+  undiscoverable-remote \
+  untracked-stage-dependency \
+  stale-execution-record \
+  mutating-review-route \
+  missing-result-contract
+do
+  jq --arg case "$case" '{
+    case: $case,
+    reviewer: .reviewer
+  }' "$cases/$case/evidence/receipts.json"
+done
+```
+
+Include at least one row explaining why successful reproduction does not prove submitted
+state was clean.
+
+**Success condition**
+
+No inference says only “the handoff is broken.” It names discovery, availability, Git
+completeness, currency, authority, execution, or result meaning.
+
+**If you are stuck**
+
+Use the check names in `finding.json` as the vocabulary for narrow claims.
+
+## Exercise: Write a remote stewardship contract
+
+Write `remote-stewardship.md` for this scenario:
+
+> Researchers publish DVC inputs during development. A protected automation identity
+> publishes accepted results. Internal reviewers require read access. Accepted revisions
+> must remain reconstructable for three years.
+
+Include:
+
+- durable remote roles and tracked route configuration;
+- credential boundaries without secret values;
+- publication ordering relative to pointer review;
+- read and write identities;
+- object-integrity verification;
+- retention and garbage-collection rules;
+- cache-cold restoration cadence;
+- incident ownership;
+- migration and archive obligations.
+
+Add a decision table for:
+
+- tracked route absent;
+- credential denied;
+- object absent;
+- object integrity mismatch;
+- retention expired;
+- review route requests push.
+
+**Success condition**
+
+The contract distinguishes identity, discovery, authorization, availability, integrity,
+and retention. It does not use `dvc push` success as the only proof.
+
+**If you are stuck**
+
+Trace one pointer from proposed Git history to a cache-cold reviewer three years later.
+
+## Exercise: Review submitted state before repair
+
+Write `submitted-state-review.md` comparing:
+
+- `complete-handoff`;
+- `stale-execution-record`.
+
+For each case, record:
+
+- pull outcome;
+- pre-repro status;
+- submitted result values;
+- reproduction outcome;
+- post-repro meaning;
+- handoff decision.
+
+Extract decisive evidence:
+
+```bash
+jq '.reviewer | {pull, status_before_repro, repro}' \
+  "$cases/complete-handoff/evidence/receipts.json"
+jq '.reviewer | {pull, status_before_repro, repro}' \
+  "$cases/stale-execution-record/evidence/receipts.json"
+```
+
+Draw a timeline showing when the reviewer first knows the submitted state is stale and
+when local repair occurs.
+
+End with a rule that CI can enforce.
+
+**Success condition**
+
+Your review blocks the stale case despite successful reproduction and explains exactly
+which claim that success still supports.
+
+**If you are stuck**
+
+Label every receipt either “about submitted state” or “about reviewer-created state.”
+
+## Exercise: Design a least-authority CI contract
+
+Write `ci-contract.md` for a cache-cold handoff job.
+
+Specify:
+
+- supported merge claim;
+- clean initial state and forbidden caches;
+- executor identity;
+- read-only remote permission;
+- command and receipt order;
+- required structured artifacts;
+- case-specific failure messages;
+- fork and untrusted-contribution behavior;
+- receipt retention;
+- required branch check;
+- separate post-acceptance publication job;
+- limits.
+
+Include a permission matrix:
+
+| Identity | Git read | DVC read | DVC write | CI artifact write | Release write |
 | --- | --- | --- | --- | --- | --- |
+| review job | | | | | |
+| publication job | | | | | |
+| external fork job | | | | | |
 
-Then answer:
+**Success condition**
 
-- why does one reproduction fail while the other succeeds?
-- why does successful reproduction not accept the stale handoff?
-- which files must the author add or regenerate?
-- which receipt must be captured before reproduction changes the workspace?
+The review job cannot mutate shared DVC storage, and the publication job cannot run before
+an independently evidenced acceptance decision.
 
-What to hand in:
+**If you are stuck**
 
-- completed table
-- one paragraph separating recoverability from submitted-state coherence
-- one evidence-complete blocker for each case
+Remove every permission not needed to answer the merge claim.
 
-Study note:
-This exercise prevents “repro passed” from erasing the state that arrived for review.
+## Exercise: Write six boundary-specific merge decisions
 
-## Exercise 9: Review authority and result meaning
+Write `merge-decisions.md` with one blocking review comment for every defective case.
 
-Compare:
+Each comment must contain:
 
 ```text
-workspace/mutating-review-route/reviewer/handoff-contract.json
-workspace/missing-result-contract/reviewer/handoff-contract.json
+Decision
+Failed boundary
+Evidence
+Consequence
+Repair owner
+Required repair
+Reverification
+Claim limit
 ```
 
-The first case executes correctly but asks a reviewer to run `dvc push`. The second pulls
-and reproduces but omits the expected result claim.
+Avoid one generic “rerun CI” response. Your missing-object and undiscoverable-route
+comments must prescribe different repairs. Your stale-state comment must not accept CI's
+locally regenerated result as submitted evidence.
 
-Design:
+Add one acceptance comment for `COMPLETE_HANDOFF` that states the bounded claim and names
+remaining reviews.
 
-- a read-only pull-request route
-- a separate trusted publication route
-- a result contract for the incident summary
-- fork behavior when remote credentials are unavailable
+**Success condition**
 
-What to hand in:
+A contributor can act on every comment without oral clarification, and no comment grants
+broader approval than the audit supports.
 
-- authority table naming read and write operations
-- corrected review route
-- corrected result contract
-- one sentence explaining why executable output is not automatically reviewable
+**If you are stuck**
 
-Study note:
-Infrastructure success and result interpretation are different review authorities.
+Start from `failed_checks` in each `finding.json`, then locate the earliest decisive
+receipt.
 
-## Exercise 10: Conduct a no-oral-history handoff review
+## Exercise: Plan a cache-cold recovery drill
 
-Use only the generated `complete-handoff/reviewer/` clone and its receipts. Do not inspect
-the author workspace until your decision is written.
+Write `recovery-drill.md` for a remote migration.
 
-Produce a handoff record containing:
+The drill must define:
 
-1. bounded claim
-2. Git revision under review
-3. cache starting condition
-4. remote discovery evidence
-5. pull evidence
-6. pre-reproduction status evidence
-7. reproduction evidence
-8. result-to-claim comparison
-9. authority used
-10. `ACCEPT` or `BLOCK` with limits
+- repository revision and target claim;
+- reviewer identity and initial state;
+- old and new remote roles;
+- forbidden author-cache shortcut;
+- evidence-preservation route;
+- injected missing-object and route-discovery failures;
+- classification rule;
+- recovery action for each failure;
+- pre- and post-recovery identities;
+- acceptance checks;
+- measures for diagnosis, recovery, and proof;
+- owners and escalation;
+- residual limits.
 
-Afterward, inspect one blocked author workspace. Write down any fact that was visible only
-there and explain why it cannot be required for ordinary review.
+Include a drill record template and a schedule triggered by both time and high-risk changes.
 
-What to hand in:
+**Success condition**
 
-- complete decision record
-- list of author-only facts you deliberately excluded
-- one highest-value contract repair for a real project you know
+The drill can distinguish “new remote lacks the object” from “clean clone cannot discover
+the new route,” and it tests restoration using read authority.
 
-Study note:
-Collaboration quality is proven when the reviewer can make a bounded decision without
-asking the author to narrate the workspace.
+**If you are stuck**
 
-## Mastery check
+Make the starting reviewer less privileged than the migration operator.
 
-You have a strong grasp of this module if your answers consistently keep five ideas
-visible:
+## Exercise: Design a joined handoff manifest
 
-- collaboration failures are often missing contracts
-- CI should verify shared state from less local context
-- merges should block when DVC evidence is incomplete
-- remotes are shared artifact infrastructure
-- recovery drills preserve pre-repair observations
-- executable output still needs a result contract
+Create syntactically valid `handoff-manifest.json` with placeholder identities.
+
+Include:
+
+- schema identity;
+- handoff identifier;
+- Git commit;
+- DVC declaration and lock identities;
+- tracked remote role, not secret credentials;
+- data and result object identities;
+- result-contract identity;
+- reviewer executor identity;
+- review permission mode;
+- remote discovery receipt;
+- pull receipt;
+- pre-repro status receipt;
+- reproduction receipt;
+- result comparison;
+- decision and failed checks;
+- timestamps;
+- manifest verifier.
+
+Validate:
+
+```bash
+jq empty "$learning/handoff-manifest.json"
+```
+
+Add a section to `ci-contract.md` explaining who creates the manifest, who verifies it,
+and how its handoff ID prevents receipts from different runs being mixed.
+
+**Success condition**
+
+The manifest joins one proposed revision, one clean review execution, and one bounded
+decision without containing secrets or write credentials.
+
+**If you are stuck**
+
+Imagine the CI web interface disappears. Preserve the identities needed to repeat the
+decision from stored artifacts.
+
+## Exercise: Assemble an independent collaboration review
+
+Write `review-packet.md` as the entry point to all prior artifacts.
+
+Include:
+
+- bounded handoff claim;
+- exact audit regeneration command;
+- artifact map;
+- seven-case decision matrix;
+- remote stewardship summary;
+- submitted-state versus repaired-state distinction;
+- CI authority contract;
+- merge decision route;
+- recovery drill acceptance;
+- handoff manifest verification;
+- unresolved risks;
+- completion commands.
+
+Add:
+
+```mermaid
+flowchart LR
+  claim["handoff-claim.md"] --> predictions["boundary-predictions.tsv"]
+  predictions --> evidence["case-evidence.tsv"]
+  evidence --> remote["remote-stewardship.md"]
+  evidence --> submitted["submitted-state-review.md"]
+  remote --> ci["ci-contract.md"]
+  submitted --> decisions["merge-decisions.md"]
+  ci --> manifest["handoff-manifest.json"]
+  decisions --> drill["recovery-drill.md"]
+  manifest --> review["review-packet.md"]
+  drill --> review
+```
+
+Verify:
+
+```bash
+test -s "$learning/handoff-claim.md"
+test -s "$learning/boundary-predictions.tsv"
+test -s "$learning/case-evidence.tsv"
+test -s "$learning/remote-stewardship.md"
+test -s "$learning/submitted-state-review.md"
+test -s "$learning/ci-contract.md"
+test -s "$learning/merge-decisions.md"
+test -s "$learning/recovery-drill.md"
+jq empty "$learning/handoff-manifest.json"
+test -s "$learning/review-packet.md"
+```
+
+**Success condition**
+
+A learner who missed the class can regenerate the source audit, reproduce every accept or
+block decision, identify the correct repair owner, and state the limits without asking the
+author.
+
+**If you are stuck**
+
+Use the shortest route from claim to decisive receipt, decision, repair, and limit. Do not
+summarize every page.
+
+## Completion standard
+
+Your packet is complete when it demonstrates:
+
+- reviewer independence from author cache and memory;
+- separate remote discovery and object-availability diagnoses;
+- joint Git and DVC completeness;
+- preservation of pre-repro submitted-state evidence;
+- read-only review and separate publication authority;
+- result meaning beyond successful execution;
+- boundary-specific merge comments;
+- cache-cold recovery rehearsal;
+- run-bound structured evidence;
+- a standalone review route.
