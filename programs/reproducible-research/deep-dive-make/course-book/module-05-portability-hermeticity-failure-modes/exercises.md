@@ -1,362 +1,226 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is not to
-recite vocabulary. The goal is to turn fuzzy portability and hermeticity complaints into
-declared contracts, measured observations, and justified tool boundaries.
-
-## How to work through this set
-
-Treat the ten exercises as one full lab day on hardening an inherited build.
-
-Before each answer:
-
-1. name the assumption or boundary you are testing
-2. decide whether the assumption is required, optional, or diagnostic only
-3. keep the smallest proof or failure message that would let another maintainer verify the
-   conclusion
-
-If you skip that classification step, everything starts to sound like "environment issues"
-instead of specific, fixable build contracts.
-
-Do the exercises in order. The day is one progression:
-
-- Exercises 1-3 declare capabilities, recursive boundaries, and semantic inputs honestly
-- Exercises 4-6 measure layers, choose tool ownership, and build a diagnostic doctor
-- Exercises 7-8 harden shell and recursive invocation contracts
-- Exercises 9-10 turn those ideas into convergent manifests and a full inherited-build
-  audit
-
-Keep one hardening packet as you go. By the end of the day it should contain:
-
-- one portability contract
-- one recursion rule you can justify under `-j`, `-n`, and nested invocation
-- one convergent representation of a non-file semantic input
-- one performance baseline that separates Make overhead from recipe cost
-- one `doctor` target with both reporting and fail-fast behavior
-- one before-and-after audit of an inherited build across two environments
-
-If those six artifacts are missing, you are probably accumulating opinions instead of
-hardening the build.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
+Use one isolated `portability-evidence-lab/` for the whole set:
 
 ```text
-module05-lab/
+portability-evidence-lab/
 ├── Makefile
-├── build/
-├── ci/
-├── nested/
-├── notes/
+├── child/
+├── config/
+├── inputs/
 ├── tools/
-└── artifacts/
+└── evidence/
 ```
 
-Keep one assumption ledger while you work:
+Keep generated logs and measurements under the repository `artifacts/` directory when you
+work in the course checkout.
 
-| Assumption | Required capability | Semantic input | Diagnostic only | Proof or failure message |
-| --- | ---: | ---: | ---: | --- |
+For every exercise, preserve:
 
-Every row must choose one ownership category. "Environment issue" is not a category.
+| Contract claim | Accepted case | Rejected case | Settled or recovery case |
+| --- | --- | --- | --- |
 
-Also keep one boundary table:
-
-| Concern | Keep in Make | Hand off to another tool | Why |
-| --- | ---: | ---: | --- |
-
-That second table matters because "use another tool" is not a complete answer unless you
-can explain which proof route survives the handoff.
+A happy-path command cannot prove a gate, manifest, recursive budget, or handoff.
 
 ```mermaid
 flowchart LR
-  declare["declare the contract"]
-  probe["probe the environment or boundary"]
-  measure["measure before redesigning"]
-  model["model semantic inputs honestly"]
-  decide["decide what Make should own"]
-  verify["verify convergence and failure behavior"]
+  classify["Classify support, identity, or ownership"]
+  claim["Write falsifiable claim"]
+  accept["Run accepted case"]
+  reject["Run rejected case"]
+  settle["Run convergence or recovery case"]
+  review["Explain owner and evidence"]
 
-  declare --> probe --> measure --> model --> decide --> verify
+  classify --> claim --> accept --> reject --> settle --> review
 ```
 
-Use that route on purpose. It keeps the day centered on declared support and ownership
-instead of on ad hoc machine-specific fixes.
+The work accumulates:
 
-## Exercise 1: Write a portability contract
+```mermaid
+flowchart TD
+  capability["Runtime capability contract"]
+  recursion["Recursive budget contract"]
+  identity["Semantic manifest"]
+  measurement["Controlled performance comparison"]
+  handoff["External-owner handoff"]
+  incident["Inherited-build evidence packet"]
 
-You inherit a Make build that uses grouped targets, `python3`, and POSIX shell syntax,
-but none of those assumptions are declared. CI sometimes runs an older Make and fails
-with unclear syntax errors.
+  capability --> recursion --> identity
+  identity --> measurement --> handoff --> incident
+```
 
-Write a small portability contract section for the build and explain what should fail fast
-versus what may use a fallback.
+## Exercise 1: Prove a portability contract
+
+Write a contract for a build that requires GNU Make grouped targets and secondary
+expansion, POSIX `/bin/sh`, and one Python executable. Do not use release-prefix filters
+to infer Make capabilities.
 
 What to hand in:
 
-- the minimum Make and shell contract
-- the required tool list
-- one optional feature and its safe fallback
-- one sentence explaining what the first failure message should optimize for
+- a `.FEATURES` gate that names only missing capabilities
+- explicit `SHELL` and `.SHELLFLAGS`
+- a Python variable restricted to one executable name or path, with arguments separate
+- accepted and rejected tool-presence cases
+- one compatibility test beyond executable presence
+- a CI support matrix that distinguishes tested releases from feature discovery
 
-Study note:
-The point is not "support as many environments as possible." The point is to make
-supported environments explicit and unsupported ones fail honestly.
+## Exercise 2: Prove a recursive budget boundary
 
-## Exercise 2: Repair a recursive boundary
-
-A top-level target currently runs:
-
-```make
-vendor:
-	make -C vendor/lib all
-```
-
-Do not begin by claiming that this invocation always loses the jobserver. Predict two
-separate behaviors:
-
-1. whether `make -n vendor` enters the child graph
-2. whether a child on your current host inherits parallel flags under `make -j2 vendor`
-
-Run both commands, save their output, then redesign the recipe as `+$(MAKE)`. Repeat the
-observations. Explain which result is a declared recursive contract and which result may
-depend on GNU Make's jobserver transport.
+Create parent and child Makefiles with four independent child recipes. Compare a literal
+`gmake` invocation, `+$(MAKE)`, and a wrapper that ends with `exec "$MAKE"`.
 
 What to hand in:
 
-- predictions written before execution
-- literal and declared dry-run logs
-- actual child `MAKELEVEL` and `MAKEFLAGS` for both forms
+- dry-run evidence showing which forms enter the child plan without publication
+- parent and child `MAKELEVEL` and literal `MAKEFLAGS`
+- start/end interval evidence under parent `-j2`
+- proof that peak recipe overlap is no greater than two and reaches two
+- one rejected attempt that copies or edits jobserver flags, with the reason it is invalid
+- a statement of which observation is portable intent and which is host-specific transport
+
+## Exercise 3: Publish a semantic manifest safely
+
+Model `MODE`, effective locale, and compiler identity. Decide which facts are pinned,
+attested, or diagnostic-only. Reevaluate semantic facts every invocation and publish only
+changed canonical content.
+
+What to hand in:
+
+- strict validation for finite configuration values
+- a process-local candidate, interruption cleanup, comparison, and rename
+- two equal invocations preserving manifest digest and modification time
+- one changed semantic fact invalidating a downstream artifact
+- equal hashes from two independent workspaces with equal declared facts
+- concurrent debug and release builds using distinct output namespaces
+- an explanation of which raw environment fields were excluded and why
+
+## Exercise 4: Locate a performance cost
+
+Define clean, no-op, and one-input rebuild workloads for one goal. Measure planning and
+real execution repeatedly while holding job count, tools, locale, storage location, and
+output capture constant.
+
+What to hand in:
+
+- preparation and exact command for each workload
+- warm-up policy, repetition count, median, and range
+- wall, user, and system time where available
+- one hypothesis assigning cost to a layer
+- one controlled experiment, such as `-rR` in a copy or removal of one repeated probe
+- selected-rule and output-equivalence checks after the experiment
+- a sentence explaining why `-n` is not a pure decision timer
+
+## Exercise 5: Design a tool handoff
+
+Choose dependency resolution or release promotion. Write both a Make-owned design and an
+external-owner design, then decide which truth model fits.
+
+What to hand in:
+
+- failure classification supported by evidence
+- input identity, invocation, success output, failure output, and interface version
+- publication, retry, resume, and rollback owner
+- a file or digest boundary that Make can verify
+- failure injection before, during, and after handoff
+- a comparison route that cannot create two publication owners
+- the former writer that must be removed after the handoff
+
+## Exercise 6: Separate diagnosis from enforcement
+
+Build a `doctor` target that reports Make features, shell contract, executable resolution,
+locale, recursion depth, and selected configuration. Build a separate `contract-check`
+that rejects missing required capabilities before any artifact recipe starts.
+
+What to hand in:
+
+- advisory `doctor` output under two controlled environments
+- the contract target and every publication frontier it gates
+- missing-tool rejection with no residue
+- available-tool acceptance that reaches publication
+- a compatibility rejection for a present but unsupported tool
+- an explanation of why sibling prerequisites do not establish left-to-right ordering
+
+## Exercise 7: Make shell failure portable
+
+Audit a recipe containing `[[ ... ]]`, `source`, a pipeline, and an unquoted path. Keep a
+POSIX shell contract and rewrite it so every required failure reaches Make.
+
+What to hand in:
+
 - the repaired recipe
-- one paragraph separating observed inheritance from portable recursive intent
+- tests for present and missing input paths
+- an injected failure in the first pipeline command
+- an explanation of how you avoided relying on non-POSIX `pipefail`
+- one case where declaring Bash would be clearer than translating the recipe
+- proof that a path containing spaces is handled as one argument
 
-Study note:
-A literal GNU Make 4.4 process may inherit a FIFO jobserver on your host. That does not
-make it equivalent to `+$(MAKE)`: the parent's planning route still needs to enter the
-child graph.
+## Exercise 8: Test recursion through a wrapper
 
-## Exercise 3: Model one non-file input honestly
-
-A binary changes behavior when `MODE=debug` and when a different compiler is selected, but
-neither fact appears anywhere in the graph.
-
-First run the capstone `semantic-fault-audit`. Explain why the clock-derived model produces
-different hashes from equal tracked inputs while the declared-state control does not.
-
-```sh
-gmake -C programs/reproducible-research/deep-dive-make/capstone \
-  semantic-fault-audit
-```
-
-Then choose `MODE` or compiler identity and build a manifest that:
-
-1. re-evaluates the non-file fact on every Make invocation
-2. preserves the existing manifest when candidate content is equal
-3. republishes the manifest when the semantic fact changes
-4. invalidates one downstream artifact when publication occurs
+Add a wrapper that selects a child directory and invokes Make. First let it call the
+`make` found on `PATH`; then pass the parent-selected `$(MAKE)` and replace the wrapper
+process with it.
 
 What to hand in:
 
-- the two clock-state findings and their `hashes_equal` values
-- the complete manifest and downstream artifact rules
-- evidence that two equal invocations preserve the manifest mtime and hash
-- evidence that one changed semantic value changes the manifest and downstream artifact
-- one sentence separating evaluation from publication
+- literal, declared-direct, and declared-wrapper planning traces
+- proof that the wrapper uses `exec`
+- relative recursion-depth evidence through direct and wrapper entry routes
+- peak-overlap measurements under the same parent budget
+- one interruption result showing no detached child remains
+- a bounded recursion policy stated relative to supported public entrypoints
 
-Study note:
-`cmp` cannot detect a changed environment fact if Make never runs the recipe. A complete
-design must explain both why the candidate is evaluated and why equal content is not
-republished.
+## Exercise 9: Prove manifest identity under contention
 
-## Exercise 4: Separate performance layers
-
-A teammate says, "Make is slow, so we should rewrite the build logic." You are not yet
-allowed to change the build. You are only allowed to measure.
-
-Describe the smallest measurement loop you would run to distinguish parse or decision cost
-from recipe cost and trace volume.
+Extend Exercise 3 with two simultaneous Make processes. Run equal configurations against
+one namespace, then different configurations against separate namespaces. Interrupt one
+writer during candidate generation.
 
 What to hand in:
 
-- the commands you would run
-- the specific numbers you would compare
-- one sentence on how different results would change the diagnosis
-- one sentence explaining why "felt slow" is not enough
-
-Study note:
-This exercise exists to stop premature rewrites. Measure first, then decide where the
-cost actually lives.
-
-## Exercise 5: Decide whether Make should still own the problem
-
-A build is now being asked to handle:
-
-- artifact compilation
-- dependency download and version solving
-- long-running environment promotion
-- manual approval checkpoints
-
-Classify which concerns Make should still own and which concern most strongly suggests a
-tool boundary.
-
-What to hand in:
-
-- the concern Make should definitely keep
-- the concern that most strongly argues for another tool
-- one sentence explaining how you would preserve the proof route after the handoff
-- one sentence explaining why handing off everything would also be a mistake
-
-Study note:
-This is an ownership exercise, not an ideology exercise. Another tool is not a magic
-answer unless boundaries and proofs remain clear.
-
-## Midday self-check
-
-Before you move into doctor targets, shell portability, and recursive budget behavior,
-make sure your packet can already answer these questions cleanly:
-
-- which capabilities are truly required for the build contract
-- which recursive boundary facts the parent and child must share
-- which semantic input you modeled as a convergent file and why
-- which concern clearly belongs outside Make without destroying the proof route
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
-
-## Exercise 6: Build a toolchain doctor
-
-Write a phony `doctor` target that reports the GNU Make version, shell, compiler path,
-Python path, locale, and recursion depth. Keep that diagnostic report separate from a
-`contract-check` target that rejects missing required tools before any artifact recipe
-starts.
-
-First inspect the required-tool rows from `environment-contract-audit`. Explain why the
-late-check model leaves a zero-byte version file. Then build one artifact target that has
-the gate as an order-only prerequisite. Test under `-j2` with an unavailable tool and an
-available tool.
-
-What to hand in:
-
-- the `doctor`, `contract-check`, and artifact rules
-- output from one diagnostic run
-- a missing-tool run with the deliberate message and proof that no artifact files exist
-- an available-tool run that publishes the expected files
-- one explanation of why `all: contract-check artifact` does not impose order under `-j`
-- one sentence separating tool presence from tool-version compatibility
-
-Study note:
-A doctor reveals context. A gate enforces a requirement. Keeping those responsibilities
-separate makes failure placement and advisory output easier to review.
-
-## Exercise 7: Remove a hidden shell dependency
-
-This recipe works when a developer has configured Bash but fails under a POSIX shell:
-
-```make
-SHELL := /bin/sh
-
-report:
-	@if [[ -f data.csv ]]; then echo ready; fi
-```
-
-Repair the recipe without changing the declared shell. Explain why setting `SHELL` makes
-the contract more honest than relying on a login-shell preference.
-
-What to hand in:
-
-- the portable recipe
-- the command used to test it
-- one other shell feature you would audit before claiming portability
-- one sentence explaining when declaring Bash would be the more honest choice
-
-Study note:
-Portability does not mean never using Bash. It means declaring Bash when Bash is really
-part of the supported contract.
-
-## Exercise 8: Preserve the parallel budget across recursion
-
-Run the capstone environment contract audit:
-
-```sh
-gmake -C programs/reproducible-research/deep-dive-make/capstone \
-  environment-contract-audit
-```
-
-Use the recursive-boundary rows as a specimen review. Read both dry-run traces, both
-actual-run traces, and the child outputs. Then run the program-level wrapper and explain
-why its absolute `MAKELEVEL` can differ while the parent-child relationship remains
-valid.
-
-What to hand in:
-
-- the two recursive findings from `summary.tsv`
-- the exact line that appears only in the declared dry-run trace
-- proof that neither dry-run route created `child.out`
-- the actual `MAKEFLAGS` observations without claiming they are universal
-- a relative `MAKELEVEL` assertion that works through both entry routes
-- one sentence explaining why aggregate `PASS` does not endorse literal recursion
-
-Study note:
-Dry-run visibility and actual jobserver inheritance answer different questions. A
-reviewable recursive boundary needs evidence for both.
-
-## Exercise 9: Prove an environment manifest converges
-
-Represent `MODE`, compiler identity, and locale in one manifest. Build it once in each of
-two clean workspaces with the same declared values and compare hashes. In one workspace,
-run again without changing those facts, then change only `MODE`.
-
-What to hand in:
-
-- the manifest rule
-- equal first-build hashes from the two clean workspaces
-- an unchanged mtime and hash from the repeated equal-state invocation
-- a changed hash and content after changing `MODE`
-- the trace line showing the downstream artifact rebuild after manifest publication
-- one sentence explaining why locale belongs in the manifest only when it affects meaning
-
-Study note:
-This exercise combines two different claims: clean-room reproducibility and incremental
-convergence. One cannot substitute for the other.
+- process-local candidate paths from both equal-state writers
+- a valid final manifest with no partial content
+- cleanup evidence after interruption
+- different-mode outputs coexisting without writer overlap
+- downstream query status after the settled equal-state case
+- an explanation of why atomic rename alone cannot repair one path with two meanings
 
 ## Exercise 10: Harden an inherited build
 
-Choose a small Makefile with at least one undeclared tool, one shell assumption, one
-recursive call, or one environment-sensitive output. Audit it on two environment
-configurations and harden the weakest boundaries.
+Combine at least five defects:
+
+- one missing runtime capability contract
+- one undeclared recursive or wrapper boundary
+- one non-file input with unstable or stale identity
+- one unmeasured performance complaint
+- one concern whose durable state belongs to another owner
+
+Include one decoy symptom that is nearby but not causal.
 
 What to hand in:
 
-- a before-and-after portability contract
-- evidence from both environments
-- one measurement that separates Make overhead from recipe cost
-- a decision about which concerns remain in Make and which belong elsewhere
-- one sentence naming the weakest boundary you fixed first and why
-
-Study note:
-The goal is not to rewrite the build into purity. The goal is to make the support
-contract, ownership, and failure behavior clear enough that another maintainer can keep it
-healthy.
+- before-and-after support, semantic-input, and ownership contracts
+- an observation ledger that rejects the decoy
+- the paired specimen evidence used to understand each mechanism
+- project-specific accepted, rejected, concurrent, and settled cases
+- a repeated performance comparison with correctness guards
+- the external handoff interface and failure owner
+- a final incident explanation reproducible without instructor commentary
 
 ## Before you read the answers
 
-Do not open `exercise-answers.md` until you can already point to:
+Do not open `exercise-answers.md` until every exercise has a rejected case. For performance
+work, the rejection may be an unsupported hypothesis rather than a failed command: record
+which measurement ruled it out.
 
-- one declared required capability
-- one modeled semantic input
-- one recursive invocation you can justify
-- one concern that clearly belongs outside Make
-- one convergent doctor or manifest behavior you can explain
+## Mastery standard
 
-If you do not yet have those five things, the answer page will sound sharper than it can
-teach.
+A complete packet distinguishes:
 
-## Mastery standard for this exercise set
+- supported environment from observed environment
+- semantic input from diagnostic context
+- atomic publication from configuration identity
+- recursive intent from measured token conservation
+- performance symptom from cost-layer evidence
+- external command containment from durable ownership handoff
 
-Across all ten answers, the module wants the same habits:
-
-- you name the assumption or boundary being tested
-- you choose evidence before you choose a fix
-- you explain the fix in terms of contract, convergence, measurement, or ownership
-
-If an answer says only "hardening is important," keep going.
+If one conclusion depends on "it worked once," continue the experiment.
