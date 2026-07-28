@@ -1,6 +1,5 @@
 # Module 03: Execution Environments as Reproducible Inputs
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,138 +9,304 @@ graph LR
   program["Deep Dive DVC"]
   section["Execution Environments Reproducible Inputs"]
   page["Module 03: Execution Environments as Reproducible Inputs"]
-  capstone["Capstone evidence"]
+  capstone["Runtime contract audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.proved through.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  influence["identify runtime influence"] --> visibility["test declaration visibility"]
+  visibility --> execution["prove current execution"]
+  execution --> meaning["inspect result meaning"]
+  meaning --> control["choose control and evidence"]
+  control --> review["make claim reviewable"]
 ```
 <!-- page-maps:end -->
 
-By Module 03, you already know that stable data identity matters.
+The same code, data, and parameters can produce a different result when the runtime
+changes. They can also appear to produce the same result because a workflow silently
+reused output created under an older runtime.
 
-The next surprise is harder:
+This module teaches you to distinguish those cases.
 
-even when code and data look stable, results can still drift because the execution
-environment is part of the input surface.
+You will use a paired DVC specimen in which one stage declares a report-style policy and
+another reads the equivalent policy from hidden process state. The declared stage becomes
+stale and rebuilds. The hidden stage reports no declared change and preserves old
+semantic meaning until forced.
 
-This module is about making that invisible boundary visible:
+The lesson is not “always use containers.” It is:
 
-- environment is not background weather
-- honest runs can diverge without anyone being careless
-- DVC can record some environment-adjacent evidence, but it does not own environment
-  management by itself
-- lockfiles, containers, and CI all solve different parts of the problem
+> Identify which runtime facts can influence the claim, make their control route explicit,
+> and preserve enough evidence to prove that the reviewed result came from the stated
+> context.
 
-The capstone corroboration surface for this module is the paired runtime specimen,
-its audit guide, generated fingerprints, planner receipts, semantic results, and the
-root-level `capstone-runtime-contract-audit` route. Together they show what changes when
-runtime policy is declared and what DVC cannot see when the same policy arrives through
-hidden process state.
+## Who this module is for
 
-## Why this module exists
+This module assumes you can:
 
-Many workflow teams say:
+- read a small `dvc.yaml`;
+- distinguish Git source identity from DVC data identity;
+- run Make targets from the repository root;
+- read JSON with `jq`;
+- interpret a file hash as identity evidence rather than semantic meaning.
 
-- the code did not change
-- the data did not change
-- the parameters did not change
+If those ideas are unfamiliar, revisit Modules 01 and 02 before attempting the cumulative
+exercises. You do not need prior container or CI expertise. The environment-strategy
+lesson builds those boundaries from first principles.
 
-and still get different outcomes.
+## What you will be able to do
 
-That is where reproducibility gets more honest. The environment is often the missing input
-surface hiding in plain sight.
+After completing the lesson and evidence packet, you should be able to:
 
-This module exists so you stop treating runtime as accidental background and start
-treating it as part of the system you need to reason about.
+- bound an environment investigation by a result claim;
+- identify influential runtime facts without inventorying the entire machine;
+- predict DVC stale behavior from declaration edges;
+- interpret empty status without claiming the runtime is unchanged;
+- prove whether compared results were freshly executed;
+- distinguish lock evidence after execution from planner visibility before execution;
+- use a forced run as a causal probe without presenting it as repair;
+- choose lockfiles, containers, CI, DVC controls, and tolerances by responsibility;
+- join external executor identity to workflow and result evidence;
+- write a runtime-drift conclusion that another learner can reproduce.
 
-## Study route
+## The controlled specimen
+
+Both stages add `3` and `5` and render the result:
+
+```text
+dot policy   -> 8.00
+comma policy -> 8,00
+```
+
+They share data and renderer code. Only the policy route differs:
+
+```mermaid
+flowchart TD
+  source["data/source.txt"] --> declared["declared_runtime"]
+  source --> hidden["hidden_runtime"]
+  renderer["render_runtime.py"] --> declared
+  renderer --> hidden
+  contract["runtime.env in deps"] --> declared
+  process["REPORT_STYLE process value"] -. "used, not declared" .-> hidden
+  declared --> declaredResult["planner sees policy change"]
+  hidden --> hiddenResult["planner cannot see policy change"]
+```
+
+This is a teaching model, not a simulation of every environment problem. Deterministic
+punctuation makes the causal route easy to inspect. Real projects may need repeated runs,
+domain-specific comparisons, and controls for package, platform, hardware, service, or
+secret state.
+
+## Produce the source evidence
+
+From the repository root:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
+```
+
+The audit writes to:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/
+```
+
+Begin with:
+
+```bash
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts
+cat "$audit/summary.tsv"
+cat "$audit/route.txt"
+```
+
+The generated workspace is isolated. The governed specimen under `capstone/repro/` remains
+unchanged.
+
+## How to read audit decisions
+
+The summary has a test result and a production decision:
+
+| Result and decision | Meaning |
+| --- | --- |
+| `PASS / ACCEPT` | the assertion passed and the observed behavior belongs in a truthful contract |
+| `PASS / REJECT` | the assertion passed by reproducing behavior a truthful contract must reject |
+| `FAIL` | the audit could not establish its expected evidence |
+
+Do not report all `PASS` rows as desirable. The hidden status, stale ordinary repro, and
+forced-run findings pass because the audit correctly exposes the intentional defect.
+
+## Recommended full study route
+
+Allow one serious session for reading and the worked investigation, then another for the
+cumulative exercises.
+
+| Reading | Question it resolves | Evidence action |
+| --- | --- | --- |
+| [Execution Environment as Part of the Input Surface](execution-environment-as-part-of-the-input-surface.md) | when does runtime count as input? | compare paired stage declarations |
+| [Determinism Is a Spectrum, Not a Switch](determinism-is-a-spectrum-not-a-switch.md) | when is a difference acceptable? | require current-run proof before tolerance |
+| [What DVC Records Indirectly and What It Does Not Manage](what-dvc-records-indirectly-and-what-it-does-not-manage.md) | which environment claims can DVC support? | read declaration and lock in time order |
+| [Lockfiles, Containers, and CI as Environment Strategies](lockfiles-containers-and-ci-as-environment-strategies.md) | which control owns which boundary? | map threats to enforcement and receipts |
+| [Reviewing Environment Drift and Runtime Evidence](reviewing-environment-drift-and-runtime-evidence.md) | how do I diagnose without guessing? | preserve status, execution, and semantic evidence |
+| [Worked Investigation: Proving Hidden Runtime Drift](worked-investigation-proving-hidden-runtime-drift.md) | how does the full argument fit together? | reproduce the causal proof route |
+| [Exercises](exercises.md) | can I produce an independent review? | build the ten-artifact learning packet |
+| [Exercise Answers](exercise-answers.md) | where does my reasoning overclaim? | revise artifacts against model evidence |
+| [Glossary](glossary.md) | am I using terms precisely? | check distinctions during review |
+
+Read in this order on a first pass. The lessons intentionally build from causal surface to
+control strategy.
+
+## A shorter diagnostic route
+
+If you are returning during an incident:
+
+| Symptom | Begin with | Continue with |
+| --- | --- | --- |
+| status is empty but output seems wrong | drift review | worked investigation |
+| lock changed after force and the team thinks the issue is repaired | DVC boundary | contract repair exercise |
+| local and CI metrics differ slightly | determinism contract | tolerance gate exercise |
+| team is debating lockfile versus container | environment strategies | executor manifest exercise |
+| environment logs exist but cannot support acceptance | DVC boundary | joined manifest exercise |
+
+Do not use the short route as a substitute for the full exercise packet if this is your
+first encounter with runtime evidence.
+
+## Learning packet
+
+The exercises create:
+
+```text
+artifacts/learning/deep-dive-dvc/runtime-evidence/
+├── claim-boundary.md
+├── planner-predictions.tsv
+├── evidence-inventory.tsv
+├── lock-chronology.md
+├── causal-diagnosis.md
+├── environment-strategy.md
+├── tolerance-gate.md
+├── executor-manifest.json
+├── contract-repair.md
+└── review-packet.md
+```
+
+The packet is cumulative:
 
 ```mermaid
 flowchart LR
-  overview["Overview"] --> core1["Core 1: environment as input"]
-  core1 --> core2["Core 2: determinism is a spectrum"]
-  core2 --> core3["Core 3: what DVC records and what it does not"]
-  core3 --> core4["Core 4: lockfiles, containers, and CI"]
-  core4 --> core5["Core 5: diagnosing environment drift"]
-  core5 --> example["Worked example"]
-  example --> practice["Exercises and answers"]
-  practice --> glossary["Glossary"]
+  claim["bounded claim"] --> predictions["planner predictions"]
+  predictions --> inventory["evidence roles"]
+  inventory --> chronology["lock chronology"]
+  chronology --> cause["causal diagnosis"]
+  cause --> repair["contract repair"]
+  strategy["control strategy"] --> manifest["joined manifest"]
+  manifest --> tolerance["fresh-run tolerance"]
+  repair --> review["independent review"]
+  tolerance --> review
 ```
 
-Read the module in that order the first time.
+The files live under `artifacts/` because they are generated learning work, not course
+source.
 
-If the problem is already partly clear, use this shortcut:
+## Evidence reading order
 
-- open Core 1 when the main confusion is "why does runtime count as input?"
-- open Core 2 when the main confusion is "how can honest runs still diverge?"
-- open Core 3 when the main confusion is "what part of this is DVC actually helping with?"
-- open Core 4 when the main confusion is "which environment strategy fits which pressure?"
-- open Core 5 when the main confusion is "how do I review or diagnose drift sanely?"
+When a result looks wrong, use this order:
 
-## Module map
+1. preserve the result, fingerprint, status, declaration, and lock identities;
+2. confirm code, data, parameter, and schema comparability;
+3. inspect status before running repro;
+4. prove whether the disputed stage executed;
+5. compare claim-relevant result meaning;
+6. isolate a suspected runtime cause;
+7. choose a repair at the missing visibility or enforcement boundary;
+8. rerun acceptance tests for staleness, execution, meaning, and convergence.
 
-| Page | Purpose |
-| --- | --- |
-| [Overview](index.md) | explains the module promise and study route |
-| [Execution Environment as Part of the Input Surface](execution-environment-as-part-of-the-input-surface.md) | teaches why runtime belongs in the workflow story |
-| [Determinism Is a Spectrum, Not a Switch](determinism-is-a-spectrum-not-a-switch.md) | teaches why divergence can be honest rather than mysterious |
-| [What DVC Records Indirectly and What It Does Not Manage](what-dvc-records-indirectly-and-what-it-does-not-manage.md) | teaches DVC's boundary around environments |
-| [Lockfiles, Containers, and CI as Environment Strategies](lockfiles-containers-and-ci-as-environment-strategies.md) | teaches the main environment-control approaches and their tradeoffs |
-| [Reviewing Environment Drift and Runtime Evidence](reviewing-environment-drift-and-runtime-evidence.md) | teaches how to inspect and diagnose runtime differences without guesswork |
-| [Worked Investigation: Proving Hidden Runtime Drift](worked-investigation-proving-hidden-runtime-drift.md) | follows preserved receipts from runtime mismatch to causal proof and contract repair |
-| [Exercises](exercises.md) | gives ten cumulative exercises |
-| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
-| [Glossary](glossary.md) | keeps the module vocabulary stable |
-
-## What should be clear by the end
-
-By the end of this module, you should be able to explain:
-
-- why the environment is part of the input surface
-- why determinism is often conditional rather than absolute
-- which runtime facts DVC helps surface and which it does not manage directly
-- how lockfiles, containers, and CI differ as environment strategies
-- how to review and diagnose environment drift without superstition
+The order matters. Rerunning too early can erase stale-state evidence. Applying tolerance
+before proving execution can normalize reused output.
 
 ## Commands to keep close
 
-These commands form the evidence loop for Module 03:
+Generate the learning evidence:
 
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
+```
+
+Enforce the audit invariants:
+
+```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-selftest
 ```
 
-The audit is the learning route. The self-test is the stronger enforcement route after
-you can explain every accepted and rejected finding.
-
-## Capstone route
-
-Use the capstone only after the runtime boundary already feels concrete.
-
-Best corroboration surfaces for this module:
-
-- `capstone/repro/runtime-contracts/dvc.yaml`
-- `capstone/repro/runtime-contracts/environment/runtime.env`
-- `capstone/scripts/audit_runtime_contracts.py`
-- `capstone/docs/runtime-contract-audit-guide.md`
-- generated `fingerprints/`, `receipts/`, `results/`, and `summary.tsv`
-
-Useful proof route:
+Inspect finding evidence:
 
 ```bash
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
+jq '.findings[] | {finding, result, decision, checks}' \
+  artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/report.json
 ```
 
-The route proves that a declared policy change makes one stage stale and rebuilds to the
-new meaning, while the equivalent hidden process change remains invisible and preserves
-stale meaning under ordinary reproduction. Forced execution exposes the defect; it does
-not repair the missing declaration.
+Compare fingerprints:
+
+```bash
+jq -s '.' \
+  artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/evidence/baseline-fingerprint.json \
+  artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/evidence/drift-fingerprint.json
+```
+
+## Common reasoning traps
+
+| Trap | Correction |
+| --- | --- |
+| “same output means same environment” | prove both contexts executed and compare runtime identities |
+| “empty status means nothing changed” | empty status covers declared state only |
+| “the fingerprint changed, so DVC will rebuild” | observation is not a declaration edge |
+| “the lock changed, so runtime is tracked” | ask what was visible before execution |
+| “force fixed it” | verify the declaration or enforcement route changed |
+| “the metric delta is small, so accept it” | prove current governed executions before tolerance |
+| “the container makes everything identical” | name host, device, service, and orchestration limits |
+| “CI passed” | identify the enforced identities, result, and retained receipt |
+
+Use this table during the exercises. If your argument resembles a trap, rewrite the
+evidence route.
+
+## Completion proof
+
+You have completed Module 03 when you can explain the seven audit findings in your own
+words and your learning packet passes:
+
+```bash
+learning=artifacts/learning/deep-dive-dvc/runtime-evidence
+
+test -s "$learning/claim-boundary.md"
+test -s "$learning/planner-predictions.tsv"
+test -s "$learning/evidence-inventory.tsv"
+test -s "$learning/lock-chronology.md"
+test -s "$learning/causal-diagnosis.md"
+test -s "$learning/environment-strategy.md"
+test -s "$learning/tolerance-gate.md"
+jq empty "$learning/executor-manifest.json"
+test -s "$learning/contract-repair.md"
+test -s "$learning/review-packet.md"
+```
+
+Self-check orally:
+
+- Why does the declared policy change make one stage stale?
+- Why can hidden status be empty while output has obsolete meaning?
+- What proves report style is causal?
+- Why does force change lock evidence without repairing future stale decisions?
+- What evidence must join a canonical executor to its result?
+- Why must current execution be established before tolerance?
+
+If any answer relies on “DVC knows the environment,” return to the DVC boundary lesson.
+
+## Transition to Module 04
+
+Module 03 shows that an influential runtime fact can be real yet invisible to the planner.
+Module 04 broadens that lesson into stage-contract design: dependencies, parameters,
+outputs, staleness, and lock evidence.
+
+Carry one question forward:
+
+> Does every influence needed for a trustworthy stale decision have a truthful declared
+> or externally enforced route?
