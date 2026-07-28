@@ -71,6 +71,56 @@ flowchart LR
 The order is diagnostic. If schedule equivalence fails, the trace and hidden-input checks
 are `NOT_RUN`; they are not silently treated as passes.
 
+## Design claims with an acceptance and rejection route
+
+Before implementing another selftest section, complete this table:
+
+| Protected claim | Healthy fixture | Controlled violation | Independent oracle | Preserved evidence |
+| --- | --- | --- | --- | --- |
+| unchanged build converges | declared graph | parse-time input changes on every read | query exit after successful build | build log, query log, exit |
+| schedules publish equivalent artifacts | isolated clean builds | controlled post-parallel artifact drift | declared inventory comparison | both inventories and semantic diff |
+| generated source is consumed | generator input and consumer | remove the consumer edge | mutate generator input and inspect dependent artifact | trace, artifact identities |
+| public target propagates failure | known passing checker | checker returns a named nonzero exit | target exit and stopping log | command, exit, reached checks |
+
+Each row needs both directions:
+
+- a healthy case that the harness accepts;
+- a deliberate defect that the harness rejects at the named boundary.
+
+Without the rejection route, the selftest may be green because its oracle is disconnected
+from the claimed invariant.
+
+```mermaid
+flowchart LR
+  claim["protected claim"] --> healthy["healthy fixture"]
+  claim --> fault["controlled violation"]
+  healthy --> accept["oracle must accept"]
+  fault --> reject["same oracle must reject"]
+  accept --> evidence["reviewable evidence"]
+  reject --> evidence
+```
+
+The controlled violation belongs to the selftest’s own test suite, not to the normal
+learner or production configuration surface.
+
+## Keep the oracle independent
+
+A selftest can accidentally prove its own assumptions. Consider an inventory generated
+from the same variable that defines the build outputs. If an expected output disappears
+from that variable, both the build and inventory omit it, and comparison still passes.
+
+Strengthen the oracle by deriving expectations from the contract rather than the
+implementation under test:
+
+- maintain an explicit governed output list for a small fixture;
+- compare against a checked schema or manifest;
+- assert required roles, not only whatever files happen to exist;
+- validate membership before computing hashes;
+- make the controlled defect violate a requirement the oracle reads independently.
+
+Independence does not require a second build system. It requires the test not to ask the
+same faulty declaration what “correct” means.
+
 ## Own the workspace
 
 The harness copies source into:
@@ -91,6 +141,29 @@ to inspect the stopping state.
 
 The harness replaces this fixed workspace on its next run. If the failure is part of an
 incident, preserve the report before rerunning.
+
+## Make fixture state attributable
+
+An isolated directory is necessary but insufficient. Record the state that enters it:
+
+```text
+source revision or tracked-file digest:
+copied paths:
+excluded paths:
+tool commands and versions:
+documented variable overrides:
+sanitized environment policy:
+network policy:
+workspace path:
+```
+
+If the harness copies the current worktree, say whether tracked modifications and
+untracked files are included. A rejected run cannot be reproduced from a revision alone
+when its fixture included local changes.
+
+Also bound time and external dependencies. A hung recursive build should produce a named
+timeout failure, not occupy CI indefinitely. A network fetch should either be part of a
+documented contract or rejected from the selftest fixture.
 
 ## Prove convergence as an exit-code contract
 
@@ -180,6 +253,24 @@ This is better than waiting for the wall clock to cross a second boundary:
 The selftest is not recommending parse-time side effects. It is constructing one so the
 harness must detect the resulting non-convergence.
 
+## Diagnose the detector, not only the build
+
+For every controlled fault, review four outcomes:
+
+| Healthy result | Faulted result | Interpretation |
+| --- | --- | --- |
+| pass | reject at expected boundary | detector is connected for this case |
+| fail | reject | fixture or ordinary contract is already broken |
+| pass | pass | detector does not close the claimed gate |
+| fail | accept | harness outcome handling is untrustworthy |
+
+A different failure is not automatically a successful negative test. If a schedule fault
+causes an earlier clean-build error, the harness has not demonstrated its
+schedule-comparison oracle. The stopping boundary must match the injected violation.
+
+Record the fault seam, expected boundary, observed boundary, and later checks not reached.
+This lets a reviewer distinguish detector quality from general failure.
+
 ## Require the tester to fail correctly
 
 A selftest seen only in its passing state may be disconnected from the contract it claims
@@ -244,6 +335,24 @@ Likewise, `result=PASS` is bounded by the recorded settings and artifact set. It
 prove cross-compiler reproducibility, every possible parallel schedule, or product
 correctness.
 
+## Extend the harness without weakening it
+
+When adding a new claim:
+
+1. write its bounded contract and non-claims;
+2. choose a fixture that can exercise it without live-worktree dependence;
+3. choose an oracle independent of the implementation under test;
+4. add the healthy acceptance case;
+5. add one deterministic controlled violation;
+6. require rejection at the intended stopping boundary;
+7. preserve evidence for both outcomes;
+8. update report-state handling so later checks remain `NOT_RUN` after failure;
+9. run the selftest’s own test suite before trusting the new green result.
+
+Do not increase a trace-count threshold or widen an ignored-path list merely to recover a
+pass. First determine whether the contract changed, the fixture changed, or the harness
+lost sensitivity.
+
 ## Review a real rejected case
 
 After running `gmake selftest-harness-tests`, inspect:
@@ -280,3 +389,5 @@ Before leaving this page, you should be able to explain:
 - why the negative proof uses explicit state drift instead of sleeping
 - why `NOT_RUN` is materially different from `FAIL`
 - how controlled fault injection proves that the harness closes its rejection gate
+- why an oracle must not derive its entire expectation from the implementation under test
+- how to extend the harness with paired acceptance and rejection evidence
