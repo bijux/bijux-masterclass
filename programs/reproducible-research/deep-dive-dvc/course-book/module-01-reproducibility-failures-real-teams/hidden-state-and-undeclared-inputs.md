@@ -1,6 +1,5 @@
 # Hidden State and Undeclared Inputs
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Reproducibility Failures Real Teams"]
+  section["Reproducibility Failures in Real Teams"]
   page["Hidden State and Undeclared Inputs"]
   capstone["Capstone evidence"]
 
@@ -18,142 +17,301 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  visible["visible files and arguments"] --> run["workflow"]
+  hidden["environment, manual work, defaults, cache"] --> run
+  run --> result["trusted result"]
+  result --> probe["change one suspected influence"]
+  probe --> contract["declare, record, constrain, or exclude"]
 ```
 <!-- page-maps:end -->
 
-Most fragile workflows do not fail because people forgot the main script.
+The visible script is not the workflow. The workflow is the set of influences
+with the power to change the result.
 
-They fail because influential inputs were present, mattered, and never became part of the
-recorded story.
+Hidden state appears when one of those influences is absent from the recorded
+contract. It may be perfectly stable on the author's machine. Hidden does not
+mean random; it means unavailable to the evidence used to explain and rebuild
+the result.
 
-That is hidden state.
+## Use a causal definition
 
-## What counts as hidden state
+Ask of a file, value, service, or condition:
 
-Hidden state is any input, condition, or side effect that influences the result without
-being made explicit enough for others to inspect and recover.
+> If this changed while the declared workflow stayed the same, could the
+> trusted result change?
 
-Typical examples include:
+If yes, it is influential state. The team must decide whether to:
 
-- local data copies that differ from what the repository implies
-- environment versions that changed quietly
-- notebook cells run in a particular order
-- parameters typed into commands but never saved
-- helper files or preprocessing steps performed outside the visible workflow
-- random seeds, filesystem order, or machine-specific behavior
+- declare it as an input or control;
+- record its immutable identity;
+- constrain it through an environment;
+- verify it at execution;
+- deliberately exclude its effect from the result contract.
 
-The details vary. The pattern is stable.
+Ignoring it is not a fifth strategy.
 
-## Why hidden state hurts teams
+## Hidden state has several shapes
 
-Hidden state makes teams ask the wrong question:
+| Shape | Example | Why ordinary review misses it |
+|---|---|---|
+| content | `data/current.csv` contains new bytes | path and filename look unchanged |
+| control | threshold entered in shell or notebook | value never reaches reviewed config |
+| transformation | one-off filtering before the script | prepared file looks like a source |
+| runtime | package, locale, hardware, thread count | environment is inherited |
+| execution | notebook memory, cache, prior output | state survives between runs |
+| discovery | unsorted directory or changing query | input set is assembled dynamically |
+| external | API, database table, model download | remote system changes independently |
+| human | manual approval, label correction, file selection | decision lives in conversation |
 
-> what changed?
+These categories overlap. The purpose is to widen the search, not force every
+influence into one box.
 
-The harder truth is:
+## Reproduce a hidden control
 
-> what was influencing the result all along without being recorded?
+The course specimen accepts a declared threshold:
 
-That is why reproducibility failure often feels mysterious. The workflow is not always
-breaking in front of you. Sometimes it is only revealing that the original run was never
-fully described.
-
-## A helpful way to sort inputs
-
-```mermaid
-flowchart TD
-  obvious["obvious inputs<br/>data files<br/>config files<br/>script arguments"] --> run["workflow run"]
-  hidden["hidden inputs<br/>environment<br/>manual edits<br/>implicit defaults<br/>machine state"] --> run
-  run --> result["result and metrics"]
+```console
+python score_incidents.py \
+  --input observations.csv \
+  --threshold 0.20 \
+  --output risk-summary.json
 ```
 
-You do not need to fear this diagram. You need to use it.
+It also accepts an environment value:
 
-Every real workflow has both categories at first. The engineering work is deciding which
-hidden inputs must become explicit.
+```console
+RISK_THRESHOLD=0.20 python score_incidents.py \
+  --input observations.csv \
+  --output risk-summary.json
+```
 
-## A small example
+Both routes are deterministic. The second hides a result-changing control from
+`params.json`.
 
-Imagine this repository:
+Run the audit:
 
-- `train.py`
-- `config.yaml`
-- `data/raw.csv`
-- `README.md` with the command
+```console
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-workflow-evidence-audit
+```
 
-That looks respectable.
+Then inspect:
 
-But the real run may also depend on:
+```console
+jq '{
+  local_repeatability,
+  decision,
+  failed_checks
+}' artifacts/audit/reproducible-research/deep-dive-dvc/workflow-evidence/workspace/hidden-threshold/assessment.json
+```
 
-- `pandas` and `scikit-learn` versions
-- a local preprocessing notebook that cleaned the CSV once
-- a remembered seed the author passed via CLI
-- an untracked feature-selection file under `/tmp`
-- the order in which a folder of inputs was enumerated
+The local reruns match. `controls_are_declared` fails. Stability does not make
+the control visible.
 
-The repo did not lie exactly. It simply did not tell the whole story.
+## Find hidden state from both directions
 
-## Common hidden inputs to look for first
+### Trace inward from the result
 
-Start with these categories:
+Choose one output the team trusts and ask:
 
-| Category | Common example |
-| --- | --- |
-| data identity | a file path exists, but the exact bytes are not controlled |
-| parameters | command-line flags were used but not captured |
-| preprocessing | a one-off step happened outside the recorded pipeline |
-| environment | library versions or system tools changed |
-| execution state | notebook order, temp files, caches, or machine-local defaults |
+- Which code wrote it?
+- Which files did that code read?
+- Which parameters and defaults affected branches?
+- Which runtime libraries or tools affected computation?
+- Which external calls supplied state?
+- Which earlier manual actions prepared its inputs?
 
-This list is intentionally ordinary. Hidden state usually lives in mundane places.
+This traces provenance backward.
 
-## Why notebooks amplify the problem
+### Trace outward from suspected influences
 
-Notebooks are valuable, but they make hidden state easier to accumulate:
+Search code and execution routes for:
 
-- cells can run out of order
-- intermediate values can live in memory
-- edits can happen without a clear input-output contract
-- saved outputs can look authoritative even when the path to them is unclear
+- environment reads;
+- filesystem globs;
+- hard-coded paths;
+- network calls;
+- current time;
+- random generators;
+- global configuration;
+- cache reads;
+- optional files;
+- notebook state;
+- prompts or manual choices.
 
-This is not an anti-notebook argument.
+Then ask which trusted outputs each influence can affect.
 
-It is an argument for being more honest about the state notebooks often carry.
+```mermaid
+flowchart TB
+  result["trusted output"] --> code["producer code"]
+  code --> files["files"]
+  code --> controls["controls and defaults"]
+  code --> runtime["runtime"]
+  code --> external["external systems"]
+  code --> prior["prior state and manual work"]
+```
 
-## What "undeclared input" means in practice
+Using both directions reduces two errors: missing an influence and recording
+irrelevant environment trivia.
 
-An undeclared input is not only a missing file in a manifest.
+## Probe instead of guessing
 
-It can also be:
+Static reading tells you what code appears to use. Controlled probes tell you
+what changes observable behavior.
 
-- a parameter that exists only in shell history
-- a default threshold buried inside code
-- a path assumed by convention but never tracked
-- a cloud or local dataset that multiple people call "the same" without byte identity
+| Probe | Observation | Likely gap |
+|---|---|---|
+| change declared input bytes | output changes but workflow stays “unchanged” | input identity or dependency |
+| unset environment variable | result changes or command fails | hidden control/runtime |
+| run in empty directory | missing file appears | undeclared local dependency |
+| clear cache | output or duration changes materially | cache is influential |
+| reorder input files | result changes | discovery order |
+| rerun notebook top-to-bottom | saved result changes | execution state |
+| disconnect network | download or query appears | external dependency |
+| alter timezone/locale | parsing or grouping changes | runtime assumption |
 
-Once you start seeing this pattern, later DVC concepts have a place to land.
+A probe does not automatically reveal the correct repair. It establishes an
+influence worth representing.
 
-## A good first inventory question
+## Paths conceal identity
 
-Ask of any result you care about:
+`CHANGED_INPUT_SAME_PATH` adds a row to `observations.csv` after the result was
+recorded. The name stays the same. Its SHA-256 digest changes.
 
-1. what files influenced this
-2. what settings influenced this
-3. what environment influenced this
-4. what manual steps influenced this
+The audit rejects the claim on `input_identity_matches`.
 
-If any answer starts with "well, usually..." or "we just know that...", the workflow still
-contains hidden state worth surfacing.
+This distinction recurs throughout the course:
 
-## Keep this standard
+```text
+path = current location
+identity = which content
+role = how the workflow uses it
+recovery = where an authorized maintainer obtains it
+```
 
-Do not define a workflow only by the script you can see.
+A complete input record may need all four.
 
-Define it by the full set of things that had the power to change the result.
+## Manual work is still workflow state
 
-That shift is what lets DVC later act on something real instead of on a simplified story
-that never matched the work.
+In `MANUAL_PREPROCESSING`, an operator removes one incident into
+`prepared-observations.csv` and runs the scoring script on that file. The output
+is repeatable. The transformation is not declared.
+
+Weak repair:
+
+> Save the prepared CSV somewhere.
+
+Stronger repair:
+
+- preserve raw input identity;
+- represent the filtering rule as code or a documented decision;
+- declare prepared output as derived state;
+- record the edge from raw to prepared;
+- test reconstruction from raw input.
+
+The goal is not to eliminate human decisions. It is to make consequential
+decisions attributable and reviewable.
+
+## Not every influence needs the same treatment
+
+Classify by effect and ownership:
+
+| Influence | Treatment |
+|---|---|
+| changes result and team controls it | declare as input or parameter |
+| changes result but external system controls it | record immutable snapshot or external identity |
+| changes performance but not result contract | record for operations when relevant |
+| changes logs only | exclude explicitly if trusted output is unaffected |
+| sensitive value affects access, not result | record credential class, never secret |
+| human approval changes release status | preserve decision record, not as a data dependency |
+
+Tracking everything creates noise. Tracking too little creates unexplained
+results. The result contract tells you what matters.
+
+## Notebooks need an execution boundary
+
+Notebook risks include:
+
+- cells executed out of order;
+- memory values with no visible producer;
+- files edited between cells;
+- parameters changed interactively;
+- saved outputs from an older kernel;
+- exploratory code treated as a production route.
+
+A notebook can be part of reproducible work when the team defines:
+
+- declared source inputs;
+- clean execution order;
+- parameter injection;
+- environment;
+- exported result contract;
+- a route that runs without inherited kernel memory.
+
+The issue is not the `.ipynb` extension. It is whether state transitions are
+recoverable.
+
+## External systems need snapshot semantics
+
+“Read from the database” does not identify an input. Useful identities include:
+
+- query text and transaction snapshot;
+- table version;
+- extraction timestamp under a stable append-only policy;
+- object-store version ID;
+- dataset release identifier;
+- API response digest and request parameters.
+
+The appropriate identity depends on what the source can guarantee. A timestamp
+alone is weak when historical queries are not stable.
+
+If the team cannot recover the source state, say so. An unavailable but
+identified input is different from an unidentified input.
+
+## Randomness is a contract decision
+
+Recording a seed can help, but it is not a universal solution. Results may
+still differ across libraries, hardware, parallel schedules, or algorithms.
+
+Choose an honest contract:
+
+- byte-identical output under a pinned runtime;
+- equal deterministic summary;
+- metric within a declared tolerance;
+- stable distribution across repeated runs;
+- exact promoted artifact identity even if retraining varies.
+
+Then record the randomness and runtime evidence required by that contract.
+
+## Write a hidden-state finding
+
+Use evidence, effect, and repair:
+
+> `score_incidents.py` can read `RISK_THRESHOLD`, but the workflow contract
+> declares `params.json` as the control source. Two local runs agree because
+> both inherited the same environment. A clean maintainer cannot explain the
+> effective threshold from the reviewed files. Require the threshold as a
+> declared parameter or record the external control identity, then repeat the
+> clean rebuild.
+
+Avoid:
+
+> Environment variables are bad.
+
+The first finding names the actual contract. The second creates a style rule
+without causal evidence.
+
+## Reader checkpoint
+
+You can audit hidden state when you can:
+
+- define an input by its power to affect the trusted result;
+- search backward from outputs and outward from suspected influences;
+- use controlled probes to confirm influence;
+- distinguish path, identity, role, and recovery;
+- represent manual transformations rather than hiding their origin;
+- choose proportional treatment for files, controls, runtime, and human state;
+- write a finding about the broken contract rather than the technology used.
+
+Hidden state becomes manageable when the team replaces “what is usually here”
+with observable identities, controls, and boundaries.
