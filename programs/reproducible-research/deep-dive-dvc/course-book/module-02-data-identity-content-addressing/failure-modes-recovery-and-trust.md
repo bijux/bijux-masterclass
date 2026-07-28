@@ -1,6 +1,5 @@
 # Failure Modes, Recovery, and Trust
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,210 +9,291 @@ graph LR
   program["Deep Dive DVC"]
   section["Data Identity Content Addressing"]
   page["Failure Modes, Recovery, and Trust"]
-  capstone["Capstone evidence"]
+  capstone["Recovery contrasts"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.diagnoses.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  loss["observe loss"] --> ledger["record surviving layers"]
+  ledger --> identity["preserve required content identity"]
+  identity --> supplier["identify trustworthy supplier"]
+  supplier --> restore["perform bounded restore"]
+  restore --> verify["verify bytes and claim"]
+  verify --> limit["state remaining limits"]
 ```
 <!-- page-maps:end -->
 
-Identity matters because failure eventually arrives.
+Recovery is not “the file exists again.” A trustworthy recovery establishes:
 
-Module 02 is not finished when you can explain hashes in the abstract. It is finished when
-you can explain what a broken recovery or identity story actually means.
+- which exact content was required;
+- which layers were lost and survived;
+- which surviving layer supplied the bytes;
+- whether restored bytes match recorded identity;
+- whether the data still satisfies its semantic contract;
+- which future durability claims remain unsupported.
 
-## What good recovery is proving
+## Classify loss before acting
 
-When a DVC repository restores tracked content after loss, it is proving something narrow
-but important:
+| Loss | Pointer | Workspace | Cache | Remote | Immediate route |
+| --- | --- | --- | --- | --- | --- |
+| workspace only | present | absent | present | optional | checkout from cache |
+| workspace and cache | present | absent | absent | contains object | pull from remote |
+| pointer only survives | present | absent | absent | absent | no content recovery source |
+| pointer lost, cache object survives | absent | uncertain | present | optional | recover identity from trusted history before use |
+| remote object lost, local cache survives | present | present/absent | present | absent | preserve and republish verified object |
+| all copies exist but bytes disagree | conflicting | present | present | present | stop and resolve identity conflict |
 
-- the tracked identity was recorded
-- the durable storage layer still has the content
-- the workspace can be rebuilt from that recorded state
+The command follows from the layer ledger. Do not begin by trying every DVC verb.
 
-That is a strong claim.
+## Compare successful and failed recovery
 
-It is not the same as proving every part of the project is correct or complete.
+Generate:
 
-## Common failure questions
-
-When recovery or identity seems broken, ask:
-
-1. which layer is missing or inconsistent
-2. whether the content identity was recorded but not stored durably
-3. whether the workspace is out of sync with recorded state
-4. whether a published artifact is being confused with full repository state
-
-This keeps the diagnosis grounded.
-
-## A practical failure table
-
-| Symptom | Likely meaning |
-| --- | --- |
-| tracked file is missing after checkout | cache may not contain the needed content |
-| `pull` cannot restore an object | remote durability is incomplete or misconfigured |
-| local file exists but hash or identity does not match expectations | workspace drift or external modification occurred |
-| published bundle exists but full repository state cannot be rebuilt | published trust and recovery durability are being confused |
-
-These are not random operational annoyances. They are boundary clues.
-
-## Diagnose with a layer ledger
-
-Before repairing anything, record what survived:
-
-| Surface | Present? | Evidence | What it permits you to claim |
-| --- | --- | --- | --- |
-| pointer | yes or no | parsed content ID, size, path | expected identity is recorded |
-| workspace | yes or no | file and digest | bytes are visible locally |
-| cache object | yes or no | object path and digest | local restoration is possible |
-| configured remote | yes or no | remote config | a recovery source is named |
-| remote object | unknown until tested | empty-cache pull | off-machine restoration works |
-
-Configuration is not availability evidence. A remote name in `.dvc/config` tells you where
-DVC will look, not whether the required object is there.
-
-## Interpret the pointer-only case
-
-The identity audit deliberately creates this state:
-
-```text
-pointer:   present
-workspace: absent
-cache:     absent
-remote:    absent
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/data-identity
 ```
 
-The pointer still contains a valid content ID. `dvc checkout` fails and leaves the
-workspace absent.
+Three cases form a recovery ladder:
 
-Classify the incident precisely:
-
-- identity metadata is available
-- content bytes are unavailable
-- local recovery is impossible from the inspected layers
-- the audit itself is working because it preserves the failure receipt
-
-Do not “repair” the demonstration by regenerating arbitrary bytes at the same path. New
-bytes would produce a new identity and conceal the unavailable object.
-
-## Distinguish three failure classes
-
-| Failure class | Typical evidence | Correct next question |
+| Case | Surviving supplier | Expected decision |
 | --- | --- | --- |
-| projection failure | pointer and cache exist, workspace absent or drifted | can checkout reconstruct the workspace? |
-| availability failure | pointer exists, cache and remote cannot supply object | where is a verified copy of this content ID? |
-| identity disagreement | workspace digest does not match pointer identity | which bytes are authoritative, and why? |
+| cache recovery | local cache | accept bounded local recovery |
+| remote recovery | configured remote | accept bounded remote recovery |
+| pointer only | none | reject recoverability claim |
 
-These classes need different responses. Running pull for an identity disagreement may
-overwrite local evidence. Running add for an availability failure records whatever bytes
-happen to be nearby as a new identity.
+```mermaid
+flowchart TD
+  pointer["pointer names required ID"] --> cache{"matching cache object?"}
+  cache -- yes --> checkout["checkout and verify"]
+  cache -- no --> remote{"matching remote object accessible?"}
+  remote -- yes --> pull["pull and verify"]
+  remote -- no --> reject["identity known; bytes unavailable"]
+```
 
-## Build a bounded recovery argument
+Metadata narrows what is missing. It cannot supply the missing content.
 
-Use four linked claims:
+## Preserve the incident ledger
 
-1. **Recorded identity:** the pointer names content ID `X`.
-2. **Tested loss:** the workspace and local cache copies were removed.
-3. **Recovery source:** pull retrieved `X` from the configured remote.
-4. **Verified result:** the restored workspace and cache bytes match the original digest.
+Before repair, record:
 
-The audit's `REMOTE_RESTORES_AFTER_CACHE_LOSS` and
-`REMOTE_RECOVERY_PRESERVES_IDENTITY` rows cover the last two claims. The push receipt
-alone covers neither.
+```text
+Claim:
+Which data or result must be recovered?
 
-## Preserve negative evidence
+Recorded identity:
+Pointer, lock, size, and independent digest if available.
 
-Expected failures should remain reviewable. For the pointer-only case, keep:
+Workspace:
+Presence, digest, and modification state.
 
-- command and working directory
-- nonzero return code
-- stderr
-- pointer content ID
-- assertions that workspace and cache stayed absent
+Cache:
+Named object presence and digest.
 
-Without that packet, “checkout failed” cannot distinguish a missing object from a malformed
-command, permission error, or broken DVC installation.
+Remote:
+Configured role, authorization, object evidence, and time.
 
-## A small recovery picture
+Published copies:
+Manifest and content identity, if relevant.
+
+Interventions:
+Commands and state changes in order.
+```
+
+Copying a file from somewhere before recording the ledger can destroy proof of which layer
+was actually lost.
+
+## Prove cache-only recovery
+
+Inspect:
+
+```bash
+cat "$audit/evidence/cache-recovery-checkout.stdout.txt"
+jq '.findings[] |
+  select(.finding == "CACHE_RESTORES_WORKSPACE")' "$audit/report.json"
+```
+
+The bounded argument:
+
+1. pointer identity survives;
+2. workspace file is removed;
+3. matching local cache object survives;
+4. checkout succeeds;
+5. restored workspace SHA-256 matches immutable source;
+6. pointer identity stays unchanged.
+
+This proves local materialization from cache for one object. It does not prove shared or
+remote recovery.
+
+## Prove remote recovery causally
+
+The audit:
+
+- pushes the object;
+- removes workspace;
+- removes the named local cache object;
+- pulls;
+- confirms cache repopulation and workspace restoration;
+- compares content identity and SHA-256 with baseline.
+
+```bash
+cat "$audit/evidence/remote-recovery-push.stdout.txt"
+cat "$audit/evidence/remote-recovery-pull.stdout.txt"
+```
+
+Removing local cache is essential. Otherwise a successful materialization could have used
+the local supplier and would not isolate the remote.
+
+A strong statement:
+
+> After the named local cache object and workspace projection were absent, pull from the
+> configured audit remote repopulated both. Restored SHA-256 and pointer content identity
+> match baseline.
+
+## Treat pointer-only failure as a required result
+
+Inspect raw negative evidence:
+
+```bash
+cat "$audit/evidence/pointer-only-checkout.stderr.txt"
+jq '.findings[] |
+  select(.finding == "POINTER_ONLY_IS_NOT_RECOVERABLE")' "$audit/report.json"
+```
+
+The row is `PASS / REJECT`:
+
+- `PASS`: audit reproduced all expected checks;
+- `REJECT`: production claim “pointer alone can recover content” must be rejected.
+
+The pointer retains diagnostic value:
+
+- exact missing identity;
+- expected path;
+- recorded size;
+- basis for searching caches, remotes, archives, or collaborators.
+
+It does not retain the bytes.
+
+## Separate unavailable from untrusted
+
+Recovery can fail in different ways:
+
+| Finding | Meaning | Response |
+| --- | --- | --- |
+| object unavailable | no accessible matching supplier | locate trusted copy or declare loss |
+| object available but identity mismatched | supplier has different bytes | quarantine and investigate |
+| identity matches but schema invalid | exact recorded bytes are semantically defective | reject data claim, not identity recovery |
+| identity and schema pass but provenance absent | origin cannot be defended | limit or reject research use |
+| restored result stale for current inputs | bytes recovered but execution claim outdated | reproduce and review |
+
+Exact recovery can faithfully restore bad data. Trust needs content identity plus
+claim-relevant validation.
+
+## Verify beyond byte restoration
+
+After identity check, apply:
+
+- format readability;
+- schema;
+- row/record constraints;
+- domain ranges;
+- provenance;
+- privacy/access rules;
+- dependency and result staleness;
+- published manifest checks where relevant.
+
+Order them:
 
 ```mermaid
 flowchart LR
-  loss["local loss"] --> remote["remote still has tracked content"]
-  remote --> pull["dvc pull restores cache"]
-  pull --> checkout["dvc checkout rebuilds workspace"]
-  checkout --> verify["verify what was restored and what was not"]
+  available["content available"] --> identity["identity matches"]
+  identity --> structure["format and schema valid"]
+  structure --> domain["domain contract valid"]
+  domain --> provenance["provenance acceptable"]
+  provenance --> result["dependent results current"]
+  result --> trust["bounded trust decision"]
 ```
 
-The last step matters just as much as the restoration commands.
+If identity fails, do not continue as though the bytes were the recorded dataset.
 
-## Why verification still matters after recovery
+## Design recovery acceptance
 
-A restored file in the workspace is not automatically the whole trust story.
+A recovery acceptance record:
 
-You still need to ask:
+```text
+Decision:
+Accept or reject which bounded recovery claim?
 
-- did we restore the tracked content we expected
-- what layer is authoritative for that claim
-- is the published contract still valid after restore
+Required identity:
+Which pointer or lock ID?
 
-This is why the capstone's recovery route includes review artifacts and not only commands.
+Loss boundary:
+Which layers were absent?
 
-## A small example
+Supplier:
+Which surviving cache, remote, or archive?
 
-Suppose you delete local tracked data and then use the remote-backed recovery route.
+Receipts:
+Which commands moved content?
 
-Strong explanation:
+Identity verification:
+Which recorded and independent digests match?
 
-> the repository restored the tracked content from remote to cache and rebuilt the
-> workspace from that content. This proves the durable recovery path for tracked artifacts
-> is working.
+Semantic verification:
+Which schema, provenance, or domain checks pass?
 
-Too-strong explanation:
+Result impact:
+Which dependent stages or publications require review?
 
-> everything about the project is now fully recovered.
+Limits:
+Which retention, coverage, and scientific claims remain untested?
+```
 
-The second statement overreaches. Recovery is powerful, but it still has a scope.
+## Improve recovery design from failure
 
-## Two confusions to avoid
+| Observed failure | Durable improvement |
+| --- | --- |
+| pointer survives but no content copy | publish to governed remote and test restoration |
+| only one author's cache has object | assign shared publication ownership |
+| remote contains object but clean clone cannot find it | track non-secret route configuration |
+| remote retention deleted required history | define protected revisions and archive policy |
+| restored bytes cannot be interpreted | add schema and provenance contracts |
+| recovery succeeds only with admin credentials | design read-only recovery identity |
+| no one can identify dependent results | make pipeline dependencies truthful |
 
-### Confusing published release state with full recovery state
+Do not respond to every loss by retaining everything forever. Match retention and
+replication to the lifetime and value of the claim.
 
-`publish/v1/` may be enough for downstream trust, but it is not the full internal
-repository state. A published bundle can remain valid while broader repository recovery is
-still a separate question.
+## Know when recovery is impossible
 
-### Confusing local convenience with durable truth
+If no trustworthy copy of the required content identity survives:
 
-If a file still happens to exist on disk, that does not prove the remote story is sound.
+- preserve pointer and failure evidence;
+- search governed caches, remotes, archives, and published bundles;
+- avoid substituting plausible but unverified bytes;
+- identify affected results and claims;
+- record the object as unrecoverable if search fails;
+- decide whether recollection creates a new dataset and new result history.
 
-Recovery discipline is about surviving loss, not merely about noticing that the workspace
-is currently populated.
+Reconstructed or recollected data may be useful, but it is not recovery of the original
+identity.
 
-## What a healthy recovery review sounds like
+## Review checkpoint
 
-Good review language sounds like this:
+You understand recovery and trust when you can:
 
-> The remote-backed recovery route successfully restored tracked content and allowed the
-> workspace to be rebuilt. The publish bundle also verified after restore. This proves the
-> tracked artifact durability story is working for those surfaces.
+- classify loss from a state ledger;
+- prove which layer supplied restored content;
+- isolate remote recovery by removing local cache;
+- treat pointer-only failure as expected negative evidence;
+- distinguish unavailable, identity-mismatched, and semantically invalid data;
+- verify meaning after bytes;
+- declare unrecoverable content honestly.
 
-That sentence is strong because it says what was proven and stops there.
+The recovery standard is:
 
-## Keep this standard
-
-Whenever a recovery story sounds vague, ask:
-
-- what exactly was restored
-- from which layer
-- into which layer
-- what evidence confirms the result
-
-Those questions keep Module 02 grounded in trust rather than in command mythology.
+> Restore only from a trustworthy supplier, prove exact identity, then evaluate the
+> semantic contract and downstream claims before calling the result trusted.
