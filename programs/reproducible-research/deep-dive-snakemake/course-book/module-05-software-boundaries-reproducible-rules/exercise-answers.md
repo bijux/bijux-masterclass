@@ -1,222 +1,307 @@
 # Exercise Answers
 
-These answers are written as model explanations, not as the only acceptable wording.
+These model answers use the capstone at the time of this course revision. Compare the
+reasoning and evidence boundary, not only the conclusion. If repository source changes,
+update the observation rather than preserving a stale answer.
 
-## How to use the answer page well
+```mermaid
+flowchart LR
+  observation["source observation"] --> inference["bounded inference"]
+  inference --> evidence["command or artifact"]
+  evidence --> decision["accept / repair / defer"]
+  decision --> limit["remaining limitation"]
+```
 
-Do not read a model answer first and then bend your exercise to match it.
+## Exercise 1: Inventory a complete job contract
 
-A better rhythm is:
+The trimming rule exposes:
 
-1. complete the exercise with your own rule, script, package, or runtime evidence
-2. write one plain-language explanation of the software boundary you are defending
-3. compare that explanation with the model answer
-4. revise where the model answer exposes hidden ownership or missing rebuild evidence
-
-The standard to aim for is clear ownership reasoning.
-
-The strongest self-study packets also leave behind six concrete artifacts:
-
-- one ownership map
-- one before-and-after rule view
-- one script-versus-package decision note
-- one runtime-layer note
-- one rebuild explanation tied to code or runtime drift
-- one maintainer-style review note
-
-If your answers contain only code movement and verdicts, the reasoning is still too
-implicit.
-
-## Exercise 1: Map one long rule by ownership
-
-A strong answer separates the visible contract from the software hiding behind it.
-
-Example:
-
-> The rule should keep declared inputs, outputs, params, logs, and resources because that
-> is the visible file contract. The data transformation loop belongs in step-local
-> implementation because it is owned by this one step. A parsing helper used elsewhere is
-> reusable logic and belongs in package code. The ambient Python assumption is a runtime
-> issue and needs an explicit environment boundary.
-
-Why this is strong:
-
-- it distinguishes four ownership categories clearly
-- it starts from the visible rule boundary rather than code style
-
-## Exercise 2: Extract step-local logic into a script
-
-The resulting rule should still reveal every meaningful input, output, parameter, runtime,
-and log path. The script may transform those declared values but must not discover extra
-files behind the rule. A focused run proves integration, while reviewing file access or
-testing with an absent undeclared file helps establish that extraction did not hide a
-dependency.
-
-The missing but important sentence is usually this one:
-
-> After extraction, the rule still teaches the step contract at a glance, while the
-> script owns only how the declared work is carried out.
-
-## Exercise 3: Diagnose a hidden dependency
-
-Why it is a software-boundary problem:
-
-- the visible rule contract is smaller than the real behavior
-- a reviewer cannot trust the declared execution story
-
-Risks:
-
-- the file graph is misleading
-- rebuild behavior may ignore a meaningful input
-- publication review becomes weaker because software behavior is partially hidden
-
-Repair:
-
-- declare `config/report-style.yaml` in the rule if it materially affects the output
-- keep the script as implementation, not as a place to invent undeclared dependencies
-
-The core principle is simple: meaningful inputs should stay visible at the rule boundary.
-
-## Exercise 4: Decide whether code belongs in `workflow/scripts/` or `src/`
-
-A strong answer keeps the workflow adapter thin and promotes only the reusable part.
-
-Example:
-
-> The script should keep Snakemake-specific path wiring because that is workflow-adjacent.
-> The shared parser used by two report steps belongs in `src/` because it can be imported
-> and tested directly without a Snakemake context. I would not move publication-path
-> decisions into `src/` because those still belong to workflow ownership.
-
-Why this is strong:
-
-- it separates workflow-adjacent and reusable responsibilities cleanly
-- it resists moving too much into package code
-
-A useful warning sentence is:
-
-> If moving the code into `src/` makes it harder to see which path assumptions or publish
-> choices still belong to the workflow, the promotion happened too early.
-
-## Exercise 5: Write a runtime contract
-
-Rule-scoped environment:
-
-- declares the software needed by one step or a small cluster of closely related steps
-- keeps the runtime boundary close to the rule that depends on it
-
-Repository-level `environment.yaml`:
-
-- gives contributors and workflow runners a shared baseline for working with the project
-- supports authoring and whole-repository execution setup
-
-Container definition:
-
-- provides a stronger machine-level boundary when host differences are risky
-- helps when OS tools, compiled dependencies, or infrastructure portability matter
-
-Why they are not interchangeable:
-
-They all describe software, but they protect different scopes. A repository environment is
-too broad to explain every step. A rule-scoped environment is too narrow to replace a full
-machine boundary. A container solves portability problems an environment file alone cannot.
-
-A compact layer note might look like this:
-
-| Layer | What it owns |
+| Surface | Observation |
 | --- | --- |
-| rule-scoped environment | software needed for one step to execute honestly |
-| repository-level environment | contributor tooling and whole-repository working setup |
-| container boundary | stronger machine portability when host differences matter |
+| data input | raw FASTQ from `get_raw_fastq` |
+| outputs | trimmed FASTQ and JSON statistics |
+| scalar policy | quality, length, N fraction, adapter overlap, poly-run threshold |
+| resources | memory derived from input size |
+| runtime | Python environment YAML |
+| evidence | named log and benchmark |
+| implementation | `python3 -m capstone.trim_fastq` |
 
-## Exercise 6: Test reusable code directly
+Opening the package reveals one important correction: adapter FASTA contents are read by
+the implementation. In the current rule, the adapter path is passed under `params`, so the
+file is explicit to the command but not represented as a graph input.
 
-The package API should accept ordinary values or paths and return ordinary values rather
-than depending on the injected `snakemake` object. Both workflow scripts remain thin
-adapters. Tests cover a valid record, an empty or boundary case, and malformed input.
-Path wiring and publication remain workflow-owned; reusable parsing or calculation moves
-to the package.
+A suitable finding is:
 
-## Exercise 7: Observe code and runtime drift
+> The rule explains most of the job, but its graph contract is smaller than its actual file
+> influence because adapter contents affect trimming without an `input` edge.
 
-The implementation change should mark outputs owned by that script as candidates for
-rebuilding while unrelated branches remain current. Runtime declaration changes require the
-same trust review even when source data is unchanged. After rebuilding, a dry-run
-converges and provenance records the repository revision, resolved environment, semantic
-configuration, and execution identity.
+The inventory does not yet prove whether changing the file plans a rerun. That requires
+the controlled experiment in Exercise 4.
 
-The key explanatory sentence is:
+## Exercise 2: Assign ownership across rule, adapter, and package
 
-> Unchanged input data does not preserve trust when the code or runtime that interprets
-> that data has changed.
+Model assignment:
 
-## Exercise 8: Review one wrapper or abstraction adoption
+| Decision | Primary owner |
+| --- | --- |
+| sample-to-FASTQ mapping | workflow discovery and rule |
+| output paths | rule |
+| scalar trimming policy | validated config, bound by rule |
+| adapter file identity | rule input |
+| memory formula | rule resource policy |
+| environment | rule/deployment policy |
+| command translation | package CLI |
+| FASTQ parsing | `fastqio.py` |
+| trimming transformations | `trim_fastq.py` domain functions |
+| log and benchmark paths | rule |
+| Git and runtime receipt | provenance job |
 
-A strong review comment would delay adoption for now:
+The intended dependency direction is:
 
-> I would not merge this wrapper change yet. The shorter rule is not enough benefit unless
-> we can explain the wrapper's tool version assumptions, runtime requirements, and visible
-> file contract. Right now the wrapper reduces local readability but also reduces review
-> confidence. If we can document what it runs and why that contract is acceptable, then the
-> wrapper may become a net improvement.
+```mermaid
+flowchart LR
+  config["validated policy"] --> rule["rule"]
+  files["declared files"] --> rule
+  runtime["runtime policy"] --> rule
+  rule --> cli["CLI"]
+  cli --> domain["domain functions"]
+  domain --> artifact["artifact"]
+  execution["observed execution"] --> provenance["receipt"]
+```
 
-Why this is the right reasoning:
+The package should not read workflow config or construct repository result paths. Git
+revision belongs in provenance rather than in trimming semantics.
 
-- the question is whether the wrapper increases clarity
-- if it hides behavior the team cannot review, it weakens the software boundary
+## Exercise 3: Prove reusable behavior without Snakemake
 
-## Exercise 9: Rebuild a published artifact honestly
+Existing direct tests cover behaviors such as:
 
-Why outputs may no longer be trustworthy:
+- quality-tail clipping preserves sequence/quality alignment
+- adapter clipping detects configured overlap
+- trimming statistics match processed records
+- FASTQ parsing rejects malformed structure
 
-- helper code under `src/capstone/` can change output meaning even with unchanged inputs
-- a runtime change in `workflow/envs/python.yaml` can alter execution behavior
+A useful additional edge case is a record whose adapter begins at position zero and
+therefore yields an empty sequence before minimum-length filtering. The test should state
+whether the record is removed and how statistics record the event.
 
-Evidence to request before approval:
+Pure function tests do not prove:
 
-- confirmation that affected outputs were rebuilt
-- provenance showing the new repository revision and runtime context
-- a review explanation connecting the software change to the rebuilt artifacts
+- CLI argument names and file writes
+- environment availability
+- rule interpolation
+- resources and logs
+- source-drift invalidation
 
-What provenance should accompany the rebuilt outputs:
+The test command establishes selected package behavior only. A CLI test should invoke
+`python -m capstone.trim_fastq` with fixture files and assert exit status plus both outputs.
+A workflow test must separately verify the Snakemake binding.
 
-- repository revision or release identifier
-- relevant runtime declaration or software versions
-- execution timestamp
-- any workflow configuration that materially affects meaning
+## Exercise 4: Promote a material file influence
 
-The main lesson is that unchanged input datasets do not cancel software drift.
+Current path:
 
-## Exercise 10: Review a complete software boundary
+```text
+config params.trim.adapters_fasta
+→ rule params.adapters_fasta
+→ --adapters-fasta CLI option
+→ package reads file
+```
 
-Prioritize undeclared meaningful inputs and unrecorded runtime drift over cosmetic file
-placement. Remove duplicate implementation between scripts and packages, keep the file
-contract in the rule, and test reusable code directly. A container is justified when OS or
-compiled-runtime portability is part of the claim; if a rule-scoped environment already
-satisfies the supported contexts, another image may add maintenance without additional
-trust.
+Current visible graph:
 
-A strong review usually orders itself like this:
+```text
+raw FASTQ → trimmed FASTQ + statistics
+```
 
-1. check whether the visible rule contract still tells the truth
-2. inspect whether scripts or package code introduced hidden dependencies
-3. review whether runtime drift is recorded at the right layer
-4. choose the narrowest verification route that proves each corrected boundary
+Required graph:
 
-## Self-check
+```text
+raw FASTQ + adapter FASTA → trimmed FASTQ + statistics
+```
 
-If your answers consistently explain:
+Corrected rule shape:
 
-- who owns the file contract
-- where the implementation belongs
-- which runtime boundary matters
-- what evidence supports rebuilt trust
+```python
+input:
+    fastq=lambda wc: get_raw_fastq(wc),
+    adapters=config["params"]["trim"]["adapters_fasta"]
+params:
+    q=config["params"]["trim"]["q"],
+    min_len=config["params"]["trim"]["min_len"]
+```
 
-then you are using the module correctly.
+The command should use `{input.adapters}`.
 
-Weak answer pattern:
+The experiment must start after successful convergence. Modify only adapter contents and
+run a dry-run. A sound contract should plan `trim_fastq` and every downstream artifact
+whose meaning depends on trimmed reads. Restoring the adapter should restore the supported
+repository state.
 
-- "the code is more organized now, so the workflow must be more reproducible"
+The file-contract audit demonstrates the same declared-versus-hidden cause with a smaller
+policy file. It does not prove the capstone trimming rule is already repaired.
 
-That sentence skips the visible contract, the runtime contract, and the rebuild story all
-at once. If your answers still sound like that, keep revising.
+## Exercise 5: Classify runtime exactness
+
+Model inventory:
+
+| Context | Surface | Classification | Remaining uncertainty |
+| --- | --- | --- | --- |
+| orchestrator | `snakemake >=9.14,<9.24` | compatibility range | exact version and dependencies |
+| job interpreter | `python=3.11` | environment declaration | patch, build, channel snapshot |
+| local package | `PYTHONPATH=src` | source-location policy | immutable package identity |
+| platform | provenance string | observed receipt | full host behavior |
+| Python executable | provenance field | observed receipt | complete package set |
+| Git commit | provenance field | observed revision | dirty state and installed-source match |
+
+No exact package lock or container digest appears in these surfaces. The supported
+bootstrap resolves a concrete toolchain for the run, but the declaration itself remains a
+range.
+
+A valid course claim is:
+
+> The capstone has a tested compatibility route for Python 3.11 and a bounded Snakemake
+> range. It records resolved facts, but does not promise an exact cross-platform package
+> resolution from the environment YAML alone.
+
+## Exercise 6: Reproduce observable and hidden source drift
+
+Expected rows:
+
+| Model | Changed dry-run | Artifact after invocation | Result / decision |
+| --- | --- | --- | --- |
+| script directive | plans `render` | `script-directive-v2` | `PASS / ACCEPT` |
+| hidden package source | plans nothing | `hidden-package-source-v1` | `PASS / REJECT` |
+| declared package source | plans `render` | `declared-package-source-v2` | `PASS / ACCEPT` |
+
+The baseline dry-run must plan no render job. Otherwise missing output, not source drift,
+could explain the later plan.
+
+The hidden model passes because the audit reproduced the expected defect. Its design is
+rejected because the old artifact remains accepted.
+
+Declaring one package file works only for the bounded specimen. A real package may import
+many modules and resources. A built artifact hash, exact installed package identity,
+source bundle revision, or image digest scales better.
+
+## Exercise 7: Review a wrapper adoption
+
+A model review should not approve an unspecified current wrapper. It should require an
+immutable reference and record:
+
+| Question | Required evidence |
+| --- | --- |
+| which wrapper? | repository plus immutable revision |
+| which tool? | tool version in wrapper environment |
+| which files? | named wrapper inputs and outputs |
+| which policy? | exposed params and defaults |
+| which command? | resolved wrapper source or execution receipt |
+| which comparison? | representative capstone artifact before and after |
+| which rollback? | prior immutable revision and retained runtime |
+
+For trimming, the existing package CLI is likely the narrower boundary because the
+capstone already owns the educational implementation and direct tests. A wrapper would be
+justified if the course intentionally adopted an external production tool and wanted a
+shared, versioned tool adapter.
+
+A Snakemake module would solve reuse of rules, not reuse of the trimming algorithm.
+
+## Exercise 8: Diagnose a cross-context import failure
+
+Evidence order:
+
+1. capture the actual scheduler job command
+2. print the Python executable
+3. inspect the active environment
+4. inspect `PYTHONPATH`
+5. run `python -c "import capstone; print(capstone.__file__)"`
+6. record working directory and mounts
+7. compare profile or container bindings with local execution
+
+The domain tests passing means the algorithm is not the first suspect. The error says the
+deployment context cannot locate the package.
+
+Possible repairs:
+
+- install a built capstone package into the job environment
+- bind an immutable package artifact into the container
+- if path injection is intentionally supported, derive an absolute path from the workflow
+  base and test it in every advertised context
+
+Negative evidence should run the job from the scheduler or an equivalent isolated context
+and confirm the expected package identity, not only a successful import from the
+developer's shell.
+
+## Exercise 9: Compare incremental and clean rebuild evidence
+
+Model matrix:
+
+| Run | Main question | Expected evidence |
+| --- | --- | --- |
+| converged incremental | is current output accepted? | no planned job |
+| source-drift incremental | does identity change invalidate output? | planned job and v2 artifact |
+| clean same-context | can declared source/runtime construct output? | successful build and equivalent meaning |
+| clean second-context | does supported context preserve meaning? | successful build plus semantic comparison |
+
+Deleting output before the drift run guarantees a job is planned. It cannot tell whether
+software identity participated in invalidation.
+
+Artifact byte identity may be inappropriate when provenance contains time or
+platform-specific fields. Define semantic comparison separately for deterministic domain
+artifacts and context receipts.
+
+## Exercise 10: Conduct a software-boundary review
+
+### Review boundary
+
+The `trim_fastq` job from discovered raw FASTQ and adapter policy through the capstone
+package, Python job environment, trimmed artifacts, and operational evidence.
+
+### Accepted contracts
+
+- scalar policy and output paths are visible at the rule
+- domain functions are ordinary Python and directly testable
+- the CLI receives explicit paths and values
+- resources, logs, benchmark, and environment are associated with the rule
+- provenance records bounded runtime and revision facts
+
+### Required repairs
+
+**Adapter file contract**
+
+The adapter FASTA is a material file influence passed through params. Promote it to a
+named input and add an incremental mutation test.
+
+**Software identity**
+
+Local package source is made available through `PYTHONPATH` without a scalable immutable
+identity in the rule. Define a built package, source bundle, exact environment, or image
+identity for release claims and prove invalidation.
+
+### Deliberate limitations
+
+- `python=3.11` is not an exact lock
+- Git commit does not prove a clean tree or installed package match
+- provenance explains a run but does not trigger a rebuild
+- direct tests do not prove scheduler deployment
+
+### Verification matrix
+
+| Evidence | Claim |
+| --- | --- |
+| trim and FASTQ unit tests | selected domain semantics |
+| CLI fixture run | argument and file binding |
+| rule list and dry-run | parse and graph plan |
+| bounded workflow execution | integrated job contract |
+| software-boundary audit | source-drift contrast |
+| cross-context import receipt | deployment binding |
+| artifact comparison | preserved result meaning |
+
+### Remaining risks
+
+- transitive local package files are not represented by one implementation path
+- exact cross-platform runtime resolution is not retained
+- numerical or concurrency behavior outside trimming may need separate evidence
+
+The review is complete when each accepted claim links to evidence and each remaining risk
+is visible to the next maintainer.
