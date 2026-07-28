@@ -30,6 +30,7 @@ CONTEXT_INVARIANCE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/dee
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/performance-diagnostics
 SCHEDULER_POLICY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/scheduler-policy
 FILE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/file-contracts
+DISCOVERY_INTEGRITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/discovery-integrity
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -51,6 +52,7 @@ CONTEXT_INVARIANCE_AUDIT_DIR_ABS := $(abspath $(CONTEXT_INVARIANCE_AUDIT_DIR))
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS := $(abspath $(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR))
 SCHEDULER_POLICY_AUDIT_DIR_ABS := $(abspath $(SCHEDULER_POLICY_AUDIT_DIR))
 FILE_CONTRACT_AUDIT_DIR_ABS := $(abspath $(FILE_CONTRACT_AUDIT_DIR))
+DISCOVERY_INTEGRITY_AUDIT_DIR_ABS := $(abspath $(DISCOVERY_INTEGRITY_AUDIT_DIR))
 TOOLS_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-snakemake/capstone
 TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
 TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
@@ -78,6 +80,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	performance-diagnostics-audit performance-diagnostics-selftest \
 	scheduler-policy-audit scheduler-policy-selftest \
 	file-contract-audit file-contract-selftest \
+	discovery-integrity-audit discovery-integrity-selftest \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
 
@@ -426,6 +429,33 @@ file-contract-audit: ## Classify convergence, hidden inputs, and publication saf
 file-contract-selftest: ## Reject dishonest convergence and publication evidence
 	$(PYTEST) -q tests/test_file_contract_audit.py
 
+discovery-integrity-audit: ## Compare declared discovery invalidation with ambient staleness
+	rm -rf "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)"
+	mkdir -p "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)"
+	cp -R repro/discovery-integrity "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/specimens"
+	$(PYTHON) scripts/audit_discovery_integrity.py \
+		--specimens repro/discovery-integrity \
+		--workspace "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/workspace" \
+		--output "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)"
+	cp docs/discovery-integrity-audit-guide.md "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/DISCOVERY_INTEGRITY_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Discovery integrity audit route:' \
+		'  1. Read DISCOVERY_INTEGRITY_AUDIT_GUIDE.md for the change experiment and PASS meanings.' \
+		'  2. Read summary.tsv and compare planned_after_arrival across the two models.' \
+		'  3. Compare the checkpoint input contracts under specimens/.' \
+		'  4. Read both change-dryrun traces before either forced-run trace.' \
+		'  5. Inspect normal_samples and forced_samples in report.json.' \
+		'  6. Use PROOF_GUIDE.md only if the claim expands beyond discovery invalidation.' > "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)" \
+		--output "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote discovery integrity audit to $(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)"
+
+discovery-integrity-selftest: ## Reject dishonest discovery invalidation evidence
+	$(PYTEST) -q tests/test_discovery_integrity_audit.py
+
 config-summary: verify ## Write a compact summary of the materialized workflow configuration
 	@mkdir -p "$(VERIFY_REPORT_DIR)"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
@@ -461,11 +491,11 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
-confirm: clean purge-dsstore ci file-contract-audit file-contract-selftest module-interface-audit module-interface-selftest software-boundary-audit software-boundary-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
+confirm: clean purge-dsstore ci file-contract-audit file-contract-selftest discovery-integrity-audit discovery-integrity-selftest module-interface-audit module-interface-selftest software-boundary-audit software-boundary-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
-proof: tour verify-report file-contract-audit profile-audit module-interface-audit software-boundary-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
+proof: tour verify-report file-contract-audit discovery-integrity-audit profile-audit module-interface-audit software-boundary-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p \

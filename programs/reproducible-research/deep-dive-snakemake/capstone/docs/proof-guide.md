@@ -35,7 +35,8 @@ first.
 | --- | --- | --- |
 | fresh-machine setup is explicit and repeatable | `make bootstrap-confirm` | `Makefile`, `environment.yaml`, toolchain output under `artifacts/venv/` |
 | rule contracts are visible before execution | `make walkthrough` | `Snakefile`, `workflow/rules/*.smk`, `list-rules.txt`, `dryrun.txt` |
-| checkpoint discovery is explicit rather than magical | `make walkthrough` | [Walkthrough Guide](walkthrough-guide.md), `Snakefile`, `discovered_samples.json` after execution |
+| checkpoint discovery responds to a declared membership change | `make discovery-integrity-audit` | paired checkpoint models, change dry-runs, normal and forced executions, [Discovery Integrity Audit Guide](discovery-integrity-audit-guide.md) |
+| discovery evidence rejects undeclared invalidation and fake counterexamples | `make discovery-integrity-selftest` | three acceptance and causal mutation tests |
 | declared influences rerun and failed publication preserves trusted finals | `make file-contract-audit` | paired rules, dry-run receipts, filesystem evidence, [File Contract Audit Guide](file-contract-audit-guide.md) |
 | file-contract evidence rejects hidden inputs and in-place poison | `make file-contract-selftest` | seven causal mutation tests |
 | the published boundary is stable and reviewable | `make verify-report` | [File API](file-api.md), `verify.json`, `manifest.json`, `provenance.json` |
@@ -56,6 +57,8 @@ first.
 - choose `walkthrough` for first contact
 - choose `verify-report` for publish-boundary trust
 - choose `file-contract-audit` for convergence, hidden-input, and atomic-publication questions
+- choose `discovery-integrity-audit` for sample-membership, checkpoint-invalidation, and ambient-scan questions
+- choose `discovery-integrity-selftest` when the question is whether discovery evidence reacts to a broken contract
 - choose `profile-audit` for policy and executor questions
 - choose `module-interface-audit` for `module` and `use rule` ownership questions
 - choose `module-interface-selftest` when the question is whether that gate rejects dishonesty

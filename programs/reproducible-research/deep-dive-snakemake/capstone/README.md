@@ -53,6 +53,7 @@ be a first-contact playground for Snakemake syntax.
 | what this repository promises | `make walkthrough` | `make tour` |
 | does the workflow still hold under ordinary proof | `make verify` | `make proof` |
 | what differs across execution contexts | `make profile-audit` | `make proof` |
+| will a sample arrival invalidate discovery | `make discovery-integrity-audit` | `make discovery-integrity-selftest` |
 | does a reusable module expose caller-owned paths and policy | `make module-interface-audit` | `make module-interface-selftest` |
 | what is safe for downstream trust | `make verify-report` | `make confirm` |
 | should I trust this as a stewardship specimen | `make proof` | `make confirm` |
@@ -87,6 +88,8 @@ bounded proof route without turning the capstone into a browsing exercise.
 | `tour` | the executed workflow bundle can be reviewed in one place | learners can inspect the evidence path end to end |
 | `verify-report` | publish-boundary review evidence is saved as a bundle | downstream trust can be inspected later |
 | `profile-audit` | local, CI, and scheduler policy differences stay explicit | policy does not get mistaken for semantics |
+| `discovery-integrity-audit` | registry changes and ambient arrivals produce different plans and sample sets | checkpoint reevaluation becomes observable rather than assumed |
+| `discovery-integrity-selftest` | undeclared registries and fake ambient counterexamples are rejected | discovery evidence responds to causal damage |
 | `module-interface-audit` | explicit and hidden module models exhibit their named config, caller, plan, and artifact contracts | successful execution does not conceal coupling |
 | `module-interface-selftest` | broad config, missing bindings, and stale evidence are rejected | the interface gate is discriminating rather than ceremonial |
 | `proof` | the sanctioned workflow review route exists and stays coherent | stewardship has a durable route |
@@ -108,6 +111,7 @@ Use these surfaces deliberately:
 All capstone documentation lives under `docs/`:
 
 - [ARCHITECTURE.md](docs/architecture.md)
+- [DISCOVERY_INTEGRITY_AUDIT_GUIDE.md](docs/discovery-integrity-audit-guide.md)
 - [DOMAIN_GUIDE.md](docs/domain-guide.md)
 - [EXTENSION_GUIDE.md](docs/extension-guide.md)
 - [FILE_API.md](docs/file-api.md)
