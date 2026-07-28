@@ -1,6 +1,5 @@
 # Dependency, Parameter, and Output Boundaries
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,324 +9,210 @@ graph LR
   program["Deep Dive DVC"]
   section["Truthful Pipelines Declared Dependencies"]
   page["Dependency, Parameter, and Output Boundaries"]
-  capstone["Capstone evidence"]
+  capstone["File, parameter, and sidecar cases"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.classifies.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  read["real file reads"] --> deps["dependencies"]
+  control["reviewable control values"] --> params["selected parameters"]
+  write["owned durable artifacts"] --> outs["outputs"]
+  scratch["disposable intermediates"] --> excluded["documented scratch"]
+  deps --> audit["mutation and loss audit"]
+  params --> audit
+  outs --> audit
 ```
 <!-- page-maps:end -->
 
-The hardest part of a truthful DVC stage is often not the command. It is the boundary
-judgment around the command.
+Correct placement follows behavior and consequence, not filename extension.
 
-Learners need to decide:
+- A dependency is an input whose change can invalidate the stage result.
+- A parameter is a deliberate control value selected for review and comparison.
+- An output is an artifact the stage promises to produce and own.
+- Scratch is disposable state with no downstream or review obligation.
 
-- which files are real dependencies
-- which values are parameters rather than code details
-- which artifacts are outputs owned by the stage
-- which files are temporary scratch and should not become part of the public graph
+## Build an influence ledger
 
-These decisions make `dvc repro` predictable. They also make review conversations less
-vague, because the team can point to the exact field that carries the claim.
+Before editing `dvc.yaml`, inventory:
 
-## Dependencies are real reads
-
-A dependency is something the command reads to produce its result.
-
-Good dependency questions are concrete:
-
-- Would changing this file possibly change the output?
-- Would removing this file make the command fail or produce a different result?
-- Does the command read this path directly or through a library call?
-- Is this source file part of the implementation that should trigger rerun when changed?
+```text
+Influence or artifact
+How command accesses it
+Can its change alter output?
+Must reviewers compare it?
+Must loss trigger recreation?
+Who owns it?
+Sensitive?
+Proposed declaration
+```
 
 Example:
 
-```yaml
-stages:
-  evaluate:
-    cmd: python -m incident_escalation_capstone.evaluate
-    deps:
-      - data/prepared/incidents.parquet
-      - models/escalation-model.json
-      - src/incident_escalation_capstone/evaluate.py
-    params:
-      - evaluate.threshold
-    outs:
-      - reports/evaluation.json
-```
+| Item | Behavior | Consequence | Placement |
+| --- | --- | --- | --- |
+| `data/source.txt` | file read | values change | dependency |
+| `policy/threshold.txt` | file read | threshold semantics change | dependency |
+| `settings.multiplier` | parsed control | score changes | parameter |
+| `results/declared-main.txt` | durable result | consumer needs it | output |
+| `results/undeclared-receipt.txt` | review receipt | evidence lost if absent | output |
+| parser scratch directory | transient | safe to recreate internally | scratch |
 
-This tells the reviewer that evaluation depends on the prepared data, the model, the
-evaluation implementation, and a threshold value. If the command also reads
-`data/reference/team_roster.csv`, the declaration is incomplete.
+## Dependencies model reads
 
-That missing file is not a small clerical issue. It means `dvc repro` may skip evaluation
-after a roster change even though the report is stale.
+A file belongs in `deps` when its current identity influences the command result.
 
-## Parameters are reviewable controls
-
-Parameters are not just variables. They are values the team wants to change, compare, and
-review as controls.
-
-Good parameter candidates include:
-
-- thresholds
-- train/test split values
-- random seeds
-- model family choices
-- feature toggles
-- filtering limits
-
-Bad parameter candidates include values that are only implementation plumbing or values
-that would be clearer as ordinary code constants.
-
-The key question is:
-
-> If this value changed, would a reviewer want the pipeline to notice and the history to
-> explain it?
-
-If yes, it probably belongs in `params.yaml` and under the stage's `params`.
-
-Example:
+The hidden-input stage reads `policy/threshold.txt` but omits it:
 
 ```yaml
-# params.yaml
-fit:
-  model_family: logistic_regression
-  regularization: 0.2
-  random_seed: 20260411
+deps:
+  - data/source.txt
+  - scripts/render.py
 ```
 
-```yaml
-# dvc.yaml
-stages:
-  fit:
-    cmd: python -m incident_escalation_capstone.fit
-    deps:
-      - data/prepared/incidents.parquet
-      - src/incident_escalation_capstone/fit.py
-    params:
-      - fit.model_family
-      - fit.regularization
-      - fit.random_seed
-    outs:
-      - models/escalation-model.json
+The command still uses:
+
+```text
+--policy policy/threshold.txt
 ```
 
-Now a change to `fit.regularization` is not hidden inside Python. It becomes a declared
-control change.
-
-## Outputs are owned artifacts
-
-An output is an artifact the stage is responsible for producing.
-
-Good output questions:
-
-- Does this stage create or replace the artifact?
-- Would downstream stages treat this artifact as an input?
-- Should DVC record the content identity of this artifact?
-- Would losing this artifact require rerunning this stage or restoring from cache?
-
-Outputs should be specific enough to make ownership clear. A broad output directory can
-be right when the stage truly owns the whole directory. It is risky when multiple stages
-write into the same directory.
-
-Weak:
-
-```yaml
-outs:
-  - reports/
-```
-
-Clearer:
-
-```yaml
-outs:
-  - reports/evaluation.json
-  - reports/error-slices.csv
-```
-
-The clearer version says exactly what the evaluation stage owns.
-
-## Scratch space is not an output contract
-
-Many commands create temporary files while they run.
-
-Not every temporary file belongs in `outs`. If a file is purely scratch, the better design
-is often to keep it under an internal work directory and remove it or keep it outside the
-review contract.
-
-The danger is accidental reliance:
+Changing the policy from `10` to `20` leaves the hidden stage absent from status.
 
 ```mermaid
-flowchart LR
-  prepare["prepare stage"] --> scratch["tmp/features.cache"]
-  scratch -. "not declared" .-> fit["fit stage reads it"]
-  prepare --> declared["data/prepared/incidents.parquet"]
-  declared --> fit
+flowchart TD
+  source["source file"] --> stage["hidden_input"]
+  policy["policy file"] --> stage
+  declaration["declared deps"] --> source
+  declaration -. "missing edge" .-> policy
+  stage --> stale["old output remains threshold=10"]
 ```
 
-In this diagram, `fit` has a hidden dependency on scratch. The pipeline may appear to
-work on one machine and break or go stale on another.
+Command-line appearance is not automatically a DVC dependency. The YAML must represent
+the read.
 
-If the file matters to a later stage, promote it into a declared output of the producer
-and a declared dependency of the consumer. If it does not matter, keep later stages from
-reading it.
+## Parameters model deliberate controls
 
-## A placement table for review
+Putting values in `params.yaml` does not make every key globally visible to every stage.
 
-| Influence | Best placement | Why |
-| --- | --- | --- |
-| raw CSV read by a command | `deps` | content change should influence rerun |
-| Python module containing the command behavior | `deps` | implementation change should be visible |
-| threshold chosen by the team | `params` | control change should be reviewable |
-| model file produced by training | `outs` | DVC should record and restore it |
-| log file used only for debugging | usually outside `outs` | it is not part of the result contract |
-| shared feature file used downstream | producer `outs`, consumer `deps` | ownership and use must both be declared |
-
-The table is not a law book. It is a way to slow down and ask the right question.
-
-## Decide from the consequence of change or loss
-
-Names such as `config`, `metadata`, `log`, and `cache` are weak placement evidence. Ask
-what should happen when the item changes or disappears.
-
-| If this happens... | And the stage should... | Declare it as... |
-| --- | --- | --- |
-| file contents change | become stale | `deps` |
-| reviewed control value changes | become stale and expose the changed key | `params` |
-| produced artifact disappears | become stale or restore the artifact | `outs` |
-| diagnostic file disappears | remain valid because nobody relies on it | scratch or operational residue |
-| code implementation changes | become stale | a code path in `deps` |
-| environment fact changes | follow an external environment contract | not silently ignored |
-
-The decision is about the pipeline response, not the file extension.
-
-### A policy file is a dependency even when it looks like configuration
-
-In the stage-contract specimen, both input stages read
-`policy/threshold.txt`. Only one lists it:
-
-```yaml
-deps:
-  - data/source.txt
-  - policy/threshold.txt
-  - scripts/render.py
-```
-
-Changing the policy to `20` makes that stage stale. The stage that omits the path keeps a
-result containing `threshold=10`.
-
-The policy file is not a parameter in this specimen because the command consumes the file
-as a file dependency. The important point is not that policy must always use `deps`. The
-important point is that the chosen contract must let DVC detect the influence.
-
-### A parameter file is not automatically a parameter contract
-
-This declaration is incomplete:
-
-```yaml
-cmd: python scripts/render.py param --params params.yaml
-deps:
-  - data/source.txt
-  - scripts/render.py
-outs:
-  - results/hidden-param.txt
-```
-
-The command visibly receives `params.yaml`, but DVC does not infer which key matters from
-the command line or from Python behavior. The truthful declaration adds:
+Truthful:
 
 ```yaml
 params:
   - settings.multiplier
 ```
 
-After the value changes from `2` to `3`, the audit demonstrates the consequence:
+When the key changes from `2` to `3`, the declared stage becomes stale and rebuilds score
+from `16` to `24`.
 
-| Stage | Listed key? | DVC marks stale? | Value after declared rebuild |
-| --- | --- | --- | --- |
-| `declared_param` | yes | yes | `multiplier=3`, `score=24` |
-| `hidden_param` | no | no | `multiplier=2`, `score=16` |
+Choose parameter treatment when:
 
-This is why “we put controls in one YAML file” is not a sufficient reproducibility claim.
-The stage still has to declare the part of that control surface it uses.
+- the value is a deliberate experiment or workflow control;
+- reviewers should compare it by key;
+- changes should appear in stage state;
+- the value is safe to record.
 
-### A sidecar is an output when its absence matters
+Use a file dependency when the input is better governed as a whole artifact, such as a
+policy document, schema, template, or model file.
 
-Suppose a command writes:
+Do not record secrets as parameters. Govern secret version or access policy externally.
 
-```text
-results/declared-main.txt
-results/undeclared-receipt.txt
-```
+## Outputs model ownership
 
-The receipt might be:
+Declare an artifact when:
 
-- disposable debug residue;
-- a quality-control receipt reviewed before promotion;
-- a row-count contract consumed by another stage;
-- an audit record required after an incident.
+- downstream stages consume it;
+- reviewers need it;
+- recovery requires it;
+- its loss should cause reproduction;
+- the stage claims responsibility for its content.
 
-Only the first case is clearly scratch. In the other cases, deleting the receipt should
-invalidate something or trigger restoration. The audit proves that DVC does neither when
-the path is outside `outs`.
+The specimen writes a main result and receipt. If the receipt supports audit or review, it
+belongs in the contract.
 
-Use this ownership test:
+Loss test:
 
-1. Delete the artifact in a disposable workspace.
-2. Run `dvc status --json`.
-3. Run `dvc repro <producer>`.
-4. Ask whether the artifact is restored.
-5. If not, decide whether that is the intended contract.
+1. settle baseline;
+2. delete only the candidate artifact;
+3. inspect status;
+4. run ordinary repro;
+5. confirm artifact restoration and current meaning.
 
-The test does not force every side effect into `outs`. It forces the team to make the
-meaning of absence explicit.
+If status remains empty and repro skips, DVC does not own the artifact.
 
-## Build an influence ledger before editing YAML
+## Scratch must truly be disposable
 
-For a real stage, create this table from command behavior:
+An artifact can remain scratch only when:
 
-| Path or value | Read, write, or control? | Meaningful change or loss | Required DVC response | Placement |
-| --- | --- | --- | --- | --- |
-| `data/source.csv` | read | rows change | rerun | `deps` |
-| `policy/threshold.txt` | read | decision policy changes | rerun | `deps` |
-| `settings.multiplier` | control | scoring changes | rerun and record key | `params` |
-| `results/report.json` | write | report missing | rerun or restore | `outs` |
-| `logs/debug.txt` | write | debug history missing | no pipeline response | outside contract |
+- no consumer reads it after command completion;
+- no review or recovery claim needs it;
+- deletion has no effect on accepted outputs;
+- the command recreates it internally as needed;
+- retention is not expected.
 
-Do not fill the placement column first. If you start from existing YAML, you are likely to
-restate the declaration instead of auditing the command.
+Location under `tmp`, `cache`, or `scratch` does not settle ownership. Conversely, a file
+under `results/` is not automatically governed.
 
-```mermaid
-flowchart LR
-  command["inspect real reads and writes"] --> consequence["name change or loss consequence"]
-  consequence --> response["state required DVC response"]
-  response --> placement["choose deps, params, outs, or external contract"]
-  placement --> pressure["test one mutation"]
-```
+Use behavior and consequence.
 
-The pressure test closes the loop. A placement that looks reasonable but produces the
-wrong response is not yet a truthful boundary.
+## Decide from change and loss
+
+| Question | If yes | Likely declaration |
+| --- | --- | --- |
+| does changing this file alter result? | stage must become stale | dependency |
+| is this a named control reviewers compare? | key change must be visible | parameter |
+| should artifact loss trigger recreation? | stage owns presence | output |
+| can it vanish without affecting any claim? | no pipeline ownership needed | scratch |
+| is it supplied by external governed context? | require joined enforcement evidence | external contract |
+
+## Avoid broad declarations as a shortcut
+
+Declaring an entire directory can hide unclear ownership:
+
+- unrelated changes trigger false reruns;
+- multiple stages appear to own the same area;
+- scratch becomes durable accidentally;
+- reviewers cannot identify the causal file.
+
+Broad boundaries can be truthful when the whole directory is one versioned input or
+output unit. Prove that ownership rather than using breadth to avoid inventory.
+
+## Test every placement adversarially
+
+| Placement | Adversarial test | Expected evidence |
+| --- | --- | --- |
+| dependency | change only file | status names stage; output adopts new value |
+| parameter | change only selected key | status names key/stage; output adopts control |
+| output | delete only artifact | status names missing output; repro restores |
+| scratch | delete between runs | accepted outputs and review claims remain valid |
+| external control | violate approved value | external gate rejects before trust |
+
+## Handle multi-role files carefully
+
+A file can contain many values. A stage may consume only one.
+
+Options:
+
+- declare whole file as dependency: any change reruns stage;
+- select exact parameter key: relevant control change reruns stage;
+- generate a smaller contract file: stage observes only owned subset.
+
+Choose based on review granularity and safe staleness. Never omit the influence because
+whole-file reruns seem noisy.
 
 ## Review checkpoint
 
-You understand this core when you can inspect one command and separate:
+You understand boundary placement when you can:
 
-- real reads from convenient nearby files
-- reviewable controls from ordinary implementation detail
-- owned outputs from temporary run artifacts
-- shared intermediates from accidental leftovers
-- values stored in `params.yaml` from keys actually declared by the stage
-- disposable side effects from artifacts whose absence should invalidate the result
+- classify from actual behavior;
+- distinguish parameter presence from selected parameter contract;
+- decide sidecar ownership by loss consequence;
+- defend scratch as truly disposable;
+- explain when whole-file or exact-key tracking is appropriate;
+- design mutation/loss tests for every placement.
 
-The goal is simple: after reading `dvc.yaml`, a reviewer should understand what can
-legitimately change the result and where that change is recorded.
+The standard is:
+
+> Every real read, deliberate control, and owned artifact has a declaration whose
+> adversarial test produces the expected planner and semantic evidence.
