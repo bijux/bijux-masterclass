@@ -134,14 +134,15 @@ request the same target with `CFLAGS=-O0`. Repair the graph with a content-addre
 stamp or manifest, and repeat the mutation without cleaning.
 
 Also change an unrelated note file. The repaired build should react to `CFLAGS` and
-ignore the note. A truthful graph needs both properties.
+ignore the note. Finally return from `-O0` to `-O2`; that reversal must rebuild too. A
+truthful graph needs all three properties.
 
 What to hand in:
 
 - the changed Makefile fragment
 - a plain-language explanation of why the input is hidden
 - the stamp or manifest content and the edge that connects it to the object
-- before-and-after traces for the `CFLAGS` mutation
+- traces for `-O2 -> -O0 -> -O2`, with no cleaning between them
 - a rejection trace showing that the unrelated note causes no recipe to run
 - one sentence explaining how the new path encodes the semantic value
 

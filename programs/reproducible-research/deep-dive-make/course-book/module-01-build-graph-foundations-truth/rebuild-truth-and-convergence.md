@@ -212,43 +212,43 @@ FLAGS_ID := $(shell printf '%s' "$(FLAGS_LINE)" | cksum | awk '{print $$1}')
 FLAGS_STAMP := build/flags.$(FLAGS_ID).stamp
 
 $(FLAGS_STAMP): | build/
-	@printf '%s\n' "$(FLAGS_LINE)" > $@
+	@candidate="$@.candidate.$$$$"; \
+	printf '%s\n' "$(FLAGS_LINE)" > "$$candidate" && \
+	rm -f build/flags.*.stamp && \
+	mv -f "$$candidate" "$@" || { rm -f "$$candidate"; exit 1; }
 
 build/%.o: src/%.c $(FLAGS_STAMP) | build/
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 ```
 
-This does not solve every build-fact problem, but it teaches the right instinct:
+This design keeps one active flag stamp in a shared object directory. A new flag value
+selects a missing path; publishing it removes the previously active stamp. Returning to
+an older value therefore selects a missing path again and rebuilds the affected objects.
+Keeping every historical stamp would make that reversal unsafe: the old stamp might be
+older than an object compiled under the newer policy.
+
+This design assumes one active configuration owns the object directory. Concurrent
+builds with different flag sets need separate build directories. Within that boundary,
+the example teaches the right instinct:
 
 - if a semantic fact changes output meaning
 - and Make cannot otherwise see it
 - give the graph evidence that changes when the fact changes
 
-The exact stamp design can improve later. The habit matters now.
+The exact evidence design can become more sophisticated later. The habit matters now.
 
-## Prefer content-preserving semantic evidence
+## Prove reversal as well as change
 
-A fixed stamp path avoids accumulating one file per value, but its timestamp must change
-only when normalized content changes:
+A one-way test from `-O2` to `-O0` is insufficient. The minimum semantic-input challenge
+is:
 
-```make
-FLAGS_STAMP := build/flags.stamp
-
-$(FLAGS_STAMP): FORCE | build/
-	@candidate="$@.candidate.$$$$"; \
-	printf '%s\n' 'CC=$(CC)' 'CPPFLAGS=$(CPPFLAGS)' 'CFLAGS=$(CFLAGS)' > "$$candidate"; \
-	if test -r "$@" && cmp -s "$$candidate" "$@"; then \
-	  rm -f "$$candidate"; \
-	else \
-	  mv -f "$$candidate" "$@"; \
-	fi
-
-.PHONY: FORCE
-FORCE:
+```text
+-O2 -> unchanged -O2 -> -O0 -> unchanged -O0 -> -O2
 ```
 
-Consumers use `$(FLAGS_STAMP)` as a normal prerequisite. The check runs each invocation,
-but unchanged semantic content preserves the stamp timestamp, so consumers converge.
+The two unchanged requests must converge. Each transition between values must rebuild
+the affected targets. This catches schemes that create a historical stamp once and then
+mistake its old timestamp for evidence about the current configuration.
 
 Do not include current time, process IDs, random values, or unrelated environment state
 in correctness evidence.

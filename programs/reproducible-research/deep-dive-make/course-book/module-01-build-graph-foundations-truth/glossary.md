@@ -163,8 +163,8 @@ The word “expansion” is incomplete unless you name the owner. Ask:
 | --- | --- | --- |
 | semantic input | A fact that changes output meaning even when ordinary source paths do not change. | Compiler flags, interpreter choice, schema version, or analysis configuration. |
 | hidden input | A semantic input with no graph-visible evidence or prerequisite edge. | Changing `CFLAGS` while an object rule depends only on its `.c` file. |
-| semantic stamp | A generated file that represents a semantic value for graph comparison. | `build/compile-flags.<id>.stamp` contains the canonical compiler settings. |
-| content-addressed path | A path whose name incorporates a digest or identifier of represented content. | A new flag value selects a missing stamp path without touching an old one. |
+| semantic stamp | A generated file that represents a semantic value for graph comparison. | `build/compile-flags.<id>.stamp` contains the canonical compiler settings; a shared object tree retains only its active stamp so value reversals remain observable. |
+| content-addressed path | A path whose name incorporates a digest or identifier of represented content. | A new flag value selects a missing stamp path; historical evidence must not let a return to an older value appear current. |
 | manifest | Human- or machine-readable evidence recording several semantic inputs together. | Tool versions, flags, configuration hashes, and dataset identity. |
 | depfile | Make syntax emitted by a compiler to record discovered include edges. | `build/a.o: src/a.c include/a.h`. |
 | bootstrap include | Tolerant inclusion of generated graph data that may not exist on the first parse. | `-include $(DEPS)` permits first compilation to create depfiles. |

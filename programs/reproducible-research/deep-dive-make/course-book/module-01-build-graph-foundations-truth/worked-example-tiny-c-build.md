@@ -233,7 +233,10 @@ $(BLD_DIR)/:
 	mkdir -p $@
 
 $(FLAGS_STAMP): | $(BLD_DIR)/
-	@printf '%s\n' "$(FLAGS_LINE)" > $@
+	@candidate="$@.candidate.$$$$"; \
+	printf '%s\n' "$(FLAGS_LINE)" > "$$candidate" && \
+	rm -f "$(BLD_DIR)"/flags.*.stamp && \
+	mv -f "$$candidate" "$@" || { rm -f "$$candidate"; exit 1; }
 
 app: $(OBJS)
 	tmp=$@.tmp.$$$$; \
@@ -254,7 +257,8 @@ This is not the last Makefile you will ever write. It is a deliberately small ex
 whose policy is visible enough to challenge:
 
 - `-rR` and `.SUFFIXES:` prevent undeclared built-in rules from rescuing a missing edge.
-- the content-addressed flag stamp turns compile policy into a prerequisite
+- the content-addressed flag stamp turns compile policy into a prerequisite and removes
+  the previously active stamp so returning to an older policy still rebuilds
 - compiler-generated depfiles discover included headers after the first successful compile
 - target-local, process-local candidate names avoid two concurrent recipes sharing a candidate
 - the dependency file is published before the object, so a published object never points at
@@ -351,12 +355,18 @@ First note the current stamp name:
 find build -name 'flags.*.stamp' -print
 make CFLAGS=-O0 --trace all
 find build -name 'flags.*.stamp' -print
+make CFLAGS=-O2 --trace all
+find build -name 'flags.*.stamp' -print
 ```
 
 The command-line value changes `FLAGS_LINE`, which changes `FLAGS_ID`, which selects a
 different prerequisite path. Both objects therefore rebuild even though no source file
-changed. More than one historical stamp may remain; that does not make the active object
-stale because only the selected stamp is its prerequisite.
+changed. The rule retains only the active stamp, so returning to `-O2` selects a missing
+path and rebuilds again. An unchanged request at either value must remain a no-op.
+
+This lab intentionally supports one active configuration in `build/`. If two flag sets
+must build concurrently, give them isolated output directories; shared object paths
+would be competing publications regardless of the stamp design.
 
 ### Demonstration 6: Failure recovery and convergence
 

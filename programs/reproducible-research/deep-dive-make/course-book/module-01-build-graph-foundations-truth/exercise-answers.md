@@ -119,7 +119,10 @@ FLAGS_ID := $(shell printf '%s' "$(FLAGS_LINE)" | cksum | awk '{print $$1}')
 FLAGS_STAMP := build/compile-flags.$(FLAGS_ID).stamp
 
 $(FLAGS_STAMP): | build/
-	@printf '%s\n' "$(FLAGS_LINE)" > $@
+	@candidate="$@.candidate.$$$$"; \
+	printf '%s\n' "$(FLAGS_LINE)" > "$$candidate" && \
+	rm -f build/compile-flags.*.stamp && \
+	mv -f "$$candidate" "$@" || { rm -f "$$candidate"; exit 1; }
 
 build/%.o: src/%.c $(FLAGS_STAMP) | build/
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -130,9 +133,17 @@ prerequisite of the requested object. A later identical request selects the exis
 stamp and converges. The stamp content gives a reviewer the human-readable policy; the
 checksum only gives it a path-safe identity.
 
+Removing the previously active stamp is essential in this single-configuration build
+directory. After `-O2 -> -O0`, an old `-O2` stamp must not remain available: returning
+to `-O2` has to create fresh evidence newer than the `-O0` object. If configurations must
+build concurrently, give each one a separate output directory rather than sharing object
+paths and deleting each other's active stamp.
+
 The rejection test matters. After convergence, changing `notes/reading.md` should leave
-`make -q build/alpha.o` at status `0` because the note has no edge to the object. A
-solution that rebuilds on every file change avoids staleness by giving up minimality.
+`make -q build/alpha.o` at status `0` because the note has no edge to the object. Test
+both `-O2 -> -O0` and `-O0 -> -O2`; a solution that proves only the first transition has
+not established reversible semantic tracking. A solution that rebuilds on every file
+change avoids staleness by giving up minimality.
 
 Running `make clean` after flag changes does not repair the graph. It destroys the state
 needed to test whether the graph recognized the semantic change.
