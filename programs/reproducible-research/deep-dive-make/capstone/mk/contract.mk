@@ -1,16 +1,22 @@
-# mk/contract.mk — feature gates and version checks
+# mk/contract.mk — required feature gates and diagnostic identity
 
-# GNU Make ≥ 4.3 required (core contract for grouped targets and full patterns).
-# MAKE_VERSION is provided by GNU Make. If missing, this Make is unsupported.
+# The core build requires capabilities introduced in GNU Make 4.3. Gate the
+# capabilities themselves so a future version such as 4.10 is not rejected by
+# a prefix list. Keep MAKE_VERSION for diagnostic identity only.
 ifeq ($(origin MAKE_VERSION),undefined)
   $(error This repository requires GNU Make (MAKE_VERSION not defined).)
 endif
 
-GNU_GE_4_3 := $(filter 4.3% 4.4% 5.%,$(MAKE_VERSION))
-ifeq ($(GNU_GE_4_3),)
-  $(error GNU Make >= 4.3 required for grouped targets and full patterns (found $(MAKE_VERSION)).)
+REQUIRED_MAKE_FEATURES := grouped-target second-expansion
+MISSING_MAKE_FEATURES := $(filter-out $(.FEATURES),$(REQUIRED_MAKE_FEATURES))
+ifneq ($(strip $(MISSING_MAKE_FEATURES)),)
+  $(error GNU Make $(MAKE_VERSION) lacks required features: $(MISSING_MAKE_FEATURES))
 endif
 
-# Feature probes (used for optional demos; do not change core correctness).
-HAVE_GROUPED_TARGETS := $(filter 4.3% 4.4% 5.%,$(MAKE_VERSION))
-HAVE_WAIT            := $(filter 4.4% 5.%,$(MAKE_VERSION))
+# Optional demos consume advertised capability evidence too.
+HAVE_GROUPED_TARGETS := $(filter grouped-target,$(.FEATURES))
+
+# .WAIT is not advertised by .FEATURES in the supported GNU Make releases and
+# the core build does not use it. Report that it is unprobed instead of
+# inferring support from another brittle version prefix.
+WAIT_SUPPORT := not-probed

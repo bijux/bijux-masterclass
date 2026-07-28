@@ -710,8 +710,9 @@ portability-audit:
 >     @printf 'OS: %s\n' "$(UNAME_S)"
 >     @printf 'SHELL: %s\n' "$(SHELL)"
 >     @printf 'MAKE_VERSION: %s\n' "$(MAKE_VERSION)"
+>     @printf 'REQUIRED_MAKE_FEATURES: %s\n' "$(REQUIRED_MAKE_FEATURES)"
 >     @printf 'HAVE_GROUPED_TARGETS: %s\n' "$(HAVE_GROUPED_TARGETS)"
->     @printf 'HAVE_WAIT: %s\n' "$(HAVE_WAIT)"
+>     @printf 'WAIT_SUPPORT: %s (optional; unused by the core build)\n' "$(WAIT_SUPPORT)"
 >     @command -v $(CC) >/dev/null 2>&1 && printf 'CC: %s\n' "$$($(CC) --version 2>/dev/null | head -1)" || printf 'CC: missing\n'
 >     @command -v $(PYTHON) >/dev/null 2>&1 && printf 'PYTHON: %s\n' "$$($(PYTHON) --version 2>/dev/null)" || printf 'PYTHON: missing\n'
 
