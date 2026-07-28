@@ -1,169 +1,248 @@
 # Module 02: Dynamic DAGs, Discovery, and Integrity
 
-Module 01 taught you how Snakemake plans work from explicit file contracts. Module 02
-asks the harder question:
+Module 01 assumed that the requested files were knowable when Snakemake parsed the
+workflow. This module removes that convenience. A delivery can change, validation can
+reject candidates, and an executed job can reveal the only trustworthy list of samples.
 
-> what happens when the set of jobs is not fully known until the workflow starts looking at data?
+The difficult part is not writing a checkpoint. It is naming the event that changes
+membership and preserving enough evidence to explain the resulting DAG.
 
-This module is about making that situation reviewable instead of magical.
+## The problem this module solves
 
-Dynamic behavior is not the enemy. Hidden discovery is.
+Suppose `alpha.fastq` has already been processed. Later, `beta.fastq` appears beside it.
+A Python function inside a checkpoint scans the directory, but the checkpoint declares
+no input.
 
-## What this day must accomplish
+Will `snakemake -n` schedule discovery again?
 
-By the end of Module 02, you should be able to do five things without mystical language:
+No. Snakemake knows about declared file relationships, not every filesystem read hidden
+inside Python or shell code. The checkpoint can discover `beta` if forced to run, yet
+ordinary scheduling has no reason to invoke it.
 
-- explain which exact surface decides what targets exist
-- turn a changing sample set into a deterministic target list
-- reject a checkpoint when static modeling is already enough
-- justify a checkpoint only when runtime work reveals a real new fact
-- preserve the discovered set as evidence that another person can inspect later
-
-## The decision ladder for the whole module
-
-Keep this order in front of you all day:
+That distinction drives the whole module:
 
 ```mermaid
-flowchart TD
-  config["Known in config or a sample sheet"] --> scan["If not, do one deterministic scan"]
-  scan --> artifact["If later steps must trust discovery, write an artifact"]
-  artifact --> checkpoint["Use a checkpoint only when execution reveals the set"]
+flowchart LR
+  event["Declared membership event changes"] --> stale["Discovery output becomes stale"]
+  stale --> rerun["Checkpoint reruns"]
+  rerun --> manifest["Accepted-set manifest changes"]
+  manifest --> reevaluate["Input function is reevaluated"]
+  reevaluate --> jobs["New jobs enter the DAG"]
+
+  ambient["Matching file merely appears"] -.no declared edge.-> hidden["Checkpoint stays current"]
+  hidden -.DAG remains stale.-> missed["New job is absent"]
 ```
 
-If you skip straight to checkpoints, you usually hide a modeling problem. If you follow
-the ladder, dynamic behavior stays explainable.
+## Learning outcomes you must demonstrate
 
-## The running lab for the whole day
+By the end, you should be able to:
 
-Use one lab story all day instead of several disconnected discovery tricks:
+- choose config, a checked registry, parse-time discovery, or a checkpoint for a stated
+  arrival problem;
+- identify the declared input whose change invalidates discovery;
+- preserve pairing and domain constraints while turning accepted records into targets;
+- predict the DAG before and after a checkpoint completes;
+- separate files present on disk from files admitted to workflow scope;
+- publish the discovered set and its governing evidence without exposing unstable
+  internal state;
+- diagnose scheduler overhead without weakening the discovery contract.
 
-- raw FASTQ files appear in `data/raw/`
-- a candidate registry gives each sample one stable identity
-- a validation step decides which candidates are usable
-- per-sample QC jobs fan out from the accepted set
-- the publish boundary carries the accepted and rejected sets forward
+These are observable abilities. “I understand dynamic workflows” is not an exit claim.
 
-That lab is small enough to run and redraw, but rich enough to teach discovery, fanout,
-dynamic reevaluation, and downstream integrity.
+## Prerequisites and setup
 
-## Plan for the day
+Before starting, you should be comfortable reading a rule’s `input`, `output`, and
+wildcards, and you should be able to run a dry-run. If those actions are still slow,
+return briefly to Module 01’s file-contract lesson.
 
-| Session | What you do | Evidence you keep |
-| --- | --- | --- |
-| static baseline | replace an ambient directory scan with a sorted, validated candidate manifest | manifest diff and dry-run |
-| domain design | model paired values without accidental Cartesian products | expected and actual target lists |
-| runtime discovery | implement a checkpoint for a usable subset known only after validation | checkpoint registry |
-| DAG review | compare the graph before and after checkpoint completion | two DAG renderings |
-| integrity | carry discovery, provenance, and inventory into a publish boundary | reviewable bundle |
-| independent practice | complete all ten exercises | implementation and design notes |
-
-The important progression is **static first, dynamic only when earned**. If configuration
-or a manifest already knows the targets, use it directly. A checkpoint is appropriate
-only when execution reveals a fact that planning could not know.
-
-## Study route
-
-```mermaid
-flowchart TD
-  start["Overview"] --> core1["Deterministic Target Lists and Sample Discovery"]
-  core1 --> core2["Wildcard Domains and Fanout Control"]
-  core2 --> core3["Checkpoints and Reviewed DAG Changes"]
-  core3 --> core4["Provenance, Manifests, and Publish Boundaries"]
-  core4 --> core5["Software Stacks and Scheduler Cost"]
-  core5 --> example["Worked Example: Making Checkpoint Discovery Reviewable"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
-```
-
-Read the module in that order the first time through.
-
-The route matters:
-
-- begin with deterministic discovery before you touch checkpoints
-- treat wildcard fanout as a domain-modeling problem, not only a syntax problem
-- treat provenance and publication as part of discovery honesty, not as an afterthought
-
-## The ten files in this module
-
-1. Overview (`index.md`)
-2. [Deterministic Target Lists and Sample Discovery](deterministic-target-lists-and-sample-discovery.md)
-3. [Wildcard Domains and Fanout Control](wildcard-domains-and-fanout-control.md)
-4. [Checkpoints and Reviewed DAG Changes](checkpoints-and-reviewed-dag-changes.md)
-5. [Provenance, Manifests, and Publish Boundaries](provenance-manifests-and-publish-boundaries.md)
-6. [Software Stacks and Scheduler Cost](software-stacks-and-scheduler-cost.md)
-7. [Worked Example: Making Checkpoint Discovery Reviewable](worked-example-making-checkpoint-discovery-reviewable.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
-10. [Glossary](glossary.md)
-
-## How to use the file set
-
-| If you need to... | Start here |
-| --- | --- |
-| stop discovery from drifting with directory noise or unordered scans | [Deterministic Target Lists and Sample Discovery](deterministic-target-lists-and-sample-discovery.md) |
-| prevent wildcards and `expand()` from creating nonsense work | [Wildcard Domains and Fanout Control](wildcard-domains-and-fanout-control.md) |
-| decide whether a checkpoint is the right tool or a design smell | [Checkpoints and Reviewed DAG Changes](checkpoints-and-reviewed-dag-changes.md) |
-| make dynamic behavior visible to reviewers and downstream consumers | [Provenance, Manifests, and Publish Boundaries](provenance-manifests-and-publish-boundaries.md) |
-| keep environments and job granularity from turning correctness into slowness | [Software Stacks and Scheduler Cost](software-stacks-and-scheduler-cost.md) |
-| see the module as one repaired workflow rather than five isolated rules | [Worked Example: Making Checkpoint Discovery Reviewable](worked-example-making-checkpoint-discovery-reviewable.md) |
-| test your own understanding | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the module vocabulary | [Glossary](glossary.md) |
-
-## The running question
-
-Carry this question through every page:
-
-> if discovery changes the DAG, what exact artifact lets another person review that change later?
-
-Good Module 02 answers usually mention one or more of these:
-
-- a concrete discovered-set file
-- a validated target list
-- a wildcard boundary that limits what can be claimed
-- a checkpoint output that is durable enough to reread
-- a publish or provenance artifact that preserves the run story
-
-## What the module should change in your head
-
-If the day is working, you should feel these transitions:
-
-- a directory scan stops looking self-explanatory
-- `expand()` stops feeling harmless when it loses pairings or grows a Cartesian product
-- a checkpoint stops looking advanced and starts looking accountable
-- a discovered-set file becomes part of the workflow contract, not side documentation
-- dynamic DAGs stop being “magic Snakemake behavior” and become reviewable cause and effect
-
-## Commands to keep close
-
-These commands form the evidence loop for Module 02:
+For the executable route, enter the capstone directory and use its supported toolchain:
 
 ```bash
-snakemake -n
-snakemake --summary
-snakemake --dag | dot -Tpdf > artifacts/dag.pdf
-snakemake --lint
-snakemake --list-changes params input code
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make info
+make discovery-integrity-audit
 ```
 
-They answer different questions:
+The audit writes only under the repository `artifacts/` tree. It does not mutate the
+tracked specimen. Read the generated `route.txt` before opening `report.json`.
 
-- what would run
-- which files Snakemake believes it owns
-- how the current jobs relate
-- which design smells are already visible
-- which tracked changes justify reruns
+If you cannot execute the capstone, the worked example includes the decisive dry-run and
+sample-set observations. Mark your answers as predictions rather than executed evidence.
 
-## Exit standard
+## The running case
 
-Do not move on until all of these are true:
+The module uses one delivery story throughout:
 
-- you can explain one discovery route without saying "Snakemake just figures it out"
-- you can show where the discovered set is recorded and why that location matters
-- you can describe one checkpoint that is justified and one that is really a smell
-- you can say which artifacts are internal execution state and which are safe to publish
-- you can explain one performance repair without weakening workflow truth
-- you have completed all ten exercises and can defend each use or rejection of a checkpoint
+- raw FASTQ files live under `data/raw/`;
+- `data/raw-arrivals.tsv` declares candidate arrivals;
+- discovery validates registry paths and derives sample identities;
+- a checkpoint writes `results/discovered_samples.json`;
+- downstream input functions fan out over the accepted sample set;
+- publication carries discovery evidence beside summaries and provenance.
 
-When those become ordinary, Module 02 has done its job.
+The registry does not list final outputs. It records the event that admits a raw file to
+consideration. Validation can still reject an arrival, and a later checkpoint output can
+still determine the downstream DAG.
+
+## Four sets that must not be conflated
+
+Dynamic-workflow bugs often begin when one word—“samples”—is used for four different
+sets:
+
+| Set | Meaning | Owner |
+| --- | --- | --- |
+| present | matching files currently visible in a directory | storage environment |
+| registered | arrivals admitted for consideration | delivery or intake process |
+| accepted | registered arrivals that pass validation | discovery checkpoint |
+| published | accepted samples represented at the public boundary | publish rules |
+
+The sets may be equal in a tiny demo. They are not interchangeable contracts.
+
+```mermaid
+flowchart TD
+  present["Present on disk"] -->|admission decision| registered["Registered candidates"]
+  registered -->|validation| accepted["Accepted samples"]
+  accepted -->|complete outputs + review| published["Published samples"]
+  registered --> rejected["Rejected evidence"]
+  accepted --> internal["Internal per-sample artifacts"]
+```
+
+When a learner says “the workflow found three samples,” ask: present, registered,
+accepted, or published?
+
+## Choose the least dynamic honest model
+
+Use this decision table before writing checkpoint syntax:
+
+| What is knowable before execution? | Suitable mechanism | Why |
+| --- | --- | --- |
+| final sample IDs and paths | validated config or sample sheet | no runtime fact is missing |
+| candidate membership, with deterministic parse-time use | checked registry read once | the DAG is static and reviewable |
+| directory snapshot accepted as an operating assumption | sorted parse-time scan | simple, but the snapshot boundary must be explicit |
+| accepted membership only after an executed validation job | checkpoint plus durable manifest | execution reveals a fact needed to plan later jobs |
+| membership depends on an undeclared ambient scan | redesign the event boundary | the workflow cannot know when discovery is stale |
+
+“Dynamic” is not a quality level. A static model is preferable whenever it states the
+truth.
+
+## Reading and lab route
+
+Allow one serious session of roughly five to seven hours, including exercises:
+
+| Block | Read or do | Evidence to keep |
+| --- | --- | --- |
+| membership | deterministic discovery lesson | a four-set classification for the running case |
+| target domain | wildcard and fanout lesson | expected target list before `expand()` |
+| reevaluation | checkpoint lesson and audit | paired change dry-runs |
+| trust boundary | provenance and publication lesson | artifact-role table |
+| operations | software and scheduler-cost lesson | one truth-preserving performance diagnosis |
+| integration | worked example | completed evidence ledger |
+| practice | ten exercises, then answers | predictions, commands, observations, revisions |
+
+Read the pages in this order:
+
+1. [Deterministic Target Lists and Sample Discovery](deterministic-target-lists-and-sample-discovery.md)
+2. [Wildcard Domains and Fanout Control](wildcard-domains-and-fanout-control.md)
+3. [Checkpoints and Reviewed DAG Changes](checkpoints-and-reviewed-dag-changes.md)
+4. [Provenance, Manifests, and Publish Boundaries](provenance-manifests-and-publish-boundaries.md)
+5. [Software Stacks and Scheduler Cost](software-stacks-and-scheduler-cost.md)
+6. [Worked Example: Making Checkpoint Discovery Reviewable](worked-example-making-checkpoint-discovery-reviewable.md)
+7. [Exercises](exercises.md)
+8. [Exercise Answers](exercise-answers.md)
+9. [Glossary](glossary.md)
+
+Do not open the answers while an exercise prediction is still blank. The prediction is
+what makes later evidence diagnostic.
+
+## The executable proof route
+
+`make discovery-integrity-audit` compares two small workflows:
+
+- `governed-registry` declares the arrival registry as a checkpoint input;
+- `ambient-scan` reads a directory inside the checkpoint but declares no input.
+
+The audit runs a baseline, adds `beta` and `gamma`, registers only `beta` in the governed
+model, and compares normal with forced execution.
+
+Expected summary:
+
+| Model | Planned after arrivals | Normal outputs | Forced outputs |
+| --- | --- | --- | --- |
+| governed registry | yes | `alpha,beta` | `alpha,beta` |
+| ambient scan | no | `alpha` | `alpha,beta,gamma` |
+
+The forced ambient result proves capability, not correct invalidation. Keep that sentence
+near every checkpoint review.
+
+## How to record evidence
+
+Use a small ledger for every lab change:
+
+| Field | What to write |
+| --- | --- |
+| claim | one behavior you expect |
+| changed event | the exact file or governed value changed |
+| prediction | jobs and target set expected before running |
+| command | the exact dry-run or execution command |
+| observation | the relevant receipt, not “it worked” |
+| interpretation | why the observation supports or contradicts the claim |
+| next check | the smallest test that could disprove your interpretation |
+
+This format prevents a successful final file from erasing the causal story.
+
+## Common wrong turns
+
+### “A checkpoint watches the directory”
+
+It does not. A checkpoint reruns for the same kinds of declared reasons as other jobs.
+Its special behavior is that Snakemake reevaluates dependent input functions after the
+checkpoint completes.
+
+### “Sorting makes discovery reproducible”
+
+Sorting makes ordering stable. It does not define admission, detect stale discovery, or
+prove that two runs saw the same candidate set.
+
+### “Everything matching the glob is a sample”
+
+A glob expresses a filename pattern. It does not express delivery approval, pairing
+completeness, sample identity rules, or publication readiness.
+
+### “A forced run repairs invalidation”
+
+A forced run is a diagnostic. Requiring an operator to remember it leaves the dependency
+hidden.
+
+## Commands and the questions they answer
+
+```bash
+snakemake -n -p
+snakemake --summary
+snakemake --dag
+make discovery-integrity-audit
+make discovery-integrity-selftest
+```
+
+| Command | Question |
+| --- | --- |
+| `snakemake -n -p` | does the declared change alter the plan? |
+| `snakemake --summary` | which owned files are present, missing, or stale? |
+| `snakemake --dag` | what jobs and edges exist in the current planning state? |
+| audit target | does declared invalidation differ observably from ambient scanning? |
+| self-test target | does the audit fail when its causal distinctions are damaged? |
+
+## Exit proof
+
+You are ready for Module 03 when you can produce all of the following without instructor
+help:
+
+- a decision explaining why a given case needs config, a registry, or a checkpoint;
+- a dry-run showing the declared arrival event schedules discovery;
+- a target-domain calculation that avoids an accidental Cartesian product;
+- an accepted-set manifest and a separate rejection record;
+- a before/after DAG explanation grounded in checkpoint output;
+- a publish review showing that public samples equal accepted complete samples;
+- a performance recommendation that retains the same membership and validation truth;
+- completed answers to all ten exercises, including corrections to wrong predictions.
+
+If you can show only the final outputs, the dynamic behavior is still under-explained.
