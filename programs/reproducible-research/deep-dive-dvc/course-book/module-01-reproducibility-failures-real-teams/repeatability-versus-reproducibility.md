@@ -1,6 +1,5 @@
 # Repeatability Versus Reproducibility
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Reproducibility Failures Real Teams"]
+  section["Reproducibility Failures in Real Teams"]
   page["Repeatability Versus Reproducibility"]
   capstone["Capstone evidence"]
 
@@ -18,133 +17,253 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  run["one successful run"] --> rerun["equal local rerun"]
+  rerun --> identities["recorded inputs, code, controls"]
+  identities --> clean["clean reconstruction"]
+  clean --> transfer["independent team recovery"]
 ```
 <!-- page-maps:end -->
 
-These two words are often used as if they mean the same thing.
+“I ran it again and got the same result” is useful evidence. It is not the same
+claim as “another maintainer can reconstruct this result later.”
 
-They do not.
+The first is local repeatability. The second is team reproducibility. Confusing
+them lets a private workspace, remembered command, or surviving data copy stand
+in for an evidence system.
 
-That confusion is one of the main reasons teams think they are in better shape than they
-really are.
+## Use claim-sized definitions
 
-## The short version
+In this course:
 
-Repeatability means:
+**Local repeatability** means the current operator can execute the workflow
+again in substantially the same workspace and obtain the same bounded result.
 
-- I can run the same workflow again in roughly the same setup
-- I get the same or similar result right now
+**Team reproducibility** means another authorized maintainer can obtain the
+recorded inputs, implementation, controls, and runtime evidence, rebuild the
+result outside the author's private workspace, and explain why it matches.
 
-Reproducibility means:
+The words are used differently across scientific disciplines and standards.
+Always state the operational claim instead of arguing from the label alone.
 
-- another person can recover the same result later
-- on another machine
-- from the recorded artifacts and rules rather than from private memory
+## The transfer is the real test
 
-Repeatability is local and fragile.
+Compare the boundaries:
 
-Reproducibility is social and durable.
+| Question | Local repeatability | Team reproducibility |
+|---|---|---|
+| who runs it? | usually the original operator | another authorized maintainer |
+| where? | familiar workspace | clean reconstruction boundary |
+| when? | while local state still exists | after time, turnover, or machine loss |
+| inputs | whatever is currently present | recorded identities with recovery routes |
+| controls | remembered or implicit values may survive | effective values are declared |
+| runtime | inherited environment | bounded and recorded environment evidence |
+| result claim | equal local output | explainable, recoverable output |
 
-## Why the difference matters
+Reproducibility has to survive a transfer of knowledge and state. A second run
+in the same directory does not cross that boundary.
 
-A workflow can be repeatable for one person on one laptop and still be irreproducible for
-the team.
+## Run the eight-case contrast
 
-That happens when success depends on things like:
+From the repository root:
 
-- a local copy of the right data
-- remembered setup steps
-- a library stack nobody recorded precisely
-- a notebook state that only the author understands
-
-The run can still "work." The trust story is what fails.
-
-## A practical contrast
-
-| Question | Repeatability answers | Reproducibility answers |
-| --- | --- | --- |
-| can I rerun this today | often yes | maybe, but that is not the whole test |
-| can a teammate rerun it next month | not necessarily | this is the real target |
-| does the repository explain what mattered | often only partly | it has to |
-| does history survive machine changes and team turnover | usually no | it must |
-
-This table is the first mental shift the module needs.
-
-## A small example
-
-Imagine a teammate says:
-
-> I reran `train.py` and got the same metric, so the workflow is reproducible.
-
-That statement is too strong.
-
-At best, it shows a narrow form of repeatability.
-
-It does not yet answer:
-
-- did they use the same exact data bytes
-- did they use the same environment
-- did the same parameters and preprocessing steps apply
-- could someone else repeat the run from the repository alone
-
-The gap between those questions is the gap between the two terms.
-
-## A human way to think about it
-
-```mermaid
-flowchart LR
-  rerun["I reran it"] --> local["local success"]
-  local --> memory["depends on machine state and memory"]
-  repo["recorded artifacts and rules"] --> transfer["someone else can recover it later"]
-  transfer --> trust["reproducible trust"]
+```console
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-workflow-evidence-audit
 ```
 
-Repeatability often ends at local success.
+Inspect the summary:
 
-Reproducibility has to survive transfer.
+```console
+jq '.findings[] | {
+  finding,
+  local_repeatability,
+  decision,
+  failed_checks
+}' artifacts/audit/reproducible-research/deep-dive-dvc/workflow-evidence/report.json
+```
 
-## Why teams overestimate repeatability
+Every case has `local_repeatability: true`. Only `COMPLETE_EVIDENCE` receives
+`ACCEPT_REPRODUCIBILITY_CLAIM`.
 
-Teams often confuse the two because:
+That contrast is the lesson. Equal reruns can coexist with:
 
-- the original author still remembers the setup
-- the right files are still sitting on disk
-- the environment has not drifted enough yet to cause visible breakage
-- the workflow has not been pressure-tested by turnover, CI, or audit questions
+- no clean reconstruction;
+- a hidden threshold;
+- changed bytes behind the same filename;
+- manual preprocessing absent from the workflow;
+- no runtime identity;
+- an input nobody else can recover;
+- a result produced by an older implementation.
 
-In other words, the workflow can appear healthy while it is still relying on luck.
+## Build an evidence ladder
 
-## Good questions to ask early
+Do not jump from “ran once” to “reproducible.” Increase the claim as evidence
+grows.
 
-When someone says a workflow is reproducible, ask:
+| Evidence available | Honest claim |
+|---|---|
+| command exited successfully | this command produced a result once |
+| two equal local outputs | this workspace is locally repeatable for this result |
+| input and implementation identities | the main source state is identifiable |
+| declared effective controls | result-changing choices are reviewable |
+| runtime record | execution context is bounded |
+| clean rebuild | recorded evidence can reconstruct the result now |
+| shared input recovery | another maintainer can obtain protected state |
+| independent execution receipt | the team boundary has exercised the route |
 
-1. could another person recover the run from the repo and declared inputs
-2. could the same result be recovered after a clean clone
-3. which parts of the story are still living only in memory
+Each row depends on the rows above it. An independent run with an unidentified
+dataset may show operational success, but not reconstruction of the claimed
+historical result.
 
-Those questions are not nitpicking. They are the beginning of engineering honesty.
+```mermaid
+flowchart TB
+  A["one run"] --> B["local repeatability"]
+  B --> C["identifiable influences"]
+  C --> D["clean rebuild"]
+  D --> E["team recovery"]
+  E --> F["bounded reproducibility claim"]
+  G["scientific validity"] -.separate evaluation.-> F
+```
 
-## What DVC is not solving here
+## Determinism is related but different
 
-DVC does not magically make every workflow deterministic or scientifically valid.
+A deterministic program returns the same output for the same effective inputs
+and runtime assumptions. Determinism helps repeatability, but it does not
+guarantee reproducibility.
 
-What it helps with is the mechanical side of reproducibility:
+A deterministic script is irreproducible to the team when its input exists
+only on one laptop.
 
-- tracked data identity
-- visible stage relationships
-- recoverable artifacts
+A non-deterministic training workflow may still support a bounded
+reproducibility claim if it records:
 
-That is why this distinction belongs before any DVC command.
+- randomness controls or distributional expectations;
+- environment and hardware;
+- acceptable output tolerance;
+- repeated-run evidence;
+- the exact promoted result.
 
-## Keep this standard
+Do not force every workflow into byte-for-byte equality when the real contract
+is statistical. Do not use statistical behavior as an excuse to omit input and
+runtime identity.
 
-Do not let "I reran it" end the discussion.
+## Similar output is not the same result
 
-Treat that as a useful signal, not as final proof.
+Suppose two runs both report `accuracy: 0.91`. That value alone cannot show
+they reconstructed the same result.
 
-If the result cannot survive transfer across people, machines, and time, the workflow may
-be repeatable today and still irreproducible in the way teams actually care about.
+They may differ in:
+
+- dataset population;
+- split;
+- label definition;
+- threshold;
+- metric implementation;
+- source code;
+- runtime;
+- promoted artifact.
+
+Reproducibility starts with identities and semantics, not numeric resemblance.
+Later modules develop metric comparability and promotion in detail.
+
+## Clean means outside private state
+
+A clean reconstruction should not inherit unreviewed state from the original
+workspace.
+
+Weak “clean” test:
+
+```text
+delete output file -> rerun in same environment and cache
+```
+
+Stronger test:
+
+```text
+new directory
+-> recorded source revision
+-> declared controls
+-> promised data recovery route
+-> bounded runtime
+-> executed workflow
+-> result verification
+```
+
+The exact isolation depends on the claim. A container can still mount an
+author's private data. A fresh Git clone can still use an undeclared global
+package. Name what the boundary excludes.
+
+## Diagnose failure without blame
+
+When a teammate cannot rebuild a result, distinguish:
+
+| Outcome | Meaning |
+|---|---|
+| contradicted | direct evidence shows an identity or result claim is false |
+| unverified | a required observation was never collected |
+| unavailable | identified state cannot be obtained through the promised route |
+| out of scope | the workflow never promised this property |
+
+“It failed for me” is the beginning of the investigation. Record which premise
+failed.
+
+Example:
+
+> Both local result files match, but no clean rebuild receipt exists. The
+> workflow is locally repeatable. Team reproducibility remains unverified.
+
+That sentence is more accurate than either “works fine” or “completely broken.”
+
+## Reproducibility does not prove validity
+
+A perfectly reconstructed analysis can still:
+
+- use biased data;
+- ask the wrong question;
+- leak evaluation information;
+- apply an invalid metric;
+- produce an unsafe decision.
+
+Mechanical reproducibility makes those choices inspectable. It does not approve
+them.
+
+Keep separate review questions:
+
+| Review | Question |
+|---|---|
+| mechanical | can we identify and rebuild the result? |
+| semantic | do inputs, metrics, and outputs mean what the claim says? |
+| scientific | is the method valid for the question? |
+| operational | is the artifact safe and supported for consumers? |
+
+DVC primarily strengthens the mechanical state story. Other review boundaries
+remain necessary.
+
+## A conversation that stays honest
+
+When someone says:
+
+> This workflow is reproducible because I reran it.
+
+Respond with:
+
+> The matching rerun establishes local repeatability. To test the team claim,
+> let us reconstruct it from recorded input, implementation, control, runtime,
+> and recovery evidence outside this workspace.
+
+This response preserves the evidence they already produced and asks for the
+next observation. It does not turn terminology into a personal correction.
+
+## Reader checkpoint
+
+You understand the distinction when you can:
+
+- state a bounded local repeatability claim;
+- describe the transfer required by team reproducibility;
+- explain why equal output is weaker than equal result identity;
+- separate determinism from reconstruction;
+- design a clean boundary that excludes private state;
+- increase a claim only as the evidence ladder grows;
+- keep mechanical reproducibility separate from scientific validity.
+
+Treat a local rerun as evidence, not as the end of the inquiry.
