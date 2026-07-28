@@ -69,7 +69,7 @@ Return to the module first if:
 | 05 Metrics and Parameters | which controls and metrics are safe to compare | `params.yaml`, `metrics/`, `publish/v1/metrics.json` | `make verify` |
 | 06 Experiments | how to vary one intended control without breaking comparison or promotion boundaries | experiment comparability specimen, generated case evidence, DVC receipts | `make experiment-comparability-audit` |
 | 07 Collaboration and CI | which checks another maintainer can run without oral context | `Makefile`, `tests/`, [Review Route Guide](../capstone/docs/review-route-guide.md) | `make verify` |
-| 08 Recovery and Scale | what survives cache loss and what depends on the remote | `.dvc-remote/`, `publish/v1/`, recovery bundle | `make recovery-review` |
+| 08 Recovery and Scale | which current and historical obligations survive cache loss and remote cutover | recovery contract, per-revision evidence, command receipts | `make recovery-readiness-audit` |
 | 09 Promotion and Auditability | what downstream users may trust from the promoted bundle | `publish/v1/`, `publish/v1/manifest.json`, `dvc.lock` | `make release-review` |
 | 10 Governance and Migration | whether another maintainer could review or migrate the repository safely | `README.md`, `dvc.yaml`, `dvc.lock`, `publish/v1/` | `make confirm` |
 

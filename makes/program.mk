@@ -194,6 +194,14 @@ capstone-reviewer-handoff-audit: ## Classify selected program reviewer handoff e
 capstone-reviewer-handoff-selftest: ## Enforce selected program reviewer handoff evidence
 	@$(RUN_PROGRAM) capstone-reviewer-handoff-selftest
 
+.PHONY: capstone-recovery-readiness-audit
+capstone-recovery-readiness-audit: ## Classify selected program recovery cutover evidence
+	@$(RUN_PROGRAM) capstone-recovery-readiness-audit
+
+.PHONY: capstone-recovery-readiness-selftest
+capstone-recovery-readiness-selftest: ## Enforce selected program recovery cutover evidence
+	@$(RUN_PROGRAM) capstone-recovery-readiness-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit
