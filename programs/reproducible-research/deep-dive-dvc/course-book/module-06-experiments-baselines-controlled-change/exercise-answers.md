@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,265 +9,240 @@ graph LR
   program["Deep Dive DVC"]
   section["Experiments Baselines Controlled Change"]
   page["Exercise Answers"]
-  capstone["Capstone evidence"]
+  packet["Reviewable experiment decisions"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.models.-> packet
 ```
 
 ```mermaid
 flowchart LR
-  baseline["anchor the baseline"] --> scope["scope one candidate intent"]
-  scope --> compare["compare without contaminating the baseline"]
-  compare --> decide["promote or discard with reasons"]
-  decide --> retain["retain only the experiments that matter"]
+  executed["candidate executed"] --> comparable["comparison valid"]
+  comparable --> stable["effect stable enough"]
+  stable --> useful["practically useful"]
+  useful --> confirmed["independently confirmed"]
+  confirmed --> authorized["promotion authorized"]
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These answers model the reasoning boundary. They do not turn the modeled stochastic
+scenario into capstone-generated evidence. Compare your authority, evidence chain,
+decision, and limit rather than matching wording.
 
-## How to use the answer page well
+## Answer: Predict the decision gates
 
-Do not read the model answer first and then reduce every experiment to "keep the best
-row."
-
-A better rhythm is:
-
-1. finish the exercise with your own experiment packet
-2. name the baseline, candidate intent, and promotion question
-3. compare your reasoning with the model answer
-4. revise anywhere your answer skips contamination risk, tradeoff review, or post-apply
-   inspection
-
-What matters is whether the reasoning keeps baseline authority, candidate scope, evidence,
-and promotion decisions connected.
-
-Strong Module 06 answers usually do five things:
-
-- they treat baseline as evidence, not memory
-- they keep candidate intent focused enough to interpret
-- they describe what DVC experiment recording preserves without overclaiming
-- they write promotion notes in terms of tradeoffs and release goals
-- they preserve only the experiments that actually matter to future review
-
-The strongest self-study packets also leave behind six concrete artifacts:
-
-- one baseline description
-- one candidate-scope judgment
-- one tradeoff review note
-- one contamination repair
-- one promotion review
-- one retention policy
-
-If your answers rely only on "this candidate scored highest," the reasoning is still too
-thin.
-
-## Answer 1: Predict the decision gates
-
-Model table:
-
-| Case | DVC runs? | Comparable? | Promotable now? | Decision |
-| --- | --- | --- | --- | --- |
-| controlled threshold | yes | yes | no decision yet | `KEEP_FOR_PROMOTION_REVIEW` |
-| mixed control change | yes | no | no | `BLOCK_COMPARISON` |
-| mutated baseline contract | yes | no | no | `BLOCK_COMPARISON` |
-| population drift | yes | no | no | `BLOCK_COMPARISON` |
-| metric schema drift | yes | no | no | `BLOCK_COMPARISON` |
-| missing candidate intent | yes | no | no | `BLOCK_COMPARISON` |
-| unsafe promotion request | yes | yes | no | `BLOCK_PROMOTION` |
-
-The important correction for many learners is the first column: all seven candidates can
-execute. The defects are in interpretation or authority, not command completion.
-
-`PASS` in the generated summary means each defect was classified as expected. It does not
-mean the blocked candidate passed review.
-
-## Answer 2: Prove the baseline anchor
-
-The controlled proof table should contain:
-
-| Required fact | Contract claim | Recorded evidence | Match? |
+| Case | Result | Decision | Deciding boundary |
 | --- | --- | --- | --- |
-| threshold | `0.65` | baseline params `0.65` | yes |
-| population ID | `incident-review-v1` | baseline metric population ID | yes |
-| metric schema | `classification-v1` | baseline metric schema | yes |
-| expected metrics | F1 `0.75`, precision `1.0`, recall `0.6` | baseline metrics | yes |
+| controlled threshold | `PASS` | `KEEP_FOR_PROMOTION_REVIEW` | only intended threshold changes |
+| mixed control change | `PASS` | `BLOCK_COMPARISON` | unrelated capacity control breaks attribution |
+| mutated baseline contract | `PASS` | `BLOCK_COMPARISON` | candidate anchor differs from approval evidence |
+| population drift | `PASS` | `BLOCK_COMPARISON` | evaluation membership changes |
+| metric schema drift | `PASS` | `BLOCK_COMPARISON` | result meaning changes |
+| missing candidate intent | `PASS` | `BLOCK_COMPARISON` | allowed change set cannot be judged |
+| unsafe promotion request | `PASS` | `BLOCK_PROMOTION` | comparison passes; authority is absent |
 
-The mutated case differs only in its current contract threshold claim of `0.60`. The
-recorded baseline still says `0.65`, so `baseline_matches_recorded_contract` fails.
+A reversing condition must repair the deciding boundary. A better metric cannot reverse
+population drift; another successful run cannot create promotion authority.
 
-The unchanged Git commit proves that experiment ancestry did not move. It cannot prove
-that an uncommitted contract claim remained honest.
+## Answer: Prove the baseline authority
 
-A durable repair is to restore the approved contract from governed history. If `0.60`
-really should become authoritative, create and review a new baseline instead of rewriting
-what the old run meant.
-
-## Answer 3: Audit the changed paths
-
-Model classification:
-
-| Case | Changed path | Role | Treatment |
-| --- | --- | --- | --- |
-| controlled | `decision.threshold` | planned intervention | continue |
-| mixed | `decision.threshold` | planned intervention | keep in threshold candidate |
-| mixed | `decision.review_capacity` | unrelated policy control | split into another candidate |
-| schema drift | `decision.threshold` | planned intervention | candidate change |
-| schema drift | `evaluation.metric_schema` | comparison control | establish a new baseline |
-
-The exact allowed set is `["decision.threshold"]`.
-
-“Declared” means a system can observe a value. “Allowed” means the value belongs to the
-predeclared causal question. An extra declared change can still make attribution invalid.
-
-## Answer 4: Bound the DVC receipts
-
-Model receipt table:
-
-| Receipt | What it proves | What it cannot prove |
-| --- | --- | --- |
-| candidate run | DVC executed the candidate from available state | stable baseline, population, schema, or policy value |
-| experiment show | DVC recorded and can display experiment revisions and selected values | every row is eligible for one ranking |
-| experiment diff | DVC can expose selected revision differences | every difference belongs to candidate intent |
-
-Both controlled and population-drift candidates can have zero return codes. Only the
-population records establish whether the evaluated incident identities are unchanged.
-
-The precise surrounding claim is:
-
-> The baseline and candidate contain the same evaluation record IDs under the same
-> population contract.
-
-## Answer 5: Interpret the controlled tradeoff
-
-Calculations:
+The controlled baseline is:
 
 ```text
-recall delta:    1.0000 - 0.6000 = +0.4000
-precision delta: 0.8333 - 1.0000 = -0.1667
-F1 delta:        0.9091 - 0.7500 = +0.1591
-additional true escalations:  2
-additional false escalations: 1
+id: approved-incident-triage
+threshold: 0.65
+population: incident-review-v1
+record count: 8
+population digest: recorded in baseline metrics
+metric schema: classification-v1
+expected precision: 1.0
+expected recall: 0.6
+expected F1: 0.75
+allowed candidate change: decision.threshold
 ```
 
-The candidate exceeds the required recall gain of `0.15` and remains above minimum
-precision `0.60`.
+Bounded claim:
 
-Recall-oriented note:
+> For the identified eight records, fixed evaluator, recorded controls, and
+> `classification-v1`, threshold `0.65` produces the baseline confusion outcomes and
+> metrics.
 
-> Keep the candidate for promotion review because it recovers two previously missed
-> positive incidents while adding one false escalation, and it remains above the precision
-> safeguard.
+It does not claim a representative production sample, training-seed stability, or
+uncertainty beyond those eight fixed records.
 
-Zero-false-positive note:
+A changed cohort, evaluator meaning, or baseline contract requires new authority before
+ordinary candidate ranking.
 
-> Reject promotion under this policy because precision falls below `1.00` and one negative
-> incident is escalated, despite the recall gain.
+## Answer: Classify every changed surface
 
-The strongest audit decision is `KEEP_FOR_PROMOTION_REVIEW`. The audit can verify the
-stated safeguards; it cannot supply organizational authority.
+Representative rows:
 
-## Answer 6: Diagnose continuity failures
+| Case and field | Role | Allowed? | Reason |
+| --- | --- | --- | --- |
+| controlled `decision.threshold` | intervention | yes | matches intent |
+| controlled metrics and lock | consequences | yes | produced by intervention |
+| mixed review capacity | unrelated control | no | attribution exceeds intent |
+| population record set and digest | comparison control | no | measurement cohort changes |
+| metric schema | baseline boundary | no | result meaning changes |
 
-Model table:
+DVC visibility answers “was this state recorded?” Experiment scope answers “does this
+state belong in the causal question?” A visible mixed control remains disallowed.
 
-| Case | Friendly name | Deeper identity evidence | Change | Why ranking blocks |
-| --- | --- | --- | --- | --- |
-| population drift | `incident-review-v1` remains | record count and ID digest | ninth incident added | cohort differs |
-| metric schema drift | familiar metric keys remain | `metric_schema` | `classification-v1` to `classification-v2` | meaning differs |
+## Answer: Bound DVC experiment receipts
 
-A stable label is only a claim. The record digest and schema identifier are evidence that
-the underlying comparison contract stayed continuous.
-
-Population drift needs an approved new cohort identity and baseline result. Schema drift
-needs a defined schema migration, interpretation guide, and new baseline metrics.
-
-## Answer 7: Design bounded repairs
-
-Model repair map:
-
-| Failure | Repair | New evidence |
+| Receipt | Observation supported | Claim not supported |
 | --- | --- | --- |
-| mixed controls | split threshold and capacity questions | separate intents and changed-path sets |
-| mutated baseline contract | restore the approved contract | contract matching recorded baseline |
-| population drift | establish a new population baseline | approved record identity and baseline metrics |
-| metric schema drift | establish a new metric baseline | schema definition and recomputed anchor |
-| missing intent | write intent before rerun | intent, allowed paths, target intervention |
+| candidate run | command returned successfully | candidate is comparable |
+| experiment show | recorded candidate state and metrics exist | population and metric meaning are continuous |
+| experiment diff | declared state differs from baseline | every difference was intended or allowed |
 
-Rerunning only proves the modified state can execute again. It does not restore the old
-population, metric meaning, or experiment question.
+Controlled threshold and population drift both execute. The first preserves population
+identity and schema; the second changes cohort membership. Command success therefore
+supports execution evidence for both and comparison evidence for neither without the
+contract checks.
 
-## Answer 8: Separate comparison from promotion
+## Answer: Decide the deterministic comparison
 
-Both controlled and unsafe-promotion cases pass:
+| Metric | Baseline | Candidate | Delta |
+| --- | ---: | ---: | ---: |
+| recall | 0.6000 | 1.0000 | +0.4000 |
+| precision | 1.0000 | 0.8333 | -0.1667 |
+| F1 | 0.7500 | 0.9091 | +0.1591 |
 
-- baseline contract match
-- candidate intent
-- allowed changed paths
-- intended threshold
-- population continuity
-- metric schema continuity
-- reproduction
-- tradeoff safeguards
-- unchanged baseline Git commit
+Two additional positive incidents are escalated and one negative incident becomes a
+false escalation. Recall gain exceeds `0.15`; precision remains above `0.60`.
 
-Only `promotion_decision_is_recorded` fails in the unsafe request.
+| Case | Execution | Comparison | Promotion |
+| --- | --- | --- | --- |
+| controlled threshold | pass | pass | keep for review |
+| population drift | pass | block | not reached |
+| unsafe promotion request | pass | pass | block |
 
-Model decision record:
+Decision: `KEEP_FOR_PROMOTION_REVIEW`.
+
+Limit: this fixed-cohort deterministic result does not establish generalization,
+stochastic stability, or authorization.
+
+## Answer: Design a replicate contract
+
+One defensible contract:
+
+```json
+{
+  "baseline": "approved-training-v4",
+  "intervention": {"fit.learning_rate": 0.03},
+  "preserved_controls": {
+    "data.split_id": "governed-split-v4",
+    "evaluate.metric_schema": "classification-v2"
+  },
+  "replicate_control": "fit.random_seed",
+  "replicate_values": [11, 23, 37, 41, 53],
+  "primary_metric": "f1",
+  "summary": "mean_paired_difference",
+  "minimum_practical_gain": 0.01,
+  "safeguards": ["precision policy passes in every replicate"],
+  "failed_run_rule": "retain failure and abstain until classified"
+}
+```
+
+Five cached reads repeat one artifact identity. Replicates require independently executed
+observations with recorded planned variation.
+
+## Answer: Reconstruct the replicate evidence
+
+| Seed | Paired F1 difference |
+| ---: | ---: |
+| 11 | +0.015 |
+| 23 | -0.003 |
+| 37 | +0.023 |
+| 41 | +0.007 |
+| 53 | +0.016 |
 
 ```text
-candidate: threshold 0.50 experiment
-baseline: approved-incident-triage
-decision: approve for governed adoption
-owner: incident policy maintainer
-observed tradeoff: recall +0.40; precision -0.1667
-comparison evidence: controlled-threshold finding and metric records
-reason: recall gain exceeds policy target and precision remains above safeguard
-resulting commit or rejection: record after clean apply and verification
+sum = 0.058
+mean paired difference = 0.058 / 5 = 0.0116
 ```
 
-`promotion-request.json` is insufficient because it contains desire without owner,
-reasoning, evidence, or resulting state.
+The mean exceeds the `0.010` practical threshold and all listed precision safeguards
+pass. Four of five differences are positive; seed 23 reverses direction.
 
-## Answer 9: Plan a safe apply
+Decision: retain the configuration for independent confirmation, assuming the replicate
+set was predeclared and complete. The evidence does not support “candidate always
+improves F1.”
 
-Model route:
+## Answer: Expose winner selection
 
-1. Before apply, capture `git status --short`, `git diff`, `dvc status`, and candidate
-   diff. Stop if unrelated changes exist.
-2. Apply the candidate, then repeat Git and DVC observations. Stop if changed paths exceed
-   the approved candidate.
-3. Reproduce and run verification. Stop if outputs, safeguards, or continuity evidence
-   differ from review.
-4. Commit only the verified state and attach the commit to the decision record.
+An acceptable ledger might contain:
 
-The new baseline record needs its governed commit, threshold, population identity and
-digest, metric schema, expected metrics, and decision authority.
+| Identity | Status | Comparable | Result category | Disposition |
+| --- | --- | --- | --- | --- |
+| lr-001 | planned | yes | below practical gain | discard |
+| lr-003 | planned | yes | nominated | confirm |
+| lr-010 | planned | yes | safeguard failure | reject |
+| lr-030 | planned | yes | dominated by lr-003 | discard |
+| depth-2 | exploratory | yes | unattractive | retain summary |
+| depth-4 | exploratory | yes | promising but weaker | retain summary |
+| depth-6 | exploratory | yes | latency safeguard failure | reject |
+| split-v5 | exploratory | no | population changed | block comparison |
+| schema-v3 | exploratory | no | metric meaning changed | block comparison |
+| mixed-policy | exploratory | no | mixed intervention | block comparison |
+| seed-best | exploratory | yes | lucky single run | do not nominate |
+| runtime-drift | exploratory | no | environment boundary changed | investigate |
 
-## Answer 10: Retain evidence by decision value
+Only reporting `lr-003` hides eleven other attempts and makes its result look
+preordained. Incomparable candidates remain outside ranking, while comparable non-winners
+remain part of the selection history.
 
-One defensible policy:
+## Answer: Design independent confirmation
 
-| Cases | Retention | Minimum evidence | Cleanup trigger |
-| --- | --- | --- | --- |
-| controlled, unsafe promotion | active until decision closes | baseline, candidate, receipts, decision | promotion or rejection recorded |
-| mixed, population, schema, mutated baseline | regression specimens | finding, minimal reproducer, enforcement test | replaced by stronger equivalent coverage |
-| missing intent | decision summary or regression specimen | failed check and repair rule | policy is enforced elsewhere |
+```text
+frozen candidate: learning_rate=0.03 with all other governed controls fixed
+selection evidence: five paired development runs
+confirmation authority: newly governed incident cohort
+population identity: recorded digest and approval
+primary metric: F1 paired against baseline
+practical rule: mean difference >= 0.010
+safeguards: precision and latency policies pass
+retuning rule: any control change creates a new candidate and confirmation claim
+accept: primary and safeguards pass with complete evidence
+reject: comparable evidence fails predeclared rule
+abstain: identity, replicate, or safeguard evidence missing
+```
 
-Another policy may retain every case as executable course proof. The invariant is that
-promotion lineage and regression enforcement must survive cleanup; bulky exploratory
-outputs need not.
+Changing the candidate after seeing confirmation consumes that confirmation boundary.
+The revised candidate returns to exploration and needs new independent evidence.
 
-## Self-check
+## Answer: Write the promotion decision
 
-If your answers consistently explain:
+A defensible scenario can promote only if a confirmation outcome is explicitly supplied.
+For example:
 
-- what baseline state anchors the comparison
-- what each candidate is trying to learn
-- what DVC experiment evidence can and cannot prove
-- which tradeoffs matter for selection
-- why promotion needs applying, inspecting, and committing a defensible state
-- where comparison stops before ranking
-- why promotion authority is separate from valid candidate evidence
+> `PROMOTE` the frozen `learning_rate=0.03` configuration from baseline
+> `approved-training-v4`, contingent on the scenario's stated independent confirmation.
+> Five predeclared paired development runs produced a mean F1 difference of `+0.0116`,
+> above the `0.010` practical threshold; four were positive, one was negative, and all
+> precision safeguards passed. The complete twelve-candidate search ledger is retained.
+> The governed confirmation cohort passed the unchanged rule and safeguards. Apply the
+> exact candidate to a clean workspace, verify declared outputs, record the resulting
+> commit as the new baseline, and retain the old baseline objects and tested rollback.
 
-then you are using Module 06 correctly.
+Without actual confirmation evidence, the correct decision is `ABSTAIN` or
+`KEEP_FOR_CONFIRMATION`, not promotion.
+
+The deterministic threshold audit remains a separate `KEEP_FOR_PROMOTION_REVIEW` result.
+Its evidence must not be cited as confirmation for the modeled training candidate.
+
+## Answer-review checklist
+
+Accept your packet only if it:
+
+- separates audit result from review decision;
+- states a finite baseline claim;
+- distinguishes visibility from allowed scope;
+- bounds DVC receipts;
+- preserves deterministic evidence limits;
+- treats seed as planned variation;
+- reports every replicate direction and failure;
+- preserves the full candidate search;
+- freezes the candidate before confirmation;
+- promotes an authorized configuration and state, not a metric maximum.
