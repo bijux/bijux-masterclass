@@ -25,250 +25,242 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-By this point in the course, you have usually become much better at repairing Makefiles.
-That is useful, but it creates a new risk:
+A tool boundary is an interface between owners. Saying "use a workflow engine" or "keep it
+in Make" is not a design until inputs, outputs, failure behavior, and proof are named.
 
-they start believing every problem should be solved inside Make if they are clever enough.
+## Classify the failed state before choosing a tool
 
-That is not discipline. That is overreach.
+| Failure class | Broken truth | First evidence | Likely owner |
+| --- | --- | --- | --- |
+| graph | file edge, freshness, or output ownership | trace, database entry, repeated build | Make |
+| environment contract | required runtime or semantic input | gate result, origin, manifest | Make contract plus supplying environment |
+| recipe execution | one external command cannot produce its declared output | command status, candidate residue, tool log | recipe tool |
+| long-lived orchestration | retries, approvals, remote state, or compensation outlive one process | state history and recovery drill | workflow or deployment system |
+| dependency resolution | version constraints and package graph need semantic solving | lock resolution explanation | package manager |
+| policy decision | a human or organization must authorize a transition | signed approval or policy evaluation | governance system or reviewer |
 
-Module 05 needs one final habit:
+Do not infer the class from where the error message appeared. A compiler can fail because
+Make supplied a stale generated header; that remains a graph defect. A Make recipe can
+fail because a deployment approval expired; that is not file freshness.
 
-> classify the failure first, then decide whether Make should repair it, isolate it, or
-> hand the job to another tool.
+```mermaid
+flowchart TD
+  incident["Observed failure"]
+  bytes["Is incorrect file truth sufficient to explain it?"]
+  graph["Repair Make graph"]
+  process["Can one bounded process own success and rollback?"]
+  recipe["Keep explicit recipe boundary"]
+  durable["Does state outlive the Make process or require human policy?"]
+  handoff["Define durable external owner and file handoff"]
 
-That keeps hardening work grounded in engineering rather than tool loyalty.
+  incident --> bytes
+  bytes -->|yes| graph
+  bytes -->|no| process
+  process -->|yes| recipe
+  process -->|no| durable --> handoff
+```
 
-## The sentence to keep
+## Use repair, contain, or hand off deliberately
 
-When a build problem appears, ask:
+There are three responses:
 
-> is this a graph-truth problem, an environment-contract problem, an orchestration problem,
-> or a sign that another tool should own this concern?
-
-That question makes failure analysis much clearer.
-
-## Not every failure belongs to the same category
-
-Build incidents usually fall into a few recurring categories:
-
-| Category | Typical symptom | Usual response |
+| Response | Meaning | Example |
 | --- | --- | --- |
-| graph truth | wrong rebuild decisions, hidden prerequisites, bad ownership | repair the Make graph |
-| environment contract | machine drift, missing tools, shell variance | declare or tighten the contract |
-| orchestration boundary | recursion confusion, multi-stage coordination, unreadable ownership | clarify boundaries or split responsibilities |
-| tool-boundary mismatch | Make is being used to simulate a database, package manager, or workflow engine | hand the concern to a more suitable tool |
+| repair | Make's graph is the right model; correct it | add a missing generated-header prerequisite |
+| contain | external tool owns bounded work inside one recipe | compiler produces one candidate object |
+| hand off | another system owns durable semantics beyond one recipe | deployment system owns promotion and rollback |
 
-This classification matters because the same symptom can tempt people toward the wrong fix.
+Containment is common and healthy: Make has always orchestrated external programs. The
+boundary is crossed only when the external system owns state that cannot honestly be
+represented by the recipe's declared file transaction.
 
-## Graph problems should stay in Make
+## Test whether file identity is enough
+
+Make remains a strong owner when all of these are true:
 
-If the failure is:
+- inputs can be named as files or convergent semantic manifests
+- success produces a bounded, inspectable output set
+- freshness explains when work is needed
+- interruption can be recovered through file state
+- one invocation can report success or failure without hidden durable state
+
+Consider moving ownership when several of these are true:
+
+- work waits hours or days for external events
+- retries and backoff must survive process termination
+- human approval changes authorization, not artifact freshness
+- rollback or compensation is a first-class operation
+- remote state is authoritative and cannot be reconstructed from repository artifacts
+- dynamic branching depends on runtime records rather than a declared target set
 
-- missing prerequisites
-- multi-writer outputs
-- non-convergent generated files
-- incorrect rebuild behavior
+A stamp cannot turn long-lived remote state into local file truth merely by recording
+"done."
+
+## Define the handoff contract before migration
+
+Every external owner needs a reviewable interface:
+
+| Contract field | Question |
+| --- | --- |
+| input identity | which immutable files, digests, schemas, and policy values cross? |
+| invocation | which command or API begins work, and is it safe to retry? |
+| success output | which receipt or artifact proves completion? |
+| failure output | where are structured diagnostics and partial-state identity recorded? |
+| atomicity | when is the result visible, and can consumers observe a partial result? |
+| ownership | which system is allowed to write each path or remote object? |
+| recovery | who retries, rolls back, or resumes after interruption? |
+| versioning | how does either side reject an incompatible interface? |
+| proof | which existing assertions remain, and what new assertion covers the handoff? |
+
+If the proposed design says only "Make calls the new tool," ownership is still blurred.
+
+## Worked boundary: dependency resolution
+
+Weak design:
+
+```make
+deps:
+	@for package in $(PACKAGES); do \
+	  curl -O "https://example.invalid/$$package-latest.tar.gz"; \
+	done
+```
+
+This recipe hides version choice, integrity, network failure, and cache identity.
+
+A package manager should own semantic resolution and emit a lock file. Make can own
+materialization from that governed result:
+
+```make
+LOCK := dependencies.lock
+DEPS_MANIFEST := build/dependencies.manifest
 
-then Make is still the right place to repair it.
+$(DEPS_MANIFEST): $(LOCK) | build/
+	@set -eu; \
+	candidate="$@.candidate.$$$$"; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	package-tool materialize --locked --manifest "$$candidate"; \
+	test -s "$$candidate"; \
+	mv "$$candidate" "$@"
+
+app: $(DEPS_MANIFEST) $(OBJECTS)
+	$(LINK.o) $(OBJECTS) -o $@
+```
 
-Those are core graph semantics. Leaving them vague and hoping another layer will "handle
-it" usually makes the system less legible.
+The durable interface is the lock plus materialization manifest. The package tool owns
+constraint solving and integrity. Make owns the edge from resolved dependencies to the
+artifact.
 
-## Contract problems should become explicit boundaries
+The package tool's offline and cache behavior is still part of the support contract. The
+example shows ownership; it does not prescribe one package manager.
 
-If the failure is:
+## Worked boundary: release promotion
 
-- Bash-specific syntax under `/bin/sh`
-- unsupported Make version
-- tool differences across machines
-- undocumented environment flags
+Make can assemble and verify an immutable release bundle:
 
-then the repair is usually not a fancy new macro. The repair is an explicit contract:
+```make
+release-bundle: app SBOM.json checksums.txt
+	tools/publish-bundle-candidate $@ app SBOM.json checksums.txt
+```
 
-- minimum version
-- required shell
-- required tools
-- clearly named fallbacks
+Promotion across environments involves durable remote state, authorization, retries, and
+rollback. Give that to a deployment system. The handoff can be:
 
-That is why Module 05 connects portability and hermeticity. Environment drift is not a
-mystical category. It is often just an undeclared contract.
-
-## Orchestration problems need ownership decisions
-
-Sometimes the issue is not one rule. It is the way several build stages are coordinated.
-
-Examples:
-
-- recursive sub-builds with overlapping responsibilities
-- one top-level target trying to drive code generation, packaging, deployment, and audits
-- mixed toolchains where nobody knows which tool owns which artifact
-
-Make can still help here, but the fix is usually architectural:
-
-- separate public targets from internal helpers
-- define which artifacts cross boundaries
-- stop pretending one recipe owns an entire workflow that spans several domains
-
-This is where clearer ownership beats more syntax.
-
-## When Make is the wrong owner
-
-Make is excellent at:
-
-- file-oriented dependency graphs
-- incremental rebuild decisions
-- orchestration of external tools
-- build-time proof and repeatability checks
-
-Make is much less well-suited to becoming:
-
-- a package solver
-- a deployment control plane
-- a long-running workflow scheduler with rich state
-- a system for deeply semantic data-pipeline lineage
-
-This does not mean Make must disappear. It may still remain the entrypoint or orchestrator.
-But it should stop pretending to own concerns that another tool models more honestly.
-
-## A practical migration question
-
-Instead of asking "should we migrate off Make?", ask:
-
-> which concern is Make modeling poorly right now, and what tool would model that concern
-> better without erasing the proof harness we already trust?
-
-That is a much better question because it keeps the migration scoped and technical.
-
-Maybe the answer is:
-
-- keep Make as the top-level orchestrator
-- move package resolution to a package manager
-- move workflow scheduling to a workflow engine
-- keep verification and artifact assembly in Make
-
-That is often a healthier result than a total rewrite motivated by frustration.
-
-## A small rubric for tool boundaries
-
-Use these questions:
-
-1. is the concern fundamentally file-and-artifact oriented
-2. does incremental rebuild logic still explain most of the value
-3. can the state be represented as honest files, stamps, or manifests
-4. is Make becoming a poor imitation of a richer state machine
-5. would another tool improve clarity without hiding the existing proof loop
-
-If the first three are mostly yes, Make is probably still a good fit.
-
-If the last two are strongly yes, you may have hit a tool boundary.
-
-## A concrete example: package management
-
-Suppose the build is trying to:
-
-- discover dependencies
-- choose compatible versions
-- download archives
-- cache and invalidate them by semantic version rules
-
-You can script that in Make. The deeper question is whether you should.
-
-At that point Make may be simulating a package manager badly. A healthier design might be:
-
-- the package manager resolves and materializes dependencies
-- Make consumes the resulting files and builds from there
-
-That keeps Make on the side of artifact orchestration rather than dependency solving.
-
-## Another example: workflow scheduling
-
-Imagine a repository using Make to track:
-
-- many long-running stages
-- retries and checkpoints
-- dynamic branch decisions
-- rich metadata about previous executions
-
-Again, Make can coordinate some of this, but there is a point where it becomes a poor
-substitute for a workflow engine.
-
-The lesson is not "never do multi-stage work in Make." The lesson is:
-
-if the central problem is stateful workflow orchestration rather than file rebuild truth,
-another tool may deserve ownership.
-
-## Anti-patterns worth naming
-
-### Tool chauvinism
-
-Using Make for every concern because the team already knows Make.
-
-### Rewrite by frustration
-
-Throwing away a working proof harness because the team is tired of one poorly-bounded
-subsystem.
-
-### Hidden handoff
-
-Another tool is already the real owner of a concern, but the Makefile still pretends the
-logic lives here.
-
-### Boundary blur
-
-No one can say which tool owns generation, packaging, verification, or release metadata.
-
-These anti-patterns waste a lot of time because they turn engineering decisions into vague
-culture arguments.
-
-## Failure signatures worth recognizing
-
-### "The Makefile keeps growing new state concepts"
-
-That may mean Make is being pushed into workflow or coordination domains it does not model
-well.
-
-### "We want a full migration, but we cannot explain what exactly Make is bad at"
-
-That usually means the real problem has not been classified yet.
-
-### "Another tool already produces the decisive outputs, but Make duplicates the logic"
-
-That is a boundary blur problem.
-
-### "The team keeps adding wrappers instead of clarifying ownership"
-
-That often signals orchestration confusion rather than raw tool deficiency.
-
-## A good migration habit
-
-If you decide another tool should own part of the system, keep three things explicit:
-
-1. what concern is moving
-2. what Make still owns afterward
-3. what proof route continues to validate the combined system
-
-This prevents migration from becoming a story about novelty instead of clarity.
-
-## What to practice from this page
-
-Take one awkward part of an existing build and classify it:
-
-1. graph truth problem, contract problem, orchestration problem, or tool-boundary mismatch
-2. what evidence supports that classification
-3. whether Make should repair it directly
-4. whether Make should stay as orchestrator while another tool owns the concern
-5. what proof route must survive the decision
-
-If you can answer those cleanly, you are making an engineering decision instead of a
-fashion decision.
+```text
+Make output:
+  bundle digest
+  checksum manifest
+  software bill of materials
+  verification report
+
+Deployment input:
+  immutable bundle digest
+  target environment
+  policy reference
+
+Deployment output:
+  signed promotion receipt
+  resulting remote revision
+  failure or rollback record
+```
+
+Make may offer a convenience target that submits the digest. It must not write a local
+`deployed.stamp` and treat that as authoritative proof of remote state.
+
+## Preserve proof while changing ownership
+
+Use a bounded migration route:
+
+1. freeze the current input/output and failure observations
+2. write the proposed handoff contract
+3. run the external implementation in a non-publishing comparison mode
+4. compare artifacts or receipts under accepted and rejected cases
+5. switch one public owner
+6. remove the former writer so dual ownership cannot persist
+7. retain the comparison as a regression proof
+
+Never run two deployment or publication owners in parallel merely to compare them. Shadow
+comparison is appropriate only when the operation is read-only or writes to isolated
+evidence destinations.
+
+```mermaid
+flowchart LR
+  make["Make-owned verified bundle"]
+  interface["Versioned digest handoff"]
+  external["External durable-state owner"]
+  receipt["Signed result receipt"]
+  review["Combined proof route"]
+
+  make --> interface --> external --> receipt --> review
+  make --> review
+```
+
+## Failure injection makes ownership visible
+
+Test the boundary at four points:
+
+| Injected failure | Expected owner response |
+| --- | --- |
+| invalid or missing input manifest | Make rejects before handoff |
+| external tool rejects compatible-looking input | external owner returns structured failure; no success receipt |
+| process interrupted after submission | external owner exposes durable status and idempotent resume/query |
+| receipt schema unsupported by Make-side verifier | verifier rejects; artifact remains distinct from promotion state |
+
+If both sides retry independently, or both can publish the same output, the interface has
+not assigned ownership.
+
+## Decision record
+
+Before moving a concern, write:
+
+- the failure class and evidence
+- why file freshness is or is not sufficient
+- current and proposed owner
+- input, success, and failure artifacts
+- retry and recovery owner
+- version compatibility rule
+- acceptance and rejection proofs
+- former writer that will be removed
+
+This turns a tool preference into a reviewable engineering decision.
+
+## Practice before moving on
+
+Choose one awkward build concern. Produce two competing designs:
+
+1. a Make-owned repair using honest file or manifest state
+2. an external-owner handoff with the full interface table
+
+Inject one failure before, during, and after the boundary. Decide using the resulting
+ownership and recovery evidence, not which configuration syntax you prefer.
 
 ## End-of-page checkpoint
 
-Before leaving this lesson, make sure you can explain:
+Before leaving, make sure you can explain:
 
-- why failure classification comes before repair or migration
-- which problems clearly belong inside Make
-- which problems should become explicit environment or orchestration contracts
-- when another tool may deserve ownership of a concern
-- why migrations should preserve proof instead of replacing one kind of confusion with another
+- why the location of an error message does not identify the failure class
+- how repair, containment, and handoff differ
+- which long-lived state signals that file freshness is no longer sufficient
+- every field required in a durable handoff contract
+- why a local stamp cannot prove remote deployment state
+- how to compare implementations without creating two publication owners
+- which failure injections reveal retry and recovery ownership
