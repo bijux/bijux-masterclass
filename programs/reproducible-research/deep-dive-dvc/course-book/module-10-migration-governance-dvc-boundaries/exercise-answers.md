@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Migration Governance Dvc Boundaries"]
+  section["Migration Governance DVC Boundaries"]
   page["Exercise Answers"]
   capstone["Capstone evidence"]
 
@@ -18,207 +17,293 @@ graph LR
 
 ```mermaid
 flowchart LR
-  evidence["start from evidence surfaces"] --> migrate["move one boundary with proof"]
-  migrate --> govern["write small enforceable rules"]
-  govern --> intervene["repair shortcuts before they harden"]
-  intervene --> own["keep DVC inside its rightful boundary"]
+  evidence["cite evidence"] --> inference["state supported inference"]
+  inference --> limit["name proof limit"]
+  limit --> decision["make decision"]
+  decision --> closure["define closure evidence"]
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These are reasoning models, not unique wording. A strong answer may use
+different evidence if it preserves the same contract and states its proof
+limits.
 
-## How to use the answer page well
+Compare in this order:
 
-Do not read the model answer first and then collapse the module into "DVC is good for
-data pipelines."
+1. Did you cite direct evidence?
+2. Does your conclusion stay inside what that evidence proves?
+3. Did you name the affected decision?
+4. Is the repair smaller than an unrelated redesign?
+5. Can another maintainer tell when the finding is closed?
 
-A better rhythm is:
+## Answer: Inventory the repository trust claims
 
-1. finish the exercise with your own stewardship packet
-2. name the contract, evidence surface, and boundary under review
-3. compare your reasoning with the model answer
-4. revise anywhere your answer hides risk behind broad governance language or fuzzy tool
-   ownership
+A compact model:
 
-What matters is whether the reasoning makes evidence, risk, repair, and ownership clear.
+| Claim | Direct evidence | Falsifying route | Result | Proof limit |
+|---|---|---|---|---|
+| declarations identify current computation | `dvc.yaml`, `dvc.lock`, stage code | stage contract audit changes declared and hidden influences | verified for modeled cases | cannot prove every runtime influence absent |
+| promoted inventory is complete | `publish/v1/manifest.json`, verifier | remove a manifest-listed file and verify | verified for current publish contract | does not approve business use |
+| complete target matches source | `complete-cutover/assessment.json` inventories | delete target `report.md` | verified in control | does not prove target availability |
+| consumer can use target | decision receipt and consumer check | remove retrieval receipt | verified in control | specimen does not use a production identity provider |
+| protected revisions recover | recovery readiness report | current-only and release-only remote cases | verified for named specimen revisions | does not prove future retention |
+| responsibilities have authority | migration decision owner map | remove or swap one responsibility | verified in control | does not prove organization directory membership |
 
-Strong Module 10 answers usually do five things:
+The important distinction is result language. `PARTIAL_COPY` contradicts target
+identity. A production registry service objective remains out of scope. An
+unattempted real production retrieval would be unverified, not contradicted.
 
-- they start from evidence surfaces instead of impressions
-- they move one boundary at a time with rollback
-- they write rules that protect named contracts
-- they repair shortcuts before they become norms
-- they keep DVC responsible for artifact lineage rather than every operational concern
+An answer that says “verified because the file exists” is weak. The
+falsification route should manipulate or challenge the claim.
 
-The strongest self-study packets also leave behind six concrete artifacts:
+## Answer: Write a contract finding from the partial copy
 
-- one evidence-first review outline
-- one migration plan
-- one governance rule
-- one anti-pattern intervention
-- one boundary-ownership table
-- one stewardship handoff review
+Model finding:
 
-If your answers rely only on "the maintainers know how it works," the reasoning is still
-too thin.
+> The migration claims to change only consumer location while preserving the
+> promoted inventory. In
+> `workspace/partial-copy/assessment.json`, source inventory includes
+> `report.md` and target inventory does not; the audit records only
+> `target_matches_source` as false. The target therefore cannot represent the
+> approved seven-file release. Block cutover and keep the source available.
+> Repeat the copy, target verification, digest comparison, and
+> consumer-equivalent retrieval. Close the finding when the assessment shows
+> equal inventories and all required checks pass. This evidence does not show
+> whether the loss arose from selection, transfer, or registry reliability.
 
-## Answer 1: Review a repository by evidence
+Adding `report.md` is necessary but not by itself sufficient. The repaired
+target also needs:
 
-Strong outline:
+- matching digest;
+- target release verification;
+- consumer retrieval;
+- retained rollback;
+- correct owners and current exception state.
 
-- identity and state layers
-  - inspect `.dvc` files, `dvc.lock`, or a state summary route
-  - catch confusion between workspace files, tracked identity, and durable state
-- pipeline and experiment truth
-  - inspect `dvc.yaml`, `params.yaml`, and experiment review records
-  - catch hidden reads, coarse stage boundaries, or uninterpretable candidates
-- metrics, promotion, and release surfaces
-  - inspect `metrics/`, `publish/v1/`, manifests, and release audit output
-  - catch meaning drift or unsupported consumer surfaces
-- remote, retention, and recovery
-  - inspect remote config, retention documentation, and recovery review output
-  - catch unrecoverable promised state or unsafe cleanup assumptions
-- tool-boundary recommendations
-  - inspect deployment or registry handoff points
-  - catch concerns DVC is being asked to own beyond artifact lineage
+The answer is bounded because it does not diagnose an unobserved root cause.
 
-The main lesson is that final review begins from proof surfaces, not from general
-confidence.
+## Answer: Review the migration change budget
 
-## Answer 2: Plan one safe migration
+The contract should yield:
 
-Strong plan:
+| Surface | Record |
+|---|---|
+| source | `publish/v1` |
+| target | `incident-escalation/2026-07` |
+| permitted change | consumer location |
+| preserved | inventory, bytes, release meaning, provenance |
+| before | source manifest and verification |
+| after | target manifest and verification |
+| acceptance | consumer retrieval receipt |
+| rollback | retained source and ready route |
+| owners | DVC lineage, registry lifecycle, CI verification, release decision |
+| exception | owner, reason, expiry, removal condition |
 
-1. Inventory the existing `publish/v1/` manifest, params, metrics, review note, and
-   promoted artifacts.
-2. Copy the supported bundle to `registry/incident-escalation/v1/`.
-3. Keep `publish/v1/` alive temporarily as the rollback boundary.
-4. Run release audit and recovery review against the new boundary.
-5. Update consumer documentation to name the registry entry.
-6. Cut over only after consumer verification succeeds.
-7. Retire the old boundary only after rollback is no longer needed.
+`UNBOUNDED_CHANGE` blocks because `metric-schema` changes interpretation rather
+than location. Combining it with the registry move prevents independent
+verification and rollback.
 
-What must stay unchanged during the move:
+A separate semantic contract could say:
 
-- the promoted artifact identities and the evidence that justifies them
+> Introduce metric contract `evaluation-v2`, changing field names and
+> population description while retaining `evaluation-v1` for a compatibility
+> window. Recompute baseline and candidate under `evaluation-v2`; prohibit
+> numeric deltas across versions; require consumer acceptance before retiring
+> `evaluation-v1`.
 
-## Answer 3: Write a governance rule
+That decision can fail without reversing the registry location.
 
-Strong rule:
+## Answer: Prove consumer acceptance and rollback readiness
 
-> Any change to `params.yaml`, `dvc.lock`, or `publish/` must include a review note naming
-> the state contract being changed and must pass the relevant verification route before
-> merge.
+Model consumer contract:
 
-Contract protected:
+```text
+reference: incident-escalation/2026-07
+identity: manifest digest equals approved source
+access: consumer-equivalent credential class
+operation: retrieve manifest, verify files, load threshold and predictions
+receipt: command identity, status, resolved digest, useful-operation result
+```
 
-- parameter and metric comparability
-- lock evidence consistency
-- promoted release auditability
+Model rollback contract:
 
-Why a vaguer rule would be worse:
+```text
+trigger: target retrieval or verification fails
+authority: release owner
+retained source: publish/v1 remains readable
+route: restore durable consumer reference to source
+objective: complete within declared duration
+validation: consumer operation passes against restored source
+window: retained through named date or duration
+retirement: separately approved after window
+```
 
-- broad instructions like "review carefully" are harder to enforce and easier to ignore
+Equal inventories can coexist with failed consumer acceptance because
+producer-side access may not match consumer authorization, durable reference,
+schema support, or retrieval path.
 
-## Answer 4: Intervene on an anti-pattern
+“We can switch back” omits retained state, authority, measured route, and
+validation. It is an intention, not readiness evidence.
 
-Strong intervention:
+## Answer: Build a proportional governance register
 
-> `outputs/latest/` is a moving internal convenience path, not a durable consumer
-> contract. Please publish a versioned boundary such as `publish/v1/` or a registry entry
-> with a manifest, promoted params, promoted metrics, and a review note. Consumers should
-> depend only on that versioned boundary, not on an internal mutable path.
+One defensible register:
 
-What evidence must travel with the repair:
+| Trigger | Contract | Evidence route | Block condition | Authority | Receipt |
+|---|---|---|---|---|---|
+| stage dependency or code | truthful invalidation | stage contract audit | hidden result influence | pipeline maintainer | audit report |
+| behavior parameter | reproducible control | rerun and parameter/metric evidence | value absent from record | pipeline maintainer | run receipt |
+| metric semantics | comparability | metric contract audit | population or definition differs | evaluation owner | comparison report |
+| promotion request | immutable candidate | promotion integrity audit | identity, provenance, verification, or approval fails | release owner | decision |
+| publish bundle | consumer contract | release verifier | inventory or digest mismatch | release owner | verification |
+| remote migration | protected history | recovery readiness audit | any protected revision fails | storage owner | recovery report |
+| location cutover | preserved boundary | boundary migration audit | any cutover premise fails | release owner | cutover decision |
+| deletion | retention and recovery | reachability report, dry run, recovery test | protected state at risk | storage owner | deletion approval |
 
-- manifest, promoted params, promoted metrics, provenance, and the review rationale
+Risk classes rise from reproducibility and comparison through consumer and
+protected-history consequences. A docs typo does not touch these triggers.
 
-## Answer 5: Decide tool ownership
+A filename-only rule misses shared code, environment, credential, or policy
+changes that affect the same contract.
 
-Strong ownership split:
+## Answer: Evaluate an expired exception
 
-- DVC should own artifact lineage, data identity, pipeline evidence, params, metrics, and
-  recovery for tracked outputs
-- a registry should own model lifecycle and consumer-facing version contracts
-- a deployment or approval platform should own rollout and deployment approval
-- monitoring or operational tooling should own alerting
+The stale specimen's exception has an owner, reason, removal condition, and
+expiry of `2025-12-31`. The audit evaluates it on `2026-07-28`, so it is not
+current.
 
-DVC can supply evidence to those layers, but it should not be stretched into replacing
-them.
+Decision:
 
-## Answer 6: Audit a repository against current truth
+> Keep cutover blocked. Do not extend the date in place. If consumer retrieval
+> is now available, run it and remove the exception. If it remains unavailable,
+> issue a fresh exception decision that explains why, narrows the permitted
+> action, keeps the source authoritative, and sets a new expiry and removal
+> condition.
 
-A mature audit compares:
+Expiry forces reconsideration at a known time. Removal condition identifies
+the observable fact that ends the exception. Evidence of a clean
+consumer-equivalent retrieval would satisfy this specimen's removal condition.
 
-- documentation promises
-- `dvc.yaml` declarations
-- `dvc.lock` recorded state
-- remote configuration
-- CI verification routes
-- release bundles
+Silently changing the date destroys the record of whether anyone reevaluated
+the risk.
 
-Every promise without executable or recoverable evidence becomes a concrete finding with a
-named consequence. Maintainer memory can guide the search, but it cannot close the gap.
+## Answer: Intervene on a mutable release shortcut
 
-## Answer 7: Migrate one artifact family safely
+Model intervention:
 
-The migration should include:
+> `latest/model.json` is a mutable path, so deployment cannot reconstruct which
+> reviewed bytes it used after another promotion. This breaks the immutable
+> release identity contract. Publish the candidate under an immutable registry
+> reference bound to the Git revision, DVC artifact identity, promoted manifest
+> digest, and release decision. Keep `latest` only as a convenience pointer and
+> record its resolved immutable identity at deployment. Close the finding by
+> resolving the immutable reference before and after a later promotion and
+> showing that it retains the approved manifest digest. This finding does not
+> evaluate deployment health or registry availability.
 
-- explicit inventory of the governed artifact family
-- identity comparison across old and new boundaries
-- validation of both recovery routes during the migration window
-- a named rollback condition if verification fails
+The identity chain is:
 
-The old path may be retired only after the new boundary proves recovery, auditability, and
-consumer continuity.
+```text
+Git revision
+-> DVC recorded content
+-> verified publish manifest
+-> immutable registry release
+-> consumer retrieval receipt
+```
 
-## Answer 8: Write an exception with an expiry
+Each arrow needs a receipt that preserves the preceding identity.
 
-A healthy exception is:
+## Answer: Assign cross-system ownership
 
-- narrow
-- reviewable
-- owned by a named person or role
-- backed by compensating evidence
-- bounded by a measurable expiry condition
+Model map:
 
-The overdue-exception check must be visible in CI or review workflow. Hidden prose in a
-ticket is not enough to prevent a temporary departure from hardening into policy.
+| Fact or decision | Evidence producer | Authority | Handoff receipt | Failure owner |
+|---|---|---|---|---|
+| source revision | Git | Git repository | revision in manifest | repository maintainer |
+| artifact lineage | DVC | DVC metadata | content identity | pipeline maintainer |
+| shared verification | CI | CI policy | check result with revision | CI owner |
+| release lifecycle | registry | registry | immutable release record | release owner |
+| access entitlement | identity platform | identity policy | access decision | security owner |
+| rollout | deployment platform | service policy | deployed release identity | service owner |
+| incident response | incident system | incident policy | incident record | incident commander |
+| cutover | decision record | release owner | cutover decision | release owner |
+| deletion | storage policy | storage owner | approved inventory and result | storage owner |
 
-## Answer 9: Decide whether DVC should keep ownership
+DVC is authoritative for tracked artifact lineage. The registry is
+authoritative for consumer release lifecycle. The overreach specimen fails
+because those responsibilities are swapped, even though every field contains a
+value.
 
-Choose by contract and capability:
+Correct ownership follows observable evidence and enforcement authority, not
+which tool is already familiar.
 
-- DVC may own tracked artifact lineage and references
-- DVC may reference external identities or commands
-- DVC must not own concerns like secrets, scheduler policy, consumer registry lifecycle,
-  or full environment solving merely because those concerns touch the pipeline
+## Answer: Decide whether cutover is approved
 
-The question is not "can DVC be used here?" but "should this contract belong to DVC at
-all?"
+Decision: `BLOCK_CUTOVER`.
 
-## Answer 10: Conduct a stewardship review
+| Premise | Result |
+|---|---|
+| target identity matches | pass |
+| only declared boundary changes | pass |
+| before and after proofs pass | pass |
+| consumer acceptance passes | pass |
+| rollback is exercised and ready | **unverified** |
+| responsibilities are correct | pass |
+| exception policy is current | pass |
 
-Success means the incoming maintainer can:
+The decisive gap is rollback. Strong target evidence cannot prove restoration
+behavior. Keep the source active, exercise the declared rollback through the
+real consumer path, measure it against the objective, and attach the receipt.
 
-- recover promised state
-- reproduce one governed result
-- compare runs or releases correctly
-- explain the promotion boundary
-- follow the incident route
-- make one safe bounded change
+The observation that changes the decision is a passing rollback receipt with:
 
-Every unexplained credential path, retention rule, authority decision, or rollback step
-becomes a concrete governance repair.
+- retained source identity;
+- authorized trigger route;
+- measured duration;
+- consumer validation after restoration.
 
-## Self-check
+Even then, `APPROVE_CUTOVER` authorizes switching consumers. It does not
+authorize source deletion. Source retirement follows the rollback window and
+its own retention decision.
 
-If your answers consistently explain:
+## Answer: Conduct an independent stewardship handoff
 
-- which evidence proves the current state
-- how migration preserves or changes a boundary
-- which governance rule protects which contract
-- how to repair shortcuts before they become normal
-- where DVC authority ends
+A useful route:
 
-then you are using Module 10 correctly.
+| Need | Entry | Expected evidence | Proof limit | Failure owner |
+|---|---|---|---|---|
+| declarations | `dvc.yaml`, `dvc.lock`, `params.yaml` | stage and recorded state | hidden influences need tests | pipeline maintainer |
+| reproduction | `make ... capstone-repro` or capstone `make repro` | materialized outputs | current run only | pipeline maintainer |
+| release | publish contract and verifier | manifest-bound promoted files | not business approval alone | release owner |
+| experiment | comparability audit | semantic and bounded comparison | not promotion | evaluation owner |
+| recovery | recovery readiness audit | protected revision restores | named revisions/date only | storage owner |
+| migration | boundary migration audit | invariant, consumer, rollback, owner checks | modeled target, not service load | release owner |
+| authority | ownership map | one authority per fact | people mapping may live externally | repository owner |
+| finding closure | failed assessment and test | repeated falsifying route passes | only named contract | finding owner |
+
+Answers to the handoff questions:
+
+1. DVC identifies tracked artifact bytes; the promoted manifest and immutable
+   registry record carry that identity to consumers.
+2. Source retirement needs target acceptance, elapsed rollback window,
+   protected-history recovery, retention authorization, and a separate owner
+   decision.
+3. The capstone does not verify real production availability, organization-wide
+   access policy, or runtime deployment health.
+
+Any route ending with “ask the original maintainer” identifies missing durable
+evidence. Replace the private explanation with a contract, receipt, owner, or
+explicit out-of-scope boundary.
+
+## Final self-check
+
+Your answer packet is stronger than these models if it:
+
+- cites the actual evidence generated in your run;
+- distinguishes false, missing, and out-of-scope claims;
+- records the exact observation behind every block;
+- gives a repair route and closure condition;
+- keeps cutover, source retirement, promotion, and deployment separate;
+- assigns authority to systems that can observe and enforce the decision.
+
+If your wording differs but those properties hold, preserve your own reasoning.
