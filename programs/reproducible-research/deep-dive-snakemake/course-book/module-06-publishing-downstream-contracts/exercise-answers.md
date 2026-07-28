@@ -1,258 +1,342 @@
 # Exercise Answers
 
-These answers are model explanations, not the only acceptable wording.
+These reference answers emphasize decision evidence. Different implementations are valid
+when they preserve the same audience, boundary, integrity, semantic, and migration
+contracts.
+
+Compare your prediction before copying any implementation detail.
+
+## Exercise 1: Classify an output tree by audience and promise
+
+Reference classification:
+
+| Artifact | Role | Publish? | Consumer or reason |
+| --- | --- | --- | --- |
+| discovery JSON | review evidence and membership authority | yes | downstream scope and release review |
+| raw QC JSON | internal/review evidence | not by default | detailed diagnosis, unstable public need |
+| trimmed FASTQ | execution state | no | analytical intermediate |
+| screen JSON | internal result | no by default | projected into supported summary |
+| summary JSON | public machine contract | yes | programmatic exact values |
+| summary TSV | public interchange contract | yes | table consumers |
+| trim log | diagnostics | no | unstable human troubleshooting |
+| benchmark | diagnostics | no | performance analysis |
+| HTML report | public human contract | yes | interpretation and navigation |
+
+An allowlist might be:
+
+```text
+discovered_samples.json
+summary.json
+summary.tsv
+report/index.html
+provenance.json
+```
+
+`manifest.json` inventories that content boundary but normally does not include its own
+digest. The public choice is justified by supported consumers, not file usefulness.
+
+## Exercise 2: Write an executable v1 consumer contract
+
+Reference fixture:
+
+```json
+{
+  "publish_version": "v1",
+  "required_paths": ["summary.json"],
+  "artifact_path": "summary.json",
+  "artifact_schema_version": 1,
+  "required_fields": {
+    "sample_id": "string",
+    "reads_count": "integer"
+  },
+  "optional_fields": {
+    "qc_status": "string"
+  },
+  "allow_additional_fields": true,
+  "field_semantics": {
+    "reads_count": {
+      "definition": "number of sequencing reads",
+      "unit": "reads"
+    }
+  },
+  "missing_value_policy": "required fields may not be absent or null",
+  "record_order": "not semantically significant"
+}
+```
+
+The verifier should run checks in a diagnosable order:
+
+```mermaid
+flowchart LR
+  manifest["Manifest present"] --> version["Publish version"]
+  version --> paths["Required paths"]
+  paths --> hashes["Digests"]
+  hashes --> schema["Artifact schema"]
+  schema --> fields["Required fields and types"]
+  fields --> meaning["Definitions and units"]
+```
+
+Stopping at the first error is acceptable for a CLI, but a structured report should retain
+enough failures for migration review. Reject Boolean values where an integer is required;
+Python’s `bool` is a subclass of `int`.
+
+## Exercise 3: Assemble and inventory an isolated candidate
+
+Reference route:
+
+1. create a new candidate directory;
+2. copy or render only allowlisted artifacts;
+3. parse each artifact;
+4. compare accepted and published identities;
+5. compare JSON, TSV, and HTML values;
+6. run v1 consumer;
+7. sort relative paths;
+8. calculate exact-byte digests;
+9. write manifest;
+10. reverify manifest;
+11. promote only after all checks pass.
+
+Manifest shape:
+
+```json
+{
+  "schema_version": 1,
+  "publish_version": "v1",
+  "files": [
+    {"path": "discovered_samples.json", "sha256": "..."},
+    {"path": "provenance.json", "sha256": "..."},
+    {"path": "report/index.html", "sha256": "..."},
+    {"path": "summary.json", "sha256": "..."},
+    {"path": "summary.tsv", "sha256": "..."}
+  ]
+}
+```
 
-What matters is whether the reasoning protects downstream trust.
+Absolute paths make a bundle host-specific. Unsorted or duplicate paths make comparison
+ambiguous. A glob-based inventory can absorb stale files. The outer packet manifest is
+the suitable place to inventory `manifest.json` plus review receipts.
 
-## How to use the answer page well
+## Exercise 4: Test additive compatibility against open and closed consumers
 
-Do not read a model answer before you have tried the exercise yourself.
+Expected:
 
-A stronger rhythm is:
+| Consumer | Policy | Result |
+| --- | --- | --- |
+| open v1 | additional fields allowed | accept |
+| closed v1 | only required and declared optional fields allowed | reject `qc_status` if undeclared |
 
-1. complete the exercise with your own tree, manifest, consumer, or review note
-2. write one plain-language explanation of the contract you are defending
-3. compare that explanation with the model answer
-4. revise where the model answer reveals missing artifact roles, weak evidence, or a
-   downstream assumption you did not notice
+The producer candidate is identical in both evaluations. Compatibility differs because
+consumer tolerance differs.
 
-The target is not identical wording. The target is durable downstream reasoning.
+A valid release statement:
 
-The strongest self-study packets also leave behind six concrete artifacts:
+> The added `qc_status` field is compatible with the declared open v1 fixture. The closed
+> fixture rejects it, so release coordination or contract change is required for that
+> consumer.
 
-- one artifact-role table
-- one public-tree sketch
-- one manifest verification transcript
-- one consumer test transcript
-- one compatibility note
-- one downstream-review note
-- one note naming when reviewed discovery evidence belongs in the public contract
+An invalid statement:
 
-If your answers rely only on the fact that files now sit under `publish/`, the reasoning
-is still too thin.
+> Adding fields is backward compatible.
 
-## Exercise 1: Classify the current outputs
+The latter hides consumer assumptions.
 
-What should remain internal:
+## Exercise 5: Detect semantic drift that preserves shape
 
-- `results/sample-a/qc.json`
-- `results/sample-a/trim.json`
-- `results/sample-b/qc.json`
-- `logs/summarize.log`
+Expected layer results:
 
-Why:
+```text
+JSON parsing: pass
+artifact schema_version: pass
+reads_count integer type: pass
+manifest digest: pass
+reads_count semantic definition and unit: fail
+decision: REJECT_CURRENT
+```
 
-These files support workflow execution, detailed inspection, or debugging. They are not
-yet a stable downstream-facing surface.
+A weak verifier:
 
-What could belong in the published contract:
+```python
+assert isinstance(record["reads_count"], int)
+```
 
-- `publish/v1/summary.tsv`
-- `publish/v1/report/index.html`
+accepts both read counts and base counts. A semantic verifier also compares:
 
-What is still missing:
+```python
+assert field_semantics["reads_count"] == {
+    "definition": "number of sequencing reads",
+    "unit": "reads",
+}
+```
 
-- a versioned publish boundary such as `publish/v1/`
-- a manifest and checksums
-- provenance
-- a clear explanation of artifact roles and stability
+Changing only `unit` must fail. If the verifier accepts, field semantics are decorative
+metadata rather than enforced contract data.
 
-The main lesson is that copying a few files into `publish/` is not enough by itself.
+## Exercise 6: Corrupt a bundle after inventory
 
-Weak answers say only "this file is useful" without naming whether it is internal,
-diagnostic, machine-facing, or human-facing.
+Expected failures:
 
-## Exercise 2: Draw the first publish boundary
+| Mutation | Failure |
+| --- | --- |
+| alter summary bytes | `checksum mismatch: summary.json` |
+| remove listed file | `manifest-listed artifact is missing` |
+| add ambient file under closed boundary | `unexpected publish path` |
+| duplicate manifest path | `manifest paths must be unique` |
+| use `../outside.json` | path containment failure |
 
-A strong answer promotes only the smallest honest set of downstream-facing files into
-`publish/v1/` and keeps per-sample workflow-operational detail, logs, and other debugging
-surfaces internal. Each included file should have a one-sentence role explanation such as
-"machine-facing summary," "human-facing report," or "integrity inventory." The quality
-signal is not how many files move; it is whether a downstream user can rely on the public
-bundle without learning the internal workflow tree.
+JSON parsing can still pass after whitespace is appended because syntax and integrity are
+different.
 
-The strongest answers also say explicitly whether accepted and rejected discovery records
-belong in the bundle. If downstream users need to defend why the result set has exactly
-its observed membership, those records should be public rather than left implicit.
+Recovery should rebuild or restore the artifact from a trusted source, then regenerate
+the manifest. Updating the digest alone certifies unexplained bytes and erases the alert.
 
-The missing but important sentence is usually this one:
+For safe promotion:
 
-> This bundle is for a downstream reader or program that needs the published summary,
-> report, and integrity surfaces, not the producer’s intermediate workflow state.
+```mermaid
+flowchart LR
+  build["Build isolated candidate"] --> freeze["Freeze writes"]
+  freeze --> inventory["Write manifest"]
+  inventory --> verify["Recalculate and verify"]
+  verify --> promote["Atomic or immutable promotion"]
+```
 
-Weak answers celebrate a larger publish tree without proving why every added file belongs
-to the contract.
+## Exercise 7: Verify human and machine surfaces from one authority
 
-## Exercise 3: Separate machine and human surfaces
+Authority matrix:
 
-A strong answer names one structured artifact such as `summary.json` or `summary.tsv` as
-authoritative for programmatic use and one report artifact such as `report/index.html` as
-authoritative for human inspection. The relationship should be explicit: the report is
-derived from or aligned with the structured summary, not a separate truth. Scraping the
-report weakens the contract because presentation markup is less stable than a documented
-machine-facing schema.
+| Fact | Authority | Derived surfaces |
+| --- | --- | --- |
+| accepted IDs | discovery artifact | JSON, TSV, HTML |
+| exact metrics | governed summary model / JSON | TSV, HTML |
+| narrative interpretation | report | human only |
+| run identity | provenance JSON | report footer |
+| public paths | manifest | report links |
 
-Weak answers call both artifacts "the output" and therefore hide which one a consumer
-should trust first.
+Expected fault detection:
 
-## Exercise 4: Write a manifest for the bundle
-
-A good manifest uses stable relative paths from the bundle root, deterministic ordering,
-and digests such as SHA-256. The ordering rule should be simple and reproducible, for
-example sorted normalized relative paths. Absolute paths do not belong because the bundle
-contract must travel across machines and directories without changing meaning. A useful
-verification transcript shows both a successful pass and the exact command used.
-
-Example answer shape:
-
-- manifest rows:
-  - `sha256<TAB>relative/path`
-- ordering:
-  - lexicographic order on normalized relative bundle paths
-- verification:
-  - one command that rehashes the bundle and compares against the manifest
-- explanation:
-  - "relative paths keep the contract portable; absolute paths would change when the
-    bundle moves even if the bundle meaning does not"
-
-The key explanatory sentence is:
-
-> The manifest proves that the inventoried bytes are the same bundle; it does not prove
-> that the bundle is scientifically correct or semantically compatible with every consumer.
-
-An equally important companion sentence is:
-
-> The manifest can show which files belong in the bundle, but it cannot by itself explain
-> why one candidate was accepted and another was rejected from the public result set.
-
-## Exercise 5: Add provenance without confusing its role
-
-A strong provenance file records the producing repository revision, workflow identity,
-runtime or environment context, and relevant configuration details that affect meaning.
-It answers questions such as "what software context produced this bundle?" It does not by
-itself answer "which published files are part of the public promise?" or "what should a
-consumer read first?" Those remain contract questions.
-
-Weak answers ask provenance to replace the manifest, consumer contract, and file API all
-at once.
-
-## Exercise 6: Write a consumer test
-
-A strong consumer accepts only the bundle path, validates the documented machine-facing
-artifact, and intentionally knows nothing about `results/`, internal rule names, or
-producer-only configuration. The success condition is that the consumer can do useful
-work with no hidden repository knowledge. That is the proof that the public contract is
-real and not just a copied folder.
-
-Example answer shape:
-
-- input:
-  - only `publish/v1/`
-- first file read:
-  - one documented machine-facing summary
-- validation:
-  - schema or required-column check
-- deliberate ignorance:
-  - no `results/` reads, no repository-root assumptions, no producer-only helper imports
-
-Why this is strong:
-
-- it proves the bundle is self-contained enough for downstream use
-- it forces the machine-facing surface to behave like a real API
-
-The deliberate boundary sentence is:
-
-> Reading `results/` would weaken the contract because it asks the consumer to depend on
-> producer-only workflow layout that the public bundle was meant to hide.
-
-The authority sentence should also be clear:
-
-> The consumer treats the documented machine-facing summary as authoritative and uses the
-> report only for human interpretation.
-
-## Exercise 7: Corrupt the bundle and detect it
-
-The failed verification should identify the changed path and report a checksum mismatch or
-equivalent integrity failure. What this proves is file identity: the bytes are no longer
-the same as the inventoried bundle. What it does not prove is semantic correctness,
-scientific validity, or whether the bundle was the right contract to publish in the first
-place.
-
-Weak answers claim checksum failure proves the scientific result is wrong. It only proves
-the published bytes no longer match the inventoried bundle.
-
-## Exercise 8: Simulate a downstream compatibility check
-
-Likely compatible within `v1`:
-
-- adding a new optional field to `summary.json`
-
-Likely versioning discussion:
-
-- renaming the file to `published-summary.json`
-- removing an existing field that consumers may rely on
-
-Why:
-
-An additive field can preserve the old contract if existing consumers still work. Path
-changes and field removals often alter the public promise directly.
-
-The strongest answers also write one sentence from the consumer’s point of view, such as:
-
-> My existing parser still succeeds without modification, so this additive field is
-> compatible within `v1`; a renamed path would not be.
-
-Weak answers classify compatibility from the producer's convenience instead of from the
-surviving consumer's experience.
-
-## Exercise 9: Design a deliberate version migration
-
-`v1` should remain intact for supported consumers while `v2` introduces the breaking
-change under a new public boundary. A good migration note maps old paths or fields to the
-new ones, states who should move and when, and keeps separate consumer tests for both
-supported versions. The internal workflow tree still does not belong in either API,
-because versioning is about the public promise, not about exposing producer internals.
-
-Example migration note elements:
-
-- what changed in `v2`
-- which `v1` consumers are still supported and for how long
-- how one old path or field maps to the new surface
-- which verification route should be run for each supported version
-
-## Exercise 10: Review a full publish change like a downstream maintainer
-
-A strong review starts with findings ordered by downstream trust impact: hidden dependency
-on `results/`, renamed public path, mismatched manifest coverage, changed artifact role,
-or unclear consumer surface. Each correction should name the narrowest verification route
-that proves the repair, such as rerunning the bundle verifier, rerunning the consumer
-test, or diffing the published role table. One appropriate outcome is to say a change
-should be versioned, postponed, or removed rather than merged under the current contract.
-
-A useful review order often looks like this:
-
-1. check whether the public artifact roles still tell the truth
-2. verify that the consumer still reads only documented bundle surfaces
-3. inspect whether manifest and provenance still match their intended jobs
-4. classify whether any changed path or field remains compatible inside the current version
-
-Weak reviews start with low-value style notes before naming contract breakage or
-verification gaps.
-
-## Self-check
-
-If your answers consistently explain:
-
-- what is internal versus public
-- what changed in the contract
-- which artifact carries which responsibility
-- what evidence supports downstream trust
-
-then you are using the module correctly.
-
-Weak answer pattern:
-
-- "the bundle is better now because it has more files and more metadata"
-
-That sentence skips the consumer surface, the artifact roles, and the compatibility
-question all at once. If your answers still sound like that, keep revising.
+- beta omitted from HTML: identity equality fails;
+- TSV rounded incorrectly: parsed numeric equality fails;
+- report links `results/`: public-path containment fails;
+- report labels reads as bases: displayed semantic-unit check fails.
+
+Essential results should remain available in text or table form, labels should include
+units, and the report should identify exclusions and limitations. Visual color alone
+must not carry pass/fail meaning.
+
+## Exercise 8: Classify the compatibility audit and damage its evidence
+
+Reference decisions:
+
+| Case | Decision |
+| --- | --- |
+| baseline | `ACCEPT_CURRENT` |
+| additive field | `ACCEPT_CURRENT` |
+| required-field removal | `REJECT_CURRENT` |
+| path rename | `REJECT_CURRENT` |
+| semantic drift | `REJECT_CURRENT` |
+| integrity corruption | `REJECT_CURRENT` |
+| versioned migration | `REQUIRE_MIGRATION` |
+
+Mutation expectations:
+
+| Mutation | Required gate response |
+| --- | --- |
+| additive case loses `reads_count` | additive case classification fails |
+| semantic counterexample restores reads meaning | named counterexample inspection fails |
+| corruption disabled | integrity counterexample inspection fails |
+| current consumer stops requiring metric | consumer-contract integrity fails |
+| v2 consumer expects v1 path | migration no longer has an accepting next consumer |
+
+Bundles can remain parseable and visually plausible in every case. Producer-only tests
+miss whether the fixture still exhibits its named risk and whether consumers remain
+strict enough to detect it.
+
+## Exercise 9: Design and test a v2 migration
+
+Required paired result:
+
+```text
+C1(B2) = reject
+C2(B2) = accept
+decision = REQUIRE_MIGRATION
+```
+
+Mapping:
+
+| v1 | v2 | Mapping |
+| --- | --- | --- |
+| `summary.json` | `metrics.json` | path break |
+| schema 1 | schema 2 | structural break |
+| `reads_count` | `read_bases` | semantic replacement |
+| unit reads | unit bases | unit break |
+
+`read_bases` cannot generally be reconstructed from `reads_count` without read lengths
+and filtering details. The migration note should say so.
+
+Readiness table:
+
+| Consumer status | Action |
+| --- | --- |
+| v2 fixture passes and owner confirms rollout | migrate during overlap |
+| owner or usage unknown | keep v1; investigate before retirement |
+| cannot consume v2 | provide supported adapter, extend v1, or revise migration |
+
+Retirement must depend on evidence such as acknowledgements, telemetry where appropriate,
+or explicit policy—not merely the age of v2.
+
+## Exercise 10: Submit a consumer-verifiable release packet
+
+Reference review order:
+
+1. `README.md` for claim boundary;
+2. current consumer fixture;
+3. candidate content manifest and integrity report;
+4. compatibility summary;
+5. detailed compatibility report;
+6. next consumer and migration note;
+7. review questions;
+8. outer bundle manifest.
+
+Suitable decision statement:
+
+> The baseline and additive candidate are accepted by the declared open v1 consumer.
+> Required-field removal, path rename, semantic drift, and byte corruption are rejected.
+> The v2 candidate is rejected by v1 and accepted by the declared v2 consumer, so
+> promotion requires migration and overlap review. This packet does not represent unknown
+> external consumers or prove atomic deployment on the target storage system.
+
+After altering a packet file, outer verification must name that path’s digest mismatch.
+Restoring the file should return the packet to a verified state without changing the
+claimed inner decision.
+
+## Reasoning map
+
+```mermaid
+flowchart TD
+  outputs["Workflow outputs"] --> promotion["Deliberate public projection"]
+  promotion --> candidate["Isolated candidate"]
+  candidate --> integrity["Path and byte integrity"]
+  integrity --> current["Current consumer"]
+  current -->|accept + same meaning| accept["Accept current"]
+  current -->|reject| next["Next consumer?"]
+  next -->|accept under new version| migration["Require migration"]
+  next -->|reject or absent| reject["Reject candidate"]
+  mutation["Causal mutations"] -.challenge.-> integrity
+  mutation -.challenge.-> current
+  mutation -.challenge.-> next
+```
+
+## Completion diagnosis
+
+Classify differences from these answers:
+
+- **equivalent implementation**: different code, same consumer-observable behavior;
+- **different policy**: open/closed fields, partial publication, or retention differs and
+  is explicitly tested;
+- **missing evidence**: likely behavior without a saved consumer or integrity receipt;
+- **contract defect**: path, structure, semantics, completeness, or bytes violate the
+  current promise;
+- **migration gap**: a new boundary exists without next-consumer or retirement evidence;
+- **claim overreach**: the packet covers fewer consumers or storage guarantees than the
+  prose claims.
+
+Revise the claim when evidence is narrower. Compatibility honesty is part of publication.
