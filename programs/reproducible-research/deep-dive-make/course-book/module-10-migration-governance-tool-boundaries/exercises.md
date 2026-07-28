@@ -28,12 +28,13 @@ instead of stewarding it.
 Keep one running packet while you work. A simple structure is enough:
 
 ```text
-module10-packet/
+build-stewardship/
 ├── review.md
 ├── ownership-table.md
 ├── migration-plan.md
 ├── governance-note.md
 ├── boundary-decision.md
+├── evidence-index.md
 └── evidence/
 ```
 
@@ -46,10 +47,18 @@ Keep two live tables open as you go.
 
 ### Proof bridge table
 
-| Boundary moved | Before evidence | After evidence | Rollback point | New owner |
+| Boundary moved | Established evidence | Replacement evidence | Rollback trigger | Receiving owner |
 | --- | --- | --- | --- | --- |
 
 Those tables stop the exercise day from drifting into vague cleanup language.
+
+Add a claim index:
+
+| Claim | Acceptance evidence | Rejection or disproof evidence | Confidence | Open question |
+| --- | --- | --- | --- | --- |
+
+The packet must distinguish what you observed, what you inferred, and what you have not
+yet verified.
 
 ## The progression for the day
 
@@ -67,6 +76,18 @@ flowchart LR
 
 Do not skip ahead. The later exercises are weak if the earlier review work is thin.
 
+Use one evidence loop throughout:
+
+```mermaid
+flowchart TD
+  inspect["inspect without unsafe execution"] --> predict["predict contract behavior"]
+  predict --> challenge["run isolated acceptance and rejection challenge"]
+  challenge --> classify["classify contract, defect, detail, or unknown"]
+  classify --> decide["record owner and bounded change"]
+  decide --> review["ask another maintainer to reconstruct the decision"]
+  review --> inspect
+```
+
 ## Exercise 1: Write a first-pass build review
 
 Choose one inherited Make-based repository and write a short review.
@@ -78,18 +99,22 @@ Your review must cover:
 - hidden inputs, hidden state, or host assumptions
 - one pressure finding from dry-run, trace, or serial-versus-parallel comparison
 - the top three risk classes you found
+- the boundary of your review: what you did not execute, inspect, or contact
 
 What to hand in:
 
 - one page or less
-- at least one concrete command you ran or would run
+- the exact safe commands you ran
 - three named risk classes such as graph-truth risk, contract drift, or boundary risk
+- an observation/inference/confidence table for the most consequential finding
+- one proposed disproof route for that finding
 - one sentence explaining why review comes before redesign
 
 Quality bar:
 
 - describe what the build currently does before saying what it should do
 - classify the findings in durable language rather than saying only "messy"
+- do not run a publication, deployment, or install route merely to discover its meaning
 
 ## Exercise 2: Inventory ownership instead of listing targets
 
@@ -101,12 +126,15 @@ Include:
 - outputs with zero obvious writers
 - outputs with multiple writers
 - side effects that are trusted even though they are not file outputs
+- the publication commit point or acceptance record for each trusted result
 
 What to hand in:
 
 - the ownership table
-- the commands used to find callers and writers
+- caller-search, Make-database, writer-search, and trace evidence
 - one unowned surface and one multi-writer surface
+- one case where two convenience targets legitimately share a prerequisite but not a writer
+- one confidence limit caused by generated rules, shell indirection, or external state
 - one sentence explaining why ownership inventory is stronger than a plain target list
 
 Quality bar:
@@ -118,16 +146,21 @@ Quality bar:
 
 Design three characterization or comparison routes for the current build:
 
-- one for current package or output layout
+- one for current package membership and artifact identity
 - one for no-op or convergence behavior
 - one for serial-versus-parallel agreement
+
+Run each route in an isolated workspace. Classify every observed behavior as contract,
+implementation detail, defect, or unknown.
 
 What to hand in:
 
 - the three checks
 - what each check is trying to prove
+- the normalization rule used before comparison
 - one observed defect that should be documented rather than preserved as contract
-- one sentence explaining how the checks support rollback
+- one relevant and one irrelevant mutation
+- one sentence explaining how the checks support rollback without sharing outputs
 
 Quality bar:
 
@@ -144,13 +177,15 @@ What to hand in:
 - the current contract in one sentence
 - the first boundary move
 - the proof route that must survive that move
-- the rollback point
-- the retirement condition for the old route
+- any intentional divergence from the established contract
+- the rollback trigger and decision owner
+- the complete retirement gates for the established route
 
 Quality bar:
 
 - the first move must be small enough to review honestly
 - "replace the whole system" is not a first move
+- elapsed time alone is not a retirement gate
 
 ## Exercise 5: Write a governance note that another maintainer could enforce
 
@@ -163,17 +198,20 @@ It must define:
 - one rule for new include files or macros
 - one rule protecting proof surfaces
 - who can approve exceptions
+- the evidence obligation and rejection challenge for one high-risk change class
 
 What to hand in:
 
 - a note of six to ten lines
 - one sentence naming the drift pattern it is meant to prevent
 - one sentence naming how it would be enforced in review or automation
+- one bounded exception with scope, owner, safety evidence, and removal condition
 
 Quality bar:
 
 - avoid "keep things simple" language
 - write rules another maintainer could really apply
+- do not use a calendar promise as the only exception-removal condition
 
 ## Exercise 6: Diagnose one recurring antipattern
 
@@ -190,12 +228,16 @@ What to hand in:
 
 - the antipattern name
 - two signals that confirm it
-- the smallest honest repair
+- the controlled challenge and repeatable failure signature
+- the smallest honest recovery
+- acceptance and rejection tests after recovery
+- the governance rule that prevents recurrence
 - one sentence explaining how that repair restores truth or ownership clarity
 
 Quality bar:
 
 - the first repair should make the system more legible before it makes it more ambitious
+- a suspicious shape without a reproduced causal signature is still a hypothesis
 
 ## Exercise 7: Make the tool-boundary argument
 
@@ -217,14 +259,17 @@ Argue whether Make should:
 What to hand in:
 
 - the concern you chose
-- a one-paragraph argument
+- an ownership table covering decision, execution, state, recovery, and evidence
 - the handoff object or interface if another tool is involved
 - one proof route on each side of the boundary
+- the idempotency identity, retry owner, and unknown-outcome recovery route
+- the durable acceptance or failure record
 
 Quality bar:
 
 - justify the answer from truth location and modeling fit
 - do not argue from novelty alone
+- “Make invokes it” does not establish that Make owns its state
 
 ## Exercise 8: Turn governance prose into verification
 
@@ -242,12 +287,15 @@ What to hand in:
 - the check command or test
 - one passing example
 - one deliberately failing example
+- the check's declared parsing or repository boundary
+- the diagnostic a maintainer sees on failure
 - the review owner for changing the rule
 
 Quality bar:
 
 - automation enforces the rule
 - governance defines who may legitimately change the rule
+- do not call a text-search heuristic a complete ownership proof
 
 ## Exercise 9: Compare Make with a neighboring tool
 
@@ -261,6 +309,7 @@ Evaluate:
 - retries or scheduling
 - observability
 - handoff artifacts
+- unknown-outcome recovery and acceptance authority
 
 What to hand in:
 
@@ -268,6 +317,7 @@ What to hand in:
 - the ownership decision
 - the exact interface between tools
 - one independent verification route for each side
+- four receiver fixtures: accept, reject, duplicate idempotency key, and lost response
 
 Quality bar:
 
@@ -282,9 +332,11 @@ Your handoff must include:
 - current contract and risk review
 - ownership inventory
 - proof-preserving migration step
-- before-and-after evidence
+- established and replacement evidence
+- intentional-divergence record
 - governance note
 - boundary decision
+- retirement-gate results
 - remaining risks and next likely repair
 
 What to hand in:
@@ -292,11 +344,14 @@ What to hand in:
 - the packet itself
 - one bounded repair or one detailed repair proposal
 - a maintainer note that says what still remains risky
+- a reviewer note mapping completeness, compatibility, failure safety, retry safety, and
+  retirement claims to exact artifacts
 
 Quality bar:
 
 - the advanced skill here is not larger diffs
 - the advanced skill is preserving trust while improving ownership
+- another maintainer must be able to reconstruct one decision without an oral briefing
 
 ## Mid-session self-check
 
@@ -307,6 +362,8 @@ Before reading the answers, stop and confirm you can answer these plainly:
 - which governance rule would actually prevent one observed drift pattern
 - which concern Make should keep and which one it should stop owning
 - what handoff object and evidence define the tool boundary
+- who owns an unknown receiver outcome after a lost response
+- which retirement gate is still open and what evidence would close it
 
 If any answer is still vague, strengthen the packet before moving on.
 
@@ -319,5 +376,8 @@ Across all ten exercises, the module wants the same habits:
 - write governance in enforceable language
 - classify antipatterns as truth loss or ownership drift
 - justify tool boundaries by modeling fit rather than novelty
+- distinguish established contract, implementation detail, defect, and unknown behavior
+- prove both warranted behavior and rejected behavior
+- make retry and retirement ownership explicit
 
 If your answers say only "the build should be cleaned up," keep working.
