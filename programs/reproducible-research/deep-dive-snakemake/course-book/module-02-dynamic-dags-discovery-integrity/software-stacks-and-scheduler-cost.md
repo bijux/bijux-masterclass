@@ -1,268 +1,320 @@
 # Software Stacks and Scheduler Cost
 
-Dynamic workflows do not fail only because their DAG is wrong. They also fail because the
-workflow is technically honest but operationally clumsy.
+A dynamic workflow can be logically correct and operationally unusable. Hundreds of tiny
+jobs may spend more time in environment setup and scheduler transitions than in useful
+work. The dangerous response is to remove validation, collapse evidence, or bypass the
+discovery boundary until the run becomes fast.
 
-Module 02 cares about two forms of operational drag:
+This lesson shows how to diagnose overhead while preserving membership, software, and
+publication truth.
 
-- software environments that are too fragmented to reuse
-- job graphs that are too fine-grained to run efficiently
+## Keep semantics fixed during a performance comparison
 
-Both problems feel like performance problems. Both are really design problems first.
+Before tuning, name the invariants:
 
-## How to read this page
+- the same arrival registry;
+- the same accepted and rejected sets;
+- the same per-sample transformation;
+- the same validation policy;
+- the same required public artifacts;
+- the same software identities or an explicitly tested replacement.
 
-Read this page with one question in mind:
+If a proposed optimization changes one of these, it is not a performance comparison. It
+is a semantic experiment.
 
-> which costs are unavoidable analysis costs, and which ones did the workflow design create
-> for itself?
+```mermaid
+flowchart LR
+  baseline["Baseline: membership + outputs + evidence"] --> proposal["Proposed tuning"]
+  proposal --> invariant{"Same accepted set, results, validation, and publication?"}
+  invariant -->|no| reject["Reject as semantic drift"]
+  invariant -->|yes| measure["Measure useful work and overhead"]
+  measure --> decide["Adopt only with attributable evidence"]
+```
 
-That distinction matters because a lot of bad "optimization" is really just avoidance of
-honest workflow structure.
+## Where dynamic workflows pay overhead
 
-## Why this lesson belongs in Module 02
+For each job, wall time can be approximated as:
 
-Dynamic workflows often make performance pain visible earlier than static ones.
+```text
+job wall time =
+    queue delay
+  + environment preparation
+  + input staging
+  + process startup
+  + useful computation
+  + validation and publication
+```
 
-Once discovery fans out into many units, poor operational boundaries become obvious:
+This is not a universal performance formula; it is a diagnostic decomposition. Measure
+the terms available in your environment.
 
-- environments are solved repeatedly for no good reason
-- tiny jobs spend more time starting than doing useful work
-- policy tuning gets blamed for problems caused by weak workflow shape
+When useful computation takes 0.2 seconds and startup takes 4 seconds, doubling CPU does
+not solve the dominant cost.
 
-That is why this lesson belongs in the same day as discovery and fanout control.
+## Environment identity belongs to workflow meaning
 
-## The sentence to keep
+A rule’s software affects its result:
 
-When a workflow feels slow, ask:
+```python
+rule classify:
+    input:
+        "results/{sample}/clean.fastq.gz"
+    output:
+        "results/{sample}/classification.json"
+    conda:
+        "workflow/envs/classify.yaml"
+    shell:
+        "classify-tool --input {input} --output {output}"
+```
 
-> is the work itself expensive, or did I design too many setup costs around it?
+The environment file is a declared software source. Pin versions closely enough for the
+claim being made, retain lock or container identities where policy requires them, and
+record the executed environment in provenance.
 
-That question prevents a lot of cargo-cult optimization.
+An environment per rule is not necessarily an environment per job. Snakemake can reuse
+an identical environment definition across many jobs. Unnecessary near-duplicate YAML
+files fragment caches and obscure which rules actually share a stack.
 
-## A quick self-check before you keep reading
+## Group by software responsibility
 
-Think about one slow workflow you have seen.
+Use separate environments when tools have distinct or conflicting dependencies. Reuse an
+environment when rules genuinely share one software responsibility.
 
-Was it slow because:
+| Situation | Environment choice |
+| --- | --- |
+| discovery parser uses Python standard library | small workflow Python environment |
+| QC and trimming use the same pinned package set | one shared preprocessing environment |
+| reporting needs a large plotting stack | separate report environment |
+| two tools require conflicting library versions | separate environments |
+| files differ only by copied comments or ordering | consolidate to one canonical definition |
 
-- the underlying computation was genuinely heavy
-- or because the workflow created too many environment solves, launches, and bookkeeping
-  steps around modest work
+Do not merge environments solely to reduce a count. The software boundary must remain
+legible.
 
-This page is mostly about the second case.
+## Count jobs from the accepted domain
 
-## Reproducible software is part of workflow meaning
+Let:
 
-If a rule only works on one maintainer's laptop because of unrecorded packages, the
-workflow is not reproducible no matter how clean the DAG looks.
+- `S` = accepted samples;
+- `R` = per-sample rule count;
+- `G` = fixed global jobs;
+- `C` = checkpoint and discovery jobs.
 
-That is why Snakemake offers explicit software boundaries such as:
+A simple expected job count is:
 
-- `conda:` environments
-- `container:` images
-- wrapper- and script-level software contracts
+```text
+J = S × R + G + C
+```
 
-The purpose is not tool fashion. The purpose is to make the software stack inspectable and
-repeatable.
+If paired records or nested panels vary, calculate from records rather than this shortcut.
+The purpose is to detect a domain explosion before blaming the scheduler.
 
-## Environment reuse is a quality issue
+Example:
 
-Learners often create one environment file per rule because it feels neat:
+- 100 accepted samples;
+- four per-sample rules;
+- three global jobs;
+- one discovery checkpoint.
+
+Expected jobs: `100 × 4 + 3 + 1 = 404`.
+
+If the dry-run shows 804 jobs, investigate fanout. Performance tuning an accidental
+Cartesian product preserves the wrong DAG faster.
+
+```mermaid
+flowchart TD
+  slow["Workflow feels slow"] --> count{"Actual jobs equal expected fanout?"}
+  count -->|no| domain["Repair target-domain modeling"]
+  count -->|yes| useful{"Useful compute dominates job time?"}
+  useful -->|yes| compute["Tune algorithm, threads, memory, or I/O"]
+  useful -->|no| overhead["Measure queue, setup, staging, and startup"]
+  overhead --> grouping["Consider grouping or batching with unchanged semantics"]
+```
+
+## Measure before grouping
+
+Collect:
+
+- dry-run job counts by rule;
+- benchmark rows for representative jobs;
+- scheduler queue and execution timestamps;
+- environment creation or cache-hit evidence;
+- file counts and sizes;
+- accepted sample count;
+- output and manifest comparisons across configurations.
+
+A benchmark only inside the job process may omit queue delay and environment setup.
+Combine Snakemake benchmarks with scheduler or wrapper receipts when diagnosing
+orchestration cost.
+
+## Grouping and batching are different
+
+**Grouping** asks the executor to submit related jobs together while retaining their rule
+contracts in the DAG.
+
+**Batching** changes a rule so one job processes multiple domain records.
+
+Grouping can reduce scheduler transitions. Batching can reduce process startup but changes
+failure isolation, resource shape, and output-publication logic.
+
+| Choice | Benefit | Review risk |
+| --- | --- | --- |
+| executor grouping | fewer submissions | group resource aggregation must be correct |
+| batch several samples per job | fewer processes | one failure can affect several samples |
+| fuse adjacent transformations | less intermediate I/O | removes inspectable boundaries |
+| long-lived service | amortized startup | software and state isolation become harder |
+
+Choose the smallest change that addresses the measured cost.
+
+## Preserve checkpoint and manifest boundaries
+
+Discovery is usually a poor place to hide performance shortcuts. Avoid:
+
+- scanning the ambient directory once and reusing it forever;
+- skipping validation for “known good” deliveries;
+- reading only the first matching file to reduce work;
+- omitting rejection evidence;
+- having downstream rules rescan instead of reading the manifest.
+
+The discovery job is normally small relative to per-sample processing. Its value is
+causal clarity.
+
+Safe optimizations might include:
+
+- parsing the registry once inside the checkpoint;
+- hashing the registry once and recording the digest;
+- using stable streaming validation for large registries;
+- caching immutable reference metadata by declared identity;
+- keeping the discovery environment small and reusable.
+
+## A truth-preserving batching example
+
+Baseline:
+
+```text
+accepted samples: alpha, beta, gamma, delta
+one 0.4-second validation-report job per sample
+startup per job: about 3 seconds
+```
+
+Proposal: one job writes all four validation reports.
+
+Before accepting, require:
+
+- the same four per-sample report paths;
+- identical report content;
+- atomic publication so a batch failure does not leave plausible partial finals;
+- explicit per-sample failure attribution;
+- unchanged accepted membership;
+- evidence that startup, not computation, dominated baseline time.
+
+If the batch writes one combined report instead, that may be a valid design, but it
+changes the file contract and downstream API. Review it as a semantic change.
+
+## Scheduler resources follow the work
+
+Resource declarations should describe job needs:
 
 ```python
 rule qc:
-    conda: "envs/qc.yaml"
-
-rule summarize:
-    conda: "envs/summarize.yaml"
-
-rule report:
-    conda: "envs/report.yaml"
-```
-
-That can be fine when the tools are genuinely different.
-
-It becomes a problem when the environment split is accidental:
-
-- identical Python stacks are solved three times
-- environment review becomes noisy
-- cold-start cost dominates the workflow
-
-The better question is not "can every rule have its own env?" The better question is:
-
-> which environment boundaries represent real software differences?
-
-## The beginner trap here
-
-Beginners often assume "one rule, one environment file" is automatically cleaner.
-
-That only helps when the rules really need different software stacks. Otherwise it creates
-noise:
-
-- more files to review
-- more redundant solves
-- more places for drift to start
-
-## A healthier environment shape
-
-Use separate environments when the rules truly need different stacks.
-
-Reuse one environment when the software boundary is the same:
-
-```python
-rule qc_raw:
-    conda: "workflow/envs/python.yaml"
-
-rule qc_trimmed:
-    conda: "workflow/envs/python.yaml"
-
-rule summarize:
-    conda: "workflow/envs/python.yaml"
-```
-
-That makes three things easier:
-
-- warm runs reuse the same solved environment
-- reviewers can inspect one file instead of three near-duplicates
-- the environment boundary matches the real software boundary
-
-## Pinning matters because "works today" is not a contract
-
-A reusable environment should still be stable enough to rebuild later.
-
-That usually means:
-
-- pinning important package versions
-- keeping the environment file under version control
-- avoiding casual unbounded upgrades in the middle of the course
-
-Containers solve the same class of problem differently:
-
-- stronger cross-machine isolation
-- heavier artifact and image management
-
-The course does not need you to memorize every deployment flag here. It does need you to
-understand that software reproducibility is an explicit workflow surface, not background
-luck.
-
-## What a good explanation sounds like
-
-Strong:
-
-> These three rules share one Python toolchain, so they reuse one environment file because
-> the software boundary is the same.
-
-Weak:
-
-> Each rule has its own env because that felt organized.
-
-## Tiny jobs can make a correct DAG feel broken
-
-Now look at the job graph itself.
-
-This workflow shape is often technically correct:
-
-```python
-rule tiny_qc:
     input:
-        "results/{sample}/chunk-{chunk}.txt"
+        "data/raw/{sample}.fastq.gz"
     output:
-        "results/{sample}/chunk-{chunk}.qc.json"
+        "results/{sample}/qc.json"
+    threads: 2
+    resources:
+        mem_mb=2048,
+        runtime=10
 ```
 
-If there are 200 samples and 100 chunks each, the workflow may now schedule 20,000 tiny
-jobs.
+Profiles translate those declarations into executor policy. Do not let a profile change
+the sample set, discovery registry, validation threshold, or publish destination simply
+to make a cluster run fit.
 
-That can hurt because each job carries overhead:
+If grouped jobs aggregate resources, verify the executor’s grouping semantics rather than
+assuming memory and runtime add in the way you expect.
 
-- process startup
-- environment activation
-- filesystem metadata traffic
-- scheduler bookkeeping
+## Compare evidence, not impressions
 
-When overhead dominates, the workflow feels slow before the actual science or analysis has
-even begun.
+Use a table:
 
-## Healthy granularity is part of workflow design
+| Field | Baseline | Candidate | Must remain equal? |
+| --- | --- | --- | --- |
+| registry digest | `…` | `…` | yes |
+| accepted IDs | `alpha,beta` | `alpha,beta` | yes |
+| rejected records | none | none | yes |
+| summary hash | `…` | `…` | yes unless formatting is the stated change |
+| job count | 12 | 7 | no |
+| scheduler submissions | 12 | 4 | no |
+| median useful compute | 0.5 s | 0.5 s | diagnostic |
+| wall time | 48 s | 21 s | expected to improve |
 
-The right question is not "how do I make Snakemake launch tiny jobs faster?" The right
-question is:
+If the candidate is faster because it processed fewer accepted samples, the comparison
+fails before timing is considered.
 
-> what is the smallest job boundary that still represents meaningful work?
+## Use the capstone diagnostics
 
-Good answers often look like:
+The capstone separates two questions:
 
-- one job per sample instead of one job per trivial file fragment
-- one summary job over a validated sample registry instead of many tiny join jobs
-- one reused environment per tool family instead of one environment per wrapper script
+```bash
+make performance-diagnostics-audit
+make scheduler-policy-audit
+```
 
-## A strong beginner habit
+The performance audit compares honest tuning with validation loss and repeated work. The
+scheduler audit checks resource translation without contacting a real scheduler. For
+Module 02, read those results through the discovery invariants:
 
-Before splitting work further, ask whether the split creates a unit another person would
-actually want to inspect, retry, or reason about.
+- Did candidate membership remain fixed?
+- Did validation remain enabled?
+- Did the output and evidence sets remain equivalent?
+- Was the measured cost actually scheduler or setup overhead?
 
-If the answer is no, the split may be scheduler noise rather than meaningful workflow
-structure.
+Do not run the broad proof route when one focused audit answers the question.
 
-## A smell table
+## Failure patterns
 
-| Smell | What you notice | Better repair |
-| --- | --- | --- |
-| one env file per nearly identical Python rule | cold-start cost and review noise | merge into one shared environment boundary |
-| hundreds of trivial jobs | scheduling overhead dominates useful work | batch at the sample or shard family level |
-| profile changes are the only performance story | workflow shape stays untouched | repair job granularity before tuning execution policy |
-| dynamic discovery emits thousands of tiny units casually | the DAG becomes harder to run and harder to review | validate whether those units are meaningful artifacts |
-| environment choice is hidden in someone’s shell | another machine cannot reproduce the run | declare the software boundary in the workflow |
+### More cores make the run slower
 
-## Performance repairs must preserve truth
+Possible cause: more concurrent tiny jobs increase setup, filesystem, or scheduler
+contention. Inspect per-rule timing and submission counts.
 
-Not every speedup is honest.
+### Reused environments still rebuild
 
-Weak performance repair:
+Possible cause: environment definitions differ, caches live on ephemeral storage, or
+the executor cannot see the same cache. Compare actual environment identities and paths.
 
-- disable checks because they are "too slow"
-- collapse outputs into one file without preserving ownership
-- skip discovery artifacts so the DAG feels smaller
+### Batching is faster but harder to trust
 
-Strong performance repair:
+Possible cause: partial failure and per-sample evidence were lost. Compare file contracts
+and failure receipts before accepting wall-time improvement.
 
-- batch work at a meaningful boundary
-- reuse environments where the software boundary is genuinely shared
-- reduce unnecessary intermediate artifacts without hiding required ones
+### Cluster profile “fixes” workload size
 
-The difference is whether the repair keeps the workflow legible.
+Possible cause: semantic configuration leaked into executor policy. Restore the same
+registry and accepted set across profiles.
 
-## A good study pause
+### Checkpoint appears expensive
 
-Pause here and say one sentence like this:
+Possible cause: the real cost is downstream fanout or repeated invalidation. Separate
+checkpoint runtime from the jobs it reveals.
 
-> We reduced launch overhead by changing job granularity and environment reuse, not by
-> hiding artifacts the workflow still needs to explain itself.
+## Review checklist
 
-If that sentence does not fit the repair, the optimization may be weakening the course’s
-main teaching goal.
+- [ ] The accepted and rejected sets are fixed across the comparison.
+- [ ] Expected fanout is calculated before scheduler diagnosis.
+- [ ] Useful computation is separated from queue, setup, staging, and startup.
+- [ ] Environment reuse follows software responsibility.
+- [ ] Software identities remain declared and reviewable.
+- [ ] Grouping and batching are not treated as synonyms.
+- [ ] Batched publication remains atomic and attributable.
+- [ ] Profiles change operating policy, not workflow meaning.
+- [ ] Discovery validation and evidence remain intact.
+- [ ] The claimed improvement is supported by comparable receipts.
 
-## The explanation a reviewer trusts
+## What you should carry forward
 
-Strong explanation:
-
-> these rules share one Python toolchain, so they reuse `workflow/envs/python.yaml`; the
-> workflow also processes one job per sample instead of one job per tiny fragment, which
-> reduces setup overhead without changing file ownership or publish semantics.
-
-Weak explanation:
-
-> we optimized it by making Snakemake do less stuff.
-
-The strong version explains which costs were removed and why the workflow contract stayed
-intact.
-
-## End-of-page checkpoint
-
-Before leaving this page, you should be able to:
-
-- explain why environment reuse is a design choice rather than a mere speed trick
-- name one situation where separate environments are justified
-- explain why too many tiny jobs are often a workflow-shape problem
-- describe one performance repair that improves speed without weakening workflow truth
+Operational efficiency is trustworthy when it removes attributable overhead while
+preserving membership, validation, outputs, and evidence. The worked example now combines
+that discipline with governed discovery, checkpoint reevaluation, fanout, and publication
+in one repair sequence.
