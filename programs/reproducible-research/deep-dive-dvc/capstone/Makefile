@@ -561,13 +561,12 @@ walkthrough: ## Build the learner-facing capstone walkthrough bundle
 
 .PHONY: push
 push: repro ## Push tracked artifacts to the local training remote
-	@$(DVC) push
+	@$(DVC) push prepare fit evaluate publish
 
 .PHONY: recovery-drill
 recovery-drill: push ## Rebuild the workspace from the remote after cache loss
 	@rm -rf data/derived metrics models publish state .dvc/cache
-	@$(DVC) pull
-	@$(DVC) checkout
+	@$(DVC) pull prepare fit evaluate publish
 	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1
 
 .PHONY: confirm
