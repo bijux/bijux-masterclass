@@ -1,194 +1,236 @@
 # Architecture Review, Drift, and Refactor Triggers
 
-Architecture rarely collapses all at once.
+Architecture drift is a mismatch between the repository's claimed boundaries and its
+actual dependency paths. It is not synonymous with a large file, an old directory, or a
+maintainer's dislike of the layout.
 
-It drifts.
+This lesson turns architectural discomfort into observations, a bounded refactor, and
+evidence that the workflow still means the same thing.
 
-That drift usually looks small in the moment:
+## Review claims before shapes
 
-- one more include
-- one more helper
-- one more path nobody documents yet
-- one more rule file with a vague name
+The capstone architecture guide claims four separated responsibilities:
 
-This page is about recognizing when those small moves have become an architecture problem.
+- workflow orchestration and file contracts
+- reusable implementation
+- execution policy
+- published artifacts and downstream trust
 
-## How to use this page
+Treat each claim as falsifiable. For example:
 
-Read this page as a review tool, not as a manifesto.
+| Claim | Observation that supports it | Observation that contradicts it |
+| --- | --- | --- |
+| the entrypoint owns visible assembly | includes and default target are easy to locate | substantial transformations obscure assembly |
+| rules own file contracts | influential files appear under `input` | implementations open undeclared files |
+| modules have explicit interfaces | caller binds config, files, policy, and names | module receives all config and invents local paths |
+| package code is reusable | ordinary CLI and direct unit tests work | package imports workflow state or assumes repository layout |
+| publish is a downstream boundary | versioned API doc and consumer verification agree | consumers reach into internal `results/` paths |
 
-You should be able to sit in front of one repository change and answer:
+An architecture review should cite source or generated evidence in both columns. The
+guide's claim is a hypothesis, not a verdict.
 
-- which boundary drifted
-- whether the drift is architectural or merely stylistic
-- whether the next action is repair, refactor, or deliberate deferral
+## Build a dependency-direction map
 
-That is the practical skill this page is trying to build.
-
-## Architecture review asks whether the repository still teaches itself
-
-At this stage, the key question is not only:
-
-> does the workflow run?
-
-It is also:
-
-> could a new reviewer explain the repository shape without oral rescue?
-
-That is the real architecture bar.
-
-## Drift becomes visible before the workflow is huge
-
-Warning signs often appear early:
-
-- new contributors cannot find the entrypoint quickly
-- file names and directories stop signaling ownership clearly
-- contract docs lag behind path and workflow changes
-- the rule graph is technically present, but helper layers are easier to inspect than the rules
-
-These are architecture signals, not mere tidiness complaints.
-
-## Start from review pain, not from mood
-
-Beginners often say things like:
-
-- "the repo feels messy"
-- "the structure is getting weird"
-- "we should clean this up soon"
-
-Those feelings may be pointing at something real, but they are not yet reviewable.
-
-A stronger architecture discussion names the failing boundary:
-
-- the entrypoint no longer shows visible assembly
-- the file API no longer matches the real path contract
-- the helper layer is easier to inspect than the rules
-- one rule family no longer represents a coherent concern
-
-Once the pain is named that clearly, refactoring stops being subjective.
-
-## Refactors should be triggered by review pain, not by aesthetics alone
-
-A repository refactor is justified when it improves one of these things:
-
-- ownership clarity
-- path-contract clarity
-- onboarding and review speed
-- separation between orchestration, implementation, and policy
-
-It is weaker when the main reason is:
-
-- “the tree feels messy”
-- “this helper file looks too long”
-- “we prefer more folders”
-
-Those may be symptoms, but they are not yet architectural reasons.
-
-## One useful review loop
+Start with intended direction:
 
 ```mermaid
-flowchart LR
-  pressure["review or maintenance pain"] --> locate["locate the unclear boundary"]
-  locate --> classify["entrypoint, rules, file API, helper, or policy surface?"]
-  classify --> refactor["refactor only the boundary that is lying or overloaded"]
-  refactor --> verify["update contract docs and review routes"]
+flowchart TD
+  entry["Snakefile\nassembly + gates"]
+  rules["workflow/rules\nlocal graph contracts"]
+  modules["workflow/modules\nreusable rule templates"]
+  scripts["workflow/scripts\njob-local implementation"]
+  package["src/capstone\ndomain software"]
+  publish["publish/v1\nconsumer contract"]
+
+  entry --> rules
+  rules --> modules
+  rules --> scripts
+  rules --> package
+  rules --> publish
 ```
 
-This loop matters because large refactors often fail by changing several boundaries at
-once without making any of them clearer.
+Then look for reverse or bypassing arrows:
 
-## One concrete architecture audit
+- package code reading global workflow config
+- a module reading a caller-private key
+- an included file mutating entrypoint policy
+- public consumers reading `results/` directly
+- a profile changing sample scope or published paths
 
-Pick one change that made the repository harder to review.
+One contradictory arrow is more useful than a claim that the repository “feels tangled.”
 
-Then force yourself to classify it:
+## Inventory review cost
 
-- entrypoint drift
-- rule-family drift
-- file-API drift
-- helper-coupling drift
-- policy or config drift
+Review pain becomes actionable when you can name what a reader must reconstruct:
 
-If you cannot classify it, you may still be reacting to general discomfort instead of a
-specific boundary failure.
-
-## Strong refactor triggers
-
-Strong triggers include:
-
-- one rule family can no longer be reviewed as a coherent unit
-- path contracts have changed but are no longer visible in docs
-- helper code now hides workflow meaning
-- the top-level assembly no longer explains how the repository is composed
-- one architectural surface is doing multiple jobs badly
-
-Those are good reasons to change the repository shape.
-
-## Weak refactor triggers
-
-Weak triggers include:
-
-- rearranging folders with no ownership gain
-- introducing modules or abstractions before reuse is real
-- renaming files only because another layout feels trendier
-
-These often increase churn without improving architecture.
-
-## The beginner mistake to catch early
-
-The most common beginner mistake is to launch a broad refactor before identifying the
-smallest lying boundary.
-
-That usually creates two problems:
-
-- many surfaces change at once
-- reviewers cannot tell what actually improved
-
-Architecture repair is strongest when it narrows the scope first, even if the eventual
-cleanup is larger.
-
-## Common failure modes
-
-| Failure mode | Why it hurts | Better repair |
+| Review question | Expected starting surface | Drift signal |
 | --- | --- | --- |
-| refactor changes too many layers at once | reviewers cannot see what improved | isolate the overloaded or misleading boundary first |
-| docs are updated after the architecture drift has already spread | review stays reactive | treat doc drift as an architecture defect early |
-| repository shape follows personal taste more than workflow boundaries | maintenance becomes subjective | refactor around ownership and contract questions |
-| new structure hides the visible DAG further | readability drops despite cleaner folders | preserve a clear entrypoint and named rule families |
-| teams normalize confusion because the workflow still runs | architecture debt becomes invisible | use onboarding and review pain as a real signal |
+| what does a default run promise? | `rule all` and file API | target depends on hidden assembly logic |
+| which files affect trimming? | trimming rule | adapter or threshold discovered in package code |
+| what enters the QC module? | module declaration and `use rule` | full config passed with undocumented reads |
+| which files are public? | `docs/file-api.md` | actual manifest or consumer differs |
+| what changes between profiles? | profile config and policy guide | semantic config appears in an executor profile |
 
-## What a reviewer should hear
+Count hops only after defining the question. “It took five files” is not automatically a
+defect; a public artifact legitimately crosses production, promotion, manifest, and
+verification boundaries. Drift exists when the route crosses unrelated owners or
+requires private knowledge.
 
-A strong explanation sounds like this:
+## Audit the capstone entrypoint without pretending it is settled
 
-> We are refactoring this boundary because it no longer teaches the truth: the repository
-> structure and the actual ownership or contract surface have drifted apart.
+The current top-level `Snakefile` owns:
 
-That is stronger than "we want to make the tree cleaner," because it tells the reviewer
-what architectural lie is being repaired.
+- configuration loading, validation, and defaults
+- shared include and path roots
+- bounded module runtime config
+- workdir and wildcard policy
+- sample-discovery checkpoint
+- discovered-sample publication
+- provenance production
+- three rule-family includes
+- default target
 
-## The explanation a reviewer trusts
+That list supports two observations:
 
-Strong explanation:
+1. assembly, gates, and the completion target remain visible
+2. discovery and publication-adjacent rules make the entrypoint carry more than assembly
 
-> this refactor is needed because the current boundary no longer tells the truth: the rule
-> family has outgrown its ownership surface, the file API is lagging the real paths, and a
-> reviewer can no longer explain the repository without opening unrelated helper layers.
+This is a real refactor candidate, not an automatic failure. Before moving the rules,
+answer:
 
-Weak explanation:
+- Does discovery form a coherent local concern with its consumers?
+- Does provenance belong with publication, or does keeping it top-level reveal a
+  repository-wide obligation?
+- Which constants and functions would an extracted file consume?
+- Would the new include order become more fragile?
+- Which rule names, dry-run jobs, and published hashes must remain equivalent?
 
-> we reorganized the repository to make it cleaner.
+If you cannot answer those questions, moving the code would shorten the file without
+strengthening ownership.
 
-The strong explanation identifies the failing boundary. The weak one names only a mood.
+## Use strong refactor triggers
 
-## End-of-page checkpoint
+A refactor is justified when at least one boundary causes an observable problem:
 
-Before leaving this page, you should be able to:
+| Trigger | Evidence | Likely repair |
+| --- | --- | --- |
+| ownership cannot be stated | rules in one file answer unrelated review questions | regroup by file lifecycle or policy owner |
+| hidden dependency causes under-rebuild | policy mutation produces a quiet dry-run | declare the file and pass it explicitly |
+| module reuse leaks caller state | source audit finds undeclared config reads | bound config and caller-owned bindings |
+| public contract and output disagree | consumer or manifest test fails | repair publisher, docs, or version |
+| execution policy changes semantics | cross-profile plan or artifact diff | remove semantic keys from profiles |
+| parse-time behavior blocks diagnostics | `--list-rules` requires network or input scan | move discovery to a rule or checkpoint |
+| same defect recurs across implementations | duplicate fixes and divergent tests | extract a domain API with one owner |
 
-- explain how architecture drift appears before dramatic breakage
-- name several strong triggers for architectural refactoring
-- distinguish review pain from mere style preference
-- explain why documentation lag is itself an architecture problem
+These triggers connect repository shape to learning, correctness, or reviewability.
 
-If you still reach for "cleanup" before you can name the failing boundary, revisit the
-page. This module wants refactor decisions to be explainable, not just intuitive.
+## Reject weak triggers
+
+Do not begin a structural change from:
+
+- a preferred maximum file length
+- a desire for more folders
+- the word “enterprise”
+- hypothetical reuse with no second caller
+- symmetry for its own sake
+- a framework pattern copied from another ecosystem
+
+Those ideas can prompt an audit. They cannot justify the result by themselves.
+
+## Write a refactor claim
+
+Use this structure before editing:
+
+> Because **observation**, reviewers or the planner cannot reliably answer **question**.
+> Move **decision** from **current owner** to **new owner**, while preserving **named
+> behavior**. Accept the refactor only if **evidence** remains equivalent and **new guard**
+> rejects the original drift.
+
+Example:
+
+> Because both capstone modules received the complete parent config, a reviewer could not
+> bound their policy dependencies. Pass only environment and benchmark settings through a
+> named runtime mapping, preserve imported rules and dry-run behavior, and add a source
+> guard that rejects broad config passing or undeclared module config keys.
+
+That refactor has a cause, boundary, invariant, and rejection test.
+
+## Preserve behavior at several levels
+
+“Tests pass” is too compressed for architecture review. Choose evidence by claim:
+
+| Level | Preservation question | Evidence |
+| --- | --- | --- |
+| parse | does workflow assembly expose the same intended rules? | `snakemake --list-rules` |
+| plan | are the same inputs, outputs, and jobs selected? | normalized dry-run or DAG |
+| execute | do representative jobs succeed in supported environments? | bounded execution receipts |
+| artifact | are deterministic outputs equivalent? | schema-aware comparison and hashes where appropriate |
+| contract | do public paths and meanings remain compatible? | consumer tests and file API review |
+| architecture | does the old hidden dependency now fail? | targeted negative test |
+
+Not every refactor needs the full course proof route. Every refactor needs evidence that
+matches the boundary it changes.
+
+## Use a safe refactor sequence
+
+For one boundary:
+
+1. record the current source observation
+2. capture a bounded rule list, plan, and representative artifact when applicable
+3. state which decisions move and which remain
+4. make the smallest ownership-complete change
+5. rerun equivalent evidence
+6. add a rejection test for the original coupling
+7. update the architecture or file contract only if its human route changed
+8. inspect the final diff for unrelated rearrangement
+
+Avoid renaming, formatting, and ownership changes in the same patch. They make semantic
+comparison harder even when each change is defensible.
+
+## Distinguish deferral from neglect
+
+Not every observed pressure should be repaired immediately. A deliberate deferral records:
+
+- the exact observation
+- why current behavior is still safe or reviewable
+- the threshold that should reopen the decision
+- the evidence that currently guards the risk
+
+For the capstone entrypoint, a defensible threshold might be:
+
+> Extract discovery when it gains another rule or when its dependencies force a second
+> non-assembly concern into the entrypoint; until then, the rule list and walkthrough keep
+> its role visible.
+
+“We will clean it up later” has none of those properties.
+
+## Conduct a thirty-minute review
+
+Use one artifact route rather than touring every file:
+
+1. start at the default target
+2. follow `manifest.json` to one published artifact
+3. trace that artifact back through promotion and internal producers
+4. inspect one module or implementation boundary on the route
+5. compare the observed ownership with `docs/architecture.md` and `docs/file-api.md`
+6. run the narrow audit associated with the weakest boundary
+
+Produce a table:
+
+| Boundary | Claim | Observation | Decision | Evidence or follow-up |
+| --- | --- | --- | --- | --- |
+| module config | caller bounds runtime state | two-key mapping; source guard passes | accept | module interface self-test |
+| entrypoint | assembly stays visible | three non-assembly rules remain top-level | watch | extract only with named concern and plan equivalence |
+| public files | consumers use `publish/v1` | file API and manifest agree | accept | verify report |
+
+The goal is a reviewable decision, not a score.
+
+## Exit checkpoint
+
+You understand architecture review when you can:
+
+1. turn a vague complaint into a contradictory dependency arrow
+2. distinguish a strong correctness or review trigger from a style preference
+3. write a refactor claim with an invariant and rejection test
+4. choose parse, plan, execution, artifact, contract, and negative evidence deliberately
+5. defer a refactor with a threshold instead of hiding the remaining weakness
