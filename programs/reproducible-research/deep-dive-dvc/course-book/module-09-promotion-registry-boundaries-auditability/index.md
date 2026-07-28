@@ -104,7 +104,7 @@ If the problem is already partly clear, use this shortcut:
 | [Audit Evidence: Params, Metrics, Locks, and Manifests](audit-evidence-params-metrics-locks-manifests.md) | teaches the evidence needed to defend promoted state |
 | [Registry Boundaries and Consumer Contracts](registry-boundaries-and-consumer-contracts.md) | teaches registry or publish boundaries as consumer contracts |
 | [Promotion Failures and Review Repairs](promotion-failures-and-review-repairs.md) | teaches common promotion failures and how to repair them |
-| [Worked Example: Repairing an Incomplete Release Bundle](worked-example-repairing-an-incomplete-release-bundle.md) | walks through one realistic promotion repair |
+| [Worked Investigation: A Digest-Valid Release with the Wrong Threshold](worked-example-investigating-threshold-drift-before-promotion.md) | investigates semantic drift that artifact digests cannot detect |
 | [Exercises](exercises.md) | gives five mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |

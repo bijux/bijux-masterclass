@@ -127,7 +127,7 @@ nav:
   - 'Audit Evidence: Params, Metrics, Locks, and Manifests': module-09-promotion-registry-boundaries-auditability/audit-evidence-params-metrics-locks-manifests.md
   - Registry Boundaries and Consumer Contracts: module-09-promotion-registry-boundaries-auditability/registry-boundaries-and-consumer-contracts.md
   - Promotion Failures and Review Repairs: module-09-promotion-registry-boundaries-auditability/promotion-failures-and-review-repairs.md
-  - 'Worked Example: Repairing an Incomplete Release Bundle': module-09-promotion-registry-boundaries-auditability/worked-example-repairing-an-incomplete-release-bundle.md
+  - 'Worked Investigation: Threshold Drift Before Promotion': module-09-promotion-registry-boundaries-auditability/worked-example-investigating-threshold-drift-before-promotion.md
   - Exercises: module-09-promotion-registry-boundaries-auditability/exercises.md
   - Exercise Answers: module-09-promotion-registry-boundaries-auditability/exercise-answers.md
   - Module Glossary: module-09-promotion-registry-boundaries-auditability/glossary.md
