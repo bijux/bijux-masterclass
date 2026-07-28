@@ -321,6 +321,7 @@ Use the rest of Module 00 based on what you need:
 - Read [Evidence-Reading Guide](evidence-reading-guide.md) if you need to interpret traces, dry runs, selftests, or artifacts.
 - Read [Capstone Framing Guide](capstone-framing-guide.md) if you need to choose a proportionate repository-scale proof route.
 - Read [Makefile Reading Guide](makefile-reading-guide.md) if you are opening a Make repository you did not author.
+- Use [Course Reference](course-reference.md) when you need a command boundary, module route, capstone target, or evidence template.
 - Read [Mid-Course Map](mid-course-map.md) if you are already comfortable with the basics and want to understand the second half of the course.
 - Read [Mastery Map](mastery-map.md) if you are returning later for review, migration, or stewardship.
 
