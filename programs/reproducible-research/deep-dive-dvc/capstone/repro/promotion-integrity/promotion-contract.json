@@ -1,0 +1,39 @@
+{
+  "approval": {
+    "required_decision": "APPROVE",
+    "required_roles": [
+      "model-owner",
+      "risk-reviewer"
+    ]
+  },
+  "consumer_contract": {
+    "supported_files": [
+      "metrics.json",
+      "model.json",
+      "params.yaml",
+      "report.md"
+    ],
+    "unsupported_sources": [
+      "capstone workspace paths",
+      "DVC cache paths",
+      "experiment queue entries"
+    ]
+  },
+  "promoted_claims": {
+    "decision_threshold": 0.52
+  },
+  "registry_reference": "incident-escalation/2026-07",
+  "release_id": "incident-escalation-2026-07",
+  "required_artifacts": [
+    "data-profile.json",
+    "metrics.json",
+    "model.json",
+    "params.yaml",
+    "predictions.csv",
+    "report.md"
+  ],
+  "source": {
+    "dvc_lock_sha256": "25e2f6c662c4494ad815256383a96ad73af448fe555124fb9d7f27b580d925e5",
+    "git_revision": "8b9e4fdc2b5f9e6d84c2dd6dd8fb21a7bce4d170"
+  }
+}
