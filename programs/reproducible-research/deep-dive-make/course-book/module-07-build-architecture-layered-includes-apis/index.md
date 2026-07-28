@@ -15,6 +15,40 @@ The standard is not “the Makefiles are organized.” It is:
 > A maintainer can name each owner, follow each consumer, and inspect evidence that the
 > boundary holds.
 
+## The architecture questions this module now tests
+
+The executable audits establish four existing contracts. The reading and practice extend
+them with five questions that become important as a repository grows:
+
+1. Does the public API define supported variables, outputs, evidence, and failure meaning,
+   or only target names?
+2. Can two requested branches give a shared prerequisite conflicting target-specific
+   policy?
+3. Is the source-to-output mapping total, injective, owner-preserving, and stable for every
+   supported discovery root?
+4. Can a reviewer follow macro text through both `eval` expansion stages and identify
+   every generated target and parse-time side effect?
+5. Do include layers follow an allowed dependency direction, or do policy, graph,
+   publication, and interface layers reach back into one another?
+
+Those are not requests for more files. They are tests of whether the architecture still
+has one explainable owner for each decision.
+
+```mermaid
+flowchart TD
+  api["public target and parameter API"] --> graph["owned graph"]
+  policy["policy layer"] --> graph
+  roots["declared discovery roots"] --> mapping["total, injective mapping"]
+  mapping --> graph
+  macro["bounded rule generator"] --> graph
+  graph --> publication["process-local candidate publication"]
+  publication --> evidence["promised artifacts and proof"]
+  review["dependency-direction review"] -.checks.-> api
+  review -.checks.-> policy
+  review -.checks.-> mapping
+  review -.checks.-> macro
+```
+
 ## Begin with the executable audits
 
 From the repository root:
@@ -99,6 +133,22 @@ Allow about six hours if you are studying independently.
 If you have only one hour, run the audit, read `summary.tsv`, and follow one family from
 specimen to trace to artifact. Do not skim every page and omit the evidence.
 
+## Entry diagnostic
+
+Before reading the lessons, answer these against one Make repository:
+
+| Prompt | Your initial answer |
+| --- | --- |
+| Which variables may callers set, and which values are rejected? | |
+| What artifacts and evidence does each public target promise? | |
+| Can an ordinary and specialized goal share a prerequisite built under different policy? | |
+| Can two distinct selected sources ever map to one output key? | |
+| What text remains after the first and second expansion of one `eval` macro? | |
+| Which include directions are forbidden? | |
+
+Keep the answers. The module is incomplete if the final answers are only more polished
+phrasing. Each answer should point to a rule, database entry, artifact, or rejection test.
+
 ## Follow four contracts through the build
 
 ```mermaid
@@ -121,6 +171,49 @@ For every arrow, name:
 3. the evidence that would change if the boundary leaked
 
 Do this before moving files. A new include layout is not evidence that ownership improved.
+
+## Build one architecture packet
+
+Keep a single packet:
+
+```text
+build-architecture-review/
+  public-api.md
+  policy-propagation.md
+  source-output-map.tsv
+  generated-rule-map.txt
+  layer-dependencies.tsv
+  acceptance.md
+  evidence/
+```
+
+The packet must answer:
+
+| Claim | Minimum evidence |
+| --- | --- |
+| caller uses supported API | help or contract manifest, caller command, promised outputs |
+| parameter is owned | origin/flavor/value, validation behavior, affected artifacts |
+| specialization is unambiguous | isolated ordinary/specialized runs and combined-goal challenge |
+| mapping preserves owners | selected-source and unique-output counts plus reverse-owner lookup |
+| macro preserves contract | explicit baseline, expansion trace, database map, artifacts |
+| layer direction holds | include/variable/rule dependency map and a deliberate forbidden-edge rejection |
+
+An absent row is not “obvious architecture.” It is an unreviewed boundary.
+
+## Independent-study checkpoints
+
+Pause after each pair of lessons:
+
+- after public API and layering, explain target and variable ownership to a reviewer using
+  only `public-api.md` and `policy-propagation.md`
+- after discovery and macros, reconstruct one output path and one generated rule from
+  their explicit inputs
+- after architecture review, inject one forbidden dependency direction and require the
+  gate to reject it
+- after the worked example, ask another learner to locate the evidence for each accepted
+  boundary without opening the narrative first
+
+These checkpoints replace instructor interpretation with durable artifacts.
 
 ## Study route
 
@@ -189,11 +282,16 @@ reject dishonest evidence.
 By the end of this module, you should be able to:
 
 - distinguish a reachable target from a declared public promise
+- define supported target parameters, outputs, evidence, and failure meaning
 - prove that external callers receive every artifact promised by their target
 - explain how include parsing and target-specific variables produce different policy scope
+- detect shared-prerequisite ambiguity across specialized goal branches
 - detect output collisions by mapping cardinality and artifact owner identity
+- prove mapping totality, injectivity, reversibility, and extension stability
 - compare an explicit rule contract with bounded and opaque generation
+- trace both `eval` expansion stages and use process-local publication candidates
 - keep macros only when expanded rules, policy, and public surfaces preserve that contract
+- reject forbidden dependency directions between architecture layers
 - write a reproducible architecture review that cites findings, mutations, limits, and risk
 
 ## Exit standard
@@ -205,7 +303,12 @@ Do not move on until all of these are true:
 - you can derive where the flat mapping loses one source owner
 - you can show equal source and unique-output counts in the namespaced control
 - you can prove that a bounded macro preserves the explicit prerequisite and policy contract
+- you can explain why target-specific policy is unsafe for one shared artifact requested
+  under conflicting branches
 - you can identify the hidden target and policy side effect in the opaque counterexample
+- you can show that generated publication candidates cannot collide across concurrent
+  recipe processes
+- you can reject one forbidden include-layer dependency with a named diagnostic
 - you have completed all ten exercises without relying on an instructor
 - `gmake architecture-contract-selftest` passes
 - `gmake abstraction-contract-selftest` passes
