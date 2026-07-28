@@ -64,12 +64,16 @@ The explicit model contains two publication rules:
 
 ```make
 build/alpha.txt: data/alpha.txt | build/
-	{ printf 'mode=%s\nsource=%s\n' '$(MODE)' '$<'; cat '$<'; } > '$@.tmp'
-	mv '$@.tmp' '$@'
+	@candidate='$@.candidate.$$$$'; \
+	{ printf 'mode=%s\nsource=%s\n' '$(MODE)' '$<'; cat '$<'; } \
+	  > "$$candidate" && \
+	mv -f "$$candidate" '$@' || { rm -f "$$candidate"; exit 1; }
 
 build/beta.txt: data/beta.txt | build/
-	{ printf 'mode=%s\nsource=%s\n' '$(MODE)' '$<'; cat '$<'; } > '$@.tmp'
-	mv '$@.tmp' '$@'
+	@candidate='$@.candidate.$$$$'; \
+	{ printf 'mode=%s\nsource=%s\n' '$(MODE)' '$<'; cat '$<'; } \
+	  > "$$candidate" && \
+	mv -f "$$candidate" '$@' || { rm -f "$$candidate"; exit 1; }
 ```
 
 Before discussing duplication, write down what these rules promise:
@@ -79,7 +83,7 @@ Before discussing duplication, write down what these rules promise:
 | target | `build/alpha.txt` | `build/beta.txt` |
 | source prerequisite | `data/alpha.txt` | `data/beta.txt` |
 | policy | `ordinary` | `ordinary` |
-| publication | write temporary file, then rename | write temporary file, then rename |
+| publication | process-local candidate, then rename | process-local candidate, then rename |
 | owner evidence | `owner=alpha` | `owner=beta` |
 
 This table is the baseline. An abstraction must preserve it unless the change deliberately
@@ -91,9 +95,11 @@ The control macro owns one repeated publication shape:
 
 ```make
 define publish_owned_file
-build/$1.txt: data/$1.txt | build/
-	{ printf 'mode=%s\nsource=%s\n' '$$(MODE)' '$$<'; cat '$$<'; } > '$$@.tmp'
-	mv '$$@.tmp' '$$@'
+build/$(1).txt: data/$(1).txt | build/
+	@candidate='$$@.candidate.$$$$$$$$'; \
+	{ printf 'mode=%s\nsource=%s\n' '$$(MODE)' '$$<'; cat '$$<'; } \
+	  > "$$$$candidate" && \
+	mv -f "$$$$candidate" '$$@' || { rm -f "$$$$candidate"; exit 1; }
 endef
 ```
 
@@ -142,6 +148,122 @@ If you write `$@` directly inside the macro invocation context, it may expand be
 recipe has a target and become empty. This is not a reason to avoid `eval`; it is a reason
 to inspect the generated rule instead of trusting the source template.
 
+The process-local candidate needs another layer of escaping because the shell, not Make,
+owns its process ID and shell variable:
+
+| Intent | Macro template | Text parsed as recipe | Shell receives |
+| --- | --- | --- | --- |
+| target automatic variable | `$$@` | `$@` | concrete target path |
+| first prerequisite | `$$<` | `$<` | concrete source path |
+| shell process ID | `$$$$$$$$` | `$$$$` | `$$` |
+| shell variable `candidate` | `$$$$candidate` | `$$candidate` | `$candidate` |
+| Make variable at recipe time | `$$(MODE)` | `$(MODE)` | effective mode value |
+
+Four or eight dollar signs are not a readability success. The ledger makes the expansion
+contract reviewable. If a macro needs several unrelated escape schemes, that is evidence
+that a helper script or explicit rule may be cheaper.
+
+## Inspect both expansion stages
+
+Inspect the raw macro without expanding it:
+
+```make
+ifneq ($(filter show-macro-source,$(MAKECMDGOALS)),)
+$(info $(value publish_owned_file))
+endif
+
+.PHONY: show-macro-source
+show-macro-source:
+	@:
+```
+
+The goal guard makes this parse-time diagnostic opt-in. Inspect the result of `call`
+before `eval` parses it:
+
+```make
+ifneq ($(filter show-macro-call,$(MAKECMDGOALS)),)
+$(file >artifacts/abstraction/publish-alpha.make,\
+  $(call publish_owned_file,alpha))
+endif
+
+.PHONY: show-macro-call
+show-macro-call:
+	@:
+```
+
+Use this only in an explicit diagnostic route because `$(file ...)` writes during Make
+expansion. The output belongs under `artifacts/`, and normal builds should not need the
+diagnostic side effect.
+
+Finally inspect the parsed rule:
+
+```sh
+gmake -npRr all > artifacts/abstraction/database.txt
+rg -n '^build/alpha\\.txt:' artifacts/abstraction/database.txt
+```
+
+The three views answer different questions:
+
+1. What responsibilities does the template visibly contain?
+2. What concrete Makefile text does one call produce?
+3. What target, prerequisite, and recipe contract did Make parse?
+
+```mermaid
+flowchart LR
+  raw["raw define body\n$(value ...)"] --> call["call expansion\nconcrete owner"]
+  call --> eval["eval expansion and parse"]
+  eval --> database["parsed rule database"]
+  database --> recipe["recipe-time Make expansion"]
+  recipe --> shell["shell expansion and publication"]
+```
+
+Do not generate the diagnostic file during ordinary parsing. That would turn inspection
+into an undeclared parse-time writer.
+
+## Make publication safe under concurrency
+
+A fixed target-derived scratch name is target-local but not process-local. Two concurrent
+Make processes publishing the same target can share that path, corrupt one another's
+candidate, or rename the wrong bytes.
+
+The macro uses:
+
+```make
+candidate='$$@.candidate.$$$$$$$$'
+```
+
+After both Make expansion stages, the shell sees a target-specific name ending in its
+process ID. The candidate is created beside the final path, removed on failure, and
+renamed only after the producer succeeds.
+
+This does not make two independent builds legitimate writers of one final target. It
+prevents candidate collision while the architecture still requires one owning target
+contract.
+
+## Keep the call domain data-only
+
+Arguments should be stable logical owner keys, not fragments of Make syntax:
+
+```make
+OWNERS := alpha beta
+```
+
+Before evaluation, require each key to belong to the repository's declared owner manifest.
+Do not pass strings containing prerequisite lists, recipes, variable assignments, or
+target prefixes merely to make one macro “flexible.” That turns each call site into a
+private language.
+
+Use multiple bounded macros when contracts differ:
+
+| Repeated contract | Appropriate generator |
+| --- | --- |
+| one owned source to one published text artifact | `publish_owned_file` |
+| one schema to a generated source/header pair | generator-specific grouped rule |
+| one public verification target | explicit interface rule, not hidden macro output |
+| global or branch policy | owning policy layer, not a publication macro argument |
+
+The macro should remove repeated mechanism while preserving architectural distinctions.
+
 ## The opaque macro crosses responsibility boundaries
 
 The defect model uses a broad name, `define_component`, and appears to generate one
@@ -177,6 +299,18 @@ flowchart TD
 The problem is not hidden implementation alone. Public targets routinely depend on private
 rules. The problem is that the macro’s apparent interface does not reveal the policy and
 target-surface decisions it owns.
+
+Also reject parse-time I/O hidden inside a reusable rule macro:
+
+```make
+DISCOVERED := $(shell ./scripts/find-components.sh)
+$(file >build/generated-owners.mk,$(DISCOVERED))
+```
+
+`$(shell ...)` and `$(file ...)` run while Make expands the surrounding text, not when a
+declared target is updated. If discovery or generation is required for correctness, give
+it an owned target and an explicit bootstrap contract. Do not let a macro quietly become
+a parse-time build system.
 
 ## Inspect evaluated rules without reading everything
 
@@ -256,6 +390,8 @@ Use this decision table:
 | evaluated prerequisites differ from the baseline | reject or redesign |
 | artifact bytes match but hidden targets appear | split target generation from publication |
 | macro mutates global policy | move policy to its owning layer or target scope |
+| macro performs parse-time I/O | replace with a declared generator or explicit diagnostic route |
+| candidate name is shared across processes | make candidate target- and process-local |
 | only two short rules repeat | explicit rules may still be cheaper |
 | rejection tests cover likely side effects | macro has a maintainable proof route |
 
@@ -272,6 +408,9 @@ Work in a disposable copy of the abstraction specimens.
 4. Extend the opaque owner list and identify every additional side effect.
 5. Compare the three database traces and artifact modes.
 6. Add a rejection test that catches one dishonest gamma mapping.
+7. Capture raw template, call-expanded text, parsed database entry, and final shell trace.
+8. Run two isolated Make processes against a controlled fixture and prove candidates do
+   not share a path.
 
 A complete answer contains the call domain, evaluated prerequisite map, artifacts, and
 test result. A line-count comparison is not enough.
@@ -285,3 +424,6 @@ You are ready to continue when you can explain:
 - why `$$@` and `$$<` survive generation differently from `$@` and `$<`
 - how the opaque macro changes policy and callable target surface
 - why database, help, trace, and artifact evidence answer different review questions
+- how text changes across call expansion, eval parsing, recipe expansion, and shell expansion
+- why process-local candidates improve failure hygiene without creating multiple owners
+- why parse-time I/O is an architectural side effect rather than harmless macro machinery
