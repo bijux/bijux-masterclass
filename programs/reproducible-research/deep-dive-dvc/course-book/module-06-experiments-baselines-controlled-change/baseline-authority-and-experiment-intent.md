@@ -255,6 +255,101 @@ else moved.
 
 The baseline gives exploration a stable reference point. It does not forbid learning.
 
+## A stochastic baseline is a distribution, not a lucky run
+
+When the workflow contains meaningful randomness, one approved seed is a lineage anchor
+but a weak performance anchor.
+
+Suppose five baseline runs produce F1 values:
+
+```text
+0.741, 0.752, 0.738, 0.747, 0.744
+```
+
+Approving only `0.752` because it is the best run makes every later comparison start from
+an unusually favorable reference. Approving only `0.738` creates the opposite bias.
+
+A stochastic baseline packet should preserve:
+
+| Surface | Required content |
+| --- | --- |
+| lineage | code, data, runtime, pipeline, and parameter authority |
+| variation plan | seed or sampling controls allowed to vary |
+| replicate identities | one record for every included run |
+| summary rule | center and spread chosen before candidate review |
+| failed-run policy | which failures remain in the evidence and how they count |
+| practical policy | minimum gain and safeguards |
+
+```mermaid
+flowchart LR
+  lineage["approved baseline lineage"] --> replicates["planned baseline replicates"]
+  replicates --> profile["baseline performance profile"]
+  profile --> candidate["paired or comparable candidate evidence"]
+  candidate --> decision["stability and practical decision"]
+```
+
+The profile does not replace exact run records. It gives candidate movement a reference
+distribution.
+
+## Match candidate evidence to baseline evidence
+
+Comparison design should be symmetric:
+
+- one baseline seed versus one candidate seed supports only that paired contrast;
+- a baseline replicate distribution versus one candidate run creates unequal evidence;
+- paired baseline and candidate runs under the same planned seeds can isolate the
+  intervention more clearly;
+- a new evaluation sample requires renewed baseline evidence on that sample.
+
+Do not borrow old baseline uncertainty estimates after changing data, runtime, metric
+contract, or training procedure. Those changes can alter the variation process itself.
+
+## Record why the baseline profile is authoritative
+
+Extend the proof packet:
+
+```text
+baseline/profile.json
+baseline/replicates.tsv
+baseline/variation-contract.json
+baseline/failures.tsv
+baseline/approval.md
+```
+
+The approval should say whether the baseline authority covers:
+
+- exact reconstruction of one run;
+- expected behavior across declared seeds;
+- a governed evaluation population;
+- a time window;
+- a runtime family;
+- a promotion policy.
+
+These scopes are not interchangeable.
+
+## Renew the anchor without hiding history
+
+A new baseline may be justified when:
+
+- evaluation population authority changes;
+- metric semantics change;
+- runtime or training method changes the variation profile;
+- a promoted candidate becomes governed reference;
+- the old profile no longer represents current operations.
+
+Preserve the old anchor and state the transition:
+
+```text
+old baseline:
+reason it no longer answers the current question:
+new baseline inputs and variation plan:
+cross-boundary comparison allowed?:
+approval:
+```
+
+If cross-boundary comparison is not justified, report two eras rather than drawing one
+continuous improvement line.
+
 ## Review checkpoint
 
 You understand this core when you can explain:
@@ -266,5 +361,8 @@ You understand this core when you can explain:
 - when a change should be treated as baseline boundary work rather than an ordinary experiment
 - why an unchanged Git parent does not prove that the baseline contract stayed honest
 - which four surfaces form a minimal baseline proof packet
+- why a stochastic baseline needs planned replicate evidence rather than a selected run
+- when baseline and candidate uncertainty evidence are symmetric enough to compare
+- when a changed variation process requires a renewed baseline
 
 Controlled change starts with a baseline that means something.
