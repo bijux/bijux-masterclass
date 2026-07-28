@@ -1,6 +1,5 @@
 # Reviewing Environment Drift and Runtime Evidence
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,199 +9,349 @@ graph LR
   program["Deep Dive DVC"]
   section["Execution Environments Reproducible Inputs"]
   page["Reviewing Environment Drift and Runtime Evidence"]
-  capstone["Capstone evidence"]
+  capstone["Runtime contract report"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.reviews.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  symptom["surprising result"] --> identity["confirm compared identities"]
+  identity --> planner["inspect status before rerun"]
+  planner --> execution["prove current execution"]
+  execution --> cause["isolate runtime cause"]
+  cause --> decision["repair, tolerate, or broaden inquiry"]
 ```
 <!-- page-maps:end -->
 
-Environment drift is easy to talk about loosely and hard to review honestly.
+“It is probably an environment issue” is not a diagnosis. It is a hypothesis that must
+compete with data drift, parameter drift, code drift, stale reuse, and comparison error.
 
-This page is about turning it into a sequence of concrete questions.
+A runtime review should leave another person able to answer:
 
-## The main review question
+- what differed;
+- what was held constant;
+- whether the compared stages actually ran;
+- whether the changed runtime fact was visible to DVC;
+- which evidence makes that fact causal;
+- which repair or acceptance rule follows.
 
-When a run differs unexpectedly, ask:
+## Preserve evidence before rerunning
 
-> what evidence suggests this is an environment difference rather than data, parameter, or
-> stage drift?
+The first impulse after a mismatch is often to run the pipeline again. That can destroy the
+most useful evidence:
 
-That question matters because "it must be the environment" is only slightly better than
-guessing.
+- pre-repro status;
+- the stale result;
+- the current runtime fingerprint;
+- logs showing a skipped stage;
+- lock and declaration identities before intervention.
 
-## A practical drift ladder
+Collect a pre-intervention packet:
+
+```text
+claim.txt
+code-identity.txt
+data-identity.txt
+parameter-identity.txt
+declaration.sha256
+lock-before.sha256
+runtime-fingerprint.json
+status-before.json
+result-before/
+```
+
+The exact filenames can follow project convention. The invariant is that you preserve the
+state used to make the original decision.
+
+## Define the symptom precisely
+
+Replace “local and CI differ” with an observable statement:
+
+> Local `metrics.json` reports `f1=0.843`; CI reports `f1=0.836` for the same claimed
+> Git commit, data revision, and parameter set.
+
+Then identify:
+
+| Field | Example |
+| --- | --- |
+| result claim | accepted evaluation `f1` |
+| local result identity | file hash and parsed value |
+| CI result identity | artifact hash and parsed value |
+| expected comparison | absolute metric delta |
+| accepted boundary | no greater than `0.002` |
+| immediate concern | observed delta is `0.007` |
+
+This statement identifies what requires explanation. It does not yet assert that the
+environment caused the gap.
+
+## Confirm the comparison basis
+
+Before investigating runtime, verify that both results claim the same:
+
+- Git commit or source identity;
+- DVC data identities;
+- selected parameter values;
+- stage declaration;
+- comparison method;
+- result schema.
+
+If these differ, do not force the incident into an environment narrative. Classify the
+known difference first.
 
 ```mermaid
 flowchart TD
-  symptom["observe a difference"] --> confirm["confirm code, data, and params are aligned"]
-  confirm --> env["inspect environment evidence"]
-  env --> classify["classify expected variance versus real drift"]
-  classify --> action["decide: tolerate, tighten, or escalate"]
+  mismatch["result mismatch"] --> basis{"code, data, params, declaration, schema align?"}
+  basis -- no --> explicit["investigate explicit workflow difference"]
+  basis -- yes --> current{"both results freshly executed in claimed contexts?"}
+  current -- no --> contract["investigate stale reuse or missing influence"]
+  current -- yes --> runtime{"runtime identities differ?"}
+  runtime -- yes --> causal["run controlled causal contrast"]
+  runtime -- no --> broader["broaden to nondeterminism, services, or measurement"]
 ```
 
-This ladder keeps the diagnosis from collapsing into folklore.
+## Read status before output
 
-## Start with what you can rule out
+Status says what DVC can see in the declared graph. Read it before a command changes the
+state.
 
-Before blaming the environment, confirm:
+The runtime audit preserves:
 
-- the same tracked data was used
-- the same declared parameters were used
-- the same recorded workflow route applies
+```text
+evidence/declared-change-status.stdout.txt
+evidence/hidden-change-status.stdout.txt
+```
 
-This is exactly where DVC's explicit state helps. It narrows the search space.
+Run the audit:
 
-## Then inspect runtime evidence
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts
+```
 
-For Module 03, useful environment evidence includes:
+Compare:
 
-- tool and interpreter versions
-- local versus CI platform reports
-- declared install surface
-- any documented environment strategy such as lockfiles or containers
+```bash
+printf 'Declared change:\n'
+cat "$audit/evidence/declared-change-status.stdout.txt"
+printf '\nHidden change:\n'
+cat "$audit/evidence/hidden-change-status.stdout.txt"
+```
 
-The capstone's `make platform-report` is helpful because it gives you a concrete example of
-environment evidence that is small, reviewable, and relevant.
+The declared receipt names `environment/runtime.env`. The hidden receipt is `{}`.
 
-## Distinguish three kinds of findings
+Do not translate `{}` as “nothing changed.” Translate it as:
 
-| Finding | Meaning |
-| --- | --- |
-| expected variance | the workflow is only conditionally deterministic here, and the difference is within declared tolerance |
-| environment drift | a meaningful runtime change likely affected the result |
-| deeper workflow issue | the environment was blamed too early, and the real problem lives elsewhere |
+> No changed declared influence made this stage stale.
 
-This distinction is what keeps the review disciplined.
+That wording preserves the boundary of the evidence.
 
-## A small example
+## Prove whether execution occurred
 
-Suppose local and CI metrics differ slightly.
+A result file can exist without being produced in the current context. Require an
+execution receipt.
 
-A calm review might say:
+Possible proof includes:
 
-1. data identity matches
-2. `params.yaml` matches
-3. pipeline declaration matches
-4. platform-report shows a Python or DVC version difference
-5. the metric delta is small enough to treat as conditional determinism, or large enough to escalate
+- DVC repro output naming the executed stage;
+- a run manifest with start, completion, and context identity;
+- executor logs joined to the result;
+- an intentional clean run whose artifacts are isolated.
 
-That is much stronger than:
+In the hidden audit:
 
-> CI is flaky again.
+```bash
+cat "$audit/evidence/hidden-change-ordinary-repro.stdout.txt"
+```
 
-## Use a causal evidence table
+The receipt says the data and pipelines are up to date. The result remains:
 
-The runtime audit gives a small model:
+```text
+style=dot
+rendered=8.00
+```
 
-| Evidence | Declared case | Hidden case |
+The current process requests `comma`, but no comma-context execution occurred. The
+comparison has discovered stale semantic meaning, not acceptable cross-context stability.
+
+## Compare fingerprints by governed field
+
+A useful fingerprint is structured and claim-specific. The audit records:
+
+```json
+{
+  "implementation": "CPython",
+  "machine": "arm64",
+  "platform": "darwin",
+  "python": "3.14.4",
+  "report_style": "dot"
+}
+```
+
+Compare the two fingerprints:
+
+```bash
+jq -n \
+  --slurpfile before "$audit/evidence/baseline-fingerprint.json" \
+  --slurpfile after "$audit/evidence/drift-fingerprint.json" \
+  '{
+    before: $before[0],
+    after: $after[0],
+    changed: [
+      ($before[0] | keys[]) as $key
+      | select($before[0][$key] != $after[0][$key])
+      | $key
+    ]
+  }'
+```
+
+Only `report_style` changes. That makes it a strong causal candidate, but the fingerprint
+alone does not prove causality.
+
+For a real project, label fields:
+
+| Field | Governed? | Relevance to claim | Enforcement |
+| --- | --- | --- | --- |
+| image digest | yes | defines packaged runtime | CI allowlist |
+| Python resolution hash | yes | numerical code dependency | installer check |
+| machine hostname | no | diagnostic context only | none |
+| locale | yes for rendered reports | changes semantic presentation | runtime contract |
+
+Do not treat every fingerprint mismatch as equally meaningful.
+
+## Test causality without calling the probe a repair
+
+The audit forces the hidden stage under the changed process value:
+
+```bash
+cat "$audit/evidence/hidden-change-forced-repro.stdout.txt"
+jq '.findings[] |
+  select(.finding == "FORCED_RUN_CHANGES_OUTPUT_WITH_STABLE_DECLARATION") |
+  .evidence' "$audit/report.json"
+```
+
+The result becomes `8,00`. This controlled intervention connects the process variable to
+the result.
+
+The declaration hash does not change. Therefore:
+
+- causal claim: supported;
+- future stale-detection repair: absent.
+
+For a production incident, prefer an isolated workspace or branch for such probes.
+Preserve the original packet and record every intervention.
+
+## Use a causal evidence matrix
+
+Build the explanation row by row:
+
+| Question | Evidence | Finding |
 | --- | --- | --- |
-| runtime fingerprint | policy changes to comma | process variable changes to comma |
-| DVC status | `declared_runtime` is stale | empty |
-| ordinary repro | stage runs | stage skips |
-| semantic result | `8,00` | stale `8.00` |
-| forced repro | unnecessary | changes result to `8,00` |
-| durable repair | already declared | add a contract edge or external gate |
+| Did explicit workflow state align? | code, data, parameter, declaration identities | yes |
+| Did runtime context differ? | paired fingerprints | report style changed |
+| Could DVC see the changed fact? | `dvc.yaml` and status | no hidden edge; status empty |
+| Did ordinary repro execute? | repro receipt | no |
+| Was retained output current? | process intent versus result | no; dot result under comma intent |
+| Can the runtime fact change output? | forced causal probe | yes; output becomes comma |
+| Did the declaration become truthful? | declaration hash | no |
 
-This table keeps four questions separate:
+Every row rules out a weaker explanation. The conclusion is now earned:
 
-1. Did runtime context change?
-2. Could DVC see the change?
-3. Did the stage execute?
-4. Does output reflect current context?
+> An influential process variable was absent from the graph, so ordinary repro reused a
+> semantically stale result.
 
-“Same DVC status” answers only question 2.
+## Classify before choosing action
 
-## Read empty status conditionally
-
-An empty status receipt means:
-
-> no declared stage influence differs from recorded state.
-
-It does not mean:
-
-> every real influence matches the context that produced the output.
-
-When fingerprints differ but status is empty, inspect whether the changed field has a
-declared path into the graph. If it does not, ordinary repro can preserve stale meaning.
-
-## Classify before repairing
-
-| Classification | Evidence pattern | Repair direction |
+| Classification | Evidence pattern | Appropriate action |
 | --- | --- | --- |
-| declared runtime drift | fingerprint differs, status stale | rebuild and review output |
-| hidden runtime drift | fingerprint differs, status empty, force changes output | declare influence or enforce externally |
-| expected conditional variation | both runs executed under governed contexts, bounded delta | apply declared tolerance |
-| unrelated workflow defect | runtime contrast does not explain result | return to data, params, code, or stage contract |
+| declared runtime drift | governed fingerprint differs; stage stale | rebuild, verify, review |
+| hidden runtime influence | fingerprint differs; status empty; forced run changes result | declare influence or enforce externally |
+| conditional variation | both contexts governed and freshly executed; bounded difference | apply predeclared tolerance |
+| explicit workflow drift | code, data, params, or declaration differ | investigate that named difference |
+| unexplained divergence | current governed runs differ without isolated cause | broaden experiments; do not invent certainty |
+| comparison defect | schema or comparison method differs | repair measurement before judging workflow |
 
-Do not use force as the final repair for hidden runtime drift. Its diagnostic value is that
-it tests causality under current context.
+“Environment issue” is not one of the classifications. It lacks a causal and governance
+statement.
 
-## Build the review packet
+## Choose the repair at the missing boundary
 
-For a local-versus-CI disagreement, collect:
+For hidden process state, possible durable repairs include:
 
-- both environment fingerprints
-- governed-field comparison
-- data, parameter, and declaration identities
-- DVC status before rerun
-- proof that each compared result was freshly executed
-- semantic output comparison
-- tolerance policy, if applicable
+- materialize the influential value as a dependency;
+- move it into a selected parameter;
+- pin it in an immutable runtime and declare the runtime identity;
+- enforce it at the canonical executor and join the receipt;
+- remove the influence from result-producing code.
 
-Without fresh-execution proof, a small delta may be stale reuse rather than conditional
-variation.
+Do not default to:
 
-## Escalation decision
+- forcing every run;
+- deleting caches whenever results look surprising;
+- widening tolerance before proving fresh execution;
+- capturing larger ungoverned environment dumps;
+- pinning unrelated packages.
+
+The repair should close the evidence gap demonstrated by the investigation.
+
+## Write the incident conclusion in layers
+
+A review note should distinguish fact, inference, decision, and limit:
+
+```text
+Observed:
+The hidden stage retained style=dot after the intended process policy changed to comma.
+Status was empty and ordinary repro skipped.
+
+Isolated cause:
+The fingerprints differed only on report_style. A forced execution under comma changed
+the output to 8,00.
+
+Contract finding:
+REPORT_STYLE affects output but is absent from dvc.yaml, so DVC cannot use it for stale
+detection.
+
+Decision:
+Reject the retained output. Materialize report style as a declared contract dependency.
+
+Limit:
+This audit establishes one hidden runtime influence. It does not characterize all
+platform or numerical variability.
+```
+
+This structure is concise enough for review and detailed enough to reproduce the reasoning.
+
+## Know when to escalate
+
+Escalate the technical investigation when:
+
+- the suspected runtime contrast does not reproduce the result difference;
+- multiple fields change and cannot yet be isolated;
+- the stage executed but evidence cannot link the result to the executor;
+- the comparison may affect release, publication, or safety decisions;
+- sensitive infrastructure prevents adequate evidence capture.
 
 Escalate contract repair when:
 
-- a changed runtime field can alter output
-- the field is neither declared nor externally enforced
-- ordinary repro can skip under the changed context
+- an influential field has no declared or external enforcement route;
+- status can remain empty after a result-changing context change;
+- reviewers cannot identify which runtime produced an accepted result.
 
-Escalate tolerance design only after both contexts are governed and freshly executed.
+Escalate tolerance design only after current execution and governed contexts are proven.
 
-## Why tolerances need honesty
+## Review checkpoint
 
-Not every difference deserves panic.
+You can review runtime drift when you can:
 
-But tolerance needs to be declared, not assumed retroactively after every surprise.
+- preserve pre-intervention evidence;
+- define the mismatched claim precisely;
+- rule out explicit workflow differences;
+- read empty status within its declared boundary;
+- prove whether each stage executed;
+- isolate a runtime change and test causality;
+- distinguish a causal probe from a durable repair;
+- state what remains unknown.
 
-Strong teams can say:
-
-- this amount of drift is expected under our current environment strategy
-- this amount of drift is not acceptable for release or comparison
-
-That is what turns runtime variability into something governable.
-
-## When to escalate
-
-Escalate when:
-
-- the drift is too large to fit the workflow's declared tolerance
-- a release or comparison claim depends on stronger sameness
-- the team does not yet have enough environment evidence to explain the difference
-
-Escalation here does not mean panic. It means the current evidence is no longer enough.
-
-## Keep this standard
-
-Do not let "environment issue" become a polite way of saying "we do not know."
-
-Ask for:
-
-- the evidence
-- the ruled-out alternatives
-- the expected tolerance
-- the next action
-
-That is the review discipline Module 03 is trying to build.
+The standard is not certainty at the first symptom. It is an evidence route that turns a
+vague environment suspicion into a bounded, reproducible decision.
