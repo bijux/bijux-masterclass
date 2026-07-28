@@ -1,6 +1,5 @@
 # The First Honest Workflow Inventory
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Reproducibility Failures Real Teams"]
+  section["Reproducibility Failures in Real Teams"]
   page["The First Honest Workflow Inventory"]
   capstone["Capstone evidence"]
 
@@ -18,166 +17,365 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["trusted result and claim"] --> inputs["source and control inputs"]
+  inputs --> transformations["transformations"]
+  transformations --> runtime["runtime and external state"]
+  runtime --> outputs["outputs and consumers"]
+  outputs --> gaps["evidence gaps and repair order"]
 ```
 <!-- page-maps:end -->
 
-Before you start using DVC, you need one skill that is more basic than any command:
+Before adopting DVC, describe the workflow that exists—not the workflow the
+README suggests and not the workflow the team intends to build.
 
-they need to describe their current workflow without flattering it.
+An honest inventory identifies the result people trust, traces the influences
+that created it, marks which evidence is available, and separates observations
+from assumptions. It gives tool adoption a concrete boundary.
 
-That is what this inventory is for.
+## Begin with one trusted result
 
-## What the inventory is trying to reveal
+Do not inventory the whole repository at once. Choose one result used in a
+decision:
 
-The goal is not to embarrass anyone or prove the workflow is bad.
+- a metric in a report;
+- a trained model;
+- a cleaned dataset;
+- a figure in a paper;
+- a release bundle;
+- an alert threshold.
 
-The goal is to answer, in plain language:
+Write:
 
-- what inputs really matter
-- what outputs people actually trust
-- what steps are still manual or implicit
-- what parts of the story still live in memory
-
-Without that inventory, tool adoption often becomes cosmetic.
-
-## A simple inventory structure
-
-Use five sections:
-
-1. source inputs
-2. control inputs
-3. execution assumptions
-4. outputs and who trusts them
-5. weak points and missing evidence
-
-This is enough for Module 01. The later modules will sharpen each section.
-
-## Section 1: Source inputs
-
-Write down:
-
-- which datasets or raw inputs exist
-- where they come from
-- whether the team knows their exact identity or only their path
-
-Bad sign:
-
-> the data is in `data/final.csv`
-
-Stronger note:
-
-> the workflow reads `data/final.csv`, but the team does not yet have a durable way to
-> prove which exact bytes that filename referred to over time.
-
-That sentence already points toward why DVC will matter later.
-
-## Section 2: Control inputs
-
-List the things that change behavior:
-
-- config files
-- parameter files
-- CLI flags
-- seeds
-- thresholds or defaults buried inside code
-
-If an important setting is remembered socially rather than recorded somewhere durable, put
-it in the inventory as a weakness.
-
-## Section 3: Execution assumptions
-
-Ask what the run is quietly assuming:
-
-- a particular Python or R environment
-- local caches or temp directories
-- notebook state
-- machine-specific filesystems or services
-- manually prepared folders
-
-This is often the hardest section because teams are so used to these assumptions that they
-stop seeing them as inputs at all.
-
-## Section 4: Outputs and trust
-
-Not every output is equally important.
-
-Ask:
-
-- which files or reports people actually share
-- which files are only internal intermediates
-- which outputs are treated as authoritative in meetings, pull requests, or releases
-
-This matters because reproducibility work is partly about protecting what people truly
-trust, not every file in the working tree equally.
-
-## Section 5: Weak points and missing evidence
-
-Finish by naming the weak points directly:
-
-- unknown data identity
-- undocumented manual preprocessing
-- environment drift risk
-- outputs trusted without a clear contract
-- one-person memory bottlenecks
-
-The point is not to fix them all in Module 01.
-
-The point is to stop pretending they are not there.
-
-## A small example
-
-Imagine writing this inventory:
-
-- source input: `customers.csv`
-- control input: `threshold=0.8` inside `score.py`
-- execution assumption: runs only from one laptop with a specific Conda env
-- trusted output: `metrics.csv` emailed to the team
-- weak point: nobody can prove which raw CSV produced last quarter's metric
-
-That is already a strong Module 01 result.
-
-It is concrete, honest, and ready for later modules.
-
-## A useful diagram for this inventory
-
-```mermaid
-flowchart LR
-  inputs["real inputs"] --> run["current workflow"]
-  controls["controls and defaults"] --> run
-  assumptions["execution assumptions"] --> run
-  run --> outputs["trusted outputs"]
-  outputs --> review["inventory of weak points"]
+```text
+trusted result:
+consumer:
+decision supported:
+current location:
+current identity:
+rebuild claim:
 ```
 
-This is not a future-state diagram. It is a present-state mirror.
+If nobody uses the output, it may not deserve the first reproducibility
+investment. If several outputs support different decisions, inventory them
+separately.
 
-## What a good inventory feels like
+## Keep observations and assumptions apart
 
-A good inventory often feels mildly uncomfortable because it replaces confidence with
-specificity.
+Use result words consistently:
 
-That is useful discomfort.
+| Result | Meaning |
+|---|---|
+| observed | direct file, command, receipt, or owner evidence |
+| contradicted | direct evidence shows the current claim is false |
+| unverified | required evidence is absent |
+| unavailable | identity is known but state cannot be recovered |
+| out of scope | the workflow does not promise this property |
 
-The inventory is working when you can say:
+Example:
 
-- here is what we really trust
-- here is what still depends on memory
-- here is what we cannot yet recover cleanly
+> `observations.csv` exists at the documented path: observed.
+>
+> The file contains the same bytes used for last month's summary: unverified.
+>
+> Its recorded digest differs from the current file: contradicted.
 
-That is a much better starting point than "our workflow is fine, we just want better tooling."
+An inventory that turns every unknown into “probably fine” becomes a
+confidence document rather than evidence.
 
-## Keep this standard
+## Inventory source inputs
 
-Do not let the first inventory turn into a wishlist about future tools.
+For each raw or external input, record:
 
-Keep it about the present workflow:
+| Field | Question |
+|---|---|
+| role | how does this input affect the result? |
+| location | where does the workflow read it now? |
+| identity | what distinguishes the exact content or snapshot? |
+| origin | who or what produced it? |
+| recovery | how does an authorized maintainer obtain it? |
+| access owner | who controls permission? |
+| retention | how long must this identity remain available? |
+| evidence result | observed, contradicted, unverified, unavailable, out of scope |
 
-- what it depends on
-- what it produces
-- what it cannot currently defend
+Weak:
 
-That honesty is the real prerequisite for everything that follows in Deep Dive DVC.
+> Input is `data/final.csv`.
+
+Useful:
+
+> The scorer reads `data/final.csv`. Its path and current size are observed.
+> No digest, source snapshot, or shared recovery route connects last month's
+> result to exact bytes; historical input identity is unverified.
+
+## Inventory control inputs
+
+Controls choose behavior without necessarily supplying records:
+
+- parameters;
+- thresholds;
+- seeds;
+- feature lists;
+- configuration profiles;
+- command flags;
+- defaults;
+- environment values;
+- manual choices.
+
+Record:
+
+| Control | Effective value | Source | Reviewed? | Historical evidence |
+|---|---|---|---:|---|
+
+The **effective value** matters. A config file can say `0.20` while an
+environment override supplies `0.40`.
+
+For the course specimen:
+
+| Control | Effective value | Source | Reviewed? | Historical evidence |
+|---|---:|---|---:|---|
+| error-rate threshold | 0.20 | `params.json` | yes | workflow record |
+| error-rate threshold in hidden case | 0.20 | `RISK_THRESHOLD` | no | command environment only |
+
+Equal values do not make the second source declared.
+
+## Inventory transformations
+
+List every operation between source and trusted result:
+
+| Transformation | Inputs | Outputs | Implementation | Invocation | Failure behavior |
+|---|---|---|---|---|---|
+
+Include:
+
+- scripts;
+- notebook sections;
+- SQL queries;
+- spreadsheet operations;
+- manual filtering;
+- copy or rename operations;
+- format conversion;
+- external service calls.
+
+If a transformation is described as “we clean it,” expand it until another
+maintainer can identify the input, operation, and output.
+
+```mermaid
+flowchart TB
+  raw["raw observations"] --> manual["manual row removal?"]
+  manual --> prepared["prepared observations"]
+  prepared --> score["score_incidents.py"]
+  params["threshold"] --> score
+  score --> summary["risk summary"]
+  summary --> decision["incident review"]
+```
+
+The question mark is an evidence gap, not a proposed future architecture.
+
+## Inventory runtime and external state
+
+Record only runtime facts with plausible power to change the trusted result:
+
+- language and dependency environment;
+- system tools;
+- operating system or architecture;
+- hardware or accelerator;
+- locale and timezone;
+- randomness and concurrency;
+- external datasets or APIs;
+- caches and global configuration;
+- credentials class when access changes reachable state.
+
+Use columns:
+
+| Influence | Current evidence | Potential effect | Required treatment |
+|---|---|---|---|
+
+Do not store secrets in the inventory. Record that the workflow requires a
+read-only research-data credential class, then point to the governed access
+system.
+
+## Inventory outputs by trust role
+
+Not every generated file needs the same protection.
+
+Classify:
+
+| Role | Meaning | Typical treatment |
+|---|---|---|
+| disposable intermediate | can be regenerated and is not reviewed directly | declare producer/consumer edge |
+| diagnostic | helps inspect a run but does not define the decision | retain as needed for review |
+| trusted result | supports a scientific or business decision | identity, verification, provenance |
+| promoted release | approved for downstream consumers | immutable bundle and decision record |
+| operational log | supports runtime diagnosis | operational retention and access policy |
+
+Ask who consumes each output and what they assume about it. A file becomes
+important through a contract, not its extension.
+
+## Inventory reconstruction and recovery separately
+
+**Reconstruction** asks whether recorded workflow evidence can produce the
+result.
+
+**Recovery** asks whether required historical state can be obtained after local
+loss.
+
+| Question | Current evidence |
+|---|---|
+| can the command run again here? |  |
+| can it run in a clean directory? |  |
+| can another maintainer obtain input bytes? |  |
+| can they obtain the required runtime? |  |
+| can they verify the rebuilt result? |  |
+| can a protected historical revision be restored? |  |
+
+A pipeline declaration without reachable data fails recovery. A data backup
+without the implementation and controls fails reconstruction.
+
+## Record social memory explicitly
+
+Ask maintainers:
+
+- What command do you never type exactly as documented?
+- Which file must already exist?
+- Which result do people call “the real one”?
+- Which parameter is usually changed?
+- Who knows where historical data lives?
+- Which failure can only one person repair?
+- What do reviewers ask every time?
+
+Translate answers into inventory entries.
+
+Example:
+
+> “Ask Leila which customer extract to use.”
+
+Becomes:
+
+> Input selection depends on one maintainer's memory. Dataset identity,
+> selection rule, and recovery owner are unverified.
+
+Do not preserve a person's name as the durable workflow interface. Preserve a
+role and a decision route.
+
+## Create an evidence matrix
+
+For each influential surface:
+
+| Surface | Identity | Declared role | Recovery | Verification | Owner | Result |
+|---|---|---|---|---|---|---|
+| raw input |  |  |  |  |  |  |
+| parameters |  |  |  |  |  |  |
+| implementation |  |  |  |  |  |  |
+| runtime |  |  |  |  |  |  |  |
+| trusted output |  |  |  |  |  |  |
+
+Blank cells are useful. They show what the current workflow cannot defend.
+
+## Use the audit as a worked inventory source
+
+Build:
+
+```console
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-workflow-evidence-audit
+```
+
+Compare:
+
+```text
+workspace/complete-evidence/evidence/workflow-record.json
+workspace/manual-preprocessing/evidence/workflow-record.json
+```
+
+The manual case lists `prepared-observations.csv` among influential files,
+while the contract declares `observations.csv`. That is an inventory finding:
+
+> The trusted summary consumes a manually prepared input whose transformation
+> and raw-to-derived edge are absent from the declared workflow.
+
+The audit does not tell you whether removing `INC-142` was scientifically
+correct. It shows that the decision cannot be reconstructed from the contract.
+
+## Rank gaps by trust consequence
+
+Do not repair gaps by how easy they are to edit.
+
+| Consequence | Example | Response |
+|---|---|---|
+| result identity unknown | current path may contain different bytes | block historical attribution |
+| influential operation missing | manual filtering shapes result | represent transformation before comparison |
+| state unavailable | input exists only on one machine | establish governed recovery |
+| runtime unbounded | version differences can change output | record or constrain environment |
+| output role unclear | team shares an arbitrary intermediate | define trusted result and consumer |
+| cosmetic inconsistency | naming differs but claim remains clear | defer unless it causes misuse |
+
+Protect the decision-bearing result first.
+
+## Map gaps to repair boundaries
+
+Complete:
+
+| Gap | Smallest complete repair | DVC role | Other owner |
+|---|---|---|---|
+| path without content identity | track exact input state | strong | data owner |
+| no shared artifact recovery | governed remote and clean pull | strong | storage/access |
+| hidden threshold | declared parameter | strong supporting role | workflow maintainer |
+| manual preprocessing | explicit transformation stage | strong supporting role | domain owner |
+| missing runtime | environment record and clean execution | dependency input only | environment/CI |
+| invalid label meaning | data-quality review | stable identity only | domain owner |
+
+This table prevents “install DVC” from becoming the repair for every row.
+
+## Inventory template
+
+Store the completed packet under `artifacts/learning/` for the exercise, or in
+the repository's governed documentation if it becomes a maintained contract:
+
+```markdown
+# Workflow inventory
+
+## Trusted result and claim
+Result, consumer, decision, current identity, rebuild claim.
+
+## Source inputs
+Role, identity, origin, recovery, access, retention, evidence result.
+
+## Controls
+Effective value, source, override order, historical evidence.
+
+## Transformations
+Input/output edges, implementation, invocation, failure behavior.
+
+## Runtime and external state
+Influence, evidence, effect, treatment.
+
+## Outputs and consumers
+Trust role, identity, verification, consumer.
+
+## Reconstruction and recovery
+Local rerun, clean rebuild, shared recovery, historical recovery.
+
+## Evidence gaps
+Observation, consequence, smallest repair, closure proof, owner.
+
+## Adoption boundary
+What DVC should own first and what remains elsewhere.
+```
+
+## Reader checkpoint
+
+Your inventory is ready when:
+
+- it begins with one trusted result and consumer decision;
+- paths are not mistaken for content identities;
+- effective controls include overrides and defaults;
+- manual and external transformations appear;
+- runtime evidence is proportional to the result contract;
+- outputs are classified by trust role;
+- reconstruction and recovery are evaluated separately;
+- unknowns remain visibly unverified;
+- each high-consequence gap has a repair, closure proof, and owner;
+- the first DVC adoption boundary follows from evidence.
+
+An honest inventory is not a confession of failure. It is the first artifact
+another maintainer can use without inheriting the team's private memory.
