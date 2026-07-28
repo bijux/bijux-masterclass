@@ -183,6 +183,108 @@ If the promoted threshold becomes the new baseline, record its controls, populat
 metric schema, and expected metrics. Otherwise the next experiment begins with the same
 ambiguity this module is meant to remove.
 
+## Promote a configuration, not a lucky replicate
+
+For a stochastic study, the selected object is normally a configuration and its evidence
+profile. The best seed is not the configuration.
+
+Promotion evidence should include:
+
+```text
+configuration:
+baseline replicate set:
+candidate replicate set:
+planned summary:
+observed center and spread:
+minimum practical gain:
+safeguard results:
+failed-run handling:
+confirmation evidence:
+```
+
+The applied workspace may contain one concrete seed for reconstruction or final training.
+The decision record must explain how that concrete state relates to the configuration
+family that was reviewed.
+
+Reject this argument:
+
+> Seed 37 had the highest F1, so promote seed 37.
+
+The seed was planned variation unless the project has a defensible reason to make it part
+of the deployed configuration.
+
+## Freeze before confirmation
+
+The candidate should be frozen before independent confirmation:
+
+```mermaid
+sequenceDiagram
+  participant Exploration
+  participant Candidate
+  participant Confirmation
+  participant Promotion
+
+  Exploration->>Candidate: nominate configuration and decision rule
+  Candidate->>Candidate: freeze controls and evidence identity
+  Candidate->>Confirmation: evaluate once under governed confirmation
+  Confirmation->>Promotion: accept, reject, or abstain
+  Promotion->>Promotion: authorize and verify applied state
+```
+
+If the team changes the candidate after viewing confirmation evidence, the changed
+candidate needs a new confirmation claim. Repeatedly tuning against the holdout turns it
+into exploration data.
+
+## Include uncertainty in the decision record
+
+Extend the durable record:
+
+```text
+candidate family:
+number of candidates explored:
+replicate contract:
+selection rule:
+confirmation authority:
+practical threshold:
+uncertainty or sensitivity finding:
+known limitation:
+```
+
+A bounded note might say:
+
+> The candidate exceeded the minimum recall gain in four of five paired runs and met the
+> precision safeguard in all five. One paired run showed no gain. The mean improvement
+> exceeds the predeclared practical threshold, and the frozen configuration passed the
+> independent confirmation set. Promotion remains limited to the governed population and
+> runtime contract.
+
+That note exposes both support and instability.
+
+## Verify rollback against the new baseline
+
+Promotion changes future experiment authority. Preserve:
+
+- old baseline identity and reconstructability;
+- promoted configuration and commit;
+- output and metric verification;
+- consumer or workflow cutover evidence;
+- rollback trigger;
+- command route to restore the old authority.
+
+Rollback is not “find the old experiment later.” It is a tested state transition.
+
+```mermaid
+flowchart LR
+  old["old approved baseline"] --> promote["promoted commit"]
+  promote --> verify["post-promotion verification"]
+  verify --> monitor["governed observation"]
+  monitor -->|rollback trigger| restore["restore old authority"]
+  restore --> check["verify old contract again"]
+```
+
+If old objects or runtime inputs are removed immediately after promotion, rollback may be
+only a policy sentence.
+
 ## Discarding is an honest outcome
 
 A discarded candidate is not wasted work if it taught something.
@@ -292,5 +394,9 @@ You understand this core when you can:
 - write a promotion note that names the control change, metric tradeoff, and review basis
 - distinguish candidate creation, promotion request, apply, and governed promotion
 - explain why a valid comparison can still be blocked at the promotion gate
+- promote a stochastic configuration from replicate evidence rather than a lucky seed
+- freeze candidate controls before independent confirmation
+- record uncertainty, search scope, and limitations in the decision
+- verify rollback as a state transition between named authorities
 
 Experiments are temporary. History should contain only the decisions the team can defend.
