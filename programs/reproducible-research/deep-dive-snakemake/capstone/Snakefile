@@ -74,6 +74,8 @@ localrules: discover_samples
 # Checkpoint: discover samples
 # -----------------------------
 checkpoint discover_samples:
+    input:
+        registry=config["arrival_registry"]
     output:
         json=f"{RESULTS_DIR}/discovered_samples.json"
     log:
@@ -98,6 +100,7 @@ checkpoint discover_samples:
         python3 -m capstone.discover_samples \
             --raw-dir "{params.raw_dir}" \
             --glob "{params.raw_glob}" \
+            --arrival-registry "{input.registry}" \
             {params.allow_pe} \
             --out-json "{output.json}" 2> "{log}"
         """

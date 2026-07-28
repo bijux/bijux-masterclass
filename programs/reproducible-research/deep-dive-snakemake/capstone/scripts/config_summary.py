@@ -61,14 +61,13 @@ def build_summary(config_path: Path, provenance_path: Path) -> dict[str, object]
     provenance = load_json(provenance_path)
     materialized = provenance["config"]
     params = materialized["params"]
-    repository_samples = sorted((repository_config.get("samples") or {}).keys())
 
     return {
         "repository_config_path": config_path.resolve().as_posix(),
         "provenance_path": provenance_path.resolve().as_posix(),
         "repository_config_keys": sorted(repository_config),
-        "repository_sample_keys": repository_samples,
-        "discovery_mode": "checkpoint" if materialized["use_discovered_samples"] else "manual",
+        "discovery_mode": "governed_arrival_registry",
+        "arrival_registry": materialized["arrival_registry"],
         "materialized_directories": {
             "results_dir": materialized["results_dir"],
             "publish_dir": materialized["publish_dir"],

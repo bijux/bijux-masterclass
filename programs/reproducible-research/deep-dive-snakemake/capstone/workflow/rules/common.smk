@@ -27,21 +27,17 @@ def discovery_payload() -> dict:
 
 def get_samples() -> list[str]:
     """Return stable sample IDs for expansion (currently SE only)."""
-    if config.get("use_discovered_samples", False):
-        data = discovery_payload()
-        return [s for s, info in data["samples"].items() if info["mode"] == "SE"]
-    return list(config.get("samples", {}).keys())
+    data = discovery_payload()
+    return [s for s, info in data["samples"].items() if info["mode"] == "SE"]
 
 
 def get_raw_fastq(wildcards) -> str:
     """Resolve the raw FASTQ path for a sample (currently SE only)."""
     sample = wildcards.sample
-    if config.get("use_discovered_samples", False):
-        info = discovery_payload()["samples"][sample]
-        if info["mode"] != "SE":
-            raise ValueError(f"paired-end mode not supported yet for sample '{sample}'")
-        return info["reads"]["SE"]
-    return config["samples"][sample]
+    info = discovery_payload()["samples"][sample]
+    if info["mode"] != "SE":
+        raise ValueError(f"paired-end mode not supported yet for sample '{sample}'")
+    return info["reads"]["SE"]
 
 
 def file_size_mb(path: str) -> float:

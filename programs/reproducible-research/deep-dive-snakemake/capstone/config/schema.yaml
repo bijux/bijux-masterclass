@@ -6,14 +6,9 @@ $schema: https://json-schema.org/draft/2020-12/schema
 title: Snakemake Capstone Configuration
 type: object
 properties:
-  use_discovered_samples:
-    type: boolean
-    description: If true, automatically discover samples from data/raw using discover_samples.py (checkpoint).
-  samples:
-    type: object
-    additionalProperties:
-      type: string
-    description: Manual sample mapping (sample name → path to raw FASTQ.gz). Ignored if use_discovered_samples is true.
+  arrival_registry:
+    type: string
+    description: Governed TSV whose path column declares which raw files enter discovery.
   results_dir:
     type: string
     default: results
@@ -84,5 +79,5 @@ properties:
         type: string
         default: data/panel/panel.fasta
     additionalProperties: false
-required: []
+required: [arrival_registry]
 additionalProperties: false

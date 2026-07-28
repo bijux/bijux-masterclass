@@ -1,4 +1,1 @@
-use_discovered_samples: true  # Enabled by default: automatic sample discovery via checkpoint
-samples:
-  sampleA: data/raw/sampleA.fastq.gz
-  sampleB: data/raw/sampleB.fastq.gz
+arrival_registry: data/raw-arrivals.tsv
