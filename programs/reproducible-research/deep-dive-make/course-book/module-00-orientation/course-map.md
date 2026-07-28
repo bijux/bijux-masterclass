@@ -36,6 +36,92 @@ flowchart TD
 | 09 · Operations | a correct production build | measure cost, investigate incidents, and write a practical runbook | evidence replaces folklore under pressure |
 | 10 · Migration and governance | an inherited system | preserve proof while changing ownership or tools | tool boundaries become explicit design decisions |
 
+## Four learning arcs
+
+### Graph truth: Modules 01–03
+
+You move from a single file target to a build that remains correct under parallel
+execution and can test its own convergence.
+
+Leave this arc with:
+
+- a drawn dependency graph;
+- a missing-edge diagnosis;
+- a serial-versus-parallel equivalence proof;
+- a deterministic discovery rule;
+- a selftest that can fail for a meaningful build defect.
+
+Readiness gate:
+
+> Given a changed input, can you predict exactly which targets should rebuild, show the
+> trace, and prove an unchanged second run is a no-op?
+
+If not, later abstraction can hide rather than repair the graph.
+
+### Semantic pressure: Modules 04–06
+
+You learn why GNU Make selected a value or rule, which machine assumptions belong in the
+contract, and how generators publish several outputs without side-effect folklore.
+
+Leave this arc with:
+
+- an expansion and precedence explanation;
+- an include-remake or rule-selection proof;
+- a supported-environment contract;
+- an honest non-file input model;
+- a generator boundary with atomic publication and failure evidence.
+
+Readiness gate:
+
+> Can you explain a surprising build result by a named expansion, precedence, include,
+> rule-selection, environment, or generator boundary?
+
+### Public build system: Modules 07–08
+
+You turn a growing collection of Makefiles into one build API and then evaluate its
+release artifacts from the consumer side.
+
+Leave this arc with:
+
+- public target contracts;
+- include ownership and namespace boundaries;
+- a release candidate manifest;
+- checksum and archive-member evidence;
+- a safe install or extraction route.
+
+Readiness gate:
+
+> Can a new contributor discover the supported targets, and can a consumer verify the
+> package without trusting the producer's workspace?
+
+### Operations and stewardship: Modules 09–10
+
+You measure parse, scheduling, recipe, and proof cost; investigate incidents; and decide
+whether Make should retain or transfer responsibility.
+
+Leave this arc with:
+
+- an execution profile;
+- an incident evidence packet;
+- a runbook with stop conditions;
+- a migration invariant table;
+- a cutover, rollback, and ownership decision.
+
+Readiness gate:
+
+> Can you change performance or tool ownership without weakening graph truth, public
+> targets, or artifact evidence?
+
+```mermaid
+flowchart TD
+  truth["graph truth"] --> pressure["semantic pressure"]
+  pressure --> public["public build system"]
+  public --> stewardship["operations and stewardship"]
+  stewardship --> review{"all earlier claims preserved?"}
+  review -- no --> earliest["return to earliest broken boundary"]
+  review -- yes --> govern["accept governed change"]
+```
+
 ## Skills accumulate
 
 Later modules do not replace earlier ones. A release target in Module 08 still needs the
@@ -81,6 +167,36 @@ The ten exercises intentionally change character:
 - Exercises 9-10 ask you to explain trade-offs and apply the skill to an unfamiliar case.
 
 Completing only the first half gives you recognition. Completing all ten builds transfer.
+
+## Track capabilities rather than pages
+
+| Boundary | Explain | Predict | Demonstrate | Review |
+| --- | --- | --- | --- | --- |
+| incremental graph | | | | |
+| parallel safety | | | | |
+| determinism and selftests | | | | |
+| GNU Make semantics | | | | |
+| portability and environment | | | | |
+| generated output ownership | | | | |
+| public build API | | | | |
+| release artifact contract | | | | |
+| performance and incident evidence | | | | |
+| migration and governance | | | | |
+
+An empty cell is a route signal. Return to the earliest missing capability because later
+claims depend on it.
+
+## Suggested schedules
+
+| Schedule | Rhythm | Keep intact |
+| --- | --- | --- |
+| ten-week | one technical module each week | complete exercise packet and review |
+| five-week | one adjacent module pair each week | worked investigations and exit gates |
+| intensive | one learning arc per long block | predictions, negative tests, and evidence interpretation |
+| repository-led | follow the earliest observed build failure | prerequisites required by that failure |
+
+Accelerated study may reduce repeated reading. It should not remove controlled mutations,
+parallel tests, clean-state checks, or consumer verification.
 
 ## Where the capstone enters
 
