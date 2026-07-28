@@ -1,87 +1,235 @@
 # Glossary
 
-Module 07 asks you to read a Snakemake repository as an architecture, not only as a pile
-of working files. This glossary helps you describe where meaning lives, which paths are
-public, and when a repository is becoming too clever to review honestly.
+Use these terms to make an architecture claim precise. Each definition answers three
+questions where useful:
 
-## When to stop and check the glossary
+- what is it
+- who owns it
+- what does it not prove
 
-Use this page when an architecture discussion starts to blur these boundaries:
+## Assembly and execution
 
-- entrypoint versus implementation
-- rule family versus reusable module
-- workflow-facing path versus downstream-facing path
-- helper convenience versus hidden coupling
-- refactor trigger versus style preference
+**Entrypoint**
 
-If the discussion feels vague, one of those terms is probably doing too many jobs at
-once.
+The top-level `Snakefile` that establishes contract gates, shared names, local workflow
+assembly, and completion targets. It is executable Python evaluated during parsing, not a
+passive table of contents.
 
-## Terms
+**Parse time**
 
-| Term | Meaning in this module |
+When Snakemake evaluates workflow Python, config, includes, module declarations, and rule
+definitions. A successful parse proves that a workflow could be assembled under the
+current context; it does not prove that a requested target has a valid plan.
+
+**Planning time**
+
+When requested targets become jobs through wildcards, input functions, checkpoints,
+resources, and file dependencies. A successful dry-run is planning evidence, not execution
+or interface evidence.
+
+**Execution time**
+
+When a planned job runs its shell command, script, notebook, or wrapper in an execution
+environment. Runtime success does not prove the graph declared every influential file.
+
+**Visible assembly**
+
+The property that a reviewer can locate config gates, included concerns, module imports,
+and completion targets without first reconstructing implementation internals.
+
+**Include**
+
+A parse-time mechanism that contributes definitions to the same local workflow and rule
+namespace. It helps separate locally owned concerns but does not isolate config, Python
+names, or ownership automatically.
+
+**Default target**
+
+The target Snakemake selects when the caller requests no explicit target. It defines a
+completion promise, not independent proof that the produced artifact deserves trust.
+
+## Ownership boundaries
+
+**Rule family**
+
+A locally owned group of rules sharing a file lifecycle, policy owner, or review question.
+It is normally assembled with `include`.
+
+**Workflow module**
+
+A reusable Snakemake workflow or rule template imported through `module` and `use rule`.
+Its boundary includes config, files, names, policy, runtime, and evidence.
+
+**Module caller**
+
+The local workflow that chooses a module, supplies bounded config, imports selected rules,
+assigns local aliases, and binds repository-specific paths and policy.
+
+**`use rule` binding**
+
+The call site where a module-owned rule template becomes a caller-owned local rule. It can
+override inputs, outputs, parameters, resources, logs, and benchmarks and therefore should
+reveal local meaning.
+
+**Ownership boundary**
+
+A division that assigns a decision and its maintenance obligation to one reviewable
+surface. A directory boundary is not an ownership boundary unless dependencies follow the
+claimed direction.
+
+**Dependency direction**
+
+The allowed flow of decisions between owners. For example, a rule may pass explicit
+arguments into package code; package code should not reach back into global workflow
+state.
+
+**Import ledger**
+
+A human-readable inventory of global names an included file consumes. Snakemake does not
+enforce this interface, so the ledger helps expose include-order and shared-state coupling.
+
+**Interface dimension**
+
+One aspect of a module contract: config, files, imported names, semantic policy, runtime,
+or operational evidence. Auditing only input and output paths leaves the interface
+incomplete.
+
+## Files and consumers
+
+**Declared input**
+
+A file named under a rule's `input`. Snakemake can use its identity and metadata to build
+dependency edges and plan reruns.
+
+**File influence**
+
+Any file whose contents can affect output. Every material file influence should normally
+be a declared input; passing its path through `params` does not declare its contents.
+
+**Internal file contract**
+
+A path and shape used between rules inside the workflow. It can change through a
+coordinated refactor when producers, consumers, tests, and guides change together.
+
+**Public file API**
+
+The documented downstream promise for artifact location, shape, meaning, and evolution.
+In the capstone, this boundary is versioned under `publish/v1/`.
+
+**Compatibility**
+
+The property that an existing consumer continues to work with the promised meaning. A file
+can remain parseable while becoming semantically incompatible.
+
+**Promotion**
+
+The deliberate transition from internal workflow state to a public artifact. Promotion
+adds a consumer-facing promise; it is not merely a copy operation.
+
+**Manifest**
+
+An ordered inventory of published members and hashes. It supports membership and integrity
+review but does not establish the scientific validity of each member.
+
+**Atomic publication**
+
+A bounded write pattern that validates a sibling candidate before renaming it to the final
+path. Under tested filesystem assumptions, failure before rename preserves the prior
+trusted final. It does not guarantee cross-filesystem atomicity or power-loss durability.
+
+**Consumer test**
+
+A test that approaches only documented public paths and meanings. It catches contract
+breakage that producer-focused tests can miss.
+
+## Implementation and coupling
+
+**Workflow-adjacent script**
+
+An implementation owned by one workflow job and commonly placed under
+`workflow/scripts/`. It may use Snakemake's injected object, so its dependency audit must
+include that object's files, config, and context.
+
+**Package interface**
+
+An ordinary function or command-line contract that has meaning without Snakemake. Package
+code should accept paths and values rather than discover repository or workflow state.
+
+**Hidden coupling**
+
+An influential dependency that crosses a boundary without appearing at the expected call
+site. Examples include broad config passing, undeclared file reads, current-directory
+assumptions, and import-time environment access.
+
+**Ambient input**
+
+Context obtained outside declared files and explicit policy, such as clock time, Git
+state, environment variables, platform, current directory, or a network service. Ambient
+input must be prohibited, injected, materialized, or documented according to the claim.
+
+**Source guard**
+
+A targeted test of a source-level architecture claim, such as allowed module config keys.
+It can reject recurrence of a known coupling pattern but cannot prove all runtime behavior.
+
+**Negative evidence**
+
+Evidence that a deliberate defect is rejected. A passing valid example establishes less
+than a valid example paired with a mutation that fails for the expected reason.
+
+## Review and change
+
+**Architecture claim**
+
+A falsifiable statement about ownership or dependency direction, such as “modules receive
+only declared runtime config.” It needs observations that could support or contradict it.
+
+**Architecture drift**
+
+A growing mismatch between claimed boundaries and actual dependencies. Drift can exist
+while every job still succeeds.
+
+**Refactor trigger**
+
+An observed correctness, maintenance, or review failure that justifies changing ownership.
+File length or aesthetic preference alone is not a trigger.
+
+**Preservation evidence**
+
+Evidence that a refactor retained the intended parse surface, plan, execution, artifact,
+or public contract. The relevant levels depend on the boundary changed.
+
+**Deliberate deferral**
+
+A recorded decision not to refactor yet, with the current safety argument, guarding
+evidence, and a measurable condition that reopens the decision.
+
+**Review packet**
+
+A bounded set of claims, source observations, command receipts, decisions, and remaining
+risks that another reviewer can challenge without oral context.
+
+## Confusion pairs
+
+| Do not collapse | Distinction |
 | --- | --- |
-| entrypoint | The top-level workflow assembly surface, usually `Snakefile`, where reviewers should first understand how the workflow is composed. |
-| visible assembly | A repository design where the top-level workflow shape is easy to discover without digging through helper code first. |
-| repository layer | A named architectural surface such as `workflow/rules/`, `workflow/modules/`, `workflow/scripts/`, `src/`, `profiles/`, or `config/`, each with a distinct job. |
-| rule family | A coherent group of rules that share one workflow concern, file-surface family, or review question. |
-| workflow module | A reusable workflow bundle that owns a clearer interface than a local rule-family file. |
-| ownership boundary | The line that explains which repository surface owns orchestration, implementation, policy, or path contracts. |
-| file API | A document that records which paths are stable, what they mean, and which surfaces are internal versus public. |
-| workflow-facing path contract | A stable path promise used inside the workflow, such as discovery artifacts or per-sample result families. |
-| downstream-facing path contract | A stable path promise exposed to downstream consumers, such as versioned publish surfaces. |
-| step-local implementation | Code near one workflow step, often a good fit for `workflow/scripts/`. |
-| reusable package code | Importable implementation code under `src/` that deserves direct tests and reuse across steps. |
-| hidden coupling | A dependency on files, config, or side effects that is not visible in the declared repository surfaces. |
-| architecture drift | The gradual weakening of repository clarity as boundaries, docs, and ownership signals stop matching the real code. |
-| refactor trigger | A concrete review or maintenance signal that justifies reshaping repository boundaries. |
-| private framework | A repository that technically works but hides its meaning behind helper layers and insider knowledge. |
+| include / module | an include assembles one local workflow; a module creates a reusable caller boundary |
+| rule family / package | a rule family owns graph contracts; a package owns ordinary software behavior |
+| explicit path / declared input | a path can be passed explicitly while its file contents remain absent from the graph |
+| completion / trust | reaching the default target does not independently validate its public meaning |
+| deterministic shape / compatible meaning | stable JSON formatting does not prevent a semantic breaking change |
+| runtime success / honest interface | hidden coupling can execute successfully |
+| public artifact / operational evidence | consumers may rely on the former; logs and benchmarks primarily diagnose the run |
+| pressure / defect | a crowded entrypoint may deserve review; a missing input edge is a reproducibility defect |
+| passing experiment / accepted design | a defect-reproduction experiment should pass when it exposes the intended failure |
+| rename / refactor | changing names alters navigation; changing ownership and dependency direction alters architecture |
 
-## How to use these terms
+## Retrieval check
 
-If an architecture discussion starts to feel fuzzy, ask which term has become unclear:
+Without returning to the definitions, explain:
 
-- is this an entrypoint problem, a rule-family problem, or a helper-coupling problem?
-- is this path workflow-facing or downstream-facing?
-- is this refactor fixing a real boundary, or only changing the tree shape?
-
-That question usually exposes the real architectural issue quickly.
-
-## Confusion pairs worth fixing early
-
-These pairs matter because architecture quality is mostly about naming the right boundary:
-
-- `entrypoint` versus `step-local implementation`: the entrypoint tells the top-level
-  workflow story; step-local implementation carries out one bounded piece of work.
-- `rule family` versus `workflow module`: a rule family groups related rules locally; a
-  workflow module implies a clearer reusable interface.
-- `workflow-facing path contract` versus `downstream-facing path contract`: one stabilizes
-  internal workflow coordination; the other stabilizes what outside consumers may trust.
-- `hidden coupling` versus `architecture drift`: hidden coupling is one concrete boundary
-  failure; architecture drift is the broader long-term weakening that follows from many
-  such failures.
-
-## Quick self-check
-
-Before you leave Module 07, make sure you can answer these in a full sentence:
-
-- If a reviewer must open four helper files before understanding what the workflow builds,
-  which architectural quality is missing from the repository?
-- If several rules share one concern but are not yet reused across repositories, which
-  boundary term fits better than "module"?
-- If a path must stay stable for downstream consumers but another path only coordinates
-  internal workflow steps, what distinction should you name explicitly?
-- If a repository still works but only maintainers with insider history can understand it,
-  which module term captures that failure mode?
-
-## Terms you should be able to use by the end of the day
-
-By the end of Module 07, you should be comfortable using these in a full sentence:
-
-- visible assembly
-- rule family
-- file API
-- hidden coupling
-- architecture drift
-- refactor trigger
-- private framework
+1. why `config: config` weakens a module caller boundary
+2. why a panel path under `params` may create stale output
+3. why `--list-rules` cannot establish file API compatibility
+4. why a manifest and consumer test answer different questions
+5. why a deliberate deferral is stronger than an untracked intention to reorganize later
