@@ -105,7 +105,7 @@ nav:
   - Merge Review and Branch Protection: module-07-collaboration-ci-social-contracts/merge-review-and-branch-protection.md
   - DVC Remotes and Shared Artifact Stewardship: module-07-collaboration-ci-social-contracts/dvc-remotes-and-shared-artifact-stewardship.md
   - Recovery Drills and Incident Readiness: module-07-collaboration-ci-social-contracts/recovery-drills-and-incident-readiness.md
-  - 'Worked Example: Fixing a Missing Data Push Review': module-07-collaboration-ci-social-contracts/worked-example-fixing-a-missing-data-push-review.md
+  - 'Worked Investigation: Blocking Incomplete Reviewer Handoffs': module-07-collaboration-ci-social-contracts/worked-investigation-blocking-incomplete-reviewer-handoffs.md
   - Exercises: module-07-collaboration-ci-social-contracts/exercises.md
   - Exercise Answers: module-07-collaboration-ci-social-contracts/exercise-answers.md
   - Module Glossary: module-07-collaboration-ci-social-contracts/glossary.md

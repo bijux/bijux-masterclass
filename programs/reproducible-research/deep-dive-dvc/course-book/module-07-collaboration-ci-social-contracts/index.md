@@ -106,7 +106,7 @@ If the problem is already partly clear, use this shortcut:
 | [Merge Review and Branch Protection](merge-review-and-branch-protection.md) | teaches merge gates, branch rules, and review evidence |
 | [DVC Remotes and Shared Artifact Stewardship](dvc-remotes-and-shared-artifact-stewardship.md) | teaches remote-backed collaboration and artifact stewardship |
 | [Recovery Drills and Incident Readiness](recovery-drills-and-incident-readiness.md) | teaches recovery rehearsal and incident response as proof surfaces |
-| [Worked Example: Fixing a Missing Data Push Review](worked-example-fixing-a-missing-data-push-review.md) | walks through one realistic collaboration failure and repair |
+| [Worked Investigation: Blocking Incomplete Reviewer Handoffs](worked-investigation-blocking-incomplete-reviewer-handoffs.md) | compares one accepted handoff with six independently reproducible blocking decisions |
 | [Exercises](exercises.md) | gives ten cumulative exercises ending in a no-oral-history handoff decision |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
