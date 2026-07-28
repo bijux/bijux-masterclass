@@ -244,6 +244,98 @@ If your explanation stops at “the data changed,” make it more precise. Name 
 claim: the candidate no longer measures the same population, so metric movement cannot be
 attributed only to the threshold intervention.
 
+## One experiment row is one observation
+
+For a repeated-run study, preserve each replicate as its own candidate observation. A
+reviewer should be able to recover:
+
+| Field | Why it matters |
+| --- | --- |
+| experiment identity | locates the exact candidate state |
+| parent or baseline | identifies the comparison anchor |
+| intervention values | distinguishes candidate from baseline |
+| seed or sample identity | identifies planned replicate variation |
+| data and runtime contract | establishes comparability |
+| metrics | records observed result |
+| exit and failure state | prevents silent removal of inconvenient runs |
+
+Do not overwrite `metrics.json` repeatedly and retain only the final average. That loses
+which result came from which control state.
+
+```mermaid
+flowchart LR
+  run1["experiment: seed 11"] --> ledger["replicate ledger"]
+  run2["experiment: seed 23"] --> ledger
+  run3["experiment: seed 37"] --> ledger
+  ledger --> summary["derived summary"]
+  summary --> decision["selection decision"]
+```
+
+The summary is a derived artifact. Its dependencies include the exact set of experiment
+records and the aggregation rule.
+
+## Make the experiment family reviewable
+
+Create a small family manifest beside the decision packet:
+
+```json
+{
+  "question": "does learning_rate=0.03 improve paired F1?",
+  "baseline": "approved-training-v4",
+  "intervention": {"fit.learning_rate": 0.03},
+  "replicate_control": "fit.random_seed",
+  "planned_values": [11, 23, 37, 41, 53],
+  "primary_metric": "f1",
+  "summary": "mean paired difference",
+  "minimum_practical_gain": 0.01
+}
+```
+
+This manifest does not replace DVC experiment records. It explains how several records
+form one decision.
+
+Check:
+
+- every planned replicate has an experiment record or explicit failure receipt;
+- no extra run entered the summary after its metric was seen;
+- baseline and candidate records use the intended pairing;
+- the summary can be recomputed from retained rows;
+- exploratory runs are labeled separately.
+
+## Retain failures and cancellations
+
+A run that crashes, exceeds a resource limit, or produces an invalid metric is part of
+the study history when it was included in the planned set.
+
+Record:
+
+```text
+replicate:
+candidate state:
+failure boundary:
+receipt:
+included in summary?:
+predeclared handling rule:
+```
+
+Dropping failures can bias the evidence when the candidate itself makes failure more
+likely. Re-running may be appropriate after an infrastructure fault, but preserve the
+first receipt and state why the retry is comparable.
+
+## Queueing is execution organization, not experimental design
+
+Running several candidates through a queue or parallel executor can make exploration
+efficient. It does not establish:
+
+- independence between runs;
+- stable runtime conditions;
+- a planned replicate set;
+- protection from early stopping;
+- honest winner selection.
+
+Those properties come from the experiment contract and retained evidence, not from how
+jobs were scheduled.
+
 ## Naming and notes matter
 
 Experiment records become much easier to review when the candidate has a clear label or
@@ -300,6 +392,10 @@ You understand this core when you can explain:
 - why clear candidate intent matters beside command output
 - why a shared Git parent is weaker than a verified baseline contract
 - how a successful experiment receipt differs from comparison evidence
+- why replicate-level records must remain recoverable beneath a summary
+- how a family manifest binds several experiments to one question
+- why failed and cancelled runs belong in the evidence ledger
+- why queued execution does not create experimental independence
 
 DVC experiments are an evidence surface for exploration. They are not a substitute for a
 clear experiment question.
