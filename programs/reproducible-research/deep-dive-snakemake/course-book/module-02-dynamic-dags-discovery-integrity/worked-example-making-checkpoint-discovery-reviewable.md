@@ -1,492 +1,471 @@
 # Worked Example: Making Checkpoint Discovery Reviewable
 
-This file pulls the whole module together around one realistic question:
+This example begins with a checkpoint that appears to work. It finds `alpha`, creates an
+output, and reruns when forced. The defect appears only when a later arrival should change
+the DAG under ordinary scheduling.
 
-> how do you let a workflow discover samples from `data/raw/` without turning the DAG into a moving target?
-
-The example stays small on purpose. The point is to make the design visible and to show
-why a checkpoint is usually the fourth move, not the first.
-
-## How to use this worked example
-
-Treat this page as a lab bench, not as a story you only read once.
-
-For each repair step:
-
-1. name the discovery fact you are trying to make visible
-2. predict which file or boundary should preserve that fact
-3. run the smallest command that proves the workflow now behaves that way
-
-If you skip the artifact question, the example becomes a checkpoint demo instead of a
-lesson about reviewable workflow truth.
-
-## If you are learning this without the live class
-
-Use the example in four passes instead of trying to absorb everything at once:
-
-1. read only the weak draft and name what it hides
-2. stop after the declared candidate set repair and run `snakemake -n`
-3. add the checkpoint only after you can explain why static planning is no longer enough
-4. finish by checking whether the publish boundary preserves the discovered set
-
-If you cannot explain the workflow after pass 2, do not move to pass 3. The checkpoint
-is a later repair, not the foundation of the lesson.
-
-## The one-day teaching goal
-
-By the end of this example, a learner should be able to rebuild a tiny dynamic workflow
-and explain:
-
-- why ambient directory scans are weak sources of truth
-- why a declared candidate set usually comes before a checkpoint
-- why a checkpoint must publish one durable registry
-- why discovery must remain legible at the publish boundary
-
-That is the educational point. The checkpoint keyword is not the point.
-
-## The lab route
-
-Work through the example in this order:
-
-1. inspect the weak draft and name the hidden discovery assumptions
-2. repair the workflow with a declared candidate set first
-3. narrow the output family before you add more dynamism
-4. introduce a checkpoint only when runtime validation really changes the usable set
-5. carry the accepted set into the publish boundary
-
-## What to keep beside you while you work
-
-Keep these four surfaces visible while you move through the example:
-
-- the current `Snakefile`
-- the discovered or accepted registry on disk
-- `snakemake -n`
-- the eventual publish tree
-
-Those four views are enough to explain whether the design is honest.
-
-## The evidence packet you should build as you go
-
-By the end of the example, keep one small packet that contains:
-
-- the candidate source of truth such as `config/samples.tsv`
-- one dry-run capture showing the current target set
-- the accepted-sample registry written by the checkpoint
-- one note naming why the checkpoint is justified here
-- one publish tree snapshot showing which discovery artifacts cross the public boundary
-
-If one of those pieces is missing, the design may still run, but it is not yet a strong
-self-study answer.
+You will repair the workflow by introducing a governed arrival event, validating
+membership, projecting accepted records, and carrying discovery truth into publication.
+Every repair has a prediction and a receipt.
 
 ## The scenario
 
-Assume a workflow that should:
-
-1. inspect `data/raw/` for FASTQ files
-2. discover which samples exist
-3. run one QC job per sample
-4. publish a reviewed boundary that keeps the discovered set visible
-
-That sounds ordinary. It still creates most of the mistakes people make with dynamic
-Snakemake workflows.
-
-Use one tiny lab tree so every repair is visible in the same place:
+A sequencing intake directory initially contains:
 
 ```text
-module02-lab/
-├── Snakefile
-├── config/
-│   └── samples.tsv
-├── data/
-│   └── raw/
-├── results/
-│   ├── discovery/
-│   └── samples/
-├── publish/
-└── artifacts/
+data/raw/
+└── alpha.fastq
 ```
 
-The point of the tree is not aesthetics. Each directory owns one kind of truth:
+After the baseline completes, two more files arrive:
 
-- `config/` declares candidate intent
-- `data/raw/` holds the evidence files the intent points to
-- `results/discovery/` records what runtime validation learned
-- `results/samples/` holds per-sample work products
-- `publish/` exposes only the public review contract
+```text
+data/raw/
+├── alpha.fastq
+├── beta.fastq
+└── gamma.fastq
+```
 
-## The repair loop for the whole example
+`beta` is approved for processing. `gamma` is present but not yet admitted. The required
+public result should therefore contain `alpha` and `beta`, not `gamma`.
 
-Keep this table beside the code while you work:
+## The evidence ledger
 
-| Repair step | Hidden question | Owned artifact | Small proof command |
-| --- | --- | --- | --- |
-| weak draft | who decided the sample set | none | `snakemake -n` |
-| declared candidates | which candidates are even in scope | `config/samples.tsv` | `snakemake -n` |
-| narrow output family | where one sample's artifacts belong | `results/samples/{sample}/qc.json` | `snakemake --summary` |
-| runtime validation | which declared candidates were actually usable | `results/discovery/accepted_samples.json` and `results/discovery/rejected_samples.json` | `find results/discovery -maxdepth 1 -type f | sort` |
-| publish boundary | what a downstream reviewer can verify without engine state | `publish/<release>/manifest.json` plus copied discovery registries | `tree publish` |
+Create this ledger before changing code:
 
-If you cannot point to the owned artifact in the current row, stop there before adding
-more workflow machinery.
+| Claim | Changed event | Prediction | Receipt | Interpretation |
+| --- | --- | --- | --- | --- |
+| baseline discovers alpha | clean execution | alpha output exists | baseline run | pending |
+| approved beta changes plan | arrival admission | discovery and beta are scheduled | change dry-run | pending |
+| gamma stays out of scope | only beta admitted | no gamma job | change run | pending |
+| publication matches acceptance | accepted set is alpha,beta | public units are alpha,beta | publish verification | pending |
 
-## The weak first draft
+Do not fill “interpretation” with “passed.” Explain the dependency or equality the receipt
+demonstrates.
+
+## The weak workflow
+
+The checkpoint scans an ambient directory:
 
 ```python
 from pathlib import Path
 
-SAMPLES = [path.stem for path in Path("data/raw").glob("*.fastq.gz")]
 
-rule all:
-    input:
-        expand("results/{sample}.json", sample=SAMPLES)
-
-rule qc:
-    input:
-        "data/raw/{sample}.fastq.gz"
+checkpoint discover:
     output:
-        "results/{sample}.json"
-    shell:
-        "python scripts/qc.py --input {input} --output {output}"
-```
-
-This draft is small, but it already teaches four bad lessons:
-
-- discovery is an implicit parse-time scan with weak normalization
-- output naming is too broad to carry more artifact families safely
-- nothing records the discovered sample set for review
-- the publish boundary has not been separated from internal execution state
-
-The code works only if you avoid asking serious questions.
-
-## What goes wrong when a learner trusts the weak draft
-
-Use this as a diagnostic card before you repair anything:
-
-| If you notice... | The weak draft is hiding... | Smallest proof command |
-| --- | --- | --- |
-| the job set changes after files are renamed or reordered | discovery is tied to ambient directory state instead of a declared contract | `snakemake -n` before and after the rename |
-| you cannot explain why one sample has output and another does not | there is no durable discovered-set artifact | `find results -maxdepth 2 -type f | sort` |
-| you are tempted to add more wildcard JSON outputs beside `results/{sample}.json` | the artifact family is too broad to grow safely | `snakemake --summary` |
-| a reviewer must rescan `data/raw/` to understand the run | the workflow never published its discovery decision | `tree publish` after a publish step exists |
-
-If you can match the symptom to the hidden defect, the repair usually becomes easier to
-defend.
-
-## Prefer a declared candidate set
-
-The first repair is not a checkpoint. The first repair is to replace ambient directory
-state with a declared candidate set. A small `config/samples.tsv` can say:
-
-```text
-sample	path
-A	data/raw/A.fastq.gz
-B	data/raw/B.fastq.gz
-```
-
-Load, validate, and sort those records once near the top of the Snakefile. The concrete
-input paths can then drive ordinary static expansion:
-
-```python
-import csv
-
-with open("config/samples.tsv", encoding="utf-8", newline="") as handle:
-    RECORDS = sorted(csv.DictReader(handle, delimiter="\t"), key=lambda row: row["sample"])
-
-SAMPLES = [record["sample"] for record in RECORDS]
-SOURCE_BY_SAMPLE = {record["sample"]: record["path"] for record in RECORDS}
-```
-
-This changes the conversation immediately.
-
-Now the workflow can answer:
-
-- which samples were candidates
-- which path belongs to each sample
-- which version-controlled record defines the target set
-- which raw files are evidence for those candidate claims
-
-If that is all the workflow needs, stop here. Adding a checkpoint would make a known
-target set harder to reason about.
-
-That pause matters. More dynamic is not automatically more advanced.
-
-Use this sentence precisely:
-
-> `config/samples.tsv` is the declared candidate surface, and `data/raw/` contains the
-> evidence files those candidate claims refer to.
-
-That distinction matters because many weak Module 02 answers call the raw directory the
-source of truth even after the workflow has already moved to a declared manifest.
-
-## Why this pause matters educationally
-
-This is the moment many learners miss. They jump to checkpoints because checkpoints look
-like the "real" advanced feature.
-
-Module 02 needs the opposite instinct:
-
-- first ask whether the target set is already knowable
-- then ask whether one declared artifact could make it reviewable
-- only then ask whether runtime execution truly reveals a new fact
-
-## Narrow the artifact family
-
-The original output shape was:
-
-```python
-"results/{sample}.json"
-```
-
-That path does not teach enough. It will become confusing the moment you add another JSON
-artifact family.
-
-A better shape is:
-
-```python
-"results/{sample}/qc.json"
-```
-
-Now the workflow has:
-
-- one place for sample identity
-- one place for artifact identity
-- room to grow into `kmer.json`, `screen.json`, or `summary.json` later
-
-That is Core 2 in action: the wildcard owns a narrow, reviewable domain.
-
-## Introduce a checkpoint only when execution reveals a new fact
-
-Suppose a validation tool must read each candidate file and only non-empty, structurally
-valid samples may continue. The usable subset cannot be known until that tool executes.
-Now a checkpoint earns its place because runtime work reveals a new target domain.
-
-```python
-checkpoint validate_candidates:
-    input:
-        lambda wildcards: [SOURCE_BY_SAMPLE[sample] for sample in SAMPLES]
-    output:
-        directory("results/discovery")
+        manifest="state/discovered.txt"
     run:
-        import json
-        from pathlib import Path
-
-        outdir = Path(output[0])
-        outdir.mkdir(parents=True, exist_ok=True)
-        accepted = []
-        rejected = []
-
-        for sample, source in sorted(SOURCE_BY_SAMPLE.items()):
-            size = Path(source).stat().st_size
-            if size > 0:
-                accepted.append({"sample": sample, "path": source})
-            else:
-                rejected.append(
-                    {
-                        "sample": sample,
-                        "path": source,
-                        "reason": "empty input file",
-                    }
-                )
-
-        (outdir / "accepted_samples.json").write_text(
-            json.dumps({"samples": accepted}, indent=2) + "\n",
+        raw_dir = Path("data/raw")
+        samples = sorted(path.stem for path in raw_dir.glob("*.fastq"))
+        Path(output.manifest).parent.mkdir(parents=True, exist_ok=True)
+        Path(output.manifest).write_text(
+            "\n".join(samples) + "\n",
             encoding="utf-8",
         )
-        (outdir / "rejected_samples.json").write_text(
-            json.dumps({"samples": rejected}, indent=2) + "\n",
-            encoding="utf-8",
-        )
-
-
-def qc_targets(_wildcards):
-    import json
-    from pathlib import Path
-
-    checkpoint_job = checkpoints.validate_candidates.get()
-    registry = Path(checkpoint_job.output[0]) / "accepted_samples.json"
-    samples = [row["sample"] for row in json.loads(registry.read_text(encoding="utf-8"))["samples"]]
-    return expand("results/{sample}/qc.json", sample=samples)
-
-
-rule all:
-    input:
-        qc_targets
 ```
 
-The checkpoint is justified here because the downstream target set genuinely depends on
-the validation result. In a real workflow, replace the non-empty-file demonstration with
-a domain validator and keep the same ownership shape: one accepted registry and one
-rejection record.
+The downstream function is structurally correct:
 
-The important part is not the keyword `checkpoint`. The important part is that the
-discovered set is written once and reused.
-
-The example is stronger now because it can answer both sides of the question:
-
-- which candidates advanced
-- which candidates were rejected and why
-
-Without the rejection record, a learner often mistakes "not present downstream" for
-"never existed," which weakens both debugging and publication.
-
-## The proof loop after the checkpoint lands
-
-Run these in order and read them literally:
-
-```bash
-snakemake -n
-snakemake results/discovery/accepted_samples.json
-cat results/discovery/accepted_samples.json
-cat results/discovery/rejected_samples.json
-snakemake -n
+```python
+def discovered_outputs(_wildcards):
+    manifest = checkpoints.discover.get().output.manifest
+    samples = Path(manifest).read_text(encoding="utf-8").splitlines()
+    return expand("build/{sample}.txt", sample=samples)
 ```
 
-What you should be able to explain after that sequence:
-
-- the first dry-run stops at validation because the accepted set is not yet known
-- the checkpoint materializes accepted and rejected discovery evidence
-- the second dry-run shows downstream QC targets derived from the accepted registry
-
-If the second dry-run still behaves like a raw-directory scan, the checkpoint contract is
-not yet owning the truth.
-
-## The checkpoint audit before you celebrate
-
-Before you call the checkpoint version correct, inspect it against this audit:
-
-| Question | Healthy answer |
-| --- | --- |
-| What exact runtime fact was learned? | which declared candidates were usable after validation |
-| Where was the answer written? | one accepted registry and one rejection record under `results/discovery/` |
-| What reads the answer later? | one downstream function that rereads the registry |
-| What does not happen anymore? | no downstream rescan of `data/raw/` |
-
-If you cannot fill in all four cells from the files in front of you, keep repairing.
-
-## A short checkpoint before you continue
-
-Pause here and say the justification in one sentence.
-
-Strong sentence:
-
-> The checkpoint is justified because validation execution determines which declared
-> candidates are usable.
-
-Weak sentence:
-
-> We used a checkpoint because the workflow is dynamic.
-
-## What to check before moving on
-
-After the checkpoint version works, confirm all of these:
-
-- the declared candidate set is still visible
-- the accepted registry is a deterministic function of declared inputs
-- downstream fanout reads the registry instead of the raw directory
-- a rejected candidate leaves reviewable evidence instead of disappearing silently
-
-## Keep discovery visible at the publish boundary
-
-Now imagine the workflow publishes a versioned result bundle.
-
-Weak shape:
-
-- publish only the per-sample QC outputs
-- drop the discovery registry entirely
-
-That leaves a downstream reviewer asking:
-
-- why do these exact sample outputs exist
-- which sample set drove the DAG
-- whether the run discovered something different from yesterday
-
-Stronger shape:
-
-```text
-publish/v1/
-  accepted_samples.json
-  rejected_samples.json
-  summary.json
-  provenance.json
-  manifest.json
-```
-
-This is Core 4: discovery should remain legible when the workflow crosses into public
-contract space.
-
-## What the learner should notice now
-
-The final bundle is not just "results plus metadata."
-
-It is the place where a future reviewer answers:
-
-- why these exact sample outputs exist
-- which candidates were rejected
-- what semantic configuration and discovery route produced the final set
-
-If the publish boundary cannot answer those questions, the workflow is still hiding part
-of its dynamic behavior.
-
-## Avoid accidental operational drag
-
-Even a correct design can become awkward if it creates too much setup cost.
-
-Two easy repairs help here:
-
-- keep one shared environment for the QC and summary rules if they truly use the same toolchain
-- process one sample per job instead of splitting into many trivial fragment jobs without a real need
-
-That is Core 5: improve speed by repairing boundaries and granularity, not by hiding
-truth.
-
-## The repaired module story
-
-By the end of the repairs, the workflow can be described cleanly:
-
-1. `config/samples.tsv` declares which candidates are in scope
-2. `data/raw/` provides the evidence files those candidates point to
-3. runtime validation writes accepted and rejected discovery records
-4. downstream fanout reads the accepted registry instead of rescanning raw inputs
-5. per-sample outputs live under narrow, predictable paths
-6. the publish boundary carries forward discovery and provenance needed for review
-
-That is what Module 02 means by a dynamic DAG you can trust.
+It waits for the checkpoint and derives targets from its output. Yet the checkpoint has
+no declared input. Its Python code reads `data/raw`, but Snakemake cannot see that
+relationship.
 
 ```mermaid
 flowchart LR
-  manifest["declared candidate manifest"] --> raw["raw evidence files"]
-  raw --> validate["validation step"]
-  validate --> accepted["accepted registry"]
-  validate --> rejected["rejection record"]
-  accepted --> fanout["per-sample fanout"]
-  fanout --> publish["publish bundle"]
-  rejected --> publish
-  publish --> review["reviewer can explain the run"]
+  raw["data/raw/*.fastq"] -.hidden read.-> checkpoint["discover checkpoint"]
+  checkpoint --> manifest["state/discovered.txt"]
+  manifest --> inputfn["discovered_outputs()"]
+  inputfn --> alpha["build/alpha.txt"]
+  beta["new beta.fastq"] -.no invalidation edge.-> checkpoint
 ```
 
-Read that diagram literally. If your workflow skips the registries or publish step, the
-review surface is still incomplete.
+## Establish the baseline
 
-## Review questions for the repaired design
+With only `alpha.fastq`, run:
 
-When you inspect a workflow shaped like this, ask:
+```bash
+snakemake --cores 1 -p
+```
 
-1. where is the discovered set recorded
-2. which downstream rule reads that exact record
-3. which paths belong to the public boundary
-4. what part of the workflow proves the sample set was deterministic
-5. what environment or job-shape choices keep the workflow practical to run
+Expected:
 
-If those answers are visible, the workflow is no longer relying on magic.
+```text
+state/discovered.txt
+build/alpha.txt
+```
 
-## If your result still feels mysterious
+This successful baseline proves only that the checkpoint and projection can execute. It
+does not test whether future membership changes invalidate discovery.
 
-Do this recovery loop in order:
+## Expose the hidden dependency
 
-1. print the candidate set you think the workflow starts from
-2. print the accepted registry the checkpoint actually wrote
-3. compare the downstream targets against that registry
-4. inspect the publish tree and ask whether another person could explain the run from it
+Add `beta.fastq` and `gamma.fastq`, then predict the dry-run.
 
-Most Module 02 confusion is not about Snakemake syntax. It is about losing track of which
-artifact currently owns the truth.
+A common prediction is: “The checkpoint scans the directory, so it will see both.” That
+describes what happens *if the checkpoint runs*. The dry-run first asks whether it needs
+to run.
+
+```bash
+snakemake --cores 1 -n -p
+```
+
+Observed:
+
+```text
+Nothing to be done (all requested files are present and up to date).
+```
+
+Normal execution also leaves only `build/alpha.txt`.
+
+Now force the checkpoint:
+
+```bash
+snakemake --cores 1 --forcerun discover
+```
+
+The realized outputs become:
+
+```text
+build/alpha.txt
+build/beta.txt
+build/gamma.txt
+```
+
+This comparison isolates the defect:
+
+| Receipt | What it proves |
+| --- | --- |
+| normal dry-run is empty | no declared influence made discovery stale |
+| normal execution stays at alpha | ordinary workflow use misses new membership |
+| forced run finds all three | scanning code has capability but no valid admission or invalidation contract |
+
+## Define the admission event
+
+Add:
+
+```text
+data/arrivals.tsv
+```
+
+Initial contents:
+
+```text
+alpha
+```
+
+After `beta` is approved:
+
+```text
+alpha
+beta
+```
+
+`gamma` remains on disk but absent from the registry. This turns “which files should enter
+scope?” into a governed decision.
+
+The repaired checkpoint declares the registry:
+
+```python
+checkpoint discover:
+    input:
+        registry="data/arrivals.tsv"
+    output:
+        manifest="state/discovered.txt"
+    run:
+        lines = Path(input.registry).read_text(encoding="utf-8").splitlines()
+        samples = sorted(line.strip() for line in lines if line.strip())
+        Path(output.manifest).parent.mkdir(parents=True, exist_ok=True)
+        Path(output.manifest).write_text(
+            "\n".join(samples) + "\n",
+            encoding="utf-8",
+        )
+```
+
+```mermaid
+flowchart LR
+  raw["raw alpha, beta, gamma"] --> validation["registry and path validation"]
+  registry["registry alpha, beta"] --> checkpoint["discover checkpoint"]
+  checkpoint --> accepted["accepted alpha, beta"]
+  accepted --> inputfn["downstream input function"]
+  inputfn --> outputs["build alpha, beta"]
+  raw -.gamma is present only.-> outside["outside scope"]
+```
+
+## Predict the repaired change
+
+After the baseline, add the two raw files and change the registry from `alpha` to
+`alpha,beta`.
+
+Prediction:
+
+- the registry timestamp and content change;
+- the checkpoint becomes stale;
+- the dry-run schedules discovery;
+- after checkpoint completion, the input function is reevaluated;
+- `build/beta.txt` enters the DAG;
+- `build/gamma.txt` remains absent.
+
+Run:
+
+```bash
+snakemake --cores 1 -n -p
+snakemake --cores 1 -p
+```
+
+The expected normal output set is:
+
+```text
+build/alpha.txt
+build/beta.txt
+```
+
+The causal chain is now visible:
+
+```text
+registry change
+    -> checkpoint invalidation
+    -> accepted manifest change
+    -> downstream reevaluation
+    -> beta job
+```
+
+## Replace the toy registry with the capstone contract
+
+The capstone registry has a header and relative paths:
+
+```text
+path
+sampleA.fastq.gz
+sampleB.fastq.gz
+```
+
+Its discovery program validates:
+
+- exact schema;
+- non-empty and unique entries;
+- paths contained inside the raw directory;
+- governed filename pattern;
+- file existence;
+- sample and mate identity;
+- pairing completeness.
+
+It writes:
+
+```json
+{
+  "schema_version": 2,
+  "arrival_registry": "data/raw-arrivals.tsv",
+  "arrival_registry_sha256": "…",
+  "n_files": 2,
+  "samples": {
+    "sampleA": {
+      "mode": "SE",
+      "reads": {"SE": "data/raw/sampleA.fastq.gz"}
+    },
+    "sampleB": {
+      "mode": "SE",
+      "reads": {"SE": "data/raw/sampleB.fastq.gz"}
+    }
+  }
+}
+```
+
+The digest binds the accepted-set artifact to exact registry bytes. It does not certify
+that the intake decision was correct; it makes substitution detectable.
+
+## Keep fanout faithful
+
+The capstone helper reads only the checkpoint output:
+
+```python
+@lru_cache(maxsize=1)
+def discovery_payload():
+    path = checkpoints.discover_samples.get().output.json
+    with open(path, encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def get_samples():
+    data = discovery_payload()
+    return [
+        sample
+        for sample, info in data["samples"].items()
+        if info["mode"] == "SE"
+    ]
+```
+
+It does not glob `data/raw` again. The manifest remains the single authority for
+downstream membership.
+
+For richer records, project valid combinations directly. Do not split samples, lanes, and
+mates into independent lists and accidentally construct a Cartesian product.
+
+## Carry discovery into publication
+
+The capstone publishes:
+
+```text
+publish/v1/
+├── discovered_samples.json
+├── manifest.json
+├── provenance.json
+├── report/
+│   └── index.html
+├── summary.json
+└── summary.tsv
+```
+
+Verification checks:
+
+- the discovery schema version;
+- a non-empty accepted sample set;
+- summary units equal discovery units;
+- the publish manifest lists the exact supported paths;
+- published files are parseable and hashed.
+
+For the scenario:
+
+```text
+accepted A = {alpha, beta}
+complete C = {alpha, beta}
+published P = {alpha, beta}
+```
+
+The required equality `P = A = C` holds. `gamma` is not omitted accidentally; it never
+entered registered or accepted scope.
+
+## Run the packaged comparison
+
+The capstone contains both tiny workflows and an audit runner:
+
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make discovery-integrity-audit
+```
+
+Read:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/discovery-integrity/
+├── route.txt
+├── summary.tsv
+├── report.json
+├── traces/
+├── specimens/
+└── workspace/
+```
+
+The exact repository-relative prefix may depend on where you invoke `make`; the target
+prints the resolved path. Begin with `route.txt`.
+
+Expected `summary.tsv`:
+
+```text
+model              planned_after_arrival  normal_samples  forced_samples
+governed-registry  true                   alpha,beta      alpha,beta
+ambient-scan       false                  alpha           alpha,beta,gamma
+```
+
+Both rows report PASS because one preserves the accepted contract and the other honestly
+reproduces the named failure. Always read `finding` with `result`.
+
+## Prove that the audit can fail
+
+Run:
+
+```bash
+make discovery-integrity-selftest
+```
+
+The self-test:
+
+- confirms the paired experiment;
+- removes the governed checkpoint’s registry input;
+- damages the ambient scanner so forcing it cannot reveal new arrivals.
+
+The audit must reject both mutations. A report that stays green when its causal edge is
+removed is documentation, not a discriminating test.
+
+## Repair the evidence ledger
+
+The completed ledger should resemble:
+
+| Claim | Changed event | Observation | Interpretation |
+| --- | --- | --- | --- |
+| baseline discovers alpha | clean execution | `baseline_samples=["alpha"]` | both models can execute initial discovery |
+| approved beta changes plan | registry changes | governed dry-run includes checkpoint | declared registry input invalidates discovery |
+| gamma stays out of scope | gamma unregistered | governed normal and forced samples omit gamma | registry defines membership, not directory proximity |
+| ambient model is stale | only files appear | normal plan empty; forced set adds beta,gamma | hidden scan has capability without invalidation |
+| audit is discriminating | contract mutations | self-test returns expected rejections | findings depend on causal source properties |
+
+This is reviewable because each interpretation names the dependency being tested.
+
+## Consider performance only after truth
+
+Suppose the repaired workflow creates thousands of short jobs. Before grouping:
+
+1. calculate expected jobs from accepted records;
+2. confirm no accidental Cartesian product;
+3. measure queue, environment, and useful compute time;
+4. preserve the same accepted set and validation;
+5. compare outputs and publish manifests;
+6. document any change to failure isolation.
+
+Do not remove the registry, skip discovery validation, or make downstream jobs rescan the
+directory to reduce overhead. Those changes make the workflow answer a different
+membership question.
+
+## Independent reproduction
+
+Without reading the audit runner, reproduce the experiment in a separate artifact
+workspace:
+
+1. copy the two specimen directories;
+2. execute both baselines;
+3. add `beta` and `gamma`;
+4. register only `beta` in the governed model;
+5. save normal dry-runs;
+6. execute normally and list outputs;
+7. force each checkpoint and list outputs again;
+8. explain every difference from declared edges.
+
+Success is not matching the expected table from memory. Success is predicting the table
+from the two Snakefiles.
+
+## Review questions
+
+Answer without vague references to Snakemake “figuring it out”:
+
+1. What precise event invalidates the governed checkpoint?
+2. Why does the ambient checkpoint stay current after files arrive?
+3. What special checkpoint behavior occurs only after execution?
+4. Why is forced execution diagnostic rather than corrective?
+5. Why does `gamma` remain outside governed scope?
+6. Where is the accepted sample set preserved?
+7. How does downstream fanout avoid a second discovery authority?
+8. Which equality protects publication completeness?
+9. What mutation proves the audit is discriminating?
+10. Which performance changes could retain all membership invariants?
+
+## Completion standard
+
+You have completed the example when you can show:
+
+- paired normal dry-runs;
+- normal and forced sample sets;
+- the registry-to-checkpoint dependency edge;
+- the accepted manifest and its registry identity;
+- the literal downstream target set;
+- publish membership equality;
+- a causal self-test rejection;
+- one truth-preserving performance hypothesis.
+
+A final `beta` output alone is insufficient. The point is to explain why it entered the
+DAG and why `gamma` did not.
