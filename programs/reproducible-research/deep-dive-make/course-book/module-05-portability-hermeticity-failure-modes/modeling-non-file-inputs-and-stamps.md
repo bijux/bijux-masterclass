@@ -119,9 +119,15 @@ TOOLCHAIN_STAMP := build/toolchain.stamp
 FORCE:
 
 $(TOOLCHAIN_STAMP): FORCE | build/
-	@$(CC) --version | sed -n '1p' > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+	@set -eu; \
+	candidate="$@.candidate.$$$$"; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	"$(CC)" --version | sed -n '1p' > "$$candidate"; \
+	if test -r "$@" && cmp -s "$$candidate" "$@"; then \
+	  :; \
+	else \
+	  mv "$$candidate" "$@"; \
+	fi
 
 app: $(TOOLCHAIN_STAMP) main.o util.o
 	$(CC) $(CFLAGS) main.o util.o -o $@
@@ -140,6 +146,12 @@ Do not remove `FORCE` just because the stamp is a file. Without an evaluation tr
 Make sees an existing target with no newer prerequisite and never runs the recipe that
 could discover a changed compiler. `FORCE` controls evaluation; `cmp` controls
 publication. Both parts are required.
+
+The process-local candidate prevents two Make processes from truncating the same work
+file. It does not make two conflicting final publications correct. If
+`MODE=debug` and `MODE=release` can run concurrently in one workspace, they need distinct
+output namespaces or an explicit exclusion policy. Atomic rename prevents partial bytes;
+it cannot decide which artifact meaning should win.
 
 ## Compare clock-derived state with declared state
 
@@ -273,13 +285,44 @@ A better shape is:
 FORCE:
 
 build/env.stamp: FORCE
-	@printf 'CC=%s\nLC_ALL=%s\n' '$(CC)' '$(LC_ALL)' > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+	@set -eu; \
+	candidate="$@.candidate.$$$$"; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	{ \
+	  printf 'CC=%s\n' '$(CC)'; \
+	  printf 'LC_ALL=%s\n' '$(LC_ALL)'; \
+	} > "$$candidate"; \
+	if test -r "$@" && cmp -s "$$candidate" "$@"; then \
+	  :; \
+	else \
+	  mv "$$candidate" "$@"; \
+	fi
 ```
 
 Now the candidate is evaluated on every invocation, but the durable file changes only
 when the declared inputs change.
+
+## Canonicalize meaning, not incidental spelling
+
+An attestation is useful only if equal semantic states produce equal content. Decide how
+to handle these cases:
+
+| Raw observations | Same semantic input? | Manifest policy |
+| --- | --- | --- |
+| `CC=cc` and `CC=/usr/bin/cc` resolve to the same executable | often | record one chosen identity, such as version plus target triple |
+| `LC_ALL` unset while locale categories are inherited | not proven | compute the effective locale or pin `LC_ALL` |
+| compiler banner contains installation path or build date | maybe | retain only fields demonstrated to affect supported behavior |
+| flags differ only in whitespace | tool-dependent | never normalize without proving equivalence |
+| environment contains access tokens | no artifact meaning | exclude secrets completely |
+
+Canonicalization is a contract, not string cleanup. Keep raw diagnostic observations in a
+separate evidence bundle when they are useful for incidents but too volatile to drive
+freshness.
+
+Validate values before interpolating them into recipes. A finite value such as `MODE`
+should match one allowed token. Tool variables should name one executable, with arguments
+stored separately. This prevents a manifest recipe from turning unconstrained Make text
+into unintended shell syntax.
 
 ## Stamps are not junk files
 
@@ -302,7 +345,7 @@ Examples that often do not belong in artifact-driving stamps:
 - the wall-clock time of the build
 - the exact username of the operator
 - the terminal width
-- a random temporary directory that does not affect outputs
+- a process work directory that does not affect outputs
 
 These facts may be interesting for logs or telemetry. That does not mean they belong in
 rebuild logic.
@@ -344,9 +387,15 @@ MODE_MANIFEST := build/mode.manifest
 FORCE:
 
 $(MODE_MANIFEST): FORCE | build/
-	@printf 'MODE=%s\n' '$(MODE)' > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+	@set -eu; \
+	candidate="$@.candidate.$$$$"; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	printf 'MODE=%s\n' '$(MODE)' > "$$candidate"; \
+	if test -r "$@" && cmp -s "$$candidate" "$@"; then \
+	  :; \
+	else \
+	  mv "$$candidate" "$@"; \
+	fi
 
 app: $(MODE_MANIFEST) main.o
 	$(CC) $(CFLAGS) main.o -o $@
@@ -361,6 +410,25 @@ It also has two distinct runtime behaviors worth testing:
 
 - `make MODE=release` twice evaluates twice but publishes once
 - changing to `make MODE=debug` publishes new manifest content and invalidates `app`
+
+Add a third test: launch two supported configurations concurrently. If both target the
+same `build/mode.manifest` and `app`, the graph has a configuration-identity defect even
+though each candidate is published atomically. A truthful variant layout is:
+
+```make
+MODE ?= release
+VALID_MODES := release debug
+ifeq ($(filter $(MODE),$(VALID_MODES)),)
+$(error MODE must be one of: $(VALID_MODES))
+endif
+
+MODE_ROOT := build/$(MODE)
+MODE_MANIFEST := $(MODE_ROOT)/mode.manifest
+APP := $(MODE_ROOT)/app
+```
+
+Now debug and release state can coexist, and the path tells reviewers which semantic
+configuration it represents.
 
 ## Failure signatures worth recognizing
 
@@ -389,6 +457,7 @@ When you propose a stamp or manifest, ask three things:
 1. which semantic fact does it represent
 2. which targets depend on that fact
 3. can the file converge when the fact does not change
+4. can two supported configurations publish without competing for one path
 
 If you cannot answer all three, the stamp is not ready yet.
 
@@ -415,4 +484,7 @@ Before leaving this lesson, make sure you can explain:
 - why two clean workspaces are a stronger stamp test than one no-op rebuild
 - how artifact hashes reveal a hidden clock-derived input
 - why stamps and manifests can improve graph truth
+- why process-local candidates prevent partial publication but do not repair configuration
+  identity collisions
+- why canonicalization needs a semantic argument
 - why provenance should often live beside the artifact rather than inside it
