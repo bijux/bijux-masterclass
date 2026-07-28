@@ -233,8 +233,7 @@ recovery-audit: push ## Capture the remote-backed recovery route as a review bun
 	@$(DVC) status > $(RECOVERY_AUDIT_DIR)/before-status.txt
 	@$(DVC) remote list > $(RECOVERY_AUDIT_DIR)/remote.txt
 	@rm -rf data/derived metrics models publish state .dvc/cache
-	@$(DVC) pull > $(RECOVERY_AUDIT_DIR)/pull.txt
-	@$(DVC) checkout > $(RECOVERY_AUDIT_DIR)/checkout.txt
+	@$(DVC) pull prepare fit evaluate publish > $(RECOVERY_AUDIT_DIR)/pull.txt
 	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1 --report $(RECOVERY_AUDIT_DIR)/verify.json
 	@$(DVC) status > $(RECOVERY_AUDIT_DIR)/after-status.txt
 	@cp dvc.lock $(RECOVERY_AUDIT_DIR)/dvc.lock
@@ -254,7 +253,7 @@ recovery-audit: push ## Capture the remote-backed recovery route as a review bun
 		'Recovery audit route:' \
 		'  1. Read remote.txt to confirm the configured recovery source.' \
 		'  2. Compare before-status.txt and after-status.txt to see the repository state around the drill.' \
-		'  3. Read pull.txt and checkout.txt for the recovery commands that rebuilt local state.' \
+		'  3. Read pull.txt for the bounded root-stage recovery command that rebuilt local state.' \
 		'  4. Read verify.json, manifest-summary.json, and state-summary.json to confirm the restored contract and restored repository state.' \
 		'  5. Read profile-summary.json, model-summary.json, threshold-review.json, and the publish-v1 files when you need restored release evidence.' \
 		'  6. Compare dvc.lock against the restored publish bundle when you need recorded provenance.' > $(RECOVERY_AUDIT_DIR)/route.txt
