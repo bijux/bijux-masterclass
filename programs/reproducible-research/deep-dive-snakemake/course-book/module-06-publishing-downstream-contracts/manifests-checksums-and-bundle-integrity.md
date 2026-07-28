@@ -1,277 +1,318 @@
 # Manifests, Checksums, and Bundle Integrity
 
-Publishing is not finished when files are copied into `publish/v1/`.
+A publish manifest answers two narrow but essential questions:
 
-The bundle also needs to defend itself.
+1. Which files belong to this bundle?
+2. Do the delivered bytes match the inventoried bytes?
 
-That means a reviewer or downstream user should be able to answer questions like:
+It does not prove that fields mean the right thing, that a consumer remains compatible,
+or that the underlying analysis is scientifically valid. This lesson builds a portable,
+canonical inventory and keeps its integrity claim separate from broader trust.
 
-- what files belong in this bundle?
-- how do I know whether the bundle is complete?
-- how can I detect whether a file changed?
-- where do I look for machine-checkable evidence versus human explanation?
+## A minimal manifest
 
-This page is about the evidence surfaces that make a publish bundle reviewable.
+```json
+{
+  "schema_version": 1,
+  "publish_version": "v1",
+  "files": [
+    {
+      "path": "summary.json",
+      "sha256": "5f70..."
+    },
+    {
+      "path": "summary.tsv",
+      "sha256": "28c1..."
+    }
+  ]
+}
+```
 
-## How to use this page
+The path is relative to the manifest’s directory. The digest is calculated over exact
+file bytes. Entries use canonical path order.
 
-Read this page while imagining the bundle has just been downloaded by someone who was not
-present when it was produced.
+That makes the bundle movable and its inventory deterministic.
 
-That person needs to answer at least four questions without asking the original author:
+## Integrity, structure, and meaning are separate
 
-- what belongs in the bundle
-- whether the bundle is complete
-- whether the files match what was published
-- what kind of context or meaning still needs a different artifact
+```mermaid
+flowchart TD
+  bytes["Delivered bytes"] --> integrity{"Match manifest digest?"}
+  integrity -->|no| reject1["Reject integrity"]
+  integrity -->|yes| parse{"Parse and satisfy schema?"}
+  parse -->|no| reject2["Reject structure"]
+  parse -->|yes| meaning{"Preserve contract semantics?"}
+  meaning -->|no| reject3["Reject compatibility"]
+  meaning -->|yes| accept["Consumer may proceed"]
+```
 
-This page is about teaching that separation cleanly.
+A checksum mismatch stops review before schema. A matching checksum moves review forward;
+it does not complete it.
 
-## If you are learning this without the live class
+## Build from an allowlist
 
-Treat this page as a verification drill, not as a metadata glossary.
+The manifest generator should receive named public artifacts:
 
-Use it in four passes:
+```python
+PUBLIC_PATHS = [
+    Path("discovered_samples.json"),
+    Path("summary.json"),
+    Path("summary.tsv"),
+    Path("report/index.html"),
+    Path("provenance.json"),
+]
+```
 
-1. write down which files in the bundle answer inventory, identity, meaning, and context
-2. stop after the first manifest sketch and ask whether the bundle could travel to another machine unchanged
-3. run one verifier route before you keep reading
-4. finish by naming which trust question each artifact still cannot answer
+Then verify and inventory:
 
-If you keep calling all of these files "metadata," slow down and separate their jobs
-again before you move on.
+```python
+def file_entry(root: Path, path: Path) -> dict[str, str]:
+    resolved_root = root.resolve()
+    resolved_path = path.resolve()
+    relative = resolved_path.relative_to(resolved_root).as_posix()
+    return {
+        "path": relative,
+        "sha256": hashlib.sha256(resolved_path.read_bytes()).hexdigest(),
+    }
 
-## A bundle should explain itself
 
-The capstone publish bundle includes:
+entries = [
+    file_entry(publish_root, publish_root / relative)
+    for relative in sorted(PUBLIC_PATHS, key=lambda item: item.as_posix())
+]
+```
 
-- `manifest.json`
-- `provenance.json`
-- `summary.json`
-- `summary.tsv`
-- `report/index.html`
-- `accepted_samples.json`
-- `rejected_samples.json`
+`relative_to` rejects paths outside the bundle root. Sorting before serialization prevents
+filesystem enumeration order from changing the manifest.
 
-Those files do not all do the same job.
+## Reject ambiguous inventory
 
-One of the most common workflow mistakes is assuming that one file can answer every
-question.
+A verifier should reject:
 
-It usually cannot.
+- missing `manifest.json`;
+- duplicate paths;
+- non-canonical ordering if ordering is part of the manifest contract;
+- absolute or escaping paths;
+- manifest-listed files that are missing;
+- unexpected files when the bundle contract is closed;
+- checksum mismatches;
+- unsupported digest algorithms;
+- incompatible manifest schema or publish version.
 
-## What a manifest is good at
+If additional public files are allowed, declare how consumers discover and classify them.
+Do not let ambient files become public simply because the verifier ignores them.
 
-A manifest is strongest when it answers:
+## The self-reference problem
 
-- which files are part of the published bundle
-- how those files are named relative to the bundle root
-- how to validate their identity
+Should `manifest.json` list its own checksum?
 
-In the capstone, `manifest.json` records published paths and SHA-256 digests.
+Direct self-hashing is circular: changing the stored hash changes the file being hashed.
+Common designs:
 
-That is valuable because it makes the bundle inventory explicit instead of implied.
+- the content manifest inventories every public artifact except itself;
+- an outer bundle manifest inventories the complete review packet, including the inner
+  content manifest;
+- a detached signature or transparency record authenticates the manifest.
 
-## What checksums are good at
-
-Checksums answer a narrower but essential question:
-
-> is this file the same file I expect?
-
-They help detect:
-
-- accidental corruption
-- incomplete transfers
-- silent replacement of one artifact with another
-
-Checksums are not a substitute for meaning. They are evidence of identity.
-
-## The integrity packet to keep beside you
-
-Keep one five-line packet while you work through this page:
-
-- one manifest excerpt with stable relative paths
-- one checksum verification transcript
-- one note saying what provenance answers
-- one note saying what the file API answers
-- one note saying what accepted and rejected discovery records explain that the manifest does not
-
-That packet keeps the page grounded in reviewable evidence instead of abstract integrity language.
-
-## Start by separating inventory, identity, meaning, and context
-
-This four-way split is the main idea to keep:
-
-| Question | Best artifact |
-| --- | --- |
-| What files belong here? | manifest |
-| Is this exactly the file I expect? | checksum or digest |
-| What does this file mean? | file API or contract note |
-| What software context produced it? | provenance |
-
-Once learners can keep those questions apart, publish integrity stops sounding like one
-fuzzy metadata topic.
-
-## One outside-in integrity scenario
-
-Imagine a downstream reviewer receives only:
-
-- `publish/v1/manifest.json`
-- `publish/v1/provenance.json`
-- `publish/v1/summary.json`
-- `publish/v1/accepted_samples.json`
-- `publish/v1/rejected_samples.json`
-
-They should be able to answer:
-
-- which files belong in the bundle
-- whether those files match the published inventory
-- what software context produced the bundle
-- why the result set has its exact membership
-
-They should not need to browse `results/` or infer rejected membership from missing files alone.
-
-## What a manifest does not prove by itself
-
-A manifest does not fully answer:
-
-- what a file means
-- whether the right files were published in the first place
-- what software context produced those files
-- whether the contract should have been versioned differently
-
-That is why manifests need companion surfaces such as:
-
-- a file API or contract note
-- provenance
-- review judgment about the publish boundary
-
-## One useful separation
+The capstone uses an inner publish manifest and, for review bundles, an outer
+`bundle-manifest.json`.
 
 ```mermaid
 flowchart LR
-  manifest["manifest.json"] --> inventory["which files belong here"]
-  checksums["sha256 entries"] --> identity["whether each file matches"]
-  provenance["provenance.json"] --> context["what software context produced the bundle"]
-  file_api["file API or contract doc"] --> meaning["what each published file means"]
+  summary["summary.json"] --> inner["publish manifest"]
+  report["report/index.html"] --> inner
+  provenance["provenance.json"] --> inner
+  inner --> packet["review packet"]
+  guide["review guide"] --> packet
+  receipts["verification receipts"] --> packet
+  packet --> outer["bundle manifest"]
 ```
 
-This separation matters because reviewers often ask the right question but check the wrong
-artifact.
+Each inventory has a different boundary. Name it.
 
-## One concrete teaching scenario
+## Corrupt after inventory
 
-Imagine you receive `publish/v1/` from a collaborator.
+The compatibility audit’s integrity case:
 
-- `manifest.json` tells you that `summary.json`, `summary.tsv`, and `report/index.html`
-  belong in the bundle
-- the SHA-256 digests tell you whether the files you have match the ones they published
-- `provenance.json` tells you what repository and runtime context produced them
-- a contract note tells you which file a machine should parse and which file a human
-  should open first
+1. writes a valid `summary.json`;
+2. calculates its SHA-256;
+3. writes `manifest.json`;
+4. changes the summary bytes;
+5. invokes the consumer verifier.
 
-If any one of those is missing, a different kind of confidence disappears.
+The JSON remains parseable. Required fields and meanings remain present. The verifier
+reports:
 
-That is the educational point: integrity is not one check, but several distinct checks.
+```text
+checksum mismatch: summary.json
+```
 
-## A weak integrity story
+This is a clean integrity experiment because no schema or semantic change is needed to
+produce the rejection.
 
-Weak shape:
+## Checksum scope matters
 
-- the bundle has files but no explicit inventory
-- a report exists, so maintainers assume the bundle is self-explanatory
-- checksums are absent, so transfers and comparisons rely on trust alone
+Hash exact stored bytes. Differences can arise from:
 
-This leaves a reviewer with no compact way to validate the bundle.
+- newline normalization;
+- JSON whitespace or key ordering;
+- compression headers and timestamps;
+- file metadata included by an archive format;
+- regenerated HTML timestamps;
+- platform-specific serialization.
 
-An equally weak variant is:
+If the public contract is logical JSON rather than exact bytes, you still need an
+integrity definition. Options include:
 
-- the bundle publishes only accepted outputs
-- reviewers must infer rejected membership from missing files
+- publish canonical serialized JSON and hash its bytes;
+- hash a documented canonical form;
+- retain exact-byte integrity while separately comparing logical content.
 
-That weakens trust because membership decisions are now implied instead of recorded.
+Do not silently switch between byte and logical identity.
 
-## A stronger integrity story
+## Manifest stability
 
-Stronger shape:
+For reproducible manifest bytes:
 
-- the manifest names the published files
-- checksum entries let others validate identity
-- provenance records software context
-- contract documentation explains how to interpret the artifacts
+- use relative POSIX paths;
+- sort entries;
+- use one digest algorithm;
+- serialize JSON with stable indentation and key ordering;
+- terminate consistently with one newline;
+- exclude run timestamps unless they are intentional manifest data;
+- keep release occurrence metadata in provenance when appropriate.
 
-Now the bundle can answer more than one kind of question without forcing one file to do
-everything.
+This makes manifest diffs reviewable. It does not require analytical artifacts to be
+byte-identical across tools unless that is a stated claim.
 
-## The beginner mistake to catch early
+## Atomic candidate publication
 
-Beginners often assume that once a manifest exists, the bundle is self-documenting.
+A safe publication route:
 
-That gives the manifest too much responsibility.
+1. create an isolated candidate directory;
+2. write all public artifacts;
+3. validate schemas and cross-file invariants;
+4. run current consumer fixtures;
+5. write the content manifest;
+6. verify every digest from the candidate directory;
+7. promote the complete candidate under an immutable release path;
+8. update any mutable pointer only after promotion.
 
-A manifest can inventory and identify files without saying:
+Hashing files while producers still write them creates a time-of-check/time-of-use race.
+Freeze the candidate before inventory.
 
-- why those files are public
-- what a consumer should read first
-- whether a checksum mismatch should be interpreted as corruption or a changed version
+## A bundle verifier
 
-Integrity gets stronger when each artifact keeps a clear job.
+Pseudocode:
 
-## A practical review loop
+```python
+manifest = load_json(bundle / "manifest.json")
+paths = [entry["path"] for entry in manifest["files"]]
 
-When reviewing a publish bundle, ask:
+require(paths == sorted(paths), "manifest paths are not canonical")
+require(len(paths) == len(set(paths)), "manifest contains duplicate paths")
 
-1. Does the manifest enumerate the expected public artifacts?
-2. Do the checksum entries cover the files the bundle promises?
-3. Is provenance present for software-context questions?
-4. Is there a document or guide that explains artifact meaning and stability?
+for entry in manifest["files"]:
+    artifact = contained_path(bundle, entry["path"])
+    require(artifact.is_file(), f"missing artifact: {entry['path']}")
+    require(
+        sha256(artifact) == entry["sha256"],
+        f"checksum mismatch: {entry['path']}",
+    )
+```
 
-If the answer to only the first question is yes, the integrity story is still incomplete.
+After integrity succeeds, invoke schema and consumer checks. Keep the failure categories
+distinct in the report.
 
-## Common failure modes
+## Hashes do not authenticate origin
 
-| Failure mode | Why it hurts | Better repair |
+If an attacker can replace both an artifact and its manifest entry, a matching checksum
+does not establish authenticity.
+
+Origin claims may require:
+
+- a signature over the manifest;
+- a trusted release service;
+- content-addressed immutable storage;
+- access controls and audit logs;
+- a transparency record;
+- independent replication.
+
+This module’s checksum audit establishes internal bundle consistency, not cryptographic
+publisher identity.
+
+## Handle large files deliberately
+
+For large artifacts:
+
+- stream bytes into the digest rather than loading the whole file;
+- record file size as an additional diagnostic;
+- choose retry and partial-transfer behavior;
+- verify after transport at the consumer side;
+- avoid rehashing mutable files concurrently with production.
+
+Example:
+
+```python
+def sha256_stream(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+```
+
+The block size affects performance, not digest meaning.
+
+## Diagnose integrity failures
+
+| Failure | First question | Do not conclude yet |
 | --- | --- | --- |
-| manifest lists files but no digests | bundle completeness is visible but file identity is weak | include checksums for published artifacts |
-| report is treated as the integrity surface | bundle validation becomes manual and human-only | keep machine-checkable inventory and digests separate |
-| provenance is omitted because manifest exists | software context becomes untraceable | pair manifest integrity with provenance evidence |
-| manifest includes internal or unstable files | public boundary becomes noisy and brittle | inventory only the intentional publish contract |
-| reviewed discovery evidence stays internal while result membership is public-facing | consumers can see the result set but not defend its membership | publish accepted and rejected discovery records when they explain bundle membership |
-| contract meaning lives only in author memory | downstream users cannot interpret the bundle confidently | document the role of each public artifact explicitly |
+| missing path | was candidate assembly incomplete or manifest stale? | analysis failed |
+| checksum mismatch | did bytes change after inventory or during transfer? | schema is incompatible |
+| unexpected file | is the public boundary closed or extensible? | extra file is harmless |
+| path escape | was manifest constructed from untrusted paths? | file can be safely read |
+| manifest order drift | did generator lose canonicalization? | artifact content changed |
+| outer packet mismatch | which copied guide or receipt changed? | inner publish bundle is corrupt |
 
-## What a reviewer should hear
+Use the exact failing layer.
 
-When the bundle is designed well, the explanation sounds like this:
+## Hands-on corruption proof
 
-> The manifest tells us what belongs in the bundle, the checksums tell us whether those
-> files are intact, the provenance tells us what produced them, and the contract note
-> tells us how to interpret them.
+Run:
 
-That sentence is strong because it does not overload any single artifact.
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make publish-compatibility-audit
+```
 
-## The explanation a reviewer trusts
+Find `integrity-corruption` in `summary.tsv`, then inspect:
 
-Strong explanation:
+- the case definition;
+- materialized `summary.json`;
+- materialized `manifest.json`;
+- the current consumer failures in `report.json`.
 
-> `manifest.json` tells us which files belong in `publish/v1/` and gives us digests to
-> verify identity, while `provenance.json` explains the producing software context and the
-> file API explains what each artifact means.
+Calculate the artifact digest independently and compare it with the manifest. Explain why
+the same artifact can pass JSON parsing while failing integrity.
 
-Weak explanation:
+## Review checklist
 
-> the manifest is there, so the bundle is self-documenting.
+- [ ] The manifest boundary is named.
+- [ ] Public files come from an allowlist.
+- [ ] Paths are relative, contained, unique, and canonical.
+- [ ] Digests cover exact defined bytes.
+- [ ] Candidate artifacts are frozen before inventory.
+- [ ] Missing, unexpected, and corrupted files have distinct errors.
+- [ ] Manifest self-reference is handled through an outer boundary or detached mechanism.
+- [ ] Integrity verification precedes schema and semantic review.
+- [ ] A matching checksum is not described as proof of meaning or origin.
+- [ ] Large-file hashing is streamed and verified after delivery where required.
+- [ ] Promotion exposes only a complete verified candidate.
 
-The strong explanation respects the limits of each artifact. The weak explanation assigns
-too much responsibility to one file.
+## What you should carry forward
 
-## End-of-page checkpoint
-
-Before leaving this page, you should be able to:
-
-- explain what a manifest proves and what it does not prove
-- explain why checksums are about identity rather than meaning
-- describe why provenance is a separate integrity surface
-- explain why a publish bundle still needs a file API or contract note
-
-If you still use “metadata” as the main explanation for all of these files, slow down and
-separate their jobs again. The whole point of the page is to make those jobs distinct.
+A manifest makes bundle membership and byte identity reviewable. It is the foundation for
+delivery trust, not the whole building. The next lesson assigns authority between
+machine-readable APIs and human reports so neither audience is forced to scrape the
+other’s surface.
