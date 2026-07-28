@@ -1,0 +1,6 @@
+incident_id,error_rate,latency_ms
+INC-104,0.08,185
+INC-117,0.24,210
+INC-129,0.31,330
+INC-142,0.12,175
+INC-155,0.20,240
