@@ -1,267 +1,358 @@
 # Wildcard Domains and Fanout Control
 
-Once a workflow has a discovered sample set, the next danger is not discovery itself.
-The next danger is accidental multiplication.
+Discovery gives you records. Fanout turns those records into jobs. The transformation is
+safe only when the target pattern preserves the relationships already present in the
+records.
 
-This page is about keeping the DAG proportional to the real problem instead of letting
-wildcards and `expand()` invent extra work.
+This lesson treats wildcards as a domain model. You will calculate target sets before
+calling `expand()`, distinguish products from pairings, and keep checkpoint output from
+creating nonsense combinations.
 
-## How to read this page
+## A wildcard names a valid substitution domain
 
-Read this page with one pressure in mind:
-
-> is this target list representing the real domain, or did the workflow quietly invent
-> extra combinations?
-
-That is the real Module 02 question here. The syntax matters only because it can either
-preserve or distort the domain.
-
-## Why this lesson matters right after discovery
-
-Discovery and fanout belong together.
-
-You can have a perfectly honest discovered set and still build a dishonest DAG if the
-workflow expands that set carelessly:
-
-- one sample becomes many accidental sample-panel pairs
-- one wildcard starts claiming several artifact families
-- one validated registry is ignored while later code recreates the domain ad hoc
-
-This page teaches how to stop that drift.
-
-## The sentence to keep
-
-When you add a wildcard or an expansion, ask:
-
-> what exact family of paths am I allowing this rule to own?
-
-That question is better than asking only whether the syntax works.
-
-## A quick self-check before you keep reading
-
-Take one output pattern from your own workflow and ask:
-
-- what concrete file family does this rule own
-- what values are allowed to fill each wildcard
-- could another rule plausibly claim the same space later
-
-If those answers are fuzzy, the output contract is already too broad.
-
-## Wildcards define a domain, not just a variable
-
-This output:
+In this output:
 
 ```python
 "results/{sample}/qc.json"
 ```
 
-does not merely say "some value goes into `sample`." It says:
+`sample` is not merely a convenient string slot. It claims that each substituted value
+is a valid sample identity and that the resulting path has one stable meaning.
 
-- this rule may claim files under `results/`
-- each claimed path carries one sample identity
-- downstream reasoning depends on that mapping staying narrow and obvious
+If accepted discovery contains `alpha` and `beta`, the domain is:
 
-That is why wildcard design is a correctness topic, not a naming topic.
-
-## How dynamic workflows explode
-
-Most Module 02 fanout bugs come from one of these shapes:
-
-- a wildcard is broader than the real artifact family
-- `expand()` builds a cartesian product when the relationship is actually paired
-- the workflow expands from two drifting lists instead of one validated data source
-- a rule rescans the filesystem and creates a different domain than earlier steps used
-
-All four bugs can produce an impressive DAG. None produce a trustworthy one.
-
-## The classic `expand()` trap
-
-```python
-SAMPLES = ["sampleA", "sampleB"]
-PANELS = ["dna", "rna"]
-
-rule all:
-    input:
-        expand("results/{sample}/{panel}/report.json", sample=SAMPLES, panel=PANELS)
+```text
+sample ∈ {alpha, beta}
 ```
 
-This produces four targets:
+The expected target set is:
 
-- `sampleA/dna`
-- `sampleA/rna`
-- `sampleB/dna`
-- `sampleB/rna`
-
-That is correct only if every sample truly needs every panel.
-
-If the real problem is "sampleA is DNA and sampleB is RNA," the cartesian product is not
-power. It is lying.
-
-## Pair from one source of truth
-
-When values belong together, keep them together in data:
-
-```python
-RUNS = [
-    {"sample": "sampleA", "panel": "dna"},
-    {"sample": "sampleB", "panel": "rna"},
-]
-
-
-def report_targets():
-    return [
-        f"results/{run['sample']}/{run['panel']}/report.json"
-        for run in RUNS
-    ]
-
-
-rule all:
-    input:
-        report_targets()
+```text
+results/alpha/qc.json
+results/beta/qc.json
 ```
 
-This is less clever than `expand()`. That is exactly why it is easier to trust.
+Write that set down before writing `expand()`. It is your smallest fanout oracle.
 
-## The beginner trap here
+## Products, pairings, and records
 
-Many learners think a shorter `expand()` call is automatically a better design.
-
-It is not.
-
-If the relationship is paired, nested, or otherwise domain-specific, the honest design is
-the one that keeps those relationships intact even when the code is a little more explicit.
-
-## One wildcard should carry one idea
-
-Weak design:
+Consider two lists:
 
 ```python
-"results/{sample}.{artifact}.json"
+SAMPLES = ["alpha", "beta"]
+LANES = ["L001", "L002"]
 ```
 
-This shape often grows into trouble:
-
-- `sample` may accidentally absorb dots
-- `artifact` may become a vague second classifier
-- another rule may claim the same suffix pattern later
-
-Stronger design:
+This expression creates a Cartesian product:
 
 ```python
-"results/{sample}/qc.json"
-"results/{sample}/kmer.json"
-"results/{sample}/screen.json"
+expand(
+    "results/{sample}/{lane}.txt",
+    sample=SAMPLES,
+    lane=LANES,
+)
 ```
 
-This path layout teaches the reader more:
-
-- the sample identity lives in one place
-- the artifact family is visible in the filename
-- the rule domain is narrower and easier to review
-
-## Constraints are useful when they match reality
-
-Constraints help when the wildcard domain is right but still needs a fence:
-
-```python
-wildcard_constraints:
-    sample = r"[A-Za-z0-9_]+"
-```
-
-That protects the workflow from:
-
-- path separators hiding in sample names
-- dots being interpreted in surprising ways
-- accidental matching of files outside the intended naming scheme
-
-Constraints do not rescue a bad path design. They only tighten a good one.
-
-## A strong beginner habit
-
-Use constraints as a fence after you already understand the domain, not as a substitute
-for understanding it.
-
-Good order:
-
-1. decide what files the rule should own
-2. choose a path layout that expresses that ownership
-3. add constraints to protect the intended naming surface
-
-## `glob_wildcards()` is not a free pass
-
-Learners often reach for `glob_wildcards()` because it feels very Snakemake-native:
-
-```python
-SAMPLES = glob_wildcards("data/raw/{sample}.fastq.gz").sample
-```
-
-This can be acceptable in a small workflow, but only if you still ask the real questions:
-
-- is the discovered set sorted before downstream use
-- is the filename pattern the actual discovery contract
-- can duplicate logical IDs appear after normalization
-- should this set now become a durable artifact instead of staying a parse-time guess
-
-The function is not the problem. Treating it like an explanation is the problem.
-
-## What a good study pause sounds like
-
-Pause and say one sentence like this out loud:
-
-> The workflow fans out from validated records, not from unrelated lists, so every target
-> corresponds to a real domain row.
-
-If that sentence sounds unnatural, the fanout model may still be too vague.
-
-## A good fanout design starts from owned artifacts
-
-Healthy design usually looks like this:
+It produces four targets. That is correct only if every sample has every lane.
 
 ```mermaid
 flowchart LR
-  discovery["discovered_samples.json"] --> targets["validated target list"]
-  targets --> qc["results/{sample}/qc.json"]
-  targets --> kmer["results/{sample}/kmer.json"]
-  targets --> report["results/{sample}/report.json"]
+  alpha["alpha"] --> a1["alpha / L001"]
+  alpha --> a2["alpha / L002"]
+  beta["beta"] --> b1["beta / L001"]
+  beta --> b2["beta / L002"]
 ```
 
-Notice what is missing:
+If discovery instead returned the observed pairs `(alpha, L001)` and `(beta, L002)`,
+the product invents two relationships.
 
-- no second hidden scan
-- no wildcard trying to represent three dimensions at once
-- no cartesian multiplication from unrelated lists
+Use paired expansion:
 
-The DAG stays legible because the domain stays tied to one owned artifact.
+```python
+expand(
+    "results/{sample}/{lane}.txt",
+    zip,
+    sample=["alpha", "beta"],
+    lane=["L001", "L002"],
+)
+```
 
-## Common repair patterns
+Better still, retain records until the final path projection:
 
-| Smell | Why it hurts | Better repair |
+```python
+accepted = [
+    {"sample": "alpha", "lane": "L001"},
+    {"sample": "beta", "lane": "L002"},
+]
+
+targets = [
+    f"results/{record['sample']}/{record['lane']}.txt"
+    for record in accepted
+]
+```
+
+Records make it harder to lose relationships while passing lists between helpers.
+
+## Count before you execute
+
+For independent review, calculate cardinality:
+
+- product: `|samples| × |lanes|`;
+- paired rows: number of accepted records;
+- nested repeat structure: sum of repeats per sample;
+- filtered product: count only combinations satisfying the predicate.
+
+Suppose discovery reports:
+
+```text
+alpha  L001
+alpha  L002
+beta   L001
+```
+
+The record count is three. A two-by-two product is four. The extra target
+`beta/L002` is evidence of a modeling error, not harmless empty work.
+
+## Preserve identity across the checkpoint boundary
+
+A checkpoint manifest should carry enough structure to reconstruct valid targets without
+guessing:
+
+```json
+{
+  "samples": {
+    "alpha": {
+      "mode": "SE",
+      "reads": {"SE": "data/raw/alpha.fastq.gz"}
+    },
+    "beta": {
+      "mode": "SE",
+      "reads": {"SE": "data/raw/beta.fastq.gz"}
+    }
+  }
+}
+```
+
+The downstream input function reads the completed checkpoint output:
+
+```python
+def accepted_qc_targets(_wildcards):
+    manifest = checkpoints.discover_samples.get().output.json
+    with open(manifest, encoding="utf-8") as handle:
+        payload = json.load(handle)
+    samples = sorted(payload["samples"])
+    return expand("results/{sample}/qc.json", sample=samples)
+```
+
+Three details matter:
+
+- `checkpoints.discover_samples.get()` creates the reevaluation relationship;
+- target membership comes from the checkpoint artifact, not a second directory scan;
+- sorting stabilizes the target list after the accepted domain is known.
+
+```mermaid
+flowchart LR
+  registry["Arrival registry"] --> checkpoint["Discovery checkpoint"]
+  checkpoint --> accepted["Accepted records"]
+  accepted --> projection["Target projection"]
+  projection --> alpha["results/alpha/qc.json"]
+  projection --> beta["results/beta/qc.json"]
+  directory["Ambient directory"] -.must not create a second domain.-> projection
+```
+
+If downstream code scans the directory again, the workflow has two discovery authorities.
+They can disagree.
+
+## One wildcard should carry one idea
+
+This pattern looks compact:
+
+```python
+"results/{unit}.txt"
+```
+
+where `unit` is sometimes `alpha`, sometimes `alpha_L001`, and sometimes
+`alpha_L001_R1`. It forces downstream code to reverse-engineer structure from one string.
+
+Prefer explicit fields:
+
+```python
+"results/{sample}/{lane}/{mate}.txt"
+```
+
+when sample, lane, and mate vary independently and are all part of file identity.
+
+However, explicit wildcards do not authorize a Cartesian product. The accepted records
+still define which triples exist.
+
+## Pairing is a validation problem
+
+Paired-end reads illustrate why filename expansion cannot replace domain validation:
+
+```text
+alpha_R1.fastq.gz
+alpha_R2.fastq.gz
+beta_R1.fastq.gz
+```
+
+The valid pair set contains `alpha`. `beta` is incomplete. A robust discovery job should
+reject or quarantine `beta`; it should not emit an R2 target and wait for Snakemake to
+fail later.
+
+| Observed files | Discovery decision | Downstream fanout |
 | --- | --- | --- |
-| `expand()` over unrelated lists | creates jobs the domain never asked for | build targets from validated rows or records |
-| wildcard with too many roles | path ownership becomes hard to reason about | split meaning across directories or fixed filenames |
-| broad output like `results/{name}.json` | many artifact families can collide later | give each family a clearer path prefix or suffix |
-| rescanning raw data in multiple places | different rules may disagree about the domain | scan once, materialize once, fan out from that result |
-| unconstrained names | unexpected filenames slip into the DAG | constrain the wildcard and validate discovery inputs |
+| `alpha_R1`, `alpha_R2` | accept paired sample | jobs may use both mates |
+| `beta_R1` only | reject incomplete sample | no beta processing jobs |
+| `gamma.fastq`, `gamma_R1` | reject mixed identity | no gamma processing jobs |
+| duplicate `delta_R1` identities | reject collision | no arbitrary first-file choice |
 
-## The explanation a reviewer trusts
+The discovered-set artifact should preserve accepted and rejected decisions separately.
 
-Strong explanation:
+## Constraints narrow syntax, not truth
 
-> the workflow fans out from `discovered_samples.json`, each target path is
-> `results/{sample}/qc.json`, and sample names are constrained to `[A-Za-z0-9_]+`, so the
-> rule owns one narrow artifact family per discovered sample.
+Wildcard constraints can prevent paths from matching malformed values:
 
-Weak explanation:
+```python
+wildcard_constraints:
+    sample="[A-Za-z0-9][A-Za-z0-9._-]*"
+```
 
-> the wildcard should probably match the right files.
+This is useful, but it does not prove that a syntactically valid sample was registered or
+accepted. A constraint answers “could this string be a sample ID?” The manifest answers
+“is this sample in this run?”
 
-The first explanation names a contract. The second names a hope.
+Keep those questions separate.
 
-## End-of-page checkpoint
+## Avoid domain reconstruction from outputs
 
-Before leaving this page, you should be able to:
+A tempting shortcut is:
 
-- explain why wildcards define ownership domains
-- predict one cartesian-product bug before running the workflow
-- show when a simple explicit target list is safer than a clever `expand()`
-- explain how constraints help without pretending they solve path-design mistakes
+```python
+SAMPLES, = glob_wildcards("results/{sample}/qc.json")
+```
+
+This reconstructs intended work from whatever outputs happen to exist. Missing outputs
+remove samples from the domain, and stale outputs can add samples that are no longer
+accepted.
+
+The direction of authority should remain:
+
+```text
+governed arrival -> accepted manifest -> requested outputs
+```
+
+Never:
+
+```text
+currently existing outputs -> inferred accepted membership
+```
+
+## A worked fanout calculation
+
+Discovery produces:
+
+```json
+{
+  "accepted": [
+    {"sample": "alpha", "panels": ["host", "vector"]},
+    {"sample": "beta", "panels": ["host"]}
+  ]
+}
+```
+
+Required targets:
+
+```text
+results/alpha/host.json
+results/alpha/vector.json
+results/beta/host.json
+```
+
+This is a sum of per-record panel counts: `2 + 1 = 3`.
+
+The following is wrong:
+
+```python
+expand(
+    "results/{sample}/{panel}.json",
+    sample=["alpha", "beta"],
+    panel=["host", "vector"],
+)
+```
+
+It creates `results/beta/vector.json`, which discovery never authorized.
+
+A faithful projection is:
+
+```python
+def panel_targets(records):
+    return [
+        f"results/{record['sample']}/{panel}.json"
+        for record in records
+        for panel in record["panels"]
+    ]
+```
+
+## Diagnose fanout from evidence
+
+Use three views together:
+
+1. the accepted records;
+2. the literal expected target list;
+3. the dry-run or DAG.
+
+If the dry-run has too many jobs, compare target sets before tuning resources. Scheduler
+pressure may be a domain explosion disguised as a performance problem.
+
+| Symptom | Likely cause | First check |
+| --- | --- | --- |
+| job count equals product of unrelated list lengths | accidental Cartesian expansion | calculate expected cardinality |
+| jobs appear for rejected samples | fanout reads the wrong authority | trace target source to checkpoint manifest |
+| a valid pair creates one fused wildcard | overloaded identity string | separate record fields |
+| stale samples remain planned | targets inferred from old outputs | remove output-based discovery |
+| constraints pass but membership is wrong | syntax treated as admission | compare against accepted set |
+
+## Hands-on prediction
+
+Use this accepted set:
+
+```python
+records = [
+    {"sample": "alpha", "lane": "L001", "mates": ["R1", "R2"]},
+    {"sample": "beta", "lane": "L002", "mates": ["R1", "R2"]},
+]
+```
+
+Before coding, write the four expected raw-QC targets. Then evaluate:
+
+```python
+expand(
+    "qc/{sample}/{lane}/{mate}.json",
+    sample=["alpha", "beta"],
+    lane=["L001", "L002"],
+    mate=["R1", "R2"],
+)
+```
+
+It creates eight targets, twice the valid count. Repair it by projecting each record’s
+mates while retaining the sample-lane relationship. Confirm the dry-run contains exactly
+four QC jobs.
+
+## Review checklist
+
+- [ ] Every wildcard has one domain meaning.
+- [ ] I can state the accepted records that authorize each target.
+- [ ] I calculated the expected target count before expanding.
+- [ ] Products are used only when every combination is valid.
+- [ ] Pairings and nested relationships remain attached to records.
+- [ ] Rejected or incomplete records produce no downstream jobs.
+- [ ] Downstream fanout reads the checkpoint artifact, not the ambient directory.
+- [ ] Wildcard constraints are not being mistaken for membership validation.
+- [ ] Existing outputs are not used to reconstruct intended scope.
+
+## What you should carry forward
+
+Dynamic fanout is controlled when the target set is a transparent projection of accepted
+records. The next lesson examines the checkpoint itself: when reevaluation occurs, what
+Snakemake knows before and after execution, and which evidence proves that the DAG changed
+for a declared reason.
