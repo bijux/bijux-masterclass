@@ -91,7 +91,7 @@ If the problem is already partly clear, use this shortcut:
 | [Workspace, Git, Cache, Remote, and Published State](workspace-git-cache-remote-and-published-state.md) | teaches how the major DVC state layers differ |
 | [DVC Add, Push, Pull, and Checkout as State Moves](dvc-add-push-pull-and-checkout-as-state-moves.md) | teaches the main DVC commands as movements between state layers |
 | [Failure Modes, Recovery, and Trust](failure-modes-recovery-and-trust.md) | teaches how identity and recovery failures should be interpreted |
-| [Worked Example: Restoring a Dataset after Local Loss](worked-example-restoring-a-dataset-after-local-loss.md) | walks through one realistic recovery-oriented identity story |
+| [Worked Investigation: Proving Data Recovery Boundaries](worked-investigation-proving-data-recovery-boundaries.md) | connects pointer identity, path contrasts, cache recovery, remote recovery, and negative evidence |
 | [Exercises](exercises.md) | gives ten cumulative mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
