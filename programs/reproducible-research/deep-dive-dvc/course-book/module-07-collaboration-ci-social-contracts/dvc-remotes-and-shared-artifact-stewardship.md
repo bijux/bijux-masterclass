@@ -1,6 +1,5 @@
 # DVC Remotes and Shared Artifact Stewardship
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,192 +7,302 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Collaboration Ci Social Contracts"]
+  section["Collaboration CI Social Contracts"]
   page["DVC Remotes and Shared Artifact Stewardship"]
-  capstone["Capstone evidence"]
+  capstone["Reviewer handoff remote cases"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.contrasts.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  pointer["tracked pointer"] --> identity["required object identity"]
+  config["tracked remote route"] --> discovery["remote discovery"]
+  discovery --> read["authorized read"]
+  identity --> read
+  read --> restore["cache-cold restoration"]
+  restore --> receipt["review receipt"]
 ```
 <!-- page-maps:end -->
 
-DVC remotes are not just storage locations.
+A DVC pointer says which content is required. A remote makes that content available to
+other authorized users. Neither promise is complete without the other.
 
-In a team workflow, they are part of the collaboration contract. They decide whether
-another maintainer, CI, or a recovery drill can reconstruct the state that the repository
-claims exists.
+Shared artifact stewardship means maintaining the whole route:
 
-If the remote story is weak, the repository may look complete in Git while being
-unusable to everyone except the original author.
+> tracked pointer → discoverable remote → available object → authorized read → verified
+> restoration
 
-## Remote availability is part of review
+The remote is not merely a bucket. It is part of the repository's collaboration contract.
 
-When DVC-tracked data or outputs change, Git may only carry metadata. The actual content
-must be available through the shared remote when collaborators need it.
+## Separate identity, location, and authority
 
-That means review should ask:
+Three questions are easy to blur:
 
-- did the author push required DVC objects?
-- can CI pull them from a clean environment?
-- does the remote configuration point to the intended shared location?
-- are permissions sufficient for reviewers and automation?
-- are release artifacts protected from accidental deletion?
+| Question | Evidence |
+| --- | --- |
+| Which bytes are required? | DVC pointer or lock identity |
+| Where should a reviewer request them? | tracked remote configuration |
+| Is this reviewer allowed to read them? | credential and storage policy |
 
-The key point is that a merged pointer without shared content is a broken promise.
+A pointer cannot answer location. A configured URL cannot prove the object exists. Valid
+credentials cannot identify which bytes belong to the reviewed state.
 
-## Remote discovery and object availability are separate
+```mermaid
+flowchart TD
+  pointer["pointer identifies object"] --> pull["dvc pull"]
+  route["tracked config names remote"] --> pull
+  auth["read authority"] --> pull
+  object["object exists in remote"] --> pull
+  pull --> restored["restored recorded bytes"]
+  missingPointer["wrong or absent pointer"] -. "different failure" .-> pull
+  missingRoute["undiscoverable route"] -. "different failure" .-> pull
+  missingObject["absent object"] -. "different failure" .-> pull
+  denied["denied read"] -. "different failure" .-> pull
+```
 
-Two handoffs can both fail `dvc pull` for different reasons:
+Diagnose the broken edge rather than treating every pull failure as the same incident.
 
-| Failure | Remote objects exist? | Clone knows the remote? | Repair |
-| --- | --- | --- | --- |
-| missing remote object | no | yes | publish the required object |
-| undiscoverable remote | yes | no | track the shared remote route |
+## Compare two blocked audit cases
 
-Run:
+Generate the handoffs:
 
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/reviewer-handoff
 ```
 
-Compare:
-
-```text
-workspace/missing-remote-object/evidence/receipts.json
-workspace/undiscoverable-remote/evidence/receipts.json
-```
-
-In the first case, `dvc remote list` names `shared`, but the pull receipt reports missing
-content. In the second, the author configured the remote with local-only state, so the
-reviewer's remote list is empty even though the object store contains the bytes.
-
-A remote contract therefore needs both:
-
-1. a discoverable route
-2. available objects at that route
-
-Do not diagnose both failures as “the remote is broken.”
-
-## Track routes, not credentials
-
-DVC separates repository configuration from machine-local configuration:
-
-| Surface | Appropriate content | Handoff role |
-| --- | --- | --- |
-| `.dvc/config` | shared remote name and non-secret route | tells a clone which storage contract belongs to the repository |
-| `.dvc/config.local` | credential references and machine-specific overrides | stays local and must not be the only discovery record |
-| CI secret store | short-lived or scoped credentials | authorizes the job without committing secrets |
-
-The exact route may still need environment-specific indirection. The invariant is that a
-new reviewer can discover what remote contract applies without receiving the author's
-private config file.
-
-## Development and release remotes may need different rules
-
-Small projects can start with one remote. Larger teams often need clearer boundaries.
-
-Example model:
-
-| Remote | Use | Policy |
-| --- | --- | --- |
-| development remote | candidate runs and collaborative work | writable by trusted contributors |
-| release remote | promoted artifacts and release bundles | restricted, audited, often append-oriented |
-| archive remote | older evidence kept for recovery | slower access, stronger retention |
-
-This is not mandatory architecture for every course exercise. It is a way to name the
-different trust levels that appear as a project grows.
-
-## Push and pull are social operations
-
-`dvc push` is not merely a sync command. It makes local evidence available to other
-people.
-
-`dvc pull` is not merely a download command. It tests whether the shared state can be
-restored from the remote.
-
-That is why a review route often needs both ideas:
+Inspect the summary rows:
 
 ```bash
-# trusted author or publication job
-dvc push
-
-# clean reviewer or CI job
-dvc pull
-dvc status --json
+rg 'MISSING_REMOTE_OBJECT|UNDISCOVERABLE_REMOTE' "$audit/summary.tsv"
 ```
 
-The author or trusted publication job pushes before review. CI or another maintainer pulls
-during verification. Those actions support one collaboration story, but they should not
-run with the same authority.
+They both block, but for different reasons:
 
-The audit's mutating-route case demonstrates the boundary. All files and objects are
-complete, yet the handoff blocks because its reviewer instructions include `dvc push`.
-Routine verification should prove that shared state is readable, not grant permission to
-change it.
+| Case | Remote discoverable? | Objects published? | Pull succeeds? |
+| --- | --- | --- | --- |
+| missing object | yes | no | no |
+| undiscoverable remote | no in clean clone | yes | no |
 
-## Permission failures should be designed
+The first is a publication failure. The second is a repository-configuration failure.
+Retrying credentials will not publish an absent object. Pushing the object again will not
+teach a clean clone which remote to use.
 
-Remote permissions should match the risk.
+## Track the route, not credentials
 
-Examples:
+Shared repository configuration should identify the remote route:
 
-- contributors can push development candidate artifacts
-- release artifact deletion is restricted
-- CI can read the objects it needs
-- pull-request CI cannot publish or garbage-collect shared objects
-- release automation can write only to the intended boundary
-- recovery roles have documented access
+```bash
+dvc remote add -d shared s3://research-artifacts/project
+git add .dvc/config
+```
 
-If everyone can delete everything, recovery depends on luck. If nobody can read the data,
-CI cannot verify the repository. Stewardship means choosing permissions that support the
-workflow instead of discovering gaps during an incident.
+Machine-specific or sensitive configuration belongs outside tracked shared state:
 
-## Remote state needs ownership
+```bash
+dvc remote modify --local shared access_key_id '...'
+dvc remote modify --local shared secret_access_key '...'
+```
 
-Someone needs to know who owns:
+The exact credential mechanism depends on the storage backend. Prefer provider-native
+identity, short-lived credentials, or secret management over copying secrets into files.
 
-- remote configuration changes
-- credential rotation
-- object retention rules
-- release artifact protection
-- cleanup of obsolete candidate artifacts
-- recovery access validation
+The rule is:
 
-This ownership can be lightweight, but it cannot be imaginary. When nobody owns remote
-stewardship, storage gradually becomes a mystery.
+- track enough non-secret configuration for authorized users to discover the route;
+- keep secrets and personal overrides local or externally managed;
+- document the expected credential acquisition path without recording secret values.
 
-Use separate owners when the authority differs:
+If `.dvc/config.local` is the only place that names the remote, the author's machine knows
+something the repository does not.
 
-| Responsibility | Typical owner | Evidence of health |
+## A successful author push is not enough
+
+Suppose the author runs:
+
+```bash
+dvc push
+```
+
+Success shows that the author's current configuration and credentials could publish the
+objects selected by that command. It does not prove:
+
+- a reviewer can discover the same remote;
+- the reviewer has read authority;
+- every pointer in the proposed commit resolves;
+- older required objects remain retained;
+- the author pushed from the intended repository state;
+- the review route avoids mutation.
+
+Use a clean read path as independent evidence:
+
+```bash
+git clone <repository> reviewer
+cd reviewer
+dvc remote list
+dvc pull
+```
+
+The reviewer should not inherit the author's cache or local configuration.
+
+## Publish objects before the pointer becomes shared history
+
+A safe handoff orders operations by recoverability:
+
+```mermaid
+sequenceDiagram
+  participant Author
+  participant Remote as DVC remote
+  participant Git as Git review
+  participant Reviewer
+
+  Author->>Author: produce and record DVC state
+  Author->>Remote: publish referenced objects
+  Author->>Git: propose pointer and declaration changes
+  Git->>Reviewer: create cache-cold review state
+  Reviewer->>Remote: read and restore objects
+  Reviewer->>Reviewer: preserve pull and status receipts
+```
+
+The exact organizational gate may vary. The invariant is that shared history must not
+promise objects that the authorized audience cannot retrieve.
+
+If a pointer is merged before publication, teammates receive a valid identity with no
+shared bytes. The author's warm cache hides the defect.
+
+## Read-only review and write-enabled publication
+
+Separate roles:
+
+| Role | Needed remote authority | Typical operations |
 | --- | --- | --- |
-| repository remote route | repository maintainers | cache-cold clone discovers expected remote |
-| credential issuance and rotation | platform or storage steward | scoped access test and rotation record |
-| candidate object publication | change author or trusted job | object can be pulled by read-only CI |
-| promoted object retention | release or data steward | recovery drill restores named release state |
-| domain acceptance | domain reviewer | result contract and decision record |
+| reviewer | read | `dvc pull`, inspect, local `dvc repro` |
+| CI verifier | read | clean pull, status, test, local reproduction |
+| author | read and scoped write | pull existing state, push new objects |
+| publication job | controlled write | publish approved object set |
+| storage administrator | policy and lifecycle management | retention, access, audit |
 
-Storage administration does not decide whether a result is scientifically acceptable.
-Domain review does not grant itself deletion authority over recovery evidence.
+The audit blocks a handoff whose review route contains `dvc push`. Review should not
+require write credentials to shared storage.
+
+Benefits include:
+
+- safer fork and external-contributor review;
+- lower impact if verifier credentials leak;
+- clearer distinction between evidence checking and publication;
+- fewer accidental remote mutations;
+- more precise branch-protection rules.
+
+## Development and release storage may differ
+
+A project can use multiple remotes when their responsibilities are explicit:
+
+| Remote | Purpose | Durability | Writers | Readers |
+| --- | --- | --- | --- | --- |
+| development | fast team iteration | shorter retention | contributors | team |
+| release | accepted artifact preservation | governed retention | publication job | wider audience |
+| archive | long-term reconstruction | archival policy | release automation | maintainers/auditors |
+
+Name each remote by durable responsibility rather than delivery order or migration history.
+
+Multiple remotes create obligations:
+
+- which pointer histories each remote must satisfy;
+- who promotes objects between boundaries;
+- how reviewers discover the correct route;
+- how integrity is checked after transfer;
+- what happens when retention expires.
+
+A second remote is not a backup unless restoration from it is tested.
+
+## Steward object lifecycle
+
+Object availability can decay after a successful handoff. Stewardship needs:
+
+- retention policy tied to result lifetime;
+- ownership for access and billing;
+- integrity checks;
+- deletion and garbage-collection rules;
+- recovery drills from cache-cold state;
+- incident escalation for missing objects;
+- migration plans when storage changes.
+
+Before garbage collection, determine which Git revisions, tags, releases, or experiments
+must remain reconstructable. “No one used it recently” is not enough.
+
+### Availability is time-bounded evidence
+
+A pull receipt proves availability at the time and from the identity that ran it. It does
+not guarantee future retention. State the time and policy:
+
+> On the reviewed commit, the cache-cold CI identity restored all recorded objects from
+> the tracked `review` remote. The remote's retention policy covers accepted revisions for
+> three years.
+
+The first sentence is observed evidence. The second is a governance claim requiring its
+own policy evidence.
+
+## Diagnose remote failures precisely
+
+Use a decision table:
+
+| Observation | Likely boundary | Next evidence |
+| --- | --- | --- |
+| `dvc remote list` is empty | discovery | inspect tracked `.dvc/config` |
+| remote listed, authentication denied | authority | inspect identity and access policy |
+| remote listed, object missing | publication or retention | identify object hash and publication receipt |
+| pull succeeds, pipeline dependency absent | Git completeness | inspect tracked stage dependencies |
+| pull succeeds, status stale | recorded currency | preserve status and compare lock/input state |
+| reviewer route requires push | role design | inspect handoff contract and credentials |
+
+Do not delete caches or force reproduction before preserving the evidence that identifies
+the failed boundary.
+
+## Write a remote stewardship contract
+
+A repository-specific contract should answer:
+
+```text
+Discoverability:
+Which tracked configuration names each shared remote?
+
+Read authority:
+Which human and automation identities can restore reviewed state?
+
+Publication:
+Who may write, and which gate verifies objects before pointers merge?
+
+Retention:
+Which histories must remain reconstructable, and for how long?
+
+Integrity:
+How are restored identities checked against recorded pointers?
+
+Recovery:
+How often does a cache-cold drill test the route?
+
+Incident ownership:
+Who responds to absent objects, denied reads, and configuration drift?
+
+Migration:
+How will old pointers remain recoverable when storage moves?
+```
 
 ## Review checkpoint
 
-You understand this core when you can:
+You understand shared artifact stewardship when you can:
 
-- explain why DVC remotes are part of collaboration, not only storage
-- identify when a merge depends on a missing `dvc push`
-- distinguish an absent object from an undiscoverable remote route
-- explain why shared routes and secret credentials belong in different config surfaces
-- separate publication authority from read-only review authority
-- distinguish development and release artifact policies
-- explain how permissions affect CI and recovery
-- name the ownership needed for remote stewardship
+- distinguish pointer identity from object availability;
+- distinguish absent objects from an undiscoverable route;
+- explain why tracked remote configuration must exclude secrets;
+- show why a clean reviewer provides stronger evidence than the author workspace;
+- separate read-only verification from write-enabled publication;
+- name retention, integrity, recovery, and migration owners;
+- state the time boundary of an availability receipt.
 
-Shared artifacts are only shared when another maintainer can actually recover them.
+The collaboration standard is not “the author ran `dvc push`.” It is:
+
+> Every reviewed pointer has a discoverable, authorized, tested restoration route whose
+> ownership and retention match the lifetime of the claim.
