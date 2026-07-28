@@ -7,79 +7,204 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Orientation"]
-  page["Module 00: Orientation and Study Practice"]
-  capstone["Capstone evidence"]
+  section["Orientation and Study Practice"]
+  page["Module 00"]
+  packet["Personal course evidence"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.prepares.-> packet
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  question["start with a trust question"] --> lesson["read one bounded lesson"]
+  lesson --> predict["predict an observable result"]
+  predict --> proof["run or inspect evidence"]
+  proof --> explain["write a bounded explanation"]
+  explain --> checkpoint["decide whether to continue"]
 ```
 <!-- page-maps:end -->
 
-This module exists to make the course legible before the first technical lesson starts.
-Deep Dive DVC is not a collection of pipeline commands. It is a course about stable
-state identity, truthful state transitions, meaningful comparison surfaces, deliberate
-promotion, remote-backed recovery, and the review habits that keep those claims honest.
+Deep Dive DVC is a course about deciding which reproducibility claims a repository can
+support. Commands are part of that work, but command recall is not the learning target.
 
-## Use this module when
+You will learn to answer questions such as:
 
-- you want the course shape before committing to a reading path
-- you need the shortest honest first session instead of browsing the whole shelf
-- you want to know when the capstone helps and when it adds noise
+- Which bytes does this pointer identify?
+- Which hidden runtime fact could change this result?
+- Why did this stage run or skip?
+- Are two metric values measurements of the same claim?
+- Could another maintainer reconstruct the submitted state?
+- Which evidence survives local loss?
+- What exactly may a downstream consumer trust?
 
-## Study rhythm
+Module 00 shows how to study those questions without depending on an instructor to choose
+the next page, interpret a command, or decide when your evidence is sufficient.
 
-Keep the rhythm small and repeatable:
+## The course contract
 
-1. read until the current state question is clear
-2. read a bounded cluster instead of the whole shelf
-3. use the capstone only when it sharpens the current claim
-4. stop once you can name one rule, one evidence surface, and one failure mode
+For each technical module, you should leave with four things:
 
-## Start here by question
-
-| If the question is... | Read this first |
+| Outcome | What it looks like |
 | --- | --- |
-| what journey does the whole course take | [course-map.md](course-map.md) |
-| what should my first session look like | [first-contact-map.md](first-contact-map.md) |
-| how should I bridge from state foundations into comparison, recovery, and promotion | [mid-course-map.md](mid-course-map.md) |
-| how should I re-enter the course for stewardship, migration, or trust review | [mastery-map.md](mastery-map.md) |
-| which recurring terms matter before Module 01 | [Reference Glossary](../reference/glossary.md) |
+| mental model | you can explain the relevant state boundary in plain language |
+| prediction | you can say what should happen before running a command |
+| observation | you can identify the receipt or artifact that records what happened |
+| bounded decision | you can state what the evidence establishes and what remains unknown |
 
-## What this course is trying to build
+Reading alone does not complete a module. Running commands without predictions does not
+complete it either. The course joins conceptual reasoning to reviewable evidence.
 
-By the end of Deep Dive DVC, you should be able to:
+## Choose your entry route
 
-- explain which state layer is authoritative for declaration, execution, promotion, and recovery
-- keep params, metrics, experiments, and release surfaces semantically meaningful
-- separate downstream trust from repository-internal evidence
-- judge when DVC still owns a concern and when another boundary should take over
+```mermaid
+flowchart TD
+  start["What do you need now?"]
+  start --> new["first contact"]
+  start --> whole["whole-course shape"]
+  start --> return["returning mid-course"]
+  start --> steward["review or stewardship"]
+  new --> first["First-Contact Map"]
+  whole --> course["Course Map"]
+  return --> middle["Mid-Course Map"]
+  steward --> mastery["Mastery Map"]
+```
 
-## First proof route
+| Situation | Open |
+| --- | --- |
+| first serious session with DVC | [First-Contact Map](first-contact-map.md) |
+| planning the complete beginner-to-advanced route | [Course Map](course-map.md) |
+| returning after Modules 01–04 | [Mid-Course Map](mid-course-map.md) |
+| auditing a mature repository or migration | [Mastery Map](mastery-map.md) |
+| uncertain about a recurring term | [Course Reference](../reference/index.md) |
 
-When you want one executable companion route without overcommitting to the capstone:
+If more than one row applies, choose the first one. The maps cross-link where their
+responsibilities meet.
 
-```sh
+## Use lessons as investigations
+
+Every module follows the same underlying method:
+
+1. Name the claim under review.
+2. Identify the state that could make the claim false.
+3. Predict the tool or artifact behavior before inspecting the result.
+4. Run the smallest proof route that can test the prediction.
+5. Compare declared evidence with semantic meaning.
+6. Record an acceptance, rejection, or abstention.
+7. State the limit of the test.
+
+This method prevents two common failures:
+
+- treating successful execution as proof of reproducibility;
+- treating a tool receipt as if it judged scientific meaning.
+
+## Keep a learning evidence directory
+
+Course commands write generated evidence under the repository-level `artifacts/`
+directory. Keep your own notes there too:
+
+```text
+artifacts/learning/deep-dive-dvc/
+├── questions.md
+├── predictions.md
+├── module-decisions.md
+└── review-packets/
+```
+
+For each module, add:
+
+```text
+claim:
+prediction:
+observed evidence:
+decision:
+remaining limit:
+```
+
+These notes are for learning and review, not source control. They make it possible to
+resume after a missed class or a long interruption without reconstructing your reasoning
+from shell history.
+
+## Know which evidence layer you are reading
+
+| Layer | Typical surface | Question answered |
+| --- | --- | --- |
+| declaration | `dvc.yaml`, `.dvc` files, parameters | what does the repository claim? |
+| recorded execution | `dvc.lock`, status and repro receipts | what declared state was observed? |
+| artifact | data, model, metric, report | what result exists? |
+| semantic contract | schema, population, controls, policy | what does the result mean? |
+| operational boundary | remote, CI, retention, promotion | who can recover or trust it? |
+
+No one layer answers every question. Later modules repeatedly test the gaps between them.
+
+## Use the capstone proportionately
+
+The capstone is a repository-scale specimen. It is useful when you already understand
+the claim you want to inspect.
+
+Use it to:
+
+- corroborate a lesson with real declarations and receipts;
+- run a controlled mutation audit;
+- practice reviewer handoff or recovery;
+- assemble a cross-module proof packet.
+
+Do not use it as the first explanation of an unfamiliar idea. Start with the lesson's
+smaller model, then move to the capstone when you can predict what the command should
+show.
+
+The smallest general route is:
+
+```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
 ```
 
-Use the walkthrough when the current module is clear enough that a repository specimen
-will help. Stay in the smaller lesson model when the capstone starts feeling larger than
-the concept you are studying.
+Individual modules provide narrower audit targets when a focused contrast is more useful.
 
-## Orientation files in this module
+## Decide when a module is complete
 
-- [course-map.md](course-map.md)
-- [first-contact-map.md](first-contact-map.md)
-- [mid-course-map.md](mid-course-map.md)
-- [mastery-map.md](mastery-map.md)
+A module is complete for first-pass study when you can:
 
-For stable vocabulary across the wider course, use [Reference Glossary](../reference/glossary.md).
+- explain its central boundary without quoting the page;
+- solve its cumulative exercises before reading the answers;
+- reproduce the worked investigation's reasoning;
+- interpret the focused audit's accepted and rejected findings;
+- write one limit on what the evidence proves.
+
+You do not need to memorize every command. You do need to know which command or artifact
+would answer the next question.
+
+## If a command does not match the page
+
+Do not improvise until the evidence is unrecognizable. Preserve:
+
+- the exact command;
+- exit status;
+- relevant standard output and error;
+- current branch and changed files;
+- tool versions involved.
+
+Then classify the mismatch:
+
+| Mismatch | Likely response |
+| --- | --- |
+| setup or dependency failure | return to platform setup |
+| receipt shape differs but claim is testable | inspect the current structured output |
+| expected semantic value differs | stop and investigate the claim |
+| command writes unexpected tracked files | preserve status and review ownership |
+| audit reports a deliberate rejection | read result and decision together |
+
+A failed expectation can be useful evidence. Hiding it with force, deletion, or unrelated
+changes is not.
+
+## Orientation checkpoint
+
+Before Module 01, be able to say:
+
+- this course teaches evidence-backed trust decisions, not merely DVC syntax;
+- every module joins a claim, prediction, observation, decision, and limit;
+- the capstone corroborates a understood idea rather than replacing explanation;
+- generated learning and audit evidence belongs under `artifacts/`;
+- you know which orientation map fits your present need.
+
+Then use the [First-Contact Map](first-contact-map.md) to begin the technical route.
