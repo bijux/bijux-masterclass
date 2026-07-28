@@ -70,7 +70,7 @@ Return to the module first if:
 | 06 Experiments | how to vary one intended control without breaking comparison or promotion boundaries | experiment comparability specimen, generated case evidence, DVC receipts | `make experiment-comparability-audit` |
 | 07 Collaboration and CI | which checks another maintainer can run without oral context | `Makefile`, `tests/`, [Review Route Guide](../capstone/docs/review-route-guide.md) | `make verify` |
 | 08 Recovery and Scale | which current and historical obligations survive cache loss and remote cutover | recovery contract, per-revision evidence, command receipts | `make recovery-readiness-audit` |
-| 09 Promotion and Auditability | what downstream users may trust from the promoted bundle | `publish/v1/`, `publish/v1/manifest.json`, `dvc.lock` | `make release-review` |
+| 09 Promotion and Auditability | whether a candidate earns immutable downstream authority | promotion contract and decision, seven generated audit cases, `publish/v1/`, `dvc.lock` | `make promotion-integrity-audit` |
 | 10 Governance and Migration | whether another maintainer could review or migrate the repository safely | `README.md`, `dvc.yaml`, `dvc.lock`, `publish/v1/` | `make confirm` |
 
 ## Good stopping point

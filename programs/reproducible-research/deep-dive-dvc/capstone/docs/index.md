@@ -57,9 +57,10 @@ source-only guide, or generated review bundle into the exported surface.
 10. [Reviewer Handoff Audit Guide](reviewer-handoff-audit-guide.md)
 11. [Recovery Guide](recovery-guide.md)
 12. [Recovery Readiness Audit Guide](recovery-readiness-audit-guide.md)
-13. [Experiment Guide](experiment-guide.md)
-14. [Review Route Guide](review-route-guide.md)
-15. [Release Review Guide](release-review-guide.md)
+13. [Promotion Integrity Audit Guide](promotion-integrity-audit-guide.md)
+14. [Experiment Guide](experiment-guide.md)
+15. [Review Route Guide](review-route-guide.md)
+16. [Release Review Guide](release-review-guide.md)
 
 ## Exported docs
 
@@ -70,6 +71,7 @@ source-only guide, or generated review bundle into the exported surface.
 - [Experiment Guide](experiment-guide.md)
 - [Metric Contract Audit Guide](metric-contract-audit-guide.md)
 - [Publish Contract](publish-contract.md)
+- [Promotion Integrity Audit Guide](promotion-integrity-audit-guide.md)
 - [Recovery Guide](recovery-guide.md)
 - [Recovery Readiness Audit Guide](recovery-readiness-audit-guide.md)
 - [Release Review Guide](release-review-guide.md)

@@ -68,6 +68,7 @@ corroborate a concept, not replace first contact with it.
 | experiment comparison and promotion gates | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit` | `make experiment-comparability-audit` |
 | independent reviewer handoff | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit` | `make reviewer-handoff-audit` |
 | protected-history recovery cutover | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-readiness-audit` | `make recovery-readiness-audit` |
+| promotion identity, integrity, provenance, and approval | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-promotion-integrity-audit` | `make promotion-integrity-audit` |
 | recovery or release review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` or `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | `make recovery-review` or `make release-review` |
 
 ## Guide set

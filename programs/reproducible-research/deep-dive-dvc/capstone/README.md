@@ -55,6 +55,7 @@ meant to be a first-contact playground for DVC commands.
 | how should I compare experiment candidates | `make experiment-review` | `make confirm` |
 | what survives cache loss and remote restore | `make recovery-review` | `make confirm` |
 | whether protected history permits remote cutover | `make recovery-readiness-audit` | `make recovery-readiness-selftest` |
+| whether a candidate has immutable identity, coherent claims, provenance, and approval | `make promotion-integrity-audit` | `make promotion-integrity-selftest` |
 | what is safe for downstream trust | `make release-review` | `make confirm` |
 
 From the repository root, the matching course-level commands are:
@@ -63,6 +64,7 @@ From the repository root, the matching course-level commands are:
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-readiness-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-promotion-integrity-audit
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review
 ```
 
@@ -91,6 +93,7 @@ and one bounded proof route without turning the capstone into a browsing exercis
 | `release-review` | the promoted bundle is smaller and clearer than the internal repository | downstream trust has a contract |
 | `recovery-review` | remote-backed restoration can be reviewed as evidence, not folklore | recovery is inspectable |
 | `recovery-readiness-audit` | current and protected historical revisions must both survive candidate-remote cutover | partial copies cannot masquerade as durable migration |
+| `promotion-integrity-audit` | release identity, inventory, integrity, meaning, provenance, approval, and consumer scope are tested independently | tidy or digest-valid defects cannot masquerade as promotion |
 | `confirm` | the strongest built-in review route still passes | final review is stronger than first-pass learning |
 
 ## Repository shape
@@ -116,6 +119,7 @@ All capstone documentation lives under `docs/`:
 - [PUBLISH_CONTRACT.md](docs/publish-contract.md)
 - [RECOVERY_GUIDE.md](docs/recovery-guide.md)
 - [RECOVERY_READINESS_AUDIT_GUIDE.md](docs/recovery-readiness-audit-guide.md)
+- [PROMOTION_INTEGRITY_AUDIT_GUIDE.md](docs/promotion-integrity-audit-guide.md)
 - [RELEASE_REVIEW_GUIDE.md](docs/release-review-guide.md)
 - [REVIEW_ROUTE_GUIDE.md](docs/review-route-guide.md)
 - [STAGE_CONTRACT_GUIDE.md](docs/stage-contract-guide.md)

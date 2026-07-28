@@ -42,6 +42,7 @@ repository confirmation.
 | a changed run preserves baseline, intent, control, population, and metric boundaries before promotion | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-selftest` |
 | recovery survives local loss because remote-backed state still exists | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
 | candidate storage restores every protected current and historical revision before authority cutover | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-readiness-audit` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-readiness-selftest` |
+| a candidate earns promotion only when immutable identity, exact inventory, integrity, claims, provenance, approval, and consumer scope agree | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-promotion-integrity-audit` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-promotion-integrity-selftest` |
 | the publish boundary is safe for downstream trust | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | the whole repository still deserves trust as a stewarded specimen | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | none |
 

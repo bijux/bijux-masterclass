@@ -53,6 +53,7 @@ directory. The layers exist so you do not have to guess where a command belongs.
 | clean reviewer handoff | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit` | using the author's cache or oral context as review evidence |
 | experiment comparison and promotion gates | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit` | ranking successful runs before continuity checks |
 | protected-history recovery cutover | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-readiness-audit` | treating a successful current pull as proof of retained releases |
+| promotion integrity and authority | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-promotion-integrity-audit` | treating a healthy bundle or matching digest as approval |
 | release-boundary review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | random `make PROGRAM=reproducible-research/deep-dive-dvc ...` exploration |
 | strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` |
 
@@ -69,6 +70,7 @@ Use root-level commands when you want one entrypoint that works across programs.
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-readiness-audit`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-promotion-integrity-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm`
@@ -94,6 +96,8 @@ surface.
 - `make capstone-reviewer-handoff-selftest`
 - `make capstone-recovery-readiness-audit`
 - `make capstone-recovery-readiness-selftest`
+- `make capstone-promotion-integrity-audit`
+- `make capstone-promotion-integrity-selftest`
 - `make capstone-experiment-review`
 - `make capstone-release-review`
 - `make capstone-confirm`
@@ -118,6 +122,8 @@ Use `capstone/` when you want the raw reference repository.
 - `make reviewer-handoff-selftest`
 - `make recovery-readiness-audit`
 - `make recovery-readiness-selftest`
+- `make promotion-integrity-audit`
+- `make promotion-integrity-selftest`
 - `make experiment-review`
 - `make release-review`
 - `make recovery-review`
