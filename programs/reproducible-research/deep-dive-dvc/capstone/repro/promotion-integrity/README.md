@@ -30,6 +30,23 @@ The source bundle proves artifact-level integrity with its own manifest. The pro
 contract adds release meaning. The decision record adds authority. None of the three can
 substitute for the others.
 
+## Case contrasts
+
+```mermaid
+flowchart TB
+  complete["Complete promotion"]
+  complete --> bytes["Change approved bytes\nTAMPERED_ARTIFACT"]
+  complete --> paths["Add unapproved path\nUNLISTED_ARTIFACT"]
+  complete --> meaning["Rehash contradictory params\nTHRESHOLD_DRIFT"]
+  complete --> identity["Use movable release name\nMUTABLE_REGISTRY_REFERENCE"]
+  complete --> source["Attach approval to other source\nSTALE_SOURCE_APPROVAL"]
+  complete --> authority["Remove required role\nMISSING_REQUIRED_REVIEW"]
+```
+
+Compare one branch with the complete case at a time. Each mutation should make exactly one
+gate false, so the failed check explains the authority decision instead of merely
+reporting that the directory is bad.
+
 ## Decision under review
 
 Accept promotion only when:
