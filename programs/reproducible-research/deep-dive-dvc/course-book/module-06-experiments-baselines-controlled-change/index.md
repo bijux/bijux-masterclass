@@ -1,6 +1,5 @@
 # Module 06: Experiments, Baselines, and Controlled Change
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,175 +8,225 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
   section["Experiments Baselines Controlled Change"]
-  page["Module 06: Experiments, Baselines, and Controlled Change"]
-  capstone["Capstone evidence"]
+  page["Module 06 Orientation"]
+  packet["Experiment decision packet"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.prepares.-> packet
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  baseline["authorized baseline"] --> intervention["bounded intervention"]
+  intervention --> execution["recorded candidate"]
+  execution --> comparison["comparability gate"]
+  comparison --> uncertainty["stability and practical gate"]
+  uncertainty --> confirmation["independent confirmation"]
+  confirmation --> promotion["governed promotion"]
 ```
 <!-- page-maps:end -->
 
-Module 06 turns reproducibility into a way to explore safely.
+DVC experiments can preserve candidate lineage without turning every candidate into a
+valid comparison or promotion.
 
-Earlier modules made the baseline more trustworthy: data has identity, runtime influence
-is visible, pipeline edges are declared, and metric meaning is reviewable. That does not
-mean the team should stop changing the workflow. It means change needs a clean boundary.
+This module teaches six separate questions:
 
-This module is about disciplined exploration:
+1. Which baseline is authoritative?
+2. Which change does the candidate intend to test?
+3. What did DVC record and isolate?
+4. Is the result comparable and stable enough to interpret?
+5. Is the effect practically useful and independently confirmed?
+6. Who may promote the resulting state?
 
-- what makes a baseline authoritative
-- what makes an experiment comparable to that baseline
-- what DVC experiments help record
-- where experiment isolation ends
-- how a candidate result becomes a deliberate promotion instead of a lucky local run
+Skipping a question makes later confidence look stronger than its evidence.
 
-The central question is:
+## Prerequisites and time
 
-> What changed, where was it declared, and can this result be compared or promoted without
-> corrupting the baseline story?
+You should already be able to:
 
-If the answer is still "I tried a few things locally," the workflow has left the course's
-evidence model.
+- identify data content and authority from Module 02;
+- name runtime influence from Module 03;
+- compare actual command behavior with stage declarations from Module 04;
+- reconstruct a complete metric meaning from Module 05.
 
-The primary corroboration surface is the executable experiment-comparability audit. It
-creates seven isolated Git and DVC repositories, runs real candidates, and preserves
-baseline records, candidate records, DVC command receipts, changed paths, and decisions.
-Use the broader capstone experiment and release surfaces only after the focused audit is
-clear.
+Allow:
 
-## Why this module exists
+| Work | Suggested time |
+| --- | ---: |
+| core lessons | 100 minutes |
+| worked investigation | 45 minutes |
+| exercise packet | 120–180 minutes |
+| answer review | 35 minutes |
 
-Experimentation is where many reproducible workflows become informal again.
+If a prerequisite is weak, return to it. Experiments amplify hidden state and semantic
+ambiguity; they do not repair either.
 
-Common failure patterns look ordinary:
+## Two evidence settings
 
-- changing a threshold locally and forgetting which run produced the better metric
-- copying a script to try a new model family
-- mixing data changes with parameter changes and calling the result one experiment
-- keeping a strong result in the workspace without a promotion review
-- promoting a result because it had the best metric, while ignoring comparability limits
+The module deliberately uses two settings:
 
-Those are not just organization problems. They erase lineage. They make later release and
-collaboration decisions depend on memory instead of evidence.
+| Setting | Purpose | Supported claim |
+| --- | --- | --- |
+| executable capstone threshold audit | baseline, allowed change, population, metric, and promotion gates | deterministic fixed-cohort comparison decisions |
+| modeled five-replicate training study | seed variation, practical gain, winner search, and confirmation | reasoning about stochastic evidence |
 
-The point of Module 06 is not to make exploration slow. The point is to let exploration
-happen without damaging the baseline that makes comparison possible.
+Do not claim the capstone generated the replicate table. Do not claim the modeled table
+proves a real candidate.
 
 ## Study route
 
 ```mermaid
-flowchart LR
-  overview["Overview"] --> core1["Core 1: baseline authority"]
-  core1 --> core2["Core 2: experiment scope"]
-  core2 --> core3["Core 3: DVC experiment mechanics"]
-  core3 --> core4["Core 4: uncertainty and replication"]
-  core4 --> core5["Core 5: comparison and selection"]
-  core5 --> core6["Core 6: promotion and cleanup"]
-  core6 --> example["Worked example"]
-  example --> practice["Exercises and answers"]
-  practice --> glossary["Glossary"]
+flowchart TD
+  authority["Baseline authority"] --> scope["Experiment scope"]
+  scope --> records["DVC records and isolation"]
+  records --> uncertainty["Uncertainty and replication"]
+  uncertainty --> selection["Comparison and selection"]
+  selection --> promotion["Promotion and cleanup"]
+  promotion --> investigation["Worked investigation"]
+  investigation --> exercises["Cumulative packet"]
+  exercises --> answers["Answer audit"]
 ```
 
-Read the module in that order the first time.
+For first-pass independent study:
 
-For a missed class or independent study session:
+1. Read baseline authority and experiment scope.
+2. Predict all seven audit decisions.
+3. Run the focused audit.
+4. Read DVC experiment records and inspect receipts.
+5. Read uncertainty before ranking candidates.
+6. Read comparison, selection, and promotion.
+7. Complete the worked investigation.
+8. Produce all ten exercise artifacts before opening answers.
 
-1. read Core 1 and Core 2 before running anything
-2. predict the seven audit decisions in Exercise 1
-3. run the focused audit
-4. read Core 3 and inspect command receipts
-5. read Core 4 and the worked example
-6. finish Exercises 2-8 before reading their answers
-7. read Core 5, then complete the apply and retention exercises
-
-This order delays metric ranking until you have established baseline and scope discipline.
-
-If the problem is already partly clear, use this shortcut:
-
-- open Core 1 when the main confusion is "what is the baseline protecting?"
-- open Core 2 when the main confusion is "what belongs in one experiment?"
-- open Core 3 when the main confusion is "what do DVC experiments record and isolate?"
-- open Core 4 when the main confusion is "does one reproducible run establish a stable effect?"
-- open Core 5 when the main confusion is "which candidate is actually comparable?"
-- open Core 6 when the main confusion is "how does a candidate become history safely?"
+This order delays metric interpretation until authority and comparability are established.
 
 ## Module map
 
-| Page | Purpose |
+| Page | Question answered |
 | --- | --- |
-| [Overview](index.md) | explains the module promise and study route |
-| [Baseline Authority and Experiment Intent](baseline-authority-and-experiment-intent.md) | teaches how a baseline anchors controlled exploration |
-| [Experiment Scope and Change Boundaries](experiment-scope-and-change-boundaries.md) | teaches which changes belong in one experiment and which require stronger review |
-| [DVC Experiment Records and Isolation](dvc-experiment-records-and-isolation.md) | teaches what DVC experiments record, compare, and keep separate |
-| [Uncertainty, Replication, and Selection Bias](uncertainty-replication-and-selection-bias.md) | separates exact-run lineage from stability, practical significance, and honest winner selection |
-| [Comparing Experiments and Selecting Candidates](comparing-experiments-and-selecting-candidates.md) | teaches candidate comparison without metric cherry-picking |
-| [Promotion, Cleanup, and History Integrity](promotion-cleanup-and-history-integrity.md) | teaches deliberate promotion, discard, and baseline protection |
-| [Worked Investigation: Separating Comparability, Uncertainty, and Promotion](worked-investigation-separating-comparability-uncertainty-and-promotion.md) | joins the executable deterministic audit to a distinct replicate-evidence review |
-| [Exercises](exercises.md) | provides ten cumulative evidence-based exercises |
-| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
-| [Glossary](glossary.md) | keeps the module vocabulary stable |
+| [Baseline Authority and Experiment Intent](baseline-authority-and-experiment-intent.md) | what makes an exact or stochastic baseline authoritative? |
+| [Experiment Scope and Change Boundaries](experiment-scope-and-change-boundaries.md) | which changes are interventions, planned variation, controls, or confounds? |
+| [DVC Experiment Records and Isolation](dvc-experiment-records-and-isolation.md) | what does one experiment record preserve, and how do replicate records form a family? |
+| [Uncertainty, Replication, and Selection Bias](uncertainty-replication-and-selection-bias.md) | why is exact-run lineage different from effect stability? |
+| [Comparing Experiments and Selecting Candidates](comparing-experiments-and-selecting-candidates.md) | how are comparable candidates selected without hiding search and tradeoffs? |
+| [Promotion, Cleanup, and History Integrity](promotion-cleanup-and-history-integrity.md) | how does a confirmed configuration become governed state safely? |
+| [Worked Investigation: Separating Comparability, Uncertainty, and Promotion](worked-investigation-separating-comparability-uncertainty-and-promotion.md) | where do deterministic, stochastic, and authority claims stop? |
+| [Exercises](exercises.md) | how do you build a complete experiment decision packet? |
+| [Exercise Answers](exercise-answers.md) | which reasoning makes each packet artifact defensible? |
+| [Glossary](glossary.md) | which experiment terms must remain distinct? |
 
-## What should be clear by the end
+## The executable audit
 
-By the end of this module, you should be able to explain:
-
-- what makes a baseline authoritative enough for experiment comparison
-- how to keep one experiment focused on a reviewable change
-- what DVC experiments add beyond ordinary Git branch history
-- why one reproducible run may still be weak evidence for a stable effect
-- how replication and winner selection change the review burden
-- how to compare candidate runs without ignoring metric meaning
-- why promotion requires evidence, not only a better number
-- how cleanup protects you from stale local folklore
-- why successful execution, valid comparison, and authorized promotion are separate gates
-- how to repair comparison defects without rewriting failed evidence
-
-## Commands to keep close
-
-These commands form the evidence loop for Module 06:
+Run:
 
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-selftest
+```
+
+Evidence appears under:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/experiment-comparability/
+```
+
+The cases isolate:
+
+| Case | Decision boundary |
+| --- | --- |
+| controlled threshold | intended control changes on same population and metric |
+| mixed control change | extra declared change breaks attribution |
+| mutated baseline | approved anchor no longer matches |
+| population drift | cohort continuity breaks |
+| metric schema drift | measurement meaning breaks |
+| missing intent | allowed change cannot be judged |
+| unsafe promotion request | comparison passes but authority is missing |
+
+`PASS` means the audit classified the case as designed. Read the decision separately.
+
+## What DVC experiments contribute
+
+DVC experiment commands can preserve and compare candidate state:
+
+```bash
 dvc exp run
 dvc exp show
 dvc exp diff
 dvc exp apply
 ```
 
-Use the focused audit before direct experiment commands. It gives each command receipt a
-bounded interpretation and supplies negative cases that an ordinary successful run does
-not reveal.
+Within this module:
 
-## Capstone route
+| Command surface | Bounded use |
+| --- | --- |
+| run | execute and record candidate state |
+| show | inspect candidate parameters and metrics |
+| diff | compare recorded declared state |
+| apply | bring selected candidate changes into workspace review |
 
-Use the capstone after you can explain what the baseline promises.
+They do not define independent replicates, estimate uncertainty, prevent winner selection
+bias, create confirmation evidence, or authorize promotion.
 
-Best corroboration surfaces for this module:
+## The decision ladder
 
-- `capstone/params.yaml`
-- `capstone/metrics/metrics.json`
-- `capstone/publish/v1/params.yaml`
-- `capstone/publish/v1/metrics.json`
-- `capstone/repro/experiment-comparability/`
-- `capstone/docs/experiment-comparability-audit-guide.md`
-- `capstone/docs/experiment-guide.md`
-- `capstone/docs/release-review-guide.md`
+| Gate | Required evidence | Possible outcome |
+| --- | --- | --- |
+| execution | DVC and command receipts | executed or failed |
+| comparability | baseline, scope, population, metric and runtime continuity | compare or block |
+| stability | planned replicate evidence where variation matters | stable enough, uncertain, or untested |
+| practical value | minimum gain and safeguards | useful or unattractive |
+| confirmation | frozen candidate on independent governed evidence | accept, reject, or abstain |
+| promotion | owner, decision, applied-state verification, new authority | promote or block |
 
-Useful proof route:
+A candidate cannot compensate for an earlier failed gate with a larger metric.
 
-```bash
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit
+## What you will produce
+
+The exercise packet contains:
+
+```text
+audit-predictions.tsv
+baseline-authority.md
+change-role-ledger.tsv
+receipt-boundaries.md
+deterministic-comparison.md
+replicate-contract.json
+replicate-results.tsv
+candidate-search-ledger.tsv
+confirmation-plan.md
+promotion-decision.md
 ```
 
-The route returns `KEEP_FOR_PROMOTION_REVIEW`, `BLOCK_COMPARISON`, or
-`BLOCK_PROMOTION`. Those outcomes prevent a successful run from silently becoming a
-ranked candidate or governed baseline.
+Keep it under:
+
+```text
+artifacts/learning/deep-dive-dvc/experiment-decisions/
+```
+
+The packet is the review surface. Shell history is not.
+
+## Common wrong turns
+
+| Wrong turn | Why it fails |
+| --- | --- |
+| compare scores before baseline checks | promising movement biases boundary review |
+| call every parameter difference an experiment | visibility does not establish allowed scope |
+| call five cached reads replicates | no independent observations were produced |
+| select the best seed | seed variation is mistaken for intervention |
+| report only the winner | search denominator and selection bias disappear |
+| retune after confirmation | confirmation evidence becomes exploration evidence |
+| apply and commit immediately | workspace state bypasses authority and verification |
+
+## Completion standard
+
+You are ready for Module 07 when you can:
+
+- reconstruct and challenge baseline authority;
+- classify intervention, planned variation, control, consequence, and confound;
+- bound what DVC experiment receipts establish;
+- define replicates and preserve failed runs;
+- compare candidate families using predeclared summaries and practical thresholds;
+- expose the complete candidate search;
+- freeze a nominee before independent confirmation;
+- separate execution, comparison, stability, usefulness, confirmation, and promotion;
+- promote a governed configuration and retain rollback evidence;
+- state which claims come from executable evidence and which are modeled reasoning.
