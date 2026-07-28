@@ -33,6 +33,7 @@ repository confirmation.
 
 | If you need to prove... | Start here | Escalate only if needed |
 | --- | --- | --- |
+| equal local reruns support team reproducibility only when identities, controls, runtime, clean reconstruction, and recovery also pass | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-workflow-evidence-audit` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-workflow-evidence-selftest` |
 | current repository state still matches the declared contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report` |
 | pointers identify bytes and storage layers can recover them after loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-selftest` |
 | stage declarations detect every real file, parameter, and output boundary | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-selftest` |

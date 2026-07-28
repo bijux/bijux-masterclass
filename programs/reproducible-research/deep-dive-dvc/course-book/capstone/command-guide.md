@@ -45,6 +45,7 @@ directory. The layers exist so you do not have to guess where a command belongs.
 | If the job is... | Start here | Do not start with |
 | --- | --- | --- |
 | first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
+| local repeatability versus team reconstruction | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-workflow-evidence-audit` | accepting equal local outputs without input, control, runtime, clean rebuild, and recovery evidence |
 | current-state verification | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` |
 | pointer, cache, workspace, and remote identity | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit` | inspecting only the final workspace file |
 | stage input, parameter, and output truth | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit` | forcing every stage to rerun |
@@ -62,6 +63,7 @@ directory. The layers exist so you do not have to guess where a command belongs.
 Use root-level commands when you want one entrypoint that works across programs.
 
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-workflow-evidence-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit`

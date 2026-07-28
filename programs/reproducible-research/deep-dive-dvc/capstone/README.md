@@ -51,6 +51,7 @@ meant to be a first-contact playground for DVC commands.
 | If the question is... | Start here | Escalate only if needed |
 | --- | --- | --- |
 | what this repository promises | `make walkthrough` | `make tour` |
+| whether equal local reruns support a team reproducibility claim | `make workflow-evidence-audit` | `make workflow-evidence-selftest` |
 | does the current state still match the declared contract | `make verify` | `make confirm` |
 | how should I compare experiment candidates | `make experiment-review` | `make confirm` |
 | what survives cache loss and remote restore | `make recovery-review` | `make confirm` |
@@ -63,6 +64,7 @@ From the repository root, the matching course-level commands are:
 
 ```sh
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-workflow-evidence-audit
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-readiness-audit
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-promotion-integrity-audit
@@ -89,6 +91,7 @@ and one bounded proof route without turning the capstone into a browsing exercis
 | Target | What it proves | Why it matters |
 | --- | --- | --- |
 | `walkthrough` | the learner-facing reading route is bounded and explicit | first capstone contact stays humane |
+| `workflow-evidence-audit` | equal local reruns are tested against input, implementation, control, runtime, clean reconstruction, and recovery evidence | repeatability cannot masquerade as team reproducibility |
 | `verify` | the current repository state matches the declared contract | proof starts from state truth, not presentation |
 | `tour` | the executed proof bundle can be reviewed in one place | learners can inspect the evidence path end to end |
 | `experiment-review` | changed params can be compared without mutating baseline meaning | experiments stay bounded |
@@ -116,6 +119,7 @@ Use these surfaces deliberately:
 All capstone documentation lives under `docs/`:
 
 - [ARCHITECTURE.md](docs/architecture.md)
+- [WORKFLOW_EVIDENCE_AUDIT_GUIDE.md](docs/workflow-evidence-audit-guide.md)
 - [DOMAIN_GUIDE.md](docs/domain-guide.md)
 - [EXPERIMENT_GUIDE.md](docs/experiment-guide.md)
 - [INDEX.md](docs/index.md)

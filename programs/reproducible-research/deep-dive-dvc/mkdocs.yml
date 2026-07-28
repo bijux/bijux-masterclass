@@ -156,6 +156,7 @@ nav:
 - Capstone Docs:
   - Home: capstone-docs/index.md
   - Domain Guide: capstone-docs/domain-guide.md
+  - Workflow Evidence Audit Guide: capstone-docs/workflow-evidence-audit-guide.md
   - Capstone Architecture: capstone-docs/architecture.md
   - Publish Contract: capstone-docs/publish-contract.md
   - Stage Contract Guide: capstone-docs/stage-contract-guide.md
