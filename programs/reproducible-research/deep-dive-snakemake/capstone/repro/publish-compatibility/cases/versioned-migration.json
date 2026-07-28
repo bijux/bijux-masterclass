@@ -1,0 +1,18 @@
+{
+  "artifact_path": "metrics.json",
+  "artifact_schema_version": 2,
+  "corrupt_after_manifest": false,
+  "field_semantics": {
+    "read_bases": {
+      "definition": "number of nucleotide bases",
+      "unit": "bases"
+    }
+  },
+  "publish_version": "v2",
+  "records": [
+    {
+      "read_bases": 40,
+      "sample_id": "alpha"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "allow_additional_fields": true,
+  "artifact_path": "metrics.json",
+  "artifact_schema_version": 2,
+  "field_semantics": {
+    "read_bases": {
+      "definition": "number of nucleotide bases",
+      "unit": "bases"
+    }
+  },
+  "optional_fields": {
+    "qc_status": "string"
+  },
+  "publish_version": "v2",
+  "required_fields": {
+    "read_bases": "integer",
+    "sample_id": "string"
+  },
+  "required_paths": [
+    "metrics.json"
+  ]
+}
