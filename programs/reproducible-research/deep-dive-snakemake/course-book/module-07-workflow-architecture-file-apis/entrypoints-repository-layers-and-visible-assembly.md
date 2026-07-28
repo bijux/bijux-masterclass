@@ -1,200 +1,246 @@
 # Entrypoints, Repository Layers, and Visible Assembly
 
-The first architecture question in a Snakemake repository is simple:
+The top-level `Snakefile` is executable Python evaluated while Snakemake constructs the
+workflow. It is not a table of contents and an `include` is not a runtime function call.
+Those facts explain why entrypoint architecture affects correctness as well as reading
+effort.
 
-> where should a reviewer look first to understand the workflow?
+## Separate three times
 
-If that question does not have a clear answer, the repository is already asking too much
-from memory and too little from structure.
+```mermaid
+flowchart LR
+  parse["Parse time\nPython, config, includes, modules"]
+  plan["Planning time\nrequested targets become jobs"]
+  run["Execution time\njobs run in environments"]
 
-This page is about making the entrypoint and layer responsibilities visible.
+  parse --> plan --> run
+```
 
-## How to use this page
+| Time | Typical work | Failure meaning |
+| --- | --- | --- |
+| parse | imports, config loading, schema validation, path constants, includes, module declarations | the workflow cannot be assembled |
+| planning | wildcard binding, input function evaluation, checkpoint-dependent reevaluation, resource selection | the requested DAG cannot be constructed |
+| execution | shell commands, scripts, notebooks, wrappers, environment activation | one planned job failed |
 
-Read this page while keeping one real repository open in front of you.
+Top-level Python runs before Snakemake knows whether the user requested one report or
+the whole workflow. A network call or directory scan at top level therefore affects
+every invocation, including `--list-rules` and many diagnostics.
 
-Your job is not to admire the folder tree. Your job is to answer one practical question:
+## Inventory the entrypoint before moving code
 
-> if a new maintainer opens this repository for the first time, what should they read first, and what should that first surface teach them immediately?
+Classify each top-level statement by responsibility:
 
-By the end of the page, you should be able to explain the repository in discovery order,
-not only in storage order.
+| Responsibility | Appropriate entrypoint examples | Warning sign |
+| --- | --- | --- |
+| contract gate | `configfile`, schema validation, required-key checks | validation buried inside a rule |
+| shared naming | a small set of reviewed path roots | every output path assembled independently |
+| assembly | `include`, `module`, and `use rule` declarations | includes selected by undocumented ambient state |
+| target selection | a visible default target or named public targets | the default changes through hidden Python logic |
+| local rule | a small assembly-level rule whose presence clarifies the workflow | substantial domain transformation embedded at top level |
+| parse-time computation | deterministic derivation from declared config | filesystem, clock, environment, or network discovery |
 
-## The top-level entrypoint should announce the workflow shape
+The classification is evidence. It tells you which decision would cross an ownership
+boundary if moved.
 
-In the capstone, the top-level `Snakefile` does several important things:
+## Includes merge one local workflow
 
-- loads and validates config
-- sets stable defaults
-- assembles the workflow from named rule files
-- defines the entrypoint target
+Consider:
 
-That is a strong job for the entrypoint.
+```python
+include: "workflow/rules/common.smk"
+include: "workflow/rules/preprocess.smk"
+include: "workflow/rules/publish.smk"
+```
 
-It tells a reviewer:
+The included files contribute to one assembled workflow. They can rely on names made
+available by earlier assembly, and their rules enter the same rule namespace. This is
+useful for local concern boundaries, but it is not an isolation mechanism.
 
-- where workflow assembly starts
-- which files contribute rules
-- which boundaries are visible at the top level
+The architectural question is:
 
-The `Snakefile` should feel like a routing and assembly surface, not a hiding place.
+> Can a reviewer name what each include contributes and which earlier names it is
+> allowed to consume?
 
-## Start with visible assembly before hidden implementation
+If the answer is “anything in the global workflow,” the file split shortens files
+without controlling coupling.
 
-The beginner mistake is to dive into helpers, packages, or folder depth too early.
+## Modules create a caller boundary
 
-A stronger reading order is:
+A Snakemake `module` declares another workflow and `use rule` exposes selected rules
+under caller-controlled names. That boundary can control:
 
-1. open the top-level `Snakefile`
-2. identify the included rule families and visible targets
-3. inspect the repository layers those rule families point into
-4. descend into scripts or packages only after the workflow shape is already visible
+- the config slice passed to the module
+- the module Snakefile
+- path rewriting or prefixes
+- imported rule names
+- rule overrides at the caller
 
-If the repository only makes sense in the reverse order, the architecture is already
-teaching the story badly.
+A module is therefore not a more impressive include. It is appropriate when the caller
+and reusable workflow need an explicit interface. The next lesson develops that
+contract.
 
-## A repository becomes clearer when layers have jobs
+## A readable entrypoint shape
 
-The capstone architecture already points toward a healthy split:
+This small example keeps decisions visible without pretending the entrypoint is empty:
 
-- `Snakefile` for visible assembly
-- `workflow/rules/` for rule families and declared file contracts
-- `workflow/modules/` for reusable workflow bundles
-- `workflow/scripts/` for workflow-adjacent implementation
-- `src/capstone/` for reusable package code
-- `profiles/` for execution policy
-- `config/` for input configuration and schema boundaries
+```python
+from snakemake.utils import validate
 
-These folders are useful only when their ownership stays legible.
+configfile: "config/config.yaml"
+validate(config, schema="config/schema.yaml")
 
-## Layering is not about folder aesthetics
+RESULTS_DIR = config.get("results_dir", "results")
+PUBLISH_DIR = config.get("publish_dir", "publish")
+PUBLISH_VERSION = config["publish"]["version"]
 
-A repository layer matters when it answers a review question quickly.
+include: "workflow/rules/common.smk"
+include: "workflow/rules/preprocess.smk"
+include: "workflow/rules/summarize.smk"
+include: "workflow/rules/publish.smk"
 
-For example:
+rule all:
+    input:
+        f"{PUBLISH_DIR}/{PUBLISH_VERSION}/manifest.json"
+    default_target: True
+```
 
-- “where is the workflow assembled?” points to `Snakefile`
-- “where does this rule family live?” points to `workflow/rules/`
-- “where is reusable implementation code?” points to `src/capstone/`
-- “where are path promises documented?” points to the file API and contract docs
+It tells a new maintainer:
 
-If a folder exists but does not answer any boundary question, it may be decorative rather
-than architectural.
+1. where configuration enters and is checked
+2. which path roots shape the local graph
+3. which concern files assemble the workflow
+4. which artifact represents completion
 
-## One useful architecture map
+It does not prove that the included files honor those boundaries. It gives the reviewer
+a falsifiable first model.
+
+## What should leave the entrypoint
+
+Move a decision only when its new owner is clearer.
+
+| Current content | Likely owner | Preservation question |
+| --- | --- | --- |
+| long shell or Python transformation | `workflow/scripts/` or `src/` | do rule inputs, outputs, params, and logs still expose the whole contract? |
+| one coherent local rule family | `workflow/rules/<concern>.smk` | can a reader still see assembly and final targets from the entrypoint? |
+| reusable multi-rule workflow | `workflow/modules/<name>/` | are config, paths, rule names, and artifacts caller-controlled? |
+| package membership or public path policy | contract or policy file | can consumers and tests read the policy independently of production? |
+| filesystem discovery | checkpoint or reviewed manifest producer | does discovery become an artifact with identity and review evidence? |
+
+Do not move code merely to make the `Snakefile` shorter. A hidden decision is worse than
+a visible, well-owned one.
+
+## Audit the capstone entrypoint honestly
+
+The capstone `Snakefile` currently owns several kinds of behavior:
+
+- configuration loading and schema validation
+- an environment path injected into config
+- defaults for directory and parameter trees
+- a checkpoint and its shell command
+- two publication-adjacent rules
+- three includes
+- the default target
+
+That inventory creates a real review question:
+
+> Which top-level rules clarify assembly, and which prevent the entrypoint from serving
+> as a quick map?
+
+Do not answer from line count. Trace dependencies.
+
+### The checkpoint
+
+`discover_samples` depends on repository-wide config defaults and produces a discovery
+artifact used by later rules. Moving it into a discovery concern file may improve the
+assembly map if:
+
+- its required constants are explicit
+- included rule files do not gain new reverse dependencies
+- the dry-run plan and discovery evidence stay equivalent
+- its role remains visible in the reading guide
+
+### The provenance rule
+
+`provenance` is a publication-supporting rule implemented by a script. It may belong
+near publish rules if that file owns the public evidence surface. Moving it without
+checking manifest and consumer expectations would be folder rearrangement, not an
+architectural repair.
+
+## Use an assembly map
+
+Record what each included surface contributes:
 
 ```mermaid
 flowchart TD
-  snakefile["Snakefile"] --> rules["workflow/rules/"]
-  snakefile --> modules["workflow/modules/"]
-  rules --> scripts["workflow/scripts/"]
-  rules --> contracts["workflow/contracts/FILE_API.md"]
-  scripts --> package["src/capstone/"]
-  snakefile --> config["config/ and schema"]
-  snakefile --> profiles["profiles/ as policy"]
+  entry["Snakefile\ncontract gates + shared names + default target"]
+  common["common.smk\nshared deterministic helpers"]
+  preprocess["preprocess.smk\nsample transformation + module calls"]
+  summarize["summarize_report.smk\ninternal summaries + report"]
+  publish["publish.smk\npublic bundle + integrity evidence"]
+
+  entry --> common
+  entry --> preprocess
+  entry --> summarize
+  entry --> publish
 ```
 
-This diagram matters because it shows the repository as a set of named boundaries rather
-than a pile of adjacent directories.
+Now add dependency-direction arrows. If `common.smk` imports a publish rule, or a module
+reads a parent-private config tree, the arrow contradicts the intended layer story.
 
-## One concrete repository-reading exercise
+## Inspect assembly with bounded commands
 
-Take one public target such as a published bundle or report and trace it backward.
+From the capstone directory:
 
-A strong repository lets you answer these in order:
+```bash
+snakemake --list-rules
+snakemake -n --printshellcmds
+snakemake --dag > ../../../../artifacts/audit/reproducible-research/deep-dive-snakemake/module-07/dag.dot
+```
 
-- where is the target declared or surfaced?
-- which rule family owns it?
-- which scripts or package code implement it?
-- which config or policy surfaces influence it?
+Before running them, write predictions:
 
-If you have to discover those answers by wandering through helpers first, visible
-assembly has already been lost.
+- which rule names should be present
+- which target should be selected by default
+- which jobs should appear for an unchanged repository
 
-## A weak entrypoint
+Interpret the results carefully:
 
-Weak shape:
+- `--list-rules` proves that parsing exposed rule names, not that boundaries are sound
+- dry-run proves a plan under the recorded inputs, not runtime correctness
+- DAG output shows declared file edges, not Python import coupling or undocumented
+  consumers
 
-- the `Snakefile` contains large implementation blocks
-- rule inclusion happens with no clear naming or ownership reason
-- important defaults are scattered across helper files most reviewers never read
+## Diagnose entrypoint failures by time
 
-This makes the repository harder to enter and easier to misunderstand.
-
-## A stronger entrypoint
-
-Stronger shape:
-
-- keep the top-level file focused on assembly, defaults, and visible targets
-- use named includes or modules that match coherent rule families
-- keep implementation code and helper logic in their own owned layers
-
-Now a reviewer can explain the repository in the same order they discover it.
-
-## The beginner mistake to catch early
-
-Beginners often think a short `Snakefile` is automatically good.
-
-That is false.
-
-A short entrypoint that hides critical defaults, routing, or ownership behind indirection
-can be worse than a slightly longer one that teaches the workflow honestly. Brevity helps
-only when the visible story stays intact.
-
-## A practical test
-
-Ask these questions:
-
-1. Can a new reviewer locate the workflow assembly point quickly?
-2. Can they tell which folders are for orchestration, implementation, policy, and contracts?
-3. Does the entrypoint reveal more than it hides?
-
-If those answers depend on prior oral explanation, the architecture is already weaker than
-it should be.
-
-## Common failure modes
-
-| Failure mode | What goes wrong | Better repair |
+| Symptom | Likely time | First evidence |
 | --- | --- | --- |
-| `Snakefile` becomes a giant monolith | assembly and implementation blur together | keep orchestration visible and move owned logic outward |
-| folders exist with no clear responsibility | readers browse without a mental map | assign each layer one reviewable job |
-| config, policy, and workflow logic mix together | architecture questions become semantic questions | separate meaning, policy, and configuration surfaces clearly |
-| helper code becomes easier to find than rules | the visible DAG stops being the first story | keep rule assembly easier to inspect than helper internals |
-| entrypoint only works for insiders | onboarding depends on oral tradition | make the top-level file teach the repository layout directly |
+| `--list-rules` fails before listing anything | parse | import, config, validation, include path |
+| rule list changes with an undeclared environment variable | parse | top-level Python and environment reads |
+| rules exist but requested output cannot be derived | planning | target pattern, input function, wildcard constraints |
+| plan is correct but a command fails | execution | log, environment, script contract |
+| published path exists but downstream consumer breaks | file API | schema, compatibility policy, consumer test |
 
-## What a reviewer should hear
+This table prevents a common mistake: refactoring directories when the failure actually
+belongs to config validation or a runtime tool.
 
-A strong explanation sounds like this:
+## Entrypoint review checklist
 
-> The top-level `Snakefile` shows assembly, target shape, and major boundaries first. I
-> only need to go deeper after I understand which rule families, policy surfaces, and
-> contracts are being assembled.
+For one repository, answer:
 
-That is a more useful explanation than "the repo is split into many folders," because it
-teaches discovery order rather than mere geography.
+- What must execute during every parse?
+- Which config defaults are public policy, and who owns them?
+- Which include order dependencies are intentional?
+- Which rules must remain visible at first contact?
+- Does the default target name a stable completion artifact?
+- Can a diagnostic command run without unrelated external side effects?
+- Which proposed move would reverse dependency direction?
+- Which dry-run or audit would prove the move preserved behavior?
 
-## The explanation a reviewer trusts
+## Exit checkpoint
 
-Strong explanation:
+You understand visible assembly when you can:
 
-> the `Snakefile` assembles the workflow and points to the owned rule families, while the
-> repository layers separate orchestration, implementation, contracts, configuration, and
-> policy so a reviewer can inspect one boundary at a time.
-
-Weak explanation:
-
-> the repository is organized into folders, and the important parts are spread around.
-
-The strong explanation describes ownership. The weak one describes geography.
-
-## End-of-page checkpoint
-
-Before leaving this page, you should be able to:
-
-- explain what the top-level `Snakefile` should own
-- describe why repository layers need named responsibilities
-- explain how visible assembly helps code review and onboarding
-- identify one sign that a repository entrypoint is hiding too much
-
-If you still describe the entrypoint mainly as a startup file, pause and reframe. In this
-module, it is the first architectural teaching surface.
+1. classify every top-level statement by parse, plan, or execution responsibility
+2. explain why an include is a local assembly tool rather than an isolation boundary
+3. justify one entrypoint move by ownership and proof, not brevity
+4. state what `--list-rules`, dry-run, and DAG output cannot establish
