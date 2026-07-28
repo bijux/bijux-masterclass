@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Reproducibility Failures Real Teams"]
+  section["Reproducibility Failures in Real Teams"]
   page["Exercises"]
   capstone["Capstone evidence"]
 
@@ -18,297 +17,373 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["bound the claim"] --> evidence["inventory evidence"]
+  evidence --> hidden["find hidden influences"]
+  hidden --> boundary["assign Git, DVC, and other owners"]
+  boundary --> repair["design repair"]
+  repair --> handoff["test independent explanation"]
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice failure diagnosis, not just DVC vocabulary. The goal is
-to make the current workflow story honest before you start improving it.
+These ten exercises form one workflow-evidence lab. You will begin with two
+matching local results and finish with an adoption contract another maintainer
+can review without the original author's memory.
 
-## How to work through this set
+Do not answer from general DVC knowledge. Run the specimen and cite its
+artifacts.
 
-Treat the ten exercises as one full lab day on reproducibility failure analysis.
+## Prepare the audit and learning packet
 
-Before each answer:
+From the repository root:
 
-1. write the claim the team thinks is true
-2. separate observed evidence from missing evidence
-3. state the next stronger question the workflow should be able to answer
+```console
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-workflow-evidence-audit
 
-If you skip that progression, the day turns into tool enthusiasm instead of disciplined
-workflow diagnosis.
+mkdir -p artifacts/learning/deep-dive-dvc/workflow-foundations
+```
 
-Do the exercises in order. The day is one progression:
-
-- Exercises 1-3 separate local reruns from team-grade recovery and respect Git's true
-  boundary
-- Exercises 4-6 decide what DVC can improve and where the current workflow story is still
-  weak
-- Exercises 7-8 build stronger evidence ladders and ownership maps
-- Exercises 9-10 turn failure reporting into a narrow adoption boundary the team can test
-
-Keep one workflow-truth packet as you go. By the end of the day it should contain:
-
-- one claim you weakened from "reproducible" to a more honest statement
-- one hidden-input inventory
-- one Git-boundary review note
-- one DVC-boundary explanation that does not overclaim
-- one cold-start failure report
-- one narrow DVC adoption proposal with a recovery test
-
-If those six artifacts are missing, you are probably describing the workflow people wish
-they had instead of the workflow they actually run.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
+The audit is under:
 
 ```text
-module01-lab/
-├── train.py
-├── params.yaml
-├── data/
-├── results/
-├── notes/
-└── artifacts/
+artifacts/audit/reproducible-research/deep-dive-dvc/workflow-evidence/
 ```
 
-Keep one evidence table while you work:
+Create:
 
-| Claim | Evidence already present | Missing evidence | Stronger next question |
-| --- | --- | --- | --- |
-
-Also keep one ownership table:
-
-| Workflow fact | Who owns it today | Is that owner explicit | What failure follows if it stays hidden |
-| --- | --- | --- | --- |
-
-That second table matters because hidden inputs do not stop being real inputs just because
-nobody wrote them down yet.
-
-```mermaid
-flowchart LR
-  claim["name the current claim"]
-  inspect["inspect the workflow story"]
-  expose["expose hidden inputs and assumptions"]
-  narrow["respect each tool boundary honestly"]
-  test["test recovery from a colder start"]
-  adopt["propose one narrow DVC adoption step"]
-
-  claim --> inspect --> expose --> narrow --> test --> adopt
+```text
+artifacts/learning/deep-dive-dvc/workflow-foundations/
+├── claim-boundary.md
+├── evidence-inventory.md
+├── hidden-control-finding.md
+├── content-identity-finding.md
+├── transformation-contract.md
+├── git-dvc-boundary.md
+├── runtime-recovery-review.md
+├── reproducibility-decision.md
+├── adoption-contract.md
+└── maintainer-handoff.md
 ```
 
-Use that route on purpose. It keeps the day centered on educational honesty instead of on
-premature tool selection.
+Link to generated audit evidence rather than copying the entire bundle.
 
-## Exercise 1: Separate repeatability from reproducibility
+## Exercise: Bound the repeatability claim
 
-A teammate says:
+Inspect:
 
-> I reran the notebook on my laptop and the metric matches last week's result, so the
-> project is reproducible.
+```text
+workspace/same-workspace-rerun/evidence/local-run-a.json
+workspace/same-workspace-rerun/evidence/local-run-b.json
+workspace/same-workspace-rerun/assessment.json
+```
 
-Write a short response that explains:
+In `claim-boundary.md`, write:
 
-- what this claim does show
-- what it does not show yet
-- which stronger question a team should ask next
-- one sentence explaining why local success is still useful evidence
+- exact observation;
+- narrow claim it supports;
+- stronger claim it does not support;
+- missing evidence;
+- evidence result: verified, contradicted, unverified, unavailable, or out of
+  scope;
+- one sentence that corrects “the workflow is reproducible” without discarding
+  the matching reruns.
 
-Study note:
-The point is not to dismiss local reruns. The point is to place them at the right level
-of confidence.
+Include a digest comparison or structured JSON comparison.
 
-## Exercise 2: Find the hidden state
+**Falsification question:** What observation would contradict local
+repeatability rather than merely leave team reproducibility unverified?
 
-A repository contains:
+**Completion check:** Your conclusion distinguishes equal output in one
+workspace from a clean reconstruction.
 
-- `train.py`
-- `params.yaml`
-- `data/train.csv`
-- `README.md`
-- `results/metrics.csv`
+## Exercise: Inventory one trusted result
 
-During discussion you learn that:
+Use `risk-summary.json` as the trusted result. In `evidence-inventory.md`,
+create these sections:
 
-- `train.csv` was cleaned once by hand
-- one threshold is sometimes passed via CLI instead of `params.yaml`
-- the original author uses a private Conda environment nobody else has recreated
+- result, consumer, and supported decision;
+- source inputs;
+- controls;
+- transformations;
+- runtime and external state;
+- output identity and verification;
+- reconstruction;
+- recovery;
+- unresolved proof limits.
 
-List at least five inputs or assumptions that should now be treated as part of the real
-workflow story.
+For every influential surface, record:
 
-What to hand in:
+| Surface | Role | Identity | Declared? | Recoverable? | Evidence result |
+|---|---|---|---:|---:|---|
 
-- the hidden-input list
-- one sentence explaining which hidden input is currently most dangerous
-- one sentence explaining which hidden input would be easiest to make explicit first
+Use `complete-evidence/evidence/workflow-record.json` as evidence, but state
+which fields are specimen assertions rather than production observations.
 
-Study note:
-This is where many students realize the workflow already has more state than the
-repository admits.
+**Falsification question:** Which row could change the result while every
+visible path remained unchanged?
 
-## Exercise 3: Name Git's real boundary
+**Completion check:** No source input is identified only by filename.
 
-A team says:
+## Exercise: Diagnose the hidden threshold
 
-> We do not need anything beyond Git because the code, configs, and README are all versioned.
+Compare:
 
-Write a short review note that explains:
+```text
+workspace/complete-evidence/evidence/workflow-record.json
+workspace/hidden-threshold/evidence/workflow-record.json
+workspace/hidden-threshold/assessment.json
+```
 
-- what Git is preserving well
-- what important parts of the result story may still lack a clear owner
-- why that gap matters for reproducibility
-- one sentence explaining why respecting Git's boundary is better than mythologizing it
+Write `hidden-control-finding.md` with:
 
-Study note:
-Git is powerful. It is just not the sole owner of every workflow truth a team may care
-about.
+- observed command shape;
+- effective threshold;
+- declared control source;
+- actual control source;
+- why equal local output does not repair the gap;
+- smallest complete repair;
+- closure proof.
 
-## Exercise 4: Draw the DVC boundary honestly
+Then evaluate two possible repairs:
 
-Suppose someone on your team says:
+1. require `--threshold` from `params.json`;
+2. keep the environment control but record its name, value identity, owner, and
+   stage influence.
 
-> DVC will solve our reproducibility problem once we start tracking the data.
+State when each is appropriate.
 
-Explain:
+**Falsification question:** If the environment and file both contain `0.20`,
+what evidence still distinguishes the routes?
 
-- what DVC is likely to help with
-- what DVC still does not settle by itself
-- why this distinction matters before adopting the tool
-- one sentence explaining what kind of disappointment follows from overclaiming
+**Completion check:** Your finding names a hidden control contract, not a
+general ban on environment variables.
 
-Study note:
-This exercise should make your eventual adoption proposal narrower and stronger.
+## Exercise: Prove content identity beyond the path
 
-## Exercise 5: Write your first workflow inventory
+Inspect:
 
-Choose one of your own workflows and write a five-part inventory:
+```text
+workspace/changed-input-same-path/evidence/workflow-record.json
+workspace/changed-input-same-path/source/observations.csv
+workspace/changed-input-same-path/assessment.json
+```
 
-1. source inputs
-2. control inputs
-3. execution assumptions
-4. trusted outputs
-5. weak points and missing evidence
+Write `content-identity-finding.md` containing:
 
-The goal is not to fix the workflow yet. The goal is to describe it honestly enough that a
-future DVC design would have something real to improve.
+- current path;
+- recorded digest;
+- current digest;
+- result production time relative to mutation;
+- invalid inference a path-only reviewer might make;
+- repair using Git or DVC;
+- recovery evidence still needed after identity is recorded.
 
-What to hand in:
+Explain why renaming the changed file does not solve historical provenance.
 
-- the five-part inventory
-- one sentence naming the weakest boundary in the current story
-- one sentence explaining which output consumers currently trust most
+**Falsification question:** Can a known digest support team reproduction if no
+authorized maintainer can retrieve the bytes?
 
-Study note:
-Do not clean the story up while you inventory it. Module 01 wants the present truth, not
-the future cleaned version.
+**Completion check:** Identity and recovery appear as separate rows.
 
-## Midday self-check
+## Exercise: Turn manual preprocessing into a contract
 
-Before you move into cold-start recovery and adoption design, make sure your packet can
-already answer these questions cleanly:
+Inspect:
 
-- which claim in your workflow is currently stronger than the evidence supports
-- which hidden input is most likely to surprise a teammate
-- what Git is preserving and what it is not
-- what one narrow problem DVC could improve without solving everything
+```text
+workspace/manual-preprocessing/source/observations.csv
+workspace/manual-preprocessing/source/prepared-observations.csv
+workspace/manual-preprocessing/evidence/workflow-record.json
+workspace/manual-preprocessing/assessment.json
+```
 
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
+In `transformation-contract.md`, define:
 
-## Exercise 6: Reproduce a result from a cold start
+- raw input identity;
+- transformation behavior;
+- implementation owner;
+- control inputs;
+- prepared output;
+- failure behavior;
+- evidence that the prepared file came from the raw file;
+- clean reconstruction test.
 
-Exchange a small analysis repository with a classmate or use a clean directory. Attempt
-the documented result without using shell history or files outside the repository. Record
-the first five points where you need missing information.
+Sketch a DVC stage declaration in pseudocode or YAML. It must make the
+raw-to-prepared edge visible. Do not invent domain justification for removing
+an observation.
 
-What to hand in:
+**Falsification question:** Which proof is mechanical, and which approval still
+belongs to a domain reviewer?
 
-- the cold-start route you attempted
-- the first five missing facts
-- one sentence explaining which missing fact should be documented first
-- one sentence explaining what this experiment proves and what it does not
+**Completion check:** The prepared file is classified as derived state rather
+than a new unexplained source.
 
-Study note:
-This is not yet a DVC exercise. It is a truth-telling exercise about what another person
-can or cannot recover today.
+## Exercise: Draw the Git and DVC responsibility boundary
 
-## Exercise 7: Build an evidence ladder
+In `git-dvc-boundary.md`, map:
 
-For one result, order these claims from weakest to strongest: "the file exists," "the
-script ran," "the inputs are identified," "another person recovered it," and "the
-published result is traceable." Explain what evidence advances each claim.
+- scoring source;
+- parameter file;
+- workflow contract;
+- input metadata;
+- input bytes;
+- pipeline declaration;
+- recorded execution state;
+- runtime declaration;
+- shared artifact storage;
+- scientific threshold approval.
 
-What to hand in:
+Use:
 
-- the ordered ladder
-- one evidence item per step
-- one sentence explaining where many teams stop too early
+| Fact | Authority | Supporting system | Evidence | Not proved |
+|---|---|---|---|---|
 
-Study note:
-This ladder is meant to make you more precise about what kind of trust each piece of
-evidence actually earns.
+Your map should use Git and DVC together. It must also leave runtime, storage
+policy, access, and scientific validity with fitting owners.
 
-## Exercise 8: Classify ten workflow facts
+**Falsification question:** What failure occurs if DVC metadata reaches Git but
+the referenced object never reaches the shared remote?
 
-Find ten facts in a real project and classify each as source, data, parameter,
-environment, process, or output. Mark which facts Git records and which need another
-owner.
+**Completion check:** No row says “DVC owns everything reproducible.”
 
-What to hand in:
+## Exercise: Separate runtime reconstruction from input recovery
 
-- the ten classified facts
-- one sentence explaining which category currently has the weakest ownership
-- one sentence explaining which facts DVC would be a good candidate to own later
+Compare:
 
-Study note:
-Ownership clarity is more important than category perfection. The categories are there to
-force you to stop saying everything is just "part of the repo."
+```text
+workspace/missing-runtime/assessment.json
+workspace/unrecoverable-input/assessment.json
+```
 
-## Exercise 9: Write a failure report without blaming a tool
+Write `runtime-recovery-review.md` with two independent contracts.
 
-Describe a failed reproduction using observed facts, missing evidence, and the next
-smallest diagnostic action. Do not use phrases such as "DVC broke" or "the environment
-was weird."
+Runtime contract:
 
-What to hand in:
+- required interpreter or image identity;
+- dependency evidence;
+- relevant system assumptions;
+- clean execution route;
+- tolerated output variation.
 
-- the observed failure
-- the evidence already available
-- the smallest next diagnostic action
-- one sentence explaining why blame language is unhelpful here
+Recovery contract:
 
-Study note:
-This is practice for keeping reports useful when the real cause is still unknown.
+- protected input identity;
+- governed storage boundary;
+- authorized credential class;
+- clean-cache retrieval;
+- content verification;
+- retention owner.
 
-## Exercise 10: Design an adoption boundary
+**Falsification question:** Why can a perfect environment fail to reconstruct
+an unavailable input, and a perfect input copy fail in an unknown runtime?
 
-Write a one-page DVC adoption proposal for the workflow from Exercise 5. Name the first
-artifact family DVC should own, what remains outside DVC, one recovery test, and one
-criterion for deciding whether adoption helped.
+**Completion check:** Each contract has its own failure observation and repair.
 
-What to hand in:
+## Exercise: Write a reproducibility decision
 
-- the narrow adoption proposal
-- the first artifact family DVC should own
-- one recovery test
-- one decision criterion for success
-- one sentence explaining what must remain outside DVC for now
+Assume:
 
-Study note:
-The strongest proposals begin with one artifact family the team can actually verify, not a
-promise to transform the whole workflow at once.
+- two local outputs match;
+- input and implementation identities match;
+- threshold is declared;
+- all transformations are represented;
+- runtime identity is recorded;
+- no clean reconstruction was attempted;
+- input is recoverable.
 
-## Mastery check
+Write `reproducibility-decision.md` with:
 
-You have a strong grasp of this module if your answers consistently keep four ideas
-visible:
+- `ACCEPT_REPRODUCIBILITY_CLAIM` or
+  `REJECT_REPRODUCIBILITY_CLAIM`;
+- premise table;
+- decisive evidence gap;
+- claims still verified;
+- immediate next action;
+- closure proof;
+- scientific and operational claims outside scope.
 
-- rerunning locally is weaker than team-grade reproducibility
-- hidden inputs and assumptions are part of the workflow whether or not they are recorded
-- Git's boundary should be respected rather than mythologized
-- DVC helps with explicit state and recovery, not every question a workflow team can ask
+Then state the single new observation that would change the decision.
+
+**Falsification question:** Can six passing premises compensate for one
+required premise that was never observed?
+
+**Completion check:** The decision does not describe the workflow as wholly
+broken.
+
+## Exercise: Design a narrow DVC adoption contract
+
+In `adoption-contract.md`, choose one first boundary:
+
+- incident-input content identity and shared recovery; or
+- declared scoring stage with input, threshold, implementation, and output.
+
+Write:
+
+```text
+current gap:
+bounded claim:
+DVC-owned evidence:
+Git-owned evidence:
+other owners:
+acceptance route:
+adversarial test:
+proof limits:
+later concerns deliberately excluded:
+```
+
+Include at least one change that should invalidate the stage and one that should
+not.
+
+**Falsification question:** What would show that the DVC adoption formalized an
+incomplete workflow story?
+
+**Completion check:** The contract can be implemented and reviewed
+independently from experiment tracking, promotion, and deployment.
+
+## Exercise: Prepare an independent maintainer handoff
+
+Write `maintainer-handoff.md` for a learner who missed the session.
+
+Give them a route to:
+
+- run the audit;
+- verify the two local results;
+- find the clean-rebuild gap;
+- inspect a hidden control;
+- distinguish input path from identity;
+- find the manual transformation;
+- assign Git and DVC responsibilities;
+- decide the first adoption boundary;
+- state what remains unproved.
+
+For each route, include:
+
+| Entry | Expected evidence | Failure meaning | Owner | Proof limit |
+|---|---|---|---|---|
+
+End with three questions they must answer without your help:
+
+1. What exactly do the matching local files prove?
+2. Which evidence makes the result transferable to another maintainer?
+3. Which important trust decision remains outside DVC?
+
+**Falsification question:** Which sentence in the handoff still relies on
+“everyone knows” or “ask the author”?
+
+**Completion check:** Rewrite every such sentence into evidence, an owner, or
+an explicit unknown.
+
+## Mastery review
+
+Your packet demonstrates Module 1 mastery when:
+
+- claim strength grows only with evidence;
+- trusted results are traced to inputs, controls, transformations, and runtime;
+- paths never substitute for content identity;
+- hidden state findings name causal influence;
+- Git and DVC have complementary responsibilities;
+- runtime reconstruction and artifact recovery stay separate;
+- decisions preserve verified local evidence while rejecting overstatement;
+- DVC adoption begins with one bounded state contract;
+- the handoff works without private memory.
+
+Complete all ten artifacts before reading the answer models.
