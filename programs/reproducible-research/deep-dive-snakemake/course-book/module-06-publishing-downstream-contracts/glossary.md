@@ -1,142 +1,387 @@
 # Glossary
 
-Publishing is where a workflow stops being only your private execution system and starts
-becoming someone else's dependency. This glossary helps you describe that handoff with
-terms that protect downstream trust instead of blurring it.
+Publication vocabulary matters because apparently similar claims require different
+evidence. A checksum can prove which bytes arrived, but not whether `reads_count` still
+means reads. A schema can prove that a field is an integer, but not whether an existing
+consumer tolerates a new field.
 
-## When to stop and check the glossary
+Use this glossary to name the promise, the consumer, the evidence, and the limit of a
+release claim.
 
-Use this page any time a review discussion starts to blur these boundaries:
+## Locate the terms in one release decision
 
-- internal versus public
-- compatible versus contract-changing
-- machine-facing versus human-facing
-- integrity evidence versus semantic meaning
+```mermaid
+flowchart LR
+  state["Internal state"] --> candidate["Isolated candidate"]
+  review["Review evidence"] --> candidate
+  candidate --> integrity["Manifest and digests"]
+  contract["Consumer contract"] --> compatibility["Compatibility evaluation"]
+  integrity --> promotion{"Promote?"}
+  compatibility --> promotion
+  promotion -->|yes| public["Versioned public contract"]
+  public --> human["Human surface"]
+  public --> machine["Machine API"]
+```
 
-If the discussion feels vague, it is usually because one of those terms has started doing
-too many jobs at once.
+The arrows describe different responsibilities:
 
-## Terms
+- the candidate controls what may cross the boundary;
+- the manifest controls byte identity and inventory;
+- the consumer contract controls acceptable paths, shape, and meaning;
+- promotion makes a verified candidate public;
+- human and machine surfaces serve different consumers from shared authorities.
 
-| Term | Meaning in this module |
+No single artifact replaces the others.
+
+## Artifact roles and boundaries
+
+### Internal state
+
+Workflow-owned material needed for execution, caching, debugging, or detailed diagnosis.
+Examples include trimmed reads, benchmark files, shell logs, and per-rule scratch output.
+
+Internal does not mean unimportant. It means downstream users are not promised stable
+paths, schemas, or meanings for the material.
+
+### Diagnostic evidence
+
+Evidence that helps explain a failure or performance problem, such as logs, benchmarks,
+and low-level QC records. Diagnostic evidence may be retained without becoming part of
+the public interface.
+
+### Review evidence
+
+Evidence needed to assess or defend a decision. Accepted and rejected discovery records
+are review evidence when a consumer must understand why the release contains its exact
+membership.
+
+Publish review evidence when that reasoning is part of the outward promise. Do not
+publish it merely because it exists.
+
+### Public contract
+
+The paths, schemas, meanings, versions, and stability promises that downstream users may
+depend on. A directory becomes public through an explicit promise and verification, not
+simply because it is named `publish/`.
+
+### Publish boundary
+
+The exact set of artifacts eligible for release. An allowlist defines this boundary more
+safely than copying everything from a workflow output directory.
+
+### Allowlist
+
+An explicit collection of paths permitted in the candidate bundle. An allowlist prevents
+logs, scratch files, stale artifacts, and accidental secrets from crossing the publish
+boundary.
+
+### Candidate bundle
+
+An isolated, not-yet-public directory assembled from the allowlist. It is the object that
+parsers, semantic checks, consumers, and integrity verification inspect.
+
+The candidate should stop changing before its manifest is created.
+
+### Atomic promotion
+
+A publication operation in which consumers observe either the previous complete release
+or the new complete release, never a partially copied mixture. Renaming a verified
+directory on one filesystem or updating an immutable release pointer are common
+strategies.
+
+## Contracts and compatibility
+
+### Consumer
+
+A person or program that relies on published behavior. Different consumers may have
+different tolerances even when they read the same artifact.
+
+### Consumer contract
+
+An executable statement of what one consumer requires: paths, publish version, artifact
+schema, fields, types, additional-field policy, definitions, units, missing-value rules,
+and ordering rules.
+
+A consumer contract makes compatibility testable. It also exposes assumptions that prose
+often leaves hidden.
+
+### Producer contract
+
+The outward behavior the publisher commits to provide. It should cover the same
+dimensions that matter to consumers: location, syntax, schema, meaning, integrity, and
+version policy.
+
+### Compatibility
+
+The result of evaluating a proposed producer release against named consumer contracts.
+Compatibility is not an intrinsic property of a diff.
+
+The useful form of the claim is:
+
+> Candidate C is accepted by consumer fixture X under publish version V.
+
+The vague form—“this change is backward compatible”—omits the consumer and the evidence.
+
+### Additive change
+
+A change that adds a path or field without removing or redefining existing behavior. It
+is compatible only when the affected consumer permits additions.
+
+An open consumer may accept a new `qc_status` field. A closed consumer that rejects
+unknown fields may fail on the same candidate.
+
+### Breaking change
+
+A change that violates an existing consumer contract. Removing a required field,
+renaming a required path, tightening a missing-value rule, or changing a unit can all be
+breaking changes.
+
+### Semantic drift
+
+A change in definition, unit, population, denominator, or interpretation while path and
+data type remain plausible. Semantic drift is especially dangerous because parsers and
+shape-only schemas may continue to pass.
+
+For example, retaining integer field `reads_count` while changing its unit from reads to
+bases preserves syntax and type but changes the result being reported.
+
+### Compatibility matrix
+
+A table that evaluates each candidate version against each supported consumer fixture.
+It makes partial compatibility and migration obligations visible.
+
+| Candidate | v1 consumer | v2 consumer | Defensible decision |
+| --- | --- | --- | --- |
+| unchanged v1 | accept | reject | continue v1 |
+| additive open-field v1 | accept if additions allowed | reject | continue v1 for named tolerant consumers |
+| renamed path without overlap | reject | accept | breaking cutover |
+| overlapping v1 and v2 surfaces | accept | accept | migration window |
+
+### Claim limit
+
+The boundary of what the evidence supports. If only one fixture was tested, the claim is
+about that fixture—not every downstream consumer. If integrity was tested but semantics
+were not, the claim is about bytes—not meaning.
+
+## Versions and migration
+
+### Publish version
+
+The version of the outward bundle contract. It communicates which paths and compatibility
+rules apply, such as `publish/v1/`.
+
+### Artifact schema version
+
+The version of one structured artifact's shape and meaning. It may change independently
+of the outer publish version when the publish policy permits that relationship.
+
+### Release identity
+
+The immutable identity of one produced bundle, such as a run ID, timestamp plus digest,
+or content-addressed release reference. Release identity answers “which instance?”;
+contract versions answer “which interface?”
+
+These three values must not be conflated:
+
+| Value | Question answered |
 | --- | --- |
-| internal state | Workflow-owned outputs that help execution, debugging, or intermediate reasoning but are not the downstream contract. |
-| public contract | The smaller set of published artifacts that downstream users are allowed to trust and depend on. |
-| publish boundary | The directory and artifact set that define the downstream-facing contract, such as `publish/v1/`. |
-| versioned boundary | A publish surface whose version communicates compatibility expectations over time. |
-| compatible change | A change that preserves existing downstream expectations within the current publish version. |
-| contract change | A change to paths, meanings, or required fields that alters the published promise and may require a new version. |
-| manifest | The inventory of published artifacts, ideally including paths and digests. |
-| checksum | A digest used to confirm file identity, detect corruption, or spot silent replacement. |
-| bundle integrity | The degree to which a publish bundle can prove completeness and identity coherently. |
-| provenance | Evidence about the software and execution context that produced the published outputs. |
-| machine-readable artifact | A structured output designed for programmatic downstream use, such as `summary.json` or `summary.tsv`. |
-| human-readable artifact | An output designed to help a person interpret the run, such as `report/index.html`. |
-| file API | A document that explains what published artifacts exist, what they mean, and how stable they are. |
-| publish drift | Any change that weakens or alters the downstream contract, whether through paths, semantics, or artifact-role confusion. |
-| downstream trust | The confidence that another person or tool can use the published bundle without reverse engineering the workflow internals. |
-| authoritative artifact | The published artifact a consumer should trust first for one job, such as the structured summary for programmatic reads. |
-| consumer entrypoint | The first documented public artifact a downstream program or reviewer is expected to read when using the bundle. |
-| reviewed discovery evidence | Public accepted and rejected discovery records that explain why the published result set has its exact membership when downstream review needs that reasoning. |
-| artifact-role table | A compact table that names which published artifact is internal, machine-facing, human-facing, integrity-oriented, or provenance-oriented. |
+| publish version | Which outward interface applies? |
+| artifact schema version | How is this structured file interpreted? |
+| release identity | Which exact produced bundle is this? |
 
-## How to use these terms
+### Migration
 
-If a publish review starts to feel vague, ask which term has become unclear:
+A planned transition from one supported contract to another. A migration names affected
+consumers, supplies replacement paths or fields, and defines evidence for safe cutover.
 
-- is the boundary internal or public?
-- is the change compatible or contract-breaking?
-- is this artifact for machines, humans, integrity, or provenance?
+### Overlap window
 
-That question usually reveals the real problem quickly.
+A period in which old and new contract surfaces are both published and verified. An
+overlap window gives consumers time to migrate without treating an abrupt break as a
+compatible release.
 
-## Confusion pairs worth fixing early
+### Retirement criterion
 
-These pairs matter because publish review weakens fast when one artifact is asked to play
-too many roles:
+Observable evidence required before an old contract is removed. Examples include all
+registered consumers passing the new fixture, an agreed support date, and a rollback
+route tested against the previous release.
 
-- `internal state` versus `public contract`: internal state helps the workflow run or be
-  debugged; the public contract is what downstream users may safely depend on.
-- `compatible change` versus `contract change`: a compatible change stays inside the
-  current published promise; a contract change alters that promise and may require a new
-  versioned boundary.
-- `manifest` versus `file API`: a manifest inventories what exists in one bundle; a file
-  API explains what those artifacts mean and how stable they are.
-- `machine-readable artifact` versus `human-readable artifact`: one is meant for program
-  consumption; the other is meant to help a person interpret results.
-- `authoritative artifact` versus `supporting artifact`: the authoritative artifact is
-  the one a consumer or reviewer should trust first for a defined job; supporting
-  artifacts help interpretation, review, or context but should not silently replace that
-  authority.
-- `reviewed discovery evidence` versus `manifest`: reviewed discovery evidence explains
-  why the published set contains these members; the manifest proves the published bytes
-  for those chosen members have not silently changed.
+```mermaid
+flowchart LR
+  announce["Announce v2 contract"] --> overlap["Publish and verify v1 + v2"]
+  overlap --> migrate["Consumers move to v2"]
+  migrate --> evidence{"Retirement criteria met?"}
+  evidence -->|no| overlap
+  evidence -->|yes| retire["Retire v1"]
+```
 
-## When reviewed discovery evidence belongs in the bundle
+## Integrity, authenticity, and meaning
 
-Do not publish accepted and rejected discovery records by reflex. Publish them when a
-downstream user needs to review, defend, or reproduce membership decisions rather than
-only consume final summaries.
+### Manifest
 
-Typical signals that the evidence belongs in the public contract:
+A deterministic inventory of published relative paths and their digests, normally with
+bundle and schema version information. Paths should be sorted, unique, and contained
+inside the bundle.
 
-- the bundle's trust story depends on why some candidates were included and others were excluded
-- downstream maintainers need to audit membership drift across releases
-- a structured summary alone cannot answer "why this exact set?"
-- the class misses the live instructor explanation, so the bundle itself must carry the review trail
+A bundle manifest commonly excludes itself because including its own digest creates a
+self-reference problem. An outer release packet can inventory the bundle manifest and
+review receipts.
 
-Typical signals that the evidence can remain internal:
+### Digest
 
-- downstream users only need final summaries and no one depends on the candidate-level selection logic
-- the evidence is operational debug detail rather than part of the public review route
-- publishing it would blur the boundary more than it would improve understanding
+A deterministic fingerprint calculated from exact bytes, such as SHA-256. A digest
+supports equality and corruption detection; it does not explain what the bytes mean.
 
-The decision rule is simple:
+### Checksum
 
-> Publish reviewed discovery evidence when membership reasoning is part of downstream trust,
-> not merely because the workflow happened to generate those files.
+A recorded digest used for later verification. In this course, checksum evidence answers
+whether a file matches the bytes inventoried at release time.
 
-## Authority questions to ask during publish review
+### Integrity
 
-If a publish conversation starts sounding vague, ask these in order:
+Evidence that the expected files are present and their bytes have not changed. Integrity
+requires both inventory completeness and digest verification.
 
-1. which artifact is authoritative for this consumer task?
-2. which artifact is the consumer entrypoint?
-3. which artifacts support interpretation rather than carry authority?
-4. which artifacts prove identity, context, or membership review separately?
+### Authenticity
 
-Those four questions usually expose whether the bundle still has one coherent contract or
-whether several artifacts are competing to be "the real output."
+Evidence about who or what authorized a release. A signature or trusted attestation can
+support authenticity. A bare checksum cannot: an attacker who can replace a file may
+also replace its checksum.
 
-## Quick self-check
+### Semantic validity
 
-Before you leave Module 06, make sure you can answer these in a full sentence:
+Evidence that values retain their declared definitions, units, populations, missing-value
+rules, and relationships. Semantic validity requires domain-aware checks or comparison
+with a governed authority.
 
-- If a downstream user depends on `publish/v1/summary.tsv`, what concept tells you that
-  path is part of a trusted outward-facing promise rather than an internal convenience?
-- If you add a new optional HTML report without changing existing published paths or field
-  meanings, what class of publish change are you probably making?
-- If a bundle contains checksums but no explanation of what each artifact means, which
-  review document is still missing?
-- If a publish tree mixes scratch leftovers with intended release artifacts, what kind of
-  trust problem has appeared?
-- If a consumer reads an HTML report first even though the structured summary is the real
-  contract surface, which authority mistake has the bundle invited?
-- If a downstream reviewer must explain why one candidate was published and another was
-  not, which missing public evidence route is likely causing the review gap?
+The evidence layers answer different questions:
 
-## Terms you should be able to use by the end of the day
+| Evidence | Question | Does not establish |
+| --- | --- | --- |
+| parser | Can the bytes be read? | required shape or meaning |
+| schema | Does the structure conform? | byte identity or domain meaning |
+| manifest digest | Are these the inventoried bytes? | correctness or authenticity |
+| semantic assertion | Do definitions and units agree? | authorization |
+| signature or attestation | Who authorized this object? | analytical correctness |
+| consumer fixture | Can this named consumer still use it? | all consumers can use it |
 
-By the end of Module 06, you should be comfortable using these in a full sentence:
+## Human and machine surfaces
 
-- public contract
-- publish boundary
-- compatible change
-- contract change
-- manifest
-- provenance
-- machine-readable artifact
-- downstream trust
-- authoritative artifact
-- consumer entrypoint
-- reviewed discovery evidence
+### Machine API
+
+A structured public artifact designed for programmatic consumption. It needs stable
+paths, documented schemas, explicit types, definitions, units, missing-value policy, and
+version behavior.
+
+### Human surface
+
+A report or document designed for interpretation and review. It should preserve essential
+results in accessible text or tables, explain exclusions and limitations, and avoid
+encoding meaning only through color or layout.
+
+### Authority
+
+The artifact or governed model that owns one fact. Authority should be assigned per fact,
+not granted vaguely to an entire directory.
+
+### Authority matrix
+
+A table mapping facts to their authority and derived surfaces. It prevents JSON, TSV, and
+HTML from becoming three independent sources of truth.
+
+| Fact | Authority | Derived surfaces |
+| --- | --- | --- |
+| accepted sample IDs | discovery artifact | JSON, TSV, HTML |
+| exact metrics | governed summary model | JSON, TSV, HTML |
+| run identity | provenance artifact | report footer |
+| public path inventory | manifest | report navigation |
+| interpretation and limitations | report narrative | human surface |
+
+### Consumer entrypoint
+
+The first documented artifact a consumer should open for a defined job. A human reviewer
+may enter through the report; a program should normally enter through a structured file.
+The entrypoint does not automatically become authority for every fact.
+
+### File API
+
+The durable documentation for public artifacts: paths, purposes, authorities, schemas,
+definitions, units, missing-value rules, version policy, compatibility examples, and
+deprecation route.
+
+## Proof vocabulary
+
+### Causal mutation
+
+A deliberate change that should trigger one named guard while leaving unrelated layers
+plausible. Changing semantic metadata without changing the integer value tests the
+semantic guard. Changing bytes after manifest creation tests integrity.
+
+### Discriminating proof
+
+Evidence that separates nearby failure causes. If a test fails for path rename, semantic
+drift, and checksum corruption with the same unexplained error, it detects trouble but
+does not teach which contract was violated.
+
+### Rejection evidence
+
+A transcript or structured result showing that an unsafe candidate was rejected for the
+intended reason. In a mutation audit, `PASS` can mean that the expected rejection was
+successfully reproduced.
+
+### Promotion receipt
+
+A durable record connecting the candidate, manifest, verifier results, consumer fixtures,
+release identity, and promotion decision.
+
+## Confusion pairs
+
+| Pair | Distinction |
+| --- | --- |
+| internal state / public contract | needed by the workflow / promised to consumers |
+| diagnostic evidence / review evidence | explains operation / supports a decision |
+| publish version / release identity | interface family / exact bundle instance |
+| artifact schema / consumer contract | file conformance / one consumer's requirements |
+| additive / compatible | description of change / result against a consumer |
+| integrity / semantic validity | expected bytes / intended meaning |
+| integrity / authenticity | unchanged object / authorized source |
+| manifest / file API | inventory of one bundle / durable meaning and stability guide |
+| human surface / machine API | interpretation / programmatic consumption |
+| entrypoint / authority | where use begins / where a fact is owned |
+| deprecation notice / retirement criterion | announced intent / evidence permitting removal |
+
+## Use the vocabulary to diagnose a release
+
+For each situation, name the violated concept before reading the answer.
+
+1. `summary.json` parses and matches its digest, but `reads_count` now measures bases.
+   **Semantic drift**; syntax and integrity are still intact.
+2. A new field breaks a strict downstream parser. The change is **additive** but not
+   **compatible** with that consumer contract.
+3. A report rounds a value differently from JSON. The surfaces disagree with their
+   shared **authority**.
+4. A release directory contains an old debug log that a broad copy command collected.
+   The **publish boundary** and **allowlist** failed.
+5. A field removal is shipped under v1 while only the v2 fixture accepts it. The
+   candidate needs a **migration** or a declared breaking cutover, not a compatibility
+   claim.
+6. A checksum matches a malicious replacement and its newly written checksum. Integrity
+   may appear coherent, but **authenticity** has not been established.
+7. A team says “all consumers are safe” after testing one fixture. The statement exceeds
+   its **claim limit**.
+
+## Retrieval check
+
+Explain each answer without looking back:
+
+- Why can an additive field be breaking?
+- What evidence distinguishes semantic drift from checksum corruption?
+- Why are publish version, artifact schema version, and release identity separate?
+- What must be true before a candidate manifest is written?
+- Why should a human report and machine API share authorities without sharing the same
+  presentation?
+- What evidence would justify retiring v1 after an overlap window?
+- What can a consumer fixture prove, and where does its claim stop?
+
+If an answer uses only “version it,” “add a checksum,” or “test it,” identify the missing
+consumer, evidence layer, or decision criterion and answer again.
