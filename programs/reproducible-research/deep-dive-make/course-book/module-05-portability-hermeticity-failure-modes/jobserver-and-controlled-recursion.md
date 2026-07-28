@@ -75,6 +75,21 @@ The practical rule is:
 - inspect `MAKELEVEL` and `MAKEFLAGS`, but do not treat one host's values as a portability
   guarantee
 
+```mermaid
+flowchart LR
+  parent["Top-level Make owns -jN budget"]
+  recipe["Declared recursive recipe line"]
+  transport["Inherited jobserver transport"]
+  child["Child Make joins same budget"]
+  jobs["Child recipes borrow shared tokens"]
+
+  parent --> recipe --> transport --> child --> jobs
+```
+
+The tokens constrain runnable recipe processes, not targets in the abstract. The parent
+and child can each have large ready queues while the shared budget still limits execution.
+That is why a child reporting many eligible targets does not itself prove oversubscription.
+
 ## Why `$(MAKE)` matters
 
 This is the healthy shape:
@@ -104,6 +119,35 @@ On GNU Make 4.4 with a FIFO jobserver, a literal `gmake` process may happen to i
 `-j2` and the FIFO reference. That observation is useful, but it does not retroactively
 declare recursive intent. Older pipe-based jobservers and other launch contexts can
 behave differently.
+
+## `MAKEFLAGS` text is evidence, not authorization proof
+
+A child can print something resembling:
+
+```text
+-j4 --jobserver-auth=fifo:/path/to/fifo
+```
+
+That establishes what text reached the child. It does not establish that:
+
+- the referenced pipe or FIFO is usable
+- every wrapper preserved the required descriptors or path access
+- the child actually scheduled against the parent's tokens
+- the build stayed within four concurrent recipes
+
+Do not manufacture jobserver state by copying or editing `MAKEFLAGS`. GNU Make owns that
+protocol. A manually copied `--jobserver-auth` value can refer to a transport the process
+cannot use, causing warnings, serialization, or hangs.
+
+Use three levels of evidence:
+
+| Claim | Minimum evidence |
+| --- | --- |
+| recursive intent is declared | recipe contains `+$(MAKE)` |
+| child received a candidate parallel contract | child records `MAKELEVEL` and literal `MAKEFLAGS` |
+| total execution stayed within budget | bounded workload records recipe intervals and measured peak concurrency |
+
+Each level answers a different question.
 
 ## Why the `+` prefix matters too
 
@@ -239,6 +283,58 @@ Check three separate claims:
 - the child receives the parent's parallel contract in `MAKEFLAGS`
 - dry run prints the child recipe without creating its output
 
+## Wrappers must preserve the declared boundary
+
+Sometimes a script selects a directory or prepares a sanitized environment before entering
+the child Make. The wrapper is then part of the recursion contract:
+
+```make
+.PHONY: vendor
+vendor:
+	+MAKE="$(MAKE)" tools/run-vendor-build vendor/lib
+```
+
+The wrapper should end by replacing itself with the supplied Make executable:
+
+```sh
+#!/bin/sh
+set -eu
+vendor_dir=$1
+exec "$MAKE" -C "$vendor_dir" all
+```
+
+Why the `+` still matters:
+
+- Make must treat the outer recipe as eligible under planning modes
+- pipe-based jobserver descriptors are made available only to declared recursive lines
+- the wrapper must not detach, background, or start an unrelated independent Make
+
+Passing the executable explicitly also avoids a hidden assumption that `make` on the
+wrapper's `PATH` is the same implementation as the parent.
+
+If the wrapper performs substantial work before `exec`, give that work its own target.
+Otherwise one jobserver token can be held while the wrapper does unrelated serial setup.
+
+## Measure token conservation with a bounded workload
+
+Do not test jobserver health by looking only at elapsed time. Build a child graph with more
+independent jobs than the parent budget and record start/end intervals for each recipe.
+
+For example, with `gmake -j2`:
+
+1. create four independent child targets
+2. make each target record its process identifier and monotonic start/end observations
+3. enter the child through the supported public parent goal
+4. calculate peak overlapping recipe intervals
+5. repeat through every supported wrapper route
+
+The acceptance claim is "peak observed overlap is no greater than two," not "the child
+printed `-j2`." Also confirm that overlap reaches two when the workload is long enough;
+a test that never exposes parallel work cannot detect accidental serialization.
+
+Keep this harness bounded and tolerant of scheduling order. It should assert concurrency
+limits, not one exact interleaving.
+
 ## Dry-run lies are a real failure mode
 
 One reason this lesson matters is that `make -n` is often used as a trust-building tool.
@@ -285,6 +381,8 @@ Recursion should trigger review when:
 - the recursion depth is not intentionally bounded
 - the top-level build cannot explain whether the sub-make consumes the same `-j` budget
 - the only reason recursion exists is to avoid modeling dependencies
+- a wrapper backgrounds the child or constructs its own `-j` value
+- operators edit `MAKEFLAGS` to silence jobserver warnings
 
 Those are not small style issues. They are signs that the orchestration boundary is doing
 more harm than good.
@@ -339,6 +437,8 @@ Take any recursive invocation and ask:
 3. what actual-run evidence shows about its parallel budget
 4. whether `-n` enters the child graph without publishing
 5. how deep is recursion allowed to go
+6. what bounded observation proves shared token conservation
+7. whether any wrapper uses `exec` and the parent-selected Make executable
 
 If those answers are weak, the recursive structure is probably weak too.
 
@@ -366,4 +466,7 @@ Before leaving this lesson, make sure you can explain:
 - why the `+` prefix matters for recursive invocations
 - why recursion needs a bounded, explainable ownership boundary
 - how `MAKELEVEL` helps control depth
+- why `MAKEFLAGS` text alone cannot prove usable jobserver authorization
+- how a wrapper can preserve or destroy the recursive contract
+- how peak recipe overlap tests a stronger claim than flag inspection
 - why readable parallel logs are useful without being a substitute for correct jobserver behavior
