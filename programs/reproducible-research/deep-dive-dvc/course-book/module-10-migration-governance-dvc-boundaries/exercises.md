@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Migration Governance Dvc Boundaries"]
+  section["Migration Governance DVC Boundaries"]
   page["Exercises"]
   capstone["Capstone evidence"]
 
@@ -18,263 +17,403 @@ graph LR
 
 ```mermaid
 flowchart LR
-  evidence["start from evidence surfaces"] --> migrate["move one boundary with proof"]
-  migrate --> govern["write small enforceable rules"]
-  govern --> intervene["repair shortcuts before they harden"]
-  intervene --> own["keep DVC inside its rightful boundary"]
+  claims["claims inventory"] --> findings["evidence findings"]
+  findings --> contract["migration contract"]
+  contract --> decision["cutover decision"]
+  decision --> rules["governance register"]
+  rules --> ownership["ownership handoff"]
+  ownership --> review["stewardship review"]
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice final stewardship judgment.
+These exercises form one cumulative stewardship lab. You will produce a
+review packet for the capstone's release-boundary migration, then use that
+packet to make and defend a cutover decision.
 
-The goal of the day is to end the course with durable repository thinking rather than
-tool enthusiasm. Strong stewardship starts from evidence surfaces, moves one boundary at a
-time, writes small enforceable rules, and refuses to assign DVC ownership for every
-production concern just because DVC is already present.
+The work is designed for independent study. Every exercise names:
 
-## How to work through this set
+- the evidence to inspect;
+- the artifact to produce;
+- a falsification question;
+- a completion check.
 
-Treat the ten exercises as one full lab day on repository stewardship, migration
-discipline, and tool-boundary governance.
+Do not answer from memory. Run the routes and cite the generated evidence.
 
-Before each answer:
+## Prepare the evidence and workspace
 
-1. name the contract or boundary under review
-2. name the evidence surface that proves the current state
-3. say what repair or migration would preserve that proof
+From the repository root:
 
-Do the exercises in order. The day is one progression:
+```console
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-boundary-migration-audit
 
-- Exercises 1-3 review repositories by evidence and write minimal governance rules
-- Exercises 4-5 intervene on shortcuts and clarify DVC's rightful ownership
-- Exercises 6-8 audit lived truth, migrate one boundary safely, and document narrow
-  exceptions
-- Exercises 9-10 decide where DVC should stop and test the repository with a new steward
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-recovery-readiness-audit
 
-Keep one stewardship packet as you go. By the end of the day it should contain:
+mkdir -p artifacts/learning/deep-dive-dvc/governance-stewardship
+```
 
-- one evidence-first repository review outline
-- one safe migration plan
-- one governance rule tied to a state contract
-- one anti-pattern intervention
-- one tool-boundary decision
-- one stewardship review handoff list
-
-If those six artifacts are missing, you are probably still describing preferences instead
-of governing the repository.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
+Use this packet:
 
 ```text
-module10-lab/
-├── artifacts/
-├── governance/
-├── migrations/
-├── notes/
-└── stewardship/
+artifacts/learning/deep-dive-dvc/governance-stewardship/
+├── claims-and-evidence.md
+├── finding-partial-copy.md
+├── migration-contract-review.md
+├── consumer-and-rollback.md
+├── governance-register.md
+├── exception-review.md
+├── intervention.md
+├── ownership-map.md
+├── cutover-decision.md
+└── handoff-review.md
 ```
 
-Keep one governance table while you work:
+The generated audits remain under `artifacts/audit/`. Your learning packet
+should link to them rather than copying their full content.
 
-| Contract | Evidence surface | Enforcing rule or check | Failure if absent |
-| --- | --- | --- | --- |
+## Exercise: Inventory the repository trust claims
 
-Also keep one boundary table:
+Inspect:
 
-| Concern | DVC owns | DVC references | DVC must not own | Why |
-| --- | --- | --- | --- | --- |
+- `capstone/dvc.yaml`;
+- `capstone/dvc.lock`;
+- `capstone/params.yaml`;
+- `capstone/publish/v1/manifest.json`;
+- `capstone/docs/PUBLISH_CONTRACT.md`;
+- the boundary migration `report.json`;
+- the recovery readiness `report.json`.
 
-```mermaid
-flowchart LR
-  inspect["inspect evidence, not impressions"]
-  rule["tie rules to contracts"]
-  move["move one boundary safely"]
-  exception["document narrow exceptions"]
-  limit["limit DVC to artifact lineage"]
-  handoff["prove the system to a new steward"]
+In `claims-and-evidence.md`, create a table with these columns:
 
-  inspect --> rule --> move --> exception --> limit --> handoff
+| Claim | Direct evidence | Falsifying route | Result | Proof limit |
+|---|---|---|---|---|
+
+Include at least these claims:
+
+- pipeline declarations identify the current computation;
+- the promoted inventory is complete;
+- the target is byte-identical to the source;
+- consumers can use the target boundary;
+- protected revisions remain recoverable;
+- each cross-system responsibility has an authority.
+
+Classify each result as `verified`, `contradicted`, `unverified`, or
+`out-of-scope`.
+
+**Falsification question:** What observation would make each claimed result
+false?
+
+**Completion check:** Every row names a concrete file or executed route, and no
+row uses “the repository looks correct” as evidence.
+
+## Exercise: Write a contract finding from the partial copy
+
+Compare:
+
+```text
+workspace/complete-cutover/assessment.json
+workspace/partial-copy/assessment.json
 ```
 
-Use that route on purpose. It keeps the day centered on durable stewardship instead of on
-general good intentions.
+Write `finding-partial-copy.md` with:
 
-## Exercise 1: Review a repository by evidence
+- claim under review;
+- exact evidence path;
+- changed observation;
+- failed check;
+- consumer consequence;
+- immediate safety action;
+- smallest complete repair;
+- closure proof;
+- claims you deliberately do not make.
 
-Write a five-section review outline for a DVC repository:
+Do not use “migration failed” as the finding. Name the missing artifact and the
+invariant it contradicts.
 
-- identity and state layers
-- pipeline and experiment truth
-- metrics, promotion, and release surfaces
-- remote, retention, and recovery
-- tool-boundary recommendations
+**Falsification question:** If `report.md` were added, which other observations
+would still be needed before approval?
 
-For each section, name one file or command you would inspect and one risk the evidence is
-supposed to catch.
+**Completion check:** A different maintainer could perform the repair and know
+which receipt closes the finding.
 
-Study note:
-This exercise matters because stewardship begins with observable proof, not maintainers'
-confidence.
+## Exercise: Review the migration change budget
 
-## Exercise 2: Plan one safe migration
+Read:
 
-A team wants to move promoted artifacts from `publish/v1/` to
-`registry/incident-escalation/v1/`.
+```text
+migration-contract.json
+migration-decision.json
+workspace/unbounded-change/assessment.json
+```
 
-Write a migration plan that preserves trust and rollback.
+In `migration-contract-review.md`, record:
 
-Your answer should include:
+- exact source and target;
+- one permitted changed surface;
+- every preserved invariant;
+- required before and after evidence;
+- consumer acceptance;
+- rollback promise;
+- ownership split;
+- exception requirements.
 
-- inventory
-- verification
-- consumer communication
-- rollback point
-- one sentence naming what must stay unchanged during the move
+Then explain why adding `metric-schema` to `changed_surfaces` must block this
+cutover even if the target files match.
 
-Study note:
-The best migrations move one trust boundary at a time and prove each step.
+Draft a separate one-paragraph contract for a future metric-schema migration.
+It must version semantic meaning rather than pretending the schema is only a
+location change.
 
-## Exercise 3: Write a governance rule
+**Falsification question:** Which evidence distinguishes a second boundary
+change from a more detailed description of the first?
 
-Write one durable governance rule for future changes to `params.yaml`, `dvc.lock`, or
-`publish/`.
+**Completion check:** The release-location and metric-schema decisions are
+independently approvable and independently reversible.
 
-Explain:
+## Exercise: Prove consumer acceptance and rollback readiness
 
-- which state contract your rule protects
-- how the rule is enforced
-- one sentence naming why a broader vaguer rule would be worse
+Inspect:
 
-Study note:
-Good governance is small enough to follow and concrete enough to verify.
+```text
+workspace/unverified-consumer/assessment.json
+workspace/no-rollback/assessment.json
+capstone/docs/boundary-migration-audit-guide.md
+```
 
-## Exercise 4: Intervene on an anti-pattern
+Write `consumer-and-rollback.md` containing two contracts.
 
-A reviewer sees this comment:
+The consumer contract must name:
 
-> We copied the best model to `outputs/latest/`; consumers can use that.
+- durable target reference;
+- consumer-equivalent credential class;
+- manifest retrieval;
+- digest verification;
+- smallest meaningful consumer operation;
+- retained receipt.
 
-Write a better review intervention with a repair path.
+The rollback contract must name:
 
-Include:
+- trigger;
+- decision authority;
+- retained source;
+- restoration route;
+- time objective;
+- post-rollback consumer check;
+- rollback window;
+- separate source-retirement decision.
 
-- why the shortcut is unsafe
-- what consumer-safe boundary should replace it
-- what evidence must travel with the repair
+**Falsification question:** Why can equal source and target inventories coexist
+with a failed consumer contract?
 
-Study note:
-This is where stewardship means correcting the path, not just criticizing it.
+**Completion check:** Neither contract uses “switch back if necessary” or
+“consumers were notified” as proof.
 
-## Exercise 5: Decide tool ownership
+## Exercise: Build a proportional governance register
 
-A team wants DVC to handle:
+Create `governance-register.md` with one row for each:
 
-- artifact lineage
-- deployment approval
-- model registry lifecycle
-- alerting
+- stage dependency change;
+- parameter affecting model behavior;
+- metric definition or population change;
+- experiment promotion;
+- release bundle change;
+- DVC remote migration;
+- consumer-boundary cutover;
+- retention deletion.
 
-Explain which concerns DVC should own and which should probably belong to another layer.
+Use columns:
 
-Study note:
-The strongest answer protects DVC from being stretched into a weak substitute for other
-systems.
+| Trigger | Contract | Evidence route | Block condition | Authority | Receipt |
+|---|---|---|---|---|---|
 
-## Midday self-check
+Add a consequence class: ordinary, reproducibility, comparison, consumer, or
+protected-history risk. Match the depth of evidence to the consequence.
 
-Before you move into repository audit, safe exceptions, and handoff review, make sure
-your packet can already answer these questions clearly:
+**Falsification question:** Which meaningful change would escape a rule that
+looks only at filenames?
 
-- which evidence surface proves each major contract
-- how a migration preserves trust and rollback
-- why governance should be small and enforceable
-- where DVC authority should stop
+**Completion check:** A prose-only edit does not require a recovery drill, and
+a remote deletion cannot pass through ordinary review.
 
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
+## Exercise: Evaluate an expired exception
 
-## Exercise 6: Audit a repository against current truth
+Inspect:
 
-Interview the files, not only the maintainers. Compare documentation, `dvc.yaml`,
-`dvc.lock`, remotes, CI, and release bundles. Record every promise that lacks executable
-or recoverable evidence.
+```text
+workspace/stale-exception/migration-decision.json
+workspace/stale-exception/assessment.json
+```
 
-Study note:
-The important habit here is to record each missing proof surface as a concrete finding,
-not as a vague concern.
+Write `exception-review.md` with:
 
-## Exercise 7: Migrate one artifact family safely
+- bypassed rule;
+- owner;
+- reason;
+- expiry;
+- removal condition;
+- compensating control;
+- current evaluation date;
+- decision;
+- permissible repair choices.
 
-Move one governed artifact family to a new storage or workflow boundary. Preserve old and
-new recovery routes during validation, compare identities, and define the rollback point.
+Explain the different work performed by expiry and removal condition. Decide
+whether the exception should be removed, renewed through a fresh decision, or
+cause the cutover to remain blocked.
 
-What to hand in:
+**Falsification question:** What direct evidence would show that the removal
+condition has already been satisfied?
 
-- the migrated family
-- the validation route
-- the rollback condition
-- one sentence naming when the old path may finally be retired
+**Completion check:** Your response does not silently extend the existing
+exception.
 
-Study note:
-Retirement is a decision after proof, not immediately after the first successful copy.
+## Exercise: Intervene on a mutable release shortcut
 
-## Exercise 8: Write an exception with an expiry
+A contributor writes:
 
-Document one justified departure from repository policy. Include:
+> The registry has `latest/model.json`, so deployment can use it.
 
-- owner
-- reason
-- affected artifacts
-- risk
-- compensating evidence
-- expiry condition
-- the check that detects an overdue exception
+Write `intervention.md` using:
 
-Study note:
-Narrow exceptions are healthy only when their removal is observable and enforced.
+- observation;
+- mechanism;
+- affected contract;
+- consequence;
+- bounded repair;
+- closure proof;
+- excluded concerns.
 
-## Exercise 9: Decide whether DVC should keep ownership
+Your repair must connect:
 
-Evaluate one concern such as:
+```text
+Git revision
+-> DVC artifact identity
+-> promoted manifest digest
+-> immutable registry reference
+-> consumer retrieval receipt
+```
 
-- model registry
-- secrets
-- streaming data
-- scheduler policy
-- environment construction
+**Falsification question:** How would you demonstrate that the immutable
+reference still identifies the approved bytes after another promotion?
 
-Use requirements to decide whether DVC owns, references, or must not own it.
+**Completion check:** The intervention teaches a repair and does not merely
+label the shortcut an anti-pattern.
 
-Study note:
-This exercise matters because teams often confuse "related to the pipeline" with "owned
-by DVC."
+## Exercise: Assign cross-system ownership
 
-## Exercise 10: Conduct a stewardship review
+Inspect:
 
-Present the repository to a new maintainer. Demonstrate:
+```text
+workspace/tool-ownership-overreach/migration-decision.json
+workspace/tool-ownership-overreach/assessment.json
+```
 
-- recovery
-- reproduction
-- comparison
-- promotion
-- incident response
-- one safe change
+Create `ownership-map.md` for:
 
-Record every boundary the new maintainer cannot explain from durable evidence.
+- source revision;
+- artifact lineage;
+- shared verification;
+- consumer release lifecycle;
+- access policy;
+- deployment rollout;
+- incident response;
+- cutover decision;
+- retention deletion.
 
-Study note:
-This final exercise matters because real stewardship is proven when a new maintainer can
-reason from the repository itself.
+Use columns:
 
-## Mastery check
+| Fact or decision | Evidence producer | Authority | Handoff receipt | Failure owner |
+|---|---|---|---|---|
 
-You have a strong grasp of this module if your answers consistently keep five ideas
-visible:
+Explain why non-empty owner fields do not prove correct ownership. Identify the
+fact for which DVC is authoritative and the fact for which the registry is
+authoritative.
 
-- review starts from evidence surfaces
-- migration should move one boundary with proof
-- governance should be small and enforceable
-- anti-patterns are shortcuts that damage state contracts
-- DVC should own artifact lineage, not every production concern
+**Falsification question:** Which system can actually observe and enforce each
+decision?
+
+**Completion check:** Every fact has one authority, and no single tool owns the
+entire lifecycle by convenience.
+
+## Exercise: Decide whether cutover is approved
+
+Assume the proposed migration has these observations:
+
+- source and target inventories match;
+- only consumer location changes;
+- before and after verifiers pass;
+- consumer retrieval passes;
+- source remains available;
+- rollback has never been exercised or timed;
+- owners are correct;
+- no exception is active.
+
+Write `cutover-decision.md`.
+
+Your decision must include:
+
+- `APPROVE_CUTOVER` or `BLOCK_CUTOVER`;
+- a premise table;
+- the decisive evidence gap;
+- immediate safety action;
+- repair proof;
+- what the decision does and does not authorize.
+
+Then write the new observation that would change your decision.
+
+**Falsification question:** Can strong target evidence compensate for an
+unexercised rollback contract?
+
+**Completion check:** Source deletion is not authorized by the cutover
+decision.
+
+## Exercise: Conduct an independent stewardship handoff
+
+Write `handoff-review.md` as if the next maintainer missed the course.
+
+Give them a route that lets them:
+
+- identify current declarations and recorded state;
+- reproduce the pipeline;
+- verify the promoted release;
+- compare an experiment under a semantic contract;
+- restore protected history;
+- evaluate a boundary migration;
+- find decision authorities;
+- close or escalate one failed finding.
+
+For each route, state:
+
+- entry command or file;
+- expected evidence;
+- proof limit;
+- owner when it fails.
+
+End with three questions the new maintainer must answer without your help:
+
+1. Which system identifies promoted bytes?
+2. Which evidence permits source retirement?
+3. Which claim remains unverified by the capstone routes?
+
+**Falsification question:** What part of the handoff still depends on your
+private explanation?
+
+**Completion check:** Remove or rewrite every part that requires “ask the
+original maintainer.”
+
+## Mastery review
+
+Your packet demonstrates module mastery when:
+
+- findings separate contradiction from missing evidence;
+- migration contracts permit one coherent change;
+- consumer acceptance and rollback have independent proof;
+- governance rules connect triggers to contracts and receipts;
+- exceptions have an end mechanism;
+- interventions include closure evidence;
+- ownership follows observation and authority;
+- decisions name failed premises;
+- handoff routes expose their proof limits.
+
+Compare your reasoning with the answer page only after all ten artifacts exist.
+The answer page provides models, not text to copy.
