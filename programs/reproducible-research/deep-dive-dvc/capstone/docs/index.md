@@ -58,13 +58,15 @@ source-only guide, or generated review bundle into the exported surface.
 11. [Recovery Guide](recovery-guide.md)
 12. [Recovery Readiness Audit Guide](recovery-readiness-audit-guide.md)
 13. [Promotion Integrity Audit Guide](promotion-integrity-audit-guide.md)
-14. [Experiment Guide](experiment-guide.md)
-15. [Review Route Guide](review-route-guide.md)
-16. [Release Review Guide](release-review-guide.md)
+14. [Boundary Migration Audit Guide](boundary-migration-audit-guide.md)
+15. [Experiment Guide](experiment-guide.md)
+16. [Review Route Guide](review-route-guide.md)
+17. [Release Review Guide](release-review-guide.md)
 
 ## Exported docs
 
 - [Capstone Architecture](architecture.md)
+- [Boundary Migration Audit Guide](boundary-migration-audit-guide.md)
 - [Data Identity Audit Guide](data-identity-audit-guide.md)
 - [Domain Guide](domain-guide.md)
 - [Experiment Comparability Audit Guide](experiment-comparability-audit-guide.md)

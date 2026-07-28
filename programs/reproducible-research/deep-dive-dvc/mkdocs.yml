@@ -165,6 +165,7 @@ nav:
   - Recovery Guide: capstone-docs/recovery-guide.md
   - Recovery Readiness Audit Guide: capstone-docs/recovery-readiness-audit-guide.md
   - Promotion Integrity Audit Guide: capstone-docs/promotion-integrity-audit-guide.md
+  - Boundary Migration Audit Guide: capstone-docs/boundary-migration-audit-guide.md
   - Capstone Tour: capstone-docs/tour.md
 - Reference:
   - Home: reference/index.md
