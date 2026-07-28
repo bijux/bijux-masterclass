@@ -1,6 +1,5 @@
 # DVC Repro, Staleness, and Lock Evidence
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,175 +9,208 @@ graph LR
   program["Deep Dive DVC"]
   section["Truthful Pipelines Declared Dependencies"]
   page["DVC Repro, Staleness, and Lock Evidence"]
-  capstone["Capstone evidence"]
+  capstone["Planner and result receipts"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.reads.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  declaration["dvc.yaml contract"] --> recorded["dvc.lock recorded state"]
+  current["current declared state"] --> status["staleness comparison"]
+  recorded --> status
+  status --> repro["run or skip"]
+  repro --> newlock["updated lock after execution"]
+  repro --> result["semantic result"]
 ```
 <!-- page-maps:end -->
 
-`dvc repro` is easiest to misunderstand when you treat it like a smarter shell script.
+`dvc.yaml`, `dvc.lock`, status, reproduction, and outputs answer different questions.
 
-It is better to treat it as a graph reviewer:
+| Surface | Question |
+| --- | --- |
+| `dvc.yaml` | what causal contract is declared? |
+| `dvc.lock` | which declared state and outputs were recorded after execution? |
+| `dvc status` | which declared differences are visible now? |
+| `dvc repro` | which visible stale stages execute or skip? |
+| result values | does output express current meaning? |
 
-> Compare declared current state with recorded previous state, then rerun the stages whose
-> declaration no longer matches the evidence.
+No one surface proves contract completeness.
 
-This is why Module 04 keeps pairing `dvc.yaml` and `dvc.lock`. One file declares the
-pipeline. The other records what happened when that declaration was last executed.
+## Understand staleness precisely
 
-## The two files answer different questions
+A stage is stale when current declared state differs from recorded state according to
+DVC's graph.
 
-`dvc.yaml` answers:
+That definition includes an important boundary:
 
-- which stages exist
-- which command each stage runs
-- which files, directories, and parameters each stage declares
-- which outputs each stage owns
+> A real influence absent from the declaration cannot participate in ordinary staleness.
 
-`dvc.lock` answers:
+The hidden file and parameter stages read changed values but remain absent from status.
 
-- which dependency versions were recorded
-- which parameter values were used
-- which outputs were produced
-- which command text was associated with the recorded run
+## Predict before executing
 
-Reading only `dvc.yaml` tells you the intended contract. Reading only `dvc.lock` tells
-you recorded evidence without enough design context. Reading them together gives you a
-reviewable execution story.
+Run:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/stage-contracts
+```
+
+Before reading receipts, inspect:
+
+```bash
+sed -n '1,240p' "$audit/workspace/baseline/dvc.yaml"
+```
+
+Predict:
+
+| Mutation | Expected stale stage |
+| --- | --- |
+| threshold policy changes | `declared_input` |
+| multiplier key changes | `declared_param` |
+| undeclared receipt deleted | none |
+
+Predictions derived from declaration edges reveal whether you understand the planner.
+
+## Read file-change status
+
+```bash
+cat "$audit/evidence/input-change-status.stdout.txt"
+```
+
+The status names changed dependency `policy/threshold.txt` for `declared_input`. It omits
+`hidden_input`.
+
+Before reproduction, both outputs still say `threshold=10`; stale status identifies the
+declared result that needs rebuilding.
+
+After reproduction:
+
+```text
+declared-input.txt -> threshold=20
+hidden-input.txt   -> threshold=10
+```
 
 ```mermaid
-flowchart LR
-  yaml["dvc.yaml: declared graph"] --> repro["dvc repro comparison"]
-  lock["dvc.lock: recorded evidence"] --> repro
-  workspace["workspace state"] --> repro
-  repro --> skip["skip unchanged stage"]
-  repro --> run["rerun stale stage"]
-  run --> newlock["updated lock evidence"]
+sequenceDiagram
+  participant Policy
+  participant DVC
+  participant Declared
+  participant Hidden
+
+  Policy->>Policy: change 10 to 20
+  DVC->>DVC: compare declared state with lock
+  DVC->>Declared: mark stale and run
+  DVC-->>Hidden: no declared edge; skip
+  Declared-->>DVC: current threshold=20
+  Hidden-->>DVC: retained threshold=10
 ```
 
-## What staleness means
+Empty hidden status is compatible with stale semantic output.
 
-A stage is stale when its current declared state no longer matches the recorded lock
-evidence.
+## Read parameter-change status
 
-Common reasons include:
-
-- a declared dependency changed content
-- a declared parameter value changed
-- the command text changed
-- a declared output is missing
-- an upstream stage changed and the downstream stage depends on its output
-
-Notice the repeated word: declared.
-
-DVC is comparing what it knows. If a command secretly reads an undeclared file, a change
-to that file does not automatically make the stage stale. That is not a mysterious DVC
-failure. It is a graph truth failure.
-
-## A small rerun story
-
-Imagine this graph:
-
-```yaml
-stages:
-  prepare:
-    cmd: python -m incident_escalation_capstone.prepare
-    deps:
-      - data/raw/service_incidents.csv
-    params:
-      - prepare.minimum_severity
-    outs:
-      - data/prepared/incidents.parquet
-  fit:
-    cmd: python -m incident_escalation_capstone.fit
-    deps:
-      - data/prepared/incidents.parquet
-    params:
-      - fit.model_family
-    outs:
-      - models/escalation-model.json
+```bash
+cat "$audit/evidence/param-change-status.stdout.txt"
 ```
 
-If `prepare.minimum_severity` changes, `prepare` becomes stale. If `prepare` produces a
-new `data/prepared/incidents.parquet`, then `fit` becomes stale because its dependency
-changed.
+The receipt names:
 
-That downstream rerun is not noise. It is the graph doing the honest thing.
-
-If `fit.model_family` changes, `fit` becomes stale, but `prepare` does not need to rerun.
-The change belongs to model fitting, not preparation.
-
-This is the kind of prediction you should make before running `dvc repro`.
-
-## What the lock file records
-
-A simplified lock excerpt might look like this:
-
-```yaml
-stages:
-  fit:
-    cmd: python -m incident_escalation_capstone.fit
-    deps:
-      - path: data/prepared/incidents.parquet
-        hash: md5
-        md5: 7d793037a0760186574b0282f2f435e7
-    params:
-      params.yaml:
-        fit.model_family: logistic_regression
-    outs:
-      - path: models/escalation-model.json
-        hash: md5
-        md5: 0c4d6a2f1eb4c6e4f2e2a2f2b913f5c8
+```text
+settings.multiplier modified
 ```
 
-The exact lock schema can vary by DVC version and output type. The lesson is more stable
-than the formatting:
+for the declared parameter stage only.
 
-- dependencies have recorded content identity
-- parameters have recorded values
-- outputs have recorded content identity
-- the command is part of the recorded stage evidence
+After reproduction, the declared stage uses `3` and produces score `24`; the hidden stage
+retains `2` and score `16`.
 
-Treating `dvc.lock` as disposable generated clutter breaks the review chain. Without it,
-the repository keeps a declaration but loses the recorded result of that declaration.
+The lock can record selected parameter state only when the stage declares it. File
+presence in `params.yaml` does not create a universal edge.
 
-## Why prediction matters
+## Read lock evidence in time order
 
-Before running `dvc repro`, make a prediction:
+The lock is retrospective:
 
-- which stage should rerun
-- which stage should stay unchanged
-- which downstream stages should rerun because their inputs changed
-- which lock evidence should update afterward
+1. declaration defines what DVC observes;
+2. execution occurs;
+3. lock records declared inputs, parameters, command, and outputs;
+4. later status compares current declared state with that record.
 
-Then compare the prediction with the actual result.
+An undeclared influence cannot be repaired merely because its output hash changes after a
+forced execution. Future comparison still lacks the cause.
 
-If a stage reruns unexpectedly, the graph may be broader than you thought. If a stage
-does not rerun when it should, the graph may be missing a real influence. Both outcomes
-are useful evidence.
+Use lock evidence to answer:
 
-The point is not to memorize DVC output text. The point is to make your mental graph meet
-the declared graph.
+- which declared identity produced recorded state;
+- which selected parameter value was recorded;
+- which owned output identity followed execution.
+
+Do not use it to claim:
+
+- all command reads were captured;
+- all side effects are owned;
+- runtime context is complete;
+- hidden semantic state is current.
+
+## Distinguish run, skip, and converge
+
+| Observation | Supported claim |
+| --- | --- |
+| stage runs after declared change | planner detects declared influence |
+| output adopts current value | execution restores semantic currency |
+| second repro skips | recorded declared state converges |
+| hidden stage skips after real change | declaration is incomplete, not “stable” |
+| missing undeclared sidecar remains absent | stage does not own artifact |
+
+## Preserve status before repair
+
+Run status before reproduction and save JSON. Otherwise a successful reproduction can
+erase evidence of submitted staleness.
+
+A useful packet:
+
+```text
+declaration.yaml
+lock-before.yaml
+status-before.json
+result-before.txt
+repro.stdout.txt
+lock-after.yaml
+result-after.txt
+status-after.json
+```
+
+This supports both planner and semantic reasoning.
+
+## Why force is diagnostic only
+
+Force can show that current hidden input changes output. It bypasses the ordinary stale
+decision.
+
+It does not:
+
+- add the file dependency;
+- select the parameter key;
+- own the sidecar;
+- protect future changes.
+
+Durable repair changes declaration or command behavior and passes adversarial tests.
 
 ## Review checkpoint
 
-You understand this core when you can answer:
+You understand planner evidence when you can:
 
-- what `dvc.yaml` declares
-- what `dvc.lock` records
-- why a declared dependency or parameter change makes a stage stale
-- why undeclared influence is invisible to `dvc repro`
-- why downstream reruns can be evidence of a correct graph
-- why lock evidence should be committed with the declaration it records
+- predict staleness from `dvc.yaml`;
+- explain lock evidence as retrospective;
+- preserve status before repro;
+- distinguish run, skip, and convergence;
+- combine status with semantic result values;
+- explain why forced freshness is not future correctness.
 
-Once that is clear, `dvc repro` stops feeling mystical. It becomes a consistency check
-between declaration, workspace state, and recorded evidence.
+The standard is:
+
+> Read declaration, recorded state, planner receipt, execution receipt, and result meaning
+> in time order; never ask one layer to prove the entire contract.
