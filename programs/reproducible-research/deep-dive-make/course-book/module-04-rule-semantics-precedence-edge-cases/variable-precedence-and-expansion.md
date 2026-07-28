@@ -25,298 +25,306 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Many Make variable bugs sound like shell bugs at first:
+Many Make variable bugs sound like shell bugs:
 
-- "Why did `CFLAGS` change in CI?"
-- "Why is this list duplicated now?"
-- "Why did the sub-make ignore the value I just set?"
-- "Why does the exact same line expand differently later?"
+- `CFLAGS` changes only in CI.
+- a prerequisite sees flags intended for one top-level target.
+- a child Make reports a command-line value that the parent never exported.
+- one expression changes meaning between parsing and recipe execution.
 
-Those are not random surprises. They come from three separate semantic questions:
+A final string cannot explain any of those. Record a variable's provenance as six
+separate facts:
 
-1. where did the value come from
-2. when does the value get computed
-3. who is allowed to see it
+1. **origin** — which source won precedence
+2. **flavor** — whether Make stored text or an already expanded result
+3. **evaluation time** — when referenced names and functions are observed
+4. **target scope** — which target context supplies the value
+5. **process export** — whether a recipe's environment receives it
+6. **recursive forwarding** — whether a child Make receives it as an environment or
+   command-line definition
 
-This page keeps those questions separate so that variable behavior becomes explainable
-instead of mystical.
+The distinction matters because "the child can see `MODE`" does not tell you whether
+`$(origin MODE)` in that child is `environment` or `command line`. Those two sources have
+different precedence.
 
-## The sentence to keep
+## Origin answers which definition won
 
-When a variable surprises you, do not ask only "what is its value?"
+GNU Make's `origin` function reports one of these values:
 
-Ask all three:
+| `$(origin NAME)` | Source | Ordinary precedence consequence |
+| --- | --- | --- |
+| `undefined` | no definition | `?=` may install a default |
+| `default` | built-in definition | almost any explicit definition replaces it |
+| `environment` | process environment | an ordinary makefile assignment replaces it |
+| `environment override` | environment while `-e` is active | it replaces an ordinary makefile assignment |
+| `file` | makefile definition | it replaces an ordinary environment value |
+| `command line` | `gmake NAME=value` | it replaces an ordinary makefile assignment |
+| `override` | makefile `override` directive | it replaces a command-line assignment |
+| `automatic` | rule context, such as `$@` | it exists only where that rule is being expanded |
 
-> what is the origin, what is the flavor, and when is the value observed?
+So the useful strongest-to-weakest ladder is:
 
-That one sentence will save you a lot of time.
+1. an `override` directive
+2. a command-line assignment
+3. an ordinary makefile assignment
+4. an environment assignment
+5. a built-in definition
 
-## Origin answers "who won?"
+The `-e` option moves environment definitions above ordinary file definitions. It does
+not move them above command-line or `override` definitions.
 
-The `origin` function tells you where Make believes a variable came from:
-
-```make
-$(origin CFLAGS)
-```
-
-In real investigations, the practical precedence ladder is usually:
-
-1. command-line assignment such as `make CFLAGS=-O0`
-2. `override` inside the makefile
-3. regular makefile assignment
-4. environment assignment
-5. built-in default
-
-There is one important exception: `-e` lets the environment outrank ordinary makefile
-assignments. That is why `-e` belongs in the "be suspicious" bucket. It changes the
-precedence rules you are trying to reason about.
-
-## Flavor answers "how is this stored?"
-
-The `flavor` function tells you whether a variable is recursive or simple:
-
-```make
-$(flavor CFLAGS)
-```
-
-For day-to-day engineering, the distinction that matters most is this:
-
-- `:=` stores the expanded result immediately
-- `=` stores the expression and expands it later
-
-That means `:=` is stable by default, while `=` stays connected to whatever the referenced
-variables become later.
-
-## Why `:=` is the healthy default
-
-Suppose you write this:
+`override` is deliberately forceful:
 
 ```make
-ROOT := $(CURDIR)
-SRC_DIR := $(ROOT)/src
-SRCS := $(wildcard $(SRC_DIR)/*.c)
+override CFLAGS += -fstack-protector-strong
 ```
 
-That is easy to reason about because each variable is computed once and then held steady.
+Use it only for a real invariant. If a caller must never disable a safety flag, state that
+contract and test it. If callers need to choose the whole value, an `override` directive
+silently defeating `gmake CFLAGS=...` is the wrong interface.
 
-Now compare it with this:
+## Flavor and evaluation time are different facts
+
+`$(flavor NAME)` reports `simple`, `recursive`, or `undefined`. `$(value NAME)` returns the
+stored text without expanding it. Together they distinguish a recipe's final text from
+the expression that produced it.
 
 ```make
-ROOT = $(CURDIR)
-SRC_DIR = $(ROOT)/src
-SRCS = $(wildcard $(SRC_DIR)/*.c)
+WARNINGS := -Wall
+DEFERRED = $(WARNINGS) -Wextra
+CAPTURED := $(WARNINGS) -Wextra
+WARNINGS := -Werror
 ```
 
-That version is not automatically wrong. It is simply more dynamic. Every later expansion
-can observe a different world if one of the referenced values changes.
+After parsing:
 
-If you do not need that dynamism, you are paying for complexity without getting value.
-
-## The operators you keep meeting
-
-| Operator | Meaning | Healthy use | Common failure |
+| Name | Flavor | `$(value NAME)` | Expanded value |
 | --- | --- | --- | --- |
-| `:=` | immediate assignment | fixed paths, sorted source lists, computed defaults | rarely the problem |
-| `=` | deferred assignment | true laziness, advanced indirection | value changes later in ways nobody expected |
-| `?=` | assign only if unset | configurable defaults | you forget something already set the variable |
-| `+=` | append | extending a stable list | duplicates or recursive growth when combined with `=` |
-| `!=` | shell assignment | rare integration edge cases | hidden inputs and parse-time side effects |
+| `DEFERRED` | recursive | `$(WARNINGS) -Wextra` | `-Werror -Wextra` |
+| `CAPTURED` | simple | `-Wall -Wextra` | `-Wall -Wextra` |
 
-You do not need to ban the last three. You do need to stop treating them as harmless.
+The assignment operators establish different observation boundaries:
 
-## A tiny proof harness
+| Form | When its right side is evaluated | Review question |
+| --- | --- | --- |
+| `NAME := expression` | immediately while parsing | should later definitions be invisible? |
+| `NAME = expression` | whenever `NAME` is expanded | is that deferred dependency intentional? |
+| `NAME ?= expression` | assignment is conditional; flavor is recursive when installed | does an empty-but-defined value count as configured? |
+| `NAME != command` | the shell runs while parsing | is this external observation declared and stable? |
+| `target: NAME := expression` | in a target-specific variable context | which prerequisite inherits the context? |
+| recipe use of `$(NAME)` | Make expands the recipe before its shell runs | are you confusing Make expansion with shell expansion? |
 
-Use this Makefile:
+```mermaid
+flowchart LR
+  parse["Parse makefiles"]
+  immediate["Evaluate := and != now"]
+  stored["Store = as deferred text"]
+  target["Enter target context"]
+  recipe["Expand recipe for that target"]
+  shell["Start recipe shell"]
+
+  parse --> immediate
+  parse --> stored
+  stored --> target --> recipe --> shell
+  immediate --> target
+```
+
+Prefer `:=` for paths, discovered file lists, pinned tool names, and other values that
+should describe one parse. Use `=` when later evaluation is part of the design, not merely
+because it is shorter.
+
+## Prove precedence instead of reciting it
+
+Put this in an isolated `Makefile`:
 
 ```make
 CFLAGS := FILE
 OPTFLAGS = $(CFLAGS) -Wall
 
-.PHONY: show show-env show-cli show-expand
-
+.PHONY: show
 show:
-	@printf 'origin=%s flavor=%s value=%s\n' \
-	  '$(origin CFLAGS)' '$(flavor CFLAGS)' '$(value CFLAGS)'
-
-show-env:
-	@$(MAKE) --no-print-directory -e show
-
-show-cli:
-	@$(MAKE) --no-print-directory CFLAGS=CLI show
-
-show-expand:
-	@printf 'OPTFLAGS flavor=%s value=%s expanded=%s\n' \
+	@printf 'origin=%s flavor=%s raw=%s expanded=%s\n' \
+	  '$(origin CFLAGS)' '$(flavor CFLAGS)' \
+	  '$(value CFLAGS)' '$(CFLAGS)'
+	@printf 'OPTFLAGS flavor=%s raw=%s expanded=%s\n' \
 	  '$(flavor OPTFLAGS)' '$(value OPTFLAGS)' '$(OPTFLAGS)'
 ```
 
-Now run:
+Run one controlled case at a time:
 
 ```sh
-export CFLAGS=ENV
-make show
-make show-env
-make show-cli
-make show-expand
+env -u CFLAGS gmake --no-builtin-variables show
+CFLAGS=ENV gmake --no-builtin-variables show
+CFLAGS=ENV gmake --no-builtin-variables -e show
+gmake --no-builtin-variables CFLAGS=CLI show
 ```
 
-What to notice:
-
-- plain `make show` should report `CFLAGS` from the file
-- `make show-env` should let the environment win because of `-e`
-- `make show-cli` should make the command line win
-- `show-expand` reveals that `OPTFLAGS` is recursive and expands later
-
-This is the simplest reliable way to teach precedence without hand-waving.
-
-## The duplication trap
-
-One of the most common beginner mistakes is mixing recursive variables with appends and
-expecting the result to stay small.
-
-For example:
+Then add this definition above the target and rerun the command-line case:
 
 ```make
-CFLAGS = -Wall
-CFLAGS += $(EXTRA_WARNINGS)
-EXTRA_WARNINGS = -Wextra
+override CFLAGS := REQUIRED
 ```
 
-That may still work, but it is harder to reason about than it needs to be because the
-final value depends on later expansion.
+Your evidence should show `file`, `environment override`, `command line`, and `override`
+origins in the relevant cases. The command also disables built-in variables so they
+cannot blur this specific comparison.
 
-A calmer version is:
+## Target-specific values flow down the dependency graph
 
-```make
-CFLAGS := -Wall
-EXTRA_WARNINGS := -Wextra
-CFLAGS += $(EXTRA_WARNINGS)
-```
-
-Now the values are concrete and stable.
-
-## Target-specific variables are about scope, not magic
-
-Make also lets you write target-specific variables:
+This declaration affects `debug` and the prerequisites built for it:
 
 ```make
 debug: CFLAGS += -O0 -g
 debug: app
 ```
 
-This is useful, but it often gets misread. A target-specific variable means "when Make is
-building this target and its prerequisites, use this value in that scope."
+That propagation is useful, but it creates a subtle shared-prerequisite problem:
 
-It does not automatically mean:
+```make
+debug: MODE := debug
+release: MODE := release
 
-- export this to every shell process forever
-- propagate it to unrelated targets
-- make every recursive `$(MAKE)` invocation inherit it as environment state
+debug release: shared-data
+```
 
-That last point matters. A target-specific variable changes Make's internal evaluation
-scope. It is not a universal replacement for `export`.
+If one invocation requests both goals, `shared-data` is built only once. Whichever target
+context causes it to be built first supplies `MODE`. The shared output therefore cannot
+honestly depend on that contextual value unless the value is encoded in the output path or
+the graph separates the variants.
 
-## Export means "make this part of the environment"
+Use `private` when prerequisites must not inherit a target-specific value:
 
-If a sub-process or sub-make truly depends on a variable, you have to decide whether to
-export it:
+```make
+debug: private MODE := debug
+debug: app
+```
+
+Target-specific scope is Make state. It does not by itself mean "put this name in every
+future process environment."
+
+## Export and recursive forwarding are separate channels
+
+`export` places a variable in recipe environments:
 
 ```make
 export LC_ALL := C
 ```
 
-Use export with discipline because environment state can become a hidden build input. If a
-variable changes outputs, then either:
+`unexport` removes that channel:
 
-- pin it as part of the build contract
-- surface it in a manifest or stamp
-- or stop pretending the build is reproducible across environments
+```make
+unexport DEVELOPER_TOKEN
+```
 
-The wrong lesson is "never export." The right lesson is "know when export changes the
-artifact meaning."
+Recursive Make adds another mechanism. GNU Make carries command-line variable definitions
+through `MAKEOVERRIDES`, which contributes to the flags passed to a child through
+`MAKEFLAGS`. Consequently a child normally sees a forwarded command-line assignment with
+origin `command line`, even if the parent has no `export NAME` directive.
 
-## A small sub-make example
+| Parent definition | Ordinary recipe environment | Child `$(origin MODE)` |
+| --- | --- | --- |
+| `MODE := file` | absent unless exported | `undefined` unless otherwise defined |
+| `export MODE := release` | `MODE=release` | `environment` |
+| `gmake MODE=release child` | `MODE=release` | `command line` |
+| recipe `$(MAKE) MODE=release -C child` | `MODE=release` | `command line` |
+| `unexport MODE` after a file definition | absent | `undefined` unless explicitly forwarded |
 
-Parent Makefile:
+Do not edit `MAKEFLAGS` or `MAKEOVERRIDES` casually. They are protocol state for recursive
+Make, not general-purpose configuration variables.
+
+## A recursive provenance harness
+
+Parent `Makefile`:
 
 ```make
 SUBDIR := child
+MODE := file
 
-.PHONY: child plain exported
+.PHONY: plain exported explicit diagnose
 
 plain:
 	@$(MAKE) --no-print-directory -C $(SUBDIR) show
 
-exported: export MODE := release
+exported: export MODE := exported
 exported:
+	@$(MAKE) --no-print-directory -C $(SUBDIR) show
+
+explicit:
+	@$(MAKE) --no-print-directory -C $(SUBDIR) MODE=explicit show
+
+diagnose:
+	@printf 'parent level=%s origin=%s flags=%s overrides=%s\n' \
+	  '$(MAKELEVEL)' '$(origin MODE)' '$(MAKEFLAGS)' '$(MAKEOVERRIDES)'
 	@$(MAKE) --no-print-directory -C $(SUBDIR) show
 ```
 
-Child Makefile:
+Child `child/Makefile`:
 
 ```make
 .PHONY: show
-
 show:
-	@printf 'MODE origin=%s value=%s\n' '$(origin MODE)' '$(MODE)'
+	@printf 'child level=%s origin=%s flavor=%s raw=%s value=%s env=%s\n' \
+	  '$(MAKELEVEL)' '$(origin MODE)' '$(flavor MODE)' \
+	  '$(value MODE)' '$(MODE)' "$${MODE-unset}"
 ```
 
-This makes the difference between unexported Make state and exported environment state
-visible immediately.
+Run:
 
-## Failure signatures worth recognizing
+```sh
+gmake plain
+gmake exported
+gmake explicit
+gmake MODE=command diagnose
+```
 
-### "The value is different in CI"
+The last command is the important counterexample. In the child, `MODE` remains a
+command-line definition because recursive forwarding is stronger than an ordinary
+environment import. The `MAKELEVEL` increase proves that the observation came from a
+child Make rather than a shell-only subprocess.
 
-Usually one of these is true:
+## Diagnose one boundary at a time
 
-- the environment is winning because of `-e`
-- a CI environment variable is overriding a default
-- a recursive variable is expanding against a different later state
+| Symptom | First evidence to collect | Likely boundary |
+| --- | --- | --- |
+| CI has a different value | `origin`, invocation flags, presence of `-e` | source precedence |
+| a value changes later | `flavor`, `value`, and the point of expansion | evaluation time |
+| flags appear on a prerequisite | target path plus target-specific declarations | graph scope |
+| a shell sees a hidden setting | controlled `env` output and export declarations | process export |
+| a child reports `command line` | `MAKELEVEL`, `MAKEFLAGS`, `MAKEOVERRIDES` | recursive forwarding |
+| flags grow on every use | raw value, flavor, and all `+=` sites | deferred self-reference |
 
-### "The flags keep growing"
-
-That often means recursive assignment plus repeated `+=` or self-reference.
-
-### "The child Makefile ignored my setting"
-
-That usually means you changed Make scope but never exported the value the child process
-actually depends on.
-
-### "I changed the variable, but the recipe still uses the old value"
-
-That points you back to expansion timing. The recipe or a simply-expanded variable may
-have captured the value earlier than you thought.
-
-## A review habit that pays off
-
-When you inspect a variable-related bug, collect these three lines first:
+Avoid dumping the whole environment as your first move. It obscures which semantic
+boundary changed. A focused diagnostic is reviewable:
 
 ```make
-$(info origin=$(origin VAR))
-$(info flavor=$(flavor VAR))
-$(info raw=$(value VAR))
+$(info MODE origin=$(origin MODE) flavor=$(flavor MODE) raw=$(value MODE))
 ```
 
-Those lines tell you more than a vague dump of the final expanded text because they keep
-origin, flavor, and raw expression separate.
+When the variable affects artifact bytes, record the effective expanded value in a
+manifest or build-information file. Provenance explains why a value won; the manifest
+connects that value to the artifact it produced.
 
-## What to practice from this page
+## Practice before moving on
 
-Take one real build variable from the capstone or your own repository and answer:
+Choose one output-affecting variable from the capstone and write down:
 
-1. Where should its default live: environment, makefile, or command line?
-2. Should it be simple (`:=`) or recursive (`=`)?
-3. Does it affect outputs enough that exporting it changes reproducibility?
-4. How would you prove the answer with `origin`, `flavor`, and `value`?
+1. the sources allowed to define it and their intended precedence
+2. whether its right side must observe parsing time or later target context
+3. whether prerequisites should inherit a target-specific value
+4. whether recipe processes need it in their environment
+5. whether recursive Make should receive it as environment or command-line state
+6. the smallest harness that rejects an unintended source or propagation path
 
-If you can answer those clearly, you are no longer guessing about variables.
+A satisfactory answer includes evidence from `origin`, `flavor`, `value`, and the relevant
+process or recursive-Make boundary. Printing only the final value is not enough.
 
 ## End-of-page checkpoint
 
-Before leaving this lesson, make sure you can explain:
+Before leaving, make sure you can explain:
 
-- why `origin` and `flavor` answer different questions
-- why `:=` is usually the calmer default
-- how `-e` changes precedence and why that matters
-- why target-specific variables are not the same thing as exported environment state
-- why `value` is often more useful than printing only the final expanded text
+- why `override` outranks a command-line definition and why that power needs a contract
+- why `?=` treats an empty but defined value as already configured
+- why a target-specific value can reach prerequisites without being exported
+- why an exported value has `environment` origin in a child Make
+- why a recursively forwarded command-line value keeps `command line` origin
+- how `MAKELEVEL`, `MAKEFLAGS`, and `MAKEOVERRIDES` expose the recursive boundary
