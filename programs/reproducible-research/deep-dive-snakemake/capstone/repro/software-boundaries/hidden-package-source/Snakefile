@@ -1,0 +1,25 @@
+import sys
+
+
+PYTHON = sys.executable
+
+
+rule render:
+    input:
+        source="data/source.txt"
+    output:
+        artifact="build/rendered.txt"
+    params:
+        python=PYTHON
+    shell:
+        """
+        PYTHONPATH=src "{params.python}" -m software_specimen.render \
+            --source "{input.source}" \
+            --artifact "{output.artifact}"
+        """
+
+
+rule all:
+    input:
+        rules.render.output.artifact
+    default_target: True
