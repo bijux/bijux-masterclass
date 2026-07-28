@@ -71,6 +71,41 @@ class SelftestHarnessTests(unittest.TestCase):
         self.assertEqual(changed_paths, ["build/include/dynamic.h"])
         self.assertTrue((report / "workspace" / "build" / "include" / "dynamic.h").is_file())
 
+    def test_publication_candidates_reach_shell_with_process_identity(self) -> None:
+        make = shutil.which("gmake") or shutil.which("make")
+        self.assertIsNotNone(make)
+        commands = (
+            [str(make), "--no-print-directory", "-n", "-B", "all"],
+            [
+                str(make),
+                "--no-print-directory",
+                "-n",
+                "-B",
+                "USE_EVAL=yes",
+                "eval-demo",
+            ],
+        )
+        output = ""
+        for command in commands:
+            result = subprocess.run(
+                command,
+                cwd=CAPSTONE,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            output += result.stdout
+
+        candidate_assignments = [
+            line
+            for line in output.splitlines()
+            if ".candidate." in line and "candidate" in line
+        ]
+        self.assertGreaterEqual(len(candidate_assignments), 9)
+        for assignment in candidate_assignments:
+            self.assertIn(".candidate.$$", assignment)
+
 
 if __name__ == "__main__":
     unittest.main()

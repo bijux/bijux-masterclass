@@ -10,8 +10,8 @@ endef
 
 # atomic_write(path, cmd): run cmd, write stdout atomically to path
 define atomic_write
-set -eu; tmp="$(1).tmp.$$"; \
-( $(2) ) > "$$tmp" && mv -f "$$tmp" "$(1)" || { rm -f "$$tmp"; exit 1; }
+set -eu; candidate="$(1).candidate.$$$$"; \
+( $(2) ) > "$$candidate" && mv -f "$$candidate" "$(1)" || { rm -f "$$candidate"; exit 1; }
 endef
 
 # assert_stdout_eq(cmd, expected): exact stdout equality

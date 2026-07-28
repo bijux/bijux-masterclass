@@ -117,19 +117,23 @@ include $(MK_DIR)/stamps.mk
 # ---- public interface ----
 all: app $(DYN_BINS)
 >     # convergence sentinel (enables: make -q all)
->     tmp=$@.tmp.$$; printf 'ok\n' > $$tmp && mv -f $$tmp $@ || { rm -f $$tmp; exit 1; }
+>     candidate=$@.candidate.$$$$; printf 'ok\n' > $$candidate && mv -f $$candidate $@ || { rm -f $$candidate; exit 1; }
 
 app: $(OBJS) | $(BLD_DIR)/
 >     # atomic publish
->     tmp=$@.tmp.$$; \
->     $(CC) $(LDFLAGS) $^ $(LDLIBS) -o $$tmp && mv -f $$tmp $@ || { rm -f $$tmp; exit 1; }
+>     candidate_dir=$(@D)/.$(@F).candidate.$$$$; candidate=$$candidate_dir/$(@F); \
+>     mkdir -p "$$candidate_dir"; \
+>     $(CC) $(LDFLAGS) $^ $(LDLIBS) -o "$$candidate" && \
+>     mv -f "$$candidate" "$@" && rmdir "$$candidate_dir" || { rm -rf "$$candidate_dir"; exit 1; }
 
 # Compile objects (atomic .o + .d publish, dir-safe)
 $(BLD_DIR)/%.o: $(SRC_DIR)/%.c $(BLD_DIR)/flags.stamp | $(BLD_DIR)/
->     tmp=$@.tmp.$$; dtmp=$(@:.o=.d).tmp.$$; \
->     mkdir -p "$(@D)"; \
->     $(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) -MF $$dtmp -MT $@ -c $< -o $$tmp && \
->     mv -f $$tmp $@ && mv -f $$dtmp $(@:.o=.d) || { rm -f $$tmp $$dtmp; exit 1; }
+>     candidate_dir=$(@D)/.$(@F).candidate.$$$$; \
+>     object_candidate=$$candidate_dir/$(@F); dep_candidate=$$candidate_dir/$(notdir $(@:.o=.d)); \
+>     mkdir -p "$(@D)" "$$candidate_dir"; \
+>     $(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) -MF "$$dep_candidate" -MT $@ -c $< -o "$$object_candidate" && \
+>     mv -f "$$object_candidate" "$@" && mv -f "$$dep_candidate" "$(@:.o=.d)" && \
+>     rmdir "$$candidate_dir" || { rm -rf "$$candidate_dir"; exit 1; }
 
 $(BLD_DIR)/:
 >     mkdir -p $@
@@ -145,11 +149,13 @@ $(DYN_HDR): scripts/gen_dynamic_h.py | $(BLD_DIR)/include/
 
 # Dynamic binaries (atomic publish, depfiles for header staleness, flags dep for knobs)
 $(BLD_DIR)/bin/%: $(SRC_DIR)/dynamic/%.c $(DYN_HDR) $(BLD_DIR)/flags.stamp | $(BLD_DIR)/bin/
->     tmp=$@.tmp.$$; dtmp=$@.d.tmp.$$; \
->     mkdir -p "$(@D)"; \
+>     candidate_dir=$(@D)/.$(@F).candidate.$$$$; \
+>     binary_candidate=$$candidate_dir/$(@F); dep_candidate=$$candidate_dir/$(@F).d; \
+>     mkdir -p "$(@D)" "$$candidate_dir"; \
 >     $(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $(LDLIBS) \
->        $(DEPFLAGS) -MF $$dtmp -MT $@ $< -o $$tmp && \
->     mv -f $$tmp $@ && mv -f $$dtmp $@.d || { rm -f $$tmp $$dtmp; exit 1; }
+>        $(DEPFLAGS) -MF "$$dep_candidate" -MT $@ $< -o "$$binary_candidate" && \
+>     mv -f "$$binary_candidate" "$@" && mv -f "$$dep_candidate" "$@.d" && \
+>     rmdir "$$candidate_dir" || { rm -rf "$$candidate_dir"; exit 1; }
 
 $(BLD_DIR)/include/:
 >     mkdir -p $@
@@ -625,7 +631,7 @@ discovery-audit:
 
 # ---- attestations without contaminating outputs ----
 attest: all | $(BLD_DIR)/
->     tmp="$(BLD_DIR)/attest.txt.tmp.$$"; \
+>     candidate="$(BLD_DIR)/attest.txt.candidate.$$$$"; \
 >     { \
 >       printf 'MAKE=%s\n' "$$($(MAKE) --version | head -1)"; \
 >       printf 'OS=%s\n' "$(UNAME_S)"; \
@@ -637,7 +643,7 @@ attest: all | $(BLD_DIR)/
 >       printf 'TZ=%s\nLC_ALL=%s\n' "$${TZ:-}" "$${LC_ALL:-}"; \
 >       cat $(BLD_DIR)/flags.stamp; \
 >       test -f stamps/tool/cc.txt && { echo '---'; head -5 stamps/tool/cc.txt; } || true; \
->     } > "$$tmp" && mv -f "$$tmp" "$(BLD_DIR)/attest.txt" || { rm -f "$$tmp"; exit 1; }
+>     } > "$$candidate" && mv -f "$$candidate" "$(BLD_DIR)/attest.txt" || { rm -f "$$candidate"; exit 1; }
 
 # ---- universal truth command ----
 selftest:
@@ -802,9 +808,9 @@ source-baseline-check:
 >             paths="$$paths./$$path\n"; \
 >         fi; \
 >     done; \
->     tmp_paths="$$(find . -type f -print | grep -E '(\.tmp(\..*)?|\.d\.tmp|\.tmp\.d)$$' || true)"; \
->     if [ -n "$$tmp_paths" ]; then \
->         paths="$$paths$$tmp_paths"; \
+>     candidate_paths="$$(find . -name '*.candidate.*' -print || true)"; \
+>     if [ -n "$$candidate_paths" ]; then \
+>         paths="$$paths$$candidate_paths"; \
 >     fi; \
 >     if [ -n "$$paths" ]; then \
 >         printf '%s\n' 'FAIL: source bundle would include local build state:' "$$paths" >&2; \
@@ -833,6 +839,7 @@ show-origins:
 
 clean:
 >     rm -rf $(BLD_DIR) stamps app all
->     find . -type f \( -name '*.tmp.*' -o -name '*.tmp' -o -name '*.d.tmp' -o -name '*.tmp.d' \) -delete 2>/dev/null || true
+>     find . -depth -type f -name '*.candidate.*' -delete 2>/dev/null || true
+>     find . -depth -type d -name '*.candidate.*' -exec rmdir {} + 2>/dev/null || true
 
 FORCE:
