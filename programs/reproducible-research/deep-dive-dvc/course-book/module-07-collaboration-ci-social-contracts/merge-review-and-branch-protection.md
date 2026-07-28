@@ -1,6 +1,5 @@
 # Merge Review and Branch Protection
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,200 +7,323 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Collaboration Ci Social Contracts"]
+  section["Collaboration CI Social Contracts"]
   page["Merge Review and Branch Protection"]
-  capstone["Capstone evidence"]
+  capstone["Reviewer handoff decisions"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.grounds.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  proposal["proposed shared state"] --> scope["identify changed claims"]
+  scope --> evidence["inspect joined Git and DVC evidence"]
+  evidence --> gates["evaluate required gates"]
+  gates --> comment["write actionable decision"]
+  comment --> merge["merge only coherent state"]
 ```
 <!-- page-maps:end -->
 
-In a DVC project, a merge is not only a code event.
+A merge changes the shared history that future clones, CI jobs, and recoveries will trust.
+For a DVC project, reviewing only the visible source diff is insufficient. A small pointer
+change can promise new data objects; a parameter change can make a recorded result stale;
+a remote configuration change can alter who can reconstruct history.
 
-It can change:
+Branch protection should preserve a coherent claim across Git state, DVC object
+availability, execution records, and result meaning.
 
-- data pointers
-- pipeline declarations
-- lock evidence
-- parameters
-- metrics
-- published release bundles
-- recovery expectations
+## Review the change as a set
 
-Branch and review rules should reflect that reality.
+Map changed files to obligations:
 
-## What should block a merge
+| Changed surface | Review questions |
+| --- | --- |
+| `*.dvc` pointer | does the object exist in the shared remote; is the source change intended? |
+| `dvc.yaml` | are dependencies, parameters, outputs, and commands truthful? |
+| `dvc.lock` | does recorded state correspond to the proposed declarations and inputs? |
+| `params.yaml` | were dependent results reproduced and comparisons reviewed? |
+| pipeline script or policy | is every declared dependency tracked; do outputs remain meaningful? |
+| `.dvc/config` | is the route non-secret, discoverable, and appropriate for reviewers? |
+| result contract | does it state what values the reviewer should expect and why? |
+| generated result | can it be restored or reproduced; does it match the contract? |
 
-A pull request should not merge when the shared state story is incomplete.
+No filename proves readiness by itself. An unchanged lock can be correct when a
+documentation-only change occurs and defective when an input pointer changed.
 
-Common blockers:
+## Determine the claim affected by the diff
 
-- DVC metadata changed but required remote objects are missing
-- `dvc.yaml` changed but `dvc.lock` evidence was not updated when it should be
-- parameters changed without matching metric or review explanation
-- metrics changed without baseline or comparability context
-- release files changed without paired params, metrics, and manifest evidence
-- CI cannot reconstruct the declared state from a clean checkout
-- direct changes landed on the protected branch without review
+Before checking boxes, write:
 
-These blockers are not punishment. They keep the main branch reproducible for the next
-person.
+> This proposal changes `<input/control/implementation/result/storage route>` and claims
+> that `<recorded result or reproducibility property>` remains trustworthy.
 
-## Decide from evidence, not file names
+Examples:
 
-A changed `.dvc` pointer is a review trigger, not an automatic rejection. A changed
-pointer can belong to a complete handoff or an incomplete one. The decision depends on
-what a clean reviewer can recover and inspect.
+- “The incident sample pointer changes; the recorded summary is claimed current for the
+  new sample.”
+- “The shared DVC route changes; all required objects are claimed retrievable by the
+  reviewer identity.”
+- “The severity policy changes; the generated summary and claim contract are claimed to
+  reflect the new policy.”
 
-Run the handoff audit, then read `summary.tsv`:
+The claim selects the evidence. Without it, reviewers may demand unrelated files or miss a
+stale result.
+
+## Use a cache-cold gate
+
+Run the reference audit:
 
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/reviewer-handoff
 ```
 
-Use this decision matrix:
+The accepted case requires:
 
-| Audit observation | Merge decision | Required repair |
-| --- | --- | --- |
-| all handoff checks pass | eligible for domain review | none at the collaboration boundary |
-| remote configured, object missing | block | author or publication job pushes the named object |
-| object exists, remote undiscoverable | block | maintainer tracks the shared remote route without tracking credentials |
-| pull passes, stage dependency absent | block | author commits the dependency or declares a recoverable source |
-| pull passes, pre-reproduction status stale | block | author reproduces and submits matching lock/output evidence |
-| review route requires `dvc push` | block | CI owner separates verification from publication authority |
-| result claim absent | block | domain owner records the expected interpretation and evidence surface |
+```text
+remote_discoverable
+pull_succeeded
+recorded_state_clean_before_repro
+repro_succeeded
+review_route_avoids_remote_mutation
+result_contract_present
+result_matches_claim
+```
 
-Notice the ownership changes by row. “Fix CI” is not a useful response when the author
-failed to push an object. “Push the data” is not a useful response when the remote route
-exists only in local configuration.
+This is a useful merge gate because it tests the proposed state from the reviewer's
+boundary, not from the author's convenient workspace.
 
-## Review files as a set
+```mermaid
+flowchart TD
+  diff["proposed commit"] --> cold["cache-cold clone"]
+  cold --> discover{"remote discoverable?"}
+  discover -- no --> block["block with failed boundary"]
+  discover -- yes --> pull{"all objects readable?"}
+  pull -- no --> block
+  pull -- yes --> clean{"submitted state clean?"}
+  clean -- no --> block
+  clean -- yes --> repro{"reproduction and claim match?"}
+  repro -- no --> block
+  repro -- yes --> accept["handoff gate accepts"]
+```
 
-Reviewers should avoid reading one file in isolation.
+Acceptance by this gate is necessary for the handoff claim. Other scientific, security,
+or release gates may still be required.
 
-Useful pairings:
+## Block stale submissions even when CI can repair them
 
-| Changed file | Review beside |
+The stale execution audit case:
+
+- discovers the remote;
+- pulls every object;
+- successfully reproduces;
+- still blocks.
+
+Inspect:
+
+```bash
+jq '.findings[] | select(.finding == "STALE_EXECUTION_RECORD")' \
+  "$audit/report.json"
+```
+
+The submitted data pointer had changed without a corresponding recorded execution. CI's
+successful repro creates a coherent local result, but that result is not the submitted
+record.
+
+A suitable blocking comment:
+
+> Block: cache-cold status reports `summarize_incidents` stale before reproduction, and
+> the submitted summary does not match the handoff claim. CI can regenerate a matching
+> local result, which proves the pipeline is executable but not that the proposed lock and
+> result are coherent. Reproduce from the proposed inputs, record the resulting state,
+> publish its DVC objects, and rerun the handoff gate.
+
+The comment distinguishes evidence, consequence, and repair.
+
+## Review remote failures without guessing
+
+Compare:
+
+```bash
+jq '.findings[] |
+  select(
+    .finding == "MISSING_REMOTE_OBJECT" or
+    .finding == "UNDISCOVERABLE_REMOTE"
+  )' "$audit/report.json"
+```
+
+Write different comments:
+
+### Object absent
+
+> Block: the tracked remote is discoverable, but pull cannot retrieve objects referenced
+> by the proposed state. Publish the exact referenced objects from the reviewed revision
+> and prove restoration from a cache-cold reviewer.
+
+### Route undiscoverable
+
+> Block: the audit objects exist in shared storage, but the clean clone has no tracked
+> remote route. Add a non-secret shared route to tracked DVC configuration; keep
+> credentials in the approved external or local mechanism.
+
+Do not suggest changing credentials for an absent object or republishing objects when the
+repository lacks the route.
+
+## Review Git completeness independently
+
+The untracked dependency case pulls successfully. It still cannot reproduce because
+`policy/severity-policy.json` exists only in the author's workspace.
+
+This exposes a two-store contract:
+
+| Store | Must contain |
 | --- | --- |
-| `dvc.yaml` | `dvc.lock`, command code, expected outputs |
-| `dvc.lock` | `dvc.yaml`, params, metrics, DVC output paths |
-| `params.yaml` | metrics, experiment or release note |
-| metric files | params, baseline, metric definition |
-| `.dvc` pointer files | remote availability and data identity |
-| `publish/v1/metrics.json` | `publish/v1/params.yaml` and release review |
+| Git | declarations, scripts, policies, parameters, pointers, non-secret route configuration |
+| DVC remote | content-addressed data and recorded outputs selected for sharing |
 
-The pattern is simple: every state claim needs its supporting evidence.
+Remote completeness cannot compensate for missing source-side dependencies. Branch
+protection should detect both.
 
-## Branch rules should protect shared history
+Review declared dependencies against tracked state:
 
-Protected branches should usually require:
+```bash
+git ls-files
+dvc dag
+```
 
-- CI success before merge
-- review approval for DVC state changes
-- no force-push on shared release branches
-- required status checks for recovery or release routes when relevant
-- clear ownership for remote and release-bundle changes
+Those commands contribute evidence, but a project-specific audit should check every
+declared dependency directly.
 
-The exact platform settings vary, but the principle is stable:
+## Separate review and publication permissions
 
-> Shared history should not depend on one person's local state or unilateral rewrite.
+The mutating-route case has complete files, clean state, successful reproduction, and a
+matching result. It blocks solely because the handoff contract asks the reviewer to run
+`dvc push`.
 
-Force-push risk is especially serious when people are coordinating Git history with DVC
-state and remote artifacts. Rewriting the record can make it harder to know which
-artifact evidence was intended to support which commit.
+This is a policy failure:
 
-## Review comments should name the missing contract
+- reviewers should inspect with read authority;
+- publication should occur under a separate accepted-state workflow;
+- forks should not receive shared-storage write credentials;
+- verification should not mutate what it is judging.
 
-Weak review comment:
+Branch protection should require the read-only review job. A protected post-merge job may
+publish under a distinct identity if repository policy calls for it.
 
-> DVC looks wrong.
+## Require result meaning, not only execution
 
-Stronger:
+The missing-contract case passes pull, status, and repro. It blocks because no expected
+claim tells the reviewer how to interpret `reports/summary.json`.
 
-> This pull request changes `dvc.lock`, but CI has not shown that the new output objects
-> can be pulled from the shared remote. Please push the missing objects or explain why no
-> remote-backed artifact change is required.
+Execution evidence can say:
 
-Weak:
+> The command ran and produced this file.
 
-> Metrics changed. Please check.
+A result contract adds:
 
-Stronger:
+> For the governed sample, the file should report four records, severity total eleven,
+> and two weekend handoffs.
 
-> `metrics/metrics.json` changed while `params.yaml` also changed. Please add the
-> comparison note that explains whether this is a same-control metric change or a
-> parameter-driven tradeoff.
+The contract need not hard-code every research outcome. It should define the fields,
+units, population or source identity, and comparison rule needed for the reviewed claim.
 
-Specific comments teach the contract.
+## Choose required checks by protected promise
 
-## Write a complete blocking comment
-
-A review comment should carry four fields:
-
-| Field | Purpose |
+| Protected promise | Required check |
 | --- | --- |
-| failed contract | names why another maintainer cannot trust the handoff |
-| evidence | points to the command or receipt that demonstrates the failure |
-| repair owner | says who can correct the boundary |
-| unblock condition | states the exact evidence required for rereview |
+| all shared pointers resolve | cache-cold remote pull |
+| repository declares a discoverable route | tracked remote configuration check |
+| source-side pipeline is complete | tracked dependency audit |
+| proposed execution record is current | pre-repro status |
+| supported environment can run pipeline | clean reproduction |
+| reviewer needs read authority only | handoff-route policy check |
+| output is interpretable | result-contract validation |
 
-For the stale-execution case, a complete comment is:
+Avoid one broad job named only “tests.” Separate checks when distinct owners and repair
+routes benefit from precise failures, while preserving an aggregate handoff decision.
 
-> **Failed contract:** the submitted DVC execution record is stale relative to the
-> changed data pointer. **Evidence:** the clean reviewer can pull every object, but
-> `dvc status --json` is nonempty before reproduction and the restored summary does not
-> match the handoff claim. **Owner:** the change author must reproduce and submit the
-> matching lock and output state. **Unblock condition:** rerun the cache-cold review and
-> show clean pre-reproduction status plus a result matching the recorded claim.
+## Write review comments as decisions
 
-Do not write “`dvc repro` passed, resolved.” In this case, reproduction repairs the
-reviewer workspace. It does not prove that the submitted commit was coherent.
+A complete blocking comment contains:
 
-For the missing-result-contract case, the owner is different:
+```text
+Decision:
+Block or accept the bounded claim.
 
-> Execution and recovery pass, but the handoff does not state which result the reviewer
-> should explain. The domain owner must add the expected claim and its evidence path
-> before this output is reviewable.
+Failed promise:
+Name the collaboration contract that is not satisfied.
 
-The second comment prevents infrastructure checks from pretending to make a domain
-decision.
+Evidence:
+Link the exact receipt and relevant state.
+
+Consequence:
+Explain what a clean reviewer cannot conclude.
+
+Repair:
+Name the state change needed, without prescribing unrelated work.
+
+Reverification:
+Name the gate that must pass after repair.
+
+Limit:
+State which other claims this comment does not assess.
+```
+
+Avoid comments such as:
+
+- “please run DVC again”;
+- “data seems missing”;
+- “CI is red”;
+- “add the generated files.”
+
+They do not identify the broken boundary or the correct storage owner.
+
+## Protect against bypass
+
+Branch rules should address:
+
+- required status checks;
+- stale-check dismissal;
+- direct pushes to protected history;
+- who may override a block and how that decision is recorded;
+- reruns after the reviewed commit changes;
+- retention of audit artifacts;
+- trusted handling of forked code;
+- publication jobs that run only after acceptance.
+
+An override is a governance decision, not a hidden click. Record the missing evidence,
+risk accepted, authority, and expiry or follow-up.
 
 ## Merge readiness checklist
 
-Before merge, the reviewer should be able to answer:
+For a change affecting workflow state:
 
-- can CI restore and verify the state?
-- are DVC-tracked objects available to collaborators?
-- can a clone discover the remote without inheriting the author's local config?
-- do declarations and lock evidence agree?
-- was status clean before any reproduction command changed the workspace?
-- can review run without write credentials to shared storage?
-- does the result contract explain what the output is supposed to mean?
-- are parameter and metric changes explained together?
-- are release-boundary changes complete?
-- is the branch history protected from accidental rewrite?
-
-If the answer is no, the merge should wait.
+- [ ] The changed claim is explicit.
+- [ ] Git includes every declared source-side dependency.
+- [ ] Tracked remote configuration is discoverable and contains no secrets.
+- [ ] Every proposed pointer resolves for a cache-cold read-only reviewer.
+- [ ] Pre-repro status says the submitted recorded state is coherent.
+- [ ] Clean reproduction succeeds in the supported executor.
+- [ ] The restored or regenerated result matches its contract.
+- [ ] Review does not require remote mutation.
+- [ ] Required receipts belong to the current commit.
+- [ ] Separate scientific, security, and promotion reviews are named when applicable.
 
 ## Review checkpoint
 
-You understand this core when you can:
+You understand DVC-aware merge review when you can:
 
-- identify DVC-specific merge blockers
-- review DVC files as related evidence instead of isolated diffs
-- map each blocked handoff to the responsible repair owner
-- write a comment with failed contract, evidence, owner, and unblock condition
-- explain why protected branches matter for artifact lineage
-- write a review comment that names the missing contract
-- define merge readiness without relying on the author's local context
+- derive evidence requirements from the changed claim;
+- review pointers, declarations, locks, remotes, and results as one system;
+- block stale submitted state despite successful CI repair;
+- distinguish missing objects from missing remote discovery;
+- detect Git incompleteness after successful DVC pull;
+- preserve read-only review authority;
+- write a boundary-specific blocking comment;
+- state what a handoff gate does not approve.
 
-Merge discipline is where the social contract becomes repository policy.
+The branch-protection standard is:
+
+> Shared history should contain a coherent, independently recoverable claim—not merely
+> enough ingredients for CI to repair one after merge.
