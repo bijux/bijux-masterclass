@@ -1,6 +1,5 @@
 # Execution Environment as Part of the Input Surface
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,206 +9,275 @@ graph LR
   program["Deep Dive DVC"]
   section["Execution Environments Reproducible Inputs"]
   page["Execution Environment as Part of the Input Surface"]
-  capstone["Capstone evidence"]
+  capstone["Runtime contract audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.tested in.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["name the result claim"] --> influences["inventory possible influences"]
+  influences --> isolate["hold alternatives fixed"]
+  isolate --> observe["compare planner and result evidence"]
+  observe --> govern["declare, enforce, or bound the influence"]
 ```
 <!-- page-maps:end -->
 
-One of the most persistent reproducibility mistakes is treating the environment as if it
-were just background scenery.
+A data pipeline does not run on code, data, and parameters alone. It also runs with an
+interpreter, libraries, operating-system behavior, process variables, locale settings,
+hardware, and services. Any of those facts can affect the result.
 
-It is not.
+The useful rule is narrower than “record everything about the machine”:
 
-If the environment can change the result, then it belongs in the workflow story.
+> A runtime fact belongs to the input surface when changing it can change a result or the
+> meaning of a result claim.
 
-## What counts as environment here
+This module is about finding those facts, proving which ones matter, and giving influential
+facts a reviewable route into the workflow contract.
 
-In this module, environment means the runtime facts that influence execution even when
-they are not part of the data files or source code:
+## Begin with the claim, not the machine
 
-- interpreter version
-- library versions
-- system tools
-- CPU or GPU behavior
-- thread settings
-- locale, timezone, and filesystem behavior
-- randomness sources and seeds
+An environment inventory can grow without limit. A claim gives the investigation a
+boundary.
 
-The list can grow, but the main idea stays stable:
+Suppose the claim is:
 
-if it can change the result, it is part of the input surface.
+> `results/declared.txt` renders the total according to the repository's current report
+> style.
 
-## Why this matters after Module 02
+The report style matters because `dot` produces `8.00` while `comma` produces `8,00`.
+The keyboard layout does not matter to this claim. The operating-system family might
+matter to another claim, but the audit holds it fixed.
 
-Module 02 taught that data identity is not the same thing as a path.
+Ask three questions:
 
-Module 03 adds the next layer:
+1. What result or interpretation must remain trustworthy?
+2. Which runtime facts could plausibly change it?
+3. What observation would show that one fact is causal?
 
-even if the same exact data identity is present, the run may still differ because the
-environment changed.
+This prevents two common failures: ignoring runtime entirely and collecting a huge
+machine dump that cannot support a decision.
 
-That is why byte-stable data alone is not enough for a full reproducibility story.
+## Four kinds of workflow influence
 
-## A practical contrast
+The words *input* and *environment* can blur important differences. Classify influences
+by how they reach execution:
 
-| Workflow claim | Too weak because it ignores environment |
-| --- | --- |
-| the code is unchanged | runtime behavior may still differ |
-| the data is unchanged | environment may still influence output |
-| the parameters are unchanged | the stack and execution context may still drift |
+| Kind | Examples | Typical DVC representation |
+| --- | --- | --- |
+| content input | source data, model weights, lookup tables | `deps` |
+| control input | threshold, seed, report style | `params` or a file in `deps` |
+| implementation input | script, executable wrapper | `deps` |
+| execution context | Python build, locale, process variables, accelerator | declared artifact or external executor policy |
 
-This is not a niche edge case. It is ordinary in real teams.
-
-## A small example
-
-Imagine two teammates both run the same training script with:
-
-- the same Git commit
-- the same DVC-tracked data
-- the same parameter file
-
-But one person uses:
-
-- a newer Python interpreter
-- a slightly different numerical library stack
-- a different CPU architecture
-
-If the metric drifts, that is not automatically a sign of carelessness.
-
-It may simply mean the environment was part of the real input surface all along.
-
-## A human picture
+The same fact can move between categories. A locale inherited silently from the process is
+execution context. A locale written to `runtime.env` and listed in `deps` becomes a
+declared control input. Its causal role did not change; its visibility did.
 
 ```mermaid
 flowchart TD
-  code["code"] --> run["workflow run"]
-  data["data identity"] --> run
-  params["parameters"] --> run
-  env["execution environment"] --> run
-  run --> result["result"]
+  real["real influences on output"] --> visible["represented in declared state"]
+  real --> hidden["present only in execution context"]
+  visible --> planner["DVC can include change in stale decision"]
+  hidden --> blind["DVC cannot infer change from the graph"]
+  planner --> current["ordinary repro can restore current meaning"]
+  blind --> reuse["ordinary repro may reuse old meaning"]
 ```
 
-You do not need to worship this diagram. You need to use it as a reminder not to drop one
-whole class of inputs from the story.
+## Inspect the paired specimen
 
-## Why teams overlook this
-
-Environment is easy to ignore because:
-
-- it feels shared until it stops being shared
-- it changes gradually
-- the original author's machine keeps working for a while
-- "works on my machine" can look like a small nuisance instead of a structural clue
-
-That is why this module names the issue directly before later modules rely on it.
-
-## Prove that runtime is causal
-
-Run the isolated runtime audit:
+Run the module's controlled experiment from the repository root:
 
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
 ```
 
-The specimen holds constant:
+The command creates an isolated audit under:
 
-- source bytes
-- rendering code
-- DVC command shape
-- Python interpreter
-- machine and platform
-
-It changes one runtime fact: whether reports use `dot` or `comma` formatting.
-
-Both paired stages execute the same logic. The declared stage reads
-`environment/runtime.env`; the hidden stage reads `REPORT_STYLE` from process state.
-
-```mermaid
-flowchart LR
-  data["same data"] --> declared["declared runtime"]
-  data --> hidden["hidden runtime"]
-  contract["runtime.env"] --> declared
-  process["process variable"] -. "real but undeclared" .-> hidden
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/
 ```
 
-This is stronger than comparing unrelated local and CI runs. It isolates one environment
-influence while holding plausible alternatives fixed.
+Start with:
 
-## Decide how an influence enters review
+```bash
+cat artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/summary.tsv
+cat artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/route.txt
+```
 
-For every runtime fact that can move a result, choose one route:
+The specimen has two stages. Both read the numbers `3` and `5`, run the same Python
+renderer, and write a formatted total.
 
-| Route | Example | What makes it reviewable |
+```yaml
+stages:
+  declared_runtime:
+    cmd: >-
+      python scripts/render_runtime.py
+      --source data/source.txt
+      --contract environment/runtime.env
+      --output results/declared.txt
+    deps:
+      - data/source.txt
+      - environment/runtime.env
+      - scripts/render_runtime.py
+
+  hidden_runtime:
+    cmd: >-
+      python scripts/render_runtime.py
+      --source data/source.txt
+      --environment-variable REPORT_STYLE
+      --output results/hidden.txt
+    deps:
+      - data/source.txt
+      - scripts/render_runtime.py
+```
+
+The two routes differ in one decisive way:
+
+- `declared_runtime` reads report style from a dependency.
+- `hidden_runtime` reads report style from process state that is absent from the graph.
+
+At the baseline, both use `dot` and produce `8.00`. The audit then changes the intended
+style to `comma`.
+
+## Predict before reading
+
+Write down your predictions for these cells:
+
+| Case after policy changes | Will status name the stage? | Will ordinary repro run it? | Which value should remain? |
+| --- | --- | --- | --- |
+| declared contract file | ? | ? | ? |
+| hidden process variable | ? | ? | ? |
+
+Then inspect the report:
+
+```bash
+jq '.findings[] |
+  {finding, result, decision, checks}' \
+  artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/report.json
+```
+
+The declared change appears in `dvc status`; ordinary repro runs the stage and changes
+the result to `8,00`.
+
+The hidden change appears in the runtime fingerprint but not in `dvc status`; ordinary
+repro skips and preserves `8.00`.
+
+The hidden result is byte-stable and semantically stale. Stability alone is not
+reproducibility.
+
+## Read evidence in separate layers
+
+The audit supplies four layers. Each closes a different question.
+
+| Layer | Evidence | Question it can answer |
 | --- | --- | --- |
-| declared dependency | generated runtime contract file | DVC stale detection |
-| governed parameter | seed or thread count in `params.yaml` | recorded control value |
-| canonical executor policy | approved container digest in CI | external gate and receipt |
-| declared tolerance | bounded numerical delta | comparison policy and measured result |
+| causal context | baseline and drift fingerprints | which tested runtime fact changed? |
+| declaration | paired `dvc.yaml` stages | could DVC observe that fact before execution? |
+| planner | status and repro receipts | did DVC decide the stage needed to run? |
+| semantics | result files and report values | does output express current runtime meaning? |
 
-Leaving the fact only in process state is not a fifth strategy. It is an ungoverned
-influence unless another enforceable contract covers it.
+Do not let one layer impersonate another:
 
-## Trace cause, planner, and result
+- A changed fingerprint does not prove that output changed.
+- Empty DVC status does not prove that runtime stayed constant.
+- A changed result does not identify its cause.
+- A changed lockfile after execution does not prove the cause was declared beforehand.
 
-The audit saves three distinct evidence types:
+A defensible explanation joins all four.
 
-1. fingerprint JSON proves `REPORT_STYLE` changed
-2. DVC status and repro receipts prove what the planner detected
-3. result values prove whether output adopted current runtime meaning
+## Prove causality with a controlled contrast
 
-Do not substitute one layer for another. A fingerprint mismatch does not prove output
-changed. An empty DVC status does not prove the runtime stayed fixed. A changed output
-does not explain which input caused it.
+Local-versus-CI comparisons often change many things at once. Python, platform, package
+resolution, credentials, filesystem layout, and data access may all differ. That can
+identify a correlation but rarely isolates a cause.
 
-## Evidence checkpoint
+The runtime audit is deliberately smaller:
 
-Explain these two rows:
+| Held constant | Deliberately changed |
+| --- | --- |
+| Python version | `report_style` |
+| Python implementation | |
+| platform | |
+| machine architecture | |
+| data | |
+| renderer code | |
 
-| Runtime change | DVC status | Ordinary result |
+Verify the isolation:
+
+```bash
+jq -s '
+  {
+    changed: (
+      (.[0] | to_entries) as $left
+      | (.[1] | to_entries) as $right
+      | [
+          $left[] as $item
+          | select($item.value != ($right[] | select(.key == $item.key).value))
+          | $item.key
+        ]
+    )
+  }
+' \
+  artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/evidence/baseline-fingerprint.json \
+  artifacts/audit/reproducible-research/deep-dive-dvc/runtime-contracts/evidence/drift-fingerprint.json
+```
+
+The forced hidden-stage run then provides the causal probe: under the changed process
+variable, the result changes from `8.00` to `8,00`. The variable can affect the result.
+
+That does not make force a repair. It proves the missing edge matters.
+
+## Choose a governance route
+
+Once an influence is shown to matter, choose how the repository will govern it:
+
+| Route | Use when | Evidence a reviewer needs |
 | --- | --- | --- |
-| declared file changes to `comma` | stage is stale | rebuild produces `8,00` |
-| hidden variable changes to `comma` | empty | stage skips and retains `8.00` |
+| declared dependency | a runtime contract can be materialized as a file | dependency diff, stale receipt, rebuilt result |
+| governed parameter | the value is a deliberate experimental control | parameter diff, lock evidence, comparison |
+| pinned execution artifact | a packaged runtime defines the accepted stack | immutable identity such as image digest |
+| canonical executor | one controlled service has authority to produce accepted evidence | executor identity, enforcement receipt, result |
+| declared tolerance | fresh governed runs may differ acceptably | execution proof, comparison method, threshold |
 
-If the second row feels impossible, the environment is still being treated as background
-rather than input.
+These routes can be combined. A lockfile, container image, and CI policy often protect
+different boundaries.
 
-## What this page is not claiming
+Merely printing a value in logs is not yet governance. A runtime receipt becomes useful
+when a rule says which fields matter, an enforcement point checks them, and the result can
+be joined to that check.
 
-This page is not claiming that every tiny environment detail must be pinned perfectly for
-all work.
+## Avoid the impossible promise
 
-It is claiming something more basic:
+“Every environment fact must be identical forever” is usually neither practical nor
+necessary. The goal is an honest contract:
 
-the team must know which environment facts are influential enough to deserve explicit
-control, evidence, or declared tolerance.
+- influential facts are declared, enforced, or explicitly bounded;
+- irrelevant facts are not mistaken for controls;
+- evidence can distinguish current execution from stale reuse;
+- the claim states the contexts in which it is supported.
 
-That is the start of engineering judgment.
+For this specimen, the supported claim is intentionally modest:
 
-## A good first review question
+> When report style is a declared dependency, DVC detects its change and ordinary repro
+> rebuilds output with current formatting policy.
 
-Ask of any surprising result:
+The audit does not prove that containers eliminate variation, that every Python workflow
+is deterministic, or that a fingerprint automatically governs the environment.
 
-1. what data changed
-2. what code changed
-3. what parameters changed
-4. what environment facts may also have changed
+## Review checkpoint
 
-If the first three questions are treated as serious but the fourth is treated as folklore,
-the workflow is still missing part of its own input surface.
+You understand the input-surface idea when you can explain all of these without saying
+“DVC tracks the environment”:
 
-## Keep this standard
+- why `REPORT_STYLE` is a real input to the hidden stage;
+- why DVC cannot make a stale decision from an undeclared process variable;
+- why the fingerprint is evidence of context, not a dependency edge;
+- why the forced run proves causality but leaves the contract defective;
+- which governance route you would choose for a comparable influence in your own work.
 
-Do not let runtime be treated as weather.
+Carry this question into the rest of the module:
 
-If the environment can influence the result, then it belongs in the causal story of the
-run, even when no one meant it to.
+> Which real influence reaches the result, and which enforceable route makes it visible
+> before the result is trusted?
