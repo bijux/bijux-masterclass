@@ -1,242 +1,322 @@
 # Reviewing Publish Drift and Downstream Risk
 
-The publish boundary deserves the same seriousness as code review.
+Publish review is an outside-in investigation. Begin with what consumers rely on, then
+classify the candidate’s effects on paths, bytes, structure, meaning, completeness, and
+migration.
 
-If a workflow changes what it publishes, how it names files, or what those files mean,
-downstream trust can break even when the workflow still runs successfully.
+This lesson provides a repeatable triage route and shows why producer-side success is weak
+evidence for downstream safety.
 
-This page is about catching that drift before it becomes a downstream incident.
+## Freeze the current contract first
 
-## How to use this page
+Before inspecting a candidate diff, collect:
 
-Treat this page like a review checklist, not just a reading page.
+- current public path allowlist;
+- artifact schemas;
+- field definitions and units;
+- consumer fixtures;
+- completeness and partial-publication policy;
+- integrity algorithm and manifest schema;
+- supported human navigation paths;
+- current publish version and retirement policy.
 
-When you finish, you should be able to sit in front of a publish-related change and ask:
+Without a baseline, reviewers can notice change but cannot classify compatibility.
 
-- what changed in the public contract
-- whether the old contract still holds
-- what a downstream user would notice first
-- whether the bundle evidence still supports trust
+## The outside-in route
 
-That is the teaching goal.
+```mermaid
+flowchart TD
+  consumer["Read current consumer contract"] --> inventory["Compare public path inventories"]
+  inventory --> integrity["Verify candidate bytes"]
+  integrity --> schema["Run schema and type checks"]
+  schema --> semantics["Compare meanings, units, and missing values"]
+  semantics --> completeness["Compare accepted, complete, and published identities"]
+  completeness --> fixtures["Run current consumer fixtures"]
+  fixtures --> decision["Accept, reject, or require migration"]
+```
 
-## If you are learning this without the live class
+Do not begin with the Snakefile diff. It explains implementation after consumer-visible
+effects are known.
 
-Use this page as a maintainer-style review simulation.
+## Drift classes
 
-Work in four passes:
-
-1. name the current public promise before you inspect any changed file
-2. list what a downstream consumer would notice first if the change landed today
-3. order your findings by downstream trust impact instead of by author convenience
-4. finish by naming the smallest verification route that proves each repair
-
-If your review starts with style or wording before contract breakage, your priority order
-is still wrong.
-
-## Publish drift is not only about missing files
-
-Drift can look obvious:
-
-- a published path disappears
-- a new file appears unexpectedly
-
-But it can also be quieter:
-
-- a JSON field changes meaning
-- a report stops matching the structured summary
-- the manifest no longer inventories the full contract
-- a notebook begins reading from `results/` because the publish bundle stopped being enough
-
-Those are all publish-review problems.
-
-## A publish review asks a different question than a workflow run review
-
-Workflow run review asks:
-
-- did the jobs complete?
-- did the pipeline behave as expected?
-
-Publish review asks:
-
-- what is safe for downstream consumers to rely on now?
-- what changed in the public contract?
-- what evidence supports trusting the bundle?
-
-Those questions overlap, but they are not identical.
-
-## Start from the downstream user, not the author
-
-The easiest way to miss publish drift is to review from the producer's perspective only.
-
-The author thinks:
-
-- the workflow still succeeds
-- the file move was small
-- the report still looks fine
-
-The downstream user experiences something else:
-
-- their notebook cannot find the old path
-- their parser reads the old field meaning
-- their validation step no longer matches the manifest
-
-Good publish review is the discipline of preferring the second perspective.
-
-## The drift triage card to keep beside you
-
-Use this order whenever a publish-related change looks busy:
-
-| Review order | Question | Typical proof route |
+| Drift class | Example | Primary evidence |
 | --- | --- | --- |
-| 1 | did a trusted public path or meaning change | compare current consumer entrypoint and contract note |
-| 2 | did the bundle stop explaining its membership or integrity | check discovery records, manifest, and provenance together |
-| 3 | did a human-facing and machine-facing surface drift apart | compare report, summary, and file API roles |
-| 4 | did the change only add explanation without weakening the contract | rerun the consumer and verifier routes |
+| boundary | new or removed public file | path inventory diff |
+| location | `summary.json` renamed | current consumer missing-path failure |
+| integrity | file changed after manifest | digest mismatch |
+| structure | required field removed | schema or consumer failure |
+| type | integer becomes string | type assertion |
+| semantics | reads become bases | field-definition comparison |
+| completeness | accepted sample missing from summary | set equality |
+| presentation | report hides exclusions | human contract review |
+| version | breaking candidate remains under v1 | publish-version decision |
+| migration | v2 exists without consumer or overlap | migration packet review |
 
-If you start at row 4 before rows 1 to 3 are clear, you are reviewing from the wrong end.
+One candidate can contain several classes. Report each rather than choosing the most
+visible.
 
-## One useful review loop
+## Risk depends on failure mode
+
+Use a risk matrix:
+
+| Consumer effect | Detectability | Example | Risk |
+| --- | --- | --- | --- |
+| hard failure, immediate | high | required path removed | visible outage |
+| hard failure, delayed | medium | field absent only for some records | partial outage |
+| silent wrong result | low | unchanged integer now uses different unit | highest analytical risk |
+| ignored safe extension | high | optional field under open contract | low |
+| integrity mismatch | high with verification | modified artifact after inventory | delivery rejection |
+| human misinterpretation | variable | report omits exclusions | review risk |
+
+Silent semantic drift deserves more scrutiny than an obvious parser error.
+
+## Compare producer and consumer evidence
+
+Producer evidence:
+
+- workflow completed;
+- files were generated;
+- schemas used by producer code passed;
+- report rendered;
+- tests for new code passed.
+
+Consumer evidence:
+
+- required paths remain locatable;
+- current parser accepts the candidate;
+- required fields and types remain available;
+- meanings and units remain stable;
+- completeness invariants hold;
+- delivered bytes match inventory.
+
+Both matter. Only the second directly supports compatibility.
+
+## Read the capstone audit
+
+Run:
+
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make publish-compatibility-audit
+```
+
+Start with the current consumer:
+
+```text
+specimens/consumer-v1.json
+```
+
+Then inspect `summary.tsv`:
+
+```text
+baseline                ACCEPT_CURRENT
+additive-field          ACCEPT_CURRENT
+required-field-removal  REJECT_CURRENT
+path-rename             REJECT_CURRENT
+semantic-drift          REJECT_CURRENT
+integrity-corruption    REJECT_CURRENT
+versioned-migration     REQUIRE_MIGRATION
+```
+
+`PASS` in the report means the named classification was reproduced. It does not mean
+`semantic-drift` is safe.
+
+## Investigate first failure without stopping reasoning
+
+The compact report includes a first current-consumer failure. This accelerates triage:
+
+```text
+required publish paths are missing: ['summary.json']
+checksum mismatch: summary.json
+field semantics changed for reads_count
+```
+
+The first failure is not always the full impact. For v2, the old consumer may reject
+version, path, schema, and fields. Use `report.json` for the complete failure set before
+writing a migration note.
+
+## Review same-version additions
+
+For an added field:
+
+1. confirm required fields remain;
+2. read the consumer’s additional-field policy;
+3. confirm new semantics do not redefine existing fields;
+4. check other known consumers, not only the reference fixture;
+5. verify inventories if the new field introduces a new file;
+6. retain a regression fixture.
 
 ```mermaid
 flowchart LR
-  change["publish-related change"] --> inspect["inspect paths, payloads, and artifact roles"]
-  inspect --> compare["compare against the current public promise"]
-  compare --> decide["keep version, bump version, or reject change"]
-  decide --> evidence["verify manifest, provenance, report, and contract docs align"]
+  addition["Producer adds field"] --> required{"Required projection unchanged?"}
+  required -->|no| breakage["Reject"]
+  required -->|yes| tolerance{"Consumer tolerates additions?"}
+  tolerance -->|no| coordinate["Coordinate or version"]
+  tolerance -->|yes| meaning{"Existing meaning unchanged?"}
+  meaning -->|no| breakage
+  meaning -->|yes| accept["Candidate may remain in current version"]
 ```
 
-This loop helps because teams often jump from “the workflow passed” straight to “the
-publish bundle is fine.”
+“Additive” describes the diff, not the compatibility result.
 
-That jump is exactly where drift hides.
+## Review path changes
 
-## One compact review packet
+A path rename affects:
 
-Keep these six items together while you review:
+- scripts with hard-coded paths;
+- workflow inputs in other repositories;
+- report download links;
+- object-store keys;
+- retention and access policies;
+- cache and synchronization rules.
 
-- one statement of the current public promise
-- one diff of the published paths or artifact roles
-- one verifier result
-- one consumer test result
-- one note about whether reviewed discovery evidence still explains bundle membership
-- one final classification: safe in current version, needs version discussion, or reject for now
+Ask for current-consumer execution. If the old path must disappear, require a new version
+or an overlap mechanism with an owner and end condition.
 
-That packet turns review from instinct into something another maintainer can replay.
+## Review semantic changes
 
-## What to inspect first
+Compare a semantic ledger:
 
-Start with four practical questions:
+| Field | Current definition | Candidate definition | Current unit | Candidate unit | Decision |
+| --- | --- | --- | --- | --- | --- |
+| `reads_count` | sequencing reads | nucleotide bases | reads | bases | break |
+| `qc_status` | absent | QC disposition | — | category | addition, consumer-dependent |
 
-1. Did the set of published files change?
-2. Did any stable path move, disappear, or get renamed?
-3. Did the meaning of an existing artifact change?
-4. Do the manifest, provenance, report, and file API still tell the same story?
+Also inspect:
 
-These questions make downstream risk visible early.
+- denominators;
+- aggregation level;
+- normalization;
+- rounding;
+- missing-value rules;
+- filtering and inclusion criteria;
+- rank or sort meaning.
 
-## A short audit you should be able to run quickly
+These changes can preserve field name and type.
 
-For any publish-related change, try this sequence:
+## Review completeness drift
 
-1. list the public files that a consumer is allowed to trust
-2. compare those files and their meanings with the previous promise
-3. check whether the manifest, provenance, report, and contract note still align
-4. decide whether the current version is still honest
+A candidate may preserve every schema but omit one accepted sample. Compare:
 
-If any of those steps becomes vague, the review is not done yet.
+```text
+accepted A
+complete C
+JSON ids J
+TSV ids T
+HTML ids H
+```
 
-## Drift often arrives through convenience
+For full publication:
 
-Common convenience moves:
+```text
+A = C = J = T = H
+```
 
-- “just publish this extra JSON too”
-- “the report already shows it, so we can skip updating the contract docs”
-- “we only renamed the file, the contents are the same”
-- “consumers can read directly from `results/` until we clean this up later”
+If any set differs, report the exact differences:
 
-Each shortcut makes the public contract less deliberate.
+- accepted but incomplete;
+- complete but unpublished;
+- published but unaccepted;
+- machine/human disagreement.
 
-## A stronger review posture
+Do not say only “counts differ.” Identities matter.
 
-Strong shape:
+## Review versioned migrations
 
-- treat every change inside `publish/v1/` as reviewable contract surface
-- compare structured artifacts, human-readable artifacts, and integrity artifacts together
-- treat contract ambiguity as a real defect, not just a documentation gap
-- version the publish boundary when the previous promise is no longer true
+For `REQUIRE_MIGRATION`, verify:
 
-This makes downstream trust an engineering decision rather than an accident.
+- current consumer rejects for the intended reasons;
+- next consumer accepts;
+- new path and schema are documented;
+- field mapping and semantic differences are explicit;
+- v1 remains available for the promised overlap;
+- producers can build both versions consistently if dual publication is promised;
+- consumer readiness is observable;
+- retirement has an owner and exit criteria.
 
-## One review sentence you should be able to write
+A migration is not complete because a v2 test passes. It completes when supported
+consumers have moved or the declared retirement policy is satisfied.
 
-Before leaving this page, practice writing one finding like this:
+## Use causal mutations
 
-> The workflow still runs, but the public bundle lost part of its reviewed discovery
-> evidence, so downstream users can still read the result files while no longer being able
-> to defend their membership. That is a trust regression, not a cosmetic omission.
+Run:
 
-If you cannot write a finding at that level, the drift is still too vague in your head.
+```bash
+make publish-compatibility-selftest
+```
 
-## The beginner mistake to catch early
+The gate should fail if:
 
-Beginners often treat publish drift as a documentation chore.
+- `reads_count` is removed from the “additive” case;
+- semantic drift is removed from the semantic counterexample;
+- corruption is removed from the integrity counterexample;
+- the current consumer stops requiring `reads_count`.
 
-That is too weak.
+This protects against a review suite that turns green by weakening expectations.
 
-If the bundle contract is ambiguous, a downstream user can make the wrong decision even
-when every workflow job passed. That makes ambiguity a correctness issue, not a cosmetic
-issue.
+Add project-specific mutations:
 
-## Common failure modes
+- change only unit metadata;
+- retain a field but change missing values;
+- add an unexpected public file;
+- remove one accepted sample from only the HTML report;
+- make v2 consumer accept both old and new meanings accidentally.
 
-| Failure mode | Why it is risky | Better repair |
+## Write a review decision
+
+Use this structure:
+
+```text
+Decision:
+Consumer evaluated:
+Candidate boundary:
+Integrity result:
+Path and schema result:
+Semantic result:
+Completeness result:
+Migration requirement:
+Evidence:
+Claim limit:
+```
+
+Example:
+
+> Decision: reject from v1. The current consumer locates and parses `summary.json`, but
+> the candidate changes `reads_count` from reads to bases. Integrity and type checks pass;
+> semantic compatibility fails. Publish the new metric only under a tested v2 contract
+> with an overlap plan. This review covers the reference consumer fixture, not every
+> external consumer.
+
+## Triage table
+
+| Observation | Immediate decision | Follow-up |
 | --- | --- | --- |
-| new public artifacts added with no reason | bundle scope expands by drift | require a downstream-use case and contract explanation |
-| published path renamed casually | consumers break even if payloads are unchanged | treat path changes as compatibility review events |
-| report and summary disagree | humans and tools see different truths | regenerate or repair the surfaces until they align |
-| manifest omits part of the public bundle | integrity review becomes incomplete | keep manifest coverage aligned with the publish contract |
-| downstream code starts reading internal files again | hidden contract escapes the publish boundary | repair the publish bundle rather than normalizing the shortcut |
+| current consumer accepts, semantics stable | candidate may remain current | retain regression test |
+| checksum mismatch | reject delivery | identify mutation or transfer fault |
+| required path missing | reject current version | restore path or design migration |
+| required field missing | reject current version | restore field or design migration |
+| same shape, changed meaning | reject current version | create explicit semantic break |
+| old rejects, new accepts under new version | require migration | review overlap and retirement |
+| human and machine identities differ | reject publication | restore shared authority and regenerate |
 
-## What a reviewer should hear
+## Review checklist
 
-A strong publish review sounds something like this:
+- [ ] The current contract is frozen before candidate inspection.
+- [ ] Review begins from consumer-visible effects.
+- [ ] Boundary, integrity, structure, semantics, completeness, and migration are separate.
+- [ ] Silent semantic risk receives explicit attention.
+- [ ] Current consumer fixtures execute against the candidate.
+- [ ] First failure is used for triage, not mistaken for full impact.
+- [ ] Identity set differences are reported exactly.
+- [ ] Same-version additions rely on declared tolerance.
+- [ ] Versioned breaks include next-consumer evidence.
+- [ ] Causal mutations prevent fixture weakening.
+- [ ] Decision text states evidence and claim limits.
 
-> The workflow still runs, but that is not the only question. We checked the published
-> paths, the artifact meanings, and the supporting manifest, provenance, and contract
-> surfaces. The old downstream promise still holds, so this remains inside the current
-> version.
+## What you should carry forward
 
-Or, when it does not hold:
-
-> The workflow still runs, but the downstream promise changed, so the current version is
-> no longer honest.
-
-That is the mindset this page is trying to build.
-
-## The explanation a reviewer trusts
-
-Strong explanation:
-
-> this change keeps the current publish contract because the stable paths and meanings are
-> intact, and the manifest, provenance, report, and file API still align; if any of those
-> promises changed, we would treat it as a versioned contract change.
-
-Weak explanation:
-
-> the workflow still runs, so the published outputs are probably fine.
-
-The strong explanation reviews the bundle as a contract. The weak explanation mistakes
-workflow success for downstream trust.
-
-## End-of-page checkpoint
-
-Before leaving this page, you should be able to:
-
-- explain how publish review differs from basic workflow run review
-- name several forms of publish drift beyond missing files
-- describe what should trigger compatibility or versioning discussion
-- explain why contract ambiguity is a real downstream risk
-
-If you still find yourself saying “the pipeline passed, so the publish bundle is probably
-fine,” read the page again. This entire module is trying to break that habit.
+Publish drift becomes reviewable when a stable consumer baseline meets an isolated
+candidate and produces classified evidence. The worked example now applies the full route:
+selecting public files, building the bundle, corrupting it, classifying evolution, and
+preparing a migration packet.
