@@ -1,6 +1,5 @@
 # Module 10: Migration, Governance, and DVC Boundaries
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Migration Governance Dvc Boundaries"]
+  section["Migration Governance DVC Boundaries"]
   page["Module 10: Migration, Governance, and DVC Boundaries"]
   capstone["Capstone evidence"]
 
@@ -18,143 +17,289 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  review["review claims"] --> migrate["govern one boundary change"]
+  migrate --> intervene["repair trust failures"]
+  intervene --> own["assign system authority"]
+  own --> handoff["leave an independent handoff"]
 ```
 <!-- page-maps:end -->
 
-Module 10 turns the course into a stewardship method.
+This module turns the course's individual DVC contracts into a stewardship
+method. You will review claims rather than appearances, migrate one state
+boundary without changing release meaning, write governance that can be
+executed, intervene on shortcuts with repair evidence, and decide where DVC's
+authority ends.
 
-The earlier modules teach individual contracts: data identity, environment evidence,
-truthful pipelines, meaningful metrics, controlled experiments, collaboration, recovery,
-and promotion. The final module asks whether you can review a real repository and make
-deliberate changes without breaking those contracts.
+The module is built around one decision:
 
-This module is about mature judgment:
+> May an approved release move from `publish/v1/` to a registry location while
+> consumers, rollback, identity, and ownership remain trustworthy?
 
-- how to review a DVC repository without wishful thinking
-- how to migrate one state boundary safely
-- how to write lightweight governance that people can follow
-- how to identify recurring DVC anti-patterns before they become culture
-- how to decide what DVC should own and what belongs to another layer
+You will not answer from a hypothetical checklist. The capstone creates one
+approved specimen and seven deliberately blocked variants.
 
-The central question is:
+## What you should already know
 
-> Which state contracts are broken, underspecified, or assigned to the wrong tool?
+This final module assumes you can:
 
-If that answer stays vague, future improvements will become accidental rewrites.
+- distinguish Git revision, DVC metadata, cache, workspace, and remote state;
+- read `dvc.yaml` beside `dvc.lock`;
+- identify declared dependencies and parameters;
+- explain why metric semantics precede numeric comparison;
+- distinguish an experiment from a promoted release;
+- run a clean recovery route for protected state.
 
-The capstone corroboration surface for this module is the full project review route:
-`capstone/dvc.yaml`, `capstone/dvc.lock`, `capstone/params.yaml`, `capstone/publish/v1/`,
-`capstone/docs/architecture.md`, `capstone/docs/review-route-guide.md`,
-`capstone/docs/recovery-guide.md`, and the `make -C capstone confirm` route.
+If those distinctions are unclear, use this diagnostic:
 
-## Why this module exists
+| If you cannot yet explain | Revisit |
+|---|---|
+| why a path is not content identity | Module 2 |
+| why current success may hide runtime drift | Module 3 |
+| why undeclared inputs break invalidation | Module 4 |
+| why equal metric names may not be comparable | Module 5 |
+| why experiment evidence is not release approval | Modules 6 and 9 |
+| why a working workspace does not prove recovery | Module 8 |
 
-The last skill is not another command.
+You do not need an external registry account. The local specimen models the
+contract and decision evidence without network access.
 
-It is being able to say:
+## Learning outcomes
 
-- this state boundary is clear
-- this one is fragile
-- this migration plan preserves recovery
-- this governance rule is worth enforcing
-- this shortcut will become an anti-pattern
-- this problem is not DVC's job
+By the end, you should be able to:
 
-That judgment is what lets a repository improve without losing trust.
+- express repository promises as falsifiable claims;
+- classify evidence as verified, contradicted, unverified, or out of scope;
+- write a finding with consequence, repair, and closure proof;
+- define a migration change budget and preserved invariants;
+- require independent consumer and rollback evidence;
+- govern consequential changes with triggers, evidence, owners, and receipts;
+- bound exceptions with expiry and removal conditions;
+- assign authority across Git, DVC, CI, registry, deployment, access, and
+  incident systems;
+- hand the repository to a maintainer who missed the class.
 
-## Study route
+## The executable case
 
-```mermaid
-flowchart LR
-  overview["Overview"] --> core1["Core 1: repository review"]
-  core1 --> core2["Core 2: migration safety"]
-  core2 --> core3["Core 3: governance rules"]
-  core3 --> core4["Core 4: anti-pattern review"]
-  core4 --> core5["Core 5: DVC boundaries"]
-  core5 --> example["Worked example"]
-  example --> practice["Exercises and answers"]
-  practice --> glossary["Glossary"]
+The source is the capstone's verified promoted bundle:
+
+```text
+capstone/publish/v1/
+├── data-profile.json
+├── manifest.json
+├── metrics.json
+├── model.json
+├── params.yaml
+├── predictions.csv
+└── report.md
 ```
 
-Read the module in that order the first time.
+The proposed target is:
 
-If the problem is already partly clear, use this shortcut:
+```text
+incident-escalation/2026-07
+```
 
-- open Core 1 when the main confusion is "how do I review a repository honestly?"
-- open Core 2 when the main confusion is "how do I move a state boundary safely?"
-- open Core 3 when the main confusion is "which rules should stay after the course ends?"
-- open Core 4 when the main confusion is "which shortcuts should I reject early?"
-- open Core 5 when the main confusion is "what should DVC own, and what should another system own?"
+The migration may change only consumer location. It must preserve inventory,
+bytes, release meaning, and source provenance.
 
-## Module map
+```mermaid
+flowchart TB
+  S["verified source release"] --> C["migration contract"]
+  C --> T["candidate target"]
+  T --> I["inventory and digest comparison"]
+  T --> U["consumer retrieval"]
+  S --> R["retained rollback"]
+  I --> D{"cutover decision"}
+  U --> D
+  R --> D
+  O["correct owners and current exceptions"] --> D
+```
 
-| Page | Purpose |
-| --- | --- |
-| [Overview](index.md) | explains the module promise and study route |
-| [Repository Review without Wishful Thinking](repository-review-without-wishful-thinking.md) | teaches an evidence-first review method |
-| [Safe Migration Plans for State Boundaries](safe-migration-plans-for-state-boundaries.md) | teaches migration planning that preserves trust |
-| [Governance Rules for Long-Lived Repositories](governance-rules-for-long-lived-repositories.md) | teaches small durable rules for future changes |
-| [Anti-Patterns and Review Interventions](anti-patterns-and-review-interventions.md) | teaches recurring DVC shortcuts and how to stop them |
-| [DVC Tool Boundaries and System Ownership](dvc-tool-boundaries-and-system-ownership.md) | teaches where DVC should and should not be authoritative |
-| [Worked Investigation: Blocking an Unsafe Boundary Cutover](worked-investigation-blocking-an-unsafe-boundary-cutover.md) | investigates one cutover decision from contract through repair proof |
-| [Exercises](exercises.md) | gives five mastery exercises |
-| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
-| [Glossary](glossary.md) | keeps the module vocabulary stable |
+## Prepare the study environment
 
-## What should be clear by the end
+Run from the repository root:
 
-By the end of this module, you should be able to explain:
+```console
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-boundary-migration-audit
 
-- how to review a DVC repository by evidence, not optimism
-- how to plan one safe migration without breaking recovery or auditability
-- how governance differs from process clutter
-- how anti-patterns emerge from reasonable shortcuts
-- when DVC is the right authority and when another layer should own the concern
-- how to leave a repository with a concrete stewardship recommendation
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-boundary-migration-selftest
+```
+
+The audit bundle appears at:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/boundary-migration/
+```
+
+Confirm that `report.json` contains one `APPROVE_CUTOVER` and seven
+`BLOCK_CUTOVER` decisions. If the command fails, keep the error output and use
+the capstone README plus `make ... capstone-install` to restore the environment.
+Do not continue by imagining what the report would contain.
+
+## A serious-session route
+
+Plan about four hours without the optional extensions.
+
+| Time | Study surface | Work product |
+|---:|---|---|
+| 25 min | this overview and audit guide | written decision question |
+| 40 min | repository review lesson | claims/evidence table |
+| 45 min | migration lesson and audit contrasts | invariant and rollback map |
+| 35 min | governance and exception lesson | governance register |
+| 35 min | anti-pattern and ownership lessons | intervention and owner map |
+| 35 min | worked investigation | independent cutover finding |
+| 45 min | exercises | cumulative stewardship packet |
+| 20 min | answer review | corrected reasoning notes |
+
+Pause after migration if you cannot explain why `UNBOUNDED_CHANGE` blocks while
+its file inventories still match. Pause after ownership if you cannot explain
+why non-empty owner fields can still be wrong.
+
+## Reading route
+
+| Page | What it teaches | Evidence to keep open |
+|---|---|---|
+| [Repository Review without Wishful Thinking](repository-review-without-wishful-thinking.md) | turns promises into falsifiable findings | capstone declarations, publish contract, audit reports |
+| [Safe Migration Plans for State Boundaries](safe-migration-plans-for-state-boundaries.md) | defines change budgets, invariants, dual boundaries, and rollback | migration contract and eight assessments |
+| [Governance Rules for Long-Lived Repositories](governance-rules-for-long-lived-repositories.md) | connects triggers to proof, authority, receipts, and exceptions | Make targets, tests, stale-exception case |
+| [Anti-Patterns and Review Interventions](anti-patterns-and-review-interventions.md) | diagnoses mechanisms and writes bounded repairs | rejected specimen cases |
+| [DVC Tool Boundaries and System Ownership](dvc-tool-boundaries-and-system-ownership.md) | separates capability, evidence, and authority | ownerless and ownership-overreach cases |
+| [Worked Investigation: Blocking an Unsafe Boundary Cutover](worked-investigation-blocking-an-unsafe-boundary-cutover.md) | investigates one block from claim through closure proof | partial-copy assessment |
+| [Exercises](exercises.md) | produces ten cumulative review artifacts | all audit evidence |
+| [Exercise Answers](exercise-answers.md) | models reasoning and proof limits | your completed packet |
+| [Glossary](glossary.md) | distinguishes migration and governance terms | use when decision language blurs |
+
+Read in order on the first pass. For later review, enter through the problem:
+
+- uncertain repository claim → repository review;
+- moving a state location → migration;
+- recurring risky change → governance;
+- vague or scolding review comment → interventions;
+- conflict between DVC and another platform → ownership.
+
+## How to read an assessment
+
+Each case has `assessment.json`. Read these fields first:
+
+```console
+jq '{
+  finding,
+  decision,
+  failed_checks,
+  checks
+}' artifacts/audit/reproducible-research/deep-dive-dvc/boundary-migration/workspace/partial-copy/assessment.json
+```
+
+Then inspect only the evidence related to the failed check. Avoid reading the
+implementation first; code familiarity can make you accept the tool's status
+without reconstructing its argument.
+
+Use one contrast at a time:
+
+| Accepted control | Rejected contrast | Distinction learned |
+|---|---|---|
+| complete cutover | partial copy | byte and inventory identity |
+| complete cutover | unbounded change | one-boundary budget |
+| complete cutover | no rollback | target success versus reversibility |
+| complete cutover | unverified consumer | producer proof versus consumer proof |
+| complete cutover | ownerless target | evidence versus accountability |
+| complete cutover | stale exception | temporary bypass lifecycle |
+| complete cutover | ownership overreach | owner completeness versus correctness |
+
+## Evidence language
+
+Use four result words consistently:
+
+| Result | Meaning |
+|---|---|
+| verified | direct evidence supports the bounded claim |
+| contradicted | direct evidence shows the claim is false |
+| unverified | the required observation is absent |
+| out of scope | this repository or route does not promise the claim |
+
+Example:
+
+- target inventory in `PARTIAL_COPY` is **contradicted**;
+- a real production load objective is **out of scope** for the specimen;
+- a consumer check never attempted is **unverified**;
+- complete specimen inventory equality is **verified**.
+
+This vocabulary prevents missing evidence from becoming wishful approval.
 
 ## Commands to keep close
 
-These commands form the evidence loop for Module 10:
+From the repository root:
 
-```bash
-make -C capstone confirm
-make -C capstone release-audit
-make -C capstone recovery-review
-dvc status
-dvc repro -n
+```console
+# governed consumer-location migration
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-boundary-migration-audit
+
+# protected-history remote migration
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-recovery-readiness-audit
+
+# immutable candidate promotion
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-promotion-integrity-audit
+
+# semantic experiment comparison
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-experiment-comparability-audit
 ```
 
-Use the `make` routes for the course-provided capstone review. Use the DVC commands to
-inspect whether proposed changes preserve the state contracts the repository already
-claims.
+Use the route that matches the decision. More checks are not automatically
+better; irrelevant checks can obscure the missing premise.
 
-## Capstone route
+## Proof limits
 
-Use the capstone as a review specimen.
+The module proves:
 
-Best corroboration surfaces for this module:
+- how to structure and enforce a boundary-cutover argument;
+- exact file identity for the local specimen;
+- isolated rejection of seven unsafe cases;
+- deterministic exception evaluation;
+- tests for the modeled decision rule.
 
-- `capstone/dvc.yaml`
-- `capstone/dvc.lock`
-- `capstone/params.yaml`
-- `capstone/publish/v1/`
-- `capstone/docs/architecture.md`
-- `capstone/docs/review-route-guide.md`
-- `capstone/docs/recovery-guide.md`
-- `capstone/Makefile`
+It does not prove:
 
-Useful proof route:
+- production registry availability or load behavior;
+- organization-wide access policy;
+- deployment health;
+- legal retention compliance;
+- recovery objectives beyond the modeled route;
+- that every real repository influence is declared.
 
-```bash
-make -C capstone confirm
-make -C capstone recovery-review
-make -C capstone release-audit
-```
+Do not convert a passing local audit into any of those broader claims.
 
-The point of that route is not to admire the capstone. It is to practice the final course
-skill: reviewing state contracts, proposing safe changes, and knowing where DVC's authority
-ends.
+## Optional extensions
+
+After the required packet:
+
+- add a measured rollback case without weakening the existing specimen;
+- model a DVC remote migration across two protected revisions;
+- draft a metric-schema contract that forbids comparisons across versions;
+- create a handoff receipt between the promoted manifest and a deployment
+  release identity;
+- review a repository you maintain using the four evidence result words.
+
+Keep each extension focused on one decision boundary.
+
+## Completion standard
+
+You have completed the module when you can, without instructor help:
+
+- run and navigate the audit bundle;
+- explain why every rejected case blocks;
+- write a finding that stays inside observed evidence;
+- distinguish cutover approval from source retirement;
+- define consumer and rollback proofs independently;
+- write a rule with trigger, contract, proof, owner, and receipt;
+- remove or renew an exception through an explicit decision;
+- assign DVC only the responsibilities its evidence can support;
+- give another maintainer a durable route with proof limits.
+
+The final skill is not using DVC for every concern. It is preserving artifact
+lineage while state crosses boundaries that other systems own.
