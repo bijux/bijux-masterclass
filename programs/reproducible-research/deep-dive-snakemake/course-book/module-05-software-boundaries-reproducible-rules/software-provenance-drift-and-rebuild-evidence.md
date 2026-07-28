@@ -1,225 +1,279 @@
 # Software Provenance, Drift, and Rebuild Evidence
 
-Software boundaries are only half the story.
+Data freshness is only part of workflow freshness. Existing output can also become stale
+when source code, installed packages, environments, images, wrappers, or external tools
+change.
 
-The other half is proving what changed when the software changes.
+This lesson separates three obligations:
 
-That matters because a workflow can become non-reproducible even when the file graph still
-looks correct.
+1. identify the software
+2. invalidate artifacts when that identity changes
+3. record what execution actually used
 
-If a helper script, package function, environment file, or container image changes, the
-repository needs a credible way to explain:
+Provenance helps with the third. It does not automatically satisfy the first two.
 
-- what changed
-- which outputs are now questionable
-- what should be rebuilt
-- what evidence will travel with the rebuilt results
+## Define software drift
 
-That is the job of software provenance.
+Software drift occurs when an implementation or runtime identity changes while the
+workflow's declared data and requested target remain the same.
 
-## How to read this page
+Examples:
 
-Read this page with one trust question in mind:
+- edit a `script:` file
+- edit a local package imported by a stable shell command
+- resolve a different patch version from the same environment declaration
+- move a container tag to a new image
+- update a wrapper revision
+- change a compiled library loaded at runtime
 
-> if the input files stayed the same, what software evidence would still justify rebuilding
-> this output?
+The reproducibility question is causal:
 
-That is the question provenance answers. The page is not about extra metadata for its own
- sake. It is about defending rebuilds later.
-
-## Why this lesson belongs in Module 05
-
-Once the repository has scripts, package code, and runtime declarations, it also has more
-ways for outputs to become stale without any input-file churn.
-
-That is why provenance belongs in the same day as software ownership:
-
-- ownership tells you which surface changed
-- runtime contracts tell you where execution meaning lives
-- provenance tells you how to defend the new artifact after the rebuild
-
-## Drift does not begin only with input files
-
-Learners often first meet Snakemake through file timestamps and declared dependencies.
-
-That is a useful start, but it is incomplete.
-
-Drift can also come from:
-
-- edits to workflow scripts
-- changes in package code under `src/`
-- runtime declaration changes in environment files
-- container image revisions
-- tool upgrades that alter behavior without changing rule syntax
-
-This is why software boundaries must stay explicit. You cannot review or rebuild what you
-cannot name.
-
-## A strong beginner habit
-
-When software changes, ask two questions immediately:
-
-1. which outputs might now be semantically stale
-2. which evidence will let another maintainer understand the rebuild later
-
-That habit is more important than memorizing every provenance field on day one.
-
-## Reproducibility needs change evidence
-
-A strong repository can answer questions like:
-
-- did a software change invalidate published outputs?
-- which rules are affected by a helper-code edit?
-- what runtime changed between two runs?
-- can we explain the software surface that produced this artifact?
-
-Those are not luxury questions. They are the practical questions of trust.
-
-## A quick self-check before you keep reading
-
-Imagine this situation:
-
-- the input data has not changed since last week
-- the reporting helper changed this morning
-
-Should you trust the old published summary automatically?
-
-No. The software surface changed, and provenance is what keeps that change reviewable.
-
-## One useful review loop
+> Does the system either rebuild the artifact or reject it after the material software
+> identity changes?
 
 ```mermaid
 flowchart LR
-  change["software change"] --> detect["detect affected rules or outputs"]
-  detect --> rebuild["rebuild what is no longer trustworthy"]
-  rebuild --> record["record provenance with the new artifact"]
-  record --> review["review what changed and why"]
+  software["software identity v1"] --> build["build artifact"]
+  build --> accepted["artifact accepted"]
+  drift["software identity v2"] --> policy{"invalidation observes identity?"}
+  policy -->|yes| rebuild["rebuild or reject"]
+  policy -->|no| stale["stale artifact remains accepted"]
 ```
 
-This loop is what turns reproducibility from a slogan into a working practice.
+## Choose an observable identity
 
-## What counts as software evidence
+Source code has many possible identities:
 
-Good software evidence often includes:
+| Implementation form | Candidate identity |
+| --- | --- |
+| one workflow script | script contents or revision |
+| local multi-module package | package artifact, source bundle, or repository revision |
+| installed package | name, version, artifact hash, lock |
+| wrapper | wrapper revision plus tool environment |
+| container | immutable image digest |
+| compiled tool | binary hash plus dependent libraries |
 
-- the git revision or release identifier of the repository
-- the environment or container declaration used for execution
-- tool or interpreter versions that materially affect behavior
-- a provenance artifact that travels with published results
+Choose the identity that matches the release and rebuild boundary. Listing one file is
+appropriate for a bounded specimen, not necessarily a multi-module production package.
 
-In the capstone, `workflow/scripts/provenance.py` points toward this idea. A workflow step
-can emit an artifact that explains the software context of the publication outputs.
+## Run the three-model audit
 
-That is much stronger than relying on memory or a comment in a pull request.
+From the program directory:
 
-## The common beginner mistake
+```bash
+gmake capstone-software-boundary-audit
+```
 
-People often assume provenance matters only for inputs, timestamps, or external data
-identity.
+Before opening `summary.tsv`, predict:
 
-Module 05 needs the opposite instinct:
+- whether each changed implementation will appear in the dry-run
+- whether the subsequent invocation will execute
+- whether the artifact marker will reach v2
 
-- software changes are part of output meaning
-- runtime changes are part of output meaning
-- published outputs need to carry enough context to defend those facts later
+The audit always starts from a converged v1 artifact. This matters: a missing output would
+cause every model to run and conceal the drift distinction.
 
-## File freshness is not enough
+## Model A: `script:` makes its source visible
 
-Weak assumption:
+The first specimen binds:
 
-> if the inputs are unchanged, the outputs are still trustworthy.
+```python
+script:
+    "workflow/scripts/render.py"
+```
 
-That assumption fails when:
+After the script marker changes, Snakemake plans the job through its code-change rerun
+reasoning. The next execution writes a v2 marker.
 
-- a script's transformation logic changes
-- a library upgrade alters ordering, formatting, or statistical behavior
-- a package helper fixes a bug that changes output meaning
+Evidence chain:
 
-The files may look fresh while the meaning is stale.
+```text
+v1 execution
+→ baseline dry-run plans no render job
+→ script source changes
+→ changed dry-run plans render
+→ execution writes script-directive-v2
+```
 
-That is drift.
+This proves behavior for the specimen and supported Snakemake toolchain. It does not prove
+that every file the script imports is automatically tracked.
 
-## The contrast that matters
+## Model B: a stable shell command hides package source
 
-The important contrast is not:
+The second specimen invokes:
 
-- old file
-- new file
+```bash
+PYTHONPATH=src python -m software_specimen.render
+```
 
-The important contrast is:
+The package module changes, but:
 
-- unchanged bytes on disk
-- changed software meaning behind those bytes
+- the shell string is unchanged
+- declared input data is unchanged
+- output already exists
+- package source is not a rule input
 
-## A stronger practice
+The dry-run plans no render job. The next ordinary invocation also does no work. The
+artifact remains at v1.
 
-Stronger shape:
+The expected row is:
 
-- keep software surfaces explicit enough that a reviewer can name them
-- treat code and runtime changes as reasons to re-evaluate output trust
-- generate provenance artifacts for outputs that will be shared or published
-- use rebuild-oriented review commands when software changes are suspected
+```text
+PASS / REJECT / HIDDEN_PACKAGE_DRIFT_MISSES_RERUN
+```
 
-In practice, this is where commands such as `--list-changes code` or broader provenance
-checks become valuable. They help the team connect software edits to output risk.
+`PASS` means the experiment successfully reproduced the defect. Always retain the
+decision and finding.
 
-## What a good explanation sounds like
+## Model C: declare the bounded source identity
 
-Strong:
+The third specimen adds:
 
-> The input data stayed the same, but the software surface moved, so the old publication is
-> stale until the repository rebuilds it and records the new runtime and revision context.
+```python
+input:
+    source="data/source.txt",
+    implementation="src/software_specimen/render.py"
+```
 
-Weak:
+After implementation changes, ordinary file dependency reasoning plans a rerun and the
+artifact reaches v2.
 
-> The files looked current, so we assumed they still were.
+```mermaid
+flowchart TD
+  changed["render.py changes"]
+  script["script directive"]
+  hidden["shell command only"]
+  declared["source under input"]
+  plan["render planned"]
+  quiet["nothing to do"]
 
-## A simple example
+  changed --> script --> plan
+  changed --> hidden --> quiet
+  changed --> declared --> plan
+```
 
-Imagine this sequence:
+The repair is deliberately small so the causal contrast is visible. For a real package,
+prefer a scalable identity such as a built artifact, source bundle revision, lock, or image
+digest.
 
-1. `src/capstone/reporting.py` changes how summary statistics are rounded.
-2. No input files change.
-3. Published tables still exist from the earlier run.
+## Understand rerun triggers as policy
 
-If the team only checks input freshness, those tables may appear valid.
+Snakemake can consider several kinds of change when deciding whether output is stale,
+including input timestamps or checksums, params, code, and software environments. Exact
+defaults and behavior depend on supported Snakemake versions and invocation policy.
 
-If the team treats software as part of workflow meaning, it asks a better question:
+Do not teach a rerun trigger from memory. Record:
 
-> which outputs were produced with the old implementation, and where is the evidence for
-> the new build?
+- Snakemake version
+- command used
+- baseline convergence
+- changed surface
+- dry-run reason
+- artifact before and after execution
 
-That question is the difference between accidental and intentional reproducibility.
+That is why the audit retains traces.
 
-## Common failure modes
+## Separate incremental and clean rebuild evidence
 
-| Failure mode | What goes wrong | Better repair |
+An incremental drift experiment asks:
+
+> Does the existing artifact become invalid after software changes?
+
+A clean rebuild asks:
+
+> Can this source and runtime produce the artifact from absent outputs?
+
+Both matter:
+
+| Evidence | Defect it can expose |
+| --- | --- |
+| incremental rebuild | stale output accepted after source or environment drift |
+| clean rebuild | missing dependency, unavailable tool, hidden setup state |
+| repeated clean rebuild | nondeterminism under the same declared context |
+| cross-context rebuild | executor, platform, or runtime-dependent meaning |
+
+Deleting outputs before every test destroys the evidence needed to detect under-rebuild.
+
+## Read provenance as a receipt
+
+The capstone provenance script records:
+
+- schema version
+- timestamp
+- Python version and executable
+- platform
+- Snakemake version
+- Git commit when available
+- materialized config
+
+These fields help a reviewer interpret an execution. They also have limits:
+
+| Field | Useful claim | Limitation |
 | --- | --- | --- |
-| provenance only records input files | software drift stays invisible | record software context for important outputs |
-| helper-code edits are treated as “internal only” | stale publications survive longer than they should | review software edits as output-affecting changes |
-| environment updates are merged without rebuild thinking | runs become incomparable | connect runtime changes to rebuild and release review |
-| publication artifacts omit software identity | external readers cannot trace the producing surface | emit provenance next to important deliverables |
-| teams trust memory over recorded evidence | review becomes anecdotal | prefer generated evidence and versioned declarations |
+| Git commit | repository revision observed | does not prove clean worktree or package installation identity |
+| Python version | interpreter observed | does not enumerate all dependency builds |
+| platform | operating context string | does not capture full kernel, CPU, or filesystem behavior |
+| config | materialized workflow policy | may include operational detail and secrets if not reviewed |
+| timestamp | when receipt was generated | makes receipt bytes vary by execution |
+| Snakemake version | orchestrator observed | does not identify every job tool |
 
-## The explanation a reviewer trusts
+The receipt explains; the rebuild contract invalidates.
 
-Strong explanation:
+## Avoid circular provenance claims
 
-> this output was rebuilt because the reporting helper changed under `src/`, and the new
-> publication includes updated provenance that records the runtime and repository state.
+Weak reasoning:
 
-Weak explanation:
+> The output is reproducible because provenance.json records a commit.
 
-> the code changed a bit, but the files looked current.
+Stronger reasoning:
 
-The first explanation defends trust. The second confuses absence of file churn with
-absence of semantic drift.
+> The release route builds from a reviewed revision and locked runtime, the rebuild policy
+> observes those identities, and provenance records the identities actually used.
 
-## End-of-page checkpoint
+The stronger claim connects policy, behavior, and receipt.
 
-Before leaving this page, you should be able to:
+## Design a drift experiment
 
-- explain how software drift differs from input drift
-- name at least three kinds of software evidence worth keeping
-- describe why published outputs need provenance that includes software context
-- explain why unchanged input files do not guarantee trustworthy outputs
+For one real job:
+
+1. converge the selected output
+2. record its artifact identity and software identity
+3. change only the material software surface
+4. run a dry-run without deleting output
+5. record the planning reason
+6. invoke the workflow
+7. inspect whether artifact meaning reached the new identity
+8. restore the source and valid state
+
+If the job does not rerun, decide whether:
+
+- the software identity is hidden
+- rerun policy excludes that trigger
+- the selected change is not material
+- a clean release rebuild is the intended invalidation mechanism
+
+## Build a software bill appropriate to the claim
+
+Useful records may include:
+
+- repository revision and dirty state
+- package artifact hashes
+- exact environment resolution
+- image digest
+- wrapper revision
+- command and params
+- platform and executor
+- output manifest
+
+More fields do not automatically create stronger evidence. Every record needs a claim and
+an inspection route.
+
+## Exit checkpoint
+
+You understand drift evidence when you can:
+
+1. name the software identity that should invalidate one artifact
+2. explain why stable shell text can hide local package changes
+3. interpret all three audit rows with result and decision
+4. distinguish incremental drift evidence from a clean rebuild
+5. explain why provenance receipts support but do not cause reproducibility
