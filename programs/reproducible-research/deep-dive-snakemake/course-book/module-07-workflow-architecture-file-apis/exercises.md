@@ -1,330 +1,365 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is to make
-architectural judgment visible through repository maps, responsibility tables, and focused
-checks, not through folder opinions.
+These ten exercises form one cumulative architecture review of the capstone. Use another
+Snakemake repository only after you can produce the same evidence there.
 
-## How to work through this set
-
-Treat this set as one full architecture-review workshop day.
-
-For each exercise, keep three things together:
-
-- the boundary you are naming
-- the evidence route you actually used
-- one plain-language note about how the decision helps the next maintainer read the
-  repository correctly
-
-If your answer cannot explain what a new reviewer should understand sooner than before,
-the exercise is not complete yet.
-
-Before each answer:
-
-1. start from the entrypoint or public artifact instead of from the deepest helper
-2. name the ownership boundary before you suggest a new file split
-3. keep one command, diagram, or repository note that proves the boundary really exists
-
-If you skip that order, the day turns into folder rearrangement instead of architecture
-review.
-
-Do them in order. The set is one day-long progression:
-
-- Exercises 1-3 establish reading order and repository responsibilities.
-- Exercises 4-6 trace public artifacts and file APIs.
-- Exercises 7-8 expose coupling and automate one architecture claim.
-- Exercises 9-10 review drift like a maintainer.
-
-For every answer, keep three things:
-
-- the boundary you are naming
-- the evidence route you actually used
-- one short sentence explaining why the decision improves repository legibility for the
-  next maintainer
-
-## Recommended working layout
-
-Build one small architecture packet as you go:
-
-- a repository reading order
-- a responsibility table
-- one artifact-trace diagram
-- one file-API note
-- one focused architecture check with a failing example
-
-If you prefer a concrete tree for the audit packet, keep it inside something like:
+Keep your notes under the repository's `artifacts/` directory. Suggested layout:
 
 ```text
-module07-lab/
-├── maps/
-├── ownership/
-├── file-api/
-├── checks/
-└── artifacts/
-    ├── reading-order/
-    ├── traces/
-    ├── drift/
-    └── reviews/
+artifacts/learning/snakemake-architecture/
+├── completion-contract.md
+├── assembly-inventory.md
+├── ownership-map.md
+├── module-interface.md
+├── dependency-ledger.md
+├── file-api-review.md
+├── implementation-boundary.md
+├── drift-guard.md
+├── refactor-decision.md
+└── architecture-review.md
 ```
 
-That structure helps separate repository reading order, ownership claims, public path
-contracts, and automated drift checks without mixing them into one vague review note.
+Those names describe durable review surfaces. They are not delivery sequence labels.
 
-Build one small architecture review packet as you go:
+## Working rules
 
-- one repository reading-order note that starts from the entrypoint and a public artifact
-- one responsibility table for the main repository layers
-- one artifact-trace diagram from public path back through its owners
-- one file-API note distinguishing public paths from internal workflow state
-- one architecture check with a deliberate failing example
-- one maintainer-style review note ordered by reproducibility risk
+For every exercise:
 
-If those six artifacts are missing, the day usually turns into "the folders feel messy"
-instead of "the repository boundary is reviewable."
+- write a prediction before running a command
+- cite a source path and the relevant declaration
+- state what the command or test cannot prove
+- keep failed experiments as evidence, but revert deliberate mutations
+- distinguish an observed defect from a possible pressure
 
-```mermaid
-flowchart LR
-  reading["read the repository in the right order"]
-  entry["repair visible assembly"]
-  ownership["name durable responsibilities"]
-  trace["trace one public artifact end to end"]
-  drift["detect hidden coupling or file-API drift"]
-  review["review architecture in bounded steps"]
+Run capstone commands from:
 
-  reading --> entry --> ownership --> trace --> drift --> review
+```text
+programs/reproducible-research/deep-dive-snakemake/capstone
 ```
 
-Use that route on purpose. It keeps the day anchored in repository legibility instead of
-file-count aesthetics.
+If your environment lacks `snakemake`, complete the source audit and mark runtime evidence
+as unavailable. Do not invent output.
 
-## What a strong day packet looks like
+## Exercise 1: Define the completion contract
 
-By the time you finish all ten exercises, your work should leave behind one small,
-reviewable packet instead of ten disconnected architecture opinions:
+Read the top-level `Snakefile`, `workflow/rules/publish.smk`, and `docs/file-api.md`.
+Begin at the default target and identify what a completed default invocation promises.
 
-- one repository reading-order note
-- one responsibility table for the main layers
-- one public-artifact trace
-- one file-API note distinguishing public from internal paths
-- one focused architecture check with a failing example
-- one maintainer-style review note ordered by reproducibility risk
+Write `completion-contract.md` with:
 
-If you cannot point to those artifacts, the exercise day is still too dependent on tacit
-classroom guidance.
+- the exact default target path expression
+- the config values that determine its resolved path
+- the rule that produces it
+- every direct input to that rule
+- a comparison between those inputs and the documented public files
+- one sentence distinguishing completion from independent trust
 
-## Exercise 1: Read the repository in the right order
+Before running anything, predict the visible rule names needed for this route. Then run:
 
-Choose a Snakemake repository you did not design recently. Record the order in which you
-inspect its surfaces to understand how one public artifact is produced.
+```bash
+snakemake --list-rules
+```
 
-What to hand in:
+Record which predictions were correct and what the rule list cannot establish.
 
-- the reading order
-- why the first surface belongs first
-- one surface you deliberately postponed
-- one architectural question the early reading order answered quickly
+**Done when:** a reader can name the completion artifact and its direct public members
+without searching the whole repository.
 
-Study note:
-If you start in helpers or packages before the entrypoint, you are usually learning the
-wrong story first.
+## Exercise 2: Classify entrypoint work by execution time
 
-## Exercise 2: Repair a weak entrypoint
+Audit every top-level statement in `Snakefile`. Classify it as:
 
-Take a top-level `Snakefile` that mixes visible assembly with too much inline behavior.
-Reduce it to configuration, includes or modules, and final targets.
+- parse-time gate or derivation
+- planning-time graph behavior
+- execution owned by a rule
+- local workflow assembly
+- completion target
 
-What to hand in:
+Write `assembly-inventory.md` as a table with columns:
 
-- the before and after entrypoint
-- the behavior that moved elsewhere
-- the repository layer that now owns it
-- one reason the new entrypoint is easier to review
-- one sentence explaining what the entrypoint still teaches immediately after the repair
+```text
+source span | responsibility | time | required owner | move or keep | evidence
+```
 
-Study note:
-The goal is not only brevity. The goal is honest visible assembly.
+Choose one statement that looks misplaced. Do not move it yet. Write a refactor claim
+that states:
 
-## Exercise 3: Write a repository responsibility table
+- the observed review problem
+- the proposed owner
+- the behavior that must remain equivalent
+- the narrowest command that could challenge the claim
 
-Assign stable responsibilities to the entrypoint, rule families, modules, scripts,
-package code, profiles, schemas, and publish contracts.
+**Done when:** your proposed move is justified by ownership and a preservation test, not
+by file length.
 
-What to hand in:
+## Exercise 3: Map rule-family ownership
 
-- one sentence per layer
-- one forbidden responsibility per layer
-- two current files whose placement violates the table
-- the least disruptive correction
+Read the three included rule files and the top-level executable rules. Draw a Mermaid
+diagram from the entrypoint to rule families and then to the public manifest.
 
-Study note:
-If two layers still sound interchangeable after you write the table, the repository
-boundary is not named clearly enough yet.
+Write `ownership-map.md` with:
 
-## Exercise 4: Review a weak structural split
+- one ownership sentence per rule family
+- one shared review question per family
+- the global names each included file consumes
+- any rule whose current location does not match its concern
+- one candidate regrouping you reject and why
 
-Find or invent a split with weak names such as `helpers.smk`, `misc.smk`, or numbered
-parts. Replace it with ownership-based boundaries.
+Use these tests on every claimed family:
 
-What to hand in:
+1. Do its rules share a file lifecycle?
+2. Do they share policy or a review question?
+3. Would moving one rule force reviewers to reconstruct that concern across files?
 
-- the weak tree
-- the stronger tree
-- the ownership sentence for each new boundary
-- one abstraction you rejected because it was premature
-- one sentence explaining why the rejected abstraction would have hidden ownership instead of clarifying it
+**Done when:** every grouping has a reason stronger than “these rules are related.”
 
-Study note:
-More files are not the win. Clearer ownership is the win.
+## Exercise 4: Audit a module interface from both sides
 
-## Exercise 5: Trace one public artifact end to end
+Inspect:
 
-Choose one published file and trace it backward through its owning rule, scripts, package
-code, configuration, entrypoint target, and file API.
+- `workflow/rules/preprocess.smk`
+- `workflow/modules/qc_module/Snakefile`
+- `workflow/modules/screen_module/Snakefile`
 
-What to hand in:
+Write `module-interface.md` with one row for each interface dimension:
 
-- an ownership diagram
-- every declared dependency on the route
-- any hidden dependency you discover
-- the contract statement a consumer relies on
+```text
+config | files | imported names | semantic policy | runtime | logs and benchmarks
+```
 
-Study note:
-If the trace forces you into hidden scans or undocumented paths, that is already a real
-finding.
+For each row, identify:
 
-## Exercise 6: Repair a file-API gap
+- the caller declaration
+- the module read
+- the owner
+- whether the boundary is explicit
 
-Choose one path family that other people are already treating as stable, but which the
-repository does not yet document clearly.
+Then run:
 
-What to hand in:
+```bash
+gmake module-interface-audit
+gmake module-interface-selftest
+```
 
-- the current undocumented path family
-- the file API statement you would add
-- one internal path that must remain outside the contract
-- one refactor that becomes safer after the file API exists
+Explain both expected findings:
 
-Study note:
-This is where path stability stops being folklore and becomes architecture.
+- `EXPLICIT_MODULE_CONTRACT_PRESERVED`
+- `HIDDEN_MODULE_COUPLING_REPRODUCED`
 
-## Midday self-check
+Do not say only that the audit passed. Explain why the defect specimen is expected to
+pass its reproduction check.
 
-Before you move into hidden coupling, automation, and full review, make sure your packet
-can already answer all of these:
+**Done when:** your table can detect a new module config read without relying on a
+successful dry-run.
 
-- why the entrypoint belongs first in the reading order
-- which repository layers own visible assembly, step logic, reusable code, and path contracts
-- which public path is stable because the repository says it is stable
-- which internal path must remain outside the contract even if it looks useful
+## Exercise 5: Promote a hidden file influence into the graph
 
-If you cannot answer those four questions cleanly, return to the earlier exercises and
-make the architecture packet more explicit before moving on.
+Choose either:
 
-## When you get stuck, diagnose the missing boundary first
+- the screen panel FASTA
+- the trimming adapter FASTA
 
-Use this table before you start proposing bigger refactors:
+Trace where its path enters config, a rule, and package code. Determine whether a change
+to the file's contents is represented as a Snakemake input dependency.
 
-| If you are stuck on... | Check whether you are missing... | Typical repair |
+Write `dependency-ledger.md` with:
+
+- the current path flow
+- the graph edge Snakemake currently sees
+- the graph edge the computation actually needs
+- a corrected rule declaration
+- the corresponding CLI or function argument
+- a dry-run experiment that mutates only the selected file
+
+If you edit a specimen or disposable copy, demonstrate:
+
+1. an immediate dry-run after convergence plans no work
+2. changing the declared file plans the affected job
+3. restoring the file returns to the prior state
+
+The capstone file-contract audit provides a smaller paired model:
+
+```bash
+gmake file-contract-audit
+gmake file-contract-selftest
+```
+
+**Done when:** you can explain why passing a file path under `params` is not the same as
+declaring its contents under `input`.
+
+## Exercise 6: Review the public file API as a consumer
+
+Approach `publish/v1/` without reading internal results first. For each documented public
+file, record:
+
+- path
+- intended consumer
+- encoding or structure
+- semantic promise
+- compatibility policy
+- verification evidence
+
+Write `file-api-review.md`. Mark missing information explicitly rather than inferring it.
+
+Then choose one hypothetical change:
+
+- rename `summary.json`
+- add an optional JSON field
+- change a count field to a percentage
+- reorder TSV rows nondeterministically
+
+Classify the change as internal, compatible public extension, reproducibility defect, or
+breaking public change. Defend the classification from the consumer's perspective.
+
+If a publish tree is available, run:
+
+```bash
+gmake verify-report
+```
+
+State which checks establish membership and integrity and which semantic questions remain
+for a consumer test.
+
+**Done when:** your review distinguishes location, shape, meaning, and evolution for at
+least one public artifact.
+
+## Exercise 7: Audit a workflow script and a package command
+
+Compare:
+
+- `workflow/scripts/provenance.py`
+- `src/capstone/trim_fastq.py`
+
+Write `implementation-boundary.md` with two dependency ledgers. Include:
+
+- declared files
+- explicit scalar policy
+- runtime and import context
+- current directory assumptions
+- environment reads
+- clock, Git, platform, or network influence
+- test interface
+
+Answer:
+
+1. Why is provenance workflow-adjacent?
+2. Why can trimming be ordinary package code?
+3. Which provenance bytes are intentionally context-dependent?
+4. Which claim about determinism would therefore be too broad?
+5. Could the package command run correctly from another working directory?
+
+Propose one interface repair only if the ledger exposes hidden coupling. Do not move code
+merely to make the two examples symmetrical.
+
+**Done when:** placement follows dependency ownership rather than a preference for scripts
+or packages.
+
+## Exercise 8: Build a negative architecture guard
+
+Choose one narrow claim:
+
+- modules receive only declared runtime config
+- package code does not import Snakemake
+- public producers agree with the documented file API
+- an influential policy file is declared as input
+
+Write `drift-guard.md` with:
+
+- the claim
+- the source or artifact inspected
+- the passing observation
+- one deliberate mutation that should fail
+- the exact failure message
+- limitations of the guard
+
+Implement the guard in a disposable copy or repository test, then:
+
+1. run it against the valid state
+2. make the mutation
+3. capture the expected failure
+4. revert the mutation
+5. rerun the valid state
+
+A useful failure message names the boundary, not just a line number.
+
+**Done when:** the original architecture defect can no longer return silently.
+
+## Exercise 9: Decide whether to extract top-level rules
+
+Evaluate two designs for the current `Snakefile`:
+
+- keep discovery, discovery publication, and provenance top-level
+- assign them to one or more named local concerns
+
+Write `refactor-decision.md` comparing:
+
+| Criterion | Keep current ownership | Extract named concerns |
 | --- | --- | --- |
-| Exercise 1 or 2 | one honest entrypoint-first reading order | restart from the visible assembly instead of deep helpers |
-| Exercise 3 or 4 | one durable ownership sentence per layer | rewrite the responsibility table before renaming files |
-| Exercise 5 or 6 | one explicit public path promise | add the file-API note before judging path changes |
-| Exercise 7, 8, 9, or 10 | one focused architectural claim | choose the boundary first, then the check or review route |
+| visible assembly | | |
+| import surface | | |
+| concern cohesion | | |
+| include-order risk | | |
+| rule discoverability | | |
+| preservation evidence | | |
 
-Most weak Module 07 answers are not short on folder ideas. They are short on named boundaries.
+Choose one design for the repository as it exists today. State a measurable threshold
+that would make you revisit the decision.
 
-## Exercise 7: Diagnose hidden coupling
+Do not invent a generic catch-all file. Proposed names must describe the enduring concern.
 
-Find one helper, script, or package module that reads undeclared files, depends on
-import-time side effects, or assumes unvalidated config.
+**Done when:** both keeping and moving have been evaluated as architectural choices, and
+your decision includes a reopening threshold.
 
-What to hand in:
+## Exercise 10: Produce a bounded architecture review
 
-- the coupling problem
-- why it is an architecture issue rather than only a code smell
-- the repository boundary it crosses incorrectly
-- the smallest honest repair
+Assemble `architecture-review.md` from the prior records. Use this structure:
 
-Study note:
-If a helper has to be read before the rule makes sense, coupling is already doing too
-much architectural work.
+### Review boundary
 
-## Exercise 8: Detect architecture drift automatically
+Name the artifact route and source revision you reviewed.
 
-Implement one focused check for an architectural claim such as:
+### Accepted boundaries
 
-- every public path is documented
-- every include is reachable from the entrypoint
-- scripts avoid undeclared repository scans
+For each accepted boundary, cite the source observation and evidence.
 
-What to hand in:
+### Required repairs
 
-- the claim and automated check
-- one passing state
-- one deliberately failing edit
-- the failure message a maintainer receives
-- one sentence explaining why this check is architectural rather than generic lint
+Order defects by reproducibility or consumer risk. For each, include:
 
-Study note:
-A vague failure message teaches almost nothing. Make the broken boundary obvious.
+- contradictory dependency arrow
+- smallest ownership-complete repair
+- behavior to preserve
+- negative test
 
-## Exercise 9: Compare two refactor designs
+### Deliberate deferrals
 
-Repair the same crowded repository in two ways: one ownership-first design and one more
-abstract design using deeper modules or packages.
+State the current guard and reopening threshold.
 
-What to hand in:
+### Verification matrix
 
-- both proposed trees
-- trade-offs in navigation, coupling, and review
-- the design you would choose now
-- the evidence that would justify the more complex design later
+Separate parse, plan, execution, artifact, public contract, and negative evidence. Mark
+anything not run.
 
-Study note:
-Choose the design that tells the truth today, not the one that merely looks more advanced.
+### Remaining risks
 
-## Exercise 10: Conduct a bounded architecture review
+Name at least one weakness outside this review's boundary.
 
-Review an unfamiliar Snakemake repository without reaching for the strongest execution
-gate first. Follow entrypoint, rule ownership, file APIs, helper boundaries, and targeted
-checks.
+Finish with a five-minute handoff test: give the packet to another learner and ask them to
+identify the default artifact, one module contract, one public promise, one repaired
+defect, and one unresolved risk. Revise any answer that requires oral rescue.
 
-What to hand in:
+**Done when:** the review supports challenge and maintenance without depending on an
+instructor.
 
-- findings ordered by reproducibility risk
-- an updated repository map
-- focused verification for each major finding
-- three onboarding questions the repaired architecture should answer without oral help
+## Completion standard
 
-Study note:
-This is a maintainer review, not a style preference exercise.
+The set is complete only when:
 
-## What weak completion looks like
-
-Do not call the day complete if your answers do any of these:
-
-- start in helper code before the entrypoint or public artifact path
-- split files without naming what durable responsibility each one owns
-- document every path equally and blur public contracts with internal workflow state
-- add an architecture check without saying which boundary it protects
-- prefer the more abstract design only because it looks more advanced
-
-## Mastery standard for this exercise set
-
-Across all ten answers, Module 07 wants the same habits:
-
-- you read repositories in an order that reveals ownership first
-- workflow splits reflect durable responsibilities
-- file APIs are treated as part of architecture
-- hidden coupling and documentation drift are reviewed as real design problems
-
-If your answer says only "the folders should be cleaner," keep going.
-
-## Exit standard for the exercise day
-
-You are done only when you can defend all of these clearly:
-
-- why the entrypoint belongs first in the reading order
-- which layer owns one public artifact at each step
-- which paths are stable because the repository says they are stable
-- which helper boundary is supporting the workflow and which is swallowing it
-- which refactor is justified now and which would be architecture theater
+- all ten records exist
+- predictions and observations remain distinguishable
+- every defect cites a source or artifact
+- every proposed repair names behavior to preserve
+- at least one negative check rejects a deliberate mutation
+- public and internal paths are not treated as one stability class
+- unavailable runtime evidence is marked rather than invented
+- the final review names remaining risk
