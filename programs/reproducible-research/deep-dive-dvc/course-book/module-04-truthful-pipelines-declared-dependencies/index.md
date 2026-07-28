@@ -1,6 +1,5 @@
 # Module 04: Truthful Pipelines and Declared Dependencies
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,160 +8,167 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
   section["Truthful Pipelines Declared Dependencies"]
-  page["Module 04: Truthful Pipelines and Declared Dependencies"]
-  capstone["Capstone evidence"]
+  page["Module 04 Orientation"]
+  proof["Stage-contract review packet"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.prepares.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  behavior["real command behavior"] --> declaration["declared contract"]
+  declaration --> planner["DVC planner decision"]
+  planner --> result["result meaning"]
+  result --> review["bounded review decision"]
 ```
 <!-- page-maps:end -->
 
-Module 04 turns DVC from a storage story into an execution story.
+A DVC pipeline is trustworthy only when its declared graph matches the work commands
+actually perform. A tidy `dvc.yaml` can still hide a file read, control value, or
+meaningful output. In that case DVC may correctly follow the declaration and still leave
+a scientifically stale result.
 
-By now, you already know two important facts:
+This module teaches you to review the chain:
 
-- data identity should come from content, not path names
-- runtime can influence a result even when code and data look unchanged
+> real reads, controls, and writes → declaration → planner decision → result meaning
 
-The next question is sharper:
+The learning target is not “write valid stage YAML.” It is “demonstrate that ordinary
+reproduction responds to the causes that matter and restores every promised result.”
 
-can the pipeline itself tell the truth about why a result exists?
+## Prerequisites and time
 
-A DVC pipeline is only reviewable when its declared graph matches the real work. If a
-script reads a file that is not listed, writes an output that is not owned, or uses a
-control value that is hidden inside code, DVC can still run. The danger is that it may run
-for reasons the team cannot explain, or skip work when the result is already stale.
+Before starting, you should be able to:
 
-This module is about replacing "the script usually works" with a declared execution graph
-that a reviewer can inspect, challenge, and reproduce.
+- distinguish Git-tracked metadata from DVC-tracked data;
+- interpret a content identity from Module 02;
+- run commands in the course environment from Module 03;
+- read YAML and basic JSON.
 
-The capstone corroboration surface for this module is the set of files that show declared
-execution truth: `capstone/dvc.yaml`, `capstone/dvc.lock`, `capstone/params.yaml`,
-`capstone/repro/stage-contracts/`, `capstone/docs/stage-contract-guide.md`,
-`capstone/docs/stage-contract-audit-guide.md`, and the `capstone-stage-contract-audit`
-route.
+Allow one serious session:
 
-## Why this module exists
+| Work | Suggested time |
+| --- | ---: |
+| core lessons | 75 minutes |
+| worked investigation | 35 minutes |
+| exercises and evidence packet | 90–150 minutes |
+| answer review | 30 minutes |
 
-Many pipelines fail quietly because the graph is incomplete.
+If you missed class, follow the route below. All commands, evidence paths, expected
+contrasts, and answer reasoning are included.
 
-Common examples look ordinary at first:
+## What you will produce
 
-- a preparation script reads a lookup table that is not in `deps`
-- a model script uses a threshold literal instead of a value in `params.yaml`
-- an evaluation command writes a report but only the metric file is declared as an output
-- a shared intermediate directory is reused by two commands without a clear owner
-- a stage reruns so often that the team stops investigating why
+By the end, your learning directory will contain a review packet with:
 
-These are not cosmetic problems. They decide whether `dvc repro` has enough declared
-information to make a correct decision.
+- a falsifiable stage claim;
+- an actual-read and actual-write ledger;
+- planner predictions;
+- hidden file and parameter proofs;
+- an output-ownership decision;
+- a false-rerun mutation matrix;
+- a refactoring contract;
+- a bounded review decision.
 
-The point of Module 04 is not to memorize every DVC field. The point is to learn the
-review habit:
+These artifacts matter because a correct-looking final `dvc.yaml` does not preserve how
+you established its truth.
 
-> If this result changed, could I explain the change from declared dependencies,
-> parameters, outputs, command text, and recorded lock evidence?
-
-If the answer is no, the pipeline is not yet truthful enough.
-
-## Study route
+## First-pass study route
 
 ```mermaid
-flowchart LR
-  overview["Overview"] --> core1["Core 1: stage contract"]
-  core1 --> core2["Core 2: dependency, parameter, output boundaries"]
-  core2 --> core3["Core 3: staleness and lock evidence"]
-  core3 --> core4["Core 4: false reruns and stale outputs"]
-  core4 --> core5["Core 5: refactoring and shared outputs"]
-  core5 --> example["Worked example"]
-  example --> practice["Exercises and answers"]
-  practice --> glossary["Glossary"]
+flowchart TD
+  contracts["Stage contracts"] --> boundaries["Classify dependencies, parameters, outputs"]
+  boundaries --> evidence["Read status, repro, and lock evidence"]
+  evidence --> failures["Distinguish stale outputs and false reruns"]
+  failures --> refactor["Preserve ownership while refactoring"]
+  refactor --> investigation["Repair a hidden influence"]
+  investigation --> exercises["Build the review packet"]
+  exercises --> answers["Audit reasoning with model answers"]
 ```
 
-Read the module in that order the first time.
-
-If the problem is already partly clear, use this shortcut:
-
-- open Core 1 when the main confusion is "what is a DVC stage promising?"
-- open Core 2 when the main confusion is "what belongs in `deps`, `params`, or `outs`?"
-- open Core 3 when the main confusion is "why did `dvc repro` rerun or skip?"
-- open Core 4 when the main confusion is "which failure is merely annoying and which is dangerous?"
-- open Core 5 when the main confusion is "how do I change pipeline shape without losing provenance?"
+Read in that order. Do not begin with the answers or compact audit verdict. Prediction
+before observation is part of the method.
 
 ## Module map
 
-| Page | Purpose |
+| Page | Question it answers |
 | --- | --- |
-| [Overview](index.md) | explains the module promise and study route |
-| [Stage Contracts and Declared Truth](stage-contracts-and-declared-truth.md) | teaches the promise each DVC stage makes |
-| [Dependency, Parameter, and Output Boundaries](dependency-parameter-output-boundaries.md) | teaches how to place inputs, controls, and outputs in the graph |
-| [DVC Repro, Staleness, and Lock Evidence](dvc-repro-staleness-and-lock-evidence.md) | teaches how `dvc repro` decides and how `dvc.lock` records evidence |
-| [False Reruns and Stale Outputs](false-reruns-and-stale-outputs.md) | teaches how to distinguish wasteful reruns from dangerous stale results |
-| [Safe Pipeline Refactoring and Shared Outputs](safe-pipeline-refactoring-and-shared-outputs.md) | teaches graph change, shared intermediates, and multi-output care |
-| [Worked Investigation: Repairing Hidden Stage Influences](worked-investigation-repairing-hidden-stage-influences.md) | predicts, observes, repairs, and replays hidden file, parameter, and output contracts |
-| [Exercises](exercises.md) | gives ten cumulative mastery exercises |
-| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
-| [Glossary](glossary.md) | keeps the module vocabulary stable |
+| [Stage Contracts and Declared Truth](stage-contracts-and-declared-truth.md) | what exactly does a stage promise? |
+| [Dependency, Parameter, and Output Boundaries](dependency-parameter-output-boundaries.md) | where does each real influence or product belong? |
+| [DVC Repro, Staleness, and Lock Evidence](dvc-repro-staleness-and-lock-evidence.md) | what can status, repro, and lock evidence each establish? |
+| [False Reruns and Stale Outputs](false-reruns-and-stale-outputs.md) | is the surprise inefficiency, stale meaning, or lost ownership? |
+| [Safe Pipeline Refactoring and Shared Outputs](safe-pipeline-refactoring-and-shared-outputs.md) | how can graph shape change without losing causal truth? |
+| [Worked Investigation: Repairing Hidden Stage Influences](worked-investigation-repairing-hidden-stage-influences.md) | how do you predict, observe, repair, and replay a defect? |
+| [Exercises](exercises.md) | how do you build a complete review packet yourself? |
+| [Exercise Answers](exercise-answers.md) | what reasoning and evidence make each decision defensible? |
+| [Glossary](glossary.md) | which nearby terms must remain distinct? |
 
-## What should be clear by the end
+## Executable specimen
 
-By the end of this module, you should be able to explain:
-
-- what makes a DVC stage truthful rather than merely convenient
-- how to decide whether a file belongs in `deps`, `outs`, or neither
-- how parameter declaration turns control values into reviewable change
-- how `dvc repro` uses declared state and lock evidence to decide what reruns
-- why stale outputs are more dangerous than extra reruns
-- how to refactor a pipeline without breaking the provenance story
-
-## Commands to keep close
-
-These commands form the evidence loop for Module 04:
-
-```bash
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-selftest
-dvc dag
-dvc status
-dvc repro
-```
-
-Use `capstone-stage-contract-audit` for the course-provided mutation route. It contrasts
-declared and hidden file reads, parameter lookups, and output ownership in isolated DVC
-workspaces. Use the self-test when changing that evidence route. Use `dvc dag`,
-`dvc status`, and `dvc repro` inside a DVC workspace when you want to inspect one
-declared graph and rerun decision directly.
-
-## Capstone route
-
-Use the capstone after you can describe a single stage in plain language.
-
-Best corroboration surfaces for this module:
-
-- `capstone/dvc.yaml`
-- `capstone/dvc.lock`
-- `capstone/params.yaml`
-- `capstone/repro/stage-contracts/`
-- `capstone/docs/stage-contract-guide.md`
-- `capstone/docs/stage-contract-audit-guide.md`
-- `capstone/docs/experiment-guide.md`
-- `capstone/docs/publish-contract.md`
-
-Useful proof route:
+The module uses a five-stage specimen with paired declared and hidden influences:
 
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
 ```
 
-The route changes one real influence at a time, saves DVC's status decision, and then
-checks the resulting semantic value or missing artifact. The point is not to trust the
-graph because it exists. It is to prove whether each declared edge matches the real read,
-write, and control behavior of the command.
+Generated evidence appears under:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/stage-contracts/
+```
+
+The specimen demonstrates:
+
+| Challenge | Truthful contrast | Defect contrast |
+| --- | --- | --- |
+| file changes `10` to `20` | declared stage reruns and adopts `20` | hidden stage skips and retains `10` |
+| parameter changes `2` to `3` | declared stage reruns and score becomes `24` | hidden stage skips and score remains `16` |
+| receipt disappears | declared ownership would trigger restoration | undeclared receipt stays absent |
+
+Some audit findings intentionally report `PASS` with decision `REJECT`: the checker
+successfully reproduced a contract defect. Always read result and decision together.
+
+## Evidence-reading order
+
+Use this order for any stage investigation:
+
+1. inspect command behavior;
+2. inspect `dvc.yaml`;
+3. predict from declared edges;
+4. apply one controlled mutation;
+5. save `dvc status --json`;
+6. run ordinary `dvc repro`;
+7. inspect semantic result values or required artifact presence;
+8. confirm a second reproduction converges;
+9. state what the evidence does and does not establish.
+
+Do not force the stage during acceptance. Force bypasses the planner decision under test.
+
+## Choose a route when returning
+
+| Symptom | Return to |
+| --- | --- |
+| unsure whether a value is a dependency or parameter | boundary lesson |
+| empty status but result seems old | staleness lesson and worked investigation |
+| too many stages rerun | false-rerun diagnosis, then mutation matrix |
+| a generated artifact disappeared without response | output ownership |
+| splitting or moving stages | safe refactoring |
+| review note says only “repro passed” | exercises and answer reasoning |
+
+## Completion standard
+
+You are ready for Module 05 when you can:
+
+- translate actual command behavior into a stage contract;
+- predict staleness without running DVC first;
+- preserve planner evidence before reproduction;
+- join planner behavior to semantic output;
+- distinguish a one-time refresh from a durable repair;
+- assign one owner to every durable artifact;
+- replay the original mutation and demonstrate convergence;
+- write a conclusion no broader than the tested commands and influences.
+
+The module's governing rule is:
+
+> A declaration is a claim. A controlled mutation, planner receipt, semantic assertion,
+> and convergence check turn that claim into reviewable evidence.
