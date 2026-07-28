@@ -8,6 +8,29 @@ This module treats parallelism as a correctness test, not a speed trick. If `mak
 changes the meaning of the build, the graph was already lying. Parallel execution merely
 made the lie easier to see.
 
+## The module promise
+
+At the end of this session, you will have a concurrency review packet that explains:
+
+1. which targets were eligible to run together;
+2. which paths each recipe read, wrote, appended, replaced, or removed;
+3. which edge or ownership rule made overlap safe;
+4. how one controlled race violated that rule;
+5. why the repair restores truth instead of merely forcing an order;
+6. whether serial and parallel builds publish the same declared artifacts.
+
+```mermaid
+flowchart LR
+  request["requested goal"] --> eligible["eligible targets"]
+  eligible --> overlap["possible overlap"]
+  overlap --> effects["read/write effects"]
+  effects --> ownership["ownership decision"]
+  ownership --> evidence["serial/parallel evidence"]
+```
+
+The scheduler chooses among eligible targets. It does not know about undeclared reads,
+shared temporary paths, or a human expectation that one recipe “normally goes first.”
+
 ## Why this day matters
 
 Many learners first meet `-j` as a performance flag. In practice, it is one of the best
@@ -21,6 +44,21 @@ By the end of Module 02, you should be able to explain three things in plain lan
 - what Make is actually allowed to run concurrently
 - what recipe and graph shapes keep parallel builds safe
 - how a larger repository can stay readable without splitting into hidden private DAGs
+
+## Entry diagnostic
+
+Start with the first row you cannot defend:
+
+| Claim | Evidence | Return route |
+| --- | --- | --- |
+| a target rebuilds from truthful prerequisites | one target/prerequisite explanation | Module 01 |
+| two prerequisites are independent in the graph | a small subgraph | this module |
+| their filesystem effects do not interfere | read/write ownership table | this module |
+| a generated artifact appears only when complete | publication and failure evidence | this module |
+| serial and parallel results are equivalent | governed artifact inventories | this module |
+
+If the first row is uncertain, revisit Module 01. Parallel reasoning assumes you can
+already explain ordinary target freshness.
 
 ## The live demo for this module
 
@@ -80,11 +118,37 @@ relationship.
 | Proof | compare declared outputs from `-j1` and `-j8` | checksums or a recursive directory diff |
 | Practice | complete all ten exercises | predictions, traces, repairs, and one selftest |
 
+### Suggested independent-study timing
+
+| Work | Approximate time | Stop when |
+| --- | ---: | --- |
+| scheduling and eligibility | 45 minutes | you can draw the runnable frontier for a small graph |
+| ownership and ordering | 65 minutes | every overlap has a read/write and edge explanation |
+| architecture and selftests | 60 minutes | the proof has an isolated oracle and controlled race |
+| worked example | 45 minutes | one failure is predicted, localized, repaired, and replayed |
+| exercises and answer review | 90 minutes | the packet supports a review without terminal history |
+
+Store learning evidence under
+`artifacts/learning/deep-dive-make/module-02-parallel-safety/`. Resume from the first
+unsupported claim, not from the last page you remember opening.
+
 Parallelism is observable even on a laptop. The exercises use short sleeps and small text
 files so you can see scheduling without compiling a large project.
 
 When terminal lines interleave, record that as evidence of overlap only. Prove a race
 with corrupted, missing, unstable, or prematurely consumed state.
+
+## Keep four questions separate
+
+| Question | Evidence |
+| --- | --- |
+| Could these targets overlap? | graph and scheduler eligibility |
+| Did they overlap in this run? | timestamps or bounded execution events |
+| Did their effects interfere? | shared-path or consumer observation |
+| Did interference violate the contract? | artifact acceptance or rejection oracle |
+
+Interleaved console output answers only the second question. A slow run does not by
+itself prove contention, and a fast parallel run does not prove artifact equivalence.
 
 ## A question to keep asking
 
@@ -163,6 +227,36 @@ By the end of the day, you should have:
 - repaired the race by changing ownership, not by disabling parallelism
 - compared one serial and one parallel artifact set
 - explained one case where an order-only prerequisite is honest and another where it is not
+
+Package those results as:
+
+```text
+parallel-safety/
+├── runnable-frontier.md
+├── ownership-table.md
+├── accepted-overlap/
+├── rejected-race/
+├── repair-replay.md
+└── schedule-comparison/
+```
+
+A reviewer should be able to distinguish scheduling evidence, interference evidence,
+and artifact evidence without reconstructing your shell history.
+
+## Recovery route after a missed class
+
+If you are studying alone:
+
+1. complete the entry diagnostic;
+2. read scheduling and parallel-safety before choosing an ordering tool;
+3. reproduce one named race in the capstone pack;
+4. write the ownership table before reading its repair;
+5. read the one-DAG and selftest lessons;
+6. run the worked example’s serial/parallel comparison;
+7. complete the exercises before opening their answers.
+
+Do not begin with `.NOTPARALLEL`, `.WAIT`, locks, or sleeps. Those mechanisms are only
+meaningful after the graph and ownership problem is named.
 
 ## The central review question
 
