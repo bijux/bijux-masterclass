@@ -62,12 +62,32 @@ That means a generated header such as `build/include/config.h` should be read ex
 an object file or binary target:
 
 ```make
-build/include/config.h: schema/config.json scripts/gen_config.py
-	python3 scripts/gen_config.py schema/config.json > $@
+build/include/:
+	mkdir -p '$@'
+
+build/include/config.h: schema/config.json scripts/gen_config.py | build/include/
+	@set -eu; \
+	candidate='$@.candidate.$$$$'; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	python3 scripts/gen_config.py schema/config.json > "$$candidate"; \
+	python3 scripts/validate_header.py "$$candidate"; \
+	mv -f "$$candidate" '$@'; \
+	trap - EXIT HUP INT TERM
 ```
 
 The beginner mistake is thinking the script is the important part. The graph is the
 important part.
+
+The candidate path is part of the publication contract:
+
+- it is target-specific, so two different generated files do not share unfinished bytes
+- it is process-specific, so two Make processes do not share a candidate
+- it lives beside the final path, so the rename stays on one filesystem
+- the trap removes it after failure or interruption
+
+The later pipeline lesson develops this protocol fully. It appears here because a
+standalone learner should not have to copy a direct write into a real build and discover
+partial publication later.
 
 ## A generated file has semantic inputs, not just nearby files
 
@@ -91,9 +111,21 @@ think about non-file inputs. Now you must apply that discipline to generation.
 Start with a small build:
 
 ```make
-build/include/version.h: data/version.json scripts/gen_version.py
-	@mkdir -p build/include
-	@python3 scripts/gen_version.py data/version.json > $@
+build/include/:
+	mkdir -p '$@'
+
+build/include/version.h: data/version.json scripts/gen_version.py | build/include/
+	@set -eu; \
+	candidate='$@.candidate.$$$$'; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	python3 scripts/gen_version.py data/version.json > "$$candidate"; \
+	python3 scripts/validate_header.py "$$candidate"; \
+	if test -r '$@' && cmp -s "$$candidate" '$@'; then \
+	  rm -f "$$candidate"; \
+	else \
+	  mv -f "$$candidate" '$@'; \
+	fi; \
+	trap - EXIT HUP INT TERM
 
 build/main.o: src/main.c build/include/version.h
 	$(CC) -Ibuild/include -c $< -o $@
@@ -103,6 +135,8 @@ This example teaches two important habits:
 
 - the generated header is a normal target with ordinary prerequisites
 - the consumer depends on the header itself, not on "the generator happened to run"
+- unchanged generated content preserves the published file’s modification time, so
+  downstream work converges
 
 If `build/main.o` depends directly on `scripts/gen_version.py` instead of the generated
 header, the graph has already become less truthful.
@@ -173,6 +207,42 @@ This distinction changes where you repair the build:
 Do not add every upstream file directly to the binary to make the test pass. That bypasses
 the publication boundary. Restore the missing edge at the layer where the content is
 actually consumed.
+
+## Separate selection, meaning, and provenance
+
+A prerequisite list performs two jobs that are easy to blur:
+
+1. it helps Make select the producer when an input is newer or missing
+2. it documents which file inputs contribute to output meaning
+
+An evidence record performs a third job: it lets a reviewer identify what actually
+produced accepted bytes.
+
+| Fact | Selects rebuild? | Changes meaning? | Belongs in provenance? |
+| --- | --- | --- | --- |
+| `schema/config.json` contents | yes | yes | digest |
+| `scripts/gen_config.py` contents | yes | yes | digest |
+| supported `MODE` value | through a convergent boundary file | yes | value |
+| Python runtime contract | through a toolchain boundary when relevant | possibly | executable and version |
+| output directory existence | no; order-only setup | no | no |
+| candidate pathname | no | no | no |
+
+Do not add a path to the normal prerequisite list merely because the recipe mentions it.
+Do not omit a semantic input merely because it is not naturally a file.
+
+```mermaid
+flowchart LR
+  files["file prerequisites"] --> select["Make selects producer"]
+  modeled["mode and toolchain boundary"] --> select
+  select --> candidate["validated candidate"]
+  candidate --> published["published output"]
+  files --> provenance["accepted provenance"]
+  modeled --> provenance
+  provenance --> review["reviewer explains identity"]
+```
+
+Provenance does not replace graph edges. A digest written after the build can explain an
+artifact while still failing to trigger its rebuild. Selection and explanation must agree.
 
 ## Prove the distinction with paired models
 
@@ -263,7 +333,7 @@ Usually not semantic inputs:
 
 - the timestamp when generation happened
 - the operator's username
-- a temporary file path used inside the recipe
+- a candidate path used inside the recipe
 
 This matters because generated builds can become noisy quickly if you model every incidental
 fact instead of the ones that really change artifact meaning.
@@ -275,18 +345,63 @@ If `MODE` changes the generated header content, you might model it like this:
 ```make
 GEN_CONFIG_MANIFEST := build/gen-config.manifest
 
-$(GEN_CONFIG_MANIFEST):
-	@mkdir -p build
-	@printf 'MODE=%s\n' '$(MODE)' > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+build/:
+	mkdir -p '$@'
+
+.PHONY: FORCE
+FORCE:
+
+$(GEN_CONFIG_MANIFEST): FORCE | build/
+	@set -eu; \
+	candidate='$@.candidate.$$$$'; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	printf 'MODE=%s\n' '$(MODE)' > "$$candidate"; \
+	if test -r '$@' && cmp -s "$$candidate" '$@'; then \
+	  rm -f "$$candidate"; \
+	else \
+	  mv -f "$$candidate" '$@'; \
+	fi; \
+	trap - EXIT HUP INT TERM
 
 build/include/version.h: data/version.json scripts/gen_version.py $(GEN_CONFIG_MANIFEST) | build/include/
-	python3 scripts/gen_version.py data/version.json > $@
+	@set -eu; \
+	candidate='$@.candidate.$$$$'; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	python3 scripts/gen_version.py data/version.json > "$$candidate"; \
+	python3 scripts/validate_header.py "$$candidate"; \
+	mv -f "$$candidate" '$@'; \
+	trap - EXIT HUP INT TERM
 ```
+
+The force prerequisite makes Make recompute the modeled fact on every invocation. The
+content comparison preserves the manifest timestamp when `MODE` is unchanged. If the value
+changes, the manifest changes and the header becomes stale.
+
+Without the force prerequisite, an existing manifest with no changing file prerequisite
+would never notice a new command-line `MODE`. Writing the value into a file is not enough;
+the graph needs a route that refreshes that value.
 
 Now the non-file input is no longer hidden. The generated header has an honest graph edge
 to the build fact that changes its meaning.
+
+## Prove content convergence, not only timestamp freshness
+
+Run four observations:
+
+```sh
+gmake clean
+gmake --trace build/include/version.h
+gmake --trace build/include/version.h
+gmake --trace MODE=strict build/include/version.h
+gmake --trace MODE=strict build/include/version.h
+```
+
+The first invocation publishes. The second recomputes the mode boundary but preserves its
+content and does not republish the header. The third changes the boundary fact and
+republishes. The fourth converges again.
+
+Record output digests and producer-start counts beside the trace. A stable timestamp alone
+cannot prove that the right semantic input was modeled.
 
 ## Why this page comes before multi-output rules
 
@@ -354,5 +469,7 @@ Before leaving this lesson, make sure you can explain:
 - why consumers should depend on published outputs
 - how to distinguish a missing producer edge from a missing consumer edge
 - how to tell a semantic input from incidental recipe noise
+- why build selection, output meaning, and provenance are related but distinct
+- why a modeled non-file value needs both a refresh route and content convergence
 - why setup paths such as directories should stay separate from generated content
 - how to describe one generated-file rebuild in plain language
