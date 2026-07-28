@@ -36,6 +36,20 @@ The caller in this diagram owns local policy and paths. The module owns how the
 transformation is performed. If the module reaches back into the caller's private config,
 the arrow points in both directions and the boundary is no longer honest.
 
+The two splitting mechanisms therefore create different shapes:
+
+```mermaid
+flowchart TD
+  entry["local Snakefile"]
+  include["include\nshared local namespace"]
+  module["module\nbounded reusable namespace"]
+  family["local rule family"]
+  binding["caller-owned use rule binding"]
+
+  entry --> include --> family
+  entry --> module --> binding
+```
+
 ## Use rule families for local concerns
 
 A rule family is a group of locally owned rules that share a review question. For the

@@ -48,6 +48,17 @@ The predicted route is supported when `snakemake --list-rules` exposes `all`, `m
 the five producer rules, and their upstream transformations. The command proves successful
 parsing and visible names. It does not inspect manifest bytes or module source.
 
+Use different evidence for different claims:
+
+```mermaid
+flowchart TD
+  rules["rule list"] --> parse["parse claim"]
+  dry["dry-run"] --> plan["planning claim"]
+  audit["paired audit"] --> boundary["interface claim"]
+  verify["verify report"] --> publish["publish claim"]
+  mutation["rejection test"] --> drift["drift guard claim"]
+```
+
 ## Exercise 2: Classify entrypoint work by execution time
 
 A compact inventory is:

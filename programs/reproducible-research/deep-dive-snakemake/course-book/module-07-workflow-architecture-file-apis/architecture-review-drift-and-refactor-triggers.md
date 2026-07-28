@@ -59,6 +59,18 @@ Then look for reverse or bypassing arrows:
 
 One contradictory arrow is more useful than a claim that the repository “feels tangled.”
 
+Turn that arrow into a bounded review cycle:
+
+```mermaid
+flowchart LR
+  claim["architecture claim"] --> observe["source observation"]
+  observe --> contradict["contradictory dependency?"]
+  contradict --> repair["ownership-complete repair"]
+  repair --> preserve["preservation evidence"]
+  preserve --> reject["negative test"]
+  reject --> claim
+```
+
 ## Inventory review cost
 
 Review pain becomes actionable when you can name what a reader must reconstruct:

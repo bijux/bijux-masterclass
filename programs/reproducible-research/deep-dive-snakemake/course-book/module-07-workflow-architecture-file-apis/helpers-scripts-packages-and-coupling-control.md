@@ -32,6 +32,17 @@ flowchart LR
 The layers should point inward. Domain code should not reach outward to inspect a
 Snakefile, global `config`, a working directory, or an undeclared repository path.
 
+Use the dependency route to distinguish explicit and ambient influence:
+
+```mermaid
+flowchart LR
+  files["declared files"] --> rule["rule contract"]
+  policy["validated policy"] --> rule
+  rule --> interface["script or package interface"]
+  ambient["clock / Git / environment"] -. "audit or inject" .-> interface
+  interface --> output["artifact"]
+```
+
 ## Choose a code home by ownership
 
 | Home | Owns | Should receive | Should not discover privately |

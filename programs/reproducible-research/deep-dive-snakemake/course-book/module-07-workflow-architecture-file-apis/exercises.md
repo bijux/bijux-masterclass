@@ -40,6 +40,28 @@ programs/reproducible-research/deep-dive-snakemake/capstone
 If your environment lacks `snakemake`, complete the source audit and mark runtime evidence
 as unavailable. Do not invent output.
 
+The records accumulate along one artifact route:
+
+```mermaid
+flowchart LR
+  completion["completion contract"] --> assembly["assembly inventory"]
+  assembly --> ownership["ownership map"]
+  ownership --> interface["module + code interfaces"]
+  interface --> api["file API"]
+  api --> review["bounded review"]
+```
+
+Each claim also needs an evidence ladder:
+
+```mermaid
+flowchart LR
+  predict["prediction"] --> source["source citation"]
+  source --> command["bounded command"]
+  command --> mutate["deliberate mutation"]
+  mutate --> restore["restored valid state"]
+  restore --> limits["stated limitations"]
+```
+
 ## Exercise 1: Define the completion contract
 
 Read the top-level `Snakefile`, `workflow/rules/publish.smk`, and `docs/file-api.md`.

@@ -61,6 +61,21 @@ flowchart LR
   public --> consumer["downstream consumer"]
 ```
 
+Trust requires evidence beyond the production edge:
+
+```mermaid
+flowchart TD
+  api["file API\nlocation + shape + meaning + evolution"]
+  producer["producer rules"]
+  manifest["manifest\nmembership + hashes"]
+  verifier["independent verifier"]
+  test["consumer test"]
+
+  api --> producer --> manifest --> verifier
+  api --> test
+  manifest --> test
+```
+
 ## Read the capstone boundary from its contract
 
 The capstone's actual contract document is `capstone/docs/file-api.md`. It separates:

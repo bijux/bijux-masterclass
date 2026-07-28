@@ -34,6 +34,17 @@ execution boundary reaches backward into caller policy. If downstream users scra
 HTML report, the file API is weaker than the consumer behavior. If a module receives
 the entire parent config, its apparent reuse boundary hides coupling.
 
+The session revisits the same boundary with progressively stronger evidence:
+
+```mermaid
+flowchart LR
+  source["source observation"] --> parse["parsed rule surface"]
+  parse --> plan["planned artifact route"]
+  plan --> run["bounded execution"]
+  run --> consumer["consumer verification"]
+  consumer --> negative["deliberate rejection test"]
+```
+
 ## The repository you will review
 
 Use the Snakemake capstone throughout the session. It is deliberately substantial
@@ -46,7 +57,7 @@ capstone/
 ├── workflow/
 │   ├── CONTRACT.md
 │   ├── REVIEW.md
-│   ├── contracts/FILE_API.md
+│   ├── docs/file-api.md
 │   ├── envs/
 │   ├── modules/
 │   ├── rules/

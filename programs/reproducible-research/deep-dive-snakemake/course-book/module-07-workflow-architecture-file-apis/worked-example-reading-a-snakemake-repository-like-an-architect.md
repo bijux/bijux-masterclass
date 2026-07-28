@@ -14,6 +14,17 @@ entire parent configuration.
 You can complete the reasoning without running the workflow. Command output adds evidence,
 but every conclusion below also points to the source observation that supports it.
 
+The review follows one artifact backward to its owners:
+
+```mermaid
+flowchart RL
+  manifest["publish/v1/manifest.json"] --> publish["manifest rule"]
+  publish --> summary["summary + report"]
+  summary --> sample["per-sample artifacts"]
+  sample --> modules["QC + screen module bindings"]
+  modules --> source["declared data + policy"]
+```
+
 ## Prepare an architecture packet
 
 Create one note with these records:
@@ -271,6 +282,18 @@ params:
 
 The parent may change how it derives `_env_python` or `BENCH_DIR` without making those
 private names part of the module contract. The module receives the two concepts it owns.
+
+The repaired dependency direction is visible:
+
+```mermaid
+flowchart LR
+  private["parent-private config"] --> mapping["two-key runtime mapping"]
+  mapping --> caller["module declaration"]
+  local["local files + policy"] --> binding["use rule binding"]
+  caller --> module["module implementation"]
+  binding --> module
+  module --> artifact["caller-owned artifact"]
+```
 
 ## Add a guard for the old defect
 

@@ -7,6 +7,28 @@ questions where useful:
 - who owns it
 - what does it not prove
 
+The vocabulary follows the artifact route:
+
+```mermaid
+flowchart LR
+  entry["entrypoint"] --> family["rule family"]
+  family --> binding["module binding"]
+  binding --> implementation["script or package"]
+  implementation --> internal["internal contract"]
+  internal --> public["public file API"]
+```
+
+Evidence terms follow a second route:
+
+```mermaid
+flowchart LR
+  claim["architecture claim"] --> preservation["preservation evidence"]
+  preservation --> negative["negative evidence"]
+  negative --> packet["review packet"]
+  drift["architecture drift"] --> trigger["refactor trigger"]
+  trigger --> claim
+```
+
 ## Assembly and execution
 
 **Entrypoint**
