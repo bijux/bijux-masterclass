@@ -45,6 +45,10 @@ This module turns lazy pipelines into production-minded pipelines. Once computat
 streaming, failures, retries, cleanup, and error aggregation can no longer be treated as
 afterthoughts.
 
+Start with [Module 04 Capstone Delta](capstone-delta.md). It separates the
+behavioral resilience work from the broad Module 03→04 file split and gives one
+runnable route through the cumulative RAG change.
+
 ## Learning outcomes
 
 - how to turn recursion and reductions into explicit, reviewable pipeline behavior
@@ -54,6 +58,7 @@ afterthoughts.
 
 ## Lesson map
 
+- [Module 04 Capstone Delta](capstone-delta.md)
 - [Structural Recursion and Iteration](structural-recursion-and-iteration.md)
 - [Folds and Reductions](folds-and-reductions.md)
 - [Memoization](memoization.md)

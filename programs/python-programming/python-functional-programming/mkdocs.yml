@@ -82,6 +82,7 @@ nav:
   - Module Glossary: module-03-iterators-laziness-streaming-dataflow/glossary.md
 - 'Module 04: Streaming Resilience and Failure Handling':
   - Home: module-04-streaming-resilience-failure-handling/index.md
+  - Module 04 Capstone Delta: module-04-streaming-resilience-failure-handling/capstone-delta.md
   - Structural Recursion and Iteration: module-04-streaming-resilience-failure-handling/structural-recursion-and-iteration.md
   - Folds and Reductions: module-04-streaming-resilience-failure-handling/folds-and-reductions.md
   - Memoization: module-04-streaming-resilience-failure-handling/memoization.md
