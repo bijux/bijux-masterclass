@@ -72,6 +72,43 @@ Keep the FuncPipe capstone open while reading this module and inspect:
 
 The capstone should make one point visible here: concurrency only stays reviewable when its control flow is explicit.
 
+## FuncPipe Lab: Replay Means Fresh Awaitables
+
+The shipped `AsyncPlan[T]` is a zero-argument callable. Calling it creates a
+fresh awaitable that eventually returns `Result[T, ErrInfo]`. Construction and
+execution are observably different:
+
+```python
+calls = 0
+
+async def read_sequence() -> Ok[int]:
+    global calls
+    calls += 1
+    return Ok(calls)
+
+plan = async_lift(read_sequence)
+assert calls == 0
+
+first = await plan()   # Ok(1)
+second = await plan()  # Ok(2)
+```
+
+The changing values are intentional. Replayability guarantees a fresh coroutine,
+not equal results from an effectful capability. Determinism belongs to the
+capability contract or its test double.
+
+Run the repository version:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k async_plan_is_deferred_and_creates_fresh_awaitables
+```
+
+If the plan returns one cached coroutine, the second await raises because Python
+coroutines are single-use. Complete the decision exercise in
+[Module 08 Exercises](exercises.md).
+
 **Core question**  
 How do you model asynchronous operations as **pure, composable descriptions** using coroutines — so that concurrency is explicit data, testable, and never hidden magic?
 
@@ -98,7 +135,7 @@ AsyncPlan is exactly the same idea as IOPlan, only non-blocking.
 - Bounded concurrency, backpressure, fairness (M08C03–C05)  
 - Retry & timeout policies as data  
 - Deterministic async testing  
-- Full async RAG pipeline
+- Async coordination around the existing pure RAG pipeline
 
 You are now one step away from production-grade async/concurrency.
 

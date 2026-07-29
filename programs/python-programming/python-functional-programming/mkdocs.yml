@@ -149,6 +149,8 @@ nav:
   - Async Service Integrations: module-08-async-pipelines-backpressure-fairness/async-service-integrations.md
   - Async Chunking: module-08-async-pipelines-backpressure-fairness/async-chunking.md
   - Async Pipeline Laws: module-08-async-pipelines-backpressure-fairness/async-pipeline-laws.md
+  - Exercises: module-08-async-pipelines-backpressure-fairness/exercises.md
+  - Exercise Answers: module-08-async-pipelines-backpressure-fairness/exercise-answers.md
   - Module 08 Refactoring Guide: module-08-async-pipelines-backpressure-fairness/refactoring-guide.md
   - Module Glossary: module-08-async-pipelines-backpressure-fairness/glossary.md
 - 'Module 09: Ecosystem Interop and Boundary Discipline':

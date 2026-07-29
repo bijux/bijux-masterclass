@@ -65,13 +65,16 @@ that do not smear runtime behavior across the whole codebase.
 - [Async Service Integrations](async-service-integrations.md)
 - [Async Chunking](async-chunking.md)
 - [Async Pipeline Laws](async-pipeline-laws.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Refactoring Guide](refactoring-guide.md)
 
 ## Exercises
 
-- Identify one async boundary and explain where scheduling belongs and where pure transformation still belongs.
-- Review one queue, timeout, or retry policy and state what pressure scenario it is meant to absorb.
-- Compare one async test helper with the runtime path it protects and explain why the test remains deterministic.
+Use [Module 08 Exercises](exercises.md) after each core. Each prompt names a
+focused test in the Module 08 reference state and an earlier contract that must
+remain true. Consult [Exercise Answers](exercise-answers.md) only after producing
+your own execution evidence.
 
 ## Capstone checkpoints
 
