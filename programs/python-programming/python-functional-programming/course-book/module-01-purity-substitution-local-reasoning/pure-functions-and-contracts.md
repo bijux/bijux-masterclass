@@ -1,419 +1,248 @@
-# Pure Functions & Contracts
+# Pure Functions and Contracts
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Purity Substitution Local Reasoning"]
-  page["Pure Functions & Contracts"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-This lesson turns "keep functions pure" into something reviewable.
-
-## Start With the Failure Mode
-
-A function usually violates its contract in one of four ways:
-
-- it reads hidden input such as environment, time, or module state
-- it returns different results for the same visible inputs
-- it mutates caller-owned data or shared state
-- it performs effects in the middle of logic that should stay substitutable
-
-The goal of this page is to make those failures easy to name and easy to detect.
-
-## Keep This Question In View
-
-> How do you constrain functions so that purity violations are detectable early by signatures, properties, and optional runtime checks?
-
-By the end of this lesson, you should be able to point at one function and say:
-
-- which purity clause matters here
-- how to check it
-- what refactor would make the clause hold again
-
----
-
-## 1. Conceptual Foundation
-
-### 1.1 The One-Sentence Rule
-
-> **Make every input explicit, every output deterministic, and never mutate shared state—or mark the function impure and isolate it.**
-
-### 1.2 Pure Function Contract in One Precise Sentence
-
-> A pure function contract requires: all inputs explicit parameters, outputs deterministic, no shared state mutated, no side effects (except raising exceptions based on inputs)—detectable with high confidence by property tests and, to a lesser extent, type hints and runtime checks.
-
-### 1.3 Why This Matters Now
-
-Purity is only useful when another engineer can verify it. A contract gives that engineer a
-checklist instead of a vibe:
-
-- Are all inputs visible in the signature?
-- Can the same inputs produce a different result?
-- Does this call mutate anything outside its own local scope?
-- Is there an effect here that belongs in a thin shell instead?
-
-### 1.4 Contracts: Three Layers
-
-Contracts go beyond purity to include preconditions, postconditions, and invariants. In
-this module, use three layers:
-
-| Layer              | Description                          | Examples                             | When to Use                          |
-|--------------------|--------------------------------------|--------------------------------------|--------------------------------------|
-| Static (typing)    | Shape and domain of data             | Type hints like `list[RawDoc]`       | For structure/shape; encourages explicitness |
-| Dynamic (asserts)  | Runtime checks that raise errors     | `assert amount >= 0`                 | For simple, enforceable conditions   |
-| Behavioral (Hypothesis) | Relational properties over inputs/outputs | `f(g(x)) == g(f(x))`                | For subtle behaviors like determinism, no mutation, invariants |
-
-Use the lightest tool that can honestly express the rule:
-
-- Use types for data shape and obvious domain boundaries.
-- Use runtime checks for simple conditions that should fail loudly.
-- Use property tests when the rule is relational, behavioral, or easy to accidentally break.
-
----
-
-## 2. Mental Model: Contract Violations vs Detection
-
-### 2.1 One Picture
+Purity becomes useful in engineering when it is stated as a contract another person
+can review:
 
 ```text
-Leaky Contract                          Reviewed Contract
-+---------------------------+          +-----------------------------+
-| hidden globals / time     |          | explicit parameters         |
-| hidden RNG / OS env vars  |          | deterministic output        |
-| mutates caller data       |          | returns new values          |
-| prints / logs / I/O       |          | effect boundary named       |
-+---------------------------+          +-----------------------------+
-
-Types and checks narrow the space. Properties catch the subtle leaks that still get
-through.
+valid explicit input -> deterministic returned value, no observable effect
 ```
 
-### 2.2 Contract Table
+That sentence is stronger than "this function looks functional." It identifies a
+domain, an output promise, and an effect promise.
 
-| Clause                     | Violation Example                      | Detected By                              |
-|----------------------------|----------------------------------------|------------------------------------------|
-| Explicit inputs            | Globals, `os.getenv`, `datetime.now()` | Code review + discipline; types encourage explicitness |
-| Deterministic outputs      | `random`, time, external state         | Hypothesis determinism property          |
-| No shared mutation         | `list.sort()`, `dict.update()`         | Hypothesis mutation check + deepcopy     |
-| No side effects            | `print`, logging, I/O                  | Manual review                            |
+## Three layers of contract
 
-**Note on Shared Mutation:** Includes nested structures and aliases; use `deepcopy` in
-properties when you need to prove caller-owned values were not changed. Unseeded RNG
-breaks determinism. Seeded RNG is only acceptable when the seed is explicit input.
+Review each pure function at three layers.
 
-In the rest of this core we turn those columns into concrete contracts on the RAG stages and one non-RAG function.
+| Layer | Question | FuncPipe example |
+| --- | --- | --- |
+| shape | What values may cross the boundary? | `chunk_doc` accepts `CleanDoc` and `RagEnv` |
+| behavior | How is the output related to the input? | chunk texts concatenate to the cleaned abstract |
+| effects | What external state may be observed or changed? | `chunk_doc` performs no I/O or mutation |
 
----
-
-## 3. Running Project: Contracts on RAG Stages
-
-Our **running project** (from `module-01/funcpipe-rag-01/README.md`) adds contracts to Core 1's pure stages.  
-- **Goal:** Ensure each stage is pure and detectable.  
-- **Start:** Core 1's pure functions.  
-- **End (this core):** Functions with Hypothesis properties for determinism, no mutation, and invariants. Semantics aligned with Core 1.
-
-### 3.1 Types (Canonical)
-
-These are defined in `module-01/funcpipe-rag-01/src/funcpipe_rag/rag_types.py` (as in Core 1) and imported as needed. No redefinition here.
-
-### 3.2 Impure Variants (Anti-Patterns in RAG)
-
-Full code:
+Type annotations help with shape, but Python does not enforce them at runtime.
+`RagEnv` therefore validates its own invariant:
 
 ```python
-# Impure clean (hidden global)
-from funcpipe_rag import RawDoc, CleanDoc
+@dataclass(frozen=True)
+class RagEnv:
+    chunk_size: int
 
-DEBUG = True
-
-
-def impure_clean_doc(doc: RawDoc) -> CleanDoc:
-    abstract = " ".join(doc.abstract.strip().lower().split())
-    if DEBUG:
-        abstract += " (debug)"
-    return CleanDoc(doc.doc_id, doc.title, abstract, doc.categories)
-
-
-# Impure chunk (nondeterministic)
-import random
-from typing import List
-from funcpipe_rag import CleanDoc, ChunkWithoutEmbedding, RagEnv
-
-
-def impure_chunk_doc(doc: CleanDoc, env: RagEnv) -> List[ChunkWithoutEmbedding]:
-    text = doc.abstract
-    offset = random.randint(0, min(10, max(0, len(text) - 1)))  # Hidden RNG; violates determinism
-    return [
-        ChunkWithoutEmbedding(doc.doc_id, text[i + offset:i + offset + env.chunk_size], i + offset,
-                              i + offset + len(text[i + offset:i + offset + env.chunk_size]))
-        for i in range(0, len(text), env.chunk_size)
-    ]  # Arbitrary offset for demo; not production chunking logic
-
-
-# Impure embed (mutates input)
-import hashlib
-from dataclasses import dataclass
-from funcpipe_rag import Chunk
-
-
-@dataclass  # Mutable for demo
-class MutableChunkWithoutEmbedding:
-    doc_id: str
-    text: str
-    start: int
-    end: int
-
-
-def impure_embed_chunk(chunk: MutableChunkWithoutEmbedding) -> Chunk:
-    # Mutates text (shared mutation)
-    chunk.text = chunk.text.upper()
-    h = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
-    step = 4
-    vec = tuple(int(h[i:i + step], 16) / (16 ** step - 1) for i in range(0, 64, step))
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, vec)
+    def __post_init__(self) -> None:
+        if type(self.chunk_size) is not int:
+            raise ValueError("RagEnv.chunk_size must be an int")
+        if self.chunk_size <= 0:
+            raise ValueError("RagEnv.chunk_size must be a positive integer")
 ```
 
-**Smells:** Hidden global (DEBUG), nondeterministic RNG (violates determinism as offset varies), shared mutation (chunk.text). Note: Used mutable class for mutation demo; canonical types remain frozen.
+The exact-type check is deliberate. `True` participates in integer arithmetic in
+Python, but it is not a defensible chunk-size value.
 
----
+## Valid input matters
 
-## 4. Correct Pattern: Detectable Contracts in RAG
-
-### 4.1 Pure Core
-
-The canonical implementations of `clean_doc`, `chunk_doc`, `embed_chunk`, and `structural_dedup_chunks` live in `module-01/funcpipe-rag-01/src/funcpipe_rag/pipeline_stages.py` (identical to Core 1). Each function accepts only explicit parameters, returns brand-new dataclasses, and never mutates inputs—exactly the contract we want to enforce in this core.
-
-### 4.2 Non-RAG Example
-
-Use your own domain code (e.g., accounting transfers) to practice adding explicit inputs, determinism, and invariants—the same discipline applied to the FuncPipe stages. Keep side effects isolated just as we do with `rag_shell`.
-
-### 4.3 Impure Shell (Edge Only)
-
-The shell from Core 1 remains; contracts focus on pure core.
-
----
-
-## 5. Equational Reasoning: Substitution Exercise
-
-**Hand Exercise:** Replace expressions in `clean_doc`.  
-1. Inline `abstract = " ".join(...)` → normalized string.  
-2. Substitute into `CleanDoc` → fixed value.  
-**Bug Hunt:** In impure_clean_doc, the value of CleanDoc(..., abstract, ...) depends on the hidden global DEBUG, so you can’t safely replace the call with its value without also knowing that global state.
-
----
-
-## 6. Property-Based Testing: Proving Equivalence (Advanced, Optional)
-
-Use Hypothesis to prove contract compliance.
-
-You can safely skip this on a first read and still follow later cores—come back when you want to mechanically verify your own refactors.
-
-We saw the simplest determinism property in Core 1; now we’ll apply the same idea to the RAG stages.
-
-To enhance the explanation, here's a short demo of falsifying an impure function using Hypothesis:
+The Module 01 stages are total over their stated domain: for valid domain values they
+return a value instead of selecting an effectful failure route. That does not mean
+every arbitrary Python object is accepted.
 
 ```python
-import random
-from hypothesis import given
-import hypothesis.strategies as st
-
-def impure_random_add(x: int) -> int:
-    return x + random.randint(1, 10)  # Non-deterministic
-
-@given(st.integers())
-def test_detect_impurity(x):
-    assert impure_random_add(x) == impure_random_add(x)  # Falsifies due to randomness
-
-# Hypothesis will quickly find differing outputs for the same x
+RagEnv(chunk_size=4)     # valid
+RagEnv(chunk_size=0)     # ValueError: violates the positive-size invariant
+RagEnv(chunk_size=True)  # ValueError: bool is not an exact int here
 ```
 
-This property test detects the impurity by showing outputs vary for identical inputs—run it to see Hypothesis in action.
+Separating construction from transformation simplifies every downstream function.
+`chunk_doc` may rely on a positive exact integer because invalid `RagEnv` values
+cannot be constructed normally.
 
-### 6.1 Custom Strategy (RAG Domain)
+Do not overstate this guarantee as "pure functions never raise." A pure function can
+raise deterministically. The better design question is whether failure belongs in
+domain construction, in an explicit result value, or at an effectful boundary. Later
+modules introduce richer failure values.
 
-From `module-01/funcpipe-rag-01/tests/conftest.py` (as in Core 1).
+## Read the actual stage contracts
 
-### 6.2 Contract Properties for RAG Stages
+The completed Module 01 stages live in:
 
-Full code:
+```text
+capstone/module-reference-states/module-01/src/funcpipe_rag/pipeline_stages.py
+```
+
+Their important contracts are:
+
+### `clean_doc`
 
 ```python
-# module-01/funcpipe-rag-01/tests/test_laws.py (excerpt)
-from hypothesis import given
-import hypothesis.strategies as st
-from funcpipe_rag import clean_doc, chunk_doc, embed_chunk
-from funcpipe_rag import ChunkWithoutEmbedding
-from .conftest import raw_doc_strategy, env_strategy
-
-
-@given(doc=raw_doc_strategy())
-def test_clean_doc_deterministic(doc):
-    assert clean_doc(doc) == clean_doc(doc)
-
-
-@given(doc=raw_doc_strategy())
-def test_clean_doc_invariants(doc):
-    cleaned = clean_doc(doc)
-    # no double spaces
-    assert "  " not in cleaned.abstract
-    # normalized whitespace and case
-    assert cleaned.abstract == " ".join(doc.abstract.strip().lower().split())
-
-
-@given(doc=raw_doc_strategy(), env=env_strategy())
-def test_chunk_doc_deterministic(doc, env):
-    cleaned = clean_doc(doc)
-    assert chunk_doc(cleaned, env) == chunk_doc(cleaned, env)
-
-
-@given(doc=raw_doc_strategy(), env=env_strategy())
-def test_chunk_doc_covers_cleaned(doc, env):
-    cleaned = clean_doc(doc)
-    assert "".join(c.text for c in chunk_doc(cleaned, env)) == cleaned.abstract
-
-
-chunk_we_strategy = st.builds(
-    ChunkWithoutEmbedding,
-    doc_id=st.text(),
-    text=st.text(min_size=1),
-    start=st.integers(min_value=0, max_value=1000),
-).map(
-    lambda c: ChunkWithoutEmbedding(
-        c.doc_id, c.text, c.start, c.start + len(c.text)
-    )
-)
-
-
-@given(chunk_we=chunk_we_strategy)
-def test_embed_deterministic(chunk_we):
-    assert embed_chunk(chunk_we) == embed_chunk(chunk_we)
-
-
-@given(chunk_we=chunk_we_strategy)
-def test_embed_range_and_dimension(chunk_we):
-    emb = embed_chunk(chunk_we).embedding
-    assert len(emb) == 16
-    assert all(0.0 <= x <= 1.0 for x in emb)
-
-
-import copy
-
-
-@given(chunk_we=chunk_we_strategy)
-def test_embed_does_not_mutate_input(chunk_we):
-    original = copy.deepcopy(chunk_we)
-    _ = embed_chunk(chunk_we)
-    assert chunk_we == original
+def clean_doc(doc: RawDoc | CleanDoc) -> CleanDoc:
+    ...
 ```
 
-These real-world properties encode determinism, invariants, no mutation, and pure behavior directly in the repository.
-
-### 6.3 Shrinking Demo: Catching a Bug
-
-Bad refactor (off-by-one in chunk_doc end, dropping last char):
-
-Full code:
+- preserves `doc_id`, `title`, and `categories`;
+- strips, lower-cases, and collapses whitespace in `abstract`;
+- returns a new frozen `CleanDoc`;
+- accepts a `CleanDoc` so its fixed-point law is also true in the type contract.
 
 ```python
-from typing import List
-from funcpipe_rag import CleanDoc, ChunkWithoutEmbedding, RagEnv
-
-
-def bad_chunk_doc(doc: CleanDoc, env: RagEnv) -> List[ChunkWithoutEmbedding]:
-    text = doc.abstract
-    return [
-        ChunkWithoutEmbedding(doc.doc_id, text[i:i + env.chunk_size], i, i + len(text[i:i + env.chunk_size]) - 1)
-        # Off-by-one
-        for i in range(0, len(text), env.chunk_size)
-    ]
+once = clean_doc(raw)
+twice = clean_doc(once)
+assert twice == once
 ```
 
-Property:
+This is idempotence, not merely determinism.
+
+### `chunk_doc`
 
 ```python
-from hypothesis import given
-import hypothesis.strategies as st
-from funcpipe_rag import CleanDoc, RagEnv
-from .conftest import env_strategy
-
-
-@given(
-    doc=st.builds(CleanDoc, doc_id=st.text(min_size=1), title=st.text(), abstract=st.text(min_size=1),
-                  categories=st.text()),
-    env=env_strategy(),
-)
-def test_bad_chunk_doc_index_invariant(doc: CleanDoc, env: RagEnv) -> None:
-    chunks = bad_chunk_doc(doc, env)
-    for c in chunks:
-        assert c.end - c.start == len(c.text)  # Fails on off-by-one
-
-
-@given(
-    doc=st.builds(CleanDoc, doc_id=st.text(min_size=1), title=st.text(), abstract=st.text(min_size=1),
-                  categories=st.text()),
-    env=env_strategy(),
-)
-def test_bad_chunk_doc_covers_abstract(doc: CleanDoc, env: RagEnv) -> None:
-    chunks = bad_chunk_doc(doc, env)
-    reconstructed = "".join(c.text for c in chunks)
-    assert reconstructed == doc.abstract  # Fails on dropped chars
+def chunk_doc(
+    doc: CleanDoc,
+    env: RagEnv,
+) -> list[ChunkWithoutEmbedding]:
+    ...
 ```
 
-These two properties encode the “index” and “coverage” invariants we care about for chunks.
+- preserves the document ID;
+- emits non-overlapping slices in increasing offset order;
+- records inclusive `start` and exclusive `end`;
+- covers the whole abstract, with a possibly shorter final slice;
+- returns an empty list for an empty abstract.
 
-Hypothesis failure trace (run to verify; example for index_invariant):
+For Module 01's non-overlapping policy:
 
+```python
+cleaned = clean_doc(raw)
+chunks = chunk_doc(cleaned, RagEnv(chunk_size=5))
+
+assert "".join(chunk.text for chunk in chunks) == cleaned.abstract
+assert all(chunk.text == cleaned.abstract[chunk.start:chunk.end] for chunk in chunks)
 ```
-Falsifying example: test_bad_chunk_doc_index_invariant(
-    doc=CleanDoc(doc_id='a', title='', abstract='a', categories=''), 
-    env=RagEnv(chunk_size=128),
-)
-AssertionError
+
+### `embed_chunk`
+
+```python
+def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
+    ...
 ```
 
-- Shrinks to minimal doc with abstract='a'; off-by-one makes end - start != len(text). For coverage, shrinks to doc with abstract length not multiple of chunk_size, dropping tail. Catches subtle bug via shrinking.
+- copies identity, text, and offsets unchanged;
+- derives a 16-element tuple from `chunk.text`;
+- produces the same embedding for equal text regardless of document ID or position.
 
----
+The embedding is a teaching double. It gives deterministic local behavior; it does
+not claim semantic similarity.
 
-## 7. When Contracts Aren't Worth It
+### `structural_dedup_chunks`
 
-For ultra-hot paths, skip runtime checks; rely on properties in tests.
+```python
+def structural_dedup_chunks(chunks: list[Chunk]) -> list[Chunk]:
+    ...
+```
 
----
+- sorts by `(doc_id, start)`;
+- removes repeated structural positions;
+- reaches a fixed point after one call.
 
-## 8. Pre-Core Quiz
+Its duplicate key is `(doc_id, text, start, end)`. Read that key before claiming what
+"duplicate" means. Arbitrary `Chunk` values with the same structure but conflicting
+embeddings are outside normal production output; the first canonical-order value is
+retained.
 
-1. Hidden global in a function → violates which clause? → **Explicit inputs**  
-2. `random.random()` inside a function → violates? → **Deterministic outputs**  
-3. `data.sort()` on a param → violates? → **No shared mutation**  
-4. `print()` inside a function → violates? → **No side effects**  
-5. Tool that searches for counterexamples to determinism? → **Hypothesis**
+## Contract violations that look plausible
 
-## 9. Post-Core Reflection & Exercise
+### Hidden policy
 
-**Reflect:** In your code, find one function that violates a contract. Apply the recipe; add properties.  
-**Project Exercise:** Implement contracts on RAG stages; run properties on sample data.  
+```python
+CHUNK_SIZE = 512
 
-All claims (e.g., referential transparency) are verifiable via the provided Hypothesis examples—run them to confirm.
 
-**Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
+def hidden_chunk_doc(doc: CleanDoc) -> list[ChunkWithoutEmbedding]:
+    ...
+```
 
-**Continue with:** [Immutability & Value Semantics](../module-01-purity-substitution-local-reasoning/immutability-and-value-semantics.md)
+The shape annotation omits an input that determines output. Two identical-looking
+calls can mean different things after a global assignment.
+
+### Mutation before return
+
+```python
+def destructive_clean(doc: dict[str, str]) -> dict[str, str]:
+    doc["abstract"] = " ".join(doc["abstract"].split())
+    return doc
+```
+
+Even if the returned mapping has the right content, callers holding the original
+reference observe an effect.
+
+### Logging inside a transform
+
+```python
+def noisy_embed(chunk: ChunkWithoutEmbedding) -> Chunk:
+    print(f"embedding {chunk.doc_id}")
+    return embed_chunk(chunk)
+```
+
+The returned value remains deterministic, but replacing the call with its value
+removes output. The function is not referentially transparent.
+
+### A test that proves too little
+
+```python
+def test_chunk_count() -> None:
+    assert len(chunk_doc(cleaned, env)) == 4
+```
+
+This could pass while offsets overlap, characters disappear, or slices are reordered.
+A reconstruction assertion tests the behavioral relationship that matters.
+
+## Proof strategy
+
+Examples and properties answer different questions:
+
+- a named example explains a specific contract to a learner;
+- a property test explores that contract over many generated values;
+- a boundary example demonstrates how invalid values fail.
+
+Module 01 uses both:
+
+```text
+tests/learning/test_module_01_purity_foundations.py
+tests/test_laws.py
+```
+
+Run the short proof:
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-01/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py
+```
+
+Then inspect these named properties in `tests/test_laws.py`:
+
+- `test_clean_doc_is_idempotent`
+- `test_chunk_doc_preserves_text`
+- `test_embed_chunk_depends_only_on_text`
+- `test_full_rag_is_canonical`
+
+The tests establish observed behavior for the explored domain. They do not prove that
+the implementation can never perform an effect; that claim also requires source and
+dependency review.
+
+## Review exercise
+
+For one Module 01 stage, write a contract with:
+
+1. valid input domain;
+2. output shape;
+3. preserved fields;
+4. changed fields;
+5. effect promise;
+6. one invalid input route;
+7. one example assertion;
+8. one property that would catch a realistic regression.
+
+Compare your contract with the source and both test surfaces. If the prose promises
+more than the code or the test proves less than the prose, record the mismatch rather
+than rationalizing it.
+
+Continue with [Immutability and Value Semantics](immutability-and-value-semantics.md)
+to see why these contracts are easier to preserve when values cannot be changed
+behind another reference.
