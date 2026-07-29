@@ -136,6 +136,7 @@ from .rag_api import (
     iter_rag_core,
 )
 from .streaming_rag import (
+    SourceSchedule,
     gen_bounded_chunks,
     gen_grouped_chunks,
     gen_stream_deduped,
@@ -143,6 +144,7 @@ from .streaming_rag import (
     safe_rag_pipeline,
     stream_chunks,
     stream_rag_chunks,
+    stream_rag_sources,
 )
 
 __all__ = [  # noqa: RUF022
@@ -263,6 +265,8 @@ __all__ = [  # noqa: RUF022
     "gen_stream_embedded",
     "gen_stream_deduped",
     "stream_rag_chunks",
+    "stream_rag_sources",
+    "SourceSchedule",
     "gen_bounded_chunks",
     "safe_rag_pipeline",
     "multicast",

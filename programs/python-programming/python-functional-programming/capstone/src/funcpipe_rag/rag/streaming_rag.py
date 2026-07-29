@@ -6,20 +6,28 @@ grouping by doc, and tracing samples.
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, Iterator
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from itertools import dropwhile, groupby, islice
 from operator import attrgetter
-from typing import TypeVar
+from typing import Literal, TypeVar
 
 from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RawDoc
 from funcpipe_rag.core.rules_pred import eval_pred
 from funcpipe_rag.core.structural_dedup import structural_dedup_lazy
-from funcpipe_rag.streaming import TraceLens, ensure_contiguous, trace_iter
+from funcpipe_rag.streaming import (
+    Source,
+    TraceLens,
+    ensure_contiguous,
+    make_chain,
+    make_roundrobin,
+    trace_iter,
+)
 
 from .chunking import gen_chunk_doc
 from .config import RagConfig, RagCoreDeps
 
 T = TypeVar("T")
+SourceSchedule = Literal["sequential", "round_robin"]
 
 
 def gen_grouped_chunks(
@@ -97,6 +105,25 @@ def stream_rag_chunks(
     return islice(deduped, max_chunks)
 
 
+def stream_rag_sources(
+    sources: Sequence[Source[RawDoc]],
+    config: RagConfig,
+    deps: RagCoreDeps,
+    *,
+    schedule: SourceSchedule = "sequential",
+    max_chunks: int | None = None,
+) -> Iterator[Chunk]:
+    """Merge replayable document sources before running the complete lazy RAG path."""
+
+    if schedule == "sequential":
+        merged = make_chain(*sources)
+    elif schedule == "round_robin":
+        merged = make_roundrobin(*sources)
+    else:
+        raise ValueError(f"unknown source schedule: {schedule}")
+    return stream_rag_chunks(merged(), config, deps, max_chunks=max_chunks)
+
+
 def gen_bounded_chunks(
     docs: Iterable[RawDoc],
     config: RagConfig,
@@ -128,6 +155,7 @@ def safe_rag_pipeline(
 
 
 __all__ = [
+    "SourceSchedule",
     "gen_bounded_chunks",
     "gen_grouped_chunks",
     "gen_stream_deduped",
@@ -135,4 +163,5 @@ __all__ = [
     "safe_rag_pipeline",
     "stream_chunks",
     "stream_rag_chunks",
+    "stream_rag_sources",
 ]

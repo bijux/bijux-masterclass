@@ -16,6 +16,7 @@ from .config import (
     make_rag_fn,
 )
 from .core import (
+    SourceSchedule,
     _trace_iter,
     full_rag_api,
     full_rag_api_docs,
@@ -35,6 +36,7 @@ from .core import (
     sliding_windows,
     stream_chunks,
     stream_rag_chunks,
+    stream_rag_sources,
     throttle,
 )
 from .types import DebugConfig, DocRule, Observations, RagTaps, RagTraceV3, TraceLens
@@ -51,6 +53,7 @@ __all__ = [
     "RagCoreDeps",
     "RagTaps",
     "RagTraceV3",
+    "SourceSchedule",
     "TraceLens",
     "_trace_iter",
     "boundary_rag_config",
@@ -76,5 +79,6 @@ __all__ = [
     "sliding_windows",
     "stream_chunks",
     "stream_rag_chunks",
+    "stream_rag_sources",
     "throttle",
 ]

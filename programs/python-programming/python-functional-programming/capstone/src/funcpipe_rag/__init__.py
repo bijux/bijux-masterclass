@@ -165,6 +165,7 @@ from .rag.config import (
     make_rag_fn,
 )
 from .rag.core import (
+    SourceSchedule,
     _trace_iter,
     full_rag_api,
     full_rag_api_docs,
@@ -183,6 +184,7 @@ from .rag.core import (
     sliding_windows,
     stream_chunks,
     stream_rag_chunks,
+    stream_rag_sources,
 )
 
 # Pure pipeline stages – the building blocks
@@ -479,6 +481,8 @@ __all__ = [  # noqa: RUF022
     "gen_stream_embedded",
     "gen_stream_deduped",
     "stream_rag_chunks",
+    "stream_rag_sources",
+    "SourceSchedule",
     "sliding_windows",
     "gen_grouped_chunks",
     "gen_bounded_chunks",
