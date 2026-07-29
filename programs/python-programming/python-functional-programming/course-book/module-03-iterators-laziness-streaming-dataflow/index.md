@@ -77,9 +77,10 @@ limits deliberately handed to later modules.
 
 ## Exercises
 
-Use [Module 03 Exercises](exercises.md) for five cumulative FuncPipe reviews:
-demand tracing, chunk metadata, bounded fan-out, stage ownership, and safe
-observation. Each exercise requires value evidence and an execution-policy argument.
+Use [Module 03 Exercises](exercises.md) for six cumulative FuncPipe reviews:
+demand tracing, chunk metadata, document-source scheduling, bounded fan-out, stage
+ownership, and safe observation. Each exercise requires value evidence and an
+execution-policy argument.
 Compare with [Exercise Answers](exercise-answers.md) only after writing your own
 prediction.
 
@@ -91,6 +92,10 @@ prediction.
   actually bounds.
 - Compare the complete stream with `full_rag_api_docs` under canonical and
   out-of-order input.
+- Trace `stream_rag_sources` through sequential and round-robin scheduling; state
+  which source factories open and which documents are pulled for one output.
+- Run `make PROGRAM=python-programming/python-functional-programming
+  capstone-source-scheduling-proof` and explain all six multi-source assertions.
 - Run `make PROGRAM=python-programming/python-functional-programming
   capstone-streaming-rag-proof` and explain both the duplicate-demand and multicast
   assertions.
@@ -107,6 +112,8 @@ Use [Refactoring Guide](refactoring-guide.md) and compare against
 - You can explain when work happens in a pipeline instead of only what data moves through it.
 - You can review a streaming helper and spot hidden materialization, cleanup leaks, or ordering surprises.
 - You can justify the boundary between reusable lazy stages and explicit materialization.
+- You can defend sequential or round-robin document scheduling from an application
+  ordering requirement.
 - You can explain why a final unique-output limit does not necessarily bound raw
   upstream work one-for-one.
 

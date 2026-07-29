@@ -185,10 +185,14 @@ Slice 2: shaped traversal
 - Read `chunking-and-windowing.md`
 - Read `reusable-pipeline-stages.md`
 - Read `fan-in-and-fan-out.md`
+- Inspect `capstone/module-reference-states/module-03/src/funcpipe_rag/api/core.py::stream_rag_sources`
+- Inspect `capstone/module-reference-states/module-03/src/funcpipe_rag/streaming/fanin.py`
+- Run `make PROGRAM=python-programming/python-functional-programming capstone-source-scheduling-proof`
 - Read `custom-iterators.md`
 
 Checkpoint:
-Can you explain which traversal shape the code is promising and why that shape matters downstream?
+Can you defend a source schedule, predict its encounter order and source-opening
+behavior, and explain why that shape matters to downstream deduplication?
 
 Slice 3: lifecycle and pressure
 

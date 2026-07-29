@@ -60,7 +60,7 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 | --- | --- | --- | --- |
 | Module 01: Purity and substitution | `capstone/module-reference-states/module-01/src/funcpipe_rag/rag_types.py`, `pipeline_stages.py`, `full_rag.py`, `rag_shell.py` | `capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py`, `test_module_01_shell_boundary.py` | `make PROGRAM=python-programming/python-functional-programming capstone-foundation-proof` |
 | Module 02: Data-first APIs and expression style | `capstone/module-reference-states/module-02/src/funcpipe_rag/api/config.py`, `api/core.py`, `shells/rag_api_shell.py`, `shells/rag_main.py` | `capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py`, `test_module_02_filesystem_boundary.py` | `make PROGRAM=python-programming/python-functional-programming capstone-data-api-proof` |
-| Module 03: Iterators and lazy dataflow | `capstone/module-reference-states/module-03/src/funcpipe_rag/api/core.py`, `api/config.py`, `core/structural_dedup.py`, `streaming/` | `capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py` | `make PROGRAM=python-programming/python-functional-programming capstone-streaming-rag-proof` |
+| Module 03: Iterators and lazy dataflow | `capstone/module-reference-states/module-03/src/funcpipe_rag/api/core.py::stream_rag_sources`, `streaming/fanin.py`, `streaming/fanout.py`, `core/structural_dedup.py` | `capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py` | `make PROGRAM=python-programming/python-functional-programming capstone-source-scheduling-proof` |
 | Module 04: Resilience and streaming failures | `capstone/src/funcpipe_rag/result/`, `capstone/src/funcpipe_rag/policies/retries.py`, `capstone/src/funcpipe_rag/policies/breakers.py` | `capstone/tests/unit/result/test_result_folds.py`, `capstone/tests/unit/policies/test_retries.py`, `capstone/tests/unit/policies/test_breakers.py` | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
 | Module 05: Algebraic data modelling | `capstone/src/funcpipe_rag/fp/validation.py`, `capstone/src/funcpipe_rag/rag/domain/` | `capstone/tests/unit/fp/test_pattern_matching.py`, `capstone/tests/unit/rag/test_stages.py` | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
 | Module 06: Monadic flow and explicit context | `capstone/src/funcpipe_rag/fp/effects/`, `capstone/src/funcpipe_rag/result/types.py` | `capstone/tests/unit/fp/test_configurable.py`, `capstone/tests/unit/fp/test_layering.py`, `capstone/tests/unit/result/test_option_result.py` | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
@@ -81,6 +81,11 @@ Module 02 also divides proof ownership. Use `capstone-data-api-proof` for
 configuration, expression, and preservation laws. Use
 `capstone-data-shell-proof` for the concrete CSV/JSONL adapter and CLI boundary.
 Run both before treating the completed state as verified.
+
+Module 03 has a similar evidence split. Use `capstone-source-scheduling-proof` for
+the six fan-in and fan-out application laws. Use `capstone-streaming-rag-proof`
+when the claim also depends on chunking, observation, complete eager equivalence,
+or unique-output fence demand.
 
 ## Stop here when
 
