@@ -99,3 +99,21 @@ Common wrong turns:
 The proof establishes explicit environment injection and deterministic chunk
 output for these runs. It does not prove Reader is necessary for every
 configuration-dependent function.
+
+## Explicit state threading: add skipped-chunk progress
+
+Add `skipped` to the frozen dataclass and make the accounting operation choose
+one new `Progress` value from the current state. Chain it in the same location
+where the chunk is observed.
+
+Common wrong turns:
+
+- mutating fields in place hides the state transition;
+- reading a module-global counter removes the caller-supplied initial state;
+- counting skipped text as processed changes the declared metric;
+- asserting only the final integer loses the result value and other state
+  fields.
+
+The proof establishes deterministic local state transitions for the tested
+sequence. It does not establish concurrency safety or justify using State when
+a direct fold would be simpler.

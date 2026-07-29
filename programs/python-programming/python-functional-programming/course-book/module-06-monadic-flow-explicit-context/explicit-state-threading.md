@@ -59,6 +59,37 @@ Use State **only** when you truly need to accumulate or mutate something across 
 For read-only dependencies, use Reader (M06C04).  
 In practice, most real pipelines are layered: `Reader[Config, State[PipelineState, Result[T, ErrInfo]]]`.
 
+## Runnable lab: return chunk progress without a global counter
+
+The learning proof turns progress into a frozen value threaded between three
+real chunk texts:
+
+```python
+program = (
+    account(chunks[0].text)
+    .and_then(lambda _: account(chunks[1].text))
+    .and_then(lambda _: account(chunks[2].text))
+)
+
+assert run_state(program, Progress()) == (
+    "ij",
+    Progress(chunks=3, characters=10),
+)
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k state_threads_rag_chunk_progress_without_global_mutation
+```
+
+The caller supplies the initial value and receives the final value. The proof
+also retains the original frozen `Progress()` instance. State is useful here
+because several dependent operations update the same local progress contract;
+a single count calculation would be clearer as an ordinary pure function.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Law                 | Formal Statement                                                            | Why it matters                                            |

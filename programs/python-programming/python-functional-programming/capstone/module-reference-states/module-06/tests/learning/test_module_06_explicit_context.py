@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from hypothesis import given
 from hypothesis import strategies as st
 
 from funcpipe_rag.core.rag_types import CleanDoc, RagEnv, RawDoc
-from funcpipe_rag.fp.effects import Reader, asks
+from funcpipe_rag.fp.effects import Reader, State, asks, run_state
 from funcpipe_rag.rag.stages import clean_doc, iter_chunk_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result, liftA2
 
@@ -109,3 +111,41 @@ def test_reader_runs_same_rag_chunk_program_with_explicit_env() -> None:
 
     assert program.run(RagEnv(chunk_size=4)) == ["abcd", "efgh", "ij"]
     assert program.run(RagEnv(chunk_size=6)) == ["abcdef", "ghij"]
+
+
+def test_state_threads_rag_chunk_progress_without_global_mutation() -> None:
+    """State returns progress explicitly while preserving the initial value."""
+
+    @dataclass(frozen=True)
+    class Progress:
+        chunks: int = 0
+        characters: int = 0
+
+    doc = CleanDoc(
+        doc_id="state",
+        title="State",
+        abstract="abcdefghij",
+        categories="fp",
+    )
+    chunks = list(iter_chunk_doc(doc, RagEnv(chunk_size=4)))
+
+    def account(text: str) -> State[Progress, str]:
+        return State(
+            lambda progress: (
+                text,
+                Progress(
+                    chunks=progress.chunks + 1,
+                    characters=progress.characters + len(text),
+                ),
+            )
+        )
+
+    program = (
+        account(chunks[0].text)
+        .and_then(lambda _: account(chunks[1].text))
+        .and_then(lambda _: account(chunks[2].text))
+    )
+    initial = Progress()
+
+    assert run_state(program, initial) == ("ij", Progress(chunks=3, characters=10))
+    assert initial == Progress()

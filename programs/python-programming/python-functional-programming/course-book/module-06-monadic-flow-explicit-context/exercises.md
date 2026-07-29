@@ -136,3 +136,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: Module 03 chunk order and bounded traversal remain
 determined by immutable configuration.
+
+## Explicit state threading: add skipped-chunk progress
+
+**Starting context:** run
+`test_state_threads_rag_chunk_progress_without_global_mutation` and inspect
+`State.and_then`.
+
+**Objective:** extend the frozen progress value with `skipped` and add a state
+operation that records an empty chunk without increasing processed characters.
+
+**Constraints:**
+
+- accept the initial state from the caller;
+- return a new frozen progress value;
+- preserve operation order;
+- leave the original initial value unchanged.
+
+**Expected evidence:** the final state distinguishes processed and skipped
+chunks while the result value and starting state remain explicit.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k state_threads_rag_chunk_progress_without_global_mutation
+```
+
+Earlier contract preserved: Module 01 immutability and Module 03 chunk ordering
+remain observable after local progress is introduced.
