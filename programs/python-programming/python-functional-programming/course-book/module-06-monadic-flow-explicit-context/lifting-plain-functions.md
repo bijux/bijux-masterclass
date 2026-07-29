@@ -44,6 +44,39 @@ This lesson introduces lifting as the bridge between ordinary functions and cont
 - choose the smallest combinator that matches the dependency structure
 - keep the resulting pipeline readable by making the lifting rule obvious at the call site
 
+## Runnable lab: combine independent RAG configuration fields
+
+`RagEnv` needs both chunk size and overlap, but neither parsed field depends on
+the other. The learning proof lifts the plain constructor over two independent
+`Result` values:
+
+```python
+chunk_size: Result[int, ErrInfo] = Ok(8)
+overlap: Result[int, ErrInfo] = Ok(2)
+
+combined = liftA2(
+    lambda size, amount: RagEnv(chunk_size=size, overlap=amount),
+    chunk_size,
+    overlap,
+)
+
+assert combined == Ok(RagEnv(chunk_size=8, overlap=2))
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k liftA2_combines_independent_rag_config_fields
+```
+
+This `Result` applicative is fail-fast: when both inputs are `Err`, the
+left-hand error wins. Use `Validation` when the product requirement is to
+report every independent field error. Also validate cross-field constraints
+before calling a constructor that can raise; `liftA2` does not turn exceptions
+into typed failures.
+
 ## The First Decision To Make
 
 Before picking a combinator, ask one question about the next piece of work:

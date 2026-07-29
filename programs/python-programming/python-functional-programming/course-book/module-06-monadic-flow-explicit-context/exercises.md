@@ -45,3 +45,34 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: Module 05 typed failure provenance remains visible,
 and valid documents retain the same normalized value.
+
+## Lifting plain functions: keep independent inputs independent
+
+**Starting context:** run
+`test_liftA2_combines_independent_rag_config_fields` and inspect `liftA2` in
+`result/types.py`.
+
+**Objective:** add independently validated `sample_size` and build a frozen
+configuration value without making its validation depend on chunk size.
+
+**Constraints:**
+
+- keep each field parser independent;
+- preserve left-to-right fail-fast order for `Result`;
+- do not catch constructor exceptions inside the pure combiner;
+- explain when accumulating `Validation` would be the better choice.
+
+**Expected evidence:** all valid inputs produce the expected configuration;
+when the leftmost and rightmost inputs fail, the declared leftmost error is
+preserved.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k liftA2_combines_independent_rag_config_fields
+```
+
+Earlier contract preserved: Module 05 still distinguishes typed failure values
+from successful immutable configuration values.

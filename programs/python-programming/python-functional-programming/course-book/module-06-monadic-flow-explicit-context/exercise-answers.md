@@ -36,3 +36,23 @@ Common wrong turns:
 The proof establishes ordered short-circuiting for this chain. It does not prove
 that fail-fast validation is always preferable; independent field validation
 may still require accumulating `Validation`.
+
+## Lifting plain functions: keep independent inputs independent
+
+Validate `sample_size` separately, then lift a curried three-argument
+constructor or combine two fields first and map the third. Keep the observable
+failure order explicit in the test.
+
+Common wrong turns:
+
+- using `and_then` implies a dependency between fields that do not depend on
+  one another;
+- expecting `Result.liftA2` to accumulate both errors contradicts its fail-fast
+  contract;
+- placing validation inside the constructor can leak `ValueError`;
+- comparing only successful output ignores error precedence.
+
+The focused proof establishes independent combination and `Result` error order.
+It does not establish cross-field validity for arbitrary values. If learners
+must see every invalid field at once, use the Module 05 `Validation`
+applicative and test the accumulated error tuple.
