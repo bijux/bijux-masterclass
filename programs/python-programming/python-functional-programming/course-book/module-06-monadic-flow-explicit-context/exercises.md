@@ -166,3 +166,34 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: Module 01 immutability and Module 03 chunk ordering
 remain observable after local progress is introduced.
+
+## Error-typed flows: narrow the expected exception set
+
+**Starting context:** run
+`test_exception_bridge_types_expected_config_failure_only` and inspect
+`try_result`.
+
+**Objective:** accept decimal chunk sizes but classify a negative value as a
+typed domain error after parsing.
+
+**Constraints:**
+
+- bridge only `ValueError` from `int`;
+- perform the positivity check as a pure `Result` step;
+- let `RuntimeError` propagate;
+- retain distinct parse and range error codes.
+
+**Expected evidence:** numeric positive input succeeds, non-numeric input
+returns `CONFIG_PARSE`, negative input returns `CHUNK_SIZE`, and unexpected
+runtime failure is raised.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k exception_bridge_types_expected_config_failure_only
+```
+
+Earlier contract preserved: Module 05 typed failures retain provenance while
+unexpected defects remain exceptions.

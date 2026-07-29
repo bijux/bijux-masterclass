@@ -117,3 +117,22 @@ Common wrong turns:
 The proof establishes deterministic local state transitions for the tested
 sequence. It does not establish concurrency safety or justify using State when
 a direct fold would be simpler.
+
+## Error-typed flows: narrow the expected exception set
+
+Keep `try_result` around `int(raw)` only. Then compose a pure
+`require_positive` function with `and_then` so parse and range failures have
+separate owners.
+
+Common wrong turns:
+
+- catching `Exception` converts bugs into misleading input failures;
+- raising for a routine negative configuration value bypasses the typed
+  contract;
+- using one generic error code destroys provenance;
+- placing `try_result` throughout the domain confuses boundary conversion with
+  business validation.
+
+The proof establishes the declared exception classification for this adapter
+and domain check. It does not prove that every `ValueError` in the application
+is expected or recoverable.

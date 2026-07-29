@@ -4,9 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
+from funcpipe_rag.boundaries.adapters.exception_bridge import try_result
 from funcpipe_rag.core.rag_types import CleanDoc, RagEnv, RawDoc
 from funcpipe_rag.fp.effects import Reader, State, asks, run_state
 from funcpipe_rag.rag.stages import clean_doc, iter_chunk_doc
@@ -149,3 +151,32 @@ def test_state_threads_rag_chunk_progress_without_global_mutation() -> None:
 
     assert run_state(program, initial) == ("ij", Progress(chunks=3, characters=10))
     assert initial == Progress()
+
+
+def test_exception_bridge_types_expected_config_failure_only() -> None:
+    """A boundary converts its named input error and lets a bug propagate."""
+
+    def parse_chunk_size(raw: str) -> Result[int, ErrInfo]:
+        return try_result(
+            lambda: int(raw),
+            lambda error: ErrInfo(code="CONFIG_PARSE", msg=str(error)),
+            exc_type=ValueError,
+        )
+
+    assert parse_chunk_size("8") == Ok(8)
+    assert parse_chunk_size("eight") == Err(
+        ErrInfo(
+            code="CONFIG_PARSE",
+            msg="invalid literal for int() with base 10: 'eight'",
+        )
+    )
+
+    def broken_parser() -> int:
+        raise RuntimeError("parser invariant broken")
+
+    with pytest.raises(RuntimeError, match="parser invariant broken"):
+        try_result(
+            broken_parser,
+            lambda error: ErrInfo(code="CONFIG_PARSE", msg=str(error)),
+            exc_type=ValueError,
+        )

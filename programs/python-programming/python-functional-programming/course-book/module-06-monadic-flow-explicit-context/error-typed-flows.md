@@ -73,6 +73,33 @@ Before turning an exception into a typed error, ask three questions:
 If the first two answers are yes and the third is no, the case is usually a good fit for
 `Result` or `Validation`. If not, letting it raise is often the more honest move.
 
+## Runnable lab: type one expected parse failure
+
+The configuration boundary expects `int` to reject non-numeric text with
+`ValueError`. It converts only that class:
+
+```python
+def parse_chunk_size(raw: str) -> Result[int, ErrInfo]:
+    return try_result(
+        lambda: int(raw),
+        lambda error: ErrInfo(code="CONFIG_PARSE", msg=str(error)),
+        exc_type=ValueError,
+    )
+```
+
+The complete proof also supplies a parser that raises `RuntimeError` and asserts
+that the bug still propagates:
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k exception_bridge_types_expected_config_failure_only
+```
+
+Catching `Exception` here would erase the classification decision. Returning
+`Err` for `ValueError` gives the caller a recoverable configuration failure;
+letting `RuntimeError` escape keeps an unexpected invariant break visible.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Invariant                         | Description                                                                                  | Enforcement          |
