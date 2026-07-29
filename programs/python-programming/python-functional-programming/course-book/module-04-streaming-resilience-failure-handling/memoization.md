@@ -354,9 +354,11 @@ def test_memoized_fold_dedup(tree):
 | lru_cache_custom           | O(1)        | O(maxsize)       | No          | Fastest, requires hashable args |
 | memoize_keyed (unbounded)  | O(1)        | O(unique keys)   | No          | Thread-safe |
 | memoize_keyed (bounded)    | O(1)        | O(maxsize)       | No          | Pure Python OrderedDict LRU |
-| DiskCache                  | O(1) + I/O  | O(disk usage)    | Yes         | Atomic, versioned invalidation |
+| DiskCache                  | Hash + filesystem I/O | O(disk usage) | Yes | Atomic replacement; filesystem latency still applies |
 
-All variants are observationally pure.
+These wrappers preserve observations only when the wrapped function is
+deterministic and the key respects its semantics. A cache cannot make an
+impure function pure.
 
 ---
 
@@ -371,21 +373,93 @@ All variants are observationally pure.
 
 ---
 
+## Make the embedding key a reviewed contract
+
+FuncPipe's local embedding is deterministic, so repeated normalized text is a
+reasonable cache candidate. The difficult decision is not adding a decorator;
+it is defining when two chunk inputs are equivalent.
+
+The required implication is:
+
+```text
+key(left) == key(right)  implies  embed(left) == embed(right)
+```
+
+`content_hash_key` lowercases, trims, and collapses whitespace before hashing.
+That is valid only while the embedding function observes text through the same
+normalization. If embedding later depends on `doc_id`, category metadata, model
+identity, or chunk position, the key must include that input too.
+
+Trace the learning example:
+
+| Chunk text | Normalized key input | Embed work |
+| --- | --- | --- |
+| `"  Functional   Python "` | `"functional python"` | Cache miss; compute |
+| `"functional python"` | `"functional python"` | Cache hit; reuse |
+
+Run:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k semantic_memo_key
+```
+
+The assertion `calls == 1` proves that the chosen pair shares work. The equal
+return values prove observational equivalence for that pair. It does not prove
+that all key collisions are semantically safe, nor that memoization improves
+wall-clock performance.
+
+Review cache choices with this table:
+
+| Question | If the answer is no |
+| --- | --- |
+| Is the operation deterministic for every input represented by the key? | Do not memoize it |
+| Does the key include every input the operation observes? | Widen the key |
+| Is the value immutable or safely copied? | Prevent callers from mutating cached state |
+| Is retention bounded for the expected cardinality? | Set a size or external lifecycle |
+| Does a persistent key include algorithm/model/normalization identity? | Add explicit version material |
+| Can two threads computing the same miss duplicate work? | Decide whether best-effort caching is enough |
+
+The Module 04 keyed memoizer protects cache mutation with a lock, but it
+computes misses outside that lock. Two concurrent callers can therefore perform
+the same expensive calculation before one stored value wins. Results remain
+correct for a pure function; duplicate work remains possible. That is an
+important boundary between thread-safe state and single-flight execution.
+
 ## 8. Pre-Core Quiz
 
-1. Memoization requires…? → **Pure, deterministic functions**  
-2. Observational purity means…? → **cached_f(x) == f(x) always**  
-3. Custom key needed when…? → **Args not hashable or need normalisation**  
-4. Persistent cache for…? → **Cross-process or cross-run sharing**  
-5. Prove cache correctness? → **Observational purity + hit/miss instrumentation**
+1. What must equal keys imply? → **Equal function results for the wrapped
+   operation.**
+2. Does thread safety prevent duplicate computation? → **Not in this
+   implementation; concurrent misses can compute twice.**
+3. Why version a persistent key? → **To prevent reuse after a semantic change
+   in normalization, embedding, or serialization.**
+4. What does a hit counter prove? → **Reuse occurred, not that the reused answer
+   was correct.**
+5. When is an unbounded cache defensible? → **Only with a demonstrated bounded
+   key space or an explicit lifecycle.**
 
 ## 9. Post-Core Exercise
 
-1. Take your current embedding function → memoize with `lru_cache_custom` → add hit/miss logging → run on real dataset → measure speedup.  
-2. Memoize a fold over `TreeDoc` that computes per-node embeddings → prove recomputations == unique texts.  
-3. Add `DiskCache` for content-based deduplication hashes that survive restarts.  
-4. Find an expensive pure function in your codebase → memoize with `memoize_keyed` → add equivalence property.
+Change the learning embedder so its output also depends on `doc_id`.
+
+- First predict the incorrect result produced by the existing text-only key.
+- Add two chunks with equal normalized text and different document IDs.
+- Redesign the key so the cached and uncached outputs agree.
+- Keep whitespace-equivalent chunks within one document on the cache-hit path.
+- State why this example still does not justify a persistent disk cache.
+
+Move forward when you can review the key as part of the function contract,
+rather than as an implementation detail.
 
 **Continue with:** [Result and Option Failures](../module-04-streaming-resilience-failure-handling/result-and-option-failures.md)
 
-You now have the complete toolkit to make any pure computation effectively O(unique inputs) — even across process restarts. The rest of Module 4 is about doing it safely when things go wrong.
+Memoization changes repeated work, not failure semantics. The next core makes
+expected absence and expected failure visible before the stream decides what to
+do with either.
