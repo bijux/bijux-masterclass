@@ -395,7 +395,14 @@ version before running it:
 ```python
 from collections.abc import Iterator
 
-from funcpipe_rag import RagConfig, RagEnv, RawDoc, gen_bounded_chunks, get_deps
+from funcpipe_rag import (
+    RagConfig,
+    RagEnv,
+    RawDoc,
+    gen_bounded_chunks,
+    get_deps,
+    stream_rag_chunks,
+)
 
 requested: list[str] = []
 
@@ -447,12 +454,61 @@ The executable check proves no eager document read and no request beyond one out
 It does not prove constant space. Streaming deduplication retains seen keys, fan-out
 retains lagging values, and a suspended generator retains its frame.
 
-```bash
-PYTHONPATH=capstone/module-reference-states/module-03/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
-  -k 'construction'
+## Trace the complete RAG iterator
+
+`gen_bounded_chunks` stops before embedding and deduplication. It is useful for
+proving a raw chunk fence, but it is not the complete application result.
+`stream_rag_chunks` composes the remaining stages:
+
+```text
+next(final_chunks)
+  -> request next unseen structural key
+  -> request embedded chunk
+  -> request pre-embedding chunk
+  -> request, filter, and clean documents as needed
 ```
 
-Before continuing, explain the exact upstream work caused by one `next(chunks)` and
-name one retained object that can still grow even though the pipeline is lazy.
+The phrase “as needed” matters. If deduplication rejects a chunk, one downstream
+`next()` requests another upstream chunk. For documents with structural keys
+`duplicate`, `duplicate`, `unique`, asking for two unique outputs pulls all three
+documents.
+
+```python
+requested = []
+
+
+def documents():
+    for doc_id, abstract in (
+        ("duplicate", "same"),
+        ("duplicate", "same"),
+        ("unique", "other"),
+    ):
+        requested.append(doc_id)
+        yield RawDoc(doc_id, "title", abstract, "cs.AI")
+
+
+config = RagConfig(env=RagEnv(chunk_size=100))
+chunks = stream_rag_chunks(
+    documents(),
+    config,
+    get_deps(config),
+    max_chunks=2,
+)
+
+assert requested == []
+assert [chunk.doc_id for chunk in chunks] == ["duplicate", "unique"]
+assert requested == ["duplicate", "duplicate", "unique"]
+```
+
+The final fence bounds emitted unique `Chunk` values. It does not promise a
+one-to-one bound on source reads. Place a fence before deduplication when upstream
+cost is the quantity that must be bounded.
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-streaming-rag-proof
+```
+
+Before continuing, explain the exact upstream work caused by one `next(chunks)`,
+distinguish the raw and unique-output fences, and name one retained object that can
+still grow even though the pipeline is lazy.
