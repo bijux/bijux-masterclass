@@ -1,6 +1,5 @@
 # Expression Review and Trade-Offs
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,109 +24,170 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Expression-oriented code is valuable when it exposes dataflow more clearly than
+mutable flags and callback bookkeeping. It is not automatically safer because it
+is shorter. A rewrite can preserve final values while changing order, cardinality,
+evaluation timing, or failure timing.
 
-This lesson exists to answer the question the main lesson leaves open: when does an
-expression-oriented rewrite actually improve the code, and how do you prove that the
-behavior did not change?
+Module 02 provides two deliberately different application shapes:
 
-## Review route
+- `iter_rag_core` composes lazy iterator stages and yields chunks on demand;
+- `full_rag_api_docs` materializes named intermediates to produce complete
+  observations and stable tap points.
 
-Use this sequence whenever you turn flags and loops into expressions:
+Neither is the universal “functional” answer. Their contracts serve different
+callers.
 
-1. write the imperative baseline
-2. write the expression version
-3. compare them on the same input
-4. reject the rewrite if it shortens the code but hides the decision path
+## Begin with the smallest equivalence
 
-Expression style is only useful if it makes the dataflow more obvious than the flags it
-replaced.
-
-## Good proof questions
-
-- does the expression version return the same chunks as the baseline pipeline?
-- are observation counters still aligned with the data that passed the rule?
-- did the rewrite remove mutable poison state instead of merely moving it?
-- can another engineer explain the filter condition without stepping through a loop?
-
-## Property-based check
-
-The most valuable property here is equivalence between the new expression-shaped API and
-the simpler baseline built from the pure stages.
+`pipe` threads one value through unary functions from left to right:
 
 ```python
-from hypothesis import given
-
-from funcpipe_rag import RagConfig, full_rag_api_docs, get_deps
-from tests.conftest import doc_list_strategy, env_strategy
-
-
-@given(docs=doc_list_strategy(), env=env_strategy())
-def test_expression_pipeline_matches_baseline(docs, env):
-    config = RagConfig(env=env)
-    deps = get_deps(config)
-    expressive, _ = full_rag_api_docs(docs, config, deps)
-    assert expressive == baseline_full_rag(docs, env)
+pipe(values, normalize, keep_nonempty)
 ```
 
-The point is not to celebrate Hypothesis for its own sake. The point is to keep the
-rewrite honest when the expression form feels cleaner than the loop.
+The first learning test compares it directly with:
 
-## Failure mode to remember
+```python
+keep_nonempty(normalize(values))
+```
 
-The classic bug here is cumulative mutable state:
+That assertion proves both forms return the same value for the example. It does not
+prove that arbitrary stages are pure, total, or safe to reorder. `pipe` preserves
+the order it is given.
 
-- one document fails the rule
-- a shared flag stays false
-- every later valid document is dropped
+This is the right scale for reviewing a syntax helper: compare it with ordinary
+Python before using it to explain a domain pipeline.
 
-Expression-style filtering prevents that entire class of mistake because the condition is
-local to each element instead of stored in poisoned state.
+## Read iterator combinators by cardinality
 
-## When expression style is worth it
+The helpers in `capstone/module-reference-states/module-02/src/funcpipe_rag/fp.py`
+lift element functions into iterable stages.
 
-Keep the expression form when:
+| Combinator | Element function | Outputs per input | Evaluation |
+| --- | --- | --- | --- |
+| `ffilter` | `A -> bool` | zero or one `A` | when the iterator is consumed |
+| `fmap` | `A -> B` | exactly one `B` | when the iterator is consumed |
+| `flatmap` | `A -> Iterable[B]` | zero or many `B` values | outer and inner iteration on demand |
 
-- the predicate is local and readable
-- the rewrite removes mutable state or sentinel flags
-- the result composes naturally with later stages
-- the team can still debug the dataflow from the code alone
+Cardinality is part of meaning. Replacing `fmap` with `flatmap` is not an aesthetic
+change; it changes the shape of the stream.
 
-Do not force it when:
+The tracked iterator test records source, filter, and expansion calls. Immediately
+after composing the stages, the record is empty. Requesting the first item produces
+exactly:
 
-- the branching logic is too rich for a compact expression
-- naming the intermediate results is clearer than compressing them
-- the rewrite hides work that matters for debugging or observability
+```text
+source(0) -> filter(0) -> expand(1)
+```
 
-## Capstone check
+This proves deferred work and stage order for the taught combinators. It does not
+yet prove bounded traversal of the complete RAG application; Module 03 takes
+ownership of that stronger streaming contract.
 
-Before moving on:
+## Trace the lazy core
 
-1. inspect `capstone/module-reference-states/module-02/src/funcpipe_rag/api/core.py`;
-2. compare `iter_rag_core` with `full_rag_api_docs`;
-3. identify which intermediates are lazy and which are materialized for complete
-   observations;
-4. decide whether each named stage exposes domain intent or merely adds ceremony.
+`iter_rag_core` names four domain stages:
 
-## Review the expression boundary
+```text
+RawDoc
+  -> ffilter(keep_rule)
+  -> fmap(cleaner)
+  -> flatmap(chunker)
+  -> fmap(embedder)
+  -> Chunk
+```
 
-Use this table on a proposed rewrite:
+The returned iterator does no stage work until consumption. Each consumed document
+may be rejected, cleaned once, expanded into zero or more chunks, and embedded once
+per chunk.
 
-| Question | Acceptable evidence |
-| --- | --- |
-| Did values remain equal? | before-and-after assertions over chunks and metadata |
-| Did order remain equal? | explicit ordered sequence, not set equality |
-| Did failure timing move? | test construction and the call that first evaluates |
-| Did materialization move? | identify each `list`, comprehension, sort, and fold |
-| Is debugging clearer? | stage names correspond to RAG concepts |
+The function intentionally does not:
 
-An expression rewrite can preserve final values while changing when an exception or
-effect occurs. Record both value and timing behavior when that distinction matters.
+- open an input source;
+- structurally deduplicate the complete output;
+- calculate complete observations;
+- return a list.
 
-## Reflection
+Those omissions preserve its iterator contract. Adding a `list`, global sort, or
+whole-stream deduplication inside it would move the materialization boundary.
 
-- Which flag-driven rewrite in your own codebase is ready for an expression form?
-- Which one still needs named intermediate values instead?
-- Which one would become harder to debug if you compressed it too far?
+## Trace the observation API
 
-**Continue with:** [Introducing Laziness](introducing-laziness.md)
+`full_rag_api_docs` chooses complete observations over streaming:
+
+1. `list(docs)` establishes total input count and replayable traversal;
+2. a list comprehension materializes kept documents;
+3. another list materializes cleaned documents;
+4. `list(iter_chunks_from_cleaned(...))` materializes pre-dedup chunks;
+5. structural deduplication returns the final chunk list;
+6. counts and samples are calculated from those complete values.
+
+This is not accidental eagerness. `RagTaps` observe completed stage values, and
+`Observations` reports complete totals. A caller that wants incremental demand
+should use the iterator shape rather than pretend this API is streaming.
+
+| Question | `iter_rag_core` | `full_rag_api_docs` |
+| --- | --- | --- |
+| first work occurs | first demand | at the call |
+| input retained | iterator frame/current value | complete input list |
+| complete counts | unavailable | returned in `Observations` |
+| stage taps | lazy trace/probe wrappers | tuples of completed stage values |
+| deduplication | caller responsibility | canonical structural dedup |
+| return | `Iterator[Chunk]` | `tuple[list[Chunk], Observations]` |
+
+## Observation must not become control flow
+
+`instrument_stage` can wrap lazy stages with tracing or a probe. Tracing emits a
+representation and yields the same value. A probe checks an invariant and yields
+the same value when the check passes. Both run on consumption.
+
+The eager API invokes optional taps with tuples after its kept, cleaned, and chunk
+stages. The test
+`test_taps_observe_stage_values_without_changing_api_output` compares a tapped run
+with an untapped baseline and requires equal return values.
+
+A proposed observer is not observation-only if it filters, replaces, reorders, or
+consumes values that the application would otherwise return.
+
+## Prove application meaning with the real baseline
+
+The executable preservation test is
+`test_default_api_preserves_module_01_rag_values`. It constructs the Module 01
+baseline from the tracked pure stages:
+
+```text
+clean_doc -> chunk_doc -> embed_chunk -> structural_dedup_chunks
+```
+
+It then compares complete chunks from `full_rag_api_docs` under default Module 02
+policy. Equality includes dataclass fields and list order, not merely counts or set
+membership.
+
+The test also checks observation totals, but it does not claim that the eager and
+lazy APIs have identical evaluation timing.
+
+Run the proof from the repository root:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-data-api-proof
+```
+
+## Review an expression rewrite
+
+Use this sequence before accepting one:
+
+1. name the direct or previous implementation that serves as the oracle;
+2. state each stage's input, output, and cardinality;
+3. mark every `list`, comprehension, fold, sort, deduplication, and first demand;
+4. compare structural values and order on the same input;
+5. use a counted source when evaluation timing matters;
+6. compare tapped and untapped values when adding observation;
+7. reject the rewrite if names no longer express domain decisions.
+
+Expression style is a win when it localizes decisions and makes composition
+reviewable. Named intermediate values remain the better choice when complete stage
+state, debugging, or observation is part of the public contract.
+
+Continue with [Introducing Laziness](introducing-laziness.md).
