@@ -19,7 +19,7 @@ from funcpipe_rag.rag_types import (
 )
 
 
-def clean_doc(doc: RawDoc) -> CleanDoc:
+def clean_doc(doc: RawDoc | CleanDoc) -> CleanDoc:
     """Deterministically normalise whitespace and case in the abstract."""
     abstract = " ".join(doc.abstract.strip().lower().split())
     return CleanDoc(

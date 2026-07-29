@@ -22,7 +22,7 @@ from funcpipe_rag.rag_types import (
 from funcpipe_rag.core.structural_dedup import structural_dedup_lazy
 
 
-def clean_doc(doc: RawDoc) -> CleanDoc:
+def clean_doc(doc: RawDoc | CleanDoc) -> CleanDoc:
     """Deterministically normalise whitespace and case in the abstract."""
     abstract = " ".join(doc.abstract.strip().lower().split())
     return CleanDoc(
