@@ -160,3 +160,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 
 Earlier contract preserved: the fake interpreter exercises the same typed
 Module 07 effect description; it replaces timing capabilities, not domain logic.
+
+## Fairness: inspect a weighted prefix
+
+**Starting context:** read `FairnessPolicy` and `async_gen_fair_merge` in
+`domain/effects/async_/concurrency.py`, then run
+`test_weighted_fair_merge_makes_each_share_observable`.
+
+**Objective:** reverse the weights so stream B has weight two, consume six
+results, and derive the expected deterministic tag sequence.
+
+**Constraints:**
+
+- use two always-ready replayable streams;
+- assert both the exact prefix and each stream's count;
+- close the partially consumed merged iterator;
+- do not introduce sleeps to influence scheduling.
+
+**Expected evidence:** the weight-two stream receives four of six positions and
+the other stream receives two without starvation.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k weighted_fair_merge_makes_each_share_observable
+```
+
+Earlier contract preserved: Module 07 still owns each tenant capability and its
+resources; fairness only selects among already described streams.

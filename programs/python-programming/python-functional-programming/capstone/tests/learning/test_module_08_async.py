@@ -9,11 +9,13 @@ from funcpipe_rag.domain.effects.async_ import (
     AsyncGen,
     AsyncPlan,
     BackpressurePolicy,
+    FairnessPolicy,
     FakeClock,
     RetryPolicy,
     TimeoutPolicy,
     async_gen_bounded_map,
     async_gen_from_list,
+    async_gen_fair_merge,
     async_gen_map,
     async_lift,
     async_with_resilience,
@@ -165,3 +167,34 @@ def test_fake_clock_replays_the_same_timeout_decision() -> None:
     assert isinstance(result, Err)
     assert result.error.code == "TIMEOUT"
     assert elapsed == 0.051
+
+
+def test_weighted_fair_merge_makes_each_share_observable() -> None:
+    """A two-to-one policy gives both ready streams progress in every cycle."""
+
+    def tagged_stream(tag: str) -> AsyncGen[str]:
+        async def generate() -> AsyncIterator[Result[str, ErrInfo]]:
+            index = 0
+            while True:
+                yield Ok(f"{tag}-{index}")
+                index += 1
+
+        return generate
+
+    merged = async_gen_fair_merge(
+        [tagged_stream("A"), tagged_stream("B")],
+        FairnessPolicy(weights={0: 2, 1: 1}, max_buffer_per_stream=2),
+    )
+
+    async def consume_prefix() -> list[Result[str, ErrInfo]]:
+        iterator = merged()
+        prefix = [await anext(iterator) for _ in range(6)]
+        await iterator.aclose()
+        return prefix
+
+    results = asyncio.run(consume_prefix())
+    tags = [item.value.split("-")[0] for item in results if isinstance(item, Ok)]
+
+    assert tags == ["A", "B", "A", "A", "B", "A"]
+    assert tags.count("A") == 4
+    assert tags.count("B") == 2

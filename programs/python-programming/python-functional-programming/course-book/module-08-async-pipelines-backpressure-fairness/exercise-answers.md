@@ -118,3 +118,22 @@ Common wrong turns:
 The appropriate evidence is structural: equal typed results, equal logical-time
 observations, and no real delay. Production cancellation still belongs in a
 narrow integration test using the actual timeout context.
+
+## Fairness: inspect a weighted prefix
+
+With weights `{0: 1, 1: 2}`, the selector compares emitted-count divided by
+weight and breaks equal ratios by lower stream index. Over six selections, the
+tags are `A, B, B, A, B, B`: two positions for A and four for B. Both streams
+are assumed to remain ready throughout the observation.
+
+Common wrong turns:
+
+- checking only final counts misses a starving prefix;
+- adding sleeps changes readiness and tests the event loop instead of policy;
+- leaving an infinite iterator open abandons both source iterators;
+- claiming six values prove long-run proportionality overstates the example.
+
+The small trace explains the selection rule. Property tests provide broader
+evidence across weights and prefix lengths. Rate limiting can then wrap the fair
+merge to cap total throughput without changing which ready stream owns each
+position.
