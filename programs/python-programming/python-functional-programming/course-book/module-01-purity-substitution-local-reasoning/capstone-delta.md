@@ -57,7 +57,8 @@ policy, or asynchronous execution.
 | readable orchestration | `full_rag.py` | legacy and pure forms can be compared without pretending they have identical representations |
 | minimal composition | `fp.py`, `rag_pipe.py` | functions are values; `fmap`, `flow`, and `RagPipe.then` expose composition choices |
 | effect ownership | `rag_shell.py` | file reads and writes stay outside `full_rag` |
-| executable laws | `tests/test_laws.py`, `tests/learning/test_module_01_purity_foundations.py` | the teaching claims are checked against the tracked state |
+| executable core laws | `tests/test_laws.py`, `tests/learning/test_module_01_purity_foundations.py` | value, stage, and pipeline claims are checked without file I/O |
+| executable boundary contract | `tests/learning/test_module_01_shell_boundary.py` | CSV parsing, pure-core delegation, JSONL serialization, and failure ownership are checked at the shell |
 
 All paths are relative to:
 
@@ -94,7 +95,7 @@ its returned value when its explicit inputs are fixed.
 
 ## Proof and laws
 
-The Module 01 learning proof checks claims a learner should use in review:
+The six-test core proof checks claims a learner should use in review:
 
 - invalid boolean chunk sizes cannot masquerade as integers;
 - frozen input values reject field reassignment;
@@ -105,16 +106,29 @@ The Module 01 learning proof checks claims a learner should use in review:
 - reversing unique input documents does not change canonical output;
 - applying canonical deduplication again does not change completed output.
 
-From the program root:
+The four-test shell proof checks a different class of claim:
+
+- valid CSV input produces JSONL values equal to calling `full_rag` on the
+  corresponding `RawDoc` values;
+- the input file remains unchanged;
+- a header-only file produces an empty output file;
+- an invalid row becomes a contextual `ValueError` before an output file exists;
+- a missing input path remains a `FileNotFoundError`.
+
+From the repository root, run the two proofs independently:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-01/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-proof
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-shell-proof
 ```
 
 Property-based coverage remains in `tests/test_laws.py`. The learning proof is the
-short, named route; the law suite explores a wider input space.
+short, named route; the law suite explores a wider input space. The shell proof does
+not make `rag_shell` pure. It establishes that the effectful adapter preserves the
+pure core's meaning at its serialized boundary and that selected failures occur on
+the expected side of output creation.
 
 ## Preserved behavior
 
@@ -126,7 +140,9 @@ the baseline every later state must carry:
 - embedding is deterministic and local;
 - canonical output is independent of unique document input order;
 - pure stages perform no file or process I/O;
-- the shell calls the same pure `full_rag` used by tests.
+- the shell serializes the same chunk values returned by the pure `full_rag`;
+- parse failure occurs before output creation, while a missing path keeps the
+  filesystem's native exception type.
 
 The legacy comparison proves chunk metadata preservation. It does not claim that the
 legacy dictionary representation equals the immutable `Chunk` representation.
@@ -153,8 +169,16 @@ That worktree is generated evidence, not the editing source.
 
 Modules 02 through 09 and the live Module 10 capstone inherit Module 01's value and
 purity contract. A correction to a baseline invariant or learning proof must be
-carried through all of them. Later modules may move files into clearer packages or
-change collection strategy, but they must not silently discard these laws.
+carried through all of them.
+
+The exact `rag_shell` API is not copied forward. Module 02 replaces it with
+data-first API functions plus `shells/rag_api_shell.py`, including explicit reader
+and writer adapters. Its proof must therefore test that evolved contract rather
+than import a historical function merely to keep a filename stable. Later storage,
+failure, and asynchronous states likewise need boundary tests appropriate to their
+own adapters. What persists is the review question: does the effectful boundary
+preserve the pure core's successful values and own only the failures its contract
+claims?
 
 ## Move-forward boundary
 
@@ -169,5 +193,5 @@ composition, canonicalization, and a thin effect shell. It does not yet prove:
 - adapter compatibility.
 
 Move to Module 02 when you can trace one document from `RawDoc` to `Chunk`, classify
-every step as value transformation or effect, and point to a test that would fail if
-the baseline meaning changed.
+every step as value transformation or effect, and point separately to the core proof
+and the boundary proof that would fail if the baseline meaning changed.
