@@ -36,6 +36,14 @@ capstone-foundation-types: ## Check the tracked Module 01 typed source
 capstone-shell-proof: ## Run the tracked Module 01 shell boundary proof
 	@$(RUN_CAPSTONE) shell-proof
 
+.PHONY: capstone-data-api-proof
+capstone-data-api-proof: ## Run the tracked Module 02 data-first API laws
+	@$(RUN_CAPSTONE) data-api-proof
+
+.PHONY: capstone-data-shell-proof
+capstone-data-shell-proof: ## Run the tracked Module 02 filesystem boundary proof
+	@$(RUN_CAPSTONE) data-shell-proof
+
 .PHONY: demo
 demo: ## Build the learner-facing capstone walkthrough
 	@$(RUN_CAPSTONE) demo

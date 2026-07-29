@@ -30,6 +30,14 @@ capstone-foundation-types: ## Check the selected program's first typed capstone 
 capstone-shell-proof: ## Run the selected program's first boundary proof
 	@$(RUN_PROGRAM) capstone-shell-proof
 
+.PHONY: capstone-data-api-proof
+capstone-data-api-proof: ## Run the selected program's data-first API proof
+	@$(RUN_PROGRAM) capstone-data-api-proof
+
+.PHONY: capstone-data-shell-proof
+capstone-data-shell-proof: ## Run the selected program's Result-bearing filesystem proof
+	@$(RUN_PROGRAM) capstone-data-shell-proof
+
 .PHONY: demo
 demo: ## Run the selected program's learner-facing capstone walkthrough
 	@$(RUN_PROGRAM) demo

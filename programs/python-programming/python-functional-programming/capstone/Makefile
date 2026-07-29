@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test foundation-proof foundation-types shell-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
+.PHONY: install test foundation-proof foundation-types shell-proof data-api-proof data-shell-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -33,6 +33,9 @@ FOUNDATION_STATE := module-reference-states/module-01
 FOUNDATION_PROOF := $(FOUNDATION_STATE)/tests/learning/test_module_01_purity_foundations.py
 FOUNDATION_TYPES := $(FOUNDATION_STATE)/src/funcpipe_rag
 SHELL_PROOF := $(FOUNDATION_STATE)/tests/learning/test_module_01_shell_boundary.py
+DATA_API_STATE := module-reference-states/module-02
+DATA_API_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_data_first_apis.py
+DATA_SHELL_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_filesystem_boundary.py
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
 INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-functional-programming
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-functional-programming
@@ -75,6 +78,12 @@ foundation-types: install ## Strictly check the first tracked typed RAG state
 
 shell-proof: install ## Run the first tracked RAG shell boundary proof
 	PYTHONPATH="$(abspath $(FOUNDATION_STATE)/src)" $(PYTEST) -q "$(SHELL_PROOF)"
+
+data-api-proof: install ## Run the tracked data-first API and configuration laws
+	PYTHONPATH="$(abspath $(DATA_API_STATE)/src)" $(PYTEST) -q "$(DATA_API_PROOF)"
+
+data-shell-proof: install ## Run the tracked Result-bearing filesystem boundary proof
+	PYTHONPATH="$(abspath $(DATA_API_STATE)/src)" $(PYTEST) -q "$(DATA_SHELL_PROOF)"
 
 demo: tour ## Build the learner-facing capstone walkthrough
 
