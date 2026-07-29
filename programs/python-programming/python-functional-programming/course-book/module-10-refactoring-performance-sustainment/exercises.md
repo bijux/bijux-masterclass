@@ -36,3 +36,31 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 
 Earlier contract preserved: Module 09 package boundaries and proof routes remain
 unchanged; only their review observation becomes accurate.
+
+## Performance budgeting: reject a one-dimensional win
+
+**Starting context:** read `review/performance.py` and
+`test_performance_budget_is_a_pure_multi_dimensional_decision`.
+
+**Objective:** evaluate an alternative observation that halves latency but doubles
+peak memory, then decide whether it can replace the current RAG stage.
+
+**Constraints:**
+
+- do not call a clock or profiler inside `evaluate_budget`;
+- keep latency, memory, and throughput thresholds explicit;
+- report every violated dimension in stable order;
+- require semantic equivalence before considering the budget result.
+
+**Expected evidence:** the same immutable observation always produces the same
+decision, and a latency win cannot hide a memory or throughput failure.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k performance_budget_is_a_pure_multi_dimensional_decision
+```
+
+Earlier contract preserved: the optimized Module 05 embedding path must still
+produce equivalent `Chunk` values before performance can justify selecting it.

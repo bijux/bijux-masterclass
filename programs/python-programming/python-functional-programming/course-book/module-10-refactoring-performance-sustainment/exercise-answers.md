@@ -27,3 +27,25 @@ only a trustworthy inventory observation.
 In FuncPipe, this changes the review shell and leaves the Module 09 RAG contracts
 untouched. That is the narrowest safe first refactor: repair the evidence before
 using it to justify larger work.
+
+## Performance budgeting: reject a one-dimensional win
+
+The correct decision evaluates all declared dimensions. An observation of
+`(latency=60 ms, peak memory=48 MB, throughput=30/s)` fails a budget of
+`(80 ms, 32 MB, 25/s)` because memory is over its maximum. The latency and
+throughput wins do not compensate for an independent hard limit.
+
+Common wrong turns:
+
+- timing inside the decision function makes tests depend on scheduler noise;
+- averaging unlike dimensions invents a meaningless unit;
+- returning only `False` hides the evidence needed to choose the next change;
+- benchmarking non-equivalent outputs rewards a semantic regression.
+
+The test proves deterministic threshold evaluation and complete violation
+reporting for supplied values. It does not prove measurement validity, workload
+representativeness, or statistical significance.
+
+In FuncPipe, performance is a selection pressure on already-correct RAG behavior.
+The budget can reject an implementation, but it cannot redefine what a valid
+`Chunk` or ranked result means.

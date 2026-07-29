@@ -5,6 +5,11 @@ from __future__ import annotations
 from pathlib import Path
 
 from funcpipe_rag.boundaries.shells.review_cli import build_summary
+from funcpipe_rag.review.performance import (
+    PerformanceBudget,
+    PerformanceObservation,
+    evaluate_budget,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -23,3 +28,23 @@ def test_review_inventory_counts_nested_sources_once() -> None:
     }
 
     assert rag_group["python_file_count"] == len(observed_files)
+
+
+def test_performance_budget_is_a_pure_multi_dimensional_decision() -> None:
+    """A faster stage still fails review when it exceeds the memory contract."""
+
+    budget = PerformanceBudget(
+        max_latency_ms=80,
+        max_peak_memory_mb=32,
+        min_throughput_per_second=25,
+    )
+    observation = PerformanceObservation(
+        latency_ms=60,
+        peak_memory_mb=48,
+        throughput_per_second=30,
+    )
+
+    decision = evaluate_budget(budget, observation)
+
+    assert decision.within_budget is False
+    assert decision.violations == ("peak_memory",)

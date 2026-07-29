@@ -84,6 +84,44 @@ These ensure optimizations are safe and budgeted.
 **Choose by profile: FP default; escalate if budget missed.**
 
 ---
+## FuncPipe Lab: Decide from Measurements, Do Not Measure in the Rule
+
+`funcpipe_rag.review.performance` models a budget, an observation, and the pure
+decision between them. The shell or benchmark owns clocks and memory sampling.
+The rule receives ordinary immutable values:
+
+```python
+from funcpipe_rag.review.performance import (
+    PerformanceBudget,
+    PerformanceObservation,
+    evaluate_budget,
+)
+
+budget = PerformanceBudget(80, 32, 25)
+observed = PerformanceObservation(60, 48, 30)
+decision = evaluate_budget(budget, observed)
+
+assert decision.within_budget is False
+assert decision.violations == ("peak_memory",)
+```
+
+The optimized route is faster and has sufficient throughput, but it is still not
+acceptable: peak memory crosses a declared boundary. This is why a single timing
+number is not a performance contract.
+
+Run the executable example:
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k performance_budget_is_a_pure_multi_dimensional_decision
+```
+
+The fixed observation makes the decision test deterministic. It does not prove
+that the observation was collected correctly or that one local run represents
+production. Those are separate benchmark-design questions.
+
+---
 ## 3. Public API (Wrappers for Optimizations)
 Wrappers for common opts; e.g., budgeted stage.
 
