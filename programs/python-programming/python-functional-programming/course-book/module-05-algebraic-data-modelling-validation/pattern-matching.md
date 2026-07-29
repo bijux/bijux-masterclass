@@ -255,6 +255,27 @@ def test_result_match_exhaustive(res):
 | Positional matching           | Brittle on field reorder           | Prefer keyword patterns (`value=v`)      |
 | Bare name capture             | Unexpected rebinding               | Use literals or qualified names          |
 
+## Runnable RAG learning lab
+
+Run the consumer of the chunk outcome union:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k pattern_matching_handles_every_chunk_outcome
+```
+
+`describe_chunk_outcome` destructures the embedding length from `Success` and
+the code and attempt from `Failure`. The parameter table makes the public label
+for every current variant observable. The final `assert_never` is deliberately
+not a wildcard: when the union gains a variant, the type checker points back to
+this consumer.
+
+Runtime cases alone do not prove static exhaustiveness, and `assert_never`
+alone does not prove that a returned label is correct. Keep both the typed
+closed union and the behavior assertions. Complete the exercise by adding a
+variant without weakening the final branch.
+
 ## 7. Pre-Core Quiz
 
 1. `match` replaces what? → **`if isinstance` chains**  

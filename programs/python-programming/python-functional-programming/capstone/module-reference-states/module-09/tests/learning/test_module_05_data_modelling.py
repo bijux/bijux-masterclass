@@ -63,10 +63,17 @@ def test_product_and_sum_types_make_chunk_outcomes_explicit() -> None:
     assert chunk_from_dict(chunk_to_dict(prepared)) == prepared
     assert chunk_state_from_dict(chunk_state_to_dict(ready)) == ready
     assert chunk_state_from_dict(chunk_state_to_dict(rejected)) == rejected
-    assert [describe_chunk_outcome(state) for state in (ready, rejected)] == [
-        "ready:2",
-        "failed:EMBED_FAIL:attempt-2",
-    ]
+
+
+@pytest.mark.parametrize(
+    ("state", "expected"),
+    [
+        (success(embedding=(0.25, 0.75), metadata={"model": "local"}), "ready:2"),
+        (failure(code="EMBED_FAIL", msg="offline", attempt=2), "failed:EMBED_FAIL:attempt-2"),
+    ],
+)
+def test_pattern_matching_handles_every_chunk_outcome(state: ChunkState, expected: str) -> None:
+    assert describe_chunk_outcome(state) == expected
 
 
 def test_processing_state_allows_only_declared_rag_transitions() -> None:
