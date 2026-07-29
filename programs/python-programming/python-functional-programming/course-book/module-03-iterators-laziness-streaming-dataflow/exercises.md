@@ -4,12 +4,11 @@ Work against `capstone/module-reference-states/module-03`. Keep Module 02's
 filtering, cleaning, chunk values, metadata, and order unchanged unless an exercise
 explicitly names a different policy.
 
-Run the existing learning proof before editing:
+Run the focused learning proof before editing:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-03/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-streaming-rag-proof
 ```
 
 Use [Exercise Answers](exercise-answers.md) only after recording your prediction and
@@ -93,22 +92,30 @@ Acceptance checks:
 Starting context: the module provides `Source`, `Transform`, and
 `make_gen_rag_fn`.
 
-Objective: classify one proposed helper as a source, transform, sink, or unnecessary
-factory. Write its type and ownership contract before implementing it.
+Objective: audit `make_gen_rag_fn` as a configured complete RAG factory, then
+classify one proposed helper as a source, transform, sink, or unnecessary factory.
+Write each type and ownership contract before implementing anything.
 
 Constraints:
 
 - per-run mutable state must be created inside the run;
 - configuration captured by a factory must be explicit;
 - tests must use replayable input or call a source again for each run.
+- distinguish a pre-embedding raw-chunk fence from a final unique-output fence.
 
-Expected evidence: one value-equivalence test and one construction-versus-demand
-test.
+Expected evidence:
+
+- final factory values contain embeddings and equal `stream_rag_chunks`;
+- canonical input order matches `full_rag_api_docs`;
+- out-of-order input demonstrates encounter order rather than canonical sorting;
+- duplicate input proves a two-output fence may request three documents;
+- one construction-versus-demand test.
 
 Acceptance checks:
 
 - the helper's name describes domain behavior, not generic “processing”;
 - two runs are independent when the input contract permits replay;
+- the stated limit names what it bounds;
 - no intermediate list is introduced without a stated consumer need.
 
 ## Exercise 5: Add safe observation
@@ -143,7 +150,8 @@ Acceptance checks:
 You are ready for Module 04 when you can present:
 
 - a value assertion and a demand assertion for the same pipeline;
+- a distinction between raw-chunk and final unique-output fences;
 - one deliberate materialization boundary;
 - one stateful streaming helper with its real space bound;
 - a failure whose timing depends on demand;
-- the command that proves Module 03 behavior in the matching reference state.
+- the focused Make command that proves Module 03 behavior.
