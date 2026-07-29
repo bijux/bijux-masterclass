@@ -12,7 +12,7 @@ from collections import deque
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from itertools import dropwhile, groupby, islice
 from operator import attrgetter
-from typing import TypeVar
+from typing import Literal, TypeVar
 
 from funcpipe_rag.api.types import Observations, TraceLens
 from funcpipe_rag.core.rules_dsl import any_doc
@@ -25,7 +25,13 @@ from funcpipe_rag.fp import (
     fmap,
     instrument_stage,
 )
-from funcpipe_rag.streaming import ensure_contiguous, trace_iter as _trace_iter
+from funcpipe_rag.streaming import (
+    Source,
+    ensure_contiguous,
+    make_chain,
+    make_roundrobin,
+    trace_iter as _trace_iter,
+)
 from funcpipe_rag.pipeline_stages import (
     embed_chunk,
     iter_chunk_doc,
@@ -39,6 +45,7 @@ from funcpipe_rag.result import Err, Ok, Result
 from .config import RagBoundaryDeps, RagConfig, RagCoreDeps
 
 T = TypeVar("T")
+SourceSchedule = Literal["sequential", "round_robin"]
 
 
 def _identity_iter(items: Iterable[RawDoc]) -> Iterable[RawDoc]:
@@ -166,6 +173,25 @@ def stream_rag_chunks(
     if max_chunks is None:
         return deduped
     return islice(deduped, max_chunks)
+
+
+def stream_rag_sources(
+    sources: Sequence[Source[RawDoc]],
+    config: RagConfig,
+    deps: RagCoreDeps,
+    *,
+    schedule: SourceSchedule = "sequential",
+    max_chunks: int | None = None,
+) -> Iterator[Chunk]:
+    """Merge replayable document sources before running the complete lazy RAG path."""
+
+    if schedule == "sequential":
+        merged = make_chain(*sources)
+    elif schedule == "round_robin":
+        merged = make_roundrobin(*sources)
+    else:
+        raise ValueError(f"unknown source schedule: {schedule}")
+    return stream_rag_chunks(merged(), config, deps, max_chunks=max_chunks)
 
 
 def gen_bounded_chunks(
@@ -415,6 +441,8 @@ __all__ = [
     "gen_stream_embedded",
     "gen_stream_deduped",
     "stream_rag_chunks",
+    "stream_rag_sources",
+    "SourceSchedule",
     "gen_bounded_chunks",
     "safe_rag_pipeline",
     "multicast",
