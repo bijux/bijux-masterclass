@@ -128,3 +128,34 @@ PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
 
 Earlier contract preserved: Module 03 streaming remains demand-driven; Module
 07 adds deterministic cleanup without replacing the iterator model.
+
+## Functional logging: separate trace construction from emission
+
+**Starting context:** read `trace_stage`, `trace_value`, `run_writer`, and
+`CollectingLogger`, then run
+`test_structured_logs_remain_data_until_the_shell_emits_them`.
+
+**Objective:** add a third `TRACE` entry containing the first document
+identifier and prove its position before draining all entries to the logger.
+
+**Constraints:**
+
+- keep the primary document list unchanged;
+- construct only `LogEntry` values in the Writer program;
+- assert the logger is empty before the shell loop;
+- preserve entry order.
+
+**Expected evidence:** the Writer returns the original identifiers and three
+ordered entries; the collecting logger receives them only during shell
+interpretation.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k structured_logs_remain_data_until_the_shell_emits_them
+```
+
+Earlier contract preserved: Module 06 Writer composition still carries the same
+primary value; Module 07 gives its accumulated data a domain-owned log shape.

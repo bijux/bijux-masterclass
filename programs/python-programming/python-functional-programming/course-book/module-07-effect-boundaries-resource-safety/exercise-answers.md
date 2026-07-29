@@ -93,3 +93,21 @@ Common wrong turns:
 The proof establishes deterministic cleanup for cooperative early termination.
 It does not cover process crashes or a consumer that abandons the iterator
 without closing it.
+
+## Functional logging: separate trace construction from emission
+
+Add `trace_value("first_doc", "d1", level="TRACE")` before the final
+`writer_pure`. Writer concatenates entry tuples in semantic execution order, so
+the new entry follows the count and precedes the returned document list.
+
+Common wrong turns:
+
+- calling `logger.log` inside an `and_then` callback performs an effect in the
+  description;
+- returning log strings instead of the document list changes the primary value;
+- sorting entries after construction destroys execution order;
+- checking only the final logger contents misses premature emission.
+
+The empty logger assertion distinguishes accumulating data from emitting it.
+The final equality proves the shell forwarded every entry in order. This does
+not prove a console, file, or remote logger will successfully persist output.

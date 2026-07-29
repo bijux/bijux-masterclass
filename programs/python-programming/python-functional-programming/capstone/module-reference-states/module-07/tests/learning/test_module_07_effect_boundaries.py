@@ -11,7 +11,10 @@ import pytest
 from funcpipe_rag.core.rag_types import RawDoc
 from funcpipe_rag.domain.capabilities import StorageRead
 from funcpipe_rag.domain.effects import IOPlan, io_delay, io_map, perform
-from funcpipe_rag.infra.adapters import FileStorage, InMemoryStorage
+from funcpipe_rag.domain.logging import LogEntry, trace_stage, trace_value
+from funcpipe_rag.fp.effects.writer import pure as writer_pure
+from funcpipe_rag.fp.effects.writer import run_writer
+from funcpipe_rag.infra.adapters import CollectingLogger, FileStorage, InMemoryStorage
 from funcpipe_rag.result.types import ErrInfo, Ok, Result
 
 
@@ -106,3 +109,27 @@ def test_partial_storage_read_closes_the_owned_file(monkeypatch: pytest.MonkeyPa
     iterator.close()
 
     assert csv_file.closed
+
+
+def test_structured_logs_remain_data_until_the_shell_emits_them() -> None:
+    """Writer records an inspectable trace before a Logger performs output."""
+
+    program = trace_stage("read docs").and_then(
+        lambda _: trace_value("doc_count", 2).and_then(
+            lambda _: writer_pure(["d1", "d2"])
+        )
+    )
+    doc_ids, entries = run_writer(program)
+    logger = CollectingLogger()
+
+    assert doc_ids == ["d1", "d2"]
+    assert entries == (
+        LogEntry(level="INFO", msg="read docs"),
+        LogEntry(level="DEBUG", msg="doc_count=2"),
+    )
+    assert logger.entries == []
+
+    for entry in entries:
+        logger.log(entry)
+
+    assert logger.entries == list(entries)
