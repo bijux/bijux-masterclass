@@ -28,6 +28,10 @@ capstone-test: ## Run only the capstone unit and integration test suite
 capstone-foundation-proof: ## Run the tracked Module 01 foundation laws
 	@$(RUN_CAPSTONE) foundation-proof
 
+.PHONY: capstone-shell-proof
+capstone-shell-proof: ## Run the tracked Module 01 shell boundary proof
+	@$(RUN_CAPSTONE) shell-proof
+
 .PHONY: demo
 demo: ## Build the learner-facing capstone walkthrough
 	@$(RUN_CAPSTONE) demo

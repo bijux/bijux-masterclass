@@ -22,6 +22,10 @@ capstone-test: ## Run the selected program's capstone test suite
 capstone-foundation-proof: ## Run the selected program's smallest cumulative capstone proof
 	@$(RUN_PROGRAM) capstone-foundation-proof
 
+.PHONY: capstone-shell-proof
+capstone-shell-proof: ## Run the selected program's first boundary proof
+	@$(RUN_PROGRAM) capstone-shell-proof
+
 .PHONY: demo
 demo: ## Run the selected program's learner-facing capstone walkthrough
 	@$(RUN_PROGRAM) demo

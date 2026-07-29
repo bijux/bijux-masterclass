@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test foundation-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
+.PHONY: install test foundation-proof shell-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -31,6 +31,7 @@ HATCH      := $(VENV)/bin/hatch
 PYTEST_ARGS ?=
 FOUNDATION_STATE := module-reference-states/module-01
 FOUNDATION_PROOF := $(FOUNDATION_STATE)/tests/learning/test_module_01_purity_foundations.py
+SHELL_PROOF := $(FOUNDATION_STATE)/tests/learning/test_module_01_shell_boundary.py
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
 INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-functional-programming
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-functional-programming
@@ -65,6 +66,9 @@ test: install ## Run the test suite
 
 foundation-proof: install ## Run the first tracked cumulative RAG laws
 	PYTHONPATH="$(abspath $(FOUNDATION_STATE)/src)" $(PYTEST) -q "$(FOUNDATION_PROOF)"
+
+shell-proof: install ## Run the first tracked RAG shell boundary proof
+	PYTHONPATH="$(abspath $(FOUNDATION_STATE)/src)" $(PYTEST) -q "$(SHELL_PROOF)"
 
 demo: tour ## Build the learner-facing capstone walkthrough
 
