@@ -18,12 +18,14 @@ from funcpipe_rag import (
     as_source,
     compose_transforms,
     fence_k,
+    full_rag_api_docs,
     gen_bounded_chunks,
     gen_overlapping_chunks,
     get_deps,
     make_chain,
     multicast,
     sliding_windows,
+    stream_rag_chunks,
     throttle,
 )
 
@@ -157,7 +159,7 @@ def test_observation_is_value_neutral_lazy_and_sample_bounded() -> None:
     assert lens.samples == [0, 1]
 
 
-def test_default_streaming_chunks_preserve_module_02_values_and_order() -> None:
+def test_complete_stream_matches_module_02_for_canonical_input_order() -> None:
     docs = (
         RawDoc("doc-a", "title", "A " * 100, "cs.AI"),
         RawDoc("doc-b", "title", "B " * 100, "cs.AI"),
@@ -165,17 +167,49 @@ def test_default_streaming_chunks_preserve_module_02_values_and_order() -> None:
     config = RagConfig(env=RagEnv(chunk_size=50))
     deps = get_deps(config)
 
-    unfenced = list(gen_bounded_chunks(docs, config, deps))
-    generously_fenced = list(gen_bounded_chunks(docs, config, deps, max_chunks=100))
+    streamed = list(stream_rag_chunks(docs, config, deps))
+    eager, _ = full_rag_api_docs(docs, config, deps)
 
-    assert generously_fenced == unfenced
-    assert [chunk.doc_id for chunk in unfenced] == [
-        "doc-a",
-        "doc-a",
-        "doc-a",
-        "doc-a",
-        "doc-b",
-        "doc-b",
-        "doc-b",
-        "doc-b",
-    ]
+    assert streamed == eager
+    assert all(len(chunk.embedding) == 16 for chunk in streamed)
+
+
+def test_streaming_dedup_preserves_encounter_order_instead_of_sorting() -> None:
+    docs = (
+        RawDoc("doc-b", "title", "B " * 30, "cs.AI"),
+        RawDoc("doc-a", "title", "A " * 30, "cs.AI"),
+    )
+    config = RagConfig(env=RagEnv(chunk_size=100))
+    deps = get_deps(config)
+
+    streamed = list(stream_rag_chunks(docs, config, deps))
+    eager, _ = full_rag_api_docs(docs, config, deps)
+
+    assert [chunk.doc_id for chunk in streamed] == ["doc-b", "doc-a"]
+    assert [chunk.doc_id for chunk in eager] == ["doc-a", "doc-b"]
+    assert sorted(streamed, key=lambda chunk: (chunk.doc_id, chunk.start)) == eager
+
+
+def test_unique_output_fence_may_pull_duplicates_to_fill_prefix() -> None:
+    requested: list[str] = []
+
+    def documents() -> Iterator[RawDoc]:
+        for doc_id, abstract in (
+            ("duplicate", "same"),
+            ("duplicate", "same"),
+            ("unique", "other"),
+        ):
+            requested.append(doc_id)
+            yield RawDoc(doc_id, "title", abstract, "cs.AI")
+
+    config = RagConfig(env=RagEnv(chunk_size=100))
+    chunks = stream_rag_chunks(
+        documents(),
+        config,
+        get_deps(config),
+        max_chunks=2,
+    )
+
+    assert requested == []
+    assert [chunk.doc_id for chunk in chunks] == ["duplicate", "unique"]
+    assert requested == ["duplicate", "duplicate", "unique"]
