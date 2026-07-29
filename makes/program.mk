@@ -22,6 +22,10 @@ capstone-test: ## Run the selected program's capstone test suite
 capstone-foundation-proof: ## Run the selected program's smallest cumulative capstone proof
 	@$(RUN_PROGRAM) capstone-foundation-proof
 
+.PHONY: capstone-foundation-types
+capstone-foundation-types: ## Check the selected program's first typed capstone state
+	@$(RUN_PROGRAM) capstone-foundation-types
+
 .PHONY: capstone-shell-proof
 capstone-shell-proof: ## Run the selected program's first boundary proof
 	@$(RUN_PROGRAM) capstone-shell-proof
