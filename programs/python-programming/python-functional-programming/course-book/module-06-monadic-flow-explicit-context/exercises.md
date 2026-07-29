@@ -197,3 +197,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: Module 05 typed failures retain provenance while
 unexpected defects remain exceptions.
+
+## Layered containers: choose the dominant outcome
+
+**Starting context:** run
+`test_layer_order_distinguishes_missing_document_from_retrieval_failure` and
+inspect both transpose helpers.
+
+**Objective:** add a fourth case for an empty query and decide whether it is
+absence or a typed input failure before transposing.
+
+**Constraints:**
+
+- state the public meaning before choosing the container;
+- keep retrieval failure distinct from no match;
+- round-trip every declared case;
+- do not use `None`.
+
+**Expected evidence:** each case retains its meaning after two transposes, and
+the chosen empty-query contract is explicit in the type and assertion.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k layer_order_distinguishes_missing_document_from_retrieval_failure
+```
+
+Earlier contract preserved: Module 05 `Option` absence and `Result` failure
+remain separate observable states.

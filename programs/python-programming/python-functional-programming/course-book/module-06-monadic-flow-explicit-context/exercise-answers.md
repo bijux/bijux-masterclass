@@ -136,3 +136,20 @@ Common wrong turns:
 The proof establishes the declared exception classification for this adapter
 and domain check. It does not prove that every `ValueError` in the application
 is expected or recoverable.
+
+## Layered containers: choose the dominant outcome
+
+An empty query is usually a caller input failure, so a defensible choice is
+`Err(ErrInfo(code="EMPTY_QUERY", ...))`. That keeps it distinct from a valid
+query with no match, represented by `Ok(NoneVal())`.
+
+Common wrong turns:
+
+- converting every non-result into absence hides failed retrieval;
+- using `None` removes the explicit Option contract;
+- transposing without first stating dominance makes the type accidental;
+- checking only one direction misses loss in the reverse mapping.
+
+The proof establishes the shipped transpose contract and the chosen four-case
+classification. It does not prove that every product should classify empty
+queries the same way.

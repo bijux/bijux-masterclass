@@ -44,6 +44,33 @@ This is the core that shows you how to stack the containers from earlier cores i
 
 Use this when you have Reader, State, Result, and Option working individually and now need to combine them without introducing complexity.
 
+## Runnable lab: keep “not found” distinct from retrieval failure
+
+A RAG lookup can succeed without a matching document or fail before it can
+answer. `Result[Option[CleanDoc], ErrInfo]` preserves both meanings:
+
+```python
+found = Ok(Some(doc))
+missing = Ok(NoneVal())
+failed = Err(ErrInfo(code="RETRIEVAL", msg="index unavailable"))
+
+assert transpose_result_option(found) == Some(Ok(doc))
+assert transpose_result_option(missing) == NoneVal()
+assert transpose_result_option(failed) == Some(Err(failed.error))
+```
+
+Run the proof, which also transposes each value back to its original form:
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k layer_order_distinguishes_missing_document_from_retrieval_failure
+```
+
+Mapping both missing and failed retrieval to `NoneVal` would hide an operational
+failure. Treating `Ok(NoneVal())` as `Err` would invent a failure where the
+query completed normally.
+
 **Outcome**
 1. You will confidently nest containers like `Reader[Config, Result[T, E]]` or `State[S, Result[T, E]]`.
 2. You will understand exactly how layer order controls short-circuit and resource usage.

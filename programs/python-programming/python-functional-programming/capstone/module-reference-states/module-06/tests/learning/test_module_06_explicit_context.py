@@ -10,9 +10,25 @@ from hypothesis import strategies as st
 
 from funcpipe_rag.boundaries.adapters.exception_bridge import try_result
 from funcpipe_rag.core.rag_types import CleanDoc, RagEnv, RawDoc
-from funcpipe_rag.fp.effects import Reader, State, asks, run_state
+from funcpipe_rag.fp.effects import (
+    Reader,
+    State,
+    asks,
+    run_state,
+    transpose_option_result,
+    transpose_result_option,
+)
 from funcpipe_rag.rag.stages import clean_doc, iter_chunk_doc
-from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result, liftA2
+from funcpipe_rag.result.types import (
+    Err,
+    ErrInfo,
+    NoneVal,
+    Ok,
+    Option,
+    Result,
+    Some,
+    liftA2,
+)
 
 
 def test_result_chain_short_circuits_before_rag_cleaning() -> None:
@@ -180,3 +196,26 @@ def test_exception_bridge_types_expected_config_failure_only() -> None:
             lambda error: ErrInfo(code="CONFIG_PARSE", msg=str(error)),
             exc_type=ValueError,
         )
+
+
+def test_layer_order_distinguishes_missing_document_from_retrieval_failure() -> None:
+    """Result outside Option preserves the difference between error and absence."""
+
+    doc = CleanDoc(
+        doc_id="found",
+        title="Found",
+        abstract="retrieved",
+        categories="fp",
+    )
+    found: Result[Option[CleanDoc], ErrInfo] = Ok(Some(doc))
+    missing: Result[Option[CleanDoc], ErrInfo] = Ok(NoneVal())
+    retrieval_error = ErrInfo(code="RETRIEVAL", msg="index unavailable")
+    failed: Result[Option[CleanDoc], ErrInfo] = Err(retrieval_error)
+
+    assert transpose_result_option(found) == Some(Ok(doc))
+    assert transpose_result_option(missing) == NoneVal()
+    assert transpose_result_option(failed) == Some(Err(retrieval_error))
+
+    assert transpose_option_result(transpose_result_option(found)) == found
+    assert transpose_option_result(transpose_result_option(missing)) == missing
+    assert transpose_option_result(transpose_result_option(failed)) == failed
