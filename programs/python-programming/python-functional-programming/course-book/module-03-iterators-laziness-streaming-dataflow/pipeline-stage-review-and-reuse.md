@@ -93,6 +93,48 @@ unique outputs. It may therefore pull more raw chunks than it emits. Use
 `gen_bounded_chunks` directly when the contract is instead “perform at most this
 many pre-embedding chunk operations.”
 
+## Audit `stream_rag_sources`
+
+`stream_rag_sources` is an application composition function, not another generic
+fan-in factory. Its inputs make ownership visible:
+
+```python
+stream_rag_sources(
+    sources: Sequence[Source[RawDoc]],
+    config: RagConfig,
+    deps: RagCoreDeps,
+    *,
+    schedule: SourceSchedule = "sequential",
+    max_chunks: int | None = None,
+) -> Iterator[Chunk]
+```
+
+- each `Source[RawDoc]` owns creation of one fresh document iterator;
+- the caller owns the immutable sequence of source factories;
+- `SourceSchedule` owns the cross-source encounter-order policy;
+- `stream_rag_sources` owns composition into the complete RAG chain;
+- the returned iterator owns one execution and cannot be restarted.
+
+The function earns a RAG-specific boundary because it rules out underspecified
+generic choices. It offers sequential and round-robin scheduling, whose
+preconditions it can state locally. It does not expose `make_merge`, because sorted
+fan-in requires every document source to satisfy the same key-order precondition.
+That proof belongs at the adapters creating those sources.
+
+Review the two schedules by values and demand:
+
+| Question | Sequential | Round robin |
+| --- | --- | --- |
+| Cross-source output | exhaust each source in order | one item from each active source per cycle |
+| First demand opens | first source only | every source iterator |
+| Per-source order | preserved | preserved |
+| Long first source | delays later sources | later active sources get turns |
+| Blocking `next()` | blocks the route | still blocks the route |
+
+Avoid a boolean such as `fair=True`. “Fair” would conceal whether the promise is
+synchronous turn-taking, non-blocking I/O, weighted priority, or async scheduling.
+The literal policy names the only behavior Module 03 implements.
+
 ## Test values and freshness separately
 
 ```python
@@ -114,6 +156,11 @@ execution timing. Neither alone proves that the iterator completes the RAG chain
 Also assert that returned values have embeddings and compare the unfenced,
 canonically ordered case with `full_rag_api_docs`.
 
+For multiple sources, add a third category: factory-opening timing. A tracked
+source should record once when called and again immediately before each document
+yield. That distinguishes round-robin creating every iterator from actually
+pulling a document from every iterator.
+
 ## When reuse is worth it
 
 Keep the factory form when:
@@ -133,18 +180,26 @@ Do not force it when:
 
 Before moving on:
 
-1. inspect `streaming/types.py`, `streaming/compose.py`, and `api/config.py` in the
-   Module 03 reference state;
-2. classify `as_source`, `fence_k`, and `make_gen_rag_fn` by ownership;
-3. run the complete streaming proof:
+1. inspect `streaming/types.py`, `streaming/fanin.py`, `api/core.py`, and
+   `api/config.py` in the Module 03 reference state;
+2. classify `as_source`, `fence_k`, `stream_rag_sources`, and `make_gen_rag_fn`
+   by ownership;
+3. run the multi-source proof:
+
+   ```bash
+   make PROGRAM=python-programming/python-functional-programming \
+     capstone-source-scheduling-proof
+   ```
+
+4. run the complete streaming proof:
 
    ```bash
    make PROGRAM=python-programming/python-functional-programming \
      capstone-streaming-rag-proof
    ```
 
-4. distinguish the raw-chunk fence from the unique-output fence;
-5. reject any abstraction whose demand and retained-state behavior cannot be stated
+5. distinguish the raw-chunk fence from the unique-output fence;
+6. reject any abstraction whose demand and retained-state behavior cannot be stated
    more simply than its implementation.
 
 ## Reflection
