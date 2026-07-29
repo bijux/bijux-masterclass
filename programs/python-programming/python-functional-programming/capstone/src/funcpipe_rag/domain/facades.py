@@ -14,7 +14,7 @@ from typing import Generic, Protocol, TypeVar
 from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding
 from funcpipe_rag.domain.effects import IOPlan, io_delay
 from funcpipe_rag.rag.stages import embed_chunk
-from funcpipe_rag.result.types import ErrInfo, Ok, Result
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
 K = TypeVar("K")
 T = TypeVar("T")
@@ -42,9 +42,12 @@ def deterministic_embedder_port(
         def embed_batch(self, items: list[Keyed[K, ChunkWithoutEmbedding]]) -> IOPlan[list[Keyed[K, Chunk]]]:
             def thunk() -> Result[list[Keyed[K, Chunk]], ErrInfo]:
                 out: list[Keyed[K, Chunk]] = []
-                for it in items:
-                    out.append(Keyed(key=it.key, value=embed_one(it.value)))
-                return Ok(out)
+                try:
+                    for it in items:
+                        out.append(Keyed(key=it.key, value=embed_one(it.value)))
+                    return Ok(out)
+                except Exception as exc:  # noqa: BLE001 - facade translates arbitrary client failures
+                    return Err(ErrInfo.from_exception(exc, stage="facade.embed_batch"))
 
             return io_delay(thunk)
 

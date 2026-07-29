@@ -3,6 +3,9 @@ from __future__ import annotations
 from collections.abc import Iterator
 
 from funcpipe_rag.boundaries.web.documents import parse_document_payloads
+from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding
+from funcpipe_rag.domain.effects import perform
+from funcpipe_rag.domain.facades import Keyed, deterministic_embedder_port
 from funcpipe_rag.interop.dataframes import normalize_records
 from funcpipe_rag.interop.stdlib_fp import merge_streams, running_sum
 from funcpipe_rag.interop.toolz_compat import compose, curried_filter, curried_map, pipe
@@ -131,3 +134,23 @@ def test_distributed_status_does_not_confuse_installation_with_implementation() 
     assert [status.name for status in statuses] == ["dask", "beam"]
     assert all(isinstance(status.installed, bool) for status in statuses)
     assert all(status.compiler_shipped is False for status in statuses)
+
+
+def test_facade_defers_client_failure_and_returns_it_as_data() -> None:
+    calls = 0
+
+    def failing_embedder(_chunk: ChunkWithoutEmbedding) -> Chunk:
+        nonlocal calls
+        calls += 1
+        raise ConnectionError("embedding service unavailable")
+
+    port = deterministic_embedder_port(embed_one=failing_embedder)
+    plan = port.embed_batch(
+        [Keyed(key="paper-1:0", value=ChunkWithoutEmbedding("paper-1", "text", 0, 4))]
+    )
+
+    assert calls == 0
+    result = perform(plan)
+    assert calls == 1
+    assert isinstance(result, Err)
+    assert result.error.stage == "facade.embed_batch"

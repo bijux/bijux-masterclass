@@ -199,3 +199,28 @@ execution behavior because the repository intentionally ships no compiler.
 
 In FuncPipe, the seam is valuable precisely because it prevents backend concerns
 from entering the core before a real scaling pressure and proof budget exist.
+
+## Functional facades: defer and translate client failure
+
+The shipped facade treats one `embed_batch` plan as atomic: if any call fails, the
+interpreted plan returns one `Err` and exposes no partial list. That policy avoids
+letting callers accidentally persist an incomplete batch as if it were complete.
+
+The fake embedder belongs inside the test boundary. Constructing the plan leaves
+its call count at zero; only `perform` executes it. The broad exception catch is
+appropriate here because this facade is the translation boundary for arbitrary
+client failures.
+
+Common wrong turns:
+
+- invoking the client while building `IOPlan` makes composition effectful
+- allowing `ConnectionError` to escape loses the application's typed failure
+  route
+- dropping `Keyed.key` prevents retry and deduplication decisions downstream
+
+The result proves deferral and exception translation for the deterministic
+embedder facade. It does not prove retry safety or remote idempotence; a real
+client adapter needs an explicit request-key and retry policy.
+
+In FuncPipe, the domain describes embedding work. A shell chooses when and how to
+interpret it, preserving the same review boundary used since Module 07.

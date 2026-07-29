@@ -203,3 +203,31 @@ pytest -q tests/learning/test_module_09_interop.py \
 
 Earlier contract preserved: Module 08's ordering, failure, and backpressure
 guarantees are requirements on a future backend, not assumptions.
+
+## Functional facades: defer and translate client failure
+
+**Starting context:** read `domain/facades.py` and
+`test_facade_defers_client_failure_and_returns_it_as_data`.
+
+**Objective:** make a deterministic fake embedder fail on its second item and
+decide whether the facade should return partial success or one batch failure.
+
+**Constraints:**
+
+- constructing `IOPlan` must not call the embedder
+- interpreting the plan must not leak the client exception
+- preserve stable item keys on success
+- state the batch atomicity policy in the test
+
+**Expected evidence:** call count stays zero until `perform`, then the failure is
+an `Err` with stage `facade.embed_batch`.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k facade_defers_client_failure_and_returns_it_as_data
+```
+
+Earlier contract preserved: Module 07 effects remain descriptions and Module 04
+keeps expected boundary failures in `Result`.
