@@ -251,9 +251,10 @@ Consequently, structural deduplication sees one shared chunk stream. A duplicate
 from source B is removed if the equivalent chunk from source A arrived first.
 
 Changing from sequential to round-robin may change which duplicate arrives first.
-That is not a generic iterator curiosity; it can change which source provenance is
-represented by the surviving value. Choose the schedule with the same care as a
-ranking or conflict-resolution policy.
+The current `Chunk` model does not carry source provenance, so equivalent chunks
+cannot reveal their origin after deduplication. A counted source trace can still
+prove which occurrence established the key. If provenance is a required output,
+model it explicitly before deduplication rather than trying to infer it later.
 
 ## Fan-out chooses a consumer contract
 

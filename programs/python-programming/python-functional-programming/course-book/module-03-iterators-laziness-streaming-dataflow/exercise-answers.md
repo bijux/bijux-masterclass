@@ -67,7 +67,82 @@ for a general iterable because this chunker indexes one in-memory string. The
 architecture keeps chunk metadata coupled to text so later retrieval can explain
 source location.
 
-## Answer 3: Audit fan-out overflow
+## Answer 3: Defend a document-source schedule
+
+Use a source factory whose call and traversal are separately observable:
+
+```python
+def tracked_source(name, docs, events):
+    def open_source():
+        events.append(f"open:{name}")
+
+        def iterate():
+            for doc in docs:
+                events.append(f"yield:{doc.doc_id}")
+                yield doc
+
+        return iterate()
+
+    return open_source
+```
+
+For priority documents `p1`, `p2` and background document `b1`, the expected
+trace is:
+
+| Demand | Sequential | Round robin |
+| --- | --- | --- |
+| construct output iterator | no events | no events |
+| request first final chunk | `open:priority`, `yield:p1` | `open:priority`, `open:background`, `yield:p1` |
+| consume all final chunks | output `p1, p2, b1` | output `p1, b1, p2` |
+
+The distinction between opening and pulling matters. `make_roundrobin` creates an
+iterator for every source when its merged iterator first runs, but it does not
+request `b1` before yielding `p1`.
+
+```python
+sources = (
+    tracked_source("priority", (p1, p2), events),
+    tracked_source("background", (b1,), events),
+)
+config = RagConfig(env=RagEnv(chunk_size=100))
+
+chunks = stream_rag_sources(
+    sources,
+    config,
+    get_deps(config),
+    schedule="sequential",
+    max_chunks=1,
+)
+
+assert events == []
+assert [chunk.doc_id for chunk in chunks] == ["p1"]
+assert events == ["open:priority", "yield:p1"]
+```
+
+Choose sequential scheduling when priority means “finish this source first.”
+Choose round-robin when each active synchronous source should get one turn per
+cycle. This is not async fairness: a blocking `next()` still blocks the thread.
+
+For cross-source deduplication, place an identical `RawDoc` in each source. The
+complete pipeline emits one structural `Chunk`, and the event trace identifies
+which occurrence established the seen key. The output value cannot identify its
+source because `Chunk` does not model source provenance. If provenance is required,
+add it explicitly at a domain boundary before deduplication.
+
+Common wrong turns are:
+
+- pass iterators instead of source factories, making a second traversal empty;
+- assume `make_merge` sorts arbitrary inputs rather than requiring locally sorted
+  sources;
+- treat round-robin as non-blocking concurrency;
+- infer provenance from an output type that does not contain it;
+- compare only output order and omit factory-opening and document-pull evidence.
+
+These checks prove deterministic synchronous scheduling, per-source order, global
+deduplication, and the tested prefix demand. They do not prove non-blocking I/O,
+thread safety, async backpressure, or recoverable source failure.
+
+## Answer 4: Audit fan-out overflow
 
 With two consumers and `maxlen=1`, the event trace is:
 
@@ -92,7 +167,7 @@ The cumulative learning test proves no over-pull at overflow in Modules 03 throu
 fairness. The architectural lesson is that bounded fan-out includes an overflow
 outcome, not merely a queue size.
 
-## Answer 4: Choose a reusable boundary
+## Answer 5: Choose a reusable boundary
 
 `make_gen_rag_fn` is a configured application factory:
 
@@ -136,7 +211,7 @@ qualified Module 02 preservation. A counted duplicate source proves fence demand
 None proves replayability of a caller-supplied generator, constant-space
 deduplication, or canonical ordering without materialization.
 
-## Answer 5: Add safe observation
+## Answer 6: Add safe observation
 
 Use a lens over derived metadata:
 
@@ -189,4 +264,11 @@ Run the evidence owner from the repository root:
 ```bash
 make PROGRAM=python-programming/python-functional-programming \
   capstone-streaming-rag-proof
+```
+
+For the source-policy review alone:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-source-scheduling-proof
 ```

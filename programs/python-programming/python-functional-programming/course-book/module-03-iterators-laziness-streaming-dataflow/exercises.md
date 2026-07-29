@@ -83,7 +83,8 @@ policy:
 - every priority document must precede background work;
 - the background source must contribute before the second priority document.
 
-Add a cross-source structural duplicate and predict which source's value survives.
+Add a cross-source structural duplicate and predict which occurrence establishes
+the key and when the later occurrence is discarded.
 
 Constraints:
 
@@ -98,7 +99,7 @@ Expected evidence:
 - an event table for construction, first output, and full consumption;
 - value assertions for both schedules;
 - demand assertions showing whether the background source factory opened;
-- a deduplication assertion whose expected survivor follows from encounter order.
+- a deduplication assertion paired with a source event trace;
 
 Acceptance checks:
 
@@ -106,6 +107,7 @@ Acceptance checks:
 - sequential scheduling does not open the background source for the first output;
 - round-robin factory-opening behavior is described separately from document pulls;
 - the final-output fence remains after global structural deduplication;
+- your review does not infer source provenance from a `Chunk` that does not model it;
 - the single-source complete-stream law still passes.
 
 ## Exercise 4: Audit fan-out overflow
