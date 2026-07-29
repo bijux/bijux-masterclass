@@ -72,6 +72,24 @@ Distributed work becomes clumsy when:
 
 Those are not infrastructure details. They are boundary failures.
 
+## Shipped evidence versus required evidence
+
+The repository currently proves only the seam:
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k distributed_status_does_not_confuse_installation_with_implementation
+```
+
+That test establishes that package availability never becomes a compiler claim.
+Before a backend can change `compiler_shipped` to true, its owner must add:
+
+- a local-runner equivalence test against the existing pipeline
+- explicit comparison rules for order and floating-point values
+- failure-policy tests for collect, drop, and fail-fast behavior
+- boundedness evidence at every materialization or shuffle
+- retry tests proving effectful sinks are idempotent or transactional
+
 ## Capstone check
 
 Before moving on:

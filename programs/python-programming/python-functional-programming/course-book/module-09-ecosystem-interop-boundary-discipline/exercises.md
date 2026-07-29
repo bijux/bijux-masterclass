@@ -174,3 +174,32 @@ pytest -q tests/learning/test_module_09_interop.py \
 
 Earlier contract preserved: configuration remains explicit data and invalid
 configuration does not masquerade as a successful execution.
+
+## Distributed dataflow: report capability without pretending to compile
+
+**Starting context:** read `pipelines/distributed.py`,
+`distributed-dataflow-review.md`, and
+`test_distributed_status_does_not_confuse_installation_with_implementation`.
+
+**Objective:** inspect both backend statuses and explain the difference between an
+installed package, a shipped compiler, and a verified backend.
+
+**Constraints:**
+
+- do not install Dask or Beam
+- do not claim a compiler exists because an import succeeds
+- keep the local pipeline as the semantic oracle
+- name the equivalence test required before enabling a compiler
+
+**Expected evidence:** status reports are deterministic about the repository
+contract even when local package installation varies.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k distributed_status_does_not_confuse_installation_with_implementation
+```
+
+Earlier contract preserved: Module 08's ordering, failure, and backpressure
+guarantees are requirements on a future backend, not assumptions.

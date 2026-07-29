@@ -175,3 +175,27 @@ variable behavior; those belong in entrypoint integration tests.
 
 In FuncPipe, the CLI is a translator from strings to `PipelineConfig`. The same
 builder used by services and tests remains the application authority.
+
+## Distributed dataflow: report capability without pretending to compile
+
+`backend_statuses` separates two facts. `installed` describes the current Python
+environment. `compiler_shipped` describes repository behavior and remains false
+for both Dask and Beam. Neither fact by itself is verification.
+
+A future compiler must run the same `PipelineSpec` through a local semantic
+interpreter and the backend's local runner, then compare values, typed failures,
+ordering rules, and materialization boundaries under an explicit equivalence
+policy.
+
+Common wrong turns:
+
+- treating a successful import as a working adapter
+- writing `NotImplementedError` tests that depend on which packages happen to be
+  installed
+- claiming distributed speed without a representative workload and cost model
+
+The result proves honest capability reporting. It does not prove any distributed
+execution behavior because the repository intentionally ships no compiler.
+
+In FuncPipe, the seam is valuable precisely because it prevents backend concerns
+from entering the core before a real scaling pressure and proof budget exist.

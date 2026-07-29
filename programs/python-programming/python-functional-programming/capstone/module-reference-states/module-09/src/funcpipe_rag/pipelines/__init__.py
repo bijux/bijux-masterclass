@@ -1,7 +1,14 @@
 """Module 09: pipeline building and cross-process specs (end-of-Module-09)."""
 
 from .configured import PipelineConfig, StepConfig, build_rag_pipeline
-from .distributed import beam_available, compile_to_beam, compile_to_dask_bag, dask_available
+from .distributed import (
+    BackendStatus,
+    backend_statuses,
+    beam_available,
+    compile_to_beam,
+    compile_to_dask_bag,
+    dask_available,
+)
 from .specs import (
     ErrorPolicy,
     OperatorSpec,
@@ -13,18 +20,20 @@ from .specs import (
 )
 
 __all__ = [
-    "StepConfig",
-    "PipelineConfig",
-    "build_rag_pipeline",
-    "dask_available",
-    "beam_available",
-    "compile_to_dask_bag",
-    "compile_to_beam",
+    "BackendStatus",
     "ErrorPolicy",
     "OperatorSpec",
+    "PipelineConfig",
     "PipelineSpec",
     "SpecRegistry",
+    "StepConfig",
+    "backend_statuses",
+    "beam_available",
+    "build_rag_pipeline",
     "canonical_json",
-    "spec_hash",
+    "compile_to_beam",
+    "compile_to_dask_bag",
+    "dask_available",
     "reconstruct_pipeline",
+    "spec_hash",
 ]

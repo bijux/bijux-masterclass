@@ -12,6 +12,7 @@ from funcpipe_rag.pipelines.configured import (
     StepConfig,
     build_rag_pipeline,
 )
+from funcpipe_rag.pipelines.distributed import backend_statuses
 from funcpipe_rag.result.types import Err, Ok
 
 
@@ -122,3 +123,11 @@ def test_cli_override_rejects_a_misspelled_stage_without_mutation() -> None:
         assert str(error) == "unknown pipeline step: chnuk"
     else:
         raise AssertionError("a misspelled target must not be ignored")
+
+
+def test_distributed_status_does_not_confuse_installation_with_implementation() -> None:
+    statuses = backend_statuses()
+
+    assert [status.name for status in statuses] == ["dask", "beam"]
+    assert all(isinstance(status.installed, bool) for status in statuses)
+    assert all(status.compiler_shipped is False for status in statuses)

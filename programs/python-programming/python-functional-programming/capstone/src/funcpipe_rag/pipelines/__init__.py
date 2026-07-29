@@ -2,6 +2,8 @@
 
 from .configured import PipelineConfig, StepConfig, build_rag_pipeline
 from .distributed import (
+    BackendStatus,
+    backend_statuses,
     beam_available,
     compile_to_beam,
     compile_to_dask_bag,
@@ -18,12 +20,14 @@ from .specs import (
 )
 
 __all__ = [
+    "BackendStatus",
     "ErrorPolicy",
     "OperatorSpec",
     "PipelineConfig",
     "PipelineSpec",
     "SpecRegistry",
     "StepConfig",
+    "backend_statuses",
     "beam_available",
     "build_rag_pipeline",
     "canonical_json",
