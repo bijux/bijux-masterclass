@@ -1,6 +1,5 @@
 # Fan-In and Fan-Out
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,602 +17,364 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  orient["Name the ordering need"] --> merge["Choose a fan-in policy"]
+  merge --> process["Run the complete RAG stream"]
+  process --> split["Choose a fan-out contract"]
+  split --> verify["Trace demand and retained state"]
 ```
 <!-- page-maps:end -->
 
-This lesson makes a potentially messy topic reviewable. As soon as a pipeline stops being single-stream, you need stronger language for what is preserved, what is duplicated, and where buffering can quietly grow.
+Module 02 accepted one collection of documents. Earlier Module 03 cores made that
+route lazy and complete. The next pressure is ordinary application work: one
+ingestion run may receive documents from a priority corpus and a background
+corpus, while final chunks must reach both an index writer and an audit consumer.
 
-## Start With the Multi-Stream Pressure
+The iterator code for merging and splitting is short. The design decision is not.
+You must state:
 
-Merge and split code often looks simple in demos, but real systems need stronger guarantees than "the data got through somehow." Start with those guarantees.
+- which source advances next;
+- which order remains stable;
+- when a source is opened;
+- what state is retained while consumers advance at different speeds;
+- whether a failure happens before or after another upstream value is requested.
 
-- If a merge strategy changes order, that needs to be part of the contract, not a surprise.
-- If one split branch can lag arbitrarily behind another, buffering needs an explicit limit or discipline.
-- If you cannot explain whether branches are independent, lockstep, or cached, the fan-out design is not ready for review.
+## Prerequisites and outcome
 
-## Keep This Question In View
+Before this lesson, be able to explain `Iterable`, `Iterator`, `Source[T]`,
+`stream_rag_chunks`, and a final unique-output fence.
 
-> **Core question:**  
-> How do you safely merge multiple input streams (fan-in) and split or multicast a single stream to multiple consumers (fan-out) in lazy, pure iterator pipelines without breaking equivalence or introducing side-effects?
+After it, you should be able to:
 
-This lesson introduces fan-in and fan-out as contract-heavy streaming operations:
+1. choose sequential, round-robin, or sorted fan-in from an ordering requirement;
+2. predict a requested prefix across multiple document sources;
+3. explain how encounter order affects first-seen deduplication;
+4. choose lockstep or bounded multicast from a consumer-cardinality requirement;
+5. prove the choice with the Module 03 source-scheduling laws.
 
-- choose merge helpers according to the ordering rule you actually need
-- choose split helpers according to the branch independence you can afford
-- keep buffering and fencing visible so downstream work stays safe
+## A source is a replay policy
 
-The running project and cross-domain examples matter because merge and split patterns show up everywhere, but the same names hide very different behavior if the contracts are not stated clearly.
-
-Use this when you are building multi-source or multi-consumer pipelines and need lazy merge and split behavior without hidden materialization.
-
-**Outcome:**
-1. Identify single-stream limitations.
-2. Add fan-in/out in < 10 lines.
-3. Prove merge/fork laws with Hypothesis.
-
-**Laws (frozen, used across this core):**
-- E1 — Equivalence: merged/fanned == eager_equiv (no reordering unless specified).
-- P1 — Purity: No side-effects; explicit configs.
-- R1 — Reusability: Factories yield fresh multis.
-- M1 — Merge order: 
-  - `chain`: sequential (preserves per-source order).
-  - `roundrobin`: interleaving without starvation (in practice, no source is delayed indefinitely).
-  - `heapq.merge`: sorted by key, stable per-source for ties.
-- T1 — Tee/multicast cost: Memory overhead is Θ(Δ), where Δ is the maximum difference in items consumed between the fastest and slowest branch; lockstep fork keeps Δ ≤ 1; bounded multicast enforces Δ≤maxlen else raises BufferError.
-- DTR — Determinism: Equal inputs/config → equal outputs.
-- FR — Freshness: 
-  - For Source factories: src() and src() are independent iterators.
-  - For Transform factories: mk = factory(config); mk(xs) and mk(xs) are independent iterators.
-- Fencing after fan-out: After any fan-out, fence each branch before any amplifying transform (n-grams, chunking, network I/O).
-
----
-
-## 1. Conceptual Foundation
-
-### 1.1 The One-Sentence Rule
-
-> **Use chain/roundrobin/merge for fan-in and fork2_lockstep/bounded multicast for fan-out to handle multi-streams lazily, ensuring independence without full materialization.**
-
-### 1.2 Fan-In/Out in One Precise Sentence
-
-> Fan-in merges sources (chain seq, roundrobin interleaving, merge sorted); fan-out forks/multicasts for independent consumers with explicit buffering discipline.
-
-### 1.3 Why This Matters Now
-
-Single-stream reasoning carries you a long way, but real pipelines soon need multiple inputs, side branches, and coordinated consumers. This lesson shows how to extend streaming discipline into that setting without losing track of order, fairness, or buffer growth.
-
-### 1.4 Fan-In/Out in 5 Lines
-
-The next examples matter because they expose the two central questions of this lesson: how items enter a shared stream and how one stream is observed by more than one consumer.
+The module defines:
 
 ```python
-merged = make_chain(src1, src2)()  # lazy merge
-```
-
-Fan-out:
-
-```python
-fork = fork2_lockstep(stage1, stage2)
-paired = fork(stream)  # strict lockstep pairs
-```
-
-Safe, lazy.
-
-### 1.5 Minimal Fan Harness (Extends Core 6)
-
-Build on Core 6 harness; add fan helpers. We reuse the functional pipeline types and combinators from M03C06:
-`Transform`, `compose`, `ffilter`, `fence_k`, and `source_to_transform`.
-
-```python
-from typing import TypeVar, Iterable, Iterator, Callable, Any
-import heapq
-from itertools import tee
-from collections import deque
-
-A = TypeVar("A"); B = TypeVar("B"); C = TypeVar("C"); T = TypeVar("T")
 Source = Callable[[], Iterator[T]]
-
-def make_chain(*srcs: Source[T]) -> Source[T]:
-    def merged() -> Iterator[T]:
-        for s in srcs:
-            yield from s()
-    return merged
-
-def make_roundrobin(*srcs: Source[T]) -> Source[T]:
-    def merged() -> Iterator[T]:
-        active = [s() for s in srcs]
-        while active:
-            nxt = []
-            for it in active:
-                try:
-                    yield next(it)
-                    nxt.append(it)
-                except StopIteration:
-                    pass
-            active = nxt
-    return merged
-
-def make_merge(*srcs: Source[T], key: Callable[[T], Any] | None = None, reverse: bool = False) -> Source[T]:
-    def merged() -> Iterator[T]:
-        iters = [s() for s in srcs]
-        yield from heapq.merge(*iters, key=key, reverse=reverse)
-    return merged
-
-def fork2_lockstep(t: Transform[A,B], u: Transform[A,C]) -> Transform[A, tuple[B,C]]:
-    """
-    Strict 1:1 lockstep fan-out.
-    Raises ValueError on cardinality mismatch (one branch shorter/longer).
-    """
-    def stage(xs: Iterable[A]) -> Iterator[tuple[B,C]]:
-        a, b = tee(xs, 2)
-        it1, it2 = t(a), u(b)
-        while True:
-            try:
-                v1 = next(it1)
-            except StopIteration:
-                # ensure second branch also exhausted
-                try:
-                    next(it2)
-                    raise ValueError("fork2_lockstep: second branch produced extra items")
-                except StopIteration:
-                    return
-            try:
-                v2 = next(it2)
-            except StopIteration:
-                raise ValueError("fork2_lockstep: second branch shorter than first")
-            yield (v1, v2)
-    return stage
-
-_SENTINEL = object()
-def multicast_bounded(xs: Iterable[T], n: int, maxlen: int = 1024) -> tuple[Iterator[T], ...]:
-    """
-    Bounded multicast.
-    If any consumer lags by more than maxlen items, raises BufferError.
-    If one branch is never drained, the producer will eventually hit BufferError when skew reaches maxlen.
-    """
-    upstream = iter(xs)
-    qs = [deque() for _ in range(n)]
-    done = False
-
-    def pump_once():
-        nonlocal done
-        if done: return
-        try:
-            x = next(upstream)
-        except StopIteration:
-            done = True
-            for q in qs: q.append(_SENTINEL)
-            return
-        for q in qs:
-            if len(q) >= maxlen:
-                raise BufferError(f"multicast buffer exceeded (maxlen={maxlen})")
-            q.append(x)
-
-    def sub(i: int) -> Iterator[T]:
-        while True:
-            if not qs[i]:
-                pump_once()
-            y = qs[i].popleft()
-            if y is _SENTINEL:
-                return
-            yield y
-
-    return tuple(sub(i) for i in range(n))
 ```
 
-Use with compose; e.g., compose(source_to_transform(make_chain(s1, s2)), ...). Use fork2_lockstep only for strict 1:1 stages; otherwise use bounded multicast or separate sinks. Always fence branches before amplification.
-
----
-
-## 2. Mental Model: Single vs Multi-Stream
-
-### 2.1 One Picture
-
-```text
-Single-Stream (Limited)                 Multi-Stream (Scalable)
-+-----------------------+               +------------------------------+
-| one src → one sink    |               | multi-src → merge → split    |
-|        ↓              |               |        ↓                     |
-| rigid, no parallel    |               | fan-in/out, independent      |
-| reuse = rebuild       |               | lazy, pure, testable         |
-+-----------------------+               +------------------------------+
-   ↑ Bottlenecked                          ↑ Composable / Multi
-```
-
-### 2.2 Behavioral Contract
-
-| Aspect | Single-Stream | Multi-Stream (Fan-In/Out) |
-|-------------------|------------------------------|------------------------------|
-| Sources | One | Many (merged) |
-| Consumers | One | Many (forked/multicast) |
-| Order | As-is | Seq (chain), interleaving (roundrobin), or sorted (merge) |
-| Independence | N/A | Fork/multicast ensures |
-
-**Note on Single Choice:** For simple; else multi.
-
-**When Not to Fan:** No multi needs; use Core 6.
-
-**Known Pitfalls:**
-- Fork requires strict 1:1 cardinality; mismatch raises ValueError.
-- Merge requires sorted inputs.
-
-**Forbidden Patterns:**
-- Multiple consumes without fork/multicast.
-- Enforce with no repeated iter calls.
-
-**Building Blocks Sidebar:**
-- chain for seq fan-in.
-- roundrobin for interleaving.
-- heapq.merge for sorted.
-- fork2_lockstep for strict 1:1 fan-out.
-
-**Resource Semantics:** Fans close resources on exhaustion.
-
-**Error Model:** Propagate; no auto-retry (use Core 6 wrappers).
-
-**Backpressure:** Fence after merge/before split; multicast raises on buffer exceed.
-
----
-
-## 3. Cross-Domain Examples: Proving Scalability
-
-Production-grade examples using the harness. Each pure, lazy.
-
-### 3.1 Example 1: Merging Multiple CSV Sources (Fan-In)
+A source is not an iterator. It is a zero-argument function that starts a fresh
+iterator. That distinction lets a configured pipeline run again without capturing
+an exhausted cursor.
 
 ```python
-def make_multi_csv_pipeline(paths: list[str], max_rows: int) -> Transform[None, Dict[str, Any]]:
-    srcs = [make_csv_source(p) for p in paths]
-    merged_src = make_chain(*srcs)
-    return compose(
-        source_to_transform(merged_src),
-        ffilter(lambda r: r.get("status") == "active"),
-        make_project({"id": "user_id", "amount": "total"}),
-        make_cast({"amount": float}),
-        fence_k(max_rows),
-    )
+from funcpipe_rag import as_source, make_chain
+
+priority = as_source(("p1", "p2"))
+background = as_source(("b1",))
+merged = make_chain(priority, background)
+
+assert list(merged()) == ["p1", "p2", "b1"]
+assert list(merged()) == ["p1", "p2", "b1"]
 ```
 
-**Why it's good:** Lazy merge of files; no load all.  
-**Contiguity/Boundedness:** Finite sources; fence caps.
+Passing `priority()` instead would pass one iterator traversal, not the restartable
+source contract expected by `make_chain`.
 
-### 3.2 Example 2: Log Merge with Time Sort (Sorted Fan-In)
+## Fan-in chooses encounter order
 
-```python
-def make_multi_log_pipeline(paths: list[str], pattern: str, k: int) -> Transform[None, str]:
-    srcs = [make_log_source(p) for p in paths]
-    merged_src = make_merge(*srcs, key=parse_ts)  # parse_ts: str -> comparable
-    return compose(
-        source_to_transform(merged_src),
-        make_regex_filter(pattern),
-        fence_k(k),
-    )
-```
+Module 03 supplies three generic factories:
 
-**Precondition:** each input is individually non-decreasing under parse_ts; otherwise use roundrobin or a bounded-lateness merge.
-**Why it's good:** Sorted merge without sort all; assumes per-log sorted.  
-**Contiguity/Boundedness:** Infinite; fence ensures termination.
-
-### 3.3 Example 3: API Fan-In from Multiple Endpoints
-
-```python
-def make_multi_api_pipeline(fetch_pages: list[Callable], pred: Callable, k: int) -> Transform[None, Dict]:
-    srcs = [lambda f=f: pager(f, attempts=2) for f in fetch_pages]
-    merged_src = make_roundrobin(*srcs)  # interleaving to avoid starvation
-    return compose(
-        source_to_transform(merged_src),
-        ffilter(pred),
-        fence_k(k),
-    )
-```
-
-**Why it's good:** Interleaving merge of APIs.
-
-### 3.4 Example 4: Telemetry Split for Multi-Agg (Fan-Out)
-
-```python
-def values_after_w(w: int):
-    from collections import deque
-    def stage(xs):
-        buf = deque(maxlen=w)
-        for d in xs:
-            buf.append(d)
-            if len(buf) == w:
-                yield d['value']
-    return stage
-
-def make_telemetry_pipeline(src: Source[dict], w: int) -> Transform[None, tuple[dict, float]]:
-    avg_stage   = make_rolling_avg_by_device(w)
-    total_stage = values_after_w(w)
-    fork = fork2_lockstep(avg_stage, total_stage)
-    return compose(source_to_transform(src), fork)
-```
-
-**Why it's good:** Fork for parallel aggs; strict lockstep enforces 1:1 cardinality.
-
-### 3.5 Example 5: FS Hash with Split for Checksum/Size
-
-```python
-def make_sha256_with_size() -> Transform[str, tuple[str, str, int]]:
-    def stage(paths: Iterable[str]) -> Iterator[tuple[str, str, int]]:
-        for p in paths:
-            h = hashlib.sha256(); size = 0
-            with open(p, "rb") as f:
-                for chunk in iter(lambda: f.read(1024*1024), b""):
-                    size += len(chunk); h.update(chunk)
-            yield (p, h.hexdigest(), size)
-    return stage
-
-def make_fs_pipeline(root: str) -> Transform[None, tuple[str, str, int]]:
-    return compose(
-        source_to_transform(make_walk_source(root)),
-        make_ext_filter({'.py'}),
-        make_sha256_with_size(),
-    )
-```
-
-**Why it's good:** Single-pass compute; no split needed.
-
-### 3.6 Example 6: Text N-Grams with Bounded Multicast (Fan-Out for Variable Cardinality)
-
-For variable-cardinality (e.g., n-grams amplify), use multicast and separate sinks or keyed join.
-
-```python
-import heapq
-from collections import Counter
-from itertools import islice
-
-def topk(k: int):
-    def stage(xs):
-        counts = Counter()
-        for x in xs:
-            counts[x] += 1
-            if len(counts) > 10_000:  # safety cap; document policy
-                counts = Counter(dict(counts.most_common(5_000)))
-        yield from heapq.nlargest(k, counts.items(), key=lambda kv: kv[1])
-    return stage
-
-def make_ngram_multi(n: int, k: int) -> Transform[str, tuple[tuple[str,...], int]]:
-    base = compose(make_tokenize(), make_ngrams(n))
-    def pipe(lines: Iterable[str]) -> Iterator[tuple]:
-        a,b = multicast_bounded(base(lines), 2, maxlen=1000)
-        freqs = topk(k)(a)
-        # bounded distinct example (instead of unbounded set)
-        distinct = set(islice(b, 1000))  # explicit bound
-        # Keyed join or separate outputs; here assume post-process
-        for f in freqs: yield f[0], f[1]  # e.g., top freqs
-    return pipe
-```
-
-**Why it's good:** Bounded multicast for derived stats; explicit buffer policy.
-
-### 3.7 Running Project: Multi-Source RAG (Fan-In)
-
-Extend RAG with multi-doc sources:
-
-```python
-def make_multi_rag_fn(env: RagEnv, max_chunks: int, sources: list[Source[RawDoc]]) -> Callable[[], Iterator[ChunkWithoutEmbedding]]:
-    merged_src = make_chain(*sources)
-    def pipe() -> Iterator[ChunkWithoutEmbedding]:
-        cleaned = gen_clean_docs(merged_src())
-        yield from gen_bounded_chunks(cleaned, env, max_chunks)
-    return pipe
-```
-
-**Wins:** Merge docs lazily.
-
----
-
-## 4. Anti-Patterns and Fixes
-
-- **No Fork/Multicast Consume:** Multi-iter without fork/multicast exhausts. **Fix:** Always fork/multicast.
-- **Eager Merge:** List all before process. **Fix:** Chain lazy.
-- **Unbounded Buffer:** Tee with skew OOM. **Fix:** Fork lockstep or multicast bounded.
-- **Unfair Merge:** Chain starves later srcs. **Fix:** Roundrobin for interleaving.
-
----
-
-## 5. Equational Reasoning: Substitution Exercise
-
-**Hand Exercise:** Inline fan → equiv single.
-
-**Bug Hunt:** No fork/multicast; fan explicit.
-
----
-
-## 6. Property-Based Testing: Proving Equivalence (Advanced, Optional)
-
-### 6.1 Custom Strategy
-
-As previous.
-
-### 6.2 Properties
-
-```python
-from hypothesis import given, strategies as st
-import itertools as it
-
-@given(st.lists(st.integers(), min_size=0, max_size=200))
-def test_chain_equiv(xs):
-    s1 = lambda: iter(xs)
-    s2 = lambda: iter(xs)
-    merged = list(make_chain(s1, s2)())
-    assert merged == xs + xs
-
-@given(st.lists(st.integers(), min_size=0, max_size=200))
-def test_tee_independence(xs):
-    a, b = tee(iter(xs), 2)
-    _ = list(it.islice(a, 3))
-    assert list(b) == xs   # tee buffers 3
-
-@given(st.lists(st.integers(), min_size=0, max_size=200))
-def test_merge_stability_ties(xs):
-    xs_sorted = sorted(xs)
-    s1 = lambda: ((0, x) for x in xs_sorted)   # tag source 0
-    s2 = lambda: ((1, x) for x in xs_sorted)   # tag source 1
-    out = list(make_merge(s1, s2, key=lambda p: p[1])())
-    seen0 = [x for src, x in out if src == 0]
-    seen1 = [x for src, x in out if src == 1]
-    assert seen0 == xs_sorted
-    assert seen1 == xs_sorted   # stable per-source for ties
-
-@given(st.lists(st.lists(st.integers()), min_size=1, max_size=4))
-def test_roundrobin_interleaving(ls):
-    srcs = [lambda l=l: iter(l) for l in ls]
-    out = list(make_roundrobin(*srcs)())
-    # multiset equality only (basic sanity; non-starving behaviour follows from the implementation)
-    assert sorted(out) == sorted([y for x in ls for y in x])
-
-@given(st.lists(st.integers(), min_size=0, max_size=50))
-def test_fork_lockstep(xs):
-    inc = lambda xs: (x+1 for x in xs)
-    dec = lambda xs: (x-1 for x in xs)
-    fork = fork2_lockstep(inc, dec)
-    out = list(fork(iter(xs)))
-    assert out == [(x+1, x-1) for x in xs]
-
-@given(st.lists(st.integers(), min_size=0, max_size=50))
-def test_multicast_freshness(xs):
-    a,b = multicast_bounded(iter(xs), 2, maxlen=100)
-    assert list(a) == xs
-    assert list(b) == xs  # independent
-```
-
-### 6.3 Additional for Examples
-
-Similar for each; e.g., multi-CSV == concat singles.
-
-### 6.4 Shrinking Demo
-
-Bad (no fork/multicast): Fails independence.
-
----
-
-## 7. When Fan Isn't Worth It
-
-Single stream; else fan.
-
----
-
-## 8. Pre-Core Quiz
-
-1. Fan-in for? → **Merge srcs.**
-2. Fork/multicast? → **Split independent.**
-3. Chain? → **Seq merge.**
-4. Equiv? → **Preserved.**
-5. Independence? → **Fork/multicast ensures.**
-
-## 9. Post-Core Reflection & Exercise
-
-**Reflect:** Find single-stream; add fan.
-
-**Project Exercise:** Add multi-src to RAG; test merge.
-
-**Final Notes:**
-- Fans pure; explicit order/independence.
-- Document order guarantees per fan.
-- Fork/multicast for multicast; balance consumption.
-- For async, see future cores.
-
-**Continue with:** [Time-Aware Streaming](../module-03-iterators-laziness-streaming-dataflow/time-aware-streaming.md)
-
-### Repository Alignment
-
-- Implementation: `capstone/src/funcpipe_rag/streaming/fanout.py::multicast`.
-- Tests: `capstone/tests/unit/streaming/test_streaming.py::test_multicast_independence` and `::test_multicast_buffer_error_on_excess_skew`.
-
-## itertools Decision Table – Use This
-
-| Tool       | Use When                                      | Memory   | Pitfall                              | Safe?   |
-|------------|-----------------------------------------------|----------|--------------------------------------|---------|
-| chain      | Concat many iterables                         | O(1)     | None                                 | Yes     |
-| groupby    | Group **contiguous** equal items              | O(1)     | Must sort first if not contiguous    | Yes     |
-| tee        | Multiple consumers of same iterator           | O(skew)  | Unbounded skew → memory explosion    | Careful |
-| islice     | Skip/take without consuming                   | O(1)     | None                                 | Yes     |
-| accumulate | Running totals/reductions                     | O(n)     | Default op is +                      | Yes     |
-| compress   | Filter by boolean mask                        | O(1)     | None                                 | Yes     |
-
-**Further Reading:** For the deepest itertools mastery, see the official docs and Dan Bader’s ‘Python Tricks’ chapter on iterators.
-
-> **You now own the most powerful lazy streaming toolkit in Python. Module 4 will show you how to make even failure and resource cleanup lazy and pure.**
-
-## Fan operations choose an ordering and pressure policy
-
-“Combine these sources” is underspecified. Module 03 exposes three fan-in choices:
-
-| Factory | Output order | Source requirement | Pressure characteristic |
+| Factory | Encounter order | Required precondition | Retained merge state |
 | --- | --- | --- | --- |
-| `make_chain` | exhaust source A, then B | none | later sources wait |
-| `make_roundrobin` | one item from each active source | none | advances active sources in turns |
-| `make_merge` | global key order | every source already sorted | holds one frontier item per source |
+| `make_chain` | exhaust source A, then B | none | current source iterator |
+| `make_roundrobin` | one item from each active source per cycle | none | one iterator per active source |
+| `make_merge` | global key order | every source is already sorted by the same key | one frontier item per source |
 
-`make_merge` does not sort its inputs. If a source violates its local ordering
-contract, the result can be globally wrong without an exception. Test the precondition
-at the adapter or build the source so disorder is impossible.
+All three preserve order within each source. They differ only in how those local
+orders are combined.
 
-For RAG ingestion, `make_chain` preserves a declared source priority. Round-robin can
-prevent one large corpus from delaying every item from a small corpus, but it changes
-encounter order and therefore can change which duplicate survives first-encounter
-deduplication. Fan-in policy is application behavior.
-
-## Two fan-out contracts
-
-`fork2_lockstep` requires both transforms to produce one corresponding output at each
-index. It fails if one filters or expands:
+### Sequential scheduling expresses priority
 
 ```python
-paired = fork2_lockstep(normalize_chunks, embed_chunks)
+from funcpipe_rag import as_source, make_chain
+
+priority = as_source(("p1", "p2"))
+background = as_source(("b1", "b2"))
+
+assert list(make_chain(priority, background)()) == [
+    "p1",
+    "p2",
+    "b1",
+    "b2",
+]
 ```
 
-This is suitable only if both branches are cardinality preserving. `multicast`
-instead gives independent consumers the same upstream values and buffers their skew.
+The background source does not start until the priority source is exhausted.
+This is useful when source order is policy, but a long or infinite first source
+can delay every later source indefinitely.
+
+### Round-robin limits turn-taking delay
 
 ```python
-fast, slow = multicast(chunks, 2, maxlen=1)
+from funcpipe_rag import as_source, make_roundrobin
+
+priority = as_source(("p1", "p2"))
+background = as_source(("b1", "b2"))
+
+assert list(make_roundrobin(priority, background)()) == [
+    "p1",
+    "b1",
+    "p2",
+    "b2",
+]
 ```
 
-With `maxlen=1`, the fast consumer may be one buffered item ahead. Its next request
-raises `BufferError` before another upstream item is requested. The preflight order
-matters:
+Round-robin is “fair” only in the narrow synchronous sense that each active
+iterator gets one `next()` attempt per cycle. A blocking source can still block
+the whole thread. Async scheduling and backpressure arrive in Module 08.
+
+### Sorted merge does not sort its inputs
+
+```python
+from funcpipe_rag import as_source, make_merge
+
+left = as_source((("left-1", 1), ("left-3", 3)))
+right = as_source((("right-2", 2), ("right-4", 4)))
+
+ordered = make_merge(left, right, key=lambda item: item[1])
+
+assert [label for label, _ in ordered()] == [
+    "left-1",
+    "right-2",
+    "left-3",
+    "right-4",
+]
+```
+
+`make_merge` assumes each source is already non-decreasing under the same key.
+It cannot detect every local-order violation, and it does not repair one. Enforce
+that precondition at the adapter that creates the source.
+
+## The RAG application owns a narrower policy
+
+The generic factories can merge any values. The application entry point accepts
+only the two policies it can apply without another domain precondition:
+
+```python
+stream_rag_sources(
+    sources,
+    config,
+    deps,
+    schedule="sequential",  # or "round_robin"
+    max_chunks=None,
+)
+```
+
+The complete dataflow is:
 
 ```text
-check every queue has capacity
-then request exactly one upstream item
-then append that item to every queue
+Source[RawDoc] values
+  -> selected fan-in schedule
+  -> filter
+  -> clean
+  -> chunk
+  -> embed
+  -> structural dedup across every source
+  -> optional final unique-output fence
+  -> Iterator[Chunk]
 ```
 
-Pulling upstream before the capacity check can lose demand information and partially
-distribute a value. The cumulative Module 03 proof guards this exact regression.
+The scheduler changes encounter order, not the downstream stages.
 
-### Overflow is terminal for the requesting generator
+```python
+from funcpipe_rag import (
+    RagConfig,
+    RagEnv,
+    RawDoc,
+    as_source,
+    get_deps,
+    stream_rag_sources,
+)
 
-An exception escaping a Python generator closes that generator. Catching
-`BufferError` outside `next(fast)` does not make `fast` resumable. Treat multicast
-overflow as a failed fan-out operation that requires rebuilding or aborting the
-whole route. Module 03's synchronous helper provides a visible bound, not a durable
-broker or recoverable queue.
+sources = (
+    as_source(
+        (
+            RawDoc("a1", "title", "alpha", "cs.AI"),
+            RawDoc("a2", "title", "beta", "cs.AI"),
+        )
+    ),
+    as_source((RawDoc("b1", "title", "gamma", "cs.AI"),)),
+)
+config = RagConfig(env=RagEnv(chunk_size=100))
 
-If consumers can be independently slow in production, choose a stronger design:
+sequential = stream_rag_sources(
+    sources,
+    config,
+    get_deps(config),
+    schedule="sequential",
+)
 
-- consume in lockstep;
-- materialize an explicitly bounded input;
-- write independent durable outputs at a boundary;
-- use the asynchronous backpressure policies taught later.
+assert [chunk.doc_id for chunk in sequential] == ["a1", "a2", "b1"]
+```
 
-### Run the pressure proof
+Changing the schedule to `"round_robin"` yields `["a1", "b1", "a2"]`.
+Both results contain complete embedded `Chunk` values.
+
+## Prefix demand depends on the schedule
+
+Consider two source factories and `max_chunks=1`.
+
+For sequential scheduling:
+
+```text
+request first unique Chunk
+  -> open source A
+  -> request A1
+  -> clean, chunk, embed, deduplicate A1
+  -> emit first unique Chunk
+  -> stop; source B was never opened
+```
+
+For round-robin scheduling, creating the merged iterator creates an iterator for
+each source when demand first reaches the scheduler. The first output still comes
+from source A, but every source factory has been opened so it can participate in
+the cycle.
+
+This distinction is why “lazy” is too vague. Both routes defer work until demand,
+but they defer different units of work.
+
+The final fence remains after deduplication. If A1 and B1 produce the same
+structural chunk, requesting two unique outputs may scan later documents or later
+sources to find the second unique value.
+
+## First-encounter deduplication is global
+
+`stream_rag_sources` merges raw documents before the complete RAG chain.
+Consequently, structural deduplication sees one shared chunk stream. A duplicate
+from source B is removed if the equivalent chunk from source A arrived first.
+
+Changing from sequential to round-robin may change which duplicate arrives first.
+That is not a generic iterator curiosity; it can change which source provenance is
+represented by the surviving value. Choose the schedule with the same care as a
+ranking or conflict-resolution policy.
+
+## Fan-out chooses a consumer contract
+
+After RAG processing, final chunks may need two consumers:
+
+- an index consumer that stores the value;
+- an audit consumer that records derived metadata.
+
+Module 03 offers two distinct contracts:
+
+| Helper | Branch contract | Retained state | Failure |
+| --- | --- | --- | --- |
+| `fork2_lockstep` | each transform produces exactly one output per input | `tee` skew plus current pair | `ValueError` on cardinality mismatch |
+| `multicast` | independent iterators receive identical upstream values | one bounded queue per consumer | `BufferError` when another pull would exceed `maxlen` |
+
+Use `fork2_lockstep` only when both transforms are cardinality preserving. A
+filtering audit branch does not satisfy that contract.
+
+### One traversal, two RAG consumers
+
+```python
+chunks = stream_rag_sources(sources, config, get_deps(config))
+index_chunks, audit_chunks = multicast(chunks, 2, maxlen=1)
+
+indexed = next(index_chunks)
+audited = next(audit_chunks)
+
+assert indexed == audited
+```
+
+The consumers see the same `Chunk` object from one upstream traversal. Alternating
+their requests keeps skew within one buffered item.
+
+### Overflow must happen before another upstream pull
+
+With two consumers and `maxlen=1`:
+
+```text
+index asks -> pull chunk 0 -> queues [0], [0] -> index gets 0
+audit asks -> audit gets 0
+index asks -> pull chunk 1 -> queues [1], [1] -> index gets 1
+index asks -> audit queue is full -> BufferError
+             no request for chunk 2
+```
+
+The implementation checks every queue's capacity before `next(upstream)`. Pulling
+first would lose demand information and could distribute a value to only some
+consumers.
+
+An exception escaping a generator closes that subscriber generator. Catching
+`BufferError` outside `next(index_chunks)` does not make it resumable. Treat
+overflow as failure of the synchronous fan-out route and rebuild or abort the
+whole operation.
+
+## Space claims must name retained state
+
+Fan-in itself can be bounded while the composed application is not:
+
+- chain retains the current source iterator;
+- round-robin retains all active source iterators;
+- sorted merge retains one frontier value per source;
+- streaming dedup retains every unique structural key seen;
+- multicast retains up to consumer skew per branch;
+- a final fence limits outputs, not necessarily raw document pulls.
+
+Do not summarize this pipeline as “constant memory.” State each retained structure
+and what input property bounds it.
+
+## Failure routes worth testing
+
+| Mistake | Observable consequence | Better evidence |
+| --- | --- | --- |
+| pass exhausted iterators instead of source factories | a second run is empty | call the merged source twice |
+| choose chain for an infinite first source | later sources never advance | counted sources plus a bounded prefix |
+| call `make_merge` on locally unsorted inputs | global order can be wrong silently | adapter test for each source's order |
+| assume round-robin handles blocking I/O | one blocking `next()` stalls all sources | keep synchronous adapters bounded; use Module 08 for async |
+| consume one multicast branch too far ahead | `BufferError` closes that subscriber | assert upstream pull count at overflow |
+| use lockstep with a filtering branch | cardinality mismatch raises | prove each branch is one-to-one or choose multicast |
+
+## Executable evidence
+
+Run the smallest source-scheduling route from the repository root:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-03/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
-  -k 'multicast'
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-source-scheduling-proof
 ```
 
-The test proves the rejected request does not pull upstream. It does not prove
-recovery after overflow, thread safety, or asynchronous fairness. Review every
-fan-out by naming maximum skew, overflow outcome, and whether branch cardinalities
-must match.
+It owns six cases in
+`capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py`:
+
+- sorted fan-in over preordered sources;
+- sequential and round-robin RAG encounter order;
+- a sequential fence that never opens the later source;
+- structural deduplication across source boundaries;
+- index and audit consumers receiving equal final chunks.
+
+For all Module 03 demand, chunking, observation, and complete-RAG laws, run:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-streaming-rag-proof
+```
+
+The first command proves the selected synchronous policies for deterministic local
+sources. It does not prove thread safety, recoverable multicast overflow,
+non-blocking I/O, or async fairness.
+
+## Review before moving on
+
+Given two document sources and two final consumers, you should now be able to
+write down:
+
+1. the encounter order under each candidate schedule;
+2. which source factories are opened for a requested prefix;
+3. which duplicate survives and why;
+4. the maximum tolerated consumer skew;
+5. the exact `next()` call where overflow appears;
+6. the test that proves no extra upstream value was requested.
+
+Apply that judgment in [Exercises](exercises.md), then compare your reasoning with
+[Exercise Answers](exercise-answers.md).
+
+**Continue with:** [Time-Aware Streaming](time-aware-streaming.md)
