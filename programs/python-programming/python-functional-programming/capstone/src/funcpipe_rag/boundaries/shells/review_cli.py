@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
@@ -146,10 +147,18 @@ PROOF_ROUTES: tuple[dict[str, str], ...] = (
 )
 
 
-def _count_python_files(path: Path) -> int:
-    if not path.exists():
-        return 0
-    return sum(1 for candidate in path.rglob("*.py") if candidate.is_file())
+def _count_python_files(paths: Iterable[Path]) -> int:
+    """Count each source once when review groups contain nested paths."""
+
+    return len(
+        {
+            candidate.resolve()
+            for path in paths
+            if path.exists()
+            for candidate in path.rglob("*.py")
+            if candidate.is_file()
+        }
+    )
 
 
 def build_summary(project_root: Path) -> dict[str, Any]:
@@ -159,7 +168,7 @@ def build_summary(project_root: Path) -> dict[str, Any]:
         package_groups.append(
             {
                 **group,
-                "python_file_count": sum(_count_python_files(path) for path in paths),
+                "python_file_count": _count_python_files(paths),
             }
         )
 
@@ -169,7 +178,7 @@ def build_summary(project_root: Path) -> dict[str, Any]:
         test_groups.append(
             {
                 **group,
-                "python_file_count": sum(_count_python_files(path) for path in paths),
+                "python_file_count": _count_python_files(paths),
             }
         )
 

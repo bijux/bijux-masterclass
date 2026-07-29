@@ -45,6 +45,31 @@ Use this when you are refactoring legacy code safely.
 3. Migrate RAG, verifying equivalence/laws.
 
 ---
+## FuncPipe Lab: Repair the Observation Before the Design
+
+The Module 09 review CLI grouped both `rag/` and its child `rag/domain/`, then
+summed the file counts. The paths were useful, but the number was false because
+domain files were counted twice.
+
+That is a small example of the first refactoring rule: do not choose a change from
+an observation you have not validated. Module 10 changes the counter to discover a
+set of file identities while preserving the visible reading routes.
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k review_inventory_counts_nested_sources_once
+funcpipe-rag-review summary --format json
+```
+
+The test is the equivalence predicate for this refactor: adding a redundant nested
+path must not change the count. It proves inventory semantics, not code quality.
+The RAG pipeline is deliberately absent from the change, so its Module 09 behavior
+remains preserved by the existing suite.
+
+Complete the matching decision exercise in [Module 10 Exercises](exercises.md).
+
+---
 ## Migration Protocol (Abstract, Reusable)
 - **Cycle:** Heuristics-guided loop (graph + scores below) until stop: no impurities, equivalence holds, laws pass, budget met.
 - **Semantics:** Preserve evolving equivalence via code predicates (below); mocks for effects.

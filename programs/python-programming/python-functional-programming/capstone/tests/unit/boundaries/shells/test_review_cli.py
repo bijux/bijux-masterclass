@@ -3,7 +3,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from funcpipe_rag.boundaries.shells.review_cli import build_summary, main, render_text
+from funcpipe_rag.boundaries.shells.review_cli import (
+    _count_python_files,
+    build_summary,
+    main,
+    render_text,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 
@@ -32,6 +37,16 @@ def test_build_summary_reports_expected_groups() -> None:
     assert route_names == ["demo", "test", "tour", "proof"]
     assert all(group["python_file_count"] > 0 for group in summary["package_groups"])
     assert all(group["python_file_count"] > 0 for group in summary["test_groups"])
+
+
+def test_python_file_count_deduplicates_nested_review_paths(tmp_path: Path) -> None:
+    package = tmp_path / "pkg"
+    nested = package / "domain"
+    nested.mkdir(parents=True)
+    (package / "api.py").write_text("", encoding="utf-8")
+    (nested / "model.py").write_text("", encoding="utf-8")
+
+    assert _count_python_files((package, nested)) == 2
 
 
 def test_render_text_mentions_review_surfaces() -> None:
