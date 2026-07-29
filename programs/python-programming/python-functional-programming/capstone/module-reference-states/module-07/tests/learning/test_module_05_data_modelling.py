@@ -5,6 +5,10 @@ from datetime import datetime
 import pytest
 from typing_extensions import assert_never
 
+from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
+from funcpipe_rag.fp.functor import result_map
+from funcpipe_rag.rag.stages import clean_doc
+from funcpipe_rag.result.types import Err, ErrInfo, Ok
 from funcpipe_rag.fp.core import (
     ChunkState,
     Done,
@@ -75,3 +79,18 @@ def test_processing_state_allows_only_declared_rag_transitions() -> None:
     assert initial == pending(queued_at=queued_at)
     with pytest.raises(ValueError, match="invalid transition"):
         transition(initial, advance_event(delta_permille=1))
+
+
+def test_result_functor_transforms_success_without_running_failure_work() -> None:
+    calls: list[str] = []
+
+    def count_words(doc: CleanDoc) -> int:
+        calls.append(doc.doc_id)
+        return len(doc.abstract.split())
+
+    cleaned = clean_doc(RawDoc("rag-1", "Types", " One  TWO three ", "fp"))
+    unavailable = Err(ErrInfo(code="SOURCE_DOWN", msg="read failed", stage="read"))
+
+    assert result_map(count_words)(Ok(cleaned)) == Ok(3)
+    assert result_map(count_words)(unavailable) is unavailable
+    assert calls == ["rag-1"]

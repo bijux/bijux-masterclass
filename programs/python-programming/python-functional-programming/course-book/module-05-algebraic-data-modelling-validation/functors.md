@@ -394,6 +394,28 @@ def test_iter_functor_laws(xs):
 | Eager processing of streams| OOM                              | `iter_map` for laziness                  |
 | Ignoring functor laws      | Refactor breaks silently         | Hypothesis law tests in CI               |
 
+## Runnable RAG learning lab
+
+Run the focused behavior before the general laws:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k result_functor_transforms_success_without_running_failure_work
+```
+
+The successful branch starts with a shipped `RawDoc`, normalizes it through
+`clean_doc`, and maps a word-count projection over `Ok`. The failed source
+branch contains the original `ErrInfo`; the projection is never called and the
+same `Err` object remains observable.
+
+That difference is the boundary of `map`: it transforms a value already inside
+the successful branch. It does not sequence a function that returns another
+`Result`, and it should not be used to hide exceptions from an impure
+callable. The test proves both branches and the skipped call. The law suite
+then justifies regrouping pure maps. Complete the corresponding exercise before
+choosing between `result_map`, `result_try_map`, and later `and_then`.
+
 ## 8. Pre-Core Quiz
 
 1. Functor = container + lawful what? → **curried map**  
