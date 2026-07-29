@@ -38,6 +38,37 @@ You often already know the sequence of operations you want. What gets in the way
 **Core question**  
 How do you replace nested `if err/None` checks and manual error propagation with monadic `and_then` (a.k.a. `bind` or `flat_map`) — chaining dependent fallible/optional steps while automatically short-circuiting on the first failure or absence?
 
+## Runnable lab: stop before cleaning invalid input
+
+The RAG learning proof makes the control rule visible with a recording cleaning
+stage:
+
+```python
+invalid = Ok(missing)
+result = invalid.and_then(require_abstract).and_then(clean_checked)
+
+assert result == Err(
+    ErrInfo(code="EMPTY_ABSTRACT", msg="abstract is required")
+)
+assert events == []
+```
+
+The second function returns `Result`, so this is an `and_then` chain rather than
+a `map` chain. When `require_abstract` returns `Err`, `clean_checked` is not
+called. A valid document reaches the same shipped `clean_doc` function and
+produces its normalized `CleanDoc`.
+
+Run the complete success-and-failure proof:
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k result_chain_short_circuits_before_rag_cleaning
+```
+
+Checking only the final `Err` is the common wrong turn. The event assertion is
+what proves the downstream RAG stage did not execute.
+
 ## The Fast Choice Rule
 
 Start with one practical test before adding more vocabulary:

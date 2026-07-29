@@ -7,3 +7,32 @@ claim supported by the focused evidence.
 When an alternative implementation preserves the stated observable and the
 earlier RAG contract, compare its trade-offs instead of treating syntax as the
 grading criterion.
+
+## and_then and bind: preserve the first failure
+
+Make each prerequisite append its own stable name before checking the document.
+Compose them in the required order:
+
+```python
+result = (
+    source
+    .and_then(require_title)
+    .and_then(require_abstract)
+    .and_then(clean_checked)
+)
+```
+
+For a missing title, the expected trace is `["require_title"]`. Neither the
+abstract check nor cleaning should run because `Err.and_then` preserves the
+first error without invoking its function.
+
+Common wrong turns:
+
+- using `map(require_title)` creates a nested `Result`;
+- checking all fields eagerly loses fail-fast order;
+- asserting only the final error cannot prove later work was skipped;
+- raising `ValueError` discards the Module 05 typed failure contract.
+
+The proof establishes ordered short-circuiting for this chain. It does not prove
+that fail-fast validation is always preferable; independent field validation
+may still require accumulating `Validation`.
