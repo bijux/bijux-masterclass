@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import asyncio
+import json
 from pathlib import Path
 
-from funcpipe_rag.boundaries.shells.review_cli import build_summary
+from hypothesis import given
+from hypothesis import strategies as st
+
+from funcpipe_rag.boundaries.shells.review_cli import build_summary, main
 from funcpipe_rag.domain.effects.async_ import async_gather, async_pure
 from funcpipe_rag.pipelines.distributed import BackendStatus
 from funcpipe_rag.rag.domain import (
@@ -30,8 +34,6 @@ from funcpipe_rag.review.performance import (
     evaluate_budget,
 )
 from funcpipe_rag.review.scaling import REQUIRED_SCALING_PROOFS, assess_scaling
-from hypothesis import given
-from hypothesis import strategies as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -209,3 +211,17 @@ def test_governance_claim_fails_closed_when_executable_evidence_is_missing() -> 
 
     assert assessment.complete is False
     assert assessment.missing_paths == ("tests/test_ranking.py",)
+
+
+def test_delivery_check_exposes_a_machine_readable_release_gate(capsys) -> None:
+    """The endpoint exits successfully only when declared evidence is discoverable."""
+
+    exit_code = main(
+        ["check", "--format", "json", "--project-root", str(PROJECT_ROOT)]
+    )
+
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert payload["evidence_claims"]
+    assert all(claim["complete"] for claim in payload["evidence_claims"])

@@ -295,10 +295,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="funcpipe-rag-review")
     parser.add_argument(
         "command",
-        choices=("summary",),
+        choices=("check", "summary"),
         nargs="?",
         default="summary",
-        help="Inspection report to render.",
+        help="Render the report or fail when a declared evidence path is missing.",
     )
     parser.add_argument(
         "--format",
@@ -322,6 +322,10 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(summary, indent=2, sort_keys=True))
     else:
         print(render_text(summary), end="")
+    if args.command == "check" and not all(
+        claim["complete"] for claim in summary["evidence_claims"]
+    ):
+        return 1
     return 0
 
 

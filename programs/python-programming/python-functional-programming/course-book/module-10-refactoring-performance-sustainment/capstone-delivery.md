@@ -31,14 +31,48 @@ Read the first diagram as a placement map: this page is one concept inside its p
 > **Core question:**  
 > How do you demonstrate end-to-end mastery of FP-in-Python by shipping a real FuncPipe system with formal laws, measurable guarantees, enforced boundaries, upgrade safety, performance budgets, and a credible scalability roadmap?
 
-This is the payoff.  
-You ship one complete, audited FuncPipe system (new or deeply refactored) that satisfies every requirement below. The entire governance/CI scaffold may be copied verbatim from the official template repository; graduation assesses correct FP architecture and invariant design, not infra originality.
+This is the payoff. You ship one complete, audited FuncPipe system and make every
+claim point to evidence a reviewer can actually run.
 
 **Motivation Bug:** FP knowledge that never ships with verified, versioned, evolvable boundaries remains hobby-grade.
 
 **Delta from Core 9:** Governance was mostly manual. Core 10 makes it mechanically enforced where reliable, explicitly best-effort elsewhere, and always secondary to architectural separation and review.
 
-**Capstone Contract (Normative – All Required for Graduation):**
+## The Shipped FuncPipe Delivery Contract
+
+The course capstone is a deterministic local application, not a production
+platform template. Its Module 10 endpoint must:
+
+- preserve the Module 09 RAG, streaming, async, failure, and boundary behavior;
+- keep performance measurements separate from pure budget decisions;
+- prove optimized embedding equivalence with generated domain values;
+- distinguish optional-package installation, compiler implementation, and
+  semantic readiness;
+- pair structural migration review with an executable upcaster;
+- publish ownership and claim-to-evidence routes;
+- fail `make review-check` when a declared evidence path is absent; and
+- pass the focused learning tests, history verification, and strongest course
+  confirmation route.
+
+Run the delivery gate:
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+make review-check
+pytest -q tests/learning/test_module_10_sustainment.py
+```
+
+`review-check` verifies that declared implementation and test paths exist. It does
+not execute those tests; the second command and final course gate provide execution
+evidence.
+
+The remainder of this page is a production-extension blueprint. It is deliberately
+broader than the shipped teaching capstone. Do not claim that FuncPipe includes
+the listed ASV, import-linter, schema-hashing, or protected-release machinery
+unless you add and verify those surfaces.
+
+## Production Extension Blueprint
+
 - Pure core / effect shell decomposition enforced by import-linter + best-effort AST bans. Architectural separation and code review are the primary defense against impurity; static tools are secondary guardrails only.
 - Typed public contract surface (events, ports, configs, graphs) using pydantic v2 models, semver (major-only public changes), canonical JSON serialization (strict, cross-language-stable rules below), and normalized JSON schema hashing.
 - All effect boundaries use explicit protocols (e.g., `Protocol[Clock]` → `datetime`). Property tests prove core remains deterministic and equivalent across multiple conforming protocol implementations (pure + representative effectful ones) supplied in the test suite.
@@ -53,7 +87,8 @@ You ship one complete, audited FuncPipe system (new or deeply refactored) that s
 - System-level golden run with canonicalized output snapshot + hash.
 - Golden files regenerated exclusively via the official regen tool, which is version-tagged in a protected upstream repository. CI verifies golden files were produced by the currently approved tagged tool version (fetched from protected ref; PRs cannot override).
 
-**Graduation Artifact:** A complete repository that passes all CI checks and serves as a drop-in template for real production pipelines.
+**Production artifact:** a separately verified repository with the required
+operational controls for its actual deployment environment.
 
 ---
 

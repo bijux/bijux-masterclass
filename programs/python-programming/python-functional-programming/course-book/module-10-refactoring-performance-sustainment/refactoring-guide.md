@@ -35,8 +35,14 @@ keep arriving.
 
 1. run `make PROGRAM=python-programming/python-functional-programming history-refresh`
 2. open `capstone/_history/worktrees/module-10/`
-3. compare the live capstone with your understanding of its proof, inspection, and confirmation routes
-4. run `make PROGRAM=python-programming/python-functional-programming capstone-confirm` when you need the strongest public route
+3. run `make review-check` inside `capstone/` to find any declared evidence path
+   that is missing
+4. run `pytest -q tests/learning/test_module_10_sustainment.py` to execute the
+   focused decision proofs
+5. compare the live capstone with your understanding of its proof, inspection,
+   and confirmation routes
+6. run `make PROGRAM=python-programming/python-functional-programming capstone-confirm`
+   when you need the strongest public route
 
 ## What to refactor toward
 

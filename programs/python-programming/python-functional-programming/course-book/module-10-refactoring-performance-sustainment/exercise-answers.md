@@ -192,3 +192,24 @@ the proof or judge whether the assertion is strong enough.
 In FuncPipe, governance routes reviewers to executable RAG evidence. The test
 suite remains the authority for behavior; the claim catalog makes that authority
 findable.
+
+## Capstone delivery: distinguish discoverability from execution
+
+`funcpipe-rag-review check` builds the same report as `summary`, then returns 1
+when any claim has missing paths. A source file without its declared test is
+incomplete because a reviewer cannot reach the promised proof.
+
+Common wrong turns:
+
+- returning 0 with warnings makes automation treat incomplete evidence as success;
+- running every pytest command inside the inventory tool conflates fast inspection
+  with expensive confirmation;
+- emitting only text makes structured review automation brittle;
+- calling path presence a passing proof overstates what was checked.
+
+The test proves exit-code and JSON behavior for the real endpoint. It does not
+prove any declared command passed. `pytest` and the final course gate provide that
+separate execution record.
+
+In FuncPipe, delivery is a chain from claim, to discoverable proof, to executed
+verification. No single link is allowed to impersonate the others.

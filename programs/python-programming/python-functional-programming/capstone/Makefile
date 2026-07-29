@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test build lint clean clean-all venv rebuild-venv demo inspect verify-report tour proof confirm \
+.PHONY: install test build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -84,6 +84,9 @@ inspect: install ## Build the learner-facing inspection bundle
 	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/manifest.json
 	@echo "✔ wrote learner-facing inspection bundle to $(INSPECT_DIR)"
 
+review-check: install ## Fail when a declared Module 10 evidence path is missing
+	$(VENV)/bin/funcpipe-rag-review check --format text --project-root .
+
 verify-report: install ## Build the structured capstone verification report bundle
 	rm -rf $(VERIFY_REPORT_DIR)
 	mkdir -p $(VERIFY_REPORT_DIR) $(VERIFY_REPORT_DIR)/docs
@@ -140,7 +143,7 @@ tour: install ## Build the learner-facing proof bundle
 
 proof: test inspect tour ## Run the sanctioned learner-facing proof route
 
-confirm: lint build verify-report proof ## Run the strongest capstone confirmation route
+confirm: lint build review-check verify-report proof ## Run the strongest capstone confirmation route
 
 build: install ## Build distribution artifacts
 	$(HATCH) build

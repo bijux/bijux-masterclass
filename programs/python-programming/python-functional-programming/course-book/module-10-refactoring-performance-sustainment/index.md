@@ -65,13 +65,16 @@ need to prove behavior over time.
 - [Versioning and Migration](versioning-and-migration.md)
 - [Governance](governance.md)
 - [Capstone Delivery](capstone-delivery.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Refactoring Guide](refactoring-guide.md)
 
 ## Exercises
 
-- Review one refactor proposal and explain what evidence would make it safe to merge instead of merely attractive.
-- Pick one performance or observability trade-off and state which contract must remain intact while tuning it.
-- Define one governance rule for the capstone and explain which regression or compatibility failure it prevents.
+Use [Module 10 Exercises](exercises.md) after each core rather than waiting until
+the end. The prompts modify or review the live FuncPipe endpoint. Compare your
+reasoning with [Exercise Answers](exercise-answers.md) only after running the named
+focused proof.
 
 ## Capstone checkpoints
 

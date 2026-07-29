@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "funcpipe-rag"
 version = "0.1.0"
-description = "FuncPipe RAG Builder (end of Module 09)"
+description = "FuncPipe RAG Builder (Module 10 cumulative endpoint)"
 readme = "README.md"
 requires-python = ">=3.10,<4.0"
 license = { text = "Apache-2.0" }

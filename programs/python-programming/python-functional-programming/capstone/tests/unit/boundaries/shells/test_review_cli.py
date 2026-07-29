@@ -86,3 +86,16 @@ def test_main_can_render_json(capsys) -> None:
     assert exit_code == 0
     assert payload["project_root"] == PROJECT_ROOT.resolve().as_posix()
     assert payload["proof_routes"][0]["name"] == "demo"
+
+
+def test_check_returns_nonzero_when_evidence_paths_are_missing(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    exit_code = main(["check", "--format", "json", "--project-root", str(tmp_path)])
+
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 1
+    assert all(not claim["complete"] for claim in payload["evidence_claims"])
+    assert all(claim["missing_paths"] for claim in payload["evidence_claims"])

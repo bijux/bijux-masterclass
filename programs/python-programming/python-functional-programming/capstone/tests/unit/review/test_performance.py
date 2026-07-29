@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pytest
+
 from funcpipe_rag.review.performance import (
     PerformanceBudget,
     PerformanceObservation,

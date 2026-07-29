@@ -263,3 +263,32 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 
 Earlier contract preserved: governance describes how existing RAG laws are
 reviewed; it does not replace those laws with repository metadata.
+
+## Capstone delivery: distinguish discoverability from execution
+
+**Starting context:** run `make review-check`, then read
+`test_delivery_check_exposes_a_machine_readable_release_gate`.
+
+**Objective:** remove one declared test path in a temporary project tree and
+explain why the check fails even though its implementation path exists.
+
+**Constraints:**
+
+- do not run declared commands inside the evidence assessor;
+- emit both human-readable and JSON reports;
+- return a nonzero exit code for incomplete evidence;
+- state which separate command proves execution.
+
+**Expected evidence:** the incomplete temporary tree returns exit code 1 and names
+the missing test; the real capstone returns 0 before its focused tests run.
+
+**Acceptance check:**
+
+```bash
+make review-check
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k delivery_check_exposes_a_machine_readable_release_gate
+```
+
+Earlier contract preserved: the existing pytest and confirmation routes remain
+the behavioral authority; the delivery check makes their claim mapping fail closed.
