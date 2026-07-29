@@ -33,14 +33,13 @@ without quietly destroying laziness.
 
 ## Stable comparison route
 
-From the program root:
+From the repository root:
 
 1. run the focused learning proof:
 
    ```bash
-   PYTHONPATH=capstone/module-reference-states/module-03/src \
-     python -m pytest -q \
-     capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py
+   make PROGRAM=python-programming/python-functional-programming \
+     capstone-streaming-rag-proof
    ```
 
 2. compare Module 02 with Module 03:
@@ -80,9 +79,14 @@ This is the preservation oracle.
 Change one list-producing stage to an iterator. Do not simultaneously change chunk
 policy, ordering, and observation. Prove:
 
-- fully consumed values equal the oracle;
+- the complete chain still reaches embedding and deduplication;
+- fully consumed values equal the oracle when canonical input order makes the order
+  policies equivalent;
 - construction performs no source work;
 - a bounded prefix requests no extra upstream item.
+
+Do not compare a complete factory only with `gen_bounded_chunks`; that helper stops
+before embedding and deduplication.
 
 ### 3. State retained memory
 
@@ -119,7 +123,9 @@ For each stage, fill one row:
 | --- | --- | --- | --- | --- |
 | filter | one or more inputs | current input | when demand reaches bad predicate/input | encounter |
 | chunk flat-map | part or all of one document | current document/chunker | when requested chunk is computed | document then offset |
-| fence | at most one per output | iterator and count | only within requested prefix | prefix |
+| raw-chunk fence | exactly one raw chunk per output | iterator and count | only within requested prefix | prefix |
+| streaming dedup | one or more raw chunks per unique output | all unique keys seen | when demand scans a duplicate or failing item | first encounter |
+| unique-output fence | one unique chunk per output | iterator and count | only while filling requested unique prefix | prefix |
 | multicast | one shared upstream value | per-consumer skew | capacity check before pull | identical per subscriber |
 
 If a row cannot be completed, inspect code before refactoring it.
@@ -139,6 +145,6 @@ This prevents a later snapshot from silently losing an earlier execution contrac
 
 ## Exit standard
 
-Before Module 04, you should be able to explain where work starts, where it pauses, and
-which tests prove that the stream contract survives refactoring. You should also be
-able to name what each test does not prove.
+Before Module 04, you should be able to explain where work starts, where it pauses,
+why a two-output unique fence can request three documents, and which test proves
+the final chunks preserve Module 02 meaning under the stated ordering condition.
