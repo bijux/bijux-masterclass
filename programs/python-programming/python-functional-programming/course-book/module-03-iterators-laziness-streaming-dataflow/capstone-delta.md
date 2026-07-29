@@ -1,100 +1,136 @@
-# Module 03 FuncPipe Delta: Make Demand Explicit
+# Module 03 FuncPipe Delta: Make Complete RAG Demand Explicit
 
-Module 02 made the RAG core configurable without hiding its pure transformations.
-It could filter, clean, chunk, embed, and deduplicate a finite collection. Module 03
-keeps those value-level rules and changes the execution model: callers may now
-request a bounded prefix without first materializing the entire input.
+Module 02 provides a configurable eager API. It filters, cleans, chunks, embeds,
+canonically sorts, deduplicates, and returns complete observations. Module 03 keeps
+that API and adds a complete iterator route for callers that need bounded demand.
 
-## The pressure
+## New pressure
 
-A document source may be large, slow, or unbounded. A list-based pipeline cannot
-answer these operational questions:
+A large or slow document source makes “return all chunks” an incomplete execution
+contract. A caller needs to know:
 
-- How many documents must be read to produce three chunks?
-- Can chunking preserve offsets while emitting one item at a time?
-- What happens when two consumers advance at different speeds?
-- Can timing and observation be tested without real sleeping or eager collection?
+- whether constructing the pipeline requests input;
+- where a prefix fence is placed;
+- which stages run before an output appears;
+- how deduplication changes upstream demand and retained state;
+- whether fully consuming the stream preserves Module 02 values.
 
-The new concept is **demand-driven dataflow**. An iterator is both a sequence of
-values and a protocol for deciding when upstream work may happen.
+The concept introduced now is **demand-driven dataflow**: downstream requests
+control upstream traversal, and fence placement is application behavior.
 
-## The application change
+## Application delta
 
-The Module 03 reference state adds these responsibilities:
+The completed Module 03 path is:
 
-| Pressure | Source surface | Learner-visible behavior |
+```text
+RawDoc source
+  -> filter
+  -> clean
+  -> chunk
+  -> embed
+  -> encounter-order structural dedup
+  -> optional unique-output fence
+  -> Chunk iterator
+```
+
+`stream_rag_chunks` owns that composition. `make_gen_rag_fn` captures immutable
+policy and returns a fresh complete RAG iterator for each call. It returns `Chunk`,
+including the deterministic embedding, rather than stopping at
+`ChunkWithoutEmbedding`.
+
+| Surface | Output | Fence meaning |
 | --- | --- | --- |
-| stream the RAG core | `api/core.py`, `api/config.py` | `stream_chunks`, `gen_bounded_chunks`, and `make_gen_rag_fn` return iterators |
-| preserve chunk meaning | `pipeline_stages.py`, `rag_types.py` | lazy chunks retain document IDs and exact spans |
-| compose generic stages | `streaming/compose.py`, `streaming/types.py` | transforms connect without intermediate lists |
-| combine and split demand | `streaming/fanin.py`, `streaming/fanout.py`, `api/core.py` | ordering, lockstep, and bounded skew are explicit policies |
-| make time testable | `streaming/time.py`, `fp.py` | clocks and sleepers are injected |
-| observe without rewriting values | `streaming/observability.py`, `streaming/sampling.py` | taps, counters, peeks, and samples stay lazy |
-| deduplicate during traversal | `core/structural_dedup.py` | first occurrences are emitted in encounter order |
+| `stream_chunks` | pre-embedding `ChunkWithoutEmbedding` | none |
+| `gen_bounded_chunks` | pre-embedding `ChunkWithoutEmbedding` | at most this many raw chunks |
+| `gen_stream_embedded` | `Chunk` | none |
+| `gen_stream_deduped` | unique encounter-ordered `Chunk` | none; retains seen keys |
+| `stream_rag_chunks` | final unique `Chunk` | at most this many unique outputs |
+| `make_gen_rag_fn` | fresh final unique `Chunk` iterator | configured unique-output limit |
 
-The generic streaming package does not replace the RAG pipeline. It gives the RAG
-pipeline small execution-policy tools while the domain stages still own cleaning,
-chunk metadata, and embedding.
+The two fences are not interchangeable. A raw-chunk fence of two requests exactly
+two raw chunks. A unique-output fence of two may request more when duplicates are
+discarded before the second unique output appears.
 
-## What must not change
+## Source ownership
 
-When the stream is fully materialized with the default non-overlapping chunk
-configuration:
+| Responsibility | Module 03 source |
+| --- | --- |
+| complete RAG iterator and RAG-specific stages | `api/core.py` |
+| reusable configured factory | `api/config.py` |
+| lazy structural deduplication | `core/structural_dedup.py` |
+| overlap and tail policy | `pipeline_stages.py`, `rag_types.py` |
+| generic source/transform composition | `streaming/compose.py`, `streaming/types.py` |
+| fan-in, fan-out, time, and observation policies | `streaming/` |
 
-- filtering and cleaning follow the Module 02 configuration;
-- chunk text, document identity, offsets, and order remain equal;
-- deterministic embedding remains a pure boundary;
-- a hard prefix fence never requests an item beyond that prefix;
-- observation yields the same values in the same order.
+The generic streaming package supplies execution-policy tools. RAG modules still
+own document cleaning, chunk metadata, embedding, and structural identity.
 
-Some new operations deliberately have different semantics. Streaming
-deduplication preserves first-encounter order and retains a set of seen keys;
-canonical Module 02 deduplication sorts before removing duplicates. “Lazy” does
-not automatically mean constant space.
+## Preservation and deliberate difference
 
-## Proof route
+For input already ordered by `(doc_id, start)`, fully materializing
+`stream_rag_chunks` equals the Module 02 eager API, including 16-component
+embeddings.
 
-From `programs/python-programming/python-functional-programming`:
+For out-of-order documents, the APIs intentionally differ:
+
+- the eager API sorts canonically before deduplication;
+- the streaming API emits the first unique chunk in encounter order.
+
+Sorting the complete streaming result by `(doc_id, start)` recovers the eager
+result. The stream cannot promise canonical order without buffering and sorting the
+whole input, which would defeat its demand contract.
+
+Neither deduplication route is constant-space. The streaming route avoids retaining
+all chunk values but retains every unique structural key seen so far.
+
+## Executable laws
+
+The Module 03 learning proof establishes 14 cases:
+
+- construction does not request documents;
+- a raw prefix fence does not pull one item too far;
+- overlap and tail policies preserve their stated metadata;
+- a sliding window pulls only the width needed for its next output;
+- source factories create fresh traversals;
+- multicast skew failure does not over-consume upstream;
+- injected time makes pacing deterministic;
+- custom deduplication is single-pass and encounter-ordered;
+- observation is lazy, bounded, and value-neutral;
+- the complete stream equals Module 02 for canonical input;
+- encounter order is visibly different from eager canonical order;
+- a unique-output fence may pull duplicates to fill its prefix.
+
+Run the stable route from the repository root:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-03/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-streaming-rag-proof
 ```
 
-The learning proof checks construction versus demand, exact prefix consumption,
-overlapping chunk metadata, window bounds, reusable-stage independence, fan-in
-ordering, fan-out skew recovery, injected time, custom iteration, neutral
-observation, and equality with the Module 02 value contract.
+## Reference-state route
 
-For source-level comparison:
+`capstone/module-reference-states/module-03` is the completed state. Compare it
+with Module 02:
 
 ```bash
-git diff --stat \
-  capstone/module-reference-states/module-02 \
-  capstone/module-reference-states/module-03
+diff -qr \
+  programs/python-programming/python-functional-programming/capstone/module-reference-states/module-02/src \
+  programs/python-programming/python-functional-programming/capstone/module-reference-states/module-03/src
 ```
 
-Read the stat first, then trace the focused files in the table. The delta is too
-large for an unguided whole-tree reading.
+Read `api/core.py`, `api/config.py`, `core/structural_dedup.py`, and `streaming/`
+before expanding to the full tree.
 
-## Reference and downstream states
+Modules 04–09 and the live Module 10 capstone preserve the complete streaming
+function, factory return type, and cumulative learning laws.
 
-`capstone/module-reference-states/module-03` is the completed state for this
-module. Modules 04 through 09 and the live capstone inherit its streaming
-contract. A correction to shared behavior or its cumulative learning proof must
-therefore be carried through those states and followed by history verification.
+## Move-forward boundary
 
-## Review boundary
+Module 03 proves synchronous demand, explicit fence placement, retained-key
+reasoning, and deterministic test control. It does not prove automatic cleanup
+after an abandoned iterator, typed per-item recovery, async backpressure, or
+constant space for deduplication and fan-out.
 
-Module 03 proves synchronous demand, bounded traversal, and deterministic test
-control. It does not prove:
-
-- automatic resource cleanup when iteration stops early;
-- typed per-item recovery;
-- asynchronous backpressure or fairness;
-- constant space for fan-out, deduplication, or every `itertools` recipe.
-
-Those limits are intentional hand-offs to later modules. Move forward when you can
-predict which upstream item a downstream `next()` will request, identify every
-materialization point, and name the policy that bounds retained state.
+Move to Module 04 when you can predict which source values a requested unique
+prefix may consume, explain why streaming order differs from canonical order, and
+point to the test that proves complete chunks still preserve Module 02 meaning.
