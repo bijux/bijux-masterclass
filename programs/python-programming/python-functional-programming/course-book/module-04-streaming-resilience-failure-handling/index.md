@@ -76,7 +76,8 @@ runnable route through the cumulative RAG change.
 Use [Module 04 Exercises](exercises.md) for cumulative work against the tracked
 reference state. Each exercise requires a predicted demand/output trace, a
 preserved Module 03 contract, executable evidence, and an explicit limit on
-what that evidence proves.
+what that evidence proves. Consult [Exercise Answers](exercise-answers.md) only
+after recording your own prediction and review notes.
 
 ## Capstone checkpoints
 

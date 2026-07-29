@@ -94,6 +94,7 @@ nav:
   - Functional Retries: module-04-streaming-resilience-failure-handling/functional-retries.md
   - Structured Error Reports: module-04-streaming-resilience-failure-handling/structured-error-reports.md
   - Exercises: module-04-streaming-resilience-failure-handling/exercises.md
+  - Exercise Answers: module-04-streaming-resilience-failure-handling/exercise-answers.md
   - Module 04 Refactoring Guide: module-04-streaming-resilience-failure-handling/refactoring-guide.md
   - Module Glossary: module-04-streaming-resilience-failure-handling/glossary.md
 - 'Module 05: Algebraic Data Modelling and Validation':
