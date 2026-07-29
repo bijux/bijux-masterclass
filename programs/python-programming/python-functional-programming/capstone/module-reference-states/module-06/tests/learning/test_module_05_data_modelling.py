@@ -43,7 +43,16 @@ from funcpipe_rag.fp.validation import (
     v_liftA2,
     v_success,
 )
-from funcpipe_rag.rag.domain import ChunkMetadata, ChunkText, Embedding, assemble
+from funcpipe_rag.rag.domain import (
+    Chunk as ModelChunk,
+)
+from funcpipe_rag.rag.domain import (
+    ChunkMetadata,
+    ChunkText,
+    Embedding,
+    assemble,
+    process_batch_hybrid,
+)
 from funcpipe_rag.rag.stages import clean_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok
 from pydantic import ValidationError
@@ -200,3 +209,21 @@ def test_domain_assembly_reports_all_embedding_mismatches() -> None:
         ErrorCode.EMB_MODEL_MISMATCH,
         ErrorCode.EMB_DIM_MISMATCH,
     )
+
+
+def test_hybrid_embedding_preserves_pure_rag_observables() -> None:
+    chunk = ModelChunk(
+        text=ChunkText(content="representation proof"),
+        metadata=ChunkMetadata(source="lesson", tags=("typed",), embedding_model="local"),
+    )
+    pure = process_batch_hybrid([chunk], mode="pure")
+    hybrid = process_batch_hybrid([chunk], mode="hybrid")
+
+    assert isinstance(pure[0], VSuccess)
+    assert isinstance(hybrid[0], VSuccess)
+    assert pure[0].value.id == hybrid[0].value.id
+    assert pure[0].value.text == hybrid[0].value.text
+    assert pure[0].value.metadata == hybrid[0].value.metadata
+    assert pure[0].value.embedding is not None
+    assert hybrid[0].value.embedding is not None
+    assert hybrid[0].value.embedding.vector == pytest.approx(pure[0].value.embedding.vector)

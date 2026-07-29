@@ -1,4 +1,4 @@
-"""Module 05 hybrid performance path: optimized batches with equivalence checks (end-of-Module-05)."""
+"""Module 05 hybrid performance path with observable-equivalence checks."""
 
 from __future__ import annotations
 
@@ -11,13 +11,13 @@ from uuid import UUID
 import numpy as np
 from numpy.typing import NDArray
 
-from funcpipe_rag.rag.domain.chunk import Chunk, assemble
-from funcpipe_rag.rag.domain.embedding import Embedding
-from funcpipe_rag.rag.domain.metadata import ChunkMetadata
-from funcpipe_rag.rag.domain.text import ChunkText
+from funcpipe_rag.fp.error import ErrInfo
+from funcpipe_rag.fp.validation import Validation, VSuccess, v_success
 
-from .error import ErrInfo
-from .validation import Validation, VSuccess, v_success
+from .chunk import Chunk, assemble
+from .embedding import Embedding
+from .metadata import ChunkMetadata
+from .text import ChunkText
 
 __all__ = [
     "OBatch",

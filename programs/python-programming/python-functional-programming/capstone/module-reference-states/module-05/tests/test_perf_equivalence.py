@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 import numpy as np
-from funcpipe_rag.fp.perf import process_batch_hybrid
 from funcpipe_rag.fp.validation import VFailure, VSuccess
-from funcpipe_rag.rag.domain import Chunk, ChunkMetadata, ChunkText
+from funcpipe_rag.rag.domain import (
+    Chunk,
+    ChunkMetadata,
+    ChunkText,
+    process_batch_hybrid,
+)
 from hypothesis import given
 from hypothesis import strategies as st
 

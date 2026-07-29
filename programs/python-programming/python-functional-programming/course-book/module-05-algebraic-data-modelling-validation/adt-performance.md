@@ -134,7 +134,7 @@ Compromise **representation**, never **semantics**.
 
 Profile first. Compromise only when measured.
 
-## 3. Public API (fp/perf.py – mypy --strict clean)
+## 3. Public API (rag/domain/perf.py – mypy --strict clean)
 
 ```python
 # (imports elided for brevity – see full fp/perf.py in the repo)
@@ -307,6 +307,27 @@ def test_pure_vs_hybrid_equivalence(batch):
 | Compromise without proof      | Silent semantic drift              | Equivalence property test                |
 | Hybrid everywhere             | Lost type safety                   | Hybrid only in measured hot paths        |
 | Mutable at boundaries         | External corruption                | Pure ADTs at API edges                   |
+
+## Runnable RAG learning lab
+
+Run the pure and hybrid representations on the same chunk:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k hybrid_embedding_preserves_pure_rag_observables
+```
+
+The comparison checks identity, text, metadata, embedding presence, and vector
+values. Floating-point vectors use an explicit tolerance because NumPy
+materializes `float32`; exact equality would confuse a representation detail
+with application drift.
+
+This test answers “does the optimized route preserve the declared public
+observables for this input?” It does not answer “is it faster?” Performance
+needs a separate benchmark with representative batches. It also does not
+permit dropping order, IDs, or metadata merely because vector values remain
+close. Extend the exercise to a batch before accepting a representation change.
 
 ## 8. Pre-Core Quiz
 
