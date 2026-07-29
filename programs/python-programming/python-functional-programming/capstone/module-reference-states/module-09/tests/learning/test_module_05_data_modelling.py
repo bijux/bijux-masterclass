@@ -5,6 +5,9 @@ from datetime import datetime
 from typing import TypedDict
 
 import pytest
+from pydantic import ValidationError
+from typing_extensions import assert_never
+
 from funcpipe_rag.boundaries.adapters.pydantic_edges import ChunkModel, to_core_chunk
 from funcpipe_rag.boundaries.adapters.serde import (
     dec_result,
@@ -57,8 +60,6 @@ from funcpipe_rag.rag.domain import (
 )
 from funcpipe_rag.rag.stages import clean_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok
-from pydantic import ValidationError
-from typing_extensions import assert_never
 
 
 class AcceptedChunkPayload(TypedDict):
