@@ -61,6 +61,37 @@ Use this when you are managing an evolving FP system.
 4. Version graphs as immutable specs.
 
 ---
+## FuncPipe Lab: Pair Shape Review with a Semantic Upcaster
+
+The capstone has a real migration seam:
+`ChunkMetadataV1 -> ChunkMetadata`. The newer shape adds optional embedding fields,
+so `assess_migration` classifies it as structurally backward-compatible.
+
+```python
+assessment = assess_migration(previous_shape, current_shape)
+assert assessment.compatibility == "backward-compatible"
+
+migrated = upcast_metadata_v1(
+    ChunkMetadataV1(source="manual", tags=["fp", "rag"])
+)
+assert migrated == ChunkMetadata(source="manual", tags=("fp", "rag"))
+```
+
+The second assertion matters. A field-set comparison cannot prove that a list of
+tags becomes an immutable tuple, that provenance stays unchanged, or that a
+default has the intended meaning. Structure selects the migration route; the
+upcaster test proves the domain translation.
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k metadata_migration_pairs_shape_review_with_an_executable_upcaster
+```
+
+This proves one in-process value migration. It does not establish wire-format
+compatibility, persisted-data rollout order, or a deprecation period.
+
+---
 ## 1. Laws & Invariants
 | Law                        | Description                                                                                  | Enforcement                          |
 |----------------------------|------------------------------------------------------------------------------------------------|--------------------------------------|

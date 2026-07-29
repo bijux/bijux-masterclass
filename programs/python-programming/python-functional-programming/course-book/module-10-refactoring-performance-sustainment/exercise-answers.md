@@ -151,3 +151,24 @@ It does not enforce approvals or prove organizational authority.
 
 In FuncPipe, the RAG model retains its language and code shape. Ownership tells a
 future maintainer who must understand a change, not how many services to deploy.
+
+## Versioning and migration: separate shape from semantics
+
+Adding required `language` yields `requires-migration` because an old value cannot
+construct the new contract unaided. A defensible upcaster must receive a declared
+default policy or a lookup capability at the shell; silently choosing `"en"`
+corrupts documents whose language is unknown or different.
+
+Common wrong turns:
+
+- treating every added field as compatible ignores new constructor obligations;
+- treating shape compatibility as semantic proof misses conversion rules;
+- mutating the old tag list leaks ownership across versions;
+- making the upcaster perform hidden I/O destroys deterministic replay.
+
+The test proves the shipped metadata shape classification and the list-to-tuple
+translation. It does not prove JSON, database, or cross-process compatibility.
+
+In FuncPipe, the old contract remains a readable input value and the translator is
+explicit. Versioning protects the RAG meaning across time rather than merely
+renaming classes.

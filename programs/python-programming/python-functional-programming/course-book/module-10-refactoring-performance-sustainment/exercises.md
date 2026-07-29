@@ -206,3 +206,32 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 
 Earlier contract preserved: existing package boundaries and imports remain stable;
 Module 10 adds review accountability rather than a speculative service split.
+
+## Versioning and migration: separate shape from semantics
+
+**Starting context:** read `review/migration.py`,
+`upcast_metadata_v1`, and
+`test_metadata_migration_pairs_shape_review_with_an_executable_upcaster`.
+
+**Objective:** classify adding a required `language` field, then design the
+upcaster input needed to supply it honestly.
+
+**Constraints:**
+
+- classify added optional and added required fields differently;
+- do not invent a language value inside a pure translator without a declared rule;
+- preserve source and tag meaning;
+- state which persisted or wire formats remain untested.
+
+**Expected evidence:** the shape review says `requires-migration`, and the proposed
+upcaster makes the source of `language` explicit.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k metadata_migration_pairs_shape_review_with_an_executable_upcaster
+```
+
+Earlier contract preserved: Module 05 domain invariants remain true after
+translation, including immutable tags and unchanged provenance.

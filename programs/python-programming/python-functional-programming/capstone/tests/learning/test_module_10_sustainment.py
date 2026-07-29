@@ -11,11 +11,14 @@ from funcpipe_rag.pipelines.distributed import BackendStatus
 from funcpipe_rag.rag.domain import (
     Chunk,
     ChunkMetadata,
+    ChunkMetadataV1,
     ChunkText,
     embedding_batches_equivalent,
     process_batch_hybrid,
+    upcast_metadata_v1,
 )
 from funcpipe_rag.result.types import Ok
+from funcpipe_rag.review.migration import ContractShape, assess_migration
 from funcpipe_rag.review.observability import (
     StageObservation,
     summarize_observations,
@@ -166,3 +169,26 @@ def test_package_groups_name_review_ownership_not_only_directories() -> None:
         "effect-boundaries": "boundary-integrations",
         "interop": "ecosystem-interop",
     }
+
+
+def test_metadata_migration_pairs_shape_review_with_an_executable_upcaster() -> None:
+    """Additive shape evidence is necessary, but the translator proves semantics."""
+
+    previous = ContractShape(
+        "chunk-metadata",
+        frozenset({"source", "tags"}),
+        frozenset({"source", "tags"}),
+    )
+    current = ContractShape(
+        "chunk-metadata",
+        frozenset({"source", "tags", "embedding_model", "expected_dim"}),
+        frozenset({"source", "tags"}),
+    )
+
+    assessment = assess_migration(previous, current)
+    migrated = upcast_metadata_v1(
+        ChunkMetadataV1(source="manual", tags=["fp", "rag"])
+    )
+
+    assert assessment.compatibility == "backward-compatible"
+    assert migrated == ChunkMetadata(source="manual", tags=("fp", "rag"))
