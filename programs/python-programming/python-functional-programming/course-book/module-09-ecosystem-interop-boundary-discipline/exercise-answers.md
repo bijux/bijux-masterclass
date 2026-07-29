@@ -224,3 +224,27 @@ client adapter needs an explicit request-key and retry policy.
 
 In FuncPipe, the domain describes embedding work. A shell chooses when and how to
 interpret it, preserving the same review boundary used since Module 07.
+
+## Cross-process composition: reject code identity before reconstruction
+
+`PipelineSpec` contains data only. The hash covers the ordered operator type,
+`func_id`, and error policy, so changing `collect` to `fail_fast` changes the
+identity even when the function name stays the same.
+
+`reconstruct_pipeline` checks the explicit allow-list before retrieving an
+executable function. An empty set therefore returns `DISALLOWED`, and the call
+counter remains zero.
+
+Common wrong turns:
+
+- pickling a closure transports ambient state and executable authority
+- hashing only function names ignores behavior-changing failure policy
+- reconstructing first and checking permission later lets untrusted identifiers
+  influence execution setup
+
+The result proves canonical identity for the shipped spec fields and pre-execution
+allow-list rejection. It does not authenticate who supplied a spec or make SHA-256
+a signature; transport authentication is a separate boundary.
+
+In FuncPipe, the receiving process owns the registry and allow-list. The sender
+may request a function identifier but cannot provide executable code.

@@ -231,3 +231,32 @@ pytest -q tests/learning/test_module_09_interop.py \
 
 Earlier contract preserved: Module 07 effects remain descriptions and Module 04
 keeps expected boundary failures in `Result`.
+
+## Cross-process composition: reject code identity before reconstruction
+
+**Starting context:** read `pipelines/specs.py` and
+`test_pipeline_spec_is_hashed_and_allow_listed_before_execution`.
+
+**Objective:** compare two specs that differ only in failure policy, then attempt
+to reconstruct one with an empty allow-list.
+
+**Constraints:**
+
+- serialize function identifiers, never callables
+- include operator type, identifier, and failure policy in the hash
+- check the allow-list before invoking an operator
+- keep rejection in `Result`
+
+**Expected evidence:** policy changes alter the hash, disallowed identifiers return
+`Err(code="DISALLOWED")`, and the registered callable is never invoked.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k pipeline_spec_is_hashed_and_allow_listed_before_execution
+```
+
+Earlier contract preserved: Module 05 data modelling and Module 04 failure
+policies survive serialization without turning transported data into executable
+authority.

@@ -16,6 +16,12 @@ from funcpipe_rag.pipelines.configured import (
     build_rag_pipeline,
 )
 from funcpipe_rag.pipelines.distributed import backend_statuses
+from funcpipe_rag.pipelines.specs import (
+    OperatorSpec,
+    PipelineSpec,
+    reconstruct_pipeline,
+    spec_hash,
+)
 from funcpipe_rag.result.types import Err, Ok
 
 
@@ -154,3 +160,26 @@ def test_facade_defers_client_failure_and_returns_it_as_data() -> None:
     assert calls == 1
     assert isinstance(result, Err)
     assert result.error.stage == "facade.embed_batch"
+
+
+def test_pipeline_spec_is_hashed_and_allow_listed_before_execution() -> None:
+    calls = 0
+
+    def untrusted_operator(value: int) -> int:
+        nonlocal calls
+        calls += 1
+        return value + 1
+
+    collected = PipelineSpec((OperatorSpec("Map", "untrusted", "collect"),))
+    fail_fast = PipelineSpec((OperatorSpec("Map", "untrusted", "fail_fast"),))
+
+    result = reconstruct_pipeline(
+        collected,
+        {"untrusted": untrusted_operator},
+        allow_list=set(),
+    )
+
+    assert isinstance(result, Err)
+    assert result.error.code == "DISALLOWED"
+    assert calls == 0
+    assert spec_hash(collected) != spec_hash(fail_fast)
