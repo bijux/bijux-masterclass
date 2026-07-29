@@ -10,9 +10,8 @@ Keep the tracked snapshot unchanged unless an exercise explicitly asks you to ma
 local copy. Start by running:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-01/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-proof
 ```
 
 Your work is complete only when that baseline still passes.
@@ -137,40 +136,56 @@ The earlier contract that must remain true is full text coverage by `chunk_doc`.
 
 ## Exercise 4: Test the effect boundary
 
-Starting context: `rag_shell.py`. Use pytest's `tmp_path`; do not write outside the
-test directory.
+Starting context: `rag_shell.py` and the tracked
+`tests/learning/test_module_01_shell_boundary.py`. First run:
 
-Objective: prove the narrow CSV-to-JSONL adapter calls the same pure core used by
-Module 01.
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-shell-proof
+```
 
-Cover:
+The existing proof covers:
 
 - a valid two-row CSV;
 - a header-only CSV;
 - a row missing a required `RawDoc` field;
 - a missing input path.
 
-Constraints:
+Objective: explain why each case belongs at the boundary, then design one additional
+Module 01 case that adds a new observation instead of repeating those four routes.
+
+Choose one:
+
+- non-ASCII title and abstract content remain valid UTF-8 after JSONL
+  serialization;
+- duplicate valid rows produce the pure core's canonical structural result;
+- an invalid UTF-8 input is translated to a contextual `ValueError`.
+
+Use pytest's `tmp_path`; do not write outside the test directory.
+
+Constraints for the added case:
 
 - derive expected valid output with `full_rag`;
 - parse JSONL instead of comparing incidental whitespace;
-- assert the documented exception type for each failure;
+- assert the documented exception type when selecting a failure route;
+- identify which existing test would catch domain logic copied into the shell and
+  which would not;
 - do not add retry, atomic-write, logging, or protocol abstractions;
 - do not weaken the pure-core learning proof.
 
 Expected evidence:
 
-- focused shell tests;
+- one focused shell test and an explanation of its distinct observation;
 - a table classifying each operation in `rag_shell` as read effect, pure transform, or
   write effect;
 - an explicit note that direct output may be partial if writing fails.
 
 Acceptance checks:
 
-- valid output content matches `full_rag`;
-- header-only input creates an empty output file;
-- malformed row translation mentions the source path;
-- missing path behavior is reported exactly as implemented.
+- the original four-test proof remains green;
+- the new assertion fails for the specific regression it names;
+- successful output is compared to `full_rag` after JSON parsing;
+- the conclusion states what the added case still does not prove.
 
 ## Exercise 5: Review a false fixed-point claim
 
@@ -201,14 +216,19 @@ Preserve all Module 01 learning and property tests.
 
 ## Completion route
 
-Run both proof surfaces:
+Run the three named proof surfaces:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-01/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py \
-  capstone/module-reference-states/module-01/tests/test_laws.py
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-types
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-proof
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-shell-proof
 ```
+
+The broader property suite remains in
+`capstone/module-reference-states/module-01/tests/test_laws.py` and must stay green.
 
 Before reading the answers, be able to identify:
 
