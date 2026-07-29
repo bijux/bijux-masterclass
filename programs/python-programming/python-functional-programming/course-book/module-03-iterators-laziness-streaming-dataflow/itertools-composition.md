@@ -414,12 +414,90 @@ For mutable state; use custom.
 | Tool       | Use When                                      | Memory   | Pitfall                              | Safe?   |
 |------------|-----------------------------------------------|----------|--------------------------------------|---------|
 | chain      | Concat many iterables                         | O(1)     | None                                 | Yes     |
-| groupby    | Group **contiguous** equal items              | O(1)     | Must sort first if not contiguous    | Yes     |
+| groupby    | Group **contiguous** equal items              | O(1) auxiliary | Groups share the source iterator | Careful |
 | tee        | Multiple consumers of same iterator           | O(skew)  | Unbounded skew → memory explosion    | Careful |
-| islice     | Skip/take without consuming                   | O(1)     | None                                 | Yes     |
-| accumulate | Running totals/reductions                     | O(n)     | Default op is +                      | Yes     |
+| islice     | Skip/take while consuming only that route     | O(1) auxiliary | Requested skips are still consumed | Yes |
+| accumulate | Produce running totals/reductions             | O(1) auxiliary | Default operation is addition     | Yes     |
 | compress   | Filter by boolean mask                        | O(1)     | None                                 | Yes     |
 
 **Further Reading:** For the deepest itertools mastery, see the official docs and Dan Bader’s ‘Python Tricks’ chapter on iterators.
 
 > **You now own the most powerful lazy streaming toolkit in Python. Module 4 will show you how to make even failure and resource cleanup lazy and pure.**
+
+## Composition is an execution contract
+
+`compose_transforms` in the Module 03 state connects stages without iterating them:
+
+```python
+from funcpipe_rag import compose_transforms, fence_k
+
+take_three = compose_transforms(
+    (lambda values: (value * 2 for value in values)),
+    fence_k(3),
+)
+
+assert list(take_three(range(100))) == [0, 2, 4]
+```
+
+The order is left-to-right: the input passes through the doubling transform and
+then the fence. Moving the fence earlier preserves the result here but can avoid
+two multiplications if an upstream transform expands each input. Stage order is
+therefore a demand and cost decision even when fully materialized values happen to
+match.
+
+### `groupby` is not a database group
+
+FuncPipe's `gen_grouped_chunks` groups contiguous runs by `doc_id`. Given document
+IDs `a, b, a`, plain `groupby` would produce three groups. The reference state
+wraps its input with `ensure_contiguous`, which raises when a completed key returns:
+
+```python
+from funcpipe_rag import ChunkWithoutEmbedding, gen_grouped_chunks
+
+chunks = [
+    ChunkWithoutEmbedding("a", "one", 0, 3),
+    ChunkWithoutEmbedding("b", "two", 0, 3),
+    ChunkWithoutEmbedding("a", "three", 3, 8),
+]
+
+groups = gen_grouped_chunks(chunks)
+next(groups)            # group "a"
+list(next(groups)[1])   # consume group "b" far enough to encounter the returning "a"
+```
+
+The exact error timing depends on group consumption because each group iterator
+shares the same upstream iterator. Never store the group iterators for later.
+Consume each group inside the outer loop:
+
+```python
+for doc_id, group in gen_grouped_chunks(chunks):
+    owned_chunks = tuple(group)
+    index_document(doc_id, owned_chunks)
+```
+
+Sorting is not an automatic repair. It materializes the stream and changes encounter
+order. Use it only if order-independent global grouping is the required behavior.
+
+### Demand law for a fence
+
+For non-negative `k`, the important property is stronger than prefix equality:
+
+```text
+list(fence_k(k)(source())) == baseline[:k]
+upstream requests == min(k, len(baseline))
+```
+
+The first line proves values. The second proves timing. The learning test uses a
+counted source because a value-only assertion would still pass for an implementation
+that pulled one item too far.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-03/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+  -k 'prefix_fence'
+```
+
+Review a composition by writing, for each downstream output, the maximum upstream
+requests and retained items. If either is “unknown,” the composition is not yet
+operationally explained.
