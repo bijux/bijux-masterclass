@@ -77,3 +77,25 @@ Common wrong turns:
 The policy is immutable description data. The semaphore, tasks, active counter,
 and work all come into existence only when the shell drives the returned
 `AsyncGen`.
+
+## Retry policy: inspect attempts and backoff
+
+With `backoff_base_ms=5`, zero jitter, and four permitted attempts, exponential
+backoff records `[0.005, 0.01, 0.02]`. There is no delay after the final
+successful attempt. The attempt counter remains zero at wrapper construction
+because `async_with_resilience` returns another `AsyncPlan`.
+
+The retriable `TRANSIENT` code permits policy to continue. A different code
+would return immediately, while exhausting all four attempts would produce the
+wrapper's `MAX_RETRIES` error rather than the step's final raw error.
+
+Common wrong turns:
+
+- asserting elapsed time couples the test to scheduler and machine load;
+- injecting a blocking synchronous sleeper stalls the event loop;
+- expecting a fourth delay adds sleep after work has already succeeded;
+- assuming a retriable code means a non-idempotent write is safe to repeat.
+
+This proof covers bounded attempts and the exponential schedule. Timeout
+translation, cancellation, and randomized jitter are distinct policy behaviors
+and deserve separate evidence.

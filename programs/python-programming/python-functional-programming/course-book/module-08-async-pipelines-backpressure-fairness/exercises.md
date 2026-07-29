@@ -100,3 +100,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 
 Earlier contract preserved: the Module 07 effect boundary still owns execution;
 Module 08 adds an explicit interpreter policy for how much execution may overlap.
+
+## Retry policy: inspect attempts and backoff
+
+**Starting context:** read `RetryPolicy`, `ResilienceEnv`, and
+`async_with_resilience` in `domain/effects/async_/resilience.py`, then run
+`test_retry_policy_records_bounded_attempts_and_backoff`.
+
+**Objective:** make the step fail three times before succeeding, permit four
+attempts, and predict the complete zero-jitter backoff trace for a 5 ms base.
+
+**Constraints:**
+
+- inject a recording sleep function;
+- use the typed `TRANSIENT` error code;
+- assert construction is effect-free;
+- do not use elapsed wall-clock time.
+
+**Expected evidence:** four executions produce success after the delays 5, 10,
+and 20 ms.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k retry_policy_records_bounded_attempts_and_backoff
+```
+
+Earlier contract preserved: only a Module 07 effect known to be idempotent may
+be repeated; the retry combinator does not grant idempotency.

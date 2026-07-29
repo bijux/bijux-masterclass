@@ -9,12 +9,15 @@ from funcpipe_rag.domain.effects.async_ import (
     AsyncGen,
     AsyncPlan,
     BackpressurePolicy,
+    RetryPolicy,
     async_gen_bounded_map,
     async_gen_from_list,
     async_gen_map,
     async_lift,
+    async_with_resilience,
+    make_test_resilience_env,
 )
-from funcpipe_rag.result.types import ErrInfo, Ok, Result
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
 
 def test_async_plan_is_deferred_and_creates_fresh_awaitables() -> None:
@@ -96,3 +99,37 @@ def test_bounded_map_caps_in_flight_work_and_preserves_order() -> None:
 
     assert asyncio.run(consume()) == [Ok(10), Ok(20), Ok(30), Ok(40)]
     assert maximum_active == 2
+
+
+def test_retry_policy_records_bounded_attempts_and_backoff() -> None:
+    """Injected sleep turns exponential retry behavior into inspectable evidence."""
+
+    attempts = 0
+    delays: list[float] = []
+
+    async def flaky_step() -> Result[int, ErrInfo]:
+        nonlocal attempts
+        attempts += 1
+        if attempts < 3:
+            return Err(ErrInfo(code="TRANSIENT", msg="try again"))
+        return Ok(42)
+
+    async def record_sleep(seconds: float) -> None:
+        delays.append(seconds)
+        await asyncio.sleep(0)
+
+    resilient = async_with_resilience(
+        flaky_step,
+        RetryPolicy(
+            max_attempts=3,
+            backoff_base_ms=10,
+            max_backoff_ms=100,
+            jitter_factor=0,
+        ),
+        env=make_test_resilience_env(sleep=record_sleep),
+    )
+
+    assert attempts == 0
+    assert asyncio.run(resilient()) == Ok(42)
+    assert attempts == 3
+    assert delays == [0.01, 0.02]

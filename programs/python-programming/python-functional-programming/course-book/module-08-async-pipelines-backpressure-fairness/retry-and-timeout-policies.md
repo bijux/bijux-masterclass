@@ -61,6 +61,55 @@ Policies are pure data; the resilient wrapper returns an ordinary `AsyncPlan`. A
 - Rate limiting & fairness (M08C05–C06)  
 - Full production async RAG pipeline with all safeguards
 
+## Runnable lab: trace a retry schedule
+
+Treat retry policy as data and replace real sleeping with a recorder. A step
+that returns two retriable errors and then succeeds makes the complete policy
+decision visible:
+
+```python
+attempts = 0
+delays: list[float] = []
+
+async def flaky_step() -> Result[int, ErrInfo]:
+    nonlocal attempts
+    attempts += 1
+    if attempts < 3:
+        return Err(ErrInfo(code="TRANSIENT", msg="try again"))
+    return Ok(42)
+
+async def record_sleep(seconds: float) -> None:
+    delays.append(seconds)
+    await asyncio.sleep(0)
+
+policy = RetryPolicy(
+    max_attempts=3,
+    backoff_base_ms=10,
+    max_backoff_ms=100,
+    jitter_factor=0,
+)
+env = make_test_resilience_env(sleep=record_sleep)
+resilient = async_with_resilience(flaky_step, policy, env=env)
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k retry_policy_records_bounded_attempts_and_backoff
+```
+
+Before execution, `attempts` is zero. The result is `Ok(42)`, exactly three
+attempts occur, and the recorded exponential schedule is `[0.01, 0.02]`
+seconds. Setting jitter to zero isolates the backoff law; deterministic jitter
+is addressed in the next core.
+
+Do not patch `asyncio.sleep` globally or assert elapsed wall time. Injecting the
+sleep capability records the interpreter decision directly and keeps unrelated
+async behavior untouched. A retry decision also requires an idempotency
+argument; a typed transient code alone does not make repeating an effect safe.
+
 ## 1. Laws & Architectural Invariants
 
 | Category                  | Name                     | Description                                                                                                                | Enforcement                          |
