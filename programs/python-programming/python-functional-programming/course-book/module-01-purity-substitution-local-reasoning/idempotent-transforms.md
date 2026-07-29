@@ -1,442 +1,211 @@
 # Idempotent Transforms
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Purity Substitution Local Reasoning"]
-  page["Idempotent Transforms"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-This lesson is about making repeated cleanup boring and predictable.
-
-## Start With the Maintenance Smell
-
-When you see code that says "keep applying this until nothing changes," you should pause.
-Sometimes that loop is necessary. Often it is hiding the fact that the transform itself
-was never designed to land on a stable representation.
-
-The goal of this lesson is to teach the review question behind that smell.
-
-## Keep This Question In View
-
-
-> How do you design pure transforms that are safe to apply repeatedly so pipelines converge without loops or guards?
-
-By the end of this lesson, you should be able to explain:
-
-- whether a transform is supposed to be idempotent
-- what "canonical form" means for your domain
-- when a loop is genuinely required and when it is just hiding unstable design
-
----
-
-## 1. Conceptual Foundation
-
-### 1.1 The One-Sentence Rule
-
-> **Prefer idempotent + canonicalizing pure transforms when possible; only keep “repeat until stable” loops when you’ve checked convergence with Hypothesis and can’t refactor to a single pass.**
-
-### 1.2 Idempotent & Canonicalizing Transforms in One Precise Sentence
-
-> An idempotent transform satisfies f(f(x)) == f(x), reaching a fixed point in one step; when also canonicalizing (e.g., sorted, deduped, deterministic), it maps to a standard form that doesn’t depend on input order or duplicates.
-
-**Note on Canonicalization:** In data pipelines, canonicalizing usually means choosing one
-standard representation so logically-equal data stops bouncing between multiple forms.
-
-### 1.3 Why This Matters Now
-
-Stable transforms matter because they remove a whole class of defensive control flow. If a
-transform lands on a canonical form in one pass, callers do not need to keep asking "did
-it settle yet?"
-
-### 1.4 Fixed Points in One Sentence
-
-> If f(f(x)) == f(x), then f reaches a fixed point in 1 step for any input; extra applications do nothing.
+A function is idempotent when applying it again does not change the result:
 
 ```text
-x --> f(x) --> f(f(x)) = f(x)  (fixed point; no change)
+f(f(x)) == f(x)
 ```
 
-### 1.5 Purity Spectrum Table
+Idempotence is useful when work may be repeated after a retry, during a rebuild, or
+by a defensive caller. It does not mean the first call does nothing. It means the
+first call reaches a fixed point.
 
-| Level              | Description                          | Example                              |
-|--------------------|--------------------------------------|--------------------------------------|
-| Fully Pure         | Explicit inputs/outputs only         | `def add(x: int, y: int) -> int: return x + y` |
-| Semi-Pure          | Observational taps (e.g., logging)   | `def add_with_log(x: int, y: int) -> int: log(f"Adding {x}+{y}"); return x + y` |
-| Impure             | Globals/I/O/mutation                | `def read_file(path: str) -> str: ...` |
+Module 01 has two distinct fixed-point claims:
 
-**Note on Purity Spectrum:** Only fully pure functions can sensibly be idempotent; semi-pure ‘log + return’ can be repeated but the log side-effect will accumulate.
+- cleaning a cleaned document does not change it;
+- structurally deduplicating canonical output does not change it.
 
----
+The whole `full_rag` function is not called on its own output because its input and
+output types differ.
 
-## 2. Mental Model: Unstable Loop vs Stable Transform
+## Cleaning reaches a fixed point
 
-### 2.1 One Picture
+`clean_doc` normalizes an abstract with:
+
+```python
+" ".join(doc.abstract.strip().lower().split())
+```
+
+After one application:
+
+- leading and trailing whitespace is gone;
+- each internal whitespace run is one ordinary space;
+- letters are lower-case.
+
+Repeating those operations produces the same string.
+
+```python
+once = clean_doc(raw_doc)
+twice = clean_doc(once)
+
+assert twice == once
+```
+
+The signature accepts `RawDoc | CleanDoc`, so the law is valid in both runtime and
+static contracts.
+
+### A deterministic transform that is not idempotent
+
+```python
+def append_marker(text: str) -> str:
+    return text + "!"
+
+
+assert append_marker("pure") == "pure!"
+assert append_marker(append_marker("pure")) == "pure!!"
+```
+
+Determinism gives the same output for the same input. Idempotence adds a fixed-point
+relationship between output and repeated input.
+
+## Structural deduplication reaches a fixed point
+
+`structural_dedup_chunks`:
+
+1. sorts chunks by `(doc_id, start)`;
+2. tracks `(doc_id, text, start, end)` keys;
+3. retains the first unseen structural key.
+
+After one call, output is ordered and has no duplicate structural keys. A second call
+has nothing left to change:
+
+```python
+once = structural_dedup_chunks(chunks)
+twice = structural_dedup_chunks(once)
+
+assert twice == once
+```
+
+The property suite tests this over generated chunk lists.
+
+## Canonicalization is stronger than duplicate removal
+
+This function removes duplicates while preserving encounter order:
+
+```python
+def preserve_first(values: list[int]) -> list[int]:
+    return list(dict.fromkeys(values))
+```
+
+It is idempotent, but two permutations can produce different results:
+
+```python
+preserve_first([2, 1]) != preserve_first([1, 2])
+```
+
+Module 01's structural deduplication also sorts, so output depends on the retained
+structural values rather than their input order. That canonical form supports:
+
+```python
+full_rag(docs, env) == full_rag(list(reversed(docs)), env)
+```
+
+when document IDs are unique.
+
+Do not collapse these concepts:
+
+| Property | Question |
+| --- | --- |
+| deterministic | does the same input give the same output? |
+| idempotent | does repeated application stop changing output? |
+| deduplicating | are repeated domain keys removed? |
+| canonical | do equivalent inputs choose one stable representation? |
+
+## The completed-output law
+
+`full_rag` has this type:
 
 ```text
-Unstable cleanup loop                      Stable transform
-+---------------------------+             +---------------------------+
-| keep trying until stable  |             | normalize(data) once      |
-| repeated control logic    |             | fixed point reached       |
-| easy to hide oscillation  |             | extra calls do nothing    |
-+---------------------------+             +---------------------------+
+list[RawDoc] × RagEnv -> list[Chunk]
 ```
 
-### 2.2 Contract Table
-
-| Clause                     | Violation Example                      | Detected By                              |
-|----------------------------|----------------------------------------|------------------------------------------|
-| Idempotence                | f(f(x)) ≠ f(x)                         | Hypothesis f(f(x)) == f(x)               |
-| Canonicalization / order invariants | Output depends on input order / duplicates | Hypothesis checks canonical form |
-| Convergence                | No fixed point after N applications    | Hypothesis repeated application          |
-| Stability                  | Divergence / oscillation               | Hypothesis bounded search                |
-| Refactor safety            | Manual loop → infinite                 | Executable properties                    |
-
-**Note on Contracts:** A loop can hide instability for a long time. An idempotence check
-forces you to name what "stable" is supposed to mean.
-
----
-
-## 3. Running Project: Stable Transforms in RAG
-
-Our **running project** (from `module-01/funcpipe-rag-01/README.md`) adds stability to Core 9's pure core.  
-- **Goal:** Make stages idempotent/canonicalizing.  
-- **Start:** Core 1-9's pure functions.  
-- **End (this core):** Stable RAG pipeline. Semantics aligned with Core 1-9.
-
-In this RAG example we focus on idempotent, canonical “sorted & deduped” transforms.
-
-### 3.1 Types (Canonical)
-
-These are defined in `module-01/funcpipe-rag-01/src/funcpipe_rag/rag_types.py` (as in Core 1) and imported as needed. No redefinition here.
-
-### 3.2 Unstable Variants (Anti-Patterns in RAG)
-
-Full code:
+Therefore this expression is invalid:
 
 ```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/pipeline_stages.py (unstable helpers)
-from funcpipe_rag import RawDoc, CleanDoc, ChunkWithoutEmbedding, RagEnv, Chunk
-from datetime import datetime
-import hashlib
-
-
-# Unstable normalize_abstract (non-idempotent, divergent)
-def unstable_normalize_abstract(abstract: str) -> str:
-    # truly non-idempotent: trailing spaces accumulate
-    return abstract.lower() + " "
-
-
-# Unstable dedupe_and_sort_chunks (order-flipping)
-def unstable_dedupe_and_sort_chunks(chunks: list[ChunkWithoutEmbedding]) -> list[ChunkWithoutEmbedding]:
-    seen = set()
-    unique = []
-    for c in chunks:
-        key = (c.doc_id, c.text, c.start, c.end)
-        if key not in seen:
-            seen.add(key)
-            unique.append(c)
-    return list(reversed(unique))  # Flips order each time, breaking idempotence
-
-
-# Unstable embed (divergent)
-def unstable_embed_chunk(current_time: datetime, chunk: ChunkWithoutEmbedding) -> Chunk:
-    h = hashlib.sha256(f"{current_time.isoformat()}::{chunk.text}".encode("utf-8")).hexdigest()
-    step = 4
-    vec = tuple(int(h[i:i + step], 16) / (16 ** step - 1) for i in range(0, 64, step))
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, vec)
+full_rag(full_rag(docs, env), env)
 ```
 
-**Smells:** Non-idempotent (changes on repeat), order-flipping (violates sortedness invariant), divergent (no fixed point).
+The output is `list[Chunk]`, not `list[RawDoc]`.
 
----
-
-## 4. Refactor to Stable: Idempotent & Canonicalizing in RAG
-
-### 4.1 Stable Core
-
-Idempotent/canonicalizing functions.
-
-Full code:
+The actual law is:
 
 ```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/pipeline_stages.py (stable helpers)
-from funcpipe_rag import RawDoc, CleanDoc, ChunkWithoutEmbedding, RagEnv, Chunk
-import hashlib
-
-
-def normalize_abstract(abstract: str) -> str:
-    return " ".join(abstract.strip().lower().split())
-
-
-def clean_doc(doc: RawDoc) -> CleanDoc:
-    abstract = normalize_abstract(doc.abstract)
-    return CleanDoc(doc.doc_id, doc.title, abstract, doc.categories)
-
-
-def chunk_doc(doc: CleanDoc, env: RagEnv) -> list[ChunkWithoutEmbedding]:
-    text = doc.abstract
-    return [ChunkWithoutEmbedding(doc.doc_id, text[i:i + env.chunk_size], i, i + len(text[i:i + env.chunk_size])) for i
-            in range(0, len(text), env.chunk_size)]
-
-
-def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
-    h = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
-    vec = tuple(int(h[i:i + 4], 16) / (16 ** 4 - 1) for i in range(0, 64, 4))
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, vec)
-
-
-def docs_to_embedded(docs: list[RawDoc], env: RagEnv) -> list[Chunk]:
-    cleaned = [clean_doc(d) for d in docs]
-    chunked = [c for doc in cleaned for c in chunk_doc(doc, env)]
-    embedded = [embed_chunk(c) for c in chunked]
-    return embedded
-
-
-def structural_dedup_chunks(chunks: list[Chunk]) -> list[Chunk]:
-    seen = set()
-    result = []
-    for c in sorted(chunks, key=lambda c: (c.doc_id, c.start)):
-        key = (c.doc_id, c.text, c.start, c.end)
-        if key not in seen:
-            seen.add(key)
-            result.append(c)
-    return result
-
-
-def full_rag(docs: list[RawDoc], env: RagEnv) -> list[Chunk]:
-    return structural_dedup_chunks(docs_to_embedded(docs, env))
+completed = full_rag(docs, env)
+assert structural_dedup_chunks(completed) == completed
 ```
 
-`normalize_abstract` normalizes the abstract in an idempotent way (calling it twice yields the same string). `structural_dedup_chunks` removes duplicates while sorting by doc_id and start, so applying it twice is the same as once. Because `full_rag` simply threads the pure stages (`clean_doc` → `chunk_doc` → `embed_chunk`) and finishes with `structural_dedup_chunks`, the entire pipeline reaches a fixed point in a single pass.
+This states that `full_rag` returns output already at the deduplication fixed point.
+Precise types prevent an attractive but meaningless algebraic slogan.
 
-**Wins:** Idempotent (repeat unchanged), canonicalizing (sorted by doc_id/start, deduped by (doc_id, text, start, end)), convergent (fixed point in 1 step), semantics aligned with Core 1-9.
+## Failure routes
 
-### 4.2 Impure Shell (Edge Only)
-
-The shell from Core 8 remains; stability focuses on core.
-
-### 4.3 Case Study: Removing a real while-changed loop
-
-A common instability smell in data cleaning is using a `while changed:` loop for repeated normalization, like collapsing multiple spaces in text. Here's how to refactor it to a single idempotent/canonicalizing transform, eliminating the loop.
-
-**Unstable Version (with loop):**
+### Unstable ordering
 
 ```python
-# Unstable collapse_spaces (requires loop for convergence)
-def unstable_collapse_spaces(text: str) -> str:
-    res = text.strip().lower()
-    changed = True
-    while changed:
-        changed = False
-        if "  " in res:
-            res = res.replace("  ", " ")
-            changed = True
-    return res
+def flip_order(values: list[int]) -> list[int]:
+    return list(reversed(values))
 ```
 
-**Smells:** Unnecessary loop (could converge in O(log n) worst-case but still imperative); not obviously idempotent without running.
+Repeated application oscillates unless the input is symmetric. A retry can alternate
+output instead of settling.
 
-**Stable Refactor (single pass, idempotent):**
+### Normalization that keeps adding information
 
-```python
-# Stable collapse_spaces (idempotent, canonicalizing)
-def collapse_spaces(text: str) -> str:
-    return " ".join(text.strip().lower().split())
+Appending timestamps, counters, or provenance inside a normalizer prevents a fixed
+point and introduces effects.
+
+### A key that omits meaningful identity
+
+Structural deduplication intentionally ignores embedding in its key because
+production embeddings are deterministic from text. If embeddings later become
+model-dependent, the key decision must be revisited; idempotence alone cannot say
+which value is correct.
+
+### Equality without resource equivalence
+
+Calling an idempotent effectful API twice may return the same value while doubling
+logs, requests, cost, or latency. Value idempotence does not automatically make
+effects safe to repeat.
+
+## Proof route
+
+Run:
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-01/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py \
+  capstone/module-reference-states/module-01/tests/test_laws.py
 ```
 
-**Process:** Replace loop with a canonicalizing comprehension: split on whitespace (removes extras), join with single space. Now f(f(x)) == f(x) by construction—no loop needed.
+Inspect:
 
-**Hypothesis Property (ties to no loop needed):**
+- `test_clean_doc_is_idempotent`;
+- `test_structural_dedup_is_idempotent`;
+- `test_structural_dedup_produces_canonical_order`;
+- `test_structural_dedup_no_duplicates`;
+- `test_full_rag_reaches_fixed_point_in_one_pass`.
 
-```python
-import hypothesis.strategies as st
-from hypothesis import given
+Each name should describe the operation to which the law actually applies.
 
-@given(st.text())
-def test_collapse_spaces_idempotent(s: str) -> None:
-    assert collapse_spaces(collapse_spaces(s)) == collapse_spaces(s)
-```
+## Learner work
 
-**RAG Integration:** Use `collapse_spaces` inside `normalize_abstract` for cleaning abstracts. The property ensures one application suffices; extra calls (e.g., in pipelines) do nothing.
+Construct three `Chunk` values:
 
----
+- two with the same structural key;
+- one with a different offset.
 
-## 5. Equational Reasoning: Substitution Exercise
+Predict the exact canonical output before running the code. Then:
 
-**Hand Exercise:** Replace expressions in `full_rag`.  
-1. Inline `normalize_abstract(d.abstract)` → normalized string.  
-2. Substitute into chunks → list of chunks.  
-3. Result: Entire call = fixed value + logs.  
-**Bug Hunt:** In unstable_normalize_abstract, substitution fails (adds space).
+1. assert the duplicate is removed;
+2. assert output order;
+3. assert a second deduplication is equal;
+4. reverse the input and assert the same canonical output;
+5. explain why this does not establish semantic embedding quality;
+6. explain what would change if embedding became part of domain identity.
 
----
+Use the existing deterministic `embed_chunk` to create valid chunks. Preserve the
+Module 01 learning proof.
 
-## 6. Property-Based Testing: Checking Stability (Advanced, Optional)
-
-Use Hypothesis to check stability, tying directly to "no loop needed" by verifying fixed points in one step.
-
-You can safely skip this on a first read and still follow later cores—come back when you want to mechanically verify your own refactors.
-
-To bridge theory and practice, here's a simple Hypothesis example illustrating impurity detection:
-
-```python
-import random
-from hypothesis import given
-import hypothesis.strategies as st
-
-def impure_random_add(x: int) -> int:
-    return x + random.randint(1, 10)  # Non-deterministic
-
-@given(st.integers())
-def test_detect_impurity(x):
-    assert impure_random_add(x) == impure_random_add(x)  # Falsifies due to randomness
-
-# Hypothesis will quickly find differing outputs for the same x
-```
-
-This property test detects the impurity by showing outputs vary for identical inputs—run it to see Hypothesis in action.
-
-### 6.1 Custom Strategy (RAG Domain)
-
-From `module-01/funcpipe-rag-01/tests/conftest.py` (as in Core 1).
-
-### 6.2 Equivalence Property
-
-Properties for stability (using the helpers in `module-01/funcpipe-rag-01/src/funcpipe_rag/pipeline_stages.py`):
-
-Full code:
-
-```python
-# module-01/funcpipe-rag-01/tests/test_laws.py (excerpt)
-from hypothesis import given
-import hypothesis.strategies as st
-from funcpipe_rag import structural_dedup_chunks, full_rag
-from funcpipe_rag import Chunk, RawDoc, RagEnv
-from .conftest import doc_list_strategy, env_strategy
-
-
-@given(st.lists(st.builds(Chunk, doc_id=st.text(min_size=1), text=st.text(min_size=1), start=st.integers(min_value=0),
-                          end=st.integers(min_value=1), embedding=st.tuples(*[st.just(0.0) for _ in range(16)])))
-def test_structural_dedup_idempotent(chunks: list[Chunk]) -> None:
-    assert structural_dedup_chunks(structural_dedup_chunks(chunks)) == structural_dedup_chunks(chunks)
-
-
-@given(st.lists(st.builds(Chunk, doc_id=st.text(min_size=1), text=st.text(min_size=1), start=st.integers(min_value=0),
-                          end=st.integers(min_value=1), embedding=st.tuples(*[st.just(0.0) for _ in range(16)])))
-def test_structural_dedup_no_duplicates(chunks: list[Chunk]) -> None:
-    deduped = structural_dedup_chunks(chunks)
-    assert len(deduped) == len(set((c.doc_id, c.text, c.start, c.end) for c in deduped))
-
-
-@given(st.lists(st.builds(Chunk, doc_id=st.text(min_size=1), text=st.text(min_size=1), start=st.integers(min_value=0),
-                          end=st.integers(min_value=1), embedding=st.tuples(*[st.just(0.0) for _ in range(16)])))
-def test_structural_dedup_sorted(chunks: list[Chunk]) -> None:
-    deduped = structural_dedup_chunks(chunks)
-    assert deduped == sorted(deduped, key=lambda c: (c.doc_id, c.start))
-
-
-@given(doc_list_strategy(), env_strategy())
-def test_structural_dedup_fixpoint(docs: list[RawDoc], env: RagEnv) -> None:
-    chunks = full_rag(docs, env)
-    assert structural_dedup_chunks(chunks) == chunks
-
-
-@given(doc_list_strategy(), env_strategy())
-def test_full_rag_deterministic(docs: list[RawDoc], env: RagEnv) -> None:
-    result1 = full_rag(docs, env)
-    result2 = full_rag(docs, env)  # Repeat application
-    assert result1 == result2
-```
-
-**Note:** Properties check idempotence, no duplicates, sorted order, convergence—ensuring no loop is needed.
-
-### 6.3 Shrinking Demo: Catching a Bug
-
-Bad refactor (divergent in full_rag):
-
-```python
-from funcpipe_rag import Chunk
-
-
-def bad_structural_dedup_chunks(chunks: list[Chunk]) -> list[Chunk]:
-    seen = set()
-    result = []
-    for c in chunks:
-        if c not in seen:
-            seen.add(c)
-            result.append(c)
-    result.reverse()  # Always flip order, breaking idempotence
-    return result
-```
-
-Property:
-
-```python
-from hypothesis import given
-import hypothesis.strategies as st
-from funcpipe_rag import Chunk
-
-
-@given(st.lists(st.builds(Chunk, doc_id=st.text(min_size=1), text=st.text(min_size=1), start=st.integers(min_value=0),
-                          end=st.integers(min_value=1), embedding=st.tuples(*[st.just(0.0) for _ in range(16)])))
-def test_bad_structural_dedup_idempotent(chunks: list[Chunk]) -> None:
-    assert bad_structural_dedup_chunks(bad_structural_dedup_chunks(chunks)) == bad_structural_dedup_chunks(
-        chunks)  # Falsifies due to order flip
-```
-
-Hypothesis failure trace (run to verify; example):
-
-```
-Falsifying example: test_bad_structural_dedup_idempotent(
-    chunks=[Chunk(doc_id='a', text='a', start=0, end=1, embedding=(0.0, 0.0, ...)), Chunk(doc_id='b', text='b', start=0, end=1, embedding=(0.0, 0.0, ...))],
-)
-AssertionError
-```
-
-- Shrinks to two distinct chunks; order flip changes output. Catches bug via shrinking.
-
----
-
-## 7. When Stable Transforms Aren't Worth It
-
-Rarely, for unbounded iterations or hot paths, use loops; check convergence with Hypothesis and prove convergence on paper for critical code paths. Sometimes you genuinely have a multi-step iterative algorithm (e.g., fixed-point inference over a graph). For those, you keep the loop, but it’s still useful to make each step as close to idempotent/canonicalizing as possible.
-
----
-
-## 8. Pre-Core Quiz
-
-1. f(f(x)) ≠ f(x) → violates? → **Idempotence**  
-2. Output depends on input order → violates? → **Canonicalization**  
-3. No fixed point → violates? → **Convergence**  
-4. "while changed:" loop → fix with? → **Stable transform**  
-5. Tool to explore convergence with property-based tests? → **Hypothesis**
-
-## 9. Post-Core Reflection & Exercise
-
-**Reflect:** In your code, find one “repeat until stable” loop. Make idempotent/canonicalizing; check with Hypothesis; replace with single call.  
-**Project Exercise:** Add stability to RAG; run properties on sample data.
-
-All claims (e.g., referential transparency) are verifiable via the provided Hypothesis examples—run them to confirm.
-
-**Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. If the Python basics still feel shaky, check free resources like Python.org's FP section or Codecademy's Advanced Python course.
-
-**Continue with:** [Overview](../module-02-data-first-apis-expression-style/index.md)
+Continue with [Module 01 Refactoring Guide](refactoring-guide.md) to review the full
+application state before the cumulative exercises.
