@@ -56,6 +56,41 @@ Use this when you are maintaining a large FP codebase and need governance that d
 4. Automate enforcement.
 
 ---
+## FuncPipe Lab: Make Claims Point to Runnable Evidence
+
+Module 10 represents a governance statement as `EvidenceClaim`: a stable name,
+the statement under review, required repository paths, and the command that runs
+the proof. A shell observes the filesystem; `assess_evidence` makes the
+deterministic completeness decision.
+
+```python
+claim = EvidenceClaim(
+    name="ranking-law",
+    statement="Ranking order remains stable after refactoring.",
+    required_paths=("src/ranking.py", "tests/test_ranking.py"),
+    command="pytest -q tests/test_ranking.py",
+)
+assessment = assess_evidence(claim, frozenset({"src/ranking.py"}))
+
+assert assessment.complete is False
+assert assessment.missing_paths == ("tests/test_ranking.py",)
+```
+
+The policy fails closed: prose and implementation are not evidence for the
+behavioral claim when its test is absent. The review CLI applies the same model to
+the capstone's performance, regression, async, and migration claims.
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k governance_claim_fails_closed_when_executable_evidence_is_missing
+funcpipe-rag-review summary
+```
+
+Presence does not mean the command passed. This assessment proves discoverability;
+execution status belongs to the verification route and must be reported separately.
+
+---
 ## 1. Laws & Invariants
 | Law                        | Description                                                                                  | Enforcement                          |
 |----------------------------|------------------------------------------------------------------------------------------------|--------------------------------------|

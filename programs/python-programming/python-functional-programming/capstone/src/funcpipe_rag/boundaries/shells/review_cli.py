@@ -8,6 +8,8 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
+from funcpipe_rag.review.evidence import EvidenceClaim, assess_evidence
+
 PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
     {
         "name": "functional-core",
@@ -151,6 +153,45 @@ PROOF_ROUTES: tuple[dict[str, str], ...] = (
     },
 )
 
+EVIDENCE_CLAIMS: tuple[EvidenceClaim, ...] = (
+    EvidenceClaim(
+        name="performance-decision",
+        statement="Performance limits are explicit, multidimensional values.",
+        required_paths=(
+            "src/funcpipe_rag/review/performance.py",
+            "tests/unit/review/test_performance.py",
+        ),
+        command="pytest -q tests/unit/review/test_performance.py",
+    ),
+    EvidenceClaim(
+        name="regression-equivalence",
+        statement="Pure and optimized embeddings preserve one domain contract.",
+        required_paths=(
+            "src/funcpipe_rag/rag/domain/perf.py",
+            "tests/unit/rag/domain/test_perf_equivalence.py",
+        ),
+        command="pytest -q tests/unit/rag/domain/test_perf_equivalence.py",
+    ),
+    EvidenceClaim(
+        name="async-contracts",
+        statement="Async coordination retains bounded value-level laws.",
+        required_paths=(
+            "src/funcpipe_rag/domain/effects/async_/plan.py",
+            "tests/unit/domain/test_async_law_properties.py",
+        ),
+        command="pytest -q tests/unit/domain/test_async_law_properties.py",
+    ),
+    EvidenceClaim(
+        name="migration-review",
+        statement="Contract shape and semantic upcasting are reviewed separately.",
+        required_paths=(
+            "src/funcpipe_rag/review/migration.py",
+            "tests/unit/review/test_migration.py",
+        ),
+        command="pytest -q tests/unit/review/test_migration.py",
+    ),
+)
+
 
 def _count_python_files(paths: Iterable[Path]) -> int:
     """Count each source once when review groups contain nested paths."""
@@ -187,11 +228,31 @@ def build_summary(project_root: Path) -> dict[str, Any]:
             }
         )
 
+    evidence_claims: list[dict[str, Any]] = []
+    for claim in EVIDENCE_CLAIMS:
+        available = frozenset(
+            path
+            for path in claim.required_paths
+            if (project_root / path).is_file()
+        )
+        assessment = assess_evidence(claim, available)
+        evidence_claims.append(
+            {
+                "name": claim.name,
+                "statement": claim.statement,
+                "required_paths": list(claim.required_paths),
+                "command": claim.command,
+                "complete": assessment.complete,
+                "missing_paths": list(assessment.missing_paths),
+            }
+        )
+
     return {
         "project_root": project_root.resolve().as_posix(),
         "package_groups": package_groups,
         "test_groups": test_groups,
         "proof_routes": list(PROOF_ROUTES),
+        "evidence_claims": evidence_claims,
     }
 
 
@@ -219,6 +280,14 @@ def render_text(summary: dict[str, Any]) -> str:
     lines.append("Proof routes:")
     for route in summary["proof_routes"]:
         lines.append(f"- {route['name']}: {route['command']} -> {route['meaning']}")
+    lines.append("")
+    lines.append("Evidence claims:")
+    for claim in summary["evidence_claims"]:
+        state = "complete" if claim["complete"] else "incomplete"
+        lines.append(f"- {claim['name']}: {state}; {claim['statement']}")
+        lines.append(f"  verify: {claim['command']}")
+        if claim["missing_paths"]:
+            lines.append(f"  missing: {', '.join(claim['missing_paths'])}")
     return "\n".join(lines) + "\n"
 
 

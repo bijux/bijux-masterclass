@@ -172,3 +172,23 @@ translation. It does not prove JSON, database, or cross-process compatibility.
 In FuncPipe, the old contract remains a readable input value and the translator is
 explicit. Versioning protects the RAG meaning across time rather than merely
 renaming classes.
+
+## Governance: require a claim-to-command route
+
+A useful ranking claim requires the production ranking path, a test that asserts
+stable ordering, and the narrow pytest command for that test. With only the source
+present, `assess_evidence` reports the test path missing.
+
+Common wrong turns:
+
+- linking only to prose makes the claim unauditable;
+- calling path presence “passed” confuses discovery with execution;
+- using one broad command for every claim makes failures hard to locate;
+- letting the pure assessor walk the filesystem hides the observation boundary.
+
+The test proves fail-closed completeness from a supplied path set. It does not run
+the proof or judge whether the assertion is strong enough.
+
+In FuncPipe, governance routes reviewers to executable RAG evidence. The test
+suite remains the authority for behavior; the claim catalog makes that authority
+findable.

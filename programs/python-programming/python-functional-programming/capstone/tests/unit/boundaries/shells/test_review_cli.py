@@ -19,6 +19,7 @@ def test_build_summary_reports_expected_groups() -> None:
     package_names = [group["name"] for group in summary["package_groups"]]
     test_names = [group["name"] for group in summary["test_groups"]]
     route_names = [route["name"] for route in summary["proof_routes"]]
+    claim_names = [claim["name"] for claim in summary["evidence_claims"]]
 
     assert package_names == [
         "functional-core",
@@ -35,6 +36,13 @@ def test_build_summary_reports_expected_groups() -> None:
         "edges-and-effects",
     ]
     assert route_names == ["demo", "test", "tour", "proof"]
+    assert claim_names == [
+        "performance-decision",
+        "regression-equivalence",
+        "async-contracts",
+        "migration-review",
+    ]
+    assert all(claim["complete"] for claim in summary["evidence_claims"])
     assert all(group["python_file_count"] > 0 for group in summary["package_groups"])
     assert {group["owner"] for group in summary["package_groups"]} == {
         "boundary-integrations",
@@ -66,6 +74,7 @@ def test_render_text_mentions_review_surfaces() -> None:
     assert "owner=functional-foundations" in rendered
     assert "algebra-and-laws" in rendered
     assert "make proof" in rendered
+    assert "regression-equivalence: complete" in rendered
 
 
 def test_main_can_render_json(capsys) -> None:

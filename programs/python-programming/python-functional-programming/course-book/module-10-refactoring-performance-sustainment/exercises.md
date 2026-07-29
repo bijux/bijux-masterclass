@@ -235,3 +235,31 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 
 Earlier contract preserved: Module 05 domain invariants remain true after
 translation, including immutable tags and unchanged provenance.
+
+## Governance: require a claim-to-command route
+
+**Starting context:** read `review/evidence.py`, `EVIDENCE_CLAIMS`, and
+`test_governance_claim_fails_closed_when_executable_evidence_is_missing`.
+
+**Objective:** add a ranking-stability claim and decide which source, test, and
+focused command make it reviewable.
+
+**Constraints:**
+
+- a claim must name at least one required path;
+- missing paths must remain visible and ordered;
+- do not treat file presence as a passing test;
+- keep filesystem discovery outside `assess_evidence`.
+
+**Expected evidence:** omitting either the implementation or proof path makes the
+claim incomplete; supplying both makes it discoverable and names a runnable route.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k governance_claim_fails_closed_when_executable_evidence_is_missing
+```
+
+Earlier contract preserved: governance describes how existing RAG laws are
+reviewed; it does not replace those laws with repository metadata.

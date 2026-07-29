@@ -18,6 +18,7 @@ from funcpipe_rag.rag.domain import (
     upcast_metadata_v1,
 )
 from funcpipe_rag.result.types import Ok
+from funcpipe_rag.review.evidence import EvidenceClaim, assess_evidence
 from funcpipe_rag.review.migration import ContractShape, assess_migration
 from funcpipe_rag.review.observability import (
     StageObservation,
@@ -192,3 +193,19 @@ def test_metadata_migration_pairs_shape_review_with_an_executable_upcaster() -> 
 
     assert assessment.compatibility == "backward-compatible"
     assert migrated == ChunkMetadata(source="manual", tags=("fp", "rag"))
+
+
+def test_governance_claim_fails_closed_when_executable_evidence_is_missing() -> None:
+    """A statement and source file are insufficient without the named proof."""
+
+    claim = EvidenceClaim(
+        name="ranking-law",
+        statement="Ranking order remains stable after refactoring.",
+        required_paths=("src/ranking.py", "tests/test_ranking.py"),
+        command="pytest -q tests/test_ranking.py",
+    )
+
+    assessment = assess_evidence(claim, frozenset({"src/ranking.py"}))
+
+    assert assessment.complete is False
+    assert assessment.missing_paths == ("tests/test_ranking.py",)
