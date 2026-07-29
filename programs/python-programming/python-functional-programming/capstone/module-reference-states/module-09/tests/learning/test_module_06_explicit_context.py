@@ -15,8 +15,11 @@ from funcpipe_rag.fp.effects import (
     State,
     asks,
     run_state,
+    run_writer,
+    tell,
     transpose_option_result,
     transpose_result_option,
+    writer_pure,
 )
 from funcpipe_rag.rag.stages import clean_doc, iter_chunk_doc
 from funcpipe_rag.result.types import (
@@ -219,3 +222,29 @@ def test_layer_order_distinguishes_missing_document_from_retrieval_failure() -> 
     assert transpose_option_result(transpose_result_option(found)) == found
     assert transpose_option_result(transpose_result_option(missing)) == missing
     assert transpose_option_result(transpose_result_option(failed)) == failed
+
+
+def test_writer_preserves_rag_chunk_while_accumulating_trace() -> None:
+    """Writer keeps the RAG value unchanged and appends ordered trace data."""
+
+    doc = CleanDoc(
+        doc_id="writer",
+        title="Writer",
+        abstract="abcdefghij",
+        categories="fp",
+    )
+    chunk = next(iter_chunk_doc(doc, RagEnv(chunk_size=4)))
+    program = writer_pure(chunk).and_then(
+        lambda current: tell(
+            f"chunk:{current.doc_id}:{current.start}-{current.end}"
+        ).map(lambda _: current)
+    ).and_then(
+        lambda current: tell(f"characters:{len(current.text)}").map(
+            lambda _: current
+        )
+    )
+
+    value, entries = run_writer(program)
+
+    assert value == chunk
+    assert entries == ("chunk:writer:0-4", "characters:4")

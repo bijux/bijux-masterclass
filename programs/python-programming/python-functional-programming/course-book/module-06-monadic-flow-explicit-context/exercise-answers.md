@@ -153,3 +153,20 @@ Common wrong turns:
 The proof establishes the shipped transpose contract and the chosen four-case
 classification. It does not prove that every product should classify empty
 queries the same way.
+
+## Writer pattern: preserve payload while extending the trace
+
+Chain `tell(...).map(lambda _: current)` for each observation. This keeps the
+payload in the value channel and the strings in the append-only log channel.
+
+Common wrong turns:
+
+- returning the message from `map` replaces the RAG value;
+- emitting through `print` makes the trace unavailable for equality checks;
+- building one concatenated string loses entry boundaries;
+- using Module 07 structured `LogEntry` in the Module 06 snapshot introduces a
+  concept before its reference state.
+
+The proof establishes payload preservation and trace order for this Writer
+program. It does not prove delivery to an operational logging system or that
+string entries are sufficient beyond Module 06.

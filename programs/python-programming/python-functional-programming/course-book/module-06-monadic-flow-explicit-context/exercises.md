@@ -227,3 +227,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: Module 05 `Option` absence and `Result` failure
 remain separate observable states.
+
+## Writer pattern: preserve payload while extending the trace
+
+**Starting context:** run
+`test_writer_preserves_rag_chunk_while_accumulating_trace` and inspect
+`Writer.and_then`.
+
+**Objective:** append the chunk’s document ID, span, and embedding readiness as
+three ordered entries without changing the chunk.
+
+**Constraints:**
+
+- use the Module 06 string-entry Writer API;
+- retain the exact original chunk value;
+- append entries in observation order;
+- do not call `print` or a logger.
+
+**Expected evidence:** `run_writer` returns the original chunk and an exact
+three-entry tuple.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k writer_preserves_rag_chunk_while_accumulating_trace
+```
+
+Earlier contract preserved: Module 05 immutable RAG values are unchanged while
+Module 06 adds inspectable trace data.

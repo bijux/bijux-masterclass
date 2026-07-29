@@ -65,6 +65,31 @@ the accumulated trace should be reviewed, tested, or returned as part of the pip
 story itself. Boundary logging is still fine when you only need to emit operational
 signals outward.
 
+## Runnable lab: trace one chunk without changing it
+
+The Module 06 snapshot uses string entries. The learning proof records a chunk
+span and character count while retaining the original chunk value:
+
+```python
+program = writer_pure(chunk).and_then(
+    lambda current: tell(
+        f"chunk:{current.doc_id}:{current.start}-{current.end}"
+    ).map(lambda _: current)
+)
+
+value, entries = run_writer(program)
+assert value == chunk
+assert entries[0] == "chunk:writer:0-4"
+```
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k writer_preserves_rag_chunk_while_accumulating_trace
+```
+
+Writer has accumulated data, not emitted an operational log. Module 07 later
+introduces structured log entries and a logger capability at the boundary.
 
 ## 1. Laws & Invariants (machine-checked in CI)
 
@@ -89,25 +114,21 @@ from typing import Callable, Generic, Tuple, TypeVar
 
 T = TypeVar("T")
 U = TypeVar("U")
-LogEntryT = TypeVar("LogEntryT")
 
-Log = Tuple[LogEntryT, ...]
-# In general, Writer can use any log type that forms a monoid
-# (has an identity element and an associative combine operation);
-# Module 06 examples use strings, while the repository later generalizes the log entry
-# type for structured logging.
+LogEntry = str
+Log = Tuple[LogEntry, ...]
 
 @dataclass(frozen=True)
-class Writer(Generic[T, LogEntryT]):
+class Writer(Generic[T]):
     run: Callable[[], Tuple[T, Log]]
 
-    def map(self, f: Callable[[T], U]) -> "Writer[U, LogEntryT]":
+    def map(self, f: Callable[[T], U]) -> "Writer[U]":
         def run() -> Tuple[U, Log]:
             value, log = self.run()
             return f(value), log
         return Writer(run)
 
-    def and_then(self, f: Callable[[T], "Writer[U, LogEntryT]"]) -> "Writer[U, LogEntryT]":
+    def and_then(self, f: Callable[[T], "Writer[U]"]) -> "Writer[U]":
         def run() -> Tuple[U, Log]:
             value, log1 = self.run()
             next_writer = f(value)
@@ -116,28 +137,28 @@ class Writer(Generic[T, LogEntryT]):
         return Writer(run)
 
 # Primitives
-def pure(x: T) -> Writer[T, LogEntryT]:
+def pure(x: T) -> Writer[T]:
     return Writer(lambda: (x, ()))
 
-def tell(entry: LogEntryT) -> Writer[None, LogEntryT]:
+def tell(entry: LogEntry) -> Writer[None]:
     return Writer(lambda: (None, (entry,)))
 
-def tell_many(entries: Log) -> Writer[None, LogEntryT]:
+def tell_many(entries: Log) -> Writer[None]:
     return Writer(lambda: (None, entries))
 
-def listen(p: Writer[T, LogEntryT]) -> Writer[Tuple[T, Log], LogEntryT]:
+def listen(p: Writer[T]) -> Writer[Tuple[T, Log]]:
     def run() -> Tuple[Tuple[T, Log], Log]:
         value, log = p.run()
         return (value, log), log
     return Writer(run)
 
-def censor(f: Callable[[Log], Log], p: Writer[T, LogEntryT]) -> Writer[T, LogEntryT]:
+def censor(f: Callable[[Log], Log], p: Writer[T]) -> Writer[T]:
     def run() -> Tuple[T, Log]:
         value, log = p.run()
         return value, f(log)
     return Writer(run)
 
-def run_writer(p: Writer[T, LogEntryT]) -> Tuple[T, Log]:
+def run_writer(p: Writer[T]) -> Tuple[T, Log]:
     return p.run()
 ```
 
