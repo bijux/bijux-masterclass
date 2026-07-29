@@ -67,6 +67,24 @@ make history-clean
 
 ## How to choose the right command
 
+These commands are alternatives, not a checklist. Do not run `capstone-test`,
+`capstone-verify-report`, `capstone-tour`, `proof`, and `test` in sequence: each
+route that needs executable evidence already owns a pytest run.
+
+| Route | Full pytest runs per invocation | Additional result |
+| --- | ---: | --- |
+| `inspect` | 0 | package, test, and guide inventory |
+| `capstone-test` | 1 | terminal output plus shared test report |
+| `capstone-verify-report` | 1 | durable review bundle |
+| `capstone-tour` or `capstone-walkthrough` | 1 | learner-facing tour bundle |
+| `proof` | 1 | inspection and tour bundles sharing one test report |
+| `test` or `capstone-confirm` | 1 | lint, typing, build, review, report, and proof bundles sharing one test report |
+
+Within one `proof` or `confirm` Make invocation, dependent bundles copy the same
+successful report from `artifacts/test-results/`; they do not execute pytest again.
+Separate invocations remain separate verification decisions and each reruns the
+suite.
+
 - Use `docs-serve` when you are reading the course-book locally.
 - Use `install` before your first capstone run or when the environment changed.
 - Use `test` when you want the strongest published course-level confirmation route.
@@ -85,4 +103,5 @@ make history-clean
 
 If a course claim matters, there should be a command or evidence bundle that helps you
 inspect it. If you cannot name that route, use the capstone guides and module maps to
-find the right surface before moving on.
+find the right surface before moving on. Once one route settles the claim, stop;
+more overlapping commands add elapsed time, not independent evidence.

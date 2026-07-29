@@ -32,6 +32,9 @@ the capstone.
 
 ## Proof route
 
+Do not execute this section as a top-to-bottom command list. Choose one escalation
+path for the claim you actually need to prove.
+
 1. Read [FuncPipe Capstone Guide](index.md).
 2. Run `make PROGRAM=python-programming/python-functional-programming inspect` when you need the fastest inventory of package, test, and guide ownership.
 3. Read tests in this order when you need the shortest honest proof:
@@ -40,20 +43,19 @@ the capstone.
    `tests/unit/infra/`, then `tests/unit/interop/`.
 4. Run `make PROGRAM=python-programming/python-functional-programming capstone-test`
    when you want the pytest suite without the wider walkthrough or bundle routes.
-5. Run `make PROGRAM=python-programming/python-functional-programming test` for the
-   course-level executable proof route.
-6. Run `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough`
-   when you need the guided walkthrough before escalating proof.
-7. Run `make PROGRAM=python-programming/python-functional-programming capstone-verify-report`
-   when you want a review bundle with the executed test record.
-8. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour` for
-   the guided proof bundle.
-9. Run `make PROGRAM=python-programming/python-functional-programming proof` when you want
-   the sanctioned end-to-end route.
-10. Run `make PROGRAM=python-programming/python-functional-programming capstone-confirm`
-    when you want the strictest confirmation route exposed by the catalog.
-11. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to decide whether the
+5. Choose exactly one artifact route when another person needs saved evidence:
+   `capstone-verify-report` for a review bundle, `capstone-tour` for a guided bundle,
+   or `proof` for both inspection and tour surfaces.
+6. Run `make PROGRAM=python-programming/python-functional-programming test` or
+   `capstone-confirm` only for the strictest lint, type, build, review, and proof
+   confirmation.
+7. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to decide whether the
     evidence is strong enough.
+
+Every route from `capstone-test` upward executes the full pytest suite once per
+invocation. Composite routes reuse one saved test report across their bundles.
+Running several routes separately repeats the same suite and is not a stronger
+proof unless the source or configuration changed between runs.
 
 ## Test-reading route by pressure
 
