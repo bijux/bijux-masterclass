@@ -77,6 +77,26 @@ def gen_stream_deduped(chunks: Iterable[Chunk]) -> Iterator[Chunk]:
     yield from structural_dedup_lazy(chunks)
 
 
+def stream_rag_chunks(
+    docs: Iterable[RawDoc],
+    config: RagConfig,
+    deps: RagCoreDeps,
+    *,
+    max_chunks: int | None = None,
+) -> Iterator[Chunk]:
+    """Compose the complete lazy RAG path and optionally fence unique outputs."""
+
+    if max_chunks is not None and max_chunks < 0:
+        raise ValueError("max_chunks must be >= 0")
+
+    chunked = stream_chunks(docs, config, deps)
+    embedded = gen_stream_embedded(chunked, deps.embedder)
+    deduped = gen_stream_deduped(embedded)
+    if max_chunks is None:
+        return deduped
+    return islice(deduped, max_chunks)
+
+
 def gen_bounded_chunks(
     docs: Iterable[RawDoc],
     config: RagConfig,
@@ -111,6 +131,7 @@ __all__ = [
     "gen_bounded_chunks",
     "gen_grouped_chunks",
     "gen_stream_deduped",
+    "stream_rag_chunks",
     "gen_stream_embedded",
     "safe_rag_pipeline",
     "stream_chunks",
