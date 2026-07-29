@@ -62,3 +62,31 @@ pytest -q tests/learning/test_module_09_interop.py \
 
 Earlier contract preserved: optional packages do not change the domain value or
 failure model established in Modules 04 through 06.
+
+## Data processing: separate record normalization from dataframe choice
+
+**Starting context:** read `interop/dataframes.py` and
+`test_record_adapter_normalizes_without_mutating_boundary_input`.
+
+**Objective:** add a second record with missing `abstract` data and decide whether
+the boundary should normalize it to an empty string or reject it.
+
+**Constraints:**
+
+- do not require pandas, Polars, or Dask
+- do not mutate the input dictionaries
+- preserve unrelated fields
+- state where strict schema validation belongs
+
+**Expected evidence:** normalization is idempotent, input rows remain unchanged,
+and the chosen missing-value policy is visible in an assertion.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k record_adapter_normalizes_without_mutating_boundary_input
+```
+
+Earlier contract preserved: Module 01 value semantics and Module 05 validation
+remain independent of the optional tabular implementation.

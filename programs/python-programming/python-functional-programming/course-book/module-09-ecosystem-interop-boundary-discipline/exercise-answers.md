@@ -66,3 +66,28 @@ operator needs its own boundary contract.
 
 In FuncPipe, the facade protects `RawDoc` and `Chunk` flows from optional-library
 types. Removing the dependency should be a packaging decision, not a RAG rewrite.
+
+## Data processing: separate record normalization from dataframe choice
+
+The shipped `normalize_records` helper treats a missing abstract as `""`. That is
+a normalization policy for permissive ingestion, not schema validation. A strict
+HTTP or file adapter may reject the row before this helper runs.
+
+A defensible test adds `{"doc_id": "paper-2"}` and expects
+`clean_abstract == ""`, while also asserting the original dictionary still has no
+new key. The copy `{**row, "clean_abstract": clean}` is the ownership boundary
+that prevents caller mutation.
+
+Common wrong turns:
+
+- installing pandas to test a rule that is independent of dataframe semantics
+- asserting only the cleaned text and missing the mutation contract
+- silently dropping unrelated columns, which makes the adapter lossy
+
+The result proves idempotent record normalization and non-mutation for ordinary
+dictionary inputs. It does not prove pandas, Polars, and Dask have identical null,
+string, or category semantics. Those need optional integration tests when a
+specific backend is supported.
+
+In FuncPipe, record normalization prepares boundary data. Construction of
+`RawDoc` and rejection of invalid domain values remain explicit later decisions.
