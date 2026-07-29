@@ -115,7 +115,7 @@ Pydantic is for **edges only** (C06). Core persistence uses explicit contracts.
 | Compact / fast                | No          | Yes     | Yes         | MessagePack + envelope       |
 | Streaming large datasets      | No          | Yes/No  | Yes         | iter_ndjson / iter_msgpack   |
 
-## 3. Public API (boundaries/serde.py – mypy --strict clean)
+## 3. Public API (boundaries/adapters/serde.py – mypy --strict clean)
 
 ```python
 from __future__ import annotations
@@ -439,6 +439,27 @@ def test_chunk_v1_migration():
 | Ad-hoc JSON handling          | Silent corruption                  | `_check_env` + safe decode               |
 | Pydantic for core persistence | Heavy deps, slow                   | Plain codecs for core                    |
 | No migration path             | Production data loss               | `migrate` + versioned envelope          |
+
+## Runnable RAG learning lab
+
+Run a complete typed failure through the shipped JSON envelope:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k serialization_preserves_result_failure_provenance
+```
+
+The assertion inspects the envelope rather than trusting a successful decoder.
+The error code, message, owning stage, and chunk path all remain present, and
+the decoded `Err` equals the original value. That is the public contract; a
+dump of the Python object's incidental layout is not.
+
+Versioning does not mean “accept every future payload.” An unknown version
+requires a registered migration or an explicit rejection. The focused test
+proves the current `Result` failure round-trip. It does not establish
+compatibility with schemas that have no migration route or validate the
+semantics of every encoded error.
 
 ## 8. Pre-Core Quiz
 

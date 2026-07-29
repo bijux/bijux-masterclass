@@ -1,9 +1,16 @@
 from __future__ import annotations
 
+import json
 from datetime import datetime
 
 import pytest
 from funcpipe_rag.boundaries.adapters.pydantic_edges import ChunkModel, to_core_chunk
+from funcpipe_rag.boundaries.adapters.serde import (
+    dec_result,
+    enc_result,
+    from_json,
+    to_json,
+)
 from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
 from funcpipe_rag.fp.core import (
     UTC,
@@ -157,3 +164,18 @@ def test_pydantic_adapter_rejects_invalid_embedding_before_core_conversion() -> 
     assert dict(core.metadata) == {"source": "lesson"}
     with pytest.raises(ValidationError, match="must be finite|not finite"):
         ChunkModel(text="invalid", embedding=[float("nan")])
+
+
+def test_serialization_preserves_result_failure_provenance() -> None:
+    failure_value = Err(
+        ErrInfo(code="EMBED_FAIL", msg="model offline", stage="embed", path=(2, 4))
+    )
+    encoded = to_json(failure_value, enc_result())
+
+    assert json.loads(encoded)["payload"]["error"] == {
+        "code": "EMBED_FAIL",
+        "msg": "model offline",
+        "stage": "embed",
+        "path": [2, 4],
+    }
+    assert from_json(encoded, dec_result()) == failure_value

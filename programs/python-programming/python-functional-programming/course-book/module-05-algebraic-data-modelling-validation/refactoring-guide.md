@@ -35,7 +35,7 @@ outside the core model.
 
 1. run `make PROGRAM=python-programming/python-functional-programming history-refresh`
 2. open `capstone/_history/worktrees/module-05/src/funcpipe_rag/`
-3. compare `fp/`, `core/rag_types.py`, and `boundaries/serde.py`
+3. compare `fp/`, `core/rag_types.py`, and `boundaries/adapters/serde.py`
 4. read the law and validation tests under `capstone/_history/worktrees/module-05/tests/`
 
 ## What to refactor toward
