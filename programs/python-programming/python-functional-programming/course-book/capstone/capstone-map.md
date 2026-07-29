@@ -58,7 +58,7 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 
 | Module | Best first source surface | Best first test or review surface | Best first command |
 | --- | --- | --- | --- |
-| Module 01: Purity and substitution | `capstone/module-reference-states/module-01/src/funcpipe_rag/rag_types.py`, `pipeline_stages.py`, `fp.py`, `full_rag.py` | `capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py` | `make PROGRAM=python-programming/python-functional-programming capstone-foundation-proof` |
+| Module 01: Purity and substitution | `capstone/module-reference-states/module-01/src/funcpipe_rag/rag_types.py`, `pipeline_stages.py`, `full_rag.py`, `rag_shell.py` | `capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py`, `test_module_01_shell_boundary.py` | `make PROGRAM=python-programming/python-functional-programming capstone-foundation-proof` |
 | Module 02: Data-first APIs and expression style | `capstone/src/funcpipe_rag/pipelines/specs.py`, `capstone/src/funcpipe_rag/pipelines/configured.py` | `capstone/tests/unit/pipelines/test_specs_roundtrip.py`, `capstone/tests/unit/pipelines/test_configured_pipeline.py` | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
 | Module 03: Iterators and lazy dataflow | `capstone/src/funcpipe_rag/streaming/`, `capstone/src/funcpipe_rag/tree/` | `capstone/tests/unit/streaming/test_streaming.py`, `capstone/tests/unit/tree/test_tree_folds.py` | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
 | Module 04: Resilience and streaming failures | `capstone/src/funcpipe_rag/result/`, `capstone/src/funcpipe_rag/policies/retries.py`, `capstone/src/funcpipe_rag/policies/breakers.py` | `capstone/tests/unit/result/test_result_folds.py`, `capstone/tests/unit/policies/test_retries.py`, `capstone/tests/unit/policies/test_breakers.py` | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
@@ -71,6 +71,11 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 
 Use this table when a module page tells you to inspect the capstone and you want the
 smallest stable route from concept to source, proof, and command.
+
+Module 01 has two additional focused commands. Use
+`capstone-foundation-types` for strict checking of the isolated snapshot and
+`capstone-shell-proof` for CSV/JSONL equivalence and boundary failures. They
+complement the first pure-behavior command; none substitutes for the others.
 
 ## Stop here when
 

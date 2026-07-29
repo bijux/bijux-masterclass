@@ -105,16 +105,25 @@ evidence proves and does not prove.
   `capstone/module-reference-states/module-01/src/funcpipe_rag/`.
 - Trace `RawDoc -> CleanDoc -> ChunkWithoutEmbedding -> Chunk`.
 - Locate the only file owner of CSV and JSONL effects.
-- Match every law claim to a named test in `tests/test_laws.py` or
+- Match every pure law claim to a named test in `tests/test_laws.py` or
   `tests/learning/test_module_01_purity_foundations.py`.
+- Match every CSV/JSONL claim to
+  `tests/learning/test_module_01_shell_boundary.py`.
 
-Run the short learner proof from the course root:
+Run the three focused routes from the repository root:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-01/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-types
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-proof
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-shell-proof
 ```
+
+The routes answer different questions: strict mypy checks declared composition, the
+foundation proof checks pure behavior, and the shell proof checks serialized
+equivalence plus failure ownership.
 
 ## Before Moving On
 
@@ -130,6 +139,8 @@ tracked state with `capstone/_history/worktrees/module-01` after history refresh
 - You can compare two implementations and explain whether they are meaning-preserving under substitution.
 - You can distinguish deterministic output, an idempotent transform, and a canonical
   completed value.
+- You can distinguish a static type proof, a pure-core law, and an effect-boundary
+  observation.
 - You can explain why Module 01 keeps eager lists and explicit orchestration instead
   of importing concepts from later modules.
 
