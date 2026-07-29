@@ -317,3 +317,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: the pure RAG normalizer retains its Module 01
 input-output behavior while Module 06 changes assembly policy.
+
+## Refactoring guide: prove the complete pure output
+
+**Starting context:** run
+`test_explicit_flow_refactor_preserves_rag_chunk_output` and compare the direct
+and `Result` routes.
+
+**Objective:** add overlap to the generated environments and preserve the full
+embedded chunk sequence.
+
+**Constraints:**
+
+- generate only valid `0 <= overlap < chunk_size` pairs;
+- compare complete chunks, including offsets and embeddings;
+- preserve input and output order;
+- state why `Result` is or is not earned in this particular route.
+
+**Expected evidence:** every generated valid environment produces identical
+direct and explicit-flow outputs.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k explicit_flow_refactor_preserves_rag_chunk_output
+```
+
+Earlier contract preserved: cleaning, chunk boundaries, order, and deterministic
+embedding from Modules 01–05 remain unchanged.

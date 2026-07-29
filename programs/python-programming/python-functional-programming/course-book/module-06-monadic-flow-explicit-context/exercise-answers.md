@@ -207,3 +207,23 @@ The proof establishes enabled and disabled behavior for this assembly
 combinator. It does not prove that runtime toggles are preferable to separate
 deployment configuration or that every cross-cutting concern should be
 configurable.
+
+## Refactoring guide: prove the complete pure output
+
+Generate `chunk_size` first, then generate overlap from
+`st.integers(min_value=0, max_value=chunk_size - 1)` with a composite strategy
+or `flatmap`. Use the same frozen `RagEnv` for both routes.
+
+Common wrong turns:
+
+- generating invalid environments tests constructor rejection instead of
+  refactor equivalence;
+- comparing only chunk counts misses text, offsets, order, or embedding drift;
+- running different normalization inputs on each side invalidates the
+  comparison;
+- claiming the `Result` wrapper is inherently superior ignores abstraction
+  cost when no typed failure exists.
+
+The property establishes observable equivalence for the generated pure RAG
+route. It does not cover boundary I/O, resource behavior, or the operational
+effects introduced in Module 07.

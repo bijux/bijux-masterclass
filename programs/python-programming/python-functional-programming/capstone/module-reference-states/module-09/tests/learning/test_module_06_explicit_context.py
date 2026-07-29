@@ -22,7 +22,7 @@ from funcpipe_rag.fp.effects import (
     transpose_result_option,
     writer_pure,
 )
-from funcpipe_rag.rag.stages import clean_doc, iter_chunk_doc
+from funcpipe_rag.rag.stages import clean_doc, embed_chunk, iter_chunk_doc
 from funcpipe_rag.result.types import (
     Err,
     ErrInfo,
@@ -326,3 +326,37 @@ def test_validation_toggle_changes_policy_without_duplicating_rag_pipeline() -> 
         )
     )
     assert calls == ["config"]
+
+
+@given(
+    abstract=st.text(
+        alphabet=" abcdefghijklmnopqrstuvwxyz",
+        max_size=48,
+    ),
+    chunk_size=st.integers(min_value=1, max_value=12),
+)
+def test_explicit_flow_refactor_preserves_rag_chunk_output(
+    abstract: str,
+    chunk_size: int,
+) -> None:
+    """Explicit Result flow preserves the direct RAG output across inputs."""
+
+    raw = RawDoc(
+        doc_id="refactor",
+        title="Refactor",
+        abstract=abstract,
+        categories="fp",
+    )
+    env = RagEnv(chunk_size=chunk_size)
+
+    cleaned = clean_doc(raw)
+    legacy = [embed_chunk(chunk) for chunk in iter_chunk_doc(cleaned, env)]
+
+    source: Result[RawDoc, ErrInfo] = Ok(raw)
+    refactored = (
+        source.map(clean_doc)
+        .map(lambda doc: list(iter_chunk_doc(doc, env)))
+        .map(lambda chunks: [embed_chunk(chunk) for chunk in chunks])
+    )
+
+    assert refactored == Ok(legacy)
