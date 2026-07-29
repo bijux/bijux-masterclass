@@ -2,26 +2,28 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, replace
 from hashlib import sha256
-from typing import Literal, Sequence
+from typing import Literal
 from uuid import UUID
 
 import numpy as np
 from numpy.typing import NDArray
 
-from .domain import Chunk, assemble
-from .embedding import Embedding
-from .metadata import ChunkMetadata
-from .text import ChunkText
-from .validation import Validation, VSuccess, v_success
+from funcpipe_rag.rag.domain.chunk import Chunk, assemble
+from funcpipe_rag.rag.domain.embedding import Embedding
+from funcpipe_rag.rag.domain.metadata import ChunkMetadata
+from funcpipe_rag.rag.domain.text import ChunkText
+
 from .error import ErrInfo
+from .validation import Validation, VSuccess, v_success
 
 __all__ = [
     "OBatch",
-    "to_optimized_batch",
     "from_optimized_batch",
     "process_batch_hybrid",
+    "to_optimized_batch",
 ]
 
 
@@ -54,7 +56,7 @@ def pure_embed(chunk: Chunk) -> Validation[Chunk, ErrInfo]:
 
 @dataclass(slots=True)
 class OBatch:
-    rows: list["OChunk"]
+    rows: list[OChunk]
     embeddings: NDArray[np.float32] | None = None
 
 

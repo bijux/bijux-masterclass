@@ -138,7 +138,7 @@ By convention, `embedding_model` and `expected_dim` set to `None` mean “no con
 | Embedding format              | Yes                    | Yes (dim/model)     | Yes    | Validated assembler  |
 | Search indexing               | Yes                    | Yes (vector norm)   | Yes    | Conversion function  |
 
-## 3. Public API (fp/domain.py – mypy --strict clean)
+## 3. Public API (rag/domain/chunk.py – mypy --strict clean)
 
 ```python
 from __future__ import annotations
@@ -254,10 +254,7 @@ def ingest_chunk(
 ```python
 from dataclasses import replace
 from hypothesis import given, strategies as st
-from funcpipe_rag.fp.domain import assemble
-from funcpipe_rag.fp.text import ChunkText
-from funcpipe_rag.fp.metadata import ChunkMetadata
-from funcpipe_rag.fp.embedding import Embedding
+from funcpipe_rag.rag.domain import assemble, ChunkText, ChunkMetadata, Embedding
 from funcpipe_rag.fp.validation import VSuccess, VFailure
 from funcpipe_rag.fp.error import ErrorCode
 
@@ -351,6 +348,27 @@ def test_assemble_dim_mismatch_fails(content, source, tags, model, vector):
 | Direct field access across modules | Tight coupling                | Use `assemble` / conversion functions    |
 | Circular imports              | Import hell                        | Keep subsystems independent              |
 | Implicit cross-checks         | Bugs when fields diverge           | Explicit validation in `assemble`        |
+
+## Runnable RAG learning lab
+
+Run the cross-subsystem failure before studying the broad property suite:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k domain_assembly_reports_all_embedding_mismatches
+```
+
+`ChunkText`, `ChunkMetadata`, and `Embedding` are independently useful values.
+Only `assemble` can see that the metadata requests one model and dimension
+while the embedding provides another. The returned `VFailure` retains both
+codes in rule order, so correcting one field does not hide the other problem.
+
+Do not make every subsystem import the combined `Chunk`; that reverses
+ownership and couples unrelated construction. The focused test proves the two
+declared cross-field checks. It does not prove every invariant is known, and it
+does not replace the successful assembly and stable tag-normalization properties
+in `test_composition.py`.
 
 ## 8. Pre-Core Quiz
 

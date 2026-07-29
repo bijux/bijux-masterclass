@@ -1,4 +1,4 @@
-"""Module 05 subsystem ADT: chunk metadata (end-of-Module-05)."""
+"""Module 05 subsystem ADT: chunk metadata."""
 
 from __future__ import annotations
 

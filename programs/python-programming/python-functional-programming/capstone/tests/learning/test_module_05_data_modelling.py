@@ -32,6 +32,7 @@ from funcpipe_rag.fp.core import (
     success,
     transition,
 )
+from funcpipe_rag.fp.error import ErrorCode
 from funcpipe_rag.fp.functor import result_map
 from funcpipe_rag.fp.monoid import METRICS, Metrics, fold
 from funcpipe_rag.fp.validation import (
@@ -42,6 +43,7 @@ from funcpipe_rag.fp.validation import (
     v_liftA2,
     v_success,
 )
+from funcpipe_rag.rag.domain import ChunkMetadata, ChunkText, Embedding, assemble
 from funcpipe_rag.rag.stages import clean_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok
 from pydantic import ValidationError
@@ -179,3 +181,22 @@ def test_serialization_preserves_result_failure_provenance() -> None:
         "path": [2, 4],
     }
     assert from_json(encoded, dec_result()) == failure_value
+
+
+def test_domain_assembly_reports_all_embedding_mismatches() -> None:
+    text = ChunkText(content="composable chunk")
+    metadata = ChunkMetadata(
+        source="lesson",
+        tags=("typed", "typed", "rag"),
+        embedding_model="expected-model",
+        expected_dim=3,
+    )
+    embedding = Embedding(vector=(0.25, 0.75), model="actual-model")
+
+    result = assemble(text, metadata, embedding)
+
+    assert isinstance(result, VFailure)
+    assert tuple(error.code for error in result.errors) == (
+        ErrorCode.EMB_MODEL_MISMATCH,
+        ErrorCode.EMB_DIM_MISMATCH,
+    )

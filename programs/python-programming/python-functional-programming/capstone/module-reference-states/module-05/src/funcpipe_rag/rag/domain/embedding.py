@@ -1,9 +1,9 @@
-"""Module 05 subsystem ADT: embeddings (end-of-Module-05)."""
+"""Module 05 subsystem ADT: embeddings."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 import math
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True, slots=True)

@@ -1,16 +1,18 @@
-"""Module 05 compositional domain model: assemble subsystem ADTs safely (end-of-Module-05)."""
+"""Module 05 compositional domain model: assemble subsystem ADTs safely."""
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field, replace
-from typing import Callable, TypeAlias
+from typing import TypeAlias
 from uuid import UUID, uuid4
 
-from .error import ErrInfo, ErrorCode
+from funcpipe_rag.fp.error import ErrInfo, ErrorCode
+from funcpipe_rag.fp.validation import Validation, v_failure, v_success
+
+from .embedding import Embedding
 from .metadata import ChunkMetadata
 from .text import ChunkText
-from .embedding import Embedding
-from .validation import Validation, v_failure, v_success
 
 ChunkId: TypeAlias = UUID
 
@@ -58,11 +60,11 @@ def upcast_metadata_v1(v1: ChunkMetadataV1) -> ChunkMetadata:
 
 
 __all__ = [
-    "ChunkId",
     "Chunk",
-    "assemble",
-    "try_set_embedding",
-    "map_metadata_checked",
+    "ChunkId",
     "ChunkMetadataV1",
+    "assemble",
+    "map_metadata_checked",
+    "try_set_embedding",
     "upcast_metadata_v1",
 ]
