@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
+.PHONY: install test foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -38,6 +38,7 @@ DATA_API_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_data_first_api
 DATA_SHELL_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_filesystem_boundary.py
 STREAMING_STATE := module-reference-states/module-03
 STREAMING_RAG_PROOF := $(STREAMING_STATE)/tests/learning/test_module_03_streaming_dataflow.py
+SOURCE_SCHEDULING_PROOF := $(STREAMING_RAG_PROOF)
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
 INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-functional-programming
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-functional-programming
@@ -89,6 +90,10 @@ data-shell-proof: install ## Run the tracked Result-bearing filesystem boundary 
 
 streaming-rag-proof: install ## Run the tracked complete streaming RAG laws
 	PYTHONPATH="$(abspath $(STREAMING_STATE)/src)" $(PYTEST) -q "$(STREAMING_RAG_PROOF)"
+
+source-scheduling-proof: install ## Run the tracked multi-source RAG scheduling laws
+	PYTHONPATH="$(abspath $(STREAMING_STATE)/src)" $(PYTEST) -q "$(SOURCE_SCHEDULING_PROOF)" \
+		-k "fan_in or source_schedule or later_sequential_source or source_boundaries or index_and_audit"
 
 demo: tour ## Build the learner-facing capstone walkthrough
 

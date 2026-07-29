@@ -42,6 +42,10 @@ capstone-data-shell-proof: ## Run the selected program's Result-bearing filesyst
 capstone-streaming-rag-proof: ## Run the selected program's complete streaming RAG proof
 	@$(RUN_PROGRAM) capstone-streaming-rag-proof
 
+.PHONY: capstone-source-scheduling-proof
+capstone-source-scheduling-proof: ## Run the selected program's multi-source RAG scheduling proof
+	@$(RUN_PROGRAM) capstone-source-scheduling-proof
+
 .PHONY: demo
 demo: ## Run the selected program's learner-facing capstone walkthrough
 	@$(RUN_PROGRAM) demo

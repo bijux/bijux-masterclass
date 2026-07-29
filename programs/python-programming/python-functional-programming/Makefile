@@ -48,6 +48,10 @@ capstone-data-shell-proof: ## Run the tracked Module 02 filesystem boundary proo
 capstone-streaming-rag-proof: ## Run the tracked Module 03 streaming RAG laws
 	@$(RUN_CAPSTONE) streaming-rag-proof
 
+.PHONY: capstone-source-scheduling-proof
+capstone-source-scheduling-proof: ## Run the tracked Module 03 multi-source scheduling laws
+	@$(RUN_CAPSTONE) source-scheduling-proof
+
 .PHONY: demo
 demo: ## Build the learner-facing capstone walkthrough
 	@$(RUN_CAPSTONE) demo
