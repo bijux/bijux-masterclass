@@ -13,7 +13,17 @@ import pytest
 from funcpipe_rag.core.rag_types import Chunk, RawDoc
 from funcpipe_rag.domain.capabilities import Clock, Logger, StorageRead
 from funcpipe_rag.domain.composition import logged_read
-from funcpipe_rag.domain.effects import IOPlan, io_delay, io_map, perform
+from funcpipe_rag.domain.effects import (
+    IOPlan,
+    Session,
+    Tx,
+    TxProtocol,
+    io_delay,
+    io_map,
+    io_pure,
+    perform,
+    with_tx,
+)
 from funcpipe_rag.domain.idempotent import AtomicWriteCap, idempotent_write
 from funcpipe_rag.domain.logging import LogEntry, trace_stage, trace_value
 from funcpipe_rag.fp.effects.writer import pure as writer_pure
@@ -24,7 +34,7 @@ from funcpipe_rag.infra.adapters import (
     InMemoryStorage,
     MonotonicTestClock,
 )
-from funcpipe_rag.result.types import ErrInfo, Ok, Result
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
 
 def test_storage_adapters_preserve_rag_read_behavior(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -217,3 +227,57 @@ def test_idempotent_chunk_write_replays_without_duplicate_output() -> None:
     assert perform(write(iter(chunks))) == Ok(Ok(None))
     assert atomic.attempts == 2
     assert atomic.writes == 1
+
+
+def test_transaction_bracket_commits_success_and_rolls_back_failure() -> None:
+    """The bracket selects exactly one terminal action from the body result."""
+
+    class RecordingTxCapability:
+        def __init__(self) -> None:
+            self.events: list[str] = []
+
+        def begin(self, session: Session) -> IOPlan[Result[Tx, ErrInfo]]:
+            def act() -> Result[Result[Tx, ErrInfo], ErrInfo]:
+                self.events.append("begin")
+                return Ok(Ok(Tx(session=session, tx_id="tx-1")))
+
+            return io_delay(act)
+
+        def commit(self, tx: Tx) -> IOPlan[Result[None, ErrInfo]]:
+            def act() -> Result[Result[None, ErrInfo], ErrInfo]:
+                self.events.append(f"commit:{tx.tx_id}")
+                return Ok(Ok(None))
+
+            return io_delay(act)
+
+        def rollback(self, tx: Tx) -> IOPlan[Result[None, ErrInfo]]:
+            def act() -> Result[Result[None, ErrInfo], ErrInfo]:
+                self.events.append(f"rollback:{tx.tx_id}")
+                return Ok(Ok(None))
+
+            return io_delay(act)
+
+    session = Session(conn_id="rag-store")
+    success_cap = RecordingTxCapability()
+    success_protocol: TxProtocol = success_cap
+
+    def successful_body(_: Tx) -> IOPlan[Result[str, ErrInfo]]:
+        success_cap.events.append("write")
+        result: Result[str, ErrInfo] = Ok("stored")
+        return io_pure(result)
+
+    assert perform(with_tx(success_protocol, session, successful_body)) == Ok(Ok("stored"))
+    assert success_cap.events == ["begin", "write", "commit:tx-1"]
+
+    failure_cap = RecordingTxCapability()
+    failure_protocol: TxProtocol = failure_cap
+
+    def failing_body(_: Tx) -> IOPlan[Result[str, ErrInfo]]:
+        failure_cap.events.append("write")
+        result: Result[str, ErrInfo] = Err(ErrInfo(code="WRITE_FAILED", msg="disk full"))
+        return io_pure(result)
+
+    assert perform(with_tx(failure_protocol, session, failing_body)) == Ok(
+        Err(ErrInfo(code="WRITE_FAILED", msg="disk full"))
+    )
+    assert failure_cap.events == ["begin", "write", "rollback:tx-1"]

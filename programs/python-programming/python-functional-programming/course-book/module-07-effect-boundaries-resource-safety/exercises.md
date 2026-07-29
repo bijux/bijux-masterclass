@@ -248,3 +248,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
 
 Earlier contract preserved: pure chunk values remain immutable; Module 07
 derives a stable boundary key without adding mutation to the RAG core.
+
+## Sessions and transactions: select one terminal action
+
+**Starting context:** read `Session`, `TxProtocol`, and `with_tx`, then run
+`test_transaction_bracket_commits_success_and_rolls_back_failure`.
+
+**Objective:** add a commit-failure branch and prove that its error replaces the
+successful body result without invoking rollback.
+
+**Constraints:**
+
+- keep the session explicit;
+- record begin, body, commit, and rollback calls;
+- return typed nested results from the capability;
+- interpret only the complete bracket.
+
+**Expected evidence:** body success followed by commit failure returns the commit
+error and records `begin`, `write`, `commit` with no rollback.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k transaction_bracket_commits_success_and_rolls_back_failure
+```
+
+Earlier contract preserved: Module 05 typed failures retain their provenance;
+the transaction bracket determines cleanup without converting them to
+exceptions.

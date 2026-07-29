@@ -166,3 +166,22 @@ Common wrong turns:
 The test proves at-most-one write under the fake adapter's atomic semantics. It
 does not prove `AtomicFileStorage` is safe under every multi-process race, nor
 that text alone is the right production identity for every artifact.
+
+## Sessions and transactions: select one terminal action
+
+Make `commit` return `Ok(Err(ErrInfo(code="COMMIT_FAILED", ...)))`. The body
+still succeeds, but `with_tx` gives commit failure precedence because the
+successful value was not durably accepted. The trace contains begin, body, and
+commit only.
+
+Common wrong turns:
+
+- rolling back after a commit failure invents behavior the bracket does not
+  promise;
+- returning the successful body value hides the failed durability boundary;
+- throwing an exception bypasses the typed transaction contract;
+- reading a global session removes the dependency from the behavior signature.
+
+The proof establishes branch selection and error precedence for this protocol.
+It does not establish database isolation levels, distributed atomicity, or
+recovery after process termination.
