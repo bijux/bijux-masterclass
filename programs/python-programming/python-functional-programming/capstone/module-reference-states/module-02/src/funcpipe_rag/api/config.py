@@ -70,6 +70,8 @@ def boundary_rag_config(raw: Mapping[str, object]) -> Result[RagConfig]:
     chunk_size_raw = raw.get("chunk_size", 512)
     if not isinstance(chunk_size_raw, int) or isinstance(chunk_size_raw, bool):
         return Err(f"Invalid config: chunk_size must be int (got {type(chunk_size_raw).__name__})")
+    if chunk_size_raw <= 0:
+        return Err("Invalid config: chunk_size must be a positive integer")
 
     rule_names_raw = raw.get("clean_rules", DEFAULT_CLEAN_CONFIG.rule_names)
     if not isinstance(rule_names_raw, (tuple, list)) or not all(isinstance(x, str) for x in rule_names_raw):

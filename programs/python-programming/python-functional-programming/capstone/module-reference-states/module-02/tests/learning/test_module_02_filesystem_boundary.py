@@ -16,6 +16,7 @@ from funcpipe_rag import (
     get_deps,
 )
 from funcpipe_rag.shells.rag_api_shell import run
+from funcpipe_rag.shells.rag_main import boundary_app_config
 
 
 def _json_value(value: object) -> object:
@@ -136,3 +137,19 @@ def test_filesystem_shell_returns_output_failure_after_core_work(
     assert isinstance(result, Err)
     assert result.error.startswith("Write failed:")
     assert not output.exists()
+
+
+def test_app_config_rejects_unknown_clean_rule_before_execution() -> None:
+    result = boundary_app_config(
+        [
+            "--input",
+            "docs.csv",
+            "--output",
+            "chunks.jsonl",
+            "--clean_rules",
+            "strip,unknown",
+        ]
+    )
+
+    assert isinstance(result, Err)
+    assert "unknown clean rule" in result.error
