@@ -34,6 +34,7 @@ nav:
   - Mastery Map: module-00-orientation/mastery-map.md
 - 'Module 01: Purity, Substitution, and Local Reasoning':
   - Home: module-01-purity-substitution-local-reasoning/index.md
+  - FuncPipe Delta: module-01-purity-substitution-local-reasoning/capstone-delta.md
   - Imperative vs Functional: module-01-purity-substitution-local-reasoning/imperative-vs-functional.md
   - Pure Functions & Contracts: module-01-purity-substitution-local-reasoning/pure-functions-and-contracts.md
   - Immutability & Value Semantics: module-01-purity-substitution-local-reasoning/immutability-and-value-semantics.md
@@ -47,6 +48,8 @@ nav:
   - Equational Reasoning: module-01-purity-substitution-local-reasoning/equational-reasoning.md
   - Idempotent Transforms: module-01-purity-substitution-local-reasoning/idempotent-transforms.md
   - Module 01 Refactoring Guide: module-01-purity-substitution-local-reasoning/refactoring-guide.md
+  - Exercises: module-01-purity-substitution-local-reasoning/exercises.md
+  - Exercise Answers: module-01-purity-substitution-local-reasoning/exercise-answers.md
   - Module Glossary: module-01-purity-substitution-local-reasoning/glossary.md
 - 'Module 02: Data-First APIs and Expression Style':
   - Home: module-02-data-first-apis-expression-style/index.md
