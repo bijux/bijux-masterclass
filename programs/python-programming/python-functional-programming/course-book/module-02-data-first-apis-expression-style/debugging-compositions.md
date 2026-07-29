@@ -519,8 +519,9 @@ print(512)  # OK for one-off
 
 ## 8. Pre-Core Quiz
 
-1. `print` in mapper? → **Purity violation.**  
-2. `list(gen)` inspect? → **tee(stage).**  
+1. `print` in mapper? → **It mixes transformation with observation.**
+2. `list(gen)` inspect? → **Materializes and changes timing; use an explicit tap
+   only when its contract fits.**
 3. Anonymous lambda? → **named("name", fn).**  
 4. Global debug flag? → **Config + identity.**  
 5. Shrink failures? → **Hypothesis verbose.**
@@ -529,14 +530,78 @@ print(512)  # OK for one-off
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** Find an opaque pipeline. Refactor with named, tee, probe; add verbose Hypothesis.  
-**Project Exercise:** Apply to RAG (e.g., trace decisions); run verbose properties.  
-- Did traces clarify bugs?  
-- Did probes catch invariants?  
-- Did verbose shrink failures?
+**Reflect:** Name one observation that requires a completed stage and one that can
+occur per item. Explain how each changes demand and retained state.
+
+**Project Exercise:** Add `RagTaps` to a configured RAG run. Prove returned chunks
+and observations equal an untapped run.
 
 **Continue with:** [Imperative to FP Refactor](../module-02-data-first-apis-expression-style/imperative-to-fp-refactor.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 
 > **Further Reading:** For more on closures in Python, see 'Fluent Python' by Luciano Ramalho. Explore toolz for advanced partials once comfortable.
+
+## FuncPipe has two debugging shapes
+
+`instrument_stage` wraps lazy iterable stages. `RagTaps` observes materialized API
+stages. They answer different questions.
+
+```text
+iter_rag_core
+  instrument_stage -> per-item trace/probe as demand advances
+
+full_rag_api_docs
+  RagTaps -> tuple snapshot after each complete list stage
+```
+
+A `RagTaps.docs` handler receives the complete kept-document tuple, not every raw
+input document. A `RagTaps.chunks` handler receives embedded chunks before canonical
+deduplication. Those details determine what a metric means.
+
+## Value neutrality is a testable contract
+
+```python
+observed: list[tuple[str, int]] = []
+taps = RagTaps(
+    docs=lambda values: observed.append(("docs", len(values))),
+    cleaned=lambda values: observed.append(("cleaned", len(values))),
+    chunks=lambda values: observed.append(("chunks", len(values))),
+)
+
+with_taps = full_rag_api_docs(docs, config, get_deps(config, taps=taps))
+without_taps = full_rag_api_docs(docs, config, get_deps(config))
+
+assert with_taps == without_taps
+```
+
+This proves the handlers did not alter API values for the tested run. The frozen
+domain dataclasses prevent ordinary field mutation, but a callback can still mutate
+its own global state, raise, block, or disclose data.
+
+## Probes and traces have different failure semantics
+
+- A trace reports values and should usually be observational.
+- A probe checks an invariant and intentionally raises when it is violated.
+- A completed-stage tap receives a snapshot and may calculate counts or samples.
+
+Do not suppress a probe failure as if it were best-effort logging. Do not let a
+trace callback decide whether a domain value continues through the pipeline.
+
+## Debugging can change execution
+
+Materializing an iterator to print it consumes it. `itertools.tee` avoids immediate
+loss but creates a skew buffer. A callback can make an otherwise fast pure stage
+slow. Observation should therefore be visible in `DebugConfig`, `StageInstrumentation`,
+or `RagTaps`, not hidden in a mapper.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'taps_observe'
+```
+
+The proof establishes output neutrality and stage counts for synchronous taps. It
+does not prove non-blocking behavior, thread safety, or safe handling of sensitive
+document text.
