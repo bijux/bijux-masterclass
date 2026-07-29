@@ -75,16 +75,16 @@ def make_gen_rag_fn(
     max_chunks: int = 10_000,
     clean_cfg: CleanConfig = DEFAULT_CLEAN_CONFIG,
     keep: RulesConfig = DEFAULT_RULES,
-) -> Callable[[Iterable[RawDoc]], Iterator[ChunkWithoutEmbedding]]:
-    """Pure configurator: build a streaming docs -> chunk stream function (Module 03)."""
+) -> Callable[[Iterable[RawDoc]], Iterator[Chunk]]:
+    """Build a complete lazy docs-to-unique-chunks RAG function."""
 
-    from funcpipe_rag.api.core import gen_bounded_chunks
+    from funcpipe_rag.api.core import stream_rag_chunks
 
     config = RagConfig(env=RagEnv(chunk_size), keep=keep, clean=clean_cfg)
     deps = get_deps(config)
 
-    def run(docs: Iterable[RawDoc]) -> Iterator[ChunkWithoutEmbedding]:
-        return gen_bounded_chunks(docs, config, deps, max_chunks=max_chunks)
+    def run(docs: Iterable[RawDoc]) -> Iterator[Chunk]:
+        return stream_rag_chunks(docs, config, deps, max_chunks=max_chunks)
 
     return run
 

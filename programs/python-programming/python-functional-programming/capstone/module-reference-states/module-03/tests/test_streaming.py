@@ -24,6 +24,7 @@ from funcpipe_rag import (
     make_sampler_stable,
     multicast,
     sliding_windows,
+    stream_rag_chunks,
     structural_dedup_lazy,
     throttle,
 )
@@ -137,7 +138,7 @@ def test_make_gen_rag_fn_equivalence() -> None:
 
     config = RagConfig(env=RagEnv(50))
     deps = get_deps(config)
-    out2 = list(gen_bounded_chunks(docs, config, deps, max_chunks=3))
+    out2 = list(stream_rag_chunks(docs, config, deps, max_chunks=3))
     assert out1 == out2
 
 
