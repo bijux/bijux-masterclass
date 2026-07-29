@@ -1,507 +1,263 @@
 # Imperative vs Functional
 
+Module 01 begins with a review question, not a syntax preference:
 
-<!-- page-maps:start -->
-## Page Maps
+> How much of this function can you understand from its arguments and return value?
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Purity Substitution Local Reasoning"]
-  page["Imperative vs Functional"]
-  capstone["Capstone evidence"]
+Imperative Python often describes **how state changes**. Functional Python emphasizes
+**how values are transformed**. Both styles can be clear. The important difference
+is whether hidden state forces a reviewer to search outside the expression at hand.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## What you need
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+You should already be comfortable with functions, loops, comprehensions, type
+annotations, and dataclasses. This lesson introduces no third-party framework.
 
-This lesson is about a review skill, not a style preference:
-
-- In imperative code, behavior often depends on mutation order and hidden state.
-- In functional code, behavior is pushed into explicit inputs, explicit outputs, and small transforms.
-- The real question is not "which style looks nicer?" but "which version can another engineer trust locally?"
-
-## Keep This Question In View
-
-> How does hidden state prevent substitution, and how do you refactor imperative code to pure functions that enable equational reasoning?
-
-If you can answer that clearly after this page, the rest of Module 01 has a solid base.
-
-## What to Inspect in the Capstone
-
-- the pure transformation helpers under `capstone/src/funcpipe_rag/`
-- the corresponding test surfaces under `capstone/tests/`
-- places where explicit configuration and explicit values replace ambient state
-
-The capstone should make one idea concrete here: purity is a design boundary, not a slogan.
-
----
-
-## 1. Conceptual Foundation
-
-### 1.1 The One-Sentence Rule
-
-> **Write pure functions by default: explicit inputs, new outputs, no hidden state or effects; mutate or I/O only in thin, explicit wrappers.**
-
-### 1.2 Referential Transparency in One Precise Sentence
-
-> An expression is referentially transparent if you can replace it with its value without changing program behavior—enabled by purity (no side effects, determinism).
-
-In this lesson, a function counts as pure when all three are true:
-
-- It depends only on its arguments (no mutable globals, no I/O),
-- It does not mutate its arguments or any shared state, and
-- Given the same arguments, it always returns the same result or raises the same exception.
-
-### 1.3 Why This Matters Now
-
-Without referential transparency, code review turns into archaeology. You cannot trust a
-line by reading it in place because the result may depend on shared globals, previous
-mutation, time, random values, or call order.
-
-That is why imperative code often feels harder to parallelize, test, and refactor:
-
-- the relevant state is spread across time instead of carried in the function signature
-- two calls that look identical may not mean the same thing
-- "small safe change" becomes hard to defend
-
-### 1.4 Functions as Values in 5 Lines
-
-Functions as first-class values matter because they let us move behavior around like data:
-
-```python
-from collections.abc import Callable
-from typing import Dict
-
-def discount_price(price: float, tax_rate: float) -> float:
-    return price * (1 - tax_rate)
-
-strategies: Dict[str, Callable[[float, float], float]] = {
-    "discount": discount_price,
-    # Add more strategies
-}
-
-def run_job(strategy_key: str, price: float, tax_rate: float) -> float:
-    return strategies[strategy_key](price, tax_rate)
-```
-
-Because `discount_price` is pure, we can store it in a dict, pass it around, and test it
-in isolation without worrying that moving it changed its meaning.
-
----
-
-## 2. Mental Model: Imperative vs Functional
-
-### 2.1 One Picture
+Keep the Module 01 reference state open:
 
 ```text
-Imperative review question               Functional review question
-+-----------------------------+          +------------------------------+
-| What happened before this?  |          | What are the explicit inputs?|
-| What else can change this?  |          | What value comes back out?   |
-| Which mutation matters?     |          | Can I substitute this call?  |
-+-----------------------------+          +------------------------------+
-        history-dependent                     locally reviewable
+capstone/module-reference-states/module-01/src/funcpipe_rag/
 ```
 
-### 2.2 Contract Table
+The corresponding short proof is:
 
-| Aspect            | Imperative / Stateful        | Functional / Pure            |
-|-------------------|------------------------------|------------------------------|
-| Inputs/Outputs    | Hidden globals, mutation     | Explicit, deterministic      |
-| Substitution      | Breaks (effects differ)      | Safe (expression = value)    |
-| Testing           | Flaky (depends on order)     | Local reasoning (properties hold)    |
-| Parallelism       | Races                        | Freedom from data races      |
+```bash
+PYTHONPATH=capstone/module-reference-states/module-01/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py
+```
 
-**Note on Imperative Choice:** Rarely, for profiled hot paths (e.g., inner loops), use imperative style hidden behind a pure API.
+Run that command from the `python-functional-programming` directory.
 
-### 2.3 Purity Spectrum Table
+## One behavior, two descriptions
 
-| Level              | Description                          | Example                              |
-|--------------------|--------------------------------------|--------------------------------------|
-| Fully Pure        | Explicit inputs/outputs only        | `def add(x: int, y: int) -> int: return x + y` |
-| Impure            | Globals/I/O/mutation                | `def read_file(path: str) -> str: ...` |
+Suppose a RAG ingestion step must normalize an abstract.
 
----
+```python
+def normalize_in_place(rows: list[dict[str, str]]) -> None:
+    for row in rows:
+        row["abstract"] = " ".join(row["abstract"].strip().lower().split())
+```
 
-## 3. Running Project: FuncPipe RAG Builder
+The call returns `None`. Its useful result is a mutation of objects owned by the
+caller. To review a later expression involving `rows`, you must know whether this
+function has already run and who else holds references to the same dictionaries.
 
-Our **running project** (from `module-01/funcpipe-rag-01/README.md`) is refactoring an impure RAG pipeline to pure.  
-- **Dataset:** 10k arXiv CS abstracts (`arxiv_cs_abstracts_10k.csv`).  
-- **Goal:** Clean, chunk, embed abstracts into `Chunk` list (including dedup).  
-- **Start:** Pedagogical impure version (`module-01/funcpipe-rag-01/src/funcpipe_rag/full_rag.py`).  
-- **End (this core):** Pure core with explicit env/state, preserving structural behavior for equivalence testing.
-
-### 3.1 Types (Canonical, Used Throughout)
-
-These live in `module-01/funcpipe-rag-01/src/funcpipe_rag/rag_types.py` and are imported as needed. Full code:
+Now make the transformation explicit:
 
 ```python
 from dataclasses import dataclass
-from typing import Tuple
 
-@dataclass
+
+@dataclass(frozen=True)
 class RawDoc:
     doc_id: str
-    title: str
     abstract: str
-    categories: str
+
 
 @dataclass(frozen=True)
 class CleanDoc:
     doc_id: str
-    title: str
     abstract: str
-    categories: str
-
-@dataclass(frozen=True)
-class ChunkWithoutEmbedding:
-    doc_id: str
-    text: str
-    start: int
-    end: int
-
-@dataclass(frozen=True, eq=True)
-class Chunk(ChunkWithoutEmbedding):
-    embedding: Tuple[float, ...]  # Length 16, [0.0, 1.0]
-
-@dataclass(frozen=True)
-class RagEnv:
-    chunk_size: int
-```
-
-### 3.2 Impure Start (Anti-Pattern)
-
-Full code:
-
-```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/full_rag.py (legacy dict-based pipeline)
-import hashlib
-from typing import List, Dict, Tuple
-from funcpipe_rag import RawDoc, RagEnv
-
-
-def _stable_embedding(text: str) -> Tuple[float, ...]:
-    h = hashlib.sha256(text.encode("utf-8")).hexdigest()
-    step = 4
-    return tuple(int(h[i:i + step], 16) / (16 ** step - 1) for i in range(0, 64, step))
-
-
-def impure_chunks(docs: List[RawDoc], env: RagEnv) -> List[Dict]:
-    chunks = []
-    for doc in docs:
-        text = " ".join(doc.abstract.strip().lower().split())
-        for i in range(0, len(text), env.chunk_size):
-            chunk_text = text[i:i + env.chunk_size]
-            embedding = _stable_embedding(chunk_text)
-            chunk_id = f"{doc.doc_id}_{i}"
-            chunks.append({
-                "doc_id": chunk_id,
-                "text": chunk_text,
-                "start": i,
-                "end": i + len(chunk_text),
-                "embedding": embedding
-            })
-    return chunks
-```
-
-**Smells:** The shape is still ad-hoc (dictionaries with derived IDs instead of `Chunk` values), and it intertwines cleaning, chunking, and embedding in one loop. Even though the embedding is deterministic now (via a hash) for pedagogical tests, the legacy shape complicates equational reasoning and deduplication.
-
----
-
-## 4. Refactor to Pure: Explicit Inputs, New Outputs
-
-### 4.1 Pure Core
-
-Pass all state explicitly; return new values. Full code:
-
-```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/fp.py
-from typing import Callable, List, TypeVar
-
-T = TypeVar("T")
-U = TypeVar("U")
-
-def fmap(f: Callable[[T], U]) -> Callable[[List[T]], List[U]]:
-    # fmap obeys the usual functor laws for list: identity and composition
-    def mapper(xs: List[T]) -> List[U]:
-        return [f(x) for x in xs]
-    return mapper
-
-# flow is not used in Core 1; see later cores for composition
-```
-
-```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/pipeline_stages.py
-import hashlib
-from typing import List, Set, Tuple
-from funcpipe_rag import RawDoc, CleanDoc, ChunkWithoutEmbedding, Chunk, RagEnv
 
 
 def clean_doc(doc: RawDoc) -> CleanDoc:
-    abstract = " ".join(doc.abstract.strip().lower().split())
-    return CleanDoc(doc.doc_id, doc.title, abstract, doc.categories)
+    return CleanDoc(
+        doc_id=doc.doc_id,
+        abstract=" ".join(doc.abstract.strip().lower().split()),
+    )
+```
+
+For a fixed `RawDoc`, the result is fixed. The input remains available for comparison,
+and the type transition records that normalization occurred.
+
+```python
+raw = RawDoc("doc-a", "  Pure   Values ")
+
+assert clean_doc(raw) == CleanDoc("doc-a", "pure values")
+assert raw.abstract == "  Pure   Values "
+```
+
+That is the practical value of local reasoning: the function body and explicit input
+are enough to predict the returned value.
+
+## Substitution is the test
+
+A deterministic function is not automatically pure. Purity requires both:
+
+- the returned value depends only on explicit inputs; and
+- evaluation produces no observable effect.
+
+If `clean_doc(raw)` is pure, replacing the call with its value preserves program
+meaning:
+
+```python
+cleaned = clean_doc(raw)
+```
+
+can become:
+
+```python
+cleaned = CleanDoc("doc-a", "pure values")
+```
+
+for that specific `raw`. This is **referential transparency**.
+
+The following function is deterministic in what it returns but is not pure:
+
+```python
+audit: list[str] = []
 
 
-def chunk_doc(doc: CleanDoc, env: RagEnv) -> List[ChunkWithoutEmbedding]:
-    text = doc.abstract
-    return [
-        ChunkWithoutEmbedding(doc.doc_id, text[i:i + env.chunk_size], i, i + len(text[i:i + env.chunk_size]))
-        for i in range(0, len(text), env.chunk_size)
-    ]
+def clean_and_record(doc: RawDoc) -> CleanDoc:
+    audit.append(doc.doc_id)
+    return clean_doc(doc)
+```
 
+Replacing the call with the returned `CleanDoc` removes an audit entry. Program
+meaning changes, so substitution is unsafe.
 
-def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
-    h = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
-    step = 4  # Fixed for dimension 16
-    vec = tuple(int(h[i:i + step], 16) / (16 ** step - 1) for i in range(0, 64, step))
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, vec)
+## The first FuncPipe state
 
+Module 01 establishes this pure dataflow:
 
-def structural_dedup_chunks(chunks: List[Chunk]) -> List[Chunk]:
-    seen: Set[Chunk] = set()
-    result: List[Chunk] = []
-    for c in chunks:
-        if c not in seen:
-            seen.add(c)
-            result.append(c)
+```text
+RawDoc
+  -> clean_doc
+CleanDoc
+  -> chunk_doc with RagEnv
+list[ChunkWithoutEmbedding]
+  -> embed_chunk
+list[Chunk]
+  -> structural_dedup_chunks
+canonical list[Chunk]
+```
+
+The code is split by responsibility:
+
+| File | Review responsibility |
+| --- | --- |
+| `rag_types.py` | frozen domain values and valid chunk configuration |
+| `pipeline_stages.py` | deterministic value transformations |
+| `full_rag.py` | stage ordering and legacy comparison |
+| `rag_shell.py` | CSV input and JSONL output |
+| `tests/test_laws.py` | property-based laws over many generated values |
+| `tests/learning/test_module_01_purity_foundations.py` | short learner-facing proof |
+
+`full_rag.py` deliberately keeps `impure_chunks` beside `docs_to_embedded`. Compare
+their ownership:
+
+```python
+def impure_chunks(docs: list[RawDoc], env: RagEnv) -> list[LegacyChunkMetadata]:
+    result: list[LegacyChunkMetadata] = []
+    for doc in docs:
+        # normalize, split, construct dictionaries, and mutate result here
+        ...
     return result
 ```
 
-```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/full_rag.py
-from typing import List
-from funcpipe_rag import fmap
-from funcpipe_rag import clean_doc, chunk_doc, embed_chunk, structural_dedup_chunks
-from funcpipe_rag import RawDoc, Chunk, RagEnv
-
-
-def docs_to_embedded(docs: List[RawDoc], env: RagEnv) -> List[Chunk]:
-    cleaned = fmap(clean_doc)(docs)
-    chunked = [c for doc in cleaned for c in chunk_doc(doc, env)]
-    return fmap(embed_chunk)(chunked)
-
-
-def full_rag(docs: List[RawDoc], env: RagEnv) -> List[Chunk]:
-    return structural_dedup_chunks(docs_to_embedded(docs, env))
-```
-
-**Wins:** Every stage is independently testable, and `full_rag` simply wires them together—clean → chunk → embed → structural dedup. Because each helper is deterministic, `full_rag(docs, env)` is referentially transparent.
-
-### 4.2 Impure Shell (Edge Only)
-
-Full code:
+The pure orchestration names the same transformations:
 
 ```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/rag_shell.py
-from dataclasses import asdict
-import csv
-import json
-from typing import List
-from funcpipe_rag import RawDoc, RagEnv
-from funcpipe_rag import full_rag
-
-
-def rag_shell(env: RagEnv, input_path: str, output_path: str) -> None:
-    try:
-        with open(input_path, encoding="utf-8") as f_in:
-            docs: List[RawDoc] = [RawDoc(**row) for row in csv.DictReader(f_in)]
-    except (UnicodeDecodeError, TypeError, ValueError) as exc:
-        raise ValueError(f"Failed to parse {input_path}: {exc}") from exc
-
-    chunks = full_rag(docs, env)
-    with open(output_path, "w", encoding="utf-8") as f_out:
-        for chunk in chunks:
-            json.dump(asdict(chunk), f_out)
-            f_out.write("\n")
-```
-
-**Note:** This is the only impurity; core remains pure. Use 'with' for resource safety in impure boundaries—full details in Module 7 (inspired by PEP 343). This acts as a shell/adapter layer.
-
----
-
-## 5. Equational Reasoning: Substitution Exercise
-
-**Hand Exercise:** Replace expressions in `full_rag`.  
-1. Inline `clean_doc(d)` → `CleanDoc(...)` with normalized abstract.  
-2. Substitute into `chunk_doc` → list of `ChunkWithoutEmbedding`.  
-3. Result: Entire call = fixed value for fixed inputs.  
-**Bug Hunt:** In a truly impure version (e.g., with randomness or timestamps), substitution fails due to varying results. In this core we keep the impure version deterministic already; the point here is shape + entanglement, not non-determinism.  
-Because `full_rag` is pure and referentially transparent, we can safely replace any call `full_rag(docs, env)` with its value, or inline `clean_doc` / `chunk_doc` step by step, without changing behavior.
-That is equational reasoning: treating equals as interchangeable in all contexts.
-
----
-
-## 6. Property-Based Testing: Proving Equivalence (Advanced, Optional)
-
-Use Hypothesis to prove refactor preserved structural behavior (text, positions).
-
-You can safely skip this on a first read and still follow later cores—come back when you want to mechanically verify your own refactors.
-
-To bridge theory and practice, here's a simple Hypothesis example illustrating impurity detection:
-
-```python
-from hypothesis import given
-import hypothesis.strategies as st
-
-# Impure function (hidden state)
-counter = 0
-def impure_add(x: int) -> int:
-    global counter
-    counter += 1
-    return x + counter
-
-# Pure refactor
-def pure_add(x: int, state: int) -> tuple[int, int]:  # Returns result and new state
-    return x + state, state + 1
-
-# Property test to catch impurity (falsifies because impure_add depends on call history, not on inputs alone)
-@given(st.integers())
-def test_impure_add_not_deterministic(x: int) -> None:
-    # Two calls with same input must give same result for a pure function.
-    first = impure_add(x)
-    second = impure_add(x)
-    assert first == second
-
-# Run: hypothesis will find counterexample showing non-determinism
-```
-
-Hypothesis falsifies this by running multiple inputs, revealing the hidden state change.
-
-### 6.1 Custom Strategy (RAG Domain)
-
-Full code:
-
-```python
-# module-01/funcpipe-rag-01/tests/conftest.py (excerpt)
-import hypothesis.strategies as st
-from funcpipe_rag import RawDoc, RagEnv
-
-
-def raw_doc_strategy():
-    return st.builds(
-        RawDoc,
-        doc_id=st.text(min_size=1, max_size=20, alphabet="abcdefghijklmnopqrstuvwxyz0123456789-_"),
-        title=st.text(max_size=100),
-        abstract=st.text(max_size=2000),
-        categories=st.text(max_size=50),
-    )
-
-
-def doc_list_strategy():
-    return st.lists(raw_doc_strategy(), max_size=50)
-
-
-def env_strategy():
-    return st.builds(RagEnv, chunk_size=st.integers(min_value=128, max_value=1024))
-```
-
-### 6.2 Equivalence Property
-
-```python
-# module-01/funcpipe-rag-01/tests/test_laws.py (structure preservation example)
-from hypothesis import given
-from funcpipe_rag import docs_to_embedded  # impure_chunks from full_rag.py
-from funcpipe_rag import impure_chunks
-from .conftest import doc_list_strategy, env_strategy
-
-
-@given(docs=doc_list_strategy(), env=env_strategy())
-def test_refactor_preserves_structure(docs, env):
-    old = sorted(
-        (c["doc_id"], c["text"], c["start"], c["end"])
-        for c in impure_chunks(docs, env)
-    )
-    new = sorted(
-        (c.doc_id, c.text, c.start, c.end)
-        for c in docs_to_embedded(docs, env)
-    )
-    assert old == new
-```
-
-**Note:** Property focuses on structural equivalence (text, positions); embeddings and side effects ignored. We ignore IDs here as they use different schemas.
-
-### 6.3 Shrinking Demo: Catching a Bug
-
-Bad refactor (forgot whitespace collapse in clean_doc):
-
-```python
-from funcpipe_rag import RawDoc, CleanDoc, RagEnv, ChunkWithoutEmbedding, Chunk
-from typing import List
-from funcpipe_rag import chunk_doc, embed_chunk
-
-
-def bad_clean_doc(doc: RawDoc) -> CleanDoc:
-    return CleanDoc(doc.doc_id, doc.title, doc.abstract.strip().lower(), doc.categories)  # No split/join
-
-
-def full_rag_bad(docs: List[RawDoc], env: RagEnv) -> List[Chunk]:
-    cleaned = [bad_clean_doc(d) for d in docs]
-    chunked = [c for doc in cleaned for c in chunk_doc(doc, env)]
-    embedded = [embed_chunk(c) for c in chunked]
+def docs_to_embedded(docs: list[RawDoc], env: RagEnv) -> list[Chunk]:
+    cleaned = [clean_doc(doc) for doc in docs]
+    chunked = [chunk for doc in cleaned for chunk in chunk_doc(doc, env)]
+    embedded = [embed_chunk(chunk) for chunk in chunked]
     return embedded
 ```
 
-Property (swapped to full_rag_bad):
+The second form does not win because comprehensions are inherently functional. It
+wins because each named stage has a smaller contract and can be substituted or tested
+without reconstructing the whole loop.
+
+## Trace one document
+
+Given:
 
 ```python
-@given(docs=doc_list_strategy(), env=env_strategy())
-def test_bad_rag(docs, env):
-    impure = impure_chunks(docs, env)
-    bad_pure = full_rag_bad(docs, env)
-    old = sorted((c["text"], c["start"], c["end"]) for c in impure)
-    new = sorted((c.text, c.start, c.end) for c in bad_pure)
-    assert old == new  # Fails on extra spaces
-```
-
-Hypothesis failure trace (run to verify; example):
-
-```
-Falsifying example: test_bad_rag(
-    docs=[RawDoc(doc_id='a', title='', abstract='a  b', categories='')], 
-    env=RagEnv(chunk_size=128),
+doc = RawDoc(
+    doc_id="paper-1",
+    title="Local Reasoning",
+    abstract="  Pure   Python  ",
+    categories="cs.PL",
 )
-AssertionError
+env = RagEnv(chunk_size=5)
 ```
 
-- Initial failure on larger input; shrinks to minimal doc with extra space ("a  b").
-- Shows length mismatch: impure collapses spaces (len=3), bad_pure doesn't (len=4).
+the observable value transitions are:
 
-This catches the bug via shrinking to the essence.
+| Expression | Relevant result |
+| --- | --- |
+| `clean_doc(doc)` | abstract `"pure python"` |
+| `chunk_doc(clean_doc(doc), env)` | texts `["pure ", "pytho", "n"]` |
+| `embed_chunk(first_chunk)` | a deterministic 16-number tuple |
+| `full_rag([doc], env)` | canonical chunks ordered by document ID and offset |
 
----
+The SHA-256-based embedding is not a semantic embedding model. It is a deterministic
+local stand-in that lets the course teach dataflow without network access or model
+variability.
 
-## 7. When Purity Isn't Worth It
+## Where effects belong
 
-Rarely, for profiled hot paths (e.g., image processing loops), use mutable arrays internally but expose pure API: `def process_image(data: bytes) -> bytes: ...`.
+File access cannot be pure: reading depends on external state, and writing changes
+external state. FuncPipe gives those operations to `rag_shell`:
 
----
+```text
+read CSV -> full_rag(docs, env) -> write JSONL
+  effect          pure core          effect
+```
 
-## 8. Pre-Core Quiz
+Do not call the whole program pure. Say precisely that `full_rag` is pure for valid
+domain inputs and `rag_shell` is the effectful owner.
 
-1. If full_rag were impure (e.g., using time), would full_rag(docs, env) == full_rag(docs, env) always hold? → **No.**  
-2. If embed_chunk used time/random, substituting the call with its value would break referential transparency.  
-3. `chunks.sort()` == `sorted(chunks)`? → **No (mutates vs new).** Run it!  
-4. Global in `clean_doc`? → **Hidden input → impure.**  
-5. Cache impure? → **Lies about state.**
+## Failure route: hidden configuration
 
-## 9. Post-Core Reflection & Exercise
+This version looks convenient:
 
-**Reflect:** In your code, find one impure func (global/shared mutation). Refactor to pure; add Hypothesis equiv.  
-**Project Exercise:** Download `arxiv_cs_abstracts_10k.csv`; run impure vs pure; verify equiv.  
+```python
+CHUNK_SIZE = 512
 
-All claims (e.g., referential transparency) are verifiable via the provided Hypothesis examples—run them to confirm.
 
-**Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
+def chunk_doc(doc: CleanDoc) -> list[ChunkWithoutEmbedding]:
+    ...
+```
 
-**Continue with:** [Pure Functions & Contracts](../module-01-purity-substitution-local-reasoning/pure-functions-and-contracts.md)
+Its output depends on a global that is absent from the signature. A test that changes
+`CHUNK_SIZE` can affect later tests. The reference state instead requires
+`RagEnv(chunk_size=...)`, so configuration participates in equality and substitution.
+
+Python adds a boundary trap: `bool` is a subclass of `int`. Module 01's `RagEnv`
+rejects `True` even though `isinstance(True, int)` is true. A chunk size is an exact
+positive integer domain value, not merely something accepted by numeric operators.
+
+## Review checklist
+
+For any helper, ask:
+
+1. Are all value-determining inputs visible in the parameters?
+2. Does the function mutate an input or reachable shared object?
+3. Does it read time, randomness, environment, files, or process state?
+4. Does it write, log, cache, or otherwise change observable state?
+5. Can the call be replaced by its returned value without changing behavior?
+6. Does a focused test prove the claim, including the important failure route?
+
+Do not classify by surface syntax. A comprehension can call an impure function; a
+loop can build and return a fresh value without touching shared state.
+
+## Learner work
+
+Open `pipeline_stages.py` in the Module 01 reference state. For `clean_doc`,
+`chunk_doc`, and `embed_chunk`, write down:
+
+- explicit inputs;
+- returned value;
+- invariant preserved;
+- one hidden dependency that would break substitution;
+- the named test that demonstrates the current contract.
+
+Then inspect `rag_shell.py` and mark the exact lines where the program crosses into
+and out of the pure core. Your evidence is a short call graph plus the passing Module
+01 learning proof—not a rewritten pipeline.
+
+Continue with [Pure Functions & Contracts](pure-functions-and-contracts.md), where
+these judgments become reviewable input, output, and invariant contracts.
