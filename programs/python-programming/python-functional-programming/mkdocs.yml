@@ -62,6 +62,9 @@ nav:
   - Tiny Function DSLs: module-02-data-first-apis-expression-style/tiny-function-dsls.md
   - Debugging Compositions: module-02-data-first-apis-expression-style/debugging-compositions.md
   - Imperative to FP Refactor: module-02-data-first-apis-expression-style/imperative-to-fp-refactor.md
+  - FuncPipe Delta: module-02-data-first-apis-expression-style/capstone-delta.md
+  - Exercises: module-02-data-first-apis-expression-style/exercises.md
+  - Exercise Answers: module-02-data-first-apis-expression-style/exercise-answers.md
   - Module 02 Refactoring Guide: module-02-data-first-apis-expression-style/refactoring-guide.md
   - Module Glossary: module-02-data-first-apis-expression-style/glossary.md
 - 'Module 03: Iterators, Laziness, and Streaming Dataflow':
