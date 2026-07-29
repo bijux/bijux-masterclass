@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime
+from typing import TypedDict
 
 import pytest
 from funcpipe_rag.boundaries.adapters.pydantic_edges import ChunkModel, to_core_chunk
@@ -13,6 +14,7 @@ from funcpipe_rag.boundaries.adapters.serde import (
 )
 from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
 from funcpipe_rag.fp.core import (
+    JSON,
     UTC,
     ChunkState,
     Done,
@@ -57,6 +59,11 @@ from funcpipe_rag.rag.stages import clean_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok
 from pydantic import ValidationError
 from typing_extensions import assert_never
+
+
+class AcceptedChunkPayload(TypedDict):
+    text: str
+    metadata: dict[str, JSON]
 
 
 def describe_chunk_outcome(state: ChunkState) -> str:
@@ -227,3 +234,16 @@ def test_hybrid_embedding_preserves_pure_rag_observables() -> None:
     assert pure[0].value.embedding is not None
     assert hybrid[0].value.embedding is not None
     assert hybrid[0].value.embedding.vector == pytest.approx(pure[0].value.embedding.vector)
+
+
+def test_boundary_refactor_preserves_accepted_chunk_values() -> None:
+    payload: AcceptedChunkPayload = {
+        "text": "accepted input",
+        "metadata": {"source": "lesson", "reviewed": True},
+    }
+    legacy = make_chunk(text=payload["text"], path=(), metadata=payload["metadata"])
+    refactored = to_core_chunk(ChunkModel.model_validate(payload))
+
+    assert refactored == legacy
+    with pytest.raises(ValidationError, match="at least 1 character"):
+        ChunkModel.model_validate({"text": "", "metadata": payload["metadata"]})
