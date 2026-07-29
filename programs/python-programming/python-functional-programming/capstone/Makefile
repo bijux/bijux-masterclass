@@ -28,6 +28,7 @@ RUFF       := $(VENV)/bin/ruff
 MYPY       := $(VENV)/bin/mypy
 PYTEST     := $(VENV)/bin/pytest
 HATCH      := $(VENV)/bin/hatch
+PYTEST_ARGS ?=
 FOUNDATION_STATE := module-reference-states/module-01
 FOUNDATION_PROOF := $(FOUNDATION_STATE)/tests/learning/test_module_01_purity_foundations.py
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
@@ -60,7 +61,7 @@ install: venv ## Install development dependencies
 	}
 
 test: install ## Run the test suite
-	$(PYTEST) -q
+	$(PYTEST) -q $(PYTEST_ARGS)
 
 foundation-proof: install ## Run the first tracked cumulative RAG laws
 	PYTHONPATH="$(abspath $(FOUNDATION_STATE)/src)" $(PYTEST) -q "$(FOUNDATION_PROOF)"
