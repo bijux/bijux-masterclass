@@ -99,3 +99,22 @@ Common wrong turns:
 This proof covers bounded attempts and the exponential schedule. Timeout
 translation, cancellation, and randomized jitter are distinct policy behaviors
 and deserve separate evidence.
+
+## Deterministic testing: replay a timeout boundary
+
+`FakeTimeout` compares the injected clock with its deadline on context exit and
+uses `>=`. Advancing from zero to exactly `0.1` seconds therefore triggers a
+100 ms timeout. Rebuilding the clock, timeout context, environment, and plan
+gives the second execution the same initial state and the same result.
+
+Common wrong turns:
+
+- reusing the advanced clock changes the second execution's starting state;
+- injecting a fake clock but allowing the real timeout context mixes two time
+  models;
+- adding a real sleep defeats both speed and determinism;
+- claiming this test proves cancellation overstates a logical timeout fake.
+
+The appropriate evidence is structural: equal typed results, equal logical-time
+observations, and no real delay. Production cancellation still belongs in a
+narrow integration test using the actual timeout context.

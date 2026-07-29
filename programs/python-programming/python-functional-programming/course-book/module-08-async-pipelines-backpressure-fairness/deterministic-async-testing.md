@@ -57,6 +57,48 @@ All timing-dependent behavior added in M08C04 (retry, timeout, jitter) is delibe
 - Rate limiting & fairness (M08C06)  
 - Full production async RAG pipeline with all safeguards
 
+## Runnable lab: replay a logical timeout
+
+A fake clock lets the step cross a deadline instantly. A fake timeout context
+then makes the same decision that the production timeout boundary would make,
+without scheduling a real timer:
+
+```python
+clock = FakeClock()
+
+async def step() -> Result[int, ErrInfo]:
+    clock.advance_s(0.051)
+    return Ok(42)
+
+plan = async_with_resilience(
+    step,
+    RetryPolicy(max_attempts=1),
+    TimeoutPolicy(timeout_ms=50),
+    env=make_test_resilience_env(clock=clock),
+    timeout_ctx=make_fake_timeout_ctx(clock),
+)
+result = await plan()
+```
+
+Run the complete replay proof:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k fake_clock_replays_the_same_timeout_decision
+```
+
+The test constructs a fresh clock and plan twice. Each run produces a
+`TIMEOUT` error and the same `0.051` logical-time observation. The repeated
+tuple is the deterministic evidence: identical inputs and injected capabilities
+lead to identical decisions.
+
+`FakeTimeout` checks its deadline when the context exits. It proves policy
+translation, not cooperative task cancellation. Keep a separate integration
+test for production cancellation behavior. Advancing one shared clock across
+both replays would also be a wrong turn because the second run would not start
+from the same state.
+
 ## 1. Laws & Architectural Invariants
 
 | Category                  | Name                     | Description                                                                                                                | Enforcement                          |

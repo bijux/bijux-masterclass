@@ -9,12 +9,15 @@ from funcpipe_rag.domain.effects.async_ import (
     AsyncGen,
     AsyncPlan,
     BackpressurePolicy,
+    FakeClock,
     RetryPolicy,
+    TimeoutPolicy,
     async_gen_bounded_map,
     async_gen_from_list,
     async_gen_map,
     async_lift,
     async_with_resilience,
+    make_fake_timeout_ctx,
     make_test_resilience_env,
 )
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
@@ -133,3 +136,32 @@ def test_retry_policy_records_bounded_attempts_and_backoff() -> None:
     assert asyncio.run(resilient()) == Ok(42)
     assert attempts == 3
     assert delays == [0.01, 0.02]
+
+
+def test_fake_clock_replays_the_same_timeout_decision() -> None:
+    """Logical time makes a timeout branch fast, repeatable, and inspectable."""
+
+    def run_once() -> tuple[Result[int, ErrInfo], float]:
+        clock = FakeClock()
+
+        async def step() -> Result[int, ErrInfo]:
+            clock.advance_s(0.051)
+            return Ok(42)
+
+        plan = async_with_resilience(
+            step,
+            RetryPolicy(max_attempts=1),
+            TimeoutPolicy(timeout_ms=50),
+            env=make_test_resilience_env(clock=clock),
+            timeout_ctx=make_fake_timeout_ctx(clock),
+        )
+        return asyncio.run(plan()), clock.now_s()
+
+    first = run_once()
+    second = run_once()
+
+    assert first == second
+    result, elapsed = first
+    assert isinstance(result, Err)
+    assert result.error.code == "TIMEOUT"
+    assert elapsed == 0.051

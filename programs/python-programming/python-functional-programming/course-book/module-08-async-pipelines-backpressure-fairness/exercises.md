@@ -130,3 +130,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 
 Earlier contract preserved: only a Module 07 effect known to be idempotent may
 be repeated; the retry combinator does not grant idempotency.
+
+## Deterministic testing: replay a timeout boundary
+
+**Starting context:** read `FakeClock`, `FakeTimeout`, and
+`make_fake_timeout_ctx`, then run
+`test_fake_clock_replays_the_same_timeout_decision`.
+
+**Objective:** set a 100 ms deadline, advance logical time by exactly 100 ms,
+and prove two fresh executions make the same timeout decision.
+
+**Constraints:**
+
+- create a fresh clock and plan for each replay;
+- inject both the clock and timeout context;
+- assert the typed error and logical-time observation;
+- do not use real sleep or a timing tolerance.
+
+**Expected evidence:** both executions return the same `TIMEOUT` result at
+exactly `0.1` logical seconds.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k fake_clock_replays_the_same_timeout_decision
+```
+
+Earlier contract preserved: the fake interpreter exercises the same typed
+Module 07 effect description; it replaces timing capabilities, not domain logic.
