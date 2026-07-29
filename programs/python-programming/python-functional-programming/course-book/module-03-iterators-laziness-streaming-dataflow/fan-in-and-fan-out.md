@@ -540,3 +540,80 @@ Single stream; else fan.
 **Further Reading:** For the deepest itertools mastery, see the official docs and Dan Bader’s ‘Python Tricks’ chapter on iterators.
 
 > **You now own the most powerful lazy streaming toolkit in Python. Module 4 will show you how to make even failure and resource cleanup lazy and pure.**
+
+## Fan operations choose an ordering and pressure policy
+
+“Combine these sources” is underspecified. Module 03 exposes three fan-in choices:
+
+| Factory | Output order | Source requirement | Pressure characteristic |
+| --- | --- | --- | --- |
+| `make_chain` | exhaust source A, then B | none | later sources wait |
+| `make_roundrobin` | one item from each active source | none | advances active sources in turns |
+| `make_merge` | global key order | every source already sorted | holds one frontier item per source |
+
+`make_merge` does not sort its inputs. If a source violates its local ordering
+contract, the result can be globally wrong without an exception. Test the precondition
+at the adapter or build the source so disorder is impossible.
+
+For RAG ingestion, `make_chain` preserves a declared source priority. Round-robin can
+prevent one large corpus from delaying every item from a small corpus, but it changes
+encounter order and therefore can change which duplicate survives first-encounter
+deduplication. Fan-in policy is application behavior.
+
+## Two fan-out contracts
+
+`fork2_lockstep` requires both transforms to produce one corresponding output at each
+index. It fails if one filters or expands:
+
+```python
+paired = fork2_lockstep(normalize_chunks, embed_chunks)
+```
+
+This is suitable only if both branches are cardinality preserving. `multicast`
+instead gives independent consumers the same upstream values and buffers their skew.
+
+```python
+fast, slow = multicast(chunks, 2, maxlen=1)
+```
+
+With `maxlen=1`, the fast consumer may be one buffered item ahead. Its next request
+raises `BufferError` before another upstream item is requested. The preflight order
+matters:
+
+```text
+check every queue has capacity
+then request exactly one upstream item
+then append that item to every queue
+```
+
+Pulling upstream before the capacity check can lose demand information and partially
+distribute a value. The cumulative Module 03 proof guards this exact regression.
+
+### Overflow is terminal for the requesting generator
+
+An exception escaping a Python generator closes that generator. Catching
+`BufferError` outside `next(fast)` does not make `fast` resumable. Treat multicast
+overflow as a failed fan-out operation that requires rebuilding or aborting the
+whole route. Module 03's synchronous helper provides a visible bound, not a durable
+broker or recoverable queue.
+
+If consumers can be independently slow in production, choose a stronger design:
+
+- consume in lockstep;
+- materialize an explicitly bounded input;
+- write independent durable outputs at a boundary;
+- use the asynchronous backpressure policies taught later.
+
+### Run the pressure proof
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-03/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+  -k 'multicast'
+```
+
+The test proves the rejected request does not pull upstream. It does not prove
+recovery after overflow, thread safety, or asynchronous fairness. Review every
+fan-out by naming maximum skew, overflow outcome, and whether branch cardinalities
+must match.
