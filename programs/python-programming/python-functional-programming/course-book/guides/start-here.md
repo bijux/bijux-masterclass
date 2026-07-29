@@ -173,8 +173,9 @@ Slice 1: laziness mechanics
 - Read `generators-vs-comprehensions.md`
 - Read `itertools-composition.md`
 - Inspect `capstone/module-reference-states/module-03/src/funcpipe_rag/streaming/`
+- Inspect `capstone/module-reference-states/module-03/src/funcpipe_rag/api/core.py`
 - Read `capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py`
-- Use the focused proof command in the Module 03 capstone delta.
+- Run `make PROGRAM=python-programming/python-functional-programming capstone-streaming-rag-proof`
 
 Checkpoint:
 Can you explain when the pipeline computes and what actually triggers materialization?

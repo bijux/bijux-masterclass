@@ -85,11 +85,15 @@ prediction.
 
 ## Capstone checkpoints
 
-- Identify where FuncPipe stays lazy and where it deliberately materializes.
-- Inspect how streaming helpers preserve metadata instead of hiding it.
-- Review whether observability helpers measure the pipeline without mutating its core behavior.
-- Run the cumulative learning proof and explain why its multicast assertion checks
-  upstream requests as well as raised errors.
+- Trace `stream_rag_chunks` through cleaning, chunking, embedding, encounter-order
+  deduplication, and the final unique-output fence.
+- Compare `gen_bounded_chunks` with `stream_rag_chunks`; state what each limit
+  actually bounds.
+- Compare the complete stream with `full_rag_api_docs` under canonical and
+  out-of-order input.
+- Run `make PROGRAM=python-programming/python-functional-programming
+  capstone-streaming-rag-proof` and explain both the duplicate-demand and multicast
+  assertions.
 
 ## Before moving on
 
@@ -103,6 +107,8 @@ Use [Refactoring Guide](refactoring-guide.md) and compare against
 - You can explain when work happens in a pipeline instead of only what data moves through it.
 - You can review a streaming helper and spot hidden materialization, cleanup leaks, or ordering surprises.
 - You can justify the boundary between reusable lazy stages and explicit materialization.
+- You can explain why a final unique-output limit does not necessarily bound raw
+  upstream work one-for-one.
 
 ## Directory glossary
 
