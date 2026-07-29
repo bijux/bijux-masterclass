@@ -9,12 +9,11 @@ from __future__ import annotations
 import argparse
 from dataclasses import replace
 
-from funcpipe_rag.api.clean_cfg import CleanConfig
-from funcpipe_rag.api.config import RagConfig, get_deps
+from funcpipe_rag.api.config import boundary_rag_config, get_deps
 from funcpipe_rag.api.core import full_rag_api_docs
 from funcpipe_rag.api.types import DebugConfig
 from funcpipe_rag.app_config import AppConfig
-from funcpipe_rag.rag_types import Chunk, RawDoc, RagEnv
+from funcpipe_rag.rag_types import Chunk, RawDoc
 from funcpipe_rag.result import Err, Ok, Result, result_and_then, result_map
 from funcpipe_rag.shells.rag_api_shell import FSReader, write_chunks_jsonl
 
@@ -47,12 +46,16 @@ def boundary_app_config(args: list[str]) -> Result[AppConfig]:
         probe_chunks=bool(ns.probe_chunks),
     )
 
-    try:
-        cfg = RagConfig(env=RagEnv(ns.chunk_size), clean=CleanConfig(rule_names=rule_names))
-    except Exception as exc:
-        return Err(f"Invalid config: {exc}")
+    config_result = boundary_rag_config(
+        {
+            "chunk_size": ns.chunk_size,
+            "clean_rules": rule_names,
+        }
+    )
+    if isinstance(config_result, Err):
+        return Err(config_result.error)
 
-    cfg = replace(cfg, debug=debug)
+    cfg = replace(config_result.value, debug=debug)
     return Ok(AppConfig(input_path=ns.input, output_path=ns.output, rag=cfg))
 
 
