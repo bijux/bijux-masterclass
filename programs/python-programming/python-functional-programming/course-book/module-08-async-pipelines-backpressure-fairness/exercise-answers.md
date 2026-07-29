@@ -137,3 +137,25 @@ The small trace explains the selection rule. Property tests provide broader
 evidence across weights and prefix lengths. Rate limiting can then wrap the fair
 merge to cap total throughput without changing which ready stream owns each
 position.
+
+## Async adapters: preserve the synchronous core
+
+`lift_sync` returns a function that captures arguments in an `AsyncPlan`.
+Neither lifting nor applying that function executes the synchronous core. Each
+plan call performs the work and catches exceptions at the adapter boundary.
+
+For a positive and a negative input, build both plans first and assert zero
+calls. Driving the positive plan produces its original `Ok`; driving the
+negative plan increments the trace again and returns `Err(ErrInfo(...))` with
+code `UNEXPECTED` and the exception message.
+
+Common wrong turns:
+
+- invoking the core to create a `Result` before lifting loses deferral;
+- making the core `async def` introduces the async creep this adapter prevents;
+- wrapping the test in `try/except` accepts an escaping exception;
+- sending trivial work to an executor adds scheduling overhead without benefit.
+
+The public `lift_sync` import is preserved in later snapshots even though Module
+09 consolidates its implementation into `plan.py`. Learner code depends on the
+stable capability, not its internal file location.

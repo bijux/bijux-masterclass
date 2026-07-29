@@ -190,3 +190,34 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 
 Earlier contract preserved: Module 07 still owns each tenant capability and its
 resources; fairness only selects among already described streams.
+
+## Async adapters: preserve the synchronous core
+
+**Starting context:** read `lift_sync` in
+`domain/effects/async_/lifts.py` and run
+`test_sync_lift_defers_work_and_translates_exceptions`.
+
+**Objective:** add a successful input alongside the failing input and prove both
+plans remain deferred, with one `Ok` and one normalized `Err`.
+
+**Constraints:**
+
+- leave the core function synchronous;
+- construct both plans before driving either;
+- assert the call trace after each execution;
+- do not catch the core exception in the test.
+
+**Expected evidence:** construction makes zero calls; the first execution returns
+the core's `Ok`, and the second returns an `UNEXPECTED` error.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k sync_lift_defers_work_and_translates_exceptions
+```
+
+Earlier contract preserved: Module 07 keeps exceptions out of the typed effect
+channel; the adapter translates at the boundary instead of changing pure core
+signatures.

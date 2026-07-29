@@ -19,6 +19,7 @@ from funcpipe_rag.domain.effects.async_ import (
     async_gen_map,
     async_lift,
     async_with_resilience,
+    lift_sync,
     make_fake_timeout_ctx,
     make_test_resilience_env,
 )
@@ -198,3 +199,28 @@ def test_weighted_fair_merge_makes_each_share_observable() -> None:
     assert tags == ["A", "B", "A", "A", "B", "A"]
     assert tags.count("A") == 4
     assert tags.count("B") == 2
+
+
+def test_sync_lift_defers_work_and_translates_exceptions() -> None:
+    """The adapter protects a synchronous core from async and exception creep."""
+
+    calls = 0
+
+    def parse_positive(value: int) -> Result[int, ErrInfo]:
+        nonlocal calls
+        calls += 1
+        if value < 0:
+            raise ValueError("negative input")
+        return Ok(value)
+
+    lifted_parse = lift_sync(parse_positive)
+    plan = lifted_parse(-1)
+
+    assert calls == 0
+
+    result = asyncio.run(plan())
+
+    assert calls == 1
+    assert isinstance(result, Err)
+    assert result.error.code == "UNEXPECTED"
+    assert result.error.msg == "negative input"
