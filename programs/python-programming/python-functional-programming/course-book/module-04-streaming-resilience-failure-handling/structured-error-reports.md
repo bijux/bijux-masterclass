@@ -326,32 +326,119 @@ def test_report_bounded_memory(items):
 
 ---
 
+## Read the report as a consumed-stream summary
+
+The report describes values that reached it. It does not know about source
+items a breaker never requested, transient failures that later succeeded, or
+exceptions translated somewhere else.
+
+The cumulative learning route uses four chunks:
+
+```text
+flaky, bad-a, bad-b, unreached
+```
+
+A fair retry queue and `max_errs=1` breaker produce:
+
+| Final stream value | Report interpretation |
+| --- | --- |
+| `Err(EMBED/INVALID for bad-a)` | Record failure |
+| `Ok(FLAKY)` | Transient failure recovered; final value is success |
+| `Err(EMBED/INVALID for bad-b)` | Threshold-crossing record failure |
+| `Err(BREAK/ERR_COUNT)` | Terminal policy event |
+
+`unreached` was queued by the bounded retry engine but never attempted after
+the breaker closed the stream.
+
+Run the whole route:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k retry_breaker_and_report
+```
+
+Predict the report before reading the assertions:
+
+```text
+total_items = 4
+total_errs = 3
+EMBED/INVALID count = 2
+BREAK/ERR_COUNT count = 1
+error_rate = 3 / 4
+```
+
+The report counts a terminal breaker value as an error because it is an
+`Err` in the consumed protocol. A product metric may choose to separate
+“record failures” from “policy events,” but it must do so by stable code or
+stage rather than subtracting one unexplained value.
+
+### Why the nested serialization proof matters
+
+Retry annotates `ErrInfo.ctx` with an immutable mapping. `BreakInfo` retains the
+last error. The earlier serializer passed the whole breaker to
+`dataclasses.asdict()`, which attempted to deepcopy that immutable mapping and
+raised `TypeError`.
+
+Module 04 now serializes a breaker field by field and recursively normalizes
+its `last_error`. The focused unit test
+`test_break_report_serializes_nested_immutable_context` prevents later states
+from losing that provenance. This is a useful review lesson: a dataclass being
+serializable at one level does not imply that every nested value supports deep
+copy.
+
+### Bound the right dimensions
+
+`max_samples=1` keeps one example per group while counts continue to grow.
+That bounds samples per group, not the number of groups. If an error code or
+path prefix is derived from high-cardinality input, the group dictionaries can
+still grow with the run. Stable, low-cardinality codes and deliberate
+`path_depth` are therefore part of the memory contract.
+
+The JSON conversion proves the saved payload uses JSON-compatible local values.
+It does not prove schema compatibility across course versions, safe transport,
+or that a monitoring backend accepts the payload.
+
 ## 8. Pre-Core Quiz
 
-1. `fold_error_report` for…? → **Rich grouped diagnostics**  
-2. `max_samples` for…? → **Bound memory per group**  
-3. Report includes…? → **Counts, samples, ctx_summary**  
-4. Law for reports? → **Completeness (every Err counted)**  
-5. Use after…? → **Breakers/retries for final outcomes**
+1. Which failures does the report count? → **Only `Err` values in the stream it
+   consumes.**
+2. Why is a breaker event counted separately? → **It is a terminal policy
+   value with a stable `BREAK/...` code.**
+3. What does `max_samples` bound? → **Retained examples per group, not group
+   cardinality.**
+4. Why avoid input-derived error codes? → **They create unstable semantics and
+   potentially unbounded group counts.**
+5. What did field-by-field breaker serialization preserve? → **The nested last
+   error and its immutable retry context without deep-copying it.**
 
 ## 9. Post-Core Exercise
 
-1. Apply `fold_error_report` to a real embedding run → inspect JSON.  
-2. Add custom grouping (e.g. by `ctx["attempt"]`) → test.  
-3. Replace all ad-hoc error logging with structured reports.  
-4. Send report to monitoring on non-zero errors.
+Extend the cumulative route with a second permanent error code.
+
+- Predict `total_items`, `total_errs`, and each code count.
+- Keep `max_samples=1` and prove counts exceed retained samples.
+- Serialize the report and inspect the nested breaker `last_error`.
+- Add a path deeper than `path_depth` and explain which provenance remains in
+  the group key versus the sample.
+- State which failures the report cannot see because they recovered or were
+  never attempted.
+
+Move forward when you can explain both the evidence present in the report and
+the evidence outside its observation boundary.
 
 **You have completed Module 04.**
 
-You can now process real-world data at scale with:
+You can now review a deterministic local RAG stream in terms of stack use,
+bounded demand, expected failure values, aggregation policy, early termination,
+resource ownership, retry scheduling, and retained evidence. Those contracts
+are foundations for production decisions; they are not proof of production
+scale, external-service behavior, or zero failure.
 
-- Zero recursion blowups
-- Zero cache misses on duplicates
-- Zero lost records on failures
-- Zero resource leaks
-- Zero wasted work on doomed runs
-- Clear, structured error reports
-
-This is production-grade functional data processing in Python — the kind that ships to millions of documents and survives anything the real world throws at it.
-
-On to Module 05: Advanced Type-Driven Design.
+Use the module exercises and refactoring guide to review the entire route before
+continuing to Module 05's algebraic data modelling.
