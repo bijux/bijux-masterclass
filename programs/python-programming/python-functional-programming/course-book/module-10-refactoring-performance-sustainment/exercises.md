@@ -121,3 +121,31 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 
 Earlier contract preserved: Module 05's optimized representation is replaceable
 only while the public `Chunk` and typed-failure semantics remain equivalent.
+
+## Async property testing: vary pressure without adding real I/O
+
+**Starting context:** read `async_gather` and
+`test_bounded_async_gather_preserves_input_order`.
+
+**Objective:** extend the generated concurrency range and explain why the expected
+list must not change.
+
+**Constraints:**
+
+- construct fresh `AsyncPlan` values with `async_pure`;
+- keep generated lists bounded;
+- include empty and single-item cases;
+- do not use sleeps as an assertion of scheduler behavior.
+
+**Expected evidence:** every successful result equals the input list for all
+generated concurrency limits.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k bounded_async_gather_preserves_input_order
+```
+
+Earlier contract preserved: Module 08's bounded scheduler may change completion
+timing, but ordered gather retains input order and the `Result` failure boundary.

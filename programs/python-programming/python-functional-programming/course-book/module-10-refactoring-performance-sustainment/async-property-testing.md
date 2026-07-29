@@ -203,11 +203,47 @@ def anyio_backend():
 Fake exec: Inject sync executor or fake concurrent.futures.
 
 ### RAG Integration
-Add async PBT to capstone/tests/test_rag_async.py; CI runs.
+The live capstone keeps async effects in `domain/effects/async_/`. Its learning
+proof uses `asyncio.run` because `AsyncPlan` is an asyncio description; no AnyIO
+test plugin is required for this route.
 
 ---
-## 5. Property-Based Proofs (capstone/tests/test_module_10_core5.py)
-Diversity with events.
+## FuncPipe Lab: Vary Scheduling Pressure, Preserve Order
+
+`async_gather` accepts a concurrency limit but promises that successful output
+keeps input order. The property varies both values and the limit:
+
+```python
+gathered = asyncio.run(
+    async_gather(
+        [async_pure(value) for value in values],
+        concurrency=concurrency,
+    )()
+)
+
+assert isinstance(gathered, Ok)
+assert gathered.value == values
+```
+
+`async_pure` supplies fresh coroutine objects, so generated cases do not touch a
+network, clock, or executor. A concurrency value of one exercises sequential
+pressure; larger values exercise the bounded scheduler; an empty list proves the
+identity case.
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k bounded_async_gather_preserves_input_order
+```
+
+The property proves ordered successful gather for bounded generated inputs. It
+does not prove fairness, cancellation cleanup, or first-error selection; those
+need separate properties because they are separate contracts.
+
+---
+## 5. Property-Based Proofs
+Diversity with events. The executable ordered-gather proof lives in
+`capstone/tests/learning/test_module_10_sustainment.py`.
 
 ```python
 from hypothesis import event, target

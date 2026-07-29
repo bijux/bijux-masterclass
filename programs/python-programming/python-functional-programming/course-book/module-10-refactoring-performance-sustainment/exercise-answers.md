@@ -92,3 +92,23 @@ cover numeric behavior outside the declared tolerances.
 In FuncPipe, the equivalence predicate is the gate before performance evidence.
 Optimization may change representation and execution, not the meaning of a RAG
 chunk.
+
+## Async property testing: vary pressure without adding real I/O
+
+Increasing the generated concurrency range changes how many plans may be in
+flight. It must not change output because `async_gather` records each result by
+input index before assembling the final list.
+
+Common wrong turns:
+
+- reusing one coroutine object violates `AsyncPlan` replayability;
+- adding arbitrary sleeps makes the test slower without proving the bound;
+- asserting only `set(output) == set(input)` loses ordering and duplicates;
+- using real services turns a scheduling law into an availability test.
+
+The property proves ordered success for generated immutable values and concurrency
+limits. It does not prove cancellation safety, fairness between streams, or which
+error wins when several plans fail.
+
+In FuncPipe, async coordination is an effect-shell concern with a precise value
+contract. Property generation varies pressure while the RAG semantics stay fixed.

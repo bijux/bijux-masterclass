@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import asyncio
 from pathlib import Path
 
 from funcpipe_rag.boundaries.shells.review_cli import build_summary
+from funcpipe_rag.domain.effects.async_ import async_gather, async_pure
 from funcpipe_rag.rag.domain import (
     Chunk,
     ChunkMetadata,
@@ -12,6 +14,7 @@ from funcpipe_rag.rag.domain import (
     embedding_batches_equivalent,
     process_batch_hybrid,
 )
+from funcpipe_rag.result.types import Ok
 from funcpipe_rag.review.observability import (
     StageObservation,
     summarize_observations,
@@ -100,3 +103,24 @@ def test_optimized_embedding_preserves_the_domain_contract(
     optimized = process_batch_hybrid(batch, mode="hybrid")
 
     assert embedding_batches_equivalent(pure, optimized)
+
+
+@given(
+    values=st.lists(st.integers(), max_size=12),
+    concurrency=st.integers(min_value=1, max_value=4),
+)
+def test_bounded_async_gather_preserves_input_order(
+    values: list[int],
+    concurrency: int,
+) -> None:
+    """Concurrency changes scheduling, not the ordered gather contract."""
+
+    gathered = asyncio.run(
+        async_gather(
+            [async_pure(value) for value in values],
+            concurrency=concurrency,
+        )()
+    )
+
+    assert isinstance(gathered, Ok)
+    assert gathered.value == values
