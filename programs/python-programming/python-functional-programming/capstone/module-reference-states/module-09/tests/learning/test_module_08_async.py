@@ -10,11 +10,14 @@ from funcpipe_rag.domain.effects.async_ import (
     AsyncGen,
     AsyncPlan,
     BackpressurePolicy,
+    ChunkPolicy,
     FairnessPolicy,
     FakeClock,
+    FakeSleeper,
     RetryPolicy,
     TimeoutPolicy,
     async_gen_bounded_map,
+    async_gen_chunk,
     async_gen_from_list,
     async_gen_fair_merge,
     async_gen_map,
@@ -261,3 +264,26 @@ def test_service_stream_releases_resource_after_partial_consumption() -> None:
 
     assert asyncio.run(consume_one()) == Ok("embedding-service:0")
     assert events == ["enter", "pull:0", "exit"]
+
+
+def test_chunk_policy_flushes_values_before_an_error() -> None:
+    """A typed stream error is a boundary, not a reason to lose buffered values."""
+
+    failure = ErrInfo(code="SOURCE", msg="malformed record")
+
+    async def source_items() -> AsyncIterator[Result[int, ErrInfo]]:
+        yield Ok(1)
+        yield Ok(2)
+        yield Err(failure)
+        yield Ok(3)
+
+    source: AsyncGen[int] = source_items
+    chunked = async_gen_chunk(
+        source,
+        ChunkPolicy[int](max_units=10, max_delay_ms=0, flush_on_err=True),
+    )(FakeSleeper())
+
+    async def consume() -> list[Result[list[int], ErrInfo]]:
+        return [item async for item in chunked()]
+
+    assert asyncio.run(consume()) == [Ok([1, 2]), Err(failure), Ok([3])]

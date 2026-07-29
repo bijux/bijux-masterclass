@@ -87,6 +87,45 @@ Use this when “just use async” stops being free because you have 100k items 
 3. All chunking behaviour controlled by pure data (`ChunkPolicy`).
 4. Full deterministic testing via injected fake sleeper — no real time in CI.
 
+## Runnable lab: flush buffered values at an error boundary
+
+Chunking must preserve typed errors without discarding successful values already
+buffered before them. Build a source containing two successes, an error, and one
+later success:
+
+```python
+failure = ErrInfo(code="SOURCE", msg="malformed record")
+
+async def source_items():
+    yield Ok(1)
+    yield Ok(2)
+    yield Err(failure)
+    yield Ok(3)
+
+chunked = async_gen_chunk(
+    source_items,
+    ChunkPolicy[int](max_units=10, max_delay_ms=0, flush_on_err=True),
+)(FakeSleeper())
+```
+
+Run the executable proof:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k chunk_policy_flushes_values_before_an_error
+```
+
+The exact result sequence is `Ok([1, 2])`, `Err(failure)`, `Ok([3])`.
+`flush_on_err=True` makes the error a batch boundary: buffered successes emerge
+first, the error retains its position, and later stream values start a new
+batch. The fake sleeper makes explicit that time is irrelevant to this case.
+
+Do not put the `Err` inside a success batch and do not drop the partial buffer.
+Both choices change the stream's typed semantics. With `flush_on_err=False`,
+the buffer may span the error; that is a different explicit policy and should
+be tested separately.
+
 ## Tiny Non-Domain Example – Chunked Counter
 
 ```python

@@ -251,3 +251,35 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 
 Earlier contract preserved: Module 07 established explicit resource ownership;
 the async adapter retains that ownership across suspension and partial demand.
+
+## Async chunking: preserve values around errors
+
+**Starting context:** read `ChunkPolicy` and `async_gen_chunk` in
+`domain/effects/async_/stream.py`, then run
+`test_chunk_policy_flushes_values_before_an_error`.
+
+**Objective:** add two successful values after the error and set
+`max_units=1`; derive the exact sequence of singleton batches and the preserved
+error.
+
+**Constraints:**
+
+- retain `flush_on_err=True`;
+- use `FakeSleeper`;
+- compare the complete `Result` sequence;
+- preserve source order.
+
+**Expected evidence:** every successful value appears exactly once in order,
+the error appears in its original relative position, and no batch exceeds one
+item.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k chunk_policy_flushes_values_before_an_error
+```
+
+Earlier contract preserved: Module 07 typed failures remain values in the
+effect channel; batching neither raises them nor erases their provenance.

@@ -182,3 +182,24 @@ Common wrong turns:
 The fake records the resource protocol directly. Provider-specific status
 mapping and transport behavior remain the responsibility of focused adapter
 integration tests.
+
+## Async chunking: preserve values around errors
+
+With `max_units=1`, each successful integer forms a singleton batch. If the
+source is successes 1 and 2, the error, then successes 3 and 4, the output is
+`Ok([1])`, `Ok([2])`, `Err(failure)`, `Ok([3])`, `Ok([4])`.
+
+The error is yielded through the existing `Result` channel. Because
+`flush_on_err=True`, any non-empty buffer must be emitted before the error.
+Afterward, normal chunk accumulation resumes; the stream does not short-circuit.
+
+Common wrong turns:
+
+- wrapping the error in `Ok([error])` changes the element type and semantics;
+- stopping after the error loses valid later values;
+- ignoring the partial buffer loses valid earlier values;
+- using real time adds no evidence when `max_delay_ms=0`.
+
+The full sequence demonstrates order and completeness for this failure route.
+Separate property tests generalize those laws over input lists, batch sizes, and
+logical-time schedules.
