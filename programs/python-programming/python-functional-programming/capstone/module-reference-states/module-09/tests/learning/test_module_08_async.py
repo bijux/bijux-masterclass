@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 
 from funcpipe_rag.domain.effects.async_ import (
     AsyncGen,
@@ -17,6 +18,7 @@ from funcpipe_rag.domain.effects.async_ import (
     async_gen_from_list,
     async_gen_fair_merge,
     async_gen_map,
+    async_gen_using,
     async_lift,
     async_with_resilience,
     lift_sync,
@@ -224,3 +226,38 @@ def test_sync_lift_defers_work_and_translates_exceptions() -> None:
     assert isinstance(result, Err)
     assert result.error.code == "UNEXPECTED"
     assert result.error.msg == "negative input"
+
+
+def test_service_stream_releases_resource_after_partial_consumption() -> None:
+    """Closing a consumer prefix exits the service resource exactly once."""
+
+    events: list[str] = []
+
+    @asynccontextmanager
+    async def service_session() -> AsyncIterator[str]:
+        events.append("enter")
+        try:
+            yield "embedding-service"
+        finally:
+            events.append("exit")
+
+    def responses(service: str) -> AsyncGen[str]:
+        async def generate() -> AsyncIterator[Result[str, ErrInfo]]:
+            for index in range(3):
+                events.append(f"pull:{index}")
+                yield Ok(f"{service}:{index}")
+
+        return generate
+
+    stream = async_gen_using(service_session, responses)
+
+    assert events == []
+
+    async def consume_one() -> Result[str, ErrInfo]:
+        iterator = stream()
+        first = await anext(iterator)
+        await iterator.aclose()
+        return first
+
+    assert asyncio.run(consume_one()) == Ok("embedding-service:0")
+    assert events == ["enter", "pull:0", "exit"]

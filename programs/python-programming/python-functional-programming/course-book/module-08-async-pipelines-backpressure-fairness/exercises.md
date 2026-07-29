@@ -221,3 +221,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 Earlier contract preserved: Module 07 keeps exceptions out of the typed effect
 channel; the adapter translates at the boundary instead of changing pure core
 signatures.
+
+## Service integrations: release a partial stream
+
+**Starting context:** read `async_gen_using` in
+`domain/effects/async_/stream.py` and run
+`test_service_stream_releases_resource_after_partial_consumption`.
+
+**Objective:** consume two of four fake service responses, close the iterator,
+and prove no third response is pulled before the session exits.
+
+**Constraints:**
+
+- acquire the resource through an async context manager;
+- record acquisition, each pull, and release;
+- assert construction has an empty trace;
+- do not rely on garbage collection for cleanup.
+
+**Expected evidence:** the final trace contains one enter, exactly two pulls,
+and one exit in that order.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k service_stream_releases_resource_after_partial_consumption
+```
+
+Earlier contract preserved: Module 07 established explicit resource ownership;
+the async adapter retains that ownership across suspension and partial demand.

@@ -159,3 +159,26 @@ Common wrong turns:
 The public `lift_sync` import is preserved in later snapshots even though Module
 09 consolidates its implementation into `plan.py`. Learner code depends on the
 stable capability, not its internal file location.
+
+## Service integrations: release a partial stream
+
+The async context manager appends `enter` only when iteration begins. Each
+`anext` advances the response generator once. Calling `aclose` on the outer
+iterator unwinds `async_gen_using`, which exits the context manager and appends
+`exit`.
+
+For two requested values, the expected trace is therefore `enter`, `pull:0`,
+`pull:1`, `exit`. No later pull is permitted because downstream demand ended.
+
+Common wrong turns:
+
+- opening the session when constructing the description performs an eager
+  external effect;
+- consuming to a list defeats the partial-demand proof;
+- omitting `aclose` delegates correctness to garbage collection;
+- creating a fresh long-lived HTTP client per item confuses shell and stream
+  ownership.
+
+The fake records the resource protocol directly. Provider-specific status
+mapping and transport behavior remain the responsibility of focused adapter
+integration tests.
