@@ -102,7 +102,10 @@ def test_fused_tree_fold_preserves_separate_observations() -> None:
 def test_semantic_memo_key_avoids_equivalent_embedding_work() -> None:
     calls = 0
 
-    @memoize_keyed(content_hash_key)
+    def normalized_text_key(chunk: ChunkWithoutEmbedding) -> str:
+        return content_hash_key(chunk)
+
+    @memoize_keyed(normalized_text_key)
     def deterministic_embedding(chunk: ChunkWithoutEmbedding) -> tuple[int, ...]:
         nonlocal calls
         calls += 1
