@@ -149,3 +149,32 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 
 Earlier contract preserved: Module 08's bounded scheduler may change completion
 timing, but ordered gather retains input order and the `Result` failure boundary.
+
+## Advanced patterns and scaling: distinguish three readiness states
+
+**Starting context:** read `pipelines/distributed.py`,
+`review/scaling.py`, and
+`test_scaling_review_separates_installation_implementation_and_proof`.
+
+**Objective:** assess a locally installed backend that has a compiler but lacks a
+backpressure proof.
+
+**Constraints:**
+
+- do not import or install the optional backend;
+- keep installation, implementation, and semantic proof distinct;
+- report missing proofs in stable order;
+- require all declared proofs before implementation readiness.
+
+**Expected evidence:** installed and implemented is still not ready when one
+required semantic proof is missing.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k scaling_review_separates_installation_implementation_and_proof
+```
+
+Earlier contract preserved: a future compiler must retain Module 08 ordering,
+failure, and pressure contracts; local execution remains the semantic oracle.

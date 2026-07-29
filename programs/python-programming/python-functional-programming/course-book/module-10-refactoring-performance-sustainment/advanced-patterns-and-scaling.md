@@ -56,6 +56,35 @@ Use this when you are building expressive, scalable FP pipelines.
 4. Prototype in RAG, verify laws.
 
 ---
+## FuncPipe Lab: Treat Scaling as a Readiness Decision
+
+The live capstone intentionally ships no Dask or Beam compiler. Module 09 already
+reports installation separately from implementation. Module 10 adds the next
+review decision: implementation and runtime readiness also require semantic
+proofs for ordering, delivery, backpressure, and failure behavior.
+
+```python
+status = BackendStatus("dask", installed=True, compiler_shipped=False)
+assessment = assess_scaling(status, REQUIRED_SCALING_PROOFS)
+
+assert assessment.implementation_ready is False
+assert assessment.runtime_ready is False
+```
+
+Conversely, reviewed compiler code and complete proofs can be implementation-ready
+on a machine where the optional runtime is not installed. That state is not
+runtime-ready, but it is a different problem from missing semantics.
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k scaling_review_separates_installation_implementation_and_proof
+```
+
+The test proves the readiness classification. It does not claim that a backend
+exists in this repository, and it does not install optional packages.
+
+---
 ## 1. Laws & Invariants
 | Invariant            | Description                                                                                  | Enforcement          |
 |----------------------|----------------------------------------------------------------------------------------------|----------------------|

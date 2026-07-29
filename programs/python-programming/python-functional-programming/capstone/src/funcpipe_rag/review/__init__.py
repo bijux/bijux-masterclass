@@ -7,13 +7,17 @@ from .performance import (
     PerformanceObservation,
     evaluate_budget,
 )
+from .scaling import REQUIRED_SCALING_PROOFS, ScalingAssessment, assess_scaling
 
 __all__ = [
+    "REQUIRED_SCALING_PROOFS",
     "BudgetDecision",
     "ObservationSummary",
     "PerformanceBudget",
     "PerformanceObservation",
+    "ScalingAssessment",
     "StageObservation",
+    "assess_scaling",
     "evaluate_budget",
     "summarize_observations",
 ]

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from funcpipe_rag.boundaries.shells.review_cli import build_summary
 from funcpipe_rag.domain.effects.async_ import async_gather, async_pure
+from funcpipe_rag.pipelines.distributed import BackendStatus
 from funcpipe_rag.rag.domain import (
     Chunk,
     ChunkMetadata,
@@ -24,6 +25,7 @@ from funcpipe_rag.review.performance import (
     PerformanceObservation,
     evaluate_budget,
 )
+from funcpipe_rag.review.scaling import REQUIRED_SCALING_PROOFS, assess_scaling
 from hypothesis import given
 from hypothesis import strategies as st
 
@@ -124,3 +126,26 @@ def test_bounded_async_gather_preserves_input_order(
 
     assert isinstance(gathered, Ok)
     assert gathered.value == values
+
+
+def test_scaling_review_separates_installation_implementation_and_proof() -> None:
+    """An importable library is not evidence that FuncPipe can compile to it."""
+
+    installed_only = BackendStatus(
+        name="dask",
+        installed=True,
+        compiler_shipped=False,
+    )
+    implemented_elsewhere = BackendStatus(
+        name="beam",
+        installed=False,
+        compiler_shipped=True,
+    )
+
+    assert assess_scaling(
+        installed_only,
+        REQUIRED_SCALING_PROOFS,
+    ).implementation_ready is False
+    assessment = assess_scaling(implemented_elsewhere, REQUIRED_SCALING_PROOFS)
+    assert assessment.implementation_ready is True
+    assert assessment.runtime_ready is False

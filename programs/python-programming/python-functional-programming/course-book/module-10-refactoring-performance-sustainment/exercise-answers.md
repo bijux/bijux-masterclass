@@ -112,3 +112,23 @@ error wins when several plans fail.
 
 In FuncPipe, async coordination is an effect-shell concern with a precise value
 contract. Property generation varies pressure while the RAG semantics stay fixed.
+
+## Advanced patterns and scaling: distinguish three readiness states
+
+Use `BackendStatus(installed=True, compiler_shipped=True)` with verified proofs
+that omit `backpressure`. `assess_scaling` reports `("backpressure",)` and both
+readiness flags remain false.
+
+Common wrong turns:
+
+- treating import success as compiler implementation repeats the Module 09 error;
+- treating compiler implementation as semantic proof skips the hardest review;
+- requiring local installation for implementation review confuses code readiness
+  with one workstation;
+- silently ignoring a missing failure or ordering proof changes RAG semantics.
+
+The test proves classification from supplied status and proof names. It does not
+execute a distributed backend or validate an external scheduler.
+
+In FuncPipe, scaling is optional and evidence-gated. The local pipeline remains
+understandable and correct even when no distributed dependency is present.
