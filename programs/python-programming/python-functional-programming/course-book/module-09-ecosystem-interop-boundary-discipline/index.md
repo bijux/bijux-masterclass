@@ -90,6 +90,12 @@ You should be able to explain how to adapt real libraries without letting them r
 course’s core architecture. Use [Refactoring Guide](refactoring-guide.md) and compare
 against `capstone/_history/worktrees/module-09` before moving forward.
 
+Complete the final team-adoption exercise and run all Module 09 learning proofs:
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py
+```
+
 ## Closing criteria
 
 - You can explain where interop is a boundary problem rather than a reason to abandon the course’s design rules.

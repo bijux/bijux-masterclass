@@ -48,3 +48,14 @@ contact with normal Python libraries, service boundaries, and team conventions.
 
 Before Module 10, you should be able to explain how external tools fit the architecture
 without being allowed to define the architecture.
+
+Use the final learning proof as a review trace:
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k module_09_boundaries_converge_on_one_rag_pipeline
+```
+
+Then run the whole learning file. You are ready to continue when you can explain
+what each test proves, what it deliberately does not prove, and why the Module 10
+live capstone must preserve the same results.

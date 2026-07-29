@@ -183,3 +183,33 @@ def test_pipeline_spec_is_hashed_and_allow_listed_before_execution() -> None:
     assert result.error.code == "DISALLOWED"
     assert calls == 0
     assert spec_hash(collected) != spec_hash(fail_fast)
+
+
+def test_module_09_boundaries_converge_on_one_rag_pipeline() -> None:
+    translated = parse_document_payloads(
+        [
+            {
+                "doc_id": "paper-1",
+                "title": "Boundary discipline",
+                "abstract": "Adapters translate while the core decides.",
+                "categories": "cs.SE",
+            }
+        ]
+    )
+    assert isinstance(translated, Ok)
+
+    base = PipelineConfig(
+        steps=(
+            StepConfig("clean"),
+            StepConfig("chunk", {"chunk_size": 512}),
+            StepConfig("embed"),
+        )
+    )
+    config = apply_step_params(base, "chunk", {"chunk_size": 16})
+    pipeline = build_rag_pipeline(config)
+
+    results = list(pipeline(iter(translated.value)))
+
+    assert len(results) == 3
+    assert all(isinstance(result, Ok) for result in results)
+    assert [result.value.start for result in results if isinstance(result, Ok)] == [0, 16, 32]

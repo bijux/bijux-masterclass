@@ -248,3 +248,30 @@ a signature; transport authentication is a separate boundary.
 
 In FuncPipe, the receiving process owns the registry and allow-list. The sender
 may request a function identifier but cannot provide executable code.
+
+## Team adoption: review one boundary chain, not a style slogan
+
+Ownership in the final learning test is explicit:
+
+| Decision | Owner | Evidence |
+| --- | --- | --- |
+| mapping fields become `RawDoc` or `Err` | `parse_document_payloads` | `translated` is `Ok` |
+| a step override targets an existing step | `apply_step_params` | the new config uses chunk size 16 |
+| stage order is valid | `build_rag_pipeline` | building succeeds before input iteration |
+| document traversal stays lazy | the returned pipeline iterator | materialization happens only at `list` |
+| embedding outcomes use `Result` | the configured embed boundary | every output is `Ok` |
+
+Common wrong turns:
+
+- “prefer functional style” gives a reviewer no observable criterion
+- requiring one library or combinator everywhere confuses syntax with contracts
+- citing the full suite for every question makes small regressions expensive to
+  diagnose
+
+The result proves that web translation and CLI configuration converge on the same
+RAG builder in the exercised success route. It does not prove optional frameworks,
+remote embedders, or distributed backends; their dedicated boundary evidence is
+still required.
+
+Adoption succeeds when a reviewer can name the owner, evidence, and limits of a
+claim. The checklist is a routing tool for judgment, not a substitute for it.

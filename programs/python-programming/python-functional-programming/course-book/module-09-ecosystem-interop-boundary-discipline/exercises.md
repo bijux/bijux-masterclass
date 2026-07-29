@@ -260,3 +260,33 @@ pytest -q tests/learning/test_module_09_interop.py \
 Earlier contract preserved: Module 05 data modelling and Module 04 failure
 policies survive serialization without turning transported data into executable
 authority.
+
+## Team adoption: review one boundary chain, not a style slogan
+
+**Starting context:** read
+`test_module_09_boundaries_converge_on_one_rag_pipeline`, then trace every call
+into `boundaries/web`, `pipelines/cli.py`, and `pipelines/configured.py`.
+
+**Objective:** review a payload-to-chunks run and assign ownership for validation,
+override policy, pipeline topology, lazy execution, and embedding failure.
+
+**Constraints:**
+
+- each decision must have one named owner
+- cite one executable assertion for every claimed contract
+- distinguish a local unit proof from the broad capstone gate
+- reject checklist items that only prescribe syntax
+
+**Expected evidence:** one translated `RawDoc` enters the established pipeline,
+the CLI-style override changes chunk size without mutation, and three embedded
+chunks leave as `Ok`.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k module_09_boundaries_converge_on_one_rag_pipeline
+```
+
+Earlier contract preserved: Module 09 adds adapters around one cumulative RAG
+application; it does not create separate web, CLI, or dataframe applications.

@@ -169,8 +169,11 @@ No runtime API; instead, templates for docs. Use Markdown/Sphinx for standards.
 - `pre-commit`: ruff (B006 mutable defaults), mypy --strict.
 - CI: Hypothesis suite; coverage >80%.
 - Ruff config: Enable rules like B006; project lint/review rule enforced by review/CI for no-try-except in core.
-### 4.5 RAG Integration
-Enforce in `funcpipe-rag-09`: Core pure; boundaries explicit; properties for monoids/errors.
+### 4.5 RAG integration
+
+Review the tracked Module 09 reference state. The adoption target is not a
+separate `funcpipe-rag-09` project: it is the same cumulative application with
+new boundary packages and preserved earlier contracts.
 ### 4.6 Before/After Refactor
 
 ```python
@@ -191,24 +194,19 @@ def process(docs: Iterator[RawDoc]) -> Iterator[CleanDoc]:
             docs)  # Comprehension for clarity; assume from_raw
 ```
 ---
-## 5. Property-Based Proofs (capstone/tests/test_adoption.py)
-```python
-from hypothesis import given
-from .strategies import doc_strat
+## 5. Executable adoption proof
 
-@given(docs=doc_strat())
-def test_process_idempotent(docs):
-    # Law: Repeated calls same (pure)
-    res1 = list(process(iter(docs)))
-    res2 = list(process(iter(docs)))  # Fresh iter
-    assert res1 == res2
+There is no separate `test_adoption.py`. The reviewable evidence is the chain of
+focused tests, closed by one cumulative route:
 
-@given(docs=doc_strat())
-def test_process_immutable(docs):
-    orig_titles = [d.title for d in docs]
-    _ = list(process(iter(docs)))  # Consume
-    assert [d.title for d in docs] == orig_titles  # Inputs unchanged
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k module_09_boundaries_converge_on_one_rag_pipeline
 ```
+
+This test begins with HTTP-shaped data, applies a CLI-shaped override, constructs
+the configured pipeline, and observes typed chunk results. A team standard should
+point to evidence at this level rather than mandate a favorite syntax.
 ---
 ## 6. Runtime Preservation Guarantee
 Standards add review overhead; FP patterns preserve or improve perf via immutability/caching.
@@ -227,10 +225,11 @@ Standards add review overhead; FP patterns preserve or improve perf via immutabi
 3. Reviews check…? → **Purity/types**  
 4. Adoption via…? → **Gradual pilots**  
 5. Benefit? → **Maintainable FP**
-## 9. Post-Core Exercise
-1. Draft standards for your team.  
-2. Review a module with checklist.  
-3. Pilot FP refactor; measure wins.
+## 9. Post-core exercise
+
+Complete [Team adoption: review one boundary chain, not a style
+slogan](exercises.md#team-adoption-review-one-boundary-chain-not-a-style-slogan).
+For every checklist item you keep, name its code owner and smallest honest proof.
 **Pipeline Usage (Idiomatic)**
 ```python
 # Standards-compliant
