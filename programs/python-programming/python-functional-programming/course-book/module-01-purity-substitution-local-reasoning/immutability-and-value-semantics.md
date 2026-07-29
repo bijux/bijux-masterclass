@@ -1,501 +1,243 @@
-# Immutability & Value Semantics
+# Immutability and Value Semantics
 
+Purity is difficult to maintain when two parts of a program share a mutable object.
+Even a function that never assigns to a global can observe changes made through
+another reference.
 
-<!-- page-maps:start -->
-## Page Maps
+Module 01 uses frozen dataclasses so RAG records behave as values: equality depends
+on field content, and a field cannot be rebound after construction.
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Purity Substitution Local Reasoning"]
-  page["Immutability & Value Semantics"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-This lesson is about protecting data the same way purity protects functions.
-
-## Start With the Python Problem
-
-Two names pointing at the same mutable object are enough to break local reasoning. One part
-of the program mutates the value, another part observes the change, and now the meaning of
-the data depends on who touched it last.
-
-Immutability is the data-side answer to that problem: once a value is published, you can
-trust that it will keep meaning the same thing.
-
-## Keep This Question In View
-
-> How do you make shared data safe to trust by preventing post-creation mutation and comparing values by what they contain?
-
-By the end of this lesson, you should be able to explain:
-
-- when `tuple`, `frozenset`, and frozen dataclasses are the right publication boundary
-- why equality by contents is easier to reason about than equality by identity
-- why hashable published values must not be mutated after creation
-
----
-
-## 1. Conceptual Foundation
-
-### 1.1 The One-Sentence Rule
-
-> **Default to frozen, hashable, value-equality data; never expose mutable containers—or wrap them behind read-only views.**
-
-### 1.2 Value Semantics in One Precise Sentence
-
-> Value semantics means objects are compared by their contents (not identity) and never change after creation; structural sharing is an implementation strategy that makes updates efficient.
-
-### 1.3 Why This Matters Now
-
-Immutability makes data reviewable in the same way purity makes function calls reviewable.
-When a value cannot change after publication:
-
-- aliases stop being surprising
-- equality becomes meaningful for "same information"
-- caching and lookup behavior stop rotting after incidental mutation
-
-### 1.4 Bug Story: Mutating a Hash Key
-
-Imagine caching embeddings by chunk:
+## The aliasing problem
 
 ```python
-from dataclasses import dataclass
-import hashlib
-from typing import Tuple, Dict
+metadata = {"category": "cs.PL"}
+first = metadata
+second = metadata
 
-@dataclass(eq=True, unsafe_hash=True)  # unsafe_hash=True on a mutable class is almost always a bug factory; prefer frozen=True and immutable fields instead
-class MutableChunkWithoutEmbedding:
-    doc_id: str
-    text: str
-    start: int
-    end: int
-
-cache: Dict[MutableChunkWithoutEmbedding, Tuple[float, ...]] = {}
-chunk = MutableChunkWithoutEmbedding("doc1", "text", 0, 4)
-cache[chunk] = (0.1, 0.2)  # Cache hit
-old_hash = hash(chunk)
-chunk.text = "mutated"  # mutation after hashing
-new_hash = hash(chunk)
-assert old_hash != new_hash  # hash changed
-assert cache.get(chunk) is None  # lookup fails → key “lost”
+first["category"] = "math.NT"
+assert second["category"] == "math.NT"
 ```
 
-**Problem:** mutation invalidates the hash, so the key becomes logically "lost" inside the
-dictionary. That is why values used as set members, dictionary keys, or cache identities
-must be immutable after creation.
+There are two names but one dictionary. Understanding `second` requires tracking
+assignments through every alias.
 
----
-
-## 2. Mental Model: Mutable Reference vs Immutable Value
-
-### 2.1 One Picture
-
-```text
-Mutable publication                       Immutable publication
-+-----------------------------+         +------------------------------+
-| a ----> shared list         |         | a ----> value object         |
-| b ----> shared list         |         | b ----> same value meaning   |
-| mutate through a            |         | update means "make new value"|
-| b silently observes change  |         | old references keep meaning  |
-+-----------------------------+         +------------------------------+
-```
-
-### 2.2 Contract Table
-
-| Clause                     | Violation Example                      | Detected By                              |
-|----------------------------|----------------------------------------|------------------------------------------|
-| No post-creation mutation  | `list.append`, `dict.__setitem__`      | Hypothesis mutation check + deepcopy     |
-| Value equality             | `is` instead of `==`                   | Hypothesis equality property             |
-| Hash stability             | Mutable in set/dict key                | Hypothesis rehash property               |
-| Structural sharing         | Full copy on update                    | Manual inspection + benchmarks           |
-
-**Note on Nested Mutation:** `frozen=True` only stops attribute rebinding. If an attribute
-still holds a mutable list or dict, deep mutation is still possible. In this module,
-"immutable" should be read as "safe to share without later mutation."
-
-**Note on Local Mutables:** Local mutable temporaries are fine; publishing them as part of the API is not.
-
-### 2.3 Shallow vs Deep Immutability
-
-`@dataclass(frozen=True)` prevents rebinding attributes but not mutating nested mutables:
-
-```python
-from dataclasses import dataclass
-from typing import List
-
-@dataclass(frozen=True)
-class ShallowImmutable:
-    items: List[int]  # Nested mutable
-
-obj = ShallowImmutable([1, 2])
-# obj.items = [3]  # Error: can't rebind
-obj.items.append(3)  # Succeeds! Nested mutation
-assert obj.items == [1, 2, 3]
-```
-
-For deep immutability, change list[int] to tuple[int, ...] and construct it immutably at the boundaries:
-
-```python
-from dataclasses import dataclass
-from typing import Tuple
-
-@dataclass(frozen=True)
-class DeepImmutable:
-    items: Tuple[int, ...]
-
-deep = DeepImmutable((1, 2))
-# deep.items = (3,)      # Error: can't rebind frozen field
-# deep.items += (3,)     # Also an error: attempts to rebind a frozen field
-```
-
----
-
-## 3. Running Project: Immutability in RAG Types
-
-Our **running project** (from `module-01/funcpipe-rag-01/README.md`) enforces immutability on Core 1/2's types.  
-- **Goal:** Make data safe for sharing, hashing, caching.  
-- **Start:** Core 1/2's types.  
-- **End (this core):** Frozen types with properties for no mutation/hash stability. Semantics aligned with Core 1/2.
-
-### 3.1 Types (Canonical)
-
-These are defined in `module-01/funcpipe-rag-01/src/funcpipe_rag/rag_types.py` (as in Core 1) and imported as needed. No redefinition here. All core RAG dataclasses in rag_types.py are frozen=True and contain only immutable fields. Because all RAG dataclasses are frozen=True and only contain immutable fields, their default __hash__ implementations are safe to use as dict keys and set members.
-
-### 3.2 Mutable Variants (Anti-Patterns in RAG)
-
-Full code:
-
-```python
-from dataclasses import dataclass
-from typing import List
-from funcpipe_rag import CleanDoc, ChunkWithoutEmbedding, RawDoc, Chunk, RagEnv
-
-
-# Mutable RawDoc (anti-pattern)
-@dataclass  # Mutable
-class MutableRawDoc:
-    doc_id: str
-    title: str
-    abstract: str
-    categories: str
-
-
-# Mutable clean (nested mutation)
-def mutable_clean_doc(doc: MutableRawDoc) -> MutableRawDoc:
-    doc.abstract = " ".join(doc.abstract.strip().lower().split())
-    return doc  # Mutates input
-
-
-# Mutable chunk (mutable list output)
-def mutable_chunk_doc(doc: CleanDoc, env: RagEnv) -> List[ChunkWithoutEmbedding]:  # Mutable list
-    text = doc.abstract
-    chunks = []  # Mutable accum (local OK, but returned mutable)
-    for i in range(0, len(text), env.chunk_size):
-        chunks.append(
-            ChunkWithoutEmbedding(doc.doc_id, text[i:i + env.chunk_size], i, i + len(text[i:i + env.chunk_size])))
-    return chunks  # Caller can mutate returned list
-
-
-# Mutable embed (mutates input for demo)
-import hashlib
-
-
-@dataclass  # Mutable for demo
-class MutableChunkWithoutEmbedding:
-    doc_id: str
-    text: str
-    start: int
-    end: int
-
-
-def mutable_embed_chunk(chunk: MutableChunkWithoutEmbedding) -> Chunk:
-    chunk.text += " mutated"  # Nested mutation
-    h = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
-    step = 4
-    vec = tuple(int(h[i:i + step], 16) / (16 ** step - 1) for i in range(0, 64, step))
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, vec)
-```
-
-**Smells:** Mutable fields (rebindable), nested mutation (abstract changed), mutable outputs (caller can append to chunks). Note: Local mutable accum is OK; problem is exposing mutable API.
-
----
-
-## 4. Refactor to Immutable: Value Semantics in RAG
-
-### 4.1 Immutable Core
-
-Use frozen dataclasses, tuples for safe sharing. Full code:
-
-```python
-from funcpipe_rag import RawDoc, CleanDoc, ChunkWithoutEmbedding, Chunk, RagEnv
-from typing import Tuple
-import hashlib
-
-
-# Immutable clean (returns new)
-def clean_doc(doc: RawDoc) -> CleanDoc:
-    abstract = " ".join(doc.abstract.strip().lower().split())
-    return CleanDoc(doc.doc_id, doc.title, abstract, doc.categories)  # New instance
-
-
-# Immutable chunk (tuple-valued API with immutable elements)
-def chunk_doc(doc: CleanDoc, env: RagEnv) -> Tuple[ChunkWithoutEmbedding, ...]:
-    text = doc.abstract
-    return tuple(
-        ChunkWithoutEmbedding(doc.doc_id, text[i:i + env.chunk_size], i, i + len(text[i:i + env.chunk_size]))
-        for i in range(0, len(text), env.chunk_size)
-    )
-
-
-# Immutable embed (no mutation)
-def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
-    h = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
-    step = 4
-    vec = tuple(int(h[i:i + step], 16) / (16 ** step - 1) for i in range(0, 64, step))
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, vec)
-```
-
-**Wins:** New instances on update, immutable outputs (tuple prevents append), no mutation. Note: From this core onward, chunk_doc returns tuple instead of list to enforce immutability; update full_rag accordingly.
-
-### 4.2 Persistent Update Example
-
-Python's dataclasses support persistent updates via `replace`:
+Compare a frozen value:
 
 ```python
 from dataclasses import dataclass, replace
-from typing import Tuple
+
 
 @dataclass(frozen=True)
-class Config:
-    host: str
-    port: int
-    tags: Tuple[str, ...]  # immutable
-
-base = Config("localhost", 8000, ("api",))
-
-# “Update” using structural sharing: new object reuses unchanged pieces
-cfg_prod = replace(base, host="prod.example.com")
-
-assert base.port == cfg_prod.port        # shared value
-assert base.tags is cfg_prod.tags        # same tuple object, reused (this is an optimization, not a semantic guarantee)
-assert base is not cfg_prod              # new Config instance
-```
-
-This is persistent update: you get a new value back, but unchanged substructures (like the tags tuple) are shared.
-
-### 4.3 Impure Shell (Edge Only)
-
-The shell from Core 1 remains; immutability focuses on core data.
-
-### 4.4 Connection to Later Cores
-
-Immutability enables referential transparency, making equational reasoning (Core 9) possible by ensuring expressions equal their values. It also unlocks safe concurrency (no races) and caching (stable hashes), key for pipelines (Core 4) and parallelism (Core 10).
-
----
-
-## 5. Equational Reasoning: Substitution Exercise
-
-**Hand Exercise:** Replace expressions in `clean_doc`.  
-1. Inline `abstract = " ".join(...)` → normalized string.  
-2. Substitute into `CleanDoc` → fixed value.  
-**Bug Hunt:** In mutable_clean_doc, substitution fails (mutates original doc).
-
----
-
-## 6. Property-Based Testing: Proving Equivalence (Advanced, Optional)
-
-Use Hypothesis to prove immutability.
-
-You can safely skip this on a first read and still follow later cores—come back when you want to mechanically verify your own refactors.
-
-### 6.1 Custom Strategy (RAG Domain)
-
-From `module-01/funcpipe-rag-01/tests/conftest.py` (as in Core 1).
-
-### 6.2 Immutability & Hash Properties for RAG Types
-
-Full code:
-
-```python
-# module-01/funcpipe-rag-01/tests/test_laws.py (excerpt)
-from hypothesis import given
-import hypothesis.strategies as st
-from copy import deepcopy
-from typing import List
-from funcpipe_rag import clean_doc, chunk_doc, embed_chunk, full_rag
-from funcpipe_rag import RawDoc, CleanDoc, ChunkWithoutEmbedding, Chunk, RagEnv
-from .conftest import raw_doc_strategy, env_strategy, doc_list_strategy
-
-
-# Properties for clean_doc
-@given(doc=raw_doc_strategy())
-def test_clean_doc_no_mutation(doc: RawDoc) -> None:
-    original = deepcopy(doc)
-    clean_doc(doc)
-    assert doc == original
-
-
-# Properties for chunk_doc
-@given(doc=st.builds(CleanDoc, doc_id=st.text(min_size=1), title=st.text(), abstract=st.text(), categories=st.text()),
-       env=env_strategy())
-def test_chunk_doc_no_mutation(doc: CleanDoc, env: RagEnv) -> None:
-    original = deepcopy(doc)
-    chunk_doc(doc, env)
-    assert doc == original
-
-
-@given(doc=st.builds(CleanDoc, doc_id=st.text(min_size=1), title=st.text(), abstract=st.text(), categories=st.text()),
-       env=env_strategy())
-def test_chunks_equal_imply_equal_hash(doc: CleanDoc, env: RagEnv) -> None:
-    c1 = chunk_doc(doc, env)
-    c2 = chunk_doc(doc, env)
-    assert c1 == c2
-    assert hash(c1) == hash(c2)
-
-
-@given(doc=st.builds(CleanDoc, doc_id=st.text(min_size=1), title=st.text(), abstract=st.text(), categories=st.text()),
-       env=env_strategy())
-def test_chunk_hash_stable(doc: CleanDoc, env: RagEnv) -> None:
-    c = chunk_doc(doc, env)
-    h = hash(c)
-    assert hash(c) == h
-
-
-# Properties for embed_chunk
-chunk_we_strategy = st.builds(
-    ChunkWithoutEmbedding,
-    doc_id=st.text(min_size=1),
-    text=st.text(min_size=1),
-    start=st.integers(min_value=0, max_value=1000),
-).map(
-    lambda c: ChunkWithoutEmbedding(
-        c.doc_id, c.text, c.start, c.start + len(c.text)
-    )
-)
-
-
-@given(chunk_we=chunk_we_strategy)
-def test_embed_chunk_no_mutation(chunk_we: ChunkWithoutEmbedding) -> None:
-    original = deepcopy(chunk_we)
-    embed_chunk(chunk_we)
-    assert chunk_we == original
-
-
-@given(chunk_we=chunk_we_strategy)
-def test_embedded_equal_imply_equal_hash(chunk_we: ChunkWithoutEmbedding) -> None:
-    e1 = embed_chunk(chunk_we)
-    e2 = embed_chunk(chunk_we)
-    assert e1 == e2
-    assert hash(e1) == hash(e2)
-
-
-@given(chunk_we=chunk_we_strategy)
-def test_chunk_value_equality(chunk_we: ChunkWithoutEmbedding) -> None:
-    e1 = embed_chunk(chunk_we)
-    e2 = embed_chunk(chunk_we)
-    assert e1 == e2
-    assert e1 is not e2
-
-
-# Composite property (full_rag)
-@given(docs=doc_list_strategy(), env=env_strategy())
-def test_full_rag_no_mutation(docs: List[RawDoc], env: RagEnv) -> None:
-    original = deepcopy(docs)
-    full_rag(docs, env)
-    assert docs == original
-```
-
-**Note:** Properties enforce no mutation and hash stability across stages.
-
-### 6.3 Shrinking Demo: Catching a Bug
-
-Bad refactor (nested mutation in embed_chunk):
-
-Full code:
-
-```python
-import hashlib
-from dataclasses import dataclass
-from funcpipe_rag import Chunk
-
-
-@dataclass  # Mutable for demo
-class MutableChunkWithoutEmbedding:
+class Paper:
     doc_id: str
-    text: str
-    start: int
-    end: int
+    category: str
 
 
-def bad_embed_chunk(chunk: MutableChunkWithoutEmbedding) -> Chunk:
-    chunk.text += " mutated"  # Nested mutation
-    h = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
-    step = 4
-    vec = tuple(int(h[i:i + step], 16) / (16 ** step - 1) for i in range(0, 64, step))
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, vec)
+original = Paper("paper-1", "cs.PL")
+reclassified = replace(original, category="math.NT")
+
+assert original.category == "cs.PL"
+assert reclassified.category == "math.NT"
 ```
 
-Property:
+The relationship is explicit: a change is represented by a new value.
+
+## What `frozen=True` guarantees
+
+The Module 01 types in `rag_types.py` are:
+
+- `RawDoc`
+- `CleanDoc`
+- `ChunkWithoutEmbedding`
+- `Chunk`
+- `RagEnv`
+
+Each is declared with `@dataclass(frozen=True)`. This provides:
+
+- structural equality from fields;
+- a generated hash when all fields are hashable;
+- a runtime error when code tries to rebind a field;
+- a useful signal to type checkers and reviewers.
+
+The learning proof demonstrates the runtime boundary:
 
 ```python
-from hypothesis import given
-import hypothesis.strategies as st
-from copy import deepcopy
+from dataclasses import FrozenInstanceError
 
-@given(st.builds(MutableChunkWithoutEmbedding, doc_id=st.text(min_size=1), text=st.text(min_size=1), start=st.integers(min_value=0), end=st.integers(min_value=1)))
-def test_bad_embed_chunk_no_mutation(chunk: MutableChunkWithoutEmbedding) -> None:
-    original = deepcopy(chunk)
-    bad_embed_chunk(chunk)
-    assert chunk == original  # Fails on mutation
+doc = RawDoc("doc-a", "title", "abstract", "cs.PL")
+
+with pytest.raises(FrozenInstanceError):
+    doc.abstract = "changed"
 ```
 
-Hypothesis failure trace (run to verify; example):
+Freezing does not make Python values universally or deeply immutable.
 
+## Shallow versus deep immutability
+
+This dataclass is frozen but contains a mutable list:
+
+```python
+@dataclass(frozen=True)
+class MisleadingBatch:
+    doc_ids: list[str]
+
+
+batch = MisleadingBatch(["doc-a"])
+batch.doc_ids.append("doc-b")  # allowed
 ```
-Falsifying example: test_bad_embed_chunk_no_mutation(
-    chunk=MutableChunkWithoutEmbedding(doc_id='a', text='a', start=0, end=1),
-)
-AssertionError
+
+The field cannot be rebound, but the referenced list can change.
+
+Module 01's record fields are immutable scalars or tuples:
+
+```python
+@dataclass(frozen=True, eq=True)
+class Chunk(ChunkWithoutEmbedding):
+    embedding: tuple[float, ...]
 ```
 
-- Shrinks to minimal chunk; mutation changes text, failing equality. Catches nested bug via shrinking.
+This makes an individual `Chunk` safe to hash. The pipeline still returns
+`list[Chunk]`. That list is a mutable **container of immutable values**.
 
----
+```python
+chunks = chunk_doc(cleaned, env)
+chunks.append(other_chunk)  # the local list may change
+chunks[0].text = "changed"  # the element may not change
+```
 
-## 7. When Immutability Isn't Worth It
+Do not claim that `chunk_doc` returns a tuple; the tracked Module 01 reference state
+returns a list. The contract is that the function creates a fresh list and does not
+mutate its inputs. Callers own the returned container.
 
-Rarely, for profiled hot paths (e.g., array processing), use mutable internals but expose immutable API.
+## Value transitions in FuncPipe
 
----
+The types record which semantic transition has occurred:
 
-## 8. Pre-Core Quiz
+```text
+RawDoc
+  | clean_doc: normalize abstract
+  v
+CleanDoc
+  | chunk_doc: attach text offsets
+  v
+ChunkWithoutEmbedding
+  | embed_chunk: derive deterministic vector
+  v
+Chunk
+```
 
-1. Mutable default argument → violates which clause? → **No shared mutation**  
-2. Mutating list inside tuple → violates? → **No shared mutation**  
-3. Using `is` instead of `==` on dataclasses → violates? → **Value equality**  
-4. `@dataclass(frozen=True)` prevents nested list mutation? → **No (shallow only)**  
-5. Tool to detect nested mutation in tests? → **Hypothesis + deepcopy**
+Returning a different type is not ceremony here. It prevents a reviewer from
+mistaking raw text for normalized text or an unembedded slice for final output.
 
-## 9. Post-Core Reflection & Exercise
+Inspect `clean_doc`:
 
-**Reflect:** In your code, find one mutable container. Freeze it; add immutability properties.  
-**Project Exercise:** Update RAG types to immutable; run properties on sample data.
+```python
+def clean_doc(doc: RawDoc | CleanDoc) -> CleanDoc:
+    abstract = " ".join(doc.abstract.strip().lower().split())
+    return CleanDoc(
+        doc_id=doc.doc_id,
+        title=doc.title,
+        abstract=abstract,
+        categories=doc.categories,
+    )
+```
 
-All claims (e.g., referential transparency) are verifiable via the provided Hypothesis examples—run them to confirm.
+The input is preserved. The output changes only the field named by the contract.
+That makes a regression assertion precise:
 
-**Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
+```python
+before = raw
+after = clean_doc(raw)
 
-**Continue with:** [Higher-Order Composition](../module-01-purity-substitution-local-reasoning/higher-order-composition.md)
+assert raw == before
+assert after.doc_id == raw.doc_id
+assert after.title == raw.title
+assert after.categories == raw.categories
+```
+
+## Configuration is also a value
+
+`RagEnv` is frozen because chunk policy affects output:
+
+```python
+small = RagEnv(chunk_size=4)
+large = RagEnv(chunk_size=8)
+
+assert small != large
+```
+
+The configuration can be passed, compared, and captured without depending on an
+ambient variable. Its constructor also prevents invalid values from entering pure
+stages. Immutability without validation would only make an invalid value permanently
+invalid.
+
+## Hashing and deduplication
+
+Hashability is useful only when equality represents the intended identity. `Chunk`
+equality includes inherited fields and the embedding tuple. Module 01's
+`structural_dedup_chunks` intentionally uses a narrower key:
+
+```python
+key = (chunk.doc_id, chunk.text, chunk.start, chunk.end)
+```
+
+That is a domain decision, not a consequence of `frozen=True`. Review these concepts
+separately:
+
+- dataclass equality answers whether every modeled field is equal;
+- hashing supports equality-based collections;
+- structural deduplication defines which fields identify a repeated RAG slice;
+- canonical ordering defines how retained values are arranged.
+
+A common mistake is to use `set(chunks)` and accidentally let implementation-level
+equality define domain deduplication and output order.
+
+## Cost and judgment
+
+Immutable value flow can allocate more objects than an in-place algorithm. It is
+usually worth the cost for control data, domain records, configuration, and pipeline
+boundaries. It may be the wrong internal representation for a measured numeric hot
+loop.
+
+A defensible compromise is:
+
+```text
+immutable public input -> contained mutable implementation -> immutable public output
+```
+
+The mutation must not escape through aliases, and benchmarks—not habit—should justify
+the extra complexity.
+
+## Proof route
+
+From the course root:
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-01/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py
+```
+
+Review `test_frozen_inputs_cannot_be_changed_in_place` and
+`test_pure_core_preserves_inputs_and_canonicalizes_output`. One tests the value
+boundary; the other tests that the composed transforms respect it.
+
+The tests do not prove deep immutability for arbitrary future fields. If a list,
+mapping, or mutable object is added to a frozen type, the contract must be reviewed
+again.
+
+## Learner work
+
+Audit every field in `rag_types.py`:
+
+1. classify it as immutable, mutable, or conditionally safe;
+2. state what dataclass equality means for the containing type;
+3. identify whether the type is hashable and whether it should be;
+4. explain why `structural_dedup_chunks` uses its explicit key;
+5. write one test that would fail if a stage mutated an input.
+
+Acceptance evidence is the field audit, your focused test, and the unchanged Module
+01 learning proof.
+
+Continue with [Higher-Order Composition](higher-order-composition.md), which composes
+these value transitions without hiding their domain order.
