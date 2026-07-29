@@ -138,6 +138,7 @@ nav:
   - Module Glossary: module-07-effect-boundaries-resource-safety/glossary.md
 - 'Module 08: Async Pipelines, Backpressure, and Fairness':
   - Home: module-08-async-pipelines-backpressure-fairness/index.md
+  - Module 08 Capstone Delta: module-08-async-pipelines-backpressure-fairness/capstone-delta.md
   - async/await as Descriptions: module-08-async-pipelines-backpressure-fairness/async-await-as-descriptions.md
   - Async Generators: module-08-async-pipelines-backpressure-fairness/async-generators.md
   - Backpressure: module-08-async-pipelines-backpressure-fairness/backpressure.md

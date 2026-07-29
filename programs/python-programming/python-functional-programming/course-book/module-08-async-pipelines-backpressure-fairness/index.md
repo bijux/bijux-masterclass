@@ -54,6 +54,7 @@ that do not smear runtime behavior across the whole codebase.
 
 ## Lesson map
 
+- [Module 08 Capstone Delta](capstone-delta.md)
 - [async/await as Descriptions](async-await-as-descriptions.md)
 - [Async Generators](async-generators.md)
 - [Backpressure](backpressure.md)
@@ -74,6 +75,8 @@ that do not smear runtime behavior across the whole codebase.
 
 ## Capstone checkpoints
 
+- Establish the Module 07-to-08 application pressure with
+  [Module 08 Capstone Delta](capstone-delta.md) before reading the combinators.
 - Inspect where async work is described and where it is actually driven.
 - Review how bounded queues and fairness policies shape throughput.
 - Compare test helpers with the runtime surfaces they are protecting.
