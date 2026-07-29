@@ -64,3 +64,18 @@ def test_io_plan_defers_rag_read_until_the_shell_performs_it() -> None:
     assert events == []
     assert perform(plan) == Ok(["d1", "d2"])
     assert events == ["read"]
+
+
+def test_read_capability_grants_no_write_authority() -> None:
+    """A structural adapter can satisfy only the narrow capability it needs."""
+
+    class ReadOnlyDocs:
+        def read_docs(self, path: str) -> Iterator[Result[RawDoc, ErrInfo]]:
+            yield Ok(RawDoc(doc_id=path, title="Read only", abstract="", categories="fp"))
+
+    reader: StorageRead = ReadOnlyDocs()
+
+    results = list(reader.read_docs("d1"))
+
+    assert results == [Ok(RawDoc(doc_id="d1", title="Read only", abstract="", categories="fp"))]
+    assert not hasattr(reader, "write_chunks")

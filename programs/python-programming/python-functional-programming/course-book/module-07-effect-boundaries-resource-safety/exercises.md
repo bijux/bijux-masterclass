@@ -67,3 +67,35 @@ PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
 
 Earlier contract preserved: Module 06 transformations remain ordinary pure
 functions; Module 07 describes only the boundary call that supplies their data.
+
+## Capability protocols: request the least authority
+
+**Starting context:** read `StorageRead`, `StorageWrite`, and `Storage`, then run
+`test_read_capability_grants_no_write_authority`.
+
+**Objective:** add a function that counts readable documents and prove it accepts
+the read-only adapter without adding a write method.
+
+**Constraints:**
+
+- annotate the dependency as `StorageRead`;
+- leave `ReadOnlyDocs` structurally typed;
+- do not inherit from the protocol;
+- run strict mypy over the learning test after the behavioral check.
+
+**Expected evidence:** the count succeeds, the adapter has no write capability,
+and static checking accepts the narrow assignment.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k read_capability_grants_no_write_authority
+MYPYPATH=src mypy --strict --follow-imports=silent \
+  tests/learning/test_module_07_effect_boundaries.py
+```
+
+Earlier contract preserved: explicit dependencies from Module 06 remain visible;
+the protocol narrows what the dependency may do instead of hiding it in an
+environment object with unrestricted access.

@@ -53,3 +53,23 @@ Common wrong turns:
 
 The trace proves deferral and one execution for this interpretation. It does
 not prove the effect is safe to replay; idempotency is a separate contract.
+
+## Capability protocols: request the least authority
+
+The counting function needs only `read_docs`, so its parameter should remain
+`StorageRead`. `ReadOnlyDocs` satisfies that protocol structurally. Adding a
+dummy `write_chunks` method would broaden authority only to satisfy a need the
+function does not have.
+
+Common wrong turns:
+
+- annotating the parameter as full `Storage` permits writes unnecessarily;
+- inheriting a concrete adapter couples the domain to infrastructure;
+- using `Any` makes the example run while discarding static evidence;
+- relying only on `hasattr` checks one object at runtime, not call-site
+  discipline.
+
+The behavioral test proves the read-only adapter works. Strict mypy proves the
+assignment matches the declared protocol and would reject a write through that
+narrowly typed reference. Neither proves the adapter's external data source is
+available or trustworthy.
