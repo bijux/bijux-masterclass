@@ -64,3 +64,32 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 
 Earlier contract preserved: the optimized Module 05 embedding path must still
 produce equivalent `Chunk` values before performance can justify selecting it.
+
+## Observability: preserve facts without creating hidden policy
+
+**Starting context:** read `review/observability.py` and
+`test_observability_is_data_that_does_not_change_pipeline_decisions`.
+
+**Objective:** add a `rank` observation and explain why a failure count belongs in
+the summary while the decision to abort does not.
+
+**Constraints:**
+
+- observations must be immutable values;
+- preserve encounter order in `summary.stages`;
+- define the empty fold result;
+- reject impossible negative or failure-greater-than-processed counts.
+
+**Expected evidence:** repeated folds over the same tuple produce equal summaries,
+including stable stage order and totals.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k observability_is_data_that_does_not_change_pipeline_decisions
+```
+
+Earlier contract preserved: Module 07 keeps effects at the shell, and Module 04
+typed failures remain the RAG control-flow values rather than being replaced by
+metrics.

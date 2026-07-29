@@ -55,6 +55,43 @@ Use this when you are debugging or maintaining FP pipelines.
 3. Make RAG traceable, verify neutrality.
 
 ---
+## FuncPipe Lab: Fold Observations as Values
+
+FuncPipe already models structured logs as values in `domain/logging.py`. Module 10
+adds the corresponding review value: `StageObservation`. A boundary collects clock
+and count readings; `summarize_observations` only folds supplied data.
+
+```python
+from funcpipe_rag.review.observability import (
+    StageObservation,
+    summarize_observations,
+)
+
+observed = (
+    StageObservation("clean", 2, 0, 1.0),
+    StageObservation("chunk", 4, 1, 2.0),
+    StageObservation("embed", 3, 0, 5.0),
+)
+summary = summarize_observations(observed)
+
+assert summary.stages == ("clean", "chunk", "embed")
+assert summary.failures == 1
+```
+
+There is no “fail the pipeline if an observation looks bad” branch here. Policy
+belongs in a separate decision such as a budget evaluator. Keeping the fold pure
+makes empty input an explicit identity and preserves stage order for review.
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k observability_is_data_that_does_not_change_pipeline_decisions
+```
+
+The example proves aggregation of already-collected values. It does not prove
+clock accuracy, metric delivery, or that every runtime path emits an observation.
+
+---
 ## 1. Laws & Invariants
 | Invariant            | Description                                                                                  | Enforcement          |
 |----------------------|----------------------------------------------------------------------------------------------|----------------------|

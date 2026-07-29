@@ -5,6 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 
 from funcpipe_rag.boundaries.shells.review_cli import build_summary
+from funcpipe_rag.review.observability import (
+    StageObservation,
+    summarize_observations,
+)
 from funcpipe_rag.review.performance import (
     PerformanceBudget,
     PerformanceObservation,
@@ -48,3 +52,18 @@ def test_performance_budget_is_a_pure_multi_dimensional_decision() -> None:
 
     assert decision.within_budget is False
     assert decision.violations == ("peak_memory",)
+
+
+def test_observability_is_data_that_does_not_change_pipeline_decisions() -> None:
+    """Observation order and totals are reviewable without becoming control flow."""
+
+    observations = (
+        StageObservation("clean", processed=2, failures=0, latency_ms=1.0),
+        StageObservation("chunk", processed=4, failures=1, latency_ms=2.0),
+        StageObservation("embed", processed=3, failures=0, latency_ms=5.0),
+    )
+
+    summary = summarize_observations(observations)
+
+    assert summary.stages == ("clean", "chunk", "embed")
+    assert (summary.processed, summary.failures, summary.latency_ms) == (9, 1, 8.0)

@@ -49,3 +49,25 @@ representativeness, or statistical significance.
 In FuncPipe, performance is a selection pressure on already-correct RAG behavior.
 The budget can reject an implementation, but it cannot redefine what a valid
 `Chunk` or ranked result means.
+
+## Observability: preserve facts without creating hidden policy
+
+Append `StageObservation("rank", processed=3, failures=0, latency_ms=1.5)` to
+the observation tuple. The resulting stage order ends in `rank`, processed
+increases by three, and latency increases by 1.5 ms.
+
+Common wrong turns:
+
+- raising inside `summarize_observations` when failures are nonzero makes metrics
+  an undocumented control-flow boundary;
+- storing observations in a module-global list makes tests order-dependent;
+- sorting stage names destroys the execution trace;
+- accepting more failures than processed records admits an impossible fact.
+
+The test proves deterministic aggregation, validation, and encounter order for
+supplied observations. It does not prove that the runtime emitted every event or
+that an external telemetry sink delivered it.
+
+In FuncPipe, `Result` still controls application failure. Observations explain what
+happened; an explicit policy may later decide whether the evidence blocks a
+release.
