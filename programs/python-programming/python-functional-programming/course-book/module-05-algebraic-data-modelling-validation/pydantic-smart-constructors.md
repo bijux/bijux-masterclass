@@ -135,7 +135,7 @@ Pydantic is **only** for I/O and config. Core domain stays pure frozen dataclass
 | Config loading    | Yes                      | Yes                | Yes           |
 | Hot loops         | No                       | No                 | No            |
 
-## 3. Public API (boundaries/pydantic_edges.py – mypy --strict clean)
+## 3. Public API (boundaries/adapters/pydantic_edges.py – mypy --strict clean)
 
 ```python
 from __future__ import annotations
@@ -319,6 +319,26 @@ def test_schema_stable(snapshot):
 | Pydantic in hot path          | 10–100× slowdown                   | Validate once → convert to frozen core   |
 | Missing discriminator        | Union parse ambiguity              | Annotated[Union[...], Field(discriminator="kind")] |
 | Mutable models in core        | Accidental mutation                | frozen=True + extra="forbid"             |
+
+## Runnable RAG learning lab
+
+Run the boundary before reading the broader schema proof:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k pydantic_adapter_rejects_invalid_embedding_before_core_conversion
+```
+
+The valid input becomes an ordinary frozen core `Chunk`. The non-finite
+embedding never reaches `to_core_chunk`; `ChunkModel` rejects it at the external
+boundary. Inspect the types after the conversion: the core value contains no
+Pydantic base class, validation context, or computed transport field.
+
+Pydantic owns shape and runtime constraints for untrusted input. It does not
+own every cross-field domain rule, and a caught `ValidationError` should not be
+treated as an unexpected infrastructure defect. The test proves this adapter's
+valid conversion and one invalid route, not arbitrary JSON safety.
 
 ## 8. Pre-Core Quiz
 

@@ -1,11 +1,18 @@
-"""Module 05 Pydantic-at-the-edges models and codecs (end-of-Module-05)."""
+"""Module 05 Pydantic-at-the-edges models and codecs."""
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Literal, TypeVar
 import math
+from typing import Any, Literal, TypeVar
 
-from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, computed_field, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    TypeAdapter,
+    computed_field,
+    model_validator,
+)
 
 from funcpipe_rag.fp.core import Chunk, make_chunk
 
@@ -24,11 +31,11 @@ class ChunkModel(BaseModel):
 
     version: Literal[1] = 1
     text: str = Field(min_length=1, max_length=200_000)
-    metadata: Dict[str, Any] = Field(default_factory=dict)
-    embedding: List[float] | None = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    embedding: list[float] | None = None
 
     @model_validator(mode="after")
-    def _validate_embedding(self) -> "ChunkModel":
+    def _validate_embedding(self) -> ChunkModel:
         if self.embedding is None:
             return self
         if not self.embedding:
@@ -67,8 +74,8 @@ def deserialize_model(json_str: str, typ: type[T]) -> T:
 
 __all__ = [
     "ChunkModel",
-    "to_core_chunk",
+    "deserialize_model",
     "from_core_chunk",
     "serialize_model",
-    "deserialize_model",
+    "to_core_chunk",
 ]

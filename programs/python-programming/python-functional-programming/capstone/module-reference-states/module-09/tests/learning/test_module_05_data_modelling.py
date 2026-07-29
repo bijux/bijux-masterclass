@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 
 import pytest
+from funcpipe_rag.boundaries.adapters.pydantic_edges import ChunkModel, to_core_chunk
 from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
 from funcpipe_rag.fp.core import (
     UTC,
@@ -36,6 +37,7 @@ from funcpipe_rag.fp.validation import (
 )
 from funcpipe_rag.rag.stages import clean_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok
+from pydantic import ValidationError
 from typing_extensions import assert_never
 
 
@@ -134,3 +136,17 @@ def test_monoid_fold_aggregates_chunk_metrics_with_empty_identity() -> None:
         latency_sum_ms=20.5,
         latency_max_ms=12.5,
     )
+
+
+def test_pydantic_adapter_rejects_invalid_embedding_before_core_conversion() -> None:
+    model = ChunkModel(
+        text="validated boundary",
+        metadata={"source": "lesson"},
+        embedding=[0.25, 0.75],
+    )
+    core = to_core_chunk(model)
+
+    assert core.text == "validated boundary"
+    assert dict(core.metadata) == {"source": "lesson"}
+    with pytest.raises(ValidationError, match="must be finite|not finite"):
+        ChunkModel(text="invalid", embedding=[float("nan")])
