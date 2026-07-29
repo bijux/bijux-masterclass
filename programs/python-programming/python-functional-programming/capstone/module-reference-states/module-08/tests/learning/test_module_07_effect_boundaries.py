@@ -9,6 +9,8 @@ from io import StringIO
 from typing import cast
 
 import pytest
+from hypothesis import given
+from hypothesis import strategies as st
 
 from funcpipe_rag.core.rag_types import Chunk, RawDoc
 from funcpipe_rag.domain.capabilities import Clock, Logger, StorageRead
@@ -281,3 +283,36 @@ def test_transaction_bracket_commits_success_and_rolls_back_failure() -> None:
         Err(ErrInfo(code="WRITE_FAILED", msg="disk full"))
     )
     assert failure_cap.events == ["begin", "write", "rollback:tx-1"]
+
+
+@given(
+    doc_ids=st.lists(
+        st.text(
+            alphabet="abcdefghijklmnopqrstuvwxyz0123456789-_",
+            min_size=1,
+            max_size=12,
+        ),
+        max_size=10,
+        unique=True,
+    )
+)
+def test_incremental_io_plan_migration_preserves_read_result(doc_ids: list[str]) -> None:
+    """Lifting one read into IOPlan preserves ordered document identity."""
+
+    docs = [
+        RawDoc(doc_id=doc_id, title=doc_id, abstract="", categories="fp")
+        for doc_id in doc_ids
+    ]
+    storage = InMemoryStorage(preload={"docs.csv": docs})
+
+    legacy = [
+        item.value.doc_id
+        for item in storage.read_docs("docs.csv")
+        if isinstance(item, Ok)
+    ]
+    migrated: IOPlan[list[str]] = io_map(
+        io_delay(lambda: Ok(storage.read_docs("docs.csv"))),
+        lambda items: [item.value.doc_id for item in items if isinstance(item, Ok)],
+    )
+
+    assert perform(migrated) == Ok(legacy)

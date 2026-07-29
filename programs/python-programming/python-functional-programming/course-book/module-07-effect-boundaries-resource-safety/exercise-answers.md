@@ -185,3 +185,27 @@ Common wrong turns:
 The proof establishes branch selection and error precedence for this protocol.
 It does not establish database isolation levels, distributed atomicity, or
 recovery after process termination.
+
+## Incremental migration: preserve ordered read identity
+
+Change both projections to:
+
+```python
+(item.value.doc_id, item.value.categories)
+```
+
+Keep the legacy call direct and the migrated call inside `io_delay`; the
+property should still compare `perform(migrated)` with `Ok(legacy)`.
+
+Common wrong turns:
+
+- sorting either side hides an ordering regression;
+- migrating storage and changing the projection together obscures the cause of
+  a failure;
+- comparing counts permits replacement or reordering;
+- calling `perform` in the construction helper puts interpretation back in the
+  core.
+
+The property proves equality of the selected observable for generated in-memory
+documents. It does not prove file-format compatibility, equal performance, or
+equivalence of effects that the comparison omits.

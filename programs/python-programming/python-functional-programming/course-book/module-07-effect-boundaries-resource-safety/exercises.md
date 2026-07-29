@@ -278,3 +278,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
 Earlier contract preserved: Module 05 typed failures retain their provenance;
 the transaction bracket determines cleanup without converting them to
 exceptions.
+
+## Incremental migration: preserve ordered read identity
+
+**Starting context:** run
+`test_incremental_io_plan_migration_preserves_read_result`, then compare the
+direct storage read with the delayed plan in that test.
+
+**Objective:** migrate the projection from document IDs to `(doc_id, categories)`
+pairs while keeping the direct and interpreted results equivalent.
+
+**Constraints:**
+
+- change only the projected observable;
+- preserve generated inputs and their order;
+- keep the boundary call inside `io_delay`;
+- compare the complete typed result, not only its length.
+
+**Expected evidence:** the generated examples show the migrated plan neither
+changes, drops, nor reorders an observed pair.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k incremental_io_plan_migration_preserves_read_result
+```
+
+Earlier contract preserved: Module 03 iteration order and Module 05 typed
+results remain observable while Module 07 moves effect timing to the shell.
