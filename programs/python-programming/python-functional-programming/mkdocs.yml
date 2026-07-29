@@ -96,6 +96,7 @@ nav:
   - Module Glossary: module-04-streaming-resilience-failure-handling/glossary.md
 - 'Module 05: Algebraic Data Modelling and Validation':
   - Home: module-05-algebraic-data-modelling-validation/index.md
+  - Module 05 Capstone Delta: module-05-algebraic-data-modelling-validation/capstone-delta.md
   - Product and Sum Types: module-05-algebraic-data-modelling-validation/product-and-sum-types.md
   - Domain State ADTs: module-05-algebraic-data-modelling-validation/domain-state-adts.md
   - Functors: module-05-algebraic-data-modelling-validation/functors.md
@@ -106,6 +107,8 @@ nav:
   - Serialization Beyond Pydantic: module-05-algebraic-data-modelling-validation/serialization-beyond-pydantic.md
   - Compositional Domain Models: module-05-algebraic-data-modelling-validation/compositional-domain-models.md
   - ADT Performance: module-05-algebraic-data-modelling-validation/adt-performance.md
+  - Exercises: module-05-algebraic-data-modelling-validation/exercises.md
+  - Exercise Answers: module-05-algebraic-data-modelling-validation/exercise-answers.md
   - Module 05 Refactoring Guide: module-05-algebraic-data-modelling-validation/refactoring-guide.md
   - Module Glossary: module-05-algebraic-data-modelling-validation/glossary.md
 - 'Module 06: Monadic Flow and Explicit Context':

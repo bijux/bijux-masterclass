@@ -45,6 +45,10 @@ This module gives the course a stronger modelling language. Instead of encoding 
 states and validation rules with flags, `None`, and scattered conditionals, you start
 using explicit data shapes that are easier to reason about and test.
 
+Start with the [Module 05 Capstone Delta](capstone-delta.md). It separates the
+new modelling behavior from broad package movement, names the stable ownership
+boundaries, and gives a runnable route from Module 04.
+
 ## Learning outcomes
 
 - how product and sum types clarify domain meaning in Python
@@ -68,9 +72,10 @@ using explicit data shapes that are easier to reason about and test.
 
 ## Exercises
 
-- Replace one primitive-heavy data shape with a product or sum type and explain which invalid states disappear.
-- Compare fail-fast and accumulating validation for one modelling boundary and state which one matches the domain rule.
-- Inspect one serialization boundary and explain whether it preserves or erodes the model’s meaning.
+Use [Module 05 Exercises](exercises.md) for cumulative work against the tracked
+reference state. Consult [Exercise Answers](exercise-answers.md) only after
+recording the legal states, predicted result, preservation claim, and limit of
+the evidence.
 
 ## Capstone checkpoints
 
