@@ -77,15 +77,21 @@ fresh source call for each run.
 
 The real Module 03 signature captures `chunk_size`, `max_chunks`, cleaning config,
 and keep rules, then returns a function from an `Iterable[RawDoc]` to an iterator of
-chunks. It earns the abstraction because it:
+final unique `Chunk` values. It earns the abstraction because it:
 
 - wires a stable RAG configuration once;
 - leaves documents as the explicit varying input;
-- creates `gen_bounded_chunks` inside every run;
+- creates `stream_rag_chunks` inside every run;
+- includes deterministic embedding and encounter-order structural deduplication;
 - exposes the returned iterator rather than silently collecting it.
 
 It does not promise restartability for an input generator supplied by the caller.
 The factory owns output traversal state, not the caller's input.
+
+`max_chunks` belongs after deduplication in this factory because it describes final
+unique outputs. It may therefore pull more raw chunks than it emits. Use
+`gen_bounded_chunks` directly when the contract is instead “perform at most this
+many pre-embedding chunk operations.”
 
 ## Test values and freshness separately
 
@@ -104,7 +110,9 @@ def test_factory_starts_no_work():
 ```
 
 The first test proves deterministic values for replayable input. The second proves
-execution timing. Neither alone proves both.
+execution timing. Neither alone proves that the iterator completes the RAG chain.
+Also assert that returned values have embeddings and compare the unfenced,
+canonically ordered case with `full_rag_api_docs`.
 
 ## When reuse is worth it
 
@@ -128,16 +136,15 @@ Before moving on:
 1. inspect `streaming/types.py`, `streaming/compose.py`, and `api/config.py` in the
    Module 03 reference state;
 2. classify `as_source`, `fence_k`, and `make_gen_rag_fn` by ownership;
-3. run the fresh-source proof:
+3. run the complete streaming proof:
 
    ```bash
-   PYTHONPATH=capstone/module-reference-states/module-03/src \
-     python -m pytest -q \
-     capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
-     -k 'reusable_source'
+   make PROGRAM=python-programming/python-functional-programming \
+     capstone-streaming-rag-proof
    ```
 
-4. reject any abstraction whose demand and retained-state behavior cannot be stated
+4. distinguish the raw-chunk fence from the unique-output fence;
+5. reject any abstraction whose demand and retained-state behavior cannot be stated
    more simply than its implementation.
 
 ## Reflection
