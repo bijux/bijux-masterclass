@@ -73,9 +73,10 @@ runnable route through the cumulative RAG change.
 
 ## Exercises
 
-- Classify one failure path as stream-local, pipeline-fatal, or retryable, then justify the classification.
-- Compare a fail-fast and accumulate-many design for the same input set and explain which evidence each path should emit.
-- Trace one cleanup path and state what proof would show that resources are released under early termination.
+Use [Module 04 Exercises](exercises.md) for cumulative work against the tracked
+reference state. Each exercise requires a predicted demand/output trace, a
+preserved Module 03 contract, executable evidence, and an explicit limit on
+what that evidence proves.
 
 ## Capstone checkpoints
 
