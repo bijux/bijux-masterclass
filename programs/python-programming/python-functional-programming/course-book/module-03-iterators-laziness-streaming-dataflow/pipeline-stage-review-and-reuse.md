@@ -40,7 +40,7 @@ Ask these questions of any reusable stage:
 - can the stage still be explained as a simple input-output contract?
 - did the abstraction remove duplication or just move it?
 
-## Useful properties
+## Review contracts, not factory syntax
 
 Reusable stages earn their keep when these claims hold:
 
@@ -50,19 +50,61 @@ Reusable stages earn their keep when these claims hold:
 - the generic stage and the hand-written domain-specific stage stay equivalent
 
 ```python
-from hypothesis import given
+from funcpipe_rag import as_source, make_chain
 
-from tests.conftest import raw_doc_list_strategy, rag_env_strategy
+merged = make_chain(as_source((1, 2)), as_source((3,)))
 
-
-@given(raw_doc_list_strategy(), rag_env_strategy())
-def test_stage_factory_is_deterministic(docs, env):
-    mk = make_gen_rag_fn(env, 200)
-    assert list(mk(docs)) == list(mk(docs))
+assert list(merged()) == [1, 2, 3]
+assert list(merged()) == [1, 2, 3]
 ```
 
-The property is simple on purpose. A factory that cannot satisfy this is not a reusable
-functional stage; it is hidden state in nicer clothing.
+`Source[T]` means `Callable[[], Iterator[T]]`. Calling a source starts a traversal.
+`Transform[A, B]` means `Callable[[Iterable[A]], Iterator[B]]`. Calling a transform
+wraps a supplied traversal.
+
+| Question | `Source[T]` | `Transform[A, B]` |
+| --- | --- | --- |
+| Who owns input creation? | source | caller |
+| What should a call create? | fresh input iterator | fresh output traversal |
+| FuncPipe example | `as_source(docs)` | `fence_k(100)` |
+| Common bug | captured exhausted iterator | retained mutable per-run state |
+
+Determinism requires replayable input. Calling a transform twice with the same
+already-consumed generator is not a valid determinism test. Use a tuple, list, or
+fresh source call for each run.
+
+## Audit `make_gen_rag_fn`
+
+The real Module 03 signature captures `chunk_size`, `max_chunks`, cleaning config,
+and keep rules, then returns a function from an `Iterable[RawDoc]` to an iterator of
+chunks. It earns the abstraction because it:
+
+- wires a stable RAG configuration once;
+- leaves documents as the explicit varying input;
+- creates `gen_bounded_chunks` inside every run;
+- exposes the returned iterator rather than silently collecting it.
+
+It does not promise restartability for an input generator supplied by the caller.
+The factory owns output traversal state, not the caller's input.
+
+## Test values and freshness separately
+
+```python
+def test_factory_value_contract():
+    run = make_gen_rag_fn(chunk_size=50, max_chunks=3)
+    assert list(run(replayable_docs)) == list(run(replayable_docs))
+
+
+def test_factory_starts_no_work():
+    run = make_gen_rag_fn(chunk_size=50, max_chunks=3)
+    stream = run(counted_documents())
+    assert requested_documents == 0
+    next(stream)
+    assert requested_documents == 1
+```
+
+The first test proves deterministic values for replayable input. The second proves
+execution timing. Neither alone proves both.
 
 ## When reuse is worth it
 
@@ -83,9 +125,20 @@ Do not force it when:
 
 Before moving on:
 
-1. inspect the module-03 stage factories under `capstone/_history/worktrees/module-03/src/funcpipe_rag/`
-2. compare them with the domain-specific RAG stage they replaced
-3. decide whether the reusable surface reduced duplication without hiding behavior
+1. inspect `streaming/types.py`, `streaming/compose.py`, and `api/config.py` in the
+   Module 03 reference state;
+2. classify `as_source`, `fence_k`, and `make_gen_rag_fn` by ownership;
+3. run the fresh-source proof:
+
+   ```bash
+   PYTHONPATH=capstone/module-reference-states/module-03/src \
+     python -m pytest -q \
+     capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+     -k 'reusable_source'
+   ```
+
+4. reject any abstraction whose demand and retained-state behavior cannot be stated
+   more simply than its implementation.
 
 ## Reflection
 

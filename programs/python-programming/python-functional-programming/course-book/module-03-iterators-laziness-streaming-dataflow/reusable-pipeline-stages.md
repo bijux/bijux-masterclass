@@ -432,33 +432,31 @@ def make_ngram_pipeline(n: int, k: int) -> Transform[str, tuple[str,...]]:
 
 ### 3.7 Running Project: Reusable Stages in RAG (One Among Many)
 
-For continuity, apply to RAG (from Core 5):
+Repeating configuration assembly at each call site obscures which values are stable
+and which input varies. The Module 03 factory captures policy, not traversal state:
 
 ```python
-from collections.abc import Iterable, Iterator, Callable
-from rag_types import RawDoc, RagEnv, ChunkWithoutEmbedding
-from core2 import gen_clean_docs
-from core5 import gen_bounded_chunks
+from funcpipe_rag import RawDoc, make_gen_rag_fn
 
-def make_gen_rag_fn(env: RagEnv, max_chunks: int) -> Callable[[Iterable[RawDoc]], Iterator[ChunkWithoutEmbedding]]:
-    """Config → (docs -> chunks). Pure, reusable, single-pass."""
-    def pipe(docs: Iterable[RawDoc]) -> Iterator[ChunkWithoutEmbedding]:
-        cleaned = gen_clean_docs(docs)
-        yield from gen_bounded_chunks(cleaned, env, max_chunks=max_chunks)
-    return pipe
+rag_512 = make_gen_rag_fn(chunk_size=512, max_chunks=1_000)
+rag_256 = make_gen_rag_fn(chunk_size=256, max_chunks=500)
 
-# Reusable: Variants
-rag_512 = make_gen_rag_fn(RagEnv(512), 1000)
+docs = [RawDoc("doc-a", "title", "x" * 1_200, "cs.AI")]
 chunks_512 = list(rag_512(docs))
-rag_256 = make_gen_rag_fn(RagEnv(256), 500)
 chunks_256 = list(rag_256(docs))
-
-# Integration with generic harness (optional but recommended)
-rag_stage: Transform[RawDoc, ChunkWithoutEmbedding] = make_gen_rag_fn(env, max_chunks)
-pipeline = compose(rag_stage, some_downstream_stage)
 ```
 
-**Wins:** Configurable; testable. Integrates with harness via compose if needed.
+Each call to `rag_512(docs)` creates a fresh generator. That is different from
+capturing one already-started generator:
+
+```python
+def broken_factory(docs):
+    stream = (doc for doc in docs)
+    return lambda: stream
+```
+
+The second call to `broken_factory(docs)()` sees the exhausted stream. A stage
+factory should create per-run traversal state inside the call that starts a run.
 
 ---
 
