@@ -257,3 +257,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: Module 05 immutable RAG values are unchanged while
 Module 06 adds inspectable trace data.
+
+## Refactoring try/except: preserve the boundary contract
+
+**Starting context:** run
+`test_refactored_config_boundary_matches_characterized_behavior` and compare
+the two local parsers.
+
+**Objective:** characterize leading whitespace and signed integer input before
+removing the legacy parser.
+
+**Constraints:**
+
+- compare complete typed results;
+- retain exact error code and message behavior;
+- keep the expected exception class narrow;
+- run the unexpected-exception test from the preceding core.
+
+**Expected evidence:** legacy and refactored parsers agree on the expanded input
+table, and an unrelated runtime defect still raises.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k "refactored_config_boundary or exception_bridge"
+```
+
+Earlier contract preserved: public Module 05 success and failure values remain
+stable while Module 06 changes internal control flow.

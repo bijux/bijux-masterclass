@@ -71,6 +71,31 @@ The safest first pass is usually **internal refactor, external contract unchange
 That ordering keeps the refactor reviewable. It separates “the flow is now cleaner” from
 “the public contract changed,” which are two different decisions.
 
+## Runnable lab: characterize before replacing try/except
+
+The learning proof keeps a small legacy parser beside its `try_result`
+replacement long enough to compare their public `Result` values:
+
+```python
+assert legacy_parse("8") == refactored_parse("8") == Ok(8)
+assert legacy_parse("eight") == refactored_parse("eight") == Err(
+    ErrInfo(code="CONFIG_PARSE", msg=expected_message)
+)
+```
+
+Run both characterized cases:
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k refactored_config_boundary_matches_characterized_behavior
+```
+
+The temporary side-by-side comparison is a migration aid, not a second
+permanent implementation. Delete the legacy function only after success and
+expected-failure behavior agree and the unexpected-exception proof from the
+previous core still passes.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Invariant                       | Description                                                                                  | Enforcement          |

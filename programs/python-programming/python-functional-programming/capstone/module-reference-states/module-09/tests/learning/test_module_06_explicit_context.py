@@ -248,3 +248,41 @@ def test_writer_preserves_rag_chunk_while_accumulating_trace() -> None:
 
     assert value == chunk
     assert entries == ("chunk:writer:0-4", "characters:4")
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("8", Ok(8)),
+        (
+            "eight",
+            Err(
+                ErrInfo(
+                    code="CONFIG_PARSE",
+                    msg="invalid literal for int() with base 10: 'eight'",
+                )
+            ),
+        ),
+    ],
+)
+def test_refactored_config_boundary_matches_characterized_behavior(
+    raw: str,
+    expected: Result[int, ErrInfo],
+) -> None:
+    """Replacing try/except preserves the boundary's typed public result."""
+
+    def legacy_parse(value: str) -> Result[int, ErrInfo]:
+        try:
+            return Ok(int(value))
+        except ValueError as error:
+            return Err(ErrInfo(code="CONFIG_PARSE", msg=str(error)))
+
+    def refactored_parse(value: str) -> Result[int, ErrInfo]:
+        return try_result(
+            lambda: int(value),
+            lambda error: ErrInfo(code="CONFIG_PARSE", msg=str(error)),
+            exc_type=ValueError,
+        )
+
+    assert legacy_parse(raw) == expected
+    assert refactored_parse(raw) == expected

@@ -170,3 +170,22 @@ Common wrong turns:
 The proof establishes payload preservation and trace order for this Writer
 program. It does not prove delivery to an operational logging system or that
 string entries are sufficient beyond Module 06.
+
+## Refactoring try/except: preserve the boundary contract
+
+Add cases such as `" 8"` and `"-1"` to the parameter table without changing
+either implementation first. Python’s `int` accepts both, so both functions
+should return the same `Ok` values unless a separate range rule already belongs
+to the public contract.
+
+Common wrong turns:
+
+- changing validation policy during the control-flow refactor makes divergence
+  ambiguous;
+- comparing only success values ignores error provenance;
+- retaining both implementations after equivalence creates duplicate owners;
+- omitting the unexpected-exception proof permits accidental broad catching.
+
+The comparison proves the listed public cases agree. It does not prove
+equivalence for every string; use a constrained property strategy when that
+larger claim is required.
