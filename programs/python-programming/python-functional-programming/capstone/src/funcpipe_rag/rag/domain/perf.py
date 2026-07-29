@@ -12,7 +12,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from funcpipe_rag.fp.error import ErrInfo
-from funcpipe_rag.fp.validation import Validation, VSuccess, v_success
+from funcpipe_rag.fp.validation import Validation, VFailure, VSuccess, v_success
 
 from .chunk import Chunk, assemble
 from .embedding import Embedding
@@ -21,10 +21,50 @@ from .text import ChunkText
 
 __all__ = [
     "OBatch",
+    "embedding_batches_equivalent",
     "from_optimized_batch",
     "process_batch_hybrid",
     "to_optimized_batch",
 ]
+
+
+def embedding_batches_equivalent(
+    left: Sequence[Validation[Chunk, ErrInfo]],
+    right: Sequence[Validation[Chunk, ErrInfo]],
+    *,
+    relative_tolerance: float = 1e-6,
+    absolute_tolerance: float = 1e-8,
+) -> bool:
+    """Compare optimized embedding results by the preserved domain contract."""
+
+    if len(left) != len(right):
+        return False
+    for left_item, right_item in zip(left, right):
+        if isinstance(left_item, VSuccess):
+            if not isinstance(right_item, VSuccess):
+                return False
+            left_chunk = left_item.value
+            right_chunk = right_item.value
+            if (
+                left_chunk.id != right_chunk.id
+                or left_chunk.text != right_chunk.text
+                or left_chunk.metadata != right_chunk.metadata
+                or (left_chunk.embedding is None) != (right_chunk.embedding is None)
+            ):
+                return False
+            if left_chunk.embedding is not None and right_chunk.embedding is not None:
+                if left_chunk.embedding.model != right_chunk.embedding.model:
+                    return False
+                if not np.allclose(
+                    left_chunk.embedding.vector,
+                    right_chunk.embedding.vector,
+                    rtol=relative_tolerance,
+                    atol=absolute_tolerance,
+                ):
+                    return False
+        elif not isinstance(right_item, VFailure) or left_item.errors != right_item.errors:
+            return False
+    return True
 
 
 def _embed_one(text: str, *, dim: int = 16) -> tuple[float, ...]:

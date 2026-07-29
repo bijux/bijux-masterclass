@@ -71,3 +71,24 @@ that an external telemetry sink delivered it.
 In FuncPipe, `Result` still controls application failure. Observations explain what
 happened; an explicit policy may later decide whether the evidence blocks a
 release.
+
+## Property-based regression: state equivalence in domain terms
+
+Change one successful result's `ChunkMetadata.source`. A batch containing only
+that chunk is sufficient to disprove equivalence; Hypothesis does not need a
+large corpus because metadata equality is part of the predicate.
+
+Common wrong turns:
+
+- comparing only vector values loses identity and provenance contracts;
+- applying `allclose` to identifiers or counts weakens exact domain semantics;
+- comparing concrete optimized container types forbids safe implementation changes;
+- testing only a hand-picked ASCII sentence misses useful generated cases.
+
+The property proves pure and hybrid embedding parity across the generated text
+and batch-size domain. It does not prove the hybrid route is faster, nor does it
+cover numeric behavior outside the declared tolerances.
+
+In FuncPipe, the equivalence predicate is the gate before performance evidence.
+Optimization may change representation and execution, not the meaning of a RAG
+chunk.

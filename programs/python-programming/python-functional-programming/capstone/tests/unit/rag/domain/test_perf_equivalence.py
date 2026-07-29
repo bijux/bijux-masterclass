@@ -1,16 +1,14 @@
 from __future__ import annotations
 
-import numpy as np
-from hypothesis import given
-from hypothesis import strategies as st
-
-from funcpipe_rag.fp.validation import VFailure, VSuccess
 from funcpipe_rag.rag.domain import (
     Chunk,
     ChunkMetadata,
     ChunkText,
+    embedding_batches_equivalent,
     process_batch_hybrid,
 )
+from hypothesis import given
+from hypothesis import strategies as st
 
 chunk_strat = st.builds(
     Chunk,
@@ -30,19 +28,5 @@ chunk_strat = st.builds(
 def test_pure_vs_hybrid_equivalence(batch: list[Chunk]) -> None:
     pure = process_batch_hybrid(batch, mode="pure")
     hybrid = process_batch_hybrid(batch, mode="hybrid")
-    assert len(pure) == len(hybrid)
-    for p, h in zip(pure, hybrid):
-        if isinstance(p, VSuccess):
-            assert isinstance(h, VSuccess)
-            pc = p.value
-            hc = h.value
-            assert pc.id == hc.id
-            assert pc.text.content == hc.text.content
-            assert pc.metadata == hc.metadata
-            assert (pc.embedding is None) == (hc.embedding is None)
-            assert pc.embedding is not None and hc.embedding is not None
-            assert pc.embedding.model == hc.embedding.model
-            assert np.allclose(pc.embedding.vector, hc.embedding.vector, rtol=1e-6, atol=1e-8)
-        else:
-            assert isinstance(h, VFailure)
-            assert p.errors == h.errors
+
+    assert embedding_batches_equivalent(pure, hybrid)

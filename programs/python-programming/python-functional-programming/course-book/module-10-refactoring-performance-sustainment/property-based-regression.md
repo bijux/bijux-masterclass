@@ -289,8 +289,39 @@ class TestRagPipeline(TestRagPipelineMachine):
 Add PBT to capstone/tests/test_rag.py; CI runs suite with stats.
 
 ---
-## 5. Property-Based Proofs (capstone/tests/test_module_10_core4.py)
-Use events/targets for diversity.
+## FuncPipe Lab: Make the Equivalence Predicate Executable
+
+The live capstone has two deterministic embedding routes in
+`rag/domain/perf.py`: a plain route and a NumPy-backed hybrid. Module 10 gives
+their preserved contract a name: `embedding_batches_equivalent`.
+
+The predicate compares batch length, success or failure shape, chunk identity,
+text, metadata, embedding model, and numeric vectors within declared tolerances.
+It does not require identical implementation types.
+
+```python
+pure = process_batch_hybrid(batch, mode="pure")
+optimized = process_batch_hybrid(batch, mode="hybrid")
+assert embedding_batches_equivalent(pure, optimized)
+```
+
+The learning test generates Unicode texts and varying batch sizes, including the
+empty identity case:
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k optimized_embedding_preserves_the_domain_contract
+```
+
+If it fails, Hypothesis shrinks the input to a smaller semantic counterexample.
+The property proves parity for the generated domain and declared tolerance; it
+does not establish a performance advantage.
+
+---
+## 5. Property-Based Proofs
+Use events/targets for diversity. The executable FuncPipe proof lives in
+`capstone/tests/learning/test_module_10_sustainment.py`.
 
 ```python
 from hypothesis import event, target

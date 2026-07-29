@@ -5,6 +5,13 @@ from __future__ import annotations
 from pathlib import Path
 
 from funcpipe_rag.boundaries.shells.review_cli import build_summary
+from funcpipe_rag.rag.domain import (
+    Chunk,
+    ChunkMetadata,
+    ChunkText,
+    embedding_batches_equivalent,
+    process_batch_hybrid,
+)
 from funcpipe_rag.review.observability import (
     StageObservation,
     summarize_observations,
@@ -14,6 +21,8 @@ from funcpipe_rag.review.performance import (
     PerformanceObservation,
     evaluate_budget,
 )
+from hypothesis import given
+from hypothesis import strategies as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -67,3 +76,27 @@ def test_observability_is_data_that_does_not_change_pipeline_decisions() -> None
 
     assert summary.stages == ("clean", "chunk", "embed")
     assert (summary.processed, summary.failures, summary.latency_ms) == (9, 1, 8.0)
+
+
+@given(texts=st.lists(st.text(min_size=1, max_size=32), max_size=8))
+def test_optimized_embedding_preserves_the_domain_contract(
+    texts: list[str],
+) -> None:
+    """Generated examples compare semantics, not implementation identity."""
+
+    batch = [
+        Chunk(
+            text=ChunkText(content=text),
+            metadata=ChunkMetadata(
+                source="learning",
+                tags=(),
+                embedding_model="local-hash",
+            ),
+        )
+        for text in texts
+    ]
+
+    pure = process_batch_hybrid(batch, mode="pure")
+    optimized = process_batch_hybrid(batch, mode="hybrid")
+
+    assert embedding_batches_equivalent(pure, optimized)

@@ -93,3 +93,31 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 Earlier contract preserved: Module 07 keeps effects at the shell, and Module 04
 typed failures remain the RAG control-flow values rather than being replaced by
 metrics.
+
+## Property-based regression: state equivalence in domain terms
+
+**Starting context:** read `embedding_batches_equivalent` and
+`test_optimized_embedding_preserves_the_domain_contract`.
+
+**Objective:** introduce a deliberate metadata mismatch in one result and predict
+the smallest counterexample Hypothesis needs to reject equivalence.
+
+**Constraints:**
+
+- compare success and failure variants explicitly;
+- preserve chunk identity, text, metadata, model, and vector values;
+- apply numeric tolerance only to vectors;
+- do not assert implementation type equality.
+
+**Expected evidence:** generated batches accept the shipped pure and hybrid routes,
+while a one-item metadata change makes the predicate false.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k optimized_embedding_preserves_the_domain_contract
+```
+
+Earlier contract preserved: Module 05's optimized representation is replaceable
+only while the public `Chunk` and typed-failure semantics remain equivalent.

@@ -20,7 +20,13 @@ from .chunk import (
 )
 from .embedding import Embedding
 from .metadata import ChunkMetadata
-from .perf import OBatch, from_optimized_batch, process_batch_hybrid, to_optimized_batch
+from .perf import (
+    OBatch,
+    embedding_batches_equivalent,
+    from_optimized_batch,
+    process_batch_hybrid,
+    to_optimized_batch,
+)
 from .text import ChunkText
 
 __all__ = [
@@ -32,6 +38,7 @@ __all__ = [
     "Embedding",
     "OBatch",
     "assemble",
+    "embedding_batches_equivalent",
     "from_optimized_batch",
     "map_metadata_checked",
     "process_batch_hybrid",
