@@ -148,30 +148,49 @@ that directly determines chunk output.
 
 ## Testing the boundary honestly
 
-The short Module 01 learning proof tests the pure core. It deliberately does not
-claim to prove file behavior.
+Module 01 keeps core and boundary evidence separate:
 
-A focused shell test should use a temporary directory and assert:
+| Proof | Observable claim | Deliberate limit |
+| --- | --- | --- |
+| `test_module_01_purity_foundations.py` | domain values and transformations obey six named laws | it performs no file I/O |
+| `test_module_01_shell_boundary.py` | the CSV/JSONL adapter preserves successful values and follows four boundary routes | it does not make the shell pure or production-complete |
 
-- a valid CSV produces parseable JSONL;
-- every line represents one returned chunk;
-- malformed row shape raises the documented error;
-- pure `full_rag` output matches serialized content;
-- input data is not rewritten.
+The tracked shell proof uses pytest's temporary directory and exercises this decision
+table:
 
-Such a test proves the local file adapter. It still does not prove atomicity, disk
-capacity behavior, security of arbitrary paths, or concurrency safety.
+| Input route | Expected observation | Ownership established |
+| --- | --- | --- |
+| two valid rows | parsed JSONL equals `asdict` values from direct `full_rag`; source bytes are unchanged | the shell delegates domain meaning and only serializes the result |
+| headers with no rows | the destination exists and is empty | an empty pure result is a successful domain outcome |
+| row missing `abstract` | contextual `ValueError`; destination does not exist | row construction failure is translated before writing starts |
+| missing input path | `FileNotFoundError`; destination does not exist | path-open failure propagates unchanged |
 
-For core behavior, run:
+From the repository root, run the boundary proof:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-01/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-shell-proof
 ```
 
-Then inspect `rag_shell.py` directly. Source review is part of effect proof because a
-return-value assertion cannot reveal every hidden read or write.
+The equivalence assertion is made after JSON parsing, not by comparing raw JSON text.
+Whitespace and object-key formatting belong to serialization; chunk field values and
+line order belong to the boundary contract.
+
+This proof still says nothing about atomic replacement, disk exhaustion, arbitrary
+path security, concurrent writers, or recovery from a mid-write failure. It also
+cannot establish the absence of every hidden effect: a return-value assertion would
+still pass if `full_rag` logged secretly. Read `full_rag.py` and `rag_shell.py`
+alongside the tests when reviewing effect ownership.
+
+The order of operations is part of the current contract:
+
+```text
+open input -> parse all rows -> call full_rag -> open output -> write lines
+```
+
+That order explains why malformed input cannot create the destination, while a write
+failure can leave a partial destination. A future streaming adapter could change the
+failure timing and would need a different proof.
 
 ## Boundary review checklist
 
@@ -186,17 +205,14 @@ return-value assertion cannot reveal every hidden read or write.
 
 ## Learner work
 
-Write a focused test plan for `rag_shell`; do not redesign it. Include:
+Run `capstone-shell-proof`, then inspect its four tests. For each test, identify the
+first observation that would fail if domain work moved into the shell. Propose one
+additional boundary case and state whether it belongs in Module 01 or requires a
+later contract such as atomic output or streaming consumption.
 
-- one valid two-document CSV;
-- one malformed row;
-- one missing path;
-- one empty CSV with headers;
-- expected output or exception for each;
-- what each case proves and does not prove.
-
-Then draw the call boundary and mark every line that can observe or change external
-state. Preserve the Module 01 core proof.
+Finally, draw the call boundary and mark every line that can observe or change
+external state. Preserve the six-test core proof; boundary coverage is additive, not
+a substitute for pure laws.
 
 Continue with [Equational Reasoning](equational-reasoning.md), where the now-isolated
 pure expressions can be rewritten under explicit laws.
