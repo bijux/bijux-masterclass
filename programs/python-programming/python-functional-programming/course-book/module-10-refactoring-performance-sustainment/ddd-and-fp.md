@@ -63,6 +63,36 @@ Use this when you are building large, long-lived FP systems.
 4. Orchestrate with explicit platform policies.
 
 ---
+## FuncPipe Lab: Name Review Ownership Without Moving the Domain
+
+The capstone review report groups code by stable responsibility and now includes
+an owner key for each group. These are review ownership labels, not Python import
+paths and not a claim that every package is a separate DDD bounded context.
+
+```text
+functional-core            -> functional-foundations
+rag-model                  -> rag-domain
+orchestration-and-policy   -> pipeline-runtime
+effect-boundaries          -> boundary-integrations
+interop                    -> ecosystem-interop
+```
+
+Moving `rag/domain` merely to make a diagram symmetric would risk history and
+imports without improving the RAG language. Naming an accountable review boundary
+answers the sustainment question while preserving the application structure.
+
+```bash
+cd programs/python-programming/python-functional-programming/capstone
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k package_groups_name_review_ownership_not_only_directories
+funcpipe-rag-review summary
+```
+
+The proof establishes complete ownership labels for the five published review
+groups. It does not prove team membership, approval enforcement, or that the
+groups are independently deployable services.
+
+---
 ## 1. Laws & Invariants
 | Law                        | Description                                                                                  | Enforcement                          |
 |----------------------------|------------------------------------------------------------------------------------------------|--------------------------------------|

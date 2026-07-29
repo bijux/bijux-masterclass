@@ -149,3 +149,20 @@ def test_scaling_review_separates_installation_implementation_and_proof() -> Non
     assessment = assess_scaling(implemented_elsewhere, REQUIRED_SCALING_PROOFS)
     assert assessment.implementation_ready is True
     assert assessment.runtime_ready is False
+
+
+def test_package_groups_name_review_ownership_not_only_directories() -> None:
+    """A change has an accountable review boundary even across nested packages."""
+
+    summary = build_summary(PROJECT_ROOT)
+    ownership = {
+        group["name"]: group["owner"] for group in summary["package_groups"]
+    }
+
+    assert ownership == {
+        "functional-core": "functional-foundations",
+        "rag-model": "rag-domain",
+        "orchestration-and-policy": "pipeline-runtime",
+        "effect-boundaries": "boundary-integrations",
+        "interop": "ecosystem-interop",
+    }

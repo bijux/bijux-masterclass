@@ -132,3 +132,22 @@ execute a distributed backend or validate an external scheduler.
 
 In FuncPipe, scaling is optional and evidence-gated. The local pipeline remains
 understandable and correct even when no distributed dependency is present.
+
+## DDD and FP: assign review ownership without inventing services
+
+`pipelines/configured.py` and `policies/retry.py` are both reviewed through
+`orchestration-and-policy`, so `pipeline-runtime` is accountable. If the change
+also alters a concrete adapter, `boundary-integrations` joins the review.
+
+Common wrong turns:
+
+- calling every directory a bounded context empties the DDD term of meaning;
+- moving files only to match ownership labels destabilizes imports and history;
+- assigning one repository-wide owner hides domain-specific judgment;
+- encoding current people's names makes the map age quickly.
+
+The test proves that every published package group has one stable ownership label.
+It does not enforce approvals or prove organizational authority.
+
+In FuncPipe, the RAG model retains its language and code shape. Ownership tells a
+future maintainer who must understand a change, not how many services to deploy.

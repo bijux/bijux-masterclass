@@ -178,3 +178,31 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 
 Earlier contract preserved: a future compiler must retain Module 08 ordering,
 failure, and pressure contracts; local execution remains the semantic oracle.
+
+## DDD and FP: assign review ownership without inventing services
+
+**Starting context:** inspect `PACKAGE_GROUPS` in `review_cli.py` and
+`test_package_groups_name_review_ownership_not_only_directories`.
+
+**Objective:** decide which owner reviews a change that touches both
+`pipelines/configured.py` and `policies/retry.py`.
+
+**Constraints:**
+
+- choose ownership by stable responsibility, not directory proximity alone;
+- do not move packages for diagram symmetry;
+- keep RAG domain language separate from operational policy;
+- make every published package group accountable.
+
+**Expected evidence:** the report exposes one durable owner for each review group,
+and the cross-group change names both required reviewers.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k package_groups_name_review_ownership_not_only_directories
+```
+
+Earlier contract preserved: existing package boundaries and imports remain stable;
+Module 10 adds review accountability rather than a speculative service split.

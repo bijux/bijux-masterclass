@@ -17,6 +17,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
             "src/funcpipe_rag/tree",
             "src/funcpipe_rag/streaming",
         ],
+        "owner": "functional-foundations",
         "purpose": "Reusable algebra, containers, folds, and lazy stream behavior.",
         "tests": [
             "tests/unit/fp",
@@ -32,6 +33,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
             "src/funcpipe_rag/rag",
             "src/funcpipe_rag/rag/domain",
         ],
+        "owner": "rag-domain",
         "purpose": "RAG-specific value shapes, stages, and domain assembly logic.",
         "tests": [
             "tests/unit/rag",
@@ -44,6 +46,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
             "src/funcpipe_rag/pipelines",
             "src/funcpipe_rag/policies",
         ],
+        "owner": "pipeline-runtime",
         "purpose": "Configured pipeline assembly and explicit runtime policy choices.",
         "tests": [
             "tests/unit/pipelines",
@@ -58,6 +61,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
             "src/funcpipe_rag/boundaries",
             "src/funcpipe_rag/infra",
         ],
+        "owner": "boundary-integrations",
         "purpose": "Capabilities, shells, adapters, and concrete runtime edges.",
         "tests": [
             "tests/unit/domain",
@@ -70,6 +74,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
         "paths": [
             "src/funcpipe_rag/interop",
         ],
+        "owner": "ecosystem-interop",
         "purpose": "Compatibility layers for stdlib and external functional helpers.",
         "tests": [
             "tests/unit/interop",
@@ -198,7 +203,8 @@ def render_text(summary: dict[str, Any]) -> str:
     lines.append("Package groups:")
     for group in summary["package_groups"]:
         lines.append(
-            f"- {group['name']}: {group['python_file_count']} python files; {group['purpose']}"
+            f"- {group['name']}: {group['python_file_count']} python files; "
+            f"owner={group['owner']}; {group['purpose']}"
         )
         lines.append(f"  paths: {', '.join(group['paths'])}")
         lines.append(f"  tests: {', '.join(group['tests'])}")

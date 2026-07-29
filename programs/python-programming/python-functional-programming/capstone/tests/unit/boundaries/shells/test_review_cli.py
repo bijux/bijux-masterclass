@@ -36,6 +36,13 @@ def test_build_summary_reports_expected_groups() -> None:
     ]
     assert route_names == ["demo", "test", "tour", "proof"]
     assert all(group["python_file_count"] > 0 for group in summary["package_groups"])
+    assert {group["owner"] for group in summary["package_groups"]} == {
+        "boundary-integrations",
+        "ecosystem-interop",
+        "functional-foundations",
+        "pipeline-runtime",
+        "rag-domain",
+    }
     assert all(group["python_file_count"] > 0 for group in summary["test_groups"])
 
 
@@ -56,6 +63,7 @@ def test_render_text_mentions_review_surfaces() -> None:
 
     assert "FuncPipe review summary" in rendered
     assert "functional-core" in rendered
+    assert "owner=functional-foundations" in rendered
     assert "algebra-and-laws" in rendered
     assert "make proof" in rendered
 
