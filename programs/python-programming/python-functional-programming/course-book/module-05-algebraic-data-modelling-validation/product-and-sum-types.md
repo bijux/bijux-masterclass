@@ -317,6 +317,35 @@ def chunk_state_from_dict(d: Mapping[str, JSON]) -> ChunkState:
 | Dict for metadata             | Unstable equality/serialization| Sorted tuple of tuples                           |
 | Inheritance for variants      | Fragile, hard to exhaust       | Tagged union of dataclasses                      |
 
+## Runnable RAG learning lab
+
+The property suite below proves broad laws, but begin with one traceable RAG
+decision:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k product_and_sum_types_make_chunk_outcomes_explicit
+```
+
+The test constructs one immutable prepared chunk and two possible embedding
+outcomes. The product type requires the chunk's text, path, and metadata
+together. The sum type makes ready and failed outcomes mutually exclusive, so a
+consumer cannot observe “successful with an error” or “failed with an
+embedding.”
+
+Trace the assertions in this order:
+
+1. the prepared product round-trips through its stable dictionary shape;
+2. both outcome variants round-trip through their tagged shapes; and
+3. the exhaustive match produces a different public description for each
+   variant.
+
+This proves the modeled distinctions and codecs for these values. It does not
+prove that every future embedding outcome is known or that a transport boundary
+may trust arbitrary dictionaries. Complete the matching exercise in
+[Module 05 Exercises](exercises.md) before adding another variant.
+
 ## 5. Property-Based Proofs (capstone/tests/test_module_05_c01.py)
 
 ```python
