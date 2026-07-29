@@ -94,8 +94,8 @@ def full_rag(docs: list[RawDoc], env: RagEnv) -> list[Chunk]:
     Properties:
     - Pure and referentially transparent
     - Output order depends only on (doc_id, start), not input order
-    - `full_rag(full_rag(x)) == full_rag(x)` (idempotent)
-    - Fixed point reached in a single pass
+    - Applying structural deduplication again does not change completed output
+    - Canonical deduplication reaches a fixed point in a single pass
     """
     return structural_dedup_chunks(docs_to_embedded(docs, env))
 
