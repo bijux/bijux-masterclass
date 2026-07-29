@@ -126,7 +126,19 @@ def _err_to_jsonable(e: Any) -> Any:
             d["ctx"] = dict(ctx)
         return d
     if isinstance(e, BreakInfo):
-        return asdict(e)
+        return {
+            "code": e.code,
+            "reason": e.reason,
+            "last_error": (
+                _err_to_jsonable(e.last_error)
+                if e.last_error is not None
+                else None
+            ),
+            "n_ok": e.n_ok,
+            "n_err": e.n_err,
+            "total": e.total,
+            "threshold": dict(e.threshold),
+        }
     if hasattr(e, "_asdict"):
         try:
             return dict(e._asdict())

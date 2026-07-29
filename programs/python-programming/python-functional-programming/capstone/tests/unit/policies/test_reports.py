@@ -5,6 +5,7 @@ import json
 from hypothesis import given
 from hypothesis import strategies as st
 
+from funcpipe_rag.policies.breakers import circuit_breaker_count_emit
 from funcpipe_rag.policies.reports import fold_error_report, report_to_jsonable
 from funcpipe_rag.result import Err, Ok, make_errinfo, map_result_iter
 
@@ -50,4 +51,20 @@ def test_report_to_jsonable_is_json_serializable() -> None:
     report = fold_error_report(map_result_iter(f, items), max_samples=2, path_depth=2)
     payload = report_to_jsonable(report)
     assert "by_path_prefix" in payload
+    json.dumps(payload)
+
+
+def test_break_report_serializes_nested_immutable_context() -> None:
+    error = make_errinfo(
+        "EMBED/INVALID",
+        "invalid chunk",
+        "embed",
+        (3,),
+        ctx={"attempt": 2},
+    )
+    observed = list(circuit_breaker_count_emit([Err(error)], max_errs=0))
+    payload = report_to_jsonable(fold_error_report(observed))
+    terminal = payload["by_code"]["BREAK/ERR_COUNT"]["samples"][0]
+
+    assert terminal["last_error"]["ctx"] == {"attempt": 2}
     json.dumps(payload)
