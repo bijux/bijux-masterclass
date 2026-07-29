@@ -368,7 +368,9 @@ Everything else → fence aggressively.
 **Reflect:** Audit every iterator consumption in your codebase and flag the ones that
 still need an explicit fence or termination argument.
 
-**Project Exercise:** Add `max_chunks=10_000` and `min_doc_len=500` defaults to your RAG config. Verify on a malicious 1 TB simulated input that the pipeline terminates in < 1 second.
+**Project Exercise:** Use a counted document source to prove that a three-chunk
+request does not read a fourth chunk. Then explain which source shapes could still
+prevent the pipeline from producing those three chunks.
 
 **Continue with:** [Reusable Pipeline Stages](../module-03-iterators-laziness-streaming-dataflow/reusable-pipeline-stages.md)
 
@@ -391,3 +393,73 @@ still need an explicit fence or termination argument.
 **Further Reading:** For the deepest itertools mastery, see the official docs and Dan Bader’s ‘Python Tricks’ chapter on iterators.
 
 > **You now own the most powerful lazy streaming toolkit in Python. Module 4 will show you how to make even failure and resource cleanup lazy and pure.**
+
+## A fence bounds output, not every kind of work
+
+`gen_bounded_chunks(..., max_chunks=3)` uses `islice` around the chunk stream. It
+guarantees at most three emitted chunks and does not request a fourth. It does not
+guarantee that reaching the first chunk is fast.
+
+Consider a filter that rejects every document:
+
+```python
+def documents():
+    while True:
+        yield rejected_document()
+
+first = next(gen_bounded_chunks(documents(), config, deps, max_chunks=3))
+```
+
+The output fence is never reached because the upstream filter searches forever for
+one accepted value. Safe traversal requires a termination argument for every stage
+that may discard, retry, or expand input.
+
+| Operation | Useful bound |
+| --- | --- |
+| `map` one-to-one | output count bounds input count |
+| `filter` | separate input scan bound may be required |
+| `flatmap` documents to chunks | output bound does not bound documents exactly |
+| retry | attempt limit |
+| fan-out | lag buffer or synchronized consumption |
+| deduplication | seen-key retention policy |
+
+### Place fences according to the failure you mean to prevent
+
+An input fence limits documents inspected. An output fence limits chunks emitted:
+
+```python
+from itertools import islice
+
+bounded_documents = islice(documents, 100)
+bounded_chunks = gen_bounded_chunks(
+    bounded_documents,
+    config,
+    deps,
+    max_chunks=1_000,
+)
+```
+
+These policies answer different questions and can be composed. Hiding both behind
+a name such as `safe_pipeline` is weak unless its docstring states both limits.
+
+### `dropwhile` is not a minimum-length filter
+
+The Module 03 `safe_rag_pipeline` uses `dropwhile` for `min_doc_len`. It skips only
+the initial run of short documents. Once one long document appears, later short
+documents pass through. That is appropriate only for an ordered warm-up prefix.
+For a global minimum-length rule, use a filter predicate. Reading the combinator
+name without tracing its state transition would miss this difference.
+
+### Exact demand proof
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-03/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+  -k 'prefix_fence or construction'
+```
+
+The tests prove finite prefix demand on productive inputs. They do not prove a time
+limit, cancellation, cleanup, or progress through a permanently rejecting filter.
+For each production fence, document both what it bounds and which progress
+assumption it relies on.
