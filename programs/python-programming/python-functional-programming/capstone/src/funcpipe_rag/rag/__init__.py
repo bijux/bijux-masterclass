@@ -26,7 +26,6 @@ from .core import (
     gen_grouped_chunks,
     gen_overlapping_chunks,
     gen_stream_deduped,
-    stream_rag_chunks,
     gen_stream_embedded,
     iter_chunks_from_cleaned,
     iter_rag,
@@ -35,6 +34,7 @@ from .core import (
     safe_rag_pipeline,
     sliding_windows,
     stream_chunks,
+    stream_rag_chunks,
     throttle,
 )
 from .types import DebugConfig, DocRule, Observations, RagTaps, RagTraceV3, TraceLens
@@ -63,7 +63,6 @@ __all__ = [
     "gen_grouped_chunks",
     "gen_overlapping_chunks",
     "gen_stream_deduped",
-    "stream_rag_chunks",
     "gen_stream_embedded",
     "get_deps",
     "iter_chunks_from_cleaned",
@@ -76,5 +75,6 @@ __all__ = [
     "safe_rag_pipeline",
     "sliding_windows",
     "stream_chunks",
+    "stream_rag_chunks",
     "throttle",
 ]

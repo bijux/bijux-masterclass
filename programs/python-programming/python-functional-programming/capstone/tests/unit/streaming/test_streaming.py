@@ -16,7 +16,6 @@ from funcpipe_rag import (
     compose_transforms,
     fence_k,
     fork2_lockstep,
-    gen_bounded_chunks,
     gen_overlapping_chunks,
     get_deps,
     make_gen_rag_fn,

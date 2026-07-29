@@ -175,7 +175,6 @@ from .rag.core import (
     gen_grouped_chunks,
     gen_overlapping_chunks,
     gen_stream_deduped,
-    stream_rag_chunks,
     gen_stream_embedded,
     iter_chunks_from_cleaned,
     iter_rag,
@@ -183,6 +182,7 @@ from .rag.core import (
     safe_rag_pipeline,
     sliding_windows,
     stream_chunks,
+    stream_rag_chunks,
 )
 
 # Pure pipeline stages – the building blocks

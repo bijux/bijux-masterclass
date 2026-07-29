@@ -131,8 +131,8 @@ __all__ = [
     "gen_bounded_chunks",
     "gen_grouped_chunks",
     "gen_stream_deduped",
-    "stream_rag_chunks",
     "gen_stream_embedded",
     "safe_rag_pipeline",
     "stream_chunks",
+    "stream_rag_chunks",
 ]
