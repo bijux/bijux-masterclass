@@ -99,9 +99,65 @@ Do not force it when:
 
 Before moving on:
 
-1. inspect `capstone/_history/worktrees/module-02/src/funcpipe_rag/api/config.py`
-2. inspect the matching config-sensitive tests under `capstone/_history/worktrees/module-02/tests/`
-3. decide whether the config model makes change safer or just more formal
+1. inspect `capstone/module-reference-states/module-02/src/funcpipe_rag/api/config.py`;
+2. inspect `api/clean_cfg.py` and identify where names become functions;
+3. run the boundary and cleaning-configuration learning tests;
+4. decide whether each config field changes application policy or merely stores
+   convenient implementation state.
+
+## Validate Python's actual runtime types
+
+Python booleans are integers for historical and language-model reasons:
+
+```python
+assert isinstance(True, int)
+```
+
+Therefore this check is insufficient at an untyped boundary:
+
+```python
+if not isinstance(chunk_size_raw, int):
+    return Err(...)
+```
+
+The Module 02 boundary explicitly rejects `bool`:
+
+```python
+if not isinstance(chunk_size_raw, int) or isinstance(chunk_size_raw, bool):
+    return Err(
+        "Invalid config: chunk_size must be int "
+        f"(got {type(chunk_size_raw).__name__})"
+    )
+```
+
+Without that clause, `True` constructs `RagEnv(chunk_size=True)` and behaves like a
+chunk size of one. Static annotations do not protect a mapping loaded from JSON,
+CLI arguments, or another untyped adapter.
+
+## Boundary validation order
+
+Use this sequence:
+
+1. check runtime type without coercing surprising values;
+2. check scalar range and cross-field constraints;
+3. check names against the interpreter registry;
+4. convert lists to immutable tuples;
+5. construct frozen domain configuration;
+6. return `Ok(config)` or an expected boundary `Err`.
+
+Do not silently apply `int(value)` unless coercion is part of the public contract.
+`int(True)`, `int(3.8)`, and `int("4")` accept three different kinds of input and
+erase the information a helpful error needs.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'boundary_config'
+```
+
+The proof covers valid configuration and boolean rejection. It does not yet prove a
+complete schema or accumulated validation errors; later modules add richer models.
 
 ## Reflection
 

@@ -331,3 +331,65 @@ so the model does not turn into decorative ceremony.
 
 Continue with [Configuration Review and Validation](configuration-review-and-validation.md)
 before you move into [Callbacks to Combinators](callbacks-to-combinators.md).
+
+## Configuration order is application behavior
+
+`CleanConfig` stores rule names in a tuple:
+
+```python
+lower_then_upper = CleanConfig(("strip", "lower", "upper"))
+upper_then_lower = CleanConfig(("strip", "upper", "lower"))
+```
+
+Applied to `" MiXeD "`, the first produces `"MIXED"` and the second `"mixed"`.
+The tuple is ordered data, not a set of enabled flags.
+
+This gives configuration useful value semantics:
+
+- equality compares the selected rules and their order;
+- the frozen dataclass can be safely captured by a configurator;
+- a boundary can serialize rule names without serializing functions;
+- review can diff policy before running it.
+
+`RULES` remains the interpreter from a durable name to behavior. Configuration
+containing an unknown name must be rejected at the boundary, not allowed to fail as
+a later `KeyError` inside cleaning.
+
+## A frozen object can still refer to mutable values
+
+`frozen=True` prevents field reassignment. It does not recursively freeze every
+object referenced by a field. Module 02 uses tuples and other frozen dataclasses so
+the actual configuration graph has value-like behavior.
+
+Avoid:
+
+```python
+@dataclass(frozen=True)
+class WeakConfig:
+    rules: list[str]
+```
+
+The list can still mutate. Prefer `tuple[str, ...]` for ordered immutable policy.
+
+## Configuration is not dependency injection
+
+Keep these separate:
+
+```text
+RagConfig   = policy values
+RagCoreDeps = cleaner, embedder, optional taps
+```
+
+A configured cleaner is created from `CleanConfig`, then placed in
+`RagCoreDeps`. This composition root is where data becomes behavior.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'cleaning_configuration'
+```
+
+The proof establishes that order is preserved and observable. It does not prove
+that every possible rule sequence is semantically useful; boundary policy may need
+to reject conflicting combinations.
