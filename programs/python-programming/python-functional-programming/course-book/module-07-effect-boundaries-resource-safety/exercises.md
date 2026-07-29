@@ -99,3 +99,32 @@ MYPYPATH=src mypy --strict --follow-imports=silent \
 Earlier contract preserved: explicit dependencies from Module 06 remain visible;
 the protocol narrows what the dependency may do instead of hiding it in an
 environment object with unrestricted access.
+
+## Resource safety: close a partial read
+
+**Starting context:** read `FileStorage.read_docs` and
+`test_partial_storage_read_closes_the_owned_file`.
+
+**Objective:** consume two rows from a three-row stream, stop, and prove the
+owned file closes without requesting the third row.
+
+**Constraints:**
+
+- record when `open` is entered;
+- assert construction is lazy;
+- close the iterator explicitly;
+- do not force the stream to a list.
+
+**Expected evidence:** one open event occurs on first demand, the file remains
+open during partial traversal, and explicit close releases it before exhaustion.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k partial_storage_read_closes_the_owned_file
+```
+
+Earlier contract preserved: Module 03 streaming remains demand-driven; Module
+07 adds deterministic cleanup without replacing the iterator model.

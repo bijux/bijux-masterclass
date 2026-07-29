@@ -79,3 +79,30 @@ def test_read_capability_grants_no_write_authority() -> None:
 
     assert results == [Ok(RawDoc(doc_id="d1", title="Read only", abstract="", categories="fp"))]
     assert not hasattr(reader, "write_chunks")
+
+
+def test_partial_storage_read_closes_the_owned_file(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A consumer that stops early must close the resource-owning iterator."""
+
+    events: list[str] = []
+    csv_file = StringIO(
+        "doc_id,title,abstract,categories\n"
+        "d1,One,Alpha,fp\n"
+        "d2,Two,Beta,python\n"
+    )
+
+    def open_csv(*args: object, **kwargs: object) -> StringIO:
+        events.append("open")
+        return csv_file
+
+    monkeypatch.setattr(builtins, "open", open_csv)
+    iterator = FileStorage().read_docs("docs.csv")
+
+    assert events == []
+    assert next(iterator) == Ok(RawDoc(doc_id="d1", title="One", abstract="Alpha", categories="fp"))
+    assert events == ["open"]
+    assert not csv_file.closed
+
+    iterator.close()
+
+    assert csv_file.closed

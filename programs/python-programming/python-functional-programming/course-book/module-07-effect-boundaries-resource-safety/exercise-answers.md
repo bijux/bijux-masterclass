@@ -73,3 +73,23 @@ The behavioral test proves the read-only adapter works. Strict mypy proves the
 assignment matches the declared protocol and would reject a write through that
 narrowly typed reference. Neither proves the adapter's external data source is
 available or trustworthy.
+
+## Resource safety: close a partial read
+
+The generator body does not run at construction, so the open trace is initially
+empty. The first `next` enters the adapter's `with open` block, and the second
+`next` reuses that same file. Calling `close` injects generator finalization at
+the suspension point and exits the context manager.
+
+Common wrong turns:
+
+- converting to a list exhausts the iterator and avoids the partial-consumption
+  case;
+- testing only `csv_file.closed` after function return may pass because of
+  implementation-specific cleanup;
+- opening the file before returning the generator makes construction eager;
+- closing the raw file behind the adapter violates ownership.
+
+The proof establishes deterministic cleanup for cooperative early termination.
+It does not cover process crashes or a consumer that abandons the iterator
+without closing it.
