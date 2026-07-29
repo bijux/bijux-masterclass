@@ -3,18 +3,24 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Iterable
 from dataclasses import asdict
 from pathlib import Path
 
+import pytest
 from funcpipe_rag import (
+    Chunk,
     Err,
+    Observations,
     Ok,
     RagConfig,
+    RagCoreDeps,
     RagEnv,
     RawDoc,
     full_rag_api_docs,
     get_deps,
 )
+from funcpipe_rag.shells import rag_api_shell
 from funcpipe_rag.shells.rag_api_shell import run
 from funcpipe_rag.shells.rag_main import boundary_app_config
 
@@ -119,9 +125,22 @@ def test_filesystem_shell_returns_missing_input_failure(tmp_path: Path) -> None:
 
 def test_filesystem_shell_returns_output_failure_after_core_work(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     source = tmp_path / "docs.csv"
     output = tmp_path / "missing-parent" / "chunks.jsonl"
+    events: list[str] = []
+    original_core = rag_api_shell.full_rag_api
+
+    def recording_core(
+        docs: Iterable[RawDoc],
+        config: RagConfig,
+        deps: RagCoreDeps,
+    ) -> tuple[list[Chunk], Observations]:
+        events.append("core")
+        return original_core(docs, config, deps)
+
+    monkeypatch.setattr(rag_api_shell, "full_rag_api", recording_core)
     source.write_text(
         "doc_id,title,abstract,categories\n"
         "a,A,Pure values,cs.PL\n",
@@ -136,6 +155,7 @@ def test_filesystem_shell_returns_output_failure_after_core_work(
 
     assert isinstance(result, Err)
     assert result.error.startswith("Write failed:")
+    assert events == ["core"]
     assert not output.exists()
 
 
