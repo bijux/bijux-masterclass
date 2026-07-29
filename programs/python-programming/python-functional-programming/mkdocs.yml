@@ -78,6 +78,9 @@ nav:
   - Custom Iterators: module-03-iterators-laziness-streaming-dataflow/custom-iterators.md
   - Iterator Lifecycle and Cleanup: module-03-iterators-laziness-streaming-dataflow/iterator-lifecycle-and-cleanup.md
   - Streaming Observability: module-03-iterators-laziness-streaming-dataflow/streaming-observability.md
+  - FuncPipe Delta: module-03-iterators-laziness-streaming-dataflow/capstone-delta.md
+  - Exercises: module-03-iterators-laziness-streaming-dataflow/exercises.md
+  - Exercise Answers: module-03-iterators-laziness-streaming-dataflow/exercise-answers.md
   - Module 03 Refactoring Guide: module-03-iterators-laziness-streaming-dataflow/refactoring-guide.md
   - Module Glossary: module-03-iterators-laziness-streaming-dataflow/glossary.md
 - 'Module 04: Streaming Resilience and Failure Handling':

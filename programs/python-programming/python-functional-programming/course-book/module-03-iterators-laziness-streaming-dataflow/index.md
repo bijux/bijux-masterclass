@@ -45,6 +45,10 @@ This module makes streaming a first-class part of the course architecture. You m
 pure transforms over finite collections to deliberate control over when work
 happens, how much memory is used, and where materialization becomes a conscious choice.
 
+Start with [FuncPipe Delta](capstone-delta.md). It identifies the exact Module 02
+behavior that must survive, the new streaming surfaces, the proof route, and the
+limits deliberately handed to later modules.
+
 ## Learning outcomes
 
 - how iterators and generators model on-demand dataflow in Python
@@ -66,26 +70,33 @@ happens, how much memory is used, and where materialization becomes a conscious 
 - [Custom Iterators](custom-iterators.md)
 - [Iterator Lifecycle and Cleanup](iterator-lifecycle-and-cleanup.md)
 - [Streaming Observability](streaming-observability.md)
+- [FuncPipe Delta](capstone-delta.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Refactoring Guide](refactoring-guide.md)
 
 ## Exercises
 
-- Identify one place where laziness is valuable and one place where materialization is the honest choice, then justify both.
-- Sketch a small chunking or windowing pipeline and explain what memory or ordering contract it relies on.
-- Review one observability helper and state whether it preserves lazy behavior or forces hidden evaluation.
+Use [Module 03 Exercises](exercises.md) for five cumulative FuncPipe reviews:
+demand tracing, chunk metadata, bounded fan-out, stage ownership, and safe
+observation. Each exercise requires value evidence and an execution-policy argument.
+Compare with [Exercise Answers](exercise-answers.md) only after writing your own
+prediction.
 
 ## Capstone checkpoints
 
 - Identify where FuncPipe stays lazy and where it deliberately materializes.
 - Inspect how streaming helpers preserve metadata instead of hiding it.
 - Review whether observability helpers measure the pipeline without mutating its core behavior.
+- Run the cumulative learning proof and explain why its multicast assertion checks
+  upstream requests as well as raised errors.
 
 ## Before moving on
 
 You should be able to explain why laziness changes error handling, resource management,
 and review strategy before the course introduces typed failures and resilience patterns.
 Use [Refactoring Guide](refactoring-guide.md) and compare against
-`capstone/_history/worktrees/module-03` before moving forward.
+`capstone/module-reference-states/module-03` before moving forward.
 
 ## Closing criteria
 
