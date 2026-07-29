@@ -4,12 +4,13 @@ Work against `capstone/module-reference-states/module-02`. Preserve Module 01
 cleaning, chunk metadata, deterministic embeddings, canonical deduplication, and
 output order unless an exercise explicitly selects a non-default policy.
 
-Run the learning proof first:
+Run both focused proof owners first:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-02/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-data-api-proof
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-data-shell-proof
 ```
 
 Record your prediction before executing. Use [Exercise Answers](exercise-answers.md)
@@ -49,14 +50,16 @@ Constraints:
 
 - name the rule by stable behavior;
 - do not change default cleaning;
-- reject unknown names at the boundary;
+- make `boundary_rag_config` the semantic validator for every entry point;
+- reject unknown names, booleans, and nonpositive sizes before dependency selection;
 - preserve rule order.
 
 Expected evidence:
 
 - a unit test for the rule itself;
 - a test showing order relative to another rule;
-- a boundary configuration test;
+- mapping-boundary tests for valid, unknown-rule, boolean, zero, and negative input;
+- a CLI-boundary test proving an unknown name returns `Err` before execution;
 - the default Module 01 compatibility test still passes.
 
 Acceptance checks:
@@ -89,27 +92,39 @@ Acceptance checks:
 - short-circuit behavior is explained;
 - unsafe parsed input is rejected before a document is evaluated.
 
-## Exercise 4: Prove boundary short-circuiting
+## Exercise 4: Prove injected and concrete boundaries
 
 Starting context: `full_rag_api_path` receives a `Reader` capability and returns a
-`Result`.
+`Result`; `shells/rag_api_shell.run` owns the concrete CSV-to-JSONL route.
 
-Objective: prove that an `Err` reader result prevents cleaning and embedding.
+Objective: prove that an `Err` reader result prevents cleaning and embedding, then
+prove the real filesystem shell preserves successful core values and failure timing.
 
 Constraints:
 
-- use a fake reader;
+- use a fake reader for control-flow proof;
 - use cleaner and embedder test doubles that record or fail if called;
 - preserve the original `Err` value;
+- use temporary paths for the real adapter proof;
+- compare decoded JSONL with `full_rag_api_docs`, not only with expected counts;
+- check whether output exists after load and write failures;
 - do not catch all exceptions inside the core.
 
-Expected evidence: an ordered event trace for successful and failing reads.
+Expected evidence:
+
+- an ordered event trace for successful and failing injected reads;
+- valid CSV, header-only CSV, malformed CSV, missing input, and unavailable output
+  cases against the concrete shell;
+- an explicit boundary between what the fake proof and real-adapter proof establish.
 
 Acceptance checks:
 
 - failure performs only the reader event;
 - success runs the configured core after reading;
 - `result_map` and `result_and_then` skip their functions for `Err`;
+- a load failure creates no output;
+- valid JSONL decodes to the exact pure API chunks in order;
+- write failure is identified as occurring after core work;
 - the result says nothing about retry or cleanup policy.
 
 ## Exercise 5: Add neutral stage observation
@@ -147,5 +162,6 @@ You are ready for Module 03 when you can show:
 - one immutable policy value and the function it configures;
 - one expression pipeline with its cardinality changes;
 - one expected boundary failure represented as data;
+- one real filesystem proof that distinguishes load and write failure timing;
 - one observation hook proven neutral;
-- the exact reference-state command supporting each claim.
+- the exact focused Make route supporting each claim.
