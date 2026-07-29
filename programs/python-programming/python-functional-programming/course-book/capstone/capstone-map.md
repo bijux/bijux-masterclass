@@ -59,7 +59,7 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 | Module | Best first source surface | Best first test or review surface | Best first command |
 | --- | --- | --- | --- |
 | Module 01: Purity and substitution | `capstone/module-reference-states/module-01/src/funcpipe_rag/rag_types.py`, `pipeline_stages.py`, `full_rag.py`, `rag_shell.py` | `capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py`, `test_module_01_shell_boundary.py` | `make PROGRAM=python-programming/python-functional-programming capstone-foundation-proof` |
-| Module 02: Data-first APIs and expression style | `capstone/src/funcpipe_rag/pipelines/specs.py`, `capstone/src/funcpipe_rag/pipelines/configured.py` | `capstone/tests/unit/pipelines/test_specs_roundtrip.py`, `capstone/tests/unit/pipelines/test_configured_pipeline.py` | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
+| Module 02: Data-first APIs and expression style | `capstone/module-reference-states/module-02/src/funcpipe_rag/api/config.py`, `api/core.py`, `shells/rag_api_shell.py`, `shells/rag_main.py` | `capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py`, `test_module_02_filesystem_boundary.py` | `make PROGRAM=python-programming/python-functional-programming capstone-data-api-proof` |
 | Module 03: Iterators and lazy dataflow | `capstone/src/funcpipe_rag/streaming/`, `capstone/src/funcpipe_rag/tree/` | `capstone/tests/unit/streaming/test_streaming.py`, `capstone/tests/unit/tree/test_tree_folds.py` | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
 | Module 04: Resilience and streaming failures | `capstone/src/funcpipe_rag/result/`, `capstone/src/funcpipe_rag/policies/retries.py`, `capstone/src/funcpipe_rag/policies/breakers.py` | `capstone/tests/unit/result/test_result_folds.py`, `capstone/tests/unit/policies/test_retries.py`, `capstone/tests/unit/policies/test_breakers.py` | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
 | Module 05: Algebraic data modelling | `capstone/src/funcpipe_rag/fp/validation.py`, `capstone/src/funcpipe_rag/rag/domain/` | `capstone/tests/unit/fp/test_pattern_matching.py`, `capstone/tests/unit/rag/test_stages.py` | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
@@ -76,6 +76,11 @@ Module 01 has two additional focused commands. Use
 `capstone-foundation-types` for strict checking of the isolated snapshot and
 `capstone-shell-proof` for CSV/JSONL equivalence and boundary failures. They
 complement the first pure-behavior command; none substitutes for the others.
+
+Module 02 also divides proof ownership. Use `capstone-data-api-proof` for
+configuration, expression, and preservation laws. Use
+`capstone-data-shell-proof` for the concrete CSV/JSONL adapter and CLI boundary.
+Run both before treating the completed state as verified.
 
 ## Stop here when
 

@@ -147,7 +147,9 @@ Slice 2: boundaries and configuration
 - Read `configuration-review-and-validation.md`
 - Inspect `capstone/module-reference-states/module-02/src/funcpipe_rag/app_config.py`
 - Inspect `capstone/module-reference-states/module-02/src/funcpipe_rag/shells/rag_main.py`
-- Use the focused proof command in the Module 02 capstone delta.
+- Read `capstone/module-reference-states/module-02/tests/learning/test_module_02_filesystem_boundary.py`
+- Run `make PROGRAM=python-programming/python-functional-programming capstone-data-api-proof`
+- Run `make PROGRAM=python-programming/python-functional-programming capstone-data-shell-proof`
 
 Checkpoint:
 Can you explain where configuration stops being data and starts becoming runtime choice?
