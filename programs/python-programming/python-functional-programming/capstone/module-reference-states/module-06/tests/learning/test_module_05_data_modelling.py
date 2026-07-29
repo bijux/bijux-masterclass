@@ -25,6 +25,7 @@ from funcpipe_rag.fp.core import (
     transition,
 )
 from funcpipe_rag.fp.functor import result_map
+from funcpipe_rag.fp.monoid import METRICS, Metrics, fold
 from funcpipe_rag.fp.validation import (
     Validation,
     VFailure,
@@ -118,3 +119,18 @@ def test_applicative_validation_accumulates_independent_chunk_errors() -> None:
 
     assert invalid == VFailure(("title required", "abstract too short"))
     assert valid == VSuccess(RawDoc("rag-2", "ADTs", "typed values", "fp"))
+
+
+def test_monoid_fold_aggregates_chunk_metrics_with_empty_identity() -> None:
+    chunks = (
+        Metrics(processed=1, succeeded=1, latency_sum_ms=12.5, latency_max_ms=12.5),
+        Metrics(processed=1, succeeded=0, latency_sum_ms=8.0, latency_max_ms=8.0),
+    )
+
+    assert fold(METRICS, ()) == Metrics()
+    assert fold(METRICS, chunks) == Metrics(
+        processed=2,
+        succeeded=1,
+        latency_sum_ms=20.5,
+        latency_max_ms=12.5,
+    )

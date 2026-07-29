@@ -392,6 +392,28 @@ def test_metrics_finite_guard():
 | NaN/inf in metrics          | Silent corruption                  | Guarded combine                          |
 | Manual empty handling       | Off-by-one on empty input          | `m.empty()` in `tree_reduce`             |
 
+## Runnable RAG learning lab
+
+Run the smallest honest aggregation:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k monoid_fold_aggregates_chunk_metrics_with_empty_identity
+```
+
+Two chunk observations contribute processed count, success count, total
+latency, and maximum latency. `fold(METRICS, ())` exposes the identity instead
+of hiding the empty-input decision, while the populated fold shows why totals
+use addition and the maximum uses `max`.
+
+An aggregation operation earns the name monoid only when the identity and
+associativity laws preserve the metric's meaning. An average is a useful
+counterexample: averaging partial averages is not associative unless the
+representation carries enough information, such as count and sum. The focused
+test proves the declared empty and two-chunk outcomes; use the law suite above
+and the exercise to justify regrouping larger partitions.
+
 ## 8. Pre-Core Quiz
 
 1. Monoid = semigroup + what? → **identity (empty)**  
