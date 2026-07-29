@@ -1,6 +1,5 @@
 # Effect Boundaries
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,504 +24,64 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is where the module stops being purely about elegant code and starts being about trustworthy system structure. "Pure core, effectful edge" is not a slogan. It is a concrete answer to the question of where file access, network access, logging, and failures belong.
+Module 01 already separates a pure RAG transformation from a CSV-to-JSONL shell.
+It lets ordinary filesystem exceptions escape. Module 02 keeps that structural
+separation and adds one new boundary promise: expected read, parse, and write
+failures are returned as values.
 
-## Start With the Boundary Mistake
+The design goal is not “remove all effects.” A useful application must read and
+write. The goal is to make effect ownership visible so the transformation can
+still be tested and reasoned about with ordinary values.
 
-The most common mistake here is not using effects. It is letting them sneak into the middle of code you still want to test and rewrite as if it were pure.
+## The boundary in one sentence
 
-- If a core helper opens files or catches broad exceptions, the boundary is in the wrong place.
-- If tests must patch built-ins or global services, dependencies are still hidden.
-- If reviewers cannot swap a fake implementation without changing the algorithm, the design is not yet sealed.
+Keep path handling and filesystem access in thin adapters, pass replaceable
+capabilities explicitly, and call the document-based core only after input has
+become validated domain data.
 
-## Keep This Question In View
-
-> **Core question:**  
-> How do you isolate all side effects (I/O, mutation, exceptions) to thin, explicit boundaries—so the core stays parametric over effects, composable, and equational while handling real-world I/O?
-
-This lesson introduces boundary design as a practical architecture habit:
-
-- keep side effects inside thin implementations that can be named, replaced, and tested
-- pass those implementations through dependencies so the core can stay focused on values
-- prefer explicit result values over invisible exception paths in the core layer
-
-The running project makes the lesson concrete: the same RAG pipeline should work with fake boundaries in tests and real boundaries in production without changing the core logic.
-
-Use this when you have small-arity APIs but still let file reads, exceptions, or mutable state leak into the core.
-**Outcome:**  
-1. Identify effect leaks (I/O, raises) in code and explain their impact on reasoning.  
-2. Refactor a leaky function into parametric core + thin boundary with injected deps.  
-3. Write Hypothesis properties proving parametricity (equivalence, idempotence), with a shrinking example.
-
-**Note:** This core anticipates Module 7's Ports & Adapters—start isolating I/O now by wrapping any file/network calls in thin functions.
-
-**Result Preview:** In this core we only care about *where* I/O happens, not about advanced error algebra. We define a minimal `Result[T] = Ok[T] | Err` with `Err` always carrying a `str`. In Module 4 we generalize this to a fully-typed `Result[T, E]` with laws and a richer API. For now, treat it as a way to handle errors without exceptions: check `isinstance(res, Ok)` to get the value or `isinstance(res, Err)` to get the error.
-
----
-
-## 1. Conceptual Foundation
-
-### 1.1 Boundary Design in One Precise Sentence
-
-> Boundary design isolates side effects to thin implementations injected via protocols in deps—ensuring the core remains parametric over pure or effectful services, composable via M02C01–M02C04, while effects are testable and replaceable.
-
-### 1.2 The One-Sentence Rule
-
-> **Confine side effects to boundary implementations (e.g., FSReader); inject them as deps so the core stays parametric and testable—never hardcode effects, raises, or mutation in core functions.**
-
-### 1.3 Why This Matters Now
-
-Small, explicit APIs are only half the story. If the code behind them still performs I/O directly, the boundary remains muddy and reasoning becomes conditional on the runtime environment. This lesson finishes the separation: APIs name the dependencies, and boundaries decide how the outside world gets involved.
-
-### 1.4 Boundaries as Values in 5 Lines
-
-The next example matters because it shows a boundary implementation being treated as a replaceable value, not as hardwired behavior.
-
-```python
-from dataclasses import dataclass
-from collections.abc import Callable
-
-from funcpipe_rag import FSReader, Ok, RawDoc, Result
-
-
-@dataclass(frozen=True)
-class FakeReader:
-    docs: list[RawDoc]
-
-    def read_docs(self, path: str) -> Result[list[RawDoc]]:
-        _ = path
-        return Ok(self.docs)
-
-
-ReaderFn = Callable[[str], Result[list[RawDoc]]]
-readers: dict[str, ReaderFn] = {
-    "fake": FakeReader([RawDoc("test", "title", "abstract", "cat")]).read_docs,
-    "real": FSReader().read_docs,
-}
-```
-
-Thin boundaries (protocols), explicit injection via deps, and parametric core allow swapping implementations (pure fakes or effectful reals) without changing core logic. In practice, you may store boundary implementations in registries like readers, then inject the chosen implementation into RagBoundaryDeps.
-
-**Note:** Core is parametric: pure if deps are pure (e.g., fake embedder), effectful if deps perform I/O. Iterators defer computation; if deps are effectful, consumption performs effects.
-
----
-
-## 2. Mental Model: Leaky Effects vs Sealed Boundaries
-
-### 2.1 One Picture
+In the completed Module 02 state, that rule has two related forms:
 
 ```text
-Leaky Effects (Chaotic)                     Sealed Boundaries (Parametric)
-+---------------------------+               +------------------------------+
-| def rag(docs_path):       |               | def iter_rag_core(docs,      |
-|     docs = open(...)      |               | config, deps)                |
-|     # I/O in core!        |               | -> Iterator[Chunk]           |
-|     return process(docs)  |               | # Parametric over deps       |
-+---------------------------+               +------------------------------+
-   ↑ Flaky Reasoning                          ↑ Effects via Injected Deps
+injected path API
+path -> Reader.read_docs -> Result[list[RawDoc]]
+                          -> full_rag_api_docs -> Ok[(chunks, observations)]
+
+concrete filesystem shell
+input path -> FSReader -> full_rag_api -> write_chunks_jsonl -> Result[Observations]
 ```
 
-### 2.2 Contract Table
+The first form isolates the reader so tests can substitute it. The second proves
+that the real CSV and JSONL adapters obey the same successful-value contract.
 
-| Aspect            | Leaky Effects                | Sealed Boundaries            |
-|-------------------|------------------------------|------------------------------|
-| Parametricity     | Hardcoded effects            | Core parametric over deps    |
-| Dependencies      | Hidden I/O globals           | Explicit protocols in deps   |
-| Composability     | Flaky (side effects)         | Easy (pure flow/partial)     |
-| Testing           | Mock globals, integration    | Unit pure, fake deps         |
-| Boundaries        | Scattered                    | Thin implementations         |
-| Reasoning         | Opaque (hidden effects)      | Equational (substitutable)   |
+## Read the actual source in ownership order
 
-**Note on Leaky Choice:** Use leaks only in trivial scripts; always seal for reuse.
+All paths below are under
+`capstone/module-reference-states/module-02/src/funcpipe_rag/`.
 
----
+| Owner | Source | Responsibility |
+| --- | --- | --- |
+| domain values | `rag_types.py` | define documents, chunks, and `RagEnv` invariants |
+| pure application | `api/core.py` | transform `RawDoc` values and calculate observations |
+| capability contract | `api/config.py` | define `Reader` and group core/boundary dependencies |
+| outcome value | `result.py` | define the minimal `Ok[T] | Err` boundary result |
+| concrete adapters | `shells/rag_api_shell.py` | parse CSV, serialize JSONL, and translate expected I/O failures |
+| CLI configuration | `shells/rag_main.py` | parse arguments and validate policy before execution |
 
-## 3. Running Project: FuncPipe RAG Builder
+This ownership line matters. `full_rag_api_docs` accepts documents, not paths. It
+does not open files, catch filesystem exceptions, or decide where output belongs.
 
-We extend the FuncPipe RAG Builder from `m02-rag.md`:  
-- **Dataset:** 10k arXiv CS abstracts (`arxiv_cs_abstracts_10k.csv`).  
-- **Goal:** Isolate I/O (file loading) to boundaries, keeping core parametric.  
-- **Start:** Leaky version with I/O in core (`core5_start.py`).  
-- **End:** Injected boundaries, preserving equivalence.
+## A capability is narrower than an adapter
 
-### 3.1 Types (Canonical, Used Throughout)
-
-Extend M02C04 with effect protocols in deps:
-
-```python
-from funcpipe_rag import Err, Ok, Reader, Result
-from funcpipe_rag import RagBoundaryDeps, RagConfig, RagCoreDeps
-```
-
-**Note:** M02C05 extends deps with reader for boundaries; core functions ignore reader.
-
-### 3.2 Leaky Start (Anti-Pattern)
-
-```python
-# core5_start.py: Leaky RAG with I/O in core (anti-pattern; illustration only)
-from funcpipe_rag import Observations, RagConfig, RagCoreDeps, RagEnv
-from funcpipe_rag import Chunk, RawDoc, clean_doc, embed_chunk, iter_rag_core, structural_dedup_chunks
-import csv
-
-
-def leaky_full_rag_api(
-        path: str,
-        config: RagConfig,
-        deps: RagCoreDeps
-) -> tuple[list[Chunk], Observations]:
-    try:
-        with open(path) as f:  # Leaky I/O in "core"!
-            reader = csv.DictReader(f)
-            docs = [RawDoc(**row) for row in reader]
-    except Exception as e:
-        raise ValueError(f"Load failed: {e}")  # Leaky exception
-    chunks_iter = iter_rag_core(docs, config, deps)  # From M02C04
-    chunks = list(chunks_iter)
-    chunks = structural_dedup_chunks(chunks)
-    obs = Observations(total_docs=len(docs), total_chunks=len(chunks))  # Simplified
-    return chunks, obs
-```
-
-**Smells:**  
-- I/O (`open`) in API, not boundary.  
-- Exceptions for control flow.  
-- Mixed parametric/streaming with effects.  
-**Problem:** Breaks parametricity; hard to test without real files.
-
----
-
-## 4. Refactor to Boundaries: Parametric Core + Injected Implementations
-
-### 4.1 Streaming Core (Parametric over Deps)
-
-Canonical M02C04 core (repeated for reference):
-
-```python
-from funcpipe_rag import RagConfig, get_deps, iter_rag_core
-
-deps = get_deps(config)
-chunks_iter = iter_rag_core(docs, config, deps)
-```
-
-**Properties:**  
-- Arity 3: Parametric; pure if deps pure.  
-- Lazy: Builds on M02C03.  
-- Deps may be effectful (e.g., real embedder performs I/O).
-
-### 4.2 Post-Clean Streaming Sub-Core
-
-Internal sub-core:
-
-```python
-from funcpipe_rag import iter_chunks_from_cleaned
-
-chunks_iter = iter_chunks_from_cleaned(cleaned, config, deps.embedder)
-```
-
-**Properties:**  
-- Arity 3: Parametric, reusable.
-
-### 4.3 I/O Boundary Implementations (Thin, Injected)
-
-Explicit reader implementations:
-
-```python
-from funcpipe_rag import FSReader, Ok, RawDoc, Result
-
-
-class FakeReader:
-    def __init__(self, docs: list[RawDoc]):
-        self._docs = docs
-
-    def read_docs(self, path: str) -> Result[list[RawDoc]]:
-        _ = path
-        return Ok(self._docs)
-```
-
-**Properties:**  
-- Thin: Single responsibility.  
-- Result: Explicit errors.  
-- Injected via deps.reader.
-
-### 4.4 Public API (Edge, Composes Boundaries)
-
-Orchestrates implementation + core:
-
-```python
-from funcpipe_rag import FSReader, RagBoundaryDeps, full_rag_api_docs, full_rag_api_path
-
-chunks, obs = full_rag_api_docs(docs, config, deps)
-boundary_deps = RagBoundaryDeps(core=deps, reader=FSReader())
-res = full_rag_api_path("arxiv_cs_abstracts_10k.csv", config, boundary_deps)
-```
-
-**Properties:**  
-- Arity 3: Effects in implementations (e.g., FSReader).  
-- Uses simple isinstance for Result handling.  
-- Matches the baseline stage composition on `Ok`.
-
-**Layers:**  
-- Core (library, parametric, streaming): iter_rag_core.  
-- Sub-core (internal helper): iter_chunks_from_cleaned.  
-- Boundary/Edge (CLI/API, effectful): full_rag_api_path (path in, Result out).
-
-### 4.5 Configurator Tie-In (M02C01)
-
-```python
-from functools import partial
-from funcpipe_rag import Chunk, ChunkWithoutEmbedding, DebugConfig, RagBoundaryDeps, RagConfig, RagCoreDeps, RagEnv
-from funcpipe_rag import FSReader, Ok, RulesConfig, StartsWith, full_rag_api_path, get_deps, make_rag_fn
-
-
-def fake_embedder(c: ChunkWithoutEmbedding) -> Chunk:
-    return Chunk(c.doc_id, c.text, c.start, c.end, (0.0,) * 16)  # Fake embedding
-
-
-# Docs API (preferred): configure a docs -> (chunks, obs) callable
-rag_docs_fn = make_rag_fn(chunk_size=512)
-
-# Boundary API: configure boundary deps and call `full_rag_api_path`
-config = RagConfig(env=RagEnv(512), debug=DebugConfig())
-boundary_deps = RagBoundaryDeps(core=get_deps(config), reader=FSReader())
-rag_path_fn = partial(full_rag_api_path, config=config, deps=boundary_deps)
-
-# Fake boundary: swap reader/embedder for tests
-keep_all_cs = RulesConfig(keep_pred=StartsWith("categories", "cs."))
-test_config = RagConfig(env=RagEnv(512), keep=keep_all_cs)
-fake_boundary_deps = RagBoundaryDeps(
-    core=RagCoreDeps(cleaner=get_deps(test_config).cleaner, embedder=fake_embedder, taps=None),
-    reader=FakeReader([]),
-)
-test_rag_path_fn = partial(full_rag_api_path, config=test_config, deps=fake_boundary_deps)
-```
-
-**Wins:** Implementations injectable; fakes make core pure. Composes with M02C01.
-
----
-
-## 5. Equational Reasoning: Substitution Exercise
-
-**Hand Exercise:** Substitute in `iter_rag_core`.  
-1. Inline `embedder = deps.embedder` → fixed function.  
-2. Substitute into generator → parametric stream.  
-3. Result: Output fixed for fixed inputs/deps (parametric).  
-**Bug Hunt:** In leaky version, `open` breaks substitution (effects change behavior).
-
-**Example:**  
-- Leaky: `with open(...)` → depends on FS, not substitutable.  
-- Sealed: `deps.reader.read_docs(path)` → injectable, substitutable with fake implementation.
-
----
-
-## 6. Property-Based Testing: Proving Parametricity (Advanced, Optional)
-
-Use Hypothesis to prove refactor preserves behavior with parametric deps.
-
-### 6.1 Custom Strategy
-
-From `capstone/tests/conftest.py`.
-
-### 6.2 Core Equivalence Property
-
-```python
-# capstone/tests/test_rag_api.py
-from hypothesis import given
-import hypothesis.strategies as st
-from funcpipe_rag import (
-    RagConfig,
-    RagEnv,
-    RagCoreDeps,
-    RagBoundaryDeps,
-    Err,
-    Ok,
-    FSReader,
-    clean_doc,
-    embed_chunk,
-    iter_chunk_doc,
-    structural_dedup_chunks,
-    iter_rag_core,
-    full_rag_api_path,
-)
-from tests.conftest import doc_list_strategy, env_strategy
-from itertools import islice
-
-def baseline_full_rag(docs, env):
-    embedded = [embed_chunk(c) for d in docs for c in iter_chunk_doc(clean_doc(d), env)]
-    return structural_dedup_chunks(embedded)
-
-@given(docs=doc_list_strategy(), env=env_strategy())
-def test_core_equivalence(docs, env):
-    config = RagConfig(env=env)
-    deps = RagCoreDeps(cleaner=clean_doc, embedder=embed_chunk)
-    core_iter = iter_rag_core(iter(docs), config, deps)
-    assert list(core_iter) == baseline_full_rag(docs, env)
-```
-
-**Note:** Tests parametric core equivalence to the baseline (no boundaries).
-
-### 6.3 Prefix Equivalence (Streaming Core)
-
-```python
-@given(docs=doc_list_strategy(), env=env_strategy(), k=st.integers(0, 50))
-def test_core_prefix_equivalence(docs, env, k):
-    config = RagConfig(env=env)
-    deps = RagCoreDeps(cleaner=clean_doc, embedder=embed_chunk)
-    core_iter = iter_rag_core(iter(docs), config, deps)
-    assert list(islice(core_iter, k)) == baseline_full_rag(docs, env)[:k]
-```
-
-**Note:** Verifies parametric core streaming matches the baseline.
-
-### 6.4 Boundary Error Handling
-
-```python
-def test_boundary_failure():
-    config = RagConfig(env=RagEnv(512))
-    deps = RagBoundaryDeps(RagCoreDeps(cleaner=clean_doc, embedder=embed_chunk, taps=None), FSReader())
-    res = full_rag_api_path("nonexistent.csv", config, deps)
-    assert isinstance(res, Err)
-    assert "Load failed" in res.error
-```
-
-**Note:** Tests boundary implementation returns Err on I/O error.
-
-### 6.5 Idempotence Property (Boundary with Fake Implementation)
-
-```python
-@given(env=env_strategy())
-def test_rag_idempotence(env):
-    from funcpipe_rag import Chunk, ChunkWithoutEmbedding, Ok, RawDoc, Result
-
-    class FakeReader:
-        def read_docs(self, path: str) -> Result[list[RawDoc]]:
-            _ = path
-            return Ok([])
-
-    def fake_embedder(c: ChunkWithoutEmbedding) -> Chunk:
-        return Chunk(c.doc_id, c.text, c.start, c.end, (0.0,) * 16)
-
-    config = RagConfig(env=env)
-    deps = RagBoundaryDeps(
-        RagCoreDeps(cleaner=clean_doc, embedder=fake_embedder, taps=None),
-        FakeReader(),
-    )
-    res1 = full_rag_api_path("fake_path", config, deps)
-    res2 = full_rag_api_path("fake_path", config, deps)
-    assert res1 == res2
-```
-
-**Note:** Ensures no hidden state with faked implementations (pure deps).
-
-### 6.6 Shrinking Demo: Catching a Leaky Bug
-
-Bad reader with leaky state:
-
-```python
-from funcpipe_rag import Ok, RawDoc, Result
-
-
-class BadReader:
-    counter = 0
-
-    def read_docs(self, path: str) -> Result[list[RawDoc]]:
-        BadReader.counter += 1  # Leaky mutation
-        if BadReader.counter % 2 == 0:
-            return Ok([])
-        return Ok([RawDoc("cs-123", "Title", "Abstract", "cs.AI")])
-```
-
-Property:
-
-```python
-@given(env=env_strategy())
-def test_bad_rag_idempotence(env):
-    config = RagConfig(env=env)
-    deps = RagBoundaryDeps(RagCoreDeps(cleaner=clean_doc, embedder=embed_chunk, taps=None), BadReader())
-    res1 = full_rag_api_path("fake_path", config, deps)
-    res2 = full_rag_api_path("fake_path", config, deps)
-    assert res1 == res2
-```
-
-**Failure Trace (Example):**
-
-```
-Falsifying example: test_bad_rag_idempotence(
-    env=RagEnv(chunk_size=128),
-)
-AssertionError
-```
-
-**Analysis:** Shrinks to minimal; catches leaky counter changing output between calls.
-
----
-
-## 7. When Boundaries Aren't Worth It
-
-Use leaks only in:  
-- **Trivial one-off scripts** (no reuse).  
-- **Legacy wrappers** around sealed cores.  
-**Guardrails:** Isolate leaks to <10 lines; always prefer boundaries for tests and reuse.
-
-**Example:**
-
-```python
-import json
-# Trivial script
-print(json.loads(open("data.json").read()))  # OK for one-off
-```
-
----
-
-## 8. Pre-Core Quiz
-
-1. `open()` in core? → **Violates parametricity.**  
-2. `raise ValueError`? → **Use `Result` for expected boundary failure; reserve
-   exceptions for violated programmer or domain invariants.**
-3. How to test I/O? → **Fake implementation.**  
-4. Effects in generator? → **Inject implementation.**  
-5. Prove parametricity? → **Hypothesis idempotence.**
-
----
-
-## 9. Post-Core Reflection & Exercise
-
-**Reflect:** Find one expected I/O failure and one violated programming invariant.
-Explain why they should not share the same handling policy.
-
-**Project Exercise:** Substitute a successful reader and a failing reader at
-`full_rag_api_path`. Prove the pure RAG core does not run on reader failure.
-
-**Continue with:** [Configuration as Data](../module-02-data-first-apis-expression-style/configuration-as-data.md)
-
-Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
-
-> **Further Reading:** For more on closures in Python, see 'Fluent Python' by Luciano Ramalho. Explore toolz for advanced partials once comfortable.
-
-## The path API is a boundary composition
-
-The Module 02 core accepts documents. A separate API accepts a path:
+The core configuration module declares only what the path API needs:
 
 ```python
 class Reader(Protocol):
     def read_docs(self, path: str) -> Result[list[RawDoc]]: ...
-
-
-def full_rag_api_path(path, config, deps):
-    docs_result = deps.reader.read_docs(path)
-    if isinstance(docs_result, Err):
-        return docs_result
-    chunks, observations = full_rag_api_docs(
-        docs_result.value,
-        config,
-        deps.core,
-    )
-    return Ok((chunks, observations))
 ```
 
-The `Reader` protocol is a capability boundary. The core does not know whether
-documents came from a file, an in-memory fixture, or another adapter.
-
-### Expected failure is returned unchanged
+`FSReader` is one implementation. A test reader can return a fixed `Ok` or `Err`
+without touching the filesystem. Both satisfy the same capability, so
+`full_rag_api_path` does not need a branch for “test mode.”
 
 ```python
 failure = Err("source unavailable")
@@ -530,42 +89,132 @@ failure = Err("source unavailable")
 
 class FailingReader:
     def read_docs(self, path: str):
+        assert path == "missing.jsonl"
         return failure
-
-
-assert full_rag_api_path("missing.jsonl", config, deps) == failure
 ```
 
-No cleaner, chunker, or embedder should run. This is short-circuit behavior, not
-exception swallowing.
+When this reader is placed in `RagBoundaryDeps`, the returned value is exactly
+`failure`. No cleaner, chunker, or embedder is needed to explain that result.
 
-### Not every exception becomes `Err`
+This is the Module 02 meaning of dependency injection: pass a small value that
+implements a required operation. It does not require a framework or global
+registry.
 
-`RagEnv(chunk_size=0)` violates a constructor invariant and raises `ValueError`.
-`boundary_rag_config({"chunk_size": 0})` should ideally translate untyped input into
-a boundary failure before construction. Module 02's minimal `Result` represents
-expected edge failure as a string; Module 04 later introduces richer failure data.
+## Short-circuiting is part of the contract
 
-Use these questions:
+The path API has one decision:
 
-| Failure | Default treatment |
-| --- | --- |
-| file missing or malformed boundary input | `Err` |
-| unsupported user rule syntax | boundary validation failure |
-| impossible negative chunk offset produced by internal code | exception/invariant failure |
-| process interruption or memory exhaustion | do not normalize into ordinary domain failure |
+```python
+docs_result = deps.reader.read_docs(path)
+if isinstance(docs_result, Err):
+    return docs_result
+chunks, observations = full_rag_api_docs(
+    docs_result.value,
+    config,
+    deps.core,
+)
+return Ok((chunks, observations))
+```
 
-### `Result` combinators preserve the boundary stop
+An `Err` stops the composition. An `Ok` unwraps validated documents and crosses
+into the pure API. `result_map` and `result_and_then` encode the same rule for
+small compositions: their function argument is never called for `Err`.
 
-`result_map` and `result_and_then` call their function only for `Ok`. The learning
-proof records that a mapper is not called for `Err`, making skipped work observable.
+The focused API proof makes the skipped call observable in
+`test_reader_failure_short_circuits_the_pure_rag_core` and
+`test_result_combinators_do_not_run_after_boundary_failure`.
+
+## The real filesystem shell adds a writer
+
+`shells/rag_api_shell.py` owns the complete effect sequence:
+
+1. `FSReader.read_docs` opens and parses CSV into `RawDoc` values.
+2. `full_rag_api` transforms those values and returns chunks plus observations.
+3. `write_chunks_jsonl` serializes the chunks.
+4. `run` returns `Ok(observations)` after a successful write.
+
+Failure timing is observable:
+
+| Condition | Core runs? | Output state | Outcome |
+| --- | --- | --- | --- |
+| missing input | no | output is not created | load `Err` |
+| malformed CSV row | no | output is not created | load `Err` |
+| header-only CSV | yes, with no documents | empty file | `Ok` with zero counts |
+| valid CSV and output | yes | JSONL equals pure API chunks | `Ok` with observations |
+| unavailable output parent | yes | output is not created | write `Err` |
+
+The write failure occurs after core work because output feasibility is discovered
+when the writer opens the target. The module makes that order explicit; it does
+not claim transactional or atomic output.
+
+## Expected failures and broken invariants are different
+
+Module 02 uses `Err(str)` for expected edge failures. It does not convert every
+exception into an ordinary result.
+
+| Situation | Treatment in this state | Reason |
+| --- | --- | --- |
+| file missing, unreadable, or malformed | `Err("Load failed: ...")` | caller can reasonably handle it |
+| output cannot be opened or written | `Err("Write failed: ...")` | caller can choose another destination |
+| untyped chunk size is `True`, zero, or negative | configuration `Err` | reject boundary data before construction |
+| unknown cleaning rule from CLI | configuration `Err` | reject policy before dependency lookup |
+| internally produced impossible chunk offsets | exception | signals a violated program invariant |
+| interruption or memory exhaustion | not normalized | not an ordinary domain outcome |
+
+`RagEnv` is still allowed to defend its own invariant. The boundary parser must
+check untyped values first so routine user error does not reach that constructor as
+an exception.
+
+Module 04 introduces richer failure modelling. Do not read a typed error taxonomy,
+retry strategy, or recovery policy into this minimal `Result`.
+
+## What the two proof styles establish
+
+The injected-reader test proves control flow: reader failure is returned unchanged
+and later work is skipped. It cannot prove that `open`, `csv.DictReader`, or
+`json.dump` are wired correctly.
+
+The real-filesystem tests prove adapter behavior using temporary paths:
+
+- valid input matches `full_rag_api_docs` after JSON serialization;
+- the source file remains unchanged;
+- empty, malformed, missing, and unwritable routes have distinct outcomes;
+- no output exists after a load failure.
+
+Run both proof owners from the repository root:
 
 ```bash
-PYTHONPATH=capstone/module-reference-states/module-02/src \
-  python -m pytest -q \
-  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
-  -k 'reader_failure or result_combinators'
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-data-api-proof
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-data-shell-proof
 ```
 
-These checks prove synchronous short-circuiting. They do not prove typed error
-classification, retry policy, cleanup, or async cancellation.
+The first route executes
+`test_module_02_data_first_apis.py`; the second executes
+`test_module_02_filesystem_boundary.py`. A passing fake-boundary test is not a
+substitute for the second route.
+
+## Review the boundary without guessing
+
+For any proposed change, trace these questions in order:
+
+1. Does the function accept paths or already-validated domain values?
+2. Which exact capability or adapter owns the effect?
+3. Can an expected failure be returned before core work starts?
+4. If core work has started, which effects may already have happened?
+5. Which focused test observes the success value, failure value, and output state?
+6. What stronger property is deliberately deferred?
+
+A boundary is sealed when those answers are visible in signatures, source
+ownership, and executable evidence—not merely asserted in prose.
+
+## Limits of the Module 02 boundary
+
+This state does not guarantee atomic replacement, cleanup of a partially written
+file, bounded-memory CSV loading, retry policy, typed error categories, async
+cancellation, or resource acquisition protocols. Those omissions are real design
+boundaries, not hidden accomplishments.
+
+Continue with [Configuration as Data](configuration-as-data.md) to see how the CLI
+and other untyped callers validate policy before selecting dependencies.
