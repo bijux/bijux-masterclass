@@ -121,6 +121,7 @@ from .streaming_rag import (
     gen_grouped_chunks,
     gen_stream_deduped,
     gen_stream_embedded,
+    stream_rag_chunks,
     safe_rag_pipeline,
     stream_chunks,
 )
@@ -240,6 +241,7 @@ __all__ = [
     "stream_chunks",
     "gen_stream_embedded",
     "gen_stream_deduped",
+    "stream_rag_chunks",
     "gen_bounded_chunks",
     "safe_rag_pipeline",
     "multicast",
