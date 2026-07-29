@@ -161,6 +161,16 @@ def test_boundary_config_rejects_bool_instead_of_treating_it_as_int() -> None:
     assert "bool" in result.error
 
 
+@pytest.mark.parametrize("chunk_size", [0, -1])
+def test_boundary_config_returns_nonpositive_chunk_size_as_data(
+    chunk_size: int,
+) -> None:
+    result = boundary_rag_config({"chunk_size": chunk_size})
+
+    assert isinstance(result, Err)
+    assert "positive" in result.error
+
+
 def test_taps_observe_stage_values_without_changing_api_output() -> None:
     docs = _docs()
     config = RagConfig(env=RagEnv(chunk_size=4))
