@@ -103,9 +103,26 @@ Do not force it when:
 
 Before moving on:
 
-1. inspect the module-02 API endpoint under `capstone/_history/worktrees/module-02/src/funcpipe_rag/api/`
-2. compare the expression route with the simpler stage-built baseline
-3. decide whether the new shape made rule selection and filtering easier to review
+1. inspect `capstone/module-reference-states/module-02/src/funcpipe_rag/api/core.py`;
+2. compare `iter_rag_core` with `full_rag_api_docs`;
+3. identify which intermediates are lazy and which are materialized for complete
+   observations;
+4. decide whether each named stage exposes domain intent or merely adds ceremony.
+
+## Review the expression boundary
+
+Use this table on a proposed rewrite:
+
+| Question | Acceptable evidence |
+| --- | --- |
+| Did values remain equal? | before-and-after assertions over chunks and metadata |
+| Did order remain equal? | explicit ordered sequence, not set equality |
+| Did failure timing move? | test construction and the call that first evaluates |
+| Did materialization move? | identify each `list`, comprehension, sort, and fold |
+| Is debugging clearer? | stage names correspond to RAG concepts |
+
+An expression rewrite can preserve final values while changing when an exception or
+effect occurs. Record both value and timing behavior when that distinction matters.
 
 ## Reflection
 
