@@ -87,6 +87,43 @@ The pure core must depend **only** on abstract ports and explicit inputs (`Reade
 
 Everything else — concrete files, HTTP clients, loggers, databases — lives in adapters.
 
+## Runnable lab: substitute the RAG storage adapter
+
+Use one domain-facing function with both shipped storage adapters:
+
+```python
+def read_ids(storage: StorageRead, path: str) -> list[str]:
+    return [
+        item.value.doc_id
+        for item in storage.read_docs(path)
+        if isinstance(item, Ok)
+    ]
+
+memory_ids = read_ids(InMemoryStorage(preload={"docs.csv": docs}), "docs.csv")
+file_ids = read_ids(FileStorage(), "docs.csv")
+assert file_ids == memory_ids
+```
+
+The executable test replaces `open` with a small CSV stream, so the example
+exercises the real `FileStorage` parser without depending on a repository data
+file:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k storage_adapters_preserve_rag_read_behavior
+```
+
+Trace the dependency direction: `read_ids` knows `StorageRead` and `RawDoc`;
+`FileStorage` knows CSV; `InMemoryStorage` knows Python collections; the test
+shell chooses which adapter to inject. Equal identifiers prove this read
+behavior is substitutable. They do not promise equal latency, durability, or
+failure modes.
+
+The central wrong turn is branching on the concrete adapter inside `read_ids`.
+That would turn the port into a label while leaving infrastructure policy in
+the domain.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Law                    | Description                                                                                     | Enforcement                  |
@@ -192,7 +229,7 @@ class ConsoleLogger(Logger):
 This repo’s end-of-Module-07 codebase provides the ports/adapters building blocks:
 - Capability protocols: `capstone/src/funcpipe_rag/domain/capabilities.py`
 - Structured log entries: `capstone/src/funcpipe_rag/domain/logging.py`
-- Deferred IO (`IOPlan`) + wrappers: `capstone/src/funcpipe_rag/fp/effects/io_plan.py`, `capstone/src/funcpipe_rag/fp/effects/io_retry.py`, `capstone/src/funcpipe_rag/fp/effects/tx.py`
+- Deferred IO (`IOPlan`) + wrappers: `capstone/src/funcpipe_rag/domain/effects/io_plan.py`, `capstone/src/funcpipe_rag/domain/effects/io_retry.py`, `capstone/src/funcpipe_rag/domain/effects/tx.py`
 - Concrete adapters: `capstone/src/funcpipe_rag/infra/adapters/file_storage.py`, `capstone/src/funcpipe_rag/infra/adapters/memory_storage.py`, `capstone/src/funcpipe_rag/infra/adapters/logger.py`, `capstone/src/funcpipe_rag/infra/adapters/clock.py`, `capstone/src/funcpipe_rag/infra/adapters/atomic_storage.py`
 
 The RAG pipeline surface itself remains the Module 02–06 config-as-data API in `capstone/src/funcpipe_rag/rag/`

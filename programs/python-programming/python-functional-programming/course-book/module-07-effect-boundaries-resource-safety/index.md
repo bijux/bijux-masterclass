@@ -78,9 +78,9 @@ changing the main Module 07 architecture route.
 
 ## Exercises
 
-- Draw one boundary between pure logic and infrastructure, then name the port or capability that keeps it honest.
-- Review one cleanup or transaction path and explain where failure handling must live for the contract to remain explicit.
-- Pick one migration step and justify why it is incremental enough to ship without rewriting the whole system.
+Use [Module 07 Exercises](exercises.md) for cumulative work against the tracked
+reference state. Consult [Exercise Answers](exercise-answers.md) only after
+recording your own expected evidence and failure analysis.
 
 ## Capstone checkpoints
 

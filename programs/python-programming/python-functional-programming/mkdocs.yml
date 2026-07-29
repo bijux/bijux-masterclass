@@ -135,6 +135,8 @@ nav:
   - Idempotent Effects: module-07-effect-boundaries-resource-safety/idempotent-effects.md
   - Sessions and Transactions: module-07-effect-boundaries-resource-safety/sessions-and-transactions.md
   - Incremental Migration: module-07-effect-boundaries-resource-safety/incremental-migration.md
+  - Exercises: module-07-effect-boundaries-resource-safety/exercises.md
+  - Exercise Answers: module-07-effect-boundaries-resource-safety/exercise-answers.md
   - Module 07 Refactoring Guide: module-07-effect-boundaries-resource-safety/refactoring-guide.md
   - Module Glossary: module-07-effect-boundaries-resource-safety/glossary.md
 - 'Module 08: Async Pipelines, Backpressure, and Fairness':
