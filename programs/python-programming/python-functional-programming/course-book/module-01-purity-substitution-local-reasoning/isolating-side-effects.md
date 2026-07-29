@@ -1,489 +1,202 @@
 # Isolating Side Effects
 
+A RAG application must read input and write output. Purity does not remove those
+effects. It gives them a narrow owner so the transformation between them can be
+reasoned about as values.
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Purity Substitution Local Reasoning"]
-  page["Isolating Side Effects"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-This lesson is about drawing one boundary clearly: the pure core decides what should
-happen, and the thin shell performs the effect.
-
-## Start With the Operational Smell
-
-You usually need this lesson when code says it is "just transforming data" but also:
-
-- reads environment variables or global config
-- logs, prints, or writes to disk in the middle of the transform
-- calls time, random, database, or network helpers directly
-
-At that point the function is doing two jobs: deciding and performing. This page is about
-splitting those jobs cleanly.
-
-## Keep This Question In View
-
-> How do you eliminate hidden side effects by passing all dependencies explicitly so that pure logic stays testable and composable?
-
-By the end of this lesson, you should be able to point at a function and say:
-
-- what belongs in the pure core
-- what belongs in the shell
-- what dependency should be explicit input instead of ambient state
-
----
-
-## 1. Conceptual Foundation
-
-### 1.1 The One-Sentence Rule
-
-> **Never touch globals, env, time, or RNG directly; pass everything explicitly via frozen context bundles—one per layer.**
-
-### 1.2 Explicit Dependencies in One Precise Sentence
-
-> Explicit dependencies mean every effectful operation receives its capabilities via frozen context objects—so the pure core remains deterministic and testable, while thin shells handle I/O, logging, and state.
-
-### 1.3 Why This Matters Now
-
-Explicit dependencies matter because they keep meaning and execution separate. Once the
-effectful capabilities are passed in explicitly, the core logic can be reviewed and tested
-as a deterministic transform again.
-
-### 1.4 How This Relates to DI / Ports & Adapters / Clean Architecture
-
-This approach lines up with familiar architecture patterns:
-
-- **Dependency Injection (DI):** Passing Env bundles is manual DI—simple and zero-deps.
-
-- **Ports & Adapters:** Pure core is the domain; shells are adapters for effects (I/O, time).
-
-- **Clean Architecture:** Core is entities/use-cases (pure); shells are interfaces/infra (effects).
-
-We keep it lightweight: explicit parameters or small frozen contexts instead of heavy
-framework machinery.
-
-### 1.5 Purity Spectrum Table
-
-| Level              | Description                          | Example                              |
-|--------------------|--------------------------------------|--------------------------------------|
-| Fully Pure         | Explicit inputs/outputs only         | `def add(x: int, y: int) -> int: return x + y` |
-| Semi-Pure          | Observational taps (e.g., logging)   | `def add_with_log(x: int, y: int) -> int: log(f"Adding {x}+{y}"); return x + y` |
-| Impure             | Globals/I/O/mutation                | `def read_file(path: str) -> str: ...` |
-
-In this lesson, even logging is treated as an effect that should be explicit when it
-matters to reviewability.
-
----
-
-## 2. Mental Model: Hidden Effects vs Explicit Context
-
-### 2.1 One Picture
+Module 01 uses one boundary:
 
 ```text
-Hidden effects                             Explicit boundary
-+---------------------------+             +-----------------------------+
-| globals / env / time      |             | core(data, cfg) -> value    |
-| random / print / I/O      |             | shell(env, input) performs  |
-| mixed into core logic     |             | effect and calls the core   |
-| review surface is muddy   |             | review surface is clear     |
-+---------------------------+             +-----------------------------+
+rag_shell
+  read CSV  ->  full_rag(docs, env)  ->  write JSONL
+    effect             pure                 effect
 ```
 
-### 2.2 Contract Table
+The tracked state does not yet inject clocks, random sources, loggers, readers, or
+writers. Those capabilities appear when later modules teach explicit context and
+boundary protocols.
 
-| Clause                     | Violation Example                      | Detected By                              |
-|----------------------------|----------------------------------------|------------------------------------------|
-| Explicit dependencies      | `os.getenv`, `datetime.now()`          | Tests with frozen context                |
-| No hidden prints           | `print` inside pure logic              | Code review + linter                     |
-| Determinism when fixed     | Same inputs+deps → same outputs        | Tests with frozen context                |
-| Mockable effects           | Direct DB calls                        | Unit tests with fake Env                 |
-| Edge isolation             | Effects in pipeline middle             | Code review + linter                     |
+## Classify effects by observation
 
-**Note on Contracts:** the phrase "thin shell" only helps if the shell really is thin.
-If half the business logic still lives next to the effect, the boundary is still muddy.
+An effect is behavior that cannot be captured only by the returned value. Common
+Python examples include:
 
----
+- reading or writing files;
+- printing or logging;
+- accessing time, randomness, environment, or process state;
+- mutating an argument, global, cache, or shared collection;
+- performing network or database I/O.
 
-## 3. Running Project: Extracting Effects in RAG
-
-Our **running project** (from `module-01/funcpipe-rag-01/README.md`) isolates effects in Core 7's typed pipelines.  
-- **Goal:** Push I/O, logging, time/RNG to edges.  
-- **Start:** Core 1-7's typed pure functions.  
-- **End (this core):** Pure core with explicit values; effects in shell. Semantics aligned with Core 1-7.
-
-### 3.1 Types (Canonical)
-
-These are defined in `module-01/funcpipe-rag-01/src/funcpipe_rag/rag_types.py` (as in Core 1) and imported as needed. No redefinition here.
-
-### 3.2 Effectful Variants (Anti-Patterns in RAG)
-
-Full code:
+This function returns a deterministic value but is still effectful:
 
 ```python
-from funcpipe_rag import RawDoc, CleanDoc, ChunkWithoutEmbedding, Chunk, RagEnv
-import hashlib
-from datetime import datetime
-import random
-import logging
-
-# Before refactors: implicit logging, time, RNG inside the pipeline
-LOG = logging.getLogger("rag")
-
-
-def effectful_clean_doc(doc: RawDoc) -> CleanDoc:
-    abstract = " ".join(doc.abstract.strip().lower().split())
-    LOG.info("Cleaned doc %s", doc.doc_id)
-    return CleanDoc(doc.doc_id, doc.title, abstract, doc.categories)
-
-
-def effectful_chunk_doc(doc: CleanDoc, env: RagEnv) -> list[ChunkWithoutEmbedding]:
-    text = doc.abstract
-    chunks = [
-        ChunkWithoutEmbedding(doc.doc_id, text[i:i + env.chunk_size], i, i + len(text[i:i + env.chunk_size]))
-        for i in range(0, len(text), env.chunk_size)
-    ]
-    random.shuffle(chunks)
-    return chunks
-
-
-def effectful_embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
-    if datetime.now() > datetime(2025, 1, 1):
-        raise ValueError("Expired")
-    h = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
-    step = 4
-    vec = tuple(int(h[i:i + step], 16) / (16 ** step - 1) for i in range(0, 64, step))
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, vec)
+def clean_and_report(doc: RawDoc) -> CleanDoc:
+    cleaned = clean_doc(doc)
+    print(cleaned.doc_id)
+    return cleaned
 ```
 
-**Smells:** Static global LOG (hidden logging), RNG (nondeterministic), time (flaky).
+Replacing the call with `cleaned` removes output. Substitution changes behavior.
 
----
+## Read the actual boundary
 
-## 4. Refactor to Explicit: Pure Core + Shell in RAG
-
-### 4.1 Pure Core
-
-Pure logic; return values + artifacts (logs, etc.); no effects in core.
-
-Full code:
+Module 01's `rag_shell.py` has one public function:
 
 ```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/pipeline_stages.py (pure helpers)
-from funcpipe_rag import RawDoc, CleanDoc, ChunkWithoutEmbedding, Chunk, RagEnv
-from datetime import datetime
-import random
-import hashlib
-from funcpipe_rag import structural_dedup_chunks
-
-
-def clean_doc_pure(doc: RawDoc) -> tuple[CleanDoc, list[str]]:
-    abstract = " ".join(doc.abstract.strip().lower().split())
-    cleaned = CleanDoc(doc.doc_id, doc.title, abstract, doc.categories)
-    return cleaned, [f"Cleaned doc {doc.doc_id}"]
-
-
-def chunk_doc_pure(seed: int, doc: CleanDoc, env: RagEnv) -> tuple[ChunkWithoutEmbedding, ...]:
-    # Use seed for deterministic shuffle if needed; here we demonstrate with shuffle
-    text = doc.abstract
-    chunks = [
-        ChunkWithoutEmbedding(doc.doc_id, text[i:i + env.chunk_size], i, i + len(text[i:i + env.chunk_size]))
-        for i in range(0, len(text), env.chunk_size)
-    ]
-    rng = random.Random(seed)
-    rng.shuffle(chunks)
-    return tuple(chunks)
-
-
-def embed_chunk_pure(current_time: datetime, chunk: ChunkWithoutEmbedding) -> Chunk:
-    if current_time > datetime(2025, 1, 1):
+def rag_shell(env: RagEnv, input_path: str, output_path: str) -> None:
+    try:
+        with open(input_path, encoding="utf-8") as input_file:
+            reader = csv.DictReader(input_file)
+            docs = [RawDoc(**row) for row in reader]
+    except (UnicodeDecodeError, csv.Error, TypeError, ValueError) as exc:
         raise ValueError(
-            "Expired")  # We still throw here; in later modules we’ll model this as Result[Chunk, ExpiredError] instead.
-    h = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
-    step = 4
-    vec = tuple(int(h[i:i + step], 16) / (16 ** step - 1) for i in range(0, 64, step))
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, vec)
+            f"Failed to read or parse CSV file '{input_path}': {exc}"
+        ) from exc
 
+    chunks = full_rag(docs, env)
 
-def full_rag_pure(seed: int, current_time: datetime, docs: list[RawDoc], env: RagEnv) -> tuple[
-    tuple[Chunk, ...], list[str]]:
-    cleaned_with_logs = [clean_doc_pure(doc) for doc in docs]
-    cleaned = [cleaned for cleaned, _ in cleaned_with_logs]
-    logs = [msg for _, messages in cleaned_with_logs for msg in messages]
-    chunked = [chunk_doc_pure(seed, doc, env) for doc in cleaned]
-    flattened = [chunk for doc_chunks in chunked for chunk in doc_chunks]
-    embedded = [embed_chunk_pure(current_time, chunk) for chunk in flattened]
-    # structural_dedup_chunks: pure helper that removes duplicate chunks; defined in Core 6
-    deduped = structural_dedup_chunks(embedded)
-    return tuple(deduped), logs
+    with open(output_path, "w", encoding="utf-8") as output_file:
+        for chunk in chunks:
+            json.dump(asdict(chunk), output_file, ensure_ascii=False)
+            output_file.write("\n")
 ```
 
-### 4.2 Impure Shell (Edge Only)
+The exact local variable names may differ; the ownership does not.
 
-Handle effects; delegate to pure core.
+### What the shell owns
 
-Full code:
+- path interpretation;
+- file lifetime;
+- CSV parsing;
+- conversion from untyped row mappings to `RawDoc`;
+- JSON serialization;
+- write ordering;
+- translation of selected read/parse failures.
+
+### What the pure core owns
+
+- text normalization;
+- chunk boundaries;
+- deterministic embedding;
+- structural deduplication;
+- canonical result order.
+
+If `full_rag` opened a path, its output would depend on external state. If
+`rag_shell` implemented chunking, domain behavior would become harder to test without
+I/O. The boundary separates those reasons to change.
+
+## Resource lifetime is already visible
+
+The `with` statements guarantee file handles are closed when their blocks exit,
+including exceptional exits. That is a resource-safety fact, but Module 01 does not
+yet build a general resource policy. Module 07 develops acquisition and release in
+depth.
+
+Keep the current claim narrow:
+
+```text
+the shell uses context managers for its two file handles
+```
+
+Do not generalize it to retries, transactional output, cancellation safety, or
+multi-resource cleanup.
+
+## Failure routes
+
+### Input file cannot be opened
+
+`FileNotFoundError` and `PermissionError` are not included in the shell's translated
+exception tuple. They propagate from `open`. This is observable public behavior.
+Module 01 does not yet provide a typed failure value.
+
+### CSV row shape is invalid
+
+If a row cannot construct `RawDoc`, the shell raises a `ValueError` with the input
+path and chains the original exception.
+
+### Output fails after partial writing
+
+The shell writes directly to the destination. A disk or serialization failure may
+leave a partial JSONL file. Module 01 makes no atomic-write guarantee.
+
+### Pure core receives a valid but empty batch
+
+`full_rag([], env)` returns an empty list. The shell creates an empty output file.
+That is a domain outcome, not an exceptional boundary route.
+
+These limitations matter because "thin shell" does not mean "production-complete
+adapter."
+
+## Do not inject unused capabilities
+
+An environment bundle with logger, clock, and random source may look forward-thinking:
 
 ```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/rag_shell.py (context bundle)
-from dataclasses import dataclass
-from typing import Callable
-from funcpipe_rag import full_rag_pure
-from funcpipe_rag import RawDoc, Chunk, RagEnv
-from datetime import datetime
-
-
 @dataclass(frozen=True)
-class LogEnv:
+class Environment:
     log: Callable[[str], None]
-
-
-@dataclass(frozen=True)
-class TimeEnv:
     now: Callable[[], datetime]
-
-
-@dataclass(frozen=True)
-class RandEnv:
     seed: int
-
-
-@dataclass(frozen=True)
-class RagCoreEnv:
-    log_env: LogEnv
-    time_env: TimeEnv
-    rand_env: RandEnv
-
-
-def full_rag_shell(env: RagCoreEnv, docs: list[RawDoc], rag_env: RagEnv) -> tuple[Chunk, ...]:
-    chunks, logs = full_rag_pure(env.rand_env.seed, env.time_env.now(), docs, rag_env)
-    for message in logs:
-        env.log_env.log(message)
-    return chunks
 ```
 
-`module-01/funcpipe-rag-01/src/funcpipe_rag/rag_shell.py` remains the only effectful entry point, reading CSV input and writing JSONL output while calling `full_rag_shell` (which delegates into `full_rag_pure`).
+If Module 01's RAG core does not use those capabilities, the bundle adds vocabulary
+without solving a current pressure. It can also mislead learners into believing
+dependency injection itself creates purity.
 
-**Wins:** Static (no effects in core), deterministic when fixed, semantics aligned with Core 1-7.
+The Module 01 reference state therefore keeps only `RagEnv`, the configuration value
+that directly determines chunk output.
 
-### 4.3 Real-World Integration
+## Testing the boundary honestly
 
-Frameworks (e.g., Django/Flask) often force globals (request, timezone.now()). Adapt by constructing Env from framework context:
+The short Module 01 learning proof tests the pure core. It deliberately does not
+claim to prove file behavior.
 
-Full code:
+A focused shell test should use a temporary directory and assert:
 
-```python
-# Flask example: Wrap request + timezone into Env
-from flask import request, current_app
-from datetime import datetime, timezone
-from funcpipe_rag import full_rag_shell, RagCoreEnv, LogEnv, TimeEnv, RandEnv
-from funcpipe_rag import RawDoc, RagEnv, Chunk
-from funcpipe_rag import with_context
+- a valid CSV produces parseable JSONL;
+- every line represents one returned chunk;
+- malformed row shape raises the documented error;
+- pure `full_rag` output matches serialized content;
+- input data is not rewritten.
 
+Such a test proves the local file adapter. It still does not prove atomicity, disk
+capacity behavior, security of arbitrary paths, or concurrency safety.
 
-def rag_entry(env: RagCoreEnv, docs: list[RawDoc], rag_env: RagEnv) -> tuple[Chunk, ...]:
-    return full_rag_shell(env, docs, rag_env)
+For core behavior, run:
 
-
-def flask_handler() -> tuple[Chunk, ...]:
-    env = RagCoreEnv(
-        log_env=LogEnv(log=current_app.logger.info),
-        time_env=TimeEnv(now=lambda: datetime.now(timezone.utc)),
-        rand_env=RandEnv(seed=42)
-    )
-    body = request.json
-    docs = [RawDoc(**d) for d in body["docs"]]
-
-    # Freeze env so downstream call sites don't have to thread it through manually.
-    full_rag = with_context(env, rag_entry)
-    return full_rag(docs, RagEnv(chunk_size=512))
+```bash
+PYTHONPATH=capstone/module-reference-states/module-01/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py
 ```
 
-**Wins:** Framework globals → explicit Env; pure core stays isolated.
+Then inspect `rag_shell.py` directly. Source review is part of effect proof because a
+return-value assertion cannot reveal every hidden read or write.
 
----
+## Boundary review checklist
 
-## 5. Equational Reasoning: Substitution Exercise
+1. Which operation first observes external state?
+2. Which operation last changes external state?
+3. Is domain logic between them callable without I/O?
+4. Who owns resource lifetime?
+5. Which exceptions are translated, and which propagate?
+6. Can output be partially written?
+7. Are any injected capabilities unused?
+8. Does the documentation claim only behavior that code and tests establish?
 
-**Hand Exercise:** Replace expressions in `full_rag_pure`.  
-1. Inline `clean_doc_pure(doc)` → (CleanDoc, logs).  
-2. Substitute into chunk_doc_pure → tuple of chunks (seeded).  
-**Bug Hunt:** In effectful_clean_doc, substitution fails (hidden log/time/RNG).
+## Learner work
 
----
+Write a focused test plan for `rag_shell`; do not redesign it. Include:
 
-## 6. Property-Based Testing: Proving Equivalence (Advanced, Optional)
+- one valid two-document CSV;
+- one malformed row;
+- one missing path;
+- one empty CSV with headers;
+- expected output or exception for each;
+- what each case proves and does not prove.
 
-Use Hypothesis to prove behavior.
+Then draw the call boundary and mark every line that can observe or change external
+state. Preserve the Module 01 core proof.
 
-You can safely skip this on a first read and still follow later cores—come back when you want to mechanically verify your own refactors.
-
-For side-effect extraction, a couple of simple tests with a fake Env are usually enough; Hypothesis is nice-to-have, not mandatory.
-
-To bridge theory and practice, here's a simple Hypothesis example illustrating impurity detection:
-
-```python
-import random
-from hypothesis import given
-import hypothesis.strategies as st
-
-def impure_random_add(x: int) -> int:
-    return x + random.randint(1, 10)  # Non-deterministic
-
-@given(st.integers())
-def test_detect_impurity(x):
-    assert impure_random_add(x) == impure_random_add(x)  # Falsifies due to randomness
-
-# Hypothesis will quickly find differing outputs for the same x
-```
-
-This property test detects the impurity by showing outputs vary for identical inputs—run it to see Hypothesis in action.
-
-### 6.1 Custom Strategy (RAG Domain)
-
-From `module-01/funcpipe-rag-01/tests/conftest.py` (as in Core 1).
-
-### 6.2 Equivalence Property
-
-Properties for stages (using the helpers in `module-01/funcpipe-rag-01/src/funcpipe_rag/rag_shell.py`):
-
-Full code:
-
-```python
-# module-01/funcpipe-rag-01/tests/test_laws.py (excerpt)
-from hypothesis import given
-import hypothesis.strategies as st
-from funcpipe_rag import clean_doc_pure, chunk_doc_pure, embed_chunk_pure, full_rag_pure
-from funcpipe_rag import RawDoc, CleanDoc, ChunkWithoutEmbedding, Chunk, RagEnv
-from funcpipe_rag import RagCoreEnv, LogEnv, TimeEnv, RandEnv, full_rag_shell
-from .conftest import raw_doc_strategy, env_strategy, doc_list_strategy
-from datetime import datetime
-
-fixed_seed = 42
-fixed_time = datetime(2024, 1, 1)
-
-
-@given(raw_doc_strategy())
-def test_clean_doc_pure_deterministic(doc: RawDoc) -> None:
-    res1, logs1 = clean_doc_pure(doc)
-    res2, logs2 = clean_doc_pure(doc)
-    assert res1 == res2 and logs1 == logs2
-
-
-@given(st.builds(CleanDoc, doc_id=st.text(min_size=1), title=st.text(), abstract=st.text(), categories=st.text()),
-       env_strategy())
-def test_chunk_doc_pure_deterministic(doc: CleanDoc, env: RagEnv) -> None:
-    assert chunk_doc_pure(fixed_seed, doc, env) == chunk_doc_pure(fixed_seed, doc, env)
-
-
-@given(st.builds(ChunkWithoutEmbedding, doc_id=st.text(min_size=1), text=st.text(min_size=1),
-                 start=st.integers(min_value=0), end=st.integers(min_value=1)))
-def test_embed_chunk_pure_deterministic(chunk: ChunkWithoutEmbedding) -> None:
-    assert embed_chunk_pure(fixed_time, chunk) == embed_chunk_pure(fixed_time, chunk)
-
-
-@given(doc_list_strategy(), env_strategy())
-def test_full_rag_shell_matches_pure(docs: list[RawDoc], env: RagEnv) -> None:
-    messages: list[str] = []
-    env_bundle = RagCoreEnv(
-        log_env=LogEnv(log=messages.append),
-        time_env=TimeEnv(now=lambda: fixed_time),
-        rand_env=RandEnv(seed=fixed_seed),
-    )
-    shell_chunks = full_rag_shell(env_bundle, docs, env)
-    pure_chunks, logs = full_rag_pure(fixed_seed, fixed_time, docs, env)
-    assert shell_chunks == pure_chunks
-    assert messages == logs
-```
-
-**Note:** Properties enforce determinism, equivalence (up to order, with mocks), invariants.
-
-### 6.3 Shrinking Demo: Catching a Bug
-
-Bad refactor (hidden RNG in chunk):
-
-```python
-from funcpipe_rag import CleanDoc, ChunkWithoutEmbedding, RagEnv
-import random
-
-
-def bad_chunk_doc(doc: CleanDoc, env: RagEnv) -> tuple[ChunkWithoutEmbedding, ...]:
-    text = doc.abstract
-    chunks = [
-        ChunkWithoutEmbedding(doc.doc_id, text[i:i + env.chunk_size], i, i + len(text[i:i + env.chunk_size]))
-        for i in range(0, len(text), env.chunk_size)
-    ]
-    random.shuffle(chunks)  # Hidden
-    return tuple(chunks)
-```
-
-Property:
-
-```python
-from hypothesis import given
-import hypothesis.strategies as st
-from funcpipe_rag import CleanDoc, RagEnv
-from .conftest import env_strategy
-
-
-@given(st.builds(CleanDoc, doc_id=st.text(min_size=1), title=st.text(), abstract=st.text(min_size=1),
-                 categories=st.text()), env_strategy())
-def test_bad_chunk_doc_deterministic(doc: CleanDoc, env: RagEnv) -> None:
-    assert bad_chunk_doc(doc, env) == bad_chunk_doc(doc, env)  # Falsifies due to randomness
-```
-
-Hypothesis failure trace (run to verify; example):
-
-```
-Falsifying example: test_bad_chunk_doc_deterministic(
-    doc=CleanDoc(doc_id='a', title='', abstract='ab', categories=''), 
-    env=RagEnv(chunk_size=1),
-)
-AssertionError
-```
-
-- Shrinks to doc with multiple chunks; different shuffles fail equality. Catches bug via shrinking.
-
----
-
-## 7. When Explicit Dependencies Aren't Worth It
-
-Rarely, for trivial scripts or hot paths, use globals; rely on properties in tests.
-
----
-
-## 8. Pre-Core Quiz
-
-1. `datetime.now()` inside pure func → violates? → **Explicit dependencies**  
-2. Global logger → violates? → **No hidden prints**  
-3. Same inputs+fixed env → same output? → **Determinism**  
-4. Direct DB call → fix with? → **env.db**  
-5. Tool to prove fixed-env determinism? → **Hypothesis**
-
-## 9. Post-Core Reflection & Exercise
-
-**Reflect:** In your code, find one function touching globals/env/time/random/print. Bundle into frozen Env; pull pure core; write shell; inject with `with_context`; add Hypothesis.  
-**Project Exercise:** Isolate effects in RAG; run properties on sample data.
-
-All claims (e.g., referential transparency) are verifiable via the provided Hypothesis examples—run them to confirm.
-
-**Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. If the Python basics still feel shaky, check free resources like Python.org's FP section or Codecademy's Advanced Python course.
-
-**Continue with:** [Equational Reasoning](../module-01-purity-substitution-local-reasoning/equational-reasoning.md)
+Continue with [Equational Reasoning](equational-reasoning.md), where the now-isolated
+pure expressions can be rewritten under explicit laws.
