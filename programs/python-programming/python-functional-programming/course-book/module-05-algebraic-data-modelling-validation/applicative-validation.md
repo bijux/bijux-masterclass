@@ -285,6 +285,28 @@ def test_v_failure_rejects_empty():
 | Using Result for multi-error  | Poor UX                            | `to_validation` / `from_validation`     |
 | Duplicate error messages      | Noisy output                       | `combine=dedup_stable`                   |
 
+## Runnable RAG learning lab
+
+Run the independent title and abstract checks:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k applicative_validation_accumulates_independent_chunk_errors
+```
+
+Both validators can inspect their own input without waiting for the other, so
+the test uses `v_liftA2` to construct a `RawDoc`. The invalid case returns both
+messages in declaration order; the valid case applies the pure constructor only
+after both values exist.
+
+This is not a universal replacement for `Result`. If validating the abstract
+requires a parsed title-derived policy, the checks are dependent and
+accumulating them as if they were independent would be misleading. The focused
+test proves the two modeled branches and error order. The law tests above
+justify legal applicative regroupings; neither establishes the business
+correctness of an arbitrary validator.
+
 ## 8. Pre-Core Quiz
 
 1. Applicative = functor + what? → **pure + ap**  

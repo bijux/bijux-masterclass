@@ -3,19 +3,14 @@ from __future__ import annotations
 from datetime import datetime
 
 import pytest
-from typing_extensions import assert_never
-
 from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
-from funcpipe_rag.fp.functor import result_map
-from funcpipe_rag.rag.stages import clean_doc
-from funcpipe_rag.result.types import Err, ErrInfo, Ok
 from funcpipe_rag.fp.core import (
+    UTC,
     ChunkState,
     Done,
     Failure,
     Running,
     Success,
-    UTC,
     advance_event,
     chunk_from_dict,
     chunk_state_from_dict,
@@ -29,6 +24,18 @@ from funcpipe_rag.fp.core import (
     success,
     transition,
 )
+from funcpipe_rag.fp.functor import result_map
+from funcpipe_rag.fp.validation import (
+    Validation,
+    VFailure,
+    VSuccess,
+    v_failure,
+    v_liftA2,
+    v_success,
+)
+from funcpipe_rag.rag.stages import clean_doc
+from funcpipe_rag.result.types import Err, ErrInfo, Ok
+from typing_extensions import assert_never
 
 
 def describe_chunk_outcome(state: ChunkState) -> str:
@@ -94,3 +101,20 @@ def test_result_functor_transforms_success_without_running_failure_work() -> Non
     assert result_map(count_words)(Ok(cleaned)) == Ok(3)
     assert result_map(count_words)(unavailable) is unavailable
     assert calls == ["rag-1"]
+
+
+def test_applicative_validation_accumulates_independent_chunk_errors() -> None:
+    def title(raw: str) -> Validation[str, str]:
+        return v_success(raw) if raw.strip() else v_failure(("title required",))
+
+    def abstract(raw: str) -> Validation[str, str]:
+        return v_success(raw) if len(raw.split()) >= 2 else v_failure(("abstract too short",))
+
+    def build(good_title: str, good_abstract: str) -> RawDoc:
+        return RawDoc("rag-2", good_title, good_abstract, "fp")
+
+    invalid = v_liftA2(build, title(" "), abstract("brief"))
+    valid = v_liftA2(build, title("ADTs"), abstract("typed values"))
+
+    assert invalid == VFailure(("title required", "abstract too short"))
+    assert valid == VSuccess(RawDoc("rag-2", "ADTs", "typed values", "fp"))
