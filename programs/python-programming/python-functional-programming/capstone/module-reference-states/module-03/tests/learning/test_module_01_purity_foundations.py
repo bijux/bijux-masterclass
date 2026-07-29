@@ -5,7 +5,6 @@ from __future__ import annotations
 from dataclasses import FrozenInstanceError
 
 import pytest
-
 from funcpipe_rag import (
     Chunk,
     ChunkWithoutEmbedding,
