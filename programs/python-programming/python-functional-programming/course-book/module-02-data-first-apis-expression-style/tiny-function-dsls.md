@@ -506,7 +506,7 @@ if x > 0: print(x)  # OK for one-off
 ## 8. Pre-Core Quiz
 
 1. If-else chain? → **Hard-coded logic.**  
-2. Mutable rule? → **frozen=True.**  
+2. Mutable rule? → **Prefer frozen data nodes or closures over immutable captures.**
 3. Magic path? → **LenGt("path", value).**  
 4. Global rule? → **Pass as param.**  
 5. Prove rules? → **Hypothesis recursive.**
@@ -515,14 +515,85 @@ if x > 0: print(x)  # OK for one-off
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** Find if-else domain logic. Refactor to frozen rule data + interpreter; add Hypothesis for equivalence/idempotence.  
-**Project Exercise:** Apply to RAG (e.g., keep as DSL); run properties.  
-- Did data reduce branches?  
-- Did interpreter enable tests?  
-- Did composability clarify logic?
+**Reflect:** Choose one RAG rule that benefits from inspection or serialization and
+one that is clearer as a direct function. Justify both representations.
+
+**Project Exercise:** Express the same keep policy as predicate data, composed
+functions, and guarded text. Compare what each representation can prove safely.
 
 **Continue with:** [Debugging Compositions](../module-02-data-first-apis-expression-style/debugging-compositions.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 
 > **Further Reading:** For more on closures in Python, see 'Fluent Python' by Luciano Ramalho. Explore toolz for advanced partials once comfortable.
+
+## Module 02 has three rule representations
+
+They solve different pressures:
+
+| Representation | Example | Strength | Cost |
+| --- | --- | --- | --- |
+| function closure | `category_startswith("cs.")` | direct, typed behavior | opaque to serialization |
+| frozen predicate data | `StartsWith("categories", "cs.")` | inspectable and comparable | requires interpreter |
+| guarded text | `d.categories.startswith("cs.")` | boundary-friendly input | parsing and security surface |
+
+Do not introduce a parser when a Python function or frozen value is enough.
+
+## Predicate data makes short-circuiting reviewable
+
+```python
+pred = All(
+    (
+        StartsWith("categories", "cs."),
+        LenGt("abstract", 500),
+    )
+)
+```
+
+The tuple records order. `eval_pred` uses `all(...)`, so it does not evaluate the
+second rule when the category fails. That can avoid work or prevent an invalid later
+path from being touched.
+
+The learning proof makes the distinction observable by placing an unknown path
+after a false rule, then after a true rule. One returns `False`; the other raises at
+the point evaluation reaches the unsupported path.
+
+## Function rules bind policy without an interpreter
+
+```python
+keep = rule_and(
+    category_startswith("cs."),
+    abstract_min_len(500),
+)
+```
+
+The closures capture prefix and minimum length. They are easy to execute and type
+but not meaningfully comparable: two separately created closures with the same
+capture are different function objects. Use function rules when behavior matters
+more than persistence or inspection.
+
+## Guarded text is still untrusted input
+
+`parse_rule` parses with `ast.parse`, validates a whitelist, and interprets supported
+nodes itself. It does not call Python `eval`. The safe surface includes document
+title, abstract, categories, boolean operations, comparisons, `len`,
+`startswith`, and `lower`.
+
+The whitelist and interpreter must agree. Allowing an AST node that the interpreter
+cannot handle produces a runtime failure; interpreting a node the validator did not
+authorize creates a security hole.
+
+The parser is intentionally small and not a general Python sandbox. Adding
+subscripts, comprehensions, imports, arbitrary calls, or reflective attributes would
+need a new threat and maintenance review.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'predicate_values or function_rules or guarded_rule'
+```
+
+These tests prove the taught rule surface for controlled local values. They do not
+prove that accepting user-authored expressions is appropriate for a production
+service.
