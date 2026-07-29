@@ -64,6 +64,50 @@ AsyncGen is exactly the same idea as a lazy sync generator or single-value `Asyn
 - Rate limiting & fairness  
 - Full production async RAG pipeline
 
+## Runnable lab: prove demand-driven transformation
+
+The reference application does not ship the illustrative
+`domain/rag_async.py` shown later on this page. Its concrete learning surface is
+`domain/effects/async_/stream.py`. Use that surface to distinguish a stream
+description from an active iterator:
+
+```python
+pulled: list[int] = []
+
+async def source_items():
+    for value in (1, 2, 3):
+        pulled.append(value)
+        yield Ok(value)
+
+source: AsyncGen[int] = source_items
+doubled = async_gen_map(source, lambda value: value * 2)
+
+assert pulled == []  # construction did not enter source_items
+
+iterator = doubled()
+assert await anext(iterator) == Ok(2)
+assert await anext(iterator) == Ok(4)
+await iterator.aclose()
+assert pulled == [1, 2]
+```
+
+Run the executable version:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k async_stream_pulls_only_what_the_consumer_requests
+```
+
+The observation is the `pulled` trace, not elapsed time. Calling
+`async_gen_map` builds another thunk; calling `doubled()` creates an iterator;
+only `anext` asks upstream for a value. Explicitly closing a partially consumed
+iterator also makes the ownership boundary visible.
+
+Wrong turns include converting the stream to a list before asserting, which
+proves full materialization rather than laziness, and checking only that
+`doubled` is callable, which proves nothing about demand.
+
 ## 1. Algebraic Laws & Architectural Invariants
 
 | Category                  | Name                     | Description                                                                                                                | Enforcement                          |

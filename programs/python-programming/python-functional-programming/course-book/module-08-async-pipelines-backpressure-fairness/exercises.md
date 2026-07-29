@@ -37,3 +37,35 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 
 Earlier contract preserved: Module 07 still owns effect interpretation at a
 shell; Module 08 changes the description type, not that boundary.
+
+## Async generators: observe a partial pull
+
+**Starting context:** read `async_gen_map` in
+`domain/effects/async_/stream.py` and
+`test_async_stream_pulls_only_what_the_consumer_requests`.
+
+**Objective:** extend the source to four values, consume three mapped results,
+close the iterator, and make the pull trace prove the fourth value was never
+requested.
+
+**Constraints:**
+
+- do not materialize the entire stream;
+- assert both mapped results and the source pull trace;
+- explicitly close the partially consumed iterator;
+- keep the source a replayable `AsyncGen` thunk.
+
+**Expected evidence:** construction records no pulls, three `anext` calls record
+exactly three source values, and the fourth value remains untouched.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k async_stream_pulls_only_what_the_consumer_requests
+```
+
+Earlier contract preserved: Module 07 resource ownership still ends at an
+interpreter boundary; laziness does not permit abandoning an owned iterator
+without closing it.
