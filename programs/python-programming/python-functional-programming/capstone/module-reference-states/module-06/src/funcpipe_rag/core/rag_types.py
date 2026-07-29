@@ -83,7 +83,7 @@ class RagEnv:
     tail_policy: TailPolicy = "emit_short"
 
     def __post_init__(self) -> None:
-        if not isinstance(self.chunk_size, int):
+        if type(self.chunk_size) is not int:
             raise ValueError("RagEnv.chunk_size must be an int")
         if self.chunk_size <= 0:
             raise ValueError("RagEnv.chunk_size must be a positive integer")

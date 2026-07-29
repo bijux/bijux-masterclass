@@ -70,5 +70,7 @@ class RagEnv:
     chunk_size: int
 
     def __post_init__(self) -> None:
+        if type(self.chunk_size) is not int:
+            raise ValueError("RagEnv.chunk_size must be an int")
         if self.chunk_size <= 0:
             raise ValueError("RagEnv.chunk_size must be a positive integer")
