@@ -522,14 +522,91 @@ def legacy_rag(docs, chunk_size, cleaner, keep, debug):
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** Find a function in your codebase with >3 params or hidden globals. Refactor it to use `inputs`, `config`, `deps` with arity ≤3. Add Hypothesis tests for equivalence and idempotence.  
-**Project Exercise:** Apply to RAG pipeline; run properties on `arxiv_cs_abstracts_10k.csv`.  
-- Did composability improve (easier partials)?  
-- Did tests catch global bugs?  
-- Did config/deps clarify domain logic?
+**Reflect:** Find a function whose parameters mix input values, stable policy, and
+effectful capabilities. Group parameters only where the resulting type has one
+coherent responsibility.
+
+**Project Exercise:** Compare `iter_rag`, `iter_rag_core`, and `full_rag_api_docs`.
+State the contract added by each API rather than ranking them by parameter count.
 
 **Continue with:** [Effect Boundaries](../module-02-data-first-apis-expression-style/effect-boundaries.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 
 > **Further Reading:** For more on closures in Python, see 'Fluent Python' by Luciano Ramalho. Explore toolz for advanced partials once comfortable.
+
+## Read the API by ownership
+
+Module 02 separates three kinds of argument:
+
+| Kind | FuncPipe value | Owner |
+| --- | --- | --- |
+| run input | `Iterable[RawDoc]` | caller |
+| stable policy | `RagConfig` | application configuration |
+| pure capabilities and taps | `RagCoreDeps` | composition root |
+
+```python
+def iter_rag_core(
+    docs: Iterable[RawDoc],
+    config: RagConfig,
+    deps: RagCoreDeps,
+) -> Iterator[Chunk]:
+    ...
+```
+
+Three parameters are not inherently better than five. This shape is better because
+each parameter answers one durable question: what data is processed, what policy is
+selected, and which implementation capabilities are available.
+
+### Keep values and capabilities distinct
+
+`RagConfig` contains frozen, comparable policy: chunk environment, cleaning config,
+predicate data, and debug selection. `RagCoreDeps` contains behavior: cleaner,
+embedder, and optional taps.
+
+Putting the embedder inside config would make configuration harder to serialize and
+compare. Putting chunk size inside dependencies would hide a policy decision among
+functions. The boundary is semantic, not cosmetic.
+
+### Return an owned contract
+
+`full_rag_api_docs` returns:
+
+```python
+tuple[list[Chunk], Observations]
+```
+
+The list is an owned, replayable result. `Observations` reports the completed run.
+The caller does not need to know which internal lists or taps produced it. In
+contrast, `iter_rag_core` returns an iterator and cannot promise completed totals at
+construction time.
+
+### Compatibility proof
+
+For default config, the new API must equal the Module 01 pipeline:
+
+```python
+baseline = structural_dedup_chunks(
+    embed_chunk(chunk)
+    for doc in docs
+    for chunk in chunk_doc(clean_doc(doc), env)
+)
+chunks, observations = full_rag_api_docs(docs, config, deps)
+
+assert chunks == baseline
+assert observations.total_chunks == len(chunks)
+```
+
+Test document IDs, text, offsets, embedding values, and order through structural
+equality. Comparing only counts would allow a broken application to pass.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'default_api'
+```
+
+The proof establishes the default compatibility route. It does not prove every
+non-default cleaning or filtering policy preserves Module 01 output; those policies
+are intended to change selected values.
