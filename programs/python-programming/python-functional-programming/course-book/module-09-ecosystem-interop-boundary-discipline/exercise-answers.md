@@ -40,3 +40,29 @@ example, can buffer an unbounded skew between consumers.
 In the application architecture, this keeps document ingestion on the lazy side
 of the boundary. Later adapters may supply documents, but they do not gain
 permission to materialize the whole corpus.
+
+## Helper libraries: require semantic parity
+
+The compatibility module is the public boundary. Calling `toolz` directly from
+RAG stages would make installation state part of domain behavior. The exercise
+therefore composes only the compatibility functions and asserts the same plain
+Python result: `[5, 4]`.
+
+The defensible dependency decision is conditional. Enable `toolz` when a team
+already understands its left-to-right vocabulary and repeated pipelines become
+easier to review. Keep the fallback when the helper only replaces a readable
+generator expression with unfamiliar syntax.
+
+Common wrong turns:
+
+- testing `TOOLZ_AVAILABLE` instead of output tests installation state, not the
+  contract
+- returning a `toolz`-specific container leaks the library into the core
+- materializing after every stage preserves values but abandons streaming
+
+The result proves parity for the exercised compose, filter, map, and pipe route.
+It does not prove every `toolz` operator has a compatible fallback. Each added
+operator needs its own boundary contract.
+
+In FuncPipe, the facade protects `RawDoc` and `Chunk` flows from optional-library
+types. Removing the dependency should be a packaging decision, not a RAG rewrite.

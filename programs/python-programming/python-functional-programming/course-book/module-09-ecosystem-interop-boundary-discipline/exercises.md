@@ -34,3 +34,31 @@ pytest -q tests/learning/test_module_09_interop.py \
 
 Earlier contract preserved: Module 03's lazy traversal remains true at the Module
 09 interop boundary.
+
+## Helper libraries: require semantic parity
+
+**Starting context:** read `interop/toolz_compat.py` and
+`test_optional_helper_facade_preserves_plain_python_semantics`.
+
+**Objective:** decide whether optional composition helpers earn their dependency
+cost for a normalize-filter-project pipeline.
+
+**Constraints:**
+
+- import only through `funcpipe_rag.interop.toolz_compat`
+- keep the result identical whether `toolz` is installed or absent
+- keep the iterator lazy until the final `list`
+- state what readability gain would justify enabling the dependency
+
+**Expected evidence:** mixed-case padded strings normalize, empty strings are
+removed, and the final projection preserves encounter order.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k optional_helper_facade_preserves_plain_python_semantics
+```
+
+Earlier contract preserved: optional packages do not change the domain value or
+failure model established in Modules 04 through 06.
