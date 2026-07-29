@@ -44,6 +44,10 @@ capstone-data-api-proof: ## Run the tracked Module 02 data-first API laws
 capstone-data-shell-proof: ## Run the tracked Module 02 filesystem boundary proof
 	@$(RUN_CAPSTONE) data-shell-proof
 
+.PHONY: capstone-streaming-rag-proof
+capstone-streaming-rag-proof: ## Run the tracked Module 03 streaming RAG laws
+	@$(RUN_CAPSTONE) streaming-rag-proof
+
 .PHONY: demo
 demo: ## Build the learner-facing capstone walkthrough
 	@$(RUN_CAPSTONE) demo

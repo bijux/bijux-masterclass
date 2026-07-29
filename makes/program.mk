@@ -38,6 +38,10 @@ capstone-data-api-proof: ## Run the selected program's data-first API proof
 capstone-data-shell-proof: ## Run the selected program's Result-bearing filesystem proof
 	@$(RUN_PROGRAM) capstone-data-shell-proof
 
+.PHONY: capstone-streaming-rag-proof
+capstone-streaming-rag-proof: ## Run the selected program's complete streaming RAG proof
+	@$(RUN_PROGRAM) capstone-streaming-rag-proof
+
 .PHONY: demo
 demo: ## Run the selected program's learner-facing capstone walkthrough
 	@$(RUN_PROGRAM) demo

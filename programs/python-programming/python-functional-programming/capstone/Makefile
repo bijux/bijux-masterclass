@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test foundation-proof foundation-types shell-proof data-api-proof data-shell-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
+.PHONY: install test foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -36,6 +36,8 @@ SHELL_PROOF := $(FOUNDATION_STATE)/tests/learning/test_module_01_shell_boundary.
 DATA_API_STATE := module-reference-states/module-02
 DATA_API_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_data_first_apis.py
 DATA_SHELL_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_filesystem_boundary.py
+STREAMING_STATE := module-reference-states/module-03
+STREAMING_RAG_PROOF := $(STREAMING_STATE)/tests/learning/test_module_03_streaming_dataflow.py
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
 INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-functional-programming
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-functional-programming
@@ -84,6 +86,9 @@ data-api-proof: install ## Run the tracked data-first API and configuration laws
 
 data-shell-proof: install ## Run the tracked Result-bearing filesystem boundary proof
 	PYTHONPATH="$(abspath $(DATA_API_STATE)/src)" $(PYTEST) -q "$(DATA_SHELL_PROOF)"
+
+streaming-rag-proof: install ## Run the tracked complete streaming RAG laws
+	PYTHONPATH="$(abspath $(STREAMING_STATE)/src)" $(PYTEST) -q "$(STREAMING_RAG_PROOF)"
 
 demo: tour ## Build the learner-facing capstone walkthrough
 
