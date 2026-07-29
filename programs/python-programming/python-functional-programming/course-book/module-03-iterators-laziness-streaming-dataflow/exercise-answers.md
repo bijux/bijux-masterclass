@@ -94,33 +94,47 @@ outcome, not merely a queue size.
 
 ## Answer 4: Choose a reusable boundary
 
-Suppose the need is to take a configurable chunk prefix. That is a transform:
+`make_gen_rag_fn` is a configured application factory:
 
 ```python
-from collections.abc import Callable, Iterable, Iterator
-from funcpipe_rag import ChunkWithoutEmbedding, fence_k
+run = make_gen_rag_fn(chunk_size=50, max_chunks=3)
+factory_chunks = list(run(replayable_docs))
 
+config = RagConfig(env=RagEnv(chunk_size=50))
+deps = get_deps(config)
+direct_chunks = list(
+    stream_rag_chunks(
+        replayable_docs,
+        config,
+        deps,
+        max_chunks=3,
+    )
+)
 
-def make_chunk_prefix(
-    maximum: int,
-) -> Callable[
-    [Iterable[ChunkWithoutEmbedding]],
-    Iterator[ChunkWithoutEmbedding],
-]:
-    return fence_k(maximum)
+assert factory_chunks == direct_chunks
+assert all(len(chunk.embedding) == 16 for chunk in factory_chunks)
 ```
 
-The factory captures only `maximum`; each transform call gets a caller-owned input
-and creates a fresh output iterator.
+The factory captures policy and creates the complete
+clean–chunk–embed–deduplicate chain inside each run. Documents remain caller-owned
+input. For canonically ordered documents, the unfenced stream equals
+`full_rag_api_docs`. For out-of-order documents, the streaming result retains
+encounter order while the eager result sorts canonically.
 
-A common wrong turn is capturing `iter(chunks)` in the factory. That changes a
-reusable transform into a one-shot hidden source. Another is adding a factory around
-a single direct call without any stable configuration; the indirection earns
-nothing.
+`max_chunks` counts final unique outputs. With duplicate, duplicate, and unique
+documents, producing two outputs requests all three documents. That is correct
+because the fence follows deduplication. A helper that promises at most two
+pre-embedding chunk operations must instead use `gen_bounded_chunks`.
 
-Value equality on replayable input proves deterministic output. A counted-source
-test proves construction timing. Neither proves the caller's generator can replay.
-This ownership distinction is why FuncPipe names both `Source` and `Transform`.
+A common wrong turn is comparing the factory only with `gen_bounded_chunks`. That
+partial pipeline has no embeddings or deduplication and cannot prove a RAG result.
+Another is calling both limits “bounded” without naming whether they bound raw
+work or final unique values.
+
+Factory/direct equality proves wiring. Eager equality under canonical order proves
+qualified Module 02 preservation. A counted duplicate source proves fence demand.
+None proves replayability of a caller-supplied generator, constant-space
+deduplication, or canonical ordering without materialization.
 
 ## Answer 5: Add safe observation
 
@@ -169,3 +183,10 @@ A satisfactory Module 03 solution should let you say:
 
 If your evidence contains only final lists, add a counted source. If it contains
 only counters, add value and metadata assertions. Streaming correctness needs both.
+
+Run the evidence owner from the repository root:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-streaming-rag-proof
+```
