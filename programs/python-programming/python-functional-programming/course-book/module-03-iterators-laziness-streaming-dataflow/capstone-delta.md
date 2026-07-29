@@ -1,8 +1,10 @@
-# Module 03 FuncPipe Delta: Make Complete RAG Demand Explicit
+# Module 03 FuncPipe Delta: Make Complete Multi-Source Demand Explicit
 
 Module 02 provides a configurable eager API. It filters, cleans, chunks, embeds,
 canonically sorts, deduplicates, and returns complete observations. Module 03 keeps
 that API and adds a complete iterator route for callers that need bounded demand.
+The completed state also admits several replayable document sources without hiding
+which source advances next.
 
 ## New pressure
 
@@ -14,6 +16,9 @@ contract. A caller needs to know:
 - which stages run before an output appears;
 - how deduplication changes upstream demand and retained state;
 - whether fully consuming the stream preserves Module 02 values.
+- how several document sources are scheduled;
+- whether source boundaries change deduplication or fence semantics;
+- how two consumers can share final chunks without duplicating upstream work.
 
 The concept introduced now is **demand-driven dataflow**: downstream requests
 control upstream traversal, and fence placement is application behavior.
@@ -23,7 +28,8 @@ control upstream traversal, and fence placement is application behavior.
 The completed Module 03 path is:
 
 ```text
-RawDoc source
+RawDoc source factories
+  -> sequential or round-robin fan-in
   -> filter
   -> clean
   -> chunk
@@ -38,6 +44,16 @@ policy and returns a fresh complete RAG iterator for each call. It returns `Chun
 including the deterministic embedding, rather than stopping at
 `ChunkWithoutEmbedding`.
 
+`stream_rag_sources` owns the additional source-scheduling decision. Its
+`SourceSchedule` is either:
+
+- `sequential`: exhaust the first source before starting the next;
+- `round_robin`: request one document from each active source in turn.
+
+Both schedules preserve order within each source. They deliberately produce
+different encounter orders across sources. That matters because streaming
+deduplication keeps the first structural duplicate it encounters.
+
 | Surface | Output | Fence meaning |
 | --- | --- | --- |
 | `stream_chunks` | pre-embedding `ChunkWithoutEmbedding` | none |
@@ -45,6 +61,7 @@ including the deterministic embedding, rather than stopping at
 | `gen_stream_embedded` | `Chunk` | none |
 | `gen_stream_deduped` | unique encounter-ordered `Chunk` | none; retains seen keys |
 | `stream_rag_chunks` | final unique `Chunk` | at most this many unique outputs |
+| `stream_rag_sources` | final unique `Chunk` from several source factories | same final-output fence after source scheduling and deduplication |
 | `make_gen_rag_fn` | fresh final unique `Chunk` iterator | configured unique-output limit |
 
 The two fences are not interchangeable. A raw-chunk fence of two requests exactly
@@ -60,7 +77,8 @@ discarded before the second unique output appears.
 | lazy structural deduplication | `core/structural_dedup.py` |
 | overlap and tail policy | `pipeline_stages.py`, `rag_types.py` |
 | generic source/transform composition | `streaming/compose.py`, `streaming/types.py` |
-| fan-in, fan-out, time, and observation policies | `streaming/` |
+| source scheduling | `api/core.py::stream_rag_sources`, `streaming/fanin.py` |
+| fan-out, time, and observation policies | `streaming/` |
 
 The generic streaming package supplies execution-policy tools. RAG modules still
 own document cleaning, chunk metadata, embedding, and structural identity.
@@ -83,15 +101,32 @@ whole input, which would defeat its demand contract.
 Neither deduplication route is constant-space. The streaming route avoids retaining
 all chunk values but retains every unique structural key seen so far.
 
+The same qualifications apply across multiple sources. A sequential one-output
+fence can stop before the second source is even opened. A round-robin schedule
+opens every source when its merged iterator first runs so it can take turns.
+Neither is universally “fairer”: sequential order expresses source priority;
+round-robin limits how long an active source waits behind a large peer.
+
+`make_merge` is a third generic fan-in factory, but it is not a
+`stream_rag_sources` schedule. It requires every input source to be independently
+sorted by the same key. The RAG entry point offers only policies it can enforce
+without silently accepting that extra precondition.
+
 ## Executable laws
 
-The Module 03 learning proof establishes 14 cases:
+The Module 03 learning proof establishes 20 cases:
 
 - construction does not request documents;
 - a raw prefix fence does not pull one item too far;
 - overlap and tail policies preserve their stated metadata;
 - a sliding window pulls only the width needed for its next output;
 - source factories create fresh traversals;
+- keyed fan-in merges sources that already satisfy its local-order precondition;
+- sequential source scheduling preserves source priority;
+- round-robin scheduling advances active sources in turns;
+- a final-output fence can avoid opening a later sequential source;
+- structural deduplication spans source boundaries;
+- index and audit consumers receive equal final chunks from one upstream traversal;
 - multicast skew failure does not over-consume upstream;
 - injected time makes pacing deterministic;
 - custom deduplication is single-pass and encounter-ordered;
@@ -105,6 +140,13 @@ Run the stable route from the repository root:
 ```bash
 make PROGRAM=python-programming/python-functional-programming \
   capstone-streaming-rag-proof
+```
+
+For only the multi-source decision and pressure laws:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-source-scheduling-proof
 ```
 
 ## Reference-state route
@@ -131,6 +173,8 @@ reasoning, and deterministic test control. It does not prove automatic cleanup
 after an abandoned iterator, typed per-item recovery, async backpressure, or
 constant space for deduplication and fan-out.
 
-Move to Module 04 when you can predict which source values a requested unique
-prefix may consume, explain why streaming order differs from canonical order, and
-point to the test that proves complete chunks still preserve Module 02 meaning.
+Move to Module 04 when you can predict which source factory and document a
+requested unique prefix may consume, defend sequential or round-robin scheduling
+for a stated ingestion policy, explain why streaming order differs from canonical
+order, and point to the test that proves complete chunks still preserve Module 02
+meaning.
