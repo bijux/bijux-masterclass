@@ -118,3 +118,31 @@ pytest -q tests/learning/test_module_09_interop.py \
 
 Earlier contract preserved: Module 04 failures remain data and Module 07 keeps
 framework behavior outside the domain core.
+
+## Data and ML pipelines: validate topology before consuming data
+
+**Starting context:** read `pipelines/configured.py` and
+`test_configured_pipeline_rejects_invalid_order_before_consumption`.
+
+**Objective:** try the orders `clean → embed` and `clean → chunk`, record their
+distinct build failures, and then construct `clean → chunk → embed`.
+
+**Constraints:**
+
+- use the shipped names and parameter keys
+- reject invalid topology while building, before iterating documents
+- keep the valid pipeline lazy
+- inject a fitted or external embedder only through `artifacts`
+
+**Expected evidence:** invalid orders fail without a source pull; the valid order
+returns an iterator of `Result[Chunk, ErrInfo]`.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k configured_pipeline_rejects_invalid_order_before_consumption
+```
+
+Earlier contract preserved: Module 03 controls materialization and Module 06 keeps
+configuration explicit rather than hidden in stage closures.

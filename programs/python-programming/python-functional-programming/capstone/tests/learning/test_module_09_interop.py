@@ -6,6 +6,11 @@ from funcpipe_rag.boundaries.web.documents import parse_document_payloads
 from funcpipe_rag.interop.dataframes import normalize_records
 from funcpipe_rag.interop.stdlib_fp import merge_streams, running_sum
 from funcpipe_rag.interop.toolz_compat import compose, curried_filter, curried_map, pipe
+from funcpipe_rag.pipelines.configured import (
+    PipelineConfig,
+    StepConfig,
+    build_rag_pipeline,
+)
 from funcpipe_rag.result.types import Err, Ok
 
 
@@ -73,3 +78,24 @@ def test_web_payload_translation_exposes_validation_as_a_value() -> None:
     assert isinstance(invalid, Err)
     assert invalid.error.code == "INVALID_DOCUMENT"
     assert invalid.error.stage == "web.parse_document_payloads"
+
+
+def test_configured_pipeline_rejects_invalid_order_before_consumption() -> None:
+    pulls: list[str] = []
+
+    def documents() -> Iterator[object]:
+        pulls.append("pulled")
+        yield object()
+
+    config = PipelineConfig(steps=(StepConfig("embed"),))
+
+    try:
+        build_rag_pipeline(config)
+    except TypeError as error:
+        assert str(error) == "embed expects ChunkWithoutEmbedding"
+    else:
+        raise AssertionError("invalid stage order must be rejected")
+
+    assert pulls == []
+    assert list(documents())
+    assert pulls == ["pulled"]

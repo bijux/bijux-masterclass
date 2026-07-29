@@ -115,3 +115,37 @@ serialization; those remain framework integration concerns.
 
 In FuncPipe, the HTTP shell translates, calls the established pipeline, and maps
 the resulting value back out. It never becomes an alternative RAG core.
+
+## Data and ML pipelines: validate topology before consuming data
+
+`build_rag_pipeline` checks a small type-state sequence while walking the
+configuration. `clean → embed` fails because embedding requires chunks.
+`clean → chunk` passes the local adjacency checks but fails the final rule that a
+pipeline must end at a `Result`-returning effect boundary.
+
+The valid configuration is:
+
+```python
+PipelineConfig(
+    steps=(
+        StepConfig("clean"),
+        StepConfig("chunk", {"chunk_size": 256, "overlap": 32}),
+        StepConfig("embed"),
+    )
+)
+```
+
+Common wrong turns:
+
+- using `size` instead of the shipped `chunk_size` key leaves the example
+  disconnected from executable code
+- discovering stage order only after processing documents wastes work and blurs
+  configuration failures with data failures
+- storing a live embedder in serializable config confuses data with resources
+
+The result proves build-time topology validation and zero source consumption on
+the tested invalid route. It does not prove an injected model is deterministic;
+the boundary owner must pin and test that artifact.
+
+In FuncPipe, config selects pure stages while the artifact mapping supplies
+resources. That separation lets CLI and service shells reuse one builder.
