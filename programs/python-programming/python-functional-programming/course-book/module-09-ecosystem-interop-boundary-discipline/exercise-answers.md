@@ -149,3 +149,29 @@ the boundary owner must pin and test that artifact.
 
 In FuncPipe, config selects pure stages while the artifact mapping supplies
 resources. That separation lets CLI and service shells reuse one builder.
+
+## CLI and config: make misspelled overrides fail closed
+
+`parse_override` is responsible only for turning dotted text into nested data.
+`apply_step_params` owns the separate question of whether a step target exists.
+Keeping those decisions separate makes each failure precise.
+
+The correct update returns a new `PipelineConfig`; the frozen original remains at
+512. A misspelled step raises `ValueError("unknown pipeline step: chnuk")` because
+an unchanged successful result would mislead the operator into believing the run
+used the requested configuration.
+
+Common wrong turns:
+
+- mutating `StepConfig.params` breaks value semantics and makes repeated CLI runs
+  history-dependent
+- accepting unmatched targets hides operational mistakes
+- letting `argparse` or Typer perform deep merge logic makes the policy hard to
+  reuse and test
+
+The result proves precedence, non-mutation, and unknown-target rejection for the
+shipped dotted override route. It does not prove shell quoting or environment
+variable behavior; those belong in entrypoint integration tests.
+
+In FuncPipe, the CLI is a translator from strings to `PipelineConfig`. The same
+builder used by services and tests remains the application authority.

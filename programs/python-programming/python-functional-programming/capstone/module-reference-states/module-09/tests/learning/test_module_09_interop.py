@@ -6,6 +6,7 @@ from funcpipe_rag.boundaries.web.documents import parse_document_payloads
 from funcpipe_rag.interop.dataframes import normalize_records
 from funcpipe_rag.interop.stdlib_fp import merge_streams, running_sum
 from funcpipe_rag.interop.toolz_compat import compose, curried_filter, curried_map, pipe
+from funcpipe_rag.pipelines.cli import apply_step_params, parse_override
 from funcpipe_rag.pipelines.configured import (
     PipelineConfig,
     StepConfig,
@@ -99,3 +100,25 @@ def test_configured_pipeline_rejects_invalid_order_before_consumption() -> None:
     assert pulls == []
     assert list(documents())
     assert pulls == ["pulled"]
+
+
+def test_cli_override_rejects_a_misspelled_stage_without_mutation() -> None:
+    config = PipelineConfig(
+        steps=(
+            StepConfig("clean"),
+            StepConfig("chunk", {"chunk_size": 512}),
+            StepConfig("embed"),
+        )
+    )
+
+    override = parse_override("chunk.chunk_size=256")
+    changed = apply_step_params(config, "chunk", override["chunk"])
+
+    assert config.steps[1].params["chunk_size"] == 512
+    assert changed.steps[1].params["chunk_size"] == 256
+    try:
+        apply_step_params(config, "chnuk", {"chunk_size": 256})
+    except ValueError as error:
+        assert str(error) == "unknown pipeline step: chnuk"
+    else:
+        raise AssertionError("a misspelled target must not be ignored")

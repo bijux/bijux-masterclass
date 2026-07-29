@@ -146,3 +146,31 @@ pytest -q tests/learning/test_module_09_interop.py \
 
 Earlier contract preserved: Module 03 controls materialization and Module 06 keeps
 configuration explicit rather than hidden in stage closures.
+
+## CLI and config: make misspelled overrides fail closed
+
+**Starting context:** read `pipelines/cli.py` and
+`test_cli_override_rejects_a_misspelled_stage_without_mutation`.
+
+**Objective:** apply `chunk.chunk_size=256`, then try the misspelled target
+`chnuk.chunk_size=256` and explain why silent success is unsafe.
+
+**Constraints:**
+
+- parse text separately from applying it
+- return a new frozen `PipelineConfig`
+- reject a target that matches no configured step
+- keep file and process I/O in the shell
+
+**Expected evidence:** the original config stays at 512, the new config uses 256,
+and the misspelling raises before a RAG run starts.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k cli_override_rejects_a_misspelled_stage_without_mutation
+```
+
+Earlier contract preserved: configuration remains explicit data and invalid
+configuration does not masquerade as a successful execution.

@@ -67,12 +67,16 @@ def apply_step_params(cfg: PipelineConfig, step_name: str, params: dict[str, Any
     """Return a new PipelineConfig with merged params for all matching steps."""
 
     steps: list[StepConfig] = []
+    matched = False
     for step in cfg.steps:
         if step.name != step_name:
             steps.append(step)
             continue
+        matched = True
         merged = deep_merge(dict(step.params), params)
         steps.append(replace(step, params=merged))
+    if not matched:
+        raise ValueError(f"unknown pipeline step: {step_name}")
     return replace(cfg, steps=tuple(steps))
 
 
