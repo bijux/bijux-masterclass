@@ -36,6 +36,10 @@ Module 06 is about one practical question:
 > in the code so that failure, configuration, logging, and local state remain easy to
 > review?
 
+Start with the [Module 06 Capstone Delta](capstone-delta.md). It separates the
+meaningful flow additions from broad snapshot reorganization and gives a named
+comparison and verification route from Module 05.
+
 ## Keep These Pages Open
 
 Use these pages alongside Module 06 so the new abstractions stay connected to the rest
@@ -73,23 +77,24 @@ By the end of the module, you should be able to:
 
 Use this order if you are reading the module front to back:
 
-1. [and_then and bind](and-then-and-bind.md): remove repetitive propagation from dependent steps
-2. [Lifting Plain Functions](lifting-plain-functions.md): decide when to use `map`, `and_then`, `map_err`, or `liftA2`
-3. [Law-Guided Design](law-guided-design.md): understand what makes those refactors safe
-4. [Reader Pattern](reader-pattern.md): make shared configuration explicit
-5. [Explicit State Threading](explicit-state-threading.md): keep local updates pure and reviewable
-6. [Error-Typed Flows](error-typed-flows.md): separate expected errors from bugs
-7. [Layered Containers](layered-containers.md): combine effects without losing track of behavior
-8. [Writer Pattern](writer-pattern.md): accumulate logs and trace data as values
-9. [Refactoring try/except](refactoring-try-except.md): turn the ideas into a repeatable rewrite process
-10. [Configurable Pipelines](configurable-pipelines.md): choose behavior from configuration instead of duplicating pipelines
-11. [Refactoring Guide](refactoring-guide.md): compare the module ideas against the capstone surfaces
+1. [Module 06 Capstone Delta](capstone-delta.md): locate the exact RAG change
+2. [and_then and bind](and-then-and-bind.md): remove repetitive propagation from dependent steps
+3. [Lifting Plain Functions](lifting-plain-functions.md): decide when to use `map`, `and_then`, `map_err`, or `liftA2`
+4. [Law-Guided Design](law-guided-design.md): understand what makes those refactors safe
+5. [Reader Pattern](reader-pattern.md): make shared configuration explicit
+6. [Explicit State Threading](explicit-state-threading.md): keep local updates pure and reviewable
+7. [Error-Typed Flows](error-typed-flows.md): separate expected errors from bugs
+8. [Layered Containers](layered-containers.md): combine effects without losing track of behavior
+9. [Writer Pattern](writer-pattern.md): accumulate logs and trace data as values
+10. [Refactoring try/except](refactoring-try-except.md): turn the ideas into a repeatable rewrite process
+11. [Configurable Pipelines](configurable-pipelines.md): choose behavior from configuration instead of duplicating pipelines
+12. [Refactoring Guide](refactoring-guide.md): compare the module ideas against the capstone surfaces
 
 ## Exercises
 
-- Rewrite one manual propagation path with `and_then`, and name the branches you no longer have to maintain by hand.
-- Find one hidden dependency and decide whether it should become a Reader input or stay as an ordinary function argument.
-- Review one logging or stateful helper and explain whether Writer or State would clarify the behavior or only add ceremony.
+Use [Module 06 Exercises](exercises.md) for cumulative work against the tracked
+reference state. Consult [Exercise Answers](exercise-answers.md) only after
+recording your own expected value, failure route, and preservation claim.
 
 ## Capstone Checkpoints
 

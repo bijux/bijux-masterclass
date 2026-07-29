@@ -110,6 +110,7 @@ nav:
   - Module Glossary: module-05-algebraic-data-modelling-validation/glossary.md
 - 'Module 06: Monadic Flow and Explicit Context':
   - Home: module-06-monadic-flow-explicit-context/index.md
+  - Module 06 Capstone Delta: module-06-monadic-flow-explicit-context/capstone-delta.md
   - and_then and bind: module-06-monadic-flow-explicit-context/and-then-and-bind.md
   - Lifting Plain Functions: module-06-monadic-flow-explicit-context/lifting-plain-functions.md
   - Law-Guided Design: module-06-monadic-flow-explicit-context/law-guided-design.md
@@ -120,6 +121,8 @@ nav:
   - Writer Pattern: module-06-monadic-flow-explicit-context/writer-pattern.md
   - Refactoring try/except: module-06-monadic-flow-explicit-context/refactoring-try-except.md
   - Configurable Pipelines: module-06-monadic-flow-explicit-context/configurable-pipelines.md
+  - Exercises: module-06-monadic-flow-explicit-context/exercises.md
+  - Exercise Answers: module-06-monadic-flow-explicit-context/exercise-answers.md
   - Module 06 Refactoring Guide: module-06-monadic-flow-explicit-context/refactoring-guide.md
   - Module Glossary: module-06-monadic-flow-explicit-context/glossary.md
 - 'Module 07: Effect Boundaries and Resource Safety':
