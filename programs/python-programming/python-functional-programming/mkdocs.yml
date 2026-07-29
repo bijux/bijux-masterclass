@@ -152,6 +152,7 @@ nav:
   - Module Glossary: module-08-async-pipelines-backpressure-fairness/glossary.md
 - 'Module 09: Ecosystem Interop and Boundary Discipline':
   - Home: module-09-ecosystem-interop-boundary-discipline/index.md
+  - Module 09 Capstone Delta: module-09-ecosystem-interop-boundary-discipline/capstone-delta.md
   - Standard Library Functional Tools: module-09-ecosystem-interop-boundary-discipline/stdlib-functional-tools.md
   - Helper Libraries: module-09-ecosystem-interop-boundary-discipline/helper-libraries.md
   - Data Processing: module-09-ecosystem-interop-boundary-discipline/data-processing.md
@@ -163,6 +164,8 @@ nav:
   - Functional Facades: module-09-ecosystem-interop-boundary-discipline/functional-facades.md
   - Cross-Process Composition: module-09-ecosystem-interop-boundary-discipline/cross-process-composition.md
   - Team Adoption: module-09-ecosystem-interop-boundary-discipline/team-adoption.md
+  - Exercises: module-09-ecosystem-interop-boundary-discipline/exercises.md
+  - Exercise Answers: module-09-ecosystem-interop-boundary-discipline/exercise-answers.md
   - Module 09 Refactoring Guide: module-09-ecosystem-interop-boundary-discipline/refactoring-guide.md
   - Module Glossary: module-09-ecosystem-interop-boundary-discipline/glossary.md
 - 'Module 10: Refactoring, Performance, and Sustainment':
@@ -228,4 +231,3 @@ extra_javascript:
 hooks:
   - ../../../docs/hooks/publish_site_assets.py
   - ../../../docs/hooks/load_course_nav.py
-

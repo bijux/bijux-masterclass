@@ -198,38 +198,32 @@ def std_merge(a, b): return chain(a, b)
 ```
 
 ---
-## 5. Property-Based Proofs (repo tests)
-Runnable properties live in `capstone/tests/unit/interop/test_stdlib_fp.py` and `capstone/tests/unit/rag/test_stdlib_fp.py`.
-```python
-from hypothesis import given, strategies as st
-from hypothesis import assume
-import operator
-from functools import reduce
+## 5. Executable proof
 
-@given(st.lists(st.integers()), st.lists(st.integers()))
-def test_chain_equiv(a, b):
-    assert list(chain(a, b)) == a + b
+The reference state tests two different claims:
 
-@given(st.integers(1, 10))
-def test_partial_equiv(n):
-    add_n = partial(operator.add, n)
-    assert add_n(5) == n + 5
+- `tests/unit/interop/test_stdlib_fp.py` checks the thin helper behavior.
+- `tests/unit/rag/test_rag_stdlib_fp.py` checks that the stdlib composition
+  produces the same RAG values as the established stages.
+- `tests/learning/test_module_09_interop.py` makes consumption timing visible.
 
-@given(st.lists(st.integers(), min_size=3))
-def test_reduce_associativity(xs):
-    assume(len(xs) >= 3)
-    a, b, c = xs[:3]
-    assert operator.add(operator.add(a, b), c) == operator.add(a, operator.add(b, c))
-    assert reduce(operator.add, xs) == sum(xs)
+Run the learning proof first:
 
-@given(st.text(min_size=1, alphabet=st.characters(blacklist_categories=['Cc'])))  # Avoid nulls/invalid
-def test_path_immutable(s):
-    p = PurePath(s)
-    assert str(p) == s.replace('\\', '/')  # Normalized on POSIX-like
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k 'stdlib_interop'
 ```
+
+The pull log in that test is more useful than asserting the concrete iterator
+class. It proves that constructing the interop pipeline does not consume a
+document source.
 ---
-## 6. Runtime Preservation Guarantee
-Stdlib FP is efficient; verified via benchmarks.
+## 6. Runtime preservation boundary
+
+The tests prove value equivalence and deferred consumption. They do not establish
+a universal performance advantage. `chain` is lazy, but `tee` can retain every
+item by which one consumer leads another. Choose a stdlib helper only after naming
+its materialization and buffering behavior.
 
 ---
 ## 7. Anti-Patterns & Immediate Fixes
@@ -248,9 +242,12 @@ Stdlib FP is efficient; verified via benchmarks.
 4. pathlib for…? → **Immutable paths**  
 5. Why stdlib? → **Portability, no deps**
 
-## 9. Post-Core Exercise
-1. Refactor custom to stdlib FP.  
-2. Prove equivalence with Hypothesis.
+## 9. Post-core exercise
+
+Complete [Standard library tools: prove laziness before preferring a
+helper](exercises.md#standard-library-tools-prove-laziness-before-preferring-a-helper).
+Do not materialize the merged stream in the assertion that proves deferred
+consumption.
 
 **Pipeline Usage (Idiomatic)**
 ```python
