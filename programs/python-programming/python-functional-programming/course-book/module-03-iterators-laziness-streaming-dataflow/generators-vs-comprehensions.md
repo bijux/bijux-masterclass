@@ -370,7 +370,7 @@ Everything else → generator expression.
 
 ## 8. Pre-Core Quiz
 
-1. `(f(x) for x in xs)` allocates the full result? → **No — never.**  
+1. `(f(x) for x in xs)` allocates the full result? → **No, although the source and suspended frame still retain state.**
 2. `list(gen_exp)` defeats laziness? → **Yes.**  
 3. Memory difference on 1 M items? → **Potentially gigabytes vs kilobytes (depending on element size).**  
 4. Syntax difference? → **Square brackets [...] vs parentheses (...) around the same comprehension.**  
@@ -378,10 +378,90 @@ Everything else → generator expression.
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** Audit your codebase — every `[...]` that produces tens of thousands of items or more is now technical debt. Replace it today.
+**Reflect:** Audit a large comprehension and decide whether its callers need replay,
+random access, a known length, or only one pass. Change it only when the consumption
+contract supports an iterator.
 
-**Project Exercise:** Replace all list comprehensions in the RAG pipeline with generator expressions. Measure peak memory on the full 10 k arXiv dataset (should drop from ~800 MB eager to < 50 MB lazy).
+**Project Exercise:** Find one deliberate materialization point and one lazy stage in
+the RAG pipeline. Add a demand-counting test before changing either one.
 
 **Continue with:** [itertools Composition](../module-03-iterators-laziness-streaming-dataflow/itertools-composition.md)
 
 You have just eliminated the most common memory leak in Python data code. The rest of Module 3 is pure composition power.
+
+## Choose from the consumer backward
+
+Square brackets and parentheses are not competing style preferences. They promise
+different capabilities:
+
+| Consumer need | Honest result |
+| --- | --- |
+| one traversal or bounded prefix | generator expression |
+| repeated traversal | list, tuple, or a source factory |
+| indexing, slicing, or `len()` | sequence |
+| whole-result sorting | deliberate materialization |
+| returning data beyond a resource scope | owned materialized value, or a managed stream |
+
+Start with the last consumer. If `write_chunks_jsonl` writes each chunk once, an
+iterator fits. If an observation report needs total count plus multiple summaries,
+materialization or a purpose-built fold may be clearer. Turning every list into a
+generator moves bugs into callers that assumed replay.
+
+### The FuncPipe distinction
+
+Module 03 uses both forms:
+
+```python
+kept = (doc for doc in docs if keep(doc))
+cleaned = (cleaner(doc) for doc in kept)
+chunked = (chunk for doc in cleaned for chunk in gen_chunk_doc(doc, env))
+```
+
+These are one-pass intermediate stages. At `full_rag_api_docs`, however, the API
+returns a list and complete `Observations`. It materializes deliberately because
+the boundary promises a reusable result and totals over the complete run.
+
+Compare the contracts rather than counting brackets:
+
+```python
+stream = gen_bounded_chunks(docs, config, deps, max_chunks=3)
+assert iter(stream) is stream
+
+chunks, observations = full_rag_api_docs(docs, config, deps)
+assert len(chunks) == observations.total_chunks
+```
+
+The first call permits early stop. The second promises completion. Neither is
+universally superior.
+
+### A replay trap
+
+```python
+chunks = (chunk for chunk in source)
+write_index(chunks)
+write_audit(chunks)  # receives no items
+```
+
+Valid repairs depend on the actual pressure:
+
+- materialize once if the result is bounded and both consumers need all values;
+- call a `Source` factory twice if recomputation is safe and intended;
+- use explicit bounded fan-out if both consumers must share one traversal.
+
+Do not casually apply `tee`; its hidden buffer grows with consumer skew.
+
+### Review proof
+
+The Module 03 proof checks that a reusable `Source` starts fresh traversals while a
+custom iterator is exhausted after one. Run those two contrasts:
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-03/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+  -k 'source_factory or custom_dedup'
+```
+
+Before continuing, annotate each FuncPipe collection as **one-pass stage**,
+**restartable source**, or **materialized boundary**. If you cannot assign one of
+those contracts, the type and name are not yet communicating enough.
