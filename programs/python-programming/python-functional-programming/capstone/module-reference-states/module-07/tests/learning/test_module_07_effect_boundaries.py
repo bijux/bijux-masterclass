@@ -11,6 +11,7 @@ import pytest
 
 from funcpipe_rag.core.rag_types import RawDoc
 from funcpipe_rag.domain.capabilities import Clock, Logger, StorageRead
+from funcpipe_rag.domain.composition import logged_read
 from funcpipe_rag.domain.effects import IOPlan, io_delay, io_map, perform
 from funcpipe_rag.domain.logging import LogEntry, trace_stage, trace_value
 from funcpipe_rag.fp.effects.writer import pure as writer_pure
@@ -157,3 +158,22 @@ def test_clock_and_logger_capabilities_make_time_explicit() -> None:
         LogEntry(level="INFO", msg="ingest d1 at 2025-01-01T00:00:00.000001+00:00"),
         LogEntry(level="INFO", msg="ingest d2 at 2025-01-01T00:00:00.000002+00:00"),
     ]
+
+
+def test_logged_read_composes_capabilities_without_eager_effects() -> None:
+    """The helper delays both storage access and its observational log."""
+
+    doc = RawDoc(doc_id="d1", title="One", abstract="Alpha", categories="fp")
+    storage = InMemoryStorage(preload={"docs.csv": [doc]})
+    logger = CollectingLogger()
+    read = logged_read(storage, logger)
+
+    plan = read("docs.csv")
+
+    assert logger.entries == []
+
+    result = perform(plan)
+
+    assert isinstance(result, Ok)
+    assert list(result.value) == [Ok(doc)]
+    assert logger.entries == [LogEntry(level="INFO", msg="read_docs path=docs.csv")]

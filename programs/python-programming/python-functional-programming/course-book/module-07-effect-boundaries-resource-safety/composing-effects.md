@@ -63,6 +63,42 @@ How do you compose small capability protocols into larger, reusable behaviours u
 
 You are now six steps away from a complete production-grade functional architecture.
 
+## Runnable lab: compose storage and logging into one description
+
+The shipped `logged_read` helper accepts the two capabilities it needs and
+returns a function from path to `IOPlan`:
+
+```python
+storage = InMemoryStorage(preload={"docs.csv": [doc]})
+logger = CollectingLogger()
+read = logged_read(storage, logger)
+
+plan = read("docs.csv")
+assert logger.entries == []
+
+result = perform(plan)
+assert list(result.value) == [Ok(doc)]
+assert logger.entries == [
+    LogEntry(level="INFO", msg="read_docs path=docs.csv")
+]
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k logged_read_composes_capabilities_without_eager_effects
+```
+
+The log is observational: it does not change the storage result. Both effects
+remain delayed until `perform`. This is higher-order composition without a
+large application environment or a new combined adapter type.
+
+Logging before returning the `IOPlan` is the wrong turn because description
+construction would become effectful. Materializing the returned iterator inside
+`logged_read` would also change its streaming contract.
+
 ## 1. Laws & Invariants (machine-checked where possible)
 
 | Law / Invariant            | Description                                                                                  | Enforcement          |

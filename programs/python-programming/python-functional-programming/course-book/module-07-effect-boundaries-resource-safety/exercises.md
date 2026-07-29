@@ -189,3 +189,32 @@ PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
 
 Earlier contract preserved: explicit context remains visible as in Module 06;
 capability protocols make each permitted effect narrower and statically named.
+
+## Composing effects: preserve the primary read result
+
+**Starting context:** read `logged_read` in `domain/composition.py`, then run
+`test_logged_read_composes_capabilities_without_eager_effects`.
+
+**Objective:** wrap two separate paths, perform both plans, and prove each
+result and log entry retains the requested path in order.
+
+**Constraints:**
+
+- construct both plans before performing either;
+- keep storage and logger as separate capabilities;
+- assert the logger remains empty during construction;
+- consume each returned iterator only after interpretation.
+
+**Expected evidence:** two typed read results and two ordered path-specific log
+entries appear only after the two `perform` calls.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k logged_read_composes_capabilities_without_eager_effects
+```
+
+Earlier contract preserved: Module 03 laziness and Module 06 compositional
+reasoning survive the addition of an observational boundary effect.

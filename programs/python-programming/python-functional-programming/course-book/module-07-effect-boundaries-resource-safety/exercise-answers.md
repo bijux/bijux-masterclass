@@ -130,3 +130,21 @@ The test proves deterministic composition of these two capabilities. Static
 annotations make the allowed effect surface reviewable. It does not prove the
 production clock is perfectly synchronized or the production logger is
 available.
+
+## Composing effects: preserve the primary read result
+
+Call `read("first.csv")` and `read("second.csv")` before interpreting either
+plan. The logger must still be empty. Performing the first plan logs the first
+path and returns its iterator; performing the second appends the second entry
+and returns the second iterator.
+
+Common wrong turns:
+
+- logging when `read(path)` is called makes construction eager;
+- storing storage and logger in a module global hides both capabilities;
+- converting iterators to lists inside the helper changes downstream demand;
+- comparing only logs ignores whether observational wrapping changed data.
+
+The proof establishes deferral, log order, and result neutrality for the
+shipped helper. It does not prove arbitrary combinations of capabilities are
+commutative or safe to reorder.
