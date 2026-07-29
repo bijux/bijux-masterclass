@@ -30,6 +30,9 @@ nav:
   - Home: module-00-orientation/index.md
   - Functional Programming Course Map: module-00-orientation/course-map.md
   - First-Contact Map: module-00-orientation/first-contact-map.md
+  - First Capstone Proof: module-00-orientation/first-capstone-proof.md
+  - Exercises: module-00-orientation/exercises.md
+  - Exercise Answers: module-00-orientation/exercise-answers.md
   - Mid-Course Map: module-00-orientation/mid-course-map.md
   - Mastery Map: module-00-orientation/mastery-map.md
 - 'Module 01: Purity, Substitution, and Local Reasoning':

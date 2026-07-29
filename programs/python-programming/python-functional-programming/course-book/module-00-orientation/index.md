@@ -143,11 +143,10 @@ The FuncPipe RAG capstone matures with the course:
 
 ## Exercises
 
-- Write a one-paragraph statement of what this course owns and what it explicitly does not try to teach.
-- Use the prerequisite table to identify one unstable skill and produce the smallest
-  evidence that would make it trustworthy enough for Module 01.
-- Open [First Capstone Proof](first-capstone-proof.md), predict which of its six laws
-  owns a changed chunk boundary, then check the test before you run it.
+Complete [Orientation Exercises](exercises.md) after the first proof. They ask you to
+choose honest evidence, route a focused failure, distinguish a tracked state from the
+endpoint, and recover after time away. Compare decisions—not wording—with
+[Orientation Exercise Answers](exercise-answers.md).
 
 ## Closing criteria
 
