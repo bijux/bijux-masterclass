@@ -490,3 +490,80 @@ No debug; else observe.
 **Further Reading:** For the deepest itertools mastery, see the official docs and Dan Bader’s ‘Python Tricks’ chapter on iterators.
 
 > **You now own the most powerful lazy streaming toolkit in Python. Module 4 will show you how to make even failure and resource cleanup lazy and pure.**
+
+## Observation is a value-neutral effect
+
+FuncPipe's `trace_iter` wraps a stream and calls a lens for each requested value:
+
+```python
+from itertools import islice
+from funcpipe_rag import TraceLens, _trace_iter
+
+lens = TraceLens[int](limit=2)
+observed = _trace_iter(range(10), lens)
+
+assert lens.count == 0
+assert list(islice(observed, 4)) == [0, 1, 2, 3]
+assert lens.count == 4
+assert lens.samples == [0, 1]
+```
+
+Three contracts are visible:
+
+- **value neutrality:** the wrapper yields the same objects in the same order;
+- **demand alignment:** it records only values the caller requests;
+- **bounded samples:** it counts every observed value but stores at most `limit`.
+
+The lens is mutable, so the operation is not pure. The effect is acceptable because
+it is injected and separated from the domain transformation.
+
+## Choose failure policy deliberately
+
+`make_tap` accepts `on_error="propagate"` or `"suppress"`. Propagation treats a
+monitoring failure as a pipeline failure. Suppression preserves dataflow but can
+hide lost telemetry. Neither policy is universally safe.
+
+Use propagation when the observation is required audit evidence. Use suppression
+for best-effort diagnostics only when the callback's own failure is reported
+elsewhere. A blanket `except Exception: pass` without an explicit policy is not
+observability; it is silent data loss.
+
+## Avoid accidental disclosure and retention
+
+`TraceLens` stores raw items. Even with a small limit, a sample may contain sensitive
+document text or a large object graph. Prefer a lens over safe metadata:
+
+```python
+doc_ids = TraceLens[str](limit=5)
+observed = (doc for doc in docs if not doc_ids.note(doc.doc_id))
+```
+
+For production code, use a named transform rather than relying on `note` returning
+`None`, but keep the design goal: record the smallest safe value that answers the
+review question.
+
+`make_peek(n, emit, stride=s)` stores a sliding deque of `n` items. It emits only
+after the window is full and the stride condition holds. A bounded internal buffer
+does not bound what `emit` retains; a callback that appends every snapshot to a list
+can still grow without limit.
+
+## Observability review table
+
+| Question | Evidence |
+| --- | --- |
+| Are values preserved? | compare materialized wrapped and unwrapped output |
+| Is evaluation still lazy? | inspect callback state before and after bounded demand |
+| What is retained? | state lens/sample/window maximum and callback ownership |
+| What if observation fails? | test propagate or suppress policy |
+| Is sampled data safe? | inspect the exact stored representation |
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-03/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+  -k 'observation'
+```
+
+This proof establishes value, timing, and sample bounds for `TraceLens`. It does not
+prove thread safety for arbitrary callbacks, privacy, or a bound on downstream
+metric storage.
