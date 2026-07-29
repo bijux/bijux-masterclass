@@ -18,6 +18,10 @@ test: ## Run tests for the selected program
 capstone-test: ## Run the selected program's capstone test suite
 	@$(RUN_PROGRAM) capstone-test
 
+.PHONY: capstone-foundation-proof
+capstone-foundation-proof: ## Run the selected program's smallest cumulative capstone proof
+	@$(RUN_PROGRAM) capstone-foundation-proof
+
 .PHONY: demo
 demo: ## Run the selected program's learner-facing capstone walkthrough
 	@$(RUN_PROGRAM) demo

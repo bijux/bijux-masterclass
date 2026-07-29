@@ -24,6 +24,10 @@ test: ## Run the strongest published course confirmation route
 capstone-test: ## Run only the capstone unit and integration test suite
 	@$(RUN_CAPSTONE) test
 
+.PHONY: capstone-foundation-proof
+capstone-foundation-proof: ## Run the tracked Module 01 foundation laws
+	@$(RUN_CAPSTONE) foundation-proof
+
 .PHONY: demo
 demo: ## Build the learner-facing capstone walkthrough
 	@$(RUN_CAPSTONE) demo
