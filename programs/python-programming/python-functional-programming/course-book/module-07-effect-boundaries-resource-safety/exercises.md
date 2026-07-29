@@ -159,3 +159,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
 
 Earlier contract preserved: Module 06 Writer composition still carries the same
 primary value; Module 07 gives its accumulated data a domain-owned log shape.
+
+## Static capabilities: make time an explicit dependency
+
+**Starting context:** read `Clock`, `Logger`, `MonotonicTestClock`, and
+`CollectingLogger`, then run
+`test_clock_and_logger_capabilities_make_time_explicit`.
+
+**Objective:** record three chunk identifiers and prove each timestamp increases
+by exactly one microsecond.
+
+**Constraints:**
+
+- accept only `Clock` and `Logger` capabilities;
+- use the deterministic clock adapter;
+- assert the complete structured log trace;
+- do not call the system clock directly.
+
+**Expected evidence:** three ordered entries carry deterministic, strictly
+increasing timestamps.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k clock_and_logger_capabilities_make_time_explicit
+```
+
+Earlier contract preserved: explicit context remains visible as in Module 06;
+capability protocols make each permitted effect narrower and statically named.

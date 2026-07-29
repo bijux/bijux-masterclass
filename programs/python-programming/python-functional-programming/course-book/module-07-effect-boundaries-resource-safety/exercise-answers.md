@@ -111,3 +111,22 @@ Common wrong turns:
 The empty logger assertion distinguishes accumulating data from emitting it.
 The final equality proves the shell forwarded every entry in order. This does
 not prove a console, file, or remote logger will successfully persist output.
+
+## Static capabilities: make time an explicit dependency
+
+Call `record_ingest` three times with the same `MonotonicTestClock` and
+`CollectingLogger`. Starting at midnight UTC, the expected suffixes end in
+`.000001+00:00`, `.000002+00:00`, and `.000003+00:00`.
+
+Common wrong turns:
+
+- constructing a new test clock for every call repeats the first timestamp;
+- calling `datetime.now` bypasses the declared capability;
+- injecting full storage or application configuration grants irrelevant
+  authority;
+- asserting only that timestamps differ misses the adapter's exact contract.
+
+The test proves deterministic composition of these two capabilities. Static
+annotations make the allowed effect surface reviewable. It does not prove the
+production clock is perfectly synchronized or the production logger is
+available.

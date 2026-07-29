@@ -4,17 +4,23 @@ from __future__ import annotations
 
 import builtins
 from collections.abc import Iterator
+from datetime import datetime, timezone
 from io import StringIO
 
 import pytest
 
 from funcpipe_rag.core.rag_types import RawDoc
-from funcpipe_rag.domain.capabilities import StorageRead
+from funcpipe_rag.domain.capabilities import Clock, Logger, StorageRead
 from funcpipe_rag.domain.effects import IOPlan, io_delay, io_map, perform
 from funcpipe_rag.domain.logging import LogEntry, trace_stage, trace_value
 from funcpipe_rag.fp.effects.writer import pure as writer_pure
 from funcpipe_rag.fp.effects.writer import run_writer
-from funcpipe_rag.infra.adapters import CollectingLogger, FileStorage, InMemoryStorage
+from funcpipe_rag.infra.adapters import (
+    CollectingLogger,
+    FileStorage,
+    InMemoryStorage,
+    MonotonicTestClock,
+)
 from funcpipe_rag.result.types import ErrInfo, Ok, Result
 
 
@@ -133,3 +139,21 @@ def test_structured_logs_remain_data_until_the_shell_emits_them() -> None:
         logger.log(entry)
 
     assert logger.entries == list(entries)
+
+
+def test_clock_and_logger_capabilities_make_time_explicit() -> None:
+    """Injected capabilities turn time-dependent logging into a stable trace."""
+
+    clock = MonotonicTestClock(datetime(2025, 1, 1, tzinfo=timezone.utc))
+    logger = CollectingLogger()
+
+    def record_ingest(doc_id: str, *, clock: Clock, logger: Logger) -> None:
+        logger.log(LogEntry(level="INFO", msg=f"ingest {doc_id} at {clock.now().isoformat()}"))
+
+    record_ingest("d1", clock=clock, logger=logger)
+    record_ingest("d2", clock=clock, logger=logger)
+
+    assert logger.entries == [
+        LogEntry(level="INFO", msg="ingest d1 at 2025-01-01T00:00:00.000001+00:00"),
+        LogEntry(level="INFO", msg="ingest d2 at 2025-01-01T00:00:00.000002+00:00"),
+    ]
