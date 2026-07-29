@@ -6,6 +6,9 @@ import asyncio
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
+from hypothesis import given
+from hypothesis import strategies as st
+
 from funcpipe_rag.domain.effects.async_ import (
     AsyncGen,
     AsyncPlan,
@@ -287,3 +290,20 @@ def test_chunk_policy_flushes_values_before_an_error() -> None:
         return [item async for item in chunked()]
 
     assert asyncio.run(consume()) == [Ok([1, 2]), Err(failure), Ok([3])]
+
+
+@given(values=st.lists(st.integers(), max_size=12))
+def test_async_stream_map_preserves_function_composition(values: list[int]) -> None:
+    """Two mapped descriptions equal one description with composed functions."""
+
+    source = async_gen_from_list(values)
+    mapped_twice = async_gen_map(
+        async_gen_map(source, lambda value: value + 1),
+        lambda value: value * 2,
+    )
+    mapped_once = async_gen_map(source, lambda value: (value + 1) * 2)
+
+    async def collect(stream: AsyncGen[int]) -> list[Result[int, ErrInfo]]:
+        return [item async for item in stream()]
+
+    assert asyncio.run(collect(mapped_twice)) == asyncio.run(collect(mapped_once))

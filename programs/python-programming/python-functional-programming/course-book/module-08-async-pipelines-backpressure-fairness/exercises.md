@@ -283,3 +283,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 
 Earlier contract preserved: Module 07 typed failures remain values in the
 effect channel; batching neither raises them nor erases their provenance.
+
+## Pipeline laws: generalize map composition
+
+**Starting context:** read `async_gen_map` and run
+`test_async_stream_map_preserves_function_composition`.
+
+**Objective:** replace the arithmetic functions with `str` and `len`, then state
+the composed function and retain generated list coverage.
+
+**Constraints:**
+
+- compare complete `Result` sequences;
+- include empty lists through the strategy;
+- use the same source values for both descriptions;
+- keep mapping functions pure.
+
+**Expected evidence:** mapping integers to strings and then lengths equals one
+mapping with `lambda value: len(str(value))` for every generated example.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k async_stream_map_preserves_function_composition
+```
+
+Earlier contract preserved: Module 07 effect interpretation remains outside
+this law; composition equivalence applies to pure transformations of the typed
+stream.

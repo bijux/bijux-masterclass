@@ -72,6 +72,39 @@ Use this when you refuse to ship async pipelines without strong evidence they wi
 3. Zero runtime overhead — all checks are design + test-time verification.
 4. Confidence to run the same pipeline in dev, staging, and production without “it works on my machine” surprises.
 
+## Runnable lab: test map composition over generated streams
+
+Begin with one tractable law before reasoning about end-to-end delivery:
+mapping with `f` and then `g` must produce the same result stream as mapping
+once with `g(f(x))`.
+
+```python
+source = async_gen_from_list(values)
+mapped_twice = async_gen_map(
+    async_gen_map(source, lambda value: value + 1),
+    lambda value: value * 2,
+)
+mapped_once = async_gen_map(source, lambda value: (value + 1) * 2)
+```
+
+Run the generated proof:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k async_stream_map_preserves_function_composition
+```
+
+Hypothesis supplies integer lists, including the empty stream and varied signed
+values. Both descriptions are fully interpreted and their `Result` sequences
+are compared. This is a composition law for pure mapping; it does not prove
+idempotence of effects, exactly-once delivery, or fairness.
+
+When the property fails, preserve the minimized counterexample and inspect which
+combinator changed ordering, cardinality, or error propagation. Do not replace
+the generated input with one happy-path example merely to make the failure
+disappear.
+
 ## Tiny Non-Domain Example – Idempotent Counter with Retries (intuition only)
 
 ```python

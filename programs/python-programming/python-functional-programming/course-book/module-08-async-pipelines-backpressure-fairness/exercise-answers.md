@@ -203,3 +203,26 @@ Common wrong turns:
 The full sequence demonstrates order and completeness for this failure route.
 Separate property tests generalize those laws over input lists, batch sizes, and
 logical-time schedules.
+
+## Pipeline laws: generalize map composition
+
+The left description applies `str` to each success and then applies `len`. The
+right description applies their composition,
+`lambda value: len(str(value))`, once. Both preserve the same stream order,
+cardinality, and `Result` structure.
+
+The empty generated list matters: both descriptions must produce an empty
+result without attempting either function. Signed and multi-digit integers
+exercise lengths that a single positive example would miss.
+
+Common wrong turns:
+
+- generating separate inputs for the two sides invalidates the comparison;
+- extracting only success values hides differences in error propagation;
+- using an effectful mapping function makes replay order observable and leaves
+  the pure composition law's preconditions;
+- testing one literal list provides an example, not broad evidence.
+
+This local law supports refactoring adjacent pure maps into a composed map.
+Operational claims such as no duplicate external writes still require stable
+keys, idempotent adapters, deterministic schedules, and their own properties.
