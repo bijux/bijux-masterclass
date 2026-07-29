@@ -3,7 +3,10 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 from subprocess import run
+from tempfile import TemporaryDirectory
+from types import SimpleNamespace
 
+from docs.hooks.publish_site_assets import on_post_build
 from scripts.program_validation import (
     PROGRAM_TARGETS,
     ROOT_CONTRACT,
@@ -198,6 +201,40 @@ class WorkflowEconomyTests(unittest.TestCase):
         for workflow in workflows:
             self.assertNotIn("uses: actions/checkout@v", workflow)
             self.assertNotIn("uses: actions/setup-python@v", workflow)
+
+    def test_standalone_program_sites_publish_shared_assets(self) -> None:
+        with TemporaryDirectory() as temporary_directory:
+            temporary_root = Path(temporary_directory)
+            site_dir = temporary_root / "site"
+            config = SimpleNamespace(
+                docs_dir=str(temporary_root / "staged-course-book"),
+                site_dir=str(site_dir),
+            )
+
+            on_post_build(config)
+
+            self.assertTrue(
+                (site_dir / "assets" / "javascripts" / "mermaid-init.js").is_file()
+            )
+            self.assertTrue(
+                (
+                    site_dir
+                    / "assets"
+                    / "javascripts"
+                    / "vendor"
+                    / "mermaid-11.6.0.min.js"
+                ).is_file()
+            )
+            self.assertTrue((site_dir / "assets" / "styles" / "extra.css").is_file())
+            self.assertTrue((site_dir / "favicon.ico").is_file())
+
+    def test_program_configs_use_site_local_shared_asset_urls(self) -> None:
+        program_configs = self.repository_root.glob("programs/*/*/mkdocs.yml")
+
+        for config_path in program_configs:
+            with self.subTest(config_path=config_path):
+                config = config_path.read_text(encoding="utf-8")
+                self.assertNotIn("../../../docs/assets", config)
 
 
 if __name__ == "__main__":
