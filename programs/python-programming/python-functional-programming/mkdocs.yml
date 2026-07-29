@@ -124,8 +124,9 @@ nav:
   - Module Glossary: module-06-monadic-flow-explicit-context/glossary.md
 - 'Module 07: Effect Boundaries and Resource Safety':
   - Home: module-07-effect-boundaries-resource-safety/index.md
-  - Effect Interfaces: module-07-effect-boundaries-resource-safety/effect-interfaces.md
+  - Module 07 Capstone Delta: module-07-effect-boundaries-resource-safety/capstone-delta.md
   - Ports and Adapters: module-07-effect-boundaries-resource-safety/ports-and-adapters.md
+  - Effect Interfaces: module-07-effect-boundaries-resource-safety/effect-interfaces.md
   - Capability Protocols: module-07-effect-boundaries-resource-safety/capability-protocols.md
   - Resource Safety: module-07-effect-boundaries-resource-safety/resource-safety.md
   - Functional Logging: module-07-effect-boundaries-resource-safety/functional-logging.md
