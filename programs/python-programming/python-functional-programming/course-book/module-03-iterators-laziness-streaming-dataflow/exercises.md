@@ -11,6 +11,13 @@ make PROGRAM=python-programming/python-functional-programming \
   capstone-streaming-rag-proof
 ```
 
+When working only on multi-source behavior, use:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-source-scheduling-proof
+```
+
 Use [Exercise Answers](exercise-answers.md) only after recording your prediction and
 evidence.
 
@@ -63,7 +70,45 @@ Acceptance checks:
 - the test explains why padded `end` may exceed source length;
 - Module 02's default non-overlapping `emit_short` behavior remains equal.
 
-## Exercise 3: Audit fan-out overflow
+## Exercise 3: Defend a document-source schedule
+
+Starting context: `stream_rag_sources` accepts replayable `Source[RawDoc]`
+factories and applies either `sequential` or `round_robin` scheduling before the
+complete RAG chain.
+
+Objective: model a priority source containing `p1`, `p2` and a background source
+containing `b1`. Predict both encounter orders, then choose a schedule for each
+policy:
+
+- every priority document must precede background work;
+- the background source must contribute before the second priority document.
+
+Add a cross-source structural duplicate and predict which source's value survives.
+
+Constraints:
+
+- record when each source factory opens and when each document is yielded;
+- use final `Chunk` values, not pre-embedding chunks;
+- test `max_chunks=1` under both schedules;
+- do not choose `make_merge` unless you can state and prove a shared local-order
+  precondition.
+
+Expected evidence:
+
+- an event table for construction, first output, and full consumption;
+- value assertions for both schedules;
+- demand assertions showing whether the background source factory opened;
+- a deduplication assertion whose expected survivor follows from encounter order.
+
+Acceptance checks:
+
+- per-source order is preserved under both policies;
+- sequential scheduling does not open the background source for the first output;
+- round-robin factory-opening behavior is described separately from document pulls;
+- the final-output fence remains after global structural deduplication;
+- the single-source complete-stream law still passes.
+
+## Exercise 4: Audit fan-out overflow
 
 Starting context: `multicast` permits bounded consumer skew. A `BufferError` escaping
 a subscriber generator closes that subscriber.
@@ -87,7 +132,7 @@ Acceptance checks:
 - your handoff states that overflow is terminal for the requesting generator;
 - identical proof passes in every downstream reference state and the live capstone.
 
-## Exercise 4: Choose a reusable boundary
+## Exercise 5: Choose a reusable boundary
 
 Starting context: the module provides `Source`, `Transform`, and
 `make_gen_rag_fn`.
@@ -118,7 +163,7 @@ Acceptance checks:
 - the stated limit names what it bounds;
 - no intermediate list is introduced without a stated consumer need.
 
-## Exercise 5: Add safe observation
+## Exercise 6: Add safe observation
 
 Starting context: `TraceLens`, `make_tap`, and `make_peek` observe values with
 different retained state and callback behavior.
@@ -150,6 +195,7 @@ Acceptance checks:
 You are ready for Module 04 when you can present:
 
 - a value assertion and a demand assertion for the same pipeline;
+- a defended source schedule with its encounter-order and factory-opening effects;
 - a distinction between raw-chunk and final unique-output fences;
 - one deliberate materialization boundary;
 - one stateful streaming helper with its real space bound;
