@@ -137,7 +137,7 @@ Profile first. Compromise only when measured.
 ## 3. Public API (rag/domain/perf.py – mypy --strict clean)
 
 ```python
-# (imports elided for brevity – see full fp/perf.py in the repo)
+# (imports elided for brevity – see full rag/domain/perf.py in the repo)
 # Core imports: Chunk, Validation, VSuccess, VFailure,
 #               v_success, v_failure,
 #               ChunkText, ChunkMetadata, Embedding, ErrInfo,

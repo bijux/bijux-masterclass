@@ -50,10 +50,10 @@ The diagram is not one required container stack. It is a decision map:
 
 ## Focus the reference-state comparison
 
-The Module 05→06 snapshot comparison contains broad package movement as domain
-files settle under `rag/domain/` and boundary adapters gain their own package.
-Those moves are not eleven new RAG behaviors. The meaningful Module 06 teaching
-surface is narrower:
+Module 05 already establishes `rag/domain/` and `boundaries/adapters/` as stable
+owners. The Module 05→06 comparison therefore does not require learners to
+reinterpret domain modelling as a flow concept. The meaningful Module 06
+teaching surface is:
 
 ```text
 src/funcpipe_rag/

@@ -36,9 +36,9 @@ Module 06 is about one practical question:
 > in the code so that failure, configuration, logging, and local state remain easy to
 > review?
 
-Start with the [Module 06 Capstone Delta](capstone-delta.md). It separates the
-meaningful flow additions from broad snapshot reorganization and gives a named
-comparison and verification route from Module 05.
+Start with the [Module 06 Capstone Delta](capstone-delta.md). It identifies the
+flow additions on top of Module 05's stable domain and adapter ownership and
+gives a named comparison and verification route.
 
 ## Keep These Pages Open
 
