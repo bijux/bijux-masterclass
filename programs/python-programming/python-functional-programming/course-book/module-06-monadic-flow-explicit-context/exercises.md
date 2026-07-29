@@ -106,3 +106,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: Module 01 substitution and Module 05 typed values
 remain valid inside the Module 06 composition machinery.
+
+## Reader pattern: vary overlap at the call site
+
+**Starting context:** run
+`test_reader_runs_same_rag_chunk_program_with_explicit_env` and inspect `asks`
+in `fp/effects/reader.py`.
+
+**Objective:** run the same chunking Reader with overlap `0` and overlap `2`,
+then explain the changed chunk boundaries.
+
+**Constraints:**
+
+- construct the Reader once;
+- pass both `RagEnv` values only to `.run`;
+- preserve document identity and text;
+- assert exact chunk text order.
+
+**Expected evidence:** the no-overlap and overlap runs produce their exact
+declared sequences from one unchanged program.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k reader_runs_same_rag_chunk_program_with_explicit_env
+```
+
+Earlier contract preserved: Module 03 chunk order and bounded traversal remain
+determined by immutable configuration.

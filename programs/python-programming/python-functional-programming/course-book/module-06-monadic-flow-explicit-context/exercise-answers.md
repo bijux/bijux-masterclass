@@ -80,3 +80,22 @@ Common wrong turns:
 The property proves the chosen map composition law for the modeled documents.
 It does not prove every possible `Result` implementation or every RAG business
 rule.
+
+## Reader pattern: vary overlap at the call site
+
+Keep the `asks` expression unchanged and run it with two valid `RagEnv`
+instances. For chunk size `4`, overlap `2` advances by two characters instead
+of four, so the expected text sequence must include the overlapping windows.
+
+Common wrong turns:
+
+- reconstructing the Reader for each environment hides whether the program
+  itself changed;
+- mutating a shared configuration object contradicts frozen value semantics;
+- asserting only chunk counts can miss wrong boundaries or ordering;
+- wrapping a single ordinary argument in Reader without shared context adds
+  ceremony without visibility.
+
+The proof establishes explicit environment injection and deterministic chunk
+output for these runs. It does not prove Reader is necessary for every
+configuration-dependent function.

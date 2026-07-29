@@ -6,7 +6,8 @@ from hypothesis import given
 from hypothesis import strategies as st
 
 from funcpipe_rag.core.rag_types import CleanDoc, RagEnv, RawDoc
-from funcpipe_rag.rag.stages import clean_doc
+from funcpipe_rag.fp.effects import Reader, asks
+from funcpipe_rag.rag.stages import clean_doc, iter_chunk_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result, liftA2
 
 
@@ -91,3 +92,20 @@ def test_result_map_composition_preserves_rag_cleaning(abstract: str) -> None:
     composed = source.map(lambda raw: clean_doc(raw).abstract)
 
     assert separate == composed
+
+
+def test_reader_runs_same_rag_chunk_program_with_explicit_env() -> None:
+    """One pure chunk program receives its read-only environment at run time."""
+
+    doc = CleanDoc(
+        doc_id="reader",
+        title="Reader",
+        abstract="abcdefghij",
+        categories="fp",
+    )
+    program: Reader[RagEnv, list[str]] = asks(
+        lambda env: [chunk.text for chunk in iter_chunk_doc(doc, env)]
+    )
+
+    assert program.run(RagEnv(chunk_size=4)) == ["abcd", "efgh", "ij"]
+    assert program.run(RagEnv(chunk_size=6)) == ["abcdef", "ghij"]

@@ -70,6 +70,31 @@ steps and you want that dependency to stay visible at the call site. If one ordi
 function argument is enough, pass the argument directly. The goal is clearer dependency
 surfaces, not container ceremony.
 
+## Runnable lab: run one chunk program with two environments
+
+The RAG proof builds one Reader and supplies the chunk policy only when running
+it:
+
+```python
+program: Reader[RagEnv, list[str]] = asks(
+    lambda env: [chunk.text for chunk in iter_chunk_doc(doc, env)]
+)
+
+assert program.run(RagEnv(chunk_size=4)) == ["abcd", "efgh", "ij"]
+assert program.run(RagEnv(chunk_size=6)) == ["abcdef", "ghij"]
+```
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k reader_runs_same_rag_chunk_program_with_explicit_env
+```
+
+The document and program stay fixed; only the explicit environment changes.
+This proves there is no module-global chunk size in the tested route. It does
+not mean every `RagEnv` argument should be wrapped in Reader—an ordinary
+argument remains clearer for a single local call.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Law                 | Formal Statement                                                            | Why it matters                                            |
