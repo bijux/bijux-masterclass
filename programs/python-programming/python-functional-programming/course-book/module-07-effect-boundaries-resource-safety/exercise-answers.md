@@ -29,3 +29,27 @@ Common wrong turns:
 The proof establishes substitutability for this read behavior. It does not show
 that both adapters have the same performance, persistence, concurrency, or
 failure characteristics.
+
+## Effect interfaces: prove description before execution
+
+Compose a second `io_map` over the identifier-producing plan:
+
+```python
+counted = io_map(plan, len)
+```
+
+This builds another `IOPlan`; it does not inspect the iterator or execute the
+storage capability. `perform(counted)` drives the original delayed read once,
+then applies both pure mappings and returns `Ok(2)`.
+
+Common wrong turns:
+
+- writing `io_delay(delayed_read())` passes an already executed `Result`
+  instead of a thunk;
+- calling `list(storage.read_docs(...))` before construction makes the read
+  eager;
+- invoking `perform` inside a domain helper hides the interpreter boundary;
+- asserting only the final count misses premature or repeated reads.
+
+The trace proves deferral and one execution for this interpretation. It does
+not prove the effect is safe to replay; idempotency is a separate contract.
