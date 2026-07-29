@@ -52,6 +52,32 @@ branching anywhere in the system. It means:
 That distinction helps you read the example correctly. The config-dependent
 branching belongs at pipeline construction time, not inside every business step.
 
+## Runnable lab: assemble strict and permissive normalization
+
+The learning proof uses one `normalize` function and applies validation only
+when assembling the strict callable:
+
+```python
+strict = toggle_validation(True, require_abstract, normalize)
+permissive = toggle_validation(False, require_abstract, normalize)
+
+assert strict(invalid) == Err(EMPTY_ABSTRACT)
+assert calls == []
+
+assert permissive(invalid) == Ok(clean_doc(invalid))
+assert calls == ["config"]
+```
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k validation_toggle_changes_policy_without_duplicating_rag_pipeline
+```
+
+The call trace proves strict validation stops normalization, while the disabled
+toggle returns the original pipeline behavior. This is policy selection at
+assembly time, not permission to scatter feature checks through each stage.
+
 This is the true capstone of Module 6. You now have every tool required to ship real-world pipelines that are pure, composable, observable, refactor-safe, and fully configurable with a single config value.
 
 Use this when you want monadic pipelines to run in production with different behaviours for dev/prod/test without compromising purity or testability.

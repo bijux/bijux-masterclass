@@ -287,3 +287,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: public Module 05 success and failure values remain
 stable while Module 06 changes internal control flow.
+
+## Configurable pipelines: assemble policy once
+
+**Starting context:** run
+`test_validation_toggle_changes_policy_without_duplicating_rag_pipeline` and
+inspect `toggle_validation`.
+
+**Objective:** add a minimum-title validation toggle while retaining one
+normalization function.
+
+**Constraints:**
+
+- select policy when constructing the callable;
+- do not add a flag argument to `normalize`;
+- prove disabled mode is the original pipeline;
+- record whether normalization executes.
+
+**Expected evidence:** enabled invalid input short-circuits before normalization;
+disabled input follows the unchanged base pipeline exactly once.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k validation_toggle_changes_policy_without_duplicating_rag_pipeline
+```
+
+Earlier contract preserved: the pure RAG normalizer retains its Module 01
+input-output behavior while Module 06 changes assembly policy.

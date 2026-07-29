@@ -189,3 +189,21 @@ Common wrong turns:
 The comparison proves the listed public cases agree. It does not prove
 equivalence for every string; use a constrained property strategy when that
 larger claim is required.
+
+## Configurable pipelines: assemble policy once
+
+Write `require_title` as an endomorphic
+`RawDoc -> Result[RawDoc, ErrInfo]`, then pass it and the unchanged `normalize`
+callable to `toggle_validation`.
+
+Common wrong turns:
+
+- adding `enabled` to `normalize` infects the core with policy branching;
+- duplicating strict and permissive normalizers creates divergent owners;
+- calling normalization before validation defeats short-circuiting;
+- asserting only the returned error cannot prove skipped work.
+
+The proof establishes enabled and disabled behavior for this assembly
+combinator. It does not prove that runtime toggles are preferable to separate
+deployment configuration or that every cross-cutting concern should be
+configurable.

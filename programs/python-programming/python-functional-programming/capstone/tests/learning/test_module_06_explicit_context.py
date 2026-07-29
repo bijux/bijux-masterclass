@@ -17,6 +17,7 @@ from funcpipe_rag.fp.effects import (
     run_state,
     run_writer,
     tell,
+    toggle_validation,
     transpose_option_result,
     transpose_result_option,
     writer_pure,
@@ -286,3 +287,42 @@ def test_refactored_config_boundary_matches_characterized_behavior(
 
     assert legacy_parse(raw) == expected
     assert refactored_parse(raw) == expected
+
+
+def test_validation_toggle_changes_policy_without_duplicating_rag_pipeline() -> None:
+    """One RAG function gains optional validation at assembly time."""
+
+    calls: list[str] = []
+
+    def require_abstract(doc: RawDoc) -> Result[RawDoc, ErrInfo]:
+        if not doc.abstract.strip():
+            return Err(ErrInfo(code="EMPTY_ABSTRACT", msg="abstract is required"))
+        return Ok(doc)
+
+    def normalize(doc: RawDoc) -> Result[CleanDoc, ErrInfo]:
+        calls.append(doc.doc_id)
+        return Ok(clean_doc(doc))
+
+    invalid = RawDoc(
+        doc_id="config",
+        title="Config",
+        abstract=" ",
+        categories="fp",
+    )
+    strict = toggle_validation(True, require_abstract, normalize)
+    permissive = toggle_validation(False, require_abstract, normalize)
+
+    assert strict(invalid) == Err(
+        ErrInfo(code="EMPTY_ABSTRACT", msg="abstract is required")
+    )
+    assert calls == []
+
+    assert permissive(invalid) == Ok(
+        CleanDoc(
+            doc_id="config",
+            title="Config",
+            abstract="",
+            categories="fp",
+        )
+    )
+    assert calls == ["config"]
