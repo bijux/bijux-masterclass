@@ -13,6 +13,7 @@ from funcpipe_rag import (
     RagConfig,
     RagEnv,
     RawDoc,
+    SourceSchedule,
     TraceLens,
     _trace_iter,
     as_source,
@@ -23,9 +24,11 @@ from funcpipe_rag import (
     gen_overlapping_chunks,
     get_deps,
     make_chain,
+    make_merge,
     multicast,
     sliding_windows,
     stream_rag_chunks,
+    stream_rag_sources,
     throttle,
 )
 
@@ -104,6 +107,106 @@ def test_reusable_source_factory_starts_fresh_traversals() -> None:
 
     assert list(merged()) == [1, 2, 3]
     assert list(merged()) == [1, 2, 3]
+
+
+def test_sorted_fan_in_merges_preordered_sources_by_key() -> None:
+    first = as_source((("first-1", 1), ("first-3", 3)))
+    second = as_source((("second-2", 2), ("second-4", 4)))
+
+    merged = make_merge(first, second, key=lambda item: item[1])
+
+    assert [label for label, _ in merged()] == [
+        "first-1",
+        "second-2",
+        "first-3",
+        "second-4",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("schedule", "expected"),
+    [
+        ("sequential", ["source-a-1", "source-a-2", "source-b-1"]),
+        ("round_robin", ["source-a-1", "source-b-1", "source-a-2"]),
+    ],
+)
+def test_rag_source_schedule_makes_encounter_order_explicit(
+    schedule: SourceSchedule,
+    expected: list[str],
+) -> None:
+    sources = (
+        as_source(
+            (
+                RawDoc("source-a-1", "title", "alpha", "cs.AI"),
+                RawDoc("source-a-2", "title", "beta", "cs.AI"),
+            )
+        ),
+        as_source((RawDoc("source-b-1", "title", "gamma", "cs.AI"),)),
+    )
+    config = RagConfig(env=RagEnv(chunk_size=100))
+
+    chunks = stream_rag_sources(
+        sources,
+        config,
+        get_deps(config),
+        schedule=schedule,
+    )
+
+    assert [chunk.doc_id for chunk in chunks] == expected
+
+
+def test_final_output_fence_does_not_start_later_sequential_source() -> None:
+    requested: list[str] = []
+
+    def first_source() -> Iterator[RawDoc]:
+        requested.append("source-a-1")
+        yield RawDoc("source-a-1", "title", "alpha", "cs.AI")
+        requested.append("source-a-2")
+        yield RawDoc("source-a-2", "title", "beta", "cs.AI")
+
+    def later_source() -> Iterator[RawDoc]:
+        requested.append("source-b-1")
+        yield RawDoc("source-b-1", "title", "gamma", "cs.AI")
+
+    config = RagConfig(env=RagEnv(chunk_size=100))
+    chunks = stream_rag_sources(
+        (first_source, later_source),
+        config,
+        get_deps(config),
+        max_chunks=1,
+    )
+
+    assert requested == []
+    assert [chunk.doc_id for chunk in chunks] == ["source-a-1"]
+    assert requested == ["source-a-1"]
+
+
+def test_structural_dedup_spans_source_boundaries() -> None:
+    duplicate = RawDoc("shared", "title", "same", "cs.AI")
+    sources = (as_source((duplicate,)), as_source((duplicate,)))
+    config = RagConfig(env=RagEnv(chunk_size=100))
+
+    chunks = stream_rag_sources(sources, config, get_deps(config))
+
+    assert [chunk.doc_id for chunk in chunks] == ["shared"]
+
+
+def test_multicast_gives_index_and_audit_consumers_the_same_rag_chunks() -> None:
+    requested: list[str] = []
+
+    def source() -> Iterator[RawDoc]:
+        for doc_id in ("doc-a", "doc-b"):
+            requested.append(doc_id)
+            yield RawDoc(doc_id, "title", doc_id, "cs.AI")
+
+    config = RagConfig(env=RagEnv(chunk_size=100))
+    chunks = stream_rag_sources((source,), config, get_deps(config))
+    index_chunks, audit_chunks = multicast(chunks, 2, maxlen=1)
+
+    paired = [(next(index_chunks), next(audit_chunks)) for _ in range(2)]
+
+    assert all(indexed == audited for indexed, audited in paired)
+    assert requested == ["doc-a", "doc-b"]
 
 
 def test_bounded_multicast_skew_error_does_not_consume_upstream() -> None:
