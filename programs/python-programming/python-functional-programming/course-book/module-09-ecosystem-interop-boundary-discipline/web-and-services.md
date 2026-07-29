@@ -302,42 +302,20 @@ async def handler(docs: list[RawDocDTO] = Body(...)):
 ```
 
 ---
-## 5. Property-Based Proofs (repo tests)
-This repo does not run FastAPI property tests by default because FastAPI is an optional dependency here. The FP laws are enforced by keeping the web layer thin and heavily unit-testing the pure core.
+## 5. Executable proof
 
-```python
-from hypothesis import given
-import hypothesis.strategies as st
-from fastapi.testclient import TestClient
-from funcpipe_rag import rag_core, default_env
+The default proof does not pretend an optional FastAPI installation is present.
+It tests the pure adapter at
+`boundaries/web/documents.py`:
 
-
-def normalize_json(data):
-    if isinstance(data, list):
-        return sorted([{"text": i["text"], "embedding": i["embedding"]} for i in data], key=lambda x: x["text"])
-    return data
-
-
-@given(docs=st.lists(raw_doc_strat()))
-def test_api_equiv(docs):
-    dto_docs = [RawDocDTO(content=d.content, metadata=d.metadata) for d in docs]
-    client = TestClient(app)
-    try:
-        app.dependency_overrides[get_cached_env] = lambda: default_env
-        response = client.post("/rag/process", json=[d.model_dump() for d in dto_docs])
-    finally:
-        app.dependency_overrides.clear()
-
-    expected_result = rag_core(docs, default_env)
-    if isinstance(expected_result, Ok):
-        assert response.status_code == 200
-        expected_dto = from_internal_chunks(expected_result.value)
-        assert normalize_json(response.json()) == normalize_json([d.model_dump() for d in expected_dto])
-    elif isinstance(expected_result, Err):
-        status, envelope = map_err_to_http(expected_result.error)
-        assert response.status_code == status
-        assert response.json() == {"detail": envelope}
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k web_payload_translation_exposes_validation_as_a_value
 ```
+
+The adapter turns HTTP-shaped mappings into `RawDoc` values or a typed
+`INVALID_DOCUMENT` failure. A project that enables FastAPI should add a separate
+client test proving its status-code and JSON mappings.
 
 ---
 ## 6. Runtime Preservation Guarantee
@@ -359,9 +337,12 @@ FastAPI async for concurrency; core perf preserved.
 4. Law? → **Purity of handlers**
 5. Benefit? → **Testable services**
 
-## 9. Post-Core Exercise
-1. Expose RAG as FastAPI.
-2. Prove equiv with Hypothesis.
+## 9. Post-core exercise
+
+Complete [Web and services: translate before invoking the
+framework](exercises.md#web-and-services-translate-before-invoking-the-framework).
+Trace one typed failure through the shell without moving validation ownership into
+FastAPI.
 
 **Pipeline Usage (Idiomatic)**
 ```python

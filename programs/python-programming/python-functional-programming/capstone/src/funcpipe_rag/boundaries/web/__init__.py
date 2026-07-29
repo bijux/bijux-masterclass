@@ -5,6 +5,6 @@ dynamic import guards so the core library remains dependency-light.
 """
 
 from .fastapi_app import create_app
+from .documents import parse_document_payloads
 
-__all__ = ["create_app"]
-
+__all__ = ["create_app", "parse_document_payloads"]

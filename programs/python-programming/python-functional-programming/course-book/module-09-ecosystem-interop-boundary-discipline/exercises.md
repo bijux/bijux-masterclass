@@ -90,3 +90,31 @@ pytest -q tests/learning/test_module_09_interop.py \
 
 Earlier contract preserved: Module 01 value semantics and Module 05 validation
 remain independent of the optional tabular implementation.
+
+## Web and services: translate before invoking the framework
+
+**Starting context:** read `boundaries/web/documents.py` and
+`test_web_payload_translation_exposes_validation_as_a_value`.
+
+**Objective:** add a payload whose `categories` value is not a string and trace
+the resulting `ErrInfo` to an HTTP 422 decision in a shell.
+
+**Constraints:**
+
+- do not import FastAPI in the translator
+- return a typed failure instead of raising for user input
+- identify the failing document index and field
+- do not perform RAG processing in the HTTP adapter
+
+**Expected evidence:** valid payloads become immutable `RawDoc` values, invalid
+payloads become `Err`, and the shell owns status-code mapping.
+
+**Acceptance check:**
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k web_payload_translation_exposes_validation_as_a_value
+```
+
+Earlier contract preserved: Module 04 failures remain data and Module 07 keeps
+framework behavior outside the domain core.

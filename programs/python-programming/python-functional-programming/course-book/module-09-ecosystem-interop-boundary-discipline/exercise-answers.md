@@ -91,3 +91,27 @@ specific backend is supported.
 
 In FuncPipe, record normalization prepares boundary data. Construction of
 `RawDoc` and rejection of invalid domain values remain explicit later decisions.
+
+## Web and services: translate before invoking the framework
+
+`parse_document_payloads` is deliberately framework-free. It translates mappings
+into `RawDoc` values and returns `ErrInfo(code="INVALID_DOCUMENT", ...)` when a
+required field or `categories` is not a string.
+
+The shell may map that code to HTTP 422, but the translator must not know that
+status code. The same translator can then serve FastAPI, a batch import endpoint,
+or a direct unit test.
+
+Common wrong turns:
+
+- relying only on a Pydantic exception makes the framework own the failure model
+- catching every exception and returning HTTP 500 hides a caller error
+- running chunking or embedding in the payload translator mixes transport and
+  application work
+
+The result proves deterministic translation and typed validation for mapping
+payloads. It does not prove routing, JSON decoding, authentication, or response
+serialization; those remain framework integration concerns.
+
+In FuncPipe, the HTTP shell translates, calls the established pipeline, and maps
+the resulting value back out. It never becomes an alternative RAG core.

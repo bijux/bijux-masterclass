@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 
+from funcpipe_rag.boundaries.web.documents import parse_document_payloads
 from funcpipe_rag.interop.dataframes import normalize_records
 from funcpipe_rag.interop.stdlib_fp import merge_streams, running_sum
 from funcpipe_rag.interop.toolz_compat import compose, curried_filter, curried_map, pipe
+from funcpipe_rag.result.types import Err, Ok
 
 
 def test_stdlib_interop_defers_source_consumption() -> None:
@@ -56,3 +58,18 @@ def test_record_adapter_normalizes_without_mutating_boundary_input() -> None:
     assert rows == original
     assert once == twice
     assert once[0]["clean_abstract"] == "mixed case"
+
+
+def test_web_payload_translation_exposes_validation_as_a_value() -> None:
+    valid = parse_document_payloads(
+        [{"doc_id": "paper-1", "title": "FP", "abstract": "Explicit boundaries"}]
+    )
+    invalid = parse_document_payloads(
+        [{"doc_id": "paper-2", "title": "Bad", "abstract": 42}]
+    )
+
+    assert isinstance(valid, Ok)
+    assert valid.value[0].categories == ""
+    assert isinstance(invalid, Err)
+    assert invalid.error.code == "INVALID_DOCUMENT"
+    assert invalid.error.stage == "web.parse_document_payloads"
