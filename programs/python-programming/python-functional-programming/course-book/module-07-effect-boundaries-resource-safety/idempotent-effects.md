@@ -63,6 +63,41 @@ How do you design effectful operations to be **idempotent** – using stable key
 
 You are now seven steps away from a complete production-grade functional architecture.
 
+## Runnable lab: replay one chunk write
+
+Use a recording implementation of the atomic write-if-absent capability:
+
+```python
+atomic = RecordingAtomicStorage()
+capability: AtomicWriteCap = atomic
+write = idempotent_write(capability)
+
+first = perform(write(iter(chunks)))
+second = perform(write(iter(chunks)))
+
+assert first == Ok(Ok(None))
+assert second == Ok(Ok(None))
+assert atomic.attempts == 2
+assert atomic.writes == 1
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k idempotent_chunk_write_replays_without_duplicate_output
+```
+
+Both interpretations are successful from the caller's perspective. The adapter
+receives two attempts but recognizes the second stable content key and performs
+only one actual write. The atomic capability owns the check-and-write race; a
+separate `exists` call followed by `write` would not provide this contract.
+
+This implementation keys on chunk text. If configuration or model identity
+changes what the stored artifact means, those semantics must become part of the
+key instead of silently reusing stale output.
+
 ## 1. Laws & Invariants (machine-checked where possible)
 
 | Law / Invariant            | Description                                                                                  | Enforcement          |
@@ -162,7 +197,7 @@ class AtomicFileStorage(AtomicWriteCap):
 ### 4.2 Retry Wrapper (higher-order, composes with behaviours)
 
 ```python
-# capstone/src/funcpipe_rag/fp/effects/io_retry.py – mypy --strict clean
+# capstone/src/funcpipe_rag/domain/effects/io_retry.py – mypy --strict clean
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, TypeVar
@@ -226,7 +261,7 @@ def _sleep(delay_ms: int) -> Result[None, ErrInfo]:
 
 This repo provides the building blocks:
 - `capstone/src/funcpipe_rag/domain/idempotent.py` (`idempotent_write`)
-- `capstone/src/funcpipe_rag/fp/effects/io_retry.py` (`retry_idempotent`)
+- `capstone/src/funcpipe_rag/domain/effects/io_retry.py` (`retry_idempotent`)
 
 It does **not** yet ship a fully IOPlan-based RAG entry point; treat the full composition as an exercise.
 

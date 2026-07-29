@@ -3,16 +3,18 @@
 from __future__ import annotations
 
 import builtins
-from collections.abc import Iterator
+from collections.abc import Generator, Iterator
 from datetime import datetime, timezone
 from io import StringIO
+from typing import cast
 
 import pytest
 
-from funcpipe_rag.core.rag_types import RawDoc
+from funcpipe_rag.core.rag_types import Chunk, RawDoc
 from funcpipe_rag.domain.capabilities import Clock, Logger, StorageRead
 from funcpipe_rag.domain.composition import logged_read
 from funcpipe_rag.domain.effects import IOPlan, io_delay, io_map, perform
+from funcpipe_rag.domain.idempotent import AtomicWriteCap, idempotent_write
 from funcpipe_rag.domain.logging import LogEntry, trace_stage, trace_value
 from funcpipe_rag.fp.effects.writer import pure as writer_pure
 from funcpipe_rag.fp.effects.writer import run_writer
@@ -113,7 +115,7 @@ def test_partial_storage_read_closes_the_owned_file(monkeypatch: pytest.MonkeyPa
     assert events == ["open"]
     assert not csv_file.closed
 
-    iterator.close()
+    cast(Generator[Result[RawDoc, ErrInfo], None, None], iterator).close()
 
     assert csv_file.closed
 
@@ -177,3 +179,41 @@ def test_logged_read_composes_capabilities_without_eager_effects() -> None:
     assert isinstance(result, Ok)
     assert list(result.value) == [Ok(doc)]
     assert logger.entries == [LogEntry(level="INFO", msg="read_docs path=docs.csv")]
+
+
+def test_idempotent_chunk_write_replays_without_duplicate_output() -> None:
+    """Stable content identity permits repeated interpretation but one write."""
+
+    class RecordingAtomicStorage:
+        def __init__(self) -> None:
+            self.present: set[str] = set()
+            self.attempts = 0
+            self.writes = 0
+
+        def write_if_absent(self, key: str, chunks: Iterator[Chunk]) -> Result[bool, ErrInfo]:
+            self.attempts += 1
+            if key in self.present:
+                return Ok(False)
+            self.present.add(key)
+            self.writes += 1
+            list(chunks)
+            return Ok(True)
+
+    chunks = [
+        Chunk(
+            doc_id="d1",
+            text="functional boundaries",
+            start=0,
+            end=21,
+            metadata={"source": "docs.csv"},
+            embedding=tuple([0.0] * 16),
+        )
+    ]
+    atomic = RecordingAtomicStorage()
+    capability: AtomicWriteCap = atomic
+    write = idempotent_write(capability)
+
+    assert perform(write(iter(chunks))) == Ok(Ok(None))
+    assert perform(write(iter(chunks))) == Ok(Ok(None))
+    assert atomic.attempts == 2
+    assert atomic.writes == 1

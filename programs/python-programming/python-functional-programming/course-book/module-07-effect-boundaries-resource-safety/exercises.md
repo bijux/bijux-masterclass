@@ -218,3 +218,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
 
 Earlier contract preserved: Module 03 laziness and Module 06 compositional
 reasoning survive the addition of an observational boundary effect.
+
+## Idempotent effects: distinguish attempts from writes
+
+**Starting context:** read `content_key`, `AtomicWriteCap`, and
+`idempotent_write`, then run
+`test_idempotent_chunk_write_replays_without_duplicate_output`.
+
+**Objective:** replay two logically identical chunk lists whose metadata differs
+and explain why the current key still permits only one actual write.
+
+**Constraints:**
+
+- keep chunk text identical;
+- change only metadata or embedding values;
+- record both attempts and actual writes;
+- retain the atomic write-if-absent operation.
+
+**Expected evidence:** both plans return success, two attempts occur, and one
+actual write occurs because Module 07 defines content identity from text.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k idempotent_chunk_write_replays_without_duplicate_output
+```
+
+Earlier contract preserved: pure chunk values remain immutable; Module 07
+derives a stable boundary key without adding mutation to the RAG core.

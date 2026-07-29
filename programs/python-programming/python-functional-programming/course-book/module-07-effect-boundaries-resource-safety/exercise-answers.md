@@ -148,3 +148,21 @@ Common wrong turns:
 The proof establishes deferral, log order, and result neutrality for the
 shipped helper. It does not prove arbitrary combinations of capabilities are
 commutative or safe to reorder.
+
+## Idempotent effects: distinguish attempts from writes
+
+`content_key` hashes only length-prefixed chunk text. Changing document metadata
+or embedding values while retaining the same text therefore produces the same
+key. The recording adapter sees two attempts and skips the second actual write.
+
+Common wrong turns:
+
+- using `hash()` creates process-dependent keys;
+- checking existence separately from writing introduces a race;
+- counting attempts as writes misreads the adapter contract;
+- assuming text-only identity is universally correct ignores configuration and
+  model changes.
+
+The test proves at-most-one write under the fake adapter's atomic semantics. It
+does not prove `AtomicFileStorage` is safe under every multi-process race, nor
+that text alone is the right production identity for every artifact.
