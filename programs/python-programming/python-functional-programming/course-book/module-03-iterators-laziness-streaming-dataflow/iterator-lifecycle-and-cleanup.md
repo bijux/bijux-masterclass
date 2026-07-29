@@ -38,7 +38,8 @@ For every custom iterator, check these rules:
 - iterables return a fresh cursor from `__iter__`
 - iterators return `self` from `__iter__`
 - exhausted iterators stay exhausted
-- resources are released on exhaustion, `close()`, or context exit
+- resource-backed iterators document whether exhaustion, `close()`, or context exit
+  owns release
 - two fresh cursors over the same source behave independently
 
 If one of those rules is false, the class is probably carrying state in a way the caller
@@ -51,7 +52,8 @@ Custom iterators should satisfy:
 - iterator parity: `iter(it) is it`
 - iterable freshness: `iter(src) is not iter(src)`
 - equivalence with the simpler generator baseline where one exists
-- cleanup on early stop for resource-backed cursors
+- cleanup on early stop for resource-backed cursors, when that lifecycle is part of
+  the implemented contract
 
 ```python
 from hypothesis import given
@@ -89,9 +91,56 @@ Stay with a generator when:
 
 Before moving on:
 
-1. inspect the module-03 iterator endpoint under `capstone/_history/worktrees/module-03/`
-2. compare the iterator design with the generator alternative
-3. decide whether the class form improved lifecycle clarity enough to justify itself
+1. inspect `core/structural_dedup.py` in the Module 03 reference state;
+2. verify that `DedupIterator` is a cursor, returns itself from `__iter__`, and
+   remains exhausted;
+3. compare its retained `seen` set with a generator implementation;
+4. state explicitly that it owns no file, socket, or external resource.
+
+## Cleanup is not automatic on early stop
+
+Exhaustion and abandonment are different events. This loop does not guarantee that
+an arbitrary underlying resource closes immediately:
+
+```python
+for chunk in resource_backed_chunks():
+    if enough(chunk):
+        break
+```
+
+A generator's `finally` block runs when the generator is closed or finalized, but
+relying on eventual garbage collection is not a precise ownership policy. Prefer a
+context manager when early stop must release promptly:
+
+```python
+with open_chunk_source(path) as chunks:
+    for chunk in chunks:
+        if enough(chunk):
+            break
+```
+
+The context owns cleanup; iteration owns value demand. Keeping those contracts
+separate makes both reviewable.
+
+Module 03's `DedupIterator`, source factories, and fan helpers do not claim managed
+external-resource cleanup. The lesson establishes the question learners must ask;
+Module 07 later adds explicit resource policies. Do not infer a cleanup guarantee
+from the presence of `yield`.
+
+## Lifecycle evidence
+
+Run the custom iterator proof:
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-03/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+  -k 'custom_dedup'
+```
+
+It proves stable exhaustion, not cleanup. A resource-backed implementation needs a
+separate test that records release after normal exhaustion, exception, and early
+exit.
 
 ## Reflection
 
