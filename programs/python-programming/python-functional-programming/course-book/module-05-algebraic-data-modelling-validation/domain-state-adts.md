@@ -431,6 +431,28 @@ def process_chunk(chunk: Chunk) -> Result[Done, Failed]:
         return err(state)
 ```
 
+## Runnable RAG learning lab
+
+Run the lifecycle as a value transformation:
+
+```bash
+cd capstone/module-reference-states/module-05
+PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
+  -k processing_state_allows_only_declared_rag_transitions
+```
+
+The trace is `Pending → Running → Done`. An advance event sent to `Pending` is
+rejected because progress has not started. The same event sent to `Done`
+returns the existing terminal value, so late progress cannot reopen completed
+work. The test also retains the original `Pending` value to make the absence of
+mutation observable.
+
+The important review question is not whether `match` looks compact. It is
+whether the transition table has one owner and every unsupported pair has a
+declared outcome. This proof covers the listed route and rejection; it does not
+model concurrent event delivery or persistence. Use the lifecycle exercise in
+[Module 05 Exercises](exercises.md) to decide cancellation ownership.
+
 ## 5. Property-Based Proofs (capstone/tests/test_module_05_c02.py)
 
 ```python

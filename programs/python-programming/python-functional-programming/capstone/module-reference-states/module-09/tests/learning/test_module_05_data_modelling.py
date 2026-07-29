@@ -1,18 +1,29 @@
 from __future__ import annotations
 
+from datetime import datetime
+
+import pytest
 from typing_extensions import assert_never
 
 from funcpipe_rag.fp.core import (
     ChunkState,
+    Done,
     Failure,
+    Running,
     Success,
+    UTC,
+    advance_event,
     chunk_from_dict,
     chunk_state_from_dict,
     chunk_state_to_dict,
     chunk_to_dict,
     failure,
     make_chunk,
+    pending,
+    start_event,
+    succeed_event,
     success,
+    transition,
 )
 
 
@@ -42,3 +53,25 @@ def test_product_and_sum_types_make_chunk_outcomes_explicit() -> None:
         "ready:2",
         "failed:EMBED_FAIL:attempt-2",
     ]
+
+
+def test_processing_state_allows_only_declared_rag_transitions() -> None:
+    queued_at = datetime(2026, 1, 2, 9, tzinfo=UTC)
+    initial = pending(queued_at=queued_at)
+    running = transition(initial, start_event(started_at=queued_at))
+    completed = transition(
+        running,
+        succeed_event(
+            completed_at=datetime(2026, 1, 2, 10, tzinfo=UTC),
+            artifact_id="chunk-index",
+            dim=2,
+            sha256="a" * 64,
+        ),
+    )
+
+    assert isinstance(running, Running)
+    assert isinstance(completed, Done)
+    assert transition(completed, advance_event(delta_permille=1)) is completed
+    assert initial == pending(queued_at=queued_at)
+    with pytest.raises(ValueError, match="invalid transition"):
+        transition(initial, advance_event(delta_permille=1))
