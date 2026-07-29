@@ -46,6 +46,31 @@ This lesson introduces laws as executable specifications:
 
 The central point is simple: laws are the reason “safe to refactor” can mean more than “I reran a couple of examples.”
 
+## Runnable lab: regroup RAG cleaning maps
+
+Functor composition gives a concrete refactor rule for the shipped normalizer:
+
+```python
+separate = source.map(clean_doc).map(lambda cleaned: cleaned.abstract)
+composed = source.map(lambda raw: clean_doc(raw).abstract)
+
+assert separate == composed
+```
+
+The learning property generates raw abstracts with mixed case and whitespace,
+then compares both groupings. It checks an actual RAG transformation rather
+than arithmetic chosen only to resemble a law.
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k result_map_composition_preserves_rag_cleaning
+```
+
+Passing this property supports regrouping these pure maps. It does not prove
+that `clean_doc` implements the right product normalization policy, nor that an
+effectful function may be moved or duplicated safely.
+
 Use this when you already write `and_then` chains and want mechanical confidence, not hope, that those chains remain safe under refactoring.
 
 **Outcome**

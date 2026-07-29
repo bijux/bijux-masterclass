@@ -76,3 +76,33 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
 
 Earlier contract preserved: Module 05 still distinguishes typed failure values
 from successful immutable configuration values.
+
+## Law-guided design: justify a regrouping
+
+**Starting context:** run
+`test_result_map_composition_preserves_rag_cleaning` and read the functor
+composition law.
+
+**Objective:** add a pure projection from normalized abstract text to word count
+and prove that separate and composed map groupings agree.
+
+**Constraints:**
+
+- keep every mapped function pure;
+- generate mixed-case and whitespace-heavy abstracts;
+- compare complete `Result` values;
+- state which product claim the law does not prove.
+
+**Expected evidence:** the generated examples produce the same typed word-count
+result for both legal groupings.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k result_map_composition_preserves_rag_cleaning
+```
+
+Earlier contract preserved: Module 01 substitution and Module 05 typed values
+remain valid inside the Module 06 composition machinery.

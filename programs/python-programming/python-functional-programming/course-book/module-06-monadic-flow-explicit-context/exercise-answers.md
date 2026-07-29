@@ -56,3 +56,27 @@ The focused proof establishes independent combination and `Result` error order.
 It does not establish cross-field validity for arbitrary values. If learners
 must see every invalid field at once, use the Module 05 `Validation`
 applicative and test the accumulated error tuple.
+
+## Law-guided design: justify a regrouping
+
+Define `word_count` as an ordinary pure function. Compare:
+
+```python
+source.map(clean_doc).map(lambda doc: doc.abstract).map(word_count)
+```
+
+with one `map` containing the same composed function order. The equality should
+hold for the generated source documents.
+
+Common wrong turns:
+
+- reversing functions tests a different program, not a regrouping;
+- adding logging inside a mapped function invalidates the pure substitution
+  argument;
+- testing only one tidy string misses the useful generated input space;
+- claiming the property proves the normalization policy confuses algebraic and
+  product correctness.
+
+The property proves the chosen map composition law for the modeled documents.
+It does not prove every possible `Result` implementation or every RAG business
+rule.

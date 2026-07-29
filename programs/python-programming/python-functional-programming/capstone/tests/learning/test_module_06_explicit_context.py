@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from hypothesis import given
+from hypothesis import strategies as st
+
 from funcpipe_rag.core.rag_types import CleanDoc, RagEnv, RawDoc
 from funcpipe_rag.rag.stages import clean_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result, liftA2
@@ -70,3 +73,21 @@ def test_liftA2_combines_independent_rag_config_fields() -> None:
     failed = liftA2(make_env, bad_chunk_size, bad_overlap)
     assert isinstance(failed, Err)
     assert failed.error == chunk_error
+
+
+@given(
+    abstract=st.text(
+        alphabet=" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+        max_size=60,
+    )
+)
+def test_result_map_composition_preserves_rag_cleaning(abstract: str) -> None:
+    """Two lawful map groupings retain the same normalized RAG text."""
+
+    doc = RawDoc(doc_id="law", title="Law", abstract=abstract, categories="fp")
+    source: Result[RawDoc, ErrInfo] = Ok(doc)
+
+    separate = source.map(clean_doc).map(lambda cleaned: cleaned.abstract)
+    composed = source.map(lambda raw: clean_doc(raw).abstract)
+
+    assert separate == composed
