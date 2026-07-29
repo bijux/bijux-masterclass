@@ -53,8 +53,19 @@ assert clean_abstract(" Straße ", cfg) == "strasse"
 ```
 
 The existing `boundary_rag_config` registry check will accept the new name and still
-reject unknown names. If another adapter keeps a separate allowlist, update it or
-centralize validation around the same registry.
+reject unknown names. Keep the numeric laws in the same test group:
+
+| Input | Required outcome |
+| --- | --- |
+| `{"chunk_size": 4, "clean_rules": ["strip", "casefold"]}` | `Ok` with the ordered tuple |
+| `{"chunk_size": True}` | `Err` mentioning `bool` |
+| `{"chunk_size": 0}` or `{"chunk_size": -1}` | `Err` requiring a positive integer |
+| `{"clean_rules": ["strip", "unknown"]}` | `Err` before dependency selection |
+
+`boundary_app_config` should split CLI rule syntax and delegate the resulting names
+to `boundary_rag_config`. Do not add a second allowlist or construct
+`CleanConfig` directly. A CLI test with an unknown name should return `Err` before
+any input path is opened.
 
 Common wrong turns:
 
@@ -146,6 +157,26 @@ This proves synchronous short-circuiting and preservation of the failure value. 
 does not prove retry, resource closure, logging, or asynchronous cancellation.
 Those are later policy layers around the same boundary.
 
+Now use `test_module_02_filesystem_boundary.py` as the shape for concrete adapter
+evidence. Its cases divide by observable state:
+
+| Case | Assertion that matters |
+| --- | --- |
+| valid CSV | decoded JSONL equals serialized `full_rag_api_docs` chunks in order |
+| header only | `Ok` has zero totals and output is an empty file |
+| malformed row | load `Err` and no output path |
+| missing input | load `Err` and no output path |
+| unavailable output parent | core event occurs, then write `Err`, with no output |
+
+The write-failure case wraps the module's `full_rag_api` call with a recording
+function and still uses the real reader and writer. This makes “after core work” an
+observed event rather than an inference from the implementation.
+
+The fake proof and filesystem proof are complementary. A fake precisely proves
+short-circuit control flow. Temporary files prove `open`, CSV parsing, JSON
+serialization, and output-state behavior. Neither proves retries, atomic
+replacement, or cleanup after a partial write.
+
 ## Answer 5: Add neutral stage observation
 
 Store bounded identifiers and counts:
@@ -192,3 +223,12 @@ and order. If it proves only pure values, add boundary failure and observation
 evidence. Module 02 is complete only when policy values and capabilities make the
 same Module 01 application easier to configure and review without changing its
 default meaning.
+
+Run both evidence owners from the repository root:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-data-api-proof
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-data-shell-proof
+```
