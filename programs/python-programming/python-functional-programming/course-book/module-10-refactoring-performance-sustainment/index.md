@@ -54,6 +54,7 @@ need to prove behavior over time.
 
 ## Lesson map
 
+- [Module 10 Capstone Delta](capstone-delta.md)
 - [Systematic Refactor](systematic-refactor.md)
 - [Performance Budgeting](performance-budgeting.md)
 - [Observability](observability.md)
@@ -74,6 +75,8 @@ need to prove behavior over time.
 
 ## Capstone checkpoints
 
+- Establish the exact Module 09-to-10 delta with
+  [Module 10 Capstone Delta](capstone-delta.md) before proposing a change.
 - Review whether the codebase has evidence for correctness, not just commentary.
 - Inspect where performance trade-offs are explicit instead of accidental.
 - Check whether ownership, compatibility, and review standards are documented well enough to last.
