@@ -69,3 +69,34 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 Earlier contract preserved: Module 07 resource ownership still ends at an
 interpreter boundary; laziness does not permit abandoning an owned iterator
 without closing it.
+
+## Backpressure: expose the bounded window
+
+**Starting context:** read `BackpressurePolicy` and
+`async_gen_bounded_map` in `domain/effects/async_/concurrency.py`, then run
+`test_bounded_map_caps_in_flight_work_and_preserves_order`.
+
+**Objective:** change the input to six values and the limit to three, then prove
+the maximum active worker count is three while ordered output remains aligned
+with input.
+
+**Constraints:**
+
+- record active work around the awaited scheduling point;
+- assert the maximum rather than a timing threshold;
+- keep `ordered=True`;
+- do not create tasks outside the combinator.
+
+**Expected evidence:** all six mapped results are ordered and no observation
+exceeds the configured three-worker window.
+
+**Acceptance check:**
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k bounded_map_caps_in_flight_work_and_preserves_order
+```
+
+Earlier contract preserved: the Module 07 effect boundary still owns execution;
+Module 08 adds an explicit interpreter policy for how much execution may overlap.

@@ -5,7 +5,15 @@ from __future__ import annotations
 import asyncio
 from collections.abc import AsyncIterator
 
-from funcpipe_rag.domain.effects.async_ import AsyncGen, async_gen_map, async_lift
+from funcpipe_rag.domain.effects.async_ import (
+    AsyncGen,
+    AsyncPlan,
+    BackpressurePolicy,
+    async_gen_bounded_map,
+    async_gen_from_list,
+    async_gen_map,
+    async_lift,
+)
 from funcpipe_rag.result.types import ErrInfo, Ok, Result
 
 
@@ -57,3 +65,34 @@ def test_async_stream_pulls_only_what_the_consumer_requests() -> None:
     asyncio.run(consume_prefix())
 
     assert pulled == [1, 2]
+
+
+def test_bounded_map_caps_in_flight_work_and_preserves_order() -> None:
+    """The policy is observable as a concurrency bound and an ordering law."""
+
+    active = 0
+    maximum_active = 0
+
+    def multiply(value: int) -> AsyncPlan[int]:
+        async def run() -> Ok[int]:
+            nonlocal active, maximum_active
+            active += 1
+            maximum_active = max(maximum_active, active)
+            await asyncio.sleep(0)
+            active -= 1
+            return Ok(value * 10)
+
+        return run
+
+    source = async_gen_from_list([1, 2, 3, 4])
+    bounded = async_gen_bounded_map(
+        source,
+        multiply,
+        BackpressurePolicy(max_concurrent=2, ordered=True),
+    )
+
+    async def consume() -> list[Result[int, ErrInfo]]:
+        return [item async for item in bounded()]
+
+    assert asyncio.run(consume()) == [Ok(10), Ok(20), Ok(30), Ok(40)]
+    assert maximum_active == 2

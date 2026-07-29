@@ -63,6 +63,51 @@ The bounded combinator returns an ordinary `AsyncGen`. The policy is closed over
 - Rate limiting & fairness (M08C05–C06)  
 - Full production async RAG pipeline with all safeguards
 
+## Runnable lab: measure the concurrency window
+
+Backpressure is a bound you can observe without relying on a benchmark. Build a
+worker that records how many calls are active, yield once to the event loop, and
+run it under an ordered policy:
+
+```python
+active = 0
+maximum_active = 0
+
+def multiply(value: int) -> AsyncPlan[int]:
+    async def run() -> Ok[int]:
+        nonlocal active, maximum_active
+        active += 1
+        maximum_active = max(maximum_active, active)
+        await asyncio.sleep(0)
+        active -= 1
+        return Ok(value * 10)
+    return run
+
+bounded = async_gen_bounded_map(
+    async_gen_from_list([1, 2, 3, 4]),
+    multiply,
+    BackpressurePolicy(max_concurrent=2, ordered=True),
+)
+results = [item async for item in bounded()]
+```
+
+The executable proof asserts both laws:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k bounded_map_caps_in_flight_work_and_preserves_order
+```
+
+`results` must retain input order, while `maximum_active` must be exactly two.
+The `sleep(0)` is only a cooperative scheduling point; the assertion does not
+depend on wall-clock duration. Constructing `bounded` still performs no work
+because the semaphore and tasks belong to the driven iterator.
+
+Do not infer backpressure from correct output alone: an unbounded implementation
+can return the same values. Do not assert task start order either; the policy
+guarantees a maximum and, when requested, result order.
+
 ## 1. Laws & Architectural Invariants
 
 | Category                  | Name                     | Description                                                                                                                | Enforcement                          |

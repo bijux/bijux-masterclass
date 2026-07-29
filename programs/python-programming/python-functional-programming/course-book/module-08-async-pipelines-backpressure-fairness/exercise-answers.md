@@ -53,3 +53,27 @@ Common wrong turns:
 The proof establishes demand-driven evaluation for this composition. It does
 not establish bounded parallelism; Core 3 adds an explicit concurrency policy
 for that separate concern.
+
+## Backpressure: expose the bounded window
+
+The worker increments its active counter immediately before the await and
+decrements it immediately after. A scheduling yield allows several calls to
+overlap without introducing real-time delays. `maximum_active` therefore
+captures the widest observed window directly.
+
+With six inputs and `max_concurrent=3`, the bounded combinator starts no fourth
+worker until one of the first three releases capacity. In ordered mode it also
+buffers completions by input index, so the resulting values retain input order
+even if individual workers finish differently.
+
+Common wrong turns:
+
+- checking only output order says nothing about bounded fan-out;
+- sleeping for fixed real durations makes the proof slow and timing-sensitive;
+- asserting exact task scheduling order promises more than the policy;
+- putting a semaphore inside every worker creates separate limits instead of
+  one shared stream limit.
+
+The policy is immutable description data. The semaphore, tasks, active counter,
+and work all come into existence only when the shell drives the returned
+`AsyncGen`.
