@@ -180,79 +180,16 @@ full-text reconstruction law; keep the existing chunk property for that.
 
 ## Answer 4: Test the effect boundary
 
-A focused test can serialize real CSV and compare parsed output with the pure core:
+The tracked file
+`tests/learning/test_module_01_shell_boundary.py` is the starting evidence, not an
+answer to copy into another location. Its four tests divide responsibility:
 
-```python
-from dataclasses import asdict
-import json
-
-import pytest
-
-from funcpipe_rag import RagEnv, RawDoc, full_rag, rag_shell
-
-
-def json_value(value: object) -> object:
-    return json.loads(json.dumps(value))
-
-
-def test_rag_shell_matches_pure_core(tmp_path) -> None:
-    source = tmp_path / "docs.csv"
-    output = tmp_path / "chunks.jsonl"
-    source.write_text(
-        "doc_id,title,abstract,categories\n"
-        "b,B,Local reasoning,cs.PL\n"
-        "a,A,Pure values,cs.PL\n",
-        encoding="utf-8",
-    )
-    docs = [
-        RawDoc("b", "B", "Local reasoning", "cs.PL"),
-        RawDoc("a", "A", "Pure values", "cs.PL"),
-    ]
-    env = RagEnv(chunk_size=5)
-
-    rag_shell(env, str(source), str(output))
-
-    actual = [
-        json.loads(line)
-        for line in output.read_text(encoding="utf-8").splitlines()
-    ]
-    expected = [json_value(asdict(chunk)) for chunk in full_rag(docs, env)]
-    assert actual == expected
-
-
-def test_rag_shell_writes_empty_output_for_header_only_csv(tmp_path) -> None:
-    source = tmp_path / "empty.csv"
-    output = tmp_path / "chunks.jsonl"
-    source.write_text(
-        "doc_id,title,abstract,categories\n",
-        encoding="utf-8",
-    )
-
-    rag_shell(RagEnv(chunk_size=5), str(source), str(output))
-
-    assert output.read_text(encoding="utf-8") == ""
-
-
-def test_rag_shell_translates_invalid_row_shape(tmp_path) -> None:
-    source = tmp_path / "invalid.csv"
-    output = tmp_path / "chunks.jsonl"
-    source.write_text(
-        "doc_id,title,abstract\n"
-        "a,A,Pure values\n",
-        encoding="utf-8",
-    )
-
-    with pytest.raises(ValueError, match=str(source)):
-        rag_shell(RagEnv(chunk_size=5), str(source), str(output))
-
-
-def test_rag_shell_propagates_missing_path(tmp_path) -> None:
-    source = tmp_path / "missing.csv"
-    output = tmp_path / "chunks.jsonl"
-
-    with pytest.raises(FileNotFoundError):
-        rag_shell(RagEnv(chunk_size=5), str(source), str(output))
-```
+| Existing route | Distinct observation |
+| --- | --- |
+| two valid rows | parsed JSONL equals the pure core and input text remains unchanged |
+| headers only | an empty domain result still creates an empty destination |
+| missing required field | row construction becomes contextual `ValueError` before output creation |
+| missing path | filesystem-open failure propagates before output creation |
 
 Operation classification:
 
@@ -263,6 +200,48 @@ Operation classification:
 | `full_rag` | pure transformation |
 | `open`, `json.dump`, and `write` | write effect |
 
+One useful extension checks non-ASCII preservation. It adds a serialization
+observation without redefining the core:
+
+```python
+from dataclasses import asdict
+import json
+from pathlib import Path
+
+from funcpipe_rag import RagEnv, RawDoc, full_rag, rag_shell
+
+
+def test_shell_preserves_non_ascii_jsonl(tmp_path: Path) -> None:
+    source = tmp_path / "unicode.csv"
+    output = tmp_path / "chunks.jsonl"
+    source.write_text(
+        "doc_id,title,abstract,categories\n"
+        "död,Ångström,Funktionell sökning,cs.PL\n",
+        encoding="utf-8",
+    )
+    docs = [
+        RawDoc("död", "Ångström", "Funktionell sökning", "cs.PL"),
+    ]
+    env = RagEnv(chunk_size=32)
+
+    rag_shell(env, str(source), str(output))
+
+    output_text = output.read_text(encoding="utf-8")
+    actual = [json.loads(line) for line in output_text.splitlines()]
+    expected = [
+        json.loads(json.dumps(asdict(chunk)))
+        for chunk in full_rag(docs, env)
+    ]
+
+    assert actual == expected
+    assert "död" in output_text
+```
+
+The parsed-value assertion protects delegation and field content. The raw-text
+assertion specifically protects `ensure_ascii=False`; JSON using Unicode escape
+sequences would parse to the same values and would not satisfy that second
+observation.
+
 Common wrong turns:
 
 - comparing JSON text formatting instead of parsed values;
@@ -271,8 +250,10 @@ Common wrong turns:
   `FileNotFoundError` propagate;
 - claiming the tests prove atomic output.
 
-The valid test proves adapter content agrees with `full_rag`. It does not prove that a
-write failure leaves no partial file; direct writes provide no such guarantee.
+The existing valid test would catch copied shell domain logic if it diverged from
+`full_rag`; the empty and failure tests alone would not. The Unicode extension proves
+one encoding choice. None of these tests proves that a write failure leaves no partial
+file, that arbitrary paths are safe, or that concurrent writers are coordinated.
 
 ## Answer 5: Review a false fixed-point claim
 
