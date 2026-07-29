@@ -405,7 +405,10 @@ def test_final_err_annotation(items):
 |-----------------|-------------------------------|--------------------------------------|----------|
 | retry_map_iter  | O(N × max_attempts) worst-case | O(inflight_cap)                      | Yes      |
 
-Bounded by `max_attempts` and `inflight_cap`; pure and lazy.
+Work is bounded by `max_attempts` and queued state by `inflight_cap`.
+`retry_map_iter` primes that bounded queue before its first output, so it can
+request ahead. The policy functions are pure decisions; the attempted function
+may still perform effects.
 
 ---
 
@@ -420,21 +423,100 @@ Bounded by `max_attempts` and `inflight_cap`; pure and lazy.
 
 ---
 
+## Trace classification, fairness, and order separately
+
+Retry is not “try the same thing again.” It is a policy chain:
+
+```text
+Err
+ |
+ +-- classifier says permanent --> emit final Err
+ |
+ +-- classifier says transient --> ask policy
+                                  |
+                                  +-- retry and under engine cap --> requeue
+                                  +-- otherwise ------------------> emit final Err
+```
+
+The learning proof submits `("transient", "stable", "permanent")` with an
+in-flight cap of three:
+
+| Attempt | Item | Outcome | Queue/output consequence |
+| ---: | --- | --- | --- |
+| 1 | `transient` | `EMBED/UNAVAILABLE` | Classified retryable; requeued |
+| 1 | `stable` | success | Emit `STABLE` |
+| 1 | `permanent` | `EMBED/INVALID` | Classified permanent; emit `Err` |
+| 2 | `transient` | success | Emit `TRANSIENT` |
+
+The completion order is therefore `STABLE`, permanent failure, `TRANSIENT`.
+Fair scheduling prevents the first item's retry from blocking every later
+item, but it does not preserve source order.
+
+Run:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k retry_classification
+```
+
+The permanent failure's context records `attempt == 1`, proving that
+classification prevented a retry. The transient call count proves one retry.
+Neither assertion proves real time passed between attempts.
+
+`exp_policy` returns `next_delay_ms` as data. The synchronous Module 04 engine
+does not sleep. A scheduler can interpret that decision later; silently adding
+`sleep()` here would mix time effects into a reusable policy loop and stall all
+queued work.
+
+Review retries in this order:
+
+| Question | Required answer before enabling retry |
+| --- | --- |
+| Is the failure transient according to stable domain evidence? | A narrow classifier |
+| Is the operation safe to repeat? | Idempotency key, transaction rule, or proof it is read-only |
+| Which limit is authoritative? | Policy limit and hard engine cap |
+| Can one item monopolize progress? | Fair bounded scheduling |
+| Does downstream require source order? | Explicit resequencing and its buffer bound |
+| Who performs delay? | A named time/scheduling boundary |
+| What evidence survives final failure? | Attempt, policy, stage, path, and optional delay |
+
+For embedding, deterministic computation is safe to repeat. A remote provider
+request may also need a request identity to avoid duplicate billing or writes.
+Retrying a non-idempotent index mutation just because its error code looks
+transient is not safe.
+
 ## 8. Pre-Core Quiz
 
-1. `retry_map_iter` for…? → **Fair bounded retries on Result stream**  
-2. `fixed_policy` for…? → **Fixed attempt count**  
-3. `inflight_cap` for…? → **Fairness / prevent starvation**  
-4. Final `Err` contains…? → **retry metadata when the error type supports it (e.g. ErrInfo.ctx)**  
-5. Order semantics…? → **Implementation-defined completion order; resequence if input order is required**
+1. Which errors reach the policy? → **Only errors the classifier marks
+   retryable.**
+2. What wins if policy keeps retrying past `max_attempts`? → **The engine cap.**
+3. Does `next_delay_ms` cause waiting? → **No; it is decision data for a
+   scheduler.**
+4. What does fairness cost? → **Completion order may differ from source order.**
+5. What must be established before retrying an effect? → **That repeating it is
+   safe under the operation's idempotency or transaction contract.**
 
 ## 9. Post-Core Exercise
 
-1. Apply `retry_map_iter` to a flaky embedder → verify bounded attempts + fairness.  
-2. Write a jitter policy → test `next_delay_ms` variance.  
-3. Refactor an imperative retry loop → `retry_map_iter`.  
-4. Combine with breaker → confirm rate reflects final outcomes after retries.
+Add a second transient item that needs three attempts.
+
+- Predict completion order before running.
+- Prove the permanent item still receives exactly one attempt.
+- Lower the engine cap below the policy limit and prove the cap wins.
+- Record the final attempt metadata on an exhausted `ErrInfo`.
+- State whether source order matters for the next FuncPipe stage and, if so,
+  what must be tagged and buffered to restore it.
+
+Move forward when retryability, repeat safety, attempt count, fairness, and
+delay ownership are separate review decisions.
 
 **Continue with:** [Structured Error Reports](../module-04-streaming-resilience-failure-handling/structured-error-reports.md)
 
-You now have the complete toolkit to make any flaky operation resilient — pure, bounded, fair, and composable with every previous core. The final core is about turning all those errors into beautiful reports.
+The final core folds terminal record failures and policy events into bounded
+evidence that an operator can inspect.
