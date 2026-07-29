@@ -476,7 +476,8 @@ print(json.loads(open("data.json").read()))  # OK for one-off
 ## 8. Pre-Core Quiz
 
 1. `open()` in core? → **Violates parametricity.**  
-2. `raise ValueError`? → **Use Result.**  
+2. `raise ValueError`? → **Use `Result` for expected boundary failure; reserve
+   exceptions for violated programmer or domain invariants.**
 3. How to test I/O? → **Fake implementation.**  
 4. Effects in generator? → **Inject implementation.**  
 5. Prove parametricity? → **Hypothesis idempotence.**
@@ -485,14 +486,86 @@ print(json.loads(open("data.json").read()))  # OK for one-off
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** Find a function with I/O or raises. Refactor to parametric core + implementation; inject fake. Add Hypothesis for equivalence/idempotence.  
-**Project Exercise:** Apply to RAG (e.g., load_docs as boundary); run properties.  
-- Did parametricity enable easier tests?  
-- Did fakes catch leaks?  
-- Did boundaries clarify effects?
+**Reflect:** Find one expected I/O failure and one violated programming invariant.
+Explain why they should not share the same handling policy.
+
+**Project Exercise:** Substitute a successful reader and a failing reader at
+`full_rag_api_path`. Prove the pure RAG core does not run on reader failure.
 
 **Continue with:** [Configuration as Data](../module-02-data-first-apis-expression-style/configuration-as-data.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 
 > **Further Reading:** For more on closures in Python, see 'Fluent Python' by Luciano Ramalho. Explore toolz for advanced partials once comfortable.
+
+## The path API is a boundary composition
+
+The Module 02 core accepts documents. A separate API accepts a path:
+
+```python
+class Reader(Protocol):
+    def read_docs(self, path: str) -> Result[list[RawDoc]]: ...
+
+
+def full_rag_api_path(path, config, deps):
+    docs_result = deps.reader.read_docs(path)
+    if isinstance(docs_result, Err):
+        return docs_result
+    chunks, observations = full_rag_api_docs(
+        docs_result.value,
+        config,
+        deps.core,
+    )
+    return Ok((chunks, observations))
+```
+
+The `Reader` protocol is a capability boundary. The core does not know whether
+documents came from a file, an in-memory fixture, or another adapter.
+
+### Expected failure is returned unchanged
+
+```python
+failure = Err("source unavailable")
+
+
+class FailingReader:
+    def read_docs(self, path: str):
+        return failure
+
+
+assert full_rag_api_path("missing.jsonl", config, deps) == failure
+```
+
+No cleaner, chunker, or embedder should run. This is short-circuit behavior, not
+exception swallowing.
+
+### Not every exception becomes `Err`
+
+`RagEnv(chunk_size=0)` violates a constructor invariant and raises `ValueError`.
+`boundary_rag_config({"chunk_size": 0})` should ideally translate untyped input into
+a boundary failure before construction. Module 02's minimal `Result` represents
+expected edge failure as a string; Module 04 later introduces richer failure data.
+
+Use these questions:
+
+| Failure | Default treatment |
+| --- | --- |
+| file missing or malformed boundary input | `Err` |
+| unsupported user rule syntax | boundary validation failure |
+| impossible negative chunk offset produced by internal code | exception/invariant failure |
+| process interruption or memory exhaustion | do not normalize into ordinary domain failure |
+
+### `Result` combinators preserve the boundary stop
+
+`result_map` and `result_and_then` call their function only for `Ok`. The learning
+proof records that a mapper is not called for `Err`, making skipped work observable.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'reader_failure or result_combinators'
+```
+
+These checks prove synchronous short-circuiting. They do not prove typed error
+classification, retry policy, cleanup, or async cancellation.
