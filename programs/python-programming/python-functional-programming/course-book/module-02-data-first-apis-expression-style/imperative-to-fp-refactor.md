@@ -399,14 +399,93 @@ print(sum([1, 2, 3]))  # OK for one-off
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** Find a god script. Refactor to pure + boundary + main; add Hypothesis equivalence.  
-**Project Exercise:** Apply to RAG script; run properties.  
-- Did modules clarify?  
-- Did tests cover end-to-end?  
-- New composable pipelines?
+**Reflect:** Compare the Module 01 and Module 02 reference states. Identify which
+files moved behavior into policy data, which added capabilities, and which preserved
+domain transformations.
+
+**Project Exercise:** Refactor one boundary call while keeping a Module 01 value
+oracle green after every change.
 
 **End of Module 02.**
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 
 > **Further Reading:** For more on closures in Python, see 'Fluent Python' by Luciano Ramalho. Explore toolz for advanced partials once comfortable.
+
+## Refactor the application without rewriting its meaning
+
+The Module 01 to Module 02 change is architectural:
+
+```text
+Module 01
+  full_rag.py + rag_pipe.py + rag_shell.py
+  direct pure stages with a thin script
+
+Module 02
+  api/config.py      policy and dependency assembly
+  api/core.py        configured value flow
+  core/rules_*.py    inspectable and callable filtering policy
+  result.py          explicit boundary outcome
+  shells/            concrete file/process edges
+```
+
+`pipeline_stages.py` and the domain dataclasses remain the semantic center. The new
+layers should route values and policy to them, not duplicate cleaning or embedding.
+
+## Use a preservation oracle
+
+Before changing orchestration, record the Module 01 computation:
+
+```python
+baseline = structural_dedup_chunks(
+    embed_chunk(chunk)
+    for doc in docs
+    for chunk in chunk_doc(clean_doc(doc), env)
+)
+```
+
+After each boundary extraction or API change:
+
+```python
+chunks, observations = full_rag_api_docs(docs, config, deps)
+assert chunks == baseline
+```
+
+Structural equality covers text, IDs, offsets, and embeddings. Add explicit order
+assertions when a future representation could compare without order.
+
+## Safe sequence
+
+1. freeze baseline value behavior;
+2. introduce `RagConfig` without changing stage logic;
+3. assemble cleaner and embedder into `RagCoreDeps`;
+4. express filter/map/flat-map in `iter_rag_core`;
+5. add complete observations at the materializing API edge;
+6. introduce `Reader` and `Result` for path input;
+7. move concrete file behavior into `shells/`;
+8. add non-default policy tests only after default compatibility holds.
+
+Each point leaves a coherent application. Avoid changing rule semantics, chunk
+shape, I/O handling, and API return type in one unreviewable edit.
+
+## Review the direction of dependencies
+
+```text
+shell -> boundary API -> configured core -> pure domain stages -> values
+```
+
+The pure stages must not import the shell. Predicate interpreters may depend on
+`RawDoc`, but not on file readers. Configuration knows rule names and pure
+capabilities; it does not open files.
+
+Run the preservation and short-circuit proof:
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'default_api or reader_failure'
+```
+
+The tests prove default value compatibility and one failing-reader route. They do
+not prove all adapters, operational cleanup, or later streaming behavior.
