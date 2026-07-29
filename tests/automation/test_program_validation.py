@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import unittest
 from pathlib import Path
+from subprocess import run
 
 from scripts.program_validation import (
     PROGRAM_TARGETS,
@@ -171,6 +172,23 @@ class WorkflowEconomyTests(unittest.TestCase):
         workflow = self.workflow_text("pages.yml")
         self.assertNotIn("Install documentation dependencies", workflow)
         self.assertEqual(workflow.count("make series-docs-build"), 1)
+
+    def test_functional_confirmation_executes_pytest_once(self) -> None:
+        capstone = (
+            self.repository_root
+            / "programs"
+            / "python-programming"
+            / "python-functional-programming"
+            / "capstone"
+        )
+        result = run(
+            ["make", "--dry-run", "confirm"],
+            cwd=capstone,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.stdout.count("/bin/pytest -q"), 1)
 
     def test_repository_owned_workflows_pin_action_revisions(self) -> None:
         workflows = (

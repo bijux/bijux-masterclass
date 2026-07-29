@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
+.PHONY: install test test-report foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -42,6 +42,8 @@ SOURCE_SCHEDULING_PROOF := $(STREAMING_RAG_PROOF)
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
 INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-functional-programming
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-functional-programming
+TEST_RESULTS_DIR ?= $(ARTIFACTS_DIR)/test-results/python-programming/python-functional-programming
+TEST_REPORT := $(TEST_RESULTS_DIR)/pytest.txt
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"; printf "\nTargets:\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -68,8 +70,15 @@ install: venv ## Install development dependencies
 		$(VENV_PIP) install -e '.[dev]'; \
 	}
 
-test: install ## Run the test suite
-	$(PYTEST) -q $(PYTEST_ARGS)
+test: test-report ## Run the test suite once and retain its output
+
+test-report: install ## Execute pytest once for all dependent proof bundles
+	rm -rf $(TEST_RESULTS_DIR)
+	mkdir -p $(TEST_RESULTS_DIR)
+	@status=0; \
+	$(PYTEST) -q $(PYTEST_ARGS) > $(TEST_REPORT) 2>&1 || status=$$?; \
+	cat $(TEST_REPORT); \
+	test $$status -eq 0
 
 foundation-proof: install ## Run the first tracked cumulative RAG laws
 	PYTHONPATH="$(abspath $(FOUNDATION_STATE)/src)" $(PYTEST) -q "$(FOUNDATION_PROOF)"
@@ -122,10 +131,10 @@ inspect: install ## Build the learner-facing inspection bundle
 review-check: install ## Fail when a declared Module 10 evidence path is missing
 	$(VENV)/bin/funcpipe-rag-review check --format text --project-root .
 
-verify-report: install ## Build the structured capstone verification report bundle
+verify-report: test-report ## Build the structured capstone verification report bundle
 	rm -rf $(VERIFY_REPORT_DIR)
 	mkdir -p $(VERIFY_REPORT_DIR) $(VERIFY_REPORT_DIR)/docs
-	$(PYTEST) -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
+	cp $(TEST_REPORT) $(VERIFY_REPORT_DIR)/pytest.txt
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(VERIFY_REPORT_DIR)/review-summary.json
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(VERIFY_REPORT_DIR)/review-summary.txt
 	cp README.md $(VERIFY_REPORT_DIR)/README.md
@@ -145,10 +154,10 @@ verify-report: install ## Build the structured capstone verification report bund
 	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
 	@echo "✔ wrote capstone verification report to $(VERIFY_REPORT_DIR)"
 
-tour: install ## Build the learner-facing proof bundle
+tour: test-report ## Build the learner-facing proof bundle
 	rm -rf $(TOUR_DIR)
 	mkdir -p $(TOUR_DIR) $(TOUR_DIR)/docs
-	$(PYTEST) -q 2>&1 | tee $(TOUR_DIR)/pytest.txt
+	cp $(TEST_REPORT) $(TOUR_DIR)/pytest.txt
 	find src/funcpipe_rag -type d | sort > $(TOUR_DIR)/package-tree.txt
 	find tests -type d | sort > $(TOUR_DIR)/test-tree.txt
 	cp README.md $(TOUR_DIR)/README.md
@@ -176,7 +185,7 @@ tour: install ## Build the learner-facing proof bundle
 		> $(TOUR_DIR)/route.txt
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
-proof: test inspect tour ## Run the sanctioned learner-facing proof route
+proof: test-report inspect tour ## Run the sanctioned learner-facing proof route
 
 confirm: lint build review-check verify-report proof ## Run the strongest capstone confirmation route
 
