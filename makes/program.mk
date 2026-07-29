@@ -38,6 +38,10 @@ proof: ## Run the selected program's strongest learner-facing proof route
 history-refresh: ## Build the selected program's generated module history worktrees
 	@$(RUN_PROGRAM) history-refresh
 
+.PHONY: history-verify
+history-verify: ## Verify the selected program's generated module history
+	@$(RUN_PROGRAM) history-verify
+
 .PHONY: history-clean
 history-clean: ## Remove the selected program's generated module history worktrees
 	@$(RUN_PROGRAM) history-clean
