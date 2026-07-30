@@ -76,6 +76,20 @@ That is why this page remains useful even if you never ship a decorator like thi
 teaches how to review seductive class claims without letting convenience language outrun
 the actual boundary.
 
+## Establish the executable baseline
+
+Run:
+
+```bash
+make class-customization-lab-test
+make class-customization-lab
+```
+
+Keep `labs/class_customization/frozen_surface.py`,
+`tests/test_frozen_surface_class_decorator.py`, and the `frozen_surface` evidence packet
+together. The source identifies the owner, the tests prove success and failure routes,
+and the packet exposes the result to a learner.
+
 ## The first design rule: define frozen at the surface
 
 This example uses "frozen" in a deliberately narrow sense:
@@ -131,7 +145,7 @@ One simple design is:
 1. wrap `__init__`
 2. mark the instance as still initializing before running the original initializer
 3. mark initialization as complete afterward
-4. reject `__setattr__` and `__delattr__` once the object is settled
+4. reject `__setattr__` and `__delattr__` once initialization succeeds
 
 That keeps the state transition explicit instead of magical.
 
@@ -140,8 +154,9 @@ Use this state-transition table when reviewing the example:
 | Moment | What is allowed |
 | --- | --- |
 | before wrapped `__init__` finishes | initialization assignments may proceed |
-| after `_frozen_ready` becomes true | normal rebinding and deletion are rejected |
+| after `_surface_frozen_ready` becomes true | normal rebinding and deletion are rejected |
 | inside nested mutable objects already stored on the instance | mutation may still occur unless another owner blocks it |
+| if `__init__` raises | no usable instance returns; the decorator makes no post-failure object claim |
 
 ## A proof route for the boundary flip
 
@@ -165,44 +180,25 @@ It should not:
 
 If the design needs those guarantees, this decorator is no longer the right owner.
 
-## A bounded implementation
+## Read the shipped implementation by owner
 
-```python
-import functools
+`surface_frozen` captures the original `__init__`, `__setattr__`, and `__delattr__`.
+It installs three replacement methods and one immutable `FrozenSurfacePolicy`.
 
+| Owner | Responsibility |
+| --- | --- |
+| wrapped initializer | open initialization, run the original initializer, close only after success |
+| installed `__setattr__` | reject ordinary rebinding after the boundary closes |
+| installed `__delattr__` | reject ordinary deletion after the boundary closes |
+| `FrozenSurfacePolicy` | publish what the decorator blocks and what it deliberately allows |
 
-def frozen(cls):
-    original_init = getattr(cls, "__init__", object.__init__)
-    original_setattr = getattr(cls, "__setattr__", object.__setattr__)
-    original_delattr = getattr(cls, "__delattr__", object.__delattr__)
+During initialization, assignments still pass through the original `__setattr__`. A
+focused test records that behavior. Policy installation must not erase an existing
+initialization rule merely because the decorator adds a later boundary.
 
-    @functools.wraps(original_init)
-    def __init__(self, *args, **kwargs):
-        object.__setattr__(self, "_frozen_ready", False)
-        try:
-            original_init(self, *args, **kwargs)
-        finally:
-            object.__setattr__(self, "_frozen_ready", True)
-
-    def __setattr__(self, name, value):
-        if getattr(self, "_frozen_ready", False):
-            raise AttributeError(
-                f"{type(self).__name__} instances are frozen after initialization"
-            )
-        original_setattr(self, name, value)
-
-    def __delattr__(self, name):
-        if getattr(self, "_frozen_ready", False):
-            raise AttributeError(
-                f"{type(self).__name__} instances are frozen after initialization"
-            )
-        original_delattr(self, name)
-
-    cls.__init__ = __init__
-    cls.__setattr__ = __setattr__
-    cls.__delattr__ = __delattr__
-    return cls
-```
+The decorator refuses instances without `__dict__` rather than half-supporting slots.
+That is a limitation of this teaching implementation, not a limitation of frozen
+classes generally.
 
 ## What this implementation proves and what it does not
 
@@ -211,11 +207,13 @@ Use the code block as evidence, not as marketing:
 | Claim | Supported by this implementation? | Why |
 | --- | --- | --- |
 | it installs the rule after class creation | yes | the decorator modifies the finished class object |
-| it allows initialization before freezing the surface | yes | wrapped `__init__` flips `_frozen_ready` only after setup |
+| it allows initialization before freezing the surface | yes | wrapped `__init__` flips `_surface_frozen_ready` only after successful setup |
 | it blocks later rebinding and deletion of top-level instance attributes | yes | `__setattr__` and `__delattr__` reject after the ready flag is set |
 | it makes nested lists, dicts, or other contained objects immutable | no | stored objects retain their own mutation behavior |
 | it prevents every low-level escape hatch | no | the example is not trying to secure the entire object model |
 | it requires a metaclass | no | the rule is installed after class creation and does not depend on namespace control |
+| it supports slotted-only instances | no | decoration refuses them clearly |
+| subclasses cannot weaken the rule | no | an overriding `__setattr__` can replace the boundary |
 
 Read that table as a review contract, not as decoration. If a future version of the
 decorator wants to promise more, both the implementation and the proof burden have to
@@ -249,7 +247,7 @@ Even this bounded design has pressure points:
 
 | Failure surface | Why it matters |
 | --- | --- |
-| `_frozen_ready` state transitions | the rule is only as clear as the moment the boundary flips |
+| `_surface_frozen_ready` state transitions | the rule is only as clear as the moment the boundary flips |
 | nested mutable objects | readers may overclaim deep immutability if this stays implicit |
 | inheritance and subclass overrides | later classes may weaken or bypass the surface rule |
 | low-level attribute bypasses | the pattern is educational surface control, not a security mechanism |
@@ -262,7 +260,7 @@ This decorator is intentionally surface-level.
 For example:
 
 ```python
-@frozen
+@surface_frozen
 class Settings:
     def __init__(self, tags):
         self.tags = tags
@@ -286,10 +284,14 @@ Subclassing is the first place this design often gets weakened or overclaimed:
 
 - a subclass may add helper methods that mutate nested state indirectly
 - a subclass may override `__setattr__` or `__delattr__` and erase the boundary
-- a subclass may change initialization order and make `_frozen_ready` harder to reason about
+- a subclass may change initialization order and make `_surface_frozen_ready` harder to reason about
 
 That does not make the example bad. It means the example is honest about staying a minimal
 class-level tool rather than pretending to be a full immutability framework.
+
+The suite proves this weakness directly: `MutableDeliveryConfig` overrides
+`__setattr__` and successfully rebinds `endpoint`. A limitation backed by a test is
+harder to erase with optimistic prose.
 
 ## Why this does not need a metaclass
 
@@ -303,6 +305,20 @@ already exists:
 - return the modified class
 
 That is strong evidence that a metaclass would be unnecessary escalation for this case.
+
+## Proof ledger
+
+| Claim | Focused test |
+| --- | --- |
+| initialization succeeds before mutation closes | `test_initialization_succeeds_before_rebinding_and_deletion_are_blocked` |
+| nested mutation and low-level bypass remain possible | `test_policy_names_mutability_and_bypass_limits` |
+| original attribute policy runs during initialization | `test_original_attribute_policy_still_runs_during_initialization` |
+| constructor signature and provenance survive wrapping | `test_wrapped_initializer_preserves_signature_and_provenance` |
+| slotted-only classes are refused | `test_slotted_classes_are_refused_instead_of_half_supported` |
+| subclass override can replace the boundary | `test_subclass_can_replace_the_boundary_as_the_policy_warns` |
+
+Together these tests define the teaching product. They do not prove security, deep
+immutability, hash safety, thread safety, or sealed inheritance.
 
 ## Evidence packet to leave behind
 
@@ -349,6 +365,7 @@ Before leaving the worked example, make sure you can do all of these:
 - define frozen narrowly enough to stay honest
 - name one mutation the decorator blocks and one it still allows
 - say what missing requirement would justify a stronger owner than this pattern
+- locate the focused test for every frozen-surface claim you make
 
 ## Continue through Module 06
 
