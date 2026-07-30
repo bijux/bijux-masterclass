@@ -1,6 +1,5 @@
 # Metaclass `__new__` and `__init__`
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Metaclass Design Class Creation"]
-  page["Metaclass `__new__` and `__init__`"]
+  page["Metaclass new and init"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -17,281 +16,225 @@ graph LR
 ```
 
 ```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+sequenceDiagram
+  participant P as Python
+  participant N as metaclass.__new__
+  participant C as class object
+  participant I as metaclass.__init__
+  participant M as module namespace
+
+  P->>N: name, bases, namespace
+  N->>C: create and return class
+  P->>I: initialize returned class
+  I-->>P: bookkeeping complete
+  P->>M: bind class name
 ```
 <!-- page-maps:end -->
 
-After resolution comes the next design question learners usually answer too vaguely:
+Once Python selects a metaclass and executes the class body, it calls the metaclass to
+produce the class object. `__new__` and `__init__` participate in that one construction
+event, but they receive different forms of the object.
 
-once the metaclass is in control, where should its work actually happen?
+## Run the exact lifecycle
 
-Many readers can repeat "`__new__` is earlier" and "`__init__` is later" without being able
-to review real code honestly. This page is about the ownership boundary, not only the
-order of hooks.
+From the course directory:
 
-This core separates the two most commonly blurred hooks:
-
-- metaclass `__new__`
-- metaclass `__init__`
-
-## The sentence to keep
-
-Use metaclass `__new__` for structural decisions that must happen while the class is being
-created, and use metaclass `__init__` for final bookkeeping or registration on the class
-object after it already exists.
-
-That split prevents a lot of vague metaclass code.
-
-If you cannot name whether a rule changes class structure or only records the finished
-class, you are not ready to place it in either hook.
-
-For self-study, turn that into a placement test:
-
-- does the rule need the raw namespace before the class exists?
-- does the rule only need the finished class object and its final identity?
-- what concrete evidence would be lost or blurred if the rule moved to the other hook?
-
-## Evidence route for metaclass hook reviews
-
-Work through each hook question in this order:
-
-| Review step | What to inspect | What strong evidence looks like |
-| --- | --- | --- |
-| Name the rule | What is the metaclass trying to guarantee? | A structural invariant, a registry update, or another precise claim |
-| Locate the earliest honest owner | Does the rule need the raw namespace or the finished class object? | The answer points clearly to `__new__` or `__init__` |
-| Reject the wrong hook | What becomes harder if the hook placement is swapped? | You can name the lost input or the blurred responsibility |
-| Reject the lower-power owner | Could a decorator or explicit helper still own the behavior? | A concrete reason class-creation ownership is still required |
-| Audit the blast radius | What import-time or hierarchy-wide side effects follow? | Registration, mutation, or test setup costs are named directly |
-
-## What metaclass `__new__` owns
-
-`__new__` receives the raw ingredients for class creation:
-
-- the metaclass
-- the class name
-- the base classes
-- the namespace mapping
-
-That makes it the right place for work such as:
-
-- namespace-driven validation
-- injecting or rewriting attributes before the class object exists
-- structural edits that depend on the class body itself
-
-Typical signs that `__new__` is the honest owner:
-
-| Signal | Why it points to `__new__` |
-| --- | --- |
-| The rule depends on names written in the class body | The namespace is still the direct source of truth |
-| The class must be rejected before it exists | `__init__` is already too late for clean refusal |
-| Helpers or wrappers must be inserted as part of class construction | The class shape is still being decided |
-
-This is still the mutability window where the construction inputs are most direct.
-
-## What metaclass `__init__` owns
-
-`__init__` runs after the class object has been created.
-
-That makes it a better fit for:
-
-- registration
-- final bookkeeping
-- post-creation checks that need the finished class object
-
-Typical signs that `__init__` is the honest owner:
-
-| Signal | Why it points to `__init__` |
-| --- | --- |
-| The rule needs the final class identity | Registration and bookkeeping reference the finished object |
-| The MRO or inherited attributes matter in final form | The class already exists and can be inspected directly |
-| The work should be easy to reverse or reset in tests | Bookkeeping surfaces can be separated from structural edits |
-
-It is usually the wrong place for heavy structural surgery, because the class has already
-been constructed.
-
-## A compact split to keep in mind
-
-```text
-metaclass __new__
-  -> shape the class
-
-metaclass __init__
-  -> record, register, or finalize the class
+```console
+python3 -m unittest discover -s tests -p "test_class_creation_lifecycle.py" -v
+python3 -m labs.class_creation
 ```
 
-That is the practical rule most review discussions need.
+Inspect:
 
-Keep one hook ledger beside any metaclass you review:
+- `labs/class_creation/lifecycle.py`
+- `tests/test_class_creation_lifecycle.py`
+- the `lifecycle` object in the JSON packet
 
-| Proposed behavior | Needs raw namespace? | Needs finished class object? | Honest hook |
-| --- | --- | --- | --- |
-| reject missing body-defined method | yes | no | `__new__` |
-| append class to registry | no | yes | `__init__` |
-| your own case | fill this in | fill this in | fill this in |
+Predict the event list before reading it.
 
-## A small example
+## The observed sequence
+
+The packet reports:
+
+```json
+[
+  "prepare:DeliveryNotice",
+  "body:DeliveryNotice",
+  "new:DeliveryNotice",
+  "init:DeliveryNotice"
+]
+```
+
+Only after those events can the surrounding scope use the bound name
+`DeliveryNotice`. Constructing `DeliveryNotice()` later adds no class-creation events.
+
+This sequence separates three objects that are often blurred:
+
+| Moment | Primary object | What is available |
+| --- | --- | --- |
+| class body execution | prepared namespace | assignments as they happen |
+| metaclass `__new__` | construction inputs | metaclass, name, bases, completed namespace |
+| metaclass `__init__` | returned class object | finished identity, MRO, inherited attributes |
+
+Metaclass `__init__` initializes a class object. It is not the `__init__` used to initialize
+instances of that class.
+
+## Structural work in `__new__`
+
+The lab’s `LifecycleMeta.__new__`:
 
 ```python
-class ValidatingMeta(type):
-    registry = []
-
-    def __new__(mcs, name, bases, namespace):
-        has_run_here = "run" in namespace
-        has_run_in_bases = any(hasattr(base, "run") for base in bases)
-        if not has_run_here and not has_run_in_bases:
-            raise TypeError(f"{name} must define run()")
-
-        namespace["from_meta"] = lambda self: "ok"
-        return super().__new__(mcs, name, bases, namespace)
-
-    def __init__(cls, name, bases, namespace):
-        super().__init__(name, bases, namespace)
-        ValidatingMeta.registry.append(cls)
-
-
-class Task(metaclass=ValidatingMeta):
-    def run(self):
-        return "running"
+def __new__(mcs, name, bases, namespace):
+    events.append(f"new:{name}")
+    namespace["creation_owner"] = mcs.__name__
+    return super().__new__(mcs, name, bases, namespace)
 ```
 
-This example keeps the split honest:
+This hook sees the completed class-body namespace before delegating to `type.__new__`. It
+adds one structural attribute and returns the class object.
 
-- `__new__` enforces a structural rule and injects behavior
-- `__init__` records the finished class in a registry
+Typical `__new__` work includes:
 
-That is exactly the division of labor the module wants.
+- rejecting a class based on its own declarations
+- transforming namespace entries before class creation
+- collecting descriptors or decorated methods
+- generating class attributes that belong to the class shape
 
-## What to reject before you argue about hook style
+The strongest reason to choose `__new__` is not “it runs first.” It is “the rule needs
+construction inputs or shapes the class being returned.”
 
-Some metaclass proposals are weak before hook placement even matters.
+## Finished-class work in `__init__`
 
-Reject these first:
+The lab’s metaclass `__init__`:
 
-| Weak claim | Why it is weak |
-| --- | --- |
-| "We can just put all metaclass logic in `__init__`." | It hides structural mutation after the class already exists |
-| "We can do everything in `__new__` and avoid thinking about the split." | It mixes class-shape work with bookkeeping and global side effects |
-| "The earlier hook is safer because it runs first." | Earlier is not safer; it is only more appropriate for structural ownership |
-| "Hook choice is mostly style." | Hook choice changes reviewability, failure timing, and reset behavior |
+```python
+def __init__(cls, name, bases, namespace):
+    super().__init__(name, bases, namespace)
+    events.append(f"init:{name}")
+    registry.append(cls.__name__)
+```
 
-## Weak answers to reject early
+Here `cls` is the returned class object. Registration needs that stable identity but does
+not change the class’s structural contract.
 
-| Weak answer | Why it fails |
-| --- | --- |
-| "put validation in `__new__` because it is earlier" | earlier does not explain why namespace access is required |
-| "put registration in `__init__` because it is cleaner" | cleaner is too vague unless the finished-class identity is the needed input |
-| "either hook could probably work" | probably means the owner boundary is still unclear |
-| "it is all metaclass code anyway" | that collapses structure and bookkeeping into one blurry surface |
+Typical `__init__` work includes:
 
-## Why structural edits belong earlier
+- registering a finished class
+- attaching final audit records
+- checking facts that require the completed MRO
+- bookkeeping that should be isolated from namespace transformation
 
-If a decision depends on the namespace before class creation finishes, `__new__` is the
-honest owner.
+This is a design default, not a language law. Registration can be implemented in
+`__new__`, and some frameworks do so to keep all creation work atomic in one hook. The
+review question is whether mixing registration with shaping makes failure, rollback, and
+state ownership harder to understand.
 
-Examples include:
+## Failure timing
 
-- rejecting missing required methods
-- rewriting definitions based on class-body declarations
-- injecting class-level helpers before the resulting class is finalized
+The lab includes a second metaclass that rejects a class missing `channel`:
 
-Trying to perform that kind of work later often makes the design harder to reason about.
+```python
+class RequiredChannelMeta(type):
+    def __new__(mcs, name, bases, namespace):
+        failure_events.append(f"new:{name}")
+        if "channel" not in namespace:
+            raise TypeError(f"{name} must declare channel")
+        return super().__new__(mcs, name, bases, namespace)
+```
 
-## Why registration belongs later
+The evidence is:
 
-Registration and bookkeeping usually need:
+```json
+{
+  "events": ["new:MissingChannel"],
+  "init_ran": false,
+  "message": "MissingChannel must declare channel"
+}
+```
 
-- the fully created class object
-- its final bases and MRO
-- a stable identity that other code can reference
+Because `__new__` did not return a class, metaclass `__init__` had nothing to initialize.
+The surrounding scope never receives `MissingChannel`.
 
-That makes `__init__` the more natural place for:
+This gives tests a precise failure claim:
 
-- appending to registries
-- recording metadata
-- attaching class-family bookkeeping
+- structural validation failed
+- no class was bound
+- later bookkeeping did not run
 
-The rule is not absolute, but it is a very strong default.
+## Cooperative delegation
 
-## Failure modes for hook placement
+Both hooks should normally delegate:
 
-Watch for these review failures:
+```python
+cls = super().__new__(mcs, name, bases, namespace)
+...
+super().__init__(name, bases, namespace)
+```
 
-| Failure mode | What goes wrong |
-| --- | --- |
-| Structural mutation postponed into `__init__` | Reviewers must reason about a class changing after creation |
-| Registration buried in `__new__` | Global side effects disappear inside structure code |
-| One hook doing both jobs | The metaclass becomes harder to explain and test |
-| Hook choice justified only by "convenience" | No real ownership boundary has been established |
+That matters when the metaclass hierarchy contains more than one implementation.
+Hard-coding `type.__new__` or skipping `super().__init__` can silently bypass another
+cooperative policy.
 
-## What this split is trying to prevent
+Delegation alone does not make policies compatible. It merely preserves the method
+resolution route needed for compatibility.
 
-Without a clear split, metaclass code often turns into:
+## Capstone implementation
 
-- structural mutation in `__init__`
-- registration side effects mixed into `__new__`
-- hard-to-review code that works mostly by accident
+The incident-plugin `PluginMeta` now makes its split observable:
 
-The point of this core is not stylistic purity. It is keeping class-creation behavior
-explainable.
+```text
+prepare:DefinitionNamespace
+  -> body:complete
+  -> new:shape
+  -> init:register
+```
 
-## A warning about overusing either hook
+In `__new__`, it:
 
-Both hooks are high-power surfaces.
+- collects inherited and declared fields
+- collects decorated actions
+- generates the visible signature
+- generates `__init__` when the class did not declare one
+- records structural class-creation evidence
 
-That means both still need the same questions asked first:
+In `__init__`, it:
 
-- does this truly belong at class-creation time?
-- could a class decorator still own it honestly?
-- could plain explicit code be clearer?
+- skips abstract family classes
+- registers the finished concrete class
+- updates the stored hook trace
 
-Choosing between `__new__` and `__init__` is not the first question. It is the second.
+Run:
 
-Before you leave this page, write one sentence beginning:
+```console
+make -C programs/python-programming/python-meta-programming capstone-class-creation
+```
 
-- "this rule belongs in `__new__` because..."
-- "this rule belongs in `__init__` because..."
+The report is generated without constructing a plugin, so class-creation evidence is not
+confused with instance behavior.
 
-## Review rules for `__new__` versus `__init__`
+## Placement review
 
-When reviewing metaclass hooks, keep these questions close:
+For each proposed metaclass action, complete this table:
 
-- is this work structural or post-creation?
-- does it depend on the raw namespace or the finished class object?
-- is registration being kept separate from namespace mutation?
-- is the metaclass doing work here that a lower-power tool could still own?
-- would a reviewer be able to explain the class-creation effects in one pass?
+| Question | `__new__` signal | `__init__` signal |
+| --- | --- | --- |
+| Does it need raw class-body entries? | strong | weak |
+| Does it shape or reject the returned class? | strong | weak |
+| Does it need the finished class identity or MRO? | possible | strong |
+| Is it reversible registry bookkeeping? | possible but mixed | strong |
+| What happens if it fails? | no class returned | class created but name not bound |
 
-Add one more question in strong reviews:
+Then ask the earlier question: could a class decorator, `__init_subclass__`, or explicit
+helper own the entire behavior more clearly?
 
-- what exact evidence would become unavailable or less honest if this work moved to the other hook?
+## Exit check
 
-## What to practice from this page
+Continue when you can:
 
-Try these before moving on:
+- reproduce the exact successful hook sequence
+- explain the object received by each hook
+- predict why a `__new__` failure prevents `__init__`
+- defend one placement using required evidence rather than “earlier” or “cleaner”
+- explain the capstone’s shaping-versus-registration split
 
-1. Put one interface or namespace validation rule in `__new__` and explain why it belongs there.
-2. Add one registry append in `__init__` and explain why it belongs after class creation.
-3. Write one short review note rejecting a metaclass that mutates structure in `__init__` for no clear reason.
-
-## Exit check for this page
-
-Before moving on, make sure you can do all of the following in plain language:
-
-- point to one rule that truly needs raw namespace access
-- point to one rule that only needs the finished class object
-- explain why swapping those two rules would blur ownership
-- reject at least one lower-power alternative or one misplaced hook honestly
-
-If those feel ordinary, the next step is `__prepare__`, the one hook that can observe and
-control assignments during class body execution itself.
-
-## Continue through Module 09
-
-- Previous: [Metaclass Resolution, Timing, and Conflicts](metaclass-resolution-timing-and-conflicts.md)
-- Next: [`__prepare__` and Declaration-Time Enforcement](prepare-and-declaration-time-enforcement.md)
-- Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)
+Next: [`__prepare__` and Declaration-Time Enforcement](prepare-and-declaration-time-enforcement.md).
