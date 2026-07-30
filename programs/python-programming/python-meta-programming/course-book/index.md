@@ -27,9 +27,15 @@ flowchart LR
 
 Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so you do not mistake the capstone or reference pages for the first stop.
 
-This course teaches Python metaprogramming as a discipline of runtime honesty. The goal
-is not to make code look advanced. The goal is to understand what Python is doing when
-code inspects, wraps, validates, or registers other code and objects.
+This website is the Python Metaprogramming masterclass: a complete teaching sequence for
+learning how Python behaves when code inspects, wraps, validates, or registers other code
+and objects. The lessons, runnable labs, worked examples, exercises, and answer reasoning
+are the product. The capstone is where you transfer and test that learning in one larger
+system; it is not a substitute for the course.
+
+The goal is not to make code look advanced. The goal is to develop runtime judgment: you
+should be able to explain what Python is doing, choose the lowest-power honest mechanism,
+and prove the important behavior with a proportionate check.
 
 ## Who this course is for
 
@@ -82,6 +88,21 @@ should own this behavior?":
 - [Mid-Course Map](module-00-orientation/mid-course-map.md)
 - [Runtime Power Ladder](reference/runtime-power-ladder.md)
 
+## How the masterclass teaches
+
+Each part of the course has a different teaching job:
+
+| Learning surface | What you do there | What it proves |
+| --- | --- | --- |
+| core lesson | build one precise mental model from a concrete design pressure | you can explain the mechanism and its boundaries |
+| runnable example or lab | execute the claim and inspect its output | the described runtime behavior is observable |
+| worked example | follow a design or review decision from weak evidence to stronger evidence | you can apply the concept instead of only defining it |
+| exercises and answers | make a decision, produce evidence, and review your reasoning | you can study independently and detect common wrong turns |
+| incident-plugin capstone | transfer several concepts into one integrated runtime | the mechanisms can coexist without hiding ownership or failure |
+
+Use that order. Reading capstone source before learning the mechanism may show you *what*
+the implementation contains, but it does not teach *why* the mechanism belongs there.
+
 ## What the course is organized around
 
 ### A clear ladder of power
@@ -94,16 +115,32 @@ The course moves from plain observation to invasive runtime control:
 4. metaclasses
 5. governance boundaries around dynamic execution and global hooks
 
-### One executable proof
+### Course-level executable practice
 
-The [Capstone Guide](capstone/index.md) points to a single plugin runtime that keeps the major
-mechanisms visible in one place. Use [Capstone Map](capstone/capstone-map.md) and
-[Capstone File Guide](capstone/capstone-file-guide.md) while reading.
+Module 01 starts with a dependency-free runtime-object lab. From the program directory,
+run:
 
-## Power ladder to capstone proof
+```console
+make lab
+make lab-test
+```
 
-Use this table when the mechanism names feel abstract and you need one executable place
-to see what each rung looks like in practice.
+The first command prints five JSON evidence packets. The second verifies that the
+relationships taught in the lessons remain true. Later modules use focused examples and
+the incident-plugin runtime where integration pressure makes the larger system useful.
+
+### One integration project
+
+The [Capstone Guide](capstone/index.md) points to the incident-plugin runtime that keeps
+the major mechanisms visible in one place. Use it after a lesson or lab to transfer the
+current idea into an application. The [Capstone Map](capstone/capstone-map.md) and
+[Capstone File Guide](capstone/capstone-file-guide.md) identify the smallest relevant
+source and proof route.
+
+## Power ladder from course lesson to capstone transfer
+
+Use this table after the core lesson has established the mechanism. It shows where to
+transfer the idea into the integrated application and which proof to inspect first.
 
 | Power rung | Primary modules | First capstone surface | Strongest first proof |
 | --- | --- | --- | --- |
@@ -117,15 +154,19 @@ to see what each rung looks like in practice.
 ### Review judgment
 
 Use [Review Checklist](reference/review-checklist.md), [Practice Map](reference/practice-map.md), and
-[Capstone Proof Guide](capstone/capstone-proof-guide.md) to keep the material pedagogic
-instead of ornamental.
+[Capstone Proof Guide](capstone/capstone-proof-guide.md) after attempting the course
+exercise. These are review aids, not replacements for the lesson sequence.
 
 ## Best reading route
 
 1. Start with [Start Here](guides/start-here.md) and [Course Guide](guides/course-guide.md).
 2. Read [Module 00](module-00-orientation/index.md) before the mechanism-heavy modules.
-3. Move through Modules 01 to 10 in order so each higher-power mechanism rests on a lower-power one.
-4. Bring in the [Capstone Guide](capstone/index.md) and [Capstone Map](capstone/capstone-map.md) once the current mechanism is clear enough to inspect in code.
+3. For each module, study the core lessons, run the examples, follow the worked example,
+   attempt the exercises, and only then compare your reasoning with the answers.
+4. Transfer the module idea into the incident-plugin runtime using the smallest capstone
+   route named by that module.
+5. Move through Modules 01 to 10 in order so each higher-power mechanism rests on a
+   lower-power one.
 
 ## Module Table of Contents
 
