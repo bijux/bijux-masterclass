@@ -157,6 +157,27 @@ def test_check_action_command_reports_annotation_contract_without_execution(caps
     assert captured["executed"] is False
 
 
+def test_class_creation_command_reports_creation_time_ownership(capsys) -> None:
+    exit_code = main(["class-creation", "delivery", "console"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["class_name"] == "ConsoleNotifier"
+    assert captured["class_creation"]["namespace_type"] == "DefinitionNamespace"
+    assert captured["class_creation"]["metaclass"] == "PluginMeta"
+    assert captured["class_creation"]["declared_fields"] == [
+        "prefix",
+        "stream",
+        "uppercase_severity",
+    ]
+    assert captured["class_creation"]["declared_actions"] == ["deliver"]
+    assert captured["class_creation"]["generated_init"] is True
+    assert captured["registered"] is True
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+
+
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:
     exit_code = main(
         [

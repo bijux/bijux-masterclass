@@ -5,11 +5,13 @@ import pytest
 from incident_plugins import (
     PluginBase,
     PluginMeta,
+    StringField,
     action,
     bind_action_arguments,
     build_manifest,
     check_action_arguments,
     inspect_action_wrapper,
+    inspect_plugin_class_creation,
     invoke,
 )
 from incident_plugins.plugins import ConsoleNotifier, PagerNotifier, WebhookNotifier
@@ -282,6 +284,67 @@ def test_action_wrapper_preserves_failures_and_records_only_success() -> None:
             "result_type": "str",
         }
     ]
+
+
+def test_class_creation_audit_separates_inherited_declared_and_generated_surfaces() -> None:
+    class AuditedDeliveryBase(PluginBase):
+        __abstract__ = True
+        group = "class-creation-proof"
+
+        base_endpoint = StringField(description="Inherited endpoint")
+
+        @action("Inherited action.")
+        def inspect(self) -> str:
+            return self.base_endpoint
+
+    class AuditedDelivery(AuditedDeliveryBase):
+        plugin_name = "audited"
+
+        channel = StringField(default="critical", description="Declared channel")
+
+        @action("Declared action.")
+        def deliver(self) -> str:
+            return self.channel
+
+    report = inspect_plugin_class_creation("class-creation-proof", "audited")
+
+    assert report["class_creation"] == {
+        "namespace_type": "DefinitionNamespace",
+        "metaclass": "PluginMeta",
+        "declared_fields": ("channel",),
+        "declared_actions": ("deliver",),
+        "inherited_fields": ("base_endpoint",),
+        "inherited_actions": ("inspect",),
+        "generated_init": True,
+        "abstract": False,
+    }
+    assert report["visible_signature"] == "(*, base_endpoint, channel='critical')"
+    assert report["collected_fields"] == ["base_endpoint", "channel"]
+    assert report["collected_actions"] == ["inspect", "deliver"]
+    assert report["registered"] is True
+    assert report["constructed"] is False
+    assert report["executed"] is False
+
+
+def test_class_creation_audit_records_an_explicit_initializer() -> None:
+    runtime_events: list[str] = []
+
+    class ExplicitInitializerPlugin(PluginBase):
+        group = "class-creation-proof"
+        plugin_name = "explicit-initializer"
+
+        def __init__(self) -> None:
+            runtime_events.append("constructed")
+            self._action_history = []
+
+    report = inspect_plugin_class_creation(
+        "class-creation-proof",
+        "explicit-initializer",
+    )
+
+    assert report["class_creation"]["generated_init"] is False
+    assert report["constructed"] is False
+    assert runtime_events == []
 
 
 def test_runtime_invocation_returns_structured_payloads() -> None:

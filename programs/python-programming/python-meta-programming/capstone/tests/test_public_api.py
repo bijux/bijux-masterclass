@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from incident_plugins import (
     ActionSpec,
+    ClassCreationSpec,
     ChoiceField,
     ConsoleNotifier,
     Field,
@@ -15,6 +16,7 @@ from incident_plugins import (
     check_action_arguments,
     create_plugin,
     inspect_action_wrapper,
+    inspect_plugin_class_creation,
     invoke,
 )
 
@@ -28,10 +30,12 @@ def test_public_api_exports_the_supported_framework_surface() -> None:
     assert Field is not None
     assert ChoiceField is not None
     assert ActionSpec is not None
+    assert ClassCreationSpec is not None
     assert action is not None
     assert bind_action_arguments is not None
     assert check_action_arguments is not None
     assert inspect_action_wrapper is not None
+    assert inspect_plugin_class_creation is not None
 
 
 def test_public_api_exports_concrete_plugins_for_review_routes() -> None:

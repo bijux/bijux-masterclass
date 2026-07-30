@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import OrderedDict, defaultdict
+from dataclasses import asdict, dataclass
 import inspect
 from typing import Any
 
@@ -14,6 +15,23 @@ from .fields import Field
 
 
 _REGISTRY: dict[str, dict[str, type["PluginBase"]]] = defaultdict(dict)
+
+
+@dataclass(frozen=True, slots=True)
+class ClassCreationSpec:
+    """Evidence captured while ``PluginMeta`` still owns class creation."""
+
+    namespace_type: str
+    metaclass: str
+    declared_fields: tuple[str, ...]
+    declared_actions: tuple[str, ...]
+    inherited_fields: tuple[str, ...]
+    inherited_actions: tuple[str, ...]
+    generated_init: bool
+    abstract: bool
+
+    def manifest(self) -> dict[str, object]:
+        return asdict(self)
 
 
 class DefinitionNamespace(OrderedDict[str, object]):
@@ -98,23 +116,40 @@ class PluginMeta(type):
         for base in bases:
             fields.update(getattr(base, "__plugin_fields__", {}))
             actions.update(getattr(base, "__plugin_actions__", {}))
+        inherited_fields = tuple(fields)
+        inherited_actions = tuple(actions)
 
+        declared_fields = []
+        declared_actions = []
         for attr_name, attr_value in cls.__dict__.items():
             if isinstance(attr_value, Field):
                 fields[attr_name] = attr_value
+                declared_fields.append(attr_name)
             spec = getattr(attr_value, "__plugin_action__", None)
             if spec is not None:
                 actions[attr_name] = spec
+                declared_actions.append(attr_name)
 
         cls.__plugin_fields__ = fields
         cls.__plugin_actions__ = actions
         cls.__signature__ = _build_signature(fields)
 
-        if "__init__" not in namespace:
+        generated_init = "__init__" not in namespace
+        if generated_init:
             cls.__init__ = _build_init(fields)
 
         is_abstract = bool(namespace.get("__abstract__", False))
         cls.__abstract__ = is_abstract
+        cls.__plugin_class_creation__ = ClassCreationSpec(
+            namespace_type=type(namespace).__name__,
+            metaclass=type(cls).__name__,
+            declared_fields=tuple(declared_fields),
+            declared_actions=tuple(declared_actions),
+            inherited_fields=inherited_fields,
+            inherited_actions=inherited_actions,
+            generated_init=generated_init,
+            abstract=is_abstract,
+        )
         if is_abstract:
             return cls
 
@@ -249,6 +284,28 @@ def check_action_arguments(
             resolved_hints,
             resolution_error,
         ),
+        "constructed": False,
+        "executed": False,
+    }
+
+
+def inspect_plugin_class_creation(
+    group: str,
+    plugin_name: str,
+) -> dict[str, object]:
+    """Expose one stored class-creation record without constructing the plugin."""
+
+    plugin_cls = _REGISTRY[group][plugin_name]
+    creation = plugin_cls.__plugin_class_creation__
+    return {
+        "group": group,
+        "plugin_name": plugin_name,
+        "class_name": plugin_cls.__name__,
+        "class_creation": creation.manifest(),
+        "visible_signature": str(inspect.signature(plugin_cls)),
+        "collected_fields": list(plugin_cls.__plugin_fields__),
+        "collected_actions": list(plugin_cls.__plugin_actions__),
+        "registered": plugin_name in _REGISTRY.get(group, {}),
         "constructed": False,
         "executed": False,
     }

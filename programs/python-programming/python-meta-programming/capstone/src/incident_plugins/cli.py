@@ -13,6 +13,7 @@ from .framework import (
     check_action_arguments,
     create_plugin,
     inspect_action_wrapper,
+    inspect_plugin_class_creation,
     invoke,
 )
 
@@ -102,6 +103,14 @@ def _build_parser() -> argparse.ArgumentParser:
     action_wrapper.add_argument("plugin_name", help="Registered plugin name.")
     action_wrapper.add_argument("action_name", help="Declared action name.")
     action_wrapper.set_defaults(handler=_handle_action_wrapper)
+
+    class_creation = subparsers.add_parser(
+        "class-creation",
+        help="Inspect stored class-creation evidence without constructing a plugin.",
+    )
+    class_creation.add_argument("group", help="Plugin group name.")
+    class_creation.add_argument("plugin_name", help="Registered plugin name.")
+    class_creation.set_defaults(handler=_handle_class_creation)
 
     registry = subparsers.add_parser("registry", help="Render the plugin registry as JSON.")
     registry.add_argument("--group", help="Restrict output to one plugin group.")
@@ -210,6 +219,10 @@ def _handle_check_action(args: argparse.Namespace) -> dict[str, object]:
         args.action_name,
         **_parse_key_values(args.arg),
     )
+
+
+def _handle_class_creation(args: argparse.Namespace) -> dict[str, object]:
+    return inspect_plugin_class_creation(args.group, args.plugin_name)
 
 
 def _handle_registry(args: argparse.Namespace) -> dict[str, Any]:
