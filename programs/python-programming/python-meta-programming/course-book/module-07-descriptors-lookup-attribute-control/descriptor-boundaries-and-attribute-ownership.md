@@ -1,316 +1,213 @@
 # Descriptor Boundaries and Attribute Ownership
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Meta-Programming"]
-  section["Descriptors Lookup Attribute Control"]
-  page["Descriptor Boundaries and Attribute Ownership"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  plain["Plain attribute or method"] --> property["Property"]
+  property --> descriptor["Reusable descriptor"]
+  descriptor --> wider["__setattr__, class hook, or metaclass"]
+  pressure["Proven design pressure"] -.justifies movement.-> plain
+  pressure -.justifies movement.-> property
+  pressure -.justifies movement.-> descriptor
+  pressure -.justifies movement.-> wider
 ```
 <!-- page-maps:end -->
 
-This final core is the design page for the module.
+Understanding descriptor mechanics does not justify using them. This core asks whether
+attribute access is truly the narrowest owner of the requirement.
 
-This page is the module's main stewardship page. The point is not to reward descriptor
-cleverness. The point is to identify when attribute access is the real owner of a rule and
-when descriptor power would simply make a smaller design harder to read.
+## The decision rule
 
-By now the mechanics are visible. The remaining question is the one that matters in real
-reviews:
+Choose a reusable descriptor when the same attribute-level contract repeats and class
+declarations become clearer by naming that contract once.
 
-when does attribute behavior truly belong to a descriptor?
+Two conditions matter:
 
-## The sentence to keep
+1. The behavior belongs to reads, writes, or deletes of one attribute.
+2. The behavior repeats enough to justify an additional owner object.
 
-Use a descriptor when the invariant belongs to attribute access itself and needs the same
-field-level behavior across multiple instances or classes; stay with lower-power tools
-when the rule is narrower or more explicit there.
+Without the first, a descriptor owns the wrong boundary. Without the second, a property
+or explicit method is usually easier to review.
 
-That is the boundary Module 07 keeps visible.
+## Start from the lowest sufficient power
 
-Keep one more sentence beside it:
+| Need | Likely owner |
+| --- | --- |
+| store a value with no access rule | plain attribute |
+| perform an explicit operation | method |
+| manage one attribute on one class | property |
+| reuse one attribute contract across fields or classes | descriptor |
+| coordinate all assignments on an object | `__setattr__` |
+| inspect or transform a class family during creation | class hook or metaclass |
 
-> if the rule stops sounding like "behavior of this attribute," a descriptor is probably no longer the honest owner.
+This is not a ranking of sophistication. It is a map of ownership width.
 
-That sentence is the page's safeguard against overreach. The moment the rule starts
-sounding object-wide, lifecycle-wide, or registration-wide, attribute ownership is
-probably no longer the right story.
+## A descriptor that earns its place
 
-## The lower-power ladder
+The lab's `Quantity` is used for repeated quantity fields:
 
-A useful review ladder for this module is:
-
-```text
-plain attribute or method
-  -> property for one local attribute boundary
-  -> reusable descriptor for repeated field semantics
-  -> wider class hooks or metaclasses only when attribute-level ownership is no longer enough
+```python
+class DeliveryTiming:
+    latency = Quantity("s", {"s": 1.0, "ms": 0.001})
+    timeout = Quantity("s", {"s": 1.0, "ms": 0.001})
 ```
 
-This is not a prestige ladder. It is an ownership ladder.
+Each field needs the same access-time behavior:
 
-Read it one more way:
+- accept a numeric value or `(number, unit)`
+- convert on assignment
+- store one canonical representation
+- return a conversion-capable value
+- expose field metadata through class access
 
-- every upward move increases reusable or hidden power
-- every upward move also increases review burden
-- if the burden rises faster than the clarity gained, the move was a mistake
+A property could implement one field clearly. Repeating two properties would duplicate
+the conversion and bounds contract. The descriptor earns its cost through real
+repetition.
 
-## How to read the ladder honestly
+## A descriptor that does not earn its place
 
-Move upward only when the lower-power owner leaves a concrete gap:
+Requirement:
 
-| Move from... | Move to... | Only when... |
-| --- | --- | --- |
-| plain attribute or method | property | one named attribute needs a visible read/write boundary |
-| property | reusable descriptor | the same field rule repeats across attributes or classes |
-| descriptor | wider class hooks or metaclasses | attribute-level ownership is no longer enough for the requirement |
+> One `Incident` class needs a display-only `summary` derived from three existing values.
 
-## Properties are still descriptors, but they solve a narrower problem
+A property is the clearer owner:
 
-A property is often the better choice when:
-
-- one attribute on one class needs validation or computation
-- reuse pressure is low
-- the class should keep the rule close to one specific field
-
-That means Module 07 is not replacing properties. It is showing when a more reusable
-descriptor becomes the clearer owner.
-
-Properties are therefore the first honest alternative to test. If one property on one
-class tells the full story, descriptor reuse may already be overkill.
-
-## Reusable descriptors earn their complexity through repetition
-
-A dedicated descriptor starts making sense when:
-
-- the same field rule repeats across several attributes
-- the same field rule repeats across several classes
-- consistent class-level declaration improves readability
-
-If those conditions are missing, a property may still be the simpler and more honest
-design.
-
-Reuse pressure is the justification, not the fact that descriptors are more general.
-
-## A scenario clinic for owner choice
-
-| Scenario | Smallest honest owner | Why |
-| --- | --- | --- |
-| one field in one class must reject blanks | property | one local boundary is enough |
-| the same validated string rule repeats across many classes | reusable descriptor | repeated field semantics now matter |
-| one hook should log every method call | wrapper | the boundary is call entry, not attribute access |
-| many fields must coordinate before an object becomes valid | wider explicit validator | the invariant is broader than one attribute |
-| class body contents must be inspected before the class is finalized | not a descriptor | class-creation timing has become part of the need |
-
-## Descriptors versus `__setattr__`
-
-One common escalation mistake is solving field-specific rules by overriding
-`__setattr__`.
-
-That centralizes logic for every attribute in one place, which often makes the design:
-
-- harder to review
-- harder to test
-- harder to extend without unintended interactions
-
-Descriptors keep ownership local to each attribute boundary. That locality is one of their
-biggest strengths.
-
-It is also their biggest review advantage. A learner can point to one field declaration
-and one descriptor class and say what rule lives there, instead of tracing a giant
-`__setattr__` branch for every attribute in the object.
-
-## Descriptors versus wrappers
-
-Wrappers own call boundaries.
-
-Descriptors own attribute boundaries.
-
-That sounds simple, but it prevents a lot of category mistakes. If the behavior is about:
-
-- reading a value
-- writing a value
-- deleting a value
-
-then a descriptor may be the right owner.
-
-If the behavior is about:
-
-- entering a function call
-- retrying, caching, timing, or logging a call
-
-then a wrapper is probably the clearer owner.
-
-That boundary matters because "intercepting something" is not specific enough. The real
-question is whether the interception belongs to attribute access or call entry.
-
-## A downgrade worksheet
-
-Before accepting a descriptor, answer these:
-
-- what would the rule look like as one property?
-- what would the rule look like as a plain method or explicit validator?
-- what clarity is actually lost if I stay lower-power?
-- what exact reuse pressure or attribute-semantics pressure forces me upward?
-
-## Descriptors versus metaclasses
-
-Descriptors do not control class creation.
-
-Metaclasses do.
-
-That means you should resist metaclass escalation when the real problem is still:
-
-- field validation
-- coercion on assignment
-- reusable attribute semantics
-
-Those are strong descriptor cases, not class-creation cases.
-
-## A decision table for likely owners
-
-Use this table when the right owner feels uncertain:
-
-| If the requirement mainly... | Likely strongest owner |
-| --- | --- |
-| changes one local attribute rule in one class | property |
-| repeats one field rule across many attributes or classes | reusable descriptor |
-| coordinates many attributes together | wider explicit validator or object-level owner |
-| changes call behavior rather than field behavior | wrapper |
-| depends on class creation timing or namespace preparation | metaclass or broader class-creation tool |
-
-## A useful negative test
-
-Before choosing a descriptor, ask:
-
-```text
-Would this still read naturally if I described it as "behavior of this attribute"?
+```python
+@property
+def summary(self) -> str:
+    return f"{self.severity}: {self.title}"
 ```
 
-If yes, a descriptor may be a good fit.
+There is no stored field, repeated access contract, or class-level field metadata. A
+custom descriptor would introduce a second class only to reproduce property behavior.
 
-If the explanation immediately turns into:
+“It might be reused later” is not current design pressure.
 
-- object-wide state coordination
-- constructor orchestration
-- class registration
-- namespace preparation
+## Descriptor versus method
 
-then the ownership may already be elsewhere.
+Use a method when the operation deserves to be explicit:
 
-That test is useful precisely because it forces plainer language. If you cannot describe
-the rule as behavior of a specific attribute, the descriptor explanation is probably being
-stretched too far.
+```python
+incident.render_summary(style="compact")
+```
 
-## Evidence packet for ownership decisions
+Turning a parameterized or effectful operation into attribute access hides work:
 
-Leave this page with a small packet:
+```python
+incident.summary
+```
 
-- one requirement placed honestly on the property/descriptor/wider-owner ladder
-- one rejected lower-power owner and one rejected stronger owner
-- one sentence describing the real reuse pressure, if any
-- one sentence explaining why the rule still belongs to attribute access instead of call entry, object-wide validation, or class creation
+Descriptors are especially risky when reads perform I/O, consume iterators, acquire
+resources, or mutate unrelated state. Attribute syntax suggests a cheap and repeatable
+observation unless the API clearly establishes otherwise.
 
-## Why the module centers the attribute engine
+## Descriptor versus `__setattr__`
 
-The old synthesis idea from the monolithic page is still important:
+`__setattr__` sees all assignments. That makes it useful for object-wide policy and
+dangerous for unrelated field rules.
 
-descriptors are the real attribute engine behind properties, bound methods, and many field
-systems.
+Prefer descriptors when:
 
-That matters because once the engine is visible:
+- each field owns a different validator
+- class declarations should expose those field contracts
+- per-field metadata is useful
 
-- framework field objects stop looking magical
-- precedence bugs become explainable
-- storage mistakes become easier to spot
-- descriptor use can be justified or rejected more honestly
+Prefer `__setattr__` only when the invariant truly spans assignments as a whole, such as
+freezing an object after initialization. Even then, document bypass and inheritance
+behavior.
 
-The point is not to make descriptors feel more advanced. The point is to make them more
-reviewable.
+## Descriptor versus metaclass
 
-## Common overclaims to reject
+A descriptor runs during attribute access and receives its installation name during
+class creation. It cannot by itself:
 
-Reject these descriptions when they appear in review:
+- choose the namespace used for the class body
+- reject duplicate definitions before a dictionary overwrites them
+- collect actions and fields across an inheritance family
+- generate a constructor for the whole field set
+- register the completed class
 
-| Overclaim | Better replacement |
+Those are why the incident-plugin capstone uses `PluginMeta`. Its `Field` objects remain
+responsible only for one attribute contract.
+
+The boundary is visible:
+
+```mermaid
+flowchart TD
+  meta["PluginMeta"] --> family["collect fields, generate init, register class"]
+  field["Field descriptor"] --> attribute["coerce, validate, store, read one value"]
+  instance["Plugin instance"] --> values["own configured values"]
+```
+
+## A decision worksheet
+
+Before approving a descriptor, complete this:
+
+| Question | Required answer |
 | --- | --- |
-| "a descriptor is cleaner here" | "a descriptor is cleaner only if attribute-level reuse is the real need" |
-| "we should centralize this in `__setattr__`" | "centralization is only better if per-attribute ownership would become less clear" |
-| "this belongs in a wrapper too" | "wrappers and descriptors own different boundaries" |
-| "a metaclass is the more advanced option" | "a metaclass is justified only when class creation timing matters" |
+| What exact public attribute is managed? | a concrete name or reusable declaration pattern |
+| Which hooks are required? | the smallest honest hook set |
+| Where do values live? | an exact instance key or external store |
+| What repeats? | current fields or classes, not speculative reuse |
+| Why is a property too narrow? | a concrete duplication or metadata problem |
+| Why is wider machinery excessive? | the need does not span object or class-family behavior |
+| What does a read or write cost? | visible computation and effects |
 
-## Failure modes for ownership decisions
+If the repetition row is blank, downgrade the design.
 
-These are the mistakes this page is trying to prevent:
+## Maintenance costs to price explicitly
 
-| Failure mode | Why it weakens the design | Repair move |
-| --- | --- | --- |
-| choosing a descriptor for a one-off local rule | abstraction cost exceeds clarity gain | keep a property or plain method |
-| using `__setattr__` for many unrelated field rules | ownership becomes centralized and harder to inspect | split the rules into properties or descriptors |
-| using a wrapper for field semantics | call-boundary tools blur attribute ownership | move the rule back to the attribute surface |
-| escalating to metaclasses for field-level reuse | class-creation power exceeds the need | stay at descriptor level unless creation timing truly matters |
+A descriptor adds:
 
-## What strong Module 07 decisions sound like
+- another object in the ownership chain
+- special lookup precedence
+- class-access behavior
+- storage compatibility decisions
+- inheritance and override questions
+- more indirect stack traces
 
-Strong design notes in this module usually sound like:
+Those costs can be worth paying. They are not free because the syntax at the declaration
+site looks compact.
 
-- "this belongs to one attribute, so a property is enough"
-- "this rule repeats across several fields, so a reusable descriptor is the clearer owner"
-- "this behavior is about calls, not attributes, so a wrapper is the wrong tool"
-- "this does not require class-creation control, so a metaclass would be overreach"
+## Capstone judgment
 
-That is the tone of ownership clarity the module wants.
+The capstone has multiple field kinds—strings, integers, booleans, and choices—used across
+several plugins. Each kind owns reusable coercion and validation. Descriptors are
+justified.
 
-## Review rules for descriptor boundaries
+The capstone does not put registry behavior into `Field.__set_name__`. Registration needs
+the complete class, inherited members, and a plugin group. That belongs to `PluginMeta`.
 
-When reviewing a descriptor-heavy design, keep these questions close:
+It also does not use a descriptor for action calls. Call entry and metadata preservation
+belong to wrappers, which Modules 04 and 05 established.
 
-- does the rule truly belong to attribute access?
-- is the same field behavior repeated enough to justify reuse?
-- would a property be clearer because the rule is local to one attribute?
-- is `__setattr__` being used where descriptors would keep ownership narrower?
-- is someone proposing a metaclass for a field-level problem?
-- can another reviewer name the rejected lower-power and rejected higher-power alternatives?
+## Failure routes
 
-## Exit check for this page
+Reject these review arguments:
 
-Before moving on, make sure you can do all of these:
+| Claim | Repair |
+| --- | --- |
+| “Descriptors are cleaner.” | Name the repeated attribute contract and compare code ownership. |
+| “A property cannot be reused.” | Show that reuse is currently required. |
+| “The metaclass already exists, so it can validate values.” | Keep field access policy on the field owner. |
+| “Attribute syntax is convenient for this operation.” | State the hidden cost or effect of the read. |
+| “The descriptor prevents invalid state.” | Name bypasses and the exact public operations covered. |
 
-- place one requirement honestly on the property/descriptor/wider-owner ladder
-- explain one real reuse pressure that justifies a descriptor
-- explain one case where a property remains the better owner
-- name one missing condition that would justify escalating beyond a descriptor
+## Exit check
 
-## What to practice from this page
+For each requirement below, choose an owner and defend it:
 
-Try these before moving on:
+1. one class computes a read-only label
+2. six plugin fields coerce bounded integers
+3. every assignment must be rejected after initialization
+4. duplicate plugin action names must fail during class-body execution
+5. an explicit delivery operation performs network I/O
 
-1. Take one field rule and place it on the ladder: plain attribute, property, descriptor, or metaclass.
-2. Rewrite one over-engineered `__setattr__` idea into either properties or descriptors.
-3. Write one short review note rejecting a descriptor because a single property would be clearer.
-
-If those feel ordinary, the worked example can now combine the module's mechanics and
-ownership boundaries inside one bounded quantity field.
+Your defense must reject one lower-power and one higher-power option where applicable.
 
 ## Continue through Module 07
 
 - Previous: [Reusable Field Descriptors and Storage](reusable-field-descriptors-and-storage.md)
 - Next: [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md)
-- Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)
