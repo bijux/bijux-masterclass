@@ -1,5 +1,4 @@
-# Exercises
-
+# Exercises: Class-Creation Evidence Studio
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Metaclass Design Class Creation"]
-  page["Exercises"]
+  page["Exercises: Class-Creation Evidence Studio"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -18,259 +17,325 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  recipe["1. Construction recipe"]
+  resolution["2. Resolution conflict"]
+  hooks["3. Hook ownership"]
+  namespace["4. Declaration evidence"]
+  owners["5. Registration owner"]
+  audit["6. Capstone audit"]
+
+  recipe --> resolution --> hooks --> namespace --> owners --> audit
 ```
 <!-- page-maps:end -->
 
-Use these after reading the five core lessons and the worked example. The goal is not to
-make metaclasses feel more advanced. The goal is to make class-creation ownership,
-definition-time timing, and lower-power alternatives explicit.
+These exercises form one cumulative review of the Module 09 executable system. They are
+not syntax drills. Each exercise asks you to predict behavior, change or inspect runnable
+code, and leave evidence another learner can review without verbal explanation.
 
-Each exercise asks for three things:
+Work in a temporary copy or a short-lived local branch if you want to preserve the
+reference implementation. Do not put generated output beside source files; write it under
+the repository `artifacts/` directory.
 
-- the class-creation or hierarchy rule you are trying to enforce
-- the metaclass or lower-power owner you chose
-- the reason that choice is the clearest one
+## Baseline
 
-For every exercise from 2 onward, add one more line:
+Before changing anything:
 
-- the strongest lower-power owner you rejected and why it was insufficient or clearer
+```console
+cd programs/python-programming/python-meta-programming
+make class-creation-lab-test
+make class-creation-lab > ../../../artifacts/class-creation-baseline.json
+```
 
-Treat the ten exercises as one full lab day on metaclass design and class creation.
+Record:
 
-Do them in order:
+- the number of focused tests
+- the six top-level evidence sections
+- the successful lifecycle trace
+- the registry claim that registration alone does not justify a metaclass
 
-- Exercises 1-3 establish direct class construction, metaclass conflicts, and the split between structural work and bookkeeping
-- Exercises 4-6 focus `__prepare__`, lower-power alternatives, and import-time registry limits
-- Exercises 7-8 extend that discipline into hierarchy-wide ownership and reset boundaries
-- Exercises 9-10 package the whole module into a reviewable metaclass-boundary packet
+If the baseline fails, diagnose it before beginning. A later green run is not useful when
+you do not know whether you started from green.
 
-Keep one metaclass-boundary table while you work:
+## Exercise 1: Extend the explicit construction recipe
 
-| Class-creation rule or hierarchy pressure | Honest owner | When it acts | What lower-power tool was rejected | Review judgment |
-| --- | --- | --- | --- | --- |
+### Starting context
 
-## Evidence discipline for the whole exercise set
+`labs/class_creation/manual.py` creates `DeliveryNotice` from a `ClassRecipe`. The current
+factory copies the namespace, supplies `__module__`, and rejects invalid identifiers.
 
-Do not hand in answers that stop at "a metaclass fits here."
+### Objective
 
-Across the set, your evidence should name:
+Add an optional `qualname` input that gives a manually generated class an explicit
+`__qualname__` without changing the existing default route.
 
-- the exact class-creation or declaration-time fact
-- when that fact appears
-- what weaker owner you considered first
-- what import-time or testing cost comes with escalation
+### Constraints
 
-Use one more discipline across the whole set:
+- Keep direct `type(name, bases, namespace)` as the construction owner.
+- Do not introduce a custom metaclass.
+- Do not mutate the caller’s namespace.
+- Reject a blank explicit `qualname`.
+- Preserve the existing `DeliveryNotice` evidence when no qualname is supplied.
 
-- every answer should name one exact invariant
-- every justified metaclass answer should name one import-time or reset cost
-- every rejection answer should name the next-lower owner that stays honest
+### Expected evidence
 
-If one of those is missing, the answer is still too soft.
+Add tests proving:
 
-## Exercise 1: Build one class manually with `type(...)`
+- an explicit qualname appears in `created.__qualname__`
+- an omitted qualname keeps the class name as its qualname
+- a blank qualname fails before class construction
+- the caller namespace remains unchanged
 
-Create one tiny class dynamically with `type(name, bases, namespace)`.
+### Acceptance checks
 
-What to hand in:
+```console
+python3 -m unittest discover -s tests -p "test_class_creation_manual.py" -v
+```
 
-- what each of the three arguments contributes
-- one piece of metadata you set manually
-- one explanation of why this is still lower-power than a custom metaclass
-- one sentence naming what would have to repeat across future classes before metaclass escalation became plausible
+Explain why this remains a one-call-site factory problem.
 
-Verification hint:
-write one sentence beginning "a metaclass would only become necessary if..." before you
-call the dynamic class justified.
+### Earlier contract to preserve
 
-## Exercise 2: Trigger and explain one metaclass conflict
+The recipe’s name, bases, and namespace must still map to observable class identity and
+behavior.
 
-Construct a small multiple-inheritance example that raises a metaclass conflict.
+## Exercise 2: Explain and test one metaclass collision
 
-What to hand in:
+### Starting context
 
-- the conflicting bases or metaclasses
-- the error you get
-- one explanation of why this is an ownership conflict instead of just a syntax problem
-- one sentence saying what joint owner or design simplification you would investigate before "fixing" the error mechanically
+`labs/class_creation/resolution.py` demonstrates inherited selection, an incompatible pair,
+and a `JointMeta`.
 
-Verification hint:
-name both competing authorities before you explain the conflict outcome.
+### Objective
 
-## Exercise 3: Split one metaclass across `__new__` and `__init__`
+Add one policy event to each candidate metaclass, then prove whether a cooperative joint
+metaclass executes both policies and in which order.
 
-Build or inspect one metaclass that does structural work and one bookkeeping task.
+### Constraints
 
-What to hand in:
+- Keep the original conflict test.
+- Make both candidate metaclasses use `super()`.
+- Predict the event order before running the test.
+- Do not describe a mechanically successful joint metaclass as automatically safe.
 
-- the rule that belongs in `__new__`
-- the bookkeeping that belongs in `__init__`
-- one sentence explaining why swapping them would make the design worse
-- one lower-power tool you checked first and why it could not carry the same family-wide rule
+### Expected evidence
 
-Verification hint:
-if you cannot say what raw namespace evidence or finished-class evidence each rule needs,
-the split is still too soft.
+Your test should show:
 
-## Exercise 4: Use `__prepare__` for one declaration-time rule
+- the unresolved class still raises `TypeError`
+- `JointMeta` is compatible with both bases
+- the event trace follows its metaclass MRO
+- constructing an instance adds no class-creation policy events
 
-Create or inspect one custom namespace mapping supplied by `__prepare__`.
+### Acceptance checks
 
-What to hand in:
+```console
+python3 -m unittest discover -s tests -p "test_class_creation_resolution.py" -v
+```
 
-- the declaration-time fact it captures or enforces
-- why later hooks would miss or reconstruct that fact poorly
-- one explanation of why the custom mapping is still narrow enough to review
-- one sentence explaining what would make this `__prepare__` design overengineered
+Write one additional semantic compatibility test the toy policies do not provide.
 
-Verification hint:
-write the vanished class-body fact in one line before you mention the hook name.
+### Earlier contract to preserve
 
-## Exercise 5: Reject one unnecessary metaclass
+`DeliveryAudit` must continue to inherit `AuditMeta` without an explicit declaration.
 
-Take one metaclass proposal and rewrite it mentally as a lower-power design.
+## Exercise 3: Move work to its honest hook
 
-What to hand in:
+### Starting context
 
-- the original metaclass idea
-- the lower-power replacement
-- one sentence explaining what the metaclass was not actually needed for
-- one sentence naming the exact convenience argument you are refusing
+`labs/class_creation/lifecycle.py` shapes the class in `__new__` and records the finished
+class in `__init__`.
 
-Verification hint:
-if your rejection does not name a concrete replacement owner, it is still incomplete.
+### Objective
 
-## Exercise 6: Review the plugin registry example honestly
+Add:
 
-Use the worked example as a case study.
+- a required `policy_version` class-body declaration
+- a registry record containing the final class name and MRO names
 
-What to hand in:
+Place each behavior in the hook that owns the needed evidence.
 
-- one thing the metaclass owns honestly
-- one import-time or testing risk it still introduces
-- one explanation of why this is narrower than a general plugin framework
-- one sentence explaining what would change if registration became opt-in instead of automatic
+### Constraints
 
-Verification hint:
-your answer should name one import-time mutation and one missing broader plugin concern.
+- Validate `policy_version` from the raw namespace.
+- Do not register a class that failed validation.
+- Build the MRO record only from the returned class.
+- Preserve cooperative `super()` calls.
+- Keep instance construction outside the class-creation trace.
 
-## Midday self-check
+### Expected evidence
 
-Before moving into the final four exercises, make sure you can already answer these
-questions clearly:
+Add tests for:
 
-- when direct `type(...)` construction is enough and when a repeating class-creation owner is actually needed
-- why a metaclass conflict is a design signal about incompatible ownership
-- what belongs in `__new__`, what belongs in `__init__`, and when `__prepare__` is justified
-- why import-time registration still needs reset and testing discipline
+- the exact successful event order
+- failure before metaclass `__init__`
+- no registry entry after failure
+- a final MRO record after success
+- no hook events added by instance construction
 
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the timing, owner, and rejected lower-power alternative more explicit before
-continuing.
+### Acceptance checks
 
-Do not continue if your notes still describe the metaclass as "nice," "clean," or
-"automatic" without naming the invariant. Those words hide the decision instead of
-proving it.
+```console
+python3 -m unittest discover -s tests -p "test_class_creation_lifecycle.py" -v
+```
 
-## Exercise 7: Separate hierarchy-wide policy from post-creation bookkeeping
+Your review note must state what evidence would be unavailable or premature in the other
+hook.
 
-Choose one hierarchy rule and explain which part truly requires class-creation ownership
-and which part is only follow-up bookkeeping.
+### Earlier contract to preserve
 
-What to hand in:
+`__new__` still shapes the class and `__init__` still owns finished-class bookkeeping.
 
-- the hierarchy rule
-- the class-creation part that belongs in the metaclass, if any
-- the bookkeeping part that could live elsewhere
-- one explanation of why keeping them separate makes the design easier to review
-- one sentence naming how test reset or import ordering changes once the two concerns are separated
+## Exercise 4: Narrow the declaration language
 
-Verification hint:
-write one line that begins "the invariant is..." and another that begins "the support surface is..."
+### Starting context
 
-## Exercise 8: Design one reset boundary for import-time class registration
+The lab `DeclarationNamespace` rejects every duplicate public declaration. The capstone
+rejects duplicates only for tracked fields and actions.
 
-Take one import-time registry or auto-registration design and make its testing boundary
-explicit.
+### Objective
 
-What to hand in:
+Change the lab namespace to reject duplicates only for values marked as declarations.
+Allow ordinary helper replacement.
 
-- the registration design
-- one reset, clear, or reinitialization surface
-- one explanation of why import-time behavior without reset discipline becomes hard to test honestly
-- one sentence naming the failure you would expect to see first if reset discipline were missing
+### Constraints
 
-Verification hint:
-predict one concrete stale-registry or duplicate-registration failure before you call the reset story acceptable.
+- Define one small, inspectable declaration marker.
+- Reject when either the old or new value is tracked.
+- Preserve public declaration order for tracked values only.
+- Do not inspect only the completed class.
+- Allow Python’s dunder assignments.
 
-## Exercise 9: Compare honest metaclass claims with overstated claims
+### Expected evidence
 
-Choose one metaclass design and write both an honest description and an overstated
-description of what it guarantees.
+Test all four routes:
 
-What to hand in:
+1. tracked value replaced by tracked value: reject
+2. tracked value replaced by ordinary value: reject
+3. ordinary value replaced by tracked value: reject
+4. ordinary helper replaced by ordinary helper: allow
 
-- the honest description
-- the overstated description
-- one explanation of which words make the overstated version misleading
-- one sentence rewriting the honest version so a solo learner could review the scope without guessing
+Also prove the rejected class name is not bound.
 
-Verification hint:
-underline the words that overclaim automatic behavior, scope, or lifecycle power.
+### Acceptance checks
 
-## Exercise 10: Produce a metaclass-boundary packet
+```console
+python3 -m unittest discover -s tests -p "test_class_creation_namespace.py" -v
+```
 
-Assemble:
+Compare the resulting rule with `capstone/src/incident_plugins/framework.py`.
 
-- one metaclass-boundary table
-- one `__new__` versus `__init__` split
-- one `__prepare__` case with a real declaration-time need
-- one rule explaining when a lower-power owner is clearer than a metaclass
+### Earlier contract to preserve
 
-The packet is strong when another learner can use it to answer:
+The custom namespace must still preserve a fact unavailable from `vars(created_class)`.
 
-- what class-creation invariant is being enforced
-- when in the class lifecycle the rule actually acts
-- why a metaclass was necessary or unnecessary
-- what weaker owner was rejected and why
+## Exercise 5: Prove registration does not require a metaclass
 
-Packet quality bar:
+### Starting context
 
-- another learner should be able to name the invariant, timing, and rejected lower-power owner without asking you follow-up questions
+`labs/class_creation/registry.py` demonstrates metaclass registration while its own evidence
+warns that `__init_subclass__` is usually sufficient for registration alone.
 
-## Mastery standard for this exercise set
+### Objective
 
-Across all six answers, the module wants the same habits:
+Implement a second isolated plugin family using `__init_subclass__` and the same
+`PluginRegistry`.
 
-- you explain metaclass behavior in class-creation language
-- you keep import-time effects visible
-- you separate structural hooks from bookkeeping hooks
-- you use `__prepare__` only when declaration-time facts really matter
-- you reject metaclass escalation when lower-power tools remain honest owners
+### Constraints
 
-Across all ten answers, add two more habits:
+- Register every concrete subclass automatically.
+- Preserve abstract opt-out, deterministic names, duplicate rejection, lookup, and reset.
+- Do not use a custom metaclass.
+- Keep the original metaclass family for side-by-side evidence.
 
-- you distinguish hierarchy-wide class-creation policy from post-creation bookkeeping
-- you leave behind a metaclass-boundary packet another learner could review without guessing
+### Expected evidence
 
-## Exit check for the exercise set
+Prove both families provide the same registration behavior. Then write a comparison table:
 
-Before leaving the exercise page, make sure your packet does all of the following:
+| Requirement | `__init_subclass__` | metaclass |
+| --- | --- | --- |
+| automatic concrete registration | | |
+| duplicate assignment observation | | |
+| raw namespace transformation | | |
+| metaclass conflict cost | | |
 
-- rejects at least three unnecessary escalations explicitly
-- names at least one import-time cost for every justified metaclass
-- separates assignment-time, construction-time, and post-creation reasoning
-- leaves another learner enough evidence to agree or disagree with your ownership call
+### Acceptance checks
 
-If an answer still sounds like "a metaclass can just handle it," keep going.
+```console
+python3 -m unittest discover -s tests -p "test_class_creation_registry.py" -v
+python3 -m unittest discover -s tests -p "test_class_creation_boundaries.py" -v
+```
 
-## Continue through Module 09
+Your conclusion must reject the metaclass for registration-only requirements.
 
-- Previous: [Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`](worked-example-building-a-deterministic-plugin-registry-with-pluginmeta.md)
-- Next: [Exercise Answers](exercise-answers.md)
-- Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)
+### Earlier contract to preserve
+
+`PluginRegistry` remains the owner of entries, ordering, lookup, duplicates, and reset.
+
+## Exercise 6: Produce a capstone class-creation audit
+
+### Starting context
+
+The capstone exposes one non-constructing report for `ConsoleNotifier`.
+
+### Objective
+
+Produce an evidence packet that connects every accepted metaclass power to source and
+tests, then evaluates one proposed new power: package discovery during import.
+
+### Constraints
+
+- Do not construct or execute a plugin for the class-creation audit.
+- Do not claim registration alone justifies `PluginMeta`.
+- Name the lower-power owner rejected by the combined invariant.
+- Reject package discovery from the metaclass with a concrete operational reason.
+- Distinguish proven behavior from architectural non-claims.
+
+### Expected evidence
+
+Run:
+
+```console
+cd ../../..
+make -C programs/python-programming/python-meta-programming capstone-class-creation \
+  > artifacts/module-09-capstone-class-creation.json
+```
+
+Your packet must contain:
+
+- the four-entry hook trace
+- one source location and focused test for every entry
+- the tracked duplicate failure route
+- the ordinary helper replacement route
+- the accepted and rejected power lists
+- a decision for package discovery
+- one risk that remains even after all focused tests pass
+
+### Acceptance checks
+
+```console
+cd programs/python-programming/python-meta-programming/capstone
+PYTHONPATH=src ../../../../artifacts/venv/python-programming/python-meta-programming/capstone/bin/python \
+  -m pytest -q tests/test_registry.py tests/test_runtime.py tests/test_cli.py \
+  -k "registry or class_creation or definition_namespace"
+```
+
+Validate the JSON with `python3 -m json.tool`.
+
+### Earlier contract to preserve
+
+Field, action, generated-signature, and registry behavior must remain consistent with the
+public capstone report.
+
+## Completion standard
+
+You have completed the studio when another learner can use only your code, tests, and
+evidence packet to answer:
+
+- when each class-creation event happens
+- what object owns it
+- which public class surface changes
+- which failure prevents class binding
+- why a lower-power owner succeeds or fails
+- where the capstone uses and refuses metaclass power
+
+Next: [Exercise Answers: Class-Creation Evidence Studio Review](exercise-answers.md).
