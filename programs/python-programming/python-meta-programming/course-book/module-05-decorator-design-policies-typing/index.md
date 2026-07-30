@@ -81,10 +81,11 @@ make decorator-policy-lab
 make decorator-policy-lab-test
 ```
 
-The first command prints three evidence packets:
+The first command prints four evidence packets:
 
 | Packet | Evidence to find | Claim it supports |
 | --- | --- | --- |
+| `cache_comparison` | key behavior, policy hooks, and reset for two cache implementations | a cache's equivalence and lifecycle rules are public meaning |
 | `retry` | three underlying executions and two recorded delays | retry changes execution count and waiting |
 | `retry_exhausted` | two attempts and the same final exception object | the stopping rule is finite and the final failure is not replaced |
 | `validation` | strict rejection, warning-mode execution, and definition-time refusal | a runtime validator must separate enforcement, observation, and unsupported typing surface |

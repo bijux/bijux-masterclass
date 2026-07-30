@@ -107,7 +107,38 @@ class DecoratorPolicyEvidenceTests(unittest.TestCase):
         self.assertEqual(json.loads(rendered), build_evidence())
         self.assertEqual(
             list(json.loads(rendered)),
-            ["retry", "retry_exhausted", "validation"],
+            ["cache_comparison", "retry", "retry_exhausted", "validation"],
+        )
+
+    def test_cache_comparison_exposes_key_policy_hooks_and_reset(self) -> None:
+        packet = build_evidence()["cache_comparison"]
+
+        self.assertEqual(
+            packet["teaching_cache"]["executions"],
+            ["INC-42:critical", "INC-42:critical"],
+        )
+        self.assertEqual(
+            packet["teaching_cache"]["info"],
+            {"hits": 1, "misses": 2, "maxsize": 2, "current_size": 2},
+        )
+        self.assertTrue(
+            packet["teaching_cache"]["equivalent_keyword_order_is_one_key"]
+        )
+        self.assertFalse(
+            packet["teaching_cache"]["equivalent_call_styles_are_one_key"]
+        )
+        self.assertEqual(packet["stdlib_lru_cache"]["executions"], ["int", "float"])
+        self.assertEqual(
+            packet["stdlib_lru_cache"]["info"],
+            {"hits": 1, "misses": 2, "maxsize": 2, "current_size": 2},
+        )
+        self.assertEqual(
+            packet["stdlib_lru_cache"]["parameters"],
+            {"maxsize": 2, "typed": True},
+        )
+        self.assertEqual(
+            packet["after_clear"],
+            {"teaching_cache_size": 0, "stdlib_cache_size": 0},
         )
 
 

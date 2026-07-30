@@ -4,6 +4,7 @@ import inspect
 import json
 import warnings
 
+from .cache_comparison import build_cache_comparison
 from .retry import retry
 from .validation import UnsupportedHintError, validated
 
@@ -135,6 +136,7 @@ def build_evidence() -> dict[str, dict[str, object]]:
     """Build the deterministic evidence packets taught in Module 05."""
 
     return {
+        "cache_comparison": build_cache_comparison(),
         "retry": retry_evidence(),
         "retry_exhausted": exhausted_retry_evidence(),
         "validation": validation_evidence(),
