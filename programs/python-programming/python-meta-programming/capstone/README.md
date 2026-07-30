@@ -41,6 +41,7 @@ Use the smallest honest route for the question you have:
 
 - Want to inspect the public runtime shape without execution? Run `make manifest` or `make registry`.
 - Want to inspect one concrete field or action contract? Run `make field` or `make action`.
+- Want to inspect one field's descriptor and storage ownership? Run `make field-ownership`.
 - Want to audit a wrapper chain and explicit signature ownership? Run `make action-wrapper`.
 - Want to validate action arguments without constructing or invoking a plugin? Run `make bind-action`.
 - Want to check the supported runtime hint subset without execution? Run `make check-action`.
@@ -89,6 +90,7 @@ make manifest
 make registry
 make plugin
 make field
+make field-ownership
 make action
 make action-wrapper
 make bind-action
@@ -152,6 +154,7 @@ your pressure instead of reading the full list in alphabetical order.
 
 - `make manifest`
 - `make registry`
+- `make field-ownership`
 - `make action-wrapper`
 - `make bind-action`
 - `make check-action`
@@ -229,6 +232,7 @@ all interact here, so the implementation has to stay honest about:
 
 - `make manifest` and `make registry` inspect the public runtime shape without invoking plugin behavior.
 - `make plugin`, `make field`, `make action`, and `make signatures` isolate one concrete public contract at a time.
+- `make field-ownership` reports one descriptor's declaring class, hooks, lookup category, storage key, and metaclass collection without construction.
 - `make action-wrapper` follows one wrapper chain and reports metadata, action-spec, and explicit-signature ownership without execution.
 - `make bind-action` validates one proposed action call while keeping construction and invocation absent.
 - `make check-action` reports checked, mismatched, refused, and unannotated action arguments without construction or invocation.

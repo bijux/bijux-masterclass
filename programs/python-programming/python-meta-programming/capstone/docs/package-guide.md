@@ -79,6 +79,7 @@ If you start in the reverse order, the tests and CLI can look like the system in
 | How are plugin classes registered? | `framework.py` | `PluginMeta.__new__`, `_register_plugin()`, `PluginMeta.registry()` |
 | How is the plugin constructor generated? | `framework.py` | `_build_signature()`, `_build_init()` |
 | How are configuration values validated and stored? | `fields.py` | `Field`, `StringField`, `ChoiceField`, `Field.initialize()` |
+| How is field ownership exposed without construction? | `framework.py` and `cli.py` | `inspect_field_ownership()` and `field-ownership` |
 | How are action signatures preserved and history recorded? | `actions.py` | `action()`, `ActionSpec.manifest()` |
 | What concrete adapters make the framework honest? | `plugins.py` | `ConsoleNotifier`, `WebhookNotifier`, `PagerNotifier` |
 | Which public commands expose the runtime? | `cli.py` | `_build_parser()` and the `_handle_*` functions |
@@ -89,6 +90,7 @@ If you start in the reverse order, the tests and CLI can look like the system in
 | Scenario | Best route | What it teaches |
 | --- | --- | --- |
 | inspect the public shape before invocation | `make manifest`, `make registry`, `make plugin` | what exists before runtime work starts |
+| inspect one field's descriptor boundary | `make field-ownership` | declaring class, hook set, precedence category, storage owner, and metaclass collection |
 | inspect generated call shapes | `make signatures` | how declared fields become visible constructors and action shapes |
 | inspect one concrete action | `make demo` or `make trace` | how one built-in adapter keeps the framework honest |
 | inspect one saved review bundle | `make inspect`, `make tour`, or `make verify-report` | how ownership and proof surfaces stay durable for later review |
