@@ -138,13 +138,23 @@ Proof move:
 
 You are ready to move on when you can:
 
-- explain the difference between data and non-data descriptors
-- trace one attribute from class declaration to per-instance storage
+- classify an object from its hooks instead of assuming that `__set_name__` makes it a
+  descriptor
+- predict data-descriptor, instance-dictionary, non-data-descriptor, and class-attribute
+  precedence before running an access
+- explain method binding through the identities of `__func__` and `__self__`
+- trace one attribute from class declaration through `__set_name__` to per-instance
+  storage
+- state what a descriptor enforces and what remains outside its boundary
 - justify when a descriptor owns an invariant better than a plain method or property
 
 Proof move:
 
-- inspect `fields.py` and the field tests for coercion, precedence, and storage behavior
+- run `make descriptor-lookup-lab-test`, inspect `make descriptor-lookup-lab`, and
+  reconcile its static prediction with each observed access
+- then run `make capstone-field-ownership` and explain how the real field's hooks,
+  storage owner, class access, and metaclass collection preserve the same model without
+  constructing a plugin
 
 ### Module 08: Descriptor Systems, Validation, and Framework Design
 

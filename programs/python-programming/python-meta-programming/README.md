@@ -164,6 +164,9 @@ make -C programs/python-programming/python-meta-programming capstone-check-actio
 make -C programs/python-programming/python-meta-programming class-customization-lab
 make -C programs/python-programming/python-meta-programming class-customization-lab-test
 make -C programs/python-programming/python-meta-programming capstone-class-creation
+make -C programs/python-programming/python-meta-programming descriptor-lookup-lab
+make -C programs/python-programming/python-meta-programming descriptor-lookup-lab-test
+make -C programs/python-programming/python-meta-programming capstone-field-ownership
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -193,6 +196,11 @@ you are ready for the broader integration project,
 Use `class-customization-lab` for Module 06's class-decorator, dataclass, property,
 descriptor, and frozen-surface evidence. `capstone-class-creation` transfers the timing
 question into stored `PluginMeta` provenance without constructing or invoking a plugin.
+Use `descriptor-lookup-lab` for Module 07's executable protocol, precedence, method
+binding, and canonical-storage evidence. Its output pairs static predictions with actual
+access so learners can explain why each lookup wins. `capstone-field-ownership` then
+transfers that reasoning into the real field system without constructing or executing a
+plugin.
 
 Primary reading route:
 
@@ -232,6 +240,13 @@ Primary reading route:
 - `labs/class_customization/frozen_surface.py`
 - `course-book/module-06-class-customization-pre-metaclasses/exercises.md`
 - `course-book/module-06-class-customization-pre-metaclasses/exercise-answers.md`
+- `course-book/module-07-descriptors-lookup-attribute-control/index.md`
+- `labs/descriptor_lookup/protocol.py`
+- `labs/descriptor_lookup/precedence.py`
+- `labs/descriptor_lookup/binding.py`
+- `labs/descriptor_lookup/quantity.py`
+- `course-book/module-07-descriptors-lookup-attribute-control/exercises.md`
+- `course-book/module-07-descriptors-lookup-attribute-control/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`

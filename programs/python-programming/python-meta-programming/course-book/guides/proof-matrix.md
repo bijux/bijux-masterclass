@@ -49,6 +49,7 @@ or [Pressure Routes](pressure-routes.md).
 | registered plugins stay deterministic and inspectable | `make PROGRAM=python-programming/python-meta-programming capstone-registry` | `registry.json`, `framework.py`, and `tests/test_registry.py` |
 | one plugin contract remains legible from the public CLI | `make PROGRAM=python-programming/python-meta-programming capstone-plugin` | `plugin.json` plus `plugins.py` |
 | one field invariant stays attached to attribute ownership | `make PROGRAM=python-programming/python-meta-programming capstone-field` | `field.json`, `fields.py`, and `tests/test_fields.py` |
+| one field's descriptor role, storage owner, and collection path remain observable without construction | `make PROGRAM=python-programming/python-meta-programming capstone-field-ownership` | `field-ownership.json`, `framework.py`, and field ownership tests |
 | action decorators preserve public callable shape while adding behavior | `make PROGRAM=python-programming/python-meta-programming capstone-action` | `action.json`, `actions.py`, and `tests/test_runtime.py` |
 | action values match the supported runtime hint subset without hidden execution | `make PROGRAM=python-programming/python-meta-programming capstone-check-action` | `check-action.json`, `actions.py`, and runtime tests |
 | class-creation provenance separates declared, inherited, and generated surfaces | `make PROGRAM=python-programming/python-meta-programming capstone-class-creation` | `class-creation.json`, `framework.py`, and runtime tests |
@@ -72,7 +73,7 @@ or [Pressure Routes](pressure-routes.md).
 | --- | --- | --- |
 | I can inspect runtime structure safely | `capstone-manifest`, `capstone-registry`, or `inspect` | public CLI outputs plus `framework.py` |
 | wrappers preserved metadata and public callable shape | `capstone-action`, `capstone-signatures`, or `capstone-trace` | `actions.py`, runtime tests, and trace output |
-| field or descriptor ownership is placed honestly | `capstone-field` or `capstone-plugin` | `fields.py`, `field.json`, and field tests |
+| field or descriptor ownership is placed honestly | `descriptor-lookup-lab`, then `capstone-field-ownership` | lab evidence, `framework.py`, `fields.py`, and field ownership tests |
 | class-creation control is justified and deterministic | `capstone-registry` | `framework.py`, `registry.json`, and registry tests |
 | review routes remain observational rather than magical | `inspect`, `capstone-verify-report`, or `proof` | saved bundles plus CLI and test surfaces |
 
@@ -83,7 +84,8 @@ or [Pressure Routes](pressure-routes.md).
 | Modules 01 to 03 | what can be observed safely without accidental execution | `manifest`, `registry`, `signatures`, or `inspect` |
 | Modules 04 to 05 | did a wrapper preserve evidence and keep its policy claims bounded | `action-wrapper`, `check-action`, `trace`, and `tests/test_runtime.py` |
 | Module 06 | what can post-construction tools own and what requires class-creation timing | `class-customization-lab`, `class-creation`, and runtime tests |
-| Modules 07 to 08 | does the chosen customization boundary really belong to descriptors and lookup | `field`, `plugin`, and `tests/test_fields.py` |
+| Module 07 | can protocol status, lookup precedence, binding, and storage ownership be predicted and observed | `descriptor-lookup-lab`, `field-ownership`, and descriptor lab tests |
+| Module 08 | does the chosen validation boundary remain a field contract rather than hidden architecture | `field`, `plugin`, and `tests/test_fields.py` |
 | Module 09 | is class-definition-time behavior justified and deterministic | `registry`, `framework.py`, and `tests/test_registry.py` |
 | Module 10 | do the public review routes stay observable under real scrutiny | `inspect`, `capstone-verify-report`, or `proof` |
 
@@ -92,7 +94,8 @@ or [Pressure Routes](pressure-routes.md).
 | If you are asking... | Best first move |
 | --- | --- |
 | Where should I start if the public runtime shape already feels suspicious? | `capstone-manifest` or `capstone-registry` |
-| Where should I start if the issue is one field or one action contract? | `capstone-field` or `capstone-action` |
+| Where should I start if the issue is descriptor ownership? | `descriptor-lookup-lab`, then `capstone-field-ownership` |
+| Where should I start if the issue is one exported field or action contract? | `capstone-field` or `capstone-action` |
 | Which saved bundle is strongest for a human review? | `inspect` or `capstone-verify-report` |
 | Which route should I use before approving a larger change? | `capstone-verify-report` or `proof` |
 
