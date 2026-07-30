@@ -37,6 +37,15 @@ should always make four things visible:
 - the evidence produced by that choice
 - the exact point where the workflow stays observational or crosses into behavior
 
+The supplied course code is one defensible route:
+
+- `labs/runtime_observation/evidence.py` makes side effects countable
+- `labs/runtime_observation/debug_view.py` implements the bounded attachment-first helper
+- `tests/test_runtime_observation_lab.py` proves the stated boundaries
+- `make observation-lab-test` runs the focused review route
+
+Use it to review your reasoning, not as an answer to copy without explanation.
+
 ## Answer 1: Separate visible names from stored state
 
 Example answer:
@@ -353,6 +362,43 @@ Use this table when your answer explains the outcome but not the reasoning:
 | "I used `type` for precision." | the subclass behavior being rejected | state what subclass-specific variation would make the broader check unsafe |
 | "The helper is safer now." | the exact user promise that changed | write the new default contract in one sentence |
 | "Static lookup is better." | better for which question | say whether you needed attached object truth or resolved runtime value truth |
+
+## Review what each answer can support
+
+| Answer | Defensible reasoning | Common wrong turn | What it proves | What it does not prove |
+| --- | --- | --- | --- | --- |
+| 1 names and storage | it compares `dir` and `vars` on the same object | treating visible class names as instance fields | these discovered names and stored names differ | that `dir` is passive for every type |
+| 2 dynamic access | it records a counter before and after each operation | calling `hasattr` a safe pre-check | this property executed once per dynamic check | that every attribute read has the same cost |
+| 3 type checks | it names the extension policy before selecting a check | calling exactness "more precise" without a rejection rule | the role check accepts this valid extension | that exact checks are never appropriate |
+| 4 callability | it keeps the gate, valid call, and failing call separate | using `callable` as proof of argument fitness | this type supports call syntax and owns a separate input policy | that invocation is cheap, reversible, or safe during inspection |
+| 5 static lookup | it identifies attachment first and execution second | interpreting static absence as dynamic absence | fallback is attached and dynamic lookup generated the value | that static lookup reveals the eventual runtime value |
+| 6 debug helper | it begins from a bounded non-evaluating contract | adding recursion and evaluation without new policy tests | the baseline reports selected attachments without triggering the target counters | that arbitrary `repr`, recursion, or concurrency is safe |
+| 7 inheritance | it ties polymorphism to a plugin-style extension boundary | rejecting extensions merely because their concrete type differs | the chosen hierarchy supports role-compatible acceptance | that every subclass satisfies unrelated behavioral contracts |
+| 8 fallback | it inspects fallback machinery before resolving a missing name | using `hasattr` and triggering fallback while "checking" | the static route stays non-executing for this target | that fallback execution is always unsafe when explicitly requested |
+| 9 least-risk order | it stops as soon as the current evidence answers the question | escalating through every tool regardless of need | the workflow minimizes unnecessary behavior for the stated question | that the same order answers every debugging question |
+| 10 packet | it joins evidence, tests, reasoning, and capstone transfer | presenting green commands as the explanation | another learner can reproduce the Module 02 boundary claims | that all capstone metaprogramming mechanisms are justified |
+
+## Capstone transfer answer
+
+A strong transfer compares public behavior rather than vaguely saying "inspect the
+capstone":
+
+```console
+make capstone-manifest
+make demo
+```
+
+The manifest route returns field and action descriptions without invoking a delivery
+action. The demo constructs a concrete plugin, resolves `deliver`, and calls it. The
+important answer is not that one command is safe and the other is dangerous. It is that
+they promise different product behavior:
+
+- manifest: describe registered structure
+- demo: execute an incident-delivery behavior with explicit inputs
+
+The capstone contains mechanisms that later modules will explain. Module 02 proves only
+that a reviewer can distinguish the observation route from the execution route and
+choose evidence accordingly.
 
 ## What strong Module 02 answers have in common
 
