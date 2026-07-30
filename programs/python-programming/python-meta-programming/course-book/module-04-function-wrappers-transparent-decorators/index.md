@@ -35,10 +35,6 @@ of the smallest useful Python tools you write, or it can become an unreviewed be
 engine that changes timing, retries, caching, observability, and failure surfaces without
 making that power obvious.
 
-This module now uses the same ten-file learning surface as the deep-dive series so the
-overview, five cores, worked example, practice set, answers, and glossary each have one
-clear job.
-
 Treat this module as one full review day on callable-boundary honesty. The goal is not to
 collect decorator tricks. The goal is to leave with a stable way to answer:
 
@@ -64,6 +60,97 @@ You should also be able to reject weak explanations such as:
 - "the wrapper is still transparent because it is short"
 - "we can add `wraps` later if tools complain"
 
+## Start with executable behavior
+
+From `programs/python-programming/python-meta-programming`, run:
+
+```console
+$ make wrapper-lab
+{
+  "lifecycle": {
+    "definition_events": [
+      "factory:outer",
+      "factory:inner",
+      "decorate:inner:render_status",
+      "decorate:outer:render_status"
+    ],
+    "call_events": [
+      "enter:outer",
+      "enter:inner",
+      "body:INC-42:critical",
+      "exit:inner",
+      "exit:outer"
+    ],
+    ...
+  },
+  "metadata": {
+    "bare": {
+      "name": "wrapped",
+      "has_wrapped": false,
+      ...
+    },
+    "preserved": {
+      "name": "preserved_handler",
+      "has_wrapped": true,
+      ...
+    }
+  },
+  ...
+}
+$ make wrapper-lab-test
+Ran 5 tests
+
+OK
+```
+
+The event sequence is the module's shared evidence. It separates three moments that weak
+decorator explanations collapse:
+
+1. decorator expressions evaluate from top to bottom
+2. returned decorators apply from bottom to top
+3. later calls enter the outer wrapper and move inward
+
+The same packet proves that a thin observer returns the same result object and re-raises
+the same exception object. Its metadata comparison shows what a bare forwarding shell
+loses and what `functools.wraps` restores.
+
+The implementation is in `labs/wrapper_runtime/evidence.py`; focused proof is in
+`tests/test_wrapper_runtime_lab.py`.
+
+## Then inspect stateful policy
+
+```console
+$ make wrapper-cache
+{
+  "cache_info": {
+    "current_size": 2,
+    "hits": 1,
+    "maxsize": 2,
+    "misses": 4
+  },
+  "policy": {
+    "eviction": "least-recently-used",
+    "failed_calls_cached": false,
+    "normalizes_equivalent_call_styles": false,
+    "thread_safe": false
+  },
+  ...
+}
+$ make wrapper-cache-test
+Ran 8 tests
+
+OK
+```
+
+This second program marks the exact escalation from wrapper mechanics to policy. Repeated
+calls may skip the function body; recent access changes eviction; failures count as misses
+but are not cached; explicit reset and inspection surfaces govern the stored state.
+
+Read `labs/wrapper_runtime/bounded_cache.py` only after predicting the execution list from
+the JSON. The proof in `tests/test_bounded_cache_lab.py` covers eviction, failure,
+hashability, disabled caching, reset behavior, metadata, and the deliberate lack of
+equivalent-call normalization.
+
 ## Keep these pages open
 
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md)
@@ -71,7 +158,7 @@ You should also be able to reject weak explanations such as:
 - [Capstone Map](../capstone/capstone-map.md)
 - [Proof Matrix](../guides/proof-matrix.md)
 
-## The ten files in this module
+## The published lesson set
 
 1. Overview (`index.md`)
 2. [Nested Functions and Wrapper Skeletons](nested-functions-and-wrapper-skeletons.md)
@@ -94,7 +181,11 @@ You should also be able to reject weak explanations such as:
 | judge when wrapper state turns a thin decorator into hidden policy | [Stateful Wrappers and Semantic Drift](stateful-wrappers-and-semantic-drift.md) |
 | preserve names, docs, signatures, and unwrapping routes honestly | [Wraps and Signature Transparency](wraps-and-signature-transparency.md) |
 | stress-test transparency and state inside one deliberately limited cache wrapper | [Worked Example: Building a Bounded Cache Decorator](worked-example-building-a-bounded-cache-decorator.md) |
-| test your understanding before moving into heavier decorator policy | [Exercises](exercises.md) |
+| run the wrapper lifecycle evidence | `make wrapper-lab` |
+| prove wrapper timing and transparency | `make wrapper-lab-test` |
+| run the bounded-cache policy example | `make wrapper-cache` |
+| prove cache state and failure behavior | `make wrapper-cache-test` |
+| complete the assessed wrapper work | [Exercises](exercises.md) |
 | compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
 | stabilize the wrapper vocabulary | [Glossary](glossary.md) |
 
@@ -165,6 +256,25 @@ that another learner can inspect:
 - one stateful wrapper with a named policy rule and a reset or inspection surface
 - one metadata comparison showing what `functools.wraps` repaired and what it did not
 
+Do not build that packet from prose alone. Use the lifecycle JSON, cache JSON, and focused
+tests as the starting evidence. Your work should identify which observations prove
+timing, identity, behavior, and state rather than using the word "transparent" without a
+qualifier.
+
+## Capstone transfer
+
+The incident-plugin `@action` decorator is the application surface for this module. It
+does more than preserve metadata:
+
+- captures an `inspect.Signature` at decoration time
+- attaches an `ActionSpec` used by manifests and preflight binding
+- binds arguments and records successful calls at call time
+- keeps `__wrapped__` so inspection can recover the original method
+
+That makes it policy-owning, not a thin observer. The course lab establishes the wrapper
+mechanics first; the capstone then asks whether a larger wrapper keeps its timing,
+metadata, state, and failure semantics visible.
+
 ## Exit standard
 
 Do not move on until all of these are true:
@@ -173,6 +283,12 @@ Do not move on until all of these are true:
 - you can show the exact desugaring of `@decorator` and stacked decorators
 - you can distinguish thin wrappers from stateful policy-carrying wrappers
 - you can explain why `functools.wraps` and `__wrapped__` preservation are review requirements
+- you can run the two Module 04 programs and explain every event, counter, and policy
+  label from the code and tests
+- you can distinguish the bounded cache's metadata transparency from its deliberate
+  semantic non-transparency
+- you can explain why the capstone action decorator is inspectable but still owns
+  invocation-history policy
 
 Do not move on if you still need phrases like "basically," "sort of," or "it kind of
 wraps things" to explain decorator behavior. Module 04 is only complete when you can

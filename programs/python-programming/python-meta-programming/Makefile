@@ -53,6 +53,22 @@ evidence-repr: ## Run the Module 03 signature-guided representation
 evidence-repr-test: ## Verify the Module 03 representation boundaries
 	@$(PYTHON) -m unittest discover -s tests -p "test_signature_guided_repr.py" -v
 
+.PHONY: wrapper-lab
+wrapper-lab: ## Run the Module 04 wrapper lifecycle evidence lab
+	@$(PYTHON) -m labs.wrapper_runtime
+
+.PHONY: wrapper-lab-test
+wrapper-lab-test: ## Verify Module 04 wrapper timing and transparency
+	@$(PYTHON) -m unittest discover -s tests -p "test_wrapper_runtime_lab.py" -v
+
+.PHONY: wrapper-cache
+wrapper-cache: ## Run the Module 04 bounded-cache worked example
+	@$(PYTHON) -m labs.wrapper_runtime.cache_demo
+
+.PHONY: wrapper-cache-test
+wrapper-cache-test: ## Verify the Module 04 bounded-cache policy
+	@$(PYTHON) -m unittest discover -s tests -p "test_bounded_cache_lab.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo
