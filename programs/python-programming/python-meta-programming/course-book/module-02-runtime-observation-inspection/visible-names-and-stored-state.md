@@ -292,6 +292,46 @@ When you meet an unfamiliar object, use this order before you touch `getattr`:
 This route is intentionally conservative. It makes you earn the move into dynamic
 behavior instead of drifting there by habit.
 
+## Guided lab: compare names with storage
+
+Run:
+
+```console
+$ python3 -m labs.runtime_observation |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["visible_names"])'
+{'acknowledge_is_stored': False, 'acknowledge_is_visible': True, 'risk_score_is_visible': True, 'stored_names': ['_fallback_reads', '_property_reads', 'title'], 'title_is_stored': True}
+```
+
+Trace `visible_names_evidence()` before interpreting the booleans:
+
+1. `dir(target)` discovers `acknowledge` and `risk_score` through the class.
+2. `vars(target)` reports the three names physically stored in the instance dictionary.
+3. `acknowledge` is visible but not stored on the instance.
+4. no property or fallback counter rises merely because those names appear.
+
+The last observation is deliberately narrow. It describes this target; it does not prove
+that every `dir(obj)` call is passive, because a different type may own custom `__dir__`
+behavior.
+
+### Failure route
+
+Replace `vars(target)` with `{name: getattr(target, name) for name in dir(target)}`. The
+new code no longer answers the stored-state question, and reading `risk_score` increments
+the property counter. Explain why the resulting mapping may contain more values while
+providing weaker evidence for the original question. Restore the storage probe and run
+`make observation-lab-test`.
+
+### Transfer to the incident-plugin runtime
+
+Create `ConsoleNotifier()` and compare `dir(instance)` with `vars(instance)`.
+`prefix` is discoverable as a class-owned field name while `_prefix` is the concrete
+instance storage name. Module 02 should report that difference without yet explaining
+the descriptor mechanism that Modules 07 and 08 will teach.
+
+That transfer matters because the capstone has a richer lookup story, but the course
+lesson still owns the concept: name discovery and stored-state inspection remain
+different runtime questions.
+
 ## Misreadings to catch during review
 
 These are the most common wrong inferences from this page:
