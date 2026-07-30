@@ -188,6 +188,84 @@ When you inherit dynamic code, start from one visible behavior and trace backwar
 This habit turns folklore questions such as "where is the framework magic?" into ordinary
 runtime inspection.
 
+## Guided lab: trace the complete packet
+
+Run the packet that joins the earlier cores:
+
+```console
+$ python3 -m labs.runtime_objects |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["object_graph"])'
+{'bound_method_points_to_function': True, 'bound_method_points_to_instance': True, 'function_points_to_module_namespace': True, 'global_used_by_call': True, 'instance_points_to_class': True, 'result': 'CRIT: queue lag'}
+```
+
+Use each boolean as an edge, not as a score:
+
+```text
+formatter
+  --__class__--> IncidentFormatter
+  --.render--> bound method
+                  --__self__--> formatter
+                  --__func__--> IncidentFormatter.render
+                                      --__globals__--> module namespace
+                                                             |
+                                                             +-- SEVERITY_LABELS
+```
+
+The final string, `CRIT: queue lag`, proves that call-time behavior reached the global
+mapping through the function's live module namespace. The booleans explain the object
+relationships that made that behavior possible.
+
+### Predict an event before running it
+
+Change `SEVERITY_LABELS["critical"]` from `"CRIT"` to `"SEV1"`. The object-identity edges
+should remain true while only the rendered result changes. This separates stable graph
+relationships from mutable application data. Restore the value and run `make lab-test`.
+
+If an identity assertion fails after changing only the label, your edit changed more
+than the intended design pressure.
+
+## Transfer trace: notice where the capstone becomes harder
+
+Run this from the program directory:
+
+```console
+$ PYTHONPATH=capstone/src python3 - <<'PY'
+import sys
+from incident_plugins import ConsoleNotifier
+
+instance = ConsoleNotifier()
+bound = instance.deliver
+stored = ConsoleNotifier.__dict__["deliver"]
+original = stored.__wrapped__
+
+print(bound.__self__ is instance)
+print(bound.__func__ is stored)
+print(stored.__module__)
+print(original.__module__)
+print(sys.modules[original.__module__].__name__)
+PY
+True
+True
+incident_plugins.plugins
+incident_plugins.plugins
+incident_plugins.plugins
+```
+
+`functools.wraps` makes the wrapper *report* the original module in `__module__`, so this
+output is intentionally not enough to identify the wrapper function's defining globals.
+Inspecting `stored.__globals__` reveals that deeper distinction, which Module 04 will
+teach when wrapper transparency becomes the actual design pressure.
+
+That difficulty is the reason for the teaching order:
+
+1. the small lab establishes the unwrapped object graph
+2. Module 01 transfers only the ordinary binding relationships
+3. the later decorator modules explain how the capstone preserves metadata while adding
+   call-time behavior
+
+The capstone enriches the lesson after the baseline is understood; it does not replace
+the baseline.
+
 ## Failure patterns this model helps prevent
 
 This page is meant to stop several common reasoning failures:
