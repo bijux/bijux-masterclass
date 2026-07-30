@@ -33,9 +33,16 @@ from .hints import (
     compile_hint,
     hint_evidence,
 )
+from .relational import (
+    ColumnContract,
+    build_incident_model,
+    inspect_columns,
+    relational_model_evidence,
+)
 
 __all__ = [
     "CachedComputation",
+    "ColumnContract",
     "CountingStore",
     "Document",
     "DeliveryPolicy",
@@ -55,9 +62,12 @@ __all__ = [
     "UnsupportedHint",
     "AuditWrites",
     "cache_evidence",
+    "build_incident_model",
     "compile_hint",
     "composition_evidence",
     "describe_layers",
     "external_storage_evidence",
     "hint_evidence",
+    "inspect_columns",
+    "relational_model_evidence",
 ]
