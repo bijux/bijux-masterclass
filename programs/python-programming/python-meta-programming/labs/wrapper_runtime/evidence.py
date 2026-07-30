@@ -151,12 +151,18 @@ def metadata_evidence() -> dict[str, object]:
             "name": bare_handler.__name__,
             "doc": bare_handler.__doc__,
             "signature": str(inspect.signature(bare_handler)),
+            "implementation_signature": str(
+                inspect.signature(bare_handler, follow_wrapped=False)
+            ),
             "has_wrapped": hasattr(bare_handler, "__wrapped__"),
         },
         "preserved": {
             "name": preserved_handler.__name__,
             "doc": preserved_handler.__doc__,
             "signature": str(inspect.signature(preserved_handler)),
+            "implementation_signature": str(
+                inspect.signature(preserved_handler, follow_wrapped=False)
+            ),
             "has_wrapped": hasattr(preserved_handler, "__wrapped__"),
             "unwrap_is_original": inspect.unwrap(preserved_handler)
             is preserved_handler.__wrapped__,

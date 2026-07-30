@@ -64,6 +64,7 @@ class WrapperRuntimeLabTests(unittest.TestCase):
                 "name": "wrapped",
                 "doc": None,
                 "signature": "(*args: 'Any', **kwargs: 'Any') -> 'ResultT'",
+                "implementation_signature": "(*args: 'Any', **kwargs: 'Any') -> 'ResultT'",
                 "has_wrapped": False,
             },
         )
@@ -72,6 +73,10 @@ class WrapperRuntimeLabTests(unittest.TestCase):
         self.assertEqual(
             packet["preserved"]["signature"],
             "(incident_id: 'str', *, severity: 'str' = 'warning') -> 'str'",
+        )
+        self.assertEqual(
+            packet["preserved"]["implementation_signature"],
+            "(*args, **kwargs) -> 'str'",
         )
         self.assertTrue(packet["preserved"]["has_wrapped"])
         self.assertTrue(packet["preserved"]["unwrap_is_original"])
