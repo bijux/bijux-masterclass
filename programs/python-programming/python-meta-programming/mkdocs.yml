@@ -128,8 +128,8 @@ nav:
   - '`__prepare__` and Declaration-Time Enforcement': module-09-metaclass-design-class-creation/prepare-and-declaration-time-enforcement.md
   - Metaclass Boundaries and Class-Creation Ownership: module-09-metaclass-design-class-creation/metaclass-boundaries-and-class-creation-ownership.md
   - 'Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`': module-09-metaclass-design-class-creation/worked-example-building-a-deterministic-plugin-registry-with-pluginmeta.md
-  - Exercises: module-09-metaclass-design-class-creation/exercises.md
-  - Exercise Answers: module-09-metaclass-design-class-creation/exercise-answers.md
+  - 'Exercises: Class-Creation Evidence Studio': module-09-metaclass-design-class-creation/exercises.md
+  - 'Exercise Answers: Class-Creation Evidence Studio Review': module-09-metaclass-design-class-creation/exercise-answers.md
   - Module Glossary: module-09-metaclass-design-class-creation/glossary.md
 - 'Module 10: Runtime Governance and Mastery Review':
   - Home: module-10-runtime-governance-mastery-review/index.md
