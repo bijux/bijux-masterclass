@@ -25,6 +25,14 @@ lab: ## Run the Module 01 runtime-object evidence lab
 lab-test: ## Verify the executable course labs
 	@$(PYTHON) -m unittest discover -s tests -v
 
+.PHONY: observation-lab
+observation-lab: ## Run the Module 02 safe-observation evidence lab
+	@$(PYTHON) -m labs.runtime_observation
+
+.PHONY: observation-lab-test
+observation-lab-test: ## Verify the Module 02 observation boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_runtime_observation_lab.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo
