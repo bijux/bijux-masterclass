@@ -33,6 +33,10 @@ observation-lab: ## Run the Module 02 safe-observation evidence lab
 observation-lab-test: ## Verify the Module 02 observation boundaries
 	@$(PYTHON) -m unittest discover -s tests -p "test_runtime_observation_lab.py" -v
 
+.PHONY: observation-debug-view
+observation-debug-view: ## Render the Module 02 attachment-first debug view
+	@$(PYTHON) -m labs.runtime_observation.debug_demo
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo
