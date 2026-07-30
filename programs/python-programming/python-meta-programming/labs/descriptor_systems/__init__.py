@@ -23,6 +23,16 @@ from .external import (
     StoreUnavailable,
     external_storage_evidence,
 )
+from .hints import (
+    HintField,
+    HintPlan,
+    Minimum,
+    NonBlank,
+    RetryPolicy,
+    UnsupportedHint,
+    compile_hint,
+    hint_evidence,
+)
 
 __all__ = [
     "CachedComputation",
@@ -31,15 +41,23 @@ __all__ = [
     "DeliveryPolicy",
     "ExternalField",
     "FieldWrapper",
+    "HintField",
+    "HintPlan",
     "IncidentRecord",
     "InvalidatingField",
+    "Minimum",
     "NormalizeText",
+    "NonBlank",
     "OneOf",
+    "RetryPolicy",
     "StoreUnavailable",
     "StoredField",
+    "UnsupportedHint",
     "AuditWrites",
     "cache_evidence",
+    "compile_hint",
     "composition_evidence",
     "describe_layers",
     "external_storage_evidence",
+    "hint_evidence",
 ]
