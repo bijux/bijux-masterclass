@@ -311,6 +311,55 @@ def inspect_plugin_class_creation(
     }
 
 
+def inspect_field_ownership(
+    group: str,
+    plugin_name: str,
+    field_name: str,
+) -> dict[str, object]:
+    """Inspect one field descriptor without constructing the plugin."""
+
+    plugin_cls = _REGISTRY[group][plugin_name]
+    descriptor = inspect.getattr_static(plugin_cls, field_name)
+    if not isinstance(descriptor, Field):
+        raise TypeError(f"{field_name!r} is not a plugin field")
+    declaring_class = next(
+        owner.__name__
+        for owner in plugin_cls.__mro__
+        if vars(owner).get(field_name) is descriptor
+    )
+    descriptor_type = type(descriptor)
+    hooks = [
+        hook
+        for hook in ("__get__", "__set__", "__delete__", "__set_name__")
+        if hasattr(descriptor_type, hook)
+    ]
+    return {
+        "group": group,
+        "plugin_name": plugin_name,
+        "field_name": field_name,
+        "declaring_class": declaring_class,
+        "descriptor_type": descriptor_type.__name__,
+        "descriptor_kind": (
+            "data"
+            if "__set__" in hooks or "__delete__" in hooks
+            else "non-data"
+        ),
+        "hooks": hooks,
+        "public_name": descriptor.name,
+        "storage_name": descriptor.storage_name,
+        "storage_owner": "plugin-instance.__dict__",
+        "class_access_returns_descriptor": (
+            getattr(plugin_cls, field_name) is descriptor
+        ),
+        "collected_by_metaclass": (
+            plugin_cls.__plugin_fields__.get(field_name) is descriptor
+        ),
+        "field": descriptor.spec().manifest(),
+        "constructed": False,
+        "executed": False,
+    }
+
+
 def invoke(
     group: str,
     plugin_name: str,

@@ -142,6 +142,10 @@ capstone-check-action: ## Check a capstone action's supported runtime hint contr
 capstone-class-creation: ## Inspect capstone class-creation provenance without construction
 	@$(RUN_CAPSTONE) class-creation
 
+.PHONY: capstone-field-ownership
+capstone-field-ownership: ## Inspect capstone descriptor ownership without construction
+	@$(RUN_CAPSTONE) field-ownership
+
 .PHONY: capstone-trace
 capstone-trace: ## Trace one capstone invocation from the public CLI
 	@$(RUN_CAPSTONE) trace

@@ -13,6 +13,7 @@ from .framework import (
     check_action_arguments,
     create_plugin,
     inspect_action_wrapper,
+    inspect_field_ownership,
     inspect_plugin_class_creation,
     invoke,
 )
@@ -53,6 +54,15 @@ def _build_parser() -> argparse.ArgumentParser:
     field.add_argument("plugin_name", help="Registered plugin name.")
     field.add_argument("field_name", help="Declared field name.")
     field.set_defaults(handler=_handle_field)
+
+    field_ownership = subparsers.add_parser(
+        "field-ownership",
+        help="Inspect descriptor ownership for one field without constructing a plugin.",
+    )
+    field_ownership.add_argument("group", help="Plugin group name.")
+    field_ownership.add_argument("plugin_name", help="Registered plugin name.")
+    field_ownership.add_argument("field_name", help="Collected field name.")
+    field_ownership.set_defaults(handler=_handle_field_ownership)
 
     action = subparsers.add_parser(
         "action",
@@ -174,6 +184,14 @@ def _handle_field(args: argparse.Namespace) -> dict[str, object]:
         "plugin_name": args.plugin_name,
         "field": field.spec().manifest(),
     }
+
+
+def _handle_field_ownership(args: argparse.Namespace) -> dict[str, object]:
+    return inspect_field_ownership(
+        args.group,
+        args.plugin_name,
+        args.field_name,
+    )
 
 
 def _handle_action(args: argparse.Namespace) -> dict[str, object]:

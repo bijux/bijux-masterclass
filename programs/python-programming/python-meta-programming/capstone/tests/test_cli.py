@@ -53,6 +53,26 @@ def test_field_command_renders_one_concrete_field_contract(capsys) -> None:
     assert captured["field"]["minimum"] == 8
 
 
+def test_field_ownership_command_exposes_lookup_without_construction(capsys) -> None:
+    exit_code = main(
+        ["field-ownership", "delivery", "webhook", "endpoint"]
+    )
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["declaring_class"] == "WebhookNotifier"
+    assert captured["descriptor_type"] == "StringField"
+    assert captured["descriptor_kind"] == "data"
+    assert captured["hooks"] == ["__get__", "__set__", "__set_name__"]
+    assert captured["storage_name"] == "_endpoint"
+    assert captured["storage_owner"] == "plugin-instance.__dict__"
+    assert captured["class_access_returns_descriptor"] is True
+    assert captured["collected_by_metaclass"] is True
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+
+
 def test_action_command_renders_one_concrete_action_contract(capsys) -> None:
     exit_code = main(["action", "delivery", "pager", "preview"])
 

@@ -57,6 +57,10 @@ plugin: ## Render one concrete plugin contract from the public CLI
 field: ## Render one concrete field contract from the public CLI
 	@PYTHONPATH=src $(CLI) field delivery webhook endpoint
 
+.PHONY: field-ownership
+field-ownership: ## Inspect one field descriptor without constructing a plugin
+	@PYTHONPATH=src $(CLI) field-ownership delivery webhook endpoint
+
 .PHONY: action
 action: ## Render one concrete action contract from the public CLI
 	@PYTHONPATH=src $(CLI) action delivery pager preview
@@ -117,6 +121,8 @@ inspect: ## Build the learner-facing inspection bundle
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(INSPECT_DIR)/registry.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(INSPECT_DIR)/plugin.json
 	@PYTHONPATH=src $(CLI) field delivery webhook endpoint > $(INSPECT_DIR)/field.json
+	@PYTHONPATH=src $(CLI) field-ownership delivery webhook endpoint \
+		> $(INSPECT_DIR)/field-ownership.json
 	@PYTHONPATH=src $(CLI) action delivery pager preview > $(INSPECT_DIR)/action.json
 	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver \
 		> $(INSPECT_DIR)/action-wrapper.json
@@ -149,7 +155,7 @@ inspect: ## Build the learner-facing inspection bundle
 	@printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read manifest.json for group-level field and action metadata.' \
-		'  2. Read registry.json, plugin.json, field.json, action.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for concrete contracts, callable policy, and class-creation provenance.' \
+		'  2. Read registry.json, plugin.json, field.json, field-ownership.json, action.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for concrete contracts, descriptor ownership, callable policy, and class-creation provenance.' \
 		'  3. Read COMMAND_GUIDE.md and PROOF_GUIDE.md for the next review route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership and proof.' \
 		> $(INSPECT_DIR)/route.txt
@@ -166,6 +172,8 @@ verify-report: ## Build the structured capstone verification report
 	@$(VENV_PY) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(VERIFY_REPORT_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(VERIFY_REPORT_DIR)/plugin.json
+	@PYTHONPATH=src $(CLI) field-ownership delivery webhook endpoint \
+		> $(VERIFY_REPORT_DIR)/field-ownership.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(VERIFY_REPORT_DIR)/signatures.json
 	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver \
 		> $(VERIFY_REPORT_DIR)/action-wrapper.json
@@ -204,7 +212,7 @@ verify-report: ## Build the structured capstone verification report
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read pytest.txt for executable proof.' \
-		'  2. Read manifest.json, plugin.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, class-creation.json, and trace.json to compare callable and class creation evidence with execution.' \
+		'  2. Read manifest.json, plugin.json, field-ownership.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, class-creation.json, and trace.json to compare descriptor, callable, and class creation evidence with execution.' \
 		'  3. Read TEST_GUIDE.md and PROOF_GUIDE.md for the closest claim-to-proof route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect a code change back to the saved proof.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
@@ -218,6 +226,8 @@ tour: ## Build the learner-facing walkthrough bundle
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(TOUR_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(TOUR_DIR)/registry.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(TOUR_DIR)/plugin.json
+	@PYTHONPATH=src $(CLI) field-ownership delivery webhook endpoint \
+		> $(TOUR_DIR)/field-ownership.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(TOUR_DIR)/signatures.json
 	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver \
 		> $(TOUR_DIR)/action-wrapper.json
@@ -273,7 +283,7 @@ tour: ## Build the learner-facing walkthrough bundle
 	@printf '%s\n' \
 		'Walkthrough route:' \
 		'  1. Read manifest.json, registry.json, plugin.json, and signatures.json to inspect the public runtime shape.' \
-		'  2. Read action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for callable ownership, partial contracts, and class-creation provenance without execution.' \
+		'  2. Read field-ownership.json, action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for descriptor ownership, callable ownership, partial contracts, and class-creation provenance without execution.' \
 		'  3. Read demo.json and trace.json for deliberate invocation, configuration, and successful action-history visibility.' \
 		'  4. Read WALKTHROUGH_GUIDE.md, COMMAND_GUIDE.md, and TOUR.md for the review order.' \
 		'  5. Read PACKAGE_GUIDE.md and PROOF_GUIDE.md when you need to connect the tour back to local guides or source ownership.' \

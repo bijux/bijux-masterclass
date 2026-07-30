@@ -9,6 +9,7 @@ from .framework import (
     check_action_arguments,
     create_plugin,
     inspect_action_wrapper,
+    inspect_field_ownership,
     inspect_plugin_class_creation,
     invoke,
 )
@@ -35,6 +36,7 @@ __all__ = [
     "check_action_arguments",
     "create_plugin",
     "inspect_action_wrapper",
+    "inspect_field_ownership",
     "inspect_plugin_class_creation",
     "invoke",
 ]
