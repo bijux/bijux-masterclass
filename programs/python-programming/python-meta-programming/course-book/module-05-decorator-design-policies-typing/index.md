@@ -24,20 +24,20 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Module 05 takes the wrapper mechanics from Module 04 and pushes them into harder design
-territory: retries, timeouts, rate limits, annotation-aware validation, and cache policy.
-The module is not here to celebrate decorator power. It is here to teach where that power
-starts to become expensive, misleading, or better owned by an explicit object or service
-boundary.
+Module 05 takes the transparent wrapper from Module 04 and gives it authority. The
+wrapper may now run work again, delay it, reject it, remember results, or inspect
+annotations. Those are changes to the callable's contract, not decorative additions.
+
+The executable thread is one incident-delivery boundary. A bounded retry wrapper may
+run delivery three times; a partial validator may stop a bad call before delivery or
+merely warn and let it through. You will inspect those consequences in
+`labs/decorator_policy/` before judging the same pressure in the incident-plugin
+capstone.
 
 For many learners, this is the first module where "I understand the syntax" stops being
 enough. A policy-heavy decorator can look tidy while still hiding retry rules, timeout
 behavior, validation scope, cache lifetimes, and operational controls that another
 maintainer must eventually own.
-
-This module now uses the same ten-file learning surface as the deep-dive series so the
-overview, five cores, worked example, practice set, answers, and glossary each have one
-clear job.
 
 Treat this module as one full review day on wrapper ownership. The goal is not to collect
 more decorator patterns. The goal is to leave with a stable way to answer:
@@ -72,7 +72,45 @@ You should also be able to reject weak explanations such as:
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md)
 - [Capstone Walkthrough](../capstone/capstone-walkthrough.md)
 
-## The ten files in this module
+## Start with executable evidence
+
+Work from `programs/python-programming/python-meta-programming`:
+
+```bash
+make decorator-policy-lab
+make decorator-policy-lab-test
+```
+
+The first command prints three evidence packets:
+
+| Packet | Evidence to find | Claim it supports |
+| --- | --- | --- |
+| `retry` | three underlying executions and two recorded delays | retry changes execution count and waiting |
+| `retry_exhausted` | two attempts and the same final exception object | the stopping rule is finite and the final failure is not replaced |
+| `validation` | strict rejection, warning-mode execution, and definition-time refusal | a runtime validator must separate enforcement, observation, and unsupported typing surface |
+
+Do not read the JSON as a trophy. Pick one claim in the right column, locate the
+corresponding test, and explain why that test proves the claim. The implementation is in
+`labs/decorator_policy/`; its focused proof is in
+`tests/test_decorator_policy_evidence.py` and
+`tests/test_decorator_policy_validation.py`.
+
+## The module's before-and-after delta
+
+Module 04's honest thin wrapper called the underlying function exactly once and
+preserved its result or exception. Module 05 deliberately breaks that thin-wrapper
+contract:
+
+| Before | New pressure | New public obligation |
+| --- | --- | --- |
+| one call enters the original once | transient failure may justify another attempt | publish retryable failures, attempt limit, delays, and side-effect precondition |
+| wrapper metadata describes callable identity | annotations are available at runtime | name the supported hint subset and refuse the rest |
+| stateful cache is inspectable | more wrapper policies accumulate | identify when an explicit policy owner is clearer |
+
+The old transparency obligations still remain. A policy wrapper must preserve metadata
+*and* reveal the behavior it added.
+
+## The learning sequence
 
 1. Overview (`index.md`)
 2. [Decorator Factories and Parameter Capture](decorator-factories-and-parameter-capture.md)
@@ -85,21 +123,7 @@ You should also be able to reject weak explanations such as:
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
 
-## How to use the file set
-
-| If you need to... | Start here |
-| --- | --- |
-| understand how configurable decorators capture policy parameters | [Decorator Factories and Parameter Capture](decorator-factories-and-parameter-capture.md) |
-| inspect retries, timeouts, and rate limits as control-flow changes instead of ornament | [Resilience and Control-Flow Wrappers](resilience-and-control-flow-wrappers.md) |
-| judge annotation-driven runtime behavior without pretending it is a full type system | [Annotation-Aware Runtime Contracts](annotation-aware-runtime-contracts.md) |
-| compare bounded caches with the standard-library cache model | [Cache Policy and lru_cache Behavior](cache-policy-and-lru-cache-behavior.md) |
-| decide when policy has outgrown a decorator | [Wrapper Policy Boundaries](wrapper-policy-boundaries.md) |
-| see those tradeoffs inside one partial runtime validator | [Worked Example: Building a Partial `@validated` Decorator](worked-example-building-a-partial-validated-decorator.md) |
-| test your understanding before class-level customization begins | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the policy and typing vocabulary | [Glossary](glossary.md) |
-
-## The review route through the module
+## Why this order matters
 
 Use this route if you want one stable teaching sequence instead of ten disconnected files:
 
@@ -110,6 +134,12 @@ Use this route if you want one stable teaching sequence instead of ten disconnec
 | what limited runtime contract can this wrapper support honestly? | typing-aware decorators overclaim easily unless the supported surface is named early | [Annotation-Aware Runtime Contracts](annotation-aware-runtime-contracts.md) |
 | what state, history, and operational hooks does the cache now own? | cache policy is the cleanest example of history-dependent wrapper behavior | [Cache Policy and lru_cache Behavior](cache-policy-and-lru-cache-behavior.md) |
 | when should the decorator give up ownership altogether? | the earlier cores only help if they culminate in a real design judgment | [Wrapper Policy Boundaries](wrapper-policy-boundaries.md) |
+
+The [worked example](worked-example-building-a-partial-validated-decorator.md) then
+traces the shipped `validated` implementation rather than introducing a second,
+unverified version. The [exercises](exercises.md) ask you to modify and review that
+implementation; the [answers](exercise-answers.md) explain what each change proves and
+what it cannot prove.
 
 ## The running question
 
@@ -162,10 +192,11 @@ decorator" without stronger proof.
 By the time you finish the worked example and exercises, you should have a small packet
 that another learner can inspect:
 
-- one hand-desugared decorator factory showing what was captured once
-- one resilience wrapper with a named control-flow rule and stopping rule
-- one partial validator with a named supported surface and a refused feature
-- one cache example with explicit inspection and reset hooks
+- the lab JSON with one claim annotated in your own words
+- one test change that proves a different retry stopping rule
+- one test change that proves an annotation is accepted or refused at decoration time
+- one cache comparison using Module 04's `bounded_cache` and `functools.lru_cache`
+- one capstone action-contract report that distinguishes checked from unsupported hints
 - one redesign note explaining why a broad wrapper should move to an explicit owner
 
 ## Exit standard
@@ -176,6 +207,7 @@ Do not move on until all of these are true:
 - you can name how retries, timeouts, or rate limits change semantics at the call boundary
 - you can say which annotation-aware checks remain partial rather than pretending to replace static typing
 - you can judge when a decorator has become hidden policy that should move elsewhere
+- you can run the focused tests and explain which behavioral claim each one proves
 
 Do not move on if you still need phrases like "it just handles policy for us" or "the
 decorator keeps things simple" to explain the design. Module 05 is only complete when you
