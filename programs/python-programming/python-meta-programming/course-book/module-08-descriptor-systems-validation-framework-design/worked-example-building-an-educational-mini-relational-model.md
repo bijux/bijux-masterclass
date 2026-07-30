@@ -1,6 +1,5 @@
 # Worked Example: Building an Educational Mini Relational Model
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,7 +9,7 @@ graph LR
   program["Python Meta-Programming"]
   section["Descriptor Systems Validation Framework Design"]
   page["Worked Example: Building an Educational Mini Relational Model"]
-  capstone["Capstone evidence"]
+  capstone["Capstone transfer"]
 
   family --> program --> section --> page
   page -.applies in.-> capstone
@@ -18,453 +17,302 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  declaration["Incident field declarations"] --> bind["descriptor name binding"]
+  create["first Incident instance"] --> writes["validated backend writes"]
+  reload["second Incident instance"] --> reads["backend reads"]
+  writes --> store["CountingStore JSON slots"]
+  store --> reads
+  reads --> local["second-instance caches"]
+  local --> review["capability and omission review"]
 ```
 <!-- page-maps:end -->
 
-The five core lessons in Module 08 become easier to trust when they meet one example that
-is powerful enough to look like a framework, but still small enough to inspect.
+This worked example combines the module’s mechanisms into one small record surface. It is
+not a miniature production ORM. Its purpose is narrower:
 
-A miniature relational model layer is exactly that kind of example.
+- prove that composed descriptors can map attributes to stable backend slots
+- reconstruct the same record through a second Python instance
+- inspect field layers without constructing a record
+- make invalid input and backend work observable
+- identify exactly where field ownership ends
 
-It combines:
+The implementation ships in `labs/descriptor_systems/relational.py`; the page explains
+that code instead of presenting a second, drifting copy.
 
-- cached descriptor reads
-- external storage
-- wrapper-field composition
-- hint-aware validation
-- the boundary between field behavior and model-wide orchestration
+## Application pressure
 
-That makes it the right worked example for the module.
+An incident record has:
 
-This page matters because worked examples are where readers most often over-trust the
-pattern. If the example looks like a miniature ORM, many learners will silently grant it
-ORM responsibilities that it never proved. The job of this page is to keep the proof
-route visible.
+- a durable integer identity
+- a severity restricted to `info`, `warning`, or `critical`
+- a summary
+- values that a second instance must reload from a shared store
 
-## The incident
+The model should expose ordinary attributes while preserving backend authority and
+validation order.
 
-Assume a team wants a tiny model system that can:
-
-- declare fields on classes
-- read and write some values through a backing store
-- validate selected values
-- lazy-load simple relationships
-
-Those are reasonable educational goals. The mistake would be pretending this is now a real
-ORM.
-
-Keep one more sentence beside it:
-
-> this example is a review packet for field ownership, not a disguised production framework.
-
-If you are studying alone, keep one more rule beside the code:
-
-- every time the example feels impressive, stop and ask what exact responsibility produced that impression
-- then decide whether that responsibility is still field-sized or already model- or framework-sized
-
-## The first design rule: keep the “ORM” claim narrow
-
-This worked example is intentionally limited.
-
-It can teach:
-
-- how a field descriptor can read from or write to external storage
-- how field wrappers can add validators
-- how one relationship field can lazy-load related records
-
-It does not claim:
+It does **not** need:
 
 - transactions
-- migrations
+- an identity map
 - query planning
-- identity maps
-- session management
+- relationships
+- migrations
 
-That refusal is what keeps the example honest.
+Those omissions define the example as much as its features do.
 
-Use this non-goal table before trusting the implementation:
+## Build an isolated model class
 
-| Tempting claim | Why this page refuses it |
-| --- | --- |
-| "this is basically an ORM" | the example does not prove transactions, identity maps, or query planning |
-| "relationships are solved" | the relationship surface is intentionally narrow and instructional |
-| "model registration completes the architecture" | registration is only one visible scaffold, not full lifecycle design |
-| "descriptor tricks replace surrounding services" | the module teaches the opposite: descriptors still need honest boundaries |
-
-## Step 1: define a base field with visible responsibilities
-
-The base field in this example owns only a few things:
-
-- a field name learned through `__set_name__`
-- optional default values
-- optional external persistence
-- a place to run hint-driven coercion and validators
-
-That is already a lot of responsibility, so the page keeps those responsibilities visible
-instead of scattering them across several hidden helpers.
-
-## Review route before reading code
-
-Use this route before you inspect the implementation details:
-
-| Review question | Where the answer should appear |
-| --- | --- |
-| what belongs to one field? | `BaseField` and wrapper behavior |
-| what belongs to backend persistence? | the `DB` structure and external field branch |
-| what belongs to relationship loading? | `OneToMany` and reconstruction path |
-| what already looks framework-shaped? | `MODEL_REGISTRY`, `ModelMeta`, and reconstruction logic |
-| what is explicitly refused? | the non-goal list and final boundary notes |
-
-## Worked-example reading order
-
-Do not read the code top to bottom only once. Use this order instead:
-
-1. trace one scalar `BaseField` write from `__set__` to `DB[...]`
-2. trace one `BaseField` read on cache miss or external lookup
-3. trace one wrapper-field validation path
-4. trace one relationship load through `OneToMany`
-5. inspect `ModelMeta` only after the field and relationship responsibilities are clear
-
-That order keeps the field contract visible before the class-level machinery starts
-looking more important than it really is.
-
-## Step 2: keep external persistence field-shaped
-
-The field should persist one attribute value, not the whole object graph.
-
-That means the educational model uses a tiny backing store shaped roughly like:
+The entry point is:
 
 ```python
-DB[model_name][primary_key][field_name]
+store = CountingStore()
+Incident = build_incident_model(store)
 ```
 
-This is enough to show:
+Supplying the store explicitly keeps test and evidence state isolated. The function uses
+an ordinary class statement; no custom metaclass or dynamic code execution is involved.
+Python still performs ordinary descriptor name binding when the local class is created.
 
-- backend-backed reads
-- backend-backed writes
-- why primary keys matter
-
-without pretending to be a real storage engine.
-
-The educational win here is not realism. It is inspectability:
-
-a learner can point to where truth lives and where it does not.
-
-## Step 3: let wrappers add narrow extra policy
-
-Validation is layered as a wrapper concern, not built into every field subclass.
-
-That keeps the field system readable:
-
-- one base field for storage and coercion
-- one wrapper for extra validation
-
-This reuses the composition lesson instead of bypassing it.
-
-That matters because the example should reinforce the module’s earlier rule:
-
-do not solve every variation by subclass multiplication when one narrow wrapper makes the
-ownership clearer.
-
-## Step 4: keep relationships lazy but honest
-
-A relationship field such as `OneToMany` can demonstrate:
-
-- lazy loading on first access
-- cache invalidation after related writes
-- why relationship loading is already pushing past “just one scalar field”
-
-This is exactly where the framework boundary starts to show.
-
-Keep that sentence active while reading the code:
-
-lazy relationship loading is already a warning that the system is approaching broader
-coordination concerns.
-
-## A bounded implementation
+The declaration is:
 
 ```python
-import json
-from collections import defaultdict
-from typing import Any, Annotated, Callable, Union, get_args, get_origin, get_type_hints
-import types
-
-
-DB = defaultdict(dict)
-MODEL_REGISTRY = {}
-
-
-def min_length(n):
-    def validator(value):
-        if len(value) < n:
-            raise ValueError(f"minimum length {n}")
-        return value
-    return validator
-
-
-def supports_instance(value, hint):
-    if hint is Any:
-        return True
-    origin = get_origin(hint)
-    if origin in (Union, types.UnionType):
-        return any(supports_instance(value, arg) for arg in get_args(hint))
-    if origin is not None:
-        raise NotImplementedError("parameterized generics are unsupported here")
-    return isinstance(value, hint)
-
-
-class BaseField:
-    UNSET = object()
-
-    def __init__(self, *, default=UNSET, external=False):
-        self.default = default
-        self.external = external
-        self.validators = []
-
-    def __set_name__(self, owner, name):
-        self.name = name
-        self.private_name = f"_{name}"
-        hint = get_type_hints(owner).get(name, Any)
-        origin = get_origin(hint)
-        if origin is Annotated:
-            base, *metadata = get_args(hint)
-            hint = base
-            self.validators.extend(item for item in metadata if callable(item))
-        self.hint = hint
-
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        if self.private_name not in obj.__dict__ and self.default is not BaseField.UNSET:
-            obj.__dict__[self.private_name] = self.default
-        if self.external:
-            pk = obj.__dict__.get("_id")
-            if pk is not None:
-                record = DB[owner.__name__].get(pk)
-                if record is not None and self.name in record:
-                    obj.__dict__[self.private_name] = json.loads(record[self.name])
-        return obj.__dict__.get(self.private_name)
-
-    def __set__(self, obj, value):
-        if not supports_instance(value, self.hint):
-            for candidate in (int, float, str):
-                if candidate is self.hint:
-                    try:
-                        value = candidate(value)
-                        break
-                    except Exception:
-                        pass
-            else:
-                raise TypeError(f"cannot coerce {value!r} to {self.hint!r}")
-
-        for validator in self.validators:
-            value = validator(value)
-
-        obj.__dict__[self.private_name] = value
-
-        if self.name == "id":
-            obj.__dict__["_id"] = value
-
-        if self.external:
-            pk = obj.__dict__.get("_id")
-            if pk is None:
-                raise ValueError("id must be set before external field assignment")
-            DB[obj.__class__.__name__].setdefault(pk, {})[self.name] = json.dumps(value)
-
-    def invalidate(self, obj):
-        obj.__dict__.pop(self.private_name, None)
-
-
-class FieldWrapper:
-    def __init__(self, inner):
-        self.inner = inner
-
-    def __set_name__(self, owner, name):
-        self.inner.__set_name__(owner, name)
-
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        return self.inner.__get__(obj, owner)
-
-    def __set__(self, obj, value):
-        self.inner.__set__(obj, value)
-
-
-def validated(validator: Callable, inner):
-    class ValidatedField(FieldWrapper):
-        def __set__(self, obj, value):
-            self.inner.__set__(obj, validator(value))
-    return ValidatedField(inner)
-
-
-class OneToMany(BaseField):
-    def __init__(self, related_model, fk_field="post_id"):
-        super().__init__(default=BaseField.UNSET, external=False)
-        self.related_model = related_model
-        self.fk_field = fk_field
-
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        if self.private_name not in obj.__dict__:
-            pk = obj.__dict__.get("_id")
-            related_cls = MODEL_REGISTRY[self.related_model]
-            items = []
-            for record_pk, record in DB[self.related_model].items():
-                fk_raw = record.get(self.fk_field)
-                if fk_raw is not None and json.loads(fk_raw) == pk:
-                    related = object.__new__(related_cls)
-                    for field_name, field in related_cls._fields.items():
-                        if field_name in record:
-                            field.__set__(related, json.loads(record[field_name]))
-                    items.append(related)
-            obj.__dict__[self.private_name] = items
-        return obj.__dict__[self.private_name]
-
-
-class ModelMeta(type):
-    def __new__(cls, name, bases, namespace):
-        new_cls = super().__new__(cls, name, bases, namespace)
-        new_cls._fields = {
-            key: value.inner if isinstance(value, FieldWrapper) else value
-            for key, value in namespace.items()
-            if isinstance(value, (BaseField, FieldWrapper))
-        }
-        MODEL_REGISTRY[name] = new_cls
-        return new_cls
-
-
-class User(metaclass=ModelMeta):
-    id: int = BaseField(external=True)
-    name: Annotated[str, min_length(1)] = validated(min_length(1), BaseField(external=True))
-
-
-class Post(metaclass=ModelMeta):
-    id: int = BaseField(external=True)
-    title: str = BaseField(external=True)
-    comments = OneToMany("Comment", fk_field="post_id")
-
-
-class Comment(metaclass=ModelMeta):
-    id: int = BaseField(external=True)
-    post_id: int = BaseField(external=True)
-    text: str = BaseField(external=True)
+class Incident:
+    severity = NormalizeText(
+        OneOf(
+            ExternalField(store, namespace="incident-model"),
+            choices=("info", "warning", "critical"),
+        )
+    )
+    summary = ExternalField(store, namespace="incident-model")
 ```
 
-## Evidence packet to extract from the code
+The two columns intentionally have different policy stacks:
 
-Do not read the code as a magic demonstration. Extract this packet:
-
-| Evidence item | What it proves |
+| Column | Layers |
 | --- | --- |
-| one scalar field write path | shows what one field can honestly own |
-| one external field read path | shows where the source of truth sits |
-| one wrapper validation path | shows how additive policy stays visible |
-| one relationship load path | shows where framework pressure begins |
-| one metaclass responsibility | shows why class-level orchestration enters the design |
+| `severity` | `NormalizeText -> OneOf -> ExternalField` |
+| `summary` | `ExternalField` |
 
-Add two more packet lines while you review:
+This lets the example show both composition and direct backend mapping.
 
-| Evidence item | What it proves |
+## Inspect before constructing
+
+Run:
+
+```bash
+python3 -m unittest tests/test_descriptor_system_relational.py -v
+make descriptor-system-lab
+```
+
+`inspect_columns(Incident)` walks the class dictionary, unwraps known field wrappers, and
+reports the underlying external owner.
+
+The packet contains:
+
+```json
+[
+  {
+    "backend_owner": "CountingStore",
+    "layers": ["NormalizeText", "OneOf", "ExternalField"],
+    "name": "severity",
+    "source_of_truth": "backend JSON slot"
+  },
+  {
+    "backend_owner": "CountingStore",
+    "layers": ["ExternalField"],
+    "name": "summary",
+    "source_of_truth": "backend JSON slot"
+  }
+]
+```
+
+This is the first review route because it answers “what will this class do?” without
+performing backend reads or creating record state.
+
+## Create the first record
+
+The evidence constructs:
+
+```python
+incident = Incident(
+    41,
+    severity=" WARNING ",
+    summary="queue depth exceeded",
+)
+```
+
+The severity write follows:
+
+```mermaid
+sequenceDiagram
+  participant Init as Incident.__init__
+  participant Normalize
+  participant Choice as OneOf
+  participant External as ExternalField
+  participant Store as CountingStore
+
+  Init->>Normalize: " WARNING "
+  Normalize->>Choice: "warning"
+  Choice->>External: accepted "warning"
+  External->>External: key + JSON encoding
+  External->>Store: write incident-model:Incident:41:severity
+```
+
+Summary takes the shorter path:
+
+```text
+Incident.__init__
+  -> ExternalField.__set__
+  -> JSON encoding
+  -> CountingStore.set("incident-model:Incident:41:summary", ...)
+```
+
+Each successful assignment also populates that instance’s local read cache.
+
+## Reconstruct through a second instance
+
+The example then creates:
+
+```python
+observer = Incident(41)
+```
+
+This is a different Python object with the same durable record identity. Its caches are
+empty. Reading the fields produces two backend reads:
+
+```python
+observer.severity  # "warning"
+observer.summary   # "queue depth exceeded"
+```
+
+The evidence reports:
+
+```json
+{
+  "loaded_from_second_instance": {
+    "severity": "warning",
+    "summary": "queue depth exceeded"
+  }
+}
+```
+
+This proves stable key reconstruction. It does not prove identity-map behavior: the two
+instances remain distinct objects and can hold independently stale caches.
+
+## Reject invalid input before persistence
+
+The failure route attempts:
+
+```python
+Incident(
+    42,
+    severity="urgent",
+    summary="unsupported severity",
+)
+```
+
+`NormalizeText` produces `"urgent"`, then `OneOf` raises. Because validation precedes the
+external field, the backend receives no write:
+
+```json
+{
+  "backend_writes_added": 0,
+  "error": "severity must be one of info, warning, critical"
+}
+```
+
+That is a useful local guarantee: this rejected first assignment has no persistence side
+effect.
+
+Do not turn it into a transaction claim. If a later field failed after an earlier field
+had persisted, this model has no rollback owner.
+
+## Capability ledger
+
+The field layer honestly owns:
+
+| Capability | Evidence |
 | --- | --- |
-| one refused production claim | shows the example knows its own boundary |
-| one owner that would have to widen next | shows where the current design would escalate first |
+| one stable backend key per attribute | keys contain namespace, model, record ID, and field |
+| JSON scalar serialization | store snapshots contain JSON text |
+| severity normalization | padded uppercase input becomes lowercase |
+| severity validation | unsupported values fail before storage |
+| local read-through cache | second read on one instance avoids another backend call |
+| static column inspection | layer and backend owners are visible from the class |
 
-## Why this is useful for review
+The example explicitly lacks:
 
-This example keeps every major responsibility visible:
-
-- the field layer owns attribute reads and writes
-- the external store is obviously simplistic
-- validation is layered as a wrapper concern
-- relationship loading is visible as a bigger step than ordinary scalar fields
-
-That makes the example usable as a boundary exercise rather than as a fake production
-recipe.
-
-## Weak readings to reject early
-
-These are the fast wrong turns a missed-class learner is likely to take:
-
-| Weak reading | Why it fails |
+| Missing capability | Why a field cannot supply it alone |
 | --- | --- |
-| "the descriptors built an ORM" | the example omits transactions, identity maps, and query planning |
-| "the relationship field solves coordination" | it demonstrates loading pressure, not complete relationship architecture |
-| "the metaclass finishes the framework" | registration is one class-creation service, not full model lifecycle design |
-| "external fields now own persistence" | they participate in one field-shaped path while the broader persistence story stays missing |
+| transactions | success and rollback span several writes |
+| identity map | multiple instances need shared lifecycle coordination |
+| query planning | access spans sets of records and predicates |
+| relationship loading | object graphs need broader policy |
+| schema migration | stored versions outlive one field declaration |
 
-## What to reject while reviewing this example
+Calling this a production ORM would grant all five absent responsibilities by implication.
 
-Reject these readings of the example:
+## Before-and-after design comparison
 
-| Misreading | Better reading |
+| Earlier Module 07 field | Module 08 record column |
 | --- | --- |
-| "the model layer is complete" | "the model layer is just complete enough to teach ownership boundaries" |
-| "relationships are solved through descriptors" | "relationships are shown narrowly to expose escalation pressure" |
-| "metaclass registration means the framework architecture is done" | "registration is one class-level mechanism, not the whole architecture" |
-| "external fields make persistence easy" | "external fields make persistence visible but still incomplete" |
+| instance dictionary is authoritative | backend JSON slot is authoritative |
+| one descriptor owns validation and storage | wrappers and external field divide policy |
+| another instance has independent values | another instance with the same record ID reloads shared values |
+| access has local Python cost | cache misses cross serialization and backend boundaries |
+| failure is local validation or unset state | failure can include backend unavailability |
 
-## Where the framework boundary appears
+The syntax remains `record.field`; the ownership and failure model has widened
+substantially.
 
-Even in this small example, you can already see responsibilities that do not belong to one
-field forever:
+## Review the source in this order
 
-- model registration
-- object reconstruction
-- relationship coordination
-- persistence conventions
+1. `ColumnContract` — what static inspection promises.
+2. `build_incident_model` — which field stacks are declared.
+3. `inspect_columns` — how wrappers are unwrapped without instance access.
+4. `relational_model_evidence` — which success and rejection paths become public.
+5. `tests/test_descriptor_system_relational.py` — which claims are executable.
 
-That is the exact point of the exercise. The field layer is still useful, but it is no
-longer the whole architecture.
+Do not begin by copying the class declaration. Begin by explaining the capability and
+omission ledgers.
 
-Use this ownership table to keep the escalation explicit:
+## Capstone transfer
 
-| Concern | Honest owner in this example | Stronger owner a real system would need |
+The incident-plugin capstone also declares descriptor-backed fields and collects their
+metadata. Unlike this record example, it keeps values on plugin instances and performs no
+backend read during attribute access.
+
+Compare them:
+
+| Concern | Record model lab | Incident-plugin capstone |
 | --- | --- | --- |
-| one field read or write | descriptor field | same unless coordination widens |
-| per-field validation | wrapper plus base field | schema or model service if rules grow cross-field |
-| backend slot storage | external field branch | repository or persistence layer if storage behavior widens |
-| relationship reconstruction | narrow relationship descriptor | identity map, session, or ORM model layer |
-| class registration | `ModelMeta` | broader model infrastructure if lifecycle grows |
+| source of truth | `CountingStore` | plugin instance dictionary |
+| serialization in field access | JSON | none |
+| wrapper composition | severity has two wrappers | none |
+| field collection | static helper in the lab | `PluginMeta` |
+| persistence claim | one-field backend mapping only | none |
 
-## What this example makes clear about Module 08
+The capstone is the transfer point, not the primary explanation of the record model.
 
-This worked example ties the module together:
+## Learner review
 
-- cached and lazy behavior shapes attribute reads
-- external storage changes the source of truth
-- wrapper fields add policy without immediate subclass sprawl
-- hint-driven validation creates a declarative field surface
-- the whole system still needs broader architectural owners once it grows
+Before opening the exercises, write a review containing:
 
-That is the durable takeaway. The point is not to produce an ORM. The point is to see
-where a descriptor system stops being just a set of fields and starts becoming framework
-design.
+1. the exact backend key for `Incident(41).severity`
+2. the accepted severity write order
+3. the source of truth and local mirror
+4. why a second instance can reload values but is not an identity map
+5. which rejected input causes zero writes
+6. one scenario that could leave a partial multi-field write
+7. the first broader owner needed for rollback
+8. one sentence refusing the production ORM label
 
-Before leaving the page, write one sentence in each of these forms:
+You have understood the example when you can defend both its useful field abstraction and
+its deliberately narrow architecture.
 
-- "this field-level mechanism proves..."
-- "this model-level mechanism begins here..."
-- "this production-grade responsibility is still missing..."
-
-## Exit check for this page
-
-Before moving on, make sure you can do all of these:
-
-- name one responsibility the example proves at field level
-- name one responsibility the example intentionally leaves incomplete
-- trace one external read or write to the actual source of truth
-- identify where relationship logic begins to exceed simple field semantics
-- explain why the metaclass is support structure rather than proof of complete architecture
-
-## Continue through Module 08
+## Continue
 
 - Previous: [Descriptor Systems and Framework Boundaries](descriptor-systems-and-framework-boundaries.md)
-- Next: [Exercises](exercises.md)
-- Reference: [Exercise Answers](exercise-answers.md)
-- Terms: [Glossary](glossary.md)
+- Next: [Descriptor System Review Lab](exercises.md)
+- Review after attempting: [Exercise Answers](exercise-answers.md)
