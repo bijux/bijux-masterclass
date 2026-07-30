@@ -187,7 +187,9 @@ Reject or redesign when:
 4. `PluginMeta.__new__` gathers inherited and local fields and action specs.
 5. A constructor signature is generated from the collected fields.
 6. Concrete plugins receive their group and public plugin name.
-7. Concrete plugins are registered in the deterministic runtime registry.
+7. `PluginMeta.__new__` returns the shaped class object.
+8. `PluginMeta.__init__` registers the finished concrete class in the deterministic
+   runtime registry.
 
 This sequence matters because beginners often confuse "defined on the class" with
 "decided at runtime." The capstone separates those moments on purpose.
@@ -198,7 +200,9 @@ This sequence matters because beginners often confuse "defined on the class" wit
 | --- | --- | --- |
 | configuration validation, defaults, or schema metadata | descriptor | `fields.py` |
 | invocation metadata, preserved signatures, or action history | decorator | `actions.py` |
-| class registration, generated constructors, or manifest assembly | metaclass or framework helper | `framework.py` |
+| tracked declaration events and generated class structure | metaclass | `framework.py` |
+| registration of completed subclasses without declaration-time rules | `__init_subclass__` or explicit helper | the owning class family |
+| deterministic registry state, lookup, duplicate handling, and reset | framework helper | `framework.py` |
 | one concrete adapter behavior | ordinary plugin class | `plugins.py` |
 | one public inspection or invocation route | CLI command | `cli.py` |
 

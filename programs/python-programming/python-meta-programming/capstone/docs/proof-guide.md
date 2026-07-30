@@ -50,7 +50,7 @@ That question matters because different proof routes answer different kinds of c
 | wrapper ownership stays inspectable without execution | `make action-wrapper` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | action arguments can be validated without execution | `make bind-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | supported action hints can be checked without overstating the contract | `make check-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
-| class-creation ownership remains observable without plugin construction | `make class-creation` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| metaclass selection, hook ownership, and accepted or rejected class-creation powers remain observable without plugin construction | `make class-creation` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | registration stays deterministic | `make registry` | `tests/test_registry.py` |
 | one realistic invocation story is still honest | `make trace` | `make tour` or `tests/test_runtime.py` |
 | saved review artifacts still match executable proof | `make verify-report` | `make proof` |

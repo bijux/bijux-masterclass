@@ -50,7 +50,7 @@ to feel harder than it is.
 | which descriptor-system powers the capstone accepts or rejects | `make field-system` | `tests/test_fields.py` and `tests/test_cli.py` |
 | whether proposed action arguments satisfy the real call contract | `make bind-action` | `tests/test_runtime.py` |
 | whether bound values match the supported runtime hint subset | `make check-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
-| what the metaclass knew and generated during one class creation | `make class-creation` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| what selected the metaclass, what each hook owned, and which powers remain outside class creation | `make class-creation` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | which action layer owns wrapper metadata and explicit signature | `make action-wrapper` | `tests/test_runtime.py` |
 | one realistic invocation path | `make demo` or `make trace` | `tests/test_runtime.py` or `make tour` |
 | a durable artifact another reviewer can inspect later | `make inspect`, `make tour`, or `make verify-report` | `make proof` |
@@ -66,7 +66,8 @@ to feel harder than it is.
   caching, external storage, wrapper composition, or hint inference is absent.
 - Choose `make bind-action` when call validation matters but execution does not.
 - Choose `make check-action` when runtime hint matching or refusal matters but execution does not.
-- Choose `make class-creation` when namespace, inheritance, or generated initialization timing matters.
+- Choose `make class-creation` when metaclass selection, namespace, hook ownership,
+  generated structure, registration, or rejected powers matter.
 - Choose `make action-wrapper` when wrapper ownership matters but execution does not.
 - Choose `make trace` when configuration, invocation history, and result probably all matter.
 - Choose `make inspect` when you need a saved route but do not yet need the strongest bundle.
@@ -93,7 +94,7 @@ to feel harder than it is.
 | `make action-wrapper` | inspect wrapper layers and preservation without execution | wrapper-chain audit JSON |
 | `make bind-action` | validate one action call without construction or invocation | normalized bound-argument JSON |
 | `make check-action` | check a narrow runtime hint subset without construction or invocation | checked, refused, and unchecked argument JSON |
-| `make class-creation` | inspect stored class-creation provenance | namespace, declared/inherited members, and generation JSON |
+| `make class-creation` | inspect stored class-creation ownership | namespace, hook trace, declared/inherited members, generated structure, registration, and power-limit JSON |
 | `make registry` | inspect registration determinism from the public surface | registry JSON |
 | `make signatures` | inspect generated constructor and action signatures | signature JSON |
 | `make demo` | invoke one realistic action | one invocation result |
@@ -121,7 +122,7 @@ publishes honestly from the public surface.
 | one action wrapper | which layer owns `ActionSpec`, `__signature__`, and `__wrapped__` | `make action-wrapper` |
 | one action preflight | whether proposed arguments satisfy the stored action signature | `make bind-action` |
 | one action contract check | whether bound values match supported hints and which hints are refused | `make check-action` |
-| one class-creation audit | what namespace, metaclass, declarations, inheritance, and generation produced the class | `make class-creation` |
+| one class-creation audit | what selected the metaclass and how preparation, shaping, and registration produced the class | `make class-creation` |
 
 ## One concrete behavior routes
 
@@ -156,7 +157,7 @@ sizes, and SHA-256 hashes for the saved route.
 | `make action-wrapper` | wrapper-structure fact | chain, signatures, and metadata ownership | `src/incident_plugins/actions.py` and `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | `make bind-action` | preflight fact | normalized arguments with execution explicitly absent | `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | `make check-action` | partial runtime-contract fact | checked, refused, and unchecked arguments with execution absent | `src/incident_plugins/actions.py` and `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
-| `make class-creation` | class-creation fact | prepared namespace, declared/inherited members, initializer generation, and registration | `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| `make class-creation` | class-creation fact | metaclass selection, prepared namespace, hook trace, generated structure, registration, and rejected powers | `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | `make registry` | class-definition fact made observable later | registered plugin names and order | `src/incident_plugins/framework.py` | `tests/test_registry.py` |
 | `make signatures` | class-definition fact made observable later | generated constructor and action signatures | `src/incident_plugins/framework.py` and `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
 | `make demo` | call-time fact | one concrete invocation result | `src/incident_plugins/plugins.py` and `src/incident_plugins/actions.py` | [TEST_GUIDE.md](test-guide.md) |
