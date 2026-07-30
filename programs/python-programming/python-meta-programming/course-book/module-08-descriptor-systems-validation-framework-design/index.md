@@ -178,9 +178,15 @@ The incident-plugin capstone intentionally keeps its field system narrower than 
 - ordinary field access performs no backend I/O
 - no cached derivations, wrapper stacks, or annotation inference are hidden in fields
 
-That is a design decision, not a missing demonstration. Later in this module, the
-capstone field-system inspection route will let you compare those accepted and rejected
-powers without constructing or executing a plugin.
+That is a design decision, not a missing demonstration. After completing the lab, compare
+those accepted and rejected powers without constructing or executing a plugin:
+
+```console
+make PROGRAM=python-programming/python-meta-programming capstone-field-system
+```
+
+Read the resulting ownership and power report as transfer evidence. The capstone is the
+application of the lesson, not a substitute for working through the course system.
 
 ## Exit evidence
 
