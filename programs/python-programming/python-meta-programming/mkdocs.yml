@@ -117,8 +117,8 @@ nav:
   - Hint-Driven Validation and Coercion: module-08-descriptor-systems-validation-framework-design/hint-driven-validation-and-coercion.md
   - Descriptor Systems and Framework Boundaries: module-08-descriptor-systems-validation-framework-design/descriptor-systems-and-framework-boundaries.md
   - 'Worked Example: Building an Educational Mini Relational Model': module-08-descriptor-systems-validation-framework-design/worked-example-building-an-educational-mini-relational-model.md
-  - Exercises: module-08-descriptor-systems-validation-framework-design/exercises.md
-  - Exercise Answers: module-08-descriptor-systems-validation-framework-design/exercise-answers.md
+  - 'Exercises: Descriptor System Evidence Studio': module-08-descriptor-systems-validation-framework-design/exercises.md
+  - 'Exercise Answers: Descriptor System Evidence Studio Review': module-08-descriptor-systems-validation-framework-design/exercise-answers.md
   - Module Glossary: module-08-descriptor-systems-validation-framework-design/glossary.md
 - 'Module 09: Metaclass Design and Class Creation':
   - Home: module-09-metaclass-design-class-creation/index.md
