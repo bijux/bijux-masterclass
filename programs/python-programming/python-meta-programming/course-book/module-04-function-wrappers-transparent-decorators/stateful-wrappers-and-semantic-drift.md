@@ -100,6 +100,80 @@ Use this review table whenever a wrapper starts carrying memory across calls:
 | what happens on failure paths? | partial state or failed first calls may change later behavior |
 | what happens under concurrency? | state can become incorrect even when the idea seems simple |
 
+## Executable escalation: a cache controls whether work runs
+
+Run the worked program before reading its implementation:
+
+```console
+$ make wrapper-cache
+{
+  "cache_info": {
+    "current_size": 2,
+    "hits": 1,
+    "maxsize": 2,
+    "misses": 4
+  },
+  "results": [
+    "INC-41:warning",
+    "INC-41:warning",
+    "INC-42:critical",
+    "INC-43:warning",
+    "INC-41:warning"
+  ],
+  "underlying_executions": [
+    "INC-41:warning",
+    "INC-42:critical",
+    "INC-43:warning",
+    "INC-41:warning"
+  ],
+  ...
+}
+```
+
+Five calls produce four executions. The second call is a hit, so the wrapper decides not
+to run the body. Later, inserting `INC-42` and `INC-43` evicts the least-recently-used
+`INC-41` entry; the final `INC-41` call executes again.
+
+Trace the state transition:
+
+| Call | Decision | LRU state after call | Executions so far |
+| --- | --- | --- | --- |
+| `INC-41` | miss | `INC-41` | 1 |
+| `INC-41` | hit, promote | `INC-41` | 1 |
+| `INC-42` | miss | `INC-41`, `INC-42` | 2 |
+| `INC-43` | miss, evict `INC-41` | `INC-42`, `INC-43` | 3 |
+| `INC-41` | miss, evict `INC-42` | `INC-43`, `INC-41` | 4 |
+
+This is the semantic boundary in executable form. The wrapper owns:
+
+- whether the function body runs
+- which prior result is returned
+- which entry is evicted
+- how hits and misses are counted
+- when state is cleared
+
+Calling that behavior "transparent caching" would be misleading. Metadata can remain
+transparent while execution semantics do not.
+
+### Failure and control surfaces
+
+The focused proof establishes policies the output sample alone cannot:
+
+- exceptions count as misses but failed calls are not cached
+- unhashable arguments fail before the wrapped body executes
+- `maxsize=0` disables storage but still records misses
+- `cache_clear()` removes entries and resets statistics
+- `cache_snapshot()` reports least-to-most-recent keys
+
+Run:
+
+```console
+make wrapper-cache-test
+```
+
+These surfaces are part of the decorator's public operating contract. Without them,
+tests and maintainers would have to infer policy from private closure contents.
+
 ## Order sensitivity becomes more important with state
 
 Stacked stateful decorators are especially sensitive to order.
@@ -182,6 +256,11 @@ That framing helps keep the educational bar honest. You do not need to solve loc
 this page, but you do need to stop pretending concurrency is irrelevant once shared state
 exists.
 
+The course implementation labels `thread_safe: false` in its output. That limitation is
+not a placeholder promise. Concurrent use is outside the example's contract; a production
+need should normally select `functools.lru_cache` or an explicitly synchronized cache
+owned by a service object.
+
 ## Stateful wrappers may deserve explicit reset hooks
 
 If a wrapper owns meaningful state, the design may need an explicit hook such as:
@@ -192,6 +271,10 @@ If a wrapper owns meaningful state, the design may need an explicit hook such as
 
 That is one reason the worked example uses a bounded cache with explicit state surfaces
 instead of hiding everything behind one opaque closure.
+
+The shipped `bounded_cache` exposes `cache_info()`, `cache_snapshot()`, and
+`cache_clear()`. Inspectability does not make its policy thin; it makes the policy
+possible to review and control.
 
 ## Stateful-wrapper repair routes
 
