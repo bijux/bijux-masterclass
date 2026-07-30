@@ -124,10 +124,15 @@ You are ready to move on when you can:
 - explain when a class decorator, property, or explicit helper is sufficient
 - describe why post-creation customization is usually less risky than class-creation control
 - recognize when a design is drifting toward descriptor or metaclass territory
+- prove class-decorator expression, body, and application timing separately
+- distinguish dataclass generation, property enforcement, and descriptor reuse
+- define surface freezing without implying deep immutability
 
 Proof move:
 
-- inspect class-level customization in the capstone without reaching for `PluginMeta`
+- run `make class-customization-lab-test`, inspect
+  `make class-customization-lab`, then use `make capstone-class-creation` to explain the
+  exact creation-time evidence that justifies `PluginMeta`
 
 ### Module 07: Descriptors, Lookup, and Attribute Control
 

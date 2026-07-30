@@ -161,6 +161,9 @@ make -C programs/python-programming/python-meta-programming capstone-action-wrap
 make -C programs/python-programming/python-meta-programming decorator-policy-lab
 make -C programs/python-programming/python-meta-programming decorator-policy-lab-test
 make -C programs/python-programming/python-meta-programming capstone-check-action
+make -C programs/python-programming/python-meta-programming class-customization-lab
+make -C programs/python-programming/python-meta-programming class-customization-lab-test
+make -C programs/python-programming/python-meta-programming capstone-class-creation
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -186,6 +189,10 @@ you are ready for the broader integration project,
 `capstone-tour` when you want the same saved bundle in the proof ladder,
 `capstone-verify-report` when you need durable integration evidence, and
 `capstone-confirm` for the strictest capstone confirmation pass.
+
+Use `class-customization-lab` for Module 06's class-decorator, dataclass, property,
+descriptor, and frozen-surface evidence. `capstone-class-creation` transfers the timing
+question into stored `PluginMeta` provenance without constructing or invoking a plugin.
 
 Primary reading route:
 
@@ -218,6 +225,13 @@ Primary reading route:
 - `labs/decorator_policy/validation.py`
 - `course-book/module-05-decorator-design-policies-typing/exercises.md`
 - `course-book/module-05-decorator-design-policies-typing/exercise-answers.md`
+- `course-book/module-06-class-customization-pre-metaclasses/index.md`
+- `labs/class_customization/evidence.py`
+- `labs/class_customization/transformation.py`
+- `labs/class_customization/attributes.py`
+- `labs/class_customization/frozen_surface.py`
+- `course-book/module-06-class-customization-pre-metaclasses/exercises.md`
+- `course-book/module-06-class-customization-pre-metaclasses/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`

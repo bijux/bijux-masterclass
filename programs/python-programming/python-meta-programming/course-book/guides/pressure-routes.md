@@ -62,7 +62,7 @@ If you cannot explain why a stronger mechanism is necessary, you are not ready t
 | What is Python actually doing at runtime here? | Modules 01 to 03 | manifest output and `framework.py` |
 | How can I inspect this safely without accidental execution? | Module 02 | `make manifest`, `make registry`, and `cli.py` |
 | Did this wrapper preserve the callable contract honestly? | Modules 03 to 05 | `make action`, `make signatures`, and `actions.py` |
-| Should this live in a wrapper, property, or descriptor? | Modules 06 to 08 | `fields.py`, `make field`, and field tests |
+| Should this live in a class decorator, property, or descriptor? | Modules 06 to 08 | class-customization lab, `make class-creation`, `fields.py`, and field tests |
 | Does this really belong at class-definition time? | Module 09 | `make registry`, `framework.py`, and registry tests |
 | Which runtime powers are too dangerous to approve casually? | Module 10 | verification bundle and review checklist |
 
@@ -109,6 +109,10 @@ Use this route to answer:
 - Does the invariant belong on attribute access?
 - Why does one field yield to instance state while another does not?
 - Is this still a field contract, or has it turned into hidden architecture?
+
+Start with `make class-customization-lab` before reading the capstone field system.
+Use `make capstone-class-creation` when the question becomes class-family timing rather
+than one attribute boundary.
 
 Best first capstone move:
 
