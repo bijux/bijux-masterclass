@@ -1,6 +1,5 @@
 # Descriptor Composition and Wrapper Fields
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,7 +9,7 @@ graph LR
   program["Python Meta-Programming"]
   section["Descriptor Systems Validation Framework Design"]
   page["Descriptor Composition and Wrapper Fields"]
-  capstone["Capstone evidence"]
+  capstone["Capstone transfer"]
 
   family --> program --> section --> page
   page -.applies in.-> capstone
@@ -18,309 +17,241 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  input["' PAGER '"] --> audit["AuditWrites"]
+  audit --> normalize["NormalizeText"]
+  normalize --> choice["OneOf"]
+  choice --> storage["StoredField"]
+  storage --> accepted["'pager' stored"]
+  accepted --> auditEvent["accepted write audited"]
 ```
 <!-- page-maps:end -->
 
-Once descriptor systems start carrying several concerns at once, teams hit a design fork:
+Composition can prevent a subclass explosion, but it does not make complexity disappear.
+It moves complexity into a delegation chain.
 
-- create more subclasses for every combination
-- or layer behavior around an inner field
+The review standard is therefore:
 
-This core focuses on the second option.
+> one layer owns one concern, every protocol hook reaches the correct inner owner, and a
+> complete read or write can still be narrated in order.
 
-This page matters because composition can sound cleaner than subclass explosion while
-quietly making field behavior harder to inspect. A learner studying alone needs a way to
-prove which layer owns what and when the wrapper stack has become too opaque to justify.
+If a wrapper exists only “for flexibility,” or if its place in the trace cannot be
+explained, it has not earned its cost.
 
-## The sentence to keep
+## Starting pressure
 
-Descriptor composition wraps one field descriptor in another so new behavior can be added
-through delegation instead of by multiplying subclasses for every field variant.
+A delivery channel field needs four behaviors:
 
-That is useful, but only if the layers stay inspectable.
+1. normalize input text
+2. accept only `email` or `pager`
+3. store the accepted value
+4. record successful writes
 
-Keep one more sentence beside it:
-
-> every wrapper layer must earn its existence by adding one clear concern without hiding the inner owner.
-
-For self-study, turn that into a written trace:
-
-- name the inner field contract in one sentence
-- name the one added concern for each wrapper
-- trace one assignment from outermost layer to stored value
-- say which layer you would remove first if readability started to slip
-
-## Why composition shows up here
-
-By Module 08, a field might want more than one concern:
-
-- storage
-- validation
-- coercion
-- logging
-- caching
-
-If every combination becomes its own subclass, the design quickly turns into a class tree
-that is harder to review than the field logic itself.
-
-Composition is the usual escape hatch.
-
-Use this table before trusting a composed field design:
-
-| Pressure | Review question |
-| --- | --- |
-| inner ownership | what field behavior would still exist if every wrapper disappeared? |
-| added concern | what one extra responsibility does this layer add? |
-| forwarding | which protocol methods must be delegated to keep the field honest? |
-| stack depth | how many layers must a reader traverse to explain one write? |
-| escalation | at what point is a wider framework abstraction clearer than more wrappers? |
-
-## A delegation base
+Inheritance could create a specialized class for this exact combination. More
+combinations would multiply subclasses. The lab instead wraps one field contract:
 
 ```python
-class FieldWrapper:
-    def __init__(self, inner):
-        self.inner = inner
-
-    def __set_name__(self, owner, name):
-        self.inner.__set_name__(owner, name)
-
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        return self.inner.__get__(obj, owner)
-
-    def __set__(self, obj, value):
-        self.inner.__set__(obj, value)
+class DeliveryPolicy:
+    channel = AuditWrites(
+        NormalizeText(
+            OneOf(
+                StoredField(),
+                choices=("email", "pager"),
+            )
+        )
+    )
 ```
 
-This is the useful center of the pattern:
+Read the declaration from outside to inside. Trace assignment in that same direction
+until storage succeeds, then return outward to record the audit.
 
-- the wrapper owns one extra concern
-- the inner descriptor still owns the underlying field contract
+## Inspect the layer ledger
 
-That keeps layering explicit.
+Open `labs/descriptor_systems/composition.py` and run:
 
-That is the rule to defend through the rest of the page:
+```bash
+python3 -m unittest tests/test_descriptor_system_composition.py -v
+make descriptor-system-lab
+```
 
-remove the wrapper and the inner field should still have a recognizable contract.
+The `composition.layers` packet reports:
 
-## A validated wrapper
+| Layer | Owned concern | `__set_name__` calls |
+| --- | --- | ---: |
+| `AuditWrites` | record an accepted write after storage | 1 |
+| `NormalizeText` | strip whitespace and normalize case | 1 |
+| `OneOf` | enforce an explicit choice set | 1 |
+| `StoredField` | store one accepted value on the instance | 1 |
+
+Class access keeps the outer descriptor visible:
 
 ```python
-def validated(validator, inner):
-    class ValidatedField(FieldWrapper):
-        def __init__(self):
-            super().__init__(inner)
-
-        def __set__(self, obj, value):
-            self.inner.__set__(obj, validator(value))
-
-    return ValidatedField()
+DeliveryPolicy.channel
 ```
 
-This shape works because the wrapper does one narrow thing:
+returns `AuditWrites`, whose `.inner` chain remains inspectable. No instance is required
+to discover the policy stack.
 
-- it transforms or rejects the incoming value
-- then it delegates ordinary field storage to the inner descriptor
+## Protocol forwarding
 
-That is much easier to reason about than a whole new subclass hierarchy for every rule.
+`FieldWrapper` forwards all three hooks required by this lab:
 
-## Evidence route for wrapper reviews
+```python
+def __set_name__(self, owner, name):
+    self.inner.__set_name__(owner, name)
 
-Use this route whenever a composed field sounds elegant but feels hard to trust:
+def __get__(self, obj, owner=None):
+    if obj is None:
+        return self
+    return self.inner.__get__(obj, owner)
 
-| Evidence step | What it proves |
-| --- | --- |
-| identify the innermost field | tells you the underlying attribute contract |
-| list one responsibility per wrapper | tells you whether each layer has a narrow reason to exist |
-| trace `__set_name__`, `__get__`, and `__set__` | tells you whether protocol forwarding is complete and coherent |
-| trace one assignment end to end | shows where transformation, validation, and storage actually happen |
-| remove one layer mentally | shows whether the wrapper adds value or only ceremony |
+def __set__(self, obj, value):
+    self.inner.__set__(obj, value)
+```
 
-## What good composition looks like
+The outermost descriptor is the only object Python calls automatically for the class
+attribute. Every inner binding happens because a wrapper explicitly delegates it.
 
-Good wrapper-field composition usually has these traits:
+Missing `__set_name__` forwarding would leave `StoredField.storage_name` empty. Duplicate
+forwarding would bind inner layers more than once. The focused test asserts a binding
+count of exactly one for every layer.
 
-- one obvious inner owner
-- one obvious added concern per layer
-- consistent forwarding of `__set_name__`, `__get__`, and `__set__`
-- shallow enough depth that a reviewer can still follow it mentally
+## Accepted write trace
 
-That last point matters more than people think.
+Assigning `" PAGER "` produces this evidence:
 
-Keep a layer ledger while you review:
+```text
+NormalizeText: " PAGER " -> "pager"
+OneOf: "pager" accepted
+StoredField: "pager" stored
+AuditWrites: accepted write recorded
+```
 
-| Layer | Owned concern | Protocol methods it must forward or override | Why it is still worth having |
-| --- | --- | --- | --- |
-| inner field | base attribute contract | its own full descriptor protocol | it defines the durable field semantics |
-| wrapper 1 | one added concern | the methods required for that concern plus correct delegation | it adds one clear behavior without hiding the base field |
-| wrapper 2 and beyond | another single concern each | same rule | only justified if the stack still stays readable |
+The order encodes policy:
 
-## A write-trace worksheet
+- normalization must precede choice validation
+- validation must precede storage
+- audit must follow successful storage
 
-Use this worksheet before you accept a wrapper stack as readable:
+Changing wrapper order changes behavior. Composition is not an unordered collection of
+features.
 
-| Step in one assignment | Which layer owns it? | What value shape leaves this step? |
-| --- | --- | --- |
-| incoming public value | outermost wrapper or caller contract | raw input |
-| validation or transformation | specific wrapper layer | transformed or rejected value |
-| storage delegation | inner field | value ready for storage |
-| final storage side effect | innermost storage owner | persisted or cached value |
+```mermaid
+sequenceDiagram
+  participant Caller
+  participant Audit
+  participant Normalize
+  participant Validate as OneOf
+  participant Store as StoredField
 
-If two adjacent rows have the same answer for ownership, one layer may not be earning its
-existence.
+  Caller->>Audit: set " PAGER "
+  Audit->>Normalize: delegate raw value
+  Normalize->>Validate: delegate "pager"
+  Validate->>Store: delegate accepted value
+  Store-->>Validate: stored
+  Validate-->>Normalize: accepted
+  Normalize-->>Audit: success
+  Audit-->>Caller: audit stored value
+```
 
-## What bad composition looks like
+## Rejected write trace
 
-Composition becomes harder to trust when:
+Assigning `"console"` produces only:
 
-- wrappers hide the inner descriptor completely
-- different layers each mutate values in surprising ways
-- `__set_name__` is forwarded inconsistently
-- the stack grows deep enough that field behavior becomes an archaeological dig
+```text
+NormalizeText: "console" -> "console"
+OneOf: "console" rejected
+```
 
-At that point, “composable” is no longer the same as “clear.”
+The evidence also reports:
 
-## Common overclaims to reject
+```json
+{
+  "audit_created": false,
+  "stored": false
+}
+```
 
-Reject these descriptions when they appear in review:
+This proves that failure stops before both mutation and success audit. An audit recorded
+before delegation would incorrectly claim that a rejected assignment succeeded.
 
-| Overclaim | Better replacement |
-| --- | --- |
-| "wrappers keep everything modular" | "wrappers keep things modular only while each layer stays shallow and inspectable" |
-| "the stack is flexible" | "the stack is flexible, but each layer increases review cost" |
-| "delegation handles the rest" | "delegation must be traced method by method, especially for `__set_name__`" |
-| "we can always add one more layer later" | "another layer is acceptable only if ownership stays legible" |
+## Wrapper budget
 
-## Weak answers to reject early
+The lab intentionally uses three visible wrappers to make the full pattern observable.
+That is an educational upper edge, not a recommendation to keep stacking.
 
-| Weak answer | Why it fails |
-| --- | --- |
-| "the wrapper is there for flexibility" | flexibility does not name a concrete concern |
-| "all layers are lightweight" | lightweight layers can still create heavy review cost |
-| "the inner field still works somehow" | somehow means the base contract is not yet clear |
-| "delegation is standard" | standard does not prove `__set_name__`, `__get__`, and `__set__` are forwarded coherently |
+For a real review:
 
-## Why `__set_name__` deserves special care
+- one wrapper is usually cheap to narrate
+- two wrappers need a written order and owner ledger
+- three or more require strong evidence that a dedicated field type or explicit service
+  would not be clearer
 
-One easy bug in wrapped descriptors is forwarding `__set_name__` incorrectly.
+The relevant cost is not runtime call depth alone. It is how many files and transformations
+a maintainer must traverse to explain one assignment.
 
-Problems include:
+## When composition is the wrong owner
 
-- never forwarding it to the inner field
-- forwarding it more than once
-- partially shadowing the name state in both wrapper and inner descriptor
+Move away from wrappers when:
 
-Because `__set_name__` often initializes storage keys and public names, this is not a
-small detail. It is part of whether the wrapped field works at all.
+- multiple layers coordinate different attributes
+- order changes according to runtime context
+- failure requires rollback across writes
+- the stack needs shared lifecycle state
+- class-wide policy must be generated from every field
 
-Use this proof route whenever name binding bugs are plausible:
+Those are system or framework concerns. More delegation cannot make their broader
+ownership disappear.
 
-- find where the public and private names are created
-- confirm whether wrapper state shadows the inner field or reuses it
-- confirm whether forwarding happens once and only once
-- test one class definition path, not only instance reads and writes
+## What the tests prove
 
-## Composition is not a license for endless stacks
+`tests/test_descriptor_system_composition.py` proves:
 
-There is a real limit to how many field layers remain readable.
+- the accepted trace runs normalize, validate, store, then audit
+- a rejected value reaches neither storage nor audit
+- every layer receives name binding exactly once
+- class access exposes the complete outer-to-inner chain
+- wrappers reject an inner object missing required descriptor hooks
+- the evidence names one responsibility per layer
 
-As a practical rule, very shallow composition is much easier to justify than deep stacks.
+It does not prove:
 
-If a field design now wants:
+- arbitrary wrapper orders are valid
+- deep stacks remain maintainable
+- cross-field coordination
+- rollback across side effects
+- compatibility with every descriptor protocol variation
 
-- logging
-- validation
-- coercion
-- caching
-- encryption
-- remote persistence
+## Capstone transfer
 
-all as separate wrapper layers, the design may already be asking for a stronger framework
-abstraction than “one wrapped descriptor.”
+The incident-plugin capstone uses explicit `StringField`, `IntegerField`,
+`BooleanField`, and `ChoiceField` subclasses. It does not use wrapper stacks.
 
-That is the escalation boundary to keep visible:
+That choice fits its current scale:
 
-composition is for additive field concerns, not for hiding architecture behind an
-infinite decorator stack.
+- each field type has one visible coercion contract
+- class inspection immediately reveals the concrete field kind
+- no cross-cutting field concern currently justifies delegation layers
 
-Use a simple wrapper budget:
+The lab teaches composition as an available mechanism. The capstone demonstrates a
+reasonable rejection of that mechanism.
 
-- one inner field plus one wrapper is usually easy to justify
-- one inner field plus two wrappers needs a written layer ledger
-- beyond that, you should prove why a wider abstraction would not be clearer
+## Learner work
 
-## Why this is better than subclass explosion
+Take one composed field and submit:
 
-Used well, composition lets a field system say:
+1. its class-access layer ledger
+2. one successful write trace
+3. one rejected write trace
+4. the exact point where mutation occurs
+5. the exact point where success audit occurs
+6. one wrapper you would remove first and the behavior lost
+7. the condition that would force the design into a wider owner
 
-- here is the base storage or coercion field
-- here is one wrapper adding validation
-- here is another wrapper adding one more cross-cutting concern
+Move on when you can explain wrapper order as executable policy rather than as nested
+syntax.
 
-That makes behavior additive and local instead of forcing a huge family of subclasses such
-as:
-
-- `CachedStringField`
-- `ValidatedCachedStringField`
-- `LoggedValidatedCachedStringField`
-
-and so on.
-
-The goal is not sophistication. The goal is keeping ownership legible.
-
-## Failure modes for wrapper fields
-
-These are the mistakes this page is trying to prevent:
-
-| Failure mode | Why it weakens the design | Repair move |
-| --- | --- | --- |
-| wrapper adds more than one real concern | the layer stops being easy to justify | split the concerns or move to a wider abstraction |
-| inner field ownership becomes hard to state | readers cannot tell what the base contract is anymore | simplify the stack and restate the innermost field contract |
-| `__set_name__` forwarding is missing or duplicated | names, storage slots, or validators can drift | trace name initialization explicitly and forward once |
-| multiple wrappers mutate values in surprising sequence | write behavior becomes guesswork | document and simplify the transformation order |
-| stack depth exceeds quick human inspection | review cost becomes higher than subclass sprawl ever saved | replace the stack with a clearer framework-level owner |
-
-## Review rules for wrapper fields
-
-When reviewing descriptor composition, keep these questions close:
-
-- what does the inner descriptor own?
-- what one extra concern does this wrapper add?
-- is `__set_name__` delegated correctly and only once?
-- how many layers do you need to traverse to understand one attribute write?
-- has the stack grown large enough that a different framework abstraction would be clearer?
-- can you name the exact layer you would remove first if the stack had to get simpler?
-
-## Exit check for this page
-
-Before moving on, make sure you can do all of these:
-
-- state the base contract of the inner field in one sentence
-- name one added concern for one wrapper and nothing more
-- explain how `__set_name__` reaches the inner field
-- trace one write path through the stack without guessing
-- say when you would stop adding wrappers and escalate to a broader design
-
-## What to practice from this page
-
-Try these before moving on:
-
-1. Wrap one validating field around one storage field and explain which concern each layer owns.
-2. Show one bug caused by forgetting to forward `__set_name__`.
-3. Write one short review note rejecting a four-layer field stack as too opaque.
-
-If those feel ordinary, the next step is hint-driven validation and coercion, where the
-descriptor starts reading type metadata as runtime evidence.
-
-## Continue through Module 08
+## Continue
 
 - Previous: [External Storage Descriptors](external-storage-descriptors.md)
 - Next: [Hint-Driven Validation and Coercion](hint-driven-validation-and-coercion.md)
-- Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)
+- Practice: [Descriptor System Review Lab](exercises.md)
