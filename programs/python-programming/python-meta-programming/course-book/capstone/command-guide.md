@@ -34,7 +34,7 @@ the broadest route.
 | --- | --- | --- |
 | public runtime shape | `capstone-manifest`, `capstone-plugin`, `capstone-field`, `capstone-action`, `capstone-registry`, or `capstone-signatures` | `inspect` |
 | partial runtime hint checks without action execution | `capstone-check-action` | runtime and CLI tests |
-| stored metaclass and namespace provenance without plugin construction | `capstone-class-creation` | runtime and CLI tests |
+| stored metaclass selection, hook ownership, accepted powers, and rejected powers without plugin construction | `capstone-class-creation` | runtime and CLI class-creation tests |
 | field descriptor ownership without plugin construction | `capstone-field-ownership` | field and CLI tests |
 | accepted and rejected field-system powers without construction | `capstone-field-system` | field and CLI tests |
 | one concrete runtime behavior | `demo` or `capstone-trace` | `capstone-walkthrough` or runtime tests |
@@ -97,7 +97,8 @@ make proof
   the stronger descriptor-system powers this capstone deliberately rejects
 - `action`: inspect one concrete action contract and its generated signature
 - `check-action`: check supported action argument hints and report refused surfaces without execution
-- `class-creation`: inspect prepared namespace, declared/inherited members, initializer generation, and registration without construction
+- `class-creation`: inspect prepared namespace, declared/inherited members, hook ownership,
+  generated class structure, registration, and rejected powers without construction
 - `registry`: inspect registration determinism from the public surface
 - `signatures`: inspect constructor and action signatures together
 - `demo`: invoke one realistic plugin action directly in the terminal

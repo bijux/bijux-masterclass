@@ -80,7 +80,7 @@ you breadth.
 | Modules 01-03 | manifest export, constructor signatures, and inspectable runtime shape | `capstone-manifest` and `capstone-registry` |
 | Modules 04-06 | decorators, wrappers, and action-history behavior | `capstone-action` and `capstone-trace` |
 | Modules 07-08 | descriptors, field validation, and focused field tests | `capstone-field` and `tests/test_fields.py` |
-| Modules 09-10 | registration, generated constructors, public commands, and saved bundles | `capstone-registry`, `capstone-signatures`, and `capstone-verify-report` |
+| Modules 09-10 | prepared namespace, generated class contract, registration, public commands, and saved bundles | `capstone-class-creation`, `capstone-signatures`, and `capstone-verify-report` |
 
 ## Core commands
 
@@ -88,6 +88,7 @@ you breadth.
 | --- | --- | --- |
 | runtime shape without execution | `make PROGRAM=python-programming/python-meta-programming capstone-manifest` | `make manifest` |
 | registry review | `make PROGRAM=python-programming/python-meta-programming capstone-registry` | `make registry` |
+| class-creation ownership without construction | `make PROGRAM=python-programming/python-meta-programming capstone-class-creation` | `make class-creation` |
 | one concrete invocation story | `make PROGRAM=python-programming/python-meta-programming capstone-trace` | `make trace` |
 | guided saved route | `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` | `make tour` |
 

@@ -76,7 +76,7 @@ or [Pressure Routes](pressure-routes.md).
 | wrappers preserved metadata and public callable shape | `capstone-action`, `capstone-signatures`, or `capstone-trace` | `actions.py`, runtime tests, and trace output |
 | field or descriptor ownership is placed honestly | `descriptor-lookup-lab`, then `capstone-field-ownership` | lab evidence, `framework.py`, `fields.py`, and field ownership tests |
 | field-system power stops at an honest architecture boundary | `descriptor-system-lab`, then `capstone-field-system` | system evidence, `framework.py`, and field-system tests |
-| class-creation control is justified and deterministic | `capstone-registry` | `framework.py`, `registry.json`, and registry tests |
+| class-creation control is justified and deterministic | `class-creation-lab`, then `capstone-class-creation` | hook and owner evidence, `framework.py`, and class-creation tests |
 | review routes remain observational rather than magical | `inspect`, `capstone-verify-report`, or `proof` | saved bundles plus CLI and test surfaces |
 
 ## Module bridge
@@ -88,7 +88,7 @@ or [Pressure Routes](pressure-routes.md).
 | Module 06 | what can post-construction tools own and what requires class-creation timing | `class-customization-lab`, `class-creation`, and runtime tests |
 | Module 07 | can protocol status, lookup precedence, binding, and storage ownership be predicted and observed | `descriptor-lookup-lab`, `field-ownership`, and descriptor lab tests |
 | Module 08 | do cache, backend, composition, hint, and record boundaries stay observable without becoming hidden architecture | `descriptor-system-lab`, `field-system`, and descriptor-system tests |
-| Module 09 | is class-definition-time behavior justified and deterministic | `registry`, `framework.py`, and `tests/test_registry.py` |
+| Module 09 | do resolution, declaration, shaping, and registration have the smallest honest owners | `class-creation-lab`, `class-creation`, and focused creation tests |
 | Module 10 | do the public review routes stay observable under real scrutiny | `inspect`, `capstone-verify-report`, or `proof` |
 
 ## Quick review questions
@@ -98,6 +98,7 @@ or [Pressure Routes](pressure-routes.md).
 | Where should I start if the public runtime shape already feels suspicious? | `capstone-manifest` or `capstone-registry` |
 | Where should I start if the issue is descriptor ownership? | `descriptor-lookup-lab`, then `capstone-field-ownership` |
 | Where should I start if several field powers are becoming architecture? | `descriptor-system-lab`, then `capstone-field-system` |
+| Where should I start if registration is being used to justify a metaclass? | `class-creation-lab`, then compare `__init_subclass__` with `capstone-class-creation` |
 | Where should I start if the issue is one exported field or action contract? | `capstone-field` or `capstone-action` |
 | Which saved bundle is strongest for a human review? | `inspect` or `capstone-verify-report` |
 | Which route should I use before approving a larger change? | `capstone-verify-report` or `proof` |

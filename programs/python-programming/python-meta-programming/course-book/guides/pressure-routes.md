@@ -115,8 +115,10 @@ with `make descriptor-lookup-lab-test` and `make descriptor-lookup-lab` to predi
 observe protocol status, precedence, binding, and storage. Continue with
 `make descriptor-system-lab-test` and `make descriptor-system-lab` when caches, backend
 authority, wrapper layers, hint policy, or multi-field ownership enter the design. Use
-`make capstone-class-creation` when the question becomes class-family timing rather than
-one attribute boundary.
+`make class-creation-lab-test` and `make class-creation-lab` when the question becomes
+class-family timing rather than one attribute boundary. Only then use
+`make capstone-class-creation` to compare the real namespace, shaping, registration, and
+rejected-power evidence.
 
 Best first capstone move:
 
@@ -137,17 +139,20 @@ Study order:
 1. [Module 06](../module-06-class-customization-pre-metaclasses/index.md)
 2. [Module 09](../module-09-metaclass-design-class-creation/index.md)
 3. [Module 10](../module-10-runtime-governance-mastery-review/index.md)
-4. `framework.py` plus `tests/test_registry.py`
+4. `labs/class_creation/` plus its focused tests
+5. `framework.py` plus class-creation, registry, and CLI tests
 
 Use this route to answer:
 
 - What must happen before the class exists?
-- Could a class decorator or explicit registration function own this more honestly?
+- Could a class decorator, `__init_subclass__`, or explicit helper own this more honestly?
 - Is the metaclass deterministic, resettable, and inspectable?
+- Which assignment-time fact would the completed class lose?
 
 Best first capstone move:
 
-- run `make PROGRAM=python-programming/python-meta-programming capstone-registry`
+- first run `make -C programs/python-programming/python-meta-programming class-creation-lab`
+- then run `make PROGRAM=python-programming/python-meta-programming capstone-class-creation`
 
 ## Route 4: Inherit a dynamic codebase without trusting its magic
 

@@ -182,13 +182,23 @@ Proof move:
 
 You are ready to move on when you can:
 
-- explain what must happen before the class exists for a metaclass to be justified
-- compare a metaclass honestly against class decorators and explicit registration
-- describe why deterministic, resettable registration matters in tests and reviews
+- trace `type(name, bases, namespace)` into one concrete class object
+- predict inherited metaclass selection and explain a real conflict as competing
+  class-creation ownership
+- separate namespace and structural work in `__new__` from finished-class bookkeeping in
+  metaclass `__init__`
+- preserve one assignment-time fact through `__prepare__` that final class inspection
+  cannot recover
+- reject a metaclass for registration alone because `__init_subclass__` is sufficient
+- justify the capstone metaclass through its combined declaration-time and generated
+  class contract
 
 Proof move:
 
-- inspect `framework.py` and `tests/test_registry.py` together
+- run `make class-creation-lab-test`, inspect `make class-creation-lab`, and reconcile
+  the hook and owner decisions with their focused tests
+- then run `make capstone-class-creation` and map its four-entry hook trace, accepted
+  powers, rejected powers, source owners, and failure tests without constructing a plugin
 
 ### Module 10: Runtime Governance and Mastery Review
 

@@ -163,13 +163,15 @@ make -C programs/python-programming/python-meta-programming decorator-policy-lab
 make -C programs/python-programming/python-meta-programming capstone-check-action
 make -C programs/python-programming/python-meta-programming class-customization-lab
 make -C programs/python-programming/python-meta-programming class-customization-lab-test
-make -C programs/python-programming/python-meta-programming capstone-class-creation
 make -C programs/python-programming/python-meta-programming descriptor-lookup-lab
 make -C programs/python-programming/python-meta-programming descriptor-lookup-lab-test
 make -C programs/python-programming/python-meta-programming capstone-field-ownership
 make -C programs/python-programming/python-meta-programming descriptor-system-lab
 make -C programs/python-programming/python-meta-programming descriptor-system-lab-test
 make -C programs/python-programming/python-meta-programming capstone-field-system
+make -C programs/python-programming/python-meta-programming class-creation-lab
+make -C programs/python-programming/python-meta-programming class-creation-lab-test
+make -C programs/python-programming/python-meta-programming capstone-class-creation
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -208,6 +210,11 @@ Use `descriptor-system-lab` for Module 08's cache freshness, backend authority, 
 order, bounded hint policy, record-model, and owner-selection evidence.
 `capstone-field-system` then compares those powers with the real application's narrower
 field design without constructing or executing a plugin.
+Use `class-creation-lab` for Module 09's explicit construction, metaclass selection,
+hook timing, prepared namespace, registry, and owner-decision evidence. The focused test
+target proves that registration alone stops at `__init_subclass__`, while the later
+`capstone-class-creation` transfer exposes the combined declaration-time and generated
+class contract that earns `PluginMeta`.
 
 Primary reading route:
 
