@@ -160,13 +160,23 @@ Proof move:
 
 You are ready to move on when you can:
 
-- say when a descriptor is still one field contract and when it has become architecture
-- explain how caching, coercion, or external storage change review cost
-- describe why some validation belongs at assignment while other validation belongs elsewhere
+- trace a cached derivation through reuse, dependency invalidation, and recomputation
+- name the authoritative backend slot, local mirror, hidden I/O, and outage behavior for
+  one external field
+- trace normalization, validation, storage, and audit through a composed field in order
+- publish a hint interpreter's supported, coerced, validated, and refused surfaces
+- distinguish a bounded field-backed record model from transactions, identity maps,
+  query planning, relationships, and migrations
+- select the smallest owner that can see an invariant and reject both weaker and stronger
+  alternatives
 
 Proof move:
 
-- compare the capstone field system with richer descriptor patterns and name the powers it intentionally leaves out
+- run `make descriptor-system-lab-test`, inspect `make descriptor-system-lab`, and
+  reconcile each mechanism with its named focused test
+- then run `make capstone-field-system` and explain why the application accepts explicit
+  field subclasses and class-level collection while rejecting caches, backend access,
+  wrapper stacks, hint inference, and transactions in its field layer
 
 ### Module 09: Metaclass Design and Class Creation
 

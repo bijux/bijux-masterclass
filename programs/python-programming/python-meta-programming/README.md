@@ -167,6 +167,9 @@ make -C programs/python-programming/python-meta-programming capstone-class-creat
 make -C programs/python-programming/python-meta-programming descriptor-lookup-lab
 make -C programs/python-programming/python-meta-programming descriptor-lookup-lab-test
 make -C programs/python-programming/python-meta-programming capstone-field-ownership
+make -C programs/python-programming/python-meta-programming descriptor-system-lab
+make -C programs/python-programming/python-meta-programming descriptor-system-lab-test
+make -C programs/python-programming/python-meta-programming capstone-field-system
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -201,6 +204,10 @@ binding, and canonical-storage evidence. Its output pairs static predictions wit
 access so learners can explain why each lookup wins. `capstone-field-ownership` then
 transfers that reasoning into the real field system without constructing or executing a
 plugin.
+Use `descriptor-system-lab` for Module 08's cache freshness, backend authority, wrapper
+order, bounded hint policy, record-model, and owner-selection evidence.
+`capstone-field-system` then compares those powers with the real application's narrower
+field design without constructing or executing a plugin.
 
 Primary reading route:
 
@@ -247,6 +254,15 @@ Primary reading route:
 - `labs/descriptor_lookup/quantity.py`
 - `course-book/module-07-descriptors-lookup-attribute-control/exercises.md`
 - `course-book/module-07-descriptors-lookup-attribute-control/exercise-answers.md`
+- `course-book/module-08-descriptor-systems-validation-framework-design/index.md`
+- `labs/descriptor_systems/cache.py`
+- `labs/descriptor_systems/external.py`
+- `labs/descriptor_systems/composition.py`
+- `labs/descriptor_systems/hints.py`
+- `labs/descriptor_systems/relational.py`
+- `labs/descriptor_systems/boundaries.py`
+- `course-book/module-08-descriptor-systems-validation-framework-design/exercises.md`
+- `course-book/module-08-descriptor-systems-validation-framework-design/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`
