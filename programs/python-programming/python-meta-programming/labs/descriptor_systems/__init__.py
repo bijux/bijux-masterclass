@@ -6,6 +6,16 @@ from .cache import (
     InvalidatingField,
     cache_evidence,
 )
+from .composition import (
+    AuditWrites,
+    DeliveryPolicy,
+    FieldWrapper,
+    NormalizeText,
+    OneOf,
+    StoredField,
+    composition_evidence,
+    describe_layers,
+)
 from .external import (
     CountingStore,
     ExternalField,
@@ -18,10 +28,18 @@ __all__ = [
     "CachedComputation",
     "CountingStore",
     "Document",
+    "DeliveryPolicy",
     "ExternalField",
+    "FieldWrapper",
     "IncidentRecord",
     "InvalidatingField",
+    "NormalizeText",
+    "OneOf",
     "StoreUnavailable",
+    "StoredField",
+    "AuditWrites",
     "cache_evidence",
+    "composition_evidence",
+    "describe_layers",
     "external_storage_evidence",
 ]
