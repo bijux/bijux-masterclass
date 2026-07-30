@@ -45,6 +45,7 @@ That question matters because different proof routes answer different kinds of c
 | the runtime surface is observational | `make manifest` or `make registry` | `make inspect` |
 | descriptor fields own validation and coercion | `make field` | `tests/test_fields.py` |
 | wrapper behavior stays visible | `make action` or `make trace` | `tests/test_runtime.py` or `tests/test_cli.py` |
+| wrapper ownership stays inspectable without execution | `make action-wrapper` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | action arguments can be validated without execution | `make bind-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | registration stays deterministic | `make registry` | `tests/test_registry.py` |
 | one realistic invocation story is still honest | `make trace` | `make tour` or `tests/test_runtime.py` |
@@ -100,6 +101,7 @@ make registry
 make plugin
 make field
 make action
+make action-wrapper
 make bind-action
 make signatures
 make demo
@@ -122,7 +124,7 @@ without dragging in unrelated proof weight.
 | --- | --- | --- | --- |
 | `src/incident_plugins/framework.py` | `make manifest`, `make registry`, `make signatures`, and `make bind-action` | `tests/test_registry.py` and `tests/test_runtime.py` | `make inspect` or `make verify-report` |
 | `src/incident_plugins/fields.py` | `make field` and `make plugin` | `tests/test_fields.py` | `make inspect` |
-| `src/incident_plugins/actions.py` | `make action`, `make trace`, and `make signatures` | `tests/test_runtime.py` and `tests/test_cli.py` | `make tour` or `make verify-report` |
+| `src/incident_plugins/actions.py` | `make action`, `make action-wrapper`, `make trace`, and `make signatures` | `tests/test_runtime.py` and `tests/test_cli.py` | `make tour` or `make verify-report` |
 | `src/incident_plugins/plugins.py` | `make plugin`, `make demo`, and `make trace` | `tests/test_runtime.py` | `make tour` |
 | `src/incident_plugins/cli.py` | `make manifest`, `make registry`, `make trace`, and `make demo` | `tests/test_cli.py` | `make inspect`, `make tour`, or `make verify-report` |
 | `scripts/write_bundle_manifest.py` | `make inspect`, `make tour`, or `make verify-report` | `tests/test_bundle_manifest.py` | the matching bundle directory under `artifacts/` |

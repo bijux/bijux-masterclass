@@ -107,6 +107,8 @@ inspect: ## Build the learner-facing inspection bundle
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(INSPECT_DIR)/plugin.json
 	@PYTHONPATH=src $(CLI) field delivery webhook endpoint > $(INSPECT_DIR)/field.json
 	@PYTHONPATH=src $(CLI) action delivery pager preview > $(INSPECT_DIR)/action.json
+	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver \
+		> $(INSPECT_DIR)/action-wrapper.json
 	@PYTHONPATH=src $(CLI) bind-action delivery console deliver \
 		--arg "title=CPU high" \
 		--arg "severity=warning" \
@@ -129,7 +131,7 @@ inspect: ## Build the learner-facing inspection bundle
 	@printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read manifest.json for group-level field and action metadata.' \
-		'  2. Read registry.json, plugin.json, field.json, action.json, signatures.json, and bind-action.json for registered plugins, concrete contracts, callable shapes, and non-executing call validation.' \
+		'  2. Read registry.json, plugin.json, field.json, action.json, signatures.json, action-wrapper.json, and bind-action.json for concrete contracts, wrapper ownership, and non-executing call validation.' \
 		'  3. Read COMMAND_GUIDE.md and PROOF_GUIDE.md for the next review route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership and proof.' \
 		> $(INSPECT_DIR)/route.txt
@@ -147,6 +149,8 @@ verify-report: ## Build the structured capstone verification report
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(VERIFY_REPORT_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(VERIFY_REPORT_DIR)/plugin.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(VERIFY_REPORT_DIR)/signatures.json
+	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver \
+		> $(VERIFY_REPORT_DIR)/action-wrapper.json
 	@PYTHONPATH=src $(CLI) bind-action delivery console deliver \
 		--arg "title=CPU high" \
 		--arg "severity=warning" \
@@ -175,7 +179,7 @@ verify-report: ## Build the structured capstone verification report
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read pytest.txt for executable proof.' \
-		'  2. Read manifest.json, plugin.json, signatures.json, bind-action.json, and trace.json to compare observation, preflight, and execution.' \
+		'  2. Read manifest.json, plugin.json, signatures.json, action-wrapper.json, bind-action.json, and trace.json to compare wrapper structure, preflight, and execution.' \
 		'  3. Read TEST_GUIDE.md and PROOF_GUIDE.md for the closest claim-to-proof route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect a code change back to the saved proof.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
@@ -190,6 +194,8 @@ tour: ## Build the learner-facing walkthrough bundle
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(TOUR_DIR)/registry.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(TOUR_DIR)/plugin.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(TOUR_DIR)/signatures.json
+	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver \
+		> $(TOUR_DIR)/action-wrapper.json
 	@PYTHONPATH=src $(CLI) bind-action delivery console deliver \
 		--arg "title=CPU high" \
 		--arg "severity=warning" \
@@ -235,8 +241,8 @@ tour: ## Build the learner-facing walkthrough bundle
 	@printf '%s\n' \
 		'Walkthrough route:' \
 		'  1. Read manifest.json, registry.json, plugin.json, and signatures.json to inspect the public runtime shape.' \
-		'  2. Read bind-action.json for validated arguments without execution.' \
-		'  3. Read demo.json and trace.json for deliberate invocation, configuration, and action-history visibility.' \
+		'  2. Read action-wrapper.json and bind-action.json for wrapper ownership and validated arguments without execution.' \
+		'  3. Read demo.json and trace.json for deliberate invocation, configuration, and successful action-history visibility.' \
 		'  4. Read WALKTHROUGH_GUIDE.md, COMMAND_GUIDE.md, and TOUR.md for the review order.' \
 		'  5. Read PACKAGE_GUIDE.md and PROOF_GUIDE.md when you need to connect the tour back to local guides or source ownership.' \
 		> $(TOUR_DIR)/route.txt

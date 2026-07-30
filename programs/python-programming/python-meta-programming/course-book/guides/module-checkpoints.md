@@ -89,12 +89,16 @@ Proof move:
 You are ready to move on when you can:
 
 - describe what happens at definition time and what happens at call time in a decorator
+- separate decorator-expression evaluation from bottom-up decorator application
 - explain why `functools.wraps` is part of correctness rather than decoration
 - tell when a wrapper is still transparent and when it has started hiding semantic change
+- distinguish logical signature recovery from the wrapper shell's implementation shape
+- trace a stateful wrapper's execution, eviction, failure, and reset policies
 
 Proof move:
 
-- inspect `actions.py` plus the matching runtime tests for invocation recording
+- run the wrapper lifecycle and bounded-cache labs, then audit the capstone action wrapper
+  before comparing its failed and successful history tests
 
 ### Module 05: Decorator Design, Policies, and Typing
 

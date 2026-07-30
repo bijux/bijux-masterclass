@@ -153,6 +153,11 @@ make -C programs/python-programming/python-meta-programming evidence-lab-test
 make -C programs/python-programming/python-meta-programming evidence-repr
 make -C programs/python-programming/python-meta-programming evidence-repr-test
 make -C programs/python-programming/python-meta-programming capstone-bind-action
+make -C programs/python-programming/python-meta-programming wrapper-lab
+make -C programs/python-programming/python-meta-programming wrapper-lab-test
+make -C programs/python-programming/python-meta-programming wrapper-cache
+make -C programs/python-programming/python-meta-programming wrapper-cache-test
+make -C programs/python-programming/python-meta-programming capstone-action-wrapper
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -165,8 +170,12 @@ Use `lab` for the Module 01 runtime-object evidence. Use `observation-lab` and
 Use `evidence-lab` and `evidence-repr` for Module 03's classified evidence packet and
 signature-guided representation. The matching focused targets verify each teaching
 contract. `capstone-bind-action` is the Module 03 transfer: it validates a real action
-call without constructing or invoking the plugin. `lab-test` verifies all course labs.
-Use `capstone-walkthrough` when you are ready for the broader integration project,
+call without constructing or invoking the plugin. Use `wrapper-lab` and `wrapper-cache`
+for Module 04's lifecycle evidence and stateful worked example. The matching focused
+targets prove timing, identity, eviction, failure, and reset behavior.
+`capstone-action-wrapper` transfers those ideas into a non-executing audit of the real
+`@action` wrapper. `lab-test` verifies all course labs. Use `capstone-walkthrough` when
+you are ready for the broader integration project,
 `capstone-tour` when you want the same saved bundle in the proof ladder,
 `capstone-verify-report` when you need durable integration evidence, and
 `capstone-confirm` for the strictest capstone confirmation pass.
@@ -191,6 +200,11 @@ Primary reading route:
 - `labs/runtime_evidence/safe_repr.py`
 - `course-book/module-03-signatures-provenance-runtime-evidence/exercises.md`
 - `course-book/module-03-signatures-provenance-runtime-evidence/exercise-answers.md`
+- `course-book/module-04-function-wrappers-transparent-decorators/index.md`
+- `labs/wrapper_runtime/evidence.py`
+- `labs/wrapper_runtime/bounded_cache.py`
+- `course-book/module-04-function-wrappers-transparent-decorators/exercises.md`
+- `course-book/module-04-function-wrappers-transparent-decorators/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`
