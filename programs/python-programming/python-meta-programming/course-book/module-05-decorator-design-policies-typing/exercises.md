@@ -1,5 +1,4 @@
-# Exercises
-
+# Exercises: Decorator Policy Design Studio
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Decorator Design Policies Typing"]
-  page["Exercises"]
+  page["Decorator Policy Design Studio"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -18,224 +17,257 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  orient["Establish the green baseline"] --> modify["Change one policy"]
+  modify --> prove["Run focused proof"]
+  prove --> review["State what the evidence does and does not prove"]
+  review --> transfer["Compare with the capstone owner"]
 ```
 <!-- page-maps:end -->
 
-Use these after reading the five core lessons and the worked example. The goal is not to
-collect more decorator patterns. The goal is to make policy ownership, typing limits, and
-wrapper honesty explicit.
+This studio changes and reviews the shipped Module 05 code. It is not a syntax
+worksheet. Each exercise asks you to predict a behavioral delta, make or review one
+bounded change, and leave evidence another learner can check.
 
-Each exercise asks for three things:
+Work from `programs/python-programming/python-meta-programming`.
 
-- the policy or contract you are trying to enforce
-- the wrapper or explicit boundary you chose
-- the reason that choice is honest enough for the problem
+## Establish the baseline
 
-Treat the ten exercises as one full lab day on decorator policy and typing boundaries.
+Run:
 
-This is not a "write ten decorators" worksheet. It is a review lab. A weak answer can
-still compile and still fail the learning goal if it hides ownership, skips refusal
-boundaries, or overstates runtime guarantees.
+```bash
+make decorator-policy-lab-test
+make decorator-policy-lab
+make capstone-check-action
+```
 
-Do them in order:
+Save these baseline facts:
 
-- Exercises 1-3 establish factory capture, resilience policy, and narrow runtime validation
-- Exercises 4-6 separate cache policy, overloaded decorators, and partial validator limits
-- Exercises 7-8 extend that discipline into escalation boundaries and explicit policy owners
-- Exercises 9-10 package the whole module into a reviewable decorator-governance packet
+- retry succeeds on its third underlying execution
+- exhausted retry stops after two total attempts
+- strict mismatch prevents execution
+- warning mismatch permits execution
+- `list[int]` is refused during decoration
+- cache reset leaves both compared caches empty
+- the shipped console action contract is complete and accepted without construction or execution
 
-Keep one policy-boundary table while you work:
+If the baseline is not green, stop and diagnose it. Do not reinterpret an existing
+failure as evidence for your change.
 
-| Policy or contract | Wrapper or owner | What it really controls | What it refuses to claim | Review judgment |
-| --- | --- | --- | --- | --- |
+## Studio 1: change a finite retry policy
 
-Keep one second table beside it:
+Starting context:
 
-| Exercise | Operator or reviewer evidence | What could still go wrong | Repair move |
-| --- | --- | --- | --- |
+- `labs/decorator_policy/retry.py` owns the generic wrapper
+- `labs/decorator_policy/evidence.py` owns the deterministic scenario
+- `tests/test_decorator_policy_evidence.py` owns the claims
 
-## Exercise 1: Build one decorator factory with real configuration
+Objective: change the success scenario from three attempts with two waits to two
+attempts with one wait.
 
-Write a parameterized decorator and apply it twice with different configuration.
+Constraints:
 
-What to hand in:
+- do not change the generic retry loop
+- keep `TransientDeliveryError` as the only retryable failure
+- keep real sleeping out of the test
+- preserve callable metadata and `__retry_policy__`
 
-- the factory implementation
-- two differently configured uses
-- one explanation of what was captured at definition time and what runs on each call
-- one sentence naming the first sign that the factory has started hiding too much policy
+Before editing, write the exact new event list. Then update the scenario and its test.
 
-## Exercise 2: Review one resilience wrapper
+Acceptance:
 
-Implement or inspect a retry, timeout, or rate-limit decorator.
+```bash
+python -m unittest \
+  tests.test_decorator_policy_evidence.DecoratorPolicyEvidenceTests.test_retry_packet_exposes_captured_policy_and_multiplied_execution
+```
 
-What to hand in:
+Hand in:
 
-- the rule it enforces at the call boundary
-- one concrete control-flow or failure behavior it changes
-- one sentence explaining why this is policy rather than a thin transformation
-- one sentence naming the exact stopping rule a reviewer should check
+- the predicted and actual event lists
+- the changed captured policy
+- one sentence explaining why fewer attempts reduce exposure but do not prove delivery is idempotent
+- the Module 04 transparency contract that remained true
 
-## Exercise 3: Validate one narrow hint subset
+## Studio 2: prove selective failure handling
 
-Build a tiny annotation-aware validator for a supported subset of hints.
+Objective: add a focused case where:
 
-What to hand in:
+- the first `ConnectionError` is retryable
+- a later `ValueError` is not
+- the wrapper stops immediately on `ValueError`
 
-- the supported hint subset
-- one call that passes and one that fails
-- one example of a hint surface you explicitly refuse to support
-- one sentence explaining what claim would become dishonest if you silently skipped that unsupported hint
+Constraints:
 
-## Exercise 4: Inspect cache policy instead of only cache speed
+- use a zero-duration injected sleeper
+- assert the exact underlying execution count
+- assert the `ValueError` object is not replaced
+- do not broaden the configured exception tuple
 
-Use `functools.lru_cache` or a bounded cache wrapper.
+Acceptance:
 
-What to hand in:
+- the new test fails if the wrapper catches `Exception`
+- the new test fails if the wrapper performs an extra attempt
+- all existing decorator-policy tests remain green
 
-- the key or typed-mode behavior you are relying on
-- one inspection or reset hook such as `cache_info()` or `cache_clear()`
-- one explanation of why cache policy is more than "just performance"
-- one sentence naming which calls count as the same cached request
+Explain what this proves about exception selection and what it does not prove about
+side-effect safety.
 
-## Exercise 5: Reject one decorator that grew too large
+## Studio 3: extend or refuse one annotation
 
-Take a wrapper idea that is carrying too much policy and redesign it mentally.
+Choose one route.
 
-What to hand in:
+Route A: extend a supported union from `str | int | None` to
+`str | int | float | None`.
 
-- the overloaded decorator idea
-- the explicit object, service, or later-course mechanism you would move it to
-- one explanation of why that new owner is easier to review
-- one sentence naming what hidden state or coordination made the old decorator untrustworthy
+Route B: add a decorated function with `dict[str, int]` and prove it is refused.
 
-## Exercise 6: Review a partial validator honestly
+Constraints:
 
-Use the worked example pattern on `@validated` or a similar runtime checker.
+- do not add deep container checking
+- do not silently skip any annotation
+- predict whether the outcome occurs during decoration or invocation
+- keep `Any`, plain classes, `Union`, and `Optional` working
 
-What to hand in:
+Acceptance:
 
-- the exact claim the validator is allowed to make
-- one unsupported typing feature it must reject or ignore
-- one explanation of why warning mode is not the same as safety
-- one sentence naming the first threshold where this should stop being a decorator and become a validation component
+```bash
+python -m unittest discover \
+  -s tests \
+  -p "test_decorator_policy_validation.py" \
+  -v
+```
 
-## Midday self-check
+Hand in:
 
-Before moving into the final four exercises, make sure you can already answer these
-questions clearly:
+- the chosen hint and predicted timing
+- the test that proves the outcome
+- the strongest honest runtime claim after your change
+- one static-typing question the runtime test still cannot answer
 
-- when decorator capture stays narrow and when it turns into hidden policy
-- why resilience wrappers and caches need operational review instead of only syntax review
-- what a partial runtime validator is allowed to claim without overstating typing support
-- when a decorator should give up ownership to an explicit object or service
+## Studio 4: audit warning and return timing
 
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the policy owner, runtime boundary, and unsupported claim more explicit before
-continuing.
+Do not change implementation first. Read:
 
-If your answers still rely on phrases like "the decorator just handles it" or "it keeps
-things simple," revise them before moving on. Those sentences hide the owner story this
-module is trying to force into the open.
+- `test_warning_mode_observes_a_mismatch_but_still_executes`
+- `test_strict_return_validation_runs_after_the_wrapped_function`
 
-## Exercise 7: Separate local convenience from durable policy
+Draw the two event sequences. Then add one assertion to each test that makes execution
+timing harder to misread.
 
-Choose one decorator idea that feels convenient in a single file but risky as a long-term
-course pattern.
+Your review note must answer:
 
-What to hand in:
+1. Why is warning mode observation rather than enforcement?
+2. Why can a return mismatch not prevent the wrapped side effect?
+3. Which business operation would be too risky for warning mode?
+4. What stronger owner would be needed for rollback or transaction semantics?
 
-- the convenient decorator idea
-- the exact policy it would silently own over time
-- one explanation of why an explicit owner would teach the boundary more honestly
-- one sentence naming who would have to debug the policy six months later
+Acceptance: another learner can infer both execution orders from test assertions
+without opening `validation.py`.
 
-## Exercise 8: Design one explicit policy owner
+## Studio 5: review cache equivalence and lifecycle
 
-Take one broad decorator idea and redesign it as an explicit object, helper, or service.
+Run the lab and inspect `cache_comparison`. Explain why these two calls share a teaching
+cache entry:
 
-What to hand in:
+```python
+render(incident_id="INC-42", severity="critical")
+render(severity="critical", incident_id="INC-42")
+```
 
-- the original decorator shape
-- the new owner you would introduce
-- one review advantage and one learning advantage the explicit owner creates
-- one sentence naming which responsibilities stay at the call boundary and which move away from it
+Then explain why this call creates a second entry:
 
-## Exercise 9: Compare safe claims with overstated claims
+```python
+render("INC-42", "critical")
+```
 
-Choose one typing-aware or policy-heavy decorator and write both an honest description and
-an overstated description.
+Add one focused test that proves a failed call is absent from the teaching cache, then
+compare that claim with what the cross-cache packet actually proves.
 
-What to hand in:
+Acceptance:
 
-- the honest description
-- the overstated description
-- one explanation of which words make the second version misleading
-- one replacement sentence that preserves usefulness without inflating the guarantee
+```bash
+python -m unittest tests.test_bounded_cache_lab tests.test_decorator_policy_evidence
+```
 
-## Exercise 10: Produce a decorator-governance packet
+Hand in a comparison with:
 
-Assemble:
+- key equivalence
+- eviction
+- failure caching
+- inspection
+- reset
+- thread-safety scope
+- one named reason to choose `functools.lru_cache`
 
-- one policy-boundary table
-- one resilience or cache example with an explicit control surface
-- one partial typing example with a named unsupported feature
-- one redesign rule for moving overloaded decorator policy into an explicit owner
+## Studio 6: transfer the boundary into the capstone
 
-The packet is strong when another learner can use it to answer:
+Run:
 
-- what policy the decorator actually owns
-- what typing or runtime claim it can support honestly
-- when the wrapper boundary should be replaced by a clearer owner
+```bash
+make capstone-bind-action
+make capstone-check-action
+make capstone-action-wrapper
+```
 
-Make the packet easy to scan. Another learner should be able to review it without knowing
-your original implementation details.
+Compare the three outputs:
 
-## Repair prompts for weak exercise drafts
-
-Use these prompts when an answer feels vague, compact, or suspiciously confident:
-
-| If your answer says... | Ask yourself instead... |
+| Route | Question |
 | --- | --- |
-| "the decorator adds safety" | what exact unsafe behavior can still happen afterward? |
-| "the wrapper improves performance" | what cache key, eviction rule, or reset route makes that statement meaningful? |
-| "the validator checks types" | which hints, and which hints are refused? |
-| "this is still simple" | simple for whom: caller, reviewer, or operator? |
-| "an object would be overkill" | what owner story is currently being hidden to avoid naming it? |
+| `bind-action` | do these values satisfy Python's call shape? |
+| `check-action` | do bound values match the supported runtime hint subset? |
+| `action-wrapper` | which wrapper layer owns metadata and signature evidence? |
 
-## Mastery standard for this exercise set
+Now inspect:
 
-Across all six answers, the module wants the same habits:
+- `capstone/src/incident_plugins/actions.py`
+- `capstone/src/incident_plugins/framework.py`
+- the two action-contract tests in `capstone/tests/test_runtime.py`
 
-- you separate thin callable transformation from policy ownership
-- you keep runtime typing claims partial and explicit
-- you prefer explicit objects or services when decorator policy grows too broad
-- you preserve transparency even when wrappers become more powerful
+Write boundary records for `@action` and `check_action_arguments`. Your review must
+explain why the capstone did not add validation directly to the action wrapper.
 
-Across all ten answers, add two more habits:
+Acceptance:
 
-- you distinguish convenient local wrappers from durable course-worthy policy boundaries
-- you leave behind a decorator-governance packet another learner could review without guessing
+```bash
+make -C capstone test
+```
 
-If an answer still sounds like "the decorator just handles it," keep going.
+The report for a complete all-`str` action must be accepted without constructing or
+executing the plugin. The partial-contract test must report one mismatch, one refused
+generic, and one unannotated argument without claiming completeness.
 
-## Exit check for the exercise set
+## Final review packet
 
-Before you leave Module 05 practice, make sure your packet lets another learner answer
-all of these:
+Submit one packet containing:
 
-- which wrappers in your set stayed narrow enough to remain decorators
-- which ones wanted an explicit owner instead
-- which runtime or typing claims you refused deliberately
-- which control, inspection, or reset surfaces reviewers should inspect first
+- retry trace before and after your change
+- one selective-exception failure proof
+- one supported or refused annotation decision
+- warning and return-timing diagrams
+- cache equivalence and lifecycle comparison
+- two capstone boundary records
+- the focused commands you ran and their outcomes
+
+For every claim, include:
+
+1. evidence
+2. what the evidence proves
+3. what it does not prove
+4. the owner of the behavior
+5. the condition that would force a different owner
+
+## Exit standard
+
+You are ready for Module 06 when you can:
+
+- predict wrapper control flow before running it
+- separate call-shape binding from partial runtime hint checking
+- identify definition-time refusal and call-time mismatch
+- explain why cache keys and reset are correctness surfaces
+- keep a wrapper only when its policy and exit condition remain reviewable
 
 ## Continue through Module 05
 
-- Previous: [Worked Example: Building a Partial `@validated` Decorator](worked-example-building-a-partial-validated-decorator.md)
+- Previous: [Worked Example](worked-example-building-a-partial-validated-decorator.md)
 - Next: [Exercise Answers](exercise-answers.md)
 - Return: [Overview](index.md)
 - Terms: [Glossary](glossary.md)
