@@ -1,3 +1,4 @@
+from .frozen_surface import FrozenSurfaceError, FrozenSurfacePolicy, surface_frozen
 from .transformation import (
     ClassCustomization,
     mark_class,
@@ -6,6 +7,9 @@ from .transformation import (
 
 __all__ = [
     "ClassCustomization",
+    "FrozenSurfaceError",
+    "FrozenSurfacePolicy",
     "mark_class",
+    "surface_frozen",
     "tracing_class_decorator",
 ]
