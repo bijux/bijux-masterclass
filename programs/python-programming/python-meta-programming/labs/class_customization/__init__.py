@@ -1,3 +1,4 @@
+from .attributes import TypedField
 from .frozen_surface import FrozenSurfaceError, FrozenSurfacePolicy, surface_frozen
 from .transformation import (
     ClassCustomization,
@@ -9,6 +10,7 @@ __all__ = [
     "ClassCustomization",
     "FrozenSurfaceError",
     "FrozenSurfacePolicy",
+    "TypedField",
     "mark_class",
     "surface_frozen",
     "tracing_class_decorator",

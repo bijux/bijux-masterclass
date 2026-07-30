@@ -77,6 +77,15 @@ decorator-policy-lab: ## Run the Module 05 decorator-policy evidence lab
 decorator-policy-lab-test: ## Verify Module 05 retry and validation policy boundaries
 	@$(PYTHON) -m unittest discover -s tests -p "test_decorator_policy_*.py" -v
 
+.PHONY: class-customization-lab
+class-customization-lab: ## Run the Module 06 lower-power customization evidence lab
+	@$(PYTHON) -m labs.class_customization
+
+.PHONY: class-customization-lab-test
+class-customization-lab-test: ## Verify Module 06 transformation and attribute boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_*class_customization*.py" -v
+	@$(PYTHON) -m unittest discover -s tests -p "test_frozen_surface*.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo
