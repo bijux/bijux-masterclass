@@ -19,6 +19,7 @@ from incident_plugins import (
     inspect_field_ownership,
     inspect_field_system,
     inspect_plugin_class_creation,
+    inspect_runtime_governance,
     invoke,
 )
 
@@ -40,6 +41,7 @@ def test_public_api_exports_the_supported_framework_surface() -> None:
     assert inspect_field_ownership is not None
     assert inspect_field_system is not None
     assert inspect_plugin_class_creation is not None
+    assert inspect_runtime_governance is not None
 
 
 def test_public_api_exports_concrete_plugins_for_review_routes() -> None:

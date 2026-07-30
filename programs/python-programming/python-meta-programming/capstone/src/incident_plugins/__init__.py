@@ -14,6 +14,7 @@ from .framework import (
     inspect_plugin_class_creation,
     invoke,
 )
+from .governance import inspect_runtime_governance
 from .plugins import ConsoleNotifier, DeliveryPlugin, PagerNotifier, WebhookNotifier
 
 __all__ = [
@@ -40,5 +41,6 @@ __all__ = [
     "inspect_field_ownership",
     "inspect_field_system",
     "inspect_plugin_class_creation",
+    "inspect_runtime_governance",
     "invoke",
 ]
