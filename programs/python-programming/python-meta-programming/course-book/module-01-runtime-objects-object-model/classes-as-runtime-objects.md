@@ -220,6 +220,52 @@ That is an important governance lesson already visible in Module 01: the runtime
 bag of unconstrained rebinding tricks. Some objects carry structural promises that Python
 defends.
 
+## Guided lab: read the class packet
+
+The class lesson needs an ordinary baseline before later modules customize class
+creation. Run:
+
+```console
+$ python3 -m labs.runtime_objects |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["class"])'
+{'bound_method_has_function': True, 'bound_method_has_instance': True, 'class_metaclass': 'type', 'class_stores_function': True, 'direct_bases': ['object'], 'result': 'WARN: queue lag'}
+```
+
+Trace `class_evidence()` in `labs/runtime_objects/evidence.py` from left to right:
+
+1. `IncidentFormatter` is a class object whose metaclass is `type`.
+2. `IncidentFormatter.__dict__["render"]` is the function stored during class definition.
+3. `formatter.render` is a bound method created by instance attribute access.
+4. `bound_render.__func__` points to the stored function and `bound_render.__self__`
+   points to the instance.
+5. calling that bound method produces the visible incident line.
+
+The packet contains no class decorator, custom descriptor, `__init_subclass__`, or custom
+metaclass. That absence is deliberate. It establishes the behavior stronger tools will
+later transform.
+
+### Change one thing and predict the evidence
+
+Rename `IncidentFormatter.render` to `format_incident`. Before running the tests, list
+every reference that must change. If you update only the call but not the class-namespace
+lookup, the probe fails for a useful reason: your explanation no longer matches the
+class object actually created.
+
+Run `make lab-test` after the edit. The class test proves the storage-and-binding
+relationship. It does not prove that every descriptor or metaclass preserves that
+relationship transparently.
+
+### Transfer to the incident-plugin runtime
+
+Use `ConsoleNotifier` as the larger comparison:
+
+- the class still has identity, bases, a namespace, and a metaclass
+- `deliver` still participates in ordinary method binding
+- custom registration and wrapping add behavior around that floor
+
+Record the ordinary facts now. Defer *why* the capstone uses descriptors, decorators,
+and `PluginMeta` until their own modules can justify the added power.
+
 ## Review rules for class-object reasoning
 
 When reviewing class-heavy code, keep these questions close:
