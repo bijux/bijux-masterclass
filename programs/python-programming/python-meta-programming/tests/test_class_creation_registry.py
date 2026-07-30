@@ -86,6 +86,10 @@ class PluginRegistryTests(unittest.TestCase):
         )
         self.assertTrue(evidence["duplicate"]["original_preserved"])  # type: ignore[index]
         self.assertEqual(evidence["reset"]["names_after_clear"], [])  # type: ignore[index]
+        self.assertIn(  # type: ignore[operator]
+            "registration alone does not prove a metaclass is smaller than __init_subclass__",
+            evidence["claim_limits"],
+        )
 
 
 if __name__ == "__main__":

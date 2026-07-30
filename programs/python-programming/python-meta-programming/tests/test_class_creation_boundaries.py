@@ -27,7 +27,18 @@ class ClassCreationBoundaryTests(unittest.TestCase):
 
         self.assertEqual(selected.count("metaclass with external registry"), 1)
         self.assertEqual(selected.count("metaclass __prepare__"), 1)
-        self.assertEqual(len(selected), 6)
+        self.assertEqual(len(selected), 7)
+
+    def test_registration_alone_stops_at_init_subclass(self) -> None:
+        registration = next(
+            decision
+            for decision in DECISIONS
+            if decision.pressure
+            == "register every concrete subclass in one class family"
+        )
+
+        self.assertEqual(registration.selected_owner, "__init_subclass__")
+        self.assertEqual(registration.refused_owner, "metaclass")
 
     def test_discovery_is_explicitly_outside_class_creation(self) -> None:
         discovery = next(
@@ -42,7 +53,7 @@ class ClassCreationBoundaryTests(unittest.TestCase):
     def test_manifest_preserves_the_review_fields(self) -> None:
         evidence = boundary_evidence()
 
-        self.assertEqual(len(evidence["decisions"]), 6)  # type: ignore[arg-type]
+        self.assertEqual(len(evidence["decisions"]), 7)  # type: ignore[arg-type]
         self.assertEqual(  # type: ignore[index]
             evidence["owner_ladder"][0],
             "plain class definition",

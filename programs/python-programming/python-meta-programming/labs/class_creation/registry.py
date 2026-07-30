@@ -147,7 +147,8 @@ def registry_evidence() -> dict[str, object]:
             "owner": PluginRegistry.__name__,
         },
         "claim_limits": [
-            "the metaclass guarantees registration for this in-process class family",
+            "the metaclass demonstrates automatic registration for this class family",
+            "registration alone does not prove a metaclass is smaller than __init_subclass__",
             "the registry owns ordering, lookup, duplicates, and reset",
             "neither component discovers packages or coordinates processes",
         ],

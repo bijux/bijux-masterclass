@@ -50,6 +50,10 @@ class ClassCreationEvidenceTests(unittest.TestCase):
             "neither component discovers packages or coordinates processes",
             evidence["registry"]["claim_limits"],
         )
+        self.assertIn(  # type: ignore[operator]
+            "registration alone does not prove a metaclass is smaller than __init_subclass__",
+            evidence["registry"]["claim_limits"],
+        )
 
 
 if __name__ == "__main__":
