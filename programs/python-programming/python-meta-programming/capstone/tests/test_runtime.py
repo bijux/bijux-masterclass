@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from incident_plugins import PluginMeta, build_manifest, invoke
+from incident_plugins import PluginBase, PluginMeta, action, build_manifest, invoke
 from incident_plugins.plugins import ConsoleNotifier, PagerNotifier, WebhookNotifier
 from incident_plugins.scenarios import DEFAULT_DEMO_SCENARIO, DEFAULT_TRACE_SCENARIO
 
@@ -16,6 +16,29 @@ def test_manifest_exposes_schema_and_actions_without_execution() -> None:
     console = manifest["delivery"][0]
     assert console["fields"][0]["name"] == "prefix"
     assert console["actions"][0]["name"] == "deliver"
+
+
+def test_manifest_does_not_construct_or_invoke_registered_plugin() -> None:
+    runtime_events: list[str] = []
+
+    class ObservationProofPlugin(PluginBase):
+        group = "observation-proof"
+        plugin_name = "event-recorder"
+
+        def __init__(self) -> None:
+            runtime_events.append("constructed")
+            self._action_history = []
+
+        @action("Record one deliberately executed event.")
+        def deliver(self) -> str:
+            runtime_events.append("invoked")
+            return "delivered"
+
+    manifest = build_manifest("observation-proof")
+
+    assert manifest["observation-proof"][0]["plugin_name"] == "event-recorder"
+    assert manifest["observation-proof"][0]["actions"][0]["name"] == "deliver"
+    assert runtime_events == []
 
 
 def test_runtime_invocation_returns_structured_payloads() -> None:
