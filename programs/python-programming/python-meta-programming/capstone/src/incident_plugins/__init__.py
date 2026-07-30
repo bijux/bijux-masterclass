@@ -1,6 +1,13 @@
 from .actions import ActionSpec, action
 from .fields import BooleanField, ChoiceField, Field, FieldSpec, IntegerField, StringField
-from .framework import PluginBase, PluginMeta, build_manifest, create_plugin, invoke
+from .framework import (
+    PluginBase,
+    PluginMeta,
+    bind_action_arguments,
+    build_manifest,
+    create_plugin,
+    invoke,
+)
 from .plugins import ConsoleNotifier, DeliveryPlugin, PagerNotifier, WebhookNotifier
 
 __all__ = [
@@ -18,6 +25,7 @@ __all__ = [
     "StringField",
     "WebhookNotifier",
     "action",
+    "bind_action_arguments",
     "build_manifest",
     "create_plugin",
     "invoke",

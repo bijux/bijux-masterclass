@@ -1,6 +1,15 @@
 from __future__ import annotations
 
-from incident_plugins import PluginBase, PluginMeta, action, build_manifest, invoke
+import pytest
+
+from incident_plugins import (
+    PluginBase,
+    PluginMeta,
+    action,
+    bind_action_arguments,
+    build_manifest,
+    invoke,
+)
 from incident_plugins.plugins import ConsoleNotifier, PagerNotifier, WebhookNotifier
 from incident_plugins.scenarios import DEFAULT_DEMO_SCENARIO, DEFAULT_TRACE_SCENARIO
 
@@ -39,6 +48,44 @@ def test_manifest_does_not_construct_or_invoke_registered_plugin() -> None:
     assert manifest["observation-proof"][0]["plugin_name"] == "event-recorder"
     assert manifest["observation-proof"][0]["actions"][0]["name"] == "deliver"
     assert runtime_events == []
+
+
+def test_action_binding_validates_and_applies_defaults_without_execution() -> None:
+    runtime_events: list[str] = []
+
+    class BindingProofPlugin(PluginBase):
+        group = "binding-proof"
+        plugin_name = "event-recorder"
+
+        def __init__(self) -> None:
+            runtime_events.append("constructed")
+            self._action_history = []
+
+        @action("Record one deliberately executed event.")
+        def deliver(self, title: str, *, severity: str = "warning") -> str:
+            runtime_events.append("invoked")
+            return f"{severity}:{title}"
+
+    arguments = bind_action_arguments(
+        "binding-proof",
+        "event-recorder",
+        "deliver",
+        "CPU high",
+    )
+
+    assert arguments == {"title": "CPU high", "severity": "warning"}
+    assert runtime_events == []
+
+
+def test_action_binding_rejects_invalid_calls_before_execution() -> None:
+    with pytest.raises(TypeError, match="missing a required argument: 'summary'"):
+        bind_action_arguments(
+            "delivery",
+            "console",
+            "deliver",
+            title="CPU high",
+            severity="warning",
+        )
 
 
 def test_runtime_invocation_returns_structured_payloads() -> None:

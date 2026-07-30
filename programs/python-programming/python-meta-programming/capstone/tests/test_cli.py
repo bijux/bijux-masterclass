@@ -65,6 +65,38 @@ def test_action_command_renders_one_concrete_action_contract(capsys) -> None:
     assert captured["action"]["signature"] == "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'"
 
 
+def test_bind_action_command_validates_arguments_without_execution(capsys) -> None:
+    exit_code = main(
+        [
+            "bind-action",
+            "delivery",
+            "console",
+            "deliver",
+            "--arg",
+            "title=CPU high",
+            "--arg",
+            "severity=warning",
+            "--arg",
+            "summary=node-1 crossed 90%",
+        ]
+    )
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured == {
+        "group": "delivery",
+        "plugin_name": "console",
+        "action_name": "deliver",
+        "bound_arguments": {
+            "title": "CPU high",
+            "severity": "warning",
+            "summary": "node-1 crossed 90%",
+        },
+        "executed": False,
+    }
+
+
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:
     exit_code = main(
         [

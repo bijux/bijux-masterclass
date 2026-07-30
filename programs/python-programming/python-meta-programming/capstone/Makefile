@@ -61,6 +61,13 @@ field: ## Render one concrete field contract from the public CLI
 action: ## Render one concrete action contract from the public CLI
 	@PYTHONPATH=src $(CLI) action delivery pager preview
 
+.PHONY: bind-action
+bind-action: ## Validate one action call without constructing or invoking a plugin
+	@PYTHONPATH=src $(CLI) bind-action delivery console deliver \
+		--arg "title=CPU high" \
+		--arg "severity=warning" \
+		--arg "summary=node-1 crossed 90%"
+
 .PHONY: registry
 registry: ## Render the delivery registry from the public CLI
 	@PYTHONPATH=src $(CLI) registry --group delivery

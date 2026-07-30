@@ -77,6 +77,10 @@ proof: ## Run the full capstone proof route
 capstone-manifest: ## Render the capstone manifest from the public CLI
 	@$(RUN_CAPSTONE) manifest
 
+.PHONY: capstone-bind-action
+capstone-bind-action: ## Validate a capstone action call without executing it
+	@$(RUN_CAPSTONE) bind-action
+
 .PHONY: capstone-trace
 capstone-trace: ## Trace one capstone invocation from the public CLI
 	@$(RUN_CAPSTONE) trace

@@ -174,6 +174,26 @@ def create_plugin(group: str, plugin_name: str, **config: object) -> PluginBase:
     return plugin_cls(**config)
 
 
+def bind_action_arguments(
+    group: str,
+    plugin_name: str,
+    action_name: str,
+    *args: object,
+    **kwargs: object,
+) -> dict[str, object]:
+    """Validate an action call without constructing or invoking the plugin."""
+
+    plugin_cls = _REGISTRY[group][plugin_name]
+    action_spec = plugin_cls.__plugin_actions__[action_name]
+    bound = action_spec.signature.bind(None, *args, **kwargs)
+    bound.apply_defaults()
+    return {
+        name: value
+        for name, value in bound.arguments.items()
+        if name != "self"
+    }
+
+
 def invoke(
     group: str,
     plugin_name: str,

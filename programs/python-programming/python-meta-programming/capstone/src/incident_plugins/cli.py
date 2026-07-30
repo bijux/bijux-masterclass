@@ -5,7 +5,14 @@ import json
 import inspect
 from typing import Any
 
-from .framework import PluginMeta, _REGISTRY, build_manifest, create_plugin, invoke
+from .framework import (
+    PluginMeta,
+    _REGISTRY,
+    bind_action_arguments,
+    build_manifest,
+    create_plugin,
+    invoke,
+)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -52,6 +59,22 @@ def _build_parser() -> argparse.ArgumentParser:
     action.add_argument("plugin_name", help="Registered plugin name.")
     action.add_argument("action_name", help="Declared action name.")
     action.set_defaults(handler=_handle_action)
+
+    bind_action = subparsers.add_parser(
+        "bind-action",
+        help="Validate action arguments without constructing or invoking a plugin.",
+    )
+    bind_action.add_argument("group", help="Plugin group name.")
+    bind_action.add_argument("plugin_name", help="Registered plugin name.")
+    bind_action.add_argument("action_name", help="Declared action name.")
+    bind_action.add_argument(
+        "--arg",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="Action argument entry. May be repeated.",
+    )
+    bind_action.set_defaults(handler=_handle_bind_action)
 
     registry = subparsers.add_parser("registry", help="Render the plugin registry as JSON.")
     registry.add_argument("--group", help="Restrict output to one plugin group.")
@@ -127,6 +150,21 @@ def _handle_action(args: argparse.Namespace) -> dict[str, object]:
             **spec.manifest(),
             "signature": str(spec.signature),
         },
+    }
+
+
+def _handle_bind_action(args: argparse.Namespace) -> dict[str, object]:
+    return {
+        "group": args.group,
+        "plugin_name": args.plugin_name,
+        "action_name": args.action_name,
+        "bound_arguments": bind_action_arguments(
+            args.group,
+            args.plugin_name,
+            args.action_name,
+            **_parse_key_values(args.arg),
+        ),
+        "executed": False,
     }
 
 
