@@ -92,6 +92,15 @@ $ make evidence-lab-test
 Ran 7 tests
 
 OK
+$ make evidence-repr
+{
+  "property_reads_after_repr": 0,
+  ...
+}
+$ make evidence-repr-test
+Ran 5 tests
+
+OK
 ```
 
 The strength labels are part of the teaching contract:
@@ -112,8 +121,8 @@ The strength labels are part of the teaching contract:
 5. [Dynamic Members and Static Structure](dynamic-members-and-static-structure.md)
 6. [Frames and Diagnostic-Only Runtime Evidence](frames-and-diagnostic-only-runtime-evidence.md)
 7. [Worked Example: Building a Safe Signature-Guided `__repr__`](worked-example-building-a-safe-signature-guided-repr.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
+8. [Module 03 Evidence Studio](exercises.md)
+9. [Module 03 Evidence Studio Review](exercise-answers.md)
 10. [Glossary](glossary.md)
 
 ## How the day should feel
@@ -132,8 +141,9 @@ Treat the module as one escalating review route:
 By the end, you should be able to audit a runtime-facing helper and sort its evidence
 surfaces by trust level without guessing.
 
-The executable companion is `labs/runtime_evidence/`, with focused proof in
-`tests/test_runtime_evidence_lab.py`.
+The executable companions are `labs/runtime_evidence/evidence.py` and
+`labs/runtime_evidence/safe_repr.py`, with focused proof in
+`tests/test_runtime_evidence_lab.py` and `tests/test_signature_guided_repr.py`.
 
 ## How to use the lesson set
 
@@ -147,8 +157,10 @@ The executable companion is `labs/runtime_evidence/`, with focused proof in
 | see safe evidence-collection choices inside one realistic helper | [Worked Example: Building a Safe Signature-Guided `__repr__`](worked-example-building-a-safe-signature-guided-repr.md) |
 | generate all five classified evidence packets | `make evidence-lab` |
 | verify the trust-boundary claims | `make evidence-lab-test` |
-| test your understanding before wrappers and decorators begin | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
+| run the signature-guided representation | `make evidence-repr` |
+| verify storage and non-execution boundaries | `make evidence-repr-test` |
+| complete the assessed learning product | [Module 03 Evidence Studio](exercises.md) |
+| compare your reasoning against a reference review | [Evidence Studio Review](exercise-answers.md) |
 | stabilize the module vocabulary | [Glossary](glossary.md) |
 
 ## The running question
@@ -194,17 +206,20 @@ After the course packet is clear, run:
 
 ```console
 make -C capstone signatures
+make capstone-bind-action
 make capstone-trace
 ```
 
-The signatures route reports constructor and action call shapes. The trace route crosses
-into construction and invocation. Module 03 asks whether signature metadata is
-inspectable and bindable; it does not yet explain how wrappers preserve that metadata.
-Modules 04 and 05 own that later pressure.
+The signatures route reports constructor and action call shapes. The binding route
+validates proposed action arguments without constructing a plugin or invoking an action.
+The trace route deliberately crosses into construction and invocation. Module 03 asks
+whether signature metadata is inspectable and bindable; it does not yet explain how
+wrappers preserve that metadata. Modules 04 and 05 own that later pressure.
 
-Use `capstone/tests/test_registry.py::test_action_decorator_preserves_signature_and_wrapped_metadata`
-as the focused bridge. It proves that the action surface still exposes the expected
-parameter kinds and return annotation after decoration.
+Use the binding tests in `capstone/tests/test_runtime.py` as the focused bridge. They
+prove valid default application, invalid-call rejection, and the absence of construction
+or invocation. The decorator metadata proof in `capstone/tests/test_registry.py` checks
+that the action surface still exposes the expected parameter kinds and return annotation.
 
 ## Module 03 review packet
 
@@ -240,7 +255,10 @@ Do not move on until all of these are true:
 - you can name the exact point where a review crosses from strong evidence into convenience or diagnostics
 - you can run the evidence lab and justify every strength label without treating the
   capstone as the primary explanation
-- you can connect capstone signature output to a focused test before invoking an action
+- you can extend the representation policy while preserving its storage and non-execution
+  boundaries
+- you can connect capstone preflight output to an independent non-execution test before
+  invoking an action
 
 When those feel ordinary, Module 03 has done its job and the decorator modules can build
 on a stronger evidence discipline.
