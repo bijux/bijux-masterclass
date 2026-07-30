@@ -331,6 +331,40 @@ the route to that evidence while still introducing a different executable shell.
 05 can then discuss typed decorator interfaces without pretending runtime metadata alone
 solves static typing.
 
+## Capstone transfer: audit the policy-owning action wrapper
+
+Run:
+
+```console
+$ make capstone-action-wrapper |
+  python3 -c 'import json, sys; p=json.load(sys.stdin); w=p["wrapper"]; print({"constructed": p["constructed"], "executed": p["executed"], "depth": w["wrapper_depth"], "visible": w["visible_signature"], "shell": w["chain"][0]})'
+{'constructed': False, 'executed': False, 'depth': 1, 'visible': "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'", 'shell': {'depth': 0, 'implementation_signature': "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'", 'name': 'deliver', 'owns_action_spec': True, 'owns_explicit_signature': True}}
+```
+
+The capstone shell differs deliberately from the course's thin preserved wrapper:
+
+| Surface | Course observing wrapper | Capstone `@action` wrapper |
+| --- | --- | --- |
+| `__wrapped__` | yes | yes |
+| explicit `__signature__` | no | yes |
+| `follow_wrapped=False` | reveals `*args, **kwargs` shell | reports the deliberately assigned action signature |
+| attached policy metadata | none | `ActionSpec` on the wrapper |
+| call-time policy | outcome events only | argument binding and successful-call history |
+
+The audit reports `owns_explicit_signature` so identical visible and shell strings do not
+hide their origin. The outer action wrapper owns the explicit override and action spec;
+the original method owns neither.
+
+The route remains observational. A test plugin records constructor and action events, and
+the audit leaves both lists empty. A separate failure test proves the call-time policy:
+
+- the exact exception object propagates
+- a failed action creates no history record
+- a successful action records bound arguments and result type
+
+This makes the capstone connection specific. `@action` preserves metadata, but it is not
+semantically thin: it owns binding and history rules at the callable boundary.
+
 ## Transparency claims that still need caution
 
 Even after `wraps`, a reviewer should still ask:

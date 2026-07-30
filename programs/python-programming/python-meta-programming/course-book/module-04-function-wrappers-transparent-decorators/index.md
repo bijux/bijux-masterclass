@@ -275,6 +275,11 @@ That makes it policy-owning, not a thin observer. The course lab establishes the
 mechanics first; the capstone then asks whether a larger wrapper keeps its timing,
 metadata, state, and failure semantics visible.
 
+Run `make capstone-action-wrapper` before invoking an action. The output follows the
+wrapper chain, identifies ownership of `ActionSpec` and `__signature__`, compares
+preserved identity fields, and explicitly reports that construction and execution stayed
+absent.
+
 ## Exit standard
 
 Do not move on until all of these are true:

@@ -128,6 +128,39 @@ def test_action_wrapper_audit_preserves_execution_boundaries() -> None:
     assert runtime_events == []
 
 
+def test_action_wrapper_preserves_failures_and_records_only_success() -> None:
+    failure = RuntimeError("delivery failed")
+
+    class OutcomePolicyPlugin(PluginBase):
+        group = "wrapper-outcome"
+        plugin_name = "outcome-policy"
+
+        @action("Deliver or expose the original failure.")
+        def deliver(self, *, should_fail: bool) -> str:
+            if should_fail:
+                raise failure
+            return "delivered"
+
+    plugin = OutcomePolicyPlugin()
+
+    with pytest.raises(RuntimeError) as caught:
+        plugin.deliver(should_fail=True)
+
+    assert caught.value is failure
+    assert plugin.action_history() == []
+
+    result = plugin.deliver(should_fail=False)
+
+    assert result == "delivered"
+    assert plugin.action_history() == [
+        {
+            "action": "deliver",
+            "arguments": {"should_fail": False},
+            "result_type": "str",
+        }
+    ]
+
+
 def test_runtime_invocation_returns_structured_payloads() -> None:
     console = invoke(
         "delivery",

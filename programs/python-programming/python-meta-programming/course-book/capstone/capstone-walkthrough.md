@@ -61,10 +61,10 @@ Use stops 5 and 6 only after the earlier stops no longer settle the question.
 
 ## Walkthrough stop 4: Inspect one wrapper-backed action
 
-- Run `make action`, `make bind-action`, and then `make trace`.
+- Run `make action`, `make action-wrapper`, `make bind-action`, and then `make trace`.
 - Read `src/incident_plugins/actions.py`.
-- Ask: what did the wrapper add, what original callable surface had to remain visible,
-  and where does validation cross into execution?
+- Ask: which layer owns `ActionSpec` and `__signature__`, what original callable surface
+  remains visible, and where does validation cross into execution?
 - Prove non-execution and deliberate execution with `tests/test_runtime.py`.
 
 ## Walkthrough stop 5: Inspect one concrete plugin
