@@ -371,6 +371,43 @@ def test_class_creation_audit_records_an_explicit_initializer() -> None:
     assert runtime_events == []
 
 
+def test_definition_namespace_rejects_duplicate_tracked_declarations() -> None:
+    with pytest.raises(
+        TypeError,
+        match="duplicate tracked definition for 'endpoint'",
+    ):
+
+        class DuplicateFieldPlugin(PluginBase):
+            group = "class-creation-proof"
+            plugin_name = "duplicate-field"
+
+            endpoint = StringField(description="First endpoint")
+            endpoint = StringField(description="Second endpoint")
+
+    assert "duplicate-field" not in PluginMeta.registry("class-creation-proof")
+
+
+def test_definition_namespace_allows_ordinary_helper_replacement() -> None:
+    class ReplacedHelperPlugin(PluginBase):
+        group = "class-creation-proof"
+        plugin_name = "replaced-helper"
+
+        helper = "first"
+        helper = "second"
+
+    report = inspect_plugin_class_creation(
+        "class-creation-proof",
+        "replaced-helper",
+    )
+
+    assert ReplacedHelperPlugin.helper == "second"
+    assert report["class_creation"]["namespace_names"] == (
+        "group",
+        "plugin_name",
+        "helper",
+    )
+
+
 def test_runtime_invocation_returns_structured_payloads() -> None:
     console = invoke(
         "delivery",
