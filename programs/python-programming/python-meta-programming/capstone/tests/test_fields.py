@@ -8,6 +8,7 @@ from incident_plugins import (
     PluginBase,
     StringField,
     inspect_field_ownership,
+    inspect_field_system,
 )
 
 
@@ -70,3 +71,47 @@ def test_field_ownership_exposes_descriptor_and_storage_boundaries() -> None:
         "constructed": False,
         "executed": False,
     }
+
+
+def test_field_system_exposes_accepted_and_rejected_powers() -> None:
+    report = inspect_field_system("examples", "example")
+
+    assert report["class_name"] == "ExamplePlugin"
+    assert report["fields"] == [
+        {
+            "name": "endpoint",
+            "descriptor_type": "StringField",
+            "coercion_owner": "StringField",
+            "storage_name": "_endpoint",
+            "source_of_truth": "plugin-instance.__dict__",
+        },
+        {
+            "name": "stream",
+            "descriptor_type": "ChoiceField",
+            "coercion_owner": "ChoiceField",
+            "storage_name": "_stream",
+            "source_of_truth": "plugin-instance.__dict__",
+        },
+        {
+            "name": "retries",
+            "descriptor_type": "IntegerField",
+            "coercion_owner": "IntegerField",
+            "storage_name": "_retries",
+            "source_of_truth": "plugin-instance.__dict__",
+        },
+    ]
+    assert [item["power"] for item in report["accepted_powers"]] == [
+        "assignment coercion and validation",
+        "per-instance configuration storage",
+        "field collection and constructor generation",
+        "public field schema",
+    ]
+    assert [item["power"] for item in report["rejected_powers"]] == [
+        "derived-value caching",
+        "external storage during attribute access",
+        "field wrapper composition",
+        "annotation-inferred field policy",
+        "cross-field transactions",
+    ]
+    assert report["constructed"] is False
+    assert report["executed"] is False

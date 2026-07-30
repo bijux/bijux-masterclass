@@ -17,6 +17,7 @@ from incident_plugins import (
     create_plugin,
     inspect_action_wrapper,
     inspect_field_ownership,
+    inspect_field_system,
     inspect_plugin_class_creation,
     invoke,
 )
@@ -37,6 +38,7 @@ def test_public_api_exports_the_supported_framework_surface() -> None:
     assert check_action_arguments is not None
     assert inspect_action_wrapper is not None
     assert inspect_field_ownership is not None
+    assert inspect_field_system is not None
     assert inspect_plugin_class_creation is not None
 
 

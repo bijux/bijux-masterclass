@@ -73,6 +73,27 @@ def test_field_ownership_command_exposes_lookup_without_construction(capsys) -> 
     assert captured["executed"] is False
 
 
+def test_field_system_command_exposes_power_boundaries_without_construction(capsys) -> None:
+    exit_code = main(["field-system", "delivery", "webhook"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["class_name"] == "WebhookNotifier"
+    assert [field["name"] for field in captured["fields"]] == [
+        "endpoint",
+        "timeout_seconds",
+        "redact_summary",
+    ]
+    assert captured["fields"][0]["coercion_owner"] == "StringField"
+    assert captured["accepted_powers"][2]["owner"] == "PluginMeta"
+    assert captured["rejected_powers"][1]["power"] == (
+        "external storage during attribute access"
+    )
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+
+
 def test_action_command_renders_one_concrete_action_contract(capsys) -> None:
     exit_code = main(["action", "delivery", "pager", "preview"])
 

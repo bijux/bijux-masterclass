@@ -360,6 +360,79 @@ def inspect_field_ownership(
     }
 
 
+def inspect_field_system(
+    group: str,
+    plugin_name: str,
+) -> dict[str, object]:
+    """Inspect the collected field system and its deliberate power limits."""
+
+    plugin_cls = _REGISTRY[group][plugin_name]
+    field_contracts = []
+    for field_name, descriptor in plugin_cls.__plugin_fields__.items():
+        descriptor_type = type(descriptor)
+        coercion_owner = next(
+            owner.__name__
+            for owner in descriptor_type.__mro__
+            if "coerce" in vars(owner)
+        )
+        field_contracts.append({
+            "name": field_name,
+            "descriptor_type": descriptor_type.__name__,
+            "coercion_owner": coercion_owner,
+            "storage_name": descriptor.storage_name,
+            "source_of_truth": "plugin-instance.__dict__",
+        })
+
+    return {
+        "group": group,
+        "plugin_name": plugin_name,
+        "class_name": plugin_cls.__name__,
+        "fields": field_contracts,
+        "accepted_powers": [
+            {
+                "power": "assignment coercion and validation",
+                "owner": "explicit Field subclass",
+            },
+            {
+                "power": "per-instance configuration storage",
+                "owner": "plugin instance",
+            },
+            {
+                "power": "field collection and constructor generation",
+                "owner": "PluginMeta",
+            },
+            {
+                "power": "public field schema",
+                "owner": "FieldSpec manifest",
+            },
+        ],
+        "rejected_powers": [
+            {
+                "power": "derived-value caching",
+                "reason": "no derived configuration value requires invalidation",
+            },
+            {
+                "power": "external storage during attribute access",
+                "reason": "plugin configuration remains local and deterministic",
+            },
+            {
+                "power": "field wrapper composition",
+                "reason": "explicit field subclasses keep current policy legible",
+            },
+            {
+                "power": "annotation-inferred field policy",
+                "reason": "field classes declare runtime coercion directly",
+            },
+            {
+                "power": "cross-field transactions",
+                "reason": "configuration initialization has no persistence transaction",
+            },
+        ],
+        "constructed": False,
+        "executed": False,
+    }
+
+
 def invoke(
     group: str,
     plugin_name: str,

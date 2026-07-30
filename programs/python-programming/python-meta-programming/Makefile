@@ -154,6 +154,10 @@ capstone-class-creation: ## Inspect capstone class-creation provenance without c
 capstone-field-ownership: ## Inspect capstone descriptor ownership without construction
 	@$(RUN_CAPSTONE) field-ownership
 
+.PHONY: capstone-field-system
+capstone-field-system: ## Inspect capstone field-system powers without construction
+	@$(RUN_CAPSTONE) field-system
+
 .PHONY: capstone-trace
 capstone-trace: ## Trace one capstone invocation from the public CLI
 	@$(RUN_CAPSTONE) trace

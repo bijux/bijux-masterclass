@@ -14,6 +14,7 @@ from .framework import (
     create_plugin,
     inspect_action_wrapper,
     inspect_field_ownership,
+    inspect_field_system,
     inspect_plugin_class_creation,
     invoke,
 )
@@ -63,6 +64,14 @@ def _build_parser() -> argparse.ArgumentParser:
     field_ownership.add_argument("plugin_name", help="Registered plugin name.")
     field_ownership.add_argument("field_name", help="Collected field name.")
     field_ownership.set_defaults(handler=_handle_field_ownership)
+
+    field_system = subparsers.add_parser(
+        "field-system",
+        help="Inspect field-system powers and limits without constructing a plugin.",
+    )
+    field_system.add_argument("group", help="Plugin group name.")
+    field_system.add_argument("plugin_name", help="Registered plugin name.")
+    field_system.set_defaults(handler=_handle_field_system)
 
     action = subparsers.add_parser(
         "action",
@@ -192,6 +201,10 @@ def _handle_field_ownership(args: argparse.Namespace) -> dict[str, object]:
         args.plugin_name,
         args.field_name,
     )
+
+
+def _handle_field_system(args: argparse.Namespace) -> dict[str, object]:
+    return inspect_field_system(args.group, args.plugin_name)
 
 
 def _handle_action(args: argparse.Namespace) -> dict[str, object]:
