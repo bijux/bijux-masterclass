@@ -10,6 +10,7 @@ from .framework import (
     _REGISTRY,
     bind_action_arguments,
     build_manifest,
+    check_action_arguments,
     create_plugin,
     inspect_action_wrapper,
     invoke,
@@ -76,6 +77,22 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Action argument entry. May be repeated.",
     )
     bind_action.set_defaults(handler=_handle_bind_action)
+
+    check_action = subparsers.add_parser(
+        "check-action",
+        help="Check supported action argument hints without constructing or invoking a plugin.",
+    )
+    check_action.add_argument("group", help="Plugin group name.")
+    check_action.add_argument("plugin_name", help="Registered plugin name.")
+    check_action.add_argument("action_name", help="Declared action name.")
+    check_action.add_argument(
+        "--arg",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="Action argument entry. May be repeated.",
+    )
+    check_action.set_defaults(handler=_handle_check_action)
 
     action_wrapper = subparsers.add_parser(
         "action-wrapper",
@@ -183,6 +200,15 @@ def _handle_action_wrapper(args: argparse.Namespace) -> dict[str, object]:
         args.group,
         args.plugin_name,
         args.action_name,
+    )
+
+
+def _handle_check_action(args: argparse.Namespace) -> dict[str, object]:
+    return check_action_arguments(
+        args.group,
+        args.plugin_name,
+        args.action_name,
+        **_parse_key_values(args.arg),
     )
 
 

@@ -123,6 +123,40 @@ def test_action_wrapper_command_exposes_logical_and_shell_signatures(capsys) -> 
     assert captured["wrapper"]["action_spec_signature_matches_original"] is True
 
 
+def test_check_action_command_reports_annotation_contract_without_execution(capsys) -> None:
+    exit_code = main(
+        [
+            "check-action",
+            "delivery",
+            "console",
+            "deliver",
+            "--arg",
+            "title=CPU high",
+            "--arg",
+            "severity=warning",
+            "--arg",
+            "summary=node-1 crossed 90%",
+        ]
+    )
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["accepted"] is True
+    assert captured["contract_complete"] is True
+    assert [item["name"] for item in captured["checked"]] == [
+        "title",
+        "severity",
+        "summary",
+    ]
+    assert captured["refused"] == []
+    assert captured["unchecked"] == []
+    assert captured["policy"]["scope"] == "arguments-only"
+    assert captured["policy"]["return_checked"] is False
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+
+
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:
     exit_code = main(
         [

@@ -12,6 +12,7 @@ from incident_plugins import (
     action,
     bind_action_arguments,
     build_manifest,
+    check_action_arguments,
     create_plugin,
     inspect_action_wrapper,
     invoke,
@@ -29,6 +30,7 @@ def test_public_api_exports_the_supported_framework_surface() -> None:
     assert ActionSpec is not None
     assert action is not None
     assert bind_action_arguments is not None
+    assert check_action_arguments is not None
     assert inspect_action_wrapper is not None
 
 

@@ -8,6 +8,7 @@ from incident_plugins import (
     action,
     bind_action_arguments,
     build_manifest,
+    check_action_arguments,
     inspect_action_wrapper,
     invoke,
 )
@@ -87,6 +88,94 @@ def test_action_binding_rejects_invalid_calls_before_execution() -> None:
             title="CPU high",
             severity="warning",
         )
+
+
+def test_action_contract_checks_supported_hints_without_execution() -> None:
+    runtime_events: list[str] = []
+
+    class ContractProofPlugin(PluginBase):
+        group = "contract-proof"
+        plugin_name = "event-recorder"
+
+        def __init__(self) -> None:
+            runtime_events.append("constructed")
+            self._action_history = []
+
+        @action("Record one deliberately executed event.")
+        def deliver(self, incident_id: str, *, attempts: int = 1) -> str:
+            runtime_events.append("invoked")
+            return f"{incident_id}:{attempts}"
+
+    report = check_action_arguments(
+        "contract-proof",
+        "event-recorder",
+        "deliver",
+        "INC-42",
+    )
+
+    assert report["bound_arguments"] == {"incident_id": "INC-42", "attempts": 1}
+    assert report["checked"] == [
+        {
+            "name": "incident_id",
+            "annotation": "str",
+            "actual_type": "str",
+            "matches": True,
+        },
+        {
+            "name": "attempts",
+            "annotation": "int",
+            "actual_type": "int",
+            "matches": True,
+        },
+    ]
+    assert report["accepted"] is True
+    assert report["contract_complete"] is True
+    assert report["constructed"] is False
+    assert report["executed"] is False
+    assert runtime_events == []
+
+
+def test_action_contract_reports_mismatch_and_unsupported_hints() -> None:
+    class PartialContractPlugin(PluginBase):
+        group = "partial-contract"
+        plugin_name = "partial"
+
+        @action("Expose partial contract behavior.")
+        def deliver(
+            self,
+            incident_id: str,
+            tags: list[str],
+            context,
+        ) -> str:
+            return incident_id
+
+    report = check_action_arguments(
+        "partial-contract",
+        "partial",
+        "deliver",
+        42,
+        ["urgent"],
+        "manual",
+    )
+
+    assert report["checked"] == [
+        {
+            "name": "incident_id",
+            "annotation": "str",
+            "actual_type": "int",
+            "matches": False,
+        }
+    ]
+    assert report["refused"] == [
+        {
+            "name": "tags",
+            "annotation": "list[str]",
+            "reason": "annotation is outside the supported runtime subset",
+        }
+    ]
+    assert report["unchecked"] == [{"name": "context", "reason": "no annotation"}]
+    assert report["contract_complete"] is False
+    assert report["accepted"] is False
 
 
 def test_action_wrapper_audit_preserves_execution_boundaries() -> None:

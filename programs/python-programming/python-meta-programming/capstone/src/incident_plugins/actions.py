@@ -3,7 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import wraps
 import inspect
-from typing import Any, Callable
+import types
+from typing import Any, Callable, Union, get_args, get_origin, get_type_hints
 
 
 @dataclass(frozen=True, slots=True)
@@ -11,6 +12,7 @@ class ActionSpec:
     name: str
     summary: str
     signature: inspect.Signature
+    resolved_hints: dict[str, object]
 
     def manifest(self) -> dict[str, object]:
         parameters = []
@@ -42,6 +44,7 @@ def action(summary: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
             name=function.__name__,
             summary=summary.strip() or (inspect.getdoc(function) or ""),
             signature=signature,
+            resolved_hints=get_type_hints(function),
         )
 
         @wraps(function)
@@ -116,3 +119,70 @@ def _annotation_name(annotation: Any) -> str | None:
     if isinstance(annotation, type):
         return annotation.__name__
     return str(annotation)
+
+
+def check_action_values(
+    spec: ActionSpec,
+    bound_arguments: dict[str, object],
+) -> dict[str, object]:
+    """Report a narrow action-argument contract without invoking the action."""
+
+    checked = []
+    refused = []
+    unchecked = []
+    for name, value in bound_arguments.items():
+        hint = spec.resolved_hints.get(name, inspect.Signature.empty)
+        if hint is inspect.Signature.empty:
+            unchecked.append({"name": name, "reason": "no annotation"})
+            continue
+
+        supported, matches, reason = _evaluate_hint(value, hint)
+        if not supported:
+            refused.append(
+                {
+                    "name": name,
+                    "annotation": _annotation_name(hint),
+                    "reason": reason,
+                }
+            )
+            continue
+
+        checked.append(
+            {
+                "name": name,
+                "annotation": _annotation_name(hint),
+                "actual_type": type(value).__name__,
+                "matches": matches,
+            }
+        )
+
+    contract_complete = not refused and not unchecked
+    return {
+        "policy": {
+            "scope": "arguments-only",
+            "supported_hints": ["Any", "plain runtime classes", "Union", "Optional"],
+            "unsupported_behavior": "report-refusal",
+            "return_checked": False,
+        },
+        "checked": checked,
+        "refused": refused,
+        "unchecked": unchecked,
+        "contract_complete": contract_complete,
+        "accepted": contract_complete and all(item["matches"] for item in checked),
+    }
+
+
+def _evaluate_hint(value: object, hint: object) -> tuple[bool, bool, str | None]:
+    if hint is Any:
+        return True, True, None
+    if isinstance(hint, type):
+        return True, isinstance(value, hint), None
+
+    origin = get_origin(hint)
+    if origin in (Union, types.UnionType):
+        member_results = [_evaluate_hint(value, member) for member in get_args(hint)]
+        if not all(supported for supported, _, _ in member_results):
+            return False, False, "union contains an unsupported member"
+        return True, any(matches for _, matches, _ in member_results), None
+
+    return False, False, "annotation is outside the supported runtime subset"

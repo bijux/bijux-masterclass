@@ -4,7 +4,7 @@ from collections import OrderedDict, defaultdict
 import inspect
 from typing import Any
 
-from .actions import ActionSpec, describe_action_wrapper
+from .actions import ActionSpec, check_action_values, describe_action_wrapper
 from .fields import Field
 
 
@@ -210,6 +210,35 @@ def inspect_action_wrapper(
         "constructed": False,
         "executed": False,
         "wrapper": describe_action_wrapper(function),
+    }
+
+
+def check_action_arguments(
+    group: str,
+    plugin_name: str,
+    action_name: str,
+    *args: object,
+    **kwargs: object,
+) -> dict[str, object]:
+    """Check the supported action-hint subset without constructing or invoking."""
+
+    bound_arguments = bind_action_arguments(
+        group,
+        plugin_name,
+        action_name,
+        *args,
+        **kwargs,
+    )
+    plugin_cls = _REGISTRY[group][plugin_name]
+    action_spec = plugin_cls.__plugin_actions__[action_name]
+    return {
+        "group": group,
+        "plugin_name": plugin_name,
+        "action_name": action_name,
+        "bound_arguments": bound_arguments,
+        **check_action_values(action_spec, bound_arguments),
+        "constructed": False,
+        "executed": False,
     }
 
 
