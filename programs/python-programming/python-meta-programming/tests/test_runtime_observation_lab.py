@@ -3,7 +3,8 @@ from __future__ import annotations
 import json
 import unittest
 
-from labs.runtime_observation import build_evidence, render_evidence
+from labs.runtime_observation import build_debug_view, build_evidence, render_evidence
+from labs.runtime_observation.evidence import IncidentObservationTarget
 
 
 class RuntimeObservationLabTests(unittest.TestCase):
@@ -55,6 +56,61 @@ class RuntimeObservationLabTests(unittest.TestCase):
         self.assertEqual(packet["fallback_reads_after_static_lookup"], 0)
         self.assertEqual(packet["resolved_owner"], "generated:owner")
         self.assertEqual(packet["fallback_reads_after_dynamic_lookup"], 1)
+
+    def test_debug_view_does_not_evaluate_property_or_fallback(self) -> None:
+        target = IncidentObservationTarget("queue lag")
+
+        entries = build_debug_view(target)
+
+        self.assertEqual(target._property_reads, 0)
+        self.assertEqual(target._fallback_reads, 0)
+        self.assertEqual(
+            [entry.as_dict() for entry in entries],
+            [
+                {
+                    "name": "acknowledge",
+                    "owner": "IncidentObservationTarget",
+                    "kind": "routine",
+                    "display": "<routine>",
+                },
+                {
+                    "name": "risk_score",
+                    "owner": "IncidentObservationTarget",
+                    "kind": "property",
+                    "display": "<property>",
+                },
+                {
+                    "name": "title",
+                    "owner": "instance",
+                    "kind": "stored-value",
+                    "display": "'queue lag'",
+                },
+            ],
+        )
+
+    def test_debug_view_reports_slots_without_resolving_them(self) -> None:
+        class SlottedIncident:
+            __slots__ = ("title",)
+
+            def __init__(self, title: str) -> None:
+                self.title = title
+
+        entries = build_debug_view(SlottedIncident("queue lag"))
+
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].name, "title")
+        self.assertEqual(entries[0].owner, "SlottedIncident")
+        self.assertEqual(entries[0].kind, "slot")
+        self.assertEqual(entries[0].display, "<slot>")
+
+    def test_debug_view_enforces_output_bound(self) -> None:
+        target = IncidentObservationTarget("queue lag")
+
+        entries = build_debug_view(target, max_names=2)
+
+        self.assertEqual([entry.name for entry in entries], ["acknowledge", "risk_score"])
+        with self.assertRaisesRegex(ValueError, "max_names must be at least 1"):
+            build_debug_view(target, max_names=0)
 
     def test_rendered_packet_is_stable_json(self) -> None:
         rendered = render_evidence()
