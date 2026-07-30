@@ -1,363 +1,232 @@
 # Descriptor Protocol and `__set_name__`
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Meta-Programming"]
-  section["Descriptors Lookup Attribute Control"]
-  page["Descriptor Protocol and `__set_name__`"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  classbody["Class body stores an object"] --> setname["type.__new__ calls __set_name__"]
+  access["Later attribute access"] --> protocol["__get__ / __set__ / __delete__"]
+  setname -.configures.-> protocol
 ```
 <!-- page-maps:end -->
 
-Module 07 starts by making one thing explicit:
+The first descriptor mistake is to treat every class-level helper as a descriptor. The
+second is to treat `__set_name__` as the switch that activates descriptor behavior.
+Those claims blur two different times and two different responsibilities.
 
-attribute access is a protocol surface, not just a dictionary lookup.
+## The claim
 
-Descriptors are a big part of that protocol.
+An object participates in descriptor lookup when its type defines `__get__`, `__set__`,
+or `__delete__`. `__set_name__` is a class-creation callback that can configure that
+object, but it does not make the object a descriptor.
 
-This page is strongest when read as a protocol review, not as a novelty page. The point
-is not that descriptors are exotic. The point is that normal attribute access already
-depends on a small set of hooks that you can inspect, name, and review.
+That distinction gives us two questions:
 
-## The sentence to keep
-
-A descriptor is any object stored on a class that defines `__get__`, `__set__`, or
-`__delete__`, and Python consults those hooks during attribute access instead of always
-returning the raw class attribute.
-
-That is the foundation the rest of the module depends on.
-
-Keep a second sentence beside it:
-
-> `__set_name__` helps a descriptor configure itself, but it does not make the object a descriptor by itself.
-
-That distinction matters because "name-aware" and "descriptor" are not interchangeable.
-If a review blurs them together, the real protocol boundary disappears immediately.
-
-## The four hooks in one place
-
-The full descriptor surface for this module is:
-
-- `__get__(self, obj, owner=None)` for reads
-- `__set__(self, obj, value)` for writes
-- `__delete__(self, obj)` for deletes
-- `__set_name__(self, owner, name)` for class-creation-time self-configuration
-
-Only the first three participate in making an object a descriptor.
-
-`__set_name__` matters because reusable descriptors often need to learn:
-
-- the owning class
-- the public attribute name
-- the private storage name they should use internally
-
-Use this split when you inspect a descriptor for the first time:
-
-| If you are asking... | Look at... |
+| Question | Evidence |
 | --- | --- |
-| is this object actually a descriptor? | `__get__`, `__set__`, `__delete__` |
-| how did it learn the field name? | `__set_name__` |
-| what behavior does it own? | the exact read/write/delete hook that implements it |
+| did the object learn where the class installed it? | `__set_name__` and its recorded names |
+| can the object participate in later attribute access? | `__get__`, `__set__`, or `__delete__` on its type |
 
-## Which hook answers which question
+## Start with the counterexample
 
-Use this table when a descriptor starts sounding fuzzier than it should:
-
-| Hook | Review question it answers |
-| --- | --- |
-| `__get__` | what should reads through this attribute return? |
-| `__set__` | what rule governs assignment to this attribute? |
-| `__delete__` | what does deletion mean or refuse to mean here? |
-| `__set_name__` | how does the descriptor learn where it was installed? |
-
-## What each hook is really for
-
-Keep the jobs separate:
-
-- `__get__` decides what `obj.attr` or `Cls.attr` should return
-- `__set__` decides what happens when code assigns `obj.attr = value`
-- `__delete__` decides what `del obj.attr` means
-- `__set_name__` lets the descriptor configure itself once when the class is created
-
-That separation matters because many production descriptors use only two or three of these
-hooks, not all four.
-
-Readers need this separation early because weak explanations often collapse all descriptor
-behavior into one vague phrase like "it intercepts the attribute." Strong explanations
-name the exact hook and the exact boundary.
-
-## A proof route for protocol status
-
-Use this route whenever a class attribute starts sounding mystical:
-
-1. confirm the object is stored on the class
-2. inspect whether any of `__get__`, `__set__`, or `__delete__` exist
-3. inspect whether `__set_name__` also exists
-4. name which read, write, delete, or naming boundary each hook actually owns
-
-If step 2 fails, the object may still be useful, but it is not a descriptor yet.
-
-## A small but important clarification
-
-`__set_name__` alone does not make something a descriptor.
-
-This object:
+The lab ships a `NameAware` object:
 
 ```python
-class NameAwareOnly:
-    def __set_name__(self, owner, name):
-        self.name = name
+class NameAware:
+    def __init__(self) -> None:
+        self.owner_name = ""
+        self.public_name = ""
+
+    def __set_name__(self, owner: type[object], name: str) -> None:
+        self.owner_name = owner.__name__
+        self.public_name = name
 ```
 
-is name-aware, but it is not a descriptor until it also defines `__get__`, `__set__`, or
-`__delete__`.
-
-That distinction prevents a lot of fuzzy explanations later.
-
-It also prevents a common teaching error: treating `__set_name__` as if it were a hidden
-activation switch. It is a configuration hook, not proof of descriptor status.
-
-That is also why returning to the class body matters. The class installs the object; the
-protocol hooks decide whether attribute access becomes descriptor-driven afterward.
-
-## The default pipeline still begins with `__getattribute__`
-
-Even though Module 07 is about descriptors, instance lookup still begins here:
+Install it on a class:
 
 ```python
-obj.__getattribute__("attr")
+class Delivery:
+    marker = NameAware()
 ```
 
-The key point is that `object.__getattribute__` applies descriptor rules as part of the
-default lookup pipeline.
+After class creation, `vars(Delivery)["marker"]` knows the owner and public name. Normal
+instance lookup still treats it as a plain class value because its type defines none of
+the three descriptor access hooks.
 
-So the useful mental model is:
+Run:
 
-```text
-attribute access
-  -> default __getattribute__
-  -> descriptor / instance dictionary / class lookup rules
+```bash
+make descriptor-lookup-lab
 ```
 
-Keep one more sentence attached to that model:
+The `protocol.name_aware` packet reports:
 
-> descriptor behavior is part of normal attribute access, not a separate metaprogramming subsystem that only frameworks use.
+```json
+{
+  "descriptor_type": "NameAware",
+  "has_delete": false,
+  "has_get": false,
+  "has_set": false,
+  "has_set_name": true,
+  "kind": "not-a-descriptor"
+}
+```
 
-Later modules may discuss overrides of `__getattribute__`, but here the goal is to master
-the default behavior first.
+This is the failure case the prose-only version of the lesson could describe but not
+prove.
 
-## Evidence route for protocol reviews
+## Inspect the type, not an invented label
 
-Use this route whenever attribute access starts sounding mystical:
+Python's special-method machinery consults the type of the class attribute. The lab's
+`inspect_descriptor_protocol` therefore checks `type(value)`:
 
-| Evidence step | What it proves |
+```python
+owner = type(value)
+has_get = hasattr(owner, "__get__")
+has_set = hasattr(owner, "__set__")
+has_delete = hasattr(owner, "__delete__")
+```
+
+The resulting category is mechanical:
+
+| Hook set | Classification |
 | --- | --- |
-| the object is stored on the class | descriptor protocol can participate |
-| one of `__get__`, `__set__`, `__delete__` exists | the object is actually a descriptor |
-| `object.__getattribute__` drives default lookup | descriptor behavior is part of normal attribute access |
-| `obj is None` on class access | the descriptor can choose a class-level review surface |
+| no access hooks | not a descriptor |
+| `__get__` only | non-data descriptor |
+| `__set__` or `__delete__` | data descriptor |
 
-## A compact descriptor example
+The label “field,” “managed,” or “important” has no effect on the category.
+
+## Trace the shipped data descriptor
+
+`StoredField` owns reads and writes:
 
 ```python
-class IntegerField:
+class StoredField:
     def __set_name__(self, owner, name):
         self.public_name = name
-        self.private_name = f"_{name}"
+        self.storage_name = f"_{name}"
 
-    def __get__(self, obj, owner=None):
-        if obj is None:
+    def __get__(self, instance, owner=None):
+        if instance is None:
             return self
-        return obj.__dict__.get(self.private_name, 0)
+        try:
+            return vars(instance)[self.storage_name]
+        except KeyError as error:
+            raise AttributeError(f"{self.public_name} is unset") from error
 
-    def __set__(self, obj, value):
-        if not isinstance(value, int):
-            raise TypeError(f"{self.public_name} must be an int")
-        obj.__dict__[self.private_name] = value
-
-
-class Counter:
-    count = IntegerField()
-
-
-c = Counter()
-c.count = 3
-print(c.count)  # 3
+    def __set__(self, instance, value):
+        vars(instance)[self.storage_name] = value
 ```
 
-This example is small, but it already shows the module's main mechanics:
+Timing and ownership are now explicit:
 
-- class-level installation
-- name learning through `__set_name__`
-- per-instance storage in `obj.__dict__`
-- validation at the attribute boundary
+1. The class body creates one `StoredField`.
+2. `type.__new__` creates the owner class.
+3. Class creation calls `StoredField.__set_name__` once for that installation.
+4. `Delivery.endpoint` calls `__get__(None, Delivery)` and returns the descriptor.
+5. `delivery.endpoint = value` calls `__set__`.
+6. `delivery.endpoint` calls `__get__(delivery, Delivery)`.
 
-It also gives the reader a real owner story:
+The descriptor object owns configuration and access behavior. The delivery instance owns
+the stored value under `_endpoint`.
 
-- the class owns installation
-- `__set_name__` owns field naming
-- `__set__` owns validation
-- the instance dictionary owns the stored value
+## Why class access returns the descriptor
 
-## Why class access usually returns the descriptor itself
+The `instance is None` branch is not boilerplate to copy without thought. It defines the
+public class-level surface.
 
-A common convention is:
+Returning `self` makes this possible:
 
 ```python
-if obj is None:
-    return self
+descriptor = Delivery.endpoint
+assert descriptor is vars(Delivery)["endpoint"]
+assert descriptor.storage_name == "_endpoint"
 ```
 
-inside `__get__`.
+That is useful for documentation, schema generation, debugging, and the capstone
+metaclass. A descriptor could return other metadata on class access, but doing so should
+be a deliberate API decision because it hides the actual owner.
 
-That makes class access such as `Counter.count` return the descriptor object itself so
-review, debugging, and introspection can still see the configured field owner.
+## Failure: per-instance state on the shared descriptor
 
-It is not the only possible design, but it is the standard one and the clearest default.
-
-Returning `self` on class access matters because it leaves a review surface behind. A
-descriptor that hides itself on class access is often harder to inspect, debug, or explain
-to a learner reading the class definition.
-
-## A class-access review card
-
-When a descriptor chooses what to return for `Class.field`, ask:
-
-| Question | Why it matters |
-| --- | --- |
-| can a learner still inspect the configured field owner? | class access should usually leave an evidence surface behind |
-| does class access return the descriptor, metadata, or something more surprising? | reviewability depends on that choice |
-| would debugging become harder if the descriptor hid itself? | invisible owners are expensive to trace later |
-
-## Which hooks matter most in practice
-
-The hooks are not equally common:
-
-- `__get__` appears in almost every useful descriptor
-- `__set__` is common for validators, coercion, and field systems
-- `__set_name__` is very common in modern reusable descriptors
-- `__delete__` is comparatively rare
-
-That matters because beginners sometimes assume a descriptor is incomplete unless it
-implements every hook. It is not.
-
-Descriptors should be judged by honest ownership, not by hook count.
-
-## Minimal hook sets worth recognizing
-
-Use these as quick classification anchors:
-
-| Shape | What it usually means |
-| --- | --- |
-| `__get__` only | readable non-data descriptor surface |
-| `__get__` plus `__set__` | data descriptor with write ownership |
-| `__get__` plus `__set_name__` | readable descriptor that also derives installation metadata |
-| `__set_name__` only | name-aware helper, not a descriptor by protocol status |
-
-## What not to do with descriptor state
-
-One of the earliest descriptor mistakes is storing per-instance values on the descriptor
-object itself.
-
-That is wrong because the descriptor instance usually lives on the class and is shared by
-every object of that class.
-
-Bad pattern:
+This implementation is wrong:
 
 ```python
 class BrokenField:
-    def __init__(self):
-        self.value = None
+    def __set__(self, instance, value):
+        self.value = value
 ```
 
-That shape almost always means instance state will leak across objects.
+There is normally one `BrokenField` in the class dictionary and many owner instances.
+`self.value` therefore becomes shared state. The protocol hook is correct; the storage
+owner is not.
 
-Module 07 will come back to storage patterns in detail, but the rule starts here:
+The lab's test uses two owner instances and asserts two different dictionaries:
 
-store per-instance state on the instance or in safe external storage, not on the
-descriptor itself.
+```python
+assert vars(first) == {"_endpoint": "https://one.test"}
+assert vars(second) == {"_endpoint": "https://two.test"}
+```
 
-## Evidence packet for protocol reviews
+That test proves independence. A single-instance example cannot.
 
-Leave this page with a small packet:
+## What the protocol evidence proves
 
-- one object that is a descriptor and one object that is only name-aware
-- one exact hook mapped to one exact boundary it owns
-- one class-access example showing what `obj is None` returns
-- one note naming where per-instance state should live and why the descriptor object itself is the wrong place
+It proves:
 
-## Common overclaims to reject
+- `__set_name__` ran during owner-class creation
+- `NameAware` is still not a descriptor
+- `StoredField` is a data descriptor
+- class access exposes the installed descriptor
+- instance values live under derived storage names
 
-Reject these descriptions when they appear in review:
+It does not prove:
 
-| Overclaim | Better replacement |
-| --- | --- |
-| "`__set_name__` makes this object a descriptor" | "`__set_name__` configures a descriptor or name-aware helper after class creation" |
-| "the descriptor handles the attribute" | "the descriptor handles reads, writes, deletes, or naming through specific hooks" |
-| "class access just gives the field" | "class access usually exposes the descriptor object for review or alternate behavior" |
-| "descriptors need all four hooks" | "descriptors need only the hooks required by the owned boundary" |
+- that every descriptor should use `__dict__`
+- that custom `__getattribute__` implementations preserve ordinary lookup
+- that a field's validation policy is correct
+- that descriptor reuse is justified
 
-## Failure modes for protocol explanations
+Those questions belong to later cores.
 
-These are the mistakes this page is trying to prevent:
+## Capstone connection
 
-| Failure mode | Why it weakens the design | Repair move |
-| --- | --- | --- |
-| treating `__set_name__` as sufficient for descriptor status | readers lose the real protocol boundary | name the actual read/write/delete hooks |
-| storing instance values on the descriptor object | state leaks across instances | move state to the instance or safe external storage |
-| hiding class-access behavior | debugging and inspection become weaker | explain or preserve the `obj is None` branch |
-| using generic "intercepts the attribute" language | the owner story becomes vague | say which hook owns which boundary |
+The capstone `Field` uses the same hook split:
 
-## Review rules for the protocol
+- `__set_name__` records `name` and `storage_name`
+- `__get__` owns reads and class inspection
+- `__set__` owns coercing writes
 
-When reviewing descriptor code, keep these questions close:
+`PluginMeta` can collect the field because class access exposes the descriptor object.
+The descriptor does not own plugin registration, constructor generation, or action
+dispatch. Those remain class-family responsibilities.
 
-- which of the protocol hooks are actually implemented?
-- does the code know that `__set_name__` is supportive, not sufficient?
-- where does per-instance state live?
-- what happens on class access when `obj is None`?
-- is this really attribute-boundary behavior, or is a simpler method or property enough?
-- can another reviewer point to the exact hook that owns the behavior in question?
+## Review checklist
 
-## Exit check for this page
+Before accepting a descriptor explanation, ask:
 
-Before moving on, make sure you can do all of these:
+- Which class dictionary holds the descriptor object?
+- Which access hooks exist on its type?
+- When did `__set_name__` run?
+- What does class access return?
+- Where are values stored for two different instances?
+- Which guarantee is outside this object's ownership?
 
-- explain why `__set_name__` is helpful but not sufficient
-- name the exact hook used for one read boundary and one write boundary
-- explain what class access usually returns and why that matters for review
-- say where per-instance state should live in a well-behaved field descriptor
+## Practice before continuing
 
-## What to practice from this page
+Open `labs/descriptor_lookup/protocol.py` and make one prediction before running its tests:
 
-Try these before moving on:
+```bash
+python3 -m unittest discover -s tests \
+  -p "test_descriptor_protocol_lab.py" -v
+```
 
-1. Write one descriptor that only defines `__get__` and explain why it is still a descriptor.
-2. Add `__set_name__` to a reusable field and show how it removes hard-coded attribute names.
-3. Inspect one class access such as `MyClass.field` and explain why returning the descriptor object is useful.
-
-If those feel ordinary, the next step is precedence: why some descriptors beat instance
-state while others can be shadowed.
+Then explain why removing `StoredField.__set__` changes both its category and the next
+core's precedence result.
 
 ## Continue through Module 07
 
-- Previous: [Overview](index.md)
+- Previous: [Module 07 Overview](index.md)
 - Next: [Data and Non-Data Descriptor Precedence](data-and-non-data-descriptor-precedence.md)
-- Practice: [Exercises](exercises.md)
-- Terms: [Glossary](glossary.md)
