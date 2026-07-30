@@ -11,6 +11,7 @@ from .framework import (
     bind_action_arguments,
     build_manifest,
     create_plugin,
+    inspect_action_wrapper,
     invoke,
 )
 
@@ -75,6 +76,15 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Action argument entry. May be repeated.",
     )
     bind_action.set_defaults(handler=_handle_bind_action)
+
+    action_wrapper = subparsers.add_parser(
+        "action-wrapper",
+        help="Audit one action wrapper chain without constructing or invoking a plugin.",
+    )
+    action_wrapper.add_argument("group", help="Plugin group name.")
+    action_wrapper.add_argument("plugin_name", help="Registered plugin name.")
+    action_wrapper.add_argument("action_name", help="Declared action name.")
+    action_wrapper.set_defaults(handler=_handle_action_wrapper)
 
     registry = subparsers.add_parser("registry", help="Render the plugin registry as JSON.")
     registry.add_argument("--group", help="Restrict output to one plugin group.")
@@ -166,6 +176,14 @@ def _handle_bind_action(args: argparse.Namespace) -> dict[str, object]:
         ),
         "executed": False,
     }
+
+
+def _handle_action_wrapper(args: argparse.Namespace) -> dict[str, object]:
+    return inspect_action_wrapper(
+        args.group,
+        args.plugin_name,
+        args.action_name,
+    )
 
 
 def _handle_registry(args: argparse.Namespace) -> dict[str, Any]:

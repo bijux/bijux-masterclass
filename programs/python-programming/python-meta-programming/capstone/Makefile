@@ -68,6 +68,10 @@ bind-action: ## Validate one action call without constructing or invoking a plug
 		--arg "severity=warning" \
 		--arg "summary=node-1 crossed 90%"
 
+.PHONY: action-wrapper
+action-wrapper: ## Audit one action wrapper chain without execution
+	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver
+
 .PHONY: registry
 registry: ## Render the delivery registry from the public CLI
 	@PYTHONPATH=src $(CLI) registry --group delivery

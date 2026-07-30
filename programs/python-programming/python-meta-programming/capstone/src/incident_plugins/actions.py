@@ -65,6 +65,51 @@ def action(summary: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     return decorate
 
 
+def describe_action_wrapper(function: Callable[..., Any]) -> dict[str, object]:
+    """Describe one action wrapper chain without invoking any callable."""
+
+    original = inspect.unwrap(function)
+    chain = []
+    current = function
+    depth = 0
+    while True:
+        chain.append(
+            {
+                "depth": depth,
+                "name": current.__name__,
+                "implementation_signature": str(
+                    inspect.signature(current, follow_wrapped=False)
+                ),
+                "owns_action_spec": hasattr(current, "__plugin_action__"),
+                "owns_explicit_signature": "__signature__" in vars(current),
+            }
+        )
+        if not hasattr(current, "__wrapped__"):
+            break
+        current = current.__wrapped__
+        depth += 1
+
+    spec = getattr(function, "__plugin_action__", None)
+    return {
+        "visible_name": function.__name__,
+        "visible_signature": str(inspect.signature(function)),
+        "original_name": original.__name__,
+        "original_signature": str(inspect.signature(original)),
+        "wrapper_depth": depth,
+        "chain": chain,
+        "metadata_preserved": {
+            "has_wrapped": hasattr(function, "__wrapped__"),
+            "name_matches": function.__name__ == original.__name__,
+            "qualname_matches": function.__qualname__ == original.__qualname__,
+            "doc_matches": function.__doc__ == original.__doc__,
+            "annotations_match": function.__annotations__ == original.__annotations__,
+        },
+        "action_spec_signature_matches_original": (
+            spec is not None and spec.signature == inspect.signature(original)
+        ),
+    }
+
+
 def _annotation_name(annotation: Any) -> str | None:
     if annotation is inspect._empty:
         return None

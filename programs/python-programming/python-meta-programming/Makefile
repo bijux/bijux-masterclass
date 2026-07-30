@@ -105,6 +105,10 @@ capstone-manifest: ## Render the capstone manifest from the public CLI
 capstone-bind-action: ## Validate a capstone action call without executing it
 	@$(RUN_CAPSTONE) bind-action
 
+.PHONY: capstone-action-wrapper
+capstone-action-wrapper: ## Audit a capstone action wrapper without executing it
+	@$(RUN_CAPSTONE) action-wrapper
+
 .PHONY: capstone-trace
 capstone-trace: ## Trace one capstone invocation from the public CLI
 	@$(RUN_CAPSTONE) trace

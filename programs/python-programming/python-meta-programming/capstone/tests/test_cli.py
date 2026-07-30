@@ -97,6 +97,32 @@ def test_bind_action_command_validates_arguments_without_execution(capsys) -> No
     }
 
 
+def test_action_wrapper_command_exposes_logical_and_shell_signatures(capsys) -> None:
+    exit_code = main(
+        [
+            "action-wrapper",
+            "delivery",
+            "console",
+            "deliver",
+        ]
+    )
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+    assert captured["wrapper"]["wrapper_depth"] == 1
+    assert captured["wrapper"]["visible_signature"] == (
+        "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'"
+    )
+    assert captured["wrapper"]["chain"][0]["owns_action_spec"] is True
+    assert captured["wrapper"]["chain"][0]["owns_explicit_signature"] is True
+    assert captured["wrapper"]["chain"][1]["owns_action_spec"] is False
+    assert captured["wrapper"]["chain"][1]["owns_explicit_signature"] is False
+    assert captured["wrapper"]["action_spec_signature_matches_original"] is True
+
+
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:
     exit_code = main(
         [

@@ -6,6 +6,7 @@ from .framework import (
     bind_action_arguments,
     build_manifest,
     create_plugin,
+    inspect_action_wrapper,
     invoke,
 )
 from .plugins import ConsoleNotifier, DeliveryPlugin, PagerNotifier, WebhookNotifier
@@ -28,5 +29,6 @@ __all__ = [
     "bind_action_arguments",
     "build_manifest",
     "create_plugin",
+    "inspect_action_wrapper",
     "invoke",
 ]

@@ -8,6 +8,7 @@ from incident_plugins import (
     action,
     bind_action_arguments,
     build_manifest,
+    inspect_action_wrapper,
     invoke,
 )
 from incident_plugins.plugins import ConsoleNotifier, PagerNotifier, WebhookNotifier
@@ -86,6 +87,45 @@ def test_action_binding_rejects_invalid_calls_before_execution() -> None:
             title="CPU high",
             severity="warning",
         )
+
+
+def test_action_wrapper_audit_preserves_execution_boundaries() -> None:
+    runtime_events: list[str] = []
+
+    class WrapperAuditPlugin(PluginBase):
+        group = "wrapper-audit"
+        plugin_name = "event-recorder"
+
+        def __init__(self) -> None:
+            runtime_events.append("constructed")
+            self._action_history = []
+
+        @action("Record one deliberately executed event.")
+        def deliver(self, incident_id: str, *, severity: str = "warning") -> str:
+            """Deliver one incident."""
+
+            runtime_events.append("invoked")
+            return f"{incident_id}:{severity}"
+
+    audit = inspect_action_wrapper(
+        "wrapper-audit",
+        "event-recorder",
+        "deliver",
+    )
+
+    assert audit["constructed"] is False
+    assert audit["executed"] is False
+    assert audit["wrapper"]["wrapper_depth"] == 1
+    assert audit["wrapper"]["visible_signature"] == (
+        "(self, incident_id: 'str', *, severity: 'str' = 'warning') -> 'str'"
+    )
+    assert audit["wrapper"]["chain"][0]["owns_action_spec"] is True
+    assert audit["wrapper"]["chain"][0]["owns_explicit_signature"] is True
+    assert audit["wrapper"]["chain"][1]["owns_action_spec"] is False
+    assert audit["wrapper"]["chain"][1]["owns_explicit_signature"] is False
+    assert all(audit["wrapper"]["metadata_preserved"].values())
+    assert audit["wrapper"]["action_spec_signature_matches_original"] is True
+    assert runtime_events == []
 
 
 def test_runtime_invocation_returns_structured_payloads() -> None:

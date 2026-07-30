@@ -4,7 +4,7 @@ from collections import OrderedDict, defaultdict
 import inspect
 from typing import Any
 
-from .actions import ActionSpec
+from .actions import ActionSpec, describe_action_wrapper
 from .fields import Field
 
 
@@ -191,6 +191,25 @@ def bind_action_arguments(
         name: value
         for name, value in bound.arguments.items()
         if name != "self"
+    }
+
+
+def inspect_action_wrapper(
+    group: str,
+    plugin_name: str,
+    action_name: str,
+) -> dict[str, object]:
+    """Inspect a registered action wrapper without construction or invocation."""
+
+    plugin_cls = _REGISTRY[group][plugin_name]
+    function = inspect.getattr_static(plugin_cls, action_name)
+    return {
+        "group": group,
+        "plugin_name": plugin_name,
+        "action_name": action_name,
+        "constructed": False,
+        "executed": False,
+        "wrapper": describe_action_wrapper(function),
     }
 
 
