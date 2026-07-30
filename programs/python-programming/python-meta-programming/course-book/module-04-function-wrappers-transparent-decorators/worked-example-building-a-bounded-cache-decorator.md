@@ -57,8 +57,13 @@ The decorator should:
 That last goal matters most. This is where many wrappers go wrong: they look tiny and end
 up behaving like unreviewed framework features.
 
-Treat the worked example as a review packet, not a recipe to paste blindly into production
-code.
+This worked example is maintained course software, not a recipe to paste from the page.
+The implementation lives in `labs/wrapper_runtime/bounded_cache.py`, the executable
+scenario in `labs/wrapper_runtime/cache_demo.py`, and focused proof in
+`tests/test_bounded_cache_lab.py`.
+
+Treat the worked example as a review packet. The page explains the public policy and
+guides the trace; the source and tests are the authority for executable behavior.
 
 ## The design boundary
 
@@ -68,7 +73,8 @@ That means the design will:
 
 - preserve metadata with `functools.wraps`
 - expose `cache_clear()` for explicit reset
-- keep cache state on the wrapper for visibility
+- expose `cache_info()` and `cache_snapshot()` for inspection
+- use least-recently-used eviction rather than insertion-only eviction
 - remain single-threaded and intentionally limited
 
 Those choices are not accidental. They make the wrapper more inspectable and easier to
@@ -79,6 +85,40 @@ They also let the learner practice a stronger habit:
 - name the non-goals early
 - expose the controls that a reviewer will need later
 - keep the wrapper small enough that the limits can still be inspected directly
+
+## Run the policy before reading the implementation
+
+```console
+$ make wrapper-cache
+```
+
+Predict these facts before comparing the JSON:
+
+- five wrapper calls produce four underlying executions
+- the second `INC-41` call is the only hit
+- accessing a cached entry promotes it to most-recently-used
+- after two evictions, the retained keys are `INC-43` and `INC-41`
+- the visible signature still contains `incident_id` and keyword-only `severity`
+
+Then run:
+
+```console
+$ make wrapper-cache-test
+```
+
+The eight focused tests are part of the worked example. They cover the happy path, but
+they also cover the policy questions a copied snippet usually leaves unanswered:
+
+| Test pressure | Contract proved |
+| --- | --- |
+| repeated call | cached result preserves object identity and skips execution |
+| recent hit before insertion | eviction is least-recently-used, not first-in-first-out |
+| keyword order and call style | keyword order is canonical; positional/keyword equivalence is deliberately not normalized |
+| repeated failure | failed results never enter storage |
+| unhashable argument | key rejection happens before wrapped execution |
+| zero capacity and clear | disabled storage and reset statistics are explicit |
+| metadata inspection | logical name, docstring, signature, and unwrap path survive |
+| demo packet | learner-visible output stays aligned with the implementation |
 
 ## Step 1: make the decorator factory timing explicit
 
@@ -135,72 +175,80 @@ Use this quick design table while reading the implementation:
 | Review surface | Why it exists in this example |
 | --- | --- |
 | `functools.wraps` | keeps the logical callable visible to tools |
-| wrapper attributes for cache state | make policy-carrying state inspectable |
+| `cache_info()` | exposes counters, capacity, and current size without private access |
+| `cache_snapshot()` | exposes current LRU order for review and teaching |
 | `cache_clear()` | gives tests and operators an explicit reset route |
 | explicit hashability failure | refuses to pretend all arguments are safely cacheable |
 
-## A bounded implementation
+## The maintained implementation
 
 ```python
-import functools
-from typing import Any, Callable, Dict, Hashable, Optional
+def _call_key(args, kwargs):
+    key = (args, tuple(sorted(kwargs.items())))
+    try:
+        hash(key)
+    except TypeError as error:
+        raise TypeError("bounded_cache requires hashable arguments") from error
+    return key
 
 
-def cache(maxsize: Optional[int] = 128) -> Callable:
+def bounded_cache(maxsize=128):
     if maxsize is not None and maxsize < 0:
-        raise ValueError("maxsize must be >= 0 or None")
+        raise ValueError("maxsize must be non-negative or None")
 
-    if maxsize == 0:
-        def decorator_no_cache(func: Callable) -> Callable:
-            @functools.wraps(func)
-            def wrapper(*args, **kwargs) -> Any:
-                return func(*args, **kwargs)
+    def decorate(function):
+        entries = OrderedDict()
+        hits = 0
+        misses = 0
 
-            def cache_clear() -> None:
-                pass
+        @wraps(function)
+        def wrapped(*args, **kwargs):
+            nonlocal hits, misses
+            key = _call_key(tuple(args), dict(kwargs))
+            if key in entries:
+                hits += 1
+                result = entries.pop(key)
+                entries[key] = result
+                return result
 
-            wrapper.cache_clear = cache_clear
-            return wrapper
-
-        return decorator_no_cache
-
-    def decorator(func: Callable) -> Callable:
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs) -> Any:
-            try:
-                key: Hashable = (args, frozenset(kwargs.items()))
-            except TypeError as exc:
-                raise TypeError(
-                    "cache() only supports hashable arguments in its canonical form"
-                ) from exc
-
-            if key in wrapper._cache:
-                wrapper._cache_order.remove(key)
-                wrapper._cache_order.append(key)
-                return wrapper._cache[key]
-
-            result = func(*args, **kwargs)
-
-            if maxsize is not None and len(wrapper._cache_order) >= maxsize:
-                oldest = wrapper._cache_order.pop(0)
-                del wrapper._cache[oldest]
-
-            wrapper._cache[key] = result
-            wrapper._cache_order.append(key)
+            misses += 1
+            result = function(*args, **kwargs)
+            if maxsize == 0:
+                return result
+            if maxsize is not None and len(entries) >= maxsize:
+                entries.popitem(last=False)
+            entries[key] = result
             return result
 
-        wrapper._cache: Dict[Hashable, Any] = {}
-        wrapper._cache_order: list = []
+        # The maintained source attaches cache_clear, cache_info, and
+        # cache_snapshot here.
+        return wrapped
 
-        def cache_clear() -> None:
-            wrapper._cache.clear()
-            wrapper._cache_order.clear()
-
-        wrapper.cache_clear = cache_clear
-        return wrapper
-
-    return decorator
+    return decorate
 ```
+
+This excerpt keeps the decision path visible. Read the maintained source for the typed
+`CachedCallable` protocol, immutable `CacheInfo`, and attached control functions.
+
+### Trace one miss and one hit
+
+Miss:
+
+```text
+build key -> not present -> increment misses -> execute function
+          -> evict LRU if full -> store result as most recent -> return result
+```
+
+Hit:
+
+```text
+build key -> present -> increment hits -> remove existing entry
+          -> reinsert as most recent -> return stored result
+```
+
+Failure exits after `misses += 1` and before insertion. Zero capacity exits after
+execution and before insertion. These positions define the failure and disabled-cache
+contracts; moving either line changes observable policy.
 
 ## Why this version is useful for review
 
@@ -209,7 +257,7 @@ This cache is intentionally not pretending to be perfect.
 It is useful because it makes the right tradeoffs visible:
 
 - `wraps` keeps the callable inspectable
-- wrapper attributes make state explicit
+- `cache_info()` and `cache_snapshot()` make state observable
 - `cache_clear()` makes reset behavior explicit
 - the hashability rule is named rather than hidden
 - capacity and eviction behavior are reviewable in code
@@ -228,8 +276,9 @@ The educational win is not "here is a clever cache." The win is:
 This decorator is bounded because it leaves real limitations visible:
 
 - it is not concurrency-safe
-- it uses a simple O(n) eviction path
 - it requires hashable arguments in its canonical key form
+- it treats positional and keyword spellings of an equivalent call as distinct keys
+- it does not provide per-key invalidation or expiration
 - it is not a substitute for `functools.lru_cache`
 
 Those limitations are not embarrassing leftovers. They are the proof that the wrapper is
@@ -242,6 +291,7 @@ This decorator is **not** trying to be:
 - a concurrency-safe cache
 - a drop-in replacement for `functools.lru_cache`
 - a generalized key-normalization framework
+- a time-to-live or invalidation service
 - a silent optimization that reviewers never need to think about
 
 ## Order and policy still matter
@@ -286,6 +336,7 @@ When you inherit or design a stateful decorator, run this loop:
 2. make reset and inspection surfaces explicit
 3. preserve metadata so tooling can still see the logical callable
 4. document limitations instead of letting the wrapper pretend to be more general than it is
+5. test failure, disabled-state, and eviction behavior—not only cache hits
 
 ## Exit check for this worked example
 
@@ -295,6 +346,8 @@ Before leaving this page, make sure you can do all of these:
 - point to the surface a tester would use to reset state
 - explain one reason this wrapper is more honest than a hidden closure-only cache
 - state one limitation that proves the example is bounded rather than pretending to be production-grade
+- explain why the same logical call written positionally and by keyword can occupy two
+  entries in this deliberately simple key model
 
 If you can do that here, Module 04 has done its job and the next decorator module can take
 on heavier policy and typing concerns with less ambiguity.
