@@ -9,12 +9,16 @@ from .protocol import (
     StoredField,
     inspect_descriptor_protocol,
 )
+from .quantity import Quantity, QuantitySpec, QuantityValue
 
 __all__ = [
     "DescriptorProtocol",
     "LookupDecision",
     "MethodBinding",
     "NameAware",
+    "Quantity",
+    "QuantitySpec",
+    "QuantityValue",
     "ShadowableValue",
     "StoredField",
     "explain_lookup",

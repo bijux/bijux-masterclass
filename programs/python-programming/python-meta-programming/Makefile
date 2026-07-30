@@ -86,6 +86,14 @@ class-customization-lab-test: ## Verify Module 06 transformation and attribute b
 	@$(PYTHON) -m unittest discover -s tests -p "test_*class_customization*.py" -v
 	@$(PYTHON) -m unittest discover -s tests -p "test_frozen_surface*.py" -v
 
+.PHONY: descriptor-lookup-lab
+descriptor-lookup-lab: ## Run the Module 07 descriptor and lookup evidence lab
+	@$(PYTHON) -m labs.descriptor_lookup
+
+.PHONY: descriptor-lookup-lab-test
+descriptor-lookup-lab-test: ## Verify Module 07 lookup, binding, and storage boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_*descriptor*.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo
