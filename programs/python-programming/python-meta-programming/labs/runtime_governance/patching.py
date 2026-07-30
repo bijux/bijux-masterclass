@@ -13,8 +13,8 @@ class PatchRecord:
     owner_type: str
     attribute: str
     had_original: bool
-    original_identity: int | None
-    replacement_identity: int
+    original_type: str | None
+    replacement_type: str
     rollback_owner: str = "scoped_attribute_patch"
 
     def manifest(self) -> dict[str, object]:
@@ -37,8 +37,8 @@ def scoped_attribute_patch(
         owner_type=type(owner).__name__,
         attribute=attribute,
         had_original=original is not sentinel,
-        original_identity=None if original is sentinel else id(original),
-        replacement_identity=id(replacement),
+        original_type=None if original is sentinel else type(original).__name__,
+        replacement_type=type(replacement).__name__,
     )
     setattr(owner, attribute, replacement)
     try:

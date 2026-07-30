@@ -110,6 +110,14 @@ class-creation-lab: ## Run the Module 09 class-creation evidence lab
 class-creation-lab-test: ## Verify Module 09 timing, namespace, registry, and owner boundaries
 	@$(PYTHON) -m unittest discover -s tests -p "test_class_creation_*.py" -v
 
+.PHONY: runtime-governance-lab
+runtime-governance-lab: ## Run the Module 10 runtime-governance evidence lab
+	@$(PYTHON) -m labs.runtime_governance
+
+.PHONY: runtime-governance-lab-test
+runtime-governance-lab-test: ## Verify Module 10 execution, interface, rollback, tooling, and review boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_runtime_governance_*.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo
