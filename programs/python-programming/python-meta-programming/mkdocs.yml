@@ -20,12 +20,12 @@ nav:
   - Start Here: guides/start-here.md
   - Course Guide: guides/course-guide.md
   - Learning Contract: guides/learning-contract.md
-  - Pressure Routes: guides/pressure-routes.md
   - Module Promise Map: guides/module-promise-map.md
   - Module Checkpoints: guides/module-checkpoints.md
-  - Proof Matrix: guides/proof-matrix.md
-  - Proof Ladder: guides/proof-ladder.md
   - Platform Setup: guides/platform-setup.md
+  - Pressure Routes: guides/pressure-routes.md
+  - Proof Ladder: guides/proof-ladder.md
+  - Proof Matrix: guides/proof-matrix.md
 - 'Module 00: Orientation and Study Practice':
   - Home: module-00-orientation/index.md
   - Course Map: module-00-orientation/course-map.md
@@ -62,8 +62,8 @@ nav:
   - Dynamic Members and Static Structure: module-03-signatures-provenance-runtime-evidence/dynamic-members-and-static-structure.md
   - Frames and Diagnostic-Only Runtime Evidence: module-03-signatures-provenance-runtime-evidence/frames-and-diagnostic-only-runtime-evidence.md
   - 'Worked Example: Building a Safe Signature-Guided `__repr__`': module-03-signatures-provenance-runtime-evidence/worked-example-building-a-safe-signature-guided-repr.md
-  - Exercises: module-03-signatures-provenance-runtime-evidence/exercises.md
-  - Exercise Answers: module-03-signatures-provenance-runtime-evidence/exercise-answers.md
+  - Module 03 Evidence Studio: module-03-signatures-provenance-runtime-evidence/exercises.md
+  - Module 03 Evidence Studio Review: module-03-signatures-provenance-runtime-evidence/exercise-answers.md
   - Module Glossary: module-03-signatures-provenance-runtime-evidence/glossary.md
 - 'Module 04: Function Wrappers and Transparent Decorators':
   - Home: module-04-function-wrappers-transparent-decorators/index.md
@@ -73,8 +73,8 @@ nav:
   - Stateful Wrappers and Semantic Drift: module-04-function-wrappers-transparent-decorators/stateful-wrappers-and-semantic-drift.md
   - Wraps and Signature Transparency: module-04-function-wrappers-transparent-decorators/wraps-and-signature-transparency.md
   - 'Worked Example: Building a Bounded Cache Decorator': module-04-function-wrappers-transparent-decorators/worked-example-building-a-bounded-cache-decorator.md
-  - Exercises: module-04-function-wrappers-transparent-decorators/exercises.md
-  - Exercise Answers: module-04-function-wrappers-transparent-decorators/exercise-answers.md
+  - Module 04 Wrapper Design Studio: module-04-function-wrappers-transparent-decorators/exercises.md
+  - Module 04 Wrapper Design Studio Review: module-04-function-wrappers-transparent-decorators/exercise-answers.md
   - Module Glossary: module-04-function-wrappers-transparent-decorators/glossary.md
 - 'Module 05: Decorator Design, Policies, and Typing':
   - Home: module-05-decorator-design-policies-typing/index.md
@@ -84,8 +84,8 @@ nav:
   - Cache Policy and lru_cache Behavior: module-05-decorator-design-policies-typing/cache-policy-and-lru-cache-behavior.md
   - Wrapper Policy Boundaries: module-05-decorator-design-policies-typing/wrapper-policy-boundaries.md
   - 'Worked Example: Building a Partial `@validated` Decorator': module-05-decorator-design-policies-typing/worked-example-building-a-partial-validated-decorator.md
-  - Exercises: module-05-decorator-design-policies-typing/exercises.md
-  - Exercise Answers: module-05-decorator-design-policies-typing/exercise-answers.md
+  - 'Exercises: Decorator Policy Design Studio': module-05-decorator-design-policies-typing/exercises.md
+  - 'Exercise Answers: Decorator Policy Design Studio': module-05-decorator-design-policies-typing/exercise-answers.md
   - Module Glossary: module-05-decorator-design-policies-typing/glossary.md
 - 'Module 06: Class Customization Before Metaclasses':
   - Home: module-06-class-customization-pre-metaclasses/index.md
@@ -95,8 +95,8 @@ nav:
   - Type Hints and Descriptor-Backed Validation: module-06-class-customization-pre-metaclasses/type-hints-and-descriptor-backed-validation.md
   - Class Customization Boundaries: module-06-class-customization-pre-metaclasses/class-customization-boundaries.md
   - 'Worked Example: Building a Minimal `@frozen` Class Decorator': module-06-class-customization-pre-metaclasses/worked-example-building-a-minimal-frozen-class-decorator.md
-  - Exercises: module-06-class-customization-pre-metaclasses/exercises.md
-  - Exercise Answers: module-06-class-customization-pre-metaclasses/exercise-answers.md
+  - 'Exercises: Lower-Power Class Design Studio': module-06-class-customization-pre-metaclasses/exercises.md
+  - 'Exercise Answers: Lower-Power Class Design Studio': module-06-class-customization-pre-metaclasses/exercise-answers.md
   - Module Glossary: module-06-class-customization-pre-metaclasses/glossary.md
 - 'Module 07: Descriptors, Lookup, and Attribute Control':
   - Home: module-07-descriptors-lookup-attribute-control/index.md
@@ -144,26 +144,26 @@ nav:
   - Module Glossary: module-10-runtime-governance-mastery-review/glossary.md
 - Python Metaprogramming Capstone Guide:
   - Home: capstone/index.md
-  - Capstone Map: capstone/capstone-map.md
-  - Capstone File Guide: capstone/capstone-file-guide.md
   - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
+  - Capstone File Guide: capstone/capstone-file-guide.md
+  - Capstone Map: capstone/capstone-map.md
+  - Command Guide: capstone/command-guide.md
   - Capstone Proof Guide: capstone/capstone-proof-guide.md
   - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
   - Capstone Extension Guide: capstone/capstone-extension-guide.md
   - Capstone Walkthrough: capstone/capstone-walkthrough.md
-  - Command Guide: capstone/command-guide.md
   - Capstone Glossary: capstone/glossary.md
 - Capstone Docs:
   - Home: capstone-docs/index.md
   - Capstone Architecture: capstone-docs/architecture.md
-  - Design Boundaries: capstone-docs/design-boundaries.md
   - Package Guide: capstone-docs/package-guide.md
   - Command Guide: capstone-docs/command-guide.md
   - Proof Guide: capstone-docs/proof-guide.md
-  - Test Guide: capstone-docs/test-guide.md
-  - Extension Guide: capstone-docs/extension-guide.md
   - Walkthrough Guide: capstone-docs/walkthrough-guide.md
   - Capstone Tour: capstone-docs/tour.md
+  - Design Boundaries: capstone-docs/design-boundaries.md
+  - Extension Guide: capstone-docs/extension-guide.md
+  - Test Guide: capstone-docs/test-guide.md
 - Reference:
   - Home: reference/index.md
   - Reference Glossary: reference/glossary.md
@@ -174,8 +174,8 @@ nav:
   - Self-Review Prompts: reference/self-review-prompts.md
   - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
   - Completion Rubric: reference/completion-rubric.md
-  - Topic Boundaries: reference/topic-boundaries.md
   - Runtime Power Ladder: reference/runtime-power-ladder.md
+  - Topic Boundaries: reference/topic-boundaries.md
 
 theme:
   custom_dir: ../../../docs/overrides
