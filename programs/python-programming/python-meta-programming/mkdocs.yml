@@ -106,8 +106,8 @@ nav:
   - Reusable Field Descriptors and Storage: module-07-descriptors-lookup-attribute-control/reusable-field-descriptors-and-storage.md
   - Descriptor Boundaries and Attribute Ownership: module-07-descriptors-lookup-attribute-control/descriptor-boundaries-and-attribute-ownership.md
   - 'Worked Example: Building a Unit-Aware Quantity Descriptor': module-07-descriptors-lookup-attribute-control/worked-example-building-a-unit-aware-quantity-descriptor.md
-  - Exercises: module-07-descriptors-lookup-attribute-control/exercises.md
-  - Exercise Answers: module-07-descriptors-lookup-attribute-control/exercise-answers.md
+  - 'Exercises: Descriptor Evidence Studio': module-07-descriptors-lookup-attribute-control/exercises.md
+  - 'Exercise Answers: Descriptor Evidence Studio Review': module-07-descriptors-lookup-attribute-control/exercise-answers.md
   - Module Glossary: module-07-descriptors-lookup-attribute-control/glossary.md
 - 'Module 08: Descriptor Systems, Validation, and Framework Design':
   - Home: module-08-descriptor-systems-validation-framework-design/index.md
