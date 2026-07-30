@@ -354,6 +354,16 @@ Then inspect `DefinitionNamespace`, `PluginMeta.__prepare__`, and the capstone d
 tracked-definition test. The lab proves what finished-class tools can own; the capstone
 test proves one fact that would otherwise be lost before a class decorator could see it.
 
+Run the learner-facing transfer:
+
+```bash
+make capstone-class-creation
+```
+
+The report exposes the prepared namespace type, declared and inherited fields/actions,
+initializer-generation decision, visible signature, registration, and absence of plugin
+construction or execution.
+
 ## Exit check for this page
 
 Before moving on, make sure you can do all of these:

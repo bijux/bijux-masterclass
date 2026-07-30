@@ -130,6 +130,10 @@ capstone-action-wrapper: ## Audit a capstone action wrapper without executing it
 capstone-check-action: ## Check a capstone action's supported runtime hint contract
 	@$(RUN_CAPSTONE) check-action
 
+.PHONY: capstone-class-creation
+capstone-class-creation: ## Inspect capstone class-creation provenance without construction
+	@$(RUN_CAPSTONE) class-creation
+
 .PHONY: capstone-trace
 capstone-trace: ## Trace one capstone invocation from the public CLI
 	@$(RUN_CAPSTONE) trace

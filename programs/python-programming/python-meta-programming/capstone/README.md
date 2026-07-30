@@ -44,6 +44,7 @@ Use the smallest honest route for the question you have:
 - Want to audit a wrapper chain and explicit signature ownership? Run `make action-wrapper`.
 - Want to validate action arguments without constructing or invoking a plugin? Run `make bind-action`.
 - Want to check the supported runtime hint subset without execution? Run `make check-action`.
+- Want to inspect what `PluginMeta` knew while creating one class? Run `make class-creation`.
 - Want one full learner-facing review bundle? Run `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` from the repository root, or `make tour` locally.
 - Want executable confirmation? Run `make verify-report`, `make proof`, or `make confirm`.
 
@@ -92,6 +93,7 @@ make action
 make action-wrapper
 make bind-action
 make check-action
+make class-creation
 make signatures
 make demo
 make trace
@@ -153,6 +155,7 @@ your pressure instead of reading the full list in alphabetical order.
 - `make action-wrapper`
 - `make bind-action`
 - `make check-action`
+- `make class-creation`
 - [COMMAND_GUIDE.md](docs/command-guide.md)
 
 ### "Where do wrappers, fields, and class creation live?"
@@ -229,6 +232,7 @@ all interact here, so the implementation has to stay honest about:
 - `make action-wrapper` follows one wrapper chain and reports metadata, action-spec, and explicit-signature ownership without execution.
 - `make bind-action` validates one proposed action call while keeping construction and invocation absent.
 - `make check-action` reports checked, mismatched, refused, and unannotated action arguments without construction or invocation.
+- `make class-creation` reports prepared namespace type, declared and inherited members, initializer generation, and registration without constructing a plugin.
 - `make demo` and `make trace` inspect one realistic runtime behavior and its recorded history.
 - `make inspect` writes the learner-facing inspection bundle with manifest and registry evidence.
 - `make tour` writes the learner-facing walkthrough bundle with manifest, registry, demo, and trace outputs.

@@ -79,6 +79,10 @@ check-action: ## Check supported action hints without construction or execution
 		--arg "severity=warning" \
 		--arg "summary=node-1 crossed 90%"
 
+.PHONY: class-creation
+class-creation: ## Inspect stored class-creation provenance without construction
+	@PYTHONPATH=src $(CLI) class-creation delivery console
+
 .PHONY: registry
 registry: ## Render the delivery registry from the public CLI
 	@PYTHONPATH=src $(CLI) registry --group delivery
@@ -126,6 +130,8 @@ inspect: ## Build the learner-facing inspection bundle
 		--arg "severity=warning" \
 		--arg "summary=node-1 crossed 90%" \
 		> $(INSPECT_DIR)/check-action.json
+	@PYTHONPATH=src $(CLI) class-creation delivery console \
+		> $(INSPECT_DIR)/class-creation.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(INSPECT_DIR)/signatures.json
 	@cp README.md $(INSPECT_DIR)/README.md
 	@for doc in $(DOC_FILES); do \
@@ -143,7 +149,7 @@ inspect: ## Build the learner-facing inspection bundle
 	@printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read manifest.json for group-level field and action metadata.' \
-		'  2. Read registry.json, plugin.json, field.json, action.json, signatures.json, action-wrapper.json, bind-action.json, and check-action.json for concrete contracts, wrapper ownership, call shape, and partial runtime hint checks.' \
+		'  2. Read registry.json, plugin.json, field.json, action.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for concrete contracts, callable policy, and class-creation provenance.' \
 		'  3. Read COMMAND_GUIDE.md and PROOF_GUIDE.md for the next review route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership and proof.' \
 		> $(INSPECT_DIR)/route.txt
@@ -173,6 +179,8 @@ verify-report: ## Build the structured capstone verification report
 		--arg "severity=warning" \
 		--arg "summary=node-1 crossed 90%" \
 		> $(VERIFY_REPORT_DIR)/check-action.json
+	@PYTHONPATH=src $(CLI) class-creation delivery console \
+		> $(VERIFY_REPORT_DIR)/class-creation.json
 	@PYTHONPATH=src $(CLI) trace delivery pager preview \
 		--config "service=core" \
 		--config "routing_key=sev1" \
@@ -196,7 +204,7 @@ verify-report: ## Build the structured capstone verification report
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read pytest.txt for executable proof.' \
-		'  2. Read manifest.json, plugin.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, and trace.json to compare wrapper structure, call shape, partial runtime checks, and execution.' \
+		'  2. Read manifest.json, plugin.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, class-creation.json, and trace.json to compare callable and class creation evidence with execution.' \
 		'  3. Read TEST_GUIDE.md and PROOF_GUIDE.md for the closest claim-to-proof route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect a code change back to the saved proof.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
@@ -223,6 +231,8 @@ tour: ## Build the learner-facing walkthrough bundle
 		--arg "severity=warning" \
 		--arg "summary=node-1 crossed 90%" \
 		> $(TOUR_DIR)/check-action.json
+	@PYTHONPATH=src $(CLI) class-creation delivery console \
+		> $(TOUR_DIR)/class-creation.json
 	@PYTHONPATH=src $(CLI) invoke delivery console deliver \
 		--config "prefix=[ops]" \
 		--config "uppercase_severity=true" \
@@ -263,7 +273,7 @@ tour: ## Build the learner-facing walkthrough bundle
 	@printf '%s\n' \
 		'Walkthrough route:' \
 		'  1. Read manifest.json, registry.json, plugin.json, and signatures.json to inspect the public runtime shape.' \
-		'  2. Read action-wrapper.json, bind-action.json, and check-action.json for wrapper ownership, bound arguments, and partial runtime hint checks without execution.' \
+		'  2. Read action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for callable ownership, partial contracts, and class-creation provenance without execution.' \
 		'  3. Read demo.json and trace.json for deliberate invocation, configuration, and successful action-history visibility.' \
 		'  4. Read WALKTHROUGH_GUIDE.md, COMMAND_GUIDE.md, and TOUR.md for the review order.' \
 		'  5. Read PACKAGE_GUIDE.md and PROOF_GUIDE.md when you need to connect the tour back to local guides or source ownership.' \

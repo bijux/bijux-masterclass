@@ -48,6 +48,7 @@ That question matters because different proof routes answer different kinds of c
 | wrapper ownership stays inspectable without execution | `make action-wrapper` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | action arguments can be validated without execution | `make bind-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | supported action hints can be checked without overstating the contract | `make check-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| class-creation ownership remains observable without plugin construction | `make class-creation` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | registration stays deterministic | `make registry` | `tests/test_registry.py` |
 | one realistic invocation story is still honest | `make trace` | `make tour` or `tests/test_runtime.py` |
 | saved review artifacts still match executable proof | `make verify-report` | `make proof` |
@@ -105,6 +106,7 @@ make action
 make action-wrapper
 make bind-action
 make check-action
+make class-creation
 make signatures
 make demo
 make trace
@@ -124,7 +126,7 @@ without dragging in unrelated proof weight.
 
 | Source file | Best public route | Best executable proof | Best saved review route |
 | --- | --- | --- | --- |
-| `src/incident_plugins/framework.py` | `make manifest`, `make registry`, `make signatures`, `make bind-action`, and `make check-action` | `tests/test_registry.py` and `tests/test_runtime.py` | `make inspect` or `make verify-report` |
+| `src/incident_plugins/framework.py` | `make manifest`, `make registry`, `make signatures`, `make bind-action`, `make check-action`, and `make class-creation` | `tests/test_registry.py` and `tests/test_runtime.py` | `make inspect` or `make verify-report` |
 | `src/incident_plugins/fields.py` | `make field` and `make plugin` | `tests/test_fields.py` | `make inspect` |
 | `src/incident_plugins/actions.py` | `make action`, `make action-wrapper`, `make check-action`, `make trace`, and `make signatures` | `tests/test_runtime.py` and `tests/test_cli.py` | `make tour` or `make verify-report` |
 | `src/incident_plugins/plugins.py` | `make plugin`, `make demo`, and `make trace` | `tests/test_runtime.py` | `make tour` |
