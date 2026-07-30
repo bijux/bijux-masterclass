@@ -30,9 +30,10 @@ one wrapper that is useful, tempting, and easy to overclaim.
 
 A partial runtime validator is exactly that kind of wrapper.
 
-Treat this page as a review packet, not as a recipe to paste unchanged into production.
-Its teaching job is to show where a validator decorator stays honest, where it starts
-overpromising, and what evidence a reviewer should demand before accepting it.
+Treat this page as a guided trace of the shipped implementation, not as a recipe to
+paste unchanged into production. Its teaching job is to show where a validator decorator
+stays honest, where it starts overpromising, and what evidence a reviewer should demand
+before accepting it.
 
 It combines:
 
@@ -102,12 +103,30 @@ This worked example is intentionally not trying to deliver:
 If a review conversation expects those features, the design already wants a more explicit
 validation owner than this module's decorator boundary.
 
+## Establish the baseline
+
+From `programs/python-programming/python-meta-programming`, run:
+
+```bash
+make decorator-policy-lab-test
+make decorator-policy-lab
+```
+
+Keep these files side by side:
+
+- `labs/decorator_policy/validation.py`
+- `tests/test_decorator_policy_validation.py`
+- the `validation` object printed by the lab
+
+The source tells you who owns the behavior. The tests prove its boundaries. The JSON
+shows the learner-visible consequences. No one surface is enough by itself.
+
 ## Step 1: capture configuration and reusable evidence once
 
-The factory shape makes the timing explicit:
+The shipped factory shape makes the timing explicit:
 
 ```python
-@validated(raise_on_error=True)
+@validated(on_mismatch="raise", validate_return=True)
 def func(...):
     ...
 ```
@@ -161,63 +180,53 @@ That clarity keeps the wrapper from drifting into fake comprehensiveness.
 The helper should also make unsupported space noisy. Quietly skipping unsupported hint
 forms teaches the wrong lesson, because it makes the wrapper look broader than it is.
 
-## A bounded implementation
+## Step 4: expose the added policy
+
+`functools.wraps` exposes the original callable through `__wrapped__`, but it does not
+describe the new validation contract. The implementation therefore attaches:
 
 ```python
-import functools
-import inspect
-import types
-import warnings
-from typing import Any, Callable, Union, get_args, get_origin, get_type_hints
+wrapped.__validation_policy__ = policy
+wrapped.__validated_hints__ = dict(hints)
+```
 
+The focused test inspects those surfaces alongside `inspect.signature`,
+`inspect.unwrap`, `__name__`, and `__doc__`. The wrapper is transparent about both the
+callable it wraps and the policy it adds.
 
-def _is_instance(value: Any, hint: Any) -> bool:
-    if hint is Any:
-        return True
-    origin = get_origin(hint)
-    if origin in (Union, types.UnionType):
-        return any(_is_instance(value, arg) for arg in get_args(hint))
-    if origin is not None:
-        raise NotImplementedError(
-            f"runtime type checking for generic types like {hint!r} is not supported here"
-        )
-    return isinstance(value, hint)
+These attributes are intentionally local to the lab. In a library, prefer an ordinary
+public inspection function or named protocol over inventing dunder attributes casually.
 
+## Step 5: trace each call route
 
-def validated(raise_on_error: bool = True) -> Callable:
-    def decorator(func: Callable) -> Callable:
-        hints = get_type_hints(func)
-        sig = inspect.signature(func)
+Strict success:
 
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            bound = sig.bind(*args, **kwargs)
-            bound.apply_defaults()
+```text
+bind -> apply defaults -> argument checks pass -> call function -> return check passes
+```
 
-            for name, value in bound.arguments.items():
-                if name in hints and not _is_instance(value, hints[name]):
-                    msg = (
-                        f"Argument '{name}={value!r}' is "
-                        f"{type(value).__name__}, expected {hints[name]!r}"
-                    )
-                    if raise_on_error:
-                        raise TypeError(msg)
-                    warnings.warn(msg, UserWarning)
+Strict argument failure:
 
-            result = func(*args, **kwargs)
-            if "return" in hints and not _is_instance(result, hints["return"]):
-                msg = (
-                    f"Return '{result!r}' is "
-                    f"{type(result).__name__}, expected {hints['return']!r}"
-                )
-                if raise_on_error:
-                    raise TypeError(msg)
-                warnings.warn(msg, UserWarning)
-            return result
+```text
+bind -> argument check fails -> TypeError -> function never runs
+```
 
-        return wrapper
+Warning mismatch:
 
-    return decorator
+```text
+bind -> argument check fails -> UserWarning -> function still runs
+```
+
+Strict return failure:
+
+```text
+bind -> arguments pass -> function runs -> return check fails -> TypeError
+```
+
+Unsupported generic:
+
+```text
+resolve hints at decoration -> list[int] refused -> no wrapped callable is produced
 ```
 
 ## What this implementation proves and what it does not
@@ -228,7 +237,7 @@ Use the code block as evidence, not as marketing:
 | --- | --- | --- |
 | it validates a narrow runtime hint subset | yes | `_is_instance` names and limits the supported cases |
 | it follows Python's own call binding rules | yes | `sig.bind(...)` does the call matching |
-| it can raise or warn on mismatches | yes | `raise_on_error` branches make the mode visible |
+| it can raise or warn on mismatches | yes | `on_mismatch` makes the mode visible |
 | it enforces full static typing semantics | no | many typing surfaces are refused intentionally |
 | it makes warning mode safe | no | the wrapped function still runs after the warning |
 | it is already a full validation framework | no | there is no broader owner, registry, coercion model, or reporting layer |
@@ -252,7 +261,7 @@ Even this bounded version has pressure points:
 | Failure surface | Why it matters |
 | --- | --- |
 | `get_type_hints(func)` can fail or resolve differently than expected | definition-time evidence may not be as stable as the wrapper claims |
-| `NotImplementedError` on generic hints | refusal is honest, but reviewers must know whether callers will hit it |
+| `UnsupportedHintError` on generic hints | refusal is honest and happens when the decorator is applied |
 | warning mode lets execution continue | downstream failures may happen after the contract warning |
 | return validation happens after function execution | bad outputs are detected late, not prevented early |
 
@@ -272,8 +281,8 @@ Use this boundary table when someone overstates the mode switch:
 
 | Mode | What it changes | What it does not change |
 | --- | --- | --- |
-| `raise_on_error=True` | mismatch becomes an immediate `TypeError` | the decorator still only understands a limited hint subset |
-| `raise_on_error=False` | mismatch becomes an observable warning | the underlying function may still break or produce a bad result |
+| `on_mismatch="raise"` | mismatch becomes an immediate `TypeError` | the decorator still only understands a limited hint subset |
+| `on_mismatch="warn"` | mismatch becomes an observable warning | the underlying function may still break or produce a bad result |
 
 ## What this example makes clear about Module 05
 
@@ -312,6 +321,22 @@ Add one last question:
 
 5. which unsupported feature would be the first sign that this wrapper has outgrown the decorator boundary?
 
+## Proof ledger
+
+Use the test names as a claim ledger:
+
+| Claim | Focused proof |
+| --- | --- |
+| defaults are bound and bad arguments do not execute | `test_strict_mode_binds_defaults_and_rejects_wrong_argument_types` |
+| `Union`, `Optional`, and `Any` are in the supported subset | `test_union_optional_and_any_form_the_supported_non_class_surface` |
+| parameterized generics are refused during decoration | `test_parameterized_generics_are_refused_when_the_function_is_decorated` |
+| warning mode executes | `test_warning_mode_observes_a_mismatch_but_still_executes` |
+| return rejection happens after execution | `test_strict_return_validation_runs_after_the_wrapped_function` |
+| policy and callable evidence remain visible | `test_wrapper_exposes_policy_hints_and_original_signature` |
+
+If you change the implementation, identify the affected claim before changing a test.
+That keeps the test suite from becoming an after-the-fact snapshot.
+
 If you can do that here, Module 05 has done its job and the course can move into
 class-level customization with a stronger sense of wrapper limits.
 
@@ -323,6 +348,7 @@ Before leaving the worked example, make sure you can do all of these:
 - name two supported hint forms and two refused hint forms
 - explain why warning mode is still operationally risky
 - say when this decorator should be replaced by an explicit validation component
+- map every claim you make about the implementation to one focused test
 
 ## Continue through Module 05
 
