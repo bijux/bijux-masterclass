@@ -69,6 +69,14 @@ wrapper-cache: ## Run the Module 04 bounded-cache worked example
 wrapper-cache-test: ## Verify the Module 04 bounded-cache policy
 	@$(PYTHON) -m unittest discover -s tests -p "test_bounded_cache_lab.py" -v
 
+.PHONY: decorator-policy-lab
+decorator-policy-lab: ## Run the Module 05 decorator-policy evidence lab
+	@$(PYTHON) -m labs.decorator_policy
+
+.PHONY: decorator-policy-lab-test
+decorator-policy-lab-test: ## Verify Module 05 retry and validation policy boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_decorator_policy_*.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo

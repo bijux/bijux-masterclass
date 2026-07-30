@@ -1,3 +1,4 @@
+from .retry import RetryPolicy, retry
 from .validation import (
     UnsupportedHintError,
     ValidationPolicy,
@@ -5,7 +6,9 @@ from .validation import (
 )
 
 __all__ = [
+    "RetryPolicy",
     "UnsupportedHintError",
     "ValidationPolicy",
+    "retry",
     "validated",
 ]
