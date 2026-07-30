@@ -102,6 +102,14 @@ descriptor-system-lab: ## Run the Module 08 descriptor-system evidence lab
 descriptor-system-lab-test: ## Verify Module 08 cache, storage, composition, and hint boundaries
 	@$(PYTHON) -m unittest discover -s tests -p "test_descriptor_system_*.py" -v
 
+.PHONY: class-creation-lab
+class-creation-lab: ## Run the Module 09 class-creation evidence lab
+	@$(PYTHON) -m labs.class_creation
+
+.PHONY: class-creation-lab-test
+class-creation-lab-test: ## Verify Module 09 timing, namespace, registry, and owner boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_class_creation_*.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo
