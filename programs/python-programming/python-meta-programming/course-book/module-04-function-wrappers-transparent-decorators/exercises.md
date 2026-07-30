@@ -1,5 +1,4 @@
-# Exercises
-
+# Module 04 Wrapper Design Studio
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Function Wrappers Transparent Decorators"]
-  page["Exercises"]
+  page["Module 04 Wrapper Design Studio"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -18,228 +17,227 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  baseline["Run the shipped behavior"] --> trace["Explain wrapper timing"]
+  trace --> preserve["Prove thin transparency"]
+  preserve --> extend["Extend cache control"]
+  extend --> transfer["Audit capstone action policy"]
 ```
 <!-- page-maps:end -->
 
-Use these after reading the five core lessons and the worked example. The goal is not to
-collect more decorator tricks. The goal is to make wrapper mechanics, transparency, and
-stateful policy visible.
+This studio is the assessed learning product for Module 04. You will investigate the two
+shipped course programs, extend the bounded cache with one operational control, and then
+review the incident-plugin `@action` decorator as a larger policy-owning wrapper.
 
-Treat the exercise set as one wrapper-governance lab, not as ten unrelated prompts. If
-your answers never name the exact behavior rule a wrapper owns, the packet is still too
-vague.
+The studio is complete when another developer can reconstruct:
 
-Each exercise asks for three things:
+- which work happened during decorator-expression evaluation
+- which work happened during decorator application
+- which work repeats on every call
+- which transparency claims concern metadata versus behavior
+- which stateful rule your extension owns
+- how focused tests prove the rule
 
-- the wrapper behavior you are trying to describe or justify
-- the runtime timing or state boundary that matters
-- the evidence that proves the wrapper is transparent enough or not
+## Establish the baseline
 
-Each strong answer also leaves behind one sentence another learner can borrow during
-review:
+From `programs/python-programming/python-meta-programming`, run:
 
-- what the wrapper now owns
-- what the wrapper still preserves
-- what the wrapper does **not** prove automatically
+```console
+make wrapper-lab
+make wrapper-lab-test
+make wrapper-cache
+make wrapper-cache-test
+make capstone-action-wrapper
+```
 
-Treat the ten exercises as one full lab day on wrappers and decorator design.
+Save review notes under the repository `artifacts/` directory. Start one ledger:
 
-Do them in order:
-
-- Exercises 1-3 establish rebinding mechanics and thin wrapper discipline
-- Exercises 4-6 expose stateful policy, metadata preservation, and wrapper review
-- Exercises 7-8 extend that discipline into composition order and explicit operational controls
-- Exercises 9-10 package the whole module into a reviewable wrapper-governance packet
-
-Keep one wrapper-review table while you work:
-
-| Wrapper or decorator | Definition-time change | Call-time change | Transparency claim | Evidence and boundary judgment |
-| --- | --- | --- | --- | --- |
-
-Keep one second table as well when the wrappers become stateful:
-
-| Wrapper or decorator | Stored state | Governing rule across calls | Reset or inspection surface | Risk if left hidden |
-| --- | --- | --- | --- | --- |
-
-## Exercise 1: Build one wrapper skeleton by hand
-
-Write a decorator without `@` syntax first and apply it manually.
-
-What to hand in:
-
-- the decorator definition
-- the manual rebinding step `wrapped = decorator(original)`
-- one explanation of what the wrapper closes over
-- one sentence naming what this skeleton still does **not** prove about transparency or policy
-
-## Exercise 2: Desugar one stacked decorator example
-
-Take a function with at least two decorators and rewrite it in step-by-step rebinding form.
-
-What to hand in:
-
-- the original `@decorator` version
-- the explicit `f = d2(d1(f))` form
-- one explanation of definition-time order versus call-time order
-- one sentence naming which behavior was attached once and which behavior repeats later
-
-## Exercise 3: Implement one thin practical wrapper
-
-Write one narrow wrapper such as timing or deprecation.
-
-What to hand in:
-
-- the decorator implementation
-- one proof that result and exception behavior remain transparent
-- one sentence explaining why the wrapper is still thin
-- one sentence explaining what added feature would immediately stop this wrapper from staying thin
-
-## Exercise 4: Show semantic drift in a stateful wrapper
-
-Implement a small stateful decorator such as `@once`.
-
-What to hand in:
-
-- the state storage location
-- one example showing how later calls behave differently because of prior calls
-- one explanation of why this is now a policy surface and not just a thin wrapper
-- one sentence naming what reset or inspection route a reviewer would need next
-
-## Exercise 5: Preserve wrapped identity honestly
-
-Compare one bare wrapper with one `functools.wraps`-based wrapper.
-
-What to hand in:
-
-- the visible `__name__`, `__doc__`, or `inspect.signature` difference
-- one proof that `__wrapped__` exists on the preserved version
-- one explanation of why metadata preservation matters to review and tooling
-- one sentence naming what `functools.wraps` still does **not** repair
-
-## Exercise 6: Review a small cache or retry decorator
-
-Use the worked example pattern on a stateful decorator.
-
-What to hand in:
-
-- the state it owns
-- one reset or inspection surface it should expose
-- one limitation that must be documented instead of hidden
-- one sentence naming why that limitation changes review posture instead of staying a footnote
-
-## Midday self-check
-
-Before moving into the final four exercises, make sure you can already answer these
-questions clearly:
-
-- what changed at definition time and what changed only later at call time
-- why a stateful decorator stopped being a thin wrapper
-- which identity surfaces `functools.wraps` preserves for tools and review
-- what operational control a cache, retry, or once-only decorator should expose
-
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the timing boundary, state boundary, and transparency claim more explicit before
-continuing.
-
-One extra check matters here:
-
-- can you point to the exact moment a wrapper stopped being instrumentation and started owning policy?
-
-## Exercise 7: Compare two wrapper compositions honestly
-
-Take one function wrapped in two different decorator orders and compare the resulting
-behavior.
-
-What to hand in:
-
-- the two composition orders
-- one observable difference in logging, caching, retrying, timing, or exception flow
-- one explanation of why decorator order is a design decision rather than a formatting choice
-- one sentence naming which layer owns policy in each composition order
-
-## Exercise 8: Add one explicit operational control
-
-Choose one stateful decorator and make its operational boundary visible to reviewers or
-users.
-
-What to hand in:
-
-- the stateful decorator
-- one explicit reset, inspection, or configuration surface
-- one sentence explaining why hidden state is weaker than state that can be reviewed or cleared deliberately
-- one sentence naming what maintenance failure becomes more likely if the control surface stays hidden
-
-## Exercise 9: Separate thin instrumentation from policy ownership
-
-Choose one decorator and explain how you would teach the difference between a thin
-instrumentation wrapper and a policy-owning wrapper.
-
-What to hand in:
-
-- the decorator under review
-- one evidence path showing it is thin or policy-owning
-- one rewrite or documentation rule that would make the classification clearer
-- one sentence naming which evidence class actually proved your judgment: metadata, timing trace, state trace, or behavior comparison
-
-## Exercise 10: Produce a wrapper-governance packet
-
-Assemble:
-
-- one wrapper-review table
-- one definition-time versus call-time trace
-- one metadata-preservation comparison
-- one stateful decorator control rule
-- one sentence that states the governing rule of the most powerful wrapper in the packet
-- one sentence that states the strongest remaining limitation in the packet
-
-The packet is strong when another learner can use it to answer:
-
-- what the wrapper changed and when it changed
-- whether the wrapper is still thin or now owns policy
-- what evidence supports any claim of transparency
-
-The packet is stronger still when another learner can also answer:
-
-- what operational control exists for the policy-owning wrapper
-- which transparency claim is only about metadata and which is about semantics
-- what risk would appear first if the wrapper were copied into a larger codebase
-
-## Repair table for weak exercise drafts
-
-Use this when an answer sounds polished but does not yet teach anything reliable:
-
-| Weak draft pattern | Why it fails | Repair move |
+| Claim | Direct evidence | Boundary |
 | --- | --- | --- |
-| "it just wraps the function" | hides timing, state, and contract changes | state what was rebound once and what now happens on each call |
-| "this wrapper is simple" | code length is not evidence | name the governing rule and show one proof route |
-| "it uses wraps so it is transparent" | metadata preservation is narrower than semantic transparency | separate identity surfaces from behavior surfaces |
-| "the order is different but mostly the same" | composition order can change timing, retries, logging, or failure flow | compare one concrete behavior trace from both orders |
-| "the cache is hidden inside the closure" | hidden state weakens review and maintenance | expose one reset or inspection surface and explain why it matters |
+| decorator expressions evaluate top-to-bottom | lifecycle definition events | expression evaluation is not decorator application |
+| decorators apply bottom-up | lifecycle definition events | applies only to returned decorator callables |
+| calls enter outer-to-inner | lifecycle call events | return flow unwinds in reverse |
+| thin observation preserves result and failure identity | identity booleans and outcome events | observation still adds cost and a frame |
+| `wraps` preserves logical contract recovery | metadata packet | shell implementation remains different |
+| cache calls can skip execution | results versus underlying executions | wrapper now owns policy |
+| action wrapper audit is observational | capstone audit plus event-recording test | invocation behavior needs separate proof |
 
-## Mastery standard for this exercise set
+Add exact values from your run. Do not write "the decorator runs first"; name the
+specific operation and order.
 
-Across all ten answers, the module wants the same habits:
+## Studio 1: reconstruct the wrapper lifecycle
 
-- you separate definition-time rebinding from call-time behavior
-- you distinguish thin wrappers from stateful policy-carrying wrappers
-- you preserve callable identity when the wrapper claims transparency
-- you name when a decorator has grown beyond a simple function transformation
+Without running the program again, write the expected event order for:
 
-Across the full packet, add three more habits:
+```python
+@tracing_decorator("outer", events)
+@tracing_decorator("inner", events)
+def render_status(...):
+    ...
+```
 
-- you treat decorator order as an explicit design decision with observable consequences
-- you leave behind a wrapper-governance packet another learner could review without guessing
-- you separate metadata transparency from semantic transparency instead of collapsing them into one claim
+Separate your answer into:
 
-If an answer still sounds like "it just decorates the function," keep going.
+1. decorator-expression evaluation
+2. decorator application
+3. call entry
+4. return unwinding
+
+Then compare against the lifecycle packet.
+
+### Investigation
+
+Reverse the two decorator lines in a local edit. Predict every event before running
+`make wrapper-lab`. Explain:
+
+- why factory order changes
+- why application order changes
+- which callable the outer wrapper closes over
+- why final return value alone is insufficient evidence
+
+Restore the published order and run `make wrapper-lab-test`.
+
+### Deliverable
+
+Provide an object graph from the rebound public name through both `__wrapped__` edges to
+the raw function. Annotate each function with its closure nonlocals and execution order.
+
+## Studio 2: qualify a transparency claim
+
+Use the `thin_wrapper` and `metadata` packets.
+
+### Work
+
+Build a two-axis review:
+
+| Surface | Bare wrapper | Preserved observer | What this proves |
+| --- | --- | --- | --- |
+| result object identity | | | |
+| exception object identity | | | |
+| name and docstring | | | |
+| logical signature | | | |
+| shell signature | | | |
+| unwrap path | | | |
+
+Answer these questions:
+
+1. Why is equality weaker than identity for the result and exception checks?
+2. Why does `follow_wrapped=False` report `(*args, **kwargs) -> 'str'` for the preserved
+   shell?
+3. Which metadata did `wraps` copy even though the shell parameter names differ?
+4. What behavior would make the observer policy-owning?
+
+### Failure experiment
+
+Temporarily suppress `DemonstrationFailure` by returning `None`. Record the failing test
+and explain the new hidden return contract. Restore bare re-raising and rerun
+`make wrapper-lab-test`.
+
+## Studio 3: add one cache invalidation control
+
+Extend `CachedCallable` and `bounded_cache` with:
+
+```python
+def cache_invalidate(*args, **kwargs) -> bool:
+    ...
+```
+
+The method must:
+
+- build keys with the same `_call_key` function as normal calls
+- remove exactly one matching entry
+- return `True` when an entry existed
+- return `False` when no entry existed
+- leave hit and miss counters unchanged
+- preserve the relative LRU order of all other entries
+- reject unhashable arguments before changing state
+
+Do not reach into the closure from tests. The new method is the public operational
+surface.
+
+### Write proof before implementation
+
+Add focused tests for:
+
+1. invalidating a cached key forces the next call to execute
+2. invalidating a missing key returns `False`
+3. another entry retains its LRU position
+4. counters do not change during invalidation
+5. unhashable invalidation leaves state unchanged
+6. the existing eight cache tests remain green
+
+Then implement the control and expose it on the wrapper alongside `cache_clear`,
+`cache_info`, and `cache_snapshot`.
+
+### Design review
+
+Explain:
+
+- why invalidation is policy rather than instrumentation
+- why `cache_clear()` was insufficient for the use case
+- why reusing `_call_key` prevents lookup and invalidation from disagreeing
+- why this still does not make the cache production-ready
+
+## Studio 4: transfer the model to `@action`
+
+Run:
+
+```console
+make capstone-action-wrapper
+make capstone-bind-action
+make capstone-trace
+```
+
+Trace these three routes:
+
+- wrapper audit: structure only
+- binding preflight: call matching without construction
+- trace: construction, invocation, and successful history
+
+Complete:
+
+| Question | Wrapper audit | Binding preflight | Trace |
+| --- | --- | --- | --- |
+| constructs plugin? | | | |
+| invokes action? | | | |
+| follows `__wrapped__`? | | | |
+| reads `ActionSpec`? | | | |
+| binds proposed arguments? | | | |
+| records history? | | | |
+
+Then inspect the failure-policy test in `capstone/tests/test_runtime.py`. Explain why a
+failed action preserves the original exception but creates no history entry. Decide
+whether "records invocations" is an honest summary, or whether "records successful
+invocations" is required.
+
+## Final wrapper review
+
+Your final artifact should contain:
+
+- the lifecycle trace and object graph
+- the two-axis transparency table
+- the cache invalidation design and focused test output
+- the capstone route comparison
+- one sentence stating the most powerful governing rule in each wrapper
+- one limitation that remains in the course cache
+- one reason the capstone `@action` wrapper is inspectable but not semantically thin
+
+## Assessment rubric
+
+| Dimension | Developing | Proficient | Strong |
+| --- | --- | --- | --- |
+| Timing model | says "definition time" generally | separates evaluation, application, and call | reconstructs exact order and closure ownership |
+| Transparency | treats `wraps` as complete proof | separates metadata and behavior | compares logical contract, shell, identity, and unwrap evidence |
+| Stateful policy | adds a method that changes entries | implements bounded invalidation with tests | preserves counters, LRU order, and failure atomicity |
+| Failure reasoning | checks only successful calls | proves exception propagation and cache failure behavior | identifies hidden contracts created by suppression or partial mutation |
+| Capstone transfer | points at `actions.py` | compares audit, binding, and trace routes | explains explicit signature ownership and success-only history |
+
+You are ready for Module 05 when you can explain exactly what the wrapper owns without
+using source length, decorator syntax, or preserved metadata as a substitute for runtime
+evidence.
 
 ## Continue through Module 04
 
 - Previous: [Worked Example: Building a Bounded Cache Decorator](worked-example-building-a-bounded-cache-decorator.md)
-- Next: [Exercise Answers](exercise-answers.md)
+- Next: [Studio Review](exercise-answers.md)
 - Return: [Overview](index.md)
 - Terms: [Glossary](glossary.md)

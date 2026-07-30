@@ -167,8 +167,8 @@ equivalent-call normalization.
 5. [Stateful Wrappers and Semantic Drift](stateful-wrappers-and-semantic-drift.md)
 6. [Wraps and Signature Transparency](wraps-and-signature-transparency.md)
 7. [Worked Example: Building a Bounded Cache Decorator](worked-example-building-a-bounded-cache-decorator.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
+8. [Wrapper Design Studio](exercises.md)
+9. [Wrapper Design Studio Review](exercise-answers.md)
 10. [Glossary](glossary.md)
 
 ## How to use the file set
@@ -185,8 +185,8 @@ equivalent-call normalization.
 | prove wrapper timing and transparency | `make wrapper-lab-test` |
 | run the bounded-cache policy example | `make wrapper-cache` |
 | prove cache state and failure behavior | `make wrapper-cache-test` |
-| complete the assessed wrapper work | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
+| complete the assessed wrapper work | [Wrapper Design Studio](exercises.md) |
+| compare your reasoning against a reference review | [Wrapper Design Studio Review](exercise-answers.md) |
 | stabilize the wrapper vocabulary | [Glossary](glossary.md) |
 
 ## The review route through the module
