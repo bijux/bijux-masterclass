@@ -259,6 +259,46 @@ Write your answers in this form:
 
 If you cannot write the third bullet, you probably still chose the tool by habit.
 
+## Guided lab: classify by question, not strictness
+
+Run:
+
+```console
+$ python3 -m labs.runtime_observation |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["type_checks"])'
+{'bool_is_exact_int': False, 'bool_is_instance_of_int': True, 'extension_is_exact_base_type': False, 'extension_matches_delivery_role': True}
+```
+
+The two pairs expose different design pressures:
+
+- `bool` is an `int` subclass, so inheritance-aware classification accepts it while an
+  exact integer check rejects it.
+- `CustomDeliveryPolicy` is a valid `DeliveryPolicy` extension, so role classification
+  accepts it while an exact base-type check rejects the extension.
+
+Neither result makes one tool universally better. The packet forces the missing question:
+does this boundary want inherited participation or one concrete implementation?
+
+### Failure route
+
+Change a role gate from `isinstance(extension, DeliveryPolicy)` to
+`type(extension) is DeliveryPolicy`. The packet will reject the extension. Write the
+specific subclass behavior that supposedly makes rejection necessary. If you cannot name
+one, the exact check has made the API narrower without earning that cost.
+
+Restore the role check and run `make observation-lab-test`.
+
+### Transfer to the incident-plugin runtime
+
+Concrete notifiers such as `ConsoleNotifier` extend `PluginBase`. A tool that accepts
+only `type(plugin) is PluginBase` would reject every useful plugin instance, including
+future extensions. The capstone's extension boundary therefore needs role-compatible
+reasoning, while narrow serialization or scalar-coercion boundaries may still justify
+exact checks for specific values.
+
+The teaching claim comes from the controlled hierarchy. The capstone demonstrates why
+the choice matters in a plugin architecture.
+
 ## Review rules for type checks
 
 When reviewing runtime classification logic, keep these questions close:
