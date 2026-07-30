@@ -4,6 +4,7 @@ SHELL := /bin/sh
 
 CAPSTONE_DIR := capstone
 RUN_CAPSTONE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(CAPSTONE_DIR)
+PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../artifacts
 SITE_DIR ?= $(ARTIFACTS_DIR)/site/python-programming/python-meta-programming
 COURSE_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/python-programming/python-meta-programming
@@ -13,8 +14,16 @@ help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "\033[36m%-18s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .PHONY: test
-test: ## Run the capstone confirmation suite
+test: lab-test ## Run course labs and the capstone confirmation suite
 	@$(RUN_CAPSTONE) confirm
+
+.PHONY: lab
+lab: ## Run the Module 01 runtime-object evidence lab
+	@$(PYTHON) -m labs.runtime_objects
+
+.PHONY: lab-test
+lab-test: ## Verify the executable course labs
+	@$(PYTHON) -m unittest discover -s tests -v
 
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
