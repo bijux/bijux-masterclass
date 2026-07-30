@@ -1,355 +1,238 @@
 # Reusable Field Descriptors and Storage
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Meta-Programming"]
-  section["Descriptors Lookup Attribute Control"]
-  page["Reusable Field Descriptors and Storage"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  descriptor["One descriptor on the class"] --> config["Shared field configuration"]
+  descriptor --> first["first.__dict__"]
+  descriptor --> second["second.__dict__"]
+  first --> firstvalue["First value"]
+  second --> secondvalue["Second value"]
 ```
 <!-- page-maps:end -->
 
-This core moves from understanding descriptor mechanics to using them as a repeatable
-design tool.
+Descriptor reuse becomes useful only when the storage model remains honest. One
+descriptor object usually serves many owner instances, so configuration may be shared
+while managed values must remain independent.
 
-The moment descriptors become truly useful is when one field rule needs to be reused
-across many attributes or classes.
+## The ownership split
 
-This page matters because descriptor knowledge stays shallow until storage ownership
-becomes explicit. Reuse is the draw, but storage mistakes are where many first descriptor
-designs actually fail.
+Use this table before writing a field:
 
-## The sentence to keep
-
-A reusable field descriptor is usually a data descriptor that learns its public name with
-`__set_name__`, validates or coerces values in `__set__`, and keeps per-instance state out
-of the descriptor object itself.
-
-That last part is the one that prevents the most bugs.
-
-Keep one more sentence beside it:
-
-> descriptor configuration may live on the descriptor object; descriptor-managed values usually must not.
-
-That second sentence prevents the most common beginner storage bug in the entire module.
-If configuration and live field values blur together, reuse becomes untrustworthy fast.
-
-## What a reusable field descriptor usually owns
-
-In this module, a field descriptor is a small class that:
-
-- takes configuration in `__init__`
-- learns its installed attribute name in `__set_name__`
-- intercepts reads and writes through `__get__` and `__set__`
-- stores per-instance values in a safe place
-
-That pattern is what turns descriptor protocol knowledge into something practical.
-
-Use this separation card whenever field descriptors start looking elegant but suspicious:
-
-| Question | Honest owner |
+| State | Normal owner |
 | --- | --- |
-| what options configure the field rule? | descriptor object |
-| what name was the field installed under? | `__set_name__` result |
-| what value belongs to one instance only? | instance storage or safe external storage |
-| what code enforces assignment behavior? | `__set__` |
+| public field name | descriptor configuration |
+| validation or conversion options | descriptor configuration |
+| derived private storage name | descriptor configuration |
+| one object's current value | owner instance or explicit external store |
+| class-family collection of fields | wider class machinery |
 
-## Which parts belong where
+The phrase “the descriptor stores the value” is too vague for review. Name the exact
+container and key.
 
-Use this table when a field descriptor starts blurring configuration and state:
+## Instance dictionary storage
 
-| Concern | Honest owner |
-| --- | --- |
-| field options such as `max_length` | descriptor object |
-| installed public name | learned through `__set_name__` |
-| per-instance stored value | instance storage or safe external storage |
-| read and write behavior | `__get__` and `__set__` |
-
-## A small string field
+`StoredField` derives a private key during class creation:
 
 ```python
-class StringField:
-    def __init__(self, max_length=None):
-        self.max_length = max_length
-
-    def __set_name__(self, owner, name):
-        self.public_name = name
-        self.private_name = f"_{name}"
-
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        return obj.__dict__.get(self.private_name, "")
-
-    def __set__(self, obj, value):
-        text = str(value)
-        if self.max_length is not None and len(text) > self.max_length:
-            raise ValueError(f"{self.public_name} exceeds {self.max_length} characters")
-        obj.__dict__[self.private_name] = text
+def __set_name__(self, owner, name):
+    self.public_name = name
+    self.storage_name = f"_{name}"
 ```
 
-This is the standard educational shape because every important part stays visible.
-
-It is also strong because the public field declaration remains readable while the storage
-rule stays local and explicit.
-
-## A proof route for storage ownership
-
-Use this route when a reusable field looks correct but you do not yet trust the storage:
-
-1. locate the descriptor object on the class
-2. locate where assignment writes the actual value
-3. create or imagine two instances
-4. ask whether changing one instance can leak into the other
-5. if the answer depends on descriptor-held mutable state, the storage owner is wrong
-
-## A positive integer field
+Writes use the owner instance:
 
 ```python
-class PositiveInt:
-    def __set_name__(self, owner, name):
-        self.public_name = name
-        self.private_name = f"_{name}"
-
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        return obj.__dict__.get(self.private_name, 0)
-
-    def __set__(self, obj, value):
-        number = int(value)
-        if number < 0:
-            raise ValueError(f"{self.public_name} must be non-negative")
-        obj.__dict__[self.private_name] = number
+def __set__(self, instance, value):
+    vars(instance)[self.storage_name] = value
 ```
 
-This is where descriptors clearly outgrow a single property:
+Reads use the same owner and key:
 
-- the rule is reusable
-- the attribute name is discovered automatically
-- the field behavior is declarative at class definition time
+```python
+def __get__(self, instance, owner=None):
+    if instance is None:
+        return self
+    return vars(instance)[self.storage_name]
+```
 
-That last point matters for education. A learner can inspect the class body and see a
-field rule installed declaratively without needing copied property code everywhere.
+This shape is small, inspectable, and compatible with ordinary objects that have a
+`__dict__`.
 
-Use this review card before accepting reuse:
+## The two-instance proof
 
-| If the design pressure is... | Descriptor reuse earns itself? |
-| --- | --- |
-| one field on one class | usually no |
-| the same field rule on several attributes | yes |
-| the same field rule across several classes | yes |
-| cross-field coordination | not by itself; a wider owner may be needed |
+A storage design is not proven by one successful object.
 
-## The storage rule that matters most
+The lab asserts:
 
-The descriptor object usually lives once on the class.
+```python
+first.endpoint = "https://one.test"
+second.endpoint = "https://two.test"
 
-So this is a bug:
+assert vars(first) == {"_endpoint": "https://one.test"}
+assert vars(second) == {"_endpoint": "https://two.test"}
+```
+
+The descriptor configuration is shared:
+
+```python
+assert Delivery.endpoint is vars(Delivery)["endpoint"]
+```
+
+The values are not. This is the central field-storage invariant.
+
+## Failure: descriptor-held current values
+
+Consider:
 
 ```python
 class BrokenField:
-    def __init__(self):
-        self.value = None
-
-    def __get__(self, obj, owner=None):
-        return self.value
-
-    def __set__(self, obj, value):
+    def __set__(self, instance, value):
         self.value = value
-```
 
-Every instance will share the same `self.value` because that state lives on the descriptor
-object itself.
-
-The safer pattern is:
-
-```python
-obj.__dict__[self.private_name] = value
-```
-
-or explicit external storage when `__dict__` is not available.
-
-## Evidence route for storage reviews
-
-Use this route whenever a descriptor seems to "store its own values":
-
-| Evidence step | What it proves |
-| --- | --- |
-| the descriptor object lives on the class | descriptor instance is shared across all class instances |
-| writes go to `self.value` on the descriptor | stored values will leak across instances |
-| writes go to `obj.__dict__` or weak-key storage | values stay associated with individual instances |
-| `__set_name__` derives a storage key | field names remain reusable without hard-coding |
-
-## Slotted classes need a different storage owner
-
-If a class uses `__slots__` and does not expose `__dict__`, ordinary instance-dictionary
-storage is unavailable.
-
-That is where external storage patterns become useful.
-
-One common external-storage pattern is `WeakKeyDictionary`:
-
-```python
-from weakref import WeakKeyDictionary
-
-
-class SlottedPositiveInt:
-    def __init__(self):
-        self._values = WeakKeyDictionary()
-
-    def __get__(self, obj, owner=None):
-        if obj is None:
+    def __get__(self, instance, owner=None):
+        if instance is None:
             return self
-        return self._values.get(obj, 0)
-
-    def __set__(self, obj, value):
-        number = int(value)
-        if number < 0:
-            raise ValueError("value must be non-negative")
-        self._values[obj] = number
+        return self.value
 ```
 
-This pattern keeps per-instance values separate while still allowing instances to be
-garbage-collected.
-
-It also forces a useful design question: if a descriptor cannot rely on `__dict__`, what
-is the narrowest external storage surface that still keeps ownership honest?
-
-## Why `id(obj)` storage is a trap
-
-Sometimes people try:
+After:
 
 ```python
-storage[id(obj)] = value
+first.endpoint = "one"
+second.endpoint = "two"
 ```
 
-That is a poor storage design because object ids can be reused after garbage collection,
-and the mapping can easily leak stale state.
+both reads return `"two"`. The descriptor followed the access protocol but violated
+instance ownership.
 
-If external storage is needed, weak references are the safer direction.
+## Slotted owners change the storage choice
 
-## A quick storage decision chart
+An owner with `__slots__` may not have a dictionary. That does not mean values should move
+onto the descriptor.
 
-| Situation | Likely safest storage |
-| --- | --- |
-| ordinary instances with `__dict__` | `obj.__dict__[private_name]` |
-| slotted instances without `__dict__` | `WeakKeyDictionary` or another explicit external store |
-| tempting shortcut with `id(obj)` | reject unless you can prove lifecycle safety, which this module does not teach as a good default |
+Possible designs include:
 
-## Storage options compared
+- require a dedicated slot known to the descriptor
+- use an external `WeakKeyDictionary`
+- reject incompatible owners at class creation
+- choose a different abstraction
 
-| Storage option | Good when | Main warning |
+Each has a cost:
+
+| Storage | Benefit | Cost |
 | --- | --- | --- |
-| `obj.__dict__[private_name]` | instances expose `__dict__` and field ownership is local | requires a stable private-name convention |
-| `WeakKeyDictionary` | slotted or external-storage cases need instance separation | adds indirection and requires hashable/weak-reference-compatible instances |
-| `id(obj)` mapping | almost never | ids can be reused and stale state can leak |
+| instance dictionary | simple and visible | unavailable on dictionary-free slots |
+| dedicated slot | value remains on the owner | slot coordination must happen before class creation finishes |
+| `WeakKeyDictionary` | external per-instance ownership without retaining owners | owners must support weak references and hashing |
+| plain dictionary keyed by owner | straightforward external map | can keep owners alive |
+| dictionary keyed by `id(owner)` | appears compact | stale entries and identity reuse make it unsafe |
 
-## What reusable field descriptors are good at
+Do not present weak-reference storage as a universal upgrade. It introduces its own owner
+requirements and concurrency questions.
 
-Use them when:
+## Defaults are also storage policy
 
-- the same field rule repeats across many classes
-- the rule truly belongs to assignment or access of that attribute
-- class-level declaration makes the model easier to read
+The capstone `Field` writes a default into each instance during generated initialization.
+That is safe for its current immutable scalar defaults.
 
-That is where descriptors start earning their complexity.
+A mutable default would be a different contract:
 
-Reuse pressure is the real justification. Descriptor power without repetition often turns
-into unnecessary abstraction.
+```python
+default=[]
+```
 
-## Evidence packet for reusable-field reviews
+Writing the same list object into every owner dictionary still shares state even though
+the dictionary keys are independent. A production field system would need a default
+factory or an explicit immutable-default restriction.
 
-Leave this page with a small packet:
+The descriptor protocol does not solve default identity.
 
-- one reusable field installed under two different names
-- one trace showing where the live per-instance value lands
-- one broken shared-state example and its repair
-- one sentence explaining why reuse pressure is strong enough, or not strong enough, to justify a descriptor
+## Validation and storage are separate decisions
 
-## What they are not automatically good at
+A field can correctly store per-instance values and still apply a bad conversion:
 
-Descriptors are not automatically the right fit for:
+```python
+text = str(value).strip()
+```
 
-- one one-off field rule on one class
-- wide object-level invariants spanning many attributes
-- full validation frameworks with cross-field coordination
+That may be appropriate for configuration input and inappropriate for strict domain
+types. Review these independently:
 
-Those cases may still belong to properties, explicit validators, or later-course
-architectures.
+1. Where is the value stored?
+2. Which inputs are accepted?
+3. Is conversion lossy?
+4. When does failure occur?
+5. Does reading mutate state?
 
-## Common overclaims to reject
+The worked quantity descriptor will make all five visible.
 
-Reject these descriptions when they appear in review:
+## Capstone field trace
 
-| Overclaim | Better replacement |
-| --- | --- |
-| "the descriptor stores the field" | "the descriptor manages access while the instance or external mapping stores the value" |
-| "descriptor state is fine because the field object is small" | "shared descriptor state is still shared across instances" |
-| "weak-key storage is just an optimization detail" | "weak-key storage is a storage-ownership choice for cases without instance dictionaries" |
-| "reuse is always worth a descriptor" | "reuse must be real enough to justify a stronger owner" |
+For `WebhookNotifier.endpoint`:
 
-## Failure modes for reusable field design
+```mermaid
+sequenceDiagram
+  participant Init as generated __init__
+  participant F as StringField.__set__
+  participant P as plugin instance
+  Init->>F: setattr(plugin, "endpoint", raw)
+  F->>F: coerce and validate
+  F->>P: vars(plugin)["_endpoint"] = text
+  P->>F: plugin.endpoint
+  F-->>P: vars(plugin)["_endpoint"]
+```
 
-These are the main ways a field descriptor can weaken:
+The metaclass generated the initializer, but the field descriptor owns coercion and
+storage access. The plugin instance owns the resulting value.
 
-| Failure mode | Why it weakens the design | Repair move |
-| --- | --- | --- |
-| storing values on the descriptor object | state leaks across instances | move value storage to the instance or weak-key mapping |
-| hard-coding field names in the descriptor | reuse becomes brittle | derive names with `__set_name__` |
-| using a descriptor for a one-off local rule | abstraction cost exceeds clarity gain | keep a property or plain method instead |
-| using `id(obj)`-based storage | stale state and identity reuse risk accumulate | prefer `obj.__dict__` or weak references |
+## What the current proof establishes
 
-## A compact review checklist
+The Module 07 tests establish:
 
-When reviewing reusable field descriptors, ask:
+- class access exposes shared descriptor configuration
+- two instances retain different values
+- public writes route into derived private keys
+- unset reads fail as attributes rather than returning hidden sentinels
+- the quantity example stores only canonical numeric values
 
-- is the rule reusable enough to justify a descriptor?
-- where does per-instance state live?
-- is `__set_name__` removing hard-coded attribute names?
-- does the descriptor clearly separate configuration from stored values?
-- would one property still be clearer if the reuse pressure is low?
-- can another reviewer identify exactly where instance state lives?
+They do not establish:
 
-## Exit check for this page
+- thread safety for external storage
+- support for dictionary-free slotted owners
+- safe mutable defaults
+- serialization compatibility
+- cross-field validation
 
-Before moving on, make sure you can do all of these:
+Those require additional owners and evidence.
 
-- explain why storing values on the descriptor object is usually wrong
-- name one safe `__dict__`-based storage pattern and one safe external-storage pattern
-- describe what `__set_name__` removes from the implementation
-- say when reuse pressure is strong enough to justify a descriptor
+## Storage review checklist
 
-## What to practice from this page
+For every reusable field, record:
 
-Try these before moving on:
+- how many descriptor objects exist
+- how many owner instances may use each descriptor
+- the exact per-instance key or external map
+- whether reads mutate storage
+- whether defaults are copied, constructed, or shared
+- what owner shapes are rejected
 
-1. Build one reusable validating field and install it on two attributes with different names.
-2. Demonstrate the shared-state bug caused by storing values on the descriptor itself.
-3. Sketch a slotted-compatible version and explain why weak-reference storage is safer than `id(obj)` storage.
+## Focused proof
 
-If those feel ordinary, the next step is the design boundary page: when descriptor power
-is truly the right owner and when it is more than the problem needs.
+Run:
+
+```bash
+python3 -m unittest discover -s tests \
+  -p "test_descriptor_protocol_lab.py" -v
+python3 -m unittest discover -s tests \
+  -p "test_quantity_descriptor_lab.py" -v
+```
+
+Then inspect two `vars(instance)` results. Do not infer storage from the public API alone.
 
 ## Continue through Module 07
 
 - Previous: [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md)
 - Next: [Descriptor Boundaries and Attribute Ownership](descriptor-boundaries-and-attribute-ownership.md)
-- Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)
