@@ -6,10 +6,22 @@ from .cache import (
     InvalidatingField,
     cache_evidence,
 )
+from .external import (
+    CountingStore,
+    ExternalField,
+    IncidentRecord,
+    StoreUnavailable,
+    external_storage_evidence,
+)
 
 __all__ = [
     "CachedComputation",
+    "CountingStore",
     "Document",
+    "ExternalField",
+    "IncidentRecord",
     "InvalidatingField",
+    "StoreUnavailable",
     "cache_evidence",
+    "external_storage_evidence",
 ]
