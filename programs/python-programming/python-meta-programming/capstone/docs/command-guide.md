@@ -45,8 +45,9 @@ to feel harder than it is.
 
 | If the question is about... | Start with | Escalate only if needed |
 | --- | --- | --- |
-| what the runtime exposes without invoking plugin behavior | `make manifest`, `make plugin`, `make field`, `make field-ownership`, `make action`, `make registry`, or `make signatures` | `make inspect` |
+| what the runtime exposes without invoking plugin behavior | `make manifest`, `make plugin`, `make field`, `make field-ownership`, `make field-system`, `make action`, `make registry`, or `make signatures` | `make inspect` |
 | which object owns one field's lookup and storage contract | `make field-ownership` | `tests/test_fields.py` and `tests/test_cli.py` |
+| which descriptor-system powers the capstone accepts or rejects | `make field-system` | `tests/test_fields.py` and `tests/test_cli.py` |
 | whether proposed action arguments satisfy the real call contract | `make bind-action` | `tests/test_runtime.py` |
 | whether bound values match the supported runtime hint subset | `make check-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | what the metaclass knew and generated during one class creation | `make class-creation` | `tests/test_runtime.py` and `tests/test_cli.py` |
@@ -61,6 +62,8 @@ to feel harder than it is.
 - Choose `make registry` when the real question is "which plugins exist and in what order?"
 - Choose `make field` or `make action` when one small contract is the pressure point.
 - Choose `make field-ownership` when descriptor category, declaring class, or storage ownership is the pressure point.
+- Choose `make field-system` when the question spans all collected fields or asks why
+  caching, external storage, wrapper composition, or hint inference is absent.
 - Choose `make bind-action` when call validation matters but execution does not.
 - Choose `make check-action` when runtime hint matching or refusal matters but execution does not.
 - Choose `make class-creation` when namespace, inheritance, or generated initialization timing matters.
@@ -85,6 +88,7 @@ to feel harder than it is.
 | `make plugin` | inspect one concrete plugin contract | one plugin contract JSON |
 | `make field` | inspect one descriptor-backed field contract | one field contract JSON |
 | `make field-ownership` | inspect one field's descriptor owner without construction | hooks, category, class access, collection, and storage JSON |
+| `make field-system` | inspect system-level field powers without construction | field owners plus accepted and rejected power JSON |
 | `make action` | inspect one decorator-backed action contract | one action contract JSON |
 | `make action-wrapper` | inspect wrapper layers and preservation without execution | wrapper-chain audit JSON |
 | `make bind-action` | validate one action call without construction or invocation | normalized bound-argument JSON |
@@ -112,6 +116,7 @@ publishes honestly from the public surface.
 | generated signatures | which constructor and action call shapes the runtime exposes | `make signatures` |
 | one field contract | how one descriptor-backed public contract appears from outside | `make field` |
 | one field ownership audit | which descriptor and storage boundary implement that contract | `make field-ownership` |
+| one field-system audit | which powers the complete collected field set accepts and rejects | `make field-system` |
 | one action contract | how one decorator-backed callable surface appears from outside | `make action` |
 | one action wrapper | which layer owns `ActionSpec`, `__signature__`, and `__wrapped__` | `make action-wrapper` |
 | one action preflight | whether proposed arguments satisfy the stored action signature | `make bind-action` |
@@ -146,6 +151,7 @@ sizes, and SHA-256 hashes for the saved route.
 | `make plugin` | inspection-time fact | one concrete plugin contract | `src/incident_plugins/plugins.py` | `tests/test_runtime.py` |
 | `make field` | inspection-time fact | one descriptor-backed field contract | `src/incident_plugins/fields.py` | `tests/test_fields.py` |
 | `make field-ownership` | descriptor-structure fact | declaring class, hooks, lookup category, class access, metaclass collection, and storage key | `src/incident_plugins/fields.py` and `src/incident_plugins/framework.py` | `tests/test_fields.py` and `tests/test_cli.py` |
+| `make field-system` | descriptor-system boundary fact | every field's coercion and storage owner plus accepted and rejected powers | `src/incident_plugins/fields.py` and `src/incident_plugins/framework.py` | `tests/test_fields.py` and `tests/test_cli.py` |
 | `make action` | inspection-time fact | one decorator-backed action contract | `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
 | `make action-wrapper` | wrapper-structure fact | chain, signatures, and metadata ownership | `src/incident_plugins/actions.py` and `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | `make bind-action` | preflight fact | normalized arguments with execution explicitly absent | `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |

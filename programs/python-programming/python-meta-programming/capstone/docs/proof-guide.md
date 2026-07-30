@@ -45,6 +45,7 @@ That question matters because different proof routes answer different kinds of c
 | the runtime surface is observational | `make manifest` or `make registry` | `make inspect` |
 | descriptor fields own validation and coercion | `make field` | `tests/test_fields.py` |
 | descriptor lookup and storage ownership stay inspectable without construction | `make field-ownership` | `tests/test_fields.py` and `tests/test_cli.py` |
+| field-system power stays bounded and inspectable without construction | `make field-system` | `tests/test_fields.py` and `tests/test_cli.py` |
 | wrapper behavior stays visible | `make action` or `make trace` | `tests/test_runtime.py` or `tests/test_cli.py` |
 | wrapper ownership stays inspectable without execution | `make action-wrapper` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | action arguments can be validated without execution | `make bind-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
@@ -104,6 +105,7 @@ make registry
 make plugin
 make field
 make field-ownership
+make field-system
 make action
 make action-wrapper
 make bind-action
@@ -122,6 +124,8 @@ without dragging in unrelated proof weight.
 - Use `manifest` before `inspect` when one public schema question is enough.
 - Use `field` before `tests/test_fields.py` when you still need to see the public contract first.
 - Use `field-ownership` when the question is descriptor mechanics rather than exported schema.
+- Use `field-system` when the question is system-wide field power rather than one
+  descriptor's mechanics.
 - Use `trace` before `verify-report` when one invocation story is enough.
 - Use `confirm` before `proof` when the question is executable confidence rather than published review output.
 
@@ -130,7 +134,7 @@ without dragging in unrelated proof weight.
 | Source file | Best public route | Best executable proof | Best saved review route |
 | --- | --- | --- | --- |
 | `src/incident_plugins/framework.py` | `make manifest`, `make registry`, `make signatures`, `make bind-action`, `make check-action`, and `make class-creation` | `tests/test_registry.py` and `tests/test_runtime.py` | `make inspect` or `make verify-report` |
-| `src/incident_plugins/fields.py` | `make field`, `make field-ownership`, and `make plugin` | `tests/test_fields.py` | `make inspect` |
+| `src/incident_plugins/fields.py` | `make field`, `make field-ownership`, `make field-system`, and `make plugin` | `tests/test_fields.py` | `make inspect` |
 | `src/incident_plugins/actions.py` | `make action`, `make action-wrapper`, `make check-action`, `make trace`, and `make signatures` | `tests/test_runtime.py` and `tests/test_cli.py` | `make tour` or `make verify-report` |
 | `src/incident_plugins/plugins.py` | `make plugin`, `make demo`, and `make trace` | `tests/test_runtime.py` | `make tour` |
 | `src/incident_plugins/cli.py` | `make manifest`, `make registry`, `make trace`, and `make demo` | `tests/test_cli.py` | `make inspect`, `make tour`, or `make verify-report` |
@@ -152,7 +156,7 @@ Those questions keep proof tied to ownership instead of to habit.
 | If you need to review... | Start with | Then run or inspect | Escalate with |
 | --- | --- | --- | --- |
 | public shape without invocation | [COMMAND_GUIDE.md](command-guide.md) | `make manifest`, `make registry`, or `make inspect` | this guide |
-| one concrete field or action contract | [COMMAND_GUIDE.md](command-guide.md) | `make field`, `make field-ownership`, `make action`, or `make inspect` | [TEST_GUIDE.md](test-guide.md) |
+| one concrete field or action contract | [COMMAND_GUIDE.md](command-guide.md) | `make field`, `make field-ownership`, `make field-system`, `make action`, or `make inspect` | [TEST_GUIDE.md](test-guide.md) |
 | one realistic invocation story | [INDEX.md](index.md) or [COMMAND_GUIDE.md](command-guide.md) | `make demo`, `make trace`, or `make tour` | `tests/test_runtime.py` |
 | source ownership for a change | [PACKAGE_GUIDE.md](package-guide.md) or [EXTENSION_GUIDE.md](extension-guide.md) | the matching public route from the file map | [TEST_GUIDE.md](test-guide.md) |
 | which proof file should fail first | [TEST_GUIDE.md](test-guide.md) | the matching test file | [PACKAGE_GUIDE.md](package-guide.md) |

@@ -36,6 +36,7 @@ the broadest route.
 | partial runtime hint checks without action execution | `capstone-check-action` | runtime and CLI tests |
 | stored metaclass and namespace provenance without plugin construction | `capstone-class-creation` | runtime and CLI tests |
 | field descriptor ownership without plugin construction | `capstone-field-ownership` | field and CLI tests |
+| accepted and rejected field-system powers without construction | `capstone-field-system` | field and CLI tests |
 | one concrete runtime behavior | `demo` or `capstone-trace` | `capstone-walkthrough` or runtime tests |
 | a saved review artifact for another learner or reviewer | `inspect`, `capstone-walkthrough`, or `capstone-verify-report` | `proof` |
 | the strongest local executable confidence | `capstone-confirm` | `proof` |
@@ -47,6 +48,7 @@ make PROGRAM=python-programming/python-meta-programming capstone-manifest
 make PROGRAM=python-programming/python-meta-programming capstone-plugin
 make PROGRAM=python-programming/python-meta-programming capstone-field
 make PROGRAM=python-programming/python-meta-programming capstone-field-ownership
+make PROGRAM=python-programming/python-meta-programming capstone-field-system
 make PROGRAM=python-programming/python-meta-programming capstone-action
 make PROGRAM=python-programming/python-meta-programming capstone-check-action
 make PROGRAM=python-programming/python-meta-programming capstone-class-creation
@@ -69,6 +71,7 @@ make manifest
 make plugin
 make field
 make field-ownership
+make field-system
 make action
 make check-action
 make class-creation
@@ -90,6 +93,8 @@ make proof
 - `field`: inspect one concrete field contract and its exported schema
 - `field-ownership`: inspect descriptor hooks, class access, storage ownership, and
   metaclass collection without constructing a plugin
+- `field-system`: inspect every collected field's coercion and storage owner, then compare
+  the stronger descriptor-system powers this capstone deliberately rejects
 - `action`: inspect one concrete action contract and its generated signature
 - `check-action`: check supported action argument hints and report refused surfaces without execution
 - `class-creation`: inspect prepared namespace, declared/inherited members, initializer generation, and registration without construction
