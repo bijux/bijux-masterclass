@@ -214,6 +214,22 @@ def test_class_creation_command_reports_creation_time_ownership(capsys) -> None:
     ]
     assert captured["class_creation"]["declared_actions"] == ["deliver"]
     assert captured["class_creation"]["generated_init"] is True
+    assert captured["class_creation"]["hook_trace"] == [
+        "prepare:DefinitionNamespace",
+        "body:complete",
+        "new:shape",
+        "init:register",
+    ]
+    assert captured["metaclass_selection"] == "inherited from base class"
+    assert captured["hook_ownership"]["init"] == (
+        "register the finished concrete class"
+    )
+    assert [item["power"] for item in captured["rejected_powers"]] == [
+        "package discovery",
+        "external I/O during class creation",
+        "automatic metaclass conflict resolution",
+        "reload reconciliation",
+    ]
     assert captured["registered"] is True
     assert captured["constructed"] is False
     assert captured["executed"] is False

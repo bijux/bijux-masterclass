@@ -311,13 +311,36 @@ def test_class_creation_audit_separates_inherited_declared_and_generated_surface
     assert report["class_creation"] == {
         "namespace_type": "DefinitionNamespace",
         "metaclass": "PluginMeta",
+        "base_classes": ("AuditedDeliveryBase",),
+        "namespace_names": ("plugin_name", "channel", "deliver"),
         "declared_fields": ("channel",),
         "declared_actions": ("deliver",),
         "inherited_fields": ("base_endpoint",),
         "inherited_actions": ("inspect",),
         "generated_init": True,
         "abstract": False,
+        "hook_trace": (
+            "prepare:DefinitionNamespace",
+            "body:complete",
+            "new:shape",
+            "init:register",
+        ),
     }
+    assert report["metaclass_selection"] == "inherited from base class"
+    assert report["hook_ownership"]["new"].startswith("collect fields")
+    assert report["hook_ownership"]["init"] == "register the finished concrete class"
+    assert report["accepted_powers"] == [
+        "declaration-time duplicate tracking",
+        "field and action collection",
+        "constructor signature and initializer generation",
+        "automatic in-process concrete subclass registration",
+    ]
+    assert [item["power"] for item in report["rejected_powers"]] == [
+        "package discovery",
+        "external I/O during class creation",
+        "automatic metaclass conflict resolution",
+        "reload reconciliation",
+    ]
     assert report["visible_signature"] == "(*, base_endpoint, channel='critical')"
     assert report["collected_fields"] == ["base_endpoint", "channel"]
     assert report["collected_actions"] == ["inspect", "deliver"]
@@ -343,6 +366,7 @@ def test_class_creation_audit_records_an_explicit_initializer() -> None:
     )
 
     assert report["class_creation"]["generated_init"] is False
+    assert report["class_creation"]["hook_trace"][-1] == "init:register"
     assert report["constructed"] is False
     assert runtime_events == []
 

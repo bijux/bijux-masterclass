@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import OrderedDict, defaultdict
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 import inspect
 from typing import Any
 
@@ -23,12 +23,15 @@ class ClassCreationSpec:
 
     namespace_type: str
     metaclass: str
+    base_classes: tuple[str, ...]
+    namespace_names: tuple[str, ...]
     declared_fields: tuple[str, ...]
     declared_actions: tuple[str, ...]
     inherited_fields: tuple[str, ...]
     inherited_actions: tuple[str, ...]
     generated_init: bool
     abstract: bool
+    hook_trace: tuple[str, ...]
 
     def manifest(self) -> dict[str, object]:
         return asdict(self)
@@ -143,12 +146,23 @@ class PluginMeta(type):
         cls.__plugin_class_creation__ = ClassCreationSpec(
             namespace_type=type(namespace).__name__,
             metaclass=type(cls).__name__,
+            base_classes=tuple(base.__name__ for base in bases),
+            namespace_names=tuple(
+                attr_name
+                for attr_name in namespace
+                if not attr_name.startswith("__")
+            ),
             declared_fields=tuple(declared_fields),
             declared_actions=tuple(declared_actions),
             inherited_fields=inherited_fields,
             inherited_actions=inherited_actions,
             generated_init=generated_init,
             abstract=is_abstract,
+            hook_trace=(
+                f"prepare:{type(namespace).__name__}",
+                "body:complete",
+                "new:shape",
+            ),
         )
         if is_abstract:
             return cls
@@ -157,8 +171,28 @@ class PluginMeta(type):
         plugin_name = getattr(cls, "plugin_name", None) or _to_slug(name)
         cls.group = group
         cls.plugin_name = plugin_name
-        _register_plugin(cls)
         return cls
+
+    def __init__(
+        cls,
+        name: str,
+        bases: tuple[type[object], ...],
+        namespace: dict[str, object],
+        **kwargs: object,
+    ) -> None:
+        super().__init__(name, bases, namespace)
+        creation = cls.__plugin_class_creation__
+        if creation.abstract:
+            cls.__plugin_class_creation__ = replace(
+                creation,
+                hook_trace=(*creation.hook_trace, "init:abstract-skip"),
+            )
+            return
+        _register_plugin(cls)
+        cls.__plugin_class_creation__ = replace(
+            creation,
+            hook_trace=(*creation.hook_trace, "init:register"),
+        )
 
     @classmethod
     def registry(cls, group: str | None = None) -> dict[str, tuple[str, ...]] | tuple[str, ...]:
@@ -297,11 +331,49 @@ def inspect_plugin_class_creation(
 
     plugin_cls = _REGISTRY[group][plugin_name]
     creation = plugin_cls.__plugin_class_creation__
+    metaclass_inherited = any(
+        isinstance(base, type(plugin_cls))
+        for base in plugin_cls.__bases__
+    )
     return {
         "group": group,
         "plugin_name": plugin_name,
         "class_name": plugin_cls.__name__,
         "class_creation": creation.manifest(),
+        "metaclass_selection": (
+            "inherited from base class"
+            if metaclass_inherited
+            else "explicit on class family root"
+        ),
+        "hook_ownership": {
+            "prepare": "DefinitionNamespace preserves declaration-time duplicate facts",
+            "new": "collect fields and actions, generate signature and initializer",
+            "init": "register the finished concrete class",
+        },
+        "accepted_powers": [
+            "declaration-time duplicate tracking",
+            "field and action collection",
+            "constructor signature and initializer generation",
+            "automatic in-process concrete subclass registration",
+        ],
+        "rejected_powers": [
+            {
+                "power": "package discovery",
+                "reason": "imports and deployment configuration own discovery",
+            },
+            {
+                "power": "external I/O during class creation",
+                "reason": "class definition must remain deterministic and local",
+            },
+            {
+                "power": "automatic metaclass conflict resolution",
+                "reason": "combined class-creation policies require explicit design",
+            },
+            {
+                "power": "reload reconciliation",
+                "reason": "registry reset and process lifecycle remain explicit",
+            },
+        ],
         "visible_signature": str(inspect.signature(plugin_cls)),
         "collected_fields": list(plugin_cls.__plugin_fields__),
         "collected_actions": list(plugin_cls.__plugin_actions__),
