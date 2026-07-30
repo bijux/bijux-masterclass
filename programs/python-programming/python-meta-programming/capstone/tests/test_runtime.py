@@ -178,6 +178,40 @@ def test_action_contract_reports_mismatch_and_unsupported_hints() -> None:
     assert report["accepted"] is False
 
 
+def test_action_contract_defers_and_reports_unresolved_forward_references() -> None:
+    class ForwardReferencePlugin(PluginBase):
+        group = "forward-reference"
+        plugin_name = "unresolved"
+
+        @action("Keep ordinary registration independent of optional hint checks.")
+        def deliver(self, incident: MissingIncidentType) -> str:  # type: ignore[name-defined]
+            return str(incident)
+
+    assert bind_action_arguments(
+        "forward-reference",
+        "unresolved",
+        "deliver",
+        "INC-42",
+    ) == {"incident": "INC-42"}
+
+    report = check_action_arguments(
+        "forward-reference",
+        "unresolved",
+        "deliver",
+        "INC-42",
+    )
+
+    assert report["checked"] == []
+    assert report["refused"] == []
+    assert report["unchecked"] == [
+        {"name": "incident", "reason": "annotation resolution failed"}
+    ]
+    assert report["resolution_error"].startswith("NameError:")
+    assert "MissingIncidentType" in report["resolution_error"]
+    assert report["contract_complete"] is False
+    assert report["accepted"] is False
+
+
 def test_action_wrapper_audit_preserves_execution_boundaries() -> None:
     runtime_events: list[str] = []
 

@@ -292,6 +292,11 @@ only, reports unsupported annotations instead of skipping them, and explicitly s
 return values are outside its scope. Keeping this as an opt-in framework function avoids
 turning every `@action` call into implicit partial type enforcement.
 
+Unlike the lab decorator, `@action` does not resolve hints when the class body runs.
+The explicit check route resolves them later. An unresolved forward reference therefore
+does not break ordinary action registration; `check-action` reports a resolution error,
+marks the affected arguments unchecked, and refuses to call the contract complete.
+
 ## Review rules for annotation-aware decorators
 
 When reviewing annotation-aware wrappers, keep these questions close:

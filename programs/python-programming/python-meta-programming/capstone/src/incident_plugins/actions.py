@@ -12,7 +12,6 @@ class ActionSpec:
     name: str
     summary: str
     signature: inspect.Signature
-    resolved_hints: dict[str, object]
 
     def manifest(self) -> dict[str, object]:
         parameters = []
@@ -44,7 +43,6 @@ def action(summary: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
             name=function.__name__,
             summary=summary.strip() or (inspect.getdoc(function) or ""),
             signature=signature,
-            resolved_hints=get_type_hints(function),
         )
 
         @wraps(function)
@@ -124,6 +122,8 @@ def _annotation_name(annotation: Any) -> str | None:
 def check_action_values(
     spec: ActionSpec,
     bound_arguments: dict[str, object],
+    resolved_hints: dict[str, object],
+    resolution_error: str | None = None,
 ) -> dict[str, object]:
     """Report a narrow action-argument contract without invoking the action."""
 
@@ -131,7 +131,11 @@ def check_action_values(
     refused = []
     unchecked = []
     for name, value in bound_arguments.items():
-        hint = spec.resolved_hints.get(name, inspect.Signature.empty)
+        if resolution_error is not None:
+            unchecked.append({"name": name, "reason": "annotation resolution failed"})
+            continue
+
+        hint = resolved_hints.get(name, inspect.Signature.empty)
         if hint is inspect.Signature.empty:
             unchecked.append({"name": name, "reason": "no annotation"})
             continue
@@ -167,9 +171,21 @@ def check_action_values(
         "checked": checked,
         "refused": refused,
         "unchecked": unchecked,
+        "resolution_error": resolution_error,
         "contract_complete": contract_complete,
         "accepted": contract_complete and all(item["matches"] for item in checked),
     }
+
+
+def resolve_action_hints(
+    function: Callable[..., Any],
+) -> tuple[dict[str, object], str | None]:
+    """Resolve hints only when explicit contract inspection requests them."""
+
+    try:
+        return get_type_hints(function), None
+    except (NameError, TypeError) as error:
+        return {}, f"{type(error).__name__}: {error}"
 
 
 def _evaluate_hint(value: object, hint: object) -> tuple[bool, bool, str | None]:

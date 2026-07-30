@@ -4,7 +4,12 @@ from collections import OrderedDict, defaultdict
 import inspect
 from typing import Any
 
-from .actions import ActionSpec, check_action_values, describe_action_wrapper
+from .actions import (
+    ActionSpec,
+    check_action_values,
+    describe_action_wrapper,
+    resolve_action_hints,
+)
 from .fields import Field
 
 
@@ -231,12 +236,19 @@ def check_action_arguments(
     )
     plugin_cls = _REGISTRY[group][plugin_name]
     action_spec = plugin_cls.__plugin_actions__[action_name]
+    function = inspect.getattr_static(plugin_cls, action_name)
+    resolved_hints, resolution_error = resolve_action_hints(inspect.unwrap(function))
     return {
         "group": group,
         "plugin_name": plugin_name,
         "action_name": action_name,
         "bound_arguments": bound_arguments,
-        **check_action_values(action_spec, bound_arguments),
+        **check_action_values(
+            action_spec,
+            bound_arguments,
+            resolved_hints,
+            resolution_error,
+        ),
         "constructed": False,
         "executed": False,
     }
