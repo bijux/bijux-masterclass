@@ -24,18 +24,15 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Module 06 is the bridge from wrapper-heavy metaprogramming into class-level ownership.
-The aim is not to collect class tricks. The aim is to learn how much can still stay
-explicit, local, and reversible after a class already exists, before the course escalates
-into descriptor-heavy or metaclass-controlled designs.
+Module 06 is the bridge from callable policy to class-level ownership. The executable
+thread is one incident-delivery configuration model examined through successively
+stronger tools: class decorator, dataclass, property, and reusable attribute descriptor.
+The question is not which tool looks most sophisticated. It is which owner is powerful
+enough for the rule and no stronger.
 
 This is the point in the course where "I know the syntax" stops being enough. A reader
 who studies alone needs to learn how to review class-level power, not just how to produce
 it. Module 06 is therefore a review module as much as a feature module.
-
-This module now uses the same ten-file learning surface as the deep-dive series so the
-overview, five cores, worked example, practice set, answers, and glossary each have one
-clear job.
 
 The strongest habit to build here is restraint. Many class requirements sound sophisticated
 enough to deserve descriptors or metaclasses long before they actually do. This module is
@@ -77,6 +74,44 @@ Do not let the module collapse into any of these:
 - [Module Checkpoints](../guides/module-checkpoints.md)
 - [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md)
 
+## Start with executable evidence
+
+Work from `programs/python-programming/python-meta-programming`:
+
+```bash
+make class-customization-lab
+make class-customization-lab-test
+```
+
+The lab prints five evidence packets:
+
+| Packet | Evidence to locate | Claim it constrains |
+| --- | --- | --- |
+| `class_transformation` | body timing, bottom-up application, preserved class identity | class decorators transform an already-created class |
+| `dataclass_boundary` | generated methods, accepted wrong runtime type, distinct defaults, mutable nested list | generation, validation, and deep immutability are separate claims |
+| `property_boundary` | a property beating a same-named instance entry | one data descriptor owns one attribute boundary |
+| `descriptor_boundary` | two reusable typed fields with isolated instance storage | repeated attribute enforcement has a first-class owner |
+| `frozen_surface` | blocked rebinding beside allowed nested mutation | surface freezing is not deep immutability |
+
+The implementation lives in `labs/class_customization/`; focused proof lives in the
+three matching test files under `tests/`.
+
+## The module delta
+
+Module 05 asked whether runtime policy still belonged in a callable wrapper. Module 06
+moves ownership upward only when the rule is about class or attribute structure:
+
+| Previous boundary | New pressure | Smallest candidate |
+| --- | --- | --- |
+| callable invocation | mark one finished class opt-in | class decorator |
+| repeated handwritten constructor boilerplate | generate ordinary class methods | dataclass |
+| one validated attribute | guard lookup and assignment locally | property |
+| the same attribute rule repeats | reuse one storage and validation owner | descriptor |
+| rule must see the namespace before class creation finishes | reject the earlier tools and justify later metaclass study |
+
+Every row retains Modules 01–05 obligations: timing, identity, inspection, failure, and
+public-surface changes must remain visible.
+
 ## The review route through the module
 
 Read the module in this order if you are learning without an instructor present:
@@ -105,7 +140,7 @@ Use this route if you are studying without class discussion or live demos:
 | worked example | one proof note defining frozen narrowly and naming an allowed mutation |
 | exercises plus answers | one review packet another learner could inspect without your code open |
 
-## The ten files in this module
+## The learning sequence
 
 1. Overview (`index.md`)
 2. [Class Decorators and Post-Construction Transformation](class-decorators-and-post-construction-transformation.md)
@@ -117,20 +152,6 @@ Use this route if you are studying without class discussion or live demos:
 8. [Exercises](exercises.md)
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
-
-## How to use the file set
-
-| If you need to... | Start here |
-| --- | --- |
-| understand what can still change after the class object already exists | [Class Decorators and Post-Construction Transformation](class-decorators-and-post-construction-transformation.md) |
-| review generated methods and defaults without pretending dataclasses validate everything | [Dataclass Generation Boundaries](dataclass-generation-boundaries.md) |
-| keep one invariant at the attribute boundary through a property | [Properties and Attribute-Boundary Control](properties-and-attribute-boundary-control.md) |
-| use type hints as declarative aids for shallow runtime validation | [Type Hints and Descriptor-Backed Validation](type-hints-and-descriptor-backed-validation.md) |
-| decide whether post-construction tools are still enough or whether the design is drifting upward | [Class Customization Boundaries](class-customization-boundaries.md) |
-| see those choices combined inside a minimal frozen class decorator | [Worked Example: Building a Minimal `@frozen` Class Decorator](worked-example-building-a-minimal-frozen-class-decorator.md) |
-| test your understanding before the descriptor modules begin | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the class-customization vocabulary | [Glossary](glossary.md) |
 
 ## The running question
 
@@ -163,11 +184,12 @@ Keep one packet beside the module as you work:
 
 | Surface | What to record |
 | --- | --- |
-| class decorator note | one explicit post-construction effect and one missing creation-time need |
-| dataclass note | one generated method set and one still-missing invariant owner |
-| property note | one named attribute boundary and the backing-storage story behind it |
-| descriptor note | one supported hint or repeated-field rule plus one refused broader claim |
-| frozen note | one blocked mutation, one allowed mutation, and one rejected stronger promise |
+| class decorator note | exact factory/body/application trace plus identity evidence |
+| dataclass note | generated methods, accepted wrong type, default isolation, and one mutable nested value |
+| property note | visible value, conflicting instance entry, and assignment failure |
+| descriptor note | field specs, private storage, per-instance values, and refused broad typing claim |
+| frozen note | blocked mutation, allowed nested mutation, bypass, subclass, and slots limits |
+| capstone note | evidence separating post-construction possibilities from `PluginMeta` creation-time ownership |
 
 ## Learning outcomes
 
@@ -221,6 +243,7 @@ Do not move on until all of these are true:
 - you can distinguish property-driven attribute control from broader descriptor or metaclass ownership
 - you can place one class customization requirement honestly on the lower-power side of the ladder
 - you can name one rejected stronger mechanism and the missing condition that would be required to justify it
+- you can map every important claim to lab output and a focused test
 
 When those feel ordinary, Module 06 has done its job and the descriptor modules can start
 from a much cleaner ownership model.

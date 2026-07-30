@@ -87,6 +87,31 @@ That one fact rules out a large amount of accidental confusion. A class decorato
 still modify, wrap, register, or replace the finished class binding. It cannot go back in
 time and participate in namespace preparation or metaclass resolution.
 
+## Run the exact timing trace
+
+```bash
+make class-customization-lab
+```
+
+Read `class_transformation.events`:
+
+```text
+factory:outer
+factory:inner
+body:Delivery
+decorate:inner:Delivery
+decorate:outer:Delivery
+```
+
+Decorator expressions are evaluated from top to bottom before the class body. After the
+body and `type` have produced the class, decorators apply from the nearest one outward.
+The separate `application_trace` therefore reads `inner`, then `outer`.
+
+The packet also applies `mark_class("incident-delivery")` as an explicit helper and
+compares object identity before and after. The same class object returns, its metaclass
+remains `type`, and an immutable `ClassCustomization` record becomes visible on the
+class rather than on instances.
+
 ## One picture of the timing
 
 ```mermaid
@@ -113,27 +138,20 @@ Use this route whenever a class decorator starts sounding more powerful than it 
 | `decorator(C)` runs after creation | the decorator can only act on the finished object |
 | rebinding assigns the return value back to `C` | replacement is possible, but only after creation is complete |
 
-## Method injection is a straightforward use
+## Attaching an inspectable class mark is a straightforward use
 
-```python
-def add_method(cls):
-    def extra(self):
-        return f"Extra from {cls.__name__}"
+Open `labs/class_customization/transformation.py`. `mark_class`:
 
-    cls.extra = extra
-    return cls
+- validates its label when the decorator factory runs
+- receives a finished class
+- refuses to overwrite a reserved class attribute
+- attaches one immutable policy record
+- returns the same class object
 
-
-@add_method
-class Basic:
-    def __init__(self, value):
-        self.value = value
-```
-
-This is a good early example because it stays honest:
+This is an honest early example because:
 
 - the decorator changes the finished class
-- the injected function becomes a descriptor when attached to the class
+- the added public surface is directly inspectable through `vars(cls)`
 - nothing about class creation timing is being hidden
 
 It also shows a useful review habit: ask whether the behavior is truly clearer as a
@@ -149,7 +167,7 @@ Use this comparison when you are unsure:
 If the helper form makes the ownership story clearer, the decorator has to earn its
 compactness rather than receiving it for free.
 
-## Registration is another honest post-construction use
+## Registration can be an honest post-construction use
 
 ```python
 registry = []
@@ -271,6 +289,12 @@ Use this boundary table to keep late versus early power visible:
 | guarantee declaration order during class body execution | not a class decorator | the requirement exists before the class object is finished |
 | resolve metaclass conflicts or customize namespace preparation | not a class decorator | those are class-creation-time concerns |
 
+The lab's collision test is a useful boundary case. `mark_class` can notice and reject a
+reserved attribute after creation, but it cannot detect that the same tracked name was
+assigned twice while the class body executed: the finished namespace retains only the
+last ordinary assignment. The capstone's `DefinitionNamespace` exists because duplicate
+tracked declarations must be caught during body execution, before that evidence is lost.
+
 ## Common overclaims to reject
 
 Reject these descriptions when they appear in review:
@@ -320,6 +344,20 @@ Leave this page with a small proof packet:
 - one rejected stronger claim explaining why this is not metaclass territory
 - one stack-order note if more than one decorator appears
 
+## Smallest honest proof route
+
+```bash
+python -m unittest discover \
+  -s tests \
+  -p "test_class_customization_transformation.py" \
+  -v
+```
+
+These tests prove timing, bottom-up application, in-place identity, factory-time
+configuration failure, decoration-time collision refusal, instance separation, and base
+relationships. They do not prove a class decorator can prepare a namespace, intercept
+class-body writes, or govern every subclass automatically.
+
 ## Exit check for this page
 
 Before moving on, make sure you can do all of these:
@@ -333,9 +371,12 @@ Before moving on, make sure you can do all of these:
 
 Try these before moving on:
 
-1. Implement a class decorator that injects one method and explain why the method still binds normally.
-2. Implement a resettable registration decorator and explain why reset behavior matters.
-3. Write down one class requirement that class decorators can solve honestly and one that already sounds like metaclass territory.
+1. Predict the five-event stack trace, then add a third decorator and update the expected
+   application order.
+2. Apply `mark_class` through explicit helper syntax and prove identity is preserved.
+3. Add one collision case and explain why refusal happens after class creation.
+4. Write one class requirement that the decorator can solve and one whose evidence has
+   already disappeared by the time the decorator runs.
 
 If those feel ordinary, pressure-test yourself with one more question:
 
