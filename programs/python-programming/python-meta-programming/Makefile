@@ -3,7 +3,7 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 CAPSTONE_DIR := capstone
-RUN_CAPSTONE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(CAPSTONE_DIR)
+RUN_CAPSTONE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool --no-print-directory -C $(CAPSTONE_DIR)
 PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../artifacts
 SITE_DIR ?= $(ARTIFACTS_DIR)/site/python-programming/python-meta-programming
