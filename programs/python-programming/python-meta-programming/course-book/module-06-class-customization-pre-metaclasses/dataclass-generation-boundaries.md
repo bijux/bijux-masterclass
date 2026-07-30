@@ -70,6 +70,29 @@ At a high level, `dataclasses.dataclass` can synthesize:
 
 That is already very useful. It is also narrower than many people casually imply.
 
+## Inspect generation and missing policy together
+
+Run `make class-customization-lab` and read `dataclass_boundary`. The evidence comes
+from one class:
+
+```python
+@dataclass(frozen=True, slots=True)
+class DeliveryPlan:
+    attempts: int
+    tags: list[str] = field(default_factory=list)
+```
+
+| Evidence | Meaning |
+| --- | --- |
+| `__init__`, `__repr__`, and `__eq__` appear in `vars(DeliveryPlan)` | the decorator generated ordinary methods |
+| `DeliveryPlan(attempts="three")` succeeds | the `int` annotation did not enforce a runtime type |
+| two `tags` lists have different identities | `default_factory` created per-instance mutable state |
+| `plan.tags.append("urgent")` succeeds | `frozen=True` did not make the nested list immutable |
+| rebinding `attempts` raises `FrozenInstanceError` | frozen dataclass policy blocks ordinary field rebinding |
+| the instance has no `__dict__` | `slots=True` changed storage shape |
+
+No option in that table is allowed to borrow guarantees from another.
+
 Use this review split before reading any larger example:
 
 | Surface | Typical owner in a dataclass design |
@@ -128,6 +151,10 @@ That sentence needs to stay loud. If a reader walks away believing annotations o
 dataclass behave like runtime validation, the module has failed one of its main teaching
 jobs.
 
+The lab deliberately constructs `DeliveryPlan(attempts="three")`. A static checker
+should reject that call, but Python executes it. The right conclusion is narrow:
+annotations and generated constructors are not runtime validators.
+
 ## A quick pressure test for generated fields
 
 Run this check when a field annotation starts sounding stronger than it is:
@@ -159,6 +186,10 @@ This example shows a few important dataclass features:
 
 These are strong conveniences, but they are still part of generated class shape, not deep
 validation or lifecycle orchestration.
+
+Identity is the proof in the lab: two plans receive different `tags` list objects.
+That establishes fresh instance state. It does not establish which tags are valid,
+whether their count is bounded, or whether later mutation is allowed by the domain.
 
 Reviewers should ask what policy, if any, is being smuggled into defaults. A fresh
 default is often correct for instance shape and still irrelevant to business invariants.
@@ -200,6 +231,12 @@ Use this review table for the common flags:
 | `slots=True` | restricts normal instance storage and dynamic attributes | "this is only a performance tweak" |
 | `kw_only=True` | changes constructor calling style | "this changes validation or business rules" |
 
+Compare `dataclass_boundary` with `frozen_surface`. Both block ordinary rebinding and
+both allow nested list mutation, but their contracts differ. The standard dataclass
+owns generated field behavior and slots integration. The teaching decorator refuses
+slotted instances and advertises bypass and subclass limits. Prefer the standard tool
+when its declared contract fits.
+
 ## `__post_init__` is where explicit logic resumes
 
 `__post_init__` is a particularly useful reminder that dataclasses are not magical.
@@ -235,6 +272,9 @@ Even a tiny home-grown dataclass-like decorator quickly exposes the right bounda
 
 That is why this module keeps dataclass generation and descriptor-based validation in
 different lessons instead of blurring them together.
+
+Do not turn the manual sketch into a second implementation. The executable course uses
+the standard-library decorator and inspects its observable results.
 
 ## A review walkthrough to keep nearby
 
@@ -293,6 +333,17 @@ Leave this page with a small packet:
 - one note explaining whether `__post_init__` is enough or whether later assignment needs its own boundary
 - one sentence rejecting a false schema or immutability claim
 
+## Smallest honest proof route
+
+```bash
+python -m unittest \
+  tests.test_class_customization_evidence.ClassCustomizationEvidenceTests.test_dataclass_packet_separates_generation_validation_and_freezing
+```
+
+This proves the exact method, type, default, mutation, rebinding, and storage evidence
+above. It does not prove static-checker coverage, deep copying, hash safety, or domain
+correctness.
+
 ## Exit check for this page
 
 Before moving on, make sure you can do all of these:
@@ -306,9 +357,13 @@ Before moving on, make sure you can do all of these:
 
 Try these before moving on:
 
-1. Write one plain class and one equivalent dataclass, then list what the dataclass generated for you.
-2. Add `frozen=True` or `slots=True` and explain what surface area changed.
-3. Write one sentence explaining why dataclass annotations are not automatic runtime validation.
+1. Predict the generated method list before reading the packet.
+2. Replace `"three"` with another incompatible runtime value and explain why construction
+   still succeeds.
+3. Remove `default_factory`, attempt a shared mutable default, and interpret the
+   dataclass error rather than bypassing it.
+4. Compare `frozen=True` with `surface_frozen` using their exact refusal and mutation
+   evidence.
 
 If those feel ordinary, the next step is the friendly face of descriptor behavior:
 properties at the attribute boundary.
