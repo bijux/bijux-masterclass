@@ -94,6 +94,14 @@ descriptor-lookup-lab: ## Run the Module 07 descriptor and lookup evidence lab
 descriptor-lookup-lab-test: ## Verify Module 07 lookup, binding, and storage boundaries
 	@$(PYTHON) -m unittest discover -s tests -p "test_*descriptor*.py" -v
 
+.PHONY: descriptor-system-lab
+descriptor-system-lab: ## Run the Module 08 descriptor-system evidence lab
+	@$(PYTHON) -m labs.descriptor_systems
+
+.PHONY: descriptor-system-lab-test
+descriptor-system-lab-test: ## Verify Module 08 cache, storage, composition, and hint boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_descriptor_system_*.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo

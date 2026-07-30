@@ -29,6 +29,7 @@ from .external import (
     StoreUnavailable,
     external_storage_evidence,
 )
+from .evidence import build_evidence, render_evidence
 from .hints import (
     HintField,
     HintPlan,
@@ -72,6 +73,7 @@ __all__ = [
     "cache_evidence",
     "build_incident_model",
     "boundary_evidence",
+    "build_evidence",
     "compile_hint",
     "composition_evidence",
     "describe_layers",
@@ -80,4 +82,5 @@ __all__ = [
     "hint_evidence",
     "inspect_columns",
     "relational_model_evidence",
+    "render_evidence",
 ]
