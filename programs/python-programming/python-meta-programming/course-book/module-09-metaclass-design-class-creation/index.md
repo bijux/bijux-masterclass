@@ -17,188 +17,195 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  primitive["type(name, bases, namespace)"]
+  resolution["Select one effective metaclass"]
+  prepare["Prepare and execute the class body"]
+  shape["Create and initialize the class"]
+  bind["Bind the class name"]
+  construct["Construct instances later"]
+
+  primitive --> resolution --> prepare --> shape --> bind --> construct
 ```
 <!-- page-maps:end -->
 
-Module 09 is the highest-power runtime mechanism in the course, which is exactly why it
-has to stay narrower than you might expect. The goal is not to make metaclasses look
-impressive. The goal is to understand what truly belongs to class creation time, what
-lower-power tools still own more honestly, and how to keep metaclass designs
-deterministic, inspectable, and reviewable.
+Metaclasses are not a bag of advanced hooks. They are one possible owner of class
+creation. That owner acts while a module is importing, affects future subclasses, and
+can collide with other class-creation owners through multiple inheritance.
 
-This module now uses the same ten-file learning surface as the deep-dive series so the
-overview, five cores, worked example, practice set, answers, and glossary each have one
-clear job.
+The course and executable lab are the primary learning surfaces in this module. The
+incident-plugin capstone comes later as a deliberately bounded application of the same
+mechanics.
 
-This module matters because metaclasses are the first place in the course where learners
-can mistake power for correctness. A missed-class learner needs a route for proving what
-must happen before the class exists, what lower-power owner was rejected, and what
-import-time blast radius the design accepts on purpose.
+## The engineering problem
 
-## What this module is for
+Suppose a plugin family needs all concrete subclasses to satisfy one rule. Several tools
+could appear to solve it:
 
-By the end of Module 09, you should be able to explain five things clearly:
+- an explicit helper can process selected classes
+- a class decorator can transform one completed class
+- `__init_subclass__` can react to subclasses
+- a metaclass can control the class-construction pipeline
 
-- how `type(name, bases, namespace)` exposes the raw class-construction primitive
-- how metaclass selection, import-time timing, and conflicts actually work
-- what belongs in metaclass `__new__` versus metaclass `__init__`
-- why `__prepare__` is the only hook that can enforce rules during class body execution
-- when metaclasses are justified and when a class decorator, descriptor, or explicit helper still owns the problem better
+The hard part is not writing a metaclass. The hard part is proving that class creation is
+the smallest honest ownership boundary.
 
-Add a sixth:
+Module 09 therefore asks:
 
-- how to reject a metaclass design that sounds elegant but still belongs to a lower-power owner
+> What fact must be observed or enforced while the class is being created, what lower-power
+> owner would lose that fact, and what import-time cost does the metaclass accept?
 
-## One-day study route for a missed-class learner
+## Prerequisites
 
-Treat this module like one long ownership clinic, not a survey of powerful hooks.
+Before starting, you should be able to:
 
-| Study block | What to produce before moving on |
-| --- | --- |
-| overview plus `type(...)` page | one class-creation pipeline sketch and one sentence explaining why `type(...)` is still lower-power than a metaclass |
-| resolution plus hook-split pages | one note naming the effective metaclass, one import-time cost, and one `__new__` versus `__init__` split |
-| `__prepare__` plus boundaries pages | one declaration-time fact that would be lost later and one refused lower-power owner |
-| worked example | one owner ladder naming the metaclass invariant, the import-time blast radius, and the reset discipline |
-| exercises plus answers | one metaclass-boundary packet another learner could review without verbal context |
+- explain the difference between a class object and one of its instances from Module 01
+- inspect a class without accidentally invoking dynamic behavior from Module 02
+- distinguish wrappers, descriptors, and class decorators from Modules 04 through 08
+- run commands from the repository root
+- read a focused `unittest` failure as evidence, not merely as a red signal
 
-If you cannot produce the artifact for a block, do not move on because the prose sounded
-familiar. Module 09 gets weak when metaclass vocabulary feels impressive before ownership
-proof becomes concrete.
+If class decorators and `__init_subclass__` are still interchangeable in your mental
+model, revisit Module 06 before escalating to metaclasses.
 
-## Keep these pages open
+## Run the system before reading the implementation
 
-- [Mastery Map](../module-00-orientation/mastery-map.md)
-- [Pressure Routes](../guides/pressure-routes.md)
-- [Review Checklist](../reference/review-checklist.md)
-- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md)
+From the repository root:
 
-## The ten files in this module
+```console
+make -C programs/python-programming/python-meta-programming class-creation-lab
+make -C programs/python-programming/python-meta-programming class-creation-lab-test
+```
 
-1. Overview (`index.md`)
-2. [Manual Class Creation with `type(...)`](manual-class-creation-with-type.md)
-3. [Metaclass Resolution, Timing, and Conflicts](metaclass-resolution-timing-and-conflicts.md)
-4. [Metaclass `__new__` and `__init__`](metaclass-new-and-init.md)
-5. [`__prepare__` and Declaration-Time Enforcement](prepare-and-declaration-time-enforcement.md)
-6. [Metaclass Boundaries and Class-Creation Ownership](metaclass-boundaries-and-class-creation-ownership.md)
-7. [Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`](worked-example-building-a-deterministic-plugin-registry-with-pluginmeta.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
-10. [Glossary](glossary.md)
+The first command prints stable JSON. The second runs focused tests for the claims in that
+packet. Keep the output open while reading.
 
-## How to use the file set
+The evidence packet has six sections:
 
-| If you need to... | Start here |
-| --- | --- |
-| understand the raw primitive behind class creation | [Manual Class Creation with `type(...)`](manual-class-creation-with-type.md) |
-| explain metaclass selection, import-time effects, and conflicts | [Metaclass Resolution, Timing, and Conflicts](metaclass-resolution-timing-and-conflicts.md) |
-| decide whether structural work belongs in `__new__` or bookkeeping belongs in `__init__` | [Metaclass `__new__` and `__init__`](metaclass-new-and-init.md) |
-| enforce declaration-time rules that cannot be checked after class creation | [`__prepare__` and Declaration-Time Enforcement](prepare-and-declaration-time-enforcement.md) |
-| decide whether class-creation control is truly required at all | [Metaclass Boundaries and Class-Creation Ownership](metaclass-boundaries-and-class-creation-ownership.md) |
-| see one honest metaclass case around deterministic registration | [Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`](worked-example-building-a-deterministic-plugin-registry-with-pluginmeta.md) |
-| pressure-test your understanding before the mastery review module | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the metaclass vocabulary used in this directory | [Glossary](glossary.md) |
-
-## The running question
-
-Carry this question through every page:
-
-> What must happen before the class exists, and why would a descriptor, class decorator, or explicit registration function still be the wrong owner?
-
-Carry a second question beside it:
-
-> What import-time or hierarchy-wide cost did this design accept, and what weaker or stronger owner did it reject first?
-
-Add a third question for the whole day:
-
-> if I removed the metaclass name from the code, would I still be able to explain what fact must exist before the class is bound and why a lower-power owner would lose it?
-
-Strong Module 09 answers usually mention one or more of these:
-
-- class creation as a runtime pipeline
-- import-time and definition-time side effects
-- structural edits in `__new__` versus final bookkeeping in `__init__`
-- declaration-time namespace control through `__prepare__`
-- a lower-power decision that rejects metaclass escalation
-
-## The review route through the module
-
-Use this route instead of reading the module as a power tour:
-
-| Page | The review question it must answer |
-| --- | --- |
-| `type(...)` page | why is direct class creation still smaller than a metaclass? |
-| resolution page | who becomes the effective class-creation owner, and when does it act? |
-| `__new__` and `__init__` page | what belongs to class shape versus post-creation bookkeeping? |
-| `__prepare__` page | what fact exists only while the class body is still executing? |
-| boundaries page | why is a metaclass the smallest honest owner here at all? |
-| worked example | what import-time cost and reset discipline make the design acceptable? |
-| exercises and answers | can another learner review the ownership decision without guessing? |
-
-## Learning outcomes
-
-By the end of this module, you should be able to:
-
-- explain the full class-creation pipeline without treating metaclasses as mystical
-- predict common metaclass conflict cases and explain why they arise
-- keep metaclass behavior deterministic, resettable, and reviewable
-- distinguish real class-creation invariants from problems that still belong to lower-power tools
-- justify one metaclass design using ownership rather than appeal to power
-
-## Weak answers to reject early
-
-Reject answers that sound like these:
-
-- "a metaclass is the cleanest place because it is powerful"
-- "the class can just register itself automatically"
-- "we can combine the metaclasses if needed"
-- "this has to happen during class creation" without naming what would be lost later
-
-Replace them with answers that name:
-
-- the exact class-creation-time fact
-- the exact lower-power owner that was tested and rejected
-- the exact import-time or hierarchy-wide consequence accepted
-
-## Fast diagnostic for metaclass overreach
-
-Use this table before you accept a design as class-creation ownership instead of ordinary
-automation.
-
-| If you notice... | Pause and ask... | Likely outcome |
+| Evidence section | Question it answers | Source |
 | --- | --- | --- |
-| the argument for the metaclass is mostly "automatic" | what exact class-creation fact disappears if the work happens later? | the current justification is probably weak |
-| the code mostly records or appends finished classes | does a decorator or explicit helper already keep the design honest? | post-creation owners may still be clearer |
-| the proposal mutates global state during import | what reset, ordering, or reload rule keeps the system deterministic? | import-time blast radius needs explicit support |
-| multiple bases bring different metaclass ideas | are these really compatible authorities or just two convenient automations? | conflict is likely a design warning, not a repair task |
-| the design cannot name a refused lower-power tool | is metaclass escalation happening before the smaller owner was tested honestly? | the owner choice is still under-argued |
+| `manual_construction` | What do `name`, `bases`, and `namespace` become? | `labs/class_creation/manual.py` |
+| `resolution` | Which metaclass wins, when does it run, and why can selection fail? | `labs/class_creation/resolution.py` |
+| `lifecycle` | What is the exact order of body execution, `__new__`, and `__init__`? | `labs/class_creation/lifecycle.py` |
+| `declaration_namespace` | Which fact can only be preserved during assignment? | `labs/class_creation/namespace.py` |
+| `registry` | Which part is hierarchy policy and which part is ordinary state? | `labs/class_creation/registry.py` |
+| `boundaries` | When should the design stop below or move beyond a metaclass? | `labs/class_creation/boundaries.py` |
 
-## Exit standard
+## The class-creation timeline
 
-Do not move on until all of these are true:
+Use this sequence as the spine of the module:
 
-- you can explain when class creation begins and what hooks run before the class name is bound
-- you can say why a joint metaclass is a semantic decision, not a mechanical fix
-- you can distinguish `__prepare__`, `__new__`, and `__init__` by responsibility rather than by memorized order alone
-- you can reject at least one metaclass proposal in favor of a lower-power tool for a named reason
+```text
+resolve effective metaclass
+  -> metaclass.__prepare__()
+  -> execute class body into returned namespace
+  -> metaclass.__new__()
+  -> metaclass.__init__()
+  -> bind class name
+  -> class may later receive instance-construction calls
+```
 
-## Evidence packet to build while you learn
+The lab proves a crucial separation:
 
-Keep these items in your notes as you move through the module:
+- the class-creation hooks run before an instance exists
+- creating an instance does not rerun those hooks
+- a failure in metaclass `__new__` prevents metaclass `__init__`
 
-- one class-creation pipeline sketch in your own words
-- one example of a refused lower-power owner
-- one example of an import-time side effect the design accepts
-- one example of a metaclass conflict explained as ownership collision
-- one reset or reversibility rule for global metaclass state
+Do not use “at runtime” as if it were precise enough. Class definition and instance
+construction are both runtime events, but they occur at different times and have
+different owners.
 
-Use one more quality bar on the packet:
+## Six-section learning route
 
-- another learner should be able to point to one refused lower-power owner, one accepted import-time cost, and one remaining uncertainty without needing your verbal explanation
+Follow the sections in order. Each depends on evidence established by the previous one.
 
-When those feel ordinary, Module 09 has done its job and Module 10 can become a mastery
-and review surface instead of another power escalation.
+1. [Manual Class Creation with `type(...)`](manual-class-creation-with-type.md) connects
+   class syntax to explicit construction inputs.
+2. [Metaclass Resolution, Timing, and Conflicts](metaclass-resolution-timing-and-conflicts.md)
+   proves inherited selection and a real conflict.
+3. [Metaclass `__new__` and `__init__`](metaclass-new-and-init.md) traces structure,
+   bookkeeping, and failure timing.
+4. [`__prepare__` and Declaration-Time Enforcement](prepare-and-declaration-time-enforcement.md)
+   preserves a duplicate assignment that final class inspection loses.
+5. [Metaclass Boundaries and Class-Creation Ownership](metaclass-boundaries-and-class-creation-ownership.md)
+   chooses the smallest honest owner for six design pressures.
+6. [Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`](worked-example-building-a-deterministic-plugin-registry-with-pluginmeta.md)
+   composes the mechanisms into one bounded plugin-family application.
+
+Then complete the [exercises](exercises.md), review the
+[answers](exercise-answers.md), and use the [glossary](glossary.md) only when a term
+blocks the trace.
+
+## What the lab intentionally does not claim
+
+The executable system is an educational model, not a production plugin platform.
+
+It proves:
+
+- explicit class inputs become class identity, bases, and attributes
+- a base class can supply the effective metaclass to descendants
+- incompatible metaclasses cause Python to refuse ambiguous ownership
+- a custom namespace can retain assignment-time facts
+- a metaclass can enforce automatic registration across one class family
+- a separate registry can own duplicates, ordering, lookup, and reset
+
+It does not prove:
+
+- package or entry-point discovery
+- safe process-wide reload behavior
+- cross-process registry coordination
+- compatibility between arbitrary combined metaclass policies
+- that automatic registration is always worth its import-time cost
+
+Those non-claims are part of the lesson.
+
+## Capstone transfer comes after the lesson
+
+After completing the lab and exercises, inspect the real incident-plugin class:
+
+```console
+make -C programs/python-programming/python-meta-programming capstone-class-creation
+```
+
+The report does not construct or execute a plugin. It exposes:
+
+- the prepared namespace type and public class-body names
+- inherited and declared fields and actions
+- the effective metaclass and its hook trace
+- generated constructor behavior
+- registration of the finished class
+- powers the capstone deliberately rejects
+
+Compare the report with the lab registry. The capstone adds descriptor and decorator
+composition, but it still refuses discovery, external I/O, automatic conflict repair, and
+reload reconciliation inside its metaclass.
+
+## How to study independently
+
+For each section:
+
+1. Predict one value or event order before running code.
+2. Open the named lab source and focused test.
+3. Run only that test file while learning the mechanism.
+4. Reconcile the test assertion with the JSON packet.
+5. Write one claim the evidence proves.
+6. Write one attractive overclaim it does not prove.
+7. State why the next-lower owner succeeds or fails.
+
+If you took a long break, restart with the timeline and the focused lab. Do not try to
+recover by rereading every definition.
+
+## Exit evidence
+
+You are ready for Module 10 when you can produce all of the following:
+
+- a `type(...)` recipe that names and explains all three construction inputs
+- a trace showing inherited metaclass selection before instance construction
+- a real conflict plus a reason a joint metaclass is a semantic decision
+- a hook trace that separates structural work from finished-class bookkeeping
+- a declaration-time rule that later `vars(cls)` inspection cannot reconstruct
+- a registry review that separates hierarchy policy from mutable registry state
+- an owner decision that rejects both one weaker and one stronger mechanism
+- a capstone comparison naming accepted and rejected class-creation powers
+
+Completion means you can review the design from evidence. Recognizing metaclass syntax is
+not enough.
