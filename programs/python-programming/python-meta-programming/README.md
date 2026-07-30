@@ -158,6 +158,9 @@ make -C programs/python-programming/python-meta-programming wrapper-lab-test
 make -C programs/python-programming/python-meta-programming wrapper-cache
 make -C programs/python-programming/python-meta-programming wrapper-cache-test
 make -C programs/python-programming/python-meta-programming capstone-action-wrapper
+make -C programs/python-programming/python-meta-programming decorator-policy-lab
+make -C programs/python-programming/python-meta-programming decorator-policy-lab-test
+make -C programs/python-programming/python-meta-programming capstone-check-action
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -174,7 +177,11 @@ call without constructing or invoking the plugin. Use `wrapper-lab` and `wrapper
 for Module 04's lifecycle evidence and stateful worked example. The matching focused
 targets prove timing, identity, eviction, failure, and reset behavior.
 `capstone-action-wrapper` transfers those ideas into a non-executing audit of the real
-`@action` wrapper. `lab-test` verifies all course labs. Use `capstone-walkthrough` when
+`@action` wrapper. Use `decorator-policy-lab` for Module 05's retry, validation, and
+cache-policy evidence, then `capstone-check-action` for the non-executing application
+transfer. That capstone route distinguishes call binding, checked hints, refused hints,
+and absent annotations without claiming full runtime typing. `lab-test` verifies all
+course labs. Use `capstone-walkthrough` when
 you are ready for the broader integration project,
 `capstone-tour` when you want the same saved bundle in the proof ladder,
 `capstone-verify-report` when you need durable integration evidence, and
@@ -205,6 +212,12 @@ Primary reading route:
 - `labs/wrapper_runtime/bounded_cache.py`
 - `course-book/module-04-function-wrappers-transparent-decorators/exercises.md`
 - `course-book/module-04-function-wrappers-transparent-decorators/exercise-answers.md`
+- `course-book/module-05-decorator-design-policies-typing/index.md`
+- `labs/decorator_policy/evidence.py`
+- `labs/decorator_policy/retry.py`
+- `labs/decorator_policy/validation.py`
+- `course-book/module-05-decorator-design-policies-typing/exercises.md`
+- `course-book/module-05-decorator-design-policies-typing/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`

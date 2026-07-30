@@ -107,10 +107,15 @@ You are ready to move on when you can:
 - judge whether policy belongs in a decorator or should become an explicit service or object
 - explain what annotation-driven runtime behavior can promise honestly and what it cannot
 - describe the review cost of hiding retries, validation, or caching behind wrappers
+- predict the exact retry and warning-mode traces before executing them
+- separate call-shape binding from partial runtime hint checking
+- name the unsupported hint and owner-exit condition in a policy review
 
 Proof move:
 
-- compare the capstone action decorator with one heavier policy pattern and explain why the capstone stays narrower
+- run `make decorator-policy-lab-test`, inspect `make decorator-policy-lab`, then compare
+  `make capstone-bind-action`, `make capstone-check-action`, and
+  `make capstone-action-wrapper`
 
 ### Module 06: Class Customization Before Metaclasses
 

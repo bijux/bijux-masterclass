@@ -55,6 +55,8 @@ Use one small proof route before resuming:
 - `make manifest`
 - `make registry`
 - `make action`
+- `make decorator-policy-lab`
+- `make capstone-check-action`
 - `make field`
 - `make verify-report`
 
@@ -67,8 +69,12 @@ function boundary.
 - move into retries, caches, validation, and policy-heavy wrappers in Module 05
 - keep asking whether the wrapper still owns a callable boundary or is starting to hide a service boundary
 
-**Capstone check:** inspect `actions.py`, `make action`, `make signatures`, and
-`make trace`.
+**Course proof:** run `make wrapper-lab`, `make wrapper-cache`, and
+`make decorator-policy-lab` before transferring the mechanisms into the application.
+
+**Capstone check:** inspect `actions.py`, then compare `make action-wrapper`,
+`make bind-action`, `make check-action`, and `make trace`. The first three remain
+non-executing; the last crosses into deliberate invocation.
 
 ## Module 06: Lower-Power Class Customization
 

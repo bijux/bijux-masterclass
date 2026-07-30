@@ -86,7 +86,12 @@ Use this route to answer:
 
 Best first capstone move:
 
-- run `make PROGRAM=python-programming/python-meta-programming capstone-trace`
+- for wrapper provenance, run
+  `make PROGRAM=python-programming/python-meta-programming capstone-action-wrapper`
+- for partial runtime hint policy, run
+  `make PROGRAM=python-programming/python-meta-programming capstone-check-action`
+- cross into execution only when needed with
+  `make PROGRAM=python-programming/python-meta-programming capstone-trace`
 
 ## Route 2: Untangle attribute ownership and validation
 
