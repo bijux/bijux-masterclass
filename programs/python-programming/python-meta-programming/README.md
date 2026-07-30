@@ -145,6 +145,9 @@ make PROGRAM=python-programming/python-meta-programming docs-serve
 make PROGRAM=python-programming/python-meta-programming docs-build
 make -C programs/python-programming/python-meta-programming lab
 make -C programs/python-programming/python-meta-programming lab-test
+make -C programs/python-programming/python-meta-programming observation-lab
+make -C programs/python-programming/python-meta-programming observation-debug-view
+make -C programs/python-programming/python-meta-programming observation-lab-test
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -152,8 +155,10 @@ make PROGRAM=python-programming/python-meta-programming capstone-verify-report
 make PROGRAM=python-programming/python-meta-programming capstone-confirm
 ```
 
-Use `lab` for the Module 01 learner-facing evidence, and `lab-test` for its focused proof.
-Use `capstone-walkthrough` when you are ready to transfer course concepts into the
+Use `lab` for the Module 01 runtime-object evidence. Use `observation-lab` and
+`observation-debug-view` for Module 02's observation boundaries and worked example.
+`lab-test` verifies all course labs; each module-specific test command runs the narrower
+route. Use `capstone-walkthrough` when you are ready to transfer course concepts into the
 integration project, `capstone-tour` when you want the same saved bundle in the proof
 ladder, `capstone-verify-report` when you need durable integration evidence, and
 `capstone-confirm` for the strictest capstone confirmation pass.
@@ -168,6 +173,11 @@ Primary reading route:
 - `labs/runtime_objects/evidence.py`
 - `course-book/module-01-runtime-objects-object-model/exercises.md`
 - `course-book/module-01-runtime-objects-object-model/exercise-answers.md`
+- `course-book/module-02-runtime-observation-inspection/index.md`
+- `labs/runtime_observation/evidence.py`
+- `labs/runtime_observation/debug_view.py`
+- `course-book/module-02-runtime-observation-inspection/exercises.md`
+- `course-book/module-02-runtime-observation-inspection/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`
