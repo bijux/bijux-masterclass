@@ -37,8 +37,13 @@ A `__repr__` mixin is a good fit because it creates exactly the right pressures:
 
 That makes it a clean worked example for signatures, structure, and evidence discipline.
 
-Treat the page as a review packet, not just an implementation walkthrough. The real
-teaching goal is to show how one helper can mix three different evidence classes:
+This is an executable course product, not a copy-paste-only walkthrough. The maintained
+implementation lives in `labs/runtime_evidence/safe_repr.py`, the concrete demonstration
+in `labs/runtime_evidence/repr_demo.py`, and the focused proof in
+`tests/test_signature_guided_repr.py`.
+
+Treat the page as a design and review packet. The real teaching goal is to show how one
+helper can mix three different evidence classes:
 
 - strong contract evidence for ordering
 - strong stored-state evidence for values
@@ -88,6 +93,49 @@ It also tells you which surfaces to avoid by default:
 - broad `getattr` over arbitrary names
 - provenance lookups that pretend to explain runtime state
 - frame or stack inspection that drags caller context into representation
+
+## Run the finished behavior before reading the design
+
+```console
+$ make evidence-repr
+{
+  "evidence": {
+    "dynamic_member_lookup": false,
+    "frame_inspection": false,
+    "ordering": "constructor-signature",
+    "values": "instance-storage"
+  },
+  "property_reads_after_repr": 0,
+  "regular": "IncidentRecord(incident_id='INC-42', severity='warning', owner='platform')",
+  "slotted": "SlottedIncident(incident_id='INC-43', severity='critical', property_reads=0)",
+  "slotted_state": {
+    "incident_id": "INC-43",
+    "property_reads": 0,
+    "severity": "critical"
+  }
+}
+```
+
+Before inspecting the source, account for each output:
+
+- constructor parameters appear before `owner`, even though assignment order differs
+- the regular and slotted objects use the same public representation contract
+- `risk_score` is absent because it is computed behavior, not stored state
+- `property_reads_after_repr` stays zero
+
+Then run the focused proof:
+
+```console
+$ make evidence-repr-test
+...
+Ran 5 tests
+
+OK
+```
+
+The proof includes inherited slots, private slots, and a class whose custom
+`__getattribute__` counts dynamic reads. Those are part of the course contract, not bonus
+edge cases.
 
 ## Step 1: choose strong evidence for field order
 
@@ -174,68 +222,44 @@ That is a terrible default.
 If a team truly wants computed values in a debug view, that should be an explicit higher-
 risk mode, not the base contract of `__repr__`.
 
-## A healthier implementation
+## The maintained implementation
 
 ```python
-import inspect
+def stored_state(instance):
+    state = {}
+    try:
+        dictionary = object.__getattribute__(instance, "__dict__")
+    except AttributeError:
+        dictionary = None
+    if isinstance(dictionary, Mapping):
+        state.update(dictionary)
 
-
-class ReprMixin:
-    def __repr__(self):
-        cls = type(self)
-        state = {}
-
+    for name in _slot_storage_names(type(instance)):
+        if name in state:
+            continue
         try:
-            data = object.__getattribute__(self, "__dict__")
-        except Exception:
-            data = None
+            state[name] = object.__getattribute__(instance, name)
+        except AttributeError:
+            continue
+    return state
 
-        if isinstance(data, dict):
-            state.update(data)
 
-        for base in cls.__mro__:
-            slots = getattr(base, "__slots__", None)
-            if not slots:
-                continue
-            if isinstance(slots, str):
-                slots = (slots,)
-            for name in slots:
-                if name in ("__dict__", "__weakref__"):
-                    continue
-                if name.startswith("_") or name in state:
-                    continue
-                try:
-                    state[name] = object.__getattribute__(self, name)
-                except AttributeError:
-                    pass
-
-        ordered_items = None
-        try:
-            sig = inspect.signature(cls.__init__)
-            order = [
-                p.name
-                for p in sig.parameters.values()
-                if p.name != "self"
-                and p.kind not in (
-                    inspect.Parameter.VAR_POSITIONAL,
-                    inspect.Parameter.VAR_KEYWORD,
-                )
-            ]
-            seen = set()
-            ordered = []
-            for name in order:
-                if name in state:
-                    ordered.append((name, state[name]))
-                    seen.add(name)
-            extras = [(name, value) for name, value in state.items() if name not in seen]
-            ordered_items = ordered + sorted(extras, key=lambda item: item[0])
-        except (TypeError, ValueError):
-            pass
-
-        items = ordered_items if ordered_items is not None else sorted(state.items(), key=lambda item: item[0])
-        args = ", ".join(f"{name}={value!r}" for name, value in items)
-        return f"{cls.__name__}({args})"
+def safe_repr(instance):
+    fields = ", ".join(
+        f"{name}={value!r}" for name, value in ordered_state(instance)
+    )
+    return f"{type(instance).__name__}({fields})"
 ```
+
+This excerpt shows the safety center, not the entire module. Read the maintained source
+for `_slot_storage_names(...)`, including inherited and name-mangled private slots, and
+`ordered_state(...)`, including its signature-failure fallback. Keeping those helpers
+separate makes evidence ownership testable:
+
+- `_slot_storage_names` owns storage-name discovery
+- `stored_state` owns value collection
+- `ordered_state` owns contract-guided ordering
+- `safe_repr` owns formatting
 
 ## Why each surface is in the implementation
 
@@ -263,6 +287,24 @@ The result is still a debugging aid, but it is a disciplined debugging aid.
 
 That distinction matters. "Debugging aid" is not a license to make the evidence weaker.
 It is a reason to keep the helper bounded and reviewable.
+
+## Honest limitations
+
+Safe does not mean inert under every imaginable object graph. This implementation makes
+specific, reviewable promises:
+
+- it does not discover values through properties, `__getattr__`, or custom
+  `__getattribute__`
+- it does not inspect provenance, frames, or callers
+- it does call `repr(value)` for values already found in instance storage
+- it does not redact secrets or detect recursive object graphs
+- it treats constructor order as an ordering hint, not proof that constructor parameters
+  and current state are identical
+
+The last three boundaries matter in production. A stored value can have a custom
+`__repr__`; secrets need an explicit redaction policy; recursive structures need cycle
+handling. Those are valid extensions, but smuggling them into this lesson would blur the
+evidence boundary it is designed to teach.
 
 ## Regular and slotted classes both work
 
@@ -323,6 +365,20 @@ When you inherit a runtime-description helper, run this loop:
 2. remove dynamic reads that are not required for the helper's purpose
 3. keep provenance and signatures in the narrow roles they can support honestly
 4. reject frame inspection unless the tool is explicitly diagnostic and truly needs it
+
+## Learner change: extend the contract without weakening it
+
+Add an explicit exclusion mechanism such as `__repr_exclude__ = {"token"}` to a new
+class in the test file. Implement the policy in `ordered_state` or a narrowly owned
+helper. Your proof must show:
+
+1. the named stored value is absent
+2. constructor ordering still holds for remaining values
+3. a property with the same name is not evaluated
+4. dictionary-backed and slotted cases remain green
+
+Do not add broad `getattr` to discover the policy. Read class structure deliberately,
+state the trust boundary, and keep `make evidence-repr-test` green.
 
 If you can also explain where the helper would cross from strong evidence into
 convenience-only evidence, the module has done its job.
