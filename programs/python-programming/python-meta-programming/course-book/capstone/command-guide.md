@@ -33,6 +33,7 @@ the broadest route.
 | If the question is about... | Start with | Escalate only if needed |
 | --- | --- | --- |
 | public runtime shape | `capstone-manifest`, `capstone-plugin`, `capstone-field`, `capstone-action`, `capstone-registry`, or `capstone-signatures` | `inspect` |
+| partial runtime hint checks without action execution | `capstone-check-action` | runtime and CLI tests |
 | one concrete runtime behavior | `demo` or `capstone-trace` | `capstone-walkthrough` or runtime tests |
 | a saved review artifact for another learner or reviewer | `inspect`, `capstone-walkthrough`, or `capstone-verify-report` | `proof` |
 | the strongest local executable confidence | `capstone-confirm` | `proof` |
@@ -44,6 +45,7 @@ make PROGRAM=python-programming/python-meta-programming capstone-manifest
 make PROGRAM=python-programming/python-meta-programming capstone-plugin
 make PROGRAM=python-programming/python-meta-programming capstone-field
 make PROGRAM=python-programming/python-meta-programming capstone-action
+make PROGRAM=python-programming/python-meta-programming capstone-check-action
 make PROGRAM=python-programming/python-meta-programming capstone-registry
 make PROGRAM=python-programming/python-meta-programming capstone-signatures
 make PROGRAM=python-programming/python-meta-programming demo
@@ -63,6 +65,7 @@ make manifest
 make plugin
 make field
 make action
+make check-action
 make registry
 make signatures
 make demo
@@ -80,6 +83,7 @@ make proof
 - `plugin`: inspect one concrete plugin contract from the public CLI
 - `field`: inspect one concrete field contract and its exported schema
 - `action`: inspect one concrete action contract and its generated signature
+- `check-action`: check supported action argument hints and report refused surfaces without execution
 - `registry`: inspect registration determinism from the public surface
 - `signatures`: inspect constructor and action signatures together
 - `demo`: invoke one realistic plugin action directly in the terminal

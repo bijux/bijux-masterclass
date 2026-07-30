@@ -47,6 +47,7 @@ to feel harder than it is.
 | --- | --- | --- |
 | what the runtime exposes without invoking plugin behavior | `make manifest`, `make plugin`, `make field`, `make action`, `make registry`, or `make signatures` | `make inspect` |
 | whether proposed action arguments satisfy the real call contract | `make bind-action` | `tests/test_runtime.py` |
+| whether bound values match the supported runtime hint subset | `make check-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | which action layer owns wrapper metadata and explicit signature | `make action-wrapper` | `tests/test_runtime.py` |
 | one realistic invocation path | `make demo` or `make trace` | `tests/test_runtime.py` or `make tour` |
 | a durable artifact another reviewer can inspect later | `make inspect`, `make tour`, or `make verify-report` | `make proof` |
@@ -58,6 +59,7 @@ to feel harder than it is.
 - Choose `make registry` when the real question is "which plugins exist and in what order?"
 - Choose `make field` or `make action` when one small contract is the pressure point.
 - Choose `make bind-action` when call validation matters but execution does not.
+- Choose `make check-action` when runtime hint matching or refusal matters but execution does not.
 - Choose `make action-wrapper` when wrapper ownership matters but execution does not.
 - Choose `make trace` when configuration, invocation history, and result probably all matter.
 - Choose `make inspect` when you need a saved route but do not yet need the strongest bundle.
@@ -81,6 +83,7 @@ to feel harder than it is.
 | `make action` | inspect one decorator-backed action contract | one action contract JSON |
 | `make action-wrapper` | inspect wrapper layers and preservation without execution | wrapper-chain audit JSON |
 | `make bind-action` | validate one action call without construction or invocation | normalized bound-argument JSON |
+| `make check-action` | check a narrow runtime hint subset without construction or invocation | checked, refused, and unchecked argument JSON |
 | `make registry` | inspect registration determinism from the public surface | registry JSON |
 | `make signatures` | inspect generated constructor and action signatures | signature JSON |
 | `make demo` | invoke one realistic action | one invocation result |
@@ -105,6 +108,7 @@ publishes honestly from the public surface.
 | one action contract | how one decorator-backed callable surface appears from outside | `make action` |
 | one action wrapper | which layer owns `ActionSpec`, `__signature__`, and `__wrapped__` | `make action-wrapper` |
 | one action preflight | whether proposed arguments satisfy the stored action signature | `make bind-action` |
+| one action contract check | whether bound values match supported hints and which hints are refused | `make check-action` |
 
 ## One concrete behavior routes
 
@@ -136,6 +140,7 @@ sizes, and SHA-256 hashes for the saved route.
 | `make action` | inspection-time fact | one decorator-backed action contract | `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
 | `make action-wrapper` | wrapper-structure fact | chain, signatures, and metadata ownership | `src/incident_plugins/actions.py` and `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | `make bind-action` | preflight fact | normalized arguments with execution explicitly absent | `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| `make check-action` | partial runtime-contract fact | checked, refused, and unchecked arguments with execution absent | `src/incident_plugins/actions.py` and `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | `make registry` | class-definition fact made observable later | registered plugin names and order | `src/incident_plugins/framework.py` | `tests/test_registry.py` |
 | `make signatures` | class-definition fact made observable later | generated constructor and action signatures | `src/incident_plugins/framework.py` and `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
 | `make demo` | call-time fact | one concrete invocation result | `src/incident_plugins/plugins.py` and `src/incident_plugins/actions.py` | [TEST_GUIDE.md](test-guide.md) |
@@ -164,6 +169,13 @@ metadata.
 
 `bind-action` validates the action shape without constructing a plugin. `trace` crosses
 into construction and execution, then reports configuration and recorded history.
+
+### `bind-action` versus `check-action`
+
+`bind-action` proves only that values fit the callable's parameter shape.
+`check-action` starts from those bound values and checks the deliberately small supported
+hint subset. It reports unsupported and unannotated parameters instead of pretending
+they passed.
 
 ### `action` versus `action-wrapper`
 

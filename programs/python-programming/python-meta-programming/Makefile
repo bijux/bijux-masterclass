@@ -117,6 +117,10 @@ capstone-bind-action: ## Validate a capstone action call without executing it
 capstone-action-wrapper: ## Audit a capstone action wrapper without executing it
 	@$(RUN_CAPSTONE) action-wrapper
 
+.PHONY: capstone-check-action
+capstone-check-action: ## Check a capstone action's supported runtime hint contract
+	@$(RUN_CAPSTONE) check-action
+
 .PHONY: capstone-trace
 capstone-trace: ## Trace one capstone invocation from the public CLI
 	@$(RUN_CAPSTONE) trace

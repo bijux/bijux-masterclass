@@ -43,6 +43,7 @@ Use the smallest honest route for the question you have:
 - Want to inspect one concrete field or action contract? Run `make field` or `make action`.
 - Want to audit a wrapper chain and explicit signature ownership? Run `make action-wrapper`.
 - Want to validate action arguments without constructing or invoking a plugin? Run `make bind-action`.
+- Want to check the supported runtime hint subset without execution? Run `make check-action`.
 - Want one full learner-facing review bundle? Run `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` from the repository root, or `make tour` locally.
 - Want executable confirmation? Run `make verify-report`, `make proof`, or `make confirm`.
 
@@ -90,6 +91,7 @@ make field
 make action
 make action-wrapper
 make bind-action
+make check-action
 make signatures
 make demo
 make trace
@@ -150,6 +152,7 @@ your pressure instead of reading the full list in alphabetical order.
 - `make registry`
 - `make action-wrapper`
 - `make bind-action`
+- `make check-action`
 - [COMMAND_GUIDE.md](docs/command-guide.md)
 
 ### "Where do wrappers, fields, and class creation live?"
@@ -225,6 +228,7 @@ all interact here, so the implementation has to stay honest about:
 - `make plugin`, `make field`, `make action`, and `make signatures` isolate one concrete public contract at a time.
 - `make action-wrapper` follows one wrapper chain and reports metadata, action-spec, and explicit-signature ownership without execution.
 - `make bind-action` validates one proposed action call while keeping construction and invocation absent.
+- `make check-action` reports checked, mismatched, refused, and unannotated action arguments without construction or invocation.
 - `make demo` and `make trace` inspect one realistic runtime behavior and its recorded history.
 - `make inspect` writes the learner-facing inspection bundle with manifest and registry evidence.
 - `make tour` writes the learner-facing walkthrough bundle with manifest, registry, demo, and trace outputs.

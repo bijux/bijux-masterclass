@@ -50,6 +50,7 @@ or [Pressure Routes](pressure-routes.md).
 | one plugin contract remains legible from the public CLI | `make PROGRAM=python-programming/python-meta-programming capstone-plugin` | `plugin.json` plus `plugins.py` |
 | one field invariant stays attached to attribute ownership | `make PROGRAM=python-programming/python-meta-programming capstone-field` | `field.json`, `fields.py`, and `tests/test_fields.py` |
 | action decorators preserve public callable shape while adding behavior | `make PROGRAM=python-programming/python-meta-programming capstone-action` | `action.json`, `actions.py`, and `tests/test_runtime.py` |
+| action values match the supported runtime hint subset without hidden execution | `make PROGRAM=python-programming/python-meta-programming capstone-check-action` | `check-action.json`, `actions.py`, and runtime tests |
 | generated constructor and action signatures still reflect declared fields honestly | `make PROGRAM=python-programming/python-meta-programming capstone-signatures` | `signatures.json`, `framework.py`, and runtime tests |
 | one concrete runtime action remains traceable after execution | `make PROGRAM=python-programming/python-meta-programming capstone-trace` | `trace.json` plus runtime tests |
 
@@ -79,7 +80,7 @@ or [Pressure Routes](pressure-routes.md).
 | Module range | Main question | Best first evidence route |
 | --- | --- | --- |
 | Modules 01 to 03 | what can be observed safely without accidental execution | `manifest`, `registry`, `signatures`, or `inspect` |
-| Modules 04 to 05 | did a wrapper preserve signature, metadata, and traceability | `action`, `trace`, and `tests/test_runtime.py` |
+| Modules 04 to 05 | did a wrapper preserve evidence and keep its policy claims bounded | `action-wrapper`, `check-action`, `trace`, and `tests/test_runtime.py` |
 | Modules 06 to 08 | does the chosen customization boundary really belong to fields and lookup | `field`, `plugin`, and `tests/test_fields.py` |
 | Module 09 | is class-definition-time behavior justified and deterministic | `registry`, `framework.py`, and `tests/test_registry.py` |
 | Module 10 | do the public review routes stay observable under real scrutiny | `inspect`, `capstone-verify-report`, or `proof` |
