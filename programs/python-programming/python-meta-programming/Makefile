@@ -150,6 +150,10 @@ proof: ## Run the full capstone proof route
 capstone-manifest: ## Render the capstone manifest from the public CLI
 	@$(RUN_CAPSTONE) manifest
 
+.PHONY: capstone-governance
+capstone-governance: ## Review accepted, constrained, and rejected capstone powers
+	@$(RUN_CAPSTONE) governance
+
 .PHONY: capstone-bind-action
 capstone-bind-action: ## Validate a capstone action call without executing it
 	@$(RUN_CAPSTONE) bind-action

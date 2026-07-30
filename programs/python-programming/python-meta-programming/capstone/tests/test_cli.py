@@ -235,6 +235,26 @@ def test_class_creation_command_reports_creation_time_ownership(capsys) -> None:
     assert captured["executed"] is False
 
 
+def test_governance_command_reports_review_decisions_without_execution(capsys) -> None:
+    exit_code = main(["governance"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+    assert [decision["outcome"] for decision in captured["decisions"]] == [
+        "approve",
+        "approve",
+        "approve",
+        "constrain",
+        "approve",
+    ]
+    assert captured["rejected_powers"][0]["power"] == (
+        "eval or exec for plugin configuration"
+    )
+
+
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:
     exit_code = main(
         [

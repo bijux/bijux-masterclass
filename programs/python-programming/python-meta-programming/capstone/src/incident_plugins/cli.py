@@ -18,6 +18,7 @@ from .framework import (
     inspect_plugin_class_creation,
     invoke,
 )
+from .governance import inspect_runtime_governance
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -134,6 +135,12 @@ def _build_parser() -> argparse.ArgumentParser:
     registry = subparsers.add_parser("registry", help="Render the plugin registry as JSON.")
     registry.add_argument("--group", help="Restrict output to one plugin group.")
     registry.set_defaults(handler=_handle_registry)
+
+    governance = subparsers.add_parser(
+        "governance",
+        help="Review accepted, constrained, and rejected runtime powers.",
+    )
+    governance.set_defaults(handler=_handle_governance)
 
     signatures = subparsers.add_parser(
         "signatures",
@@ -261,6 +268,11 @@ def _handle_registry(args: argparse.Namespace) -> dict[str, Any]:
     if args.group is not None:
         return {"group": args.group, "plugins": list(registry)}
     return {group: list(plugins) for group, plugins in registry.items()}
+
+
+def _handle_governance(args: argparse.Namespace) -> dict[str, object]:
+    del args
+    return inspect_runtime_governance()
 
 
 def _handle_signatures(args: argparse.Namespace) -> dict[str, list[dict[str, object]]]:

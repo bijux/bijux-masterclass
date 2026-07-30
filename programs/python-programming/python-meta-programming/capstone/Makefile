@@ -95,6 +95,10 @@ class-creation: ## Inspect stored class-creation provenance without construction
 registry: ## Render the delivery registry from the public CLI
 	@PYTHONPATH=src $(CLI) registry --group delivery
 
+.PHONY: governance
+governance: ## Review accepted, constrained, and rejected runtime powers
+	@PYTHONPATH=src $(CLI) governance
+
 .PHONY: signatures
 signatures: ## Render generated constructor and action signatures from the public CLI
 	@PYTHONPATH=src $(CLI) signatures --group delivery
@@ -144,6 +148,7 @@ inspect: ## Build the learner-facing inspection bundle
 		> $(INSPECT_DIR)/check-action.json
 	@PYTHONPATH=src $(CLI) class-creation delivery console \
 		> $(INSPECT_DIR)/class-creation.json
+	@PYTHONPATH=src $(CLI) governance > $(INSPECT_DIR)/governance.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(INSPECT_DIR)/signatures.json
 	@cp README.md $(INSPECT_DIR)/README.md
 	@for doc in $(DOC_FILES); do \
@@ -162,8 +167,9 @@ inspect: ## Build the learner-facing inspection bundle
 		'Inspection route:' \
 		'  1. Read manifest.json for group-level field and action metadata.' \
 		'  2. Read registry.json, plugin.json, field.json, field-ownership.json, field-system.json, action.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for concrete contracts, descriptor-system boundaries, callable policy, and class-creation provenance.' \
-		'  3. Read COMMAND_GUIDE.md and PROOF_GUIDE.md for the next review route.' \
-		'  4. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership and proof.' \
+		'  3. Read governance.json to review which runtime powers the application accepts, constrains, and rejects.' \
+		'  4. Read COMMAND_GUIDE.md and PROOF_GUIDE.md for the next review route.' \
+		'  5. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership and proof.' \
 		> $(INSPECT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/bundle-manifest.json
 	@echo "wrote learner-facing inspection bundle to $(INSPECT_DIR)"
@@ -197,6 +203,7 @@ verify-report: ## Build the structured capstone verification report
 		> $(VERIFY_REPORT_DIR)/check-action.json
 	@PYTHONPATH=src $(CLI) class-creation delivery console \
 		> $(VERIFY_REPORT_DIR)/class-creation.json
+	@PYTHONPATH=src $(CLI) governance > $(VERIFY_REPORT_DIR)/governance.json
 	@PYTHONPATH=src $(CLI) trace delivery pager preview \
 		--config "service=core" \
 		--config "routing_key=sev1" \
@@ -220,7 +227,7 @@ verify-report: ## Build the structured capstone verification report
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read pytest.txt for executable proof.' \
-		'  2. Read manifest.json, plugin.json, field-ownership.json, field-system.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, class-creation.json, and trace.json to compare descriptor-system, callable, and class creation evidence with execution.' \
+		'  2. Read manifest.json, plugin.json, field-ownership.json, field-system.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, class-creation.json, governance.json, and trace.json to compare runtime ownership and review decisions with execution.' \
 		'  3. Read TEST_GUIDE.md and PROOF_GUIDE.md for the closest claim-to-proof route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect a code change back to the saved proof.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
@@ -253,6 +260,7 @@ tour: ## Build the learner-facing walkthrough bundle
 		> $(TOUR_DIR)/check-action.json
 	@PYTHONPATH=src $(CLI) class-creation delivery console \
 		> $(TOUR_DIR)/class-creation.json
+	@PYTHONPATH=src $(CLI) governance > $(TOUR_DIR)/governance.json
 	@PYTHONPATH=src $(CLI) invoke delivery console deliver \
 		--config "prefix=[ops]" \
 		--config "uppercase_severity=true" \
@@ -287,6 +295,7 @@ tour: ## Build the learner-facing walkthrough bundle
 		"actions=src/incident_plugins/actions.py" \
 		"cli=src/incident_plugins/cli.py" \
 		"framework=src/incident_plugins/framework.py" \
+		"governance=src/incident_plugins/governance.py" \
 		"plugins=src/incident_plugins/plugins.py" \
 		"tests=tests" \
 		> $(TOUR_DIR)/focus-areas.txt
@@ -294,9 +303,10 @@ tour: ## Build the learner-facing walkthrough bundle
 		'Walkthrough route:' \
 		'  1. Read manifest.json, registry.json, plugin.json, and signatures.json to inspect the public runtime shape.' \
 		'  2. Read field-ownership.json, field-system.json, action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for descriptor-system ownership, callable ownership, partial contracts, and class-creation provenance without execution.' \
-		'  3. Read demo.json and trace.json for deliberate invocation, configuration, and successful action-history visibility.' \
-		'  4. Read WALKTHROUGH_GUIDE.md, COMMAND_GUIDE.md, and TOUR.md for the review order.' \
-		'  5. Read PACKAGE_GUIDE.md and PROOF_GUIDE.md when you need to connect the tour back to local guides or source ownership.' \
+		'  3. Read governance.json for the accepted, constrained, and rejected runtime powers.' \
+		'  4. Read demo.json and trace.json for deliberate invocation, configuration, and successful action-history visibility.' \
+		'  5. Read WALKTHROUGH_GUIDE.md, COMMAND_GUIDE.md, and TOUR.md for the review order.' \
+		'  6. Read PACKAGE_GUIDE.md and PROOF_GUIDE.md when you need to connect the tour back to local guides or source ownership.' \
 		> $(TOUR_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/bundle-manifest.json
 	@echo "wrote learner-facing walkthrough bundle to $(TOUR_DIR)"
