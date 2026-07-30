@@ -192,6 +192,11 @@ make demo
 delivery action. `demo` constructs a plugin and deliberately calls `deliver`. Read that
 as an observation-to-execution boundary, not merely as two convenient commands.
 
+The focused proof is
+`capstone/tests/test_runtime.py::test_manifest_does_not_construct_or_invoke_registered_plugin`.
+It registers a plugin whose constructor and action record runtime events, builds the
+manifest, and proves that the event record stays empty.
+
 The capstone already contains descriptors, decorators, and a metaclass. Module 02 does
 not yet justify those mechanisms. Its transfer question is narrower:
 

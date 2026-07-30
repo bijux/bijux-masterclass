@@ -396,6 +396,11 @@ they promise different product behavior:
 - manifest: describe registered structure
 - demo: execute an incident-delivery behavior with explicit inputs
 
+The capstone proof test
+`test_manifest_does_not_construct_or_invoke_registered_plugin` strengthens the first
+claim: it uses an event-recording plugin and asserts that neither construction nor action
+execution happened during manifest generation.
+
 The capstone contains mechanisms that later modules will explain. Module 02 proves only
 that a reviewer can distinguish the observation route from the execution route and
 choose evidence accordingly.
