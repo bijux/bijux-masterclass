@@ -1,5 +1,4 @@
-# Exercise Answers
-
+# Exercise Answers: Descriptor System Evidence Studio Review
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,8 +8,8 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Descriptor Systems Validation Framework Design"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
+  page["Exercise Answers: Descriptor System Evidence Studio Review"]
+  capstone["Capstone transfer"]
 
   family --> program --> section --> page
   page -.applies in.-> capstone
@@ -18,398 +17,427 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  attempt["Learner attempt"] --> evidence["Compare evidence"]
+  evidence --> reasoning["Compare owner reasoning"]
+  reasoning --> wrong["Identify wrong turn"]
+  wrong --> limits["State proves / does not prove"]
+  limits --> transfer["Apply to capstone"]
 ```
 <!-- page-maps:end -->
 
-Use this page after attempting the exercises yourself. The point is not to match every
-example literally. The point is to compare your reasoning against answers that keep
-descriptor-system power, cache policy, backend ownership, and framework boundaries honest.
+Use this page only after completing your own evidence journal. The implementations below
+are defensible routes, not the only acceptable code. Compare:
 
-This page matters because answer keys can accidentally train imitation instead of review.
-Use the answers here as reasoning checkpoints, not as short phrases to copy.
+- ownership
+- event order
+- failure timing
+- preserved behavior
+- explicit non-claims
 
-Use this page actively:
+A result that happens to pass one happy-path assertion is not equivalent to the reasoning
+contract.
 
-- compare your stated source of truth against the reference answer
-- compare your invalidation owner against the reference answer
-- check whether you named a refused weaker owner or stronger owner when the answer needed one
+## Answer 1: Establish the baseline contract
 
-## Answer 1: Design one cached field honestly
+A strong map includes concrete evidence such as:
 
-Example answer:
+| Claim | Packet evidence | Focused proof |
+| --- | --- | --- |
+| source assignment owns local cache freshness | `cache_invalidation.invalidation_owner` | `test_dependency_assignment_invalidates_before_the_next_read` |
+| backend is authoritative | `external_storage.field.source_of_truth` | `test_second_instance_reads_the_authoritative_backend_value` |
+| wrapper order is policy | `composition.accepted.trace` | `test_assignment_traces_normalization_validation_storage_and_audit` |
+| hint support is bounded | `hint_policy.plans` and `.refused` | `test_parameterized_generics_and_unknown_metadata_are_refused` |
+| record example is not an ORM | `record_model.explicitly_absent` | `test_evidence_refuses_a_production_orm_claim` |
+| owner choice includes escalation | `architecture_boundary.decisions` | `test_evidence_covers_every_named_pressure_and_both_refusals` |
 
-A cached `word_count` field might:
+Reasoning:
 
-- compute on first read
-- store its cached value in `obj.__dict__["_word_count_cached"]`
-- expose an `invalidate(obj)` method whenever `text` changes
+The JSON packet makes runtime and policy evidence portable, while tests state the
+guarantee. Source explains how. None of the three is a complete substitute for the other
+two.
 
-Good conclusion:
+Common wrong turn:
 
-The cache design is not complete until the invalidation story is explicit. “It caches the
-value” is not enough by itself.
+> “All tests pass, so the architecture is correct.”
 
-Reasoning checkpoint:
+Tests prove named behavior, not that the selected owner fits every future requirement.
 
-- can you point to the dependency that makes the cache stale?
-- can you say who clears it without using vague words such as "somewhere" or "later"?
+What this proves:
 
-Repair move if your answer is weak:
+- the shipped mechanism claims have executable support
+- sources of truth and refusal surfaces are visible
 
-- add the exact cache slot
-- add the exact invalidation trigger
+What this does not prove:
 
-Weak answer to reject:
+- production readiness
+- correctness under untested concurrency or infrastructure pressure
 
-- "the cache works because the field stores the result for later"
+Capstone transfer:
 
-Why it fails:
+Use the same claim-to-proof structure when reading `capstone-field-system`; do not infer
+hidden powers from the existence of descriptors or a metaclass.
 
-it names reuse but not staleness, dependency, or invalidation ownership.
+## Answer 2: Extend dependency-aware caching
 
-## Answer 2: Review one external-storage field
+A minimal declaration change is:
 
-Example answer:
+```python
+class Document:
+    text = InvalidatingField(
+        invalidates=("word_count", "character_count"),
+    )
+    word_count = CachedComputation(
+        lambda document: len(document.text.split()),
+        depends_on=("text",),
+    )
+    character_count = CachedComputation(
+        lambda document: len(document.text),
+        depends_on=("text",),
+    )
+```
 
-A field backed by a memory store or database might use a key such as:
+A focused test should observe both state machines:
 
-- `field:Post:12:title`
+```python
+document = Document("one cache")
 
-and:
+assert document.word_count == 2
+assert document.character_count == 9
+assert document.word_count == 2
+assert document.character_count == 9
 
-- read through the backend on cache miss
-- write through on assignment and refresh the local cache
+document.text = "one refreshed cache"
 
-Good conclusion:
+assert not Document.word_count.evidence(document)["cached"]
+assert not Document.character_count.evidence(document)["cached"]
+assert document.word_count == 3
+assert document.character_count == 19
+```
 
-Attribute access now hides storage I/O and serialization work, so the design needs clear
-documentation or observability rather than pretending the field is purely local.
+Reasoning:
 
-Reasoning checkpoint:
+Both derivations depend on the same source assignment. The source lists both invalidation
+targets, while each cache independently lists `text` as its dependency. Values and
+computation counters remain on the instance.
 
-- did you name the authoritative backend slot?
-- did you identify one cost hidden by attribute syntax?
+Common wrong turns:
 
-Repair move if your answer is weak:
+- storing `character_count` on the descriptor
+- invalidating only one cache
+- calling both computations eagerly inside `text.__set__`
+- adding a global dependency registry before the current scale requires it
 
-- rewrite the answer until a reviewer can tell where truth lives and why the access is not purely local
+What this proves:
 
-Weak answer to reject:
+- one source assignment invalidates two local derivations
+- both caches retain independent per-instance state
 
-- "the descriptor just proxies storage"
+What this does not prove:
 
-Why it fails:
+- the two declarations cannot drift
+- arbitrary dependency graphs are validated
+- updates are atomic across threads
 
-proxy language hides the backend slot, serialization boundary, and hidden I/O cost.
+Capstone transfer:
+
+The capstone still has no derived configuration values. Adding this machinery there would
+create a dependency system without an application pressure.
+
+## Answer 3: Make backend refresh explicit
 
-## Answer 3: Compose one wrapper field
+An honest refresh reads first, then replaces the cache only after success:
+
+```python
+def refresh(self, obj):
+    raw = self.store.get(self.key_for(obj))
+    if raw is None:
+        raise AttributeError(f"{self.public_name} has no backend value")
+    value = json.loads(raw)
+    vars(obj)[self.cache_name] = value
+    return value
+```
+
+For maintainability, the backend-read and decode path can be extracted into a private
+helper used by both `__get__` and `refresh`. The important ordering is:
+
+```text
+derive key -> backend read -> decode -> replace cache -> return
+```
+
+Reasoning:
+
+Clearing the cache before reading would leave no local value after an outage. Returning
+the old cache after an outage would falsely report refresh success. Reading into a local
+variable and committing the cache only after success preserves the prior mirror on
+failure while keeping the exception visible.
+
+Evidence:
 
-Example answer:
+```python
+reads_before = len(
+    [event for event in store.events if event["operation"] == "read"]
+)
+assert Record.title.refresh(observer) == "resolved"
+reads_after = len(
+    [event for event in store.events if event["operation"] == "read"]
+)
+assert reads_after - reads_before == 1
+```
 
-- the inner field owns storage and ordinary set/get behavior
-- the wrapper field adds validation before delegating to the inner descriptor
+Common wrong turns:
 
-Good conclusion:
+- implement `refresh` as `invalidate` followed by ordinary access without considering
+  outage state
+- swallow `StoreUnavailable` and return stale data
+- write the refreshed value back to an already authoritative backend
+- call refresh on every read and quietly remove caching
 
-Composition works well when each layer owns one extra concern and forwarding of
-`__set_name__`, `__get__`, and `__set__` stays consistent.
+What this proves:
 
-Reasoning checkpoint:
+- one explicit refresh consults the backend once
+- local state changes only after a successful decode
 
-- can you state the inner field contract in one sentence?
-- can you justify the wrapper without saying only "for flexibility"?
+What this does not prove:
 
-Repair move if your answer is weak:
+- freshness after the refresh returns
+- compare-and-swap semantics
+- retries, timeout policy, or transaction isolation
 
-- remove one wrapper mentally and restate what behavior actually changes
+Capstone transfer:
 
-Weak answer to reject:
+The capstone field system has no backend mirror, so a refresh API would be meaningless
+there.
 
-- "the wrapper makes the field more flexible"
+## Answer 4: Add one earned wrapper layer
 
-Why it fails:
+A narrow wrapper can be written as:
 
-flexible does not identify the inner contract or the one concern added by the wrapper.
+```python
+class MaximumLength(FieldWrapper):
+    responsibility = "reject text longer than one explicit limit"
 
-## Answer 4: Validate one narrow hint subset
+    def __init__(self, inner, *, limit):
+        if limit <= 0:
+            raise ValueError("maximum length must be positive")
+        super().__init__(inner)
+        self.limit = limit
 
-Example answer:
+    def __set__(self, obj, value):
+        if not isinstance(value, str):
+            raise TypeError(f"{self.public_name} expected normalized text")
+        accepted = len(value) <= self.limit
+        _trace(
+            obj,
+            {
+                "layer": type(self).__name__,
+                "limit": self.limit,
+                "accepted": accepted,
+            },
+        )
+        if not accepted:
+            raise ValueError(
+                f"{self.public_name} must be at most {self.limit} characters"
+            )
+        self.inner.__set__(obj, value)
+```
 
-Support:
+The declaration is:
 
-- plain runtime classes such as `int` and `str`
-- `Union` or `Optional`
-- selected `Annotated[...]` validators
+```python
+route_label = AuditWrites(
+    NormalizeText(
+        MaximumLength(
+            StoredField(),
+            limit=12,
+        )
+    )
+)
+```
 
-Refuse:
+Reasoning:
 
-- parameterized generics such as `list[int]`
+`NormalizeText` must be outside `MaximumLength` so the limit applies to the stored form,
+not surrounding whitespace. `AuditWrites` remains outside so it records only successful
+storage.
 
-Good conclusion:
+The accepted trace should be:
 
-This is an honest hint-driven field because it names its supported surface clearly and
-does not claim to understand every typing construct.
+```text
+NormalizeText -> MaximumLength -> StoredField -> AuditWrites
+```
 
-Reasoning checkpoint:
+The rejection trace stops at `MaximumLength`; no `_route_label` or `__field_audit__`
+entry should appear.
 
-- did you name one supported hint surface and one refused one?
-- did you describe one coercion path instead of saying "it validates types"?
+Common wrong turns:
 
-Repair move if your answer is weak:
+- combine normalization and maximum length into one vague wrapper
+- audit before delegation
+- validate raw padded input when the contract is about normalized storage
+- alter the existing `channel` stack to make the new test easier
 
-- add one concrete refused hint form and one concrete coercion boundary
+What this proves:
 
-Weak answer to reject:
+- one more single-purpose layer can remain inspectable
+- declaration order controls transformation and failure order
 
-- "it supports annotations for runtime checking"
+What this does not prove:
 
-Why it fails:
+- adding further wrappers remains a good design
+- the layer participates in cross-field validation
 
-annotations are too broad a surface unless the accepted subset and refusal surface are named.
+Capstone transfer:
 
-## Answer 5: Reject one descriptor that became architecture
+An explicit `StringField(min_length=...)` remains clearer for the capstone’s present
+policy. The new wrapper demonstrates a mechanism; it does not force adoption.
 
-Example answer:
+## Answer 5: Add policy without widening hint support
 
-Suppose one “smart field” tries to own:
+A matching value rule is:
 
-- lazy loading
-- cache invalidation across related records
-- object identity management
-- transaction coordination
+```python
+@dataclass(frozen=True, slots=True)
+class Maximum(ValueRule):
+    limit: int | float
 
-Better owners:
+    @property
+    def label(self):
+        return f"maximum={self.limit}"
 
-- explicit session or unit-of-work objects
-- model-layer coordination services
-- broader framework infrastructure
+    def apply(self, value):
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            raise TypeError("Maximum can only validate numeric values")
+        if value > self.limit:
+            raise ValueError(f"value must be <= {self.limit}")
+        return value
+```
 
-Good conclusion:
+Then:
 
-Once multiple records or lifecycle phases must be coordinated, the descriptor is no longer
-the whole owner. The design has crossed into framework architecture.
+```python
+attempts: Annotated[int, Minimum(0), Maximum(10)] = HintField()
+```
 
-Reasoning checkpoint:
+Reasoning:
 
-- did you name the extra responsibility precisely?
-- did you choose a stronger owner that can actually see that wider lifecycle?
+`compile_hint` already retains metadata order, and `HintPlan._apply_rules` already walks
+that tuple in order. No interpreter change is needed. The exercise adds policy, not a new
+hint language feature.
 
-Repair move if your answer is weak:
+Strong tests include:
 
-- replace generic words such as "system" or "framework stuff" with one concrete owner like session, repository, or unit of work
+```python
+self.assertEqual(
+    RetryPolicy(
+        attempts="3",
+        label="retry",
+        timeout=None,
+        enabled=True,
+    ).attempts,
+    3,
+)
 
-Weak answer to reject:
+with self.assertRaisesRegex(ValueError, "must be <= 10"):
+    RetryPolicy(
+        attempts="11",
+        label="retry",
+        timeout=None,
+        enabled=True,
+    )
+```
 
-- "the descriptor got too complex"
+Also retain direct tests that `True` does not satisfy `int`, `list[int]` is refused, and
+unknown `Annotated` metadata fails.
 
-Why it fails:
+Common wrong turns:
 
-complexity alone is not the boundary; the missing point is which broader owner must take over.
+- add special maximum logic to `HintField.__set__`
+- run rules before coercion and make `"3"` fail numeric validation
+- broaden supported hints while touching the compiler
+- accept booleans as numeric values
 
-## Answer 6: Review the educational mini relational model
+What this proves:
 
-Example answer:
+- explicit metadata can add bounded policy without widening the hint interpreter
+- rule ordering survives into the plan manifest
 
-Field layer ownership:
+What this does not prove:
 
-- validating and storing one field value
-- reading one field through a backend-backed descriptor
+- all validators compose safely
+- static type checkers understand runtime metadata
+- generic or nested model validation
 
-Framework or model layer ownership:
+Capstone transfer:
 
-- model registration
-- record reconstruction
-- relationship orchestration
+The capstone’s `IntegerField(minimum=..., maximum=...)` keeps equivalent policy explicit
+without annotation inference.
 
-Good conclusion:
+## Answer 6: Review the application boundary
 
-The mini relational model is educational because it exposes the mechanism clearly but
-omits the infrastructure a real ORM would need, such as transactions, identity maps, and
-query planning.
+A defensible comparison is:
 
-Reasoning checkpoint:
+| Concern | Descriptor-system lab | Incident-plugin capstone |
+| --- | --- | --- |
+| field source of truth | backend JSON slot or instance cache, depending on example | plugin instance dictionary |
+| validation | wrappers or `ValueRule` plans | explicit `Field` subclasses |
+| class-wide coordination | only static helpers in the record model | `PluginMeta` field collection and constructor generation |
+| hidden backend I/O | accepted and exposed in `ExternalField` | rejected |
+| derived caching | accepted in local cache lab | rejected |
+| wrapper composition | accepted and traced | rejected |
+| annotation inference | accepted only in bounded hint lab | rejected for fields |
 
-- did you identify one field-level win and one framework-level omission?
-- did you explicitly refuse at least one production claim?
+For atomic updates across two plugin fields:
 
-Repair move if your answer is weak:
+- `Field.__set__` is too weak because one descriptor cannot see both writes and rollback.
+- `PluginMeta` is the wrong owner because class creation happens before runtime
+  configuration transactions.
+- a session or unit of work is the smallest owner that can stage both values, validate
+  them, commit together, and roll back together.
 
-- add one sentence beginning with "this example does not prove..."
+The smallest proof set would include:
 
-Weak answer to reject:
+1. both valid changes commit
+2. failure in the second validation leaves both original values
+3. failure during commit rolls back both writes
+4. field coercion behavior remains unchanged
+5. plugin action execution remains outside the transaction test
 
-- "it is basically a tiny ORM"
+Common wrong turns:
 
-Why it fails:
+- call two ordinary assignments “atomic”
+- put rollback state on a shared descriptor
+- use a metaclass because it is the strongest mechanism in the course
+- add persistence infrastructure before defining what is being committed
 
-that sentence grants production responsibilities the worked example explicitly refuses.
+What this proves:
 
-## Answer 7: Make one backend access path observable
+- owner selection follows runtime invariant scope
+- the capstone can reject Module 08 powers deliberately
 
-Example answer:
+What this does not prove:
 
-Suppose a descriptor reads through a key-value store on cache miss.
+- a concrete transaction implementation
+- persistence durability
+- isolation under concurrency
 
-Strong observability additions:
+## Final self-review
 
-- increment a per-field read counter
-- emit a small trace or log line when backend access occurs
-- expose an explicit helper such as `field_stats(obj)` for teaching and review
+Before leaving Module 08, make sure every answer states:
 
-Good conclusion:
+- what owns truth
+- what executes and when
+- what public surface changes
+- where failure occurs relative to mutation
+- which earlier behavior remains true
+- what the result proves
+- what it does not prove
+- where the capstone accepts or rejects the mechanism
 
-Backend-backed attribute access is harder to reason about when the I/O stays invisible.
-An observation surface makes the hidden cost and lifecycle easier to teach and review.
+If one answer still depends on words such as “automatic,” “transparent,” or “framework”
+without an owner and trace, return to the matching core.
 
-Reasoning checkpoint:
+## Continue
 
-- did you pick one observation surface that someone can actually inspect?
-- did you connect it to one hidden cost or failure path?
-
-Repair move if your answer is weak:
-
-- add one counter, log, or helper that would make the access path visible
-
-Weak answer to reject:
-
-- "backend access can be logged if needed later"
-
-Why it fails:
-
-later is not an observation surface another reviewer can inspect now.
-
-## Answer 8: Separate one field concern from one framework concern
-
-Example answer:
-
-Mixed design:
-
-- a descriptor validates one field
-- lazily loads related records
-- coordinates cross-record invalidation
-
-Strong split:
-
-- field concern that stays: validating and storing one attribute contract
-- framework concern that moves out: coordinating related-record lifecycle and invalidation
-
-Good conclusion:
-
-The split makes review easier because field semantics stay local while coordination logic
-moves to an owner that can see the wider model lifecycle.
-
-Reasoning checkpoint:
-
-- did you separate field semantics from coordination rather than only renaming them?
-- did you reject one stronger owner as unnecessary at the current scale?
-
-Repair move if your answer is weak:
-
-- redraw the boundary as "stays in field" versus "moves out" and justify each line
-
-Weak answer to reject:
-
-- "the field handles the local part and the framework handles the rest"
-
-Why it fails:
-
-local and the rest are too vague to review or implement cleanly.
-
-## Answer 9: Compare honest field claims with overstated framework claims
-
-Example answer:
-
-Honest description:
-
-- "This descriptor caches one computed value and invalidates it when the backing field changes."
-
-Overstated description:
-
-- "This descriptor keeps the whole model synchronized automatically."
-
-Good conclusion:
-
-The second version is misleading because words such as "whole model" and
-"automatically" imply broader orchestration than one field-level owner can honestly
-guarantee.
-
-Reasoning checkpoint:
-
-- can you identify the exact words that overstate power?
-- can you rewrite them into one bounded field claim?
-
-Repair move if your answer is weak:
-
-- highlight the exaggerated words, then replace them with the smallest honest promise
-
-Weak answer to reject:
-
-- "it mostly keeps the model in sync"
-
-Why it fails:
-
-mostly and in sync overclaim coordination without naming what is actually guaranteed.
-
-## Answer 10: Produce a descriptor-system packet
-
-The packet is strong when another learner can answer:
-
-- what the field layer owns
-- where the real source of truth lives
-- how invalidation or observation works
-- when broader framework coordination should move out of the descriptor
-
-Add these final checks to your own packet:
-
-- one refused weaker owner
-- one refused stronger owner
-- one remaining uncertainty you would audit next
-
-Extra packet test:
-
-- could a missed-class learner reconstruct your owner ladder from the packet alone?
-
-## What strong Module 08 answers have in common
-
-Across the whole set, strong answers share the same habits:
-
-- they treat invalidation as part of descriptor behavior
-- they make the backend or source of truth explicit
-- they keep composed fields shallow and readable
-- they name the exact hint subset a field understands
-- they say when a field system has become broader architecture
-- they make invalidation and backend access visible
-- they leave behind a packet another learner can review without guessing
-
-If an answer still sounds like "framework behavior can live in the descriptor somehow,"
-revise it until you can say exactly what the descriptor owns and what should move out of
-it.
-
-## Cross-answer habits to inspect
-
-| Habit to inspect | Strong answer behavior |
-| --- | --- |
-| naming truth | always points to one authoritative slot, object, or service |
-| naming invalidation | always identifies the actor or path that clears stale state |
-| naming refusal | always states what the field or model deliberately does not prove |
-| naming escalation | always identifies the first broader owner when the field boundary breaks |
-
-## Exit check for this answer key
-
-Before leaving Module 08, make sure you can:
-
-- trace one answer back to concrete code or storage evidence
-- rewrite one weak answer into a stronger one
-- identify one refused claim in the worked example
-- name one precise escalation boundary from field logic to framework ownership
-
-## Continue through Module 08
-
-- Previous: [Exercises](exercises.md)
-- Return: [Overview](index.md)
+- Previous: [Descriptor System Evidence Studio](exercises.md)
+- Return: [Module Overview](index.md)
 - Next module: [Module 09](../module-09-metaclass-design-class-creation/index.md)
-- Terms: [Glossary](glossary.md)
