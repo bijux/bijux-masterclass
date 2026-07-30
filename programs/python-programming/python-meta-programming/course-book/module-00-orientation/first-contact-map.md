@@ -63,7 +63,8 @@ define the vocabulary and runtime evidence standards that the rest of the course
 - dynamic versus static member enumeration
 - frame and stack inspection as diagnostics only
 
-**Capstone check:** inspect action signatures and manifest data before reading wrapper code.
+**Capstone check:** inspect action signatures and manifest data, then run action preflight
+to validate a call without constructing or invoking a plugin.
 
 ## How to know you are ready for Module 04
 

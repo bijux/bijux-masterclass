@@ -148,6 +148,11 @@ make -C programs/python-programming/python-meta-programming lab-test
 make -C programs/python-programming/python-meta-programming observation-lab
 make -C programs/python-programming/python-meta-programming observation-debug-view
 make -C programs/python-programming/python-meta-programming observation-lab-test
+make -C programs/python-programming/python-meta-programming evidence-lab
+make -C programs/python-programming/python-meta-programming evidence-lab-test
+make -C programs/python-programming/python-meta-programming evidence-repr
+make -C programs/python-programming/python-meta-programming evidence-repr-test
+make -C programs/python-programming/python-meta-programming capstone-bind-action
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -157,10 +162,13 @@ make PROGRAM=python-programming/python-meta-programming capstone-confirm
 
 Use `lab` for the Module 01 runtime-object evidence. Use `observation-lab` and
 `observation-debug-view` for Module 02's observation boundaries and worked example.
-`lab-test` verifies all course labs; each module-specific test command runs the narrower
-route. Use `capstone-walkthrough` when you are ready to transfer course concepts into the
-integration project, `capstone-tour` when you want the same saved bundle in the proof
-ladder, `capstone-verify-report` when you need durable integration evidence, and
+Use `evidence-lab` and `evidence-repr` for Module 03's classified evidence packet and
+signature-guided representation. The matching focused targets verify each teaching
+contract. `capstone-bind-action` is the Module 03 transfer: it validates a real action
+call without constructing or invoking the plugin. `lab-test` verifies all course labs.
+Use `capstone-walkthrough` when you are ready for the broader integration project,
+`capstone-tour` when you want the same saved bundle in the proof ladder,
+`capstone-verify-report` when you need durable integration evidence, and
 `capstone-confirm` for the strictest capstone confirmation pass.
 
 Primary reading route:
@@ -178,6 +186,11 @@ Primary reading route:
 - `labs/runtime_observation/debug_view.py`
 - `course-book/module-02-runtime-observation-inspection/exercises.md`
 - `course-book/module-02-runtime-observation-inspection/exercise-answers.md`
+- `course-book/module-03-signatures-provenance-runtime-evidence/index.md`
+- `labs/runtime_evidence/evidence.py`
+- `labs/runtime_evidence/safe_repr.py`
+- `course-book/module-03-signatures-provenance-runtime-evidence/exercises.md`
+- `course-book/module-03-signatures-provenance-runtime-evidence/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`

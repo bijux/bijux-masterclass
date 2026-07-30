@@ -61,10 +61,11 @@ Use stops 5 and 6 only after the earlier stops no longer settle the question.
 
 ## Walkthrough stop 4: Inspect one wrapper-backed action
 
-- Run `make action` and then `make trace`.
+- Run `make action`, `make bind-action`, and then `make trace`.
 - Read `src/incident_plugins/actions.py`.
-- Ask: what did the wrapper add, and what original callable surface had to remain visible?
-- Prove it with `tests/test_runtime.py`.
+- Ask: what did the wrapper add, what original callable surface had to remain visible,
+  and where does validation cross into execution?
+- Prove non-execution and deliberate execution with `tests/test_runtime.py`.
 
 ## Walkthrough stop 5: Inspect one concrete plugin
 
@@ -82,7 +83,8 @@ Use stops 5 and 6 only after the earlier stops no longer settle the question.
 
 ## Best walkthrough pairing by module
 
-- Modules 01 to 03: stops 1 and 2
+- Modules 01 to 02: stops 1 and 2
+- Module 03: stops 1, 2, and the `bind-action` portion of stop 4
 - Modules 04 to 05: stop 4
 - Modules 06 to 08: stop 3
 - Module 09: stop 2

@@ -73,12 +73,16 @@ Proof move:
 You are ready to move on when you can:
 
 - use signatures to explain how a callable is meant to be invoked
+- validate a complete call with `bind()` and explain why `bind_partial()` answers a
+  different question
 - distinguish strong runtime evidence from best-effort provenance hints
 - explain why two inspection helpers can answer different questions about the same object
+- build a stored-state representation without evaluating properties
 
 Proof move:
 
-- read the capstone action signatures and say what they reveal without invocation
+- run the Module 03 evidence and representation labs, then use capstone action preflight
+  to prove argument validation remains separate from execution
 
 ### Module 04: Function Wrappers and Transparent Decorators
 
