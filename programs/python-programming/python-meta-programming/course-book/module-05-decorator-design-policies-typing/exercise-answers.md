@@ -1,5 +1,4 @@
-# Exercise Answers
-
+# Exercise Answers: Decorator Policy Design Studio
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Decorator Design Policies Typing"]
-  page["Exercise Answers"]
+  page["Decorator Policy Design Studio Answers"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -18,312 +17,261 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["State the claim"] --> evidence["Locate executable evidence"]
+  evidence --> limit["Name what remains unproved"]
+  limit --> owner["Review the owner and exit condition"]
 ```
 <!-- page-maps:end -->
 
-Use this page after attempting the exercises yourself. The point is not to match every
-example literally. The point is to compare your reasoning against answers that keep
-wrapper power, policy scope, and typing limits honest.
+Use these answers after attempting the studio. Exact prose may differ, but your evidence,
+timing, and ownership conclusions should be equally precise.
 
-Treat each answer as a review calibration, not as a single correct final form. A strong
-answer names ownership, limits, and operational consequences in plain language. A weak
-answer may still sound technically clever while hiding who actually owns the policy.
+## Answer 1: change a finite retry policy
 
-## Answer 1: Build one decorator factory with real configuration
+For two total attempts, the predicted trace is:
 
-Example answer:
-
-```python
-import functools
-
-
-def repeat(times):
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            return [func(*args, **kwargs) for _ in range(times)]
-        return wrapper
-    return decorator
+```text
+attempt:1
+sleep:0.1
+attempt:2
 ```
 
-Strong explanation:
-
-- `repeat(times)` runs once at definition time
-- the returned decorator captures `times`
-- the wrapper uses that captured value on each call
-
-Good conclusion:
-
-This is an honest factory because the configuration is explicit and the captured policy is
-still narrow and visible.
-
-Reasoning checkpoint:
-
-- can you point to the exact captured value?
-- can you say what would make this factory too policy-heavy to stay honest?
-
-## Answer 2: Review one resilience wrapper
-
-Example answer:
-
-A retry decorator that retries `ConnectionError` up to three times changes semantics in at
-least three ways:
-
-- it may call the underlying function more than once
-- it waits between attempts
-- it changes when failure becomes final
-
-Good conclusion:
-
-That is already control-flow policy, not a thin wrapper, because the decorator now governs
-execution timing and error handling.
-
-Reasoning checkpoint:
-
-- can you name the stopping rule exactly?
-- can you explain which side effects might happen more than once?
-
-## Answer 3: Validate one narrow hint subset
-
-Example answer:
-
-Support:
-
-- plain runtime classes
-- `Union`
-- `Optional`
-- `Any`
-
-Reject:
-
-- parameterized generics such as `list[int]`
-
-Good conclusion:
-
-This is an honest partial validator because it names its supported surface clearly and
-refuses unsupported hints instead of pretending to understand them.
-
-Reasoning checkpoint:
-
-- can you name the first unsupported hint a real caller might hit?
-- can you explain why silently skipping that hint would be misleading?
-
-## Answer 4: Inspect cache policy instead of only cache speed
-
-Example answer:
+The captured policy must become:
 
 ```python
-import functools
-
-
-@functools.lru_cache(maxsize=2, typed=True)
-def add(x, y):
-    return x + y
+{
+    "exceptions": ["TransientDeliveryError"],
+    "max_attempts": 2,
+    "backoff_seconds": [0.1],
+}
 ```
 
-Strong explanation:
+The scenario's success condition also changes from `attempts < 3` to `attempts < 2`.
+Changing only the expectation would hide a contradiction between implementation and
+proof.
 
-- `typed=True` distinguishes calls such as `add(1, 2)` and `add(1.0, 2)`
-- `cache_info()` exposes hits, misses, and current size
-- `cache_clear()` provides deterministic reset
+Reasoning:
 
-Good conclusion:
+- one caller request can still execute the operation twice
+- one injected sleep proves the wrapper owns waiting between attempts
+- `functools.wraps` and `__retry_policy__` must remain unchanged because policy growth
+  does not cancel Module 04's transparency contract
 
-The cache is not just a speed trick. It owns keying, eviction, and operational state, and
-those choices are part of the wrapper's public meaning.
+Common wrong turn: changing the generic loop to special-case the scenario. The scenario
+owns example data; `retry` owns reusable semantics.
 
-Reasoning checkpoint:
+This proves an exact finite trace. It does not prove that the underlying delivery is
+idempotent, that 0.1 seconds is an appropriate operational delay, or that concurrent
+callers coordinate safely.
 
-- can you say which calls count as the same cached request?
-- can you name the reset or inspection hook an operator would use first?
+## Answer 2: prove selective failure handling
 
-## Answer 5: Reject one decorator that grew too large
+A defensible test uses one stable `ValueError` object:
 
-Example answer:
+```python
+failure = ValueError("bad payload")
+attempts = 0
 
-Suppose one decorator tries to combine:
+@retry(
+    exceptions=(ConnectionError,),
+    max_attempts=3,
+    backoff_seconds=(0.0, 0.0),
+    sleep=lambda _: None,
+)
+def deliver() -> None:
+    nonlocal attempts
+    attempts += 1
+    if attempts == 1:
+        raise ConnectionError("transient")
+    raise failure
 
-- retries
-- timeouts
-- logging
-- validation
-- cache invalidation
+with self.assertRaises(ValueError) as caught:
+    deliver()
 
-Strong redesign:
+self.assertIs(caught.exception, failure)
+self.assertEqual(attempts, 2)
+```
 
-- keep a thin boundary decorator if needed
-- move retry policy to a retry object or client wrapper
-- move validation to a validator component
-- move cache ownership to an explicit cache service or standard-library wrapper
+The first failure earns another attempt. The second is outside the configured exception
+tuple, so it exits immediately. If the wrapper catches `Exception`, the count becomes
+three and the proof fails.
 
-Good conclusion:
+Common wrong turn: asserting only `ValueError` by type. Identity is stronger evidence
+that the wrapper did not translate the non-retryable failure.
 
-Once policy becomes this broad, a single decorator hides too much state and coordination to
-stay reviewable.
+This proves selective handling and immediate propagation. It does not prove the first
+attempt had no irreversible side effect.
 
-Reasoning checkpoint:
+## Answer 3: extend or refuse one annotation
 
-- can you name the first responsibility that should move out of the decorator?
-- can you describe the clearer owner in one sentence?
+### Route A
 
-## Answer 6: Review a partial validator honestly
+Adding `float` to the union remains within the existing supported mechanism. The
+annotation is approved during decoration because every union member is a runtime class.
+A `2.5` value then matches during invocation.
 
-Example answer:
+The strongest honest claim remains:
 
-A partial `@validated` decorator can honestly claim:
+> the decorator checks values against a small supported runtime hint subset at calls
+> that actually execute.
 
-- it checks a narrow supported hint subset at one runtime boundary
-- it binds arguments before validating
-- it may raise or warn on mismatch
+It still cannot prove that every call site in the program is valid before execution.
 
-It cannot honestly claim:
+### Route B
 
-- full typing support
-- safety in warning mode
-- enforcement of every advanced typing feature
+`dict[str, int]` is refused during decoration. `get_origin` finds `dict`, which is
+neither `Union` nor `types.UnionType`; `_validate_supported_hint` raises
+`UnsupportedHintError`. The function body never becomes reachable through a wrapper.
 
-Good conclusion:
+Common wrong turn: treating `isinstance(value, dict)` as support for `dict[str, int]`.
+That checks only the outer container and silently ignores the declared element contract.
 
-Warning mode is not safety mode because the wrapped function may still fail internally even
-after the validator chooses not to raise.
+The refusal proves boundary honesty. It does not prove the annotation is invalid or
+useless; static tooling can still reason about it.
 
-Reasoning checkpoint:
+## Answer 4: audit warning and return timing
 
-- can you state the strongest honest claim this validator can make?
-- can you name the first threshold where it should become an explicit validator component?
+Warning mismatch:
 
-## Answer 7: Separate local convenience from durable policy
+```text
+bind -> compare argument -> warn -> append to calls -> return value
+```
 
-Example answer:
+Strict return mismatch:
 
-Suppose a project starts with a decorator that:
+```text
+bind -> compare arguments -> increment calls -> return 42 -> compare return -> raise
+```
 
-- retries failures
-- emits logs
-- converts exceptions into sentinel values
-- caches successful results
+Answers to the review questions:
 
-Strong assessment:
-
-- the decorator may feel convenient in one notebook or one service file
-- over time it silently becomes the owner of execution policy, observability policy, and cache policy
-- learners can no longer tell which behavior belongs to the business function and which belongs to the wrapper
-
-Good conclusion:
-
-This is the kind of convenience that ages badly. A clearer owner teaches better because it
-forces each policy to become visible instead of bundling them under one callable boundary.
-
-Reasoning checkpoint:
-
-- can you say who would debug this policy six months later?
-- can you point to the hidden owner the decorator was avoiding?
-
-## Answer 8: Design one explicit policy owner
-
-Example answer:
-
-Suppose a broad `@validated_retrying_cached` decorator is replaced with:
-
-- a validator component
-- a retry policy object
-- a cache object or `lru_cache` boundary
-- a small orchestration helper that wires them together
-
-Strong review advantage:
-
-- each policy surface can now be tested and reviewed independently
-
-Strong learning advantage:
-
-- learners can see which owner validates input, which one retries, and which one caches
-
-Good conclusion:
-
-An explicit owner is better when the main teaching goal is boundary clarity rather than
-surface-level compactness.
-
-Reasoning checkpoint:
-
-- can you separate what still belongs at the call boundary from what moved away?
-- can you explain why that split teaches more honestly?
-
-## Answer 9: Compare safe claims with overstated claims
-
-Example answer:
-
-Honest description:
-
-- "This decorator validates a small supported subset of hints at call time and rejects unsupported typing features."
-
-Overstated description:
-
-- "This decorator makes the function type-safe."
-
-Good conclusion:
-
-The second version is misleading because words such as "makes" and "type-safe" imply a
-much stronger guarantee than partial runtime checking can provide. Honest language keeps
-the supported surface and the unsolved space visible.
-
-Reasoning checkpoint:
-
-- can you rewrite the honest claim without losing usefulness?
-- can you point to the exact inflated words in the bad claim?
-
-## Answer 10: Produce a decorator-governance packet
-
-The packet is strong when another learner can answer:
-
-- what policy the decorator owns directly
-- what explicit control or reset surface exists for stateful behavior
-- which runtime typing claims are supported and which are intentionally refused
-- when the wrapper should be replaced by a clearer service or object boundary
-
-Add one more packet test:
-
-- could a reviewer identify the policy owner without reading your implementation twice?
-
-## Repair moves for weak answer keys
-
-If your answer key still feels shallow, use these repair moves:
-
-| Weak answer habit | Repair move |
+1. Warning mode is observation because delegation continues after the warning.
+2. Return checking happens after the function produced a value, so prior side effects
+   cannot be prevented or undone by this wrapper.
+3. A money transfer, destructive write, or external page without an idempotency boundary
+   is too risky for warning-only validation.
+4. Rollback needs an explicit transaction or unit-of-work owner, not another branch in
+   the decorator.
+
+Useful assertions include exact call lists and exact counters after the mismatch. They
+make control flow visible without asking a reader to infer it from warning capture.
+
+This proves local event order. It does not prove transactional safety.
+
+## Answer 5: review cache equivalence and lifecycle
+
+The teaching cache constructs a key from:
+
+```python
+(args, tuple(sorted(kwargs.items())))
+```
+
+Sorting makes the two keyword orders equal. A positional call puts values in `args`
+instead, so it creates a different key even though signature binding would describe the
+same logical arguments.
+
+Comparison:
+
+| Surface | Teaching cache | `lru_cache` reference |
+| --- | --- | --- |
+| key equivalence | direct `args` plus sorted `kwargs`; equivalent call styles can fragment | standard-library private key construction with documented public behavior |
+| eviction | visible least-recently-used order | bounded least-recently-used policy |
+| failed calls | tested as misses and not stored | exceptions are not cached |
+| inspection | `cache_info()` and teaching-only `cache_snapshot()` | `cache_info()` and `cache_parameters()` |
+| reset | `cache_clear()` resets entries and counters | `cache_clear()` resets state |
+| thread safety | explicitly unsupported | internal cache structure remains coherent, without guaranteeing one execution per racing key |
+
+Common wrong turn: saying `typed=False` always merges equal values of different types.
+The public documentation is more qualified. Use `typed=True` when the type distinction
+must be part of the declared policy, and test the exact calls your application depends
+on.
+
+Choosing `lru_cache` is defensible when its keying, bounded state, concurrency contract,
+and hooks meet the requirement. A custom wrapper needs a named requirement that the
+standard tool cannot satisfy.
+
+The comparison proves exact local histories. It is not a benchmark or a freshness proof.
+
+## Answer 6: transfer the boundary into the capstone
+
+`bind-action` and `check-action` are intentionally separate:
+
+- `bind_action_arguments` delegates parameter matching to `inspect.Signature.bind`
+- `check_action_arguments` starts with that bound mapping, then checks only the supported
+  annotation subset
+- `inspect_action_wrapper` reports transformation ownership without validating or
+  invoking
+
+Boundary record for `@action`:
+
+```text
+Policy: bind calls, record successful action history, preserve callable evidence
+Current owner: action wrapper
+Evidence surface: ActionSpec, __wrapped__, __signature__, action-wrapper command
+Why this owner still fits: behavior is local to one successful action call
+Exit condition: action policy begins retrying, coercing, or interpreting rich schemas
+```
+
+Boundary record for `check_action_arguments`:
+
+```text
+Policy: check Any, runtime classes, Union, and Optional for bound action arguments
+Current owner: explicit framework preflight function plus helpers in actions.py
+Evidence surface: check-action JSON and focused runtime/CLI tests
+Why this owner still fits: checking is opt-in, non-executing, and separate from action invocation
+Exit condition: validation needs nested schemas, coercion, cross-field rules, or reusable rich errors
+```
+
+The capstone does not put this check inside `@action` because that would change every
+action invocation, broaden the wrapper's owner story, and entangle registration with a
+partial runtime type system. The explicit route lets a caller request preflight and see
+refusals without changing ordinary action semantics.
+
+The complete console report proves that three bound string values match their resolved
+`str` hints without plugin construction or execution. The partial-contract test proves
+that a mismatch, unsupported `list[str]`, and unannotated parameter stay distinct. It
+does not prove return types, nested containers, static call-site correctness, or business
+validity.
+
+## Final packet review
+
+A strong packet lets a reviewer answer:
+
+- Which code runs at factory, decoration, and call time?
+- Which failures earn another attempt?
+- Which hint forms are supported, refused, or absent?
+- Which calls share cache state?
+- Which state can be inspected and reset?
+- Which capstone route binds shape, checks values, or inspects wrapper ownership?
+- What event would force each decorator policy into an explicit owner?
+
+Reject the packet if it says only "tests pass." Tests are evidence for named claims, not
+a substitute for naming the claims.
+
+## Verification ledger
+
+| Surface changed | Smallest first proof |
 | --- | --- |
-| describing only the implementation shape | add the owner story and the refusal boundary |
-| praising simplicity without naming tradeoffs | state what complexity was hidden and who now owns it |
-| saying "it validates types" | list supported hints, refused hints, and one overclaim you reject |
-| treating warnings as harmless | explain what can still fail after the warning |
-| treating caches as performance magic | name key equivalence, eviction, and reset surfaces |
+| retry configuration or loop | one named test in `test_decorator_policy_evidence.py` |
+| hint support or mismatch mode | `test_decorator_policy_validation.py` |
+| teaching-cache behavior | `test_bounded_cache_lab.py` |
+| cross-cache evidence | the cache-comparison test |
+| action contract report | capstone runtime and CLI contract tests |
+| course page links and navigation | strict program documentation build |
 
-## What strong Module 05 answers have in common
+Escalate to the broad course gate only after the focused route is green.
 
-Across the whole set, strong answers share the same habits:
+## Exit check
 
-- they distinguish thin wrappers from policy-carrying wrappers
-- they keep runtime typing claims narrow and explicit
-- they expose reset, inspection, or control hooks when stateful policy exists
-- they move overloaded decorator behavior into explicit owners when the wrapper boundary is no longer the clearest fit
-- they distinguish local convenience from durable policy design
-- they leave behind a packet another learner can review without guessing
+Before leaving the answer key, confirm you can explain:
 
-If an answer still sounds like "the decorator can just handle it," revise it until you can
-say what policy it owns, what it refuses to own, and why that boundary is honest.
+- why a successful retry trace can still reveal risk
+- why refusal is stronger than silent partial support
+- why warning and return checks have different execution timing
+- why cache equivalence is part of correctness
+- why the capstone keeps partial contract checking outside `@action`
 
-## Exit check for the answer key
-
-Before leaving this page, make sure you can do all of these:
-
-- identify the policy owner in every answer
-- name one refused claim in every typing-aware answer
-- name one operational surface in every resilience or cache answer
-- explain one case where an explicit owner teaches better than another decorator layer
-
-## Continue through Module 05
+## Continue
 
 - Previous: [Exercises](exercises.md)
 - Return: [Overview](index.md)

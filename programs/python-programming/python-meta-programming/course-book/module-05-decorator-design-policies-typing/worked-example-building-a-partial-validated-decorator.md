@@ -169,11 +169,11 @@ It also gives the reviewer a clean proof route:
 
 ## Step 3: keep the type checker small and explicit
 
-A compact helper such as `_is_instance` should stay honest about its scope:
+A compact helper such as `_matches_hint` should stay honest about its scope:
 
 - `Any` passes
 - `Union` is checked recursively
-- unsupported generic hints raise `NotImplementedError`
+- unsupported generic hints have already caused `UnsupportedHintError` during decoration
 
 That clarity keeps the wrapper from drifting into fake comprehensiveness.
 
@@ -235,7 +235,7 @@ Use the code block as evidence, not as marketing:
 
 | Claim | Supported by this implementation? | Why |
 | --- | --- | --- |
-| it validates a narrow runtime hint subset | yes | `_is_instance` names and limits the supported cases |
+| it validates a narrow runtime hint subset | yes | `_validate_supported_hint` and `_matches_hint` name and limit the supported cases |
 | it follows Python's own call binding rules | yes | `sig.bind(...)` does the call matching |
 | it can raise or warn on mismatches | yes | `on_mismatch` makes the mode visible |
 | it enforces full static typing semantics | no | many typing surfaces are refused intentionally |

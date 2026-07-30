@@ -271,6 +271,27 @@ configuration, policy inspection, metadata, and signature preservation. They do 
 cover every object recognized by `typing`, nested container contents, protocols,
 coercion, or business invariants.
 
+## Capstone transfer: keep checking outside `@action`
+
+Run:
+
+```bash
+make capstone-bind-action
+make capstone-check-action
+make capstone-action-wrapper
+```
+
+The capstone separates three responsibilities:
+
+- binding proves call shape
+- contract checking reports matches, mismatches, unsupported hints, and missing hints
+- wrapper inspection proves which layer owns action metadata and signatures
+
+`check-action` does not construct a plugin or invoke its action. It checks arguments
+only, reports unsupported annotations instead of skipping them, and explicitly says
+return values are outside its scope. Keeping this as an opt-in framework function avoids
+turning every `@action` call into implicit partial type enforcement.
+
 ## Review rules for annotation-aware decorators
 
 When reviewing annotation-aware wrappers, keep these questions close:
