@@ -1,5 +1,11 @@
 """Executable evidence for descriptor systems and their architecture boundaries."""
 
+from .boundaries import (
+    DesignPressure,
+    OwnerDecision,
+    boundary_evidence,
+    decide_owner,
+)
 from .cache import (
     CachedComputation,
     Document,
@@ -44,6 +50,7 @@ __all__ = [
     "CachedComputation",
     "ColumnContract",
     "CountingStore",
+    "DesignPressure",
     "Document",
     "DeliveryPolicy",
     "ExternalField",
@@ -56,6 +63,7 @@ __all__ = [
     "NormalizeText",
     "NonBlank",
     "OneOf",
+    "OwnerDecision",
     "RetryPolicy",
     "StoreUnavailable",
     "StoredField",
@@ -63,9 +71,11 @@ __all__ = [
     "AuditWrites",
     "cache_evidence",
     "build_incident_model",
+    "boundary_evidence",
     "compile_hint",
     "composition_evidence",
     "describe_layers",
+    "decide_owner",
     "external_storage_evidence",
     "hint_evidence",
     "inspect_columns",
