@@ -8,8 +8,8 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Descriptors Lookup Attribute Control"]
-  page["Module 07: Descriptors, Lookup, and Attribute Control"]
-  capstone["Capstone evidence"]
+  page["Module 07"]
+  capstone["Incident-plugin fields"]
 
   family --> program --> section --> page
   page -.applies in.-> capstone
@@ -17,211 +17,171 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  inspect["Inspect class state"] --> classify["Classify the descriptor"]
+  classify --> predict["Predict the winning lookup layer"]
+  predict --> execute["Compare with an actual read or write"]
+  execute --> transfer["Review capstone field ownership"]
 ```
 <!-- page-maps:end -->
 
-Module 07 is where attribute access stops feeling intuitive and starts becoming a visible
-runtime protocol. The goal is not to memorize descriptor trivia. The goal is to
-understand what actually happens when Python reads, writes, or deletes an attribute, and
-to decide when a descriptor is the honest owner of that behavior.
+Module 06 introduced a small `TypedField` to show that runtime validation needs an
+explicit owner. This module opens that owner and studies the machinery it relies on.
+The goal is not to collect descriptor tricks. The goal is to predict ordinary attribute
+behavior, prove where values live, and decide whether a reusable descriptor has earned
+its abstraction cost.
 
-This is also the point in the course where ordinary Python starts looking less magical if
-you review it carefully. Properties, bound methods, and reusable field objects all become
-clearer once the lookup engine stops feeling like folklore.
+## The learning problem
 
-This module now uses the same ten-file learning surface as the deep-dive series so the
-overview, five cores, worked example, practice set, answers, and glossary each have one
-clear job.
+The statement “Python calls `__get__`” is not enough to review a descriptor-backed API.
+A useful explanation must answer all six questions:
 
-The strongest habit to build here is disciplined explanation. Readers should be able to
-say why lookup resolved a certain way without resorting to phrases like "Python just knows"
-or "descriptor magic."
+1. When does the hook run?
+2. Which object owns the hook?
+3. Is the class attribute a data descriptor, a non-data descriptor, or neither?
+4. Which lookup layer wins for this exact public name?
+5. Where does per-instance state live?
+6. Why is a descriptor clearer than a property or a wider class mechanism?
 
-## What this module is for
+The executable lab keeps those questions attached to observable evidence.
 
-By the end of Module 07, you should be able to explain five things clearly:
+## Prerequisites
 
-- what makes an object a descriptor and when Python invokes it
-- why data descriptors and non-data descriptors have different precedence
-- how plain functions become bound methods through descriptor behavior
-- where reusable field descriptors should keep per-instance state
-- when a descriptor is the right owner instead of a property, wrapper, or wider class hook
+Before starting, you should be able to:
 
-You should also be able to say what this module does not prove automatically:
+- distinguish class state from instance state
+- use `vars(obj)` and `vars(type(obj))` without assuming they perform normal lookup
+- explain why a property is a data descriptor
+- describe what Module 06's `TypedField` enforces and what annotations alone do not
 
-- that every attribute rule deserves descriptor reuse
-- that data-descriptor precedence is a design excuse for subtle APIs
-- that annotation-driven field systems are automatically safe because they are class-level
-- that lookup weirdness is acceptable just because the protocol can explain it afterward
+If the property-precedence example from Module 06 is still unclear, revisit it before
+continuing. Module 07 generalizes that exact lookup rule.
 
-## Weak answers to reject early
+## Run the module before reading deeply
 
-Do not let the module collapse into any of these:
+From the Python Metaprogramming course directory:
 
-| Weak answer | Why it fails |
+```bash
+make descriptor-lookup-lab
+make descriptor-lookup-lab-test
+```
+
+The first command prints four stable evidence packets:
+
+| Packet | Question it answers |
 | --- | --- |
-| "Python just knows to call the descriptor." | the protocol and lookup order disappeared from the explanation |
-| "the descriptor stores the value for the field." | storage ownership stays vague, which is where shared-state bugs begin |
-| "properties and descriptors are basically the same thing." | one-attribute boundaries and real reuse pressure are being blurred together |
-| "precedence explains it, so the design is fine." | mechanical lookup is not a defense for a subtle or hostile API |
-| "a reusable field is automatically worth a descriptor." | reuse has to be real enough to justify the stronger owner |
+| `protocol` | does `__set_name__` make an object a descriptor? |
+| `precedence` | which layer wins for data, non-data, and plain class attributes? |
+| `method_binding` | what identities prove that a function became a bound method? |
+| `quantity_field` | where does a reusable data descriptor keep canonical instance values? |
 
-## Keep these pages open
+The second command tests the claims rather than merely reproducing the output.
 
-- [Mid-Course Map](../module-00-orientation/mid-course-map.md)
-- [Pressure Routes](../guides/pressure-routes.md)
-- [Topic Boundaries](../reference/topic-boundaries.md)
-- [Capstone Map](../capstone/capstone-map.md)
+Source route:
 
-## The review route through the module
+- `labs/descriptor_lookup/protocol.py`
+- `labs/descriptor_lookup/precedence.py`
+- `labs/descriptor_lookup/binding.py`
+- `labs/descriptor_lookup/quantity.py`
+- `labs/descriptor_lookup/evidence.py`
+- `tests/test_*descriptor*.py`
 
-Read the module in this order if you are studying without an instructor present:
+## The ordinary lookup model
 
-| Read this page when you need to... | Review question to keep active |
+For an instance read such as `delivery.endpoint`, keep this order available:
+
+```mermaid
+flowchart TD
+  start["delivery.endpoint"] --> class["Find endpoint through type(delivery).__mro__"]
+  class --> data{"Class value has __set__ or __delete__?"}
+  data -->|yes| datawin["Data descriptor wins"]
+  data -->|no| instance{"endpoint in delivery.__dict__?"}
+  instance -->|yes| instancewin["Instance dictionary wins"]
+  instance -->|no| getter{"Class value has __get__?"}
+  getter -->|yes| nondata["Non-data descriptor runs"]
+  getter -->|no| plain["Plain class value wins, or lookup fails"]
+```
+
+This is a review model for ordinary lookup driven by `object.__getattribute__`. A class
+that overrides `__getattribute__`, a metaclass that changes class lookup, or a fallback
+through `__getattr__` adds more behavior. The lab states `ordinary_lookup_only: true`
+instead of pretending to simulate every possible attribute engine.
+
+## Core sequence
+
+Follow the cores in order:
+
+1. [Descriptor Protocol and `__set_name__`](descriptor-protocol-and-set-name.md) separates
+   protocol status from class-creation naming.
+2. [Data and Non-Data Descriptor Precedence](data-and-non-data-descriptor-precedence.md)
+   predicts the winning lookup layer before executing it.
+3. [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md)
+   proves method binding through `__func__` and `__self__`.
+4. [Reusable Field Descriptors and Storage](reusable-field-descriptors-and-storage.md)
+   separates shared descriptor configuration from per-instance values.
+5. [Descriptor Boundaries and Attribute Ownership](descriptor-boundaries-and-attribute-ownership.md)
+   decides when reuse pressure justifies the mechanism.
+6. [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md)
+   traces the shipped `Quantity` implementation and its failures.
+7. [Exercises](exercises.md) turns the lab and the incident-plugin fields into a design
+   studio.
+8. [Exercise Answers](exercise-answers.md) calibrates the evidence and the judgment.
+
+## What changes in the learner's model
+
+| Before this module | After this module |
 | --- | --- |
-| [Descriptor Protocol and `__set_name__`](descriptor-protocol-and-set-name.md) | which hooks actually participate in this attribute behavior? |
-| [Data and Non-Data Descriptor Precedence](data-and-non-data-descriptor-precedence.md) | what wins lookup first, and why? |
-| [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md) | what exactly turns a class function into a bound method? |
-| [Reusable Field Descriptors and Storage](reusable-field-descriptors-and-storage.md) | where does per-instance state live, and what storage bugs are being avoided? |
-| [Descriptor Boundaries and Attribute Ownership](descriptor-boundaries-and-attribute-ownership.md) | does this rule truly belong to attribute access, or is a lower-power owner clearer? |
-| [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md) | what field semantics are owned here, and what broader system claim is refused? |
-| [Exercises](exercises.md) | can I narrate lookup, storage, and ownership without mystical language? |
-| [Exercise Answers](exercise-answers.md) | is my reasoning explicit about precedence, state ownership, and rejected stronger tools? |
-| [Glossary](glossary.md) | am I using descriptor vocabulary consistently and precisely? |
+| attribute access feels like dictionary lookup with exceptions | lookup is an ordered protocol with named winning layers |
+| `__set_name__` feels like descriptor activation | it is class-creation configuration and does not establish descriptor status |
+| methods “receive `self` automatically” | a function's non-data `__get__` returns a method whose identities can be inspected |
+| the descriptor “stores the value” | descriptor configuration and instance value storage have different owners |
+| reuse sounds sufficient to justify a descriptor | repeated attribute semantics and review cost are compared explicitly |
 
-## Session route for independent learners
+## Capstone transfer
 
-Use this route if you are studying without live demos or instructor walkthroughs:
+The incident-plugin capstone uses `Field` as a data descriptor:
 
-| Session block | What to produce before moving on |
-| --- | --- |
-| protocol hooks plus precedence | one lookup trace that names the winning step mechanically |
-| method binding plus reusable field storage | one note separating binding behavior from storage ownership |
-| ownership boundaries | one ladder judgment rejecting both a weaker and a stronger owner |
-| worked example | one proof note naming the canonical storage surface and one refused broader claim |
-| exercises plus answers | one descriptor-boundary packet another learner could inspect without reopening the full module |
+- `PluginMeta` collects the descriptor objects while creating plugin classes
+- `Field.__set_name__` records public and private storage names
+- generated initialization writes through `Field.__set__`
+- configuration reads through `Field.__get__`
+- values live in each plugin instance's `__dict__`
 
-## The ten files in this module
+Run the capstone field contract now:
 
-1. Overview (`index.md`)
-2. [Descriptor Protocol and `__set_name__`](descriptor-protocol-and-set-name.md)
-3. [Data and Non-Data Descriptor Precedence](data-and-non-data-descriptor-precedence.md)
-4. [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md)
-5. [Reusable Field Descriptors and Storage](reusable-field-descriptors-and-storage.md)
-6. [Descriptor Boundaries and Attribute Ownership](descriptor-boundaries-and-attribute-ownership.md)
-7. [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
-10. [Glossary](glossary.md)
+```bash
+make capstone-field
+```
 
-## How to use the file set
+After the capstone transfer is introduced later in this module, use
+`make capstone-field-ownership` to inspect the descriptor without constructing or invoking
+a plugin. The capstone is supporting evidence: the lab teaches the mechanism first, and
+the application shows why a production field family accepts the complexity.
 
-| If you need to... | Start here |
-| --- | --- |
-| understand the full descriptor protocol and the role of `__set_name__` | [Descriptor Protocol and `__set_name__`](descriptor-protocol-and-set-name.md) |
-| make sense of shadowing and precedence during lookup | [Data and Non-Data Descriptor Precedence](data-and-non-data-descriptor-precedence.md) |
-| explain how instance methods bind through function descriptors | [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md) |
-| build reusable validated fields without shared-state bugs | [Reusable Field Descriptors and Storage](reusable-field-descriptors-and-storage.md) |
-| decide whether attribute behavior truly belongs to a descriptor | [Descriptor Boundaries and Attribute Ownership](descriptor-boundaries-and-attribute-ownership.md) |
-| see those choices combined in one bounded field system | [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md) |
-| pressure-test your understanding before moving into framework-grade descriptor systems | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the descriptor vocabulary used in this directory | [Glossary](glossary.md) |
+## Evidence standard
 
-## The running question
+For every descriptor claim, leave behind:
 
-Carry this question through every page:
+- the static class value, found without invoking it
+- the protocol hooks found on its type
+- the predicted winner
+- the actual result, when execution is safe and useful
+- the exact instance storage key, if a value is retained
+- one limitation or rejected owner
 
-> What belongs to attribute access itself, and what would become more confusing if I hid it behind a wrapper or wider class hook?
-
-Keep a second question beside it:
-
-> what lower-power owner or stronger owner am I refusing here, and what missing condition would have to appear before that choice changed?
-
-Strong Module 07 answers usually mention one or more of these:
-
-- the descriptor protocol on class attributes
-- precedence rules between descriptors and instance state
-- method binding as non-data descriptor behavior
-- per-instance storage that does not leak across objects
-- a lower-power decision that rejects unnecessary class-wide machinery
-
-Weak answers usually sound like one of these instead:
-
-- "Python automatically handles methods" without naming `function.__get__`
-- "the descriptor stores the value" without saying where
-- "properties and descriptors are basically the same" without naming reuse pressure
-- "the framework field is magic" without tracing the hooks or storage owner
-
-## Evidence packet to build while you learn
-
-Keep one packet beside the module as you work:
-
-| Surface | What to record |
-| --- | --- |
-| protocol note | one minimal descriptor and the smallest honest hook set |
-| precedence note | one traced comparison between data-descriptor and non-data-descriptor lookup |
-| binding note | one inspected bound method with `__func__` and `__self__` |
-| storage note | one explicit per-instance storage owner and one rejected broken storage pattern |
-| ownership note | one sentence rejecting a descriptor in favor of a lower-power owner |
-
-## Learning outcomes
-
-By the end of this module, you should be able to:
-
-- explain the descriptor protocol without treating it as exotic magic
-- predict lookup precedence for data descriptors, non-data descriptors, instance dictionaries, and plain class attributes
-- describe how bound methods are created and what `__func__` and `__self__` mean
-- choose storage patterns for reusable descriptors that keep instance behavior independent
-- reject descriptor use when a simpler attribute boundary would be clearer
-
-## Mid-module warning signs
-
-Pause and repair your understanding if you catch yourself doing any of these:
-
-- describing descriptor behavior only as "magic" or "automatic"
-- forgetting whether the object is a data descriptor or non-data descriptor
-- storing field values on the shared descriptor object and calling it a shortcut
-- using a descriptor where one property on one class would already be clearer
-- appealing to precedence to defend a subtle API instead of simplifying the design
-
-## Review packet standard
-
-By the end of the module, your notes should let another learner answer all of these
-without guessing:
-
-- what exact attribute boundary is being owned
-- which lookup step or hook decides the outcome
-- where per-instance state actually lives
-- which lower-power owner was rejected and why
-- which stronger mechanism was also rejected because the need did not justify it
-
-## Evidence packet to build while you learn
-
-Leave yourself a review packet as you move through the module:
-
-- one minimal descriptor with the smallest useful hook set
-- one traced lookup comparison between a data descriptor and a non-data descriptor
-- one inspected bound method showing `__func__` and `__self__`
-- one reusable field descriptor with an explicit per-instance storage owner
-- one sentence rejecting a descriptor in favor of a lower-power owner
-
-If you can assemble those five artifacts, the module is becoming standalone instead of
-lecture-dependent.
+“It works” is not sufficient. “The data descriptor wins” is also incomplete unless the
+reviewer can see the `__set__` or `__delete__` hook that establishes that category.
 
 ## Exit standard
 
-Do not move on until all of these are true:
+Move to Module 08 only when you can:
 
-- you can explain what descriptor methods participate in reads, writes, and deletes
-- you can say why data descriptors beat instance dictionaries while non-data descriptors can be shadowed
-- you can trace ordinary method binding back to `function.__get__`
-- you can place one field invariant honestly on the descriptor side of the power ladder
-- you can name one rejected stronger mechanism and one rejected weaker mechanism for a descriptor design
+- classify a class attribute from its actual hook set
+- explain why `__set_name__` alone is not descriptor status
+- predict data and non-data lookup with a same-named instance entry
+- prove a bound method's function and receiver identities
+- demonstrate independent instance storage for a reusable field
+- defend or reject descriptor ownership against a property and a wider class hook
+- connect those conclusions to the capstone `Field` surface
 
-When those feel ordinary, Module 07 has done its job and Module 08 can extend the same
-ideas into larger descriptor systems.
+The next module can then focus on wider attribute hooks without treating the descriptor
+engine underneath them as magic.
