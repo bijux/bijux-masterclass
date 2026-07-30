@@ -37,6 +37,14 @@ observation-lab-test: ## Verify the Module 02 observation boundaries
 observation-debug-view: ## Render the Module 02 attachment-first debug view
 	@$(PYTHON) -m labs.runtime_observation.debug_demo
 
+.PHONY: evidence-lab
+evidence-lab: ## Run the Module 03 runtime-evidence trust lab
+	@$(PYTHON) -m labs.runtime_evidence
+
+.PHONY: evidence-lab-test
+evidence-lab-test: ## Verify the Module 03 evidence classifications
+	@$(PYTHON) -m unittest discover -s tests -p "test_runtime_evidence_lab.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo
