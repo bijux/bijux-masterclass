@@ -275,6 +275,51 @@ This is a preview of the module-wide runtime graph:
 
 Later modules build on that chain instead of replacing it.
 
+## Guided lab: read the function packet
+
+Before opening the implementation, predict which facts the lab can report from supported
+metadata and which fact requires a diagnostic surface. Then run, from the program
+directory:
+
+```console
+$ python3 -m labs.runtime_objects |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["function"])'
+{'callable': True, 'free_variables': ['prefix'], 'module': 'labs.runtime_objects.evidence', 'name': 'prefix_title', 'qualname_has_enclosing_scope': True, 'result': 'incident: queue lag'}
+```
+
+Read the packet in three passes:
+
+1. `name`, `module`, and the enclosing-scope check describe supported identity and
+   provenance metadata.
+2. `result` proves the closure still has the captured prefix when called.
+3. `free_variables` comes from `__code__.co_freevars`; it is useful diagnostic evidence,
+   not a contract application behavior should depend on.
+
+Now inspect `function_evidence()` in `labs/runtime_objects/evidence.py`. The important
+design choice is that the lab *reports* `co_freevars` but does not use it to decide how
+incidents behave. Delete or rename the closure, update the probe honestly, and run
+`make lab-test`. A failing test should tell you which teaching claim changed.
+
+### Failure route
+
+Replace the Python-defined closure with `len` and try to read `__code__`. You should get
+`AttributeError`. That failure is evidence for the boundary taught earlier: callable
+does not imply Python-function internals.
+
+### Transfer to the incident-plugin runtime
+
+After the small probe is clear, inspect `ConsoleNotifier.deliver` in
+`capstone/src/incident_plugins/plugins.py`.
+
+- `ConsoleNotifier.__dict__["deliver"]` is the function currently stored on the class.
+- `ConsoleNotifier().deliver` is a bound method.
+- the stored function has wrapper metadata because the capstone decorator has already
+  transformed it; Module 04 will explain that transformation.
+
+For Module 01, stop at the ordinary relationship between stored function and bound
+method. The capstone is transfer evidence, not permission to introduce decorator theory
+early.
+
 ## Practical review rules
 
 When reviewing code that manipulates functions, keep these rules close:
