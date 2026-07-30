@@ -296,8 +296,8 @@ Try these before moving on:
 2. Add one invalid policy case to the focused tests and explain why failure belongs at
    factory time.
 3. Apply two different policies and prove they do not share configuration.
-2. Apply the same factory twice with different arguments and explain why the captured configuration stays independent.
-3. Write down one parameterized decorator idea that still feels honest and one that already feels like too much policy for a wrapper.
+4. Write down one parameterized decorator idea that still feels honest and one that
+   already feels like too much policy for a wrapper.
 
 If those feel ordinary, the next step is to study policy-heavy wrappers that change
 control flow and error behavior directly.
