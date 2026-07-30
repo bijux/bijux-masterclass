@@ -1,5 +1,4 @@
-# Exercises
-
+# Exercises: Descriptor System Evidence Studio
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,8 +8,8 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Descriptor Systems Validation Framework Design"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+  page["Exercises: Descriptor System Evidence Studio"]
+  capstone["Capstone transfer"]
 
   family --> program --> section --> page
   page -.applies in.-> capstone
@@ -18,265 +17,304 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  baseline["1. Establish evidence"] --> cache["2. Extend dependencies"]
+  cache --> backend["3. Make refresh explicit"]
+  backend --> wrapper["4. Add one wrapper"]
+  wrapper --> hint["5. Add one value rule"]
+  hint --> review["6. Review the system boundary"]
 ```
 <!-- page-maps:end -->
 
-Use these after reading the five core lessons and the worked example. The goal is not to
-memorize framework vocabulary. The goal is to make cache policy, backend ownership,
-composition, hint support, and architecture boundaries explicit.
+This studio is one cumulative review and implementation route. Work in a disposable
+learner branch or restore your changes between attempts. Do not edit the answer page
+while working.
 
-This page matters because weak exercises let learners imitate vocabulary without proving
-ownership. The point of this set is to leave behind reviewable evidence, not polished
-sounding answers.
+Start from the Python Metaprogramming program directory:
 
-Each exercise asks for three things:
+```bash
+make descriptor-system-lab-test
+make descriptor-system-lab
+```
 
-- the field behavior or framework pressure you are analyzing
-- the descriptor or broader owner you chose
-- the reason that choice is the clearest one
+Keep one evidence journal with these columns:
 
-Add a fourth thing to every answer:
+| Change | Source of truth | Mutation or I/O path | Failure evidence | Preserved contract | Refused claim |
+| --- | --- | --- | --- | --- | --- |
 
-- one rejected alternative owner and why you rejected it
+Every exercise must leave behind executable evidence. A design explanation without a
+test or observable packet is incomplete.
 
-Treat the ten exercises as one full lab day on descriptor systems and framework boundaries.
+## Exercise 1: Establish the baseline contract
 
-Do them in order:
+### Starting context
 
-- Exercises 1-3 establish honest cache design, external storage, and shallow composition
-- Exercises 4-6 keep hint support narrow and separate field ownership from model ownership
-- Exercises 7-8 extend that discipline into backend observability and escalation out of field logic
-- Exercises 9-10 package the whole module into a reviewable descriptor-system packet
+The shipped lab contains six evidence sections and 38 focused tests.
 
-Keep one descriptor-system table while you work:
+### Objective
 
-| Field behavior or framework pressure | Smallest honest owner | Source of truth | Invalidation or coordination rule | Review judgment |
-| --- | --- | --- | --- | --- |
+Build a claim-to-proof map before changing code.
 
-Keep a second evidence ledger beside it:
+### Constraints
 
-| Exercise | Concrete evidence you inspected or built | Weak claim you refused | Remaining uncertainty |
-| --- | --- | --- | --- |
+- do not modify source
+- inspect at least one implementation file and one test file per mechanism
+- distinguish observed facts from architecture interpretation
 
-Use one more discipline across the whole set:
+### Required evidence
 
-- every answer should name one source of truth
-- every answer involving caching should name one invalidation owner
-- every answer involving escalation should name the first broader owner that becomes necessary
+Record:
 
-## Exercise 1: Design one cached field honestly
+1. the cache slot and invalidation owner
+2. the external field’s exact backend key and authoritative owner
+3. the accepted wrapper trace
+4. one hint coercion and one refused hint
+5. one capability and one omission from the record model
+6. one boundary decision with both rejected owners
 
-Create or inspect one descriptor that caches a computed value.
+### Acceptance checks
 
-What to hand in:
+- `make descriptor-system-lab-test` passes
+- the JSON packet parses
+- every claim cites a packet key and a test name
+- at least three non-claims are recorded
 
-- when the value is computed
-- where the cached value is stored
-- one explicit invalidation rule
-- one rejected weaker answer such as "the caller will remember to refresh it"
+### Earlier contract to preserve
 
-Verification hint:
-mutate one dependency after the first read and write down the wrong answer you would get
-if invalidation never ran.
+Module 07’s lookup model still explains why class access exposes each descriptor and why
+per-instance caches remain isolated.
 
-## Exercise 2: Review one external-storage field
+## Exercise 2: Extend dependency-aware caching
 
-Build or inspect one descriptor whose source of truth lives outside the instance.
+### Starting context
 
-What to hand in:
+`Document.text` currently invalidates `word_count`.
 
-- the backend key shape
-- one read-through or write-through behavior
-- one explanation of what cost or I/O the attribute access hides
-- one rejected description that pretends the field is still purely local
+### Objective
 
-Verification hint:
-write the exact backend key and cached local slot side by side before you describe the
-field as convenient.
+Add a `character_count` cached computation that is also invalidated by `text` assignment.
 
-## Exercise 3: Compose one wrapper field
+### Constraints
 
-Take one field descriptor and add one extra concern through composition.
+- store the derived value per instance
+- name `text` in the cached computation’s dependency tuple
+- add `character_count` to the source field’s invalidation tuple
+- do not introduce a metaclass, global cache, or caller-managed refresh
+- direct dictionary mutation may remain an explicit bypass
 
-What to hand in:
+### Required evidence
 
-- the inner field's responsibility
-- the wrapper layer's added concern
-- one explanation of how `__set_name__` or delegation is preserved
-- one reason another wrapper layer would make the stack harder to review
+Add tests proving:
 
-Verification hint:
-trace one assignment through every wrapper layer and stop if any layer cannot be described
-in one sentence.
+1. two reads compute once
+2. assigning `text` removes both derived caches
+3. the next reads recompute both values
+4. two `Document` instances do not share derived state
 
-## Exercise 4: Validate one narrow hint subset
+Extend the JSON evidence with the new cache name, dependency, count, and bypass limit.
 
-Build or inspect one hint-aware field descriptor.
+### Acceptance checks
 
-What to hand in:
+- focused cache tests pass
+- existing `word_count` values and computation counts remain correct
+- no cache value is stored on the shared descriptor
+- the invalidation owner is visible from the declaration
 
-- the exact hint forms it supports
-- one coercion it allows or refuses
-- one explanation of how `Annotated[...]` metadata is used, if present
-- one unsupported hint form that must fail clearly
+### Earlier contract to preserve
 
-Verification hint:
-write one "supported now" example and one "refused now" example before you talk about the
-field as type-aware.
+`word_count` still follows `empty -> cached -> invalidated -> refreshed`, and the original
+six cache tests remain green.
 
-## Exercise 5: Reject one descriptor that became architecture
+## Exercise 3: Make backend refresh explicit
 
-Choose one field-system idea that is starting to exceed one attribute contract.
+### Starting context
 
-What to hand in:
+`ExternalField.invalidate(obj)` clears a local mirror, after which the next read consults
+the backend.
 
-- the extra responsibility it is trying to absorb
-- the explicit framework or service owner it should move to
-- one sentence explaining why the descriptor layer is no longer enough
-- one rejected lower-power owner that would still be too weak
+### Objective
 
-Verification hint:
-if your answer does not name the first wider owner explicitly, it is still too vague.
+Add a `refresh(obj)` method that explicitly invalidates and reloads one field.
 
-## Exercise 6: Review the educational mini relational model
+### Constraints
 
-Use the worked example as a case study.
+- derive the same stable key as ordinary reads
+- return the newly authoritative value
+- perform exactly one backend read
+- propagate `StoreUnavailable`
+- do not silently return the old cache after backend failure
+- do not add transactions, retries, or identity-map behavior
 
-What to hand in:
+### Required evidence
 
-- one thing the field layer owns honestly
-- one thing the model layer or framework layer must own instead
-- one explanation of why this example is educational rather than production-grade
-- one production claim you explicitly refuse to make
+Test this sequence:
 
-Verification hint:
-your refusal sentence should include at least one of these missing concerns: transactions,
-identity maps, or query planning.
+1. one instance caches `investigating`
+2. another actor writes `resolved`
+3. ordinary access remains stale
+4. `refresh` returns `resolved`
+5. the event log contains one additional read
 
-## Midday self-check
+Add a failure test where the backend is unavailable during refresh.
 
-Before moving into the final four exercises, make sure you can already answer these
-questions clearly:
+### Acceptance checks
 
-- why cache invalidation is part of the field contract instead of an optional extra
-- what source of truth a backend-backed descriptor is really hiding
-- when composition still keeps a field system readable and when it starts obscuring ownership
-- what pressure shows that a descriptor has crossed from field logic into architecture
+- external-field tests pass
+- backend authority remains explicit
+- the local cache changes only after a successful read
+- stable key and JSON behavior remain unchanged
 
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the source of truth, invalidation rule, and escalation boundary more explicit before
-continuing.
+### Earlier contract to preserve
 
-If you can answer them only in abstract language, add one concrete code path or storage
-path before continuing.
+Ordinary cache-hit access still performs no backend read, and assignment still writes the
+backend before changing local state.
 
-## Exercise 7: Make one backend access path observable
+## Exercise 4: Add one earned wrapper layer
 
-Choose one backend-backed descriptor and design a way for learners or reviewers to see when
-attribute access crosses into I/O or shared storage.
+### Starting context
 
-What to hand in:
+`DeliveryPolicy.channel` has visible normalization, choice, storage, and audit layers.
 
-- the backend-backed field
-- one observation surface such as logging, counters, tracing, or explicit read helpers
-- one explanation of why hidden I/O makes the field harder to reason about
-- one reason silent backend access would weaken review or debugging
+### Objective
 
-Verification hint:
-pick one observation surface that another learner could inspect without reading your mind.
+Implement `MaximumLength`, a wrapper that accepts a configured positive limit and rejects
+long text before delegating.
 
-## Exercise 8: Separate one field concern from one framework concern
+Use it in a new `DeliveryPolicy.route_label` field with:
 
-Take one descriptor design and split its responsibilities into one field-level concern and
-one wider framework or service concern.
+```text
+AuditWrites -> NormalizeText -> MaximumLength -> StoredField
+```
 
-What to hand in:
+### Constraints
 
-- the mixed design
-- the field-level concern that should stay
-- the wider concern that should move out
-- one explanation of why the split makes the architecture easier to review
-- one stronger owner you considered but rejected as unnecessary at this stage
+- the wrapper owns only maximum-length validation
+- reject non-positive limits at wrapper construction
+- forward name binding through the existing base
+- validate after normalization
+- rejected writes must reach neither storage nor success audit
+- do not alter the existing `channel` policy
 
-Verification hint:
-rewrite the mixed design as two columns: "stays in field" and "moves out."
+### Required evidence
 
-## Exercise 9: Compare honest field claims with overstated framework claims
+Add tests for:
 
-Choose one descriptor-system design and write both an honest description and an overstated
-description of what it guarantees.
+- a padded accepted label and its exact trace
+- an overlong label with no stored value or audit event
+- one `__set_name__` call per layer
+- class access exposing the entire wrapper chain
 
-What to hand in:
+### Acceptance checks
 
-- the honest description
-- the overstated description
-- one explanation of which words make the overstated version misleading
-- one sentence rewriting the overstated version into an honest boundary claim
+- composition tests pass
+- each trace event names one owner
+- layer order is visible from both declaration and output
+- `channel` retains its original accepted and rejected behavior
 
-Verification hint:
-underline the words that overclaim scale, coordination, or automatic behavior.
+### Earlier contract to preserve
 
-## Exercise 10: Produce a descriptor-system packet
+The existing four-layer channel trace and failure-before-mutation guarantee remain true.
 
-Assemble:
+## Exercise 5: Add policy without widening hint support
 
-- one descriptor-system table
-- one cached field with an explicit invalidation rule
-- one backend-backed field with a named source of truth
-- one escalation rule explaining when descriptor logic must move to a framework or service owner
+### Starting context
 
-The packet is strong when another learner can use it to answer:
+`Minimum` and `NonBlank` are the only shipped `ValueRule` implementations.
 
-- what the field layer owns directly
-- where data really lives
-- when the design has crossed into wider architecture
+### Objective
 
-Add these packet requirements:
+Implement `Maximum(limit)` and apply it with `Minimum(0)` to `RetryPolicy.attempts`.
 
-- one refused weaker owner
-- one refused stronger owner
-- one named uncertainty you would investigate next in a real code review
+### Constraints
 
-Packet quality bar:
+- `Maximum` accepts numeric, non-boolean values only
+- rules run in declaration order after coercion
+- `"3"` remains accepted and stored as integer `3`
+- values above the maximum fail before storage
+- do not add generic containers, arbitrary classes, or best-effort constructor loops
 
-- another learner should be able to tell where truth lives without asking you
-- another learner should be able to spot when invalidation matters
-- another learner should be able to name the first escalation owner from your notes alone
+### Required evidence
 
-## Mastery standard for this exercise set
+Publish the rule order in the plan manifest and add tests for:
 
-Across all six answers, the module wants the same habits:
+- coercion followed by both successful rules
+- an over-maximum failure
+- boolean refusal
+- unchanged refusal of `list[int]` and unknown `Annotated` metadata
 
-- you treat invalidation as part of cache design
-- you make the source of truth explicit
-- you keep composed fields inspectable
-- you keep hint-driven validation narrow and honest
-- you name the point where field logic turns into framework architecture
+### Acceptance checks
 
-Across all ten answers, add two more habits:
+- hint tests pass
+- the supported type list is unchanged
+- the coercion table is unchanged
+- the refusal surface remains in the evidence packet
 
-- you make backend access and invalidation visible instead of implicit
-- you leave behind a descriptor-system packet another learner could review without guessing
+### Earlier contract to preserve
 
-If an answer still sounds like "the smart descriptor handles it," keep going.
+Optional `timeout`, non-blank label normalization, explicit boolean text, and all existing
+unsupported forms behave exactly as before.
 
-## Exit check for this exercise set
+## Exercise 6: Review the application boundary
 
-Before moving on to the answer key, make sure your packet lets another learner:
+### Starting context
 
-- trace one cache invalidation owner
-- trace one backend source of truth
-- explain one wrapper boundary
-- name one refused hint surface
-- name one point where the design must escalate into broader architecture
+The lab’s record model accepts external storage and composition. The incident-plugin
+capstone accepts explicit field subclasses and class-level collection while rejecting
+those stronger field powers.
 
-## Continue through Module 08
+### Objective
 
-- Previous: [Worked Example: Building an Educational Mini Relational Model](worked-example-building-an-educational-mini-relational-model.md)
-- Next: [Exercise Answers](exercise-answers.md)
-- Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)
+Produce a review decision that compares both systems and proposes the owner for one new
+requirement: atomic configuration updates across two plugin fields.
+
+### Constraints
+
+- do not implement the transaction
+- do not move transaction ownership into `Field.__set__`
+- inspect before constructing or executing a plugin
+- distinguish assignment validation from multi-write coordination
+
+### Required evidence
+
+Run:
+
+```bash
+make descriptor-system-lab
+make capstone-field-system
+```
+
+Submit:
+
+1. a field-capability comparison table
+2. the source of truth in each system
+3. accepted and rejected powers in each system
+4. why a field descriptor is too weak for atomic multi-field updates
+5. why a metaclass is also the wrong runtime transaction owner
+6. the proposed session or unit-of-work boundary
+7. the smallest tests that would prove commit and rollback
+
+### Acceptance checks
+
+- every conclusion cites executable evidence
+- plugin construction and action execution remain false
+- the selected owner can see both writes
+- one weaker and one stronger owner are rejected concretely
+- the answer states what remains unproved
+
+### Earlier contract to preserve
+
+The capstone’s existing per-field coercion, generated constructor, manifest, and action
+behavior remain unchanged.
+
+## Studio completion standard
+
+Your submission is complete when another learner can:
+
+- reproduce every command
+- identify where each value is authoritative
+- trace every mutation and backend access
+- locate failure before or after side effects
+- verify earlier behavior remained green
+- explain why each stronger mechanism was accepted or rejected
+
+Only then compare your work with the
+[Descriptor System Evidence Studio Review](exercise-answers.md).
