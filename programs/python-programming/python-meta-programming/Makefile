@@ -45,6 +45,14 @@ evidence-lab: ## Run the Module 03 runtime-evidence trust lab
 evidence-lab-test: ## Verify the Module 03 evidence classifications
 	@$(PYTHON) -m unittest discover -s tests -p "test_runtime_evidence_lab.py" -v
 
+.PHONY: evidence-repr
+evidence-repr: ## Run the Module 03 signature-guided representation
+	@$(PYTHON) -m labs.runtime_evidence.repr_demo
+
+.PHONY: evidence-repr-test
+evidence-repr-test: ## Verify the Module 03 representation boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_signature_guided_repr.py" -v
+
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
 	@$(RUN_CAPSTONE) demo
