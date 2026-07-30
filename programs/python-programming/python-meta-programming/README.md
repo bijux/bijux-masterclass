@@ -1,8 +1,14 @@
 # Python Metaprogramming
 
-Python Metaprogramming is the runtime-judgment course in the `python-programming`
-family. It teaches introspection, decorators, descriptors, and metaclasses as tools
-that must earn their complexity through observability, testability, and clear ownership.
+Python Metaprogramming is a teaching-first masterclass in the `python-programming`
+family. Its primary product is the course website: sequenced lessons, runnable labs,
+worked examples, decision-focused exercises, and reasoned answers for independent study.
+It teaches introspection, decorators, descriptors, and metaclasses as tools that must
+earn their complexity through observability, testability, and clear ownership.
+
+The incident-plugin capstone is the integration project. It lets learners transfer
+course ideas into one realistic runtime, but it does not replace the lessons or define
+the whole learning experience.
 
 ## Core question
 
@@ -43,10 +49,15 @@ By the end of the course, you should be able to:
 ## Course shape
 
 - `course-book/guides/` contains learner routes, question maps, checkpoints, and proof ladders.
-- `course-book/capstone/` contains repository entry pages, architecture routes, walkthroughs, and review checklists.
-- `course-book/reference/` contains durable maps, glossaries, and review standards.
 - `course-book/module-00-orientation/` plus Modules `01` to `10` contain the core teaching arc.
-- `capstone/` contains the executable incident-plugin runtime used to prove the course claims
+- `labs/` contains small executable learning surfaces that isolate the concept currently
+  being taught.
+- `tests/` proves the claims made by those course labs.
+- `course-book/reference/` contains durable maps, glossaries, and review standards.
+- `course-book/capstone/` contains integration-project routes, architecture walkthroughs,
+  and review checklists.
+- `capstone/` contains the executable incident-plugin runtime used for transfer and
+  integration proof.
 - `Makefile` exposes stable program-level commands from the monorepo root
 
 ## Reading contract
@@ -57,7 +68,8 @@ This is not a browse-at-random course. The sequence matters:
 2. Learn wrapper design before descriptor ownership.
 3. Learn descriptor ownership before metaclasses.
 4. Learn the mechanism ladder before governance and red lines.
-5. Keep the capstone open while reading so every hook stays attached to one runnable codebase.
+5. Run the focused lesson or lab before transferring the mechanism into the capstone.
+6. Use the capstone after the concept is clear enough to explain what the larger system adds.
 
 If you skip that order, later modules can still feel readable, but the design trade-offs
 become much harder to judge honestly.
@@ -74,7 +86,8 @@ become much harder to judge honestly.
 8. Use `course-book/module-00-orientation/mid-course-map.md` when you are resuming the course after a break and need to re-enter from the right boundary.
 9. Use `course-book/guides/proof-ladder.md` when you need the smallest honest proof route.
 10. Move through Modules `00` to `10` in order, then close with the mastery review inside Module `10`.
-11. Keep `course-book/capstone/index.md` and `course-book/capstone/capstone-map.md` open while reading.
+11. Use `course-book/capstone/index.md` and `course-book/capstone/capstone-map.md` after
+    each module to locate its smallest integration proof.
 
 ## What this course covers
 
@@ -105,7 +118,7 @@ become much harder to judge honestly.
 ## How the capstone fits
 
 [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/python-programming/python-meta-programming/capstone)
-is the executable proof for the course. It is a plugin runtime for incident-delivery
+is the integration project for the course. It is a plugin runtime for incident-delivery
 adapters that keeps four mechanisms visible in one inspectable system:
 
 - descriptor-backed configuration fields
@@ -119,6 +132,10 @@ Use it to answer questions like:
 - Which work happens at class-definition time instead of runtime invocation?
 - Which exported facts can be inspected without executing user behavior?
 
+Those questions are transfer work. Learn each mechanism first from the core lesson,
+runnable example, worked example, and exercises. Then use the capstone to check whether
+your explanation survives contact with a system where several mechanisms interact.
+
 ## Working locally
 
 From the repository root:
@@ -126,6 +143,8 @@ From the repository root:
 ```bash
 make PROGRAM=python-programming/python-meta-programming docs-serve
 make PROGRAM=python-programming/python-meta-programming docs-build
+make -C programs/python-programming/python-meta-programming lab
+make -C programs/python-programming/python-meta-programming lab-test
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -133,10 +152,11 @@ make PROGRAM=python-programming/python-meta-programming capstone-verify-report
 make PROGRAM=python-programming/python-meta-programming capstone-confirm
 ```
 
-Use `capstone-walkthrough` for the first published learner-facing route, `capstone-tour`
-when you want the same saved bundle in the proof ladder, `capstone-verify-report` when
-you need durable executable evidence, and `capstone-confirm` for the strictest published
-confirmation pass.
+Use `lab` for the Module 01 learner-facing evidence, and `lab-test` for its focused proof.
+Use `capstone-walkthrough` when you are ready to transfer course concepts into the
+integration project, `capstone-tour` when you want the same saved bundle in the proof
+ladder, `capstone-verify-report` when you need durable integration evidence, and
+`capstone-confirm` for the strictest capstone confirmation pass.
 
 Primary reading route:
 
@@ -144,6 +164,10 @@ Primary reading route:
 - `course-book/guides/start-here.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
+- `course-book/module-01-runtime-objects-object-model/index.md`
+- `labs/runtime_objects/evidence.py`
+- `course-book/module-01-runtime-objects-object-model/exercises.md`
+- `course-book/module-01-runtime-objects-object-model/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`
