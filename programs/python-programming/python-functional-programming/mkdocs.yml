@@ -198,6 +198,7 @@ nav:
 - 'Module 10: Refactoring, Performance, and Sustainment':
   - Home: module-10-refactoring-performance-sustainment/index.md
   - Module 10 Capstone Delta: module-10-refactoring-performance-sustainment/capstone-delta.md
+  - Retrieval as Functional Composition: module-10-refactoring-performance-sustainment/retrieval-as-functional-composition.md
   - Systematic Refactor: module-10-refactoring-performance-sustainment/systematic-refactor.md
   - Performance Budgeting: module-10-refactoring-performance-sustainment/performance-budgeting.md
   - Observability: module-10-refactoring-performance-sustainment/observability.md

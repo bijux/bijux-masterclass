@@ -52,8 +52,11 @@ rename does not need a benchmark. An optimization does. A metadata contract chan
 needs a translator and migration review. An optional backend proposal needs
 ordering, failure, delivery, and pressure semantics before installation matters.
 
-Module 10 adds one small cumulative capability:
+Module 10 completes one missing product behavior and then makes change evidence
+reviewable:
 
+- query and ranked-result states become explicit immutable values;
+- one pure retrieval function scores and deterministically orders the local index;
 - shells collect observations;
 - pure functions classify evidence, performance, migration, and scaling facts;
 - `review_change` combines only the checks relevant to a proposed change; and
@@ -64,36 +67,40 @@ exact Module 09-to-10 source and proof surfaces.
 
 ## Study sequence
 
-### Establish a trustworthy change
+### Complete and characterize the local product
 
-1. [Systematic Refactor](systematic-refactor.md) — characterize behavior before
+1. [Retrieval as Functional Composition](retrieval-as-functional-composition.md)
+   — turn the embedded index into ranked chunk values without hiding ordering or
+   overclaiming semantic relevance.
+
+2. [Systematic Refactor](systematic-refactor.md) — characterize behavior before
    moving code.
-2. [Performance Budgeting](performance-budgeting.md) — separate semantic
+3. [Performance Budgeting](performance-budgeting.md) — separate semantic
    equivalence, measurement, and the budget decision.
-3. [Observability](observability.md) — retain execution facts without turning
+4. [Observability](observability.md) — retain execution facts without turning
    metrics into hidden policy.
 
 ### Strengthen the evidence
 
-4. [Property-Based Regression](property-based-regression.md) — generate domain
+5. [Property-Based Regression](property-based-regression.md) — generate domain
    cases for a stable semantic predicate.
-5. [Async Property Testing](async-property-testing.md) — vary scheduler pressure
+6. [Async Property Testing](async-property-testing.md) — vary scheduler pressure
    while asserting ordering and boundedness laws.
-6. [Advanced Patterns and Scaling](advanced-patterns-and-scaling.md) — decide
+7. [Advanced Patterns and Scaling](advanced-patterns-and-scaling.md) — decide
    whether a more complex execution route has earned its cost.
 
 ### Keep contracts understandable
 
-7. [DDD and FP](ddd-and-fp.md) — assign language and review ownership without
+8. [DDD and FP](ddd-and-fp.md) — assign language and review ownership without
    inventing services.
-8. [Versioning and Migration](versioning-and-migration.md) — distinguish
+9. [Versioning and Migration](versioning-and-migration.md) — distinguish
    structural compatibility from semantic translation.
-9. [Governance](governance.md) — connect each important claim to a narrow
+10. [Governance](governance.md) — connect each important claim to a narrow
    executable route.
 
 ### Deliver the learning result
 
-10. [Capstone Delivery](capstone-delivery.md) — assemble a review dossier for the
+11. [Capstone Delivery](capstone-delivery.md) — assemble a review dossier for the
     deterministic local application that actually exists.
 
 Use [Exercises](exercises.md) alongside the cores. Each exercise changes or reviews
