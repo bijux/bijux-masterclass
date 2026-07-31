@@ -108,11 +108,12 @@ Construction is pure. The same text and limit produce an equal query value.
 
 Cosine similarity is:
 
-\[
-\operatorname{cos}(a, b) =
-\frac{\sum_i a_i b_i}
-{\sqrt{\sum_i a_i^2}\sqrt{\sum_i b_i^2}}
-\]
+```text
+cos(a, b) = dot(a, b) / (magnitude(a) * magnitude(b))
+```
+
+Here, `dot(a, b)` is the sum of each pair of components multiplied together,
+and `magnitude(a)` is the square root of the sum of `a`'s squared components.
 
 The formula is defined only when:
 
