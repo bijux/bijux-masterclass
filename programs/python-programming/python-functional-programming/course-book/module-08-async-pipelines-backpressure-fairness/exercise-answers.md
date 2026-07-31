@@ -78,46 +78,228 @@ The policy is immutable description data. The semaphore, tasks, active counter,
 and work all come into existence only when the shell drives the returned
 `AsyncGen`.
 
-## Retry policy: inspect attempts and backoff
+## Retry policy: keep repetition at the embedding boundary
 
-With `backoff_base_ms=5`, zero jitter, and four permitted attempts, exponential
-backoff records `[0.005, 0.01, 0.02]`. There is no delay after the final
-successful attempt. The attempt counter remains zero at wrapper construction
-because `async_with_resilience` returns another `AsyncPlan`.
+Predict the calls before writing code:
 
-The retriable `TRANSIENT` code permits policy to continue. A different code
-would return immediately, while exhausting all four attempts would produce the
-wrapper's `MAX_RETRIES` error rather than the step's final raw error.
+| Document | Cleaning calls | Embedding attempts | Final position |
+| --- | ---: | ---: | --- |
+| `recovers` | 1 | 2 | `ok:recovers` |
+| `exhausts` | 1 | 2 | `err:MAX_RETRIES` |
+| `after` | 1 | 1 | `ok:after` |
+
+Cleaning happens before the resilient mapper, so an embedding retry cannot
+re-enter `clean_doc`. The mapper owns one plan per chunk and repeats only that
+plan. Exhaustion is emitted as a value, allowing the bounded stream to request
+the next prepared chunk.
+
+A defensible proof is:
+
+```python
+def test_embedding_retry_review() -> None:
+    docs = [
+        RawDoc("recovers", "Recovers", "first", "demo"),
+        RawDoc("exhausts", "Exhausts", "second", "demo"),
+        RawDoc("after", "After", "third", "demo"),
+    ]
+    cleaned: list[str] = []
+    attempts: dict[str, int] = {}
+
+    def tracked_clean(doc: RawDoc) -> CleanDoc:
+        cleaned.append(doc.doc_id)
+        return clean_doc(doc)
+
+    def scheduled_embedder(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+        async def run() -> Result[Chunk, ErrInfo]:
+            attempt = attempts.get(chunk.doc_id, 0) + 1
+            attempts[chunk.doc_id] = attempt
+
+            if chunk.doc_id == "recovers" and attempt == 1:
+                return Err(ErrInfo(code="TRANSIENT", msg="retry once"))
+            if chunk.doc_id == "exhausts":
+                return Err(ErrInfo(code="TRANSIENT", msg="still unavailable"))
+            return Ok(embed_chunk(chunk))
+
+        return run
+
+    resilient_embedder = resilient_mapper(
+        scheduled_embedder,
+        RetryPolicy(
+            max_attempts=2,
+            retriable_codes=frozenset({"TRANSIENT"}),
+            backoff_base_ms=0,
+            jitter_factor=0,
+        ),
+        env=make_test_resilience_env(),
+    )
+    stream = async_rag_chunks(
+        async_gen_from_list(docs),
+        RagEnv(chunk_size=32),
+        tracked_clean,
+        resilient_embedder,
+        BackpressurePolicy(max_concurrent=1, ordered=True),
+    )
+
+    assert attempts == {}
+
+    async def collect() -> list[Result[Chunk, ErrInfo]]:
+        return [item async for item in stream()]
+
+    results = asyncio.run(collect())
+    labels = [
+        f"ok:{item.value.doc_id}"
+        if isinstance(item, Ok)
+        else f"err:{item.error.code}"
+        for item in results
+    ]
+
+    assert labels == [
+        "ok:recovers",
+        "err:MAX_RETRIES",
+        "ok:after",
+    ]
+    assert cleaned == ["recovers", "exhausts", "after"]
+    assert attempts == {"recovers": 2, "exhausts": 2, "after": 1}
+    assert isinstance(results[1], Err)
+    assert results[1].error.ctx is not None
+    assert results[1].error.ctx["attempts"] == 2
+```
+
+The recovered `TRANSIENT` is an intermediate interpreter observation, not a
+stream output. The exhausted item is different: policy has no permitted attempt
+left, so it produces `MAX_RETRIES` and preserves the last failure in its
+context.
+
+The last `Ok` proves continuation. Without it, a broken short-circuiting stream
+could still satisfy the exhaustion assertions.
 
 Common wrong turns:
 
-- asserting elapsed time couples the test to scheduler and machine load;
-- injecting a blocking synchronous sleeper stalls the event loop;
-- expecting a fourth delay adds sleep after work has already succeeded;
-- assuming a retriable code means a non-idempotent write is safe to repeat.
+- wrapping `async_rag_chunks` in a retry loop repeats source, cleaning, and
+  already successful embedding work;
+- using `max_attempts=3` while expecting only three retries confuses total
+  attempts with additional attempts;
+- returning the last `TRANSIENT` after exhaustion contradicts the shipped
+  wrapper contract;
+- incrementing the cleaning trace inside the embedder stops proving the
+  boundary; and
+- treating `idempotent=True` as enforcement ignores the external effect's real
+  contract.
 
-This proof covers bounded attempts and the exponential schedule. Timeout
-translation, cancellation, and randomized jitter are distinct policy behaviors
-and deserve separate evidence.
+This proof establishes local repetition, bounded attempts, ordered output, and
+continuation for deterministic fakes. It does not establish that a remote
+embedding request is idempotent, that retries improve availability, or that a
+backoff value is operationally appropriate.
 
-## Deterministic testing: replay a timeout boundary
+Architecturally, the composition remains:
 
-`FakeTimeout` compares the injected clock with its deadline on context exit and
-uses `>=`. Advancing from zero to exactly `0.1` seconds therefore triggers a
-100 ms timeout. Rebuilding the clock, timeout context, environment, and plan
-gives the second execution the same initial state and the same result.
+```text
+one clean/chunk pass
+        ↓
+one bounded worker slot
+        ↓
+one resilient plan with up to two embedding attempts
+        ↓
+one visible Result position
+```
+
+## Deterministic testing: defend the boundary of a fake timeout
+
+The fake timeout uses `>=`, so reaching exactly `0.050` seconds crosses a
+50 ms deadline. Each attempt gets a new timeout context. The clock itself keeps
+its current value, but the `after` attempt records its deadline relative to that
+current value and completes without advancing it.
+
+One complete implementation is:
+
+```python
+def test_embedding_timeout_review() -> None:
+    def run_once() -> tuple[list[str], list[str], float]:
+        clock = FakeClock()
+        attempted: list[str] = []
+
+        def timed_embedder(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+            async def run() -> Result[Chunk, ErrInfo]:
+                attempted.append(chunk.doc_id)
+                if chunk.doc_id == "deadline":
+                    clock.advance_s(0.050)
+                return Ok(embed_chunk(chunk))
+
+            return run
+
+        resilient_embedder = resilient_mapper(
+            timed_embedder,
+            RetryPolicy(max_attempts=1),
+            TimeoutPolicy(timeout_ms=50),
+            env=make_test_resilience_env(clock=clock),
+            timeout_ctx=make_fake_timeout_ctx(clock),
+        )
+        stream = async_rag_chunks(
+            async_gen_from_list(
+                [
+                    RawDoc("before", "Before", "first", "demo"),
+                    RawDoc("deadline", "Deadline", "second", "demo"),
+                    RawDoc("after", "After", "third", "demo"),
+                ]
+            ),
+            RagEnv(chunk_size=32),
+            clean_doc,
+            resilient_embedder,
+            BackpressurePolicy(max_concurrent=1, ordered=True),
+        )
+
+        async def collect() -> list[Result[Chunk, ErrInfo]]:
+            return [item async for item in stream()]
+
+        labels = [
+            f"ok:{item.value.doc_id}"
+            if isinstance(item, Ok)
+            else f"err:{item.error.code}"
+            for item in asyncio.run(collect())
+        ]
+        return labels, attempted, clock.now_s()
+
+    first = run_once()
+    second = run_once()
+
+    assert first == second
+    assert first == (
+        ["ok:before", "err:TIMEOUT", "ok:after"],
+        ["before", "deadline", "after"],
+        0.050,
+    )
+```
+
+The deadline-crossing embedder computes an `Ok`, but `FakeTimeout.__aexit__`
+observes the crossed deadline and raises before the wrapper can return that
+value. The resilience interpreter translates the exception to `TIMEOUT`.
+
+`after` remains visible because timeout is local to one resilient plan. Its
+deadline begins at logical time `0.050` and the plan does not advance the clock.
+
+The two required conclusions are:
+
+> The fake proves that the resilience policy translates a logically crossed
+> per-attempt deadline into `Err(TIMEOUT)` while preserving later stream work.
+
+> The fake does not prove that a production task receives cancellation at
+> 50 ms or that its resources are released correctly.
+
+Moving `clock` outside `run_once` mutates the second execution's initial state.
+Even if the labels happened to remain equal, the test would no longer be a
+replay from equivalent inputs.
 
 Common wrong turns:
 
-- reusing the advanced clock changes the second execution's starting state;
-- injecting a fake clock but allowing the real timeout context mixes two time
-  models;
-- adding a real sleep defeats both speed and determinism;
-- claiming this test proves cancellation overstates a logical timeout fake.
+- sharing the clock, attempt list, or stream description across runs;
+- injecting `FakeClock` but forgetting to pass its timeout context;
+- asserting elapsed wall time in addition to logical time;
+- interpreting context-exit checking as task interruption; and
+- using this unit test as evidence for provider or resource cancellation.
 
-The appropriate evidence is structural: equal typed results, equal logical-time
-observations, and no real delay. Production cancellation still belongs in a
-narrow integration test using the actual timeout context.
+This proof establishes repeatable policy translation, exact boundary behavior,
+and application continuation. A separate controlled integration test using the
+real timeout mechanism is needed for cancellation and cleanup.
 
 ## Fairness: inspect a weighted prefix
 
