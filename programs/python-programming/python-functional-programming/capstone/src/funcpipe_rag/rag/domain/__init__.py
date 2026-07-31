@@ -27,6 +27,7 @@ from .perf import (
     process_batch_hybrid,
     to_optimized_batch,
 )
+from .retrieval import RankedChunk, SearchQuery
 from .text import ChunkText
 
 __all__ = [
@@ -37,6 +38,8 @@ __all__ = [
     "ChunkText",
     "Embedding",
     "OBatch",
+    "RankedChunk",
+    "SearchQuery",
     "assemble",
     "embedding_batches_equivalent",
     "from_optimized_batch",

@@ -21,6 +21,7 @@ from .chunk import (
 from .embedding import Embedding
 from .metadata import ChunkMetadata
 from .perf import OBatch, from_optimized_batch, process_batch_hybrid, to_optimized_batch
+from .retrieval import RankedChunk, SearchQuery
 from .text import ChunkText
 
 __all__ = [
@@ -35,8 +36,9 @@ __all__ = [
     "ChunkMetadataV1",
     "upcast_metadata_v1",
     "OBatch",
+    "RankedChunk",
+    "SearchQuery",
     "to_optimized_batch",
     "from_optimized_batch",
     "process_batch_hybrid",
 ]
-
