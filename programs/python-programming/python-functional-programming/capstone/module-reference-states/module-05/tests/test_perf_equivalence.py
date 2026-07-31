@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import numpy as np
+from hypothesis import given
+from hypothesis import strategies as st
+
 from funcpipe_rag.fp.validation import VFailure, VSuccess
 from funcpipe_rag.rag.domain import (
     AssembledChunk,
@@ -8,8 +11,6 @@ from funcpipe_rag.rag.domain import (
     ChunkText,
     process_batch_hybrid,
 )
-from hypothesis import given
-from hypothesis import strategies as st
 
 chunk_strat = st.builds(
     AssembledChunk,

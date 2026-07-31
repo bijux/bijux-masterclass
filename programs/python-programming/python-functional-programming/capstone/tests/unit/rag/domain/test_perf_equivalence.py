@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from hypothesis import given
+from hypothesis import strategies as st
+
 from funcpipe_rag.rag.domain import (
     AssembledChunk,
     ChunkMetadata,
@@ -7,8 +10,6 @@ from funcpipe_rag.rag.domain import (
     embedding_batches_equivalent,
     process_batch_hybrid,
 )
-from hypothesis import given
-from hypothesis import strategies as st
 
 chunk_strat = st.builds(
     AssembledChunk,
