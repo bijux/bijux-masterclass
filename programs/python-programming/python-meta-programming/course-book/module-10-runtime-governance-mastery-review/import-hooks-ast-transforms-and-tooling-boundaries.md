@@ -1,6 +1,5 @@
 # Import Hooks, AST Transforms, and Tooling Boundaries
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -17,338 +16,281 @@ graph LR
 ```
 
 ```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+sequenceDiagram
+  participant Test
+  participant MetaPath as sys.meta_path
+  participant Finder as VirtualModuleFinder
+  participant Cache as sys.modules
+  Test->>MetaPath: install exact-name finder
+  Test->>Finder: import owned module
+  Finder->>Finder: find → create → exec
+  Finder->>Cache: cache loaded module
+  Test->>MetaPath: remove finder
+  Test->>Cache: remove owned module
+  Test--xFinder: same import now fails
 ```
 <!-- page-maps:end -->
 
-Import hooks and AST transforms sit near the edge of what ordinary application code can
-justify responsibly.
+Import hooks and AST transforms sit near the top of Python's runtime-power ladder. They
+can be excellent tools when the problem genuinely belongs to import integration,
+compilation, instrumentation, or source analysis. In ordinary application wiring, they
+often hide ownership that explicit imports and functions would preserve.
 
-That does not make them illegitimate. It means they need a much stronger explanation than
-"Python lets us do it."
+This core teaches two experiments:
 
-This page fails if readers leave thinking the main lesson is "clean up your hook in a
-finally block." The deeper lesson is owner selection: process-wide mechanisms must solve
-process-wide problems, not ordinary application wiring problems in a more dramatic way.
+- a finder/loader that owns one exact virtual module for one context;
+- an AST transformer that replaces one exact trusted constant and reports the count.
 
-## The sentence to keep
+Both are executable. Both are constrained to tooling. Neither is proposed for the
+incident-plugin application's runtime behavior.
 
-Import hooks and AST transforms are usually tooling mechanisms, not application defaults,
-because they change global semantics and raise the cost of reasoning about every import.
+## Why the review bar rises
 
-That is the governance center of gravity for this page.
+An application function changes behavior when someone calls it. A finder inserted into
+`sys.meta_path` participates in imports throughout the process while installed. An AST
+transform changes code before execution, so the source a reviewer reads is not exactly the
+code object that runs.
 
-If the design claim could be rewritten as "we wanted it to be automatic," the mechanism is
-probably already too strong.
-
-For self-study, turn that sentence into a tooling-grade test:
-
-- what process-wide problem is being solved?
-- what explicit-import, registry, or build-time alternative was checked first?
-- how does the system behave with the hook or transform disabled entirely?
-
-## Evidence route for hooks and transforms
-
-Use this route before approving an import hook or AST rewrite:
-
-| Review step | What to inspect | What strong evidence looks like |
-| --- | --- | --- |
-| Name the owner | Is this tooling-grade, infrastructure-grade, or just application convenience? | One of those is chosen explicitly |
-| Name the process-wide change | What imports, modules, or code paths are altered once the mechanism is enabled? | Global semantics are named concretely |
-| Reject lower-power alternatives | What explicit-import, registry, or build-time option was considered first? | A simpler owner was rejected for a specific reason |
-| Inspect reversibility | How is the hook disabled, removed, or bypassed? | Cleanup and no-hook operation are documented |
-| Preserve evidence | How do tracebacks, source locations, reload paths, and ordering stay inspectable? | Location-preservation and ordering rules are explicit |
-
-## Why the review bar jumps so sharply
-
-These mechanisms widen blast radius immediately:
-
-- they can affect many imports instead of one local object
-- they are order-sensitive
-- they complicate reloading and cache invalidation
-- they can confuse debuggers, profilers, and editors if source locations drift
-
-In other words, they are powerful precisely where ordinary code wants predictability.
-
-## Honest approval language versus overclaim
-
-| Honest claim | Overclaim to reject |
+| Mechanism | Hidden surface |
 | --- | --- |
-| "This hook instruments imports for tracing during one controlled process lifetime." | "This gives us seamless plugin discovery with no architectural cost." |
-| "This AST transform rewrites one syntax pattern while preserving source locations." | "This lets us upgrade application behavior automatically everywhere." |
+| meta-path finder | process-wide import resolution order |
+| loader | module creation and execution |
+| `sys.modules` cache | future imports may bypass the finder |
+| AST transformer | executed structure may differ from source |
+| `compile` / `exec` | transformed code executes in the current process |
 
-## Import hooks change the process-wide import story
+The mechanism may target one name or one constant, but the integration point is still
+powerful. Governance must describe both the narrow match and the broad hook point.
 
-Python import machinery can be customized through `sys.meta_path`.
+## A finder and loader with one owner
 
-That is real and sometimes useful, especially for tooling:
-
-- tracing
-- coverage
-- instrumentation
-- controlled virtual modules
-
-But the consequence is equally real:
-
-- you are no longer reviewing one module
-- you are reviewing altered import behavior for the process
-
-That should make reviewers slower, not more impressed.
-
-Keep the practical rule visible:
-
-when import behavior changes globally, the burden of proof rises globally too.
-
-## A tiny reversible virtual-module example
+Open `labs/runtime_governance/tooling.py`. `VirtualModuleFinder` implements both
+`MetaPathFinder` and `Loader`:
 
 ```python
-import sys
-import types
-from importlib.machinery import ModuleSpec
+class VirtualModuleFinder(MetaPathFinder, Loader):
+    def find_spec(
+        self,
+        fullname: str,
+        path: object = None,
+        target: ModuleType | None = None,
+    ) -> ModuleSpec | None:
+        if fullname != self.module_name:
+            return None
+        self.events.append(f"find:{fullname}")
+        return ModuleSpec(fullname, self)
 
-
-class VirtualFinder:
-    def find_spec(self, fullname, path=None, target=None):
-        if fullname == "virtual_mod":
-            return ModuleSpec(fullname, VirtualLoader())
+    def create_module(self, spec: ModuleSpec) -> ModuleType | None:
+        self.events.append(f"create:{spec.name}")
         return None
 
-
-class VirtualLoader:
-    def create_module(self, spec):
-        return types.ModuleType(spec.name)
-
-    def exec_module(self, module):
-        module.answer = 42
-
-
-finder = VirtualFinder()
-sys.meta_path.insert(0, finder)
-try:
-    import virtual_mod
-    print(virtual_mod.answer)  # 42
-finally:
-    sys.meta_path.remove(finder)
+    def exec_module(self, module: ModuleType) -> None:
+        self.events.append(f"exec:{module.__name__}")
+        module.__dict__.update(self.attributes)
 ```
 
-The important part is not the trick. It is the cleanup.
+The exact-name condition is essential. For every name it does not own, `find_spec` returns
+`None` and normal import resolution continues.
 
-Without the reversible lifetime, even a bounded example encourages the wrong instinct.
+Returning `None` from `create_module` has a different meaning: use Python's default module
+creation. `exec_module` then populates that module. Keep these two `None` results separate:
 
-## Hook-lifetime checklist
+- `find_spec -> None`: this finder declines the import;
+- `create_module -> None`: this loader accepts default module allocation.
 
-For any import hook, another engineer should be able to answer:
+## Lifetime requires cache cleanup too
 
-- when is it installed?
-- when is it removed?
-- what imports happened before installation?
-- what happens if it is installed twice?
-- how does the system behave with no hook at all?
+Removing the finder is not enough. Once imported, the module lives in `sys.modules`;
+another import may return the cached object without consulting finders.
 
-Keep one no-hook worksheet beside every import-time mechanism:
-
-| Question | Strong answer shape |
-| --- | --- |
-| what still works with no hook? | core application logic or baseline program behavior |
-| what capability disappears? | tracing, instrumentation, rewrite, or discovery convenience |
-| what evidence stays available? | source locations, fallback startup path, or explicit import behavior |
-| what cleanup restores baseline? | finder removal, cache reset, or disabled pipeline path |
-
-## AST transforms can preserve shape or quietly destroy evidence
-
-AST rewriting is another mechanism that looks delightful in demos and expensive in
-maintenance.
-
-It can be justified for tooling, code generation, or tightly scoped experiments. It must
-still preserve debugging evidence.
+The context manager owns both surfaces:
 
 ```python
-import ast
+@contextmanager
+def installed_virtual_module(module_name, attributes):
+    if module_name in sys.modules:
+        raise RuntimeError(f"module already loaded: {module_name}")
+    finder = VirtualModuleFinder(module_name, attributes)
+    sys.meta_path.insert(0, finder)
+    try:
+        yield finder
+    finally:
+        if finder in sys.meta_path:
+            sys.meta_path.remove(finder)
+        loaded = sys.modules.get(module_name)
+        if loaded is not None and loaded.__loader__ is finder:
+            sys.modules.pop(module_name, None)
+```
 
+The cleanup removes the module only if this finder loaded it. That identity check prevents
+the helper from deleting a module now owned by someone else.
 
-class SquareCall(ast.NodeTransformer):
-    def visit_Call(self, node):
-        self.generic_visit(node)
-        if isinstance(node.func, ast.Name) and node.func.id == "square" and len(node.args) == 1:
-            argument = node.args[0]
-            rewritten = ast.BinOp(left=argument, op=ast.Mult(), right=argument)
-            return ast.copy_location(rewritten, node)
+The precondition also refuses a module name already present in the cache. Silently
+replacing an existing module would make ownership ambiguous.
+
+## No-hook mode is part of the contract
+
+Inside the context, importing `_bijux_runtime_governance_virtual` yields a virtual module
+and records:
+
+```text
+find:_bijux_runtime_governance_virtual
+create:_bijux_runtime_governance_virtual
+exec:_bijux_runtime_governance_virtual
+```
+
+After exit:
+
+```text
+hook_present_after_scope = false
+module_cached_after_scope = false
+no_hook_failure = "ModuleNotFoundError"
+```
+
+The final import failure proves something important: the experiment did not quietly make
+the application depend on the hook after its published lifetime.
+
+No-hook mode should be tested whenever the design claims a hook is optional. Otherwise
+"optional" may mean only that setup code has a flag while downstream behavior still
+requires the altered import semantics.
+
+## The AST transform has a different owner
+
+The second experiment operates on trusted static source:
+
+```python
+class ConstantRewriter(ast.NodeTransformer):
+    def __init__(self, old: str, new: str) -> None:
+        self.old = old
+        self.new = new
+        self.replacements = 0
+
+    def visit_Constant(self, node: ast.Constant) -> ast.AST:
+        if node.value == self.old:
+            self.replacements += 1
+            return ast.copy_location(ast.Constant(self.new), node)
         return node
 ```
 
-And after rewriting:
+`rewrite_constant` parses in statement mode, visits the tree, fixes location metadata,
+compiles under the explicit filename `<constant-rewriter>`, executes, and returns both the
+result and replacement count.
 
-```python
-tree = ast.parse("def f(x): return square(x) + 1")
-tree = SquareCall().visit(tree)
-ast.fix_missing_locations(tree)
+```mermaid
+flowchart LR
+  source["result = 'draft'"] --> tree["ast.parse"]
+  tree --> visit["ConstantRewriter"]
+  visit --> count["replacement_count = 1"]
+  visit --> locations["fix_missing_locations"]
+  locations --> code["compile with owned filename"]
+  code --> result["result = 'approved'"]
 ```
 
-Two functions matter here for governance:
+The count is provenance. A transformer that silently matches zero nodes could appear to
+succeed while doing nothing. A transformer that unexpectedly matches many nodes could
+change more code than the proposal described.
 
-- `ast.copy_location(...)`
-- `ast.fix_missing_locations(...)`
+## Source locations are operational evidence
 
-Without them, tracebacks and tooling often become much harder to trust.
+`ast.copy_location` preserves location from the replaced node.
+`ast.fix_missing_locations` fills required metadata on generated nodes.
+The explicit compile filename gives tracebacks an owner.
 
-That makes location preservation part of correctness, not an optional nicety for better
-debugger screenshots.
+These details do not prove semantic equivalence, but omitting them makes debugging
+transformed code materially worse.
 
-## Tooling-grade problems are the honest home
+A serious transform should also consider:
 
-These mechanisms are strongest when the problem is already meta-level:
+- whether `ast.unparse` output is retained for review;
+- whether before/after trees or hashes are recorded;
+- whether exact replacement counts are asserted;
+- how Python-version AST changes are tested;
+- whether line mappings remain useful to debuggers and coverage tools.
 
-- code coverage
-- tracing
-- static-to-runtime instrumentation
-- educational or experimental transformation pipelines
+## This transform is not a dynamic-execution exception
 
-They are weakest when used to avoid explicit application architecture.
+`rewrite_constant` eventually calls `exec` in the current process. Its source is trusted
+and fixed by the experiment. Empty builtins does not make it suitable for untrusted input.
 
-Common weak justification:
+The dynamic-execution lesson still applies. An AST transform changes source shape; it does
+not create process isolation.
 
-- "we wanted automatic plugin discovery without explicit imports"
+## Tooling-grade and application-grade pressures
 
-Common stronger justification:
-
-- "we are building instrumentation that must see modules as they load"
-
-The difference is not cleverness. It is whether global import semantics are really the
-natural owner of the problem.
-
-## Tooling-grade examples versus application-grade drift
-
-| Pressure | Honest owner | Why |
+| Pressure | Tooling mechanism may be earned | Ordinary application alternative |
 | --- | --- | --- |
-| coverage or tracing across many imports | import hook or instrumentation layer | the problem is already process-wide |
-| code rewrite for controlled educational analysis | AST transform pipeline | the source transformation itself is the product |
-| plugin discovery in one app package | explicit imports, registries, or entry points | global import mutation is stronger than the need |
-| startup convenience for local modules | explicit startup wiring | the problem is architecture, not import machinery |
+| test Python's import integration | exact-name temporary finder | direct loader call if import semantics are irrelevant |
+| collect coverage or rewrite compiled templates | observable AST transform | ordinary function composition |
+| analyze or lint source without execution | AST visitor | explicit domain model |
+| select application plugins | usually no | explicit configuration and discovery adapter |
+| change one application constant | no | parameter, configuration, or function |
+| make imports look seamless | no | ordinary explicit import |
 
-## Application code usually has clearer alternatives
+The word "seamless" is a warning in review. Hidden integration cost is often being
+presented as ergonomics.
 
-Before approving import machinery changes, compare them against lower-power options:
+## Run the evidence
 
-- explicit imports
-- package entry points
-- build-time code generation
-- decorators or registries
-- configuration files and explicit startup wiring
+From the course root:
 
-If one of those keeps the behavior visible, it usually wins.
+```console
+make runtime-governance-lab
+python -m unittest discover -s tests -p "test_runtime_governance_tooling.py" -v
+```
 
-That win matters even when the lower-power design is more repetitive. Repetition is often
-cheaper than invisible global semantics.
+The tests prove:
 
-## Weak answers to reject early
+- the exact virtual name loads with ordered events;
+- unrelated imports are ignored;
+- finder and owned cache entry are removed;
+- no-hook import fails;
+- the constant replacement and count are visible;
+- the packet refuses application and untrusted-source approval.
 
-| Weak answer | Why it fails |
+They do not prove that arbitrary import-hook composition is order-independent or that a
+source transform preserves arbitrary program semantics.
+
+## Failure routes to review
+
+| Failure route | Required response |
 | --- | --- |
-| "the hook makes startup seamless" | seamless hides global semantics and ordering cost |
-| "the transform only rewrites a tiny pattern" | tiny does not excuse lost locations or hidden import-time behavior |
-| "we can remove the hook later if needed" | later is not a present cleanup story |
-| "the app needs automatic discovery" | automatic discovery is not yet a tooling-grade justification |
+| finder claims names it does not own | narrow matching or reject the hook |
+| cleanup removes only `sys.meta_path` entry | remove the owned cache entry too |
+| cleanup deletes any same-named module | check loader identity before removal |
+| transform matches zero or too many nodes | assert an expected replacement count |
+| generated locations are absent | copy and repair location metadata |
+| application requires the tooling hook | provide and test no-hook behavior, or redesign |
+| transformed source is untrusted | refuse in-process execution |
 
-## "No-hook mode" is a real design requirement
+## Capstone transfer: ordinary imports stay ordinary
 
-One of the best governance tests is simple:
+The incident-plugin runtime rejects application import hooks and AST rewriting. Its plugin
+classes are imported normally. Registration happens for already imported class
+definitions; discovery remains an explicit external concern.
 
-can the system still run correctly with the hook disabled?
+Run:
 
-For many legitimate tooling cases, the answer should be yes:
+```console
+make capstone-class-creation
+make capstone-governance
+```
 
-- coverage disabled still runs the program
-- tracing disabled still runs the program
-- AST instrumentation disabled still leaves the core logic intact
+The class-creation report rejects package discovery as a metaclass power. The governance
+report rejects application hooks and transforms and selects ordinary imports plus tooling
+outside the application process.
 
-If the application cannot function without the import trick, the trick may be owning too
-much of the design.
+This separation prevents a class definition, an import policy, and deployment discovery
+from becoming one invisible lifecycle.
 
-Before you leave this page, write one sentence beginning:
+## Review checkpoint
 
-- "this mechanism is tooling-grade because..."
-- "no-hook mode here means..."
+Explain why each pair differs:
 
-## Failure modes to name explicitly
+- exact-name matching versus local blast radius;
+- finder removal versus complete hook cleanup;
+- source-location preservation versus semantic equivalence;
+- empty builtins versus process isolation;
+- a tooling experiment versus an application extension architecture.
 
-Watch for these:
-
-| Failure mode | What goes wrong |
-| --- | --- |
-| hook introduced for local application convenience | process-wide cost is paid for a local problem |
-| no-hook mode breaks core application behavior | the import mechanism owns too much architecture |
-| rewritten AST loses source locations | tracebacks and tooling evidence become less trustworthy |
-| ordering assumptions stay implicit | behavior changes across startup paths and tests |
-| cleanup is missing or partial | later tests or modules inherit altered semantics |
-
-## Reloading and ordering are not side notes
-
-Import hooks are sensitive to timing:
-
-- what imports happened before the hook was installed?
-- what order are multiple hooks evaluated in?
-- what state survives module reloads?
-- how are caches invalidated?
-
-These are not obscure corner cases. They are part of the primary ownership cost.
-
-## Review rules for hooks and transforms
-
-When reviewing import hooks or AST transforms, ask these questions:
-
-- is this solving a tooling problem or an application-architecture problem?
-- what is the disable path?
-- how are cleanup, ordering, and reload behavior tested?
-- are source locations preserved after transformation?
-- what lower-power alternative was rejected, and why?
-- what process-wide behavior changes once this hook is enabled?
-
-Add one more final question:
-
-- what sentence explains why this is a tooling problem rather than an application-structure problem?
-
-If the answer to the last question is fuzzy, the design is not yet governable.
-
-## What this page makes clear
-
-The point is not "never touch import machinery."
-
-The boundary is:
-
-- global semantics demand global responsibility
-- tooling can justify powers that ordinary application code usually cannot
-- reversibility and evidence preservation matter even more at the highest-power layer
-
-That is why Module 10 treats this topic as a boundary review, not a celebration.
-
-## What to practice from this page
-
-Try these before moving on:
-
-1. Write down one import-hook idea that should become explicit imports instead.
-2. Add a disable path and cleanup step to one hook design.
-3. Explain why location preservation is part of correctness for AST transforms.
-
-## Exit check for this page
-
-Before moving on, make sure you can do all of the following:
-
-- reject one application-grade import-hook idea in favor of explicit structure
-- explain why no-hook mode is part of good design, not optional polish
-- name one source-location surface that must survive AST rewriting
-- describe one concrete process-wide behavior change a hook introduces
-
-If those feel ordinary, the next step is to bring the full module together into an
-approval standard: how to choose the lowest-power mechanism and defend escalation only
-when the evidence is strong enough.
-
-## Continue through Module 10
-
-- Previous: [Observability, Reversibility, and Monkey-Patching Boundaries](observability-reversibility-and-monkey-patching-boundaries.md)
-- Next: [Mechanism Selection, Review Gates, and Escalation Boundaries](mechanism-selection-review-gates-and-escalation-boundaries.md)
-- Practice: [Exercises](exercises.md)
-- Terms: [Glossary](glossary.md)
+You are ready for mechanism selection when you can approve this lab as constrained tooling
+while rejecting the same primitives for the capstone application.
