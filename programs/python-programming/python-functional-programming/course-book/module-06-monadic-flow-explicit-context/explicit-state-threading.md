@@ -1,68 +1,74 @@
-# Explicit State Threading
+# State: Return Local Progress Explicitly
 
+Reader describes a computation that reads the same environment throughout:
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Monadic Flow Explicit Context"]
-  page["Explicit State Threading"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+```text
+RagEnv -> Value
 ```
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+State describes a computation that receives a state value and returns a new
+one alongside its result:
+
+```text
+Progress -> (Value, Progress)
 ```
-<!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Nothing mutates in place. The change is explicit in the return value.
 
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
+This can clarify several dependent updates, but a fold or an ordinary tuple is
+often simpler. Learn State as a composition tool with a cost, not as the
+mandatory replacement for every counter.
 
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
+## Start from the FuncPipe progress requirement
 
-**Core question**  
-How do you handle the last remaining effect — local mutable state — in a pure, composable, testable way by explicitly threading state through the pipeline, without ever using a global or in-place mutation again?
+The learning proof chunks ten normalized characters into three chunks:
 
-This is the final effect-encoding pattern. After this core, every pipeline you write will be completely pure, referentially transparent, and mechanically proven correct — while still being able to count tokens, accumulate metadata, or track progress.
+```text
+"abcd", "efgh", "ij"
+```
 
-Use this when you need counters, accumulators, or temporary mutable state inside pipelines but refuse to pay the price of globals or hidden mutation.
+It wants to retain:
 
-**Outcome**
-1. You will write every stateful pipeline as a pure `State[S, T]`.
-2. You will thread state automatically with `.and_then`.
-3. You will have Hypothesis proof that your State compositions satisfy the monad laws — meaning refactoring is always safe.
+- the current chunk text as the flow value;
+- the number of observed chunks; and
+- the number of observed characters.
 
-## Why State Is the Final Effect
+The progress model is immutable:
 
-- **get / put / modify**: Read, write, or update the current state — pure because a new state is always returned.
-- **and_then**: Threads the state automatically through dependent steps — exactly like Reader, but the "environment" can change.
-- **State + Result**: The real daily driver — state + error handling in one pure value.
+```python
+@dataclass(frozen=True)
+class Progress:
+    chunks: int = 0
+    characters: int = 0
+```
 
-Use State **only** when you truly need to accumulate or mutate something across steps.  
-For read-only dependencies, use Reader (M06C04).  
-In practice, most real pipelines are layered: `Reader[Config, State[PipelineState, Result[T, ErrInfo]]]`.
+One accounting operation has this conceptual signature:
 
-## Runnable lab: return chunk progress without a global counter
+```text
+str -> State[Progress, str]
+```
 
-The learning proof turns progress into a frozen value threaded between three
-real chunk texts:
+Its implementation returns the text and a new progress value:
+
+```python
+def account(text: str) -> State[Progress, str]:
+    return State(
+        lambda progress: (
+            text,
+            Progress(
+                chunks=progress.chunks + 1,
+                characters=(
+                    progress.characters + len(text)
+                ),
+            ),
+        )
+    )
+```
+
+## Run the complete state transition
+
+The operations are dependent because each one must receive the progress
+returned by the preceding operation:
 
 ```python
 program = (
@@ -71,13 +77,19 @@ program = (
     .and_then(lambda _: account(chunks[2].text))
 )
 
-assert run_state(program, Progress()) == (
-    "ij",
-    Progress(chunks=3, characters=10),
-)
+initial = Progress()
+value, final = run_state(program, initial)
 ```
 
-Run the proof:
+The expected observation is:
+
+```python
+assert value == "ij"
+assert final == Progress(chunks=3, characters=10)
+assert initial == Progress()
+```
+
+Run it:
 
 ```bash
 cd capstone/module-reference-states/module-06
@@ -85,201 +97,179 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
   -k state_threads_rag_chunk_progress_without_global_mutation
 ```
 
-The caller supplies the initial value and receives the final value. The proof
-also retains the original frozen `Progress()` instance. State is useful here
-because several dependent operations update the same local progress contract;
-a single count calculation would be clearer as an ordinary pure function.
+The last assertion matters. It distinguishes returning a new frozen value from
+mutating the caller’s initial state.
 
-## 1. Laws & Invariants (machine-checked in CI)
+## Trace `and_then` by hand
 
-| Law                 | Formal Statement                                                            | Why it matters                                            |
-|---------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Left Identity       | `pure(x).and_then(f) == f(x)`                                               | Safe to lift plain values                                 |
-| Right Identity      | `s.and_then(pure) == s`                                                     | Safe to extract sub-pipelines                             |
-| Associativity       | `s.and_then(f).and_then(g) == s.and_then(lambda x: f(x).and_then(g))`       | Grouping never changes meaning                            |
-| Get/Put Retrieval   | `get().and_then(put) == pure(None)`                                         | Get then put restores original state                      |
-| Put/Get             | `put(s).and_then(lambda _: get()) == put(s).map(lambda _: s)`               | Put then get returns the new value                        |
-| Modify Identity     | `modify(lambda s: s) == pure(None)`                                         | Modifying with identity does nothing                      |
+For initial `Progress()`:
 
-All laws verified with Hypothesis. A single counterexample breaks CI.
+| Operation | Returned value | Returned state |
+| --- | --- | --- |
+| `account("abcd")` | `"abcd"` | `Progress(chunks=1, characters=4)` |
+| `account("efgh")` | `"efgh"` | `Progress(chunks=2, characters=8)` |
+| `account("ij")` | `"ij"` | `Progress(chunks=3, characters=10)` |
 
-## 2. Public API – State is a one-field dataclass (mypy --strict clean)
+`State.and_then` passes only the value into the function you provide. It
+threads the updated state internally:
 
 ```python
-# capstone/src/funcpipe_rag/fp/effects/state.py – end-of-Module-06 (mypy --strict clean target)
+def and_then(
+    self,
+    f: Callable[[T], State[S, U]],
+) -> State[S, U]:
+    def run(state: S) -> tuple[U, S]:
+        value, next_state = self.run(state)
+        return f(value).run(next_state)
 
-from __future__ import annotations
-from dataclasses import dataclass
-from typing import Generic, Callable, TypeVar
-
-S = TypeVar("S")   # State type
-T = TypeVar("T")
-U = TypeVar("U")
-
-@dataclass(frozen=True)
-class State(Generic[S, T]):
-    run: Callable[[S], tuple[T, S]]
-
-    def map(self, f: Callable[[T], U]) -> "State[S, U]":
-        def run(s: S) -> tuple[U, S]:
-            value, new_s = self.run(s)
-            return f(value), new_s
-        return State(run)
-
-    def and_then(self, f: Callable[[T], "State[S, U]"]) -> "State[S, U]":
-        def run(s: S) -> tuple[U, S]:
-            value, new_s = self.run(s)
-            return f(value).run(new_s)
-        return State(run)
-
-# Primitives
-def pure(x: T) -> State[S, T]:
-    return State(lambda s: (x, s))
-
-def get() -> State[S, S]:
-    return State(lambda s: (s, s))
-
-def put(new_s: S) -> State[S, None]:
-    return State(lambda _: (None, new_s))
-
-def modify(f: Callable[[S], S]) -> State[S, None]:
-    return State(lambda s: (None, f(s)))
-
-def run_state(p: State[S, T], initial: S) -> tuple[T, S]:
-    return p.run(initial)
-```
-
-That matches the repository snapshot in `capstone/src/funcpipe_rag/fp/effects/state.py`.
-If you want the value-only or state-only views, you can still read them directly from
-`run_state(p, initial)[0]` and `run_state(p, initial)[1]` without introducing extra
-helpers into the core course surface.
-
-## 3. Canonical Style – The Way You Will Actually Write 99% of State Pipelines
-
-```python
-@dataclass(frozen=True)
-class PipelineState:
-    total_tokens: int = 0
-    processed_chunks: int = 0
-
-def embed_chunk(chunk: Chunk) -> State[PipelineState, Result[EmbeddedChunk, ErrInfo]]:
-    # NOTE: In this core we deliberately ignore Reader/ports and focus only on the State aspect.
-    # In the real codebase (M07+), this function lives inside a Reader[Config, ...] and uses ports, not globals.
-    def run(st: PipelineState) -> tuple[Result[EmbeddedChunk, ErrInfo], PipelineState]:
-        tokens = tokenize(chunk.text.content)
-        vec = model.encode(tokens)                                 # model from Reader (outer layer)
-        embedded = replace(chunk, embedding=Embedding(vec, current_model))
-
-        new_st = PipelineState(
-            total_tokens=st.total_tokens + len(tokens),
-            processed_chunks=st.processed_chunks + 1,
-        )
-        return Ok(embedded), new_st
     return State(run)
-
-# Usage
-initial_state = PipelineState()
-(result, final_state) = run_state(embed_chunk(some_chunk), initial_state)
-print(final_state.total_tokens)
 ```
 
-This is the style you will use every day when you need local mutable state.
+The caller still controls when the whole description runs and which initial
+state it receives.
 
-## 4. Composition When You Need Reusable Steps
+## `get`, `put`, and `modify`
+
+The Module 06 API includes three small descriptions:
 
 ```python
-def count_tokens(tokens: list[str]) -> State[PipelineState, list[str]]:
-    return (
-        modify(lambda st: replace(st, total_tokens=st.total_tokens + len(tokens)))
-        .and_then(lambda _: pure(tokens))
-    )
-
-def embed_and_count(chunk: Chunk) -> State[PipelineState, Result[EmbeddedChunk, ErrInfo]]:
-    return (
-        pure(chunk.text.content)
-        .map(tokenize)
-        .and_then(count_tokens)          # accumulates + forwards tokens
-        .map(model.encode)
-        .map(lambda vec: replace(chunk, embedding=Embedding(vec, current_model)))
-        .map(Ok)
-    )
+get()          # state -> (state, state)
+put(new)       # state -> (None, new)
+modify(f)      # state -> (None, f(state))
 ```
 
-## 5. Before → After – Manual Threading vs State
+They are useful when a composed operation needs to inspect or replace state
+without manually constructing `State`.
+
+For example, update progress and keep the chunk as the main value:
 
 ```python
-# BEFORE – manual threading (signatures explode)
-def step1(x: int, s: int) -> tuple[int, int]:
-    return x + 1, s + 1
-
-def step2(y: int, s: int) -> tuple[int, int]:
-    return y * 2, s * 2
-
-def pipeline(x: int, s: int) -> tuple[int, int]:
-    y, s1 = step1(x, s)
-    z, s2 = step2(y, s1)
-    return z, s2
-
-# AFTER – pure State, composable
-def step1_s(x: int) -> State[int, int]:
-    return modify(lambda s: s + 1).map(lambda _: x + 1)
-
-def step2_s(y: int) -> State[int, int]:
-    return modify(lambda s: s * 2).map(lambda _: y * 2)
-
-pipeline_s = pure(some_x).and_then(step1_s).and_then(step2_s)
-(value, final_s) = run_state(pipeline_s, initial_s)
+def account_chunk(chunk: Chunk) -> State[Progress, Chunk]:
+    return modify(
+        lambda progress: Progress(
+            chunks=progress.chunks + 1,
+            characters=(
+                progress.characters + len(chunk.text)
+            ),
+        )
+    ).map(lambda _: chunk)
 ```
 
-Zero manual threading. Zero mutation. Full composability.
+The `map` restores the domain value after `modify` returns `None`.
 
-## 6. Property-Based Proofs (capstone/tests/test_state_laws.py)
+## Compare State with a fold
+
+If the only requirement is a final aggregate, a fold is clearer:
 
 ```python
-@given(x=st.integers())
-def test_state_left_identity(x):
-    f = lambda n: State(lambda s: (n + 1, s + 1))
-    assert run_state(pure(x).and_then(f), 0) == run_state(f(x), 0)
-
-@given(p=st_states())
-def test_state_associativity(p):
-    f = lambda a: State(lambda s: (a + 1, s + 1))
-    g = lambda b: State(lambda s: (b * 2, s * 2))
-    assert run_state(p.and_then(f).and_then(g), 0) == run_state(p.and_then(lambda x: f(x).and_then(g)), 0)
-
-def test_get_put_retrieval():
-    prog = get().and_then(put)
-    assert run_state(prog, 42) == (None, 42)
-
-def test_put_get():
-    s_val = 42
-    prog1 = put(s_val).and_then(lambda _: get())
-    prog2 = put(s_val).map(lambda _: s_val)
-    assert run_state(prog1, 0) == run_state(prog2, 0)
+final = reduce(
+    lambda progress, chunk: Progress(
+        chunks=progress.chunks + 1,
+        characters=(
+            progress.characters + len(chunk.text)
+        ),
+    ),
+    chunks,
+    Progress(),
+)
 ```
 
-## 7. Anti-Patterns & Immediate Fixes
+Choose State when:
 
-| Anti-Pattern              | Symptom                           | Fix                          |
-|---------------------------|-----------------------------------|------------------------------|
-| Global mutable state      | Untestable, race-prone            | Use State + explicit threading |
-| In-place mutation         | Hidden side effects               | Return new state             |
-| Manual state passing      | Signatures explode                | State composes automatically |
+- several reusable operations update the same local state;
+- those operations also pass meaningful values to dependent steps;
+- the caller must choose the initial state; and
+- the state transition should compose without manual tuple unpacking.
 
-## 8. Pre-Core Quiz
+Choose a fold when:
 
-1. State replaces…? → **Global mutable variables**  
-2. You read state with…? → **get()**  
-3. You update state with…? → **put() or modify()**  
-4. You run a State with…? → **run_state(p, initial)**  
-5. The golden rule? → **Never mutate in place again**
+- traversal and aggregation are the whole problem;
+- only the final aggregate matters; and
+- introducing `State[S, A]` would hide a straightforward reduction.
 
-## 9. Post-Core Exercise
+The module exercise asks you to justify this choice, not just implement the
+State version.
 
-1. Take your largest global-mutable-state pipeline and rewrite it using the `def run(st):` style inside a State.
-2. Add a token counter + processed-chunks counter to an existing embedding pipeline.
-3. Layer State inside Reader from M06C04 — run the same pipeline with two different configs and assert different final states.
+## State is not shared mutable state
 
-**Continue with:** [Error-Typed Flows](../module-06-monadic-flow-explicit-context/error-typed-flows.md)
+State does not provide:
 
-You have now handled **all three classic effects** (config, failure, state) in a pure, composable way. Every pipeline you write from here on is mathematically pure, fully testable, and proven correct by Hypothesis. The remaining cores are polish and architecture.
+- synchronization between threads or tasks;
+- atomic updates to shared storage;
+- persistence;
+- crash recovery; or
+- global progress reporting.
+
+It models a local state transition as a value. Two calls to
+`run_state(program, Progress())` are separate runs. If the application needs
+shared concurrent progress, Module 08’s coordination rules and an appropriate
+effect boundary are required.
+
+## Layering State with failure requires a policy
+
+These types do not mean the same thing:
+
+```text
+State[S, Result[A, E]]
+Result[State[S, A], E]
+```
+
+In the first shape, running State produces both an updated state and a Result.
+A failure value may therefore accompany state changes.
+
+In the second shape, an outer `Err` means there is no State program to run.
+
+Module 06 does not prescribe one large Reader-State-Result stack. If you layer
+contexts, state the failure and state-retention policy first and test it.
+[Layered Containers](layered-containers.md) develops that reasoning with the
+smaller Result/Option case.
+
+## What the laws allow
+
+The State law tests compare both returned components after running from the
+same initial state. They cover:
+
+```text
+left identity
+right identity
+associativity
+get followed by put
+put followed by get
+modify with identity
+```
+
+Run them:
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/test_state_laws.py
+```
+
+These laws support regrouping State descriptions. They do not prove the
+progress formula is correct. The learning test supplies that application
+evidence by asserting exact chunk and character counts.
+
+## Common wrong turns
+
+- **Mutating fields inside `State.run`.** The wrapper does not make in-place
+  mutation referentially transparent.
+- **Reading a module-global counter.** That removes the caller-supplied initial
+  state and makes runs interfere.
+- **Using State for a single sum.** A fold communicates simple aggregation
+  more directly.
+- **Asserting only the final count.** Compare the returned domain value, every
+  state field, and the unchanged initial value.
+- **Calling State concurrency-safe.** Local value threading is not
+  synchronization.
+
+## What the focused proof establishes
+
+The learning test proves deterministic local progress for one ordered chunk
+sequence, explicit initial and final states, and preservation of the original
+frozen value.
+
+It does not prove concurrency safety, persistence, or that State is preferable
+to a fold for every aggregation.
+
+Continue with [Error-Typed Flows](error-typed-flows.md), where the module
+separates recoverable boundary failures from unexpected exceptions.
