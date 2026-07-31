@@ -1,94 +1,141 @@
-# Capstone Map
+# Map the Course to the Evolving Application
 
+This map answers one question: **what application change belongs to the module I am
+studying?** It keeps later abstractions out of earlier lessons and makes preserved
+behavior visible.
 
-<!-- page-maps:start -->
-## Page Maps
+## Read a module as a delta
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Capstone"]
-  page["Capstone Map"]
-  capstone["Capstone evidence"]
+For Modules 02–09, compare two sibling directories:
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+```text
+capstone/module-reference-states/module-XX
+capstone/module-reference-states/module-YY
 ```
+
+`XX` is the preceding module and `YY` is the current one. Module 01 starts from the
+course problem statement rather than a tracked Module 00 application. Module 10 compares
+the Module 09 state with the live capstone.
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  m01["01<br/>pure core"]
+  m02["02<br/>data-first API"]
+  m03["03<br/>lazy multi-source flow"]
+  m04["04<br/>typed resilience"]
+  m05["05<br/>domain values"]
+  m06["06<br/>explicit context"]
+  m07["07<br/>effect plans"]
+  m08["08<br/>bounded async"]
+  m09["09<br/>interop edges"]
+  m10["10<br/>evidence-led change"]
+
+  m01 --> m02 --> m03 --> m04 --> m05
+  m05 --> m06 --> m07 --> m08 --> m09 --> m10
 ```
-<!-- page-maps:end -->
 
-Read the first diagram as a timing map: this page routes you into the right capstone
-surface, not through every capstone page in order. Read the second diagram as the guide
-loop: arrive with one question, choose the matching route, then leave with one smaller
-and more honest next move.
+Each arrow means “add one capability while preserving the earlier contracts.” It does
+not mean every file changes or every concept should be generalized.
 
-This map turns the capstone into a deliberate study surface instead of a single guide
-page. Use it whenever you want to decide where to go next for concrete evidence.
+## Module-by-module application contract
 
-## Choose one capstone route
+| Module | Capability before | New pressure and earned change | First source to inspect | Learning proof |
+| --- | --- | --- | --- | --- |
+| 01 — purity | an imperative ingestion idea with no trusted seams | cleaning, chunking, and ranking become substitutable pure functions; the shell owns file I/O | `module-01/src/funcpipe_rag/pipeline_stages.py`, then `full_rag.py` and `rag_shell.py` | `module-01/tests/learning/test_module_01_purity_foundations.py` |
+| 02 — data-first APIs | a pure pipeline with arguments scattered across calls | configuration and requests become explicit values; filesystem failures cross the shell as `Result` values | `module-02/src/funcpipe_rag/api/config.py`, `api/core.py`, then `shells/rag_api_shell.py` | `module-02/tests/learning/test_module_02_data_first_apis.py` and `test_module_02_filesystem_boundary.py` |
+| 03 — lazy dataflow | one request can be evaluated, but eager collection and multiple sources create memory and scheduling pressure | iterator stages, bounded chunking, fan-in, fan-out, and observation become explicit without changing result order | `module-03/src/funcpipe_rag/api/core.py`, then `streaming/fanin.py` and `streaming/fanout.py` | `module-03/tests/learning/test_module_03_streaming_dataflow.py` |
+| 04 — resilient streaming | lazy values can flow, but failures and resource limits still need policy | `Result` streams, folds, retry reports, circuit breakers, and resource-aware traversal make partial failure reviewable | `module-04/src/funcpipe_rag/result/stream.py`, then `policies/retries.py`, `policies/breakers.py`, and `policies/resources.py` | `module-04/tests/learning/test_module_04_resilient_streaming.py` |
+| 05 — algebraic modelling | failures are explicit, but important RAG states can still be represented by loose primitives | document, chunk, metadata, and embedding values gain smart construction and validation; accumulated errors remain data | `module-05/src/funcpipe_rag/rag/domain/`, then `fp/validation.py` and `rag/stages.py` | `module-05/tests/learning/test_module_05_data_modelling.py` |
+| 06 — explicit context | domain values are safer, but configuration, state, and diagnostics can produce nested plumbing | bind, lifted functions, reader-style configuration, state threading, and writer-style diagnostics compose context without hiding it | `module-06/src/funcpipe_rag/fp/effects/`, then `result/types.py` and `fp/effects/configurable.py` | `module-06/tests/learning/test_module_06_explicit_context.py` |
+| 07 — effect boundaries | context is explicit in values, but the application still needs owned execution, cleanup, and transactions | capabilities describe required effects; plans stay inspectable; adapters execute storage, clock, logging, and transactional behavior | `module-07/src/funcpipe_rag/domain/capabilities.py`, `domain/effects/`, then `boundaries/` and `infra/adapters/` | `module-07/tests/learning/test_module_07_effect_boundaries.py` |
+| 08 — bounded async | effects have owners, but concurrent work introduces pressure, ordering, cancellation, and fairness questions | async plans, bounded gather, queues, timeouts, and backpressure make scheduling policy explicit and testable | `module-08/src/funcpipe_rag/domain/effects/async_/`, then `infra/adapters/async_runtime.py` | `module-08/tests/learning/test_module_08_async.py` |
+| 09 — interop discipline | the internal architecture is coherent, but libraries, dataframe tools, CLI overrides, and distributed backends expose foreign contracts | adapters and compatibility functions translate at named edges; external helpers do not become the domain model | `module-09/src/funcpipe_rag/interop/`, then `pipelines/cli.py`, `pipelines/distributed.py`, and `boundaries/shells/` | `module-09/tests/learning/test_module_09_interop.py` |
+| 10 — sustainment | the application works through explicit seams, but change claims need evidence and ownership | semantic equivalence, budgets, migration shape, observation, and published evidence routes compose into review decisions | live `src/funcpipe_rag/review/`, then `boundaries/shells/review_cli.py` | live `tests/learning/test_module_10_sustainment.py` and `tests/unit/review/` |
 
-| If your question is... | Best page | Smallest command if needed |
-| --- | --- | --- |
-| Which capstone page should I open first? | [FuncPipe Capstone Guide](index.md) | none |
-| Which files should I read first? | [Capstone File Guide](capstone-file-guide.md) | `make PROGRAM=python-programming/python-functional-programming inspect` |
-| Which tests or proof artifacts match the current module? | [Capstone Proof Guide](capstone-proof-guide.md) | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
-| Where do package boundaries and adapters live? | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make PROGRAM=python-programming/python-functional-programming inspect` |
-| Which saved proof route fits this claim? | [Capstone Proof Guide](capstone-proof-guide.md) | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
-| I need the guided walkthrough story. | [Capstone Walkthrough](capstone-walkthrough.md) | `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough` |
-| I need explicit review prompts or change placement. | [Capstone Review Worksheet](capstone-review-worksheet.md) or [Capstone Extension Guide](capstone-extension-guide.md) | none |
+All paths in the first nine rows are relative to
+`capstone/module-reference-states/`. The Module 10 paths are relative to `capstone/`.
 
-## Module-to-capstone bridge
+## Run the state you are reading
 
-| Module range | Best first route |
-| --- | --- |
-| Modules 01 to 03 | `fp/`, `result/`, `streaming/`, and the pipeline core |
-| Modules 04 to 06 | failure containers, algebraic modelling, and configured flows |
-| Modules 07 to 08 | `domain/`, `boundaries/`, `infra/`, and async effect packages |
-| Modules 09 to 10 | `interop/`, review guides, and proof surfaces |
+From the repository root, substitute the two-digit module:
 
-## Module-to-file, test, and proof route
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-module-state-proof MODULE=04
+```
 
-| Module | Best first source surface | Best first test or review surface | Best first command |
-| --- | --- | --- | --- |
-| Module 01: Purity and substitution | `capstone/module-reference-states/module-01/src/funcpipe_rag/rag_types.py`, `pipeline_stages.py`, `full_rag.py`, `rag_shell.py` | `capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py`, `test_module_01_shell_boundary.py` | `make PROGRAM=python-programming/python-functional-programming capstone-foundation-proof` |
-| Module 02: Data-first APIs and expression style | `capstone/module-reference-states/module-02/src/funcpipe_rag/api/config.py`, `api/core.py`, `shells/rag_api_shell.py`, `shells/rag_main.py` | `capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py`, `test_module_02_filesystem_boundary.py` | `make PROGRAM=python-programming/python-functional-programming capstone-data-api-proof` |
-| Module 03: Iterators and lazy dataflow | `capstone/module-reference-states/module-03/src/funcpipe_rag/api/core.py::stream_rag_sources`, `streaming/fanin.py`, `streaming/fanout.py`, `core/structural_dedup.py` | `capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py` | `make PROGRAM=python-programming/python-functional-programming capstone-source-scheduling-proof` |
-| Module 04: Resilience and streaming failures | `capstone/src/funcpipe_rag/result/`, `capstone/src/funcpipe_rag/policies/retries.py`, `capstone/src/funcpipe_rag/policies/breakers.py` | `capstone/tests/unit/result/test_result_folds.py`, `capstone/tests/unit/policies/test_retries.py`, `capstone/tests/unit/policies/test_breakers.py` | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
-| Module 05: Algebraic data modelling | `capstone/src/funcpipe_rag/fp/validation.py`, `capstone/src/funcpipe_rag/rag/domain/` | `capstone/tests/unit/fp/test_pattern_matching.py`, `capstone/tests/unit/rag/test_stages.py` | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
-| Module 06: Monadic flow and explicit context | `capstone/src/funcpipe_rag/fp/effects/`, `capstone/src/funcpipe_rag/result/types.py` | `capstone/tests/unit/fp/test_configurable.py`, `capstone/tests/unit/fp/test_layering.py`, `capstone/tests/unit/result/test_option_result.py` | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
-| Module 07: Effect boundaries and resource safety | `capstone/src/funcpipe_rag/boundaries/`, `capstone/src/funcpipe_rag/domain/effects/`, `capstone/src/funcpipe_rag/domain/capabilities.py` | `capstone/tests/unit/domain/test_io_plan_laws.py`, `capstone/tests/unit/domain/test_session.py`, `capstone/tests/unit/domain/test_idempotent.py` | `make PROGRAM=python-programming/python-functional-programming capstone-tour` |
-| Module 08: Async FuncPipe and backpressure | `capstone/src/funcpipe_rag/domain/effects/async_/`, `capstone/src/funcpipe_rag/infra/adapters/async_runtime.py` | `capstone/tests/unit/domain/test_async_backpressure.py`, `capstone/tests/unit/domain/test_async_law_properties.py`, `capstone/tests/unit/domain/test_async_resilience.py` | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
-| Module 09: Ecosystem interop | `capstone/src/funcpipe_rag/boundaries/shells/cli.py`, `capstone/src/funcpipe_rag/pipelines/cli.py`, `capstone/src/funcpipe_rag/interop/` | `capstone/tests/unit/pipelines/test_cli_overrides.py`, `capstone/tests/unit/interop/test_stdlib_fp.py`, `capstone/tests/unit/interop/test_toolz_compat.py` | `make PROGRAM=python-programming/python-functional-programming capstone-tour` |
-| Module 10: Refactoring and sustainment | [FuncPipe Capstone Guide](index.md), [Capstone Architecture Guide](capstone-architecture-guide.md), [Capstone Proof Guide](capstone-proof-guide.md), `capstone/pyproject.toml` | [Capstone Walkthrough](capstone-walkthrough.md), [Capstone Proof Guide](capstone-proof-guide.md) | `make PROGRAM=python-programming/python-functional-programming test` |
+The command runs **all learning tests present in that state**, not only the new Module 04
+file. This is intentional. Module 04 is complete only when its resilience behavior
+passes while the Module 01–03 promises still pass.
 
-Use this table when a module page tells you to inspect the capstone and you want the
-smallest stable route from concept to source, proof, and command.
+Expected final lines resemble:
 
-Module 01 has two additional focused commands. Use
-`capstone-foundation-types` for strict checking of the isolated snapshot and
-`capstone-shell-proof` for CSV/JSONL equivalence and boundary failures. They
-complement the first pure-behavior command; none substitutes for the others.
+```text
+...................................................                      [100%]
+51 passed
+```
 
-Module 02 also divides proof ownership. Use `capstone-data-api-proof` for
-configuration, expression, and preservation laws. Use
-`capstone-data-shell-proof` for the concrete CSV/JSONL adapter and CLI boundary.
-Run both before treating the completed state as verified.
+The number may grow if that tracked state gains a justified proof. The important signal
+is that pytest loaded source from `module-reference-states/module-04/src` and selected
+tests from the same state.
 
-Module 03 has a similar evidence split. Use `capstone-source-scheduling-proof` for
-the six fan-in and fan-out application laws. Use `capstone-streaming-rag-proof`
-when the claim also depends on chunking, observation, complete eager equivalence,
-or unique-output fence demand.
+An invalid module fails before pytest:
 
-## Stop here when
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-module-state-proof MODULE=10
+```
 
-- you know which capstone page owns your question
-- you know whether you need code, tests, review prompts, or proof artifacts
-- you know the smallest command worth running next
+Module 10 is deliberately not a snapshot command. Its endpoint is the live capstone.
+Use:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming capstone-test
+```
+
+## Compare without drowning in the diff
+
+Suppose you are studying Module 07. Do not begin with a recursive diff of two large
+trees. Use this sequence:
+
+1. Read `module-07-effect-boundaries-resource-safety/capstone-delta.md`.
+2. Open the new Module 07 learning test and list its imported names.
+3. Find those names in the Module 07 source state.
+4. Check whether those source paths exist in Module 06.
+5. Compare only the relevant definitions and assertions.
+6. Run `capstone-module-state-proof MODULE=07`.
+7. Re-run one earlier test after temporarily changing only its input data, not source.
+
+That route keeps the comparison attached to a behavioral question. A large file-count
+increase is not itself evidence of learning or better design.
+
+## Diagnose three common mismatches
+
+### The lesson names a type absent from the state
+
+Confirm that you opened the matching two-digit directory. If the type exists only in a
+later state, the lesson or state is out of sequence; do not silently substitute the live
+implementation.
+
+### The state contains a package the lesson never explains
+
+First check the module delta and the new learning test. If neither supplies the pressure,
+record the package as unexplained. Passing tests do not make an unexplained abstraction
+pedagogically valid.
+
+### A current test passes but an earlier promise disappears
+
+Run the cumulative state proof rather than only the current module file. The state is
+incoherent if its new behavior requires an unexplained regression in an earlier law.
+
+## Your exit note
+
+Before returning to the module exercises, write four sentences:
+
+- “Before this module, FuncPipe could …”
+- “That became insufficient when …”
+- “The module changes …”
+- “The cumulative state proves … while preserving …”
+
+If a sentence relies on “more advanced” or merely repeats the module title, the delta is
+not yet understood.
