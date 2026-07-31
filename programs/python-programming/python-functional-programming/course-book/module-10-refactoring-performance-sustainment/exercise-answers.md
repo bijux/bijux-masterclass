@@ -193,23 +193,51 @@ In FuncPipe, governance routes reviewers to executable RAG evidence. The test
 suite remains the authority for behavior; the claim catalog makes that authority
 findable.
 
-## Capstone delivery: distinguish discoverability from execution
+## Capstone delivery: compose an honest change dossier
 
-`funcpipe-rag-review check` builds the same report as `summary`, then returns 1
-when any claim has missing paths. A source file without its declared test is
-incomplete because a reviewer cannot reach the promised proof.
+A defensible dossier is:
+
+1. **Claim:** pure and hybrid embedding preserve chunk text, metadata, failure
+   position, model, expected dimension, and vector meaning.
+2. **Source:** `src/funcpipe_rag/rag/domain/perf.py` owns both the routes and
+   `embedding_batches_equivalent`.
+3. **Proof:** run
+   `pytest -q tests/unit/rag/domain/test_perf_equivalence.py` and the named
+   Module 10 learning test.
+4. **Applicable decisions:** semantic equivalence, claim completeness, and the
+   performance budget apply. Migration and scaling do not.
+5. **Result:** equivalence and discoverability pass, but the supplied observation
+   exceeds peak memory, so the composed blocker is
+   `("performance:peak_memory",)`.
+6. **Limit:** the generated strategy and supplied observation do not establish
+   representative workload performance or hardware-specific numeric behavior.
+
+The key judgment is to preserve the memory blocker even though latency and
+throughput pass. Independent hard constraints are not votes. It is equally
+important not to add migration or scaling ceremony to a change that alters
+neither contract shape nor execution backend.
 
 Common wrong turns:
 
-- returning 0 with warnings makes automation treat incomplete evidence as success;
-- running every pytest command inside the inventory tool conflates fast inspection
-  with expensive confirmation;
-- emitting only text makes structured review automation brittle;
-- calling path presence a passing proof overstates what was checked.
+- treating a complete `EvidenceClaim` as proof that its command passed;
+- accepting the change because two of three performance dimensions pass;
+- running a benchmark inside `review_change`, which destroys deterministic replay;
+- adding every available assessment to appear thorough;
+- reporting only `acceptable=False` and losing the reason; and
+- claiming that one generated property covers every input or environment.
 
-The test proves exit-code and JSON behavior for the real endpoint. It does not
-prove any declared command passed. `pytest` and the final course gate provide that
-separate execution record.
+`test_change_review_composes_only_applicable_application_evidence` proves that
+already-classified application evidence composes into the expected blocker.
+`test_change.py` proves independent blockers retain review order and irrelevant
+checks may be absent. `make review-check` proves only that the published source
+and test paths exist.
 
-In FuncPipe, delivery is a chain from claim, to discoverable proof, to executed
-verification. No single link is allowed to impersonate the others.
+None of these commands proves that the 48 MB observation came from a representative
+benchmark. A real optimization decision still needs a declared workload and an
+effectful measurement route. The pure review model keeps that uncertainty visible
+instead of pretending to resolve it.
+
+In FuncPipe, capstone delivery is the learner's ability to connect one precise
+application claim to source, executable proof, applicable decisions, an observed
+result, and a stated limit. The local RAG application is the product being
+reviewed; no invented production platform is required.

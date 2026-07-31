@@ -264,31 +264,48 @@ pytest -q tests/learning/test_module_10_sustainment.py \
 Earlier contract preserved: governance describes how existing RAG laws are
 reviewed; it does not replace those laws with repository metadata.
 
-## Capstone delivery: distinguish discoverability from execution
+## Capstone delivery: compose an honest change dossier
 
-**Starting context:** run `make review-check`, then read
-`test_delivery_check_exposes_a_machine_readable_release_gate`.
+**Starting context:** read `review/change.py`,
+`test_change_review_composes_only_applicable_application_evidence`, and the
+`change-acceptance` entry in `EVIDENCE_CLAIMS`.
 
-**Objective:** remove one declared test path in a temporary project tree and
-explain why the check fails even though its implementation path exists.
+**Objective:** review a proposed hybrid-embedding change that preserves domain
+values and has a complete focused proof, but exceeds the memory budget.
 
 **Constraints:**
 
-- do not run declared commands inside the evidence assessor;
-- emit both human-readable and JSON reports;
-- return a nonzero exit code for incomplete evidence;
-- state which separate command proves execution.
+- use the actual embedding equivalence source and test paths;
+- pass the already-classified evidence into `review_change`;
+- include a budget decision because the proposal makes a performance claim;
+- omit migration and scaling assessments because neither applies;
+- do not execute tests or measurements inside `review_change`;
+- preserve every independent blocker in stable order; and
+- state what the generated equivalence and supplied budget observation do not
+  prove.
 
-**Expected evidence:** the incomplete temporary tree returns exit code 1 and names
-the missing test; the real capstone returns 0 before its focused tests run.
+**Expected evidence:** `review_change` returns an unacceptable decision with only
+`"performance:peak_memory"` as its blocker. `make review-check` confirms the
+published route is discoverable, while focused pytest separately proves execution.
 
-**Acceptance check:**
+**Acceptance checks:**
 
 ```bash
-make review-check
+pytest -q tests/unit/review/test_change.py
 pytest -q tests/learning/test_module_10_sustainment.py \
-  -k delivery_check_exposes_a_machine_readable_release_gate
+  -k change_review_composes_only_applicable_application_evidence
+make review-check
 ```
 
-Earlier contract preserved: the existing pytest and confirmation routes remain
-the behavioral authority; the delivery check makes their claim mapping fail closed.
+Earlier contracts preserved: Module 05 owns the `Chunk` equivalence predicate,
+Module 07 keeps measurement and filesystem effects at the shell, and Module 09
+remains the pre-sustainment reference state.
+
+Before comparing with the answer, write a six-line dossier containing:
+
+1. the RAG behavior claimed;
+2. the source boundary;
+3. the focused proof;
+4. the applicable review decisions;
+5. the observed result; and
+6. the limit of that evidence.
