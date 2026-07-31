@@ -227,4 +227,4 @@ Continue when you can:
 - distinguish schema stability from migration compatibility;
 - choose between a domain constructor, Pydantic, `Result`, and applicative validation for a concrete failure.
 
-Next, [Functor Mapping](functor-map.md) changes values inside an existing context without rewriting its success or failure structure.
+Next, [Functors](functors.md) change values inside an existing context without rewriting its success or failure structure.
