@@ -7,6 +7,55 @@ For every exercise, keep observations separate from decisions. Record what was
 measured or discovered, pass plain values to a deterministic rule, and state which
 earlier RAG behavior must remain unchanged.
 
+## Retrieval composition: filter without corrupting rank
+
+**Starting context:** read `SearchQuery` in `rag/domain/retrieval.py`,
+`retrieve` in `rag/retrieval.py`, and all four proofs in
+`tests/learning/test_module_10_retrieval.py`.
+
+**Objective:** add a minimum cosine score to the query contract so callers can
+exclude weak candidates without creating gaps in result ranks or changing the
+existing default behavior.
+
+**Constraints:**
+
+- represent the threshold as a field on the immutable `SearchQuery` value;
+- default it to `-1.0` so every previously legal query retains its result;
+- reject non-finite values and values outside `[-1.0, 1.0]`;
+- score each candidate once;
+- filter by threshold before applying `top_k`;
+- assign contiguous one-based ranks after filtering;
+- preserve the complete equal-score coordinate tie-break;
+- do not add a model SDK, vector database, or boundary effect; and
+- do not change the frozen Module 01–09 reference states.
+
+**Expected evidence:** use three explicit vectors to show one candidate above the
+threshold, one exactly on it, and one below it. Reversing candidate input order
+must not change the returned chunk IDs, scores, or ranks. An invalid threshold
+must fail during query construction.
+
+**Acceptance check:**
+
+```bash
+make capstone-retrieval-proof
+```
+
+Add one focused test name for the threshold behavior so the exact claim can also
+run with:
+
+```bash
+pytest -q tests/learning/test_module_10_retrieval.py \
+  -k threshold_filters_before_contiguous_ranking
+```
+
+Earlier contracts preserved: the Module 09 index remains historical input;
+`embed_chunk` retains its vector result; query and chunk text still use one
+embedding contract; equal scores keep deterministic coordinate order; and
+`top_k` remains an upper bound.
+
+Before reading the answer, state what this threshold proves about score mechanics
+and why it still cannot establish semantic relevance.
+
 ## Systematic refactor: make the starting observation trustworthy
 
 **Starting context:** read `build_summary` in
