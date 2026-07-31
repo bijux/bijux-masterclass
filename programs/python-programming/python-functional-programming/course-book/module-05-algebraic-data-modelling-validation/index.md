@@ -37,13 +37,15 @@ domain states instead of turning into type-shape ornament:
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for symptom-first review of modelling mistakes
 - [Capstone Map](../capstone/capstone-map.md) for the validation and domain-state surfaces in FuncPipe
 
-Carry this question into the module:
+Carry this question into every lesson:
 
-> Which states, failures, and construction rules deserve first-class value shapes instead of scattered conditionals?
+> Which distinction already exists in FuncPipe, and what invalid value or
+> lossy boundary are we removing?
 
-This module gives the course a stronger modelling language. Instead of encoding domain
-states and validation rules with flags, `None`, and scattered conditionals, you start
-using explicit data shapes that are easier to reason about and test.
+Module 5 is not permission to invent types. It is practice in choosing the
+smallest honest value shape for the cumulative RAG application. You begin with
+the existing pipeline products and `Result` sum, then study operations and
+boundaries that preserve their meaning.
 
 Start with the [Module 05 Capstone Delta](capstone-delta.md). It separates the
 new modelling behavior from broad package movement, names the stable ownership
@@ -51,24 +53,47 @@ boundaries, and gives a runnable route from Module 04.
 
 ## Learning outcomes
 
-- how product and sum types clarify domain meaning in Python
-- how mapping, validation, and aggregation follow stable algebraic rules
-- how smart constructors and pattern matching keep invariants close to the model
-- how serialization and performance pressure influence modelling choices
+- distinguish “all these fields” products from “one of these cases” sums;
+- trace `RawDoc → CleanDoc → ChunkWithoutEmbedding → Chunk` and name the
+  guarantee added by each operation;
+- reuse `Result` for success/failure instead of creating a parallel outcome;
+- decide between fail-fast `Result` and accumulating `Validation`;
+- validate a complete indexed chunk at the boundary without coupling the core
+  to Pydantic;
+- test preservation laws for mapping, aggregation, serialization, refactoring,
+  and an alternative representation.
 
-## Lesson map
+## Study route
 
-- [Product and Sum Types](product-and-sum-types.md)
-- [Domain State ADTs](domain-state-adts.md)
-- [Functors](functors.md)
-- [Applicative Validation](applicative-validation.md)
-- [Monoids](monoids.md)
-- [Pydantic Smart Constructors](pydantic-smart-constructors.md)
-- [Pattern Matching](pattern-matching.md)
-- [Serialization Beyond Pydantic](serialization-beyond-pydantic.md)
-- [Compositional Domain Models](compositional-domain-models.md)
-- [ADT Performance](adt-performance.md)
-- [Refactoring Guide](refactoring-guide.md)
+Follow the dependency, not merely the file order:
+
+```mermaid
+flowchart TD
+  shapes["Product and Sum Types<br/>real pipeline values"] --> states["Domain States<br/>real stage transitions"]
+  states --> map["Functors<br/>change a value in context"]
+  map --> validation["Applicative Validation<br/>accumulate independent errors"]
+  validation --> monoids["Monoids<br/>combine evidence lawfully"]
+  shapes --> boundary["Pydantic at the Boundary<br/>validate complete chunks"]
+  boundary --> match["Pattern Matching<br/>consume closed alternatives"]
+  match --> serde["Serialization<br/>preserve meaning on the wire"]
+  validation --> assembly["Compositional Models<br/>own cross-field checks"]
+  assembly --> performance["ADT Performance<br/>prove observable equivalence"]
+  serde --> refactor["Refactoring Guide<br/>preserve accepted values"]
+  performance --> refactor
+```
+
+1. Establish the real values in [Product and Sum Types](product-and-sum-types.md)
+   and [Domain States](domain-state-adts.md).
+2. Learn lawful operations in [Functors](functors.md),
+   [Applicative Validation](applicative-validation.md), and
+   [Monoids](monoids.md).
+3. Cross external representations in
+   [Pydantic at the Boundary](pydantic-smart-constructors.md),
+   [Pattern Matching](pattern-matching.md), and
+   [Serialization Beyond Pydantic](serialization-beyond-pydantic.md).
+4. Apply the judgment to [Compositional Domain Models](compositional-domain-models.md),
+   [ADT Performance](adt-performance.md), and the
+   [Refactoring Guide](refactoring-guide.md).
 
 ## Exercises
 
@@ -79,22 +104,33 @@ the evidence.
 
 ## Capstone checkpoints
 
-- Inspect where FuncPipe uses richer value shapes instead of raw primitives.
-- Compare fail-fast modeling with validation that accumulates multiple issues.
-- Review whether serialization keeps domain intent visible or leaks transport concerns inward.
+- Run `make capstone-module-state-proof MODULE=05`.
+- Find the test that proves embedding preserves ID, text, and offsets.
+- Compare the Module 5 `ChunkModel` fields with `core.rag_types.Chunk`; account
+  for every field crossing the conversion.
+- Compare fail-fast `Result` with the independent checks accumulated by
+  `Validation`.
+- Explain why the focused `rag/domain/` assembly lab does not replace the
+  cumulative pipeline values.
 
 ## Before moving on
 
-You should be able to explain how algebraic modelling makes downstream composition safer,
-and why explicit shapes matter before the course introduces lawful chaining patterns. Use
-[Refactoring Guide](refactoring-guide.md) and compare against
-`capstone/_history/worktrees/module-05` before moving forward.
+You should be able to explain how algebraic modelling makes downstream
+composition safer and where its cost is unjustified. Use the
+[Refactoring Guide](refactoring-guide.md), then compare
+`capstone/module-reference-states/module-04` with
+`capstone/module-reference-states/module-05`. The generated history worktree is
+a convenient view, but the tracked reference state is the source of truth.
 
 ## Closing criteria
 
-- You can explain which domain distinctions deserve explicit data shapes instead of flags, `None`, or stringly typed values.
-- You can review a constructor or pattern match and tell whether it keeps invariants close to the model.
-- You can justify a modelling trade-off in terms of correctness, composition, and long-term maintainability.
+- You can explain products and sums using the actual RAG types.
+- You can trace the stage transition and state what remains unchanged.
+- You can reject an unearned state machine and explain what pressure would earn
+  one.
+- You can review a constructor, adapter, or match and identify its owned
+  invariants.
+- You can run the learning proof and state what its evidence does not prove.
 
 ## Directory glossary
 
