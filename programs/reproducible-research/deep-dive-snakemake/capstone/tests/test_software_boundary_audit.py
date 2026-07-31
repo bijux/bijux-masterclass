@@ -19,9 +19,7 @@ def test_specimens_cover_three_distinct_source_contracts() -> None:
     ]
 
     specimens = CAPSTONE_ROOT / "repro" / "software-boundaries"
-    script_snakefile = (specimens / "script-directive" / "Snakefile").read_text(
-        encoding="utf-8"
-    )
+    script_snakefile = (specimens / "script-directive" / "Snakefile").read_text(encoding="utf-8")
     hidden_snakefile = (specimens / "hidden-package-source" / "Snakefile").read_text(
         encoding="utf-8"
     )

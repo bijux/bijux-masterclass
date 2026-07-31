@@ -52,9 +52,7 @@ def replace(path: Path, old: str, new: str) -> None:
 
 
 def test_capstone_modules_receive_only_declared_runtime_config() -> None:
-    caller = (
-        CAPSTONE_ROOT / "workflow" / "rules" / "preprocess.smk"
-    ).read_text(encoding="utf-8")
+    caller = (CAPSTONE_ROOT / "workflow" / "rules" / "preprocess.smk").read_text(encoding="utf-8")
     assert caller.count("config: MODULE_RUNTIME_CONFIG") == 2
     assert "config: config\n" not in caller
 

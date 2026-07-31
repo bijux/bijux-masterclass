@@ -119,9 +119,7 @@ def audit_model(
         write_trace(traces / f"{model_name}-{label}.txt", result)
 
     artifact = model / "build" / "rendered.txt"
-    artifact_lines = (
-        artifact.read_text(encoding="utf-8").splitlines() if artifact.exists() else []
-    )
+    artifact_lines = artifact.read_text(encoding="utf-8").splitlines() if artifact.exists() else []
     observations = {
         "initial_execution_returncode": initial_execution["returncode"],
         "baseline_dryrun_returncode": baseline_dryrun["returncode"],
@@ -142,8 +140,7 @@ def audit_model(
     artifact_marker = artifact_lines[0] if artifact_lines else ""
     result, failures = evaluate_model(
         baseline_converged=(
-            observations["baseline_dryrun_returncode"] == 0
-            and observations["baseline_converged"]
+            observations["baseline_dryrun_returncode"] == 0 and observations["baseline_converged"]
         ),
         changed_dryrun_succeeded=observations["changed_dryrun_returncode"] == 0,
         rerun_planned=observations["rerun_planned_after_source_change"],
