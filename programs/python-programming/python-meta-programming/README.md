@@ -223,7 +223,8 @@ target proves that registration alone stops at `__init_subclass__`, while the la
 `capstone-class-creation` transfer exposes the combined declaration-time and generated
 class contract that earns `PluginMeta`.
 
-Primary reading route:
+The website and course book are the primary learning route. After reading a lesson, use
+this repository source route to inspect the implementation it names:
 
 - `course-book/guides/index.md`
 - `course-book/guides/start-here.md`
@@ -279,6 +280,23 @@ Primary reading route:
 - `labs/descriptor_systems/boundaries.py`
 - `course-book/module-08-descriptor-systems-validation-framework-design/exercises.md`
 - `course-book/module-08-descriptor-systems-validation-framework-design/exercise-answers.md`
+- `course-book/module-09-metaclass-design-class-creation/index.md`
+- `labs/class_creation/manual.py`
+- `labs/class_creation/resolution.py`
+- `labs/class_creation/lifecycle.py`
+- `labs/class_creation/namespace.py`
+- `labs/class_creation/registry.py`
+- `labs/class_creation/boundaries.py`
+- `course-book/module-09-metaclass-design-class-creation/exercises.md`
+- `course-book/module-09-metaclass-design-class-creation/exercise-answers.md`
+- `course-book/module-10-runtime-governance-mastery-review/index.md`
+- `labs/runtime_governance/dynamic.py`
+- `labs/runtime_governance/interfaces.py`
+- `labs/runtime_governance/patching.py`
+- `labs/runtime_governance/tooling.py`
+- `labs/runtime_governance/selection.py`
+- `course-book/module-10-runtime-governance-mastery-review/exercises.md`
+- `course-book/module-10-runtime-governance-mastery-review/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`

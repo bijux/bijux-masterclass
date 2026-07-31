@@ -117,8 +117,8 @@ The course moves from plain observation to invasive runtime control:
 
 ### Course-level executable practice
 
-The first two modules provide dependency-free labs before learners enter wrapper and
-framework design. From the program directory, run:
+Every substantive module provides a dependency-free lab before the capstone transfer.
+For the first two modules, run:
 
 ```console
 make lab
@@ -130,8 +130,10 @@ make observation-lab-test
 
 Module 01 prints object-relationship evidence. Module 02 makes property and fallback
 execution countable, then supplies a bounded attachment-first debug view. The focused
-tests verify the claims taught by each module. Later modules use focused examples and the
-incident-plugin runtime where integration pressure makes the larger system useful.
+tests verify the claims taught by each module. Modules 03–10 follow the same
+lesson → lab → focused-test order; the [Course Map](module-00-orientation/course-map.md)
+publishes their commands. The incident-plugin runtime comes afterward, only when
+integration pressure makes the larger system useful.
 
 ### One integration project
 

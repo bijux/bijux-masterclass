@@ -109,6 +109,37 @@ them.
 When you study a module, the capstone gives you one place where the module’s claim becomes
 visible in code, commands, tests, and saved evidence.
 
+## Why the lab files exist
+
+Start from the lesson and its command, not from the lab directory. The lab source is
+split only when the pieces have different teaching jobs:
+
+| File shape | Teaching job | Should you read it first? |
+| --- | --- | --- |
+| `__init__.py` | exposes the small public lab API | no; it is package plumbing |
+| `__main__.py` | lets the Make target run the lab | no; it is command plumbing |
+| `evidence.py` | builds the controlled scenario and stable evidence packet | after predicting the lesson output |
+| topic file such as `retry.py` or `cache.py` | owns one mechanism taught by one core lesson | yes, when that lesson names it |
+| `*_demo.py` | renders one worked example without adding another mechanism | only with its worked-example page |
+
+The remaining folders map to the curriculum as follows:
+
+| Module | Subject files | Why they are separate |
+| --- | --- | --- |
+| 01 | `runtime_objects/evidence.py` | one small file is enough for ordinary object relationships |
+| 02 | `runtime_observation/evidence.py`, `debug_view.py` | the core observation counters stay separate from the safer-debug-printer worked example |
+| 03 | `runtime_evidence/evidence.py`, `safe_repr.py`, `repr_demo.py` | evidence trust is the core; representation is one applied example and its runner |
+| 04 | `wrapper_runtime/evidence.py`, `bounded_cache.py`, `cache_demo.py` | transparent wrapper mechanics stay separate from stateful cache policy and its runner |
+| 05 | `decorator_policy/retry.py`, `validation.py`, `cache_comparison.py`, `evidence.py` | each policy changes a different callable contract; the evidence file only stages deterministic scenarios |
+| 06 | `class_customization/transformation.py`, `attributes.py`, `frozen_surface.py`, `evidence.py` | class transformation, attribute ownership, and surface freezing are different lower-power alternatives to a metaclass |
+| 07 | `descriptor_lookup/protocol.py`, `precedence.py`, `binding.py`, `quantity.py`, `evidence.py` | protocol, lookup order, method binding, and canonical storage need separate predictions before they are combined |
+| 08 | `descriptor_systems/cache.py`, `external.py`, `composition.py`, `hints.py`, `relational.py`, `boundaries.py`, `evidence.py` | each file owns one system pressure; `relational.py` is the optional worked example and `boundaries.py` decides when not to use a descriptor |
+| 09 | `class_creation/manual.py`, `resolution.py`, `lifecycle.py`, `namespace.py`, `registry.py`, `boundaries.py`, `evidence.py` | each file isolates one class-creation stage; the boundary file justifies or rejects escalation |
+| 10 | `runtime_governance/dynamic.py`, `interfaces.py`, `patching.py`, `tooling.py`, `selection.py`, `evidence.py` | each high-power mechanism gets its own refusal and rollback boundary; the selection file records the final judgment |
+
+If a file is not named by the current lesson, skip it. The lab is evidence for the
+course, not a second framework to master.
+
 ## Which support page solves which study problem
 
 | Study problem | Best page |
