@@ -4,6 +4,109 @@ Use these answers after producing your own evidence. A passing assertion is only
 the start of the review: each answer explains the decision, common wrong turns,
 what the result proves, and what remains outside the proof.
 
+## Retrieval composition: filter without corrupting rank
+
+Put the threshold beside `text`, `embedding`, and `top_k` because it changes the
+meaning of one retrieval request:
+
+```python
+@dataclass(frozen=True, slots=True)
+class SearchQuery:
+    text: str
+    embedding: Embedding
+    top_k: int
+    min_score: float = -1.0
+
+    def __post_init__(self) -> None:
+        # existing text, top_k, and embedding checks remain
+        if (
+            not math.isfinite(self.min_score)
+            or not -1.0 <= self.min_score <= 1.0
+        ):
+            raise ValueError(
+                "SearchQuery.min_score must be finite and between -1 and 1"
+            )
+```
+
+`-1.0` is the cosine lower bound, so the default does not remove any candidate
+that the existing similarity contract can produce. A default of `0.0` would be
+an unexplained behavior change for valid vectors with negative similarity.
+
+Thread the value through `make_query`:
+
+```python
+def make_query(
+    text: str,
+    *,
+    top_k: int = 3,
+    min_score: float = -1.0,
+) -> SearchQuery:
+    return SearchQuery(
+        text=text,
+        embedding=Embedding(
+            vector=embed_text(text),
+            model=LOCAL_EMBEDDING_MODEL,
+        ),
+        top_k=top_k,
+        min_score=min_score,
+    )
+```
+
+Keep scoring, eligibility, ordering, and rank assignment visibly separate:
+
+```python
+scored = (
+    (cosine_similarity(query.embedding.vector, chunk.embedding), chunk)
+    for chunk in chunks
+)
+eligible = (
+    (score, chunk)
+    for score, chunk in scored
+    if score >= query.min_score
+)
+ordered = sorted(
+    eligible,
+    key=lambda item: (
+        -item[0],
+        item[1].doc_id,
+        item[1].start,
+        item[1].end,
+        item[1].text,
+    ),
+)
+
+return tuple(
+    RankedChunk(chunk=chunk, score=score, rank=rank)
+    for rank, (score, chunk) in enumerate(
+        ordered[: query.top_k],
+        start=1,
+    )
+)
+```
+
+The comparison is inclusive: a candidate exactly on the declared minimum is
+eligible. `enumerate` happens after filtering, so the first returned value always
+has rank one and no gaps can appear.
+
+Common wrong turns:
+
+- storing the threshold in a CLI or adapter makes core behavior depend on an
+  omitted boundary value;
+- accepting `NaN` makes every comparison false without explaining why no results
+  appeared;
+- assigning ranks before filtering can return ranks such as one and three;
+- using only `-score` as the sort key reintroduces encounter-order ties;
+- calling the threshold a “relevance cutoff” overclaims the hash-vector fixture;
+  and
+- editing Module 05–09 snapshots rewrites the historical learning states instead
+  of extending the live endpoint.
+
+The focused proof establishes validation, inclusive filtering, stable ordering,
+contiguous ranks, and backward-compatible default behavior for the supplied
+vectors. It does not prove that any threshold separates relevant from irrelevant
+language, that the threshold transfers to another embedding model, or that the
+implementation is efficient for a large index.
+
 ## Systematic refactor: make the starting observation trustworthy
 
 The two configured paths are useful reading routes, but they are not disjoint sets.
@@ -199,8 +302,8 @@ Common wrong turns:
 - linking only to prose makes the claim unauditable;
 - calling path presence “passed” confuses discovery with execution;
 - using one broad command for every claim makes failures hard to locate;
-- inventing a ranking path that the application does not contain disconnects the
-  exercise from FuncPipe; and
+- claiming semantic relevance from the deterministic ranking fixture exceeds the
+  application contract; and
 - letting the pure assessor walk the filesystem hides the observation boundary.
 
 The test proves fail-closed completeness from a supplied path set. It does not run
