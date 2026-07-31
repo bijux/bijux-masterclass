@@ -1,225 +1,24 @@
-# Compositional Domain Models
+# Compositional Domain Models: Put Cross-Field Rules at the Join
 
+The cumulative pipeline uses `core.rag_types.Chunk`. This lesson does not
+replace it. Instead, Module 5 includes a focused model under `rag/domain/` to
+answer one design question:
 
-<!-- page-maps:start -->
-## Page Maps
+> If text, metadata, and an embedding can be understood independently, where
+> should rules involving more than one of them live?
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Algebraic Data Modelling Validation"]
-  page["Compositional Domain Models"]
-  capstone["Capstone evidence"]
+The answer is an explicit assembler. The small records own their local shape;
+the assembler owns agreements that become visible only when records meet.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## The rule no subsystem can check alone
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Separate two ideas that often get blurred together: a domain can be one business concept and still be best modeled as several smaller value types. The crucial move is not just splitting. It is making recombination explicit and reviewable.
-
-## Start With the God-Object Smell
-
-You usually reach this lesson after seeing a domain object that carries every concern at once. The pain is obvious in teams too: every change collides with every other change.
-
-- If one type is imported and mutated by every subsystem, the model boundary is already too wide.
-- If cross-subsystem invariants are checked everywhere, no one place owns the truth.
-- If splitting the model would make integration rules disappear, the split is not yet disciplined enough.
-
-**Core question**  
-How do you split domain concepts into independent subsystem ADTs and recombine them safely — keeping subsystems loosely coupled while the overall model stays coherent, evolvable, and type-safe in every FuncPipe pipeline?
-
-This lesson introduces compositional domain modeling as a boundary design strategy:
-
-- give each subsystem its own focused value model
-- keep cross-subsystem invariants at explicit assemblers or conversion points
-- let teams and modules evolve locally until they intentionally meet
-
-The motivating giant `AssembledChunk` example matters because it captures both the code smell and the team smell at the same time: one type, too many reasons to change.
-
-The naïve pattern everyone writes first:
+FuncPipe's focused records are:
 
 ```python
-# BEFORE – monolithic, tightly coupled
-@dataclass(frozen=True)
-class AssembledChunk:
-    text: str
-    source: str
-    tags: list[str]
-    embedding_model: str | None
-    expected_dim: int | None
-    vector: list[float] | None
-    # 37 more fields...
-# Every subsystem imports and mutates the same type → merge hell
-```
-
-This is the composition problem to name.
-
-The production pattern keeps each subsystem small and then makes integration the one place where cross-cutting rules are enforced deliberately.
-
-```python
-# AFTER – split + safe recombination
-text = ChunkText(content="...")
-meta = ChunkMetadata(source="web", tags=("news",))
-emb  = Embedding(vector=(0.1, ...), model="mini", dim=384)
-
-chunk = assemble(text, meta, emb)   # Validation[AssembledChunk, ErrInfo] with cross-checks
-```
-
-That separation is the core value: local evolution plus visible recombination rules.
-
-Use this when you want independent model evolution without turning integration into schema chaos.
-
-**Outcome**
-1. Every domain concept lives in its own subsystem ADT.
-2. Recombination via validated `assemble` / conversion functions.
-3. Zero accidental coupling — changes stay local until explicitly integrated.
-
-## Tiny Non-Domain Example – Order Processing Split
-
-```python
-# billing.py
-@dataclass(frozen=True, slots=True)
-class BillingInfo:
-    amount_cents: int
-    currency: str
-
-# shipping.py
-@dataclass(frozen=True, slots=True)
-class ShippingAddress:
-    street: str
-    country: str
-
-# order.py – integration point only
-def create_order(billing: BillingInfo, shipping: ShippingAddress) -> Validation[Order, str]:
-    if billing.currency != "USD" and shipping.country != "US":
-        return v_failure(("international shipping only for USD",))
-    return v_success(Order(billing=billing, shipping=shipping, id=uuid4()))
-```
-
-Billing and Shipping teams work independently. Order team owns the one integration check.
-
-## Why Split & Recombine ADTs? (Three bullets every engineer should internalise)
-
-- **Loose coupling**: Subsystem A can add fields without touching B — no merge conflicts.
-- **Explicit integration**: `assemble` / conversion functions are the only place cross-cutting concerns live — single source of truth.
-- **Evolvability**: Adding a new subsystem (e.g. TaxInfo) only requires updating one integration point, never touching existing ADTs.
-
-DO have 2–4 small, focused ADTs per subsystem.  
-DO enforce cross-subsystem invariants only in the assembler.  
-DON’T have one giant “Everything” ADT used everywhere.
-
-By convention, `embedding_model` and `expected_dim` set to `None` mean “no constraint”; `assemble` only checks them when they are non-`None` and an embedding is present.
-
-
-## 1. Laws & Invariants (machine-checked)
-
-| Invariant                  | Description                                          | Enforcement                              |
-|----------------------------|------------------------------------------------------|------------------------------------------|
-| Subsystem Isolation        | Subsystem ADTs only imported by integration layer   | Module layout + code review              |
-| Recombination Validity     | `assemble` enforces cross-subsystem invariants      | Validation[AssembledChunk, ErrInfo] return        |
-| Exhaustiveness at Join     | All subsystem variants handled in integration       | `assert_never` in match                  |
-
-## 2. Decision Table – Split vs Combine
-
-| Concern                       | Independent evolution? | Needs cross-checks? | Split? | Combine via          |
-|-------------------------------|------------------------|---------------------|--------|----------------------|
-| Text processing               | Yes                    | No                  | Yes    | Product              |
-| Metadata (source, tags)       | Yes                    | No                  | Yes    | Product              |
-| Embedding format              | Yes                    | Yes (dim/model)     | Yes    | Validated assembler  |
-| Search indexing               | Yes                    | Yes (vector norm)   | Yes    | Conversion function  |
-
-## 3. Public API (rag/domain/chunk.py – mypy --strict clean)
-
-```python
-from __future__ import annotations
-
-from dataclasses import dataclass, replace, field
-from typing import Callable
-from uuid import UUID, uuid4
-
-from .validation import Validation, v_success, v_failure
-from .error import ErrInfo, ErrorCode
-
-# Subsystem ADTs – imported here for wiring
-# Only the integration layer (this module) should use all three
-from .text import ChunkText
-from .metadata import ChunkMetadata
-from .embedding import Embedding
-
-__all__ = [
-    "AssembledChunk", "ChunkId",
-    "assemble", "try_set_embedding", "map_metadata_checked",
-    "upcast_metadata_v1",
-]
-
-ChunkId = UUID
-
-@dataclass(frozen=True, slots=True)
-class AssembledChunk:
-    id: ChunkId = field(default_factory=uuid4)
-    text: ChunkText
-    metadata: ChunkMetadata
-    embedding: Embedding | None = None
-
-def assemble(
-    text: ChunkText,
-    meta: ChunkMetadata,
-    emb: Embedding | None = None,
-) -> Validation[AssembledChunk, ErrInfo]:
-    errs = []
-    # dedup + stable order tags
-    norm_tags = tuple(dict.fromkeys(meta.tags))
-    if norm_tags != meta.tags:
-        meta = replace(meta, tags=norm_tags)
-
-    if emb is not None:
-        if meta.embedding_model is not None and meta.embedding_model != emb.model:
-            errs.append(ErrInfo(ErrorCode.EMB_MODEL_MISMATCH, f"{emb.model} != {meta.embedding_model}"))
-        if meta.expected_dim is not None and meta.expected_dim != emb.dim:
-            errs.append(ErrInfo(ErrorCode.EMB_DIM_MISMATCH, f"{emb.dim} != {meta.expected_dim}"))
-
-    return v_failure(tuple(errs)) if errs else v_success(AssembledChunk(text=text, metadata=meta, embedding=emb))
-
-def try_set_embedding(chunk: AssembledChunk, emb: Embedding | None) -> Validation[AssembledChunk, ErrInfo]:
-    return assemble(chunk.text, chunk.metadata, emb)
-
-def map_metadata_checked(
-    chunk: AssembledChunk,
-    f: Callable[[ChunkMetadata], ChunkMetadata],
-) -> Validation[AssembledChunk, ErrInfo]:
-    return assemble(chunk.text, f(chunk.metadata), chunk.embedding)
-
-# Versioning example – metadata v1 → current
-@dataclass(frozen=True, slots=True)
-class ChunkMetadataV1:
-    source: str
-    tags: list[str]
-
-def upcast_metadata_v1(v1: ChunkMetadataV1) -> ChunkMetadata:
-    return ChunkMetadata(source=v1.source, tags=tuple(v1.tags))
-```
-
-## 4. Reference Implementations (continued)
-
-### 4.1 Subsystem ADTs (split across modules)
-
-```python
-# text.py
 @dataclass(frozen=True, slots=True)
 class ChunkText:
     content: str
 
-# metadata.py
 @dataclass(frozen=True, slots=True)
 class ChunkMetadata:
     source: str
@@ -227,164 +26,240 @@ class ChunkMetadata:
     embedding_model: str | None = None
     expected_dim: int | None = None
 
-# embedding.py
 @dataclass(frozen=True, slots=True)
 class Embedding:
     vector: tuple[float, ...]
     model: str
     dim: int = field(init=False)
-
-    def __post_init__(self) -> None:
-        object.__setattr__(self, "dim", len(self.vector))
 ```
 
-### 4.2 RAG Integration – Safe Assembly Pipeline
+`Embedding` can prove that its values are finite and derive its dimension.
+`ChunkMetadata` can record an expected model and dimension. Neither value can
+decide whether those expectations agree, because neither owns the other value.
+
+Putting the check in both classes would introduce coupling and duplicate the
+policy. Deferring it until arbitrary downstream code reads the fields would
+leave no clear owner.
+
+## `assemble` is the integration boundary
+
+The assembled product has a name that explains its scope:
 
 ```python
-def ingest_chunk(
+@dataclass(frozen=True, slots=True)
+class AssembledChunk:
+    id: UUID = field(default_factory=uuid4)
+    text: ChunkText = field(default_factory=lambda: ChunkText(content=""))
+    metadata: ChunkMetadata = field(
+        default_factory=lambda: ChunkMetadata(source="", tags=())
+    )
+    embedding: Embedding | None = None
+```
+
+Construction goes through:
+
+```python
+def assemble(
     text: ChunkText,
     meta: ChunkMetadata,
-    emb: Embedding | None,
+    emb: Embedding | None = None,
 ) -> Validation[AssembledChunk, ErrInfo]:
-    return assemble(text, meta, emb)
+    ...
 ```
 
-## 5. Property-Based Proofs (capstone/tests/test_composition.py)
+The return type tells the reader that cross-field construction can report more
+than one independent problem.
 
-```python
-from dataclasses import replace
-from hypothesis import given, strategies as st
-from funcpipe_rag.rag.domain import assemble, ChunkText, ChunkMetadata, Embedding
-from funcpipe_rag.fp.validation import VSuccess, VFailure
-from funcpipe_rag.fp.error import ErrorCode
+```mermaid
+flowchart LR
+  text["ChunkText"]
+  metadata["ChunkMetadata<br/>expected model + dimension"]
+  embedding["Embedding<br/>actual model + dimension"]
+  assembler["assemble<br/>normalize + cross-check"]
+  success["VSuccess(AssembledChunk)"]
+  failure["VFailure(all mismatches)"]
 
-raw_tags = st.lists(st.text(min_size=1), min_size=0, max_size=15)
-
-@given(
-    content=st.text(min_size=1),
-    source=st.text(),
-    raw_tags=raw_tags,
-    model=st.none() | st.text(),
-    dim=st.none() | st.integers(min_value=1, max_value=8192),
-    vector=st.none() | st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1, max_size=10),
-)
-def test_assemble_success_and_dedup(content, source, raw_tags, model, dim, vector):
-    meta = ChunkMetadata(
-        source=source,
-        tags=tuple(raw_tags),
-        embedding_model=model,
-        expected_dim=dim,
-    )
-    emb = Embedding(vector=tuple(vector or ()), model=model or "test") if vector else None
-
-    # Force success by matching dim/model when emb present
-    if emb:
-        meta = replace(meta, expected_dim=emb.dim, embedding_model=emb.model)
-
-    v = assemble(ChunkText(content=content), meta, emb)
-    assert isinstance(v, VSuccess)
-    chunk = v.value
-
-    # Round-trip core fields
-    assert chunk.text.content == content
-    assert chunk.metadata.source == source
-    assert chunk.metadata.embedding_model == (emb.model if emb else model)
-    assert chunk.metadata.expected_dim == (emb.dim if emb else dim)
-
-    # Embedding round-trip when present
-    if emb is not None:
-        assert chunk.embedding is not None
-        assert chunk.embedding.vector == emb.vector
-        assert chunk.embedding.model == emb.model
-        assert chunk.embedding.dim == emb.dim
-    else:
-        assert chunk.embedding is None
-
-    # Tags are deduped and stable order
-    expected_tags = tuple(dict.fromkeys(raw_tags))
-    assert chunk.metadata.tags == expected_tags
-
-@given(
-    content=st.text(min_size=1),
-    source=st.text(),
-    tags=st.lists(st.text(), min_size=1),
-    model=st.text(),
-    vector=st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1, max_size=10),
-)
-def test_assemble_model_mismatch_fails(content, source, tags, model, vector):
-    meta = ChunkMetadata(source=source, tags=tuple(tags), embedding_model=model + "-wrong")
-    emb = Embedding(vector=tuple(vector), model=model)
-    v = assemble(ChunkText(content=content), meta, emb)
-    assert isinstance(v, VFailure)
-    assert any(e.code == ErrorCode.EMB_MODEL_MISMATCH for e in v.errors)
-
-@given(
-    content=st.text(min_size=1),
-    source=st.text(),
-    tags=st.lists(st.text(), min_size=1),
-    model=st.text(),
-    vector=st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1, max_size=10),
-)
-def test_assemble_dim_mismatch_fails(content, source, tags, model, vector):
-    meta = ChunkMetadata(source=source, tags=tuple(tags), embedding_model=model, expected_dim=len(vector) + 1)
-    emb = Embedding(vector=tuple(vector), model=model)
-    v = assemble(ChunkText(content=content), meta, emb)
-    assert isinstance(v, VFailure)
-    assert any(e.code == ErrorCode.EMB_DIM_MISMATCH for e in v.errors)
+  text --> assembler
+  metadata --> assembler
+  embedding --> assembler
+  assembler --> success
+  assembler --> failure
 ```
 
-## 6. Big-O & Allocation Guarantees
+The arrows locate ownership. Text does not import metadata. Embedding does not
+know the assembled product. The integration module imports all three.
 
-| Operation            | Time               | Heap                  | Notes                                      |
-|----------------------|--------------------|-----------------------|--------------------------------------------|
-| assemble             | O(|tags|)          | O(|tags|)             | Dedup tags only allocation                 |
-| map_metadata_checked | O(|tags|)          | O(|tags|)             | Same                                       |
+## Run both assembly outcomes
 
-## 7. Anti-Patterns & Immediate Fixes
-
-| Anti-Pattern                  | Symptom                            | Fix                                      |
-|-------------------------------|------------------------------------|------------------------------------------|
-| Monolithic AssembledChunk type         | Merge conflicts on every change    | Split into subsystem ADTs                |
-| Direct field access across modules | Tight coupling                | Use `assemble` / conversion functions    |
-| Circular imports              | Import hell                        | Keep subsystems independent              |
-| Implicit cross-checks         | Bugs when fields diverge           | Explicit validation in `assemble`        |
-
-## Runnable RAG learning lab
-
-Run the cross-subsystem failure before studying the broad property suite:
+From `programs/python-programming/python-functional-programming`:
 
 ```bash
-cd capstone/module-reference-states/module-05
-PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
-  -k domain_assembly_reports_all_embedding_mismatches
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/python \
+  - <<'PY'
+from funcpipe_rag.fp.validation import VFailure, VSuccess
+from funcpipe_rag.rag.domain import (
+    ChunkMetadata,
+    ChunkText,
+    Embedding,
+    assemble,
+)
+
+text = ChunkText("composable chunk")
+invalid = assemble(
+    text,
+    ChunkMetadata(
+        source="lesson",
+        tags=("typed", "typed", "rag"),
+        embedding_model="expected-model",
+        expected_dim=3,
+    ),
+    Embedding((0.25, 0.75), "actual-model"),
+)
+print(type(invalid).__name__)
+if isinstance(invalid, VFailure):
+    print([error.code.value for error in invalid.errors])
+
+valid = assemble(
+    text,
+    ChunkMetadata(
+        source="lesson",
+        tags=("typed", "typed", "rag"),
+        embedding_model="local",
+        expected_dim=2,
+    ),
+    Embedding((0.25, 0.75), "local"),
+)
+print(type(valid).__name__)
+if isinstance(valid, VSuccess):
+    print(type(valid.value).__name__, valid.value.metadata.tags)
+PY
 ```
 
-`ChunkText`, `ChunkMetadata`, and `Embedding` are independently useful values.
-Only `assemble` can see that the metadata requests one model and dimension
-while the embedding provides another. The returned `VFailure` retains both
-codes in rule order, so correcting one field does not hide the other problem.
+Expected output:
 
-Do not make every subsystem import the combined `AssembledChunk`; that reverses
-ownership and couples unrelated construction. The focused test proves the two
-declared cross-field checks. It does not prove every invariant is known, and it
-does not replace the successful assembly and stable tag-normalization properties
-in `test_composition.py`.
+```text
+VFailure
+['EMB_MODEL_MISMATCH', 'EMB_DIM_MISMATCH']
+VSuccess
+AssembledChunk ('typed', 'rag')
+```
 
-## 8. Pre-Core Quiz
+Three behaviors are visible:
 
-1. Split for…? → **Independent evolution**  
-2. Combine via…? → **Validated assembler**  
-3. Boundary rule? → **Explicit conversion only**  
-4. Mega-ADT? → **Never**  
-5. Benefit? → **Teams work in parallel forever**
+1. independent model and dimension mismatches are both reported;
+2. successful assembly constructs the combined product;
+3. repeated tags are removed without changing first-occurrence order.
 
-## 9. Post-Core Exercise
+## Assign each invariant to one owner
 
-1. Split one existing monolithic type into 2–3 subsystem ADTs.  
-2. Write `assemble` with cross-checks → return Validation.  
-3. Add a v1 → current upcast function for one subsystem.  
-4. Verify with property test that round-trip through serialization preserves data.
+| Invariant | Owner | Reason |
+| --- | --- | --- |
+| embedding values are finite | `Embedding.__post_init__` | needs only the vector |
+| `dim` equals vector length | `Embedding.__post_init__` | derived locally |
+| tags have tuple representation | `ChunkMetadata` construction/type | local metadata shape |
+| tags are unique in stable order | `assemble` | normalization policy for the combined value |
+| expected model equals actual model | `assemble` | needs metadata and embedding |
+| expected dimension equals actual dimension | `assemble` | needs metadata and embedding |
 
-**Continue with:** [ADT Performance](../module-05-algebraic-data-modelling-validation/adt-performance.md)
+This is more precise than “put validation in the domain.” The narrowest owner
+that has all required information should enforce the rule.
 
-You now build large systems as loosely coupled subsystem ADTs recombined only at explicit, validated integration points — teams evolve independently, schema conflicts vanish, and the domain model stays coherent forever. The final core gives concrete performance guidance for when (and how) to compromise pure ADTs in hot paths.
+The current local products do not validate every conceivable invariant.
+`ChunkText` permits an empty string and `ChunkMetadata` permits an empty source.
+That may be acceptable for the focused lesson, or it may reveal missing product
+pressure. Do not claim assembly makes every value globally valid.
+
+## Updates must re-enter the boundary
+
+Frozen dataclasses prevent direct mutation, but `dataclasses.replace` can still
+create inconsistent combinations if callers use it carelessly. FuncPipe
+provides checked operations:
+
+```python
+def try_set_embedding(
+    chunk: AssembledChunk,
+    embedding: Embedding | None,
+) -> Validation[AssembledChunk, ErrInfo]:
+    return assemble(chunk.text, chunk.metadata, embedding)
+
+def map_metadata_checked(
+    chunk: AssembledChunk,
+    transform: Callable[[ChunkMetadata], ChunkMetadata],
+) -> Validation[AssembledChunk, ErrInfo]:
+    return assemble(chunk.text, transform(chunk.metadata), chunk.embedding)
+```
+
+Both routes send the new combination through the same rules. That is the
+practical value of an assembler: construction and later replacement share one
+integration policy.
+
+## Why this is not the pipeline `Chunk`
+
+The two values model different teaching surfaces:
+
+| Cumulative pipeline | Focused assembly lab |
+| --- | --- |
+| `core.rag_types.Chunk` | `rag.domain.AssembledChunk` |
+| document ID, text span, offsets, metadata, required 16-value embedding | `ChunkText`, structured metadata, optional model-specific embedding |
+| produced by `embed_chunk` | produced by `assemble` |
+| supports the RAG application from early modules onward | isolates cross-field assembly and representation equivalence in Module 5 |
+
+Earlier versions called both classes `Chunk`, forcing aliases such as
+`ModelChunk` in learning tests. `AssembledChunk` removes that accidental
+collision. A learner can now see from the import which surface is being used.
+
+The focused lab still has to earn its maintenance cost. It is justified here
+because the cumulative span type does not model expected embedding model and
+dimension as independent subsystem records. If those ideas later become real
+pipeline requirements, convergence should happen through an explicit module
+delta and preservation tests—not by silently swapping types.
+
+## Versioning one subsystem
+
+`ChunkMetadataV1` and `upcast_metadata_v1` illustrate a narrow evolution:
+
+```python
+@dataclass(frozen=True, slots=True)
+class ChunkMetadataV1:
+    source: str
+    tags: list[str]
+
+def upcast_metadata_v1(value: ChunkMetadataV1) -> ChunkMetadata:
+    return ChunkMetadata(source=value.source, tags=tuple(value.tags))
+```
+
+The conversion is explicit because a mutable list representation crosses into
+the current immutable tuple representation. This function proves only that
+small conversion; it is not a complete persistence migration system.
+
+## Inspect and verify
+
+Read the small source files before the property suite:
+
+```bash
+sed -n '1,130p' \
+  capstone/module-reference-states/module-05/src/funcpipe_rag/rag/domain/chunk.py
+
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/pytest \
+  -q capstone/module-reference-states/module-05/tests/learning/test_module_05_data_modelling.py \
+  -k domain_assembly
+```
+
+Then inspect `tests/test_composition.py`. Its generated examples strengthen the
+evidence for stable tag normalization and agreement checks. They do not prove
+that the type split matches every future RAG requirement.
+
+## Check your understanding
+
+1. Why can neither `ChunkMetadata` nor `Embedding` own the model-agreement
+   check alone?
+2. Why does `assemble` return `Validation` instead of a plain product?
+3. Which operation preserves first-occurrence tag order?
+4. Why should metadata replacement call `assemble` again?
+5. What does the name `AssembledChunk` clarify about the cumulative pipeline?
+
+Continue to [ADT Performance](adt-performance.md) when you can identify each
+local invariant, each cross-field invariant, and the narrowest owner of both.
