@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pytest
+
 from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, RagEnv, RawDoc
 from funcpipe_rag.rag import (
     LOCAL_EMBEDDING_MODEL,
