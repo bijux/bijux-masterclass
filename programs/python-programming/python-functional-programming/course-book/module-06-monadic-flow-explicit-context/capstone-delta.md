@@ -1,127 +1,134 @@
-# Module 06 Capstone Delta
+# Module 06 Capstone Delta: Make Flow Rules Observable
 
-Module 05 left FuncPipe with immutable RAG values, `Result` and `Option`
-failures, and accumulating `Validation`. Those types make each outcome honest,
-but a multi-stage pipeline can still repeat propagation branches, close over
-configuration, mutate counters, append diagnostic text, or catch exceptions too
-widely.
+Module 05 can already represent a parsed value, a typed failure, a missing
+value, and a collection of validation errors. The remaining problem is not
+data modelling. It is repeated or hidden control flow.
 
-Module 06 makes those flow rules explicit. The RAG transformations remain pure;
-new composition operations and small context types describe how values,
-failures, configuration, local state, and trace data travel between them.
+Consider a document that must pass a prerequisite before normalization:
 
-## The application delta
-
-| Delta question | Module 06 answer |
-| --- | --- |
-| Previous capability | Immutable RAG values with typed `Result`, `Option`, and accumulating `Validation` outcomes |
-| New pressure | Dependent stages repeat propagation logic while configuration, counters, traces, and exception policy become hidden control flow |
-| Concept introduced | Lawful `map`/`and_then`, applicative lifting, Reader, State, Writer, explicit container ordering, narrow exception bridges, and higher-order configuration toggles |
-| Source surfaces | `result/types.py`, `fp/effects/`, `boundaries/adapters/exception_bridge.py`, and the existing pure functions in `rag/stages.py` |
-| Proof surfaces | Module 06 law tests plus `tests/learning/test_module_06_explicit_context.py` |
-| Preserved behavior | Module 05 parsing, validation, cleaning, chunking, deterministic embedding, streaming order, and typed failure values |
-| Completed state | `capstone/module-reference-states/module-06/` |
-| Learner route | Run one named learning test, inspect its source operation, then complete the matching exercise |
-| Later states affected | Modules 07–09 and the live Module 10 capstone retain these composition contracts while adding boundaries, async coordination, interop, and operational review |
-
-## Read the delta as flow
-
-```mermaid
-flowchart LR
-  values["Module 05 values\nResult + Option + Validation"] --> chain["Dependent flow\nmap + and_then"]
-  config["Read-only context\nReader"] --> chain
-  chain --> state["Local progress\nState"]
-  chain --> trace["Trace data\nWriter"]
-  chain --> boundary["Expected exceptions\nnarrow bridge"]
-  state --> output["Same RAG values"]
-  trace --> output
-  boundary --> output
+```python
+checked = source.and_then(require_abstract)
+cleaned = checked.and_then(clean_checked)
 ```
 
-The diagram is not one required container stack. It is a decision map:
+The useful change is not the method name. The useful change is that one
+well-tested rule now owns failure propagation: if the first operation returns
+`Err`, the second operation is not called. The RAG functions remain focused on
+their domain transformations.
 
-- use `map` for a plain transformation and `and_then` when the next stage can
-  fail or be absent;
-- use Reader only for shared read-only context;
-- use State only for local values that genuinely change between stages;
-- use Writer only when an ordered trace must remain inspectable as data;
-- keep exception conversion at a boundary and name the exception class; and
-- prefer an ordinary function when no additional effect rule is needed.
+## Delta contract
 
-## Focus the reference-state comparison
+| Question | Module 06 answer |
+| --- | --- |
+| Previous capability | Immutable RAG values with explicit `Result`, `Option`, and accumulating `Validation` outcomes |
+| New pressure | Dependent stages repeat propagation branches; configuration, local progress, trace data, and exception policy are easy to hide |
+| Concepts introduced | `and_then`, lifting, composition laws, Reader, State, Writer, explicit layer order, narrow exception bridges, and assembly-time policy |
+| New source owners | `fp/effects/` and `boundaries/adapters/exception_bridge.py` |
+| Existing application functions reused | `clean_doc`, `iter_chunk_doc`, and `embed_chunk` in `rag/stages.py` |
+| Main proof | `tests/learning/test_module_06_explicit_context.py` |
+| Preserved behavior | Module 05 parsing, normalization, chunk boundaries, order, deterministic embeddings, typed errors, and immutable values |
+| Completed state | `capstone/module-reference-states/module-06/` |
+| Downstream obligation | Modules 07–09 and the live Module 10 application retain the Module 06 composition behavior |
 
-Module 05 already establishes `rag/domain/` and `boundaries/adapters/` as stable
-owners. The Module 05→06 comparison therefore does not require learners to
-reinterpret domain modelling as a flow concept. The meaningful Module 06
-teaching surface is:
+## The real source delta
+
+The new teaching code has narrow ownership:
 
 ```text
 src/funcpipe_rag/
-├── result/types.py
 ├── fp/effects/
-│   ├── configurable.py
-│   ├── layering.py
-│   ├── reader.py
-│   ├── state.py
-│   └── writer.py
-└── boundaries/adapters/exception_bridge.py
+│   ├── configurable.py   # choose wrappers at assembly time
+│   ├── layering.py       # transpose Result and Option deliberately
+│   ├── reader.py         # read-only environment
+│   ├── state.py          # explicit local state transition
+│   └── writer.py         # value plus ordered trace data
+└── boundaries/adapters/
+    └── exception_bridge.py
 ```
 
-The existing functions in `rag/stages.py` supply the application pressure:
-cleaning, chunking, and embedding need composition and context, but they do not
-need to know how those rules are encoded.
+The application does not gain a second chunker, cleaner, or embedder.
+`rag/stages.py` supplies the existing behavior that the new flow tools compose.
+That constraint keeps Module 06 cumulative: it changes how existing work is
+connected without pretending the RAG domain has been replaced.
 
-## What changed in the RAG application
+## Eleven claims, eleven observable proofs
 
-The application can now:
+| Learning claim | RAG evidence |
+| --- | --- |
+| A failed prerequisite skips dependent cleaning | an event list remains empty after `Err` |
+| Independent configuration fields can be combined | `liftA2` builds `RagEnv` and preserves declared error order |
+| Legal map regrouping preserves meaning | separate and composed cleaning projections return equal `Result` values |
+| Read-only context is supplied at execution | one Reader runs with two chunk sizes |
+| Local progress is explicit | the caller receives both the last chunk text and a new `Progress` |
+| Only expected exceptions become typed errors | `ValueError` becomes `ErrInfo`; `RuntimeError` still raises |
+| Layer order preserves public meaning | found, missing, and retrieval failure survive transposition |
+| Trace data does not replace the payload | Writer returns the original chunk plus ordered entries |
+| Refactoring keeps a boundary contract | legacy and bridged parsers agree on characterized inputs |
+| Policy is chosen without duplicating normalization | strict mode skips normalization; permissive mode calls it once |
+| A structural rewrite preserves RAG output | direct and mapped routes return identical embedded chunks |
 
-- short-circuit a dependent RAG flow without duplicating error branches;
-- lift pure RAG construction over one or more successful typed values;
-- justify refactors with executable identity, composition, and associativity
-  laws;
-- provide chunking configuration as an explicit Reader input;
-- thread local progress without mutating a global counter;
-- distinguish a missing retrieval result from a failed retrieval;
-- accumulate ordered diagnostic data without emitting it;
-- convert only named, expected boundary exceptions into typed failures; and
-- toggle validation, logging, or metrics while preserving the underlying
-  pipeline result.
+These proofs are intentionally bounded. For example, the Reader test proves
+that its chunk size is caller-supplied in the tested program. It does not prove
+that Reader is the best representation for every function accepting
+`RagEnv`.
 
-## What did not change
+## Read the module as a set of choices
 
-Module 06 does not require every function to return Reader, State, or Writer.
-`clean_doc`, `iter_chunk_doc`, and `embed_chunk` remain ordinary pure
-functions. The context types earn their place only where they remove a concrete
-hidden dependency or propagation rule.
+```mermaid
+flowchart TD
+  next["What does the next operation need?"]
+  next -->|plain value from one success| map["map"]
+  next -->|same context and may stop| bind["and_then"]
+  next -->|independent contextual inputs| lift["applicative lifting"]
+  next -->|shared read-only value| reader["ordinary argument or Reader"]
+  next -->|changing local value| state["fold or State"]
+  next -->|ordered side data| writer["tuple/fold or Writer"]
+  next -->|throwing boundary| bridge["narrow exception bridge"]
+```
 
-The snapshot also does not ship one giant Reader-State-Writer RAG stack.
-Layering is kept explicit because the outer container determines which outcome
-dominates. Lesson sketches that combine several effects must not be mistaken
-for the required application architecture.
+The left side of each “or” is important. Passing an ordinary argument or
+returning an ordinary tuple is often clearer. The module teaches Reader, State,
+and Writer so you can recognize when repeated composition pressure earns those
+abstractions—not so every function acquires a container.
 
-## Working route
+## Compare Module 05 and Module 06
 
-1. Compare `module-reference-states/module-05/` with
-   `module-reference-states/module-06/`.
-2. Read the current core and its named test in
-   `tests/learning/test_module_06_explicit_context.py`.
-3. Run that test with the Module 06 `src/` directory on `PYTHONPATH`.
-4. Inspect the matching law or behavior test in the Module 06 test directory.
-5. Complete the exercise and state what its evidence does not prove.
-6. Confirm the same learning test remains present in downstream snapshots.
+From the course directory:
 
-## Preservation checklist
+```bash
+make history-refresh
+```
 
-Before accepting a flow refactor, confirm that:
+Then compare:
 
-- successful RAG values are unchanged;
-- the same failure stops the same downstream work;
-- input order and chunk order remain stable;
-- configuration is passed explicitly and is not mutated;
-- State starts from a caller-supplied value;
-- Writer preserves the payload while accumulating ordered data;
-- absence and failure retain distinct meanings;
-- only expected boundary exceptions become typed errors; and
-- later snapshots still satisfy the Module 06 learning proofs.
+```text
+capstone/_history/worktrees/module-05/src/funcpipe_rag/
+capstone/_history/worktrees/module-06/src/funcpipe_rag/
+```
 
-Continue with [and_then and bind](and-then-and-bind.md).
+Read new files before changed export files. An `__init__.py` difference may
+only expose a new owner; it is not automatically a new application behavior.
+
+For a focused executable comparison:
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py
+```
+
+## Preservation questions
+
+Before accepting any Module 06 refactor, answer:
+
+- Does a valid `RawDoc` still normalize to the same `CleanDoc`?
+- Does the same invalid prerequisite stop the same downstream work?
+- Are chunk text, offsets, and order unchanged?
+- Is configuration caller-supplied and immutable?
+- Does State start from a value supplied by the caller?
+- Does Writer retain the original payload and entry order?
+- Are successful absence and failed retrieval still different cases?
+- Is the caught exception class named and expected at that boundary?
+- Do later reference states retain the Module 06 learning tests?
+
+Continue with [and_then and bind](and-then-and-bind.md), where the first
+propagation rule becomes executable.
