@@ -31,19 +31,19 @@ nav:
   - Functional Programming Course Map: module-00-orientation/course-map.md
   - First-Contact Map: module-00-orientation/first-contact-map.md
   - First Capstone Proof: module-00-orientation/first-capstone-proof.md
-  - Exercises: module-00-orientation/exercises.md
-  - Exercise Answers: module-00-orientation/exercise-answers.md
   - Mid-Course Map: module-00-orientation/mid-course-map.md
   - Mastery Map: module-00-orientation/mastery-map.md
+  - Orientation Exercises: module-00-orientation/exercises.md
+  - Orientation Exercise Answers: module-00-orientation/exercise-answers.md
 - 'Module 01: Purity, Substitution, and Local Reasoning':
   - Home: module-01-purity-substitution-local-reasoning/index.md
-  - FuncPipe Delta: module-01-purity-substitution-local-reasoning/capstone-delta.md
+  - 'Module 01 FuncPipe Delta: Establish a Substitutable RAG Core': module-01-purity-substitution-local-reasoning/capstone-delta.md
   - Imperative vs Functional: module-01-purity-substitution-local-reasoning/imperative-vs-functional.md
-  - Pure Functions & Contracts: module-01-purity-substitution-local-reasoning/pure-functions-and-contracts.md
-  - Immutability & Value Semantics: module-01-purity-substitution-local-reasoning/immutability-and-value-semantics.md
+  - Pure Functions and Contracts: module-01-purity-substitution-local-reasoning/pure-functions-and-contracts.md
+  - Immutability and Value Semantics: module-01-purity-substitution-local-reasoning/immutability-and-value-semantics.md
   - Higher-Order Composition: module-01-purity-substitution-local-reasoning/higher-order-composition.md
-  - Local FP Refactors: module-01-purity-substitution-local-reasoning/local-fp-refactors.md
-  - Small Combinator Library: module-01-purity-substitution-local-reasoning/small-combinator-library.md
+  - Local Functional Refactors: module-01-purity-substitution-local-reasoning/local-fp-refactors.md
+  - A Small Combinator Library: module-01-purity-substitution-local-reasoning/small-combinator-library.md
   - Combinator Laws and Trade-Offs: module-01-purity-substitution-local-reasoning/combinator-laws-and-tradeoffs.md
   - Typed Pipelines: module-01-purity-substitution-local-reasoning/typed-pipelines.md
   - Typed Pipeline Review: module-01-purity-substitution-local-reasoning/typed-pipeline-review.md
@@ -51,11 +51,12 @@ nav:
   - Equational Reasoning: module-01-purity-substitution-local-reasoning/equational-reasoning.md
   - Idempotent Transforms: module-01-purity-substitution-local-reasoning/idempotent-transforms.md
   - Module 01 Refactoring Guide: module-01-purity-substitution-local-reasoning/refactoring-guide.md
-  - Exercises: module-01-purity-substitution-local-reasoning/exercises.md
-  - Exercise Answers: module-01-purity-substitution-local-reasoning/exercise-answers.md
+  - Module 01 Exercises: module-01-purity-substitution-local-reasoning/exercises.md
+  - Module 01 Exercise Answers: module-01-purity-substitution-local-reasoning/exercise-answers.md
   - Module Glossary: module-01-purity-substitution-local-reasoning/glossary.md
 - 'Module 02: Data-First APIs and Expression Style':
   - Home: module-02-data-first-apis-expression-style/index.md
+  - 'Module 02 FuncPipe Delta: Move Policy into Values': module-02-data-first-apis-expression-style/capstone-delta.md
   - Closures & Partials: module-02-data-first-apis-expression-style/closures-and-partials.md
   - Expression-Oriented Python: module-02-data-first-apis-expression-style/expression-oriented-python.md
   - Expression Review and Trade-Offs: module-02-data-first-apis-expression-style/expression-review-and-tradeoffs.md
@@ -68,13 +69,13 @@ nav:
   - Tiny Function DSLs: module-02-data-first-apis-expression-style/tiny-function-dsls.md
   - Debugging Compositions: module-02-data-first-apis-expression-style/debugging-compositions.md
   - Imperative to FP Refactor: module-02-data-first-apis-expression-style/imperative-to-fp-refactor.md
-  - FuncPipe Delta: module-02-data-first-apis-expression-style/capstone-delta.md
-  - Exercises: module-02-data-first-apis-expression-style/exercises.md
-  - Exercise Answers: module-02-data-first-apis-expression-style/exercise-answers.md
+  - 'Module 02 Exercises: Design the Configured RAG API': module-02-data-first-apis-expression-style/exercises.md
+  - Module 02 Exercise Answers: module-02-data-first-apis-expression-style/exercise-answers.md
   - Module 02 Refactoring Guide: module-02-data-first-apis-expression-style/refactoring-guide.md
   - Module Glossary: module-02-data-first-apis-expression-style/glossary.md
 - 'Module 03: Iterators, Laziness, and Streaming Dataflow':
   - Home: module-03-iterators-laziness-streaming-dataflow/index.md
+  - 'Module 03 FuncPipe Delta: Make Complete Multi-Source Demand Explicit': module-03-iterators-laziness-streaming-dataflow/capstone-delta.md
   - Iterator Protocol and Generators: module-03-iterators-laziness-streaming-dataflow/iterator-protocol-and-generators.md
   - Generators vs Comprehensions: module-03-iterators-laziness-streaming-dataflow/generators-vs-comprehensions.md
   - itertools Composition: module-03-iterators-laziness-streaming-dataflow/itertools-composition.md
@@ -87,14 +88,13 @@ nav:
   - Custom Iterators: module-03-iterators-laziness-streaming-dataflow/custom-iterators.md
   - Iterator Lifecycle and Cleanup: module-03-iterators-laziness-streaming-dataflow/iterator-lifecycle-and-cleanup.md
   - Streaming Observability: module-03-iterators-laziness-streaming-dataflow/streaming-observability.md
-  - FuncPipe Delta: module-03-iterators-laziness-streaming-dataflow/capstone-delta.md
-  - Exercises: module-03-iterators-laziness-streaming-dataflow/exercises.md
-  - Exercise Answers: module-03-iterators-laziness-streaming-dataflow/exercise-answers.md
+  - 'Module 03 Exercises: Review Demand, State, and Boundaries': module-03-iterators-laziness-streaming-dataflow/exercises.md
+  - Module 03 Exercise Answers: module-03-iterators-laziness-streaming-dataflow/exercise-answers.md
   - Module 03 Refactoring Guide: module-03-iterators-laziness-streaming-dataflow/refactoring-guide.md
   - Module Glossary: module-03-iterators-laziness-streaming-dataflow/glossary.md
 - 'Module 04: Streaming Resilience and Failure Handling':
   - Home: module-04-streaming-resilience-failure-handling/index.md
-  - Module 04 Capstone Delta: module-04-streaming-resilience-failure-handling/capstone-delta.md
+  - 'Module 04 Capstone Delta: Resilient Streaming': module-04-streaming-resilience-failure-handling/capstone-delta.md
   - Structural Recursion and Iteration: module-04-streaming-resilience-failure-handling/structural-recursion-and-iteration.md
   - Folds and Reductions: module-04-streaming-resilience-failure-handling/folds-and-reductions.md
   - Memoization: module-04-streaming-resilience-failure-handling/memoization.md
@@ -105,49 +105,49 @@ nav:
   - Resource-Aware Streams: module-04-streaming-resilience-failure-handling/resource-aware-streams.md
   - Functional Retries: module-04-streaming-resilience-failure-handling/functional-retries.md
   - Structured Error Reports: module-04-streaming-resilience-failure-handling/structured-error-reports.md
-  - Exercises: module-04-streaming-resilience-failure-handling/exercises.md
-  - Exercise Answers: module-04-streaming-resilience-failure-handling/exercise-answers.md
   - Module 04 Refactoring Guide: module-04-streaming-resilience-failure-handling/refactoring-guide.md
+  - Module 04 Exercises: module-04-streaming-resilience-failure-handling/exercises.md
+  - Module 04 Exercise Answers: module-04-streaming-resilience-failure-handling/exercise-answers.md
   - Module Glossary: module-04-streaming-resilience-failure-handling/glossary.md
 - 'Module 05: Algebraic Data Modelling and Validation':
   - Home: module-05-algebraic-data-modelling-validation/index.md
   - Module 05 Capstone Delta: module-05-algebraic-data-modelling-validation/capstone-delta.md
-  - Product and Sum Types: module-05-algebraic-data-modelling-validation/product-and-sum-types.md
-  - Domain State ADTs: module-05-algebraic-data-modelling-validation/domain-state-adts.md
-  - Functors: module-05-algebraic-data-modelling-validation/functors.md
-  - Applicative Validation: module-05-algebraic-data-modelling-validation/applicative-validation.md
-  - Monoids: module-05-algebraic-data-modelling-validation/monoids.md
-  - Pydantic Smart Constructors: module-05-algebraic-data-modelling-validation/pydantic-smart-constructors.md
-  - Pattern Matching: module-05-algebraic-data-modelling-validation/pattern-matching.md
-  - Serialization Beyond Pydantic: module-05-algebraic-data-modelling-validation/serialization-beyond-pydantic.md
-  - Compositional Domain Models: module-05-algebraic-data-modelling-validation/compositional-domain-models.md
-  - ADT Performance: module-05-algebraic-data-modelling-validation/adt-performance.md
-  - Exercises: module-05-algebraic-data-modelling-validation/exercises.md
-  - Exercise Answers: module-05-algebraic-data-modelling-validation/exercise-answers.md
+  - Product and Sum Types in the RAG Pipeline: module-05-algebraic-data-modelling-validation/product-and-sum-types.md
+  - Domain States Without an Invented State Machine: module-05-algebraic-data-modelling-validation/domain-state-adts.md
+  - 'Functors: Change the Value, Preserve the Context': module-05-algebraic-data-modelling-validation/functors.md
+  - 'Applicative Validation: Report Independent Problems Together': module-05-algebraic-data-modelling-validation/applicative-validation.md
+  - 'Monoids: Aggregation You Can Regroup': module-05-algebraic-data-modelling-validation/monoids.md
+  - Pydantic at the Boundary: module-05-algebraic-data-modelling-validation/pydantic-smart-constructors.md
+  - 'Pattern Matching: Consume the Cases You Modelled': module-05-algebraic-data-modelling-validation/pattern-matching.md
+  - 'Serialization: Preserve Meaning Across a Boundary': module-05-algebraic-data-modelling-validation/serialization-beyond-pydantic.md
+  - 'Compositional Domain Models: Put Cross-Field Rules at the Join': module-05-algebraic-data-modelling-validation/compositional-domain-models.md
+  - 'ADT Performance: Prove Meaning Before Claiming Speed': module-05-algebraic-data-modelling-validation/adt-performance.md
   - Module 05 Refactoring Guide: module-05-algebraic-data-modelling-validation/refactoring-guide.md
-  - Module Glossary: module-05-algebraic-data-modelling-validation/glossary.md
+  - Module 05 Exercises: module-05-algebraic-data-modelling-validation/exercises.md
+  - Module 05 Exercise Answers: module-05-algebraic-data-modelling-validation/exercise-answers.md
+  - Module 05 Glossary: module-05-algebraic-data-modelling-validation/glossary.md
 - 'Module 06: Monadic Flow and Explicit Context':
   - Home: module-06-monadic-flow-explicit-context/index.md
-  - Module 06 Capstone Delta: module-06-monadic-flow-explicit-context/capstone-delta.md
-  - and_then and bind: module-06-monadic-flow-explicit-context/and-then-and-bind.md
-  - Lifting Plain Functions: module-06-monadic-flow-explicit-context/lifting-plain-functions.md
-  - Law-Guided Design: module-06-monadic-flow-explicit-context/law-guided-design.md
-  - Reader Pattern: module-06-monadic-flow-explicit-context/reader-pattern.md
-  - Explicit State Threading: module-06-monadic-flow-explicit-context/explicit-state-threading.md
-  - Error-Typed Flows: module-06-monadic-flow-explicit-context/error-typed-flows.md
-  - Layered Containers: module-06-monadic-flow-explicit-context/layered-containers.md
-  - Writer Pattern: module-06-monadic-flow-explicit-context/writer-pattern.md
-  - Refactoring try/except: module-06-monadic-flow-explicit-context/refactoring-try-except.md
-  - Configurable Pipelines: module-06-monadic-flow-explicit-context/configurable-pipelines.md
-  - Exercises: module-06-monadic-flow-explicit-context/exercises.md
-  - Exercise Answers: module-06-monadic-flow-explicit-context/exercise-answers.md
-  - Module 06 Refactoring Guide: module-06-monadic-flow-explicit-context/refactoring-guide.md
-  - Module Glossary: module-06-monadic-flow-explicit-context/glossary.md
+  - 'Module 06 Capstone Delta: Make Flow Rules Observable': module-06-monadic-flow-explicit-context/capstone-delta.md
+  - '`and_then`: Sequence Dependent Outcomes': module-06-monadic-flow-explicit-context/and-then-and-bind.md
+  - Lifting Plain Functions into a Context: module-06-monadic-flow-explicit-context/lifting-plain-functions.md
+  - 'Law-Guided Design: Know What a Refactor Preserves': module-06-monadic-flow-explicit-context/law-guided-design.md
+  - 'Reader: Make Shared Read-Only Context Explicit': module-06-monadic-flow-explicit-context/reader-pattern.md
+  - 'State: Return Local Progress Explicitly': module-06-monadic-flow-explicit-context/explicit-state-threading.md
+  - 'Error-Typed Flows: Classify Failures at Their Boundary': module-06-monadic-flow-explicit-context/error-typed-flows.md
+  - 'Layered Containers: Decide Which Outcome Dominates': module-06-monadic-flow-explicit-context/layered-containers.md
+  - 'Writer: Return Ordered Trace Data with the Value': module-06-monadic-flow-explicit-context/writer-pattern.md
+  - Refactoring `try`/`except` Without Changing the Contract: module-06-monadic-flow-explicit-context/refactoring-try-except.md
+  - 'Configurable Pipelines: Choose Policy at Assembly': module-06-monadic-flow-explicit-context/configurable-pipelines.md
+  - 'Module 06 Refactoring Guide: Earn Each Context': module-06-monadic-flow-explicit-context/refactoring-guide.md
+  - 'Module 06 Exercises: Review One Explicit RAG Flow': module-06-monadic-flow-explicit-context/exercises.md
+  - Module 06 Exercise Answers: module-06-monadic-flow-explicit-context/exercise-answers.md
+  - Module 06 Glossary: module-06-monadic-flow-explicit-context/glossary.md
 - 'Module 07: Effect Boundaries and Resource Safety':
   - Home: module-07-effect-boundaries-resource-safety/index.md
   - Module 07 Capstone Delta: module-07-effect-boundaries-resource-safety/capstone-delta.md
-  - Ports and Adapters: module-07-effect-boundaries-resource-safety/ports-and-adapters.md
   - Effect Interfaces: module-07-effect-boundaries-resource-safety/effect-interfaces.md
+  - Ports and Adapters: module-07-effect-boundaries-resource-safety/ports-and-adapters.md
   - Capability Protocols: module-07-effect-boundaries-resource-safety/capability-protocols.md
   - Resource Safety: module-07-effect-boundaries-resource-safety/resource-safety.md
   - Functional Logging: module-07-effect-boundaries-resource-safety/functional-logging.md
@@ -156,9 +156,9 @@ nav:
   - Idempotent Effects: module-07-effect-boundaries-resource-safety/idempotent-effects.md
   - Sessions and Transactions: module-07-effect-boundaries-resource-safety/sessions-and-transactions.md
   - Incremental Migration: module-07-effect-boundaries-resource-safety/incremental-migration.md
-  - Exercises: module-07-effect-boundaries-resource-safety/exercises.md
-  - Exercise Answers: module-07-effect-boundaries-resource-safety/exercise-answers.md
   - Module 07 Refactoring Guide: module-07-effect-boundaries-resource-safety/refactoring-guide.md
+  - Module 07 Exercises: module-07-effect-boundaries-resource-safety/exercises.md
+  - Module 07 Exercise Answers: module-07-effect-boundaries-resource-safety/exercise-answers.md
   - Module Glossary: module-07-effect-boundaries-resource-safety/glossary.md
 - 'Module 08: Async Pipelines, Backpressure, and Fairness':
   - Home: module-08-async-pipelines-backpressure-fairness/index.md
@@ -173,8 +173,8 @@ nav:
   - Async Service Integrations: module-08-async-pipelines-backpressure-fairness/async-service-integrations.md
   - Async Chunking: module-08-async-pipelines-backpressure-fairness/async-chunking.md
   - Async Pipeline Laws: module-08-async-pipelines-backpressure-fairness/async-pipeline-laws.md
-  - Exercises: module-08-async-pipelines-backpressure-fairness/exercises.md
-  - Exercise Answers: module-08-async-pipelines-backpressure-fairness/exercise-answers.md
+  - Module 08 Exercises: module-08-async-pipelines-backpressure-fairness/exercises.md
+  - Module 08 Exercise Answers: module-08-async-pipelines-backpressure-fairness/exercise-answers.md
   - Module 08 Refactoring Guide: module-08-async-pipelines-backpressure-fairness/refactoring-guide.md
   - Module Glossary: module-08-async-pipelines-backpressure-fairness/glossary.md
 - 'Module 09: Ecosystem Interop and Boundary Discipline':
@@ -191,8 +191,8 @@ nav:
   - Functional Facades: module-09-ecosystem-interop-boundary-discipline/functional-facades.md
   - Cross-Process Composition: module-09-ecosystem-interop-boundary-discipline/cross-process-composition.md
   - Team Adoption: module-09-ecosystem-interop-boundary-discipline/team-adoption.md
-  - Exercises: module-09-ecosystem-interop-boundary-discipline/exercises.md
-  - Exercise Answers: module-09-ecosystem-interop-boundary-discipline/exercise-answers.md
+  - Module 09 Exercises: module-09-ecosystem-interop-boundary-discipline/exercises.md
+  - Module 09 Exercise Answers: module-09-ecosystem-interop-boundary-discipline/exercise-answers.md
   - Module 09 Refactoring Guide: module-09-ecosystem-interop-boundary-discipline/refactoring-guide.md
   - Module Glossary: module-09-ecosystem-interop-boundary-discipline/glossary.md
 - 'Module 10: Refactoring, Performance, and Sustainment':
@@ -201,29 +201,29 @@ nav:
   - Retrieval as Functional Composition: module-10-refactoring-performance-sustainment/retrieval-as-functional-composition.md
   - Systematic Refactor: module-10-refactoring-performance-sustainment/systematic-refactor.md
   - Performance Budgeting: module-10-refactoring-performance-sustainment/performance-budgeting.md
-  - Observability: module-10-refactoring-performance-sustainment/observability.md
+  - Observability as Data: module-10-refactoring-performance-sustainment/observability.md
   - Property-Based Regression: module-10-refactoring-performance-sustainment/property-based-regression.md
   - Async Property Testing: module-10-refactoring-performance-sustainment/async-property-testing.md
   - Advanced Patterns and Scaling: module-10-refactoring-performance-sustainment/advanced-patterns-and-scaling.md
-  - DDD and FP: module-10-refactoring-performance-sustainment/ddd-and-fp.md
+  - Domain Language and Review Ownership: module-10-refactoring-performance-sustainment/ddd-and-fp.md
   - Versioning and Migration: module-10-refactoring-performance-sustainment/versioning-and-migration.md
-  - Governance: module-10-refactoring-performance-sustainment/governance.md
+  - Claims, Evidence, and Review Discipline: module-10-refactoring-performance-sustainment/governance.md
   - Capstone Delivery: module-10-refactoring-performance-sustainment/capstone-delivery.md
-  - Exercises: module-10-refactoring-performance-sustainment/exercises.md
-  - Exercise Answers: module-10-refactoring-performance-sustainment/exercise-answers.md
+  - Module 10 Exercises: module-10-refactoring-performance-sustainment/exercises.md
+  - Module 10 Exercise Answers: module-10-refactoring-performance-sustainment/exercise-answers.md
   - Module 10 Refactoring Guide: module-10-refactoring-performance-sustainment/refactoring-guide.md
   - Module Glossary: module-10-refactoring-performance-sustainment/glossary.md
-- FuncPipe Capstone Guide:
+- Learn Functional Python Through FuncPipe:
   - Home: capstone/index.md
-  - Capstone Map: capstone/capstone-map.md
-  - Capstone File Guide: capstone/capstone-file-guide.md
-  - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
-  - Capstone Proof Guide: capstone/capstone-proof-guide.md
-  - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
-  - Capstone Extension Guide: capstone/capstone-extension-guide.md
-  - Capstone Walkthrough: capstone/capstone-walkthrough.md
-  - Command Guide: capstone/command-guide.md
-  - Capstone Glossary: capstone/glossary.md
+  - Map the Course to the Evolving Application: capstone/capstone-map.md
+  - Walk One Failure Through FuncPipe: capstone/capstone-walkthrough.md
+  - Read FuncPipe by Behavior, Not Alphabetically: capstone/capstone-file-guide.md
+  - Understand the Boundaries FuncPipe Earned: capstone/capstone-architecture-guide.md
+  - Prove One FuncPipe Claim at a Time: capstone/capstone-proof-guide.md
+  - Review a FuncPipe Change from Claim to Decision: capstone/capstone-review-worksheet.md
+  - Extend FuncPipe Without Losing the Course: capstone/capstone-extension-guide.md
+  - Run the Smallest Honest FuncPipe Command: capstone/command-guide.md
+  - FuncPipe Capstone Glossary: capstone/glossary.md
 - Capstone Docs:
   - Home: capstone-docs/index.md
   - FuncPipe Architecture Map: capstone-docs/architecture.md

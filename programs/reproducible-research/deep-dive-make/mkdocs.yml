@@ -48,7 +48,7 @@ nav:
   - 'Worked Example: Tiny C Build': module-01-build-graph-foundations-truth/worked-example-tiny-c-build.md
   - Exercises: module-01-build-graph-foundations-truth/exercises.md
   - Exercise Answers: module-01-build-graph-foundations-truth/exercise-answers.md
-  - Glossary: module-01-build-graph-foundations-truth/glossary.md
+  - Build Graph Vocabulary: module-01-build-graph-foundations-truth/glossary.md
 - 'Module 02: Parallel Safety and Project Structure':
   - Home: module-02-parallel-safety-project-structure/index.md
   - Parallel Scheduling and Runnable Targets: module-02-parallel-safety-project-structure/parallel-scheduling-and-runnable-targets.md
@@ -59,7 +59,7 @@ nav:
   - 'Worked Example: Parallel-Safe Build': module-02-parallel-safety-project-structure/worked-example-parallel-safe-build.md
   - Exercises: module-02-parallel-safety-project-structure/exercises.md
   - Exercise Answers: module-02-parallel-safety-project-structure/exercise-answers.md
-  - Glossary: module-02-parallel-safety-project-structure/glossary.md
+  - Parallel Safety Vocabulary: module-02-parallel-safety-project-structure/glossary.md
 - 'Module 03: Determinism, Debugging, and Self-Testing':
   - Home: module-03-determinism-debugging-self-testing/index.md
   - Determinism and Stable Discovery: module-03-determinism-debugging-self-testing/determinism-and-stable-discovery.md
@@ -70,7 +70,7 @@ nav:
   - 'Worked Example: Production Simulator': module-03-determinism-debugging-self-testing/worked-example-production-simulator.md
   - Exercises: module-03-determinism-debugging-self-testing/exercises.md
   - Exercise Answers: module-03-determinism-debugging-self-testing/exercise-answers.md
-  - Glossary: module-03-determinism-debugging-self-testing/glossary.md
+  - Determinism and Selftest Vocabulary: module-03-determinism-debugging-self-testing/glossary.md
 - 'Module 04: Rule Semantics, Precedence, and Edge Cases':
   - Home: module-04-rule-semantics-precedence-edge-cases/index.md
   - CLI Semantics and Debug Control: module-04-rule-semantics-precedence-edge-cases/cli-semantics-and-debug-control.md
@@ -108,8 +108,8 @@ nav:
   - Home: module-07-build-architecture-layered-includes-apis/index.md
   - Public Targets and Build API Design: module-07-build-architecture-layered-includes-apis/public-targets-and-build-api-design.md
   - Layered Includes and Responsibility Boundaries: module-07-build-architecture-layered-includes-apis/layered-includes-and-responsibility-boundaries.md
-  - Macros, call, and Reuse Without Opaqueness: module-07-build-architecture-layered-includes-apis/macros-call-and-reuse-without-opaqueness.md
   - Discovery, Namespacing, and Repository Growth: module-07-build-architecture-layered-includes-apis/discovery-namespacing-and-repository-growth.md
+  - Macros, call, and Reuse Without Opaqueness: module-07-build-architecture-layered-includes-apis/macros-call-and-reuse-without-opaqueness.md
   - Architecture Review and Maintenance Discipline: module-07-build-architecture-layered-includes-apis/architecture-review-and-maintenance-discipline.md
   - 'Worked Example: Refactoring a Tangled Build Layout': module-07-build-architecture-layered-includes-apis/worked-example-refactoring-a-tangled-build-layout.md
   - Exercises: module-07-build-architecture-layered-includes-apis/exercises.md
@@ -122,7 +122,7 @@ nav:
   - Checksums, Manifests, and Artifact Evidence: module-08-release-engineering-artifact-contracts/checksums-manifests-and-artifact-evidence.md
   - Install Flows and Destination Safety: module-08-release-engineering-artifact-contracts/install-flows-and-destination-safety.md
   - Release Failure Modes and Debugging: module-08-release-engineering-artifact-contracts/release-failure-modes-and-debugging.md
-  - 'Worked Example: Repairing a Broken Release Surface': module-08-release-engineering-artifact-contracts/worked-example-repairing-a-broken-release-surface.md
+  - 'Worked Example: Accepting One Capstone Release Candidate': module-08-release-engineering-artifact-contracts/worked-example-repairing-a-broken-release-surface.md
   - Exercises: module-08-release-engineering-artifact-contracts/exercises.md
   - Exercise Answers: module-08-release-engineering-artifact-contracts/exercise-answers.md
   - Glossary: module-08-release-engineering-artifact-contracts/glossary.md
@@ -147,7 +147,7 @@ nav:
   - 'Worked Example: Planning a Safe Build Migration': module-10-migration-governance-tool-boundaries/worked-example-planning-a-safe-build-migration.md
   - Exercises: module-10-migration-governance-tool-boundaries/exercises.md
   - Exercise Answers: module-10-migration-governance-tool-boundaries/exercise-answers.md
-  - Glossary: module-10-migration-governance-tool-boundaries/glossary.md
+  - Build Stewardship Vocabulary: module-10-migration-governance-tool-boundaries/glossary.md
 - Deep Dive Make Capstone Guide:
   - Home: capstone/index.md
   - Deep Dive Make Capstone Map: capstone/capstone-map.md
@@ -163,12 +163,18 @@ nav:
 - Capstone Docs:
   - Home: capstone-docs/index.md
   - Architecture Guide: capstone-docs/architecture.md
+  - Architecture Contract Audit Guide: capstone-docs/architecture-contract-audit-guide.md
+  - Abstraction Contract Audit Guide: capstone-docs/abstraction-contract-audit-guide.md
   - Contract Audit Guide: capstone-docs/contract-audit-guide.md
-  - Incident Review Guide: capstone-docs/incident-review-guide.md
+  - Incident Signature Audit Guide: capstone-docs/incident-review-guide.md
+  - Incremental Fault Audit Guide: capstone-docs/incremental-fault-audit-guide.md
+  - Environment Contract Audit Guide: capstone-docs/environment-contract-audit-guide.md
+  - Performance Evidence Guide: capstone-docs/performance-evidence-guide.md
   - Profile Audit Guide: capstone-docs/profile-audit-guide.md
   - Proof Guide: capstone-docs/proof-guide.md
   - Release Acceptance Guide: capstone-docs/release-guide.md
   - Repro Guide: capstone-docs/repro-guide.md
+  - Semantic Fault Audit Guide: capstone-docs/semantic-fault-audit-guide.md
   - Selftest Guide: capstone-docs/selftest-guide.md
   - Target Guide: capstone-docs/target-guide.md
   - Walkthrough Guide: capstone-docs/walkthrough-guide.md
