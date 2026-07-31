@@ -18,89 +18,210 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  promise["State the module promise"] --> predict["Predict before running"]
+  predict --> course["Run focused course evidence"]
+  course --> practice["Complete exercise before answer"]
+  practice --> transfer["Use one capstone transfer"]
+  transfer --> checkpoint["Record what the evidence proves"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+The first diagram places orientation between the Python Programming family, this course,
+and the incident-plugin integration project. The second is the working study cycle.
+Follow it from left to right for every substantive module. The course website and
+runnable course material are the product you are studying; the capstone is the transfer
+surface at the end of the cycle.
 
-Python metaprogramming is where runtime power and runtime confusion meet. This course is
-designed to replace vague "magic" explanations with a clear hierarchy of mechanisms,
-costs, and responsibilities.
+Python metaprogramming is where runtime power and runtime confusion meet. This course
+replaces vague “magic” explanations with runtime traces, ownership decisions, bounded
+claims, and tests a learner can run without an instructor.
+
+## Who this course is for
+
+This course is designed for Python developers who can already write ordinary functions,
+classes, modules, exceptions, and tests. It is especially useful if you:
+
+- maintain libraries or frameworks that expose decorators, descriptors, or registries
+- review dynamic code whose execution timing and ownership are hard to explain
+- need to preserve signatures and introspection when behavior is transformed
+- want a principled reason to reject a metaclass, hook, or runtime patch
+
+This is not a first Python course. If method binding, class versus instance state, or
+exception control flow are still new, strengthen those foundations before beginning.
+
+## Prerequisite self-check
+
+Before Module 01, you should be able to explain and demonstrate:
+
+1. the difference between a class attribute and an instance attribute
+2. how a function call differs from retrieving a bound method
+3. why importing a module executes module-level code
+4. how to run a focused `unittest` suite and interpret a failing assertion
+5. why an annotation is metadata unless some runtime owner enforces it
+
+Do not guess. Write a five-minute example for any item that feels uncertain. The point
+is not to pass an entrance exam; it is to keep later behavior from looking magical only
+because an earlier Python rule was missing.
 
 ## The question this course owns
 
-Keep one question in view while reading:
+Keep one question visible throughout the course:
 
-> What exactly is Python doing at runtime, and is this the lowest-power mechanism that can solve the problem honestly?
+> What exactly is Python doing at runtime, and is this the lowest-power mechanism that
+> can solve the problem honestly?
 
-If the answer is unclear, the code will be harder to debug, review, and maintain than it needs to be.
+Every core sharpens one part of that question. Every lab makes a claim observable.
+Every exercise asks you to make or review a decision. Every capstone route checks whether
+the explanation survives when mechanisms interact.
+
+## How modules and cores relate
+
+Modules 01 through 10 form one progression. A module owns a learning problem; its cores
+separate that problem into traceable mechanisms and decisions.
+
+Within a module:
+
+1. read the module landing page and prerequisites
+2. run the named lab before treating prose as proof
+3. study the cores in order because later cores reuse earlier vocabulary
+4. trace the worked example from input through failure and evidence
+5. complete the exercises before opening the answers
+6. transfer one settled claim into the capstone
+7. use the exit standard to decide whether to continue
+
+Do not read all cores and postpone execution until the end. Metaprogramming claims are
+easy to misunderstand when the observation arrives hours after the explanation.
 
 ## The power ladder
 
-This course is organized around a strict ladder:
+The course climbs only when a lower-power owner is insufficient:
 
-1. plain code
-2. introspection
-3. decorators
-4. descriptors
-5. metaclasses
-6. responsibility boundaries around dynamic execution and global hooks
+1. plain functions, classes, and explicit composition
+2. observation and introspection
+3. callable wrappers and decorators
+4. properties, class decorators, and descriptors
+5. class-creation hooks and metaclasses
+6. tightly governed dynamic execution, patching, import hooks, and transforms
 
-The rule is simple: always prefer the lowest rung that solves the problem.
+Moving upward is not progress by itself. Progress means being able to explain why the
+current owner is necessary, what public surface changed, how it can be inspected, which
+failure it introduces, and how to remove or constrain it.
 
-## How to read the course
+## Run the study route
 
-Read the modules in order. Each one establishes a boundary the next one depends on:
+From the Python Metaprogramming course directory:
 
-1. object model and introspection before transformation
-2. decorators before descriptors
-3. descriptors before metaclasses
-4. mechanics before responsibility rules
+```bash
+make study-route
+make study-route-test
+```
 
-This ordering matters because metaprogramming only becomes trustworthy when you can compare each tool to the simpler tool below it.
+`study-route` publishes the complete course-first sequence as JSON. Each substantive
+module names:
 
-## Orientation companions
+- the question it owns
+- the focused course command
+- the focused test command
+- the later capstone transfer
+- the earlier contract that must remain true
+- the evidence required before moving forward
 
-Use these pages with this module when you want the course shape to stay visible:
+The command does not decide whether you understand the material. It prevents the route
+itself from drifting into undocumented or capstone-first advice.
 
-- [Course Map](course-map.md) for the whole ten-module arc
-- [First-Contact Map](first-contact-map.md) for the minimum honest route into the foundations
-- [Mid-Course Map](mid-course-map.md) for the bridge from observation into wrappers, descriptors, and class customization
-- [Mid-Course Map](mid-course-map.md) again when you are resuming after a break without guessing at the right boundary
-- [Mastery Map](mastery-map.md) for the late-course review and extension route
+## Independent-study cycle
 
-## What the capstone proves
+Use one study session for one coherent claim:
 
-[`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/python-programming/python-meta-programming/capstone)
-is the course’s executable proof. It is a plugin runtime for incident-delivery adapters
-that keeps all four major mechanisms visible in one codebase:
+| Moment | Learner action | Evidence to retain |
+| --- | --- | --- |
+| orient | state the module question and prerequisite | one sentence you can test |
+| predict | write what should happen and when | expected value, exception, or trace |
+| observe | run the smallest course command | focused JSON or console evidence |
+| prove | run the matching focused tests | the exact protected contract |
+| practice | solve before reading the answer | your decision and rejected alternative |
+| calibrate | compare with the reasoned answer | corrected reasoning, proof, and non-claim |
+| transfer | run one capstone command | application evidence for the same concept |
 
-- introspection-driven manifest export
+A session may stop after focused proof. The broad course gate belongs near a release or
+mastery boundary, not after every reading session.
+
+## How to use exercises and answers
+
+Exercises are decision work, not syntax copying. For each exercise:
+
+1. record the starting contract that must remain true
+2. predict the timing, owner, public surface, and failure route
+3. implement or inspect the smallest honest change
+4. run the acceptance evidence named in the prompt
+5. write what the result proves and what it does not prove
+6. only then open the answer
+
+Use the answer to compare reasoning, not just output. A matching output with the wrong
+ownership model is not a correct solution. A different implementation can be correct if
+it preserves the stated contract and produces equally strong evidence.
+
+## How the capstone participates
+
+The incident-plugin capstone is a supporting integration project. It combines:
+
+- observational manifest and registry reports
+- action decorators with visible wrapper ownership
 - descriptor-backed configuration fields
-- decorator-based action instrumentation
-- metaclass-driven plugin registration
+- metaclass-driven class creation and registration
+- an explicit governance report for accepted and rejected powers
 
-If a course claim cannot be connected to this runtime, treat it skeptically.
+Do not enter it to discover a mechanism for the first time. First learn the mechanism in
+the module lab, then use the named capstone command to answer one transfer question.
+The application is intentionally more crowded than the lab; that pressure is useful only
+after the isolated claim is clear.
 
-## Questions to keep asking while you read
+## Choose the smallest honest verification
 
-- What work happens at definition time, and what work happens at call or instance time?
-- Which metadata or signatures must remain visible after wrapping?
-- Which invariant belongs on a field, on a callable, on a class, or in plain code?
-- What would become harder to debug if this mechanism were made more magical?
+Use proof in this order:
 
-## What not to expect
+1. one course example or evidence command
+2. the matching focused course tests
+3. one observational capstone transfer
+4. one runtime capstone route when execution is part of the claim
+5. the broad course gate only when the complete course state is under review
 
-This course is not a tricks catalog and not a recommendation to make everything dynamic.
-It is a correctness-first course about knowing what Python can do, what it should do, and
-where the responsibility lines need to stay hard.
+Passing a broad suite does not explain why a claim is true. A small test does not prove
+unrelated runtime behavior. Name the claim before choosing the proof.
 
-## Stable vocabulary
+## Return after a break
 
-Use [Reference Glossary](../reference/glossary.md) when you want the recurring language in
-this course kept stable while you move between orientation, modules, guides, and capstone
-proof.
+Do not resume at the last page you remember opening. Resume from the last module whose
+exit evidence you can still explain.
+
+For example:
+
+```bash
+make study-route LAST_TRUSTED_MODULE=4
+```
+
+The generated re-entry plan first re-runs Module 04’s focused evidence, then moves to
+Module 05’s course lab and tests, and only afterward names the capstone transfer. If the
+refresh evidence is surprising, move the trusted boundary backward and rebuild the plan.
+
+Use the companion maps for the relevant range:
+
+- [First-Contact Map](first-contact-map.md) for Modules 01–03
+- [Mid-Course Map](mid-course-map.md) for Modules 04–08
+- [Mastery Map](mastery-map.md) for Modules 09–10
+- [Course Map](course-map.md) when the whole arc needs to be visible
+
+## Orientation exit standard
+
+Begin Module 01 when you can:
+
+- explain who this course is and is not for
+- name the prerequisite you would refresh first
+- describe how a core, lab, exercise, answer, and capstone transfer differ
+- run and interpret `make study-route`
+- choose focused proof before broad proof
+- state the last trusted boundary you would use after a long break
+- explain why the course—not the capstone—is the primary learning surface
+
+Use the [Reference Glossary](../reference/glossary.md) when recurring vocabulary becomes
+unstable, but return to executable evidence rather than trying to memorize the shelf.
