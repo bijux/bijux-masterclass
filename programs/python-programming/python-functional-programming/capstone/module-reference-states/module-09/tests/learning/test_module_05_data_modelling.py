@@ -1,13 +1,9 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
 from typing import TypedDict
 
 import pytest
-from pydantic import ValidationError
-from typing_extensions import assert_never
-
 from funcpipe_rag.boundaries.adapters.pydantic_edges import ChunkModel, to_core_chunk
 from funcpipe_rag.boundaries.adapters.serde import (
     dec_result,
@@ -15,28 +11,14 @@ from funcpipe_rag.boundaries.adapters.serde import (
     from_json,
     to_json,
 )
-from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
-from funcpipe_rag.fp.core import (
-    JSON,
-    UTC,
-    ChunkState,
-    Done,
-    Failure,
-    Running,
-    Success,
-    advance_event,
-    chunk_from_dict,
-    chunk_state_from_dict,
-    chunk_state_to_dict,
-    chunk_to_dict,
-    failure,
-    make_chunk,
-    pending,
-    start_event,
-    succeed_event,
-    success,
-    transition,
+from funcpipe_rag.core.rag_types import (
+    Chunk,
+    ChunkWithoutEmbedding,
+    CleanDoc,
+    RagEnv,
+    RawDoc,
 )
+from funcpipe_rag.fp.core import JSON, make_chunk
 from funcpipe_rag.fp.error import ErrorCode
 from funcpipe_rag.fp.functor import result_map
 from funcpipe_rag.fp.monoid import METRICS, Metrics, fold
@@ -58,8 +40,10 @@ from funcpipe_rag.rag.domain import (
     assemble,
     process_batch_hybrid,
 )
-from funcpipe_rag.rag.stages import clean_doc
-from funcpipe_rag.result.types import Err, ErrInfo, Ok
+from funcpipe_rag.rag.stages import chunk_doc, clean_doc, embed_chunk
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
+from pydantic import ValidationError
+from typing_extensions import assert_never
 
 
 class AcceptedChunkPayload(TypedDict):
@@ -67,61 +51,76 @@ class AcceptedChunkPayload(TypedDict):
     metadata: dict[str, JSON]
 
 
-def describe_chunk_outcome(state: ChunkState) -> str:
-    match state:
-        case Success(embedding=embedding):
-            return f"ready:{len(embedding)}"
-        case Failure(code=code, attempt=attempt):
-            return f"failed:{code}:attempt-{attempt}"
+def describe_chunk_outcome(outcome: Result[Chunk, ErrInfo]) -> str:
+    match outcome:
+        case Ok(value=chunk):
+            return f"ready:{chunk.doc_id}:{len(chunk.embedding)}"
+        case Err(error=error):
+            return f"failed:{error.code}:{error.stage}"
         case other:
             assert_never(other)
 
 
-def test_product_and_sum_types_make_chunk_outcomes_explicit() -> None:
-    prepared = make_chunk(
-        text="typed values",
-        path=(0, 2),
-        metadata={"source": "guide", "reviewed": True},
+def test_rag_product_types_keep_chunk_fields_together() -> None:
+    prepared = ChunkWithoutEmbedding(
+        doc_id="typed-values",
+        text="algebraic data",
+        start=0,
+        end=14,
+        metadata={"source": "course-book"},
     )
-    ready = success(embedding=(0.25, 0.75), metadata={"model": "local"})
-    rejected = failure(code="EMBED_FAIL", msg="model unavailable", attempt=2)
 
-    assert chunk_from_dict(chunk_to_dict(prepared)) == prepared
-    assert chunk_state_from_dict(chunk_state_to_dict(ready)) == ready
-    assert chunk_state_from_dict(chunk_state_to_dict(rejected)) == rejected
+    assert prepared.doc_id == "typed-values"
+    assert prepared.text[prepared.start : prepared.end] == "algebraic data"
+    assert dict(prepared.metadata) == {"source": "course-book"}
+    with pytest.raises((AttributeError, TypeError)):
+        prepared.metadata["source"] = "changed"  # type: ignore[index]
 
 
 @pytest.mark.parametrize(
-    ("state", "expected"),
+    ("outcome", "expected"),
     [
-        (success(embedding=(0.25, 0.75), metadata={"model": "local"}), "ready:2"),
-        (failure(code="EMBED_FAIL", msg="offline", attempt=2), "failed:EMBED_FAIL:attempt-2"),
+        (
+            Ok(
+                embed_chunk(
+                    ChunkWithoutEmbedding(
+                        doc_id="rag-typed",
+                        text="sum type",
+                        start=0,
+                        end=8,
+                    )
+                )
+            ),
+            "ready:rag-typed:16",
+        ),
+        (
+            Err(ErrInfo(code="EMBED_FAIL", msg="offline", stage="embed")),
+            "failed:EMBED_FAIL:embed",
+        ),
     ],
 )
-def test_pattern_matching_handles_every_chunk_outcome(state: ChunkState, expected: str) -> None:
-    assert describe_chunk_outcome(state) == expected
+def test_result_sum_type_separates_embedding_success_from_failure(
+    outcome: Result[Chunk, ErrInfo],
+    expected: str,
+) -> None:
+    assert describe_chunk_outcome(outcome) == expected
 
 
-def test_processing_state_allows_only_declared_rag_transitions() -> None:
-    queued_at = datetime(2026, 1, 2, 9, tzinfo=UTC)
-    initial = pending(queued_at=queued_at)
-    running = transition(initial, start_event(started_at=queued_at))
-    completed = transition(
-        running,
-        succeed_event(
-            completed_at=datetime(2026, 1, 2, 10, tzinfo=UTC),
-            artifact_id="chunk-index",
-            dim=2,
-            sha256="a" * 64,
-        ),
-    )
+def test_rag_stage_types_make_embedding_transition_explicit() -> None:
+    raw = RawDoc("rag-stage", "Types", "  Typed   STAGES  ", "fp")
+    cleaned = clean_doc(raw)
+    prepared = chunk_doc(cleaned, RagEnv(chunk_size=32))[0]
+    embedded = embed_chunk(prepared)
 
-    assert isinstance(running, Running)
-    assert isinstance(completed, Done)
-    assert transition(completed, advance_event(delta_permille=1)) is completed
-    assert initial == pending(queued_at=queued_at)
-    with pytest.raises(ValueError, match="invalid transition"):
-        transition(initial, advance_event(delta_permille=1))
+    assert isinstance(cleaned, CleanDoc)
+    assert isinstance(prepared, ChunkWithoutEmbedding)
+    assert not isinstance(prepared, Chunk)
+    assert isinstance(embedded, Chunk)
+    assert embedded.doc_id == prepared.doc_id
+    assert embedded.text == prepared.text
+    assert (embedded.start, embedded.end) == (prepared.start, prepared.end)
+    assert len(embedded.embedding) == 16
+    assert raw.abstract == "  Typed   STAGES  "
 
 
 def test_result_functor_transforms_success_without_running_failure_work() -> None:
