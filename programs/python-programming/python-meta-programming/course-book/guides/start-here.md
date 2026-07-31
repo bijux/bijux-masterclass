@@ -57,8 +57,8 @@ If you are new to the course, use this route exactly:
 2. Read [Course Guide](course-guide.md) to see the ten-module arc and how the support shelves fit around it.
 3. Read [Learning Contract](learning-contract.md) so the study bar is explicit before the dense material begins.
 4. Read [Module 00](../module-00-orientation/index.md) to learn the power ladder and the course’s idea of "honest escalation."
-5. Run `make study-route` from the course directory and inspect the course-first proof
-   order.
+5. Open the [Course Map](../module-00-orientation/course-map.md), choose Module 01, and
+   note its lesson, lab, and focused test.
 6. Complete [Study Practicum](../module-00-orientation/study-practicum.md) before opening
    its [reasoned review](../module-00-orientation/study-practicum-answers.md).
 7. Read [First-Contact Map](../module-00-orientation/first-contact-map.md) if the course still feels large and you want the shortest clean entry through foundations.
@@ -85,8 +85,9 @@ then use [Pressure Routes](pressure-routes.md) to choose the relevant hotspot ro
 
 Use [Module Promise Map](module-promise-map.md) and
 [Module Checkpoints](module-checkpoints.md) to find the last boundary you still understand.
-Resume there, not at the most advanced topic you remember seeing. Then render the bounded
-route with `make study-route LAST_TRUSTED_MODULE=<module>`.
+Resume there, not at the most advanced topic you remember seeing. Rerun that module’s
+lab and focused test from the [Course Map](../module-00-orientation/course-map.md), then
+continue to the next lesson only if you can explain the evidence.
 
 ### If your environment is the blocker
 

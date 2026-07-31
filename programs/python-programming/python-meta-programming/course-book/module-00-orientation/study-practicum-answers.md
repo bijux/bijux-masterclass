@@ -20,8 +20,8 @@ flowchart LR
 <!-- page-maps:end -->
 
 These reviews calibrate reasoning rather than prescribe one transcript. Your command
-output may differ in ordering details only where the published JSON contract permits it.
-Your ownership, proof order, and non-claims should be equivalent.
+output may differ in incidental ordering details. Your ownership, proof order, and
+non-claims should be equivalent.
 
 ## Review 1: start from runtime objects
 
@@ -34,13 +34,12 @@ before Module 04 can explain what a wrapper changes.
 ### Executable route
 
 ```bash
-make study-route LAST_TRUSTED_MODULE=0
 make lab
 make lab-test
 ```
 
-The generated plan starts with Module 00, then Module 01’s course evidence and focused
-tests, and only then names `make capstone-manifest`.
+The Course Map starts with Module 01’s course evidence and focused tests. Only after
+those claims are understood does it name `make capstone-manifest`.
 
 A small identity example can be:
 
@@ -94,7 +93,6 @@ Module 06 as trusted would make the plan depend on missing intermediate contract
 ### Executable route
 
 ```bash
-make study-route LAST_TRUSTED_MODULE=3
 make evidence-lab
 make evidence-lab-test
 make wrapper-lab
@@ -102,8 +100,8 @@ make wrapper-lab-test
 make capstone-action-wrapper
 ```
 
-The re-entry packet should name Module 03 as `refresh`, Module 04 as `continue_with`, and
-keep `broad_gate_deferred` true.
+This route refreshes Module 03 before continuing to Module 04 and keeps the broad gate
+deferred.
 
 ### Reasoning
 
@@ -117,8 +115,8 @@ claims—the trusted boundary should move backward to Module 02.
 
 ### Common wrong turn
 
-Using `LAST_TRUSTED_MODULE=6` because Module 06 was previously completed. Completion
-history is not a current proof boundary.
+Starting from Module 06 because it was previously completed. Completion history is not
+a current proof boundary.
 
 ### What the result proves
 

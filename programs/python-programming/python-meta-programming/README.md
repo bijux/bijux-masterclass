@@ -143,8 +143,6 @@ From the repository root:
 ```bash
 make PROGRAM=python-programming/python-meta-programming docs-serve
 make PROGRAM=python-programming/python-meta-programming docs-build
-make -C programs/python-programming/python-meta-programming study-route
-make -C programs/python-programming/python-meta-programming study-route-test
 make -C programs/python-programming/python-meta-programming lab
 make -C programs/python-programming/python-meta-programming lab-test
 make -C programs/python-programming/python-meta-programming observation-lab
@@ -184,10 +182,9 @@ make PROGRAM=python-programming/python-meta-programming capstone-verify-report
 make PROGRAM=python-programming/python-meta-programming capstone-confirm
 ```
 
-Use `study-route` for the executable course-first sequence. Set
-`LAST_TRUSTED_MODULE=<module>` when returning after a break; the generated plan re-proves
-that boundary before continuing and leaves the broad gate deferred. Use
-`study-route-test` to verify module order, proof order, and re-entry behavior.
+When returning after a break, use the course-book’s module checkpoints to find the last
+claim you can still explain. Rerun that module’s focused lab and test before continuing.
+The course map publishes the exact command pair for every module.
 
 Use `lab` for the Module 01 runtime-object evidence. Use `observation-lab` and
 `observation-debug-view` for Module 02's observation boundaries and worked example.

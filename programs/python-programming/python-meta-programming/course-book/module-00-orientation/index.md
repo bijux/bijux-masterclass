@@ -107,27 +107,20 @@ Moving upward is not progress by itself. Progress means being able to explain wh
 current owner is necessary, what public surface changed, how it can be inspected, which
 failure it introduces, and how to remove or constrain it.
 
-## Run the study route
+## Read the course route
 
-From the Python Metaprogramming course directory:
-
-```bash
-make study-route
-make study-route-test
-```
-
-`study-route` publishes the complete course-first sequence as JSON. Each substantive
-module names:
+The [Course Map](course-map.md) publishes the complete course-first sequence. Each
+substantive module names:
 
 - the question it owns
 - the focused course command
 - the focused test command
-- the later capstone transfer
+- the optional later capstone transfer
 - the earlier contract that must remain true
 - the evidence required before moving forward
 
-The command does not decide whether you understand the material. It prevents the route
-itself from drifting into undocumented or capstone-first advice.
+There is no routing tool to learn. Every executable command in the map runs subject
+evidence or a focused subject test.
 
 ## Independent-study cycle
 
@@ -202,15 +195,16 @@ unrelated runtime behavior. Name the claim before choosing the proof.
 Do not resume at the last page you remember opening. Resume from the last module whose
 exit evidence you can still explain.
 
-For example:
+For example, if Module 04 is the last claim you still trust:
 
 ```bash
-make study-route LAST_TRUSTED_MODULE=4
+make wrapper-lab
+make wrapper-lab-test
 ```
 
-The generated re-entry plan first re-runs Module 04’s focused evidence, then moves to
-Module 05’s course lab and tests, and only afterward names the capstone transfer. If the
-refresh evidence is surprising, move the trusted boundary backward and rebuild the plan.
+Explain the wrapper lifecycle evidence before moving to Module 05. If the refresh
+evidence is surprising, move the trusted boundary backward and use the matching command
+pair in the Course Map.
 
 Use the companion maps for the relevant range:
 
@@ -226,7 +220,7 @@ Begin Module 01 when you can:
 - explain who this course is and is not for
 - name the prerequisite you would refresh first
 - describe how a core, lab, exercise, answer, and capstone transfer differ
-- run and interpret `make study-route`
+- find and run the focused lab and test for a module claim
 - choose focused proof before broad proof
 - state the last trusted boundary you would use after a long break
 - explain why the course—not the capstone—is the primary learning surface

@@ -160,14 +160,16 @@ observed signature.” That narrower sentence is the learning result.
 | passing `callable` feels like validation | capability and valid invocation are blurred | bind with the real signature |
 | capstone output feels like business execution | report and invocation routes are blurred | verify the packet’s construction/execution flags |
 
-After a longer break, use:
+After a longer break, re-prove the first boundary directly:
 
 ```bash
-make study-route LAST_TRUSTED_MODULE=0
+make lab
+make lab-test
 ```
 
-If Module 01 is still stable, use `LAST_TRUSTED_MODULE=1` and prove that contract before
-continuing.
+If Module 01 is still stable, continue with `make observation-lab` and
+`make observation-lab-test`. Move forward only when you can explain why observation and
+execution are different.
 
 ## Ready for Module 04
 

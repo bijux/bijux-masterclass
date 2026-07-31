@@ -223,8 +223,12 @@ makes the invariant easiest to inspect, test, and remove.
 Use the last module whose exit evidence is still trustworthy:
 
 ```bash
-make study-route LAST_TRUSTED_MODULE=5
+make decorator-policy-lab
+make decorator-policy-lab-test
 ```
+
+This example re-proves Module 05 before continuing to Module 06. If its retry and
+validation boundaries are surprising, return to Module 04 rather than pressing forward.
 
 | Symptom | Return to |
 | --- | --- |

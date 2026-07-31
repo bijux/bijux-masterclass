@@ -65,18 +65,18 @@ Decide whether to begin at Module 01 or skip directly to wrappers in Module 04.
 
 - Do not use familiarity with syntax as evidence of runtime understanding.
 - Test at least one prerequisite claim with a small Python example.
-- Generate the executable study route for a new learner.
+- Use the Course Map to identify the first subject lab and focused test.
 - Do not open capstone source as a substitute for the prerequisite check.
 
 ### Expected evidence
 
 ```bash
-make study-route LAST_TRUSTED_MODULE=0
+make lab
+make lab-test
 ```
 
-Retain the first route, its preserved contract, and its exit evidence. Add one tiny
-example that distinguishes a function from a retrieved bound method or class state from
-instance state.
+Retain the Module 01 claim and exit evidence. Add one tiny example that distinguishes a
+function from a retrieved bound method or class state from instance state.
 
 ### Acceptance checks
 
@@ -111,15 +111,17 @@ overstate memory.
 
 ### Expected evidence
 
-Run at least two candidate plans:
+Test both the remembered boundary and the safer earlier boundary:
 
 ```bash
-make study-route LAST_TRUSTED_MODULE=6
-make study-route LAST_TRUSTED_MODULE=3
+make class-customization-lab
+make class-customization-lab-test
+make evidence-lab
+make evidence-lab-test
 ```
 
-Compare the `refresh`, `continue_with`, `order`, and `broad_gate_deferred` fields. Choose
-one plan and justify it.
+Compare which evidence you can explain without reading the answers. Choose one boundary
+and justify it; do not treat a green command as proof of understanding.
 
 ### Acceptance checks
 
@@ -153,14 +155,12 @@ question inside the full suite.
 
 ### Expected evidence
 
-Use the Module 05 entry from:
-
 ```bash
-make study-route
+make decorator-policy-lab
+make decorator-policy-lab-test
 ```
 
-Then run only the course command and focused test named by that entry. Record the
-relevant retry evidence and test assertion.
+Record the relevant retry evidence and test assertion.
 
 ### Acceptance checks
 

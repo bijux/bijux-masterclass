@@ -176,13 +176,14 @@ power belongs in the design.
 If Module 08 remains trustworthy:
 
 ```bash
-make study-route LAST_TRUSTED_MODULE=8
+make descriptor-system-lab
+make descriptor-system-lab-test
 ```
 
-The plan re-runs descriptor-system evidence before class creation. If Module 09 remains
-trustworthy, use `LAST_TRUSTED_MODULE=9`; the plan re-proves class creation before
-governance. A learner who completed the course can use `LAST_TRUSTED_MODULE=10` to repeat
-the governance review without pretending mastery is permanent.
+Then continue to class creation. If Module 09 remains trustworthy, rerun
+`make class-creation-lab` and `make class-creation-lab-test` before governance. A learner
+who completed the course can repeat `make runtime-governance-lab` and
+`make runtime-governance-lab-test` without pretending mastery is permanent.
 
 ## Course completion standard
 

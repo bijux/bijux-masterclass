@@ -62,14 +62,8 @@ whether the same explanation survives in the incident-plugin application.
 | 09 | What must happen before a class exists? | `make class-creation-lab` | `make class-creation-lab-test` | `make capstone-class-creation` |
 | 10 | Which runtime powers should be approved or rejected? | `make runtime-governance-lab` | `make runtime-governance-lab-test` | `make capstone-governance` |
 
-This table is generated independently as executable evidence by:
-
-```bash
-make study-route
-```
-
-If the page and JSON disagree, treat the mismatch as a course defect. Do not silently
-choose whichever route is more convenient.
+The table itself is the learner route. Each command is a real subject lab or focused
+test; there is no separate navigation program to learn or maintain.
 
 ## Stage contracts
 

@@ -122,7 +122,7 @@ visible in code, commands, tests, and saved evidence.
 | I need a direct claim-to-evidence mapping | [Proof Matrix](proof-matrix.md) |
 | I need to stabilize the environment before any proof work | [Platform Setup](platform-setup.md) |
 | I need to practice choosing a route and proof size | [Study Practicum](../module-00-orientation/study-practicum.md) |
-| I am returning after a break | `make study-route LAST_TRUSTED_MODULE=<module>` and [Module 00](../module-00-orientation/index.md) |
+| I am returning after a break | [Module Checkpoints](module-checkpoints.md), then the matching lab and focused test in [Module 00](../module-00-orientation/index.md) |
 
 ## How to study the course well
 
