@@ -8,6 +8,7 @@ PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../artifacts
 SITE_DIR ?= $(ARTIFACTS_DIR)/site/python-programming/python-meta-programming
 COURSE_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/python-programming/python-meta-programming
+LAST_TRUSTED_MODULE ?= 0
 
 .PHONY: help
 help: ## Show available targets
@@ -16,6 +17,14 @@ help: ## Show available targets
 .PHONY: test
 test: lab-test ## Run course labs and the capstone confirmation suite
 	@$(RUN_CAPSTONE) confirm
+
+.PHONY: study-route
+study-route: ## Render the course-first study route and bounded reentry plan
+	@$(PYTHON) -m labs.study_practice --last-trusted-module $(LAST_TRUSTED_MODULE)
+
+.PHONY: study-route-test
+study-route-test: ## Verify course progression, proof order, and reentry boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_study_practice_*.py" -v
 
 .PHONY: lab
 lab: ## Run the Module 01 runtime-object evidence lab
