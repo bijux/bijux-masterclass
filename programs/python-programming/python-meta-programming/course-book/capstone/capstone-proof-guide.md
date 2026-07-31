@@ -17,73 +17,173 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  course["Focused course proof"] --> report["Capstone report"]
+  report --> assertion["Focused capstone assertion"]
+  assertion --> bundle{"Durable handoff needed?"}
+  bundle -->|yes| saved["Saved bundle"]
+  bundle -->|no| stop["Stop"]
+  saved --> broad["Broad gate at completion"]
 ```
 <!-- page-maps:end -->
 
-Use this guide when you need to connect a capstone claim to the smallest repeatable proof
-route that actually defends it. The capstone becomes noisy when learners gather evidence
-without first deciding what they are trying to prove.
+Use this guide after the corresponding course lab and focused tests pass. Capstone proof
+begins with one observational report, then one assertion that protects the same claim.
+The broad suite belongs near completion, not at the start of a bounded review.
 
-## Choose the proof pass you actually need
+## Proof record
 
-### Bounded review pass
+For every transfer, record:
 
-Use this when you need one honest pass without reopening the whole runtime:
+1. course claim
+2. focused course test
+3. transfer contract
+4. capstone report
+5. owning source
+6. focused capstone assertion
+7. non-claim
+8. next escalation condition
 
-1. Read [Capstone Guide](index.md).
-2. Run `make PROGRAM=python-programming/python-meta-programming capstone-tour`.
-3. Read [Capstone Map](capstone-map.md).
-4. Check one matching test file for the claim under review.
+Generate items 1, 3, 4, 5, and 7 with:
 
-### Deeper executable pass
+```bash
+make transfer-route MODULE=7
+```
 
-Use this when the review question is strong enough to justify the full saved proof route:
+The learner must still locate and explain the focused assertions.
 
-1. Run `make PROGRAM=python-programming/python-meta-programming test`.
-2. Run `make PROGRAM=python-programming/python-meta-programming capstone-verify-report`.
-3. Compare the saved outputs with the matching tests.
+## Module proof map
 
-## Proof targets
+| Module | Capstone report | First test surface | Protected claim |
+| --- | --- | --- | --- |
+| 01 | `capstone-manifest` | `test_registry.py`, `test_runtime.py` | public classes, fields, and actions are deterministic |
+| 02 | `capstone-manifest` | `test_cli.py`, `test_runtime.py` | manifest observation does not invoke actions |
+| 03 | `capstone-bind-action` | `test_runtime.py`, `test_cli.py` | signature binding occurs without construction or invocation |
+| 04 | `capstone-action-wrapper` | `test_runtime.py`, `test_cli.py` | metadata, signature, and wrapper provenance remain visible |
+| 05 | `capstone-check-action` | `test_runtime.py`, `test_cli.py` | supported hints are checked and unsupported hints are refused |
+| 06 | `capstone-class-creation` | `test_runtime.py` | lower-power and class-creation owners remain distinguishable |
+| 07 | `capstone-field-ownership` | `test_fields.py`, `test_cli.py` | descriptor category, collection, and storage are inspectable |
+| 08 | `capstone-field-system` | `test_fields.py`, `test_cli.py` | accepted and rejected field-system powers are explicit |
+| 09 | `capstone-class-creation` | `test_registry.py`, `test_runtime.py`, `test_cli.py` | namespace, shaping, and registration timing are stored |
+| 10 | `capstone-governance` | `test_governance.py`, `test_cli.py` | decisions connect owners, reports, rollback, and proof |
 
-- The manifest exposes field and action metadata without executing plugin work.
-- The generated constructor signature reflects declared fields accurately.
-- Descriptor-backed fields validate and coerce configuration per instance.
-- Action decorators preserve signature visibility and record invocation history.
-- Plugin registration stays deterministic and rejects duplicates.
+The first test surface is not always one file because public CLI evidence and mechanism
+behavior are separate claims.
 
-## Minimum proof route
+## Proof sizes
 
-1. Run `make PROGRAM=python-programming/python-meta-programming test`.
-2. Read `capstone/tests/test_runtime.py`.
-3. Read `capstone/tests/test_registry.py`.
-4. Read `capstone/tests/test_fields.py`.
-5. Read `capstone/tests/test_cli.py`.
+### One public report
 
-For a shorter module-aligned pass, use:
+Best for:
 
-- Modules 01-03: read `manifest` output and `capstone/tests/test_runtime.py`.
-- Modules 04-05: read `trace` output and `capstone/tests/test_runtime.py`.
-- Modules 07-08: read `capstone/tests/test_fields.py`.
-- Module 09: read `registry` output and `capstone/tests/test_registry.py`.
-- Module 10: run `capstone-governance`, read `capstone/tests/test_governance.py` and
-  `capstone/tests/test_cli.py`, then compare `governance.json` with the mechanism-specific
-  files in the saved inspection bundle.
+- learning the shape of one capstone contract
+- confirming that construction or execution is absent
+- choosing the owning source before reading implementation
 
-## Questions to answer
+Not enough for:
 
-- Which proof confirms definition-time work rather than runtime work?
-- Which proof confirms preserved metadata rather than only produced output?
-- Which saved bundle is strongest for a human review without rerunning commands?
-- Which proof would fail first if the design became more magical?
+- regression confidence
+- implementation invariants not exposed publicly
+- runtime success
+
+### One focused test file or test selection
+
+Best for:
+
+- the invariant that should fail first after a change
+- timing, cleanup, ordering, and failure behavior
+- comparing public output with internal ownership
+
+Not enough for:
+
+- every capstone contract
+- a durable review artifact
+- explaining the course progression by itself
+
+### One saved bundle
+
+Use `inspect`, `capstone-tour`, or `capstone-verify-report` when another reviewer needs a
+stable artifact with hashes and route instructions.
+
+A bundle preserves evidence; it does not make a vague claim precise.
+
+### Broad course gate
+
+Use:
+
+```bash
+make PROGRAM=python-programming/python-meta-programming test
+```
+
+once near completion after focused routes pass. It provides course and capstone
+regression confidence. It does not replace the proof record.
+
+## Evidence comparisons
+
+### Manifest versus runtime success
+
+`capstone-manifest` proves exported structure. It does not construct a plugin or invoke
+an action. A successful manifest cannot prove that configuration values are valid.
+
+### Binding versus hint checking
+
+`capstone-bind-action` uses Python call-shape rules. `capstone-check-action` starts from
+bound values and evaluates a deliberately small supported hint subset. Neither invokes
+the action.
+
+### Wrapper report versus trace
+
+`capstone-action-wrapper` proves structural preservation without execution.
+`capstone-trace` proves one deliberate construction and invocation story. Use the first
+for wrapper ownership and the second for runtime history.
+
+### Class creation versus governance
+
+`capstone-class-creation` proves what the hooks produced and when. `capstone-governance`
+records whether the application approves or rejects those powers. Mechanism evidence and
+design approval are different proof classes.
+
+## Failure-first review questions
+
+Ask which assertion should fail first if:
+
+- manifest generation starts invoking a plugin action
+- a wrapper loses `__wrapped__` or its explicit signature
+- hint checking silently accepts an unsupported generic
+- a field stores data on the shared descriptor
+- registry order becomes nondeterministic
+- package discovery enters class creation
+- governance approves a power without naming rollback or proof
+
+If no focused assertion is identifiable, the transfer record is incomplete even when
+the broad suite passes.
+
+## Saved bundle selection
+
+| Review need | Route | First files |
+| --- | --- | --- |
+| public shape and ownership | `inspect` | `manifest.json`, ownership reports, `governance.json` |
+| guided application story | `capstone-tour` | `route.txt`, focused reports, `trace.json` |
+| executable report | `capstone-verify-report` | pytest output and public evidence |
+| every published artifact | `proof` | all bundle manifests |
+
+Use bundle manifests to confirm file hashes and sizes. Do not compare a stale saved
+artifact with new source without rebuilding the route.
+
+## Proof anti-patterns
+
+- Starting with the broad test because the claim is unclear.
+- Citing a JSON key without naming the code that owns it.
+- Treating an `executed: false` report as runtime behavior proof.
+- Treating one successful trace as determinism or broad regression proof.
+- Treating governance decisions as substitutes for mechanism tests.
+- Reading all tests before identifying which invariant matters.
 
 ## Reviewer exit signal
 
-You can stop the proof pass when you can say:
+Stop when you can say:
 
-- which claim you checked
-- which smallest route established it
-- which stronger route you deliberately did not need yet
+- which completed course claim was transferred
+- which public capstone report exposed it
+- which assertion protects it
+- what the evidence refuses to prove
+- why no broader route was needed yet
