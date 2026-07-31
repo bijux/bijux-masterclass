@@ -226,3 +226,121 @@ Common wrong turns:
 This local law supports refactoring adjacent pure maps into a composed map.
 Operational claims such as no duplicate external writes still require stable
 keys, idempotent adapters, deterministic schedules, and their own properties.
+
+## Cumulative lab: review the FuncPipe async indexing policy
+
+Start with the value flow, not the scheduler. Filtering is the only event that
+deliberately produces no stream position. A source failure is already a
+`Result`, validation translates an exception into a `Result`, and the mapper
+returns its embedding failure as a `Result`. Ordered coordination must therefore
+preserve all three errors between the two successful chunks.
+
+| Input event | Cleaner called? | Embedder called? | Output position |
+| --- | --- | --- | --- |
+| valid before | yes | yes | `ok:before` |
+| filtered document | no | no | none |
+| source `Err` | no | no | `err:SOURCE` |
+| validation failure | yes | no | `err:UNEXPECTED` |
+| embedding `Err` | yes | yes | `err:EMBED` |
+| valid after | yes | yes | `ok:after` |
+
+One complete proof is:
+
+```python
+def test_async_indexing_policy_review() -> None:
+    source_failure = ErrInfo(code="SOURCE", msg="unreadable row")
+
+    async def source_items() -> AsyncIterator[Result[RawDoc, ErrInfo]]:
+        yield Ok(RawDoc("before", "Before", "valid", "keep"))
+        yield Ok(RawDoc("filtered", "Filtered", "skip me", "skip"))
+        yield Err(source_failure)
+        yield Ok(RawDoc("invalid", "Invalid", "reject", "keep"))
+        yield Ok(RawDoc("embed-fail", "Embed fail", "valid", "keep"))
+        yield Ok(RawDoc("after", "After", "still valid", "keep"))
+
+    cleaned: list[str] = []
+
+    def clean_or_reject(doc: RawDoc) -> CleanDoc:
+        cleaned.append(doc.doc_id)
+        if doc.doc_id == "invalid":
+            raise ValueError("document failed validation")
+        return clean_doc(doc)
+
+    active = 0
+    maximum_active = 0
+    embedded: list[str] = []
+
+    def embed_later(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+        async def run() -> Result[Chunk, ErrInfo]:
+            nonlocal active, maximum_active
+            embedded.append(chunk.doc_id)
+            active += 1
+            maximum_active = max(maximum_active, active)
+            await asyncio.sleep(0)
+            active -= 1
+            if chunk.doc_id == "embed-fail":
+                return Err(ErrInfo(code="EMBED", msg="provider rejected chunk"))
+            return Ok(embed_chunk(chunk))
+
+        return run
+
+    stream = async_rag_chunks(
+        source_items,
+        RagEnv(chunk_size=32),
+        clean_or_reject,
+        embed_later,
+        BackpressurePolicy(max_concurrent=2, ordered=True),
+        keep=lambda doc: doc.categories != "skip",
+    )
+
+    async def collect() -> list[Result[Chunk, ErrInfo]]:
+        return [item async for item in stream()]
+
+    results = asyncio.run(collect())
+    labels = [
+        f"ok:{item.value.doc_id}"
+        if isinstance(item, Ok)
+        else f"err:{item.error.code}"
+        for item in results
+    ]
+
+    assert labels == [
+        "ok:before",
+        "err:SOURCE",
+        "err:UNEXPECTED",
+        "err:EMBED",
+        "ok:after",
+    ]
+    assert maximum_active == 2
+    assert cleaned == ["before", "invalid", "embed-fail", "after"]
+    assert embedded == ["before", "embed-fail", "after"]
+```
+
+The three trace assertions divide ownership clearly. `cleaned` proves that the
+filter acts before the synchronous core. `embedded` proves that source and
+validation failures bypass scheduling. `maximum_active` proves that the
+application actually exercises the declared concurrency ceiling, rather than
+merely constructing a policy object.
+
+The output assertion is the continuity proof. In ordered mode, every emitted
+`Result` retains the source-relative position it acquired before or during
+embedding. With `ordered=False`, successes and embedding failures may be
+observed in completion order; reviewers would then need stable coordinates to
+relate each result to its input instead of reading that relationship directly
+from the sequence.
+
+Common wrong turns:
+
+- making the filtered document return an `Err` changes a selection rule into a
+  validation failure;
+- catching errors around collection hides the typed failure channel;
+- asserting only `maximum_active <= 2` can pass even if no overlap occurs;
+- using a real embedding service turns a coordination proof into an integration
+  test; and
+- duplicating cleaning or chunking inside the fake embedder stops proving that
+  the synchronous core remains authoritative.
+
+This proof establishes deferral, filtering order, bounded overlap, ordered
+continuity, and typed failure preservation for this controlled application
+path. It does not establish provider rate limits, network cancellation,
+retry safety, durable writes, or semantic embedding quality.
