@@ -1,6 +1,5 @@
 # Systematic Refactor
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,274 +24,215 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+A safe refactor begins by deciding which observable behavior must survive. Moving
+code first and searching for a reason afterward is not systematic; it only makes
+the diff systematic.
 
-**Module 10**
-> **Core question:**  
-> How do you iteratively refactor imperative spaghetti—entangled loops, shared state, hidden deps, and effects—into a layered FuncPipe pipeline with pure core, explicit boundaries, and verifiable equivalence, using a heuristics-guided cycle to handle real legacies safely?
+This core uses a real FuncPipe defect: the review inventory configured both
+`rag/` and its child `rag/domain/`. A naïve count treated domain files twice. The
+RAG application still ran, but the observation used to justify later work was
+wrong.
 
-In this core, we outline a heuristics-guided migration cycle for refactoring imperative code to functional pipelines in the FuncPipe RAG Builder (now at `funcpipe-rag-10`). We separate the abstract protocol (reusable framework), a realistic case study (tangled legacy script), and a verification appendix (patterns for equivalence evidence). Builds on Module 09 standards.
+## The pressure: overlapping reading routes
 
-**Motivation Bug:** Tangled imperatives are flaky; big-bang risks regressions—heuristic-guided cycle with equivalence evidence enables safe, adaptive migration.
+The two paths have different teaching purposes:
 
-**Delta from Module 09:** Standards define good FP; this gives the adaptive playbook.
+- `rag/` shows the application package as a whole;
+- `rag/domain/` gives a learner a high-signal route into owned RAG values.
 
-Use this when you are refactoring legacy code safely.
+Removing the child path would make the reading map weaker. Keeping both and
+summing their file counts makes the measurement false.
 
-**Outcome:**
-1. Audit/classify impurities, including structural tangles.
-2. Apply heuristics-guided cycle with diverging paths.
-3. Migrate RAG, verifying equivalence/laws.
+```python
+def count_python_files(paths: list[Path]) -> int:
+    return sum(
+        1
+        for path in paths
+        for candidate in path.rglob("*.py")
+        if candidate.is_file()
+    )
+```
 
----
-## FuncPipe Lab: Repair the Observation Before the Design
+If `rag/domain/chunk.py` is discovered under both configured roots, it contributes
+two to the result. The problem is not recursion. The problem is that the fold
+counts observations rather than identities.
 
-The Module 09 review CLI grouped both `rag/` and its child `rag/domain/`, then
-summed the file counts. The paths were useful, but the number was false because
-domain files were counted twice.
+## State the invariant before changing the fold
 
-That is a small example of the first refactoring rule: do not choose a change from
-an observation you have not validated. Module 10 changes the counter to discover a
-set of file identities while preserving the visible reading routes.
+For this refactor:
+
+> The inventory count equals the number of distinct Python files reachable from
+> the configured paths.
+
+That sentence makes several design decisions reviewable:
+
+- overlapping roots are valid;
+- a file contributes at most once;
+- nonexistent roots contribute nothing;
+- configuration order does not affect the count; and
+- configured paths remain visible even when their discoveries overlap.
+
+The invariant points to a set:
+
+```python
+def _count_python_files(paths: Iterable[Path]) -> int:
+    return len(
+        {
+            candidate.resolve()
+            for path in paths
+            if path.exists()
+            for candidate in path.rglob("*.py")
+            if candidate.is_file()
+        }
+    )
+```
+
+The set is not a general “functional improvement.” It earns its place because file
+identity, not encounter count, is the domain of this observation.
+
+## Characterize the boundary, not the helper
+
+The learning test calls `build_summary(PROJECT_ROOT)` and reconstructs the expected
+set from the published `rag-model` paths:
+
+```python
+summary = build_summary(PROJECT_ROOT)
+rag_group = next(
+    group for group in summary["package_groups"]
+    if group["name"] == "rag-model"
+)
+observed_files = {
+    path.resolve()
+    for relative in rag_group["paths"]
+    for path in (PROJECT_ROOT / relative).rglob("*.py")
+}
+
+assert rag_group["python_file_count"] == len(observed_files)
+```
+
+This is stronger than directly testing `_count_python_files` with one hard-coded
+number. It checks the public review summary, includes the real nested
+configuration, and adapts when legitimate source files are added.
+
+It is deliberately not a snapshot of the entire JSON report. An all-field
+snapshot would fail whenever an unrelated package count changed and would hide the
+single behavior under review.
+
+## A reviewable refactor sequence
+
+```mermaid
+flowchart TD
+    claim["Name preserved behavior"]
+    boundary["Locate the public boundary"]
+    failing["Write a failing characterization"]
+    rule["Extract the domain rule"]
+    focused["Run focused proof"]
+    wider["Check affected callers"]
+    compare["Review before/after complexity"]
+
+    claim --> boundary --> failing --> rule --> focused --> wider --> compare
+```
+
+For the inventory correction:
+
+1. **Name the behavior.** Counts represent distinct source files.
+2. **Locate the boundary.** `build_summary` publishes the count.
+3. **Characterize it.** Reconstruct file identities from the published paths.
+4. **Change the rule.** Fold into a set of resolved paths.
+5. **Run the focused proof.**
+6. **Inspect callers.** Text and JSON renderers consume the same summary value.
+7. **Review the result.** The configuration remains readable; counting becomes
+   accurate.
+
+This order matters. If the test were written after the implementation, it would be
+easy to assert whatever the new helper happened to return.
+
+## Run the proof
+
+From `capstone/`:
 
 ```bash
-cd programs/python-programming/python-functional-programming/capstone
 pytest -q tests/learning/test_module_10_sustainment.py \
   -k review_inventory_counts_nested_sources_once
-funcpipe-rag-review summary --format json
 ```
 
-The test is the equivalence predicate for this refactor: adding a redundant nested
-path must not change the count. It proves inventory semantics, not code quality.
-The RAG pipeline is deliberately absent from the change, so its Module 09 behavior
-remains preserved by the existing suite.
+Expected result:
 
-Complete the matching decision exercise in [Module 10 Exercises](exercises.md).
-
----
-## Migration Protocol (Abstract, Reusable)
-- **Cycle:** Heuristics-guided loop (graph + scores below) until stop: no impurities, equivalence holds, laws pass, budget met.
-- **Semantics:** Preserve evolving equivalence via code predicates (below); mocks for effects.
-- **Purity:** Progressive: tag → parameterize → extract; full when untagged.
-- **Error Model Default:** Per-record Result streams during migration (preserve continuation); collapse to batch post-purity when (a) adapters idempotent, (b) no per-record branching, (c) consumers don't need partials.
-- **Resource Safety:** Ports return ContextManager[Iterator[Result[T, E]]]; IoAction enters/exits during perform. Core never stores raw iterators.
-- **Integration:** Apply to legacies; multi-layered verification (appendix).
-- **Mypy Config:** --strict incremental; shims for sigs (schedule below).
-- **Stop Condition:** No tags, equivalence holds, laws pass, budget met.
-
-### Equivalence Predicates (Code, Normative)
-Parameterized to domain.
-```python
-from collections import Counter
-def eq_pure(xs: list, ys: list, key: Callable[[Any], Hashable], order_sensitive: bool = False) -> bool:
-    if order_sensitive: return [key(x) for x in xs] == [key(y) for y in ys]
-    return Counter(key(x) for x in xs) == Counter(key(y) for y in ys)  # Multiset; assumes hashable keys. If keys aren’t hashable, map to a stable serialization or use sorted lists under a total order.
-
-def eq_boundary(a: dict, b: dict, normalize: Callable[[dict], dict]) -> bool:
-    return normalize(a) == normalize(b)  # Per-artifact; e.g., strip timestamps/logs
-
-def eq_error(e1: list[ErrInfo], e2: list[ErrInfo], classify: Callable[[ErrInfo], tuple[str, str]]) -> bool:
-    return Counter(classify(e) for e in e1) == Counter(classify(e) for e in e2)  # Multisets of (code, stage)
-```
-- Domain: Define key/normalize/classify per system (e.g., key=Chunk.id; normalize strips noise; classify=(code, stage)).
-- Each pass specifies predicate + params.
-
-### Decision Graph + Heuristics (Operational)
-Graph:
-```mermaid
-graph TD
-  start["Start: audit and tag smells, then choose the highest-scoring path"]
-  pure["Extract Pure Islands<br/>score: mutation density + cyclomatic complexity"]
-  boundaries["Extract Boundaries<br/>score: I/O density + exception density"]
-  errors["Normalize Errors<br/>score: exception density + silent swallows"]
-  deps["Parameterize Dependencies<br/>score: hidden globals + fan-in or fan-out of shared state"]
-  verify["Verify and optimize if over budget"]
-  stop["Stop when impurities are isolated, equivalence holds, laws pass, and budget is met"]
-
-  pureFail["Laws or equivalence fail -> loop or undo"]
-  boundaryFail["Swappability fails -> loop or undo"]
-  errorFail["Error equivalence fails -> loop or undo"]
-  depFail["Equivalence fails -> loop or undo"]
-  verifyFail["Verification fails -> loop or escalate"]
-
-  start --> pure
-  start --> boundaries
-  start --> errors
-  start --> deps
-  pure --> pureFail
-  boundaries --> boundaryFail
-  errors --> errorFail
-  deps --> depFail
-  pure --> verify
-  boundaries --> verify
-  errors --> verify
-  deps --> verify
-  verify --> verifyFail
-  verify --> stop
-```
-Heuristics (measurable; tie-breaker: choose pure if tied; unit = smallest refactorable region, usually loop nest or helper; split >80 LOC by effect boundary first. Normalize each score to [0,1] per region; sum with equal weights unless domain dictates otherwise. If top-two scores are within 10%, do a paired pass (e.g., parameterize + pure extract) to avoid churn. Approximate without tooling: grep symbols for fan-in/out, count branches/loops for CC):
-- Mutation density: # mut ops (assigns, .append) / lines.
-- Cyclomatic complexity (CC): # branches/loops per region.
-- % lines in I/O: IO calls / total.
-- Exception density: try/except / lines.
-- # global/hidden: Count reads/writes to globals/time/RNG/env.
-- Fan-in/out: # refs to shared objects.
-
-Iterations continue until stop; variance wide.
-
-### Resource Pattern (Canonical Combinator)
-```python
-def within(cm_factory: Callable[[], ContextManager[Iterator[T]]], fn: Callable[[Iterator[T]], Iterator[U]]) -> IoAction[Iterator[U]]:
-    def thunk():
-        with cm_factory() as it:
-            yield from fn(it)
-    return IoAction.delay(thunk)  # Enter/exit in perform; safe partial
-
-# Usage
-read_desc = within(lambda: storage.read_docs(path), identity)  # Streaming safe
+```text
+1 passed
 ```
 
-### Artifact Taxonomy (For eq_boundary)
-Artifacts classed as: (a) line logs (normalize: sort + strip timestamps), (b) structured records (normalize: key-based multisets), (c) blobs (normalize: hash/content eq). Each port exposes normalizer for its class.
+Then inspect the human-facing output:
 
-### Signature Evolution Schedule (3-Phase)
-1. **Shadow:** Run new in parallel; log/assert equivalence; no output switch.
-2. **Canary:** Subset traffic to new; monitor; non-flaky tests via mocks/seeds.
-3. **Cutover:** Switch; remove legacy/shims after stability (e.g., 1 sprint).
+```bash
+funcpipe-rag-review summary --format text --project-root .
+```
 
----
-## Case Study: Tangled RAG God Script Migration
-### Legacy (Before: Realistic Ugliness)
-Anonymized from internal: partials feed phases; hidden coupling; mutable backoff; shared mutables.
+Find the `rag-model` line and its paths. The command performs filesystem I/O in
+the shell. `_count_python_files` and the rendering logic operate on the discovered
+values. The refactor does not move observation into the pure RAG pipeline.
+
+## Failure routes worth testing
+
+### Subtracting a constant
 
 ```python
-# real_tangled_rag.py (anonymized)
-import csv, json, random, time, os  # Hidden deps
-CONFIG = {"chunk_size": 256, "retry": 3, "backoff": [1,2,4]}  # Global mutable
-SHARED_STATE = {"partials": [], "error_counts": {}, "cache": {}}  # Shared mutables across phases/modules
-def tangled_rag(in_path: str, out_path: str, temp_dir: str) -> list[Chunk]:  # Coupled to OS via temp
-    global CONFIG, SHARED_STATE
-    chunks = []
-    with open(in_path) as f:
-        reader = csv.DictReader(f)
-        for row in reader:  # Parsing + retry + partials intertwined
-            backoff = CONFIG['backoff'][:]  # Mutable copy; modifies over retries
-            for attempt in range(CONFIG['retry']):
-                try:
-                    doc = RawDoc(**row)
-                    SHARED_STATE['cache'][doc.doc_id] = doc  # Mutate shared
-                    break
-                except KeyError as e:
-                    SHARED_STATE['error_counts'][str(e)] = SHARED_STATE['error_counts'].get(str(e), 0) + 1
-                    if SHARED_STATE['error_counts'][str(e)] > 5: break  # Cross-cut threshold
-                    time.sleep(backoff[attempt % len(backoff)])  # Hidden time; mutates backoff?
-                    backoff[attempt % len(backoff)] *= 1.5  # Mutate backoff state
-            if 'cs.' not in row.get('categories', ''): continue  # Flag in loop
-            cleaned = CleanDoc(...)  # ...
-            SHARED_STATE['partials'].append(cleaned)  # Feed to next phase
-            # Inner loop: chunk + check partials (coupling)
-            temp_file = os.path.join(temp_dir, f"{cleaned.doc_id}.tmp")  # OS couple
-            with open(temp_file, 'w') as tf:  # Interleaved IO
-                offset = random.randint(0,10)
-                for i in range(0, len(cleaned.abstract), CONFIG['chunk_size'] + offset):
-                    chunk = Chunk(...)
-                    if any(chunk.text in p.abstract for p in SHARED_STATE['partials']): continue  # Cross-phase check
-                    tf.write(json.dumps(chunk.to_dict()) + '\n')
-                    chunks.append(chunk)
-            # Reuse partials in write phase
-    with open(out_path, 'w') as f:
-        for chunk in chunks:
-            if chunk.doc_id in SHARED_STATE['cache']:  # Hidden coupling
-                f.write(json.dumps(chunk.to_dict()) + '\n')
-    return chunks
+count = recursive_count - 5
 ```
 
-### Iteration 1: Audit + Parameterize Deps (High # Globals/Fan-in)
-Score: High globals (6+) + fan-in (partials/cache/error_counts).
-Micro-commit Delta (Tagged → Parameterized):
+This passes until the child package gains or loses a file. It encodes the current
+tree rather than the invariant.
+
+### Deduplicating configured strings
+
 ```python
-# Before (tagged excerpt)
-global CONFIG, SHARED_STATE  # Impurity: global mutable
-backoff = CONFIG['backoff'][:]  # Impurity: mutable copy
-time.sleep(backoff[attempt % len(backoff)])  # Impurity: hidden time
-backoff[attempt % len(backoff)] *= 1.5  # Impurity: mutate state
-offset = random.randint(0,10)  # Impurity: hidden RNG
-
-# After (parameterized)
-def tangled_rag(..., config: dict | None = None, shared_state: dict | None = None, clock: Callable[[float], None] = time.sleep, rng: random.Random = random.Random(42)) -> list[Chunk]:
-    config = config or CONFIG.copy()
-    shared_state = shared_state or {"partials": [], "error_counts": {}, "cache": {}}
-    backoff = config['backoff'][:]  # Still mutable; next iteration
-    clock(backoff[attempt % len(backoff)])
-    offset = rng.randint(0,10)
-    # Preserve eq_pure(chunks, key=lambda c: (c.doc_id, c.text)); eq_error(classify=lambda e: (type(e), e.key))
-```
-Verify: Appendix patterns.
-
-### Iteration 2: Normalize Errors + Extract Boundaries (High Exceptions/IO %)
-Score: Exception density high; % IO ~30.
-Port: As protocol; adapter handles retries/backoff immutably.
-Verify: eq_error; metamorphic (retry idempotence).
-
-Loop: Mutations remain → Next pure.
-
-### Iteration 3: Extract Pure Islands (High Mutations/Complexity)
-Extract cleaning/chunking; shared state → explicit dicts. Assume constructors are pure; if not, treat them as effect boundaries and port them first.
-Score: Mutation density high; complexity from loops.
-Collapse errors? No—adapters not idempotent.
-Verify: Metamorphic families (appendix).
-
-Stop: Checks pass.
-
----
-## Verification Appendix (Patterns)
-### Multi-Layered Evidence
-- Equivalence: Per pass, using predicates + domain params.
-- Local Laws: Idempotence/associativity for new pure (Module 05/06).
-- Swappability: Mock adapter == real (eq_boundary).
-- Metamorphic: Derive via:
-  1. Invariant (e.g., order irrelevance, retry idempotence, chunk monotonicity, add-noise, scale).
-  2. Transform (permute, rerun with seed, vary size, add errors, scale input).
-  3. Assert: eq_pure/eq_error post-transform.
-
-Canonical Families:
-- Permutation: For order-irrelevance.
-- Retry: Same input/seeds → same output (idempotence).
-- Monotonicity: Smaller chunk_size → more chunks.
-- Noise: Add irrelevant records → same core outputs.
-- Associativity: Split/recombine folds → same aggregate.
-
-... (examples per iteration in case study)
-
----
-## 6. Runtime Preservation Guarantee
-Set system-specific budget (multi-dimensional: latency, throughput, peak RSS). Profile per pass; fuse if over (imperative behind pure); defer non-blocking regressions to Core 2.
-
----
-## 7. Anti-Patterns & Immediate Fixes
-| Anti-Pattern         | Symptom                  | Fix                            |
-|----------------------|--------------------------|--------------------------------|
-| Vibes-based choices  | Inefficient paths        | Use heuristics/scores          |
-| Naïve predicates     | Pass regressions         | Parameterize + multisets       |
-| Early collapse       | Lose continuation        | Gate on adapter idempotence    |
-| Synthetic examples   | Unrealistic prep         | Use anonymized real code       |
-
----
-## 8. Pre-Core Quiz
-1. Choose paths by…? → **Heuristics/scores**  
-2. Predicates parameterized by…? → **Domain key/normalize**  
-3. Collapse errors when…? → **Adapters idempotent**  
-4. Metamorphic derivation? → **Invariant + transform + assert**  
-5. Sig evolution? → **3-phase schedule**
-
-## 9. Post-Core Exercise
-1. Audit real tangled function; score + run 1 iteration.  
-2. Define predicates + metamorphic family.  
-3. Iterate to stop; profile.
-
-**Pipeline Usage (Idiomatic)**
-```python
-result = perform_io(rag_composed(storage, in_path, out_path))
+for path in set(configured_paths):
+    ...
 ```
 
-**Continue with:** [Performance Budgeting](../module-10-refactoring-performance-sustainment/performance-budgeting.md)
+`rag/` and `rag/domain/` are distinct strings, so their overlapping discoveries
+remain duplicated.
+
+### Removing the child route
+
+The number becomes correct by weakening the learner-facing package map. The
+observation problem is hidden rather than solved.
+
+### Rewriting unrelated RAG code
+
+Nothing about counting review files requires changing cleaning, chunking,
+embedding, retrieval, or adapters. A larger application diff would increase risk
+without helping the invariant.
+
+## What the proof establishes
+
+The focused test proves that the real published package group counts unique Python
+file identities when configured roots overlap. It also proves that the group still
+publishes its reading paths.
+
+It does not prove:
+
+- that file count measures complexity or quality;
+- that every source file belongs to the right review owner;
+- that symlink policy is suitable for every repository;
+- that any RAG behavioral test passed; or
+- that the full review summary is stable.
+
+Those are different claims and need different evidence.
+
+## Carry the result into the capstone decision
+
+`review_change` should consume trustworthy assessments. It does not repair weak
+observations. This gives Module 10 a useful ordering:
+
+1. make the observation honest;
+2. classify it with a pure rule;
+3. compose only relevant decisions; and
+4. explain what remains unknown.
+
+Before continuing, write one sentence naming the public behavior for a refactor
+you are considering. If you cannot state it without mentioning implementation
+steps, you are not ready to move the code.
+
+Continue with [Performance Budgeting](performance-budgeting.md), where equivalent
+behavior becomes a prerequisite for interpreting a speed or memory observation.
