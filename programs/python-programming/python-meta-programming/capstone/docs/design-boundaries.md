@@ -153,11 +153,12 @@ Reject or redesign when:
 
 ## Governance boundary
 
-**Owners:** `cli.py`, tests, and the proof guides
+**Owners:** `governance.py`, `cli.py`, tests, and the proof guides
 
 This boundary owns:
 
 - public inspection and invocation routes
+- accepted, constrained, and rejected application-level mechanism decisions
 - saved review bundles
 - executable confirmation through tests
 
@@ -171,6 +172,9 @@ Review questions:
 
 - Can another reviewer observe the behavior without folklore?
 - Does the CLI report the runtime, or is it secretly replacing it?
+- Does each accepted or constrained decision name an owner, an observable route, a
+  rollback route, and executable proof—and does each rejection name a lower-power
+  alternative?
 - Does the proof route still match the design claim it is supposed to defend?
 
 Reject or redesign when:
@@ -205,6 +209,7 @@ This sequence matters because beginners often confuse "defined on the class" wit
 | deterministic registry state, lookup, duplicate handling, and reset | framework helper | `framework.py` |
 | one concrete adapter behavior | ordinary plugin class | `plugins.py` |
 | one public inspection or invocation route | CLI command | `cli.py` |
+| one application-wide runtime power decision | observational governance record | `governance.py` |
 
 ## Strong proof pairings
 
@@ -212,6 +217,8 @@ This sequence matters because beginners often confuse "defined on the class" wit
 - pair decorators with `make action`, `make trace`, and runtime tests
 - pair metaclass changes with `make registry`, `make signatures`, and `tests/test_registry.py`
 - pair plugin changes with `make plugin`, `make demo`, and runtime tests
+- pair governance changes with `make governance`, the named mechanism report, and
+  `tests/test_governance.py`
 - pair CLI changes with `tests/test_cli.py` and the closest saved bundle route
 
 ## Good stopping point

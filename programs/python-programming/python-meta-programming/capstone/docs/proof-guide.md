@@ -51,6 +51,7 @@ That question matters because different proof routes answer different kinds of c
 | action arguments can be validated without execution | `make bind-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | supported action hints can be checked without overstating the contract | `make check-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | metaclass selection, hook ownership, and accepted or rejected class-creation powers remain observable without plugin construction | `make class-creation` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| application-wide mechanism choices remain explicit and reviewable | `make governance` | `tests/test_governance.py` and each decision's named mechanism tests |
 | registration stays deterministic | `make registry` | `tests/test_registry.py` |
 | one realistic invocation story is still honest | `make trace` | `make tour` or `tests/test_runtime.py` |
 | saved review artifacts still match executable proof | `make verify-report` | `make proof` |
@@ -111,6 +112,7 @@ make action-wrapper
 make bind-action
 make check-action
 make class-creation
+make governance
 make signatures
 make demo
 make trace
@@ -136,8 +138,9 @@ without dragging in unrelated proof weight.
 | `src/incident_plugins/framework.py` | `make manifest`, `make registry`, `make signatures`, `make bind-action`, `make check-action`, and `make class-creation` | `tests/test_registry.py` and `tests/test_runtime.py` | `make inspect` or `make verify-report` |
 | `src/incident_plugins/fields.py` | `make field`, `make field-ownership`, `make field-system`, and `make plugin` | `tests/test_fields.py` | `make inspect` |
 | `src/incident_plugins/actions.py` | `make action`, `make action-wrapper`, `make check-action`, `make trace`, and `make signatures` | `tests/test_runtime.py` and `tests/test_cli.py` | `make tour` or `make verify-report` |
+| `src/incident_plugins/governance.py` | `make governance` | `tests/test_governance.py` and the named mechanism tests | `make inspect` or `make verify-report` |
 | `src/incident_plugins/plugins.py` | `make plugin`, `make demo`, and `make trace` | `tests/test_runtime.py` | `make tour` |
-| `src/incident_plugins/cli.py` | `make manifest`, `make registry`, `make trace`, and `make demo` | `tests/test_cli.py` | `make inspect`, `make tour`, or `make verify-report` |
+| `src/incident_plugins/cli.py` | `make manifest`, `make registry`, `make governance`, `make trace`, and `make demo` | `tests/test_cli.py` | `make inspect`, `make tour`, or `make verify-report` |
 | `scripts/write_bundle_manifest.py` | `make inspect`, `make tour`, or `make verify-report` | `tests/test_bundle_manifest.py` | the matching bundle directory under `artifacts/` |
 
 ## Failure-first proof questions
@@ -157,6 +160,7 @@ Those questions keep proof tied to ownership instead of to habit.
 | --- | --- | --- | --- |
 | public shape without invocation | [COMMAND_GUIDE.md](command-guide.md) | `make manifest`, `make registry`, or `make inspect` | this guide |
 | one concrete field or action contract | [COMMAND_GUIDE.md](command-guide.md) | `make field`, `make field-ownership`, `make field-system`, `make action`, or `make inspect` | [TEST_GUIDE.md](test-guide.md) |
+| one application-wide mechanism decision | [DESIGN_BOUNDARIES.md](design-boundaries.md) | `make governance`, then the decision's named mechanism report | `tests/test_governance.py` and the named mechanism tests |
 | one realistic invocation story | [INDEX.md](index.md) or [COMMAND_GUIDE.md](command-guide.md) | `make demo`, `make trace`, or `make tour` | `tests/test_runtime.py` |
 | source ownership for a change | [PACKAGE_GUIDE.md](package-guide.md) or [EXTENSION_GUIDE.md](extension-guide.md) | the matching public route from the file map | [TEST_GUIDE.md](test-guide.md) |
 | which proof file should fail first | [TEST_GUIDE.md](test-guide.md) | the matching test file | [PACKAGE_GUIDE.md](package-guide.md) |

@@ -51,6 +51,7 @@ to feel harder than it is.
 | whether proposed action arguments satisfy the real call contract | `make bind-action` | `tests/test_runtime.py` |
 | whether bound values match the supported runtime hint subset | `make check-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | what selected the metaclass, what each hook owned, and which powers remain outside class creation | `make class-creation` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| which runtime powers the application accepts, constrains, or rejects | `make governance` | `tests/test_governance.py` and the named mechanism tests |
 | which action layer owns wrapper metadata and explicit signature | `make action-wrapper` | `tests/test_runtime.py` |
 | one realistic invocation path | `make demo` or `make trace` | `tests/test_runtime.py` or `make tour` |
 | a durable artifact another reviewer can inspect later | `make inspect`, `make tour`, or `make verify-report` | `make proof` |
@@ -68,6 +69,8 @@ to feel harder than it is.
 - Choose `make check-action` when runtime hint matching or refusal matters but execution does not.
 - Choose `make class-creation` when metaclass selection, namespace, hook ownership,
   generated structure, registration, or rejected powers matter.
+- Choose `make governance` before proposing a new runtime power or reviewing why an
+  existing mechanism remains in the application.
 - Choose `make action-wrapper` when wrapper ownership matters but execution does not.
 - Choose `make trace` when configuration, invocation history, and result probably all matter.
 - Choose `make inspect` when you need a saved route but do not yet need the strongest bundle.
@@ -95,6 +98,7 @@ to feel harder than it is.
 | `make bind-action` | validate one action call without construction or invocation | normalized bound-argument JSON |
 | `make check-action` | check a narrow runtime hint subset without construction or invocation | checked, refused, and unchecked argument JSON |
 | `make class-creation` | inspect stored class-creation ownership | namespace, hook trace, declared/inherited members, generated structure, registration, and power-limit JSON |
+| `make governance` | review application-wide runtime power decisions | accepted, constrained, and rejected decisions with owner, rollback, and proof JSON |
 | `make registry` | inspect registration determinism from the public surface | registry JSON |
 | `make signatures` | inspect generated constructor and action signatures | signature JSON |
 | `make demo` | invoke one realistic action | one invocation result |
@@ -123,6 +127,7 @@ publishes honestly from the public surface.
 | one action preflight | whether proposed arguments satisfy the stored action signature | `make bind-action` |
 | one action contract check | whether bound values match supported hints and which hints are refused | `make check-action` |
 | one class-creation audit | what selected the metaclass and how preparation, shaping, and registration produced the class | `make class-creation` |
+| one governance audit | which runtime powers have earned their cost and which powers remain outside the application | `make governance` |
 
 ## One concrete behavior routes
 
@@ -158,6 +163,7 @@ sizes, and SHA-256 hashes for the saved route.
 | `make bind-action` | preflight fact | normalized arguments with execution explicitly absent | `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | `make check-action` | partial runtime-contract fact | checked, refused, and unchecked arguments with execution absent | `src/incident_plugins/actions.py` and `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
 | `make class-creation` | class-creation fact | metaclass selection, prepared namespace, hook trace, generated structure, registration, and rejected powers | `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| `make governance` | application-policy fact | accepted, constrained, and rejected powers with ownership and recovery evidence | `src/incident_plugins/governance.py` | `tests/test_governance.py` and the named mechanism tests |
 | `make registry` | class-definition fact made observable later | registered plugin names and order | `src/incident_plugins/framework.py` | `tests/test_registry.py` |
 | `make signatures` | class-definition fact made observable later | generated constructor and action signatures | `src/incident_plugins/framework.py` and `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
 | `make demo` | call-time fact | one concrete invocation result | `src/incident_plugins/plugins.py` and `src/incident_plugins/actions.py` | [TEST_GUIDE.md](test-guide.md) |
@@ -204,6 +210,13 @@ they passed.
 `action` reports the public action contract. `action-wrapper` follows the transformation
 chain and identifies which layer owns preservation and policy metadata.
 
+### `governance` versus a mechanism report
+
+`governance` records whether a power belongs in the application and names the evidence
+required to defend that decision. A focused report such as `field-system`,
+`action-wrapper`, or `class-creation` exposes how one approved or constrained mechanism
+actually behaves. The decision is not proof of its own implementation.
+
 ### `confirm` versus `proof`
 
 `confirm` is the strongest local confirmation route. `proof` publishes the full guided review route.
@@ -213,6 +226,8 @@ chain and identifies which layer owns preservation and policy metadata.
 - Choose `manifest` before `registry` unless plugin order is the actual question.
 - Choose `field` or `action` before `plugin` when one small contract is the real pressure.
 - Choose `trace` before `demo` when metadata or history might matter.
+- Choose `governance` before adding a new dynamic power, then follow the decision's
+  named observability and proof routes.
 - Choose `inspect` before `tour` when the question is still mainly about ownership.
 - Choose `confirm` before `proof` when a human-facing published bundle is not required.
 

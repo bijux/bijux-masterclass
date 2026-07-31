@@ -48,6 +48,8 @@ Use the smallest honest route for the question you have:
 - Want to check the supported runtime hint subset without execution? Run `make check-action`.
 - Want to inspect `PluginMeta` selection, hook ownership, generated structure, and power
   limits without constructing a plugin? Run `make class-creation`.
+- Want to review which runtime powers the application accepts, constrains, and rejects?
+  Run `make governance`.
 - Want one full learner-facing review bundle? Run `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` from the repository root, or `make tour` locally.
 - Want executable confirmation? Run `make verify-report`, `make proof`, or `make confirm`.
 
@@ -99,6 +101,7 @@ make action-wrapper
 make bind-action
 make check-action
 make class-creation
+make governance
 make signatures
 make demo
 make trace
@@ -112,6 +115,7 @@ From the repository root, use the published course-level routes:
 
 ```bash
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
+make PROGRAM=python-programming/python-meta-programming capstone-governance
 make PROGRAM=python-programming/python-meta-programming capstone-tour
 make PROGRAM=python-programming/python-meta-programming capstone-verify-report
 make PROGRAM=python-programming/python-meta-programming capstone-confirm
@@ -163,6 +167,7 @@ your pressure instead of reading the full list in alphabetical order.
 - `make bind-action`
 - `make check-action`
 - `make class-creation`
+- `make governance`
 - [COMMAND_GUIDE.md](docs/command-guide.md)
 
 ### "Where do wrappers, fields, and class creation live?"
@@ -182,6 +187,14 @@ your pressure instead of reading the full list in alphabetical order.
 - `make signatures`
 - [PACKAGE_GUIDE.md](docs/package-guide.md)
 - [DESIGN_BOUNDARIES.md](docs/design-boundaries.md)
+
+### "Which runtime powers does this application accept or reject?"
+
+- `make governance`
+- `src/incident_plugins/governance.py`
+- `tests/test_governance.py`
+- Compare each decision with the focused mechanism report named in its
+  `observability` and `proof` fields.
 
 ### "How do I review the full learner-facing route?"
 
@@ -209,7 +222,8 @@ defaults above and escalate only one guide at a time.
 - Decorator modules: inspect `src/incident_plugins/actions.py` and the runtime tests
 - Descriptor modules: inspect `src/incident_plugins/fields.py`, `DESIGN_BOUNDARIES.md`, and `tests/test_fields.py`
 - Metaclass module: inspect `src/incident_plugins/framework.py` and `tests/test_registry.py`
-- Governance and mastery: return to `make inspect`, `make verify-report`, and the saved `artifacts/` bundles
+- Governance and mastery: run `make governance` before `make inspect`, then compare
+  `governance.json` with the focused mechanism reports and executable proof
 
 ## Why this capstone exists
 
@@ -228,8 +242,11 @@ all interact here, so the implementation has to stay honest about:
 - `src/incident_plugins/framework.py` owns registration, generated constructors, and manifest export.
 - `src/incident_plugins/fields.py` owns descriptor-backed field contracts.
 - `src/incident_plugins/actions.py` owns wrapper-backed action contracts.
+- `src/incident_plugins/governance.py` owns the application-level record of accepted,
+  constrained, and rejected runtime powers.
 - `src/incident_plugins/plugins.py` owns concrete delivery adapters.
-- `tests/` contains executable verification for descriptors, registration, and runtime manifests.
+- `tests/` contains executable verification for descriptors, registration, runtime
+  manifests, and governance decisions.
 - `ARCHITECTURE.md`, `TOUR.md`, `PROOF_GUIDE.md`, and the local guide set turn the capstone into a learner-facing review surface.
 
 ## Review routes
@@ -246,8 +263,11 @@ all interact here, so the implementation has to stay honest about:
 - `make class-creation` reports prepared namespace type, public class-body names, declared
   and inherited members, hook ownership, initializer generation, registration, and
   rejected powers without constructing a plugin.
+- `make governance` reports application-wide mechanism decisions with owners,
+  observability, rollback, and proof routes without constructing or invoking a plugin.
 - `make demo` and `make trace` inspect one realistic runtime behavior and its recorded history.
-- `make inspect` writes the learner-facing inspection bundle with manifest and registry evidence.
+- `make inspect` writes the learner-facing inspection bundle with manifest, registry,
+  and governance evidence.
 - `make tour` writes the learner-facing walkthrough bundle with manifest, registry, demo, and trace outputs.
 - `make verify-report` writes the executable verification report bundle with pytest output and public-surface evidence.
 - `make confirm` runs the strongest local executable confirmation route.
@@ -269,7 +289,8 @@ feel fuzzier than the commands.
 
 ## Definition of done
 
-- `make inspect` writes the learner-facing inspection bundle with manifest and registry evidence.
+- `make inspect` writes the learner-facing inspection bundle with manifest, registry,
+  and governance evidence.
 - `make tour` writes the guided walkthrough bundle for file-by-file review.
 - `make verify-report` captures pytest output together with the public runtime surface.
 - `make confirm` completes the strongest local executable confirmation route.
