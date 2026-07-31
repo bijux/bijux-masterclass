@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import pytest
-from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding
+from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, RagEnv, RawDoc
 from funcpipe_rag.rag.domain import Embedding, RankedChunk, SearchQuery
+from funcpipe_rag.rag.rag_api import iter_rag
 from funcpipe_rag.rag.retrieval import (
     LOCAL_EMBEDDING_MODEL,
     cosine_similarity,
+    make_query,
     retrieve,
 )
-from funcpipe_rag.rag.stages import embed_chunk, embed_text
+from funcpipe_rag.rag.stages import clean_doc, embed_chunk, embed_text
 
 
 def test_query_and_chunk_text_share_one_embedding_contract() -> None:
@@ -81,3 +83,19 @@ def test_retrieval_ranks_by_score_then_stable_chunk_coordinates() -> None:
         cosine_similarity((1.0,), (1.0, 0.0))
     with pytest.raises(ValueError, match="must be non-zero"):
         cosine_similarity((0.0, 0.0), (1.0, 0.0))
+
+
+def test_live_rag_flow_indexes_then_retrieves_an_exact_local_match() -> None:
+    docs = (
+        RawDoc("other", "Effects", "boundary effects", "fp"),
+        RawDoc("exact", "Retrieval", "typed retrieval", "fp"),
+    )
+    chunks = tuple(iter_rag(docs, RagEnv(chunk_size=80), clean_doc))
+
+    hits = retrieve(make_query("typed retrieval", top_k=1), chunks)
+
+    assert len(chunks) == 2
+    assert len(hits) == 1
+    assert hits[0].chunk.doc_id == "exact"
+    assert hits[0].chunk.text == "typed retrieval"
+    assert hits[0].score == pytest.approx(1.0)
