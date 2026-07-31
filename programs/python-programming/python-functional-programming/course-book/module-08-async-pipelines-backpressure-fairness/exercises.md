@@ -101,65 +101,157 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 Earlier contract preserved: the Module 07 effect boundary still owns execution;
 Module 08 adds an explicit interpreter policy for how much execution may overlap.
 
-## Retry policy: inspect attempts and backoff
+## Retry policy: keep repetition at the embedding boundary
 
-**Starting context:** read `RetryPolicy`, `ResilienceEnv`, and
-`async_with_resilience` in `domain/effects/async_/resilience.py`, then run
-`test_retry_policy_records_bounded_attempts_and_backoff`.
+**Starting context:** read `resilient_mapper` in
+`domain/effects/async_/resilience.py` and the application proofs whose names
+contain `retries_only` and `retry_exhaustion`. Draw the application composition
+before editing a test:
 
-**Objective:** make the step fail three times before succeeding, permit four
-attempts, and predict the complete zero-jitter backoff trace for a 5 ms base.
+```text
+documents → filter/clean/chunk → bounded map → resilient embedding plan
+```
+
+**Objective:** build one three-document stream that distinguishes recovery from
+exhaustion:
+
+1. `recovers` returns `TRANSIENT` once and then succeeds;
+2. `exhausts` returns `TRANSIENT` on both permitted attempts; and
+3. `after` succeeds on its first attempt.
+
+Use one chunk per document and predict the complete output before running:
+
+```text
+ok:recovers
+err:MAX_RETRIES
+ok:after
+```
 
 **Constraints:**
 
-- inject a recording sleep function;
-- use the typed `TRANSIENT` error code;
-- assert construction is effect-free;
-- do not use elapsed wall-clock time.
+- wrap the embedder with `resilient_mapper`;
+- use `RetryPolicy(max_attempts=2)`;
+- restrict `retriable_codes` to `TRANSIENT`;
+- inject zero backoff and zero jitter;
+- use `BackpressurePolicy(max_concurrent=1, ordered=True)`;
+- record cleaning calls and embedding attempts by document ID;
+- do not wrap or replay the complete `async_rag_chunks` stream;
+- preserve `clean_doc`, `embed_chunk`, and typed `Result` values; and
+- do not add a network client or an exercise-only RAG pipeline.
 
-**Expected evidence:** four executions produce success after the delays 5, 10,
-and 20 ms.
+**Required evidence:**
 
-**Acceptance check:**
+| Document | Cleaning calls | Embedding attempts | Final position |
+| --- | ---: | ---: | --- |
+| `recovers` | predict | predict | predict |
+| `exhausts` | predict | predict | predict |
+| `after` | predict | predict | predict |
+
+Your assertions should prove:
+
+- every document is cleaned exactly once;
+- attempts are `{"recovers": 2, "exhausts": 2, "after": 1}`;
+- exhaustion contains `ctx["attempts"] == 2`;
+- the later success remains visible; and
+- constructing the stream records no attempt.
+
+**Review questions:**
+
+1. Why is the recovered `TRANSIENT` absent from output?
+2. Why does exhaustion become `MAX_RETRIES` rather than returning the last raw
+   `TRANSIENT`?
+3. Which work would be duplicated if the complete stream were retried?
+4. Why does `idempotent=True` express a claim rather than prove one?
+5. How long can one backpressure slot remain occupied?
+
+**Acceptance checks:**
 
 ```bash
-cd capstone/module-reference-states/module-08
-PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
-  -k retry_policy_records_bounded_attempts_and_backoff
+make capstone-embedding-resilience-proof
+make capstone-module-state-proof MODULE=08
 ```
 
-Earlier contract preserved: only a Module 07 effect known to be idempotent may
-be repeated; the retry combinator does not grant idempotency.
+Earlier contracts preserved:
 
-## Deterministic testing: replay a timeout boundary
+- Module 03 document and chunk order remains observable;
+- Module 04 failures remain typed values;
+- Module 07 owns execution and the idempotency argument; and
+- bounded Module 08 coordination still owns the concurrency ceiling.
 
-**Starting context:** read `FakeClock`, `FakeTimeout`, and
-`make_fake_timeout_ctx`, then run
-`test_fake_clock_replays_the_same_timeout_decision`.
+## Deterministic testing: defend the boundary of a fake timeout
 
-**Objective:** set a 100 ms deadline, advance logical time by exactly 100 ms,
-and prove two fresh executions make the same timeout decision.
+**Starting context:** read `FakeClock`, `FakeTimeout`,
+`make_fake_timeout_ctx`, and
+`test_async_rag_chunks_replays_logical_embedding_timeout`.
+
+**Objective:** extend the application timeout proof to three documents:
+
+1. `before` completes without advancing logical time;
+2. `deadline` advances the clock by exactly `0.050` seconds under a 50 ms
+   timeout; and
+3. `after` completes without advancing logical time.
+
+Run the complete description twice from fresh fixtures and predict:
+
+```text
+ok:before
+err:TIMEOUT
+ok:after
+```
 
 **Constraints:**
 
-- create a fresh clock and plan for each replay;
-- inject both the clock and timeout context;
-- assert the typed error and logical-time observation;
-- do not use real sleep or a timing tolerance.
+- create the clock, attempt trace, embedder, resilience environment, timeout
+  context, and stream inside `run_once`;
+- use `RetryPolicy(max_attempts=1)`;
+- pass the same `FakeClock` to the test environment and timeout context;
+- use `BackpressurePolicy(max_concurrent=1, ordered=True)`;
+- compare the complete result labels, attempt trace, and final logical time;
+- use no real delay, timing tolerance, global patch, or shared clock; and
+- do not claim that the fake interrupts a running task.
 
-**Expected evidence:** both executions return the same `TIMEOUT` result at
-exactly `0.1` logical seconds.
+**Required evidence:**
 
-**Acceptance check:**
+```python
+first = run_once()
+second = run_once()
 
-```bash
-cd capstone/module-reference-states/module-08
-PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
-  -k fake_clock_replays_the_same_timeout_decision
+assert first == second
+assert first == (
+    ["ok:before", "err:TIMEOUT", "ok:after"],
+    ["before", "deadline", "after"],
+    0.050,
+)
 ```
 
-Earlier contract preserved: the fake interpreter exercises the same typed
-Module 07 effect description; it replaces timing capabilities, not domain logic.
+Then write two separate conclusions:
+
+- one sentence stating what the fake proves about policy; and
+- one sentence stating what it does not prove about production cancellation.
+
+**Failure experiment:** move the `FakeClock` outside `run_once`. Explain why
+the two executions no longer begin from equivalent state, then restore fresh
+fixtures.
+
+**Review questions:**
+
+1. Why does equality at the deadline trigger timeout?
+2. Why is the successful value computed by the deadline-crossing plan not
+   emitted?
+3. Why does `after` still receive a fresh per-attempt deadline?
+4. Which test would be needed to prove cancellation cleanup?
+5. Why would a wall-clock assertion weaken this proof?
+
+**Acceptance checks:**
+
+```bash
+make capstone-embedding-resilience-proof
+make capstone-module-state-proof MODULE=08
+```
+
+Earlier contract preserved: the fake interpreter drives the same Module 07
+effect description and the same Module 08 RAG composition. It replaces timing
+capabilities only; it does not replace domain logic or resource ownership.
 
 ## Fairness: inspect a weighted prefix
 
