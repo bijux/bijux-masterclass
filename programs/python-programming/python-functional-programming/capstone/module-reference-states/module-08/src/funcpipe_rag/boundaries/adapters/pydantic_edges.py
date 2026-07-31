@@ -78,7 +78,7 @@ def from_core_chunk(core: Chunk) -> ChunkModel:
 def serialize_model(model: BaseModel) -> str:
     computed = getattr(model.__class__, "model_computed_fields", {})
     exclude = set(computed.keys()) if isinstance(computed, dict) else set()
-    return model.model_dump_json(by_alias=True, exclude_unset=True, exclude=exclude)
+    return model.model_dump_json(by_alias=True, exclude=exclude)
 
 
 def deserialize_model(json_str: str, typ: type[T]) -> T:

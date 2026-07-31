@@ -27,6 +27,7 @@ def test_chunk_roundtrip(text: str, metadata: dict[str, object]) -> None:
         embedding=(0.0,) * 16,
     )
     json_str = serialize_model(model)
+    assert '"version":1' in json_str
     reloaded = deserialize_model(json_str, ChunkModel)
     assert model == reloaded
     assert reloaded.length == len(text)
