@@ -1,481 +1,300 @@
-# Serialization Beyond Pydantic
+# Serialization: Preserve Meaning Across a Boundary
 
+Pydantic can validate an incoming chunk, but validation and persistence are
+different responsibilities. The moment FuncPipe stores a `Result` or sends it
+to another process, the byte representation becomes a contract:
 
-<!-- page-maps:start -->
-## Page Maps
+- Which sum variant was this?
+- Which fields preserve the failure's provenance?
+- Which schema version produced the payload?
+- What should happen when the reader does not understand it?
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Algebraic Data Modelling Validation"]
-  page["Serialization Beyond Pydantic"]
-  capstone["Capstone evidence"]
+Module 5 answers those questions with explicit encoders, decoders, and a small
+versioned envelope.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+## The value that must survive
+
+Consider a failed embedding:
+
+```python
+failure = Err(
+    ErrInfo(
+        code="EMBED_FAIL",
+        msg="model offline",
+        stage="embed",
+        path=(2, 4),
+    )
+)
 ```
+
+Serializing only the message would lose the machine-readable code, pipeline
+stage, and chunk path. Serializing `failure.__dict__` would couple the wire
+format to an implementation detail and still would not say whether the payload
+represented `Ok` or `Err`.
+
+FuncPipe writes this envelope:
+
+```json
+{
+  "tag": "result",
+  "ver": 1,
+  "payload": {
+    "kind": "err",
+    "error": {
+      "code": "EMBED_FAIL",
+      "msg": "model offline",
+      "stage": "embed",
+      "path": [2, 4]
+    }
+  }
+}
+```
+
+The fields answer separate questions:
+
+| Field | Meaning |
+| --- | --- |
+| `tag` | which codec family should read the value |
+| `ver` | which schema of that family produced it |
+| `payload.kind` | which member of the `Result` sum is present |
+| `payload.error` | the data required to reconstruct `ErrInfo` |
+
+## Follow the encoding path
+
+`enc_result()` returns a function from a typed value to `Envelope`:
+
+```python
+def enc_result(enc_val=None, enc_err=None):
+    encode_value = enc_val or json_encoder
+    encode_error = enc_err or _default_enc_err
+
+    def _enc(result):
+        match result:
+            case Ok(value=value):
+                return Envelope(
+                    tag="result",
+                    ver=1,
+                    payload={"kind": "ok", "value": encode_value(value)},
+                )
+            case Err(error=error):
+                return Envelope(
+                    tag="result",
+                    ver=1,
+                    payload={"kind": "err", "error": encode_error(error)},
+                )
+    return _enc
+```
+
+`to_json` then renders the envelope. The codec owns domain meaning; the JSON
+renderer owns text syntax.
+
+The reverse route performs more work:
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Persistence is a modeling problem, not just a library feature. Once a value crosses time or process boundaries, “just dump the dataclass” is no longer a harmless shortcut. It becomes a schema contract whether the team admits it or not.
-
-## Start With the Drift Problem
-
-Schema drift usually appears long after the first dump/load helper looked convenient. The lesson needs to pull that future failure into view immediately.
-
-- If the serialized form has no explicit tag or version, change will become guesswork later.
-- If a persisted sum type has no stable discriminator, decoding logic will eventually become ambiguous.
-- If you cannot explain how old data becomes new data, the serialization story is still incomplete.
-
-**Core question**  
-How do you define stable, versioned, round-trippable serialization contracts for your core ADTs — using only plain dataclasses and lightweight codecs — so that persistence never silently breaks when you evolve the schema?
-
-This lesson introduces serialization as an explicit contract around domain values:
-
-- wrap persisted values in a stable envelope
-- pair each persisted ADT with explicit encoders and decoders
-- make versioning and migration rules reviewable instead of accidental
-
-The motivating persistence failure matters because it is the most common reason teams discover too late that serialization was already part of the model.
-
-The naïve pattern everyone writes first:
-
-```python
-# BEFORE – unstable, unversioned, fragile
-serialized = json.dumps(asdict(chunk))        # field order changes, no tag for sums, no version
-chunk = Chunk(**json.loads(serialized))       # missing fields → None, wrong types → crash later
+  text["JSON text"] --> parse["json.loads"]
+  parse --> shape["check tag / ver / payload shape"]
+  shape --> migrate["apply registered migrations"]
+  migrate --> decode["Result decoder"]
+  decode --> value["Ok(value) or Err(ErrInfo)"]
 ```
 
-This is the drift problem to recognize before you ship it.
+The decoder rejects a wrong tag, an unknown version, an unknown `kind`, and
+malformed `ErrInfo` fields. Type annotations alone cannot protect this
+boundary; the runtime checks are part of the contract.
 
-The production pattern turns persistence into an intentional format with explicit structure and migration behavior.
+## Run the provenance round trip
 
-```python
-# AFTER – stable, versioned, migratable
-enc = enc_chunk()                               # factory → Encoder[Chunk]
-serialized = to_json(core_chunk, enc)           # {"tag":"chunk","ver":1,"payload":{...}}
-core_chunk = from_json(serialized, dec_chunk()) # migrates automatically
-```
+From `programs/python-programming/python-functional-programming`:
 
-That explicitness is the whole point: changes stop being silent and start becoming governed.
-
-Use this when “just add a field” persistence changes have burned you and you want durable contracts instead of lucky dumps.
-
-**Outcome**
-1. Every core ADT gains explicit encoder/decoder factories + Envelope.
-2. All serialization proven round-trippable + migratable.
-3. Zero-dependency, near-linear, streaming serde forever.
-
-## Tiny Non-Domain Example – Versioned Option[T]
-
-```python
-# v1
-opt_v1 = Some(value=42)
-serialized_v1 = to_json(opt_v1, enc_option())
-# {"tag":"option","ver":1,"payload":{"kind":"some","value":42}}
-
-# v2 decoder with added metadata field (implemented as the current dec_option)
-opt_v2 = from_json(serialized_v1, dec_option())
-# Some(value=42, metadata={})
-```
-
-Adding a field never breaks old data.
-
-## Why Explicit Serialization Contracts? (Three bullets every engineer should internalise)
-
-- **Stability**: Tagged envelope + explicit payload → field order, missing fields, and sum variants never surprise.
-- **Versioning + migration**: `ver` field + `MIGRATORS` → schema evolution is explicit and automated.
-- **Zero magic**: Plain functions, no reflection → predictable, fast, dependency-free.
-
-Pydantic is for **edges only** (C06). Core persistence uses explicit contracts.
-
-## 1. Laws & Invariants (machine-checked)
-
-| Invariant             | Description                                          | Enforcement                              |
-|-----------------------|------------------------------------------------------|------------------------------------------|
-| Round-Trip            | `from_x(to_x(x)) == x`                               | Hypothesis on all ADTs                   |
-| Migration Round-Trip  | Old data → new decoder yields correct migrated value | Property tests with old payloads         |
-| Envelope Shape        | Every serialized value has tag/ver/payload           | `_check_env` guard                       |
-| Non-empty VFailure    | Validation failures always have ≥1 error             | Decoder enforcement                      |
-
-## 2. Decision Table – When to Use What Serde
-
-| Need                          | Validation? | Binary? | Versioning? | Recommended                  |
-|-------------------------------|-------------|---------|-------------|------------------------------|
-| Simple JSON, no validation    | No          | No      | Yes         | Plain envelope + json        |
-| Schema + validation           | Yes         | No      | Yes         | Marshmallow OneOfSchema      |
-| Compact / fast                | No          | Yes     | Yes         | MessagePack + envelope       |
-| Streaming large datasets      | No          | Yes/No  | Yes         | iter_ndjson / iter_msgpack   |
-
-## 3. Public API (boundaries/adapters/serde.py – mypy --strict clean)
-
-```python
-from __future__ import annotations
-
-from dataclasses import dataclass
-from typing import Any, Callable, Mapping, Protocol, TypeVar, Tuple
+```bash
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/python \
+  - <<'PY'
 import json
-import msgpack
-from typing_extensions import assert_never
 
-from funcpipe_rag.fp.core import Option, Some, NoneVal, Result, Ok, Err, Validation, VSuccess, VFailure, ErrInfo
+from funcpipe_rag.boundaries.adapters.serde import (
+    dec_result,
+    enc_result,
+    from_json,
+    to_json,
+)
+from funcpipe_rag.result.types import Err, ErrInfo
 
-__all__ = [
-    "Envelope",
-    "Encoder", "Decoder",
-    "enc_option", "dec_option",
-    "enc_result", "dec_result",
-    "enc_validation", "dec_validation",
-    "to_json", "from_json",
-    "to_msgpack", "from_msgpack",
-    "from_json_safe",
-    "MIGRATORS", "migrate",
-    "iter_ndjson", "iter_msgpack",
-]
+failure = Err(
+    ErrInfo(
+        code="EMBED_FAIL",
+        msg="model offline",
+        stage="embed",
+        path=(2, 4),
+    )
+)
+encoded = to_json(failure, enc_result())
+decoded = from_json(encoded, dec_result())
 
-T = TypeVar("T")
-E = TypeVar("E")
-
-JSON = str | int | float | bool | None | list["JSON"] | dict[str, "JSON"]
-
-@dataclass(frozen=True, slots=True)
-class Envelope:
-    tag: str                     # e.g. "option", "result", "chunk"
-    ver: int
-    payload: dict[str, JSON]
-
-class Encoder(Protocol[T]):
-    def __call__(self, x: T) -> Envelope: ...
-
-class Decoder(Protocol[T]):
-    def __call__(self, env: Envelope) -> T: ...
-
-# Default JSON value codecs (identity for JSON-serializable values)
-def json_encoder(x: JSON) -> JSON:
-    return x
-
-def json_decoder(j: JSON) -> JSON:
-    return j
-
-# Option factories
-def enc_option(enc_val: Callable[[T], JSON] | None = None) -> Encoder[Option[T]]:
-    ev = enc_val or json_encoder  # type: ignore[arg-type]  # assumes T is JSON-compatible if no codec supplied
-    def _enc(x: Option[T]) -> Envelope:
-        match x:
-            case Some(value=v):
-                return Envelope(tag="option", ver=1, payload={"kind": "some", "value": ev(v)})
-            case NoneVal():
-                return Envelope(tag="option", ver=1, payload={"kind": "none"})
-            case other:
-                assert_never(other)
-    return _enc
-
-def dec_option(dec_val: Callable[[JSON], T] | None = None) -> Decoder[Option[T]]:
-    dv = dec_val or json_decoder  # type: ignore[arg-type]
-    def _dec(env: Envelope) -> Option[T]:
-        if env.tag != "option":
-            raise ValueError(f"expected tag 'option', got {env.tag}")
-        if env.ver != 1:
-            raise ValueError(f"unknown version {env.ver}")
-        kind = env.payload.get("kind")
-        if kind == "some":
-            return Some(dv(env.payload["value"]))
-        if kind == "none":
-            return NoneVal()
-        raise ValueError(f"invalid kind {kind!r}")
-    return _dec
-
-# Result factories (explicit ErrInfo codecs required – no default assumption)
-def enc_result(enc_val: Callable[[T], JSON] | None = None,
-               enc_err: Callable[[ErrInfo], JSON] | None = None) -> Encoder[Result[T, ErrInfo]]:
-    ev = enc_val or json_encoder  # type: ignore[arg-type]
-    ee = enc_err or (lambda e: {"code": e.code, "msg": e.msg})  # safe default for ErrInfo
-    def _enc(x: Result[T, ErrInfo]) -> Envelope:
-        match x:
-            case Ok(value=v):
-                return Envelope(tag="result", ver=1, payload={"kind": "ok", "value": ev(v)})
-            case Err(error=e):
-                return Envelope(tag="result", ver=1, payload={"kind": "err", "error": ee(e)})
-            case other:
-                assert_never(other)
-    return _enc
-
-def dec_result(dec_val: Callable[[JSON], T] | None = None,
-               dec_err: Callable[[JSON], ErrInfo] | None = None) -> Decoder[Result[T, ErrInfo]]:
-    dv = dec_val or json_decoder  # type: ignore[arg-type]
-    de = dec_err or (lambda j: ErrInfo(code=j["code"], msg=j["msg"]))
-    def _dec(env: Envelope) -> Result[T, ErrInfo]:
-        if env.tag != "result":
-            raise ValueError(f"expected tag 'result', got {env.tag}")
-        if env.ver != 1:
-            raise ValueError(f"unknown version {env.ver}")
-        kind = env.payload.get("kind")
-        if kind == "ok":
-            return Ok(dv(env.payload["value"]))
-        if kind == "err":
-            return Err(de(env.payload["error"]))
-        raise ValueError(f"invalid kind {kind!r}")
-    return _dec
-
-# Validation factories (similar pattern)
-def enc_validation(enc_val: Callable[[T], JSON] | None = None,
-                   enc_err: Callable[[ErrInfo], JSON] | None = None) -> Encoder[Validation[T, ErrInfo]]:
-    ev = enc_val or json_encoder
-    ee = enc_err or (lambda e: {"code": e.code, "msg": e.msg})
-    def _enc(x: Validation[T, ErrInfo]) -> Envelope:
-        match x:
-            case VSuccess(value=v):
-                return Envelope(tag="validation", ver=1, payload={"kind": "v_success", "value": ev(v)})
-            case VFailure(errors=es):
-                return Envelope(tag="validation", ver=1, payload={"kind": "v_failure", "errors": [ee(e) for e in es]})
-            case other:
-                assert_never(other)
-    return _enc
-
-def dec_validation(dec_val: Callable[[JSON], T] | None = None,
-                   dec_err: Callable[[JSON], ErrInfo] | None = None) -> Decoder[Validation[T, ErrInfo]]:
-    dv = dec_val or json_decoder
-    de = dec_err or (lambda j: ErrInfo(code=j["code"], msg=j["msg"]))
-    def _dec(env: Envelope) -> Validation[T, ErrInfo]:
-        if env.tag != "validation":
-            raise ValueError(f"expected tag 'validation', got {env.tag}")
-        if env.ver != 1:
-            raise ValueError(f"unknown version {env.ver}")
-        kind = env.payload.get("kind")
-        if kind == "v_success":
-            return VSuccess(dv(env.payload["value"]))
-        if kind == "v_failure":
-            errs = [de(e) for e in env.payload["errors"]]
-            if not errs:
-                raise ValueError("VFailure requires non-empty errors")
-            return VFailure(errors=tuple(errs))
-        raise ValueError(f"invalid kind {kind!r}")
-    return _dec
-
-# JSON / MessagePack
-_JSON_KW = dict(ensure_ascii=False, allow_nan=False, separators=(",", ":"))
-_MP_PACK = dict(use_bin_type=True)
-_MP_UNPACK = dict(raw=False)
-
-def _check_env(obj: Mapping[str, Any]) -> None:
-    if not isinstance(obj, dict):
-        raise ValueError("invalid envelope: not a dict")
-    required = {"tag", "ver", "payload"}
-    missing = required - set(obj)
-    if missing:
-        raise ValueError(f"invalid envelope: missing {missing}")
-    if not isinstance(obj["tag"], str):
-        raise ValueError("tag must be str")
-    if not isinstance(obj["ver"], int):
-        raise ValueError("ver must be int")
-    if not isinstance(obj["payload"], dict):
-        raise ValueError("payload must be dict")
-
-def to_json(x: T, enc: Encoder[T]) -> str:
-    env = enc(x)
-    return json.dumps({"tag": env.tag, "ver": env.ver, "payload": env.payload}, **_JSON_KW)
-
-def from_json(s: str, dec: Decoder[T]) -> T:
-    obj = json.loads(s)
-    _check_env(obj)
-    env = Envelope(tag=obj["tag"], ver=obj["ver"], payload=obj["payload"])
-    return dec(migrate(env))
-
-def to_msgpack(x: T, enc: Encoder[T]) -> bytes:
-    env = enc(x)
-    return msgpack.packb({"tag": env.tag, "ver": env.ver, "payload": env.payload}, **_MP_PACK)
-
-def from_msgpack(b: bytes, dec: Decoder[T]) -> T:
-    obj = msgpack.unpackb(b, **_MP_UNPACK)
-    _check_env(obj)
-    env = Envelope(tag=obj["tag"], ver=obj["ver"], payload=obj["payload"])
-    return dec(migrate(env))
-
-# Safe decode + versioning
-@dataclass(frozen=True, slots=True)
-class DecodeErr:
-    path: Tuple[str, ...] = ()
-    msg: str = ""
-
-def from_json_safe(s: str, dec: Decoder[T]) -> Validation[T, DecodeErr]:
-    try:
-        return VSuccess(from_json(s, dec))
-    except Exception as exc:
-        return VFailure((DecodeErr(msg=str(exc)),))
-
-MIGRATORS: dict[tuple[str, int], Callable[[Envelope], Envelope]] = {}
-
-MAX_MIGRATION_STEPS = 32
-
-def migrate(env: Envelope) -> Envelope:
-    key = (env.tag, env.ver)
-    steps = 0
-    seen: set[tuple[str, int]] = set()
-    while key in MIGRATORS:
-        if key in seen:
-            raise RuntimeError(f"migration cycle detected at {key}")
-        seen.add(key)
-        steps += 1
-        if steps > MAX_MIGRATION_STEPS:
-            raise RuntimeError("migration step limit exceeded")
-        env = MIGRATORS[key](env)
-        key = (env.tag, env.ver)
-    return env
-
-# Streaming
-def iter_ndjson(fp, dec: Decoder[T]):
-    for line in fp:
-        line = line.strip()
-        if line:
-            yield from_json(line, dec)
-
-def iter_msgpack(fp, dec: Decoder[T]):
-    unpacker = msgpack.Unpacker(fp, **_MP_UNPACK)
-    for obj in unpacker:
-        _check_env(obj)
-        yield dec(migrate(Envelope(obj["tag"], obj["ver"], obj["payload"])))
+print(json.loads(encoded)["payload"])
+print(decoded == failure)
+PY
 ```
 
-## 4. Reference Implementations (continued)
+Expected output:
 
-### 4.1 Before vs After – Chunk Persistence
-
-```python
-# BEFORE – unstable dict → JSON
-serialized = json.dumps(asdict(core_chunk))      # field order changes, no version
-core_chunk = Chunk(**json.loads(serialized))     # missing fields → default, crash later
-
-# AFTER – stable envelope
-enc = enc_chunk()                               # factory
-serialized = to_json(core_chunk, enc)           # {"tag":"chunk","ver":1,"payload":{...}}
-core_chunk = from_json(serialized, dec_chunk()) # migrates if needed, raises clear error if invalid
+```text
+{'kind': 'err', 'error': {'code': 'EMBED_FAIL', 'msg': 'model offline', 'stage': 'embed', 'path': [2, 4]}}
+True
 ```
 
-### 4.2 RAG Integration – Persistent Chunk Store
+The first line makes the representation inspectable. The second proves the
+round trip for this value.
 
-```python
-# Write stream
-with open("chunks.ndjson", "w") as f:
-    enc = enc_chunk()
-    for core_chunk in pipeline_chunks:
-        f.write(to_json(core_chunk, enc) + "\n")
+## State the round-trip law precisely
 
-# Read stream with migration
-with open("chunks.ndjson") as f:
-    dec = dec_chunk()
-    for core_chunk in iter_ndjson(f, dec):
-        yield core_chunk
+The useful law is:
+
+```text
+decode(encode(value)) == value
 ```
 
-### 4.3 Versioning & Migration Example (Chunk v1 → v2)
+It holds only for values covered by the paired codecs. FuncPipe's default
+`ErrInfo` codec preserves:
+
+- `code`;
+- `msg`;
+- a non-empty `stage`;
+- a non-empty integer `path`.
+
+It does **not** serialize `cause` or `ctx`. Those fields may hold exceptions or
+arbitrary objects without a stable JSON representation. Therefore the default
+round-trip equality claim applies to `ErrInfo` values whose omitted fields are
+`None`.
+
+That limitation is a contract, not a reason to silently call `str()` on every
+object. If a product needs persistent context, define a small JSON-shaped
+context schema and an explicit codec for it.
+
+The default success encoder similarly assumes the success value is already
+JSON-compatible. A domain dataclass needs a supplied `enc_val`/`dec_val` pair:
 
 ```python
-# Suppose v1 Chunk had no metadata field
-def migrate_chunk_v1_to_v2(env: Envelope) -> Envelope:
-    if env.ver != 1 or env.tag != "chunk":
-        return env
-    payload = env.payload.copy()
+enc_result(enc_val=encode_chunk)
+dec_result(dec_val=decode_chunk)
+```
+
+Without those functions, `json.dumps` discovering a dataclass at runtime will
+fail. Explicit codecs keep that decision near the boundary.
+
+## Why a version is not yet a migration
+
+`ver=1` records history, but it does not make future data readable. A migration
+must turn one understood envelope into the next:
+
+```python
+def chunk_v1_to_v2(envelope: Envelope) -> Envelope:
+    payload = dict(envelope.payload)
     payload.setdefault("metadata", {})
     return Envelope(tag="chunk", ver=2, payload=payload)
 
-MIGRATORS[("chunk", 1)] = migrate_chunk_v1_to_v2
+MIGRATORS[("chunk", 1)] = chunk_v1_to_v2
 ```
 
-## 5. Property-Based Proofs (capstone/tests/test_serde.py)
+`migrate` repeatedly looks up `(tag, version)` until no next migration exists.
+It detects cycles and limits the chain to 32 steps. The final decoder must
+still understand the version produced by the chain.
+
+Migration design has several obligations:
+
+- never reinterpret an old field silently;
+- preserve information or document an intentional loss;
+- make each step deterministic;
+- test real historical envelopes;
+- keep the registry scoped and controlled.
+
+FuncPipe's `MIGRATORS` object is process-global. Tests that change it must
+restore the previous contents, as `test_chunk_v1_migration` does. A production
+service would usually assemble an immutable registry at startup rather than
+let request code mutate it.
+
+## Safe failure is a separate API choice
+
+`from_json` raises for malformed input. That is convenient when a bad record
+should stop the operation. `from_json_safe` translates decoding exceptions
+into:
 
 ```python
-from hypothesis import given, strategies as st
-
-msgpack_int = st.integers(min_value=-(2**63), max_value=2**64 - 1)
-
-@given(opt=st.one_of(st.builds(Some, value=st.integers()), st.just(NoneVal())))
-def test_option_json_roundtrip(opt):
-    enc = enc_option()
-    dec = dec_option()
-    s = to_json(opt, enc)
-    back = from_json(s, dec)
-    assert back == opt
-
-@given(res=st.one_of(st.builds(Ok, value=msgpack_int),
-                    st.builds(Err, error=st.builds(ErrInfo, code=st.text(), msg=st.text()))))
-def test_result_msgpack_roundtrip(res):
-    enc = enc_result()
-    dec = dec_result()
-    b = to_msgpack(res, enc)
-    back = from_msgpack(b, dec)
-    assert back == res
-
-# Migration example test
-def test_chunk_v1_migration():
-    v1_payload = {"text": "hello", "embedding": [0.1, 0.2]}
-    env_v1 = Envelope(tag="chunk", ver=1, payload=v1_payload)
-    env_v2 = migrate(env_v1)
-    assert env_v2.ver == 2
-    assert env_v2.payload["metadata"] == {}
+Validation[T, DecodeErr]
 ```
 
-## 6. Big-O & Allocation Guarantees
+This gives a caller a typed failure value, but it currently reports the
+exception message at an empty path. It is not a complete structured diagnostic
+system. If field-level paths matter, decoder functions must add them as they
+descend through the payload.
 
-| Operation            | Time               | Heap                  | Notes                                      |
-|----------------------|--------------------|-----------------------|--------------------------------------------|
-| encode/decode        | O(#fields)         | O(#fields)            | Single allocation per envelope             |
-| JSON/MessagePack     | O(N)               | O(N)                  | Linear in payload size                     |
-| Streaming iter       | O(1) per item      | O(1) per item         | Zero-copy when possible                    |
+Likewise, safe decoding does not impose input-size, nesting-depth, or resource
+limits. Those protections belong at the I/O boundary before or around parsing
+untrusted data.
 
-## 7. Anti-Patterns & Immediate Fixes
+## JSON, MessagePack, and streams share the codec
 
-| Anti-Pattern                  | Symptom                            | Fix                                      |
-|-------------------------------|------------------------------------|------------------------------------------|
-| Raw asdict → json             | Unstable order, no tags            | Explicit Envelope + enc/dec              |
-| No version field              | Schema drift breaks old data       | `ver` + MIGRATORS                        |
-| Ad-hoc JSON handling          | Silent corruption                  | `_check_env` + safe decode               |
-| Pydantic for core persistence | Heavy deps, slow                   | Plain codecs for core                    |
-| No migration path             | Production data loss               | `migrate` + versioned envelope          |
+The `Envelope` codec is independent of the transport:
 
-## Runnable RAG learning lab
+| Surface | Writer/reader | Important behavior |
+| --- | --- | --- |
+| JSON value | `to_json` / `from_json` | readable text; rejects NaN on write |
+| MessagePack value | `to_msgpack` / `from_msgpack` | compact binary; requires the `msgpack` dependency |
+| newline-delimited JSON | `iter_ndjson` | lazy record decoding; stops on the first raised decode error |
+| MessagePack stream | `iter_msgpack` | lazy unpacking and envelope validation |
 
-Run a complete typed failure through the shipped JSON envelope:
+Using the same domain codec prevents the JSON and binary formats from inventing
+different meanings. It does not mean they accept identical primitive ranges;
+the MessagePack property test deliberately bounds integers to its supported
+range.
+
+## Pydantic and serde are complementary
+
+Use the Pydantic adapter to validate an external chunk payload and convert it
+to the core. Use serde when a particular representation must survive storage,
+transport, or schema evolution.
+
+Neither layer belongs inside the domain value:
+
+```text
+external payload -> Pydantic boundary model -> core value
+core value -> explicit persistence codec -> envelope bytes
+```
+
+A public API could use both paths, but they answer different questions.
+
+## Inspect and verify
+
+Read the implementation:
 
 ```bash
-cd capstone/module-reference-states/module-05
-PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
-  -k serialization_preserves_result_failure_provenance
+sed -n '1,340p' \
+  capstone/module-reference-states/module-05/src/funcpipe_rag/boundaries/adapters/serde.py
 ```
 
-The assertion inspects the envelope rather than trusting a successful decoder.
-The error code, message, owning stage, and chunk path all remain present, and
-the decoded `Err` equals the original value. That is the public contract; a
-dump of the Python object's incidental layout is not.
+Run the application-level proof:
 
-Versioning does not mean “accept every future payload.” An unknown version
-requires a registered migration or an explicit rejection. The focused test
-proves the current `Result` failure round-trip. It does not establish
-compatibility with schemas that have no migration route or validate the
-semantics of every encoded error.
+```bash
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/pytest \
+  -q capstone/module-reference-states/module-05/tests/learning/test_module_05_data_modelling.py \
+  -k serialization
+```
 
-## 8. Pre-Core Quiz
+Then inspect `tests/test_serde.py` for Option/JSON, Result/MessagePack, and
+migration evidence. Do not expand those tests into a claim about values the
+strategies never generate.
 
-1. Envelope contains…? → **tag, ver, payload**  
-2. Round-trip law → **from(to(x)) == x**  
-3. For versioning? → **MIGRATORS dict**  
-4. Streaming with…? → **iter_ndjson / iter_msgpack**  
-5. Beyond Pydantic for…? → **Core persistence**
+## Check your understanding
 
-## 9. Post-Core Exercise
+1. Why are both `tag` and `payload.kind` needed for a serialized `Result`?
+2. Which `ErrInfo` fields does the default codec intentionally omit?
+3. Why does a version number alone not make a schema migratable?
+4. What must a custom success codec provide for a domain dataclass?
+5. Which additional controls are needed before decoding large untrusted input?
 
-1. Implement `Encoder`/`Decoder` for one core ADT → test round-trip.  
-2. Add a v2 migrator for an existing type → test old payload loads.  
-3. Replace one `json.dumps(asdict(...))` with envelope serde.  
-4. Add streaming persistence for a pipeline stage.
-
-**Continue with:** [Compositional Domain Models](../module-05-algebraic-data-modelling-validation/compositional-domain-models.md)
-
-You now serialize every core ADT with stable, versioned, migratable contracts — schema evolution is explicit and safe forever. The rest of Module 5 adds compositional domain models and performance guidance for heavy ADTs.
+Continue to [Compositional Domain Models](compositional-domain-models.md) when
+you can describe the exact values a codec preserves, rejects, migrates, and
+intentionally cannot round-trip.
