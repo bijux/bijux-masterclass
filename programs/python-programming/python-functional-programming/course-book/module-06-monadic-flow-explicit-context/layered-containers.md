@@ -1,65 +1,52 @@
-# Layered Containers
+# Layered Containers: Decide Which Outcome Dominates
 
+A retrieval can succeed and find a document, succeed and find nothing, or
+fail. One container is not enough to distinguish all three outcomes:
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Monadic Flow Explicit Context"]
-  page["Layered Containers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+```text
+found:    Ok(Some(document))
+missing:  Ok(NoneVal())
+failed:   Err(retrieval_error)
 ```
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+That public meaning is:
+
+```text
+Result[Option[CleanDoc], ErrInfo]
 ```
-<!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read from the outside inward:
 
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
+1. Did retrieval succeed?
+2. If it succeeded, was a document present?
 
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
+The order is a domain decision. It is not decorative type syntax.
 
-**Core question**  
-How do you combine multiple effects (config + failure, state + failure, failure + absence) in a single pipeline using only simple nested containers and two transpose helpers — with zero monad transformers and zero category theory?
+## Run the three retrieval cases
 
-This is the core that shows you how to stack the containers from earlier cores into real production pipelines. No magic, no heavy abstraction — just nesting and deliberate layer order.
-
-Use this when you have Reader, State, Result, and Option working individually and now need to combine them without introducing complexity.
-
-## Runnable lab: keep “not found” distinct from retrieval failure
-
-A RAG lookup can succeed without a matching document or fail before it can
-answer. `Result[Option[CleanDoc], ErrInfo]` preserves both meanings:
+The Module 06 learning proof constructs:
 
 ```python
-found = Ok(Some(doc))
-missing = Ok(NoneVal())
-failed = Err(ErrInfo(code="RETRIEVAL", msg="index unavailable"))
+found: Result[Option[CleanDoc], ErrInfo] = Ok(
+    Some(doc)
+)
 
-assert transpose_result_option(found) == Some(Ok(doc))
-assert transpose_result_option(missing) == NoneVal()
-assert transpose_result_option(failed) == Some(Err(failed.error))
+missing: Result[Option[CleanDoc], ErrInfo] = Ok(
+    NoneVal()
+)
+
+failed: Result[Option[CleanDoc], ErrInfo] = Err(
+    ErrInfo(
+        code="RETRIEVAL",
+        msg="index unavailable",
+    )
+)
 ```
 
-Run the proof, which also transposes each value back to its original form:
+The cases remain distinguishable. In particular, `missing` is not an error and
+`failed` is not absence.
+
+Run the proof:
 
 ```bash
 cd capstone/module-reference-states/module-06
@@ -67,192 +54,159 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
   -k layer_order_distinguishes_missing_document_from_retrieval_failure
 ```
 
-Mapping both missing and failed retrieval to `NoneVal` would hide an operational
-failure. Treating `Ok(NoneVal())` as `Err` would invent a failure where the
-query completed normally.
+Before running, write the expected result for each case. If you cannot name the
+outer and inner decision, the type is not yet helping.
 
-**Outcome**
-1. You will confidently nest containers like `Reader[Config, Result[T, E]]` or `State[S, Result[T, E]]`.
-2. You will understand exactly how layer order controls short-circuit and resource usage.
-3. You will know when (and when not) to transpose layers.
+## Why transpose the layers?
 
-## Layer Order Controls Everything
-
-> Note: “outer” / “inner” here are about **effect dominance in the type**  
-> (who owns the short-circuit behaviour), not literal Python call order.
-
-The most reliable reading habit is to go **outside in**:
-
-- what does the caller encounter first?
-- which branch can stop the rest of the work?
-- what information is still available when that branch wins?
-
-| Outer → Inner          | Short-circuit behaviour                                      | State/Config on failure? | Recommended for                              |
-|------------------------|--------------------------------------------------------------|--------------------------|----------------------------------------------|
-| Result → anything      | Err stops everything immediately                             | No                       | Most pipelines (failure dominates)           |
-| Reader → Result        | Config always available (even for logging Err)               | Yes (config)             | When you need config on error paths          |
-| State → Result         | State always threaded (even on Err)                          | Yes (state)              | When you want to count failed operations     |
-| Result → Reader/State  | Err short-circuits before Reader/State runs                  | No                       | When config/state only needed on success     |
-| Result → Option        | Err dominates absence                                        | —                        | Default for "failure or not found"           |
-| Option → Result        | None dominates Err (very rare)                               | —                        | Only when absence should win                 |
-
-**Rule of thumb**: Put **Result outermost** in 95% of cases.  
-It gives true early short-circuit and prevents work on failure.
-
-When you need config or state on error paths (e.g. logging, metrics), put Reader/State outside Result.
-
-## 1. Laws & Invariants (machine-checked in CI)
-
-| Law                           | Formal Statement                                                            | Why it matters                                            |
-|-------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Stacked Monad Laws            | Same left/right/associativity as single containers (via normal combinators) | Refactor-safe multi-effect pipelines                      |
-| Transpose Involution          | `transpose_option_result(transpose_result_option(m)) == m`                 | Swapping layers twice is identity                         |
-| Error Dominance               | `transpose_result_option(Err(e)) == Some(Err(e))`                          | Error beats absence                                       |
-
-The stacked monad laws are verified in the full test suite. The transpose-specific laws are shown below.
-
-## 2. Public API – Only two transpose helpers (everything else is plain nesting)
+The reference state provides:
 
 ```python
-# capstone/src/funcpipe_rag/fp/effects/layering.py – end-of-Module-06 (mypy --strict clean target)
-
-from __future__ import annotations
-from funcpipe_rag.result.types import Result, Ok, Err, Option, Some, NoneVal
-
-T = TypeVar("T")
-E = TypeVar("E")
-
-def transpose_result_option(ro: Result[Option[T], E]) -> Option[Result[T, E]]:
-    """Swap layers: Result[Option[T]] → Option[Result[T]].
-    
-    Error dominates absence: Err(e) becomes Some(Err(e)).
-    """
-    if isinstance(ro, Err):
-        return Some(Err(ro.error))
-    return Some(Ok(ro.value.value)) if isinstance(ro.value, Some) else NoneVal()
-
-def transpose_option_result(or_: Option[Result[T, E]]) -> Result[Option[T], E]:
-    """Swap layers: Option[Result[T]] → Result[Option[T]].
-    
-    Error dominates absence: Some(Err(e)) becomes Err(e).
-    """
-    if isinstance(or_, NoneVal):
-        return Ok(NoneVal())
-    return Err(or_.value.error) if isinstance(or_.value, Err) else Ok(Some(or_.value.value))
+transpose_result_option(
+    value: Result[Option[T], E],
+) -> Option[Result[T, E]]
 ```
 
-That's it. No other cross-layer helpers required.  
-Just nest containers and use the usual `.map` / `.and_then`.  
-(You may occasionally write tiny local lift functions for ergonomics in very deep stacks — but 99% of the time you won’t need them.)
-
-## 3. Real-World Example – Query User (Failure + Absence)
+and the reverse:
 
 ```python
-def query_user(id: UserId) -> Result[Option[User], NetworkErr]:
-    """Most common shape: Result outer → network failure short-circuits early."""
-    resp = try_result(
-        lambda: http_get(f"/users/{id}"),
-        map_http_exc,
-    )
-    return resp.map(lambda body: NoneVal() if body is None else Some(parse_user(body)))
-
-# Usage – linear, no manual nesting
-match query_user(some_id):
-    case Ok(Some(user)): process(user)
-    case Ok(NoneVal()): handle_not_found()
-    case Err(e): handle_network_error(e)   # no user parsing work done
+transpose_option_result(
+    value: Option[Result[T, E]],
+) -> Result[Option[T], E]
 ```
 
-If you ever need absence to dominate (very rare):
+For the three cases:
+
+| Input | Transposed output |
+| --- | --- |
+| `Ok(Some(doc))` | `Some(Ok(doc))` |
+| `Ok(NoneVal())` | `NoneVal()` |
+| `Err(error)` | `Some(Err(error))` |
+
+The failed retrieval becomes `Some(Err(error))`, not `NoneVal()`. Error
+dominates absence in the shipped conversion.
+
+Transposition can be useful when an API or combinator expects the other layer
+order. It should not be performed merely to make a type look familiar.
+
+## Prove the conversion does not lose a case
+
+The learning proof round-trips every declared case:
 
 ```python
-absent_first = transpose_result_option(query_user(id))  # Option[Result[User, NetworkErr]]
+assert transpose_option_result(
+    transpose_result_option(found)
+) == found
 ```
 
-## 4. Recommended Production Stacks
+The same assertion holds for `missing` and `failed`.
 
-| Goal                                 | Stack (outer → inner)                                      | Rationale                                                                          |
-|--------------------------------------|------------------------------------------------------------|------------------------------------------------------------------------------------|
-| Failure dominates everything         | `Result[Reader[Config, State[PipelineState, T]], ErrInfo]` | Early exit on error when interpreted as `(Config → State → Result[T, ErrInfo])`   |
-| Config needed on error paths         | `Reader[Config, Result[State[PipelineState, T], ErrInfo]]` | Config available for logging/metrics on Err                                       |
-| Count failed operations              | `State[PipelineState, Result[Reader[Config, T], ErrInfo]]` | State threaded even on Err                                                         |
+The property suite generalizes this as an involution over generated values:
 
-Pick the **type layer order** that matches your dominance needs.
-If a recommended stack feels hard to read, translate it into a sentence from the
-caller’s view before committing to it. That usually reveals whether the chosen outer
-layer is really the one you want noticed first.
+```text
+transpose back (transpose value) == value
+```
 
+Run it:
 
-## 5. Before → After – Nested Container Handling
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/test_layering.py
+```
+
+Round-trip equality proves the helper preserves the modeled cases. It does not
+prove that the original public type is the right product decision.
+
+## Choose the public meaning before the container
+
+Consider an empty query. Several contracts are possible:
+
+- `Err(EMPTY_QUERY)`: the caller supplied invalid input;
+- `Ok(NoneVal())`: an empty query is valid but has no result;
+- a separate query ADT that prevents emptiness at construction.
+
+No transpose helper can make that decision for you. State the public meaning
+first, then select the type that represents it.
+
+For FuncPipe, treating an empty query as a typed input failure is defensible
+because no retrieval attempt should occur. A valid non-empty query with no
+matching document remains successful absence.
+
+## Outer context determines control
+
+Compare:
+
+```text
+Result[Option[T], E]
+Option[Result[T, E]]
+```
+
+With Result outside, the program first decides whether the operation failed.
+With Option outside, absence can prevent there being an inner Result at all.
+
+The difference becomes more consequential with State or Writer:
+
+```text
+State[S, Result[T, E]]
+Result[State[S, T], E]
+
+Writer[Result[T, E]]
+Result[Writer[T], E]
+```
+
+Questions to answer before layering:
+
+- If the domain operation fails, are state changes retained?
+- Can trace entries describe work before a failure?
+- Does absence suppress an error, or can errors occur independently?
+- Which context owns short-circuiting?
+- What does the outer boundary need to pattern-match first?
+
+Module 06 deliberately does not ship one universal transformer stack. Explicit
+small types and transpose helpers keep the policy visible.
+
+## Prefer a dedicated domain sum when combinations are constrained
+
+Layered generic containers can represent more combinations than the product
+allows. If the application has a small closed set of retrieval states, a
+domain type may be clearer:
 
 ```python
-# BEFORE – manual nesting hell
-def get_user(id: UserId) -> User | None:
-    res = http_get(id)                  # Result[bytes, NetworkErr]
-    if isinstance(res, Err):
-        log(res.error)
-        return None                     # conflates network error with not found
-    if not res.value:
-        return None
-    return parse_user(res.value)
-
-# AFTER – typed layering, no manual checks
-def get_user(id: UserId) -> Result[Option[User], NetworkErr]:
-    return (
-        try_result(lambda: http_get(id), map_http_exc)
-        .map(lambda body: NoneVal() if body is None else Some(parse_user(body)))
-    )
-
-match get_user(some_id):
-    case Ok(Some(user)): process(user)
-    case Ok(NoneVal()): handle_not_found()
-    case Err(e): handle_network_error(e)
+type Retrieval = (
+    Retrieved
+    | NoMatch
+    | RetrievalFailed
+)
 ```
 
-Zero manual propagation. Types tell the whole story.
+Use generic layering when the independent meanings and existing APIs compose
+naturally. Use a domain sum when named cases communicate the workflow better
+or prevent nonsensical combinations.
 
-## 6. Property-Based Proofs (selected)
+This is the same modelling judgment from Module 05 applied to flow.
 
-```python
-@given(ro=results(values=options()))
-def test_transpose_result_option_involution(ro):
-    assert transpose_option_result(transpose_result_option(ro)) == ro
+## Common wrong turns
 
-@given(or_=options(values=results()))
-def test_transpose_option_result_involution(or_):
-    assert transpose_result_option(transpose_option_result(or_)) == or_
+- **Using `None` for every non-value.** It erases failure provenance.
+- **Converting `Err` to `NoneVal`.** A failed operation becomes
+  indistinguishable from successful absence.
+- **Choosing the outer container by convenience.** The outer layer controls
+  which decision happens first.
+- **Transposing without a round-trip test.** A case may disappear silently.
+- **Building deeply nested stacks.** If reviewers cannot state the public
+  cases, introduce a named domain type or boundary adapter.
+- **Calling one order universally correct.** The product contract determines
+  dominance.
 
-@given(e=errors())
-def test_transpose_result_option_error_dominates(e):
-    assert transpose_result_option(Err(e)) == Some(Err(e))
+## What the focused proof establishes
 
-@given(e=errors())
-def test_transpose_option_result_error_dominates(e):
-    assert transpose_option_result(Some(Err(e))) == Err(e)
-```
+The learning test proves that found, missing, and failed retrieval cases remain
+distinct through both transpose functions and round-trip to their original
+values.
 
-## 7. Anti-Patterns & Immediate Fixes
+It does not prove that all applications should use
+`Result[Option[T], E]`, or that an empty query must be classified in one
+particular way.
 
-| Anti-Pattern                    | Symptom                              | Fix                                      |
-|---------------------------------|--------------------------------------|------------------------------------------|
-| Manual nested match/if          | Deeply indented error handling       | Use layered containers + normal combinators |
-| Wrong layer order               | Unexpected short-circuit behaviour   | Choose order deliberately (or transpose) |
-| Monad transformers              | Category-theory overhead             | Just nest — Python handles it            |
-
-## 8. Pre-Core Quiz
-
-1. Default recommended outer container? → **Result (failure dominates)**  
-2. When to put Reader outer? → **When config needed on error paths**  
-3. Transpose is needed for? → **Result ↔ Option only**  
-4. Recommended production stack when counting failed ops? → **State outer, Result inner**  
-5. The golden rule? → **Let layer order do the work — no transformers needed**
-
-## 9. Post-Core Exercise
-
-1. Take a real pipeline with both failure and absence — rewrite with Result[Option[T]].
-2. Swap to Option[Result[T]] with transpose — confirm propagation changes.
-3. Add Reader or State to an existing layered pipeline — choose order deliberately.
-
-**Continue with:** [Writer Pattern](../module-06-monadic-flow-explicit-context/writer-pattern.md)
-
-You have now combined **all** effect containers into production-ready pipelines using nothing more than simple nesting and deliberate layer order. Your code is pure, composable, and proven correct by Hypothesis — with zero category-theory overhead. The remaining cores are pure polish.
+Continue with [Writer Pattern](writer-pattern.md) to model ordered side
+information without emitting it as an effect.
