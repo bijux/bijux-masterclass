@@ -313,3 +313,81 @@ PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
 Earlier contract preserved: Module 07 effect interpretation remains outside
 this law; composition equivalence applies to pure transformations of the typed
 stream.
+
+## Cumulative lab: review the FuncPipe async indexing policy
+
+**Starting context:** read `rag/async_rag.py` and the three tests whose names
+contain `async_rag_chunks`. Work in a learner branch beside the Module 08
+learning tests. Do not edit `capstone/_history/`; those worktrees are generated
+comparison evidence.
+
+**Objective:** construct one application-level proof that combines filtering,
+document validation, a source failure, an embedding failure, and bounded
+continuation. Use the proof to defend whether ordered output is part of the
+indexing contract.
+
+Use a replayable source with these events in this order:
+
+1. one valid document;
+2. one document rejected by the `keep` rule;
+3. one `Err` from the source;
+4. one document whose cleaner raises `ValueError`;
+5. one document whose embedding plan returns `Err`; and
+6. one final valid document.
+
+**Constraints:**
+
+- use `async_rag_chunks`, not a parallel exercise-only pipeline;
+- use `BackpressurePolicy(max_concurrent=2, ordered=True)`;
+- let the fake embedder yield with `asyncio.sleep(0)`, not a wall-clock delay;
+- record the maximum number of active embedding calls;
+- record which document IDs reach the cleaner and embedder;
+- keep failures as `ErrInfo` values;
+- prove the rejected document reaches neither cleaning nor embedding;
+- prove the source and validation failures never reach embedding;
+- prove the final valid document is still emitted; and
+- preserve the synchronous `clean_doc` and `embed_chunk` implementations.
+
+**Required evidence:** produce a table before writing assertions:
+
+| Input event | Cleaner called? | Embedder called? | Output position |
+| --- | --- | --- | --- |
+| valid before | predict | predict | predict |
+| filtered document | predict | predict | predict |
+| source `Err` | predict | predict | predict |
+| validation failure | predict | predict | predict |
+| embedding `Err` | predict | predict | predict |
+| valid after | predict | predict | predict |
+
+Then make the test prove:
+
+```text
+ok:before
+err:SOURCE
+err:UNEXPECTED
+err:EMBED
+ok:after
+```
+
+Your review note must answer:
+
+1. Why does filtering create no output position?
+2. Why do the source and validation failures retain positions?
+3. Why is the embedding failure emitted even though the mapper owns the task?
+4. What evidence shows the final document was not erased?
+5. What would become harder to review with `ordered=False`?
+
+**Acceptance checks:**
+
+```bash
+make capstone-async-rag-proof
+make capstone-module-state-proof MODULE=08
+```
+
+Earlier contracts preserved:
+
+- Module 02 filtering remains a value-level choice;
+- Module 03 document/chunk order remains observable;
+- Module 04 failures remain typed values;
+- Module 07 owns effect interpretation; and
+- Module 08 adds bounded coordination without replacing those contracts.
