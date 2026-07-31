@@ -37,11 +37,19 @@ def test_build_summary_reports_expected_groups() -> None:
     ]
     assert route_names == ["demo", "test", "tour", "proof"]
     assert claim_names == [
+        "change-acceptance",
         "performance-decision",
         "regression-equivalence",
         "async-contracts",
         "migration-review",
     ]
+    change_claim = summary["evidence_claims"][0]
+    assert change_claim["required_paths"] == [
+        "src/funcpipe_rag/review/change.py",
+        "tests/unit/review/test_change.py",
+    ]
+    assert change_claim["command"] == "pytest -q tests/unit/review/test_change.py"
+    assert change_claim["missing_paths"] == []
     assert all(claim["complete"] for claim in summary["evidence_claims"])
     assert all(group["python_file_count"] > 0 for group in summary["package_groups"])
     assert {group["owner"] for group in summary["package_groups"]} == {
@@ -74,6 +82,7 @@ def test_render_text_mentions_review_surfaces() -> None:
     assert "owner=functional-foundations" in rendered
     assert "algebra-and-laws" in rendered
     assert "make proof" in rendered
+    assert "change-acceptance: complete" in rendered
     assert "regression-equivalence: complete" in rendered
 
 
