@@ -24,7 +24,7 @@ embedding plan.
 | New pressure | An embedding adapter may wait, and starting one task per chunk would make concurrency and memory unbounded |
 | Concept introduced now | `AsyncGen` describes a replayable result stream; `AsyncPlan` describes one delayed embedding; `BackpressurePolicy` controls their composition |
 | Source that changes | `src/funcpipe_rag/rag/async_rag.py` and its public export from `funcpipe_rag.rag` |
-| Proof of the teaching claim | Three `async_rag_chunks` tests in `tests/learning/test_module_08_async.py` |
+| Proof of the teaching claim | Four `async_rag_chunks` tests in `tests/learning/test_module_08_async.py` |
 | Earlier behavior preserved | Cleaning, chunk coordinates, embedding values, typed stream failures, and the synchronous `iter_rag` route |
 | Completed reference state | `capstone/module-reference-states/module-08/` |
 | Learner-visible route | `make capstone-async-rag-proof` from the course root |
@@ -207,11 +207,13 @@ From `programs/python-programming/python-functional-programming`:
 make capstone-async-rag-proof
 ```
 
-The command runs only the three Module 08 application proofs:
+The command runs only the four Module 08 application proofs:
 
 - constructing the stream defers embedding and preserves synchronous values;
 - the application respects the declared concurrency ceiling and ordering; and
-- source and validation failures remain visible without erasing later work.
+- source and validation failures remain visible without erasing later work; and
+- the cumulative filter/source/validation/embedding trace retains every
+  expected position.
 
 Use the full Module 08 learning route only when a change affects the generic
 async laws:

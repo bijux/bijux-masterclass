@@ -316,7 +316,7 @@ stream.
 
 ## Cumulative lab: review the FuncPipe async indexing policy
 
-**Starting context:** read `rag/async_rag.py` and the three tests whose names
+**Starting context:** read `rag/async_rag.py` and the four tests whose names
 contain `async_rag_chunks`. Work in a learner branch beside the Module 08
 learning tests. Do not edit `capstone/_history/`; those worktrees are generated
 comparison evidence.

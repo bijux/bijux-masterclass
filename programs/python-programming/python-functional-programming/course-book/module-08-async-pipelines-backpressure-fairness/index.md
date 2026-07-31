@@ -47,10 +47,36 @@ that do not smear runtime behavior across the whole codebase.
 
 ## Learning outcomes
 
-- how async steps stay explicit instead of magical
-- how backpressure and timeouts protect pipelines under load
-- how adapters for external services fit around a pure core
-- how to test async flows deterministically rather than by hope
+- distinguish a replayable `AsyncPlan` from a coroutine object and a running task;
+- trace how an `AsyncGen` pulls source values only when a consumer asks;
+- defend where FuncPipe introduces concurrency and where it deliberately stays
+  synchronous;
+- prove that `BackpressurePolicy` limits in-flight embedding while preserving
+  ordered `Result` values; and
+- use injected clocks, sleepers, and adapters to test coordination without
+  depending on wall-clock timing.
+
+## Begin with the application pressure
+
+Read [Module 08 Capstone Delta](capstone-delta.md) before the individual
+combinators. Module 07 can describe and interpret effects, but its RAG indexing
+path remains synchronous. Module 08 adds one application path,
+`rag/async_rag.py`, because embedding is the first stage with a useful
+independent concurrency boundary.
+
+```mermaid
+flowchart LR
+  source["Async source<br/>Result[RawDoc]"]
+  prepare["filter → clean → chunk<br/>synchronous and demand-driven"]
+  embed["embedding plans<br/>bounded async work"]
+  output["ordered<br/>Result[Chunk]"]
+
+  source --> prepare --> embed --> output
+```
+
+The diagram is intentionally asymmetric. Cleaning and chunking remain the
+tested synchronous core. The module coordinates injected embedding plans; it
+does not convert every RAG function to `async def`.
 
 ## Lesson map
 
@@ -74,28 +100,42 @@ that do not smear runtime behavior across the whole codebase.
 Use [Module 08 Exercises](exercises.md) after each core. Each prompt names a
 focused test in the Module 08 reference state and an earlier contract that must
 remain true. Consult [Exercise Answers](exercise-answers.md) only after producing
-your own execution evidence.
+your own execution evidence. Finish with the cumulative indexing-policy lab: it
+requires you to explain filtering, three distinct failure positions, bounded
+overlap, and later-value continuity in one proof.
 
 ## Capstone checkpoints
 
 - Establish the Module 07-to-08 application pressure with
   [Module 08 Capstone Delta](capstone-delta.md) before reading the combinators.
-- Inspect where async work is described and where it is actually driven.
-- Review how bounded queues and fairness policies shape throughput.
-- Compare test helpers with the runtime surfaces they are protecting.
+- Inspect `rag/async_rag.py` beside
+  `domain/effects/async_/combinators.py`.
+- Identify the exact boundary between synchronous document preparation and
+  asynchronous embedding plans.
+- Run the four application proofs:
+
+  ```bash
+  make capstone-async-rag-proof
+  ```
+
+- Compare the Module 07 and Module 08 reference states using the route in the
+  [Refactoring Guide](refactoring-guide.md).
 
 ## Before moving on
 
-You should be able to explain how async coordination stays reviewable, what protects the
-system from runaway work, and how to tell whether an async abstraction clarifies or hides
-control flow. Use [Refactoring Guide](refactoring-guide.md) and compare against
-`capstone/_history/worktrees/module-08` before moving forward.
+You should be able to explain how async coordination stays reviewable, what
+protects embedding from runaway fan-out, and why a typed failure does not erase
+later valid work. Use the [Refactoring Guide](refactoring-guide.md) and compare
+the generated Module 07 and Module 08 worktrees before moving forward.
 
 ## Closing criteria
 
 - You can explain how concurrency stays bounded instead of accidental.
-- You can identify which async abstractions describe work and which ones actually drive execution.
+- You can identify which async abstractions describe work and which consumer
+  action actually drives execution.
 - You can defend an async design in terms of fairness, backpressure, and testability.
+- You can state which synchronous RAG laws Module 08 preserves and point to the
+  executable evidence.
 
 ## Directory glossary
 
