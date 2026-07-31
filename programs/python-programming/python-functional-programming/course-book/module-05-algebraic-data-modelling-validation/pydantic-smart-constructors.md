@@ -1,364 +1,230 @@
-# Pydantic Smart Constructors
+# Pydantic at the Boundary
 
+The typed RAG stages are useful only after input has become trustworthy. JSON, CLI arguments, and saved records do not arrive as `Chunk` values; they arrive as strings, lists, dictionaries, missing fields, and extra fields.
 
-<!-- page-maps:start -->
-## Page Maps
+Module 5 uses Pydantic for that crossing. It does not replace the frozen domain dataclasses with framework models.
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Algebraic Data Modelling Validation"]
-  page["Pydantic Smart Constructors"]
-  capstone["Capstone evidence"]
+## The boundary contract
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+An indexed chunk in FuncPipe carries:
+
+- a non-empty document ID;
+- non-empty text;
+- start and end offsets;
+- metadata;
+- exactly 16 finite embedding values.
+
+The domain `Chunk` constructor enforces core invariants. The boundary has additional responsibilities: reject unknown fields, parse JSON, report all field locations clearly, and serialize a stable versioned shape.
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Make the Pydantic boundary explicit enough that you stop arguing with yourself about where it belongs. The answer in this course is simple: use it where raw data enters or leaves, then cross into plain domain values and keep the core clean.
-
-## Start With the Boundary Leak
-
-Many teams either skip validation entirely or let framework models leak through the whole system. The lesson needs to show that there is a narrower, more durable middle path.
-
-- If raw dicts become core dataclasses directly, bad data may explode much later than it should.
-- If Pydantic models are passed everywhere, framework semantics start replacing domain semantics.
-- If derived fields and serialization rules are not centralized at the edge, the same invariants get reimplemented repeatedly.
-
-**Core question**  
-How do you use Pydantic v2 **only at the edges** as smart constructors — enforcing runtime invariants, providing stable serialization, and computing derived fields — while keeping the core domain as plain frozen dataclasses for maximum performance and purity?
-
-This lesson introduces Pydantic as an edge-only construction tool:
-
-- validate and normalize raw input once
-- compute derived fields where the boundary information still exists
-- convert to plain domain values before business logic and hot paths begin
-
-The motivating raw-JSON example matters because it shows the whole failure chain: silent acceptance now, expensive confusion later.
-
-The naïve pattern everyone writes first:
-
-```python
-# BEFORE – raw dict → core dataclass, silent garbage
-chunk = make_chunk(**raw_json)   # accepts missing fields, wrong types, NaN embedding
-serialized = json.dumps(asdict(chunk))   # order-unstable, no version, no validation on read
+  payload["untrusted dict / JSON"] -->|model_validate| edge["ChunkModel<br/>strict boundary value"]
+  edge -->|to_core_chunk| domain["Chunk<br/>domain value"]
+  domain -->|pure functions| core["typed RAG core"]
+  domain -->|from_core_chunk| edge
+  edge -->|serialize_model| json["versioned JSON"]
 ```
 
-This is the boundary leak to catch early.
+The arrow from boundary to domain should lose uncertainty, not lose information.
 
-The production pattern keeps runtime validation at the edge, then crosses into pure domain values quickly so the rest of the system stays predictable and fast.
+## Read the model before using it
 
-```python
-# AFTER – safe at edge, pure in core
-validated = ChunkModel.model_validate(raw_json)   # clear ValidationError early
-core_chunk = to_core_chunk(validated)             # → frozen dataclass, zero runtime cost inside pipeline
-serialized = validated.model_dump_json(by_alias=True)  # stable, versioned, reproducible
+Open the matching reference state:
+
+```bash
+cd programs/python-programming/python-functional-programming
+sed -n '1,120p' \
+  capstone/module-reference-states/module-05/src/funcpipe_rag/boundaries/adapters/pydantic_edges.py
 ```
 
-That one-time validation boundary is the key design idea this lesson should lock in.
-
-Use this when you have debugged bad input too late and want strong runtime validation without dragging framework models through the core.
-
-**Outcome**
-1. Every raw JSON/dict → validated Pydantic model → core frozen ADT.
-2. Runtime invariants enforced exactly once at the edge.
-3. Stable, versioned, round-trippable serialization forever.
-
-## Tiny Non-Domain Example – Production Config Loading
+The essential shape is:
 
 ```python
-class ProdConfigModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, populate_by_name=True)
-
-    port: int = Field(ge=1, le=65535)
-    host: str = Field(pattern=r"^[a-z0-9.-]+$")
-    timeout_ms: int = Field(gt=0)
-    debug: bool = False
-
-    @model_validator(mode="after")
-    def _no_localhost(self) -> "ProdConfigModel":
-        if self.host in {"localhost", "127.0.0.1", "::1"}:
-            raise ValueError("localhost disallowed in prod")
-        return self
-
-    @computed_field
-    def timeout_seconds(self) -> float:
-        return self.timeout_ms / 1000.0
-
-# Usage
-config_model = ProdConfigModel.model_validate(raw_dict)   # raises clear error if bad
-core_config = CoreConfig(
-    port=config_model.port,
-    host=config_model.host,
-    timeout_seconds=config_model.timeout_seconds,
-    debug=config_model.debug,
-)
-```
-
-All checks in one place, derived field free, core stays plain frozen dataclass.
-
-## Why Pydantic at the Edges Only? (Three bullets every engineer should internalise)
-
-- **Runtime enforcement**: `model_validator`, field constraints, discriminated unions → illegal states impossible at boundary.
-- **Stable serialization**: `model_dump_json(by_alias=True)` + discriminators → order-independent, versioned, reproducible JSON forever.
-- **Zero cost in core**: Validate once at edge → convert to frozen dataclass → full speed + mypy totality inside pipeline.
-
-Pydantic is **only** for I/O and config. Core domain stays pure frozen dataclasses.
-
-## 1. Laws & Invariants (machine-checked)
-
-| Invariant                  | Description                                          | Enforcement                              |
-|----------------------------|------------------------------------------------------|------------------------------------------|
-| Construction Invariant     | Invalid input raises ValidationError early           | Pydantic validation + tests              |
-| Round-Trip                 | `deserialize_model(serialize_model(x)) == x` (with `exclude_unset=True` and defaults) | Hypothesis property tests                |
-| Schema Stability           | Schema changes explicit and reviewed                 | Snapshot tests                           |
-| Discriminator Uniqueness   | No ambiguous union parsing                           | Pydantic + tests                         |
-| Computed Field Purity      | Derived fields deterministic, no side effects        | Reproducibility tests                    |
-
-## 2. Decision Table – Where to Use Pydantic
-
-| Location          | Need runtime validation? | Need stable serde? | Use Pydantic? |
-|-------------------|--------------------------|--------------------|---------------|
-| Ingress (JSON → domain) | Yes                      | Yes                | Yes           |
-| Core pipeline     | No (already validated)   | No                 | No            |
-| Egress (domain → JSON) | No                       | Yes                | Yes           |
-| Config loading    | Yes                      | Yes                | Yes           |
-| Hot loops         | No                       | No                 | No            |
-
-## 3. Public API (boundaries/adapters/pydantic_edges.py – mypy --strict clean)
-
-```python
-from __future__ import annotations
-
-from typing import Annotated, Any, Dict, List, Literal, TypeVar
-from pydantic import BaseModel, Field, ConfigDict, model_validator, computed_field, TypeAdapter
-import math
-
-from funcpipe_rag.fp.core import Chunk, make_chunk  # plain frozen core
-
-__all__ = [
-    "ChunkModel",
-    "to_core_chunk",
-    "from_core_chunk",
-    "serialize_model",
-    "deserialize_model",
-]
-
-T = TypeVar("T")
-
-StrictConfig = ConfigDict(
-    strict=True,
-    frozen=True,
-    extra="forbid",
-    populate_by_name=True,
-)
-
 class ChunkModel(BaseModel):
-    model_config = StrictConfig
+    model_config = ConfigDict(
+        strict=True,
+        frozen=True,
+        extra="forbid",
+    )
 
     version: Literal[1] = 1
+    doc_id: str = Field(min_length=1)
     text: str = Field(min_length=1, max_length=200_000)
-    metadata: Dict[str, Any] = Field(default_factory=dict)
-    embedding: List[float] | None = None
-
-    @model_validator(mode="after")
-    def _validate_embedding(self) -> "ChunkModel":
-        if self.embedding is None:
-            return self
-        if not self.embedding:
-            raise ValueError("embedding must be non-empty if present")
-        if len(self.embedding) > 8192:
-            raise ValueError("embedding too long")
-        for i, v in enumerate(self.embedding):
-            if not math.isfinite(v):
-                raise ValueError(f"embedding[{i}] not finite")
-            if abs(v) > 100.0:
-                raise ValueError(f"embedding[{i}] out of reasonable range")
-        return self
-
-    @computed_field
-    def length(self) -> int:
-        return len(self.text)
-
-def to_core_chunk(model: ChunkModel) -> Chunk:
-    return make_chunk(
-        text=model.text,
-        path=(),
-        metadata=model.metadata,
-    )
-
-def from_core_chunk(core: Chunk) -> ChunkModel:
-    return ChunkModel(
-        text=core.text,
-        metadata=core.metadata,
-    )
-
-def serialize_model(model: BaseModel) -> str:
-    return model.model_dump_json(by_alias=True, exclude_unset=True)
-
-def deserialize_model(json_str: str, typ: type[T]) -> T:
-    return TypeAdapter(typ).validate_json(json_str)
+    start: int = Field(ge=0)
+    end: int = Field(ge=0)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    embedding: tuple[float, ...]
 ```
 
-### 3.1 Pattern: Discriminated Unions for Core ADTs (e.g. Result)
+The model-level validator checks relationships that individual field validators cannot:
 
 ```python
-from typing import Annotated, Generic, Literal, TypeAlias, TypeVar, Union
-from pydantic import BaseModel, ConfigDict, Field
-
-StrictConfig = ConfigDict(
-    strict=True,
-    frozen=True,
-    extra="forbid",
-    populate_by_name=True,
-)
-
-T = TypeVar("T")
-
-class ErrInfoModel(BaseModel):
-    model_config = StrictConfig
-    code: str
-    msg: str
-
-class OkModel(BaseModel, Generic[T]):
-    model_config = StrictConfig
-    kind: Literal["ok"] = "ok"
-    value: T
-
-class ErrModel(BaseModel):
-    model_config = StrictConfig
-    kind: Literal["err"] = "err"
-    error: ErrInfoModel
-
-ResultModel: TypeAlias = Annotated[Union[OkModel[T], ErrModel], Field(discriminator="kind")]
+if self.end - self.start != len(self.text):
+    raise ValueError("offset span must equal text length")
+if len(self.embedding) != 16:
+    raise ValueError("embedding must contain 16 values")
+if any(not math.isfinite(value) for value in self.embedding):
+    raise ValueError("embedding values must be finite")
 ```
 
-## 4. Reference Implementations (continued)
+`start`, `end`, and `text` are individually valid in many combinations. Their relationship is the invariant.
 
-### 4.1 Before vs After – Chunk Ingestion
+## Validate, convert, and round-trip
 
-```python
-# BEFORE – raw dict → core dataclass, silent garbage
-chunk = make_chunk(**raw_json)   # accepts negative length, NaN embedding, etc.
+Run:
 
-# AFTER – validated at edge, safe core
-validated = ChunkModel.model_validate(raw_json)   # clear ValidationError if bad
-core_chunk = to_core_chunk(validated)             # → pure frozen dataclass
-```
-
-### 4.2 RAG Integration – Safe Ingestion Pipeline
-
-```python
-def ingest_raw_chunk(raw: dict[str, Any]) -> Chunk:
-    validated = ChunkModel.model_validate(raw)
-    return to_core_chunk(validated)
-
-def persist_chunk(core: Chunk) -> str:
-    model = from_core_chunk(core)
-    return serialize_model(model)   # stable, versioned JSON
-```
-
-## 5. Property-Based Proofs (capstone/tests/test_pydantic_edges.py)
-
-```python
-import math
-import pytest
-from hypothesis import given, strategies as st
+```bash
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/python \
+  - <<'PY'
 from funcpipe_rag.boundaries.adapters.pydantic_edges import (
     ChunkModel,
     deserialize_model,
+    from_core_chunk,
     serialize_model,
+    to_core_chunk,
 )
 
-nonfinite = st.sampled_from([float("nan"), float("inf"), float("-inf")])
+payload = {
+    "doc_id": "boundary-1",
+    "text": "trusted after validation",
+    "start": 10,
+    "end": 34,
+    "metadata": {"source": "course"},
+    "embedding": (0.0,) * 16,
+}
 
-@given(text=st.text(min_size=1, max_size=1000),
-       metadata=st.dictionaries(st.text(), st.integers() | st.text()))
-def test_chunk_roundtrip(text, metadata):
-    model = ChunkModel(text=text, metadata=metadata)
-    json_str = serialize_model(model)
-    reloaded = deserialize_model(json_str, ChunkModel)
-    assert model == reloaded
-    assert reloaded.length == len(text)
+edge = ChunkModel.model_validate(payload)
+domain = to_core_chunk(edge)
+encoded = serialize_model(from_core_chunk(domain))
+decoded = deserialize_model(encoded, ChunkModel)
 
-@given(bad_emb=st.lists(nonfinite, min_size=1))
-def test_nonfinite_embedding_rejected(bad_emb):
-    with pytest.raises(ValueError):
-        ChunkModel(text="x", embedding=bad_emb)
-
-@given(emb=st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1))
-def test_large_embedding_rejected_if_out_of_range(emb):
-    if any(abs(x) > 100 for x in emb):
-        with pytest.raises(ValueError):
-            ChunkModel(text="x", embedding=emb)
-
-def test_schema_stable(snapshot):
-    assert ChunkModel.model_json_schema() == snapshot
+print(type(domain).__name__, domain.doc_id, len(domain.embedding))
+print(decoded == edge)
+print(encoded)
+PY
 ```
 
-## 6. Big-O & Allocation Guarantees
+The first two lines are:
 
-| Operation            | Time               | Heap                  | Notes                                      |
-|----------------------|--------------------|-----------------------|--------------------------------------------|
-| Validation           | O(#fields)         | O(#fields)            | Once at edge                               |
-| Serialization        | O(#fields)         | O(#fields)            | Stable order via aliases                   |
-| computed_field       | O(1) or O(N)       | O(1)                  | Recomputed on access; keep pure & fast     |
+```text
+Chunk boundary-1 16
+True
+```
 
-## 7. Anti-Patterns & Immediate Fixes
+The JSON line contains every domain field plus `version`. A Python dictionary must supply a tuple because this model is strict. On the wire, JSON has only arrays; `deserialize_model` validates that JSON array into the declared tuple. Pydantic deliberately distinguishes its Python-input and JSON-input paths here.
 
-| Anti-Pattern                  | Symptom                            | Fix                                      |
-|-------------------------------|------------------------------------|------------------------------------------|
-| Raw **kwargs → dataclass      | Silent invalid states              | Pydantic model_validate at edge          |
-| Manual JSON serde             | Unstable order, no versioning      | model_dump_json / validate_json          |
-| Pydantic in hot path          | 10–100× slowdown                   | Validate once → convert to frozen core   |
-| Missing discriminator        | Union parse ambiguity              | Annotated[Union[...], Field(discriminator="kind")] |
-| Mutable models in core        | Accidental mutation                | frozen=True + extra="forbid"             |
+## Why conversion functions matter
 
-## Runnable RAG learning lab
+It is tempting to use `ChunkModel` throughout the application. Keeping an explicit conversion gives the core several advantages:
 
-Run the boundary before reading the broader schema proof:
+- pure domain code is not coupled to Pydantic;
+- frozen dataclasses remain cheap, direct values;
+- domain functions express domain types in their signatures;
+- changing a wire format does not force a core rewrite;
+- conversion can be tested as a preservation law.
+
+The important law is:
+
+```python
+from_core_chunk(to_core_chunk(valid_model)) == valid_model
+```
+
+The equality includes identity, text, offsets, metadata, and embedding. An earlier adapter discarded document identity, offsets, and the vector during conversion; a round-trip test that checked only text could not reveal that loss. A useful test compares the complete value.
+
+## Explore the failure surface
+
+Use one base payload and change one pressure at a time:
+
+```python
+from pydantic import ValidationError
+
+base = {
+    "doc_id": "boundary-2",
+    "text": "four",
+    "start": 0,
+    "end": 4,
+    "embedding": (0.0,) * 16,
+}
+
+bad_payloads = [
+    base | {"end": 3},                       # span and text disagree
+    base | {"embedding": (0.0, 1.0)},       # wrong dimension
+    base | {"embedding": (float("nan"),) + (0.0,) * 15},
+    base | {"unexpected": True},             # unknown field
+]
+
+for payload in bad_payloads:
+    try:
+        ChunkModel.model_validate(payload)
+    except ValidationError as error:
+        print(error.errors()[0]["type"])
+```
+
+Do not teach learners to assert the entire formatted exception string. Pydantic’s rendering can change between versions. Tests should normally assert the rejected condition, the relevant field or message fragment, and the fact that no domain conversion ran.
+
+## Smart constructors and Pydantic are related, not identical
+
+A smart constructor is any function that refuses to create an invalid domain value. `Chunk.__post_init__` participates in that job. Pydantic adds a rich adapter layer for untrusted structured input.
+
+Use the narrowest tool that owns the problem:
+
+| Input situation | Appropriate owner |
+| --- | --- |
+| Internal typed call with already separated fields | domain constructor |
+| JSON, CLI, environment, or persistence payload | Pydantic boundary |
+| Failure expected during a pipeline effect | `Result` with `ErrInfo` |
+| Several independent form errors should accumulate | applicative `Validation` |
+
+Pydantic raises `ValidationError`; it does not automatically turn failures into the course’s `Result` type. An outer adapter decides whether to display the error, translate it, or return an `Err`.
+
+## Versioning is a promise
+
+`version: Literal[1] = 1` makes the accepted format explicit. It does not implement migration by itself. If a version 2 is introduced, decide:
+
+- whether version 1 remains readable;
+- where migration occurs;
+- whether serialization emits only the newest version;
+- which snapshot and round-trip tests protect both behaviors.
+
+A schema snapshot catches accidental public-shape changes. It does not prove that old persisted values migrate correctly.
+
+## Verify the teaching claims
+
+Run:
 
 ```bash
-cd capstone/module-reference-states/module-05
-PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
-  -k pydantic_adapter_rejects_invalid_embedding_before_core_conversion
+make capstone-module-state-proof MODULE=05
 ```
 
-The valid input becomes an ordinary frozen core `Chunk`. The non-finite
-embedding never reaches `to_core_chunk`; `ChunkModel` rejects it at the external
-boundary. Inspect the types after the conversion: the core value contains no
-Pydantic base class, validation context, or computed transport field.
+For the focused boundary tests:
 
-Pydantic owns shape and runtime constraints for untrusted input. It does not
-own every cross-field domain rule, and a caught `ValidationError` should not be
-treated as an unexpected infrastructure defect. The test proves this adapter's
-valid conversion and one invalid route, not arbitrary JSON safety.
+```bash
+cd capstone
+PYTHONPATH="$PWD/module-reference-states/module-05/src" \
+  ../../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/pytest \
+  -q module-reference-states/module-05/tests/test_pydantic_edges.py
+```
 
-## 8. Pre-Core Quiz
+The tests establish:
 
-1. Pydantic at edges for…? → **Runtime validation + stable serde**  
-2. model_validator(mode="after") for…? → **Cross-field checks**  
-3. Discriminated unions use…? → **kind tag**  
-4. computed_field gives…? → **Pure derived properties**  
-5. Core stays…? → **Plain frozen dataclasses**
+- valid values survive JSON and domain round-trips;
+- non-finite vectors are rejected;
+- any dimension other than 16 is rejected;
+- the published schema remains stable;
+- the learning proof converts only validated values.
 
-## 9. Post-Core Exercise
+They do not prove compatibility with a future schema or validate arbitrary external storage.
 
-1. Wrap one core ADT in a Pydantic model → add model_validator + computed_field.  
-2. Add discriminated union for a sum type → test parsing.  
-3. Replace one raw JSON → dataclass with Pydantic edge + bridge.  
-4. Add schema snapshot test for a model → verify stability.
+## Ready to continue?
 
-**Continue with:** [Pattern Matching](../module-05-algebraic-data-modelling-validation/pattern-matching.md)
+Continue when you can:
 
-You now have bulletproof I/O: every external payload is validated exactly once at the edge, serialized stably forever, and the core pipeline runs at full speed on pure frozen ADTs. The rest of Module 5 adds pattern matching for orchestration and final serialization contracts.
+- draw the untrusted → boundary → domain path;
+- explain why Pydantic does not own the core;
+- identify the cross-field invariants;
+- demonstrate a full-value round-trip;
+- distinguish schema stability from migration compatibility;
+- choose between a domain constructor, Pydantic, `Result`, and applicative validation for a concrete failure.
+
+Next, [Functor Mapping](functor-map.md) changes values inside an existing context without rewriting its success or failure structure.
