@@ -346,3 +346,42 @@ def test_async_rag_chunks_defers_embedding_and_matches_the_sync_core() -> None:
     expected = [Ok(chunk) for chunk in iter_rag(docs, env, clean_doc)]
     assert asyncio.run(collect()) == expected
     assert embedded == ["a:0", "a:4", "b:0", "b:4"]
+
+
+def test_async_rag_chunks_applies_the_backpressure_policy_to_embedding() -> None:
+    """The application exposes its concurrency ceiling and ordering choice."""
+
+    active = 0
+    maximum_active = 0
+
+    def embed_later(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+        async def run() -> Ok[Chunk]:
+            nonlocal active, maximum_active
+            active += 1
+            maximum_active = max(maximum_active, active)
+            await asyncio.sleep(0)
+            active -= 1
+            return Ok(embed_chunk(chunk))
+
+        return run
+
+    stream = async_rag_chunks(
+        async_gen_from_list([RawDoc("doc", "Title", "abcdefghijkl", "demo")]),
+        RagEnv(chunk_size=3),
+        clean_doc,
+        embed_later,
+        BackpressurePolicy(max_concurrent=2, ordered=True),
+    )
+
+    async def collect() -> list[Result[Chunk, ErrInfo]]:
+        return [item async for item in stream()]
+
+    results = asyncio.run(collect())
+    coordinates = [
+        (item.value.doc_id, item.value.start)
+        for item in results
+        if isinstance(item, Ok)
+    ]
+
+    assert maximum_active == 2
+    assert coordinates == [("doc", 0), ("doc", 3), ("doc", 6), ("doc", 9)]
