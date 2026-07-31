@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Generic, Literal, TypeAlias, TypeVar
 
@@ -14,10 +14,6 @@ from .error import ErrorCode
 T = TypeVar("T")
 U = TypeVar("U")
 E = TypeVar("E")
-
-JSONPrimitive: TypeAlias = str | int | float | bool | None
-JSON: TypeAlias = JSONPrimitive | Mapping[str, "JSON"] | Sequence["JSON"]
-
 
 @dataclass(frozen=True, slots=True)
 class Some(Generic[T]):
@@ -60,11 +56,9 @@ def make_errinfo(
 
 
 __all__ = [
-    "JSON",
     "NONE",
     "Err",
     "ErrInfo",
-    "JSONPrimitive",
     "NoneVal",
     "Ok",
     "Option",

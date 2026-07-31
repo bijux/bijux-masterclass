@@ -4,9 +4,6 @@ import json
 from typing import TypedDict
 
 import pytest
-from pydantic import ValidationError
-from typing_extensions import assert_never
-
 from funcpipe_rag.boundaries.adapters.pydantic_edges import ChunkModel, to_core_chunk
 from funcpipe_rag.boundaries.adapters.serde import (
     dec_result,
@@ -21,7 +18,6 @@ from funcpipe_rag.core.rag_types import (
     RagEnv,
     RawDoc,
 )
-from funcpipe_rag.fp.core import JSON
 from funcpipe_rag.fp.error import ErrorCode
 from funcpipe_rag.fp.functor import result_map
 from funcpipe_rag.fp.monoid import METRICS, Metrics, fold
@@ -45,6 +41,8 @@ from funcpipe_rag.rag.domain import (
 )
 from funcpipe_rag.rag.stages import chunk_doc, clean_doc, embed_chunk
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
+from pydantic import ValidationError
+from typing_extensions import assert_never
 
 
 class AcceptedChunkPayload(TypedDict):
@@ -52,7 +50,7 @@ class AcceptedChunkPayload(TypedDict):
     text: str
     start: int
     end: int
-    metadata: dict[str, JSON]
+    metadata: dict[str, object]
     embedding: tuple[float, ...]
 
 
