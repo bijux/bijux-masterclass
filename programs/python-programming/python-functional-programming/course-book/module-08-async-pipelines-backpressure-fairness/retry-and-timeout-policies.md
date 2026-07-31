@@ -1,500 +1,407 @@
 # Retry and Timeout Policies
 
+Backpressure answers **how many embedding plans may run at once**. It does not
+answer what one worker should do when its plan fails transiently or takes too
+long.
 
-<!-- page-maps:start -->
-## Page Maps
+This core adds that decision without creating a second RAG pipeline. FuncPipe
+keeps `async_rag_chunks` unchanged and wraps the injected embedder:
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Async Pipelines Backpressure Fairness"]
-  page["Retry and Timeout Policies"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+```text
+AsyncChunkEmbedder
+        │
+        ▼
+resilient_mapper(retry, timeout)
+        │
+        ▼
+async_rag_chunks(..., embedder=resilient_embedder)
 ```
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+That placement matters. A retry repeats one chunk's embedding plan. It does not
+re-read the source, clean the document again, or replay chunks that already
+succeeded.
+
+## What you should learn
+
+By the end of this core, you should be able to:
+
+- distinguish attempts from retries;
+- predict which errors are returned immediately and which are retried;
+- derive an exponential backoff trace without using wall-clock time;
+- explain why a timeout applies to each attempt rather than the whole stream;
+- decide whether repeating an effect is safe;
+- trace how retry interacts with the backpressure window; and
+- prove that one exhausted chunk does not erase later documents.
+
+You should already understand `AsyncPlan`, `AsyncGen`, typed `Result` values,
+and `BackpressurePolicy` from the preceding cores.
+
+## Begin with the failure, not the policy
+
+Suppose embedding produces these observations:
+
+```text
+chunk A → TRANSIENT
+chunk A → Ok
+chunk B → TRANSIENT
+chunk B → TRANSIENT
+chunk C → Ok
 ```
-<!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Several responses are possible:
 
-**Module 08 – Main Track Core**  
-> **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
-> This is a **required** core. Every production FuncPipe pipeline that touches external services wraps them in retry/timeout policies — turning transient failures and stalls into typed `ErrInfo` without ever breaking purity or composability.
+| Response | Problem |
+| --- | --- |
+| restart the complete indexing stream | repeats source and preparation work that did not fail |
+| retry every `Err` | repeats permanent validation and contract failures |
+| swallow the failure | makes missing index entries invisible |
+| retry the chunk under explicit policy | keeps repetition local and reviewable |
 
-## Progression Note
-Module 8 is **Async FuncPipe & Backpressure** — the lightweight, production-grade concurrency layer that sits directly on top of Module 7’s effect boundaries.
+The last choice is FuncPipe's design. `RetryPolicy` describes when repetition is
+permitted. `async_with_resilience` interprets that policy for one `AsyncPlan`.
+`resilient_mapper` lifts the same decision over an item-to-plan function such as
+an embedder.
 
-| Module | Focus                                     | Key Outcomes                                                                      |
-|--------|-------------------------------------------|-----------------------------------------------------------------------------------|
-| 7      | Effect Boundaries & Resource Safety       | Ports & adapters, capability protocols, idempotent effects, explicit sessions    |
-| 8      | Async FuncPipe & Backpressure             | Async FuncPipe, non-blocking pipelines, backpressure, basic fairness             |
-| 9      | FP Across Libraries and Frameworks        | FuncPipe style in Pandas/Polars/Dask, FastAPI, CLI, distributed systems           |
-| 10     | Refactoring, Performance, Future-Proofing | Systematic refactors, performance budgets, governance and long-term evolution    |
+## The shipped policy values
 
-**Core question**  
-How do you model retry and timeout policies as pure, immutable data that are fed into async descriptions — giving you configurable, testable resilience against transient failures and stalls while keeping the core pure?
-
-**Symmetry with Previous Cores**  
-- Core 1: `AsyncPlan` = single-value async description  
-- Core 3: `AsyncGen` + `BackpressurePolicy` = bounded async stream  
-- Core 4: `AsyncPlan` / `AsyncGen` + `RetryPolicy` / `TimeoutPolicy` = resilient async description  
-
-Policies are pure data; the resilient wrapper returns an ordinary `AsyncPlan`. All effects (sleep, jitter, cancellation) happen only when the plan is driven.
-
-**What you now have after M08C03 + this core**
-- Bounded async streams with backpressure  
-- Resilient async steps with configurable retry/timeout  
-- Pure descriptions — no effects until iteration  
-- Deterministic testing via injected `ResilienceEnv`
-
-**What the rest of Module 8 adds**
-- Rate limiting & fairness (M08C05–C06)  
-- Full production async RAG pipeline with all safeguards
-
-## Runnable lab: trace a retry schedule
-
-Treat retry policy as data and replace real sleeping with a recorder. A step
-that returns two retriable errors and then succeeds makes the complete policy
-decision visible:
+The Module 08 reference state defines:
 
 ```python
-attempts = 0
-delays: list[float] = []
-
-async def flaky_step() -> Result[int, ErrInfo]:
-    nonlocal attempts
-    attempts += 1
-    if attempts < 3:
-        return Err(ErrInfo(code="TRANSIENT", msg="try again"))
-    return Ok(42)
-
-async def record_sleep(seconds: float) -> None:
-    delays.append(seconds)
-    await asyncio.sleep(0)
-
-policy = RetryPolicy(
-    max_attempts=3,
-    backoff_base_ms=10,
-    max_backoff_ms=100,
-    jitter_factor=0,
-)
-env = make_test_resilience_env(sleep=record_sleep)
-resilient = async_with_resilience(flaky_step, policy, env=env)
-```
-
-Run the proof:
-
-```bash
-cd capstone/module-reference-states/module-08
-PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
-  -k retry_policy_records_bounded_attempts_and_backoff
-```
-
-Before execution, `attempts` is zero. The result is `Ok(42)`, exactly three
-attempts occur, and the recorded exponential schedule is `[0.01, 0.02]`
-seconds. Setting jitter to zero isolates the backoff law; deterministic jitter
-is addressed in the next core.
-
-Do not patch `asyncio.sleep` globally or assert elapsed wall time. Injecting the
-sleep capability records the interpreter decision directly and keeps unrelated
-async behavior untouched. A retry decision also requires an idempotency
-argument; a typed transient code alone does not make repeating an effect safe.
-
-## 1. Laws & Architectural Invariants
-
-| Category                  | Name                     | Description                                                                                                                | Enforcement                          |
-|---------------------------|--------------------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| Algebraic Laws            | Identity                 | `async_with_resilience(step, max_attempts=1, timeout=None) is step` (exact identity when no custom env is passed)         | Hypothesis                           |
-| Algebraic Laws            | Bounded Attempts         | Number of executions ≤ policy.max_attempts (for retriable failures)                                                       | Runtime probe + property tests       |
-| Architectural Invariants | Bounded Duration         | Total wall-clock time ≤ max_attempts × timeout_ms + capped backoff sum (with fake clock)                                   | Fake clock tests                     |
-| Architectural Invariants | Description Purity       | Constructing a resilient plan performs **zero** side effects (sleep/jitter/RNG only on execution)                       | Mock tests                           |
-| Architectural Invariants | Idempotency Warning      | Non-idempotent steps with >1 attempt emit `RuntimeWarning` on first retry                                                 | Runtime warning                      |
-| Architectural Invariants | Cancellation Safety      | Timeout cancels the underlying task cooperatively; no zombie tasks left behind                                            | Cancellation tests                   |
-
-## 2. Decision Table
-
-| Scenario                  | Stable / Fast    | Flaky / Rate-limited | Long-running / Unknown Duration | Recommended                               |
-|---------------------------|------------------|----------------------|----------------------------------|-------------------------------------------|
-| Local CPU / DB            | Yes              | No                   | No                               | No resilience needed                      |
-| External API              | No               | Yes                  | No                               | Retry only                                |
-| Network-bound             | No               | No                   | Yes                              | Timeout only                              |
-| Unreliable third-party    | No               | Yes                  | Yes                              | Retry + Timeout                           |
-
-**Rule**: Always wrap external calls in resilience; never wrap pure/internal steps.
-
-## 3. Public API – Resilience (`capstone/src/funcpipe_rag/domain/effects/async_/resilience.py` – mypy --strict clean)
-
-```python
-# funcpipe_rag/domain/effects/async_/resilience.py
-from __future__ import annotations
-
-from dataclasses import dataclass, field
-from typing import Callable, TypeVar, Awaitable
-from random import Random
-from asyncio import timeout as async_timeout, sleep, CancelledError, TimeoutError
-import warnings
-
-from funcpipe_rag.domain.effects.async_.plan import AsyncPlan
-from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
-
-T = TypeVar("T")
-U = TypeVar("U")
-
 @dataclass(frozen=True)
 class RetryPolicy:
-    max_attempts: int = 3
+    max_attempts: int = 1
+    retriable_codes: frozenset[str] = frozenset(
+        {"TRANSIENT", "TIMEOUT", "RATE_LIMIT"}
+    )
     backoff_base_ms: int = 100
-    max_backoff_ms: int = 60_000
-    jitter_factor: float = 0.5
-    retriable_codes: frozenset[str] = field(default_factory=lambda: frozenset({"TRANSIENT", "RATE_LIMIT", "TIMEOUT"}))
+    max_backoff_ms: int = 10_000
+    jitter_factor: float = 0.1
     idempotent: bool = True
 
-    def __post_init__(self) -> None:
-        if self.max_attempts < 1:
-            raise ValueError("max_attempts must be >= 1")
 
 @dataclass(frozen=True)
 class TimeoutPolicy:
-    timeout_ms: int = 10_000
-
-    def __post_init__(self) -> None:
-        if self.timeout_ms <= 0:
-            raise ValueError("timeout_ms must be > 0")
-
-@dataclass(frozen=True)
-class ResilienceEnv:
-    rng: Random
-    sleep: Callable[[float], Awaitable[None]]
-
-    @staticmethod
-    def default() -> "ResilienceEnv":
-        return ResilienceEnv(Random(), sleep)
-
-
-def async_with_resilience(
-    step: AsyncPlan[T],
-    retry: RetryPolicy,
-    timeout: TimeoutPolicy | None = None,
-    env: ResilienceEnv | None = None,
-) -> AsyncPlan[T]:
-    """
-    Returns an AsyncPlan that applies retry/timeout policies to an existing AsyncPlan.
-    Pure until executed — all effects (sleep, jitter, cancellation) happen only when driven.
-    """
-    # Exact identity fast-path — no wrapper overhead.
-    # Only applies when no custom ResilienceEnv is provided; if an env is given we
-    # always wrap so that all uses of env (e.g. future metrics or tracing) are
-    # centralized in the wrapper.
-    if retry.max_attempts == 1 and timeout is None and env is None:
-        return step
-
-    async def _resilient() -> Result[T, ErrInfo]:
-        local_env = env or ResilienceEnv.default()
-        rng = local_env.rng
-        last_err: ErrInfo | None = None
-        warned_non_idempotent = False
-
-        for attempt in range(1, retry.max_attempts + 1):
-            try:
-                if timeout is not None:
-                    async with async_timeout(timeout.timeout_ms / 1000.0):
-                        res = await step()
-                else:
-                    res = await step()
-
-                if isinstance(res, Ok):
-                    return res
-
-                last_err = res.error
-                if last_err.code not in retry.retriable_codes:
-                    return res
-
-            except TimeoutError:
-                assert timeout is not None
-                last_err = ErrInfo(code="TIMEOUT", msg=f"Timeout after {timeout.timeout_ms}ms")
-                if "TIMEOUT" not in retry.retriable_codes:
-                    return Err(last_err)
-
-            except CancelledError:
-                raise  # Propagate cancellation immediately
-
-            except Exception as exc:
-                last_err = ErrInfo(code="UNEXPECTED", msg=str(exc), cause=exc)
-                if last_err.code not in retry.retriable_codes:
-                    return Err(last_err)
-
-            # Warn once if retrying non-idempotent step
-            if attempt > 1 and not retry.idempotent and not warned_non_idempotent:
-                warnings.warn(
-                    "Retrying a step marked non-idempotent — potential duplicate side-effects",
-                    category=RuntimeWarning,
-                    stacklevel=2,
-                )
-                warned_non_idempotent = True
-
-            # Backoff before next attempt
-            if attempt < retry.max_attempts:
-                backoff = min(retry.backoff_base_ms * (2 ** (attempt - 1)), retry.max_backoff_ms) / 1000.0
-                jitter = backoff * retry.jitter_factor * (2.0 * rng.random() - 1.0)
-                delay = max(0.0, backoff + jitter)
-                await local_env.sleep(delay)
-
-        # Exhausted attempts
-        meta = {"attempts": retry.max_attempts}
-        if not retry.idempotent:
-            meta["warning"] = "retried non-idempotent step"
-        return Err(
-            ErrInfo(
-                code="MAX_RETRIES",
-                msg=f"Failed after {retry.max_attempts} attempts",
-                cause=last_err,
-                meta=meta,
-            )
-        )
-
-    return lambda: _resilient()
-
-
-# Mapper for streams (use in async_gen_bounded_map etc.)
-def resilient_mapper(
-    f: Callable[[T], AsyncPlan[U]],
-    retry: RetryPolicy,
-    timeout: TimeoutPolicy | None = None,
-    env: ResilienceEnv | None = None,
-) -> Callable[[T], AsyncPlan[U]]:
-    def wrapped(item: T) -> AsyncPlan[U]:
-        return async_with_resilience(f(item), retry, timeout, env)
-    return wrapped
+    timeout_ms: int
 ```
 
-## 4. Reference Implementations (pure domain code)
+`max_attempts` includes the first execution. Therefore:
 
-### 4.1 Resilient embedding step
+| `max_attempts` | Maximum retries after the first failure |
+| ---: | ---: |
+| 1 | 0 |
+| 2 | 1 |
+| 4 | 3 |
+
+Calling a field `max_retries` would suggest a different count. Read the name
+literally when predicting traces.
+
+Invalid policy values fail during construction. Negative backoff, a timeout of
+zero, and jitter outside `[0.0, 1.0]` are configuration errors, not asynchronous
+stream failures.
+
+## Follow one retry decision
+
+```mermaid
+stateDiagram-v2
+  [*] --> Attempt
+  Attempt --> Success: Ok
+  Attempt --> ReturnError: non-retriable Err
+  Attempt --> Delay: retriable Err and attempts remain
+  Delay --> Attempt
+  Attempt --> Exhausted: retriable Err and no attempt remains
+  Success --> [*]
+  ReturnError --> [*]
+  Exhausted --> [*]
+```
+
+The observable outcomes differ:
+
+| Final observation | Returned value |
+| --- | --- |
+| any attempt succeeds | that attempt's `Ok` |
+| failure code is not retriable | the original `Err` |
+| all permitted attempts return retriable failures | `Err` with code `MAX_RETRIES` |
+| one attempt crosses a timeout and no retry remains | `Err` with code `TIMEOUT` |
+| timeout is retried until attempts are exhausted | `Err` with code `MAX_RETRIES` |
+| caller cancels the operation | `CancelledError` is re-raised |
+
+The exhausted error retains the attempt count and last failure in `ErrInfo.ctx`.
+That is useful review evidence, but it is not a substitute for logging at the
+runtime boundary.
+
+## Derive backoff before executing it
+
+With jitter disabled, the delay after failed attempt \(n\) is:
+
+\[
+\operatorname{delay}(n)
+=
+\frac{
+  \min(\text{base}_{ms} \times 2^{n-1}, \text{cap}_{ms})
+}{1000}
+\]
+
+For `backoff_base_ms=5`, `max_backoff_ms=12`, and four attempts:
+
+| Failed attempt | Uncapped delay | Recorded delay |
+| ---: | ---: | ---: |
+| 1 | 5 ms | 0.005 s |
+| 2 | 10 ms | 0.010 s |
+| 3 | 20 ms | 0.012 s |
+
+There is no delay after success and no delay after the final failed attempt.
+
+Jitter varies each delay around its exponential base. It reduces synchronized
+retries in real systems, but it makes a teaching trace harder to inspect. Use
+`jitter_factor=0` when proving the backoff law. Use a seeded `Random` when the
+jitter calculation itself is the behavior under test.
+
+## Runnable application example: recover one chunk
+
+This example uses the real Module 08 application composition. The fake embedder
+fails once and then returns the existing deterministic local embedding.
 
 ```python
-retry_policy = RetryPolicy(max_attempts=4)
-timeout_policy = TimeoutPolicy(timeout_ms=8000)
+import asyncio
 
-def resilient_embed_chunk(
-    chunk: ChunkWithoutEmbedding,
-    embedder: EmbeddingCap,
-) -> AsyncPlan[EmbeddedChunk]:
-    return async_with_resilience(
-        async_embed_chunk(chunk, embedder),  # Core 1 AsyncPlan
-        retry_policy,
-        timeout_policy,
-    )
+from funcpipe_rag.core.rag_types import (
+    Chunk,
+    ChunkWithoutEmbedding,
+    RagEnv,
+    RawDoc,
+)
+from funcpipe_rag.domain.effects.async_ import (
+    AsyncPlan,
+    BackpressurePolicy,
+    RetryPolicy,
+    async_gen_from_list,
+    make_test_resilience_env,
+    resilient_mapper,
+)
+from funcpipe_rag.rag import async_rag_chunks
+from funcpipe_rag.rag.stages import clean_doc, embed_chunk
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
+
+attempted: list[str] = []
+
+
+def flaky_embedder(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+    async def run() -> Result[Chunk, ErrInfo]:
+        attempted.append(chunk.doc_id)
+        if len(attempted) == 1:
+            return Err(ErrInfo(code="TRANSIENT", msg="try the chunk again"))
+        return Ok(embed_chunk(chunk))
+
+    return run
+
+
+resilient_embedder = resilient_mapper(
+    flaky_embedder,
+    RetryPolicy(
+        max_attempts=2,
+        retriable_codes=frozenset({"TRANSIENT"}),
+        backoff_base_ms=0,
+        jitter_factor=0,
+    ),
+    env=make_test_resilience_env(),
+)
+
+stream = async_rag_chunks(
+    async_gen_from_list([RawDoc("doc", "Title", "one chunk", "demo")]),
+    RagEnv(chunk_size=32),
+    clean_doc,
+    resilient_embedder,
+    BackpressurePolicy(max_concurrent=1, ordered=True),
+)
+
+
+async def collect() -> list[Result[Chunk, ErrInfo]]:
+    return [item async for item in stream()]
+
+
+results = asyncio.run(collect())
+print([f"ok:{item.value.doc_id}" for item in results if isinstance(item, Ok)])
+print(len(attempted))
 ```
 
-### 4.2 Resilient bounded RAG pipeline
+Expected output:
+
+```text
+['ok:doc']
+2
+```
+
+Construction performs no attempt. Iteration asks the bounded worker to drive
+the resilient plan. The first typed failure is consumed by retry policy; the
+second attempt produces the one visible chunk.
+
+The executable learning proof uses a local counter rather than the module-level
+counter shown here:
+
+```bash
+make capstone-embedding-resilience-proof
+```
+
+## Where retry sits inside backpressure
+
+```mermaid
+sequenceDiagram
+  participant S as prepared chunk stream
+  participant B as bounded worker
+  participant R as resilient plan
+  participant E as embedder
+
+  S->>B: chunk A
+  B->>R: drive plan
+  R->>E: attempt 1
+  E-->>R: Err(TRANSIENT)
+  R->>R: injected backoff
+  R->>E: attempt 2
+  E-->>R: Ok(chunk A)
+  R-->>B: Ok(chunk A)
+  B-->>S: emit result
+```
+
+One bounded worker owns the resilient plan for the duration of its attempts.
+Retries do not create extra backpressure slots. They do keep the existing slot
+occupied longer, so aggressive retry can reduce throughput even when
+`max_concurrent` is unchanged.
+
+This is why retry count and concurrency count are separate policies:
+
+- backpressure limits simultaneous chunks;
+- retry limits repeated attempts for one chunk; and
+- timeout limits the duration of one attempt.
+
+Multiplying those limits gives an upper bound on possible embedding calls, not
+a promise about completion time.
+
+## Exhaustion remains local
+
+The application proof uses two documents:
+
+```text
+fails → attempt 1 → TRANSIENT
+      → attempt 2 → TRANSIENT
+      → err:MAX_RETRIES
+
+after → attempt 1 → ok:after
+```
+
+The resulting sequence is:
+
+```text
+err:MAX_RETRIES
+ok:after
+```
+
+That final success is essential evidence. A test that asserts only
+`MAX_RETRIES` could still hide a stream implementation that stops after the
+first exhausted item.
+
+## Timeout is a boundary around each attempt
+
+When no test timeout context is supplied, `async_with_resilience` uses
+`asyncio.wait_for` around `step()`. The configured timeout is rebuilt for every
+attempt.
+
+Consequences:
+
+- `timeout_ms=50` and `max_attempts=3` do **not** create one 50 ms total budget;
+- a timed-out attempt may be retried only when `TIMEOUT` is retriable;
+- production timeout cancels the current awaitable;
+- cancellation requested by the caller is never translated into `ErrInfo`; and
+- a timeout cannot undo an external side effect that completed before
+  cancellation arrived.
+
+A total request deadline would need a different owner and a different policy.
+Do not infer it from this per-attempt wrapper.
+
+## Repetition requires an idempotency argument
+
+Retry policy answers **may the interpreter try again?** It cannot prove that
+trying again is safe.
+
+| Effect | Retry judgment |
+| --- | --- |
+| deterministic local `embed_chunk` | safe; same input produces the same value |
+| read from a remote service | often safe, but rate and consistency contracts matter |
+| append a row | unsafe unless duplicates are acceptable or deduplicated |
+| charge a payment | unsafe without an idempotency key and provider guarantee |
+| upsert by stable chunk coordinate | potentially safe; the storage contract must say so |
+
+`RetryPolicy.idempotent=False` emits a runtime warning when a repeated attempt
+begins. It does not block the attempt, roll back effects, or make the operation
+safe. Treat the flag as an explicit review signal.
+
+The warning must occur even if the repeated attempt succeeds. The focused unit
+proof `test_non_idempotent_warning_is_emitted_before_a_retry_recovers` protects
+that behavior.
+
+## Counterexamples worth rejecting
+
+### Retrying the complete stream
 
 ```python
-def async_rag_pipeline_resilient_bounded(
-    storage: StoragePort,
-    input_path: str,
-    env: RagEnv,
-    embedder: EmbeddingCap,
-    bp_policy: BackpressurePolicy,
-    retry: RetryPolicy,
-    timeout: TimeoutPolicy | None,
-) -> AsyncGen[EmbeddedChunk]:
-    unbounded = async_rag_pipeline_stream(storage, input_path, env, embedder)
-    mapper = resilient_mapper(lambda c: async_embed_chunk(c, embedder), retry, timeout)
-    return async_gen_bounded_map(unbounded, mapper, bp_policy)
+# Wrong ownership: a chunk failure can replay successful documents.
+for attempt in range(3):
+    results = [item async for item in async_rag_chunks(... )()]
 ```
 
-Shell consumption (unchanged — resilience happens automatically inside workers):
+### Retrying every failure code
 
 ```python
-async def run_rag_resilient():
-    bp_policy = BackpressurePolicy(max_concurrent=8)
-    retry = RetryPolicy(max_attempts=4)
-    timeout = TimeoutPolicy(timeout_ms=8000)
-
-    stream = async_rag_pipeline_resilient_bounded(real_storage, "data.csv", env, embedder, bp_policy, retry, timeout)
-    async for result in stream():
-        # same as Core 3
-        ...
+# Validation and programming errors do not become transient through repetition.
+RetryPolicy(max_attempts=3, retriable_codes=frozenset({"UNEXPECTED", "INVALID"}))
 ```
 
-### 4.3 Before → After (the real transformation)
+### Hiding real time in a unit test
 
 ```python
-# BEFORE – fragile embedding with ad-hoc retry
-async def embed_with_adhoc_retry(chunk):
-    for attempt in range(4):
-        try:
-            return await asyncio.wait_for(embedder.embed(chunk.text.content), timeout=8)
-        except:
-            await asyncio.sleep(0.1 * (2 ** attempt))
-    raise RuntimeError("embed failed")
-
-# AFTER – pure, configurable resilience
-def embed_resilient(
-    chunk: ChunkWithoutEmbedding,
-    embedder: EmbeddingCap,
-    retry: RetryPolicy = RetryPolicy(max_attempts=4),
-    timeout: TimeoutPolicy | None = TimeoutPolicy(timeout_ms=8000),
-) -> AsyncPlan[EmbeddedChunk]:
-    return async_with_resilience(
-        async_embed_chunk(chunk, embedder),
-        retry,
-        timeout,
-    )
+started = time.monotonic()
+result = await plan()
+assert time.monotonic() - started >= 0.3
 ```
 
-## 5. Property-Based Proofs (all pass in CI)
+The last test is slow and scheduler-dependent. The next core replaces sleep,
+randomness, and deadline observation with controlled capabilities.
 
-```python
-@pytest.mark.asyncio
-async def test_identity_when_no_retry_no_timeout():
-    async def step():
-        return Ok(42)
+## Inspect the shipped implementation
 
-    base: AsyncPlan[int] = lambda: step()
-    plan = async_with_resilience(base, RetryPolicy(max_attempts=1), None)
+From the Module 08 reference state, read in this order:
 
-    assert plan is base  # exact identity (fast-path)
+1. `domain/effects/async_/resilience.py`
+   - `RetryPolicy`
+   - `TimeoutPolicy`
+   - `async_with_resilience`
+   - `resilient_mapper`
+2. `rag/async_rag.py`
+   - the injected `AsyncChunkEmbedder` boundary
+3. `tests/learning/test_module_08_async.py`
+   - per-chunk recovery
+   - exhausted-retry continuity
+4. `tests/unit/domain/test_async_resilience.py`
+   - policy bounds, backoff cap, timeout translation, and idempotency warning
 
-    res = await plan()
-    assert isinstance(res, Ok) and res.value == 42
+Do not look for `EmbeddedChunk`, `EmbeddingCap`, or a separate
+`async_rag_pipeline_resilient_bounded`. Those are not part of this course state.
+The application composes the shipped generic mapper with its existing embedder
+boundary.
 
-@given(attempts=st.integers(2, 10))  # attempts >= 2 for real retry cases
-@pytest.mark.asyncio
-async def test_retry_bounded_attempts(attempts):
-    policy = RetryPolicy(max_attempts=attempts, retriable_codes=frozenset({"TRANSIENT"}))
+## Before moving on
 
-    call_count = 0
-    async def always_fail():
-        nonlocal call_count
-        call_count += 1
-        return Err(ErrInfo(code="TRANSIENT", msg="fail"))
+You are ready for deterministic async testing when you can answer:
 
-    plan = async_with_resilience(lambda: always_fail(), policy, None)
-    res = await plan()
+1. Why is `max_attempts=3` two retries rather than three?
+2. Which exact value appears after retry exhaustion?
+3. Why does retry occupy one backpressure slot instead of acquiring a new one?
+4. What must be true before repeating an effect?
+5. Why is a per-attempt timeout not a total stream deadline?
+6. Which observations should a fast test record instead of elapsed wall time?
 
-    assert isinstance(res, Err) and res.error.code == "MAX_RETRIES"
-    assert call_count == attempts
+If any answer depends on “the framework handles it,” trace the state diagram
+again and run:
 
-@given(base_ms=st.integers(50, 500))
-@pytest.mark.asyncio
-async def test_backoff_cap_respected(base_ms):
-    policy = RetryPolicy(max_attempts=10, backoff_base_ms=base_ms, max_backoff_ms=1000, jitter_factor=0.0)  # deterministic for test
-
-    delays: list[float] = []
-    async def fake_sleep(d: float) -> None:
-        delays.append(d)
-
-    env = ResilienceEnv(rng=Random(42), sleep=fake_sleep)
-
-    async def force_retry():
-        return Err(ErrInfo(code="TRANSIENT", msg="retry"))
-
-    plan = async_with_resilience(lambda: force_retry(), policy, None, env)
-    await plan()  # triggers retries
-
-    for attempt, delay in enumerate(delays, start=1):
-        expected = min(base_ms * (2 ** (attempt - 1)), policy.max_backoff_ms) / 1000.0
-        assert abs(delay - expected) < 1e-9
+```bash
+make capstone-embedding-resilience-proof
 ```
-
-```python
-@pytest.mark.asyncio
-async def test_timeout_cancels_and_retries_if_retriable():
-    policy = RetryPolicy(max_attempts=2, retriable_codes=frozenset({"TIMEOUT"}))
-    timeout_policy = TimeoutPolicy(timeout_ms=10)
-
-    call_count = 0
-    async def hanging():
-        nonlocal call_count
-        call_count += 1
-        await asyncio.sleep(10)  # will timeout
-        return Ok("never")
-
-    plan = async_with_resilience(lambda: hanging(), policy, timeout_policy)
-    res = await plan()
-
-    assert call_count == 2  # retried once after timeout
-    assert isinstance(res, Err) and res.error.code == "MAX_RETRIES"
-```
-
-```python
-@pytest.mark.asyncio
-async def test_non_retriable_error_no_retry():
-    policy = RetryPolicy(max_attempts=5)
-
-    async def permanent_fail():
-        return Err(ErrInfo(code="PERMANENT", msg="bad"))
-
-    plan = async_with_resilience(lambda: permanent_fail(), policy, None)
-    res = await plan()
-
-    assert isinstance(res, Err) and res.error.code == "PERMANENT"
-```
-
-```python
-@pytest.mark.asyncio
-async def test_non_idempotent_warning():
-    policy = RetryPolicy(max_attempts=3, idempotent=False)
-
-    with warnings.catch_warnings(record=True) as w:
-        warnings.simplefilter("always")
-
-        async def side_effect():
-            return Err(ErrInfo(code="TRANSIENT", msg="retry me"))
-
-        plan = async_with_resilience(lambda: side_effect(), policy, None)
-        await plan()
-
-        assert len(w) == 1
-        assert "non-idempotent" in str(w[0].message)
-```
-
-## 6. Runtime Guarantees
-
-| Policy Setting          | Max Executions | Max Wall-clock (approx)                  | Notes                                      |
-|-------------------------|----------------|------------------------------------------|--------------------------------------------|
-| max_attempts=1          | 1              | timeout_ms                               | Exact identity wrapper                     |
-| max_attempts=N          | N              | N × timeout_ms + capped exponential backoff | Bounded by policy                          |
-| timeout=None            | max_attempts   | capped backoff sum                       | No per-attempt timeout                     |
-
-## 7. Anti-Patterns & Immediate Fixes
-
-| Anti-Pattern                       | Symptom                       | Fix                                       |
-|------------------------------------|-------------------------------|-------------------------------------------|
-| Hard-coded retry/timeout           | Inflexible, untestable        | Use `RetryPolicy` / `TimeoutPolicy`       |
-| Retrying non-idempotent steps      | Duplicate side-effects        | Set `idempotent=False` → runtime warning  |
-| No timeout on network calls        | Hung tasks                    | Always wrap external calls in timeout     |
-| Infinite retry                     | Live-lock on failure          | Always set finite `max_attempts`          |
-
-## 8. Pre-Core Quiz
-
-1. Policies are…? → **Pure immutable data**  
-2. Resilience is applied via…? → **`async_with_resilience` returning an AsyncPlan**  
-3. Where do sleep/jitter/cancellation happen…? → **Only when the plan is driven**  
-4. How to test deterministically…? → **Inject `ResilienceEnv` with fake RNG/sleep**  
-5. Real power comes from…? → **Configurable resilience without impurity**
-
-## 9. Post-Core Exercise
-
-1. Define a `RetryPolicy` and `TimeoutPolicy` for your flakiest external call.  
-2. Wrap an `AsyncPlan` step with `async_with_resilience`.  
-3. Add to a bounded stream via `resilient_mapper`.  
-4. Write a test with fake `ResilienceEnv` asserting exact attempt count and backoff delays.  
-5. Celebrate – you now have production-grade resilience.
-
-**Continue with:** [Deterministic Async Testing](../module-08-async-pipelines-backpressure-fairness/deterministic-async-testing.md)
-
-You now have **resilient, backpressure-safe async streams** — ready for real-world flakiness and load. The remaining cores add fairness and complete the production Async FuncPipe.
-
-**M08C04 is now frozen.**
