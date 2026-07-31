@@ -16,6 +16,19 @@ This studio modifies and reviews the shipped Module 06 code. It is not a collect
 class-syntax prompts. Each part asks you to predict behavior, preserve an earlier
 contract, and leave evidence another learner can review.
 
+Use the lowest owner that can see the whole rule:
+
+```mermaid
+flowchart TD
+  rule["What owns the rule?"] --> one{"One attribute?"}
+  one -->|yes| property["Property"]
+  one -->|no| repeated{"Repeated attribute protocol?"}
+  repeated -->|yes| descriptor["Descriptor"]
+  repeated -->|no| finished{"Finished-class transformation?"}
+  finished -->|yes| decorator["Class decorator or dataclass"]
+  finished -->|no| defer["Defer class-creation power to Module 09"]
+```
+
 Work from `programs/python-programming/python-meta-programming`.
 
 ## Establish the baseline

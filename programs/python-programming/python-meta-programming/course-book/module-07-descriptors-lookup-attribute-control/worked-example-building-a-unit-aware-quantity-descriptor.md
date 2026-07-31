@@ -16,6 +16,17 @@ flowchart LR
 This worked example is shipped in `labs/descriptor_lookup/quantity.py` and tested in
 `tests/test_quantity_descriptor_lab.py`. Read it with the implementation open.
 
+One descriptor is shared, but each instance owns its canonical value:
+
+```mermaid
+flowchart TD
+  descriptor["DeliveryTiming.latency<br/>shared Quantity descriptor"]
+  first["first DeliveryTiming"] --> firststate["first._latency_canonical"]
+  second["second DeliveryTiming"] --> secondstate["second._latency_canonical"]
+  descriptor -.validates and converts.-> firststate
+  descriptor -.validates and converts.-> secondstate
+```
+
 ## The design pressure
 
 Several incident-delivery timing fields need the same contract:

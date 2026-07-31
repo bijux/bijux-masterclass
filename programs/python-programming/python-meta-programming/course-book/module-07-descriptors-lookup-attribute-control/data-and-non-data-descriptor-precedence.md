@@ -16,6 +16,20 @@ flowchart TD
 The protocol core identified which hooks exist. This core uses that classification to
 predict an ordinary instance read before executing it.
 
+The storage owners do not change when lookup precedence changes:
+
+```mermaid
+flowchart TD
+  class["Delivery class"] --> data["shared data descriptor"]
+  class --> nondata["shared non-data descriptor"]
+  first["first Delivery instance"] --> firstdict["first instance dictionary"]
+  second["second Delivery instance"] --> seconddict["second instance dictionary"]
+  data -.reads or writes.-> firstdict
+  data -.reads or writes.-> seconddict
+  firstdict -.may shadow.-> nondata
+  seconddict -.may shadow.-> nondata
+```
+
 ## The claim
 
 A data descriptor wins over a same-named instance dictionary entry. A non-data descriptor

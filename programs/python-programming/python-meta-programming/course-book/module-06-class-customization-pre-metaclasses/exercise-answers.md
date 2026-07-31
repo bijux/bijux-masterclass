@@ -15,6 +15,20 @@ flowchart LR
 Use these answers after attempting the studio. A different implementation can be
 defensible, but its timing, ownership, evidence, and limits must be equally explicit.
 
+Keep the lifecycle boundary visible while reviewing every answer:
+
+```mermaid
+flowchart LR
+  body["Execute class body"] --> create["Create finished class"]
+  create --> decorate["Apply class decorators"]
+  decorate --> construct["Construct instance"]
+  construct --> access["Read or write attribute"]
+```
+
+A decorator can change the finished class; a property or descriptor owns the later
+attribute operation. None of those lower-power tools sees the namespace while the body
+is still executing.
+
 ## Answer 1: extend the class-decorator trace
 
 With decorators written as outer, middle, inner, the exact trace is:

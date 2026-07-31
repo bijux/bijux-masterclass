@@ -14,6 +14,17 @@ flowchart LR
 Use these answers to review reasoning, not to compare prose word for word. A defensible
 answer names timing, owner, public surface, proof, and limitation.
 
+The answer review should connect evidence back to ownership:
+
+```mermaid
+flowchart TD
+  classvalue["Static class attachment"] --> protocol{"Which hooks exist on its type?"}
+  protocol --> prediction["Lookup prediction"]
+  state["Instance dictionary"] --> prediction
+  prediction --> operation["Deliberate read or write"]
+  operation --> judgment["Owner, result, and limitation"]
+```
+
 ## Answer 1: Naming is not descriptor status
 
 A protocol inventory can be built from the installed objects:

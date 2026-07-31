@@ -15,6 +15,20 @@ The first descriptor mistake is to treat every class-level helper as a descripto
 second is to treat `__set_name__` as the switch that activates descriptor behavior.
 Those claims blur two different times and two different responsibilities.
 
+One object can participate in both stages, but the hooks still have separate jobs:
+
+```mermaid
+sequenceDiagram
+  participant B as class body
+  participant T as type.__new__
+  participant D as installed object
+  participant I as owner instance
+  B->>T: namespace containing D
+  T->>D: __set_name__(owner, name)
+  I->>D: later __get__ or __set__
+  D-->>I: resolved value or stored update
+```
+
 ## The claim
 
 An object participates in descriptor lookup when its type defines `__get__`, `__set__`,

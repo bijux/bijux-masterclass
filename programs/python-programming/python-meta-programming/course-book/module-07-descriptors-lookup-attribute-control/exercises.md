@@ -25,6 +25,17 @@ make descriptor-lookup-lab-test
 
 Keep the JSON output available while you work.
 
+Every exercise uses the same evidence cycle:
+
+```mermaid
+flowchart LR
+  question["Name one lookup question"] --> static["Inspect the attached object"]
+  static --> predict["Predict owner and winning layer"]
+  predict --> run["Run one deliberate operation"]
+  run --> compare["Compare prediction with evidence"]
+  compare --> limit["Record the proof limit"]
+```
+
 ## Submission packet
 
 For each exercise record:
