@@ -44,14 +44,14 @@ This lesson introduces compositional domain modeling as a boundary design strate
 - keep cross-subsystem invariants at explicit assemblers or conversion points
 - let teams and modules evolve locally until they intentionally meet
 
-The motivating giant `Chunk` example matters because it captures both the code smell and the team smell at the same time: one type, too many reasons to change.
+The motivating giant `AssembledChunk` example matters because it captures both the code smell and the team smell at the same time: one type, too many reasons to change.
 
 The naïve pattern everyone writes first:
 
 ```python
 # BEFORE – monolithic, tightly coupled
 @dataclass(frozen=True)
-class Chunk:
+class AssembledChunk:
     text: str
     source: str
     tags: list[str]
@@ -72,7 +72,7 @@ text = ChunkText(content="...")
 meta = ChunkMetadata(source="web", tags=("news",))
 emb  = Embedding(vector=(0.1, ...), model="mini", dim=384)
 
-chunk = assemble(text, meta, emb)   # Validation[Chunk, ErrInfo] with cross-checks
+chunk = assemble(text, meta, emb)   # Validation[AssembledChunk, ErrInfo] with cross-checks
 ```
 
 That separation is the core value: local evolution plus visible recombination rules.
@@ -126,7 +126,7 @@ By convention, `embedding_model` and `expected_dim` set to `None` mean “no con
 | Invariant                  | Description                                          | Enforcement                              |
 |----------------------------|------------------------------------------------------|------------------------------------------|
 | Subsystem Isolation        | Subsystem ADTs only imported by integration layer   | Module layout + code review              |
-| Recombination Validity     | `assemble` enforces cross-subsystem invariants      | Validation[Chunk, ErrInfo] return        |
+| Recombination Validity     | `assemble` enforces cross-subsystem invariants      | Validation[AssembledChunk, ErrInfo] return        |
 | Exhaustiveness at Join     | All subsystem variants handled in integration       | `assert_never` in match                  |
 
 ## 2. Decision Table – Split vs Combine
@@ -157,7 +157,7 @@ from .metadata import ChunkMetadata
 from .embedding import Embedding
 
 __all__ = [
-    "Chunk", "ChunkId",
+    "AssembledChunk", "ChunkId",
     "assemble", "try_set_embedding", "map_metadata_checked",
     "upcast_metadata_v1",
 ]
@@ -165,7 +165,7 @@ __all__ = [
 ChunkId = UUID
 
 @dataclass(frozen=True, slots=True)
-class Chunk:
+class AssembledChunk:
     id: ChunkId = field(default_factory=uuid4)
     text: ChunkText
     metadata: ChunkMetadata
@@ -175,7 +175,7 @@ def assemble(
     text: ChunkText,
     meta: ChunkMetadata,
     emb: Embedding | None = None,
-) -> Validation[Chunk, ErrInfo]:
+) -> Validation[AssembledChunk, ErrInfo]:
     errs = []
     # dedup + stable order tags
     norm_tags = tuple(dict.fromkeys(meta.tags))
@@ -188,15 +188,15 @@ def assemble(
         if meta.expected_dim is not None and meta.expected_dim != emb.dim:
             errs.append(ErrInfo(ErrorCode.EMB_DIM_MISMATCH, f"{emb.dim} != {meta.expected_dim}"))
 
-    return v_failure(tuple(errs)) if errs else v_success(Chunk(text=text, metadata=meta, embedding=emb))
+    return v_failure(tuple(errs)) if errs else v_success(AssembledChunk(text=text, metadata=meta, embedding=emb))
 
-def try_set_embedding(chunk: Chunk, emb: Embedding | None) -> Validation[Chunk, ErrInfo]:
+def try_set_embedding(chunk: AssembledChunk, emb: Embedding | None) -> Validation[AssembledChunk, ErrInfo]:
     return assemble(chunk.text, chunk.metadata, emb)
 
 def map_metadata_checked(
-    chunk: Chunk,
+    chunk: AssembledChunk,
     f: Callable[[ChunkMetadata], ChunkMetadata],
-) -> Validation[Chunk, ErrInfo]:
+) -> Validation[AssembledChunk, ErrInfo]:
     return assemble(chunk.text, f(chunk.metadata), chunk.embedding)
 
 # Versioning example – metadata v1 → current
@@ -245,7 +245,7 @@ def ingest_chunk(
     text: ChunkText,
     meta: ChunkMetadata,
     emb: Embedding | None,
-) -> Validation[Chunk, ErrInfo]:
+) -> Validation[AssembledChunk, ErrInfo]:
     return assemble(text, meta, emb)
 ```
 
@@ -344,7 +344,7 @@ def test_assemble_dim_mismatch_fails(content, source, tags, model, vector):
 
 | Anti-Pattern                  | Symptom                            | Fix                                      |
 |-------------------------------|------------------------------------|------------------------------------------|
-| Monolithic Chunk type         | Merge conflicts on every change    | Split into subsystem ADTs                |
+| Monolithic AssembledChunk type         | Merge conflicts on every change    | Split into subsystem ADTs                |
 | Direct field access across modules | Tight coupling                | Use `assemble` / conversion functions    |
 | Circular imports              | Import hell                        | Keep subsystems independent              |
 | Implicit cross-checks         | Bugs when fields diverge           | Explicit validation in `assemble`        |
@@ -364,7 +364,7 @@ Only `assemble` can see that the metadata requests one model and dimension
 while the embedding provides another. The returned `VFailure` retains both
 codes in rule order, so correcting one field does not hide the other problem.
 
-Do not make every subsystem import the combined `Chunk`; that reverses
+Do not make every subsystem import the combined `AssembledChunk`; that reverses
 ownership and couples unrelated construction. The focused test proves the two
 declared cross-field checks. It does not prove every invariant is known, and it
 does not replace the successful assembly and stable tag-normalization properties

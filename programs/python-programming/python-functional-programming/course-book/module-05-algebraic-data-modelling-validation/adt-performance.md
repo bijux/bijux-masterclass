@@ -50,13 +50,13 @@ The naïve reaction everyone has first:
 
 ```python
 # BEFORE – pure but slow / verbose
-def embed_batch(chunks: list[Chunk]) -> list[Validation[Chunk, ErrInfo]]:
+def embed_batch(chunks: list[AssembledChunk]) -> list[Validation[AssembledChunk, ErrInfo]]:
     out = []
     for c in chunks:
         emb = embed_one(c.text.content)                 # pure Embedding, no per-item error
         validated = assemble(c.text, c.metadata, emb)   # Validation only from assemble
         out.append(validated)
-    return out   # N temporary tuples, N Chunk replacements
+    return out   # N temporary tuples, N AssembledChunk replacements
 ```
 
 This is the pressure that makes premature compromise tempting.
@@ -138,7 +138,7 @@ Profile first. Compromise only when measured.
 
 ```python
 # (imports elided for brevity – see full rag/domain/perf.py in the repo)
-# Core imports: Chunk, Validation, VSuccess, VFailure,
+# Core imports: AssembledChunk, Validation, VSuccess, VFailure,
 #               v_success, v_failure,
 #               ChunkText, ChunkMetadata, Embedding, ErrInfo,
 #               assemble, pure_embed, embed_many, replace
@@ -150,7 +150,7 @@ from dataclasses import dataclass
 from typing import Literal, Sequence
 import numpy as np
 
-from .domain import Chunk
+from .domain import AssembledChunk
 from .validation import Validation, v_success, v_failure
 
 __all__ = [
@@ -173,7 +173,7 @@ class OChunk:
     expected_dim: int | None
     row: int | None = None                 # index into embeddings array
 
-def to_optimized_batch(chunks: Sequence[Chunk]) -> OBatch:
+def to_optimized_batch(chunks: Sequence[AssembledChunk]) -> OBatch:
     rows: list[OChunk] = []
     for chunk in chunks:
         row = OChunk(
@@ -187,8 +187,8 @@ def to_optimized_batch(chunks: Sequence[Chunk]) -> OBatch:
         rows.append(row)
     return OBatch(rows=rows, embeddings=None)
 
-def from_optimized_batch(ob: OBatch) -> list[Validation[Chunk, ErrInfo]]:
-    out: list[Validation[Chunk, ErrInfo]] = []
+def from_optimized_batch(ob: OBatch) -> list[Validation[AssembledChunk, ErrInfo]]:
+    out: list[Validation[AssembledChunk, ErrInfo]] = []
     for i, oc in enumerate(ob.rows):
         text = ChunkText(oc.text)
         meta = ChunkMetadata(
@@ -213,10 +213,10 @@ def from_optimized_batch(ob: OBatch) -> list[Validation[Chunk, ErrInfo]]:
     return out
 
 def process_batch_hybrid(
-    batch: list[Chunk],
+    batch: list[AssembledChunk],
     *,
     mode: Literal["pure", "hybrid"] = "hybrid",
-) -> list[Validation[Chunk, ErrInfo]]:
+) -> list[Validation[AssembledChunk, ErrInfo]]:
     if mode == "pure":
         # pure path – reference implementation
         return [pure_embed(c) for c in batch]
@@ -234,16 +234,16 @@ def process_batch_hybrid(
 
 ```python
 # BEFORE – pure, slow, high allocation
-def embed_batch_pure(chunks: list[Chunk]) -> list[Validation[Chunk, ErrInfo]]:
+def embed_batch_pure(chunks: list[AssembledChunk]) -> list[Validation[AssembledChunk, ErrInfo]]:
     out = []
     for c in chunks:
         emb = embed_one(c.text.content)
         validated = assemble(c.text, c.metadata, emb)
         out.append(validated)
-    return out   # N temporary tuples, N Chunk replacements
+    return out   # N temporary tuples, N AssembledChunk replacements
 
 # AFTER – hybrid, fast, proven equivalent
-def embed_batch_hybrid(chunks: list[Chunk]) -> list[Validation[Chunk, ErrInfo]]:
+def embed_batch_hybrid(chunks: list[AssembledChunk]) -> list[Validation[AssembledChunk, ErrInfo]]:
     ob = to_optimized_batch(chunks)
     ob.embeddings = embed_many([r.text for r in ob.rows])  # single NumPy call
     return from_optimized_batch(ob)                       # moves numeric work into a contiguous NumPy array and reduces Python overhead

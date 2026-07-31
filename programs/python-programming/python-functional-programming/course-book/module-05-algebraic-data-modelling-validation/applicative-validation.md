@@ -161,8 +161,8 @@ result = assemble(
 ```
 
 The result contains both `EMB_MODEL_MISMATCH` and `EMB_DIM_MISMATCH`. It also
-normalizes duplicate tags before construction. This small domain model is a
-focused assembly exercise; it does not replace the cumulative
+normalizes duplicate tags before constructing `AssembledChunk`. That explicit
+name marks a focused assembly exercise; it does not replace the cumulative
 `core.rag_types.Chunk` used by the main pipeline.
 
 Run the proof directly:

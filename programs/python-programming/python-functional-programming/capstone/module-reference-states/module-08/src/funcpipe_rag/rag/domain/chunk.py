@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field, replace
-from typing import Callable, TypeAlias
+from typing import TypeAlias
 from uuid import UUID, uuid4
 
 from funcpipe_rag.fp.error import ErrInfo, ErrorCode
@@ -17,14 +18,14 @@ ChunkId: TypeAlias = UUID
 
 
 @dataclass(frozen=True, slots=True)
-class Chunk:
+class AssembledChunk:
     id: ChunkId = field(default_factory=uuid4)
     text: ChunkText = field(default_factory=lambda: ChunkText(content=""))
     metadata: ChunkMetadata = field(default_factory=lambda: ChunkMetadata(source="", tags=()))
     embedding: Embedding | None = None
 
 
-def assemble(text: ChunkText, meta: ChunkMetadata, emb: Embedding | None = None) -> Validation[Chunk, ErrInfo]:
+def assemble(text: ChunkText, meta: ChunkMetadata, emb: Embedding | None = None) -> Validation[AssembledChunk, ErrInfo]:
     errs: list[ErrInfo] = []
 
     norm_tags = tuple(dict.fromkeys(meta.tags))
@@ -37,14 +38,14 @@ def assemble(text: ChunkText, meta: ChunkMetadata, emb: Embedding | None = None)
         if meta.expected_dim is not None and meta.expected_dim != emb.dim:
             errs.append(ErrInfo(ErrorCode.EMB_DIM_MISMATCH, f"{emb.dim} != {meta.expected_dim}"))
 
-    return v_failure(tuple(errs)) if errs else v_success(Chunk(text=text, metadata=meta, embedding=emb))
+    return v_failure(tuple(errs)) if errs else v_success(AssembledChunk(text=text, metadata=meta, embedding=emb))
 
 
-def try_set_embedding(chunk: Chunk, emb: Embedding | None) -> Validation[Chunk, ErrInfo]:
+def try_set_embedding(chunk: AssembledChunk, emb: Embedding | None) -> Validation[AssembledChunk, ErrInfo]:
     return assemble(chunk.text, chunk.metadata, emb)
 
 
-def map_metadata_checked(chunk: Chunk, f: Callable[[ChunkMetadata], ChunkMetadata]) -> Validation[Chunk, ErrInfo]:
+def map_metadata_checked(chunk: AssembledChunk, f: Callable[[ChunkMetadata], ChunkMetadata]) -> Validation[AssembledChunk, ErrInfo]:
     return assemble(chunk.text, f(chunk.metadata), chunk.embedding)
 
 
@@ -59,11 +60,11 @@ def upcast_metadata_v1(v1: ChunkMetadataV1) -> ChunkMetadata:
 
 
 __all__ = [
+    "AssembledChunk",
     "ChunkId",
-    "Chunk",
-    "assemble",
-    "try_set_embedding",
-    "map_metadata_checked",
     "ChunkMetadataV1",
+    "assemble",
+    "map_metadata_checked",
+    "try_set_embedding",
     "upcast_metadata_v1",
 ]

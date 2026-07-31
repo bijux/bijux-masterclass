@@ -87,10 +87,10 @@ src/funcpipe_rag/
 
 `core/rag_types.py` and `rag/stages.py` remain the primary application path.
 `rag/domain/` is a later focused lab for cross-field assembly and alternative
-representation; it does not replace the pipeline values. Do not read its
-second `Chunk` name as another pipeline stage. The early Module 5 lessons and
-proofs use the cumulative values first, so the lab has explicit context instead
-of appearing as an unexplained parallel application.
+representation; it does not replace the pipeline values. Its result is named
+`AssembledChunk` so learners do not mistake it for another pipeline stage. The
+early Module 5 lessons and proofs use the cumulative values first, so the lab
+has explicit context instead of appearing as a parallel application.
 
 `boundaries/adapters/` owns external validation and serialization so Pydantic
 and transport envelopes do not leak into the core. Its `ChunkModel` converts

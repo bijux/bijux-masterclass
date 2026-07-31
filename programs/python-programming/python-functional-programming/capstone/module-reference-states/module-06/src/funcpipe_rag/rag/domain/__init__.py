@@ -2,7 +2,7 @@
 
 These ADTs are used in the Module 05 "type-driven design" cores:
 - independent, immutable subsystem records (`ChunkText`, `ChunkMetadata`, `Embedding`)
-- safe assembly into a coherent `Chunk` via applicative `Validation`
+- safe assembly into a coherent `AssembledChunk` via applicative `Validation`
 - an optional NumPy hybrid path with equivalence tests
 
 This modeling layer is intentionally separate from the main RAG pipeline value
@@ -10,7 +10,7 @@ types in `funcpipe_rag.core.rag_types`.
 """
 
 from .chunk import (
-    Chunk,
+    AssembledChunk,
     ChunkId,
     ChunkMetadataV1,
     assemble,
@@ -24,19 +24,19 @@ from .perf import OBatch, from_optimized_batch, process_batch_hybrid, to_optimiz
 from .text import ChunkText
 
 __all__ = [
+    "AssembledChunk",
     "ChunkId",
-    "ChunkText",
     "ChunkMetadata",
-    "Embedding",
-    "Chunk",
-    "assemble",
-    "try_set_embedding",
-    "map_metadata_checked",
     "ChunkMetadataV1",
-    "upcast_metadata_v1",
+    "ChunkText",
+    "Embedding",
     "OBatch",
-    "to_optimized_batch",
+    "assemble",
     "from_optimized_batch",
+    "map_metadata_checked",
     "process_batch_hybrid",
+    "to_optimized_batch",
+    "try_set_embedding",
+    "upcast_metadata_v1",
 ]
 

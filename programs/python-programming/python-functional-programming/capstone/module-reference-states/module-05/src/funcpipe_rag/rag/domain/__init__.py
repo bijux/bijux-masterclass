@@ -1,7 +1,7 @@
 """Composable RAG domain values introduced in Module 05."""
 
 from .chunk import (
-    Chunk,
+    AssembledChunk,
     ChunkId,
     ChunkMetadataV1,
     assemble,
@@ -15,7 +15,7 @@ from .perf import OBatch, from_optimized_batch, process_batch_hybrid, to_optimiz
 from .text import ChunkText
 
 __all__ = [
-    "Chunk",
+    "AssembledChunk",
     "ChunkId",
     "ChunkMetadata",
     "ChunkMetadataV1",

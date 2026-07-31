@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, replace
 from hashlib import sha256
-from typing import Literal, Sequence
+from typing import Literal
 from uuid import UUID
 
 import numpy as np
@@ -13,16 +14,16 @@ from numpy.typing import NDArray
 from funcpipe_rag.fp.error import ErrInfo
 from funcpipe_rag.fp.validation import Validation, VSuccess, v_success
 
-from .chunk import Chunk, assemble
+from .chunk import AssembledChunk, assemble
 from .embedding import Embedding
 from .metadata import ChunkMetadata
 from .text import ChunkText
 
 __all__ = [
     "OBatch",
-    "to_optimized_batch",
     "from_optimized_batch",
     "process_batch_hybrid",
+    "to_optimized_batch",
 ]
 
 
@@ -44,7 +45,7 @@ def embed_many(texts: Sequence[str], *, dim: int = 16) -> NDArray[np.float32]:
     return np.asarray([_embed_one(t, dim=dim) for t in texts], dtype=np.float32)
 
 
-def pure_embed(chunk: Chunk) -> Validation[Chunk, ErrInfo]:
+def pure_embed(chunk: AssembledChunk) -> Validation[AssembledChunk, ErrInfo]:
     model = chunk.metadata.embedding_model or "unknown"
     emb = Embedding(vector=_embed_one(chunk.text.content), model=model)
     v = assemble(chunk.text, chunk.metadata, emb)
@@ -55,7 +56,7 @@ def pure_embed(chunk: Chunk) -> Validation[Chunk, ErrInfo]:
 
 @dataclass(slots=True)
 class OBatch:
-    rows: list["OChunk"]
+    rows: list[OChunk]
     embeddings: NDArray[np.float32] | None = None
 
 
@@ -70,7 +71,7 @@ class OChunk:
     row: int | None = None
 
 
-def to_optimized_batch(chunks: Sequence[Chunk]) -> OBatch:
+def to_optimized_batch(chunks: Sequence[AssembledChunk]) -> OBatch:
     rows: list[OChunk] = []
     for chunk in chunks:
         rows.append(
@@ -86,8 +87,8 @@ def to_optimized_batch(chunks: Sequence[Chunk]) -> OBatch:
     return OBatch(rows=rows, embeddings=None)
 
 
-def from_optimized_batch(ob: OBatch) -> list[Validation[Chunk, ErrInfo]]:
-    out: list[Validation[Chunk, ErrInfo]] = []
+def from_optimized_batch(ob: OBatch) -> list[Validation[AssembledChunk, ErrInfo]]:
+    out: list[Validation[AssembledChunk, ErrInfo]] = []
     for i, oc in enumerate(ob.rows):
         text = ChunkText(content=oc.text)
         meta = ChunkMetadata(
@@ -110,10 +111,10 @@ def from_optimized_batch(ob: OBatch) -> list[Validation[Chunk, ErrInfo]]:
 
 
 def process_batch_hybrid(
-    batch: list[Chunk],
+    batch: list[AssembledChunk],
     *,
     mode: Literal["pure", "hybrid"] = "hybrid",
-) -> list[Validation[Chunk, ErrInfo]]:
+) -> list[Validation[AssembledChunk, ErrInfo]]:
     if mode == "pure":
         return [pure_embed(c) for c in batch]
 

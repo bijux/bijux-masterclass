@@ -1,14 +1,18 @@
 from __future__ import annotations
 
-from hypothesis import given, strategies as st
 import numpy as np
-
-from funcpipe_rag.rag.domain import Chunk, ChunkMetadata, ChunkText, process_batch_hybrid
 from funcpipe_rag.fp.validation import VFailure, VSuccess
-
+from funcpipe_rag.rag.domain import (
+    AssembledChunk,
+    ChunkMetadata,
+    ChunkText,
+    process_batch_hybrid,
+)
+from hypothesis import given
+from hypothesis import strategies as st
 
 chunk_strat = st.builds(
-    Chunk,
+    AssembledChunk,
     text=st.builds(ChunkText, content=st.text(min_size=1, max_size=100)),
     metadata=st.builds(
         ChunkMetadata,
@@ -22,7 +26,7 @@ chunk_strat = st.builds(
 
 
 @given(batch=st.lists(chunk_strat, min_size=1, max_size=50))
-def test_pure_vs_hybrid_equivalence(batch: list[Chunk]) -> None:
+def test_pure_vs_hybrid_equivalence(batch: list[AssembledChunk]) -> None:
     pure = process_batch_hybrid(batch, mode="pure")
     hybrid = process_batch_hybrid(batch, mode="hybrid")
     assert len(pure) == len(hybrid)

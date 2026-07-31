@@ -230,7 +230,7 @@ domain_assembly or hybrid_embedding or boundary_refactor
 2. Which type family is the focused cross-field assembly lab?
 3. What does `assemble` teach that the stage products do not?
 4. Which observables must the optimized batch representation preserve?
-5. Would merging the two `Chunk` names now improve or obscure the lesson?
+5. Why does `AssembledChunk` not replace the pipeline's indexed `Chunk`?
 
 Do not begin with a refactor. First identify ownership and evidence. If you
 propose a change, name the invalid state it removes and the exact tests that
