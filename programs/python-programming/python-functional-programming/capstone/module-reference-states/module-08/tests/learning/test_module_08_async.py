@@ -9,7 +9,13 @@ from contextlib import asynccontextmanager
 from hypothesis import given
 from hypothesis import strategies as st
 
-from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, RagEnv, RawDoc
+from funcpipe_rag.core.rag_types import (
+    Chunk,
+    ChunkWithoutEmbedding,
+    CleanDoc,
+    RagEnv,
+    RawDoc,
+)
 from funcpipe_rag.domain.effects.async_ import (
     AsyncGen,
     AsyncPlan,
@@ -385,3 +391,55 @@ def test_async_rag_chunks_applies_the_backpressure_policy_to_embedding() -> None
 
     assert maximum_active == 2
     assert coordinates == [("doc", 0), ("doc", 3), ("doc", 6), ("doc", 9)]
+
+
+def test_async_rag_chunks_keeps_failures_in_the_application_stream() -> None:
+    """A bad source item or document does not erase later valid work."""
+
+    source_failure = ErrInfo(code="SOURCE", msg="unreadable row")
+
+    async def generate_docs() -> AsyncIterator[Result[RawDoc, ErrInfo]]:
+        yield Ok(RawDoc("before", "Before", "valid", "demo"))
+        yield Err(source_failure)
+        yield Ok(RawDoc("invalid", "Invalid", "reject", "demo"))
+        yield Ok(RawDoc("after", "After", "still valid", "demo"))
+
+    def clean_or_reject(doc: RawDoc) -> CleanDoc:
+        if doc.doc_id == "invalid":
+            raise ValueError("document failed validation")
+        return clean_doc(doc)
+
+    embedded: list[str] = []
+
+    def embed_later(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+        async def run() -> Ok[Chunk]:
+            embedded.append(chunk.doc_id)
+            return Ok(embed_chunk(chunk))
+
+        return run
+
+    source: AsyncGen[RawDoc] = generate_docs
+    stream = async_rag_chunks(
+        source,
+        RagEnv(chunk_size=32),
+        clean_or_reject,
+        embed_later,
+        BackpressurePolicy(max_concurrent=2, ordered=True),
+    )
+
+    async def collect() -> list[Result[Chunk, ErrInfo]]:
+        return [item async for item in stream()]
+
+    results = asyncio.run(collect())
+    labels = [
+        f"ok:{item.value.doc_id}" if isinstance(item, Ok) else f"err:{item.error.code}"
+        for item in results
+    ]
+
+    assert labels == [
+        "ok:before",
+        "err:SOURCE",
+        "err:UNEXPECTED",
+        "ok:after",
+    ]
+    assert embedded == ["before", "after"]
