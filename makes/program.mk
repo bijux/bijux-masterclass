@@ -82,6 +82,10 @@ capstone-walkthrough: ## Run the selected program's learner-facing capstone walk
 capstone-tour: ## Run the selected program's learner-facing capstone tour
 	@$(RUN_PROGRAM) capstone-tour
 
+.PHONY: capstone-governance
+capstone-governance: ## Review the selected program's accepted, constrained, and rejected powers
+	@$(RUN_PROGRAM) --no-print-directory capstone-governance
+
 .PHONY: capstone-platform-report
 capstone-platform-report: ## Print the selected program's supported toolchain versions
 	@$(RUN_PROGRAM) capstone-platform-report

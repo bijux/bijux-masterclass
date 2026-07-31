@@ -204,13 +204,25 @@ Proof move:
 
 You are ready to finish the course when you can:
 
-- name red lines around dynamic execution, monkey-patching, and import-hook behavior
-- explain which powers may be acceptable in tooling but not in normal application code
-- review a meta-heavy design for debuggability, observability, and reversibility
+- explain why an AST allowlist and empty builtins narrow a trusted language but do not
+  isolate adversarial execution
+- distinguish ABC instantiation enforcement, static protocol compatibility, shallow
+  runtime presence, and behavioral proof
+- prove patch restoration after ordinary and exceptional exits while refusing concurrency
+  and crash-safety claims
+- show complete import-hook cleanup across both `sys.meta_path` and `sys.modules`, then
+  prove no-hook behavior
+- write an approve, constrain, or reject decision with a lower-power comparison, blast
+  radius, observation route, rollback, proof, escalation signal, and non-claim
+- audit one capstone decision by connecting JSON evidence, source ownership, and a focused
+  assertion
 
 Proof move:
 
-- run the capstone proof route and name one design change you would reject immediately
+- run `make runtime-governance-lab-test`, inspect `make runtime-governance-lab`, and
+  reconcile every evidence key with its owning source and focused test
+- then run `make capstone-governance` and explain one approved mechanism, the constrained
+  registry, and one rejected power before invoking a plugin
 
 ## What to do when a checkpoint fails
 

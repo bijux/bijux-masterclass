@@ -64,7 +64,7 @@ If you cannot explain why a stronger mechanism is necessary, you are not ready t
 | Did this wrapper preserve the callable contract honestly? | Modules 03 to 05 | `make action`, `make signatures`, and `actions.py` |
 | Should this live in a class decorator, property, descriptor, or wider service? | Modules 06 to 08 | class-customization, descriptor-lookup, and descriptor-system labs before capstone transfer |
 | Does this really belong at class-definition time? | Module 09 | `make registry`, `framework.py`, and registry tests |
-| Which runtime powers are too dangerous to approve casually? | Module 10 | verification bundle and review checklist |
+| Which runtime powers are too dangerous to approve casually? | Module 10 | `runtime-governance-lab` before `capstone-governance` |
 
 ## Route 1: Review a wrapper without losing provenance
 
@@ -197,7 +197,12 @@ Use this route to answer:
 
 Best first capstone move:
 
-- run `make PROGRAM=python-programming/python-meta-programming capstone-verify-report`
+- first run
+  `make -C programs/python-programming/python-meta-programming runtime-governance-lab-test`
+- inspect `make -C programs/python-programming/python-meta-programming runtime-governance-lab`
+- only then run
+  `make PROGRAM=python-programming/python-meta-programming capstone-governance`
+  and compare the application decisions with the course packet
 
 ## When a route is working
 

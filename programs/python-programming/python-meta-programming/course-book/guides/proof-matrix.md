@@ -54,6 +54,7 @@ or [Pressure Routes](pressure-routes.md).
 | action decorators preserve public callable shape while adding behavior | `make PROGRAM=python-programming/python-meta-programming capstone-action` | `action.json`, `actions.py`, and `tests/test_runtime.py` |
 | action values match the supported runtime hint subset without hidden execution | `make PROGRAM=python-programming/python-meta-programming capstone-check-action` | `check-action.json`, `actions.py`, and runtime tests |
 | class-creation provenance separates declared, inherited, and generated surfaces | `make PROGRAM=python-programming/python-meta-programming capstone-class-creation` | `class-creation.json`, `framework.py`, and runtime tests |
+| the capstone publishes accepted, constrained, and rejected powers without construction or execution | `make PROGRAM=python-programming/python-meta-programming capstone-governance` | `governance.json`, `governance.py`, and governance/CLI tests |
 | generated constructor and action signatures still reflect declared fields honestly | `make PROGRAM=python-programming/python-meta-programming capstone-signatures` | `signatures.json`, `framework.py`, and runtime tests |
 | one concrete runtime action remains traceable after execution | `make PROGRAM=python-programming/python-meta-programming capstone-trace` | `trace.json` plus runtime tests |
 
@@ -77,7 +78,8 @@ or [Pressure Routes](pressure-routes.md).
 | field or descriptor ownership is placed honestly | `descriptor-lookup-lab`, then `capstone-field-ownership` | lab evidence, `framework.py`, `fields.py`, and field ownership tests |
 | field-system power stops at an honest architecture boundary | `descriptor-system-lab`, then `capstone-field-system` | system evidence, `framework.py`, and field-system tests |
 | class-creation control is justified and deterministic | `class-creation-lab`, then `capstone-class-creation` | hook and owner evidence, `framework.py`, and class-creation tests |
-| review routes remain observational rather than magical | `inspect`, `capstone-verify-report`, or `proof` | saved bundles plus CLI and test surfaces |
+| runtime-governance claims stop at their executable boundaries | `runtime-governance-lab-test`, then `runtime-governance-lab` | lab JSON, five owning modules, and focused governance tests |
+| review routes remain observational rather than magical | `capstone-governance`, then `inspect` | governance JSON, saved bundle manifest, CLI, and governance tests |
 
 ## Module bridge
 
@@ -89,7 +91,7 @@ or [Pressure Routes](pressure-routes.md).
 | Module 07 | can protocol status, lookup precedence, binding, and storage ownership be predicted and observed | `descriptor-lookup-lab`, `field-ownership`, and descriptor lab tests |
 | Module 08 | do cache, backend, composition, hint, and record boundaries stay observable without becoming hidden architecture | `descriptor-system-lab`, `field-system`, and descriptor-system tests |
 | Module 09 | do resolution, declaration, shaping, and registration have the smallest honest owners | `class-creation-lab`, `class-creation`, and focused creation tests |
-| Module 10 | do the public review routes stay observable under real scrutiny | `inspect`, `capstone-verify-report`, or `proof` |
+| Module 10 | can trust, contract, rollback, tooling, and escalation decisions be proved before capstone transfer | `runtime-governance-lab-test`, `runtime-governance-lab`, then `capstone-governance` |
 
 ## Quick review questions
 
@@ -99,6 +101,8 @@ or [Pressure Routes](pressure-routes.md).
 | Where should I start if the issue is descriptor ownership? | `descriptor-lookup-lab`, then `capstone-field-ownership` |
 | Where should I start if several field powers are becoming architecture? | `descriptor-system-lab`, then `capstone-field-system` |
 | Where should I start if registration is being used to justify a metaclass? | `class-creation-lab`, then compare `__init_subclass__` with `capstone-class-creation` |
+| Where should I start if a dynamic mechanism's safety or enforcement claim feels too large? | `runtime-governance-lab-test`, then inspect the matching evidence key and focused test |
+| Where should I start if the capstone needs a power decision rather than another runtime trace? | `capstone-governance`, then the mechanism-specific observational command |
 | Where should I start if the issue is one exported field or action contract? | `capstone-field` or `capstone-action` |
 | Which saved bundle is strongest for a human review? | `inspect` or `capstone-verify-report` |
 | Which route should I use before approving a larger change? | `capstone-verify-report` or `proof` |

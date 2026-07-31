@@ -70,7 +70,8 @@ Use this worksheet in this order:
 - Modules 04-05: Which wrapper behavior is visible in public output, and which part still requires reading tests?
 - Modules 06-08: Which field rule belongs on attribute access rather than object construction?
 - Module 09: Which invariant truly belongs at class-definition time?
-- Module 10 and mastery review: Which public command gives the clearest review evidence for this claim?
+- Module 10 and mastery review: What does `capstone-governance` approve, constrain, or
+  reject, and which mechanism-specific command and focused assertion verify that decision?
 
 ## Good stopping point
 

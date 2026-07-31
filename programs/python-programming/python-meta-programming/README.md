@@ -172,6 +172,9 @@ make -C programs/python-programming/python-meta-programming capstone-field-syste
 make -C programs/python-programming/python-meta-programming class-creation-lab
 make -C programs/python-programming/python-meta-programming class-creation-lab-test
 make -C programs/python-programming/python-meta-programming capstone-class-creation
+make -C programs/python-programming/python-meta-programming runtime-governance-lab
+make -C programs/python-programming/python-meta-programming runtime-governance-lab-test
+make -C programs/python-programming/python-meta-programming capstone-governance
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour

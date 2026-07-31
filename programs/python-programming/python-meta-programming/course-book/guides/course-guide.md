@@ -84,18 +84,27 @@ This arc teaches placement and restraint, not just power.
 
 Module 10 teaches what many advanced courses skip:
 
-- when dynamic power crosses a red line
-- how debugging cost changes the design argument
-- why an "impressive" mechanism may still be the wrong design
+- where syntax policy stops and process isolation begins
+- why ABC, protocol, and subclass-hook claims have different strengths
+- how rollback evidence differs from concurrency or crash safety
+- when import hooks and AST transforms belong to tooling rather than applications
+- how to publish approve, constrain, and reject decisions with executable proof
+
+The Module 10 course lab is the first learning surface. It supplies five small,
+deterministic experiments so each claim can be traced before the learner audits the
+larger incident-plugin runtime.
 
 ## How the capstone fits the course
 
-The capstone is not an optional demo. It is the executable proof surface for the course.
+The lessons, runnable course labs, worked examples, exercises, and reasoned answers are
+the primary product. The capstone is the integration and transfer surface that follows
+them.
 
 - Early modules explain how to inspect the capstone without accidental execution.
 - Middle modules explain its wrappers, fields, and customization boundaries.
 - Later modules explain why its metaclass and registry stay narrow.
-- The final module explains how to review or reject changes to the capstone honestly.
+- The final module first builds a governance packet in the course lab, then explains how
+  to review or reject capstone decisions honestly through `capstone-governance`.
 
 When you study a module, the capstone gives you one place where the module’s claim becomes
 visible in code, commands, tests, and saved evidence.

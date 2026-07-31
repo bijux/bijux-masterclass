@@ -36,6 +36,7 @@ named home inside it.
 | where wrapper behavior really lives | [Capstone Architecture Guide](capstone-architecture-guide.md) | `actions.py` and `tests/test_runtime.py` |
 | where field ownership and validation live | [Capstone File Guide](capstone-file-guide.md) | `fields.py` and `tests/test_fields.py` |
 | whether class creation is honest | [Capstone Architecture Guide](capstone-architecture-guide.md) | `framework.py` and `tests/test_registry.py` |
+| which dynamic powers the application accepts, constrains, or rejects | `capstone-governance` | `governance.py`, `tests/test_governance.py`, and the matching mechanism reports |
 | which route to hand to another reviewer | [Capstone Walkthrough](capstone-walkthrough.md) | `inspect`, `capstone-tour`, or `capstone-verify-report` |
 
 ## Mechanism to file map
@@ -55,7 +56,7 @@ named home inside it.
 | Module 06 | generated constructor behavior in `framework.py` | class customization before metaclasses | `test` then read `test_runtime.py` |
 | Modules 07-08 | `fields.py` | descriptor-backed validation, coercion, and per-instance storage | `test` then read `test_fields.py` |
 | Module 09 | registration logic in `framework.py` and registry output | definition-time registration and duplicate prevention | `inspect` then read `registry.json` and `test_registry.py` |
-| Module 10 | `cli.py` plus saved proof bundles | public review surface stays observational and reviewable | `capstone-verify-report` then read `pytest.txt`, `manifest.json`, and `trace.json` |
+| Module 10 | `governance.py`, `cli.py`, and saved proof bundles | power decisions stay observational, explicit, and paired with evidence | `capstone-governance` then read `governance.json` beside the mechanism report and focused tests |
 
 ## Practical reading order
 

@@ -69,7 +69,9 @@ For a shorter module-aligned pass, use:
 - Modules 04-05: read `trace` output and `capstone/tests/test_runtime.py`.
 - Modules 07-08: read `capstone/tests/test_fields.py`.
 - Module 09: read `registry` output and `capstone/tests/test_registry.py`.
-- Module 10: read `capstone/tests/test_cli.py` plus the saved verification bundle.
+- Module 10: run `capstone-governance`, read `capstone/tests/test_governance.py` and
+  `capstone/tests/test_cli.py`, then compare `governance.json` with the mechanism-specific
+  files in the saved inspection bundle.
 
 ## Questions to answer
 

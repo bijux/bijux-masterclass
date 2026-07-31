@@ -48,7 +48,7 @@ preview of it. This map keeps the promises sharp.
 | 07 Descriptors, Lookup, and Attribute Control | explain descriptor precedence, binding, and per-instance storage without folklore | framework-scale descriptor systems and broader validation architecture | `fields.py` and field tests | you need clear lookup mechanics before judging larger field frameworks |
 | 08 Descriptor Systems, Validation, and Framework Shape | judge when a descriptor is still one field contract and when it has become architecture | class-creation control and metaclass scope | field schema export, coercion surfaces, and field tests | metaclasses should feel like escalation from real descriptor limits |
 | 09 Metaclass Design and Class Creation | explain what truly belongs at class-definition time and reject metaclasses that only hide lower-power options | governance rules for dynamic power across a whole system | `framework.py`, registry output, and registry tests | governance only makes sense after the highest mechanism is understood precisely |
-| 10 Runtime Governance and Mastery Review | review dynamic designs for observability, debuggability, red lines, and restraint | no later module; this is the integrated judgment pass | manifest, registry, trace, verification bundle, and review worksheet | this is the stewardship layer that converts mechanism knowledge into durable judgment |
+| 10 Runtime Governance and Mastery Review | classify trust, contract, rollback, tooling, and escalation claims through executable evidence | no later module; this is the integrated judgment pass | `runtime-governance-lab` first, then `capstone-governance` and the saved inspection bundle | this is the stewardship layer that converts mechanism knowledge into durable judgment |
 
 ## Read the promises as a dependency chain
 
@@ -79,9 +79,10 @@ If this chain is weak, stronger hooks begin solving the wrong problems.
 
 This module asks:
 
-- which powers are still defensible
-- which ones should trigger skepticism immediately
-- what makes a meta-heavy design teachable, reviewable, and maintainable
+- where each mechanism executes and who owns the changed public surface
+- which powers are approved, constrained, or rejected
+- what focused test proves each decision and what remains unproved
+- whether the same judgment transfers from a small course experiment to the capstone
 
 Without this chain, the course can still teach mechanism names while failing to teach judgment.
 
