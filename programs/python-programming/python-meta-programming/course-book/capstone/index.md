@@ -18,110 +18,143 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  module["Finish one module claim"] --> course["Run focused course proof"]
+  course --> contract["Render transfer contract"]
+  contract --> capstone["Run observational capstone route"]
+  capstone --> compare["Compare proof and non-claim"]
 ```
 <!-- page-maps:end -->
 
-The capstone is the executable proof for the course. It is a compact incident-plugin
-runtime where decorators, descriptors, metaclasses, and introspection must coexist
-without hiding responsibility.
+The first diagram places this shelf inside the course. The second is the required
+transfer sequence. The course website, runnable labs, worked examples, exercises, and
+answers teach the mechanism. This incident-plugin application checks whether one settled
+claim remains understandable when several mechanisms interact.
 
-Use this guide when you need one durable entry point into the capstone shelf. The goal
-is not to browse everything. The goal is to choose one learner question, one owning
-surface, and one proof route without getting lost in the repository.
+Do not begin here to discover decorators, descriptors, or metaclasses. Begin here with a
+module question and a focused course proof.
 
-## What this capstone is actually teaching
+## What the capstone contributes
 
-By the end of the capstone, you should be able to explain:
+The capstone supplies integration pressure that isolated labs deliberately remove:
 
-- how public inspection stays separate from runtime execution
-- how descriptor-backed field rules remain explicit and per-instance
-- how wrapper behavior stays visible instead of erasing callable identity
-- how class-definition-time registration can remain deterministic and reviewable
-- how a small runtime can still be audited like ordinary code
+- descriptors, wrappers, and class creation share one public runtime
+- import-time class creation produces state that later commands must expose honestly
+- generated signatures and manifests must agree with executable behavior
+- global registry state needs deterministic reset and duplicate policy
+- reviewers need non-constructing reports before deliberate invocation
 
-If the capstone is not teaching those five things, you are either widening too quickly
-or using a proof route that is too large for the current question.
+That pressure makes the capstone useful. It does not make the capstone the course.
 
-## Start by learner question
+## Entry contract
 
-| If your question is... | Start here | Stop when you can... |
-| --- | --- | --- |
-| "What does this capstone prove for the course?" | this page, then [Capstone Architecture Guide](capstone-architecture-guide.md) | explain the capstone in plain language |
-| "Which repository surface should I read first?" | [Capstone File Guide](capstone-file-guide.md) | name one owning file and one matching test |
-| "How do the modules map onto the capstone?" | [Capstone Map](capstone-map.md) | connect one module-stage claim to one capstone route |
-| "Which command proves this claim with the smallest blast radius?" | [Command Guide](command-guide.md) and [Capstone Proof Guide](capstone-proof-guide.md) | choose one honest proof route |
-| "How should I review the whole runtime as a steward?" | [Capstone Review Worksheet](capstone-review-worksheet.md) | record one keep, change, or reject judgment |
-| "Where should a change land?" | [Capstone Extension Guide](capstone-extension-guide.md) | name the correct ownership layer |
+Before choosing a capstone command, you must be able to state:
 
-## First-day route for a missed-class learner
+1. the module claim being transferred
+2. the focused course command already run
+3. the focused test that protects the claim
+4. the application owner expected to expose the same behavior
+5. one fact the capstone command cannot prove
 
-Use this route if you are studying alone and need one stable first pass:
+If any item is missing, return to the module rather than browsing the application.
 
-1. Run `make PROGRAM=python-programming/python-meta-programming capstone-manifest`.
-2. Read this page.
-3. Read [Capstone Architecture Guide](capstone-architecture-guide.md).
-4. Read [Capstone File Guide](capstone-file-guide.md).
-5. Read `capstone/src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
-6. Run `make PROGRAM=python-programming/python-meta-programming capstone-registry`.
-7. Read `capstone/tests/test_registry.py` and `capstone/tests/test_fields.py`.
-8. Stop there unless your question now clearly requires runtime traces, saved bundles, or change placement.
+Render the transfer contract from the course directory:
 
-This route is intentionally incomplete. It gives you ownership and proof before it gives
-you breadth.
+```bash
+make transfer-route MODULE=7
+make transfer-route-test
+```
 
-## Start by module range
+The JSON identifies the root, course, and local capstone commands; the owning source
+surface; the transfer question; the proof; and the non-claim. The tests verify that all
+30 published Make entrypoints exist.
 
-| Module range | Best capstone focus | Best first proof route |
-| --- | --- | --- |
-| Modules 01-03 | manifest export, constructor signatures, and inspectable runtime shape | `capstone-manifest` and `capstone-registry` |
-| Modules 04-06 | decorators, wrappers, and action-history behavior | `capstone-action` and `capstone-trace` |
-| Modules 07-08 | descriptors, field validation, and focused field tests | `capstone-field` and `tests/test_fields.py` |
-| Modules 09-10 | prepared namespace, generated class contract, registration, public commands, and saved bundles | `capstone-class-creation`, `capstone-signatures`, and `capstone-verify-report` |
+## Module transfer route
 
-## Core commands
+| Module | Course claim already proved | Observational capstone route | Application question |
+| --- | --- | --- | --- |
+| 01 | runtime objects expose inspectable relationships | `capstone-manifest` | which classes, fields, and actions exist publicly? |
+| 02 | observation remains separate from execution | `capstone-manifest` | which facts are exported without action invocation? |
+| 03 | signature binding can precede invocation | `capstone-bind-action` | do proposed arguments fit the stored signature? |
+| 04 | wrappers preserve visible ownership | `capstone-action-wrapper` | which layer owns metadata, signature, and provenance? |
+| 05 | callable policy states supported and refused contracts | `capstone-check-action` | which runtime hints are actually checked? |
+| 06 | lower-power class tools are considered first | `capstone-class-creation` | which finished-class requirements remain lower-power? |
+| 07 | descriptor lookup and storage are predictable | `capstone-field-ownership` | which descriptor and storage owner implement one field? |
+| 08 | field-system power is explicitly bounded | `capstone-field-system` | which wider descriptor powers are rejected? |
+| 09 | class-creation hooks have distinct timing | `capstone-class-creation` | what requires preparation, shaping, and registration? |
+| 10 | runtime powers receive explicit decisions | `capstone-governance` | which powers are approved, constrained, or rejected? |
 
-| If you need... | From the repository root | From the capstone directory |
-| --- | --- | --- |
-| runtime shape without execution | `make PROGRAM=python-programming/python-meta-programming capstone-manifest` | `make manifest` |
-| registry review | `make PROGRAM=python-programming/python-meta-programming capstone-registry` | `make registry` |
-| class-creation ownership without construction | `make PROGRAM=python-programming/python-meta-programming capstone-class-creation` | `make class-creation` |
-| one concrete invocation story | `make PROGRAM=python-programming/python-meta-programming capstone-trace` | `make trace` |
-| guided saved route | `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` | `make tour` |
+Repeated commands are intentional. Module 01 asks what objects exist; Module 02 asks
+whether the observation route invokes business behavior. Module 06 compares lower-power
+owners; Module 09 asks which pre-class facts finally earn `PluginMeta`.
 
-## What not to do first
+## Run from the right boundary
 
-- Do not start in `plugins.py` when the ownership model is still unclear.
-- Do not start in the whole test suite when the claim itself is still vague.
-- Do not start with the largest saved bundle when one public command can answer the question.
-- Do not treat the capstone as a separate mini-project detached from the module sequence.
+From the repository root:
 
-## Guide set
+```bash
+make PROGRAM=python-programming/python-meta-programming capstone-manifest
+```
 
-- [Capstone Map](capstone-map.md)
-- [Capstone Walkthrough](capstone-walkthrough.md)
-- [Command Guide](command-guide.md)
-- [Capstone File Guide](capstone-file-guide.md)
-- [Capstone Architecture Guide](capstone-architecture-guide.md)
-- [Capstone Proof Guide](capstone-proof-guide.md)
-- [Capstone Review Worksheet](capstone-review-worksheet.md)
-- [Capstone Extension Guide](capstone-extension-guide.md)
-- [Glossary](glossary.md)
+From the course directory:
 
-## Self-check before leaving this page
+```bash
+make capstone-manifest
+```
 
-- Which work happens before an instance exists?
-- Which runtime facts stay inspectable from the public surface?
-- Which mechanism would you simplify first if the design felt too magical?
-- Which proof route would you choose first for one module-stage claim?
+From `capstone/`:
 
-## Good stopping point
+```bash
+make manifest
+```
 
-Stop here when you know:
+These three entrypoints reach the same public command. Use the repository route when
+following published site instructions, the course route during study, and the local
+route while reading capstone source.
 
-- which module-stage claim the capstone is making visible
-- which file or public output owns that claim
-- which smallest command or saved route proves it honestly
+## Observational before executable
+
+The ten module transfers are deliberately non-constructing and non-invoking. Even when a
+report describes runtime behavior, the first transfer stays observational.
+
+Move to `capstone-trace` only when the claim is about deliberate construction,
+configuration, invocation, result, and action history. A trace is not a stronger answer
+to a class-creation or field-ownership question; it is a different kind of evidence.
+
+## Choose the next page by question
+
+| Question | Page |
+| --- | --- |
+| Which exact module claim maps to which command? | [Capstone Map](capstone-map.md) |
+| Which command is smallest for this transfer? | [Command Guide](command-guide.md) |
+| Which file owns the reported behavior? | [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| How do I move from output to focused tests? | [Capstone Proof Guide](capstone-proof-guide.md) |
+| How do I conduct a complete public-surface tour? | [Capstone Walkthrough](capstone-walkthrough.md) |
+| How do I record approve, change, or reject reasoning? | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+| Where should a proposed extension land? | [Capstone Extension Guide](capstone-extension-guide.md) |
+
+Do not read every page by default. Choose the page that answers the current learning
+problem.
+
+## Recovery when the application feels too dense
+
+Stop and return to the course if:
+
+- several mechanisms look like one piece of “framework magic”
+- a saved bundle feels easier to cite than to explain
+- you cannot say whether a command constructs or invokes a plugin
+- the capstone source becomes the first place you encounter a mechanism
+- passing the full suite feels like the only available proof
+
+Use `make study-route LAST_TRUSTED_MODULE=<module>` to rebuild the course boundary, then
+render the matching `transfer-route`.
+
+## Transfer exit standard
+
+Leave this page when you can:
+
+- name one completed module claim
+- render its transfer contract
+- run the same route from repository, course, and capstone levels
+- identify the application owner before reading all source
+- state what the report proves and does not prove
+- keep the capstone in a supporting integration role
