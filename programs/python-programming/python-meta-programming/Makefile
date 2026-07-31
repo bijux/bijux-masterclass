@@ -35,7 +35,7 @@ observation-lab-test: ## Verify the Module 02 observation boundaries
 
 .PHONY: observation-debug-view
 observation-debug-view: ## Render the Module 02 attachment-first debug view
-	@$(PYTHON) -m labs.runtime_observation.debug_demo
+	@$(PYTHON) -c 'from labs.runtime_observation.debug_view import main; raise SystemExit(main())'
 
 .PHONY: evidence-lab
 evidence-lab: ## Run the Module 03 runtime-evidence trust lab

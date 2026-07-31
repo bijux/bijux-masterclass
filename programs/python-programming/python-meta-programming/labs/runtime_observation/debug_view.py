@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import inspect
+import json
 from types import MemberDescriptorType
 
 
@@ -84,3 +85,18 @@ def _display(raw: object, kind: str) -> str:
     if raw is None or isinstance(raw, (bool, int, float, str)):
         return repr(raw)
     return f"<{kind}>"
+
+
+def main() -> int:
+    """Render the worked example from the same module that owns its behavior."""
+
+    from .evidence import IncidentObservationTarget
+
+    target = IncidentObservationTarget("queue lag")
+    payload = [entry.as_dict() for entry in build_debug_view(target)]
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
