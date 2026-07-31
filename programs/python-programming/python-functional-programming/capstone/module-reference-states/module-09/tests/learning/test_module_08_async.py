@@ -400,6 +400,56 @@ def test_async_rag_chunks_retries_only_the_failed_embedding_plan() -> None:
     assert attempts == 2
 
 
+def test_async_rag_chunks_keeps_retry_exhaustion_local_to_one_chunk() -> None:
+    """Exhausting one chunk emits MAX_RETRIES without erasing later documents."""
+
+    docs = [
+        RawDoc("fails", "Fails", "first chunk", "demo"),
+        RawDoc("after", "After", "later chunk", "demo"),
+    ]
+    attempts: dict[str, int] = {}
+
+    def selective_embedder(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+        async def run() -> Result[Chunk, ErrInfo]:
+            attempts[chunk.doc_id] = attempts.get(chunk.doc_id, 0) + 1
+            if chunk.doc_id == "fails":
+                return Err(ErrInfo(code="TRANSIENT", msg="still unavailable"))
+            return Ok(embed_chunk(chunk))
+
+        return run
+
+    resilient_embedder = resilient_mapper(
+        selective_embedder,
+        RetryPolicy(
+            max_attempts=2,
+            retriable_codes=frozenset({"TRANSIENT"}),
+            backoff_base_ms=0,
+            jitter_factor=0,
+        ),
+        env=make_test_resilience_env(),
+    )
+    stream = async_rag_chunks(
+        async_gen_from_list(docs),
+        RagEnv(chunk_size=32),
+        clean_doc,
+        resilient_embedder,
+        BackpressurePolicy(max_concurrent=1, ordered=True),
+    )
+
+    async def collect() -> list[Result[Chunk, ErrInfo]]:
+        return [item async for item in stream()]
+
+    results = asyncio.run(collect())
+
+    assert isinstance(results[0], Err)
+    assert results[0].error.code == "MAX_RETRIES"
+    assert results[0].error.ctx is not None
+    assert results[0].error.ctx["attempts"] == 2
+    assert isinstance(results[1], Ok)
+    assert results[1].value.doc_id == "after"
+    assert attempts == {"fails": 2, "after": 1}
+
+
 def test_async_rag_chunks_applies_the_backpressure_policy_to_embedding() -> None:
     """The application exposes its concurrency ceiling and ordering choice."""
 
