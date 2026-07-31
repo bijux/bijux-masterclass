@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from hypothesis import given
 from hypothesis import strategies as st
 
+from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, RagEnv, RawDoc
 from funcpipe_rag.domain.effects.async_ import (
     AsyncGen,
     AsyncPlan,
@@ -31,6 +32,8 @@ from funcpipe_rag.domain.effects.async_ import (
     make_fake_timeout_ctx,
     make_test_resilience_env,
 )
+from funcpipe_rag.rag import async_rag_chunks, iter_rag
+from funcpipe_rag.rag.stages import clean_doc, embed_chunk
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
 
@@ -307,3 +310,39 @@ def test_async_stream_map_preserves_function_composition(values: list[int]) -> N
         return [item async for item in stream()]
 
     assert asyncio.run(collect(mapped_twice)) == asyncio.run(collect(mapped_once))
+
+
+def test_async_rag_chunks_defers_embedding_and_matches_the_sync_core() -> None:
+    """The application path adds coordination without changing RAG values."""
+
+    docs = [
+        RawDoc("a", "A", "ABC DEF", "demo"),
+        RawDoc("b", "B", "GHI JKL", "demo"),
+    ]
+    env = RagEnv(chunk_size=4)
+    embedded: list[str] = []
+
+    def embed_later(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+        async def run() -> Ok[Chunk]:
+            embedded.append(f"{chunk.doc_id}:{chunk.start}")
+            await asyncio.sleep(0)
+            return Ok(embed_chunk(chunk))
+
+        return run
+
+    stream = async_rag_chunks(
+        async_gen_from_list(docs),
+        env,
+        clean_doc,
+        embed_later,
+        BackpressurePolicy(max_concurrent=2, ordered=True),
+    )
+
+    assert embedded == []
+
+    async def collect() -> list[Result[Chunk, ErrInfo]]:
+        return [item async for item in stream()]
+
+    expected = [Ok(chunk) for chunk in iter_rag(docs, env, clean_doc)]
+    assert asyncio.run(collect()) == expected
+    assert embedded == ["a:0", "a:4", "b:0", "b:4"]

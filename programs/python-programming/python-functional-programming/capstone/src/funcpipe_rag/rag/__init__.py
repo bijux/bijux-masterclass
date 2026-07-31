@@ -4,6 +4,7 @@
 entrypoints live here instead.
 """
 
+from .async_rag import AsyncChunkEmbedder, async_rag_chunks
 from .clean_cfg import DEFAULT_CLEAN_CONFIG, CleanConfig, make_cleaner
 from .config import (
     DocsReader,
@@ -50,6 +51,7 @@ from .types import DebugConfig, DocRule, Observations, RagTaps, RagTraceV3, Trac
 __all__ = [
     "DEFAULT_CLEAN_CONFIG",
     "LOCAL_EMBEDDING_MODEL",
+    "AsyncChunkEmbedder",
     "CleanConfig",
     "DebugConfig",
     "DocRule",
@@ -63,6 +65,7 @@ __all__ = [
     "SourceSchedule",
     "TraceLens",
     "_trace_iter",
+    "async_rag_chunks",
     "boundary_rag_config",
     "cosine_similarity",
     "full_rag_api",
