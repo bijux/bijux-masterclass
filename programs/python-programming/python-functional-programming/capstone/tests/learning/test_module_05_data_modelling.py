@@ -12,6 +12,7 @@ from funcpipe_rag.boundaries.adapters.serde import (
     from_json,
     to_json,
 )
+from funcpipe_rag.core.rag_types import Chunk as IndexedChunk
 from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, CleanDoc, RawDoc
 from funcpipe_rag.fp.core import (
     JSON,
@@ -56,6 +57,11 @@ from funcpipe_rag.rag.domain import (
     SearchQuery,
     assemble,
     process_batch_hybrid,
+)
+from funcpipe_rag.rag.retrieval import (
+    LOCAL_EMBEDDING_MODEL,
+    cosine_similarity,
+    retrieve,
 )
 from funcpipe_rag.rag.stages import clean_doc, embed_chunk, embed_text
 from funcpipe_rag.result.types import Err, ErrInfo, Ok
@@ -187,6 +193,29 @@ def test_retrieval_values_reject_ambiguous_query_and_rank_states() -> None:
         RankedChunk(chunk=indexed, score=float("nan"), rank=1)
     with pytest.raises(ValueError, match="positive integer"):
         RankedChunk(chunk=indexed, score=0.75, rank=0)
+
+
+def test_retrieval_ranks_by_score_then_stable_chunk_coordinates() -> None:
+    exact_vector = (1.0,) + (0.0,) * 15
+    lower_vector = (0.0, 1.0) + (0.0,) * 14
+    tie_b = IndexedChunk("b", "later tie", 0, 9, embedding=exact_vector)
+    lower = IndexedChunk("c", "lower score", 0, 11, embedding=lower_vector)
+    tie_a = IndexedChunk("a", "earlier tie", 0, 11, embedding=exact_vector)
+    query = SearchQuery(
+        text="stable ranking",
+        embedding=Embedding(vector=exact_vector, model=LOCAL_EMBEDDING_MODEL),
+        top_k=2,
+    )
+
+    hits = retrieve(query, (tie_b, lower, tie_a))
+
+    assert tuple(hit.chunk.doc_id for hit in hits) == ("a", "b")
+    assert tuple(hit.rank for hit in hits) == (1, 2)
+    assert tuple(hit.score for hit in hits) == pytest.approx((1.0, 1.0))
+    with pytest.raises(ValueError, match="same non-zero dimension"):
+        cosine_similarity((1.0,), (1.0, 0.0))
+    with pytest.raises(ValueError, match="must be non-zero"):
+        cosine_similarity((0.0, 0.0), (1.0, 0.0))
 
 
 def test_applicative_validation_accumulates_independent_chunk_errors() -> None:
