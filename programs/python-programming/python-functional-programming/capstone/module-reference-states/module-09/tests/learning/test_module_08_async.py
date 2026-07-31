@@ -443,3 +443,72 @@ def test_async_rag_chunks_keeps_failures_in_the_application_stream() -> None:
         "ok:after",
     ]
     assert embedded == ["before", "after"]
+
+
+def test_async_rag_chunks_preserves_the_complete_indexing_policy_trace() -> None:
+    """Filtering and distinct failure owners remain visible under bounded work."""
+
+    source_failure = ErrInfo(code="SOURCE", msg="unreadable row")
+
+    async def source_items() -> AsyncIterator[Result[RawDoc, ErrInfo]]:
+        yield Ok(RawDoc("before", "Before", "valid", "keep"))
+        yield Ok(RawDoc("filtered", "Filtered", "skip me", "skip"))
+        yield Err(source_failure)
+        yield Ok(RawDoc("invalid", "Invalid", "reject", "keep"))
+        yield Ok(RawDoc("embed-fail", "Embed fail", "valid", "keep"))
+        yield Ok(RawDoc("after", "After", "still valid", "keep"))
+
+    cleaned: list[str] = []
+
+    def clean_or_reject(doc: RawDoc) -> CleanDoc:
+        cleaned.append(doc.doc_id)
+        if doc.doc_id == "invalid":
+            raise ValueError("document failed validation")
+        return clean_doc(doc)
+
+    active = 0
+    maximum_active = 0
+    embedded: list[str] = []
+
+    def embed_later(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+        async def run() -> Result[Chunk, ErrInfo]:
+            nonlocal active, maximum_active
+            embedded.append(chunk.doc_id)
+            active += 1
+            maximum_active = max(maximum_active, active)
+            await asyncio.sleep(0)
+            active -= 1
+            if chunk.doc_id == "embed-fail":
+                return Err(ErrInfo(code="EMBED", msg="provider rejected chunk"))
+            return Ok(embed_chunk(chunk))
+
+        return run
+
+    stream = async_rag_chunks(
+        source_items,
+        RagEnv(chunk_size=32),
+        clean_or_reject,
+        embed_later,
+        BackpressurePolicy(max_concurrent=2, ordered=True),
+        keep=lambda doc: doc.categories != "skip",
+    )
+
+    async def collect() -> list[Result[Chunk, ErrInfo]]:
+        return [item async for item in stream()]
+
+    results = asyncio.run(collect())
+    labels = [
+        f"ok:{item.value.doc_id}" if isinstance(item, Ok) else f"err:{item.error.code}"
+        for item in results
+    ]
+
+    assert labels == [
+        "ok:before",
+        "err:SOURCE",
+        "err:UNEXPECTED",
+        "err:EMBED",
+        "ok:after",
+    ]
+    assert maximum_active == 2
+    assert cleaned == ["before", "invalid", "embed-fail", "after"]
+    assert embedded == ["before", "embed-fail", "after"]
