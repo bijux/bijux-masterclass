@@ -1,64 +1,69 @@
-# Module 06 Refactoring Guide
+# Module 06 Refactoring Guide: Earn Each Context
 
+Module 06 should not end with every FuncPipe function wrapped in Reader, State,
+Writer, or Result. It should end with clearer ownership:
 
-<!-- page-maps:start -->
-## Page Maps
+- domain functions own domain transformations;
+- containers own explicit propagation rules;
+- adapters classify expected throwing behavior;
+- builders choose optional policy; and
+- tests compare the observations that matter.
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Monadic Flow Explicit Context"]
-  page["Module 06 Refactoring Guide"]
-  capstone["Capstone evidence"]
+Use this guide to review one flow from the Module 06 reference state before
+moving to effect boundaries in Module 07.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## Begin with the direct route
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
-
-This guide closes Module 06. The point is not to admire monadic vocabulary. The point is
-to make sequencing, context, and failure propagation easier to read and safer to change.
-
-## Final application pressure
-
-The direct RAG route is already readable:
+For valid inputs, the direct RAG path is already clear:
 
 ```python
 cleaned = clean_doc(raw)
-chunks = [embed_chunk(chunk) for chunk in iter_chunk_doc(cleaned, env)]
+chunks = [
+    embed_chunk(chunk)
+    for chunk in iter_chunk_doc(cleaned, env)
+]
 ```
 
-Do not replace it merely to display a container. A `Result` flow becomes useful
-when a typed boundary or prerequisite already exists and the same
-transformations must preserve that context:
+Do not replace it to demonstrate vocabulary.
+
+A Result-preserving path becomes relevant when `raw` already arrived inside a
+typed outcome:
 
 ```python
 refactored = (
-    source.map(clean_doc)
-    .map(lambda doc: list(iter_chunk_doc(doc, env)))
-    .map(lambda chunks: [embed_chunk(chunk) for chunk in chunks])
+    source
+    .map(clean_doc)
+    .map(
+        lambda doc: list(
+            iter_chunk_doc(doc, env)
+        )
+    )
+    .map(
+        lambda chunks: [
+            embed_chunk(chunk)
+            for chunk in chunks
+        ]
+    )
 )
 ```
 
-The important review question is not “is the second version more functional?”
-It is “which failure or context rule requires the second shape, and did the RAG
-output remain the same?”
+Every function under `map` is plain and infallible for the modeled input. If a
+new dependent prerequisite returns `Result`, only that operation moves under
+`and_then`.
 
-## Runnable equivalence proof
+## Prove the complete output
 
-The module’s final property generates document text and valid chunk sizes,
-executes both routes, and compares the complete embedded chunk list:
+The final Module 06 learning property generates abstract text and valid chunk
+sizes. It compares:
+
+```text
+direct list[EmbeddedChunk]
+Ok(direct list[EmbeddedChunk])
+```
+
+with the mapped Result route.
+
+Run it:
 
 ```bash
 cd capstone/module-reference-states/module-06
@@ -66,41 +71,120 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
   -k explicit_flow_refactor_preserves_rag_chunk_output
 ```
 
-The test covers empty input, short tails, multiple chunks, normalization,
-offsets, order, and deterministic embeddings within its generated space. It
-does not exercise file I/O or claim that wrapping an infallible route in
-`Result` is automatically better design.
+Complete chunk equality protects:
 
-## Review the flow by responsibility
+- document identity;
+- normalized text;
+- chunk boundaries and offsets;
+- output order; and
+- deterministic embeddings.
 
-| Question | Evidence to inspect |
-| --- | --- |
-| Does a downstream stage depend on a successful value? | `and_then` proof and its skipped-work trace |
-| Are successful values transformed without new failure? | `map` composition property |
-| Are configuration values independent? | `liftA2` proof and declared error order |
-| Is context read-only or changing? | Reader environment runs versus State progress result |
-| Are absence and failure distinct? | layered retrieval cases |
-| Is trace data part of the inspectable result? | Writer payload-and-entry assertion |
-| Is an exception expected? | narrow exception bridge and propagation test |
-| Does configuration change assembly or core logic? | validation-toggle call trace |
+Comparing only list length would allow incorrect text, offsets, order, or
+embedding values to pass.
 
-## Stable comparison route
+The exercise extends the generator with valid overlap values. Generate
+`chunk_size` first, then constrain overlap to
+`0 <= overlap < chunk_size`. Otherwise the property tests constructor
+rejection rather than equivalence of two valid routes.
 
-1. run `make PROGRAM=python-programming/python-functional-programming history-refresh`
-2. open `capstone/_history/worktrees/module-06/src/funcpipe_rag/fp/effects/`
-3. run `tests/learning/test_module_06_explicit_context.py`
-4. compare the learning claims with `test_monad_laws.py`,
-   `test_reader_laws.py`, `test_state_laws.py`, and `test_writer_laws.py`
+## Use a context ledger
 
-## What to refactor toward
+Before introducing an abstraction, complete one row:
 
-- dependent steps composed without repetitive propagation code
-- context passed explicitly instead of read from globals
-- logs and side information carried as data when that keeps the flow honest
-- exception-heavy code rewritten into reviewable containers and laws
+| Pressure | Smallest honest option | When the Module 06 type earns its place | Evidence |
+| --- | --- | --- | --- |
+| one plain success transformation | direct call or `map` | the value already lives inside a context | complete contextual equality |
+| dependent fallible step | explicit branch | repeated propagation obscures the domain flow | first error and skipped-work trace |
+| independent contextual inputs | explicit pattern match | the same combination structure repeats | success and declared error order |
+| shared read-only context | ordinary argument or configured closure | several descriptions share and compose over one environment | same program, controlled environments |
+| local changing value | tuple or fold | reusable dependent operations thread the same state | value, final state, unchanged initial state |
+| ordered side data | tuple or domain record | several operations append while preserving one payload | payload equality and exact entry order |
+| throwing adapter | local `try` | callers need a typed recoverable outcome | expected mapping and unexpected propagation |
+| optional policy | direct builder branch | one base callable needs reusable wrappers | enabled, disabled, and evaluation-count proofs |
 
-## Exit standard
+If the “smallest honest option” is clearer, keep it.
 
-Before Module 07, you should be able to say which context travels through the flow, how
-failure propagates, what output a refactor preserves, and what tests prove each
-composition rule still holds.
+## Review layer order separately
+
+When a flow contains more than one context, write the complete type:
+
+```text
+Result[Option[CleanDoc], ErrInfo]
+Writer[Result[EmbeddedChunk, ErrInfo]]
+State[Progress, Result[Chunk, ErrInfo]]
+```
+
+Then answer:
+
+- Which decision happens first?
+- Does an error retain earlier state or trace entries?
+- Is absence successful?
+- What must the caller pattern-match?
+- Can every represented combination occur?
+
+Do not hide these choices behind a generic “effect stack” description.
+
+## Characterize boundaries before changing them
+
+For a `try`/`except` refactor:
+
+1. record the old success and error values;
+2. name the exact expected exception class;
+3. wrap the smallest throwing expression;
+4. compare complete results;
+5. prove a different exception still raises; and
+6. make domain validation a separate pure step.
+
+This keeps parser behavior, validation policy, and control-flow structure in
+reviewable changes.
+
+## Read the Module 05 to 06 delta in ownership order
+
+After running `make history-refresh` from the course directory:
+
+1. inspect new files under
+   `capstone/_history/worktrees/module-06/src/funcpipe_rag/fp/effects/`;
+2. inspect
+   `boundaries/adapters/exception_bridge.py`;
+3. inspect changed exports only to see what became public;
+4. run
+   `tests/learning/test_module_06_explicit_context.py`;
+5. inspect the matching law files; and
+6. confirm the same learning test remains in Modules 07–09.
+
+This route avoids treating widespread `__init__.py` or formatting differences
+as new application behavior.
+
+## Separate three kinds of evidence
+
+| Evidence | Supports | Does not support |
+| --- | --- | --- |
+| container law property | legal structural regrouping | RAG policy correctness |
+| focused learning test | one named application behavior | every possible input or deployment |
+| before/after equivalence property | preservation over a generated domain | superiority of the new design |
+
+A refactor needs both preservation evidence and a readability or ownership
+reason. Equality alone proves the rewrite did not change the tested behavior;
+it does not prove the additional abstraction is worthwhile.
+
+## Module exit review
+
+Take one changed flow and explain it without using the word *monad*:
+
+- what value enters;
+- what can stop the flow;
+- what context the caller supplies;
+- what local value changes;
+- what side information is returned;
+- which exception is expected;
+- what exact RAG output remains unchanged; and
+- which test supports each statement.
+
+Then explain where an ordinary function, argument, fold, or tuple would be
+clearer.
+
+You are ready for Module 07 when you can distinguish describing context from
+executing effects. Reader can describe a computation that depends on a value;
+Writer can return trace data; neither one opens, closes, retries, or emits an
+external resource. Module 07 assigns those responsibilities to capabilities,
+ports, adapters, and resource-safe shells.
