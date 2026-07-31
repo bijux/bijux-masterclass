@@ -143,6 +143,8 @@ From the repository root:
 ```bash
 make PROGRAM=python-programming/python-meta-programming docs-serve
 make PROGRAM=python-programming/python-meta-programming docs-build
+make -C programs/python-programming/python-meta-programming study-route
+make -C programs/python-programming/python-meta-programming study-route-test
 make -C programs/python-programming/python-meta-programming lab
 make -C programs/python-programming/python-meta-programming lab-test
 make -C programs/python-programming/python-meta-programming observation-lab
@@ -181,6 +183,11 @@ make PROGRAM=python-programming/python-meta-programming capstone-tour
 make PROGRAM=python-programming/python-meta-programming capstone-verify-report
 make PROGRAM=python-programming/python-meta-programming capstone-confirm
 ```
+
+Use `study-route` for the executable course-first sequence. Set
+`LAST_TRUSTED_MODULE=<module>` when returning after a break; the generated plan re-proves
+that boundary before continuing and leaves the broad gate deferred. Use
+`study-route-test` to verify module order, proof order, and re-entry behavior.
 
 Use `lab` for the Module 01 runtime-object evidence. Use `observation-lab` and
 `observation-debug-view` for Module 02's observation boundaries and worked example.
@@ -225,6 +232,8 @@ Primary reading route:
 - `course-book/guides/start-here.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
+- `course-book/module-00-orientation/study-practicum.md`
+- `course-book/module-00-orientation/study-practicum-answers.md`
 - `course-book/module-01-runtime-objects-object-model/index.md`
 - `labs/runtime_objects/evidence.py`
 - `course-book/module-01-runtime-objects-object-model/exercises.md`

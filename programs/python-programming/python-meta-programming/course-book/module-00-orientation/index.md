@@ -161,6 +161,14 @@ Use the answer to compare reasoning, not just output. A matching output with the
 ownership model is not a correct solution. A different implementation can be correct if
 it preserves the stated contract and produces equally strong evidence.
 
+Practice that workflow before Module 01:
+
+- [Study Practicum](study-practicum.md) asks you to choose a starting boundary, recover
+  after a break, select proportional proof, and separate course learning from capstone
+  transfer.
+- [Study Practicum Review](study-practicum-answers.md) explains one defensible route,
+  common wrong turns, proof limits, and application consequences.
+
 ## How the capstone participates
 
 The incident-plugin capstone is a supporting integration project. It combines:

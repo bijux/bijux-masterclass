@@ -28,10 +28,12 @@ nav:
   - Proof Matrix: guides/proof-matrix.md
 - 'Module 00: Orientation and Study Practice':
   - Home: module-00-orientation/index.md
-  - Course Map: module-00-orientation/course-map.md
+  - 'Study Practicum: Building an Evidence-First Learning Route': module-00-orientation/study-practicum.md
+  - 'Study Practicum Review: Reasoning About Learning Routes': module-00-orientation/study-practicum-answers.md
   - First-Contact Map: module-00-orientation/first-contact-map.md
   - Mid-Course Map: module-00-orientation/mid-course-map.md
   - Mastery Map: module-00-orientation/mastery-map.md
+  - Course Map: module-00-orientation/course-map.md
 - 'Module 01: Runtime Objects and the Python Object Model':
   - Home: module-01-runtime-objects-object-model/index.md
   - Functions as Runtime Objects: module-01-runtime-objects-object-model/functions-as-runtime-objects.md
