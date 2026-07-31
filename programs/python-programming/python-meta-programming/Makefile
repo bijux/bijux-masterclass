@@ -9,6 +9,7 @@ ARTIFACTS_DIR ?= ../../../artifacts
 SITE_DIR ?= $(ARTIFACTS_DIR)/site/python-programming/python-meta-programming
 COURSE_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/python-programming/python-meta-programming
 LAST_TRUSTED_MODULE ?= 0
+MODULE ?= 1
 
 .PHONY: help
 help: ## Show available targets
@@ -25,6 +26,14 @@ study-route: ## Render the course-first study route and bounded reentry plan
 .PHONY: study-route-test
 study-route-test: ## Verify course progression, proof order, and reentry boundaries
 	@$(PYTHON) -m unittest discover -s tests -p "test_study_practice_*.py" -v
+
+.PHONY: transfer-route
+transfer-route: ## Render one module's observational capstone transfer contract
+	@$(PYTHON) -m labs.study_practice.transfer_evidence --module $(MODULE)
+
+.PHONY: transfer-route-test
+transfer-route-test: ## Verify transfer claims and every published Make entrypoint
+	@$(PYTHON) -m unittest discover -s tests -p "test_study_practice_transfer*.py" -v
 
 .PHONY: lab
 lab: ## Run the Module 01 runtime-object evidence lab
