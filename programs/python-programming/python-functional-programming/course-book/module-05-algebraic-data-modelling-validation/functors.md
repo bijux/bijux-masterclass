@@ -1,436 +1,226 @@
-# Functors
+# Functors: Change the Value, Preserve the Context
 
+The word *functor* sounds more exotic than the job it names. In this course, a
+functor is a container with a lawful `map` operation:
 
-<!-- page-maps:start -->
-## Page Maps
+> Apply a function to a value that may be present, successful, or part of a
+> collection without changing what that surrounding context means.
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Algebraic Data Modelling Validation"]
-  page["Functors"]
-  capstone["Capstone evidence"]
+For FuncPipe, the most important example is `Result`. A successful value may be
+transformed. A failure must pass through untouched.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+## The repetition that `map` removes
+
+Suppose a source read has already produced `Result[CleanDoc, ErrInfo]`, and the
+next calculation merely counts words:
+
+```python
+def count_words(result: Result[CleanDoc, ErrInfo]) -> Result[int, ErrInfo]:
+    if isinstance(result, Err):
+        return result
+    return Ok(len(result.value.abstract.split()))
 ```
+
+Nothing is wrong with this function in isolation. The problem appears when
+every small transformation repeats the same `Err` branch. The business
+operation—counting words—becomes harder to see than the container plumbing.
+
+FuncPipe expresses the stable part once:
+
+```python
+def result_map(f):
+    def _inner(result):
+        if isinstance(result, Ok):
+            return Ok(f(result.value))
+        return result
+    return _inner
+```
+
+Now the caller supplies only the changing part:
+
+```python
+word_count = result_map(lambda doc: len(doc.abstract.split()))
+```
+
+`word_count(Ok(clean_doc))` produces `Ok[int]`. Passing an `Err` returns that
+same error object without calling the lambda.
+
+## Read the shape before the syntax
+
+Mapping changes the type inside a context:
+
+```text
+Result[CleanDoc, ErrInfo] --map(count_words)--> Result[int, ErrInfo]
+```
+
+The success type changes from `CleanDoc` to `int`. The error type and the fact
+that the operation may have failed do not change.
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+  input["Result[CleanDoc, ErrInfo]"]
+  ok["Ok(CleanDoc)"]
+  err["Err(ErrInfo)"]
+  mapped["Ok(word count)"]
+  same["same Err object"]
 
-Functors should feel like a relief from repetitive container plumbing. The point is not more abstraction for its own sake. The point is a safe way to transform values inside `Option`, `Result`, and collections without rewriting the same structural boilerplate every time.
-
-## Start With the Unboxing Smell
-
-The pain point here is easy to recognize: the actual transformation is tiny, but the code around it keeps checking `Err`, `Some`, empty cases, and manual loops.
-
-- If the same `if Err` or `if Some` structure appears in many places, the transformation logic is being drowned by container handling.
-- If a minor refactor changes structure-handling inconsistently across functions, the codebase no longer has one reliable transformation pattern.
-- If you cannot describe what stays the same and what changes under `map`, the abstraction has not yet become useful.
-
-**Core question**  
-How do you replace ad-hoc unboxing, duplicated `if err/None` boilerplate, and manual loops with lawful functor mapping over Option, Result, and List — guaranteeing type-safe, composable transformations in every FuncPipe pipeline stage?
-
-This lesson introduces functors as the standard answer to “transform the value, keep the container contract”:
-
-- transform values without rewriting error, absence, or collection structure
-- keep the container behavior stable while the inner function changes
-- use the functor laws as a way to trust refactors, not as decorative mathematics
-
-The motivating pipeline examples matter because they show the same smell in several shapes: optional values, fallible values, and batches all repeating structural handling.
-
-The naïve pattern everyone writes first:
-
-```python
-# BEFORE – manual unboxing everywhere
-def normalize_embedding(res: Result[Embedding, ErrInfo]) -> Result[float, ErrInfo]:
-    if isinstance(res, Err):
-        return res
-    try:
-        norm = normalize(res.value)
-        return Ok(norm)
-    except Exception as e:
-        return Err(make_errinfo(...))
-
-# And for batches...
-def embed_batch(chunks: list[Chunk]) -> list[Result[Success, ErrInfo]]:
-    out = []
-    for c in chunks:
-        r = embed_chunk(c)
-        if isinstance(r, Err):
-            out.append(r)
-            continue
-        out.append(Ok(postprocess(r.value)))
-    return out
+  input --> ok -->|"call count_words"| mapped
+  input --> err -->|"do not call count_words"| same
 ```
 
-This is the structural repetition to eliminate.
+This diagram is the whole contract. `map` is appropriate when the inner
+function is a plain transformation. It is not a general replacement for
+branching or sequencing.
 
-The production pattern makes the transformation itself the center of attention and lets the container preserve its own structure automatically.
+## Run the real FuncPipe example
 
-```python
-# AFTER – uniform, composable, zero boilerplate
-normalize_embedding = result_try_map(normalize, stage="norm")
-
-postprocess = result_map(normalize_embedding) >> result_map(str)
-
-embed_batch = iter_map(embed_chunk) >> iter_map(postprocess)
-# or eager:
-embed_batch = list_map(embed_chunk) >> list_map(postprocess)
-```
-
-Now the value transformation becomes the readable part again, and later composition has fewer places to drift apart.
-
-Use this when duplicated unboxing is getting in the way and you want one consistent way to transform optional, fallible, and batched values.
-
-**Outcome**
-1. Every manual `if Err/None` or loop replaced with functor `map`.
-2. All transformations proven to satisfy identity + composition laws.
-3. Immutable, lazy-capable pipelines with zero boilerplate.
-
-## Tiny Non-Domain Example – Mapping Over Option[int]
-
-```python
-opt: Option[int] = Some(value=5)
-doubled = option_map(lambda x: x * 2)(opt)          # Some(value=10)
-tripled = option_map(lambda x: x + x//2)(doubled)   # Some(value=15)
-
-absent: Option[int] = NONE
-option_map(lambda x: x * 100)(absent)               # NONE – function never called
-```
-
-Mapping applies **only when present**, short-circuits automatically, and composes cleanly.
-
-## Why Functors? (Three bullets every engineer should internalise)
-
-- **Uniform transformation**: One curried `map` works for Option, Result, List — no more duplicated unboxing.
-- **Lawful composition**: `map(f) >> map(g) == map(f >> g)` and `map(id) == id` proven for all instances — refactoring is safe.
-- **Structure preservation + short-circuit**: Errors/absence automatically propagated, no accidental double-processing.
-
-We explicitly **do not** use `None` or `Optional[T]` as absence in domain code — absence is a first-class ADT (`Option[T] = Some[T] | NONE`) with its own lawful map.
-
-## 1. Laws & Invariants (machine-checked)
-
-> **Reminder – what does `>>` mean in this series?**  
-> Throughout Modules 1–5 we use `f >> g` as *left-to-right function composition*: first apply `f`, then apply `g` to the result. Formally,  
-> `f >> g := compose(f, g) := lambda x: g(f(x))`.  
-> In concrete Python you can always replace `f >> g` with `compose(f, g)` (or with the `flow` / `pipe` helpers introduced in earlier cores).
-
-| Law               | Formal Statement                                           | Enforcement                                           |
-|-------------------|------------------------------------------------------------|-------------------------------------------------------|
-| Identity          | `map(id)(x) == x`                                          | Hypothesis on all functors                            |
-| Composition       | `map(g)(map(f)(x)) == map(f >> g)(x)`                      | Hypothesis on all functors (`f >> g := compose(f, g)`)|
-| Preservation      | Mapping over empty/error yields empty/error                | Property tests + short-circuit counters               |
-| Naturality        | `to_optional ∘ map(f) == map(f) ∘ to_optional` (for Option)| Hypothesis bridge tests                               |
-| Purity            | `map` is referentially transparent                         | Reproducibility + no-side-effect tests                |
-| Bounded Work      | O(1) for Option/Result, O(N) lazy for iter_map             | Instrumented benchmarks                               |
-
-## 2. Decision Table – Which Functor When?
-
-| Container       | May Be Absent | May Fail | Collection | Recommended Functor                  |
-|-----------------|---------------|----------|------------|--------------------------------------|
-| Optional value  | Yes           | No       | No         | `Option`                             |
-| Fallible op     | No            | Yes      | No         | `Result`                             |
-| Sequence/Batch  | No            | No       | Yes        | `iter_map` (lazy) / `list_map` (eager tuple) |
-
-## 3. Public API (fp/functor.py – mypy --strict clean)
-
-```python
-from __future__ import annotations
-
-from dataclasses import dataclass
-from typing import (Generic, TypeVar, Callable, Iterable, Iterator,
-                    Tuple, Sequence, Literal, Optional, final, TypeAlias, cast)
-
-from .core import Result, Ok, Err, ErrInfo, make_errinfo
-
-__all__ = [
-    "Option", "Some", "NoneVal", "NONE",
-    "option_map", "from_optional", "to_optional",
-    "result_map", "result_try_map", "result_map_err", "result_bimap",
-    "iter_map", "list_map", "compose",
-]
-
-T = TypeVar("T")
-U = TypeVar("U")
-V = TypeVar("V")
-E = TypeVar("E")
-F = TypeVar("F")
-
-# Left-to-right function composition.
-# Throughout the cores we use the infix notation
-#   f >> g  :=  compose(f, g)  :=  lambda x: g(f(x))
-# i.e. “apply f, then g”. If you don’t have an infix helper
-# in your codebase, call `compose(f, g)` directly (or use the
-# `flow` / `pipe` helpers from earlier modules).
-def compose(f: Callable[[T], U], g: Callable[[U], V]) -> Callable[[T], V]:
-    return lambda x: g(f(x))
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class Some(Generic[T]):
-    kind: Literal["some"] = "some"
-    value: T
-
-@final
-@dataclass(frozen=True, slots=True)
-class NoneVal:
-    kind: Literal["none"] = "none"
-
-NONE: NoneVal = NoneVal()  # singleton – do not construct NoneVal() directly
-Option: TypeAlias = Some[T] | NoneVal
-
-# Option functor (curried)
-def option_map(f: Callable[[T], U]) -> Callable[[Option[T]], Option[U]]:
-    def _inner(opt: Option[T]) -> Option[U]:
-        return Some(value=f(opt.value)) if isinstance(opt, Some) else NONE
-    return _inner
-
-def from_optional(x: Optional[T]) -> Option[T]:
-    return NONE if x is None else Some(value=x)
-
-def to_optional(opt: Option[T]) -> Optional[T]:
-    return opt.value if isinstance(opt, Some) else None
-
-# Result functor (curried, generic in error type E)
-def result_map(
-    f: Callable[[T], U],
-) -> Callable[[Result[T, E]], Result[U, E]]:
-    def _inner(res: Result[T, E]) -> Result[U, E]:
-        if isinstance(res, Ok):
-            return Ok(value=f(res.value))
-        # res is an Err here; value type stays T, we widen to U via cast
-        return cast(Result[U, E], res)
-    return _inner
-
-def result_try_map(
-    f: Callable[[T], U],
-    *,
-    stage: str = "",
-    path: Tuple[int, ...] = (),
-) -> Callable[[Result[T, ErrInfo]], Result[U, ErrInfo]]:
-    def _inner(res: Result[T, ErrInfo]) -> Result[U, ErrInfo]:
-        if isinstance(res, Err):
-            return res
-        try:
-            return Ok(value=f(res.value))
-        except Exception as exc:
-            return Err(error=make_errinfo(
-                code="EXC",
-                msg=str(exc),
-                stage=stage,
-                path=path,
-                exc=exc,
-                meta={"exc_type": type(exc).__name__},
-            ))
-    return _inner
-
-def result_map_err(
-    f: Callable[[E], F],
-) -> Callable[[Result[T, E]], Result[T, F]]:
-    def _inner(res: Result[T, E]) -> Result[T, F]:
-        if isinstance(res, Err):
-            return Err(error=f(res.error))
-        return cast(Result[T, F], res)
-    return _inner
-
-def result_bimap(
-    f: Callable[[T], U],
-    g: Callable[[E], F],
-) -> Callable[[Result[T, E]], Result[U, F]]:
-    def _inner(res: Result[T, E]) -> Result[U, F]:
-        if isinstance(res, Ok):
-            return Ok(value=f(res.value))
-        # res is an Err here; we transform its error payload
-        err = cast(Err[E], res)
-        return Err(error=g(err.error))
-    return _inner
-
-# Sequence functors (curried)
-def iter_map(f: Callable[[T], U]) -> Callable[[Iterable[T]], Iterator[U]]:
-    def _inner(xs: Iterable[T]) -> Iterator[U]:
-        for x in xs:
-            yield f(x)
-    return _inner
-
-# Returns immutable tuple for value semantics
-def list_map(f: Callable[[T], U]) -> Callable[[Sequence[T]], Tuple[U, ...]]:
-    def _inner(xs: Sequence[T]) -> Tuple[U, ...]:
-        return tuple(iter_map(f)(xs))
-    return _inner
-```
-
-## 4. Reference Implementations (continued)
-
-### 4.1 Before vs After – Result Mapping
-
-```python
-# BEFORE – 8 lines of boilerplate
-def normalize_embedding(res: Result[Embedding, ErrInfo]) -> Result[float, ErrInfo]:
-    if isinstance(res, Err):
-        return res
-    try:
-        norm = normalize(res.value)
-        return Ok(value=norm)
-    except Exception as e:
-        return Err(error=make_errinfo(...))
-
-# AFTER – one lawful line
-normalize_embedding = result_try_map(normalize, stage="norm")
-```
-
-### 4.2 Before vs After – Batch Processing
-
-```python
-# BEFORE – manual loop, error handling mixed in
-results = []
-for chunk in chunks:
-    r = embed_chunk(chunk)
-    if isinstance(r, Err):
-        results.append(r)
-        continue
-    results.append(Ok(value=postprocess(r.value)))
-
-# AFTER – pure, lazy, composable
-pipeline = iter_map(embed_chunk) >> iter_map(postprocess)
-results = tuple(pipeline(chunks))
-```
-
-### 4.3 RAG Integration Example
-
-```python
-# Full embedding pipeline – zero unboxing
-embed_and_postprocess = (
-    result_try_map(extract_text, stage="extract") >>
-    result_try_map(tokenize, stage="tokenize") >>
-    result_try_map(model.encode, stage="encode") >>
-    result_try_map(normalize, stage="norm")
-)
-
-batch_pipeline = iter_map(embed_and_postprocess)
-embedded_chunks: Tuple[Result[NormalizedEmbedding, ErrInfo], ...] = tuple(batch_pipeline(raw_chunks))
-```
-
-## 5. Property-Based Proofs (capstone/tests/test_functor_laws.py)
-
-```python
-from dataclasses import dataclass
-from hypothesis import given, strategies as st
-from funcpipe_rag.fp.functor import *
-from funcpipe_rag.fp.core import Ok, Err
-
-# Simple dummy error for law tests (decoupled from full ErrInfo)
-@dataclass(frozen=True)
-class DummyErr:
-    msg: str
-
-@given(x=st.integers())
-def test_option_identity(x):
-    opt = Some(value=x)
-    assert option_map(lambda v: v)(opt) == opt
-    assert option_map(lambda v: v)(NONE) is NONE
-
-@given(x=st.integers())
-def test_option_composition(x):
-    f = lambda v: v + 1
-    g = lambda v: v * 2
-    opt = Some(value=x)
-    assert (option_map(g)(option_map(f)(opt)) ==
-            option_map(compose(f, g))(opt))
-
-@given(opt=st.one_of(st.builds(Some, value=st.integers()), st.just(NONE)))
-def test_option_naturality(opt):
-    f = lambda v: v + 5
-    assert to_optional(option_map(f)(opt)) == (None if opt is NONE else f(opt.value))
-
-@given(res=st.one_of(st.builds(Ok, value=st.integers()),
-                    st.builds(Err, error=st.builds(DummyErr, msg=st.text()))))
-def test_result_functor_laws(res):
-    assert result_map(lambda x: x)(res) == res
-    f = lambda x: x + 1
-    g = lambda x: x * 2
-    assert (result_map(g)(result_map(f)(res)) ==
-            result_map(compose(f, g))(res))
-
-@given(xs=st.lists(st.integers()))
-def test_list_functor_laws(xs):
-    assert list_map(lambda x: x)(xs) == tuple(xs)
-    f = lambda x: x + 1
-    g = lambda x: x * 2
-    assert (list_map(g)(list_map(f)(xs)) ==
-            list_map(compose(f, g))(xs))
-
-@given(xs=st.lists(st.integers()))
-def test_iter_functor_laws(xs):
-    f = lambda x: x + 1
-    g = lambda x: x * 2
-    assert (tuple(iter_map(g)(iter_map(f)(xs))) ==
-            tuple(iter_map(compose(f, g))(xs)))
-    assert tuple(iter_map(lambda x: x)(xs)) == tuple(xs)
-```
-
-## 6. Big-O & Allocation Guarantees
-
-| Functor       | Time   | Heap (eager) | Heap (lazy) | Notes                          |
-|---------------|--------|--------------|-------------|--------------------------------|
-| option_map    | O(1)   | O(1)         | –           | Constant                       |
-| result_map    | O(1)   | O(1)         | –           | Constant                       |
-| iter_map      | O(N)   | O(1)         | O(1)        | Fully lazy                     |
-| list_map      | O(N)   | O(N)         | –           | Immutable tuple output         |
-
-## 7. Anti-Patterns & Immediate Fixes
-
-| Anti-Pattern               | Symptom                          | Fix                                      |
-|----------------------------|----------------------------------|------------------------------------------|
-| Manual if Err/None         | Duplicated boilerplate           | `map` / `try_map` (curried)              |
-| List comprehensions with if| Mixed logic, hard to compose     | `iter_map` / `list_map`                  |
-| Mutable accumulation       | Side effects                     | Pure `map` over immutable containers     |
-| Eager processing of streams| OOM                              | `iter_map` for laziness                  |
-| Ignoring functor laws      | Refactor breaks silently         | Hypothesis law tests in CI               |
-
-## Runnable RAG learning lab
-
-Run the focused behavior before the general laws:
+From `programs/python-programming/python-functional-programming`:
 
 ```bash
-cd capstone/module-reference-states/module-05
-PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
-  -k result_functor_transforms_success_without_running_failure_work
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/python \
+  - <<'PY'
+from funcpipe_rag.core.rag_types import RawDoc
+from funcpipe_rag.fp.functor import result_map
+from funcpipe_rag.rag.stages import clean_doc
+from funcpipe_rag.result.types import Err, ErrInfo, Ok
+
+calls = []
+
+def count_words(doc):
+    calls.append(doc.doc_id)
+    return len(doc.abstract.split())
+
+clean = clean_doc(RawDoc("map-1", "Mapping", " One  TWO three ", "fp"))
+unavailable = Err(ErrInfo(code="SOURCE_DOWN", msg="read failed", stage="read"))
+count = result_map(count_words)
+
+print(count(Ok(clean)))
+print(count(unavailable))
+print(calls)
+PY
 ```
 
-The successful branch starts with a shipped `RawDoc`, normalizes it through
-`clean_doc`, and maps a word-count projection over `Ok`. The failed source
-branch contains the original `ErrInfo`; the projection is never called and the
-same `Err` object remains observable.
+Expected output:
 
-That difference is the boundary of `map`: it transforms a value already inside
-the successful branch. It does not sequence a function that returns another
-`Result`, and it should not be used to hide exceptions from an impure
-callable. The test proves both branches and the skipped call. The law suite
-then justifies regrouping pure maps. Complete the corresponding exercise before
-choosing between `result_map`, `result_try_map`, and later `and_then`.
+```text
+Ok(value=3)
+Err(error=ErrInfo(code='SOURCE_DOWN', msg='read failed', stage='read', path=(), cause=None, ctx=None))
+['map-1']
+```
 
-## 8. Pre-Core Quiz
+The final line is evidence, not decoration: the transformation ran exactly
+once, for the successful value.
 
-1. Functor = container + lawful what? → **curried map**  
-2. Identity law → **map(id)(x) == x**  
-3. Composition law → **map(g)(map(f)(x)) == map(f >> g)(x)**  
-4. For absent/error values → **map short-circuits automatically**  
-5. For large sequences → **use iter_map for laziness**
+## Why laws matter
 
-## 9. Post-Core Exercise
+Any function with a name like `map` could be implemented. A *functor* promises
+two laws that make refactoring predictable.
 
-1. Implement your own functor (e.g. Tree) → prove identity + composition.  
-2. Refactor one pipeline loop to `iter_map(f) >> iter_map(g)`.  
-3. Replace all manual `if res.is_err(): return res` with `result_map` / `result_try_map`.  
-4. Add Hypothesis law tests for any custom container you map over.
+### Identity
 
-**Continue with:** [Applicative Validation](../module-05-algebraic-data-modelling-validation/applicative-validation.md)
+Mapping the identity function changes nothing:
 
-You now transform data through any container with a single, lawful, composable curried `map` — no unboxing, no loops, no boilerplate, short-circuit guaranteed. The rest of Module 5 builds Applicatives (parallel validation), Monads (sequencing), and Monoids (aggregation) on top of these functors.
+```python
+identity = lambda value: value
+assert result_map(identity)(result) == result
+```
+
+If this fails, merely observing a value through `map` changes the program.
+
+### Composition
+
+Mapping two functions in sequence must equal mapping their composition:
+
+```python
+normalise = lambda text: " ".join(text.split())
+word_count = lambda text: len(text.split())
+composed = lambda text: word_count(normalise(text))
+
+left = result_map(word_count)(result_map(normalise)(result))
+right = result_map(composed)(result)
+assert left == right
+```
+
+This law lets you combine or split pure transformation steps without changing
+success and failure behavior. Python has no built-in `>>` operator for ordinary
+function composition; spelling the composition as a lambda keeps the example
+honest.
+
+The laws assume pure functions. If `normalise` writes a file or increments a
+counter, equal returned values do not prove equal observable behavior.
+
+## The same idea in three contexts
+
+Module 5 supplies mapping functions for three useful shapes:
+
+| Context | Mapping behavior | Preserved case |
+| --- | --- | --- |
+| `Option[T]` | transform a `Some` value | `NONE` remains absent |
+| `Result[T, E]` | transform an `Ok` value | the original `Err` passes through |
+| `Iterable[T]` | transform each item lazily | order and item count |
+
+```python
+from funcpipe_rag.fp.functor import list_map, option_map
+from funcpipe_rag.fp.core import NONE, Some
+
+assert option_map(str.upper)(Some("rag")) == Some("RAG")
+assert option_map(str.upper)(NONE) is NONE
+assert list_map(len)(["typed", "data"]) == (5, 4)
+```
+
+These are separate functions because Python does not have higher-kinded types
+or type classes built into its type system. The shared concept is still useful:
+the caller changes values while each function preserves its own context.
+
+## Know when not to use `map`
+
+The type of the inner function is the fastest guide:
+
+| Inner function | Needed operation |
+| --- | --- |
+| `T -> U` | `map` |
+| `T -> Result[U, E]` | result sequencing/`bind`, introduced earlier |
+| `T -> U` that may raise | first make the exception policy explicit; `result_try_map` is available at exception boundaries |
+| several independent validations | applicative validation, in the next lesson |
+
+If a function passed to `result_map` returns a `Result`, the output becomes
+`Result[Result[U, E], E]`. That nesting is a design warning: the operation is
+fallible, so plain mapping is the wrong composition tool.
+
+Likewise, `result_try_map` is not permission to catch exceptions throughout
+domain code. It is useful at a deliberate boundary where an exception is
+translated into `ErrInfo` with a stage and path.
+
+## Inspect the implementation and proof
+
+The implementation is intentionally small:
+
+```bash
+sed -n '1,180p' \
+  capstone/module-reference-states/module-05/src/funcpipe_rag/fp/functor.py
+```
+
+The application-level learning proof is in:
+
+```text
+capstone/module-reference-states/module-05/tests/learning/
+└── test_module_05_data_modelling.py
+```
+
+Find `test_result_functor_transforms_success_without_running_failure_work`.
+Before moving on, explain why the test checks both the returned value and the
+`calls` list.
+
+## Check your understanding
+
+1. In `Result[T, E] -> Result[U, E]`, which type parameter may `result_map`
+   change?
+2. Why should mapping an `Err` return it without calling the transformation?
+3. What bug does the composition law protect against during a refactor?
+4. Why is `result_map(parse)` wrong when `parse` already returns a `Result`?
+5. Which FuncPipe test proves that failure work is skipped?
+
+You are ready for [Applicative Validation](applicative-validation.md) when you
+can distinguish transforming one successful value from combining several
+independent checked values.
