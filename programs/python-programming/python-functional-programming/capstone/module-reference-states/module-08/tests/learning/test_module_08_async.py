@@ -450,6 +450,58 @@ def test_async_rag_chunks_keeps_retry_exhaustion_local_to_one_chunk() -> None:
     assert attempts == {"fails": 2, "after": 1}
 
 
+def test_async_rag_chunks_replays_logical_embedding_timeout() -> None:
+    """Fresh fake time makes timeout translation and later continuation repeatable."""
+
+    def run_once() -> tuple[list[str], list[str], float]:
+        clock = FakeClock()
+        attempted: list[str] = []
+
+        def timed_embedder(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+            async def run() -> Result[Chunk, ErrInfo]:
+                attempted.append(chunk.doc_id)
+                if chunk.doc_id == "slow":
+                    clock.advance_s(0.051)
+                return Ok(embed_chunk(chunk))
+
+            return run
+
+        resilient_embedder = resilient_mapper(
+            timed_embedder,
+            RetryPolicy(max_attempts=1),
+            TimeoutPolicy(timeout_ms=50),
+            env=make_test_resilience_env(clock=clock),
+            timeout_ctx=make_fake_timeout_ctx(clock),
+        )
+        stream = async_rag_chunks(
+            async_gen_from_list(
+                [
+                    RawDoc("slow", "Slow", "cross deadline", "demo"),
+                    RawDoc("after", "After", "within deadline", "demo"),
+                ]
+            ),
+            RagEnv(chunk_size=32),
+            clean_doc,
+            resilient_embedder,
+            BackpressurePolicy(max_concurrent=1, ordered=True),
+        )
+
+        async def collect() -> list[Result[Chunk, ErrInfo]]:
+            return [item async for item in stream()]
+
+        labels = [
+            f"ok:{item.value.doc_id}" if isinstance(item, Ok) else f"err:{item.error.code}"
+            for item in asyncio.run(collect())
+        ]
+        return labels, attempted, clock.now_s()
+
+    first = run_once()
+    second = run_once()
+
+    assert first == second
+    assert first == (["err:TIMEOUT", "ok:after"], ["slow", "after"], 0.051)
+
+
 def test_async_rag_chunks_applies_the_backpressure_policy_to_embedding() -> None:
     """The application exposes its concurrency ceiling and ordering choice."""
 
