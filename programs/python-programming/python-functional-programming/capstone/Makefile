@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test test-report foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
+.PHONY: install test test-report foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof module-state-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -39,6 +39,8 @@ DATA_SHELL_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_filesystem_b
 STREAMING_STATE := module-reference-states/module-03
 STREAMING_RAG_PROOF := $(STREAMING_STATE)/tests/learning/test_module_03_streaming_dataflow.py
 SOURCE_SCHEDULING_PROOF := $(STREAMING_RAG_PROOF)
+MODULE ?=
+MODULE_STATE = module-reference-states/module-$(MODULE)
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
 INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-functional-programming
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-functional-programming
@@ -103,6 +105,14 @@ streaming-rag-proof: install ## Run the tracked complete streaming RAG laws
 source-scheduling-proof: install ## Run the tracked multi-source RAG scheduling laws
 	PYTHONPATH="$(abspath $(STREAMING_STATE)/src)" $(PYTEST) -q "$(SOURCE_SCHEDULING_PROOF)" \
 		-k "fan_in or source_schedule or later_sequential_source or source_boundaries or index_and_audit"
+
+module-state-proof: install ## Run all cumulative learning proofs for MODULE=01 through MODULE=09
+	@case "$(MODULE)" in \
+		01|02|03|04|05|06|07|08|09) ;; \
+		*) echo "MODULE must be one of 01 through 09" >&2; exit 2 ;; \
+	esac
+	PYTHONPATH="$(abspath $(MODULE_STATE)/src)" \
+		$(PYTEST) -q "$(MODULE_STATE)/tests/learning"
 
 demo: tour ## Build the learner-facing capstone walkthrough
 
