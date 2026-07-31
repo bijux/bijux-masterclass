@@ -37,6 +37,7 @@ from funcpipe_rag.domain.effects.async_ import (
     lift_sync,
     make_fake_timeout_ctx,
     make_test_resilience_env,
+    resilient_mapper,
 )
 from funcpipe_rag.rag import async_rag_chunks, iter_rag
 from funcpipe_rag.rag.stages import clean_doc, embed_chunk
@@ -352,6 +353,51 @@ def test_async_rag_chunks_defers_embedding_and_matches_the_sync_core() -> None:
     expected = [Ok(chunk) for chunk in iter_rag(docs, env, clean_doc)]
     assert asyncio.run(collect()) == expected
     assert embedded == ["a:0", "a:4", "b:0", "b:4"]
+
+
+def test_async_rag_chunks_retries_only_the_failed_embedding_plan() -> None:
+    """A transient chunk failure is retried without replaying document preparation."""
+
+    docs = [RawDoc("doc", "Title", "one chunk", "demo")]
+    env = RagEnv(chunk_size=32)
+    attempts = 0
+
+    def flaky_embedder(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+        async def run() -> Result[Chunk, ErrInfo]:
+            nonlocal attempts
+            attempts += 1
+            if attempts == 1:
+                return Err(ErrInfo(code="TRANSIENT", msg="try the chunk again"))
+            return Ok(embed_chunk(chunk))
+
+        return run
+
+    resilient_embedder = resilient_mapper(
+        flaky_embedder,
+        RetryPolicy(
+            max_attempts=2,
+            retriable_codes=frozenset({"TRANSIENT"}),
+            backoff_base_ms=0,
+            jitter_factor=0,
+        ),
+        env=make_test_resilience_env(),
+    )
+    stream = async_rag_chunks(
+        async_gen_from_list(docs),
+        env,
+        clean_doc,
+        resilient_embedder,
+        BackpressurePolicy(max_concurrent=1, ordered=True),
+    )
+
+    assert attempts == 0
+
+    async def collect() -> list[Result[Chunk, ErrInfo]]:
+        return [item async for item in stream()]
+
+    expected = [Ok(chunk) for chunk in iter_rag(docs, env, clean_doc)]
+    assert asyncio.run(collect()) == expected
+    assert attempts == 2
 
 
 def test_async_rag_chunks_applies_the_backpressure_policy_to_embedding() -> None:
