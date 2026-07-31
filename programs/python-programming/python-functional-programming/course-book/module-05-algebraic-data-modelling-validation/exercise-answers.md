@@ -6,26 +6,54 @@ observable, the ownership boundary, and the earlier cumulative RAG contract.
 
 ## Product and sum types
 
-Model `Skipped` as another frozen variant containing only data required to
-explain the outcome. Extend the union and add one explicit match case.
+`ChunkWithoutEmbedding` is a product: its identity, text, offsets, and metadata
+must travel together. The outcome is the existing sum
+`Result[Chunk, ErrInfo]`. A defensible reporter has one branch per variant:
 
-Avoid a Boolean success flag paired with optional error and embedding fields:
-that recreates contradictory states. Avoid silently treating an unknown tag as
-`Skipped`; forward compatibility requires an explicit migration or rejection.
+```python
+def report(result: Result[Chunk, ErrInfo]) -> str:
+    match result:
+        case Ok(value=Chunk(doc_id=doc_id, start=start, end=end)):
+            return f"ready:{doc_id}:{start}-{end}"
+        case Err(error=ErrInfo(stage=stage)):
+            return f"failed:{stage}"
+        case other:
+            assert_never(other)
+```
 
-The evidence proves the declared variants are distinguishable and the tested
-codec rejects one unknown tag. It does not prove arbitrary JSON is safe or that
-every future outcome belongs in this union.
+Avoid a Boolean paired with optional error and embedding fields: that recreates
+contradictory states. Avoid adding a second `ChunkState` union solely for this
+exercise; `Result` already owns the success/failure decision.
 
-## Domain state ADTs
+The evidence proves that the real product keeps its tested fields together,
+metadata rejects top-level mutation, and both result alternatives are
+distinguishable. It does not prove arbitrary JSON is safe, deep-freeze nested
+metadata, or show that embedding itself cannot fail.
 
-Add a cancellation event and transition only from states where cancellation is
-a legal business action. Preserve the existing absorbing terminal branch.
+## Domain states
 
-Common wrong turns are mutating the current state, accepting every event from
-every state, or comparing naive and aware datetimes. The focused route proves
-the listed transitions and rejections; it does not prove the state machine is
-correct under concurrent delivery or duplicated external events.
+Use the application operations in order:
+
+```python
+raw = RawDoc("state-1", "Types", "  Typed   values  ", "fp")
+cleaned = clean_doc(raw)
+prepared = chunk_doc(cleaned, RagEnv(chunk_size=32))[0]
+indexed = embed_chunk(prepared)
+
+assert indexed.doc_id == prepared.doc_id
+assert indexed.text == prepared.text
+assert (indexed.start, indexed.end) == (prepared.start, prepared.end)
+assert raw.abstract == "  Typed   values  "
+```
+
+The most important decision is what not to add. A timestamped job lifecycle
+has no owner, persistence surface, or user-visible behavior in this indexing
+path. It would be an unrelated application hidden inside the lesson.
+
+Common wrong turns are mutating `prepared`, checking only `isinstance`, or
+calling a two-value vector an indexed `Chunk`. The focused route proves the
+declared stages execute and preserve the listed observables. It does not prove
+that Python enforces annotations at runtime or that boundary input is valid.
 
 ## Functors
 
@@ -60,23 +88,40 @@ distributed aggregation under arbitrary floating-point regrouping.
 
 ## Pydantic smart constructors
 
-Call `ChunkModel.model_validate` before `to_core_chunk`. Keep the resulting
-core value free of `BaseModel` inheritance and transport-only computed fields.
+Call `ChunkModel.model_validate` before `to_core_chunk` and compare the complete
+round-trip:
+
+```python
+edge = ChunkModel.model_validate({
+    "doc_id": "edge-1",
+    "text": "valid",
+    "start": 4,
+    "end": 9,
+    "metadata": {"source": "exercise"},
+    "embedding": (0.0,) * 16,
+})
+core = to_core_chunk(edge)
+assert from_core_chunk(core) == edge
+assert deserialize_model(serialize_model(edge), ChunkModel) == edge
+```
 
 Do not catch all validation errors and construct the core value anyway. Do not
-repeat the same edge constraints throughout the pure pipeline. The proof
-establishes rejection and conversion for the declared schema cases, not that
-Pydantic owns cross-subsystem domain invariants.
+compare only text and metadata; that can hide discarded identity, offsets, or
+embedding. The proof establishes complete preservation plus the declared
+dimension, finiteness, and offset rejections. It does not establish migration
+compatibility with a future schema or make Pydantic the owner of the core.
 
 ## Pattern matching
 
-Add an explicit `case Skipped(reason=reason)` and leave `assert_never` as the
-last branch. Each case should return the stable label required by callers.
+Use the explicit `Ok` and `Err` branches shown in the product-and-sum answer,
+and leave `assert_never` as the final statement. Destructure the fields needed
+for the public label rather than reaching through nullable attributes.
 
 A wildcard makes future variants silently look handled; an `isinstance` chain
 without a final impossibility check loses the closed-union review signal. The
-test proves runtime coverage of constructed variants. Static exhaustiveness
-still depends on the type checker and the union annotation.
+test proves runtime coverage of the two constructed variants. Static
+exhaustiveness still depends on the type checker understanding the annotated
+union; the runtime test alone cannot detect a future unconstructed variant.
 
 ## Serialization
 
