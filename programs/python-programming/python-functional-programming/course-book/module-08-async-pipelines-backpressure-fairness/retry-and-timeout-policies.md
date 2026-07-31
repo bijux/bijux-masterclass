@@ -131,15 +131,15 @@ runtime boundary.
 
 ## Derive backoff before executing it
 
-With jitter disabled, the delay after failed attempt \(n\) is:
+With jitter disabled, the delay after failed attempt `n` is:
 
-\[
-\operatorname{delay}(n)
-=
-\frac{
-  \min(\text{base}_{ms} \times 2^{n-1}, \text{cap}_{ms})
-}{1000}
-\]
+```text
+delay_seconds(n) = min(base_ms × 2^(n - 1), cap_ms) ÷ 1000
+```
+
+The exponent starts at zero for the first retry, so that first delay is the
+configured base rather than twice the base. The minimum applies the cap before
+milliseconds are converted to seconds for the injected sleep capability.
 
 For `backoff_base_ms=5`, `max_backoff_ms=12`, and four attempts:
 
