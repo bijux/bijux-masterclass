@@ -159,6 +159,26 @@ proof: ## Run the full capstone proof route
 capstone-manifest: ## Render the capstone manifest from the public CLI
 	@$(RUN_CAPSTONE) manifest
 
+.PHONY: capstone-plugin
+capstone-plugin: ## Render one concrete capstone plugin contract
+	@$(RUN_CAPSTONE) plugin
+
+.PHONY: capstone-field
+capstone-field: ## Render one concrete capstone field contract
+	@$(RUN_CAPSTONE) field
+
+.PHONY: capstone-action
+capstone-action: ## Render one concrete capstone action contract
+	@$(RUN_CAPSTONE) action
+
+.PHONY: capstone-registry
+capstone-registry: ## Render the deterministic capstone registry
+	@$(RUN_CAPSTONE) registry
+
+.PHONY: capstone-signatures
+capstone-signatures: ## Render generated capstone signatures
+	@$(RUN_CAPSTONE) signatures
+
 .PHONY: capstone-governance
 capstone-governance: ## Review accepted, constrained, and rejected capstone powers
 	@$(RUN_CAPSTONE) governance

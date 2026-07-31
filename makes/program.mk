@@ -82,6 +82,58 @@ capstone-walkthrough: ## Run the selected program's learner-facing capstone walk
 capstone-tour: ## Run the selected program's learner-facing capstone tour
 	@$(RUN_PROGRAM) capstone-tour
 
+.PHONY: capstone-manifest
+capstone-manifest: ## Render the selected program's public capstone manifest
+	@$(RUN_PROGRAM) --no-print-directory capstone-manifest
+
+.PHONY: capstone-plugin
+capstone-plugin: ## Render one selected program capstone plugin contract
+	@$(RUN_PROGRAM) --no-print-directory capstone-plugin
+
+.PHONY: capstone-field
+capstone-field: ## Render one selected program capstone field contract
+	@$(RUN_PROGRAM) --no-print-directory capstone-field
+
+.PHONY: capstone-field-ownership
+capstone-field-ownership: ## Inspect selected program capstone field ownership
+	@$(RUN_PROGRAM) --no-print-directory capstone-field-ownership
+
+.PHONY: capstone-field-system
+capstone-field-system: ## Inspect selected program capstone field-system powers
+	@$(RUN_PROGRAM) --no-print-directory capstone-field-system
+
+.PHONY: capstone-action
+capstone-action: ## Render one selected program capstone action contract
+	@$(RUN_PROGRAM) --no-print-directory capstone-action
+
+.PHONY: capstone-action-wrapper
+capstone-action-wrapper: ## Inspect selected program capstone wrapper ownership
+	@$(RUN_PROGRAM) --no-print-directory capstone-action-wrapper
+
+.PHONY: capstone-bind-action
+capstone-bind-action: ## Validate selected program capstone action binding
+	@$(RUN_PROGRAM) --no-print-directory capstone-bind-action
+
+.PHONY: capstone-check-action
+capstone-check-action: ## Check selected program capstone action hints
+	@$(RUN_PROGRAM) --no-print-directory capstone-check-action
+
+.PHONY: capstone-class-creation
+capstone-class-creation: ## Inspect selected program capstone class creation
+	@$(RUN_PROGRAM) --no-print-directory capstone-class-creation
+
+.PHONY: capstone-registry
+capstone-registry: ## Render the selected program's capstone registry
+	@$(RUN_PROGRAM) --no-print-directory capstone-registry
+
+.PHONY: capstone-signatures
+capstone-signatures: ## Render selected program capstone signatures
+	@$(RUN_PROGRAM) --no-print-directory capstone-signatures
+
+.PHONY: capstone-trace
+capstone-trace: ## Trace one selected program capstone invocation
+	@$(RUN_PROGRAM) --no-print-directory capstone-trace
+
 .PHONY: capstone-governance
 capstone-governance: ## Review the selected program's accepted, constrained, and rejected powers
 	@$(RUN_PROGRAM) --no-print-directory capstone-governance
