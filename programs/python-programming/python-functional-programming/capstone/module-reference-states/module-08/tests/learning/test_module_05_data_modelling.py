@@ -15,7 +15,7 @@ from funcpipe_rag.boundaries.adapters.serde import (
     from_json,
     to_json,
 )
-from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
+from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, CleanDoc, RawDoc
 from funcpipe_rag.fp.core import (
     JSON,
     UTC,
@@ -58,7 +58,7 @@ from funcpipe_rag.rag.domain import (
     assemble,
     process_batch_hybrid,
 )
-from funcpipe_rag.rag.stages import clean_doc
+from funcpipe_rag.rag.stages import clean_doc, embed_chunk, embed_text
 from funcpipe_rag.result.types import Err, ErrInfo, Ok
 
 
@@ -137,6 +137,21 @@ def test_result_functor_transforms_success_without_running_failure_work() -> Non
     assert result_map(count_words)(Ok(cleaned)) == Ok(3)
     assert result_map(count_words)(unavailable) is unavailable
     assert calls == ["rag-1"]
+
+
+def test_query_and_chunk_text_share_one_embedding_contract() -> None:
+    chunk = ChunkWithoutEmbedding(
+        doc_id="rag-embedding",
+        text="one local vector contract",
+        start=0,
+        end=25,
+    )
+
+    vector = embed_text(chunk.text)
+
+    assert len(vector) == 16
+    assert vector == embed_text(chunk.text)
+    assert embed_chunk(chunk).embedding == vector
 
 
 def test_applicative_validation_accumulates_independent_chunk_errors() -> None:

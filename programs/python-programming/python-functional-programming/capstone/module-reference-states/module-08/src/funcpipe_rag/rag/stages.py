@@ -104,19 +104,24 @@ def iter_chunk_doc(doc: CleanDoc, env: RagEnv) -> Iterator[ChunkWithoutEmbedding
     )
 
 
-def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
-    """Produce a deterministic 16-dimensional embedding from chunk text."""
+def embed_text(text: str) -> tuple[float, ...]:
+    """Produce the deterministic 16-dimensional vector used by local RAG values."""
 
-    digest = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
+    digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
     step = 4
-    vector = tuple(int(digest[i : i + step], 16) / (16**step - 1) for i in range(0, len(digest), step))[:16]
+    return tuple(int(digest[i : i + step], 16) / (16**step - 1) for i in range(0, len(digest), step))[:16]
+
+
+def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
+    """Attach the local deterministic text embedding to a chunk."""
+
     return Chunk(
         doc_id=chunk.doc_id,
         text=chunk.text,
         start=chunk.start,
         end=chunk.end,
         metadata=chunk.metadata,
-        embedding=vector,
+        embedding=embed_text(chunk.text),
     )
 
 
@@ -130,6 +135,7 @@ def structural_dedup_chunks(chunks: Iterable[Chunk]) -> list[Chunk]:
 __all__ = [
     "clean_doc",
     "chunk_doc",
+    "embed_text",
     "iter_chunk_spans",
     "iter_overlapping_chunks_text",
     "iter_chunk_doc",
