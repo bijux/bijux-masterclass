@@ -1,31 +1,26 @@
 # Module 05: Algebraic Data Modelling and Validation
 
+Module 4 made failures explicit. Module 5 now makes value shapes explicit:
+which facts must travel together, which alternatives must remain separate, and
+which boundary owns each invariant.
 
-<!-- page-maps:start -->
-## Page Maps
+The primary learning surface remains the cumulative FuncPipe RAG application.
+Focused models appear only when they isolate a decision the main stage types do
+not expose. Their scope is named and explained; they are not parallel products
+for their own sake.
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Algebraic Data Modelling Validation"]
-  page["Module 05: Algebraic Data Modelling and Validation"]
-  capstone["Capstone evidence"]
+## What you need before starting
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+You should be able to:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+- read frozen dataclasses and union annotations;
+- distinguish pure transformations from effectful operations;
+- follow `Ok | Err` and `Some | NONE` from Module 4;
+- run one selected pytest test from the course root.
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+If `Result` and `Option` are unfamiliar, revisit Module 4's failure-modeling
+pages before continuing. This module builds operations and boundaries on those
+containers rather than redefining them.
 
 ## Keep These Pages Open
 
@@ -50,6 +45,21 @@ boundaries that preserve their meaning.
 Start with the [Module 05 Capstone Delta](capstone-delta.md). It separates the
 new modelling behavior from broad package movement, names the stable ownership
 boundaries, and gives a runnable route from Module 04.
+
+## How to study independently
+
+Use three passes for each lesson:
+
+1. **Predict:** state the value, failure, or preserved fields before running
+   code.
+2. **Trace:** execute the small example and follow the corresponding FuncPipe
+   source.
+3. **Prove:** run the named learning test, then state both its claim and its
+   limit.
+
+Do not read the full implementation dump before identifying the problem. The
+rewritten lessons keep examples small enough to execute and point to the exact
+source only after the concept has a reason to exist.
 
 ## Learning outcomes
 
@@ -97,10 +107,11 @@ flowchart TD
 
 ## Exercises
 
-Use [Module 05 Exercises](exercises.md) for cumulative work against the tracked
-reference state. Consult [Exercise Answers](exercise-answers.md) only after
-recording the legal states, predicted result, preservation claim, and limit of
-the evidence.
+Use [Module 05 Exercises](exercises.md) for six cumulative pieces of work
+against the tracked reference state. They group related lessons instead of
+inflating the count with syntax variations. Consult
+[Exercise Answers](exercise-answers.md) only after recording the legal states,
+predicted result, preservation claim, and limit of the evidence.
 
 ## Capstone checkpoints
 
@@ -110,8 +121,10 @@ the evidence.
   for every field crossing the conversion.
 - Compare fail-fast `Result` with the independent checks accumulated by
   `Validation`.
-- Explain why the focused `rag/domain/` assembly lab does not replace the
-  cumulative pipeline values.
+- Explain why `rag.domain.AssembledChunk` is a focused assembly value and does
+  not replace `core.rag_types.Chunk`.
+- For the hybrid representation, distinguish the equivalence proof that exists
+  from the performance benchmark that does not.
 
 ## Before moving on
 
@@ -130,6 +143,7 @@ a convenient view, but the tracked reference state is the source of truth.
   one.
 - You can review a constructor, adapter, or match and identify its owned
   invariants.
+- You can distinguish semantic-equivalence evidence from performance evidence.
 - You can run the learning proof and state what its evidence does not prove.
 
 ## Directory glossary
