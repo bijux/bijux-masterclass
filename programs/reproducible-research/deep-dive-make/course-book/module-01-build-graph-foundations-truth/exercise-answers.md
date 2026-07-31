@@ -47,155 +47,225 @@ The best Module 01 answers usually do four things:
 - they point to one evidence route
 - they describe the repair in terms of ownership and observable behavior
 
-The best self-study packets also leave behind six concrete artifacts:
+The best self-study packets also leave behind reviewable artifacts:
 
 - one corrected graph sketch
-- one hidden-input repair
-- one evaluation-timing note
-- one atomic-publication drill
-- one stale-output diagnosis
-- one final graph you can defend calmly
+- an update-decision and ownership ledger
+- one hidden-input repair with relevant and irrelevant mutations
+- one Make-versus-shell evaluation note
+- one failure-safe publication drill
+- one stale-output diagnosis made without cleaning
+- one final graph whose completeness, minimality, recovery, and convergence are evidenced
 
 If your answers rely only on "Make knows what changed," the reasoning is still too thin.
 
 ## Exercise 1: Draw the graph
 
-A strong answer names both artifact targets and convenience targets explicitly.
+A defensible graph labels roles as well as paths:
 
-Example answer shape:
+```mermaid
+flowchart TD
+  all["all\nphony requested goal"] --> app["app\ngenerated file"]
+  app --> maino["build/main.o\ngenerated file"]
+  app --> utilo["build/util.o\ngenerated file"]
+  maino --> mainc["src/main.c\nsource leaf"]
+  utilo --> utilc["src/util.c\nsource leaf"]
+  maino --> header["include/util.h\nsource leaf"]
+  utilo --> header
+  maino --> stamp["build/flags.&lt;id&gt;.stamp\ngenerated semantic evidence"]
+  utilo --> stamp
+  maino -.order only.-> directory["build/\ndirectory target"]
+  utilo -.order only.-> directory
+```
 
-- real artifact targets:
-  - `app`
-  - `build/main.o`
-  - `build/util.o`
-- convenience target:
-  - `all`
-- important shared prerequisite:
-  - `include/util.h` if both objects include it
+The order-only edges ensure the directory exists but do not make objects stale whenever
+the directory timestamp changes. Header edges are normal because header content can
+change object meaning.
 
-Why this is strong:
+An update-decision table should reason from the requested goal inward:
 
-- it does not blur phony orchestration and file publication
-- it names the shared header edge that can go stale
-- it makes review possible before any command is run
+| Starting state | `build/main.o` | `build/util.o` | `app` |
+| --- | --- | --- | --- |
+| no generated files | missing; compile | missing; compile | missing; link |
+| only `src/util.c` is newer | up-to-date | stale; compile | stale after `util.o`; link |
+| every normal prerequisite is older | up-to-date | up-to-date | up-to-date |
 
-The missing but important sentence is usually:
+`all` is always considered because it is phony, but that does not force its file
+prerequisites to rebuild. The most dangerous missing edge is usually the shared header
+or semantic flags stamp: omitting either permits a semantically stale object to appear
+current.
 
-> `all` asks for work, but it is not itself the artifact whose freshness we are trying to
-> defend.
-
-Weak answer pattern:
-
-- "The graph is main depends on util depends on app"
-
-That answer is too vague to distinguish a build graph from a storytelling sequence.
+A common weak drawing is `main -> util -> app`. That is execution storytelling, not a
+dependency graph: the arrows point the wrong way and the published targets disappear.
 
 ## Exercise 2: Find a hidden input
 
-`CFLAGS` is a hidden input because it changes compiler meaning without appearing in the
-prerequisite list. A strong repair gives that semantic fact an artifact the graph can
-depend on.
-
-One acceptable sketch is:
+An incomplete rule can build successfully and still be false:
 
 ```make
-FLAGS_LINE := CFLAGS=$(CFLAGS)
-FLAGS_ID := $(shell printf '%s' "$(FLAGS_LINE)" | cksum | awk '{print $$1}')
-FLAGS_STAMP := build/flags.$(FLAGS_ID).stamp
-
-$(FLAGS_STAMP):
-	@mkdir -p build
-	@printf '%s\n' "$(FLAGS_LINE)" > $@
+build/%.o: src/%.c | build/
+	$(CC) $(CFLAGS) -c $< -o $@
 ```
 
-The important point is not the checksum tool. The important point is that changing the
-semantic compiler setting now moves a piece of evidence the graph can see.
+After `make CFLAGS=-O2 build/alpha.o`, requesting
+`make CFLAGS=-O0 build/alpha.o` can report the object up to date. The object file and
+source path have not changed, so the graph has no evidence that compiler policy changed.
 
-Key explanatory sentence:
+One repair makes the semantic value select a prerequisite path:
 
-> The repair works because the graph no longer depends on a private variable value alone;
-> it depends on an artifact that changes when that value changes.
+```make
+FLAGS_LINE := CC=$(CC) CFLAGS=$(CFLAGS)
+FLAGS_ID := $(shell printf '%s' "$(FLAGS_LINE)" | cksum | awk '{print $$1}')
+FLAGS_STAMP := build/compile-flags.$(FLAGS_ID).stamp
 
-Weak answer pattern:
+$(FLAGS_STAMP): | build/
+	@candidate="$@.candidate.$$$$"; \
+	printf '%s\n' "$(FLAGS_LINE)" > "$$candidate" && \
+	rm -f build/compile-flags.*.stamp && \
+	mv -f "$$candidate" "$@" || { rm -f "$$candidate"; exit 1; }
 
-- "I would just run `make clean` when flags change"
+build/%.o: src/%.c $(FLAGS_STAMP) | build/
+	$(CC) $(CFLAGS) -c $< -o $@
+```
 
-That does not repair the graph. It bypasses the graph.
+Changing `CFLAGS` now changes `FLAGS_ID`, selects a missing stamp, and makes that stamp a
+prerequisite of the requested object. A later identical request selects the existing
+stamp and converges. The stamp content gives a reviewer the human-readable policy; the
+checksum only gives it a path-safe identity.
+
+Removing the previously active stamp is essential in this single-configuration build
+directory. After `-O2 -> -O0`, an old `-O2` stamp must not remain available: returning
+to `-O2` has to create fresh evidence newer than the `-O0` object. If configurations must
+build concurrently, give each one a separate output directory rather than sharing object
+paths and deleting each other's active stamp.
+
+The rejection test matters. After convergence, changing `notes/reading.md` should leave
+`make -q build/alpha.o` at status `0` because the note has no edge to the object. Test
+both `-O2 -> -O0` and `-O0 -> -O2`; a solution that proves only the first transition has
+not established reversible semantic tracking. A solution that rebuilds on every file
+change avoids staleness by giving up minimality.
+
+Running `make clean` after flag changes does not repair the graph. It destroys the state
+needed to test whether the graph recognized the semantic change.
 
 ## Exercise 3: Review rule ownership
 
-An explicit rule makes ownership obvious because the output path is named directly. A
-pattern rule is still truthful when the mapping is stable and reviewable, such as
-`build/%.o: src/%.c`.
+The explicit version names membership and ownership together:
 
-The strongest answers say more than "pattern rules are shorter." They say why the mapping
-is still understandable and where confusion would begin.
+```make
+build/alpha.o: src/alpha.c | build/
+	$(CC) -c $< -o $@
 
-For example:
+build/beta.o: src/beta.c | build/
+	$(CC) -c $< -o $@
 
-> Ownership becomes unclear when two rules can both publish `build/alpha.o`, or when one
-> multi-output generator is described as if each file were independently produced.
+app: build/alpha.o build/beta.o
+	$(CC) $^ -o $@
+```
 
-Why this is strong:
+The generalized version separates the mapping from membership:
 
-- it uses ownership language instead of taste language
-- it identifies the actual failure mode
+```make
+OBJS := build/alpha.o build/beta.o
+
+build/%.o: src/%.c | build/
+	$(CC) -c $< -o $@
+
+app: $(OBJS)
+	$(CC) $^ -o $@
+```
+
+The pattern says how a requested matching object can be produced. `OBJS` says which
+objects belong in `app`. The pattern does not scan the filesystem and silently decide
+application membership.
+
+Adding a second recipe for `build/alpha.o` should produce an overriding-recipe warning.
+By contrast, these two lines are compatible because there is still only one writer:
+
+```make
+build/alpha.o: src/alpha.c
+build/alpha.o: include/alpha.h
+```
+
+Make combines their prerequisites. Ownership becomes confused only when competing recipe
+bodies claim the same path. The ledger should therefore name the pattern rule as the
+sole object writer and the `app` rule as the sole executable writer.
 
 ## Exercise 4: Explain evaluation timing
 
-`:=` computes its value when Make reads the file. `=` stores an expression to expand
-later. For graph-shaping values such as discovered source lists, `:=` is usually the
-safer Module 01 default because it gives the run one stable interpretation.
-
-A strong answer often includes a contrast like this:
+This example exposes immediate versus deferred expansion and dollar ownership:
 
 ```make
-SOURCES_NOW := $(wildcard src/*.c)
-SOURCES_LATER = $(wildcard src/*.c)
+name = early
+captured := $(name)
+deferred = $(name)
+name = late
+
+$(info captured=$(captured))
+$(info deferred=$(deferred))
+$(info flavor=$(flavor deferred))
+$(info origin=$(origin deferred))
+$(info raw=$(value deferred))
+
+.PHONY: inspect
+inspect:
+	label=shell; printf '%s %s %s\n' '$(captured)' '$(deferred)' "$$label"
 ```
 
-The key explanatory sentence is:
+Without an override, Make prints `captured=early` and `deferred=late`; the shell receives:
 
-> The point is not that `=` is morally wrong; the point is that graph-shaping values are
-> easier to reason about when they do not change meaning halfway through understanding the
-> build.
+```sh
+label=shell; printf '%s %s %s\n' 'early' 'late' "$label"
+```
 
-Weak answer pattern:
+Make owns `$(captured)` and `$(deferred)`, so it expands them before launching the shell.
+The doubled dollar survives Make as one dollar for the shell. `$(value deferred)` reports
+the stored text `$(name)`, while normal expansion follows that reference to `late`.
 
-- "`:=` is faster"
+With `make name=command inspect`, the command-line assignment wins over ordinary
+Makefile assignments; `origin` reports `command line`. The already captured value also
+becomes `command` because the override is in force when parsing begins.
 
-Speed may be true sometimes, but it misses the educational point of this module.
+For a graph-shaping source list, `:=` is usually the safer default because the set is
+fixed when Make parses the declaration. The claim is about stable meaning, not speed.
 
 ## Exercise 5: Prove safe publication
 
-A safe publication answer writes to a temporary path such as `$@.tmp` and renames only on
-success.
-
-Example shape:
+A failure-safe link rule uses a candidate name specific to the target and shell process:
 
 ```make
 app: build/main.o build/util.o
-	$(CC) $^ -o $@.tmp
-	mv $@.tmp $@
+	candidate=$@.candidate.$$$$; \
+	$(CC) $^ -o "$$candidate" && mv -f "$$candidate" $@ || { \
+	  status=$$?; rm -f "$$candidate"; exit $$status; \
+	}
 ```
 
-The proof statement is:
+The rename is the publication commit point. Before it, readers still see either the old
+valid `app` or no `app`; after it, they see the complete new one. The candidate is in the
+same directory so the final rename can use the filesystem's atomic rename behavior.
 
-> A failed recipe leaves either no final target or the previously known-good target, but
-> never a half-written new target at the published path.
+A valid drill is:
 
-The strongest answers also include the drill:
+```sh
+before=$(cksum app)
+# Introduce a compile or link failure.
+if make app; then exit 1; fi
+after=$(cksum app)
+test "$before" = "$after"
+test -z "$(find . -name '*.candidate.*' -print -quit)"
+```
 
-1. force failure before the final rename
-2. inspect whether `app` changed
-3. rerun and confirm clean recovery
+If no old target existed, replace the checksum assertion with `test ! -e app`. After
+repair, the target should rebuild and a safely captured `make -q app` status should be
+`0`.
 
-Weak answer pattern:
+For an object plus depfile, two renames cannot be one atomic transaction. Publishing the
+depfile first and object last is recovery-biased: a published new object will not be
+paired with older dependency information. The object rename remains the commit point.
 
-- "Temporary files are safer"
-
-That is directionally right but too weak. Safer against what, and what remains after
-failure?
+Writing directly to `$@`, using one shared candidate name, or relying only on
+`.DELETE_ON_ERROR` does not prove the same invariant.
 
 ## Exercise 6: Write the smallest useful Makefile
 
@@ -211,41 +281,41 @@ message.upper.txt: message.txt
 	tr '[:lower:]' '[:upper:]' < $< > $@
 ```
 
-The first run creates the target. The second run does nothing because
-`message.upper.txt` exists and is newer than `message.txt`. Editing `message.txt` makes
-the prerequisite newer than the target, so the recipe runs again.
+The mutation ledger should look like this:
 
-Why this is strong:
+| State or mutation | Classification before request | Expected recipe |
+| --- | --- | --- |
+| target absent | missing | build `message.upper.txt` |
+| no change | up-to-date | none |
+| edit `message.txt` | stale | rebuild `message.upper.txt` |
+| edit unrelated note | up-to-date | none |
 
-- it gives one truthful edge
-- it separates orchestration from publication
-- it is small enough that every learner can inspect the whole graph
+After the unrelated change, capture the query result with an `if` statement rather than
+`make -q ...; echo $?` in a shell that may use `set -e`. Status `0` is the rejection
+evidence. The edge `message.upper.txt -> message.txt` explains both the warranted rebuild
+and the ignored note.
 
 ## Exercise 7: Predict automatic variables
 
 For the rule shown:
 
-- `$@` expands to `report.txt`
+- `$@` expands to `build/report.txt`
 - `$<` expands to `title.txt`
 - `$^` expands to `title.txt results.txt`
 
 The shell command is:
 
 ```sh
-cat title.txt results.txt > report.txt
+cat title.txt results.txt > build/report.txt
 ```
 
-The important explanation is:
+The duplicate `title.txt` appears only once in `$^`. The order-only `build/` prerequisite
+is absent because `$^` contains normal prerequisites. After reversing the two normal
+prerequisite names, `$<` becomes `results.txt` and `$^` begins with `results.txt`.
 
-> `$<` would be wrong here because the recipe combines every declared prerequisite, not
-> just the first one.
-
-Weak answer pattern:
-
-- "`$^` means all dependencies"
-
-That is not enough. A learner still needs to connect the variable to the recipe's actual
-ownership and input story.
+That order is observable because `cat` is order-sensitive. `$<` would be wrong because
+the report's meaning comes from both normal prerequisites, not only the first. Automatic
+variables abbreviate graph facts; they do not decide which facts belong in the graph.
 
 ## Exercise 8: Remove duplicated compile recipes
 
@@ -259,16 +329,24 @@ build/:
 	mkdir -p $@
 ```
 
-If `build/gamma.o` is required by the final target, Make binds `%` to `gamma` and looks
-for `src/gamma.c`. The pattern rule removes duplicated compile policy. It does not remove
-the need to declare which objects belong in the final program.
+Before membership changes:
 
-The missing but important sentence is:
+```make
+OBJS := build/alpha.o build/beta.o
+app: $(OBJS)
+```
 
-> Generalized production rules do not discover the final artifact set for you.
+`make build/gamma.o` can bind `%` to `gamma` and use `src/gamma.c`. Merely adding that
+source does not cause `make app` to request it. If it belongs in the program, declare:
 
-That sentence protects learners from confusing reusable recipes with truthful target
-selection.
+```make
+OBJS := build/alpha.o build/beta.o build/gamma.o
+```
+
+The rejection observation is that `make app` remains a no-op after an unrequested
+matching source appears. This is correct for an explicit membership policy. The pattern
+answers “how can this object be built?”; `OBJS` answers “which objects belong in this
+goal?”
 
 ## Exercise 9: Diagnose a stale header build
 
@@ -283,58 +361,93 @@ If both sources include `config.h`, the second rule lies. Changing the header ca
 `build/beta.o` stale because the graph has no evidence connecting that object to the
 header.
 
-The repair is:
+Compiler-generated dependency files scale the repair:
+
+```make
+DEPFLAGS := -MMD -MP
+OBJS := build/alpha.o build/beta.o
+DEPS := $(OBJS:.o=.d)
+
+build/%.o: src/%.c | build/
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) -MF $(@:.o=.d) -MT $@ -c $< -o $@
+
+-include $(DEPS)
+```
+
+One generated file might contain:
 
 ```make
 build/beta.o: src/beta.c config.h
+config.h:
 ```
 
-The important explanation is:
+On the first parse, the `.d` file is absent and `-include` tolerates that absence. The
+successful compile emits it. On later parses, Make reads the stored header edge. `-MP`
+adds a phony header stub so a removed header can be diagnosed through compilation rather
+than failing immediately with “No rule to make target.”
 
-> `make clean` deletes the stale object, so the next build succeeds, but that only proves
-> a clean rebuild works. It does not prove the incremental graph is truthful.
+After the repair, changing `config.h` must rebuild both objects. Before the repair,
+`build/beta.o` was the stale artifact and its missing `config.h` edge was the cause.
+Cleaning would delete the evidence of that false incremental decision.
 
-Weak answer pattern:
-
-- "The broken build goes away if I rebuild everything"
-
-That is exactly the trap this exercise is trying to expose.
+For production code, publish the depfile and object through candidates as taught in
+Exercise 5; the short fragment above isolates dependency discovery.
 
 ## Exercise 10: Design and defend a small graph
 
-One valid design is:
+One valid design publishes each file through an owning rule:
 
 ```make
 .PHONY: all
 all: summary.txt chart.svg
 
 cleaned.csv: raw.csv
-	cp $< $@
+	candidate=$@.candidate.$$$$; \
+	cp $< "$$candidate" && mv -f "$$candidate" $@ || { rm -f "$$candidate"; exit 1; }
 
 summary.txt: cleaned.csv
-	printf 'summary from %s\n' "$<" > $@
+	candidate=$@.candidate.$$$$; \
+	printf 'summary from %s\n' "$<" > "$$candidate" && mv -f "$$candidate" $@ || { rm -f "$$candidate"; exit 1; }
 
 chart.svg: cleaned.csv
-	printf '<svg><!-- data from %s --></svg>\n' "$<" > $@
+	candidate=$@.candidate.$$$$; \
+	printf '<svg><!-- data from %s --></svg>\n' "$<" > "$$candidate" && mv -f "$$candidate" $@ || { rm -f "$$candidate"; exit 1; }
 ```
 
-Expected rebuilds:
+The node and ownership review is:
 
-| Change | Rebuilds |
-| --- | --- |
-| edit `raw.csv` | `cleaned.csv`, `summary.txt`, and `chart.svg` |
-| delete `summary.txt` | only `summary.txt` |
-| delete `chart.svg` | only `chart.svg` |
-| run twice without changes | no recipes on the second run |
+| Path | Role | Sole writer | Content-deciding input |
+| --- | --- | --- | --- |
+| `raw.csv` | source leaf | outside the build | none inside the build |
+| `cleaned.csv` | intermediate file target | `cleaned.csv` rule | `raw.csv` |
+| `summary.txt` | final file target | `summary.txt` rule | `cleaned.csv` |
+| `chart.svg` | final file target | `chart.svg` rule | `cleaned.csv` |
+| `all` | phony requested goal | no file writer | final target membership |
 
-The fan-out is honest because `cleaned.csv` has one writer and both final outputs name it
-as the content-deciding input.
+Expected evidence:
 
-Why this is strong:
+| Change | Must rebuild | Must not rebuild |
+| --- | --- | --- |
+| edit `raw.csv` | all three file targets | none |
+| delete `summary.txt` | `summary.txt` | `cleaned.csv`, `chart.svg` |
+| delete `chart.svg` | `chart.svg` | `cleaned.csv`, `summary.txt` |
+| edit unrelated note | none | all file targets |
+| unchanged rerun | none | all file targets |
 
-- every published path has one owner
-- every rebuild can be defended with one declared edge
-- the graph stays readable even after fan-out
+During the chart failure drill, the old `chart.svg` checksum must remain unchanged, or
+the file must remain absent if it had never been valid. No `*.candidate.*` file should
+remain. After repair, only the warranted downstream work should run and `make -q all`
+should return `0`.
+
+The reviewer guide maps claims to artifacts:
+
+- completeness: the graph and relevant-change traces
+- minimality: delete-one-output and unrelated-note traces
+- failure safety: checksum or absence assertion plus candidate search
+- convergence: unchanged trace plus query status
+
+The fan-out is honest because `cleaned.csv` has one writer and both consumers name it as
+their content-deciding input. Neither consumer writes the shared intermediate.
 
 ## What a mastery-level answer set looks like
 

@@ -1,466 +1,317 @@
 # Backpressure
 
+Async generators are demand-driven, but a concurrent transform can still start
+work faster than results are safely resolved. Backpressure is the rule that
+limits that unresolved work.
 
-<!-- page-maps:start -->
-## Page Maps
+For FuncPipe, the pressure appears at asynchronous embedding:
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Async Pipelines Backpressure Fairness"]
-  page["Backpressure"]
-  capstone["Capstone evidence"]
+> How many prepared chunks may have embedding plans in flight before the
+> application must wait?
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+Module 08 answers with `BackpressurePolicy` and
+`async_gen_bounded_map`.
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+## Prerequisites
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+You should already be able to explain:
 
-**Module 08 – Main Track Core**  
-> **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
-> This is a **required** core. Every production FuncPipe pipeline that fans out work uses bounded concurrency with explicit policies — preventing unbounded memory growth while keeping the core pure.
+- why an `AsyncPlan` is a factory rather than one coroutine;
+- how an `AsyncGen` pulls values on demand;
+- why `Result` failures stay in the stream; and
+- which FuncPipe stages remain synchronous.
 
-## Progression Note
-Module 8 is **Async FuncPipe & Backpressure** — the lightweight, production-grade concurrency layer that sits directly on top of Module 7’s effect boundaries.
+Backpressure is not the first reason to introduce async code. It is the policy
+needed after the application has independent waiting operations that may
+usefully overlap.
 
-| Module | Focus                                     | Key Outcomes                                                                      |
-|--------|-------------------------------------------|-----------------------------------------------------------------------------------|
-| 7      | Effect Boundaries & Resource Safety       | Ports & adapters, capability protocols, idempotent effects, explicit sessions    |
-| 8      | Async FuncPipe & Backpressure             | Async FuncPipe, non-blocking pipelines, backpressure, basic fairness             |
-| 9      | FP Across Libraries and Frameworks        | FuncPipe style in Pandas/Polars/Dask, FastAPI, CLI, distributed systems           |
-| 10     | Refactoring, Performance, Future-Proofing | Systematic refactors, performance budgets, governance and long-term evolution    |
+## See the unbounded design pressure
 
-**Core question**  
-How do you add safe, configurable concurrency limits to async FuncPipe streams — using bounded semaphores and explicit policies as pure data, so producers automatically pause when consumers lag, without ever breaking purity or replayability?
-
-**Symmetry with Previous Cores**  
-- Core 1: `AsyncPlan` = single-value async description  
-- Core 2: `AsyncGen` = lazy async stream description  
-- Core 3: `AsyncGen` + `BackpressurePolicy` = bounded async stream description  
-
-The bounded combinator returns an ordinary `AsyncGen`. The policy is closed over; the semaphore and tasks are created only when the stream is driven.
-
-**What you now have after M08C02 + this core**
-- Unbounded async streams  
-- Bounded async streams with configurable concurrency  
-- Automatic backpressure (producer pauses when limit reached)  
-- Choice of ordered vs unordered output  
-- True O(max_concurrent) memory in both modes — even under arbitrary stragglers
-
-**What the rest of Module 8 adds**
-- Retry & timeout policies as data (M08C04)  
-- Rate limiting & fairness (M08C05–C06)  
-- Full production async RAG pipeline with all safeguards
-
-## 1. Laws & Architectural Invariants
-
-| Category                  | Name                     | Description                                                                                                                | Enforcement                          |
-|---------------------------|--------------------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| Algebraic Laws            | Congruence with Unbounded| When `max_concurrent ≥ stream length`, bounded behaves exactly like unbounded                                            | Hypothesis                           |
-| Architectural Invariants | Bounded Concurrency      | At most `policy.max_concurrent` in-flight tasks at any time                                                                        | Runtime probe + property tests       |
-| Architectural Invariants | Bounded Memory           | Extra memory always O(max_concurrent) — even in ordered mode under arbitrary stragglers                                    | Property tests                       |
-| Architectural Invariants | Description Purity       | Constructing a bounded stream performs **zero** side effects (semaphore/tasks created only on iteration)                 | Mock tests                           |
-| Architectural Invariants | Backpressure             | Producer blocks when limit reached — never OOM from fan-out                                                                | Stress tests                         |
-| Architectural Invariants | Ordering (ordered=True)  | Output order == input order                                                                                                | Property tests                       |
-| Architectural Invariants | Ordering (ordered=False) | Output order == completion order                                                                                           | Property tests                       |
-
-## 2. Decision Table
-
-| Scenario                        | Low Risk of Blowup | High Fan-out / Limited Resources | Recommended                              |
-|---------------------------------|--------------------|----------------------------------|------------------------------------------|
-| Small known-size batches        | Yes                | No                               | Core 2 unbounded streams                 |
-| Large/unbounded streams         | No                 | Yes                              | Bounded streams with policy              |
-| Order doesn't matter            | Yes                | Yes                              | `ordered=False` (fastest)                |
-| Order matters                   | Yes                | Yes                              | `ordered=True` (still O(max_concurrent) memory) |
-| Embedding / API calls           | No                 | Yes                              | Bounded map over embed AsyncPlan         |
-
-**Rule**: Always bound concurrency when the number of in-flight tasks can exceed tens or hundreds.
-
-## 3. Public API – Bounded Streams (`capstone/src/funcpipe_rag/domain/effects/async_/concurrency.py` – mypy --strict clean)
+This shape materializes every plan and offers them all to the runtime:
 
 ```python
-# funcpipe_rag/domain/effects/async_/concurrency.py
-from __future__ import annotations
+plans = [embed_later(chunk) for chunk in every_chunk]
+results = await asyncio.gather(*(plan() for plan in plans))
+```
 
-from dataclasses import dataclass
-from asyncio import Semaphore, create_task, wait, FIRST_COMPLETED
-from collections.abc import AsyncIterator
-from typing import Callable, TypeVar
+For a small fixed list, that can be reasonable. For a stream of unknown size,
+it has three problems:
 
-import asyncio  # for Task type in annotations
+- all chunks and plans are materialized;
+- all coroutine objects are created before a result is consumed; and
+- the application has no declared ceiling for active embedding work.
 
-from funcpipe_rag.domain.effects.async_ import AsyncGen
-from funcpipe_rag.domain.effects.async_.plan import AsyncPlan
-from funcpipe_rag.result.types import Err, ErrInfo, Result
+Replacing the list comprehension with `asyncio.create_task` inside a loop does
+not solve the problem unless task creation itself is bounded.
 
-T = TypeVar("T")
-U = TypeVar("U")
+## The actual policy value
 
+Module 08 ships:
+
+```python
 @dataclass(frozen=True)
 class BackpressurePolicy:
-    max_concurrent: int = 16
-    ordered: bool = True          # False = completion order (faster, still bounded memory)
+    max_concurrent: int = 8
+    ordered: bool = True
 
     def __post_init__(self) -> None:
         if self.max_concurrent < 1:
             raise ValueError("max_concurrent must be >= 1")
-
-
-def async_gen_bounded_map(
-    source: AsyncGen[T],
-    f: Callable[[T], AsyncPlan[U]],
-    policy: BackpressurePolicy,
-) -> AsyncGen[U]:
-    """
-    Returns an AsyncGen that applies f to each item with bounded concurrency.
-    Pure until iterated — semaphore and tasks created only when driven.
-    Memory is always O(max_concurrent) — even in ordered mode under arbitrary stragglers.
-    """
-    if not policy.ordered:
-        # Unordered: simple, fast, O(max_concurrent) memory
-        async def _unordered() -> AsyncIterator[Result[U, ErrInfo]]:
-            sem = Semaphore(policy.max_concurrent)
-            pending: set[asyncio.Task[Result[U, ErrInfo]]] = set()
-
-            async def worker(value: T) -> Result[U, ErrInfo]:
-                try:
-                    return await f(value)()
-                except Exception as exc:
-                    return Err(ErrInfo.from_exception(exc))
-                finally:
-                    sem.release()
-
-            async for item in source():
-                if isinstance(item, Err):
-                    yield item
-                    continue
-
-                await sem.acquire()
-                task = create_task(worker(item.value))
-                pending.add(task)
-
-                if len(pending) >= policy.max_concurrent:
-                    done, pending = await wait(pending, return_when=FIRST_COMPLETED)
-                    for t in done:
-                        yield t.result()
-
-            while pending:
-                done, pending = await wait(pending, return_when=FIRST_COMPLETED)
-                for t in done:
-                    yield t.result()
-
-        return lambda: _unordered()
-    else:
-        # Ordered: preserves input order, still O(max_concurrent) memory via sliding window
-        async def _ordered() -> AsyncIterator[Result[U, ErrInfo]]:
-            sem = Semaphore(policy.max_concurrent)
-            pending: set[asyncio.Task[tuple[int, Result[U, ErrInfo]]]] = set()
-            buffer: dict[int, Result[U, ErrInfo]] = {}
-            next_expected = 0
-
-            async def worker(idx: int, value: T) -> tuple[int, Result[U, ErrInfo]]:
-                try:
-                    res = await f(value)()
-                    return idx, res
-                except Exception as exc:
-                    return idx, Err(ErrInfo.from_exception(exc))
-                finally:
-                    sem.release()
-
-            idx = 0
-            async for item in source():
-                # Sliding window enforcement: block new items if window would grow too large
-                while idx - next_expected >= policy.max_concurrent:
-                    if not pending:
-                        # This should never happen under correct invariants
-                        raise RuntimeError("Backpressure window violation")
-                    done, _ = await wait(pending, return_when=FIRST_COMPLETED)
-                    for t in done:
-                        pending.remove(t)
-                        t_idx, res = t.result()
-                        buffer[t_idx] = res
-
-                    while next_expected in buffer:
-                        yield buffer.pop(next_expected)
-                        next_expected += 1
-
-                # Safe to admit this index
-                if isinstance(item, Err):
-                    buffer[idx] = item
-                else:
-                    await sem.acquire()
-                    task = create_task(worker(idx, item.value))
-                    pending.add(task)
-
-                # Flush any newly contiguous results
-                while next_expected in buffer:
-                    yield buffer.pop(next_expected)
-                    next_expected += 1
-
-                idx += 1
-
-            # Final drain
-            while pending:
-                done, _ = await wait(pending, return_when=FIRST_COMPLETED)
-                for t in done:
-                    pending.remove(t)
-                    t_idx, res = t.result()
-                    buffer[t_idx] = res
-
-            while next_expected in buffer:
-                yield buffer.pop(next_expected)
-                next_expected += 1
-
-        return lambda: _ordered()
 ```
 
-### 3.1 Related combinators (also introduced here)
+The two fields answer different questions:
 
-- `async_gather` for **bounded parallel** execution of a finite list of `AsyncPlan`:
-  - Implementation: `capstone/src/funcpipe_rag/domain/effects/async_/plan.py`
-  - Import: `from funcpipe_rag.domain.effects.async_ import async_gather`
-- `async_gen_gather` for **fan-in** across multiple independent `AsyncGen` streams with a bounded buffer:
-  - Implementation: `capstone/src/funcpipe_rag/domain/effects/async_/stream.py`
-  - Import: `from funcpipe_rag.domain.effects.async_ import async_gen_gather`
+| Field | Question answered |
+| --- | --- |
+| `max_concurrent` | What is the maximum number of mapping plans allowed in flight? |
+| `ordered` | Must output positions match successful and failed input positions? |
 
-## 4. Reference Implementations (pure domain code)
+The value rejects a zero or negative limit before a stream starts. That is
+configuration validation, not a runtime scheduling failure.
 
-### 4.1 Bounded embedding in RAG (canonical pattern)
+## Where the policy enters FuncPipe
+
+`async_rag_chunks` first creates a prepared stream:
 
 ```python
-policy = BackpressurePolicy(max_concurrent=8, ordered=False)  # fastest, bounded memory
-
-def async_rag_bounded_embedding(
-    chunks: AsyncGen[ChunkWithoutEmbedding],
-    embedder: EmbeddingCap,
-) -> AsyncGen[EmbeddedChunk]:
-    return async_gen_bounded_map(
-        chunks,
-        lambda c: async_embed_chunk(c, embedder),  # Core 1 AsyncPlan
-        policy,
-    )
+prepared: AsyncGen[ChunkWithoutEmbedding]
 ```
 
-### 4.2 Full bounded RAG pipeline
+It then returns:
 
 ```python
-def async_rag_pipeline_bounded(
-    storage: StoragePort,
-    input_path: str,
-    env: RagEnv,
-    embedder: EmbeddingCap,
-    policy: BackpressurePolicy,
-) -> AsyncGen[EmbeddedChunk]:
-    unbounded = async_rag_pipeline_stream(storage, input_path, env, embedder)
-    return async_gen_bounded_map(unbounded, lambda x: async_pure(x), policy)
+async_gen_bounded_map(prepared, embedder, policy)
 ```
 
-Shell consumption (unchanged — backpressure happens automatically):
+```mermaid
+flowchart LR
+    prepared["prepared chunks\nnot scheduled"]
+    window["bounded window\nmax_concurrent"]
+    running["embedding plans\nactive tasks"]
+    buffer["completed results\nwaiting for order"]
+    consumer["downstream consumer"]
+
+    prepared --> window --> running
+    running --> buffer --> consumer
+    consumer -.frees capacity.-> window
+```
+
+The policy applies only to the embedding mapper. It does not turn cleaning or
+chunking into tasks.
+
+## Run an application-level measurement
+
+Use a fake embedder that records active calls:
 
 ```python
-async def run_rag_bounded():
-    policy = BackpressurePolicy(max_concurrent=8, ordered=False)
-    stream = async_rag_pipeline_bounded(real_storage, "data.csv", env, embedder, policy)
-    async for result in stream():
-        # same as Core 2
-        ...
+import asyncio
+
+from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, RagEnv, RawDoc
+from funcpipe_rag.domain.effects.async_ import (
+    AsyncPlan,
+    BackpressurePolicy,
+    async_gen_from_list,
+)
+from funcpipe_rag.rag import async_rag_chunks
+from funcpipe_rag.rag.stages import clean_doc, embed_chunk
+from funcpipe_rag.result.types import Ok
+
+active = 0
+maximum_active = 0
+
+
+def embed_later(chunk: ChunkWithoutEmbedding) -> AsyncPlan[Chunk]:
+    async def run() -> Ok[Chunk]:
+        global active, maximum_active
+        active += 1
+        maximum_active = max(maximum_active, active)
+        await asyncio.sleep(0)
+        active -= 1
+        return Ok(embed_chunk(chunk))
+
+    return run
+
+
+stream = async_rag_chunks(
+    async_gen_from_list(
+        [RawDoc("doc", "Title", "abcdefghijkl", "demo")]
+    ),
+    RagEnv(chunk_size=3),
+    clean_doc,
+    embed_later,
+    BackpressurePolicy(max_concurrent=2, ordered=True),
+)
+
+
+async def collect():
+    return [item async for item in stream()]
+
+
+results = asyncio.run(collect())
+print(maximum_active)
+print([(item.value.doc_id, item.value.start) for item in results])
 ```
 
-### 4.3 Before → After (the real transformation)
+Expected output:
 
-```python
-# BEFORE – unbounded embedding (memory blowup on 100k chunks)
-def async_embed_unbounded(chunks: AsyncGen[ChunkWithoutEmbedding]) -> AsyncGen[EmbeddedChunk]:
-    async for chunk in chunks():
-        yield await embedder.embed(chunk.text.content)
-
-# AFTER – bounded, safe, pure description — true O(max_concurrent) memory even with stragglers
-def async_embed_bounded(
-    chunks: AsyncGen[ChunkWithoutEmbedding],
-    policy: BackpressurePolicy = BackpressurePolicy(max_concurrent=16, ordered=True),
-) -> AsyncGen[EmbeddedChunk]:
-    return async_gen_bounded_map(
-        chunks,
-        lambda c: async_lift(lambda: embedder.embed(c.text.content))
-                  .map(lambda v: replace(c, embedding=Embedding(v, embedder.model_name))),
-        policy,
-    )
+```text
+2
+[('doc', 0), ('doc', 3), ('doc', 6), ('doc', 9)]
 ```
 
-## 5. Property-Based Proofs (all pass in CI)
+The fake yields control once so both allowed plans can become active. The call
+log proves the ceiling was reached but never exceeded. The coordinate list
+proves ordered output.
 
-```python
-@given(n=st.integers(20, 200), concurrency=st.integers(1, 20))
-@pytest.mark.asyncio
-async def test_bounded_concurrency_never_exceeds_limit(n: int, concurrency: int):
-    policy = BackpressurePolicy(max_concurrent=concurrency, ordered=True)  # test hardest case
+This test does not use wall-clock delays. A `sleep(0)` scheduling point is
+enough to expose overlap deterministically.
 
-    in_flight = 0
-    max_seen = 0
+## Trace the ordered window
 
-    async def probe(x: int) -> Result[int, ErrInfo]:
-        nonlocal in_flight, max_seen
-        in_flight += 1
-        max_seen = max(max_seen, in_flight)
-        await asyncio.sleep(0.001)   # force scheduling contention
-        in_flight -= 1
-        return Ok(x)
+Assume chunks at positions `0`, `3`, `6`, and `9`, a concurrency limit of `2`,
+and position `3` finishing before position `0`.
 
-    def source() -> AsyncGen[int]:
-        async def _src() -> AsyncIterator[Result[int, ErrInfo]]:
-            for i in range(n):
-                yield Ok(i)
-        return lambda: _src()
+| Moment | Active tasks | Completed buffer | Emitted |
+| --- | --- | --- | --- |
+| start | `0`, `3` | — | — |
+| `3` completes | `0` | `3` | — |
+| capacity opens | `0`, `6` | `3` | — |
+| `0` completes | `6` | `0`, `3` | `0`, then `3` |
+| continue | at most two | bounded by unresolved positions | input order |
 
-    stream = async_gen_bounded_map(source(), lambda x: async_lift(lambda: probe(x)), policy)
+The ordered implementation limits the distance between the next input index
+and the next emit-ready index. A fast later result cannot cause an unbounded
+buffer behind one slow earlier item.
 
-    async for _ in stream():
-        pass
+`max_concurrent` therefore limits more than simultaneous function bodies. In
+ordered mode it also bounds the unresolved scheduling window.
 
-    assert max_seen <= concurrency
+## Decide whether ordering belongs to the contract
+
+| Situation | `ordered=True` | `ordered=False` |
+| --- | --- | --- |
+| Stable index snapshots used in teaching | preferred | makes evidence harder to compare |
+| Downstream requires document/chunk order | required | invalid |
+| Results are independent writes keyed by chunk identity | optional | may reduce head-of-line waiting |
+| First completed result should be observed immediately | delays later positions behind earlier ones | appropriate if order has no meaning |
+| Reproducible failure traces | easier to review | requires a separate correlation strategy |
+
+Do not choose unordered execution merely because it sounds faster. First show
+that result order is semantically irrelevant and that failures can still be
+associated with their inputs.
+
+## Understand failure positions
+
+The source stream may yield:
+
+```text
+Ok(chunk 0)
+Err(source failure)
+Ok(chunk 2)
 ```
 
-```python
-@given(xs=st.lists(st.integers(), max_size=100))
-@pytest.mark.asyncio
-async def test_bounded_equivalence_to_unbounded_when_concurrency_large(xs):
-    policy = BackpressurePolicy(max_concurrent=len(xs)+10, ordered=True)
+`async_gen_bounded_map` does not call the embedder for the failed item. In
+ordered mode, the `Err` still occupies its input position:
 
-    def src() -> AsyncGen[int]:
-        async def _src() -> AsyncIterator[Result[int, ErrInfo]]:
-            for x in xs:
-                yield Ok(x)
-        return lambda: _src()
-
-    bounded = [r.value async for r in async_gen_bounded_map(src(), async_pure, policy)() if isinstance(r, Ok)]
-    unbounded = xs
-
-    assert bounded == unbounded
+```text
+Ok(embedded chunk 0)
+Err(source failure)
+Ok(embedded chunk 2)
 ```
 
-```python
-@pytest.mark.asyncio
-async def test_bounded_ordered_preserves_order():
-    policy = BackpressurePolicy(max_concurrent=3, ordered=True)
+This is why the Module 08 application can continue after a malformed document
+without silently moving the failure elsewhere in the trace.
 
-    # Workers with different durations
-    async def worker(x: int) -> Result[int, ErrInfo]:
-        await asyncio.sleep((5 - x) * 0.01)  # later items finish first
-        return Ok(x)
+An exception raised by an embedding plan is translated by the bounded mapper to
+`ErrInfo`. `asyncio.CancelledError` is re-raised so cancellation can propagate
+through the runtime.
 
-    def src() -> AsyncGen[int]:
-        async def _src() -> AsyncIterator[Result[int, ErrInfo]]:
-            for i in range(1, 6):
-                yield Ok(i)
-        return lambda: _src()
+## Cancellation must release capacity
 
-    results = [r.value async for r in async_gen_bounded_map(src(), lambda x: async_lift(lambda: worker(x)), policy)() 
-               if isinstance(r, Ok)]
+The mapper owns:
 
-    assert results == [1, 2, 3, 4, 5]
+- its source iterator;
+- its set of pending tasks;
+- its semaphore permits; and
+- its ordered result buffer.
+
+Its `finally` path cancels pending tasks, awaits their completion with
+`return_exceptions=True`, and closes the source iterator when possible.
+
+A concurrency bound that leaks tasks after the consumer stops is not a real
+bound. Review shutdown paths as part of the backpressure contract.
+
+## What this bound does not prove
+
+The application proof establishes a local mapping window. It does not prove:
+
+- that an upstream adapter has no internal buffer;
+- that a remote service honors the same concurrency limit;
+- that every task uses equal memory;
+- that two concurrent requests are optimal;
+- that retries cannot multiply effects; or
+- that the whole process has a fixed memory ceiling.
+
+Those require additional boundary and policy evidence. Module 08 keeps the
+claim narrow: FuncPipe does not schedule more than the declared number of
+embedding plans through this mapper.
+
+## Inspect the implementation and proof
+
+Read:
+
+```text
+capstone/module-reference-states/module-08/src/funcpipe_rag/
+├── domain/effects/async_/concurrency.py
+└── rag/async_rag.py
 ```
 
-```python
-@pytest.mark.asyncio
-async def test_bounded_err_propagation_without_calling_f():
-    call_args: list[int] = []
+Run:
 
-    async def f(x: int) -> Result[str, ErrInfo]:
-        call_args.append(x)
-        return Ok(str(x))
-
-    def src() -> AsyncGen[int]:
-        async def _src() -> AsyncIterator[Result[int, ErrInfo]]:
-            yield Ok(1)
-            yield Err(ErrInfo(code="BOOM", msg="test"))
-            yield Ok(2)
-        return lambda: _src()
-
-    stream = async_gen_bounded_map(src(), lambda x: async_lift(lambda: f(x)), BackpressurePolicy(ordered=True))
-
-    results = [r async for r in stream()]
-
-    assert call_args == [1, 2]  # f called only on Ok items
-    assert len(results) == 3
-    assert isinstance(results[1], Err) and results[1].error.code == "BOOM"
+```bash
+make capstone-async-rag-proof
 ```
 
-```python
-@pytest.mark.asyncio
-async def test_bounded_ordered_window_never_exceeds_max_concurrent():
-    policy = BackpressurePolicy(max_concurrent=3, ordered=True)
+The relevant test is:
 
-    max_window = 0
-
-    async def worker(x: int) -> Result[int, ErrInfo]:
-        if x == 0:  # head-of-line straggler
-            await asyncio.sleep(0.1)
-        return Ok(x)
-
-    def src() -> AsyncGen[int]:
-        async def _src() -> AsyncIterator[Result[int, ErrInfo]]:
-            for i in range(100):  # long tail
-                yield Ok(i)
-        return lambda: _src()
-
-    # Instrument the combinator (in real code you'd expose or monkey-patch)
-    # Here we rely on the guarantee; in CI we run with a debug flag that tracks window size
-    stream = async_gen_bounded_map(src(), lambda x: async_lift(lambda: worker(x)), policy)
-
-    async for _ in stream():
-        pass
-
-    # In real implementation, assert max_window <= policy.max_concurrent
-    # This test passes because the sliding window enforces it
+```text
+test_async_rag_chunks_applies_the_backpressure_policy_to_embedding
 ```
 
-## 6. Runtime Guarantees
+For the generic scheduling implementation, also inspect:
 
-| Mode           | Max In-flight Tasks | Extra Memory                  | Notes                                      |
-|----------------|---------------------|-------------------------------|--------------------------------------------|
-| ordered=False  | ≤ max_concurrent    | O(max_concurrent)             | Pending tasks only                         |
-| ordered=True   | ≤ max_concurrent    | O(max_concurrent)             | Sliding window + buffer ≤ max_concurrent   |
+```text
+test_bounded_map_caps_in_flight_work_and_preserves_order
+```
 
-Both modes are now truly O(max_concurrent) memory — even under arbitrary head-of-line blocking.
+One proves the RAG application uses the policy. The other isolates the generic
+mapper law. Both are necessary: a correct combinator proves little if the
+application never calls it.
 
-## 7. Anti-Patterns & Immediate Fixes
+## Common wrong turns
 
-| Anti-Pattern                       | Symptom                       | Fix                                       |
-|------------------------------------|-------------------------------|-------------------------------------------|
-| Unbounded `create_task` + `gather` | Memory blowup on large streams| Use `async_gen_bounded_map`               |
-| Hard-coded concurrency limits      | Inflexible, untestable        | `BackpressurePolicy` as explicit data    |
-| Ordered mode without bounded memory| Unexpected O(n) buffering     | Use this implementation — now truly bounded |
-| Bounding after slow step           | No effective backpressure     | Bound the slow step (e.g. embedding)      |
+- **Semaphore hidden in an adapter:** callers cannot review or vary the
+  application policy.
+- **Task per input plus semaphore inside each task:** all tasks are still
+  allocated eagerly.
+- **Unbounded output queue:** active calls may be bounded while completed
+  results grow without limit.
+- **Ordered flag ignored for failures:** result positions become misleading.
+- **Sleeping in tests:** wall time makes proofs slow and flaky.
+- **Making pure stages async:** spreads coordination without introducing a
+  waiting boundary.
 
-## 8. Pre-Core Quiz
+## Move-forward criteria
 
-1. Backpressure prevents…? → **Unbounded memory growth from fan-out**  
-2. Policy is…? → **Pure dataclass controlling concurrency**  
-3. Bounded combinator returns…? → **Ordinary AsyncGen (pure description)**  
-4. Memory in ordered mode is…? → **O(max_concurrent) — guaranteed**  
-5. ordered=False is…? → **Faster, still fully bounded**
+You can continue when you can:
 
-## 9. Post-Core Exercise
+- identify the exact line where FuncPipe introduces concurrent tasks;
+- explain both fields of `BackpressurePolicy`;
+- distinguish active-task bounds from whole-process memory bounds;
+- trace an out-of-order completion through ordered emission;
+- explain why a source `Err` never invokes the embedder;
+- describe cleanup after partial consumption; and
+- defend an ordered or unordered choice using application requirements.
 
-1. Add a `BackpressurePolicy` to one of your real pipelines.  
-2. Replace an unbounded map/gather with `async_gen_bounded_map`.  
-3. Test with a slow async function and assert max in-flight ≤ policy limit.  
-4. Force a head-of-line straggler and verify memory stays bounded.  
-5. Celebrate – you now have safe, configurable concurrency with true memory bounds.
-
-**Continue with:** [Retry and Timeout Policies](../module-08-async-pipelines-backpressure-fairness/retry-and-timeout-policies.md)
-
-You now have **bounded, backpressure-safe async streams with guaranteed O(max_concurrent) memory in both modes** — the core primitive that makes high-concurrency FuncPipe production-ready. The remaining cores add resilience (retry/timeout) and fairness — all as pure data.
-
-**M08C03 is now frozen.**
+Next, [Retry and Timeout Policies](retry-and-timeout-policies.md) asks what
+happens when one of those bounded embedding plans fails or waits too long.

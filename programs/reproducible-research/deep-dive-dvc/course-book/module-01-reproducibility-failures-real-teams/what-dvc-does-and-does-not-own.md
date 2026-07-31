@@ -1,6 +1,5 @@
 # What DVC Does and Does Not Own
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Reproducibility Failures Real Teams"]
+  section["Reproducibility Failures in Real Teams"]
   page["What DVC Does and Does Not Own"]
   capstone["Capstone evidence"]
 
@@ -18,135 +17,312 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  git["Git<br/>source history"] --> dvc["DVC<br/>artifact and pipeline state"]
+  runtime["runtime tooling"] --> result["bounded result"]
+  dvc --> result
+  science["domain review"] --> decision["trusted decision"]
+  result --> decision
+  governance["approval and access"] --> decision
 ```
 <!-- page-maps:end -->
 
-One of the fastest ways to get confused about DVC is to expect it to solve every problem
-that appears in a data workflow.
+DVC is useful when the missing evidence concerns data and artifact identity,
+declared computation, recorded pipeline state, comparison, or recovery. It does
+not turn every unknown influence into a declared input and it does not approve
+the meaning or use of a result.
 
-It does not.
+Learn the boundary before the commands. Then every command has a reason.
 
-DVC is useful precisely because its job is narrower than that.
+## Start from responsibilities
 
-## What DVC is good at owning
+DVC is designed to help with:
 
-DVC helps make parts of the workflow story explicit and recoverable, especially around:
+| Responsibility | What DVC contributes |
+|---|---|
+| artifact identity | connects a repository path to content-addressed state |
+| large-file collaboration | stores lightweight metadata in Git while bytes live in a configured remote |
+| pipeline declaration | records commands, dependencies, parameters, and outputs |
+| recorded execution state | captures input and output identities in lock state |
+| selective reconstruction | determines which stages are stale and materializes tracked state |
+| experiment evidence | organizes parameter and metric records for comparison |
+| artifact recovery | retrieves tracked content from a shared remote |
 
-- data and artifact identity
-- declared pipeline stages
-- recorded execution state
-- experiment context and comparison
-- recovery of tracked artifacts from durable storage
+Each responsibility depends on honest configuration. DVC cannot identify a file
+the workflow reads secretly or recover an object nobody pushed.
 
-These are mechanical reproducibility problems.
+## DVC does not discover truth automatically
 
-They matter a lot, and many teams handle them badly without a tool boundary like DVC.
+If a script reads:
 
-## What DVC does not own
-
-DVC does not guarantee:
-
-- that the data is semantically correct
-- that the science or analysis is valid
-- that the workflow is fully deterministic on every machine
-- that undocumented manual work has magically become part of the system
-- that downstream consumers understand the meaning of what was published
-
-Those are important concerns. They simply belong to other boundaries as well:
-
-- data quality practices
-- experimental design
-- environment discipline
-- team governance
-- release and review contracts
-
-## A useful mental model
-
-```mermaid
-flowchart LR
-  workflow["workflow and artifacts"] --> dvc["DVC owns tracked identity, stages, and recovery"]
-  dvc --> trust["mechanical reproducibility"]
-  science["science and interpretation"] --> trust
-  governance["team review and release rules"] --> trust
+```python
+threshold = os.environ["RISK_THRESHOLD"]
 ```
 
-DVC is part of the trust story. It is not the whole trust story.
+but the stage declares only `params.json`, DVC sees the declaration, not the
+author's intention. The stage contract is incomplete.
 
-## Why this distinction matters in Module 01
+Likewise, DVC cannot infer:
 
-If you expect DVC to solve everything, later frustrations will sound like:
+- that a notebook was manually run before the pipeline;
+- that `data/current.csv` came from a particular query;
+- that an optional file changed the result;
+- that the team treats one report as authoritative;
+- that a model is scientifically valid.
 
-- "DVC tracked the data, but the dataset was still wrong"
-- "DVC recorded the run, but the model is still a bad model"
-- "DVC restored the files, but the team still argues about what is safe to publish"
+The workflow inventory supplies the truth DVC should represent.
 
-Those are not evidence that DVC failed. They are evidence that the workflow has more than
-one authority boundary.
+## Map the audit gaps to owners
 
-## A small example
+The workflow evidence audit isolates seven rejected claims:
 
-Suppose DVC tracks:
+| Finding | Primary gap | DVC contribution | Other required owner |
+|---|---|---|---|
+| same-workspace rerun | no clean reconstruction | declared pipeline and reproducible materialization | CI or independent reviewer |
+| hidden threshold | control absent from record | parameter dependency | maintainer must declare the control |
+| changed input at same path | content identity | tracked artifact identity | source/data owner |
+| manual preprocessing | missing transformation | explicit stage and output edge | maintainer/domain owner |
+| missing runtime | environment identity | can depend on lock/image declaration | environment tool and CI |
+| unrecoverable input | shared artifact bytes | remote push/pull | storage, access, retention owners |
+| stale implementation | result provenance | lock state beside Git revision | Git and verification route |
 
-- the exact training dataset
-- the pipeline stages
-- the resulting metrics and model artifacts
+DVC participates in most repairs. It is the sole owner of none of the broader
+trust decisions.
 
-That is useful and important.
+## Artifact identity is not data meaning
 
-But the workflow can still fail in other ways:
+Suppose DVC records the exact bytes of `observations.csv`. That supports:
 
-- the labels may be wrong
-- the evaluation split may be scientifically weak
-- the published report may mislead downstream readers
-- a teammate may still make an undocumented manual change before release
+> This repository state refers to this content.
 
-DVC can make some of these failures easier to detect or discuss. It does not own all of
-their repair.
+It does not support:
 
-## What honest tool boundaries sound like
+- incident labels are correct;
+- collection was unbiased;
+- the data may legally be used;
+- the dataset represents the target population;
+- missing values were handled appropriately.
 
-Strong statement:
+```mermaid
+flowchart TB
+  bytes["artifact bytes"] --> identity["DVC identity"]
+  identity --> mechanical["mechanical reconstruction"]
+  meaning["schema, provenance, quality"] --> semantic["semantic review"]
+  mechanical --> trust["bounded trust"]
+  semantic --> trust
+  approval["authorized use"] --> trust
+```
 
-> DVC helps us track what data and derived artifacts were used, what the pipeline declared,
-> and what recorded state can be recovered later.
+Mechanical evidence makes semantic review possible against a stable object. It
+does not replace that review.
 
-Weak statement:
+## A declared pipeline is not a complete runtime
 
-> DVC makes the whole ML workflow reproducible and trustworthy.
+`dvc.yaml` can name:
 
-The first one names a boundary. The second one hides one.
+- command;
+- source dependencies;
+- parameter keys;
+- outputs;
+- metrics.
 
-## How the capstone helps
+The command still executes inside a runtime. Environment evidence may come
+from:
 
-The DVC capstone is useful here because it separates several layers cleanly:
+- a dependency lock;
+- a Conda environment;
+- a container image digest;
+- Nix or another environment description;
+- CI runner identity;
+- external tool version receipts.
 
-- `dvc.yaml` and `dvc.lock` for declared and recorded workflow state
-- the remote and recovery route for durability
-- `publish/v1/` for downstream review
+DVC can declare those files as dependencies and call the runtime. It does not
+build a complete environment merely because a stage exists.
 
-That separation is the lesson.
+## A remote is not retention or authorization policy
 
-It shows that no single file or tool is carrying the whole meaning of the system.
+A DVC remote gives the client a content storage boundary. It does not by itself
+decide:
 
-## Good questions to ask once DVC is introduced
+- who should have access;
+- how credentials are issued;
+- which revisions must be retained;
+- when objects may be deleted;
+- what recovery time is promised;
+- which sensitive data may leave an environment.
 
-When evaluating a DVC-based repo, ask:
+Those responsibilities belong to storage, identity, security, and governance
+owners. The DVC route must operate within their policies.
 
-1. which part of the workflow story is now explicit because of DVC
-2. which important risk still lives outside DVC
-3. where do governance, environment control, and release review still need to do work
+“`dvc push` succeeded” proves transfer. A recovery drill from an empty cache
+tests whether the promised team boundary can retrieve the state.
 
-Those questions keep tool expectations honest.
+## Experiments are not scientific approval
 
-## Keep this standard
+DVC can help record:
 
-Use DVC as a way to reduce hidden state and improve recoverability.
+- changed parameters;
+- resulting metrics;
+- source revision;
+- experiment names or identities.
 
-Do not use DVC as a way to avoid naming the rest of the system.
+The team still must decide:
 
-The strongest workflows are the ones where DVC's contribution is clear, useful, and not
-mythologized into authority it never had.
+- whether runs are semantically comparable;
+- whether the metric is valid;
+- whether the observed difference matters;
+- whether the experiment should be retained;
+- whether a candidate may be promoted.
+
+Later modules build those decisions. In Module 1, remember that visibility is
+not approval.
+
+## Tracking an output does not make it a release
+
+A model or report can be:
+
+- a stage output;
+- an experiment artifact;
+- a reviewed candidate;
+- a promoted release;
+- a deployed runtime object.
+
+These are different states. DVC can preserve artifact lineage through them.
+Promotion, consumer contract, deployment, and runtime monitoring need their own
+evidence and authorities.
+
+Avoid:
+
+> DVC tracks `model.json`, so it is production ready.
+
+Use:
+
+> DVC identifies the model and its pipeline lineage. Release verification and
+> owner approval determine whether consumers may use it.
+
+## DVC cannot repair an unknown workflow
+
+A common adoption failure looks like:
+
+1. run `dvc add` on a folder called `data/final`;
+2. create stages around existing shell commands;
+3. push outputs;
+4. declare the workflow reproducible.
+
+If the folder was created manually, controls remain hidden, and trusted outputs
+are unknown, the new metadata formalizes an incomplete story.
+
+Inventory first:
+
+- source and derived inputs;
+- controls;
+- runtime;
+- transformations;
+- trusted outputs;
+- recovery boundary;
+- unresolved evidence.
+
+Then choose what DVC should own.
+
+## Introduce DVC around one contract
+
+For a first adoption, choose a narrow pressure:
+
+### Data identity pressure
+
+Claim:
+
+> `observations.csv` at this repository revision identifies exact bytes.
+
+Evidence:
+
+- DVC metadata in Git;
+- content in a governed remote;
+- clean pull receipt.
+
+### Pipeline truth pressure
+
+Claim:
+
+> Changing the declared input or threshold invalidates the incident summary.
+
+Evidence:
+
+- stage dependencies and parameter declaration;
+- lock state;
+- controlled invalidation tests.
+
+### Recovery pressure
+
+Claim:
+
+> An authorized maintainer can restore the protected result after local loss.
+
+Evidence:
+
+- protected Git revision;
+- reachable remote objects;
+- clean recovery and verification receipt.
+
+Do not attempt data identity, experiments, release registry, production
+deployment, and governance redesign in one first change.
+
+## Decide whether DVC fits
+
+| Situation | DVC fit | Reason |
+|---|---|---|
+| small inputs and outputs already versioned effectively in Git | optional | existing boundary may be sufficient |
+| large data changes independently from source | strong | content-addressed artifact metadata complements Git |
+| pipeline edges live in memory | strong after inventory | stages can declare relationships |
+| external database cannot reproduce snapshots | partial | DVC can track extracts, not repair source semantics |
+| runtime drifts | partial | declare environment evidence; use an environment tool |
+| model decision is scientifically disputed | not the deciding tool | domain review owns validity |
+| production rollout is unsafe | not the rollout owner | deployment system owns runtime change |
+| shared artifacts cannot be recovered | strong with governed storage | remote routes support recovery |
+
+“Partial” means DVC contributes evidence while another boundary remains
+necessary.
+
+## Read DVC files as claims
+
+As you progress through the course:
+
+- `.dvc` files claim a path-to-content relationship;
+- `dvc.yaml` claims stage dependencies, controls, commands, and outputs;
+- `dvc.lock` records observed state for an execution;
+- `params.yaml` exposes reviewed controls;
+- metric files expose comparison surfaces;
+- remote configuration names a transfer boundary.
+
+None should be trusted merely because it exists. Later modules test whether the
+claims are truthful.
+
+## An honest adoption statement
+
+Prefer:
+
+> We are introducing DVC to identify and recover the incident input, then to
+> declare how the threshold and scoring implementation produce the summary.
+> The environment lock, data-quality review, access policy, and release
+> approval remain separate responsibilities.
+
+Avoid:
+
+> We added DVC, so the workflow is reproducible now.
+
+The first statement gives reviewers a boundary and a way to find gaps.
+
+## Reader checkpoint
+
+You understand DVC's starting boundary when you can:
+
+- name the artifact and pipeline responsibilities DVC supports;
+- explain why declarations must be authored honestly;
+- separate content identity from data meaning;
+- connect a DVC stage to separate runtime evidence;
+- distinguish remote transfer from access and retention policy;
+- keep experiment visibility separate from scientific and release approval;
+- choose one adoption contract based on actual workflow pressure;
+- identify a small workflow for which DVC may be unnecessary.
+
+DVC is strongest when the team can say exactly which mechanical evidence it
+owns and which trust decisions remain elsewhere.

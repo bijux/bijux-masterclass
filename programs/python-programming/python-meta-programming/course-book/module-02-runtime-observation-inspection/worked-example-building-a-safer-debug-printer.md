@@ -176,6 +176,73 @@ A safer design makes recursion explicit:
 Those are not cosmetic concerns. They are part of making the tool behave like a debugging
 tool instead of like an accidental object walker with side effects.
 
+## Start with the executable non-recursive baseline
+
+Before studying the larger mixin below, run the course implementation:
+
+```console
+$ make observation-debug-view
+[
+  {
+    "display": "<routine>",
+    "kind": "routine",
+    "name": "acknowledge",
+    "owner": "IncidentObservationTarget"
+  },
+  {
+    "display": "<property>",
+    "kind": "property",
+    "name": "risk_score",
+    "owner": "IncidentObservationTarget"
+  },
+  {
+    "display": "'queue lag'",
+    "kind": "stored-value",
+    "name": "title",
+    "owner": "instance"
+  }
+]
+```
+
+The implementation in `labs/runtime_observation/debug_view.py` deliberately does less
+than the final mixin:
+
+- it discovers instance and class attachments without calling custom `__dir__`
+- it reads each candidate with `inspect.getattr_static`
+- it labels properties, routines, slots, and stored scalar values
+- it enforces a maximum number of names
+- it does not recurse or evaluate descriptors
+
+That smaller contract is executable and tested. Read
+`test_debug_view_does_not_evaluate_property_or_fallback` before modifying it: both
+side-effect counters must remain zero.
+
+### What the baseline proves
+
+The output proves that this tool can show attachment ownership without resolving the
+property or triggering fallback lookup. It also proves that the output bound is enforced
+and slot attachments are reported as structure.
+
+It does not prove that `repr()` is safe for arbitrary values, that class namespaces never
+change concurrently, or that recursive observation is safe. The implementation avoids
+calling arbitrary `repr()` by displaying only scalar stored values directly.
+
+### Why the larger version still matters
+
+The mixin below explores opt-in property evaluation, slot reads, and bounded recursion.
+Those features introduce new policies and failure paths. Treat it as an extension design
+to review against the executable baseline:
+
+| Added capability | New cost to review |
+| --- | --- |
+| property evaluation | descriptor code can run |
+| slot value reads | descriptor access can fail |
+| recursion | cycles, depth, and output growth need policy |
+| general representation | user-defined `__repr__` may execute |
+
+Do not copy the larger implementation until you can say which added capability your tool
+actually needs.
+
 ## A healthier implementation
 
 ```python

@@ -1,76 +1,99 @@
 name: Program Validation
 
 on:
-  push:
-    branches: [master, main]
   pull_request:
-    branches: [master, main]
+    branches: [main]
+    paths:
+      - "programs/**"
+      - ".bijux/shared/bijux-docs/**"
+      - "docs/**"
+      - "configs/docs/**"
+      - "makes/**"
+      - "scripts/**"
+      - "tests/automation/**"
+      - "Makefile"
+      - "mkdocs.yml"
+      - "mkdocs.shared.yml"
+      - ".github/workflows/program-validation.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: program-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  validate:
+  select:
+    name: select affected programs
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.targets.outputs.matrix }}
+      has_targets: ${{ steps.targets.outputs.has_targets }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Verify selection policy
+        run: python3 -m unittest discover -s tests/automation -v
+
+      - name: Gather changed files
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          mkdir -p artifacts
+          git diff --name-only "${BASE_SHA}...${HEAD_SHA}" > artifacts/changed-files.txt
+
+      - name: Select validation targets
+        id: targets
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${EVENT_NAME}" == "workflow_dispatch" ]]; then
+            matrix="$(python3 scripts/program_validation.py --all)"
+          else
+            matrix="$(
+              python3 scripts/program_validation.py \
+                --changed-file-list artifacts/changed-files.txt
+            )"
+          fi
+          has_targets="$(
+            python3 -c \
+              'import json,sys; print(str(bool(json.load(sys.stdin)["include"])).lower())' \
+              <<<"${matrix}"
+          )"
+          printf 'matrix=%s\n' "${matrix}" >> "${GITHUB_OUTPUT}"
+          printf 'has_targets=%s\n' "${has_targets}" >> "${GITHUB_OUTPUT}"
+          printf 'Selected matrix: %s\n' "${matrix}"
+
+  validate:
+    name: ${{ matrix.name }}
+    needs: select
+    if: ${{ needs.select.outputs.has_targets == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - name: series-site
-            setup: |
-              python -m pip install -U pip
-            validate: |
-              make series-docs-build
-          - name: deep-dive-make
-            setup: |
-              python -m pip install -U pip
-            validate: |
-              make PROGRAM=reproducible-research/deep-dive-make docs-build
-              make PROGRAM=reproducible-research/deep-dive-make test
-          - name: deep-dive-snakemake
-            setup: |
-              python -m pip install -U pip
-            validate: |
-              make PROGRAM=reproducible-research/deep-dive-snakemake docs-build
-              make -C programs/reproducible-research/deep-dive-snakemake/capstone bootstrap-confirm
-          - name: deep-dive-dvc
-            setup: |
-              python -m pip install -U pip
-            validate: |
-              make PROGRAM=reproducible-research/deep-dive-dvc docs-build
-              make PROGRAM=reproducible-research/deep-dive-dvc test
-          - name: python-functional-programming
-            setup: |
-              python -m pip install -U pip
-            validate: |
-              make PROGRAM=python-programming/python-functional-programming docs-build
-              make PROGRAM=python-programming/python-functional-programming test
-          - name: python-object-oriented-programming
-            setup: |
-              python -m pip install -U pip
-            validate: |
-              make PROGRAM=python-programming/python-object-oriented-programming docs-build
-              make PROGRAM=python-programming/python-object-oriented-programming test
-          - name: python-meta-programming
-            setup: |
-              python -m pip install -U pip
-            validate: |
-              make PROGRAM=python-programming/python-meta-programming docs-build
-              make PROGRAM=python-programming/python-meta-programming test
-    name: ${{ matrix.name }}
+      matrix: ${{ fromJSON(needs.select.outputs.matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
           cache: pip
 
-      - name: Install prerequisites
-        run: ${{ matrix.setup }}
-
       - name: Run validation
-        run: ${{ matrix.validate }}
+        run: ${{ matrix.command }}

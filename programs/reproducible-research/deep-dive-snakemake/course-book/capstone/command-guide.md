@@ -78,7 +78,9 @@ are often better for learning and review.
 | first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
 | one executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
 | publish-boundary verification | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
+| file-contract truth and publication safety | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-file-contract-audit` | inferring freshness or safety from rule syntax alone |
 | execution-policy invariance | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-context-invariance-audit` | comparing profile YAML without plans or artifacts |
+| scheduler resource translation | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-scheduler-policy-audit` | claiming cluster success from a plausible command |
 | performance-claim integrity | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-performance-diagnostics-audit` | comparing one timing pair without semantic gates |
 | strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
 
@@ -101,7 +103,9 @@ job you just named.
 | You need a bounded first read. | `capstone-walkthrough` | it keeps repository orientation smaller than execution proof |
 | You want one executed workflow story. | `capstone-tour` | it gives real evidence without jumping to the strongest route |
 | You care about downstream trust. | `capstone-verify-report` | publish review is narrower than whole-repository confirmation |
+| You need to distinguish declared freshness from hidden-input staleness and safe replacement from cleanup. | `capstone-file-contract-audit` | paired dry runs and failure cases make each contract claim falsifiable |
 | You suspect local and CI are diverging semantically. | `capstone-context-invariance-audit` | the paired specimen proves both preservation and rejection |
+| You need to prove resource declarations survive scheduler translation. | `capstone-scheduler-policy-audit` | the receipt joins a dry-run to accepted and rejected mappings without claiming site execution |
 | You need to distinguish honest tuning from lost validation or repeated work. | `capstone-performance-diagnostics-audit` | four isolated runs produce reference, acceptance, rejection, and regression evidence |
 | You need the capstone's real profile files packaged together. | `capstone-profile-audit` | profile inventory is narrower than semantic equivalence proof |
 
@@ -113,6 +117,7 @@ Use root-level commands when you want one entrypoint that works across programs.
 - `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour`
 - `make PROGRAM=reproducible-research/deep-dive-snakemake proof`
 - `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-file-contract-audit`
 - `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm`
 
 ## Program-directory commands
@@ -124,6 +129,8 @@ surface.
 - `make capstone-tour`
 - `make proof`
 - `make capstone-profile-audit`
+- `make capstone-file-contract-audit`
+- `make capstone-file-contract-selftest`
 - `make capstone-context-invariance-audit`
 - `make capstone-context-invariance-selftest`
 - `make capstone-performance-diagnostics-audit`
@@ -139,6 +146,8 @@ Use `capstone/` when you want the raw reference workflow.
 - `make tour`
 - `make verify-report`
 - `make profile-audit`
+- `make file-contract-audit`
+- `make file-contract-selftest`
 - `make context-invariance-audit`
 - `make context-invariance-selftest`
 - `make performance-diagnostics-audit`

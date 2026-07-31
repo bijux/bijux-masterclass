@@ -62,15 +62,15 @@ Return to the module first if:
 
 | Module | Main question | Capstone surface | First command |
 | --- | --- | --- | --- |
-| 01 Reproducibility Failures | why rerunnable scripts are weaker than explicit state contracts | `README.md`, `data/raw/`, [Capstone File Guide](capstone-file-guide.md) | `make walkthrough` |
+| 01 Reproducibility Failures | why equal local reruns are weaker than a clean team reconstruction | workflow evidence contract, eight case assessments, local and clean result receipts | `make workflow-evidence-audit` |
 | 02 Data Identity | what makes state durable instead of path-shaped | `dvc.lock`, `.dvc/cache`, `.dvc-remote/` | `make verify` |
 | 03 Execution Environments | how runtime assumptions become explicit repository state | `Makefile`, `pyproject.toml`, `src/incident_escalation_capstone/` | `make verify` |
 | 04 Truthful Pipelines | how declared stage edges differ from hopeful reruns | `dvc.yaml`, `dvc.lock`, `state/` | `make repro` |
 | 05 Metrics and Parameters | which controls and metrics are safe to compare | `params.yaml`, `metrics/`, `publish/v1/metrics.json` | `make verify` |
-| 06 Experiments | how to vary the control surface without mutating the baseline | `params.yaml`, experiment comparison bundle, `publish/v1/` | `make experiment-review` |
+| 06 Experiments | how to vary one intended control without breaking comparison or promotion boundaries | experiment comparability specimen, generated case evidence, DVC receipts | `make experiment-comparability-audit` |
 | 07 Collaboration and CI | which checks another maintainer can run without oral context | `Makefile`, `tests/`, [Review Route Guide](../capstone/docs/review-route-guide.md) | `make verify` |
-| 08 Recovery and Scale | what survives cache loss and what depends on the remote | `.dvc-remote/`, `publish/v1/`, recovery bundle | `make recovery-review` |
-| 09 Promotion and Auditability | what downstream users may trust from the promoted bundle | `publish/v1/`, `publish/v1/manifest.json`, `dvc.lock` | `make release-review` |
+| 08 Recovery and Scale | which current and historical obligations survive cache loss and remote cutover | recovery contract, per-revision evidence, command receipts | `make recovery-readiness-audit` |
+| 09 Promotion and Auditability | whether a candidate earns immutable downstream authority | promotion contract and decision, seven generated audit cases, `publish/v1/`, `dvc.lock` | `make promotion-integrity-audit` |
 | 10 Governance and Migration | whether another maintainer could review or migrate the repository safely | `README.md`, `dvc.yaml`, `dvc.lock`, `publish/v1/` | `make confirm` |
 
 ## Good stopping point

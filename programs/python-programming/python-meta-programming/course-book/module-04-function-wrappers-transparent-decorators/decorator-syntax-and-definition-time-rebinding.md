@@ -81,9 +81,9 @@ That one-time timing is not a side note. It affects:
 - when failures appear
 - whether later behavior is controlled by one-time setup or per-call logic
 
-## Stacked decorators compose predictably
+## Stacked decorators have two definition-time orders
 
-Multiple decorators apply from the bottom up:
+Multiple returned decorators apply from the bottom up:
 
 ```python
 @d3
@@ -110,14 +110,32 @@ So the final binding is:
 f = d3(d2(d1(f)))
 ```
 
-That is why definition-time application order and call-time execution order are related
-but not identical.
+There is one earlier order that must not be skipped: decorator expressions are evaluated
+from top to bottom before any returned decorator is applied. With decorator factories,
+the complete sequence is:
+
+1. evaluate `d3`
+2. evaluate `d2`
+3. evaluate `d1`
+4. create the raw function
+5. apply `d1`
+6. apply `d2`
+7. apply `d3`
+
+For plain names, expression evaluation is usually invisible. For calls such as
+`@tracing_decorator("outer", events)`, evaluation runs the factory body and can validate
+configuration or cause effects. Collapsing expression evaluation and decorator
+application loses a real runtime boundary.
+
+That is why definition-time expression order, definition-time application order, and
+call-time execution order are related but not identical.
 
 Use that distinction as a review check:
 
 | Question | Definition-time answer | Call-time answer |
 | --- | --- | --- |
-| which decorator applies first? | the lowest decorator in the stack | the outermost resulting wrapper runs first |
+| which decorator expression evaluates first? | the highest expression in the stack | not applicable |
+| which returned decorator applies first? | the lowest decorator in the stack | the outermost resulting wrapper runs first |
 | where do configuration expressions run? | once, while the function is being defined | not again unless the wrapper itself re-evaluates something |
 | where do wrapper-local side effects happen? | only if the decorator performs them during construction | on each later call if the wrapper body performs them |
 
@@ -125,7 +143,8 @@ Use that distinction as a review check:
 
 ```text
 Definition time:
-original f -> d1(f) -> d2(d1(f)) -> d3(d2(d1(f)))
+evaluate d3 -> evaluate d2 -> evaluate d1 -> create original f
+apply d1(f) -> apply d2(d1(f)) -> apply d3(d2(d1(f)))
 
 Call time:
 caller -> outermost wrapper d3 -> d2 -> d1 -> original function
@@ -133,6 +152,40 @@ caller -> outermost wrapper d3 -> d2 -> d1 -> original function
 
 This is one of the most useful review diagrams in the module because it keeps timing and
 composition straight.
+
+## Guided trace: predict before executing
+
+The course program records all three orders:
+
+```console
+$ make wrapper-lab |
+  python3 -c 'import json, sys; p=json.load(sys.stdin)["lifecycle"]; print(*p["definition_events"], *p["call_events"], sep="\n")'
+factory:outer
+factory:inner
+decorate:inner:render_status
+decorate:outer:render_status
+enter:outer
+enter:inner
+body:INC-42:critical
+exit:inner
+exit:outer
+```
+
+Read the trace in ownership order:
+
+- both factories run before the raw function is rebound
+- the inner returned decorator first receives the raw function
+- the outer returned decorator receives the inner wrapper
+- the later call enters the outer layer first
+- the return path unwinds from inner to outer
+
+Now change the source order of the two `@tracing_decorator(...)` lines. Predict the entire
+nine-event trace before running the program. Restore the published order and run
+`make wrapper-lab-test`.
+
+The focused test asserts exact order because order is the teaching contract. A test that
+only checked the final string would miss every definition-time distinction this core
+exists to teach.
 
 ## A simple example
 
@@ -200,7 +253,7 @@ That is why decorator order is never cosmetic.
 It also explains why "the same decorators are present" is not enough to claim the same
 behavior. The stack order is part of the behavior.
 
-## Decorator factories add one more evaluation step
+## Decorator factories make expression evaluation visible
 
 A factory such as `@factory(config)` means:
 
@@ -227,8 +280,9 @@ def f(...):
 f = decorator(f)
 ```
 
-This is another useful timing lesson: both the factory call and the decoration happen once
-when the function is defined, not on every invocation.
+This is another useful timing lesson: both the factory call and the returned decorator
+application happen once when the function is defined, not on every invocation. They are
+still separate operations with different ordering rules.
 
 That is where import-time surprises often enter. If `factory(arg)` does expensive work,
 opens resources, or validates configuration, those costs happen while the definition is
@@ -253,6 +307,7 @@ The following mistakes are more common than they first appear:
 | "the decorator runs every time I call the function" | the decorator itself versus the wrapper it returned | separate rebinding from later wrapper execution |
 | "the factory argument is dynamic per call" | captured definition-time configuration versus call-time input | show where `factory(arg)` was evaluated once |
 | "stacked decorators are basically left to right" | source order versus application order | rewrite them as nested calls or rebinding assignments |
+| "all definition-time work is bottom-up" | decorator-expression evaluation versus decorator application | trace factory calls top-down, then application bottom-up |
 | "the error came from inside the function" | definition-time failure versus call-time failure | check whether the decorator expression failed before the function was ever invoked |
 
 ## Non-callable decorator expressions fail early

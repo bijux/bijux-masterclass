@@ -273,6 +273,49 @@ If you cannot answer all four on one object, reread the page with that object op
 scratch file. The module becomes much more durable when one concrete object carries the
 whole boundary.
 
+## Guided lab: make repeated execution countable
+
+Run:
+
+```console
+$ python3 -m labs.runtime_observation |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["dynamic_access"])'
+{'hasattr_result': True, 'property_reads_after_dynamic_lookup': 1, 'property_reads_after_hasattr': 2, 'property_reads_after_static_lookup': 0, 'resolved_score': 7, 'static_lookup_returns_property': True}
+```
+
+`IncidentObservationTarget.risk_score` increments `_property_reads` every time the
+property executes. Read the packet as an event sequence:
+
+| Operation | Counter afterward | Boundary crossed |
+| --- | ---: | --- |
+| `inspect.getattr_static(target, "risk_score")` | 0 | attachment inspection only |
+| `getattr(target, "risk_score")` | 1 | descriptor execution |
+| `hasattr(target, "risk_score")` | 2 | descriptor execution again |
+
+The counter turns "may execute" into observable evidence. `hasattr` did not protect the
+later read; it performed another read of its own.
+
+### Failure route
+
+Change `risk_score` so it raises `RuntimeError`. `hasattr` will not convert that failure
+to `False`; the exception escapes. Then change it to raise `AttributeError` and observe
+the different result. Record why neither outcome means the property was safely inspected,
+restore the baseline, and run `make observation-lab-test`.
+
+### Transfer to the incident-plugin runtime
+
+The capstone `invoke()` function uses:
+
+```python
+method = getattr(plugin, action_name)
+return method(**kwargs)
+```
+
+That is an intentional behavioral route: it resolves a named action and calls it. A
+debugger copying the same line merely to "see whether an action exists" would be using
+the right mechanism for the wrong question. Module 02 asks you to identify the purpose
+of the lookup before judging the builtin.
+
 ## Review mistakes this page should eliminate
 
 These are the most common weak review comments this lesson should prevent:

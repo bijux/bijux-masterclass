@@ -79,42 +79,54 @@ is already trusting partial work.
 
 That is the core lesson: generation and publication are not always the same moment.
 
-## Temporary paths are part of safe publication
+## Candidate workspaces are part of safe publication
 
 One healthy pattern is:
 
 ```make
 build/api.h build/api.json &: schema/api.yml scripts/gen_api.py | build/
-	python3 scripts/gen_api.py --out-dir build/tmp
-	python3 scripts/validate_api.py build/tmp/api.h build/tmp/api.json
-	mv build/tmp/api.h build/api.h
-	mv build/tmp/api.json build/api.json
+	@set -eu; \
+	workspace='build/api.candidate.$$$$'; \
+	trap 'rm -rf "$$workspace"' EXIT HUP INT TERM; \
+	mkdir "$$workspace"; \
+	python3 scripts/gen_api.py --out-dir "$$workspace"; \
+	python3 scripts/validate_api.py \
+	  "$$workspace/api.h" "$$workspace/api.json"; \
+	mv -f "$$workspace/api.h" build/api.h; \
+	mv -f "$$workspace/api.json" build/api.json; \
+	trap - EXIT HUP INT TERM; \
+	rmdir "$$workspace"
 ```
 
-The idea is not "always use `tmp` because it looks professional." The idea is:
+This pattern provides **scheduler-level completion** for dependent targets in this Make
+invocation:
 
 - incomplete work stays outside the trusted output paths
 - validation happens before final publication
-- downstream targets only see the files once the pipeline succeeded
+- dependent recipes do not start until the grouped recipe succeeds
+- concurrent processes do not share a candidate workspace
 
-That is a much stronger contract than writing directly into the final paths throughout the
-pipeline.
+It does not provide set-level atomicity. If the process stops after the first `mv`, an
+external reader can observe a new header beside old JSON. The example is honest only when
+that limitation is acceptable.
 
 ## Atomic publication is about trust
 
-When the module says "atomic publication," the important meaning is not kernel-level
-technical perfection in every environment. The important meaning is:
+When the module says "atomic publication," always finish the sentence:
 
-> do not let downstream work observe a half-published result and mistake it for truth.
+> atomic for which observer, over which paths, and at which event?
 
-Often that means:
+Use this decision table:
 
-- write to a temporary file
-- validate the full result
-- move the file into place
+| Required promise | Publication shape |
+| --- | --- |
+| one file never exposes partial bytes | candidate beside final path, validate, rename |
+| Make dependents wait for one coupled producer | grouped targets |
+| external readers see one coherent multi-file generation | immutable directory plus one pointer switch |
+| two independent publishers must not race | one owning process or an explicit publication lock |
 
-For directory-level or multi-output publication, it may mean staging several outputs and
-then moving or touching the final boundary only after all of them are ready.
+The strongest requirement determines the protocol. Do not use the word atomic as a
+substitute for choosing one.
 
 ## A useful single-file example
 
@@ -122,9 +134,13 @@ Single-file generation can still benefit from publication discipline:
 
 ```make
 build/include/config.h: schema/config.yml scripts/gen_config.py | build/include/
-	@python3 scripts/gen_config.py schema/config.yml > $@.tmp
-	@python3 scripts/validate_header.py $@.tmp
-	@mv $@.tmp $@
+	@set -eu; \
+	candidate='$@.candidate.$$$$'; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	python3 scripts/gen_config.py schema/config.yml > "$$candidate"; \
+	python3 scripts/validate_header.py "$$candidate"; \
+	mv -f "$$candidate" '$@'; \
+	trap - EXIT HUP INT TERM
 ```
 
 This rule is easier to trust because:
@@ -132,10 +148,11 @@ This rule is easier to trust because:
 - an invalid header never becomes the published header
 - the published path changes only after validation
 - the consumer edge still points at one clean output path
+- candidate and final path share a parent, so the rename does not cross filesystems
 
 That same pattern scales to larger pipelines.
 
-## Multi-output publication needs one clear finishing point
+## Multi-output publication needs one reader-visible finishing point
 
 For coupled outputs, the question becomes:
 
@@ -145,27 +162,111 @@ One answer is grouped targets with staged files:
 
 ```make
 api.h api.json &: schema/api.yml scripts/gen_api.py | build/
-	@python3 scripts/gen_api.py --out-dir build/tmp
-	@python3 scripts/validate_api.py build/tmp/api.h build/tmp/api.json
-	@mv build/tmp/api.h api.h
-	@mv build/tmp/api.json api.json
+	@set -eu; \
+	workspace='build/api.candidate.$$$$'; \
+	trap 'rm -rf "$$workspace"' EXIT HUP INT TERM; \
+	mkdir "$$workspace"; \
+	python3 scripts/gen_api.py --out-dir "$$workspace"; \
+	python3 scripts/validate_api.py \
+	  "$$workspace/api.h" "$$workspace/api.json"; \
+	mv -f "$$workspace/api.h" api.h; \
+	mv -f "$$workspace/api.json" api.json; \
+	trap - EXIT HUP INT TERM; \
+	rmdir "$$workspace"
 ```
 
 Another answer is a stamp or manifest that is touched or published only after both final
 outputs are in place.
 
-The important thing is that the build names the finishing point instead of letting
-publication leak across multiple partial steps.
+Both answers can coordinate Make’s own dependent recipes. Neither makes two final renames
+one filesystem transaction for independent readers.
+
+## Publish a coherent set through one pointer
+
+When readers require all files from one generation, make the set immutable and publish one
+pointer:
+
+```make
+.PHONY: publish-api
+publish-api: schema/api.yml scripts/gen_api.py scripts/validate_api.py | build/
+	@set -eu; \
+	generation="$$(python3 scripts/api_generation_key.py \
+	  schema/api.yml scripts/gen_api.py)"; \
+	release="build/api-generations/$$generation"; \
+	workspace="$$release.candidate.$$$$"; \
+	pointer_candidate="build/api-current.candidate.$$$$"; \
+	lock='build/api-publication.lock'; \
+	trap 'rm -rf "$$workspace"; rm -f "$$pointer_candidate"' EXIT HUP INT TERM; \
+	mkdir -p build/api-generations; \
+	mkdir "$$workspace"; \
+	python3 scripts/gen_api.py --out-dir "$$workspace"; \
+	python3 scripts/validate_api.py \
+	  "$$workspace/api.h" "$$workspace/api.json"; \
+	python3 scripts/write_accepted_manifest.py "$$workspace"; \
+	if ! mkdir "$$lock"; then \
+	  printf '%s\n' 'another API publisher owns the publication lock' >&2; \
+	  exit 1; \
+	fi; \
+	trap 'rm -rf "$$workspace"; rm -f "$$pointer_candidate"; rmdir "$$lock" 2>/dev/null || :' \
+	  EXIT HUP INT TERM; \
+	if test -d "$$release"; then \
+	  python3 scripts/compare_generation.py "$$workspace" "$$release"; \
+	  rm -rf "$$workspace"; \
+	else \
+	  mv "$$workspace" "$$release"; \
+	fi; \
+	if test -e build/api-current && ! test -L build/api-current; then \
+	  printf '%s\n' 'api-current exists but is not the owned publication link' >&2; \
+	  exit 1; \
+	fi; \
+	if test "$$(readlink build/api-current 2>/dev/null || :)" != \
+	  "api-generations/$$generation"; then \
+	  ln -s "api-generations/$$generation" "$$pointer_candidate"; \
+	  mv -f "$$pointer_candidate" build/api-current; \
+	fi; \
+	rmdir "$$lock"; \
+	trap - EXIT HUP INT TERM
+```
+
+Read this protocol in order:
+
+1. derive a deterministic generation identity from modeled inputs
+2. generate and validate in a process-local workspace
+3. acquire one publication lock before adopting or selecting final state
+4. adopt the immutable directory, or verify an existing identical generation
+5. create a candidate link and rename it over the public pointer
+6. release the lock and cleanup trap
+
+The lock fails closed rather than letting independent Make processes compete for one
+public pointer. A production repository may use a supported lock utility with waiting and
+stale-owner recovery, but it still needs one documented owner.
+
+Readers resolve `build/api-current` once and read both files beneath that resolved
+directory. Re-resolving the pointer separately for each file can still mix generations.
+
+```mermaid
+sequenceDiagram
+  participant P as publisher
+  participant L as publication lock
+  participant C as api-current
+  participant R as reader
+  P->>P: generate and validate immutable directory
+  P->>L: acquire
+  P->>C: rename one candidate pointer
+  P->>L: release
+  R->>C: resolve once
+  R->>R: read complete immutable set
+```
 
 ## Cleanup on failure matters
 
 Pipelines that fail mid-run need one more discipline:
 
-- remove temporary artifacts that are not trustworthy
+- remove candidate artifacts that are not trustworthy
 - do not leave behind final outputs that were only partially updated
 
-That usually means the recipe should fail before moving temporary outputs into their final
-paths, or explicitly remove partial temp state on the way out.
+That usually means the recipe should fail before moving candidate outputs into their final
+paths, or publish one immutable set through a single pointer.
 
 The standard here is not cosmetic tidiness. It is preventing the next build step from
 treating garbage as truth.
@@ -174,16 +275,40 @@ treating garbage as truth.
 
 ```make
 build/report.json: data/input.csv scripts/gen_report.py | build/
-	@python3 scripts/gen_report.py data/input.csv > $@.tmp
-	@python3 scripts/check_report.py $@.tmp
-	@mv $@.tmp $@ || { rm -f $@.tmp; exit 1; }
+	@set -eu; \
+	candidate='$@.candidate.$$$$'; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	python3 scripts/gen_report.py data/input.csv > "$$candidate"; \
+	python3 scripts/check_report.py "$$candidate"; \
+	mv -f "$$candidate" '$@'; \
+	trap - EXIT HUP INT TERM
 ```
 
 In a real shell recipe you may want clearer trap handling, but the design point is
 constant:
 
-- invalid or incomplete content should die in temporary space
+- invalid or incomplete content should die in candidate space
 - the final target path should remain the trustworthy boundary
+
+The trap covers generator failure, validator failure, rename failure, and common
+interruptions. It cannot repair a storage system that violates the assumed rename
+semantics, and a forced process kill may leave candidate debris. Recovery must treat
+unreferenced candidates as untrusted and removable.
+
+## Test the interruption windows
+
+Inject failure at each boundary:
+
+| Stop point | Single-file final | Multi-file direct paths | Pointer-selected set |
+| --- | --- | --- | --- |
+| before validation | previous accepted file | previous accepted pair | previous pointer |
+| after validation, before publication | previous accepted file | previous accepted pair | previous pointer |
+| after first final rename | not applicable | mixed pair possible | previous pointer |
+| after immutable directory adoption | not applicable | not applicable | previous pointer; unreferenced generation allowed |
+| after pointer switch | new accepted file | new pair if both renames completed | new accepted generation |
+
+The matrix tells you which failure injection distinguishes the protocols. A success-only
+demo cannot establish publication behavior.
 
 ## Pipelines create stage boundaries on purpose
 
@@ -216,9 +341,9 @@ That means the final path stopped being a trustworthy boundary.
 
 That means coupled publication is being modeled too loosely.
 
-### "Temporary outputs keep leaking into later stages"
+### "Candidate outputs keep leaking into later stages"
 
-That usually means temporary space and trusted space were not separated clearly enough.
+That usually means candidate space and trusted space were not separated clearly enough.
 
 ## A review question that improves pipeline design
 
@@ -229,6 +354,8 @@ Take one generator pipeline and ask:
 3. which step publishes the trusted outputs
 4. what happens on failure before publication
 5. which files or boundary nodes downstream targets are allowed to depend on
+6. whether readers resolve one pointer or several mutable paths
+7. how competing publishers and abandoned candidates are handled
 
 If those answers are weak, the pipeline contract is weak too.
 
@@ -236,11 +363,13 @@ If those answers are weak, the pipeline contract is weak too.
 
 Choose one multi-stage generator in the capstone or your own build and write down:
 
-1. the temporary paths
+1. the candidate paths
 2. the validation step
 3. the publication step
 4. the cleanup behavior on failure
 5. the exact output path or boundary file consumers should trust
+6. the interruption window that could expose mixed state
+7. the one process or lock that owns final publication
 
 If you can explain those without hand-waving, the pipeline has a real publication contract.
 
@@ -249,7 +378,9 @@ If you can explain those without hand-waving, the pipeline has a real publicatio
 Before leaving this lesson, make sure you can explain:
 
 - why pipeline generation and publication are not automatically the same moment
-- why temporary paths help keep partial work out of trusted output paths
-- what atomic publication means in practical build terms
+- why process-local candidate paths keep partial work out of trusted output paths
+- why an atomic claim must name its observer and publication unit
 - why validation should happen before downstream trust
 - how to tell whether a pipeline leaves behind untrustworthy partial outputs
+- when immutable generation directories and one pointer are necessary
+- why unique candidate paths do not replace final-publication ownership

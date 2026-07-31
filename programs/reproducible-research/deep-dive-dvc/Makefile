@@ -76,9 +76,89 @@ capstone-recovery-drill: ## Rebuild the workspace from the remote after cache lo
 capstone-recovery-review: ## Build the capstone remote recovery review bundle
 	@$(RUN_CAPSTONE) recovery-review
 
+.PHONY: capstone-recovery-readiness-audit
+capstone-recovery-readiness-audit: ## Audit protected revisions before remote cutover
+	@$(RUN_CAPSTONE) recovery-readiness-audit
+
+.PHONY: capstone-recovery-readiness-selftest
+capstone-recovery-readiness-selftest: ## Enforce recovery cutover evidence
+	@$(RUN_CAPSTONE) recovery-readiness-selftest
+
+.PHONY: capstone-promotion-integrity-audit
+capstone-promotion-integrity-audit: ## Audit release identity, integrity, provenance, and approval
+	@$(RUN_CAPSTONE) promotion-integrity-audit
+
+.PHONY: capstone-promotion-integrity-selftest
+capstone-promotion-integrity-selftest: ## Enforce promotion integrity decisions
+	@$(RUN_CAPSTONE) promotion-integrity-selftest
+
+.PHONY: capstone-boundary-migration-audit
+capstone-boundary-migration-audit: ## Audit a governed consumer-boundary cutover
+	@$(RUN_CAPSTONE) boundary-migration-audit
+
+.PHONY: capstone-boundary-migration-selftest
+capstone-boundary-migration-selftest: ## Enforce governed boundary cutover decisions
+	@$(RUN_CAPSTONE) boundary-migration-selftest
+
+.PHONY: capstone-workflow-evidence-audit
+capstone-workflow-evidence-audit: ## Contrast local reruns with team reproducibility evidence
+	@$(RUN_CAPSTONE) workflow-evidence-audit
+
+.PHONY: capstone-workflow-evidence-selftest
+capstone-workflow-evidence-selftest: ## Enforce workflow evidence claim decisions
+	@$(RUN_CAPSTONE) workflow-evidence-selftest
+
 .PHONY: capstone-experiment-review
 capstone-experiment-review: ## Build the capstone experiment comparison bundle
 	@$(RUN_CAPSTONE) experiment-review
+
+.PHONY: capstone-stage-contract-audit
+capstone-stage-contract-audit: ## Audit declared and hidden stage influences
+	@$(RUN_CAPSTONE) stage-contract-audit
+
+.PHONY: capstone-stage-contract-selftest
+capstone-stage-contract-selftest: ## Reject dishonest stage contract evidence
+	@$(RUN_CAPSTONE) stage-contract-selftest
+
+.PHONY: capstone-data-identity-audit
+capstone-data-identity-audit: ## Audit pointer, cache, workspace, and remote identity
+	@$(RUN_CAPSTONE) data-identity-audit
+
+.PHONY: capstone-data-identity-selftest
+capstone-data-identity-selftest: ## Enforce data identity and recovery evidence
+	@$(RUN_CAPSTONE) data-identity-selftest
+
+.PHONY: capstone-runtime-contract-audit
+capstone-runtime-contract-audit: ## Audit declared and hidden runtime influences
+	@$(RUN_CAPSTONE) runtime-contract-audit
+
+.PHONY: capstone-runtime-contract-selftest
+capstone-runtime-contract-selftest: ## Enforce declared and hidden runtime evidence
+	@$(RUN_CAPSTONE) runtime-contract-selftest
+
+.PHONY: capstone-metric-contract-audit
+capstone-metric-contract-audit: ## Audit metric semantic comparability
+	@$(RUN_CAPSTONE) metric-contract-audit
+
+.PHONY: capstone-metric-contract-selftest
+capstone-metric-contract-selftest: ## Enforce metric semantic comparability evidence
+	@$(RUN_CAPSTONE) metric-contract-selftest
+
+.PHONY: capstone-experiment-comparability-audit
+capstone-experiment-comparability-audit: ## Audit experiment comparison and promotion boundaries
+	@$(RUN_CAPSTONE) experiment-comparability-audit
+
+.PHONY: capstone-experiment-comparability-selftest
+capstone-experiment-comparability-selftest: ## Enforce experiment comparison and promotion evidence
+	@$(RUN_CAPSTONE) experiment-comparability-selftest
+
+.PHONY: capstone-reviewer-handoff-audit
+capstone-reviewer-handoff-audit: ## Audit clean reviewer handoff evidence
+	@$(RUN_CAPSTONE) reviewer-handoff-audit
+
+.PHONY: capstone-reviewer-handoff-selftest
+capstone-reviewer-handoff-selftest: ## Enforce clean reviewer handoff evidence
+	@$(RUN_CAPSTONE) reviewer-handoff-selftest
 
 .PHONY: capstone-source-bundle
 capstone-source-bundle: ## Build the capstone tracked-source release bundle

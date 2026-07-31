@@ -47,6 +47,32 @@ Add one more question immediately after it:
 
 > what side effect or failure risk becomes more likely because this wrapper is allowed to try again, wait, or refuse work?
 
+## Begin with the actual trace
+
+Run:
+
+```bash
+make decorator-policy-lab
+```
+
+The `retry` packet contains this sequence:
+
+```text
+attempt:1
+sleep:0.1
+attempt:2
+sleep:0.2
+attempt:3
+```
+
+The caller made one call. The underlying function ran three times. The retry wrapper,
+not the business function, selected both waits. That trace is the smallest useful proof
+that retry governs control flow.
+
+The `retry_exhausted` packet adds the failure route: the underlying function runs
+exactly twice, and the second failure is re-raised as the same exception object. The
+wrapper does not convert it, suppress it, or accidentally begin a third attempt.
+
 ## Retry changes failure semantics
 
 A retry decorator can be useful, but it is already a policy engine:
@@ -58,29 +84,22 @@ A retry decorator can be useful, but it is already a policy engine:
 
 That is far more than "just wrapping a function."
 
+The lab implementation requires all control-flow choices at the factory boundary:
+
 ```python
-import functools
-import time
-
-
-def retry(exceptions=(Exception,), max_attempts=3, initial_delay=1):
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            delay = initial_delay
-            for attempt in range(max_attempts):
-                try:
-                    return func(*args, **kwargs)
-                except exceptions:
-                    if attempt == max_attempts - 1:
-                        raise
-                    time.sleep(delay)
-                    delay *= 2
-
-        return wrapper
-
-    return decorator
+@retry(
+    exceptions=(TransientDeliveryError,),
+    max_attempts=3,
+    backoff_seconds=(0.1, 0.2),
+    sleep=record_sleep,
+)
+def deliver(incident_id: str) -> str:
+    ...
 ```
+
+`backoff_seconds` must contain exactly one delay between attempts. A policy with three
+attempts therefore needs two delays. This removes a hidden backoff algorithm and makes
+the total waiting budget calculable during review.
 
 This wrapper now owns a clear call-policy contract. That is why it belongs in Module 05,
 not the thin-wrapper module.
@@ -91,6 +110,21 @@ It also owns an idempotency question that thin wrappers usually avoid:
 - what if a second attempt is not morally the same as the first attempt?
 
 That is why "retry" is never only a reliability keyword. It is a behavior multiplier.
+
+## The idempotency precondition
+
+Retry is defensible only when another attempt is safe enough for the operation's
+contract. Compare:
+
+| Underlying work | Failure point | Retry judgment |
+| --- | --- | --- |
+| read an incident record | before any state change | usually reasonable |
+| send a request carrying a stable idempotency key | after an uncertain response | possible if the receiver honors the key |
+| append a page to an external queue with no deduplication | after the append but before acknowledgement | unsafe: a retry can duplicate the page |
+
+The lab uses an in-memory failure before returning a delivery result. It proves the
+wrapper mechanics and stopping rule. It does **not** prove that retrying a real incident
+delivery is safe.
 
 ## Timeout changes waiting semantics, not only behavior
 
@@ -183,6 +217,21 @@ Use this quick comparison during review:
 | jitter | how predictable or coordinated repeated attempts become |
 | quota window | whether bursts are absorbed, delayed, or rejected |
 
+The lab deliberately injects `sleep` as a controlled boundary. Tests replace real time
+with an event recorder, so the backoff order is deterministic. This seam does not make
+the wrapper production-ready; it makes the teaching claim executable without making
+the test suite wait.
+
+## Counterexample: broad exception retry
+
+Do not configure `(Exception,)` merely because it is concise. A programming error such
+as `ValueError` would then be treated like a transient delivery failure. The focused
+test `test_retry_catches_only_the_configured_exception_types` configures
+`ConnectionError`, raises `ValueError`, and proves the function runs only once.
+
+That negative test matters more than another success example: it proves the retry
+boundary is selective.
+
 ## These wrappers should preserve non-policy surfaces
 
 Even when semantics change, the wrapper should still preserve what it can:
@@ -209,6 +258,21 @@ These are the failures to catch before approving the design:
 | rate limiting with invisible shared state | later callers are governed by history they cannot inspect | expose the owner or move coordination to a clearer component |
 | preserving metadata while hiding stop conditions | tools can inspect the callable but humans still cannot predict wrapper behavior | document or expose the control-flow rule directly |
 
+## Smallest honest proof route
+
+From the course root:
+
+```bash
+python -m unittest \
+  tests.test_decorator_policy_evidence.DecoratorPolicyEvidenceTests.test_retry_packet_exposes_captured_policy_and_multiplied_execution \
+  tests.test_decorator_policy_evidence.DecoratorPolicyEvidenceTests.test_exhausted_retry_has_a_finite_rule_and_preserves_final_failure \
+  tests.test_decorator_policy_evidence.DecoratorPolicyEvidenceTests.test_retry_catches_only_the_configured_exception_types
+```
+
+Together these tests prove success after retries, exhaustion, exception identity, delay
+order, and selective exception handling. They do not prove concurrency safety,
+idempotency, cancellation, jitter quality, or distributed coordination.
+
 ## Review rules for resilience wrappers
 
 When reviewing retry, timeout, or rate-limit decorators, keep these questions close:
@@ -233,9 +297,13 @@ Before moving on, make sure you can do all of these:
 
 Try these before moving on:
 
-1. Implement a bounded retry decorator and explain exactly when it stops retrying.
-2. Write down one timeout implementation caveat for sync code.
-3. Compare one rate-limit decorator to an explicit limiter object and explain which design would be easier to review under growth.
+1. Change the lab policy to two attempts and one delay. Update the expected trace before
+   changing the code.
+2. Add a test where the first attempt has a visible side effect and the second succeeds.
+   Explain why the test demonstrates risk rather than safety.
+3. Write down one timeout implementation caveat for synchronous code.
+4. Compare one rate-limit decorator to an explicit limiter object and explain which
+   design would be easier to inspect and reset under growth.
 
 If those feel ordinary, the next step is annotation-aware runtime behavior, where the
 wrapper begins to claim knowledge about types and contracts.

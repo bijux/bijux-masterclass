@@ -163,6 +163,60 @@ If a wrapper claims to stay thin, try to prove it with these questions:
 | what still stays unchanged? | return values, exception behavior, and call ownership still belong to the wrapped function |
 | what would make this no longer thin? | state across calls, altered failure policy, retries, caching, throttling, or hidden fallback behavior |
 
+## Executable proof: preserve object identity across the boundary
+
+Run:
+
+```console
+$ make wrapper-lab |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["thin_wrapper"])'
+{'events': ['start:succeed', 'success:object', 'start:fail', 'failure:DemonstrationFailure'], 'failure_type': 'DemonstrationFailure', 'same_exception_object': True, 'same_result_object': True}
+```
+
+The identity checks are stronger than comparing equal values:
+
+- `same_result_object` proves the wrapper returned the exact object produced by the
+  wrapped function
+- `same_exception_object` proves observation re-raised the exact exception instance
+- the event list proves success and failure were both observed once
+
+This is a deliberately narrow transparency claim. The wrapper still adds a stack frame,
+event writes, and runtime cost. It preserves result and failure identity; it does not
+make the call indistinguishable from an unwrapped call.
+
+Read `observing_decorator` and `thin_wrapper_evidence` in
+`labs/wrapper_runtime/evidence.py`. The wrapper has two explicit branches:
+
+```text
+call -> start event -> wrapped function -> success event -> same result object
+                              |
+                              +-> failure event -> same exception object re-raised
+```
+
+The test asserts both branches. A happy-path-only test would not justify the claim that
+exception behavior remains transparent.
+
+### Failure route: convert failure into a value
+
+Replace bare `raise` with `return None` in a local experiment. Three contracts change:
+
+- callers no longer receive `DemonstrationFailure`
+- the return type now includes a hidden sentinel
+- downstream code may continue after an operation that actually failed
+
+That is failure policy, not thin observation. Restore bare re-raising and run
+`make wrapper-lab-test`.
+
+### Before-and-after review
+
+| Design | Added behavior | Preserved behavior | Classification |
+| --- | --- | --- | --- |
+| direct call | none | original result and exception | unwrapped |
+| observing wrapper | records start and outcome | exact result and exception objects | thin instrumentation |
+| wrapper returning `None` on failure | records and suppresses failure | neither exception identity nor original return contract | policy-owning |
+
+Use this table instead of classifying by line count.
+
 ## `try/finally` often matters for transparency
 
 For wrappers like timers, the right control-flow shape is important:
@@ -217,6 +271,9 @@ means the change is still narrow enough to inspect directly.
 
 The point of calling them thin is not to pretend they are free. It is to say the added
 behavior is still narrow, inspectable, and reviewable.
+
+The shipped evidence makes that claim reviewable: it names the extra events and proves
+which identities cross the wrapper unchanged.
 
 ## Thin wrappers are the lower-power decorator case
 

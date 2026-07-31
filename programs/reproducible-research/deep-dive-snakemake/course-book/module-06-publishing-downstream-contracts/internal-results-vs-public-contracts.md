@@ -1,276 +1,309 @@
 # Internal Results Versus Public Contracts
 
-The first publishing decision is the most important one:
+Snakemake owns many files so it can resume work, diagnose failures, and avoid unnecessary
+recomputation. Downstream users should not have to understand that execution layout.
 
-> which outputs belong to the workflow, and which outputs belong to the downstream world?
+This lesson turns a crowded results tree into a deliberate public boundary. The central
+skill is not copying files. It is deciding which paths and meanings the project is willing
+to support.
 
-If that line is vague, the workflow becomes harder to review and downstream users are
-forced to guess which files are safe to trust.
+## Begin with audiences and promises
 
-This page is about making that line explicit.
+Consider:
 
-## How to use this page
+```text
+results/
+├── discovered_samples.json
+├── alpha/
+│   ├── qc.raw.json
+│   ├── qc.trimmed.json
+│   ├── trimmed.fastq.gz
+│   ├── signature.json
+│   └── screen.json
+├── summary.json
+└── summary.tsv
+logs/
+benchmarks/
+.snakemake/
+```
 
-Read this page with a real workflow tree in front of you.
+Every file may be useful. That does not make every file public.
 
-You should be able to point at each file or directory and say one of these out loud:
+Ask for each artifact:
 
-- this exists so the workflow can keep running
-- this exists so maintainers can inspect or debug the run
-- this exists because a downstream user is allowed to trust it
+1. Who reads it?
+2. What decision do they make from it?
+3. Which path, schema, and meaning may they rely on?
+4. How long will that promise be supported?
+5. Which check prevents accidental drift?
 
-If you cannot sort the tree that way, your publish boundary is not ready yet.
+If those questions have no answer, the file is not yet a public contract.
 
-## If you are learning this without the live class
+## Four artifact roles
 
-Run this page as a sorting lab, not as a reading-only lesson.
+| Role | Primary audience | Stability expectation | Examples |
+| --- | --- | --- | --- |
+| execution state | Snakemake and workflow operators | may change with implementation | intermediates, shadow files, `.snakemake/` |
+| diagnostic evidence | maintainers and incident reviewers | retained for stated investigations | logs, benchmarks, rejected candidates |
+| review evidence | scientific or release reviewers | stable enough to support a named claim | discovery manifest, configuration summary |
+| public contract | downstream people and programs | versioned path, structure, and meaning | summary JSON/TSV, report, provenance, manifest |
 
-Use it in four passes:
-
-1. print the current `results/` and `publish/` trees without changing anything
-2. classify every visible file before you move even one path into `publish/v1/`
-3. stop and defend one exclusion decision before you defend one inclusion decision
-4. finish by naming which downstream user the public bundle is actually for
-
-If you cannot say who the consumer is, you are still arranging files for producer
-convenience rather than designing a public contract.
-
-## A workflow usually produces more files than it should publish
-
-A healthy workflow often creates many useful files:
-
-- per-step logs
-- benchmarks
-- scratch intermediates
-- per-sample result files
-- validation artifacts
-- final summaries and reports
-
-Those files do not all make the same promise.
-
-Some exist to help the workflow operate. Some exist to help maintainers review a run.
-Some exist so another person or tool can rely on the results later.
-
-Publishing begins when you decide which category a file belongs to.
-
-## Internal state is still important, but it is not the public contract
-
-Internal outputs are often necessary for:
-
-- chaining rules together
-- debugging failures
-- inspecting detailed sample-level behavior
-- supporting later aggregation
-
-In the capstone, much of `results/` serves that purpose. It contains per-sample files that
-help the workflow do its job, but it is not the main downstream promise.
-
-That distinction matters because downstream consumers should not be forced to reverse
-engineer the workflow layout to use the published results.
-
-## Published outputs are an explicit promise
-
-A published output says something stronger than "this file exists."
-
-It says:
-
-- this path is intentionally exposed
-- this file meaning is stable enough for consumers to rely on
-- this artifact belongs to a reviewable contract
-
-That is why the capstone promotes a smaller surface under `publish/v1/`.
-
-Files such as:
-
-- `summary.json`
-- `summary.tsv`
-- `report/index.html`
-- `manifest.json`
-- `provenance.json`
-- `accepted_samples.json`
-- `rejected_samples.json`
-
-are not just another directory. They are the deliberate public boundary.
-
-The reviewed discovery records matter here because a downstream consumer often needs to
-know not only what survived into the bundle, but also why other candidates did not.
-
-## A practical sorting rule
-
-When you are unsure whether a file belongs in the public bundle, ask these three
-questions in order:
-
-1. Would the workflow still need this file even if no downstream user ever saw it?
-2. Would a maintainer mainly use this file to debug, inspect, or validate a run?
-3. Would a downstream notebook, report pipeline, or external repository be justified in
-   treating this file as a stable interface?
-
-If the first or second answer is strongest, keep the file internal until you have a
-clearer downstream reason.
-
-If the third answer is strongest, you are no longer talking about a mere output. You are
-talking about a contract.
-
-## One simple contrast
+Roles can overlap, but state the overlap. A discovery manifest can be both workflow input
+to later jobs and a published membership record.
 
 ```mermaid
 flowchart LR
-  results["results/"] --> internal["workflow-owned internal state"]
-  publish["publish/v1/"] --> public["downstream-facing contract"]
-  internal --> review["supports workflow execution and review"]
-  public --> trust["supports downstream trust and reuse"]
+  execution["Execution state"] --> review{"Promotion review"}
+  diagnostics["Diagnostic evidence"] --> review
+  review -->|named audience + stable meaning + verifier| public["Public contract"]
+  review -->|implementation detail or unstable schema| retain["Remain internal"]
 ```
 
-This diagram matters because many publishing mistakes begin when both directories are
-treated as if they made the same promise.
+Promotion is a design decision, not a directory copy.
 
-They do not.
+## The capstone boundary
 
-## The first sorting card to keep beside you
+The capstone keeps per-sample processing under `results/` and publishes a smaller bundle:
 
-Use this table before you promote or demote any file:
+```text
+publish/v1/
+├── discovered_samples.json
+├── manifest.json
+├── provenance.json
+├── report/
+│   └── index.html
+├── summary.json
+└── summary.tsv
+```
 
-| File or directory | Primary audience | Why it exists | Public or internal |
-| --- | --- | --- | --- |
-| `results/sample-a/qc.json` | workflow and maintainers | supports execution and detailed inspection | internal |
-| `results/logs/aggregate.log` | maintainers | failure diagnosis and debugging | internal |
-| `publish/v1/summary.json` | machines | stable downstream data contract | public |
-| `publish/v1/report/index.html` | humans | readable interpretation of the run | public |
-| `publish/v1/accepted_samples.json` | humans and machines | explains which validated candidates became public results | public |
-| `publish/v1/rejected_samples.json` | humans and machines | explains which candidates were excluded and why | public when discovery review matters downstream |
+This boundary offers:
 
-If you cannot fill the last column honestly, you are not ready to change the boundary yet.
+- machine-readable sample membership;
+- machine-readable metrics;
+- a tabular interchange surface;
+- a human report;
+- governed run identity;
+- an inventory with digests.
 
-## A concrete audit you should be able to perform
+It does not promise:
 
-Imagine a repository with these artifacts after a run:
+- per-rule temporary files;
+- internal directory structure;
+- logs as a stable parsing API;
+- Snakemake metadata;
+- every benchmark column forever.
 
-- `results/sample_A.tsv`
-- `results/sample_B.tsv`
-- `results/qc/coverage.png`
-- `results/logs/aggregate.log`
-- `publish/v1/summary.json`
-- `publish/v1/report/index.html`
+## Promote by consumer need
 
-A strong learner should be able to say:
+Suppose a downstream service needs sample ID, raw read count, and a top panel hit.
+Publishing the entire `results/{sample}/` tree makes the service depend on:
 
-- the `results/` files help the workflow execute, inspect QC, or debug
-- the `publish/v1/` files are intentionally promoted because a downstream consumer should
-  not need to reverse engineer the internal layout
-- the existence of a polished QC plot does not automatically make it part of the public
-  contract
+- several paths;
+- intermediate schemas;
+- partial-completion behavior;
+- file naming chosen for workflow convenience;
+- future internal refactors.
 
-That is the beginning of publication discipline.
+A stable `summary.json` can project only the supported fields. The public artifact is not
+“less transparent”; it is a deliberate API with a smaller compatibility surface.
 
-## One boundary question that catches many weak designs
+Keep internal evidence available to authorized reviewers without declaring it all
+downstream API.
 
-Ask this whenever a file feels "important" but you still do not know if it is public:
+## Write the boundary as an allowlist
 
-> would a downstream user be justified in depending on this exact path next week without
-> learning the workflow's internal execution tree?
+Prefer named publish inputs:
 
-If the answer is no, the file may still be valuable, but it does not yet belong in the
-public contract.
+```python
+rule publish_manifest:
+    input:
+        discovery="publish/v1/discovered_samples.json",
+        summary="publish/v1/summary.json",
+        table="publish/v1/summary.tsv",
+        report="publish/v1/report/index.html",
+        provenance="publish/v1/provenance.json",
+    output:
+        manifest="publish/v1/manifest.json"
+```
 
-## A weak boundary
+Avoid:
 
-Weak shape:
+```python
+glob.glob("publish/v1/**/*", recursive=True)
+```
 
-- notebooks read directly from `results/`
-- published files are chosen ad hoc after the run
-- a path becomes “public” only because someone found it useful once
+while constructing the public inventory. Ambient globbing can include stale files,
+scratch output, or a manifest from an earlier run.
 
-This feels flexible at first. It creates long-term fragility:
+```mermaid
+flowchart TD
+  accepted["Accepted samples"] --> required["Named required outputs"]
+  required --> complete{"Complete and valid?"}
+  complete -->|no| stop["Stop publication"]
+  complete -->|yes| candidate["Assemble candidate bundle"]
+  candidate --> verify["Consumer and integrity verification"]
+  verify --> promote["Promote versioned public boundary"]
+```
 
-- internal layout changes break downstream use
-- reviewers cannot tell which files are meant to stay stable
-- publication discipline arrives only after confusion has already started
+The allowlist makes absence and addition reviewable.
 
-## A stronger boundary
+## Separate production from promotion
 
-Stronger shape:
+Generating an internal summary and promoting a public summary are different events.
 
-- keep workflow-operational state under internal directories such as `results/`
-- promote only the intended downstream artifacts into a versioned publish boundary
-- treat every file inside that publish boundary as something a reviewer must be able to defend
-- publish reviewed discovery evidence when downstream users need to understand result membership, not only final result bytes
+Production asks:
 
-That design gives both maintainers and consumers a clear answer to the same question:
+- did all required analytical work finish?
+- do internal artifacts satisfy their rule contracts?
+- is the accepted sample set complete?
 
-> which files are safe to depend on?
+Promotion asks:
 
-## The beginner mistake to catch early
+- which artifacts cross the boundary?
+- do they satisfy public schemas and meanings?
+- does the current consumer accept them?
+- do hashes and inventory match?
+- can promotion expose a partial bundle?
 
-Many beginners think publishing means copying the most useful-looking files into a
-`publish/` directory after the run.
+This separation lets publication fail safely without rerunning expensive analysis.
 
-That is still too producer-centered.
+## Prevent stale-file publication
 
-The real question is not which files feel important to the workflow author. The real
-question is which files a downstream user should be encouraged to trust without learning
-the internal workflow tree.
+Suppose a previous run published `gamma`, while the new accepted set is `alpha,beta`.
+Copying new files into an existing directory can leave `gamma` behind.
 
-## A practical test
+Safer patterns:
 
-Ask these questions about any output:
+- assemble into a new versioned or release-specific candidate directory;
+- verify the exact allowlisted paths;
+- reject unexpected paths;
+- write the manifest after candidate artifacts are complete;
+- promote atomically where the storage system supports it;
+- keep published versions immutable.
 
-1. Is this file mainly for the workflow to continue operating?
-2. Is this file mainly for maintainers to debug or inspect a run?
-3. Is this file intentionally exposed for downstream use?
+Cleaning an existing public directory before copying is less safe because consumers may
+observe the boundary while it is incomplete.
 
-If the answer is mostly the first or second, it probably does not belong in the publish
-contract.
+## Public completeness is set equality
 
-If the answer is the third, it needs stronger naming, stability, and review.
+Let:
 
-## Common failure modes
+- `A` = accepted samples;
+- `C` = samples with all required internal outputs;
+- `P` = samples in the public machine-readable summary.
 
-| Failure mode | What goes wrong | Better repair |
+For a full publication:
+
+```text
+A = C = P
+```
+
+File presence alone cannot prove this equality. The verifier must compare identities.
+
+If partial publication is supported, add:
+
+- declared policy identifier;
+- excluded accepted samples;
+- machine-readable reasons;
+- consumer-visible completeness status.
+
+“Publish whatever exists” is not a partial-publication policy.
+
+## Classify a concrete tree
+
+| Artifact | Default role | Reason |
 | --- | --- | --- |
-| downstream notebooks read from `results/` | internal layout becomes a hidden public API | publish a smaller stable bundle and steer consumers there |
-| publish directory copies too many internal files | contract grows without intention | publish only the outputs a consumer is meant to trust |
-| reports are the only visible outputs | machine-readable contract becomes unclear | pair human-oriented reports with explicit machine-readable artifacts |
-| logs or benchmarks leak into the public surface | consumers inherit maintenance noise | keep operational evidence separate from the downstream contract |
-| no one can explain why a file is public | review becomes guesswork | require a clear downstream-use reason for promoted files |
+| `results/alpha/trimmed.fastq.gz` | internal state | large intermediate tied to workflow implementation |
+| `results/alpha/qc.trimmed.json` | review evidence | useful for diagnosis, not necessarily stable public API |
+| `logs/trim_alpha.log` | diagnostic evidence | human troubleshooting format may change |
+| `benchmarks/trim_alpha.txt` | diagnostic evidence | performance review, not analytical result |
+| `publish/v1/summary.json` | public machine API | declared consumer parses it |
+| `publish/v1/summary.tsv` | public interchange surface | supported tabular consumer path |
+| `publish/v1/report/index.html` | public human surface | supported reading path, not scraping API |
+| `publish/v1/provenance.json` | public review evidence | binds results to governed run identity |
+| `publish/v1/manifest.json` | public inventory | defines paths and byte identities |
 
-## What a reviewer should hear
+The classification can differ by project. What matters is that each promotion has an
+audience, contract, and verifier.
 
-When a team promotes a file into `publish/v1/`, the explanation should sound like this:
+## A boundary review exercise
 
-> We are exposing this file because a downstream user needs a stable, documented surface
-> for a real use case, and we do not want them reading internal `results/` paths.
+Given an internal metric file:
 
-If the explanation instead sounds like:
+```json
+{
+  "sample": "alpha",
+  "raw_reads": 10,
+  "trimmed_reads": 8,
+  "worker_hostname": "node-17",
+  "scratch_path": "/scratch/job-219",
+  "debug_histogram": [1, 2, 5]
+}
+```
 
-> We already had the file anyway, so we copied it over.
+A public consumer needs sample, raw reads, and trimmed reads.
 
-then the boundary is still accidental.
+The supported projection should omit hostname and scratch path because they are
+execution context. Whether to publish the debug histogram depends on a named consumer and
+stability promise, not on its availability.
 
-## The explanation a reviewer trusts
+Reference projection:
 
-Strong explanation:
+```json
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "sample_id": "alpha",
+      "raw_reads": 10,
+      "trimmed_reads": 8
+    }
+  ]
+}
+```
 
-> these per-sample files remain under `results/` because they support workflow execution
-> and detailed review, while `publish/v1/` contains the smaller bundle downstream users
-> are allowed to trust as the stable contract; the reviewed discovery records are public
-> because they explain why the bundle has exactly its observed membership.
+Also define meanings and units. A field name alone is not enough.
 
-Weak explanation:
+## Boundary failure patterns
 
-> we copied the important files into `publish/` after the run finished.
+### Exposing internal paths as convenience
 
-The strong explanation defines ownership and intention. The weak explanation describes a
-folder move without a contract.
+A consumer begins reading them, making refactoring expensive. Either promote and version
+the path intentionally or keep it outside documented public surfaces.
 
-## End-of-page checkpoint
+### Publishing logs as data
 
-Before leaving this page, you should be able to:
+Logs mix diagnostics with unstable wording. Emit a structured artifact for machine
+consumers.
 
-- explain why `results/` and `publish/v1/` make different promises
-- give one example of an internal output that should not become public
-- give one example of a file that belongs in the published contract
-- explain why downstream consumers should not need to understand the whole workflow tree
+### One directory for internal and public files
 
-If you still talk about publication mainly as "where final files go," keep working. The
-stronger idea is that publication defines which outputs other people are allowed to rely
-on.
+Ownership and retention become ambiguous. Separate workflow-owned `results/` from
+consumer-owned `publish/vN/`.
+
+### Reusing the public directory in place
+
+Stale files and partial visibility become likely. Build and verify an isolated candidate.
+
+### Calling every retained file “provenance”
+
+Retention does not define meaning. Name which evidence supports which claim.
+
+## Review checklist
+
+- [ ] Every candidate public artifact has a named audience and decision.
+- [ ] Internal state, diagnostics, review evidence, and public contract are distinguished.
+- [ ] Public paths are allowlisted.
+- [ ] Public schemas project supported meaning rather than mirror internal layout.
+- [ ] Accepted, complete, and published sample sets are compared.
+- [ ] Unexpected and stale files cause rejection.
+- [ ] Candidate assembly is isolated from the trusted public boundary.
+- [ ] Human-readable files are not treated as implicit machine APIs.
+- [ ] Each promoted path has a compatibility test.
+- [ ] The published surface is small enough to support deliberately.
+
+## What you should carry forward
+
+A public boundary is a maintained promise to a named consumer. The next lesson asks how
+that promise may evolve, which changes can remain inside the current version, and which
+require a migration rather than optimistic release notes.

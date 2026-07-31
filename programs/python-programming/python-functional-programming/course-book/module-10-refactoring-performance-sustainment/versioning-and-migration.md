@@ -1,6 +1,5 @@
 # Versioning and Migration
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,333 +24,213 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+A migration has two different questions:
 
-**Module 10**
-> **Core question:**  
-> How do you version and migrate FuncPipe contracts (events, ports, configs, graphs) across bounded contexts with enforceable rules for backward/forward compatibility, enabling zero-downtime evolution and safe deprecation?
+1. Can the old value fit the new structural contract?
+2. Does the translation preserve the application's meaning?
 
-In this core, we establish rigorous, enforceable versioning for the FuncPipe RAG Builder (now at `funcpipe-rag-10`). All public contracts are versioned with explicit semantic rules. Events and graphs are immutable primitives with major-only versioning (breaking = new major). Ports follow inbound-stable (2-major deprecation) / outbound-evolvable contracts. Configs use semver. Compatibility is verified with PBT (new accepts old; old rejects new with typed error; invariants preserved after translation). Deprecation is exactly two major versions. Builds on Core 7's contexts.
+A field-set comparison can answer the first question. Only an executable
+translator and its domain assertions can answer the second.
 
-**Motivation Bug:** Unversioned or poorly versioned contracts cause cascading breaks, downtime during upgrades, and "works on my machine" migrations.
+## The FuncPipe migration seam
 
-**Delta from Core 7:** Contexts isolate domains; versioning makes evolution safe across time.
-
-**Versioning & Migration Contract (Normative):**
-- Events & graphs: major-only (v1, v2); primitives only; additive optional fields allowed within major (lenient readers ignore unknown + MUST emit telemetry).
-- Ports: inbound stable for 2 majors (breaking requires new port + shim); outbound new versions on breaking.
-- Configs: semver; defaults may change in minor (warn on old).
-- Event types:
-  - Closed-world channel (finite known types): new type = breaking → new major.
-  - Open-world channel (consumers ignore unknown types): new type = same major.
-- Compatibility mode: consumers lenient for additive changes (ignore unknown optional fields + telemetry); strict reject on breaking major.
-- Deprecation: exactly two major versions supported concurrently.
-- Rollout order:
-  - Additive (same major): producer first (lenient consumers tolerate new fields).
-  - Breaking (new major): dual-publish vN and vN+1 → consumers upgrade to read vN+1 → producer drops vN.
-- Stored events/reprocessing: keep upcasters for the last two majors in a separate "archive" toolchain; old logs require explicit migration or archive runner.
-- Enforcement: PBT compatibility suite + runtime version guards + mypy.
-
-Use this when you are managing an evolving FP system.
-
-**Outcome:**
-1. Version all contracts with explicit rules.
-2. Write semantic compatibility PBT.
-3. Migrate with deprecation windows + dual-publish.
-4. Version graphs as immutable specs.
-
----
-## 1. Laws & Invariants
-| Law                        | Description                                                                                  | Enforcement                          |
-|----------------------------|------------------------------------------------------------------------------------------------|--------------------------------------|
-| **Event/Graph Versioning** | Major-only; breaking change = new major; additive optional = same major (lenient ignore + telemetry). | Naming + PBT                         |
-| **Port Stability**         | Inbound ports stable for 2 majors; outbound new versions on breaking.                        | Mypy + PBT                           |
-| **Backward Compatibility** | New version accepts old inputs/events; translates + preserves invariants.                    | PBT suite                            |
-| **Forward Compatibility**  | Old version rejects unknown major with typed error; ignores unknown optional fields + telemetry. | PBT suite + runtime guards           |
-| **Deprecation Window**     | Exactly two major versions supported concurrently.                                            | Runtime + CI                         |
-| **Graph Immutability**     | Graphs are immutable, major-versioned specs; changes create new major.                       | Serialization + canonical hash checks|
-
-These are enforceable engineering constraints.
-
----
-## 2. Decision Table
-### Events & Graphs (major-only)
-| Change Type                | Same Major | New Major | Notes                                |
-|----------------------------|------------|-----------|--------------------------------------|
-| Additive optional field    | Yes        | No        | Lenient readers ignore + telemetry   |
-| New event type (closed-world) | No      | Yes       | Breaking → new major                 |
-| New event type (open-world) | Yes       | No        | Consumers ignore unknown types       |
-| Field rename/remove        | No         | Yes       | New major + migration ACL            |
-| Semantics change           | No         | Yes       | New major                            |
-
-### Ports & Configs (semver)
-| Change Type                | Minor | Major | Notes                                |
-|----------------------------|-------|-------|--------------------------------------|
-| Additive optional field    | Yes   | No    | Lenient readers ignore               |
-| Config default change      | Yes   | No    | Warn on old                          |
-| Field rename/remove        | No    | Yes   | Major + shim                         |
-| Semantics change           | No    | Yes   | Major                                |
-
-**Major for breaking; minor for additive.**
-
----
-## 3. Public API (Versioning Blueprint)
-```text
-contracts/
-  events/
-    clean_doc_produced/
-      v1.py          # CleanDocProducedV1
-      v2.py          # CleanDocProducedV2 (breaking)
-      current.py     # alias to latest
-  ports/
-    inbound_raw_source/
-      v1.py
-      v2.py          # breaking inbound change
-      current.py
-  graphs/
-    rag/
-      v1.json        # canonical JSON
-      v2.json
-      current.json
-```
-
-Runtime version guards in ACL/ports.
-
----
-## 4. Reference Implementations
-### 4.1 Versioned Event (Major-Only)
-```python
-# contracts/events/clean_doc_produced/v1.py
-from dataclasses import dataclass
-from typing import Literal
-
-@dataclass(frozen=True)
-class CleanDocProducedV1:
-    version: Literal["1"] = "1"
-    doc_id: str
-    abstract: str
-    produced_at_ms: int
-
-# contracts/events/clean_doc_produced/v2.py
-@dataclass(frozen=True)
-class CleanDocProducedV2:
-    version: Literal["2"] = "2"
-    doc_id: str
-    text: str  # renamed from abstract
-    produced_at_ms: int
-```
-
-### 4.2 Compatibility ACL (Lenient + Strict + Telemetry)
-```python
-# contexts/chunking/acl.py
-import logging
-from typing import TypedDict
-
-from pydantic import BaseModel, ValidationError
-
-from contracts.events.clean_doc_produced.v1 import CleanDocProducedV1
-from contracts.events.clean_doc_produced.v2 import CleanDocProducedV2
-from .types import ChunkingIngressV1, ChunkingTranslationError
-from funcpipe.core import Result, Ok, Err
-
-logger = logging.getLogger(__name__)
-
-class _V1Model(BaseModel):
-    version: Literal["1"]
-    doc_id: str
-    abstract: str
-    produced_at_ms: int
-    model_config = {"extra": "allow"}
-
-class _V2Model(BaseModel):
-    version: Literal["2"]
-    doc_id: str
-    text: str
-    produced_at_ms: int
-    model_config = {"extra": "allow"}
-
-def from_clean_doc_produced(raw: dict) -> Result[ChunkingIngressV1, ChunkingTranslationError]:
-    version = raw.get("version", "1")
-    try:
-        if version == "1":
-            parsed = _V1Model(**raw)
-            if parsed.model_extra:
-                logger.warning("Ignored unknown fields in CleanDocProduced v1: %s", parsed.model_extra.keys())
-            return Ok(ChunkingIngressV1(
-                doc_id=parsed.doc_id,
-                text=parsed.abstract,
-                metadata={"cleaned_at_ms": parsed.produced_at_ms},
-            ))
-        if version == "2":
-            parsed = _V2Model(**raw)
-            if parsed.model_extra:
-                logger.warning("Ignored unknown fields in CleanDocProduced v2: %s", parsed.model_extra.keys())
-            return Ok(ChunkingIngressV1(
-                doc_id=parsed.doc_id,
-                text=parsed.text,
-                metadata={"cleaned_at_ms": parsed.produced_at_ms},
-            ))
-    except ValidationError as exc:
-        return Err(ChunkingTranslationError("validation_error", str(exc)))
-    return Err(ChunkingTranslationError("unsupported_version", f"v{version}"))
-```
-
-### 4.3 Old Version Rejection (Strict Reader)
-```python
-# old_contexts/chunking/v1/acl.py
-from pydantic import BaseModel, ValidationError
-
-class _OldV1Model(BaseModel):
-    version: Literal["1"]
-    doc_id: str
-    abstract: str
-    produced_at_ms: int
-    model_config = {"extra": "forbid"}
-
-def from_clean_doc_produced(raw: dict) -> Result[...]:
-    if raw.get("version", "1") != "1":
-        return Err(ChunkingTranslationError("unsupported_version", "this version only accepts v1"))
-    try:
-        _OldV1Model(**raw)
-    except ValidationError as exc:
-        return Err(ChunkingTranslationError("validation_error", str(exc)))
-    # ...
-```
-
-### 4.4 Port Evolution Rules
-- Inbound: stable for 2 majors (breaking requires new port + shim adapter).
-- Outbound: new versions on breaking; old deprecated over 2 majors.
-
-### 4.5 Pipeline Graph Versioning (Major-Only, Canonical JSON)
-```python
-# graphs/rag_v1.json (canonical, sorted keys)
-{
-  "version": "1",
-  "contexts": {
-    "cleaning": "v1",
-    "chunking": "v2"
-  },
-  "policy": {
-    "batch_size": 128,
-    "ordering": "stable"
-  }
-}
-```
-
-Loader with validation + canonical hash:
+The old in-process metadata value stores:
 
 ```python
-import json
-import hashlib
-from pydantic import BaseModel, ValidationError
-
-class RagGraphV1(BaseModel):
-    version: Literal["1"]
-    contexts: dict[str, str]
-    policy: dict
-
-def load_pipeline_graph(path: str) -> tuple[RagGraphV1, str]:
-    with open(path) as f:
-        raw = f.read()
-    canon = json.dumps(json.loads(raw), sort_keys=True, separators=(",", ":"))
-    graph_hash = hashlib.sha256(canon.encode()).hexdigest()
-    data = json.loads(canon)
-    try:
-        graph = RagGraphV1(**data)
-    except ValidationError as exc:
-        raise ValueError(f"Invalid graph {path}: {exc}")
-    return graph, graph_hash
+@dataclass(frozen=True, slots=True)
+class ChunkMetadataV1:
+    source: str
+    tags: list[str]
 ```
 
-### 4.6 Event Evolution Rules
-- Additive optional fields → same major.
-- Breaking rename/remove/semantics → new major.
-- New event type:
-  - Closed-world channel → new major.
-  - Open-world channel → same major.
-- Converters live in downstream ACL.
-- Compatibility PBT verifies new accepts old + old rejects new with explicit error.
+The current value stores:
 
-### 4.7 Orchestration Shell with Platform Policy
 ```python
-# shell.py
-import logging
-from contexts.cleaning import CleaningContext
-from contexts.chunking.acl import from_clean_doc_produced
-from contexts.chunking import ChunkingContext
-
-logger = logging.getLogger(__name__)
-
-@dataclass(frozen=True)
-class OrchestrationPolicy:
-    batch_size: int = 128
-    ordering: Literal["stable", "unordered"] = "stable"
-    delivery: Literal["at-least-once", "at-most-once"] = "at-least-once"
-    dedup_key: Callable[[CleanDocProducedV1], Hashable] | None = lambda e: e.doc_id
-    retry_policy: RetryPolicy = field(default_factory=lambda: RetryPolicy(max_attempts=3))
-
-async def rag_orchestration(cfg: GlobalConfig, policy: OrchestrationPolicy):
-    cleaning = CleaningContext(cfg.cleaning)
-    chunking = ChunkingContext(cfg.chunking)
-
-    seen = set() if policy.delivery == "at-most-once" else None
-
-    async for raw_batch in batch_source(cfg.source_path, policy.batch_size):
-        clean_events = await cleaning.process_batch(raw_batch)
-        for event in clean_events:
-            key = policy.dedup_key(event) if policy.dedup_key else None
-            if seen is not None and key in seen:
-                continue
-            translated = from_clean_doc_produced(event.to_dict())
-            if translated.is_err():
-                logger.warning("ACL failure: %s", translated.err())
-                continue
-            ingest = lambda: chunking.ingest(translated.ok())
-            result = await policy.retry_policy.run(ingest)
-            if result.is_ok() and seen is not None and key is not None:
-                seen.add(key)  # ack-based dedup
+@dataclass(frozen=True, slots=True)
+class ChunkMetadata:
+    source: str
+    tags: tuple[str, ...]
+    embedding_model: str | None = None
+    expected_dim: int | None = None
 ```
 
----
-## 5. Property-Based Proofs
-Per-context PBT as before + compatibility suite + runtime isolation.
+The new embedding fields are optional. An old value contains enough information
+to construct the new shape, but a translator must still:
 
----
-## 6. Runtime Preservation Guarantee
-Versioned contracts + compatibility checks + dual-publish for breaking majors enable zero-downtime upgrades.
+- preserve `source`;
+- preserve tag order and contents;
+- transfer ownership from mutable list to immutable tuple; and
+- choose honest defaults for fields absent in V1.
 
----
-## 7. Anti-Patterns & Immediate Fixes
-| Anti-Pattern               | Symptom                          | Fix                                      |
-|----------------------------|----------------------------------|------------------------------------------|
-| Shared domain types        | Evolution deadlock               | Local types + primitive events           |
-| Direct cross-context calls | Hidden coupling                  | Ports/events only                        |
-| Policy in shell            | Domain logic in orchestration    | Explicit platform policy objects         |
-| Unversioned events         | Breaking changes without notice  | Versioned primitive events + compatibility PBT |
+## Classify shape without pretending to translate
 
----
-## 8. Pre-Core Quiz
-1. Context owns…? → **Types, errors, invariants, language**  
-2. Cross-context…? → **Versioned primitive events + ACL**  
-3. Isolation enforced by…? → **Layered import-linter + runtime smoke**  
-4. Orchestration is…? → **Thin wiring + platform policy**  
-5. Benefit…? → **Independent evolution + clear ownership**
+`ContractShape` contains only field names and required fields:
 
-## 9. Post-Core Exercise
-1. List bounded contexts in your system.  
-2. Extract one to local types + primitive events + ACL.  
-3. Add layered import-linter rules + runtime isolation test.  
-4. Write two-way compatibility PBT.
-
-**Pipeline Usage (Idiomatic)**
 ```python
-# Inside cleaning
-cleaned = clean_doc(raw, cfg)
+previous = ContractShape(
+    "chunk-metadata",
+    frozenset({"source", "tags"}),
+    frozenset({"source", "tags"}),
+)
+current = ContractShape(
+    "chunk-metadata",
+    frozenset({"source", "tags", "embedding_model", "expected_dim"}),
+    frozenset({"source", "tags"}),
+)
 
-# Cross-context (orchestration)
-translated = from_clean_doc_produced(event.to_dict())
-if translated.is_ok():
-    await chunking.ingest(translated.ok())
+assessment = assess_migration(previous, current)
+assert assessment.compatibility == "backward-compatible"
 ```
 
-**Continue with:** [Governance](../module-10-refactoring-performance-sustainment/governance.md)
+“Backward-compatible” means an old structural value has all newly required fields.
+It does not mean the Python translator is correct or any serialized format is
+compatible.
+
+The pure classifier uses a small decision table:
+
+| Shape change | Classification | Reason |
+| --- | --- | --- |
+| add optional field | `backward-compatible` | old values still satisfy required fields |
+| add required field | `requires-migration` | a rule must supply missing meaning |
+| remove field | `incompatible` | the old contract contains a value the new shape cannot represent |
+| change contract name | `incompatible` | the comparison no longer describes one contract |
+
+## Prove the semantic translator
+
+The shipped upcaster is deliberately small:
+
+```python
+def upcast_metadata_v1(v1: ChunkMetadataV1) -> ChunkMetadata:
+    return ChunkMetadata(
+        source=v1.source,
+        tags=tuple(v1.tags),
+    )
+```
+
+The learning proof checks the resulting domain value:
+
+```python
+migrated = upcast_metadata_v1(
+    ChunkMetadataV1(source="manual", tags=["fp", "rag"])
+)
+
+assert migrated == ChunkMetadata(
+    source="manual",
+    tags=("fp", "rag"),
+)
+```
+
+This comparison makes the default `None` values visible through dataclass
+equality and proves list-to-tuple ownership transfer.
+
+```mermaid
+flowchart LR
+    old["ChunkMetadataV1"]
+    shape["Shape classification"]
+    translator["upcast_metadata_v1"]
+    current["ChunkMetadata"]
+    invariants["Domain assertions"]
+
+    old --> shape
+    old --> translator --> current --> invariants
+    shape -.selects review route.-> translator
+```
+
+The dotted arrow is important: the shape classifier helps choose the route. It
+does not perform or verify the translation.
+
+## Required fields need a declared source of meaning
+
+Suppose the current contract adds required `language: str`. The old value has no
+language information:
+
+```python
+current = ContractShape(
+    "chunk-metadata",
+    frozenset({"source", "tags", "language"}),
+    frozenset({"source", "tags", "language"}),
+)
+```
+
+`assess_migration` returns `requires-migration`.
+
+This translator is dishonest:
+
+```python
+def upcast(v1):
+    return ChunkMetadata(..., language="en")
+```
+
+It invents knowledge. A defensible route must declare where language comes from:
+
+- a documented default valid for the bounded corpus;
+- a pure mapping supplied as input;
+- a separate enrichment capability at an effect shell; or
+- an explicit “unknown” value admitted by the new domain.
+
+The choice changes the contract and belongs in review.
+
+## Run the focused evidence
+
+From `capstone/`:
+
+```bash
+pytest -q tests/unit/review/test_migration.py
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k metadata_migration_pairs_shape_review_with_an_executable_upcaster
+```
+
+The unit tests exercise optional addition, required addition, and removal. The
+learning test pairs the real metadata shape with the real upcaster.
+
+If a proposed change is not backward-compatible, pass its
+`MigrationAssessment` into `ChangeEvidence`. `review_change` will name the
+migration classification as a blocker until the application has the required
+translation evidence.
+
+## Failure routes
+
+### Treating all added fields alike
+
+An optional field with an honest default differs from a required field whose
+meaning old data cannot supply.
+
+### Trusting shape as semantics
+
+Two fields can retain the same names while changing units, ordering, or
+provenance. Structural compatibility is necessary but incomplete.
+
+### Mutating the old value
+
+Reusing the V1 tag list would let old and new contracts share ownership. The tuple
+conversion makes the new value independent.
+
+### Hidden I/O in the translator
+
+A pure upcaster should replay deterministically. If enrichment needs storage or a
+service, make that capability explicit at a shell and pass the resulting value to
+pure translation.
+
+### Claiming wire compatibility
+
+The teaching proof operates on Python values. It does not parse JSON, migrate a
+database, coordinate two running versions, or define a deployment window.
+
+## What the evidence proves
+
+The focused tests prove structural classification for the declared field rules
+and semantic translation for `ChunkMetadataV1` into the current in-process value.
+
+They do not prove:
+
+- persisted-data migration;
+- cross-language serialization;
+- rolling deployment behavior;
+- external consumer compatibility; or
+- a universal versioning policy.
+
+Those concerns should be added only when the application gains the corresponding
+boundary. FuncPipe keeps the current lesson small enough to execute and review.
+
+Continue with [Governance](governance.md), where important application claims are
+connected to discoverable and runnable proof routes.

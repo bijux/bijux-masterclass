@@ -2,12 +2,19 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Literal, TypeVar
 import math
+from typing import Any, Literal, TypeVar
 
-from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, computed_field, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    TypeAdapter,
+    computed_field,
+    model_validator,
+)
 
-from funcpipe_rag.fp.core import Chunk, make_chunk
+from funcpipe_rag.core.rag_types import Chunk
 
 T = TypeVar("T")
 
@@ -23,23 +30,22 @@ class ChunkModel(BaseModel):
     model_config = StrictConfig
 
     version: Literal[1] = 1
+    doc_id: str = Field(min_length=1)
     text: str = Field(min_length=1, max_length=200_000)
-    metadata: Dict[str, Any] = Field(default_factory=dict)
-    embedding: List[float] | None = None
+    start: int = Field(ge=0)
+    end: int = Field(ge=0)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    embedding: tuple[float, ...]
 
     @model_validator(mode="after")
-    def _validate_embedding(self) -> "ChunkModel":
-        if self.embedding is None:
-            return self
-        if not self.embedding:
-            raise ValueError("embedding must be non-empty if present")
-        if len(self.embedding) > 8192:
-            raise ValueError("embedding too long")
+    def _validate_chunk(self) -> ChunkModel:
+        if self.end - self.start != len(self.text):
+            raise ValueError("offset span must equal text length")
+        if len(self.embedding) != 16:
+            raise ValueError("embedding must contain 16 values")
         for i, v in enumerate(self.embedding):
             if not math.isfinite(v):
                 raise ValueError(f"embedding[{i}] not finite")
-            if abs(v) > 100.0:
-                raise ValueError(f"embedding[{i}] out of reasonable range")
         return self
 
     @computed_field
@@ -48,17 +54,31 @@ class ChunkModel(BaseModel):
 
 
 def to_core_chunk(model: ChunkModel) -> Chunk:
-    return make_chunk(text=model.text, path=(), metadata=model.metadata)
+    return Chunk(
+        doc_id=model.doc_id,
+        text=model.text,
+        start=model.start,
+        end=model.end,
+        metadata=model.metadata,
+        embedding=model.embedding,
+    )
 
 
 def from_core_chunk(core: Chunk) -> ChunkModel:
-    return ChunkModel(text=core.text, metadata=dict(core.metadata))
+    return ChunkModel(
+        doc_id=core.doc_id,
+        text=core.text,
+        start=core.start,
+        end=core.end,
+        metadata=dict(core.metadata),
+        embedding=core.embedding,
+    )
 
 
 def serialize_model(model: BaseModel) -> str:
     computed = getattr(model.__class__, "model_computed_fields", {})
     exclude = set(computed.keys()) if isinstance(computed, dict) else set()
-    return model.model_dump_json(by_alias=True, exclude_unset=True, exclude=exclude)
+    return model.model_dump_json(by_alias=True, exclude=exclude)
 
 
 def deserialize_model(json_str: str, typ: type[T]) -> T:
@@ -67,8 +87,8 @@ def deserialize_model(json_str: str, typ: type[T]) -> T:
 
 __all__ = [
     "ChunkModel",
-    "to_core_chunk",
+    "deserialize_model",
     "from_core_chunk",
     "serialize_model",
-    "deserialize_model",
+    "to_core_chunk",
 ]

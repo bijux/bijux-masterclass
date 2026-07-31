@@ -88,3 +88,49 @@ If Module 03 is landing properly, these terms should feel ordinary by the end:
 
 If those still feel decorative rather than useful, revisit the worked example and the
 first seven exercises before moving on.
+
+## Scheduler-policy evidence terms
+
+| Term | Meaning in this module |
+| --- | --- |
+| **job contract** | the shared declaration of job identity, resources, semantic inputs, and output identity |
+| **resource translation** | converting rule resources into scheduler-specific request fields |
+| **recording adapter** | an adapter that writes the request it would submit while contacting no scheduler |
+| **submission receipt** | structured evidence containing the rendered request, declared resources, and execution status |
+| **under-provisioning** | requesting fewer resources than the workflow rule declares it needs |
+| **semantic profile leak** | a profile field that changes target membership, threshold, or output meaning |
+| **site integration** | a deployment-specific test that captures scheduler and worker evidence |
+| **scheduler job ID** | the deployment-issued identity connecting submission, states, logs, and exit outcome |
+| **worker path probe** | evidence that a scheduled worker can reach the declared storage surface |
+| **bounded claim** | a conclusion limited to exactly what the collected evidence demonstrates |
+
+Use the terms together:
+
+> The recording adapter produced a submission receipt that preserved the job
+> contract and rejected under-provisioning. This is a bounded resource-translation
+> claim; site integration still needs a scheduler job ID and worker path probe.
+
+Avoid:
+
+> The scheduler setup works.
+
+The second sentence collapses local rendering, scheduler acceptance, worker
+execution, storage access, and output correctness into one unsupported claim.
+
+```mermaid
+flowchart LR
+    C["job contract"] --> R["resource translation"]
+    R --> S["submission receipt"]
+    S --> B["bounded claim"]
+    B --> I["site integration"]
+```
+
+```mermaid
+flowchart TD
+    R["recording adapter evidence"] --> T["translation claim"]
+    J["scheduler job ID"] --> I["site integration claim"]
+    P["worker path probe"] --> I
+    V["verified output"] --> I
+    T --> B["bounded production review"]
+    I --> B
+```

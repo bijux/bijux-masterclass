@@ -38,8 +38,12 @@ Create `message.txt` containing one line of text and this `Makefile`:
 all: build/message.h
 
 build/message.h: message.txt | build/
-	@printf '#define MESSAGE "%s"\n' "$$(cat $<)" > $@.candidate
-	@mv $@.candidate $@
+	@set -eu; \
+	candidate='$@.candidate.$$$$'; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	printf '#define MESSAGE "%s"\n' "$$(cat '$<')" > "$$candidate"; \
+	mv -f "$$candidate" '$@'; \
+	trap - EXIT HUP INT TERM
 
 build/:
 	mkdir -p $@
@@ -51,10 +55,10 @@ clean:
 Run:
 
 ```sh
-make --trace
-make --trace
+gmake --trace
+gmake --trace
 printf 'revised\n' > message.txt
-make --trace
+gmake --trace
 ```
 
 The first run creates the header, the second does nothing, and the source edit rebuilds
@@ -62,8 +66,8 @@ exactly one output. That observable cycle is the foundation for every more compl
 generator in this module.
 
 Now force the candidate command to fail before `mv`. The final `build/message.h` should
-remain absent or retain its previous known-good contents. Inspect both the final path and
-`build/message.h.candidate`, then restore the command and rerun.
+remain absent or retain its previous known-good contents. Inspect the final path and the
+process-specific candidate trace, then restore the command and rerun.
 
 Record the result:
 
@@ -104,9 +108,11 @@ from:
 The team reports four symptoms:
 
 1. a schema edit sometimes leaves the header stale
-2. `make -j2 all` occasionally prints the generator log twice
+2. `gmake -j2 all` occasionally prints the generator log twice
 3. the manifest changes every run
 4. a failed generation sometimes leaves one final output updated and another stale
+5. an external documentation process occasionally reads a header and JSON file from
+   different generations
 
 That is enough to begin. No guessing yet.
 
@@ -229,9 +235,17 @@ relationship directly:
 
 ```make
 build/include/api.h build/api.json &: schema/api.yml scripts/gen_api.py | build/ build/include/
-	@python3 scripts/gen_api.py schema/api.yml --out-dir build/tmp
-	@mv build/tmp/api.h build/include/api.h
-	@mv build/tmp/api.json build/api.json
+	@set -eu; \
+	workspace='build/api.candidate.$$$$'; \
+	trap 'rm -rf "$$workspace"' EXIT HUP INT TERM; \
+	mkdir "$$workspace"; \
+	python3 scripts/gen_api.py schema/api.yml --out-dir "$$workspace"; \
+	python3 scripts/validate_api.py \
+	  "$$workspace/api.h" "$$workspace/api.json"; \
+	mv -f "$$workspace/api.h" build/include/api.h; \
+	mv -f "$$workspace/api.json" build/api.json; \
+	trap - EXIT HUP INT TERM; \
+	rmdir "$$workspace"
 ```
 
 This is Core 2:
@@ -239,6 +253,10 @@ This is Core 2:
 - one event owns both outputs
 - the graph now has one recipe for the coupled output set
 - duplicate execution is no longer left to chance
+
+This repair covers one GNU Make invocation. The process-specific workspace prevents
+candidate collision, but two final renames still permit a mixed pair after interruption.
+The external-reader symptom therefore remains open.
 
 ## Repair the manifest boundary
 
@@ -251,20 +269,34 @@ api.manifest:
 
 That file does not represent build meaning. It represents clock noise.
 
-A healthier manifest might record the facts that actually define the generated set:
+A healthier intent manifest records the facts that define the requested generation:
 
 ```make
-build/api.manifest: schema/api.yml | build/
-	@printf 'schema=schema/api.yml\nmode=%s\n' '$(MODE)' > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+.PHONY: FORCE
+FORCE:
+
+build/api-intent.manifest: FORCE schema/api.yml scripts/gen_api.py | build/
+	@set -eu; \
+	candidate='$@.candidate.$$$$'; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	python3 scripts/write_api_intent.py \
+	  --schema schema/api.yml \
+	  --generator scripts/gen_api.py \
+	  --mode '$(MODE)' > "$$candidate"; \
+	if test -r '$@' && cmp -s "$$candidate" '$@'; then \
+	  rm -f "$$candidate"; \
+	else \
+	  mv -f "$$candidate" '$@'; \
+	fi; \
+	trap - EXIT HUP INT TERM
 ```
 
 Now the file has a real role:
 
-- it describes the generator boundary
+- it describes requested generator meaning
 - it changes only when the boundary meaning changes
 - it can participate honestly in convergence
+- it refreshes command-line `MODE` through `FORCE` instead of freezing the first value
 
 This is Core 3:
 
@@ -272,27 +304,36 @@ This is Core 3:
 - they should converge
 - they should not replace direct content edges where those edges are still needed
 
+An accepted-result manifest is different. It belongs inside an immutable generation
+directory and records the digests of the validated header and JSON. The intent manifest
+selects work; the accepted manifest identifies trusted results.
+
 ## Define what atomic publication means
 
 The original generator wrote directly into final paths. That makes partial failure
 dangerous.
 
-Staging and validation make the common failure path safer:
+Candidate isolation and validation make the common failure path safer:
 
 ```make
 build/include/api.h build/api.json &: schema/api.yml scripts/gen_api.py | build/ build/include/
-	@rm -rf build/tmp
-	@mkdir -p build/tmp
-	@python3 scripts/gen_api.py schema/api.yml --out-dir build/tmp
-	@python3 scripts/validate_api.py build/tmp/api.h build/tmp/api.json
-	@mv build/tmp/api.h build/include/api.h
-	@mv build/tmp/api.json build/api.json
+	@set -eu; \
+	workspace='build/api.candidate.$$$$'; \
+	trap 'rm -rf "$$workspace"' EXIT HUP INT TERM; \
+	mkdir "$$workspace"; \
+	python3 scripts/gen_api.py schema/api.yml --out-dir "$$workspace"; \
+	python3 scripts/validate_api.py \
+	  "$$workspace/api.h" "$$workspace/api.json"; \
+	mv -f "$$workspace/api.h" build/include/api.h; \
+	mv -f "$$workspace/api.json" build/api.json; \
+	trap - EXIT HUP INT TERM; \
+	rmdir "$$workspace"
 ```
 
 This is much stronger because:
 
 - validation happens before final publication
-- temporary work stays outside trusted output paths
+- candidate work stays outside trusted output paths
 - final paths are untouched when generation or validation fails
 
 This is Core 4:
@@ -307,6 +348,21 @@ output set must change atomically, publish an immutable versioned directory and 
 one `current` symlink or pointer with an atomic rename. The unit of publication must then
 be that pointer, not each file separately.
 
+For this incident, the external documentation reader makes set-level consistency a real
+requirement. The durable layout is:
+
+```text
+build/api-generations/<generation-id>/api.h
+build/api-generations/<generation-id>/api.json
+build/api-generations/<generation-id>/accepted.manifest
+build/api-current -> api-generations/<generation-id>
+```
+
+The producer derives the generation ID from the intent manifest, validates a
+process-specific candidate directory, adopts it as immutable, and switches
+`build/api-current` once. The documentation reader resolves that link once. The compiler
+reads `build/api-current/api.h`.
+
 ## Run the failure-mode loop
 
 Now take the original four symptoms and classify them:
@@ -319,6 +375,8 @@ Now take the original four symptoms and classify them:
    likely class: unstable boundary file
 4. one output updated after failure
    likely class: early publication bug
+5. mixed header and JSON observed by an external reader
+   likely class: sequential-path publication used where set-level consistency was required
 
 This is why Core 5 exists. The classifications stop the repair from turning into random
 shell edits.
@@ -336,26 +394,53 @@ build/:
 build/include/:
 	mkdir -p $@
 
-build/api.manifest: schema/api.yml | build/
-	@printf 'schema=schema/api.yml\nmode=%s\n' '$(MODE)' > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+.PHONY: FORCE
+FORCE:
 
-build/include/api.h build/api.json &: schema/api.yml scripts/gen_api.py build/api.manifest | build/ build/include/
-	@rm -rf build/tmp
-	@mkdir -p build/tmp
-	@python3 scripts/gen_api.py schema/api.yml --out-dir build/tmp
-	@python3 scripts/validate_api.py build/tmp/api.h build/tmp/api.json
-	@mv build/tmp/api.h build/include/api.h
-	@mv build/tmp/api.json build/api.json
+build/api-intent.manifest: FORCE schema/api.yml scripts/gen_api.py | build/
+	@set -eu; \
+	candidate='$@.candidate.$$$$'; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	python3 scripts/write_api_intent.py \
+	  --schema schema/api.yml \
+	  --generator scripts/gen_api.py \
+	  --mode '$(MODE)' > "$$candidate"; \
+	if test -r '$@' && cmp -s "$$candidate" '$@'; then \
+	  rm -f "$$candidate"; \
+	else \
+	  mv -f "$$candidate" '$@'; \
+	fi; \
+	trap - EXIT HUP INT TERM
 
-main.o: src/main.c build/include/api.h
-	$(CC) -Ibuild/include -c $< -o $@
+.PHONY: publish-api
+publish-api: build/api-intent.manifest scripts/validate_api.py | build/
+	@python3 scripts/publish_api_generation.py \
+	  --intent build/api-intent.manifest \
+	  --generations build/api-generations \
+	  --pointer build/api-current \
+	  --lock build/api-publication.lock
 
-all: build/include/api.h build/api.json build/api.manifest main.o
+build/api-current/api.h build/api-current/api.json: | publish-api
+	@test -r '$@'
+
+main.o: src/main.c build/api-current/api.h
+	$(CC) -MMD -MP -MF build/main.d -Ibuild/api-current -c '$<' -o '$@'
+
+-include build/main.d
+
+.PHONY: all
+all: build/api-current/api.json main.o
 ```
 
-This is not fancy. It is simply much more truthful.
+`publish_api_generation.py` owns the protocol already developed in the core lesson:
+process-specific candidate directory, whole-set validation, accepted-result manifest,
+publication lock, immutable generation adoption, and convergent pointer switch. Keeping
+that protocol in a tested helper makes the Make graph readable.
+
+The order-only `publish-api` edge reconciles the pointer before each proxy path is checked.
+The proxy recipe fails if publication claims success without the promised file.
+Compiler-generated dependency data records the generated header as a content edge; the
+publication edge does not replace it.
 
 ## Verify the repaired graph with input-specific predictions
 
@@ -364,9 +449,9 @@ change one input at a time and predict the path before running Make:
 
 | Changed input | Generated outputs that should rebuild | Downstream work | Work that should remain unchanged |
 | --- | --- | --- | --- |
-| `schema/api.yml` | header, JSON, manifest | `main.o` through the header | unrelated objects |
-| `scripts/gen_api.py` | header and JSON | `main.o` through the header | manifest if it records no generator identity |
-| `MODE` through the manifest boundary | manifest, header, JSON | `main.o` through the header | unrelated objects |
+| `schema/api.yml` | intent and new immutable generation | `main.o` through the header | unrelated objects |
+| `scripts/gen_api.py` | intent and new immutable generation | `main.o` through the header | unrelated objects |
+| `MODE` through the intent boundary | intent and new immutable generation | `main.o` through the header | unrelated objects |
 | `src/main.c` | none | `main.o` | manifest and generated outputs |
 
 For each row:
@@ -374,7 +459,7 @@ For each row:
 1. establish a converged build
 2. record governed output hashes or modification times
 3. change exactly one input
-4. run `make --trace all`
+4. run `gmake --trace all`
 5. compare selected work with the predicted path
 6. run the product-facing behavior check
 7. restore the input and reconverge before the next row
@@ -389,6 +474,35 @@ selects unrelated work, you found an overbroad edge. If selected work matches bu
 is still wrong, move the investigation into the recipe or publication boundary rather than
 adding more prerequisites blindly.
 
+## Verify interruption and recovery predictions
+
+Start from accepted generation `A`, request generation `B`, and inject one stop point at a
+time:
+
+| Injection | Pointer after failure | Reader-visible set | Allowed leftover |
+| --- | --- | --- | --- |
+| generator exits while writing candidate | `A` | complete `A` | process-owned or abandoned candidate |
+| validation rejects candidate | `A` | complete `A` | rejected candidate evidence |
+| process stops after immutable `B` is adopted | `A` | complete `A` | unreferenced, validated `B` |
+| process stops after pointer switch | `B` | complete `B` | immutable `A` retained by policy |
+| second publisher cannot acquire lock | unchanged | complete current generation | its own candidate only |
+
+After each injection:
+
+1. record the pointer target once
+2. hash every file beneath that resolved directory
+3. compare those hashes with its accepted-result manifest
+4. inventory lock and candidate ownership
+5. rerun the same requested intent and require convergence to one accepted generation
+
+Then delete `api.json` from a disposable copy of an accepted generation. The integrity
+route must reject the copy; it must not rewrite the accepted manifest to bless the missing
+file. Regeneration should create or reselect a complete immutable generation from modeled
+inputs.
+
+This test distinguishes recovery from cleanup. Cleanup merely removes debris. Recovery
+restores a state whose identity and acceptance evidence agree.
+
 ## What each core contributed
 
 ```mermaid
@@ -398,7 +512,7 @@ flowchart TD
   multi --> boundary["Core 3: manifest names a real boundary fact"]
   boundary --> publish["Core 4: trust begins after full publication"]
   publish --> repair["Core 5: classify the failure and repair the graph"]
-  repair --> stable["Convergent generator pipeline"]
+  repair --> stable["Convergent, recoverable generator pipeline"]
 ```
 
 This is why the module is organized into five cores and then one worked example. The
@@ -412,7 +526,9 @@ A strong summary sounds like this:
 > header, the coupled outputs lacked one clear publication event, the manifest recorded
 > unstable noise, and final outputs were published before validation completed. We repaired
 > the graph by restoring direct consumer edges, introducing one generation boundary,
-> making the manifest convergent, and publishing only after the full pipeline succeeded.
+> separating intent from accepted results, and switching one pointer only after an
+> immutable generation passed whole-set validation. Interruption and peer-loss tests now
+> preserve or restore the last accepted generation.
 
 That summary is much stronger than "the generator was flaky."
 
@@ -426,7 +542,9 @@ Take one real generator incident and retell it in the same order:
 4. decide whether any stamp or manifest is justified
 5. state where trust begins
 6. execute the input-specific rebuild table
-7. rerun convergence and a parallel check
+7. inject interruption before and after pointer switching
+8. delete or corrupt one accepted peer and run the integrity route
+9. rerun convergence, parallel, and competing-publisher checks
 
 If you can do that cleanly, Module 06 has started to change how you think about generation.
 

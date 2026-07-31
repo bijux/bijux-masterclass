@@ -1,6 +1,5 @@
 # Collaboration Failures and Social Contracts
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,137 +7,282 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Collaboration Ci Social Contracts"]
+  section["Collaboration CI Social Contracts"]
   page["Collaboration Failures and Social Contracts"]
-  capstone["Capstone evidence"]
+  capstone["Reviewer handoff audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.tested in.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["shared result claim"] --> requirements["required repository and remote state"]
+  requirements --> reviewer["cache-cold reviewer"]
+  reviewer --> receipts["preserved review receipts"]
+  receipts --> decision["accept or block"]
+  decision --> ownership["named repair owner"]
 ```
 <!-- page-maps:end -->
 
-Reproducibility failures often look technical after they happen.
+Collaboration fails when a result depends on knowledge, files, permissions, or cached
+objects that never crossed the handoff boundary. The author may have a working directory
+that runs perfectly while a reviewer receives an incomplete system.
 
-Before they happen, they often look social:
+“Remember to push the data” is not a durable contract. A collaboration contract states
+what must be shared, who owns each boundary, how a clean reviewer verifies it, and which
+evidence blocks acceptance.
 
-- someone forgot to push data
-- someone trusted a local result
-- someone merged a lockfile change without checking remote state
-- someone assumed a teammate knew which command to run
-- someone promoted a report without the parameters that made it interpretable
+## A handoff is a claim about independence
 
-Module 07 does not treat these as character flaws. It treats them as missing contracts.
+When an author hands off a DVC project, the implied claim is:
 
-## The problem with "careful people"
+> A reviewer can recover the recorded state, understand the result, and reproduce it using
+> tracked repository state plus authorized read access to shared storage.
 
-"We are careful" is not a reproducibility strategy.
+That claim is stronger than:
 
-Careful people still get interrupted. They still miss uploads under deadline pressure.
-They still onboard new teammates who do not share private context. They still forget why a
-local result was trusted three months later.
+- the author's command succeeded;
+- the pointer file is committed;
+- the data exists somewhere;
+- CI can run with privileged credentials;
+- a teammate remembers the setup.
 
-A stronger system asks:
+The reviewer must succeed without the author's warm cache, untracked files, shell history,
+or oral explanation.
 
-> Which promises should the repository and CI enforce because humans will eventually
-> forget them?
+## The seven boundaries in one handoff
 
-That question turns blame into design.
+The capstone audit tests seven independent checks:
 
-## Social contracts should become visible checks
+| Boundary | Required evidence | Failure revealed |
+| --- | --- | --- |
+| remote discovery | tracked DVC configuration names the shared route | objects exist but reviewer cannot locate them |
+| object availability | `dvc pull` restores recorded data and result | pointers refer to absent objects |
+| Git completeness | all declared source dependencies are tracked | author-only file prevents reproduction |
+| recorded currency | status is clean before repair-oriented repro | submitted result is stale |
+| reproducibility | repro succeeds from clean clone | repository cannot execute independently |
+| review authority | review route avoids remote mutation | reviewer needs publisher privileges |
+| result meaning | explicit contract matches restored result | bytes exist without an interpretable claim |
 
-A social contract is an agreement the team relies on.
+No one boundary substitutes for another. A successful pull cannot restore an untracked
+Python or policy file. A successful repro can repair stale submitted state without proving
+the handoff was coherent when reviewed.
 
-Weak contract:
+```mermaid
+flowchart TD
+  git["Git-tracked declarations, code, policy, pointers"] --> clone["cache-cold clone"]
+  remote["discoverable read-only DVC remote"] --> clone
+  clone --> pull["restore recorded objects"]
+  pull --> prestatus["inspect status before reproduction"]
+  prestatus --> repro["reproduce locally"]
+  repro --> meaning["compare result with claim contract"]
+  meaning --> accept["accept bounded handoff"]
+```
 
-> Remember to push DVC data before merging.
+## Run the controlled handoffs
 
-Stronger contract:
+From the repository root:
 
-> A pull request cannot merge unless CI can pull required DVC objects and run the
-> verification route from a clean checkout.
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
+```
 
-The second version can be checked. It gives reviewers a shared standard instead of a
-reminder.
+The audit writes isolated author repositories, Git remotes, DVC remotes, and reviewer
+clones under:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/reviewer-handoff/
+```
+
+Begin with:
+
+```bash
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/reviewer-handoff
+column -t -s $'\t' "$audit/summary.tsv"
+cat "$audit/route.txt"
+```
+
+The summary contains one `ACCEPT` case and six `BLOCK` cases. Every row has audit result
+`PASS`: the accepted case satisfies the contract, while each blocked case successfully
+reproduces a defect.
+
+## Read failures as broken promises
+
+The case names point to technical symptoms. The social contract lives beneath them.
+
+| Case | Broken promise | Likely owner |
+| --- | --- | --- |
+| `MISSING_REMOTE_OBJECT` | every committed pointer names shared, retrievable bytes | author or publication job |
+| `UNDISCOVERABLE_REMOTE` | an authorized reviewer can find the shared route | repository maintainer |
+| `UNTRACKED_STAGE_DEPENDENCY` | Git contains every declared source-side dependency | author and merge reviewer |
+| `STALE_EXECUTION_RECORD` | submitted lock and result describe current declared inputs | author and CI |
+| `MUTATING_REVIEW_ROUTE` | ordinary review requires read authority only | workflow maintainer |
+| `MISSING_RESULT_CONTRACT` | the reviewer can interpret what the output claims | result owner |
+
+This classification improves repair. “DVC pull failed” describes an observation. It does
+not tell you whether objects are absent, the remote is undiscoverable, or access policy is
+wrong.
+
+## Author success is weak handoff evidence
+
+An author's workspace contains hidden conveniences:
+
+- cached DVC objects;
+- local remote configuration;
+- untracked policy files;
+- generated outputs from an earlier run;
+- credentials with write access;
+- remembered commands.
+
+The audit deliberately creates a cache-cold reviewer clone. Git-tracked state is cloned;
+DVC objects must come from the isolated remote; untracked files do not cross.
 
 ```mermaid
 flowchart LR
-  promise["team promise"] --> check["visible check"]
-  check --> review["review decision"]
-  review --> trust["shared trust"]
-  promise -. "memory only" .-> failure["forgotten under pressure"]
+  author["author workspace"] --> tracked["tracked Git state"]
+  author --> objects["published DVC objects"]
+  tracked --> reviewer["reviewer clone"]
+  objects --> reviewer
+  cache["author cache"] -. "not transferred" .-> reviewer
+  local["config.local and untracked files"] -. "not transferred" .-> reviewer
+  memory["oral history"] -. "not transferred" .-> reviewer
 ```
 
-The diagram is simple because the idea is simple: important promises need evidence.
+A workflow that works only on the author machine has not yet passed the collaboration
+boundary.
 
-## Common failure classes
+## Preserve evidence before local repair
 
-| Failure | What it looks like | Missing contract |
-| --- | --- | --- |
-| missing data push | metadata merged, remote object absent | CI or review did not verify data availability |
-| local-only success | author can run it, teammate cannot | clean executor was not authoritative |
-| lockfile drift | pipeline declaration and lock evidence disagree | merge gate did not require consistent state |
-| private review context | only the author understands the result | review notes and published evidence are incomplete |
-| stale release bundle | metrics promoted without matching params | release boundary did not require paired evidence |
+The reviewer route must inspect recorded state before reproduction:
 
-These are not rare edge cases. They are ordinary collaboration pressure points.
+1. discover configured remotes;
+2. pull recorded objects;
+3. save `dvc status --json`;
+4. inspect the restored result and claim contract;
+5. run reproduction;
+6. compare post-repro evidence.
 
-## Make the reviewer independent
+The order matters in the stale execution case. `dvc repro` succeeds and repairs the local
+reviewer workspace. If the pre-repro status receipt were discarded, the team might accept
+the submitted state based on its repaired descendant.
 
-A reviewer should not need to ask:
+Use this distinction:
 
-- which local file did you use?
-- did you remember to push the data?
-- which threshold produced this metric?
-- did this run happen before or after the feature change?
-- can you send me the missing artifact?
+| Evidence | Question |
+| --- | --- |
+| pre-repro status | was the submitted recorded state coherent? |
+| repro receipt | can the reviewer execute the declared pipeline? |
+| post-repro result | what does locally repaired state produce? |
 
-Some human discussion is always useful. But the core state story should be inspectable
-from the repository and remote-backed evidence.
+Successful repair does not rewrite the history of what was handed off.
 
-The review target is:
+## Convert norms into executable checks
 
-> Another maintainer can verify the result without private files, private memory, or local
-> machine state.
+A weak norm:
 
-## Good contracts are specific
+> Contributors should make sure everything is available.
 
-Weak:
+A reviewable contract:
 
-> Keep DVC up to date.
+> Before merge, a cache-cold clone with read-only remote access must discover the tracked
+> remote, pull every recorded object, report clean pre-repro status, reproduce without
+> private files, and match the declared result claim.
 
-Specific:
+The second statement names:
 
-> Pull requests that change `dvc.yaml`, `dvc.lock`, `params.yaml`, metric files, or DVC
-> pointer files must pass a clean verification route and include any required remote data
-> pushes.
+- the initial state;
+- the authority available;
+- the commands;
+- the evidence;
+- the acceptance rule.
 
-Weak:
+It can become a CI job and a reviewer checklist without relying on memory.
 
-> Review metrics carefully.
+## Separate result acceptance from scientific endorsement
 
-Specific:
+The complete handoff claims:
 
-> Release review must include the metric file, matching parameters, baseline comparison,
-> and any known comparability limits.
+```text
+record_count = 4
+severity_total = 11
+weekend_handoffs = 2
+```
 
-Specific contracts are easier to teach and easier to automate.
+Passing the handoff audit means the reviewer can recover, reproduce, and explain that
+bounded result. It does not establish:
+
+- that four incidents represent a population;
+- that severity scoring is scientifically appropriate;
+- that the result should be promoted;
+- that remote retention is sufficient for years;
+- that credentials are distributed securely.
+
+The social contract must name what it supports. Operational reviewability and scientific
+validity are related but separate claims.
+
+## Design responsibility without blame
+
+When a boundary fails, ask:
+
+1. Which promise was broken?
+2. Which evidence exposed it?
+3. Which role can repair the source of the defect?
+4. Which automated check should prevent recurrence?
+
+For a missing object:
+
+- promise: every pointer in reviewed history resolves for authorized readers;
+- evidence: tracked remote is discoverable, but pull reports missing cache objects;
+- repair owner: author or publication job pushes the referenced object;
+- prevention: clean-clone pull gate before merge.
+
+This is more durable than telling one person to be careful next time.
+
+## Handoff contract template
+
+Use this structure for a repository:
+
+```text
+Claim:
+What bounded result must another person recover and understand?
+
+Tracked state:
+Which declarations, code, policies, pointers, and remote routes must be in Git?
+
+Shared objects:
+Which DVC-tracked inputs and recorded outputs must be readable?
+
+Reviewer authority:
+Which operations are allowed, and which publication operations are forbidden?
+
+Proof route:
+Which receipts are preserved before and after reproduction?
+
+Decision:
+Which missing evidence blocks merge or handoff?
+
+Ownership:
+Who publishes objects, maintains configuration, repairs source completeness, and owns
+result meaning?
+
+Limits:
+Which storage, security, scientific, and promotion claims remain outside this contract?
+```
 
 ## Review checkpoint
 
-You understand this core when you can:
+You understand collaboration as a contract when you can explain:
 
-- describe a reproducibility failure as a missing contract
-- distinguish memory-based expectations from enforceable checks
-- name what a reviewer should verify without private context
-- explain why "careful team" is not enough
-- rewrite vague collaboration advice into a specific review rule
+- why a warm author cache is not shared evidence;
+- why remote discovery and object availability are separate;
+- why Git and DVC storage must both be complete;
+- why status must be captured before reproduction;
+- why review should not require `dvc push`;
+- why runnable output still needs a claim contract;
+- which role owns each repair.
 
-The goal is not distrust. The goal is a system where trust has evidence.
+The durable standard is:
+
+> A handoff is complete only when a cache-cold, read-only reviewer can reconstruct the
+> claim and preserve evidence of the submitted state without relying on the author.

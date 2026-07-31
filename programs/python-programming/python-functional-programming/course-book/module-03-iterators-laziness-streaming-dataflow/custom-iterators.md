@@ -515,3 +515,44 @@ lifecycle rules and decide whether the class form is really better than a genera
 
 Continue with [Iterator Lifecycle and Cleanup](iterator-lifecycle-and-cleanup.md) before
 you move into [Streaming Observability](streaming-observability.md).
+
+## The custom iterator actually added to FuncPipe
+
+Module 03 introduces `DedupIterator`, a cursor rather than a reusable iterable:
+
+```python
+from funcpipe_rag import DedupIterator
+
+deduped = DedupIterator(
+    ["doc-a", "doc-a", "doc-b", "doc-a"],
+    key=lambda doc_id: doc_id,
+)
+
+assert iter(deduped) is deduped
+assert list(deduped) == ["doc-a", "doc-b"]
+assert list(deduped) == []
+```
+
+Its state is the upstream iterator plus a set of keys already encountered. `__next__`
+pulls until it finds an unseen key or upstream raises `StopIteration`. This class
+form earns its place because the retained state and cursor semantics are visible.
+
+The space bound is `O(u)`, where `u` is the number of unique keys encountered—not
+`O(1)`. Laziness controls when keys enter the set; it does not make global
+deduplication constant-space.
+
+`structural_dedup_lazy` preserves the first item for each structural chunk key. That
+differs from Module 02's canonical deduplication, which sorts chunks first. If two
+equivalent chunks carry different embeddings, the lazy form retains the first
+encountered chunk. Review ordering before substituting one implementation for the
+other.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-03/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+  -k 'custom_dedup'
+```
+
+The proof covers iterator identity, encounter order, and stable exhaustion. It does
+not prove a memory cap or resource cleanup.

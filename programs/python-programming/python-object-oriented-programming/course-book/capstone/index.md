@@ -88,6 +88,7 @@ The rest of the code exists to support that ownership:
 | Which command or saved bundle proves the claim I care about? | [Command Guide](command-guide.md) and [Capstone Proof Guide](capstone-proof-guide.md) | the smallest honest executable route |
 | How should I review this design after a module? | [Capstone Review Worksheet](capstone-review-worksheet.md) | a real audit path instead of vague approval |
 | Where should a new feature or change land? | [Capstone Extension Guide](capstone-extension-guide.md) | placement rules that preserve the object model |
+| Which capstone term or boundary name is unclear? | [Capstone Glossary](glossary.md) | a stable definition tied to this system |
 
 ## Study routes by course stage
 

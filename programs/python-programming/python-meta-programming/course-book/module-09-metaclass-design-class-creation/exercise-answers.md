@@ -1,5 +1,4 @@
-# Exercise Answers
-
+# Exercise Answers: Class-Creation Evidence Studio Review
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Metaclass Design Class Creation"]
-  page["Exercise Answers"]
+  page["Exercise Answers: Class-Creation Evidence Studio Review"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -18,366 +17,454 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["claim"]
+  source["source path"]
+  test["focused test"]
+  output["observable output"]
+  limit["non-claim"]
+
+  claim --> source --> test --> output --> limit
 ```
 <!-- page-maps:end -->
 
-Use this page after attempting the exercises yourself. The point is not to match every
-example literally. The point is to compare your reasoning against answers that keep
-class-creation power, import-time behavior, and lower-power alternatives honest.
+Use these answers to review reasoning and evidence, not to compare spelling. A different
+implementation is defensible when it preserves the requested contract, names its owner,
+and proves the same observable behavior.
 
-Use these answers as reasoning checkpoints, not as short model solutions to imitate. A
-strong answer always leaves evidence for why the owner was chosen and what lower-power
-alternative was rejected first.
+## Answer 1: Extend the explicit construction recipe
 
-Use this page actively:
+### Defensible implementation
 
-- compare your named invariant against the reference answer
-- compare your timing claim against the reference answer
-- check whether your answer named a lower-power owner before defending the metaclass
-
-## How to review your own answers against this page
-
-For each exercise, check whether your answer includes:
-
-| Checkpoint | What a strong answer shows |
-| --- | --- |
-| Named invariant | The exact class-creation, declaration-time, or hierarchy-wide rule |
-| Named timing | When the rule acts in the class lifecycle |
-| Rejected owner | The strongest lower-power alternative and why it was insufficient |
-| Cost visibility | Import-time, reset, or composition cost if power escalates |
-| Boundary honesty | What the mechanism does not own |
-
-## Answer 1: Build one class manually with `type(...)`
-
-Example answer:
-
-- `name` becomes the class name
-- `bases` determines inheritance
-- `namespace` supplies methods and attributes
-
-Useful metadata:
-
-- `__module__` can be set manually so the class has a sensible module identity
-
-Good conclusion:
-
-This is still lower-power than a metaclass because it creates one class explicitly without
-automatically changing how future subclasses are created.
-
-Reasoning checkpoint:
-
-- if your answer does not say why repeated future subclass control would change the design,
-  your comparison to metaclasses is still weak
-
-Weak answer to reject:
-
-- "this is dynamic enough that a metaclass would probably help later"
-
-Why it fails:
-
-later is not a present class-creation invariant or family-wide requirement.
-
-## Answer 2: Trigger and explain one metaclass conflict
-
-Example answer:
-
-If `A` uses `MetaA` and `B` uses `MetaB`, then:
+Add the optional input to the recipe:
 
 ```python
-class Bad(A, B):
-    pass
+@dataclass(frozen=True, slots=True)
+class ClassRecipe:
+    name: str
+    bases: tuple[type[object], ...]
+    namespace: dict[str, object]
+    qualname: str | None = None
 ```
 
-may raise a metaclass conflict because Python cannot find one compatible class-creation
-owner for the new class.
+Validate and apply it in the factory:
 
-Good conclusion:
+```python
+def build_class(recipe: ClassRecipe) -> type[object]:
+    if not recipe.name.isidentifier():
+        raise ValueError(f"class name must be an identifier: {recipe.name!r}")
+    if recipe.qualname is not None and not recipe.qualname.strip():
+        raise ValueError("explicit qualname cannot be blank")
 
-The error is not just syntax friction. It is a signal that two incompatible class-creation
-authorities are being combined without a coherent shared owner.
+    namespace = dict(recipe.namespace)
+    namespace.setdefault("__module__", __name__)
+    if recipe.qualname is not None:
+        namespace.setdefault("__qualname__", recipe.qualname)
+    return type(recipe.name, recipe.bases, namespace)
+```
 
-Reasoning checkpoint:
+Representative assertions:
 
-- a strong answer also says what simplification or joint ownership question must be asked
-  before trying a technical repair
+```python
+namespace = {"channel": "console"}
+created = build_class(
+    ClassRecipe(
+        "Delivery",
+        (),
+        namespace,
+        qualname="generated.Delivery",
+    )
+)
 
-Weak answer to reject:
+assert created.__qualname__ == "generated.Delivery"
+assert namespace == {"channel": "console"}
+assert build_class(ClassRecipe("Plain", (), {})).__qualname__ == "Plain"
+```
 
-- "Python does not like the combination"
+### Reasoning
 
-Why it fails:
+The pressure still belongs to the explicit factory. One call receives one recipe and
+creates one class. No future subclass must inherit a policy, and no assignment-time event
+must be preserved.
 
-it repeats the failure without naming the competing class-creation authorities.
+### Common wrong turns
 
-## Answer 3: Split one metaclass across `__new__` and `__init__`
+- Mutating `recipe.namespace` leaks factory bookkeeping into caller-owned data.
+- Installing a metaclass adds hierarchy-wide authority without a hierarchy-wide rule.
+- Silently replacing a blank qualname hides invalid provenance input.
 
-Example answer:
+### What this proves
 
-- `__new__` should enforce a required method or inject a structural attribute before the class is finalized
-- `__init__` should append the finished class to a registry
+The factory controls explicit introspection metadata while preserving the original
+construction contract.
 
-Good conclusion:
+### What this does not prove
 
-Swapping them makes the design blur structure and bookkeeping. `__new__` owns class-shape
-decisions; `__init__` owns post-creation bookkeeping.
+It does not recreate compiler provenance, source locations, or nested lexical scope.
 
-Reasoning checkpoint:
+### Capstone connection
 
-- your answer should make clear what namespace or finished-class evidence would be lost by
-  moving the rule to the other hook
+The capstone uses ordinary class statements, so Python supplies this identity metadata.
+Its metaclass should not invent provenance it did not receive.
 
-Weak answer to reject:
+## Answer 2: Explain and test one metaclass collision
 
-- "I put the important part in `__new__` and the rest in `__init__`"
+### Defensible implementation
 
-Why it fails:
+Make both policies cooperative:
 
-important and the rest do not identify structure versus bookkeeping.
+```python
+events: list[str] = []
 
-## Answer 4: Use `__prepare__` for one declaration-time rule
 
-Example answer:
+class AuditMeta(type):
+    def __new__(mcs, name, bases, namespace):
+        events.append(f"audit:{name}")
+        return super().__new__(mcs, name, bases, namespace)
 
-A custom mapping can reject duplicate non-dunder assignments during class body execution.
 
-Why later hooks are worse:
+class PolicyMeta(type):
+    def __new__(mcs, name, bases, namespace):
+        events.append(f"policy:{name}")
+        return super().__new__(mcs, name, bases, namespace)
+```
 
-- after the class body finishes, only the final value may remain unless the mapping
-  recorded the duplicate event during assignment
+After defining the two base classes, clear setup events and define the joint owner:
 
-Good conclusion:
+```python
+events.clear()
 
-`__prepare__` is justified only when the class-body-time fact truly matters and cannot be
-recovered cleanly later.
 
-Reasoning checkpoint:
+class JointMeta(AuditMeta, PolicyMeta):
+    pass
 
-- if your answer cannot say exactly what later hooks would fail to recover, the
-  `__prepare__` claim is not yet honest
 
-Weak answer to reject:
+class Combined(AuditedBase, PolicyBase, metaclass=JointMeta):
+    pass
 
-- "the custom mapping gives more control over the class body"
 
-Why it fails:
+assert events == ["audit:Combined", "policy:Combined"]
+before_instance = list(events)
+Combined()
+assert events == before_instance
+```
 
-more control is not a vanished declaration-time fact.
+The order follows `JointMeta.__mro__`. Both methods must delegate for the chain to reach
+`type.__new__`.
 
-## Answer 5: Reject one unnecessary metaclass
+### Reasoning
 
-Example answer:
+The joint metaclass satisfies Python’s subtype requirement and preserves both toy hooks.
+That is mechanical composition evidence.
 
-Original idea:
+A separate semantic test is still needed. For example, if both policies inject an
+attribute named `policy`, a test must specify which value is allowed or reject the
+combination.
 
-- use a metaclass to register classes in a plugin list
+### Common wrong turns
 
-Lower-power replacement:
+- Calling `type.__new__` directly in `AuditMeta` bypasses `PolicyMeta`.
+- Asserting only `type(Combined) is JointMeta` proves selection, not policy composition.
+- Treating the absence of `TypeError` as a complete integration test hides collisions.
 
-- use an explicit decorator or helper function for opt-in registration
+### What this proves
 
-Good conclusion:
+Cooperative metaclass methods execute according to the combined metaclass MRO.
 
-If post-creation registration is enough, the metaclass was not actually needed. The design
-does not require class-creation control just because automatic registration sounds neat.
+### What this does not prove
 
-Reasoning checkpoint:
+It does not prove their mutations, registries, or failure semantics are compatible.
 
-- the best answers name the convenience argument they are rejecting instead of only naming
-  the replacement tool
+### Capstone connection
 
-Weak answer to reject:
+`PluginMeta` rejects automatic conflict repair. A real joint owner would need tests at
+least as explicit as this trace plus domain-specific compatibility checks.
 
-- "a decorator is simpler"
+## Answer 3: Move work to its honest hook
 
-Why it fails:
+### Defensible placement
 
-simpler is too vague unless the metaclass was rejected for a named non-class-creation problem.
+Validate the class-body declaration in `__new__`:
 
-## Answer 6: Review the plugin registry example honestly
+```python
+def __new__(mcs, name, bases, namespace):
+    events.append(f"new:{name}")
+    if "policy_version" not in namespace:
+        raise TypeError(f"{name} must declare policy_version")
+    return super().__new__(mcs, name, bases, namespace)
+```
 
-Example answer:
+Record the final MRO in metaclass `__init__`:
 
-Honest metaclass ownership:
+```python
+def __init__(cls, name, bases, namespace):
+    super().__init__(name, bases, namespace)
+    events.append(f"init:{name}")
+    registry.append(
+        {
+            "name": cls.__name__,
+            "mro": [owner.__name__ for owner in cls.__mro__],
+        }
+    )
+```
 
-- automatically registering every concrete subclass at class-creation time
+The critical failure assertion is:
 
-Remaining risk:
+```python
+before = list(registry)
+with pytest.raises(TypeError):
+    class MissingVersion(metaclass=LifecycleMeta):
+        pass
 
-- import order and reload behavior still affect when entries appear and whether tests need reset hooks
+assert registry == before
+assert events[-1] == "new:MissingVersion"
+```
 
-Why it is narrower than a full framework:
+### Reasoning
 
-- it handles registration and ordering only, not discovery, lifecycle management, or configuration
+The raw namespace distinguishes “declared here” from “inherited later,” so validation
+belongs in `__new__`. The final MRO exists on the returned class, so its record belongs in
+`__init__`.
 
-Good conclusion:
+Moving validation to `__init__` would allow the class object to exist before rejection.
+Moving final-MRO bookkeeping before `super().__new__` would be premature because no class
+or MRO exists yet.
 
-The example is justified because the metaclass owns one clear hierarchy-wide class-creation
-rule, not because registries are automatically “metaclass territory.”
+### Common wrong turns
 
-Reasoning checkpoint:
+- Using `hasattr` checks inherited values and weakens the “declared here” rule.
+- Appending registry state before validation risks entries for rejected classes.
+- Adding instance `__init__` events confuses two construction lifecycles.
 
-- your answer should also say what import-time cost is accepted and what broader framework
-  responsibilities are still outside the example
+### What this proves
 
-Weak answer to reject:
+The hook split follows required evidence and failure timing.
 
-- "registries are a natural fit for metaclasses"
+### What this does not prove
 
-Why it fails:
+It does not make global registry mutation safe under reload or concurrent imports.
 
-natural fit hides the actual invariant and the import-time mutation cost.
+### Capstone connection
 
-## Answer 7: Separate hierarchy-wide policy from post-creation bookkeeping
+The shipped `PluginMeta` uses the same split: structural contract generation in
+`__new__`, finished-class registration in metaclass `__init__`.
 
-Example answer:
+## Answer 4: Narrow the declaration language
 
-Suppose a plugin base wants:
+### Defensible implementation
 
-- every concrete subclass registered automatically
-- registration order preserved
-- test resets available
+Use an explicit declaration marker:
 
-Strong split:
+```python
+@dataclass(frozen=True, slots=True)
+class Declaration:
+    value: object
 
-- class-creation policy: deciding that every concrete subclass is registered at creation time
-- bookkeeping: appending to the registry and exposing reset helpers
 
-Good conclusion:
+def is_tracked(value: object) -> bool:
+    return isinstance(value, Declaration)
+```
 
-Keeping those concerns separate makes review easier because readers can tell which part is
-the actual metaclass invariant and which part is ordinary operational support.
+Then narrow assignment policy:
 
-Reasoning checkpoint:
+```python
+class DeclarationNamespace(dict[str, object]):
+    def __init__(self) -> None:
+        super().__init__()
+        self.public_names: list[str] = []
 
-- a strong answer names where reset, ordering, or registry maintenance belongs once the
-  invariant has been isolated
+    def __setitem__(self, key: str, value: object) -> None:
+        previous = self.get(key)
+        if key in self and (is_tracked(previous) or is_tracked(value)):
+            raise TypeError(f"duplicate tracked declaration: {key}")
+        if is_tracked(value):
+            self.public_names.append(key)
+        super().__setitem__(key, value)
+```
 
-Weak answer to reject:
+The four required tests are important because a one-sided check is easy to bypass:
 
-- "the metaclass does the family rule and the helper does the rest"
+```python
+tracked -> tracked   # reject
+tracked -> ordinary  # reject
+ordinary -> tracked  # reject
+ordinary -> ordinary # allow
+```
 
-Why it fails:
+### Reasoning
 
-the rest is too vague to review or maintain.
+The language protects only names that contribute to its declared contract. Ordinary
+helper replacement remains ordinary Python behavior.
 
-## Answer 8: Design one reset boundary for import-time class registration
+### Common wrong turns
 
-Example answer:
+- Checking only the new value lets an ordinary value overwrite a tracked declaration.
+- Checking only the old value lets a tracked declaration overwrite an ordinary helper.
+- Inspecting `vars(cls)` after creation cannot recover the overwritten value.
 
-A registry metaclass should often be paired with:
+### What this proves
 
-- `registry.clear()`
-- a test helper that rebuilds expected entries explicitly
-- documented import-order assumptions
+The custom mapping preserves and enforces one assignment-time fact.
 
-Good conclusion:
+### What this does not prove
 
-Import-time behavior without reset discipline turns test isolation into guesswork. A clear
-reset boundary makes the registration surface easier to verify and reason about.
+It does not validate the declaration’s inner value or guarantee arbitrary tooling
+compatibility.
 
-Reasoning checkpoint:
+### Capstone connection
 
-- your answer should predict one concrete failure mode that appears when reset boundaries
-  are missing
+`DefinitionNamespace` uses `Field` and action markers instead of the exercise’s
+`Declaration`, with the same old-or-new tracked rule.
 
-Weak answer to reject:
+## Answer 5: Prove registration does not require a metaclass
 
-- "tests would get messy"
+### Defensible implementation
 
-Why it fails:
+Reuse `PluginRegistry` from a normal base:
 
-messy does not predict duplicate registration, stale registry state, or order leakage.
+```python
+def make_subclass_plugin_family(registry):
+    class PluginBase:
+        __abstract__ = True
+        group = "default"
 
-## Answer 9: Compare honest metaclass claims with overstated claims
+        def __init_subclass__(cls, **kwargs):
+            super().__init_subclass__(**kwargs)
+            cls.__abstract__ = bool(vars(cls).get("__abstract__", False))
+            inherited_group = next(
+                (
+                    str(base.group)
+                    for base in cls.__bases__
+                    if getattr(base, "group", None) is not None
+                ),
+                "default",
+            )
+            cls.group = str(vars(cls).get("group", inherited_group))
+            cls.plugin_name = str(
+                vars(cls).get("plugin_name", _slug(cls.__name__))
+            )
+            if not cls.__abstract__:
+                registry.register(cls.group, cls.plugin_name, cls)
 
-Example answer:
+    return PluginBase
+```
 
-Honest description:
+The comparison should conclude:
 
-- "This metaclass registers concrete subclasses at class-creation time and preserves declaration order."
+| Requirement | `__init_subclass__` | metaclass |
+| --- | --- | --- |
+| automatic concrete registration | yes | yes |
+| duplicate assignment observation | no | yes, with `__prepare__` |
+| raw namespace transformation | no direct pre-creation window | yes |
+| metaclass conflict cost | no new metaclass | yes |
 
-Overstated description:
+### Reasoning
 
-- "This metaclass manages the whole plugin system automatically."
+The base hook preserves the registration invariant with less class-creation authority.
+The registry remains unchanged because state ownership is independent from hook choice.
 
-Good conclusion:
+### Common wrong turns
 
-The second version is misleading because words such as "whole" and "automatically" imply
-discovery, lifecycle, configuration, and runtime coordination far beyond the actual
-class-creation rule.
+- Inheriting `__abstract__ = True` without checking `vars(cls)` accidentally keeps every
+  descendant abstract.
+- Storing registry data on the metaclass mixes policy and state again.
+- Claiming the metaclass is preferable because its implementation already exists ignores
+  the owner question.
 
-Reasoning checkpoint:
+### What this proves
 
-- the honest version should be specific enough that another learner could review the scope
-  without inferring extra framework power
+Registration-only requirements stop at `__init_subclass__`.
 
-Weak answer to reject:
+### What this does not prove
 
-- "the metaclass mostly manages plugin classes"
+It does not preserve duplicate assignments or provide pre-creation namespace shaping.
 
-Why it fails:
+### Capstone connection
 
-mostly manages still smuggles in broader lifecycle and configuration scope.
+The capstone crosses the metaclass boundary because it also needs
+`DefinitionNamespace`, field/action collection, and generated class structure.
 
-## Answer 10: Produce a metaclass-boundary packet
+## Answer 6: Produce a capstone class-creation audit
 
-The packet is strong when another learner can answer:
+### Defensible evidence map
 
-- what invariant the metaclass owns
-- when that invariant is enforced in the class lifecycle
-- what declaration-time fact or hierarchy-wide rule justified the metaclass
-- which lower-power owner would have been clearer if the invariant were smaller
+| Hook trace | Source owner | Focused proof |
+| --- | --- | --- |
+| `prepare:DefinitionNamespace` | `PluginMeta.__prepare__` and `DefinitionNamespace` | duplicate tracked declaration and ordinary replacement tests |
+| `body:complete` | Python class-body execution into the returned mapping | recorded `namespace_names` |
+| `new:shape` | `PluginMeta.__new__` | inherited/declared collection and generated-signature assertions |
+| `init:register` | `PluginMeta.__init__` and `_register_plugin` | deterministic registry and duplicate-key tests |
 
-Repair move if your packet is weak:
+The lower-power decision is:
 
-- rewrite each line so it begins with the invariant, timing, or rejected owner rather than
-  with the mechanism name
+```text
+registration only
+  -> __init_subclass__ is enough
 
-Extra packet test:
+tracked assignment events plus generated family contract
+  -> PluginMeta is justified
+```
 
-- could a missed-class learner explain why the next-lower owner failed without hearing your verbal explanation?
+The package-discovery decision is:
 
-## What strong Module 09 answers have in common
+```text
+owner: explicit discovery service
+reason: installed and enabled packages are deployment/I/O facts, while PluginMeta sees
+only classes already imported into the current process
+```
 
-Across the whole set, strong answers share the same habits:
+### Required JSON review
 
-- they explain metaclasses in class-creation language
-- they keep import-time effects visible
-- they separate `__new__`, `__init__`, and `__prepare__` by responsibility
-- they treat conflicts as design signals
-- they reject metaclass escalation when lower-power tools still own the problem honestly
-- they separate hierarchy-wide policy from follow-up bookkeeping
-- they leave behind a packet another learner can review without guessing
+The report should show:
 
-If an answer still sounds like "metaclasses are powerful so they fit here," revise it
-until you can name the exact class-creation invariant they own and why lower-power tools
-fail.
+- `constructed: false`
+- `executed: false`
+- all four hook events
+- accepted class-creation powers
+- rejected discovery, external I/O, conflict repair, and reload reconciliation
 
-## Cross-answer habits to inspect
+Validate the captured file:
 
-| Habit to inspect | Strong answer behavior |
-| --- | --- |
-| naming the invariant | always states the rule before naming the hook or mechanism |
-| naming timing | always says when the rule acts in the class lifecycle |
-| naming the rejected owner | always identifies the next-lower owner and why it loses something essential |
-| naming the cost | always surfaces one import-time, reset, or composition consequence |
+```console
+python3 -m json.tool artifacts/module-09-capstone-class-creation.json >/dev/null
+```
 
-## Exit check for the answer key
+### Common wrong turns
 
-Before leaving this page, make sure your own answers now do all of the following:
+- Constructing a plugin to inspect class creation mixes the lifecycle under review.
+- Claiming import-time tests prove reload safety overstates the evidence.
+- Recommending entry-point scanning from `PluginMeta.__init__` hides I/O in import.
+- Treating the generated signature as validation ignores descriptor ownership.
 
-- justify every escalation with an invariant rather than a vibe
-- reject at least one lower-power owner explicitly
-- keep import-time and reset costs visible
-- leave a reviewer enough evidence to disagree with your owner choice for concrete reasons
+### What this proves
 
-## Continue through Module 09
+The shipped class family has inspectable namespace, shaping, and registration ownership
+without instance execution.
 
-- Previous: [Exercises](exercises.md)
-- Return: [Overview](index.md)
-- Next module: [Module 10](../module-10-runtime-governance-mastery-review/index.md)
-- Terms: [Glossary](glossary.md)
+### What this does not prove
+
+Focused tests do not prove arbitrary metaclass compatibility, reload reconciliation,
+cross-process discovery, or safe external I/O.
+
+### Remaining risk
+
+The registry is process-global import-time state. Tests can reset it, but real reload and
+dynamic-import policy remains outside the framework contract.
+
+## Studio completion review
+
+Strong submissions preserve this chain:
+
+```text
+explicit construction
+  -> inherited metaclass selection
+  -> observable hook timing
+  -> declaration-time evidence
+  -> lower-power registration alternative
+  -> justified capstone metaclass
+```
+
+If an answer starts with “use a metaclass” before naming a vanished fact or automatic
+family invariant, revisit the owner decision.
+
+Return to the [Module 09 overview](index.md) or continue to
+[Module 10](../module-10-runtime-governance-mastery-review/index.md).

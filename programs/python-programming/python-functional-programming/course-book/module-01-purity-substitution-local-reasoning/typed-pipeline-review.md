@@ -1,111 +1,149 @@
 # Typed Pipeline Review
 
+A typed pipeline review is a boundary audit, not a count of annotations. Module 01
+uses distinct domain values to make illegal stage order visible, `RagPipe` to preserve
+unary composition types, and direct orchestration where collection shape would make a
+generic chain less clear.
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Purity Substitution Local Reasoning"]
-  page["Typed Pipeline Review"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## Trace the actual shapes
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  raw["RawDoc"] -->|"clean_doc"| clean["CleanDoc"]
+  clean -->|"chunk_doc(doc, env)"| sliced["list[ChunkWithoutEmbedding]"]
+  sliced -->|"map embed_chunk"| embedded["list[Chunk]"]
+  embedded -->|"structural_dedup_chunks"| final["list[Chunk]"]
 ```
-<!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Review both the element type and the container shape:
 
-This lesson closes the typed-pipeline hotspot. Adding type parameters is not the win by
-itself. The win is a pipeline surface that becomes easier to review, harder to misuse,
-and still equivalent to the simpler untyped baseline.
+| Boundary | Producer | Consumer requirement | Review result |
+| --- | --- | --- | --- |
+| raw to clean | `clean_doc: RawDoc \| CleanDoc -> CleanDoc` | `chunk_doc` needs `CleanDoc` plus `RagEnv` | element types fit; configuration remains explicit |
+| clean to chunks | `chunk_doc` returns `list[ChunkWithoutEmbedding]` | `embed_chunk` needs one `ChunkWithoutEmbedding` | direct composition is invalid; mapping is required |
+| embedded to canonical | mapped embedding returns `list[Chunk]` | dedup accepts `list[Chunk]` | container and element types fit |
 
-## Review questions
+The one-to-many transition is the important pressure. A wrapper that records only
+`A -> B` cannot invent flattening semantics. `docs_to_embedded` therefore uses named
+list comprehensions rather than pretending every stage is a unary value transform of
+the same shape.
 
-- Which type variables actually protect the pipeline from the wrong intermediate values?
-- Which helper signatures stay readable enough for another engineer to maintain?
-- Which dynamic boundaries should remain dynamic instead of being forced through `Any`
-  or fake generic precision?
+## Check what the generic wrapper actually guarantees
 
-## Equivalence route
-
-When the typed form and the untyped form claim to do the same work, compare them on the
-same input and demand the same result. The simplest route is:
-
-1. run the typed pipeline
-2. run the untyped baseline
-3. confirm they return the same value for the same docs and environment
-4. stop if the typed version only adds ceremony without preventing a real mistake
-
-## Property-based review
-
-Useful properties for this lesson include:
-
-- stage functions remain deterministic
-- chunking still covers the whole cleaned abstract
-- embedding stays stable for the same chunk
-- the typed full pipeline and the untyped baseline stay equivalent
-
-### Bad refactor example
-
-The easiest mistake is to pass the wrong intermediate type through a visually similar
-pipeline step.
+`RagPipe[A, B].then` accepts `Callable[[B], C]` and returns `RagPipe[A, C]`. For a
+genuinely unary chain, this rejects a wrong adjacent value:
 
 ```python
-from typing import List, Tuple
+from collections.abc import Callable
 
-from funcpipe_rag import RawDoc, Chunk, RagEnv, chunk_doc, clean_doc, embed_chunk
+from funcpipe_rag import CleanDoc, RagEnv, RawDoc, chunk_doc, clean_doc
+from funcpipe_rag.rag_pipe import RagPipe
 
 
-def bad_full_rag(docs: List[RawDoc], env: RagEnv) -> Tuple[Chunk, ...]:
-    return tuple(
-        embed_chunk(doc)
-        for doc in docs
-        for chunk in chunk_doc(clean_doc(doc), env)
-    )
+def chunk_count(env: RagEnv) -> Callable[[CleanDoc], int]:
+    def count(doc: CleanDoc) -> int:
+        return len(chunk_doc(doc, env))
+
+    return count
+
+
+count_chunks = RagPipe(clean_doc).then(chunk_count(RagEnv(chunk_size=8)))
+result: int = count_chunks(
+    RawDoc("paper", "Types", "typed pipelines", "cs.PL")
+)
 ```
 
-That code looks pipeline-shaped, but the intermediate value is wrong. The type surface is
-only earning its keep if it helps you detect exactly that class of error.
+The invalid adjacency is shorter:
 
-## When typed pipelines are worth it
+```python
+broken = RagPipe(clean_doc).then(embed_chunk)
+```
 
-Keep the typed layer when:
+`clean_doc` produces `CleanDoc`; `embed_chunk` requires
+`ChunkWithoutEmbedding`. A static checker should reject construction before the
+pipeline is called. By contrast, Module 01's `flow` uses
+`Callable[[Any], Any]`, so this same mismatch can escape static checking:
 
-- higher-order helpers are reused across the module or capstone
-- the wrong intermediate type is a realistic maintenance bug
-- the signature is still readable after adding the type parameters
-- the team uses static checking as part of normal review
+```python
+broken = flow(clean_doc, embed_chunk)
+```
 
-Do not force it when:
+That difference is a real benefit of `RagPipe`, but it does not justify using the
+wrapper where direct orchestration is clearer.
 
-- the boundary is inherently dynamic and is better protected by validation
-- the type expression is harder to understand than the code itself
-- the proof still depends entirely on runtime tests and the type adds no signal
+## Separate static, runtime, and behavioral evidence
 
-## Capstone check
+No one proof route establishes the whole contract:
 
-Before moving on, compare the typed lesson with the module endpoint:
+| Evidence | Establishes | Does not establish |
+| --- | --- | --- |
+| strict mypy | the seven tracked source files satisfy their declared static relationships | valid runtime configuration, purity, or correct output |
+| frozen dataclass validation | `RagEnv.chunk_size` is an exact positive integer and values reject reassignment | correct stage order or chunk coverage |
+| foundation tests | normalization, chunk coverage, embedding locality, canonical behavior, and input preservation | absence of every type mismatch in unexecuted code |
+| source review | effects and `Any` escapes are visible to a reviewer | laws over a broad generated input space |
 
-1. inspect `capstone/_history/worktrees/module-01/src/funcpipe_rag/fp.py`
-2. inspect `capstone/_history/worktrees/module-01/tests/test_laws.py`
-3. decide whether the typed helper surface is preventing a real class of mistakes
+This matters for the cleaning fixed-point law:
 
-## Reflection
+```python
+clean_doc(clean_doc(raw)) == clean_doc(raw)
+```
 
-- Which helper in your own codebase needs stronger typing because it crosses too many stages?
-- Which helper would be clearer with a plain concrete type instead of a generic?
-- Which problem is better solved by validation than by more type machinery?
+The runtime expression requires `clean_doc` to accept its own `CleanDoc` output.
+Typing the parameter only as `RawDoc` would make the executable law and the public
+annotation disagree even if Python happened to run it successfully.
 
-**Continue with:** [Isolating Side Effects](isolating-side-effects.md)
+## Run the two independent routes
+
+From the repository root:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-types
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-proof
+```
+
+The type target uses strict mypy, points `MYPYPATH` at the Module 01 snapshot, and
+writes its cache under `artifacts/`. Snapshot isolation is essential: resolving
+imports from the live Module 10 package could produce a green result for the wrong
+source state.
+
+The behavior target runs the six-test learning proof against the same snapshot. A
+review should require both results rather than treating passing runtime tests as a
+static check or treating mypy as proof of domain behavior.
+
+## Review the annotation cost
+
+Keep the typed wrapper when:
+
+- adjacent intermediate types differ and a mismatch is plausible;
+- a unary chain is reused as one callable;
+- the inferred public result remains understandable;
+- strict checking is part of the executable review path.
+
+Prefer a direct function when:
+
+- a stage expands one value into many;
+- mapping or flattening policy must remain visible;
+- configuration would need hidden capture solely to fit the wrapper;
+- `Any` would erase the guarantee the abstraction claims to add.
+
+Types also stop at effect behavior. `Callable[[str], int]` can describe both a pure
+length function and one that writes to a global audit list. Purity still needs source
+review and behavioral evidence.
+
+## Compact review route
+
+Before accepting a typed pipeline change:
+
+1. Write each stage as `input -> output`, including containers.
+2. Mark every one-to-many, flattening, and configuration boundary.
+3. Search public helper signatures for `Any`.
+4. Identify one realistic invalid adjacency the checker rejects.
+5. Run `capstone-foundation-types`.
+6. Run `capstone-foundation-proof`.
+7. Explain what remains a source-review claim.
+
+Move to [Isolating Side Effects](isolating-side-effects.md) once you can explain why
+`RagPipe(clean_doc).then(embed_chunk)` is statically invalid, why `flow` cannot prove
+that, and why neither fact establishes purity.

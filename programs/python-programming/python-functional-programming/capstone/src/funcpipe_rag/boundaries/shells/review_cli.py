@@ -4,8 +4,11 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
+
+from funcpipe_rag.review.evidence import EvidenceClaim, assess_evidence
 
 PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
     {
@@ -16,6 +19,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
             "src/funcpipe_rag/tree",
             "src/funcpipe_rag/streaming",
         ],
+        "owner": "functional-foundations",
         "purpose": "Reusable algebra, containers, folds, and lazy stream behavior.",
         "tests": [
             "tests/unit/fp",
@@ -31,6 +35,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
             "src/funcpipe_rag/rag",
             "src/funcpipe_rag/rag/domain",
         ],
+        "owner": "rag-domain",
         "purpose": "RAG-specific value shapes, stages, and domain assembly logic.",
         "tests": [
             "tests/unit/rag",
@@ -43,6 +48,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
             "src/funcpipe_rag/pipelines",
             "src/funcpipe_rag/policies",
         ],
+        "owner": "pipeline-runtime",
         "purpose": "Configured pipeline assembly and explicit runtime policy choices.",
         "tests": [
             "tests/unit/pipelines",
@@ -57,6 +63,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
             "src/funcpipe_rag/boundaries",
             "src/funcpipe_rag/infra",
         ],
+        "owner": "boundary-integrations",
         "purpose": "Capabilities, shells, adapters, and concrete runtime edges.",
         "tests": [
             "tests/unit/domain",
@@ -69,6 +76,7 @@ PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
         "paths": [
             "src/funcpipe_rag/interop",
         ],
+        "owner": "ecosystem-interop",
         "purpose": "Compatibility layers for stdlib and external functional helpers.",
         "tests": [
             "tests/unit/interop",
@@ -145,11 +153,67 @@ PROOF_ROUTES: tuple[dict[str, str], ...] = (
     },
 )
 
+EVIDENCE_CLAIMS: tuple[EvidenceClaim, ...] = (
+    EvidenceClaim(
+        name="change-acceptance",
+        statement="A proposed change is accepted only when its applicable proofs agree.",
+        required_paths=(
+            "src/funcpipe_rag/review/change.py",
+            "tests/unit/review/test_change.py",
+        ),
+        command="pytest -q tests/unit/review/test_change.py",
+    ),
+    EvidenceClaim(
+        name="performance-decision",
+        statement="Performance limits are explicit, multidimensional values.",
+        required_paths=(
+            "src/funcpipe_rag/review/performance.py",
+            "tests/unit/review/test_performance.py",
+        ),
+        command="pytest -q tests/unit/review/test_performance.py",
+    ),
+    EvidenceClaim(
+        name="regression-equivalence",
+        statement="Pure and optimized embeddings preserve one domain contract.",
+        required_paths=(
+            "src/funcpipe_rag/rag/domain/perf.py",
+            "tests/unit/rag/domain/test_perf_equivalence.py",
+        ),
+        command="pytest -q tests/unit/rag/domain/test_perf_equivalence.py",
+    ),
+    EvidenceClaim(
+        name="async-contracts",
+        statement="Async coordination retains bounded value-level laws.",
+        required_paths=(
+            "src/funcpipe_rag/domain/effects/async_/plan.py",
+            "tests/unit/domain/test_async_law_properties.py",
+        ),
+        command="pytest -q tests/unit/domain/test_async_law_properties.py",
+    ),
+    EvidenceClaim(
+        name="migration-review",
+        statement="Contract shape and semantic upcasting are reviewed separately.",
+        required_paths=(
+            "src/funcpipe_rag/review/migration.py",
+            "tests/unit/review/test_migration.py",
+        ),
+        command="pytest -q tests/unit/review/test_migration.py",
+    ),
+)
 
-def _count_python_files(path: Path) -> int:
-    if not path.exists():
-        return 0
-    return sum(1 for candidate in path.rglob("*.py") if candidate.is_file())
+
+def _count_python_files(paths: Iterable[Path]) -> int:
+    """Count each source once when review groups contain nested paths."""
+
+    return len(
+        {
+            candidate.resolve()
+            for path in paths
+            if path.exists()
+            for candidate in path.rglob("*.py")
+            if candidate.is_file()
+        }
+    )
 
 
 def build_summary(project_root: Path) -> dict[str, Any]:
@@ -159,7 +223,7 @@ def build_summary(project_root: Path) -> dict[str, Any]:
         package_groups.append(
             {
                 **group,
-                "python_file_count": sum(_count_python_files(path) for path in paths),
+                "python_file_count": _count_python_files(paths),
             }
         )
 
@@ -169,7 +233,26 @@ def build_summary(project_root: Path) -> dict[str, Any]:
         test_groups.append(
             {
                 **group,
-                "python_file_count": sum(_count_python_files(path) for path in paths),
+                "python_file_count": _count_python_files(paths),
+            }
+        )
+
+    evidence_claims: list[dict[str, Any]] = []
+    for claim in EVIDENCE_CLAIMS:
+        available = frozenset(
+            path
+            for path in claim.required_paths
+            if (project_root / path).is_file()
+        )
+        assessment = assess_evidence(claim, available)
+        evidence_claims.append(
+            {
+                "name": claim.name,
+                "statement": claim.statement,
+                "required_paths": list(claim.required_paths),
+                "command": claim.command,
+                "route_available": assessment.complete,
+                "missing_paths": list(assessment.missing_paths),
             }
         )
 
@@ -178,6 +261,7 @@ def build_summary(project_root: Path) -> dict[str, Any]:
         "package_groups": package_groups,
         "test_groups": test_groups,
         "proof_routes": list(PROOF_ROUTES),
+        "evidence_claims": evidence_claims,
     }
 
 
@@ -189,7 +273,8 @@ def render_text(summary: dict[str, Any]) -> str:
     lines.append("Package groups:")
     for group in summary["package_groups"]:
         lines.append(
-            f"- {group['name']}: {group['python_file_count']} python files; {group['purpose']}"
+            f"- {group['name']}: {group['python_file_count']} python files; "
+            f"owner={group['owner']}; {group['purpose']}"
         )
         lines.append(f"  paths: {', '.join(group['paths'])}")
         lines.append(f"  tests: {', '.join(group['tests'])}")
@@ -204,6 +289,33 @@ def render_text(summary: dict[str, Any]) -> str:
     lines.append("Proof routes:")
     for route in summary["proof_routes"]:
         lines.append(f"- {route['name']}: {route['command']} -> {route['meaning']}")
+    lines.append("")
+    lines.append("Evidence claims:")
+    for claim in summary["evidence_claims"]:
+        state = "available" if claim["route_available"] else "missing"
+        lines.append(f"- {claim['name']}: {state}; {claim['statement']}")
+        lines.append(f"  verify: {claim['command']}")
+        if claim["missing_paths"]:
+            lines.append(f"  missing: {', '.join(claim['missing_paths'])}")
+    return "\n".join(lines) + "\n"
+
+
+def render_claim_text(project_root: str, claim: dict[str, Any]) -> str:
+    """Render one declared route without claiming that its command has run."""
+
+    state = "available" if claim["route_available"] else "missing"
+    lines = [
+        "FuncPipe evidence route",
+        f"project_root: {project_root}",
+        f"claim: {claim['name']}",
+        f"statement: {claim['statement']}",
+        f"route: {state}",
+        f"required_paths: {', '.join(claim['required_paths'])}",
+        f"verify: {claim['command']}",
+        "interpretation: route availability does not mean the verification command passed",
+    ]
+    if claim["missing_paths"]:
+        lines.append(f"missing: {', '.join(claim['missing_paths'])}")
     return "\n".join(lines) + "\n"
 
 
@@ -211,10 +323,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="funcpipe-rag-review")
     parser.add_argument(
         "command",
-        choices=("summary",),
+        choices=("check", "summary"),
         nargs="?",
         default="summary",
-        help="Inspection report to render.",
+        help="Render the report or fail when a declared evidence path is missing.",
     )
     parser.add_argument(
         "--format",
@@ -228,17 +340,58 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=Path.cwd(),
         help="Capstone project root. Defaults to the current working directory.",
     )
+    parser.add_argument(
+        "--claim",
+        choices=tuple(claim.name for claim in EVIDENCE_CLAIMS),
+        help="Show or check only one declared evidence route.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     summary = build_summary(args.project_root)
+    selected_claim = next(
+        (
+            claim
+            for claim in summary["evidence_claims"]
+            if claim["name"] == args.claim
+        ),
+        None,
+    )
     if args.format == "json":
-        print(json.dumps(summary, indent=2, sort_keys=True))
+        payload = (
+            {
+                "project_root": summary["project_root"],
+                "evidence_claim": selected_claim,
+            }
+            if selected_claim is not None
+            else summary
+        )
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    elif selected_claim is not None:
+        print(
+            render_claim_text(summary["project_root"], selected_claim),
+            end="",
+        )
     else:
         print(render_text(summary), end="")
+    checked_claims = (
+        (selected_claim,)
+        if selected_claim is not None
+        else tuple(summary["evidence_claims"])
+    )
+    if args.command == "check" and not all(
+        claim["route_available"] for claim in checked_claims
+    ):
+        return 1
     return 0
 
 
-__all__ = ["build_summary", "main", "parse_args", "render_text"]
+__all__ = [
+    "build_summary",
+    "main",
+    "parse_args",
+    "render_claim_text",
+    "render_text",
+]

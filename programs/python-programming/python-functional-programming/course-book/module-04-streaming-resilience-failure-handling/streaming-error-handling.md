@@ -451,7 +451,10 @@ def test_containment_no_leak(items):
 | split_results_to_sinks         | O(1)          | O(1)                   | Yes      |
 | partition_results              | O(1)          | O(N) total             | No       |
 
-All streaming operations are truly lazy.
+The serial combinators request one item at a time. `par_try_map_iter` keeps up
+to `max_in_flight` submitted futures, so it is bounded but may request ahead of
+the next emitted item. “Lazy” does not imply identical demand for serial and
+parallel routes.
 
 ---
 
@@ -466,22 +469,95 @@ All streaming operations are truly lazy.
 
 ---
 
+## Trace one failure without losing its stream position
+
+The Module 03 pipeline already preserves document and chunk order. Module 04
+must preserve that useful observation when an embedding call fails. Returning
+only successful values would shift every later position; raising would erase
+all later records. `try_map_iter` instead emits exactly one `Result` for each
+input it requests.
+
+The focused learning source is:
+
+```text
+(0, "first"), (1, "bad"), (2, "unrequested")
+```
+
+Taking two outputs produces:
+
+| Requested input | Output | Evidence retained |
+| --- | --- | --- |
+| `(0, "first")` | `Ok("FIRST")` | Successful value |
+| `(1, "bad")` | `Err(EMBED/INVALID)` | Stage `embed`, path `(1,)`, original cause |
+| `(2, "unrequested")` | no output | Source item is not requested |
+
+Run:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k result_stream
+```
+
+The `requested == 2` assertion is as important as the two output assertions.
+It connects failure handling back to Module 03's bounded-demand contract.
+
+Choose the next combinator based on what the consumer needs:
+
+| Consumer decision | Route | Information or cost |
+| --- | --- | --- |
+| Continue with success and failure in encounter order | Keep `Iterator[Result[...]]` | No early materialization |
+| Observe successes without changing the stream | `tap_ok` | Side effect occurs during consumption |
+| Observe failures without changing the stream | `tap_err` | Side effect can itself fail unless guarded |
+| Route values to two final sinks | `split_results_to_sinks` | Terminal consumption; no return stream |
+| Recover a known failure to a value | `recover_iter` | Original failure no longer appears downstream |
+| Build two complete lists | `partition_results` | O(N) storage and finite-input requirement |
+
+`try_map_iter` intentionally catches `Exception` at a generic adapter boundary.
+That is broad. Do not infer that every stage should catch every exception.
+Where the domain knows the expected failures, translate those specific
+exceptions into stable error codes and let unexpected defects surface.
+
+The parallel route preserves output order but can have several calls already
+running when a consumer stops. Its `max_in_flight` bound controls submitted
+work, not instantaneous cancellation of work already submitted.
+
 ## 8. Pre-Core Quiz
 
-1. try_map_iter for…? → **Exception-safe lazy mapping**  
-2. par_try_map_iter for…? → **Order-preserving parallel mapping**  
-3. filter_ok for…? → **Stream only successes**  
-4. split_results_to_sinks for…? → **One-pass routing to two sinks**  
-5. recover_iter for…? → **Recover Err to values lazily**
+1. Why emit one `Result` per requested input? → **To retain position while
+   allowing later records to continue.**
+2. What does `islice(..., 2)` prove on the serial route? → **Only two source
+   items were requested.**
+3. Does `par_try_map_iter` have the same demand? → **No; it may submit up to its
+   in-flight bound.**
+4. When does recovery lose evidence? → **When an `Err` is converted to a
+   fallback without separately retaining the failure.**
+5. Why is broad exception capture confined to an adapter? → **The adapter has
+   an explicit containment contract; domain functions should classify more
+   narrowly.**
 
 ## 9. Post-Core Exercise
 
-1. Replace a try/except loop with `try_map_iter` → verify full output on mixed data.  
-2. Add `tap_err` for logging → test laziness with `islice`.  
-3. Use `par_try_map_iter` for embedding → measure speedup on real dataset.  
-4. Implement `split_results_to_sinks_guarded` for safe indexing + error warehouse.  
-5. Add ordering test to your own pipeline using tagged inputs.
+Extend the learning source with one permanent and one transient embedding
+failure.
+
+- Keep one output per requested input.
+- Assign distinct codes while preserving the same `embed` stage.
+- Use paths to recover original positions without inspecting messages.
+- Take only the first three outputs and assert the fourth input is not
+  requested.
+- Explain how the demand assertion would change for `par_try_map_iter` with
+  `max_in_flight=2`.
+
+Move forward when you can review values, ordering, provenance, and demand as
+four distinct claims.
 
 **Continue with:** [Error Aggregation](../module-04-streaming-resilience-failure-handling/error-aggregation.md)
 
-You now have the complete toolkit to process real-world messy data without ever losing a single record or halting on one bad apple. The rest of Module 4 is about aggregating and reporting those errors beautifully.
+The stream now retains both successes and failures. The next core decides how
+much of that stream must be consumed to produce an aggregate decision.

@@ -260,6 +260,63 @@ Common weak alternatives to reject explicitly:
 - special-casing "optional" parameters from docstrings or annotations
 - assuming a wrapper with `*args, **kwargs` has no recoverable contract
 
+## Guided lab: compare full, failed, and partial binding
+
+Run:
+
+```console
+$ python3 -m labs.runtime_evidence |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["binding"])'
+{'bound_arguments': {'incident_id': 'INC-42', 'metadata': {'owner': 'platform'}, 'retries': 2, 'severity': 'warning'}, 'evidence_strength': 'strong-call-matching', 'keyword_for_positional_only_rejected': True, 'partial_arguments': {'retries': 3}}
+```
+
+The three outcomes answer different questions:
+
+- full binding plus defaults produces the mapping an actual call would receive
+- passing `incident_id` by keyword is rejected because the signature marks it
+  positional-only
+- partial binding accepts only `retries` because the tool is intentionally assembling an
+  incomplete call
+
+`strong-call-matching` means Python's argument rules accepted or rejected the shape. It
+does not mean the eventual function body succeeds.
+
+### Failure route
+
+Replace `bind()` with `bind_partial()` for the complete-call validation path. A call
+missing `incident_id` will now appear acceptable even though actual invocation cannot
+proceed. Record the different question partial binding answers, restore full binding, and
+run `make evidence-lab-test`.
+
+### Transfer to the incident-plugin runtime
+
+Run the capstone preflight:
+
+```console
+$ make capstone-bind-action
+{
+  "action_name": "deliver",
+  "bound_arguments": {
+    "severity": "warning",
+    "summary": "node-1 crossed 90%",
+    "title": "CPU high"
+  },
+  "executed": false,
+  "group": "delivery",
+  "plugin_name": "console"
+}
+```
+
+This is not simulated application success. The public
+`bind_action_arguments(...)` API retrieves the registered action's stored
+`inspect.Signature`, calls `bind(...)`, applies defaults, and returns the interpreter-
+aligned argument mapping. It does not construct the plugin or invoke the action.
+
+The capstone proof uses an event-recording plugin to assert that both side effects remain
+absent. Invalid action shapes raise `TypeError` during preflight. Actual action wrappers
+use the same binding rule before invocation and history recording, so preflight and
+execution do not drift into separate hand-written argument models.
+
 ## Review rules for binding logic
 
 When reviewing call-validation or forwarding code, keep these questions close:

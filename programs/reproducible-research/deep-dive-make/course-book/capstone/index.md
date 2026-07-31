@@ -33,13 +33,86 @@ of slogans.
 Use this guide once the local module idea is already legible. The capstone should answer
 one build question at a time, not become a full repository tour by default.
 
+## The capstone is an argument, not a trophy
+
+A large example is easy to admire and hard to learn from. Treat this repository as a
+set of linked claims:
+
+```mermaid
+flowchart LR
+  contract["Contract\nwhat callers may rely on"]
+  model["Graph and policy\nhow the claim is represented"]
+  execution["Execution\nwhat Make and tools do"]
+  evidence["Evidence\nwhat a reviewer can inspect"]
+  judgment["Judgment\nwhat the evidence permits"]
+
+  contract --> model --> execution --> evidence --> judgment
+  judgment -. "a failed claim changes" .-> contract
+```
+
+The arrows are questions, not assurances. A target name does not prove its contract.
+A successful recipe does not prove convergence. A saved report does not prove that its
+inputs were the intended ones. Your work in the capstone is to follow one claim across
+all five boxes and stop at the first unsupported transition.
+
+## Your learner contract
+
+For each capstone visit, produce a short review note with these five fields:
+
+| Field | What to record |
+| --- | --- |
+| question | one behavior you are trying to understand |
+| prediction | what you expect before running a command |
+| smallest route | one guide, owning file, and command |
+| observation | the exact output or saved evidence that changed or confirmed your model |
+| bounded judgment | what is proved, rejected, or still unknown |
+
+For example:
+
+> **Question:** Does the build converge after a successful build?
+>
+> **Prediction:** A second invocation should schedule no compilation or linking work.
+>
+> **Smallest route:** `tests/run.sh` through `gmake selftest`.
+>
+> **Observation:** The convergence check records an empty second-build work set.
+>
+> **Bounded judgment:** The tested configuration converges; this does not prove every
+> compiler, flag set, or platform converges.
+
+This note prevents two common self-study failures: running everything without knowing
+what to inspect, and turning one passing run into a universal claim.
+
 ## What this capstone proves
 
-- public targets can stay small and stable
-- graph truth can survive hidden-input and generated-file pressure
-- serial and parallel execution can agree when the build deserves trust
-- one release candidate can be verified and installed in containment without replacing it
-- failure specimens can stay isolated and teachable without polluting the healthy build
+The repository contains proof routes for the following bounded claims:
+
+| Claim | First owning surface | Corroborating route | Important limit |
+| --- | --- | --- | --- |
+| public targets have inspectable meanings | `Makefile` and `help` | `gmake contract-audit` | internal helper targets are not thereby public |
+| modeled inputs drive rebuilds | `mk/objects.mk`, `mk/stamps.mk`, depfiles | `gmake selftest` and `gmake incremental-fault-audit` | only declared input classes are covered |
+| tested serial and parallel schedules agree | graph rules plus publication recipes | `gmake selftest` | this is not a proof for arbitrary external tools |
+| one candidate can be checked without rebuilding it | release policy and verification scripts | `gmake release-check` | no remote publication occurs |
+| known failure classes can be recognized from preserved evidence | isolated files under `repro/` | the matching audit target | a specimen explains one mechanism, not every incident |
+
+Read the limit column before using the command. It marks the boundary between evidence
+and inference.
+
+## Choose a first investigation
+
+If you are studying alone, begin with one of these investigations rather than browsing:
+
+| Investigation | Predict before running | Inspect afterward |
+| --- | --- | --- |
+| convergence | whether a second build has real work | selftest summary and captured logs |
+| parallel equivalence | whether serial and parallel inventories match | schedule comparison evidence |
+| hidden input | which artifact should rebuild after policy changes | stamp rules and incremental audit findings |
+| release identity | whether verification can consume existing bytes after build cleanup | candidate digest and acceptance record |
+| incident ownership | which writer or edge caused the failure | finding, specimen, and preserved workspace |
+
+Write your prediction down. A prediction makes a passing result informative because it
+reveals whether your mental model, not merely the build, was correct.
+
 
 ## Choose the right capstone route
 
@@ -90,13 +163,16 @@ On macOS, use `gmake` inside `capstone/` because `/usr/bin/make` is BSD Make.
 
 ## Review questions
 
-- Which targets are truly public, and which are only helper surfaces?
-- Which file proves convergence and parallel safety instead of merely claiming them?
-- Which failure class is the healthy build defending against right now?
+- Which targets are truly public, and what evidence distinguishes them from helpers?
+- Which file defines the tested convergence claim, and which file merely implements it?
+- Which failure class is the healthy build defending against, and where is its negative
+  control?
 - Which exact digest do candidate, install, and final release evidence identify?
+- What remains unknown after the chosen route passes?
 
 ## Stop here when
 
-- you know the current build claim in plain language
-- you know the smallest file, guide, or command that can prove it
-- you know whether a wider steward review is actually necessary
+- you can state the current build claim and its limit in plain language
+- you can name the owning file and the evidence-producing command
+- you have recorded one observation rather than only a pass/fail result
+- you know whether the evidence supports trust, rejection, or a narrower follow-up

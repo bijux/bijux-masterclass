@@ -4,7 +4,7 @@ This package intentionally contains *optional* adapters (e.g., FastAPI) behind
 dynamic import guards so the core library remains dependency-light.
 """
 
+from .documents import parse_document_payloads
 from .fastapi_app import create_app
 
-__all__ = ["create_app"]
-
+__all__ = ["create_app", "parse_document_payloads"]

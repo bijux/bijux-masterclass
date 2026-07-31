@@ -429,3 +429,81 @@ dataset.
 **Further Reading:** For the deepest itertools mastery, see the official docs and Dan Bader’s ‘Python Tricks’ chapter on iterators.
 
 > **You now own the most powerful lazy streaming toolkit in Python. Module 4 will show you how to make even failure and resource cleanup lazy and pure.**
+
+## Chunk boundaries are domain data
+
+The Module 03 change is not merely “use a generator.” It adds overlap and makes the
+last partial chunk a policy. For text `abcdef`, size `4`, and overlap `2`:
+
+| Tail policy | Emitted `(text, start, end)` | Meaning |
+| --- | --- | --- |
+| `emit_short` | `("abcd", 0, 4)`, `("cdef", 2, 6)`, `("ef", 4, 6)` | preserve all source text; final item is short |
+| `drop` | first two rows only | require full-width chunks; discard incomplete tail |
+| `pad` | final row becomes `("ef\\0\\0", 4, 8)` | fixed width; end may exceed source length |
+
+Offsets are not incidental indexes. They let retrieval results point back to the
+source. A learner implementation that emits correct text but wrong spans has broken
+the RAG contract.
+
+```python
+from funcpipe_rag import gen_overlapping_chunks
+
+chunks = list(
+    gen_overlapping_chunks(
+        "doc-a",
+        "abcdef",
+        k=4,
+        o=2,
+        tail_policy="emit_short",
+    )
+)
+assert [(chunk.start, chunk.end) for chunk in chunks] == [(0, 4), (2, 6), (4, 6)]
+```
+
+The advance is `step = k - o`. The validation `0 <= o < k` matters because `o == k`
+would make `step == 0`, so the generator would never advance.
+
+### Windows have a warm-up cost
+
+`sliding_windows(source, w)` must request `w` source items before it can emit its
+first full window. Each later window requests exactly one more item:
+
+```text
+requests for n produced windows = 0, if n == 0
+requests for n produced windows = n + w - 1, if n > 0
+retained auxiliary items <= w
+```
+
+For width four, asking for two windows requests values `0` through `4`:
+
+```python
+from itertools import islice
+from funcpipe_rag import sliding_windows
+
+assert list(islice(sliding_windows(range(100), 4), 2)) == [
+    (0, 1, 2, 3),
+    (1, 2, 3, 4),
+]
+```
+
+The output tuples themselves are owned snapshots. The internal deque is bounded,
+but a caller can still consume the whole iterator into an unbounded list.
+
+### Two different boundedness questions
+
+- **Auxiliary-space bound:** how much does the stage retain while moving forward?
+- **Demand bound:** how far upstream does it read for the requested output?
+
+A deque with `maxlen=w` proves the first. The counted-source learning test proves
+the second. Neither proves the other.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-03/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+  -k 'overlapping or sliding_window'
+```
+
+Before continuing, choose a tail policy for retrieval and state what downstream
+code must do with short or padded text. Then derive the source-request count for
+five windows of width three without running Python.

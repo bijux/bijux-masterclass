@@ -38,10 +38,15 @@ Use it when you care about a concept but want the fastest evidence route.
 | Claim | Command | File surfaces |
 | --- | --- | --- |
 | data identity is not only a path name | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `capstone/data/raw/service_incidents.csv`, `capstone/dvc.lock`, `capstone/.dvc-remote/` |
+| identity survives relocation but recoverability depends on accessible storage | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit` | `capstone/repro/data-identity/`, generated `.dvc` pointers, cache objects, state-move receipts, and pointer-only failure evidence |
 | the pipeline declaration and the recorded run are different evidence types | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `capstone/dvc.yaml`, `capstone/dvc.lock` |
 | the pipeline declares the real change surface | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-repro` | `capstone/dvc.yaml`, `capstone/dvc.lock`, `capstone/state/` |
+| stage declarations expose real file, parameter, and output boundaries | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit` | `capstone/repro/stage-contracts/`, `capstone/scripts/audit_stage_contracts.py`, generated status receipts and result values |
+| influential runtime state needs a declared edge or an enforced external contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit` | `capstone/repro/runtime-contracts/`, generated fingerprints, status receipts, semantic results, and declaration hashes |
 | params are part of recorded execution meaning | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/params.yaml`, `capstone/dvc.lock` |
 | metrics are reviewable state, not only console output | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/metrics/metrics.json`, `capstone/publish/v1/metrics.json` |
+| metric movement supports comparison only under a stable semantic contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit` | `capstone/repro/metric-contracts/`, generated metric and parameter diffs, comparison records, and `summary.tsv` |
+| a clean reviewer can recover and explain submitted state without author cache, private files, or remote write authority | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit` | `capstone/repro/reviewer-handoff/`, isolated author and reviewer clones, command receipts, findings, and `summary.tsv` |
 | promoted outputs are smaller than internal repository state | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | `capstone/publish/v1/`, `capstone/state/`, `course-book/capstone/index.md`, `capstone/publish/v1/manifest.json` |
 | repository layers have distinct reading responsibilities | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/capstone-file-guide.md`, `capstone/dvc.yaml` |
 
@@ -52,7 +57,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | Claim | Command | File surfaces |
 | --- | --- | --- |
 | the repository can rebuild its promoted contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/publish/v1/manifest.json`, `capstone/src/incident_escalation_capstone/verify.py` |
-| experiments can vary parameters without mutating the baseline contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | `capstone/params.yaml`, `capstone/dvc.lock` |
+| experiments preserve baseline, intent, allowed controls, population, metric meaning, and promotion authority as separate boundaries | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit` | `capstone/repro/experiment-comparability/`, generated baseline and candidate records, DVC receipts, findings, and `summary.tsv` |
 | another person can run the same proof targets through the public interface | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `Makefile`, `programs/reproducible-research/deep-dive-dvc/Makefile`, `capstone/Makefile` |
 | remote-backed recovery still works after local loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | `capstone/.dvc-remote/`, `capstone/publish/v1/` |
 | the full repository can defend itself under review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `course-book/capstone/index.md`, `capstone/dvc.yaml`, `capstone/dvc.lock`, `course-book/capstone/capstone-review-worksheet.md` |
@@ -65,7 +70,8 @@ Use it when you care about a concept but want the fastest evidence route.
 | Question | Best first command | Best first file |
 | --- | --- | --- |
 | what exactly changed between declaration and recorded execution | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `capstone/dvc.lock` |
-| which parameters are safe to compare across runs | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/params.yaml` |
+| which metric results are safe to compare across runs | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit` | `capstone/repro/metric-contracts/README.md` |
+| which handoff boundary prevents an independent review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit` | `capstone/repro/reviewer-handoff/README.md` |
 | which artifacts are safe for downstream trust | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | `capstone/publish/v1/manifest.json` |
 | which state survives local cache loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | `course-book/capstone/index.md` |
 | which verification route fits my question | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `course-book/capstone/capstone-proof-guide.md` |

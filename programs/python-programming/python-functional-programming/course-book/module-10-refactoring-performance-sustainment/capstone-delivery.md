@@ -1,6 +1,5 @@
 # Capstone Delivery
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,148 +24,242 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+The course ends by delivering evidence for the deterministic local FuncPipe
+application learners actually built. You do not need a cluster, deployment
+platform, protected release repository, or external model call to demonstrate
+functional-programming judgment.
 
-**Module 10 (Conclusion)**  
-> **Core question:**  
-> How do you demonstrate end-to-end mastery of FP-in-Python by shipping a real FuncPipe system with formal laws, measurable guarantees, enforced boundaries, upgrade safety, performance budgets, and a credible scalability roadmap?
+The final product is a reviewable chain:
 
-This is the payoff.  
-You ship one complete, audited FuncPipe system (new or deeply refactored) that satisfies every requirement below. The entire governance/CI scaffold may be copied verbatim from the official template repository; graduation assesses correct FP architecture and invariant design, not infra originality.
+```mermaid
+flowchart LR
+    claim["Application claim"]
+    source["Owned source boundary"]
+    test["Focused executable proof"]
+    result["Observed command result"]
+    decision["Pure change decision"]
+    limit["Stated proof limit"]
 
-**Motivation Bug:** FP knowledge that never ships with verified, versioned, evolvable boundaries remains hobby-grade.
+    claim --> source --> test --> result --> decision --> limit
+```
 
-**Delta from Core 9:** Governance was mostly manual. Core 10 makes it mechanically enforced where reliable, explicitly best-effort elsewhere, and always secondary to architectural separation and review.
+Every link has a different responsibility. A source path is not a passing test. A
+passing test is not proof of an untested workload. A pure decision is only as
+credible as its supplied evidence.
 
-**Capstone Contract (Normative – All Required for Graduation):**
-- Pure core / effect shell decomposition enforced by import-linter + best-effort AST bans. Architectural separation and code review are the primary defense against impurity; static tools are secondary guardrails only.
-- Typed public contract surface (events, ports, configs, graphs) using pydantic v2 models, semver (major-only public changes), canonical JSON serialization (strict, cross-language-stable rules below), and normalized JSON schema hashing.
-- All effect boundaries use explicit protocols (e.g., `Protocol[Clock]` → `datetime`). Property tests prove core remains deterministic and equivalent across multiple conforming protocol implementations (pure + representative effectful ones) supplied in the test suite.
-- Every declared invariant mechanically linked to Hypothesis property tests via invariants.md + governance/check_invariants.py.
-- Every unsafe extension justified by performance budget, categorized (implementation-only vs semantic), proven with PBT. Semantic-unsafe changes require RFC approval and major version bump of all affected contracts/graphs.
-- Float fields in contracts forbidden by default: enforced by pydantic runtime validation + @allow_float marker + RFC requirement.
-- CI fails on: cross-context core imports, detectable observable impurity, law regressions, contract compatibility breaks, modifications to old contract versions, canonical serialization drift, schema hash drift.
-- Performance budget with CI enforcement using ASV + the single blessed statistical model (Welch’s t-test, rolling 30-run baseline, p<0.01, MAD outlier rejection) defined in budget.yaml. Overrides require RFC.
-- ParaPipe readiness plan with explicit semantics for partitioning, merging, ordering, delivery, backpressure, deduplication, failure handling, and reconciliation. Any semantic affecting ordering, lossiness, deduplication, delivery guarantees, retries, or merge algebra requires corresponding semantic property tests.
-- Release process: CHANGELOG.md, MIGRATIONS.md, deprecation enforcement.
-- Old contract versions immutable.
-- System-level golden run with canonicalized output snapshot + hash.
-- Golden files regenerated exclusively via the official regen tool, which is version-tagged in a protected upstream repository. CI verifies golden files were produced by the currently approved tagged tool version (fetched from protected ref; PRs cannot override).
+## What the completed capstone contains
 
-**Graduation Artifact:** A complete repository that passes all CI checks and serves as a drop-in template for real production pipelines.
+The live `capstone/` is the Module 10 endpoint. It preserves the cumulative
+application and adds sustainment surfaces:
 
----
+| Surface | Responsibility |
+| --- | --- |
+| `src/funcpipe_rag/review/evidence.py` | classify whether a claim's named paths are discoverable |
+| `review/performance.py` | compare supplied measurements with an explicit multidimensional budget |
+| `review/observability.py` | fold immutable stage facts without changing RAG control flow |
+| `review/migration.py` | classify contract shape before a semantic translator is judged |
+| `review/scaling.py` | separate installation, implementation, and declared semantic proof |
+| `review/change.py` | compose only the decisions relevant to one proposed change |
+| `boundaries/shells/review_cli.py` | perform filesystem discovery and render the review inventory |
+| `tests/learning/test_module_10_sustainment.py` | connect each review rule to the cumulative RAG application |
 
-## 1. Graduation Checklist (Enforceable Where Reliable)
+This is a teaching application, not a production template. Its value is that every
+review concept has a small implementation and executable proof learners can trace.
 
-| Requirement                          | Enforcement                                                                 |
-|--------------------------------------|-----------------------------------------------------------------------------|
-| Core/Shell Separation                | import-linter + ast_bans.py (best-effort) + review                         |
-| Effect Protocols + Determinism       | Explicit protocols + Hypothesis tests across multiple implementations     |
-| Typed, Versioned Contracts           | pydantic v2 + normalized JSON schema hash + canonical golden tests         |
-| No Unapproved Floats                 | pydantic validation + @allow_float + RFC                                   |
-| Law Suite                            | Hypothesis + check_invariants.py                                            |
-| Impurity Detection                   | ast_bans.py + ruff + import-linter (explicitly best-effort)                 |
-| Performance Budget CI                | ASV + blessed statistical model                                             |
-| ParaPipe Readiness Plan              | PARAPIPE_PLAN.yaml + required semantic property tests                      |
-| Golden File Trust                    | Protected upstream tool tag + CI verification                               |
+## Build one change dossier
 
----
+Choose one proposed change, such as selecting the hybrid embedding route. Record
+these six items.
 
-## 2. Deliverables (Reference Repo Layout – Functional Equivalents Explicitly Allowed)
+### 1. Application claim
 
-Shared utilities (law strategies, fixtures, contract helpers) belong in top-level `funcpipe/` packages with strict OWNERS.
+Use domain language:
+
+> The hybrid embedding route preserves each chunk's text, provenance, model,
+> expected dimension, failure position, and vector meaning.
+
+Avoid implementation-only claims such as “the NumPy code returns a list.”
+
+### 2. Source boundary
+
+Name both compared routes and the predicate:
 
 ```text
-my_funcpipe_system/
-  README.md
-  funcpipe/
-    testing/                # shared strategies, fixtures, protocol impls
-    contracts/              # shared canonical utilities, validators
-  contexts/
-    cleaning/
-      OWNERS
-      invariants.md
-      core.py
-      unsafe/
-      adapters/
-      shell.py
-  contracts/
-    _canon.py
-    v1/
-      CleanDocProduced.py
-      CleanDocProduced.schema.json.sha256   # normalized export
-      CleanDocProduced.golden.json
-    v2/
-      ...
-  laws/
-    test_invariants.py
-    test_compat.py
-    test_parapipe_properties.py
-  governance/
-    regen_goldens.py        # official tool, tagged in protected upstream
-    ast_bans.py
-    check_invariants.py
-  bench/
-    budget.yaml             # blessed statistical model
-  docs/
-    CHANGELOG.md
-    MIGRATIONS.md
-    PARAPIPE_PLAN.yaml
-  capstone/tests/
-    test_e2e_smoke.py
+src/funcpipe_rag/rag/domain/perf.py
 ```
 
----
+The file location is discoverability evidence. Read the code and confirm the
+predicate compares every public field relevant to the claim.
 
-## 3. Required Proofs (Final Specification)
+### 3. Focused proof
 
-### 3.1 Observable Purity & Effect Boundaries
-- AST bans are best-effort guardrails (documented limitations in file header).
-- All effects go through typed protocols.
-- Test suite supplies multiple protocol implementations (pure + realistic effectful) and proves identical core results.
-
-### 3.2 Canonical JSON Serialization – Cross-Language Stable Rules
-Designed for Rust/TS/Go/Java interop. Float fields forbidden unless @allow_float + RFC.
-
-1. Sorted keys (depth-first)  
-2. Numeric values → `Decimal` with exact `str(decimal)` (float forbidden by default)  
-3. NaN / ±Inf → rejected at pydantic validation  
-4. `datetime` → UTC ISO8601 with `Z`, microseconds if non-zero  
-5. `bytes` → base64  
-6. `UUID` → lowercase string  
-7. Include `None` and empty containers  
-8. Lists are ordered sequences (declare ordering invariants if meaningful)  
-9. Schema hash = SHA256 of `model.model_json_schema()` after stripping: title, description, examples, $comment, deprecated, and any pydantic-internal keys. Pydantic version pinned in `capstone/pyproject.toml`.
-
-### 3.3 Golden File Integrity
-`governance/regen_goldens.py` is the sole authority and is released as immutable git tags in the protected upstream template repo. CI fetches the approved tool version from the protected ref and fails if any golden file does not match it.
-
-### 3.4 ParaPipe Readiness Plan Examples
-
-Good:
-```yaml
-partition_key: "doc_id"
-merge_algebra: "list_concatenation"
-ordering: "stable_per_partition"
-delivery: "at_least_once"
-backpressure: "bounded_task_queue + drop_newest"  # requires lossiness property test
-dedup_key: "chunk_id"
-failure_model: "idempotent_replay_from_checkpoint"
-reconciliation: "last_writer_wins_per_doc_id"
-required_property_tests:
-  - merge_associativity
-  - merge_identity
-  - idempotency_under_replay
-  - drop_newest_max_loss_bound
+```bash
+pytest -q tests/unit/rag/domain/test_perf_equivalence.py
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k optimized_embedding_preserves_the_domain_contract
 ```
 
-Bad (fails graduation):
-```yaml
-merge_algebra: "concat_i_guess"
-ordering: "whatever"
-# no property tests for ordering or lossiness → fail
+Record the command and observed result. Do not replace the focused route with a
+whole-suite command in the dossier; a reviewer should be able to reproduce the
+specific claim quickly.
+
+### 4. Applicable decisions
+
+An optimization needs semantic equivalence and a budget decision. It does not need
+a migration assessment when no public contract shape changes:
+
+```python
+evidence = ChangeEvidence(
+    semantic_equivalent=True,
+    claims=(embedding_claim,),
+    budget=evaluate_budget(budget, observation),
+    migration=None,
+)
+
+decision = review_change(evidence)
 ```
 
-### 3.5 Performance Budget
-Single blessed model in template `budget.yaml`. No deviations without RFC.
+If peak memory violates the budget, the change remains blocked even when the
+equivalence proof passes.
+
+### 5. Preserved earlier contracts
+
+Name the relevant course inheritance:
+
+- Module 04 failure values retain their positions;
+- Module 05 `Chunk` metadata remains application-owned;
+- Module 07 measurement effects remain outside pure decisions; and
+- Module 08 concurrency does not alter ordered output.
+
+Do not claim preservation of every course behavior if the change does not touch
+it. Relevant precision is more credible than a universal checklist.
+
+### 6. Proof limit
+
+For example:
+
+> Generated equivalence covers the declared text and batch-size strategy. It does
+> not establish real workload performance or hardware-specific numeric behavior.
+
+This statement is part of delivery, not an apology. It tells the next maintainer
+what evidence a broader claim would require.
+
+## Discoverability and execution are different gates
+
+Run:
+
+```bash
+make review-check
+```
+
+The command calls `funcpipe-rag-review check` and fails when a published evidence
+claim names a missing source or test path. It answers:
+
+> Can a learner reach every proof the review inventory promises?
+
+It does not execute those tests.
+
+Now run:
+
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py
+```
+
+This executes the Module 10 learning claims. It does not run the whole capstone
+suite or verify generated history.
+
+Use the distinction deliberately:
+
+| Evidence | Answers | Does not answer |
+| --- | --- | --- |
+| `make review-check` | are declared paths discoverable? | do tests pass? |
+| focused pytest | does one teaching claim pass? | is every module preserved? |
+| history verification | does generated Module 10 match the live endpoint? | is runtime behavior correct? |
+| strict docs build | do course pages and diagrams render? | do code claims execute? |
+| final broad gate | do cumulative configured checks pass together? | is every external environment represented? |
+
+## Inspect the learner-facing report
+
+```bash
+make inspect
+```
+
+The command writes a text summary, JSON summary, documentation copies, route file,
+and manifest under the repository `artifacts/` tree. Read `summary.txt` first.
+
+Check:
+
+- package groups have stable responsibilities and owners;
+- nested source paths do not inflate counts;
+- test groups state what they prove;
+- proof routes name their cost and purpose; and
+- every evidence claim has a narrow command.
+
+The JSON form supports mechanical inspection. The text form supports a learner.
+Neither should be treated as a runtime test report.
+
+## Compare the cumulative endpoint
+
+Module 09 remains the preserved state before sustainment review. Module 10 is the
+live capstone and generated endpoint:
+
+```bash
+git diff --no-index \
+  module-reference-states/module-09/src/funcpipe_rag \
+  src/funcpipe_rag/review
+```
+
+Expect the review package only at the Module 10 side. Earlier reference states
+must not gain these concepts retroactively.
+
+After source changes, use the established history refresh and verification route.
+The generated Module 10 worktree must contain `review/change.py` and its tests,
+while Modules 01–09 remain faithful to their own teaching endpoints.
+
+## Delivery failure routes
+
+### A persuasive document without a command
+
+The claim cannot be reproduced. Add a focused executable route or narrow the
+claim to what can be inspected.
+
+### A passing command without a named assertion
+
+A broad suite may pass while the claimed behavior is never asserted. Point to the
+test and explain the important assertion.
+
+### A benchmark without equivalence
+
+The faster candidate may be doing different work. Establish domain equivalence
+first.
+
+### A production checklist for unshipped machinery
+
+Listing schema registries, deployment controls, distributed runtimes, or release
+systems the course does not implement makes the capstone harder to review and
+teaches learners to confuse aspiration with evidence.
+
+### One strongest command after every edit
+
+Repeated broad runs slow feedback and hide which proof matters. Use focused tests
+during learning and reserve the broad gate for final confirmation.
+
+## Final learner review
+
+Before calling the capstone delivered, you should be able to answer:
+
+1. What application behavior does your dossier claim?
+2. Which source boundary owns it?
+3. Which focused test proves the important relationship?
+4. Which review decisions apply, and which do not?
+5. Which earlier module contracts must survive?
+6. What did you observe when the command ran?
+7. What remains outside the proof?
+
+If another learner can follow those answers from claim to code to evidence, the
+capstone has fulfilled its purpose. Delivery here means understandable,
+executable, and honest—not decorated with infrastructure the course never taught.
+
+Complete [Module 10 Exercises](exercises.md), compare your reasoning with
+[Exercise Answers](exercise-answers.md), and use the
+[Refactoring Guide](refactoring-guide.md) for the final self-review.

@@ -1,246 +1,335 @@
 # Reports, File APIs, and Human Versus Machine Surfaces
 
-A strong publish bundle usually needs more than one kind of artifact.
+A human report and a machine API can describe the same run without serving the same
+contract. Humans need explanation, units, context, and visual hierarchy. Programs need
+stable paths, schemas, types, and failure behavior.
 
-That is not a flaw. It is a sign that the bundle is serving more than one audience.
+This lesson gives each surface an authority rule and then verifies that both are generated
+from the same governed data.
 
-The important question is:
+## Three audiences
 
-> which artifact is for machines, which artifact is for humans, and which artifact defines the contract?
-
-If that answer is blurry, downstream users and reviewers start reading the wrong file for
-the wrong job.
-
-## How to use this page
-
-Keep one downstream machine and one downstream human in mind while you read.
-
-Ask two different questions:
-
-- if a script wants to consume this bundle, what should it read?
-- if a reviewer wants to understand the run quickly, what should they open first?
-
-If you keep answering both questions with the same file, the bundle is probably mixing
-roles.
-
-## If you are learning this without the live class
-
-Treat this page as an audience-routing exercise.
-
-Use it in four passes:
-
-1. name one machine consumer and one human reviewer before you classify any files
-2. choose which artifact each audience should open first
-3. stop and ask what would break if a script scraped the report instead
-4. finish by writing one authority note saying which artifact is authoritative for which question
-
-If you cannot name the authority relationship between artifacts, you are still describing
-outputs instead of interfaces.
-
-## Human-readable and machine-readable are different needs
-
-Downstream consumers often need stable machine-readable artifacts such as:
-
-- `summary.json`
-- `summary.tsv`
-- `manifest.json`
-
-Reviewers and collaborators often also need human-readable artifacts such as:
-
-- `report/index.html`
-- contract notes or file API documents
-
-The mistake is not having both. The mistake is failing to say which one is authoritative
-for which question.
-
-## A report is valuable, but it is not automatically the contract
-
-The capstone builds `report/index.html` from `summary.json`.
-
-That is a healthy relationship:
-
-- `summary.json` remains a structured machine-readable artifact
-- the report turns that information into a readable explanation for humans
-
-This means the report helps interpretation, but it should not become the only source of
-truth for downstream automation.
-
-## A file API answers a different question again
-
-A file API or contract note helps a human understand:
-
-- what artifacts exist in the public bundle
-- what each one means
-- which paths are stable
-- what kind of change would count as a contract break
-
-This is different from both the report and the manifest.
-
-The report explains what happened in the run. The file API explains how to use the bundle.
-
-## The authority card to keep beside you
-
-Use this table before you call any file "the main output":
-
-| Question | Authoritative artifact | Supporting artifact |
+| Audience | Typical question | Suitable surface |
 | --- | --- | --- |
-| what should a script parse | `summary.json` or `summary.tsv` | report for human interpretation |
-| what should a human open first | `report/index.html` | structured summary for exact fields |
-| what paths and meanings are stable | file API or contract note | manifest and provenance as support evidence |
-| whether the bundle is intact | manifest plus checksums | report only as a human-facing convenience |
+| analyst or scientist | what happened and which results deserve attention? | HTML or PDF report |
+| downstream program | which exact values can I parse reliably? | JSON, TSV, Parquet, or another declared file API |
+| reviewer or steward | which files, code, configuration, and evidence support the release? | manifest, provenance, verification report |
 
-If one file keeps winning every row, the bundle is still too vague.
+One person can occupy several roles. The contracts remain distinct.
 
-## One artifact should not do every job
+```mermaid
+flowchart TD
+  model["Governed summary model"] --> machine["Machine API: summary.json"]
+  model --> table["Interchange: summary.tsv"]
+  model --> human["Human report: report/index.html"]
+  machine --> verify["Cross-surface verifier"]
+  table --> verify
+  human --> verify
+```
+
+Generate all views from one governed model. Do not generate the JSON by scraping the HTML
+or the HTML by reverse-engineering a TSV with weaker semantics.
+
+## Assign authority
+
+A publish guide should answer:
+
+- Which surface is authoritative for exact values?
+- Which surface is authoritative for narrative interpretation?
+- Which file defines sample membership?
+- Which file inventories bundle bytes?
+- Which disagreements cause publication failure?
+
+For the capstone:
+
+| Question | Authority |
+| --- | --- |
+| accepted sample IDs | `discovered_samples.json` |
+| exact published metrics | `summary.json` |
+| compact tabular exchange | `summary.tsv`, checked against JSON |
+| human interpretation | `report/index.html`, generated from summary JSON |
+| run identity | `provenance.json` |
+| public path and digest inventory | `manifest.json` |
+
+The HTML report is not authoritative for machine values merely because it displays them.
+
+## Why scraping reports is fragile
+
+An HTML consumer may depend on:
+
+- element order;
+- CSS classes;
+- display formatting;
+- rounded numbers;
+- human labels;
+- hidden accessibility text;
+- JavaScript-rendered content.
+
+A harmless design change can break the scraper. Worse, a scraper may continue working
+while capturing the wrong column.
+
+If machine use matters, publish a machine surface and test it. Do not call a scraper a
+supported API unless the HTML structure itself is versioned and tested as one.
+
+## Machine surfaces need more than valid syntax
+
+For `summary.json`, declare:
+
+- relative path;
+- schema version;
+- record identity;
+- required and optional fields;
+- field types;
+- definitions and units;
+- null and missing behavior;
+- ordering rules;
+- extension policy;
+- compatibility tests.
+
+Example:
+
+```json
+{
+  "schema_version": 1,
+  "field_semantics": {
+    "reads_count": {
+      "definition": "number of sequencing reads",
+      "unit": "reads"
+    }
+  },
+  "records": [
+    {
+      "sample_id": "alpha",
+      "reads_count": 10
+    }
+  ]
+}
+```
+
+A consumer fixture can verify this directly.
+
+## TSV has its own contract
+
+TSV is easy to inspect and widely supported, but define:
+
+- header spelling and order;
+- delimiter and quoting;
+- newline convention;
+- encoding;
+- missing-value token;
+- numeric formatting;
+- row identity and order;
+- whether comments are allowed.
+
+Example:
+
+```text
+sample_id	reads_count
+alpha	10
+```
+
+Do not assume a JSON schema automatically defines TSV behavior.
+
+## Human reports need explicit units and limitations
+
+A strong report shows:
+
+- release and contract version;
+- sample scope;
+- metric labels with units;
+- data-quality or completeness status;
+- links or references to machine artifacts;
+- generation identity;
+- limitations and excluded samples;
+- accessible tables or textual equivalents for essential figures.
+
+It should not expose internal scratch paths, raw stack traces, or secrets simply because
+they were available during rendering.
+
+## Cross-surface consistency
+
+Let:
+
+- `J` = records in `summary.json`;
+- `T` = rows in `summary.tsv`;
+- `H` = sample cards or table rows in the HTML report;
+- `A` = accepted discovery membership.
+
+For a full release:
+
+```text
+ids(J) = ids(T) = ids(H) = A
+```
+
+For every shared metric:
+
+```text
+value_JSON(sample, field)
+  = parsed_value_TSV(sample, column)
+  = unrounded_source_value_HTML(sample, label)
+```
+
+The HTML may display rounded text, but its source model should preserve the exact value
+and declare formatting.
 
 ```mermaid
 flowchart LR
-  summary["summary.json / summary.tsv"] --> machine["machine-readable consumer surface"]
-  report["report/index.html"] --> human["human-readable interpretation surface"]
-  file_api["file API / contract note"] --> contract["artifact meaning and stability rules"]
-  manifest["manifest.json"] --> validation["bundle inventory and identity checks"]
+  discovery["Accepted IDs"] --> equality["Identity equality check"]
+  json["JSON records"] --> equality
+  tsv["TSV rows"] --> equality
+  html["HTML sample sections"] --> equality
+  equality -->|all agree| release["Release candidate may proceed"]
+  equality -->|difference| reject["Reject publication"]
 ```
 
-The point of this diagram is not to create bureaucracy. It is to prevent role confusion.
+## Avoid parallel calculation
 
-## One anti-scraping review loop
+Weak pattern:
 
-When someone proposes scraping a report, ask these in order:
+- one script computes JSON;
+- a second independently scans results for TSV;
+- a third recomputes metrics for HTML.
 
-1. what exact machine-facing field is missing from the structured contract
-2. whether the structured summary should be repaired instead of scraping HTML
-3. what stability promise the report markup is actually making
+The surfaces can diverge even when each script succeeds.
 
-Most of the time, the right repair is to strengthen the machine-facing contract rather
-than normalize presentation scraping.
+Stronger pattern:
 
-## A concrete way to assign roles
+1. build one validated in-memory summary model;
+2. serialize JSON;
+3. derive TSV from the same model;
+4. render HTML from the same model;
+5. parse outputs back through consumer-side checks;
+6. compare identities and shared values.
 
-Use this pattern when you design a publish bundle:
+This still requires format-specific tests, but it removes three competing calculation
+authorities.
 
-| Question | Best artifact type | Why |
-| --- | --- | --- |
-| What should another program parse? | machine-readable summary such as JSON or TSV | stable structured fields are easier to version and validate |
-| What should a human open first? | report or dashboard | people need explanation, framing, and visual context |
-| Where do path meaning and stability rules live? | file API or contract note | consumers need an explicit statement of what is safe to depend on |
-| How do we know the bundle is complete and untampered? | manifest and checksums | integrity is different from semantics |
+## A report change can still be breaking
 
-This table is simple on purpose. It stops beginners from calling every file "the output."
+Human surfaces also carry promises. Examples:
 
-## A weak publish explanation
+- removing a result interpretation used in review;
+- hiding excluded samples;
+- changing units without labeling;
+- removing accessible table equivalents;
+- renaming a stable report path;
+- changing a warning from prominent to invisible.
 
-Weak shape:
+Not every visual restyle requires a publish version. Evaluate whether supported human
+decisions or navigation paths change.
 
-- the report is polished, so teams stop maintaining structured summaries
-- the JSON exists, but no one documents whether it is stable
-- consumers scrape the HTML because the machine-readable contract is unclear
+## A machine field can be presentation-only
 
-This produces fragile downstream use and painful review discussions.
+Fields such as:
 
-## A stronger publish explanation
+```json
+{
+  "display_color": "#2a9d8f",
+  "formatted_reads": "10 reads"
+}
+```
 
-Stronger shape:
+may help a frontend but can couple the machine API to presentation. Prefer raw governed
+values and let the report renderer own styling. Publish presentation fields only when a
+consumer needs them and their compatibility is supported.
 
-- keep a structured artifact for machine consumption
-- keep a readable report for human inspection
-- keep a contract document that explains artifact roles and stability
-- make sure those surfaces agree with each other
+## Consumer fixture examples
 
-That gives each audience a proper interface.
+Machine consumer:
 
-## One teaching scenario that makes the difference obvious
+```python
+payload = load_json(bundle / "summary.json")
+assert payload["schema_version"] == 1
+for record in payload["records"]:
+    assert isinstance(record["sample_id"], str)
+    assert isinstance(record["reads_count"], int)
+```
 
-Suppose a colleague wants to compare two published runs programmatically.
+Human smoke test:
 
-They should not need to:
+```python
+html = (bundle / "report" / "index.html").read_text(encoding="utf-8")
+assert "Sequencing reads" in html
+assert "alpha" in html
+assert 'href="../summary.json"' in html
+```
 
-- scrape values out of `report/index.html`
-- guess which files inside the bundle are stable
-- infer meaning from a checksum manifest alone
+Add an HTML parser or accessibility checker for structural claims. String checks are only
+a bounded example.
 
-They should be able to:
+## Design an authority matrix
 
-- read a documented machine-facing file such as `summary.json`
-- confirm the bundle inventory and integrity with `manifest.json` and checksums
-- use a contract note to understand which fields and paths are part of the public promise
+For every duplicated fact:
 
-That scenario is the reason this distinction matters.
+| Fact | Authoritative source | Derived surfaces | Drift check |
+| --- | --- | --- | --- |
+| accepted sample IDs | discovery JSON | summary, TSV, HTML | exact set equality |
+| read count | summary model/JSON | TSV, HTML | parsed numeric equality |
+| run commit | provenance JSON | report footer | exact string equality |
+| publish paths | manifest JSON | report download links | link target subset |
+| excluded samples | rejection or completeness artifact | report warning | identity and reason equality |
 
-## What reviewed discovery evidence changes here
+This matrix tells maintainers where to fix a disagreement.
 
-When the bundle also contains `accepted_samples.json` and `rejected_samples.json`, the
-authority split becomes even clearer:
+## Failure patterns
 
-- structured files explain membership and machine-facing facts
-- reports explain the run to a human
-- the file API says which of those artifacts a consumer may rely on directly
+### HTML is the only output
 
-This matters because a reviewer may read the report first, but a machine should still use
-the structured membership and summary artifacts.
+Programs scrape presentation. Add a stable machine surface and name it authoritative for
+values.
 
-## A practical test
+### JSON mirrors internal objects
 
-Ask these questions:
+Implementation refactors become public breaks. Project a supported schema.
 
-1. If a script wanted to consume this bundle, which file should it read?
-2. If a reviewer wanted to understand the run quickly, which file should they open?
-3. If a maintainer wanted to know whether a path is stable, where is that promised?
+### JSON and TSV disagree
 
-If one artifact is trying to answer all three questions, the publish design is probably
-too vague.
+Independent calculations or formatting loss exist. Generate from one model and parse back
+for comparison.
 
-## The beginner mistake to catch early
+### Report omits rejected samples
 
-The most common beginner mistake is to confuse readability with API quality.
+Human reviewers see a clean story while machine evidence records exclusions. Add visible
+completeness and exclusion context.
 
-A beautiful HTML report may be excellent for humans while being a terrible machine
-interface. A raw JSON file may be excellent for machines while still needing a clear
-human-facing explanation around it. Quality comes from assigning the right role to each
-artifact, not from forcing one file to satisfy every audience.
+### Machine consumer relies on list order
 
-## Common failure modes
+If order is meaningful, declare and test it. Otherwise publish keyed records or require
+consumers not to infer rank.
 
-| Failure mode | What it causes | Better repair |
-| --- | --- | --- |
-| downstream tools scrape HTML reports | machine usage depends on presentation markup | keep a stable machine-readable artifact authoritative |
-| JSON bundle exists but is undocumented | consumers guess which fields are stable | document contract roles in a file API or contract note |
-| report and summary drift apart | humans and tools no longer see the same story | generate human-readable surfaces from structured artifacts where possible |
-| manifest is used as a semantic guide | users know file names but not meanings | pair inventory evidence with contract explanations |
-| every artifact is called “the output” | review discussions become imprecise | name whether an artifact is for machines, humans, validation, or provenance |
+### Report links internal paths
 
-## What a reviewer should hear
+The public surface leaks implementation ownership. Link only supported public artifacts.
 
-When a bundle is designed well, the explanation sounds something like this:
+## Hands-on review
 
-> `summary.json` is the machine-facing contract, `report/index.html` helps people inspect
-> the run, the file API explains what is stable, and the manifest plus checksums defend
-> bundle integrity.
+Take one capstone release and build this table:
 
-That sentence is useful because each artifact has one primary job.
+| Sample | Discovery | JSON | TSV | HTML |
+| --- | --- | --- | --- | --- |
+| sampleA | present? | present and values | present and values | present and displayed values |
+| sampleB | present? | present and values | present and values | present and displayed values |
 
-## The explanation a reviewer trusts
+Record exact discrepancies. Do not resolve a mismatch by choosing whichever surface looks
+most plausible; use the authority matrix.
 
-Strong explanation:
+## Review checklist
 
-> `summary.json` and `summary.tsv` are the machine-facing outputs, `report/index.html`
-> helps humans inspect the run, and the file API explains the meaning and stability of the
-> published artifacts; the reviewed discovery records stay structured so machines do not
-> need to infer membership from the report.
+- [ ] Human, machine, and stewardship audiences have distinct supported surfaces.
+- [ ] Exact-value authority is named.
+- [ ] All views derive from one governed summary model.
+- [ ] JSON semantics include definitions, units, and missing-value behavior.
+- [ ] TSV encoding, headers, order, and missing values are specified.
+- [ ] Reports display units, scope, exclusions, and limitations.
+- [ ] Essential human content is accessible without scraping visual layout.
+- [ ] Cross-surface sample IDs and values are verified.
+- [ ] Report links remain inside the public boundary.
+- [ ] Presentation fields do not leak into the machine contract accidentally.
+- [ ] Human-surface changes are reviewed for decision impact.
 
-Weak explanation:
+## What you should carry forward
 
-> the report shows everything, so the rest is optional.
-
-The strong explanation preserves clear roles. The weak explanation collapses them.
-
-## End-of-page checkpoint
-
-Before leaving this page, you should be able to:
-
-- explain why reports and machine-readable summaries are both useful
-- explain why a report should not become the only downstream surface
-- describe what a file API contributes beyond a report or manifest
-- explain how role confusion creates brittle downstream use
-
-If you still describe the report as "the main output" without naming the machine-facing
-contract separately, revisit the page. The whole point is to stop that ambiguity.
+Different formats can serve different audiences while remaining consistent. Authority,
+shared-source generation, and cross-surface verification keep a report from becoming an
+accidental API and a machine file from becoming an unexplained data dump. The next lesson
+uses these contracts to triage candidate drift from a downstream maintainer’s position.

@@ -1,0 +1,20 @@
+{
+  "case": "baseline",
+  "schema_version": 1,
+  "population": {
+    "identity": "sha256:8d493546a9f0a84d7c18480c35761ed99f491fa79c8125eea415d6709fc519b3",
+    "rows": 120
+  },
+  "metric": {
+    "aggregation": "global",
+    "definition": "binary_f1_positive_class",
+    "name": "positive_class_f1_at_fixed_threshold",
+    "unit": "fraction"
+  },
+  "confusion_matrix": {
+    "false_negative": 18,
+    "false_positive": 12,
+    "true_negative": 48,
+    "true_positive": 42
+  }
+}

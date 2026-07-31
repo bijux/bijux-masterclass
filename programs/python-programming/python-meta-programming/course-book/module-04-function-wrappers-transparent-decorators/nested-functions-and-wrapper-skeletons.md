@@ -99,6 +99,66 @@ For self-study, this is the point where you should be able to answer a concrete 
 
 If the answer is not "the closed-over `func` reference," pause here before moving on.
 
+## Inspect the shipped closure instead of imagining it
+
+Run the Module 04 program and isolate the lifecycle packet:
+
+```console
+$ make wrapper-lab |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["lifecycle"])'
+{'call_events': ['enter:outer', 'enter:inner', 'body:INC-42:critical', 'exit:inner', 'exit:outer'], 'definition_events': ['factory:outer', 'factory:inner', 'decorate:inner:render_status', 'decorate:outer:render_status'], 'outer_wrapper_closure': ['events', 'function', 'label'], 'result': 'INC-42:critical', 'visible_signature': "(incident_id: 'str', *, severity: 'str' = 'warning') -> 'str'", 'wrapper_depth': 2}
+```
+
+The `outer_wrapper_closure` field comes from
+`inspect.getclosurevars(render_status).nonlocals`. It reports three names owned by that
+wrapper:
+
+- `function`: the already-wrapped callable it delegates to
+- `label`: definition-time configuration for this layer
+- `events`: the observation sink shared by the trace
+
+That is stronger than saying the wrapper "remembers things." It identifies the actual
+runtime ownership. The outer wrapper does not reach the raw function directly; it closes
+over the inner wrapper. Following `__wrapped__` twice reaches the raw
+`render_status`, which is why the packet reports a wrapper depth of two.
+
+### Trace the object graph
+
+Read `tracing_decorator` in `labs/wrapper_runtime/evidence.py`, then draw:
+
+```text
+name render_status
+  -> outer wrapped function
+       closure function -> inner wrapped function
+         closure function -> raw render_status function
+```
+
+For each node, record:
+
+- when the function object was created
+- which function it will call
+- which nonlocal values it owns
+- which public signature `inspect.signature` reports
+
+This is the smallest useful wrapper review. It connects closure mechanics, wrapper
+stacking, and inspection without requiring decorator folklore.
+
+### Failure route: delegate through the rebound name
+
+Temporarily replace `function(*args, **kwargs)` inside the tracing wrapper with
+`render_status(*args, **kwargs)`. The name points at the outer wrapper after decoration,
+so the call recurses through the wrong edge.
+
+Do not keep that edit. Restore delegation through the closed-over `function` and run:
+
+```console
+make wrapper-lab-test
+```
+
+The repair is architectural, not stylistic: a wrapper owns the callable passed into its
+decorator. It should not rediscover that callable through a name whose binding decoration
+has already changed.
+
 ## One picture of the structure
 
 ```mermaid

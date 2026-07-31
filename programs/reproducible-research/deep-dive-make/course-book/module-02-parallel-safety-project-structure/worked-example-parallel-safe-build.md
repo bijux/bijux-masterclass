@@ -28,6 +28,24 @@ flowchart LR
 This file begins with a tiny scheduling demonstration, then ties the module together
 around the real course capstone.
 
+## Choose the invocation boundary
+
+From the repository root:
+
+```sh
+make PROGRAM=reproducible-research/deep-dive-make capstone-selftest
+```
+
+From `programs/reproducible-research/deep-dive-make/capstone/`:
+
+```sh
+gmake help
+gmake selftest
+```
+
+Record the working directory and executable. Do not alternate between root wrapper and
+capstone commands inside one evidence note.
+
 ## See parallel scheduling in one minute
 
 Create this Makefile in an empty practice directory:
@@ -51,8 +69,8 @@ beta:
 Compare:
 
 ```sh
-time make -j1 all
-time make -j2 all
+time gmake -j1 all
+time gmake -j2 all
 ```
 
 The serial run takes about four seconds. The parallel run takes about two because `alpha`
@@ -69,7 +87,7 @@ beta:
 	@printf 'beta\n' > combined.txt
 ```
 
-Run `make -j2 all` repeatedly. The final file depends on which recipe writes last. The
+Run `gmake -j2 all` repeatedly. The final file depends on which recipe writes last. The
 graph allows concurrent work, but the recipes violate one-writer ownership.
 
 ## Layout
@@ -100,20 +118,6 @@ capstone/
       order-only-edge/
       pattern-selection/
 ```
-
-From the repository root, run capstone commands through:
-
-```sh
-make PROGRAM=reproducible-research/deep-dive-make capstone-selftest
-```
-
-From `programs/reproducible-research/deep-dive-make/capstone/`, use GNU Make directly:
-
-```sh
-make selftest
-```
-
-On macOS that second command may be `gmake selftest`.
 
 This example matters because it combines three things at once:
 
@@ -174,70 +178,131 @@ particular run happens to finish successfully.
 
 ### Demonstration 1: Inspect the schedule
 
-Run:
+Predict the initial runnable frontier for `all`, then run:
 
 ```sh
-make -n all
-make --trace all
+gmake -n all
+gmake --trace -j2 all
 ```
 
-The first command shows the candidate work. The second shows why each target is needed.
+The first command shows planned recipes for current state. The second shows selected
+updates and reasons for one observed schedule. Draw the object targets that can overlap
+and the final target that waits. Do not infer output safety from the trace alone.
 
 ### Demonstration 2: Prove convergence
 
 Run:
 
 ```sh
-make clean && make all
-make -q all; echo $?
+gmake selftest
 ```
 
-You want exit code `0` after the successful build.
+Use the harness-owned workspace rather than cleaning the live capstone. In the saved
+report, locate the successful serial build, query command, and query exit zero. Explain
+why this proves convergence for the fixture but not serial/parallel equivalence.
 
 ### Demonstration 3: Compare serial and parallel
 
 Run:
 
 ```sh
-make clean && make -j1 all
-make clean && make -j8 all
+gmake selftest-report
 ```
 
-The simulator should produce equivalent declared artifacts across both runs.
+Open the serial and parallel inventories under:
+
+```text
+artifacts/proof/reproducible-research/deep-dive-make/selftest/
+```
+
+Confirm:
+
+- both clean schedules used equivalent fixture state;
+- each inventory has the governed expected paths;
+- missing, unexpected, and changed categories are empty;
+- aggregate identities match;
+- product behavior remains a separate check.
+
+Write two limits: only the recorded schedules and declared artifacts were compared.
 
 ### Demonstration 4: Use the repro pack as contrast
 
-Run one broken repro, for example:
+Run the bounded incident route:
 
 ```sh
-make -f repro/shared-staging-collision.mk clean
-make -f repro/shared-staging-collision.mk -j8 all
+gmake incident-audit
 ```
 
-Then explain why the healthy capstone does not suffer from the same problem.
+Read:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/incident/
+```
+
+Choose the shared-staging collision. Before reading its evidence, predict:
+
+```text
+runnable targets:
+shared path:
+expected signature:
+why one successful run would be inconclusive:
+ownership repair:
+```
+
+Then compare the prediction with the preserved signature. The healthy capstone derives
+candidates from final targets and assigns one owner to each final artifact.
 
 ### Demonstration 5: Observe an order-only directory
 
-Find a target that uses `| $(BUILD_DIR)/` or another directory prerequisite. Touch the
-directory and run the build again. The directory must exist before the recipe runs, but a
-directory timestamp change should not force content rebuilds.
-
-### Demonstration 6: Trace one object
-
-Choose one object file, delete only that file, and run:
+Run:
 
 ```sh
-make --trace all
+gmake semantic-fault-audit
 ```
 
-Explain why that object and its downstream link rebuild while independent objects stay
-untouched.
+Use the paired order-only and semantic-edge fixtures. Both inputs exist; only the normal
+edge treats changed content as an invalidation. Read `summary.tsv`, both traces, and both
+outputs. State why a directory setup edge can be order-only while a content input cannot.
+
+### Demonstration 6: Map one DAG
+
+Run:
+
+```sh
+gmake architecture-contract-audit
+```
+
+Trace one public target from the top-level Makefile through included `mk/*.mk` owners to
+its final paths. Record:
+
+- public request owner;
+- discovery/mapping owner;
+- producer rule owner;
+- output namespace;
+- cross-layer prerequisites;
+- any recursive boundary.
+
+The audit supports the map; it does not replace reading the declarations.
+
+## Build the experiment ledger
+
+| Demonstration | Claim | Selection evidence | Artifact evidence | Rejection evidence | Limit |
+| --- | --- | --- | --- | --- | --- |
+| runnable frontier |  |  |  |  |  |
+| convergence |  |  |  |  |  |
+| schedule equivalence |  |  |  |  |  |
+| shared-staging race |  |  |  |  |  |
+| order-only semantics |  |  |  |  |  |
+| one-DAG architecture |  |  |  |  |  |
+
+Leave cells empty when an experiment does not produce that evidence type. A dry run does
+not become artifact evidence merely because it is convenient.
 
 ## Diagnose the broken repro without guessing
 
 When a repro fails intermittently, use this order:
 
-1. run `make -n` to identify recipes Make considers independent
+1. run `gmake -n` to identify recipes Make considers independent
 2. read those recipes and list every written path, including temporary files and logs
 3. run the smallest reproduction repeatedly under `-j8`
 4. inspect the shared path after each run
@@ -258,6 +323,21 @@ Use this short incident note:
 | Which ownership change repaired it? | before-and-after graph |
 | Why is the result now equivalent under `-j1` and `-j8`? | artifact comparison |
 
+## Review without rerunning
+
+After the incident audit, work only from its saved bundle:
+
+1. identify the fixture and expected signature;
+2. name the overlapping target effects;
+3. locate the first contract violation;
+4. distinguish observed failure from inferred root cause;
+5. name the ownership repair;
+6. state which evidence a repaired run must produce;
+7. preserve the bundle before any rerun replaces it.
+
+If the diagnosis requires memory of console output, the bundle or your handoff is
+incomplete.
+
 ## What this example should teach you
 
 By the time you finish this file, you should be able to point at the simulator and say:
@@ -267,3 +347,5 @@ By the time you finish this file, you should be able to point at the simulator a
 - where hidden semantic state is modeled honestly
 - where selftest proves the build instead of merely running it
 - why the documented paths and commands correspond to files that actually exist
+- how incident signatures distinguish the intended race from unrelated failure
+- how one-DAG layering preserves scheduler visibility across source files

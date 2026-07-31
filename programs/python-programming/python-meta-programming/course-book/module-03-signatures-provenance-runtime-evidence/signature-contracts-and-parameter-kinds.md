@@ -269,6 +269,38 @@ Failure handling is part of the teaching point, not cleanup. If signature recove
 the right conclusion is "strong contract evidence is unavailable here," not "this case is
 impossible and we can ignore it."
 
+## Guided lab: read the contract as structured evidence
+
+Run:
+
+```console
+$ python3 -m labs.runtime_evidence |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["signature"])'
+{'annotation_names': ['incident_id', 'metadata', 'retries', 'return', 'severity'], 'evidence_strength': 'strong-call-shape', 'parameter_kinds': {'incident_id': 'positional_only', 'metadata': 'var_keyword', 'retries': 'keyword_only', 'severity': 'positional_or_keyword'}, 'return_annotation': 'str', 'signature': "(incident_id: 'str', /, severity: 'str' = 'warning', *, retries: 'int' = 0, **metadata: 'str') -> 'str'"}
+```
+
+Read the packet in two layers:
+
+- `parameter_kinds` and the printed signature describe call shape Python can bind
+- `annotation_names` and `return_annotation` describe metadata that supports review but
+  is not enforced value validation by this function
+
+The label `strong-call-shape` applies only to the first claim. It does not mean the
+callable succeeds, is side-effect free, or receives values matching its annotations.
+
+### Failure route
+
+Pass `42` to `inspect.signature`. The resulting `TypeError` means strong callable
+contract evidence is unavailable because the object is not callable. Preserve that
+failure instead of fabricating an empty signature, then run `make evidence-lab-test`.
+
+### Transfer to the incident-plugin runtime
+
+Compare the course packet with `make -C capstone signatures`. The capstone publishes
+generated constructor signatures and decorated action signatures. Module 03 can inspect
+their parameter kinds and return annotations, while deferring the metadata-preservation
+mechanism to Modules 04 and 05.
+
 ## Review rules for signature contracts
 
 When reviewing signature-aware code, keep these questions close:

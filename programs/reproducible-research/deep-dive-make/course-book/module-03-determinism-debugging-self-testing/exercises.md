@@ -18,10 +18,20 @@ debugging theater instead of disciplined proof.
 
 Do the exercises in order. The day is one progression:
 
-- Exercises 1-3 stabilize discovery, rebuild explanations, and public CI promises
-- Exercises 4-6 design selftests and expose hidden sources of nondeterminism
+- Exercises 1-3 separate discovery, rebuild explanations, and public CI promises
+- Exercises 4-6 audit proof, bound generated rules, and design an independent oracle
 - Exercises 7-8 separate convergence proof from product correctness
 - Exercises 9-10 turn all of that into maintainable CI and incident reports
+
+```mermaid
+flowchart LR
+  discovery["discovery claims"] --> trace["causal trace"]
+  trace --> contract["public contract"]
+  contract --> proof["selftest proof"]
+  proof --> oracle["independent oracle"]
+  oracle --> converge["convergence"]
+  converge --> handoff["CI and rejected-run handoff"]
+```
 
 Keep one determinism packet as you go. By the end of the day it should contain:
 
@@ -78,51 +88,74 @@ flowchart LR
 Use that route on purpose. It keeps the day centered on falsifiable claims instead of on
 general frustration with CI or nondeterminism.
 
-## Exercise 1: Stabilize discovery
+## Exercise 1: Separate discovery claims
 
-Take one discovery step in the simulator and explain how you would guarantee stable order
-and membership across runs and machines.
+Create an isolated Makefile with `src/alpha.c`, `src/report.c`, and a discovered source
+list. Capture the evaluated list, then add `src/scratch.c` without editing the Makefile
+and capture it again.
+
+Classify membership policy, canonical order, graph stability, and artifact identity
+separately. Repair the membership policy with an explicit list, owned directory, or
+durable filter. Do not choose a repair until you have written which files the target is
+supposed to own.
 
 What to hand in:
 
-- the discovery fragment
-- one sentence on root choice
-- one sentence on ordering
-- one sentence on membership control
-- one sentence explaining what kind of drift would break determinism first
+- the initial and changed evaluated lists
+- a four-row table covering membership, order, graph, and artifact claims
+- the original and repaired discovery fragments
+- the ownership rule that justifies the repair
+- one claim the experiment does not prove across machines
 
 Study note:
-Do not answer this as "sort the wildcard output." A good answer also explains what kinds
-of files are allowed to participate in discovery at all.
+GNU Make’s wildcard result can be ordered while its membership is still wrong. Sorting
+and filtering answer different questions.
 
 ## Exercise 2: Trace a rebuild properly
 
-Choose one target and explain which `--trace` line proves why it rebuilt.
+In an isolated build, choose one target with at least two prerequisites. Complete a
+successful build, change exactly one declared prerequisite, and predict the rebuild
+before running:
+
+```sh
+gmake --trace TARGET
+```
+
+Replace `TARGET` with the real file target. Join the decisive trace line to timestamp or
+signature evidence. Replay without another change and record the query exit.
 
 What to hand in:
 
-- the exact trace line
-- the target name
-- the plain-language explanation of the causal edge or timestamp relationship
-- one sentence explaining why this line is stronger evidence than memory or guesswork
+- the pre-run prediction
+- the exact trace line and target
+- the relevant target/prerequisite state
+- the artifact acceptance observation
+- the unchanged replay query exit
+- a causal sentence bounded by those observations
 
 Study note:
-If the explanation sounds like "Make probably noticed something changed," it is still too
-weak. The trace should name the reason precisely enough that another person can follow it.
+Trace proves selection, not artifact correctness. Your answer needs both evidence layers.
 
 ## Exercise 3: Define the CI contract
 
-Name which targets belong in the public contract and state what each one guarantees.
+Choose four public targets for a small repository: help, product build/test, build-system
+selftest, and CI composition. Define each using consumer, inputs, allowed writes,
+success/failure meaning, incremental behavior, parallel behavior, and non-claims.
+
+Draw the CI prerequisite graph. Decide whether its prerequisites may run concurrently
+and prove their artifact namespaces do not collide.
 
 What to hand in:
 
-- the target list
-- one promise per target
-- one note about what would count as a contract-breaking semantic change
-- one sentence naming a local convenience target that should stay outside the contract
+- the four complete target contracts
+- the CI prerequisite graph
+- an output-ownership table
+- one controlled failure showing nonzero propagation
+- one semantic break that does not rename a target
+- one local convenience target deliberately excluded
 
 Study note:
-CI does not consume target names alone. It consumes the promises those names carry.
+The target name, variables, effects, outputs, and failure behavior form one interface.
 
 ## Exercise 4: Audit a complete selftest report
 
@@ -141,6 +174,9 @@ What to hand in:
 - the 13 paths in the declared artifact inventory, grouped by role
 - the schedule-comparison result and aggregate identities
 - the hidden-input mechanism, query exit, and why that exit counts as a pass
+- one way the inventory oracle could grade itself if expected membership came only from
+  the build implementation
+- one independent requirement that prevents that false pass
 - two claims the report does not support
 
 Study note:
@@ -149,19 +185,27 @@ claim to a command and evidence file, you are still trusting the harness by repu
 
 ## Exercise 5: Quarantine `eval`
 
-Explain what conditions make an `eval` surface acceptable in this module and how you
-would prove it is not controlling the core build.
+Read `mk/rules_eval.mk`. Choose one generated target and write its explicit-rule
+equivalent. Annotate which values expand during `call` and `eval`, and which automatic
+variables must survive until recipe execution.
+
+Run the disabled core selftest, inspect the enabled target through dry-run or database
+evidence, and run the abstraction contract audit. Include the audit’s rejection case,
+not only its healthy comparison.
 
 What to hand in:
 
-- the switch that enables or disables the surface
-- the bounded generated target set
-- the proof that `selftest` still matters when `eval` is off
-- one sentence explaining when you would reject `eval` entirely
+- the explicit-rule equivalent
+- the expansion annotation
+- the switch and bounded generated target inventory
+- disabled-core evidence
+- enabled selection evidence
+- the accepted comparison and rejected abstraction case
+- a decision to keep, simplify, or remove the abstraction
 
 Study note:
-The important question is not "is metaprogramming clever?" The important question is
-whether the build remains auditable without it.
+Separate include location does not prove optionality. Disabled core behavior and bounded
+enabled behavior do.
 
 ## Midday self-check
 
@@ -169,38 +213,49 @@ Before you move into convergence and CI behavior, make sure your packet can alre
 answer these questions cleanly:
 
 - which build claim you are protecting first and how you would falsify it
-- which discovery surface in your lab could drift silently without an explicit rule
+- how membership and ordering can disagree without either observation being mislabeled
 - which public target promises matter to CI consumers
 - which rejected case proves that the current selftest closes a real gate
+- why the generated-rule family is or is not cheaper to review than its explicit form
 
 If you cannot answer those four questions in plain language, return to Exercises 1-5 and
 make the packet more explicit before continuing.
 
-## Exercise 6: Detect accidental discovery
+## Exercise 6: Design an independent selftest oracle
 
-Create `src/real.c` and `src/scratch.c`. Use a broad wildcard that discovers both, then
-replace it with an explicit allowlist or a rooted filter that excludes the scratch file.
+Design a small build that declares three required outputs. Its implementation should
+derive recipes from one source list. Create a selftest whose expected output membership
+comes from an independent contract manifest rather than from that implementation list.
+
+Remove one member from the implementation list. The build and an
+implementation-derived inventory would agree on the same wrong omission; your
+independent oracle must reject it.
 
 What to hand in:
 
-- both discovery expressions
-- `make` output showing the discovered list
-- a rule for deciding which repository files are build inputs
-- one sentence explaining why accidental membership is a determinism defect, not just a
-  style defect
+- the three-output contract manifest
+- the implementation list
+- the healthy accepted inventory
+- the omitted-member fault
+- the rejected comparison naming the missing path
+- one explanation of why deriving expectations from the implementation would produce a
+  false pass
 
 Study note:
-Discovery errors often look harmless until they surface only in one developer tree or one
-CI workspace. That is why membership policy matters.
+The selftest does not need another build system. It needs an expectation that does not
+disappear when the implementation makes the same mistake.
 
 ## Exercise 7: Explain a no-op build
 
 Run a successful build twice. On the second run, collect:
 
 ```sh
-make --trace all
-make -q all
-printf '%s\n' "$?"
+gmake --trace all
+set +e
+gmake -q all
+query_exit=$?
+set -e
+printf '%s\n' "$query_exit"
 ```
 
 Explain both the absence of recipe work and the query exit status.
@@ -211,6 +266,7 @@ What to hand in:
 - the newest target and prerequisite timestamps for one rule
 - one sentence defining convergence
 - one sentence explaining what observation would prove the build had not converged
+- one explanation of the difference among query exits `0`, `1`, and `2`
 
 Study note:
 A quiet second build is useful, but the real lesson is why the graph now has no honest
@@ -252,6 +308,8 @@ What to hand in:
 
 - the `ci` rule
 - the public target dependency chain
+- the allowed output namespace for each prerequisite
+- evidence that one injected prerequisite failure reaches the CI exit
 - the clean-room command and result
 - one local convenience target deliberately excluded from CI
 - one sentence explaining why "boring" is a compliment for this target
@@ -294,6 +352,7 @@ Stop before `exercise-answers.md` and check that you can already point to:
 - one trace line that explains a rebuild
 - one defect that product tests missed
 - one selftest that would have caught it
+- one oracle whose expectation is independent from the implementation under test
 - one rejected selftest review you would be willing to send to a teammate
 
 If you do not yet have those five things, the answer page will feel useful but will not
@@ -304,7 +363,7 @@ teach much.
 Across all ten answers, the module wants you to show three things:
 
 - you can name the contract being protected
-- you can point to evidence for that contract
-- you can explain the repair or design choice in graph terms, not vibes
+- you can point to acceptance and rejection evidence for that contract
+- you can explain the repair or design choice in graph terms
 
 If your answer only says "CI should be stable" or "`eval` should be careful," keep going.

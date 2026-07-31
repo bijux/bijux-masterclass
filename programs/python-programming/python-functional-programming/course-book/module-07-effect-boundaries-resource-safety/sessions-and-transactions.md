@@ -63,6 +63,38 @@ How do you model sessions and transactions as **explicit immutable data and pure
 
 You are now eight steps away from a complete production-grade functional architecture.
 
+## Runnable lab: observe both transaction exits
+
+Use a recording transaction capability and run one successful body and one
+failing body:
+
+```python
+success = perform(with_tx(success_protocol, session, successful_body))
+failure = perform(with_tx(failure_protocol, session, failing_body))
+
+assert success == Ok(Ok("stored"))
+assert success_cap.events == ["begin", "write", "commit:tx-1"]
+
+assert failure == Ok(Err(ErrInfo(code="WRITE_FAILED", msg="disk full")))
+assert failure_cap.events == ["begin", "write", "rollback:tx-1"]
+```
+
+Run the complete proof:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k transaction_bracket_commits_success_and_rolls_back_failure
+```
+
+`with_tx` delays begin, body, and terminal action inside one `IOPlan`. A
+successful body commits and never rolls back. A typed body failure rolls back
+and preserves the original body error.
+
+Manually calling begin and commit around the body is the wrong turn: an early
+return or new failure branch can bypass cleanup. A module-global session also
+hides connection authority and prevents independent test traces.
+
 ## 1. Laws & Invariants (machine-checked where possible)
 
 | Law / Invariant            | Description                                                                                  | Enforcement          |
@@ -89,7 +121,7 @@ These laws eliminate the most common source of Heisenbugs in effectful systems: 
 ## 3. Public API – Session & Transaction ADTs (`capstone/src/funcpipe_rag/domain/effects/tx.py`)
 
 ```python
-# capstone/src/funcpipe_rag/fp/effects/tx.py – mypy --strict clean
+# capstone/src/funcpipe_rag/domain/effects/tx.py – mypy --strict clean
 from __future__ import annotations
 from dataclasses import dataclass, field, replace
 from types import MappingProxyType
@@ -245,7 +277,8 @@ result = perform(plan)
 ## 5. Property-Based Proofs (selected)
 
 ```python
-# capstone/tests/test_session_tx.py – assumes imports/fixtures from core library
+# The shipped transaction tests live in `capstone/tests/unit/domain/test_session.py`.
+# The following property is an extension exercise using the same public API.
 @given(updates=st.dictionaries(st.text(), st.text()))
 def test_session_threading(updates):
     s1 = Session("conn")

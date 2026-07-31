@@ -69,6 +69,19 @@ Those all stay close to the original idea of function transformation.
 They also share an important limit: the wrapper is still mainly speaking about one call,
 not coordinating a larger subsystem.
 
+## Compare the two shipped policies
+
+The Module 05 lab intentionally keeps two policies in decorators:
+
+| Wrapper | Why the boundary remains defensible | Pressure that would move it out |
+| --- | --- | --- |
+| `retry` | one callable, immutable finite policy, named exception types, no shared cross-call state | shared budgets, circuit state, metrics, dynamic reconfiguration, or coordination across deliveries |
+| `validated` | one callable, small supported hint subset, explicit refusal, no coercion or schema registry | nested structures, cross-field rules, rich errors, coercion, or reusable schemas |
+
+This is a provisional design judgment, not proof that decorators are always the right
+owner for retry or validation. The important feature is that the exit conditions are
+named before the wrappers grow.
+
 ## Decorators get weaker as policy widens
 
 The more a wrapper starts owning:
@@ -117,6 +130,31 @@ Use this table when a wrapper starts carrying more than one policy concern:
 | owns shared mutable state that operators must inspect | explicit service or component |
 | interprets rich validation metadata | validator object or framework boundary |
 | depends heavily on call ordering with other wrappers | clearer composition owner than another hidden layer |
+
+## Write a boundary record
+
+When the answer is not obvious, write five lines:
+
+```text
+Policy:
+Current owner:
+Evidence surface:
+Why this owner still fits:
+Exit condition:
+```
+
+For the lab retry wrapper:
+
+```text
+Policy: retry TransientDeliveryError at most three total attempts with 0.1s then 0.2s waits
+Current owner: the callable wrapper produced by retry
+Evidence surface: __retry_policy__, deterministic event packet, focused tests
+Why this owner still fits: the rule is local, finite, immutable, and has no shared lifecycle
+Exit condition: retries must coordinate state or budgets across more than one callable
+```
+
+This record is deliberately short, but it cannot hide behind "simple." It names the
+owner, the proof, and the point at which the decision expires.
 
 ## Warning signs that a decorator may be the wrong owner
 
@@ -174,6 +212,27 @@ In review language, that often sounds like:
 - keep the boundary wrapper
 - move the real policy to something with a visible name, state surface, and lifecycle
 
+For example, a boundary decorator could delegate to:
+
+```python
+class DeliveryPolicy:
+    def run(self, operation, /, *args, **kwargs):
+        ...
+
+
+def governed_by(policy: DeliveryPolicy):
+    def decorate(function):
+        @wraps(function)
+        def wrapped(*args, **kwargs):
+            return policy.run(function, *args, **kwargs)
+        return wrapped
+    return decorate
+```
+
+The decorator still marks the call boundary. `DeliveryPolicy` becomes the explicit
+owner of shared state, lifecycle, inspection, and coordination. This is pseudocode:
+Module 05 does not need a second policy framework; the ownership split is the point.
+
 ## Typing pressure is another warning sign
 
 If a decorator starts trying to:
@@ -189,6 +248,11 @@ That is one reason the worked example stays partial on purpose.
 It is also why "we can keep adding one more decorator feature" is weak design language
 here. Once the wrapper starts interpreting rich metadata deeply, the owner story usually
 wants a new shape.
+
+The capstone already models a lower-power alternative for configuration validation:
+descriptor-backed fields own per-attribute rules. Module 05's action validation stays
+at the call boundary because it reasons about bound action arguments. Later descriptor
+modules will explain why assignment-time field invariants belong to a different owner.
 
 ## Common overclaims to reject
 
@@ -211,6 +275,38 @@ These are the boundary failures to catch before they harden:
 | keeping shared state in closures because it feels compact | stewardship and reset routes stay hidden | move state to a first-class object or component |
 | calling the design simple because the surface is short | short syntax hides broad semantics | judge by owned policy, not line count |
 | letting order interactions carry design meaning silently | the policy becomes distributed across layers | reduce the stack or move coordination into one clearer owner |
+
+## Review one proposed stack
+
+Suppose an incident action is decorated as:
+
+```python
+@cached(maxsize=256)
+@retry(exceptions=(DeliveryError,), max_attempts=3)
+@validated(on_mismatch="warn")
+@action("Deliver an incident.")
+def deliver(...):
+    ...
+```
+
+A code review must resolve at least these questions:
+
+- does a cache hit bypass validation, retry, and action-history recording?
+- does warning mode let an incompatible value reach delivery?
+- are failed deliveries cached?
+- does retry produce one action-history record or one per attempt?
+- what cache key distinguishes operationally different calls?
+
+Reordering the decorators changes those answers. That is evidence that composition
+itself has become a policy owner. Prefer an explicit orchestration component before
+letting stack order become an undocumented workflow language.
+
+## Smallest honest review route
+
+Run `make decorator-policy-lab`, then write one boundary record for each packet. Your
+record passes when another learner can find the owner and its proof without reading the
+implementation twice. There is no automated test for the final ownership judgment;
+the executable evidence constrains the facts on which the judgment is based.
 
 ## Review rules for policy boundaries
 
@@ -236,9 +332,12 @@ Before moving on, make sure you can do all of these:
 
 Try these before moving on:
 
-1. Take one retry or cache decorator and sketch the equivalent explicit object design.
-2. Name one case where a decorator should stay and one where policy should move out.
-3. Write one review note that rejects a wrapper because its policy surface has become too broad.
+1. Write boundary records for `retry`, `validated`, and the teaching cache.
+2. Take one retry or cache decorator and sketch the equivalent explicit object design.
+3. Predict the behavior of the four-decorator stack above, then explain why the stack
+   should not become the course's application architecture.
+4. Write one review note that rejects a wrapper because its policy surface has become
+   too broad and names the replacement owner.
 
 If those feel ordinary, the worked example can combine the module's policy and typing
 pressures inside one deliberately partial validator.

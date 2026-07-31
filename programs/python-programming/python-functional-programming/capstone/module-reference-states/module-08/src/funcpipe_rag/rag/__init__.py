@@ -4,6 +4,7 @@
 entrypoints live here instead.
 """
 
+from .async_rag import AsyncChunkEmbedder, async_rag_chunks
 from .types import DocRule, RagTaps, DebugConfig, Observations, TraceLens, RagTraceV3
 from .clean_cfg import CleanConfig, make_cleaner, DEFAULT_CLEAN_CONFIG
 from .config import (
@@ -26,6 +27,9 @@ from .core import (
     stream_chunks,
     gen_stream_embedded,
     gen_stream_deduped,
+    stream_rag_chunks,
+    stream_rag_sources,
+    SourceSchedule,
     sliding_windows,
     gen_grouped_chunks,
     gen_bounded_chunks,
@@ -39,6 +43,7 @@ from .core import (
 )
 
 __all__ = [
+    "AsyncChunkEmbedder",
     "DocRule",
     "RagTaps",
     "DebugConfig",
@@ -65,6 +70,9 @@ __all__ = [
     "stream_chunks",
     "gen_stream_embedded",
     "gen_stream_deduped",
+    "stream_rag_chunks",
+    "stream_rag_sources",
+    "SourceSchedule",
     "sliding_windows",
     "gen_grouped_chunks",
     "gen_bounded_chunks",
@@ -75,4 +83,5 @@ __all__ = [
     "full_rag_api",
     "full_rag_api_docs",
     "full_rag_api_path",
+    "async_rag_chunks",
 ]

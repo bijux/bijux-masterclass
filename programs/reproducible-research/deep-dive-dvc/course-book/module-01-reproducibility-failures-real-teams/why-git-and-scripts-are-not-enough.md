@@ -1,6 +1,5 @@
 # Why Git and Scripts Are Not Enough
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -8,7 +7,7 @@
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Reproducibility Failures Real Teams"]
+  section["Reproducibility Failures in Real Teams"]
   page["Why Git and Scripts Are Not Enough"]
   capstone["Capstone evidence"]
 
@@ -18,132 +17,286 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  git["Git<br/>source and declarations"] --> result["result story"]
+  scripts["scripts<br/>behavior"] --> result
+  artifacts["artifact identity and recovery"] --> result
+  execution["executed relationships and receipts"] --> result
 ```
 <!-- page-maps:end -->
 
-Module 01 should not leave you with the impression that Git is weak or useless.
+Git and scripts are essential parts of a reproducible workflow. The failure
+begins when a team asks them to prove claims they do not explicitly represent.
 
-Git is excellent at what it owns.
+The right conclusion is not “Git is bad” or “scripts are obsolete.” It is:
 
-The problem is that teams often ask Git and a few scripts to carry a reproducibility story
-that is larger than source control alone.
+> Source history and executable behavior are necessary evidence, but the
+> result story also needs artifact identity, declared relationships, effective
+> controls, execution receipts, and recovery.
 
-## What Git does well
+## Start with what Git proves well
 
-Git is strong at:
+For tracked source, Git can answer:
 
-- versioning text
-- showing code history
-- supporting branching and review
-- preserving deliberate edits to source files and docs
+- which revision contains this code and configuration;
+- who changed a line and how revisions relate;
+- what reviewers approved;
+- which branch or tag names a repository state;
+- whether a tracked file differs from that state.
 
-Those are major strengths. Any honest DVC course should say that clearly.
+That is powerful evidence. Preserve it.
 
-## Where the gap opens
+Git can also store small data files. The limitation is not a magical rule that
+“Git cannot version data.” The practical boundary appears when data and derived
+artifacts are:
 
-Reproducibility for data and ML work depends on more than source text:
+- large or numerous;
+- regenerated frequently;
+- unsuitable for ordinary source diffs;
+- retained under different policies;
+- shared through storage that is not the Git object database;
+- sensitive or licensed under separate access controls.
 
-- the exact data identity
-- the relationship between stages
-- the parameters that shaped a run
-- the environment and execution context
-- the resulting artifacts someone later wants to recover
+The team needs a complementary artifact boundary rather than contempt for
+source control.
 
-Git can record some of that indirectly, but it does not model the full problem by itself.
+## A Git revision is not automatically result provenance
 
-## A practical contrast
+Suppose a result sits beside `score_incidents.py` in a clean Git checkout.
+Which revision produced it?
 
-| Workflow question | Git answers well | Git alone struggles with |
-| --- | --- | --- |
-| who changed the code | yes | not the main issue |
-| which data bytes produced this result | not directly | this is a core gap |
-| how outputs depend on inputs and stages | only by convention | weak without extra structure |
-| how to recover large or derived artifacts cleanly | not Git's core job | teams improvise here |
-| how to compare experimental runs beyond source diff | partly | often incomplete |
+Possible answers:
 
-This is why "we put it in Git" is not the same claim as "we can defend the result."
+- the current revision;
+- an earlier revision whose output was copied forward;
+- uncommitted code;
+- current code with a different input;
+- a script invoked with a hidden threshold.
 
-## Scripts are useful, but they often hide structure
+Proximity does not establish provenance. The result needs a recorded connection
+to the implementation, inputs, and controls that produced it.
 
-Ad hoc scripts can absolutely be part of a good workflow.
+`STALE_IMPLEMENTATION` demonstrates this:
 
-The problem appears when the scripts become the only place where important structure lives:
+```console
+jq '{
+  local_repeatability,
+  decision,
+  failed_checks
+}' artifacts/audit/reproducible-research/deep-dive-dvc/workflow-evidence/workspace/stale-implementation/assessment.json
+```
 
-- which files are inputs
-- which outputs are derived
-- which parameters were chosen
-- which order the steps are meant to run in
+Both local result files match. The current script digest differs from the
+recorded implementation digest. “The script is in Git” is true but incomplete.
 
-At that point, a teammate can read the code and still not recover the whole operational
-story without asking the author.
+## Scripts encode behavior, not necessarily a workflow contract
 
-## A small example
+A script can contain correct computation and still leave these facts obscure:
 
-Imagine a repo with:
+- which files are official inputs;
+- which optional files alter behavior;
+- where parameter values originate;
+- which outputs are trusted;
+- which earlier transformation creates an input;
+- when an output becomes stale;
+- how to recover non-source artifacts.
 
-- `train.py`
-- `evaluate.py`
-- `run_all.sh`
-- `README.md`
+Reading code may reveal some of these facts. Reconstructing them from control
+flow is different from declaring them as a reviewable interface.
 
-That may be enough to get work done.
+Example:
 
-But now ask stronger questions:
+```python
+threshold = float(os.getenv("RISK_THRESHOLD", "0.20"))
+rows = load_csv("data/current.csv")
+write_summary(rows, threshold)
+```
 
-- which exact dataset version was used
-- which artifacts are intermediate versus trusted outputs
-- whether the shell script assumes files already exist
-- whether metrics from last month can be recovered exactly
+The script reveals two dependencies to a careful reader. It still does not
+record which input bytes or environment value produced a historical summary.
 
-Git history plus shell commands can help, but they do not answer all of those on their
-own.
+## Shell wrappers preserve order weakly
 
-## Why teams reach for memory instead of structure
+A `run_all.sh` can be a useful entry point:
 
-Git-plus-script workflows often survive for longer than they should because the team has
-informal compensations:
+```sh
+python prepare.py
+python train.py
+python evaluate.py
+```
 
-- one person remembers the right command
-- one folder name is treated as if it were an identity
-- one server still has the "real" copy
-- one notebook output is accepted as evidence
+It tells a reader an intended order. By itself it may not tell them:
 
-That is not reproducibility. It is social caching.
+- which outputs connect the commands;
+- whether `train.py` also reads an undeclared local file;
+- whether a command can be skipped safely;
+- which parameter change invalidates which output;
+- whether a failed command left a partial artifact;
+- which outputs belong to this invocation;
+- whether recovery can materialize prior state.
 
-## What this means for DVC
+A linear command list is not yet a dependency graph or execution record.
 
-DVC is not here to replace Git.
+```mermaid
+flowchart LR
+  shell["run_all.sh"] --> P["prepare.py"]
+  shell --> T["train.py"]
+  shell --> E["evaluate.py"]
+  raw["raw data?"] -.implicit.-> P
+  P -.which file?.-> T
+  T -.which model?.-> E
+  params["controls?"] -.implicit.-> T
+```
 
-It is here to complement Git by making parts of the workflow story more explicit:
+The dotted questions are where social memory accumulates.
 
-- data and artifact identity
-- stage relationships
-- experiment and metric context
-- recovery paths for non-source artifacts
+## README commands are guidance, not receipts
 
-That only makes sense once the Git boundary is understood honestly.
+A README may correctly say:
 
-## The wrong conclusion to avoid
+```console
+python score_incidents.py \
+  --input observations.csv \
+  --threshold 0.20 \
+  --output risk-summary.json
+```
 
-Do not leave this page thinking:
+That records an intended route. It does not prove:
 
-> Git failed us, so we need a different tool for everything.
+- that this command produced a specific historical result;
+- that the input still has the same bytes;
+- that the environment matches;
+- that the command exited successfully;
+- that the output passed its contract.
 
-The better conclusion is:
+Keep the README for teaching and entry. Add execution evidence for claims about
+what actually happened.
 
-> Git is solving source history well, but source history is only part of the reproducibility problem.
+## File paths solve naming, not identity
 
-That is a much more stable foundation for the rest of the course.
+Git-plus-script workflows often rely on names such as:
 
-## Keep this standard
+```text
+data/final.csv
+models/best.pkl
+reports/latest.json
+```
 
-When evaluating a fragile workflow, ask two separate questions:
+These names communicate a role. They are dangerous when treated as immutable
+identity.
 
-1. what is Git already preserving well
-2. what important parts of the result story still have no clear owner
+Ask:
 
-That second question is where DVC enters.
+| Question | Path can answer? | Additional evidence |
+|---|---:|---|
+| where should the workflow read? | yes | role contract |
+| which exact bytes were used? | no | content identity |
+| which revision named those bytes? | not for external artifacts | pointer/provenance |
+| can another maintainer obtain them? | no | recovery route |
+| are they still the approved release? | no | promotion record |
+
+DVC helps connect repository paths to content-addressed artifact state. Later
+modules develop the mechanics.
+
+## “Everything in Git” still leaves environment and execution
+
+A tiny workflow may legitimately commit its data, source, parameters, and
+expected result to Git. That can be a sound design.
+
+It still needs an answer for:
+
+- runtime and dependencies;
+- execution order or graph;
+- hidden controls;
+- clean verification;
+- result semantics;
+- whether saved output belongs to the current revision.
+
+DVC is not mandatory for every repository. Reproducibility evidence is.
+
+## “DVC will fix it” is also too broad
+
+Adding `.dvc` files while preserving manual preprocessing, hidden thresholds,
+and an unknown runtime moves only one boundary.
+
+Compare repairs:
+
+| Gap | Fitting first repair |
+|---|---|
+| input bytes have no durable identity | artifact tracking such as DVC |
+| input identified but unavailable to team | governed remote and recovery test |
+| hidden threshold | declared parameter or recorded external control |
+| manual preprocessing | explicit transformation contract |
+| unknown environment | runtime lock, image, or verified environment record |
+| stale output | dependency and verification route |
+| invalid analysis | scientific review, not artifact tooling |
+
+Tool adoption should follow the diagnosed contract.
+
+## Git and DVC form a joined boundary
+
+A DVC repository normally uses both:
+
+```mermaid
+flowchart LR
+  G["Git revision<br/>code, params, DVC metadata"] --> K["content identity"]
+  K --> R["DVC remote<br/>recoverable bytes"]
+  G --> P["pipeline declaration"]
+  R --> W["materialized workspace"]
+  P --> W
+  W --> V["verification receipt"]
+```
+
+Git preserves lightweight declarations and history. DVC metadata connects
+paths to content identities and pipeline state. A remote supplies shared
+artifact bytes. Verification checks the bounded claim.
+
+If Git metadata is shared but DVC objects are not, collaboration is incomplete.
+If objects exist without the correct Git revision, the intended workflow state
+is unclear.
+
+## Decide from workflow pressure
+
+DVC becomes valuable when several of these are true:
+
+- data or artifacts do not fit ordinary Git collaboration;
+- paths are being mistaken for identity;
+- pipeline edges live mainly in scripts or memory;
+- teams need selective reruns from declared state;
+- experiment parameters and metrics need structured comparison;
+- protected results must be restored after workspace loss.
+
+Do not manufacture those pressures to justify the tool. A small deterministic
+analysis with committed inputs and a reliable environment may need only Git,
+a build command, and tests.
+
+## Audit the current division of labor
+
+Create a table:
+
+| Evidence need | Git | Script | DVC | Other owner | Gap |
+|---|---|---|---|---|---|
+| source revision | authoritative | references | records alongside metadata |  |  |
+| input content identity | possible for committed file | reads path | suited for tracked artifact | external dataset registry |  |
+| behavior | stores implementation | authoritative implementation | invokes stage command |  |  |
+| runtime | stores lock/image declaration | runs inside it | can declare files as dependencies | environment tool |  |
+| artifact recovery | source objects only | no | remote pull | storage policy |  |
+| scientific validity | stores review text | implements method | no | domain review |  |
+
+Do not force an entry in every tool column. Name one authority for each fact.
+
+## Reader checkpoint
+
+You understand the boundary when you can:
+
+- defend Git's role in source history and review;
+- explain why source proximity is not result provenance;
+- distinguish script behavior from a declared workflow contract;
+- treat README commands as intended routes rather than execution receipts;
+- separate path, content identity, and recovery;
+- choose a repair based on the evidence gap;
+- describe how Git, DVC metadata, remote objects, and verification work
+  together;
+- recognize a workflow that does not need DVC.
+
+The goal is not to replace Git and scripts. It is to stop asking them to carry
+an artifact and execution contract that remains implicit.

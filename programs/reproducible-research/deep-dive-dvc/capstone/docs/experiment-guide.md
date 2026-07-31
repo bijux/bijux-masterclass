@@ -41,10 +41,16 @@ surface. It is not a license to mutate the baseline story until the result looks
 
 ## Minimum route
 
-1. Inspect baseline `params.yaml` and `metrics/metrics.json`.
-2. Run `dvc exp run` with one declared change.
-3. Use `dvc exp show` to compare the candidate against the baseline.
-4. Return to the publish contract only if the candidate is worth promotion.
+1. Run `make experiment-comparability-audit`.
+2. Read `summary.tsv` before ranking any candidate metrics.
+3. Compare the controlled case with one blocked comparison.
+4. Inspect the saved `dvc exp run`, `show`, and `diff` receipts.
+5. Return to the publish contract only after comparison and promotion gates are distinct.
+
+Use [Experiment Comparability Audit Guide](experiment-comparability-audit-guide.md) for the
+complete evidence order. The older `experiment-review` bundle is useful for inspecting the
+current capstone state, but it does not construct negative cases or enforce candidate
+comparability.
 
 Read [STAGE_CONTRACT_GUIDE.md](stage-contract-guide.md) first when the real pressure is
 not how to run the experiment, but whether the changed params still support honest

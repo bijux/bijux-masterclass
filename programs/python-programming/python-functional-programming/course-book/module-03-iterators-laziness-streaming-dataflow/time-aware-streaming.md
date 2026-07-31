@@ -478,10 +478,11 @@ Batch processing; else time-aware.
 
 **Reflect:** Find bursty; add throttle.
 
-**Project Exercise:** Add time to RAG; test with mock.
+**Project Exercise:** Pace a RAG boundary with `FakeTime`. Assert emitted values,
+recorded sleep durations, and final clock time.
 
 **Final Notes:**
-- Time pure; inject clocks.
+- Time remains an effect; injected clocks make that dependency explicit.
 - Document monotonicity per stage.
 - Mock for deterministic tests.
 - For async time, see future cores.
@@ -507,3 +508,80 @@ Batch processing; else time-aware.
 **Further Reading:** For the deepest itertools mastery, see the official docs and Dan Bader’s ‘Python Tricks’ chapter on iterators.
 
 > **You now own the most powerful lazy streaming toolkit in Python. Module 4 will show you how to make even failure and resource cleanup lazy and pure.**
+
+## Injected time is explicit, not pure
+
+`clock()` observes changing state and `sleeper()` changes the world. Passing them as
+arguments does not turn either operation into a pure function. It makes the effect
+visible, replaceable, and deterministic in tests.
+
+```python
+from funcpipe_rag import FakeTime, throttle
+
+time = FakeTime()
+items = throttle(
+    ("a", "b", "c"),
+    min_delta=0.25,
+    clock=time.clock,
+    sleeper=time.sleep,
+)
+
+assert list(items) == ["a", "b", "c"]
+assert time.sleeps == [0.25, 0.25]
+assert time.clock() == 0.5
+```
+
+Trace the first two requests:
+
+1. the first item reads clock `0.0`, records it, and yields without sleeping;
+2. the second item reads `0.0`, computes a `0.25` wait, sleeps, reads `0.25`, and
+   yields;
+3. iteration is suspended, so the third wait has not happened yet.
+
+The sleeps are driven by demand. Constructing the throttled iterator does not sleep.
+If the caller takes one item and stops, no later delay occurs.
+
+## Which time should a policy use?
+
+Elapsed-time policies should receive a monotonic clock in production. Wall clocks
+can jump because of synchronization or administrator changes. Timestamps intended
+for human records may use wall time, but they have a different contract.
+
+The Module 03 API asks callers to choose the clock rather than importing one inside
+the stage. A boundary can wire:
+
+```python
+from time import monotonic, sleep
+
+paced = throttle(chunks, min_delta=0.1, clock=monotonic, sleeper=sleep)
+```
+
+The core RAG value transforms still know nothing about time.
+
+## Throttle and token-bucket policies differ
+
+- `make_throttle(min_delta, ...)` enforces spacing between consecutive emissions.
+- `make_rate_limit(rate, burst, ...)` permits an initial burst and replenishes
+  tokens as time advances.
+- `make_call_gate(min_delta, ...)` paces effectful function calls rather than values.
+
+Do not call all three “rate limiting” in review. Their burst and state semantics
+differ, so equal average throughput does not imply equal request timing.
+
+## Failure and cancellation boundaries
+
+If the sleeper raises, the iterator raises at the request that needed sleep. If the
+upstream raises, no later sleep occurs. A synchronous sleep blocks the current
+thread and offers no asynchronous fairness. Module 08 introduces scheduling and
+backpressure; this module establishes only testable synchronous timing.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-03/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py \
+  -k 'injected_time'
+```
+
+The proof establishes values and planned elapsed time without waiting in real time.
+It does not establish production scheduler precision. In a code review, require the
+clock type, burst policy, and failure behavior to be named.

@@ -1,47 +1,67 @@
-# Module Glossary
+# Module 06 Glossary
 
-<!-- page-maps:start -->
-## Page Maps
+Use these meanings while reading Module 06. The terms describe observable
+FuncPipe behavior, not merely page titles.
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Monadic Flow Explicit Context"]
-  page["Module Glossary"]
-  capstone["Capstone evidence"]
+## Flow operations
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-This glossary belongs to **Module 06: Monadic Flow and Explicit Context** in **Python Functional Programming**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
-
-## How to use this glossary
-
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Term | Meaning in this module |
 | --- | --- |
-| and_then and bind | the module's treatment of and_then and bind, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Configurable Pipelines | the module's treatment of configurable pipelines, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Error-Typed Flows | the module's treatment of error-typed flows, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Explicit State Threading | the module's treatment of explicit state threading, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Law-Guided Design | the module's treatment of law-guided design, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Layered Containers | the module's treatment of layered containers, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Lifting Plain Functions | the module's treatment of lifting plain functions, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Module 06 Refactoring Guide | the repair route for applying the module's main design claim to existing code without losing behavior, clarity, or proof. |
-| Reader Pattern | the module's treatment of reader pattern, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Refactoring try/except | the module's treatment of refactoring try/except, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Writer Pattern | the module's treatment of writer pattern, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
+| context | A rule surrounding a value, such as possible failure, successful absence, read-only environment, changing local state, or ordered trace data. |
+| `map` | Apply `T -> U` to a successful or present value while preserving the surrounding context. |
+| `map_err` | Transform the error value of a Result without changing a success. This changes the error vocabulary and should preserve useful provenance. |
+| `and_then` / bind | Apply `T -> Context[U]` to a successful value and keep one context layer. For Result and Option, the stopping variant skips the function. |
+| short-circuit | Preserve a stopping case such as `Err` or `NoneVal` without evaluating the next dependent operation. |
+| lift | Apply a plain function to values already inside one or more contexts without rewriting the plain function to accept containers. |
+| applicative combination | Combine contextual inputs whose values do not depend on one another. Result remains fail-fast in Module 06; Validation accumulates independent failures. |
+| dependent step | An operation that cannot run until an earlier operation produces a successful value. |
+| independent input | An input that can be checked or produced without the successful value of another input. |
+
+## Laws and evidence
+
+| Term | Meaning in this module |
+| --- | --- |
+| left identity | Introducing a value with the context’s success constructor before bind does not change the next operation’s result. |
+| right identity | Binding a contextual value to its success constructor preserves the original contextual value. |
+| associativity | Regrouping dependent operations without reordering them preserves the contextual result. |
+| functor composition | Two pure `map` operations agree with one `map` containing the same composed function order. |
+| law property | A property-based test of a structural rule over a bounded generated domain. It is not proof of a RAG business policy. |
+| characterization test | A test that records existing public behavior before a refactor, whether or not that behavior is ideal. |
+| equivalence property | A comparison of before and after observations over generated inputs. It supports preservation, not design superiority. |
+
+## Explicit contexts
+
+| Term | Meaning in this module |
+| --- | --- |
+| Reader | A description equivalent to `Environment -> Value`, with operations for composing computations that share a read-only environment. |
+| `ask` | A Reader description that returns the complete environment. |
+| `asks` | A Reader description that selects a value from the environment. |
+| `local` | Run a Reader description with a derived environment for that run. It does not mutate the caller’s environment. |
+| State | A description equivalent to `State -> (Value, State)`, used for explicit local state transitions. |
+| initial state | The state value supplied by the caller to `run_state`; it is part of the program input. |
+| Writer | A description that returns a payload and ordered trace entries without emitting them externally. |
+| `tell` | A Writer description whose payload is `None` and whose meaningful output is one trace entry. |
+| payload preservation | A wrapper returns the same domain value while adding context such as trace data or metrics. |
+
+## Layering and boundaries
+
+| Term | Meaning in this module |
+| --- | --- |
+| outer context | The first decision in a nested type. In `Result[Option[T], E]`, retrieval success or failure is decided before presence or absence. |
+| layer order | The arrangement of two contexts; changing it can change failure, absence, state-retention, or trace-retention behavior. |
+| transpose | Convert between two supported layer orders while preserving every modeled case. |
+| successful absence | An operation completed correctly but found no value, represented by `Ok(NoneVal())` in the retrieval example. |
+| expected exception | A named exception from a narrow boundary operation that the caller can handle as a typed result. |
+| unexpected exception | A defect or unmodeled failure that remains raised rather than being mislabeled as a domain error. |
+| exception bridge | An adapter that runs one throwing operation, catches only declared expected classes, and maps them to `Result` or `Validation`. |
+| assembly-time policy | Choosing wrappers while building a callable so the domain function does not inspect feature flags during every run. |
+| endomorphic validator | A validator shaped `T -> Result[T, E]`; success preserves the input type so an existing pipeline can follow. |
+
+## Application terms
+
+| Term | Meaning in this module |
+| --- | --- |
+| preservation claim | The earlier FuncPipe observation that must remain equal after a flow refactor: normalized values, chunk boundaries, order, embeddings, or error provenance. |
+| call trace | A test-owned list recording which operations ran. It proves skipped or exactly-once work when result equality cannot. |
+| context ledger | A comparison of the simplest direct representation with Reader, State, Writer, Result, or a wrapper, including the evidence required to justify the choice. |
+| Module 06 reference state | `capstone/module-reference-states/module-06/`, the completed code and tests for explicit flow context before Module 07 effects. |

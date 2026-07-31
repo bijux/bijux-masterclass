@@ -17,87 +17,255 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  contract["0<br/>Transfer contract"] --> shape["1<br/>Public shape"]
+  shape --> callable["2<br/>Callable boundary"]
+  callable --> field["3<br/>Attribute boundary"]
+  field --> class["4<br/>Class creation"]
+  class --> govern["5<br/>Governance"]
+  govern --> runtime["6<br/>Deliberate runtime"]
 ```
 <!-- page-maps:end -->
 
-Use this page when you want the first honest tour through the capstone without turning it
-into a file dump. The walkthrough should let an independent learner see the runtime from
-the public surface before diving into implementation detail.
+Use this page for a complete capstone review after at least one module transfer is
+understood. It is not the first route for every learning session. Stop at the earliest
+point that settles the current question.
 
-## First pass versus deeper pass
+Run commands from the Python Metaprogramming course directory unless a local capstone
+command is shown explicitly.
 
-### First pass
+## Stop 0: establish the course claim
 
-Use stops 1 to 4 when the goal is to understand the runtime from the public surface.
+Choose a module and re-prove its course claim. For the Module 04 example:
 
-### Deeper pass
+```bash
+make wrapper-lab
+make wrapper-lab-test
+```
 
-Use stops 5 and 6 only after the earlier stops no longer settle the question.
+Record:
 
-## Walkthrough stop 1: Observe before execution
+- course claim
+- expected capstone owner
+- mapped observational capstone command
+- proof
+- non-claim
 
-- Run `make manifest` or inspect the saved `manifest.json` from `make inspect`.
-- Read `src/incident_plugins/cli.py` and the manifest helpers in `src/incident_plugins/framework.py`.
-- Ask: which runtime facts can be exported without invoking plugin actions?
-- Prove it with `make manifest`.
+Do not continue if the module’s focused course proof has not passed. The walkthrough is
+integration practice, not a substitute lesson.
 
-## Walkthrough stop 2: Find the registry boundary
+## Stop 1: inspect public shape
 
-- Run `make registry`.
-- Read the registration code in `src/incident_plugins/framework.py`.
-- Ask: what happens at class-definition time, and why is this deterministic in tests?
-- Prove it with `tests/test_registry.py`.
+Run:
 
-## Walkthrough stop 3: Inspect one descriptor-backed field
+```bash
+make capstone-manifest
+make capstone-registry
+make capstone-signatures
+```
 
-- Run `make field`.
-- Read `src/incident_plugins/fields.py`.
-- Ask: where does per-instance field state actually live, and which invariant belongs to attribute access?
-- Prove it with `tests/test_fields.py`.
+Compare:
 
-## Walkthrough stop 4: Inspect one wrapper-backed action
+- manifest: exported field and action contracts
+- registry: completed concrete plugin classes and order
+- signatures: generated constructor and action call shapes
 
-- Run `make action` and then `make trace`.
-- Read `src/incident_plugins/actions.py`.
-- Ask: what did the wrapper add, and what original callable surface had to remain visible?
-- Prove it with `tests/test_runtime.py`.
+Read the manifest and registry helpers in `framework.py`, then the relevant CLI handlers.
 
-## Walkthrough stop 5: Inspect one concrete plugin
+Questions:
 
-- Run `make plugin`.
-- Read `src/incident_plugins/plugins.py`.
-- Ask: which rules belong to the framework and which rules belong to the concrete adapter?
-- Prove it by matching the plugin output to the field and action metadata already inspected.
+- Which facts exist because import and class creation already happened?
+- Which facts can be reported without plugin construction?
+- Which output is class-family state, and which is one callable contract?
 
-## Walkthrough stop 6: Inspect the full guided route
+Stop here for Modules 01–02 when the observation claim is settled.
 
-- Run `make inspect` and `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough`.
-- Read the saved bundles under `artifacts/inspect/python-programming/python-meta-programming` and `artifacts/tour/python-programming/python-meta-programming`.
-- Ask: does the public learning surface make the runtime easier to review than the raw source tree alone?
-- Prove it by following `route.txt` and `focus-areas.txt`.
+## Stop 2: inspect the callable boundary
 
-## Best walkthrough pairing by module
+Run:
 
-- Modules 01 to 03: stops 1 and 2
-- Modules 04 to 05: stop 4
-- Modules 06 to 08: stop 3
-- Module 09: stop 2
-- Module 10 and mastery review: stops 5 and 6
+```bash
+make capstone-action
+make capstone-action-wrapper
+make capstone-bind-action
+make capstone-check-action
+```
 
-## When to stop and escalate
+Read `actions.py` and the action helpers in `framework.py`.
 
-- Stop at the first walkthrough step that settles the current question.
-- Escalate from one stop to the next only when the earlier output no longer proves enough.
-- Move to [Capstone Architecture Guide](capstone-architecture-guide.md) when the question is about ownership rather than order.
+Trace:
+
+1. public action metadata
+2. wrapper layers and `__wrapped__`
+3. stored signature and argument binding
+4. supported hint checks and refused hints
+
+All four routes remain non-invoking. Do not add `trace` merely because it exists.
+
+Questions:
+
+- Which fact is enforced by Python signature binding?
+- Which fact is policy from the application’s supported hint subset?
+- Which wrapper owner preserves metadata?
+- What remains unproved until deliberate invocation?
+
+This is the main transfer stop for Modules 03–05.
+
+## Stop 3: inspect the attribute boundary
+
+Run:
+
+```bash
+make capstone-field
+make capstone-field-ownership
+make capstone-field-system
+```
+
+Read `fields.py`, then the collection helpers in `framework.py`.
+
+Compare:
+
+- schema: public field name, kind, default, and constraints
+- mechanism: descriptor category, declaring class, class access, and storage key
+- system: accepted field owners and rejected wider powers
+
+Questions:
+
+- Where is the descriptor object stored?
+- Where is one plugin instance’s value stored?
+- What makes the field a data descriptor?
+- Which Module 08 powers remain outside this application?
+
+This is the main transfer stop for Modules 07–08. Module 06 can use the next stop to look
+for lower-power alternatives.
+
+## Stop 4: inspect class creation
+
+Run:
+
+```bash
+make capstone-class-creation
+make capstone-registry
+```
+
+Read the stored provenance before reading all of `PluginMeta`.
+
+Separate:
+
+- metaclass selection
+- namespace preparation
+- class body events
+- collected fields and actions
+- generated initializer and signature
+- completed-class registration
+
+Module 06 asks which of those facts could be owned after class creation. Module 09 asks
+which facts genuinely require the class-creation process.
+
+Questions:
+
+- Why is `__init_subclass__` sufficient for registration alone?
+- Why does tracked namespace preparation require earlier ownership?
+- Which rejected powers would make import behavior unsafe or opaque?
+
+## Stop 5: review governance
+
+Run:
+
+```bash
+make capstone-governance
+```
+
+Read `governance.py`, then follow one decision to its mechanism report and focused tests.
+
+Review at least:
+
+- one approved power
+- the constrained process-global registry
+- one rejected power and its lower-power alternative
+
+Questions:
+
+- Does the decision name a real owner?
+- Can another reviewer observe the mechanism?
+- Is rollback proportionate to the blast radius?
+- Does the named test prove the mechanism or only the decision shape?
+
+This is the Module 10 transfer. Governance is not a summary page; it is an evidence
+index for design judgment.
+
+## Stop 6: cross into deliberate runtime behavior
+
+Only continue when the question includes construction and action invocation:
+
+```bash
+make capstone-trace
+```
+
+The trace reports configuration, action metadata, result, and history for one concrete
+story. Compare it with `tests/test_runtime.py`.
+
+State explicitly:
+
+- plugin construction occurred
+- configuration flowed through descriptors
+- the action wrapper recorded history
+- one concrete plugin produced the result
+
+A successful trace does not prove registry determinism, all plugin behavior, or broad
+regression confidence.
+
+## Save the walkthrough only when needed
+
+For a durable handoff:
+
+```bash
+make capstone-tour
+```
+
+Inspect `route.txt`, `focus-areas.txt`, the JSON reports, and
+`bundle-manifest.json`. The manifest supplies paths, sizes, and hashes so another
+reviewer can confirm exactly which artifacts were handed over.
+
+Do not build a saved bundle during every study session. Save it when the review must
+survive beyond the current terminal.
+
+## Module stop map
+
+| Module | Required stops |
+| --- | --- |
+| 01–02 | 0–1 |
+| 03–05 | 0–2 |
+| 06 | 0, 4 |
+| 07–08 | 0, 3 |
+| 09 | 0, 4 |
+| 10 | 0, 5 |
+| integration or runtime story | relevant observational stop, then 6 |
+
+The ranges do not mean “read everything between.” They mean follow the arrows needed for
+the chosen module claim.
+
+## Escalation signals
+
+Escalate when:
+
+- a public report conflicts with its focused test
+- the owner cannot be identified from the report
+- the claim requires construction or invocation
+- another reviewer needs a stable bundle
+- the complete change set is ready for the broad gate
+
+Stop when:
+
+- the focused transfer record is complete
+- the non-claim is explicit
+- later stops answer different questions
 
 ## Good stopping point
 
-Stop once you can say:
+You have completed the walkthrough when you can:
 
-- which public step settled the current question
-- which owning file you would open next only if needed
-- which later stop you deliberately did not need yet
+- begin from a completed course claim
+- move from public report to owner to focused assertion
+- distinguish observation from deliberate execution
+- compare mechanism evidence with governance decisions
+- explain why the capstone supports, rather than replaces, the course

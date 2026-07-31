@@ -16,7 +16,7 @@ rule qc:
     benchmark:
         "qc.txt"
     conda:
-        config["_env_python"]
+        config["env_python"]
     params:
         pythonpath=PYTHONPATH,
         benchdir=lambda wc: config["benchmarks_dir"],

@@ -1,6 +1,5 @@
 # DVC Add, Push, Pull, and Checkout as State Moves
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,159 +9,276 @@ graph LR
   program["Deep Dive DVC"]
   section["Data Identity Content Addressing"]
   page["DVC Add, Push, Pull, and Checkout as State Moves"]
-  capstone["Capstone evidence"]
+  capstone["Data identity receipts"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.reads.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  before["record before-state ledger"] --> command["run one state move"]
+  command --> receipt["preserve command receipt"]
+  receipt --> after["record after-state ledger"]
+  after --> identity["compare content identity"]
+  identity --> claim["state bounded conclusion"]
 ```
 <!-- page-maps:end -->
 
-It is easy to memorize DVC commands before you understand what state each command is
-changing.
+Command names are easier to remember when you understand which layer supplies which state.
+A command receipt is useful only when paired with before-state, after-state, and identity
+evidence.
 
-That creates brittle knowledge.
+| Command | Primary bounded move |
+| --- | --- |
+| `dvc add` | workspace bytes into managed local identity plus pointer metadata |
+| `dvc push` | local cache objects into configured remote |
+| `dvc pull` | remote objects into local cache and requested workspace projections |
+| `dvc checkout` | available local cache objects into workspace projections |
 
-Module 02 should leave you with a clearer question:
+These are models for the audited cases, not promises that every invocation moves every
+possible object.
 
-> when I run this command, which layer moves, and what kind of trust does that create?
+## Read `dvc add` as identity recording
 
-## The four commands in plain language
+Before:
 
-| Command | Main state move | What it is really doing |
-| --- | --- | --- |
-| `dvc add` | workspace -> cache plus pointer record | creates a tracked identity for existing content |
-| `dvc push` | local cache -> remote | makes tracked content durably recoverable off-machine |
-| `dvc pull` | remote -> local cache | retrieves tracked content back into local durable storage |
-| `dvc checkout` | cache -> workspace | reconstructs workspace files from recorded tracked state |
+```text
+workspace: data/observations.csv
+pointer: absent
+cache object: absent
+```
 
-This table is the heart of the page.
+After:
 
-## Why this framing matters
+```text
+workspace: data/observations.csv
+pointer: data/observations.csv.dvc
+cache object: .dvc/cache/files/md5/be/7d…a717
+```
 
-If you think only in command names, you will ask:
+The command:
 
-- when should I run `pull` again
-- why did `checkout` touch my files
-- why does `push` matter if my local run already worked
+```bash
+dvc add data/observations.csv
+```
 
-If they think in state moves, those questions become easier:
-
-- did the content move into the right durability layer
-- did the workspace get reconstructed from tracked identity
-- is the remote now part of the recovery story
-
-## A clean picture
+creates an inspectable relationship among workspace bytes, pointer identity, and cache
+object. It does not publish the object or validate scientific meaning.
 
 ```mermaid
 flowchart LR
-  workspace["workspace"] -->|dvc add| cache["local cache"]
-  cache -->|dvc push| remote["remote"]
-  remote -->|dvc pull| cache
-  cache -->|dvc checkout| workspace
+  workspace["workspace bytes"] --> add["dvc add"]
+  add --> pointer["pointer metadata"]
+  add --> cache["local managed object"]
+  pointer --> review["Git review"]
+  cache --> local["local recovery source"]
 ```
 
-This is the simplest useful command model for Module 02.
+## Read `dvc push` as remote publication
 
-## `dvc add`: make identity explicit
+For the remote-recovery case:
 
-`dvc add` matters because it is the first command that turns:
+```bash
+cat "$audit/evidence/remote-recovery-push.stdout.txt"
+```
 
-- "there is a file here"
+A push receipt supports:
 
-into:
+> The selected local cache object was transferred or already present in the configured
+> remote according to this command.
 
-- "this workspace path now refers to recorded content identity"
+Pair it with:
 
-You should leave this section understanding that `dvc add` is not mostly about moving
-files around. It is about making a content claim explicit and locally restorable.
+- pointer content ID;
+- remote role and configuration;
+- command exit status;
+- later cache-cold recovery.
 
-## `dvc push`: make recovery durable
+Push does not:
 
-`dvc push` does not make the result more scientifically valid.
+- repair a missing workspace projection;
+- prove another identity has read authority;
+- prove future retention;
+- make untracked pointers visible in Git;
+- publish unrelated objects automatically;
+- validate the dataset.
 
-What it does is move tracked content into a recovery layer that survives local loss.
+## Read `dvc checkout` as local projection
 
-This is a huge difference.
+The cache-recovery case deletes only the workspace file. The named cache object survives.
 
-Without `push`, a local cache may still work for one machine. With `push`, the team can
-start talking about durable recovery rather than lucky persistence.
+```bash
+cat "$audit/evidence/cache-recovery-checkout.stdout.txt"
+jq '.findings[] |
+  select(.finding == "CACHE_RESTORES_WORKSPACE")' "$audit/report.json"
+```
 
-## `dvc pull`: restore local durable state
+The proof requires:
 
-`dvc pull` brings tracked content back from the remote into the local cache.
+- workspace absent before checkout;
+- cache object present;
+- checkout succeeds;
+- workspace restored;
+- restored SHA-256 matches source;
+- pointer content ID unchanged.
 
-That means it is not only "download the file." It is:
+```mermaid
+flowchart LR
+  pointer["pointer requests be7d…a717"] --> checkout["dvc checkout"]
+  cache["local cache holds be7d…a717"] --> checkout
+  checkout --> workspace["workspace projection restored"]
+  workspace --> digest["digest matches baseline"]
+```
 
-- recover tracked identity into local durable storage
-- make later workspace reconstruction possible
-
-This is why `pull` and `checkout` are related but not identical.
-
-## `dvc checkout`: rebuild the workspace projection
-
-`dvc checkout` is about the workspace view.
-
-It reconstructs or aligns workspace files from tracked content already available in the
+Checkout does not prove remote durability because it can succeed entirely from local
 cache.
 
-That is why you can have content present in the cache and still need `checkout` to make
-the workspace match the recorded state.
+## Read `dvc pull` as remote-backed local recovery
 
-## A small example
+The remote-recovery case first pushes, then removes workspace and the named local cache
+object.
 
-Suppose you lose your working copy of a tracked dataset.
+```bash
+cat "$audit/evidence/remote-recovery-pull.stdout.txt"
+jq '.findings[] |
+  select(
+    .finding == "REMOTE_RESTORES_AFTER_CACHE_LOSS" or
+    .finding == "REMOTE_RECOVERY_PRESERVES_IDENTITY"
+  )' "$audit/report.json"
+```
 
-The honest recovery story is not only:
+After pull:
 
-- run one magic command
+- local cache is repopulated;
+- workspace is restored;
+- restored SHA-256 matches baseline;
+- pointer content ID remains baseline identity.
 
-It is:
+The loss of the local supplier is what makes the remote causal for this recovery claim.
 
-1. the remote still holds the tracked content
-2. `dvc pull` restores that content into the local cache
-3. `dvc checkout` rebuilds the workspace file from the cached content
+## Choose commands from the missing layer
 
-This three-layer explanation is much healthier than magical thinking.
+| Current state | Goal | Appropriate move | Why |
+| --- | --- | --- | --- |
+| workspace bytes unmanaged | record identity | `dvc add` | creates pointer/cache relation |
+| cache has recorded object; remote lacks it | publish shared content | `dvc push` | transfers managed object outward |
+| pointer and cache exist; workspace absent | restore projection | `dvc checkout` | local supplier is sufficient |
+| pointer exists; cache absent; remote has object | restore local content | `dvc pull` | remote repopulates local layers |
+| pointer exists; cache and remote absent | recover bytes | none of these alone | no accessible supplier exists |
 
-## Common confusions
+The last row is essential. A command vocabulary cannot create lost content.
 
-### "I pushed, so the workspace is fixed"
+## Use the narrowest command whose proof matches the claim
 
-No. `push` is about remote durability, not local workspace reconstruction.
+If the claim is “local cache can restore the workspace,” use checkout after removing only
+the workspace.
 
-### "I checked out, so the remote must be fine"
+If the claim is “remote survives local cache loss,” remove workspace and cache, then pull.
 
-No. `checkout` can succeed from local cache even when the remote has never been updated.
+If the claim is “the object is published,” push and later test from an isolated reader.
 
-### "I added the file, so the team can recover it"
+Using pull when cache remains may succeed without proving remote supply, depending on
+state and behavior. Design the before-state so alternative suppliers are absent.
 
-Not yet. `add` created recorded local identity. Durable team recovery depends on the
-remote story too.
+## Preserve raw receipts and semantic checks
 
-## Keep this standard
+A state-move packet should include:
 
-When teaching or reviewing DVC commands, always pair the command with its state move.
+```text
+claim.txt
+before-state.tsv
+pointer.yaml
+command.stdout.txt
+command.stderr.txt
+command-exit.txt
+after-state.tsv
+workspace.sha256
+cache.sha256
+decision.md
+```
 
-Do not say only:
+The exact layout can follow repository convention. The invariant is that exit code,
+materialization, and identity comparison are all visible.
 
-- add tracks files
-- push uploads
-- pull downloads
-- checkout restores
+## Interpret failure as bounded evidence
 
-Say:
+The pointer-only checkout returns `255`:
 
-- `add` creates recorded identity
-- `push` adds remote durability
-- `pull` restores local durable state
-- `checkout` rebuilds the workspace projection
+```bash
+cat "$audit/evidence/pointer-only-checkout.stderr.txt"
+jq '.findings[] |
+  select(.finding == "POINTER_ONLY_IS_NOT_RECOVERABLE")' "$audit/report.json"
+```
 
-That is the level of clarity Module 02 is aiming for.
+The failure is expected because:
+
+- pointer survives;
+- cache object is absent;
+- remote supplier is absent;
+- checkout cannot materialize bytes;
+- workspace remains absent.
+
+Do not translate the result as “checkout is broken.” Translate it as:
+
+> Checkout cannot satisfy this pointer without accessible matching content.
+
+## Avoid command substitutions
+
+### “I ran add, so the team has the data”
+
+Add records local managed state. Shared recovery still needs remote publication and
+tracked pointer state.
+
+### “I ran push, so my workspace is safe”
+
+Push supplies remote durability for selected objects. Workspace recovery still requires
+pointer, configuration, authorization, and verified pull or checkout.
+
+### “Checkout worked, so the remote is healthy”
+
+Checkout may use local cache only. Remove or isolate it before testing remote recovery.
+
+### “Pull worked, so every project object is available”
+
+The receipt covers requested state in that repository and time. It does not audit every
+historical object.
+
+### “The command exited zero, so recovery is exact”
+
+Compare restored bytes with the recorded identity and claim-relevant semantics.
+
+## Write a state-move explanation
+
+A strong explanation:
+
+> The pointer continued to name `be7d…a717`. Before pull, the workspace and named cache
+> object were absent while the configured remote retained the published object. Pull
+> returned zero, repopulated the cache, restored the workspace, and produced the baseline
+> SHA-256. This supports remote recovery for the audited object at this time; it does not
+> establish future retention or scientific validity.
+
+It names:
+
+- before-state;
+- supplier;
+- command;
+- after-state;
+- identity check;
+- limit.
+
+## Review checkpoint
+
+You understand commands as state moves when you can:
+
+- predict which layers change after each command;
+- distinguish local checkout from remote pull;
+- remove alternative suppliers before causal recovery tests;
+- pair exit status with materialization and identity evidence;
+- explain why pointer-only checkout must fail;
+- choose a command from the missing layer rather than habit.
+
+The durable question is:
+
+> Which layer has the required bytes now, which layer should have them after the command,
+> and what evidence proves the exact identity moved?

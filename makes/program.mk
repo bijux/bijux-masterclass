@@ -14,6 +14,38 @@ program-docs-serve: series-docs-install ## Serve docs for the selected program
 test: ## Run tests for the selected program
 	@$(RUN_PROGRAM) test
 
+.PHONY: capstone-test
+capstone-test: ## Run the selected program's capstone test suite
+	@$(RUN_PROGRAM) capstone-test
+
+.PHONY: capstone-foundation-proof
+capstone-foundation-proof: ## Run the selected program's smallest cumulative capstone proof
+	@$(RUN_PROGRAM) capstone-foundation-proof
+
+.PHONY: capstone-foundation-types
+capstone-foundation-types: ## Check the selected program's first typed capstone state
+	@$(RUN_PROGRAM) capstone-foundation-types
+
+.PHONY: capstone-shell-proof
+capstone-shell-proof: ## Run the selected program's first boundary proof
+	@$(RUN_PROGRAM) capstone-shell-proof
+
+.PHONY: capstone-data-api-proof
+capstone-data-api-proof: ## Run the selected program's data-first API proof
+	@$(RUN_PROGRAM) capstone-data-api-proof
+
+.PHONY: capstone-data-shell-proof
+capstone-data-shell-proof: ## Run the selected program's Result-bearing filesystem proof
+	@$(RUN_PROGRAM) capstone-data-shell-proof
+
+.PHONY: capstone-streaming-rag-proof
+capstone-streaming-rag-proof: ## Run the selected program's complete streaming RAG proof
+	@$(RUN_PROGRAM) capstone-streaming-rag-proof
+
+.PHONY: capstone-source-scheduling-proof
+capstone-source-scheduling-proof: ## Run the selected program's multi-source RAG scheduling proof
+	@$(RUN_PROGRAM) capstone-source-scheduling-proof
+
 .PHONY: demo
 demo: ## Run the selected program's learner-facing capstone walkthrough
 	@$(RUN_PROGRAM) demo
@@ -30,6 +62,10 @@ proof: ## Run the selected program's strongest learner-facing proof route
 history-refresh: ## Build the selected program's generated module history worktrees
 	@$(RUN_PROGRAM) history-refresh
 
+.PHONY: history-verify
+history-verify: ## Verify the selected program's generated module history
+	@$(RUN_PROGRAM) history-verify
+
 .PHONY: history-clean
 history-clean: ## Remove the selected program's generated module history worktrees
 	@$(RUN_PROGRAM) history-clean
@@ -45,6 +81,62 @@ capstone-walkthrough: ## Run the selected program's learner-facing capstone walk
 .PHONY: capstone-tour
 capstone-tour: ## Run the selected program's learner-facing capstone tour
 	@$(RUN_PROGRAM) capstone-tour
+
+.PHONY: capstone-manifest
+capstone-manifest: ## Render the selected program's public capstone manifest
+	@$(RUN_PROGRAM) --no-print-directory capstone-manifest
+
+.PHONY: capstone-plugin
+capstone-plugin: ## Render one selected program capstone plugin contract
+	@$(RUN_PROGRAM) --no-print-directory capstone-plugin
+
+.PHONY: capstone-field
+capstone-field: ## Render one selected program capstone field contract
+	@$(RUN_PROGRAM) --no-print-directory capstone-field
+
+.PHONY: capstone-field-ownership
+capstone-field-ownership: ## Inspect selected program capstone field ownership
+	@$(RUN_PROGRAM) --no-print-directory capstone-field-ownership
+
+.PHONY: capstone-field-system
+capstone-field-system: ## Inspect selected program capstone field-system powers
+	@$(RUN_PROGRAM) --no-print-directory capstone-field-system
+
+.PHONY: capstone-action
+capstone-action: ## Render one selected program capstone action contract
+	@$(RUN_PROGRAM) --no-print-directory capstone-action
+
+.PHONY: capstone-action-wrapper
+capstone-action-wrapper: ## Inspect selected program capstone wrapper ownership
+	@$(RUN_PROGRAM) --no-print-directory capstone-action-wrapper
+
+.PHONY: capstone-bind-action
+capstone-bind-action: ## Validate selected program capstone action binding
+	@$(RUN_PROGRAM) --no-print-directory capstone-bind-action
+
+.PHONY: capstone-check-action
+capstone-check-action: ## Check selected program capstone action hints
+	@$(RUN_PROGRAM) --no-print-directory capstone-check-action
+
+.PHONY: capstone-class-creation
+capstone-class-creation: ## Inspect selected program capstone class creation
+	@$(RUN_PROGRAM) --no-print-directory capstone-class-creation
+
+.PHONY: capstone-registry
+capstone-registry: ## Render the selected program's capstone registry
+	@$(RUN_PROGRAM) --no-print-directory capstone-registry
+
+.PHONY: capstone-signatures
+capstone-signatures: ## Render selected program capstone signatures
+	@$(RUN_PROGRAM) --no-print-directory capstone-signatures
+
+.PHONY: capstone-trace
+capstone-trace: ## Trace one selected program capstone invocation
+	@$(RUN_PROGRAM) --no-print-directory capstone-trace
+
+.PHONY: capstone-governance
+capstone-governance: ## Review the selected program's accepted, constrained, and rejected powers
+	@$(RUN_PROGRAM) --no-print-directory capstone-governance
 
 .PHONY: capstone-platform-report
 capstone-platform-report: ## Print the selected program's supported toolchain versions
@@ -129,6 +221,102 @@ capstone-performance-diagnostics-audit: ## Classify selected program performance
 .PHONY: capstone-performance-diagnostics-selftest
 capstone-performance-diagnostics-selftest: ## Reject dishonest selected program performance evidence
 	@$(RUN_PROGRAM) capstone-performance-diagnostics-selftest
+
+.PHONY: capstone-scheduler-policy-audit
+capstone-scheduler-policy-audit: ## Record selected program scheduler policy evidence
+	@$(RUN_PROGRAM) capstone-scheduler-policy-audit
+
+.PHONY: capstone-scheduler-policy-selftest
+capstone-scheduler-policy-selftest: ## Reject unsafe selected program scheduler mappings
+	@$(RUN_PROGRAM) capstone-scheduler-policy-selftest
+
+.PHONY: capstone-file-contract-audit
+capstone-file-contract-audit: ## Classify selected program file contract evidence
+	@$(RUN_PROGRAM) capstone-file-contract-audit
+
+.PHONY: capstone-file-contract-selftest
+capstone-file-contract-selftest: ## Reject dishonest selected program file contract evidence
+	@$(RUN_PROGRAM) capstone-file-contract-selftest
+
+.PHONY: capstone-stage-contract-audit
+capstone-stage-contract-audit: ## Classify selected program stage contract evidence
+	@$(RUN_PROGRAM) capstone-stage-contract-audit
+
+.PHONY: capstone-stage-contract-selftest
+capstone-stage-contract-selftest: ## Reject dishonest selected program stage contract evidence
+	@$(RUN_PROGRAM) capstone-stage-contract-selftest
+
+.PHONY: capstone-data-identity-audit
+capstone-data-identity-audit: ## Classify selected program data identity evidence
+	@$(RUN_PROGRAM) capstone-data-identity-audit
+
+.PHONY: capstone-data-identity-selftest
+capstone-data-identity-selftest: ## Enforce selected program data identity evidence
+	@$(RUN_PROGRAM) capstone-data-identity-selftest
+
+.PHONY: capstone-runtime-contract-audit
+capstone-runtime-contract-audit: ## Classify selected program runtime contract evidence
+	@$(RUN_PROGRAM) capstone-runtime-contract-audit
+
+.PHONY: capstone-runtime-contract-selftest
+capstone-runtime-contract-selftest: ## Enforce selected program runtime contract evidence
+	@$(RUN_PROGRAM) capstone-runtime-contract-selftest
+
+.PHONY: capstone-metric-contract-audit
+capstone-metric-contract-audit: ## Classify selected program metric comparison evidence
+	@$(RUN_PROGRAM) capstone-metric-contract-audit
+
+.PHONY: capstone-metric-contract-selftest
+capstone-metric-contract-selftest: ## Enforce selected program metric comparison evidence
+	@$(RUN_PROGRAM) capstone-metric-contract-selftest
+
+.PHONY: capstone-experiment-comparability-audit
+capstone-experiment-comparability-audit: ## Classify selected program experiment comparison evidence
+	@$(RUN_PROGRAM) capstone-experiment-comparability-audit
+
+.PHONY: capstone-experiment-comparability-selftest
+capstone-experiment-comparability-selftest: ## Enforce selected program experiment decision evidence
+	@$(RUN_PROGRAM) capstone-experiment-comparability-selftest
+
+.PHONY: capstone-reviewer-handoff-audit
+capstone-reviewer-handoff-audit: ## Classify selected program reviewer handoff evidence
+	@$(RUN_PROGRAM) capstone-reviewer-handoff-audit
+
+.PHONY: capstone-reviewer-handoff-selftest
+capstone-reviewer-handoff-selftest: ## Enforce selected program reviewer handoff evidence
+	@$(RUN_PROGRAM) capstone-reviewer-handoff-selftest
+
+.PHONY: capstone-recovery-readiness-audit
+capstone-recovery-readiness-audit: ## Classify selected program recovery cutover evidence
+	@$(RUN_PROGRAM) capstone-recovery-readiness-audit
+
+.PHONY: capstone-recovery-readiness-selftest
+capstone-recovery-readiness-selftest: ## Enforce selected program recovery cutover evidence
+	@$(RUN_PROGRAM) capstone-recovery-readiness-selftest
+
+.PHONY: capstone-promotion-integrity-audit
+capstone-promotion-integrity-audit: ## Classify selected program promotion integrity evidence
+	@$(RUN_PROGRAM) capstone-promotion-integrity-audit
+
+.PHONY: capstone-promotion-integrity-selftest
+capstone-promotion-integrity-selftest: ## Enforce selected program promotion integrity evidence
+	@$(RUN_PROGRAM) capstone-promotion-integrity-selftest
+
+.PHONY: capstone-boundary-migration-audit
+capstone-boundary-migration-audit: ## Classify selected program boundary cutover evidence
+	@$(RUN_PROGRAM) capstone-boundary-migration-audit
+
+.PHONY: capstone-boundary-migration-selftest
+capstone-boundary-migration-selftest: ## Enforce selected program boundary cutover evidence
+	@$(RUN_PROGRAM) capstone-boundary-migration-selftest
+
+.PHONY: capstone-workflow-evidence-audit
+capstone-workflow-evidence-audit: ## Classify selected program workflow evidence
+	@$(RUN_PROGRAM) capstone-workflow-evidence-audit
+
+.PHONY: capstone-workflow-evidence-selftest
+capstone-workflow-evidence-selftest: ## Enforce selected program workflow evidence
+	@$(RUN_PROGRAM) capstone-workflow-evidence-selftest
 
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle

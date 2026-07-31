@@ -14,7 +14,7 @@ def write_json(path: Path, payload: object) -> None:
 def test_config_summary_reports_repository_and_materialized_config(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yaml"
     config_path.write_text(
-        "use_discovered_samples: true\nsamples:\n  sampleA: data/raw/sampleA.fastq.gz\n",
+        "arrival_registry: data/raw/arrivals.tsv\n",
         encoding="utf-8",
     )
     provenance_path = tmp_path / "provenance.json"
@@ -26,9 +26,8 @@ def test_config_summary_reports_repository_and_materialized_config(tmp_path: Pat
                 "publish_dir": "publish",
                 "logs_dir": "logs",
                 "benchmarks_dir": "benchmarks",
-                "use_discovered_samples": True,
+                "arrival_registry": "data/raw/arrivals.tsv",
                 "params": {
-                    "raw_dir": "data/raw",
                     "raw_glob": "*.fastq.gz",
                     "allow_paired_end": False,
                     "dedup": {"mode": "dedup"},
@@ -61,9 +60,9 @@ def test_config_summary_reports_repository_and_materialized_config(tmp_path: Pat
     )
 
     payload = json.loads(output.read_text(encoding="utf-8"))
-    assert payload["repository_config_keys"] == ["samples", "use_discovered_samples"]
-    assert payload["repository_sample_keys"] == ["sampleA"]
-    assert payload["discovery_mode"] == "checkpoint"
+    assert payload["repository_config_keys"] == ["arrival_registry"]
+    assert payload["discovery_mode"] == "governed_arrival_registry"
+    assert payload["arrival_registry"] == "data/raw/arrivals.tsv"
     assert payload["materialized_directories"]["publish_dir"] == "publish"
     assert payload["materialized_params"]["publish_version"] == "v1"
     assert payload["provenance_identity"]["snakemake_version"] == "9.19.0"

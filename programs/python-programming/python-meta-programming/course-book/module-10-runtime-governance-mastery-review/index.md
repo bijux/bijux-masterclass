@@ -17,179 +17,187 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  lab["Run the governance lab"] --> cores["Study five ownership decisions"]
+  cores --> studio["Complete the evidence studio"]
+  studio --> review["Review your packet"]
+  review --> transfer["Audit the incident-plugin runtime"]
 ```
 <!-- page-maps:end -->
 
-Module 10 closes the mechanism ladder by turning it into engineering judgment. The goal is
-not to add one last collection of dangerous tricks. The goal is to decide which powers are
-defensible, which ones belong only to tooling or exceptional cases, and how a reviewer can
-ask for evidence instead of admiring cleverness.
+Module 10 is the course's engineering-judgment practicum. You have already learned how
+Python observes, wraps, describes, and creates runtime objects. Now you must decide when
+those powers earn their maintenance cost.
 
-This module is weakest when it is read as a tour of dangerous mechanisms. It becomes
-useful only when it is read as a decision course: what to approve, what to constrain, what
-to reject, and what evidence those calls require.
+The course material and its executable lab are the primary learning product. The
+incident-plugin capstone is a transfer environment: it lets you test the judgment learned
+here against a larger runtime, but it does not replace the lesson, exercises, or answer
+review.
 
-This module now uses the same ten-file learning surface as the deep-dive series and the
-other strong metaprogramming modules: overview, five core lessons, worked example,
-exercises, answer key, and glossary.
+## The learning problem
 
-## What this module is for
+Metaprogramming failures rarely begin with invalid syntax. They begin with a claim that is
+larger than the mechanism can support:
 
-By the end of Module 10, you should be able to explain five things clearly:
+- an AST allowlist is described as a sandbox;
+- a runtime protocol check is described as signature validation;
+- a `finally` block is described as universal rollback;
+- an import hook is described as local because it matches one module;
+- a metaclass is approved because it removes boilerplate, without naming class-creation
+  ownership.
 
-- why `eval` and `exec` must be governed by trust boundaries and real isolation claims
-- what ABCs, protocols, and `__subclasshook__` can and cannot promise honestly
-- how dynamic behavior stays observable, reversible, and testable
-- why import hooks and AST transforms usually belong to tooling-grade problems
-- how to choose the lowest-power mechanism and justify escalation only when ownership demands it
+This module replaces those claims with evidence. For every mechanism, you will name:
 
-## One-day study route for a missed-class learner
+1. the design pressure;
+2. the smallest honest owner;
+3. execution timing and blast radius;
+4. an observation route;
+5. rollback or refusal behavior;
+6. the proof and its limits.
 
-Treat this module like a review practicum, not a final tour of runtime tricks.
+## Prerequisites
 
-| Study block | What to produce before moving on |
+Before starting, you should be able to:
+
+- read a traceback and a focused unit test;
+- explain attribute lookup, descriptors, decorators, and class creation;
+- distinguish class definition from instance construction;
+- run commands from `programs/python-programming/python-meta-programming`;
+- read JSON as evidence rather than as application output.
+
+If class creation timing is still uncertain, revisit
+[Module 09](../module-09-metaclass-design-class-creation/index.md). If descriptor
+ownership is uncertain, revisit
+[Module 08](../module-08-descriptor-systems-validation-framework-design/index.md).
+
+## Start with executable evidence
+
+From the course root, run:
+
+```console
+make runtime-governance-lab
+make runtime-governance-lab-test
+```
+
+The first command prints one deterministic JSON packet. The second runs the focused tests
+behind its claims. The packet has five top-level surfaces:
+
+| Evidence key | Question it answers |
 | --- | --- |
-| overview plus dynamic-execution page | one trust-boundary note naming who controls the input, what boundary really exists, and which lower-power owner was rejected first |
-| interface plus observability pages | one contract note and one rollback note showing what the mechanism proves and how baseline state returns |
-| import-hooks plus mechanism-selection pages | one escalation worksheet naming the first simpler owner and the first operational cost of going higher-power |
-| worked example | one runtime-governance packet naming chosen powers, refused stronger powers, observational surfaces, and reset surfaces |
-| exercises plus answers | one review packet another learner could use to approve, constrain, or reject a dynamic design without hearing you explain it live |
+| `dynamic_execution` | Which syntax is accepted, what is refused, and why is this not a sandbox? |
+| `interface_contracts` | Which claims belong to ABCs, protocols, and `__subclasshook__`? |
+| `reversible_patching` | What changes inside the patch scope, and what identity returns afterward? |
+| `tooling_boundaries` | What does a hook or transform own, and does no-hook mode still work? |
+| `mechanism_selection` | Why was each proposed power approved, constrained, or rejected? |
 
-If you cannot produce the artifact for a block, do not move on because the prose sounded
-reasonable. Module 10 gets weak when judgment language feels familiar before evidence
-becomes concrete.
+Do not merely check that the commands pass. Pick one claim and locate all three parts:
 
-## The review route through the module
+- the implementation under `labs/runtime_governance/`;
+- the focused test under `tests/test_runtime_governance_*.py`;
+- the learner-facing explanation in this module.
 
-Use the module in this order when you are reviewing a dynamic design:
+That triangle—lesson, code, proof—is the basic unit of study.
 
-| If the design pressure starts with... | Read this first | Then ask... |
+## The five-core progression
+
+Read the cores in order. Each introduces a stricter review question.
+
+| Core | New question | Observable learner work |
 | --- | --- | --- |
-| untrusted expressions, generated code, or "safe eval" claims | [Dynamic Execution, Trust Boundaries, and Process Isolation](dynamic-execution-trust-boundaries-and-process-isolation.md) | where is the real process boundary, and what lower-power model was rejected? |
-| interface language, duck typing, or runtime capability checks | [Interface Contracts with ABCs, Protocols, and `__subclasshook__`](interface-contracts-with-abcs-protocols-and-subclasshook.md) | what is nominal, structural, shallow, or truly behavioral here? |
-| wrappers, registries, flags, patches, or tracing layers | [Observability, Reversibility, and Monkey-Patching Boundaries](observability-reversibility-and-monkey-patching-boundaries.md) | what stays visible, what resets cleanly, and what hot path pays the cost? |
-| import machinery, code rewriting, or "automatic discovery" | [Import Hooks, AST Transforms, and Tooling Boundaries](import-hooks-ast-transforms-and-tooling-boundaries.md) | is this tooling-grade, and how does it preserve cleanup and evidence? |
-| a final choice between two or more mechanisms | [Mechanism Selection, Review Gates, and Escalation Boundaries](mechanism-selection-review-gates-and-escalation-boundaries.md) | what is the lowest-power honest owner, and what proves escalation is earned? |
+| [Dynamic Execution](dynamic-execution-trust-boundaries-and-process-isolation.md) | Where does syntax narrowing stop and isolation begin? | Classify an accepted expression and a refused hostile-input design. |
+| [Interface Contracts](interface-contracts-with-abcs-protocols-and-subclasshook.md) | What does each interface mechanism actually prove? | Match nominal, static structural, and shallow runtime claims to owners. |
+| [Observability and Reversibility](observability-reversibility-and-monkey-patching-boundaries.md) | Can another engineer see and undo the runtime change? | Prove restoration after both success and failure. |
+| [Tooling Boundaries](import-hooks-ast-transforms-and-tooling-boundaries.md) | Does process-wide power belong in the application at all? | Record hook events, cleanup, no-hook behavior, and transform provenance. |
+| [Mechanism Selection](mechanism-selection-review-gates-and-escalation-boundaries.md) | Has a higher-power mechanism earned approval? | Publish a decision with lower-power comparison, blast radius, rollback, and proof. |
 
-## Weak answers to reject early
+The sequence matters. You cannot make a defensible mechanism choice before you can size
+the trust claim, contract claim, rollback claim, and process-wide effects.
 
-Do not let the module collapse into any of these:
+## Study loop for each core
 
-| Weak answer | Why it fails |
-| --- | --- |
-| "The runtime can enforce it automatically." | Automation is not ownership, observability, or reversibility. |
-| "We restricted globals, so it is safe enough." | Namespace control is not a real hostile-input boundary. |
-| "The protocol or ABC proves the contract." | Interface surfaces do not prove deep behavior by themselves. |
-| "The import hook is worth it because it feels seamless." | Seamlessness is often hidden blast radius in disguise. |
-| "The wrapper is tiny, so rollback does not matter." | Small dynamic surfaces still need visibility and cleanup. |
+Use the same deliberate loop without turning the pages into a mechanical template:
 
-## Fast diagnostic for runtime-governance overreach
+```mermaid
+flowchart TD
+  pressure["Name the pressure"] --> predict["Predict timing and owner"]
+  predict --> run["Run the smallest evidence route"]
+  run --> inspect["Inspect one implementation and test"]
+  inspect --> limit["Write what the evidence does not prove"]
+  limit --> transfer["Compare with the capstone decision"]
+```
 
-Use this table before you accept a design as "still worth the dynamic power."
+Stop after `predict` and write down what you expect. If you run first, it is easy to
+mistake recognition for understanding.
 
-| If you notice... | Pause and ask... | Likely outcome |
+## What the lab deliberately does not claim
+
+The lab is small so that runtime causality remains traceable. Its boundaries are part of
+the lesson:
+
+- the arithmetic evaluator accepts bounded internal arithmetic; it is not safe for
+  adversarial source;
+- `@runtime_checkable` checks attribute presence, not compatible signatures;
+- the scoped patch restores ordinary Python state, but other threads may observe the
+  replacement and a process crash cannot execute cleanup;
+- the import hook exists for a tooling experiment, not application discovery;
+- the AST transform operates on trusted static source and reports its replacement count;
+- the decision report is review evidence, not an automated security verdict.
+
+Any answer that removes these limits has weakened the design.
+
+## Independent-study route
+
+Use these blocks if you are studying without an instructor.
+
+| Block | Work | Move forward when... |
 | --- | --- | --- |
-| safety language grows faster than the real boundary | what exact process or operational boundary exists outside the current interpreter? | the claim is probably overreaching |
-| interface language sounds stronger than tests | what behavior still lives outside the contract surface? | the interface claim is too large |
-| patches or registries change state silently | what reset or observation surface proves current runtime state? | the design is not reviewable enough yet |
-| import-time or process-wide behavior is justified with convenience | is this tooling-grade, or is ordinary application wiring being dressed up? | escalation is probably too strong |
-| no one can write a clean rejection sentence | what lower-power owner was actually compared first? | the selection process is still under-argued |
+| orient | run both lab commands and inspect the JSON keys | you can map every key to one source file and one test file |
+| explain | study the five cores in order | you can state one honest claim and one non-claim per mechanism |
+| apply | read the [worked example](worked-example-reviewing-a-plugin-runtime-for-observability-and-control.md) | you can explain why the capstone rejects powers it could technically implement |
+| practice | complete the [evidence studio](exercises.md) without the answers open | every decision includes runnable evidence and a preserved earlier contract |
+| review | use the [answer key](exercise-answers.md) as a review rubric | you can identify both a wrong turn and the exact proof limit |
+| transfer | run `make capstone-governance` | you can defend or challenge each capstone decision from evidence |
 
-## Keep these pages open
+Keep the [Module Glossary](glossary.md) beside the review packet when terms such as
+blast radius, observation route, or refusal boundary need a stable meaning.
 
-- [Mastery Map](../module-00-orientation/mastery-map.md)
-- [Boundary Review Prompts](../reference/boundary-review-prompts.md)
-- [Review Checklist](../reference/review-checklist.md)
-- [Capstone Proof Guide](../capstone/capstone-proof-guide.md)
+If you return after a long break, rerun the two lab commands and reconstruct the
+lesson-code-proof triangle for one key. Do not restart by rereading every page passively.
 
-## The ten files in this module
+## The capstone transfer
 
-1. Overview (`index.md`)
-2. [Dynamic Execution, Trust Boundaries, and Process Isolation](dynamic-execution-trust-boundaries-and-process-isolation.md)
-3. [Interface Contracts with ABCs, Protocols, and `__subclasshook__`](interface-contracts-with-abcs-protocols-and-subclasshook.md)
-4. [Observability, Reversibility, and Monkey-Patching Boundaries](observability-reversibility-and-monkey-patching-boundaries.md)
-5. [Import Hooks, AST Transforms, and Tooling Boundaries](import-hooks-ast-transforms-and-tooling-boundaries.md)
-6. [Mechanism Selection, Review Gates, and Escalation Boundaries](mechanism-selection-review-gates-and-escalation-boundaries.md)
-7. [Worked Example: Reviewing a Plugin Runtime for Observability and Control](worked-example-reviewing-a-plugin-runtime-for-observability-and-control.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
-10. [Glossary](glossary.md)
+Only after the course lab is understood, run:
 
-## How to use the file set
+```console
+make capstone-governance
+```
 
-| If you need to... | Start here |
-| --- | --- |
-| draw the hard line around `compile`, `eval`, and `exec` | [Dynamic Execution, Trust Boundaries, and Process Isolation](dynamic-execution-trust-boundaries-and-process-isolation.md) |
-| compare runtime interfaces without overstating what they prove | [Interface Contracts with ABCs, Protocols, and `__subclasshook__`](interface-contracts-with-abcs-protocols-and-subclasshook.md) |
-| keep wrappers, registries, and patches observable and reversible | [Observability, Reversibility, and Monkey-Patching Boundaries](observability-reversibility-and-monkey-patching-boundaries.md) |
-| judge whether import machinery changes belong to tooling or ordinary app design | [Import Hooks, AST Transforms, and Tooling Boundaries](import-hooks-ast-transforms-and-tooling-boundaries.md) |
-| decide whether a higher-power mechanism truly earns approval | [Mechanism Selection, Review Gates, and Escalation Boundaries](mechanism-selection-review-gates-and-escalation-boundaries.md) |
-| see those decisions applied to one real runtime | [Worked Example: Reviewing a Plugin Runtime for Observability and Control](worked-example-reviewing-a-plugin-runtime-for-observability-and-control.md) |
-| pressure-test your review habits before closing the course | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the governance vocabulary used in this directory | [Glossary](glossary.md) |
+The command is observational: it does not construct or execute a plugin. Its report
+documents the shipped runtime's decisions:
 
-## Evidence packet to build while you learn
+- decorators, descriptors, `PluginMeta`, and inspection routes are approved for named
+  owners;
+- the process-global registry is constrained by deterministic ordering and reset
+  discipline;
+- runtime evaluation, application monkey patching, application import hooks, package
+  discovery during class creation, and automatic metaclass-conflict repair are rejected.
 
-Keep one packet beside the module as you work:
+Then use `make inspect` or `make capstone-tour` when you need the larger evidence bundle.
+The capstone supports transfer by making real consequences inspectable; it is not a
+substitute for doing the course exercises.
 
-| Surface | What to record |
-| --- | --- |
-| trust boundary notes | where safety claims stop and where real isolation begins |
-| contract notes | what each interface surface proves and what it does not |
-| reset and disable notes | how registries, wrappers, hooks, or patches restore baseline state |
-| escalation notes | which lower-power owner was rejected first and why |
-| review notes | one explicit rejection rule and one explicit approval rule |
+## Mastery standard
 
-Use one more quality bar on the packet:
+You are ready to finish the course when you can review an unfamiliar dynamic proposal and
+produce all of the following without relying on mechanism prestige:
 
-- another learner should be able to point to one stopped safety claim, one reset surface, and one rejected lower-power owner without needing your verbal context
+- a pressure statement that does not presuppose the implementation;
+- an owner and timing trace;
+- a lower-power comparison;
+- a public-surface and blast-radius statement;
+- an observation and rollback plan;
+- focused proof;
+- a precise statement of what remains unproved;
+- an approve, constrain, or reject decision.
 
-## The running question
-
-Carry this question through every page:
-
-> Which runtime powers are still defensible once debugging cost, observability, reversibility, and team trust become the real review criteria?
-
-Strong Module 10 answers usually mention one or more of these:
-
-- trust boundaries that stop at what the process can really enforce
-- interface claims sized to the actual strength of the mechanism
-- explicit cleanup, reset, and disable paths
-- tooling-grade powers rejected for ordinary application behavior
-- an escalation decision defended by timing and ownership rather than taste
-
-Carry one more question through every page:
-
-> If this mechanism fails at runtime, what evidence would let another engineer explain the failure quickly and restore baseline behavior safely?
-
-Add one final course-closing question:
-
-> if I removed the mechanism name from the discussion, would I still be able to explain the trust boundary, the reset path, and the reason a lower-power owner was rejected?
-
-## Learning outcomes
-
-By the end of this module, you should be able to:
-
-- review high-power runtime code with operational standards rather than aesthetic ones
-- separate trusted internal metaprogramming from unsafe in-process code execution claims
-- demand observability, reversibility, and proof surfaces before approving runtime magic
-- compare decorators, descriptors, metaclasses, and import hooks through ownership and blast radius
-- explain why the capstone stays defensible because its public review surfaces remain observational
-
-## Exit standard
-
-Do not leave the course until all of these are true:
-
-- you can name one higher-power mechanism you would reject and why a lower-power one still owns the problem
-- you can explain why restricted globals are not a security boundary
-- you can distinguish shallow interface checks from real behavioral proof
-- you can point to one reset, cleanup, or disable surface that makes a dynamic design reviewable
-- you can name one explicit rejection rule for a higher-power mechanism and one approval rule that still stays narrow
-
-When those feel ordinary, Module 10 has done its job and the course can end with judgment
-instead of with one more pile of mechanisms.
+The strongest final answer may be rejection. Mastery is not using every mechanism. It is
+knowing exactly which power the problem deserves.

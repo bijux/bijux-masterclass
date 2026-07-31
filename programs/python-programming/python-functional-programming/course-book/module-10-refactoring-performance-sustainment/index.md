@@ -1,6 +1,5 @@
 # Module 10: Refactoring, Performance, and Sustainment
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,72 +24,128 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+This final module is about maintaining the application you built, not imagining a
+different production platform. You will review one FuncPipe change from observable
+facts to an acceptance decision and learn where that decision remains uncertain.
 
-## Keep These Pages Open
+## Prerequisites
 
-Use these support surfaces while reading so the final module becomes a review and
-sustainment guide instead of one more topic pile at the end of the course:
+Before starting, you should be able to:
 
-- [Mastery Map](../module-00-orientation/mastery-map.md) for the late-course review route
-- [Review Checklist](../reference/review-checklist.md) for the stable engineering bar
-- [Self-Review Prompts](../reference/self-review-prompts.md) for self-review judgment checks
-- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for the full claim-to-evidence route through FuncPipe
+- explain the pure-core/effect-shell split from Module 07;
+- distinguish async completion order from output order from Module 08;
+- identify the value translation owned by a Module 09 adapter;
+- run one focused pytest command from `capstone/`; and
+- compare Module 09 with the live Module 10 endpoint.
 
-Carry this question into the module:
+If those feel distant, use the
+[Mastery Map](../module-00-orientation/mastery-map.md) to select the missing proof.
+Do not rerun the whole course merely to recover one contract.
 
-> Which design choices still pay for themselves under refactoring, performance pressure, team growth, and long-term review cost?
+## The module question
 
-This module is the long-term survival guide for the course. It focuses on how functional
-design choices age under performance pressure, team growth, changing contracts, and the
-need to prove behavior over time.
+> What evidence would let another maintainer accept this change for the right
+> reason, and what remains outside that evidence?
 
-## Learning outcomes
+The question matters because different changes need different proof. A function
+rename does not need a benchmark. An optimization does. A metadata contract change
+needs a translator and migration review. An optional backend proposal needs
+ordering, failure, delivery, and pressure semantics before installation matters.
 
-- how to refactor imperative code toward a layered functional design
-- how to think about performance, observability, and regression evidence together
-- how to evolve contracts, governance, and domain boundaries without losing clarity
-- how to judge whether the capstone is ready to be sustained, not only shipped
+Module 10 completes one missing product behavior and then makes change evidence
+reviewable:
 
-## Lesson map
+- query and ranked-result states become explicit immutable values;
+- one pure retrieval function scores and deterministically orders the local index;
+- shells collect observations;
+- pure functions classify evidence, performance, migration, and scaling facts;
+- `review_change` combines only the checks relevant to a proposed change; and
+- the resulting blockers remain inspectable values.
 
-- [Systematic Refactor](systematic-refactor.md)
-- [Performance Budgeting](performance-budgeting.md)
-- [Observability](observability.md)
-- [Property-Based Regression](property-based-regression.md)
-- [Async Property Testing](async-property-testing.md)
-- [Advanced Patterns and Scaling](advanced-patterns-and-scaling.md)
-- [DDD and FP](ddd-and-fp.md)
-- [Versioning and Migration](versioning-and-migration.md)
-- [Governance](governance.md)
-- [Capstone Delivery](capstone-delivery.md)
-- [Refactoring Guide](refactoring-guide.md)
+Read [Module 10 Capstone Delta](capstone-delta.md) before the cores. It names the
+exact Module 09-to-10 source and proof surfaces.
 
-## Exercises
+## Study sequence
 
-- Review one refactor proposal and explain what evidence would make it safe to merge instead of merely attractive.
-- Pick one performance or observability trade-off and state which contract must remain intact while tuning it.
-- Define one governance rule for the capstone and explain which regression or compatibility failure it prevents.
+### Complete and characterize the local product
 
-## Capstone checkpoints
+1. [Retrieval as Functional Composition](retrieval-as-functional-composition.md)
+   — turn the embedded index into ranked chunk values without hiding ordering or
+   overclaiming semantic relevance.
 
-- Review whether the codebase has evidence for correctness, not just commentary.
-- Inspect where performance trade-offs are explicit instead of accidental.
-- Check whether ownership, compatibility, and review standards are documented well enough to last.
+2. [Systematic Refactor](systematic-refactor.md) — characterize behavior before
+   moving code.
+3. [Performance Budgeting](performance-budgeting.md) — separate semantic
+   equivalence, measurement, and the budget decision.
+4. [Observability](observability.md) — retain execution facts without turning
+   metrics into hidden policy.
 
-## Before finishing the course
+### Strengthen the evidence
 
-You should be able to explain how the capstone can continue evolving without losing the
-semantics, boundaries, and review discipline the course spent ten modules building. Use
-[Refactoring Guide](refactoring-guide.md) and compare against
-`capstone/_history/worktrees/module-10` before you call the course complete.
+5. [Property-Based Regression](property-based-regression.md) — generate domain
+   cases for a stable semantic predicate.
+6. [Async Property Testing](async-property-testing.md) — vary scheduler pressure
+   while asserting ordering and boundedness laws.
+7. [Advanced Patterns and Scaling](advanced-patterns-and-scaling.md) — decide
+   whether a more complex execution route has earned its cost.
 
-## Closing criteria
+### Keep contracts understandable
 
-- You can describe how the codebase proves correctness, compatibility, and ownership over time.
-- You can judge whether a change proposal improves the system or only moves complexity around.
-- You can explain what makes the capstone maintainable two years from now, not only runnable today.
+8. [DDD and FP](ddd-and-fp.md) — assign language and review ownership without
+   inventing services.
+9. [Versioning and Migration](versioning-and-migration.md) — distinguish
+   structural compatibility from semantic translation.
+10. [Governance](governance.md) — connect each important claim to a narrow
+   executable route.
 
-## Directory glossary
+### Deliver the learning result
 
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+11. [Capstone Delivery](capstone-delivery.md) — assemble a review dossier for the
+    deterministic local application that actually exists.
+
+Use [Exercises](exercises.md) alongside the cores. Each exercise changes or reviews
+the live capstone and names an earlier contract that must survive. Open
+[Exercise Answers](exercise-answers.md) after producing your own evidence.
+
+## Your observable learner work
+
+By the end, produce one short change review containing:
+
+- the behavior being preserved or intentionally changed;
+- the source and tests that establish that behavior;
+- any performance, migration, or scaling decision that actually applies;
+- the focused command you ran and its result;
+- the blockers returned by the composed decision; and
+- one sentence stating what the evidence does not prove.
+
+This is more useful than a generic “production-ready” checklist. It makes the
+claim, application boundary, and proof route reviewable by another learner.
+
+## Smallest honest verification route
+
+From `capstone/`:
+
+```bash
+pytest -q tests/unit/review/test_change.py
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k change_review_composes_only_applicable_application_evidence
+```
+
+Use `make review-check` when you need to confirm that all published evidence paths
+are discoverable. That command does not execute their tests. Use the final course
+gate only after focused work passes.
+
+## Conditions for finishing
+
+You are ready to finish the course when you can:
+
+- reject a faster change that violates an independent budget;
+- explain why a present test path is not the same as a passing test;
+- require a semantic translator when shape comparison is insufficient;
+- keep observations separate from application control flow;
+- apply only the review checks relevant to the proposed change;
+- preserve Modules 01–09 while changing Module 10 review behavior; and
+- state the limits of every proof you cite.
+
+Use the [Refactoring Guide](refactoring-guide.md) for a final before-and-after
+review and the module [Glossary](glossary.md) when vocabulary becomes unstable.

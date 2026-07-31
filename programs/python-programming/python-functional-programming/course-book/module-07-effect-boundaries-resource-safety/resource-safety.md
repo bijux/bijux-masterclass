@@ -60,6 +60,46 @@ How do you guarantee resource cleanup — even on errors or partial stream consu
 
 You are now three steps away from a complete production-grade functional architecture.
 
+## Runnable lab: close a partially consumed file stream
+
+`FileStorage.read_docs` returns a generator that owns an open file while it is
+being consumed. Make acquisition and cleanup observable:
+
+```python
+events: list[str] = []
+
+def open_csv(*args: object, **kwargs: object) -> StringIO:
+    events.append("open")
+    return csv_file
+
+iterator = FileStorage().read_docs("docs.csv")
+assert events == []
+
+first = next(iterator)
+assert events == ["open"]
+assert not csv_file.closed
+
+iterator.close()
+assert csv_file.closed
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k partial_storage_read_closes_the_owned_file
+```
+
+Creating the generator is lazy. The first `next` enters the adapter's `with
+open(...)` block. Explicit `close` unwinds that block even though a second row
+remains unread.
+
+The consumer owns the active iterator and therefore owns early cleanup. Relying
+on garbage collection is a wrong turn: prompt finalization is an implementation
+detail, not a portable resource contract. A shell can use `contextlib.closing`
+when control flow makes explicit `close` awkward.
+
 ## 1. Laws & Invariants (machine-checked where possible)
 
 | Law / Invariant                    | Description                                                                                  | Enforcement          |

@@ -79,14 +79,29 @@ Once you can read rules this way, Make gets calmer.
 
 The most useful beginner correction is this one:
 
-- a source file is already true because it exists outside the build
-- a target is not yet true when Make starts
-- the recipe is the act that makes the promise real
+- a source leaf normally exists without a producing rule
+- a file target may already satisfy its promise when Make starts
+- Make checks the declared evidence before deciding whether the promise needs renewal
+- the owning recipe is the act that publishes a missing or stale target
 
 That framing helps with review. If a rule claims it owns `build/main.o`, then the recipe
 must be the only place that turns that path from "missing" into "published artifact."
 The target is not just a string on the left side of a colon. It is a promise about what a
 future file means.
+
+## Distinguish node roles
+
+| Role | Example | What Make does |
+| --- | --- | --- |
+| requested goal | command-line `app` | walks its prerequisite closure |
+| aggregate/action target | phony `all` or `clean` | represents a request rather than file freshness |
+| file target | `build/main.o` | checks existence and prerequisite freshness |
+| generated prerequisite | `build/config.h` | updates it before consumers |
+| source leaf | `src/main.c` | requires it to exist; no producer is needed |
+| missing unexplained leaf | misspelled `src/mian.c` | fails because no rule can make it |
+
+One path can be a target in one rule and a prerequisite in another. “Target” describes
+its position in a rule, not a permanent species of file.
 
 ## What Make is actually deciding
 
@@ -100,6 +115,42 @@ That is a smaller question, and it is why bad builds often feel surprising:
 - if the published file is broken, later decisions can still treat it as truth
 
 The bug is often not in the command. The bug is in the story the graph tells.
+
+## Walk the update decision
+
+For one file target, Make conceptually asks:
+
+```mermaid
+flowchart TD
+  needed["target lies in requested closure"] --> prereqs["update prerequisites"]
+  prereqs --> exists{"target exists?"}
+  exists -->|no| run["run owning recipe"]
+  exists -->|yes| newer{"normal prerequisite newer?"}
+  newer -->|yes| run
+  newer -->|no| skip["target is up to date"]
+  run --> result{"recipe and publication succeed?"}
+  result -->|yes| promise["target promise renewed"]
+  result -->|no| failure["request fails; rejected output must not look valid"]
+```
+
+Phony targets follow action semantics and are considered for execution whenever they are
+requested in the graph. Order-only prerequisites affect update order but not the
+newer-than test; Module 02 develops that distinction.
+
+## Predict from a state table
+
+Before running Make, write:
+
+| Target exists | Prerequisite state | Prediction |
+| --- | --- | --- |
+| no | prerequisites available | recipe runs |
+| yes | all normal prerequisites older | recipe skips |
+| yes | one normal prerequisite newer | recipe runs |
+| yes | one prerequisite missing with no rule | request fails |
+| yes | hidden recipe input changed | Make may skip dishonestly |
+
+The final row is why reading recipes still matters after reading the graph: Make cannot
+infer undeclared shell reads.
 
 ## A quick contrast: graph thinking vs script thinking
 
@@ -123,6 +174,20 @@ When a Makefile is unfamiliar, do not start with the longest recipe. Start here:
 
 That reading order keeps you focused on causality. A shell command can be complicated and
 still sit in a correct graph. A tiny shell command can sit in a lying graph.
+
+Then compare declared prerequisites with actual recipe observations:
+
+```text
+target:
+declared normal prerequisites:
+declared setup prerequisites:
+recipe file reads:
+recipe environment/tool inputs:
+recipe writes:
+```
+
+Every semantic read needs graph evidence or a deliberate documented external contract.
+The shell remains opaque to Make.
 
 ## A tiny Makefile worth reading slowly
 
@@ -205,6 +270,17 @@ Now ask the questions in order:
 
 That is the real reading pass. If you start with `$(CC)`, you start too late.
 
+Now challenge it:
+
+1. remove `app` and predict the closure that rebuilds;
+2. repeat unchanged and predict no work;
+3. change only `src/main.c` and predict one object plus the link;
+4. change `include/util.h` and predict both objects plus the link;
+5. add an undeclared header read and predict the stale-output failure after changing it.
+
+The fifth challenge tests completeness. A no-op build can be quiet because the graph is
+correct or because an edge is missing.
+
 ## Commands that make the graph visible
 
 Use these when your picture of the graph is fuzzy:
@@ -212,11 +288,34 @@ Use these when your picture of the graph is fuzzy:
 ```sh
 make -n all
 make --trace all
-make -p | sed -n '/^# Files/,/^# Finished Make data base/p'
+make -pRrq all > artifacts/learning/deep-dive-make/module-01-graph-truth/database.txt
 ```
 
-You do not need to memorize every line of output. You just need to get comfortable using
-Make's own evidence to confirm the graph you think you have.
+Create the artifact directory before redirecting. Query mode may return `1` when work is
+needed, so capture its exit separately rather than assuming the database is absent.
+
+Dry run predicts ordinary recipes; trace explains selected updates; the bounded database
+shows evaluated rules and variables. None proves that a recipe produced correct content.
+
+## Default goals and multiple requests
+
+Without `.DEFAULT_GOAL`, GNU Make normally chooses the first ordinary target it reads as
+the default. Include reordering can therefore change an accidental default.
+
+Declare intent:
+
+```make
+.DEFAULT_GOAL := all
+```
+
+A user can also request several goals:
+
+```sh
+make app report
+```
+
+Make takes the union of their needed graph. Do not design correctness around an assumed
+left-to-right shell-script sequence between independent goals.
 
 ## End-of-page checkpoint
 
@@ -226,6 +325,9 @@ Before leaving this page, make sure you can do all four:
 - explain why `.PHONY` does not belong on real artifacts
 - describe the object-file graph for the tiny C build without looking at the diagram
 - say which command you would run first if you wanted Make to explain a rebuild decision
+- distinguish a missing file target, an up-to-date file target, a source leaf, and a
+  phony action
+- challenge graph completeness with a relevant input mutation
 
 ## What to practice on this page
 

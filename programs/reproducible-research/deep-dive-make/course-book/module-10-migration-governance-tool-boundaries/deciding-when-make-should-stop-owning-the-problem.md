@@ -34,6 +34,22 @@ Teams usually get boundary decisions wrong in one of two ways:
 Both mistakes come from the same failure: nobody names what kind of responsibility is
 actually being owned.
 
+## Ownership has more than one dimension
+
+“Make owns deployment” can hide five different claims:
+
+| Ownership dimension | Question |
+| --- | --- |
+| decision | who decides that the action is allowed now? |
+| execution | who starts and performs the work? |
+| state | who records the authoritative current state? |
+| recovery | who decides whether to retry, compensate, or stop? |
+| evidence | who produces the durable acceptance or failure record? |
+
+Make may own execution of a local recipe without owning approval, remote state,
+recovery, or acceptance evidence. Name each dimension before deciding whether ownership
+should move.
+
 ## The sentence to keep
 
 When you are unsure about a boundary, ask:
@@ -82,6 +98,20 @@ Typical strong fits:
 
 This is not nostalgia. It is a match between model and problem.
 
+A practical test is whether the responsibility can be represented as a convergent file
+transaction:
+
+```mermaid
+flowchart LR
+  inputs["declared local inputs"] --> produce["deterministic producer"]
+  produce --> candidate["unpublished candidate"]
+  candidate --> verify["local validation"]
+  verify --> artifact["atomically published artifact"]
+  artifact --> quiet["unchanged request converges"]
+```
+
+When that model fits, Make can expose dependency, publication, and failure truth directly.
+
 ## What Make often only imitates
 
 Make is a weak owner when the responsibility is dominated by truth it cannot observe or
@@ -95,6 +125,24 @@ govern honestly:
 
 Make can still trigger those systems. Triggering is not the same as owning.
 
+Remote responsibilities usually look different:
+
+```mermaid
+stateDiagram-v2
+  [*] --> Submitted
+  Submitted --> Accepted: receiver validates request
+  Submitted --> Unknown: connection fails before response
+  Accepted --> Processing
+  Processing --> Published
+  Processing --> Rejected
+  Unknown --> Accepted: query by idempotency key
+  Unknown --> Submitted: retry only when receiver contract permits
+```
+
+The `Unknown` state is the boundary Make cannot resolve from a recipe exit code alone.
+The receiver may have accepted the request before the connection failed. Blindly rerunning
+a phony target can duplicate remote work.
+
 ## Use one ownership test
 
 Answer these questions in order:
@@ -107,6 +155,28 @@ Answer these questions in order:
 
 If questions 2 through 4 keep pointing to remote mutable state or external authority,
 Make should probably stop owning the problem.
+
+## Distinguish a launch command from a state machine
+
+Consider:
+
+```make
+.PHONY: publish
+publish: dist/report-bundle.tar.gz dist/report-bundle.tar.gz.sha256
+	./scripts/submit-release.sh $^
+```
+
+This can be a useful entrypoint, but its contract must stay narrow:
+
+- Make ensures the local artifact and checksum exist
+- the client submits an immutable artifact identity
+- the receiver owns acceptance, retry, approval, and publication state
+- success means the receiver returned a durable acceptance record, not that Make now owns
+  remote truth
+
+Do not model the remote system with a local `published.stamp` touched after an HTTP call.
+The stamp can become true while the service later rejects the release, or remain absent
+after the service accepted a request whose response was lost.
 
 ## A quick decision table
 
@@ -164,6 +234,58 @@ Example:
 Without this contract, teams end up with vague "release failed" incidents that mix build
 truth and remote-state truth together.
 
+## Require an immutable handoff identity
+
+A handoff object should be:
+
+- complete before submission
+- immutable for the lifetime of the request
+- addressable by a digest or release identity
+- accompanied by the metadata the receiver needs to validate it
+- independent of mutable workspace paths after acceptance
+
+An example request envelope:
+
+```json
+{
+  "release_id": "report-2026-07",
+  "artifact": "report-bundle.tar.gz",
+  "sha256": "4e8b...d19a",
+  "manifest_sha256": "82d1...77c0"
+}
+```
+
+The full digest values come from the actual artifacts. The release identity and artifact
+digest together can form an idempotency key if the receiver contract supports it.
+
+## Assign retry ownership before the first failure
+
+| Failure point | What is known | Responsible owner | Safe action |
+| --- | --- | --- | --- |
+| local package creation fails | no handoff object exists | Make-owned build | repair input or producer, then rebuild |
+| local verification fails | candidate is not acceptable | Make-owned build | reject before submission |
+| receiver rejects before acceptance | request was evaluated and refused | receiver/client contract | report reason; do not rebuild artifact unless reason concerns artifact |
+| connection fails with unknown acceptance | remote state is unknown | receiver state model | query by idempotency key before retry |
+| processing fails after acceptance | receiver owns accepted request | receiver | retry or compensate using receiver policy |
+| publication succeeds but local response is lost | remote success may already exist | receiver | retrieve durable receipt; do not submit a different artifact |
+
+“Retry three times” is not a boundary design. The owner must know whether the operation is
+idempotent and whether acceptance occurred.
+
+## Make the receipt reviewable
+
+The receiver's durable record should identify:
+
+- request or idempotency key
+- accepted artifact digest
+- acceptance time and responsible system
+- final state or a query route for current state
+- failure or rejection reason when applicable
+
+A local copy may be stored under `artifacts/` for review, but it is evidence about remote
+truth, not the authority that creates that truth. If the record is mutable, document how
+reviewers refresh and authenticate it.
+
 ## Keep proof alive on both sides of the boundary
 
 Boundary work often gets harder because the team moves ownership and deletes the evidence
@@ -176,6 +298,18 @@ Protect one proof route for each side:
   deployed the intended object
 
 If either side lacks proof, the ownership split is not yet healthy.
+
+Test the boundary with at least four receiver fixtures:
+
+| Fixture response | Expected sender behavior |
+| --- | --- |
+| accepts and returns receipt | preserve receipt tied to submitted digest |
+| rejects checksum | fail without changing local artifact |
+| returns acceptance after duplicate idempotency key | treat as the same request, not a second publication |
+| drops connection after accepting | query by key and recover receipt before any resubmission |
+
+A success-only mock teaches invocation, not ownership. The unknown-outcome fixture is the
+one that reveals whether retry truth lives in the right system.
 
 ## Good reasons to keep ownership in Make
 
@@ -230,6 +364,17 @@ This works when the boundary is explicit:
 
 Hybrid answers usually fail only when the handoff object or proof route is vague.
 
+## Compare three ownership designs
+
+| Design | Local artifact truth | Remote state truth | Main defect or strength |
+| --- | --- | --- | --- |
+| Make recipe builds and uploads mutable workspace files | mixed | inferred from exit code | rebuild and retry can change the submitted object |
+| Make builds immutable bundle; shell client owns ad hoc retry | clear | still partly hidden | handoff improves, but unknown outcomes remain weak |
+| Make builds and verifies bundle; receiver owns idempotent submission and receipts | clear | authoritative receiver | responsibility and recovery align with truth location |
+
+The middle design can be a useful bounded improvement. Do not describe it as the completed
+boundary if retry and acceptance remain opaque.
+
 ## Failure signatures that reveal the wrong owner
 
 These sentences are strong warning signs:
@@ -260,6 +405,8 @@ When you audit a suspicious boundary, write a short packet:
 4. proof route before handoff
 5. proof route after handoff
 6. recommended owner and why
+7. retry and unknown-outcome owner
+8. durable acceptance evidence
 
 If you cannot fill all six lines, the boundary is still under-described.
 
@@ -271,6 +418,7 @@ Take one target from an inherited repository and answer:
 2. where does the truth of that responsibility live?
 3. is Make modeling that truth directly or hiding another owner?
 4. what handoff object and evidence would exist if ownership moved?
+5. who resolves a lost response after possible acceptance?
 
 ## Exit check
 
@@ -280,3 +428,4 @@ You are ready to use this lesson when you can:
 - identify when Make is still the most honest owner of a responsibility
 - identify when another tool should own remote state, approval, or policy truth
 - write a concrete handoff contract instead of saying "the other system handles it"
+- assign retry, unknown-outcome recovery, and receipt ownership explicitly

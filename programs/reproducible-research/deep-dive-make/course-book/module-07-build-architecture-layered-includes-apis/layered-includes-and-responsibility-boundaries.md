@@ -166,6 +166,116 @@ flowchart LR
 This does not mean target-specific variables are always the best solution. It means the
 scope now matches the claim: release policy travels through the release branch.
 
+## The shared-prerequisite trap
+
+Target-specific values propagate to prerequisites. That is useful only when one
+prerequisite is not asked to represent conflicting meanings.
+
+Consider:
+
+```make
+.PHONY: ordinary release clean
+
+ordinary: MODE := ordinary
+release: MODE := release
+
+ordinary release: build/shared.txt
+
+build/shared.txt: | build/
+	@candidate=$@.candidate.$$$$; \
+	printf 'mode=%s\n' '$(MODE)' > "$$candidate" && \
+	mv -f "$$candidate" $@ || { rm -f "$$candidate"; exit 1; }
+
+build/:
+	mkdir -p $@
+
+clean:
+	rm -rf build
+```
+
+In one invocation, Make builds `build/shared.txt` at most once. If both goals are
+requested, the shared prerequisite inherits the target-specific value from the branch
+that causes it to be built first. Goal order can therefore select the artifact meaning:
+
+```sh
+gmake ordinary release
+gmake clean
+gmake release ordinary
+```
+
+If the artifact bytes differ between those requests, the architecture is ambiguous.
+Target-specific syntax narrowed policy scope but did not create two valid artifact
+identities.
+
+```mermaid
+flowchart TD
+  ordinary["ordinary\nMODE=ordinary"] --> shared["build/shared.txt\none path"]
+  release["release\nMODE=release"] --> shared
+  shared --> conflict{"which meaning\nowns the path?"}
+```
+
+This defect may remain hidden when ordinary and release goals are always run in separate
+workspaces. A combined-goal challenge exposes whether the graph itself has one stable
+answer.
+
+## Choose one of three honest repairs
+
+### Keep the shared prerequisite policy-neutral
+
+If both branches truly consume identical bytes, do not pass branch policy into the shared
+producer:
+
+```make
+ordinary release: build/shared.txt
+
+build/shared.txt: MODE := common
+```
+
+Specialize only downstream artifacts that have distinct meanings.
+
+### Give distinct meanings distinct paths
+
+If policy changes artifact meaning, encode the distinction in target identity:
+
+```make
+ordinary: build/ordinary/shared.txt
+release: build/release/shared.txt
+
+build/ordinary/shared.txt: MODE := ordinary
+build/release/shared.txt: MODE := release
+```
+
+The graph now contains two owned contracts rather than one path selected by traversal.
+
+### Stop specialization from reaching prerequisites
+
+GNU Make's `private` modifier keeps a target-specific value on the target itself:
+
+```make
+release: private RELEASE_LABEL := approved
+release: build/shared.txt
+	@printf '%s\n' '$(RELEASE_LABEL)' > build/release-label.txt
+```
+
+Use this only when the value affects the `release` recipe but not `build/shared.txt`.
+`private` is not a way to hide a real semantic input from a prerequisite.
+
+## Prove combined-goal stability
+
+For every target-specific policy that reaches prerequisites, test:
+
+| Challenge | Required evidence |
+| --- | --- |
+| ordinary goal alone | ordinary artifact identity and policy record |
+| specialized goal alone | specialized artifact identity and policy record |
+| both goals in each command-line order | identical contract result for both orders |
+| parallel combined goals | no competing writer or traversal-dependent artifact |
+| unchanged rerun | convergence for every produced identity |
+
+If distinct goal orders intentionally produce distinct artifacts, those artifacts need
+distinct target paths or isolated build roots. A shared final path cannot carry both
+contracts honestly.
+
 ## Why include order still matters
 
 Include order determines the sequence in which Make evaluates assignments and rules:
@@ -204,6 +314,20 @@ The distinction becomes useful during review:
 A file may legitimately contribute to more than one concern, but the reviewer should be
 able to state which decisions it owns. Names such as `common.mk`, `helpers.mk`, and
 `shared.mk` do not establish that boundary.
+
+Add one more review column:
+
+| Layer | Declares | May depend on | Must not decide |
+| --- | --- | --- | --- |
+| base policy | tool commands and repository defaults | platform contract | public target membership |
+| discovery | selected inputs and logical owners | base policy only when discovery needs a tool | release specialization |
+| graph | targets and prerequisite mapping | policy and discovery | external caller compatibility |
+| interface | public targets and parameter validation | graph contracts | private output mapping |
+| publication | final artifacts and evidence | graph-owned inputs | source discovery |
+
+This is a dependency direction, not a required filename layout. A repository may combine
+small responsibilities in one file, but it should still reject a publication layer that
+silently changes discovery or a policy layer that expands the public API.
 
 ## Optional includes require a stronger test
 
@@ -248,6 +372,8 @@ Work from the generated audit bundle.
 4. Explain why moving the global append into `artifacts.mk` would not repair the leak.
 5. Modify a disposable copy so `release` has a prerequisite. Confirm that the
    target-specific value reaches that prerequisite but not a separate `all` invocation.
+6. Make ordinary and release goals share that prerequisite, request the goals in both
+   orders, and decide whether the path must become policy-neutral or namespaced.
 
 A complete answer cites the finding, the relevant assignment, and the artifact contents.
 “The scoped version is cleaner” is not evidence.
@@ -261,3 +387,5 @@ You are ready to continue when you can explain:
 - how target-specific values travel to prerequisites
 - why include order and variable scope are separate concerns
 - which artifact proves `CROSS_LAYER_POLICY_LEAK_REPRODUCED`
+- why target-specific policy can still be ambiguous for a shared prerequisite
+- when `private`, policy-neutral prerequisites, or distinct output paths are appropriate

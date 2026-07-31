@@ -1,6 +1,5 @@
 # Module 02: Data Identity and Content Addressing
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,134 +9,259 @@ graph LR
   program["Deep Dive DVC"]
   section["Data Identity Content Addressing"]
   page["Module 02: Data Identity and Content Addressing"]
-  capstone["Capstone evidence"]
+  capstone["Data identity audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.proved through.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  locator["separate path from identity"] --> pointer["trace pointer to cache"]
+  pointer --> layers["map state layers"]
+  layers --> moves["interpret commands as moves"]
+  moves --> recovery["prove supplier and restored identity"]
+  recovery --> trust["apply semantic checks and limits"]
 ```
 <!-- page-maps:end -->
 
-Module 02 turns the first big DVC claim into something concrete:
+The path `data/observations.csv` can hold different bytes tomorrow. The same bytes can move
+to another path today. Reproducible data work therefore needs an identity stronger than a
+filename and a recovery claim stronger than “the pointer still exists.”
 
-paths are not identity.
+This module uses seven executable findings to teach:
 
-If a workflow still treats `data/train.csv` as if the filename itself were the truth, the
-rest of the program will stay brittle. Pipelines, experiments, release bundles, and
-recovery drills all depend on a more durable idea:
+- content identity follows bytes rather than location;
+- a DVC pointer connects identity to a workspace projection;
+- cache and remote are different availability layers;
+- commands move state between layers;
+- metadata alone cannot recover missing content;
+- exact byte recovery is necessary but not sufficient for scientific trust.
 
-- identity comes from content, not location
-- mutable workspace files are not the same thing as authoritative recorded state
-- caches and remotes are part of the trust model, not implementation trivia
+## Prerequisites
 
-This module is where you stop saying "the file is over there" and start saying "the
-system is claiming these exact bytes."
+You should be able to:
 
-The capstone corroboration surface for this module is the set of files and review routes
-that separate state layers and recovery: `dvc.lock`, `publish/v1/`, `make state-summary`,
-`make recovery-review`, `capstone/docs/stage-contract-guide.md`, and `capstone/docs/recovery-guide.md`.
+- run Make targets from the repository root;
+- read small YAML and JSON files;
+- use `jq`, `cat`, and `find`;
+- distinguish Git commits from generated workspace files;
+- explain a bounded evidence claim from Module 01.
 
-## Why this module exists
+No prior knowledge of DVC cache layout is required. The lesson derives the audited object
+address from the pointer.
 
-Many teams can describe where a file lives today and still cannot answer:
+## Learning outcomes
 
-- whether the same bytes existed last month
-- which copy is authoritative
-- how a lost workspace gets rebuilt honestly
-- why a renamed file can still represent the same data
+After completing the packet, you should be able to:
 
-This module repairs that confusion by replacing location-based thinking with
-content-based identity and explicit state layers.
+- disprove path-based identity with paired contrasts;
+- trace a pointer to matching cache bytes;
+- distinguish workspace, Git, cache, remote, and published state;
+- predict `add`, `push`, `pull`, and `checkout` as state moves;
+- isolate local cache and remote as recovery suppliers;
+- interpret a failed pointer-only checkout as required negative evidence;
+- write a recovery decision with exact identity and limits;
+- separate byte identity from schema, provenance, and scientific validity;
+- declare original content unrecoverable when no trusted copy survives.
 
-## Study route
+## Generate the audit
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
+```
+
+Evidence appears under:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/data-identity/
+```
+
+Begin:
+
+```bash
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/data-identity
+column -t -s $'\t' "$audit/summary.tsv"
+cat "$audit/route.txt"
+```
+
+The audit creates separate no-SCM DVC repositories for every case so recovery cannot
+borrow cache or remote state from another experiment.
+
+## Read the seven findings
+
+| Finding | Decision | Claim |
+| --- | --- | --- |
+| pointer names cached content | accept | metadata leads to matching local bytes |
+| same bytes share identity | accept | path change does not require identity change |
+| changed bytes change identity | accept | stable path does not preserve identity |
+| cache restores workspace | accept | local cache can project missing workspace content |
+| remote restores after cache loss | accept | remote can repopulate local layers |
+| remote recovery preserves identity | accept | recovered bytes match baseline identity |
+| pointer only is not recoverable | reject | metadata without supplier cannot restore |
+
+`PASS / REJECT` means the audit successfully reproduced a recovery claim that must be
+rejected.
+
+## The state model
+
+```mermaid
+flowchart TD
+  git["Git: pointer and declarations"] --> workspace["workspace projection"]
+  cache["local cache: managed object"] --> workspace
+  remote["DVC remote: shared managed object"] --> cache
+  pointer["pointer content ID"] --> cache
+  workspace --> semantic["schema and domain validation"]
+  semantic --> claim["trusted bounded use"]
+```
+
+The pointer tells DVC which content should appear where. Cache or remote must supply the
+bytes. Semantic checks decide whether exact bytes support the intended research claim.
+
+## Full study route
+
+| Reading | Question answered | Evidence action |
+| --- | --- | --- |
+| [Paths Are Locators, Not Data Identity](paths-are-locators-not-data-identity.md) | why is a filename too weak? | compare paired identity contrasts |
+| [Content Addressing, Cache, and Pointer Files](content-addressing-cache-and-pointer-files.md) | how does the pointer lead to bytes? | derive and verify cache object |
+| [Workspace, Git, Cache, Remote, and Published State](workspace-git-cache-remote-and-published-state.md) | which layer owns which claim? | build loss-state ledger |
+| [DVC Add, Push, Pull, and Checkout as State Moves](dvc-add-push-pull-and-checkout-as-state-moves.md) | what does each command prove? | read receipts with before/after state |
+| [Failure Modes, Recovery, and Trust](failure-modes-recovery-and-trust.md) | when is recovery trustworthy? | isolate supplier and verify semantics |
+| [Worked Investigation: Proving Data Recovery Boundaries](worked-investigation-proving-data-recovery-boundaries.md) | how do all findings form one argument? | execute identity and recovery route |
+| [Exercises](exercises.md) | can you produce independent proof? | build ten-artifact packet |
+| [Exercise Answers](exercise-answers.md) | where does reasoning overclaim? | revise against model evidence |
+| [Glossary](glossary.md) | are identity terms precise? | check language during review |
+
+Read in order on a first pass. Use the worked investigation before beginning the cumulative
+packet.
+
+## Diagnostic return route
+
+| Symptom | Begin with | Continue with |
+| --- | --- | --- |
+| same path contains surprising data | locator lesson | changed-content finding |
+| pointer exists but file is missing | state layers | recovery failure lesson |
+| checkout works but remote durability is uncertain | command moves | remote recovery case |
+| pull restores file but trust remains unclear | recovery and trust | semantic checks |
+| remote migration is planned | state layers | Module 07 stewardship |
+| published bundle survives but pipeline does not | state layers | Module 08 recovery |
+
+## Cumulative learning packet
+
+Exercises create:
+
+```text
+artifacts/learning/deep-dive-dvc/data-identity/
+├── identity-claim.md
+├── pointer-trace.tsv
+├── path-contrasts.md
+├── state-ledger.tsv
+├── command-receipts.md
+├── cache-recovery.md
+├── remote-recovery.md
+├── negative-recovery.md
+├── recovery-manifest.json
+└── review-packet.md
+```
 
 ```mermaid
 flowchart LR
-  overview["Overview"] --> core1["Core 1: paths are locators"]
-  core1 --> core2["Core 2: content addressing and pointer files"]
-  core2 --> core3["Core 3: workspace, Git, cache, remote, publish"]
-  core3 --> core4["Core 4: add, push, pull, checkout as state moves"]
-  core4 --> core5["Core 5: failure, recovery, and trust"]
-  core5 --> example["Worked example"]
-  example --> practice["Exercises and answers"]
-  practice --> glossary["Glossary"]
+  claim["identity claim"] --> pointer["pointer trace"]
+  pointer --> contrasts["path contrasts"]
+  contrasts --> ledger["state ledger"]
+  ledger --> commands["command receipts"]
+  commands --> cache["cache recovery"]
+  commands --> remote["remote recovery"]
+  commands --> negative["negative recovery"]
+  cache --> manifest["recovery manifest"]
+  remote --> manifest
+  negative --> review["review packet"]
+  manifest --> review
 ```
 
-Read the module in that order the first time.
+## Evidence reading order
 
-If the problem is already partly clear, use this shortcut:
+For any recovery claim:
 
-- open Core 1 when the main confusion is "why isn't the path enough?"
-- open Core 2 when the main confusion is "what does DVC actually record?"
-- open Core 3 when the main confusion is "which copy is authoritative?"
-- open Core 4 when the main confusion is "what is `dvc add` or `dvc pull` really doing?"
-- open Core 5 when the main confusion is "how does this help recovery rather than folklore?"
+1. record required content identity;
+2. preserve workspace/cache/remote before-state;
+3. identify the only trustworthy supplier;
+4. save raw command receipt;
+5. record after-state;
+6. compare restored content identity and independent digest;
+7. apply schema, provenance, and domain checks;
+8. state decision and limits.
 
-## Module map
-
-| Page | Purpose |
-| --- | --- |
-| [Overview](index.md) | explains the module promise and study route |
-| [Paths Are Locators, Not Data Identity](paths-are-locators-not-data-identity.md) | teaches why filenames and directories are not durable identity |
-| [Content Addressing, Cache, and Pointer Files](content-addressing-cache-and-pointer-files.md) | teaches how DVC records content identity and references it |
-| [Workspace, Git, Cache, Remote, and Published State](workspace-git-cache-remote-and-published-state.md) | teaches how the major DVC state layers differ |
-| [DVC Add, Push, Pull, and Checkout as State Moves](dvc-add-push-pull-and-checkout-as-state-moves.md) | teaches the main DVC commands as movements between state layers |
-| [Failure Modes, Recovery, and Trust](failure-modes-recovery-and-trust.md) | teaches how identity and recovery failures should be interpreted |
-| [Worked Example: Restoring a Dataset after Local Loss](worked-example-restoring-a-dataset-after-local-loss.md) | walks through one realistic recovery-oriented identity story |
-| [Exercises](exercises.md) | gives five mastery exercises |
-| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
-| [Glossary](glossary.md) | keeps the module vocabulary stable |
-
-## What should be clear by the end
-
-By the end of this module, you should be able to explain:
-
-- why a path is only a locator and not the identity of the data
-- how content addressing changes the trust story
-- how workspace, Git, cache, remote, and published state differ
-- what `dvc add`, `dvc push`, `dvc pull`, and `dvc checkout` actually move or restore
-- how identity and recovery failures should be read without mysticism
+Do not run recovery commands before preserving the state needed to prove what was lost.
 
 ## Commands to keep close
 
-These commands form the evidence loop for Module 02:
+Generate:
 
 ```bash
-make -C capstone state-summary
-make -C capstone manifest-summary
-make -C capstone recovery-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
 ```
 
-The point is not to memorize commands. It is to tie each state layer to a concrete file or
-bundle so you stop treating the repository as one undifferentiated blob.
-
-## Capstone route
-
-Use the capstone only after the state layers are already legible in your head.
-
-Best corroboration surfaces for this module:
-
-- `capstone/dvc.lock`
-- `capstone/publish/v1/manifest.json`
-- `capstone/docs/stage-contract-guide.md`
-- `capstone/docs/recovery-guide.md`
-- `capstone/docs/publish-contract.md`
-- `capstone/Makefile`
-
-Useful proof route:
+Enforce:
 
 ```bash
-make -C capstone state-summary
-make -C capstone manifest-summary
-make -C capstone recovery-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-selftest
 ```
 
-The point of that route is not to admire the capstone. It is to practice naming which
-layer is authoritative for which fact before trusting what you see.
+Inspect the rejected case:
+
+```bash
+jq '.findings[] |
+  select(.finding == "POINTER_ONLY_IS_NOT_RECOVERABLE")' \
+  artifacts/audit/reproducible-research/deep-dive-dvc/data-identity/report.json
+```
+
+## Common reasoning errors
+
+| Error | Correction |
+| --- | --- |
+| same path means same data | compare content identity |
+| different path means different data | compare bytes and pointer IDs |
+| pointer contains data | pointer contains metadata |
+| local cache is a backup | test governed remote recovery |
+| checkout proves remote health | checkout can use local cache |
+| pull success proves dataset validity | apply semantic contracts after identity |
+| one restored object proves remote completeness | bound claim to object and time |
+| plausible replacement is recovery | original identity must match |
+
+## Completion proof
+
+```bash
+learning=artifacts/learning/deep-dive-dvc/data-identity
+
+test -s "$learning/identity-claim.md"
+test -s "$learning/pointer-trace.tsv"
+test -s "$learning/path-contrasts.md"
+test -s "$learning/state-ledger.tsv"
+test -s "$learning/command-receipts.md"
+test -s "$learning/cache-recovery.md"
+test -s "$learning/remote-recovery.md"
+test -s "$learning/negative-recovery.md"
+jq empty "$learning/recovery-manifest.json"
+test -s "$learning/review-packet.md"
+```
+
+Explain:
+
+- Why can two paths share identity?
+- Why can one path change identity?
+- How does a pointer map to cache content?
+- What proves cache supplied one recovery?
+- What proves remote supplied another?
+- Why does pointer-only failure pass the audit?
+- What checks follow byte identity?
+
+## Transition to Module 03
+
+Module 02 makes data identity explicit. Module 03 adds runtime identity: even exact data
+bytes can produce different meaning under a changed execution environment.
+
+Carry forward:
+
+> Reproducibility needs both the exact content and the conditions under which that content
+> is interpreted.

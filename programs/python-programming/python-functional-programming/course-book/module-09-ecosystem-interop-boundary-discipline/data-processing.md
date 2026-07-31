@@ -204,28 +204,27 @@ df = df[df['categories'].str.contains('cs.AI')]
 df = df.assign(clean=lambda d: d['abstract'].str.strip()).loc[lambda d: d['categories'].str.contains('cs.AI')]
 ```
 ---
-## 5. Property-Based Proofs (repo tests)
-This repo only tests the stdlib-only pieces by default; dataframe adapters are optional and are exercised in downstream integration tests when the libraries are installed.
-```python
-from hypothesis import given, assume
-import hypothesis.strategies as st
-@given(st.lists(st.dictionaries(keys=st.sampled_from(['doc_id', 'abstract', 'categories']), values=st.text(min_size=0))))
-def test_chain_idempotence(data):
-    df = pd.DataFrame(data)
-    assume('abstract' in df.columns)
-    f = lambda d: d.assign(clean_abstract=d['abstract'].str.strip().str.lower())
-    assert f(f(df)).equals(f(df))  # Idempotent normalizing
-# Similar for Polars/Dask with strategies
-@given(st.lists(st.dictionaries(keys=st.sampled_from(['a', 'b']), values=st.integers())))
-def test_schema_invariance(data):
-    df = pd.DataFrame(data)
-    assume(all('a' in row and 'b' in row for row in data))
-    f = lambda d: d.assign(c=d['a'] + d['b'])
-    assert set(f(df).columns) == set(df.columns) | {'c'}  # Preserves + adds
+## 5. Executable proof
+
+The default repository proves the backend-independent contract in
+`tests/learning/test_module_09_interop.py`: record normalization is idempotent,
+preserves unrelated fields, and does not mutate caller-owned rows.
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k record_adapter_normalizes_without_mutating_boundary_input
 ```
+
+The default suite does not install pandas, Polars, or Dask and therefore makes no
+claim that their null and string semantics are interchangeable. A project that
+selects one of those backends must add an integration test for that backend.
 ---
-## 6. Runtime Preservation Guarantee
-Polars fastest for in-memory; Dask scales out; Pandas baseline.
+## 6. Runtime preservation boundary
+
+Backend names are not performance evidence. Dataset size, column types,
+materialization points, and shuffle behavior determine the useful choice. The
+stdlib record path is the semantic oracle for this lesson; profile a selected
+backend with representative data before claiming a speed or scale advantage.
 
 ---
 ## 7. Anti-Patterns & Immediate Fixes
@@ -244,9 +243,12 @@ Polars fastest for in-memory; Dask scales out; Pandas baseline.
 4. FP style? → **Pure transforms**
 5. Benefit? → **Composable data**
 
-## 9. Post-Core Exercise
-1. Refactor RAG load FP-style.
-2. Prove idempotence with Hypothesis.
+## 9. Post-core exercise
+
+Complete [Data processing: separate record normalization from dataframe
+choice](exercises.md#data-processing-separate-record-normalization-from-dataframe-choice).
+Your answer must distinguish permissive normalization from strict schema
+validation.
 
 **Pipeline Usage (Idiomatic)**
 ```python

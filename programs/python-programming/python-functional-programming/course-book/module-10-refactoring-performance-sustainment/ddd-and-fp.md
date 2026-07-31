@@ -1,5 +1,4 @@
-# DDD and FP
-
+# Domain Language and Review Ownership
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Functional Programming"]
   section["Refactoring Performance Sustainment"]
-  page["DDD and FP"]
+  page["Domain Language and Review Ownership"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,310 +24,190 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Domain-driven design contributes a useful question to functional code:
 
-**Module 10**
-> **Core question:**  
-> How do you structure large functional systems as independently evolvable bounded contexts with pure cores, explicit ports/events, verifiable isolation, and clear boundary contracts while preserving composability and law-based reasoning?
+> Which part of the application owns this language and its invariants?
 
-In this core, we restructure the FuncPipe RAG Builder (now at `funcpipe-rag-10`) as a set of bounded contexts. Each context is a self-contained functional domain owning:
-- its ubiquitous language (local types, errors, combinators),
-- pure core (invariants + pipelines),
-- explicit ports (inbound/outbound protocols),
-- versioned immutable domain events (built from primitives only),
-- anti-corruption layers (pure translators with minimal compatibility policy).
+It does not require turning every directory into a bounded context or every
+package into a service. FuncPipe remains one local application. Module 10 uses
+domain language to make review responsibility visible without reorganizing code
+for diagram symmetry.
 
-Contexts evolve independently. Orchestration is thin wiring governed by explicit platform-level policies (ordering, delivery, retries). Isolation is enforced statically (layered import-linter) and verified at runtime.
+## Read the existing application boundaries
 
-**Motivation Bug:** Monolithic pipelines create hidden coupling: a change in cleaning breaks indexing; scaling embedding requires redeploying everything; ownership is ambiguous.
+FuncPipe has five review groups:
 
-**Delta from Core 6:** Advanced patterns improve single-context pipelines; DDD+FP enables safe multi-context systems with independent evolution.
+| Group | Stable responsibility | Review owner |
+| --- | --- | --- |
+| `functional-core` | reusable algebra, results, trees, and streaming | `functional-foundations` |
+| `rag-model` | RAG values, stages, and domain assembly | `rag-domain` |
+| `orchestration-and-policy` | configured flow and explicit runtime choices | `pipeline-runtime` |
+| `effect-boundaries` | capabilities, shells, adapters, and concrete edges | `boundary-integrations` |
+| `interop` | ecosystem value translation | `ecosystem-interop` |
 
-**DDD+FP Contract (Normative):**
-- Each context owns its types, errors, invariants.
-- Core imports only stdlib + shared FP primitives (funcpipe.core, funcpipe.result, funcpipe.eq, funcpipe.combinators) + own context.
-- ACL imports upstream events + own context.
-- Communication via versioned immutable events (primitives only; no upstream types).
-  Event schema discipline: field names/semantics owned by producer context; downstream treats unknown fields as error (strict) or drops (lenient) – policy declared per consumer ACL.
-- Anti-corruption layers are pure translators with minimal compatibility policy (e.g., version gating).
-- Orchestration owns workflow and delivery guarantees (ordering, retries, dedup) as platform/system context policy – not domain invariants.
-- Isolation enforced via layered import-linter contracts (CI) + runtime smoke test.
+These are review routes, not claims of independent deployment. A group may span
+several Python directories when one change requires the same engineering
+judgment.
 
-Use this when you are building large, long-lived FP systems.
+## Ownership follows meaning
 
-**Outcome:**
-1. Split system into bounded contexts with local types/events.
-2. Enforce isolation with layered import-linter + runtime check.
-3. Version events (primitives only) + write compatibility PBT.
-4. Orchestrate with explicit platform policies.
+Consider a change touching:
 
----
-## 1. Laws & Invariants
-| Law                        | Description                                                                                  | Enforcement                          |
-|----------------------------|------------------------------------------------------------------------------------------------|--------------------------------------|
-| **Context Isolation**      | Core: stdlib + shared FP + own context only.<br>ACL: upstream events + own context only.<br>Adapters: infra + own context. | Layered import-linter + runtime smoke |
-| **Local Ubiquitous Language** | Domain concepts (types, errors, combinators) defined exactly once per context.              | Ownership matrix + linter            |
-| **Invariant Ownership**    | Each domain invariant belongs to exactly one context.                                         | PBT per context                      |
-| **Event Immutability**     | Domain events are frozen dataclasses built from primitives; versioned (v1, v2).              | frozen=True + mypy + PBT             |
-| **ACL Minimal Policy**     | ACLs are pure translators with minimal compatibility policy only (e.g., version gating).     | Reviews + PBT                        |
-| **Backward Compatibility** | New context versions accept old events; old versions reject unknown fields with typed error. | Two-way PBT compatibility suite      |
-
-These are enforceable engineering constraints.
-
----
-## 2. Decision Table
-| Signal                             | Single Context | Multiple Contexts          | Recommended                  |
-|------------------------------------|----------------|----------------------------|------------------------------|
-| Distinct terminology/invariants    | No             | Yes                        | Multiple                     |
-| Divergent change cadence           | No             | Yes                        | Multiple                     |
-| Different scaling / tech needs     | No             | Yes                        | Multiple                     |
-| Different failure semantics        | No             | Yes                        | Multiple                     |
-| Shared evolution pace              | Yes            | Risky                      | Single                       |
-
-**Split when any signal is "Yes".**
-
----
-## 3. Public API (Context Blueprint)
 ```text
-contexts/
-  cleaning/
-    __init__.py      # re-exports core + ports + events only
-    types.py         # RawDoc, CleanDoc, CleaningError
-    core.py          # pure functions + pipelines
-    ports.py         # InboundRawSource, OutboundCleanSink
-    events.py        # CleanDocProducedV1(frozen=True, primitives only)
-    acl.py           # translate_from_upstream(event) -> Result[ChunkingIngressV1, ChunkingTranslationError]
-    config.py        # CleaningConfig
+src/funcpipe_rag/pipelines/configured.py
+src/funcpipe_rag/policies/retry.py
 ```
 
-Adapters are internal; consumers import only core/ports/events.
+Both belong to `orchestration-and-policy`. The durable question is how a pipeline
+assembles policy, so `pipeline-runtime` reviews the combined change.
 
----
-## 4. Reference Implementations
-### 4.1 Context-Local Types & Errors
+If the same work also changes:
+
+```text
+src/funcpipe_rag/boundaries/adapters/storage.py
+```
+
+then `boundary-integrations` joins the review because concrete storage translation
+and lifecycle are now affected.
+
+Counting directories would produce three owners. Following responsibility
+produces the two kinds of judgment the change actually needs.
+
+```mermaid
+flowchart LR
+    change["Proposed change"]
+    pipeline["configured pipeline"]
+    retry["retry policy"]
+    adapter["storage adapter"]
+    runtime["pipeline-runtime"]
+    boundary["boundary-integrations"]
+
+    change --> pipeline --> runtime
+    change --> retry --> runtime
+    change --> adapter --> boundary
+```
+
+## Keep application language local
+
+RAG terms belong in the RAG model:
+
+- document;
+- chunk;
+- embedding;
+- metadata;
+- ranking or retrieval result.
+
+Operational terms belong in orchestration and policy:
+
+- retry decision;
+- concurrency limit;
+- timeout;
+- circuit state;
+- materialization policy.
+
+Boundary terms describe translation and effects:
+
+- storage adapter;
+- filesystem shell;
+- web payload;
+- serialization;
+- clock capability.
+
+When `ChunkMetadata` starts carrying retry counters, domain and operational
+language have crossed without an earned reason. When a retry policy imports a
+concrete filesystem adapter, policy and effect ownership have crossed.
+
+The first response should be to clarify the value boundary, not split the
+application into services.
+
+## What would justify a larger boundary?
+
+A separate bounded context may be useful when several signals persist:
+
+- the same term has genuinely different meanings;
+- invariants change independently;
+- translation between the meanings is unavoidable;
+- different owners must make changes at different cadences; and
+- the separation reduces, rather than relocates, coupling.
+
+One different package name or one scalability idea is not enough. FuncPipe does
+not have this pressure in Module 10, so it keeps its current package architecture.
+
+## The executable ownership proof
+
+`PACKAGE_GROUPS` in the review shell publishes the group, paths, purpose, tests,
+and owner. The learning proof asserts the complete owner mapping:
+
 ```python
-# contexts/cleaning/types.py
-from dataclasses import dataclass
+ownership = {
+    group["name"]: group["owner"]
+    for group in build_summary(PROJECT_ROOT)["package_groups"]
+}
 
-@dataclass(frozen=True)
-class CleaningError:
-    code: str
-    message: str
-
-@dataclass(frozen=True)
-class RawDoc:
-    doc_id: str
-    title: str
-    abstract: str
-    categories: str  # space/comma-separated
-
-@dataclass(frozen=True)
-class CleanDoc:
-    doc_id: str
-    title: str
-    abstract: str
-    categories: str
+assert ownership == {
+    "functional-core": "functional-foundations",
+    "rag-model": "rag-domain",
+    "orchestration-and-policy": "pipeline-runtime",
+    "effect-boundaries": "boundary-integrations",
+    "interop": "ecosystem-interop",
+}
 ```
 
-### 4.2 Pure Core with Local Invariants
-```python
-# contexts/cleaning/core.py
-import re
-from .types import RawDoc, CleanDoc, CleaningError
-from .config import CleaningConfig
-from funcpipe.core import Result, Ok, Err
+Run:
 
-def _has_allowed_category(categories: str, prefixes: tuple[str, ...]) -> bool:
-    """Precondition: categories is space/comma-separated list of tags.
-    Invariant: at least one tag has an allowed prefix."""
-    cats = re.split(r"[,\s]+", categories.strip())
-    return any(any(cat.startswith(p) for p in prefixes) for cat in cats)
-
-def clean_doc(raw: RawDoc, cfg: CleaningConfig) -> Result[CleanDoc, CleaningError]:
-    if len(raw.abstract) < cfg.min_abstract_length:
-        return Err(CleaningError("too_short", f"abstract < {cfg.min_abstract_length} chars"))
-    if not _has_allowed_category(raw.categories, cfg.allowed_prefixes):
-        return Err(CleaningError("irrelevant_category", f"no prefix in {cfg.allowed_prefixes}"))
-    cleaned_abstract = raw.abstract.lower().strip()
-    return Ok(CleanDoc(
-        doc_id=raw.doc_id,
-        title=raw.title.strip(),
-        abstract=cleaned_abstract,
-        categories=raw.categories,
-    ))
+```bash
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k package_groups_name_review_ownership_not_only_directories
+funcpipe-rag-review summary --format text --project-root .
 ```
 
-### 4.3 Versioned Domain Event (Primitives Only)
-```python
-# contexts/cleaning/events.py
-from dataclasses import dataclass
-from typing import Literal
+Read the group purposes beside the owners. An owner label without a stated
+responsibility is only a name.
 
-@dataclass(frozen=True)
-class CleanDocProducedV1:
-    version: Literal["1"] = "1"
-    doc_id: str
-    title: str
-    abstract: str
-    categories: str
-    produced_at_ms: int
-```
+## Failure routes
 
-### 4.4 Anti-Corruption Layer (Pure Translator with Minimal Compatibility Policy)
-```python
-# contexts/chunking/acl.py
-from contexts.cleaning.events import CleanDocProducedV1
-from .types import ChunkingIngressV1, ChunkingTranslationError
-from funcpipe.core import Result, Ok, Err
+### One bounded context per directory
 
-def from_clean_doc_produced(event: CleanDocProducedV1) -> Result[ChunkingIngressV1, ChunkingTranslationError]:
-    if event.version != "1":
-        return Err(ChunkingTranslationError("unsupported_version", f"v{event.version}"))
-    return Ok(ChunkingIngressV1(
-        doc_id=event.doc_id,
-        text=event.abstract,
-        metadata={"title": event.title, "categories": event.categories, "cleaned_at_ms": event.produced_at_ms},
-    ))
-```
+This confuses filesystem organization with domain meaning and creates translation
+work that the application does not need.
 
-### 4.5 Ports Example
-```python
-# contexts/cleaning/ports.py
-from typing import Protocol, AsyncIterator
-from funcpipe.core import Result
-from .types import RawDoc, CleanDoc, CleaningError
+### Moving files to match a diagram
 
-class InboundRawSource(Protocol):
-    async def raw_docs(self) -> AsyncIterator[Result[RawDoc, CleaningError]]: ...
+Package churn risks imports and generated history while leaving the underlying
+responsibilities unchanged.
 
-class OutboundCleanSink(Protocol):
-    async def store(self, docs: AsyncIterator[Result[CleanDoc, CleaningError]]) -> None: ...
-```
+### One owner for the whole repository
 
-### 4.6 Layered Import-Linter Contracts (Runnable INI)
-```ini
-[importlinter]
-root_package = contexts
+The label is easy to maintain but does not tell a reviewer which knowledge a
+change requires.
 
-[importlinter:contract:core_isolation]
-name = Core isolation
-type = forbidden
-source_modules = contexts.*.core
-forbidden_modules = contexts.*
-ignore_imports =
-    contexts.*.core -> contexts.*.types
-    contexts.*.core -> contexts.*.config
-    contexts.*.core -> funcpipe.*
+### Naming current people
 
-[importlinter:contract:acl_upstream_events]
-name = ACL upstream events only
-type = forbidden
-source_modules = contexts.*.acl
-forbidden_modules = contexts.*
-ignore_imports =
-    contexts.chunking.acl -> contexts.cleaning.events
-    contexts.embedding.acl -> contexts.chunking.events
-    # etc.
-```
+Personal names age quickly and make responsibility depend on one staffing moment.
+Use stable capability labels in the teaching application.
 
-### 4.7 Runtime Isolation Smoke Test
-```python
-# ci/test_runtime_isolation.py
-import importlib
-import pytest
+### Ownership as authority proof
 
-@pytest.mark.parametrize("context", ["cleaning", "chunking", "embedding", "indexing"])
-def test_context_core_imports_clean(context):
-    core = importlib.import_module(f"contexts.{context}.core")
-    assert core.__name__.endswith(".core")
-```
+The report can state who should review a group. It cannot enforce approvals or
+prove that an organization has assigned those people.
 
-### 4.8 Event Evolution Rules
-- Additive optional fields → minor version.
-- Breaking rename/remove → major version.
-- Converters live in downstream ACL.
-- Compatibility PBT verifies new accepts old + old rejects new with explicit error.
+## What the evidence proves
 
-### 4.9 Orchestration Shell with Platform Policy
-```python
-# shell.py
-import logging
-from contexts.cleaning import CleaningContext
-from contexts.chunking.acl import from_clean_doc_produced
-from contexts.chunking import ChunkingContext
+The focused test proves that every published review group has the expected stable
+responsibility label. The summary makes the paths and tests for each group
+inspectable.
 
-logger = logging.getLogger(__name__)
+It does not prove:
 
-@dataclass(frozen=True)
-class OrchestrationPolicy:
-    batch_size: int = 128
-    ordering: Literal["stable", "unordered"] = "stable"
-    delivery: Literal["at-least-once", "at-most-once"] = "at-least-once"
-    dedup_key: Callable[[CleanDocProducedV1], Hashable] | None = lambda e: e.doc_id
-    retry_policy: RetryPolicy = field(default_factory=lambda: RetryPolicy(max_attempts=3))
+- independent deployability;
+- organizational approval rules;
+- absence of every cross-package dependency;
+- that five groups are ideal for all future changes; or
+- that review ownership alone preserves domain invariants.
 
-async def rag_orchestration(cfg: GlobalConfig, policy: OrchestrationPolicy):
-    cleaning = CleaningContext(cfg.cleaning)
-    chunking = ChunkingContext(cfg.chunking)
+The mapping is a learning and sustainment aid for the application that exists.
+Change it when domain responsibility changes, not when a new diagram looks
+attractive.
 
-    seen = set() if policy.delivery == "at-most-once" else None
-
-    async for raw_batch in batch_source(cfg.source_path, policy.batch_size):
-        clean_events = await cleaning.process_batch(raw_batch)
-        for event in clean_events:
-            key = policy.dedup_key(event) if policy.dedup_key else None
-            if seen is not None and key in seen:
-                continue
-            translated = from_clean_doc_produced(event)
-            if translated.is_err():
-                logger.warning("ACL failure: %s", translated.err())
-                continue
-            ingest = lambda: chunking.ingest(translated.ok())
-            result = await policy.retry_policy.run(ingest)
-            if result.is_ok() and seen is not None and key is not None:
-                seen.add(key)  # ack-based dedup
-```
-
----
-## 5. Property-Based Proofs
-Per-context PBT as before + compatibility suite + runtime isolation.
-
----
-## 6. Runtime Preservation Guarantee
-Contexts independently deployable/testable/scalable; versioned events enable rolling upgrades; platform policies control cross-context behaviour.
-
----
-## 7. Anti-Patterns & Immediate Fixes
-| Anti-Pattern               | Symptom                          | Fix                                      |
-|----------------------------|----------------------------------|------------------------------------------|
-| Shared domain types        | Evolution deadlock               | Local types + primitive events           |
-| Direct cross-context calls | Hidden coupling                  | Ports/events only                        |
-| Policy in shell            | Domain logic in orchestration    | Explicit platform policy objects         |
-| Unversioned events         | Breaking changes without notice  | Versioned primitive events + compatibility PBT |
-
----
-## 8. Pre-Core Quiz
-1. Context owns…? → **Types, errors, invariants, language**  
-2. Cross-context…? → **Versioned primitive events + ACL**  
-3. Isolation enforced by…? → **Layered import-linter + runtime smoke**  
-4. Orchestration is…? → **Thin wiring + platform policy**  
-5. Benefit…? → **Independent evolution + clear ownership**
-
-## 9. Post-Core Exercise
-1. List bounded contexts in your system.  
-2. Extract one to local types + primitive events + ACL.  
-3. Add layered import-linter rules + runtime isolation test.  
-4. Write two-way compatibility PBT.
-
-**Pipeline Usage (Idiomatic)**
-```python
-# Inside cleaning
-cleaned = clean_doc(raw, cfg)
-
-# Cross-context (orchestration)
-translated = from_clean_doc_produced(event)
-if translated.is_ok():
-    await chunking.ingest(translated.ok())
-```
-
-**Continue with:** [Versioning and Migration](../module-10-refactoring-performance-sustainment/versioning-and-migration.md)
+Continue with [Versioning and Migration](versioning-and-migration.md), where a
+contract shape and its domain translation must be reviewed separately.

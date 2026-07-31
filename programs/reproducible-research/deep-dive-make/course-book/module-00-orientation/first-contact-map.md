@@ -1,58 +1,236 @@
 # First-Contact Map
-Use this page for your first honest session with the course. The goal is not to cover as
-much ground as possible. The goal is to leave the first hour coherent enough that later
-reading choices feel deliberate instead of random.
 
-## First session route
+Use this page for one honest first session. The outcome is not “I ran Make.” It is:
+
+> I predicted one graph decision, observed it, changed one prerequisite, and explained
+> why the next decision changed.
+
+Allow 60–90 minutes.
+
+## Page maps
 
 ```mermaid
-flowchart TD
-  read["Read the program promise"] --> orient["Complete Module 00"]
-  orient --> trace["Run one traced file-target build"]
-  trace --> reflect["Write one plain-language explanation"]
-  reflect --> decide["Choose whether to continue into Module 01 now"]
+graph LR
+  course["Deep Dive Make"] --> orientation["Module 00"]
+  orientation --> page["First Contact"]
+  page --> packet["First build evidence"]
 ```
 
-1. Read `../index.md` for the program promise.
-2. Read `index.md` for the Module 00 role.
-3. Read `course-map.md` to see the four course arcs.
-4. Read `../guides/start-here.md` when you want the shortest starting route.
-5. Read `../capstone/capstone-map.md` only if a repository specimen will clarify, not blur, the current idea.
-6. Run one bounded command:
+```mermaid
+flowchart LR
+  prepare["confirm GNU Make"] --> sandbox["create isolated sandbox"]
+  sandbox --> predict["predict file-target behavior"]
+  predict --> trace["run with trace"]
+  trace --> mutate["change one prerequisite"]
+  mutate --> explain["write bounded explanation"]
+```
 
-```sh
+## Confirm the course route
+
+From the repository root:
+
+```bash
+git branch --show-current
+git status --short
+make PROGRAM=reproducible-research/deep-dive-make help
+```
+
+Then check GNU Make:
+
+```bash
+make --version
+```
+
+On systems where `make` is not GNU Make 4 or newer, follow
+[Platform Setup](../guides/platform-setup.md). The repository targets choose the
+appropriate supported command; do not silently translate course semantics to another
+Make implementation.
+
+## Create an isolated practice build
+
+Use a disposable directory under repository artifacts:
+
+```bash
+mkdir -p artifacts/learning/deep-dive-make/first-contact
+cd artifacts/learning/deep-dive-make/first-contact
+```
+
+Create `message.txt`:
+
+```text
+build graphs should explain their decisions
+```
+
+Create `Makefile`:
+
+```make
+.DEFAULT_GOAL := all
+.PHONY: all
+
+all: message.upper.txt
+
+message.upper.txt: message.txt
+	tr '[:lower:]' '[:upper:]' < $< > $@
+```
+
+The recipe begins with a real tab.
+
+## Predict before running
+
+Create `prediction.md`:
+
+```text
+Requested target:
+First run:
+Second unchanged run:
+After message.txt changes:
+Artifact content expected:
+Claim this does not prove:
+```
+
+A reasonable prediction is:
+
+- `all` requires `message.upper.txt`;
+- the first run creates the missing file;
+- the second run does no recipe work;
+- a newer `message.txt` makes the output stale;
+- the recipe transforms current input content.
+
+Do not write “Make sees changes.” Name missing and newer file states.
+
+## Observe the three decisions
+
+Run:
+
+```bash
+make --trace
+make --trace
+printf 'and remain reviewable\n' >> message.txt
+make --trace
+```
+
+Preserve the output in your notes.
+
+Expected decision sequence:
+
+```mermaid
+stateDiagram-v2
+  [*] --> Missing: output absent
+  Missing --> Built: first Make run
+  Built --> Current: unchanged second run
+  Current --> Stale: prerequisite becomes newer
+  Stale --> Rebuilt: next Make run
+```
+
+Inspect:
+
+```bash
+cat message.upper.txt
+stat message.txt message.upper.txt
+```
+
+The exact `stat` format differs by platform. You need the relative freshness and artifact
+content, not identical prose.
+
+## Explain what each surface establishes
+
+| Surface | Evidence |
+| --- | --- |
+| Makefile | declared target and prerequisite relationship |
+| `make --trace` | selected update reason and recipe |
+| output file | result produced by the recipe |
+| second run | convergence for unchanged declared state |
+| input mutation | declared edge triggers a rebuild |
+
+Limits:
+
+- `make --trace` does not discover hidden file reads inside the recipe;
+- successful `tr` does not prove portability to every platform;
+- one serial build does not prove parallel safety;
+- current timestamps do not prove byte-for-byte deterministic output.
+
+That boundary is the course in miniature.
+
+## Break the graph deliberately
+
+Copy the Makefile into your notes, then remove `message.txt` from the prerequisite list:
+
+```make
+message.upper.txt:
+	tr '[:lower:]' '[:upper:]' < message.txt > $@
+```
+
+Run until current, change `message.txt`, then run `make --trace` again.
+
+The recipe reads the file, but the graph no longer names it. Make may skip a result whose
+meaning is stale.
+
+Restore the prerequisite and repeat the same mutation. This is your first controlled
+repair:
+
+```text
+failure:
+missing edge:
+original mutation:
+status before repair:
+same mutation after repair:
+```
+
+## Run one course-scale corroboration
+
+Return to the repository root and run:
+
+```bash
 make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
 ```
 
-## What you should know before Module 01
+Use it to identify:
 
-Before the first technical module, you should be able to answer:
+- a public target;
+- a file target;
+- a declared prerequisite;
+- an evidence or selftest target.
 
-- what this course treats as the core promises of a good build system
-- why the capstone is an executable corroboration surface rather than the first thing to read
-- which course arc matches your current pressure: graph truth, discipline, system design, or stewardship
+Do not treat the walkthrough as proof of every module. It shows that a larger repository
+uses the same graph vocabulary.
 
-## First-week rhythm
+## Write the first decision
 
-Repeat the same rhythm through the first modules:
+Append:
 
-1. read until the current build question is clear
-2. inspect one matching example, exercise, or capstone surface immediately
-3. run one bounded command instead of escalating to every proof route
-4. stop when you can state one rule and one failure mode in plain language
+```text
+Accepted:
+The declared message prerequisite caused the expected missing, current, stale, and rebuilt
+decisions in this sandbox.
 
-## A strong first-session outcome
+Rejected:
+The broken rule cannot support freshness after message.txt changes.
 
-Your first session is successful if you can say all three of these without guessing:
+Still untested:
+Parallel safety, deterministic bytes, portability, release contracts, and recovery.
+```
 
-- what a target is
-- what a prerequisite is
-- why Make sometimes does no work on a second run
+This is stronger than “Make worked” because it names the tested condition and limit.
 
-That may sound small. It is not small. It is the seed of every later topic in the
-course.
+## Choose the next route
 
-## When to leave this route
+| Current question | Continue with |
+| --- | --- |
+| why targets rebuild or skip | Module 01 |
+| why `-j` exposes a failure | Module 02 |
+| why results or discovery vary | Module 03 |
+| how the full course progresses | [Course Map](course-map.md) |
+| how to set up a study schedule | [Start Here](../guides/start-here.md) |
 
-Move to [mid-course-map.md](mid-course-map.md) once Modules 01 to 03 feel stable and the
-main question becomes semantics under pressure, hardening, release trust, or incidents.
+New learners should continue with Module 01 even if a later pressure feels urgent.
+
+## First-contact checkpoint
+
+Leave this route when you can:
+
+- read target, prerequisite, and recipe positions;
+- predict missing, current, and stale decisions;
+- use `--trace` as bounded selection evidence;
+- inspect the artifact rather than trusting exit status;
+- demonstrate and repair one missing edge;
+- state what the experiment does not prove.

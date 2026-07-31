@@ -28,12 +28,11 @@ Module 02 takes the object model from Module 01 and turns it into a review disci
 how to inspect runtime objects without accidentally executing the very behavior you are
 trying to observe.
 
-This module now uses the same ten-file learning surface as the deep-dive series so the
-overview, five cores, worked example, practice set, answers, and glossary each have one
-clear job.
-
-Treat it as one full workshop day. A missed-class learner should finish the module with a
-repeatable inspection workflow, not just with a memory of which builtin exists.
+This is a complete teaching unit, not preparation notes for reading the capstone. The
+five cores define distinct observation questions, the runtime-observation lab makes
+boundary crossings countable, the worked example applies those choices to a debugging
+tool, and the exercises require a reviewable decision packet. The capstone comes last as
+an integration check.
 
 ## What this module is for
 
@@ -62,17 +61,47 @@ You should also be able to defend one higher-level judgment:
 Use this sequence on purpose instead of reading pages as isolated notes:
 
 1. read the overview and name the runtime question you keep confusing in real life
-2. study the five core lessons in order, because each one narrows a different inspection mistake
-3. copy one small object into a scratch file and test every claim against that object
-4. walk through the worked example and mark where the helper changes from observation into execution
-5. do the exercises in order and keep one decision packet as you go
-6. use the answer key only after you have written your own runtime question, tool choice, and evidence route
+2. run `make observation-lab` and save the five before-state packets
+3. study the five core lessons in order, comparing each claim with its matching packet
+4. trace the packet implementation and focused test before changing either
+5. walk through the worked example and mark where the helper changes from observation into execution
+6. do the exercises in order and keep one decision packet as you go
+7. use the answer key only after you have written your own runtime question, tool choice, and evidence route
+8. transfer the workflow to the incident-plugin inspection commands
 
-If you skip step 3 or 5, the module usually feels clearer than it really is. The ideas do
+If you skip the lab or exercises, the module usually feels clearer than it really is. The ideas do
 not stabilize until you have compared names, storage, static lookup, and dynamic lookup on
-one concrete object of your own.
+one concrete object and explained what executed.
 
-## The ten files in this module
+## Run the observation lab
+
+From `programs/python-programming/python-meta-programming`:
+
+```console
+$ make observation-lab
+{
+  "dynamic_access": {
+    "property_reads_after_static_lookup": 0,
+    "property_reads_after_dynamic_lookup": 1,
+    "property_reads_after_hasattr": 2,
+    ...
+  },
+  ...
+}
+$ make observation-lab-test
+Ran 7 tests
+
+OK
+```
+
+All five packets use objects defined in `labs/runtime_observation/evidence.py`.
+Side-effect counters make the safety claim observable:
+
+- zero reads means the structural question stayed observational
+- a rising counter marks the exact operation that executed a property or fallback hook
+- the tests prove the expected boundary, not that arbitrary inspection is universally safe
+
+## The published lesson set
 
 1. Overview (`index.md`)
 2. [Visible Names and Stored State](visible-names-and-stored-state.md)
@@ -85,7 +114,10 @@ one concrete object of your own.
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
 
-## How to use the file set
+The executable companion is `labs/runtime_observation/`, with claim-level proof in
+`tests/test_runtime_observation_lab.py`.
+
+## How to use the lesson set
 
 | If you need to... | Start here |
 | --- | --- |
@@ -95,6 +127,8 @@ one concrete object of your own.
 | decide whether an object can be called and what that claim really means | [Callable Objects and the Call Protocol](callable-objects-and-the-call-protocol.md) |
 | keep runtime observation disciplined with static lookup when needed | [Static Lookup and Disciplined Observation](static-lookup-and-disciplined-observation.md) |
 | see the safety boundary tested in one realistic debugging tool | [Worked Example: Building a Safer Debug Printer](worked-example-building-a-safer-debug-printer.md) |
+| produce all five controlled evidence packets | `make observation-lab` |
+| verify the observation boundaries after an edit | `make observation-lab-test` |
 | test your understanding before moving to Module 03 | [Exercises](exercises.md) |
 | compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
 | stabilize the module vocabulary | [Glossary](glossary.md) |
@@ -145,6 +179,30 @@ By the end of this module, you should be able to:
 - choose the least risky observation tool that answers the real question
 - use capstone inspection surfaces as evidence before reading implementation details
 
+## Capstone transfer: inspect before invoking
+
+After the small lab is explainable, compare two capstone routes:
+
+```console
+make capstone-manifest
+make demo
+```
+
+`capstone-manifest` reports registered fields and actions without invoking an incident
+delivery action. `demo` constructs a plugin and deliberately calls `deliver`. Read that
+as an observation-to-execution boundary, not merely as two convenient commands.
+
+The focused proof is
+`capstone/tests/test_runtime.py::test_manifest_does_not_construct_or_invoke_registered_plugin`.
+It registers a plugin whose constructor and action record runtime events, builds the
+manifest, and proves that the event record stays empty.
+
+The capstone already contains descriptors, decorators, and a metaclass. Module 02 does
+not yet justify those mechanisms. Its transfer question is narrower:
+
+> which public route reports structure, which route executes application behavior, and
+> what evidence lets a reviewer tell the difference?
+
 ## Mid-module pressure points
 
 Watch for these specific misunderstandings while you study:
@@ -165,6 +223,10 @@ Do not move on until all of these are true:
 - you can separate visible names, stored state, and resolved values
 - you can say when `getattr`, `hasattr`, and `inspect.getattr_static` answer different questions
 - you can describe one debugging or tooling scenario where static lookup is the safer first move
+- you can run the observation lab, identify which counters should remain zero, and
+  explain what each focused test does not prove
+- you can distinguish the capstone manifest route from the invocation route without
+  treating the capstone as the lesson itself
 
 If you want one final self-test before moving on, answer this without looking anything up:
 

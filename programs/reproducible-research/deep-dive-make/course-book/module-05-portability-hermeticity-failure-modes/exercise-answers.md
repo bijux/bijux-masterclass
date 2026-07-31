@@ -25,397 +25,344 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this after you have written your own answers. The point is comparison, not copying.
+Compare reasoning and evidence boundaries, not incidental paths or timing values.
 
-## How to use the answer page well
+## Exercise 1: Prove a portability contract
 
-Do not read a model answer first and then retrofit your hardening packet to match it.
-
-A better rhythm is:
-
-1. finish the exercise with your own contract, probes, and notes
-2. write one plain-language explanation of the boundary or assumption
-3. compare that explanation with the model answer
-4. revise where the model answer exposes a missing contract, weak measurement, or blurry
-   ownership decision
-
-Strong Module 05 answers do not simply list tools or flags. They usually do four things:
-
-- they name the assumption directly
-- they show how the build would prove that assumption
-- they explain why the repair converges
-- they make tool ownership explicit
-
-The strongest self-study packets also leave behind six concrete artifacts:
-
-- one portability contract
-- one recursive-boundary repair
-- one convergent semantic-input representation
-- one performance baseline
-- one doctor target
-- one inherited-build audit
-
-If your answers rely only on "hardening is important," the reasoning is still too thin.
-
-## Exercise 1: Write a portability contract
-
-A strong answer makes the contract concrete, for example:
-
-- GNU Make 4.3 or newer required
-- POSIX `/bin/sh` syntax only
-- `python3` required
-- grouped targets optional only if a stamp-based fallback preserves the same generation
-  semantics
-
-The important explanation is:
-
-> The contract should separate required capabilities from optional ones and make
-> unsupported environments fail with the first useful message instead of with a later
-> syntax surprise.
-
-Weak answer pattern:
-
-- "Support as many environments as possible"
-
-That is a wish, not a maintainable support contract.
-
-## Exercise 2: Repair a recursive boundary
-
-The strongest prediction separates planning from execution:
-
-- `make -n vendor` prints the literal command but does not ask the child Make to reveal
-  its plan
-- the actual child may or may not inherit usable jobserver state, depending on the Make
-  version and invocation environment
-
-On GNU Make 4.4 with a FIFO jobserver, the literal child may report `-j2` and a jobserver
-FIFO in `MAKEFLAGS`. Record that result rather than hiding it. It is an observation about
-the current transport, not a portable declaration.
-
-The durable repair is:
+A model contract is:
 
 ```make
-.PHONY: vendor
+ifeq ($(origin MAKE_VERSION),undefined)
+$(error GNU Make is required)
+endif
 
-vendor:
-	+$(MAKE) -C vendor/lib all
+REQUIRED_MAKE_FEATURES := grouped-target second-expansion
+MISSING_MAKE_FEATURES := $(filter-out $(.FEATURES),$(REQUIRED_MAKE_FEATURES))
+ifneq ($(strip $(MISSING_MAKE_FEATURES)),)
+$(error GNU Make $(MAKE_VERSION) lacks: $(MISSING_MAKE_FEATURES))
+endif
+
+SHELL := /bin/sh
+.SHELLFLAGS := -eu -c
+
+PYTHON ?= python3
+PYTHONFLAGS ?=
+ifneq ($(words $(PYTHON)),1)
+$(error PYTHON must name one executable; use PYTHONFLAGS for arguments)
+endif
+
+.PHONY: contract-check
+contract-check:
+	@command -v "$(PYTHON)" >/dev/null 2>&1 || { \
+	  printf 'contract: missing %s\n' "$(PYTHON)" >&2; exit 2; \
+	}
+	@"$(PYTHON)" -c 'import pathlib' >/dev/null 2>&1 || { \
+	  printf 'contract: %s lacks required pathlib support\n' "$(PYTHON)" >&2; \
+	  exit 2; \
+	}
 ```
 
-After the repair, `make -n vendor` should enter the child graph and print its recipe
-without creating the child output. In an actual run, the child should be exactly one
-`MAKELEVEL` deeper than its parent.
+`.FEATURES` answers runtime capability. A CI matrix answers which releases maintainers
+test and support. `MAKE_VERSION` remains useful diagnostics, but a prefix list is not a
+sound "at least" comparison.
 
-A good explanation does not say "`+` preserves the jobserver." It says:
+Required cases:
 
-> `$(MAKE)` declares recursive intent; `+` makes that boundary visible when ordinary
-> recipes are suppressed; the actual child flags show what this run inherited.
+| Case | Expected boundary |
+| --- | --- |
+| current GNU Make with both feature tokens | parsing continues |
+| controlled missing-feature value in a harness | parsing names the missing token |
+| available compatible Python | gate succeeds |
+| nonexistent Python | gate rejects before publication |
+| present interpreter lacking required behavior | compatibility probe rejects |
+| `PYTHON='python3 -I'` | parsing rejects; flags belong in `PYTHONFLAGS` |
 
-## Exercise 3: Model one non-file input honestly
+## Exercise 2: Prove a recursive budget boundary
 
-The clock comparison should report:
+The durable parent form is:
 
-| Model | Finding | `hashes_equal` |
-| --- | --- | --- |
-| clock-derived | `CLOCK_STATE_DRIFT_REPRODUCED` | false |
-| declared-state | `DECLARED_STATE_STABLE` | true |
+```make
+.PHONY: child-build
+child-build:
+	+$(MAKE) -C child all
+```
 
-Those rows establish that a stamp filename does not make state reproducible. Its content
-must be derivable from declared inputs.
+For a wrapper:
 
-A complete `MODE` model needs an evaluation trigger and change-only publication:
+```make
+child-build:
+	+MAKE="$(MAKE)" tools/run-child child
+```
+
+```sh
+#!/bin/sh
+set -eu
+child_dir=$1
+exec "$MAKE" -C "$child_dir" all
+```
+
+The child can record intervals:
+
+```make
+JOBS := alpha beta gamma delta
+.PHONY: all $(JOBS)
+all: $(JOBS)
+
+$(JOBS):
+	@start=$$(python3 -c 'import time; print(time.monotonic_ns())'); \
+	sleep 0.2; \
+	end=$$(python3 -c 'import time; print(time.monotonic_ns())'); \
+	printf '%s\t%s\t%s\t%s\n' '$@' "$$$$" "$$start" "$$end" \
+	  > ../evidence/interval-$@.tsv
+```
+
+Calculate peak overlap from the intervals rather than line order. With parent `-j2`, a
+useful workload reaches two concurrent recipes but never exceeds two.
+
+Evidence hierarchy:
+
+1. `+$(MAKE)` or the declared wrapper establishes intent.
+2. relative `MAKELEVEL` and literal flags establish observed child context.
+3. interval overlap establishes behavior on this route.
+
+Copying `--jobserver-auth` text is invalid because Make owns the underlying transport;
+text can name a pipe or FIFO the receiving process cannot use.
+
+## Exercise 3: Publish a semantic manifest safely
+
+Classify first:
+
+| Fact | Model answer |
+| --- | --- |
+| `MODE` | validate and attest; it changes output meaning |
+| locale | pin `LC_ALL=C` if sorting or parsing depends on it |
+| compiler identity | attest a canonical supported identity |
+| hostname and terminal width | diagnostic-only |
+| credentials | exclude entirely |
+
+Use variant identity and collision-safe publication:
 
 ```make
 MODE ?= release
-MODE_MANIFEST := build/mode.manifest
+VALID_MODES := release debug
+ifneq ($(words $(MODE)),1)
+$(error MODE must be exactly one of: $(VALID_MODES))
+endif
+ifeq ($(filter $(MODE),$(VALID_MODES)),)
+$(error MODE must be one of: $(VALID_MODES))
+endif
+
+export LC_ALL := C
+MODE_ROOT := build/$(MODE)
+MANIFEST := $(MODE_ROOT)/environment.manifest
 
 .PHONY: FORCE
 FORCE:
 
-$(MODE_MANIFEST): FORCE | build/
-	@printf 'MODE=%s\n' '$(MODE)' > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
-
-build/application.txt: source.txt $(MODE_MANIFEST) | build/
-	@printf 'mode=%s\n' '$(MODE)' > $@
-	@cat source.txt >> $@
+$(MANIFEST): FORCE | $(MODE_ROOT)/
+	@set -eu; \
+	candidate="$@.candidate.$$$$"; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	{ \
+	  printf 'MODE=%s\n' '$(MODE)'; \
+	  printf 'LC_ALL=C\n'; \
+	  "$(CC)" --version | sed -n '1p'; \
+	} > "$$candidate"; \
+	if test -r "$@" && cmp -s "$$candidate" "$@"; then :; \
+	else mv "$$candidate" "$@"; fi
 ```
 
-This is strong because:
+`FORCE` controls reevaluation. Comparison controls durable identity. The process identifier
+prevents work-file collisions. `build/debug` and `build/release` prevent one final path
+from representing two supported configurations.
 
-- `FORCE` makes the manifest recipe inspect `MODE` on every invocation
-- `cmp` leaves the existing file and mtime alone when `MODE` is unchanged
-- changing `MODE` replaces the manifest
-- the newer manifest then invalidates `build/application.txt`
+## Exercise 4: Locate a performance cost
 
-The evidence should distinguish these events:
+A valid packet labels each sample:
 
-| Invocation | Candidate evaluated? | Manifest published? | Application rebuilt? |
-| --- | --- | --- | --- |
-| first `MODE=release` | yes | yes | yes |
-| second `MODE=release` | yes | no | no |
-| `MODE=debug` | yes | yes | yes |
+| Field | Example |
+| --- | --- |
+| goal | `all` |
+| workload | no-op after successful release build |
+| Make/options | GNU Make 4.4.1, `-j2` |
+| controlled environment | `LC_ALL=C`, same toolchain and storage |
+| repetitions | one warm-up plus seven measured |
+| summary | median and min–max range |
+| observation mode | output discarded; trace disabled |
 
-The required distinction is:
+Compare:
 
-> `FORCE` controls evaluation of the non-file fact; content comparison controls whether
-> that fact is published as changed state.
+- no-op `gmake -n all`
+- no-op `gmake all`
+- changed-input `gmake all`
+- the same controlled workload after one experimental change
 
-Weak answer pattern:
+`-n` includes parsing, makefile remakes, graph traversal, recipe expansion and printing,
+and declared recursive planning. Therefore it is an orchestration proxy, not a pure
+decision timer.
 
-- "Use `cmp` so the manifest notices when `MODE` changes"
+If `-rR` reduces no-op planning time, verify identical selected recipes, prerequisite
+causes, and output hashes before adopting it. The performance result identifies a suspect;
+the correctness result licenses the change.
 
-Without an evaluation trigger, Make may never run `cmp` after the manifest first exists.
+## Exercise 5: Design a tool handoff
 
-## Exercise 4: Separate performance layers
+For release promotion, a model interface is:
 
-A good minimal loop is:
+| Field | Contract |
+| --- | --- |
+| input identity | immutable bundle digest, checksum manifest, software bill of materials |
+| invocation | idempotent submission keyed by digest and target environment |
+| success output | signed receipt with remote revision |
+| failure output | structured status with submission identity |
+| publication owner | deployment system |
+| retry/resume owner | deployment system |
+| rollback owner | deployment system under policy |
+| Make responsibility | build and verify bundle; validate receipt schema |
 
-```sh
-/usr/bin/time -p make -n all >/dev/null
-/usr/bin/time -p make all >/dev/null
-make --trace all > build/trace.log
-wc -l build/trace.log
-```
+Failure cases:
 
-The answer is strong if it explains what the comparison means:
+- invalid manifest: Make rejects before submission
+- authorization rejection: external owner returns no success receipt
+- interruption after submission: status is recovered by idempotency key
+- incompatible receipt: Make-side verifier rejects the receipt without redefining remote
+  state
 
-- expensive `make -n`:
-  - suggests parse or decision overhead
-- expensive full build with cheap `make -n`:
-  - suggests recipe cost dominates
-- very high trace volume:
-  - suggests the evidence surface itself may be operationally costly
+A non-publishing comparison may write to isolated evidence destinations. Running two real
+promotion owners is not a safe comparison. After cutover, remove the former Make-side
+remote writer.
 
-The key explanation is:
-
-> "Felt slow" is not enough because it does not tell you whether the cost lives in Make's
-> decisions, in the recipes, or in the observation method itself.
-
-## Exercise 5: Decide whether Make should still own the problem
-
-A strong answer usually keeps artifact-oriented concerns in Make, such as:
-
-- compilation
-- file assembly
-- packaging of already-resolved inputs
-
-And it usually identifies one richer workflow concern as a boundary, such as:
-
-- dependency version solving
-- long-running promotion and approval orchestration
-
-The strongest answers also preserve the proof route:
-
-> Make may remain the top-level verification and artifact assembly route while an external
-> tool owns dependency resolution or workflow state.
-
-Weak answer pattern:
-
-- "Use another tool for everything complicated"
-
-That abandons ownership rather than clarifying it.
-
-## Exercise 6: Build a toolchain doctor
-
-A useful answer separates diagnostics from enforcement:
+## Exercise 6: Separate diagnosis from enforcement
 
 ```make
-SHELL := /bin/sh
-REQUIRED_TOOL ?= python3
-RESULT := build/result.txt
-
-.PHONY: all contract-check doctor
-all: $(RESULT)
+.PHONY: doctor contract-check
 
 doctor:
-	@printf 'make=%s\nshell=%s\nmakelevel=%s\n' \
-	  '$(MAKE_VERSION)' '$(SHELL)' '$(MAKELEVEL)'
-	@printf 'locale=%s\n' "$${LC_ALL:-not-set}"
-	@printf 'compiler=%s\n' "$$(command -v "$(CC)" 2>/dev/null || printf missing)"
-	@printf 'python=%s\n' "$$(command -v python3 2>/dev/null || printf missing)"
+	@printf 'make=%s\nfeatures=%s\n' '$(MAKE_VERSION)' '$(.FEATURES)'
+	@printf 'shell=%s flags=%s\n' '$(SHELL)' '$(.SHELLFLAGS)'
+	@printf 'python=%s\n' "$$(command -v "$(PYTHON)" 2>/dev/null || printf missing)"
+	@printf 'locale=%s\nlevel=%s\nmode=%s\n' \
+	  "$${LC_ALL-unset}" '$(MAKELEVEL)' '$(MODE)'
 
 contract-check:
-	@command -v "$(REQUIRED_TOOL)" >/dev/null 2>&1 || { \
-	  printf 'contract: missing required tool %s\n' "$(REQUIRED_TOOL)" >&2; \
-	  exit 2; \
+	@command -v "$(PYTHON)" >/dev/null 2>&1 || { \
+	  printf 'contract: missing %s\n' "$(PYTHON)" >&2; exit 2; \
+	}
+	@"$(PYTHON)" -c 'import pathlib' >/dev/null 2>&1 || { \
+	  printf 'contract: incompatible %s\n' "$(PYTHON)" >&2; exit 2; \
 	}
 
-$(RESULT): | contract-check build/
-	$(REQUIRED_TOOL) --version > build/tool-version.txt
-	printf 'result=complete\n' > $@
-
-build/:
-	mkdir -p $@
+build/result.txt: inputs/source.txt | contract-check build/
+	"$(PYTHON)" tools/render.py $< > $@
 ```
 
-The important edge is:
+`doctor` reports; it does not promise support. `contract-check` enforces presence and
+compatibility. The order-only edge ensures the gate completes before this publication
+frontier without making the phony gate force the result out of date.
 
-```make
-$(RESULT): | contract-check
-```
+`all: contract-check build/result.txt` is insufficient ordering under parallel Make
+because sibling prerequisites may run concurrently.
 
-This requires the gate to finish before the result recipe starts without making the
-phony gate force result publication on every invocation.
+## Exercise 7: Make shell failure portable
 
-Do not write:
-
-```make
-all: contract-check $(RESULT)
-```
-
-Under `-j`, sibling prerequisites may run concurrently. Their left-to-right order is not
-an execution sequence.
-
-The audit supplies the expected failure evidence:
-
-| Case | Finding | Publication state |
-| --- | --- | --- |
-| late check | `LATE_TOOL_FAILURE_LEFT_RESIDUE` | empty version file remains |
-| missing gate | `REQUIRED_TOOL_REJECTED_EARLY` | no version or result file |
-| available gate | `REQUIRED_TOOL_ACCEPTED` | both files exist |
-
-This design distinguishes:
-
-- advisory facts, which `doctor` reports for diagnosis
-- required presence, which `contract-check` enforces before publication
-- version compatibility, which needs its own accepted-version policy and boundary tests
-
-The available case matters because a gate that rejects every tool would otherwise look
-correct in the missing-tool test.
-
-## Exercise 7: Remove a hidden shell dependency
-
-POSIX `test` uses single brackets:
+A POSIX rewrite avoids the unnecessary pipeline:
 
 ```make
 SHELL := /bin/sh
+.SHELLFLAGS := -eu -c
 
 .PHONY: report
 report:
-	@if [ -f data.csv ]; then echo ready; fi
+	@test -r "data set.csv" || { \
+	  printf 'missing input: %s\n' "data set.csv" >&2; exit 2; \
+	}
+	@awk -f tools/report.awk "data set.csv" > report.txt
 ```
 
-Test both branches:
+This handles the spaced path as one argument and lets `awk` failure reach Make directly.
+If two fallible pipeline commands are genuinely needed, split them into declared file
+targets or write a small script with an explicitly supported shell and its tested failure
+rules. POSIX `/bin/sh` has no portable `pipefail`.
 
-```sh
-rm -f data.csv && make report
-touch data.csv && make report
-```
+Declaring Bash is clearer when arrays, process substitution, or Bash-specific pipeline
+semantics are central rather than incidental.
 
-Other common audit points include arrays, brace expansion, `source`, process
-substitution, and `set -o pipefail`.
+## Exercise 8: Test recursion through a wrapper
 
-The important explanation is:
-
-> If Bash is genuinely required, declaring `SHELL := /bin/bash` is more honest than
-> depending on a developer's interactive-shell preference.
-
-## Exercise 8: Preserve the parallel budget across recursion
-
-The expected summary rows are:
-
-| Model | Finding |
-| --- | --- |
-| literal recursion | `LITERAL_RECURSION_HIDES_CHILD_PLAN` |
-| declared recursion | `DECLARED_RECURSION_EXPOSES_CHILD_PLAN` |
-
-The declared dry-run trace includes:
-
-```text
-child-plan: publish child.out
-```
-
-The literal dry-run trace does not. Neither dry-run workspace should contain
-`child/child.out`; seeing the plan is not the same as performing it.
-
-In actual runs, inspect the recorded `MAKEFLAGS` literally. A GNU Make 4.4 FIFO system may
-show `-j2` in both models. The conclusion is not "both are equally correct." The
-conclusion is:
-
-- literal recursion happened to inherit the current transport
-- declared recursion preserves planning visibility and communicates intent
-- another supported Make version may expose jobserver state differently
-
-The direct capstone route and the program wrapper add different outer Make levels. A
-portable assertion is:
-
-```text
-child MAKELEVEL = audit process MAKELEVEL + 1
-```
-
-It is not:
-
-```text
-child MAKELEVEL = 1
-```
-
-Aggregate `PASS` confirms that the broken model hid the plan and the control exposed it.
-The finding name, not the aggregate status alone, tells you which behavior is acceptable.
-
-## Exercise 9: Prove an environment manifest converges
-
-One valid rule is:
+The weak wrapper calls whatever `make` its `PATH` resolves. The repaired parent supplies
+its selected executable:
 
 ```make
-MODE ?= release
-ENV_MANIFEST := build/environment.txt
-
-.PHONY: FORCE
-FORCE:
-
-$(ENV_MANIFEST): FORCE | build/
-	@{ \
-	  printf 'MODE=%s\n' '$(MODE)'; \
-	  printf 'CC=%s\n' "$$($(CC) --version | sed -n '1p')"; \
-	  printf 'LC_ALL=%s\n' "$${LC_ALL:-not-set}"; \
-	} > $@.candidate
-	@cmp -s $@.candidate $@ 2>/dev/null || mv $@.candidate $@
-	@rm -f $@.candidate
-
-build/application.txt: source.txt $(ENV_MANIFEST) | build/
-	@printf 'environment=%s\n' "$$(sha256sum $(ENV_MANIFEST) | cut -d' ' -f1)" > $@
+wrapped-child:
+	+MAKE="$(MAKE)" tools/run-child child
 ```
 
-The two clean workspaces should produce equal manifest hashes when `MODE`, compiler
-identity, and locale are equal. That proves the initial state is derived rather than
-invented. In one workspace, the next equal-state invocation runs the candidate recipe but
-`cmp` prevents a timestamp change. `make MODE=debug` changes semantic content, replaces
-the file, and makes the downstream artifact out of date.
+The wrapper validates its one directory argument and ends with:
 
-If `sha256sum` is unavailable on the supported platform, use the repository's declared
-checksum tool or Python's `hashlib`; do not silently weaken the proof to visual inspection.
+```sh
+exec "$MAKE" -C "$child_dir" all
+```
 
-The key explanation is:
+`exec` prevents an unnecessary supervising process and ensures signals reach the child
+directly. The parent recipe still needs `+` so dry-run and pipe-based jobserver behavior
+recognize the outer boundary.
 
-> Locale belongs in the manifest only when it changes build meaning; otherwise it is
-> diagnostic noise rather than a semantic input.
+Compare direct and wrapped routes using:
+
+- child-plan visibility under `-n`
+- no output under planning
+- child depth equal to its immediate parent plus one
+- peak interval overlap under the same `-j2`
+- interruption leaving no detached child process
+
+## Exercise 9: Prove manifest identity under contention
+
+Two equal-state writers may each create:
+
+```text
+environment.manifest.candidate.<different-process-id>
+```
+
+Each complete candidate has the same content. Atomic rename leaves one valid final file;
+the trap removes unpublished candidates after normal exit or handled interruption.
+
+Different modes must not race for that final path. They publish:
+
+```text
+build/release/environment.manifest
+build/debug/environment.manifest
+```
+
+The distinction is crucial:
+
+- candidate identity prevents partial work-file collisions
+- atomic rename prevents consumers from observing partial final bytes
+- output namespace makes semantic configuration identity truthful
+
+None substitutes for the others.
 
 ## Exercise 10: Harden an inherited build
 
-A strong answer is an evidence packet rather than a rewritten Makefile alone. It should
-contain:
+A complete incident packet has this causal form:
 
-- the supported GNU Make, shell, and required-tool contract
-- `doctor` output from two environments
-- a repaired recursive invocation or environment manifest where needed
-- `make -n` and full-build timings
-- a no-op check such as `make all && make -q all`
-- a reasoned ownership decision
+| Boundary | Defect | Proof after repair |
+| --- | --- | --- |
+| runtime support | syntax/tool assumptions undeclared | missing feature/tool rejects; available case succeeds |
+| recursion | parent planning hides child or wrapper breaks intent | child plan visible; token overlap bounded |
+| semantic input | manifest stale, volatile, or shared across modes | clean-room equality, equal-state convergence, variant coexistence |
+| performance | one unlabeled timing blamed Make | repeated workload comparison locates a layer |
+| ownership | local file pretends to represent durable remote state | versioned digest handoff and recoverable external receipt |
 
-The two environments do not need to be two physical machines. A container, CI runner, or
-deliberately changed `PATH`, `LC_ALL`, and `MODE` can expose assumptions. What matters is
-that the comparison is controlled and the conclusion follows from observed differences.
+Reject the decoy explicitly. For example, a different interactive login shell cannot
+explain recipes after the Makefile pins `SHELL=/bin/sh`; show that evidence rather than
+merely dismissing the idea.
 
-The weakest boundary is often the first one to fix because it tends to make every later
-diagnosis noisier.
+The final explanation should name which observations came from course specimens and which
+came from the inherited project. Mechanism evidence is transferable; project acceptance
+must still be rerun locally.
 
-## What mastery-level answers sound like
+## Review standard
 
-A mastery-level answer set in this module does three things well:
-
-- it treats portability and hermeticity as declared contracts rather than vague values
-- it measures before claiming a performance diagnosis
-- it treats tool boundaries as ownership decisions, not ideological ones
-
-That is the standard Module 05 is trying to build.
+A complete answer identifies the claim boundary, shows an accepted and rejected case,
+states who owns recovery, and demonstrates either convergence or durable status after
+interruption. Configuration syntax without those observations is not a model answer.

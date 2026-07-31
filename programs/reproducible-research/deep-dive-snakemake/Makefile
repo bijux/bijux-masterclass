@@ -56,6 +56,12 @@ capstone-module-interface-audit: ## Compare explicit and hidden module interface
 capstone-module-interface-selftest: ## Reject dishonest module interface evidence
 	$(MAKE) -C capstone module-interface-selftest
 
+capstone-software-boundary-audit: ## Compare observable and hidden software source drift
+	$(MAKE) -C capstone software-boundary-audit
+
+capstone-software-boundary-selftest: ## Reject dishonest software drift evidence
+	$(MAKE) -C capstone software-boundary-selftest
+
 capstone-context-invariance-audit: ## Compare policy-preserving contexts with semantic leaks
 	$(MAKE) -C capstone context-invariance-audit
 
@@ -67,6 +73,18 @@ capstone-performance-diagnostics-audit: ## Classify honest tuning, semantic drif
 
 capstone-performance-diagnostics-selftest: ## Reject dishonest performance evidence
 	$(MAKE) -C capstone performance-diagnostics-selftest
+
+capstone-scheduler-policy-audit: ## Record and classify scheduler resource translation
+	$(MAKE) -C capstone scheduler-policy-audit
+
+capstone-scheduler-policy-selftest: ## Reject unsafe scheduler mapping evidence
+	$(MAKE) -C capstone scheduler-policy-selftest
+
+capstone-file-contract-audit: ## Classify convergence, hidden inputs, and publication safety
+	$(MAKE) -C capstone file-contract-audit
+
+capstone-file-contract-selftest: ## Reject dishonest file contract evidence
+	$(MAKE) -C capstone file-contract-selftest
 
 check: capstone-check ## Run capstone fast checks
 

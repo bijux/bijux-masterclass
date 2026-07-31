@@ -93,6 +93,41 @@ Use this when you have been globally banned from an API at 3 a.m. or had to expl
 3. All scheduling proven to satisfy token-bucket and weighted-fair-queue laws (with explicit, documented assumptions) via Hypothesis + fake clock.
 4. Linear, readable, refactor-safe flows that respect external constraints automatically.
 
+## Runnable lab: inspect a weighted prefix
+
+Use two always-ready tagged streams and a two-to-one policy. Drive only six
+values so the scheduling decision is visible rather than buried in an
+aggregate:
+
+```python
+merged = async_gen_fair_merge(
+    [tagged_stream("A"), tagged_stream("B")],
+    FairnessPolicy(weights={0: 2, 1: 1}, max_buffer_per_stream=2),
+)
+
+iterator = merged()
+prefix = [await anext(iterator) for _ in range(6)]
+await iterator.aclose()
+```
+
+Run the executable proof:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k weighted_fair_merge_makes_each_share_observable
+```
+
+The deterministic tie-break produces tags `A, B, A, A, B, A`: stream A gets
+four positions and stream B gets two, while B still progresses in each weighted
+cycle. Closing the infinite merged iterator is part of the resource contract.
+
+This prefix is an explanatory example, not a complete statistical proof of
+long-run fairness. The property suite varies weights and prefix sizes. Also
+keep rate limiting conceptually separate: fairness allocates positions among
+ready streams, while the token bucket controls when the merged positions may be
+emitted.
+
 ## Tiny Non-Domain Example – Rate-limited & Fair Counter Merge
 
 ```python

@@ -9,6 +9,33 @@ This module is about keeping the build trustworthy under change. That means dete
 discovery, disciplined debugging, a stable CI-facing target surface, and selftests that
 prove the build system rather than simply exercising the binary.
 
+## The module promise
+
+At the end of this session, you will not merely have run a deterministic build. You will
+have a review packet that explains:
+
+1. which repository state defines the graph;
+2. which observation explains one rebuild decision;
+3. which public target CI is entitled to trust;
+4. which selftest claim accepted a healthy build;
+5. which controlled defect the same selftest rejected;
+6. what the evidence still does not establish.
+
+Those six items turn “the build seems stable” into a claim another maintainer can review.
+
+```mermaid
+flowchart LR
+  state["semantic repository state"] --> graph["evaluated graph"]
+  graph --> decision["rebuild decisions"]
+  decision --> execution["recipe execution"]
+  execution --> artifacts["declared artifacts"]
+  artifacts --> review["bounded review decision"]
+```
+
+The arrows are also diagnostic boundaries. A changed artifact may come from changed
+discovery, a changed rule, a changed execution environment, or a faulty writer. Do not
+skip directly from the symptom to a guessed repair.
+
 ## Why this day matters
 
 A build can seem healthy for a long time while still carrying silent variability. Module
@@ -23,6 +50,22 @@ By the end of Module 03, you should be able to explain four things clearly:
 - how to debug a rebuild with Make-native evidence instead of folklore
 - which targets are real public contracts for CI and which are only local conveniences
 - how to test the build system itself for convergence and equivalence
+
+## Entry diagnostic
+
+Begin with the first row you cannot defend:
+
+| Claim | Evidence you should already know how to obtain | Return route |
+| --- | --- | --- |
+| a target is stale for an explicit reason | one target/prerequisite edge and timestamps | Module 01 |
+| two independent prerequisites may run concurrently | the relevant subgraph and writer ownership | Module 02 |
+| discovery gives the same ordered membership | captured evaluated source list | this module |
+| a rebuild has a Make-native explanation | bounded `--trace` evidence | this module |
+| CI invokes a stable public contract | target promise and failure semantics | this module |
+| the build rejects a controlled graph defect | failed selftest with preserved evidence | this module |
+
+If either of the first two rows is uncertain, revisit that earlier lesson before
+continuing. Module 03 observes and tests graph truth; it cannot substitute for it.
 
 ## The live demo for this module
 
@@ -74,6 +117,20 @@ observation does not answer the question, record what it ruled out before escala
 | Abstraction | inspect the optional `eval` example | proof that the core build works with it disabled |
 | Practice | complete all ten exercises | evidence from both positive and negative cases |
 
+### Suggested independent-study timing
+
+| Work | Approximate time | Stop when |
+| --- | ---: | --- |
+| entry diagnostic and discovery lesson | 45 minutes | you can distinguish membership, order, and byte identity |
+| forensic debugging | 50 minutes | one rebuild explanation names target, cause, and trace evidence |
+| CI contract and selftest design | 75 minutes | every public claim has an oracle and a rejection case |
+| abstraction and worked simulator | 55 minutes | explicit and generated rules can be compared without guessing |
+| exercises and answer review | 90 minutes | the evidence packet survives review without terminal history |
+
+The times are planning aids, not completion criteria. Preserve your stopping state under
+`artifacts/learning/deep-dive-make/module-03/` and resume from the first unsupported
+claim.
+
 Do not treat deterministic output as “the command succeeded twice.” Compare the declared
 artifacts or their checksums.
 
@@ -91,6 +148,21 @@ Whenever someone says "the build is flaky," translate it into a smaller question
 - Which proof route can show that directly?
 
 That translation is one of the most valuable skills in the entire course.
+
+## Keep the evidence layers separate
+
+| Layer | Question | Typical evidence |
+| --- | --- | --- |
+| discovery | which inputs became graph members, in what order | printed evaluated variable or database excerpt |
+| selection | why did Make select this rule or target | bounded trace line |
+| execution | what command ran and how did it exit | recipe log |
+| artifact | what was actually published | path inventory, size, digest, semantic check |
+| convergence | does the unchanged request require more work | query exit and no-op trace |
+| rejection | can the proof detect a known violation | controlled defect and failed report |
+
+A dry run belongs to selection and predicted execution. It is not artifact evidence.
+A successful recipe belongs to execution. It does not prove convergence. Keeping these
+layers separate prevents accidental overclaiming throughout the module.
 
 ## Study route
 
@@ -161,6 +233,37 @@ By the end of the day, you should have:
 - explained one rebuild with a specific trace line
 - written or reviewed one selftest that fails on a deliberate defect
 - separated one CI-facing contract from one local convenience target
+
+Package those results as:
+
+```text
+module-03/
+├── claim-table.md
+├── discovery.txt
+├── rebuild-note.md
+├── ci-contract.md
+├── accepted-selftest/
+└── rejected-selftest/
+```
+
+The exact filenames are not graded. The separation is: a reviewer should not have to
+infer which evidence supports which claim.
+
+## Recovery route after a missed class
+
+If you are studying without the session:
+
+1. run the entry diagnostic;
+2. read the determinism and forensic-debugging lessons;
+3. complete Exercises 1, 2, and 7;
+4. read the CI and selftest lessons;
+5. run the worked example through its rejected case;
+6. complete the remaining exercises;
+7. compare answers only after writing your own decision and limit.
+
+Do not start with the selftest report and reverse-engineer the concepts from its field
+names. The report becomes useful after you can distinguish graph, execution, artifact,
+and rejection evidence.
 
 ## The central review question
 

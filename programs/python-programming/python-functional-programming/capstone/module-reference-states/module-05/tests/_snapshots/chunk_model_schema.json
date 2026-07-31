@@ -1,25 +1,32 @@
 {
   "additionalProperties": false,
   "properties": {
+    "doc_id": {
+      "minLength": 1,
+      "title": "Doc Id",
+      "type": "string"
+    },
     "embedding": {
-      "anyOf": [
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "default": null,
-      "title": "Embedding"
+      "items": {
+        "type": "number"
+      },
+      "title": "Embedding",
+      "type": "array"
+    },
+    "end": {
+      "minimum": 0,
+      "title": "End",
+      "type": "integer"
     },
     "metadata": {
       "additionalProperties": true,
       "title": "Metadata",
       "type": "object"
+    },
+    "start": {
+      "minimum": 0,
+      "title": "Start",
+      "type": "integer"
     },
     "text": {
       "maxLength": 200000,
@@ -35,7 +42,11 @@
     }
   },
   "required": [
-    "text"
+    "doc_id",
+    "text",
+    "start",
+    "end",
+    "embedding"
   ],
   "title": "ChunkModel",
   "type": "object"

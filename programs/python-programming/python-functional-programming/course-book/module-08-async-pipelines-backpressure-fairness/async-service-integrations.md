@@ -115,6 +115,49 @@ Use this when “the embedding API changed its JSON shape again” is the kind o
 3. Idempotent writes via UPSERT + stable deterministic IDs (derived from content hash).
 4. Full deterministic testing via sync mock implementations of the protocols.
 
+## Runnable lab: close a partially consumed service stream
+
+Model a service session with `asynccontextmanager` and record acquisition,
+pulling, and release. Wrap the session with the same `async_gen_using`
+combinator a concrete adapter would use:
+
+```python
+events: list[str] = []
+
+@asynccontextmanager
+async def service_session():
+    events.append("enter")
+    try:
+        yield "embedding-service"
+    finally:
+        events.append("exit")
+
+stream = async_gen_using(service_session, responses)
+assert events == []
+
+iterator = stream()
+first = await anext(iterator)
+await iterator.aclose()
+```
+
+Run the executable proof:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k service_stream_releases_resource_after_partial_consumption
+```
+
+The trace must be `enter`, `pull:0`, `exit`: description construction acquires
+nothing, one downstream request causes one service pull, and explicit closure
+releases the session without pulling the remaining responses.
+
+This fake proves the ownership protocol without a network dependency. A concrete
+adapter still needs narrow integration tests for its client's behavior and
+error taxonomy. Never hide a long-lived client inside each stream invocation;
+the shell should own that client, while `async_gen_using` owns short-lived
+sessions or responses.
+
 ## Tiny Non-Domain Example – HTTP Weather Adapter
 
 ```python

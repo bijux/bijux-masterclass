@@ -1,0 +1,34 @@
+from pathlib import Path
+
+
+checkpoint discover:
+    input:
+        registry="data/arrivals.tsv"
+    output:
+        manifest="state/discovered.txt"
+    run:
+        arrivals = Path(input.registry).read_text(encoding="utf-8").splitlines()
+        samples = sorted(line.strip() for line in arrivals if line.strip())
+        Path(output.manifest).parent.mkdir(parents=True, exist_ok=True)
+        Path(output.manifest).write_text("\n".join(samples) + "\n", encoding="utf-8")
+
+
+def discovered_outputs(_wildcards):
+    manifest = checkpoints.discover.get().output.manifest
+    samples = Path(manifest).read_text(encoding="utf-8").splitlines()
+    return expand("build/{sample}.txt", sample=samples)
+
+
+rule materialize:
+    input:
+        "data/raw/{sample}.fastq"
+    output:
+        "build/{sample}.txt"
+    shell:
+        "cp {input} {output}"
+
+
+rule all:
+    input:
+        discovered_outputs
+    default_target: True

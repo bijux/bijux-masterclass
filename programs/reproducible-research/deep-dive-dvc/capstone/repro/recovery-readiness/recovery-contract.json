@@ -1,0 +1,28 @@
+{
+  "artifact": "data/observations.csv",
+  "cutover_gate": {
+    "candidate_remote_must_restore_every_protected_revision": true,
+    "legacy_remote_may_retire_after_acceptance": true
+  },
+  "protected_revisions": [
+    {
+      "expected_row_count": 3,
+      "expected_sha256": "61aaecb17c31a9b920d2ce2626375c16051c66bd734721a174d03d9ad0463f96",
+      "reason": "published evidence remains auditable",
+      "revision": "release-2025-q1"
+    },
+    {
+      "expected_row_count": 4,
+      "expected_sha256": "8ba0b53d8a4b40d291100a89ffd651db2bb48b0a52f176650272a66957fb756a",
+      "reason": "current collaborators and automation can resume work",
+      "revision": "main"
+    }
+  ],
+  "recovery_route": [
+    "git checkout <protected-revision>",
+    "dvc pull --remote candidate data/observations.csv.dvc",
+    "sha256sum data/observations.csv"
+  ],
+  "recovery_time_objective_seconds": 30,
+  "verification_mode": "cache_empty_restore"
+}

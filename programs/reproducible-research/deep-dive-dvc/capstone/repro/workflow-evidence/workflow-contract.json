@@ -1,0 +1,32 @@
+{
+  "claim": "A clean maintainer can rebuild and explain the incident risk summary from recorded evidence.",
+  "declared_controls": {
+    "error_rate_threshold": {
+      "path": "params.json",
+      "value": 0.2
+    }
+  },
+  "declared_inputs": [
+    "observations.csv",
+    "params.json",
+    "score_incidents.py"
+  ],
+  "required_evidence": [
+    "input_identity_matches",
+    "implementation_identity_matches",
+    "controls_are_declared",
+    "all_influential_inputs_are_declared",
+    "runtime_is_recorded",
+    "clean_rebuild_matches",
+    "input_is_recoverable"
+  ],
+  "result_contract": {
+    "fields": [
+      "error_rate_threshold",
+      "high_risk_incidents",
+      "observation_count"
+    ],
+    "output": "risk-summary.json"
+  },
+  "workflow": "incident-risk-summary"
+}

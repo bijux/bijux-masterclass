@@ -1,12 +1,27 @@
 from .actions import ActionSpec, action
 from .fields import BooleanField, ChoiceField, Field, FieldSpec, IntegerField, StringField
-from .framework import PluginBase, PluginMeta, build_manifest, create_plugin, invoke
+from .framework import (
+    ClassCreationSpec,
+    PluginBase,
+    PluginMeta,
+    bind_action_arguments,
+    build_manifest,
+    check_action_arguments,
+    create_plugin,
+    inspect_action_wrapper,
+    inspect_field_ownership,
+    inspect_field_system,
+    inspect_plugin_class_creation,
+    invoke,
+)
+from .governance import inspect_runtime_governance
 from .plugins import ConsoleNotifier, DeliveryPlugin, PagerNotifier, WebhookNotifier
 
 __all__ = [
     "ActionSpec",
     "BooleanField",
     "ChoiceField",
+    "ClassCreationSpec",
     "ConsoleNotifier",
     "DeliveryPlugin",
     "Field",
@@ -18,7 +33,14 @@ __all__ = [
     "StringField",
     "WebhookNotifier",
     "action",
+    "bind_action_arguments",
     "build_manifest",
+    "check_action_arguments",
     "create_plugin",
+    "inspect_action_wrapper",
+    "inspect_field_ownership",
+    "inspect_field_system",
+    "inspect_plugin_class_creation",
+    "inspect_runtime_governance",
     "invoke",
 ]

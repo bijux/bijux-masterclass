@@ -469,21 +469,91 @@ Fail-fast strategies are lazy; accumulation requires finite streams.
 
 ---
 
+## Choose consumption before choosing an error shape
+
+Aggregation is a demand policy. The return type alone does not reveal how much
+of the source was consumed.
+
+The learning proof compares these streams:
+
+```text
+fail-fast: Ok(2), Ok(3), Err("bad"), Ok(100)
+collect:   Err("first"), Ok(4), Err("second"), Err("overflow")
+```
+
+Trace their decisions:
+
+| Strategy | Items consumed | Returned evidence | Evidence intentionally absent |
+| --- | ---: | --- | --- |
+| Fail fast | 3 | First error, `"bad"` | Later `Ok(100)` is never requested |
+| Collect with `max_errs=2` | 4 | First two errors plus `capped=True` | Text of errors beyond the cap |
+
+Run:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k error_fold
+```
+
+The capped fold bounds retained error values, not work. It still consumes the
+finite input so it can tell whether overflow occurred. If the requirement is
+to stop work after an error budget is exceeded, use
+`fold_until_error_rate` or a breaker rather than a collecting fold.
+
+Make the application decision explicitly:
+
+| RAG situation | Defensible strategy | Reason |
+| --- | --- | --- |
+| Interactive request cannot answer without every required chunk | Fail fast | Latency matters; later work cannot repair the response |
+| Offline validation needs every rejected document category | Collect errors | Complete diagnostics matter more than early exit |
+| Large import needs representative diagnostics | Capped collection | Count all consumed failures while bounding retained samples |
+| Provider is broadly unhealthy | Break on count/rate | Stop requesting work after observed evidence crosses policy |
+| Partial indexing is acceptable | `collect_both` | Preserve successful values and failures separately |
+
+`fold_results_collect_errs` and its capped variant are all-or-nothing: if any
+error exists, their returned `Err` does not expose the accumulated successful
+value. That is correct only when partial success is not useful. Use
+`collect_both` when the sink can commit successful chunks independently.
+
+The proof uses a finite tuple. A full-collection fold over an infinite or
+unbounded stream cannot return. Finiteness is part of the call contract, not a
+detail hidden by `Iterable`.
+
 ## 8. Pre-Core Quiz
 
-1. Fail-fast for…? → **Early termination on first error**  
-2. Full accumulation for…? → **Complete error report**  
-3. Capped accumulation for…? → **Bounded memory diagnostics**  
-4. Circuit-breaker for…? → **Stop on error rate threshold**  
-5. Never do manually what…? → **A fold can do correctly**
+1. What does fail fast bound? → **Demand after the first `Err`.**
+2. What does capped collection bound? → **Stored error values, not source
+   consumption.**
+3. When is an all-or-nothing result wrong? → **When successful records may be
+   committed or inspected independently.**
+4. Why must full collection require a finite source? → **It cannot return until
+   the source is exhausted.**
+5. What evidence distinguishes a cap from no errors? → **The retained errors
+   and overflow flag.**
 
 ## 9. Post-Core Exercise
 
-1. Replace a manual error loop with `fold_results_fail_fast` → test short-circuit.  
-2. Add capped error collection → verify memory stays bounded.  
-3. Implement circuit-breaker on embedding error rate → test early stop.  
-4. Use `collect_both` at pipeline end → generate JSON error report.
+Choose an aggregation policy for a 10,000-document offline import.
+
+- State whether successfully embedded chunks may be committed when other
+  documents fail.
+- Set an error-sample budget and explain what remains counted after the budget
+  is full.
+- Add a source counter that distinguishes full consumption from fail-fast
+  demand.
+- Include one test with no errors and one with more errors than the sample cap.
+- State whether the chosen fold would terminate for an open-ended source.
+
+Move forward when the choice is justified by the application contract, not by
+which helper has the shortest name.
 
 **Continue with:** [Circuit Breakers](../module-04-streaming-resilience-failure-handling/circuit-breakers.md)
 
-You now have the complete toolkit to choose exactly how strict or forgiving your pipeline should be — all with mathematical guarantees and zero manual loops. The rest of Module 4 is about adding retries and final reporting.
+The next core moves early termination into the stream itself so downstream
+consumers can observe why demand stopped.

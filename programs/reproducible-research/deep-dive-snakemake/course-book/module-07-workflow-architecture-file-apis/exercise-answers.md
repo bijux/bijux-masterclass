@@ -1,255 +1,387 @@
 # Exercise Answers
 
-These answers are model explanations, not the only acceptable wording.
+These are model answers for the capstone, not scripts to copy without inspection. A
+different conclusion is valid when it cites the repository and preserves the relevant
+contract.
 
-What matters is whether the reasoning makes repository ownership and review surfaces
-clearer.
+For each answer, compare:
+
+- the observation
+- the reasoning from that observation
+- the evidence boundary
 
-## How to use the answer page well
+If your conclusion differs, identify which observation or risk judgment differs.
 
-Do not read a model answer before you have drawn the repository map or review note
-yourself.
+## Exercise 1: Define the completion contract
+
+The default target is:
 
-A stronger rhythm is:
+```python
+f"{PUBLISH_DIR}/{PUBLISH_VERSION}/manifest.json"
+```
 
-1. inspect the repository and write your own ownership explanation
-2. state one boundary you believe the repository is telling well or badly
-3. compare that explanation with the model answer
-4. revise where the model answer reveals a hidden dependency, weak file split, or unclear
-   contract surface you missed
+With default config, that resolves to:
+
+```text
+publish/v1/manifest.json
+```
 
-The target is not identical wording. The target is clearer architectural judgment.
+`rule manifest` in `workflow/rules/publish.smk` directly depends on:
 
-The strongest self-study packets also leave behind six concrete artifacts:
+| Named input | Producer | Public path |
+| --- | --- | --- |
+| `summary_json` | `summarize` | `publish/v1/summary.json` |
+| `summary_tsv` | `summarize` | `publish/v1/summary.tsv` |
+| `report_html` | `report` | `publish/v1/report/index.html` |
+| `provenance` | `provenance` | `publish/v1/provenance.json` |
+| `discovered` | `publish_discovered_samples` | `publish/v1/discovered_samples.json` |
+
+Those five members plus `manifest.json` agree with `docs/file-api.md`.
+
+A suitable conclusion is:
 
-- one reading-order note
-- one responsibility table
-- one public-artifact trace
-- one file-API note
-- one failing architecture check
-- one bounded review note
+> The default invocation promises production of a versioned manifest whose declared
+> inputs cover the other documented public files. The target alone does not prove schema
+> validity, semantic correctness, or that the hashes match current file contents.
 
-If your answers rely only on tree shape and naming taste, the architectural reasoning is
-still too implicit.
+The predicted route is supported when `snakemake --list-rules` exposes `all`, `manifest`,
+the five producer rules, and their upstream transformations. The command proves successful
+parsing and visible names. It does not inspect manifest bytes or module source.
 
-## Exercise 1: Read the repository in the right order
+Use different evidence for different claims:
 
-A strong answer starts at the top-level `Snakefile`, identifies the visible assembly and
-targets, then moves into named rule families before scripts or package code. A postponed
-surface might be a generic helper or deep package module, because it only becomes useful
-after the workflow shape is already visible. The key success signal is that the first
-surface answers "how is this workflow assembled?" quickly.
+```mermaid
+flowchart TD
+  rules["rule list"] --> parse["parse claim"]
+  dry["dry-run"] --> plan["planning claim"]
+  audit["paired audit"] --> boundary["interface claim"]
+  verify["verify report"] --> publish["publish claim"]
+  mutation["rejection test"] --> drift["drift guard claim"]
+```
 
-Weak answers start in helpers or packages and only later discover what public artifact or
-target surface they were supposed to be reading.
+## Exercise 2: Classify entrypoint work by execution time
 
-## Exercise 2: Repair a weak entrypoint
+A compact inventory is:
 
-What belongs in the entrypoint:
+| Source surface | Responsibility | Time | Keep or review |
+| --- | --- | --- | --- |
+| config file and schema validation | reject invalid workflow policy | parse | keep |
+| environment path and directory roots | derive shared assembly names | parse | keep, but keep narrow |
+| `setdefault_tree` | materialize defaults | parse | keep near config gate |
+| workdir and wildcard constraints | graph policy | parse/planning | keep visible |
+| `discover_samples` checkpoint | create discovery evidence | execution with planning reevaluation | review location |
+| discovery publication rule | promote one public member | execution | review with publish concern |
+| provenance rule | capture run context | execution | review with evidence or publish concern |
+| includes | assemble local rule families | parse | keep |
+| `rule all` | define completion | planning | keep |
 
-- config loading and validation
-- visible workflow assembly
-- stable defaults
-- the default target or public target surface
+The most defensible candidate is discovery publication. It has a public-path concern but
+lives above the publish include. A refactor claim could be:
 
-What should probably move elsewhere:
+> Because discovery publication is a public promotion rule outside the publish family, a
+> reviewer must inspect two owners to understand publication. Move it only if
+> `publish.smk` can consume its constants without gaining reverse dependencies. Preserve
+> the visible rule name, manifest input, dry-run plan, and published bytes.
 
-- a large inline `run:` block
-- step-local logic that belongs in scripts
-- reusable logic that belongs in packages
+This remains a candidate, not a required repair. The current location is visible and the
+workflow is small. Moving it without an import ledger could create an include-order
+dependency that is harder to understand.
+
+## Exercise 3: Map rule-family ownership
+
+One useful ownership map is:
+
+```mermaid
+flowchart TD
+  entry["Snakefile\nconfig gates + assembly + completion"]
+  preprocess["preprocess.smk\nper-sample transformations"]
+  aggregate["summarize_report.smk\naggregation + human report"]
+  publish["publish.smk\nmanifest and integrity inventory"]
+  public["publish/v1/manifest.json"]
+
+  entry --> preprocess
+  entry --> aggregate
+  entry --> publish
+  preprocess --> aggregate
+  aggregate --> publish --> public
+```
+
+Ownership statements:
+
+| Family | Ownership | Shared review question |
+| --- | --- | --- |
+| preprocessing | transforms each discovered sample and binds reusable QC/screen rules | do sample-level jobs declare files, policy, runtime, and evidence consistently? |
+| aggregation/report | converts per-sample artifacts into machine and human summaries | is sample membership and meaning preserved through aggregation? |
+| publication | inventories the public surface | does the manifest cover the intended downstream contract? |
+
+The top-level publication and provenance rules are location pressures because they
+participate in the public artifact lifecycle. They are not automatically defects:
+provenance is repository-wide context, and discovery is tied to checkpoint planning.
+
+A rejected regrouping is a catch-all “output rules” file containing summary, report,
+provenance, copies, and manifest. It would group by the fact that every rule writes a file,
+not by ownership. It would weaken the distinction between internal aggregation and public
+promotion.
+
+## Exercise 4: Audit a module interface from both sides
+
+The current interface table is:
+
+| Dimension | Caller declaration | Module read | Owner | Result |
+| --- | --- | --- | --- | --- |
+| config | `MODULE_RUNTIME_CONFIG` | `env_python`, `benchmarks_dir` | caller derives; module consumes | explicit and bounded |
+| files | `use rule` input/output | named `input` and `output` | caller | explicit |
+| imported names | `qc_raw`, `qc_trimmed`, `screen_panel` | module templates `qc`, `screen` | caller aliases | explicit |
+| semantic policy | screen panel bound at caller | package command consumes path | caller should own | visible, but file edge remains questionable |
+| runtime | bounded environment key | `conda` | caller policy exposed through module API | explicit |
+| evidence | caller log and benchmark bindings | module writes named surfaces | caller | explicit |
+
+The paired audit findings mean:
+
+- `EXPLICIT_MODULE_CONTRACT_PRESERVED`: the control model keeps caller ownership visible
+- `HIDDEN_MODULE_COUPLING_REPRODUCED`: the defect model successfully proves that broad
+  config can change artifact meaning without a complete call site
+
+Both experiments can report `PASS` because the audit is checking whether each intended
+behavior was observed. The decision attached to hidden coupling is rejection.
+
+The self-test is necessary because a dry-run can look correct in both designs. The graph
+does not expose private config reads.
+
+## Exercise 5: Promote a hidden file influence into the graph
+
+Choose the screen panel. The current path travels:
+
+```text
+config["params"]["panel"]["fasta"]
+  -> use rule screen_panel params.panel_fasta
+  -> module shell
+  -> capstone.screen_panel --panel-fasta
+```
+
+The command opens the panel file, but the panel is not a named Snakemake input. The visible
+graph is:
+
+```text
+kmer.json -> screen.json
+```
+
+The actual computation is:
+
+```text
+kmer.json + panel.fasta -> screen.json
+```
+
+A corrected module template would expose the file:
+
+```python
+rule screen:
+    input:
+        kmer_json="kmer.json",
+        panel_fasta="panel.fasta"
+    output:
+        json="screen.json"
+    shell:
+        """
+        python3 -m capstone.screen_panel \
+            --kmer-json "{input.kmer_json}" \
+            --panel-fasta "{input.panel_fasta}" \
+            --out-json "{output.json}"
+        """
+```
 
-Why this is an architecture issue:
+The caller would bind:
 
-The entrypoint should announce the workflow shape. Once it starts hiding large
-implementation logic, the repository entry surface becomes less useful for review and
-onboarding.
+```python
+use rule screen from screen as screen_panel with:
+    input:
+        kmer_json=f"{RESULTS}/{{sample}}/kmer.json",
+        panel_fasta=config["params"]["panel"]["fasta"]
+    output:
+        json=f"{RESULTS}/{{sample}}/screen.json"
+```
 
-Weak answers praise a shorter `Snakefile` even when the new split hides ownership rather
-than clarifying it.
+The package CLI already accepts a panel path, so the software interface need not discover
+anything. The repair changes the graph contract.
 
-The missing but important sentence is usually this one:
+A convincing experiment requires a converged disposable workflow:
 
-> After the repair, the entrypoint still teaches configuration, assembly, and final
-> targets before the reader needs any deeper file.
+1. dry-run reports nothing to do
+2. modify only panel contents
+3. dry-run plans `screen_panel` and downstream summary/publication
+4. execute and confirm the result records the new panel influence
 
-## Exercise 3: Write a repository responsibility table
+The file-contract audit demonstrates the same causal distinction with a smaller policy
+file. It does not prove that the capstone screen rule has already been repaired.
 
-A strong table gives each layer one durable job and one clear prohibition. For example:
+## Exercise 6: Review the public file API as a consumer
 
-- the entrypoint owns visible assembly, not hidden implementation
-- rule-family files own coherent workflow concerns, not generic overflow
-- scripts own step-local implementation, not undeclared repository scans
-- packages own reusable logic, not hidden workflow state
-- file APIs own path promises, not producer-only internal details
+For `summary.json`:
 
-The least disruptive correction is usually the one that restores the lying boundary
-directly instead of inventing a new abstraction.
+| Promise | Current evidence | Review result |
+| --- | --- | --- |
+| location | `publish/v1/summary.json` in file API | explicit |
+| shape | UTF-8 JSON, newline, deterministic key ordering, `schema_version` | partly explicit |
+| meaning | described as merged per-sample summary | too broad for field-level consumer implementation |
+| evolution | path, removal, or semantic change treated as public contract change | explicit at policy level |
+| integrity | manifest hash and verification route | independently reviewable |
 
-Example table headings:
+The missing field-level semantics are a genuine documentation weakness. A consumer may
+still need to inspect a specimen or producer to understand exact fields.
 
-- layer
-- durable responsibility
-- forbidden responsibility
-- current violating file
-- least disruptive repair
+Change classifications:
 
-Why this is strong:
+- renaming `summary.json`: breaking public path change
+- adding an optional field: potentially compatible, but only with tolerant-consumer
+  evidence
+- changing count to percentage under the same field: breaking semantic change
+- nondeterministic TSV row order: reproducibility defect even if parsers still accept it
 
-- it forces each layer to own one stable job
-- it makes misplaced files reviewable instead of merely annoying
+`gmake verify-report` can establish current file presence, parseability, membership, and
+other bounded checks implemented by the verifier. It cannot decide whether a scientific
+field has the meaning a downstream study assumes.
 
-## Exercise 4: Review a weak structural split
+## Exercise 7: Audit a workflow script and a package command
 
-Why the split is weak:
+The dependency comparison is:
 
-- the filenames do not communicate ownership or workflow concern
-- the split may reduce line count without improving architectural meaning
+| Influence | Provenance script | Trimming package |
+| --- | --- | --- |
+| workflow object | required | absent |
+| declared input files | none | paths supplied by rule/CLI |
+| config | complete injected mapping | explicit scalar CLI options and paths |
+| clock | read directly | absent from core transformation |
+| Git | subprocess from workflow base | absent |
+| platform/Python | inspected | implementation context only |
+| test interface | requires injected workflow context or seams | functions and CLI can be tested ordinarily |
 
-What kind of boundary would be stronger:
+Provenance belongs near the workflow because its purpose is to describe that run's
+context. Trimming is package code because its functions and CLI have meaning without
+Snakemake.
 
-- rule families grouped by coherent workflow concern, such as preprocessing,
-  summarization, publishing, or another clearly named domain
+The provenance timestamp, commit, runtime, platform, and materialized config are
+intentionally context-dependent. Therefore this statement is too broad:
 
-What a reviewer should infer from names:
+> Every published file has identical bytes whenever declared file inputs are unchanged.
 
-- what the file owns
-- which rules belong there
-- how it relates to the visible workflow story
+A narrower statement can distinguish deterministic scientific products from a provenance
+receipt that records the execution event.
 
-The key problem is not the number of files. It is the lack of an ownership signal.
+For trimming, working-directory invariance depends on callers supplying resolved or
+correctly relative paths and the package avoiding repository searches. Test it by invoking
+the CLI from two directories with explicit paths and comparing domain outputs.
 
-Weak answers rename `misc` to another vague bucket without making the workflow concern any
-clearer.
+## Exercise 8: Build a negative architecture guard
 
-A useful contrast sentence is:
+The implemented capstone guard uses this claim:
 
-> I rejected the extra abstraction because it would have moved the ambiguity into a deeper
-> directory instead of naming a clearer owned concern.
+> QC and screen modules receive only the two declared runtime config keys.
 
-## Exercise 5: Trace one public artifact end to end
+It checks:
 
-A strong trace begins with the documented public path and finds the publication rule, its
-declared source result, any step-local script, reusable package call, semantic
-configuration, and final target. It marks absent layers honestly rather than inventing
-them. An undeclared style file or directory scan is a finding because the visible chain
-does not explain the produced bytes.
+- both declarations say `config: MODULE_RUNTIME_CONFIG`
+- the caller does not contain `config: config`
+- both module sources read exactly `env_python` and `benchmarks_dir`
 
-Example trace elements:
+Useful deliberate failures are:
 
-- public path and contract sentence
-- owning publication rule
-- immediate input artifacts
-- script or package call
-- semantic config keys
-- hidden dependencies or undocumented scans
+- replace one declaration with `config: config`
+- add `config["private_policy"]` to a module
 
-Why this is strong:
+A helpful assertion message would be:
 
-- it lets another maintainer replay the reasoning from the contract backward
-- it turns "where does this file come from?" into a bounded review route
+```text
+screen module reads config key 'private_policy' outside the declared runtime interface
+```
 
-## Exercise 6: Repair a file-API gap
+Limitations:
 
-What architecture problem this creates:
+- source matching covers bracket-style config access only
+- it does not detect filesystem or environment reads
+- it does not prove the two values are valid
+- it does not establish scientific correctness
 
-- path promises are real, but they are undocumented
-- workflow-facing and downstream-facing boundaries blur together
+The guard is architectural because it constrains dependency direction between caller and
+module. It is not generic style lint.
 
-Risks:
+## Exercise 9: Decide whether to extract top-level rules
 
-- refactors break notebooks and tests invisibly
-- maintainers cannot tell whether a path rename is a contract change
-- consumers depend on internal layout by accident
+A model comparison:
 
-What to add first:
+| Criterion | Keep current ownership | Extract named concerns |
+| --- | --- | --- |
+| visible assembly | executable obligations are visible but crowd the map | map becomes shorter |
+| import surface | no new include dependencies | extracted files consume shared constants and helpers |
+| concern cohesion | discovery and public evidence are split | publish or discovery lifecycle may become more coherent |
+| include-order risk | current order is established | new files may depend on names created earlier |
+| rule discoverability | top-level rules are easy to find | durable file names can make concerns easier to find |
+| preservation evidence | current proof routes apply | rule list, plan, outputs, docs, and guards need comparison |
 
-- a file API or contract document that distinguishes workflow-facing paths from public
-  publish-facing paths
+A defensible current decision is to keep the rules in place and record the pressure. The
+workflow remains small, the rules are visible, and extraction would introduce an import
+surface without yet removing a demonstrated correctness problem.
 
-The goal is to make path promises reviewable instead of implied.
+Reopen the decision if:
 
-Weak answers document every internal path equally and therefore blur workflow-facing
-coordination with consumer-facing stability.
+- discovery gains another rule or policy owner
+- another publication-supporting rule appears top-level
+- the walkthrough can no longer explain assembly in one bounded route
+- include consumers require the same top-level rule from multiple concerns
 
-The strongest answers also say explicitly which path must stay outside the contract and
-why, so the file API does not quietly expand into a dump of every useful directory.
+Another learner may choose extraction now. That answer is valid if it names the new
+concerns, inventories consumed names, and demonstrates equivalent rules, plans, and
+artifacts.
 
-## Exercise 7: Diagnose hidden coupling
+## Exercise 10: Produce a bounded architecture review
 
-A strong review comment would say:
+An abbreviated model review follows.
 
-> This is not only a local code-quality problem. The helper changes repository behavior
-> through undeclared files, unvalidated config, or import-time side effects, which means
-> the visible rule and config surfaces no longer tell the full truth. That weakens the
-> architecture because reviewers must inspect hidden layers to understand workflow meaning.
+### Review boundary
 
-Why:
+The default manifest route from the top-level target through preprocessing modules,
+aggregation, publication, and the public file API.
 
-- architecture depends on visible boundaries staying trustworthy
-- hidden dependencies move meaning away from the declared repository surfaces
+### Accepted boundaries
 
-Weak answers call this only a code smell and therefore miss the repository-level damage to
-review and onboarding.
+- rule families group per-sample processing, aggregation/report, and manifest concerns
+- module call sites bind local artifacts and names
+- module runtime config is narrowed to two declared keys
+- package transformations use ordinary command interfaces
+- the versioned publish surface is documented separately from internal results
 
-## Exercise 8: Detect architecture drift automatically
+### Required repairs
 
-A useful check encodes one narrow repository claim and names the violating path. For
-example, enumerate publish outputs, compare them with `FILE_API.md`, and fail on missing
-or stale entries. The failing fixture demonstrates that the check protects an actual
-boundary. A generic "architecture invalid" message is too vague to guide repair.
+Highest risk within the route:
 
-Example good failure message:
+> Panel FASTA contents affect `screen.json`, but the path is passed as a parameter rather
+> than declared as an input. Promote it to a named input in the module template and caller,
+> preserve the package CLI, and add a mutation test proving panel changes plan a rerun.
 
-> `publish/v1/summary.tsv` is produced by the workflow but has no file-API entry. Document
-> the path as public or remove it from the publish boundary.
+This is a reproducibility risk because it can produce stale accepted output.
 
-The key explanatory sentence is:
+### Deliberate deferrals
 
-> This is an architecture check, not generic lint, because it protects the truthfulness
-> of one repository boundary that a maintainer depends on.
+Top-level discovery and provenance rules remain in the entrypoint. Reopen their placement
+when either concern grows or review evidence shows assembly is obscured.
 
-## Exercise 9: Compare two refactor designs
+### Verification matrix
 
-The ownership-based split is usually safer first because it improves navigation without
-creating a new interface. A module or package becomes worthwhile when reuse, independent
-testing, or a stable caller contract already exists. Choose the simplest structure that
-makes current ownership truthful, and record measurable triggers rather than promising a
-future abstraction by instinct.
+| Evidence class | Model evidence | Limitation |
+| --- | --- | --- |
+| parse | rule list | no coupling proof |
+| plan | dry-run for selected artifact | no runtime proof |
+| execution | bounded capstone or audit run | only tested environment |
+| artifact | manifest and verifier | only implemented checks |
+| public contract | file API and consumer review | field semantics remain incomplete |
+| negative | module source guard and paired audit | bounded to represented defect |
 
-Weak answers choose the more abstract tree only because it looks more advanced.
+### Remaining risks
 
-## Exercise 10: Conduct a bounded architecture review
+- adapter FASTA may have the same missing-input pattern as panel FASTA
+- public JSON field semantics are not fully documented for independent consumers
+- provenance intentionally depends on ambient context and needs carefully bounded
+  reproducibility claims
 
-Begin with the entrypoint and documented file API, compare the actual rule graph, then
-inspect scripts and packages only where the trace leads. Findings about undeclared inputs,
-unstable public paths, or hidden semantic config outrank naming preferences. Focused
-dry-runs, contract tests, and direct package tests support findings without spending time
-on unrelated full-suite execution.
-
-Weak reviews spend most of their time on style and naming while leaving undeclared public
-paths or hidden semantic dependencies unranked.
-
-A useful review order often looks like this:
-
-1. inspect the entrypoint and documented public paths first
-2. trace one affected artifact through its declared owners
-3. check helpers or packages only where the trace reveals hidden coupling
-4. choose the narrowest verification route that proves each major finding
-
-## Self-check
-
-If your answers consistently explain:
-
-- who owns orchestration
-- where path promises live
-- where reusable code belongs
-- what makes a refactor honest rather than cosmetic
-
-then you are using the module correctly.
-
-Weak answer pattern:
-
-- "the repository is cleaner now because the folders look more organized"
-
-That sentence skips visible assembly, file APIs, and ownership boundaries all at once. If
-your answers still sound like that, keep revising.
+The handoff succeeds when another learner can locate each claim and challenge it from the
+packet. If they need an oral explanation of why hidden-coupling `PASS` is a rejected
+design, the review is not yet standalone.

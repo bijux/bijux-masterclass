@@ -1,0 +1,15 @@
+stages:
+  evaluate_metric_contract:
+    cmd: >-
+      python3 scripts/render_metrics.py
+      --case cases/selected.json
+      --params params.yaml
+      --output metrics/metrics.json
+    deps:
+      - cases/selected.json
+      - scripts/render_metrics.py
+    params:
+      - decision.threshold
+    metrics:
+      - metrics/metrics.json:
+          cache: false

@@ -1,0 +1,13 @@
+rule render:
+    input:
+        source="data/source.txt"
+    output:
+        artifact="build/rendered.txt"
+    script:
+        "workflow/scripts/render.py"
+
+
+rule all:
+    input:
+        rules.render.output.artifact
+    default_target: True

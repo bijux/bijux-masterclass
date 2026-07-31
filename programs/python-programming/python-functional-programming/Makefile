@@ -24,6 +24,50 @@ test: ## Run the strongest published course confirmation route
 capstone-test: ## Run only the capstone unit and integration test suite
 	@$(RUN_CAPSTONE) test
 
+.PHONY: capstone-foundation-proof
+capstone-foundation-proof: ## Run the tracked Module 01 foundation laws
+	@$(RUN_CAPSTONE) foundation-proof
+
+.PHONY: capstone-foundation-types
+capstone-foundation-types: ## Check the tracked Module 01 typed source
+	@$(RUN_CAPSTONE) foundation-types
+
+.PHONY: capstone-shell-proof
+capstone-shell-proof: ## Run the tracked Module 01 shell boundary proof
+	@$(RUN_CAPSTONE) shell-proof
+
+.PHONY: capstone-data-api-proof
+capstone-data-api-proof: ## Run the tracked Module 02 data-first API laws
+	@$(RUN_CAPSTONE) data-api-proof
+
+.PHONY: capstone-data-shell-proof
+capstone-data-shell-proof: ## Run the tracked Module 02 filesystem boundary proof
+	@$(RUN_CAPSTONE) data-shell-proof
+
+.PHONY: capstone-streaming-rag-proof
+capstone-streaming-rag-proof: ## Run the tracked Module 03 streaming RAG laws
+	@$(RUN_CAPSTONE) streaming-rag-proof
+
+.PHONY: capstone-source-scheduling-proof
+capstone-source-scheduling-proof: ## Run the tracked Module 03 multi-source scheduling laws
+	@$(RUN_CAPSTONE) source-scheduling-proof
+
+.PHONY: capstone-async-rag-proof
+capstone-async-rag-proof: ## Run the tracked Module 08 async indexing laws
+	@$(RUN_CAPSTONE) async-rag-proof
+
+.PHONY: capstone-embedding-resilience-proof
+capstone-embedding-resilience-proof: ## Run the tracked Module 08 embedding resilience laws
+	@$(RUN_CAPSTONE) embedding-resilience-proof
+
+.PHONY: capstone-retrieval-proof
+capstone-retrieval-proof: ## Run the live index-to-retrieval learning laws
+	@$(RUN_CAPSTONE) retrieval-proof
+
+.PHONY: capstone-module-state-proof
+capstone-module-state-proof: ## Run cumulative learning proofs for MODULE=01 through MODULE=09
+	@$(RUN_CAPSTONE) module-state-proof MODULE="$(MODULE)"
+
 .PHONY: demo
 demo: ## Build the learner-facing capstone walkthrough
 	@$(RUN_CAPSTONE) demo

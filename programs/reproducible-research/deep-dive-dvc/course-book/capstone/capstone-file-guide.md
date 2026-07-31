@@ -37,6 +37,7 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | which parameters are part of comparable state | `capstone/params.yaml` | the declared `params:` keys in `capstone/dvc.yaml` |
 | how publish artifacts are assembled and promoted | `capstone/src/incident_escalation_capstone/publish.py` | `capstone/publish/v1/manifest.json` |
 | how promoted state is verified | `capstone/src/incident_escalation_capstone/verify.py` | `capstone/tests/test_verify.py` |
+| why promotion accepts or blocks | `capstone/repro/promotion-integrity/promotion-contract.json` | `capstone/scripts/audit_promotion_integrity.py` and its tests |
 | what downstream users are allowed to trust | `capstone/publish/v1/manifest.json` | [Capstone Proof Guide](capstone-proof-guide.md) |
 | what survives local loss and remote restore | `capstone/.dvc-remote/` as the durability source, then `capstone/dvc.lock` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | what course-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
@@ -51,6 +52,7 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | `capstone/src/incident_escalation_capstone/` | implementation of preparation, fitting, evaluation, publication, inspection, and verification |
 | `capstone/state/`, `capstone/metrics/`, `capstone/models/`, `capstone/data/derived/` | internal repository outputs and intermediate state |
 | `capstone/publish/v1/` | promoted downstream-facing contract |
+| `capstone/repro/promotion-integrity/` | modeled release policy and source-bound approval evidence |
 | `capstone/.dvc-remote/` | local training remote used to prove recovery |
 | `capstone/tests/` | executable checks for code-level and contract-level behavior |
 

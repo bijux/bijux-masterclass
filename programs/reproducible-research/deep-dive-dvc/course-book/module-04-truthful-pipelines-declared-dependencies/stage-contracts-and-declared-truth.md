@@ -1,6 +1,5 @@
 # Stage Contracts and Declared Truth
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,159 +9,245 @@ graph LR
   program["Deep Dive DVC"]
   section["Truthful Pipelines Declared Dependencies"]
   page["Stage Contracts and Declared Truth"]
-  capstone["Capstone evidence"]
+  capstone["Stage contract audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.tested in.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  behavior["observe command behavior"] --> influences["inventory reads, controls, writes"]
+  influences --> declaration["compare with dvc.yaml"]
+  declaration --> mutations["apply isolated mutations"]
+  mutations --> planner["inspect status and repro"]
+  planner --> semantics["verify current output meaning"]
 ```
 <!-- page-maps:end -->
 
-A DVC stage is not just a convenient command wrapper.
+A DVC stage is a promise about causality:
 
-It is a claim:
+> When any declared influence changes or an owned artifact is lost, the planner can detect
+> that the recorded result no longer represents current state.
 
-> When these declared inputs and controls have these recorded values, this command produces
-> these declared outputs.
+The command's real behavior determines the needed contract. Stage names and plausible
+YAML do not.
 
-That claim is the smallest unit of pipeline truth in this module. If the stage claim is
-honest, a reviewer can explain why the output exists. If the stage claim is incomplete,
-the rest of the pipeline may look organized while still hiding the real cause of a result.
+## Inventory behavior before editing declarations
 
-## The stage as a promise
+For every command, list:
 
-A minimal stage has four parts:
+| Behavior | Contract question |
+| --- | --- |
+| reads a file | is the file in `deps` or represented truthfully elsewhere? |
+| reads a control value | is the exact key in `params`? |
+| writes an artifact | is it an owned `out`, metric, plot, or documented scratch? |
+| calls a service or process state | is it governed externally or materialized? |
+| mutates shared state | is that authority explicit and appropriate? |
 
-```yaml
-stages:
-  prepare:
-    cmd: python -m incident_escalation_capstone.prepare
-    deps:
-      - data/raw/service_incidents.csv
-      - src/incident_escalation_capstone/prepare.py
-    params:
-      - prepare.minimum_severity
-      - prepare.include_weekends
-    outs:
-      - data/prepared/incidents.parquet
+The inventory begins from source code, command flags, system calls, and consumer
+expectations. DVC cannot infer arbitrary behavior by inspecting Python.
+
+## Run the paired specimen
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/stage-contracts
 ```
 
-Read that as a sentence:
+Read:
 
-> Run this command, using these files and these parameter values, and expect this output.
+```bash
+column -t -s $'\t' "$audit/summary.tsv"
+cat "$audit/route.txt"
+```
 
-That sentence is more useful than "run the prepare script." It tells a future reviewer
-what should cause a rerun and what should not.
+Five stages share controlled behavior:
+
+| Stage | Real influence or artifact | Declaration |
+| --- | --- | --- |
+| `declared_input` | reads policy file | policy in `deps` |
+| `hidden_input` | reads same policy file | policy omitted |
+| `declared_param` | reads `settings.multiplier` | key in `params` |
+| `hidden_param` | reads same key | key omitted |
+| `undeclared_sidecar` | writes result and receipt | only main result in `outs` |
 
 ```mermaid
-flowchart LR
-  deps["deps: files and directories read"] --> cmd["cmd: declared execution"]
-  params["params: reviewed controls"] --> cmd
-  cmd --> outs["outs: owned outputs"]
-  cmd --> lock["dvc.lock: recorded evidence"]
+flowchart TD
+  policy["threshold policy"] --> declaredFile["declared_input"]
+  policy -. "real read, absent edge" .-> hiddenFile["hidden_input"]
+  param["settings.multiplier"] --> declaredParam["declared_param"]
+  param -. "real lookup, absent edge" .-> hiddenParam["hidden_param"]
+  sidecar["review receipt"] -. "real write, absent ownership" .-> outputStage["undeclared_sidecar"]
 ```
 
-The diagram is deliberately small. Do not start Module 04 by admiring a whole DAG. Start
-with one stage and ask whether the declared story matches reality.
+Dashed edges exist in program behavior but not planner state.
 
-## What DVC can and cannot infer
+## Baseline convergence is necessary but weak
 
-DVC is strict about declared state, but it is not psychic.
+All five stages execute successfully at baseline. A second reproduction skips them, and
+status is empty.
 
-If the command reads `data/raw/service_incidents.csv` and that file is in `deps`, DVC can
-hash it and compare it with `dvc.lock`.
+```bash
+jq '.findings[] |
+  select(.finding == "BASELINE_CONVERGES")' "$audit/report.json"
+```
 
-If the command reads `data/reference/team_roster.csv` but that file is missing from
-`deps`, DVC has no reason to know it matters.
+This proves:
 
-If the command uses `prepare.minimum_severity` from `params.yaml` and the key is listed
-under `params`, DVC can notice meaningful control changes.
+- commands can run in baseline conditions;
+- recorded declared state settles;
+- ordinary repro converges.
 
-If the command hard-codes `minimum_severity = 3` inside Python, the control value becomes
-code review archaeology instead of a pipeline control surface.
+It does not prove:
 
-A truthful stage is not one that eliminates all judgment. It is one that puts the
-important judgment where reviewers can see it.
+- every real read is declared;
+- every consumed parameter is selected;
+- every meaningful artifact is owned;
+- hidden changes will invalidate results.
 
-## A human reading method
+Convergence tests unchanged declarations. Contract completeness requires adversarial
+changes.
 
-When you inspect a stage, use this order:
+## Test file influence
 
-1. Read the command out loud.
-2. List what the command must read before it can succeed.
-3. Check whether each real read appears in `deps` or `params`.
-4. List what the command owns after it finishes.
-5. Check whether each owned artifact appears in `outs`.
-6. Compare the current declaration with `dvc.lock` when recorded evidence matters.
+The audit changes:
 
-This is slower than scanning the stage name, but it catches the real failures.
+```text
+policy/threshold.txt: 10 -> 20
+```
 
-For example, a stage named `train` may look obvious. But the name does not tell you
-whether the command reads a prepared dataset, a feature schema, a model configuration, a
-random seed, or a cached lookup table. The declaration must tell that story.
+Status names only `declared_input`.
 
-## Truthful does not mean enormous
+After reproducing the declared stage:
 
-One common overcorrection is to declare every nearby file as a dependency.
+```text
+declared output: threshold=20
+hidden output:   threshold=10
+```
 
-That makes the stage noisy:
+The hidden stage is semantically stale: its output disagrees with current policy, but no
+declared edge tells DVC.
+
+```bash
+jq '.findings[] |
+  select(
+    .finding == "DECLARED_INPUT_CHANGE_IS_STALE" or
+    .finding == "DECLARED_INPUT_REBUILDS_CURRENT_VALUE" or
+    .finding == "HIDDEN_INPUT_CHANGE_IS_INVISIBLE"
+  )' "$audit/report.json"
+```
+
+## Test parameter influence
+
+The audit changes:
+
+```text
+settings.multiplier: 2 -> 3
+```
+
+Status names only `declared_param`. After reproduction:
+
+```text
+declared: multiplier=3, score=24
+hidden:   multiplier=2, score=16
+```
+
+Merely storing a value in `params.yaml` does not make it part of every stage. The stage
+must select the key it consumes.
+
+## Test output ownership
+
+The sidecar stage writes:
+
+```text
+results/declared-main.txt
+results/undeclared-receipt.txt
+```
+
+Only the main result is declared. The audit deletes the receipt, then status remains empty
+and repro skips.
+
+If the receipt supports review, recovery, or downstream use, the stage contract is
+deceptive. If it is disposable scratch, no consumer or claim should depend on it.
+
+## Join declaration, planner, and semantic evidence
+
+| Evidence layer | Question |
+| --- | --- |
+| source/command | what does the process actually read and write? |
+| `dvc.yaml` | what causal contract is declared? |
+| `dvc.lock` | what declared state was recorded after execution? |
+| status receipt | which declared change is currently detected? |
+| repro receipt | which stage executed or skipped? |
+| result values | does output reflect current influence? |
+| missing-artifact check | can loss of an owned artifact be detected? |
+
+A truthful review uses multiple layers. Status can reveal a planner decision but not
+semantic freshness of hidden output. Output can reveal stale meaning but not why DVC
+skipped.
+
+## Repair the missing edge
+
+For hidden file influence:
 
 ```yaml
 deps:
-  - .
+  - data/source.txt
+  - policy/threshold.txt
+  - scripts/render.py
 ```
 
-This usually creates needless reruns and hides the intended contract. The stage becomes
-harder to review because the declared dependency says "anything here might matter."
-
-Prefer a narrower claim when the command really has a narrower read surface:
+For hidden parameter:
 
 ```yaml
-deps:
-  - data/prepared/incidents.parquet
-  - src/incident_escalation_capstone/fit.py
 params:
-  - fit.model_family
-  - fit.regularization
-  - fit.random_seed
-outs:
-  - models/escalation-model.json
+  - settings.multiplier
 ```
 
-That version gives the reviewer a better question:
+For meaningful receipt:
 
-> Are those the files and controls that actually influence model fitting?
+```yaml
+outs:
+  - results/declared-main.txt
+  - results/undeclared-receipt.txt
+```
 
-If the answer is yes, the graph is stronger. If the answer is no, the missing influence
-has a specific place to go.
+Then acceptance must prove:
 
-## Stage names are labels, not proof
+1. baseline settles;
+2. isolated influence change makes the stage stale;
+3. ordinary repro executes it;
+4. output adopts current meaning;
+5. missing owned output makes the stage stale;
+6. second repro converges.
 
-Names help you navigate, but a stage name is not evidence.
+YAML appearance is not acceptance evidence.
 
-A stage named `evaluate` can still lie if it reads a model that is not declared. A stage
-named `publish` can still lie if it writes a release file that is not owned. A stage named
-`prepare` can still lie if it silently depends on an environment variable or a local file
-outside the repository.
+## Keep contracts narrow and complete
 
-The stage contract lives in the fields and in the lock evidence, not in the label.
+Overdeclaring can cause false reruns. Underdeclaring can preserve false confidence.
+
+Choose the smallest truthful boundary:
+
+- declare exact files rather than broad directories when ownership is stable;
+- select exact parameter keys;
+- own artifacts whose absence affects claims or consumers;
+- keep disposable scratch outside the result contract;
+- document external influences with enforceable evidence.
 
 ## Review checkpoint
 
-You understand this core when you can take one DVC stage and explain:
+You understand stage truth when you can:
 
-- what the command promises to do
-- which declared files and parameter keys influence it
-- which outputs it owns
-- which important reads or writes would make the declaration deceptive if omitted
-- why a reviewer should inspect `dvc.yaml` and `dvc.lock` together
+- derive the contract from real reads, controls, and writes;
+- explain why baseline convergence permits hidden defects;
+- prove file and parameter staleness with paired stages;
+- explain why a missing sidecar can remain invisible;
+- distinguish `dvc.yaml`, lock, status, repro, and semantic evidence;
+- specify repair acceptance rather than only a YAML diff.
 
-That is the foundation for the rest of Module 04. The whole DAG is only trustworthy when
-its individual stage contracts are honest enough to review.
+The standard is:
+
+> Every influence needed for a correct rerun decision and every artifact needed for a
+> trusted result has a truthful, testable ownership edge.

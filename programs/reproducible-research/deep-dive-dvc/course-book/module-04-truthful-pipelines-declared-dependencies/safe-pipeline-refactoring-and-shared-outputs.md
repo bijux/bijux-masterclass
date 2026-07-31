@@ -1,6 +1,5 @@
 # Safe Pipeline Refactoring and Shared Outputs
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,150 +9,130 @@ graph LR
   program["Deep Dive DVC"]
   section["Truthful Pipelines Declared Dependencies"]
   page["Safe Pipeline Refactoring and Shared Outputs"]
-  capstone["Capstone evidence"]
+  proof["Before-and-after contract proof"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.produces.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  inventory["inventory reads, controls, writes"] --> preserve["state preserved claims"]
+  preserve --> reshape["change graph shape"]
+  reshape --> challenge["challenge new boundaries"]
+  challenge --> converge["prove current and converged"]
 ```
 <!-- page-maps:end -->
 
-Real DVC pipelines rarely stay as a perfect straight line.
+Refactoring a pipeline changes more than its diagram. Moving an output, splitting a
+stage, merging commands, or narrowing a dependency can change:
 
-They grow:
+- which mutation triggers work;
+- which stage owns an artifact;
+- how invalidation propagates;
+- which evidence a reviewer can inspect;
+- whether an interrupted run leaves a coherent result.
 
-- one preparation stage feeds several analyses
-- one model output feeds evaluation and publishing
-- a single command produces a metric file and a plot
-- an overloaded stage needs to be split into clearer boundaries
-- directories move as the repository becomes more organized
+A safe refactor makes its preserved and changed contracts explicit before editing
+`dvc.yaml`.
 
-These changes are normal. The risk is not change itself. The risk is changing graph shape
-without preserving the provenance story.
+## Inventory the behavioral contract
 
-## Shared intermediates need an owner
+For every affected stage, write an influence ledger:
 
-A shared intermediate is an artifact produced once and consumed by more than one later
-stage.
+| Contract surface | Questions |
+| --- | --- |
+| command | which program and arguments define behavior? |
+| file reads | which content can change the result? |
+| controls | which selected parameter keys affect behavior? |
+| outputs | which durable artifacts must the stage restore? |
+| consumers | which later stages read each output? |
+| semantic assertion | what result value proves current meaning? |
 
-Example:
+Inspect application code, not just the existing declaration. A refactor that faithfully
+copies an already incomplete `deps` list preserves the defect.
+
+## Give every durable artifact one owner
+
+A shared intermediate is produced once and consumed by several stages:
 
 ```mermaid
 flowchart LR
-  prepare["prepare"] --> features["data/prepared/features.parquet"]
+  prepare["prepare"] --> features["features.parquet"]
   features --> fit["fit"]
   features --> inspect["inspect"]
-  fit --> evaluate["evaluate"]
+  fit --> model["model.json"]
+  model --> evaluate["evaluate"]
+  features --> evaluate
 ```
 
-The important question is not "can two later stages read the same file?" They can.
-
-The important question is:
-
-> Which stage owns the shared artifact, and do all consumers declare it?
-
-The producer should list the artifact in `outs`:
+The producer declares `features.parquet` in `outs`; every consumer declares it in
+`deps`. That creates one producer edge and several consumer edges.
 
 ```yaml
 stages:
   prepare:
-    cmd: python -m incident_escalation_capstone.prepare
+    cmd: python -m incident_escalation.prepare
     deps:
-      - data/raw/service_incidents.csv
+      - data/raw/incidents.csv
+      - src/incident_escalation/prepare.py
     outs:
       - data/prepared/features.parquet
-```
 
-Each consumer should list it in `deps`:
-
-```yaml
-stages:
   fit:
-    cmd: python -m incident_escalation_capstone.fit
+    cmd: python -m incident_escalation.fit
     deps:
       - data/prepared/features.parquet
+      - src/incident_escalation/fit.py
     outs:
       - models/escalation-model.json
+
   inspect:
-    cmd: python -m incident_escalation_capstone.inspect
+    cmd: python -m incident_escalation.inspect
     deps:
       - data/prepared/features.parquet
+      - src/incident_escalation/inspect.py
     outs:
       - reports/inspection.json
 ```
 
-That gives DVC a clear fan-out story.
+Do not let two stages write the same durable path. Shared consumption is normal; shared
+ownership makes restoration and provenance ambiguous.
 
-## Multi-output stages can be honest
+## Decide whether outputs belong together
 
-A stage can own more than one output when the command truly produces a cohesive set.
+A stage may own several outputs when they form one atomic scientific claim.
 
-Example:
+For example, an evaluation command may produce:
 
-```yaml
-stages:
-  evaluate:
-    cmd: python -m incident_escalation_capstone.evaluate
-    deps:
-      - models/escalation-model.json
-      - data/prepared/features.parquet
-    params:
-      - evaluate.threshold
-    outs:
-      - reports/evaluation.json
-      - reports/error-slices.csv
-      - reports/calibration.svg
-```
+- `evaluation.json`;
+- `error-slices.csv`;
+- `calibration.svg`.
 
-This is reasonable if those artifacts are produced together from the same evaluation run.
+Keep them together when they share inputs and controls, are refreshed as one evaluation,
+and failure should invalidate the set. Split them when one is optional debugging output,
+has different inputs, changes on a different cadence, or has an independent consumer and
+review meaning.
 
-It becomes weak if one output is used for release, one is a temporary debugging file, and
-one belongs to a different command. Multi-output is not a problem by itself. Mixed
-ownership is the problem.
+Use a consequence test:
 
-Ask:
+| Question | Keep together when… | Split when… |
+| --- | --- | --- |
+| invalidation | every influence applies to every output | influences differ |
+| failure | partial result is not useful | one result can succeed independently |
+| review | artifacts support one claim | artifacts support distinct claims |
+| reuse | consumers need the set | consumers need independent products |
 
-- do these outputs share the same inputs and controls?
-- should they be refreshed together?
-- would a reviewer understand why one command owns all of them?
-- does any downstream stage depend on only one of them?
+The goal is not maximum stage count. It is honest ownership.
 
-If the answers are clear, a multi-output stage is fine. If the answers are confused, split
-the stage boundary.
+## Split an overloaded stage
 
-## Refactoring without losing truth
-
-Pipeline refactoring should preserve a readable before-and-after story.
-
-Common safe moves include:
-
-- renaming a stage while preserving its command, dependencies, parameters, and outputs
-- moving an output path while keeping the producing stage and consumer dependencies clear
-- splitting one large stage into two stages when an intermediate artifact has real meaning
-- merging two stages when the intermediate has no independent review value
-- narrowing a broad dependency after confirming the real read surface
-
-The safe refactor question is:
-
-> After this change, can I still explain which declared input caused which declared output?
-
-If not, the change may be making the pipeline prettier while making it less truthful.
-
-## A split example
-
-Before:
+Suppose one stage fits and evaluates:
 
 ```yaml
 stages:
   train_and_evaluate:
-    cmd: python -m incident_escalation_capstone.train_and_evaluate
+    cmd: python -m incident_escalation.train_and_evaluate
     deps:
       - data/prepared/features.parquet
     params:
@@ -164,57 +143,143 @@ stages:
       - reports/evaluation.json
 ```
 
-This may be convenient, but it hides two different claims in one stage: fitting a model
-and evaluating it.
+This boundary makes an evaluation threshold change rerun model fitting. More importantly,
+it hides the model as a meaningful handoff.
 
-After:
+Split it only after defining the new intermediate:
 
 ```yaml
 stages:
   fit:
-    cmd: python -m incident_escalation_capstone.fit
+    cmd: python -m incident_escalation.fit
     deps:
       - data/prepared/features.parquet
     params:
       - fit.model_family
     outs:
       - models/escalation-model.json
+
   evaluate:
-    cmd: python -m incident_escalation_capstone.evaluate
+    cmd: python -m incident_escalation.evaluate
     deps:
-      - models/escalation-model.json
       - data/prepared/features.parquet
+      - models/escalation-model.json
     params:
       - evaluate.threshold
     outs:
       - reports/evaluation.json
 ```
 
-Now a threshold change reruns evaluation without pretending model fitting changed. A model
-control change reruns fitting and then propagates to evaluation. The graph becomes more
-specific and more teachable.
+Now test three mutations:
 
-## A merge example
+1. `fit.model_family` reruns `fit`, then `evaluate` through the model.
+2. `evaluate.threshold` reruns only `evaluate`.
+3. prepared features rerun both consumers.
 
-Splitting is not always better.
+Those are contract assertions, not merely performance expectations.
 
-If one stage writes `tmp/normalized.csv` and the next immediately reads it, and nobody
-reviews or reuses that intermediate, the split may add ceremony without adding truth. In
-that case, a single stage with one meaningful declared output may be clearer.
+## Merge only meaningless boundaries
 
-The question is not "more stages or fewer stages?" The question is "which boundaries make
-the causal story visible?"
+Two adjacent stages may be better as one when their intermediate:
+
+- has no independent interpretation;
+- is never reviewed or reused;
+- exists only as scratch;
+- cannot be restored meaningfully on its own;
+- makes failure recovery harder rather than clearer.
+
+Before merging, list every downstream consumer. If another stage reads the intermediate,
+removing it changes a public pipeline boundary. Either preserve a meaningful replacement
+or update and test every consumer.
+
+## Move or rename an output safely
+
+An output path participates in producer ownership and every consumer dependency. Treat a
+move as a graph migration:
+
+```mermaid
+sequenceDiagram
+  participant Reviewer
+  participant Producer
+  participant Artifact
+  participant Consumers
+
+  Reviewer->>Producer: record old ownership and assertions
+  Producer->>Artifact: declare new output path
+  Reviewer->>Consumers: replace every dependency edge
+  Reviewer->>Producer: reproduce from missing new output
+  Producer->>Artifact: restore new path
+  Artifact->>Consumers: trigger downstream work
+```
+
+Check that:
+
+- the old path is no longer declared;
+- no command still reads or writes it;
+- the new path is owned by exactly one stage;
+- all consumers declare the new path;
+- deleting the new artifact marks its owner stale;
+- ordinary reproduction rebuilds it and its consumers.
+
+A successful run from an already populated workspace is too weak. Test restoration from
+the missing new output.
+
+## Narrow dependencies with a mutation matrix
+
+Replacing `data/` with one file may remove false reruns, but it can also hide a lookup
+table or schema read. Record both positive and negative cases:
+
+| Mutation | Expected invalidation |
+| --- | --- |
+| prepared features change | stage stale |
+| declared source module changes | stage stale |
+| selected control changes | stage stale |
+| unrelated notebook changes | stage unchanged |
+| unused raw archive changes | stage unchanged |
+
+Positive cases defend completeness. Negative cases defend precision. A refactor needs
+both.
+
+## Preserve a before-and-after proof
+
+Save:
+
+```text
+graph-before.txt
+declaration-before.yaml
+contract-ledger.md
+declaration-after.yaml
+graph-after.txt
+mutation-matrix.tsv
+reproduction-receipts/
+review-decision.md
+```
+
+The decision should distinguish:
+
+- preserved claims;
+- deliberately changed claims;
+- removed artifacts;
+- new ownership;
+- acceptance evidence.
+
+Do not claim lock-file similarity proves behavioral equivalence. A legitimate split or
+path move changes lock structure. Prove the intended causal behavior instead.
 
 ## Review checkpoint
 
-You understand this core when you can:
+You can refactor safely when you can:
 
-- name the producer that owns a shared intermediate
-- confirm every consumer declares the shared intermediate as a dependency
-- decide when multiple outputs belong to one stage
-- split an overloaded stage when the intermediate has review value
-- merge stages when the split only exposes throwaway scratch
-- preserve lock evidence and review clarity while changing graph shape
+- inventory actual reads, controls, writes, and consumers;
+- assign every durable artifact one producer;
+- justify multi-output cohesion by consequence;
+- test split-stage propagation with targeted mutations;
+- merge only boundaries without independent meaning;
+- migrate every edge when moving an output;
+- demonstrate positive and negative invalidation cases;
+- prove restoration and convergence after the new graph is in place.
 
-Pipeline structure is not sacred. Provenance is. Refactor the graph when it makes the
-truth easier to see.
+The durable question is:
+
+> Does the new graph preserve every intended scientific claim while making ownership and
+> invalidation easier to inspect?

@@ -44,6 +44,42 @@ Module 7 takes the lawful containers and pipelines from Module 6 and puts all ef
 **Core question**  
 How do you **incrementally migrate** an existing imperative codebase full of scattered side effects to the pure FP architecture of Module 7 – step by step, without big rewrites, while mechanically proving behavioural equivalence at every stage?
 
+## Runnable lab: lift one read without changing its result
+
+The learning proof first observes ordered document identifiers through a direct
+`StorageRead` call. It then lifts that one boundary call into an `IOPlan` and
+compares the interpreted result across generated inputs:
+
+```python
+legacy = [
+    item.value.doc_id
+    for item in storage.read_docs("docs.csv")
+    if isinstance(item, Ok)
+]
+migrated = io_map(
+    io_delay(lambda: Ok(storage.read_docs("docs.csv"))),
+    lambda items: [item.value.doc_id for item in items if isinstance(item, Ok)],
+)
+
+assert perform(migrated) == Ok(legacy)
+```
+
+Run the property:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k incremental_io_plan_migration_preserves_read_result
+```
+
+This is deliberately one small migration: the input adapter, success filtering,
+ordering, and visible document identity stay fixed. Only the timing and
+ownership of the read move into a deferred description.
+
+Changing output shape while introducing `IOPlan` is the wrong turn because a
+failed comparison cannot identify which change caused the regression. Comparing
+only counts is also too weak: it would miss reordered or substituted documents.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Law / Invariant            | Description                                                                                  | Enforcement          |

@@ -223,68 +223,101 @@ boundaries.
 
 ## Exercise 7: Inject and classify failures
 
-Cause three controlled failures: one transient simulation, one invalid configuration, and
-one interrupted write to a temporary output.
+Run:
+
+```console
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+gmake scheduler-policy-audit
+```
+
+Before reading `summary.tsv`, inspect the four profile documents and classify
+each as accepted, retryable, or deterministic rejection. Then compare your
+predictions with the generated decisions.
 
 What to hand in:
 
-- the trigger and observed evidence for each failure
-- the retry, fail-fast, or rerun decision
-- the log location for each case
-- an explanation of why indiscriminate retries would be harmful
+- a four-row prediction-versus-observation table
+- the exact invariant violated by each rejected profile
+- the owner who must repair each violation
+- an explanation of why none of the three rejections is retryable unchanged
+- the accepted receipt field that prevents a false cluster-execution claim
 
 Study note:
-This is where policy stops being theoretical. If the failure classes blur together here,
-the repository will blur them later under pressure too.
+`result=PASS` on a rejected finding means the audit observed the intended
+rejection. Do not confuse audit result with policy decision.
 
 ## Exercise 8: Design a staging route
 
-Design data movement for a rule that reads shared storage, computes on node-local scratch,
-and publishes a declared final output back to shared storage.
+Extend the accepted scheduler request with a site-neutral staging design. The
+rule reads `data/records.tsv`, computes in worker scratch, and publishes
+`results/summary.tsv`.
 
 What to hand in:
 
-- a diagram of source, scratch, execution, and publication
+- a sequence diagram from submission through verified publication
+- one evidence artifact for every transition
 - cleanup behavior after success and failure
-- the profile-owned settings or environment assumptions
-- the invariant that must remain identical across local and cluster contexts
-- a visible mark on the diagram showing the exact point where downstream trust begins
+- the worker path probe that distinguishes missing input from scheduler failure
+- the atomic publication operation
+- the invariant that remains identical in local, CI, and scheduler contexts
+- a visible mark where downstream trust begins
 
 Study note:
-If scratch placement changes what a downstream consumer trusts, the route is wrong.
+The recording adapter proves no storage claim. Your design must say which
+evidence a real site integration would add.
 
 ## Exercise 9: Prove a clean-room run
 
-Run a small workflow from a fresh work directory or isolated checkout without reusing its
-previous outputs, caches, or shell history.
+Run the scheduler-policy adversarial suite:
+
+```console
+gmake scheduler-policy-selftest
+```
+
+Choose two mutation tests and explain why removing the intended cause must make
+the corresponding audit finding fail.
 
 What to hand in:
 
-- the exact bounded command route
-- environment and input prerequisites
-- expected output inventory and checksum evidence
-- one hidden dependency the clean-room run exposed or ruled out
+- the exact mutation each test performs
+- the check expected to become false
+- the resulting audit exit behavior
+- the stale-evidence path the suite proves is removed
+- a short argument for why static fixture comparison would be weaker
 
 Study note:
-Clean-room proof is valuable because it punishes undeclared habits. That is the point of
-the exercise, not an annoyance.
+An adversarial selftest asks whether evidence responds to cause. A happy-path
+rerun asks only whether the current files still agree with themselves.
 
 ## Exercise 10: Review a production policy change
 
-Write a review for a proposed profile change that raises resources, enables retries, and
-changes a staging location. Treat each line independently.
+Review this proposed deployment change:
+
+```text
+threads: 4 -> 8
+mem_mb: 8000 -> 6000 in the scheduler adapter
+minimum_score: 10 -> 30 in the Slurm profile
+latency_wait: 30 -> 90
+retries: 0 -> 3 for every failure
+scratch: shared project path -> node-local allocation
+```
+
+Treat every line independently. Do not accept or reject the whole block by
+intuition.
 
 What to hand in:
 
-- acceptance or rejection for each change
-- the failure class the retry policy is intended to cover
-- evidence that final outputs and publish boundaries remain stable
-- the narrowest verification route that supports your conclusion
-- the order in which you reviewed profile policy, failure policy, and storage assumptions
+- `ACCEPT`, `REJECT`, or `NEEDS EVIDENCE` for every line
+- the owning repository surface for each accepted change
+- the specific proof route required for each decision
+- a bounded retry policy replacing the indiscriminate retry line
+- evidence that `results/summary.tsv` remains the final contract path
+- a final review statement that distinguishes local translation from site proof
 
 Study note:
-Treat this like a maintainer handoff, not like a personal preference memo. If the review
-order is invisible, the next maintainer cannot repeat your reasoning under pressure.
+The resource increase is not automatically safe, and the latency increase is
+not automatically harmless. Ask what evidence and ownership make each change
+reviewable.
 
 ## What weak completion looks like
 
@@ -297,6 +330,15 @@ Do not call the day complete if your answers do any of these:
 - approve a production diff without showing a stable review order
 
 ## Exit standard for the exercise day
+
+```mermaid
+flowchart LR
+    P["predict policy decision"] --> A["run audit"]
+    A --> R["read receipt and reason"]
+    R --> O["assign owner"]
+    O --> F["design repair"]
+    F --> H["state remaining site proof"]
+```
 
 Do not count the day complete unless you can do all of this without leaning on the answer
 page as a command script:

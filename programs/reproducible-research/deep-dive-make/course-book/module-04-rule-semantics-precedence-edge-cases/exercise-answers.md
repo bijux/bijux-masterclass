@@ -25,192 +25,164 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this after you have written your own answers. The point is comparison, not copying.
-
-## How to use the answer page well
-
-Do not read a model answer first and then retrofit your investigation to match it.
-
-A better rhythm is:
-
-1. finish the exercise with your own stage map, probes, and notes
-2. write one plain-language explanation of the semantic rule involved
-3. compare that explanation with the model answer
-4. revise where the model answer exposes missing stage boundaries, weak evidence, or a
-   noisier repair than necessary
-
-Strong answers in Module 04 do not merely name a feature. They usually do four things:
-
-- they identify the semantic rule in play
-- they choose the least disruptive evidence first
-- they explain the repair as a clearer truth contract
-- they verify convergence after the repair
-
-The strongest self-study packets also leave behind six concrete artifacts:
-
-- one stage map
-- one variable-origin probe
-- one convergent include generator
-- one honest multi-output repair
-- one precedence matrix
-- one bounded compound incident report
-
-If your answers rely only on "Make can be tricky," the reasoning is still too weak.
+Use these as reasoning models after completing your own evidence packet. Exact output
+varies with tool versions and file times; the semantic conclusions should not.
 
 ## Exercise 1: Choose the right CLI probe
 
-The strongest answer starts with `make --trace app` because the immediate question is
-"why did this run?" `--trace` is the cleanest first route to the causal edge or rule
-location.
+A useful harness has one parse effect and two recipe classes:
 
-A strong second command is `make -p` or `make -q app`, depending on what you are trying
-to settle next:
+```make
+$(info parsed)
+PARSE_RESULT := $(shell printf 'parse\n' >> parse-events.log)
 
-- `-p`:
-  - use it when the dispute is about the evaluated rule or variable world
-- `-q`:
-  - use it when the dispute is whether the requested graph has actually converged
+.PHONY: inspect child
+inspect:
+	@printf 'ordinary\n' >> recipe-events.log
+	+$(MAKE) --no-print-directory child
 
-The important explanation is:
+child:
+	@printf 'recursive\n' >> recipe-events.log
+```
 
-> `clean`, `-B`, and `-j1` all change conditions more aggressively, so they are weaker as
-> first evidence when the goal is diagnosis rather than forced progress.
+The expected boundary matrix is:
 
-Weak answer pattern:
+| Mode | parse log | ordinary recipe | recursive Make line | Primary meaning |
+| --- | --- | --- | --- | --- |
+| `-n` | changes | printed, not run | runs under recursive option propagation | preview recipes, not parsing |
+| `-q` | changes | not run | recursive line may still be processed as recursive Make | query freshness |
+| `-t` | changes | replaced by target touching where applicable | runs under recursive option propagation | mark targets current |
 
-- "Run `clean` first so everything is fresh"
+The exact child outcome depends on whether the child goal is already current, so record
+its exit status and state instead of claiming every recursive recipe writes. The durable
+conclusion is that parse-time functions run before these modes suppress or replace
+ordinary recipes, and recursive Make recipe lines receive special treatment.
 
-That may help later, but it destroys the evidence you were trying to inspect.
+The repair removes the mutating top-level shell call. If the event log is a required
+artifact, give it an explicit file target with declared inputs. The acceptance assertion
+is that a before/after inventory around each diagnostic mode contains no unexpected file
+change.
 
 ## Exercise 2: Prove where a variable value came from
 
-A good answer introduces a small probe such as:
+A child probe should expose every channel:
 
 ```make
-.PHONY: show-cflags
-
-show-cflags:
-	@printf 'origin=%s flavor=%s raw=%s expanded=%s\n' \
-	  '$(origin CFLAGS)' '$(flavor CFLAGS)' '$(value CFLAGS)' '$(CFLAGS)'
+.PHONY: show
+show:
+	@printf 'level=%s origin=%s flavor=%s raw=%s value=%s env=%s overrides=%s\n' \
+	  '$(MAKELEVEL)' '$(origin CFLAGS)' '$(flavor CFLAGS)' \
+	  '$(value CFLAGS)' '$(CFLAGS)' "$${CFLAGS-unset}" '$(MAKEOVERRIDES)'
 ```
 
-That answer is strong because it separates:
+The supported strongest-to-weakest order is `override`, command line, ordinary file,
+environment, built-in default. `-e` promotes the environment above an ordinary file
+assignment, but not above command line or `override`.
 
-- origin:
-  - who won
-- flavor:
-  - how the value is stored
-- raw text:
-  - what expression was assigned
-- expanded text:
-  - what recipes actually see
+| Parent channel | Child origin | Why |
+| --- | --- | --- |
+| unexported file assignment | `undefined` | Make state is not automatically process state |
+| exported file assignment | `environment` | child imports the recipe environment |
+| parent command-line assignment | `command line` | recursive Make forwards it through its protocol |
+| explicit `$(MAKE) CFLAGS=value` | `command line` | child invocation defines it directly |
+| parent `override` only | `undefined` unless exported or forwarded | precedence inside parent is not transmission |
 
-A strong repair usually simplifies one of two things:
+This rejects the claim that "visible in the child" implies export. The origins distinguish
+environment import from recursive command-line forwarding.
 
-- precedence:
-  - reduce accidental environment wins such as routine `-e`
-- expansion timing:
-  - use `:=` when delayed expansion is not part of the contract
+## Exercise 3: Make generated include publication recoverable
 
-The key explanatory sentence is:
-
-> Until origin, flavor, raw text, and expanded text are separated, two different problems
-> can look like the same strange flag value.
-
-## Exercise 3: Repair a generated-include loop
-
-The essential explanation is:
-
-> Make includes the generated file during evaluation. If the rule rewrites that file on
-> every run, Make keeps seeing a changed build definition and never settles on a stable
-> evaluated state.
-
-A strong repair writes deterministic content from a real input and publishes atomically.
-
-Example:
+Direct redirection can leave a truncated file that Make will parse on the next invocation.
+A recoverable owner writes and validates a process-local candidate:
 
 ```make
-mk/generated-config.mk: config/mode.env
-	@printf 'MODE := %s\n' "$$(cat $<)" > $@.tmp
-	@mv $@.tmp $@
+mk/generated-config.mk: config/mode.txt tools/render-config
+	@set -eu; \
+	candidate="$@.candidate.$$$$"; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	tools/render-config $< > "$$candidate"; \
+	grep -Eq '^MODE := (release|debug)$$' "$$candidate"; \
+	if test -r "$@" && cmp -s "$$candidate" "$@"; then \
+	  :; \
+	else \
+	  mv "$$candidate" "$@"; \
+	fi
 ```
 
-The strongest answers also say what proves convergence:
+On bootstrap, the first parse reports restart `0`; after the rule publishes the include,
+the restarted parse reports `1`. A separate settled invocation reports `0`, because
+`MAKE_RESTARTS` counts restarts in the current process rather than historical restarts.
 
-> Repeated invocations stop changing the include content and `MAKE_RESTARTS` no longer
-> grows after the stable update.
-
-Weak answer pattern:
-
-- "Regenerate the include less often"
-
-That does not address why the build definition itself never settles.
+The proof must also show that the settled digest and modification time remain unchanged.
+Interruption leaves the last valid final file intact and the trap removes the candidate.
+`gmake -n` must not create either path.
 
 ## Exercise 4: Replace a platform branch with a capability gate
 
-A strong answer says the build should branch on the feature it needs, not on an operating
-system label that only loosely predicts that feature.
-
-For example:
+A complete answer separates three variables:
 
 ```make
-HAVE_GNU_TAR := $(if $(shell tar --version 2>/dev/null | grep -q 'GNU tar' && printf yes),yes,)
+ARCHIVE_MODE ?= auto
+VALID_ARCHIVE_MODES := auto enabled disabled
+ifneq ($(words $(ARCHIVE_MODE)),1)
+$(error ARCHIVE_MODE must be exactly one of: $(VALID_ARCHIVE_MODES))
+endif
+ifeq ($(filter $(ARCHIVE_MODE),$(VALID_ARCHIVE_MODES)),)
+$(error ARCHIVE_MODE must be one of: $(VALID_ARCHIVE_MODES))
+endif
 
-ifeq ($(HAVE_GNU_TAR),yes)
-  ARCHIVE := tar
+ARCHIVE_PROBE ?= tar --help 2>/dev/null | grep -q -- '--sort'
+HAVE_SORTED_ARCHIVE := $(if $(shell $(ARCHIVE_PROBE) && printf yes),yes,no)
+
+ifeq ($(ARCHIVE_MODE),enabled)
+  ifneq ($(HAVE_SORTED_ARCHIVE),yes)
+    $(error deterministic archive ordering was requested but is unavailable)
+  endif
+  ARCHIVE_ENGINE := sorted
+else ifeq ($(ARCHIVE_MODE),disabled)
+  ARCHIVE_ENGINE := unsorted
+else ifeq ($(HAVE_SORTED_ARCHIVE),yes)
+  ARCHIVE_ENGINE := sorted
 else
-  $(error need GNU tar-compatible archive behavior)
+  ARCHIVE_ENGINE := unsorted
 endif
 ```
 
-The exact capability can vary. The important architectural move is:
+`ARCHIVE_MODE` is caller policy, `HAVE_SORTED_ARCHIVE` is discovery, and
+`ARCHIVE_ENGINE` is the decision. Test `ARCHIVE_PROBE=true` and `false` against all three
+valid modes. Test empty, `maybe`, and `auto enabled` as rejected inputs.
 
-- compute the capability once
-- give it a stable name
-- make later branches depend on that name
-
-The key explanatory sentence is:
-
-> The platform guess assumed the operating-system label was the real requirement, when
-> the real requirement was a specific tool behavior.
+If sorted versus unsorted entry order changes artifact bytes, the two paths are not
+equivalent. In that contract, `auto` must either select a canonical alternate
+implementation or fail; quietly producing host-dependent archives is not a fallback.
 
 ## Exercise 5: Repair a multi-output generator honestly
 
-The two valid repairs are:
-
-### Grouped targets
+Grouped targets express the real owner:
 
 ```make
+ifeq ($(filter grouped-target,$(.FEATURES)),)
+$(error grouped-target support is required)
+endif
+
 api.h api.json &: gen_api.py schema.yml
 	python3 gen_api.py
+	test -s api.h
+	test -s api.json
 ```
 
-Choose this when the supported Make version includes grouped-target semantics. It is the
-closest match to the real event: one generator invocation publishes multiple outputs.
+A parallel trace should show one invocation. After settling, `gmake -q api.h api.json`
+returns `0`; deleting either member triggers one grouped regeneration.
 
-### Stamp-governed generation
-
-```make
-API_STAMP := build/api.stamp
-
-$(API_STAMP): gen_api.py schema.yml | build/
-	python3 gen_api.py
-	touch $@
-
-api.h api.json: $(API_STAMP)
-```
-
-Choose this when you need a broader compatibility story or when the team finds the stamp
-clearer to audit.
-
-The real publication event both repairs are modeling is:
-
-> one generator run publishes a coordinated set of artifacts, not two independent output
-> stories.
+A stamp can model "the generator completed and both members passed validation," but it
+does not automatically repair a missing member while the stamp remains. A valid
+compatibility design must make consumers depend on the stamp as the publication event and
+define a missing-member rejection or recovery route. Listing missing output targets as
+recipe-less dependents of an existing stamp does not recreate them.
 
 ## Exercise 6: Compare assignment flavors
 
-One revealing example is:
+One revealing harness is:
 
 ```make
 BASE = first
@@ -218,85 +190,66 @@ RECURSIVE = $(BASE)
 SIMPLE := $(BASE)
 BASE = second
 OPTIONAL ?= fallback
+EMPTY :=
+EMPTY ?= ignored
 LIST := alpha
 LIST += beta
+SHELL_VALUE != printf observed
 ```
 
-The key observations are:
+`RECURSIVE` stores `$(BASE)` and expands to `second`; `SIMPLE` captured `first`.
+`EMPTY` remains empty because `?=` tests definedness, not non-emptiness. `+=` preserves the
+existing variable's flavor. `!=` invokes the shell while Make parses the assignment, even
+under `-n`.
 
-- `RECURSIVE`:
-  - recursively expanded and yields `second`
-- `SIMPLE`:
-  - expanded at assignment time and yields `first`
-- `OPTIONAL`:
-  - assigned only when it was not defined earlier
-- `LIST += beta`:
-  - appends according to the variable’s existing flavor
-- `$(value RECURSIVE)`:
-  - shows the stored text `$(BASE)` rather than expanding it
+Printing `value` distinguishes stored expression from eventual expansion. The repair for a
+mutating or environment-sensitive `!=` is an explicit file target whose output becomes a
+declared input; changing `!=` to `:= $(shell ...)` does not move the observation out of
+parsing.
 
-The important explanation is:
+## Exercise 7: Prove target-specific scope propagation
 
-> Raw text and expanded text are both worth printing because they answer different
-> debugging questions: what was stored, and what the build eventually used.
-
-Recursive expansion is useful when a value intentionally depends on later configuration.
-It is risky for graph-shaping discovery because delayed meaning can make timing harder to
-reason about.
-
-## Exercise 7: Build a precedence matrix
-
-Expected results for a Makefile containing only `MODE ?= release`:
-
-| Invocation | Value | Typical origin |
-| --- | --- | --- |
-| `make show` | `release` | `file` |
-| `MODE=debug make show` | `debug` | `environment` |
-| `make MODE=debug show` | `debug` | `command line` |
-| `MODE=debug make -e show` | `debug` | `environment override` |
-| Makefile uses `override MODE := hardened` | `hardened` | `override` |
-
-A clear project contract is:
-
-- provide a documented default
-- allow intentional command-line overrides
-- avoid routine `-e` in CI or daily use
-
-The key explanatory sentence is:
-
-> "Works on my shell" is weak evidence because shell-exported variables create a hidden
-> configuration channel unless the precedence contract is explicit.
-
-## Exercise 8: Observe a generated include restart
-
-A stable shape is:
+With:
 
 ```make
--include build/config.mk
-
-build/config.mk: config.txt | build/
-	@value=$$(cat $<); \
-	printf 'MODE := %s\n' "$$value" > $@.new; \
-	if ! cmp -s $@.new $@; then mv $@.new $@; else rm -f $@.new; fi
-
-build/:
-	mkdir -p $@
-
-.PHONY: show
-show:
-	@printf 'MODE=%s restarts=%s\n' "$(MODE)" "$(MAKE_RESTARTS)"
+debug: MODE := debug
+release: MODE := release
+debug release: shared
 ```
 
-Make may restart after first creating or semantically changing the include. Once the file
-content stabilizes, repeated invocations converge. Adding the current time guarantees
-different content and creates needless remake/restart behavior.
+`shared` inherits the target-specific value from the top-level target that first causes it
+to be built. Requesting `debug release` versus `release debug` can therefore change the
+context of a once-built prerequisite.
 
-The important explanation is:
+`private` prevents inheritance:
 
-> Content-stable publication preserves semantic convergence; timestamp-only rewriting does
-> not, because the evaluated build definition keeps changing.
+```make
+debug: private MODE := debug
+```
 
-## Exercise 9: Remove pattern-rule ambiguity
+It does not create a debug variant of `shared`. If the bytes genuinely depend on mode, the
+graph needs distinct identities such as `build/debug/shared` and
+`build/release/shared`. Export changes process visibility, and recursive forwarding
+changes child-Make precedence; neither repairs one path representing two artifacts.
+
+## Exercise 8: Audit parse effects across include restarts
+
+The inventory should classify:
+
+| Construct | Evaluation boundary | Restart behavior |
+| --- | --- | --- |
+| top-level `$(shell ...)` inside `:=` | parse | repeats after a makefile remake |
+| top-level `$(file ...)` | parse | repeats and mutates in diagnostic modes |
+| `!=` assignment | parse | repeats after a makefile remake |
+| ordinary recipe command | target update | does not run merely because parsing restarted |
+| generated-include recipe | makefile-remake boundary | may cause one restart |
+
+A sound repair removes every mutation from the first three rows. Guarding one with
+`MAKE_RESTARTS` still permits mutation during the initial parse and diagnostic modes.
+After repair, bootstrap has parse counts `0` then `1`, a settled invocation has only `0`,
+and `-n` leaves the filesystem unchanged.
+
+## Exercise 9: Prove rule and prerequisite selection
 
 The prediction and observation table should converge on:
 
@@ -354,31 +307,40 @@ Weak answer pattern:
 That preserves hidden policy. It does not make a future edit safe or make target ownership
 visible.
 
+The secondary-expansion half should show:
+
+```make
+.SECONDEXPANSION:
+report_INPUTS := data.csv render.py
+report: $$($$@_INPUTS)
+```
+
+Without escaping, `$@` is empty during initial expansion and `gmake -np report` shows the
+computed inputs are absent. With escaping, target context exists during secondary
+expansion and the database shows both prerequisites. Rule selection decides which recipe
+owns a target; secondary expansion decides target-context prerequisite text. They are
+different graph-construction boundaries.
+
 ## Exercise 10: Diagnose a compound semantic incident
 
-A strong report uses one evidence route per symptom:
+A strong report uses one evidence route per boundary:
 
-| Symptom | Evidence | Typical repair |
+| Defect | Falsifiable evidence | Repair |
 | --- | --- | --- |
-| wrong variable value | `origin`, `flavor`, `value`, expanded value | simplify precedence or expansion |
-| unstable generated include | `--trace`, `MAKE_RESTARTS`, content diff | deterministic, atomic, change-only publication |
-| unexpected rule selection | `make -d` or bounded `make -p` inspection | remove ambiguity or add explicit ownership |
+| parse mutation | before/after inventory around `-n` | move effect to explicit target |
+| provenance disagreement | parent/child origin and forwarding state | choose export or command-line contract |
+| target-context expansion loss | bounded database entry | escape for secondary expansion or write explicit edge |
+| duplicate output ownership | parallel trace and invocation log | grouped publication owner |
 
-The final convergence query matters because three locally plausible repairs can still
-interact. The build is not repaired until the requested graph reaches a stable state.
+Reject the decoy with evidence—for example, prove that shell choice does not explain a
+prerequisite missing from Make's database. Then rerun the original probes, not only the
+happy build. Completion requires: no dry-run mutation, one grouped generator invocation,
+the intended child origin, restored prerequisite edges, and query status `0` after a
+settled build.
 
-The missing but important sentence is:
+## Review standard
 
-> Naming the semantic stage first reduced the debugging scope by turning one big "Make
-> problem" into three smaller, testable questions.
-
-## What mastery-level answers sound like
-
-A mastery-level answer set in this module does three things well:
-
-- it names semantic rules precisely instead of saying "Make is weird"
-- it picks evidence before it picks a repair
-- it explains the repair as a better truth contract, not just a different syntax choice
-
-If your answers do those three things consistently, you are learning Module 04 in the
-right direction.
+A complete model answer says when an observation occurred, what single controlled change
+distinguished the cause, which competing explanation was rejected, and how the same proof
+changed after repair. Feature names and successful commands without that reasoning are
+not enough.

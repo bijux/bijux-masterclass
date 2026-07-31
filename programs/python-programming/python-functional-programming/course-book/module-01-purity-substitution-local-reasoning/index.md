@@ -27,9 +27,11 @@ flowchart LR
 
 This module teaches the semantic floor for the whole course:
 
-- which functions are safe to reason about locally
-- which kinds of hidden state break substitution
-- how to refactor toward explicit data flow before the abstractions get fancier
+- which functions are safe to reason about locally;
+- which kinds of hidden state break substitution;
+- how immutable values expose domain transitions;
+- how to refactor toward explicit dataflow before abstractions get more powerful;
+- which laws prove the first FuncPipe state remains stable.
 
 If this module does not feel concrete, later topics like combinators, typed pipelines, and
 effect management will feel ornamental instead of useful.
@@ -59,6 +61,9 @@ Carry this question into the module:
 
 Read the pages in this order:
 
+- [FuncPipe Delta](capstone-delta.md) to see why Module 01 creates the first
+  application reference state instead of comparing with a nonexistent Module 00
+  snapshot
 - [Imperative vs Functional](imperative-vs-functional.md)
 - [Pure Functions and Contracts](pure-functions-and-contracts.md)
 - [Immutability and Value Semantics](immutability-and-value-semantics.md)
@@ -72,6 +77,8 @@ Read the pages in this order:
 - [Equational Reasoning](equational-reasoning.md)
 - [Idempotent Transforms](idempotent-transforms.md)
 - [Refactoring Guide](refactoring-guide.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 
 If you are reviewing instead of reading front-to-back:
 
@@ -81,28 +88,61 @@ If you are reviewing instead of reading front-to-back:
 
 ## Exercises
 
-- Take one helper from the capstone and classify it as pure, effectful, or mixed, then justify the classification in terms of substitution.
-- Rewrite one small imperative branch as a value-preserving transform and state what behavioral evidence would prove the refactor safe.
-- Pick one input transformation and explain whether repeated application is idempotent, conditional, or unsafe.
+The [Module 01 Exercises](exercises.md) require you to:
+
+- trace one document through the actual reference-state functions;
+- separate a mixed batch transformation from audit recording;
+- build and review one typed unary composition;
+- test the CSV-to-JSONL effect boundary;
+- repair a false fixed-point claim.
+
+Use [Exercise Answers](exercise-answers.md) only after you can state what your
+evidence proves and does not prove.
 
 ## Capstone Checks
 
-- Identify which helpers in FuncPipe stay pure across refactors.
-- Trace where configuration is explicit instead of ambient.
-- Check whether tests prove behavior or only exercise examples.
+- Inspect the tracked source under
+  `capstone/module-reference-states/module-01/src/funcpipe_rag/`.
+- Trace `RawDoc -> CleanDoc -> ChunkWithoutEmbedding -> Chunk`.
+- Locate the only file owner of CSV and JSONL effects.
+- Match every pure law claim to a named test in `tests/test_laws.py` or
+  `tests/learning/test_module_01_purity_foundations.py`.
+- Match every CSV/JSONL claim to
+  `tests/learning/test_module_01_shell_boundary.py`.
+
+Run the three focused routes from the repository root:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-types
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-proof
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-shell-proof
+```
+
+The routes answer different questions: strict mypy checks declared composition, the
+foundation proof checks pure behavior, and the shell proof checks serialized
+equivalence plus failure ownership.
 
 ## Before Moving On
 
 You should be able to explain why a function is pure, why that matters for substitution,
 and where a thin effect wrapper belongs when purity is impossible. Use
-[Refactoring Guide](refactoring-guide.md) and compare against
-`capstone/_history/worktrees/module-01` before moving forward.
+[Refactoring Guide](refactoring-guide.md), complete the exercises, and compare the
+tracked state with `capstone/_history/worktrees/module-01` after history refresh.
 
 ## Closing Criteria
 
 - You can defend a purity judgment without appealing to taste or syntax alone.
 - You can point to the exact place where an effect wrapper belongs when the transform itself cannot stay pure.
 - You can compare two implementations and explain whether they are meaning-preserving under substitution.
+- You can distinguish deterministic output, an idempotent transform, and a canonical
+  completed value.
+- You can distinguish a static type proof, a pure-core law, and an effect-boundary
+  observation.
+- You can explain why Module 01 keeps eager lists and explicit orchestration instead
+  of importing concepts from later modules.
 
 ## Directory Glossary
 

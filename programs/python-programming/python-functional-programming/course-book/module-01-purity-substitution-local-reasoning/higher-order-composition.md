@@ -1,473 +1,265 @@
 # Higher-Order Composition
 
+A higher-order function accepts a function, returns a function, or both. The point is
+not abstraction for its own sake. It is to reuse a sequencing rule while leaving the
+domain transformation visible.
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Purity Substitution Local Reasoning"]
-  page["Higher-Order Composition"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-This lesson is about a practical refactor move: stop rewriting the same loop structure when
-the real variation is only the transform inside it.
-
-## Start With the Concrete Problem
-
-Without composition, codebases tend to collect:
-
-- loops that differ in only one or two lines
-- nested transforms where the business rule is buried inside traversal mechanics
-- callback-heavy code that is harder to reorder or test than it should be
-
-Composition solves that by separating:
-
-- the fixed traversal or pipeline structure
-- the specific function passed into that structure
-
-## Keep This Question In View
-
-> **Core question:**  
-> How do you build concise, reusable, composable transformations using functions as first-class citizens—so that complex logic emerges from simple, testable building blocks without imperative loops or hidden state?
-
-By the end of this lesson, you should be able to identify:
-
-- the repeated pipeline shape
-- the small function that should be extracted
-- whether the resulting pipeline is actually clearer than the loop it replaced
-
----
-
-## 1. Conceptual Foundation
-
-### 1.1 The One-Sentence Rule
-
-> **Default to declarative pipelines over imperative loops; compose small, pure, testable functions into readable chains.**
-
-### 1.2 Higher-Order Composition in One Precise Sentence
-
-> Higher-order functions take functions as arguments or return them; composition chains them into pipelines that apply sequentially while preserving purity and immutability.
-
-### 1.3 Why This Matters Now
-
-Higher-order composition matters because it keeps structure and behavior separate. Once the
-transform becomes a value, you can:
-
-- test the small function on its own
-- test the traversal logic on its own
-- swap or reorder steps without rewriting the whole loop body
-
----
-
-## 2. Mental Model: Imperative Loop vs Declarative Pipeline
-
-### 2.1 One Picture
+Module 01 keeps this toolkit intentionally small:
 
 ```text
-Imperative loop                           Declarative pipeline
-+--------------------------------+       +-------------------------------------+
-| total = 0                      |       | from operator import add            |
-| for x in xs:                   |       | total = reduce(add,                 |
-|     if x > 0:                  |       |                filter(pos,          |
-|         total += x * x         |       |                       map(sq, xs)), |
-| print(total)                   |       |                0)                   |
-+--------------------------------+       +-------------------------------------+
-                                          Structure and transform are separated
+identity  one value -> same value
+fmap      (A -> B) -> (Iterable[A] -> list[B])
+flow      unary stages -> one left-to-right unary stage
+RagPipe   typed wrapper for unary stage composition
 ```
 
-### 2.2 Contract Table
+Closures, partial application, iterator combinators, and context plumbing arrive in
+later modules. Do not smuggle them into the first reference state to force a
+point-free pipeline.
 
-| Clause                     | Violation Example                      | Detected By                              |
-|----------------------------|----------------------------------------|------------------------------------------|
-| Identity laws              | flow(identity, f) ≠ f                  | Hypothesis identity property             |
-| Equivalence                | Pipeline ≠ known-correct impl          | Hypothesis equivalence vs imperative     |
-| Laziness / Memory          | Eager list(map()) on large data        | Manual memory profiling                  |
+## Functions are values
 
-**Note on Pipelines:** In Python, declarative code often means comprehensions plus small
-pure helpers, with `map`, `filter`, `reduce`, or a local `flow` helper used when they make
-the data movement clearer. The point is not to force one syntax. The point is to make the
-transform easy to see.
-
-### 2.3 How This Relates to Plain Python
-
-Python has multiple ways to express transformations; choose based on readability and laziness:
-
-| Transformation      | For-Loop (Imperative) | List Comprehension (Declarative) | map / filter (HO, lazy)     |
-|---------------------|-----------------------|----------------------------------|-----------------------------|
-| Apply f to xs       | res = []<br>for x in xs:<br>    res.append(f(x)) | [f(x) for x in xs]              | map(f, xs)                  |
-| Filter positives    | res = []<br>for x in xs:<br>    if x > 0:<br>        res.append(x) | [x for x in xs if x > 0]        | filter(pos, xs)             |
-| Pros/Cons           | Verbose, mutable accum | Readable, eager (full list)      | Lazy iterators, composable  |
-
-**Guidance:** Use comprehensions for simple cases; map/filter for laziness; curried versions (e.g., via functools.partial) for pipelines. Inline short pipelines; name reusable ones.
-
----
-
-## 3. Running Project: HO Composition in RAG Pipeline
-
-Our **running project** (from `module-01/funcpipe-rag-01/README.md`) composes RAG stages with HO functions.  
-- **Goal:** Replace imperative loops with declarative pipelines.  
-- **Start:** Core 1-3's pure functions.  
-- **End (this core):** HO-composed `full_rag` with properties for laws/equivalence. Semantics aligned with Core 1-3.
-
-### 3.1 Types (Canonical)
-
-These are defined in `module-01/funcpipe-rag-01/src/funcpipe_rag/rag_types.py` (as in Core 1) and imported as needed. No redefinition here.
-
-### 3.2 Imperative Variants (Anti-Patterns in RAG)
-
-Full code:
+Ordinary Python lets a function be bound and passed:
 
 ```python
-from funcpipe_rag import RawDoc, CleanDoc, ChunkWithoutEmbedding, RagEnv
-from typing import List
+from collections.abc import Callable
 
 
-# Imperative clean (manual loop)
-def imperative_clean_doc(doc: RawDoc) -> CleanDoc:
-    words = doc.abstract.strip().lower().split()
-    abstract = ""
-    for word in words:
-        abstract += word + " "  # Mutable string accum
-    return CleanDoc(doc.doc_id, doc.title, abstract.strip(), doc.categories)
+def normalize(text: str) -> str:
+    return " ".join(text.strip().lower().split())
 
 
-# Imperative chunk (manual indexing)
-def imperative_chunk_doc(doc: CleanDoc, env: RagEnv) -> List[ChunkWithoutEmbedding]:
-    text = doc.abstract
-    chunks = []
-    i = 0
-    while i < len(text):
-        end = min(i + env.chunk_size, len(text))
-        chunks.append(ChunkWithoutEmbedding(doc.doc_id, text[i:end], i, end))
-        i = end  # Manual step; off-by-one risk
-    return chunks
+def apply_text_rule(text: str, rule: Callable[[str], str]) -> str:
+    return rule(text)
 
 
-# Imperative embed (non-associative reduce example)
-import hashlib
-from typing import Tuple
-from funcpipe_rag import Chunk
-
-
-def imperative_embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
-    h = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
-    step = 4
-    vec = []
-    for i in range(0, 64, step):
-        val = int(h[i:i + step], 16) / (16 ** step - 1)
-        vec.append(val)  # Mutable accum
-    return Chunk(chunk.doc_id, chunk.text, chunk.start, chunk.end, tuple(vec))
+assert apply_text_rule("  Pure   Python ", normalize) == "pure python"
 ```
 
-**Smells:** Manual accum (mutable string/list), indexing (error-prone), non-HO (no composable parts).
+`apply_text_rule` is higher-order because `rule` is a value. Its usefulness depends on
+the contract of the supplied callable. Passing an impure function does not become
+safe merely because the wrapper is higher-order.
 
----
+## `fmap`: lift an element transform
 
-## 4. Refactor to HO: Declarative Pipelines in RAG
-
-### 4.1 HO Core
-
-`module-01/funcpipe-rag-01/src/funcpipe_rag/full_rag.py` wires the pure stages together with the `fmap` and `flow` helpers from `fp.py`. Full code for fp.py:
+Module 01's `fp.py` defines:
 
 ```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/fp.py
-from typing import Callable, TypeVar, List
+A = TypeVar("A")
+B = TypeVar("B")
 
-T = TypeVar("T")
-U = TypeVar("U")
-V = TypeVar("V")
 
-def fmap(f: Callable[[T], U]) -> Callable[[List[T]], List[U]]:
-    # fmap obeys the usual functor laws for list: identity and composition
-    # This fmap is a simple list-based helper; it’s eager. In Module 3 we’ll generalize this pattern to lazy iterators.
-    def mapper(xs: List[T]) -> List[U]:
-        return [f(x) for x in xs]
-    return mapper
+def fmap(func: Callable[[A], B]) -> Callable[[Iterable[A]], list[B]]:
+    def mapped(items: Iterable[A]) -> list[B]:
+        return [func(item) for item in items]
 
-def flow(*fs: Callable) -> Callable:
-    def composed(x):
-        for f in fs:
-            x = f(x)
-        return x
+    return mapped
+```
+
+Read the signature in two stages:
+
+```text
+give fmap:     A -> B
+receive:       Iterable[A] -> list[B]
+```
+
+For the RAG domain:
+
+```python
+clean_docs = fmap(clean_doc)
+cleaned: list[CleanDoc] = clean_docs(raw_docs)
+```
+
+`clean_doc` still owns normalization. `fmap` owns the repeated application and
+materializes the results as a list.
+
+The materialization is part of the contract. Module 01 is eager. Later modules change
+the traversal strategy and must explain that delta.
+
+## Why laws matter
+
+Two laws prevent `fmap` from adding surprising behavior.
+
+Identity:
+
+```python
+fmap(identity)(values) == values
+```
+
+Composition:
+
+```python
+fmap(lambda value: g(f(value)))(values) == fmap(g)(fmap(f)(values))
+```
+
+The Module 01 property tests check both. These laws support a refactor between one
+combined pass and two mapped transformations when the functions are pure and the
+extra eager intermediate list is acceptable.
+
+They do not grant permission to reorder arbitrary functions:
+
+```python
+fmap(g)(fmap(f)(values)) != fmap(f)(fmap(g)(values))
+```
+
+in general.
+
+## `flow`: compose unary stages
+
+`flow` returns one function that calls unary stages left to right:
+
+```python
+def flow(*functions: Callable[[Any], Any]) -> Callable[[Any], Any]:
+    def composed(value: Any) -> Any:
+        result = value
+        for function in functions:
+            result = function(result)
+        return result
+
     return composed
-
-def identity(x):
-    return x
 ```
 
-Full code for full_rag.py:
+Use it when each output is the next input:
 
 ```python
-# module-01/funcpipe-rag-01/src/funcpipe_rag/full_rag.py
-from typing import List
-from funcpipe_rag import fmap, flow
-from funcpipe_rag import clean_doc, chunk_doc, embed_chunk, structural_dedup_chunks
-from funcpipe_rag import RawDoc, Chunk, RagEnv
+normalize_length = flow(normalize, len)
+
+assert normalize_length("  Pure   Python ") == 11
+```
+
+The implementation uses `Any`, so it cannot statically prove that adjacent stages
+fit. The composition is readable but weakly typed. `RagPipe` offers a typed
+alternative later in this lesson sequence.
+
+## Why Module 01 does not force `full_rag` through `flow`
+
+The real RAG stages do not form a simple unary chain:
+
+- `chunk_doc` needs both a `CleanDoc` and `RagEnv`;
+- one document becomes many chunks;
+- embedding maps over those chunks;
+- deduplication needs the whole collection.
+
+The tracked `full_rag.py` therefore keeps orchestration explicit:
+
+```python
+def docs_to_embedded(docs: list[RawDoc], env: RagEnv) -> list[Chunk]:
+    cleaned = [clean_doc(doc) for doc in docs]
+    chunked = [chunk for doc in cleaned for chunk in chunk_doc(doc, env)]
+    embedded = [embed_chunk(chunk) for chunk in chunked]
+    return embedded
 
 
-def docs_to_embedded(docs: List[RawDoc], env: RagEnv) -> List[Chunk]:
-    cleaned = fmap(clean_doc)(docs)
-    chunked = [c for doc in cleaned for c in chunk_doc(doc, env)]
-    return fmap(embed_chunk)(chunked)
-
-
-def full_rag(docs: List[RawDoc], env: RagEnv) -> List[Chunk]:
+def full_rag(docs: list[RawDoc], env: RagEnv) -> list[Chunk]:
     return structural_dedup_chunks(docs_to_embedded(docs, env))
-
-
-def full_rag_point_free(docs: List[RawDoc], env: RagEnv) -> List[Chunk]:
-    return flow(
-        fmap(clean_doc),
-        lambda cleaned: [c for doc in cleaned for c in chunk_doc(doc, env)],
-        fmap(embed_chunk),
-        structural_dedup_chunks,
-    )(docs)
 ```
 
-These helpers provide the declarative composition we care about: `fmap` applies a pure stage across a list, and `flow` threads data through the entire pipeline without imperative bookkeeping. Note: flow(f, g, h)(x) means h(g(f(x))) (left-to-right).
+There is no `full_rag_point_free` in the Module 01 reference state. Its absence is a
+teaching decision. Hiding `env` or inventing a flat-map abstraction before the course
+introduces those tools would make the application harder to trace.
 
-### 4.2 Non-RAG Example: Data Munging Pipeline
+This is an important composition judgment:
 
-For a simple CSV processing pipeline. Full code:
+> Prefer explicit orchestration when the available abstraction does not fit the
+> domain shape honestly.
+
+## `RagPipe`: typed unary composition
+
+`rag_pipe.py` defines a small generic wrapper:
 
 ```python
-from typing import Dict, List, Tuple
+class RagPipe(Generic[A, B]):
+    def __init__(self, stage: Callable[[A], B]):
+        self._stage = stage
 
-# Imperative version (anti-pattern)
-def imperative_process_data(rows: List[Dict[str, str]]) -> List[Dict[str, float]]:
-    cleaned = []
-    for row in rows:
-        if row['age'] and int(row['age']) > 18:
-            cleaned.append({'id': row['id'], 'score': float(row['score'])})
+    def __call__(self, value: A) -> B:
+        return self._stage(value)
 
-    normalized = []
-    for item in cleaned:
-        item['score'] = item['score'] / 100.0  # Mutates
-        normalized.append(item)
-    return normalized
-
-# HO refactor
-def is_adult(row: Dict[str, str]) -> bool:
-    age = row.get('age')
-    return age is not None and int(age) > 18
-
-def parse_score(row: Dict[str, str]) -> Dict[str, float]:
-    return {'id': row['id'], 'score': float(row['score'])}
-
-def normalize_score(item: Dict[str, float]) -> Dict[str, float]:
-    return {**item, 'score': item['score'] / 100.0}  # New dict
-
-def process_data(rows: List[Dict[str, str]]) -> Tuple[Dict[str, float], ...]:
-    return tuple(
-        map(normalize_score,
-            map(parse_score,
-                filter(is_adult, rows)
-            )
-        )
-    )
+    def then(self, next_stage: Callable[[B], C]) -> "RagPipe[A, C]":
+        return RagPipe(lambda value: next_stage(self._stage(value)))
 ```
 
-Here we intentionally use built-in map/filter to highlight laziness; our fmap helper above is eager and for lists only.
-
-**Wins:** Internal stages are lazy iterators, no mutation, reusable parts. Moving filter before expensive map avoids wasted work on invalid rows.
-
-### 4.3 Non-RAG Example: Business Logic Pipeline
-
-For a request handler. Full code:
+This is not a second RAG framework. It demonstrates that method chaining can still
+represent ordinary function composition:
 
 ```python
-from typing import Dict, Callable
-from funcpipe_rag import flow
-
-
-# Imperative version (anti-pattern)
-def imperative_handle_request(req: Dict) -> Dict:
-    if not authenticate(req):
-        return {'error': 'unauth'}
-    if not authorize(req):
-        return {'error': 'unauthorized'}
-    result = run_action(req)
-    return {'result': result}
-
-
-# HO refactor (composition)
-# reusing flow from fp.py
-
-def check_auth(req: Dict) -> Dict:
-    if not authenticate(req):
-        raise ValueError('unauth')
-    return req
-
-
-def check_authz(req: Dict) -> Dict:
-    if not authorize(req):
-        raise ValueError('unauthorized')
-    return req
-
-
-handle_request = flow(
-    check_auth,
-    check_authz,
-    lambda req: {'result': run_action(req)},
-)
+clean_then_count = RagPipe(clean_doc).then(lambda doc: len(doc.abstract))
+count: int = clean_then_count(raw_doc)
 ```
 
-**Wins:** Composable guards, easy to reorder/add steps without nesting. Real-world handlers often compose error-aware wrappers (like Result/Either types); here we raise exceptions to keep the example small. We’ll later replace these ValueError raises with explicit Result values.
+`RagPipe.then` can express a chain whose stages are genuinely unary. It does not solve
+one-to-many expansion or configuration binding by itself.
 
-### 4.4 Impure Shell (Edge Only)
+## Failure routes
 
-The shell from Core 1 remains; HO focuses on core.
-
-### 4.5 Tradeoffs in Composition
-
-Overly long pipelines hurt readability—split if >3-4 stages. If a pipeline is only used once and short, inline it. Imperative may win in ultra-hot paths, but wrap in HO API.
-
----
-
-## 5. Equational Reasoning: Substitution Exercise
-
-**Hand Exercise:** Replace expressions in `full_rag`.  
-1. Inline `docs_to_embedded(docs, env)` → list of chunks.  
-2. Substitute into `structural_dedup_chunks` → fixed value.  
-3. Result: Entire call = fixed value.  
-**Bug Hunt:** In imperative_chunk_doc, substitution fails (manual indexing risks).
-
----
-
-## 6. Property-Based Testing: Proving Equivalence (Advanced, Optional)
-
-Use Hypothesis to prove laws.
-
-You can safely skip this on a first read and still follow later cores—come back when you want to mechanically verify your own refactors.
-
-### 6.1 Custom Strategy (RAG Domain)
-
-From `module-01/funcpipe-rag-01/tests/conftest.py` (as in Core 1).
-
-### 6.2 Composition & Equivalence Properties for the RAG Pipeline
-
-Full code:
+### Adjacent stages do not fit
 
 ```python
-# module-01/funcpipe-rag-01/tests/test_laws.py (excerpt)
-from hypothesis import given
-import hypothesis.strategies as st
-from funcpipe_rag import fmap, flow, identity
-from funcpipe_rag import full_rag, full_rag_point_free
-from funcpipe_rag import RagEnv, RawDoc
-from .conftest import doc_list_strategy, env_strategy
-
-
-@given(xs=st.lists(st.integers()))
-def test_fmap_identity(xs):
-    assert fmap(lambda x: x)(xs) == xs
-
-
-@given(xs=st.lists(st.integers()))
-def test_fmap_composition(xs):
-    inc = lambda x: x + 1
-    double = lambda x: x * 2
-    assert fmap(lambda x: double(inc(x)))(xs) == fmap(double)(fmap(inc)(xs))
-
-
-@given(docs=doc_list_strategy(), env=env_strategy())
-def test_full_rag_equivalent_forms(docs, env):
-    assert full_rag(docs, env) == full_rag_point_free(docs, env)
+bad = flow(clean_doc, embed_chunk)
+bad(raw_doc)
 ```
 
-These real tests enforce both the functor laws for `fmap` and the equivalence between our straight-line and point-free pipeline definitions.
+`clean_doc` returns `CleanDoc`; `embed_chunk` requires
+`ChunkWithoutEmbedding`. The untyped `flow` construction succeeds and execution
+fails. A type-aware wrapper or an intermediate `chunk_doc` stage is required.
 
-### 6.3 Shrinking Demo: Catching a Bug
-
-Bad refactor (non-associative reduce in full_rag):
-
-Full code:
+### An effect hides inside a callback
 
 ```python
-from functools import reduce
-from typing import List, Tuple
-from funcpipe_rag import clean_doc, chunk_doc, embed_chunk
-from funcpipe_rag import RawDoc, Chunk, RagEnv
+def report(doc: RawDoc) -> RawDoc:
+    print(doc.doc_id)
+    return doc
 
 
-def bad_full_rag(docs: List[RawDoc], env: RagEnv) -> Tuple[Chunk, ...]:
-    # Buggy use of reduce: new tuple concatenated on the left reverses the doc order
-    return reduce(
-        lambda acc, d: tuple(embed_chunk(c) for c in chunk_doc(clean_doc(d), env)) + acc,
-        docs,
-        tuple()
-    )  # Wrong concat (reverses order)
+pipeline = fmap(report)
 ```
 
-Property:
+`fmap` preserves the callback's effects; it does not purify them. Repeated evaluation
+prints repeatedly.
 
-```python
-from hypothesis import given
-from funcpipe_rag import RawDoc, RagEnv
-from .conftest import doc_list_strategy, env_strategy
+### Abstraction erases the domain
 
+A chain of anonymous lambdas may be shorter than `docs_to_embedded`, but it can hide
+normalization, expansion, and embedding behind generic plumbing. If a reviewer cannot
+name the domain transition at each boundary, the composition has not earned its cost.
 
-@given(docs=doc_list_strategy(), env=env_strategy())
-def test_bad_full_rag_equivalence(docs: List[RawDoc], env: RagEnv) -> None:
-    imperative = tuple(
-        embed_chunk(c)
-        for d in docs
-        for c in chunk_doc(clean_doc(d), env)
-    )
-    assert bad_full_rag(docs, env) == imperative  # Fails on order
+## Proof route
+
+Inspect:
+
+```text
+capstone/module-reference-states/module-01/src/funcpipe_rag/fp.py
+capstone/module-reference-states/module-01/src/funcpipe_rag/rag_pipe.py
+capstone/module-reference-states/module-01/src/funcpipe_rag/full_rag.py
 ```
 
-Hypothesis failure trace (run to verify; example):
+Then run the Module 01 law suite:
 
-```
-Falsifying example: test_bad_full_rag_equivalence(
-    docs=[RawDoc(doc_id='a', title='', abstract='a', categories=''), RawDoc(doc_id='b', title='', abstract='b', categories='')], 
-    env=RagEnv(chunk_size=128),
-)
-AssertionError
+```bash
+PYTHONPATH=capstone/module-reference-states/module-01/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-01/tests/test_laws.py
 ```
 
-- Shrinks to two docs; reversed order fails equality. Catches bug via shrinking.
+Review `test_fmap_identity_law`, `test_fmap_composition_law`, and
+`test_refactor_preserves_chunk_structure`. The first two prove combinator behavior;
+the last checks that decomposing the monolithic loop preserves RAG chunk metadata.
 
----
+## Learner work
 
-## 7. When HO Isn't Worth It
+Write two versions of a pipeline that cleans documents and counts abstract lengths:
 
-Rarely, for profiled hot paths (e.g., tight loops), use imperative but wrap in HO API.
+1. an explicit comprehension;
+2. `flow(fmap(clean_doc), fmap(lambda doc: len(doc.abstract)))`.
 
----
+Assert equal output for empty, one-document, and multi-document inputs. Then explain:
 
-## 8. Pre-Core Quiz
+- why the `flow` stages fit;
+- where eager lists are allocated;
+- why the equivalent pattern cannot directly express `chunk_doc` without binding
+  `RagEnv` and flattening;
+- which version you would choose in a review and why.
 
-1. Side-effect in map → violates? → **Purity**  
-2. Non-associative op in reduce → violates? → **Predictability**  
-3. Nested for-loops → better as? → **Pipeline**  
-4. List comp vs generator exp → memory trade-off? → **List comp O(n) extra**  
-5. Tool to prove equivalence? → **Hypothesis**
-
-## 9. Post-Core Reflection & Exercise
-
-**Reflect:** In your code, find one imperative loop. Compose it; add HO properties.  
-**Project Exercise:** Compose RAG stages; run properties on sample data.
-
-All claims (e.g., referential transparency) are verifiable via the provided Hypothesis examples—run them to confirm.
-
-**Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
-
-**Continue with:** [Local FP Refactors](../module-01-purity-substitution-local-reasoning/local-fp-refactors.md)
+Preserve the Module 01 learning proof. Continue with
+[Local Functional Refactors](local-fp-refactors.md), which applies these judgments to
+small changes instead of demanding a whole-program rewrite.

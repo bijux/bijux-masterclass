@@ -199,6 +199,68 @@ Use static pattern rules when:
 That is a good trade when you are teaching or maintaining a repository meant to stay
 readable.
 
+## Secondary expansion builds prerequisites from target context
+
+Ordinary prerequisite lists expand while Make reads the rule. At that point `$@` has no
+target value:
+
+```make
+main_OBJS := build/main.o build/report.o
+audit_OBJS := build/audit.o build/report.o
+
+main audit: $($@_OBJS)
+```
+
+The computed reference collapses too early, so neither target receives the intended
+prerequisites.
+
+`.SECONDEXPANSION` asks Make to expand escaped prerequisites again in automatic-variable
+context:
+
+```make
+.SECONDEXPANSION:
+
+main_OBJS := build/main.o build/report.o
+audit_OBJS := build/audit.o build/report.o
+
+main audit: $$($$@_OBJS)
+	$(LINK.o) $^ -o $@
+```
+
+Read the rule in two passes:
+
+| Boundary | Text Make observes | Available fact |
+| --- | --- | --- |
+| initial parse expansion | `$($@_OBJS)` remains escaped for later | target context is not used yet |
+| secondary expansion for `main` | `$(main_OBJS)` | `$@` is `main` |
+| secondary expansion for `audit` | `$(audit_OBJS)` | `$@` is `audit` |
+| recipe expansion | concrete `$^` and `$@` | the selected target's graph is settled |
+
+```mermaid
+flowchart LR
+  source["Rule text: $$($$@_OBJS)"]
+  parse["Initial expansion preserves expression"]
+  select["Make considers target main"]
+  second["Secondary expansion uses $@ = main"]
+  graph["Prerequisites become main_OBJS"]
+  recipe["Recipe sees concrete $^"]
+
+  source --> parse --> select --> second --> graph --> recipe
+```
+
+The escaping is the contract. An unescaped reference is consumed during the first
+expansion and cannot be recovered later.
+
+For explicit rules, secondary expansion can use `$$@`, `$$%`, and prerequisite history
+through `$$<`, `$$^`, and `$$+`. `$$?` and `$$*` do not carry useful values there.
+Static pattern and implicit rules provide stem context for `$$*`, but have additional
+search semantics. Begin with an explicit-rule harness before using those forms.
+
+Secondary expansion is justified when it makes a bounded family of target-specific
+prerequisites clearer. It is not a license to hide arbitrary graph construction in nested
+variable names. Prove the expanded prerequisites with `gmake -np` or `--debug=implicit`
+and keep the name-to-prerequisite mapping visible.
+
 ## Multi-output generators require one logical publication step
 
 This is where even experienced engineers make avoidable mistakes.
@@ -247,18 +309,40 @@ GEN_STAMP := build/api.stamp
 
 $(GEN_STAMP): gen_api.py schema.yml | build/
 	python3 gen_api.py
+	test -s api.h
+	test -s api.json
 	touch $@
 
-api.h api.json: $(GEN_STAMP)
+consumer: $(GEN_STAMP)
+	consume api.h api.json
 ```
 
 This is not as elegant as grouped targets, but it is honest. It says:
 
 - one recipe owns the generation event
-- the outputs are downstream of that event
+- successful validation precedes the stamp publication
+- downstream consumers depend on the publication event
 - the build graph has a stable point to reason about
 
-The stamp is not busywork. It is the missing node that makes the generation explainable.
+The stamp is not a substitute for file identity. If other rules must name `api.h` and
+`api.json` directly as independently repairable prerequisites, require grouped-target
+support or design an explicit recovery rule for a missing member. A stamp that remains
+present after one output is deleted can otherwise hide a broken group.
+
+## Special targets change precise guarantees
+
+Special targets are global or scoped semantic switches. Review the guarantee each one
+changes and the failures it cannot repair:
+
+| Special target | Guarantee it changes | It does not repair |
+| --- | --- | --- |
+| `.PHONY` | named prerequisites are always considered and skip implicit-rule search | file artifact freshness |
+| `.DELETE_ON_ERROR` | removes a changed target when its recipe fails, unless preserved by `.PRECIOUS` | undeclared side outputs or successful recipes that publish bad bytes |
+| `.PRECIOUS` | preserves named targets across interruption and recipe failure | partial-file correctness |
+| `.SECONDARY` | prevents selected intermediate files from automatic deletion | missing dependencies |
+| `.NOTPARALLEL` | serializes the documented scope | multi-writer ownership |
+| `.WAIT` | establishes a prerequisite scheduling barrier | content dependency edges |
+| `.ONESHELL` | runs all recipe lines in one shell | automatic early-command failure detection |
 
 ## `.PHONY` is for orchestration, not real artifacts
 
@@ -286,12 +370,34 @@ That is useful for targets like:
 It is destructive for real artifacts such as binaries, archives, manifests, or generated
 headers.
 
+## `.DELETE_ON_ERROR` limits failed-target residue
+
+Without `.DELETE_ON_ERROR`, a recipe can write half a target and exit nonzero. A later run
+may mistake that file for useful state:
+
+```make
+.DELETE_ON_ERROR:
+
+report.csv: observations.csv
+	python3 render.py $< > $@
+```
+
+If the recipe changes `report.csv` and then fails, Make removes the target. This supports
+recovery, but it is not atomic publication: another process could observe partial bytes
+while the recipe runs. A process-local candidate plus rename remains the stronger pattern.
+
+`.DELETE_ON_ERROR` also knows only the declared target. If a recipe writes undeclared side
+outputs, Make cannot clean them. A target named under `.PRECIOUS` is intentionally exempt
+from deletion, so combining the two requires a documented recovery reason.
+
+Test the failure path. A passing recipe tells you nothing about deletion semantics.
+
 ## `.NOTPARALLEL` is a last resort, not a design strategy
 
 `.NOTPARALLEL` can be valid when a tool genuinely cannot be modeled safely for concurrent
 execution. But it is often used to hide graph bugs:
 
-- shared temp files
+- shared process work files
 - multi-writer outputs
 - missing order relationships
 - non-atomic publication
@@ -304,6 +410,10 @@ missing truth, not as a final repair.
 GNU Make 4.4 added `.WAIT` as a way to impose barrier-style ordering in prerequisite
 lists. It can be useful, but it should not replace honest prerequisites.
 
+If the supported Make range includes older releases, reject the unsupported runtime before
+parsing a rule that relies on `.WAIT`, or provide a graph with real compatibility
+semantics. Silently treating `.WAIT` as an ordinary prerequisite name is not a fallback.
+
 Use a real edge when content or publication truly depends on another artifact.
 
 Use a barrier only when the scheduling relationship is real but not naturally expressed by
@@ -311,7 +421,7 @@ a normal file dependency.
 
 That distinction matters because barriers are easier to misuse as ordering folklore.
 
-## `.SECONDARY` and friends can preserve files, but they do not fix semantics
+## Retention targets do not fix graph semantics
 
 Special targets such as `.SECONDARY`, `.PRECIOUS`, and `.INTERMEDIATE` affect how Make
 treats intermediate files. They can be helpful for debugging or for preventing deletion of
@@ -326,7 +436,7 @@ They do not solve:
 
 In other words, file retention policy is not the same thing as graph truth.
 
-## `.ONESHELL` changes recipe execution shape
+## `.ONESHELL` changes failure observation
 
 `.ONESHELL` makes all lines in a recipe run in one shell instance instead of separate
 invocations.
@@ -336,10 +446,13 @@ sharing inside recipes. For example:
 
 - environment exports on one line remain visible to later lines
 - `cd` persists within the recipe
+- failure in an early line may be hidden if a later line succeeds
 - shell error handling needs to be set deliberately
 
-This is not automatically bad. It is a reminder that special targets often change the
-semantics more than their short syntax suggests.
+With `.ONESHELL`, Make ordinarily receives the shell's final exit status. Use an explicit
+shell contract such as `set -eu` where appropriate, and still test pipelines and commands
+whose failure rules vary by shell. `.ONESHELL` reduces shell startup boundaries; it does
+not make a multi-command recipe transactional.
 
 ## A small broken-generator example
 
@@ -386,13 +499,15 @@ obvious.
 
 ## A better way to review advanced rule features
 
-When someone proposes an advanced rule form, ask them to explain five things:
+When someone proposes an advanced rule form, ask them to explain:
 
 1. which recipe invocation owns the publication event
 2. which files are the semantic inputs
 3. whether parallel runs can trigger duplicate or competing writers
 4. how the rule converges on a second run
 5. which Make feature is required and what the fallback is
+6. at which expansion boundary every computed prerequisite is resolved
+7. which failure-path artifact state each special target permits
 
 If those answers are strong, the feature is probably justified.
 
@@ -414,7 +529,8 @@ If you can answer those without hiding behind syntax, the rule is probably sound
 Before leaving this lesson, make sure you can explain:
 
 - why overlapping pattern rules make builds harder to reason about
+- why `.SECONDEXPANSION` requires escaping and target-context evidence
 - why multi-output generation needs one logical publication event
 - why grouped targets or a stamp are safer than naive multi-target rules
-- why `.PHONY` belongs on orchestration targets, not real artifacts
-- why special targets can be useful without being valid substitutes for graph truth
+- when `.DELETE_ON_ERROR` removes a failed target and when it cannot help
+- why `.PHONY`, `.NOTPARALLEL`, `.WAIT`, and `.ONESHELL` each change a narrow guarantee

@@ -361,28 +361,105 @@ All streaming operations are truly lazy and O(1) per item.
 
 | Anti-Pattern                            | Symptom                     | Fix                                      |
 |-----------------------------------------|-----------------------------|------------------------------------------|
-| try/except in hot streaming path        | Pipeline halts or silent loss | Wrap in `Result` → continue              |
+| Expected record failure escapes a stage | Pipeline halts before policy can decide | Translate at the stage boundary |
 | Using Optional[T] for errors            | Loses error info            | Use `Result[T, ErrInfo]`                 |
 | Swallowing exceptions without logging   | Invisible failures          | Always return `Err` with full provenance |
 | Recovering too early                    | Mask real problems          | Recover only at pipeline boundary        |
 
 ---
 
+## Classify the RAG outcome before choosing a container
+
+`Result` and `Option` are not replacements for every exception. They describe
+outcomes the caller is expected to inspect.
+
+Use the embedding boundary as the decision point:
+
+| Outcome | Representation | Why |
+| --- | --- | --- |
+| Chunk embedded | `Ok(embedded_chunk)` | Success continues with a value |
+| Search found no matching chunk | `Nothing()` in Module 04 | Absence is expected and has no failure provenance |
+| Embedding service unavailable | `Err(ErrInfo(...))` | Retry and reporting need code, stage, and path |
+| Invalid chunk text | `Err(ErrInfo(...))` | The record may be rejected while later records continue |
+| Broken internal invariant | Exception | Continuing could make later evidence misleading |
+| Process interruption | Exception | Cancellation and shutdown are not record values |
+
+The learning proof starts with:
+
+```python
+failure = Err(
+    make_errinfo(
+        "DOC/MISSING",
+        "document was not read",
+        "read",
+        (7,),
+    )
+)
+```
+
+Mapping a normalizer over that `Err` must not call the normalizer. Converting
+the same failure to `Option` intentionally discards its provenance:
+
+```text
+Err(DOC/MISSING at path 7) --to_option--> Nothing
+```
+
+That conversion is appropriate only after a caller has decided that every
+failure should be treated as ordinary absence. It is not a harmless formatting
+change.
+
+Run:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k option_absence
+```
+
+The proof establishes three observations: the failed value is unchanged,
+failure skips the success function, and `Option` distinguishes presence from
+absence. It does not prove that `DOC/MISSING` was classified correctly. That is
+a domain decision reviewed at the reader boundary.
+
+Keep exception translation narrow. `try_map_iter` later in this module catches
+`Exception` because its job is explicitly to adapt arbitrary record functions.
+A smaller domain adapter should normally catch only the exceptions it can
+classify, preserving unexpected faults as exceptions.
+
 ## 8. Pre-Core Quiz
 
-1. Result for…? → **Success or failure with rich error**  
-2. Option for…? → **Simple presence/absence (no error info)**  
-3. Monad law that enables chaining? → **Associativity**  
-4. Never raise in stream when you can…? → **Return Err**  
-5. recover() on Err(e)? → **Returns Ok(f(e)); E becomes phantom**
+1. When is `Option` sufficient? → **When absence is expected and the caller
+   needs no reason.**
+2. Why retain `ErrInfo.path`? → **To connect a record failure to its document
+   or section provenance.**
+3. What does `Err.map(success_fn)` do? → **It preserves the error without
+   calling the success function.**
+4. Should an invariant violation become `Err` automatically? → **No; continuing
+   may be unsafe or misleading.**
+5. What information is lost by `to_option(Err(...))`? → **The failure code,
+   message, stage, path, cause, and context.**
 
 ## 9. Post-Core Exercise
 
-1. Wrap your current embedder in `safe_embed` → run on real data → verify no crash and all errors collected.  
-2. Implement fallback embedding on `Err` using `.recover()`.  
-3. Replace every try/except in a data-processing function with `Result`.  
-4. Add `partition_results` at the end of your RAG pipeline → log summary of failures with full `ErrInfo`.
+Write a classification table for the Module 04 reader and embedder boundaries.
+
+- Include one expected absence, one retryable record failure, one permanent
+  record failure, and one exception that must escape.
+- For each `Err`, choose a stable code, stage, and path meaning.
+- Add one assertion showing that a success-only transform is not called for the
+  retryable failure.
+- Identify the exact boundary, if any, where discarding failure provenance into
+  `Option` is acceptable.
+
+Move forward when another reviewer could disagree with your classification
+without first reverse-engineering control flow.
 
 **Continue with:** [Streaming Error Handling](../module-04-streaming-resilience-failure-handling/streaming-error-handling.md)
 
-You now have the complete toolkit to process real-world messy data without ever losing a single record or crashing on one bad apple. The rest of Module 4 is about aggregating and reporting those errors beautifully.
+The next core carries those per-record decisions through a lazy stream, where
+position and demand become part of the failure contract.

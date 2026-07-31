@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,247 +9,240 @@ graph LR
   program["Deep Dive DVC"]
   section["Experiments Baselines Controlled Change"]
   page["Exercise Answers"]
-  capstone["Capstone evidence"]
+  packet["Reviewable experiment decisions"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.models.-> packet
 ```
 
 ```mermaid
 flowchart LR
-  baseline["anchor the baseline"] --> scope["scope one candidate intent"]
-  scope --> compare["compare without contaminating the baseline"]
-  compare --> decide["promote or discard with reasons"]
-  decide --> retain["retain only the experiments that matter"]
+  executed["candidate executed"] --> comparable["comparison valid"]
+  comparable --> stable["effect stable enough"]
+  stable --> useful["practically useful"]
+  useful --> confirmed["independently confirmed"]
+  confirmed --> authorized["promotion authorized"]
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These answers model the reasoning boundary. They do not turn the modeled stochastic
+scenario into capstone-generated evidence. Compare your authority, evidence chain,
+decision, and limit rather than matching wording.
 
-## How to use the answer page well
-
-Do not read the model answer first and then reduce every experiment to "keep the best
-row."
-
-A better rhythm is:
-
-1. finish the exercise with your own experiment packet
-2. name the baseline, candidate intent, and promotion question
-3. compare your reasoning with the model answer
-4. revise anywhere your answer skips contamination risk, tradeoff review, or post-apply
-   inspection
-
-What matters is whether the reasoning keeps baseline authority, candidate scope, evidence,
-and promotion decisions connected.
-
-Strong Module 06 answers usually do five things:
-
-- they treat baseline as evidence, not memory
-- they keep candidate intent focused enough to interpret
-- they describe what DVC experiment recording preserves without overclaiming
-- they write promotion notes in terms of tradeoffs and release goals
-- they preserve only the experiments that actually matter to future review
-
-The strongest self-study packets also leave behind six concrete artifacts:
-
-- one baseline description
-- one candidate-scope judgment
-- one tradeoff review note
-- one contamination repair
-- one promotion review
-- one retention policy
-
-If your answers rely only on "this candidate scored highest," the reasoning is still too
-thin.
-
-## Answer 1: Name the baseline
-
-Strong baseline description:
-
-> The baseline uses `evaluate.threshold: 0.65` and reports F1 `0.81`, precision `0.78`,
-> and recall `0.84`. Candidate experiments should compare against the same declared
-> parameter surface, metric definition, evaluation population, and governed Git state
-> unless a baseline boundary change is explicitly reviewed.
-
-Evidence to inspect:
-
-- `params.yaml`
-- `metrics/metrics.json`
-- `dvc.lock`
-- published baseline files such as `publish/v1/params.yaml` and `publish/v1/metrics.json`
-- any release or prediction review guide that explains the metric meaning
-
-What would make the baseline no longer clean:
-
-- uncommitted semantic changes
-- changed data or evaluation population without baseline review
-- metric schema changes that silently alter meaning
-
-Baseline must be evidence, not memory, because later reviewers need to reconstruct the
-comparison from files rather than from what the original runner remembers.
-
-## Answer 2: Scope a candidate
-
-This should usually be separate candidate runs.
-
-Reasoning:
-
-- lowering `evaluate.threshold` tests a policy tradeoff
-- switching `fit.model_family` tests a model choice
-- removing weekends changes the evaluation population and may require boundary review
-
-What the team loses by combining them too early:
-
-- clean attribution of which change caused the metric movement
-- a stable interpretation of baseline continuity
-- the ability to promote only one justified change
-
-A defensible combined run exists only if the team explicitly proposes a full policy shift,
-not a clean single-factor comparison.
-
-## Answer 3: Interpret a candidate table
-
-Strong review note:
-
-> The candidate lowers `evaluate.threshold` from `0.65` to `0.50`. F1 rises from `0.81`
-> to `0.84`, and recall rises from `0.84` to `0.95`. Precision falls from `0.78` to
-> `0.75`. This candidate is promising if the release objective prioritizes reducing missed
-> escalations enough to justify more false positives. It is unattractive if precision
-> stability or operator workload is the stronger business constraint.
-
-The main lesson is to name the tradeoff rather than celebrating the higher F1 alone.
-
-## Answer 4: Identify what DVC experiments do not prove
-
-Strong response:
-
-> DVC experiments help record candidate runs, parameter differences, metrics, and
-> comparison evidence without immediately rewriting main Git history. They do not prove
-> that the candidate is semantically comparable, environmentally stable, aligned with the
-> release objective, or safe to promote. Those questions still require review of baseline,
-> control changes, metric meaning, and release policy.
-
-Example of a well-recorded but non-promotable candidate:
-
-- a candidate with better recall that changed the evaluation population or metric schema
-  at the same time, making the comparison non-comparable
-
-## Answer 5: Decide promotion or discard
-
-Before applying the candidate, inspect:
-
-- parameter diff
-- metric diff
-- baseline identity
-- evaluation population evidence
-- metric schema continuity
-- whether unrelated workspace changes exist
-
-After applying the candidate, check:
-
-- `git diff`
-- `git status`
-- expected updates to `params.yaml`, metrics, lockfiles, or published artifacts
-- no unrelated semantic drift
-- any capstone-specific review path outputs
-
-Strong promotion note should include:
-
-- baseline and candidate identities
-- threshold changed from `0.65` to `0.50`
-- recall improved while precision decreased
-- the release objective prioritizes missed-escalation reduction
-- comparison surfaces remained stable, if verified
-- exact Git state preserved by the promotion commit
-
-One reason to reject promotion even if recall improved:
-
-- the precision loss violates a release safeguard or the comparison packet cannot prove
-  stable metric meaning and population continuity
-
-## Answer 6: Queue a controlled parameter sweep
-
-A good sweep has:
-
-- a stated hypothesis
-- bounded parameter values that matter scientifically
-- a table shape with one candidate per row and stable metric columns
-
-The sweep should be narrow enough that each candidate still teaches something. Wider
-search becomes noise when values are arbitrary or when the team cannot explain why those
-settings belong in the hypothesis space.
-
-## Answer 7: Reproduce one experiment outside the queue
-
-The reconstructed run should identify:
-
-- the exact code state
-- the tracked data identity
-- parameter values
-- environment identity
-
-Then it should compare the reproduced metrics with the experiment record.
-
-A mismatch that forces deeper audit is:
-
-- different metrics or artifacts despite matching declared code, data, parameters, and
-  environment, because that suggests either missing evidence or an undeclared influence
-
-## Answer 8: Detect a contaminated baseline
-
-Uncommitted semantic changes blur whether the result belongs to the named baseline or to
-an unrecorded intermediate state. Strong evidence names the dirty paths and shows that the
-candidate is no longer a clean comparison against the last committed baseline.
-
-The repair is not to rename the candidate after the fact. The repair is to:
-
-- commit the intended baseline first, or
-- discard the contaminated run, or
-- isolate unrelated work before rerunning
-
-The main lesson is that provenance breaks at the baseline boundary before it breaks in the
-experiment table.
-
-## Answer 9: Write a promotion review
-
-The note must make the decision reconstructable months later. A strong note names:
-
-- baseline identity
-- candidate identity
-- exact changed controls
-- observed tradeoffs
-- known limitations or open risks
-- the Git revision and promoted files that preserve the chosen state
-
-Rejection is appropriate when:
-
-- the gain violates safeguards
-- the candidate changes too many semantic surfaces at once
-- evidence is incomplete
-- the candidate cannot be reproduced independently
-
-## Answer 10: Manage experiment retention
-
-Strong retention policy:
-
-- disposable: keep only short-lived learning notes; cleanup is allowed quickly
-- reproducible: retain semantic inputs, metric outputs, and enough metadata to rerun
-- decision-relevant: also retain comparison rationale and baseline linkage
-- release-relevant: retain durable artifacts, provenance, and recovery evidence
-
-Why this matters:
-
-- not every experiment deserves long-term weight, but important decisions become
-  unreviewable if the key evidence is cleaned away too early
-
-## Self-check
-
-If your answers consistently explain:
-
-- what baseline state anchors the comparison
-- what each candidate is trying to learn
-- what DVC experiment evidence can and cannot prove
-- which tradeoffs matter for selection
-- why promotion needs applying, inspecting, and committing a defensible state
-
-then you are using Module 06 correctly.
+## Answer: Predict the decision gates
+
+| Case | Result | Decision | Deciding boundary |
+| --- | --- | --- | --- |
+| controlled threshold | `PASS` | `KEEP_FOR_PROMOTION_REVIEW` | only intended threshold changes |
+| mixed control change | `PASS` | `BLOCK_COMPARISON` | unrelated capacity control breaks attribution |
+| mutated baseline contract | `PASS` | `BLOCK_COMPARISON` | candidate anchor differs from approval evidence |
+| population drift | `PASS` | `BLOCK_COMPARISON` | evaluation membership changes |
+| metric schema drift | `PASS` | `BLOCK_COMPARISON` | result meaning changes |
+| missing candidate intent | `PASS` | `BLOCK_COMPARISON` | allowed change set cannot be judged |
+| unsafe promotion request | `PASS` | `BLOCK_PROMOTION` | comparison passes; authority is absent |
+
+A reversing condition must repair the deciding boundary. A better metric cannot reverse
+population drift; another successful run cannot create promotion authority.
+
+## Answer: Prove the baseline authority
+
+The controlled baseline is:
+
+```text
+id: approved-incident-triage
+threshold: 0.65
+population: incident-review-v1
+record count: 8
+population digest: recorded in baseline metrics
+metric schema: classification-v1
+expected precision: 1.0
+expected recall: 0.6
+expected F1: 0.75
+allowed candidate change: decision.threshold
+```
+
+Bounded claim:
+
+> For the identified eight records, fixed evaluator, recorded controls, and
+> `classification-v1`, threshold `0.65` produces the baseline confusion outcomes and
+> metrics.
+
+It does not claim a representative production sample, training-seed stability, or
+uncertainty beyond those eight fixed records.
+
+A changed cohort, evaluator meaning, or baseline contract requires new authority before
+ordinary candidate ranking.
+
+## Answer: Classify every changed surface
+
+Representative rows:
+
+| Case and field | Role | Allowed? | Reason |
+| --- | --- | --- | --- |
+| controlled `decision.threshold` | intervention | yes | matches intent |
+| controlled metrics and lock | consequences | yes | produced by intervention |
+| mixed review capacity | unrelated control | no | attribution exceeds intent |
+| population record set and digest | comparison control | no | measurement cohort changes |
+| metric schema | baseline boundary | no | result meaning changes |
+
+DVC visibility answers “was this state recorded?” Experiment scope answers “does this
+state belong in the causal question?” A visible mixed control remains disallowed.
+
+## Answer: Bound DVC experiment receipts
+
+| Receipt | Observation supported | Claim not supported |
+| --- | --- | --- |
+| candidate run | command returned successfully | candidate is comparable |
+| experiment show | recorded candidate state and metrics exist | population and metric meaning are continuous |
+| experiment diff | declared state differs from baseline | every difference was intended or allowed |
+
+Controlled threshold and population drift both execute. The first preserves population
+identity and schema; the second changes cohort membership. Command success therefore
+supports execution evidence for both and comparison evidence for neither without the
+contract checks.
+
+## Answer: Decide the deterministic comparison
+
+| Metric | Baseline | Candidate | Delta |
+| --- | ---: | ---: | ---: |
+| recall | 0.6000 | 1.0000 | +0.4000 |
+| precision | 1.0000 | 0.8333 | -0.1667 |
+| F1 | 0.7500 | 0.9091 | +0.1591 |
+
+Two additional positive incidents are escalated and one negative incident becomes a
+false escalation. Recall gain exceeds `0.15`; precision remains above `0.60`.
+
+| Case | Execution | Comparison | Promotion |
+| --- | --- | --- | --- |
+| controlled threshold | pass | pass | keep for review |
+| population drift | pass | block | not reached |
+| unsafe promotion request | pass | pass | block |
+
+Decision: `KEEP_FOR_PROMOTION_REVIEW`.
+
+Limit: this fixed-cohort deterministic result does not establish generalization,
+stochastic stability, or authorization.
+
+## Answer: Design a replicate contract
+
+One defensible contract:
+
+```json
+{
+  "baseline": "approved-training-v4",
+  "intervention": {"fit.learning_rate": 0.03},
+  "preserved_controls": {
+    "data.split_id": "governed-split-v4",
+    "evaluate.metric_schema": "classification-v2"
+  },
+  "replicate_control": "fit.random_seed",
+  "replicate_values": [11, 23, 37, 41, 53],
+  "primary_metric": "f1",
+  "summary": "mean_paired_difference",
+  "minimum_practical_gain": 0.01,
+  "safeguards": ["precision policy passes in every replicate"],
+  "failed_run_rule": "retain failure and abstain until classified"
+}
+```
+
+Five cached reads repeat one artifact identity. Replicates require independently executed
+observations with recorded planned variation.
+
+## Answer: Reconstruct the replicate evidence
+
+| Seed | Paired F1 difference |
+| ---: | ---: |
+| 11 | +0.015 |
+| 23 | -0.003 |
+| 37 | +0.023 |
+| 41 | +0.007 |
+| 53 | +0.016 |
+
+```text
+sum = 0.058
+mean paired difference = 0.058 / 5 = 0.0116
+```
+
+The mean exceeds the `0.010` practical threshold and all listed precision safeguards
+pass. Four of five differences are positive; seed 23 reverses direction.
+
+Decision: retain the configuration for independent confirmation, assuming the replicate
+set was predeclared and complete. The evidence does not support “candidate always
+improves F1.”
+
+## Answer: Expose winner selection
+
+An acceptable ledger might contain:
+
+| Identity | Status | Comparable | Result category | Disposition |
+| --- | --- | --- | --- | --- |
+| lr-001 | planned | yes | below practical gain | discard |
+| lr-003 | planned | yes | nominated | confirm |
+| lr-010 | planned | yes | safeguard failure | reject |
+| lr-030 | planned | yes | dominated by lr-003 | discard |
+| depth-2 | exploratory | yes | unattractive | retain summary |
+| depth-4 | exploratory | yes | promising but weaker | retain summary |
+| depth-6 | exploratory | yes | latency safeguard failure | reject |
+| split-v5 | exploratory | no | population changed | block comparison |
+| schema-v3 | exploratory | no | metric meaning changed | block comparison |
+| mixed-policy | exploratory | no | mixed intervention | block comparison |
+| seed-best | exploratory | yes | lucky single run | do not nominate |
+| runtime-drift | exploratory | no | environment boundary changed | investigate |
+
+Only reporting `lr-003` hides eleven other attempts and makes its result look
+preordained. Incomparable candidates remain outside ranking, while comparable non-winners
+remain part of the selection history.
+
+## Answer: Design independent confirmation
+
+```text
+frozen candidate: learning_rate=0.03 with all other governed controls fixed
+selection evidence: five paired development runs
+confirmation authority: newly governed incident cohort
+population identity: recorded digest and approval
+primary metric: F1 paired against baseline
+practical rule: mean difference >= 0.010
+safeguards: precision and latency policies pass
+retuning rule: any control change creates a new candidate and confirmation claim
+accept: primary and safeguards pass with complete evidence
+reject: comparable evidence fails predeclared rule
+abstain: identity, replicate, or safeguard evidence missing
+```
+
+Changing the candidate after seeing confirmation consumes that confirmation boundary.
+The revised candidate returns to exploration and needs new independent evidence.
+
+## Answer: Write the promotion decision
+
+A defensible scenario can promote only if a confirmation outcome is explicitly supplied.
+For example:
+
+> `PROMOTE` the frozen `learning_rate=0.03` configuration from baseline
+> `approved-training-v4`, contingent on the scenario's stated independent confirmation.
+> Five predeclared paired development runs produced a mean F1 difference of `+0.0116`,
+> above the `0.010` practical threshold; four were positive, one was negative, and all
+> precision safeguards passed. The complete twelve-candidate search ledger is retained.
+> The governed confirmation cohort passed the unchanged rule and safeguards. Apply the
+> exact candidate to a clean workspace, verify declared outputs, record the resulting
+> commit as the new baseline, and retain the old baseline objects and tested rollback.
+
+Without actual confirmation evidence, the correct decision is `ABSTAIN` or
+`KEEP_FOR_CONFIRMATION`, not promotion.
+
+The deterministic threshold audit remains a separate `KEEP_FOR_PROMOTION_REVIEW` result.
+Its evidence must not be cited as confirmation for the modeled training candidate.
+
+## Answer-review checklist
+
+Accept your packet only if it:
+
+- separates audit result from review decision;
+- states a finite baseline claim;
+- distinguishes visibility from allowed scope;
+- bounds DVC receipts;
+- preserves deterministic evidence limits;
+- treats seed as planned variation;
+- reports every replicate direction and failure;
+- preserves the full candidate search;
+- freezes the candidate before confirmation;
+- promotes an authorized configuration and state, not a metric maximum.

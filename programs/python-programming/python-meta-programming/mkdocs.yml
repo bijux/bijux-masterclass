@@ -2,8 +2,8 @@ INHERIT: ../../../mkdocs.shared.yml
 
 site_name: Python Metaprogramming
 site_description: >-
-  A correctness-first course-book on Python metaprogramming: introspection, decorators,
-  descriptors, and metaclasses—without magical handwaving.
+  A teaching-first Python metaprogramming masterclass with runnable lessons, deliberate
+  practice, and an incident-plugin integration project.
 site_url: https://bijux.io/bijux-masterclass/python-programming/python-meta-programming/
 
 repo_name: bijux/bijux-masterclass
@@ -20,15 +20,17 @@ nav:
   - Start Here: guides/start-here.md
   - Course Guide: guides/course-guide.md
   - Learning Contract: guides/learning-contract.md
-  - Pressure Routes: guides/pressure-routes.md
   - Module Promise Map: guides/module-promise-map.md
   - Module Checkpoints: guides/module-checkpoints.md
-  - Proof Matrix: guides/proof-matrix.md
-  - Proof Ladder: guides/proof-ladder.md
   - Platform Setup: guides/platform-setup.md
+  - Pressure Routes: guides/pressure-routes.md
+  - Proof Ladder: guides/proof-ladder.md
+  - Proof Matrix: guides/proof-matrix.md
 - 'Module 00: Orientation and Study Practice':
   - Home: module-00-orientation/index.md
   - Course Map: module-00-orientation/course-map.md
+  - 'Study Practicum: Building an Evidence-First Learning Route': module-00-orientation/study-practicum.md
+  - 'Study Practicum Review: Reasoning About Learning Routes': module-00-orientation/study-practicum-answers.md
   - First-Contact Map: module-00-orientation/first-contact-map.md
   - Mid-Course Map: module-00-orientation/mid-course-map.md
   - Mastery Map: module-00-orientation/mastery-map.md
@@ -62,8 +64,8 @@ nav:
   - Dynamic Members and Static Structure: module-03-signatures-provenance-runtime-evidence/dynamic-members-and-static-structure.md
   - Frames and Diagnostic-Only Runtime Evidence: module-03-signatures-provenance-runtime-evidence/frames-and-diagnostic-only-runtime-evidence.md
   - 'Worked Example: Building a Safe Signature-Guided `__repr__`': module-03-signatures-provenance-runtime-evidence/worked-example-building-a-safe-signature-guided-repr.md
-  - Exercises: module-03-signatures-provenance-runtime-evidence/exercises.md
-  - Exercise Answers: module-03-signatures-provenance-runtime-evidence/exercise-answers.md
+  - Module 03 Evidence Studio: module-03-signatures-provenance-runtime-evidence/exercises.md
+  - Module 03 Evidence Studio Review: module-03-signatures-provenance-runtime-evidence/exercise-answers.md
   - Module Glossary: module-03-signatures-provenance-runtime-evidence/glossary.md
 - 'Module 04: Function Wrappers and Transparent Decorators':
   - Home: module-04-function-wrappers-transparent-decorators/index.md
@@ -73,8 +75,8 @@ nav:
   - Stateful Wrappers and Semantic Drift: module-04-function-wrappers-transparent-decorators/stateful-wrappers-and-semantic-drift.md
   - Wraps and Signature Transparency: module-04-function-wrappers-transparent-decorators/wraps-and-signature-transparency.md
   - 'Worked Example: Building a Bounded Cache Decorator': module-04-function-wrappers-transparent-decorators/worked-example-building-a-bounded-cache-decorator.md
-  - Exercises: module-04-function-wrappers-transparent-decorators/exercises.md
-  - Exercise Answers: module-04-function-wrappers-transparent-decorators/exercise-answers.md
+  - Module 04 Wrapper Design Studio: module-04-function-wrappers-transparent-decorators/exercises.md
+  - Module 04 Wrapper Design Studio Review: module-04-function-wrappers-transparent-decorators/exercise-answers.md
   - Module Glossary: module-04-function-wrappers-transparent-decorators/glossary.md
 - 'Module 05: Decorator Design, Policies, and Typing':
   - Home: module-05-decorator-design-policies-typing/index.md
@@ -84,8 +86,8 @@ nav:
   - Cache Policy and lru_cache Behavior: module-05-decorator-design-policies-typing/cache-policy-and-lru-cache-behavior.md
   - Wrapper Policy Boundaries: module-05-decorator-design-policies-typing/wrapper-policy-boundaries.md
   - 'Worked Example: Building a Partial `@validated` Decorator': module-05-decorator-design-policies-typing/worked-example-building-a-partial-validated-decorator.md
-  - Exercises: module-05-decorator-design-policies-typing/exercises.md
-  - Exercise Answers: module-05-decorator-design-policies-typing/exercise-answers.md
+  - 'Exercises: Decorator Policy Design Studio': module-05-decorator-design-policies-typing/exercises.md
+  - 'Exercise Answers: Decorator Policy Design Studio': module-05-decorator-design-policies-typing/exercise-answers.md
   - Module Glossary: module-05-decorator-design-policies-typing/glossary.md
 - 'Module 06: Class Customization Before Metaclasses':
   - Home: module-06-class-customization-pre-metaclasses/index.md
@@ -95,8 +97,8 @@ nav:
   - Type Hints and Descriptor-Backed Validation: module-06-class-customization-pre-metaclasses/type-hints-and-descriptor-backed-validation.md
   - Class Customization Boundaries: module-06-class-customization-pre-metaclasses/class-customization-boundaries.md
   - 'Worked Example: Building a Minimal `@frozen` Class Decorator': module-06-class-customization-pre-metaclasses/worked-example-building-a-minimal-frozen-class-decorator.md
-  - Exercises: module-06-class-customization-pre-metaclasses/exercises.md
-  - Exercise Answers: module-06-class-customization-pre-metaclasses/exercise-answers.md
+  - 'Exercises: Lower-Power Class Design Studio': module-06-class-customization-pre-metaclasses/exercises.md
+  - 'Exercise Answers: Lower-Power Class Design Studio': module-06-class-customization-pre-metaclasses/exercise-answers.md
   - Module Glossary: module-06-class-customization-pre-metaclasses/glossary.md
 - 'Module 07: Descriptors, Lookup, and Attribute Control':
   - Home: module-07-descriptors-lookup-attribute-control/index.md
@@ -106,8 +108,8 @@ nav:
   - Reusable Field Descriptors and Storage: module-07-descriptors-lookup-attribute-control/reusable-field-descriptors-and-storage.md
   - Descriptor Boundaries and Attribute Ownership: module-07-descriptors-lookup-attribute-control/descriptor-boundaries-and-attribute-ownership.md
   - 'Worked Example: Building a Unit-Aware Quantity Descriptor': module-07-descriptors-lookup-attribute-control/worked-example-building-a-unit-aware-quantity-descriptor.md
-  - Exercises: module-07-descriptors-lookup-attribute-control/exercises.md
-  - Exercise Answers: module-07-descriptors-lookup-attribute-control/exercise-answers.md
+  - 'Exercises: Descriptor Evidence Studio': module-07-descriptors-lookup-attribute-control/exercises.md
+  - 'Exercise Answers: Descriptor Evidence Studio Review': module-07-descriptors-lookup-attribute-control/exercise-answers.md
   - Module Glossary: module-07-descriptors-lookup-attribute-control/glossary.md
 - 'Module 08: Descriptor Systems, Validation, and Framework Design':
   - Home: module-08-descriptor-systems-validation-framework-design/index.md
@@ -117,8 +119,8 @@ nav:
   - Hint-Driven Validation and Coercion: module-08-descriptor-systems-validation-framework-design/hint-driven-validation-and-coercion.md
   - Descriptor Systems and Framework Boundaries: module-08-descriptor-systems-validation-framework-design/descriptor-systems-and-framework-boundaries.md
   - 'Worked Example: Building an Educational Mini Relational Model': module-08-descriptor-systems-validation-framework-design/worked-example-building-an-educational-mini-relational-model.md
-  - Exercises: module-08-descriptor-systems-validation-framework-design/exercises.md
-  - Exercise Answers: module-08-descriptor-systems-validation-framework-design/exercise-answers.md
+  - 'Exercises: Descriptor System Evidence Studio': module-08-descriptor-systems-validation-framework-design/exercises.md
+  - 'Exercise Answers: Descriptor System Evidence Studio Review': module-08-descriptor-systems-validation-framework-design/exercise-answers.md
   - Module Glossary: module-08-descriptor-systems-validation-framework-design/glossary.md
 - 'Module 09: Metaclass Design and Class Creation':
   - Home: module-09-metaclass-design-class-creation/index.md
@@ -128,8 +130,8 @@ nav:
   - '`__prepare__` and Declaration-Time Enforcement': module-09-metaclass-design-class-creation/prepare-and-declaration-time-enforcement.md
   - Metaclass Boundaries and Class-Creation Ownership: module-09-metaclass-design-class-creation/metaclass-boundaries-and-class-creation-ownership.md
   - 'Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`': module-09-metaclass-design-class-creation/worked-example-building-a-deterministic-plugin-registry-with-pluginmeta.md
-  - Exercises: module-09-metaclass-design-class-creation/exercises.md
-  - Exercise Answers: module-09-metaclass-design-class-creation/exercise-answers.md
+  - 'Exercises: Class-Creation Evidence Studio': module-09-metaclass-design-class-creation/exercises.md
+  - 'Exercise Answers: Class-Creation Evidence Studio Review': module-09-metaclass-design-class-creation/exercise-answers.md
   - Module Glossary: module-09-metaclass-design-class-creation/glossary.md
 - 'Module 10: Runtime Governance and Mastery Review':
   - Home: module-10-runtime-governance-mastery-review/index.md
@@ -139,31 +141,32 @@ nav:
   - Import Hooks, AST Transforms, and Tooling Boundaries: module-10-runtime-governance-mastery-review/import-hooks-ast-transforms-and-tooling-boundaries.md
   - Mechanism Selection, Review Gates, and Escalation Boundaries: module-10-runtime-governance-mastery-review/mechanism-selection-review-gates-and-escalation-boundaries.md
   - 'Worked Example: Reviewing a Plugin Runtime for Observability and Control': module-10-runtime-governance-mastery-review/worked-example-reviewing-a-plugin-runtime-for-observability-and-control.md
-  - Exercises: module-10-runtime-governance-mastery-review/exercises.md
-  - Exercise Answers: module-10-runtime-governance-mastery-review/exercise-answers.md
+  - 'Exercises: Runtime Governance Evidence Studio': module-10-runtime-governance-mastery-review/exercises.md
+  - 'Exercise Answers: Runtime Governance Evidence Studio Review': module-10-runtime-governance-mastery-review/exercise-answers.md
   - Module Glossary: module-10-runtime-governance-mastery-review/glossary.md
 - Python Metaprogramming Capstone Guide:
   - Home: capstone/index.md
   - Capstone Map: capstone/capstone-map.md
-  - Capstone File Guide: capstone/capstone-file-guide.md
-  - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
-  - Capstone Proof Guide: capstone/capstone-proof-guide.md
-  - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
-  - Capstone Extension Guide: capstone/capstone-extension-guide.md
-  - Capstone Walkthrough: capstone/capstone-walkthrough.md
   - Command Guide: capstone/command-guide.md
+  - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
+  - Capstone File Guide: capstone/capstone-file-guide.md
+  - Capstone Proof Guide: capstone/capstone-proof-guide.md
+  - Capstone Walkthrough: capstone/capstone-walkthrough.md
+  - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
+  - 'Capstone Review Answers: Transfer Decisions and Proof Limits': capstone/capstone-review-answers.md
+  - Capstone Extension Guide: capstone/capstone-extension-guide.md
   - Capstone Glossary: capstone/glossary.md
 - Capstone Docs:
   - Home: capstone-docs/index.md
   - Capstone Architecture: capstone-docs/architecture.md
-  - Design Boundaries: capstone-docs/design-boundaries.md
   - Package Guide: capstone-docs/package-guide.md
   - Command Guide: capstone-docs/command-guide.md
   - Proof Guide: capstone-docs/proof-guide.md
-  - Test Guide: capstone-docs/test-guide.md
-  - Extension Guide: capstone-docs/extension-guide.md
   - Walkthrough Guide: capstone-docs/walkthrough-guide.md
   - Capstone Tour: capstone-docs/tour.md
+  - Design Boundaries: capstone-docs/design-boundaries.md
+  - Extension Guide: capstone-docs/extension-guide.md
+  - Test Guide: capstone-docs/test-guide.md
 - Reference:
   - Home: reference/index.md
   - Reference Glossary: reference/glossary.md
@@ -174,22 +177,16 @@ nav:
   - Self-Review Prompts: reference/self-review-prompts.md
   - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
   - Completion Rubric: reference/completion-rubric.md
-  - Topic Boundaries: reference/topic-boundaries.md
   - Runtime Power Ladder: reference/runtime-power-ladder.md
+  - Topic Boundaries: reference/topic-boundaries.md
 
 theme:
   custom_dir: ../../../docs/overrides
-  logo: ../../../docs/assets/bijux_logo_hq.png
-  favicon: ../../../docs/assets/site-icons/favicon.ico
 
-extra_css:
-  - ../../../docs/assets/styles/extra.css
-
-extra_javascript:
-  - ../../../docs/assets/javascripts/vendor/mermaid-11.6.0.min.js
-  - ../../../docs/assets/javascripts/mermaid-init.js
+plugins:
+  - search
+  - autorefs
 
 hooks:
   - ../../../docs/hooks/publish_site_assets.py
   - ../../../docs/hooks/load_course_nav.py
-

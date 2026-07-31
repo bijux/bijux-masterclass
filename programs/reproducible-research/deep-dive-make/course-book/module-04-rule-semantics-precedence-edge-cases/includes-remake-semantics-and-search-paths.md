@@ -25,305 +25,278 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Includes are where many Makefiles stop feeling like one file and start becoming a build
-system.
+An included makefile is executable build definition. If Make rebuilds one, it discards the
+old parsed graph and reads the makefiles again. A learner who expects "parse once, then run
+recipes" will misdiagnose the second parse as duplicate execution.
 
-That is a good thing. Layered include files make large builds readable. They let you keep
-policy separate from rules, toolchain setup separate from public targets, and optional
-developer overrides separate from shared behavior.
+The right mental model is:
 
-But includes also introduce one of Make's least-understood semantics:
+```mermaid
+flowchart LR
+  read["Read makefiles"]
+  graph["Construct candidate graph"]
+  check["Check every makefile as a target"]
+  remake["Remake stale makefiles"]
+  restart["Restart and read from the top"]
+  goals["Update requested goals"]
 
-> if Make remakes an included makefile, it restarts evaluation.
-
-That is not Make being dramatic. That is Make being honest. If the input files that define
-the build changed, the build logic has to be read again.
-
-This page makes that behavior legible and then adds one more caution: search paths such as
-`VPATH` can quietly hide where a dependency really came from.
-
-## Why includes exist at all
-
-Healthy include layering usually serves one or more of these goals:
-
-- keep toolchain defaults in one place
-- separate public targets from low-level rules
-- let local developer overrides stay optional
-- share a small rules library across related parts of the tree
-
-The point is architectural clarity, not cleverness.
-
-A simple layered shape might look like this:
-
-```make
-include mk/common.mk
-include mk/contract.mk
-include mk/rules.mk
--include mk/local.mk
+  read --> graph --> check
+  check -->|none remade| goals
+  check -->|one or more remade| remake --> restart --> read
 ```
 
-Read that as:
+`MAKE_RESTARTS` is undefined during the first parse. After a successful makefile remake,
+its value is the number of restarts so far. That makes restart behavior observable without
+guessing from duplicated log lines.
 
-- load shared defaults
-- load the public contract
-- load the rule definitions
-- then, if present, load local private overrides
-
-That is already much easier to review than one giant file with everything mixed together.
-
-## `include` and `-include` are not interchangeable
-
-There are two common include forms:
+## Required and optional includes make different promises
 
 ```make
-include mk/rules.mk
--include mk/local.mk
+include mk/contracts.mk
+-include mk/local-overrides.mk
 ```
 
-The first says the file is required. If it is missing, the build definition is incomplete.
+The required include says the build definition is incomplete without `mk/contracts.mk`.
+The optional form—also spelled `sinclude`—suppresses the missing-file diagnostic. It does
+not mean "ignore syntax errors" or "ignore a failed recipe that was supposed to generate
+the file."
 
-The second says the file is optional. If it is missing, keep going.
+Use an optional include only when its absence has defined semantics. A private developer
+convenience may qualify. A fragment that declares production prerequisites does not.
 
-That distinction matters because optional files should only be optional when correctness
-does not depend on them. A local reader-specific configuration file is a good candidate for
-`-include`. A required public rules file is not.
+| File role | Form | Missing-file meaning |
+| --- | --- | --- |
+| public rules or artifact contract | `include` | configuration error unless Make can build it |
+| generated dependency fragment | often `-include` | first build may legitimately begin without it |
+| local developer preferences | `-include` | shared behavior remains complete |
+| security or release policy | `include` | never silently absent |
 
-## The restart model in plain language
+## Observe a real restart
 
-If Make reads an included file and also knows how to build that file, it may decide the
-included file is out of date. When that happens, Make does this:
-
-1. build the included file
-2. restart
-3. read the makefiles again from the top
-
-This makes sense once you say it out loud. If the build definition changed, continuing with
-the old parsed state would be wrong.
-
-The confusion starts when people forget that generated makefiles are still inputs to the
-build system. They are not magic side files.
-
-## A tiny generated-include example
-
-Start with this Makefile:
+Use this isolated `Makefile`:
 
 ```make
+$(info parse restart=$(or $(MAKE_RESTARTS),0) files=$(MAKEFILE_LIST))
+
 include generated.mk
 
-generated.mk:
-	@printf 'MESSAGE := hello\n' > $@
+generated.mk: message.txt
+	@printf 'MESSAGE := %s\n' "$$(cat $<)" > $@
 
-.PHONY: show clean
-
+.PHONY: show
 show:
-	@printf 'MESSAGE=%s\n' '$(MESSAGE)'
-
-clean:
-	rm -f generated.mk
+	@printf 'MESSAGE=%s restarts=%s\n' \
+	  '$(MESSAGE)' '$(or $(MAKE_RESTARTS),0)'
 ```
 
-Now run:
+Create `message.txt`, remove `generated.mk`, and run `gmake show`. The expected event
+sequence is:
+
+1. the first parse reports restart `0`
+2. Make discovers that `generated.mk` is missing and has a rule
+3. the recipe creates it
+4. Make restarts, so parsing reports restart `1`
+5. the second parse imports `MESSAGE`
+6. only then does the `show` recipe run
+
+On a settled second invocation, parsing reports restart `0`: no makefile was remade during
+that process.
+
+## Parse-time behavior must tolerate re-reading
+
+Every top-level expansion can happen again after a remake:
+
+```make
+$(info reading build definition)
+TOOL := $(shell command -v python3)
+$(file >parse-marker,parsed)
+```
+
+The `info` diagnostic is merely repeated. The shell probe is repeated and may observe a
+different environment. The `file` function mutates state during parsing and is unsafe
+under ordinary runs, `-n`, `-q`, `-p`, and restarts.
+
+A sound parse is:
+
+- read-only except for Make's explicit makefile-remake recipes
+- deterministic for declared inputs
+- safe to evaluate more than once
+- free of network, installation, and credential side effects
+
+Do not guard a side effect with `MAKE_RESTARTS` and call it safe. That hides the symptom
+while leaving diagnostic modes capable of mutation. Move the effect into an explicit
+target.
+
+## Generate included makefiles convergently
+
+A generator should publish a complete file and avoid changing its identity when content
+is unchanged:
+
+```make
+generated.mk: config/options.txt tools/render-config
+	@set -eu; \
+	candidate="$@.candidate.$$$$"; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	tools/render-config $< > "$$candidate"; \
+	if test -r "$@" && cmp -s "$$candidate" "$@"; then \
+	  :; \
+	else \
+	  mv "$$candidate" "$@"; \
+	fi
+```
+
+This recipe gives the included file:
+
+- declared source and tool prerequisites
+- process-local candidate naming
+- cleanup after interruption
+- complete-file publication by rename
+- compare-before-replace behavior
+
+The comparison preserves the modification time when semantics have not changed. That
+helps the build converge instead of manufacturing another stale signal.
+
+The generated content must also be canonical. Sort unordered inputs, exclude wall-clock
+time and host identity, and quote values so the result remains valid Make syntax.
+
+## Do not mark generated makefiles phony
+
+`.PHONY` is correct for actions such as `check` that do not denote files. It is wrong for
+an included makefile:
+
+```make
+.PHONY: generated.mk
+include generated.mk
+```
+
+GNU Make avoids restarting when a phony included makefile is rebuilt; otherwise it could
+loop forever. The result is worse than a loop: the current invocation can continue with
+the graph parsed before the new content was available.
+
+An included makefile needs real freshness prerequisites and file identity. Do not use a
+force prerequisite either unless the generator and restart behavior have a bounded,
+demonstrated convergence argument.
+
+## Include identity is part of provenance
+
+`MAKEFILE_LIST` records each makefile name immediately before Make parses it:
+
+```make
+$(info makefiles=$(MAKEFILE_LIST))
+```
+
+Use it to confirm order, not merely presence. Later assignments can replace earlier ones,
+and included rule definitions can alter the graph.
+
+The include search also affects identity. For a name without a directory component, Make
+checks the current directory and configured include directories, including those supplied
+with `-I`. Two directories containing `policy.mk` make this command context-sensitive:
 
 ```sh
-make clean
-make show
-make show
+gmake -I vendor/one -I vendor/two show
 ```
 
-What happens:
-
-- first run: Make notices `generated.mk` is needed, builds it, restarts, then reads it
-- second run: the file is already there, so the build settles immediately
-
-That restart is healthy. It means the included file has become part of the evaluated world.
-
-## How generated includes become a problem
-
-Generated includes become dangerous when they are not deterministic.
-
-For example, if the generator writes a timestamp every time:
+Prefer repository-rooted names:
 
 ```make
-generated.mk:
-	@printf 'BUILD_TIME := %s\n' "$$(date +%s)" > $@
+ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+include $(ROOT)/mk/policy.mk
 ```
 
-Now the included file changes every run, so Make keeps finding a reason to restart or keep
-the state unstable.
+If the main makefile may be reached through a symbolic link or from several working
+directories, define and test the intended canonicalization policy rather than assuming
+`CURDIR` identifies the makefile's owner.
 
-This is not an "include bug." It is a determinism bug in a file that happens to control
-evaluation.
+## Include order is precedence policy
 
-That is why generated includes need the same discipline as any other artifact:
-
-- one clear writer
-- deterministic content when semantics have not changed
-- safe publication
-- convergence tests
-
-## `MAKEFILE_LIST` is your include stack
-
-When you need to answer "where did this setting come from?", start with:
-
-```make
-$(info STACK=$(MAKEFILE_LIST))
-```
-
-`MAKEFILE_LIST` records the makefiles read so far. That makes it a simple but powerful
-forensics tool:
-
-- it shows include order
-- it helps explain why one assignment overrode another
-- it makes local override leaks easier to spot
-
-If a local file is accidentally influencing CI, the include stack often shows it quickly.
-
-## Include order is policy
-
-Include order is not a formatting detail. It changes which assignment wins and which rule
-definition is seen last.
-
-For example:
+These orders are not equivalent:
 
 ```make
 include mk/defaults.mk
--include mk/local.mk
+-include mk/local-overrides.mk
 ```
 
-This lets the local file override defaults.
-
-If you reverse the order:
-
 ```make
--include mk/local.mk
+-include mk/local-overrides.mk
 include mk/defaults.mk
 ```
 
-then the defaults overwrite the local settings.
+With ordinary assignments, the latter file can replace an earlier value. Command-line
+variables and `override` directives still follow their own precedence rules, so include
+order is one part of provenance rather than the whole answer.
 
-Neither ordering is universally correct. The point is that the order is part of the build
-policy and should be chosen on purpose.
-
-## Search paths can hide truth
-
-Make also offers file search features such as `VPATH` and `vpath`.
-
-They sound convenient because they let Make find prerequisites in alternate directories.
-They can also make dependency truth harder to see.
-
-Example:
+Record the intended layering in domain terms:
 
 ```make
-VPATH := src generated
-
-app.o: app.c config.h
-	$(CC) -c $< -o $@
+include mk/toolchain-defaults.mk
+include mk/artifact-contract.mk
+-include mk/developer-preferences.mk
+include mk/rules.mk
 ```
 
-If `config.h` exists in more than one place, or if the search order changes, the build may
-still "work" while you lose track of which file actually supplied the input.
+Then use `origin`, `value`, and `MAKEFILE_LIST` together when a setting surprises you.
 
-That is why this course prefers explicit paths:
+## Keep prerequisite search separate from include search
 
-```make
-build/app.o: src/app.c include/config.h
-```
-
-Explicit paths are easier to review, debug, and explain.
-
-## When search paths are defensible
-
-This page is not saying `VPATH` is forbidden forever. It is saying you should know the
-cost.
-
-Search paths are most defensible when:
-
-- the search roots are small and well-defined
-- the found files are easy to explain
-- the project has tests or audits that prove the resolution is stable
-
-If you cannot say where a prerequisite came from without running several experiments, the
-search policy is too opaque.
-
-## A small `VPATH` exercise
-
-Create this layout:
-
-```text
-src/config.h
-generated/config.h
-Makefile
-```
-
-Then use:
+`-I` controls include discovery. `VPATH` and `vpath` control prerequisite discovery. Both
+can make an unqualified name resolve differently, but they act at different boundaries.
 
 ```make
 VPATH := generated src
 
-.PHONY: show
-
-show: config.h
-	@printf 'resolved config.h from VPATH\n'
+build/app.o: app.c config.h
+	$(CC) -c $< -o $@
 ```
 
-Now switch the order to `src generated` and watch how the resolution policy changes even
-though the rule text stayed the same.
+If both roots contain `config.h`, the dependency line no longer identifies the input.
+Changing search order can change artifact bytes without changing the rule.
 
-That is the teaching value of the example: search policy can change meaning without
-changing the visible dependency line.
+Prefer explicit paths:
 
-## Failure signatures worth recognizing
+```make
+build/app.o: src/app.c include/config.h
+	$(CC) -c $< -o $@
+```
 
-### "Make keeps re-reading the makefiles"
+Use search paths only when roots are bounded, duplicate basenames are rejected, and an
+audit can report the resolved prerequisite. Convenience is not sufficient evidence.
 
-That often means an included file is being regenerated non-deterministically or the build
-never converges on a stable version of it.
+## Diagnose restart and identity failures
 
-### "The local override worked for me, but CI ignored it"
+| Symptom | Evidence route | Likely cause |
+| --- | --- | --- |
+| parse message appears twice | print `MAKE_RESTARTS` | a makefile was remade |
+| every invocation restarts | compare generated content and timestamps | generator is non-convergent or always forced |
+| new generated rules are ignored | inspect `.PHONY`, force prerequisites, and restart count | Make did not safely re-exec |
+| CI misses local behavior | inspect required/optional forms and `MAKEFILE_LIST` | optional private include |
+| wrong fragment supplies a value | print `MAKEFILE_LIST`, `origin`, and raw value | include order or `-I` ambiguity |
+| wrong prerequisite supplies bytes | remove `VPATH` ambiguity or trace resolution | search-path collision |
+| `gmake -n` changes a file | audit top-level functions and probes | parse-time mutation |
 
-That usually points to `-include` on a file that does not exist in CI, or to include order
-that was assumed rather than reviewed.
+## Prove convergence
 
-### "The wrong prerequisite was used, but the rule looked right"
+For one generated include, preserve this evidence:
 
-That often points to `VPATH` or `vpath` resolving the path from a different directory than
-the reader expected.
+1. start without the generated file
+2. run the target and record restart count `1`
+3. hash the generated file and record its modification time
+4. run the same target again and record restart count `0`
+5. prove that hash and modification time stayed unchanged
+6. change one declared source input
+7. prove exactly one new restart and a justified content change
+8. run `gmake -n` and prove no file changes
 
-### "A variable value changed after we split the build into more files"
-
-That usually means include order changed which file's assignment wins.
-
-## A durable review checklist
-
-When you inspect include-related behavior, ask:
-
-1. which files are required and which are optional
-2. in what order are they read
-3. can any included file be rebuilt during the run
-4. if so, is that generated content deterministic
-5. are any search-path features making prerequisite origins hard to explain
-
-Those five questions catch most of the real issues.
-
-## What to practice from this page
-
-Take one included file in the capstone or your own repository and explain:
-
-1. why it is included
-2. whether it should be `include` or `-include`
-3. whether Make could ever remake it
-4. what would have to be true for that remake to stay safe
-5. whether explicit prerequisite paths would be clearer than the current search policy
-
-If you can answer those cleanly, include layering has become architecture rather than
-ambient magic.
+This route demonstrates bootstrap, settling, invalidation, and diagnostic safety. A single
+successful first build proves only bootstrap.
 
 ## End-of-page checkpoint
 
-Before leaving this lesson, make sure you can explain:
+Before leaving, make sure you can explain:
 
-- why Make restarts after remaking an included makefile
-- why generated includes must be deterministic to converge
-- why `MAKEFILE_LIST` is a practical forensic tool
-- why include order changes semantics rather than merely style
-- why `VPATH` can hide dependency truth even when the build succeeds
+- why Make checks makefiles as targets before updating requested goals
+- what `MAKE_RESTARTS` reports on initial, restarted, and settled invocations
+- why parse-time effects may run several times
+- how candidate publication and compare-before-replace support convergence
+- why `.PHONY` destroys the file semantics an included makefile needs
+- how `MAKEFILE_LIST`, `-I`, and include order expose definition provenance
+- why include search and prerequisite search are related but distinct policies

@@ -10,7 +10,7 @@ BENCH = config["benchmarks_dir"]
 # -----------------------------
 module qc:
     snakefile: "../modules/qc_module/Snakefile"
-    config: config
+    config: MODULE_RUNTIME_CONFIG
 
 use rule qc from qc as qc_raw with:
     input:
@@ -40,7 +40,7 @@ use rule qc from qc as qc_trimmed with:
 
 module screen:
     snakefile: "../modules/screen_module/Snakefile"
-    config: config
+    config: MODULE_RUNTIME_CONFIG
 
 use rule screen from screen as screen_panel with:
     input:

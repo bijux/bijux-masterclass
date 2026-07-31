@@ -25,346 +25,250 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-The five core lessons in Module 05 are easiest to trust when they all appear in one build
-that is recognizably imperfect. This walkthrough uses the course's executable specimens
-before applying the repairs to a larger sketch. You can follow it without inventing a
-private sample project.
+This example hardens one build without inventing defects that the evidence does not show.
+It uses the course specimens for mechanisms, then proves each claim again in the inherited
+project.
 
-## Begin with paired evidence
-
-From the repository root, run:
-
-```sh
-gmake -C programs/reproducible-research/deep-dive-make \
-  capstone-environment-contract-audit
-```
-
-Open:
-
-```text
-artifacts/audit/reproducible-research/deep-dive-make/environment-contracts/
-```
-
-Start with `summary.tsv`, then use `report.json`, `traces/`, and `workspace/` to test each
-summary against the underlying evidence.
-
-The audit gives three broken/control pairs:
-
-| Contract family | Broken observation | Control observation |
-| --- | --- | --- | --- |
-| non-file state | `MODE=debug` request retains release artifact | changed mode publishes once, equal mode converges |
-| recursive boundary | parent dry run hides the child plan | parent dry run enters child plan without publishing |
-| required tool | missing command leaves an empty version file | gate rejects cleanly and accepts an available tool |
-
-`PASS` means each specimen behaved as its model declared. It does not mean the broken
-models are acceptable.
-
-This example starts with a build that "mostly works":
-
-- the lead developer can run it locally
-- CI sometimes fails in ways nobody can reproduce quickly
-- parallel output is confusing
-- provenance files exist, but they break convergence
-- the team suspects Make itself is the main problem
-
-That is exactly the kind of build many teams inherit.
-
-## The incident report
-
-Assume you inherit a repository with these complaints:
-
-1. CI fails on a machine with an older Make
-2. the recursive sub-build is absent from top-level dry-run evidence, and nobody has
-   checked whether it shares the parallel contract
-3. the build records environment information, but `make -q all` still returns `1` after a
-   successful run
-4. the team says the build is "slow," but nobody can say whether Make or the compiler is
-   responsible
-5. someone proposes replacing Make entirely with a workflow tool
-
-That is enough to begin.
-
-## The starting Makefile shape
-
-Here is the simplified build:
-
-```make
-SHELL := /bin/sh
-
-MODE ?= release
-
-include mk/generated-env.mk
-
-.PHONY: all thirdparty
-
-all: thirdparty app package
-
-thirdparty:
-	make -C vendor/lib all
-
-api.h api.json: gen_api.py schema.yml
-	python3 gen_api.py
-
-app: api.h main.o
-	$(CC) $(CFLAGS) main.o -o $@
-
-package: app
-	tar -czf app.tar.gz app
-
-mk/generated-env.mk:
-	@printf 'BUILD_TIME := %s\n' "$$(date +%s)" > $@
-```
-
-Every line here is plausible. That is what makes the example useful.
-
-## Establish the inherited build's own evidence
-
-The specimen proves the failure mechanisms. Now collect the inherited build's state.
+## Begin with two evidence bundles
 
 Run:
 
 ```sh
-make all
-make -q all; echo $?
-make -n all > build/dry-run.log
-make --trace all > build/trace.log
-/usr/bin/time -p make all >/dev/null
+gmake -C programs/reproducible-research/deep-dive-make \
+  capstone-environment-contract-audit
+gmake -C programs/reproducible-research/deep-dive-make/capstone \
+  semantic-fault-audit
 ```
 
-Record observations, not conclusions:
+The environment bundle provides paired cases for changed non-file state, recursive
+planning visibility, and required-tool rejection. The semantic bundle provides the
+clean-workspace clock comparison and grouped-publication cases.
 
-- whether the build converges
-- whether the top-level dry run enters the vendor graph
-- which targets Make says it selected
-- whether full execution is slow enough to measure by layer
+`PASS` means each specimen matched its expected observation, including broken specimens
+whose defect was reproduced. Read the finding name, trace, and output state.
 
-Do not call the recursive boundary a jobserver leak merely because the build is slow.
-The child may expose little parallel work, and a GNU Make 4.4 FIFO may survive an
-undeclared process invocation. The dry-run gap is already a reproducible defect.
+## The inherited build
 
-## Declare the portability contract
+```make
+SHELL := /bin/sh
+MODE ?= release
+PYTHON ?= python3
+ENV_MANIFEST := build/environment.manifest
 
-CI fails on an older Make. Do not patch the symptom first. Ask what the build requires.
+.PHONY: all vendor
+all: vendor build/app build/app.tar.gz
 
-Suppose `gen_api.py` really needs grouped targets in the final design. Then the build needs
-a contract near the top:
+vendor:
+	gmake -C vendor/lib all
+
+$(ENV_MANIFEST): | build/
+	@printf 'MODE=%s\nBUILD_TIME=%s\n' \
+	  '$(MODE)' "$$(date +%s)" > $@
+
+generated/api.h generated/api.json: schema.yml tools/gen-api.py
+	$(PYTHON) tools/gen-api.py
+
+build/app: source.txt generated/api.h $(ENV_MANIFEST) | build/
+	$(PYTHON) tools/render-app.py \
+	  --source source.txt --environment $(ENV_MANIFEST) --output $@
+
+build/app.tar.gz: build/app
+	tar -czf $@ $<
+```
+
+The complaints are:
+
+- an older GNU Make reports unclear syntax after grouped targets are proposed
+- `gmake -n vendor` does not reveal the child plan
+- changing `MODE` after the first build leaves the existing manifest unchanged
+- independent clean workspaces produce different manifests because of `BUILD_TIME`
+- `-j` sometimes invokes the API generator twice
+- the team wants to replace Make because the build is "slow"
+- release promotion is being added to the packaging recipe
+
+Each complaint belongs to a different claim.
+
+## Record observations without overclaiming
+
+Run file-target queries, not only the phony aggregate:
+
+```sh
+gmake all
+gmake -q build/app build/app.tar.gz
+gmake -n vendor
+gmake -j4 --trace generated/api.h generated/api.json
+```
+
+`all` and `vendor` are phony, so `gmake -q all` returning `1` would be expected and would
+not prove artifact non-convergence. Query the file targets whose settled state matters.
+
+Create a ledger:
+
+| Observation | Supported conclusion | Not yet proven |
+| --- | --- | --- |
+| child plan absent under `-n` | recursion is undeclared to planning | jobserver was lost on this host |
+| manifest ignores later `MODE` | no evaluation trigger for non-file state | every environment fact belongs in the manifest |
+| clean-workspace manifest hashes differ | clock is hidden artifact input | no-op build necessarily rebuilds |
+| generator trace contains two starts | output ownership is independent | Make cannot model grouped output |
+| one full build is slow | a latency symptom exists | which layer dominates |
+
+## Declare runtime capabilities and tools
+
+The repaired build requires grouped targets and secondary expansion. Gate advertised
+features rather than guessing version prefixes:
 
 ```make
 ifeq ($(origin MAKE_VERSION),undefined)
 $(error GNU Make is required)
 endif
 
-MIN_GNU_MAKE_OK := $(if $(filter 4.3% 4.4% 4.5% 5.%,$(MAKE_VERSION)),yes,)
-ifeq ($(MIN_GNU_MAKE_OK),)
-$(error GNU Make 4.3 or newer required; found $(MAKE_VERSION))
+REQUIRED_MAKE_FEATURES := grouped-target second-expansion
+MISSING_MAKE_FEATURES := $(filter-out $(.FEATURES),$(REQUIRED_MAKE_FEATURES))
+ifneq ($(strip $(MISSING_MAKE_FEATURES)),)
+$(error GNU Make $(MAKE_VERSION) lacks: $(MISSING_MAKE_FEATURES))
 endif
 
+SHELL := /bin/sh
+.SHELLFLAGS := -eu -c
+export LC_ALL := C
 PYTHON ?= python3
+ifneq ($(words $(PYTHON)),1)
+$(error PYTHON must name one executable path)
+endif
 
 .PHONY: contract-check
 contract-check:
 	@command -v "$(PYTHON)" >/dev/null 2>&1 || { \
-	  printf 'contract: missing required tool %s\n' "$(PYTHON)" >&2; \
+	  printf 'contract: missing %s\n' "$(PYTHON)" >&2; \
 	  exit 2; \
 	}
 ```
 
-Make the gate a prerequisite of the public build before any artifact recipe can publish.
-Now the CI failure becomes a declared boundary rather than a random parser error or an
-empty probe file.
+Test missing and available tool cases. Finding an executable proves presence, not version
+compatibility; add a behavioral or numeric policy if the renderer needs a specific Python
+feature.
 
-This is the Core 1 lesson in action:
+## Declare the recursive boundary
 
-- required tools and versions are stated explicitly
-- unsupported environments fail early
-- the build stops pretending that all Make implementations are equivalent
-- an available-tool control proves that the gate does not reject everything
-
-## Repair the recursive boundary
-
-The inherited build uses:
+Replace:
 
 ```make
-thirdparty:
-	make -C vendor/lib all
+vendor:
+	gmake -C vendor/lib all
 ```
 
-That is an undeclared process invocation. On some hosts it loses jobserver access; on GNU
-Make 4.4 with a FIFO it may happen to inherit the parent's flags. In either case, the
-parent's dry run does not enter the child graph.
-
-Repair it to:
+with:
 
 ```make
-.PHONY: thirdparty
-
-thirdparty:
+vendor: | contract-check
 	+$(MAKE) -C vendor/lib all
 ```
 
-Then run both `make -n thirdparty` and `make -j2 thirdparty`. The planning run should expose
-the child's recipes without creating outputs. The execution run should show a child
-`MAKELEVEL` exactly one greater than its parent and the inherited `MAKEFLAGS`. Bound depth
-only after accounting for every supported entry route; an absolute level copied from one
-wrapper is not a portable guard.
+Now prove two claims separately:
 
-This is Core 2:
+- `gmake -n vendor` enters the child plan without creating child outputs
+- an actual `gmake -j2 vendor` records a child exactly one `MAKELEVEL` deeper and measures
+  peak recipe overlap within the shared budget
 
-- `$(MAKE)` declares recursive semantics
-- `+` keeps the child plan visible under dry run
-- relative `MAKELEVEL` evidence distinguishes the boundary from an unexplained absolute
-  number
+Do not infer token conservation from one `MAKEFLAGS` string.
 
-## Make environment evidence converge
+## Replace event metadata with semantic state
 
-The inherited file:
+`BUILD_TIME` describes when an event happened; it does not describe application meaning.
+Keep it in a run log if operators need it. The artifact-driving manifest contains
+validated semantic facts:
 
 ```make
-mk/generated-env.mk:
-	@printf 'BUILD_TIME := %s\n' "$$(date +%s)" > $@
-```
+VALID_MODES := release debug
+ifneq ($(words $(MODE)),1)
+$(error MODE must be exactly one of: $(VALID_MODES))
+endif
+ifeq ($(filter $(MODE),$(VALID_MODES)),)
+$(error MODE must be one of: $(VALID_MODES))
+endif
 
-is trying to attest environment state. In reality, it injects fresh entropy every run and
-prevents convergence.
-
-The healthier question is:
-
-> which environmental facts actually change artifact meaning?
-
-Suppose the important ones are `MODE`, `CC`, and `LC_ALL`. Then write a convergent
-manifest:
-
-```make
-ENV_MANIFEST := build/env.manifest
+MODE_ROOT := build/$(MODE)
+ENV_MANIFEST := $(MODE_ROOT)/environment.manifest
+APP := $(MODE_ROOT)/app
 
 .PHONY: FORCE
 FORCE:
 
-$(ENV_MANIFEST): FORCE | build/
-	@printf 'MODE=%s\nCC=%s\nLC_ALL=%s\n' '$(MODE)' '$(CC)' '$(LC_ALL)' > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
-
-app: $(ENV_MANIFEST) api.h main.o
-	$(CC) $(CFLAGS) main.o -o $@
+$(ENV_MANIFEST): FORCE | $(MODE_ROOT)/
+	@set -eu; \
+	candidate="$@.candidate.$$$$"; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	{ \
+	  printf 'MODE=%s\n' '$(MODE)'; \
+	  printf 'PYTHON=%s\n' "$$("$(PYTHON)" --version 2>&1)"; \
+	  printf 'LC_ALL=%s\n' '$(LC_ALL)'; \
+	} > "$$candidate"; \
+	if test -r "$@" && cmp -s "$$candidate" "$@"; then \
+	  :; \
+	else \
+	  mv "$$candidate" "$@"; \
+	fi
 ```
 
-`FORCE` and `cmp` solve different problems:
+This design:
 
-- `FORCE` reevaluates command-line and environment state on every invocation
-- `cmp` prevents equal content from replacing the manifest
+- reevaluates non-file facts on every invocation
+- keeps equal manifest identity stable
+- publishes complete content after interruption-safe candidate generation
+- gives debug and release different path identities
 
-Without `FORCE`, a later `MODE=debug` request leaves the release manifest stale. Without
-`cmp`, every invocation republishes the manifest and rebuilds the application.
+Two clean workspaces with the same declared facts must produce equal manifest hashes.
+Repeated equal-state invocation must preserve hash and modification time. Changing `MODE`
+must publish in a different namespace.
 
-This is Core 3:
-
-- environment facts become explicit
-- changed facts propagate and equal facts converge
-- attestation sits beside the artifact instead of poisoning it
-
-## Identify whether Make is actually the performance problem
-
-The team says the build is slow.
-
-Compare:
-
-```sh
-/usr/bin/time -p make -n all >/dev/null
-/usr/bin/time -p make all >/dev/null
-make --trace all > build/trace.log
-wc -l build/trace.log
-```
-
-Interpret the measured ratio rather than borrowing example numbers. If full execution is
-far slower than dry-run decision work, recipe execution dominates this observation. If
-both are slow, inspect parse and graph-decision costs before blaming recipes.
-
-One timing run is not a benchmark. Repeat the same command, record the environment, and use
-the module's performance lesson before making a migration argument.
-
-This is Core 4:
-
-- separate performance layers before proposing fixes
-- use measurement to reject the wrong explanation
-
-## Model coupled outputs as one generation event
-
-The build also has:
+## Give the API generator one owner
 
 ```make
-api.h api.json: gen_api.py schema.yml
-	python3 gen_api.py
+generated/api.h generated/api.json &: schema.yml tools/gen-api.py | contract-check
+	"$(PYTHON)" tools/gen-api.py
+	test -s generated/api.h
+	test -s generated/api.json
 ```
 
-If this duplicates under `-j`, that is not a reason to migrate away from Make. It is a
-reason to model the generation honestly.
+The grouped feature gate appears before this syntax is selected. Under `-j4`, trace and an
+invocation log must show one generation event. Delete one group member and prove one
+repairing invocation.
 
-GNU Make 4.3 or newer can express the shared generation event directly with a grouped
-target:
+## Measure before redesigning
 
-```make
-api.h api.json &: gen_api.py schema.yml
-	python3 gen_api.py
-```
+Define three workloads:
 
-Make now runs the generator once and knows that one recipe updates both outputs. If your
-portability contract must support older GNU Make, a stamp can represent the event, but it
-needs an explicit integrity check: deleting `api.h` while leaving the stamp would
-otherwise look up to date. A guarded fallback verifies both outputs before publishing the
-stamp and fails clearly if one later disappears:
+| Workload | Goal state |
+| --- | --- |
+| clean | no governed build outputs |
+| no-op | selected mode completely settled |
+| changed input | one declared source changed reproducibly |
 
-```make
-API_STAMP := build/api.stamp
+For each, run repeated measurements with the same job count, tools, locale, and output
+capture. Measure planning separately from real execution and keep trace capture out of the
+timing comparison.
 
-$(API_STAMP): gen_api.py schema.yml | build/
-	python3 gen_api.py
-	@test -s api.h && test -s api.json
-	@touch $@
+If no-op `gmake -n` and no-op real build are both expensive, investigate parsing and graph
+decision with one controlled experiment such as `-rR` in a copy. If planning is cheap and
+the changed-input build is slow, profile the selected renderer or archive tool. Either
+result is more useful than a rewrite based on one timing.
 
-api.h api.json: $(API_STAMP)
-	@test -s $@ || { \
-	  echo "$@ is missing; run 'make clean-generated all'" >&2; \
-	  exit 1; \
-	}
-```
+## Keep packaging and promotion separate
 
-The grouped target is clearer when it is available. The fallback is shown to make the
-portability tradeoff visible, not to pretend that a stamp automatically proves every
-output still exists. Automatic recovery of independently deleted coupled outputs is one
-reason to prefer grouped targets when the supported Make version allows them.
+Building `build/release.tar.gz` from verified files is a file transaction Make can own.
+Promotion to a remote environment adds durable authorization, retry, status, and rollback
+state.
 
-## Decide the real tool boundary
+The handoff is:
 
-The remaining awkward part may be packaging:
+| Make publishes | Deployment system owns | Receipt returned |
+| --- | --- | --- |
+| immutable archive digest, checksums, software bill of materials | environment selection, approval, retry, rollback | signed status and remote revision |
 
-```make
-package: app
-	tar -czf app.tar.gz app
-```
+Do not represent remote success with a local `deployed.stamp`. A convenience target may
+submit the immutable digest, but the deployment system remains authoritative.
 
-This is still fine inside Make because the concern is file-oriented and the output contract
-is simple.
-
-But imagine the team now wants:
-
-- dependency resolution
-- multi-environment release promotion
-- long-running approval workflows
-- retry policies and remote execution state
-
-That is the moment to ask whether Make should remain the orchestrator while another tool
-owns those richer workflow concerns.
-
-This is Core 5:
-
-- classify the concern first
-- keep Make where it models artifacts well
-- move stateful workflow concerns only when the boundary is clear
-
-## The repaired sketch
-
-The hardening pass leaves the build closer to this:
+## Repaired build shape
 
 ```make
 SHELL := /bin/sh
@@ -373,105 +277,99 @@ SHELL := /bin/sh
 ifeq ($(origin MAKE_VERSION),undefined)
 $(error GNU Make is required)
 endif
-
-MIN_GNU_MAKE_OK := $(if $(filter 4.3% 4.4% 4.5% 5.%,$(MAKE_VERSION)),yes,)
-ifeq ($(MIN_GNU_MAKE_OK),)
-$(error GNU Make 4.3 or newer required; found $(MAKE_VERSION))
+REQUIRED_MAKE_FEATURES := grouped-target second-expansion
+MISSING_MAKE_FEATURES := $(filter-out $(.FEATURES),$(REQUIRED_MAKE_FEATURES))
+ifneq ($(strip $(MISSING_MAKE_FEATURES)),)
+$(error GNU Make lacks: $(MISSING_MAKE_FEATURES))
 endif
 
 MODE ?= release
+VALID_MODES := release debug
+ifneq ($(words $(MODE)),1)
+$(error MODE must be exactly one of: $(VALID_MODES))
+endif
+ifeq ($(filter $(MODE),$(VALID_MODES)),)
+$(error MODE must be one of: $(VALID_MODES))
+endif
+
 PYTHON ?= python3
-ENV_MANIFEST := build/env.manifest
+ifneq ($(words $(PYTHON)),1)
+$(error PYTHON must name one executable path)
+endif
+export LC_ALL := C
+MODE_ROOT := build/$(MODE)
+ENV_MANIFEST := $(MODE_ROOT)/environment.manifest
+APP := $(MODE_ROOT)/app
+BUNDLE := $(MODE_ROOT)/app.tar.gz
 
-.PHONY: all contract-check FORCE thirdparty
+.PHONY: all contract-check FORCE vendor
 FORCE:
-
-all: thirdparty app package
+all: vendor $(BUNDLE)
 
 contract-check:
 	@command -v "$(PYTHON)" >/dev/null 2>&1 || { \
-	  printf 'contract: missing required tool %s\n' "$(PYTHON)" >&2; \
-	  exit 2; \
+	  printf 'contract: missing %s\n' "$(PYTHON)" >&2; exit 2; \
 	}
 
-thirdparty: | contract-check
+vendor: | contract-check
 	+$(MAKE) -C vendor/lib all
 
-$(ENV_MANIFEST): FORCE | build/
-	@printf 'MODE=%s\nCC=%s\nLC_ALL=%s\n' '$(MODE)' '$(CC)' '$(LC_ALL)' > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+$(ENV_MANIFEST): FORCE | $(MODE_ROOT)/
+	@set -eu; \
+	candidate="$@.candidate.$$$$"; \
+	trap 'rm -f "$$candidate"' EXIT HUP INT TERM; \
+	printf 'MODE=%s\n' '$(MODE)' > "$$candidate"; \
+	if test -r "$@" && cmp -s "$$candidate" "$@"; then :; \
+	else mv "$$candidate" "$@"; fi
 
-api.h api.json &: gen_api.py schema.yml | contract-check
-	python3 gen_api.py
+generated/api.h generated/api.json &: schema.yml tools/gen-api.py | contract-check generated/
+	"$(PYTHON)" tools/gen-api.py
+	test -s generated/api.h
+	test -s generated/api.json
 
-app: $(ENV_MANIFEST) api.h main.o | contract-check
-	$(CC) $(CFLAGS) main.o -o $@
+$(APP): source.txt generated/api.h $(ENV_MANIFEST) | contract-check
+	"$(PYTHON)" tools/render-app.py \
+	  --source source.txt --environment $(ENV_MANIFEST) --output $@
 
-package: app | contract-check
-	tar -czf app.tar.gz app
+$(BUNDLE): $(APP) | contract-check
+	tar -czf $@ $<
+
+$(MODE_ROOT)/:
+	mkdir -p $@
+
+generated/:
+	mkdir -p $@
 ```
 
-This sketch still needs the repository's real compile edges and output ownership. It does
-establish the environment contracts that the inherited version hid.
+Archive metadata normalization is deliberately not claimed here. Module 08 defines that
+release contract. This sketch shows the corrected Module 05 boundaries without pretending
+to prove portable archive bytes.
 
-## Run the acceptance sequence
-
-Do not stop after reading the repaired sketch. Prove the three changed contracts:
+## Acceptance matrix
 
 | Check | Required observation |
 | --- | --- |
-| `make MODE=release app` then `make MODE=debug app` | manifest and app change to debug |
-| repeat `make MODE=debug app` | manifest hash and mtime stay fixed; app does not rebuild |
-| `make -n thirdparty` | child plan is visible; child outputs are absent |
-| `make -j2 thirdparty` | child is one `MAKELEVEL` deeper and reports inherited flags |
-| `make PYTHON=bijux-missing-tool all` | deliberate contract message; no publication residue |
-| `make PYTHON=python3 all` | gate passes and the build can proceed |
+| unavailable `PYTHON` | deliberate failure before artifact publication |
+| available `PYTHON` | same gate accepts and build proceeds |
+| `gmake -n vendor` | child plan visible, no child output |
+| bounded `gmake -j2 vendor` workload | child one level deeper; peak overlap no greater than two |
+| two equal clean workspaces | equal environment-manifest hashes |
+| repeated equal mode | manifest identity unchanged; file goals query current |
+| release and debug in parallel | distinct namespaces with no shared final writer |
+| both API members requested under `-j4` | one generator invocation |
+| clean/no-op/changed-input timings | repeated, labeled, and paired with correctness checks |
+| promotion failure | no false local success stamp; durable external status remains queryable |
 
-Keep the environment-contract bundle beside this project-specific evidence. The specimen
-explains the mechanism; the inherited build's logs prove that the repair applies here.
+## Incident conclusion
 
-## What each core contributed
+The evidence supports this account:
 
-```mermaid
-flowchart TD
-  symptoms["Inherited build symptoms"] --> contract["Core 1: portability contract"]
-  contract --> recursion["Core 2: recursive boundary under jobserver"]
-  recursion --> inputs["Core 3: convergent environment evidence"]
-  inputs --> performance["Core 4: measurement before optimization"]
-  performance --> boundary["Core 5: classify tool boundaries honestly"]
-  boundary --> result["Declared and testable build contract"]
-```
+> The build had an undeclared feature and tool contract, recursion hidden from planning,
+> stale and clock-derived environment evidence, independent owners for coupled outputs,
+> an unclassified performance complaint, and remote workflow state entering a file build.
+> We gated advertised capabilities, declared recursion, made semantic manifests
+> convergent and configuration-specific, grouped output ownership, measured distinct
+> workloads, and defined an immutable deployment handoff.
 
-This is why the module is organized the way it is. Hardening is not one trick. It is a
-series of clarifications.
-
-## What you should say at the end
-
-A strong summary sounds like this:
-
-> The build was not mainly broken because "Make is flaky." It had an undeclared version
-> and tool contract, a recursive boundary hidden from dry-run evidence, a manifest that
-> never reevaluated changed non-file state, and an unmeasured performance complaint. We
-> added paired contract checks, declared the recursive call, separated manifest evaluation
-> from publication, and measured before discussing migration. Only after that did we ask
-> whether any concern belonged in another tool.
-
-That is the kind of explanation Module 05 is trying to build.
-
-## What to practice after this example
-
-Take one real inherited build and rewrite its story in the same order:
-
-1. state the symptoms precisely
-2. establish the current contract or the lack of one
-3. inspect recursive boundaries
-4. identify one non-file input worth modeling
-5. produce one measurement before proposing a performance fix
-6. decide whether any concern has crossed a tool boundary
-
-If you can do that, Module 05 has started to change how you harden builds.
-
-Ask another learner to use only `summary.tsv`, one trace, and one workspace to explain a
-broken/control pair. If they must rely on your verbal explanation, improve the evidence
-route before adding more detection.
+Another learner should be able to reconstruct every sentence from the paired specimen
+bundle and the project-specific acceptance matrix without instructor narration.

@@ -443,3 +443,83 @@ Rarely, for one-off calls with fixed config (e.g., scripts), pass params explici
 **Continue with:** [Expression-Oriented Python](../module-02-data-first-apis-expression-style/expression-oriented-python.md)
 
 > **Further Reading:** For more on closures in Python, see 'Fluent Python' by Luciano Ramalho. Explore toolz for advanced partials once comfortable.
+
+## FuncPipe configurator trace
+
+`make_rag_fn` binds policy into a callable whose only remaining argument is the
+document collection:
+
+```python
+from funcpipe_rag import CleanConfig, RawDoc, make_rag_fn
+
+run = make_rag_fn(
+    chunk_size=4,
+    clean_cfg=CleanConfig(("strip", "upper")),
+)
+
+docs = [RawDoc("doc-a", "title", " abcdef ", "cs.PL")]
+chunks, observations = run(docs)
+
+assert [chunk.text for chunk in chunks] == ["ABCD", "EF"]
+assert observations.total_docs == 1
+```
+
+Trace what is captured:
+
+```text
+make_rag_fn call
+  -> frozen RagConfig
+  -> RagCoreDeps containing configured cleaner and embedder
+  -> run(docs), created with those two values in its closure
+```
+
+The documents are not captured. Each `run(docs)` call starts from the supplied
+list, which is why equal input and policy produce equal independent results.
+
+### Closure inspection is evidence
+
+Python lets you inspect a closure, but do not write production logic that depends
+on closure cell positions:
+
+```python
+assert run.__closure__ is not None
+assert {type(cell.cell_contents).__name__ for cell in run.__closure__} == {
+    "function",
+    "RagConfig",
+    "RagCoreDeps",
+}
+```
+
+This is a useful learning probe: it reveals whether a configurator accidentally
+captured input, a file handle, or mutable run state. Here, `function` is the imported
+`full_rag_api` implementation. The public contract remains the call signature and
+behavior.
+
+### Closure or `partial`?
+
+Use `partial` when the configured callable already has the right remaining
+signature:
+
+```python
+from functools import partial
+
+configured = partial(full_rag_api_docs, config=config, deps=deps)
+```
+
+Use a closure when construction needs validation, dependency assembly, or a narrower
+public signature. `make_rag_fn` earns a closure because it turns simple public
+settings into `RagConfig` and `RagCoreDeps`.
+
+Neither form makes an effect pure. Capturing a mutable client or clock merely hides
+that capability. Review captured values with the same care as explicit parameters.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'configurator'
+```
+
+The proof establishes repeatable values and that input is supplied per run. It does
+not prove thread safety for arbitrary injected dependencies or replayability for an
+input iterator.

@@ -443,11 +443,11 @@ def test_breaker_equivalence_to_full_scan(items):
 def test_count_breaker_off_by_one():
     xs: list[Result[int, str]] = [Err("E"), Err("E"), Err("E")]
     results = list(circuit_breaker_count_emit(xs, max_errs=1))
-    # first Err + terminal BreakInfo
-    assert len(results) == 2
+    # first tolerated Err + threshold-crossing Err + terminal BreakInfo
+    assert len(results) == 3
     assert isinstance(results[0], Err)
-    assert isinstance(results[1], Err) and isinstance(results[1].error, BreakInfo)
-    bi = results[1].error
+    assert isinstance(results[2], Err) and isinstance(results[2].error, BreakInfo)
+    bi = results[2].error
     assert bi.n_err == 2
     assert bi.threshold["max_errs"] == 1
 ```
@@ -475,21 +475,94 @@ All breakers are truly lazy generators with O(1) auxiliary memory.
 
 ---
 
+## Read the terminal value as part of the stream protocol
+
+A breaker answers a different question from a fail-fast fold. A fold returns
+one aggregate result. An emitting breaker preserves the consumed prefix and
+adds a terminal `Err(BreakInfo(...))` explaining why demand stopped.
+
+For `short_circuit_on_err_emit`:
+
+```text
+upstream:  Ok(1), Err("unavailable"), Ok(2)
+downstream: Ok(1), Err("unavailable"), Err(BreakInfo), <stop>
+```
+
+The threshold-crossing error remains visible. `BreakInfo` is an additional
+control observation, not a replacement for that record failure.
+
+For count breakers, `max_errs` means “how many errors are tolerated.” With
+`max_errs=1`, the first error is tolerated and the second triggers:
+
+| Emission | `n_err` after emission | Decision |
+| --- | ---: | --- |
+| first `Err` | 1 | continue |
+| second `Err` | 2 | emit it, then emit terminal `BreakInfo` |
+| third input | — | never requested |
+
+That is why the unit test has three outputs: two source errors and one terminal
+value.
+
+Run the focused application proof:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k emitting_breaker
+```
+
+The source sets `closed=True` in `finally`. The breaker calls `close()` on its
+upstream iterator when it returns early, so the assertion proves this
+particular generator's cleanup ran. It does not prove that arbitrary upstream
+resources close themselves; the next core supplies an explicit lifetime
+boundary.
+
+Choose emit versus truncate deliberately:
+
+| Contract | Use |
+| --- | --- |
+| A report, CLI, or operator must know why the run stopped | Emitting breaker |
+| The caller already owns termination evidence and requires only the prefix | Truncating breaker |
+| Silent termination could be mistaken for normal exhaustion | Do not truncate |
+
+Rate policies also need a meaningful sample floor. A single failure out of one
+item has a 100% observed rate but usually too little evidence for a run-level
+health judgment. `min_samples` makes that uncertainty explicit; it does not
+make the chosen threshold statistically valid by itself.
+
 ## 8. Pre-Core Quiz
 
-1. Emit breaker for…? → **Observable termination with BreakInfo**  
-2. Truncate breaker for…? → **Silent early stop**  
-3. Rate breaker for…? → **Abort on error rate threshold**  
-4. Resource cleanup on break…? → **Automatic via try/finally**  
-5. Never do manually what…? → **A breaker can do safely**
+1. With `max_errs=1`, which error triggers? → **The second error.**
+2. Is the triggering record preserved by an emitting breaker? → **Yes, followed
+   by a terminal `BreakInfo`.**
+3. Why can truncation be dangerous? → **The prefix can look like normal
+   exhaustion when no separate evidence exists.**
+4. What does upstream `close()` prove? → **That a cooperative closable iterator
+   was asked to terminate.**
+5. Why set `min_samples` on a rate breaker? → **To avoid making a run-level
+   decision from an arbitrarily tiny prefix.**
 
 ## 9. Post-Core Exercise
 
-1. Add `circuit_breaker_rate_emit` to embedding stream → test early abort on injected failures.  
-2. Use `short_circuit_on_err_truncate` for quick debug runs → verify no resource leaks.  
-3. Implement custom predicate breaker for "stop on first OOM" → test.  
-4. Combine with `par_try_map_iter` → verify parallel work stops on trigger.
+Add a count breaker to a mixed embedding stream.
+
+- Predict every emitted value for `max_errs=0` and `max_errs=1`.
+- Assert that the threshold-crossing failure appears before `BreakInfo`.
+- Count source requests and prove the item after the trigger is not requested.
+- Compare emitting and truncating outputs and state which is acceptable for an
+  operator-facing run.
+- Keep cleanup as a separate assertion rather than inferring it from output
+  length.
+
+Move forward when you can explain the difference between a record failure, a
+terminal policy event, and normal exhaustion.
 
 **Continue with:** [Resource-Aware Streams](../module-04-streaming-resilience-failure-handling/resource-aware-streams.md)
 
-You now have the complete toolkit to abort doomed runs instantly while keeping every line of code pure, composable, and resource-safe. The rest of Module 4 is about retries and final reporting.
+Early termination is now observable. The next core makes the lifetime of the
+source explicit even when consumers, producers, or policies stop the stream.

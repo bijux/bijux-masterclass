@@ -1,400 +1,251 @@
-# Product and Sum Types
+# Product and Sum Types in the RAG Pipeline
 
+Module 4 gave FuncPipe a typed failure channel and a streaming document path. Module 5 now asks a different question:
 
-<!-- page-maps:start -->
-## Page Maps
+> What information must exist together, and which alternatives must remain separate?
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Algebraic Data Modelling Validation"]
-  page["Product and Sum Types"]
-  capstone["Capstone evidence"]
+That question is the practical heart of algebraic data modelling.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+## What you need before starting
+
+You should be comfortable with frozen dataclasses, union types, and the `Ok | Err` result introduced in Module 4. Keep the Module 5 reference state open while you read:
+
+```bash
+cd programs/python-programming/python-functional-programming
+sed -n '1,140p' \
+  capstone/module-reference-states/module-05/src/funcpipe_rag/core/rag_types.py
 ```
+
+The lesson uses the cumulative FuncPipe application, not a second modelling exercise.
+
+## Two shapes, two questions
+
+A **product type** means “all of these fields together.” Its possible values are combinations of its fields.
+
+```python
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class DocumentKey:
+    source: str
+    document_id: str
+```
+
+A `DocumentKey` contains a source **and** a document ID.
+
+A **sum type** means “exactly one of these alternatives.” In modern Python, a union of distinct dataclasses is often enough:
+
+```python
+ReadOutcome = ReadSucceeded | ReadFailed
+```
+
+A `ReadOutcome` is a success **or** a failure. It is not both, and it cannot be neither.
+
+This distinction is more useful than the vocabulary:
+
+| Modelling pressure | Shape | FuncPipe example |
+| --- | --- | --- |
+| Several facts travel together | product | `ChunkWithoutEmbedding` |
+| A value is one of distinct cases | sum | `Ok[Chunk] | Err[ErrInfo]` |
+| A value changes meaning after work completes | two product types | `ChunkWithoutEmbedding` then `Chunk` |
+| A field is genuinely optional within one state | optional field | use sparingly; explain what `None` means |
+
+## The invalid state we want to remove
+
+Imagine one loose chunk class:
+
+```python
+@dataclass
+class LooseChunk:
+    doc_id: str
+    text: str
+    start: int
+    end: int
+    embedding: tuple[float, ...] | None = None
+    error: str | None = None
+```
+
+It admits combinations that the pipeline cannot interpret:
+
+- no embedding and no error;
+- an embedding and an error;
+- offsets that do not describe the text;
+- mutable fields changing after indexing.
+
+Adding an `is_ready` boolean makes more contradictory combinations. The problem is the shape, not a missing conditional.
+
+## Products describe the real stages
+
+FuncPipe already has the useful products:
+
+```python
+from dataclasses import dataclass, field
+from collections.abc import Mapping
+
+@dataclass(frozen=True)
+class ChunkWithoutEmbedding:
+    doc_id: str
+    text: str
+    start: int
+    end: int
+    metadata: Mapping[str, object] = field(default_factory=dict)
+
+@dataclass(frozen=True)
+class Chunk(ChunkWithoutEmbedding):
+    embedding: tuple[float, ...] = ()
+```
+
+The first value means “the text span is ready to embed.” The second means “the span has a valid embedding.” They are different types because callers may do different work with them.
+
+The application transition makes that distinction visible:
+
+```python
+def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
+    ...
+```
+
+The annotation is a design claim: embedding consumes a prepared chunk and returns an indexed chunk. A function that needs an embedding should ask for `Chunk`, not accept the earlier state and hope.
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  raw["RawDoc<br/>source fields"] -->|clean_doc| clean["CleanDoc<br/>normalised text"]
+  clean -->|chunk_doc| prepared["ChunkWithoutEmbedding<br/>text + span"]
+  prepared -->|embed_chunk| indexed["Chunk<br/>text + span + 16 floats"]
 ```
-<!-- page-maps:end -->
 
-Make one modelling question visible right away: is the concept “all of these fields together” or “exactly one of these variants”? Once you can ask that question clearly, a lot of accidental complexity in Python models stops looking inevitable.
+The classes share fields through inheritance, so `isinstance(indexed, ChunkWithoutEmbedding)` is true. That reuse is convenient, but the function signatures—not an `isinstance` check—communicate the stage boundary. In a code review, look at what a function accepts and returns.
 
-## Start With the Invalid-State Smell
+## A sum describes success or failure
 
-You may know the data you care about and still encode it with booleans, nullable fields, and mutable classes that allow impossible combinations.
-
-- If several fields must all exist together, the model wants a product type.
-- If a value must be one variant or another, the model wants a tagged sum.
-- If a model can hold contradictory information at once, the shape is still too loose.
-
-**Core question**  
-How do you replace ad-hoc dicts, mutable classes, and fragile inheritance with pure product and tagged sum types — guaranteeing exhaustive handling, immutability, and stable serialization in every pipeline stage?
-
-This lesson introduces ADTs as the first modelling tool to reach for in this module:
-
-- use product types when the value is a fixed bundle of fields
-- use tagged sums when the value is one of several distinct cases
-- make those choices explicit enough that the type shape itself removes bad states
-
-The motivating `Chunk` and error examples matter because they show a common failure pattern: even after adding better error flow, the underlying data shapes are still too weak to prevent contradictory or incomplete states.
-
-The naïve (and extremely common) solution:
+Embedding can also fail at an effectful boundary. FuncPipe does not need another `ChunkState` hierarchy for this. Module 4 already established:
 
 ```python
-class ChunkState:
-    def __init__(self, success=None, embedding=None, error=None):
-        self.success = success
-        self.embedding = embedding
-        self.error = error
-
-# somewhere deep in the code...
-if state.success:
-    index(state.embedding)   # oops, someone forgot to check error is not None
+Result[Chunk, ErrInfo] = Ok[Chunk] | Err[ErrInfo]
 ```
 
-This is the core modelling smell to recognize instantly: boolean blindness and null soup.
-
-The production solution: model every domain concept as either a **product type** (AND) or a **tagged sum type** (OR — exactly one variant).
+A consumer handles the closed set of alternatives:
 
 ```python
-ChunkState = Success | Failure
+from typing_extensions import assert_never
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
+from funcpipe_rag.core.rag_types import Chunk
 
-@dataclass(frozen=True, slots=True, kw_only=True)
-class Success:
-    kind: Literal["success"] = "success"
-    embedding: tuple[float, ...]
-    metadata: tuple[tuple[str, JSON], ...]
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class Failure:
-    kind: Literal["failure"] = "failure"
-    code: str
-    msg: str
-    attempt: int
+def describe(result: Result[Chunk, ErrInfo]) -> str:
+    match result:
+        case Ok(value=chunk):
+            return f"ready:{chunk.doc_id}:{len(chunk.embedding)}"
+        case Err(error=error):
+            return f"failed:{error.code}:{error.stage}"
+        case other:
+            assert_never(other)
 ```
 
-Now the model itself tells you which cases exist, and later tools like `match` and `assert_never` can enforce that understanding mechanically.
+`assert_never` is primarily a static exhaustiveness check. If the union gains another variant and the type checker understands the match, the forgotten case becomes visible. It is not a substitute for tests or boundary validation.
 
-Use this when incomplete state handling, silent `None` paths, and mutable model shapes let bad combinations slip through review.
+## Run the transition
 
-**Outcome**
-1. Every dict/class soup replaced with proper product and tagged sum types.
-2. Exhaustiveness proved via mypy + assert_never.
-3. Immutable, serialisable domain models that survive refactors without silent regressions.
+Run this from the Functional Programming directory:
 
-## Tiny Non-Domain Example – Shape ADT
+```bash
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/python \
+  - <<'PY'
+from funcpipe_rag.core.rag_types import RagEnv, RawDoc
+from funcpipe_rag.rag.stages import chunk_doc, clean_doc, embed_chunk
+
+raw = RawDoc("adt-1", "Types", "  Values before cleverness  ", "fp")
+clean = clean_doc(raw)
+prepared = chunk_doc(clean, RagEnv(chunk_size=40))[0]
+indexed = embed_chunk(prepared)
+
+print(type(prepared).__name__, prepared.text)
+print(type(indexed).__name__, len(indexed.embedding))
+print((prepared.doc_id, prepared.start, prepared.end) ==
+      (indexed.doc_id, indexed.start, indexed.end))
+PY
+```
+
+Expected output:
+
+```text
+ChunkWithoutEmbedding values before cleverness
+Chunk 16
+True
+```
+
+Trace the last line carefully. The operation changes the representation by adding an embedding, while preserving document identity and span.
+
+## Invariants still need runtime enforcement
+
+A dataclass annotation does not validate incoming JSON and Python does not enforce annotations at runtime. The domain constructors therefore check important invariants:
+
+- offsets are integers;
+- `start >= 0`;
+- `end >= start`;
+- metadata is a mapping;
+- an indexed chunk has exactly 16 embedding values.
+
+Try a failure:
 
 ```python
-from dataclasses import dataclass
-from typing import Literal
-from typing import assert_never
+from funcpipe_rag.core.rag_types import Chunk
 
-@dataclass(frozen=True, slots=True)
-class Circle:
-    kind: Literal["circle"] = "circle"
-    radius: float
-
-@dataclass(frozen=True, slots=True)
-class Rectangle:
-    kind: Literal["rectangle"] = "rectangle"
-    width: float
-    height: float
-
-Shape = Circle | Rectangle
-
-def area(s: Shape) -> float:
-    match s:
-        case Circle(radius=r):
-            return 3.14159265359 * r * r
-        case Rectangle(width=w, height=h):
-            return w * h
-    assert_never(s)  # mypy errors if you add Triangle and forget to handle it
+Chunk(
+    doc_id="bad",
+    text="x",
+    start=0,
+    end=1,
+    embedding=(0.0, 1.0),
+)
 ```
 
-Adding a new variant now forces the handling sites to be updated instead of silently drifting out of sync.
+It raises `ValueError` because a two-dimensional value is not an embedding produced by this application.
 
-## Why ADTs? (Three bullets every engineer should internalise)
+One subtle boundary remains: `MappingProxyType` prevents replacing top-level metadata entries, but it does not recursively freeze a nested list or dict. “Frozen dataclass” is not the same as “deeply immutable object graph.” Prefer simple immutable metadata values when equality or safe sharing matters.
 
-- **Exhaustiveness**: Adding a variant breaks every handler until you update it — no silent missing cases.
-- **Immutability + Value semantics**: Frozen + structural eq/hash → safe in sets/dicts, pure functions, cache keys (provided nested metadata structures are not mutated after construction).
-- **Stable serialization**: Explicit `kind` tag + deterministic field order (sorted tuple for metadata) → JSON round-trip without surprises.
+## What changed in Module 5
 
-## 1. Laws & Invariants (machine-checked)
+The previous reference state already had documents, chunks, `Result`, and deterministic embedding. Module 5 does not earn its keep by inventing parallel records. Its data-modelling delta is to make the existing stage distinctions explicit, test their preservation laws, and validate external representations before conversion.
 
-| Law                 | Formal Statement                                                                                                                | Enforcement                      |
-|---------------------|---------------------------------------------------------------------------------------------------------------------------------|----------------------------------|
-| Exhaustiveness      | Every match over a sum type must handle all variants (proved by `assert_never`)                                                 | mypy --strict + tests            |
-| Immutability        | Dataclass fields cannot be reassigned. Nested containers in metadata are shared references and remain mutable (do not mutate them after chunk creation to preserve value semantics) | `test_adt_immutability` (top-level) |
-| Structural Equality | `x == y` iff all fields equal (stable under dict key order via sorted tuples)                                                   | `test_chunk_metadata_order_independent` |
-| JSON Round-Trip     | `from_dict(to_dict(x)) == x` for all instances                                                                                  | `test_chunk_roundtrip`, `test_chunk_state_roundtrip` |
+The focused learning proof is:
 
-## 2. Decision Table – Which ADT Construction Do You Actually Use?
-
-| Data Shape                              | Has Payload? | Needs Tags? | Recommended Construction                                      |
-|-----------------------------------------|--------------|-------------|---------------------------------------------------------------|
-| Simple record (AND of fields)           | Yes          | No          | `@dataclass(frozen=True, slots=True, kw_only=True)`           |
-| Simple enumeration (no data)            | No           | Yes         | `class Status(Enum): PENDING = "pending" ...`                 |
-| Tagged variants with data (OR + payload)| Yes          | Yes         | Union of tagged dataclasses with `kind: Literal["..."]`       |
-| Deeply nested tree                      | Yes          | Yes         | Recursive Union of tagged dataclasses                         |
-
-**Never** use mutable classes or bare dicts for domain data.
-
-## 3. Public API (fp/core.py – mypy --strict clean)
-
-```python
-from __future__ import annotations
-
-from dataclasses import dataclass
-from typing import Iterable, Literal, Mapping, Sequence, Tuple, TypeAlias
-
-JSONPrimitive: TypeAlias = str | int | float | bool | None
-JSON: TypeAlias = JSONPrimitive | Mapping[str, "JSON"] | Sequence["JSON"]
-Path = Tuple[int, ...]
-
-def _freeze_metadata(m: Mapping[str, JSON]) -> Tuple[Tuple[str, JSON], ...]:
-    # sort by key only – values may be heterogeneous JSON
-    return tuple(sorted(m.items()))
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class Chunk:
-    text: str
-    path: Path
-    metadata: Tuple[Tuple[str, JSON], ...]   # top-level frozen, order-independent
-    version: Literal[1] = 1
-
-def make_chunk(
-    *,
-    text: str,
-    path: Path,
-    metadata: Mapping[str, JSON],
-) -> Chunk:
-    return Chunk(text=text, path=path, metadata=_freeze_metadata(metadata))
-
-def chunk_to_dict(c: Chunk) -> dict[str, JSON]:
-    return {
-        "version": c.version,
-        "text": c.text,
-        "path": list(c.path),
-        "metadata": dict(c.metadata),
-    }
-
-def chunk_from_dict(d: Mapping[str, JSON]) -> Chunk:
-    if d.get("version") != 1:
-        raise ValueError("unsupported version")
-    return make_chunk(
-        text=str(d["text"]),
-        path=tuple(int(i) for i in d["path"]),
-        metadata=dict(d["metadata"]),
-    )
-
-# Success / Failure sum type for embedding outcomes
-@dataclass(frozen=True, slots=True, kw_only=True)
-class Success:
-    kind: Literal["success"] = "success"
-    embedding: Tuple[float, ...]
-    metadata: Tuple[Tuple[str, JSON], ...]
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class Failure:
-    kind: Literal["failure"] = "failure"
-    code: str
-    msg: str
-    attempt: int
-
-ChunkState = Success | Failure
-
-def success(
-    *,
-    embedding: Iterable[float],
-    metadata: Mapping[str, JSON],
-) -> Success:
-    return Success(
-        embedding=tuple(float(x) for x in embedding),
-        metadata=_freeze_metadata(metadata),
-    )
-
-def failure(*, code: str, msg: str, attempt: int) -> Failure:
-    return Failure(code=code, msg=msg, attempt=attempt)
+```bash
+make capstone-module-state-proof MODULE=05
 ```
 
-## 4. Reference Implementations (continued)
+Read these tests as executable explanations:
 
-### 4.1 Tree Sum Type (recursive tagged union)
-
-```python
-from typing import assert_never
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class TextNode:
-    kind: Literal["text"] = "text"
-    content: str
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class SectionNode:
-    kind: Literal["section"] = "section"
-    title: str
-    children: Tuple["Node", ...]
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class ListNode:
-    kind: Literal["list"] = "list"
-    items: Tuple["Node", ...]
-
-Node = TextNode | SectionNode | ListNode
+```text
+capstone/module-reference-states/module-05/tests/learning/
+└── test_module_05_data_modelling.py
 ```
 
-### 4.2 Exhaustive Pattern Matching
+Look for three claims:
 
-```python
-def node_depth(n: Node) -> int:
-    match n:
-        case TextNode():
-            return 0
-        case SectionNode(children=children):
-            return 1 + max((node_depth(c) for c in children), default=0)
-        case ListNode(items=items):
-            return 1 + max((node_depth(i) for i in items), default=0)
-    assert_never(n)  # mypy errors if you add a new variant
-```
+1. product types keep the document span together;
+2. `Result` separates successful chunks from failure information;
+3. embedding changes the stage type while preserving the earlier value.
 
-### 4.3 JSON Round-Trip for Tagged Sum
+## Review questions
 
-```python
-def chunk_state_to_dict(state: ChunkState) -> dict[str, JSON]:
-    base = {"kind": state.kind, "version": 1}
-    if isinstance(state, Success):
-        return base | {
-            "embedding": list(state.embedding),
-            "metadata": dict(state.metadata),
-        }
-    else:  # Failure
-        return base | {
-            "code": state.code,
-            "msg": state.msg,
-            "attempt": state.attempt,
-        }
+Before introducing a new model, ask:
 
-def chunk_state_from_dict(d: Mapping[str, JSON]) -> ChunkState:
-    if d.get("version") != 1:
-        raise ValueError("unsupported version")
-    kind = d["kind"]
-    if kind == "success":
-        return success(
-            embedding=d["embedding"],      # type: ignore[arg-type]
-            metadata=dict(d["metadata"]),
-        )
-    if kind == "failure":
-        return failure(
-            code=d["code"],                # type: ignore[arg-type]
-            msg=d["msg"],
-            attempt=d["attempt"],          # type: ignore[arg-type]
-        )
-    raise ValueError(f"unknown kind {kind}")
-```
+- Is this several facts that must coexist, or several cases that must not coexist?
+- Does the application already have a type expressing the same state?
+- Which impossible value does the new shape remove?
+- Which constructor enforces invariants at runtime?
+- Which test proves the application-level claim?
 
-### 4.4 Big-O & Allocation Guarantees
+Do not add a sum type merely because the topic is sum types. A new alternative must correspond to a real decision the application makes.
 
-| Construction         | Time   | Heap               | Notes                              |
-|----------------------|--------|--------------------|------------------------------------|
-| dataclass creation   | O(1)   | O(#fields)         | slots=True → no __dict__           |
-| Tagged union match   | O(1)   | O(1)               | Exhaustive via assert_never        |
-| JSON round-trip      | O(N)   | O(N)               | Stable via sorted tuples           |
+## Ready to continue?
 
-### 4.5 Anti-Patterns & Immediate Fixes
+Move on when you can:
 
-| Anti-Pattern                  | Symptom                        | Fix                                              |
-|-------------------------------|--------------------------------|--------------------------------------------------|
-| Mutable domain classes        | Accidental mutation            | frozen=True, slots=True, kw_only=True            |
-| Untagged Union or dict variants| Silent missing cases           | kind: Literal + assert_never                     |
-| Dict for metadata             | Unstable equality/serialization| Sorted tuple of tuples                           |
-| Inheritance for variants      | Fragile, hard to exhaust       | Tagged union of dataclasses                      |
+- explain products as “and” and sums as “or” without relying on syntax;
+- trace the three real chunk stages;
+- explain why `Result[Chunk, ErrInfo]` is preferable to success/error nullable fields;
+- distinguish type-checker evidence from runtime validation;
+- run the Module 5 proof and identify the preservation assertions.
 
-## 5. Property-Based Proofs (capstone/tests/test_module_05_c01.py)
-
-```python
-import dataclasses
-from typing import assert_never
-
-import pytest
-from hypothesis import given
-import hypothesis.strategies as st
-
-# ... imports of your ADT types ...
-
-@given(text=st.text(), path=st.lists(st.integers(), max_size=10).map(tuple),
-       meta=st.dictionaries(st.text(), st.integers() | st.lists(st.integers())))
-def test_chunk_immutability(text, path, meta):
-    chunk = make_chunk(text=text, path=path, metadata=meta)
-    with pytest.raises(dataclasses.FrozenInstanceError):
-        chunk.text = "mutated"
-
-@given(meta=st.dictionaries(st.text(), st.integers()))
-def test_chunk_metadata_order_independent(meta):
-    c1 = make_chunk(text="t", path=(), metadata=meta)
-    c2 = make_chunk(text="t", path=(), metadata=dict(reversed(list(meta.items()))))
-    assert c1 == c2
-    assert hash(c1) == hash(c2)
-
-@given(chunk=st.builds(make_chunk,
-                      text=st.text(),
-                      path=st.lists(st.integers(), max_size=10).map(tuple),
-                      metadata=st.dictionaries(st.text(), st.integers() | st.none())))
-def test_chunk_roundtrip(chunk):
-    j = chunk_to_dict(chunk)
-    reloaded = chunk_from_dict(j)
-    assert chunk == reloaded
-
-@given(succ=st.builds(success,
-                     embedding=st.lists(st.floats(allow_nan=False, allow_infinity=False), max_size=10),
-                     metadata=st.dictionaries(st.text(), st.integers())),
-       fail=st.builds(failure, code=st.text(min_size=1), msg=st.text(), attempt=st.integers(min_value=1)))
-def test_chunk_state_roundtrip(succ, fail):
-    for state in (succ, fail):
-        j = chunk_state_to_dict(state)
-        reloaded = chunk_state_from_dict(j)
-        assert state == reloaded
-
-@given(node=st.recursive(
-    st.builds(TextNode, content=st.text()),
-    lambda children: st.one_of(
-        st.builds(SectionNode, title=st.text(), children=children),
-        st.builds(ListNode, items=children),
-    ),
-    max_leaves=20,
-))
-def test_node_exhaustive_match(node):
-    def dummy(n: Node) -> int:
-        match n:
-            case TextNode():   return 0
-            case SectionNode(): return 1
-            case ListNode():    return 2
-        assert_never(n)
-    dummy(node)
-```
-
-## 6. Pre-Core Quiz
-
-1. Product type → AND of fields (dataclass)  
-2. Tagged sum type → OR of variants with payloads  
-3. frozen=True, slots=True → Immutability + efficiency  
-4. assert_never → Exhaustiveness proof  
-5. Why sorted tuple for metadata? → Stable equality & hash (independent of dict key order)
-
-## 7. Post-Core Exercise
-
-1. Model your current chunk embedding state as a tagged sum type → add assert_never to every handler.  
-2. Refactor one dict-based structure to frozen dataclass → test JSON round-trip + order-independent equality.  
-3. Add a new variant to an existing sum type → verify mypy errors in all match sites.  
-4. Replace a mutable class in your codebase with a frozen dataclass → measure memory improvement (slots!).
-
-**Continue with:** [Domain State ADTs](../module-05-algebraic-data-modelling-validation/domain-state-adts.md)
-
-You now model every piece of domain data as pure, immutable, exhaustively-handled values — eliminating vast classes of bugs before they happen. The rest of Module 5 is about composing these ADTs into powerful abstractions (functors, applicatives, monoids).
+Next, [Domain State ADTs](domain-state-adts.md) examines when stage-specific products are sufficient and when an explicit state machine would actually be justified.

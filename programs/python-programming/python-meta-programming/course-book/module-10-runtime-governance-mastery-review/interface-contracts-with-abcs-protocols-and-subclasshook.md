@@ -1,6 +1,5 @@
 # Interface Contracts with ABCs, Protocols, and `__subclasshook__`
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Runtime Governance Mastery Review"]
-  page["Interface Contracts with ABCs, Protocols, and `__subclasshook__`"]
+  page["Interface Contracts with ABCs, Protocols, and subclasshook"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -18,346 +17,281 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  pressure["Interface pressure"] --> nominal["ABC: nominal runtime family"]
+  pressure --> structural["Protocol: static structural contract"]
+  pressure --> classify["subclasshook: narrow runtime classification"]
+  nominal --> proof["Focused evidence"]
+  structural --> proof
+  classify --> proof
 ```
 <!-- page-maps:end -->
 
-Once dynamic execution boundaries are clear, the next governance question is smaller but
-equally important:
+Python offers several tools that look like "interface enforcement." They do not enforce
+the same thing. Good governance starts by shrinking the claim to match the mechanism.
 
-what does a runtime "interface" actually promise?
+This core asks you to distinguish three questions:
 
-Python gives several ways to name an interface, but those ways do not all guarantee the
-same thing.
+- May an incomplete nominal subclass be instantiated?
+- Does a statically checked consumer accept an object with a compatible shape?
+- Should a runtime class be classified by one shallow, inspectable feature?
 
-This page is weakest when readers remember only the syntax. The real teaching target is
-claim sizing: what a contract surface can honestly promise, what it cannot, and what other
-evidence must still carry the design.
+An ABC, a protocol, and `__subclasshook__` can answer those questions respectively. None
+proves that an implementation behaves correctly.
 
-## The sentence to keep
+## Predict before running
 
-ABCs, protocols, and `__subclasshook__` are useful only when the code review story stays
-honest about whether the contract is nominal, structural, static, shallow, or truly
-behavioral.
-
-That sentence is the whole page in miniature.
-
-If the surrounding review language is larger than those five words, the contract claim is
-probably already drifting.
-
-For self-study, turn that sentence into a contract-sizing test:
-
-- is the claim nominal, structural, shallow runtime, or truly behavioral?
-- what behavior still lives outside this interface surface?
-- what test or documentation evidence must still carry that behavior?
-
-## Evidence route for interface-contract reviews
-
-Use this route before accepting an interface surface:
-
-| Review step | What to inspect | What strong evidence looks like |
-| --- | --- | --- |
-| Name the contract shape | Is this nominal, structural, static, shallow runtime, or behavioral? | One category is chosen explicitly instead of blended together |
-| Match the owner to the need | Does the design need runtime instantiation failure, flexible static typing, or a tiny structural hook? | ABC, protocol, or `__subclasshook__` is chosen for a specific reason |
-| Reject overclaim | What does this surface not prove? | Behavior, performance, cleanup, or resource semantics are left to tests and docs |
-| Inspect the runtime cost | Is this check shallow, awkward, or likely to be mistaken for certification? | The limits of runtime checks are named directly |
-| Name the missing evidence | What still has to be tested elsewhere? | Semantic invariants and failure cases are still covered outside the interface |
-
-## ABCs name a runtime contract with real but narrow force
-
-`abc.ABC` plus `@abstractmethod` can prevent instantiation of incomplete subclasses.
-
-That is a real runtime guardrail:
+Consider a class with a `deliver` attribute whose callable takes no message:
 
 ```python
-from abc import ABC, abstractmethod
+class WrongSignature:
+    def deliver(self) -> str:
+        return "delivered"
+```
 
+Predict these results:
 
-class Drawable(ABC):
+1. Does `isinstance(WrongSignature(), DeliveryProtocol)` pass?
+2. Would a static type checker accept `WrongSignature` where `DeliveryProtocol` is
+   required?
+3. Can the runtime check prove what `deliver("incident")` returns?
+
+The answers are: yes, normally no, and no. The rest of the page explains why.
+
+## ABCs own nominal instantiation rules
+
+The lab defines:
+
+```python
+class DeliveryABC(ABC):
+    """Runtime nominal contract for constructed delivery adapters."""
+
     @abstractmethod
-    def draw(self) -> str:
-        ...
-
-
-class Circle(Drawable):
-    def draw(self) -> str:
-        return "circle"
-
-
-print(Circle().draw())  # circle
+    def deliver(self, message: str) -> str:
+        """Deliver one message."""
 ```
 
-And the failure mode is precise too:
+Then it creates an incomplete subclass:
 
 ```python
-try:
-    Drawable()
-except TypeError as exc:
-    print("expected:", exc)
+class MissingDelivery(DeliveryABC):
+    pass
 ```
 
-This is useful, but it is not a full semantic proof. An ABC can require the presence of a
-method. It does not guarantee the method behaves well.
+Class creation succeeds. Instance construction does not:
 
-## Honest ABC claims versus overclaims
-
-| Honest ABC claim | Overclaim to reject |
-| --- | --- |
-| "Incomplete subclasses cannot be instantiated." | "All subclasses conform correctly to the full design contract." |
-| "This runtime family owns one named method boundary." | "Inheritance proves the behavior is safe, efficient, or correct." |
-
-## Protocols are primarily for static structural typing
-
-`typing.Protocol` shines when you want structural compatibility checked by type checkers.
-
-That is the key idea to keep. Runtime use is secondary.
-
-```python
-from typing import Protocol
-
-
-class SupportsClose(Protocol):
-    def close(self) -> None:
-        ...
+```text
+TypeError: Can't instantiate abstract class MissingDelivery
+with abstract method deliver
 ```
 
-This says "objects with a compatible `close()` method fit this contract" for static
-analysis. That is valuable because it keeps interfaces flexible without forcing
-inheritance.
+That timing detail matters. `@abstractmethod` does not reject the `class` statement. The
+ABC machinery records unresolved abstract methods and `ABCMeta.__call__` prevents
+construction.
 
-The governance trap is pretending that a protocol automatically proves runtime behavior.
-It does not.
+```mermaid
+sequenceDiagram
+  participant Body as class body
+  participant Meta as ABCMeta
+  participant Class as MissingDelivery
+  participant Call as MissingDelivery()
+  Body->>Meta: namespace without deliver
+  Meta->>Class: create class with __abstractmethods__
+  Call->>Class: request instance
+  Class-->>Call: TypeError
+```
 
-## When protocols are the right owner
+The honest claim is:
 
-Protocols are strongest when:
+> Nominal subclasses of `DeliveryABC` cannot be instantiated while `deliver` remains
+> abstract.
 
-| Pressure | Why a protocol can be honest |
-| --- | --- |
-| callers care about a small capability shape | structural typing avoids artificial inheritance |
-| implementations come from multiple unrelated libraries | nominal coupling would add friction without stronger proof |
-| the strongest value comes from static analysis | runtime certification is not the real goal |
+The ABC does not prove a correct signature, return type, side effect, or delivery result.
+A concrete subclass can implement `deliver` badly and still instantiate.
 
-## `@runtime_checkable` is shallow on purpose
+## Protocols own static structural relationships
 
-Protocols can opt into runtime checks:
+The lab's protocol is:
 
 ```python
-from typing import Protocol, runtime_checkable
-
-
 @runtime_checkable
-class SupportsClose(Protocol):
-    def close(self) -> None:
-        ...
+class DeliveryProtocol(Protocol):
+    """Static structural contract with shallow runtime presence checks."""
 
-
-class FileLike:
-    def close(self) -> None:
-        print("closed")
-
-
-print(isinstance(FileLike(), SupportsClose))  # True
-print(isinstance(123, SupportsClose))         # False
+    def deliver(self, message: str) -> str: ...
 ```
 
-That can be useful at API boundaries, but the check stays shallow:
+A static type checker can compare callable signatures and report that `WrongSignature`
+does not satisfy the protocol. This is the protocol's strongest role: expressing a
+consumer-facing structural contract without requiring inheritance.
 
-- it does not prove semantic invariants
-- it does not deeply validate signatures the way reviewers often imagine
-- it does not replace real tests
+That improves architecture:
 
-In other words, runtime-checkable protocols are for light structural filtering, not for
-strong runtime certification.
+- implementations do not need to inherit from an application-owned base class;
+- consumers can depend on the capability they use;
+- adapters from other packages can participate structurally;
+- signature incompatibility can be reported before runtime.
 
-That last sentence should appear in review notes more often than "it passed `isinstance`."
+The proof belongs to the configured static checker. A prose statement that "the protocol
+checks the signature" is incomplete unless the static checking route actually runs.
 
-## `__subclasshook__` should stay boring
+## `@runtime_checkable` is intentionally shallow
 
-An abstract base class can declare virtual subclassing rules with `__subclasshook__`.
+At runtime:
 
 ```python
-from abc import ABC
+isinstance(WrongSignature(), DeliveryProtocol)  # True
+```
 
+The runtime check sees a `deliver` attribute. It does not perform the static type
+checker's signature analysis. It does not call the method, inspect its result, or prove
+its behavior.
 
-class HasLen(ABC):
+Use runtime-checkable protocols only when shallow presence is the decision you need. If
+you need to validate a call before execution, bind arguments against a known signature or
+publish an explicit runtime validation subset.
+
+| Claim | Runtime protocol check | Static protocol check |
+| --- | --- | --- |
+| named attribute exists | yes | yes |
+| callable parameters are compatible | no | yes, within checker support |
+| return annotation is compatible | no | yes, within checker support |
+| implementation returns the promised value | no | no |
+| side effects obey the domain contract | no | no |
+
+The final two rows require executable behavioral proof.
+
+## `__subclasshook__` owns narrow classification
+
+The third lab type recognizes classes whose class dictionaries define `preview`:
+
+```python
+class PreviewCapable(ABC):
     @classmethod
-    def __subclasshook__(cls, candidate):
-        if hasattr(candidate, "__len__") and callable(getattr(candidate, "__len__", None)):
-            return True
+    def __subclasshook__(cls, candidate: type[object]) -> bool:
+        if cls is PreviewCapable:
+            return any("preview" in vars(base) for base in candidate.__mro__)
         return NotImplemented
 ```
 
-That hook is defensible only when it stays simple enough to inspect quickly.
+This hook is deliberately boring:
 
-Strong uses usually look like:
+- it applies only when the queried ABC is exactly `PreviewCapable`;
+- it searches static dictionaries along the candidate's MRO;
+- it does not instantiate the candidate;
+- it does not invoke descriptors or `__getattr__`;
+- it returns `NotImplemented` when another class owns the classification.
 
-- a small attribute presence check
-- maybe one callable check
-- `NotImplemented` for everything else
+Compare two candidates:
 
-Before you leave this page, write one sentence beginning:
+```python
+class StaticPreview:
+    def preview(self) -> str:
+        return "preview"
 
-- "this interface surface proves..."
-- "this interface surface still cannot prove..."
 
-Weak uses try to smuggle business meaning into a structural shortcut.
+class DynamicPreview:
+    def __getattr__(self, name: str) -> object:
+        if name == "preview":
+            return lambda: "preview"
+        raise AttributeError(name)
+```
 
-## `__subclasshook__` refusal rules
+`issubclass(StaticPreview, PreviewCapable)` is true.
+`issubclass(DynamicPreview, PreviewCapable)` is false.
+The dynamic fallback is not executed.
 
-Reject a hook when it tries to do any of these:
+That is a feature. Classification remains deterministic and avoids running candidate
+behavior during a question about class relationships.
 
-| Weak hook move | Why it should be rejected |
-| --- | --- |
-| infer semantic safety from method presence | structure is being confused with behavior |
-| encode business policy in a type shortcut | runtime meaning becomes hidden in an inspection trick |
-| grow beyond a trivial attribute or callable check | the hook stops being quickly reviewable |
-| return `True` too eagerly instead of `NotImplemented` | unrelated types are pulled into the contract surface |
+## `False` and `NotImplemented` carry different ownership
 
-## The governance boundary is about claims, not syntax
+Inside a subclass hook:
 
-The same interface surface can be either honest or misleading depending on the claim that
-surrounds it.
+- `True` says the hook recognizes the candidate;
+- `False` says the hook actively rejects the candidate;
+- `NotImplemented` delegates to normal ABC machinery.
 
-Honest claim:
+Returning `False` for every unfamiliar situation can suppress legitimate nominal or
+registered relationships. The lab delegates when `cls` is not the exact owner and makes
+one narrow decision otherwise.
 
-- "objects passing this protocol check have a `close()` method we can call"
+## Choose by the decision you need
 
-Misleading claim:
-
-- "objects passing this protocol check are valid resources with correct cleanup semantics"
-
-The difference is not technical cleverness. It is whether the language overstates what the
-mechanism actually proves.
-
-## Contract-surface comparison table
-
-| Mechanism | Strongest honest promise | Common misunderstanding |
+| Design pressure | Suitable owner | Do not overclaim |
 | --- | --- | --- |
-| ABC | incomplete subclasses fail clearly at runtime | behavior is now fully guaranteed |
-| Protocol | static structural compatibility can be expressed cleanly | runtime use is equivalent to semantic validation |
-| `@runtime_checkable` protocol | shallow runtime shape filtering is available | `isinstance` now proves the object is a good resource or adapter |
-| `__subclasshook__` | a tiny structural concession can be encoded in one ABC | business semantics can be inferred from a few attributes |
+| prevent incomplete members of one runtime family from constructing | ABC | method correctness |
+| describe a structural consumer contract during development | Protocol + static checker | runtime enforcement |
+| ask one shallow runtime capability question | `@runtime_checkable` protocol | signature compatibility |
+| classify classes by stable class-dictionary evidence | narrow `__subclasshook__` | arbitrary behavioral conformance |
+| validate actual arguments before a call | `inspect.Signature.bind` or explicit validator | return behavior |
+| prove delivery semantics | focused behavioral tests | general interface conformance |
 
-## Interface-claim worksheet
+The phrase "enforce the interface" is too vague for review. Replace it with the exact row
+you intend.
 
-Use this worksheet before you approve any runtime interface story:
+## Run the evidence route
 
-| Question | Strong answer shape |
+From the course root:
+
+```console
+make runtime-governance-lab
+python -m unittest discover -s tests -p "test_runtime_governance_interfaces.py" -v
+```
+
+Inspect these packet values:
+
+```text
+interface_contracts.abc.incomplete_class_created = true
+interface_contracts.abc.incomplete_instance_created = false
+interface_contracts.protocol.wrong_signature_passes_runtime_check = true
+interface_contracts.subclass_hook.static_preview_matches = true
+interface_contracts.subclass_hook.dynamic_preview_matches = false
+interface_contracts.subclass_hook.instance_fallback_executed = false
+```
+
+The tests prove those runtime observations. They do not replace a static checker run, so
+the packet names the static type checker as the owner of signature compatibility instead
+of pretending to demonstrate it dynamically.
+
+## Failure cases to recognize
+
+| Failure | Why it misleads |
 | --- | --- |
-| what kind of contract is this? | nominal, structural, shallow runtime, or behavioral |
-| what does the surface prove directly? | missing method rejection, static compatibility, or tiny attribute presence check |
-| what does it not prove? | cleanup, performance, resource safety, or domain semantics |
-| what other evidence is still required? | tests, docs, invariants, or incident checks |
+| claiming an ABC validates signatures | abstractness and signature compatibility are separate concerns |
+| using `isinstance` with a protocol as call validation | presence can pass while invocation fails |
+| executing `hasattr(instance, name)` inside classification | custom lookup may run arbitrary candidate behavior |
+| returning `False` when the hook does not own the question | normal ABC relationships may be suppressed |
+| treating any interface declaration as behavioral proof | names and annotations do not prove outcomes |
 
-## When to pick each tool
+## Capstone transfer: explicit binding wins
 
-Use an ABC when:
+The incident-plugin runtime needs to answer a concrete runtime question: can these supplied
+keyword arguments bind to this registered action? It uses stored `inspect.Signature`
+objects and an explicit binding route rather than a runtime protocol check.
 
-- the interface is part of the runtime design
-- incomplete subclasses should fail clearly
-- nominal ownership through inheritance is acceptable
+Run:
 
-Use a protocol when:
+```console
+make capstone-bind-action
+make capstone-governance
+```
 
-- structural compatibility matters more than inheritance
-- the strongest value comes from static analysis
-- you want flexible caller-side typing without base-class coupling
+The governance report rejects `runtime-checkable Protocol` for runtime signature
+enforcement. The lower-power owners are a static type checker for development-time
+relationships and explicit call binding for runtime arguments.
 
-Use `__subclasshook__` when:
+This is a direct application of the lesson: use a mechanism whose observable behavior
+matches the question.
 
-- an ABC needs a tiny structural concession
-- the logic is trivial enough to stay reviewable
-- you are willing to return `NotImplemented` instead of forcing cleverness
+## Review checkpoint
 
-## What these tools do not replace
+For each sentence, replace the blank with one precise phrase:
 
-None of them replaces:
+- An ABC in this lab proves ______.
+- A static protocol check can report ______.
+- A runtime-checkable protocol observes ______.
+- The subclass hook classifies using ______.
+- None of these mechanisms proves ______.
 
-- behavioral tests
-- performance evidence
-- documentation of side effects
-- review judgment about ownership and abstraction cost
-
-## Weak answers to reject early
-
-| Weak answer | Why it fails |
-| --- | --- |
-| "the ABC proves the implementation is correct" | method presence is not semantic correctness |
-| "the protocol tells us the object is safe to use" | structure is smaller than resource or behavioral safety |
-| "runtime_checkable gives us a real runtime contract" | the runtime check is intentionally shallow |
-| "the subclass hook is enough for our domain rule" | domain rules usually exceed tiny structural shortcuts |
-
-That matters in Module 10 because interface syntax can make a design look more disciplined
-than it really is.
-
-## Failure modes to name explicitly
-
-Watch for these:
-
-| Failure mode | What goes wrong |
-| --- | --- |
-| interface name used as a substitute for tests | semantic gaps stay hidden behind nice type language |
-| protocol runtime check treated as certification | shallow structure is mistaken for behavioral safety |
-| ABC inheritance chosen where structure was enough | coupling increases without stronger proof |
-| `__subclasshook__` turned into a clever mini-policy engine | review cost rises while guarantees stay weak |
-
-## Review rules for interface contracts
-
-When reviewing ABCs, protocols, or virtual subclass hooks, ask these questions:
-
-- is the interface stable enough to deserve a name?
-- does this design need runtime enforcement, static structural typing, or both?
-- is the protocol check being asked to prove more than it can?
-- does `__subclasshook__` stay trivial and default to `NotImplemented`?
-- are semantic guarantees tested somewhere other than the interface declaration itself?
-
-Add one more strong review question:
-
-- what exact sentence would overstate this contract surface if it appeared in docs or a PR description?
-
-If the answer to the last question is "not really," the interface surface is doing too much
-reputational work.
-
-## What this page makes clear
-
-The point is not "choose the fanciest contract surface."
-
-The boundary is:
-
-- nominal and structural contracts solve different problems
-- runtime checks are often weaker than their names suggest
-- governance begins when we stop overstating what an interface declaration proves
-
-That is the habit that carries into the rest of the module.
-
-## What to practice from this page
-
-Try these before moving on:
-
-1. Write one example where an ABC is clearer than a protocol.
-2. Write one example where a protocol is better because inheritance would be artificial.
-3. Reject one `__subclasshook__` idea that tries to smuggle business semantics into a structural check.
-
-## Exit check for this page
-
-Before moving on, make sure you can do all of the following:
-
-- name what an ABC, protocol, and `__subclasshook__` each prove at their strongest
-- reject one overstated contract sentence for each of those surfaces
-- point to one behavioral guarantee that still requires tests
-- explain why a shallow runtime check is useful without pretending it is certification
-
-If those feel ordinary, the next step is to ask what happens after the interface exists:
-how to preserve observability, reversibility, and test control when runtime behavior
-becomes magical.
-
-## Continue through Module 10
-
-- Previous: [Dynamic Execution, Trust Boundaries, and Process Isolation](dynamic-execution-trust-boundaries-and-process-isolation.md)
-- Next: [Observability, Reversibility, and Monkey-Patching Boundaries](observability-reversibility-and-monkey-patching-boundaries.md)
-- Practice: [Exercises](exercises.md)
-- Terms: [Glossary](glossary.md)
+You are ready to continue when your answers mention timing and evidence, not simply
+"nominal versus structural."

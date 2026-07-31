@@ -197,6 +197,15 @@ That wastes time and still leaves the real question unanswered:
 | collecting evidence without a review question | bundles grow but comprehension stays weak | name the question before picking the route |
 | comparing local and CI behavior only by intuition | policy drift becomes anecdotal | package the difference in a profile-audit surface |
 
+```mermaid
+flowchart TD
+    Q["review question"] --> D{"Needs real scheduler behavior?"}
+    D -->|"no"| A["scheduler-policy audit"]
+    A --> M["adversarial selftest if the gate is questioned"]
+    D -->|"yes"| I["site integration"]
+    I --> C["clean-room confirmation for a repository-wide claim"]
+```
+
 ## The explanation a reviewer trusts
 
 Strong explanation:

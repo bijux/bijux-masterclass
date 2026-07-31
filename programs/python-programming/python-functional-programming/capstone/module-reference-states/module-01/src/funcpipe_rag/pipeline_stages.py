@@ -23,7 +23,7 @@ from funcpipe_rag.rag_types import (
 )
 
 
-def clean_doc(doc: RawDoc) -> CleanDoc:
+def clean_doc(doc: RawDoc | CleanDoc) -> CleanDoc:
     """Deterministically normalise whitespace and case in the abstract.
 
     The transformation is idempotent: ``clean_doc(clean_doc(doc)) == clean_doc(doc)``.

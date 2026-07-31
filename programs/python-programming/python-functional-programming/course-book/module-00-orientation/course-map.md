@@ -17,10 +17,15 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  pure["01: deterministic values"] --> config["02: data-first configuration"]
+  config --> stream["03: lazy streaming"]
+  stream --> failure["04: resilient failures"]
+  failure --> model["05: valid domain states"]
+  model --> context["06: explicit context"]
+  context --> effects["07: effect boundaries"]
+  effects --> async["08: bounded async"]
+  async --> interop["09: ecosystem adapters"]
+  interop --> sustain["10: reviewable change"]
 ```
 <!-- page-maps:end -->
 
@@ -82,17 +87,42 @@ If your pressure is mainly about:
 
 ## Capstone alignment
 
-Keep the FuncPipe RAG capstone open while reading the map.
+The capstone is one cumulative application. Read each row as a change from the previous
+state, not as a new example:
 
-- Arc 1 appears in pure helpers, configured pipelines, and lazy stream stages.
-- Arc 2 appears in result containers, validation flows, and explicit context carriers.
-- Arc 3 appears in capability protocols, effect boundaries, and async runtime adapters.
-- Arc 4 appears in CLI surfaces, interop packages, and the proof and sustainment workflow.
+| Module | Capability entering the module | Pressure and earned change | Earlier behavior that remains |
+| --- | --- | --- | --- |
+| 01 | no tracked implementation | make cleaning, chunking, embedding, and deduplication deterministic value transforms | establishes immutable inputs, exact configuration, fixed-point cleaning, complete chunks, text-derived embeddings, and canonical output |
+| 02 | one fixed pure pipeline | make configuration and composition explicit data rather than hidden choices | the Module 01 values and pure result remain equivalent |
+| 03 | eager data-first pipeline | stream bounded prefixes and make materialization deliberate | document and chunk meaning remain stable; any order-policy change is explicit |
+| 04 | lazy streaming stages | represent record failures, retries, cleanup, folds, and bounded evidence without collapsing the stream | bounded demand, successful values, and resource closure remain reviewable |
+| 05 | typed stream outcomes | reject ambiguous primitive states and accumulate independent validation failures | previously valid input produces the same domain meaning, order, and metadata |
+| 06 | explicit domain values | compose dependent failure, configuration, state, logs, and traces without repeated branching | container layers preserve payloads and keep context order visible |
+| 07 | pure descriptions with explicit context | move files, clocks, logs, retries, transactions, and resources behind capabilities and interpreters | planning remains pure and earlier success/failure meanings survive interpretation |
+| 08 | synchronous effect boundaries | coordinate waiting work with bounds, order, fairness, cancellation, and deterministic scheduling evidence | resource limits and at-most-once effect policy remain explicit |
+| 09 | bounded async application | adapt CLIs, libraries, serialization, dataframes, and distributed plans without leaking them into the core | typed values, effect descriptions, and backpressure rules remain owned by the core |
+| 10 | integrated endpoint | make refactoring, performance, migration, scaling, and operational claims reviewable through saved evidence | Module 09 behavior remains the baseline; sustainment changes how proposals are judged |
+
+This table tells you what to look for in a reference-state comparison. It does not
+replace the module's capstone delta, where source files, tests, exceptions, and proof
+limits are stated precisely.
+
+## Choose the state before the file
+
+- For Module 01, begin with [First Capstone Proof](first-capstone-proof.md) and
+  `capstone/module-reference-states/module-01/`.
+- For Modules 02 through 09, compare adjacent tracked states before inspecting the live
+  endpoint.
+- For Module 10, compare the Module 09 state with the live capstone and its review
+  evidence. There is no separate tracked `module-10` directory.
+- Use generated `_history/worktrees/` only after `history-refresh`; the tracked
+  `module-reference-states/` remain the source of truth.
 
 ## Best companion pages
 
 - `index.md`
 - `first-contact-map.md`
+- `first-capstone-proof.md`
 - `mid-course-map.md`
 - `mastery-map.md`
 - `../guides/start-here.md`

@@ -62,9 +62,9 @@ If you cannot explain why a stronger mechanism is necessary, you are not ready t
 | What is Python actually doing at runtime here? | Modules 01 to 03 | manifest output and `framework.py` |
 | How can I inspect this safely without accidental execution? | Module 02 | `make manifest`, `make registry`, and `cli.py` |
 | Did this wrapper preserve the callable contract honestly? | Modules 03 to 05 | `make action`, `make signatures`, and `actions.py` |
-| Should this live in a wrapper, property, or descriptor? | Modules 06 to 08 | `fields.py`, `make field`, and field tests |
+| Should this live in a class decorator, property, descriptor, or wider service? | Modules 06 to 08 | class-customization, descriptor-lookup, and descriptor-system labs before capstone transfer |
 | Does this really belong at class-definition time? | Module 09 | `make registry`, `framework.py`, and registry tests |
-| Which runtime powers are too dangerous to approve casually? | Module 10 | verification bundle and review checklist |
+| Which runtime powers are too dangerous to approve casually? | Module 10 | `runtime-governance-lab` before `capstone-governance` |
 
 ## Route 1: Review a wrapper without losing provenance
 
@@ -86,7 +86,12 @@ Use this route to answer:
 
 Best first capstone move:
 
-- run `make PROGRAM=python-programming/python-meta-programming capstone-trace`
+- for wrapper provenance, run
+  `make PROGRAM=python-programming/python-meta-programming capstone-action-wrapper`
+- for partial runtime hint policy, run
+  `make PROGRAM=python-programming/python-meta-programming capstone-check-action`
+- cross into execution only when needed with
+  `make PROGRAM=python-programming/python-meta-programming capstone-trace`
 
 ## Route 2: Untangle attribute ownership and validation
 
@@ -105,9 +110,25 @@ Use this route to answer:
 - Why does one field yield to instance state while another does not?
 - Is this still a field contract, or has it turned into hidden architecture?
 
+Start with `make class-customization-lab` to compare lower-power class tools. Continue
+with `make descriptor-lookup-lab-test` and `make descriptor-lookup-lab` to predict and
+observe protocol status, precedence, binding, and storage. Continue with
+`make descriptor-system-lab-test` and `make descriptor-system-lab` when caches, backend
+authority, wrapper layers, hint policy, or multi-field ownership enter the design. Use
+`make class-creation-lab-test` and `make class-creation-lab` when the question becomes
+class-family timing rather than one attribute boundary. Only then use
+`make capstone-class-creation` to compare the real namespace, shaping, registration, and
+rejected-power evidence.
+
 Best first capstone move:
 
-- run `make PROGRAM=python-programming/python-meta-programming capstone-field`
+- run
+  `make PROGRAM=python-programming/python-meta-programming capstone-field-ownership`
+  to inspect descriptor ownership without plugin construction
+- use `capstone-field` next when the question is the exported schema rather than the
+  lookup mechanism
+- use `capstone-field-system` after Module 08 to compare the application's accepted and
+  rejected field-system powers
 
 ## Route 3: Decide whether a metaclass is actually justified
 
@@ -118,17 +139,20 @@ Study order:
 1. [Module 06](../module-06-class-customization-pre-metaclasses/index.md)
 2. [Module 09](../module-09-metaclass-design-class-creation/index.md)
 3. [Module 10](../module-10-runtime-governance-mastery-review/index.md)
-4. `framework.py` plus `tests/test_registry.py`
+4. `labs/class_creation/` plus its focused tests
+5. `framework.py` plus class-creation, registry, and CLI tests
 
 Use this route to answer:
 
 - What must happen before the class exists?
-- Could a class decorator or explicit registration function own this more honestly?
+- Could a class decorator, `__init_subclass__`, or explicit helper own this more honestly?
 - Is the metaclass deterministic, resettable, and inspectable?
+- Which assignment-time fact would the completed class lose?
 
 Best first capstone move:
 
-- run `make PROGRAM=python-programming/python-meta-programming capstone-registry`
+- first run `make -C programs/python-programming/python-meta-programming class-creation-lab`
+- then run `make PROGRAM=python-programming/python-meta-programming capstone-class-creation`
 
 ## Route 4: Inherit a dynamic codebase without trusting its magic
 
@@ -173,7 +197,12 @@ Use this route to answer:
 
 Best first capstone move:
 
-- run `make PROGRAM=python-programming/python-meta-programming capstone-verify-report`
+- first run
+  `make -C programs/python-programming/python-meta-programming runtime-governance-lab-test`
+- inspect `make -C programs/python-programming/python-meta-programming runtime-governance-lab`
+- only then run
+  `make PROGRAM=python-programming/python-meta-programming capstone-governance`
+  and compare the application decisions with the course packet
 
 ## When a route is working
 

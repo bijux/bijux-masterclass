@@ -1,5 +1,4 @@
-# Observability
-
+# Observability as Data
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Functional Programming"]
   section["Refactoring Performance Sustainment"]
-  page["Observability"]
+  page["Observability as Data"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,254 +24,202 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Observability should explain execution without secretly controlling it. If a
+metrics fold raises when a failure count is nonzero, then metrics have become an
+undocumented error policy. If it writes to a module-global list, repeated tests no
+longer reason about the same inputs.
 
-**Module 10**
-> **Core question:**  
-> How do you add observability to pure functional pipelines, enabling side-effect-free tracing of intermediate states, metrics aggregation, and debuggable compositions without breaking purity or laziness?
+FuncPipe models stage observations as immutable values and summarizes them with a
+pure fold. A separate shell may later emit the summary, and a separate policy may
+decide what blocks a release.
 
-In this core, we add observability patterns to the FuncPipe RAG Builder (now at `funcpipe-rag-10`). Observability includes tracing (taps for logging/sampling intermediates), metrics (monoidal accumulation of counts/errors), and debugging (naming/probing compositions). These are pure: traces as data (e.g., Writer monad from Module 6), metrics as folds (Module 4), probes as higher-order wrappers (Module 2). We refactor RAG to traceable stages, verifying neutrality (traced == untraced equivalence).
+## The application pressure
 
-**Motivation Bug:** Opaque FP compositions hide failures (e.g., silent error propagation); impure logging breaks purity—pure observability enables debuggable pipelines without effects.
-
-**Delta from Core 2:** Budgeted pipelines are performant; this makes them observable.
-
-**Observability Protocol (Contract, Entry/Exit Criteria):**
-- **Traces/Metrics:** Pure data (e.g., Writer[Result[T, E], LogThunk]); aggregate monoidally.
-- **Semantics:** Neutral: traced pipeline == untraced (equivalence per Core 1); no added effects/laziness breaks.
-- **Purity:** Preserve; observability via higher-order (e.g., tap/map).
-- **Error Model:** Trace errors explicitly (e.g., tap_err).
-- **Resource Safety:** No change; traces bounded to avoid memory.
-- **Integration:** Add to RAG (trace chunks); verify with properties.
-- **Mypy Config:** --strict; Callable for probes.
-- **Exit:** Traces complete, equivalence holds, overhead in budget.
-
-Use this when you are debugging or maintaining FP pipelines.
-
-**Outcome:**
-1. Add pure traces/metrics to compositions.
-2. Debug via naming/probing.
-3. Make RAG traceable, verify neutrality.
-
----
-## 1. Laws & Invariants
-| Invariant            | Description                                                                                  | Enforcement          |
-|----------------------|----------------------------------------------------------------------------------------------|----------------------|
-| **Neutrality Inv**   | Traced == untraced outputs (eq_pure/eq_error).                                              | Properties           |
-| **Purity Inv**       | No effects in traces; logs/metrics as data.                                                  | Reviews/mypy         |
-| **Bounded Inv**      | Traces/metrics bounded (e.g., max_samples); no unbounded growth.                             | Hypothesis sizes     |
-| **Monoid Inv**       | Metrics associative + identity; commutative if order irrelevant.                             | Properties           |
-| **Laziness Inv**     | Probes preserve laziness assuming stages are lazy; no eager materialization.                 | Tests with islice    |
-
-These ensure observability is safe/pure.
-
-### Writer Laws (Normative for This Core)
-Writer[T, LogThunk] (value: T, logs: LogThunk) with:
-- bind: Combines logs by thunk-concat: λ(): logs1() + logs2().
-- identity: λ(): ().
-
----
-## 2. Decision Table
-| Need                 | Purity Req   | Overhead OK  | Recommended            |
-|----------------------|--------------|--------------|------------------------|
-| Log intermediates    | High         | Low          | Tap (Mod 3)            |
-| Aggregate metrics    | High         | Medium       | Writer/fold (Mod 6/4)  |
-| Debug compositions   | High         | High         | Name/probe (Mod 2)     |
-| Error traces         | High         | Low          | Tap_err (Mod 4)        |
-
-**Choose by need; verify overhead in budget.**
-
----
-## 3. Public API (Wrappers for Observability)
-Wrappers for traces; e.g., traceable stage.
+Suppose cleaning processes two documents, chunking produces four chunks with one
+failure, and embedding handles three:
 
 ```python
-from typing import Callable, Iterator, TypeVar, TypeAlias
-from funcpipe_rag import Writer, run_writer
-
-T = TypeVar("T")
-U = TypeVar("U")
-Log: TypeAlias = str  # Or structured ADT
-LogThunk: TypeAlias = Callable[[], tuple[Log, ...]]
-
-
-def traceable(stage: Callable[[Iterator[T]], Iterator[U]], max_samples: int = 100,
-              show: Callable[[U], Log] = lambda x: repr(x)[:100]) -> Callable[
-    [Iterator[T]], Writer[Iterator[U], LogThunk]]:
-    def wrapped(it: Iterator[T]) -> Writer[Iterator[U], LogThunk]:
-        logs = []
-        count = 0
-        out = stage(it)
-
-        def gen():
-            nonlocal count
-            for x in out:
-                if count < max_samples:
-                    logs.append(show(x))
-                    count += 1
-                yield x
-
-        return Writer(gen(), lambda: tuple(
-            logs))  # Logs are lazy-coupled to consumption; inspecting logs before exhausting the stream yields a prefix. With thunked logs, calling logs_thunk() later yields a longer prefix.
-
-    return wrapped
-# Usage: traced_chunk, logs_thunk = run_writer(traceable(gen_chunks)(docs)); logs = logs_thunk()
-# Default show is best-effort; for strict purity/perf, pass an explicit pure serializer.
+observations = (
+    StageObservation("clean", processed=2, failures=0, latency_ms=1.0),
+    StageObservation("chunk", processed=4, failures=1, latency_ms=2.0),
+    StageObservation("embed", processed=3, failures=0, latency_ms=5.0),
+)
 ```
 
----
-## 4. Reference Implementations
-### 4.1 Tracing Intermediates (Tap)
-Pure logs as data.
-```python
-def tap(max_samples: int = 100, show: Callable[[T], Log] = lambda x: repr(x)[:100]) -> Callable[[Iterator[T]], Writer[Iterator[T], LogThunk]]:
-    return traceable(lambda it: it, max_samples, show)
-```
-### 4.2 Metrics Aggregation (Writer/Fold)
-Monoidal metrics (e.g., error counts). Per-record Writer allocations can be expensive; for large streams prefer a fused fold stage for metrics.
+A maintainer needs totals and execution order. The RAG pipeline does not need the
+summary to decide whether a `Result` is `Ok` or `Err`; that decision already has an
+explicit domain route from Module 04.
+
+## Validate facts at construction
+
+`StageObservation` rejects states that cannot describe one stage:
 
 ```python
-from dataclasses import dataclass
-from funcpipe_rag import Writer, run_writer, Result, Err
+@dataclass(frozen=True, slots=True)
+class StageObservation:
+    stage: str
+    processed: int
+    failures: int
+    latency_ms: float
 
-
-@dataclass
-class Metrics:
-    count: int = 0
-    errs: int = 0
-
-    def __add__(self, other: "Metrics") -> "Metrics":
-        return Metrics(self.count + other.count, self.errs + other.errs)
-
-    @classmethod
-    def zero(cls) -> "Metrics":
-        return cls()
-
-
-def metriced(fn: Callable[[T], Result[U, ErrInfo]]) -> Callable[[T], Writer[Result[U, ErrInfo], Metrics]]:
-    def wrapped(x: T) -> Writer[Result[U, ErrInfo], Metrics]:
-        res = fn(x)
-        metrics = Metrics(count=1, errs=1 if isinstance(res, Err) else 0)
-        return Writer(res, metrics)
-
-    return wrapped
+    def __post_init__(self) -> None:
+        if not self.stage:
+            raise ValueError("stage must not be empty")
+        if min(self.processed, self.failures) < 0 or self.latency_ms < 0:
+            raise ValueError("observation values cannot be negative")
+        if self.failures > self.processed:
+            raise ValueError("failures cannot exceed processed items")
 ```
-### 4.3 Debuggable Compositions (Naming/Probe)
-Name intermediates; probe with breakpoints (pure paired yield).
+
+The type does not claim that a clock was accurate or every event was captured. It
+only prevents internally impossible supplied values.
+
+This is an important boundary: validation protects the meaning of a value; it does
+not certify the effect that produced it.
+
+## Fold without hidden policy
+
 ```python
-from typing import Any
-
-S = TypeVar("S")
-U = TypeVar("U")
-
-def probe_pipe(names: list[str], *stages: Callable[[Any], Any], show: Callable[[Any], Log] = lambda x: repr(x)[:100]) -> Callable[[S], tuple[U, tuple[Log, ...]]]:
-    assert len(names) == len(stages), "Names must match stages"
-    def pipe(inp: S) -> tuple[U, tuple[Log, ...]]:
-        val: Any = inp
-        logs = []
-        for name, stage in zip(names, stages):
-            val = stage(val)
-            logs.append(f"{name}: {show(val)}")
-        return val, tuple(logs)
-    return pipe
+def summarize_observations(
+    observations: tuple[StageObservation, ...],
+) -> ObservationSummary:
+    return ObservationSummary(
+        processed=sum(item.processed for item in observations),
+        failures=sum(item.failures for item in observations),
+        latency_ms=sum(item.latency_ms for item in observations),
+        stages=tuple(item.stage for item in observations),
+    )
 ```
-### 4.4 Error Traces (Tap_err)
-Trace errors purely.
+
+For the sample:
+
 ```python
-def tap_err(max_samples: int = 100, show: Callable[[ErrInfo], Log] = lambda e: repr(e)[:100]) -> Callable[[Iterator[Result[T, ErrInfo]]], Writer[Iterator[Result[T, ErrInfo]], LogThunk]]:
-    def wrapped(it: Iterator[Result[T, ErrInfo]]) -> Writer[Iterator[Result[T, ErrInfo]], LogThunk]:
-        logs = []
-        count = 0
-        def gen():
-            nonlocal count
-            for r in it:
-                if isinstance(r, Err) and count < max_samples:
-                    logs.append(show(r.error))
-                    count += 1
-                yield r
-        return Writer(gen(), lambda: tuple(logs))
-    return wrapped
+summary = summarize_observations(observations)
+
+assert summary.stages == ("clean", "chunk", "embed")
+assert summary.processed == 9
+assert summary.failures == 1
+assert summary.latency_ms == 8.0
 ```
 
-### RAG Integration
-Add traces to chunking.
+The stage tuple preserves encounter order. Sorting it would make output stable but
+destroy its value as a compact execution trace.
+
+The empty input has a deliberate identity:
+
 ```python
-# Before: Opaque
-def rag_chunk(docs: Iterator[CleanDoc]) -> Iterator[Chunk]:
-    return gen_chunks(docs)
-
-# After: Traceable
-def rag_chunk_traceable(docs: Iterator[CleanDoc]) -> Writer[Iterator[Chunk], LogThunk]:
-    return traceable(gen_chunks)(docs)
-
-chunks, logs_thunk = run_writer(rag_chunk_traceable(docs))
-logs = logs_thunk()
-# Verify: logs complete, neutrality holds
+assert summarize_observations(()) == ObservationSummary(
+    processed=0,
+    failures=0,
+    latency_ms=0,
+    stages=(),
+)
 ```
 
-### Composing Traced Stages
-Chain Writers across stages.
+That identity makes summaries composable and removes the need for a special
+“first observation” branch.
+
+## Keep four responsibilities separate
+
+```mermaid
+flowchart LR
+    execute["RAG stage executes"]
+    observe["Shell records StageObservation"]
+    summarize["Pure fold builds ObservationSummary"]
+    decide["Explicit policy interprets summary"]
+    emit["Shell renders or emits result"]
+
+    execute --> observe --> summarize
+    summarize --> decide
+    summarize --> emit
+```
+
+- **Execution** produces application values and `Result` failures.
+- **Observation** reads clocks or counters at an effect boundary.
+- **Summarization** combines already-observed values.
+- **Policy** decides whether a fact matters to acceptance.
+- **Emission** writes text, JSON, logs, or metrics.
+
+Combining these steps makes testing harder and ownership unclear. Separating them
+does not require a logging framework or telemetry service.
+
+## A counterexample: failure count as control flow
+
 ```python
-def compose_traced(stage1: Callable[[Iterator[S]], Writer[Iterator[T], LogThunk]], stage2: Callable[[Iterator[T]], Writer[Iterator[U], LogThunk]]) -> Callable[[Iterator[S]], Writer[Iterator[U], LogThunk]]:
-    return lambda it: stage1(it).bind(stage2)
+def summarize_observations(items):
+    if any(item.failures for item in items):
+        raise RuntimeError("pipeline failed")
+    ...
 ```
----
-## 5. Property-Based Proofs (capstone/tests/test_module_10_core3.py)
-Hypothesis for neutrality.
+
+This is wrong for FuncPipe:
+
+- Module 04 already models application failure explicitly;
+- a summary of a partially successful run becomes impossible to inspect;
+- changing instrumentation changes control flow; and
+- callers cannot distinguish an observed failure from a broken metrics function.
+
+If the application needs “no failed chunks” as an acceptance policy, write a pure
+policy over `ObservationSummary` and pass its result into the relevant review. Do
+not hide it inside the fold.
+
+## Run the evidence
+
+From `capstone/`:
+
+```bash
+pytest -q tests/unit/review/test_observability.py
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k observability_is_data_that_does_not_change_pipeline_decisions
+```
+
+Expected learning-test result:
+
+```text
+1 passed
+```
+
+Now add this value locally and predict the new summary before running the test:
+
 ```python
-@given(items=item_list_strategy())
-def test_trace_neutral(items):
-    traced, logs_thunk = run_writer(traceable(gen_process)(iter(items)))
-    traced_list = list(traced)
-    logs = logs_thunk()
-    untraced = list(gen_process(iter(items)))
-    assert traced_list == untraced  # Neutrality
-    assert len(logs) <= 100  # Bounded
-    assert len(logs) == min(len(items), 100)  # Complete up to bound
-
-@given(items=item_list_strategy())
-def test_trace_lazy(items):
-    counter = [0]
-    def counted_iter():
-        for x in items:
-            counter[0] += 1
-            yield x
-    traced, _ = run_writer(traceable(gen_process)(counted_iter()))
-    partial = list(islice(traced, 5))
-    assert len(partial) == 5  # Laziness preserved; no full eval
-    assert counter[0] == 5  # No overpull
+StageObservation("rank", processed=3, failures=0, latency_ms=1.5)
 ```
 
----
-## 6. Runtime Preservation Guarantee
-Overhead in budget (e.g., tracing <5% latency); pure data avoids effects.
+The stage sequence should end with `"rank"`, processed should become `12`,
+failures should remain `1`, and latency should become `9.5`.
 
----
-## 7. Anti-Patterns & Immediate Fixes
-| Anti-Pattern         | Symptom                  | Fix                            |
-|----------------------|--------------------------|--------------------------------|
-| Impure logging       | Breaks purity            | Use Writer/tap                 |
-| Unbounded traces     | Memory blowup            | Bound samples                  |
-| Opaque compositions  | Hard debug               | Name/probe stages              |
-| Ignore errors        | Silent failures          | Tap_err explicitly             |
+## What the evidence proves
 
----
-## 8. Pre-Core Quiz
-1. Tracing via…? → **Tap/Writer**  
-2. Metrics as…? → **Monoids/folds**  
-3. Debug with…? → **Naming/probing**  
-4. Neutrality means…? → **Traced == untraced**  
-5. Bound traces for…? → **Memory safety**
+The focused tests prove:
 
-## 9. Post-Core Exercise
-1. Add trace to RAG stage.  
-2. Aggregate metrics; verify neutrality.  
-3. Debug a composition.
+- immutable input values produce equal summaries;
+- totals and encounter order are deterministic;
+- the empty tuple has a defined identity; and
+- invalid stage facts are rejected.
 
-**Pipeline Usage (Idiomatic)**
-```python
-chunks, logs_thunk = run_writer(traceable(gen_chunks)(docs))
-logs = logs_thunk()
-```
+They do not prove:
 
-**Continue with:** [Property-Based Regression](../module-10-refactoring-performance-sustainment/property-based-regression.md)
+- that the runtime captured every stage;
+- that latency clocks are monotonic;
+- that an external sink delivered an event;
+- that one observed failure should block a change; or
+- that summary overhead is negligible.
+
+Those claims belong to observation shells, explicit policy, and performance
+evidence respectively.
+
+## Review checkpoint
+
+Inspect one instrumentation change and ask:
+
+1. Which function reads the clock, counter, or environment?
+2. Which value crosses into pure code?
+3. Can the same values be replayed in a test?
+4. Does the instrumentation alter `Result` control flow?
+5. Who decides whether the observation blocks acceptance?
+
+If those answers are not visible, the instrumentation is carrying more authority
+than its name suggests.
+
+Continue with [Property-Based Regression](property-based-regression.md) to replace
+anecdotal examples with generated evidence for a stable domain predicate.

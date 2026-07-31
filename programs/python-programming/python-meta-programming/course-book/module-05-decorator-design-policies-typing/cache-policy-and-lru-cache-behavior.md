@@ -79,6 +79,29 @@ completely from tuning, debugging, or tests.
 It also gives learners a better comparison standard. A custom cache decorator should be
 judged against this explicit hook surface, not only against whether it "seems to work."
 
+## Run the comparison
+
+From `programs/python-programming/python-meta-programming`:
+
+```bash
+make decorator-policy-lab
+```
+
+Read `cache_comparison`. It executes the Module 04 teaching cache and
+`functools.lru_cache` against small, deliberate call histories:
+
+| Evidence | Teaching cache | `lru_cache(maxsize=2, typed=True)` |
+| --- | --- | --- |
+| underlying executions | two render calls from three requests | `int`, then `float`, from three requests |
+| hits and misses | one hit, two misses | one hit, two misses |
+| parameter inspection | `CacheInfo.maxsize` | `cache_parameters()` |
+| state inspection | `cache_info()` and `cache_snapshot()` | `cache_info()` |
+| reset | `cache_clear()` | `cache_clear()` |
+| thread safety | explicitly false | coherent under concurrent updates |
+
+Both caches end with size zero after `cache_clear()`. The matching test proves that
+reset behavior rather than merely mentioning the hook.
+
 ## One picture of cache behavior
 
 ```text
@@ -121,6 +144,25 @@ Use `typed=True` as a teaching pressure point, not just a parameter name:
 If a learner cannot explain that distinction in plain language, they are still treating
 cache policy as background magic.
 
+The comparison also exposes a custom-cache limitation. These two calls share a key
+because keyword items are sorted:
+
+```python
+render(incident_id="INC-42", severity="critical")
+render(severity="critical", incident_id="INC-42")
+```
+
+This positional call does **not** share that key:
+
+```python
+render("INC-42", "critical")
+```
+
+Python's signature says the calls are semantically equivalent, but the teaching
+cache's key builder does not normalize them through signature binding. That is an
+intentional limitation worth seeing, and a concrete reason not to promote the lab
+implementation as a drop-in standard-library replacement.
+
 ## Eviction policy should be explicit
 
 With `lru_cache`, capacity limits and least-recently-used eviction are part of the public
@@ -157,10 +199,12 @@ These hooks also teach a durable rule for later modules:
 - if a wrapper owns meaningful state, it should expose a deliberate review or reset route
 - if it refuses to expose one, the design burden rises sharply
 
-## The bounded comparison matters
+## Why the bounded comparison matters
 
-Module 04 used a bounded cache to make state visible. This module uses `lru_cache` as
-the production-grade reference point.
+Module 04 used `labs/wrapper_runtime/bounded_cache.py` to reveal key construction,
+least-recently-used order, failed-call behavior, and reset. This module reuses that
+executable rather than presenting a second toy implementation, then compares it with
+the production-grade standard-library reference point.
 
 That comparison makes two important habits explicit:
 
@@ -195,6 +239,11 @@ in the course. That is part of why it is the right reference point here.
 That is also why a hand-rolled cache decorator should stay visibly narrow unless there is
 a named requirement the standard tool cannot meet.
 
+The lab packet labels the custom cache `thread_safe: false`. It labels the standard
+wrapper `thread_safe: true` in the narrow documented sense that its internal data
+structure remains coherent across threads. That does not promise one underlying
+execution per key under races, nor does it make cached values fresh.
+
 ## Failure modes for cache decorators
 
 These are the mistakes to catch before approving the design:
@@ -205,6 +254,18 @@ These are the mistakes to catch before approving the design:
 | no reset or inspection surface | operators and tests cannot steward state deliberately | expose hooks or move the owner elsewhere |
 | pretending eviction is invisible | history-dependent behavior becomes harder to explain | document the eviction rule as part of semantics |
 | rebuilding a weaker version of `lru_cache` without a concrete reason | the wrapper inherits production burden without production guarantees | prefer the standard tool unless a named requirement forces otherwise |
+
+## Smallest honest proof route
+
+```bash
+python -m unittest \
+  tests.test_bounded_cache_lab \
+  tests.test_decorator_policy_evidence.DecoratorPolicyEvidenceTests.test_cache_comparison_exposes_key_policy_hooks_and_reset
+```
+
+This route proves the custom eviction and failure rules plus the cross-cache comparison.
+It does not benchmark performance, test concurrent schedules, or prove freshness for
+incident data.
 
 ## Review rules for cache decorators
 
@@ -230,9 +291,14 @@ Before moving on, make sure you can do all of these:
 
 Try these before moving on:
 
-1. Use `functools.lru_cache` and inspect `cache_info()` and `cache_clear()`.
-2. Compare `typed=False` with `typed=True` on inputs such as `1` and `1.0`.
-3. Explain one reason a hand-rolled cache decorator should stay bounded unless there is a very specific need not met by the standard tool.
+1. Run the comparison and explain why the positional call causes a second teaching-cache
+   execution.
+2. Change `typed=True` to `typed=False`, record the actual result, and avoid generalizing
+   beyond what the standard-library documentation promises.
+3. Use both `cache_info()` and `cache_clear()` and explain which lifecycle question each
+   answers.
+4. Write the named requirement that would justify keeping a custom cache instead of
+   selecting `lru_cache`.
 
 If those feel ordinary, the final core can focus on the bigger design judgment: when a
 wrapper should stop growing and hand policy off elsewhere.

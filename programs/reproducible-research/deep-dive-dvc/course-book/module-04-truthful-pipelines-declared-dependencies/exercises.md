@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,306 +9,242 @@ graph LR
   program["Deep Dive DVC"]
   section["Truthful Pipelines Declared Dependencies"]
   page["Exercises"]
-  capstone["Capstone evidence"]
+  packet["Stage-contract review packet"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.builds.-> packet
 ```
 
 ```mermaid
 flowchart LR
-  promise["read the stage promise"] --> classify["classify real influence"]
-  classify --> predict["predict reruns from declarations"]
-  predict --> repair["repair hidden reads and mixed ownership"]
-  repair --> review["review the graph as a contract"]
+  claim["state stage claim"] --> ledger["inventory influence"]
+  ledger --> predict["predict planner"]
+  predict --> challenge["apply mutation"]
+  challenge --> repair["repair contract"]
+  repair --> review["write bounded decision"]
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice pipeline judgment, not only DVC vocabulary.
+These ten exercises build one review packet from the executable stage-contract specimen.
+Do them in order. Each exercise leaves an artifact used later.
 
-The goal of the day is to stop treating `dvc.yaml` as a place where commands happen to be
-written down. A stage declaration is a contract. If the contract lies about what the
-command reads, controls, or writes, a run can look clean while still being stale.
+Create the learning directory:
 
-## How to work through this set
+```bash
+packet=artifacts/learning/deep-dive-dvc/stage-contracts
+mkdir -p "$packet"
+```
 
-Treat the ten exercises as one full lab day on truthful stage contracts.
+Run the specimen when directed:
 
-Before each answer:
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/stage-contracts
+```
 
-1. name the stage claim under review
-2. name the real influences on that claim
-3. explain what `dvc repro` can and cannot infer from declarations alone
+Do not edit the generated audit workspace in place. Copy it to a disposable directory
+under `artifacts/learning/` for repair experiments.
 
-Do the exercises in order. The day is one progression:
+## Exercise: State a falsifiable stage claim
 
-- Exercises 1-3 read stage promises and predict reruns from declared state
-- Exercises 4-5 diagnose lying graphs and decide when to refactor stage boundaries
-- Exercises 6-8 build and break contracts in a small pipeline
-- Exercises 9-10 repair ownership problems and review the full graph as evidence
+Read `capstone/repro/stage-contracts/dvc.yaml` and the probe command it invokes. Choose
+`declared_input`.
 
-Keep one contract packet as you go. By the end of the day it should contain:
+Write `contract-claim.md` containing:
 
-- one explanation of why a stage declaration is a reviewable promise
-- one table that separates file reads, control values, and outputs
-- one rerun prediction sheet with reasons
-- one repaired missing-dependency example
-- one stage-boundary refactor with justification
-- one full pipeline review from target outputs backward
+- the durable result it promises;
+- every real file read;
+- every durable write;
+- the mutation expected to make it stale;
+- the result value expected after reproduction;
+- what an unchanged second reproduction should do.
 
-If those six artifacts are missing, you are probably still memorizing YAML fields instead
-of learning how provenance contracts stay truthful.
+End with one sentence beginning “This claim would be false if…”.
 
-## Recommended working layout
+**Acceptance evidence:** another learner can design a test from your claim without seeing
+your intended answer.
 
-If you want one lab tree that can support the whole day, use something like:
+## Exercise: Build an influence ledger
+
+For all five specimen stages, inspect command arguments and implementation behavior.
+Create `influence-ledger.tsv` with these columns:
 
 ```text
-module04-lab/
-├── artifacts/
-├── data/
-├── dvc.lock
-├── dvc.yaml
-├── params.yaml
-└── src/
+stage	kind	name	read_or_written	declared	consequence_if_hidden
 ```
 
-Keep one influence-classification table while you work:
+Use `kind` values `file`, `parameter`, or `output`. Include the policy, multiplier, main
+output, and sidecar receipt rows.
 
-| Real influence | Belongs in | Why | What goes wrong if omitted |
-| --- | --- | --- | --- |
+**Acceptance evidence:** the ledger reveals the three intentionally hidden contract
+surfaces without relying on stage names.
 
-Also keep one rerun prediction table:
+## Exercise: Predict planner decisions
 
-| Change | Stage that should rerun | Why | Stage that should remain stable |
-| --- | --- | --- | --- |
+Before reading generated status receipts, create `planner-predictions.tsv`.
+
+Predict the stale stages and result values for:
+
+- policy value `10` changing to `20`;
+- multiplier `2` changing to `3`;
+- the undeclared receipt disappearing;
+- no state changing after a converged run.
+
+Give each prediction a declaration-based reason. Do not use “DVC should know.”
 
 ```mermaid
-flowchart LR
-  promise["read declaration as promise"]
-  influence["place each influence honestly"]
-  rerun["predict reruns from edges"]
-  stale["diagnose stale-output risk"]
-  boundary["refactor boundary if needed"]
-  audit["review full graph from outputs backward"]
-
-  promise --> influence --> rerun --> stale --> boundary --> audit
+flowchart TD
+  change["one controlled change"] --> edge{"declared edge?"}
+  edge -- yes --> stale["predict stale stage"]
+  edge -- no --> skip["predict skip"]
+  stale --> semantic["predict rebuilt meaning"]
+  skip --> semantic
 ```
 
-Use that route on purpose. It keeps the day centered on truthful influence and ownership
-instead of on command syntax alone.
+**Acceptance evidence:** your predictions distinguish what the graph will do from what a
+truthful graph ought to do.
 
-## Exercise 1: Read a stage contract
+## Exercise: Prove the hidden file influence
 
-You see this stage:
+Run the audit. Use only:
 
-```yaml
-stages:
-  prepare:
-    cmd: python -m incident_escalation_capstone.prepare
-    deps:
-      - data/raw/service_incidents.csv
-    outs:
-      - data/prepared/incidents.parquet
+- baseline and input-change declarations;
+- `input-change-status.stdout.txt`;
+- current policy value;
+- declared and hidden output values.
+
+Write `file-influence.md` with observation, inference, rejected alternative explanation,
+and decision. Explain why the paired stages isolate the missing edge.
+
+**Acceptance evidence:** name `threshold=20` and `threshold=10`, explain why the hidden
+result is stale, and avoid blaming cache behavior.
+
+## Exercise: Repair and replay the file contract
+
+Copy the specimen workspace into a disposable learning directory. Add the policy path to
+the hidden stage's `deps`.
+
+Establish policy `10`, converge, mutate to `20`, preserve status, reproduce normally,
+inspect the result, and reproduce again.
+
+Append to `file-influence.md`:
+
+- repaired declaration;
+- status before reproduction;
+- semantic value after reproduction;
+- convergence result;
+- why force was excluded.
+
+**Acceptance evidence:** the original mutation becomes visible for the correct dependency
+and the output adopts `threshold=20`.
+
+## Exercise: Prove and repair the hidden parameter
+
+Repeat the investigation for `settings.multiplier`. Create `parameter-influence.md`.
+
+Your evidence must join:
+
+- baseline multiplier `2`;
+- changed multiplier `3`;
+- status receipt;
+- declared score `24`;
+- hidden score `16`;
+- selected parameter declaration;
+- repaired replay and convergence.
+
+Explain why declaring the selected key is clearer than declaring the whole parameter file
+as a generic dependency.
+
+**Acceptance evidence:** distinguish “the key exists in `params.yaml`” from “this stage
+declares that key.”
+
+## Exercise: Decide output ownership
+
+Inspect `undeclared_sidecar` and the output-loss workspace. Create
+`output-ownership.md` with two designs:
+
+| Decision question | Governed receipt | Disposable scratch |
+| --- | --- | --- |
+| does absence invalidate the result? | | |
+| may a consumer depend on it? | | |
+| must ordinary repro restore it? | | |
+| where should it be written? | | |
+
+Implement the governed design in a disposable copy. Delete the receipt after convergence,
+then preserve status and reproduction evidence.
+
+**Acceptance evidence:** justify ownership from the consequence of absence, not the file
+name or extension.
+
+## Exercise: Diagnose a false rerun
+
+Design a conservative evaluation stage that declares a broad `data/` dependency. First
+list every actual file read, then design a mutation matrix with:
+
+- two changes that must invalidate evaluation;
+- two unrelated changes that should not;
+- the result assertion for each positive case.
+
+Narrow the dependency without hiding any real read. Save the matrix and rationale in
+`invalidation-boundary.md`.
+
+**Acceptance evidence:** positive cases defend completeness and negative cases defend
+precision.
+
+## Exercise: Refactor an overloaded boundary
+
+Start from a stage that fits a model and evaluates it in one command. Create
+`refactoring-contract.md` that:
+
+- states the claim before refactoring;
+- assigns ownership of the model and evaluation report;
+- splits or deliberately retains the stage;
+- predicts propagation for model-family, evaluation-threshold, and prepared-data changes;
+- specifies missing-output restoration checks.
+
+Include before-and-after Mermaid graphs.
+
+**Acceptance evidence:** justify graph shape by ownership and review consequence, not
+shorter YAML or stage count.
+
+## Exercise: Assemble the review decision
+
+Create `review-packet.md` that links the previous artifacts and contains:
+
+1. scope of the reviewed specimen;
+2. accepted contract claims;
+3. rejected hidden file, parameter, and output claims;
+4. repair evidence;
+5. residual limits;
+6. one adversarial mutation for a real capstone stage.
+
+For the adversarial mutation, name the declaration edge removed, retained command
+behavior, controlled mutation, planner receipt, semantic assertion, and expected rejection.
+
+End with a decision table:
+
+| Claim | Planner evidence | Semantic or ownership evidence | Decision |
+| --- | --- | --- | --- |
+
+**Acceptance evidence:** every decision links declaration, mutation, planner receipt, and
+result meaning; no claim extends to stages you did not inspect.
+
+## Completion checklist
+
+Your packet should contain:
+
+```text
+contract-claim.md
+influence-ledger.tsv
+planner-predictions.tsv
+file-influence.md
+parameter-influence.md
+output-ownership.md
+invalidation-boundary.md
+refactoring-contract.md
+review-packet.md
 ```
 
-Write a short explanation of:
-
-- what the stage promises
-- what changes should make it stale
-- what you still need to inspect before trusting the declaration
-- one sentence naming the biggest hidden-risk category for this stage
-
-Study note:
-The YAML is not the proof. It is the claim that the proof should support.
-
-## Exercise 2: Place each influence
-
-An evaluation command reads:
-
-- `models/escalation-model.json`
-- `data/prepared/incidents.parquet`
-- `data/reference/escalation_policy.csv`
-- a threshold value from `params.yaml`
-- a temporary log file written during the run
-
-Decide which items belong in `deps`, which belong in `params`, which belong in `outs`, and
-which should probably stay outside the output contract.
-
-Explain your reasoning and include one sentence about why a temporary file can still
-matter operationally without becoming a governed output.
-
-Study note:
-Module 04 gets clearer once you stop using file paths and control values as if they were
-the same kind of influence.
-
-## Exercise 3: Predict reruns
-
-Use this graph:
-
-```mermaid
-flowchart LR
-  prepare["prepare"] --> prepared["prepared incidents"]
-  prepared --> fit["fit"]
-  fit --> model["model"]
-  model --> evaluate["evaluate"]
-  prepared --> evaluate
-```
-
-Predict what should rerun when:
-
-- the raw incidents file changes and `prepare` produces a new prepared output
-- `fit.model_family` changes
-- `evaluate.threshold` changes
-- an unrelated README changes
-
-Explain each prediction in terms of declared dependencies and parameters, not vague ideas
-about "the pipeline changed."
-
-Study note:
-This is where students learn whether they are reasoning from the graph or from intuition.
-
-## Exercise 4: Diagnose stale output risk
-
-You review this report:
-
-> I changed `data/reference/escalation_policy.csv`, ran `dvc repro`, and evaluation did not
-> rerun. But the evaluation command uses that file.
-
-Write a review response that explains:
-
-- the likely graph problem
-- why this is more dangerous than an extra rerun
-- the concrete declaration repair
-- what lock evidence should show after the repair and rerun
-
-Study note:
-False reruns waste time. Stale outputs can silently falsify trust.
-
-## Exercise 5: Refactor a mixed stage
-
-A stage currently fits a model and evaluates it in one command:
-
-```yaml
-stages:
-  train_and_evaluate:
-    cmd: python -m incident_escalation_capstone.train_and_evaluate
-    deps:
-      - data/prepared/incidents.parquet
-    params:
-      - fit.model_family
-      - evaluate.threshold
-    outs:
-      - models/escalation-model.json
-      - reports/evaluation.json
-```
-
-Propose either:
-
-- a split into clearer stages, if you think the model is a meaningful intermediate
-- a justification for keeping it together, if you think the combined boundary is more honest
-
-Your answer should explain how the refactor affects rerun behavior, review clarity, and
-ownership of intermediate artifacts.
-
-Study note:
-Good graph shape is not cosmetic. It changes what reviewers can understand and what DVC
-can re-run precisely.
-
-## Midday self-check
-
-Before you move into pipeline construction, deliberate omission, and full review, make
-sure your packet can already answer these questions clearly:
-
-- what a stage declaration promises
-- how file reads, control values, and outputs differ
-- why `dvc repro` only reacts to declared influence
-- why stale outputs are a correctness problem, not only a convenience issue
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
-
-## Exercise 6: Build a three-stage pipeline
-
-Create prepare, train, and evaluate stages with explicit dependencies, parameters, and
-outputs. Run twice and use DVC evidence to show that the second run converges.
-
-What to hand in:
-
-- the three stage declarations
-- the first-run evidence
-- the second-run convergence evidence
-- one sentence explaining why the second run staying still is meaningful
-
-Study note:
-A converged second run is one of the simplest demonstrations that the declared graph is
-not thrashing needlessly.
-
-## Exercise 7: Omit one dependency on purpose
-
-Remove a real dependency from one stage, change that input, and observe the plan. Explain:
-
-- why the stage can now look current while being stale
-- why a successful command cannot compensate for a lying graph
-- how you repaired the declaration
-- what evidence changed after the repair
-
-Study note:
-This is the exercise that teaches why hidden reads are more serious than untidy YAML.
-
-## Exercise 8: Trace one parameter through the lockfile
-
-Change one tracked parameter and inspect the resulting `dvc.lock` changes. Identify:
-
-- the stage invalidated
-- the output identities replaced
-- any stage that correctly remained unchanged
-- one sign that your stage boundary may be too coarse if too much reruns
-
-Study note:
-The lockfile is where parameter influence stops being theory and becomes recorded state.
-
-## Exercise 9: Repair shared-output ownership
-
-Construct two stages that write into the same output directory. Redesign them so each
-producer has exclusive ownership or a single aggregation stage publishes the shared
-artifact.
-
-What to hand in:
-
-- the ambiguous original shape
-- the repaired ownership shape
-- one sentence explaining why ownership ambiguity harms cleanup and freshness reasoning
-
-Study note:
-Shared-output ownership often looks convenient until teams need trustworthy reruns and
-cleanup behavior.
-
-## Exercise 10: Review a pipeline as a contract
-
-Review a real `dvc.yaml` from target outputs backward. For every stage, record:
-
-- its purpose
-- its inputs
-- its controls
-- its outputs
-- its failure residue
-- the evidence that its declared graph matches actual reads and writes
-
-End with one paragraph explaining where the pipeline is strongest and where its contract
-is still fragile.
-
-Study note:
-This final exercise matters because real review starts from the output a consumer trusts
-and walks backward through the contract that produced it.
-
-## Mastery check
-
-You have a strong grasp of this module if your answers consistently keep five ideas
-visible:
-
-- a stage contract is a reviewable promise, not only a command
-- file reads and control values belong in different declaration fields
-- `dvc repro` only reacts to declared influence
-- stale outputs are a correctness risk, while false reruns are usually visible waste
-- graph refactoring is valuable when it preserves or improves the provenance story
+You have finished when a missed-class learner can reconstruct not only what DVC did, but
+why the graph produced that decision, why the result was acceptable or stale, and how the
+repair survived the original challenge.

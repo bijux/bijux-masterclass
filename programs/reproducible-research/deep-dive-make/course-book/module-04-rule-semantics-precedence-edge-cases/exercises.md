@@ -1,107 +1,78 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is not to
-show off syntax. The goal is to make rule semantics, variable precedence, and edge-case
-debugging calm and inspectable.
-
-## How to work through this set
-
-Treat the ten exercises as one full lab day on semantic incident handling.
-
-Before each answer:
-
-1. name the semantic stage where you think the problem lives
-2. choose the first command that would expose that stage cleanly
-3. state what repair would become plausible if that evidence comes back the way you expect
-
-If you skip stage naming, every confusing behavior starts to feel like "Make is weird."
-This module is here to replace that feeling with sharper boundaries.
-
-Do the exercises in order. The day is one progression:
-
-- Exercises 1-3 teach you to inspect probes, variable origin, and generated includes
-- Exercises 4-6 teach you to reason about capability gates, multi-output generation, and
-  assignment flavor
-- Exercises 7-9 teach you to model precedence, restarts, and rule selection precisely
-- Exercise 10 turns all of that into one bounded compound investigation
-
-Keep one semantics packet as you go. By the end of the day it should contain:
-
-- one semantic-stage map for a real incident
-- one variable-origin probe and recommended precedence contract
-- one stable include generator and one intentionally unstable one
-- one honest multi-output repair
-- one precedence matrix
-- one compound incident report that stays bounded and reproducible
-
-If those six artifacts are missing, you are probably learning commands in isolation
-instead of learning how the semantics connect.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
+Treat these exercises as one investigation that grows from observation to repair. Work in
+an isolated `semantic-evidence-lab/` tree so deliberate failures cannot alter another
+build:
 
 ```text
-module04-lab/
+semantic-evidence-lab/
 ├── Makefile
-├── mk/
+├── child/
 ├── config/
 ├── generated/
-├── src/
-├── notes/
-└── artifacts/
+├── mk/
+├── scripts/
+└── evidence/
 ```
 
-Keep two working tables.
+For every exercise, preserve a four-column record:
 
-First, a stage map:
-
-| Symptom | Semantic stage | First probe | What that probe should reveal |
+| Claim | Controlled change | Observation | Conclusion |
 | --- | --- | --- | --- |
 
-Second, a variable report:
-
-| Variable | Origin | Flavor | Raw value | Expanded value | Why it matters |
-| --- | --- | --- | --- | --- | --- |
-
-Those tables matter because Module 04 is where learners often drown in details they have
-not sorted by stage.
+A command transcript is not yet evidence. State what changed between runs and why the
+result supports one semantic explanation.
 
 ```mermaid
 flowchart LR
-  stage["name the semantic stage"]
-  probe["choose the least disruptive probe"]
-  inspect["inspect origin, trace, restart, or rule selection"]
-  isolate["separate cause from nearby noise"]
-  repair["choose the smallest truthful repair"]
-  verify["verify convergence after the repair"]
+  claim["Make one boundary claim"]
+  control["Change one input or option"]
+  observe["Capture focused evidence"]
+  reject["Reject competing explanation"]
+  repair["Repair the semantic contract"]
+  repeat["Repeat and prove settled state"]
 
-  stage --> probe --> inspect --> isolate --> repair --> verify
+  claim --> control --> observe --> reject --> repair --> repeat
 ```
 
-Use that route on purpose. It keeps the day bounded and stops you from using `clean`,
-`-B`, or `.NOTPARALLEL` as first reactions.
+The progression is cumulative:
+
+```mermaid
+flowchart TD
+  modes["Diagnostic-mode safety"]
+  provenance["Variable provenance"]
+  restart["Include restart"]
+  gates["Capability policy"]
+  expansion["Prerequisite expansion"]
+  ownership["Rule ownership"]
+  incident["Compound incident proof"]
+
+  modes --> provenance --> restart --> gates
+  gates --> expansion --> ownership --> incident
+```
+
+Do not begin with `clean`, `-B`, `-j1`, or `.NOTPARALLEL`. Those actions erase or suppress
+evidence before you know which boundary failed.
 
 ## Exercise 1: Choose the right CLI probe
 
-Suppose you say:
+Build a Makefile with:
 
-> "`app` rebuilt, and I do not know whether the reason was a stale input, a phony target,
-> or a generated include."
+- a top-level `$(info ...)`
+- a top-level `$(shell ...)` that appends to `parse-events.log`
+- an ordinary recipe that appends to `recipe-events.log`
+- a recursive `$(MAKE)` recipe line that invokes a child target
 
-Explain which Make command you would run first, which one you would run second, and what
-you expect each to tell you.
+Run the same goal with `-n`, `-q`, and `-t`. Record which parse effects occur and whether
+the recursive recipe line executes despite the diagnostic option.
 
 What to hand in:
 
-- the first command
-- the second command
-- one sentence explaining why those two commands come before `clean`, `-B`, or `-j1`
-- one sentence naming the semantic stage each command is inspecting
-
-Study note:
-This is a probe-selection exercise, not a command memorization exercise. The main lesson
-is to choose the least disruptive evidence first.
+- the Makefile and a before/after file inventory for each mode
+- exit status and focused output for all three commands
+- an explanation of parse-time effects versus recipe suppression
+- a repair that makes every diagnostic invocation non-mutating
+- a warning explaining the special recursive-Make exception
 
 ## Exercise 2: Prove where a variable value came from
 
@@ -110,38 +81,38 @@ environment, the command line, and the file itself. A teammate says:
 
 > "CI is using different optimization flags, but the Makefile looks the same."
 
-Describe how you would prove the winning origin and flavor of `CFLAGS`, and explain one
-repair that would make the variable behavior easier to reason about.
+Create parent and child Makefiles. Exercise these parent definitions:
+
+- ordinary file assignment
+- exported file assignment
+- parent command-line assignment
+- explicit `$(MAKE) CFLAGS=...` child assignment
+- `override` directive
+
+The child must print `origin`, `flavor`, raw text, expanded value, environment value,
+`MAKELEVEL`, and `MAKEOVERRIDES`.
 
 What to hand in:
 
-- the introspection lines or target you would add
-- the exact facts you want to capture about `CFLAGS`
-- one repair using clearer precedence or expansion rules
-- one sentence explaining when you would document command-line override as part of the
-  project contract
+- a prediction and observation matrix
+- the strongest-to-weakest precedence order supported by your results
+- proof that export and recursive command-line forwarding produce different child origins
+- one recommended configuration contract and one rejected channel
 
-Study note:
-Do not stop at the expanded value. Module 04 wants you to separate origin, flavor, raw
-text, and expanded text deliberately.
+## Exercise 3: Make generated include publication recoverable
 
-## Exercise 3: Repair a generated-include loop
-
-A build generates `mk/generated-config.mk`, includes it, and rewrites it on every run
-with a fresh timestamp. You report that the build never seems to settle.
-
-Explain why that happens and redesign the rule so the included file converges.
+Generate `mk/generated-config.mk` from `config/mode.txt`. Print `MAKE_RESTARTS` and
+`MAKEFILE_LIST` during parsing. Begin with direct publication to the final path, then
+interrupt the generator after it writes incomplete Make syntax. Repair it with a
+process-local candidate, cleanup trap, validation, compare-before-replace, and rename.
 
 What to hand in:
 
-- a plain-language explanation of the restart problem
-- the repaired rule shape
-- one sentence explaining why atomic publication matters here
-- one sentence explaining what observation would prove the include now converges
-
-Study note:
-Generated includes are not just artifacts. They are part of the evaluated build
-definition, so instability here has wider consequences than an ordinary stale file.
+- bootstrap evidence showing restart `0` followed by restart `1`
+- the failure residue from direct publication
+- the repaired rule and recovery result
+- a settled run showing restart `0` with unchanged digest and modification time
+- a dry-run proof that parsing performs no mutation
 
 ## Exercise 4: Replace a platform branch with a capability gate
 
@@ -155,56 +126,37 @@ else
 endif
 ```
 
-Rewrite the idea as a capability gate instead of a platform guess. You do not need to use
-this exact tool example if another capability makes the lesson clearer.
+Replace it with discovery, caller policy, and implementation variables. The caller policy
+must accept exactly `auto`, `enabled`, or `disabled`. Add a bounded probe seam so all
+capability outcomes can be tested without installing or removing software.
 
 What to hand in:
 
-- the named capability you would compute
-- the single place you would compute it
-- one sentence explaining why the new branch is easier to audit
-- one sentence explaining what bad assumption the platform guess made
-
-Study note:
-This exercise is about naming the actual requirement. Platform labels are only proxies,
-and often weak ones.
+- the named behavioral requirement
+- strict rejection of empty, multiword, and unknown policy values
+- the six valid policy/capability cases and at least two invalid cases
+- proof that `enabled` plus unavailable fails before recipes
+- either output-equivalence evidence for `auto` or a reason `auto` must reject fallback
 
 ## Exercise 5: Repair a multi-output generator honestly
 
-One generator produces both `api.h` and `api.json`, but the Makefile currently uses a
-naive multi-target rule and occasionally runs the generator twice under `-j`.
-
-Describe two valid repairs and explain when you would choose each one.
+One generator produces both `api.h` and `api.json`, but a naive independent-target rule
+can invoke it twice under `-j`. First repair it with grouped targets. Then design a
+stamp-governed compatibility shape and identify what happens if one output is deleted
+while the stamp remains.
 
 What to hand in:
 
-- a grouped-target repair
-- a stamp-based repair
-- one sentence on the capability or portability tradeoff between them
-- one sentence naming the real publication event both repairs are trying to model
-
-Study note:
-The right repair starts by stating the truth: one generator invocation publishes multiple
-artifacts.
-
-## Midday self-check
-
-Before you move into assignment flavor, precedence, and restart behavior, make sure your
-packet can already answer these questions cleanly:
-
-- which semantic stage you would inspect first for a surprising rebuild
-- which facts about a variable must be separated before you can explain its behavior
-- which observation would prove a generated include has converged
-- which capability your build actually needs instead of which platform name you hope
-  implies it
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
+- grouped-target capability evidence from `.FEATURES`
+- parallel traces and invocation counts before and after repair
+- validation that both outputs exist before successful publication
+- the stamp design's missing-member failure and an explicit recovery policy
+- a decision stating which Make version contract you would support
 
 ## Exercise 6: Compare assignment flavors
 
-Create variables with `=`, `:=`, `?=`, and `+=`. Change a referenced variable between
-assignments and print:
+Create variables with `=`, `:=`, `?=`, `+=`, and `!=`. Change a referenced variable
+between assignments and print:
 
 ```make
 $(origin NAME)
@@ -219,56 +171,42 @@ What to hand in:
 
 - the Makefile and prediction
 - the observed output
-- one practical use and one risk for recursive expansion
-- one sentence explaining why raw text and expanded text are both worth printing
+- the time at which each right side is observed
+- proof that empty-but-defined prevents `?=` from assigning
+- proof that `!=` invokes a shell during parsing, including under `-n`
+- a rewrite that confines parse observations to declared, read-only inputs
 
-Study note:
-This is where many learners stop treating variable flavor as trivia and start treating it
-as part of semantic debugging.
+## Exercise 7: Prove target-specific scope propagation
 
-## Exercise 7: Build a precedence matrix
-
-Define `MODE ?= release` and print its origin. Invoke the target with:
-
-1. no override
-2. `MODE=debug make show`
-3. `make MODE=debug show`
-4. `MODE=debug make -e show`
-5. `override MODE := hardened` in the Makefile
+Extend Exercise 2 with target-specific and `private` values. Make two top-level targets
+share one prerequisite while supplying different target-specific `MODE` values. Request
+both goals in both orders, then add `private`.
 
 What to hand in:
 
-- a table of value and origin for every invocation
-- a recommended project contract for configuring `MODE`
-- one reason to avoid routine use of `-e`
-- one sentence explaining why "works on my shell" is weak evidence in a precedence dispute
+- the shared prerequisite's observed value for both goal orders
+- an explanation of why a once-built shared artifact cannot depend safely on that context
+- the observed effect of `private`
+- an output-path design that represents both variants honestly
+- a comparison with export and recursive forwarding
 
-Study note:
-This exercise matters because ambiguous configuration channels create hidden inputs at the
-semantic layer, even when the file graph looks fine.
+## Exercise 8: Audit parse effects across include restarts
 
-## Exercise 8: Observe a generated include restart
-
-Generate `build/config.mk` from `config.txt`, include it, and print `$(MAKE_RESTARTS)`.
-Publish the include only when its content changes.
-
-Then deliberately add a timestamp so it changes every run and observe the behavior.
+Audit every top-level `$(shell ...)`, `$(file ...)`, `!=`, and included fragment in your
+lab. Construct an event ledger for an initial parse, one include restart, a settled run,
+and `-n`. Move all mutations into explicit targets.
 
 What to hand in:
 
-- the stable and unstable generator rules
-- restart counts or trace evidence
-- the repair that restores convergence
-- one sentence explaining why content-stable publication is different from timestamp-only
-  rewriting
+- the audit inventory with evaluation times
+- expected and actual event counts across all four cases
+- one removed parse mutation and its replacement target
+- proof that the generated include remains convergent
+- an explanation of why guarding a mutation with `MAKE_RESTARTS` is insufficient
 
-Study note:
-Module 04 wants you to see restart behavior as a consequence of semantics, not as random
-Make mood swings.
+## Exercise 9: Prove rule and prerequisite selection
 
-## Exercise 9: Remove pattern-rule ambiguity
-
-Run the capstone `semantic-fault-audit` and isolate the three pattern-selection rows:
+Run the capstone `semantic-fault-audit` and isolate the pattern-selection rows:
 
 ```sh
 gmake -C programs/reproducible-research/deep-dive-make/capstone \
@@ -279,9 +217,9 @@ The first two models contain the same sources, the same requested target, and th
 pattern-rule candidates. Only rule order changes. Before reading the report, predict
 which source will produce `build/a.choice` in each model.
 
-Read the traces to identify the selected recipe and `$<`. Then inspect the namespaced
-control and explain why both source families can publish without competing for one target
-meaning.
+Read the traces to identify the selected recipe and `$<`. Then add an isolated
+`.SECONDEXPANSION` harness that computes prerequisite lists from `$@`, first without
+escaping and then with escaping.
 
 What to hand in:
 
@@ -290,53 +228,34 @@ What to hand in:
 - a one-line diff summary of the two ambiguous Makefiles
 - the two target paths published by the namespaced control
 - a review rule that rejects hidden text-order policy without banning useful pattern rules
-
-Study note:
-Both ambiguous models succeed. Exit status cannot detect that text order changed target
-meaning. Your evidence must connect a candidate rule, its prerequisite, and the bytes it
-published.
+- database evidence showing the missing and restored computed prerequisites
+- a boundary table for initial expansion, secondary expansion, rule selection, and recipe
+  expansion
 
 ## Exercise 10: Diagnose a compound semantic incident
 
-Construct or select a build with at least three symptoms:
-
-- a surprising variable value
-- a generated include that changes the graph
-- a rule selected differently than expected
-
-Investigate without beginning with `clean`, `-B`, or `.NOTPARALLEL`.
+Combine at least four defects from the earlier exercises in one build. Include one
+parse-time effect, one provenance disagreement, one target-context expansion error, and
+one output-ownership error. Add a decoy symptom that is nearby but not causal.
 
 What to hand in:
 
-- a short symptom list
-- the evidence command chosen for each symptom
-- the semantic cause and repair for each
-- a final `make -q` or equivalent convergence result
-- one sentence explaining how naming stages reduced the debugging scope
-
-Study note:
-This is the exercise where the whole module should start feeling calmer. You are not
-solving "Make weirdness." You are solving three smaller stage-specific problems.
+- a time-ordered event ledger
+- one falsifiable claim and controlled probe per defect
+- the rejected decoy explanation and evidence against it
+- one reviewable repair per semantic boundary
+- dry-run immutability, parallel ownership, child-provenance, and settled-query results
+- a final incident explanation that distinguishes expected restart behavior from defects
 
 ## Before you read the answers
 
-Do not open `exercise-answers.md` until you can already point to:
-
-- one variable whose origin you proved
-- one restart behavior you can explain
-- one ambiguous rule you made predictable
-- one incident where naming the semantic stage reduced the debugging scope
-- one repair you chose only after evidence ruled out easier guesses
-
-If you do not yet have those five things, the answer page will feel sharper than it can
-teach.
+Do not open `exercise-answers.md` until your evidence packet contains failed assertions as
+well as successful commands. A capability gate without an unavailable-capability failure,
+or a generator repair without a parallel stress run, is incomplete.
 
 ## Mastery standard for this exercise set
 
-Across all ten answers, the module wants the same habit:
-
-- you name the semantic rule involved
-- you choose evidence before you choose a repair
-- you explain the repair in terms of truth, convergence, precedence, or ownership
-
-If an answer says only "Make is tricky," keep going.
+Across all ten answers, you should be able to locate an observation on the evaluation
+timeline, state the controlling semantic rule, reject one plausible alternative, and
+demonstrate the repaired behavior twice: once at the failure boundary and once in a settled
+run.

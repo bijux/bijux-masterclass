@@ -193,6 +193,113 @@ Ask:
 
 If the answer is yes, the boundary is probably wrong already.
 
+## Prove the boundary with the scheduler-policy specimen
+
+The capstone now contains a smaller specimen for this exact question:
+
+```text
+capstone/repro/scheduler-policy/
+├── job-contract.json
+├── Snakefile
+├── config/
+└── scripts/record_submission.py
+```
+
+Run its audit:
+
+```console
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+gmake scheduler-policy-audit
+```
+
+Then open:
+
+```text
+../../../../artifacts/audit/reproducible-research/deep-dive-snakemake/
+└── scheduler-policy/
+    ├── summary.tsv
+    ├── report.json
+    └── workspace/
+```
+
+Do not start with the generated `sbatch` command. Start with
+`job-contract.json`. It says that `summarize_records` needs four threads,
+8,000 MB of memory, and 30 minutes. It also owns `minimum_score: 10`, which
+changes the result set.
+
+```mermaid
+flowchart LR
+    J["job contract"] --> W["Snakefile resources"]
+    J --> A["recording adapter"]
+    W --> D["dry-run evidence"]
+    A --> R["submission receipt"]
+    D --> C["comparison"]
+    R --> C
+```
+
+The accepted profile produces a receipt with these arguments:
+
+```text
+--cpus-per-task=4
+--mem=8000M
+--time=30
+```
+
+This is translation, not invention. The profile selects how a declaration is
+expressed to Slurm. It does not decide the declaration's meaning.
+
+## Follow one semantic leak to its consequence
+
+Now inspect `config/semantic-leak.yaml`. It tries to set:
+
+```json
+{
+  "semantic_overrides": {
+    "minimum_score": 30
+  }
+}
+```
+
+That is rejected even though it is syntactically valid. A score threshold
+changes which records appear in `results/summary.tsv`; putting it in a cluster
+profile would make local and scheduler runs answer different questions.
+
+```mermaid
+flowchart TD
+    P["proposed profile field"] --> Q{"Changes result meaning?"}
+    Q -->|"no"| O["review as operating policy"]
+    Q -->|"yes"| S["move to governed workflow config"]
+    O --> T["record scheduler translation"]
+    S --> V["require semantic review"]
+```
+
+Use the rejection as a reasoning exercise:
+
+1. Name the output whose membership would change.
+2. Name the profile contexts that could now disagree.
+3. Move the threshold to one governed semantic config.
+4. Leave only executor and resource translation in the profile.
+
+## A receipt is evidence, not cluster proof
+
+The accepted receipt contains `"executed": false`. That line is essential.
+The audit proves that the repository can render a reviewable request. It does
+not prove that a Slurm controller accepted it, that a worker mounted the same
+filesystem, or that cancellation and retries work at a deployment site.
+
+Use separate claims:
+
+| Claim | Evidence needed |
+| --- | --- |
+| rule declares resources | Snakemake dry-run |
+| adapter preserves declarations | recorded request plus audit |
+| scheduler accepts request | scheduler job ID and state |
+| worker executes correctly | worker log, exit status, verified output |
+| result meaning is context-invariant | semantic output comparison |
+
+This separation prevents a common operational overclaim: treating a plausible
+submission command as evidence that a real cluster run succeeded.
+
 ## Common failure modes
 
 | Failure mode | What it looks like | Better repair |

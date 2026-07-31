@@ -67,6 +67,44 @@ How do you represent effectful operations as pure, composable data with a minima
 
 You are one small step away from a complete production-grade functional architecture.
 
+## Runnable lab: delay a RAG read
+
+Wrap the storage call in `io_delay`, then map the resulting iterator to document
+identifiers:
+
+```python
+def delayed_read() -> Result[Iterator[Result[RawDoc, ErrInfo]], ErrInfo]:
+    events.append("read")
+    return Ok(storage.read_docs("docs.csv"))
+
+plan: IOPlan[list[str]] = io_map(
+    io_delay(delayed_read),
+    lambda items: [
+        item.value.doc_id for item in items if isinstance(item, Ok)
+    ],
+)
+
+assert events == []
+assert perform(plan) == Ok(["d1", "d2"])
+assert events == ["read"]
+```
+
+Run the shipped proof:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k io_plan_defers_rag_read_until_the_shell_performs_it
+```
+
+`io_delay` stores the thunk; `io_map` builds a larger description; neither
+opens or reads anything. `perform` is the interpreter boundary and therefore
+the only operation that appends to the event trace.
+
+Do not cache `delayed_read()` as a `Result` before calling `io_delay`: that
+would execute the effect during construction. Also do not call `perform` from
+inside the pure RAG stages; the shell owns the decision to execute.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Law / Invariant            | Description                                                                                  | Enforcement              |
@@ -98,10 +136,10 @@ designed to teach without adding a library dependency.
 
 **Global error policy**: We fix `E = ErrInfo` everywhere. This is deliberate – it simplifies interop between `Result`, `Reader`, ports, and `IOPlan`. Per-subsystem error types are possible by parameterising `IOPlan[A, E]`, but we don’t need that complexity here.
 
-## 3. Public API – `IOPlan` (`capstone/src/funcpipe_rag/fp/effects/io_plan.py`)
+## 3. Public API – `IOPlan` (`capstone/src/funcpipe_rag/domain/effects/io_plan.py`)
 
 ```python
-# capstone/src/funcpipe_rag/fp/effects/io_plan.py – mypy --strict clean, zero external deps
+# capstone/src/funcpipe_rag/domain/effects/io_plan.py – mypy --strict clean, zero external deps
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Generic, TypeVar
@@ -184,7 +222,7 @@ This repo’s end-of-Module-07 codebase provides the primitives (capability prot
 
 - Current RAG pipeline entry points: `capstone/src/funcpipe_rag/rag/rag_api.py` and `capstone/src/funcpipe_rag/rag/core.py`
 - Capability protocols (ports): `capstone/src/funcpipe_rag/domain/capabilities.py`
-- IOPlan: `capstone/src/funcpipe_rag/fp/effects/io_plan.py`
+- IOPlan: `capstone/src/funcpipe_rag/domain/effects/io_plan.py`
 
 Shell usage unchanged:
 

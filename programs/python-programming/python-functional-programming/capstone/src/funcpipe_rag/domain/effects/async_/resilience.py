@@ -154,6 +154,14 @@ def async_with_resilience(
         warned_non_idempotent = False
 
         for attempt in range(1, retry.max_attempts + 1):
+            if attempt > 1 and not retry.idempotent and not warned_non_idempotent:
+                warnings.warn(
+                    "Retrying a step marked non-idempotent — potential duplicate side-effects",
+                    category=RuntimeWarning,
+                    stacklevel=2,
+                )
+                warned_non_idempotent = True
+
             try:
                 if timeout is None:
                     res = await step()
@@ -187,14 +195,6 @@ def async_with_resilience(
                     return Err(last_err)
                 if retry.max_attempts == 1:
                     return Err(last_err)
-
-            if attempt > 1 and not retry.idempotent and not warned_non_idempotent:
-                warnings.warn(
-                    "Retrying a step marked non-idempotent — potential duplicate side-effects",
-                    category=RuntimeWarning,
-                    stacklevel=2,
-                )
-                warned_non_idempotent = True
 
             if attempt < retry.max_attempts:
                 base_s = min(retry.backoff_base_ms * (2 ** (attempt - 1)), retry.max_backoff_ms) / 1000.0

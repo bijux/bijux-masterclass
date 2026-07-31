@@ -1,6 +1,5 @@
 # Advanced Patterns and Scaling
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,217 +24,212 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+An advanced feature is useful when it makes an existing contract easier to express
+or preserves that contract under new pressure. It is not useful merely because it
+is sophisticated.
 
-**Module 10**
-> **Core question:**  
-> How do Python's structural pattern matching and advanced typing features enable richer, safer functional pipelines, and how do you scale FuncPipe to parallel execution with tools like concurrent.futures or Dask while preserving purity, composability, and laws?
+FuncPipe already uses two earned Python features:
 
-In this core, we apply advanced Python features and scaling techniques to the FuncPipe RAG Builder (now at `funcpipe-rag-10`). We use structural pattern matching for expressive ADT handling, ParamSpec for type-safe higher-order functions, and parallel execution via concurrent.futures (CPU-bound) or Dask (distributed) with explicit contracts for purity, ordering, and error handling. These enable concise, verified, scalable pipelines. Builds on prior cores.
+- structural pattern matching exhausts known `Result` variants at serialization
+  boundaries; and
+- `ParamSpec` preserves the call signature of memoized functions.
 
-**Motivation Bug:** Complex ADTs require verbose dispatch; higher-order functions lose type precision; pipelines bottleneck on single core—advanced features and parallel backends solve these without sacrificing FP guarantees.
+Neither feature requires the application to become distributed. Scaling is a
+separate decision with a much larger proof obligation.
 
-**Delta from Core 5:** PBT verifies laws; this applies language features and scaling with law-preserving contracts.
+## Review the pressure before choosing a feature
 
-**Protocol (Contract, Entry/Exit Criteria):**
-- **Properties:** Match exhaustiveness (mypy with sealed ADTs), typing preservation, parallel equiv to sequential (stable order or multiset).
-- **Semantics:** Match for ADTs; typed HOFs; parallel via pure, picklable mappers.
-- **Purity:** Immutable data; no shared state.
-- **Error Model:** Per-item Results in parallel; aggregate or propagate.
-- **Resource Safety:** Bounded workers; timeouts.
-- **Integration:** Apply to RAG (match on Results, parallel chunking).
-- **Mypy Config:** --strict.
-- **Exit:** Features pass mypy, parallel passes PBT equiv, scales near-linearly (with GIL/serialization overhead).
+| Pressure | Smallest honest response | Evidence |
+| --- | --- | --- |
+| Handle a closed value family | `match` over owned variants | every variant has an explicit route |
+| Preserve higher-order call signatures | `ParamSpec` and `TypeVar` | strict type checking plus behavior test |
+| Process independent local plans concurrently | bounded `async_gather` | bound, order, failure, and cleanup tests |
+| Move execution to another process or engine | explicit compiler/adapter | semantic parity for delivery, ordering, failure, and pressure |
+| Make a normal loop look more “functional” | keep the readable loop | application behavior remains obvious |
 
-Use this when you are building expressive, scalable FP pipelines.
+The table prevents a common escalation: a local performance problem does not
+automatically justify a distributed backend.
 
-**Outcome:**
-1. Use match for ADTs.
-2. Type-safe HOFs with ParamSpec.
-3. Parallel backends with contracts.
-4. Prototype in RAG, verify laws.
+## Pattern matching earns its place at a closed boundary
 
----
-## 1. Laws & Invariants
-| Invariant            | Description                                                                                  | Enforcement          |
-|----------------------|----------------------------------------------------------------------------------------------|----------------------|
-| **Match Inv**        | Match covers variants where possible (sealed ADTs via Literal/Enum + assert_never).          | Mypy + runtime       |
-| **Typing Inv**       | HOFs preserve full signatures/return types.                                                  | Mypy --strict        |
-| **Parallel Inv**     | Parallel == sequential (stable order for sequential executor; multiset for parallel).        | PBT equivalence      |
-| **Idempotence Inv**  | Parallel ops idempotent if sequential is.                                                    | PBT idempotence      |
-
-These extend prior laws with explicit contracts.
-
----
-## 2. Decision Table
-| Scenario             | Typing Needed | Parallel Needed | Recommended            |
-|----------------------|---------------|-----------------|------------------------|
-| ADT handling         | Medium        | No              | Match/case             |
-| HOF safety           | High          | No              | ParamSpec              |
-| Scale CPU-bound      | Low           | Yes             | ProcessPoolExecutor    |
-| Scale distributed    | Low           | Yes             | Dask                   |
-
-**Choose match for expressiveness; advanced typing for HOFs; parallel for scale.**
-
----
-## 3. Public API (Advanced Patterns)
-Type-safe HOFs; match on ADTs.
+The serialization adapter owns a closed `Result` family:
 
 ```python
-from typing import Callable, ParamSpec, TypeVar, Generic
-from functools import wraps
-from funcpipe_rag import Result, Ok, Err, ErrInfo, RawDoc, Chunk
+match result:
+    case Ok(value=value):
+        return encode_success(value)
+    case Err(error=error):
+        return encode_failure(error)
+```
 
+The match is valuable because the adapter must translate both variants and keep
+their meaning visible. A chain of predicates could work, but it would make
+exhaustiveness harder to review.
+
+Do not use a match only to disguise ordinary polymorphism or open-ended extension.
+If external plugins can introduce new values, a closed pattern match may encode
+the wrong ownership model.
+
+## `ParamSpec` preserves a callable contract
+
+The memo policy wraps functions with different parameter lists. A broad
+`Callable[..., object]` would erase useful type information. `ParamSpec` lets the
+wrapper return a callable with the same parameters:
+
+```python
 P = ParamSpec("P")
 R = TypeVar("R")
-T = TypeVar("T")
 
-
-def result_hof(f: Callable[P, R]) -> Callable[P, Result[R, ErrInfo]]:
-    @wraps(f)
-    def wrapped(*args: P.args, **kwargs: P.kwargs) -> Result[R, ErrInfo]:
-        try:
-            return Ok(f(*args, **kwargs))
-        except Exception as exc:
-            return Err(ErrInfo(code=type(exc).__name__, message=str(exc)))
-
-    return wrapped
-
-
-def to_option(res: Result[T, ErrInfo]) -> T | None:
-    match res:
-        case Ok(value):
-            return value
-        case Err(_):
-            return None
-
-
-def unwrap_or(res: Result[T, ErrInfo], default: T) -> T:
-    match res:
-        case Ok(value):
-            return value
-        case Err(_):
-            return default
+def memoize(
+    function: Callable[P, R],
+) -> Callable[P, R]:
+    ...
 ```
 
----
-## 4. Reference Implementations
-### 4.1 Pattern Matching for ADTs
-Expressive dispatch with exhaustiveness.
+This feature earns its complexity at a higher-order API boundary. It would add
+little value to a function with one fixed RAG argument shape.
+
+## A package is not a backend
+
+Module 09 leaves explicit Dask and Beam attachment points, but the course does not
+ship either compiler. Import availability answers only:
+
+> Can this Python environment import the optional package?
+
+It does not answer:
+
+- can FuncPipe translate its pipeline into that backend?
+- does the translation preserve chunk and failure values?
+- what delivery semantics apply after retries?
+- which order is preserved?
+- where does backpressure live?
+
+Module 10 represents these distinctions:
 
 ```python
-from typing_extensions import assert_never
+status = BackendStatus(
+    name="dask",
+    installed=True,
+    compiler_shipped=False,
+)
 
-def process_res(res: Result[Chunk, ErrInfo]) -> Chunk:
-    match res:
-        case Ok(chunk): return chunk
-        case Err(err) if err.code == "transient": raise RetryLater(err)
-        case Err(err): raise PermanentError(err)
-        case _: assert_never(res)  # mypy exhaustiveness aid
+assessment = assess_scaling(status, REQUIRED_SCALING_PROOFS)
+
+assert assessment.implementation_ready is False
+assert assessment.runtime_ready is False
 ```
 
-### 4.2 Typing Advances for HOFs
-Preserve arbitrary signatures.
+Import success cannot turn an unimplemented seam into a feature.
+
+## Readiness is a state transition
+
+```mermaid
+stateDiagram-v2
+    [*] --> SeamOnly
+    SeamOnly --> Implemented: compiler is shipped
+    Implemented --> SemanticallyReviewed: all required proofs pass
+    SemanticallyReviewed --> RuntimeReady: optional package is installed
+    RuntimeReady --> SemanticallyReviewed: package unavailable locally
+```
+
+The current teaching capstone stays at `SeamOnly`. That is an honest and usable
+state: local execution remains the oracle, and no optional backend is required to
+complete the course.
+
+`assess_scaling` expects proof names for:
+
+- `ordering`;
+- `failure`;
+- `delivery`; and
+- `backpressure`.
+
+These names are reminders of Module 08 and Module 09 contracts, not substitutes
+for tests. Supplying a string such as `"ordering"` is meaningful only after a
+real compiler has an executable parity test for ordering.
+
+## Missing proof remains visible
 
 ```python
-def logged_hof(f: Callable[P, R]) -> Callable[P, R]:
-    @wraps(f)
-    def wrapped(*args: P.args, **kwargs: P.kwargs) -> R:
-        logger.info(f"Calling {f.__name__} with args={args[:2]}...")
-        return f(*args, **kwargs)
-    return wrapped
+status = BackendStatus(
+    name="dask",
+    installed=True,
+    compiler_shipped=True,
+)
+verified = frozenset({"ordering", "delivery"})
+
+assessment = assess_scaling(status, verified)
+
+assert assessment.missing_proofs == ("backpressure", "failure")
+assert assessment.implementation_ready is False
 ```
 
-### 4.3 Parallel FuncPipe with Futures
-CPU-bound; stable order; per-item errors.
+Stable ordering of missing proof names makes the assessment reviewable. The
+decision does not install a package, import a backend, run a cluster, or compile a
+pipeline; those are effectful observations and executions outside this pure rule.
+
+## Run the focused evidence
+
+From `capstone/`:
+
+```bash
+pytest -q tests/unit/review/test_scaling.py
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k scaling_review_separates_installation_implementation_and_proof
+```
+
+Expected learning observations:
+
+- installed without compiler is not implementation-ready;
+- compiler plus all declared semantic proofs may be implementation-ready even
+  when the local package is absent; and
+- runtime readiness additionally requires local installation.
+
+This separation lets code review evaluate an implementation without requiring
+every learner to install an optional ecosystem.
+
+## Failure routes
+
+### Import-and-claim
 
 ```python
-from concurrent.futures import ProcessPoolExecutor
-from typing import List
-
-def _safe_apply(f: Callable[[T], R], x: T) -> Result[R, ErrInfo]:
-    try:
-        return Ok(f(x))
-    except Exception as exc:
-        return Err(ErrInfo(code=type(exc).__name__, message=str(exc)))
-
-def parallel_map_result(f: Callable[[T], R], items: List[T], max_workers: int = 4) -> List[Result[R, ErrInfo]]:
-    # f must be top-level/picklable; wrap in _safe_apply for error safety
-    with ProcessPoolExecutor(max_workers) as exec:
-        futures = [exec.submit(_safe_apply, f, item) for item in items]
-        return [fut.result() for fut in futures]  # Stable order
+if dask_available():
+    return "distributed-ready"
 ```
 
-### 4.4 Integrating Parallel in RAG
-Parallel chunking (stable order).
+This reports environment state as application capability.
 
-```python
-def parallel_chunk(docs: List[CleanDoc], size: int) -> List[Chunk]:
-    # chunk_doc must be top-level/picklable
-    with ProcessPoolExecutor() as exec:
-        results = exec.map(chunk_doc, docs, [size] * len(docs))
-    return [c for cs in results for c in cs]  # Stable order
-```
+### Compiler-and-claim
 
-### 4.5 Dask for Distributed
-Bag semantics (unordered); pure functions.
+A translation function can run while changing failure selection or materializing
+an unbounded stream. Implementation existence is not semantic parity.
 
-```python
-from functools import partial
-import dask.bag as db
+### Distributed example without application pressure
 
-def dask_chunk(docs: db.Bag[CleanDoc], size: int) -> db.Bag[Chunk]:
-    chunk_size = partial(chunk_doc, size=size)  # Picklable
-    return docs.map(chunk_size).flatten()
-```
+Adding a cluster-shaped example to a deterministic local course makes the RAG
+application harder to understand and teaches configuration rather than functional
+judgment.
 
-### RAG Integration
-Apply match/parallel in RAG; verify laws.
+### Advanced syntax everywhere
 
----
-## 5. Property-Based Proofs (capstone/tests/test_module_10_core6.py)
-PBT for parallel equiv (stable order).
+Pattern matching and higher-order typing can obscure simple logic when the domain
+is not closed or the signature does not need preservation. The review question is
+always whether the feature clarifies an owned contract.
 
-```python
-@given(docs=doc_list_strategy)
-def test_parallel_equiv(docs):
-    cleaned = [clean_doc(d) for d in docs]
-    seq = [c for d in cleaned for c in chunk_doc(d, 256)]
-    par = parallel_chunk(cleaned, 256)
-    assert eq_pure(seq, par, key=lambda c: (c.doc_id, c.start, c.end, c.text), ordered=True)
-```
+## What the evidence proves
 
----
-## 6. Runtime Preservation Guarantee
-Typing no overhead; match O(1); parallel near-linear speedup (benchmark target with GIL/serialization overhead).
+The focused tests prove that supplied installation, compiler, and proof facts are
+classified independently and that missing semantic proof names remain visible.
 
----
-## 7. Anti-Patterns & Immediate Fixes
-| Anti-Pattern         | Symptom                  | Fix                            |
-|----------------------|--------------------------|--------------------------------|
-| Verbose dispatch     | Hard to read             | Match for ADTs                 |
-| Type loss in HOFs    | Mypy errors              | ParamSpec                      |
-| Sequential scale     | Slow on multicore        | Parallel backends              |
-| Mutable parallel     | Races                    | Immutable data only            |
+They do not prove:
 
----
-## 8. Pre-Core Quiz
-1. Match for…? → **ADTs**  
-2. ParamSpec for…? → **HOFs**  
-3. Parallel with…? → **Futures/Dask**  
-4. Typing advances…? → **Safer HOFs**  
-5. Scaling for…? → **Multicore/distributed**
+- that Dask or Beam is installed;
+- that FuncPipe ships a distributed compiler;
+- that a backend preserves RAG semantics;
+- that distributed execution is faster; or
+- that the four proof categories are complete for a future deployment.
 
-## 9. Post-Core Exercise
-1. Add match to RAG error handling.  
-2. Parallelize embedding; PBT equiv.  
-3. Prototype Dask pipeline.
+Those claims must wait for a real application pressure and executable adapter.
+The local FuncPipe pipeline remains the complete course product.
 
-**Pipeline Usage (Idiomatic)**
-```python
-match res:
-    case Ok(v): ...
-par = parallel_map_result(f, items)
-```
-
-**Continue with:** [DDD and FP](../module-10-refactoring-performance-sustainment/ddd-and-fp.md)
+Continue with [DDD and FP](ddd-and-fp.md) to assign language and review ownership
+without turning package boundaries into invented services.

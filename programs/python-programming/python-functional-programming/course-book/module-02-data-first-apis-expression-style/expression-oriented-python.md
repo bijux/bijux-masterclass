@@ -419,3 +419,88 @@ prove it preserved behavior.
 
 Continue with [Expression Review and Trade-Offs](expression-review-and-tradeoffs.md)
 before you move into [Introducing Laziness](introducing-laziness.md).
+
+## Expression flow is about visible data movement
+
+An expression-oriented rewrite is successful when the reader can trace the value
+without simulating mutable control state. FuncPipe's smallest example is `pipe`:
+
+```python
+from funcpipe_rag import pipe
+
+
+def normalize(values: list[str]) -> list[str]:
+    return [value.strip().lower() for value in values]
+
+
+def keep_nonempty(values: list[str]) -> list[str]:
+    return [value for value in values if value]
+
+
+result = pipe([" A ", " ", "B"], normalize, keep_nonempty)
+assert result == ["a", "b"]
+```
+
+Read it left to right:
+
+```text
+input -> normalize -> keep_nonempty -> result
+```
+
+The preservation equation is:
+
+```python
+assert pipe(values, normalize, keep_nonempty) == keep_nonempty(normalize(values))
+```
+
+That equation tests the helper, not the domain functions. A RAG refactor also needs
+tests for chunk values, metadata, order, and observations.
+
+### Named intermediates can remain expression-oriented
+
+This is not a contest to produce one line:
+
+```python
+kept_docs = [doc for doc in docs if eval_pred(doc, config.keep.keep_pred)]
+cleaned_docs = [deps.cleaner(doc) for doc in kept_docs]
+chunks = [
+    deps.embedder(chunk)
+    for doc in cleaned_docs
+    for chunk in gen_chunk_doc(doc, config.env)
+]
+```
+
+Each binding names a domain boundary and contains one expression. The names make
+observation counts and failure locations reviewable. Compressing the three stages
+into one nested comprehension would remove useful structure.
+
+### Statements still own effects
+
+File writes, logging, exception translation, and resource cleanup often need
+statements because order and ownership matter. Keep the value computation
+expression-oriented and make the boundary sequence explicit:
+
+```python
+result = reader.read_docs(path)
+if isinstance(result, Err):
+    return result
+chunks, observations = full_rag_api_docs(result.value, config, deps.core)
+return Ok((chunks, observations))
+```
+
+The `if` is clearer than forcing error propagation into a conditional expression.
+Expression-oriented Python rejects incidental mutation; it does not reject all
+statements.
+
+Run the direct-threading proof:
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'expression_pipeline'
+```
+
+The proof establishes evaluation order and value equality for pure functions. It
+does not establish that every expression is pure or that a shorter expression is
+easier to maintain.

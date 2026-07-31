@@ -317,55 +317,22 @@ funcpipe-rag = "funcpipe_rag.boundaries.shells.cli:main"
 # Before: Script
 config = load_config('default.json')
 result = rag_pipeline(config, docs)
-# After: CLI
-$ rag rag-process input.txt --set chunk.params.size=256
+# After: the shipped CLI
+$ funcpipe-rag input.csv --config pipeline.json --set chunk.chunk_size=256
 ```
 ---
-## 5. Property-Based Proofs (repo tests)
-Runnable tests live in `capstone/tests/unit/pipelines/test_cli_overrides.py`.
+## 5. Executable proof
 
-```python
-from typer.testing import CliRunner
-from hypothesis import given
-import hypothesis.strategies as st
-import os
-import pytest
-from funcpipe_rag import StepConfig  # Import for tests
-from unittest.mock import patch  # Import for tests
+`tests/unit/pipelines/test_cli_overrides.py` covers parsing and merge behavior.
+The learning proof adds the operationally important typo route:
 
-
-# Property tests on pure layers
-@given(st.dictionaries(st.text(), st.text()))
-def test_deep_merge_precedence(base):
-    env = {'a': 'env'}
-    cli = {'a': 'cli', 'b': 'cli'}
-    merged = deep_merge(deep_merge(base, env), cli)
-    assert merged['a'] == 'cli'
-    assert 'b' in merged
-
-
-@given(st.integers(min_value=100, max_value=1000))
-def test_runner_equiv(chunk_size):
-    config = PipelineConfig(steps=[StepConfig(name='chunk', params={'size': chunk_size})])
-    spec = RunSpec(input_path=Path('test.txt'), config=config, artifacts={}, seed=42, output_format='json')
-    # In this repo, the CLI shell lives in `funcpipe_rag.boundaries.shells.cli`.
-    # Patch boundary I/O (storage) rather than core pipeline building.
-    with patch('funcpipe_rag.infra.adapters.file_storage.FileStorage.read_docs') as mock_load:
-        mock_load.return_value = []  # Mock boundary
-        result = run_from_spec(spec)
-    assert result.is_ok()  # Or check value
-
-
-# CLI example-based
-def test_cli_dry_run():
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        Path('test.txt').write_text('data')
-        os.environ['FUNCPipe_CONFIG'] = ''  # Pin
-        result = runner.invoke(app, ['rag-process', 'test.txt', '--dry-run'])
-        assert result.exit_code == 0
-        assert "Dry run" in result.output
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k cli_override_rejects_a_misspelled_stage_without_mutation
 ```
+
+This test uses the shipped stdlib-first helper API. Typer remains an optional
+shell and is not required for the configuration contract.
 ---
 ## 6. Runtime Preservation Guarantee
 CLI adds no overhead; core perf preserved.
@@ -386,9 +353,11 @@ CLI adds no overhead; core perf preserved.
 4. Thin adapters? → **Testability**
 5. Benefit? → **User-friendly entry**
 
-## 9. Post-Core Exercise
-1. Add CLI to RAG pipeline.
-2. Test equivalence with invoke.
+## 9. Post-core exercise
+
+Complete [CLI and config: make misspelled overrides fail
+closed](exercises.md#cli-and-config-make-misspelled-overrides-fail-closed).
+Explain why returning an unchanged configuration is not a harmless fallback.
 
 **Pipeline Usage (Idiomatic)**
 ```python

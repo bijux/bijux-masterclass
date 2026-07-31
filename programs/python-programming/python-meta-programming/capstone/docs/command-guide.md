@@ -45,7 +45,14 @@ to feel harder than it is.
 
 | If the question is about... | Start with | Escalate only if needed |
 | --- | --- | --- |
-| what the runtime exposes without invoking plugin behavior | `make manifest`, `make plugin`, `make field`, `make action`, `make registry`, or `make signatures` | `make inspect` |
+| what the runtime exposes without invoking plugin behavior | `make manifest`, `make plugin`, `make field`, `make field-ownership`, `make field-system`, `make action`, `make registry`, or `make signatures` | `make inspect` |
+| which object owns one field's lookup and storage contract | `make field-ownership` | `tests/test_fields.py` and `tests/test_cli.py` |
+| which descriptor-system powers the capstone accepts or rejects | `make field-system` | `tests/test_fields.py` and `tests/test_cli.py` |
+| whether proposed action arguments satisfy the real call contract | `make bind-action` | `tests/test_runtime.py` |
+| whether bound values match the supported runtime hint subset | `make check-action` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| what selected the metaclass, what each hook owned, and which powers remain outside class creation | `make class-creation` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| which runtime powers the application accepts, constrains, or rejects | `make governance` | `tests/test_governance.py` and the named mechanism tests |
+| which action layer owns wrapper metadata and explicit signature | `make action-wrapper` | `tests/test_runtime.py` |
 | one realistic invocation path | `make demo` or `make trace` | `tests/test_runtime.py` or `make tour` |
 | a durable artifact another reviewer can inspect later | `make inspect`, `make tour`, or `make verify-report` | `make proof` |
 | the strongest local confidence route | `make confirm` | `make proof` |
@@ -55,6 +62,16 @@ to feel harder than it is.
 - Choose `make manifest` when you need the safest observational route.
 - Choose `make registry` when the real question is "which plugins exist and in what order?"
 - Choose `make field` or `make action` when one small contract is the pressure point.
+- Choose `make field-ownership` when descriptor category, declaring class, or storage ownership is the pressure point.
+- Choose `make field-system` when the question spans all collected fields or asks why
+  caching, external storage, wrapper composition, or hint inference is absent.
+- Choose `make bind-action` when call validation matters but execution does not.
+- Choose `make check-action` when runtime hint matching or refusal matters but execution does not.
+- Choose `make class-creation` when metaclass selection, namespace, hook ownership,
+  generated structure, registration, or rejected powers matter.
+- Choose `make governance` before proposing a new runtime power or reviewing why an
+  existing mechanism remains in the application.
+- Choose `make action-wrapper` when wrapper ownership matters but execution does not.
 - Choose `make trace` when configuration, invocation history, and result probably all matter.
 - Choose `make inspect` when you need a saved route but do not yet need the strongest bundle.
 
@@ -74,7 +91,14 @@ to feel harder than it is.
 | `make manifest` | inspect exported plugin schema without invocation | public manifest JSON |
 | `make plugin` | inspect one concrete plugin contract | one plugin contract JSON |
 | `make field` | inspect one descriptor-backed field contract | one field contract JSON |
+| `make field-ownership` | inspect one field's descriptor owner without construction | hooks, category, class access, collection, and storage JSON |
+| `make field-system` | inspect system-level field powers without construction | field owners plus accepted and rejected power JSON |
 | `make action` | inspect one decorator-backed action contract | one action contract JSON |
+| `make action-wrapper` | inspect wrapper layers and preservation without execution | wrapper-chain audit JSON |
+| `make bind-action` | validate one action call without construction or invocation | normalized bound-argument JSON |
+| `make check-action` | check a narrow runtime hint subset without construction or invocation | checked, refused, and unchecked argument JSON |
+| `make class-creation` | inspect stored class-creation ownership | namespace, hook trace, declared/inherited members, generated structure, registration, and power-limit JSON |
+| `make governance` | review application-wide runtime power decisions | accepted, constrained, and rejected decisions with owner, rollback, and proof JSON |
 | `make registry` | inspect registration determinism from the public surface | registry JSON |
 | `make signatures` | inspect generated constructor and action signatures | signature JSON |
 | `make demo` | invoke one realistic action | one invocation result |
@@ -96,7 +120,14 @@ publishes honestly from the public surface.
 | registry export | which concrete plugins exist and in what deterministic order | `make registry` |
 | generated signatures | which constructor and action call shapes the runtime exposes | `make signatures` |
 | one field contract | how one descriptor-backed public contract appears from outside | `make field` |
+| one field ownership audit | which descriptor and storage boundary implement that contract | `make field-ownership` |
+| one field-system audit | which powers the complete collected field set accepts and rejects | `make field-system` |
 | one action contract | how one decorator-backed callable surface appears from outside | `make action` |
+| one action wrapper | which layer owns `ActionSpec`, `__signature__`, and `__wrapped__` | `make action-wrapper` |
+| one action preflight | whether proposed arguments satisfy the stored action signature | `make bind-action` |
+| one action contract check | whether bound values match supported hints and which hints are refused | `make check-action` |
+| one class-creation audit | what selected the metaclass and how preparation, shaping, and registration produced the class | `make class-creation` |
+| one governance audit | which runtime powers have earned their cost and which powers remain outside the application | `make governance` |
 
 ## One concrete behavior routes
 
@@ -125,7 +156,14 @@ sizes, and SHA-256 hashes for the saved route.
 | `make manifest` | inspection-time fact | group-level field and action metadata | `src/incident_plugins/framework.py` | `tests/test_registry.py` or [PROOF_GUIDE.md](proof-guide.md) |
 | `make plugin` | inspection-time fact | one concrete plugin contract | `src/incident_plugins/plugins.py` | `tests/test_runtime.py` |
 | `make field` | inspection-time fact | one descriptor-backed field contract | `src/incident_plugins/fields.py` | `tests/test_fields.py` |
+| `make field-ownership` | descriptor-structure fact | declaring class, hooks, lookup category, class access, metaclass collection, and storage key | `src/incident_plugins/fields.py` and `src/incident_plugins/framework.py` | `tests/test_fields.py` and `tests/test_cli.py` |
+| `make field-system` | descriptor-system boundary fact | every field's coercion and storage owner plus accepted and rejected powers | `src/incident_plugins/fields.py` and `src/incident_plugins/framework.py` | `tests/test_fields.py` and `tests/test_cli.py` |
 | `make action` | inspection-time fact | one decorator-backed action contract | `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
+| `make action-wrapper` | wrapper-structure fact | chain, signatures, and metadata ownership | `src/incident_plugins/actions.py` and `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| `make bind-action` | preflight fact | normalized arguments with execution explicitly absent | `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| `make check-action` | partial runtime-contract fact | checked, refused, and unchecked arguments with execution absent | `src/incident_plugins/actions.py` and `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| `make class-creation` | class-creation fact | metaclass selection, prepared namespace, hook trace, generated structure, registration, and rejected powers | `src/incident_plugins/framework.py` | `tests/test_runtime.py` and `tests/test_cli.py` |
+| `make governance` | application-policy fact | accepted, constrained, and rejected powers with ownership and recovery evidence | `src/incident_plugins/governance.py` | `tests/test_governance.py` and the named mechanism tests |
 | `make registry` | class-definition fact made observable later | registered plugin names and order | `src/incident_plugins/framework.py` | `tests/test_registry.py` |
 | `make signatures` | class-definition fact made observable later | generated constructor and action signatures | `src/incident_plugins/framework.py` and `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
 | `make demo` | call-time fact | one concrete invocation result | `src/incident_plugins/plugins.py` and `src/incident_plugins/actions.py` | [TEST_GUIDE.md](test-guide.md) |
@@ -146,9 +184,38 @@ sizes, and SHA-256 hashes for the saved route.
 `field` isolates descriptor-backed configuration. `action` isolates decorator-backed callable
 metadata.
 
+### `field` versus `field-ownership`
+
+`field` reports the exported configuration contract. `field-ownership` inspects the
+descriptor machinery that implements it without constructing the plugin.
+
 ### `demo` versus `trace`
 
 `demo` shows one result. `trace` shows result, configuration, and recorded history together.
+
+### `bind-action` versus `trace`
+
+`bind-action` validates the action shape without constructing a plugin. `trace` crosses
+into construction and execution, then reports configuration and recorded history.
+
+### `bind-action` versus `check-action`
+
+`bind-action` proves only that values fit the callable's parameter shape.
+`check-action` starts from those bound values and checks the deliberately small supported
+hint subset. It reports unsupported and unannotated parameters instead of pretending
+they passed.
+
+### `action` versus `action-wrapper`
+
+`action` reports the public action contract. `action-wrapper` follows the transformation
+chain and identifies which layer owns preservation and policy metadata.
+
+### `governance` versus a mechanism report
+
+`governance` records whether a power belongs in the application and names the evidence
+required to defend that decision. A focused report such as `field-system`,
+`action-wrapper`, or `class-creation` exposes how one approved or constrained mechanism
+actually behaves. The decision is not proof of its own implementation.
 
 ### `confirm` versus `proof`
 
@@ -159,6 +226,8 @@ metadata.
 - Choose `manifest` before `registry` unless plugin order is the actual question.
 - Choose `field` or `action` before `plugin` when one small contract is the real pressure.
 - Choose `trace` before `demo` when metadata or history might matter.
+- Choose `governance` before adding a new dynamic power, then follow the decision's
+  named observability and proof routes.
 - Choose `inspect` before `tour` when the question is still mainly about ownership.
 - Choose `confirm` before `proof` when a human-facing published bundle is not required.
 

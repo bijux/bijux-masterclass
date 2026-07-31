@@ -1,331 +1,259 @@
-# ADT Performance
+# ADT Performance: Prove Meaning Before Claiming Speed
 
+Algebraic data types create ordinary Python objects. In some workloads, a flat
+or array-backed representation may reduce interpreter overhead or make a
+numeric library usable. That possibility does not justify replacing clear
+domain values on suspicion.
 
-<!-- page-maps:start -->
-## Page Maps
+Module 5 therefore treats optimization as two separate questions:
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Algebraic Data Modelling Validation"]
-  page["ADT Performance"]
-  capstone["Capstone evidence"]
+1. Does another representation preserve the behavior we care about?
+2. Is it measurably better for a representative workload?
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+The checked-in FuncPipe evidence answers the first question. It does **not**
+currently contain a benchmark proving the hybrid path faster.
+
+## The reference path and experimental path
+
+The focused assembly lab has a clear per-value operation:
+
+```python
+def pure_embed(
+    chunk: AssembledChunk,
+) -> Validation[AssembledChunk, ErrInfo]:
+    model = chunk.metadata.embedding_model or "unknown"
+    embedding = Embedding(
+        vector=_embed_one(chunk.text.content),
+        model=model,
+    )
+    return assemble(chunk.text, chunk.metadata, embedding)
 ```
+
+The hybrid route temporarily flattens a batch:
+
+```text
+list[AssembledChunk]
+    -> OBatch(rows, embeddings=None)
+    -> OBatch(rows, embeddings=float32 array)
+    -> list[Validation[AssembledChunk, ErrInfo]]
+```
+
+`OChunk` stores scalar and list fields convenient for batch work. `OBatch`
+stores all embedding vectors in one NumPy array. Neither type is exported as
+the public result of `process_batch_hybrid`; values return through `assemble`.
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+  input["list[AssembledChunk]"]
+  pure["pure mode<br/>embed each domain value"]
+  flatten["hybrid mode<br/>flatten to OBatch"]
+  array["float32 embedding array"]
+  rebuild["rebuild through assemble"]
+  output["list[Validation[AssembledChunk, ErrInfo]]"]
 
-Good modeling and good performance are not enemies, but they are not automatically aligned either. The key discipline here is to compromise representation only when profiling justifies it and only when equivalence to the pure model is still demonstrable.
-
-## Start With the Performance Panic
-
-Teams often hit this lesson at the moment they are tempted to throw out their ADTs and “just use arrays and mutable structs everywhere.” The page should slow that reaction down and make the tradeoff reviewable.
-
-- If a path is slow but unmeasured, you do not yet know whether representation is the real problem.
-- If optimization changes public semantics, it is not a safe performance compromise.
-- If there is no easy way back to a pure fallback, the optimization is harder to trust and harder to test.
-
-**Core question**  
-When — and how — should you compromise on pure immutable ADTs for performance or ergonomics in hot paths, while proving that the optimized representation is semantically equivalent to the pure one?
-
-This lesson introduces performance compromise as a controlled representation choice:
-
-- keep pure ADTs at public boundaries and in business logic
-- flatten or vectorize only the parts proved to be hot
-- require equivalence evidence so speedups do not quietly rewrite the domain behavior
-
-The motivating complaints matter because they are real, but they do not all justify the same answer. The lesson needs to turn “performance panic” into a measured design process.
-
-The naïve reaction everyone has first:
-
-```python
-# BEFORE – pure but slow / verbose
-def embed_batch(chunks: list[Chunk]) -> list[Validation[Chunk, ErrInfo]]:
-    out = []
-    for c in chunks:
-        emb = embed_one(c.text.content)                 # pure Embedding, no per-item error
-        validated = assemble(c.text, c.metadata, emb)   # Validation only from assemble
-        out.append(validated)
-    return out   # N temporary tuples, N Chunk replacements
+  input --> pure --> output
+  input --> flatten --> array --> rebuild --> output
 ```
 
-This is the pressure that makes premature compromise tempting.
+The shared output type makes comparison possible. It does not make the two
+implementations equivalent automatically.
 
-The production pattern keeps semantics anchored in the pure model while allowing optimized representations where measurement proves they are worth it.
+## Build a preservation ledger
 
-```python
-# AFTER – hybrid, fast, proven correct
-obatch = to_optimized_batch(chunks)                     # O(N), mutable internals
-obatch.embeddings = embed_many([r.text for r in obatch.rows])  # NumPy, zero-copy
-validated_chunks = from_optimized_batch(obatch)         # back to pure ADTs, proven equivalent
+Before comparing code, list the observables that representation conversion
+must preserve:
+
+| Observable | Pure/hybrid expectation |
+| --- | --- |
+| batch length | equal |
+| item order | equal |
+| `AssembledChunk.id` | equal |
+| text content | equal |
+| source and tags | equal after the same assembly normalization |
+| expected model and dimension | equal |
+| success versus failure | corresponding variant |
+| failure errors | equal and in the same order |
+| embedding model | equal |
+| embedding vector | numerically equal within declared tolerance |
+
+This ledger prevents an attractive vector comparison from hiding reordered
+items, replaced IDs, or discarded metadata.
+
+## Run the application-level comparison
+
+From `programs/python-programming/python-functional-programming`:
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/python \
+  - <<'PY'
+from funcpipe_rag.fp.validation import VSuccess
+from funcpipe_rag.rag.domain import (
+    AssembledChunk,
+    ChunkMetadata,
+    ChunkText,
+    process_batch_hybrid,
+)
+
+chunk = AssembledChunk(
+    text=ChunkText("representation proof"),
+    metadata=ChunkMetadata(
+        source="lesson",
+        tags=("typed",),
+        embedding_model="local",
+    ),
+)
+pure = process_batch_hybrid([chunk], mode="pure")
+hybrid = process_batch_hybrid([chunk], mode="hybrid")
+
+assert isinstance(pure[0], VSuccess)
+assert isinstance(hybrid[0], VSuccess)
+print(pure[0].value.id == hybrid[0].value.id)
+print(pure[0].value.metadata == hybrid[0].value.metadata)
+print(pure[0].value.embedding.vector == hybrid[0].value.embedding.vector)
+PY
 ```
 
-That is the standard to leave with: compromise representation, never meaning.
+Expected output:
 
-Use this when you value ADTs but need a principled path through real performance pressure.
-
-**Outcome**
-1. Every hot path measured and justified.
-2. Optimized representations proven equivalent to pure ADTs.
-3. Full speed in loops, full safety at boundaries — forever.
-
-## Tiny Non-Domain Example – Vector Normalization Batch
-
-```python
-# Pure but slow (creates N temporary tuples)
-def normalize_pure(vs: list[tuple[float, ...]]) -> list[tuple[float, ...]]:
-    out = []
-    for v in vs:
-        norm = math.sqrt(sum(x*x for x in v))
-        out.append(tuple(x / norm for x in v))
-    return out
-
-# Hybrid – fast NumPy, proven equivalent
-def to_array(vs: list[tuple[float, ...]]) -> np.ndarray:
-    return np.array(vs, dtype=np.float32)
-
-def from_array(arr: np.ndarray) -> list[tuple[float, ...]]:
-    return [tuple(row.tolist()) for row in arr]
-
-def normalize_hybrid(vs: list[tuple[float, ...]]) -> list[tuple[float, ...]]:
-    arr = to_array(vs)
-    norms = np.linalg.norm(arr, axis=1, keepdims=True)
-    arr /= norms.clip(min=1e-12)      # avoid div-by-zero
-    return from_array(arr)
+```text
+True
+True
+True
 ```
 
-`normalize_hybrid` is 50–200× faster on 100k vectors, proven equivalent via property test.
+For this deterministic implementation and input, vectors compare exactly.
+Tests still use `pytest.approx`/`numpy.allclose` because the representation is
+explicitly `float32` and future numeric implementations may take different
+rounding paths.
 
-## Why Compromise Representation? (Three bullets every engineer should internalise)
+## Trace the conversion, field by field
 
-- **Measured bottlenecks**: Pure ADTs allocate heavily in loops — NumPy/tuples can be 10–100× faster with far fewer Python objects.
-- **Proven equivalence**: Property test `pure(x) == hybrid(x)` → you keep semantic safety while gaining speed.
-- **Boundaries only**: Pure ADTs at API edges → full type safety; optimized internals → full performance.
+`to_optimized_batch` changes representation:
 
-Compromise **representation**, never **semantics**.
+- UUID remains a UUID;
+- `ChunkText.content` becomes a string field;
+- tuple tags become a mutable list internal to `OChunk`;
+- metadata constraints become scalar fields;
+- embeddings are initially absent from the array.
 
-## 1. Laws & Invariants (machine-checked)
+After `embed_many`, `from_optimized_batch` reverses the shape:
 
-| Invariant                  | Description                                          | Enforcement                              |
-|----------------------------|------------------------------------------------------|------------------------------------------|
-| Measured Optimization      | Speedup ≥2× or memory ≤50% before merge              | Benchmark CI                             |
-| Semantic Equivalence       | `pure(x) == hybrid(x)` for all generated inputs      | Hypothesis property tests                |
-| Boundary Purity            | Public API takes/returns pure ADTs                   | mypy + runtime asserts                   |
-| Revertible Compromise      | `mode="pure"` fallback always available              | Feature flag + tests                     |
+- list tags become a tuple;
+- the NumPy row becomes a tuple of Python floats;
+- model metadata and the vector create `Embedding`;
+- `assemble` rechecks model/dimension agreement;
+- `dataclasses.replace` restores the original UUID.
 
-## 2. Decision Table – When to Compromise
+That final UUID replacement is easy to overlook. Without it, output text and
+vectors could be correct while identity changed.
 
-| Symptom                       | Pure Cost   | Compromise Pattern          | Threshold          |
-|-------------------------------|-------------|-----------------------------|--------------------|
-| High allocation in loop       | >10M objs   | Flatten to NumPy/array      | Profiled >2× slower|
-| Verbose field copying         | >50 lines   | Hybrid wrapper              | Developer time     |
-| Serialization overhead        | >100ms/batch| Custom MessagePack codec    | Measured           |
-| Batch embedding slow          | >10s/10k    | Mutable OBatch + bulk embed | Always hybrid      |
+The internal mutability of `OBatch` is a scoped compromise. It is acceptable
+only while callers cannot mistake the intermediate object for a validated
+domain result.
 
-Profile first. Compromise only when measured.
+## What the implementation does not prove
 
-## 3. Public API (fp/perf.py – mypy --strict clean)
+The name `embed_many` may suggest vectorized computation, but the current code
+uses a Python list comprehension around `_embed_one` and then calls
+`numpy.asarray`. It consolidates representation; it does not demonstrate that
+the hash calculation itself runs as one vectorized numeric kernel.
 
-```python
-# (imports elided for brevity – see full fp/perf.py in the repo)
-# Core imports: Chunk, Validation, VSuccess, VFailure,
-#               v_success, v_failure,
-#               ChunkText, ChunkMetadata, Embedding, ErrInfo,
-#               assemble, pure_embed, embed_many, replace
-# External: numpy as np, uuid.UUID
+Therefore these claims would be unsupported:
 
-from __future__ import annotations
+- “the hybrid path is 30–100 times faster”;
+- “NumPy always allocates less memory here”;
+- “the path is zero-copy”;
+- “property tests prove performance”;
+- “using an array makes execution parallel.”
 
-from dataclasses import dataclass
-from typing import Literal, Sequence
-import numpy as np
+A benchmark must measure both modes with representative batch sizes, warm-up,
+repeat policy, Python/NumPy versions, and memory method. Only then can a change
+make a quantified performance claim.
 
-from .domain import Chunk
-from .validation import Validation, v_success, v_failure
+## Correctness evidence and performance evidence
 
-__all__ = [
-    "OBatch", "to_optimized_batch", "from_optimized_batch",
-    "process_batch_hybrid",
-]
+| Question | Appropriate evidence |
+| --- | --- |
+| Are IDs, order, metadata, variants, and vectors preserved? | example tests and property-based equivalence tests |
+| Does an invalid metadata/embedding agreement fail the same way? | paired failure tests |
+| Is float drift within an accepted tolerance? | numeric comparison with documented `rtol`/`atol` |
+| Is hybrid faster for the target batch distribution? | benchmark with representative data |
+| Does hybrid use less peak memory? | repeatable memory measurement |
+| Is the extra representation worth maintaining? | profile plus code-review judgment |
 
-@dataclass(slots=True)
-class OBatch:
-    rows: list["OChunk"]
-    embeddings: np.ndarray | None = None   # float32, shape (N, D)
+Do not let a benchmark replace equivalence tests, or equivalence tests replace
+a benchmark. They answer different questions.
 
-@dataclass(slots=True)
-class OChunk:
-    id: UUID
-    text: str
-    source: str
-    tags: list[str]
-    model: str | None
-    expected_dim: int | None
-    row: int | None = None                 # index into embeddings array
+## Property tests strengthen, but bound, the claim
 
-def to_optimized_batch(chunks: Sequence[Chunk]) -> OBatch:
-    rows: list[OChunk] = []
-    for chunk in chunks:
-        row = OChunk(
-            id=chunk.id,
-            text=chunk.text.content,
-            source=chunk.metadata.source,
-            tags=list(chunk.metadata.tags),
-            model=chunk.metadata.embedding_model,
-            expected_dim=chunk.metadata.expected_dim,
-        )
-        rows.append(row)
-    return OBatch(rows=rows, embeddings=None)
+`test_perf_equivalence.py` generates batches of `AssembledChunk` values and
+compares pure and hybrid results. Read the strategy before summarizing the
+proof:
 
-def from_optimized_batch(ob: OBatch) -> list[Validation[Chunk, ErrInfo]]:
-    out: list[Validation[Chunk, ErrInfo]] = []
-    for i, oc in enumerate(ob.rows):
-        text = ChunkText(oc.text)
-        meta = ChunkMetadata(
-            source=oc.source,
-            tags=tuple(oc.tags),
-            embedding_model=oc.model,
-            expected_dim=oc.expected_dim,
-        )
-        emb = None
-        if ob.embeddings is not None:
-            vec = tuple(ob.embeddings[i].tolist())
-            model = oc.model or "unknown"
-            # Embedding infers dim from vector in __post_init__,
-            # so we don't pass dim explicitly here.
-            emb = Embedding(vector=vec, model=model)
-        v = assemble(text, meta, emb)
-        if isinstance(v, VSuccess):
-            chunk = replace(v.value, id=oc.id)
-            out.append(v_success(chunk))
-        else:
-            out.append(v)
-    return out
+- batch size is bounded;
+- text and metadata strings are bounded;
+- starting embeddings are absent;
+- `expected_dim` is `None`;
+- numeric comparisons use explicit tolerance.
 
-def process_batch_hybrid(
-    batch: list[Chunk],
-    *,
-    mode: Literal["pure", "hybrid"] = "hybrid",
-) -> list[Validation[Chunk, ErrInfo]]:
-    if mode == "pure":
-        # pure path – reference implementation
-        return [pure_embed(c) for c in batch]
+The property test covers many values inside that domain. It does not quantify
+all Python values or every future metadata rule.
 
-    # hybrid path – fast
-    ob = to_optimized_batch(batch)
-    texts = [r.text for r in ob.rows]
-    ob.embeddings = embed_many(texts)                    # bulk NumPy call
-    return from_optimized_batch(ob)                      # moves numeric work into a contiguous NumPy array and reduces Python overhead
+The application-level learning test uses one deliberately readable value:
+
+```bash
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/pytest \
+  -q capstone/module-reference-states/module-05/tests/learning/test_module_05_data_modelling.py \
+  -k hybrid_embedding
 ```
 
-## 4. Reference Implementations (continued)
+Use the readable example to understand the ledger, then the generated test to
+broaden confidence.
 
-### 4.1 Before vs After – Embedding Batch
+## Guard the intermediate representation
 
-```python
-# BEFORE – pure, slow, high allocation
-def embed_batch_pure(chunks: list[Chunk]) -> list[Validation[Chunk, ErrInfo]]:
-    out = []
-    for c in chunks:
-        emb = embed_one(c.text.content)
-        validated = assemble(c.text, c.metadata, emb)
-        out.append(validated)
-    return out   # N temporary tuples, N Chunk replacements
+`from_optimized_batch` assumes the embeddings array has one row per `OChunk`.
+An externally constructed `OBatch` with mismatched row counts can fail with an
+index error. The current route is safe because `process_batch_hybrid` creates
+both pieces together.
 
-# AFTER – hybrid, fast, proven equivalent
-def embed_batch_hybrid(chunks: list[Chunk]) -> list[Validation[Chunk, ErrInfo]]:
-    ob = to_optimized_batch(chunks)
-    ob.embeddings = embed_many([r.text for r in ob.rows])  # single NumPy call
-    return from_optimized_batch(ob)                       # moves numeric work into a contiguous NumPy array and reduces Python overhead
+If `OBatch` becomes a public or persisted boundary, it will need explicit
+shape validation:
+
+```text
+embeddings.shape == (len(rows), expected_dimension)
 ```
 
-`embed_batch_hybrid` is 30–100× faster on 10k chunks, proven equivalent via property test.
+That is a good example of optimization expanding the invariant surface. A
+private intermediate can rely on construction discipline; a public value needs
+validation and useful failures.
 
-### 4.2 RAG Integration – Full Hybrid Pipeline
+## Decide whether the compromise is earned
 
-```python
-processed = process_batch_hybrid(raw_chunks, mode="hybrid")
-# or pure fallback in tests:
-processed = process_batch_hybrid(raw_chunks, mode="pure")
-```
+Before retaining an optimized representation, answer:
 
-## 5. Property-Based Proofs (capstone/tests/test_perf_equivalence.py)
+1. Which profile identifies representation as a bottleneck?
+2. Which public observables form the equivalence ledger?
+3. Which numeric tolerance is acceptable, and why?
+4. Where is mutable or untyped state confined?
+5. Can the clear reference path remain executable?
+6. What new invalid intermediate states have been introduced?
+7. Which benchmark demonstrates a worthwhile gain?
 
-```python
-from hypothesis import given, strategies as st
-import numpy as np
+For this course state, the honest conclusion is: the hybrid route is a useful
+representation-equivalence exercise, while its performance benefit remains to
+be measured.
 
-@given(batch=st.lists(chunk_strat, min_size=1, max_size=1000))
-def test_pure_vs_hybrid_equivalence(batch):
-    pure = embed_batch_pure(batch)
-    hybrid = embed_batch_hybrid(batch)
-    assert len(pure) == len(hybrid)
-    for p, h in zip(pure, hybrid):
-        if isinstance(p, VSuccess):
-            assert isinstance(h, VSuccess)
-            pc = p.value
-            hc = h.value
-            assert pc.id == hc.id
-            assert pc.text.content == hc.text.content
-            assert pc.metadata == hc.metadata
-            assert (pc.embedding is None) == (hc.embedding is None)
-            if pc.embedding is not None:
-                assert np.allclose(
-                    pc.embedding.vector,
-                    hc.embedding.vector,
-                    rtol=1e-5,
-                    atol=1e-8,
-                )
-                assert pc.embedding.model == hc.embedding.model
-        else:
-            assert isinstance(h, VFailure)
-            assert p.errors == h.errors
-```
+## Check your understanding
 
-## 6. Big-O & Allocation Guarantees
+1. Why is comparing only embedding vectors insufficient?
+2. Which conversion step restores `AssembledChunk.id`?
+3. Why does `numpy.asarray` not itself prove vectorized speedup?
+4. What domain does the property strategy actually generate?
+5. What validation would be required if `OBatch` became public?
 
-| Operation                 | Pure (Python objects)                        | Hybrid (NumPy)                                      | Notes                                                   |
-|---------------------------|----------------------------------------------|-----------------------------------------------------|---------------------------------------------------------|
-| Batch embedding (N chunks)| O(N×D) time, O(N×D) Python-level numeric ops | O(N×D) time, O(N) domain objects + O(N×D) numeric in C | Hybrid shifts work from Python to NumPy and reduces interpreter overhead |
-| Memory peak               | High (many small objs)                       | Lower (single array)                                | Hybrid improves locality & GC pressure                 |
-
-## 7. Anti-Patterns & Immediate Fixes
-
-| Anti-Pattern                  | Symptom                            | Fix                                      |
-|-------------------------------|------------------------------------|------------------------------------------|
-| Premature optimization        | Unmeasured changes                 | Profile first                            |
-| Compromise without proof      | Silent semantic drift              | Equivalence property test                |
-| Hybrid everywhere             | Lost type safety                   | Hybrid only in measured hot paths        |
-| Mutable at boundaries         | External corruption                | Pure ADTs at API edges                   |
-
-## 8. Pre-Core Quiz
-
-1. Compromise when…? → **Measured ≥2× slowdown**  
-2. Prove equivalence with…? → **Property test pure(x) == hybrid(x)**  
-3. Keep pure at…? → **Boundaries / business logic**  
-4. Hybrid pattern? → **Mutable/flat internal, ADT external**  
-5. Never compromise…? → **Semantics**
-
-## 9. Post-Core Exercise
-
-1. Profile your RAG pipeline → find hottest path.  
-2. Implement hybrid version → add equivalence property test.  
-3. Measure speedup → justify in PR.  
-4. Add `mode="pure"` fallback → use in tests.
-
-**End of Module 05**
-
-You have completed the journey: from raw dicts to bulletproof ADTs, functors, applicatives, monoids, pattern matching, stable serialization, compositional models, and finally — principled performance compromises that never sacrifice semantics.
-
-Your system is now correct, fast, maintainable, and evolvable.  
-Go build something that lasts.
+Continue to the [Refactoring Guide](refactoring-guide.md) when you can separate
+semantic equivalence, numeric tolerance, measured speed, and maintenance cost.

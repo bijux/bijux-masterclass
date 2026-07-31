@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,289 +8,337 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
   section["Data Identity Content Addressing"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+  page["Data identity exercises"]
+  capstone["Data identity audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.uses.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["bound identity claim"] --> pointer["trace pointer to bytes"]
+  pointer --> contrasts["test path contrasts"]
+  contrasts --> recovery["prove cache and remote recovery"]
+  recovery --> negative["preserve unrecoverable case"]
+  negative --> review["assemble evidence review"]
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice identity and state-layer judgment, not only DVC command
-vocabulary. The goal is to make different trust questions stop collapsing into "the repo"
-or "the data."
+These exercises form one cumulative data-identity review. Every recovery claim must name
+required identity, surviving supplier, state move, restored-byte verification, and limits.
 
-## How to work through this set
+## Working directory
 
-Treat the ten exercises as one full lab day on state authority and recovery boundaries.
-
-Before each answer:
-
-1. name the trust question you are trying to answer
-2. decide which layer should answer it first
-3. explain what that layer can and cannot prove by itself
-
-If you skip the layer question, DVC pointers, cache objects, workspace files, remotes,
-and published bundles all blur together.
-
-Do the exercises in order. The day is one progression:
-
-- Exercises 1-3 separate paths, identity, and state-authority questions
-- Exercises 4-6 explain DVC commands as state moves and inspect pointers by hand
-- Exercises 7-8 test checkout and remote recovery honestly
-- Exercises 9-10 diagnose missing objects and draw a full authority diagram
-
-Keep one state-authority packet as you go. By the end of the day it should contain:
-
-- one explanation of why a path is weaker than identity
-- one plain-language separation of pointer, cache, and workspace
-- one authoritative-layer table
-- one hand inspection of a pointer and its cache object
-- one empty-cache remote recovery drill
-- one state-authority diagram with commands and recovery claims
-
-If those six artifacts are missing, you are probably memorizing DVC terms instead of
-learning how the layers answer different questions.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module02-lab/
-├── data/
-├── dvc.yaml
-├── notes/
-├── publish/
-└── artifacts/
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/data-identity
+learning=artifacts/learning/deep-dive-dvc/data-identity
+mkdir -p "$learning"
 ```
 
-Keep one authority table while you work:
+Produce:
 
-| Question | First authoritative layer | Evidence route | What it still cannot prove |
-| --- | --- | --- | --- |
+```text
+data-identity/
+├── identity-claim.md
+├── pointer-trace.tsv
+├── path-contrasts.md
+├── state-ledger.tsv
+├── command-receipts.md
+├── cache-recovery.md
+├── remote-recovery.md
+├── negative-recovery.md
+├── recovery-manifest.json
+└── review-packet.md
+```
 
-Also keep one state-move table:
+## Exercise: Bound the data identity claim
 
-| Command | Layer changed | New trust added | Trust not added |
-| --- | --- | --- | --- |
+Write `identity-claim.md`.
 
-Those two tables matter because Module 02 is where many students first stop treating all
-copies of "the data" as equivalent.
+Include:
+
+- baseline content ID, size, path, and independent SHA-256;
+- distinction among locator, identity, and availability;
+- result supported by equal-byte and changed-byte contrasts;
+- required recovery evidence;
+- semantic checks outside byte identity;
+- four claims the audit does not support.
+
+Add:
+
+| Question | Evidence | Limit |
+| --- | --- | --- |
+| which bytes recorded? | | |
+| where projected? | | |
+| locally available? | | |
+| remotely recoverable? | | |
+| scientifically suitable? | | |
+
+**Success condition**
+
+The claim never treats a path, pointer, or successful command as sufficient alone.
+
+## Exercise: Trace a pointer to matching bytes
+
+Write `pointer-trace.tsv`:
+
+```text
+surface	value	evidence_role	verification
+```
+
+Include pointer path, hash type, content ID, size, derived cache path, workspace SHA-256,
+and cache SHA-256.
+
+Inspect:
+
+```bash
+cat "$audit/workspace/pointer-cache/data/observations.csv.dvc"
+jq '.findings[] |
+  select(.finding == "POINTER_NAMES_CACHED_CONTENT")' "$audit/report.json"
+```
+
+**Success condition**
+
+Another learner can derive the cache address and explain why the audit uses both DVC's MD5
+and an independent SHA-256 comparison.
+
+## Exercise: Disprove path-based identity
+
+Write `path-contrasts.md` comparing:
+
+- same bytes at `data/observations.csv` and `archive/renamed.csv`;
+- changed bytes at stable `data/observations.csv`.
+
+For each contrast, state:
+
+- controlled fact;
+- changed fact;
+- observed IDs;
+- inference;
+- unsupported overclaim.
+
+Include a diagram and this conclusion in your own words:
+
+> Location change neither requires nor prevents content-identity change.
+
+**Success condition**
+
+The reasoning uses both contrasts; it does not generalize from only one.
+
+## Exercise: Build a state-layer ledger
+
+Write `state-ledger.tsv`:
+
+```text
+case_moment	pointer	workspace	cache	remote	supplier	recoverable	decision
+```
+
+Include:
+
+- baseline after add;
+- cache case before and after checkout;
+- remote case after push;
+- remote case after workspace/cache loss;
+- remote case after pull;
+- pointer-only case before and after failed checkout.
+
+Use `present`, `absent`, or `not-configured` consistently.
+
+**Success condition**
+
+Every recovery decision follows from a named supplier, and pointer-only state is marked
+identifiable but unrecoverable.
+
+## Exercise: Interpret commands as state moves
+
+Write `command-receipts.md` for `add`, `push`, `checkout`, and `pull`.
+
+For each command:
+
+```text
+Before state
+Command receipt
+Expected moved identity
+After state
+Verification
+Supported claim
+Unsupported claim
+```
+
+Use receipts from `$audit/evidence/`.
+
+Add a decision table choosing the narrowest command for:
+
+- unmanaged workspace data;
+- missing workspace with cache present;
+- missing workspace/cache with remote present;
+- missing workspace/cache/remote with pointer present.
+
+**Success condition**
+
+The last scenario has no invented recovery command.
+
+## Exercise: Prove cache-only recovery
+
+Write `cache-recovery.md`.
+
+Include:
+
+- required identity;
+- before-state proving workspace absence and cache presence;
+- checkout receipt;
+- restored workspace evidence;
+- pointer-identity comparison;
+- restored SHA-256 comparison;
+- decision and limits.
+
+Explain why this case cannot prove remote durability.
+
+**Success condition**
+
+Your argument names the local cache as causal supplier and does not mention remote recovery
+as observed fact.
+
+## Exercise: Prove remote recovery after local loss
+
+Write `remote-recovery.md`.
+
+Include:
+
+- publication receipt;
+- before-state with workspace and named cache object absent;
+- configured remote role;
+- pull receipt;
+- cache repopulation;
+- workspace restoration;
+- baseline and recovered identity comparison;
+- decision, time boundary, and limits.
+
+Explain why removing local cache strengthens the causal claim.
+
+**Success condition**
+
+The conclusion is bounded to the audited object and does not claim all remote history or
+future retention.
+
+## Exercise: Defend negative recovery evidence
+
+Write `negative-recovery.md` for the pointer-only case.
+
+Include:
+
+- what metadata survives;
+- what content layers are absent;
+- checkout command, exit, and stderr;
+- post-failure workspace/cache state;
+- why audit result is `PASS`;
+- why recovery decision is `REJECT`;
+- useful next searches;
+- when to declare the original identity unrecoverable.
+
+**Success condition**
+
+The pointer remains valuable diagnostic evidence but is never described as a backup.
+
+## Exercise: Design a recovery manifest
+
+Create valid `recovery-manifest.json` with placeholder identities:
+
+- schema;
+- recovery identifier;
+- Git revision;
+- pointer path, content ID, size, hash type;
+- independent baseline digest;
+- loss boundary;
+- supplier type and role;
+- command receipt identity;
+- restored cache and workspace identities;
+- semantic validation receipts;
+- decision;
+- limits;
+- timestamps;
+- verifier.
+
+Validate:
+
+```bash
+jq empty "$learning/recovery-manifest.json"
+```
+
+**Success condition**
+
+The manifest joins one loss event, one required identity, one supplier, and one verified
+decision without secrets.
+
+## Exercise: Assemble an independent identity review
+
+Write `review-packet.md`.
+
+Include:
+
+- bounded identity claim;
+- audit regeneration command;
+- artifact map;
+- seven-finding matrix;
+- locator/identity/availability distinction;
+- cache and remote recovery arguments;
+- pointer-only rejection;
+- semantic verification boundary;
+- recovery manifest route;
+- unresolved risks;
+- completion commands.
+
+Add:
 
 ```mermaid
 flowchart LR
-  path["distinguish path from identity"]
-  layer["separate pointer, cache, workspace, remote"]
-  move["explain commands as state moves"]
-  inspect["inspect pointer and cache by hand"]
-  recover["test bounded recovery honestly"]
-  publish["state who is authoritative for what"]
-
-  path --> layer --> move --> inspect --> recover --> publish
+  claim["identity-claim.md"] --> pointer["pointer-trace.tsv"]
+  pointer --> contrasts["path-contrasts.md"]
+  contrasts --> ledger["state-ledger.tsv"]
+  ledger --> commands["command-receipts.md"]
+  commands --> cache["cache-recovery.md"]
+  commands --> remote["remote-recovery.md"]
+  commands --> negative["negative-recovery.md"]
+  cache --> manifest["recovery-manifest.json"]
+  remote --> manifest
+  negative --> review["review-packet.md"]
+  manifest --> review
 ```
 
-Use that route on purpose. It keeps the day centered on trust and authority instead of on
-surface-level command memory.
-
-## Exercise 1: Explain why the path is too weak
-
-A teammate says:
-
-> The dataset is `data/train.csv`, so as long as that file exists, the identity problem is solved.
-
-Write a short response that explains:
-
-- what the path does tell you
-- what it does not tell you
-- why that difference matters for reproducibility
-- one sentence explaining when the path is still useful
-
-Study note:
-The point is not to dismiss paths. The point is to stop mistaking location for identity.
-
-## Exercise 2: Separate pointer, cache, and workspace
-
-Suppose you have run `dvc add data/raw.csv`.
-
-Explain in plain language:
-
-- what the `.dvc` file is doing
-- what the cache is doing
-- why the workspace file is still a different layer from both
-- one sentence explaining why calling the pointer "the data" is misleading
-
-Your answer should avoid jargon where possible.
-
-Study note:
-This exercise is about conceptual clarity. If the language stays fuzzy here, later remote
-and recovery reasoning will also stay fuzzy.
-
-## Exercise 3: Name the authoritative layer
-
-For each question below, say which layer you would inspect first:
-
-1. what did the pipeline actually record as executed?
-2. what may a downstream reviewer safely trust?
-3. what survives local cache loss?
-4. what files are visible in the working tree right now?
-
-Use the vocabulary from the module rather than generic phrases like "the repo."
-
-What to hand in:
-
-- the four layer assignments
-- one sentence per assignment explaining why that layer comes first
-- one sentence explaining why the same answer would be wrong for a different question
-
-Study note:
-This is where many students realize that "where should I look?" is itself a trust
-question.
-
-## Exercise 4: Explain the commands as state moves
-
-Write a short explanation of what changes when you run:
-
-- `dvc push`
-- `dvc pull`
-- `dvc checkout`
-
-Your answer should focus on which layer each command affects and what new trust it adds or
-does not add.
-
-What to hand in:
-
-- the three command explanations
-- one sentence explaining which command helps recovery most directly
-- one sentence explaining which command does not prove durability by itself
-
-Study note:
-The commands matter less than the state movement they perform.
-
-## Exercise 5: Diagnose a recovery claim
-
-A team says:
-
-> We rebuilt the workspace after deleting local files, so the published release and the full repository are both fully proven.
-
-Explain:
-
-- what this recovery success does prove
-- what it does not prove yet
-- which additional boundary the team may be confusing with recovery
-- one sentence explaining why bounded proof is still valuable
-
-Study note:
-Recovery is strong evidence. It is just not infinite evidence.
-
-## Midday self-check
-
-Before you move into pointer inspection, revision switching, and missing-object diagnosis,
-make sure your packet can already answer these questions cleanly:
-
-- why a path is weaker than identity
-- what each of pointer, cache, and workspace contributes to the workflow story
-- which layer you would inspect first for at least two different trust questions
-- what kind of claim a recovery success still cannot justify
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
-
-## Exercise 6: Inspect a pointer by hand
-
-Track a small file with DVC. Open the resulting `.dvc` file, locate its object identifier
-and size, then find the corresponding cache object. Explain the relationship without
-calling the pointer "the data."
-
-What to hand in:
-
-- the pointer fields you inspected
-- the matching cache-object location
-- one sentence explaining the relationship
-- one sentence explaining what would still be missing if only the pointer survived
-
-Study note:
-This is the exercise where content addressing should stop feeling abstract.
-
-## Exercise 7: Prove checkout changes workspace state
-
-Create two Git revisions that point to different versions of one dataset. Switch between
-the revisions and use `dvc checkout`. Record what changes in Git, the workspace, and the
-cache at each step.
-
-What to hand in:
-
-- the two revisions and their pointer difference
-- what changed in the workspace
-- what remained in cache
-- one sentence explaining why workspace state and cache state are not interchangeable
-
-Study note:
-This is a good exercise for seeing why path equality is weaker than content identity.
-
-## Exercise 8: Test a remote from an empty cache
-
-Push a tracked artifact, clone into a clean directory with an empty DVC cache, and recover
-it. Capture the commands and checksums that prove the remote held the required object.
-
-What to hand in:
-
-- the empty-cache recovery route
-- the commands you used
-- the checksum or equivalent identity evidence
-- one sentence explaining what this proves about the remote and what it does not prove
-
-Study note:
-The key lesson is that a successful push is weaker than a successful clean recovery.
-
-## Exercise 9: Diagnose a missing-object failure
-
-Remove or isolate one required cache object without changing the pointer. Run the
-appropriate status or pull command and explain why metadata can remain valid while content
-is unavailable.
-
-What to hand in:
-
-- the simulated failure setup
-- the command and observed failure
-- the explanation of how metadata can stay valid
-- one sentence explaining which recovery claim has now failed
-
-Study note:
-This is the exercise where availability and identity finally separate cleanly in most
-students' heads.
-
-## Exercise 10: Draw a state-authority diagram
-
-Draw Git, workspace, cache, remote, and published bundle as separate nodes. Label the
-commands that move or materialize state and mark which node is authoritative for recovery
-under your chosen policy.
-
-What to hand in:
-
-- the full diagram
-- one sentence per node explaining its authority
-- one sentence explaining where downstream trust begins
-- one sentence explaining which node many teams overtrust
-
-Study note:
-The best diagrams answer concrete trust questions instead of merely showing arrows between
-tools.
-
-## Mastery check
-
-You have a strong grasp of this module if your answers consistently keep four ideas
-visible:
-
-- paths are locators, not identity
-- content identity needs recorded references and storage layers
-- different repository layers answer different trust questions
-- recovery is a bounded proof, not a magic guarantee about everything
+Verify:
+
+```bash
+test -s "$learning/identity-claim.md"
+test -s "$learning/pointer-trace.tsv"
+test -s "$learning/path-contrasts.md"
+test -s "$learning/state-ledger.tsv"
+test -s "$learning/command-receipts.md"
+test -s "$learning/cache-recovery.md"
+test -s "$learning/remote-recovery.md"
+test -s "$learning/negative-recovery.md"
+jq empty "$learning/recovery-manifest.json"
+test -s "$learning/review-packet.md"
+```
+
+**Success condition**
+
+A missed-class learner can regenerate the audit, locate exact bytes from the pointer,
+identify the supplier in each recovery, reproduce the rejected case, and state where byte
+identity stops.
+
+## Completion standard
+
+Your packet demonstrates:
+
+- path is a locator rather than identity;
+- pointer identity maps to matching managed bytes;
+- same and changed content contrasts are paired;
+- state layers are recorded before intervention;
+- commands are explained as bounded moves;
+- local and remote suppliers are isolated;
+- negative evidence remains inspectable;
+- restored identity precedes semantic trust;
+- recovery evidence is joined in a manifest;
+- review works without oral explanation.

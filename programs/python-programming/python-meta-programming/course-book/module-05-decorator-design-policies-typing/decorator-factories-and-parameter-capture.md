@@ -51,6 +51,25 @@ Add one more review question beside it:
 
 > if this configuration were wrong, when would I notice and who would have to fix it?
 
+## Read the shipped factory before writing another
+
+Open `labs/decorator_policy/retry.py` and locate `retry`. It has three distinct
+execution moments:
+
+| Moment | Code that runs | Object or state produced |
+| --- | --- | --- |
+| factory call | validates `exceptions`, `max_attempts`, and `backoff_seconds` | an immutable `RetryPolicy` plus `decorate` |
+| decorator application | receives `function` | `wrapped`, which closes over the function, policy, exception tuple, and sleeper |
+| ordinary call | enters the finite loop | a result or the final retryable exception |
+
+Run `make decorator-policy-lab` and inspect `retry.captured_policy`. That policy is
+available before `deliver("INC-42")` runs. The output therefore proves capture timing
+without relying on a print statement hidden in the factory.
+
+Now change `max_attempts` to `4` without adding a third delay. The factory raises
+`ValueError` before it receives a function. That is a deliberate definition-time
+failure: an incoherent policy never becomes a callable.
+
 ## A decorator factory has three layers
 
 The standard shape is:
@@ -63,24 +82,14 @@ The factory captures configuration. The decorator captures the function. The wra
 on each call with both available through closures.
 
 ```python
-import functools
-import time
-
-
-def timer(prefix):
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            start = time.perf_counter()
-            try:
-                return func(*args, **kwargs)
-            finally:
-                elapsed = time.perf_counter() - start
-                print(f"{prefix}: {func.__name__} took {elapsed:.4f}s")
-
-        return wrapper
-
-    return decorator
+factory = retry(
+    exceptions=(TransientDeliveryError,),
+    max_attempts=3,
+    backoff_seconds=(0.1, 0.2),
+    sleep=record_sleep,
+)
+decorated = factory(deliver)
+result = decorated("INC-42")
 ```
 
 That is the full structure. Nothing else is hidden.
@@ -92,45 +101,53 @@ name where each responsibility lives:
 - the decorator owns rebinding
 - the wrapper owns repeated runtime behavior
 
-## One picture of the timing
+## Trace the captured owners
 
 ```mermaid
 graph TD
-  factory["Factory call<br/>timer('IO')"]
+  factory["Factory call<br/>retry(...)"]
   decorator["Returned decorator"]
   apply["decorator(func)"]
-  wrapper["wrapper closes over prefix and func"]
+  wrapper["wrapper closes over policy,<br/>exceptions, sleeper, and function"]
   caller["later call"]
   factory --> decorator --> apply --> wrapper --> caller
 ```
 
-Caption: configuration is captured once when the function is defined; the wrapper uses it later on each invocation.
+Caption: policy is validated and captured once; the finite call loop consumes it later.
 
 ## `@factory(arg)` is just another desugaring
 
 This:
 
 ```python
-@timer("IO")
-def work(...):
+@retry(
+    exceptions=(TransientDeliveryError,),
+    max_attempts=3,
+    backoff_seconds=(0.1, 0.2),
+)
+def deliver(incident_id: str) -> str:
     ...
 ```
 
 means:
 
 ```python
-decorator = timer("IO")
+decorator = retry(
+    exceptions=(TransientDeliveryError,),
+    max_attempts=3,
+    backoff_seconds=(0.1, 0.2),
+)
 
-def work(...):
+def deliver(incident_id: str) -> str:
     ...
 
-work = decorator(work)
+deliver = decorator(deliver)
 ```
 
 So the timing is:
 
-- `timer("IO")` runs once
-- the resulting decorator wraps `work` once
+- `retry(...)` validates and captures its policy once
+- the resulting decorator wraps `deliver` once
 - later calls run the wrapper many times
 
 That separation becomes important when configuration work is heavy or when the decorator
@@ -156,27 +173,10 @@ Use this table during review:
 
 ## Different applications get independent configuration
 
-```python
-import functools
-import logging
-
-
-def log_level(level):
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            logger = logging.getLogger(func.__name__)
-            logger.setLevel(level)
-            logger.log(level, f"Calling {func.__name__}")
-            return func(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
-```
-
-Two uses of `@log_level(...)` do not share the same closed-over configuration by accident.
-Each factory call produces a distinct decorator carrying its own settings.
+Apply `retry` twice: once for `(ConnectionError,)` with two attempts, and once for
+`(TimeoutError,)` with four. Each wrapped callable exposes its own
+`__retry_policy__`. The policies are immutable values, not one mutable global settings
+dictionary.
 
 That is one of the big benefits of this pattern: per-use configuration without global
 state.
@@ -253,6 +253,21 @@ These are the mistakes to catch before the module moves into heavier policy:
 | allowing configuration to imply stronger guarantees than the wrapper delivers | readers overtrust the surface | state the exact supported behavior and non-goals |
 | preserving metadata but hiding captured policy | tooling can inspect the callable but humans still cannot inspect the ownership story | document or externalize the policy surface |
 
+## Prove the timing claim
+
+Run:
+
+```bash
+python -m unittest \
+  tests.test_decorator_policy_evidence.DecoratorPolicyEvidenceTests.test_retry_factory_rejects_incoherent_policy_before_decoration \
+  tests.test_decorator_policy_evidence.DecoratorPolicyEvidenceTests.test_retry_wrapper_exposes_policy_and_preserves_callable_evidence
+```
+
+The first test proves configuration is rejected at factory time. The second proves the
+captured policy remains inspectable while `functools.wraps` preserves the original
+callable surface. Neither test proves retry is safe for non-idempotent work; that
+judgment belongs to the next core.
+
 ## Review rules for decorator factories
 
 When reviewing a decorator factory, keep these questions close:
@@ -277,9 +292,12 @@ Before moving on, make sure you can do all of these:
 
 Try these before moving on:
 
-1. Write one `repeat(times)` or `timer(prefix)` factory and desugar it by hand.
-2. Apply the same factory twice with different arguments and explain why the captured configuration stays independent.
-3. Write down one parameterized decorator idea that still feels honest and one that already feels like too much policy for a wrapper.
+1. Desugar the shipped `retry(...)` application by hand.
+2. Add one invalid policy case to the focused tests and explain why failure belongs at
+   factory time.
+3. Apply two different policies and prove they do not share configuration.
+4. Write down one parameterized decorator idea that still feels honest and one that
+   already feels like too much policy for a wrapper.
 
 If those feel ordinary, the next step is to study policy-heavy wrappers that change
 control flow and error behavior directly.

@@ -54,26 +54,31 @@ Weak answers usually say only "Snakemake skipped the rule."
 
 ## Exercise 2: Prove convergence on purpose
 
-A strong answer proves that a successful run settles down.
+A strong answer preserves the command and the second observation:
 
-Example answer shape:
+```console
+snakemake --cores 1 results/declared-report.txt
+snakemake --cores 1 --dry-run results/declared-report.txt
+```
 
-- run `snakemake`
-- then run `snakemake -n`
-- expected evidence: "Nothing to be done."
-- explanation:
-  - "the workflow converges because the declared inputs, outputs, and tracked rule meaning
-    have not changed since the successful run"
+Expected receipt:
 
-Why this is strong:
+```text
+Nothing to be done (all requested files are present and up to date).
+```
 
-- it uses the dry-run as evidence instead of treating convergence as a feeling
-- it explains why no additional work is justified
+The report should record threshold `10`. The declared facts that stayed unchanged are
+`data/source.txt`, `policy/threshold.txt`, the rule implementation, and the requested
+target.
 
-The missing but important sentence is usually this one:
+A strong explanation is:
 
-> The second dry-run is quiet because the declared inputs, outputs, and tracked rule
-> meaning are the same facts the successful run already satisfied.
+> The target converged for the current declared graph because no declared input or tracked
+> rule meaning changed after construction. This receipt does not prove that every file
+> opened by the renderer appears in the graph.
+
+That final sentence matters. Without it, a learner can mistake planner agreement for a
+complete dependency audit.
 
 ## Exercise 3: Trigger one selective rebuild
 
@@ -90,26 +95,41 @@ Why this is strong:
 - it explains the rebuild from the changed input backward
 - it avoids the false idea that rule order controls rebuilds
 
-## Exercise 4: Break convergence and repair it
+## Exercise 4: Expose and repair an under-rebuild
 
-A strong answer shows both the defect and the repair.
+Before repair, the hidden rule passes `policy/threshold.txt` through `params`. After
+building at threshold `10`, changing policy to `20` produces:
 
-Example answer shape:
+```text
+Nothing to be done
+```
 
-- broken state:
-  - add a changing tracked value such as `time.time()` in `params`
-  - rerun `snakemake -n`
-  - expected evidence: the rule is planned again
-- explanation:
-  - "the tracked rule meaning changes each parse because the parameter is not stable"
-- repair:
-  - "remove the unstable value from the rule meaning or move a stable version of it into
-    config"
+The quiet plan is the symptom. The stronger evidence pair is:
 
-Why this is strong:
+```text
+current policy = 20
+stored report = 10
+```
 
-- it identifies unstable meaning as the cause
-- it proves the repair by restoring convergence
+The contract diff should move the policy path:
+
+```diff
+ rule hidden_report:
+     input:
+-        source="data/source.txt"
++        source="data/source.txt",
++        policy="policy/threshold.txt"
+     output:
+         "results/hidden-report.txt"
+-    params:
+-        policy="policy/threshold.txt"
+```
+
+The shell command must then use `{input.policy}`. After rebuilding at `10` and changing
+policy to `20`, the dry-run should plan `hidden_report`.
+
+`--force` is not a repair because it does not add the missing edge. The next policy
+change would be invisible again unless a human remembered the workaround.
 
 ## Exercise 5: Diagnose one wildcard ownership problem
 
@@ -130,30 +150,36 @@ Why this is strong:
 
 ## Exercise 6: Repair a poison output
 
-A strong answer contrasts the broken and repaired publication contracts.
+The in-place case begins with `trusted`, exits `13`, and leaves:
 
-Example:
+```text
+unsafe-final.txt = PARTIAL
+```
 
-- broken shape:
-  - the rule writes directly to `results/report.txt` and then exits with failure
-- repaired shape:
-  - write to `results/report.txt.tmp`
-  - rename to `results/report.txt` only after success
-- evidence route:
-  - keep a per-job log such as `logs/report.log`
-- explanation:
-  - "the repaired version is safer because downstream users either see a complete final
-    output or no final output at all"
+The atomic failure begins with another trusted final, exits `17`, and leaves:
 
-Why this is strong:
+```text
+atomic-final.txt = trusted
+atomic-final.txt.tmp = complete
+```
 
-- it explains publication trust, not just shell mechanics
-- it leaves behind evidence for the next investigation
+The successful atomic run then leaves:
 
-The key explanatory sentence is:
+```text
+atomic-final.txt = complete
+atomic-final.txt.tmp = absent
+```
 
-> The final path becomes trustworthy only after the temporary output is fully written and
-> atomically promoted into its declared location.
+A useful state table is:
+
+| State | Final | Scratch | Consumer decision |
+| --- | --- | --- | --- |
+| before replacement | trusted | absent | final may be consumed |
+| failed atomic attempt | trusted | complete but unaccepted | final may be consumed; scratch may not |
+| successful promotion | complete new value | absent | new final may be consumed |
+
+The claim is limited to same-filesystem rename. A scratch directory mounted elsewhere
+does not inherit this guarantee merely because the command is still named `mv`.
 
 ## Exercise 7: Separate workflow meaning from execution policy
 
@@ -198,9 +224,10 @@ real defect.
 ## Exercise 10: Complete a trustworthy tiny project
 
 A strong project has three explicit source records, one wildcard transformation family,
-and one summary rule. `rule all` requests the summary and any intermediate files that are
-intended deliverables. The summary writes to a sibling temporary path and renames only
-after every row is complete. Logs are separate from published data.
+one policy file, and one summary rule. `rule all` requests the summary and any
+intermediates intended as deliverables. The summary declares both transformed records
+and policy as inputs, writes to a sibling scratch path, validates the table, and promotes
+only after success. Logs remain separate from published data.
 
 Verification should show:
 
@@ -208,15 +235,23 @@ Verification should show:
 - the first execution creates all expected files
 - the next dry-run converges
 - changing one source rebuilds its transformation and the dependent summary
-- an injected summary failure leaves no final partial file
+- changing declared policy rebuilds only the dependent summary
+- moving policy to `params` reproduces a quiet dry-run with stale output
+- restoring policy under `input` repairs the planner
+- an injected replacement failure preserves the prior trusted summary
 
-The final review should classify sample membership and transformation parameters as
-workflow meaning, while cores and shell-printing behavior remain execution policy.
+The final review should classify sample membership, transformation parameters, and policy
+contents as workflow meaning, while cores and shell-printing behavior remain execution
+policy.
 
-The strongest answers also say explicitly why that split matters:
+A complete acceptance argument has four parts:
 
-> A reviewer can decide whether a change alters intended outputs or only operating context
-> without reverse-engineering the whole workflow.
+> **Intervention:** I changed the declared policy from `10` to `20` and separately forced
+> failure before summary promotion. **Observation:** the dry-run planned only the summary,
+> and the failed writer left the prior final unchanged while scratch held the new attempt.
+> **Decision:** accept the dependency and publication contracts. **Limit:** this proves
+> the tested local file influence and same-filesystem rename, not arbitrary hidden inputs
+> or cross-filesystem atomicity.
 
 ## What all ten answers should have in common
 

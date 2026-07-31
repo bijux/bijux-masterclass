@@ -53,11 +53,13 @@ module's exact evidence language before you continue.
 | Frame retention hazard | The risk that retaining frame or traceback objects keeps locals and caller chains alive longer than intended. |
 | Limitation statement | A sentence that names where a helper or recovery path can fail so the review does not overclaim certainty. |
 | Parameter kind | The invocation category attached to a `Parameter`, such as positional-only or keyword-only. |
+| Preflight binding | Validating and normalizing proposed call arguments against a stored signature without invoking the callable. |
 | Provenance helper | A helper such as `getsource`, `getfile`, or `getmodule` that tries to recover where an object came from. |
 | Resolved-value truth | The value you get after normal attribute access, descriptor execution, or dynamic lookup logic has been allowed to run. |
 | Review packet | The combined evidence table, examples, limitation notes, and boundary judgments another learner can inspect without guessing what was being proved. |
 | Signature | An `inspect.Signature` object describing a callable's invocation contract. |
 | Strong contract evidence | Evidence Python itself enforces at call time or exposes directly as part of the callable contract, such as signature shape and argument binding. |
+| Stored-state evidence | Values read directly from instance dictionaries or slots without broad dynamic attribute discovery. |
 | Static structure | The raw attached members or descriptors visible through static lookup rather than through normal dynamic resolution. |
 | Static lookup | Inspection through `inspect.getattr_static`, which avoids normal attribute-protocol execution. |
 | Convenience surface | A helpful but non-essential review aid that should not carry the main correctness claim when stronger evidence already exists. |

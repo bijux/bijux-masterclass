@@ -1,93 +1,135 @@
-# FuncPipe Capstone Guide
+# Learn Functional Python Through FuncPipe
 
+FuncPipe is not an assignment saved for the end of the course. It is the running
+application in which each module earns its abstractions. The coursebook explains the
+idea; a tracked capstone state shows what changed at that point; tests make the new
+promise observable.
 
-<!-- page-maps:start -->
-## Page Maps
+Use this shelf when you need to turn a lesson into code reading, execution, or a design
+decision. You do not need to understand the whole repository before beginning.
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Capstone"]
-  page["FuncPipe Capstone Guide"]
-  capstone["Capstone evidence"]
+## The three capstone surfaces
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+The repository contains three related views of one application:
+
+| Surface | What it represents | When to use it |
+| --- | --- | --- |
+| `capstone/module-reference-states/module-01` through `module-09` | the application exactly as each tracked module leaves it | while studying or reviewing Modules 01–09 |
+| `capstone/_history/worktrees/module-01` through `module-10` | generated comparison worktrees | when comparing states or validating history |
+| `capstone/src/funcpipe_rag` and `capstone/tests` | the live Module 10 endpoint | after Module 09 or when reviewing the completed design |
+
+Do not study Module 04 by opening only the live application. The live code contains
+concepts that Module 04 has not taught yet. Start from the Module 04 reference state,
+compare it with Module 03, and move to the live endpoint only after you can explain the
+delta.
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  lesson["Course lesson<br/>names a pressure"]
+  previous["Previous<br/>reference state"]
+  current["Current<br/>reference state"]
+  proof["Cumulative<br/>learning tests"]
+  live["Live Module 10<br/>endpoint"]
+
+  lesson --> previous
+  previous -->|"compare"| current
+  current --> proof
+  proof -->|"later modules preserve the contract"| live
 ```
-<!-- page-maps:end -->
 
-The FuncPipe RAG capstone is the course's executable proof. It shows what functional
-Python looks like once purity, typed failures, effect boundaries, and async coordination
-have to survive contact with a real repository.
+The diagram is a reading order, not a build pipeline. A lesson makes sense when you can
+describe the pressure between two states and point to the test that keeps the resulting
+behavior alive.
 
-This guide is the entry surface for the shelf. Use it to choose the smallest honest route
-for the question you have right now, then stop once one file, guide, or proof surface is
-clearly enough.
+## Choose one learning job
 
-## What this capstone proves
-
-- pure transforms stay separate from effectful shells
-- failure modelling can stay explicit instead of disappearing into ad hoc exceptions
-- protocols and adapters can keep infrastructure replaceable without hiding ownership
-- async pressure can remain inspectable and testable instead of becoming ambient runtime magic
-
-## Choose the right capstone route
-
-| If your question is... | Best page |
-| --- | --- |
-| Which capstone surface matches the current module? | [Capstone Map](capstone-map.md) |
-| Which files should I read first? | [Capstone File Guide](capstone-file-guide.md) |
-| Where do package and effect boundaries live? | [Capstone Architecture Guide](capstone-architecture-guide.md) |
-| Which proof route or test group fits this claim? | [Capstone Proof Guide](capstone-proof-guide.md) |
-| How should I review the design as a steward? | [Capstone Review Worksheet](capstone-review-worksheet.md) |
-| Where should a new change land? | [Capstone Extension Guide](capstone-extension-guide.md) |
-
-## Start by module range
-
-| Module range | Best capstone focus |
-| --- | --- |
-| Modules 01-03 | pure transforms, explicit configuration, and lazy dataflow |
-| Modules 04-06 | result types, validation paths, and lawful composition |
-| Modules 07-08 | capability protocols, adapters, async boundaries, and orchestration pressure |
-| Modules 09-10 | interop, sustainment, review surfaces, and extension seams |
-
-## Core commands
-
-| If you need... | From the repository root | From the capstone directory |
+| Your job now | Start here | Leave with |
 | --- | --- | --- |
-| the guided walkthrough | `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough` | `make demo` |
-| the pytest suite only | `make PROGRAM=python-programming/python-functional-programming capstone-test` | `make test` |
-| the course-level proof route | `make PROGRAM=python-programming/python-functional-programming test` | `make confirm` |
+| Reconnect a module to the application | [Capstone Map](capstone-map.md) | one state, one source route, and one proof command |
+| Follow one request through the completed system | [Capstone Walkthrough](capstone-walkthrough.md) | a trace from input value to effect boundary |
+| Find the owning source and test package | [Capstone File Guide](capstone-file-guide.md) | a narrow set of files, not a repository tour |
+| Understand why the package boundaries exist | [Capstone Architecture Guide](capstone-architecture-guide.md) | an ownership and dataflow explanation |
+| Decide what evidence a claim needs | [Capstone Proof Guide](capstone-proof-guide.md) | the smallest proof that answers the claim |
+| Review a proposed change | [Capstone Review Worksheet](capstone-review-worksheet.md) | an accepted decision or named blockers |
+| Place and prove a new behavior | [Capstone Extension Guide](capstone-extension-guide.md) | a bounded change plan tied to preserved laws |
+| Run a known command correctly | [Command Guide](command-guide.md) | output you can interpret |
+| Resolve unfamiliar capstone language | [FuncPipe Capstone Glossary](glossary.md) | a precise term you can reconnect to its owning lesson |
 
-## Guide set
+The pages are not a second linear course. Enter through the job that is blocking you,
+then return to the module lesson.
 
-- [Capstone Map](capstone-map.md)
-- [Capstone Walkthrough](capstone-walkthrough.md)
-- [Command Guide](command-guide.md)
-- [Capstone File Guide](capstone-file-guide.md)
-- [Capstone Architecture Guide](capstone-architecture-guide.md)
-- [Capstone Proof Guide](capstone-proof-guide.md)
-- [Capstone Review Worksheet](capstone-review-worksheet.md)
-- [Capstone Extension Guide](capstone-extension-guide.md)
-- [Glossary](glossary.md)
+## First independent-study session
 
-## Review questions
+From the repository root:
 
-- Which packages stay pure, and which ones are responsible for effects?
-- Where does the code choose to materialize data, and why there?
-- Which guarantees are proved by tests and bundles instead of commentary alone?
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-module-state-proof MODULE=01
+```
 
-## Stop here when
+This runs the learning tests inside the first tracked state with that state’s source on
+`PYTHONPATH`. A successful run means the Module 01 application contracts passed in your
+environment. It does not mean you understand why they matter.
 
-- you know which capstone page answers the current course question
-- you know whether your next move is code reading, proof reading, or execution
-- you know the smallest command that fits that move
+After the command:
+
+1. Open
+   `capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py`.
+2. Choose one test whose name you can explain.
+3. Find the source function exercised by that test.
+4. Change one input value mentally and predict the assertion before running anything.
+5. Run that single test if your prediction is uncertain.
+
+Your evidence of learning is the explanation connecting the input, returned value, and
+law. A green suite is necessary execution evidence, not a substitute for that
+explanation.
+
+## The capstone study loop
+
+For each substantive module:
+
+1. Read the module’s `capstone-delta.md` before its detailed cores.
+2. Name the capability already present in the preceding state.
+3. Name the new pressure. Avoid naming the abstraction alone.
+4. Inspect only the source files listed in the [Capstone Map](capstone-map.md).
+5. Read the new module learning test before reading its implementation.
+6. Predict one passing case and one failure or boundary case.
+7. Run `capstone-module-state-proof MODULE=XX`.
+8. Return to the exercises and use the state as evidence, not as an answer to copy.
+
+For Module 10, use the live capstone and the named evidence routes described in the
+[Capstone Proof Guide](capstone-proof-guide.md).
+
+## What the application teaches
+
+FuncPipe is a deterministic local RAG system so that functional design remains visible.
+It does not need network model calls to create real design pressure.
+
+Across the course it grows from pure document transformations into:
+
+- explicit document, chunk, configuration, and result values;
+- bounded streaming and controlled materialization;
+- typed validation and failure accumulation;
+- policies for retries, resources, and idempotent effects;
+- capability-owned I/O and replaceable adapters;
+- bounded asynchronous coordination;
+- explicit interoperability seams; and
+- evidence-based refactoring and change acceptance.
+
+Each addition has a cost. Containers add vocabulary, laziness adds lifecycle concerns,
+protocols add indirection, and concurrency adds ordering pressure. The capstone earns
+those costs only when the corresponding module exposes a problem that simpler code no
+longer handles well.
+
+## A completed capstone review
+
+You are ready to leave this shelf when you can produce all four statements for the
+current question:
+
+1. **Behavior:** “The application promises …”
+2. **Ownership:** “That promise belongs in … because …”
+3. **Evidence:** “This test or command observes …”
+4. **Limit:** “The evidence does not establish …”
+
+If one statement is vague, choose the page matching that gap. Do not run the broad test
+suite merely because the next reasoning step is unclear.

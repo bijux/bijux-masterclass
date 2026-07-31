@@ -73,24 +73,32 @@ Proof move:
 You are ready to move on when you can:
 
 - use signatures to explain how a callable is meant to be invoked
+- validate a complete call with `bind()` and explain why `bind_partial()` answers a
+  different question
 - distinguish strong runtime evidence from best-effort provenance hints
 - explain why two inspection helpers can answer different questions about the same object
+- build a stored-state representation without evaluating properties
 
 Proof move:
 
-- read the capstone action signatures and say what they reveal without invocation
+- run the Module 03 evidence and representation labs, then use capstone action preflight
+  to prove argument validation remains separate from execution
 
 ### Module 04: Function Wrappers and Transparent Decorators
 
 You are ready to move on when you can:
 
 - describe what happens at definition time and what happens at call time in a decorator
+- separate decorator-expression evaluation from bottom-up decorator application
 - explain why `functools.wraps` is part of correctness rather than decoration
 - tell when a wrapper is still transparent and when it has started hiding semantic change
+- distinguish logical signature recovery from the wrapper shell's implementation shape
+- trace a stateful wrapper's execution, eviction, failure, and reset policies
 
 Proof move:
 
-- inspect `actions.py` plus the matching runtime tests for invocation recording
+- run the wrapper lifecycle and bounded-cache labs, then audit the capstone action wrapper
+  before comparing its failed and successful history tests
 
 ### Module 05: Decorator Design, Policies, and Typing
 
@@ -99,10 +107,15 @@ You are ready to move on when you can:
 - judge whether policy belongs in a decorator or should become an explicit service or object
 - explain what annotation-driven runtime behavior can promise honestly and what it cannot
 - describe the review cost of hiding retries, validation, or caching behind wrappers
+- predict the exact retry and warning-mode traces before executing them
+- separate call-shape binding from partial runtime hint checking
+- name the unsupported hint and owner-exit condition in a policy review
 
 Proof move:
 
-- compare the capstone action decorator with one heavier policy pattern and explain why the capstone stays narrower
+- run `make decorator-policy-lab-test`, inspect `make decorator-policy-lab`, then compare
+  `make capstone-bind-action`, `make capstone-check-action`, and
+  `make capstone-action-wrapper`
 
 ### Module 06: Class Customization Before Metaclasses
 
@@ -111,58 +124,105 @@ You are ready to move on when you can:
 - explain when a class decorator, property, or explicit helper is sufficient
 - describe why post-creation customization is usually less risky than class-creation control
 - recognize when a design is drifting toward descriptor or metaclass territory
+- prove class-decorator expression, body, and application timing separately
+- distinguish dataclass generation, property enforcement, and descriptor reuse
+- define surface freezing without implying deep immutability
 
 Proof move:
 
-- inspect class-level customization in the capstone without reaching for `PluginMeta`
+- run `make class-customization-lab-test`, inspect
+  `make class-customization-lab`, then use `make capstone-class-creation` to explain the
+  exact creation-time evidence that justifies `PluginMeta`
 
 ### Module 07: Descriptors, Lookup, and Attribute Control
 
 You are ready to move on when you can:
 
-- explain the difference between data and non-data descriptors
-- trace one attribute from class declaration to per-instance storage
+- classify an object from its hooks instead of assuming that `__set_name__` makes it a
+  descriptor
+- predict data-descriptor, instance-dictionary, non-data-descriptor, and class-attribute
+  precedence before running an access
+- explain method binding through the identities of `__func__` and `__self__`
+- trace one attribute from class declaration through `__set_name__` to per-instance
+  storage
+- state what a descriptor enforces and what remains outside its boundary
 - justify when a descriptor owns an invariant better than a plain method or property
 
 Proof move:
 
-- inspect `fields.py` and the field tests for coercion, precedence, and storage behavior
+- run `make descriptor-lookup-lab-test`, inspect `make descriptor-lookup-lab`, and
+  reconcile its static prediction with each observed access
+- then run `make capstone-field-ownership` and explain how the real field's hooks,
+  storage owner, class access, and metaclass collection preserve the same model without
+  constructing a plugin
 
 ### Module 08: Descriptor Systems, Validation, and Framework Design
 
 You are ready to move on when you can:
 
-- say when a descriptor is still one field contract and when it has become architecture
-- explain how caching, coercion, or external storage change review cost
-- describe why some validation belongs at assignment while other validation belongs elsewhere
+- trace a cached derivation through reuse, dependency invalidation, and recomputation
+- name the authoritative backend slot, local mirror, hidden I/O, and outage behavior for
+  one external field
+- trace normalization, validation, storage, and audit through a composed field in order
+- publish a hint interpreter's supported, coerced, validated, and refused surfaces
+- distinguish a bounded field-backed record model from transactions, identity maps,
+  query planning, relationships, and migrations
+- select the smallest owner that can see an invariant and reject both weaker and stronger
+  alternatives
 
 Proof move:
 
-- compare the capstone field system with richer descriptor patterns and name the powers it intentionally leaves out
+- run `make descriptor-system-lab-test`, inspect `make descriptor-system-lab`, and
+  reconcile each mechanism with its named focused test
+- then run `make capstone-field-system` and explain why the application accepts explicit
+  field subclasses and class-level collection while rejecting caches, backend access,
+  wrapper stacks, hint inference, and transactions in its field layer
 
 ### Module 09: Metaclass Design and Class Creation
 
 You are ready to move on when you can:
 
-- explain what must happen before the class exists for a metaclass to be justified
-- compare a metaclass honestly against class decorators and explicit registration
-- describe why deterministic, resettable registration matters in tests and reviews
+- trace `type(name, bases, namespace)` into one concrete class object
+- predict inherited metaclass selection and explain a real conflict as competing
+  class-creation ownership
+- separate namespace and structural work in `__new__` from finished-class bookkeeping in
+  metaclass `__init__`
+- preserve one assignment-time fact through `__prepare__` that final class inspection
+  cannot recover
+- reject a metaclass for registration alone because `__init_subclass__` is sufficient
+- justify the capstone metaclass through its combined declaration-time and generated
+  class contract
 
 Proof move:
 
-- inspect `framework.py` and `tests/test_registry.py` together
+- run `make class-creation-lab-test`, inspect `make class-creation-lab`, and reconcile
+  the hook and owner decisions with their focused tests
+- then run `make capstone-class-creation` and map its four-entry hook trace, accepted
+  powers, rejected powers, source owners, and failure tests without constructing a plugin
 
 ### Module 10: Runtime Governance and Mastery Review
 
 You are ready to finish the course when you can:
 
-- name red lines around dynamic execution, monkey-patching, and import-hook behavior
-- explain which powers may be acceptable in tooling but not in normal application code
-- review a meta-heavy design for debuggability, observability, and reversibility
+- explain why an AST allowlist and empty builtins narrow a trusted language but do not
+  isolate adversarial execution
+- distinguish ABC instantiation enforcement, static protocol compatibility, shallow
+  runtime presence, and behavioral proof
+- prove patch restoration after ordinary and exceptional exits while refusing concurrency
+  and crash-safety claims
+- show complete import-hook cleanup across both `sys.meta_path` and `sys.modules`, then
+  prove no-hook behavior
+- write an approve, constrain, or reject decision with a lower-power comparison, blast
+  radius, observation route, rollback, proof, escalation signal, and non-claim
+- audit one capstone decision by connecting JSON evidence, source ownership, and a focused
+  assertion
 
 Proof move:
 
-- run the capstone proof route and name one design change you would reject immediately
+- run `make runtime-governance-lab-test`, inspect `make runtime-governance-lab`, and
+  reconcile every evidence key with its owning source and focused test
+- then run `make capstone-governance` and explain one approved mechanism, the constrained
+  registry, and one rejected power before invoking a plugin
 
 ## What to do when a checkpoint fails
 

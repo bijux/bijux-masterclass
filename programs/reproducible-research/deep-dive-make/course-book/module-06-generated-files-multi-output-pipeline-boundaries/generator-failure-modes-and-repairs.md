@@ -36,7 +36,7 @@ It sounds more like this:
 - "the generator failed, but some outputs survived"
 - "nobody knows which file the next stage is supposed to trust"
 
-Those are not five unrelated mysteries. They are recurring failure shapes.
+Those are not unrelated mysteries. They are recurring failure shapes.
 
 This page is about naming those shapes and giving you a repair loop that stays
 calm under pressure.
@@ -45,12 +45,12 @@ calm under pressure.
 
 When generation misbehaves, ask:
 
-> is the problem a missing semantic input, a dishonest publication unit, an unstable
-> boundary file, an early publication bug, or a confused consumer edge?
+> is the problem in selection, candidate isolation, validation, publication, continuing
+> integrity, consumer edges, or recovery?
 
 That question narrows the repair space fast.
 
-## Failure mode 1: stale generated output
+## Stale generated output
 
 Symptom:
 
@@ -67,7 +67,7 @@ Example:
 
 ```make
 build/include/config.h: scripts/gen_config.py
-	python3 scripts/gen_config.py data/config.yml > $@
+	python3 scripts/gen_config.py data/config.yml > '$@'
 ```
 
 If `data/config.yml` changes and the header does not rebuild, the graph is lying.
@@ -79,7 +79,7 @@ Repair:
 
 This is the simplest generator bug and still one of the most common.
 
-## Failure mode 2: duplicate execution under `-j`
+## Duplicate execution under `-j`
 
 Symptom:
 
@@ -100,12 +100,12 @@ api.h api.json: schema/api.yml scripts/gen_api.py
 Repair:
 
 - use grouped targets if available
-- or use a stamp that represents one successful generation event
+- or use a completion boundary with an explicit peer-integrity policy
 
 The important point is not "parallel builds are tricky." The important point is that the
 graph failed to name the single publication event clearly enough.
 
-## Failure mode 3: unstable manifest or stamp
+## Unstable manifest or stamp
 
 Symptom:
 
@@ -127,12 +127,12 @@ build/api.manifest:
 Repair:
 
 - record only semantic facts
-- compare temporary content with the existing file
+- compare candidate content with the existing file
 - publish only when the represented meaning changed
 
 This is usually a convergence bug disguised as provenance.
 
-## Failure mode 4: partial publication after failure
+## Partial publication after failure
 
 Symptom:
 
@@ -146,13 +146,14 @@ Usual root cause:
 
 Repair:
 
-- generate in temporary space
+- generate in a target- and process-local candidate workspace
 - validate before publication
-- move into final paths only after the full generation succeeded
+- rename one file for single-path publication
+- publish an immutable directory through one pointer for set-level consistency
 
 This is where publication discipline matters most.
 
-## Failure mode 5: confused consumer edges
+## Confused consumer edges
 
 Symptom:
 
@@ -179,15 +180,113 @@ Repair:
 - restore the direct output dependency for actual consumers
 - keep stamps and manifests only where they represent a real boundary fact
 
+## Fresh completion record with missing or corrupt outputs
+
+Symptom:
+
+- a stamp is newer than every producer input
+- one peer output is missing or has been edited
+- Make reports the completion target is current
+
+Usual root cause:
+
+- the design treats event completion as continuing output integrity
+
+Repair:
+
+- grouped targets can rerun when a peer is missing
+- a stamp fallback must fail closed or reconcile the complete peer set
+- an accepted-result manifest must verify immutable output paths and digests
+
+Do not touch the missing file merely to satisfy Make. That invents completion evidence
+without recreating accepted content.
+
+## Mixed generation visible to readers
+
+Symptom:
+
+- each file is individually complete
+- related files contain different generation identifiers
+- the Make build may still have exited successfully
+
+Usual root cause:
+
+- the producer replaced several stable paths sequentially
+- readers opened those paths independently during publication
+
+Repair:
+
+- write the generation identifier into every output and accepted manifest
+- publish immutable generation directories
+- replace one pointer after whole-set validation
+- require readers to resolve that pointer once
+
+This failure is invisible to a test that reads files only after the recipe finishes. Inject
+a reader between publication events or stop the process after the first rename.
+
+## Competing publishers and abandoned candidates
+
+Symptom:
+
+- two independent Make processes attempt to publish the same final path
+- candidate directories accumulate after interruption
+- a stale lock prevents recovery or an unsafe cleanup removes another publisher’s work
+
+Usual root cause:
+
+- unique candidate names were mistaken for final-publication ownership
+- the lock protocol has no owner identity or stale-owner policy
+
+Repair:
+
+- define one publisher for each final path or pointer
+- acquire the publication lock only for adoption and pointer switching
+- remove only candidates owned by the current process
+- classify old unreferenced candidates before garbage collection
+- make stale-lock recovery an explicit administrative contract
+
+Unique candidates prevent unfinished-work collision. They do not authorize several
+processes to race over accepted state.
+
+## Inventory state before repairing it
+
+Do not begin an incident by deleting the build directory. First classify every relevant
+path:
+
+| State | Meaning | Safe default |
+| --- | --- | --- |
+| pointer-referenced immutable generation | currently accepted set | preserve |
+| unreferenced validated generation | possible completed publication not selected | preserve for diagnosis |
+| process-owned candidate | unfinished work from a live producer | do not touch |
+| abandoned candidate | unfinished work with no live owner | quarantine or remove after evidence capture |
+| completion stamp without peers | insufficient completion claim | invalidate through owned repair route |
+| mutable peers with different generation IDs | mixed and untrusted set | stop consumers; restore last accepted set |
+| accepted manifest with digest mismatch | corruption or unauthorized mutation | reject and regenerate from modeled inputs |
+
+Capture paths, digests, generation IDs, pointer target, lock owner, and process liveness.
+That evidence tells you whether recovery should preserve, reject, regenerate, or republish.
+
+```mermaid
+flowchart TD
+  inspect["inventory paths, IDs, digests, pointer, lock"] --> classify{"state class"}
+  classify -->|accepted and referenced| preserve["preserve"]
+  classify -->|accepted but unreferenced| diagnose["retain for diagnosis"]
+  classify -->|owned candidate| wait["leave live owner alone"]
+  classify -->|abandoned candidate| quarantine["quarantine or remove"]
+  classify -->|mixed or corrupt| reject["stop consumers and reject"]
+  reject --> recover["restore or regenerate from modeled inputs"]
+```
+
 ## The repair loop that keeps working
 
 When you hit a generator incident, use the same sequence every time:
 
 1. reproduce it with the smallest command that still shows the failure
-2. run `make --trace` to see what Make believed
-3. identify which of the five failure shapes fits best
-4. repair the graph or publication contract
-5. rerun convergence and, when relevant, a parallel build
+2. inventory the on-disk publication state before cleanup
+3. run `gmake --trace` to see what Make believed
+4. identify the failure boundary and trusted last-known-good state
+5. repair the graph, integrity check, publication protocol, or consumer route
+6. rerun convergence, deletion recovery, interruption, and relevant concurrency checks
 
 This loop matters because generator incidents often tempt teams into random shell edits.
 The loop keeps the investigation anchored in graph truth.
@@ -197,7 +296,7 @@ The loop keeps the investigation anchored in graph truth.
 Suppose you see:
 
 ```sh
-make -j2 all
+gmake -j2 all
 ```
 
 and the log prints:
@@ -215,7 +314,7 @@ The clean diagnosis is not "parallelism is broken." It is:
 
 That level of diagnosis is what this page is trying to teach.
 
-## Why `--trace` belongs at the center
+## Why `--trace` is necessary but insufficient
 
 Generator incidents often trigger emotional debugging:
 
@@ -234,6 +333,10 @@ Generator incidents often trigger emotional debugging:
 That does not solve every generator problem by itself, but it prevents the repair from
 drifting into folklore.
 
+It cannot tell you whether two files share a generation ID, whether an external reader
+observed a mixed set, or whether a lock belongs to a live process. Pair the trace with the
+state inventory and reader-visible evidence.
+
 ## Parallel and convergence checks are the finishing tests
 
 A generator fix is not finished just because one command succeeded once.
@@ -241,10 +344,10 @@ A generator fix is not finished just because one command succeeded once.
 You usually want at least these checks:
 
 ```sh
-make all
-make -q all; echo $?
-make -j2 all
-make -q all; echo $?
+gmake all
+gmake -q all; echo $?
+gmake -j2 all
+gmake -q all; echo $?
 ```
 
 Why these matter:
@@ -253,12 +356,25 @@ Why these matter:
 - the parallel run checks that publication and coupling stay honest under pressure
 - the final query checks that the repaired model still settles
 
+Add the checks selected by the contract:
+
+```sh
+gmake delete-one-peer-check
+gmake failed-publication-check
+gmake interrupted-publication-check
+gmake competing-publisher-check
+```
+
+These names represent repository-owned proof routes, not commands Make provides
+automatically. Each route should create an isolated specimen under `artifacts/`, inject
+one fault, and assert the expected trusted state.
+
 This is the same standard the earlier modules built. Module 06 is just applying it to
 generation.
 
 ## Failure signatures worth recognizing quickly
 
-### "The fix only works after `rm -rf build`"
+### "The repair works only after deleting all build state"
 
 That often means the incremental graph is still lying.
 
@@ -281,9 +397,10 @@ Take one broken generator incident and ask:
 
 1. which failure class fits best
 2. what target or boundary file is mis-modeled
-3. what `--trace` line would prove the current behavior
-4. what graph change would make the publication contract more honest
-5. which post-fix commands would prove convergence and pressure safety
+3. which on-disk state is still trusted
+4. what `--trace` line and reader observation prove the current behavior
+5. what graph or publication change repairs the owning boundary
+6. which fault injections prove convergence, recovery, and concurrency safety
 
 If those answers are strong, the repair is usually on the right path.
 
@@ -294,8 +411,9 @@ Pick one generator failure mode and write a short incident note:
 1. the symptom
 2. the likely failure class
 3. the evidence command
-4. the graph or publication repair
-5. the verification command after the repair
+4. the state inventory and last-known-good selection
+5. the graph or publication repair
+6. the verification commands after the repair
 
 If you can do that without drifting into vague blame, you have learned the real lesson of
 this page.
@@ -304,8 +422,11 @@ this page.
 
 Before leaving this lesson, make sure you can explain:
 
-- the five generator failure classes on this page
+- the generator failure classes on this page
 - why duplicate execution is a publication-model bug, not just a parallelism annoyance
 - why unstable manifests are convergence bugs
 - why consumer edges must still point at the content actually read
+- why a completion record is not continuing integrity proof
+- how to distinguish an abandoned candidate from another process’s live work
+- why state inventory comes before cleanup
 - why a generator repair is incomplete until convergence and pressure checks pass

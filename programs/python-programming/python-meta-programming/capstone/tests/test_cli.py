@@ -53,6 +53,47 @@ def test_field_command_renders_one_concrete_field_contract(capsys) -> None:
     assert captured["field"]["minimum"] == 8
 
 
+def test_field_ownership_command_exposes_lookup_without_construction(capsys) -> None:
+    exit_code = main(
+        ["field-ownership", "delivery", "webhook", "endpoint"]
+    )
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["declaring_class"] == "WebhookNotifier"
+    assert captured["descriptor_type"] == "StringField"
+    assert captured["descriptor_kind"] == "data"
+    assert captured["hooks"] == ["__get__", "__set__", "__set_name__"]
+    assert captured["storage_name"] == "_endpoint"
+    assert captured["storage_owner"] == "plugin-instance.__dict__"
+    assert captured["class_access_returns_descriptor"] is True
+    assert captured["collected_by_metaclass"] is True
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+
+
+def test_field_system_command_exposes_power_boundaries_without_construction(capsys) -> None:
+    exit_code = main(["field-system", "delivery", "webhook"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["class_name"] == "WebhookNotifier"
+    assert [field["name"] for field in captured["fields"]] == [
+        "endpoint",
+        "timeout_seconds",
+        "redact_summary",
+    ]
+    assert captured["fields"][0]["coercion_owner"] == "StringField"
+    assert captured["accepted_powers"][2]["owner"] == "PluginMeta"
+    assert captured["rejected_powers"][1]["power"] == (
+        "external storage during attribute access"
+    )
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+
+
 def test_action_command_renders_one_concrete_action_contract(capsys) -> None:
     exit_code = main(["action", "delivery", "pager", "preview"])
 
@@ -63,6 +104,155 @@ def test_action_command_renders_one_concrete_action_contract(capsys) -> None:
     assert captured["action"]["name"] == "preview"
     assert captured["action"]["returns"] == "str"
     assert captured["action"]["signature"] == "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'"
+
+
+def test_bind_action_command_validates_arguments_without_execution(capsys) -> None:
+    exit_code = main(
+        [
+            "bind-action",
+            "delivery",
+            "console",
+            "deliver",
+            "--arg",
+            "title=CPU high",
+            "--arg",
+            "severity=warning",
+            "--arg",
+            "summary=node-1 crossed 90%",
+        ]
+    )
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured == {
+        "group": "delivery",
+        "plugin_name": "console",
+        "action_name": "deliver",
+        "bound_arguments": {
+            "title": "CPU high",
+            "severity": "warning",
+            "summary": "node-1 crossed 90%",
+        },
+        "executed": False,
+    }
+
+
+def test_action_wrapper_command_exposes_logical_and_shell_signatures(capsys) -> None:
+    exit_code = main(
+        [
+            "action-wrapper",
+            "delivery",
+            "console",
+            "deliver",
+        ]
+    )
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+    assert captured["wrapper"]["wrapper_depth"] == 1
+    assert captured["wrapper"]["visible_signature"] == (
+        "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'"
+    )
+    assert captured["wrapper"]["chain"][0]["owns_action_spec"] is True
+    assert captured["wrapper"]["chain"][0]["owns_explicit_signature"] is True
+    assert captured["wrapper"]["chain"][1]["owns_action_spec"] is False
+    assert captured["wrapper"]["chain"][1]["owns_explicit_signature"] is False
+    assert captured["wrapper"]["action_spec_signature_matches_original"] is True
+
+
+def test_check_action_command_reports_annotation_contract_without_execution(capsys) -> None:
+    exit_code = main(
+        [
+            "check-action",
+            "delivery",
+            "console",
+            "deliver",
+            "--arg",
+            "title=CPU high",
+            "--arg",
+            "severity=warning",
+            "--arg",
+            "summary=node-1 crossed 90%",
+        ]
+    )
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["accepted"] is True
+    assert captured["contract_complete"] is True
+    assert [item["name"] for item in captured["checked"]] == [
+        "title",
+        "severity",
+        "summary",
+    ]
+    assert captured["refused"] == []
+    assert captured["unchecked"] == []
+    assert captured["policy"]["scope"] == "arguments-only"
+    assert captured["policy"]["return_checked"] is False
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+
+
+def test_class_creation_command_reports_creation_time_ownership(capsys) -> None:
+    exit_code = main(["class-creation", "delivery", "console"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["class_name"] == "ConsoleNotifier"
+    assert captured["class_creation"]["namespace_type"] == "DefinitionNamespace"
+    assert captured["class_creation"]["metaclass"] == "PluginMeta"
+    assert captured["class_creation"]["declared_fields"] == [
+        "prefix",
+        "stream",
+        "uppercase_severity",
+    ]
+    assert captured["class_creation"]["declared_actions"] == ["deliver"]
+    assert captured["class_creation"]["generated_init"] is True
+    assert captured["class_creation"]["hook_trace"] == [
+        "prepare:DefinitionNamespace",
+        "body:complete",
+        "new:shape",
+        "init:register",
+    ]
+    assert captured["metaclass_selection"] == "inherited from base class"
+    assert captured["hook_ownership"]["init"] == (
+        "register the finished concrete class"
+    )
+    assert [item["power"] for item in captured["rejected_powers"]] == [
+        "package discovery",
+        "external I/O during class creation",
+        "automatic metaclass conflict resolution",
+        "reload reconciliation",
+    ]
+    assert captured["registered"] is True
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+
+
+def test_governance_command_reports_review_decisions_without_execution(capsys) -> None:
+    exit_code = main(["governance"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["constructed"] is False
+    assert captured["executed"] is False
+    assert [decision["outcome"] for decision in captured["decisions"]] == [
+        "approve",
+        "approve",
+        "approve",
+        "constrain",
+        "approve",
+    ]
+    assert captured["rejected_powers"][0]["power"] == (
+        "eval or exec for plugin configuration"
+    )
 
 
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:

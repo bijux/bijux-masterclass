@@ -1,0 +1,20 @@
+{
+  "case": "population-drift",
+  "schema_version": 1,
+  "population": {
+    "identity": "sha256:ae27d8f66302dd1ee34518bed36db8f57f5a673e3ab823adc0b9819a262f7411",
+    "rows": 120
+  },
+  "metric": {
+    "aggregation": "global",
+    "definition": "binary_f1_positive_class",
+    "name": "positive_class_f1_at_fixed_threshold",
+    "unit": "fraction"
+  },
+  "confusion_matrix": {
+    "false_negative": 15,
+    "false_positive": 10,
+    "true_negative": 50,
+    "true_positive": 45
+  }
+}

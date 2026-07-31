@@ -1,6 +1,5 @@
 # Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Metaclass Design Class Creation"]
-  page["Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`"]
+  page["Worked Example: Building a Deterministic Plugin Registry with PluginMeta"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -18,328 +17,267 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  body["plugin class body"]
+  namespace["DefinitionNamespace"]
+  shape["PluginMeta.__new__"]
+  class_object["finished plugin class"]
+  register["PluginMeta.__init__"]
+  registry["in-process registry"]
+  report["class-creation report"]
+
+  body --> namespace --> shape --> class_object --> register --> registry
+  class_object --> report
+  registry --> report
 ```
 <!-- page-maps:end -->
 
-The five core lessons in Module 09 become much easier to trust when they meet one
-metaclass design that is useful, tempting, and still narrow enough to review honestly.
+This worked example begins by rejecting its own tempting simplification:
 
-Deterministic plugin registration is exactly that kind of case.
+> Automatic registration alone is not enough to justify `PluginMeta`.
 
-It combines:
+`__init_subclass__` can register completed subclasses. The metaclass becomes the smallest
+honest owner only when the plugin family also needs a declaration-time namespace and
+generated class structure.
 
-- class-creation-time registration
-- hierarchy-wide automatic behavior
-- duplicate rejection
-- resettable global state for tests
+## Start with the executable registry model
 
-That makes it the right worked example for the module.
+Run:
 
-This page should be read as a review packet, not as a recipe to copy into every plugin
-system. The teaching goal is to show one bounded case where the metaclass still has an
-honest owner.
-
-If you are studying alone, keep one more rule beside the code:
-
-- every time the registry example feels convenient, stop and name the exact invariant that convenience is hiding
-- then decide whether that invariant is still class-creation-sized or already broader framework policy
-
-## The incident
-
-Assume a team wants a plugin family where:
-
-- concrete subclasses register automatically
-- base classes can opt out as abstract
-- plugin names are unique within a group
-- tests can reset the registry deterministically
-
-Those are reasonable goals. The mistake would be pretending that every registry problem now
-deserves a metaclass.
-
-## Evidence route for reading this example honestly
-
-Work through the example in this order:
-
-| Review step | What to inspect | What strong evidence looks like |
-| --- | --- | --- |
-| Name the invariant | What must always happen when concrete subclasses are defined? | Registration, duplicate rejection, and deterministic grouping are explicit |
-| Name the rejected owner | Why not use a decorator or explicit registry call? | The answer explains what automatic subclass-time behavior would be lost |
-| Audit import-time cost | What global state changes during import? | Registry mutation, ordering, and reset needs are stated plainly |
-| Inspect reset discipline | How do tests recover determinism? | A clear reset surface exists and is part of the design |
-| Reject overclaim | What is intentionally outside this example? | Discovery, lifecycle, and configuration are excluded explicitly |
-
-## Worked-example reading order
-
-Do not read the implementation top to bottom only once. Use this order instead:
-
-1. identify the class-creation invariant the metaclass is supposed to own
-2. trace how abstract opt-out prevents base classes from registering
-3. trace one concrete subclass registration into the grouped registry
-4. inspect duplicate rejection and deterministic ordering
-5. inspect reset support only after the invariant and import-time mutation are clear
-
-That order keeps the class-creation rule visible before the registry convenience starts to
-look like a whole plugin framework.
-
-## The first design rule: justify the metaclass narrowly
-
-This example uses a metaclass because the desired behavior is:
-
-- tied to class creation itself
-- automatic across the subclass hierarchy
-- not just a one-off post-creation transformation
-
-That is the boundary the module has been building toward.
-
-If the same system only needed occasional opt-in registration, a decorator or explicit
-registry call might still be clearer.
-
-Keep the refusal sentence close:
-
-if the family can tolerate opt-in registration, the metaclass case becomes much weaker.
-
-## Step 1: keep abstract opt-out explicit
-
-The metaclass should not blindly register every class it sees.
-
-A small convention such as:
-
-```python
-__abstract__ = True
+```console
+cd programs/python-programming/python-meta-programming
+python3 -m unittest discover -s tests -p "test_class_creation_registry.py" -v
+python3 -m labs.class_creation
 ```
 
-lets base classes participate in the hierarchy without being treated as concrete plugin
-implementations.
+Open:
 
-That keeps the registry focused on real entries.
+- `labs/class_creation/registry.py`
+- `tests/test_class_creation_registry.py`
+- the `registry` object in the JSON packet
 
-## Step 2: derive the group deterministically
+The lab separates two responsibilities:
 
-The example should make group selection visible and predictable.
+| Responsibility | Owner |
+| --- | --- |
+| decide whether a concrete class participates automatically | class-family hook |
+| store classes, reject duplicate keys, sort names, resolve entries, reset state | `PluginRegistry` |
 
-A good small rule is:
+Its hook trace is:
 
-- use `group` from the class body if present
-- otherwise inherit the first available group from base classes
-- otherwise fall back to a default group
-
-This rule is simple enough to explain in review.
-
-## Ownership table for the example
-
-| Design concern | Owner in this example | Why that owner is honest |
-| --- | --- | --- |
-| Decide whether a class is abstract | Class body flag plus metaclass read | The class states intent; the metaclass applies the family rule |
-| Derive the final group | Metaclass at class creation time | The class family needs one automatic place to settle grouping |
-| Reject duplicate plugin names | Metaclass during registration | The family rule must hold for every concrete subclass |
-| Provide reset for tests | Explicit classmethod support | Reset is operational support, not the invariant itself |
-
-## Step 3: make duplicate rejection and ordering explicit
-
-A registry is not honest unless it answers two questions:
-
-- what happens on duplicate names?
-- what order do tests and callers observe?
-
-This example rejects duplicates within a group and sorts registrations deterministically by
-name so test behavior stays predictable.
-
-The review benefit is important:
-
-- duplicate handling is named, not implied
-- observed order is named, not left to import accidents
-- reset is built in, not postponed to test folklore
-
-## A bounded implementation
-
-```python
-from collections import defaultdict
-from threading import RLock
-
-
-_registry = defaultdict(list)
-_lock = RLock()
-
-
-class PluginMeta(type):
-    def __new__(mcs, name, bases, namespace, **kwargs):
-        cls = super().__new__(mcs, name, bases, namespace)
-
-        if namespace.get("__abstract__", False):
-            return cls
-
-        group = namespace.get("group")
-        if group is None:
-            for base in bases:
-                if hasattr(base, "group"):
-                    group = getattr(base, "group")
-                    break
-        if group is None:
-            group = "default"
-        cls.group = group
-
-        with _lock:
-            items = _registry[group]
-            if any(existing_name == name for existing_name, _ in items):
-                raise ValueError(f"duplicate plugin {name!r} in group {group!r}")
-            items.append((name, cls))
-            items.sort(key=lambda item: item[0])
-
-        return cls
-
-    @classmethod
-    def get_plugins(mcs, group):
-        with _lock:
-            return list(_registry.get(group, []))
-
-    @classmethod
-    def clear(mcs, group=None):
-        with _lock:
-            if group is None:
-                _registry.clear()
-            else:
-                _registry.pop(group, None)
-
-
-class Logger(metaclass=PluginMeta):
-    __abstract__ = True
-    group = "logging"
-
-    def log(self, message):
-        raise NotImplementedError
-
-
-class FileLogger(Logger):
-    def log(self, message):
-        return f"[FILE] {message}"
-
-
-class ConsoleLogger(Logger):
-    def log(self, message):
-        return f"[CONSOLE] {message}"
+```text
+new:ConsolePlugin:shape
+init:ConsolePlugin:bookkeeping
+register:delivery:console
 ```
 
-## Why the code stays bounded
+The trace is useful, but the packet includes a deliberate non-claim:
 
-Notice what the metaclass is not doing:
+```text
+registration alone does not prove a metaclass is smaller than __init_subclass__
+```
 
-- no package scanning
-- no enable or disable policy
-- no runtime lifecycle hooks
-- no dependency graph management
+That sentence prevents a mechanism demonstration from becoming a design recommendation.
 
-Keep one more refusal line active:
+## The extra pressure that earns `PluginMeta`
 
-- no package discovery or loading orchestration during import
+The incident-plugin class family is a declaration-driven API:
 
-That restraint is part of why the example remains teachable.
+```python
+class ConsoleNotifier(DeliveryPlugin):
+    plugin_name = "console"
 
-## Why this is useful for review
+    prefix = StringField(default="[incident]", description="Output prefix")
+    stream = ChoiceField(("stdout", "stderr"), default="stdout")
 
-This example keeps the important metaclass choices visible:
+    @action("Render an incident notification.")
+    def deliver(self, *, title: str, severity: str, summary: str) -> str:
+        ...
+```
 
-- registration happens during class creation
-- the effect is hierarchy-wide
-- abstract opt-out is explicit
-- duplicate handling is part of the rule
-- tests get a reset hook through `clear()`
+From that one class body, the framework must:
 
-That makes it a real metaclass case study instead of a generic “look what metaclasses can
-do” demo.
+- reject duplicate tracked field or action names while assignments happen
+- combine inherited and declared fields
+- combine inherited and declared actions
+- generate a constructor signature
+- generate an initializer when none is declared
+- attach inspectable creation evidence
+- register every concrete plugin
 
-## Review notes another learner should be able to write
+The first requirement cannot be recovered by `__init_subclass__`, because overwritten
+assignments are absent from the finished class. That combined invariant crosses the
+metaclass threshold.
 
-After reading the implementation, a strong learner should be able to say:
+## Trace the shipped implementation
 
-- "registration is the class-creation invariant"
-- "the metaclass is justified because every concrete subclass must register automatically"
-- "reset helpers are necessary because import-time state is mutated"
-- "this still is not a full plugin framework"
+Read `capstone/src/incident_plugins/framework.py` in this order:
 
-## Weak readings to reject early
+1. `DefinitionNamespace`
+2. `ClassCreationSpec`
+3. `PluginMeta.__prepare__`
+4. `PluginMeta.__new__`
+5. `PluginMeta.__init__`
+6. `_register_plugin`
+7. `inspect_plugin_class_creation`
 
-These are the fast wrong turns a missed-class learner is likely to take:
+Do not start by reading every helper. Follow the ownership sequence.
 
-| Weak reading | Why it fails |
-| --- | --- |
-| "the metaclass solves plugin systems cleanly" | the example only handles registration, uniqueness, ordering, and reset |
-| "the registry is now automatic so the hard part is done" | automatic registration does not solve discovery, lifecycle, or configuration |
-| "tests can just clear it somehow" | somehow hides the operational surface needed for determinism |
-| "duplicate rejection proves framework maturity" | one invariant does not prove broader plugin architecture |
+### `__prepare__`: preserve tracked assignment events
 
-## Why import-time effects still matter here
+`DefinitionNamespace` rejects a repeated name when either value is a `Field` or decorated
+action. It does not reject all repeated helper names.
 
-Even though this is a good metaclass example, it still has real costs:
+That scope protects declarations feeding the generated public contract while leaving
+ordinary Python class-body behavior mostly intact.
 
-- registration depends on class definition happening
-- import order affects when plugins appear
-- reload can register classes again unless tests or tooling reset state
+Focused proof:
 
-Those are not flaws in the explanation. They are part of the design truth.
+```console
+cd capstone
+PYTHONPATH=src ../../../../artifacts/venv/python-programming/python-meta-programming/capstone/bin/python \
+  -m pytest -q tests/test_runtime.py -k definition_namespace
+```
 
-## Failure modes if this example grows without discipline
+The tests prove:
 
-| Growth mistake | What breaks |
-| --- | --- |
-| Add discovery and loading into the metaclass | Import-time cost and hidden coupling increase sharply |
-| Hide reset outside the registry API | Tests become harder to isolate honestly |
-| Treat duplicate rejection as optional policy | The invariant stops being precise |
-| Claim the example manages plugins end to end | The teaching boundary becomes false |
+- a duplicate field fails during class-body execution
+- the failed class is not registered
+- an ordinary helper may still be replaced
 
-## Why this is narrower than a plugin framework
+### `__new__`: shape the class
 
-This example is only about:
+`PluginMeta.__new__` delegates to `type.__new__`, then:
 
-- registration
-- uniqueness
-- deterministic ordering
-- test reset
+- copies inherited field and action order
+- overlays local declarations
+- generates `__signature__`
+- installs a generated `__init__` when appropriate
+- stores `ClassCreationSpec`
+- derives group and plugin name for concrete classes
 
-It does not attempt:
+These are structural consequences visible on the returned class.
 
-- plugin discovery across packages
-- enable or disable policies
-- configuration injection
-- lifecycle management
+### `__init__`: register the finished class
 
-Those would push the design beyond a single metaclass example into broader framework
-architecture.
+Metaclass `__init__` receives the returned class:
 
-## What this example makes clear about Module 09
+```python
+if creation.abstract:
+    ...
+    return
+_register_plugin(cls)
+```
 
-This worked example ties the module together:
+Abstract family classes opt out. Concrete classes register by `(group, plugin_name)`.
+Registration failure prevents the class statement from binding the new class name, while
+the existing registry entry remains intact.
 
-- metaclass behavior happens at class creation time
-- hierarchy-wide behavior can justify the tool
-- global state needs explicit reset paths
-- import-time consequences must be named, not hidden
-- the metaclass remains justified only because the ownership boundary is narrow and clear
+The registry exposes sorted names, so caller-visible ordering does not depend on import
+order.
 
-That is the durable takeaway. The point is not to make registries feel magical. The point
-is to show one case where class-creation-time control is genuinely the honest owner.
+## Inspect without constructing
 
-Before leaving the page, write one sentence in each of these forms:
+From the repository root:
 
-- "the metaclass invariant here is..."
-- "the import-time cost here is..."
-- "the broader plugin concern still missing is..."
+```console
+make -C programs/python-programming/python-meta-programming capstone-class-creation
+```
 
-## Exit check for this page
+For `ConsoleNotifier`, the report shows:
 
-Before moving on, make sure you can do all of the following:
+```json
+{
+  "class_name": "ConsoleNotifier",
+  "metaclass_selection": "inherited from base class",
+  "class_creation": {
+    "namespace_type": "DefinitionNamespace",
+    "base_classes": ["DeliveryPlugin"],
+    "declared_fields": ["prefix", "stream", "uppercase_severity"],
+    "declared_actions": ["deliver"],
+    "generated_init": true,
+    "hook_trace": [
+      "prepare:DefinitionNamespace",
+      "body:complete",
+      "new:shape",
+      "init:register"
+    ]
+  },
+  "registered": true,
+  "constructed": false,
+  "executed": false
+}
+```
 
-- name the exact class-creation invariant the metaclass owns
-- explain why explicit opt-in registration would change the design meaningfully
-- identify one import-time cost and one reset response
-- state two plugin-system concerns this example intentionally does not own
+This is class-creation evidence. It does not call the generated initializer or an action.
 
-## Continue through Module 09
+## Before and after the escalation
 
-- Previous: [Metaclass Boundaries and Class-Creation Ownership](metaclass-boundaries-and-class-creation-ownership.md)
-- Next: [Exercises](exercises.md)
-- Reference: [Exercise Answers](exercise-answers.md)
-- Terms: [Glossary](glossary.md)
+| Earlier owner | What it could honestly provide | Pressure still missing |
+| --- | --- | --- |
+| explicit registry helper | clear opt-in registration | automatic family rule |
+| class decorator | post-creation transformation and registration | forgotten opt-in remains possible |
+| `__init_subclass__` | automatic registration of completed subclasses | overwritten tracked declarations are already lost |
+| `PluginMeta` | prepared namespace plus generated family contract | accepted import and conflict costs |
+
+The metaclass is not “better” than the earlier owners. It is more expensive and preserves
+one required fact they cannot.
+
+## Failure routes
+
+### Duplicate tracked declaration
+
+The custom namespace raises before class creation completes. No class is bound and no
+registry entry is created.
+
+### Duplicate plugin key
+
+`PluginRegistry` rejects the second `(group, plugin_name)` entry. The original class
+remains resolvable.
+
+### Explicit initializer
+
+When a plugin declares `__init__`, the metaclass records `generated_init: false`. It does
+not silently replace authored construction behavior.
+
+### Metaclass conflict
+
+The framework does not combine `PluginMeta` with unrelated metaclasses automatically.
+Such integration requires an explicit compatible metaclass and combined-policy tests.
+
+## What remains outside the class-creation system
+
+`PluginMeta` does not own:
+
+- package discovery
+- network or filesystem I/O
+- plugin enabling and deployment policy
+- cross-process registry coordination
+- reload reconciliation
+- runtime action execution
+
+Those omissions keep import deterministic and the class-creation report honest.
+
+## Review packet
+
+After running the example, write:
+
+1. The assignment-time fact that earns `__prepare__`.
+2. The class-shape work owned by `__new__`.
+3. The finished-class bookkeeping owned by `__init__`.
+4. The mutable state owned by the registry.
+5. One failure that prevents class binding.
+6. One lower-power design that would work if duplicate tracking were removed.
+7. One stronger service needed if package discovery were added.
+
+## Exit check
+
+The example is complete when you can explain:
+
+- why the lab registry alone does not justify a metaclass
+- which combined capstone pressure does justify `PluginMeta`
+- how the four hook-trace entries map to source
+- why registry reset is ordinary operational support
+- what the class-creation report proves without constructing a plugin
+- which production concerns remain deliberately absent
+
+Next: [Exercises](exercises.md).

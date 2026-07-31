@@ -28,9 +28,10 @@ Module 01 gives the floor the rest of the course stands on: Python functions, cl
 modules, and instances are ordinary runtime objects, and metaprogramming becomes honest
 only when that sentence feels mechanically true instead of inspirational.
 
-This module now uses the same ten-file learning surface as the deep-dive series so the
-overview, five cores, worked example, practice set, answers, and glossary each have one
-clear job.
+The module is a complete teaching unit rather than a preface to the capstone. Its five
+core lessons build the model, a runnable lab makes each relationship observable, the
+worked example applies review judgment, and the exercises require you to produce your
+own evidence. Only then does the capstone provide a transfer check in a larger system.
 
 ## What this module is for
 
@@ -49,7 +50,49 @@ By the end of Module 01, you should be able to explain five things cleanly:
 - [Module Checkpoints](../guides/module-checkpoints.md)
 - [Capstone Map](../capstone/capstone-map.md)
 
-## The ten files in this module
+## The learning loop
+
+Use the module in this order:
+
+1. Read one core lesson and predict what its example will prove.
+2. Run `make lab`, then inspect only the JSON packet named by that lesson.
+3. Open `labs/runtime_objects/evidence.py` and trace how the packet was produced.
+4. Change or extend the smallest relevant probe while keeping `make lab-test` green.
+5. Complete the matching exercise without copying the answer.
+6. Transfer the object relationship to the incident-plugin capstone.
+
+The lab is deliberately smaller than the capstone. It removes descriptors, decorators,
+and metaclasses that Module 01 has not taught yet, so you can observe ordinary functions,
+classes, modules, instances, and bound methods without unexplained framework machinery.
+
+## Run the module lab
+
+From `programs/python-programming/python-meta-programming`:
+
+```console
+$ make lab
+{
+  "class": {
+    "bound_method_has_function": true,
+    "bound_method_has_instance": true,
+    ...
+  },
+  ...
+}
+$ make lab-test
+Ran 6 tests
+
+OK
+```
+
+The JSON is the observation surface. The tests are the claim-to-proof surface. Their
+important distinction is:
+
+- `make lab` helps you explain *what exists at runtime*
+- `make lab-test` checks the relationships the course depends on
+- neither command proves that arbitrary dynamic code is safe or well designed
+
+## The published lesson set
 
 1. Overview (`index.md`)
 2. [Functions as Runtime Objects](functions-as-runtime-objects.md)
@@ -62,7 +105,10 @@ By the end of Module 01, you should be able to explain five things cleanly:
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
 
-## How to use the file set
+The executable companion is `labs/runtime_objects/`, with focused verification in
+`tests/test_runtime_objects_lab.py`.
+
+## How to use the lesson set
 
 | If you need to... | Start here |
 | --- | --- |
@@ -72,6 +118,8 @@ By the end of Module 01, you should be able to explain five things cleanly:
 | compare `__dict__`-backed and slotted instances | [Instances as Runtime Objects](instances-as-runtime-objects.md) |
 | connect functions, modules, classes, instances, and bound methods into one model | [Object Graph and Runtime Cycle](object-graph-and-runtime-cycle.md) |
 | watch the boundary between supported introspection and brittle heuristics fail in practice | [Worked Example: Reviewing a Brittle Source-Recovery Tool](worked-example-reviewing-a-brittle-source-recovery-tool.md) |
+| run all five object-model probes before editing them | `make lab` |
+| verify the teaching claims after an edit | `make lab-test` |
 | test your understanding before moving to Module 02 | [Exercises](exercises.md) |
 | compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
 | stabilize the module vocabulary | [Glossary](glossary.md) |
@@ -99,6 +147,21 @@ By the end of this module, you should be able to:
 - explain what happens at import time, class-definition time, instance time, and call time
 - use the capstone runtime as evidence for ordinary object relationships
 
+## Capstone transfer, not capstone-first study
+
+After the lab feels explainable, inspect
+`capstone/src/incident_plugins/plugins.py` and choose `ConsoleNotifier.deliver`. Trace:
+
+1. the `plugins` module object that owns the global namespace
+2. the `ConsoleNotifier` class object bound into that namespace
+3. the function stored under `deliver` on the class
+4. one `ConsoleNotifier` instance
+5. the bound method produced by `instance.deliver`
+
+The capstone adds decorator and metaclass behavior that later modules will teach. In
+Module 01, acknowledge those layers but do not try to explain them early. The transfer
+goal is only to prove that the ordinary object graph still exists underneath them.
+
 ## Exit standard
 
 Do not move on until all of these are true:
@@ -107,6 +170,8 @@ Do not move on until all of these are true:
 - you can name which runtime facts are stable and which are diagnostic-only
 - you can trace one bound method back through instance, class, function, and module state
 - you can describe one brittle introspection idea and say exactly why it fails
+- you can run `make lab-test`, explain what each test proves, and name one claim it does
+  not prove
 
 When those feel ordinary, Module 01 has done its job and Module 02 can focus on safe
 observation instead of object-model confusion.

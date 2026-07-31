@@ -78,6 +78,8 @@ def multicast(items: Iterable[T], n: int, *, maxlen: int = 1024) -> tuple[Iterat
         nonlocal done
         if done:
             return
+        if any(len(q) >= maxlen for q in queues):
+            raise BufferError(f"multicast buffer exceeded (maxlen={maxlen})")
         try:
             x: object = next(upstream)
         except StopIteration:
@@ -86,8 +88,6 @@ def multicast(items: Iterable[T], n: int, *, maxlen: int = 1024) -> tuple[Iterat
                 q.append(sentinel)
             return
         for q in queues:
-            if len(q) >= maxlen:
-                raise BufferError(f"multicast buffer exceeded (maxlen={maxlen})")
             q.append(x)
 
     def sub(i: int) -> Iterator[T]:

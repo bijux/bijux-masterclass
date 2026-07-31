@@ -45,6 +45,21 @@ Out of the box, Make mainly sees:
 That is enough for many file-to-file relationships. It is not enough for every build
 fact that matters.
 
+## Four incremental outcomes
+
+For a relevant input change:
+
+| Make decision | Artifact result | Interpretation |
+| --- | --- | --- |
+| rebuild | correct new result | truthful edge and producer for this case |
+| rebuild | wrong or partial result | selection was plausible; recipe/publication failed |
+| skip | stale old result | semantic input is missing from freshness evidence |
+| skip | still-correct result | input was irrelevant or artifact identity is unchanged |
+
+For an irrelevant change, unnecessary rebuilding is also a defect: the graph has a false
+or overbroad edge. Truth means responding to relevant changes and ignoring irrelevant
+ones.
+
 ## The hidden-input problem
 
 Some things can change output meaning without appearing in the prerequisite list:
@@ -104,10 +119,15 @@ from run to run.
 
 A convergent build has a stable resting state.
 
-This command is a useful probe:
+In an isolated module lab or harness-owned workspace:
 
 ```sh
-make clean && make all && make -q all; echo $?
+make all
+set +e
+make -q all
+query_exit=$?
+set -e
+printf 'query_exit=%s\n' "$query_exit"
 ```
 
 After a successful build:
@@ -119,21 +139,31 @@ After a successful build:
 Module 01 wants you to care about that middle case. A build that rebuilds forever without
 meaningful change is telling you the graph is unstable.
 
-## A practical convergence loop
+Query mode does not inspect artifact meaning. A missing edge can yield exit zero while a
+stale file remains. Pair convergence with controlled input challenges.
 
-Use this four-step loop whenever a build feels suspicious:
+## A practical truth loop
 
-1. `make clean && make all`
-2. `make -q all; echo $?`
-3. `make --trace all`
-4. touch one meaningful input and repeat
+Use this loop whenever a build feels suspicious:
 
-That loop tells you two things:
+1. preserve initial source and target state;
+2. build the requested target successfully;
+3. query unchanged state and require exit zero;
+4. change one relevant input and predict the affected closure;
+5. trace the rebuild and inspect accepted artifact content;
+6. query unchanged state again;
+7. change one irrelevant input and require no needless work;
+8. restore the fixture through its owned reset route.
+
+That loop tells you:
 
 - whether the build reaches a resting state
-- whether the right edges wake up when a real input changes
+- whether the right edges wake up after a semantic change
+- whether irrelevant changes stay outside the closure
+- whether the producer publishes the expected new artifact
 
-If either part fails, the graph needs work before the build deserves trust.
+Do not clean between the relevant input change and its rebuild. Cleaning would erase the
+incremental question.
 
 ## Two common ways convergence breaks
 
@@ -152,8 +182,10 @@ no stable resting state.
 SRCS = $(wildcard src/*.c)
 ```
 
-This is not always wrong, but if the resulting list is unordered or if file discovery
-changes without being modeled clearly, you can create confusing rebuild behavior.
+GNU Make’s wildcard function returns sorted matches for each expression. The unresolved
+question is membership: does every matching file belong in the target contract? A
+scratch source can silently widen the graph even when order is canonical. Module 03
+develops discovery policy in depth.
 
 ### Recipe text that depends on moving state
 
@@ -180,19 +212,92 @@ FLAGS_ID := $(shell printf '%s' "$(FLAGS_LINE)" | cksum | awk '{print $$1}')
 FLAGS_STAMP := build/flags.$(FLAGS_ID).stamp
 
 $(FLAGS_STAMP): | build/
-	@printf '%s\n' "$(FLAGS_LINE)" > $@
+	@candidate="$@.candidate.$$$$"; \
+	printf '%s\n' "$(FLAGS_LINE)" > "$$candidate" && \
+	rm -f build/flags.*.stamp && \
+	mv -f "$$candidate" "$@" || { rm -f "$$candidate"; exit 1; }
 
 build/%.o: src/%.c $(FLAGS_STAMP) | build/
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 ```
 
-This does not solve every build-fact problem, but it teaches the right instinct:
+This design keeps one active flag stamp in a shared object directory. A new flag value
+selects a missing path; publishing it removes the previously active stamp. Returning to
+an older value therefore selects a missing path again and rebuilds the affected objects.
+Keeping every historical stamp would make that reversal unsafe: the old stamp might be
+older than an object compiled under the newer policy.
+
+This design assumes one active configuration owns the object directory. Concurrent
+builds with different flag sets need separate build directories. Within that boundary,
+the example teaches the right instinct:
 
 - if a semantic fact changes output meaning
 - and Make cannot otherwise see it
 - give the graph evidence that changes when the fact changes
 
-The exact stamp design can improve later. The habit matters now.
+The exact evidence design can become more sophisticated later. The habit matters now.
+
+## Prove reversal as well as change
+
+A one-way test from `-O2` to `-O0` is insufficient. The minimum semantic-input challenge
+is:
+
+```text
+-O2 -> unchanged -O2 -> -O0 -> unchanged -O0 -> -O2
+```
+
+The two unchanged requests must converge. Each transition between values must rebuild
+the affected targets. This catches schemes that create a historical stamp once and then
+mistake its old timestamp for evidence about the current configuration.
+
+Do not include current time, process IDs, random values, or unrelated environment state
+in correctness evidence.
+
+## Clean success and incremental truth differ
+
+A clean build can hide:
+
+- missing header edges because every object is rebuilt anyway;
+- missing flag evidence because no prior object exists;
+- unsafe stale-output behavior after a generator input changes;
+- a target whose recipe only works when directories happen to be empty.
+
+An incremental build can hide:
+
+- a source-package omission never tested in a fresh workspace;
+- undeclared generated files borrowed from a previous run;
+- a missing bootstrap rule.
+
+Keep both proof routes. Do not treat “clean fixes it” as a repair.
+
+## Timestamp limits
+
+Make’s ordinary file freshness depends on filesystem timestamps. Reason carefully when:
+
+- clock changes make a target appear newer than future prerequisites;
+- timestamp resolution collapses rapid changes;
+- files are restored with preserved mtimes but changed content;
+- remote or generated filesystems have unusual time behavior.
+
+Do not respond by touching everything routinely. Use repository-supported hash,
+manifest, or always-check-and-content-preserve patterns for semantic facts that mtime
+cannot represent reliably.
+
+## Write a convergence note
+
+```text
+Requested target:
+Initial build result:
+Unchanged query exit:
+Relevant input challenge:
+Predicted rebuild closure:
+Observed trace:
+Artifact acceptance:
+Second unchanged query exit:
+Irrelevant input challenge:
+Decision:
+Limit:
+```
 
 ## Questions to ask during review
 
@@ -200,6 +305,8 @@ The exact stamp design can improve later. The habit matters now.
 - Where is that input represented as evidence?
 - Does that evidence stay stable when the meaning stays stable?
 - Can the build reach a quiet state after success?
+- Does a relevant change wake the smallest truthful closure?
+- Does an irrelevant change avoid needless work?
 
 ## Practical questions for review
 
@@ -207,6 +314,7 @@ The exact stamp design can improve later. The habit matters now.
 - If a tool version changes output meaning, where is that fact recorded?
 - If a target rebuilds every time, which input is moving even when the source files are
   not?
+- Could query exit zero be preserving a stale target because an edge is missing?
 
 When you can answer those questions for a real build, you have moved from "it usually
 works" to "the graph is telling the truth."

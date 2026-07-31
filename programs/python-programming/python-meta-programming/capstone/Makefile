@@ -57,13 +57,47 @@ plugin: ## Render one concrete plugin contract from the public CLI
 field: ## Render one concrete field contract from the public CLI
 	@PYTHONPATH=src $(CLI) field delivery webhook endpoint
 
+.PHONY: field-ownership
+field-ownership: ## Inspect one field descriptor without constructing a plugin
+	@PYTHONPATH=src $(CLI) field-ownership delivery webhook endpoint
+
+.PHONY: field-system
+field-system: ## Inspect field-system powers without constructing a plugin
+	@PYTHONPATH=src $(CLI) field-system delivery webhook
+
 .PHONY: action
 action: ## Render one concrete action contract from the public CLI
 	@PYTHONPATH=src $(CLI) action delivery pager preview
 
+.PHONY: bind-action
+bind-action: ## Validate one action call without constructing or invoking a plugin
+	@PYTHONPATH=src $(CLI) bind-action delivery console deliver \
+		--arg "title=CPU high" \
+		--arg "severity=warning" \
+		--arg "summary=node-1 crossed 90%"
+
+.PHONY: action-wrapper
+action-wrapper: ## Audit one action wrapper chain without execution
+	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver
+
+.PHONY: check-action
+check-action: ## Check supported action hints without construction or execution
+	@PYTHONPATH=src $(CLI) check-action delivery console deliver \
+		--arg "title=CPU high" \
+		--arg "severity=warning" \
+		--arg "summary=node-1 crossed 90%"
+
+.PHONY: class-creation
+class-creation: ## Inspect stored class-creation provenance without construction
+	@PYTHONPATH=src $(CLI) class-creation delivery console
+
 .PHONY: registry
 registry: ## Render the delivery registry from the public CLI
 	@PYTHONPATH=src $(CLI) registry --group delivery
+
+.PHONY: governance
+governance: ## Review accepted, constrained, and rejected runtime powers
+	@PYTHONPATH=src $(CLI) governance
 
 .PHONY: signatures
 signatures: ## Render generated constructor and action signatures from the public CLI
@@ -95,7 +129,26 @@ inspect: ## Build the learner-facing inspection bundle
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(INSPECT_DIR)/registry.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(INSPECT_DIR)/plugin.json
 	@PYTHONPATH=src $(CLI) field delivery webhook endpoint > $(INSPECT_DIR)/field.json
+	@PYTHONPATH=src $(CLI) field-ownership delivery webhook endpoint \
+		> $(INSPECT_DIR)/field-ownership.json
+	@PYTHONPATH=src $(CLI) field-system delivery webhook \
+		> $(INSPECT_DIR)/field-system.json
 	@PYTHONPATH=src $(CLI) action delivery pager preview > $(INSPECT_DIR)/action.json
+	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver \
+		> $(INSPECT_DIR)/action-wrapper.json
+	@PYTHONPATH=src $(CLI) bind-action delivery console deliver \
+		--arg "title=CPU high" \
+		--arg "severity=warning" \
+		--arg "summary=node-1 crossed 90%" \
+		> $(INSPECT_DIR)/bind-action.json
+	@PYTHONPATH=src $(CLI) check-action delivery console deliver \
+		--arg "title=CPU high" \
+		--arg "severity=warning" \
+		--arg "summary=node-1 crossed 90%" \
+		> $(INSPECT_DIR)/check-action.json
+	@PYTHONPATH=src $(CLI) class-creation delivery console \
+		> $(INSPECT_DIR)/class-creation.json
+	@PYTHONPATH=src $(CLI) governance > $(INSPECT_DIR)/governance.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(INSPECT_DIR)/signatures.json
 	@cp README.md $(INSPECT_DIR)/README.md
 	@for doc in $(DOC_FILES); do \
@@ -113,9 +166,10 @@ inspect: ## Build the learner-facing inspection bundle
 	@printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read manifest.json for group-level field and action metadata.' \
-		'  2. Read registry.json, plugin.json, field.json, action.json, and signatures.json for registered plugins, one concrete plugin, one concrete field, one concrete action, and generated callable shapes.' \
-		'  3. Read COMMAND_GUIDE.md and PROOF_GUIDE.md for the next review route.' \
-		'  4. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership and proof.' \
+		'  2. Read registry.json, plugin.json, field.json, field-ownership.json, field-system.json, action.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for concrete contracts, descriptor-system boundaries, callable policy, and class-creation provenance.' \
+		'  3. Read governance.json to review which runtime powers the application accepts, constrains, and rejects.' \
+		'  4. Read COMMAND_GUIDE.md and PROOF_GUIDE.md for the next review route.' \
+		'  5. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership and proof.' \
 		> $(INSPECT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/bundle-manifest.json
 	@echo "wrote learner-facing inspection bundle to $(INSPECT_DIR)"
@@ -130,7 +184,26 @@ verify-report: ## Build the structured capstone verification report
 	@$(VENV_PY) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(VERIFY_REPORT_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(VERIFY_REPORT_DIR)/plugin.json
+	@PYTHONPATH=src $(CLI) field-ownership delivery webhook endpoint \
+		> $(VERIFY_REPORT_DIR)/field-ownership.json
+	@PYTHONPATH=src $(CLI) field-system delivery webhook \
+		> $(VERIFY_REPORT_DIR)/field-system.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(VERIFY_REPORT_DIR)/signatures.json
+	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver \
+		> $(VERIFY_REPORT_DIR)/action-wrapper.json
+	@PYTHONPATH=src $(CLI) bind-action delivery console deliver \
+		--arg "title=CPU high" \
+		--arg "severity=warning" \
+		--arg "summary=node-1 crossed 90%" \
+		> $(VERIFY_REPORT_DIR)/bind-action.json
+	@PYTHONPATH=src $(CLI) check-action delivery console deliver \
+		--arg "title=CPU high" \
+		--arg "severity=warning" \
+		--arg "summary=node-1 crossed 90%" \
+		> $(VERIFY_REPORT_DIR)/check-action.json
+	@PYTHONPATH=src $(CLI) class-creation delivery console \
+		> $(VERIFY_REPORT_DIR)/class-creation.json
+	@PYTHONPATH=src $(CLI) governance > $(VERIFY_REPORT_DIR)/governance.json
 	@PYTHONPATH=src $(CLI) trace delivery pager preview \
 		--config "service=core" \
 		--config "routing_key=sev1" \
@@ -154,7 +227,7 @@ verify-report: ## Build the structured capstone verification report
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read pytest.txt for executable proof.' \
-		'  2. Read manifest.json, plugin.json, signatures.json, and trace.json for the saved public-surface evidence.' \
+		'  2. Read manifest.json, plugin.json, field-ownership.json, field-system.json, signatures.json, action-wrapper.json, bind-action.json, check-action.json, class-creation.json, governance.json, and trace.json to compare runtime ownership and review decisions with execution.' \
 		'  3. Read TEST_GUIDE.md and PROOF_GUIDE.md for the closest claim-to-proof route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect a code change back to the saved proof.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
@@ -168,7 +241,26 @@ tour: ## Build the learner-facing walkthrough bundle
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(TOUR_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(TOUR_DIR)/registry.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(TOUR_DIR)/plugin.json
+	@PYTHONPATH=src $(CLI) field-ownership delivery webhook endpoint \
+		> $(TOUR_DIR)/field-ownership.json
+	@PYTHONPATH=src $(CLI) field-system delivery webhook \
+		> $(TOUR_DIR)/field-system.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(TOUR_DIR)/signatures.json
+	@PYTHONPATH=src $(CLI) action-wrapper delivery console deliver \
+		> $(TOUR_DIR)/action-wrapper.json
+	@PYTHONPATH=src $(CLI) bind-action delivery console deliver \
+		--arg "title=CPU high" \
+		--arg "severity=warning" \
+		--arg "summary=node-1 crossed 90%" \
+		> $(TOUR_DIR)/bind-action.json
+	@PYTHONPATH=src $(CLI) check-action delivery console deliver \
+		--arg "title=CPU high" \
+		--arg "severity=warning" \
+		--arg "summary=node-1 crossed 90%" \
+		> $(TOUR_DIR)/check-action.json
+	@PYTHONPATH=src $(CLI) class-creation delivery console \
+		> $(TOUR_DIR)/class-creation.json
+	@PYTHONPATH=src $(CLI) governance > $(TOUR_DIR)/governance.json
 	@PYTHONPATH=src $(CLI) invoke delivery console deliver \
 		--config "prefix=[ops]" \
 		--config "uppercase_severity=true" \
@@ -203,16 +295,18 @@ tour: ## Build the learner-facing walkthrough bundle
 		"actions=src/incident_plugins/actions.py" \
 		"cli=src/incident_plugins/cli.py" \
 		"framework=src/incident_plugins/framework.py" \
+		"governance=src/incident_plugins/governance.py" \
 		"plugins=src/incident_plugins/plugins.py" \
 		"tests=tests" \
 		> $(TOUR_DIR)/focus-areas.txt
 	@printf '%s\n' \
 		'Walkthrough route:' \
 		'  1. Read manifest.json, registry.json, plugin.json, and signatures.json to inspect the public runtime shape.' \
-		'  2. Read demo.json for one concrete invocation.' \
-		'  3. Read trace.json for configuration and action-history visibility.' \
-		'  4. Read WALKTHROUGH_GUIDE.md, COMMAND_GUIDE.md, and TOUR.md for the review order.' \
-		'  5. Read PACKAGE_GUIDE.md and PROOF_GUIDE.md when you need to connect the tour back to local guides or source ownership.' \
+		'  2. Read field-ownership.json, field-system.json, action-wrapper.json, bind-action.json, check-action.json, and class-creation.json for descriptor-system ownership, callable ownership, partial contracts, and class-creation provenance without execution.' \
+		'  3. Read governance.json for the accepted, constrained, and rejected runtime powers.' \
+		'  4. Read demo.json and trace.json for deliberate invocation, configuration, and successful action-history visibility.' \
+		'  5. Read WALKTHROUGH_GUIDE.md, COMMAND_GUIDE.md, and TOUR.md for the review order.' \
+		'  6. Read PACKAGE_GUIDE.md and PROOF_GUIDE.md when you need to connect the tour back to local guides or source ownership.' \
 		> $(TOUR_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/bundle-manifest.json
 	@echo "wrote learner-facing walkthrough bundle to $(TOUR_DIR)"

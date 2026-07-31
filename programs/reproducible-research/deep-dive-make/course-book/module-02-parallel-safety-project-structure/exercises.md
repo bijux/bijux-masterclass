@@ -22,8 +22,17 @@ Do the exercises in order. The day is one progression:
 
 - Exercises 1-3 teach you to inventory writers and expose obvious collisions
 - Exercises 4-6 teach you to choose truthful ordering and observe harmless overlap
-- Exercises 7-8 move into self-built race examples and directory ordering
+- Exercises 7-8 move into failed publication and semantic ordering
 - Exercises 9-10 teach you to expose missing edges and prove serial/parallel equivalence
+
+```mermaid
+flowchart LR
+  frontier["runnable frontier"] --> ownership["effect ownership"]
+  ownership --> ordering["truthful ordering"]
+  ordering --> failure["publication failure"]
+  failure --> missing["missing-edge challenge"]
+  missing --> equivalence["schedule equivalence"]
+```
 
 Keep one parallel-safety packet as you go. By the end of the day it should contain:
 
@@ -85,14 +94,16 @@ superstitions about concurrency.
 ## Exercise 1: Name the runnable targets
 
 Take the course `capstone/` and explain which object targets may run concurrently during
-a clean build and why.
+a clean build and why. Draw the runnable frontier before any object completes, then draw
+the frontier after all objects complete.
 
 What to hand in:
 
-- a short graph sketch or target list
+- the requested-goal closure
+- both runnable-frontier sketches
 - one sentence per concurrently runnable target group
-- one sentence naming which target must wait and why
-- one ownership-table row for the final target
+- the exact edges that keep the final target blocked
+- one ownership-table row for each object and the final target
 
 Study note:
 Do not answer this as "parallel means independent tasks." Name the exact prerequisites
@@ -117,7 +128,8 @@ Appending politely is still multi-writer behavior. The question is not whether i
 ## Exercise 3: Repair a temporary-file collision
 
 Explain why `repro/shared-staging-collision.mk` is unsafe, then redesign it so each
-target uses its own temporary path.
+target uses its own temporary path. Extend the review to two independent Make
+invocations that share one output root.
 
 What to hand in:
 
@@ -125,6 +137,7 @@ What to hand in:
 - the repaired temp-path pattern
 - a short explanation of why temp files still count as output ownership
 - one sentence explaining what failure should leave behind
+- the policy that isolates, coordinates, or rejects independent invocations
 
 Study note:
 Learners often ignore temporary paths because they are not the final artifact. Module 02
@@ -133,13 +146,16 @@ asks you to treat every written path as part of the concurrency contract.
 ## Exercise 4: Choose the right ordering tool
 
 Give one example that needs a real prerequisite, one that needs an order-only
-prerequisite, and one that needs a stamp.
+prerequisite, one that needs a semantic stamp, and one genuine singleton resource that
+requires bounded serialization.
 
 What to hand in:
 
-- three short rule fragments
-- one sentence per fragment explaining why that ordering tool is honest
-- one sentence naming what lie the wrong ordering tool would introduce
+- four short rule or contract fragments
+- one sentence per fragment explaining why the mechanism is honest
+- a changed-state challenge for the real edge, setup edge, and stamp
+- the supported GNU Make boundary for the serialization mechanism
+- one sentence naming what lie a broader mechanism would introduce
 
 Study note:
 This is an honesty exercise, not a syntax exercise. The point is to describe what should
@@ -147,15 +163,19 @@ or should not trigger rebuilds.
 
 ## Exercise 5: Design a selftest
 
-Describe the checks your `selftest` target must perform to prove parallel safety on the
-declared artifact set.
+Design a `selftest` that compares independent clean serial and parallel workspaces. Its
+expected artifact membership must come from a governed contract rather than from
+whatever files the implementation happens to produce. Add one controlled shared-writer
+fault that the same comparison must reject.
 
 What to hand in:
 
-- the ordered checklist the selftest should run
-- the artifact set it should compare
-- the failure signal that would tell you the build still lies
-- one sentence explaining why terminal output alone is not enough
+- the bounded claim and non-claims
+- the equivalent initial-state policy
+- the governed artifact set and identity checks
+- missing, unexpected, and changed result categories
+- the controlled fault and expected stopping boundary
+- one accepted and one rejected result shape
 
 Study note:
 A good selftest stops on the first meaningful divergence. It does not print encouragement
@@ -193,23 +213,28 @@ Study note:
 This exercise exists to separate visible concurrency from unsafe concurrency. Those are
 not the same thing.
 
-## Exercise 7: Turn harmless concurrency into a race
+## Exercise 7: Reject partial publication
 
-Modify Exercise 6 so both targets write `result.txt`. Run the build at least ten times
-under `-j2` and record the final content.
+Create one file target whose recipe writes directly to the final path and then fails.
+Show that a nonzero exit can coexist with plausible partial output. Repair the producer
+so it writes a target-specific candidate in the final directory, validates it, and
+publishes by rename only after success.
 
-Repair the build by giving each worker its own file and adding one aggregation target.
+Run the repaired producer with a controlled failure before publication, then with a
+healthy input. Add a consumer and prove it never observes the rejected candidate.
 
 What to hand in:
 
-- the broken and repaired graph shapes
-- the ten observed results
-- a trace showing that the aggregator waits for both worker files
-- one sentence naming the published path that caused the race
+- the broken and repaired recipes
+- the failed exit and partial-final observation from the broken case
+- the repaired failure evidence showing no rejected final publication
+- the healthy final artifact and consumer result
+- the candidate path ownership and same-filesystem reasoning
+- the next unchanged query exit
 
 Study note:
-The important shift is not "two jobs became dangerous." The important shift is "one path
-lost single-writer ownership."
+Parallel safety includes failure visibility. A consumer must see an accepted previous
+value or the new accepted value, never a half-published result.
 
 ## Exercise 8: Separate setup order from semantic freshness
 
@@ -267,20 +292,23 @@ Delay does not create the bug. Delay makes the hidden scheduling assumption visi
 Choose a small build with at least three independently runnable targets. Write a
 `parallel-check` target or shell script that:
 
-1. performs a clean `-j1` build
-2. records checksums of declared outputs
-3. performs a clean `-j8` build
-4. records checksums again
-5. fails if the manifests differ
+1. creates equivalent isolated serial and parallel workspaces
+2. performs a clean `-j1` build
+3. records the governed expected membership and accepted identities
+4. performs a clean `-j8` build in the other workspace
+5. records the same evidence
+6. classifies missing, unexpected, and changed artifacts
+7. fails if the declared contract differs
 
 What to hand in:
 
 - the declared artifact set
+- the equivalent-state and environment record
 - the comparison implementation
 - one passing transcript
-- one deliberate race that makes the check fail
-- one sentence explaining why checksum comparison is a stronger proof than reading the
-  console log
+- one controlled race and its expected comparison category
+- one rejected transcript at the intended boundary
+- two schedules or environments the result does not cover
 
 Study note:
 The right question is not "did both builds finish?" The right question is "did both
@@ -295,6 +323,7 @@ Do not open `exercise-answers.md` until you can point to:
 - one repair that removes shared output ownership
 - one proof route that compares serial and parallel meaning rather than terminal noise
 - one example where a missing edge only becomes obvious under overlap
+- one publication failure that cannot expose a plausible rejected final artifact
 
 If you do not yet have those five things, the answer page will sound helpful but will not
 teach the underlying discipline.

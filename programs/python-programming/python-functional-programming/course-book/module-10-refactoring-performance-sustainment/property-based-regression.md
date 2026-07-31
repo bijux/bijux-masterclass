@@ -1,6 +1,5 @@
 # Property-Based Regression
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,314 +24,204 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Example tests ask whether a few chosen values behave correctly. Property-based
+tests ask whether a domain statement survives many generated values and then
+shrink a failure toward a small counterexample.
 
-**Module 10**
-> **Core question:**  
-> How do you use property-based testing with Hypothesis to catch regressions and enforce invariants in pure functional pipelines, integrating these tests into CI for continuous verification of laws like equivalence, idempotence, and associativity?
+The difficult work is not adding `@given`. It is choosing a predicate that
+describes the application contract rather than the current implementation.
 
-In this core, we integrate property-based testing (PBT) into the FuncPipe RAG Builder (now at `funcpipe-rag-10`). PBT uses Hypothesis to generate diverse inputs, verifying properties (e.g., laws from prior modules) rather than specific examples. This catches regressions in pure pipelines, where traditional unit tests miss edge cases. We focus on invariants (e.g., idempotence), regressions (e.g., equivalence post-refactor), and CI integration (e.g., fail on property violations). Builds on Core 1's equivalence predicates.
+## The FuncPipe pressure
 
-**Motivation Bug:** Example-based tests miss rare failures (e.g., deep trees breaking recursion limits); PBT explores vast inputs, shrinking failures for minimal repros—essential for pure pipelines where bugs hide in compositions.
+Module 05 introduced a pure embedding route and a hybrid route that may use a
+different internal representation. Module 10 needs to decide whether an
+optimization can replace the current route.
 
-**Delta from Core 3:** Observable pipelines are debuggable; PBT automates invariant checks in CI.
-
-**PBT Protocol (Contract, Entry/Exit Criteria):**
-- **Properties:** Formal statements (e.g., "f(f(x)) == f(x)" for idempotence); derived from laws/invariants. Derive properties from specs + stated preconditions (e.g., if a law assumes sorted input, the strategy must generate sorted data or use assume(...)). Strategy encodes domain; assume is for rare conditional edges, not basic validity.
-- **Semantics:** Tests generate/shrink inputs; fail on counterexamples; seed for repro.
-- **Purity:** Focus on pure funcs; mock effects with fakes.
-- **Error Model:** Properties include failure paths (e.g., error propagation).
-- **Resource Safety:** Bound generation (e.g., max_size); timeout per test.
-- **Integration:** Add to RAG (test clean_doc idempotence); CI runs full suite.
-- **Mypy Config:** --strict; strategies typed.
-- **Exit:** Key laws pass, diversity targets hit (via events/targets), runtime budget met, CI green. Code coverage >80% (via pytest-cov) as side metric.
-
-Use this when you need pipeline reliability backed by automated laws.
-
-**Outcome:**
-1. Write PBT for invariants/regressions.
-2. Integrate Hypothesis into CI.
-3. Test RAG properties, catch bugs.
-
-Note: Hypothesis "coverage" refers to input-space exploration (via events/targets), not path coverage (measured separately with pytest-cov).
-
-Split PBT into unit (small sizes, strict deadlines for pure stages) and e2e (fewer examples, no deadlines, fixed fakes for pipelines).
-
-Property Taxonomy: 
-- Algebraic laws (idempotence, associativity).
-- Metamorphic properties (e.g., adding noise preserves core outputs).
-- Round-trips (serialize/deserialize == id).
-- Observational equivalence (refactor matches baseline).
-
----
-## 1. Laws & Invariants
-| Invariant            | Description                                                                                  | Enforcement          |
-|----------------------|----------------------------------------------------------------------------------------------|----------------------|
-| **Property Inv**     | All stated properties hold for generated inputs; failures shrink to minimal.                 | Hypothesis runs      |
-| **Equivalence Inv**  | Refactors preserve Core 1 predicates.                                                        | PBT equivalence      |
-| **Idempotence Inv**  | If intended, f(f(x)) == f(x).                                                               | PBT idempotence      |
-| **Associativity Inv**| For monoids/folds, (a op b) op c == a op (b op c).                                         | PBT associativity    |
-| **Diversity Inv**    | Properties explore key input dimensions; measured via Hypothesis events/targets.             | CI metrics           |
-
-These automate law enforcement.
-
----
-## 2. Decision Table
-| Scenario             | Need Diversity | CI Integration | Recommended            |
-|----------------------|----------------|----------------|------------------------|
-| Check laws           | High           | Yes            | PBT invariants         |
-| Regression guard     | High           | Yes            | PBT equivalence        |
-| Edge cases           | High           | Yes            | Custom strategies      |
-| Simple asserts       | Low            | No             | Unit tests             |
-
-**Use PBT for pure funcs; units for effects.**
-
----
-## 3. Public API (Strategies for RAG Domain)
-Domain strategies for Hypothesis. Note: text strategies intentionally include diverse Unicode to stress handling; constrain alphabet if testing non-Unicode paths. Pipeline accepts raw string categories.
+This assertion is too weak:
 
 ```python
-from hypothesis import strategies as st
-from funcpipe_rag import RawDoc, CleanDoc, Chunk
-from random import Random
-
-
-def raw_doc_strategy() -> st.SearchStrategy[RawDoc]:
-    return st.builds(
-        RawDoc,
-        doc_id=st.text(min_size=1, max_size=20, alphabet=st.characters(categories=("Ll", "Lu", "Nd"))),
-        # Constrain to letters/numbers for realistic IDs
-        title=st.text(max_size=50),
-        abstract=st.text(min_size=1, max_size=500),
-        categories=st.text(max_size=20),
-    )
-
-
-clean_doc_strategy = raw_doc_strategy().map(clean_doc)  # Only reachable CleanDocs
-
-doc_list_strategy = st.lists(raw_doc_strategy(), max_size=50, unique_by=lambda d: d.doc_id)
-
-
-@st.composite
-def chunk_strategy(draw) -> Chunk:
-    doc = draw(raw_doc_strategy())
-    size = draw(st.integers(min_value=1, max_value=256))
-    start = draw(st.integers(min_value=0, max_value=max(0, len(doc.abstract) - 1)))
-    end = min(len(doc.abstract), start + size)
-    return Chunk(doc_id=doc.doc_id, text=doc.abstract[start:end], start=start, end=end)
+assert len(pure_results) == len(hybrid_results)
 ```
 
-For floating-point equivalence (e.g., embeddings), use a tolerant predicate assuming aligned order and IDs; only valid if stable ordering is guaranteed; otherwise compare by id.
+Both routes could produce the same number of chunks while changing source
+metadata, losing a failure, or attaching a vector to the wrong text.
+
+This assertion is too strong:
 
 ```python
-import numpy as np
-def eq_numeric(a: list, b: list, atol=1e-5) -> bool:
-    if len(a) != len(b): return False
-    return all(np.allclose(np.array(va), np.array(vb), atol=atol) for va, vb in zip(a, b))
+assert type(pure_results) is type(hybrid_results)
 ```
 
----
-## 4. Reference Implementations
-### 4.1 Invariant Properties (Idempotence)
-Precondition: clean_doc is designed to be idempotent (e.g., normalization like lowercase/strip).
+It forbids exactly the internal representation change the optimization is meant
+to explore.
+
+## Define equivalence in domain terms
+
+FuncPipe's `embedding_batches_equivalent` compares the public meaning of each
+result:
+
+- success and failure variants occur at the same positions;
+- chunk text, source, tags, model, and expected dimension remain equal;
+- vector values are numerically close under the declared tolerance; and
+- failure values remain equal.
+
+Representation identity is absent from the contract.
+
+```mermaid
+flowchart LR
+    generated["Generated Chunk values"]
+    pure["process_batch_hybrid(..., mode='pure')"]
+    hybrid["process_batch_hybrid(..., mode='hybrid')"]
+    predicate["embedding_batches_equivalent"]
+    accept["Semantic gate passes"]
+
+    generated --> pure --> predicate
+    generated --> hybrid --> predicate
+    predicate --> accept
+```
+
+The predicate is reusable outside Hypothesis. That matters because the property
+framework generates inputs; it should not own the meaning of equivalence.
+
+## Generate application-owned values
+
+The learning proof generates text and constructs real `Chunk` values:
 
 ```python
-from hypothesis import given, settings, Phase, HealthCheck
-from funcpipe_rag import eq_pure
+@given(texts=st.lists(st.text(min_size=1, max_size=32), max_size=8))
+def test_optimized_embedding_preserves_the_domain_contract(
+    texts: list[str],
+) -> None:
+    batch = [
+        Chunk(
+            text=ChunkText(content=text),
+            metadata=ChunkMetadata(
+                source="learning",
+                tags=(),
+                embedding_model="local-hash",
+            ),
+        )
+        for text in texts
+    ]
 
+    pure = process_batch_hybrid(batch, mode="pure")
+    optimized = process_batch_hybrid(batch, mode="hybrid")
 
-@given(raw=raw_doc_strategy())
-@settings(max_examples=200, deadline=1000, phases=(Phase.explicit, Phase.generate, Phase.target),
-          suppress_health_check=[HealthCheck.filter_too_much])
-def test_clean_idempotent(raw):
-    once = clean_doc(raw)
-    twice = clean_doc(once)
-    assert eq_pure([once], [twice], key=lambda d: (d.doc_id, d.title, d.abstract, d.categories))
-
-
-@given(clean=clean_doc_strategy)
-@settings(max_examples=200, deadline=1000, phases=(Phase.explicit, Phase.generate, Phase.target),
-          suppress_health_check=[HealthCheck.filter_too_much])
-def test_clean_fixpoint(clean):
-    assert eq_pure([clean_doc(clean)], [clean], key=lambda d: (d.doc_id, d.title, d.abstract, d.categories))
+    assert embedding_batches_equivalent(pure, optimized)
 ```
 
-### 4.2 Regression Properties (Equivalence)
-Control non-determinism with fixed seeds/mocks; use separate RNGs and storage to avoid state sharing. Use tuple(docs) if inputs are immutable. Use multiset equality (order-insensitive).
+The bounds are intentional:
+
+- empty batches establish the collection identity;
+- one-item batches expose the smallest positional mismatch;
+- varied Unicode text pressures deterministic embedding input handling; and
+- a maximum of eight chunks keeps the teaching proof quick.
+
+Larger generation is not automatically stronger. A bounded strategy that targets
+the contract is more useful than an enormous strategy that makes failures slow to
+reproduce.
+
+## Understand the shrinking result
+
+Introduce one deliberate metadata mismatch:
 
 ```python
-from collections import Counter
-
-@given(docs=doc_list_strategy, seed=st.integers(0, 2**32-1))
-@settings(max_examples=200, deadline=1000, suppress_health_check=[HealthCheck.filter_too_much])
-def test_refactor_equiv(docs, seed):
-    rng_imp = Random(seed)
-    rng_fp = Random(seed)
-    clock = lambda _: None  # Noop clock
-    storage_imp = fake_storage()
-    storage_fp = fake_storage()
-    imp_input = tuple(docs)
-    fp_input = tuple(docs)
-    imp = imperative_rag(imp_input, rng=rng_imp, clock=clock, storage=storage_imp)
-    fp = fp_rag(fp_input, rng=rng_fp, clock=clock, storage=storage_fp)
-    # Multiset equality (order-insensitive)
-    key = lambda c: (c.doc_id, c.start, c.end, c.text)
-    assert Counter(map(key, imp)) == Counter(map(key, fp))
-    # Observational equivalence on storage
-    assert storage_imp.snapshot() == storage_fp.snapshot()
+changed = replace(
+    batch[0],
+    metadata=replace(batch[0].metadata, source="different"),
+)
 ```
 
-### 4.3 CI Integration Pattern
-Cache deps, pin profile, artifact failures. Use fixed seed for PR repro; no seed for nightly exploration (true stochastic search). Note: Failing examples are stored only if the Hypothesis example database is enabled (default: yes).
+The smallest useful counterexample is one successful chunk whose source differs.
+Hypothesis does not need a large corpus because provenance equality is part of the
+predicate.
 
-```yaml
-# .github/workflows/ci.yml
-name: CI
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with: { python-version: '3.10' }
-      - name: Cache deps
-        uses: actions/cache@v3
-        with: { path: ~/.cache/pip, key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }} }
-      - name: Install deps
-        run: pip install -r requirements.txt  # Includes hypothesis
-      - name: Run PBT
-        env: { HYPOTHESIS_PROFILE: ci }
-        run: pytest --hypothesis-show-statistics --hypothesis-seed=0  # Seed for repro; stats for diversity
-      - name: Artifact failing examples
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with: { name: hypothesis-failures, path: .hypothesis/examples/ }
+Read that failure as a design result:
 
-# .github/workflows/nightly.yml (scheduled)
-name: Nightly PBT
-on:
-  schedule:
-    - cron: '0 0 * * *'  # Daily
-jobs:
-  test:
-    # ... similar, but omit --hypothesis-seed=0 for stochastic search
-```
+- the optimized vector may still be numerically correct;
+- the chunk is still not semantically equivalent;
+- performance evidence cannot override the failed semantic gate; and
+- the counterexample names the smallest public contract that changed.
 
-Profile (`funcpipe_rag/hypothesis_profile.py`); explicit load in conftest.py:
+## Laws and regression predicates are not interchangeable
+
+An idempotence law has one implementation:
 
 ```python
-# capstone/tests/conftest.py
-import os
-import funcpipe_rag
-from hypothesis import settings
-
-profile = os.getenv("HYPOTHESIS_PROFILE") or ("ci" if os.getenv("CI") else "unit_pbt")
-settings.load_profile(profile)
+clean_doc(clean_doc(doc)) == clean_doc(doc)
 ```
+
+An equivalence predicate compares two routes:
 
 ```python
-from hypothesis import Phase, settings
-settings.register_profile("ci", max_examples=1000, deadline=None, phases=(Phase.explicit, Phase.generate, Phase.target))
-settings.register_profile("unit_pbt", max_examples=200, deadline=1000)
+embedding_batches_equivalent(pure(batch), hybrid(batch))
 ```
 
-### 4.4 Custom Strategies (Deep Trees)
-Bound depth explicitly for recursion tests.
+A general example has chosen input and output:
 
 ```python
-@st.composite
-def bounded_tree_strategy(draw, max_depth=5) -> TreeDoc:
-    if max_depth <= 0:
-        return draw(st.builds(Leaf, content=st.text()))
-    else:
-        if draw(st.booleans()):
-            return draw(st.builds(Leaf, content=st.text()))
-        else:
-            children = draw(st.lists(bounded_tree_strategy(max_depth=max_depth-1), min_size=1, max_size=3))
-            return Node(children=children)
+assert clean_doc(RawDoc("  hello  ")).abstract == "hello"
 ```
 
-### 4.5 Stateful Testing for Pipelines
-For boundary state (caches/retries), use RuleBasedStateMachine.
+All three are useful. Calling every generated assertion a “law” makes review less
+precise. Name the mathematical relationship or application contract actually
+under test.
 
-```python
-from hypothesis.stateful import RuleBasedStateMachine, rule, invariant
-from hypothesis import settings
+## Failure routes
 
-class RagPipelineMachine(RuleBasedStateMachine):
-    def __init__(self):
-        super().__init__()
-        self.storage = fake_storage()
-        self.docs = []
+### Reimplementing production logic in the test
 
-    @rule(doc=raw_doc_strategy())
-    def add_doc(self, doc):
-        self.docs.append(doc)
-        fp_rag(self.docs, storage=self.storage)  # Run pipeline
+If the test computes vectors with the same algorithm as the candidate, both may
+share the same defect. Compare public values or use a simpler trusted oracle.
 
-    @invariant()
-    def no_duplicate_chunks(self):
-        chunks = self.storage.read_chunks()
-        ids = [(c.doc_id, c.start, c.end) for c in chunks]
-        assert len(ids) == len(set(ids))  # Example invariant: unique chunks
+### Applying tolerance to identity
 
-TestRagPipelineMachine = RagPipelineMachine.TestCase
+Numeric tolerance is appropriate for vectors. It is not appropriate for chunk
+position, tags, source, model name, or failure codes.
 
-@settings(max_examples=100, stateful_step_count=50)
-class TestRagPipeline(TestRagPipelineMachine):
-    pass
+### Generating invalid values accidentally
+
+If most examples fail constructors, the test spends its effort proving validation
+that belongs elsewhere. Generate valid `Chunk` values for equivalence; write
+separate validation properties for invalid inputs.
+
+### Depending on implementation types
+
+Concrete container equality prevents safe representation changes and turns a
+semantic regression test into an architecture lock.
+
+## Run and read the proof
+
+From `capstone/`:
+
+```bash
+pytest -q tests/unit/rag/domain/test_perf_equivalence.py
+pytest -q tests/learning/test_module_10_sustainment.py \
+  -k optimized_embedding_preserves_the_domain_contract
 ```
 
-### RAG Integration
-Add PBT to capstone/tests/test_rag.py; CI runs suite with stats.
+The first command exercises the predicate with focused examples. The learning
+test varies batch contents and sizes through the real pure and hybrid routes.
 
----
-## 5. Property-Based Proofs (capstone/tests/test_module_10_core4.py)
-Use events/targets for diversity.
+When a property fails, read the minimized input before increasing example counts.
+The smallest case often reveals that the predicate is missing a domain field or
+that the implementation changed meaning.
 
-```python
-from hypothesis import event, target
+## What the proof establishes
 
-@given(docs=doc_list_strategy)
-def test_rag_diversity(docs):
-    event(f"n_docs={len(docs)}")
-    target(len(docs))
-    # ... property ...
-```
+The property establishes equivalence for values generated by the declared
+strategy and numeric tolerances. It guards text, metadata, success/failure shape,
+and vector meaning across both routes.
 
----
-## 6. Runtime Preservation Guarantee
-PBT runs bounded (max_examples/deadline); CI timeouts prevent hangs; separate profiles for unit/e2e.
+It does not establish:
 
----
-## 7. Anti-Patterns & Immediate Fixes
-| Anti-Pattern         | Symptom                  | Fix                            |
-|----------------------|--------------------------|--------------------------------|
-| Only examples        | Miss edges               | Add PBT                        |
-| Unbounded gen        | Slow CI                  | Bound sizes/deadline           |
-| No shrinking         | Hard repro               | Use Hypothesis defaults        |
-| Ignore laws          | Regressions              | Derive from invariants         |
+- that either route is fast;
+- that every possible Python string or batch size was executed;
+- that a hardware-specific implementation behaves identically;
+- that the strategy covers serialized or external values; or
+- that the equivalence predicate itself names every future domain contract.
 
----
-## 8. Pre-Core Quiz
-1. PBT for…? → **Laws/regressions**  
-2. Hypothesis generates…? → **Diverse inputs**  
-3. Shrinking for…? → **Minimal failures**  
-4. CI profile…? → **More examples**  
-5. Strategies for…? → **Domain data**
+The predicate must evolve deliberately when the public RAG model evolves.
 
-## 9. Post-Core Exercise
-1. Write PBT for RAG idempotence.  
-2. Add to CI; run.  
-3. Fix a found bug.
-
-**Pipeline Usage (Idiomatic)**
-```python
-@given(docs=doc_list_strategy)
-def test_rag_invariant(docs):
-    # ...
-```
-
-**Continue with:** [Async Property Testing](../module-10-refactoring-performance-sustainment/async-property-testing.md)
+Continue with [Async Property Testing](async-property-testing.md), where generated
+pressure must preserve order and boundedness without relying on real-time sleeps.

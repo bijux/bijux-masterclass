@@ -252,6 +252,46 @@ Then write a four-row packet:
 
 If your packet never names the crossing point, the workflow is still too implicit.
 
+## Guided lab: inspect fallback before triggering it
+
+Run:
+
+```console
+$ python3 -m labs.runtime_observation |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["static_lookup"])'
+{'fallback_is_attached': True, 'fallback_reads_after_dynamic_lookup': 1, 'fallback_reads_after_static_lookup': 0, 'resolved_owner': 'generated:owner', 'static_lookup_reports_missing': True}
+```
+
+The packet answers two questions in order:
+
+1. static lookup shows that `__getattr__` is attached and that no concrete `owner`
+   attribute is attached
+2. dynamic lookup asks the runtime to resolve `owner`, which triggers the fallback and
+   increments its counter
+
+`static_lookup_reports_missing` does not mean normal lookup will fail. It means the
+requested name is absent from the attachment structure that static lookup examines.
+The generated value exists only after the fallback behavior runs.
+
+### Failure route
+
+Replace the first `inspect.getattr_static(target, "owner")` attempt with
+`hasattr(target, "owner")`. The fallback counter will rise before the workflow has
+decided whether execution is appropriate. Explain why a `True` existence result now
+contains less structural information than the original `AttributeError`, restore the
+static route, and run `make observation-lab-test`.
+
+### Transfer to the incident-plugin runtime
+
+Use static lookup on `ConsoleNotifier.prefix` to inspect the attached `Field` object.
+Then compare that with reading `instance.prefix`, which invokes descriptor behavior and
+may materialize the default in instance storage. The first route helps tooling describe
+the field contract; the second asks for a configured runtime value.
+
+Modules 07 and 08 will teach descriptor ownership. Module 02 only needs the review
+boundary: attachment inspection and value resolution are different operations with
+different execution costs.
+
 ## Review rules for disciplined observation
 
 When reviewing tooling or runtime-inspection code, keep these questions close:

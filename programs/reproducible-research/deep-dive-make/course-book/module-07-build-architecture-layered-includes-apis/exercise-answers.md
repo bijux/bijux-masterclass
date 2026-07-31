@@ -48,12 +48,14 @@ things:
 - they justify the refactor in terms of growth or reviewability
 - they leave the build easier to inspect later
 
-The strongest self-study packets also leave behind six concrete artifacts:
+The strongest self-study packets also leave behind eight concrete artifacts:
 
 - one public target contract list
+- one parameter and failure contract
 - one include-layer ownership map
+- one dependency-direction ledger
 - one justified macro decision
-- one growth-safe naming redesign
+- one forward and reverse mapping proof
 - one automation audit
 - one architecture review note
 
@@ -79,6 +81,21 @@ bypassed part of the declared contract.
 The narrow repair is to change the caller from `gmake internal-build` to `gmake verify`.
 Adding `internal-build` to help would enlarge the compatibility surface while preserving
 the caller's incomplete behavior.
+
+The extended API should be recorded as a contract, not just a variable assignment:
+
+| Field | Model answer |
+| --- | --- |
+| invocation | `gmake verify PROFILE=ordinary` or `PROFILE=strict` |
+| supported parameter | exactly `ordinary` and `strict` |
+| results | application and verification artifacts |
+| side effects | no release publication |
+| failure | unsupported value fails before either result is updated |
+
+For `PROFILE=strict`, `build/verification.txt` should contain both `profile=strict` and
+`verified=yes`. A call such as `PROFILE=strcit` must fail and leave the previous artifact
+untouched or absent after clean state. That rejected spelling matters: it proves the build
+does not silently reinterpret a caller mistake as an ordinary build.
 
 ## Exercise 2: Split one Makefile into layers
 
@@ -106,14 +123,38 @@ the executable check is decisive: from clean state, build the ordinary target an
 any release-only flag in its artifact. Include order determines evaluation order; variable
 scope determines which targets inherit a value.
 
+The target-scoped repair becomes ambiguous if both branches share `build/shared.o`.
+Compare all three invocations:
+
+```sh
+gmake clean && gmake all release
+gmake clean && gmake release all
+gmake clean && gmake -j2 all release
+```
+
+If the artifact’s identity includes flags, the model repair uses distinct paths:
+
+```make
+all: build/ordinary/shared.o
+release: build/release/shared.o
+```
+
+If its bytes genuinely do not depend on release policy, remove that policy from its recipe
+and keep one policy-neutral path. A `private` target-specific variable is appropriate only
+when the child must not inherit the value and that non-inheritance is part of the contract.
+
+A defensible dependency ledger says graph rules consume policy, while policy never reads
+public goals. Injecting `$(if $(filter release,$(MAKECMDGOALS)),...)` into discovery must be
+rejected because a provider now depends on its interface consumer.
+
 ## Exercise 3: Decide whether a macro is justified
 
 The explicit contract is:
 
 | Target | Source | Mode | Publication | Owner |
 | --- | --- | --- | --- | --- |
-| `build/alpha.txt` | `data/alpha.txt` | ordinary | temporary file then rename | alpha |
-| `build/beta.txt` | `data/beta.txt` | ordinary | temporary file then rename | beta |
+| `build/alpha.txt` | `data/alpha.txt` | ordinary | process-local candidate, then rename | alpha |
+| `build/beta.txt` | `data/beta.txt` | ordinary | process-local candidate, then rename | beta |
 
 The bounded model exposes:
 
@@ -135,6 +176,24 @@ leaving the generated domain visible.
 Keeping the explicit rules is also defensible when two short rules are cheaper to read than
 the two-stage `eval` expansion. A required limit belongs in the answer: this evidence does
 not establish behavior for generated includes, secondary expansion, or a new rule family.
+
+One correct expansion ledger is:
+
+| Intent | Macro source | Parsed recipe | Shell input |
+| --- | --- | --- | --- |
+| target | `$$@` | `$@` | concrete target |
+| first prerequisite | `$$<` | `$<` | concrete source |
+| shell process ID | `$$$$$$$$` | `$$$$` | `$$` |
+| shell `candidate` variable | `$$$$candidate` | `$$candidate` | `$candidate` |
+
+The candidate name should combine the target and shell process ID, be created beside the
+final path, be removed after producer failure, and be renamed only after success. After an
+interruption, the final path must not contain partial bytes and no process may reuse
+another publisher’s candidate.
+
+Search the macro and its ordinary parse route for `$(shell ...)` and `$(file ...)`. A
+diagnostic may use them behind an explicit goal guard; the production parse must not write
+or discover hidden state.
 
 ## Exercise 4: Prepare the repository for growth
 
@@ -170,6 +229,22 @@ source count != unique output count
 
 That assertion is appropriate when the contract promises one output per selected source.
 
+It proves injectivity only when every supported source was selected. A complete model
+answer records:
+
+| Property | Evidence |
+| --- | --- |
+| totality | supported-source manifest equals the forward-map source column |
+| injectivity | output count equals unique-output count |
+| reversibility | reverse transformation reproduces every source byte-for-byte |
+| stability | adding `src/plugin/deep/util.txt` leaves the CLI and library paths unchanged |
+
+For example, a documented `.txt` and `.csv` domain may preserve extensions under
+`build/<owner>/...`; `.bin` should be rejected until its mapping is specified. A symlink
+policy should either reject links or map their logical repository paths consistently.
+Generated sources must live outside discovery roots or enter through a declared manifest,
+otherwise build output can be rediscovered as input.
+
 ## Exercise 5: Review a build architecture before it rots
 
 A bounded macro review might begin:
@@ -196,12 +271,31 @@ A complete decision record could say:
 This answer is stronger than a list of possible risks because it names the claim,
 observation, evidence, decision, limit, and rerun trigger.
 
+For the required direction claim, a model ledger is:
+
+| Consumer | Provider | Meaning consumed | Direction |
+| --- | --- | --- | --- |
+| discovery | policy | supported source roots | allowed |
+| graph | discovery | selected sources and owner keys | allowed |
+| interface | graph | named artifact targets | allowed |
+| discovery | interface | current public goal name | forbidden |
+
+The feedback mutation makes discovery vary with `MAKECMDGOALS`. The rejection route builds
+the same profile through differently ordered public goals and requires the discovery
+manifest to remain identical. The repair moves the choice to a validated `PROFILE`
+parameter and starts a child Make with that value. Discovery consumes policy; it no longer
+interprets caller syntax.
+
+The change cone includes discovery manifests, output mapping, public help, accepted profile
+calls, and rejected profile values. Recording that cone explains why those pieces of
+evidence belong in the decision packet.
+
 ## Exercise 6: Publish a useful `help` target
 
 An explicit implementation remains easy to review:
 
 ```make
-PUBLIC_TARGETS := all test selftest clean help
+PUBLIC_TARGETS := all test selftest clean help contract
 
 .PHONY: $(PUBLIC_TARGETS)
 help:
@@ -210,7 +304,16 @@ help:
 	  'test'     'run product tests' \
 	  'selftest' 'verify build-system invariants' \
 	  'clean'    'remove generated state' \
-	  'help'     'show this public interface'
+	  'help'     'show this public interface' \
+	  'contract' 'show the machine-readable interface'
+
+.PHONY: contract
+contract:
+	@printf '%s\t%s\t%s\t%s\n' \
+	  'target' 'parameters' 'result' 'failure'; \
+	printf '%s\t%s\t%s\t%s\n' \
+	  'selftest' 'PROFILE=ordinary|strict' \
+	  'build/selftest.json' 'nonzero; no new evidence'
 ```
 
 The answer is incomplete until an external caller can choose the intended target from
@@ -224,6 +327,12 @@ as this protects the private boundary:
 
 An internal target may remain reachable because public targets need implementation nodes.
 Its absence from help means callers are not promised its name or partial outcome.
+
+The machine caller reads `contract`, checks for the exact `selftest` row, supplies a
+supported profile, and verifies `build/selftest.json`. It does not scrape the human
+description. `PROFILE=unknown` must fail before updating the evidence file. That separates
+interface discovery from interface prose while keeping both views owned by the same
+explicit contract data.
 
 The key explanation is:
 
@@ -253,6 +362,18 @@ The repository table should add the evidence each public target promises. If CI 
 `build-objects`, change it to a suitable declared target and compare both the command and
 its artifacts. Promoting the helper solely to silence the mismatch would enlarge the API
 without deciding whether its partial behavior deserves compatibility guarantees.
+
+Recursive calls need the same audit:
+
+```make
+verify:
+	+$(MAKE) --no-print-directory PROFILE='$(PROFILE)' internal-verify
+```
+
+The parent trace and child artifact should report the same validated profile. Do not depend
+on `export PROFILE` or an ambient environment value unless environment inheritance is a
+documented API. A rejection case starts the parent with an unrelated environment value
+and requires the child to use the documented default or reject it according to policy.
 
 The important explanation is:
 
@@ -296,6 +417,22 @@ The key explanation is:
 > policy, which target branches may specialize it, and which artifacts must prove that
 > scope.
 
+Now add the shared-prerequisite result. If `all` and `release` both update
+`build/shared.o`, target-specific propagation makes the effective flags depend on which
+branch reaches it first. Separate goal invocations are not enough evidence. Capture both
+goal orders and `-j2`.
+
+A model repair for policy-dependent bytes is:
+
+```make
+build/ordinary/shared.o: CFLAGS := -O2
+build/release/shared.o: CFLAGS := -O2 -DRELEASE
+```
+
+Distinct semantics receive distinct identities. For policy-neutral bytes, remove `CFLAGS`
+from the shared recipe instead. The answer must connect path identity to byte identity,
+not select a technique by preference.
+
 ## Exercise 9: Inspect a macro instead of trusting it
 
 Adding `gamma` to the owner list should generate exactly:
@@ -321,6 +458,24 @@ undocumented surface is not mistaken for a public promise.
 to add every generated helper to help. Remove publication-target generation and policy
 assignment from the artifact-rule macro, then give those decisions explicit owners.
 
+The five requested views answer different questions:
+
+1. raw definition: what responsibilities and escapes are visible?
+2. call-expanded text: what concrete owner-specific rule is proposed?
+3. parsed database: what graph did Make accept?
+4. recipe trace: what automatic and Make variables were substituted?
+5. shell trace: what candidate path and command actually ran?
+
+If `$$@` is mistakenly written `$@` in the macro source, it expands before a generated
+target context exists and the target path disappears. If a shell variable is under-escaped,
+Make may consume `$c` as a Make variable reference and pass only the remainder of the name.
+The learner’s prediction should name the expansion boundary, not merely say “escaping
+breaks.”
+
+Two controlled publisher processes should show distinct target-and-process-local candidate
+paths. The rejection test should fail if those paths are replaced by one fixed
+target-derived scratch name, even if a serial build still succeeds.
+
 ## Exercise 10: Refactor a growing build
 
 A strong result starts with observations, not a tree:
@@ -328,16 +483,23 @@ A strong result starts with observations, not a tree:
 | Boundary | Before | After |
 | --- | --- | --- |
 | caller | private target; verification absent | declared target; verification present |
+| parameters | implicit or silently accepted | validated, documented, and forwarded |
 | policy | release flag in both artifacts | release flag only in release artifact |
-| outputs | two sources collapse to one path | each source has an owner-identifiable path |
+| shared prerequisite | first visitor determines policy | neutral bytes or policy-specific path |
+| outputs | two sources collapse to one path | total, injective, reversible stable mapping |
+| publication | shared candidate or direct write | process-local candidate and atomic rename |
+| layers | provider inspects consumer goal | dependency direction remains one-way |
 
 The public target must appear in help and match the command used by automation. The policy
-proof must compare ordinary and release artifact contents. The mapping proof must show
-equal source and unique-output counts, not merely two output directories.
+proof must compare ordinary and release artifact contents. The mapping proof must compare
+the supported-source manifest, forward map, unique outputs, and reconstructed reverse map.
+Count equality alone can hide an omitted source paired with an unrelated extra output.
 
 Rejection tests complete the result. Mutating the repaired caller back to the private
-target, removing target scope, or collapsing the namespace should make the audit fail.
-Then run from clean state and repeat once without changes to establish convergence.
+target, accepting an unsupported parameter, restoring a shared policy-sensitive path,
+collapsing the namespace, weakening candidate uniqueness, or adding a reverse dependency
+should make the relevant gate fail. Then run from clean state, in parallel, with both
+public goal orders, and once without changes to establish convergence.
 
 The remaining-risk note matters. Architecture review is not credible when it claims a
 growing build has no unresolved pressure. A useful note names the next likely owner,
@@ -350,5 +512,6 @@ A mastery-level answer set in this module does three things well:
 - it treats the Makefile as an interface, not just a script
 - it treats include files as responsibility boundaries, not just text fragments
 - it treats reuse and naming decisions as architecture choices with long-term costs
+- it proves why a dishonest variation is rejected
 
 That is the standard Module 07 is trying to build.

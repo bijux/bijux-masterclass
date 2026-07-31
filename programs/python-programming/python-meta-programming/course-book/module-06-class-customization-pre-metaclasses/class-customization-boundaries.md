@@ -74,6 +74,10 @@ If explicit class code already makes the rule easy to see, that is often the bes
 
 Metaprogramming does not win by default just because it is available.
 
+The lab does not need a separate "plain class" abstraction. Ordinary `__init__`
+methods, direct backing fields, and explicit validation remain visible inside every
+packet until another owner earns responsibility.
+
 This is the page where readers should start distrusting prestige reasoning. "Advanced"
 does not mean "better." If ordinary class code owns the invariant clearly, escalation is a
 loss, not an upgrade.
@@ -165,6 +169,20 @@ Use this table when you need a concrete placement test:
 | the class body must be scanned before methods are finalized | metaclass territory | the requirement exists during class creation |
 | a constructor must reject one cross-field mismatch | plain class code or `__post_init__` | no reusable or creation-time surface is needed yet |
 
+## Run the ladder as one comparison
+
+`make class-customization-lab` gives each lower-power candidate one concrete job:
+
+| Evidence packet | Owner selected | Why it fits | First exit condition |
+| --- | --- | --- | --- |
+| `class_transformation` | class decorator | opt-in mark on a finished class | body writes or namespace preparation must be observed |
+| `dataclass_boundary` | standard dataclass decorator | generate field-shaped methods and storage constraints | runtime invariant lacks an explicit owner |
+| `property_boundary` | property | one HTTPS invariant on one attribute | the same setter/storage rule repeats |
+| `descriptor_boundary` | descriptor | repeated shallow type and storage policy | schema-wide or cross-field policy appears |
+| `frozen_surface` | class decorator | narrow post-initialization surface rule | slots, deep immutability, sealed inheritance, or tamper resistance is required |
+
+This is not a ranking from weak to prestigious. It is a set of ownership matches.
+
 ## Metaclasses should still be treated as a later escalation
 
 A metaclass becomes worth considering only when the requirement truly depends on
@@ -176,6 +194,28 @@ class-creation-time control:
 
 If the behavior can still be expressed after class creation with the tools in this module,
 that is usually the clearer design.
+
+## Why the capstone crosses the line
+
+The incident-plugin runtime does more than modify one finished class:
+
+- `DefinitionNamespace` rejects duplicate tracked definitions while the body executes
+- `PluginMeta.__new__` combines inherited and newly declared fields and actions
+- the metaclass generates constructors and class signatures for every participating
+  concrete plugin
+- registration applies across a class family without repeating an opt-in decorator
+
+A class decorator receives a namespace after duplicate ordinary assignments have
+collapsed to the last value. It can inspect a completed method-resolution order but did
+not participate in creating it. Those are timing reasons for `PluginMeta`, not appeals
+to framework style.
+
+The capstone still keeps lower-power owners underneath it:
+
+- `@action` owns one callable boundary
+- `Field` owns one attribute boundary
+- ordinary plugin methods own delivery behavior
+- `PluginMeta` owns only the class-family creation contract
 
 ## A decision table for likely owners
 
@@ -242,6 +282,17 @@ Fill these blanks when a design pressure feels ambiguous:
 
 If you cannot fill all five lines, keep the design lower-power until you can.
 
+Use this completed example:
+
+| Worksheet field | Answer |
+| --- | --- |
+| invariant | reject two tracked declarations with the same name in one class body |
+| smallest owner | prepared mapping returned by `__prepare__` |
+| stronger tool rejected | global import hook |
+| missing condition for that stronger tool | behavior would have to span module loading rather than one class namespace |
+| first escalation symptom | none toward metaclass power; body-write timing already requires it |
+| evidence | capstone duplicate-definition test |
+
 ## Common overclaims to reject
 
 Reject these descriptions when they appear in review:
@@ -290,6 +341,29 @@ Leave this page with a small packet:
 - one downward rewrite note showing how you tested whether a lower-power design was still enough
 - one escalation symptom you would watch for later in real code
 
+## Smallest honest proof route
+
+Start with:
+
+```bash
+make class-customization-lab
+make class-customization-lab-test
+```
+
+Then inspect `DefinitionNamespace`, `PluginMeta.__prepare__`, and the capstone duplicate
+tracked-definition test. The lab proves what finished-class tools can own; the capstone
+test proves one fact that would otherwise be lost before a class decorator could see it.
+
+Run the learner-facing transfer:
+
+```bash
+make capstone-class-creation
+```
+
+The report exposes the prepared namespace type, declared and inherited fields/actions,
+initializer-generation decision, visible signature, registration, and absence of plugin
+construction or execution.
+
 ## Exit check for this page
 
 Before moving on, make sure you can do all of these:
@@ -303,9 +377,12 @@ Before moving on, make sure you can do all of these:
 
 Try these before moving on:
 
-1. Take one class invariant and place it on the ladder: plain code, class decorator, property, descriptor, or metaclass.
-2. Rewrite one over-engineered class rule downward to a lower-power tool.
-3. Write one review note rejecting a metaclass because post-construction customization is still enough.
+1. Write a boundary worksheet for every lab packet.
+2. Name the exact event that would force each owner upward.
+3. Compare `mark_class` collision refusal with `DefinitionNamespace` duplicate refusal
+   and explain the timing difference.
+4. Write one rejected metaclass decision and one justified metaclass decision without
+   using "automatic" or "framework" as the reason.
 
 If those feel ordinary, the worked example can pressure-test this whole decision model
 inside a minimal frozen class decorator.

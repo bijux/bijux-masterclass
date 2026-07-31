@@ -58,72 +58,104 @@ The strongest self-study packets also leave behind six concrete artifacts:
 If your answers rely only on "the build feels stable now," the reasoning is still too
 weak.
 
-## Exercise 1: Stabilize discovery
+## Exercise 1: Separate discovery claims
 
-A strong answer combines three things:
+Suppose the first evaluated list is:
 
-- rooted discovery:
-  - search only under the declared input boundary
-- canonical ordering:
-  - sort or otherwise stabilize the discovered set
-- explicit membership policy:
-  - define which files are eligible to count as inputs
+```text
+src/alpha.c
+src/report.c
+```
 
-The key explanatory sentence is:
+After adding `src/scratch.c`, a broad wildcard yields:
 
-> Discovery is deterministic only when the same repository state produces the same
-> semantic membership and the same ordering of that membership.
+```text
+src/alpha.c
+src/report.c
+src/scratch.c
+```
 
-Why this is strong:
+A strong classification is:
 
-- it treats membership drift as a build defect
-- it explains both "which files" and "in what order"
+| Claim | Decision |
+| --- | --- |
+| membership | changed; correctness depends on whether every matching file is owned |
+| order | remains canonical for this expression |
+| graph | changes because a new source-derived target enters the graph |
+| artifact | not established until governed outputs are built and compared |
+
+If the contract owns only reviewed product sources, an explicit list is honest:
+
+```make
+SRCS := src/alpha.c src/report.c
+```
+
+If the contract owns every source in a dedicated directory, move scratch material
+outside that root rather than maintaining an exclusion that will grow indefinitely.
+
+The experiment does not establish cross-machine artifact reproducibility. It observes
+membership and ordering in one declared environment, then predicts graph consequences.
 
 Weak answer pattern:
 
-- "Use `sort` on the wildcard"
+- “Add `sort`.”
 
-That helps ordering, but it does not define a trustworthy input boundary.
+That addresses order while leaving ownership unanswered.
 
 ## Exercise 2: Trace a rebuild properly
 
-A strong answer quotes the actual `--trace` line that explains the rebuild, rather than
-paraphrasing from memory.
+A strong answer predicts one edge, quotes the actual `--trace` line, joins it to target
+state, inspects the artifact, and proves the unchanged replay converges.
 
 Example answer shape:
 
-> `make: 'report.txt' is newer than 'summary.txt'` shows that `summary.txt` rebuilt
-> because one declared prerequisite was newer than the target.
+```text
+Prediction: summary.txt will rebuild because report.txt is newer.
+Selection: the trace names report.txt as the prerequisite that updates summary.txt.
+State: report.txt has the later recorded modification time.
+Artifact: summary.txt passes its semantic content check after the recipe exits zero.
+Replay: gmake -q summary.txt returns 0 with no further input change.
+```
 
-The important lesson is that Make can often supply the causal edge directly. That makes
-the trace stronger than "I changed something nearby, so it probably made sense."
+The trace supports selection. The content check supports the result. Query exit zero
+supports convergence. No one observation replaces the other two.
 
 Weak answer pattern:
 
-- "The target rebuilt because the dependency chain changed somehow"
+- “The target rebuilt because the dependency chain changed somehow.”
 
 That is too vague to teach or debug.
 
 ## Exercise 3: Define the CI contract
 
-Good public targets often include `help`, `all`, `test`, and `selftest`, but the
-strongest answers go further and state what each target promises.
+One acceptable design is:
 
-For example:
+| Target | Consumer and promise | Allowed writes | Failure |
+| --- | --- | --- | --- |
+| `help` | contributors receive the supported public surface | terminal only | nonzero when help cannot be rendered |
+| `test` | product consumers receive runtime assertions over a declared build | product test report | nonzero on build or assertion failure |
+| `selftest` | maintainers receive convergence and schedule-equivalence proof | isolated selftest report | nonzero at first broken build claim |
+| `ci` | automation composes the required public checks | union of disjoint prerequisite outputs | propagates any required failure |
 
-- `all`:
-  - produces the declared primary artifacts
-- `test`:
-  - checks product behavior on the declared runtime surface
-- `selftest`:
-  - checks build convergence and serial/parallel equivalence
-- `help`:
-  - documents supported public entry points
+Example composition:
 
-The key explanatory sentence is:
+```make
+.PHONY: help test selftest ci
 
-> CI depends on target meaning, not target names alone, so a semantic change in a public
-> target is a contract change even if the name stays the same.
+ci: test selftest
+```
+
+This permits prerequisite concurrency only if `test` and `selftest` own disjoint
+workspaces or have truthful edges between shared state. A strong submission names those
+paths rather than assuming phony prerequisites serialize.
+
+A controlled failing product assertion should make `test` nonzero and therefore make
+`ci` nonzero. Swallowing that exit would break the contract without renaming a target.
+Another semantic break would be making `test` skip required runtime assertions while
+still exiting zero.
+
+A local timing or editor-convenience target can remain outside the public contract when
+no automation or downstream consumer depends on its behavior.
 
 ## Exercise 4: Audit a complete selftest report
 
@@ -162,6 +194,12 @@ Two honest non-claims are:
 - the report does not prove equivalence for artifacts outside the declared inventory
 - the report does not prove cross-compiler or cross-platform reproducibility
 
+The inventory oracle would grade itself if its expected paths came only from the same
+`OBJS` and `DYN_BINS` variables used to produce them. Removing one source from those
+variables would remove both the output and the expectation. An independent requirement
+can be a governed manifest of required artifact roles and paths, validated before hashes
+are compared.
+
 Weak answer pattern:
 
 - "`summary.txt` says PASS, so the build is deterministic"
@@ -170,22 +208,26 @@ That skips the command and evidence chain and overstates one recorded environmen
 
 ## Exercise 5: Quarantine `eval`
 
-An `eval` surface is acceptable only when it stays bounded, switchable, auditable, and
-non-essential to the core build contract.
+For one generated member, the answer should show the ordinary rule that a reviewer would
+otherwise write. It should then identify two expansion moments:
 
-A strong answer usually shows:
+```text
+call/eval time: member name and template parameters become rule text
+recipe time: automatic variables identify the selected target and prerequisite
+```
 
-- a switch:
-  - one variable or target that enables the surface intentionally
-- a boundary:
-  - a limited, reviewable generated target set
-- a proof route:
-  - `selftest` still proves the core graph honestly when the surface is disabled
+Automatic variables therefore need dollar escaping in text that passes through `eval`.
+The accepted evidence set includes:
 
-The important explanation is:
+- core selftest passing with the switch disabled;
+- a finite enabled target inventory;
+- dry-run or bounded database evidence for one generated rule;
+- equivalent declared artifacts from explicit and generated implementations;
+- rejection of the dishonest fixture by the abstraction audit.
 
-> `eval` is acceptable only when removing it does not destroy the ability to reason about
-> the core build contract.
+Keeping `eval` is reasonable only if that evidence is cheaper to review than the explicit
+family. A static pattern rule or ordinary macro is the better decision when it preserves
+the invariant without a second parse.
 
 Weak answer pattern:
 
@@ -193,36 +235,37 @@ Weak answer pattern:
 
 That says nothing about how another maintainer would verify the boundary.
 
-## Exercise 6: Detect accidental discovery
+## Exercise 6: Design an independent selftest oracle
 
-A broad expression such as:
+Suppose the governed contract file contains:
 
-```make
-SRCS := $(sort $(wildcard src/*.c))
+```text
+build/alpha.txt
+build/bravo.txt
+build/charlie.txt
 ```
 
-is only honest when every matching file is intentionally part of the build. If scratch
-files live in the same directory, the build needs a membership policy such as:
+The implementation may derive rules from:
 
 ```make
-SRCS := src/real.c
+REPORTS := alpha bravo charlie
 ```
 
-or a durable filter:
+The healthy build produces all three paths, and the oracle compares the sorted actual
+inventory against the separately governed contract. Now remove `bravo` from `REPORTS`.
+The expected rejection names `build/bravo.txt` as missing.
 
-```make
-SRCS := $(sort $(filter-out src/scratch%.c,$(wildcard src/*.c)))
-```
+An inventory derived from `REPORTS` would shrink to the same two paths as the faulty
+build and pass. The independent manifest retains the consumer’s requirement when the
+implementation forgets it.
 
-The key explanatory sentence is:
-
-> Accidental membership is a determinism defect because different worktrees can produce
-> different semantic input sets without any intended change to the build contract.
+The manifest still needs ownership and review. Independence prevents one false-pass
+class; it does not make the expected contract automatically correct.
 
 ## Exercise 7: Explain a no-op build
 
-After a converged build, `make --trace all` should show no selected rebuild work, and
-`make -q all` should return zero because the requested graph is already up to date.
+After a converged build, `gmake --trace all` should show no selected rebuild work, and
+`gmake -q all` should return zero because the requested graph is already up to date.
 
 The important explanation is:
 
@@ -231,6 +274,11 @@ The important explanation is:
 
 The strongest answers also inspect one target/prerequisite pair directly so "no work"
 does not remain a mysterious global feeling.
+
+Query exit `1` means work is required; exit `2` means Make encountered an error. Neither
+should be relabeled “not converged” without preserving that distinction. The query says
+whether Make would update the request, not whether the existing artifact is semantically
+correct.
 
 ## Exercise 8: Separate product tests from build tests
 
@@ -268,14 +316,28 @@ recipes:
 ci: lint test selftest
 ```
 
+One acceptable ownership table is:
+
+| Prerequisite | Allowed output |
+| --- | --- |
+| `lint` | lint report namespace only |
+| `test` | product-test report and product fixture workspace |
+| `selftest` | build-proof report and isolated build workspace |
+
+Because these namespaces are disjoint, `gmake -j ci` does not create a report-path race.
+If one prerequisite returns nonzero, `ci` must return nonzero. A controlled failing lint
+fixture or product assertion should demonstrate that propagation; reading the recipe is
+not rejection evidence.
+
 The important explanation is:
 
 > "Boring" is good here because the target is not inventing new behavior; it is invoking
 > stable, documented contracts in one predictable place.
 
-The strongest answers also show a clean-room run such as a fresh clone, tracked-files
-copy, or isolated working directory, so no hidden local state can make CI look stronger
-than it is.
+The clean-room run should record its source revision, included tracked changes,
+documented variables, environment policy, command, exits, and allowed writes. A local
+timing target stays outside the composition because it is diagnostic rather than a
+required correctness contract.
 
 ## Exercise 10: Review a rejected selftest without rerunning
 
@@ -324,7 +386,7 @@ A mastery-level submission moves comfortably between:
 - debugging evidence:
   - `--trace`, `-q`, timestamps, negative cases
 - design discipline:
-  - bounded metaprogramming, stable discovery, clean CI composition
+  - bounded metaprogramming, stable discovery, independent oracles, clean CI composition
 
 If your answers can move between those three levels without collapsing into "CI should be
 stable," you are learning Module 03 in the right direction.

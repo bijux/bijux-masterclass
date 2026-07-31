@@ -1,293 +1,390 @@
 # Exercises
 
-
-<!-- page-maps:start -->
 ## Page Maps
 
 ```mermaid
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Promotion Registry Boundaries Auditability"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+  section["Promotion and Auditability"]
+  page["Cumulative Promotion Review"]
+  evidence["Promotion integrity audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.builds from.-> evidence
 ```
 
 ```mermaid
 flowchart LR
-  contract["name the downstream trust contract"] --> surface["design a small release surface"]
-  surface --> audit["verify evidence consistency"]
-  audit --> boundary["separate consumer boundary from internal churn"]
-  boundary --> gate["enforce publication with a promotion gate"]
+  contract["Define authority"] --> inventory["Bound inventory"]
+  inventory --> predict["Predict audit"]
+  predict --> integrity["Investigate bytes"]
+  integrity --> meaning["Investigate claims"]
+  meaning --> approval["Bind approval"]
+  approval --> registry["Design registry"]
+  registry --> consume["Verify as consumer"]
+  consume --> incident["Plan containment"]
+  incident --> gate["Defend promotion gate"]
 ```
-<!-- page-maps:end -->
 
-Use these exercises to practice promotion judgment, not only file movement.
+These ten exercises form one cumulative release-review packet. You will not edit the
+course's capstone source. You will generate isolated audit cases, inspect them, and write
+review artifacts under `artifacts/`.
 
-The goal of the day is to stop treating promotion as copying artifacts into a nicer
-directory. Promotion is a downstream trust contract. A release surface should be small,
-stable, versioned, and auditable. Consumers need to know what they may trust and what
-remains internal.
+The packet is complete when another learner can read your evidence and reproduce every
+accept-or-block decision without asking what you meant.
 
-## How to work through this set
+## Prepare the lab packet
 
-Treat the ten exercises as one full lab day on promotion, registry boundaries, and audit
-discipline.
+From the repository root:
 
-Before each answer:
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-promotion-integrity-audit
 
-1. name the consumer who will rely on the promoted state
-2. name the exact files or claims that consumer may trust
-3. say what evidence must travel with the release so trust is reconstructable later
+packet_dir=artifacts/practice/reproducible-research/deep-dive-dvc/promotion-review
+audit_dir=artifacts/audit/reproducible-research/deep-dive-dvc/promotion-integrity
+mkdir -p "$packet_dir"
+```
 
-Do the exercises in order. The day is one progression:
+Keep generated writing and command output in `packet_dir`. Do not place lab notes beside
+the course source pages.
 
-- Exercises 1-3 define the promotion contract and detect audit gaps
-- Exercises 4-5 separate public release surfaces from internal pipeline churn
-- Exercises 6-8 make manifests and ownership boundaries explicit
-- Exercises 9-10 compare promoted releases and enforce publication with a gate
-
-Keep one promotion packet as you go. By the end of the day it should contain:
-
-- one promotion contract statement
-- one consumer-facing release surface
-- one audit-gap review note
-- one deterministic manifest design
-- one ownership split for registry and DVC remote duties
-- one promotion gate with ordered checks
-
-If those six artifacts are missing, you are probably still packaging files instead of
-designing a trustworthy release boundary.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
+Your final packet should contain:
 
 ```text
-module09-lab/
-├── artifacts/
-├── notes/
-├── publish/
-├── registry/
-└── review/
+promotion-review/
+  approval-review.md
+  consumer-verification.md
+  failure-decisions.md
+  incident-response.md
+  inventory-review.md
+  lifecycle-contract.md
+  promotion-gate.md
+  registry-boundary.md
+  threshold-investigation.md
+  verification-summary.md
 ```
 
-Keep one release-surface table while you work:
+## How to assess your work
 
-| File or artifact | Consumer-visible? | Why it belongs | What it cannot answer alone |
-| --- | --- | --- | --- |
+Use four standards throughout:
 
-Also keep one audit table:
+| Standard | Evidence in your answer |
+| --- | --- |
+| specificity | names exact records, fields, cases, and failed checks |
+| boundary discipline | separates quality, integrity, provenance, authority, and availability |
+| reproducibility | another learner can repeat the inspection from commands and paths |
+| repair integrity | proposes new evidence rather than editing records into agreement |
 
-| Audit question | Evidence file or route | Failure if missing |
-| --- | --- | --- |
+An answer that says only “the bundle is invalid” is incomplete. Name the proposition that
+failed and the evidence needed next.
 
-```mermaid
-flowchart LR
-  promote["state what is promoted"]
-  scope["limit the public surface"]
-  align["align params, metrics, and source evidence"]
-  manifest["record immutable identities"]
-  protect["separate internal and consumer systems"]
-  publish["block publication until the contract is complete"]
+## Exercise: Define the release lifecycle and authority contract
 
-  promote --> scope --> align --> manifest --> protect --> publish
-```
+Write `lifecycle-contract.md` for the capstone release. Include:
 
-Use that route on purpose. It keeps the day centered on downstream trust instead of on
-artifact copying.
+- definitions of candidate, eligible, approved, published, superseded, and withdrawn;
+- one observable transition condition between each adjacent state;
+- a complete promotion sentence naming candidate, source, required roles, consumer action,
+  immutable registry reference, and unsupported surfaces;
+- a table separating candidate quality evidence from promotion authority evidence;
+- the event that would force a published release into withdrawn state.
 
-## Exercise 1: Write a promotion contract
-
-A candidate model is ready for downstream incident escalation review.
-
-Write a short promotion statement that names:
-
-- what is being promoted
-- which downstream consumer may use it
-- which params and metrics justify it
-- what should remain internal
-- one sentence describing what the consumer must not infer from the bundle
-
-Study note:
-The first step in a trustworthy release is to say exactly what the release means and what
-it does not mean.
-
-## Exercise 2: Design a release surface
-
-Design a `publish/v1/` bundle for a promoted DVC result.
-
-List the files you would include and explain why each file belongs there.
-
-Also name:
-
-- one internal file or directory that should not be part of the consumer contract
-- one file that is allowed in the repository but not in the release bundle
-
-Study note:
-Small release surfaces are easier to audit and safer for consumers to depend on.
-
-## Exercise 3: Find the audit gap
-
-A bundle has:
+Use the actual specimen contract and decision:
 
 ```text
-publish/v1/
-  model.json
-  metrics.json
-  params.yaml
+capstone/repro/promotion-integrity/promotion-contract.json
+capstone/repro/promotion-integrity/promotion-decision.json
 ```
 
-There is no manifest, and the metrics were produced before the promoted parameter change.
+Acceptance criteria:
 
-Write a review note that explains:
+- no lifecycle state is defined by “looks ready”;
+- the approval transition binds to exact Git and `dvc.lock` identities;
+- publication requires an immutable reference rather than `latest`;
+- withdrawal preserves historical evidence.
 
-- the audit gap
-- why the current bundle is not trustworthy yet
-- the repair path
-- one sentence naming what should block publication immediately
+## Exercise: Prove the exact inventory boundary
 
-Study note:
-A neat directory can still hide contradictory evidence.
+Compare:
 
-## Exercise 4: Define a registry boundary
+```text
+$audit_dir/workspace/complete-promotion/
+$audit_dir/workspace/unlisted-artifact/
+```
 
-A team tells consumers:
+Write `inventory-review.md` with:
 
-> Use whatever model is in `outputs/latest/`.
+1. the required paths from `promotion-contract.json`;
+2. the recorded paths from `publish/manifest.json`;
+3. the files actually present under `publish/`;
+4. the equality rule used by the audit;
+5. the extra path in the blocked case;
+6. two possible repairs and the policy consequence of each.
 
-Rewrite this as a stronger registry or publish-boundary contract.
+Do not assume an extra file is harmless. Explain what review would be required if it were
+deliberately added to the supported or audit-only surface.
 
-Your answer should say:
+Acceptance criteria:
 
-- what consumers may depend on
-- what they should ignore
-- how versioning should work
-- one sentence explaining why `latest` is not a durable contract
+- distinguishes manifest integrity from exact inventory;
+- explains why recorded files can all pass while the candidate still blocks;
+- does not recommend merely ignoring the extra path.
 
-Study note:
-This is where students usually realize that convenience paths and consumer boundaries are
-different things.
+## Exercise: Predict and verify all promotion decisions
 
-## Exercise 5: Reject or repair a promotion
+Before opening `report.json`, copy the seven finding names from the audit guide into
+`verification-summary.md`. Predict:
 
-A promoted release contains debug plots, two model files, old metrics, and no review note.
+- decision;
+- single most relevant failed check;
+- evidence you expect to inspect.
 
-Decide whether you would reject the promotion or repair it before acceptance.
+Then read the report and append actual results. For every wrong prediction, write one
+sentence explaining the mistaken evidence boundary.
 
-Explain:
+Your table should cover:
 
-- what evidence or bundle changes you would require
-- what ambiguity must be removed
-- what proof you need before re-accepting the bundle
+- complete promotion;
+- tampered artifact;
+- unlisted artifact;
+- threshold drift;
+- mutable registry reference;
+- stale source approval;
+- missing required review.
 
-Study note:
-Promotion should fail fast when the bundle tells multiple incompatible stories.
+Acceptance criteria:
 
-## Midday self-check
+- contains all seven cases;
+- separates expected from actual results;
+- explains prediction errors instead of erasing them;
+- records that only one case receives release authority.
 
-Before you move into manifests, consumer verification, and promotion gates, make sure
-your packet can already answer these questions clearly:
+## Exercise: Investigate post-approval artifact change
 
-- what a promoted bundle promises to consumers
-- why the release surface should stay small and versioned
-- how params, metrics, and manifests answer different audit questions
-- why internal convenience paths are unsafe consumer contracts
+Compare the complete and tampered cases. Write the relevant section of
+`failure-decisions.md`.
 
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
+Answer:
 
-## Exercise 6: Build a deterministic release manifest
+- which file changed;
+- how byte size and digest reveal the change;
+- which other checks remain true;
+- why regenerating only the digest would make the old approval stale;
+- whether the response is block, withdraw, or supersede under both unpublished and
+  already-published scenarios;
+- which evidence must be preserved before repair.
 
-Create a manifest that lists every promoted file, byte size, checksum, source revision,
-data identity, parameter identity, and schema version. Regenerate it and explain any
-unstable field.
+Include an independent digest command using Python or `sha256sum`.
 
-What to hand in:
+Acceptance criteria:
 
-- the manifest shape
-- one example entry
-- one sentence explaining how a consumer verifies it
-- one sentence naming a field that should be excluded if it breaks determinism
+- distinguishes detection from repair;
+- treats approval as bound to candidate bytes;
+- gives different lifecycle responses for unpublished and exposed releases.
 
-Study note:
-The manifest matters because auditability depends on immutable identities, not on good
-intentions.
+## Exercise: Diagnose semantic drift with valid digests
 
-## Exercise 7: Verify a bundle as a consumer
+Follow the worked investigation for `THRESHOLD_DRIFT`, then write your own
+`threshold-investigation.md`.
 
-Move a release bundle outside the working repository. Using only its public instructions,
-verify integrity, identify provenance, read metrics, and determine compatibility.
+Include:
 
-What to hand in:
+- contract threshold;
+- promoted params threshold;
+- manifest decision threshold;
+- params byte size and digest comparison;
+- the exact passing and failing checks;
+- known facts and unresolved questions;
+- the evidence needed to determine which threshold was intended;
+- a repair plan for both possible authoritative thresholds.
 
-- the verification route
-- the consumer questions the bundle answered
-- the unanswered question that proves the bundle still needs repair, if any
+Finish this sentence:
 
-Study note:
-This is how you test whether the bundle is truly public and reviewable, not just tidy.
+> Artifact integrity passes because …, while promotion blocks because …
 
-## Exercise 8: Separate registry and DVC-remote duties
+Acceptance criteria:
 
-Write an ownership table for:
+- does not call the case corrupt;
+- does not choose the intended threshold without source evidence;
+- requires regeneration of dependent artifacts when the intended threshold changes;
+- requires renewed approval for the coherent candidate.
 
-- internal cache objects
-- approved release artifacts
-- metadata
-- retention
-- access control
-- consumer support
+## Exercise: Review source binding and independent approval
 
-Assign each duty to the DVC remote, registry, repository, or another named system.
+Compare:
 
-Study note:
-Clear boundaries prevent the cache from accidentally becoming the public product surface.
+```text
+$audit_dir/workspace/complete-promotion/
+$audit_dir/workspace/stale-source-approval/
+$audit_dir/workspace/missing-required-review/
+```
 
-## Exercise 9: Compare two promoted releases
+Write `approval-review.md` with a field-by-field comparison of contract and decision:
 
-Produce a review that connects:
+| Field | Contract | Complete decision | Stale-source case | Missing-review case |
+| --- | --- | --- | --- | --- |
+| release ID |  |  |  |  |
+| registry reference |  |  |  |  |
+| Git revision |  |  |  |  |
+| lock digest |  |  |  |  |
+| required decision |  |  |  |  |
+| reviewer roles |  |  |  |  |
 
-- source
-- data
-- parameters
-- metrics
-- artifact checksums
+Then explain:
 
-across two releases. Distinguish intended change from unexplained drift.
+- why a valid bundle cannot repair approval for another source;
+- why one reviewer role cannot silently satisfy two independent roles;
+- what new evidence each case requires.
 
-Study note:
-Release comparison should be at least as disciplined as experiment comparison.
+Acceptance criteria:
 
-## Exercise 10: Design a promotion gate
+- names the exact field disagreement or absence;
+- proposes a new decision rather than copying or editing approval;
+- distinguishes source provenance from reviewer authority.
 
-Specify ordered checks for:
+## Exercise: Assign registry, repository, and remote responsibilities
 
-- completeness
-- reproducibility
-- policy approval
-- immutable identity
-- consumer verification
+Write `registry-boundary.md`. Assign an owning system for:
 
-State:
+- source declaration;
+- recorded DVC state;
+- content-addressed storage;
+- candidate comparison;
+- promotion policy;
+- approval history;
+- immutable release discovery;
+- consumer schemas;
+- lifecycle aliases;
+- recovery and retention.
 
-- which failures block publication
-- which require an explicit documented exception
-- who approves an exception
+For each responsibility, name:
 
-Study note:
-The strongest promotion gates fail with enough structure that the repair path is obvious.
+- stable identifier;
+- read path;
+- write authority;
+- verification evidence;
+- failure owner.
 
-## Mastery check
+Then analyze this proposal:
 
-You have a strong grasp of this module if your answers consistently keep five ideas
-visible:
+> Consumers should pull whichever model object is newest in the DVC remote.
 
-- promotion is a downstream trust contract
-- release surfaces should be small and stable
-- params, metrics, locks, and manifests answer different audit questions
-- registry boundaries protect consumers from internal churn
-- neat-looking bundles can still be rejected when evidence is inconsistent
+Identify at least four missing promises.
+
+Acceptance criteria:
+
+- does not call the DVC remote a registry without qualifying the specific responsibility;
+- records immutable identity beneath any movable alias;
+- gives consumers a supported interface rather than a producer cache path.
+
+## Exercise: Verify from the consumer side
+
+Pretend the audit workspace is all the consumer received. Write
+`consumer-verification.md` describing a clean verification route for
+`complete-promotion`.
+
+The route must:
+
+1. identify the immutable release;
+2. read the promotion contract and decision;
+3. compare exact inventory;
+4. recompute artifact sizes and digests;
+5. validate the threshold claim across contract, params, and manifest;
+6. identify supported versus audit-only files;
+7. record the source revision and lock identity;
+8. state what remains unproved.
+
+Add one paragraph explaining how `dvc get <repo> <path> --rev <revision>` could retrieve a
+repository-backed release and why retrieval alone would not grant promotion authority.
+
+Acceptance criteria:
+
+- never relies on the producer's local cache;
+- produces a durable resolved identity;
+- includes proof limits covering scientific suitability and remote durability.
+
+## Exercise: Plan containment for an exposed defective release
+
+Assume `THRESHOLD_DRIFT` was published and used by two monthly reports before detection.
+Write `incident-response.md`.
+
+Include:
+
+- immediate containment for aliases and new use;
+- evidence snapshot before any edits;
+- how to identify affected downstream reports;
+- decision between withdrawal and in-place repair;
+- correction and renewed review route;
+- consumer notification contents;
+- retained chronology;
+- link to the separate recovery route if content availability is uncertain.
+
+Draw a sequence diagram showing verifier, release owner, registry, and consumer actions.
+
+Acceptance criteria:
+
+- never replaces files under the immutable release identity;
+- preserves the original decision and failed evidence;
+- separates semantic correction from remote recovery;
+- identifies concrete downstream impact evidence.
+
+## Exercise: Defend a promotion gate
+
+Write `promotion-gate.md` as the final synthesis. Define ordered gates for:
+
+- candidate comparability;
+- immutable release identity;
+- exact inventory;
+- artifact integrity;
+- semantic claim consistency;
+- source provenance;
+- required approval;
+- consumer verification;
+- remote recoverability when required by policy;
+- atomic publication and retained receipts.
+
+For each gate, provide:
+
+| Field | Required content |
+| --- | --- |
+| claim | one falsifiable sentence |
+| evidence | exact record or command |
+| block condition | observable failure |
+| repair owner | named role |
+| proof limit | what passing does not establish |
+
+Run the self-test:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc \
+  capstone-promotion-integrity-selftest
+```
+
+Record the result, but do not use a passing test count as the whole gate defense. Explain
+which adversarial cases the tests enforce and which real-world concerns remain outside the
+specimen.
+
+Acceptance criteria:
+
+- every material failure blocks rather than relying on an undocumented exception;
+- gates are ordered so candidate selection precedes promotion authority;
+- a passing gate leaves an inspectable evidence packet;
+- the final section states at least four honest proof limits.
+
+## Packet review
+
+Before reading the answer key, exchange packets with another learner if possible. If
+studying alone, wait briefly, then review your packet as a consumer who has never seen the
+capstone source.
+
+Check:
+
+- [ ] Every accept or block judgment names a specific proposition.
+- [ ] Every repair requests new evidence rather than rewritten history.
+- [ ] Registry authority and DVC object availability remain separate.
+- [ ] Immutable identities appear in consumer and incident records.
+- [ ] Commands and evidence paths are reproducible.
+- [ ] Proof limits are explicit.
+- [ ] All ten packet files exist.

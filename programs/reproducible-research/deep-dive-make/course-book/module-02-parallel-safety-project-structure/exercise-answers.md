@@ -52,22 +52,29 @@ The strongest self-study packets also leave behind six concrete artifacts:
 - one repaired shared-writer design
 - one repaired temporary-path design
 - one ordering-tool comparison
-- one harmless overlap example and one real race example
-- one serial-versus-parallel checksum comparison
+- one harmless overlap example and one failed-publication rejection
+- one serial-versus-parallel governed artifact comparison
 
 If your answers rely only on "parallel jobs can run at the same time," the reasoning is
 still too shallow.
 
 ## Exercise 1: Name the runnable targets
 
-Independent object-file targets may run concurrently once their prerequisites are ready.
-The final link target cannot run until those object files are complete.
+For a clean capstone build, the requested closure reaches source files, generated inputs,
+semantic stamps, object files, dynamic binaries, the application, and the final sentinel.
+After source and setup prerequisites are ready, the object-file targets form part of the
+runnable frontier.
 
 A strong answer names the exact edges that justify the scheduling:
 
 > `build/main.o` and `build/util.o` may overlap because they read separate source files and
 > publish separate object paths. `app` must wait because it reads both object files and
 > publishes one final binary path.
+
+After all required objects complete, `app` enters the frontier. The public `all` target
+remains blocked until its application and dynamic-binary prerequisites are ready. An
+ownership table should show one object path per compiler recipe and one final application
+path for the linker.
 
 Why this is strong:
 
@@ -77,7 +84,7 @@ Why this is strong:
 
 Weak answer pattern:
 
-- "Compilation can happen in parallel and linking happens later"
+- “Compilation can happen in parallel and linking happens later.”
 
 That is directionally true but too generic to defend a specific build.
 
@@ -95,6 +102,8 @@ Why this is strong:
 
 - it names the actual race surface
 - it repairs the ownership model instead of hoping append order stays stable
+- it can be challenged by varying worker completion order while checking the final log’s
+  governed record order and content
 
 Weak answer pattern:
 
@@ -105,25 +114,30 @@ That changes timing, not ownership.
 ## Exercise 3: Repair a temporary-file collision
 
 The unsafe design writes a shared temporary path such as `tmp.out`. A safe repair derives
-the temporary name from `$@`, so each target publishes through its own private staging
-path.
+the candidate from `$@` and adds process uniqueness:
 
 Example repair shape:
 
 ```make
-target-a:
-	@printf 'a\n' > $@.tmp
-	@mv $@.tmp $@
-
-target-b:
-	@printf 'b\n' > $@.tmp
-	@mv $@.tmp $@
+build/%.out: inputs/%.txt
+	@candidate="$@.candidate.$$$$"; \
+	render "$<" > "$$candidate" && \
+	validate "$$candidate" && \
+	mv -f "$$candidate" "$@" || { rm -f "$$candidate"; exit 1; }
 ```
 
 The important explanation is:
 
 > Temporary paths are still owned outputs because overlapping writers can corrupt them
 > before the final artifact is ever published.
+
+The candidate lives beside the final path so rename does not cross a filesystem boundary.
+Failure removes the candidate and does not publish rejected content.
+
+Two independent Make invocations can still race to own the same final target. A complete
+answer therefore chooses one policy: separate output roots, explicit whole-workspace
+coordination, rejection of concurrent invocations, or a transactional external producer.
+A unique candidate prevents staging collision but does not settle final ownership.
 
 Weak answer pattern:
 
@@ -133,7 +147,7 @@ That answer ignores the concurrency contract halfway through publication.
 
 ## Exercise 4: Choose the right ordering tool
 
-A strong answer explains what truth each tool carries:
+A strong answer explains what truth each mechanism carries:
 
 - real prerequisite:
   - content changes should trigger rebuilds
@@ -141,6 +155,9 @@ A strong answer explains what truth each tool carries:
   - setup must exist before the rule runs, but setup timestamp changes should not rebuild
 - stamp:
   - a semantic event matters but has no natural direct file edge
+- scoped serialization:
+  - an otherwise independent operation uses a documented singleton that cannot be
+    partitioned
 
 The strongest answers also say what lie the wrong tool would introduce.
 
@@ -151,22 +168,45 @@ Example:
 
 That sentence shows the learner understands why ordering tools are not interchangeable.
 
+The changed-state challenges should demonstrate:
+
+- normal edge: changing input meaning rebuilds the consumer;
+- order-only edge: changing setup mtime alone does not rebuild;
+- stamp: changed normalized value invalidates once, then converges;
+- singleton: the unguarded fixture rejects with the expected resource signature, while
+  the narrow supported guard restores accepted artifacts.
+
+Global `.NOTPARALLEL` is too broad when only one resource is singular. `.WAIT` or scoped
+`.NOTPARALLEL` also requires a declared supported GNU Make version.
+
 ## Exercise 5: Design a selftest
 
-A strong selftest includes convergence, serial/parallel equivalence, and a direct
-comparison of the declared artifact set. It should fail on the first meaningful
-divergence rather than printing vague reassurance.
+A defensible claim is:
 
-The key explanatory sentence is:
+> For the recorded fixture and tools, independent clean `-j1` and `-j8` builds publish
+> the same governed artifact membership and accepted identities.
 
-> Terminal output can show overlap, but only artifact comparison can prove that overlap
-> preserved meaning.
+The harness should:
+
+1. create equivalent isolated serial and parallel workspaces;
+2. record source, variables, tools, and environment policy;
+3. build serially and verify convergence;
+4. build in parallel and verify convergence;
+5. compare actual paths against an independent expected manifest;
+6. classify missing, unexpected, and changed artifacts;
+7. run product behavior checks separately;
+8. activate a controlled shared-writer fault;
+9. require rejection at the schedule-comparison boundary;
+10. preserve both reports.
+
+An accepted result has empty difference categories. A rejected result names the changed,
+missing, or unexpected path and marks later checks not reached when the harness stops.
 
 Weak answer pattern:
 
-- "Run the build a few times and see if it looks okay"
+- “Run the build a few times and see if it looks okay.”
 
-That is observation without a contract.
+That samples execution without an oracle or rejection case.
 
 ## Exercise 6: Observe scheduling without a race
 
@@ -192,34 +232,42 @@ The missing but important sentence is:
 > Scheduling overlap is not a race until overlapping work contends for a shared semantic
 > resource or published path.
 
-## Exercise 7: Turn harmless concurrency into a race
+## Exercise 7: Reject partial publication
 
-The race begins when both workers write `result.txt`. The repair gives each worker one
-path and gives the combined file one owner:
+The broken producer writes plausible bytes to the final path before returning nonzero:
 
 ```make
-.PHONY: all
-all: result.txt
-
-alpha.txt:
-	@printf 'alpha\n' > $@
-
-beta.txt:
-	@printf 'beta\n' > $@
-
-result.txt: alpha.txt beta.txt
-	@cat $^ > $@
+build/report.json: data/input.csv
+	@mkdir -p "$(@D)"
+	printf '{"status":"partial"}\n' > "$@"
+	false
 ```
 
-The important explanation is:
+The failure exit is correct, but a later consumer or separate Make invocation can mistake
+the remaining file for an accepted report.
 
-> The problem was never "two jobs ran together." The problem was that two jobs tried to
-> publish the same semantic path.
+The repair is:
 
-Why this is strong:
+```make
+.DELETE_ON_ERROR:
 
-- it names the broken path directly
-- it repairs ownership before discussing performance
+build/report.json: data/input.csv scripts/render.py | build/
+	@candidate="$(@D)/.$(@F).candidate.$$$$"; \
+	python3 scripts/render.py "$<" "$$candidate" && \
+	python3 scripts/check_report.py "$$candidate" && \
+	mv -f "$$candidate" "$@" || { rm -f "$$candidate"; exit 1; }
+
+build/:
+	mkdir -p "$@"
+```
+
+In the controlled failure, the candidate may be created but must be removed, the rejected
+new value must not replace the final path, and the consumer must not run from rejected
+content. In the healthy case, validation precedes same-directory rename and the consumer
+observes the complete report. The next unchanged query should return zero.
+
+The accepted policy must say whether a prior accepted final artifact remains or the final
+path is absent after failure. Either can be valid; plausible rejected content cannot.
 
 ## Exercise 8: Separate setup order from semantic freshness
 
@@ -298,6 +346,11 @@ The important explanation is:
 > The sleep did not fix or create the graph defect. It widened the timing window so the
 > missing edge became reproducible.
 
+The expected signature is the consumer reaching `grep` before `generated.h` exists or is
+complete. After adding the edge, three passing runs are useful samples, but the stronger
+evidence is that the graph no longer permits the consumer frontier before the generator
+completes and the artifact passes its content check.
+
 Weak answer pattern:
 
 - "Adding a delay makes the build unstable"
@@ -306,31 +359,35 @@ The build was already unstable. The delay only made the lie easier to catch.
 
 ## Exercise 10: Prove serial and parallel equivalence
 
-A strong implementation creates sorted checksum manifests from one declared output list:
+A strong implementation creates two equivalent isolated workspaces and uses an expected
+artifact manifest owned independently from the output discovery code.
 
-```sh
-set -eu
-outputs='build/alpha.txt build/beta.txt result.txt'
+The comparison report should resemble:
 
-make clean
-make -j1 all
-sha256sum $outputs | sort > serial.sha256
-
-make clean
-make -j8 all
-sha256sum $outputs | sort > parallel.sha256
-
-diff -u serial.sha256 parallel.sha256
+```json
+{
+  "result": "PASS",
+  "missing_paths": [],
+  "unexpected_paths": [],
+  "changed_artifacts": []
+}
 ```
 
-The check is strong because it compares declared artifact meaning rather than console
-appearance. A deliberate shared-writer race should either fail the build or change one of
-the manifests.
+For each expected path, record size and digest or the repository’s semantic identity
+check. The serial and parallel commands, job counts, source identity, tool versions,
+variables, and environment policy belong beside the inventories.
 
-The missing but important sentence is:
+The controlled fault must reach the intended comparison category. For example, a
+shared-writer mutation may produce one `changed_artifacts` entry. A missing compiler is
+an environment failure and does not prove that schedule comparison rejects a race.
 
-> A build is not proven parallel-safe because both runs finished; it is proven
-> parallel-safe when both runs produced the same declared outputs.
+The result does not cover untested job counts, other toolchains, unsupported filesystems,
+or artifacts outside the governed set.
+
+The important sentence is:
+
+> Both builds finishing is execution evidence; matching governed membership and accepted
+> identities is bounded schedule-equivalence evidence.
 
 ## What a mastery-level answer set looks like
 
@@ -339,9 +396,9 @@ A mastery-level submission moves comfortably between:
 - graph language:
   - runnable targets, ownership, honest edges, setup-only edges
 - evidence:
-  - `--trace`, repeated `-j` runs, elapsed time, checksum manifests
+  - runnable frontiers, `--trace`, elapsed time, governed inventories, rejection signatures
 - repair language:
-  - unique writers, atomic publish, truthful ordering, artifact comparison
+  - unique writers, atomic publish, truthful ordering, isolated artifact comparison
 
 If your answers can move between those three levels without collapsing into "parallel is
 tricky," you are learning Module 02 in the right direction.

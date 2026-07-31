@@ -1,0 +1,19 @@
+{
+  "case": "missing-population-identity",
+  "schema_version": 1,
+  "population": {
+    "rows": 120
+  },
+  "metric": {
+    "aggregation": "global",
+    "definition": "binary_f1_positive_class",
+    "name": "positive_class_f1_at_fixed_threshold",
+    "unit": "fraction"
+  },
+  "confusion_matrix": {
+    "false_negative": 15,
+    "false_positive": 10,
+    "true_negative": 50,
+    "true_positive": 45
+  }
+}

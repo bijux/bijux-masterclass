@@ -1,271 +1,261 @@
-# Writer Pattern
+# Writer: Return Ordered Trace Data with the Value
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Monadic Flow Explicit Context"]
-  page["Writer Pattern"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
-
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure, absence, and observability as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
-
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
-
-**Core question**  
-How do you add rich, ordered logging/tracing/metrics to monadic pipelines in a completely pure, composable, testable way — treating logs as accumulated data instead of side effects?
-
-This is the core that finally gives you production-grade observability without sacrificing purity. After this core, every pipeline you write can emit detailed, deterministic logs/metrics that are fully testable — with zero `print`, zero global loggers, and zero hidden side effects.
-
-Use this when you need observability in production pipelines but refuse to compromise on purity and testability.
-
-**Outcome**
-1. You will add logging/tracing with `tell` and `listen`.
-2. You will have mechanical proof that your Writer compositions satisfy the monad laws — meaning logs always appear in exactly the order you expect.
-3. You will stack Writer with Result/State/Reader for fully observable multi-effect pipelines.
-
-## Why Writer Is the Final Effect
-
-- **tell**: Append a log entry — pure because logs are just data.
-- **listen / censor**: Inspect or filter the accumulated logs — pure transformations.
-- **and_then**: Automatically appends logs from both sides — exactly like State, but the "state" is immutable and append-only.
-
-Use Writer when you need observability.  
-For config → Reader. For failure → Result. For local state → State.  
-The trade-off is a bit more combinator noise; in return you get perfectly deterministic, testable logs.  
-A very common logging-heavy shape is `Reader[Config, Writer[Result[T, ErrInfo]]]` when you want both config and logs even on error paths.
-
-That does **not** mean Writer replaces every ordinary logger. It is the right fit when
-the accumulated trace should be reviewed, tested, or returned as part of the pipeline
-story itself. Boundary logging is still fine when you only need to emit operational
-signals outward.
-
-
-## 1. Laws & Invariants (machine-checked in CI)
-
-| Law                 | Formal Statement                                                            | Why it matters                                            |
-|---------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Left Identity       | `pure(x).and_then(f) == f(x)`                                               | Safe to lift plain values                                 |
-| Right Identity      | `w.and_then(pure) == w`                                                     | Safe to extract sub-pipelines                             |
-| Associativity       | `w.and_then(f).and_then(g) == w.and_then(lambda x: f(x).and_then(g))`       | Log order never changes with grouping                     |
-| Tell Append         | `run_writer(tell(e1).and_then(lambda _: tell(e2))) == (None, (e1, e2))`     | Logs concatenate in execution order                       |
-| Listen Roundtrip    | `listen(w).map(lambda pair: pair[0]) == w`                                  | Listening does not change values or logs                  |
-
-All laws verified with Hypothesis. A single counterexample breaks CI.
-
-## 2. Public API – Writer is a one-field dataclass (mypy --strict clean)
+Printing from the middle of a pure pipeline makes an observation hard to test:
 
 ```python
-# capstone/src/funcpipe_rag/fp/effects/writer.py – end-of-Module-06 (mypy --strict clean target)
+print(f"chunk={chunk.doc_id}:{chunk.start}-{chunk.end}")
+```
 
-from __future__ import annotations
-from dataclasses import dataclass
-from typing import Callable, Generic, Tuple, TypeVar
+The domain value does not contain that output, and a caller cannot compare or
+transform it without capturing a process-wide stream.
 
-T = TypeVar("T")
-U = TypeVar("U")
-LogEntryT = TypeVar("LogEntryT")
+Writer models a different contract:
 
-Log = Tuple[LogEntryT, ...]
-# In general, Writer can use any log type that forms a monoid
-# (has an identity element and an associative combine operation);
-# Module 06 examples use strings, while the repository later generalizes the log entry
-# type for structured logging.
+```text
+() -> (Value, ordered entries)
+```
 
+The trace is returned as data. No terminal, file, or logging service is touched.
+Module 07 will decide where real emission belongs.
+
+## Run the FuncPipe chunk trace
+
+The Module 06 learning proof takes the first real chunk from
+`iter_chunk_doc`:
+
+```python
+chunk = next(
+    iter_chunk_doc(
+        doc,
+        RagEnv(chunk_size=4),
+    )
+)
+```
+
+It starts with that chunk as the payload and appends two entries:
+
+```python
+program = (
+    writer_pure(chunk)
+    .and_then(
+        lambda current: tell(
+            f"chunk:{current.doc_id}:"
+            f"{current.start}-{current.end}"
+        ).map(lambda _: current)
+    )
+    .and_then(
+        lambda current: tell(
+            f"characters:{len(current.text)}"
+        ).map(lambda _: current)
+    )
+)
+```
+
+Running the description returns both channels:
+
+```python
+value, entries = run_writer(program)
+
+assert value == chunk
+assert entries == (
+    "chunk:writer:0-4",
+    "characters:4",
+)
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k writer_preserves_rag_chunk_while_accumulating_trace
+```
+
+The payload equality is as important as the entry assertion. A tracing wrapper
+that silently replaces or modifies the chunk has violated its contract.
+
+## Why `tell(...).map(lambda _: current)` appears
+
+`tell(entry)` has the conceptual result:
+
+```text
+Writer[None]
+```
+
+Its meaningful output is the entry, not a new domain value. The following
+`map` restores the current chunk to the value channel:
+
+```python
+tell(message).map(lambda _: current)
+```
+
+This separation makes the two channels explicit:
+
+- the payload continues through dependent operations;
+- entries append in observation order.
+
+If this idiom dominates application code, introduce a named helper such as
+`trace_chunk(current)` rather than repeating the plumbing.
+
+## Read the implementation
+
+The Module 06 Writer stores a delayed run function:
+
+```python
 @dataclass(frozen=True)
-class Writer(Generic[T, LogEntryT]):
-    run: Callable[[], Tuple[T, Log]]
-
-    def map(self, f: Callable[[T], U]) -> "Writer[U, LogEntryT]":
-        def run() -> Tuple[U, Log]:
-            value, log = self.run()
-            return f(value), log
-        return Writer(run)
-
-    def and_then(self, f: Callable[[T], "Writer[U, LogEntryT]"]) -> "Writer[U, LogEntryT]":
-        def run() -> Tuple[U, Log]:
-            value, log1 = self.run()
-            next_writer = f(value)
-            next_value, log2 = next_writer.run()
-            return next_value, log1 + log2
-        return Writer(run)
-
-# Primitives
-def pure(x: T) -> Writer[T, LogEntryT]:
-    return Writer(lambda: (x, ()))
-
-def tell(entry: LogEntryT) -> Writer[None, LogEntryT]:
-    return Writer(lambda: (None, (entry,)))
-
-def tell_many(entries: Log) -> Writer[None, LogEntryT]:
-    return Writer(lambda: (None, entries))
-
-def listen(p: Writer[T, LogEntryT]) -> Writer[Tuple[T, Log], LogEntryT]:
-    def run() -> Tuple[Tuple[T, Log], Log]:
-        value, log = p.run()
-        return (value, log), log
-    return Writer(run)
-
-def censor(f: Callable[[Log], Log], p: Writer[T, LogEntryT]) -> Writer[T, LogEntryT]:
-    def run() -> Tuple[T, Log]:
-        value, log = p.run()
-        return value, f(log)
-    return Writer(run)
-
-def run_writer(p: Writer[T, LogEntryT]) -> Tuple[T, Log]:
-    return p.run()
+class Writer(Generic[T]):
+    run: Callable[[], tuple[T, tuple[str, ...]]]
 ```
 
-## 3. Writer + Result – Observable Error Handling
+`map` changes only the payload:
 
 ```python
-E = TypeVar("E")
+def map(self, f):
+    def run():
+        value, entries = self.run()
+        return f(value), entries
 
-def wr_pure(x: T) -> Writer[Result[T, E]]:
-    return Writer(lambda: (Ok(x), ()))
-
-def wr_map(p: Writer[Result[T, E]], f: Callable[[T], U]) -> Writer[Result[U, E]]:
-    def run() -> Tuple[Result[U, E], Log]:
-        r, log = p.run()
-        return r.map(f), log
-    return Writer(run)
-
-def wr_and_then(p: Writer[Result[T, E]], k: Callable[[T], Writer[Result[U, E]]]) -> Writer[Result[U, E]]:
-    def run() -> Tuple[Result[U, E], Log]:
-        r, log1 = p.run()
-        if isinstance(r, Err):
-            return Err(r.error), log1                          # logs before Err preserved
-        next_writer = k(r.value)
-        next_r, log2 = next_writer.run()
-        return next_r, log1 + log2
     return Writer(run)
 ```
 
-## 4. Real-World Example – Logging in RAG Pipeline
+`and_then` runs both descriptions and concatenates the entries:
 
 ```python
-def embed_chunk(chunk: Chunk) -> Writer[Result[EmbeddedChunk, ErrInfo]]:
-    return (
-        tell(f"start embed chunk_id={chunk.id}")
-        .and_then(lambda _: pure(tokenize(chunk.text.content)))
-        .and_then(lambda tokens: tell(f"tokenized count={len(tokens)}").map(lambda _: tokens))
-        .and_then(lambda tokens: pure(model.encode(tokens)))
-        .and_then(lambda vec: tell(f"encoded dim={len(vec)}").map(lambda _: vec))
-        .map(lambda vec: replace(chunk, embedding=Embedding(vec, current_model)))
-        .map(Ok)
-    )
+def and_then(self, f):
+    def run():
+        value, first = self.run()
+        next_value, second = f(value).run()
+        return next_value, first + second
 
-(result, logs) = run_writer(embed_chunk(some_chunk))
-print(logs)
-# ("start embed chunk_id=...", "tokenized count=123", "encoded dim=768")
+    return Writer(run)
 ```
 
-## 5. Before → After – Print Debugging vs Pure Logging
+Tuple concatenation makes the order visible and immutable. It also allocates a
+new tuple. Very long left-associated Writer chains can copy earlier entries
+repeatedly. This teaching implementation is suitable for small traces, not a
+claim about high-volume operational logging performance.
+
+## `listen` and `censor`
+
+`listen(program)` makes the entries available inside the payload while
+retaining them as entries:
+
+```text
+Writer[A] -> Writer[(A, entries)]
+```
+
+Use it when a pure decision needs to inspect the trace. Be careful not to make
+domain behavior depend on incidental diagnostic text.
+
+`censor(transform, program)` changes the returned entries while preserving the
+payload. It can filter or normalize trace data before an outer boundary sees
+it.
+
+Neither helper emits anything.
+
+## Writer is not operational logging
+
+The Module 06 entries are strings. They do not provide:
+
+- timestamps;
+- severity;
+- correlation identifiers;
+- structured fields;
+- delivery guarantees;
+- backpressure;
+- log rotation; or
+- integration with a logging backend.
+
+Those concerns require owned boundary types and effect execution. Module 07’s
+functional logging lesson introduces a more appropriate separation.
+
+Writer in this module answers a smaller question: can ordered diagnostic data
+remain inspectable in a pure result?
+
+## Layering Writer and Result
+
+The reference state includes helpers for:
+
+```text
+Writer[Result[T, E]]
+```
+
+`wr_and_then` preserves entries created before a failure and skips the next
+dependent operation when the inner Result is `Err`.
+
+That is one explicit policy:
+
+- trace entries may describe work before failure;
+- Result owns short-circuiting of the value flow;
+- Writer remains the outer context and returns the accumulated trace.
+
+`Result[Writer[T], E]` would have different meaning: an outer `Err` contains no
+Writer program to run. Choose the policy before choosing the layer order.
+
+## Compare Writer with simpler values
+
+An ordinary tuple may be enough:
 
 ```python
-# BEFORE – print side effects
-def embed_chunk(chunk: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
-    print(f"start embed chunk_id={chunk.id}")
-    tokens = tokenize(chunk.text.content)
-    print(f"tokenized count={len(tokens)}")
-    vec = model.encode(tokens)
-    print(f"encoded dim={len(vec)}")
-    return Ok(replace(chunk, embedding=Embedding(vec, current_model)))
-
-# AFTER – pure, testable logs
-def embed_chunk(chunk: Chunk) -> Writer[Result[EmbeddedChunk, ErrInfo]]:
-    return (
-        tell(f"start embed chunk_id={chunk.id}")
-        .and_then(lambda _: pure(tokenize(chunk.text.content)))
-        .and_then(lambda tokens: tell(f"tokenized count={len(tokens)}").map(lambda _: tokens))
-        .and_then(lambda tokens: pure(model.encode(tokens)))
-        .and_then(lambda vec: tell(f"encoded dim={len(vec)}").map(lambda _: vec))
-        .map(lambda vec: replace(chunk, embedding=Embedding(vec, current_model)))
-        .map(Ok)
+def inspect_chunk(
+    chunk: Chunk,
+) -> tuple[Chunk, tuple[str, ...]]:
+    return chunk, (
+        f"chunk:{chunk.doc_id}:"
+        f"{chunk.start}-{chunk.end}",
     )
 ```
 
-Zero prints. Full testability. Logs exactly match execution order.
+Choose Writer when several reusable operations append side information and
+must compose while preserving one payload. Choose a tuple or a dedicated
+domain record when there is one local observation or when named fields convey
+more meaning than a generic entry sequence.
 
-## 6. Property-Based Proofs & Key Examples (selected)
+## Laws and application evidence
 
-```python
-from hypothesis import given, strategies as st
+The Writer law suite checks:
 
-@given(x=st.integers())
-def test_writer_left_identity(x):
-    f = lambda n: Writer(lambda: (n + 1, ("inc",)))
-    assert run_writer(pure(x).and_then(f)) == run_writer(f(x))
+- left identity;
+- right identity;
+- associativity;
+- append order for `tell`; and
+- the `listen` round trip.
 
-@given(entries=st.lists(st.text()))
-def test_writer_right_identity(entries):
-    w = Writer(lambda: (42, tuple(entries)))
-    assert run_writer(w.and_then(pure)) == run_writer(w)
+Run it:
 
-@given(entries=st.lists(st.text()))
-def test_writer_associativity(entries):
-    w = Writer(lambda: (42, tuple(entries)))
-    f = lambda a: Writer(lambda: (a + 1, ("f",)))
-    g = lambda b: Writer(lambda: (b * 2, ("g",)))
-    assert run_writer(w.and_then(f).and_then(g)) == run_writer(w.and_then(lambda x: f(x).and_then(g)))
-
-@given(e1=st.text(), e2=st.text())
-def test_writer_tell_append(e1, e2):
-    assert run_writer(tell(e1).and_then(lambda _: tell(e2))) == (None, (e1, e2))
-
-@given(entries=st.lists(st.text()))
-def test_writer_listen_roundtrip(entries):
-    w = Writer(lambda: (42, tuple(entries)))
-    assert run_writer(listen(w).map(lambda pair: pair[0])) == run_writer(w)
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/test_writer_laws.py
 ```
 
-## 7. Anti-Patterns & Immediate Fixes
+The laws prove the append/composition structure for the generated entries.
+The RAG learning test separately proves exact chunk preservation and expected
+trace content.
 
-| Anti-Pattern              | Symptom                           | Fix                          |
-|---------------------------|-----------------------------------|------------------------------|
-| print() / logging.info()  | Impure, untestable                | Use tell / Writer            |
-| Global logger             | Hidden side effects               | Accumulate logs as data      |
-| Manual log concatenation  | Verbose, error-prone              | Writer composes automatically |
+## Common wrong turns
 
-## 8. Pre-Core Quiz
+- **Calling `print` or a logger inside the Writer program.** The trace is no
+  longer only a returned value.
+- **Returning the message as the payload.** Diagnostic data replaces the RAG
+  value.
+- **Using one concatenated string.** Entry order and boundaries become harder
+  to inspect.
+- **Calling string entries production observability.** The teaching type has a
+  deliberately narrow contract.
+- **Ignoring allocation cost.** Tuple concatenation is clear but not a
+  high-throughput logging structure.
+- **Layering Writer and Result without a failure policy.** Reviewers cannot
+  tell whether pre-failure entries should survive.
 
-1. Writer replaces…? → **print() and global loggers**  
-2. You add a log with…? → **tell("message")**  
-3. You inspect logs with…? → **listen(p)**  
-4. Logs are appended with…? → **and_then**  
-5. The golden rule? → **Never print() in a pipeline again**
+## What the focused proof establishes
 
-## 9. Post-Core Exercise
+The learning test proves that the Writer description returns the exact original
+chunk and appends two exact string entries in order.
 
-1. Take your most print-heavy pipeline and rewrite it with Writer + tell.
-2. Add structured metrics (e.g. token counts) to an embedding pipeline.
-3. Use listen + censor to filter sensitive data from logs in a test.
+It does not prove delivery to a logging system, concurrency behavior,
+performance at large trace sizes, or the adequacy of strings as an operational
+log schema.
 
-**Continue with:** [Refactoring try/except](../module-06-monadic-flow-explicit-context/refactoring-try-except.md)
-
-You have now added **pure, testable observability** to every pipeline. Logs and metrics are now first-class data — composable, deterministic, and proven correct by Hypothesis. The remaining cores are full-pipeline refactors and architectural patterns.
+Continue with [Refactoring try/except](refactoring-try-except.md), where the
+module applies its flow rules to an existing boundary without changing the
+public result.

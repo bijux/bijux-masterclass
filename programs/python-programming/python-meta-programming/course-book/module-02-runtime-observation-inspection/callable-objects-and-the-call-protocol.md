@@ -238,6 +238,43 @@ It keeps "cannot be called" separate from "can be called, but the call failed."
 That is the reader-first teaching move here: name the exact boundary crossed by the
 helper. The boolean gate is observational. The attempted call is behavioral.
 
+## Guided lab: separate the gate from the call
+
+Run:
+
+```console
+$ python3 -m labs.runtime_observation |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["callability"])'
+{'callable_instance': True, 'instance_attribute_does_not_install_protocol': False, 'invalid_call_error': 'ValueError', 'valid_result': 'route:INC-42'}
+```
+
+The packet makes four separate claims:
+
+1. `CallableRouter` instances support the type-level call protocol.
+2. attaching `__call__` to one `PlainRouter` instance does not install that protocol.
+3. a valid call can return a useful route.
+4. the same callable can reject invalid input with `ValueError`.
+
+The first claim is observational. The final two required execution. A tool that needs
+only the first answer should not perform either call.
+
+### Failure route
+
+Remove the empty-identifier validation from `CallableRouter.__call__`. The callability
+result remains `True`, while the invalid-call evidence changes. Explain why this proves
+that callability and input policy are independent contracts, then restore the validation
+and run `make observation-lab-test`.
+
+### Transfer to the incident-plugin runtime
+
+The capstone manifest reports action metadata without calling the action. The `invoke`
+command crosses the boundary deliberately. A registry or documentation generator should
+not execute `deliver` merely because it is callable; an invocation route must validate
+configuration and arguments, then preserve the action's failure information.
+
+This is where the capstone supports the course judgment: discovering an invocable public
+surface and exercising that surface are different product behaviors.
+
 ## Review rules for callability checks
 
 When reviewing callability logic, keep these questions close:

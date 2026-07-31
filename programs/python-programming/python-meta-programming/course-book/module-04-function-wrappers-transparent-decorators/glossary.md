@@ -48,7 +48,10 @@ behavior preservation, or one-time rebinding from repeated runtime policy.
 | Decoration time | The one-time moment when the decorator expression is applied and the function name is rebound. |
 | Decorator | A callable that takes a function and returns another callable. |
 | Decorator factory | A callable that returns a decorator, usually used as `@factory(config)`. |
+| Decorator application order | Bottom-up application of already-evaluated decorators to the newly created function. |
+| Decorator expression order | Top-to-bottom evaluation of expressions written after `@`, before returned decorators are applied. |
 | Definition-time rebinding | The fact that `@decorator` syntax rewrites a function name to the wrapper returned by the decorator. |
+| Explicit signature override | A `__signature__` stored directly on a wrapper so inspection reports a deliberate contract even without following `__wrapped__`. |
 | Governing rule | The exact behavioral rule a wrapper now owns, such as "first result wins" or "failed calls retry three times". |
 | Inspection surface | The visible metadata or unwrapping route that tools and reviewers rely on, such as `__name__`, `inspect.signature`, or `__wrapped__`. |
 | Metadata transparency | Preserving callable identity surfaces so tooling can still see the logical callable honestly. |

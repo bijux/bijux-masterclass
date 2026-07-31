@@ -46,11 +46,17 @@ are meaningfully comparable.
 | metric | A recorded value that claims something about workflow behavior on a defined population under defined controls. |
 | metric claim | The human interpretation attached to a metric value, including population, definition, and decision context. |
 | comparison surface | The set of metrics, parameters, data identity, and review evidence needed to compare two runs fairly. |
+| metric comparability contract | The population, controls, metric definition, unit, aggregation, schema, and evidence that must remain compatible before a numeric movement supports a comparison. |
+| mechanical metric diff | A recorded change in metric keys or values without a judgment that their meanings remain comparable. |
+| same-contract comparison | A comparison whose baseline and candidate preserve the semantic fields required by the review claim. |
+| comparison abstention | A deliberate refusal to accept or reject a candidate when required semantic evidence is missing or unresolved. |
+| compatibility mapping | An explicit rule that explains how differently named, structured, or versioned metric fields retain equivalent meaning. |
 | parameter control | A value that influences result behavior or interpretation and should be visible in review. |
 | control surface | The parameter values that shape training, evaluation, publishing, or release decisions. |
 | metric schema | The structure, names, units, nesting, and missing-value rules of a metric file. |
 | schema drift | A change in metric file structure or meaning that can invalidate direct comparison. |
 | additive metric change | A new metric or field added while existing metric meanings remain stable. |
+| additive schema evolution | A schema change that adds evidence without changing or removing the established meaning of existing comparison fields. |
 | meaning-changing metric change | A metric change that alters definition, population, unit, threshold policy, or review interpretation. |
 | population | The examples, records, incidents, or slice being measured by a metric or plot. |
 | unit of analysis | The level at which a metric is computed, such as per incident, per customer, per day, or per alert. |

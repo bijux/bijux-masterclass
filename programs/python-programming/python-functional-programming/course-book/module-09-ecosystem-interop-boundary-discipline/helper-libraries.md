@@ -259,36 +259,20 @@ def category_counts_toolz(chunks: Iterator[Chunk]) -> dict[str, int]:
     return reduceby(lambda c: c.categories.split(',')[0] if c.categories else 'none', lambda acc, _: acc + 1, chunks, 0)
 ```
 ---
-## 5. Property-Based Proofs (repo tests)
-Runnable properties live in `capstone/tests/unit/interop/test_toolz_compat.py`.
-```python
-from hypothesis import given, strategies as st
-from toolz import pipe, compose, curried
-from returns.result import Result, Success, Failure
-def ret(y): return Success(y)  # Monad return
-@given(st.integers())
-def test_result_functor_monad(x):
-    r: Result[int, str] = Success(x)
-    assert r.map(lambda y: y) == r  # Functor id
-    f = lambda y: y + 1
-    g = lambda y: y * 2
-    assert r.map(lambda y: g(f(y))) == r.map(f).map(g)  # Functor comp
-    assert r.bind(ret) == r  # Right id
-    assert ret(x).bind(lambda y: ret(y + 1)) == ret(x + 1)  # Left id
-    assert r.bind(lambda y: ret(y + 1).bind(lambda z: ret(z * 2))) == r.bind(lambda y: ret((y + 1) * 2))  # Associativity
-@given(st.lists(st.integers()))
-def test_toolz_groupby_equiv_sorted(xs):
-    key = lambda z: z % 3
-    toolz_g = toolz_groupby(key, xs)
-    it_g = {k: list(g) for k, g in groupby(sorted(xs, key=key), key=key)}
-    assert toolz_g == it_g  # Equiv under sorted
-def test_toolz_groupby_mismatch_unsorted():
-    xs = [1, 0, 2, 1]  # Non-consecutive
-    key = lambda z: z % 3
-    toolz_g = toolz_groupby(key, xs)
-    it_g = {k: list(g) for k, g in groupby(xs, key=key)}
-    assert toolz_g[1] == [1, 1] and it_g[1] == [1]  # Mismatch demo
+## 5. Executable proof
+
+`tests/unit/interop/test_toolz_compat.py` proves the shipped fallback operations.
+It does not import `toolz` unconditionally or claim laws for the separate
+`returns` package. The readable learning proof composes the public compatibility
+surface:
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k optional_helper_facade_preserves_plain_python_semantics
 ```
+
+That distinction matters: an optional helper is acceptable only when its presence
+does not change application values or force its container types into the RAG core.
 ---
 ## 6. Runtime Preservation Guarantee
 Helpers ~ stdlib; groupby O(n) memory; memoize bounded by lru_cache.
@@ -309,9 +293,12 @@ Helpers ~ stdlib; groupby O(n) memory; memoize bounded by lru_cache.
 4. groupby diff…? → **Materialize vs stream**
 5. Optional how? → **Compat layer**
 
-## 9. Post-Core Exercise
-1. Implement flag-gated RAG.
-2. Prove laws with Hypothesis.
+## 9. Post-core exercise
+
+Complete [Helper libraries: require semantic
+parity](exercises.md#helper-libraries-require-semantic-parity). Your review must
+state both the observable parity evidence and the readability threshold for
+accepting a dependency.
 
 **Pipeline Usage (Idiomatic)**
 ```python

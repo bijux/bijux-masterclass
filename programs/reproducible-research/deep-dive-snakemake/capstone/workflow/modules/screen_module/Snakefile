@@ -19,7 +19,7 @@ rule screen:
     benchmark:
         "screen.txt"
     conda:
-        config["_env_python"]
+        config["env_python"]
     shell:
         r"""
         set -euo pipefail

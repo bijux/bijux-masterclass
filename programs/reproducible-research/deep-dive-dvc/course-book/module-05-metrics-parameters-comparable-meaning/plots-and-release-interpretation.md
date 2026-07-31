@@ -132,6 +132,90 @@ Do not promote a metric as release evidence when:
 This does not mean the run is useless. It means the run is not ready to carry that
 particular authority.
 
+## Comparability is a gate, not a release decision
+
+The metric-contract audit stops deliberately before promotion.
+
+Its accepted candidate proves:
+
+- the primary metric has the same definition and scale
+- population identity and size match
+- the decision threshold matches
+- schema version and aggregation match
+- DVC reports a `0.0458` increase
+
+It does **not** prove:
+
+- the increase clears a predeclared acceptance threshold
+- precision, calibration, fairness, latency, and cost safeguards pass
+- a plot uses a stable data and rendering contract
+- the candidate should replace the release baseline
+
+Treat release reasoning as ordered gates:
+
+```mermaid
+flowchart LR
+  complete["evidence complete?"] --> comparable["same metric claim?"]
+  comparable --> sufficient["movement sufficient by policy?"]
+  sufficient --> safeguards["secondary safeguards pass?"]
+  safeguards --> publish["publish bounded claim"]
+  complete -->|no| abstain["abstain"]
+  comparable -->|no| reject["reject direct comparison"]
+  sufficient -->|no| retain["retain baseline"]
+  safeguards -->|no| retain
+```
+
+Skipping the comparability gate produces confident decisions about unrelated
+measurements. Stopping at the comparability gate produces a different mistake: treating a
+valid delta as an automatic release.
+
+## Why the audit does not manufacture plot evidence
+
+The isolated specimen does not generate a plot. That absence is intentional.
+
+A plot would need its own declared contract:
+
+| Plot boundary | Evidence needed |
+| --- | --- |
+| source | identity of predictions or records plotted |
+| population | identity and slice-selection rule |
+| transformation | binning, aggregation, smoothing, missing-value policy |
+| axes | units, scales, and fixed limits where comparison requires them |
+| rendering | deterministic order and relevant renderer context |
+| decision role | the bounded claim the plot supports |
+
+Without those surfaces, adding a PNG would create decoration, not proof.
+
+The main capstone publishes metrics, parameters, predictions, a model, and a manifest. It
+does not currently publish a governed plot contract. Review the repository that exists;
+do not cite a visual artifact that the release boundary does not provide.
+
+## Build a promotion packet from accepted evidence
+
+Start with:
+
+```text
+workspace/comparable-candidate/evidence/
+├── baseline-metrics.json
+├── candidate-metrics.json
+├── dvc-metrics-diff.json
+├── dvc-params-diff.json
+└── comparison.json
+```
+
+Then add release-specific evidence:
+
+| Decision question | Required addition |
+| --- | --- |
+| is `0.0458` enough? | predeclared primary acceptance rule |
+| did any safeguard regress? | named secondary metric results and limits |
+| is the population release-relevant? | population governance and representativeness note |
+| does a plot support the claim? | governed plot contract and generated artifact |
+| what will downstream users receive? | bundle manifest and publish contract |
+
+If any required addition is missing, say which judgment remains open. Do not turn
+“comparison accepted” into “candidate accepted.”
+
 ## A release review note
 
 A strong release note is short but explicit:
@@ -153,6 +237,14 @@ You understand this core when you can:
 - keep release-facing metrics paired with their parameter evidence
 - decide when a metric is not ready for promotion
 - write a review note that separates numeric movement from release judgment
+
+Take the accepted audit row and write two sentences:
+
+1. the strongest comparability claim supported now
+2. the additional release evidence still required
+
+Then take `unit-drift` and explain why no plot, however persuasive, can repair subtraction
+across incompatible units.
 
 The goal is a release bundle that can be read later without guessing what the numbers and
 plots were supposed to mean.

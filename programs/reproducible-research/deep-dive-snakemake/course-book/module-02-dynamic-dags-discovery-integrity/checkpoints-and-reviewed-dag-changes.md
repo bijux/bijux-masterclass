@@ -1,314 +1,317 @@
 # Checkpoints and Reviewed DAG Changes
 
-Checkpoints are where many Snakemake courses become mystical.
+A checkpoint is justified when an executed job reveals information needed to construct
+later jobs. It is not justified merely because a file list varies or because the workflow
+author wants to use a more sophisticated feature.
 
-This module takes the opposite approach:
+This lesson follows one checkpoint through planning, execution, reevaluation, and review.
+It also separates the checkpoint’s special behavior from ordinary invalidation rules.
 
-> a checkpoint is acceptable only when it makes a data-dependent change to the DAG more explicit than the alternatives.
+## What a checkpoint changes
 
-If it hides the real target story, it is a bad checkpoint even if the code runs.
+An ordinary rule can produce a file whose path is already known. A checkpoint also
+produces known output, but downstream input functions may wait for that output, inspect
+it, and then return inputs whose identities were not knowable earlier.
 
-## How to study this page
+```mermaid
+sequenceDiagram
+  participant S as Snakemake planner
+  participant C as discovery checkpoint
+  participant M as accepted manifest
+  participant F as downstream input function
+  S->>F: evaluate requested inputs
+  F->>C: checkpoints.discover.get()
+  C-->>S: output not complete
+  S->>C: schedule and execute checkpoint
+  C->>M: write accepted-set artifact
+  S->>F: reevaluate after completion
+  F->>M: read accepted records
+  F-->>S: return concrete downstream targets
+  S->>S: extend the DAG
+```
 
-Read this page with one boundary in mind:
+The checkpoint does not return jobs. It writes evidence. A dependent input function turns
+that evidence into concrete paths.
 
-> what exact runtime fact becomes knowable only after this step executes?
+## A minimal, reviewable pattern
 
-If you cannot name that fact, you are probably looking at a modeling problem rather than a
-checkpoint problem.
+The checkpoint:
 
-## Why this lesson is usually mishandled
+```python
+checkpoint validate_delivery:
+    input:
+        registry="data/arrivals.tsv"
+    output:
+        manifest="results/accepted.json"
+    script:
+        "workflow/scripts/validate_delivery.py"
+```
 
-Checkpoints look advanced, so they attract too much attention too early.
+The dependent function:
 
-That causes two teaching failures:
+```python
+import json
 
-- learners wrap already-knowable target lists in checkpoints and call it sophistication
-- learners memorize the API before they understand what new fact the workflow is trying to
-  discover
 
-This page is trying to reverse that order.
+def accepted_outputs(_wildcards):
+    manifest = checkpoints.validate_delivery.get().output.manifest
+    with open(manifest, encoding="utf-8") as handle:
+        payload = json.load(handle)
+    samples = sorted(payload["accepted"])
+    return expand("results/{sample}/qc.json", sample=samples)
+```
 
-## Ask these questions before you write one line
+The target:
 
-Before you write a checkpoint, answer these in plain language:
+```python
+rule all:
+    input:
+        accepted_outputs
+```
 
-1. What fact is truly unknown at initial planning time?
-2. Which declared input surface will reveal that fact?
-3. What file will record the answer?
-4. Why is a config file or deterministic scan not enough here?
+This division makes three responsibilities visible:
 
-If you cannot answer all four, stop. The design is probably not ready for a checkpoint.
+| Surface | Responsibility |
+| --- | --- |
+| checkpoint rule | declare influences and materialize the runtime fact |
+| manifest schema | preserve accepted and rejected discovery evidence |
+| input function | project accepted records into concrete downstream paths |
 
-## A strong beginner habit
+Do not hide validation, directory scanning, and path projection in one large input
+function.
 
-Write the four answers in prose before you write the checkpoint code.
+## The checkpoint output must be worth rereading
 
-That sounds slower, but it usually saves time because it exposes fake checkpoints early.
+A plain list can be enough for a teaching specimen:
 
-## What a checkpoint actually does
+```text
+alpha
+beta
+```
 
-A normal rule lets Snakemake build the job graph up front.
+A production discovery artifact usually needs:
 
-A checkpoint says:
+- schema version;
+- governing registry path and digest;
+- discovery policy or tool identity;
+- accepted records with stable IDs and source paths;
+- rejected candidates with reasons;
+- canonical ordering;
+- enough metadata to explain pairing or grouping.
 
-- build the graph as far as this step
-- run the checkpoint
-- inspect its declared output
-- reevaluate downstream job construction using that new fact
+The artifact should answer “why did these jobs exist?” without reconstructing a transient
+directory state.
 
-That is all. A checkpoint is not "dynamic magic." It is controlled graph reevaluation.
+## Checkpoint reevaluation is not input invalidation
 
-## When a checkpoint is justified
+Two mechanisms are involved:
 
-Use a checkpoint when downstream targets genuinely cannot be known until some declared
-input has been inspected or produced.
-
-Good examples:
-
-- deciding which declared candidates remain usable after validation
-- splitting one input into a data-dependent set of shards
-- enumerating outputs from a tool whose count depends on validated input content
-
-In all three cases, the checkpoint exists because the workflow learns a real new fact.
-
-## The contrast that matters
-
-The real contrast is not:
-
-- simple workflow
-- advanced workflow
-
-The real contrast is:
-
-- already knowable target set
-- genuinely runtime-discovered target set
-
-## When a checkpoint is a smell
-
-Do not use a checkpoint for problems that are really about weak workflow design:
-
-- you could have read the sample list from config instead
-- the target list was already known but nobody modeled it cleanly
-- multiple rules keep rescanning the filesystem and disagreeing about what exists
-- the rule wants to hide side effects that should have been explicit outputs
-
-Those are not checkpoint problems. They are modeling problems.
-
-## The checkpoint contract
-
-A healthy checkpoint has four properties:
-
-1. one clear discovery question
-2. one owned output that records the answer
-3. deterministic behavior for fixed declared inputs
-4. downstream fanout that reads the recorded answer instead of rediscovering it
-
-If any of those are missing, the checkpoint usually leaves the workflow harder to review.
-
-## The beginner-safe mental model
-
-Treat a checkpoint as a two-part promise:
-
-- first promise: this step will discover one new fact and write it down
-- second promise: later jobs will read that written fact instead of rediscovering it
-
-That is a much safer mental model than “Snakemake reruns the DAG somehow.”
-
-## What a learner should notice in the code
-
-The important line in a healthy checkpoint design is rarely the `checkpoint` keyword
-itself.
-
-The important lines are usually:
-
-- the output that records the discovery result
-- the downstream function that rereads that exact output
-- the absence of a second hidden scan somewhere else
-
-## A good shape
+1. **Invalidation** decides whether the checkpoint must run.
+2. **Reevaluation** lets dependent input functions run again after it completes.
 
 ```mermaid
 flowchart TD
-  manifest["config/samples.tsv"] --> raw["declared raw evidence files"]
-  raw --> checkpoint["checkpoint validate_candidates"]
-  checkpoint --> accepted["results/discovery/accepted_samples.json"]
-  checkpoint --> rejected["results/discovery/rejected_samples.json"]
-  accepted --> fanout["per-sample targets"]
-  fanout --> publish["publish/v1/accepted_samples.json"]
-  rejected --> publish["publish/v1/rejected_samples.json"]
+  changed{"Did a declared checkpoint influence change?"}
+  changed -->|no| current["Checkpoint output remains current"]
+  current --> old["Dependent function sees existing manifest"]
+  old --> stale["DAG membership remains unchanged"]
+  changed -->|yes| execute["Checkpoint executes"]
+  execute --> new["Manifest is materialized"]
+  new --> reevaluate["Dependent input function reevaluates"]
+  reevaluate --> revised["DAG reflects new accepted set"]
 ```
 
-This picture matters because the discovery step leaves behind durable accepted and
-rejected records. The checkpoint is not trusted because it is dynamic. It is trusted
-because its result is reviewable.
+Calling a rule a checkpoint only provides the lower half of this story. If a directory
+read is hidden and no declared input changes, the upper half never triggers.
 
-## Minimal checkpoint pattern
+## Observe the distinction
+
+Run:
+
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make discovery-integrity-audit
+```
+
+The governed specimen declares `data/arrivals.tsv`. After `beta` is registered, its
+dry-run schedules `discover`, normal execution builds `alpha` and `beta`, and unregistered
+`gamma` remains outside scope.
+
+The ambient specimen declares no checkpoint input. After `beta` and `gamma` appear:
+
+- its dry-run reports nothing to do;
+- normal execution still contains only `alpha`;
+- forced checkpoint execution reveals `alpha`, `beta`, and `gamma`.
+
+The forced result proves that the scanner works. The normal result proves that the
+workflow contract does not know when to use it.
+
+## A justified checkpoint
+
+Suppose an intake registry names candidate archives. A validation job must:
+
+- open each archive;
+- verify its checksum;
+- inspect contained metadata;
+- reject incomplete sample pairs;
+- assign a stable sample ID;
+- write accepted and rejected records.
+
+The final accepted set is genuinely unavailable until the validation job executes. A
+checkpoint is justified because runtime work reveals a fact needed for downstream job
+construction.
+
+The review argument should be:
+
+> The arrival registry is the declared invalidation event. The checkpoint validates
+> registered candidates and writes the accepted-set manifest. Downstream input functions
+> read only that manifest, so DAG growth is attributable to a preserved runtime fact.
+
+## Three fake justifications
+
+### “The sample list changes between projects”
+
+Variation between invocations does not require runtime reevaluation. A validated sample
+sheet read at parse time is sufficient when it already names the final set.
+
+### “The filenames are discovered with a glob”
+
+A glob can run during parsing. The question is whether an executed job must reveal the
+set, not whether Python can calculate it.
+
+### “Checkpoint sounds safer for future growth”
+
+Unused dynamism adds a second planning state and harder failure modes. Model current truth
+and refactor when a real runtime fact appears.
+
+## Directory outputs require a different inspection pattern
+
+Sometimes a checkpoint produces an unknown set of files inside a directory:
 
 ```python
-checkpoint validate_candidates:
+checkpoint split:
     input:
-        lambda wildcards: [SOURCE_BY_SAMPLE[sample] for sample in SAMPLES]
+        "data/bundle.tar"
     output:
-        directory("results/discovery")
-    run:
-        import json
-        from pathlib import Path
-
-        outdir = Path(output[0])
-        outdir.mkdir(parents=True, exist_ok=True)
-        accepted = []
-        rejected = []
-
-        for sample, source in sorted(SOURCE_BY_SAMPLE.items()):
-            size = Path(source).stat().st_size
-            if size > 0:
-                accepted.append({"sample": sample, "path": source})
-            else:
-                rejected.append(
-                    {
-                        "sample": sample,
-                        "path": source,
-                        "reason": "empty input file",
-                    }
-                )
-
-        (outdir / "accepted_samples.json").write_text(
-            json.dumps({"samples": accepted}, indent=2) + "\n",
-            encoding="utf-8",
-        )
-        (outdir / "rejected_samples.json").write_text(
-            json.dumps({"samples": rejected}, indent=2) + "\n",
-            encoding="utf-8",
-        )
-
-
-def discovered_qc_targets(_wildcards):
-    import json
-    from pathlib import Path
-
-    checkpoint_job = checkpoints.validate_candidates.get()
-    registry = Path(checkpoint_job.output[0]) / "accepted_samples.json"
-    samples = [row["sample"] for row in json.loads(registry.read_text(encoding="utf-8"))["samples"]]
-    return expand("results/{sample}/qc.json", sample=samples)
-
-
-rule all:
-    input:
-        discovered_qc_targets
+        directory("results/chunks")
+    shell:
+        "extract-and-validate {input} {output}"
 ```
 
-Three parts matter here:
-
-- the checkpoint writes an accepted registry and a rejection record
-- downstream expansion reads the accepted registry, not the raw directory again
-- the rejected candidates stay visible instead of disappearing from the story
-
-That is the core Module 02 pattern.
-
-## The common bad repair
-
-A common bad repair looks like this:
-
-- add a checkpoint
-- then let downstream helper code rescan `data/raw/`
-- leave the checkpoint registry unused or decorative
-
-That is worse than no checkpoint at all because it creates the appearance of explicit
-discovery without actually making the DAG reviewable.
-
-## What the checkpoint must never hide
-
-A checkpoint must never be used to smuggle in these facts:
-
-- undeclared input files
-- random or time-based discovery
-- side effects that later rules depend on but cannot name
-- a second private discovery pass inside downstream helper code
-
-If the downstream DAG changes, the workflow should be able to point to one declared input
-surface and concrete checkpoint outputs that explain why.
-
-## Determinism matters more than dynamism
-
-The hardest checkpoint bug to debug is often not code failure. It is discovery drift.
-
-Example bad shape:
+A downstream function can inspect the completed directory:
 
 ```python
-import random
-
-checkpoint discover_samples:
-    output:
-        directory("results/discovery")
-    run:
-        import json
-        from pathlib import Path
-
-        outdir = Path(output[0])
-        outdir.mkdir(parents=True, exist_ok=True)
-        samples = [f"sample{random.randint(1, 99)}" for _ in range(2)]
-        (outdir / "accepted_samples.json").write_text(
-            json.dumps({"samples": samples})
-        )
-        (outdir / "rejected_samples.json").write_text(
-            json.dumps({"samples": []})
-        )
+def chunk_outputs(_wildcards):
+    chunk_dir = checkpoints.split.get().output[0]
+    chunks = sorted(glob_wildcards(os.path.join(chunk_dir, "{chunk}.txt")).chunk)
+    return expand("results/checked/{chunk}.json", chunk=chunks)
 ```
 
-This code proves the point:
+The directory is declared checkpoint output, so its completed contents belong to the
+checkpoint artifact. This differs from scanning an unrelated ambient input directory.
 
-- the checkpoint output is not a fact about declared inputs
-- reruns can change the discovered set without any honest cause
-- even the accepted and rejected records become theater instead of evidence
-- downstream results become impossible to defend
+Prefer a manifest even here when rejection reasons, ordering, or identities matter. A
+directory listing alone rarely preserves enough review context.
 
-The fix is never "dynamic DAGs are flaky." The fix is "discovery must be a deterministic
-function of declared inputs."
+## Predict the DAG in two states
 
-## A good review checklist
+Before the checkpoint completes, the planner knows:
 
-When you review a checkpoint, ask:
+- the requested aggregate target;
+- the checkpoint job;
+- the checkpoint’s declared input and output;
+- that a dependent input function must be revisited.
 
-- what exact question is this checkpoint answering
-- which accepted and rejected records capture the answer
-- could I inspect those files after the run and understand the discovered set
-- do downstream rules read the accepted registry or perform their own fresh discovery
-- would the same declared inputs produce the same answer again
+After completion, it additionally knows:
 
-If those questions are easy to answer, the checkpoint is probably healthy.
+- the accepted sample IDs;
+- concrete per-sample paths returned by the input function;
+- downstream jobs and edges for those paths.
 
-## A short checkpoint before moving on
+Do not compare diagrams without labeling the state. A pre-checkpoint partial DAG and a
+post-checkpoint realized DAG answer different questions.
 
-Pause here and say one sentence like this:
+| Review view | Question |
+| --- | --- |
+| initial dry-run | what can be planned before runtime discovery? |
+| checkpoint manifest | what fact did execution reveal? |
+| reevaluated dry-run or run log | which jobs were added from that fact? |
+| final DAG or summary | what realized job structure completed? |
 
-> The checkpoint exists because validation execution decides which declared candidates are
-> usable, and it records that answer in accepted and rejected discovery records that
-> downstream rules reuse.
+## Failure behavior is part of the contract
 
-If that sentence feels hard to produce, revisit the discovery ladder before using more
-checkpoint code.
+If discovery validation fails, the checkpoint should not leave a trustworthy-looking
+accepted manifest. Use atomic publication:
 
-## The explanation a reviewer trusts
+1. write a candidate file beside the final;
+2. fully validate and flush it;
+3. rename the candidate to the declared output;
+4. retain rejection evidence in a separate governed location when appropriate.
 
-Strong explanation:
+A half-written JSON file can be more dangerous than no file because later tools may parse
+some fields and treat stale or partial membership as authoritative.
 
-> the checkpoint exists because validation execution decides which declared candidates are
-> usable, it writes `results/discovery/accepted_samples.json` and
-> `results/discovery/rejected_samples.json`, and all downstream fanout reads the accepted
-> registry, so the dynamic change to the DAG is explicit and reproducible.
+## Cache consciously
 
-Weak explanation:
+The capstone helper caches its loaded discovery payload:
 
-> we needed a checkpoint because Snakemake could not figure it out otherwise.
+```python
+@lru_cache(maxsize=1)
+def discovery_payload():
+    checkpoint_output = checkpoints.discover_samples.get().output.json
+    with open(checkpoint_output, encoding="utf-8") as handle:
+        return json.load(handle)
+```
 
-The first sentence explains the contract. The second sentence hides it.
+This is safe within one planning process after checkpoint completion because the manifest
+is immutable for that planning state. It would be unsafe for a long-lived process that
+expects the file to change again without restarting or clearing the cache.
 
-## End-of-page checkpoint
+State the lifetime assumption when caching dynamic evidence.
 
-Before leaving this page, you should be able to:
+## Diagnostic table
 
-- explain a checkpoint as controlled DAG reevaluation
-- name one case where a checkpoint is justified
-- name one case where a checkpoint is really covering for weak target design
-- describe the durable output a healthy checkpoint should leave behind
+| Symptom | Likely cause | Evidence to inspect |
+| --- | --- | --- |
+| checkpoint never reruns after arrivals | membership event is undeclared | change dry-run and checkpoint inputs |
+| checkpoint reruns but no new job appears | manifest or input projection omitted the record | manifest diff and returned target list |
+| checkpoint reruns every invocation | output or input is unstable | timestamps, upstream producers, manifest bytes |
+| downstream jobs use a different sample set | second discovery authority exists | all globs and sample-list helpers |
+| forced run repairs the plan | hidden invalidation dependency | normal versus forced traces |
+| malformed discovery output poisons planning | publication is not atomic or schema is weak | candidate residue and parser errors |
+
+## A checkpoint review packet
+
+For one proposed checkpoint, collect:
+
+- the rule with its declared inputs and output;
+- a sentence naming the runtime fact;
+- the output schema;
+- one baseline dry-run;
+- one change dry-run after the governing event changes;
+- the completed manifest;
+- the expected target list;
+- the realized downstream job list;
+- one rejection or failure receipt.
+
+If the packet cannot distinguish a changed registry from a merely changed ambient
+directory, the invalidation model is incomplete.
+
+## Review checklist
+
+- [ ] Execution truly reveals information unavailable during parsing.
+- [ ] A declared input names the event that can change that information.
+- [ ] The checkpoint writes one durable, validated discovery artifact.
+- [ ] Downstream input functions call `checkpoints.<name>.get()`.
+- [ ] Downstream target membership comes only from the checkpoint artifact.
+- [ ] Expected fanout is calculated before execution.
+- [ ] Pre- and post-checkpoint DAG views are labeled.
+- [ ] Failure cannot leave a plausible partial final.
+- [ ] Forced execution is used for diagnosis, not routine correctness.
+- [ ] The same behavior would not be clearer as static config or a sample sheet.
+
+## What you should carry forward
+
+A checkpoint is accountable when its invalidation event, runtime fact, artifact, and DAG
+projection form one visible chain. The next lesson asks which parts of that chain remain
+internal and which must cross the publication boundary for later review.

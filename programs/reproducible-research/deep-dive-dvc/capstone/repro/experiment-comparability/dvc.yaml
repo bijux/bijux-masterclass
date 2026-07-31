@@ -1,0 +1,17 @@
+stages:
+  evaluate_candidate:
+    cmd: >-
+      python3 scripts/evaluate_candidate.py
+      --data data/evaluation.csv
+      --params params.yaml
+      --output metrics/metrics.json
+    deps:
+      - data/evaluation.csv
+      - scripts/evaluate_candidate.py
+    params:
+      - decision.threshold
+      - evaluation.population_id
+      - evaluation.metric_schema
+    metrics:
+      - metrics/metrics.json:
+          cache: false

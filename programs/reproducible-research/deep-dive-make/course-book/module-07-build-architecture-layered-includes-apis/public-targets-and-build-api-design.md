@@ -50,6 +50,40 @@ When you look at a top-level `Makefile`, ask:
 
 That is the core separation.
 
+## A public target contract is more than a name
+
+For each public target, define five fields:
+
+| Contract field | Question |
+| --- | --- |
+| invocation | What target and working directory may callers use? |
+| supported parameters | Which command-line variables or environment inputs may callers set? |
+| promised results | Which files, reports, or observable checks exist after success? |
+| side-effect boundary | Which local or external state may the target change? |
+| failure meaning | What does nonzero mean, and can trusted prior results remain? |
+
+Example:
+
+| Target | Supported parameters | Promised results | Side effects | Failure meaning |
+| --- | --- | --- | --- | --- |
+| `all` | `MODE=ordinary|diagnostic` | application artifact | repository-local build outputs | requested artifact contract was not fulfilled |
+| `test` | `TEST_FILTER=<expression>` | test report and exit status | test workspace only | at least one selected test or harness check failed |
+| `selftest` | none | convergence and architecture audit evidence | isolated audit workspaces | build-system invariant or rejection test failed |
+| `clean` | none | governed generated paths absent | deletes only documented generated state | at least one governed path could not be removed |
+
+A target name without the other four fields forces callers to learn the real API from
+recipe internals.
+
+```mermaid
+flowchart LR
+  caller["human, CI, or script"] --> invocation["target and working directory"]
+  parameters["supported variables"] --> invocation
+  invocation --> promise["promised artifacts and evidence"]
+  invocation --> effects["bounded side effects"]
+  promise --> status["documented success or failure meaning"]
+  effects --> status
+```
+
 ## A build API is still an API
 
 The word "API" can sound too formal for a Makefile. It is still the right word.
@@ -88,6 +122,69 @@ unless there is a real reason to promote them.
 
 The point is not minimalism for its own sake. The point is that a small target surface is
 easier to document, easier to support, and safer to evolve.
+
+## Parameters are part of the API
+
+This public target accepts a caller-owned mode:
+
+```make
+MODE ?= ordinary
+SUPPORTED_MODES := ordinary diagnostic
+
+.PHONY: all
+all:
+	@case ' $(SUPPORTED_MODES) ' in \
+	  *' $(MODE) '*) ;; \
+	  *) printf 'unsupported MODE=%s; choose: %s\n' \
+	       '$(MODE)' '$(SUPPORTED_MODES)' >&2; exit 2 ;; \
+	esac
+	+$(MAKE) build/application.txt MODE='$(MODE)'
+```
+
+The contract is:
+
+- absence selects `ordinary`
+- the command line may select `ordinary` or `diagnostic`
+- any other value fails before artifact publication
+- recursive Make receives the effective value explicitly
+
+Using `?=` documents caller override better than silently accepting every environment
+value. Validation still matters: support is a bounded set, not every string Make can
+expand.
+
+Inspect ownership:
+
+```make
+.PHONY: explain-api
+explain-api:
+	@printf 'MODE origin=%s flavor=%s value=%s\n' \
+	  '$(origin MODE)' '$(flavor MODE)' '$(value MODE)'
+```
+
+Do not expose secrets, credentials, or arbitrary host state through a diagnostic target.
+
+## Preserve parameters across recursive boundaries
+
+Recursive Make has its own API boundary. Prefer `$(MAKE)`, not a literal `make`, so job
+server and Make flags propagate. Pass responsibility-owned parameters explicitly:
+
+```make
+TEST_FILTER ?= all
+
+.PHONY: test
+test:
+	+$(MAKE) -C tests run TEST_FILTER='$(TEST_FILTER)'
+```
+
+Review three questions:
+
+1. Is `TEST_FILTER` a supported public input to top-level `test`?
+2. Does the child `run` contract interpret the same value?
+3. Are unrelated parent variables intentionally excluded?
+
+Exporting the entire environment is not simpler. It widens the parameter API until the
+child can depend on values the parent never promised. Passing an undeclared empty value
+can also erase a child default, so the top-level contract defines `all` explicitly.
 
 ## Internal helper targets are not shameful
 
@@ -131,6 +228,20 @@ This is stronger than dumping dozens of helper names. It makes the public surfac
 
 That also means `help` should not pretend internal implementation targets are first-class
 commands unless they truly are.
+
+Descriptions should include supported parameters and evidence:
+
+```text
+all MODE=ordinary|diagnostic
+    build application.txt using the selected supported mode
+test TEST_FILTER=<expression>
+    run selected tests and publish the test report
+selftest
+    verify convergence, architecture controls, and rejection tests
+```
+
+If humans read formatted help and automation needs a stable list, publish a separate
+machine-readable contract rather than parsing aligned prose.
 
 ## CI should depend on public targets, not archaeology
 
@@ -208,6 +319,20 @@ flowchart TD
 Read the help trace and caller trace together. The help trace establishes the promise;
 the caller trace establishes the dependency. The output files establish the consequence.
 
+## Prove parameter and evidence behavior
+
+For each public target, keep acceptance and rejection cases:
+
+| Challenge | Acceptance | Rejection |
+| --- | --- | --- |
+| default invocation | promised artifact contains `mode=ordinary` | no diagnostic-only artifact appears |
+| supported override | artifact contains `mode=diagnostic` | unrelated target policy does not change |
+| unsupported override | exit status is documented nonzero | no final artifact is replaced |
+| private helper call | helper may be reachable | contract audit rejects it as an external caller |
+| public verification call | product and verification evidence exist | missing evidence fails the contract |
+
+This is an API test suite, not merely a Make syntax test.
+
 ## Do not repair interface drift by documenting everything
 
 When an audit finds automation calling a private helper, two repairs are possible:
@@ -228,6 +353,30 @@ Use this promotion test:
 | will maintainers support the meaning across refactors? | repair callers instead |
 
 Public API review is therefore a caller review, not only a Makefile inventory.
+
+## Treat aliases as compatibility contracts
+
+Two public names for one route can be legitimate when their promised results are
+identical:
+
+```make
+.PHONY: check test
+check: test
+```
+
+If both names are documented, both are contracts. Removing `check` requires a caller
+inventory and compatibility decision even though its recipe is empty.
+
+Do not use aliases to hide different meanings:
+
+```make
+# Misleading: "check" sounds equivalent but skips build invariants.
+check: unit-tests
+selftest: unit-tests build-invariants
+```
+
+An alias is safe because contracts are equivalent, not because dependency syntax is
+short.
 
 ## Public targets should say what they mean
 
@@ -270,6 +419,10 @@ help:
 
 This does not mean no internal targets exist. It means the public promises are clear.
 
+The child targets are implementation dependencies unless the repository deliberately
+publishes them. The top-level contract owns translation between the stable public name
+and the current internal layout.
+
 ## Internal targets can still be documented locally
 
 Inside `mk/` files or a maintainer guide, you may still document helper targets such as:
@@ -291,6 +444,8 @@ Watch for these symptoms:
 - nobody can list the public targets from memory
 - CI depends on target names that do not appear in user-facing docs or `help`
 - targets exist only because some old script once depended on them
+- supported variables are accepted implicitly and never validated
+- recursive calls leak environment state the top-level contract does not mention
 - new features always add top-level targets, even when they are not meant for general use
 
 Those are not documentation issues only. They are interface-design issues.
@@ -304,6 +459,7 @@ Before making a target public, ask:
 3. is the name stable enough to keep
 4. does it belong at the top level rather than inside a maintainer-only layer
 5. are you willing to treat changes to it as interface changes
+6. can supported parameters and promised evidence be tested
 
 If the answer to the last question is no, the target probably should not be public.
 
@@ -348,6 +504,7 @@ Take a top-level Makefile and ask:
 3. which of those targets are used by CI or scripts
 4. which top-level targets should really be private helpers
 5. which names are too vague to survive long-term
+6. which variables, working-directory assumptions, and side effects callers rely on
 
 If those answers are weak, the build API is weak too.
 
@@ -361,6 +518,8 @@ public target list in plain language:
 3. every automation caller and the target it actually invokes
 4. one caller that should move to a public target
 5. one helper you refuse to promote, with the reason
+6. one supported parameter with accepted and rejected values
+7. the artifact and failure evidence promised by each target
 
 Keep three forms of evidence:
 
@@ -381,3 +540,5 @@ Before leaving this lesson, make sure you can explain:
 - how `help` can reinforce the API instead of obscuring it
 - how to decide whether a target deserves promotion to the public surface
 - why a successful private caller can still violate the build API
+- why supported variables, recursive forwarding, side effects, and failure meaning are
+  part of the public contract

@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import contextlib
+from collections.abc import Iterable, Mapping
 from dataclasses import asdict, dataclass, field, is_dataclass
 from types import MappingProxyType
-from typing import Any, Generic, Iterable, Mapping, TypeVar
+from typing import Any, Generic, TypeVar
+
+from funcpipe_rag.result import Err, ErrInfo, Ok, Result
 
 from .breakers import BreakInfo
-from funcpipe_rag.result import Err, ErrInfo, Ok, Result
 
 E = TypeVar("E")
 
@@ -126,17 +129,25 @@ def _err_to_jsonable(e: Any) -> Any:
             d["ctx"] = dict(ctx)
         return d
     if isinstance(e, BreakInfo):
-        return asdict(e)
+        return {
+            "code": e.code,
+            "reason": e.reason,
+            "last_error": (
+                _err_to_jsonable(e.last_error)
+                if e.last_error is not None
+                else None
+            ),
+            "n_ok": e.n_ok,
+            "n_err": e.n_err,
+            "total": e.total,
+            "threshold": dict(e.threshold),
+        }
     if hasattr(e, "_asdict"):
-        try:
+        with contextlib.suppress(Exception):
             return dict(e._asdict())
-        except Exception:
-            pass
     if is_dataclass(e) and not isinstance(e, type):
-        try:
+        with contextlib.suppress(Exception):
             return asdict(e)
-        except Exception:
-            pass
     return {"repr": repr(e)}
 
 

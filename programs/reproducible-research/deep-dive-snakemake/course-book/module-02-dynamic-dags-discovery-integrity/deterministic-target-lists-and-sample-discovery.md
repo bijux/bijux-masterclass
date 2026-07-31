@@ -1,328 +1,330 @@
 # Deterministic Target Lists and Sample Discovery
 
-Dynamic workflows begin with a simple promise:
+A workflow cannot be more reproducible than the process that decides what work exists.
+Before learning checkpoints, make sample membership explicit enough to review, validate,
+and invalidate.
 
-> if the set of samples changes, the workflow can explain exactly how it learned that fact.
+This lesson builds that contract from a governed arrival registry. It also shows when a
+sorted directory scan is sufficient and when “deterministic” is being used too loosely.
 
-That promise sounds obvious. Many real workflows still break it by discovering work in
-ways that are unstable, implicit, or impossible to review later.
+## Start with the membership question
 
-## How to read this page
+Imagine these files:
 
-Read this page with one question in front of you:
-
-> what exact surface decides which units this workflow is allowed to build?
-
-If you can answer that question clearly, most of Module 02 becomes easier. If you cannot,
-dynamic behavior will keep feeling magical no matter how much syntax you memorize.
-
-## Why this lesson comes first
-
-This lesson comes before checkpoints for a reason.
-
-Most bad dynamic workflows are not failing because they lack advanced features. They are
-failing because nobody made discovery honest at the beginning:
-
-- the source of truth is vague
-- normalization happens in multiple places
-- later rules cannot explain where the target list came from
-
-Module 02 starts here because a weak discovery surface poisons everything that comes after
-it.
-
-## Discovery is not permission to be vague
-
-People often say "Snakemake discovers samples for me" when they really mean one of
-three different things:
-
-- the sample list is written in config
-- a script scans a directory and turns filenames into sample identities
-- a checkpoint produces a discovered-set file that later rules consume
-
-Those are not the same design.
-
-The healthy question is not "can Snakemake discover this?" The healthy question is:
-
-> what exact input surface decides which targets exist?
-
-If that surface is unclear, the workflow may still run, but the run story is weak.
-
-## The discovery ladder
-
-Use these options in order:
-
-1. config or a sample sheet when the set is already knowable
-2. one deterministic scan when the filesystem is the real source of truth
-3. one discovery artifact when later rules or reviewers must trust the set
-4. a checkpoint only when runtime work reveals the set
-
-The rest of this page teaches the first three. The checkpoint case belongs later because
-it should be earned, not assumed.
-
-## A strong beginner habit
-
-Before you write fanout logic, write one plain-language sentence describing discovery.
-
-For example:
-
-> This workflow discovers samples from `data/raw/*.fastq.gz`, normalizes each filename once,
-> sorts the list, and writes the discovered set to a registry before downstream fanout.
-
-If you cannot write a sentence like that, the workflow is not ready for more dynamism.
-
-## The stable model
-
-Module 02 uses this model throughout:
-
-1. choose one declared discovery surface
-2. normalize it into a deterministic sample list
-3. validate the result
-4. materialize it as an artifact when later rules need to trust it
-5. fan out from that list, not from fresh filesystem guesses
-
-That is how dynamic behavior stays reviewable.
-
-## Three discovery surfaces, from simplest to strongest
-
-### 1. Config or sample sheet
-
-This is the easiest surface to teach:
-
-- you write the sample list deliberately
-- version control captures the change
-- `rule all` or a helper function expands from known data
-
-This is a strong default when the workflow does not need to discover new inputs at run
-time.
-
-### 2. Deterministic scan at parse time
-
-Sometimes the workflow must inspect a directory to know what exists. That can still be
-honest if the scan is narrow and stable:
-
-- the input directory is declared
-- matching rules are explicit
-- the result is sorted
-- filename parsing is validated
-
-This is fine for a small workflow when the discovered set is not yet an important
-downstream contract.
-
-### 3. Checkpoint-produced discovery artifact
-
-This is the strongest version:
-
-- discovery happens in one owned step
-- the discovered set is written to a durable file
-- downstream fanout reads that file
-- later review can inspect the exact set that drove the DAG
-
-That is the design the rest of this module is trying to earn.
-
-## The mistake to avoid here
-
-Do not confuse "filesystem is the source of truth" with "whatever the directory happens to
-contain right now is automatically a good contract."
-
-Even when the directory is the right source, the workflow still owes the reader:
-
-- a declared scan boundary
-- stable ordering
-- one normalization rule
-- early validation
-
-## A bad first draft
-
-This shape looks convenient:
-
-```python
-from pathlib import Path
-
-SAMPLES = [path.stem for path in Path("data/raw").glob("*.fastq.gz")]
-
-rule all:
-    input:
-        expand("results/{sample}/qc.json", sample=SAMPLES)
+```text
+data/raw/
+├── alpha.fastq.gz
+├── beta.fastq.gz
+└── notes.fastq.gz
 ```
 
-Why this is weak:
+A glob can report three matching paths. It cannot tell you whether `notes.fastq.gz` is a
+sample, whether `beta` was approved for this run, or whether the directory changed after
+the previous discovery job completed.
 
-- `Path.glob()` order is not the lesson you want readers to trust
-- the filename parsing is wrong because `.stem` drops only the final suffix
-- there is no validation for duplicate logical sample IDs
-- nothing records the discovered set for later review
+Discovery therefore needs two contracts:
 
-The workflow may appear to work while teaching the wrong habit.
+1. a **membership contract**: what event admits a candidate;
+2. an **identity contract**: how an admitted path becomes a stable sample ID.
 
-## A better pattern for small workflows
+Sorting belongs after those decisions. It stabilizes representation; it does not make the
+decisions.
 
-If parse-time discovery is enough, make it explicit and deterministic:
+## Compare four discovery surfaces
 
-```python
-from pathlib import Path
+| Surface | Membership known | Invalidation event | Typical use |
+| --- | --- | --- | --- |
+| config mapping | before parsing | config changes | small, stable sample set |
+| checked sample sheet | before parsing | sheet changes | rich metadata and explicit approval |
+| parse-time directory scan | at parsing | a new invocation observes a snapshot | exploratory or tightly controlled landing area |
+| checkpoint manifest | after an executed job | a declared checkpoint input changes | validation or tool output reveals accepted membership |
 
-RAW_DIR = Path("data/raw")
+The last two are often confused. A checkpoint does not turn an undeclared directory scan
+into a watched input.
 
-
-def discover_samples():
-    fastqs = sorted(RAW_DIR.glob("*.fastq.gz"))
-    if not fastqs:
-        raise ValueError(f"No FASTQ files found in {RAW_DIR}")
-
-    samples = []
-    for path in fastqs:
-        name = path.name.removesuffix(".fastq.gz")
-        if not name.replace("_", "").isalnum():
-            raise ValueError(f"Unsafe sample name: {name}")
-        samples.append(name)
-
-    if len(samples) != len(set(samples)):
-        raise ValueError("Duplicate sample IDs after filename normalization")
-
-    return samples
-
-
-SAMPLES = discover_samples()
-
-rule all:
-    input:
-        expand("results/{sample}/qc.json", sample=SAMPLES)
+```mermaid
+flowchart TD
+  known{"Is final membership known before execution?"}
+  known -->|yes| sheet["Use config or a validated sample sheet"]
+  known -->|no| event{"Is there a declared candidate event?"}
+  event -->|no| redesign["Define an intake registry or upstream manifest"]
+  event -->|yes| runtime{"Must an executed job decide acceptance?"}
+  runtime -->|no| static["Read the registry deterministically"]
+  runtime -->|yes| checkpoint["Checkpoint writes the accepted-set artifact"]
 ```
 
-This still uses discovery, but it stops pretending the filesystem is self-explanatory.
+## A governed arrival registry
 
-## Why this pattern is better for teaching
+The capstone uses a one-column TSV:
 
-It turns discovery into an argument another person can inspect:
+```text
+path
+sampleA.fastq.gz
+sampleB.fastq.gz
+```
 
-- the directory is named
-- the matching rule is visible
-- the ordering rule is visible
-- the validation rules are visible
+The file is intentionally modest. Its job is not to duplicate every sample annotation.
+It declares which raw paths have entered workflow scope.
 
-That is enough structure for a missed class session to remain recoverable.
-
-## When discovery must become an artifact
-
-Once discovery drives a dynamic DAG or a publish boundary, a Python list at parse time is
-usually not enough. Another engineer should be able to inspect the exact discovered set
-from the run itself.
-
-That is when the workflow should produce something like:
-
-- `results/discovered_samples.json`
-- `results/discovered_samples.tsv`
-- `results/discovery/registry.json`
-
-The filename is less important than the contract:
-
-- it is the owned output of discovery
-- it is durable enough to reread later
-- downstream rules fan out from it
-
-## A good study pause
-
-Pause here and ask which later surfaces would need the discovered set.
-
-Good answers in Module 02 usually include one or more of these:
-
-- downstream target expansion
-- checkpoint reevaluation
-- publish-boundary review
-- provenance or inventory explanation
-
-## A simple discovered-set artifact
+The corresponding checkpoint contract is:
 
 ```python
-rule discover_samples:
+import os
+
+
+checkpoint discover_samples:
     input:
-        directory("data/raw")
+        registry=config["arrival_registry"]
     output:
-        "results/discovered_samples.json"
-    run:
-        import json
-        from pathlib import Path
-
-        raw_dir = Path(input[0])
-        samples = sorted(
-            path.name.removesuffix(".fastq.gz")
-            for path in raw_dir.glob("*.fastq.gz")
-        )
-        Path(output[0]).parent.mkdir(parents=True, exist_ok=True)
-        Path(output[0]).write_text(
-            json.dumps({"samples": samples}, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        json=f"{RESULTS_DIR}/discovered_samples.json"
+    params:
+        raw_dir=lambda wildcards, input: os.path.dirname(input.registry),
+        raw_glob=config["params"]["raw_glob"],
+    shell:
+        """
+        python3 -m capstone.discover_samples \
+            --raw-dir "{params.raw_dir}" \
+            --glob "{params.raw_glob}" \
+            --arrival-registry "{input.registry}" \
+            --out-json "{output.json}"
+        """
 ```
 
-This rule does two useful things for you:
+The key line is not `checkpoint`. It is `input.registry`. That edge gives Snakemake a
+declared reason to rebuild discovery.
 
-- it names discovery as a real step with a real output
-- it gives later review one file that answers "what did this run discover?"
+## Validate before deriving targets
 
-## What a learner should check immediately
+The capstone rejects a registry when:
 
-After implementing any discovery route, stop and verify four things:
+- the header is not exactly `path`;
+- a row is empty;
+- a path is absolute or escapes through `..`;
+- a path is duplicated;
+- a registered file does not exist;
+- a path violates the governed FASTQ pattern;
+- two names collapse to the same sample and mate;
+- paired-end membership is incomplete or forbidden.
 
-- the same input surface produces the same ordered list twice
-- invalid names fail early instead of drifting downstream
-- duplicate logical identities are rejected
-- later rules consume the normalized list instead of rescanning
+Each rejection protects a different invariant:
 
-## What a good explanation sounds like
+| Validation | Invariant protected |
+| --- | --- |
+| exact header | schema is not inferred from position or spelling guesses |
+| relative contained path | the registry cannot silently widen trust outside raw storage |
+| uniqueness | one arrival has one registry identity |
+| existence | admitted membership refers to usable evidence |
+| pattern match | file type stays within the declared domain |
+| sample/mate collision check | one logical input role has one source |
+| complete pair check | downstream jobs do not receive half a biological unit |
 
-Strong:
+A “helpful” parser that silently skips bad rows weakens discovery. Rejected candidates
+should produce explicit evidence, not disappear.
 
-> Discovery starts from one declared surface, becomes one normalized list, and is reused by
-> later rules without fresh guesses.
+## Deterministic representation
 
-Weak:
+After validation, derive a canonical representation:
 
-> Snakemake scans the files and figures it out.
+```python
+def read_arrival_registry(registry: Path) -> list[Path]:
+    entries = parse_and_validate(registry)
+    return sorted(entries, key=lambda path: path.as_posix())
+```
 
-## What makes discovery deterministic
+Then derive sample records in stable sample order:
 
-Discovery is deterministic when the same declared inputs produce the same discovered set.
+```json
+{
+  "schema_version": 2,
+  "arrival_registry": "data/raw/arrivals.tsv",
+  "arrival_registry_sha256": "…",
+  "samples": {
+    "sampleA": {
+      "mode": "SE",
+      "reads": {"SE": "data/raw/sampleA.fastq.gz"}
+    }
+  }
+}
+```
 
-That usually requires four habits:
+Determinism here means that the same registry bytes, validation policy, and raw inputs
+produce the same logical records and ordering. It does not mean every later directory
+change is automatically noticed.
 
-- sort every scan result
-- normalize names exactly once
-- reject invalid or duplicate identities early
-- avoid ambient inputs that the rule never admits
+## Presence is not membership
 
-If discovery depends on hidden machine state, current time, or whichever files happened to
-be copied first, it is not a trustworthy basis for DAG construction.
+Suppose the registry lists `alpha` and `beta`, while the directory also contains
+`gamma`.
 
-## Common failure modes
+```mermaid
+flowchart LR
+  directory["alpha, beta, gamma present"] --> registry["alpha, beta registered"]
+  registry --> validation["alpha, beta validated"]
+  validation --> accepted["alpha, beta accepted"]
+  directory -.gamma has no admission event.-> outside["gamma outside workflow scope"]
+```
 
-| Failure mode | What it looks like | Better repair |
+Ignoring `gamma` is not missed discovery under this contract. It is correct scope
+enforcement. To admit `gamma`, update the registry through the governed intake process.
+
+This makes a useful review question possible:
+
+> Which tracked event authorized this sample to enter the DAG?
+
+“Its file was nearby” is rarely a sufficient answer.
+
+## Static use of the same registry
+
+If every registry row is already valid and no executed job needs to decide acceptance,
+you do not need a checkpoint:
+
+```python
+from pathlib import Path
+
+
+def registered_samples(path):
+    return sorted(
+        line.strip()
+        for line in Path(path).read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    )
+
+
+SAMPLES = registered_samples("config/samples.txt")
+
+
+rule all:
+    input:
+        expand("results/{sample}.txt", sample=SAMPLES)
+```
+
+This is a static DAG built from a declared, versioned source. Add schema validation and
+path checks before using it in production. Do not introduce a checkpoint merely because
+the sample count can vary between runs.
+
+## Parse-time scanning and its boundary
+
+A parse-time scan can be reasonable for a disposable exploration:
+
+```python
+SAMPLES, = glob_wildcards("data/raw/{sample}.fastq.gz")
+SAMPLES = sorted(SAMPLES)
+```
+
+Its contract is: “the current invocation plans from the directory snapshot visible while
+the Snakefile is parsed.” That may be enough when:
+
+- a human launches a fresh process for every delivery;
+- the landing directory is immutable during a run;
+- every matching filename is in scope;
+- pairing and identity rules are simple and validated elsewhere.
+
+It is inadequate when the directory is noisy, long-lived, mutable, or subject to partial
+uploads. In those settings, create a governed event rather than adding more glob tricks.
+
+## The stale-checkpoint experiment
+
+The capstone audit makes the hidden invalidation defect observable:
+
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make discovery-integrity-audit
+```
+
+Read the two change dry-runs. Both specimens receive new raw files. Only the governed
+model changes a declared checkpoint input.
+
+Expected evidence:
+
+```text
+governed-registry  planned_after_arrival=true   normal_samples=alpha,beta
+ambient-scan       planned_after_arrival=false  normal_samples=alpha
+```
+
+Then inspect forced outputs:
+
+```text
+governed-registry  forced_samples=alpha,beta
+ambient-scan       forced_samples=alpha,beta,gamma
+```
+
+The ambient scanner is deterministic when invoked: it sorts the same visible files the
+same way. It is still not correctly invalidated.
+
+## A prediction lab
+
+Create this table before running the audit:
+
+| Change | Governed model prediction | Ambient model prediction |
 | --- | --- | --- |
-| unordered scan | sample order changes between runs or machines | sort explicitly before writing or expanding |
-| weak filename parsing | `sampleA.fastq` and `sampleA.fastq.gz` collapse badly | normalize with one clear suffix rule |
-| duplicate logical IDs | one sample silently shadows another | validate uniqueness after normalization |
-| re-scanning everywhere | each rule performs its own fresh discovery | introduce one owned discovery artifact |
-| hidden discovery surface | rules depend on files nobody declared | make the discovery input boundary explicit |
+| add raw `beta` only | no new sample | no new sample |
+| add `beta` to registry | discovery and beta planned | not applicable |
+| add unregistered raw `gamma` | gamma excluded | checkpoint stays stale |
+| force discovery | alpha and beta | alpha, beta, gamma |
 
-## The sentence a reviewer wants to hear
+After execution, replace each prediction with a receipt path and one sentence of
+interpretation. If a result differs, explain the missing or extra dependency edge before
+changing code.
 
-Strong explanation:
+## Failure patterns and repairs
 
-> the workflow discovers samples from `data/raw/*.fastq.gz`, sorts the filenames, normalizes
-> them into sample IDs once, writes the result to `results/discovered_samples.json`, and fans
-> out downstream work from that file.
+### Unsorted output
 
-Weak explanation:
+Symptom: manifests differ only in order.
 
-> Snakemake looks around and finds the samples.
+Repair: canonicalize after validation. Do not compare unordered domain data as raw text
+unless ordering is part of the public contract.
 
-The difference is not style. It is whether the workflow meaning is actually reviewable.
+### Duplicate logical identities
 
-## End-of-page checkpoint
+Symptom: two filenames map to the same sample or mate.
 
-Before leaving this page, you should be able to:
+Repair: reject the discovery artifact. Choosing the first path makes results dependent on
+incidental ordering.
 
-- name the discovery surface for one workflow without hand-waving
-- explain when a Python list is enough and when a discovered-set artifact is needed
-- describe two validation checks that belong in discovery
-- explain why downstream fanout should trust one owned artifact instead of repeated scans
+### Partial arrival
+
+Symptom: a registry row exists before its raw file is complete.
+
+Repair: make intake publish the registry entry only after an atomic delivery check, or
+make validation reject incomplete candidates with retained evidence.
+
+### Ambient scope creep
+
+Symptom: unrelated matching files become jobs.
+
+Repair: separate present files from registered candidates. Tightening the glob may reduce
+noise but does not create an admission record.
+
+### Hidden invalidation
+
+Symptom: forcing discovery reveals new samples that normal execution missed.
+
+Repair: declare the governed membership event as an input. Do not document “use
+`--forcerun` after deliveries” as the operational contract.
+
+## Review checklist
+
+Before downstream fanout, verify:
+
+- [ ] The event that changes candidate membership is named.
+- [ ] That event is a declared input when an existing discovery output must become stale.
+- [ ] Paths are contained, unique, present, and domain-valid.
+- [ ] Sample identity and mate parsing rules reject collisions.
+- [ ] Ordering is canonical only after membership and identity are validated.
+- [ ] Unregistered ambient files cannot enter the accepted set.
+- [ ] The discovery artifact records its schema and governing registry digest.
+- [ ] A dry-run demonstrates the intended invalidation behavior.
+
+## What you should carry forward
+
+A target list is trustworthy when another person can reconstruct:
+
+1. which candidates were admitted;
+2. which validation policy was applied;
+3. which candidates were accepted or rejected;
+4. what event caused discovery to rerun;
+5. how the accepted records became target names.
+
+The next lesson takes that accepted set and prevents wildcard expansion from inventing
+combinations that the domain never contained.

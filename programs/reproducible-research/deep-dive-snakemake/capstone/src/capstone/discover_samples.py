@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import hashlib
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -53,11 +55,50 @@ def parse_sample_and_mate(path: Path) -> ParsedName:
     return ParsedName(sample=base, mate="SE")
 
 
-def discover_fastqs(raw_dir: Path, glob_pat: str) -> list[Path]:
-    # Deterministic: sorted by name.
-    files = sorted((p for p in raw_dir.glob(glob_pat) if p.is_file()), key=lambda p: p.name)
-    # Deduplicate if glob expands oddly.
-    return sorted(set(files), key=lambda p: p.name)
+def read_arrival_registry(registry: Path) -> list[Path]:
+    """Return validated, relative paths from a one-column TSV arrival registry."""
+    if not registry.is_file():
+        raise ValueError(f"arrival registry does not exist: {registry}")
+
+    with registry.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        if reader.fieldnames != ["path"]:
+            raise ValueError("arrival registry header must be exactly: path")
+
+        entries: list[Path] = []
+        for line_number, row in enumerate(reader, start=2):
+            value = row["path"].strip()
+            if not value:
+                raise ValueError(f"arrival registry line {line_number} has an empty path")
+            relative = Path(value)
+            if relative.is_absolute() or ".." in relative.parts:
+                message = (
+                    f"arrival registry line {line_number} must stay inside "
+                    f"the raw directory: {value}"
+                )
+                raise ValueError(message)
+            entries.append(relative)
+
+    if not entries:
+        raise ValueError("arrival registry must list at least one FASTQ path")
+    if len(entries) != len(set(entries)):
+        raise ValueError("arrival registry contains a duplicate path")
+    return sorted(entries, key=lambda path: path.as_posix())
+
+
+def discover_fastqs(raw_dir: Path, glob_pat: str, arrivals: list[Path]) -> list[Path]:
+    """Resolve governed arrivals without treating ambient directory contents as inputs."""
+    files: list[Path] = []
+    for relative in arrivals:
+        if not relative.match(glob_pat):
+            raise ValueError(
+                f"registered arrival does not match glob '{glob_pat}': {relative.as_posix()}"
+            )
+        candidate = raw_dir / relative
+        if not candidate.is_file():
+            raise ValueError(f"registered FASTQ does not exist: {candidate}")
+        files.append(candidate)
+    return files
 
 
 def main() -> None:
@@ -67,18 +108,28 @@ def main() -> None:
     ap.add_argument("--raw-dir", required=True)
     ap.add_argument("--glob", default="*.fastq.gz", help="Glob pattern relative to raw-dir.")
     ap.add_argument(
+        "--arrival-registry",
+        required=True,
+        help="TSV with one 'path' column; changing it is the declared discovery event.",
+    )
+    ap.add_argument(
         "--allow-paired-end", action="store_true", help="Allow paired-end naming conventions."
     )
     ap.add_argument("--out-json", required=True)
     args = ap.parse_args()
 
     raw_dir = Path(args.raw_dir)
+    arrival_registry = Path(args.arrival_registry)
     out_json = Path(args.out_json)
 
     if not raw_dir.exists():
         raise SystemExit(f"raw dir does not exist: {raw_dir}")
 
-    fastqs = discover_fastqs(raw_dir, args.glob)
+    try:
+        arrivals = read_arrival_registry(arrival_registry)
+        fastqs = discover_fastqs(raw_dir, args.glob, arrivals)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
 
     by_sample: dict[str, dict[str, str]] = {}
 
@@ -127,6 +178,8 @@ def main() -> None:
         "schema_version": 2,
         "raw_dir": str(raw_dir),
         "glob": args.glob,
+        "arrival_registry": str(arrival_registry),
+        "arrival_registry_sha256": hashlib.sha256(arrival_registry.read_bytes()).hexdigest(),
         "n_files": len(fastqs),
         "allow_paired_end": bool(args.allow_paired_end),
         "samples": samples,

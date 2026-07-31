@@ -1,6 +1,5 @@
 # Configuration Review and Validation
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,88 +24,199 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Configuration becomes useful domain data only after an untyped caller has been
+checked. A frozen dataclass prevents mutation after construction; it does not prove
+that a JSON mapping, command-line token, or rule name is valid.
 
-This lesson closes the configuration hotspot. The main lesson explains how to turn hidden
-settings into explicit data. This companion page explains how to test that contract and
-how to decide whether the extra modeling work is justified.
+Module 02 therefore has two distinct responsibilities:
 
-## Review route
+- `boundary_rag_config` validates untyped RAG policy and constructs `RagConfig`;
+- `boundary_app_config` parses CLI concerns, delegates RAG policy to that shared
+  validator, then adds paths and debug flags.
 
-Ask these questions whenever configuration enters a pipeline:
+The important review question is not merely “is config immutable?” It is “can every
+entry route construct the same valid policy or return at the same boundary?”
 
-- is the config immutable after construction?
-- does parsing and validation happen at the boundary instead of inside the core?
-- do equal config values imply equal behavior?
-- can a test replace the real boundary dependencies without rewriting the pipeline?
+## Follow a valid value
 
-## Property-based checks
-
-Good properties for this lesson include:
-
-- the docs API and the boundary-driven API return the same chunks
-- a streamed prefix matches the eager prefix for the same config
-- invalid raw configuration fails at the boundary
-- equal config values produce equal behavior
-- repeated calls with the same config remain idempotent
+The canonical parser lives in
+`capstone/module-reference-states/module-02/src/funcpipe_rag/api/config.py`.
+For this input:
 
 ```python
-from dataclasses import replace
-
-from hypothesis import given
-
-from funcpipe_rag import RagConfig, full_rag_api_docs, get_deps
-from tests.conftest import doc_list_strategy, env_strategy
-
-
-@given(docs=doc_list_strategy(), env=env_strategy())
-def test_equal_config_values_mean_equal_behaviour(docs, env):
-    config1 = RagConfig(env=env)
-    config2 = replace(config1)
-    deps = get_deps(config1)
-    out1, _ = full_rag_api_docs(docs, config1, deps)
-    out2, _ = full_rag_api_docs(docs, config2, deps)
-    assert out1 == out2
+raw = {
+    "chunk_size": 4,
+    "clean_rules": ["strip", "upper"],
+}
 ```
 
-The point of a property like this is simple: configuration should behave like data, not
-like a bag of hidden process state.
+the parser checks the raw fields, converts the rule sequence to a tuple, and only
+then constructs:
 
-## Failure mode to remember
+```text
+RagConfig(
+  env=RagEnv(chunk_size=4),
+  clean=CleanConfig(rule_names=("strip", "upper")),
+)
+```
 
-The easiest way to lie to yourself here is to keep a mutable global and pretend the
-pipeline is still config-driven. Once one call mutates the global, the same input no
-longer guarantees the same output.
+The result is frozen, structurally comparable policy. `get_deps` later interprets
+the cleaning names by looking them up in `RULES` and binds them into a cleaner.
 
-That is exactly the kind of bug the immutable config route is supposed to remove.
+This split gives each value a precise role:
 
-## When config-as-data is worth it
+| Value | Meaning | Must not own |
+| --- | --- | --- |
+| raw mapping | untrusted boundary representation | domain invariants |
+| `CleanConfig` | ordered cleaning policy names | filesystem or CLI parsing |
+| `RagEnv` | validated numeric run policy | coercion from arbitrary objects |
+| `RagConfig` | complete pure-core policy | dependency execution |
+| `RagCoreDeps` | selected callable implementations | validation of raw names |
 
-Keep the modeled config when:
+## Validate in dependency order
 
-- the pipeline needs real variants
-- tests need to swap behavior cleanly
-- multiple boundaries must agree on the same settings
-- a reviewer needs to see what can change without reading globals
+`boundary_rag_config` uses this order:
 
-Do not force it when:
+1. retrieve `chunk_size`, using the public default when absent;
+2. require an actual integer and reject `bool` explicitly;
+3. require a positive value before calling `RagEnv`;
+4. retrieve `clean_rules`, using the default ordered tuple when absent;
+5. require a list or tuple whose every element is a string;
+6. reject names absent from the `RULES` registry;
+7. convert the accepted sequence to a tuple;
+8. construct frozen config and return `Ok`.
 
-- the script is truly one-shot and not reused
-- the boundary is so small that a plain parameter is clearer than a config object
-- the model is growing fields nobody can explain
+Each earlier check protects a later operation. Range validation protects
+`RagEnv`; registry validation protects `make_cleaner`.
 
-## Capstone check
+## Python's boolean trap is an API issue
 
-Before moving on:
+Python reports:
 
-1. inspect `capstone/_history/worktrees/module-02/src/funcpipe_rag/api/config.py`
-2. inspect the matching config-sensitive tests under `capstone/_history/worktrees/module-02/tests/`
-3. decide whether the config model makes change safer or just more formal
+```python
+isinstance(True, int)  # True
+```
 
-## Reflection
+This check is therefore too weak:
 
-- Which setting in your own codebase still lives in a global because nobody named it well?
-- Which setting deserves a dedicated model because it changes review behavior?
-- Which one is simple enough to stay a direct function argument?
+```python
+if not isinstance(chunk_size_raw, int):
+    return Err(...)
+```
 
-**Continue with:** [Callbacks to Combinators](callbacks-to-combinators.md)
+The boundary needs both conditions:
+
+```python
+if not isinstance(chunk_size_raw, int) or isinstance(chunk_size_raw, bool):
+    return Err(...)
+```
+
+Otherwise `True` can silently mean a chunk size of one. Type annotations do not
+protect a value that entered through `Mapping[str, object]`.
+
+## Do not coerce by accident
+
+The mapping boundary deliberately does not call `int(value)`. These values carry
+different information:
+
+| Raw value | Mapping-boundary result | Reason |
+| --- | --- | --- |
+| `4` | `Ok` | exact accepted runtime type and range |
+| `True` | `Err` mentioning `bool` | boolean policy is ambiguous |
+| `0` or `-1` | `Err` requiring positive integer | range fails before construction |
+| `"4"` | `Err` requiring integer | string coercion is not this API's contract |
+| missing field | `Ok` with `512` | an explicit default is part of the contract |
+
+Silent coercion would make `True`, `3.8`, and `"4"` look like variations of the
+same request and would remove the information needed for a useful error.
+
+## Rule names require semantic validation
+
+`CleanConfig` stores names in order so a learner can inspect and compare policy.
+The dataclass alone cannot know whether a name has an implementation.
+
+```python
+CleanConfig(("strip", "unknown"))
+```
+
+That value is structurally valid but cannot be interpreted by `make_cleaner`;
+direct lookup in `RULES` would raise `KeyError`. The boundary must compare names
+with the registry first and return an `Err` that includes the unknown names and
+available choices.
+
+| Raw cleaning policy | Outcome |
+| --- | --- |
+| `["strip", "upper"]` | `Ok(CleanConfig(("strip", "upper")))` |
+| `("upper", "lower")` | `Ok`; order is preserved |
+| `"strip,upper"` | `Err`; the mapping API requires a sequence |
+| `["strip", 1]` | `Err`; every item must be a string |
+| `["strip", "unknown"]` | `Err`; dependency selection cannot succeed |
+
+## The CLI must share the policy parser
+
+`shells/rag_main.py` owns command-line syntax. `argparse` converts
+`--chunk_size 4` to an integer and the shell splits comma-separated rule names.
+The shell then calls:
+
+```python
+config_result = boundary_rag_config(
+    {
+        "chunk_size": ns.chunk_size,
+        "clean_rules": rule_names,
+    }
+)
+```
+
+Only after `Ok` does it use `dataclasses.replace` to add debug policy and wrap the
+result with input and output paths in `AppConfig`.
+
+This delegation prevents drift. A former direct-construction route could accept an
+unknown name, return `Ok(AppConfig)`, and fail later while `get_deps` selected the
+cleaner. That was not a Result-bearing boundary; it was deferred failure.
+
+`argparse` still owns malformed command-line syntax. For example,
+`--chunk_size nope` produces its normal parser error rather than an `Err` value.
+Once CLI tokens have been parsed, range and rule policy belong to the shared
+validator.
+
+## Executable evidence
+
+The focused data API proof covers valid construction, boolean rejection, and both
+nonpositive ranges. It also proves that two different cleaning orders produce
+different, deterministic results:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-data-api-proof
+```
+
+The concrete shell proof covers the cross-entry-point law: an unknown CLI cleaning
+rule returns `Err` before reading input or selecting dependencies.
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-data-shell-proof
+```
+
+The exact tests are in the completed Module 02 reference state under
+`tests/learning/`. The same range and CLI validation source corrections are carried
+through every later reference state and the live capstone.
+
+## Review checklist
+
+Before accepting a configuration change, answer:
+
+1. Is the new field boundary syntax, domain policy, debug policy, or dependency
+   selection?
+2. Which constructor invariant or registry lookup requires validation first?
+3. Do all entry points delegate to one semantic parser?
+4. Is defaulting explicit, and is coercion either documented or rejected?
+5. Does a focused test observe both the returned result and whether execution
+   started?
+6. Has the public law been carried into every cumulative later state?
+
+Configuration-as-data is justified when these answers make variants easier to
+inspect and test. A plain parameter remains better when there is only one local,
+already typed value and no boundary policy to coordinate.
+
+Continue with [Callbacks to Combinators](callbacks-to-combinators.md).

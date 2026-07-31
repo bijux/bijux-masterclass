@@ -1,0 +1,22 @@
+{
+  "allow_additional_fields": true,
+  "artifact_path": "summary.json",
+  "artifact_schema_version": 1,
+  "field_semantics": {
+    "reads_count": {
+      "definition": "number of sequencing reads",
+      "unit": "reads"
+    }
+  },
+  "optional_fields": {
+    "qc_status": "string"
+  },
+  "publish_version": "v1",
+  "required_fields": {
+    "reads_count": "integer",
+    "sample_id": "string"
+  },
+  "required_paths": [
+    "summary.json"
+  ]
+}

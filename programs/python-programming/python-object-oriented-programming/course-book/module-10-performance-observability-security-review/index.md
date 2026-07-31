@@ -117,6 +117,8 @@ semantics, not fashion.
 - [Capstone Architecture Review](capstone-architecture-review.md)
 - [Capstone Hardening and Extension Strategy](capstone-hardening-and-extension-strategy.md)
 - [Final Mastery Checkpoint](final-mastery-checkpoint.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Glossary](glossary.md)
 
 ## Keep these support surfaces open

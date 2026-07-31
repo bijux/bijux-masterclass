@@ -54,6 +54,7 @@ conventions? The answer is not purity theater. It is deliberate interop.
 
 ## Lesson map
 
+- [Module 09 Capstone Delta](capstone-delta.md)
 - [Standard Library Functional Tools](stdlib-functional-tools.md)
 - [Helper Libraries](helper-libraries.md)
 - [Data Processing](data-processing.md)
@@ -65,13 +66,17 @@ conventions? The answer is not purity theater. It is deliberate interop.
 - [Functional Facades](functional-facades.md)
 - [Cross-Process Composition](cross-process-composition.md)
 - [Team Adoption](team-adoption.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Refactoring Guide](refactoring-guide.md)
 
 ## Exercises
 
-- Choose one external library boundary and explain which facade keeps configuration and failure contracts explicit.
-- Compare one stdlib route with one third-party route and justify which one the capstone should prefer today.
-- Review one team convention and state how it becomes a stable engineering standard instead of unwritten folklore.
+Use [Exercises](exercises.md) for decision-making work against the Module 09
+reference state. Each prompt names its starting context, constraints, observable
+evidence, acceptance command, and earlier contract to preserve. Compare your
+reasoning with [Exercise Answers](exercise-answers.md) only after running the
+focused proof.
 
 ## Capstone checkpoints
 
@@ -84,6 +89,12 @@ conventions? The answer is not purity theater. It is deliberate interop.
 You should be able to explain how to adapt real libraries without letting them rewrite the
 course’s core architecture. Use [Refactoring Guide](refactoring-guide.md) and compare
 against `capstone/_history/worktrees/module-09` before moving forward.
+
+Complete the final team-adoption exercise and run all Module 09 learning proofs:
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py
+```
 
 ## Closing criteria
 

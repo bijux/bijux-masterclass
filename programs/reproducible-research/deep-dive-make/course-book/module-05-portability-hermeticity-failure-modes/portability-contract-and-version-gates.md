@@ -84,7 +84,7 @@ Use this split:
 This is important because "best effort" builds often hide correctness drift behind soft
 fallbacks that were never reviewed.
 
-## Version gates are capability gates in disguise
+## Prefer feature gates to guessed version ranges
 
 Suppose the build wants grouped targets `&:`. The important question is not "which machine
 am I on?" The important question is:
@@ -93,23 +93,48 @@ am I on?" The important question is:
 
 That is why version gates should be tied to capabilities, not to tribal knowledge.
 
-For example:
+GNU Make reports supported semantics in `$(.FEATURES)`. Use that evidence when a token
+exists:
 
 ```make
 ifeq ($(origin MAKE_VERSION),undefined)
 $(error this repository requires GNU Make)
 endif
 
-HAVE_GROUPED_TARGETS := $(if $(filter 4.3% 4.4% 4.5% 5.%,$(MAKE_VERSION)),yes,)
+REQUIRED_MAKE_FEATURES := grouped-target second-expansion
+MISSING_MAKE_FEATURES := $(filter-out $(.FEATURES),$(REQUIRED_MAKE_FEATURES))
 
-ifeq ($(HAVE_GROUPED_TARGETS),)
-  USE_GROUPED_TARGETS := no
-else
-  USE_GROUPED_TARGETS := yes
+ifneq ($(strip $(MISSING_MAKE_FEATURES)),)
+$(error GNU Make $(MAKE_VERSION) lacks required features: $(MISSING_MAKE_FEATURES))
 endif
 ```
 
-Now the build can branch on a named capability rather than on an undocumented assumption.
+This accepts a future Make release that still advertises the required behavior. A text
+filter such as `4.3% 4.4% 4.5% 5.%` accidentally rejects `4.10` and `6.0`; expanding that
+list after every release is not a capability model.
+
+If required behavior has no feature token, keep the human support statement and implement
+one of these machine checks:
+
+- a bounded probe that parses or executes the exact required behavior
+- a maintained numeric-version helper with boundary tests
+- an installation or container boundary that supplies a pinned Make
+
+Do not claim robust semantic-version comparison with a collection of prefix filters.
+
+## Keep version policy and feature discovery distinct
+
+A project can require "GNU Make 4.3 and later" as its supported test range while still
+asking `.FEATURES` whether one runtime exposes grouped targets. These are different claims:
+
+| Claim | Evidence | Failure meaning |
+| --- | --- | --- |
+| supported release range | tested version matrix | maintainers have not promised this runtime |
+| required feature | `.FEATURES` or behavioral probe | runtime cannot express the graph correctly |
+| observed version | `MAKE_VERSION` in diagnostics | identity only; not proof of one behavior |
+
+The contract should print all three when they differ. That lets an operator distinguish
+"known but missing capability" from "untested release."
 
 ## The shell is part of the contract too
 
@@ -133,6 +158,19 @@ For this course, the healthy default is:
 - write recipes for POSIX `/bin/sh`
 - keep shell behavior simple and explicit
 - choose a stricter shell contract only when the benefit is worth stating aloud
+
+Setting `SHELL` is necessary but not sufficient. Make does not normally import `SHELL`
+from the environment on Unix-like systems, and recipe behavior also depends on
+`.SHELLFLAGS`. Declare both:
+
+```make
+SHELL := /bin/sh
+.SHELLFLAGS := -eu -c
+```
+
+`-e` has shell-specific edge cases and POSIX does not provide `pipefail`. If pipeline
+failure is part of correctness, either avoid the pipeline, test each command explicitly,
+or declare a shell that provides the required behavior.
 
 ## A simple shell mistake
 
@@ -172,16 +210,29 @@ This creates three problems:
 2. the fallback order is hard to review
 3. the build may silently switch tools with different semantics
 
-A calmer pattern is to centralize tool requirements:
+A clearer pattern makes each tool variable an executable identity and keeps arguments in
+separate variables:
 
 ```make
 PYTHON ?= python3
 TAR ?= tar
+PYTHONFLAGS ?=
+TARFLAGS ?=
+
+ifneq ($(words $(PYTHON)),1)
+$(error PYTHON must name one executable path; put arguments in PYTHONFLAGS)
+endif
 
 .PHONY: contract-check
 contract-check:
-	@command -v $(PYTHON) >/dev/null 2>&1 || { echo "missing $(PYTHON)" >&2; exit 1; }
-	@command -v $(TAR) >/dev/null 2>&1 || { echo "missing $(TAR)" >&2; exit 1; }
+	@command -v "$(PYTHON)" >/dev/null 2>&1 || { \
+	  printf 'contract: missing Python executable %s\n' "$(PYTHON)" >&2; \
+	  exit 2; \
+	}
+	@command -v "$(TAR)" >/dev/null 2>&1 || { \
+	  printf 'contract: missing archive executable %s\n' "$(TAR)" >&2; \
+	  exit 2; \
+	}
 ```
 
 Now the contract is:
@@ -191,6 +242,16 @@ Now the contract is:
 - the build checks them in one place
 
 That is much easier to teach and audit.
+
+Presence is only the first gate. A complete contract distinguishes:
+
+1. **resolution** — does this executable name resolve?
+2. **identity** — which path and version resolved?
+3. **capability** — does it implement the required behavior?
+4. **artifact input** — should a change in identity invalidate outputs?
+
+The contract check owns the first and third claims. A convergent toolchain manifest owns
+the fourth when tool identity changes artifact meaning.
 
 ## A requirement checked inside publication is too late
 
@@ -297,7 +358,7 @@ Whenever you add a fallback, ask:
 
 That question is more important than whether the fallback feels convenient.
 
-## A tiny contract file
+## A contract file with testable branches
 
 A practical contract file might look like this:
 
@@ -306,16 +367,27 @@ ifeq ($(origin MAKE_VERSION),undefined)
 $(error GNU Make is required)
 endif
 
-MIN_GNU_MAKE_OK := $(if $(filter 4.3% 4.4% 4.5% 5.%,$(MAKE_VERSION)),yes,)
-ifeq ($(MIN_GNU_MAKE_OK),)
-$(error GNU Make 4.3 or newer required; found $(MAKE_VERSION))
+REQUIRED_MAKE_FEATURES := grouped-target second-expansion
+MISSING_MAKE_FEATURES := $(filter-out $(.FEATURES),$(REQUIRED_MAKE_FEATURES))
+ifneq ($(strip $(MISSING_MAKE_FEATURES)),)
+$(error GNU Make lacks required features: $(MISSING_MAKE_FEATURES))
 endif
 
 SHELL := /bin/sh
 .SHELLFLAGS := -eu -c
 
 PYTHON ?= python3
-HAVE_GROUPED_TARGETS := $(if $(filter 4.3% 4.4% 4.5% 5.%,$(MAKE_VERSION)),yes,)
+PYTHONFLAGS ?=
+ifneq ($(words $(PYTHON)),1)
+$(error PYTHON must name one executable path)
+endif
+
+.PHONY: contract-check
+contract-check:
+	@command -v "$(PYTHON)" >/dev/null 2>&1 || { \
+	  printf 'contract: missing %s\n' "$(PYTHON)" >&2; \
+	  exit 2; \
+	}
 ```
 
 This is not the only good shape, but it demonstrates the habit:
@@ -323,17 +395,21 @@ This is not the only good shape, but it demonstrates the habit:
 - declare the boundary
 - name the capability
 - make the shell contract explicit
-- keep the conditions visible near the top of the build
+- keep feature rejection visible before unsupported syntax is selected
+- keep executable identity separate from tool arguments
 
-The version filters are intentionally visible teaching examples, not a universal semantic
-version parser. If the supported range expands, test boundary versions explicitly:
+Test the contract as a matrix:
 
-- newest rejected version
-- oldest accepted version
-- a later minor version such as `4.10`, which simplistic text filters often mishandle
+| Runtime case | Required result |
+| --- | --- |
+| every required feature present | parsing continues |
+| one required feature absent | parsing rejects and names only the missing features |
+| required executable available | contract target succeeds |
+| required executable absent | contract target fails before publication |
+| executable variable contains arguments | parsing rejects and points to the flags variable |
 
-Version policy is code. It needs positive and negative cases just like the required-tool
-gate.
+Test the supported runtime range in CI as well. A local feature gate cannot substitute for
+the versions maintainers actually exercise.
 
 ## Failure signatures worth recognizing
 

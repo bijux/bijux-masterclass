@@ -244,6 +244,118 @@ The improvement is not just technical. It improves clarity:
 - a reviewer can reason about it
 - a rerun can be explained
 
+## A path in `params` does not declare file contents
+
+This distinction is easy to miss:
+
+```python
+rule hidden_report:
+    input:
+        source="data/source.txt"
+    output:
+        "results/hidden-report.txt"
+    params:
+        policy="policy/threshold.txt"
+    shell:
+        """
+        python scripts/render_report.py \
+          --source {input.source} \
+          --policy {params.policy} \
+          --output {output}
+        """
+```
+
+The renderer opens `policy/threshold.txt`, so the computation depends on that file.
+Snakemake does not inspect arbitrary Python file access when it constructs the DAG. The
+planner sees the parameter string, not a dependency edge from the policy file.
+
+The honest contract is:
+
+```python
+rule declared_report:
+    input:
+        source="data/source.txt",
+        policy="policy/threshold.txt"
+    output:
+        "results/declared-report.txt"
+    shell:
+        """
+        python scripts/render_report.py \
+          --source {input.source} \
+          --policy {input.policy} \
+          --output {output}
+        """
+```
+
+The two commands can compute identical bytes. Their planner behavior differs because one
+rule represents the real influence and one hides it.
+
+```mermaid
+flowchart LR
+  policy["threshold.txt changes"]
+  declared["policy under input"]
+  hidden["policy path under params"]
+  rerun["declared_report planned"]
+  quiet["hidden_report skipped"]
+  stale["stored threshold remains old"]
+
+  policy --> declared --> rerun
+  policy --> hidden --> quiet --> stale
+```
+
+## Run the contrast instead of imagining it
+
+From the capstone directory:
+
+```console
+make file-contract-audit
+```
+
+Then read:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/file-contracts/
+├── summary.tsv
+├── report.json
+└── evidence/
+    ├── declared-settled-dry-run.stdout.txt
+    ├── declared-policy-change-dry-run.stdout.txt
+    └── hidden-policy-change-dry-run.stdout.txt
+```
+
+The audit first builds both reports with threshold `10`. It proves convergence, changes
+the policy to `20`, and asks each target what should happen.
+
+The expected decisions are:
+
+| Observation | Decision | Reason |
+| --- | --- | --- |
+| immediate declared dry-run has no jobs | accept | the unchanged workflow converged |
+| declared policy change plans `declared_report` | accept | the real influence reaches the planner |
+| hidden policy change plans no work | reject | the report still records `10` while policy says `20` |
+
+Do not collapse those observations into “dry-run passed.” A dry-run answers what the
+declared graph plans. It cannot certify that the declaration contains every real
+influence.
+
+## Diagnose under-rebuild with two values
+
+When you suspect a hidden input, record both:
+
+1. the current value of the suspected influence;
+2. the value embedded in the existing output.
+
+In the audit:
+
+```text
+policy_value=20
+stored_report_value=10
+```
+
+That disagreement is stronger evidence than an unchanged modification time. It shows
+that the output is stale in a domain-relevant way. The repair is to add the missing edge,
+not to force a one-off rerun.
+
 ## Incomplete outputs break trust
 
 Another common non-convergence cause is partial or incomplete outputs after failure.

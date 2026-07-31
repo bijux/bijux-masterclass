@@ -1,275 +1,257 @@
-# Pattern Matching
+# Pattern Matching: Consume the Cases You Modelled
 
+Product and sum types improve a design only if consumers read them clearly.
+For FuncPipe's `Result[T, E]`, every consumer must answer the same question:
 
-<!-- page-maps:start -->
-## Page Maps
+> What should happen for `Ok`, and what should happen for `Err`?
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Algebraic Data Modelling Validation"]
-  page["Pattern Matching"]
-  capstone["Capstone evidence"]
+Python's `match` statement can make those cases and their payloads visible in
+one place. It is a case-analysis tool, not a promise that Python has proved the
+match exhaustive.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+## Match the real chunk outcome
+
+The cumulative pipeline already represents an embedding outcome as:
+
+```text
+Result[Chunk, ErrInfo] = Ok[Chunk] | Err[ErrInfo]
 ```
+
+A presentation function can consume that closed union:
+
+```python
+from typing_extensions import assert_never
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
+from funcpipe_rag.core.rag_types import Chunk
+
+def describe_chunk_outcome(outcome: Result[Chunk, ErrInfo]) -> str:
+    match outcome:
+        case Ok(value=chunk):
+            return f"ready:{chunk.doc_id}:{len(chunk.embedding)}"
+        case Err(error=error):
+            return f"failed:{error.code}:{error.stage}"
+        case other:
+            assert_never(other)
+```
+
+Each class pattern both selects a variant and binds its payload. Keyword
+patterns make the relationship explicit: `value` belongs to `Ok`; `error`
+belongs to `Err`.
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Pattern matching should feel like a safer way to read domain variants, not like syntactic novelty. `match` is valuable because it lines up naturally with tagged sums and makes missing cases harder to hide.
-
-## Start With the Branching Boilerplate
-
-Once a codebase has explicit variants, the next problem is how to handle them cleanly. Long `if isinstance` chains often preserve the information, but they bury the model under branching boilerplate.
-
-- If every handler repeats the same variant tests and attribute extraction, the branch structure is harder to review than it needs to be.
-- If adding a new variant can slip past existing handlers, the dispatch style is still too fragile.
-- If you cannot tell what each branch assumes about the payload, the case analysis is not yet readable enough.
-
-**Core question**  
-How do you replace verbose, fragile `if isinstance` chains with Python 3.10+ `match` statements that destructuringly pattern-match on ADTs — guaranteeing exhaustive handling, automatic type narrowing, and refactor-safety in every FuncPipe pipeline stage?
-
-This lesson introduces `match` as the natural case-analysis syntax for ADTs:
-
-- destructure variants directly where they are handled
-- keep guards and payload extraction close to the matching branch
-- use the final `assert_never` pattern to keep the closed-union promise honest
-
-The motivating `Result` example matters because it is exactly the kind of branch-heavy code that appears everywhere once variants are available.
-
-The naïve pattern everyone writes first:
-
-```python
-# BEFORE – verbose, fragile, non-exhaustive
-def handle_result(res: Result[T, ErrInfo]) -> T:
-    if isinstance(res, Ok):
-        return res.value
-    elif isinstance(res, Err):
-        if res.error.code == ErrorCode.RETRYABLE:
-            return retry(res.error)
-        else:
-            raise RuntimeError(res.error.msg)
-    # oops, someone added Pending and forgot to handle it → silent crash or wrong path
+  result["Result[Chunk, ErrInfo]"]
+  result -->|"Ok(value=chunk)"| ready["ready: id + dimension"]
+  result -->|"Err(error=error)"| failed["failed: code + stage"]
 ```
 
-This is the branching boilerplate to replace.
+There is no `Pending` branch because `Pending` is not a real alternative in
+this result. Adding variants to make the lesson look more sophisticated would
+make the application model less honest.
 
-The production pattern makes the variant structure visible in the code shape itself and gives tooling a better chance to help.
+## Run both cases
 
-```python
-# AFTER – one lawful, exhaustive block
-def handle_result(res: Result[T, ErrInfo]) -> T:
-    match res:
-        case Ok(value=v):
-            return v
-        case Err(error=e) if e.code is ErrorCode.RETRYABLE:
-            return retry(e)
-        case Err(error=e):
-            raise RuntimeError(e.msg)
+From `programs/python-programming/python-functional-programming`:
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/python \
+  - <<'PY'
+from typing_extensions import assert_never
+from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding
+from funcpipe_rag.rag.stages import embed_chunk
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
+
+def describe(outcome: Result[Chunk, ErrInfo]) -> str:
+    match outcome:
+        case Ok(value=chunk):
+            return f"ready:{chunk.doc_id}:{len(chunk.embedding)}"
+        case Err(error=error):
+            return f"failed:{error.code}:{error.stage}"
         case other:
-            assert_never(other)   # mypy errors if you add Pending and forget to handle
+            assert_never(other)
+
+prepared = ChunkWithoutEmbedding(
+    doc_id="match-1", text="closed cases", start=0, end=12
+)
+print(describe(Ok(embed_chunk(prepared))))
+print(describe(Err(ErrInfo(code="EMBED_FAIL", msg="offline", stage="embed"))))
+PY
 ```
 
-That is the real promise to care about: changes to the model become visible pressure on the handling sites instead of silent drift.
+Expected output:
 
-Use this when you are tired of `isinstance` spaghetti and want clearer, more trustworthy case analysis over ADTs.
-
-**Outcome**
-1. Every `if isinstance` chain replaced with `match`.
-2. All matches statically checked for exhaustiveness via `case other: assert_never(other)` on closed unions.
-3. Readable, safe, refactor-proof ADT handling.
-
-## Tiny Non-Domain Example – Shape Area
-
-```python
-match shape:
-    case Circle(radius=r):
-        return 3.14159 * r * r
-    case Rectangle(width=w, height=h):
-        return w * h
-    case other:
-        assert_never(other)   # mypy errors if you add Triangle and forget
+```text
+ready:match-1:16
+failed:EMBED_FAIL:embed
 ```
 
-Adding `Triangle` breaks every site until handled — no silent wrong-path.
+The output tests the branch behavior. It does not, by itself, prove static
+exhaustiveness.
 
-## Why Pattern Matching for ADTs? (Three bullets every engineer should internalise)
+## What `assert_never` actually contributes
 
-- **Exhaustiveness**: `case other: assert_never(other)` + closed union types → adding a variant forces every match to update.
-- **Type narrowing**: Branches know exact variant → no more `cast` or `isinstance`.
-- **Readability + safety**: Declarative patterns + guards replace nested if-elif chains forever.
-
-Use `match` **only** on core frozen dataclasses. Pydantic models are converted at the edge (C06).
-
-## Setup – Imports & Core ADT Recap
+`assert_never` accepts a value statically typed as `Never`. After a type checker
+narrows both known variants, the final variable should have that type:
 
 ```python
-from typing_extensions import assert_never  # critical for exhaustiveness
-
-# In this repo, use the production ADTs:
-from funcpipe_rag.fp.core import Some, NoneVal
-from funcpipe_rag.fp.error import ErrorCode
-from funcpipe_rag.result.types import Ok, Err, Result, ErrInfo
+case other:
+    assert_never(other)
 ```
 
-## 1. Laws & Invariants (machine-checked)
+If `Result` later gains a third alternative, a capable type checker can report
+that `other` is no longer `Never`. At runtime, reaching the branch raises an
+assertion error.
 
-| Invariant             | Description                                          | Enforcement                              |
-|-----------------------|------------------------------------------------------|------------------------------------------|
-| Exhaustiveness        | All variants handled (`case other: assert_never`)    | mypy (with closed unions) + runtime      |
-| Type Narrowing        | Each case narrows to exact variant                   | mypy strict mode                         |
-| Guard Purity          | Guards are pure expressions                          | Code review + tests                      |
-| No Side Effects       | Patterns/guards do no I/O or mutation                | Reproducibility tests                    |
+This technique needs all of the following:
 
-With `Result = Ok[T] | Err[E]` defined as a closed union and a `case other: assert_never(other)` branch, mypy will error when you add a new variant and forget to handle it.
+- the input annotation is a closed union;
+- the type checker understands the class patterns;
+- static checking actually runs;
+- no earlier wildcard swallows a case.
 
-## 2. Decision Table – `match` vs `if isinstance`
+A parametrized test with one `Ok` and one `Err` proves those examples, not every
+future union member. Static and runtime evidence complement one another.
 
-| Scenario                     | Need guards? | Need destructuring? | Use `match`? |
-|------------------------------|--------------|---------------------|--------------|
-| Simple binary (Ok/Err)       | No           | Yes                 | Yes          |
-| With retry logic             | Yes          | Yes                 | Yes          |
-| Deeply nested product        | No           | Yes                 | Yes          |
-| Performance-critical path    | No           | No                  | Optional     |
-| Python <3.10                 | –            | –                   | No           |
+For external data, an unknown case may be expected rather than impossible.
+Decode and validate the external tag first; return a useful boundary error
+instead of using `assert_never` as input validation.
 
-## Gotchas (every engineer must internalise)
+## Prefer keyword class patterns
 
-- **Capture vs constant**: Bare name captures → use `Literal["kind"]` or qualified `ErrorCode.RETRYABLE`.
-- **Positional matching**: Dataclasses expose fields via `__match_args__`; reordering fields silently breaks positional patterns → **always use keyword patterns** (`case Ok(value=v)`).
-- **Guards**: Must be pure and fast — do work after the match.
-- **Exhaustiveness**: Always end with `case other: assert_never(other)`.
-
-## 3. Reference Implementations
-
-### 3.1 Matching Option
+Dataclasses support positional matching through `__match_args__`:
 
 ```python
-def unwrap_or(opt: Option[T], default: T) -> T:
-    match opt:
-        case Some(value=v):
-            return v
+case Ok(chunk):
+    ...
+```
+
+That is compact but couples the consumer to field order. The keyword form
+survives reordering and is easier to review:
+
+```python
+case Ok(value=chunk):
+    ...
+```
+
+The same rule applies to domain products:
+
+```python
+case ErrInfo(code=code, stage="embed"):
+    ...
+```
+
+The literal `"embed"` is a value pattern. By contrast, an unqualified bare
+name is normally a capture:
+
+```python
+case ErrInfo(code=expected):  # binds expected; it does not compare with it
+    ...
+```
+
+Use literals, qualified enum members, or a guard when comparison is intended.
+
+## Guards refine a variant
+
+A guard adds a condition after a structural pattern succeeds:
+
+```python
+def failure_scope(result: Result[Chunk, ErrInfo]) -> str:
+    match result:
+        case Ok():
+            return "none"
+        case Err(error=ErrInfo(stage="embed", path=path)) if path:
+            return "one chunk"
+        case Err(error=ErrInfo(stage="embed")):
+            return "embedding stage"
+        case Err(error=_):
+            return "another stage"
+        case other:
+            assert_never(other)
+```
+
+Order matters. The more specific embedding failure with a path must appear
+before the general embedding failure.
+
+Keep guards cheap and unsurprising. A guard that writes a log, mutates state,
+or performs network I/O makes branch selection itself effectful and much harder
+to reason about.
+
+## `Option` is another closed sum
+
+The same case analysis applies to explicit absence:
+
+```python
+from typing import TypeVar
+from funcpipe_rag.fp.core import NoneVal, Option, Some
+
+T = TypeVar("T")
+
+def unwrap_or(option: Option[T], default: T) -> T:
+    match option:
+        case Some(value=value):
+            return value
         case NoneVal():
             return default
         case other:
             assert_never(other)
 ```
 
-### 3.2 Matching Result with Guards
+The Module 5 property tests exercise both variants over many integer values.
+The useful lesson is not “replace every `isinstance`.” It is that a consumer of
+a meaningful closed sum should expose the alternatives and their behavior.
 
-```python
-def handle_result(res: Result[T, ErrInfo]) -> T:
-    match res:
-        case Ok(value=v):
-            return v
-        case Err(error=e) if e.code is ErrorCode.RETRYABLE:
-            return retry(e)
-        case Err(error=e):
-            raise RuntimeError(e.msg)
-        case other:
-            assert_never(other)
+## When an `if` is clearer
+
+Pattern matching is not automatically superior:
+
+- a single boolean condition usually belongs in an `if`;
+- checking one protocol capability may be clearer with `isinstance`;
+- open plugin families are not closed unions and need an extension mechanism;
+- mappings from string commands to handlers may be clearer as dictionaries.
+
+Choose `match` when the data model is case-shaped and destructuring makes that
+shape easier to audit.
+
+Likewise, do not nest several levels of class patterns merely to avoid local
+names. Deep patterns can hide error reporting and make schema changes ripple
+through consumers. Bind the meaningful product, then use ordinary code for
+subsequent calculations.
+
+## Inspect the executable evidence
+
+The focused tests are:
+
+```bash
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/pytest \
+  -q capstone/module-reference-states/module-05/tests/test_pattern_matching.py
+
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTHONPATH=capstone/module-reference-states/module-05/src \
+../../../artifacts/venv/python-programming/python-functional-programming/capstone/bin/pytest \
+  -q capstone/module-reference-states/module-05/tests/learning/test_module_05_data_modelling.py \
+  -k result_sum_type
 ```
 
-### 3.3 Matching Validation (or-patterns)
+Then inspect `describe_chunk_outcome` in the learning test. Account for three
+separate claims:
 
-```python
-def handle_validation(val: Validation[T, ErrInfo]) -> T:
-    match val:
-        case VSuccess(value=v):
-            return v
-        case VFailure(errors=(e,)) if e.code is ErrorCode.RETRYABLE:
-            return retry_single(e)
-        case VFailure(errors=es):
-            raise MultipleErrors(es)
-        case other:
-            assert_never(other)
-```
+1. each current variant returns the intended public description;
+2. keyword patterns extract the intended payload;
+3. the final branch asks static checking to keep the union closed.
 
-### 3.4 RAG Integration – Embedding Result Handling
+## Check your understanding
 
-```python
-def embed_with_fallback(res: Result[Embedding, ErrInfo]) -> Embedding:
-    match res:
-        case Ok(value=emb):
-            return emb
-        case Err(error=e) if e.code in {ErrorCode.TRANSIENT, ErrorCode.RATE_LIMIT}:
-            return fallback_embedding(e)
-        case Err(error=e):
-            log_and_raise(e)
-        case other:
-            assert_never(other)
-```
+1. Why is `case Ok(value=chunk)` safer than relying on field position?
+2. What does a bare name inside a pattern usually do?
+3. What must be true before `assert_never(other)` provides static
+   exhaustiveness pressure?
+4. Why should unknown wire tags be decoded as boundary errors instead?
+5. When is an ordinary `if` more honest than a `match`?
 
-## 4. Property-Based Proofs (capstone/tests/test_pattern_matching.py)
-
-```python
-from hypothesis import given, strategies as st
-
-@given(v=st.integers())
-def test_option_unwrap_or_some(v):
-    assert unwrap_or(Some(value=v), default=-1) == v
-
-@given(default=st.integers())
-def test_option_unwrap_or_none(default):
-    assert unwrap_or(NoneVal(), default) == default
-
-@given(res=st.one_of(st.builds(Ok, value=st.integers()),
-                    st.builds(Err, error=st.builds(ErrInfo, code=st.sampled_from(ErrorCode), msg=st.text()))))
-def test_result_match_exhaustive(res):
-    # This test verifies no runtime crash; exhaustiveness is enforced by mypy
-    # via assert_never on closed unions.
-    def dummy(r: Result[int, ErrInfo]) -> int:
-        match r:
-            case Ok(value=v):
-                return v
-            case Err(error=_):
-                return -1
-            case other:
-                assert_never(other)
-        # unreachable
-    dummy(res)
-```
-
-## 5. Big-O & Allocation Guarantees
-
-| Operation            | Time   | Heap   | Notes                              |
-|----------------------|--------|--------|------------------------------------|
-| match on ADT         | O(1)   | O(1)   | Constant time dispatch             |
-
-## 6. Anti-Patterns & Immediate Fixes
-
-| Anti-Pattern                  | Symptom                            | Fix                                      |
-|-------------------------------|------------------------------------|------------------------------------------|
-| Long if-isinstance chains     | Verbose, easy to miss cases        | Replace with `match` + `case other: assert_never` |
-| Missing case other            | Silent bugs on new variants        | Always end match with `case other: assert_never(other)` |
-| Side effects in guards        | Non-deterministic behaviour        | Keep guards pure                         |
-| Positional matching           | Brittle on field reorder           | Prefer keyword patterns (`value=v`)      |
-| Bare name capture             | Unexpected rebinding               | Use literals or qualified names          |
-
-## 7. Pre-Core Quiz
-
-1. `match` replaces what? → **`if isinstance` chains**  
-2. Exhaustiveness via…? → **`case other: assert_never(other)`**  
-3. Guards for…? → **Conditional branches**  
-4. Type narrowing? → **Branch knows exact variant**  
-5. Always end match with…? → **`case other: assert_never(other)`**
-
-## 8. Post-Core Exercise
-
-1. Refactor one `if isinstance` chain to `match` → add `case other: assert_never(other)`.  
-2. Add a new variant to an existing sum type → verify mypy errors in all match sites.  
-3. Use guards to handle retryable errors in a Result match.  
-4. Replace a nested if-elif with or-patterns (`case Ok() | Some():`).
-
-**Continue with:** [Serialization Beyond Pydantic](../module-05-algebraic-data-modelling-validation/serialization-beyond-pydantic.md)
-
-You now destructure and handle every ADT with concise, exhaustive, type-narrowing `match` statements — no more `isinstance` boilerplate, no more silent missing cases. The rest of Module 5 adds stable serialization, compositional domain models, and performance guidance for heavy ADTs.
+Continue with
+[Serialization Beyond Pydantic](serialization-beyond-pydantic.md) when you can
+separate structural case analysis, static exhaustiveness evidence, and runtime
+input validation.

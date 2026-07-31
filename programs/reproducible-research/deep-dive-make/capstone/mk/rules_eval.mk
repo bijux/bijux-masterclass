@@ -18,15 +18,19 @@ EVAL_DEMO_TARGETS := $(GEN_H) $(GEN_C)
 # GNU Make >= 4.3: grouped targets guarantee single recipe invocation.
 ifeq ($(HAVE_GROUPED_TARGETS),)
 $(GEN_H): $(GEN_MULTI) | $(BLD_DIR)/include/
-> $(PYTHON) $< --h > $@.tmp.$$ && mv -f $@.tmp.$$ $@
+> candidate=$@.candidate.$$$$; \
+> $(PYTHON) $< --h > $$candidate && mv -f $$candidate $@ || { rm -f $$candidate; exit 1; }
 $(GEN_C): $(GEN_MULTI) | $(BLD_DIR)/include/
-> $(PYTHON) $< --c > $@.tmp.$$ && mv -f $@.tmp.$$ $@
+> candidate=$@.candidate.$$$$; \
+> $(PYTHON) $< --c > $$candidate && mv -f $$candidate $@ || { rm -f $$candidate; exit 1; }
 else
 $(GEN_H) $(GEN_C) &: $(GEN_MULTI) | $(BLD_DIR)/include/
 > set -eu; \
-> tmp_h="$(GEN_H).tmp.$$"; tmp_c="$(GEN_C).tmp.$$"; \
-> $(PYTHON) $< --h > "$$tmp_h"; \
-> $(PYTHON) $< --c > "$$tmp_c"; \
-> mv -f "$$tmp_h" "$(GEN_H)"; \
-> mv -f "$$tmp_c" "$(GEN_C)"
+> header_candidate="$(GEN_H).candidate.$$$$"; source_candidate="$(GEN_C).candidate.$$$$"; \
+> trap 'rm -f "$$header_candidate" "$$source_candidate"' EXIT; \
+> $(PYTHON) $< --h > "$$header_candidate"; \
+> $(PYTHON) $< --c > "$$source_candidate"; \
+> mv -f "$$header_candidate" "$(GEN_H)"; \
+> mv -f "$$source_candidate" "$(GEN_C)"; \
+> trap - EXIT
 endif

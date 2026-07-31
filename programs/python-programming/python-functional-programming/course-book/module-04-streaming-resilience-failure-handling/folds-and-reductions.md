@@ -359,21 +359,95 @@ Result metadata (paths when used) is intrinsic; auxiliary overhead is only the e
 
 ---
 
+## Fold the evidence the RAG run actually needs
+
+Traversal answers “which node comes next?” A fold answers “what observation do
+we carry forward?” FuncPipe needs a document summary before choosing resource
+and failure policies: node count estimates embedding work, text length
+estimates input volume, and maximum depth helps diagnose pathological parser
+output.
+
+Three separate folds are easy to read:
+
+```text
+tree --count pass------> node count
+tree --length pass-----> character count
+tree --depth pass------> maximum depth
+```
+
+A fused fold visits each node once and carries a product accumulator:
+
+```text
+tree --(count, length, maximum depth) pass--> all three observations
+```
+
+For the learning tree, trace the accumulator by hand:
+
+| Node | Incoming accumulator | Outgoing accumulator |
+| --- | --- | --- |
+| `root` | `(0, 0, 0)` | `(1, 4, 0)` |
+| `a` | `(1, 4, 0)` | `(2, 5, 1)` |
+| `b` | `(2, 5, 1)` | `(3, 6, 1)` |
+| `c` | `(3, 6, 1)` | `(4, 7, 2)` |
+
+Then run:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k fused_tree_fold
+```
+
+The equality in that test is the preservation claim: fusion changes traversal
+count, not the three answers. It does not measure a speedup. On a small tree,
+tuple construction and a more complex combiner may erase the benefit. Measure
+when performance is the reason for fusion.
+
+Choose the fold surface by required evidence:
+
+| Need | Route | Cost to make visible |
+| --- | --- | --- |
+| One final value and no path | `fold_tree_no_path` | No path tuples |
+| One final value with section provenance | `fold_tree_buffered` | One path tuple per combiner call |
+| Progress after every node | `scan_tree` | One emitted accumulator per node |
+| A readable oracle for shallow generated trees | Recursive test fold | Call-stack growth |
+
+The iterative folds assume a valid finite tree. Unlike `flatten`, the Module 04
+fold implementation does not detect repeated object identities. Validate the
+tree at the boundary when untrusted construction can create cycles, or the fold
+may not terminate. “Stack safe” does not mean “safe for every graph.”
+
 ## 8. Pre-Core Quiz
 
-1. Safe recursion over trees? → **Iterative fold with explicit stack**  
-2. Compute 5 independent stats? → **One fused tuple fold**  
-3. Running totals over tree? → **`scan_tree`**  
-4. Zero extra path allocation on deep chains? → **`fold_tree_buffered`**  
-5. Equivalence guarantee? → **Hypothesis vs recursive spec + order test**
+1. What does fusion preserve? → **The observations computed from the same
+   traversal order.**
+2. What does fusion change? → **The number of traversals and the shape of the
+   accumulator.**
+3. When should you use `scan_tree`? → **When downstream code needs each running
+   state rather than only the final state.**
+4. Which route avoids path construction? → **`fold_tree_no_path`.**
+5. Does an explicit stack detect cycles automatically? → **No; that is a
+   separate input-validity contract.**
 
 ## 9. Post-Core Exercise
 
-1. Implement recursive max-depth → replace with fold → add equivalence + order property.  
-2. Fuse count + text length + max depth + set of all doc_ids in one fold.  
-3. Add `scan_tree` progress reporting to the RAG pipeline (yield running chunk count).  
-4. Find any multi-pass aggregation in your codebase → fuse into one fold → measure speedup.
+Extend the fused accumulator with the number of empty text nodes.
+
+- Keep the original count, length, and depth results unchanged.
+- Write the expected four-tuple for the learning tree before editing.
+- Compare the fused answer with four separate `fold_tree_no_path` calls.
+- Explain why adding a mutable set to the accumulator would make review harder,
+  even if the final count happened to be correct.
+
+Move forward when you can distinguish an equivalence proof from a performance
+measurement.
 
 **Continue with:** [Memoization](../module-04-streaming-resilience-failure-handling/memoization.md)
 
-You now own the universal pattern for safe aggregation over any algebraic data type. Everything else in Module 4 is just specialising this fold.
+The next core applies the same “preserve the answer, change the work” reasoning
+to repeated deterministic computation.

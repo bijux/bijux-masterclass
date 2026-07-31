@@ -25,122 +25,364 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This example shows how Module 08 fits together when a workspace loses its local DVC
-cache.
+This investigation begins after an apparently successful remote migration.
 
-The goal is not to panic or manually recreate files. The goal is to prove whether the
-state that matters can be restored from shared evidence.
+The migration operator copied the current DVC state to a candidate remote and changed a
+test workspace to use it. A pull from `main` succeeds. The operator proposes retiring the
+legacy remote.
 
-## The situation
+The repository has two active promises:
 
-A maintainer deletes the local cache while cleaning disk space.
+- `main` must remain recoverable for current collaboration
+- `release-2025-q1` must remain recoverable because a published report cites it
 
-The workspace still has Git files:
+The example shows why current recovery is real evidence but insufficient evidence.
 
-- `dvc.lock`
-- `params.yaml`
-- `publish/v1/manifest.json`
-- `publish/v1/metrics.json`
-- `publish/v1/params.yaml`
+## Start with the promises
 
-But the local DVC objects are gone.
+The course specimen records:
 
-The recovery question is:
-
-> Can the important state be restored from the shared remote and verified against the
-> published evidence?
-
-## Step 1: Stop guessing
-
-Weak response:
-
-> I can rebuild something similar from raw data.
-
-Stronger response:
-
-> First, restore the declared state from the remote and compare it with the manifest and
-> lock evidence.
-
-The second response protects the state story. Rebuilding by memory may create a similar
-file while losing the evidence that it is the same state.
-
-## Step 2: Pull from shared authority
-
-The maintainer runs:
-
-```bash
-dvc pull
-dvc status
+```json
+{
+  "artifact": "data/observations.csv",
+  "protected_revisions": [
+    {
+      "revision": "release-2025-q1",
+      "expected_row_count": 3,
+      "reason": "published evidence remains auditable"
+    },
+    {
+      "revision": "main",
+      "expected_row_count": 4,
+      "reason": "current collaborators and automation can resume work"
+    }
+  ],
+  "recovery_time_objective_seconds": 30,
+  "verification_mode": "cache_empty_restore"
+}
 ```
 
-If the pull succeeds, the shared remote has the objects required by the current workspace.
+The two revisions refer to different DVC object identities. That fact is essential. If
+both names pointed to the same content, a current-only copy could accidentally satisfy
+both checks without teaching historical coverage.
 
-If the pull fails, the incident is now specific: important objects are missing from the
-shared recovery boundary, or credentials and remote configuration are broken.
+The cutover decision is:
 
-Either result teaches the team something real.
+> May the candidate remote become recovery authority and permit the legacy remote to
+> retire?
 
-## Step 3: Verify the release boundary
+Acceptance requires every protected revision, not a majority.
 
-The maintainer checks the published evidence:
+## Examine the tempting evidence
 
-```bash
-make -C capstone recovery-review
-make -C capstone release-audit
+The operator reports:
+
+```text
+candidate remote configured
+main pull succeeded
+four rows restored
 ```
 
-The important questions are:
+All three statements can be true while the cutover remains unsafe.
 
-- does the release manifest still describe the restored files?
-- do metrics and parameters still match the promoted boundary?
-- does the lock evidence still support the restored state?
-- can another maintainer repeat the route?
+| Evidence | What it proves | What it does not prove |
+| --- | --- | --- |
+| candidate remote configured | DVC can locate a named storage endpoint | storage contains required objects |
+| `main` pull succeeded | candidate has the current pointer's object and access worked | protected release objects exist |
+| four rows restored | current content shape matches one claim | published three-row content remains auditable |
 
-Recovery is not only "files exist again." Recovery means the restored state can be
-defended.
+The error would be moving from "current state restores" to "protected history is
+complete."
 
-## Step 4: Decide whether this was expected cleanup or an incident
+## Run the independent audit
 
-If the local cache was deleted but remote restore works, this may be ordinary maintenance.
-The team should still confirm the recovery route is documented.
+From the course directory:
 
-If remote restore fails, this is an incident or at least a durability gap. The next note
-should say which boundary failed:
+```bash
+make capstone-recovery-readiness-audit
+```
 
-- missing remote object
-- remote permission error
-- stale remote configuration
-- incomplete release manifest
-- old state beyond retention policy
+The audit builds each case in the generated `artifacts/audit/` tree. It does not initialize
+the authored specimen in place.
 
-Naming the boundary keeps the repair focused.
+Open `summary.tsv`. The relevant rows have this shape:
 
-## Step 5: Turn the finding into a stronger check
+```text
+finding           expected  decision  result
+COMPLETE_MIGRATION ACCEPT    ACCEPT    PASS
+CURRENT_ONLY_COPY  BLOCK     BLOCK     PASS
+RELEASE_ONLY_COPY  BLOCK     BLOCK     PASS
+```
 
-If the restore succeeded, the team may add a scheduled recovery check or onboarding drill.
+`PASS` in the final column means the audit reached the expected teaching decision. It does
+not mean the migration case was accepted. `CURRENT_ONLY_COPY` correctly passes its test
+by producing `BLOCK`.
 
-If the restore failed, the team should repair the missing object, permission, or
-documentation gap and then rerun the recovery route.
+This distinction prevents a test harness result from being mistaken for a storage
+decision.
 
-The output of the exercise is not only a restored cache. It is a better recovery contract.
+## Compare the two current-only reviewers
 
-## The review note you would want
+Open:
 
-> Local DVC cache was removed during disk cleanup. We restored required objects from the
-> shared remote with `dvc pull`, confirmed `dvc status`, and ran the recovery and release
-> review routes. The published manifest, metrics, and parameters still match the restored
-> state. This confirms local cache loss is survivable for the current release boundary.
+```text
+workspace/current-only-copy/revision-evidence.json
+```
 
-If restore failed, the note should name the missing boundary and repair instead.
+The release record is structurally equivalent to:
 
-## Why this is a mastery example
+```json
+{
+  "revision": "release-2025-q1",
+  "revision_resolved": true,
+  "restored": false,
+  "expected_row_count": 3,
+  "actual_row_count": null,
+  "content_claim_matches": false
+}
+```
 
-This one story exercises the whole module:
+The main record is structurally equivalent to:
 
-- Core 1: local cache was not treated as durable authority
-- Core 2: the release boundary was treated as higher value than disposable local state
-- Core 3: cleanup was judged by recoverability
-- Core 4: remote availability became the key verification point
-- Core 5: the recovery note preserved what happened and what now passes
+```json
+{
+  "revision": "main",
+  "revision_resolved": true,
+  "restored": true,
+  "expected_row_count": 4,
+  "actual_row_count": 4,
+  "content_claim_matches": true
+}
+```
 
-The repository survived because the team restored evidence, not just files.
+The result localizes the failure:
+
+| Boundary | Release | Main | Finding |
+| --- | --- | --- | --- |
+| Git revision resolution | passes | passes | Git history is available |
+| candidate access | attempted | passes | access is not globally broken |
+| candidate object coverage | fails | passes | candidate contains only part of protected state |
+| content identity | unavailable | passes | release meaning cannot be checked |
+| cutover | blocked | blocked as one decision | legacy authority must remain |
+
+The main success helps diagnosis. It rules out several broad claims such as "the candidate
+remote is entirely unreachable." It cannot cancel the release failure.
+
+## Read receipts only after the decision
+
+Open:
+
+```text
+workspace/current-only-copy/receipts.json
+```
+
+Find three command groups:
+
+- the author's migration command, which pushes current state to `candidate`
+- the release reviewer's cache-empty pull, which fails
+- the main reviewer's cache-empty pull, which succeeds
+
+Check:
+
+- command arguments name the candidate remote
+- the reviewers use separate clone directories
+- each reviewer removes local artifact cache before pulling
+- the failed receipt preserves return code, standard output, and standard error
+- no reviewer command pushes or repairs remote content
+
+The receipts corroborate the structured findings. They are not the first reading surface
+because forcing every reviewer to infer policy from raw command logs is error-prone.
+
+## Preserve the incident before repair
+
+At this point the team knows:
+
+- source: candidate remote after current-only migration
+- affected obligation: published recovery of `release-2025-q1`
+- unaffected obligation: current `main` recovery
+- unknowns: any other protected release not named by the lab contract
+- likely cause: copy scope covered only current workspace state
+- containment: do not retire or garbage-collect the legacy remote
+
+The team preserves:
+
+- `summary.tsv`
+- `report.json`
+- current-only revision evidence
+- current-only command receipts
+- the recovery contract
+- migration operator's original copy receipt
+
+Only now should a write repair be authorized.
+
+## Reject the wrong repair route
+
+An operator suggests adding `dvc push --remote candidate` to the verification script.
+
+That would make the next check convenient, but it would collapse repair and verification:
+
+```mermaid
+flowchart LR
+  badcheck["check begins"]
+  push["fill candidate from available cache"]
+  pull["pull from candidate"]
+  green["report success"]
+
+  badcheck --> push --> pull --> green
+```
+
+The green result could not say whether candidate storage was complete before the check.
+
+The audit includes `MUTATING_RECOVERY_ROUTE`. Both revisions restore, but the decision
+still blocks because the proposed verification route includes a remote write.
+
+Use two routes:
+
+- a write-authorized repair route that copies the missing protected set
+- a new read-only, empty-cache verification route that tests candidate state afterward
+
+## Bound the repair
+
+The diagnosed gap is not "all data may be missing." It is "the protected release object
+was omitted by current-only copy scope."
+
+The repair plan should name:
+
+| Field | Decision |
+| --- | --- |
+| source authority | legacy remote remains authoritative during repair |
+| target | candidate remote |
+| protected scope | `release-2025-q1` plus any other policy-protected revisions discovered by inventory |
+| mutation owner | storage operator |
+| success evidence | candidate-only empty-cache restores and content-identity checks |
+| stop condition | source identity mismatch, missing source object, or unexpected protected revision |
+| rollback | no authority transfer; legacy remains in service |
+
+The example does not use "copy everything" because expired exploratory state is outside
+the stated obligation. In a real repository, inventory may reveal a wider protected set.
+
+## Re-verify without the repair cache
+
+After the storage operator copies the approved set, verification must start fresh:
+
+- create new reviewer clones
+- select each protected revision independently
+- discard local artifact cache
+- pull from candidate with read-only access
+- compare restored SHA-256 and row count
+- measure duration against the declared objective
+- preserve new receipts
+
+The expected pattern matches `COMPLETE_MIGRATION`:
+
+| Revision | Resolved | Restored | Identity | Duration |
+| --- | --- | --- | --- | --- |
+| `release-2025-q1` | pass | pass | pass | within lab objective |
+| `main` | pass | pass | pass | within lab objective |
+
+Only this evidence can support candidate authority.
+
+## Do not overclaim the measured time
+
+The specimen declares a 30-second recovery-time objective and transfers tiny files on a
+local filesystem. A pass proves that the audit enforces a declared objective. It does not
+predict production transfer time.
+
+A production review would need:
+
+- representative object sizes and directory shapes
+- real remote protocol and region
+- intended recovery identity
+- expected concurrency and bandwidth
+- cold-cache conditions
+- repeated measurements or an agreed percentile
+- operational overhead beyond the data transfer
+
+Keep the lab conclusion bounded:
+
+> Both protected specimen revisions restored within the declared local audit objective.
+
+Do not write:
+
+> Production recovery takes less than 30 seconds.
+
+## Decide on authority and legacy retirement separately
+
+Candidate acceptance and source deletion are related but distinct:
+
+```mermaid
+flowchart LR
+  proof["candidate recovery proof passes"]
+  authority["candidate becomes authority"]
+  observe["rollback interval and monitoring"]
+  exitreview["source exit review"]
+  retire["legacy remote retires"]
+
+  proof --> authority --> observe --> exitreview --> retire
+```
+
+The team may accept candidate authority while retaining the legacy remote for rollback or
+archive policy. Source retirement needs:
+
+- closed rollback interval
+- final protected-set audit
+- no unresolved holds
+- explicit deletion or decommission approval
+- preserved disposition record
+
+A migration test does not authorize deletion by itself.
+
+## Write the incident and cutover note
+
+A useful note:
+
+> Candidate cutover was blocked because an empty-cache reviewer restored `main` but could
+> not restore protected release `release-2025-q1`. Git resolved both revisions, so the
+> failure was candidate object coverage rather than missing history. We preserved the
+> failed release receipt before repair and kept the legacy remote authoritative. The
+> storage operator copied the policy-protected release set. New candidate-only reviewers
+> restored both revisions, matched their contracted SHA-256 and row counts, and met the
+> lab recovery-time objective. Candidate authority may proceed; legacy retirement remains
+> subject to the rollback and source-exit gates.
+
+Every sentence has a job:
+
+| Sentence | Evidence role |
+| --- | --- |
+| blocked decision | prevents premature cutover |
+| mixed revision result | scopes affected and unaffected obligations |
+| Git resolution | narrows diagnosis |
+| preserved receipt | protects pre-repair evidence |
+| bounded copy | records mutation |
+| new reviewers | proves repair from independent state |
+| separate retirement gate | avoids treating acceptance as deletion authority |
+
+## Repeat the investigation yourself
+
+Without reading the script first:
+
+1. run the recovery-readiness audit
+2. use `summary.tsv` to predict which protected revision each partial-copy case lacks
+3. confirm the prediction in each `revision-evidence.json`
+4. inspect only the receipts needed to explain the missing object
+5. compare `STALE_RELEASE_CLAIM` with `CURRENT_ONLY_COPY`
+6. explain why one is an availability failure and the other an identity failure
+7. draft a blocked cutover note with a bounded repair and a separate source-exit gate
+
+Then read the audit implementation and focused tests. Check whether the code enforces the
+decision rule you inferred from the evidence.
+
+## Mastery review
+
+You understand the example when you can explain:
+
+- why current-state recovery is valid but incomplete evidence
+- why each protected revision gets an independent empty-cache reviewer
+- why structured findings should be read before raw receipts
+- why a successful pull can still fail a stale content claim
+- why verification must not push
+- why repair evidence and post-repair recovery evidence are different
+- why candidate acceptance does not authorize source retirement
+
+The migration becomes trustworthy when the team can preserve and explain a blocked
+cutover, not only when the final pull is green.

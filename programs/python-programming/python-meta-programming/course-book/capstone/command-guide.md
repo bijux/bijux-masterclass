@@ -17,99 +17,168 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["Name the course claim"] --> contract["Render transfer contract"]
+  contract --> observe["Choose observational command"]
+  observe --> execute{"Does the claim require invocation?"}
+  execute -->|no| stop["Stop with focused proof"]
+  execute -->|yes| trace["Use trace or demo"]
 ```
 <!-- page-maps:end -->
 
-Use the smallest command that proves the specific claim you care about. The goal is not
-to memorize commands. The goal is to choose enough evidence without jumping straight to
-the broadest route.
+Use this guide after the module’s focused lab and tests pass. The command is chosen by
+the claim, not by a desire for the largest output.
 
-## Start by proof size
+Start by writing down the completed module claim, the expected application owner, the
+first observational command, and one fact that command cannot prove. The
+[Capstone Map](capstone-map.md) supplies the mapping; the learner supplies the
+explanation.
 
-| If the question is about... | Start with | Escalate only if needed |
+## Observational transfer commands
+
+These commands are the first capstone route for Modules 01–10. They do not construct a
+plugin instance or invoke an action.
+
+| Course target | Local target | Best question |
 | --- | --- | --- |
-| public runtime shape | `capstone-manifest`, `capstone-plugin`, `capstone-field`, `capstone-action`, `capstone-registry`, or `capstone-signatures` | `inspect` |
-| one concrete runtime behavior | `demo` or `capstone-trace` | `capstone-walkthrough` or runtime tests |
-| a saved review artifact for another learner or reviewer | `inspect`, `capstone-walkthrough`, or `capstone-verify-report` | `proof` |
-| the strongest local executable confidence | `capstone-confirm` | `proof` |
+| `capstone-manifest` | `manifest` | what public fields and actions exist? |
+| `capstone-plugin` | `plugin` | what does one concrete plugin publish? |
+| `capstone-field` | `field` | what schema does one field expose? |
+| `capstone-field-ownership` | `field-ownership` | which descriptor and storage owner implement it? |
+| `capstone-field-system` | `field-system` | which wider field powers are accepted or rejected? |
+| `capstone-action` | `action` | what signature and metadata does one action publish? |
+| `capstone-action-wrapper` | `action-wrapper` | which wrapper layer owns metadata and provenance? |
+| `capstone-bind-action` | `bind-action` | do proposed arguments fit the signature? |
+| `capstone-check-action` | `check-action` | which supported runtime hints match? |
+| `capstone-class-creation` | `class-creation` | what did preparation, shaping, and registration own? |
+| `capstone-registry` | `registry` | which plugins are registered in deterministic order? |
+| `capstone-signatures` | `signatures` | what generated constructor and action shapes are public? |
+| `capstone-governance` | `governance` | which powers are approved, constrained, or rejected? |
 
-## From the repository root
+`plugin`, `field`, `action`, `registry`, and `signatures` are useful supporting views.
+The [Capstone Map](capstone-map.md) names the narrower first command for each module.
 
-```bash
-make PROGRAM=python-programming/python-meta-programming capstone-manifest
-make PROGRAM=python-programming/python-meta-programming capstone-plugin
-make PROGRAM=python-programming/python-meta-programming capstone-field
-make PROGRAM=python-programming/python-meta-programming capstone-action
-make PROGRAM=python-programming/python-meta-programming capstone-registry
-make PROGRAM=python-programming/python-meta-programming capstone-signatures
-make PROGRAM=python-programming/python-meta-programming demo
-make PROGRAM=python-programming/python-meta-programming capstone-trace
-make PROGRAM=python-programming/python-meta-programming inspect
-make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
-make PROGRAM=python-programming/python-meta-programming capstone-tour
-make PROGRAM=python-programming/python-meta-programming capstone-verify-report
-make PROGRAM=python-programming/python-meta-programming capstone-confirm
-make PROGRAM=python-programming/python-meta-programming proof
-```
+## Three equivalent entry levels
 
-## From `capstone/`
+From the repository root:
 
 ```bash
-make manifest
-make plugin
-make field
-make action
-make registry
-make signatures
-make demo
-make trace
-make inspect
-make tour
-make verify-report
-make confirm
-make proof
+make PROGRAM=python-programming/python-meta-programming capstone-field-ownership
 ```
 
-## When to use which command
+From the Python Metaprogramming course directory:
 
-- `manifest`: inspect group-level schema and action metadata without execution
-- `plugin`: inspect one concrete plugin contract from the public CLI
-- `field`: inspect one concrete field contract and its exported schema
-- `action`: inspect one concrete action contract and its generated signature
-- `registry`: inspect registration determinism from the public surface
-- `signatures`: inspect constructor and action signatures together
-- `demo`: invoke one realistic plugin action directly in the terminal
-- `trace`: inspect result, configuration, and action history together
-- `inspect`: build the saved guided inspection bundle
-- `capstone-walkthrough` from the repository root, or `tour` inside `capstone/`, writes the guided walkthrough bundle into `artifacts/`
-- `capstone-tour`: use the same saved walkthrough bundle when you are moving through a proof route rather than a first-pass reading route
-- `verify-report`: write the executable verification report bundle into `artifacts/`
-- `confirm`: strongest local executable proof through pytest
-- `proof`: full published review route with saved bundles
+```bash
+make capstone-field-ownership
+```
 
-## Default choices when unsure
+From the capstone directory:
 
-- Choose `manifest` before `registry` unless plugin order is the actual question.
-- Choose `field` or `action` before `plugin` when one contract is the real pressure.
-- Choose `trace` before `demo` when metadata or action history probably matter.
-- Choose `inspect` before `capstone-walkthrough` when the question is still mainly about ownership.
-- Choose `confirm` before `proof` when a saved human-facing bundle is not required.
+```bash
+make field-ownership
+```
 
-## A small proof-first route
+The command name changes only because each Makefile owns a different public boundary.
+The JSON claim must not change.
 
-1. Start with `manifest`, `registry`, `plugin`, `field`, `action`, or `signatures` when the question is about public shape.
-2. Move to `demo` or `trace` when the question is about one concrete runtime behavior.
-3. Move to `inspect` or `capstone-walkthrough` when the question is about guided study or source ownership.
-4. Move to `verify-report`, `proof`, or `confirm` when the question is about executable confidence.
+The three forms are public course interfaces and must stay equivalent. A documented
+command that does not resolve is a product defect.
+
+## Command claim boundaries
+
+### Public shape
+
+Use `manifest`, `plugin`, `field`, `action`, `registry`, or `signatures` when the claim is
+about exported structure. These reports do not prove invocation.
+
+### Ownership
+
+Use `field-ownership`, `field-system`, `action-wrapper`, or `class-creation` when the
+claim asks which mechanism owns behavior. These reports include construction/execution
+flags so the learner can distinguish stored evidence from runtime work.
+
+### Preflight
+
+Use `bind-action` for Python call-shape rules. Escalate to `check-action` only when the
+question includes the supported hint subset. Neither route proves that an action
+executes successfully.
+
+### Governance
+
+Use `governance` for application-level mechanism decisions. Follow each decision to its
+named mechanism report and focused tests. A policy record cannot prove the behavior it
+approves.
+
+## Executing commands
+
+Only these first-pass routes deliberately cross into plugin construction or action
+invocation:
+
+| Course target | Local target | What crosses the boundary |
+| --- | --- | --- |
+| `demo` | `demo` | constructs one plugin and invokes one action |
+| `capstone-trace` | `trace` | constructs, invokes, and reports configuration, result, and history |
+
+Choose `trace` when result, configuration, and action history all matter. Choose `demo`
+only when the result itself is the claim. Neither is a stronger substitute for
+observational ownership evidence.
+
+## Saved bundle and confidence commands
+
+| Course or root target | Local target | Use |
+| --- | --- | --- |
+| `inspect` | `inspect` | save public shape and ownership reports |
+| `capstone-walkthrough` or `capstone-tour` | `tour` | save a guided public-to-runtime story |
+| `capstone-verify-report` | `verify-report` | save focused public evidence beside pytest output |
+| `capstone-confirm` | `confirm` | run the complete capstone test suite |
+| `proof` | `proof` | build every published review bundle |
+
+Saved bundles are for durable handoff. They are not the default first answer during a
+learning session.
+
+## Selection examples
+
+### “Why does `endpoint` ignore a same-named instance value?”
+
+Start in the Module 07 course lab. Then use `capstone-field-ownership`. Do not use
+`trace`; invocation adds no evidence about descriptor category.
+
+### “Do these values fit `deliver`?”
+
+Start with `capstone-bind-action`. Use `capstone-check-action` only if the claim includes
+runtime hints. Do not use `demo` until success or failure of the action itself matters.
+
+### “Why is `PluginMeta` accepted?”
+
+Use `capstone-class-creation` for mechanism evidence and `capstone-governance` for the
+decision. Neither output replaces class-creation and governance tests.
+
+### “Did one delivery record history correctly?”
+
+This claim requires execution. Use `capstone-trace`, then the focused runtime test.
+
+## Failure signals
+
+Your route is too broad when:
+
+- you run `proof` before naming a claim
+- you cite `confirm` without locating the protecting test
+- you use `trace` to explain a non-executing ownership question
+- you open a bundle before understanding its component reports
+
+Your route is too narrow when:
+
+- a structural report is used to claim runtime success
+- signature binding is used to claim hint compatibility
+- governance is used as proof of mechanism behavior
+- one focused test is used to claim full capstone regression confidence
 
 ## Good stopping point
 
-Stop when you can say:
+Stop when you can name:
 
-- which command you would run first for the current claim
-- why that command is smaller and more honest than the larger routes
-- what the next stronger route would be if the first one were not enough
+- the module claim already proved in the course
+- the smallest observational capstone command
+- whether construction or invocation occurs
+- the owning source and focused test
+- the explicit non-claim
+- the condition that would justify a stronger route

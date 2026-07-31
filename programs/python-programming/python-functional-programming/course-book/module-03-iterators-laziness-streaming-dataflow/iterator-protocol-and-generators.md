@@ -385,3 +385,130 @@ Everything else → generator.
 **Continue with:** [Generators vs Comprehensions](../module-03-iterators-laziness-streaming-dataflow/generators-vs-comprehensions.md)
 
 You now own the single most important primitive in all of Module 3. Everything else is just composing these lazy streams.
+
+## FuncPipe demand trace
+
+The reference state makes the timing claim observable in
+`tests/learning/test_module_03_streaming_dataflow.py`. Trace this simplified
+version before running it:
+
+```python
+from collections.abc import Iterator
+
+from funcpipe_rag import (
+    RagConfig,
+    RagEnv,
+    RawDoc,
+    gen_bounded_chunks,
+    get_deps,
+    stream_rag_chunks,
+)
+
+requested: list[str] = []
+
+
+def documents() -> Iterator[RawDoc]:
+    for doc_id in ("doc-a", "doc-b"):
+        requested.append(doc_id)
+        yield RawDoc(doc_id, "title", "x" * 200, "cs.AI")
+
+
+config = RagConfig(env=RagEnv(chunk_size=50))
+chunks = gen_bounded_chunks(documents(), config, get_deps(config), max_chunks=1)
+
+assert requested == []
+assert next(chunks).doc_id == "doc-a"
+assert requested == ["doc-a"]
+```
+
+`gen_bounded_chunks(...)` returns a generator immediately. The first `next()` enters
+its body, enters `stream_chunks`, requests one `RawDoc`, filters and cleans it, and
+then requests only the first chunk. Execution is suspended at that chunk's `yield`.
+The second document is not speculative work waiting in memory.
+
+| State | What Python has | What has executed |
+| --- | --- | --- |
+| iterable created | generator object | no generator body |
+| item requested | active call stack | enough upstream work for one output |
+| item yielded | suspended frames | local variables retained until the next request |
+
+This is why “generators use less memory” is incomplete. The stronger contract is
+**downstream demand controls upstream execution**.
+
+### Failure timing is part of the API
+
+If `documents()` raises while producing `doc-b`, constructing `chunks` still
+succeeds. The error appears only when demand reaches `doc-b`. Tests must drive the
+iterator far enough to cross the failing boundary:
+
+```python
+first = next(chunks)
+# No claim about later input has been tested yet.
+remaining = list(chunks)
+```
+
+A test that inspects only the generator object proves neither values nor failures.
+A test of one prefix proves only that prefix.
+
+The executable check proves no eager document read and no request beyond one output.
+It does not prove constant space. Streaming deduplication retains seen keys, fan-out
+retains lagging values, and a suspended generator retains its frame.
+
+## Trace the complete RAG iterator
+
+`gen_bounded_chunks` stops before embedding and deduplication. It is useful for
+proving a raw chunk fence, but it is not the complete application result.
+`stream_rag_chunks` composes the remaining stages:
+
+```text
+next(final_chunks)
+  -> request next unseen structural key
+  -> request embedded chunk
+  -> request pre-embedding chunk
+  -> request, filter, and clean documents as needed
+```
+
+The phrase “as needed” matters. If deduplication rejects a chunk, one downstream
+`next()` requests another upstream chunk. For documents with structural keys
+`duplicate`, `duplicate`, `unique`, asking for two unique outputs pulls all three
+documents.
+
+```python
+requested = []
+
+
+def documents():
+    for doc_id, abstract in (
+        ("duplicate", "same"),
+        ("duplicate", "same"),
+        ("unique", "other"),
+    ):
+        requested.append(doc_id)
+        yield RawDoc(doc_id, "title", abstract, "cs.AI")
+
+
+config = RagConfig(env=RagEnv(chunk_size=100))
+chunks = stream_rag_chunks(
+    documents(),
+    config,
+    get_deps(config),
+    max_chunks=2,
+)
+
+assert requested == []
+assert [chunk.doc_id for chunk in chunks] == ["duplicate", "unique"]
+assert requested == ["duplicate", "duplicate", "unique"]
+```
+
+The final fence bounds emitted unique `Chunk` values. It does not promise a
+one-to-one bound on source reads. Place a fence before deduplication when upstream
+cost is the quantity that must be bounded.
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-streaming-rag-proof
+```
+
+Before continuing, explain the exact upstream work caused by one `next(chunks)`,
+distinguish the raw and unique-output fences, and name one retained object that can
+still grow even though the pipeline is lazy.

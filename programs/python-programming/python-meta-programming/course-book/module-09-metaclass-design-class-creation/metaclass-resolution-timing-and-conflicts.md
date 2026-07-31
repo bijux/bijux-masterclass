@@ -1,6 +1,5 @@
 # Metaclass Resolution, Timing, and Conflicts
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Metaclass Design Class Creation"]
-  page["Metaclass Resolution, Timing, and Conflicts"]
+  page["Metaclass Resolution Timing and Conflicts"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -17,310 +16,228 @@ graph LR
 ```
 
 ```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+flowchart TD
+  statement["class Child(Base, metaclass=Requested)"]
+  requested["requested metaclass, if present"]
+  inherited["metaclasses of every base"]
+  compatible{"one candidate is a subtype of every requirement?"}
+  selected["effective metaclass"]
+  conflict["TypeError: metaclass conflict"]
+
+  statement --> requested --> compatible
+  statement --> inherited --> compatible
+  compatible -->|yes| selected
+  compatible -->|no| conflict
 ```
 <!-- page-maps:end -->
 
-Once you know that class creation is a runtime event, the next question is:
+Before Python executes a class body, it must choose the callable that will create the
+class. A custom metaclass may be requested explicitly or inherited through the base
+classes. Python still needs one compatible owner.
 
-which metaclass actually controls that event?
+## Run the selection experiment
 
-This core answers that question and makes one practical consequence unavoidable:
+From the course directory:
 
-metaclass work runs at definition time, which usually means import time.
-
-This page matters because learners often understand the conflict error before they
-understand the ownership collision behind it. A missed-class learner needs a route for
-proving where the effective metaclass comes from, when it runs, and why a joint
-metaclass is a semantic escalation rather than a repair macro.
-
-## The sentence to keep
-
-Python resolves one effective metaclass for the class being created, runs its class
-creation logic at definition time, and raises conflicts when multiple inheritance brings
-incompatible metaclass owners together.
-
-That one sentence explains most “why did this metaclass run?” questions.
-
-Keep one more sentence beside it:
-
-> a metaclass conflict is Python refusing to guess between competing class-creation authorities.
-
-For self-study, turn that sentence into a review test:
-
-- can I name the explicit metaclass request, if any?
-- can I name the metaclass arriving through each base?
-- can I say what import-time or subclass-wide behavior each authority wants to own?
-
-## Timing comes first
-
-Before talking about conflict rules, keep the timing clear:
-
-metaclass work runs when the class is defined, not when instances are created.
-
-In ordinary code that usually means:
-
-- module import time
-- class statement execution time
-
-That matters because any heavy work, I/O, or global mutation performed by a metaclass now
-happens before objects are ever instantiated.
-
-## Where the effective metaclass comes from
-
-There are two broad routes:
-
-- an explicit `metaclass=...` on the class statement
-- an implicit metaclass derived from the base classes
-
-Python then needs one effective metaclass that is compatible with the bases involved.
-
-That is why metaclass selection is not only a syntax detail. It is a multiple-inheritance
-rule.
-
-Use this table before trusting a class statement with metaclass behavior:
-
-| Pressure | Review question |
-| --- | --- |
-| explicit `metaclass=...` | what class-creation authority is being requested directly? |
-| inherited metaclass | what authority is arriving through the bases? |
-| definition time | what code runs during import or class statement execution? |
-| multiple inheritance | can one coherent effective metaclass honestly own the combined rule set? |
-
-## A compact mental model
-
-```text
-explicit metaclass, if present
-  -> must be compatible with the metaclasses of the bases
-
-no explicit metaclass
-  -> Python derives the effective metaclass from the bases
-
-no compatible common metaclass
-  -> metaclass conflict
+```console
+python3 -m unittest discover -s tests -p "test_class_creation_resolution.py" -v
+python3 -m labs.class_creation
 ```
 
-That is the review-level model most people need.
+Open:
 
-## Evidence route for metaclass resolution reviews
+- `labs/class_creation/resolution.py`
+- `tests/test_class_creation_resolution.py`
+- the `resolution` object in the JSON packet
 
-Use this route whenever a class seems to have metaclass behavior "from nowhere":
+Before reading the output, predict:
 
-| Evidence step | What it proves |
-| --- | --- |
-| inspect the class statement for an explicit metaclass | shows whether the owner was requested directly |
-| inspect each base class metaclass | shows inherited class-creation authorities |
-| identify the resolved effective metaclass | shows who actually owns class creation |
-| inspect one definition-time side effect | shows what work happens before instances ever exist |
-| test one multiple-inheritance case | shows whether the ownership story still composes |
+- the metaclass of `DeliveryAudit`
+- whether constructing `DeliveryAudit()` adds a metaclass creation event
+- what happens when bases carry unrelated metaclasses
 
-## A small metaclass example
+## Inherited selection
+
+The lab defines a metaclass that records each class it creates:
 
 ```python
-class TaggedMeta(type):
+class AuditMeta(type):
     def __new__(mcs, name, bases, namespace):
-        namespace["tag"] = f"created by {mcs.__name__}"
+        creation_events.append(f"create:{name}")
         return super().__new__(mcs, name, bases, namespace)
 
 
-class Base(metaclass=TaggedMeta):
+class AuditedBase(metaclass=AuditMeta):
     pass
 
 
-class Child(Base):
+class DeliveryAudit(AuditedBase):
     pass
-
-
-print(Base.tag)   # created by TaggedMeta
-print(Child.tag)  # created by TaggedMeta
 ```
 
-This example shows two useful facts:
-
-- metaclass effects are inherited through the class hierarchy
-- subclasses often keep the same metaclass implicitly
-
-That “infectious” behavior is exactly why metaclasses need stronger review discipline.
-
-Use this inheritance table when the blast radius feels understated:
-
-| Behavior | Why it matters |
-| --- | --- |
-| subclasses inherit the metaclass implicitly | a one-time decision becomes family-wide class-creation policy |
-| definition-time work repeats for every subclass | import-time cost and side effects scale with the hierarchy |
-| registry or validation behavior becomes automatic | lower-power opt-in alternatives may no longer be available |
-
-## Why conflicts happen
-
-Conflicts appear when multiple bases carry metaclasses that do not fit into one compatible
-hierarchy.
-
-For example:
+`DeliveryAudit` does not spell `metaclass=AuditMeta`, but:
 
 ```python
-class MetaA(type):
-    pass
-
-
-class MetaB(type):
-    pass
-
-
-class A(metaclass=MetaA):
-    pass
-
-
-class B(metaclass=MetaB):
-    pass
-
-
-try:
-    class Bad(A, B):
-        pass
-except TypeError as exc:
-    print("Expected:", exc)
+assert type(AuditedBase) is AuditMeta
+assert type(DeliveryAudit) is AuditMeta
 ```
 
-The conflict is not Python being fussy. It is Python telling you that two different
-class-creation owners are being combined without one clear higher-level owner.
+The base class carries class-creation authority into its descendants. This is the first
+major cost difference from an opt-in class decorator.
 
-That is the sentence to keep in review notes:
+## Definition time is not instance time
 
-"the error is a signal that ownership is ambiguous, not only that syntax is invalid."
+The evidence records:
 
-## Why “just combine them” is not always the answer
+```json
+{
+  "events_before_instance": [
+    "create:AuditedBase",
+    "create:DeliveryAudit"
+  ],
+  "instance_creation_added_events": false
+}
+```
 
-You can sometimes write a joint metaclass:
+Both classes were created while their class statements executed. In normal modules, that
+usually happens during import. Constructing `DeliveryAudit()` later does not rerun
+metaclass `__new__`.
+
+This distinction has practical consequences:
+
+- global registry writes happen before application startup finishes
+- metaclass exceptions can prevent a module from importing
+- slow I/O in class creation becomes slow import I/O
+- every descendant inherits the policy unless another compatible metaclass supersedes it
+
+“The metaclass runs at runtime” is true but too weak for review. State “during class
+definition, usually import” instead.
+
+## The compatibility rule
+
+For a class with bases, Python considers:
+
+- an explicitly requested metaclass, if present
+- the metaclass of every base class
+
+The selected metaclass must be a subclass of all those candidate metaclasses. If no such
+candidate is available, Python raises `TypeError`.
+
+The lab creates two unrelated authorities:
 
 ```python
-class MetaAB(MetaA, MetaB):
+class AuditMeta(type):
+    ...
+
+
+class PolicyMeta(type):
+    ...
+
+
+class AuditedBase(metaclass=AuditMeta):
+    pass
+
+
+class PolicyBase(metaclass=PolicyMeta):
     pass
 ```
 
-But this is only safe when the underlying behaviors truly compose.
+Then this fails before `Conflicted` is bound:
 
-That means a joint metaclass is:
+```python
+class Conflicted(AuditedBase, PolicyBase):
+    pass
+```
 
-- a semantic design decision
-- not a mechanical repair step
+The packet confirms a real `TypeError` containing “metaclass conflict.” Python is refusing
+to guess which class-creation authority should dominate.
 
-If the two metaclasses want incompatible timing, validation, or registration behavior, a
-joint metaclass may make the code worse rather than better.
+## A joint metaclass solves only the mechanical problem
 
-## Common overclaims to reject
+The lab also demonstrates an explicit compatible candidate:
 
-Reject these descriptions when they appear in review:
+```python
+class JointMeta(AuditMeta, PolicyMeta):
+    pass
 
-| Overclaim | Better replacement |
+
+class DeliberatelyCombined(
+    AuditedBase,
+    PolicyBase,
+    metaclass=JointMeta,
+):
+    pass
+```
+
+This makes construction mechanically possible because `JointMeta` is a subclass of both
+candidate metaclasses.
+
+It does not prove:
+
+- both policies call `super()` cooperatively
+- their namespace expectations agree
+- their mutation order is safe
+- their registration or validation semantics compose
+
+A joint metaclass is new integration code. It requires tests for both policies together,
+not merely an assertion that the class statement stopped raising.
+
+## Failure analysis
+
+When a conflict appears, use this route:
+
+1. List the explicit metaclass, if any.
+2. Record `type(base)` for every base.
+3. State the policy owned by each candidate.
+4. Ask whether both policies are truly needed in one class family.
+5. Prefer removing an unnecessary authority over combining them.
+6. If combination is necessary, test hook order and cooperative delegation.
+
+Do not start by writing `class CombinedMeta(LeftMeta, RightMeta)`. That treats a design
+collision as a syntax repair.
+
+## Capstone comparison
+
+Concrete incident plugins inherit `PluginMeta` through `PluginBase`; they do not repeat an
+explicit metaclass declaration.
+
+Run:
+
+```console
+make -C programs/python-programming/python-meta-programming capstone-class-creation
+```
+
+The report states:
+
+```json
+"metaclass_selection": "inherited from base class"
+```
+
+The capstone deliberately rejects automatic conflict resolution. If a plugin must also
+inherit from a class family with another metaclass, that composition needs an explicit
+design decision outside the current framework contract.
+
+## Review exercise
+
+Given `class Candidate(Left, Right): ...`, produce:
+
+| Evidence | Your result |
 | --- | --- |
-| "the metaclass only runs once" | "the metaclass runs each time the class statement executes, usually at import time" |
-| "a joint metaclass fixes the conflict" | "a joint metaclass is only valid if the underlying authorities truly compose" |
-| "the subclass just inherits the behavior" | "the subclass inherits the same class-creation authority and therefore the same blast radius" |
-| "it is only a type-system issue" | "it is a class-creation ownership issue with inheritance consequences" |
+| `type(Left)` | metaclass and owned policy |
+| `type(Right)` | metaclass and owned policy |
+| selected compatible candidate | exact type or “none” |
+| definition-time effects | registry, mutation, validation, or none |
+| lower-cost repair | remove, relocate, or combine a policy |
+| combined-policy proof | focused test needed if combination remains |
 
-## Weak answers to reject early
+## Exit check
 
-| Weak answer | Why it fails |
-| --- | --- |
-| "Python got confused by two metaclasses" | confusion hides the real ownership collision |
-| "the metaclass only matters at definition time" | definition time is exactly where import-time cost and hierarchy policy begin |
-| "a joint metaclass can merge them later" | later is not proof that the authorities actually compose |
-| "the subclass just inherits the setup" | setup language hides repeated class-creation control and blast radius |
+Continue when you can:
 
-## Import-time effects are part of the design
+- predict an inherited effective metaclass
+- distinguish class-definition events from instance-construction events
+- explain conflicts as incompatible ownership, not mysterious syntax
+- state the subtype compatibility rule
+- reject a joint metaclass that has no semantic composition proof
 
-Because resolution happens at definition time, every metaclass decision also carries an
-import-time design choice.
-
-Questions that matter immediately include:
-
-- does this metaclass mutate global registries?
-- does it do expensive scanning or I/O?
-- does class definition order now affect behavior?
-
-If those questions are not answered, the metaclass is not yet review-ready.
-
-Use this import-time checklist before approving a metaclass:
-
-- name one global state mutation, if any
-- name one expensive operation, if any
-- say whether class definition order changes the outcome
-- say how tests or reloads avoid accumulating stale effects
-
-Keep one import-time note beside every metaclass example:
-
-| Definition-time event | Why it matters |
-| --- | --- |
-| registry mutation | test reset and import ordering become part of design review |
-| validation failure | import can now fail before any instance exists |
-| expensive work during class definition | module load cost stops being incidental |
-
-## What this core is really trying to teach
-
-The point is not merely to memorize conflict errors.
-
-The point is to understand that metaclasses are:
-
-- inherited
-- definition-time
-- hierarchy-shaping
-
-Those three facts are enough to explain most of their risk surface.
-
-Before you leave this page, write one sentence beginning:
-
-- "the effective metaclass here is..."
-- "the first import-time cost I must account for is..."
-
-## Failure modes for resolution and conflict design
-
-These are the mistakes this page is trying to prevent:
-
-| Failure mode | Why it weakens the design | Repair move |
-| --- | --- | --- |
-| treating explicit `metaclass=` as isolated to one class | the hierarchy-wide effect gets underestimated | inspect subclass behavior and import-time repetition |
-| resolving a conflict by combining authorities mechanically | incompatible semantics get hidden inside one metaclass | justify the composition in domain terms or refuse it |
-| ignoring definition-time blast radius | import-time cost becomes invisible to reviewers | document the side effects and reset surfaces explicitly |
-| explaining conflicts only with the error text | the ownership lesson never becomes clear | restate the error as a class-creation authority collision |
-
-## Review rules for resolution and conflicts
-
-When reviewing metaclass selection, keep these questions close:
-
-- where is the effective metaclass coming from?
-- what work does it do at class-definition time?
-- are multiple bases introducing incompatible metaclass owners?
-- if a joint metaclass is proposed, do the underlying behaviors really compose?
-- would a lower-power tool avoid the import-time and inheritance consequences entirely?
-- what exact lower-power owner did you reject before accepting this family-wide authority?
-
-## Exit check for this page
-
-Before moving on, make sure you can do all of these:
-
-- name the effective metaclass for one example and say where it came from
-- explain why the work runs at definition time rather than at instance creation
-- describe one metaclass conflict as an ownership collision
-- say when a joint metaclass is semantically justified and when it is not
-
-## What to practice from this page
-
-Try these before moving on:
-
-1. Build one tiny metaclass that adds a marker attribute and show that subclasses inherit the metaclass implicitly.
-2. Trigger one metaclass conflict on purpose and explain it in ownership language instead of only error-message language.
-3. Write one short review note rejecting a “just combine the metaclasses” fix as semantically unsafe.
-
-If those feel ordinary, the next step is to separate structural work in metaclass
-`__new__` from post-creation bookkeeping in metaclass `__init__`.
-
-## Continue through Module 09
-
-- Previous: [Manual Class Creation with `type(...)`](manual-class-creation-with-type.md)
-- Next: [Metaclass `__new__` and `__init__`](metaclass-new-and-init.md)
-- Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)
+Next: [Metaclass `__new__` and `__init__`](metaclass-new-and-init.md).

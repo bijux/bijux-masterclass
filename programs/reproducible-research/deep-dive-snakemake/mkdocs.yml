@@ -77,11 +77,11 @@ nav:
 - 'Module 05: Software Boundaries and Reproducible Rules':
   - Home: module-05-software-boundaries-reproducible-rules/index.md
   - Rule Logic, Scripts, and Software Ownership: module-05-software-boundaries-reproducible-rules/rule-logic-scripts-and-software-ownership.md
+  - Workflow Adapters, Packages, and Reusable Boundaries: module-05-software-boundaries-reproducible-rules/helper-code-packages-and-reusable-boundaries.md
   - Environments, Containers, and Runtime Contracts: module-05-software-boundaries-reproducible-rules/environments-containers-and-runtime-contracts.md
-  - Helper Code, Packages, and Reusable Boundaries: module-05-software-boundaries-reproducible-rules/helper-code-packages-and-reusable-boundaries.md
   - Software Provenance, Drift, and Rebuild Evidence: module-05-software-boundaries-reproducible-rules/software-provenance-drift-and-rebuild-evidence.md
   - Failure Modes at the Software Boundary: module-05-software-boundaries-reproducible-rules/failure-modes-at-the-software-boundary.md
-  - 'Worked Example: Moving a Workflow Across the Software Boundary Safely': module-05-software-boundaries-reproducible-rules/worked-example-moving-a-workflow-across-the-software-boundary-safely.md
+  - 'Worked Example: Extract a Transformation Without Hiding Its Identity': module-05-software-boundaries-reproducible-rules/worked-example-moving-a-workflow-across-the-software-boundary-safely.md
   - Exercises: module-05-software-boundaries-reproducible-rules/exercises.md
   - Exercise Answers: module-05-software-boundaries-reproducible-rules/exercise-answers.md
   - Glossary: module-05-software-boundaries-reproducible-rules/glossary.md
@@ -100,21 +100,21 @@ nav:
   - Home: module-07-workflow-architecture-file-apis/index.md
   - Entrypoints, Repository Layers, and Visible Assembly: module-07-workflow-architecture-file-apis/entrypoints-repository-layers-and-visible-assembly.md
   - Rule Families, Modules, and Ownership Boundaries: module-07-workflow-architecture-file-apis/rule-families-modules-and-ownership-boundaries.md
-  - File APIs, Public Paths, and Contract Docs: module-07-workflow-architecture-file-apis/file-apis-public-paths-and-contract-docs.md
+  - File APIs, Public Paths, and Contract Documents: module-07-workflow-architecture-file-apis/file-apis-public-paths-and-contract-docs.md
   - Helpers, Scripts, Packages, and Coupling Control: module-07-workflow-architecture-file-apis/helpers-scripts-packages-and-coupling-control.md
   - Architecture Review, Drift, and Refactor Triggers: module-07-workflow-architecture-file-apis/architecture-review-drift-and-refactor-triggers.md
-  - 'Worked Example: Reading a Snakemake Repository Like an Architect': module-07-workflow-architecture-file-apis/worked-example-reading-a-snakemake-repository-like-an-architect.md
+  - 'Worked Example: Review One Artifact Across the Architecture': module-07-workflow-architecture-file-apis/worked-example-reading-a-snakemake-repository-like-an-architect.md
   - Exercises: module-07-workflow-architecture-file-apis/exercises.md
   - Exercise Answers: module-07-workflow-architecture-file-apis/exercise-answers.md
   - Glossary: module-07-workflow-architecture-file-apis/glossary.md
 - 'Module 08: Operating Contexts and Execution Policy':
   - Home: module-08-operating-contexts-execution-policy/index.md
   - Profiles as Policy and Semantic Boundaries: module-08-operating-contexts-execution-policy/profiles-as-policy-and-semantic-boundaries.md
-  - Executors, Queues, and Context-Invariant Workflow Meaning: module-08-operating-contexts-execution-policy/executors-queues-and-context-invariant-workflow-meaning.md
+  - Executors, Resources, and Context-Invariant Workflow Meaning: module-08-operating-contexts-execution-policy/executors-queues-and-context-invariant-workflow-meaning.md
   - Retries, Latency, and Failure Discipline: module-08-operating-contexts-execution-policy/retries-latency-and-failure-discipline.md
-  - Staging, Storage, and Filesystem Assumptions: module-08-operating-contexts-execution-policy/staging-storage-and-filesystem-assumptions.md
+  - Staging, Storage, and Filesystem Trust: module-08-operating-contexts-execution-policy/staging-storage-and-filesystem-assumptions.md
   - Reviewing Operating-Context Drift and Policy Leaks: module-08-operating-contexts-execution-policy/reviewing-operating-context-drift-and-policy-leaks.md
-  - 'Worked Example: Auditing Local, CI, and SLURM Without Semantic Drift': module-08-operating-contexts-execution-policy/worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md
+  - 'Worked Example: Proving Context Invariance and Catching Policy Leaks': module-08-operating-contexts-execution-policy/worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md
   - Exercises: module-08-operating-contexts-execution-policy/exercises.md
   - Exercise Answers: module-08-operating-contexts-execution-policy/exercise-answers.md
   - Glossary: module-08-operating-contexts-execution-policy/glossary.md
@@ -160,7 +160,15 @@ nav:
   - Workflow Tour: capstone-docs/tour.md
   - Workflow Architecture Guide: capstone-docs/architecture.md
   - Extension Guide: capstone-docs/extension-guide.md
+  - File Contract Audit Guide: capstone-docs/file-contract-audit-guide.md
   - Profile Audit Guide: capstone-docs/profile-audit-guide.md
+  - Module Interface Audit Guide: capstone-docs/module-interface-audit-guide.md
+  - Performance Diagnostics Audit Guide: capstone-docs/performance-diagnostics-audit-guide.md
+  - Scheduler Policy Audit Guide: capstone-docs/scheduler-policy-audit-guide.md
+  - Context Invariance Audit Guide: capstone-docs/context-invariance-audit-guide.md
+  - Discovery Integrity Audit Guide: capstone-docs/discovery-integrity-audit-guide.md
+  - Publish Compatibility Audit Guide: capstone-docs/publish-compatibility-audit-guide.md
+  - Software Boundary Audit Guide: capstone-docs/software-boundary-audit-guide.md
   - Domain Guide: capstone-docs/domain-guide.md
 - Reference:
   - Home: reference/index.md
@@ -176,15 +184,6 @@ nav:
 
 theme:
   custom_dir: ../../../docs/overrides
-  logo: ../../../docs/assets/bijux_logo_hq.png
-  favicon: ../../../docs/assets/site-icons/favicon.ico
-
-extra_css:
-  - ../../../docs/assets/styles/extra.css
-
-extra_javascript:
-  - ../../../docs/assets/javascripts/vendor/mermaid-11.6.0.min.js
-  - ../../../docs/assets/javascripts/mermaid-init.js
 
 hooks:
   - ../../../docs/hooks/publish_site_assets.py

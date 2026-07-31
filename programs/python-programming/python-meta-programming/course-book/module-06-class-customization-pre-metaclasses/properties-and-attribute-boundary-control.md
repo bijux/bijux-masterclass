@@ -67,6 +67,20 @@ That is one reason Module 06 places properties before the reusable descriptor pa
 Readers need to see that the runtime machinery is already here before the course increases
 its reuse power.
 
+## Begin with the observable conflict
+
+Run `make class-customization-lab` and read `property_boundary`. Its
+`DeliveryConfig.endpoint` property stores a valid HTTPS URL in `_endpoint`. The lab then
+writes an apparently conflicting entry directly:
+
+```python
+vars(config)["endpoint"] = "shadowed"
+```
+
+Reading `config.endpoint` still returns `"https://example.test"`, not `"shadowed"`.
+That is runtime evidence for data-descriptor precedence. It also reveals the storage
+story: the property owns public `endpoint`; `_endpoint` owns the value.
+
 ## Properties are data descriptors
 
 This detail matters a lot:
@@ -116,6 +130,9 @@ Use this route when you need to prove the lookup story to yourself:
 That route matters because many learners assume "no setter" means "shadowable." The
 runtime does not agree.
 
+The packet performs the same conflict with a setter-backed property and records both
+values. The focused test fails if lookup ever returns the same-named instance entry.
+
 ## A standard validation example
 
 ```python
@@ -142,6 +159,11 @@ This is a good Module 06 example because:
 
 That is exactly the sort of lower-power ownership decision the module is trying to teach.
 
+The lab uses a domain-shaped rule instead: assigning `"http://insecure.test"` raises
+`ValueError("endpoint must use https")`, and the prior valid endpoint remains visible.
+The property therefore owns an invariant on every ordinary assignment, not merely a
+formatted read.
+
 It also shows a review habit worth keeping: the public name and the storage name should
 tell the same story. If the public boundary is `radius`, the backing storage should not
 turn into a confusing second policy surface.
@@ -167,6 +189,10 @@ Even without a custom setter, this property still wins over instance state durin
 
 That is a crucial correction because many people assume "no setter" means the property is
 like a method-like computed attribute that can be shadowed. It is not.
+
+Do not turn "cannot be shadowed through normal lookup" into "cannot be bypassed."
+Directly mutating the backing field, overriding lookup, or changing the class can still
+change behavior. This proof is about descriptor precedence, not tamper-proof state.
 
 ## Storage patterns to review explicitly
 
@@ -232,6 +258,11 @@ A property is a weaker fit when:
 
 Those are clues that later descriptor tools may be the more honest owner.
 
+Compare the lab's `property_boundary` with `descriptor_boundary`. The property spells
+out one HTTPS rule for one attribute. `TypedField` becomes useful only when the same
+shallow type-and-storage rule repeats for `endpoint` and `attempts`. Reuse pressure,
+not prestige, justifies the stronger owner.
+
 Use this escalation table when you feel unsure:
 
 | Pressure | Stay with property? | Why |
@@ -289,6 +320,17 @@ Leave this page with a small packet:
 - one sentence explaining why the rule is still local enough to stay a property
 - one rejected escalation note describing what repeated pressure would justify a descriptor
 
+## Smallest honest proof route
+
+```bash
+python -m unittest \
+  tests.test_class_customization_evidence.ClassCustomizationEvidenceTests.test_property_packet_proves_data_descriptor_precedence
+```
+
+This proves normal lookup precedence, assignment failure, and backing-storage
+separation. It does not prove deep immutability, secrecy, thread safety, or protection
+against deliberate bypass.
+
 ## Exit check for this page
 
 Before moving on, make sure you can do all of these:
@@ -302,9 +344,10 @@ Before moving on, make sure you can do all of these:
 
 Try these before moving on:
 
-1. Implement a property with validation and explain why the rule belongs at one attribute boundary.
-2. Show that a read-only property still beats a same-named entry in `__dict__`.
-3. Write down one case where a property is the right fit and one where a reusable descriptor system would be more honest.
+1. Predict both visible values before running the packet.
+2. Change the valid endpoint and prove a rejected later assignment leaves it unchanged.
+3. Add a read-only property and show that a same-named entry in `__dict__` still loses.
+4. Name the exact repetition that would justify moving this rule into a descriptor.
 
 If those feel ordinary, the next step is to use type hints as declarative aids for shallow
 validation through descriptors.

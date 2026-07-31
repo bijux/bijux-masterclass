@@ -217,6 +217,54 @@ Review checkpoint:
 - is the frame evidence transient and bounded?
 - if the helper disappeared, would the application contract become clearer rather than weaker?
 
+## Evidence practicum: collect less and discard the frame
+
+Run:
+
+```console
+$ make evidence-lab |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["frames"])'
+{'bounded_to': 2, 'caller_names': ['frame_evidence', 'build_evidence'], 'evidence_strength': 'diagnostic-only', 'retains_frame_objects': False}
+```
+
+The stable claims in this packet are about the helper's policy:
+
+- the caller walk is bounded to two names
+- the returned value contains strings rather than frames
+- the local frame reference is deleted in `finally`
+- the evidence is labeled diagnostic-only
+
+The caller names are expected in this controlled route, but caller identity is not a
+portable application contract. Refactoring the call path can change those names without
+changing business behavior.
+
+Run `make evidence-lab-test` and inspect the `caller_names(0)` case. Rejecting a limit
+below one is how the helper makes bounded collection part of its API rather than a
+suggestion in prose.
+
+### Compare the two Module 03 products
+
+The evidence packet includes a small, bounded frame diagnostic because the lesson is
+about responsible frame handling. The signature-guided representation includes no frame
+inspection at all because its job does not need caller context.
+
+That contrast is more important than memorizing `del frame`:
+
+| Product behavior | Frame decision |
+| --- | --- |
+| explicit runtime-evidence diagnostic | collect two caller names and release the frame |
+| ordinary object representation | do not inspect frames |
+| plugin action binding | accept explicit group, plugin, action, and arguments |
+
+When application behavior needs context, explicit inputs are the durable design.
+
+### Investigation
+
+Change the frame limit from two to one and identify which assertion changes. Then imagine
+renaming the caller. If the helper were used for authorization or routing, that harmless
+refactor could change application behavior. Restore the original implementation and keep
+the stack out of control flow.
+
 ## Review rules for frame inspection
 
 When reviewing frame or stack inspection, keep these questions close:

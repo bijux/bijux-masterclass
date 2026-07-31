@@ -38,6 +38,32 @@ Use one lab story all day instead of five unrelated snippets:
 That lab is intentionally small. It is large enough to teach a DAG, a selective rebuild,
 and a real output boundary, but still small enough to redraw on paper.
 
+## The executable pressure lab
+
+The running lab teaches construction. The capstone’s file-contract audit supplies a
+fixed adversarial comparison when you need to test your explanation:
+
+```console
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make file-contract-audit
+```
+
+Use it after reading the convergence and publication pages, not before learning the
+basic DAG model.
+
+```mermaid
+flowchart LR
+  construct["construct tiny honest DAG"] --> settle["prove immediate convergence"]
+  settle --> hide["observe hidden-input under-rebuild"]
+  hide --> poison["observe in-place poison"]
+  poison --> protect["observe atomic preservation"]
+  protect --> argue["write bounded acceptance argument"]
+```
+
+The route produces seven findings. Some intentionally unsafe findings are `PASS / REJECT`.
+That means the audit successfully reproduced behavior a real workflow should reject. It
+does not mean the unsafe rule passed review.
+
 ## Plan for the day
 
 | Session | What you do | Evidence you keep |
@@ -130,6 +156,7 @@ snakemake --summary
 snakemake --dag | dot -Tpdf > dag.pdf
 snakemake --rulegraph | dot -Tpdf > rulegraph.pdf
 snakemake --lint
+make -C programs/reproducible-research/deep-dive-snakemake/capstone file-contract-audit
 ```
 
 They answer different questions:
@@ -139,6 +166,7 @@ They answer different questions:
 - how jobs depend on each other
 - how rules relate structurally
 - which design smells already exist
+- whether one controlled hidden-input and publication contrast behaves as predicted
 
 ## What the first-day lab should feel like
 

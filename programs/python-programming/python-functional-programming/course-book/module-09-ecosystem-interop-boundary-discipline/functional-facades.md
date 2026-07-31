@@ -254,11 +254,15 @@ def kafka_consumer_adapter(
     return KafkaConsumer()
 ```
 ### 4.4 Integration in RAG
+
+The shipped application uses `deterministic_embedder_port` and local embeddings.
+It adds no network or model dependency:
+
 ```python
-embedder = openai_embedder_adapter(client_factory=lambda: openai.OpenAI(api_key=os.getenv("OPENAI_KEY")))
-items = [Keyed(key=str(i), value=c) for i, c in enumerate(chunks)]
-action = embedder.embed_batch(items)
-result = perform_io(action)  # Interpreter at sink
+embedder = deterministic_embedder_port()
+items = [Keyed(key=str(i), value=chunk) for i, chunk in enumerate(chunks)]
+plan = embedder.embed_batch(items)
+result = perform(plan)
 ```
 ### 4.5 Before/After Refactor
 ```python
@@ -273,25 +277,18 @@ action = embedder.embed_batch(items)
 result = perform_io(action)  # Effects only here
 ```
 ---
-## 5. Property-Based Proofs (repo tests)
-Runnable tests live in `capstone/tests/unit/domain/test_facades.py`.
-```python
-@given(st.lists(chunk_strat(), max_size=10))
-def test_openai_facade_laws_fake(chunks):
-    fake_resp = FakeOpenAIResponse(data=[FakeEmbedding(embedding=[0.1]*1536) for _ in chunks])
-    def fake_factory(): return FakeOpenAI(fake_resp)
-    facade = openai_embedder_adapter(fake_factory)
-    keys = [str(i) for i in range(len(chunks))]
-    items = [Keyed(key=k, value=c) for k, c in zip(keys, chunks)]
-    action1 = facade.embed_batch(items)
-    action2 = facade.embed_batch(items)
-    # Observational equality: interpret under same fake
-    actual1 = perform_fake_io(action1)
-    actual2 = perform_fake_io(action2)
-    assert actual1 == actual2
-    expected = Ok([Keyed(key=keys[i], value=EmbeddedChunk(chunk=chunks[i], embedding=fake_resp.data[i].embedding)) for i in range(len(chunks))])
-    assert actual1 == expected
+## 5. Executable proof
+
+`tests/unit/domain/test_facades.py` proves deferral and key preservation on the
+success route. The learning test adds failure translation:
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k facade_defers_client_failure_and_returns_it_as_data
 ```
+
+No external client is needed. A controlled fake exposes exactly when the effect
+runs and how an exception becomes `ErrInfo`.
 ---
 ## 6. Runtime Preservation Guarantee
 Facades add description overhead (negligible); interpretation at sinks preserves perf.
@@ -310,9 +307,11 @@ Facades add description overhead (negligible); interpretation at sinks preserves
 3. Errors become…? → **Rich ErrInfo**
 4. Benefit? → **Pure + testable**
 5. Law? → **Purity + equivalence**
-## 9. Post-Core Exercise
-1. Wrap a lib (e.g., boto3) returning IoAction.
-2. Prove laws with fake interpreter.
+## 9. Post-core exercise
+
+Complete [Functional facades: defer and translate client
+failure](exercises.md#functional-facades-defer-and-translate-client-failure).
+State whether batch failure is atomic before changing the implementation.
 **Pipeline Usage (Idiomatic)**
 ```python
 embedder = openai_embedder_adapter(client_factory)

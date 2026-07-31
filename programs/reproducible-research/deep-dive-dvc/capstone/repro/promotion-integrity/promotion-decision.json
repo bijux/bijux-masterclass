@@ -1,0 +1,19 @@
+{
+  "approvals": [
+    {
+      "reviewer": "release-owner",
+      "role": "model-owner"
+    },
+    {
+      "reviewer": "independent-reviewer",
+      "role": "risk-reviewer"
+    }
+  ],
+  "decision": "APPROVE",
+  "dvc_lock_sha256": "25e2f6c662c4494ad815256383a96ad73af448fe555124fb9d7f27b580d925e5",
+  "git_revision": "8b9e4fdc2b5f9e6d84c2dd6dd8fb21a7bce4d170",
+  "rationale": "The candidate satisfies the release inventory, artifact integrity, promoted threshold, and independent review requirements.",
+  "registry_reference": "incident-escalation/2026-07",
+  "release_id": "incident-escalation-2026-07",
+  "reviewed_at": "2026-07-28T09:30:00Z"
+}

@@ -1,6 +1,5 @@
 # Manual Class Creation with `type(...)`
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Metaclass Design Class Creation"]
-  page["Manual Class Creation with `type(...)`"]
+  page["Manual Class Creation with type"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -18,273 +17,216 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  name["name"]
+  bases["bases"]
+  namespace["namespace"]
+  constructor["type(name, bases, namespace)"]
+  class_object["new class object"]
+  instance["instance created later"]
+
+  name --> constructor
+  bases --> constructor
+  namespace --> constructor
+  constructor --> class_object --> instance
 ```
 <!-- page-maps:end -->
 
-Module 09 starts by stripping away the `class` statement and looking at the class creation
-primitive directly.
+A class statement is convenient syntax for building a class object. Start Module 09 by
+making those construction inputs visible before adding a custom metaclass.
 
-That matters because metaclasses are not a separate magical system. They are an extension
-of the same class-construction story.
+## The problem: assemble one class from explicit data
 
-This page matters because many learners jump from "classes are runtime values" straight to
-"therefore metaclasses must be the right owner." This page should stop that jump by making
-the smaller owner visible first.
+Imagine a local schema loader has already produced:
 
-## The sentence to keep
+- the name `DeliveryNotice`
+- the base class `object`
+- a `channel` attribute
+- a `render` function
 
-`type(name, bases, namespace)` is the default class-construction primitive, and
-understanding it makes metaclasses feel like control over class creation rather than like
-mystical syntax.
+The pressure is to create one class from that data. Nothing yet requires a policy over
+future subclasses. Calling `type(...)` directly is therefore smaller and more honest than
+defining a custom metaclass.
 
-That is the foundation for the rest of the module.
+## Run the focused evidence
 
-Keep one more sentence beside it:
+From the course directory:
 
-> if one explicit `type(...)` call solves the problem clearly, a repeating metaclass owner is usually too strong.
-
-For self-study, turn that into a concrete test:
-
-- can I point to the one call site that owns this dynamic construction?
-- can I name what would have to repeat across future classes before a family-wide owner became justified?
-- can I explain the generated class without using mystical language such as "meta" or "magic"?
-
-## What the three arguments mean
-
-The shape is:
-
-```python
-type(name, bases, namespace)
+```console
+python3 -m unittest discover -s tests -p "test_class_creation_manual.py" -v
+python3 -m labs.class_creation
 ```
 
-and each part has a clear job:
+Inspect:
 
-- `name` becomes the class name
-- `bases` defines inheritance and contributes to the MRO
-- `namespace` provides the class attributes, methods, and metadata
+- `labs/class_creation/manual.py`
+- `tests/test_class_creation_manual.py`
+- the `manual_construction` object in the JSON packet
 
-That is enough to build a class object directly.
+Predict the result before opening the JSON:
 
-Use this table before escalating from `type(...)` to a metaclass:
+1. What will `created.__name__` be?
+2. What will `created.__bases__` contain?
+3. Where will `channel` be stored?
+4. When is the first instance created?
 
-| Pressure | Review question |
-| --- | --- |
-| one-off dynamic construction | is one explicit call already enough? |
-| repeated hierarchy-wide rule | does every future subclass need the same owner automatically? |
-| namespace shaping | does the rule belong to class creation or only to this one factory? |
-| blast radius | does the design affect one class or an entire family and import path? |
+## The construction recipe
 
-## A compact example
+The lab names the three inputs:
 
 ```python
-def make_greeter_class(class_name, greeting):
-    def greet(self):
-        return f"{greeting} from {self.__class__.__name__}"
-
-    namespace = {
-        "__doc__": f"{class_name} created with type()",
-        "greet": greet,
-        "kind": "generated",
-    }
-    return type(class_name, (object,), namespace)
-
-
-Hello = make_greeter_class("Hello", "Hi")
-instance = Hello()
-
-print(instance.greet())  # Hi from Hello
-print(Hello.kind)        # generated
+@dataclass(frozen=True, slots=True)
+class ClassRecipe:
+    name: str
+    bases: tuple[type[object], ...]
+    namespace: dict[str, object]
 ```
 
-This example is small, but it already shows the main point:
-
-class creation is something Python can perform from data.
-
-That sentence matters because it removes the mysticism without forcing metaclass
-escalation.
-
-## Why this matters before metaclasses
-
-Metaclasses only make sense once you see that class creation is already a runtime action.
-
-If a class can be created from:
-
-- a name
-- base classes
-- a namespace mapping
-
-then a metaclass is a way to intercept or customize that process.
-
-That is much easier to reason about than “metaclasses are the class of a class” by itself.
-
-## Evidence route for `type(...)` reviews
-
-Use this route whenever dynamic construction starts to sound more exotic than it is:
-
-| Evidence step | What it proves |
-| --- | --- |
-| identify the exact `name`, `bases`, and `namespace` inputs | shows the raw class-construction ingredients |
-| inspect one generated method or attribute | shows how namespace data becomes class behavior |
-| inspect metadata such as `__module__` | shows what the factory must supply manually |
-| ask whether another class needs the same logic automatically | shows whether a metaclass owner is even in scope |
-
-## The namespace is not just a bag of attributes
-
-The `namespace` argument is where the future class body lands conceptually:
-
-- methods
-- constants
-- descriptors
-- documentation
-- special names such as `__module__`
-
-This matters because later hooks such as metaclass `__new__` and `__prepare__` are really
-about controlling or observing that namespace at the right time.
-
-Use this namespace table when the review gets fuzzy:
-
-| Namespace item | Why it matters for ownership |
-| --- | --- |
-| methods and descriptors | show what behavior the factory is creating directly |
-| metadata such as `__module__` | shows what a plain class statement would usually supply for free |
-| helper constants | shows what belongs only to this one generated class |
-| special names | shows where dynamic construction can leave a class half-formed if details are skipped |
-
-## A note about `__module__`
-
-A `class` statement fills in `__module__` automatically.
-
-When calling `type(...)` directly, you should set it yourself if you care about:
-
-- debugging and reprs
-- pickling
-- documentation surfaces
-
-For example:
+Then it constructs a class:
 
 ```python
-def make_class_in_module(name, module):
-    namespace = {
-        "__module__": module,
-        "value": 1,
-    }
-    return type(name, (object,), namespace)
+def build_class(recipe: ClassRecipe) -> type[object]:
+    if not recipe.name.isidentifier():
+        raise ValueError(f"class name must be an identifier: {recipe.name!r}")
+    namespace = dict(recipe.namespace)
+    namespace.setdefault("__module__", __name__)
+    return type(recipe.name, recipe.bases, namespace)
 ```
 
-This is a small detail, but it keeps dynamic classes from feeling half-formed.
+Trace each input to the result:
 
-It also teaches a larger lesson:
-
-dynamic construction is honest only when the factory supplies the metadata a human reader
-would expect from a normal class statement.
-
-## A factory audit card
-
-Use this card whenever a `type(...)` factory starts sounding more powerful than it is:
-
-| Question | Strong answer shape |
+| Recipe input | Observable result |
 | --- | --- |
-| what data is truly dynamic here? | one changing name, base set, namespace rule, or metadata input |
-| what metadata must the factory supply manually? | `__module__`, docs, descriptors, or another named field |
-| what stays local to this one call site? | the entire class-construction decision |
-| what condition would force escalation later? | repeated family-wide construction policy or class-creation-time invariant |
+| `name="DeliveryNotice"` | `created.__name__ == "DeliveryNotice"` |
+| `bases=(object,)` | `created.__bases__ == (object,)` |
+| `namespace["channel"]` | `created.channel == "console"` |
+| `namespace["render"]` | an instance binds and calls `render` as a method |
+| injected `__module__` | introspection identifies the defining module |
 
-## Why `type(...)` is still lower-power than a custom metaclass
+The returned object is a class. It is itself an instance of `type`.
 
-Manual `type(...)` creation is dynamic, but it is still explicit and local:
+```python
+created = build_class(recipe)
 
-- one class is being created
-- the caller owns the whole construction site
-- there is no automatic effect on future subclasses
+assert isinstance(created, type)
+notice = created()
+assert type(notice) is created
+```
 
-That makes it a lower-power tool than a metaclass, even though both participate in class
-creation.
+Class creation happens at the first line. Instance construction happens at the second.
+Keeping those events separate prevents later confusion about metaclass timing.
 
-## Common overclaims to reject
+## Why copy the namespace
 
-Reject these descriptions when they appear in review:
+The lab calls `dict(recipe.namespace)` before passing it to `type`.
 
-| Overclaim | Better replacement |
-| --- | --- |
-| "we are basically doing metaprogramming already" | "we are explicitly constructing one class from data" |
-| "dynamic classes need a metaclass next" | "a metaclass is only needed if class-creation control must repeat across a family" |
-| "the factory hides the same complexity as a metaclass" | "the factory keeps ownership local to one call site" |
-| "the namespace is just an implementation detail" | "the namespace is the class body made explicit" |
+That copy creates a boundary:
 
-## Weak answers to reject early
+```python
+namespace = {"channel": "console"}
+created = build_class(ClassRecipe("Delivery", (), namespace))
+namespace["channel"] = "webhook"
 
-| Weak answer | Why it fails |
-| --- | --- |
-| "it is dynamic so a metaclass is nearby anyway" | dynamic construction alone does not create a hierarchy-wide owner |
-| "the factory is more advanced than a class statement" | advanced does not explain why the owner is still local |
-| "the namespace just contains the code" | that wording hides the explicit class-construction inputs the reader must inspect |
-| "this could scale to many classes later" | later is not a present justification for stronger ownership |
+assert created.channel == "console"
+```
 
-## Failure modes for manual class creation
+Without the copy, reviewers might incorrectly assume later mutation of the recipe changes
+the already-created class. The test makes the intended ownership explicit: construction
+consumes the values present at that moment.
 
-These are the mistakes this page is trying to prevent:
+This is a shallow copy. Mutable objects inside the mapping would still be shared. The lab
+does not claim deep isolation.
 
-| Failure mode | Why it weakens the design | Repair move |
-| --- | --- | --- |
-| escalating to metaclasses before one explicit factory is tried | the design jumps to a stronger owner than needed | prove that one-off `type(...)` construction is insufficient first |
-| leaving metadata such as `__module__` implicit when it matters | generated classes feel incomplete in debugging and tooling | set the metadata deliberately |
-| using factories when no real dynamic input exists | the code becomes harder to read for no gain | replace with a normal class statement |
-| describing the factory in mystical terms | readers stop checking the actual `name`, `bases`, and `namespace` inputs | restate the construction in plain class-creation language |
+## Why `__module__` matters
 
-## What this page makes clear
+A class statement normally supplies attributes such as `__module__` and `__qualname__`.
+When code creates a class manually, the caller owns enough of that context to keep
+introspection understandable.
 
-The point is not “build classes dynamically all the time.”
+The lab supplies `__module__` when the recipe does not. It deliberately does not invent a
+synthetic `__qualname__` hierarchy or source location. Manual construction can make source
+provenance less obvious, which is one reason ordinary class syntax remains preferable for
+ordinary classes.
 
-The boundary is:
+## Failure route: reject invalid construction input
 
-- class creation is a runtime event
-- class objects can be built explicitly
-- metaclasses only make sense as control over that event
+The lab rejects a non-identifier name before calling `type`:
 
-Before you leave this page, write one sentence beginning:
+```python
+build_class(ClassRecipe("not a class", (), {}))
+# ValueError: class name must be an identifier: 'not a class'
+```
 
-- "a metaclass would only become necessary here if..."
+This proves a local factory can own local input validation. A custom metaclass would add
+hierarchy-wide behavior without solving a hierarchy-wide problem.
 
-Once that is clear, the rest of Module 09 becomes much less mystical.
+Other failures remain Python’s responsibility:
 
-## Review rules for manual class creation
+- incompatible bases
+- invalid metaclass selection derived from those bases
+- namespace entries that violate a descriptor or base-class rule
 
-When reviewing code that uses `type(...)`, keep these questions close:
+Do not wrap every `TypeError` merely to make the factory appear more complete.
 
-- why is the class being built dynamically at all?
-- are the bases and namespace explicit enough to inspect?
-- does the class need `__module__` or other metadata set manually?
-- would a plain `class` statement still be clearer if no true dynamic construction is needed?
-- is this dynamic class creation staying local, or is it drifting toward a metaclass-level concern?
-- what exact stronger owner would be required before `type(...)` stopped being enough?
+## Where manual construction stops
 
-## Exit check for this page
+Direct `type(...)` is a good fit when:
 
-Before moving on, make sure you can do all of these:
+- one explicit call site owns class generation
+- the name, bases, and namespace already exist as data
+- callers can see when generation happens
+- no automatic rule must govern future subclasses
 
-- point to what each `type(...)` argument contributes in one real example
-- name one metadata field that a dynamic factory may need to set manually
-- explain why the design is still local instead of hierarchy-wide
-- say what condition would justify escalating from `type(...)` to a metaclass
+It becomes insufficient when the real invariant is:
 
-## What to practice from this page
+- every subclass must be checked automatically
+- class-body assignments must be observed while they occur
+- one class family needs a consistent construction protocol
 
-Try these before moving on:
+Those pressures lead to later sections. They do not retroactively make this factory a
+metaclass.
 
-1. Build one tiny class with `type(...)` and explain which part of the tuple or namespace produced each visible behavior.
-2. Add `__module__` manually and explain why it matters for dynamic classes.
-3. Write one sentence explaining why `type(...)` is still lower-power than a custom metaclass.
+## Capstone comparison
 
-If those feel ordinary, the next step is metaclass resolution: how Python chooses a
-metaclass, when the work runs, and why conflicts appear.
+The incident-plugin capstone does not call `type(...)` from application code to create each
+plugin. Plugin authors use ordinary class statements because those declarations are the
+reader-facing API.
 
-## Continue through Module 09
+The capstone still reaches the same primitive: `PluginMeta.__new__` delegates to
+`type.__new__` through `super()`. Its extra policy is justified only because every plugin
+subclass participates in field collection, signature generation, and registration.
 
-- Previous: [Overview](index.md)
-- Next: [Metaclass Resolution, Timing, and Conflicts](metaclass-resolution-timing-and-conflicts.md)
-- Practice: [Exercises](exercises.md)
-- Terms: [Glossary](glossary.md)
+That is the transfer:
+
+```text
+one explicit generated class
+  -> direct type(...) call
+
+one automatic policy over a class family
+  -> consider a metaclass after rejecting lower-power owners
+```
+
+## Review exercise
+
+For any proposed dynamic class factory, record:
+
+- the exact source of `name`, `bases`, and `namespace`
+- who validates those inputs
+- when construction happens
+- how the class is discoverable in tracebacks and introspection
+- why an ordinary class statement is not clearer
+- why future subclasses do or do not need automatic policy
+
+If the final answer is only “metaclasses are more flexible,” the ownership analysis is
+not complete.
+
+## Exit check
+
+Continue when you can:
+
+- map all three `type(...)` inputs to observable class attributes
+- explain why the returned class exists before any instance
+- identify the shallow namespace-copy boundary
+- name one provenance cost of manual construction
+- reject a metaclass for this one-call-site problem
+
+Next: [Metaclass Resolution, Timing, and Conflicts](metaclass-resolution-timing-and-conflicts.md).

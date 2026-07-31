@@ -45,12 +45,17 @@ This module turns purity from a local refactoring habit into a reusable design s
 The focus is on configuration, expression-oriented code, and APIs that compose without
 leaking globals or control flags.
 
+Start with [FuncPipe Delta](capstone-delta.md). It maps the Module 01 application to
+the new configured API, names the behavior that must remain equal, and provides the
+smallest executable proof route.
+
 ## Learning outcomes
 
 - how closures and partial application create configurable pure behavior
 - how expression-oriented Python keeps dataflow visible
 - how to design APIs that stay small, explicit, and testable
 - how to represent configuration and rules as data instead of ambient behavior
+- how to return expected filesystem failure without moving effects into the core
 
 ## Lesson map
 
@@ -66,32 +71,48 @@ leaking globals or control flags.
 - [Tiny Function DSLs](tiny-function-dsls.md)
 - [Debugging Compositions](debugging-compositions.md)
 - [Imperative to FP Refactor](imperative-to-fp-refactor.md)
+- [FuncPipe Delta](capstone-delta.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Refactoring Guide](refactoring-guide.md)
 
 ## Exercises
 
-- Refactor one callback-heavy path into a data-first pipeline and name the configuration value that should stay explicit.
-- Trace one closure or partial application example and explain what behavior is being fixed at construction time.
-- Review one API surface and state whether it exposes configuration as data or hides it in control flow.
+Use [Module 02 Exercises](exercises.md) to classify API ownership, add an ordered
+cleaning policy, compare rule representations, prove boundary short-circuiting, and
+add neutral observation. Each exercise states the Module 01 behavior that must
+remain valid. Consult [Exercise Answers](exercise-answers.md) only after writing your
+prediction and evidence.
 
 ## Capstone checkpoints
 
-- Locate the configuration values that shape the pipeline without mutating globals.
-- Compare a raw callback chain with the combinator-based version.
-- Inspect whether debugging helpers expose intermediate values without collapsing the design.
+- Inspect `api/config.py` and `api/core.py` in the completed Module 02 state; classify
+  policy, capabilities, inputs, and observation.
+- Compare `iter_rag_core` with `full_rag_api_docs`; identify cardinality and the
+  first materialization point in each shape.
+- Inspect `shells/rag_api_shell.py` and `shells/rag_main.py`; explain why the CLI
+  delegates policy validation and why load failure precedes core execution.
+- Read both learning proof files:
+  `test_module_02_data_first_apis.py` and
+  `test_module_02_filesystem_boundary.py`.
+- Run `capstone-data-api-proof` and `capstone-data-shell-proof` from the repository
+  root with `PROGRAM=python-programming/python-functional-programming`.
 
 ## Before moving on
 
 You should be able to explain how data-first APIs stay configurable without turning into
-dependency soup, and where laziness starts to become a design obligation rather than an
-implementation trick. Use [Refactoring Guide](refactoring-guide.md) and compare against
-`capstone/_history/worktrees/module-02` before moving forward.
+dependency soup, where laziness starts to become a design obligation rather than an
+implementation trick, and which expected failures belong to the filesystem shell.
+Use [Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/module-reference-states/module-02` before moving forward.
 
 ## Closing criteria
 
 - You can explain why a data-first API composes more predictably than one driven by ambient flags.
 - You can identify where laziness starts to influence interface design instead of remaining an internal optimization.
 - You can review a configuration path and explain how overrides stay explicit and testable.
+- You can distinguish an injected-reader short-circuit proof from a real CSV/JSONL
+  adapter proof.
 
 ## Directory glossary
 

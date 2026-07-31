@@ -50,6 +50,8 @@ choice tied to your intent instead of rewarding the heaviest route by default.
 
 | If you want to... | Run | What you get |
 | --- | --- | --- |
+| run the cumulative learning proofs for a tracked module | `make module-state-proof MODULE=06` | Module 01–06 learning tests against Module 06 source |
+| inspect one published sustainment claim | `funcpipe-rag-review summary --claim change-acceptance --project-root .` | required paths, route availability, and the separate test command |
 | verify the executable behavior only | `make test` | the pytest result without the saved guided bundles |
 | inspect the repository as a learning surface | `make inspect` | a saved inspection bundle with architecture, package, test, and proof guidance |
 | capture executable proof with saved artifacts | `make verify-report` | pytest output plus the saved review summary bundle |
@@ -65,6 +67,8 @@ choice tied to your intent instead of rewarding the heaviest route by default.
 
 ## Good command habits
 
+- Use `make module-state-proof MODULE=XX` for Modules 01–09; the live package contains concepts those states have not taught.
+- Treat `route: available` as file discovery, then run the printed command for behavior.
 - Start with `make inspect` when your question is about repository shape, package ownership, or guide routing.
 - Start with `make test` when your question is only about behavior and you do not need saved bundles.
 - Start with `make verify-report` when you need both executed proof and durable artifacts.
@@ -73,6 +77,8 @@ choice tied to your intent instead of rewarding the heaviest route by default.
 
 ## Common command mistakes
 
+- testing an earlier module against the live Module 10 source
+- treating an available evidence route as a passing test
 - using `make confirm` when `make inspect` would answer the question faster
 - reading raw pytest output when the saved inspection or walkthrough bundle is the better review surface
 - treating `make test` as equivalent to the published proof route

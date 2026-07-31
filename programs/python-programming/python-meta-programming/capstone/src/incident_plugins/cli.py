@@ -5,7 +5,20 @@ import json
 import inspect
 from typing import Any
 
-from .framework import PluginMeta, _REGISTRY, build_manifest, create_plugin, invoke
+from .framework import (
+    PluginMeta,
+    _REGISTRY,
+    bind_action_arguments,
+    build_manifest,
+    check_action_arguments,
+    create_plugin,
+    inspect_action_wrapper,
+    inspect_field_ownership,
+    inspect_field_system,
+    inspect_plugin_class_creation,
+    invoke,
+)
+from .governance import inspect_runtime_governance
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -44,6 +57,23 @@ def _build_parser() -> argparse.ArgumentParser:
     field.add_argument("field_name", help="Declared field name.")
     field.set_defaults(handler=_handle_field)
 
+    field_ownership = subparsers.add_parser(
+        "field-ownership",
+        help="Inspect descriptor ownership for one field without constructing a plugin.",
+    )
+    field_ownership.add_argument("group", help="Plugin group name.")
+    field_ownership.add_argument("plugin_name", help="Registered plugin name.")
+    field_ownership.add_argument("field_name", help="Collected field name.")
+    field_ownership.set_defaults(handler=_handle_field_ownership)
+
+    field_system = subparsers.add_parser(
+        "field-system",
+        help="Inspect field-system powers and limits without constructing a plugin.",
+    )
+    field_system.add_argument("group", help="Plugin group name.")
+    field_system.add_argument("plugin_name", help="Registered plugin name.")
+    field_system.set_defaults(handler=_handle_field_system)
+
     action = subparsers.add_parser(
         "action",
         help="Render one action contract for one concrete plugin.",
@@ -53,9 +83,64 @@ def _build_parser() -> argparse.ArgumentParser:
     action.add_argument("action_name", help="Declared action name.")
     action.set_defaults(handler=_handle_action)
 
+    bind_action = subparsers.add_parser(
+        "bind-action",
+        help="Validate action arguments without constructing or invoking a plugin.",
+    )
+    bind_action.add_argument("group", help="Plugin group name.")
+    bind_action.add_argument("plugin_name", help="Registered plugin name.")
+    bind_action.add_argument("action_name", help="Declared action name.")
+    bind_action.add_argument(
+        "--arg",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="Action argument entry. May be repeated.",
+    )
+    bind_action.set_defaults(handler=_handle_bind_action)
+
+    check_action = subparsers.add_parser(
+        "check-action",
+        help="Check supported action argument hints without constructing or invoking a plugin.",
+    )
+    check_action.add_argument("group", help="Plugin group name.")
+    check_action.add_argument("plugin_name", help="Registered plugin name.")
+    check_action.add_argument("action_name", help="Declared action name.")
+    check_action.add_argument(
+        "--arg",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="Action argument entry. May be repeated.",
+    )
+    check_action.set_defaults(handler=_handle_check_action)
+
+    action_wrapper = subparsers.add_parser(
+        "action-wrapper",
+        help="Audit one action wrapper chain without constructing or invoking a plugin.",
+    )
+    action_wrapper.add_argument("group", help="Plugin group name.")
+    action_wrapper.add_argument("plugin_name", help="Registered plugin name.")
+    action_wrapper.add_argument("action_name", help="Declared action name.")
+    action_wrapper.set_defaults(handler=_handle_action_wrapper)
+
+    class_creation = subparsers.add_parser(
+        "class-creation",
+        help="Inspect stored class-creation evidence without constructing a plugin.",
+    )
+    class_creation.add_argument("group", help="Plugin group name.")
+    class_creation.add_argument("plugin_name", help="Registered plugin name.")
+    class_creation.set_defaults(handler=_handle_class_creation)
+
     registry = subparsers.add_parser("registry", help="Render the plugin registry as JSON.")
     registry.add_argument("--group", help="Restrict output to one plugin group.")
     registry.set_defaults(handler=_handle_registry)
+
+    governance = subparsers.add_parser(
+        "governance",
+        help="Review accepted, constrained, and rejected runtime powers.",
+    )
+    governance.set_defaults(handler=_handle_governance)
 
     signatures = subparsers.add_parser(
         "signatures",
@@ -117,6 +202,18 @@ def _handle_field(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _handle_field_ownership(args: argparse.Namespace) -> dict[str, object]:
+    return inspect_field_ownership(
+        args.group,
+        args.plugin_name,
+        args.field_name,
+    )
+
+
+def _handle_field_system(args: argparse.Namespace) -> dict[str, object]:
+    return inspect_field_system(args.group, args.plugin_name)
+
+
 def _handle_action(args: argparse.Namespace) -> dict[str, object]:
     plugin_cls = _REGISTRY[args.group][args.plugin_name]
     spec = plugin_cls.__plugin_actions__[args.action_name]
@@ -130,11 +227,52 @@ def _handle_action(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _handle_bind_action(args: argparse.Namespace) -> dict[str, object]:
+    return {
+        "group": args.group,
+        "plugin_name": args.plugin_name,
+        "action_name": args.action_name,
+        "bound_arguments": bind_action_arguments(
+            args.group,
+            args.plugin_name,
+            args.action_name,
+            **_parse_key_values(args.arg),
+        ),
+        "executed": False,
+    }
+
+
+def _handle_action_wrapper(args: argparse.Namespace) -> dict[str, object]:
+    return inspect_action_wrapper(
+        args.group,
+        args.plugin_name,
+        args.action_name,
+    )
+
+
+def _handle_check_action(args: argparse.Namespace) -> dict[str, object]:
+    return check_action_arguments(
+        args.group,
+        args.plugin_name,
+        args.action_name,
+        **_parse_key_values(args.arg),
+    )
+
+
+def _handle_class_creation(args: argparse.Namespace) -> dict[str, object]:
+    return inspect_plugin_class_creation(args.group, args.plugin_name)
+
+
 def _handle_registry(args: argparse.Namespace) -> dict[str, Any]:
     registry = PluginMeta.registry(args.group)
     if args.group is not None:
         return {"group": args.group, "plugins": list(registry)}
     return {group: list(plugins) for group, plugins in registry.items()}
+
+
+def _handle_governance(args: argparse.Namespace) -> dict[str, object]:
+    del args
+    return inspect_runtime_governance()
 
 
 def _handle_signatures(args: argparse.Namespace) -> dict[str, list[dict[str, object]]]:

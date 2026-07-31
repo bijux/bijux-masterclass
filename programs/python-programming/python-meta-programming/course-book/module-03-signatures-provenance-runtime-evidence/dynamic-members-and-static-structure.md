@@ -223,6 +223,47 @@ That order matters for standalone learners:
 2. collect attached-object evidence
 3. cross into value resolution only when the runtime question actually requires it
 
+## Evidence practicum: make hidden execution measurable
+
+The course target makes the difference observable instead of asking you to trust a
+warning:
+
+```console
+$ make evidence-lab |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["members"])'
+{'dynamic_value': 7, 'evidence_strength': 'structural-before-dynamic', 'property_reads_after_getmembers': 1, 'property_reads_after_static_lookup': 0, 'static_value_is_property': True}
+```
+
+`MemberEvidenceTarget.risk_score` increments `property_reads` whenever the property body
+runs. The two counters turn an otherwise invisible boundary into executable evidence:
+
+1. `inspect.getmembers(instance)` returns the resolved value `7` and the counter becomes
+   `1`
+2. `inspect.getattr_static(instance, "risk_score")` returns the property object and the
+   counter stays `0`
+
+Both results are truthful, but they answer different questions. The dynamic value is
+evidence about normal lookup behavior. The property object is evidence about attached
+structure. Neither should be relabeled as the other.
+
+### Transfer into the worked implementation
+
+Run `make evidence-repr`. Its packet reports
+`"dynamic_member_lookup": false` and `"property_reads_after_repr": 0`. Then run
+`make evidence-repr-test` to prove that the representation works for dictionary-backed,
+slotted, inherited-slot, private-slot, and custom-lookup cases.
+
+This transfer matters: the safer member-inspection rule changes an actual utility design.
+The representation does not enumerate names with `dir()` and then resolve them. It reads
+owned instance storage and deliberately excludes the `risk_score` property.
+
+### Investigation
+
+Temporarily replace the storage reader in `safe_repr` with
+`getattr(instance, "risk_score")`. The test should expose the property read. Restore the
+storage implementation before continuing. The failure is the lesson: a more informative-
+looking string silently became application execution.
+
 ## Review rules for member inspection
 
 When reviewing member-inspection code, keep these questions close:

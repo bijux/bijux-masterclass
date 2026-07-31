@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test build lint clean clean-all venv rebuild-venv demo inspect verify-report tour proof confirm \
+.PHONY: install test test-report foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof async-rag-proof embedding-resilience-proof retrieval-proof module-state-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -28,9 +28,27 @@ RUFF       := $(VENV)/bin/ruff
 MYPY       := $(VENV)/bin/mypy
 PYTEST     := $(VENV)/bin/pytest
 HATCH      := $(VENV)/bin/hatch
+PYTEST_ARGS ?=
+FOUNDATION_STATE := module-reference-states/module-01
+FOUNDATION_PROOF := $(FOUNDATION_STATE)/tests/learning/test_module_01_purity_foundations.py
+FOUNDATION_TYPES := $(FOUNDATION_STATE)/src/funcpipe_rag
+SHELL_PROOF := $(FOUNDATION_STATE)/tests/learning/test_module_01_shell_boundary.py
+DATA_API_STATE := module-reference-states/module-02
+DATA_API_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_data_first_apis.py
+DATA_SHELL_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_filesystem_boundary.py
+STREAMING_STATE := module-reference-states/module-03
+STREAMING_RAG_PROOF := $(STREAMING_STATE)/tests/learning/test_module_03_streaming_dataflow.py
+SOURCE_SCHEDULING_PROOF := $(STREAMING_RAG_PROOF)
+ASYNC_RAG_STATE := module-reference-states/module-08
+ASYNC_RAG_PROOF := $(ASYNC_RAG_STATE)/tests/learning/test_module_08_async.py
+RETRIEVAL_PROOF := tests/learning/test_module_10_retrieval.py
+MODULE ?=
+MODULE_STATE = module-reference-states/module-$(MODULE)
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
 INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-functional-programming
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-functional-programming
+TEST_RESULTS_DIR ?= $(ARTIFACTS_DIR)/test-results/python-programming/python-functional-programming
+TEST_REPORT := $(TEST_RESULTS_DIR)/pytest.txt
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"; printf "\nTargets:\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -48,17 +66,74 @@ rebuild-venv: ## Recreate the local virtual environment in place
 
 install: venv ## Install development dependencies
 	@set -e; \
-	$(VENV_PIP) install -e '.[dev]' || { \
-		$(MAKE) rebuild-venv; \
+	install_dev_dependencies() { \
 		$(VENV_PIP) install -e '.[dev]'; \
 	}; \
+	rebuild_environment() { \
+		$(PYTHON) -m venv --clear $(VENV); \
+		$(VENV_PIP) install -U pip; \
+	}; \
+	install_dev_dependencies || { \
+		rebuild_environment; \
+		install_dev_dependencies; \
+	}; \
 	test -x $(RUFF) && test -x $(MYPY) && test -x $(PYTEST) && test -x $(HATCH) || { \
-		$(MAKE) rebuild-venv; \
-		$(VENV_PIP) install -e '.[dev]'; \
+		rebuild_environment; \
+		install_dev_dependencies; \
 	}
 
-test: install ## Run the test suite
-	$(PYTEST) -q
+test: test-report ## Run the test suite once and retain its output
+
+test-report: install ## Execute pytest once for all dependent proof bundles
+	rm -rf $(TEST_RESULTS_DIR)
+	mkdir -p $(TEST_RESULTS_DIR)
+	@status=0; \
+	$(PYTEST) -q $(PYTEST_ARGS) > $(TEST_REPORT) 2>&1 || status=$$?; \
+	cat $(TEST_REPORT); \
+	test $$status -eq 0
+
+foundation-proof: install ## Run the first tracked cumulative RAG laws
+	PYTHONPATH="$(abspath $(FOUNDATION_STATE)/src)" $(PYTEST) -q "$(FOUNDATION_PROOF)"
+
+foundation-types: install ## Strictly check the first tracked typed RAG state
+	MYPYPATH="$(abspath $(FOUNDATION_STATE)/src)" \
+		MYPY_CACHE_DIR="$(abspath $(ARTIFACTS_DIR))/mypy/python-programming/python-functional-programming/module-01" \
+		$(MYPY) --strict "$(FOUNDATION_TYPES)"
+
+shell-proof: install ## Run the first tracked RAG shell boundary proof
+	PYTHONPATH="$(abspath $(FOUNDATION_STATE)/src)" $(PYTEST) -q "$(SHELL_PROOF)"
+
+data-api-proof: install ## Run the tracked data-first API and configuration laws
+	PYTHONPATH="$(abspath $(DATA_API_STATE)/src)" $(PYTEST) -q "$(DATA_API_PROOF)"
+
+data-shell-proof: install ## Run the tracked Result-bearing filesystem boundary proof
+	PYTHONPATH="$(abspath $(DATA_API_STATE)/src)" $(PYTEST) -q "$(DATA_SHELL_PROOF)"
+
+streaming-rag-proof: install ## Run the tracked complete streaming RAG laws
+	PYTHONPATH="$(abspath $(STREAMING_STATE)/src)" $(PYTEST) -q "$(STREAMING_RAG_PROOF)"
+
+source-scheduling-proof: install ## Run the tracked multi-source RAG scheduling laws
+	PYTHONPATH="$(abspath $(STREAMING_STATE)/src)" $(PYTEST) -q "$(SOURCE_SCHEDULING_PROOF)" \
+		-k "fan_in or source_schedule or later_sequential_source or source_boundaries or index_and_audit"
+
+async-rag-proof: install ## Run the tracked Module 08 async indexing laws
+	PYTHONPATH="$(abspath $(ASYNC_RAG_STATE)/src)" $(PYTEST) -q "$(ASYNC_RAG_PROOF)" \
+		-k "async_rag_chunks"
+
+embedding-resilience-proof: install ## Run the tracked Module 08 embedding resilience laws
+	PYTHONPATH="$(abspath $(ASYNC_RAG_STATE)/src)" $(PYTEST) -q "$(ASYNC_RAG_PROOF)" \
+		-k "retries_only or retry_exhaustion or logical_embedding_timeout"
+
+retrieval-proof: install ## Run the live index-to-retrieval learning laws
+	$(PYTEST) -q "$(RETRIEVAL_PROOF)"
+
+module-state-proof: install ## Run all cumulative learning proofs for MODULE=01 through MODULE=09
+	@case "$(MODULE)" in \
+		01|02|03|04|05|06|07|08|09) ;; \
+		*) echo "MODULE must be one of 01 through 09" >&2; exit 2 ;; \
+	esac
+	PYTHONPATH="$(abspath $(MODULE_STATE)/src)" \
+		$(PYTEST) -q "$(MODULE_STATE)/tests/learning"
 
 demo: tour ## Build the learner-facing capstone walkthrough
 
@@ -84,10 +159,13 @@ inspect: install ## Build the learner-facing inspection bundle
 	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/manifest.json
 	@echo "✔ wrote learner-facing inspection bundle to $(INSPECT_DIR)"
 
-verify-report: install ## Build the structured capstone verification report bundle
+review-check: install ## Fail when a declared Module 10 evidence path is missing
+	$(VENV)/bin/funcpipe-rag-review check --format text --project-root .
+
+verify-report: test-report ## Build the structured capstone verification report bundle
 	rm -rf $(VERIFY_REPORT_DIR)
 	mkdir -p $(VERIFY_REPORT_DIR) $(VERIFY_REPORT_DIR)/docs
-	$(PYTEST) -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
+	cp $(TEST_REPORT) $(VERIFY_REPORT_DIR)/pytest.txt
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(VERIFY_REPORT_DIR)/review-summary.json
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(VERIFY_REPORT_DIR)/review-summary.txt
 	cp README.md $(VERIFY_REPORT_DIR)/README.md
@@ -107,10 +185,10 @@ verify-report: install ## Build the structured capstone verification report bund
 	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
 	@echo "✔ wrote capstone verification report to $(VERIFY_REPORT_DIR)"
 
-tour: install ## Build the learner-facing proof bundle
+tour: test-report ## Build the learner-facing proof bundle
 	rm -rf $(TOUR_DIR)
 	mkdir -p $(TOUR_DIR) $(TOUR_DIR)/docs
-	$(PYTEST) -q 2>&1 | tee $(TOUR_DIR)/pytest.txt
+	cp $(TEST_REPORT) $(TOUR_DIR)/pytest.txt
 	find src/funcpipe_rag -type d | sort > $(TOUR_DIR)/package-tree.txt
 	find tests -type d | sort > $(TOUR_DIR)/test-tree.txt
 	cp README.md $(TOUR_DIR)/README.md
@@ -138,9 +216,9 @@ tour: install ## Build the learner-facing proof bundle
 		> $(TOUR_DIR)/route.txt
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
-proof: test inspect tour ## Run the sanctioned learner-facing proof route
+proof: test-report inspect tour ## Run the sanctioned learner-facing proof route
 
-confirm: lint build verify-report proof ## Run the strongest capstone confirmation route
+confirm: lint build review-check verify-report proof ## Run the strongest capstone confirmation route
 
 build: install ## Build distribution artifacts
 	$(HATCH) build

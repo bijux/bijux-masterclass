@@ -1,0 +1,49 @@
+{
+  "boundary": {
+    "artifact_family": "promoted-release",
+    "changed_surfaces": [
+      "consumer-location"
+    ],
+    "preserved_invariants": [
+      "exact-inventory",
+      "artifact-bytes",
+      "promoted-meaning",
+      "source-provenance"
+    ],
+    "source_reference": "publish/v1",
+    "target_reference": "incident-escalation/2026-07"
+  },
+  "evidence_policy": {
+    "required_after": [
+      "target-manifest",
+      "target-verification",
+      "consumer-retrieval"
+    ],
+    "required_before": [
+      "source-manifest",
+      "source-verification"
+    ]
+  },
+  "exception_policy": {
+    "required_fields": [
+      "owner",
+      "expires_at",
+      "reason",
+      "removal_condition"
+    ]
+  },
+  "migration_id": "promoted-release-registry-cutover",
+  "ownership_policy": {
+    "ci": "shared-verification",
+    "dvc": "artifact-lineage",
+    "registry": "consumer-lifecycle",
+    "release-owner": "cutover-decision"
+  },
+  "rollback_policy": {
+    "old_boundary_retained_until": [
+      "target-verification",
+      "consumer-retrieval"
+    ],
+    "rollback_reference": "publish/v1"
+  }
+}

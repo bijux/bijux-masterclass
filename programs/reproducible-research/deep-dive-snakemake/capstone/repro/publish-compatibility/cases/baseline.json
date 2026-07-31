@@ -1,0 +1,18 @@
+{
+  "artifact_path": "summary.json",
+  "artifact_schema_version": 1,
+  "corrupt_after_manifest": false,
+  "field_semantics": {
+    "reads_count": {
+      "definition": "number of sequencing reads",
+      "unit": "reads"
+    }
+  },
+  "publish_version": "v1",
+  "records": [
+    {
+      "reads_count": 10,
+      "sample_id": "alpha"
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 # Type Hints and Descriptor-Backed Validation
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,330 +17,233 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  declare["Annotation declares intent"] --> own["Descriptor owns enforcement"]
+  own --> store["Instance owns stored value"]
+  store --> inspect["Class access exposes field policy"]
 ```
 <!-- page-maps:end -->
 
-Module 06 now has enough machinery in place to use type hints in a more disciplined class
-context:
+The property core kept one HTTPS rule local to one attribute. Now imagine the same
+shallow runtime type rule repeated for `endpoint`, `attempts`, and fields on several
+classes. Copied setters would make repetition the real owner.
 
-> annotations can act as declarative input for shallow runtime validation, but they still
-> do nothing on their own.
+This core introduces one reusable descriptor without pretending to teach the full
+descriptor protocol—that belongs to Modules 07 and 08. Its purpose here is to make one
+boundary judgment executable:
 
-That is the boundary this page keeps explicit.
+> an annotation declares an expected type; a runtime object must still own enforcement.
 
-This page should be read as a bridge page. It is not trying to turn type hints into a
-runtime type system. It is trying to teach how declared expectations become runtime
-behavior only when a real owner, such as a descriptor, takes responsibility for them.
+## Prerequisites and scope
 
-## The sentence to keep
+Before this page, you should be able to:
 
-When a class uses type hints for runtime validation, ask:
+- explain why dataclass annotations did not reject `"three"` for an `int` field
+- prove that a property is a data descriptor
+- identify backing storage separately from a public attribute
 
-> where is the actual enforcement happening, and how shallow is the contract?
+This page supports plain runtime classes supplied explicitly to `TypedField`. It does
+not interpret `Union`, `Optional`, parameterized generics, protocols, or arbitrary class
+annotations. Module 05 already showed the cost of a partial hint interpreter. This core
+does not hide another one inside attribute access.
 
-That question stops annotations from being mistaken for behavior.
+## Run the evidence
 
-Keep a second question beside it:
+From `programs/python-programming/python-meta-programming`:
 
-> which hint shapes are supported deliberately, and which ones must stay refused to keep the contract honest?
+```bash
+make class-customization-lab
+```
 
-That second question matters because a shallow runtime contract only stays trustworthy
-when refusal remains visible. A helper that quietly accepts everything teaches the wrong
-lesson.
+Read `descriptor_boundary`. Its class declaration is:
 
-## Hints are declarations, not enforcement
+```python
+class DeliveryConfig:
+    endpoint: str = TypedField(str)
+    attempts: int = TypedField(int)
+```
 
-At the class level, `get_type_hints(MyClass)` can resolve field annotations into runtime
-objects.
+The annotation and descriptor argument look redundant because they serve different
+consumers:
 
-That is useful because it gives you a declarative description of expected field types.
-It is not useful enough by itself to validate anything.
+| Surface | Consumer | Promise |
+| --- | --- | --- |
+| `endpoint: str` | readers and static tooling | declared program-level type |
+| `TypedField(str)` | Python runtime | shallow `isinstance(value, str)` enforcement |
+| `TypedFieldSpec` | inspection and teaching tools | public name, expected runtime class, storage name |
 
-To enforce behavior, the class still needs a runtime owner, such as:
+If the runtime owner disappears, the annotation remains and assignment stops being
+checked. If the annotation disappears, the descriptor still enforces, but static
+readability becomes weaker.
 
-- a property
-- a descriptor
-- a validating constructor path
+## Trace the descriptor lifecycle
 
-This page focuses on the descriptor route because it scales beyond one property while
-still staying below metaclass power.
-
-That owner story is the core teaching move here. The annotation declares. The descriptor
-enforces. The class stores. If those roles blur together, the design becomes harder to
-review.
-
-Use this owner split whenever the page starts feeling abstract:
-
-| Surface | Honest owner |
-| --- | --- |
-| field annotation | declaration only |
-| `get_type_hints(...)` result | resolved evidence for the declaration |
-| descriptor `__set__` | runtime enforcement |
-| backing storage | the place validated values finally live |
-
-## One picture of the typing bridge
+Open `labs/class_customization/attributes.py`.
 
 ```mermaid
-graph TD
-  classNode["Class definition"]
-  hints["Resolved type hints"]
-  cache["Per-class hint cache"]
-  descriptor["Descriptor __set__"]
-  store["Validated storage"]
-  classNode --> hints --> cache --> descriptor --> store
+sequenceDiagram
+  participant Body as class body
+  participant Type as type.__new__
+  participant Field as TypedField
+  participant Instance as DeliveryConfig instance
+  Body->>Field: construct TypedField(str)
+  Type->>Field: __set_name__(DeliveryConfig, "endpoint")
+  Instance->>Field: __set__(instance, value)
+  Field->>Instance: store under private storage name
+  Instance->>Field: __get__(instance, DeliveryConfig)
+  Field-->>Instance: return stored value
 ```
 
-Caption: type hints provide declarative input, but the descriptor still owns the runtime enforcement.
+The timing and owners are distinct:
 
-## Evidence route for hint-backed validation
+1. the class body creates descriptor objects
+2. class creation calls `__set_name__`
+3. instance initialization crosses `__set__`
+4. ordinary reads cross `__get__`
 
-Use this route whenever a design starts sounding like annotations are magical:
+A class decorator runs after step 2. It can inspect the finished descriptor but cannot
+retroactively participate in `__set_name__`.
 
-| Evidence step | What it proves |
-| --- | --- |
-| class annotations exist | the class declares expected shapes |
-| `get_type_hints(MyClass)` resolves them | the declarations become usable runtime objects |
-| the class caches those hints | the declaration surface is treated as stable evidence |
-| descriptor `__set__` checks assigned values | enforcement happens at the attribute boundary, not inside the annotation itself |
+## Storage must remain per instance
 
-## A diagnostic route for annotation overclaims
+`TypedField` stores values in `vars(instance)` under a name derived from the descriptor
+class and public field:
 
-Run this check whenever someone says "the class validates from type hints":
+```text
+_TypedField__endpoint
+_TypedField__attempts
+```
 
-1. point to the annotation line
-2. point to the line that resolves the annotation into runtime data
-3. point to the descriptor assignment hook that rejects a bad value
-4. remove step 3 mentally and ask what validation remains
+The descriptor object is shared on the class; the values are not. The packet constructs
+two configurations and proves their values remain independent.
 
-If the answer to step 4 is "none," the lesson is doing its job.
+Storing the value on the descriptor itself would leak state across instances. That is a
+failure of ownership, not a minor implementation bug.
 
-## A minimal `_is_instance` helper stays honest
+## Class access is an inspection surface
 
-Like Module 05, this module benefits from a deliberately limited runtime checker:
+The descriptor returns itself when accessed through the class:
 
 ```python
-from typing import Any, Union, get_args, get_origin
-
-
-def _is_instance(value, hint) -> bool:
-    if hint is Any:
-        return True
-
-    origin = get_origin(hint)
-
-    if origin is Union:
-        return any(_is_instance(value, option) for option in get_args(hint))
-
-    if origin is not None:
-        raise NotImplementedError(f"Generic validation not supported: {hint!r}")
-
-    try:
-        return isinstance(value, hint)
-    except TypeError as exc:
-        raise NotImplementedError(f"Unsupported hint: {hint!r}") from exc
+DeliveryConfig.endpoint.spec()
 ```
 
-That helper is intentionally small because the module focuses on a shallow validation
-bridge, not a full runtime typing system.
+That produces an inspectable `TypedFieldSpec`. The focused test also proves that reading
+an unset instance field raises `AttributeError` instead of returning the descriptor or
+inventing a default.
 
-It should also stay loud about what it refuses. Quiet fallback is one of the fastest ways
-to make a runtime validation story sound broader than it really is.
+This is the same course discipline applied to a new mechanism: stronger runtime behavior
+must come with stronger observable evidence.
 
-Use this review table when you decide whether the helper is still honest:
+## Assignment owns the failure
 
-| Behavior | Honest? | Why |
-| --- | --- | --- |
-| supports plain classes and a named union subset | yes | the contract stays reviewable |
-| raises clearly on unsupported generics | yes | refusal remains visible |
-| silently skips unsupported hints | no | the surface sounds broader than enforcement |
-| keeps expanding until it imitates a framework | usually no for this module | the page stops teaching shallow ownership |
-
-## Supported and refused hint shapes
-
-Keep the contract explicit:
-
-| Hint shape | Status in this page's pattern |
-| --- | --- |
-| plain runtime classes | supported |
-| `Union` and `Optional`-style unions | supported |
-| `Any` | allowed as passthrough |
-| parameterized generics such as `list[int]` | refused |
-| richer typing constructs that need framework-level semantics | refused |
-
-## A typed descriptor gives the enforcement a real owner
+This assignment:
 
 ```python
-import sys
-from typing import get_type_hints
-
-
-class TypedDescriptor:
-    def __set_name__(self, owner, name):
-        self.public_name = name
-        self.storage_name = f"_{name}"
-
-        if not hasattr(owner, "_field_hints_cache"):
-            owner._field_hints_cache = get_type_hints(
-                owner,
-                globalns=vars(sys.modules[owner.__module__]),
-                localns=dict(owner.__dict__),
-            )
-
-    def __get__(self, obj, objtype=None):
-        if obj is None:
-            return self
-        return getattr(obj, self.storage_name)
-
-    def __set__(self, obj, value):
-        hints = obj.__class__._field_hints_cache
-        expected = hints.get(self.public_name)
-
-        if expected is not None and not _is_instance(value, expected):
-            raise TypeError(f"{self.public_name}={value!r} expected {expected!r}")
-
-        setattr(obj, self.storage_name, value)
+config.attempts = "three"
 ```
 
-This is a good Module 06 pattern because it makes ownership explicit:
+reaches `TypedField.__set__` and raises:
 
-- hints describe the expected shape
-- the descriptor performs enforcement
-- storage remains visible and local
+```text
+attempts must be int; got str
+```
 
-It also keeps the timing honest. Class annotations are resolved once for the class. Each
-assignment is then checked by the descriptor at the moment the attribute boundary is
-crossed.
+The annotation does not raise. `get_type_hints` does not raise. The descriptor is the
+runtime owner.
 
-## A quick walkthrough for the descriptor path
+The contract remains deliberately shallow. `TypedField(list)` could prove only that a
+value is a list; it would say nothing about element types. The course therefore does not
+present `list[int]` as supported runtime enforcement here.
 
-Use this mini trace when you read or teach the example:
+## Why explicit expected types are healthier in this core
 
-1. class creation resolves and caches the hints
-2. the descriptor learns its public and storage names
-3. assignment hits `__set__`
-4. the descriptor compares the value against the supported hint subset
-5. validated state lands in explicit storage
+It is possible to make a descriptor discover its rule from class annotations. That
+introduces additional questions:
 
-That sequence helps independent learners connect the declaration-time and assignment-time
-parts without smearing them together.
+- when are string and forward-reference annotations resolved?
+- where are resolution errors reported?
+- does an inherited annotation change a reused descriptor?
+- which class owns cached resolved hints?
 
-## Per-class caching matters
+Those are valid framework questions, but they would obscure this core's learning target.
+`TypedField(str)` keeps the runtime contract local and visible. The parallel `: str`
+annotation keeps the static declaration visible.
 
-One subtle but important quality point is:
+The capstone later uses explicit `Field` subclasses for the same reason: a
+`StringField` owns runtime behavior directly instead of asking an annotation to become
+a hidden schema language.
 
-- resolve type hints once per class
-- do not recompute them on every assignment
+## Property to descriptor delta
 
-That is both cleaner and more honest. The class owns a stable declaration surface, so the
-validation helper should cache that declaration rather than repeatedly rediscover it.
-
-Use this table when reviewing the cache boundary:
-
-| Choice | Why it is better or worse |
+| Property version | Descriptor version |
 | --- | --- |
-| resolve hints once per class | matches the class-level declaration surface and avoids repeated introspection |
-| recompute hints on every assignment | wastes work and makes the validation path noisier |
-| hide the cache behind vague class state | weakens the evidence trail for reviewers |
+| getter, setter, and storage repeated inside one class | reusable `__get__`, `__set__`, and `__set_name__` owner |
+| ideal for one domain-specific HTTPS rule | useful for repeated shallow type rules |
+| class attribute is a `property` object | class attribute is a `TypedField` object with `spec()` |
+| backing name handwritten | backing name derived once during class creation |
 
-## This is still shallow runtime validation
+Do not promote the HTTPS rule merely because a descriptor exists. Domain-specific
+validation may still be clearer as the property. Promote the part that actually repeats.
 
-The strongest honest claim here is:
+## Failure and maintenance costs
 
-> the descriptor enforces a limited runtime contract for supported hint shapes.
-
-It does not mean:
-
-- full generic validation
-- full typing-system enforcement
-- zero-cost runtime checking
-
-That narrow claim is exactly what keeps the pattern useful instead of misleading.
-
-## When this page's pattern should stop
-
-Move beyond this pattern only when one of these becomes true:
-
-| Pressure | Why this pattern becomes too small |
-| --- | --- |
-| you need parameterized collection semantics such as `list[int]` with deep element checks | the contract stops being shallow |
-| you need coercion, rich error accumulation, or schema-wide reporting | assignment-time field checks are no longer enough |
-| you need shared policy across many interacting fields | the owner is no longer one descriptor boundary at a time |
-
-## Common overclaims to reject
-
-Reject these sentences when they appear in review:
-
-| Overclaim | Better replacement |
-| --- | --- |
-| "the annotations validate the fields" | "the descriptor validates assignments using the resolved annotations" |
-| "this class is type-safe at runtime" | "this class enforces a shallow supported hint subset at assignment time" |
-| "unsupported hints can just be skipped" | "unsupported hints must stay visible as refusals" |
-| "caching is just optimization" | "caching is part of keeping the declaration and enforcement story reviewable" |
-
-## Failure modes for hint-backed descriptors
-
-These are the main ways the design can weaken:
-
-| Failure mode | Why it weakens the design | Repair move |
+| Failure | Why it matters | Repair |
 | --- | --- | --- |
-| silent fallback on unsupported hints | the contract sounds broader than it is | refuse unsupported shapes explicitly |
-| recomputing type hints on every assignment | the owner story becomes noisy and wasteful | cache per class |
-| confusing annotation presence with enforcement | readers overtrust the class contract | point directly to `__set__` as the runtime owner |
-| broadening the helper until it imitates a full framework | the page stops teaching shallow boundary honesty | keep the supported surface narrow and named |
+| value stored on descriptor | instances share state accidentally | store in each instance |
+| class access tries to read instance storage | inspection breaks | return the descriptor when `instance is None` |
+| unset read invents `None` | absence becomes ambiguous | raise `AttributeError` |
+| annotation described as enforcement | reviewers trust a surface with no runtime owner | point to `__set__` |
+| generic hints treated as shallow classes | contract silently ignores element types | refuse the broader claim |
+| descriptor introduced for one unique rule | reuse power is unearned | keep the property |
 
-One more failure mode deserves attention:
+## Smallest honest proof route
 
-| Failure mode | Why it weakens the design | Repair move |
-| --- | --- | --- |
-| caching hints in a place reviewers cannot find easily | the declaration-to-enforcement trail becomes harder to inspect | keep the cache explicit on the class or another clearly owned surface |
+```bash
+python -m unittest \
+  tests.test_class_customization_evidence.ClassCustomizationEvidenceTests.test_descriptor_packet_exposes_reusable_owner_and_per_instance_state \
+  tests.test_class_customization_evidence.ClassCustomizationEvidenceTests.test_typed_field_returns_itself_from_class_access_and_rejects_unset_reads
+```
 
-## Review rules for hint-backed validation
+These tests prove assignment enforcement, per-instance state, class-level inspection,
+storage naming, and unset-read behavior. They do not prove deep generic validation,
+coercion, inheritance policy, thread safety, or schema-wide error reporting.
 
-When reviewing hint-backed class validation, keep these questions close:
+## Capstone transfer
 
-- where does enforcement actually happen?
-- what hint subset is supported, and what is refused explicitly?
-- are hints being cached per class instead of recomputed per assignment?
-- is the attribute-boundary owner clear: property, descriptor, or constructor?
-- has the design grown large enough that a dedicated validation layer would be clearer?
-- can another reviewer identify the exact enforcement point without reading the whole class twice?
+Inspect `capstone/src/incident_plugins/fields.py`, but do not treat it as required
+reading before understanding this lab. The capstone fields add defaults, constraints,
+manifests, and initialization behavior because the application needs them.
 
-## Evidence packet for hint-backed validation
+The learning transfer is:
 
-Leave this page with a small packet:
+- `TypedField` proves the reusable attribute-owner mechanics
+- capstone `Field` proves how those mechanics participate in an application contract
+- `PluginMeta` collects field declarations across a class family, a separate
+  class-creation responsibility
 
-- one supported hint example and one refused hint example
-- one trace from annotation to descriptor enforcement
-- one note explaining why per-class caching belongs to the review story
-- one sentence naming the first requirement that would push this design into a fuller validation layer
+## Learner work
 
-## Exit check for this page
+1. Add a `channel: str = TypedField(str)` field and predict its storage name.
+2. Prove two instances do not share field state.
+3. Add `TypedField(list)` and explain why accepting `["urgent", 3]` does not support
+   `list[str]`.
+4. Replace the descriptor with only an annotation and prove the runtime failure
+   disappears.
+5. Write the exact repetition that justified moving beyond a property.
 
-Before moving on, make sure you can do all of these:
+## Exit standard
 
-- name the runtime owner that actually enforces the hint-backed rule
-- list at least two supported hint shapes and two refused ones
-- explain why per-class hint caching is part of the review story, not only a speed tweak
-- say when this pattern should stop and give way to a more explicit validation layer
+Do not move on until you can:
 
-## What to practice from this page
-
-Try these before moving on:
-
-1. Implement a descriptor that validates plain classes plus `Union` or `Optional`.
-2. Cache resolved hints on the class and explain why that is better than repeated `get_type_hints` calls.
-3. Write down one reason this remains a shallow contract rather than a full runtime type system.
-
-If those feel ordinary, the next step is the bigger boundary question: when are these
-class-level tools still enough, and when is the design drifting upward?
+- identify annotation, descriptor, and instance storage as separate owners
+- trace `__set_name__`, `__set__`, and `__get__` in order
+- explain why class access returns the descriptor
+- reject deep typing claims for a shallow runtime class check
+- say why this repeated rule earned descriptor reuse
 
 ## Continue through Module 06
 
 - Previous: [Properties and Attribute-Boundary Control](properties-and-attribute-boundary-control.md)
 - Next: [Class Customization Boundaries](class-customization-boundaries.md)
 - Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)
+- Practice: [Exercises](exercises.md)

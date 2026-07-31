@@ -38,7 +38,9 @@ If you later build this seam out locally, Dask is usually the closer Python-nati
 
 **Motivation Bug:** Imperative distributed code often embeds effects (e.g., I/O or state mutation) directly in computation steps, leading to non-reproducible runs, hard-to-test graphs, and failures under retries or shuffles. FP style enforces a clear boundary: pure, composable transforms build the graph lazily, while effects are confined to idempotent sinks, enabling reliable scaling without sacrificing testability or debuggability.
 
-**Delta from Core 6 (Module 09):** The CLI provides user-facing entry points for running pipelines; this core extends FuncPipe to distributed execution, where graphs are built as composable operators with algebraic guarantees, allowing seamless local-to-cluster transitions.
+**Delta from Core 6 (Module 09):** The CLI provides user-facing entry points for
+the local pipeline. This core adds an honest attachment seam and review contract;
+it does not extend the shipped application to distributed execution.
 
 **Distributed Protocol (Contract, Entry/Exit Criteria):**
 - **Purity:** Transforms must be referentially transparent (outputs depend only on inputs, injected artifacts, and config); no mutable globals or network calls inside operators; idempotent under retries/duplication (e.g., no incrementing counters); worker-local caches are allowed if read-only and deterministic (e.g., model loading in setup).
@@ -89,6 +91,7 @@ Builders as funcs. Guard imports. We define an intermediate representation (IR) 
 
 **Canonical default route:**
 - Open `capstone/src/funcpipe_rag/pipelines/distributed.py` to see the seam.
+- Call `backend_statuses()` to distinguish local installation from shipped implementation.
 - Keep reading the local pipeline and proof surfaces as the canonical implementation.
 - Treat the code below as design scaffolding for an optional backend, not as a promise that this repo already ships one.
 
@@ -485,3 +488,7 @@ backend sketches, proofs, and failure modes before you move on.
 
 Continue with [Distributed Dataflow Review](distributed-dataflow-review.md) before you
 move into [Functional Facades](functional-facades.md).
+
+Before continuing, complete [Distributed dataflow: report capability without
+pretending to
+compile](exercises.md#distributed-dataflow-report-capability-without-pretending-to-compile).

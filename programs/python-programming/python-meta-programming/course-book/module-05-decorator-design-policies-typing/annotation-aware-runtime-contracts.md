@@ -73,6 +73,25 @@ It also creates a clean review route:
 
 If any one of those steps is missing, the contract claim usually gets weaker fast.
 
+## Run the three outcomes before reading the implementation
+
+From `programs/python-programming/python-meta-programming`:
+
+```bash
+make decorator-policy-lab
+```
+
+Read the `validation` packet as three different contracts:
+
+| Outcome | Timing | Did the wrapped function run? | Meaning |
+| --- | --- | --- | --- |
+| strict mismatch | call time, before delegation | no | the supported hint did not match |
+| warning mismatch | call time, before delegation | yes | the mismatch was observed, not enforced |
+| unsupported `list[int]` | decoration time | no callable exists yet | the validator refuses a hint outside its policy |
+
+This table prevents two common mistakes: calling warning mode enforcement, and treating
+unsupported annotations as though they had been checked.
+
 ## A partial validator is the right review target
 
 For Volume I, the honest approach is a partial checker.
@@ -122,49 +141,32 @@ graph TD
 
 Caption: runtime annotation use is strongest when it stays narrow, explicit, and bound to the real call shape.
 
-## A minimal helper pattern
+## Trace the shipped validator
 
-```python
-import functools
-import inspect
-import types
-from typing import Any, Union, get_args, get_origin, get_type_hints
+Open `labs/decorator_policy/validation.py`. The public factory is small because three
+helpers have separate jobs:
 
+| Owner | Runs when | Responsibility |
+| --- | --- | --- |
+| `_validate_supported_hint` | decoration | recursively approve only `Any`, runtime classes, `Union`, and `Optional` |
+| `_matches_hint` | call | compare a value with an already-approved hint |
+| `validated` | factory, decoration, and call | capture policy, resolve hints, bind calls, and choose raise versus warn |
 
-def _is_instance(value: Any, hint: Any) -> bool:
-    if hint is Any:
-        return True
-    origin = get_origin(hint)
-    if origin in (Union, types.UnionType):
-        return any(_is_instance(value, arg) for arg in get_args(hint))
-    if origin is not None:
-        raise NotImplementedError(
-            f"runtime type checking for generic types like {hint!r} is not supported here"
-        )
-    return isinstance(value, hint)
+The separation is an invariant. `_matches_hint` is allowed to be compact only because
+decoration-time validation has already refused every hint it cannot interpret.
 
+The callable exposes two review surfaces:
 
-def validate_args(func):
-    hints = get_type_hints(func)
-    sig = inspect.signature(func)
+- `__validation_policy__` names mismatch mode, return-check choice, and supported forms
+- `__validated_hints__` shows the resolved annotations captured for that application
 
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        bound = sig.bind(*args, **kwargs)
-        bound.apply_defaults()
-        for name, value in bound.arguments.items():
-            if name in hints and not _is_instance(value, hints[name]):
-                raise TypeError(f"{name}={value!r} does not match {hints[name]!r}")
-        return func(*args, **kwargs)
-
-    return wrapper
-```
-
-This helper is useful because it is honest about its limits. It validates a small subset
-of hints and refuses the rest instead of silently faking support.
+They make the added policy inspectable without reading closure cells. They are teaching
+surfaces, not a request to standardize new dunder attributes across Python libraries.
 
 That refusal is a review feature. Silent partial support is one of the fastest ways to
-make a validator look more trustworthy than it really is.
+make a validator look more trustworthy than it really is. Refusing during decoration
+also means an unsupported contract fails near its declaration instead of surprising the
+first production caller.
 
 ## Bound arguments matter here too
 
@@ -181,6 +183,11 @@ That is exactly the kind of shortcut this course is trying to avoid.
 Binding also gives you a stronger answer when a learner asks "which argument failed?" The
 validator can answer in parameter language instead of tuple-position folklore.
 
+The strict lab test proves a default is applied before checking: `render("INC-42")`
+validates both `incident_id="INC-42"` and `severity="warning"`. A bad
+`incident_id=42` is rejected before `render` appends to its call log. This is observable
+evidence that binding and validation precede delegation.
+
 ## Runtime type checks are not static typing
 
 This module needs to say this plainly:
@@ -194,6 +201,15 @@ So the strongest honest claim is:
 > this decorator enforces a limited runtime contract at a narrow boundary.
 
 That is a useful claim. It is not the same claim as "this program is type-safe."
+
+Static analysis and this wrapper answer different questions:
+
+| Question | Static checker | This runtime wrapper |
+| --- | --- | --- |
+| can a known call site pass an incompatible value? | often, before execution | only when that call executes |
+| did an untyped external boundary deliver the expected simple runtime class? | not by observing the live value | yes, for the supported subset |
+| is every element of `list[int]` an integer? | can reason from declared types | deliberately refuses the hint |
+| does `warning` mode stop incompatible work? | not applicable | no |
 
 ## Common overclaims to reject
 
@@ -218,6 +234,17 @@ That is exactly where a small validator starts turning into a separate validatio
 framework. Sometimes that is justified. Often it is a sign the decorator should stop
 growing or hand off to a more explicit tool.
 
+## Return checks happen after side effects
+
+A parameter mismatch can be rejected before the wrapped function runs. A return
+mismatch cannot: the value exists only after execution. The focused test
+`test_strict_return_validation_runs_after_the_wrapped_function` proves the call counter
+is already `1` when the decorator raises.
+
+That timing matters for incident delivery. Rejecting a mislabeled return does not undo a
+page that was already sent. Runtime return checking improves evidence; it is not a
+transaction boundary.
+
 ## Failure modes for annotation-aware decorators
 
 These are the mistakes to catch before approving the design:
@@ -228,6 +255,47 @@ These are the mistakes to catch before approving the design:
 | half-supporting a hint surface silently | reviewers cannot tell what the contract really covers | refuse unsupported hints clearly |
 | using warnings to imply enforcement | callers may believe the function was protected when it was not | describe warning mode as observation only |
 | escalating the decorator into a validation framework by accident | the owner becomes too hidden and too broad | move richer rules into an explicit validator component |
+
+## Smallest honest proof route
+
+```bash
+python -m unittest discover \
+  -s tests \
+  -p "test_decorator_policy_validation.py" \
+  -v
+```
+
+The tests cover default binding, unions, optional values, `Any`, unsupported generics,
+strict argument failure, return-check timing, warning behavior, invalid factory
+configuration, policy inspection, metadata, and signature preservation. They do not
+cover every object recognized by `typing`, nested container contents, protocols,
+coercion, or business invariants.
+
+## Capstone transfer: keep checking outside `@action`
+
+Run:
+
+```bash
+make capstone-bind-action
+make capstone-check-action
+make capstone-action-wrapper
+```
+
+The capstone separates three responsibilities:
+
+- binding proves call shape
+- contract checking reports matches, mismatches, unsupported hints, and missing hints
+- wrapper inspection proves which layer owns action metadata and signatures
+
+`check-action` does not construct a plugin or invoke its action. It checks arguments
+only, reports unsupported annotations instead of skipping them, and explicitly says
+return values are outside its scope. Keeping this as an opt-in framework function avoids
+turning every `@action` call into implicit partial type enforcement.
+
+Unlike the lab decorator, `@action` does not resolve hints when the class body runs.
+The explicit check route resolves them later. An unresolved forward reference therefore
+does not break ordinary action registration; `check-action` reports a resolution error,
+marks the affected arguments unchecked, and refuses to call the contract complete.
 
 ## Review rules for annotation-aware decorators
 
@@ -253,9 +321,13 @@ Before moving on, make sure you can do all of these:
 
 Try these before moving on:
 
-1. Write a validator that supports plain classes, `Union`, `Optional`, and `Any`.
-2. Force it to encounter `list[int]` or another unsupported hint and make it fail clearly.
-3. Explain one useful runtime boundary where partial validation helps and one case where static analysis should still do the heavy lifting.
+1. Add `float` to a union already supported by a lab function and prove both the new
+   success route and the existing failure route.
+2. Add a `dict[str, int]` annotation and predict whether refusal occurs during
+   decoration or invocation before running the test.
+3. Add an intentionally wrong return and prove the body ran before rejection.
+4. Explain one external runtime boundary where this partial validator helps and one
+   internal call graph where static analysis should do the heavy lifting.
 
 If those feel ordinary, the next step is cache policy, where wrapper state becomes visible,
 inspectable, and operationally significant.

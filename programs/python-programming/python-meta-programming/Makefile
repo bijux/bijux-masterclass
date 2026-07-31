@@ -3,7 +3,8 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 CAPSTONE_DIR := capstone
-RUN_CAPSTONE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(CAPSTONE_DIR)
+RUN_CAPSTONE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool --no-print-directory -C $(CAPSTONE_DIR)
+PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../artifacts
 SITE_DIR ?= $(ARTIFACTS_DIR)/site/python-programming/python-meta-programming
 COURSE_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/python-programming/python-meta-programming
@@ -13,8 +14,109 @@ help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "\033[36m%-18s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .PHONY: test
-test: ## Run the capstone confirmation suite
+test: lab-test ## Run course labs and the capstone confirmation suite
 	@$(RUN_CAPSTONE) confirm
+
+.PHONY: lab
+lab: ## Run the Module 01 runtime-object evidence lab
+	@$(PYTHON) -m labs.runtime_objects
+
+.PHONY: lab-test
+lab-test: ## Verify the executable course labs
+	@$(PYTHON) -m unittest discover -s tests -v
+
+.PHONY: observation-lab
+observation-lab: ## Run the Module 02 safe-observation evidence lab
+	@$(PYTHON) -m labs.runtime_observation
+
+.PHONY: observation-lab-test
+observation-lab-test: ## Verify the Module 02 observation boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_runtime_observation_lab.py" -v
+
+.PHONY: observation-debug-view
+observation-debug-view: ## Render the Module 02 attachment-first debug view
+	@$(PYTHON) -c 'from labs.runtime_observation.debug_view import main; raise SystemExit(main())'
+
+.PHONY: evidence-lab
+evidence-lab: ## Run the Module 03 runtime-evidence trust lab
+	@$(PYTHON) -m labs.runtime_evidence
+
+.PHONY: evidence-lab-test
+evidence-lab-test: ## Verify the Module 03 evidence classifications
+	@$(PYTHON) -m unittest discover -s tests -p "test_runtime_evidence_lab.py" -v
+
+.PHONY: evidence-repr
+evidence-repr: ## Run the Module 03 signature-guided representation
+	@$(PYTHON) -m labs.runtime_evidence.repr_demo
+
+.PHONY: evidence-repr-test
+evidence-repr-test: ## Verify the Module 03 representation boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_signature_guided_repr.py" -v
+
+.PHONY: wrapper-lab
+wrapper-lab: ## Run the Module 04 wrapper lifecycle evidence lab
+	@$(PYTHON) -m labs.wrapper_runtime
+
+.PHONY: wrapper-lab-test
+wrapper-lab-test: ## Verify Module 04 wrapper timing and transparency
+	@$(PYTHON) -m unittest discover -s tests -p "test_wrapper_runtime_lab.py" -v
+
+.PHONY: wrapper-cache
+wrapper-cache: ## Run the Module 04 bounded-cache worked example
+	@$(PYTHON) -m labs.wrapper_runtime.cache_demo
+
+.PHONY: wrapper-cache-test
+wrapper-cache-test: ## Verify the Module 04 bounded-cache policy
+	@$(PYTHON) -m unittest discover -s tests -p "test_bounded_cache_lab.py" -v
+
+.PHONY: decorator-policy-lab
+decorator-policy-lab: ## Run the Module 05 decorator-policy evidence lab
+	@$(PYTHON) -m labs.decorator_policy
+
+.PHONY: decorator-policy-lab-test
+decorator-policy-lab-test: ## Verify Module 05 retry and validation policy boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_decorator_policy_*.py" -v
+
+.PHONY: class-customization-lab
+class-customization-lab: ## Run the Module 06 lower-power customization evidence lab
+	@$(PYTHON) -m labs.class_customization
+
+.PHONY: class-customization-lab-test
+class-customization-lab-test: ## Verify Module 06 transformation and attribute boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_*class_customization*.py" -v
+	@$(PYTHON) -m unittest discover -s tests -p "test_frozen_surface*.py" -v
+
+.PHONY: descriptor-lookup-lab
+descriptor-lookup-lab: ## Run the Module 07 descriptor and lookup evidence lab
+	@$(PYTHON) -m labs.descriptor_lookup
+
+.PHONY: descriptor-lookup-lab-test
+descriptor-lookup-lab-test: ## Verify Module 07 lookup, binding, and storage boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_*descriptor*.py" -v
+
+.PHONY: descriptor-system-lab
+descriptor-system-lab: ## Run the Module 08 descriptor-system evidence lab
+	@$(PYTHON) -m labs.descriptor_systems
+
+.PHONY: descriptor-system-lab-test
+descriptor-system-lab-test: ## Verify Module 08 cache, storage, composition, and hint boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_descriptor_system_*.py" -v
+
+.PHONY: class-creation-lab
+class-creation-lab: ## Run the Module 09 class-creation evidence lab
+	@$(PYTHON) -m labs.class_creation
+
+.PHONY: class-creation-lab-test
+class-creation-lab-test: ## Verify Module 09 timing, namespace, registry, and owner boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_class_creation_*.py" -v
+
+.PHONY: runtime-governance-lab
+runtime-governance-lab: ## Run the Module 10 runtime-governance evidence lab
+	@$(PYTHON) -m labs.runtime_governance
+
+.PHONY: runtime-governance-lab-test
+runtime-governance-lab-test: ## Verify Module 10 execution, interface, rollback, tooling, and review boundaries
+	@$(PYTHON) -m unittest discover -s tests -p "test_runtime_governance_*.py" -v
 
 .PHONY: demo
 demo: ## Run one learner-facing capstone invocation
@@ -47,6 +149,54 @@ proof: ## Run the full capstone proof route
 .PHONY: capstone-manifest
 capstone-manifest: ## Render the capstone manifest from the public CLI
 	@$(RUN_CAPSTONE) manifest
+
+.PHONY: capstone-plugin
+capstone-plugin: ## Render one concrete capstone plugin contract
+	@$(RUN_CAPSTONE) plugin
+
+.PHONY: capstone-field
+capstone-field: ## Render one concrete capstone field contract
+	@$(RUN_CAPSTONE) field
+
+.PHONY: capstone-action
+capstone-action: ## Render one concrete capstone action contract
+	@$(RUN_CAPSTONE) action
+
+.PHONY: capstone-registry
+capstone-registry: ## Render the deterministic capstone registry
+	@$(RUN_CAPSTONE) registry
+
+.PHONY: capstone-signatures
+capstone-signatures: ## Render generated capstone signatures
+	@$(RUN_CAPSTONE) signatures
+
+.PHONY: capstone-governance
+capstone-governance: ## Review accepted, constrained, and rejected capstone powers
+	@$(RUN_CAPSTONE) governance
+
+.PHONY: capstone-bind-action
+capstone-bind-action: ## Validate a capstone action call without executing it
+	@$(RUN_CAPSTONE) bind-action
+
+.PHONY: capstone-action-wrapper
+capstone-action-wrapper: ## Audit a capstone action wrapper without executing it
+	@$(RUN_CAPSTONE) action-wrapper
+
+.PHONY: capstone-check-action
+capstone-check-action: ## Check a capstone action's supported runtime hint contract
+	@$(RUN_CAPSTONE) check-action
+
+.PHONY: capstone-class-creation
+capstone-class-creation: ## Inspect capstone class-creation provenance without construction
+	@$(RUN_CAPSTONE) class-creation
+
+.PHONY: capstone-field-ownership
+capstone-field-ownership: ## Inspect capstone descriptor ownership without construction
+	@$(RUN_CAPSTONE) field-ownership
+
+.PHONY: capstone-field-system
+capstone-field-system: ## Inspect capstone field-system powers without construction
+	@$(RUN_CAPSTONE) field-system
 
 .PHONY: capstone-trace
 capstone-trace: ## Trace one capstone invocation from the public CLI

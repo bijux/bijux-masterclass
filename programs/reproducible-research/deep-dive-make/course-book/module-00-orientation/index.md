@@ -11,6 +11,21 @@ It answers that question from rules in a file normally named `Makefile`. The rul
 graph. This course begins with that small idea and builds toward parallel execution,
 generated files, releases, incident diagnosis, and responsible migration.
 
+The learning target is not command recall. It is the ability to explain and test a build
+claim:
+
+| Part | Question |
+| --- | --- |
+| request | which target did the user or CI ask for? |
+| graph | which prerequisites and rules make that target possible? |
+| decision | why did Make rebuild, skip, or reject work? |
+| recipe | which external command actually transformed state? |
+| artifact | which file or public action now exists? |
+| proof | which trace, file identity, selftest, or consumer check supports the claim? |
+| limit | which hidden input, runtime assumption, or unsupported platform remains outside it? |
+
+Every technical module returns to this chain under a different pressure.
+
 ## What this orientation module is for
 
 Module 00 is not a warm-up you should rush through. It establishes the study habits that
@@ -192,6 +207,64 @@ The first file-target experiment is the pattern for the whole course. Later exam
 larger, but the learning move stays the same: predict the requested graph, run one bounded
 command, inspect the evidence, and change one fact.
 
+## Read evidence in layers
+
+A build can print no errors and still have a stale output, hidden prerequisite, race, or
+unsafe release boundary.
+
+| Evidence layer | Typical surface | Question answered |
+| --- | --- | --- |
+| declaration | targets, prerequisites, variables, includes | what graph does the Makefile claim? |
+| selection | `make --trace`, `make -n`, debug output | which rule and target did Make choose? |
+| execution | recipe output and exit status | which shell command ran and did it report success? |
+| artifact | files, timestamps, hashes, archive members | what state was actually produced? |
+| convergence | unchanged second build | does settled declared state avoid needless work? |
+| negative challenge | changed input, delay, missing tool, failed recipe | does the build fail or rebuild for the right reason? |
+| consumer proof | install, extract, verify, or public target check | can the intended user rely on the result? |
+
+One layer cannot prove all the others. A successful recipe does not prove that the graph
+will rerun it when a hidden input changes. A no-op second build does not prove the output
+is correct.
+
+```mermaid
+flowchart LR
+  declare["read declared graph"] --> predict["predict Make decision"]
+  predict --> trace["capture selection and execution"]
+  trace --> artifact["inspect artifact meaning"]
+  artifact --> challenge["change one relevant fact"]
+  challenge --> decision["accept, reject, or repair"]
+```
+
+## Keep a learning evidence directory
+
+Course commands write generated evidence under the repository-level `artifacts/`
+directory. Keep your study packet there:
+
+```text
+artifacts/learning/deep-dive-make/
+├── questions.md
+├── predictions.md
+├── module-decisions.md
+├── command-logs/
+└── review-packets/
+```
+
+For each investigation, record:
+
+```text
+claim:
+requested target:
+predicted graph decision:
+observed trace:
+artifact check:
+controlled challenge:
+decision:
+remaining limit:
+```
+
+This packet replaces instructor memory and shell history. It lets a missed-class learner
+resume from the last demonstrated capability.
+
 ## Day-zero checklist
 
 Before you leave orientation, make sure all of these are true:
@@ -202,6 +275,8 @@ Before you leave orientation, make sure all of these are true:
 - you can explain why the second file-target run does no work
 - you can change one input and predict the rebuild before you run it
 - you have one practice directory reserved for course experiments
+- you can distinguish graph, recipe, artifact, and consumer evidence
+- you know generated learning evidence belongs under `artifacts/`
 
 ## Choose a route
 
@@ -242,6 +317,11 @@ Use the rest of Module 00 based on what you need:
 
 - Read [Course Map](course-map.md) if you want the full ten-session arc.
 - Read [First-Contact Map](first-contact-map.md) if you want the shortest route into the first week.
+- Read [Self-Study Guide](self-study-guide.md) if you need pacing, missed-session recovery, or answer-review discipline.
+- Read [Evidence-Reading Guide](evidence-reading-guide.md) if you need to interpret traces, dry runs, selftests, or artifacts.
+- Read [Capstone Framing Guide](capstone-framing-guide.md) if you need to choose a proportionate repository-scale proof route.
+- Read [Makefile Reading Guide](makefile-reading-guide.md) if you are opening a Make repository you did not author.
+- Use [Course Reference](course-reference.md) when you need a command boundary, module route, capstone target, or evidence template.
 - Read [Mid-Course Map](mid-course-map.md) if you are already comfortable with the basics and want to understand the second half of the course.
 - Read [Mastery Map](mastery-map.md) if you are returning later for review, migration, or stewardship.
 

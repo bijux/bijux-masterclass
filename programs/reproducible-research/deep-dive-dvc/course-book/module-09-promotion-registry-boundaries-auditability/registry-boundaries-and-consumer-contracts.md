@@ -1,118 +1,353 @@
 # Registry Boundaries and Consumer Contracts
 
-
-<!-- page-maps:start -->
 ## Page Maps
 
 ```mermaid
 graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
-  section["Promotion Registry Boundaries Auditability"]
+  section["Promotion and Auditability"]
   page["Registry Boundaries and Consumer Contracts"]
-  capstone["Capstone evidence"]
+  evidence["Immutable release case"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.tests.-> evidence
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  producer["Producer project"] --> review["Promotion review"]
+  review --> registry["Named release interface"]
+  registry --> consumer["Consumer project"]
+  remote["DVC remote"] -.supplies content.-> producer
+  remote -.may supply content.-> consumer
 ```
-<!-- page-maps:end -->
 
-A registry boundary is where internal artifacts become named products.
+“Registry” is often used for any place that contains artifacts. That loose language hides
+important differences in authority, discovery, storage, and consumption.
 
-It may be a model registry, a published directory, an object-store prefix, or a release
-record. The form can vary. The contract is stable:
+A DVC remote can hold the bytes needed to restore tracked outputs. A DVC repository can
+publish versioned data for `dvc get` or `dvc import`. A model registry can add lifecycle
+and approval metadata. A release directory can expose a small local interface. These
+surfaces can cooperate, but they do not make the same promise.
 
-> Consumers use this named release surface, not arbitrary internal pipeline paths.
+This lesson gives you a decision model for assigning each responsibility and writing a
+consumer contract that survives internal project change.
 
-## Registry boundaries protect consumers
+## Name the boundary by the question it answers
 
-Internal project structure changes often:
+| Boundary | Primary question | Typical identity |
+| --- | --- | --- |
+| Git repository | which declared project revision? | commit or immutable tag |
+| DVC lock state | which recorded pipeline dependencies and outputs? | committed `dvc.lock` at a Git revision |
+| DVC remote | where can content-addressed data be pushed or pulled? | configured remote plus object identity |
+| DVC-backed data registry | which versioned dataset or artifact can another project discover and retrieve? | repository URL, path, and revision |
+| promotion registry | which candidate has authority for a supported use? | immutable release version plus decision metadata |
+| release bundle | which public files and schemas form the consumer interface? | exact manifest inventory |
 
-- stages are renamed
-- feature paths move
-- report generation changes
-- intermediate outputs split or merge
-- experiment candidates appear and disappear
+When one tool implements several boundaries, keep the questions separate. A model
+registry might store artifact bytes and approval metadata, but reviewers still need to
+distinguish availability from authority.
 
-Downstream consumers should not break every time internal structure improves.
+## A DVC remote is not a promotion registry
 
-A registry boundary gives them a smaller contract:
+`dvc push` transfers cache objects needed by tracked outputs to a configured remote.
+`dvc pull` obtains objects for the selected project state and places outputs in the
+workspace. These operations support collaboration and recovery.
+
+They do not inherently answer:
+
+- which candidate passed comparison;
+- which release reviewers approved;
+- what a consumer may do with an object;
+- which schema is supported;
+- whether a movable alias changed;
+- when a release is deprecated or withdrawn.
+
+```mermaid
+flowchart TB
+  lock["dvc.lock: output identity"] --> pull["dvc pull"]
+  remote["DVC remote: content object"] --> pull
+  pull --> workspace["Restored workspace output"]
+
+  contract["Promotion contract"] --> approve["Promotion decision"]
+  workspace --> candidate["Candidate bundle"]
+  candidate --> approve
+  approve --> registry["Consumer release"]
+```
+
+The remote enables restoration. Promotion grants authority. A remotely available object
+may be experimental, obsolete, or unreviewed.
+
+## A DVC repository can act as a data registry
+
+A separate consumer can retrieve a DVC-tracked path from a repository at a named revision:
+
+```bash
+dvc get <repository-url> <path> --rev <immutable-revision>
+```
+
+This is useful when the producer repository itself is the discovery and versioning
+surface. The consumer does not need to initialize a DVC project merely to use `dvc get`.
+
+If the consumer wants a tracked dependency with an update relationship, `dvc import` may
+be more appropriate. The exact choice belongs to dependency-management design, but the
+release questions remain:
+
+- Which repository and path are supported?
+- Which immutable revision was approved?
+- What schema and behavior does the path promise?
+- How does the consumer verify the retrieved content?
+- What happens when a new release appears?
+
+Retrieving without `--rev` uses the repository's current default revision. That may be
+convenient for exploration but is too weak for a historical audit claim.
+
+## A model registry adds authority and lifecycle
+
+A model registry commonly adds concepts such as:
+
+- named model or product;
+- immutable versions;
+- approval status or lifecycle stage;
+- annotations, owners, and review links;
+- discovery APIs;
+- access controls;
+- deprecation, withdrawal, or supersession.
+
+These features are useful only when their semantics are explicit. A stage called
+`production` is a movable authority pointer. Record the immutable model version beneath
+it. A version called `7` is stable only if the registry forbids retargeting or replacement.
+
+The course does not require one registry vendor. Evaluate any implementation against the
+same invariants:
+
+| Invariant | Review question |
+| --- | --- |
+| immutable identity | can this version ever resolve to different bytes or metadata? |
+| source binding | can I identify the Git and DVC state that produced it? |
+| exact inventory | can I determine every artifact in the release? |
+| approval binding | are reviewers attached to this exact version? |
+| consumer contract | are supported files, schemas, and uses documented? |
+| recoverability | can the backing content still be retrieved under the retention promise? |
+| lifecycle history | can I see promotion, supersession, and withdrawal without erasing events? |
+
+## Design separate producer and consumer views
+
+The producer sees internal richness:
 
 ```text
-registry/
-  incident-escalation/
-    v1/
-      model.json
-      metrics.json
-      params.yaml
-      manifest.json
+raw data
+prepared data
+feature outputs
+candidate models
+experiment results
+evaluation tables
+debug plots
+release candidate
 ```
 
-Consumers depend on `incident-escalation/v1`, not the internal training directory.
+The consumer should see a bounded product:
 
-## The registry should say what is supported
+```text
+incident-escalation/2026-07
+  manifest
+  model
+  params
+  metrics
+  report
+```
 
-A registry entry should answer:
+This asymmetry is intentional. The registry protects consumers from pipeline refactors and
+protects maintainers from having every internal path become a permanent dependency.
 
-- what artifact or bundle is approved?
-- which version is being consumed?
-- which metadata travels with it?
-- what compatibility or usage expectation exists?
-- where is the audit trail?
+Ask consumers what action they need, not which producer folders they want.
 
-If the registry only stores a model file, consumers may miss the parameters and metrics
-that explain it.
+## Write the consumer contract as testable clauses
 
-## Do not leak exploratory state into the registry
+A useful contract contains:
 
-Exploratory results can be useful without being registry-ready.
+### Identity
 
-Keep out:
+> Consumers resolve `incident-escalation/2026-07`. The identifier is immutable.
 
-- candidate outputs without review
-- debug plots
-- old metric files
-- internal cache files
-- local notebook exports
-- unreviewed model variants
+### Supported action
 
-The registry boundary should say "this is supported," not "this was nearby."
+> Consumers may score rows matching the documented feature schema and use threshold
+> `0.52` for the documented review workflow.
 
-## Consumer contract examples
+### Supported files
 
-Weak:
+> `model.json`, `params.yaml`, `metrics.json`, and `report.md` are supported interfaces.
 
-> Use whatever model is in `outputs/latest/`.
+### Verification
 
-Stronger:
+> Consumers verify exact inventory and artifact digests against `manifest.json` before
+> use.
 
-> Use `publish/v1/model.json` with the matching `publish/v1/params.yaml` and
-> `publish/v1/metrics.json`; do not depend on files outside `publish/v1/`.
+### Provenance
 
-Stronger still:
+> The release record identifies the approved Git revision and `dvc.lock` digest.
 
-> Use registry entry `incident-escalation/v1`; it contains a manifest, promoted model,
-> release metrics, promoted parameters, and review link. Internal pipeline paths are not a
-> supported interface.
+### Exclusions
 
-The last version gives consumers a clear contract and maintainers room to change internals.
+> Workspace paths, cache objects, experiment records, and producer intermediates are not
+> supported consumer interfaces.
 
-## Review checkpoint
+### Lifecycle
 
-You understand this core when you can:
+> A release is never modified in place. Corrections create a new immutable release;
+> withdrawal retains the original decision history and blocks new use.
 
-- define the registry boundary for one promoted result
-- explain what consumers are allowed to depend on
-- keep exploratory or debug state out of the registry
-- include metadata and audit evidence beside the artifact
-- protect consumers from internal pipeline churn
+Every clause implies a test or observable process.
 
-A registry is not a storage drawer. It is a consumer-facing promise.
+## Resolve aliases safely
+
+Movable aliases are useful for discovery:
+
+```text
+candidate
+approved
+production
+latest
+```
+
+They are dangerous when recorded as the only identity.
+
+A safe consumer route is:
+
+```mermaid
+sequenceDiagram
+  participant C as Consumer
+  participant A as Movable alias
+  participant R as Immutable release
+  C->>A: resolve current approved release
+  A-->>C: incident-escalation/2026-07
+  C->>R: retrieve immutable version
+  R-->>C: bundle + manifest + metadata
+  C->>C: verify and record immutable identity
+```
+
+After resolution, logs, reports, caches, and downstream lock files should name
+`incident-escalation/2026-07`, not merely `approved`.
+
+The promotion audit's `MUTABLE_REGISTRY_REFERENCE` case changes both contract and decision
+to `incident-escalation/latest`. The two records agree, yet the release blocks because
+agreement on a moving target cannot preserve historical identity.
+
+## Prevent producer internals from leaking into consumption
+
+Review a proposed consumer command:
+
+```bash
+python score.py \
+  --model ../../producer/models/model.json \
+  --params ../../producer/params.yaml
+```
+
+It leaks:
+
+- producer directory layout;
+- workspace availability;
+- current rather than immutable state;
+- two files that may come from different revisions;
+- no integrity or approval check.
+
+A stronger conceptual route is:
+
+```bash
+resolve incident-escalation/2026-07
+verify manifest and supported schemas
+score with verified model and params
+record incident-escalation/2026-07 in the result
+```
+
+The exact command depends on the registry, but the consumer obligations do not.
+
+## Separate schema compatibility from lifecycle authority
+
+A new release can be schema-compatible and still require explicit promotion. A release can
+also retain authority while becoming unsuitable for new consumers because policy changed.
+
+Use two axes:
+
+| Schema compatibility | Lifecycle authority | Meaning |
+| --- | --- | --- |
+| compatible | approved | ordinary supported consumption |
+| compatible | withdrawn | parser may work, but new use is forbidden |
+| breaking | approved under a new interface version | consumers must migrate deliberately |
+| breaking | accidentally replacing old version | registry integrity failure |
+
+Do not use a lifecycle label to communicate schema compatibility. `production` does not
+mean “same API as the previous version.”
+
+## Plan supersession and withdrawal
+
+Immutable does not mean eternally recommended. It means historical identity does not
+change.
+
+When release `2026-08` supersedes `2026-07`:
+
+- publish a new immutable identity;
+- retain the old manifest, source, and decision;
+- update movable discovery aliases only after the new release verifies;
+- record compatibility and migration notes;
+- keep or retire old content according to the retention contract.
+
+When a release must be withdrawn:
+
+- preserve the original record;
+- add the withdrawal decision and reason;
+- stop aliases and new consumers from resolving to it;
+- identify affected downstream uses;
+- publish a corrected version when available.
+
+Deleting the record erases the evidence needed to investigate impact.
+
+## Registry and remote failure matrix
+
+| Registry state | DVC content state | Consumer consequence | Review response |
+| --- | --- | --- | --- |
+| release absent | object present | bytes exist without authority | do not consume as promoted |
+| release approved | object absent | authority exists but retrieval fails | incident and recovery response |
+| release points to wrong source | object present | retrievable but untrustworthy | block or withdraw |
+| immutable release valid | object present | expected state | verify and consume |
+| alias points to withdrawn version | object present | discovery authority is stale | correct alias and assess impact |
+
+Availability and authority are independent dimensions. Test both.
+
+## Evaluate a registry design
+
+For one registry or release mechanism, complete this table:
+
+| Responsibility | Owning system | Stable identifier | Verification evidence |
+| --- | --- | --- | --- |
+| source declaration |  |  |  |
+| recorded DVC state |  |  |  |
+| artifact storage |  |  |  |
+| promotion decision |  |  |  |
+| immutable release discovery |  |  |  |
+| consumer schema |  |  |  |
+| lifecycle history |  |  |  |
+| recovery |  |  |  |
+
+If one system owns multiple rows, describe its separate records or APIs. If no system owns
+a row, the design has an ungoverned boundary.
+
+## Independent review checkpoint
+
+You are ready for promotion failure analysis when you can:
+
+- distinguish a Git revision, DVC lock state, DVC remote, data registry, promotion
+  registry, and release bundle;
+- explain what `dvc get --rev` contributes and what it does not prove;
+- write testable identity, action, verification, provenance, exclusion, and lifecycle
+  clauses;
+- resolve a movable alias to an immutable recorded identity;
+- identify producer-path leakage in a consumer workflow;
+- analyze availability and authority as independent dimensions;
+- describe supersession without modifying history.
+
+A registry boundary is effective when the consumer can discover, verify, and use an
+approved immutable product without acquiring accidental dependencies on the producer's
+workspace.

@@ -1,350 +1,422 @@
-# Worked Example: Reading a Snakemake Repository Like an Architect
+# Worked Example: Review One Artifact Across the Architecture
 
-This file ties the whole module together around one realistic problem:
+This worked example reviews the capstone through one public artifact:
 
-> a workflow repository still works, but new contributors cannot explain its shape without an oral tour.
-
-The question is not "how do we inspect every file?" The question is how to read the
-repository in an order that reveals ownership, path contracts, and drift risk quickly.
-
-## If you are learning this without the live class
-
-Use the example in five passes instead of trying to absorb the whole repository shape in
-one read:
-
-1. start at the entrypoint and write down what it visibly assembles
-2. stop after the rule-family pass and ask whether the helper layers can still wait
-3. trace one public artifact before you open deep implementation code
-4. confirm the file API before you discuss refactoring
-5. finish by deciding which drift signal matters now and which can wait
-
-If you cannot explain the repository after pass 2, do not go deeper into helpers or
-package code yet. Most Module 07 confusion starts when learners chase implementation
-detail before they have named the visible architecture.
-
-## How to use this worked example
-
-Work through this page with the five core lessons nearby.
-
-Do not treat it as a summary you skim after the module. Treat it as a guided architecture
-walkthrough:
-
-- where to start reading
-- what to postpone
-- how to trace one public artifact
-- how to decide whether drift is real or only a vague discomfort
-
-## The one-day teaching goal
-
-By the end of this example, you should be able to explain one Snakemake repository
-without falling back on phrases like "the important parts are spread around."
-
-You should be able to say:
-
-- which surface a new maintainer reads first
-- which rule family or layer owns which concern
-- where path promises become explicit
-- which structural problem deserves refactoring now
-
-## The lab route
-
-Work through the example in this order:
-
-1. start at the entrypoint and identify visible assembly
-2. inspect named rule families before any helper code
-3. separate reusable workflow modules from local assembly boundaries
-4. confirm the public file contract and path promises
-5. finish by deciding which architectural drift matters now
-
-Keep one small architecture packet beside you as you read:
-
-- a reading-order note
-- an ownership table
-- one artifact trace
-- one file-API note
-- one drift finding with a focused proof route
-
-That packet is not overhead. It is the thing that turns "I explored the repo" into
-"another maintainer can review why this reading order and boundary map are trustworthy."
-
-## The starting situation
-
-Assume you inherit the capstone and need to answer three questions quickly:
-
-1. where is the workflow assembled
-2. where do the main rule families live
-3. where are public promises documented
-
-If you cannot answer those questions in a stable order, the repository architecture is
-already too opaque.
-
-The whole walkthrough becomes easier if you visualize the reading order before opening
-deep implementation code:
-
-```mermaid
-flowchart TD
-  entry["Snakefile"]
-  families["named rule families"]
-  modules["workflow modules if present"]
-  contracts["file APIs and contract docs"]
-  helpers["scripts and package code only where the trace leads"]
-
-  entry --> families --> modules --> contracts --> helpers
+```text
+publish/v1/manifest.json
 ```
 
-That sequence is not arbitrary. It protects the visible workflow story from being buried
-under implementation detail too early.
+The goal is not to tour every directory. It is to explain how a requested public file
+crosses assembly, local rule families, module and package boundaries, and verification.
+Along the route, we will find and repair one real coupling defect: modules receiving the
+entire parent configuration.
 
-## What goes wrong when a learner trusts the starting situation
+You can complete the reasoning without running the workflow. Command output adds evidence,
+but every conclusion below also points to the source observation that supports it.
 
-Use this card before you repair anything:
+The review follows one artifact backward to its owners:
 
-| If you notice... | The repository is hiding... | Smallest review surface |
+```mermaid
+flowchart RL
+  manifest["publish/v1/manifest.json"] --> publish["manifest rule"]
+  publish --> summary["summary + report"]
+  summary --> sample["per-sample artifacts"]
+  sample --> modules["QC + screen module bindings"]
+  modules --> source["declared data + policy"]
+```
+
+## Prepare an architecture packet
+
+Create one note with these records:
+
+1. completion contract
+2. assembly inventory
+3. rule-family map
+4. module interface table
+5. implementation dependency ledger
+6. public artifact trace
+7. drift finding
+8. refactor claim
+9. verification matrix
+10. remaining-risk note
+
+The records are cumulative. Do not replace an early prediction with the observed answer.
+Keep both so a reviewer can see what changed your model.
+
+## Begin at completion
+
+The top-level default target is:
+
+```python
+rule all:
+    input:
+        f"{PUBLISH_DIR}/{PUBLISH_VERSION}/manifest.json"
+    default_target: True
+```
+
+Write the first record:
+
+| Question | Answer from source | Confidence |
 | --- | --- | --- |
-| a new maintainer starts in helpers because the entrypoint teaches too little | visible assembly is too weak | one annotated entrypoint read |
-| two repository layers can be described with the same sentence | ownership boundaries are not named clearly enough | one responsibility table |
-| path stability is guessed from habit rather than docs | the file API is folklore instead of architecture | one file-API note plus one traced public path |
-| "the repo feels messy" is the only drift argument available | architecture review has no focused boundary claim yet | one artifact trace plus one concrete drift finding |
+| What represents a complete default run? | the versioned publish manifest | high |
+| Which values choose its path? | `publish_dir` and publish version | high |
+| Does this prove every member is trustworthy? | no; it proves only the requested completion path | high |
 
-If you can name the hidden defect first, the architecture review stops feeling like folder opinion.
+This distinction matters. A target is a workflow promise, not independent verification.
 
-## What the learner should notice first
+Before reading producers, predict:
 
-The repository may still run perfectly.
+- the manifest rule should be visible after parsing
+- its inputs should name every public file that it inventories
+- the public file API should agree with those inputs
+- a verification route should check both membership and artifact content
 
-The problem is that maintainers are depending on oral guidance instead of structure. That
-is exactly the kind of architecture weakness that becomes expensive later even when the
-workflow still executes correctly today.
+## Inventory assembly by responsibility
 
-## Start at the entrypoint
+Read the top-level `Snakefile` from top to bottom once. Do not follow imports yet.
+Classify statements:
 
-The top-level `Snakefile` is the right first file because it visibly:
-
-- loads or validates config
-- includes rule families or modules
-- sets directory defaults when needed
-- defines the main target
-
-That is exactly what a good entrypoint should do.
-
-The entrypoint should tell a reviewer, early, which visible workflow story they are about
-to inspect. That is why the first architectural read should begin there rather than in
-`src/` or a helper directory.
-
-If the repository does not reward that reading order, the architectural problem is real,
-not just personal preference.
-
-## The entrypoint audit before you celebrate
-
-Before you call the reading order healthy, make sure you can answer all four of these:
-
-| Question | Healthy answer |
+| Responsibility | Observed surface |
 | --- | --- |
-| What does the entrypoint reveal immediately? | config, major includes or modules, and final target assembly |
-| What did you safely postpone? | helpers, scripts, or package code that support but do not define the visible story |
-| What would count as an architectural warning? | needing deep implementation files before the workflow shape makes sense |
-| What evidence proves the read order is honest? | an entrypoint note, rule-family pass, and one public-artifact trace |
+| configuration gate | config file, schema validation, defaults |
+| shared names | result, publish, log, benchmark, and runtime mappings |
+| graph policy | workdir, wildcard constraint, local checkpoint policy |
+| top-level rules | discovery, discovery publication, provenance |
+| local assembly | common plus three rule-family includes |
+| completion | default manifest target |
 
-If any row stays vague, keep repairing. The repository may run, but the architecture may still teach the story in the wrong order.
+This inventory produces two findings:
 
-## Read rule families before helpers
+- the entrypoint visibly explains how the workflow is assembled
+- it also owns three executable rules, so it is not assembly-only
 
-Once the entrypoint is clear, inspect the named rule families.
+Do not immediately move those rules. Record the pressure:
 
-This gives a workflow story such as:
+> Discovery and provenance make the entrypoint slower to scan, but a move is justified
+> only if a new concern owner and behavior-preservation evidence are clearer.
 
-- preprocessing creates internal working surfaces
-- summarization promotes selected artifacts toward publication
-- publishing assembles and verifies the public contract
+That is more honest than scoring the file by length.
 
-That sequence teaches repository architecture and workflow meaning at the same time. If
-you jump into helper code first, you lose the visible graph and start from implementation
-detail instead of ownership.
+## Confirm the parsed rule surface
 
-At this stage, write one sentence per layer before you continue:
+From the capstone directory:
 
-- what the entrypoint owns
-- what one rule-family file owns
-- what a helper or package layer should only support
+```bash
+snakemake --list-rules
+```
 
-If the same sentence still fits two layers, the repository boundary is not named clearly
-enough yet.
+The current rule set should include:
 
-## A short checkpoint before you continue
+```text
+all
+dedup_fastq
+discover_samples
+kmer_profile
+manifest
+provenance
+publish_discovered_samples
+qc_raw
+qc_trimmed
+report
+screen_panel
+summarize
+trim_fastq
+```
 
-Pause here and ask:
+Interpret the receipt narrowly:
 
-- could a new maintainer explain the workflow shape without opening package code yet?
-- do the rule-family names already signal concern boundaries?
-- is the top-level assembly revealing more than it hides?
+- parsing completed
+- included and imported rule names became visible
+- module aliases entered the local namespace
 
-If the answer to any of these is no, the architectural story is already weaker than it
-should be.
+It does not prove that module config is bounded, paths are public, or implementations
+declare all influences.
 
-## Separate local assembly from reusable workflow modules
+## Map local rule families
 
-Now inspect `workflow/modules/` only after rule-family ownership is already visible.
+Now inspect the included files:
 
-That distinction matters:
-
-- rule families group one repository's visible graph
-- workflow modules expose reusable workflow bundles with their own boundary
-
-Seeing both in the same pass helps a reviewer ask a better question: is this file here
-because the repository needs local readability, or because the workflow boundary is
-genuinely reusable?
-
-This distinction becomes much easier to defend when you put it on paper:
-
-| Surface | Why it exists | What it should not hide |
+| Rule family | Rules or bindings it contributes | Shared review question |
 | --- | --- | --- |
-| local rule family | readable ownership inside one repository | the visible graph |
-| reusable workflow module | stronger caller boundary or reuse surface | ambiguous local overflow |
+| `preprocess.smk` | QC bindings, trimming, deduplication, k-mer profile, screen binding | are per-sample transformations and evidence paths consistent? |
+| `summarize_report.smk` | summary and report | does aggregation preserve the discovered sample contract? |
+| `publish.smk` | manifest | does publication inventory the required public surface? |
 
-## Why this reading order matters educationally
+Notice an asymmetry: `publish.smk` owns the manifest, while discovery publication and
+provenance remain top-level. This may be intentional visibility or incomplete concern
+grouping. Record it as a review question, not a proven defect.
 
-This is the moment where repository inspection stops being a scavenger hunt.
+The rule-family map should answer why rules live together. “They fit in the file” is not
+an answer.
 
-The learner is no longer just finding files. They are using sequence to decide which
-surfaces deserve trust first and which should be read only after the workflow story is
-already visible.
+## Trace the manifest inputs
 
-## Confirm the file API explicitly
+The manifest rule names:
 
-Architecture review is incomplete until the path contracts are visible.
+```python
+input:
+    summary_json=rules.summarize.output.json,
+    summary_tsv=rules.summarize.output.tsv,
+    report_html=rules.report.output.html,
+    provenance=rules.provenance.output.json,
+    discovered=rules.publish_discovered_samples.output.json,
+```
 
-The capstone keeps those in surfaces such as:
+Compare those inputs with `capstone/docs/file-api.md`:
 
-- `workflow/CONTRACT.md`
-- `workflow/contracts/FILE_API.md`
-- publish-facing contract notes
+| Public surface | Producer | Manifest input? |
+| --- | --- | --- |
+| `discovered_samples.json` | `publish_discovered_samples` | yes |
+| `summary.json` | `summarize` | yes |
+| `summary.tsv` | `summarize` | yes |
+| `report/index.html` | `report` | yes |
+| `provenance.json` | `provenance` | yes |
+| `manifest.json` | `manifest` | it is the inventory itself |
 
-Those docs answer questions the tree alone cannot:
+The contract and producer agree on membership at source level. That is not yet a hash or
+schema check.
 
-- which workflow paths are public
-- which published paths are stable
-- which changes count as contract changes instead of internal refactors
+## Follow one internal branch through a module
 
-This is where architecture stops being intuitive and becomes reviewable.
+`summary.json` depends on per-sample outputs. Follow the screen branch backward:
 
-The file API is what prevents maintainers from treating every path rename as a harmless
-cleanup. Once path promises are documented, repository structure and public contracts stop
-blurring together.
+```text
+publish/v1/summary.json
+  <- internal summary
+  <- results/{sample}/screen.json
+  <- results/{sample}/kmer.json
+  <- results/{sample}/dedup.fastq.gz
+  <- results/{sample}/trimmed.fastq.gz
+  <- discovered raw FASTQ
+```
 
-## The path-contract audit before you move on
+The screen job enters through a module binding:
 
-Do not just say "the file API exists." Test whether you can name what it protects:
+```python
+use rule screen from screen as screen_panel with:
+    input:
+        kmer_json=f"{RESULTS}/{{sample}}/kmer.json"
+    output:
+        json=f"{RESULTS}/{{sample}}/screen.json"
+    params:
+        panel_fasta=config["params"]["panel"]["fasta"]
+```
 
-| Surface | Smallest honest claim |
-| --- | --- |
-| entrypoint and rule layers | this public path is intentionally produced from visible assembly |
-| file-API document | this path is stable because the repository says it is stable |
-| helper and package layers | these supporting files do not redefine the public promise silently |
+The caller owns local input, output, and the panel that changes scientific meaning. The
+module owns the reusable screening command.
 
-If you cannot fill this table, the architecture still depends too much on oral tradition.
+## Find the hidden module coupling
 
-## Trace one artifact through its owners
+Before the repair, both module declarations used:
 
-Take one concrete public output such as `publish/v1/summary.json` and record the route:
+```python
+config: config
+```
+
+The module sources then read parent configuration:
+
+```python
+config["_env_python"]
+config["benchmarks_dir"]
+```
+
+Build the interface table:
+
+| Dependency | Visible at caller? | Necessary to module? | Finding |
+| --- | --- | --- | --- |
+| k-mer JSON | yes, `input` binding | yes | explicit |
+| screen JSON | yes, `output` binding | yes | explicit |
+| panel FASTA | yes, `params` binding | yes | explicit semantic policy |
+| Python environment | hidden inside broad config | yes | interface leak |
+| benchmark root | hidden inside broad config | yes | interface leak |
+| all other parent config | supplied but unused | no | excessive authority |
+
+The jobs could parse, plan, and execute successfully. The defect is that the caller could
+not state the module's complete dependency surface without inspecting private module code.
+
+## State the refactor before applying it
+
+Use a bounded claim:
+
+> Because the QC and screen modules receive the full parent config, reviewers cannot
+> distinguish required runtime settings from accidental access to repository policy.
+> Pass a named two-key runtime mapping, rename the module-facing environment key, preserve
+> imported rule names and plans, and reject broad config passing or new undeclared module
+> config reads.
+
+The claim identifies:
+
+- the observation
+- the harmed review question
+- the ownership change
+- the behavior that must remain
+- the guard that should reject recurrence
+
+## Repair the caller boundary
+
+The entrypoint now derives:
+
+```python
+MODULE_RUNTIME_CONFIG = {
+    "env_python": config["_env_python"],
+    "benchmarks_dir": BENCH_DIR,
+}
+```
+
+Both declarations pass only that mapping:
+
+```python
+module screen:
+    snakefile: "../modules/screen_module/Snakefile"
+    config: MODULE_RUNTIME_CONFIG
+```
+
+The module reads public interface names:
+
+```python
+conda:
+    config["env_python"]
+params:
+    benchdir=lambda wc: config["benchmarks_dir"]
+```
+
+The parent may change how it derives `_env_python` or `BENCH_DIR` without making those
+private names part of the module contract. The module receives the two concepts it owns.
+
+The repaired dependency direction is visible:
 
 ```mermaid
 flowchart LR
-  entry["Snakefile requests publish target"]
-  family["workflow/rules/... owns promotion"]
-  script["workflow/scripts/... adapts execution"]
-  package["src/... owns reusable logic"]
-  api["FILE_API.md defines consumer promise"]
-
-  entry --> family --> script --> package --> api
+  private["parent-private config"] --> mapping["two-key runtime mapping"]
+  mapping --> caller["module declaration"]
+  local["local files + policy"] --> binding["use rule binding"]
+  caller --> module["module implementation"]
+  binding --> module
+  module --> artifact["caller-owned artifact"]
 ```
 
-Not every artifact passes through every layer. That is useful information. A missing layer
-is not a defect. An unexplained jump across layers often is.
+## Add a guard for the old defect
 
-After drawing the trace, ask three review questions immediately:
+A source-level test checks:
 
-1. could a new maintainer explain this path from the entrypoint backward?
-2. did any hidden scan, side effect, or undocumented path appear in the middle?
-3. does the trace end in an explicit public contract statement or only in producer memory?
+- both caller declarations use `MODULE_RUNTIME_CONFIG`
+- neither passes `config: config`
+- each module source reads exactly `env_python` and `benchmarks_dir`
 
-## What the learner should notice now
+This guard is intentionally narrow. It does not prove:
 
-The artifact trace is doing two jobs at once:
+- that the environment file exists
+- that benchmark paths work on every executor
+- that the module has no ambient filesystem dependencies
+- that screening is scientifically valid
 
-- it shows which surface owns each step
-- it exposes where the visible repository story breaks and hidden assumptions begin
+It does prove that a new direct config read cannot enter these two module sources without
+changing the expected interface.
 
-That is why this kind of trace is more educational than a generic folder tour.
+## Compare with the paired module experiment
 
-## Catch architecture drift before it hardens
+Run:
 
-Now compare the documented repository shape with the actual one.
-
-Typical drift signals include:
-
-- a crowded entrypoint accumulating hidden logic again
-- helper code becoming the first place reviewers must look
-- public paths being used without contract updates
-- modules or directories whose names no longer reveal ownership
-
-At this stage, the review should not ask only "does it run?" It should ask "does the
-repository still teach its own shape?"
-
-That question is the real threshold between a merely functioning repository and one that
-is sustainable to maintain.
-
-## The repaired architecture story
-
-By the end of the walkthrough, the repository can be described cleanly:
-
-1. the entrypoint reveals visible assembly
-2. rule families carry named ownership
-3. reusable modules are distinct from local structure
-4. file APIs define public path promises
-5. helper and package code support the workflow instead of replacing its story
-
-That is what it means to read a Snakemake repository like an architect.
-
-```mermaid
-flowchart LR
-  entry["visible entrypoint"] --> ownership["named repository ownership"]
-  ownership --> artifact["public artifact trace"]
-  artifact --> api["explicit file API"]
-  api --> drift["bounded drift review"]
+```bash
+gmake module-interface-audit
+gmake module-interface-selftest
 ```
 
-Read that diagram literally. If one step is missing, the repository may still execute,
-but the architecture story is not yet teachable.
+The generated audit contains two successful experiments:
 
-## Review questions for the repaired design
+| Model | Expected finding | Interpretation |
+| --- | --- | --- |
+| explicit contract | `EXPLICIT_MODULE_CONTRACT_PRESERVED` | caller-visible binding is preserved |
+| hidden coupling | `HIDDEN_MODULE_COUPLING_REPRODUCED` | the experiment successfully demonstrates a defect |
 
-When you inspect a repository shaped like this, ask:
+The paired experiment teaches causality. The capstone source guard prevents recurrence in
+the real workflow. Keep those two kinds of evidence distinct.
 
-1. which surface should a new maintainer read first and why
-2. which layer owns one public artifact at each step
-3. where the path contract becomes explicit
-4. which helper or package boundary is supporting the workflow and which one is swallowing it
-5. which drift signal would justify the next structural refactor
+## Audit the implementation boundary
 
-If those answers are visible, the module's architecture story has landed.
+The module shell calls:
 
-## If the module still feels abstract
+```bash
+python3 -m capstone.screen_panel
+```
 
-Do this recovery loop in order:
+Record the implementation ledger:
 
-1. point to the entrypoint and say what it visibly assembles
-2. write one sentence per repository layer
-3. trace one public artifact backward through its owners
-4. mark which path becomes stable only because the file API says so
-5. name one drift signal that justifies action now and one that can wait
+| Influence | Rule representation | Package representation |
+| --- | --- | --- |
+| k-mer data | named input | CLI path |
+| panel FASTA | caller parameter | CLI path |
+| output JSON | named output | CLI path |
+| Python import location | runtime parameter | `PYTHONPATH` |
+| environment | module config | `conda` |
+| log | named log | stderr redirection |
+| benchmark root | module config | directory creation parameter |
 
-Most Module 07 confusion is not about folder count. It is about losing track of which
-architectural boundary should teach the next maintainer what is safe first.
+One concern remains: if panel FASTA contents affect the output but the path appears only
+under `params`, Snakemake may not plan a rerun after the panel file changes. The
+architecture review should carry this into the next file-contract audit rather than
+declare the whole branch complete.
 
-If you want one final classroom-style check, summarize the repository in five lines:
+This is what honest review looks like: one repaired boundary can expose the next.
 
-1. where a new maintainer starts reading
-2. which named rule family owns the public artifact you traced
-3. where the path promise becomes explicit
-4. which helper boundary is supporting the workflow rather than swallowing it
-5. which drift signal would justify the next refactor now, not later
+## Verify public promotion independently
+
+Run the publication evidence route:
+
+```bash
+gmake verify-report
+```
+
+Read:
+
+1. the generated route
+2. copied file API
+3. publish manifest
+4. verification JSON
+5. discovery, summary, and provenance together
+6. review packet manifest
+
+The route should answer different questions:
+
+| Evidence | Question |
+| --- | --- |
+| file API | what is promised? |
+| rule source | who produces and promotes it? |
+| manifest | which public members and hashes were recorded? |
+| verifier | do the current files satisfy bounded checks? |
+| consumer-oriented review | can a downstream reader interpret them? |
+
+Do not substitute a screenshot of the report for this evidence chain.
+
+## Complete the architecture packet
+
+A model packet now contains:
+
+| Record | Worked conclusion |
+| --- | --- |
+| completion contract | versioned manifest is the default completion artifact |
+| assembly inventory | gates and includes are visible; three executable rules remain top-level |
+| rule-family map | preprocessing, aggregation/report, and manifest concerns are named |
+| module interface | local files and policy are bound; runtime config is narrowed |
+| implementation ledger | rule-to-package dependencies are mostly explicit |
+| public trace | manifest membership agrees with the file API at source level |
+| drift finding | broad config passed excessive parent state to modules |
+| refactor claim | narrow runtime mapping plus source guard |
+| verification matrix | source guard, paired audit, rule list, and publish evidence have distinct roles |
+| remaining risk | panel FASTA may need promotion from `params` to declared input |
+
+## Transfer the method to another repository
+
+For a different Snakemake repository:
+
+1. choose one completion artifact
+2. trace it backward through public, internal, rule, and implementation owners
+3. record every place policy or paths cross a boundary
+4. find one arrow that contradicts the claimed dependency direction
+5. write a refactor claim before changing code
+6. preserve parse, plan, execution, artifact, and contract behavior as applicable
+7. add a negative check for the old defect
+8. finish by naming the next unresolved risk
+
+You have completed the example when another learner can challenge your conclusion from
+the packet without needing an instructor to reconstruct your reasoning.

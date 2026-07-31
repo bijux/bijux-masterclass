@@ -48,6 +48,58 @@ class EnvironmentContractAuditTests(unittest.TestCase):
             check=False,
         )
 
+    def run_contract_probe(
+        self,
+        *,
+        version: str,
+        features: str,
+    ) -> subprocess.CompletedProcess[str]:
+        assert self.make
+        makefile = (
+            ".RECIPEPREFIX := >\n"
+            "include mk/contract.mk\n"
+            ".PHONY: show\n"
+            "show:\n"
+            "> @printf 'grouped=%s\\n' '$(HAVE_GROUPED_TARGETS)'\n"
+        )
+        return subprocess.run(
+            [
+                self.make,
+                "--no-print-directory",
+                "-f",
+                "-",
+                f"MAKE_VERSION={version}",
+                f".FEATURES={features}",
+                "show",
+            ],
+            cwd=CAPSTONE,
+            input=makefile,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+    def test_accepts_future_version_with_required_capabilities(self) -> None:
+        result = self.run_contract_probe(
+            version="4.10",
+            features="target-specific second-expansion grouped-target",
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.strip(), "grouped=grouped-target")
+
+    def test_rejects_make_missing_a_required_capability(self) -> None:
+        result = self.run_contract_probe(
+            version="9.1",
+            features="target-specific second-expansion",
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "lacks required features: grouped-target",
+            result.stderr,
+        )
+
     def test_verifies_state_recursion_and_tool_contracts(self) -> None:
         with TemporaryDirectory() as directory:
             root = Path(directory)

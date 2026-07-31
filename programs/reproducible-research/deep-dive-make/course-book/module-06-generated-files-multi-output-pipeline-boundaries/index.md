@@ -13,6 +13,35 @@ side effects that "just appear" when the build feels ready.
 Generation is where many otherwise careful builds become vague. Outputs appear, manifests
 get added without a real boundary, and partial files leak into trusted locations.
 
+The word **atomic** causes particular trouble. It can refer to three different promises:
+
+| Promise | Observer | What must be indivisible |
+| --- | --- | --- |
+| recipe execution | targets in one Make invocation | one producer runs once before dependent recipes start |
+| single-path publication | a reader opening one final path | incomplete bytes never replace the last accepted file |
+| set-level publication | a reader opening several related files | every file belongs to the same accepted generation |
+
+Grouped targets can provide the first promise. A candidate file followed by a same-filesystem
+rename can provide the second. Neither automatically provides the third. Set-level
+publication usually needs immutable generation directories and one atomic pointer or
+manifest switch.
+
+Keep those promises separate throughout the module. Saying “the generator is atomic”
+without naming the observer and unit is not an architecture claim.
+
+## Entry diagnostic
+
+Before reading the lessons, answer these questions for one generator you know:
+
+1. If one output disappears, what exact command recreates the complete set?
+2. Can two Make processes use the same unfinished-work path?
+3. If the process stops between two final renames, what can an external reader observe?
+4. Does a manifest prove output identity, or only that some command once finished?
+5. Which source, tool, option, and environment facts can change the bytes?
+
+Keep the answers even when they are uncertain. Revisit them after the worked example. The
+comparison is a better measure of learning than recognizing syntax on the page.
+
 ## Plan for the day
 
 | Time | Activity | Evidence you keep |
@@ -82,6 +111,35 @@ Before choosing grouped targets, a stamp, or a manifest, write:
 
 The Make syntax comes after this contract.
 
+## Build one publication packet
+
+Use one evidence packet across the day:
+
+| Evidence | Question it answers |
+| --- | --- |
+| semantic-input ledger | what can change generated meaning? |
+| producer-start log | did the coupled generator run exactly once? |
+| candidate-path trace | can concurrent producers collide before publication? |
+| accepted-set manifest | which exact output digests belong together? |
+| failure-state inventory | what remains after validation failure or interruption? |
+| reader observation | can a reader see a mixed generation? |
+| deletion-recovery trace | does loss of one peer recreate an honest set? |
+| no-op trace | does unchanged meaning converge? |
+
+Do not substitute modification times for this packet. Timestamps help Make decide whether
+to run; they do not identify producer starts, content generations, or reader-visible
+consistency.
+
+```mermaid
+flowchart LR
+  inputs["semantic inputs"] --> candidate["isolated candidate workspace"]
+  candidate --> validation["whole-set validation"]
+  validation --> accepted["immutable accepted generation"]
+  accepted --> pointer["single publication pointer"]
+  pointer --> readers["Make and external readers"]
+  failed["failed or interrupted work"] -. never reaches .-> pointer
+```
+
 ## The question to keep asking
 
 Whenever you see generated output, ask:
@@ -129,6 +187,8 @@ matches the generator or pipeline problem you are facing.
 | stop one generator from running twice for a coupled output set | [Multi-Output Producers and Single Publication](multi-output-producers-and-single-publication.md) |
 | decide whether a stamp or manifest is the right boundary | [Manifests, Stamps, and Boundary Files](manifests-stamps-and-boundary-files.md) |
 | publish generated outputs only when the whole pipeline succeeded | [Generator Pipelines and Atomic Publication](generator-pipelines-and-atomic-publication.md) |
+| distinguish Make scheduling from external-reader consistency | [Generator Pipelines and Atomic Publication](generator-pipelines-and-atomic-publication.md) |
+| recover when a peer output or completion record disappears | [Generator Failure Modes and Repairs](generator-failure-modes-and-repairs.md) |
 | diagnose stale outputs, duplicate execution, or partial publication | [Generator Failure Modes and Repairs](generator-failure-modes-and-repairs.md) |
 | see the whole module in one realistic incident | [Worked Example: Repairing a Broken Generator Pipeline](worked-example-repairing-a-broken-generator-pipeline.md) |
 | test your own understanding | [Exercises](exercises.md) |
@@ -159,6 +219,9 @@ By the end of the day, you should have:
 - justified one manifest or stamp instead of adding it automatically
 - demonstrated one failed generation that does not poison trusted outputs
 - recovered cleanly from one deleted generated artifact
+- stated whether your publication promise covers one path, one Make invocation, or an
+  externally read multi-file set
+- proved that concurrent producers cannot share an unfinished-work path
 
 ## Commands to keep close
 
@@ -169,6 +232,8 @@ make --trace all
 make -j2 all
 make all && make -q all
 make -n all
+make clean && make -j2 all
+make --trace first-goal second-goal
 ```
 
 You do not need every one on every incident. You do need the habit of using them to prove
@@ -182,6 +247,8 @@ By the end of this module, you should be able to:
 - choose grouped targets, stamps, or manifests according to truthful publication semantics
 - define where a generation pipeline becomes trustworthy to downstream consumers
 - keep generated outputs convergent under serial and parallel execution
+- distinguish scheduler-level completion, single-path rename, and set-level publication
+- preserve a last-known-good generation through failure and interruption
 - explain a generator failure as a graph or publication defect instead of "generator weirdness"
 
 ## Exit standard
@@ -192,6 +259,10 @@ Do not move on until all of these are true:
 - you can model one coupled output set so it runs exactly once per logical change
 - you can justify one manifest or stamp as a real boundary file
 - you can explain where a pipeline publishes and why partial outputs are not trusted
+- you can explain why two sequential renames do not publish a multi-file set atomically
+- you can prove that candidate paths are isolated across concurrent producer processes
+- you can name the recovery rule for a missing peer, missing pointer, and abandoned
+  candidate workspace
 - you can repair one broken generator incident with `--trace`, convergence, and a graph change
 - you can complete all ten exercises, including a deliberate failure and recovery
 

@@ -6,20 +6,28 @@ grouping by doc, and tracing samples.
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, Iterator
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from itertools import dropwhile, groupby, islice
 from operator import attrgetter
-from typing import TypeVar
+from typing import Literal, TypeVar
 
 from funcpipe_rag.core.rules_pred import eval_pred
 from funcpipe_rag.core.structural_dedup import structural_dedup_lazy
 from funcpipe_rag.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RawDoc
-from funcpipe_rag.streaming import TraceLens, ensure_contiguous, trace_iter
+from funcpipe_rag.streaming import (
+    Source,
+    TraceLens,
+    ensure_contiguous,
+    make_chain,
+    make_roundrobin,
+    trace_iter,
+)
 
 from .chunking import gen_chunk_doc
 from .config import RagConfig, RagCoreDeps
 
 T = TypeVar("T")
+SourceSchedule = Literal["sequential", "round_robin"]
 
 
 def gen_grouped_chunks(
@@ -77,6 +85,45 @@ def gen_stream_deduped(chunks: Iterable[Chunk]) -> Iterator[Chunk]:
     yield from structural_dedup_lazy(chunks)
 
 
+def stream_rag_chunks(
+    docs: Iterable[RawDoc],
+    config: RagConfig,
+    deps: RagCoreDeps,
+    *,
+    max_chunks: int | None = None,
+) -> Iterator[Chunk]:
+    """Compose the complete lazy RAG path and optionally fence unique outputs."""
+
+    if max_chunks is not None and max_chunks < 0:
+        raise ValueError("max_chunks must be >= 0")
+
+    chunked = stream_chunks(docs, config, deps)
+    embedded = gen_stream_embedded(chunked, deps.embedder)
+    deduped = gen_stream_deduped(embedded)
+    if max_chunks is None:
+        return deduped
+    return islice(deduped, max_chunks)
+
+
+def stream_rag_sources(
+    sources: Sequence[Source[RawDoc]],
+    config: RagConfig,
+    deps: RagCoreDeps,
+    *,
+    schedule: SourceSchedule = "sequential",
+    max_chunks: int | None = None,
+) -> Iterator[Chunk]:
+    """Merge replayable document sources before running the complete lazy RAG path."""
+
+    if schedule == "sequential":
+        merged = make_chain(*sources)
+    elif schedule == "round_robin":
+        merged = make_roundrobin(*sources)
+    else:
+        raise ValueError(f"unknown source schedule: {schedule}")
+    return stream_rag_chunks(merged(), config, deps, max_chunks=max_chunks)
+
+
 def gen_bounded_chunks(
     docs: Iterable[RawDoc],
     config: RagConfig,
@@ -112,6 +159,9 @@ __all__ = [
     "stream_chunks",
     "gen_stream_embedded",
     "gen_stream_deduped",
+    "stream_rag_chunks",
+    "stream_rag_sources",
+    "SourceSchedule",
     "gen_bounded_chunks",
     "safe_rag_pipeline",
 ]

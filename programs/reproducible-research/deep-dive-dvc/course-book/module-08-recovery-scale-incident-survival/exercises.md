@@ -25,264 +25,366 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice long-lived recovery judgment, not only DVC command
-vocabulary.
+These ten exercises form one evidence packet. You will begin with a vague migration claim,
+run the course audit, diagnose mixed recovery, review cleanup scope, and finish with a
+cutover and incident decision another maintainer can challenge.
 
-The goal of the day is to stop treating local cache or current convenience as durable
-authority. Recovery at scale depends on knowing what must survive, what may expire, how
-cleanup is reviewed, and how incident response preserves evidence before repair.
+You do not need cloud credentials. The capstone creates isolated Git repositories and
+local DVC remotes under the repository's `artifacts/` tree.
 
-## How to work through this set
+## Lab boundary
 
-Treat the ten exercises as one full lab day on durability, cleanup, and incident
-survival.
+Work from the Deep Dive DVC course directory. Read the worked example before beginning.
 
-Before each answer:
-
-1. name the artifact family or promise under protection
-2. name where its durable copy is supposed to live
-3. say what evidence would prove the promise still holds
-
-Do the exercises in order. The day is one progression:
-
-- Exercises 1-3 define durability boundaries and retention classes
-- Exercises 4-5 review migration and executor-drift incidents
-- Exercises 6-8 measure recovery and simulate cleanup or outage risk
-- Exercises 9-10 verify migration readiness and rehearse incident coordination
-
-Keep one recovery packet as you go. By the end of the day it should contain:
-
-- one durability boundary statement
-- one retention classification table
-- one cleanup review record
-- one migration verification route
-- one timed recovery objective drill
-- one incident tabletop repair list
-
-If those six artifacts are missing, you are probably still talking about resilience
-instead of testing it.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
+Create a learner-owned directory outside the course source tree:
 
 ```text
-module08-lab/
-├── artifacts/
-├── incidents/
-├── notes/
-├── retention/
-└── runbooks/
+recovery-readiness-lab/
+├── contract-review.md
+├── retention-map.md
+├── case-predictions.md
+├── evidence-map.md
+├── cleanup-review.md
+├── cutover-review.md
+├── executor-review.md
+├── incident-packet.md
+├── handoff-check.md
+└── final-decision.md
 ```
 
-Keep one durability table while you work:
+Do not copy generated audit workspaces into source control. Preserve references to the
+generated bundle and quote only the evidence needed for your reasoning.
 
-| Artifact family | Must survive local loss? | Durable location | Verification route | Allowed expiry |
-| --- | --- | --- | --- | --- |
-
-Also keep one incident table:
-
-| Failure | First evidence to preserve | Immediate action | Long-term repair |
-| --- | --- | --- | --- |
+The exercises build this decision path:
 
 ```mermaid
 flowchart LR
-  survive["state what must survive"]
-  classify["retain by value and obligation"]
-  review["review cleanup and migration scope"]
-  recover["test empty-cache recovery"]
-  preserve["preserve evidence during incidents"]
-  repair["turn findings into policy or runbook fixes"]
+  contract["define the promise"]
+  classify["classify obligations"]
+  predict["predict failures"]
+  run["run isolated audit"]
+  diagnose["diagnose mixed recovery"]
+  clean["review collection scope"]
+  cutover["review authority change"]
+  drift["interpret executor drift"]
+  incident["preserve and repair"]
+  handoff["defend the final decision"]
 
-  survive --> classify --> review --> recover --> preserve --> repair
+  contract --> classify --> predict --> run --> diagnose
+  diagnose --> clean --> cutover --> drift --> incident --> handoff
 ```
 
-Use that route on purpose. It keeps the day centered on durable recoverability rather than
-on storage optimism.
+## How to assess your own work
 
-## Exercise 1: Name the durability boundary
+Every submission should distinguish:
 
-A release has:
+- **claim** — what the project promises
+- **evidence** — what an observed file, command, or result proves
+- **decision** — what action the evidence permits
+- **limit** — what remains outside the proof
 
-- `publish/v1/manifest.json`
-- `publish/v1/metrics.json`
-- `publish/v1/params.yaml`
-- DVC-tracked model output referenced in `dvc.lock`
+A command transcript without a decision is incomplete. A decision without evidence is
+unsupported. Evidence without limits is easy to overclaim.
 
-Write a short recovery goal that explains:
+## Exercise: Define a falsifiable recovery contract
 
-- what must survive local cache loss
-- what a maintainer should run to verify it
-- what would count as a failed recovery promise
-- one sentence naming why local cache is not enough
+Read:
 
-Study note:
-This is the foundation for the rest of the module. If the durability boundary is vague,
-cleanup and incident review will also be vague.
+```text
+capstone/repro/recovery-readiness/recovery-contract.json
+capstone/repro/recovery-readiness/README.md
+```
 
-## Exercise 2: Classify retention value
+In `contract-review.md`, explain the contract in your own words. Include:
 
-Classify these states as protected, bounded-retention, or safe-to-discard after review:
+- artifact family
+- two protected revisions and their different obligations
+- identity checks
+- recovery point objective expressed for this specimen
+- recovery time objective
+- permitted content source
+- read-only verification requirement
+- cutover decision
 
-- promoted release artifact
-- current mainline training data
-- abandoned exploratory candidate output
-- published analysis dataset
-- temporary local debug report
+Then write three observations that would falsify the contract. At least one must involve
+content identity rather than transfer failure.
 
-Explain one sentence for each classification and add one rule for when a normally
-discardable artifact becomes protected incident evidence.
+**Evidence rule:** cite exact contract fields. Do not say only "the JSON says so."
 
-Study note:
-Retention follows value and obligation, not age alone.
+**Completion test:** another learner should be able to predict what `ACCEPT` means without
+seeing the audit code.
 
-## Exercise 3: Review a cleanup request
+## Exercise: Classify retention by obligation
 
-A teammate wants to run:
+In `retention-map.md`, classify these states:
+
+| State | Facts |
+| --- | --- |
+| `release-2025-q1` observations | cited by a published quarterly report |
+| `main` observations | used by current collaborators |
+| rejected threshold candidate | decision closed; comparison note retained |
+| debug extract | reveals the cause of an open data-loss incident |
+| superseded release model | rollback window closes in 14 days |
+| local transfer log | contains no unique evidence and the migration review closed |
+
+For each state, record:
+
+- active obligation
+- retention class: protected, time-bounded, archive, or disposable
+- observable end condition
+- authority that may change the class
+- recovery or disposition evidence
+
+Add a hold rule explaining why the debug extract cannot follow its ordinary expiry while
+the incident is open.
+
+**Evidence rule:** age and storage cost may influence implementation, but neither may be
+the only classification reason.
+
+**Completion test:** every protected row maps to a concrete revision or artifact identity.
+
+## Exercise: Predict the audit before running it
+
+The audit includes:
+
+- complete migration
+- current-only copy
+- release-only copy
+- stale release claim
+- mutating recovery route
+- missing time objective
+
+In `case-predictions.md`, create:
+
+| Case | Release restore | Main restore | Other failed check | Expected decision | Reason |
+| --- | --- | --- | --- | --- | --- |
+
+Fill it without running the audit.
+
+For the stale-claim case, distinguish "bytes restored" from "promised bytes restored."
+For the mutating-route case, explain why a remote write invalidates independent
+verification even if later pulls succeed.
+
+**Evidence rule:** derive predictions from the contract and module pages, not the
+implementation.
+
+**Completion test:** every blocked case names one precise failed boundary.
+
+## Exercise: Build an evidence map from the audit
+
+Run:
 
 ```bash
-dvc gc --all-branches
+make capstone-recovery-readiness-audit
 ```
 
-because storage is getting expensive.
+Locate the generated audit bundle under `artifacts/audit/`. In `evidence-map.md`, record:
 
-Write a review response that explains:
+| Question | First evidence surface | Corroborating surface | Answer |
+| --- | --- | --- | --- |
+| Which cases reached the expected decision? |  |  |  |
+| Which protected revision is missing from current-only copy? |  |  |  |
+| Did Git resolve that revision? |  |  |  |
+| Which stale claim failed after successful restore? |  |  |  |
+| Which exact command populated only current state? |  |  |  |
+| Did all accepted restores meet the declared objective? |  |  |  |
 
-- what evidence you need before approving cleanup
-- which protected references must be considered
-- what dry-run or remote checks should happen first
-- one sentence naming the stop condition that should block deletion
+Use `summary.tsv` and `report.json` before raw receipts. Record the generated bundle path
+and audit manifest identity so another learner can locate the same run.
 
-Study note:
-The important habit here is to review deletion scope before action, not after regret.
+**Evidence rule:** one surface should answer the decision; another should explain the
+mechanism.
 
-## Exercise 4: Plan a remote migration check
+**Completion test:** compare predictions with observations and explain every mismatch.
 
-A team is moving from an old DVC remote to a new one.
+## Exercise: Diagnose partial recovery without repairing it
 
-Describe a migration check that covers:
+Use only the `CURRENT_ONLY_COPY` evidence. In `incident-packet.md`, write the opening
+incident record:
 
-- inventory of important states
-- copying or pushing required objects
-- clean checkout verification
-- rollback or cutover decision
+- failed promise
+- first preserved evidence
+- affected obligation
+- unaffected obligation
+- unknown obligations
+- likely failure boundary
+- containment actions
+- commands that must not run before evidence is preserved
 
-Study note:
-Migration is about continuity of recovery promises, not only changing a URL.
+Then write two alternative hypotheses:
 
-## Exercise 5: Write an incident note
+- candidate content is incomplete
+- recovery access is broken
 
-CI started producing different metrics after a base image update.
+Use the two revision records and receipts to accept or reject each hypothesis.
 
-Write an incident note that explains:
+Do not propose repair yet.
 
-- what changed
-- why the executor is part of the evidence story
-- what should be checked before accepting or rejecting the new results
-- what documentation or policy should be updated
+**Evidence rule:** keep facts, hypotheses, and decisions visibly separate.
 
-Study note:
-The exercise matters because incident notes should preserve evidence before the team
-normalizes the new state.
+**Completion test:** the diagnosis explains why `main` success narrows the failure without
+closing the incident.
 
-## Midday self-check
+## Exercise: Design a garbage-collection review
 
-Before you move into timed recovery, outage simulation, and migration retirement, make
-sure your packet can already answer these questions clearly:
+A storage operator proposes:
 
-- what state must survive local loss
-- why retention classes differ by value and obligation
-- how cleanup needs scoped review and dry-run evidence
-- why CI image or remote changes can break recovery promises
+```bash
+dvc gc --all-branches --force
+```
 
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
+The retention map protects `main`, two release tags, and one open DVC experiment. The
+review clone may not have fetched every remote ref.
 
-## Exercise 6: Measure recovery objectives
+In `cleanup-review.md`:
 
-Choose one critical artifact family. Define its recovery point and recovery time
-objectives, then perform a timed clean-cache recovery and compare the result with those
-objectives.
+- identify each mismatch between policy and the proposed scope
+- list the reference inventory required before preview
+- write a policy-to-scope table
+- write a non-destructive preview using the current DVC preview flag
+- explain whether `--all-commits` alone would protect the experiment
+- name the extra review needed if the cache is shared by another project
+- define at least five stop conditions
+- define the additional authority required before remote collection
 
-What to hand in:
+Do not run destructive garbage collection.
 
-- the chosen artifact family
-- the recovery objectives
-- the measured result
-- one sentence explaining what failed if the objective was missed
+**Evidence rule:** the preview command is a candidate-removal observation, not deletion
+approval.
 
-Study note:
-Configuration is not a recovery promise until the team measures it.
+**Completion test:** every command flag has a policy reason.
 
-## Exercise 7: Audit garbage-collection reachability
+## Exercise: Review the remote authority cutover
 
-Before running garbage collection, enumerate:
+In `cutover-review.md`, use the generated audit to evaluate five gates:
 
-- branches
-- tags
-- experiment refs
-- remote copies
+| Gate | Required evidence | Observed evidence | Decision |
+| --- | --- | --- | --- |
+| contract |  |  |  |
+| candidate population |  |  |  |
+| independent recovery |  |  |  |
+| authority |  |  |  |
+| source exit |  |  |  |
 
-that protect valuable objects. Produce a review record showing what may be removed.
+Evaluate both `COMPLETE_MIGRATION` and `CURRENT_ONLY_COPY`.
 
-Study note:
-Uncertainty about a valuable reference is a reason to stop, not to widen the cleanup flag.
+For the complete case, decide whether candidate acceptance also authorizes immediate
+legacy deletion. Explain rollback interval, holds, and final source-exit review.
 
-## Exercise 8: Simulate remote unavailability
+For current-only copy, write a bounded repair authorization that names source, target,
+protected scope, operator, stop condition, and post-repair proof.
 
-Block access to the primary remote and attempt the documented workflow. Identify:
+**Evidence rule:** migration writes and verification reads must remain separate.
 
-- which activities continue
-- which stop
-- what secondary recovery route the policy promises
+**Completion test:** candidate acceptance and legacy retirement have separate decisions.
 
-What to hand in:
+## Exercise: Interpret recovery executor drift
 
-- the blocked workflow result
-- the surviving activities
-- the missing continuity promise, if any
+Use this comparison:
 
-Study note:
-This is how teams learn whether their resilience story is real or only assumed.
+| Surface | Accepted executor | New executor |
+| --- | --- | --- |
+| image | immutable digest `A` | immutable digest `B` |
+| DVC | 3.x version recorded | newer 3.x version recorded |
+| Git clone | full protected refs | default shallow clone |
+| recovery identity | read-only archive role | same role |
+| `main` | restores and matches | restores and matches |
+| `release-2025-q1` | restores and matches | revision does not resolve |
+| duration | 18 minutes | 7 minutes |
+| RTO | 30 minutes | 30 minutes |
 
-## Exercise 9: Verify a remote migration
+In `executor-review.md`:
 
-Copy governed objects to a new remote, test recovery from an empty cache, compare object
-coverage, and define the evidence required before retiring the old remote.
+- decide whether content continuity is known for both revisions
+- decide whether RTO evidence is comparable
+- diagnose the first boundary to repair
+- state what must be rerun after repair
+- write a release note that does not describe the faster duration as an overall
+  improvement
+- name the executor fields future receipts must preserve
 
-Study note:
-Retiring the old remote is a governance decision, not a shortcut after one successful
-push.
+**Evidence rule:** do not infer a missing DVC object from a Git revision-resolution
+failure.
 
-## Exercise 10: Run an incident tabletop
+**Completion test:** the review separates executor coverage, content coverage, and
+performance.
 
-Assign:
+## Exercise: Complete the incident response
 
-- incident lead
-- storage operator
-- repository maintainer
-- scientific reviewer
+Return to the partial-recovery incident. Assume the legacy remote successfully restores
+the expected release identity.
 
-Walk through accidental deletion, partial remote recovery, and a disputed result without
-performing destructive actions.
+Extend `incident-packet.md` with:
 
-What to hand in:
+- last known good contract
+- roles for incident lead, storage operator, repository maintainer, and domain reviewer
+- bounded repair
+- a timeline containing facts, hypotheses, and decisions
+- independent post-repair verification
+- semantic acceptance
+- containment removal
+- regression check
+- durable policy or automation change
 
-- the role map
-- the unanswered questions
-- the runbook or policy repairs
+Write the final incident note in fewer than 180 words. It must state why the first failed
+receipt was preserved and why a new reviewer, rather than the repair workspace, supplied
+closure evidence.
 
-Study note:
-This final exercise matters because incidents reveal whether ownership, evidence, and
-repair paths are actually clear under stress.
+**Evidence rule:** a successful push is repair evidence, not recovery evidence.
 
-## Mastery check
+**Completion test:** the same current-only copy failure would be detected before a future
+cutover.
 
-You have a strong grasp of this module if your answers consistently keep five ideas
-visible:
+## Exercise: Conduct an independent maintainer handoff
 
-- local cache is not durable authority
-- retention follows value, not age alone
-- cleanup needs reference scope and dry-run review
-- remote migration and CI drift can break recovery
-- incident response should preserve evidence before repair
+In `handoff-check.md`, design a no-coaching handoff for an incoming maintainer. Include:
+
+- contract discovery
+- protected revision explanation
+- remote authority and rollback explanation
+- read-only audit execution
+- one blocked-case diagnosis
+- garbage-collection preview review
+- credential role explanation without secret values
+- incident packet location
+- authority for cutover and source retirement
+
+The outgoing maintainer may observe but may not operate the keyboard or supply hidden
+commands.
+
+Record:
+
+| Capability | Durable source | Incoming evidence | Gap | Repair owner |
+| --- | --- | --- | --- | --- |
+
+Finish `final-decision.md` with a cutover recommendation based on the complete case. State:
+
+- exact accepted scope
+- proof bundle
+- limits
+- rollback interval
+- source-exit conditions
+- unresolved risks
+
+**Evidence rule:** "knowledge transferred" is not evidence.
+
+**Completion test:** the incoming maintainer can defend the cutover and block an unsafe
+cleanup without the outgoing maintainer.
+
+## Packet review
+
+Your packet is ready for answer comparison when it contains:
+
+- a falsifiable contract with RPO and RTO
+- a retention map with observable end conditions
+- predictions made before executing the audit
+- a decision-first evidence map
+- an incident record that preserves the first failure
+- a garbage-collection scope review with no destructive action
+- separate candidate and source-exit decisions
+- an executor-drift diagnosis
+- a bounded repair and independent closure proof
+- a demonstrated handoff and final recommendation
+
+If a page contains only commands or only general principles, revise it. The packet should
+connect each action to a protected promise and a reviewable decision.

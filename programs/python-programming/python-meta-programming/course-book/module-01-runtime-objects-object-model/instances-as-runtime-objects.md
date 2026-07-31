@@ -237,6 +237,49 @@ This is another reason Module 01 keeps returning to ordinary object relationship
 instance does not "contain the method implementation." It participates in a binding step
 that links the instance to a function stored on the class.
 
+## Guided lab: compare storage from evidence
+
+Run:
+
+```console
+$ python3 -m labs.runtime_objects |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["instance"])'
+{'regular_storage': {'title': 'queue lag'}, 'slotted_has_dict': False, 'slotted_rejects_undeclared_attribute': True, 'slotted_title': 'queue lag'}
+```
+
+Do not reduce this packet to "`__slots__` is faster." It proves a narrower and more
+useful set of claims:
+
+- the regular object exposes its assigned title through `vars(regular)`
+- the pure slotted object has no instance dictionary
+- the declared `title` slot works
+- an undeclared attribute is rejected
+
+The lab does not measure memory or speed, so it cannot support a performance claim. That
+limit is part of good evidence reading.
+
+### Change one storage contract
+
+Add `"__dict__"` to `SlottedIncident.__slots__`, then predict all three observations that
+should change or stay fixed. The slotted object should gain a dictionary and accept the
+new `severity` attribute, while its title still works. Update the test only if you intend
+to teach the hybrid storage contract permanently; otherwise restore the original class
+and run `make lab-test`.
+
+### Transfer to the incident-plugin runtime
+
+Create `ConsoleNotifier()` and inspect `vars(instance)`. You will see private-looking
+storage names such as `_prefix` rather than the public field names alone. Module 01 can
+make two honest observations:
+
+- this concrete plugin instance is dictionary-backed
+- its storage shape is influenced by class-owned attribute behavior
+
+Do not infer the descriptor policy from the dictionary alone. Modules 07 and 08 will
+explain why those storage names exist and which class objects own validation. For now,
+the capstone demonstrates that a larger application still rests on an observable
+instance storage model.
+
 ## Review rules for instance-object reasoning
 
 When reviewing instance-heavy designs, keep these questions close:

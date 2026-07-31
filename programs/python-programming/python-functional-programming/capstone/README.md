@@ -73,6 +73,7 @@ From the repository root:
 ```bash
 make PROGRAM=python-programming/python-functional-programming install
 make PROGRAM=python-programming/python-functional-programming capstone-walkthrough
+make PROGRAM=python-programming/python-functional-programming capstone-module-state-proof MODULE=06
 make PROGRAM=python-programming/python-functional-programming inspect
 make PROGRAM=python-programming/python-functional-programming test
 make PROGRAM=python-programming/python-functional-programming capstone-test
@@ -86,6 +87,7 @@ From this directory:
 ```bash
 make test
 make inspect
+make review-check
 make verify-report
 make confirm
 make proof
@@ -98,12 +100,25 @@ is the strongest published course-level proof route and delegates here to `make 
 Use `capstone-test` when you only want the pytest suite without the extra confirmation
 bundles. Use `capstone-walkthrough` when you want the first published learner-facing
 route before escalating to `capstone-tour`, `capstone-verify-report`, or `capstone-confirm`.
+Use `capstone-module-state-proof MODULE=01` through `MODULE=09` to run the cumulative
+learning tests against the matching tracked source instead of the live endpoint.
+
+To inspect one live sustainment route without implying that its test ran:
+
+```bash
+funcpipe-rag-review summary --claim change-acceptance --project-root .
+```
+
+The output reports `route: available` when the declared source and test paths exist,
+then prints the separate verification command.
 
 ## Choose the smallest command that answers your question
 
 | If you need... | Command |
 | --- | --- |
 | a fast inventory of packages, tests, and guides | `make inspect` |
+| one named evidence route and its command | `funcpipe-rag-review summary --claim NAME --project-root .` |
+| a fail-closed check for declared evidence paths | `make review-check` |
 | the pytest suite only | `make test` |
 | a saved proof bundle with review artifacts | `make verify-report` |
 | the human walkthrough bundle | `make tour` |
@@ -186,6 +201,7 @@ Use this repository as a running mirror of the course:
 | Module 07: Effect boundaries and resource safety | `src/funcpipe_rag/boundaries/`, `src/funcpipe_rag/domain/effects/`, `src/funcpipe_rag/domain/capabilities.py` | `tests/unit/domain/test_io_plan_laws.py`, `tests/unit/domain/test_session.py`, `tests/unit/domain/test_idempotent.py` | `make tour` |
 | Module 08: Async FuncPipe and backpressure | `src/funcpipe_rag/domain/effects/async_/`, `src/funcpipe_rag/infra/adapters/async_runtime.py` | `tests/unit/domain/test_async_backpressure.py`, `tests/unit/domain/test_async_law_properties.py`, `tests/unit/domain/test_async_resilience.py` | `make verify-report` |
 | Module 09: Ecosystem interop | `src/funcpipe_rag/boundaries/shells/cli.py`, `src/funcpipe_rag/pipelines/cli.py`, `src/funcpipe_rag/pipelines/distributed.py`, `src/funcpipe_rag/interop/` | `tests/unit/pipelines/test_cli_overrides.py`, `tests/unit/interop/test_stdlib_fp.py`, `tests/unit/interop/test_toolz_compat.py` | `make tour` |
+| Module 10: Sustainment review | `src/funcpipe_rag/review/`, `src/funcpipe_rag/boundaries/shells/review_cli.py` | `tests/learning/test_module_10_sustainment.py`, `tests/unit/review/` | `make review-check` |
 | Module 10: Refactoring and sustainment | `README.md`, `ARCHITECTURE.md`, `PROOF_GUIDE.md`, `pyproject.toml` | `make verify-report`, `make proof`, `make confirm` | `make confirm` |
 
 Use this table when a course page tells you to "inspect the capstone" and you want the shortest stable path from concept to evidence.

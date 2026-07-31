@@ -25,8 +25,13 @@ TOUR_DIR      ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-snakemake
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-snakemake/verify
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/profile
 MODULE_INTERFACE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/module-interfaces
+SOFTWARE_BOUNDARY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/software-boundaries
 CONTEXT_INVARIANCE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/context-invariance
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/performance-diagnostics
+SCHEDULER_POLICY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/scheduler-policy
+FILE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/file-contracts
+DISCOVERY_INTEGRITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/discovery-integrity
+PUBLISH_COMPATIBILITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/publish-compatibility
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -43,8 +48,13 @@ TOUR_DIR_ABS      := $(abspath $(TOUR_DIR))
 MANIFEST_ABS      := $(abspath $(MANIFEST))
 PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 MODULE_INTERFACE_AUDIT_DIR_ABS := $(abspath $(MODULE_INTERFACE_AUDIT_DIR))
+SOFTWARE_BOUNDARY_AUDIT_DIR_ABS := $(abspath $(SOFTWARE_BOUNDARY_AUDIT_DIR))
 CONTEXT_INVARIANCE_AUDIT_DIR_ABS := $(abspath $(CONTEXT_INVARIANCE_AUDIT_DIR))
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS := $(abspath $(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR))
+SCHEDULER_POLICY_AUDIT_DIR_ABS := $(abspath $(SCHEDULER_POLICY_AUDIT_DIR))
+FILE_CONTRACT_AUDIT_DIR_ABS := $(abspath $(FILE_CONTRACT_AUDIT_DIR))
+DISCOVERY_INTEGRITY_AUDIT_DIR_ABS := $(abspath $(DISCOVERY_INTEGRITY_AUDIT_DIR))
+PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS := $(abspath $(PUBLISH_COMPATIBILITY_AUDIT_DIR))
 TOOLS_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-snakemake/capstone
 TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
 TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
@@ -67,8 +77,13 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	validate-config verify-artifacts walkthrough tour \
 	publish-summary profile-summary config-summary results-summary evidence-summary \
 	verify-report profile-audit module-interface-audit module-interface-selftest \
+	software-boundary-audit software-boundary-selftest \
 	context-invariance-audit context-invariance-selftest \
 	performance-diagnostics-audit performance-diagnostics-selftest \
+	scheduler-policy-audit scheduler-policy-selftest \
+	file-contract-audit file-contract-selftest \
+	discovery-integrity-audit discovery-integrity-selftest \
+	publish-compatibility-audit publish-compatibility-selftest \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
 
@@ -278,6 +293,33 @@ module-interface-audit: ## Compare explicit and hidden module interface contract
 module-interface-selftest: ## Reject dishonest module interface evidence
 	$(PYTEST) -q tests/test_module_interface_audit.py
 
+software-boundary-audit: ## Compare observable and hidden software source drift
+	rm -rf "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)"
+	mkdir -p "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)"
+	cp -R repro/software-boundaries "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/specimens"
+	$(PYTHON) scripts/audit_software_boundaries.py \
+		--specimens repro/software-boundaries \
+		--workspace "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/workspace" \
+		--output "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)"
+	cp docs/software-boundary-audit-guide.md "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/SOFTWARE_BOUNDARY_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Software boundary audit route:' \
+		'  1. Read SOFTWARE_BOUNDARY_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and keep result, decision, and finding together.' \
+		'  3. Compare script, hidden package, and declared package Snakefiles.' \
+		'  4. Compare baseline and changed dry-run traces.' \
+		'  5. Inspect artifact markers and planning observations in report.json.' \
+		'  6. Use PROOF_GUIDE.md only when the review claim expands.' > "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)" \
+		--output "$(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote software boundary audit to $(SOFTWARE_BOUNDARY_AUDIT_DIR_ABS)"
+
+software-boundary-selftest: ## Reject dishonest software drift evidence
+	$(PYTEST) -q tests/test_software_boundary_audit.py
+
 context-invariance-audit: ## Compare policy-preserving contexts with semantic leaks
 	rm -rf "$(CONTEXT_INVARIANCE_AUDIT_DIR_ABS)"
 	mkdir -p "$(CONTEXT_INVARIANCE_AUDIT_DIR_ABS)"
@@ -332,6 +374,117 @@ performance-diagnostics-audit: ## Classify honest tuning, semantic drift, and re
 performance-diagnostics-selftest: ## Reject dishonest performance evidence
 	$(PYTEST) -q tests/test_performance_diagnostics_audit.py
 
+scheduler-policy-audit: ## Record and classify scheduler resource translation
+	rm -rf "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)"
+	mkdir -p "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)"
+	cp -R repro/scheduler-policy "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/specimen"
+	$(PYTHON) scripts/audit_scheduler_policy.py \
+		--specimen repro/scheduler-policy \
+		--workspace "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/workspace" \
+		--output "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)" \
+		--python "$(PYTHON)"
+	cp docs/scheduler-policy-audit-guide.md "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/SCHEDULER_POLICY_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Scheduler policy audit route:' \
+		'  1. Read SCHEDULER_POLICY_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and distinguish PASS from ACCEPT or REJECT.' \
+		'  3. Compare job-contract.json with the Snakemake dry-run.' \
+		'  4. Inspect the accepted receipt before the three rejected receipts.' \
+		'  5. Confirm every receipt states whether a scheduler was contacted.' \
+		'  6. Use PROOF_GUIDE.md only if the claim expands beyond policy translation.' > "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)" \
+		--output "$(SCHEDULER_POLICY_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote scheduler policy audit to $(SCHEDULER_POLICY_AUDIT_DIR_ABS)"
+
+scheduler-policy-selftest: ## Reject unsafe scheduler mapping evidence
+	$(PYTEST) -q tests/test_scheduler_policy_audit.py
+
+file-contract-audit: ## Classify convergence, hidden inputs, and publication safety
+	rm -rf "$(FILE_CONTRACT_AUDIT_DIR_ABS)"
+	mkdir -p "$(FILE_CONTRACT_AUDIT_DIR_ABS)"
+	cp -R repro/file-contracts "$(FILE_CONTRACT_AUDIT_DIR_ABS)/specimen"
+	$(PYTHON) scripts/audit_file_contracts.py \
+		--specimen repro/file-contracts \
+		--workspace "$(FILE_CONTRACT_AUDIT_DIR_ABS)/workspace" \
+		--output "$(FILE_CONTRACT_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)" \
+		--python "$(PYTHON)" \
+		--poison-writer scripts/poison.py \
+		--atomic-writer scripts/atomic_writer.py
+	cp docs/file-contract-audit-guide.md "$(FILE_CONTRACT_AUDIT_DIR_ABS)/FILE_CONTRACT_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(FILE_CONTRACT_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'File contract audit route:' \
+		'  1. Read FILE_CONTRACT_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and separate accepted behavior from rejected examples.' \
+		'  3. Compare the declared and hidden rule contracts in specimen/Snakefile.' \
+		'  4. Inspect the three dry-run receipts and declared rebuild receipt under evidence/.' \
+		'  5. Compare in-place-failure with atomic-failure filesystem evidence.' \
+		'  6. Use report.json to connect each decision to explicit checks.' > "$(FILE_CONTRACT_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(FILE_CONTRACT_AUDIT_DIR_ABS)" \
+		--output "$(FILE_CONTRACT_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote file contract audit to $(FILE_CONTRACT_AUDIT_DIR_ABS)"
+
+file-contract-selftest: ## Reject dishonest convergence and publication evidence
+	$(PYTEST) -q tests/test_file_contract_audit.py
+
+discovery-integrity-audit: ## Compare declared discovery invalidation with ambient staleness
+	rm -rf "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)"
+	mkdir -p "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)"
+	cp -R repro/discovery-integrity "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/specimens"
+	$(PYTHON) scripts/audit_discovery_integrity.py \
+		--specimens repro/discovery-integrity \
+		--workspace "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/workspace" \
+		--output "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)"
+	cp docs/discovery-integrity-audit-guide.md "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/DISCOVERY_INTEGRITY_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Discovery integrity audit route:' \
+		'  1. Read DISCOVERY_INTEGRITY_AUDIT_GUIDE.md for the change experiment and PASS meanings.' \
+		'  2. Read summary.tsv and compare planned_after_arrival across the two models.' \
+		'  3. Compare the checkpoint input contracts under specimens/.' \
+		'  4. Read both change-dryrun traces before either forced-run trace.' \
+		'  5. Inspect normal_samples and forced_samples in report.json.' \
+		'  6. Use PROOF_GUIDE.md only if the claim expands beyond discovery invalidation.' > "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)" \
+		--output "$(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote discovery integrity audit to $(DISCOVERY_INTEGRITY_AUDIT_DIR_ABS)"
+
+discovery-integrity-selftest: ## Reject dishonest discovery invalidation evidence
+	$(PYTEST) -q tests/test_discovery_integrity_audit.py
+
+publish-compatibility-audit: ## Classify additive, breaking, semantic, and versioned publish changes
+	rm -rf "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)"
+	mkdir -p "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)"
+	cp -R repro/publish-compatibility "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/specimens"
+	$(PYTHON) scripts/audit_publish_compatibility.py \
+		--specimens repro/publish-compatibility \
+		--workspace "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/workspace" \
+		--output "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/report.json"
+	cp docs/publish-compatibility-audit-guide.md "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/PUBLISH_COMPATIBILITY_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Publish compatibility audit route:' \
+		'  1. Read PUBLISH_COMPATIBILITY_AUDIT_GUIDE.md for decision meanings.' \
+		'  2. Read consumer-v1.json before opening any candidate case.' \
+		'  3. Read summary.tsv and explain each ACCEPT, REJECT, or REQUIRE_MIGRATION decision.' \
+		'  4. Compare additive-field, required-field-removal, and semantic-drift definitions.' \
+		'  5. Inspect integrity-corruption and versioned-migration bundles in workspace/.' \
+		'  6. Use report.json for exact consumer failures and PROOF_GUIDE.md only if the claim expands.' > "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)" \
+		--output "$(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote publish compatibility audit to $(PUBLISH_COMPATIBILITY_AUDIT_DIR_ABS)"
+
+publish-compatibility-selftest: ## Reject weakened consumers and dishonest compatibility cases
+	$(PYTEST) -q tests/test_verify_consumer_contract.py tests/test_publish_compatibility_audit.py
+
 config-summary: verify ## Write a compact summary of the materialized workflow configuration
 	@mkdir -p "$(VERIFY_REPORT_DIR)"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
@@ -367,11 +520,11 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
-confirm: clean purge-dsstore ci module-interface-audit module-interface-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest verify ## Clean-room confirmation (strict)
+confirm: clean purge-dsstore ci file-contract-audit file-contract-selftest discovery-integrity-audit discovery-integrity-selftest publish-compatibility-audit publish-compatibility-selftest module-interface-audit module-interface-selftest software-boundary-audit software-boundary-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
-proof: tour verify-report profile-audit module-interface-audit context-invariance-audit performance-diagnostics-audit ## Run the sanctioned learner-facing proof route
+proof: tour verify-report file-contract-audit discovery-integrity-audit publish-compatibility-audit profile-audit module-interface-audit software-boundary-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p \

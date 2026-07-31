@@ -1,332 +1,385 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is to make
-your discovery reasoning visible through runnable artifacts, not through checkpoint
-folklore.
+These ten exercises form one cumulative investigation. You begin by predicting an
+existing discovery experiment, then build and damage your own governed workflow, and
+finish by reviewing its public evidence.
 
-## How to work through this set
+Do the work in an artifact workspace or a separate learner repository. Do not edit the
+tracked capstone specimens while experimenting.
 
-Treat the ten exercises as one long lab on discovery honesty.
+## Working rules
 
-Before each answer:
+For every exercise, keep:
 
-1. name the discovery surface you are trusting
-2. predict which artifact will carry the truth forward
-3. run the smallest command that proves the design really behaves that way
+- the claim you are testing;
+- the exact changed event;
+- a prediction written before execution;
+- the command or inspection route;
+- the smallest relevant observation;
+- an interpretation that names a dependency or invariant;
+- any revision after the evidence disagrees.
 
-If you skip the artifact question, the day turns into syntax practice and misses the real
-lesson.
-
-Do them in order. The set is one day-long progression:
-
-- Exercises 1-3 establish the discovery ladder.
-- Exercises 4-6 turn discovery into durable artifacts.
-- Exercises 7-8 justify or reject checkpoints.
-- Exercises 9-10 test whether dynamic behavior survives review and publication.
-
-For every answer, keep three things:
-
-- the workflow files or command sequence you actually used
-- the artifact that proves what the workflow discovered
-- one short sentence explaining why the design is honest
-
-## Recommended working layout
-
-If you want one project that can support the whole day, build the exercises in a tiny lab
-tree like this:
-
-```text
-module02-lab/
-├── Snakefile
-├── config/
-├── data/
-├── results/
-├── publish/
-├── logs/
-└── artifacts/
-```
-
-That structure makes it easier to compare static discovery, runtime discovery, and publish
-integrity without rebuilding the whole project for every prompt.
-
-Build one small discovery-integrity packet as you go:
-
-- one note naming the source of truth for each discovery design
-- one normalized target-list or registry artifact
-- one fanout check showing how the target set changed after a repair
-- one checkpoint-justification note that names the runtime fact being learned
-- one rejection or validation record for a bad candidate
-- one publish note distinguishing public discovery artifacts from internal engine state
-
-If those six artifacts are missing, the day usually turns into "dynamic Snakemake magic"
-instead of "reviewable discovery design."
+“It passed” and “it failed” are observations without reasoning.
 
 ```mermaid
 flowchart LR
-  truth["name the discovery surface"]
-  normalize["normalize it into an owned artifact"]
-  fanout["test target-set integrity"]
-  checkpoint["justify runtime discovery honestly"]
-  publish["carry discovery truth into publication"]
-  review["separate public contract from internal state"]
-
-  truth --> normalize --> fanout --> checkpoint --> publish --> review
+  claim["State claim"] --> predict["Predict jobs and files"]
+  predict --> change["Change one governed cause"]
+  change --> observe["Save dry-run or execution receipt"]
+  observe --> explain["Explain dependency or invariant"]
+  explain --> challenge["Try one causal mutation"]
 ```
 
-Use that route on purpose. It keeps the day centered on artifacts that carry truth rather
-than on checkpoint mystique.
+## Exercise 1: Predict the arrival experiment
 
-## What a strong day packet looks like
+Read only these files:
 
-By the time you finish all ten exercises, your work should leave behind one small,
-reviewable packet instead of ten disconnected answers:
+```text
+capstone/repro/discovery-integrity/governed-registry/Snakefile
+capstone/repro/discovery-integrity/ambient-scan/Snakefile
+```
 
-- one declared candidate surface such as a sample sheet or normalized scan output
-- one target-list artifact that proves the fanout you intended
-- one example of accidental fanout and its repaired design
-- one justified-checkpoint note naming the runtime fact being learned
-- one accepted registry and one rejection record
-- one publish tree with public discovery artifacts separated from internal state
-- one checksum or manifest command showing how a consumer can verify the published bundle
+Both start with `alpha.fastq`. The experiment later adds `beta.fastq` and `gamma.fastq`;
+only the governed registry is updated to include `beta`.
 
-If you cannot point to those artifacts, the exercise day is still too abstract.
+Before running anything, predict:
 
-## Exercise 1: Compare two discovery surfaces
+| Model | Will the change dry-run schedule discovery? | Normal sample outputs | Forced sample outputs |
+| --- | --- | --- | --- |
+| governed registry |  |  |  |
+| ambient scan |  |  |  |
 
-Model the same three-sample workflow in two ways:
+Then run:
 
-- one with a versioned sample sheet
-- one with a deterministic directory scan
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make discovery-integrity-audit
+```
 
-What to hand in:
+Deliver:
 
-- both discovery shapes
-- one reason to prefer each in a real project
-- one command that proves they generate the same target list
-- one sentence naming the declared source of truth in each design
+- the completed prediction table;
+- `summary.tsv`;
+- one corrected prediction, if needed;
+- a paragraph explaining why the forced ambient result does not repair normal
+  invalidation.
 
-Study note:
-Do not answer this as a style preference question. The point is to make the source of
-truth explicit in both designs.
+Do not inspect the audit runner until after comparing your prediction with the summary.
 
-## Exercise 2: Turn ambient discovery into a declared contract
+## Exercise 2: Validate a governed arrival registry
 
-Start from a tiny workflow that scans `data/raw/` directly at parse time and relies on
-whatever filenames happen to be present.
+Implement a parser for:
 
-Repair it so the workflow has one named discovery surface and one normalization point.
+```text
+path
+alpha.fastq.gz
+beta.fastq.gz
+```
 
-What to hand in:
+It must return sorted relative paths and reject:
 
-- the original discovery shape and why it was weak
-- the repaired discovery rule or helper
-- the normalized sample list it produces
-- one sentence explaining why another reviewer could trust the new design more
+- a header other than exactly `path`;
+- an empty registry;
+- an empty row;
+- an absolute path;
+- any path containing `..`;
+- duplicate paths;
+- a registered path that does not exist below the raw directory;
+- a path outside the governed `*.fastq.gz` pattern.
 
-Study note:
-If the repaired version still requires another person to rescan the raw directory to know
-what happened, the contract is still weak.
+Write at least one passing test and one focused test for each rejection family. Error
+messages must identify the broken invariant closely enough for a learner to diagnose the
+row.
 
-## Exercise 3: Prevent one accidental fanout explosion
+Deliver:
 
-Design a small example where `expand()` creates more targets than the real domain calls
-for.
+- parser and tests;
+- test receipt;
+- a table mapping each validation to the ambiguity or trust expansion it prevents.
 
-Then repair it so the target list comes from one validated record structure instead of two
-independent lists.
+Do not add recovery behavior that silently drops invalid rows.
 
-What to hand in:
+## Exercise 3: Project accepted records without false combinations
 
-- the buggy expansion
-- the unintended targets it creates
-- the repaired target-list design
-- one command, such as `snakemake -n`, that would make the difference obvious
+Use:
 
-Study note:
-Wrong fanout is usually a domain-modeling defect before it is a Snakemake defect.
+```python
+records = [
+    {"sample": "alpha", "lane": "L001", "mates": ["R1", "R2"]},
+    {"sample": "beta", "lane": "L002", "mates": ["R1", "R2"]},
+]
+```
 
-## Exercise 4: Design the integrity trail for a dynamic run
+Required targets:
 
-Assume a workflow discovers samples and publishes a versioned bundle.
+```text
+qc/alpha/L001/R1.json
+qc/alpha/L001/R2.json
+qc/beta/L002/R1.json
+qc/beta/L002/R2.json
+```
 
-Describe the minimum artifact set that would let a downstream reviewer answer:
+First calculate how many targets a three-list Cartesian expansion would create. Then
+implement a projection that returns exactly the four valid paths in canonical order.
 
-- which samples were discovered
-- which files are part of the public boundary
-- what run identity produced that boundary
+Add tests that fail if:
 
-What to hand in:
+- `alpha/L002` or `beta/L001` appears;
+- any mate is missing;
+- record order changes the returned target order;
+- duplicate records create duplicate targets.
 
-- one accepted-registry path
-- one rejection-record path
-- one provenance artifact path
-- one manifest or inventory artifact path
-- one short explanation of what each artifact proves
+Deliver the expected set, implementation, tests, and a one-sentence rule for when
+`expand(..., zip, ...)` is safe.
+
+## Exercise 4: Choose static or runtime discovery
+
+For each case, choose one mechanism:
+
+- validated config mapping;
+- checked sample sheet read at parse time;
+- sorted parse-time scan;
+- checkpoint with a declared registry or upstream manifest;
+- reject and redesign the intake boundary.
+
+Cases:
+
+1. A versioned sample sheet already names final IDs and FASTQ paths.
+2. A controlled teaching folder is immutable during each invocation, and every matching
+   file is in scope.
+3. Candidate archives are registered, but an executed validator must inspect their
+   contents before accepted sample IDs are known.
+4. A long-lived landing folder changes asynchronously; a checkpoint scans it but has no
+   input that records arrivals.
+5. A config file names candidates, and a pure Python validation function can decide
+   acceptance during parsing without external work.
 
-Study note:
-Treat this as a trust design exercise. A directory tree without explained artifact roles
-is not enough, and a dynamic run that publishes only accepted outputs is still hiding part
-of its decision trail.
+For every decision, state:
 
-## Exercise 5: Improve performance without weakening truth
+- what is knowable before execution;
+- the invalidation event;
+- the durable evidence;
+- why a more dynamic mechanism would not improve the model.
 
-Start from a workflow shape that is operationally clumsy, for example:
+Deliver a decision table. Code is not required.
 
-- too many tiny per-fragment jobs
-- too many almost-identical environment files
+## Exercise 5: Build declared checkpoint invalidation
 
-Repair it without hiding required artifacts or changing the meaning of the publish
-boundary.
+Construct a small workflow with:
 
-What to hand in:
+- `data/raw/alpha.fastq`;
+- `data/arrivals.tsv` containing `alpha`;
+- a discovery checkpoint that declares the registry;
+- `state/accepted.txt`;
+- one `build/{sample}.txt` output per accepted sample;
+- a default aggregate target driven by a checkpoint-dependent input function.
 
-- the original smell
-- the repaired environment or job-boundary design
-- one sentence explaining why the repair lowers overhead
-- one sentence explaining why workflow truth stayed intact
+Execute the baseline. Then:
 
-Study note:
-If the repair works by hiding files a reviewer actually needs, it is not a legitimate
-performance improvement.
+1. add raw `beta` and raw `gamma`;
+2. add only `beta` to the registry;
+3. save a dry-run;
+4. execute normally;
+5. list outputs;
+6. force the checkpoint;
+7. list outputs again.
 
-## Exercise 6: Build a validated candidate registry
+```mermaid
+sequenceDiagram
+  participant L as Learner
+  participant R as Registry
+  participant C as Checkpoint
+  participant D as DAG
+  L->>C: execute alpha baseline
+  L->>R: register beta
+  L->>D: request dry-run
+  D-->>L: discovery and beta planned
+  L->>C: execute normally
+  C-->>D: accepted alpha,beta
+  D-->>L: gamma remains absent
+```
 
-Create a tabular manifest with at least three sample identifiers and source paths. Load it
-once, reject duplicate identifiers and missing files, sort it, and use it to build
-concrete QC targets without a checkpoint.
+Deliver:
 
-What to hand in:
+- Snakefile and input data;
+- baseline and change receipts;
+- normal and forced output lists;
+- a dependency chain from registry change to beta job;
+- an explanation of why gamma’s presence is insufficient for membership.
 
-- the manifest and validation code
-- the deterministic target list
-- one deliberately invalid record and its early error
-- an explanation of why static planning is sufficient
-- one sentence explaining why a checkpoint here would hide already knowable facts
+## Exercise 6: Preserve rejection evidence atomically
 
-Study note:
-This exercise should make you comfortable rejecting a checkpoint, not just implementing
-one.
+Extend Exercise 5 so the registry contains paths rather than sample IDs. The discovery
+program must publish:
 
-## Exercise 7: Justify one checkpoint and reject one fake one
+```text
+state/accepted.json
+state/rejected.json
+```
 
-Write two short design sketches:
+Use these candidates:
 
-- one workflow shape where a checkpoint is justified
-- one workflow shape where a checkpoint would only hide weak modeling
+- complete `alpha.fastq.gz`;
+- registered but missing `beta.fastq.gz`;
+- escaping path `../gamma.fastq.gz`;
+- duplicate `alpha.fastq.gz`.
 
-What to hand in:
+Choose and document one policy:
 
-- the discovery question each sketch is trying to answer
-- the output artifact of the justified checkpoint
-- the cleaner alternative for the unjustified checkpoint
-- one sentence explaining the difference between the two cases
+- fail the entire discovery job and retain a protected rejection candidate; or
+- complete discovery with separate accepted and rejected artifacts.
 
-Study note:
-The important contrast is not "advanced" versus "simple." It is "runtime fact" versus
-"already knowable fact."
+Requirements:
 
-## Exercise 8: Implement a justified checkpoint
+- final JSON is written atomically;
+- every rejection has a machine-readable reason;
+- a failed run cannot leave a plausible new `accepted.json`;
+- the previous trusted accepted artifact, if any, is either preserved unchanged or
+  removed according to a stated policy;
+- no rejected sample creates downstream jobs.
 
-Start from a declared candidate set, then make a validation checkpoint publish a registry
-containing usable candidates and a rejection record for excluded ones. Fan out one
-downstream job per accepted identifier.
+Deliver implementation, failure receipt, filesystem listing after failure, JSON evidence,
+and a review of the atomic-publication behavior.
 
-What to hand in:
+## Exercise 7: Explain the DAG before and after discovery
 
-- the checkpoint output contract
-- the input function that reads it through `checkpoints.<name>.get()`
-- evidence from before and after checkpoint completion
-- the rejection record and what made one candidate fail
-- an explanation of the runtime fact that could not be known during initial planning
+Using Exercise 5 or 6, save:
 
-## Midday self-check
+- an initial dry-run from a clean workspace;
+- the completed discovery artifact;
+- a realized DAG or job list after discovery;
+- a second dry-run after registering one new valid sample.
 
-Before you move into testing discovery changes and publishing the result, make sure your
-packet can already answer all of these:
+Draw two diagrams:
 
-- which artifact is the actual source of truth for the discovered set
-- where rejected candidates stay visible instead of disappearing from the story
-- whether your target fanout comes from validated records instead of accidental cross-products
-- why a checkpoint is justified or unjustified in this exact case
-- which discovery artifacts a downstream reviewer will need to see later
+1. what the planner knows before the checkpoint completes;
+2. the downstream jobs known after the manifest is read.
 
-If you cannot answer those four questions cleanly, return to the earlier exercises and
-make the packet more explicit before moving on.
+Label every node as one of:
 
-Study note:
-If the workflow could have learned the same set from declared config before execution,
-this is the wrong place to use a checkpoint.
+- declared input;
+- checkpoint job;
+- checkpoint artifact;
+- reevaluated input function;
+- concrete downstream job;
+- public artifact.
 
-## When you get stuck, diagnose the missing artifact first
+Deliver both diagrams and a paragraph explaining why the first is not an incomplete
+version of the same evidence question: it represents a different planning state.
 
-Use this table before you start rewriting rules at random:
+## Exercise 8: Enforce discovery-publication equality
 
-| If you are stuck on... | Check whether you are missing... | Typical repair |
-| --- | --- | --- |
-| Exercise 2 or 6 | one declared candidate surface | replace ambient discovery with a versioned manifest or one normalized scan |
-| Exercise 3 | one record structure that owns the fanout | stop expanding independent lists and build targets from validated records |
-| Exercise 7 or 8 | one sentence naming the runtime fact | write the justification before you touch `checkpoint` code |
-| Exercise 9 or 10 | one durable registry or publish artifact | keep the accepted, rejected, and published sets visible instead of inferred |
+Create a verifier for:
 
-Most failed answers are not short on syntax. They are short on owned artifacts.
+```text
+accepted A = {alpha, beta}
+complete outputs C = {alpha}
+existing stale output = gamma
+summary units P = {alpha, gamma}
+```
 
-## Exercise 9: Test discovery integrity under change
+The verifier must reject publication and report:
 
-Run the checkpoint workflow, then add one candidate, remove one candidate, and corrupt one
-candidate in separate trials. Predict the registry and downstream target changes before
-each run.
+- accepted but incomplete: `beta`;
+- present but outside accepted scope: `gamma`;
+- published but unaccepted: `gamma`;
+- accepted but unpublished: `beta`.
 
-What to hand in:
+Then create a valid case where `A = C = P = {alpha, beta}`. Write a public inventory with
+canonical relative paths and SHA-256 digests.
 
-- the three predictions
-- registry diffs for each trial
-- dry-run evidence for affected downstream jobs
-- the rejection evidence retained for the corrupt candidate
+Deliver:
 
-Study note:
-This is where discovery becomes operationally real. The workflow must show what changed,
-not just quietly produce a new set of files.
+- verifier and tests;
+- rejected receipt;
+- valid inventory;
+- a decision on whether partial publication is allowed and what evidence that policy
+  would require.
 
-## Exercise 10: Publish a reviewable dynamic result
+Do not repair the invalid case by deleting `gamma` alone; `beta` remains incomplete.
 
-Publish a versioned bundle for the checkpoint workflow. Include the accepted registry,
-rejection record, results, resolved configuration, provenance, and a manifest with
-checksums.
+## Exercise 9: Damage the discovery evidence gate
 
-What to hand in:
+Run:
 
-- the public directory tree
-- a machine-readable inventory and checksum verification command
-- a short consumer procedure that does not depend on internal working paths
-- an explanation of which artifacts are public contracts and which remain internal state
+```bash
+make discovery-integrity-selftest
+```
 
-## What weak completion looks like
+Then copy the governed specimen into your artifact workspace and apply these mutations
+one at a time:
 
-Do not call the day complete if your answers do any of these:
+1. remove the registry from the checkpoint `input`;
+2. keep the input but make discovery read the ambient directory instead;
+3. leave the manifest unchanged when the registry adds beta;
+4. let unregistered gamma enter the target list;
+5. change the audit to inspect only forced execution.
 
-- describe discovery as if the engine "just knows" the sample set
-- use a checkpoint where the facts were already available in static validated data
-- accept fanout growth without tracing which records created it
-- publish a dynamic result without exposing the accepted and rejected discovery artifacts
-- blur checkpoint internals and public review surfaces into one undifferentiated bundle
+For each mutation, state:
 
-## Exit standard for the exercise day
+- which observation should change;
+- which finding must fail;
+- whether ordinary workflow output could still look plausible;
+- why a final-output-only test might miss the defect.
 
-Do not count the day complete unless you can do all of this without leaning on the answer
-page as a set of instructions:
+Implement automated rejection tests for at least three mutations. Restore a clean copy
+between cases so one mutation does not mask another.
 
-- explain why one discovery surface is trustworthy
-- reject one unnecessary checkpoint with confidence
-- defend one justified checkpoint by naming the runtime fact it reveals
-- show one registry, one provenance artifact, and one manifest that make the run reviewable
-- distinguish public contract files from internal workflow state
+## Exercise 10: Submit a discovery integrity packet
 
-## Mastery standard for this exercise set
+Build a review packet for your repaired workflow. It must contain:
 
-Across all ten answers, Module 02 wants the same habits:
+```text
+review/
+├── README.md
+├── accepted.json
+├── arrival-registry.tsv
+├── change-dryrun.txt
+├── rejection-receipt.txt
+├── publish-inventory.json
+├── review-questions.md
+├── run-receipt.txt
+└── target-list.txt
+```
 
-- you name the artifact or boundary that carries the truth
-- you explain dynamic behavior without using mystical language
-- you show which command or file would let another person verify the claim
+`README.md` must state:
 
-If your answer says only "Snakemake will handle it," keep going.
+- the membership contract;
+- the checkpoint justification;
+- the invalidation event;
+- the accepted-set schema;
+- the fanout rule;
+- the publication equality;
+- the limit of the evidence.
+
+`review-questions.md` must ask a reviewer to verify causes, not merely file presence.
+Include at least:
+
+- Which declared change scheduled discovery?
+- Does the target list exactly project accepted records?
+- Are rejected candidates unable to create jobs?
+- Do accepted, complete, and published sample sets agree?
+- Would forcing the checkpoint reveal any undeclared membership?
+
+Add a bundle manifest over the packet itself. Deliberately alter one copied evidence file
+and show that bundle verification fails, then restore it.
+
+Deliver the complete packet and a one-page review that identifies one remaining limitation
+instead of claiming universal reproducibility.
+
+## Completion check
+
+Before reading the answers, confirm that your work contains:
+
+- ten written predictions or decisions;
+- normal and forced discovery evidence;
+- at least one deliberately rejected registry;
+- an exact target-set calculation;
+- a pre/post-checkpoint DAG explanation;
+- a publication equality test;
+- at least three causal mutation tests;
+- a portable review packet with integrity verification.
+
+If an exercise produced only prose, ask whether a runnable or inspectable artifact could
+make its claim reviewable. If it produced only files, add the reasoning that connects
+them to the contract.

@@ -154,6 +154,72 @@ That contrast is the entire lesson:
 - the bare wrapper changes what tools see
 - the preserved wrapper keeps the original callable legible
 
+## Executable audit: logical contract versus wrapper shell
+
+Run:
+
+```console
+$ make wrapper-lab |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["metadata"])'
+{'bare': {'doc': None, 'has_wrapped': False, 'implementation_signature': "(*args: 'Any', **kwargs: 'Any') -> 'ResultT'", 'name': 'wrapped', 'signature': "(*args: 'Any', **kwargs: 'Any') -> 'ResultT'"}, 'preserved': {'doc': 'Render one incident.', 'has_wrapped': True, 'implementation_signature': "(*args, **kwargs) -> 'str'", 'name': 'preserved_handler', 'signature': "(incident_id: 'str', *, severity: 'str' = 'warning') -> 'str'", 'unwrap_is_original': True}}
+```
+
+The preserved record contains two different, simultaneously true signatures:
+
+- `signature` is the logical callable contract recovered when `inspect.signature`
+  follows `__wrapped__`
+- `implementation_signature` is the forwarding shell reported by
+  `inspect.signature(..., follow_wrapped=False)`
+
+`functools.wraps` does not rewrite the nested function's code parameters. It gives tools
+an honest route back to the logical callable. It also copies the original annotations;
+because those annotations name `incident_id` and `severity` rather than the shell's
+`args` and `kwargs`, the shell view retains the copied return annotation but shows
+unannotated variadic parameters. That slightly odd mixed view is another reason to use
+the normal unwrapping route for the logical public contract.
+
+The correct claim is:
+
+> the wrapper preserves recoverability of the original contract
+
+not:
+
+> the wrapper itself now has the original code shape
+
+The bare wrapper exposes only the shell because it has no `__wrapped__` edge to follow.
+Its name and docstring are lost for the same reason: no preservation step copied them.
+
+### Inspect both layers yourself
+
+Use this sequence on `preserved_handler` inside a local experiment:
+
+```python
+inspect.signature(preserved_handler)
+inspect.signature(preserved_handler, follow_wrapped=False)
+inspect.unwrap(preserved_handler)
+preserved_handler.__wrapped__
+```
+
+Then answer:
+
+1. Which object receives the call first?
+2. Which object owns the logical contract?
+3. Which edge lets tools move between them?
+4. Which result would documentation tooling normally want?
+
+This separates execution ownership from contract ownership. The wrapper executes first,
+while the original callable remains the source of the logical signature.
+
+### Failure route: copy labels without preserving the edge
+
+Manually assign `__name__` and `__doc__` in the bare decorator but do not set
+`__wrapped__`. The surface looks slightly better, yet signature recovery and
+`inspect.unwrap` still stop at the forwarding shell.
+
+Restore `functools.wraps` and run `make wrapper-lab-test`. The focused proof checks the
+name, docstring, logical signature, shell signature, `__wrapped__`, and unwrapping result
+together. No single metadata field is sufficient evidence.
+
 It is useful to separate what `wraps` usually repairs from what it does not:
 
 | Surface or concern | `wraps` usually helps? | Why |
@@ -161,6 +227,7 @@ It is useful to separate what `wraps` usually repairs from what it does not:
 | name, docstring, annotations, module, qualname | yes | metadata is copied or updated onto the wrapper |
 | `__wrapped__` path for unwrapping tools | yes | the wrapper gets an explicit pointer to the logical original callable |
 | signature recovery through unwrapping | often yes | tools can follow `__wrapped__` instead of stopping at `*args, **kwargs` |
+| wrapper shell's code parameters | no | `follow_wrapped=False` still reveals the forwarding implementation |
 | hidden cache, retry, or fallback policy | no | metadata preservation does not undo semantic changes |
 | altered return-value or exception behavior | no | transparent labels cannot cancel non-transparent runtime behavior |
 
@@ -258,6 +325,45 @@ This page also closes the loop with Module 03:
 
 That is why the course teaches `functools.wraps` before heavier decorator policy. If
 transparency is weak here, everything built on inspection later becomes less trustworthy.
+
+Module 03 supplied strong signature evidence. This core shows how a wrapper can preserve
+the route to that evidence while still introducing a different executable shell. Module
+05 can then discuss typed decorator interfaces without pretending runtime metadata alone
+solves static typing.
+
+## Capstone transfer: audit the policy-owning action wrapper
+
+Run:
+
+```console
+$ make capstone-action-wrapper |
+  python3 -c 'import json, sys; p=json.load(sys.stdin); w=p["wrapper"]; print({"constructed": p["constructed"], "executed": p["executed"], "depth": w["wrapper_depth"], "visible": w["visible_signature"], "shell": w["chain"][0]})'
+{'constructed': False, 'executed': False, 'depth': 1, 'visible': "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'", 'shell': {'depth': 0, 'implementation_signature': "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'", 'name': 'deliver', 'owns_action_spec': True, 'owns_explicit_signature': True}}
+```
+
+The capstone shell differs deliberately from the course's thin preserved wrapper:
+
+| Surface | Course observing wrapper | Capstone `@action` wrapper |
+| --- | --- | --- |
+| `__wrapped__` | yes | yes |
+| explicit `__signature__` | no | yes |
+| `follow_wrapped=False` | reveals `*args, **kwargs` shell | reports the deliberately assigned action signature |
+| attached policy metadata | none | `ActionSpec` on the wrapper |
+| call-time policy | outcome events only | argument binding and successful-call history |
+
+The audit reports `owns_explicit_signature` so identical visible and shell strings do not
+hide their origin. The outer action wrapper owns the explicit override and action spec;
+the original method owns neither.
+
+The route remains observational. A test plugin records constructor and action events, and
+the audit leaves both lists empty. A separate failure test proves the call-time policy:
+
+- the exact exception object propagates
+- a failed action creates no history record
+- a successful action records bound arguments and result type
+
+This makes the capstone connection specific. `@action` preserves metadata, but it is not
+semantically thin: it owns binding and history rules at the callable boundary.
 
 ## Transparency claims that still need caution
 

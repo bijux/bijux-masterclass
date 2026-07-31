@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,296 +8,477 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
   section["Execution Environments Reproducible Inputs"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
+  page["Runtime evidence answer reasoning"]
+  capstone["Runtime contract audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.interprets.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["name the environment boundary"] --> inspect["inspect runtime evidence"]
-  inspect --> compare["compare execution strategies"]
-  compare --> break["break the environment on purpose"]
-  break --> govern["design a durable operating rule"]
+  attempt["complete your artifact"] --> compare["compare claim and evidence"]
+  compare --> challenge["challenge each inference"]
+  challenge --> revise["revise overclaims and missing links"]
+  revise --> verify["rerun the proof route"]
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These are model reasoning routes, not text to copy. Compare the structure of your argument,
+the evidence you chose, and the limits you stated. A different design can be stronger if
+it closes the same questions with equally inspectable evidence.
 
-## How to use the answer page well
+Use this answer page effectively:
 
-Do not read the model answer first and then shrink the whole module into "containers fix
-it" or "environment drift is inevitable."
+1. Open your artifact beside the corresponding answer.
+2. Mark every claim in your work that lacks a receipt, rule, or comparison.
+3. Mark every receipt that you asked to prove more than it can.
+4. Revise the artifact, then rerun its validation command.
 
-A better rhythm is:
+The central discipline across all answers is:
 
-1. finish the exercise with your own boundary table and environment packet
-2. state the result claim and the environment facts that could move it
-3. compare your reasoning with the model answer
-4. revise anywhere your answer overclaims, blurs DVC's role, or skips the evidence route
+```mermaid
+flowchart LR
+  context["runtime context"] --> visibility["declared or externally enforced visibility"]
+  visibility --> planner["planner or gate decision"]
+  planner --> execution["current execution"]
+  execution --> result["semantic result"]
+  result --> judgment["comparison and acceptance judgment"]
+```
 
-What matters is whether the reasoning keeps result claims, runtime evidence, and
-governance choices connected.
+Skipping a link produces a weaker claim.
 
-Strong Module 03 answers usually do five things:
+## Answer: Bound the runtime-sensitive claim
 
-- they treat environment as part of the input surface
-- they distinguish acceptable sensitivity from unexplained drift
-- they describe DVC's role precisely rather than magically
-- they compare lockfiles, containers, and CI by responsibility
-- they turn the lesson into a repeatable review or gate
+A strong bounded claim is:
 
-The strongest self-study packets also leave behind six concrete artifacts:
+> For the paired specimen, a result is semantically current when its `style` and
+> `rendered` fields reflect the report-style policy used for that execution. The audit
+> tests whether DVC reacts when this policy is declared and when the equivalent influence
+> exists only in process state.
 
-- one environment boundary statement
-- one DVC-versus-environment control table
-- one environment fingerprint
-- one deliberate drift experiment
-- one strategy comparison table
-- one governed drift gate
+A model input-surface table:
 
-If your answers rely only on "same code, same result," the reasoning is still too thin.
+| Influence | Source | Can change result? | Representation before execution | Governance status |
+| --- | --- | --- | --- | --- |
+| source numbers | `data/source.txt` | yes, changes total | file in `deps` | declared |
+| renderer code | `scripts/render_runtime.py` | yes, changes calculation or format | file in `deps` | declared |
+| declared report style | `environment/runtime.env` | yes, changes style and punctuation | file in `deps` | declared |
+| hidden report style | process `REPORT_STYLE` | yes, same formatting effect | absent from graph; fingerprint observes it | defective |
+| Python version | interpreter | plausibly, though not in this contrast | fingerprint only | observed, held constant |
 
-## Answer 1: Name the environment as input
+The deliberately changed fact is `report_style`. The audit holds Python version,
+implementation, platform, machine, data, and renderer code constant.
 
-Why the claim is too strong:
+The comparison checks semantic fields:
 
-- code, data, and parameters can remain aligned while runtime facts still influence the
-  observed result
+```text
+dot   -> style=dot, rendered=8.00
+comma -> style=comma, rendered=8,00
+```
 
-Which runtime facts may matter:
+Two necessary limits:
 
-- interpreter or compiler versions
-- numerical libraries
-- operating-system behavior
-- thread scheduling or parallel runtime choices
-- locale, timezone, or filesystem conventions
-- hardware or accelerator differences
+- The audit does not prove every relevant environment fact is captured.
+- The audit does not characterize numerical or hardware nondeterminism.
 
-Why this does not make the workflow hopeless:
+Why this reasoning is stronger than “environment is an input”: it names a result claim,
+one causal influence, its representation, and the tested boundary.
 
-- it means the team needs a clearer environment contract and evidence route, not a
-  surrender of reproducibility
+## Answer: Predict planner behavior from declarations
 
-A strong next-evidence sentence is:
+A model prediction table:
 
-> Before deciding whether this is acceptable drift or a broken run, I want the two run
-> fingerprints side by side: interpreter, dependency identity, platform, and any governed
-> runtime flags.
+| Case | Declared route | Expected status | Expected repro | Expected result |
+| --- | --- | --- | --- | --- |
+| settled baseline | all recorded declarations match | empty | skip | retained dot |
+| contract becomes comma | changed file in `deps` | `declared_runtime` stale | execute declared stage | comma |
+| process becomes comma | no declared value or artifact | empty | skip hidden stage | retained dot |
+| second repro after declared rebuild | changed dependency and output now recorded | empty | skip | retained comma |
+| forced hidden execution | force bypasses stale decision | status need not be stale | execute hidden stage | comma |
 
-The main lesson is that environment influence is ordinary engineering context, not magic.
+The crucial reasoning happens before output is inspected:
 
-## Answer 2: Explain conditional determinism
+- DVC can compare the declared contract file.
+- DVC cannot compare a process value that has no representation in stage state.
+- Force requests execution regardless of ordinary staleness.
 
-Why the workflow may still be honest:
+An incorrect prediction such as “DVC reads `REPORT_STYLE` because the Python command does”
+confuses the executed program with DVC's dependency model. DVC sees command text, but the
+value inherited at process launch is not embedded in that text.
 
-- small divergence can come from runtime-sensitive numerical behavior even when the team
-  changed nothing deceptively
+A useful correction note is:
 
-What conditional determinism means:
+> I predicted the hidden stage would become stale because its program consumes the
+> variable. The declaration shows that DVC has no value or artifact to compare. Program
+> causality does not create planner visibility automatically.
 
-- the workflow is reliably identical only under declared runtime conditions, not across
-  every possible machine or dependency stack
+## Answer: Inventory evidence by inferential role
 
-What evidence to inspect next:
+Representative rows:
 
-- environment fingerprints for both runs
-- dependency identities
-- governed tolerance rules for the metric or artifact
-- any documentation that declares the canonical execution context
-
-A reviewer-facing explanation might say:
-
-> The result moved slightly across environments. That may still be honest if the workflow
-> contract allows bounded runtime-sensitive variation. We need the two environment
-> fingerprints and the declared tolerance before deciding whether this is acceptable or a
-> reproducibility defect.
-
-## Answer 3: Draw DVC's environment boundary
-
-Strong note:
-
-> DVC helps make data identity, parameters, and declared workflow state explicit. That is
-> valuable because it gives us a clean record of which tracked inputs and stage contracts
-> were supposed to produce the result. But DVC does not directly pin interpreter
-> versions, package resolution, container images, operating-system behavior, or hardware.
-> The distinction matters because teams can diagnose environment drift much faster with
-> DVC while still needing separate controls to reduce or govern that drift.
-
-Useful table:
-
-| DVC clarifies | Separate environment controls |
-| --- | --- |
-| tracked data identity | dependency lockfiles |
-| declared parameters | container images |
-| stage contracts and lock evidence | CI executor policy |
-| rerun decisions from declared influence | runtime flag governance |
-
-One example failure:
-
-- evaluation results differ because BLAS or numerical library versions changed; DVC makes
-  the unchanged tracked inputs obvious, but it does not prevent the library drift itself
-
-## Answer 4: Choose an environment strategy
-
-Strong comparison:
-
-| Control | What it contributes | What it does not cover well | When it is strongest |
+| Evidence | Primary layer | Question closed | Question not closed |
 | --- | --- | --- | --- |
-| Lockfile | reviewable dependency resolution | host OS, native libs, hardware | local iteration and dependency review |
-| Container | broader packaged runtime filesystem | secrets, network behavior, host scheduling | stable automation and shared execution |
-| CI as canonical executor | one governed proof context | local developer convenience or all off-platform uses | release evidence and shared authority |
+| `summary.tsv` | enforcement | did every audit assertion pass, and which behavior is accepted? | what exact receipt supports each assertion? |
+| paired fingerprints | context | which recorded runtime fields differ? | did the stage run or output change? |
+| declared status | planner | which declared change makes the stage stale? | did rebuild complete? |
+| hidden status | planner | did any declared influence make the stage stale? | did runtime context stay fixed? |
+| ordinary repro receipt | execution | did DVC run or skip the hidden stage? | why the hidden influence is absent |
+| forced repro receipt | execution | did the diagnostic execution occur? | was future stale detection repaired? |
+| result values | semantics | which report style the output expresses | which context caused it without paired evidence |
+| declaration hash | declaration | did stage declaration change across force? | whether the process variable affects output |
+| lock hashes | execution | did recorded execution/output state change after force? | whether hidden state is visible before execution |
+| audit tests | enforcement | which invariants the audit checks | whether those invariants cover a real project's claim |
 
-A strong operating model for this team is:
+The `summary.tsv` distinction matters:
 
-- use lockfiles so dependency changes are reviewable and reproducible locally
-- build or pin a container image for the governed automation context
-- treat CI as the canonical proof environment for accepted results
+- `PASS / ACCEPT`: the audit observed behavior the truthful contract should preserve.
+- `PASS / REJECT`: the audit successfully reproduced a defect the truthful contract
+  should reject.
 
-That combination is strong because it gives fast local work, explicit dependency history,
-and one shared authority for result acceptance.
+Calling both merely “tests passed” loses the educational decision.
 
-## Answer 5: Diagnose local-versus-CI drift
+## Answer: Reconstruct lock evidence in time order
 
-Environment evidence to inspect next:
+A model chronology:
 
-- interpreter and tool versions
-- resolved dependency identity
-- container image digest if CI uses one
-- platform or architecture differences
-- governed runtime flags, seeds, locale, and thread settings
+### Baseline after dot execution
 
-How to decide whether the difference is acceptable:
+- Declaration has no edge for hidden `REPORT_STYLE`.
+- Lock records the dependencies and output from the dot execution.
+- Intended and result styles are both dot.
+- The result is current for that baseline context.
 
-- compare the observed movement against the workflow's declared tolerance and the release
-  significance of the metric or artifact
+### Process policy changes to comma
 
-Repairs if the strategy is too weak:
+- Declaration is byte-for-byte unchanged.
+- Lock is unchanged because no execution happened.
+- Intended style is comma; retained result still says dot.
+- The result is not evidence of comma-context execution.
 
-- tighten dependency control with a governed lockfile
-- move CI into a pinned image
-- record environment fingerprints automatically
-- declare CI explicitly as the proof context for accepted outputs
+### Ordinary repro skips
 
-A disciplined PR sentence might say:
+- Empty status follows from unchanged declared state.
+- Lock remains unchanged.
+- The ordinary repro receipt confirms the hidden stage did not execute.
+- The dot result is now semantically stale relative to comma intent.
 
-> DVC-tracked inputs agree, but local and CI environments still differ; we are comparing
-> run fingerprints now to decide whether this is accepted numeric sensitivity or an
-> environment-governance defect.
+### Forced execution
 
-## Answer 6: Capture an environment fingerprint
+- Declaration remains unchanged.
+- The stage executes under comma process state.
+- Result changes to comma.
+- Lock changes to record the new execution/output identity.
 
-A useful fingerprint is compact but discriminating. It usually includes:
+The useful inference from the changed lock is:
 
-- exact interpreter or compiler identity
-- dependency lock hash or resolved environment export
-- operating-system or image identity
-- major tool versions
-- governed runtime flags and meaningful environment variables
+> The forced execution produced new recorded stage state and output identity.
 
-Values most likely to alter meaning include:
+The unsupported inference is:
 
-- numerical library identity
-- package versions
-- image digest
-- locale, seed, or thread settings when relevant
+> DVC can now detect future `REPORT_STYLE` changes.
 
-Values that may be context only:
+The stale decision occurs before a future execution. Because the declaration still lacks
+the value, the next change can remain invisible.
 
-- hostname
-- transient CI job number
-- machine nickname
+## Answer: Prove the hidden runtime diagnosis
 
-A strong smallest-reviewable fingerprint is:
+A model diagnosis:
 
-> interpreter version, dependency identity, image or platform identity, and any governed
-> runtime flags that can plausibly move the result.
+**Observed symptom**
 
-## Answer 7: Break an environment deliberately
+The current process context requests comma formatting, but ordinary repro retains a result
+whose style is dot.
 
-A strong answer preserves all non-environment inputs, records one explicit dependency
-change, and compares outputs under the workflow's real acceptance rule.
+**Competing explanations**
 
-What matters in the judgment:
+Data, renderer code, Python, platform, report style, or stale reuse could explain the
+observation.
 
-- deterministic difference: the changed environment predictably produces a different but
-  explainable result
-- tolerated difference: the result moves within an agreed contract
-- release blocker: the difference is unexplained, semantically important, or outside the
-  accepted bound
+**Controlled facts**
 
-The main lesson is that environment governance becomes concrete only when teams practice
-failure classification instead of assuming every drift is either harmless or catastrophic.
+The paired specimen keeps source data and renderer code fixed. Fingerprints show Python,
+implementation, platform, and machine match.
 
-## Answer 8: Compare lockfile and container guarantees
+**Changed fact**
 
-Strong comparison:
+The fingerprint changes only `report_style` from dot to comma.
 
-| Surface | Lockfile constrains | Container digest constrains |
-| --- | --- | --- |
-| language packages | yes | indirectly through the image filesystem |
-| operating-system libraries | usually no | often yes, within the image |
-| hardware | no | no |
-| environment variables | no | no, unless separately governed |
-| network access | no | no |
-| entry commands | no | only if the image and execution policy declare them |
+**Planner and execution evidence**
 
-Why containers do not remove the need for dependency contracts:
+Hidden status is empty and the ordinary repro receipt says the pipeline is up to date.
+The hidden stage does not execute.
 
-- a container can package a runtime broadly, but teams still need reviewable dependency
-  intent and explicit upgrade history. Otherwise the image becomes a large opaque blob
-  with weak explanation of what actually changed.
+**Semantic evidence**
 
-## Answer 9: Design an environment drift gate
+The retained result remains `style=dot` and `rendered=8.00`.
 
-A strong gate does four things:
+**Causal intervention**
 
-- checks governed environment identities such as lockfile hash or image digest
-- records the resolved runtime as an artifact
-- fails with the exact boundary that drifted
-- defines an intentional upgrade path with result comparison and review
+Forced execution under comma changes output to `style=comma` and `rendered=8,00`.
 
-Example failure wording:
+**Contract finding**
 
-> Environment drift detected: CI resolved dependencies no longer match the approved
-> lockfile hash for this result contract. Regenerate the governed environment, compare
-> outputs, and submit the upgrade for review.
+`dvc.yaml` remains unchanged and contains no representation of the process value.
 
-Reviewer expectation after a failure:
+**Supported conclusion**
 
-- inspect the changed environment evidence
-- inspect the result comparison
-- decide whether this is an approved upgrade or a defect
+> Report style is causal for this output and undeclared for the hidden stage. Ordinary
+> repro therefore preserves stale semantic meaning when only the process value changes.
 
-## Answer 10: Reproduce across two contexts
+**Remaining limits**
 
-The comparison should include:
+The audit isolates one deterministic formatting influence. It does not establish how
+other environment changes affect other stages.
 
-- both environment fingerprints
-- the exact command and tracked inputs
-- the output comparison rule
-- the conclusion about whether current governance is adequate
+Why force is evidence rather than repair: it manipulates execution while leaving planner
+inputs unchanged.
 
-Matching digests are strong evidence when exact identity is expected. For numerically
-sensitive work, the honest contract may instead be bounded metric variation plus stable
-scientific interpretation.
+## Answer: Choose an environment strategy by threat
 
-A strong final conclusion sounds like this:
+A model result claim:
 
-> Our current strategy is strong enough only if we treat CI as canonical and record the
-> runtime fingerprint automatically. Local runs are still useful, but they are not yet a
-> fully governed proof environment.
+> Accepted evaluation reports are produced by CI from reviewed source, DVC data and
+> parameters, the approved dependency resolution and image digest, with declared locale
+> and thread count.
 
-## Self-check
+A model threat table:
 
-If your answers consistently explain:
+| Threat | Control | Enforcement | Receipt |
+| --- | --- | --- | --- |
+| Python dependency resolution drifts | hashed lockfile | image build and CI verify lock identity | lock hash plus installation/build record |
+| native numerical library drifts | immutable image | CI permits approved digest | image digest |
+| locale changes report semantics | runtime contract in `deps` | schema validation before DVC repro | contract hash and status/repro evidence |
+| thread count changes numerical behavior | selected parameter or contract field | pre-execution gate | governed value in run manifest |
+| unapproved executor accepts result | canonical CI policy | protected acceptance workflow | signed or retained run manifest |
 
-- why environment belongs in the input surface
-- why conditional determinism is a serious engineering concept
-- what DVC clarifies without directly managing
-- how environment strategies trade explicitness, stability, and authority
-- how a governed gate turns theory into durable team practice
+Roles:
 
-then you are using Module 03 correctly.
+- The lockfile defines reviewed language resolution.
+- The image packages the resolved dependencies and native library.
+- CI verifies identities, executes the pipeline, and has acceptance authority.
+- DVC connects declared data, parameters, code, and runtime controls to stale decisions and
+  result evidence.
+
+Residual limits might include:
+
+- macOS local runs support development but not acceptance;
+- the host kernel remains outside the image;
+- external data services are outside the claim unless snapshotted;
+- reconstruction depends on retaining the image digest and accessible image content.
+
+A sensible rejected control is GPU attestation because GPU execution is explicitly
+unsupported. Adding it would create maintenance without protecting the stated claim.
+
+The strategy succeeds when evidence from the lock, image, executor, DVC, and result shares
+one run identity.
+
+## Answer: Design a fresh-execution tolerance gate
+
+Correct decisions:
+
+| Case | Delta | Currency gate | Decision |
+| --- | --- | --- | --- |
+| `0.843` versus `0.844`, complete proof | `0.001` | pass | accept |
+| `0.843` versus `0.838`, complete proof | `0.005` | pass | reject outside tolerance |
+| equal `0.843`, B skipped after hidden drift | `0.000` | fail | reject before comparison |
+
+Model pseudocode:
+
+```text
+require approved_executor_identity(A, B)
+require matching_code_data_parameter_identities(A, B)
+require valid_result_schema(A, B)
+require three_fresh_evaluation_receipts(A)
+require three_fresh_evaluation_receipts(B)
+
+delta = absolute_difference(A.f1, B.f1)
+accept only if every paired or aggregate comparison follows the declared method
+and delta <= 0.002
+```
+
+The exact aggregation rule for three runs must be declared. Options include comparing
+means, every pair, or distributions; they make different claims. A stronger answer names
+one. For example:
+
+> Compare the mean `f1` from three fresh runs per executor; require absolute mean delta no
+> greater than `0.002`, and retain every raw result.
+
+The gate order is non-negotiable:
+
+```mermaid
+flowchart TD
+  identity["approved identities?"] -->|no| reject["reject"]
+  identity -->|yes| fresh["all required runs fresh?"]
+  fresh -->|no| reject
+  fresh -->|yes| schema["valid comparable results?"]
+  schema -->|no| reject
+  schema -->|yes| delta["calculate declared comparison"]
+  delta -->|inside boundary| accept["accept bounded claim"]
+  delta -->|outside boundary| reject
+```
+
+## Answer: Design a joined executor manifest
+
+A compact model:
+
+```json
+{
+  "schema_version": "runtime-evidence-manifest/v1",
+  "run_id": "example-run-identity",
+  "source": {
+    "git_commit": "example-git-sha",
+    "dvc_yaml_sha256": "example-declaration-sha256",
+    "dvc_lock_sha256": "example-lock-sha256",
+    "data_revision": "example-data-revision",
+    "params_sha256": "example-parameter-sha256"
+  },
+  "runtime": {
+    "dependency_lock_sha256": "example-dependency-lock-sha256",
+    "container_digest": "sha256:example-image-digest",
+    "platform": "linux/amd64",
+    "controls": {
+      "locale": "C.UTF-8",
+      "thread_count": 1
+    }
+  },
+  "execution": {
+    "executor": "canonical-ci",
+    "started_at": "2030-01-01T12:00:00Z",
+    "completed_at": "2030-01-01T12:10:00Z",
+    "dvc_receipt_sha256": "example-receipt-sha256"
+  },
+  "results": [
+    {
+      "path": "metrics.json",
+      "sha256": "example-result-sha256"
+    }
+  ],
+  "decision": {
+    "status": "accepted",
+    "policy": "evaluation-runtime-policy"
+  }
+}
+```
+
+Observations include platform and timestamps. Enforced controls include approved image
+digest, lock identity, locale, and thread count. The run ID binds the evidence packet;
+hashes and artifact references let reviewers detect substitution.
+
+Do not put secret values, access tokens, private environment dumps, or credentials in the
+manifest. A safe secret version or policy identity may be appropriate if it reveals no
+sensitive value.
+
+The manifest is only trustworthy if the canonical executor creates or signs it after
+enforcing the controls. A developer-authored JSON file with plausible values is a claim,
+not a receipt.
+
+## Answer: Specify and test a contract repair
+
+A direct repaired stage:
+
+```yaml
+hidden_runtime:
+  cmd: >-
+    python scripts/render_runtime.py
+    --source data/source.txt
+    --contract environment/runtime.env
+    --output results/hidden.txt
+  deps:
+    - data/source.txt
+    - environment/runtime.env
+    - scripts/render_runtime.py
+  outs:
+    - results/hidden.txt
+```
+
+The contract:
+
+```text
+REPORT_STYLE=dot
+```
+
+It is safe to record because report style is non-secret policy. A repository owner or
+validated configuration generator can establish it.
+
+Acceptance matrix:
+
+| Test case | Expected status | Expected execution | Expected semantic result |
+| --- | --- | --- | --- |
+| settled baseline | empty | skip | dot |
+| contract changes to comma | repaired stage stale | not yet | retained dot until rebuild |
+| ordinary repro after change | becomes settled | execute | comma |
+| second repro after rebuild | empty | skip | retained comma |
+| unrelated process variable changes | empty | skip | retained governed comma |
+
+The negative test removes `environment/runtime.env` from `deps`, settles the stage, changes
+the contract, and asserts that the test suite fails because the stage is not reported
+stale. The test should fail on the missing edge, not merely on output after force.
+
+An alternative parameter-based repair can be valid. It must still prove that the command
+consumes the selected parameter and that changing the parameter makes the stage stale.
+
+## Answer: Assemble an independent runtime review
+
+A strong entry document is short because the evidence is organized, not because reasoning
+is omitted.
+
+Model opening:
+
+> This packet tests whether report-style policy participates in DVC stale decisions. The
+> declared case changes a dependency, becomes stale, executes, and adopts current meaning.
+> The hidden case changes only process state; status remains empty and ordinary repro
+> preserves old meaning. A forced execution changes output without changing the
+> declaration, proving a causal but undeclared influence.
+
+Model artifact route:
+
+| Artifact | Review purpose |
+| --- | --- |
+| `claim-boundary.md` | states exactly what is tested |
+| `planner-predictions.tsv` | distinguishes declaration-based expectation from observation |
+| `evidence-inventory.tsv` | prevents evidence-layer overclaims |
+| `lock-chronology.md` | explains pre- and post-execution state |
+| `causal-diagnosis.md` | joins contrast, planner, execution, and semantics |
+| `environment-strategy.md` | assigns control ownership |
+| `tolerance-gate.md` | rejects stale comparison before numeric judgment |
+| `executor-manifest.json` | joins runtime and result identities |
+| `contract-repair.md` | specifies durable repair and acceptance tests |
+
+Model unresolved risks:
+
+- the specimen tests one formatting influence, not a real numerical stack;
+- the proposed CI manifest design is not implemented here;
+- image rebuild provenance needs separate evidence;
+- external services and secrets remain outside the specimen;
+- a real repeated-run study needs a domain-specific comparison design.
+
+Model regeneration commands:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-selftest
+jq empty artifacts/learning/deep-dive-dvc/runtime-evidence/executor-manifest.json
+```
+
+The final quality test is handoff:
+
+> Can a reviewer move from the claim to the exact receipt, repeat the inference, locate
+> the decision rule, and see the residual limit without asking what you meant?
+
+If not, revise the route rather than adding a broad summary.
+
+## Self-review standard
+
+Your packet should now make these distinctions without prompting:
+
+- influential runtime fact versus exhaustive machine inventory;
+- declared dependency versus observed fingerprint;
+- planner convergence versus current-context execution;
+- lock evidence after execution versus stale visibility before execution;
+- causal force probe versus durable repair;
+- immutable runtime identity versus proof it was enforced;
+- bounded fresh-run variation versus stale semantic reuse;
+- passing audit assertion versus acceptable production behavior.
+
+Those distinctions are the practical skill of Module 03.

@@ -397,6 +397,113 @@ This is Core 5:
 - failure has a log
 - the publication point is explicit
 
+## Pressure-test the repair before accepting it
+
+The repaired code is plausible. Plausibility is not the exit condition. Before accepting
+the repair, test the two claims it now makes:
+
+1. every file that changes the report is visible to the planner;
+2. a failed replacement cannot poison the trusted final path.
+
+Use the capstone’s bounded contrast:
+
+```console
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make file-contract-audit
+```
+
+Before reading the generated report, write this prediction table:
+
+| Intervention | Declared report | Hidden report | Trusted atomic final |
+| --- | --- | --- | --- |
+| no change after successful run | no job | no job | unchanged |
+| threshold file changes | rerun | should rerun, but will not | unchanged |
+| writer fails before promotion | not part of this contrast | not part of this contrast | prior final survives |
+
+If your prediction says the hidden report is safe because the Python script opens the
+policy file, return to the rule contract. Snakemake plans from declared edges, not from a
+trace of every file a process might open.
+
+## Read the convergence receipts
+
+Open:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/file-contracts/evidence/
+```
+
+Start with `declared-settled-dry-run.stdout.txt`. It should contain:
+
+```text
+Nothing to be done
+```
+
+That is the baseline. Next compare:
+
+- `declared-policy-change-dry-run.stdout.txt`
+- `hidden-policy-change-dry-run.stdout.txt`
+
+The declared receipt plans `declared_report`. The hidden receipt reports nothing to do.
+Now open `report.json` and find the two values attached to
+`HIDDEN_POLICY_CHANGE_MISSES_RERUN`:
+
+```json
+{
+  "policy_value": "20",
+  "stored_report_value": "10"
+}
+```
+
+This pair is the proof of stale acceptance. A missing job alone might reflect a mistaken
+test setup. The disagreeing semantic values show that the existing output no longer
+matches the current policy.
+
+## Read the publication receipts
+
+The audit begins both publication cases with a final containing `trusted`.
+
+For in-place failure, the process writes to the final and exits nonzero. The report must
+show:
+
+```text
+IN_PLACE_FAILURE_POISONS_FINAL  PASS  REJECT
+final_contents = PARTIAL
+```
+
+For atomic failure, the process writes scratch and exits before rename. The report must
+show:
+
+```text
+ATOMIC_FAILURE_PRESERVES_FINAL  PASS  ACCEPT
+final_after_failure = trusted
+scratch_after_failure = complete
+```
+
+Then successful promotion must show `complete` at the final path and no sibling scratch.
+
+Notice what changed between the unsafe and safe cases: not Snakemake configuration, not
+retry count, and not a cleanup flag. The writer changed which path it was allowed to
+mutate before validation.
+
+## Write the acceptance argument
+
+A reviewable acceptance argument names evidence and limits:
+
+> The declared rule reruns after `policy/threshold.txt` changes, while the paired hidden
+> rule leaves a report containing threshold `10` under policy `20`. The publication
+> contrast shows an in-place failure replacing trusted contents with `PARTIAL`, while
+> failure before same-directory rename preserves the trusted final. This proves the
+> missing dependency edge and local atomic-promotion boundary; it does not prove
+> cross-filesystem atomicity or domain validity of arbitrary output.
+
+Avoid weaker summaries:
+
+- “The workflow reruns correctly.”
+- “Temporary files make it safe.”
+- “Snakemake cleans failed outputs.”
+
+Each sentence hides the intervention, observation, or claim limit.
+
 ## The repaired workflow
 
 After the fixes, you have something much healthier:

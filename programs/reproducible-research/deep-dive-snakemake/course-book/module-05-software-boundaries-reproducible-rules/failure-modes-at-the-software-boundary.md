@@ -1,222 +1,250 @@
 # Failure Modes at the Software Boundary
 
-The easiest way to understand software boundaries is to study how they fail.
+Software-boundary failures often look like ordinary workflow failures:
 
-Most repositories do not become confusing because someone explicitly decides to hide
-meaning. They become confusing because small shortcuts accumulate:
+- nothing reruns
+- an import breaks
+- local execution differs from a scheduler
+- an artifact exists but records old behavior
+- a wrapper upgrade changes output
 
-- a helper script reads one more file than the rule declares
-- a wrapper pulls in behavior nobody reviews
-- an environment file expands until no one knows what it protects
-- a package helper quietly changes output meaning
+Diagnose them by asking which identity or dependency crossed the rule, adapter, package,
+runtime, and provenance boundaries invisibly.
 
-This page turns those patterns into things you can recognize early.
-
-## How to use this page
-
-Do not read this page only after something breaks.
-
-Read it as an audit sheet while you inspect a workflow change, a capstone step, or your
-own repository. Each failure mode below should help you ask a sharper question before the
-mistake becomes normal.
-
-## Failure mode 1: the rule contract is smaller than the real behavior
-
-This happens when a script or helper code reads files that are not declared in the rule.
-
-The rule claims one execution story. The software performs another.
-
-Why it matters:
-
-- DAG review becomes misleading
-- rerun logic can miss meaningful dependencies
-- future maintainers cannot trust the visible contract
-
-Better repair:
-
-- keep meaningful file dependencies declared in the rule
-- treat helper code as implementation, not as a place to invent hidden inputs
-
-Fast way to detect it:
-
-- read the rule and write down the files you think matter
-- read the script and look for extra config files, templates, lookup tables, or ambient paths
-- if the second list is larger than the first in a meaningful way, the boundary is lying
-
-## Failure mode 2: giant helper code with no ownership signal
-
-Sometimes a repository creates a `helpers.py` or `utils.py` that slowly absorbs
-everything.
-
-The problem is not the filename by itself. The problem is that ownership disappears.
-
-No one can tell:
-
-- which rules depend on which helpers
-- which code is step-local and which code is reusable
-- what deserves direct tests
-
-Better repair:
-
-- split step-local scripts from reusable package code
-- give modules names that describe domain intent rather than generic utility status
-
-Fast way to detect it:
-
-- ask which rule owns the helper
-- ask whether the same code is reused elsewhere
-- if the answer to both questions is vague, the file is already too generic
-
-## Failure mode 3: environment declarations drift away from the steps they protect
-
-This happens when a repository has runtime files, but nobody can explain their scope.
-
-Symptoms:
-
-- one environment file is shared by unrelated rules
-- dependency changes are merged with no step-level reasoning
-- runtime failures are debugged by trial and error
-
-Better repair:
-
-- keep runtime contracts near the rules they protect when possible
-- document whether a file serves authoring, execution, or portability
-
-Fast way to detect it:
-
-- open one environment file and name the exact step or boundary it protects
-- if you can only say "the workflow uses this," the scope is already too blurry
-
-## Failure mode 4: wrappers are adopted as black boxes
-
-Wrappers can reduce noise, but they also create distance from the executed behavior.
-
-That becomes dangerous when the team cannot explain:
-
-- which tool version is being invoked
-- which runtime assumptions the wrapper brings
-- which file relationships remain visible versus hidden
-
-Better repair:
-
-- treat wrapper adoption as a review decision
-- document why the wrapper improves clarity rather than obscures it
-
-Fast way to detect it:
-
-- ask what command really runs
-- ask what tool version or runtime contract it assumes
-- if the team treats both answers as wrapper internals that no one needs to know, review confidence is already dropping
-
-## Failure mode 5: provenance is weaker than publication claims
-
-This happens when published results look polished but the software story is thin.
-
-Symptoms:
-
-- no clear record of repository revision
-- runtime information missing from publication artifacts
-- no easy way to explain whether helper-code edits triggered a rebuild
-
-Better repair:
-
-- emit provenance next to outputs that will travel outside the repo
-- keep rebuild evidence strong enough for a reviewer to defend the result
-
-Fast way to detect it:
-
-- choose one published artifact
-- ask which repository revision, runtime context, and helper-code revision produced it
-- if those answers depend on memory, the publication boundary is weak
-
-## One diagnostic map
+## Use a causal diagnostic route
 
 ```mermaid
 flowchart TD
-  hidden_inputs["hidden inputs"] --> trust_loss["contract trust drops"]
-  vague_runtime["vague runtime"] --> trust_loss
-  black_box_wrapper["black-box wrapper"] --> trust_loss
-  silent_helper_change["silent helper change"] --> trust_loss
-  weak_provenance["weak provenance"] --> trust_loss
+  symptom["observe symptom"] --> contract["read rule contract"]
+  contract --> implementation["inspect adapter + software identity"]
+  implementation --> runtime["inspect resolved runtime"]
+  runtime --> experiment["change one influence"]
+  experiment --> plan["observe dry-run"]
+  plan --> artifact["inspect artifact + receipt"]
+  artifact --> repair["repair owner + add rejection test"]
 ```
 
-This is useful because the visible symptom is often just "the workflow feels brittle."
+Do not begin by deleting all outputs. That removes the stale-state evidence needed to
+diagnose under-rebuild.
 
-The real causes are usually more specific.
+## Hidden package source drift
 
-## A three-minute audit that actually helps
+**Symptom:** package code changed, but the dry-run reports nothing to do and output keeps
+old behavior.
 
-When reviewing a workflow change, ask:
+**Cause:** the rule's shell command is unchanged and the package identity is absent from
+the rebuild contract.
 
-1. Does the rule still declare the meaningful files?
-2. Is the software ownership clear between rule, script, package, and wrapper?
-3. Can we explain which runtime boundary this step depends on?
-4. Would a helper-code or environment change obviously trigger rebuild thinking?
-5. Will a future reviewer be able to defend the resulting artifact?
+**Experiment:**
 
-These questions are not bureaucracy. They are shortcuts to better judgment.
+1. converge the output under a source marker
+2. change only package source
+3. run a dry-run
+4. invoke the workflow without forcing
+5. inspect the artifact marker
 
-If you can answer all five quickly, the boundary is probably healthy.
+The software-boundary audit performs this experiment.
 
-If even one answer becomes hand-wavy, stop there first.
+**Repair:** expose a scalable software identity: declared bounded source, built package
+hash, lock, source bundle revision, or image digest. Prove that changing it invalidates
+the output.
 
-## Common anti-explanations
+## Files passed as parameters
 
-Weak explanation:
+**Symptom:** a reference, model, adapter list, or policy file changes but dependent output
+does not rerun.
 
-> it works locally, and the rest is implementation detail.
+**Cause:** the file path appears under `params` or inside package code instead of under
+`input`.
 
-Why it fails:
+**Experiment:** converge, modify only file contents, and inspect the dry-run.
 
-- software boundaries are exactly where implementation detail becomes workflow meaning
+**Repair:** declare the material file as a named input and pass that same path through the
+software interface.
 
-Weak explanation:
+This is a file-contract failure even when the package boundary is otherwise clean.
 
-> the wrapper handles that for us.
+## Import-time repository coupling
 
-Why it fails:
+**Symptom:** importing a package fails from another working directory, scans data, creates
+directories, or reads config before a function is called.
 
-- responsibility still belongs to the repository adopting the wrapper
+**Cause:** module import performs workflow or repository work.
 
-Weak explanation:
+Warning pattern:
 
-> we can rebuild later if needed.
+```python
+CONFIG = load_config("config/config.yaml")
+SAMPLES = list(Path("data").glob("*.fastq.gz"))
+```
 
-Why it fails:
+**Experiment:** import the package from an empty working directory with only the installed
+artifact available.
 
-- without clear provenance and ownership, "later" becomes guesswork
+**Repair:** move I/O behind explicit functions, pass paths or values, and let the workflow
+own discovery and policy.
 
-## The beginner mistake to catch early
+## Adapter and domain logic fused together
 
-Beginners often treat boundary failures as style issues:
+**Symptom:** every unit test must create a fake global `snakemake` object even to test a
+small transformation.
 
-- a rule is "a bit messy"
-- a helper file is "not ideally organized"
-- an environment is "slightly broad"
+**Cause:** domain behavior reads injected workflow state directly.
 
-That framing is too weak.
+**Repair:** keep a thin workflow adapter that translates named inputs, outputs, and params
+into ordinary function arguments. Test the domain function directly and the adapter
+through a bounded rule execution.
 
-These are trust failures before they are style failures. They change whether another
-person can review the execution story honestly.
+```mermaid
+flowchart LR
+  fused["domain reads global snakemake"] --> hard["tests require workflow emulation"]
+  split["thin adapter"] --> arguments["ordinary arguments"]
+  arguments --> domain["domain function"]
+  tests["direct tests"] --> domain
+```
 
-## The explanation a reviewer trusts
+## Runtime declaration mistaken for exact identity
 
-Strong explanation:
+**Symptom:** the same environment YAML resolves different builds or behaves differently
+across platforms.
 
-> the rule declares all meaningful inputs, the transformation code is owned by a named
-> software surface, the runtime is explicit, and the publication output records enough
-> provenance to explain a rebuild.
+**Cause:** a compatibility declaration is being described as an exact lock.
 
-That explanation sounds simple because the repository structure has done the hard work.
+**Experiment:** record resolved package lists, solver, channels, and platform in both
+contexts.
 
-## End-of-page checkpoint
+**Repair:** narrow the claim or retain exact platform locks or image digests. Add
+cross-context evidence only for contexts the course or project supports.
 
-Before leaving this page, you should be able to:
+## Local package path hidden in runtime setup
 
-- name five concrete software-boundary failure patterns
-- explain why hidden inputs are more dangerous than untidy code style
-- describe how wrappers and environments can reduce or increase clarity
-- explain why strong provenance is part of error prevention, not only documentation
+**Symptom:** local execution imports `src/`, but cluster or container execution cannot find
+the package.
 
-If you now see failure modes earlier in your own repositories than you did before, this
-page is doing the right kind of work.
+**Cause:** `PYTHONPATH`, editable installation, or current directory is ambient rather than
+part of deployment policy.
+
+**Experiment:** print the executable, import location, current directory, and command in
+the actual job context.
+
+**Repair:** install an immutable package into the environment or make the supported path
+injection explicit and test it across execution contexts.
+
+## Wrapper treated as a black box
+
+**Symptom:** a wrapper revision changes command options, files, or tool version and
+downstream output changes unexpectedly.
+
+**Cause:** adoption relied on wrapper name rather than a reviewed interface and immutable
+revision.
+
+**Experiment:** compare resolved wrapper source, command, environment, and artifacts across
+revisions.
+
+**Repair:** pin the wrapper revision, document exposed policy, and add a representative
+artifact comparison before upgrading.
+
+## Partial outputs survive software failure
+
+**Symptom:** a failed package invocation leaves a file that another process or later run
+treats as trusted.
+
+**Cause:** implementation writes directly to the final path or validates too late.
+
+**Experiment:** preload a trusted final, force failure during writing, and inspect the
+final and candidate paths.
+
+**Repair:** write a sibling candidate, validate it, and rename after success under tested
+filesystem assumptions. Declare Snakemake outputs honestly and test failure behavior.
+
+## Broad exception handling erases evidence
+
+**Symptom:** provenance reports `unknown`, a command continues, or malformed data is skipped
+without a visible decision.
+
+**Cause:** exception handling catches more than the contract permits.
+
+Broad fallback can be justified for nonessential provenance facts, but it must not turn a
+material software or data failure into success.
+
+Review:
+
+- which exception types are expected
+- whether fallback changes artifact meaning
+- whether a log records the failure
+- whether the result remains suitable for publication
+
+## Nondeterministic software behavior
+
+**Symptom:** clean rebuilds under apparently identical inputs and runtime produce different
+artifacts.
+
+Possible causes:
+
+- unseeded randomness
+- unordered iteration or concurrency
+- clock or locale
+- nondeterministic tool implementation
+- hardware-sensitive floating point
+- unstable external service
+
+**Experiment:** repeat clean builds while recording source, runtime, policy, platform, and
+output identities.
+
+**Repair:** control the source of variation, define a semantic equivalence test, or narrow
+the reproducibility claim.
+
+## Provenance overclaims
+
+**Symptom:** a report lists versions and commit but cannot reconstruct the actual job
+environment or explain why an artifact remained accepted.
+
+**Cause:** provenance receipt is being used as a substitute for rebuild and release policy.
+
+**Repair:** connect:
+
+- reviewed software identity
+- observable invalidation mechanism
+- clean build route
+- execution receipt
+- artifact manifest
+
+Each has a different owner.
+
+## Fast diagnostic table
+
+| Observation | Boundary to inspect first | Useful command or receipt |
+| --- | --- | --- |
+| source changed, output stayed old | software identity | changed-source dry-run |
+| reference changed, output stayed old | rule inputs | file-contract audit |
+| package works only from repository root | package interface | cross-directory CLI test |
+| local works, cluster import fails | deployment/runtime | job executable and import path |
+| same declaration resolves differently | environment exactness | resolved package inventory |
+| wrapper upgrade changes command | external adapter | pinned source and command diff |
+| failed run corrupts final | publication behavior | forced-failure filesystem evidence |
+| repeat builds differ | nondeterminism | paired clean-build manifests |
+
+## Write a repair claim
+
+Use:
+
+> Because **observed dependency** is hidden from **boundary owner**, **stale or
+> irreproducible behavior** can occur. Expose **identity or input** at **named surface**,
+> preserve **existing contract**, and reject recurrence with **controlled experiment**.
+
+Example:
+
+> Because local package source is hidden behind an unchanged shell command, Snakemake can
+> accept v1 output after source reaches v2. Bind an immutable package identity to the job,
+> preserve files and CLI behavior, and reject any changed identity that yields a quiet
+> dry-run.
+
+## Exit checkpoint
+
+You can diagnose software boundaries when you can:
+
+1. preserve stale-state evidence instead of deleting it
+2. distinguish hidden file, source, runtime, and ambient dependencies
+3. choose a repair owned by the correct boundary
+4. pair successful behavior with a deliberate failure or drift experiment
+5. state what remains unproved after the repair

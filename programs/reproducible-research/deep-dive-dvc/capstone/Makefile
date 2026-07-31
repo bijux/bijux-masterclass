@@ -18,7 +18,17 @@ TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-dvc
 RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/verify
 RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
+RECOVERY_READINESS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery-readiness
+PROMOTION_INTEGRITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/promotion-integrity
+BOUNDARY_MIGRATION_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/boundary-migration
 EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
+EXPERIMENT_COMPARABILITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/experiment-comparability
+STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/stage-contracts
+DATA_IDENTITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/data-identity
+RUNTIME_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/runtime-contracts
+METRIC_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/metric-contracts
+REVIEWER_HANDOFF_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/reviewer-handoff
+WORKFLOW_EVIDENCE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/workflow-evidence
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-dvc
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-dvc-capstone-source.tar.gz
 
@@ -226,8 +236,7 @@ recovery-audit: push ## Capture the remote-backed recovery route as a review bun
 	@$(DVC) status > $(RECOVERY_AUDIT_DIR)/before-status.txt
 	@$(DVC) remote list > $(RECOVERY_AUDIT_DIR)/remote.txt
 	@rm -rf data/derived metrics models publish state .dvc/cache
-	@$(DVC) pull > $(RECOVERY_AUDIT_DIR)/pull.txt
-	@$(DVC) checkout > $(RECOVERY_AUDIT_DIR)/checkout.txt
+	@$(DVC) pull prepare fit evaluate publish > $(RECOVERY_AUDIT_DIR)/pull.txt
 	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1 --report $(RECOVERY_AUDIT_DIR)/verify.json
 	@$(DVC) status > $(RECOVERY_AUDIT_DIR)/after-status.txt
 	@cp dvc.lock $(RECOVERY_AUDIT_DIR)/dvc.lock
@@ -247,7 +256,7 @@ recovery-audit: push ## Capture the remote-backed recovery route as a review bun
 		'Recovery audit route:' \
 		'  1. Read remote.txt to confirm the configured recovery source.' \
 		'  2. Compare before-status.txt and after-status.txt to see the repository state around the drill.' \
-		'  3. Read pull.txt and checkout.txt for the recovery commands that rebuilt local state.' \
+		'  3. Read pull.txt for the bounded root-stage recovery command that rebuilt local state.' \
 		'  4. Read verify.json, manifest-summary.json, and state-summary.json to confirm the restored contract and restored repository state.' \
 		'  5. Read profile-summary.json, model-summary.json, threshold-review.json, and the publish-v1 files when you need restored release evidence.' \
 		'  6. Compare dvc.lock against the restored publish bundle when you need recorded provenance.' > $(RECOVERY_AUDIT_DIR)/route.txt
@@ -262,6 +271,164 @@ recovery-audit: push ## Capture the remote-backed recovery route as a review bun
 
 .PHONY: recovery-review
 recovery-review: recovery-audit ## Capture the remote-backed recovery review bundle
+
+.PHONY: recovery-readiness-audit
+recovery-readiness-audit: install ## Audit protected revisions before remote cutover
+	@rm -rf $(RECOVERY_READINESS_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_recovery_readiness.py \
+		--specimen repro/recovery-readiness \
+		--workspace $(RECOVERY_READINESS_AUDIT_DIR)/workspace \
+		--output $(RECOVERY_READINESS_AUDIT_DIR)/report.json \
+		--dvc $(VENV_BIN)/dvc \
+		--check
+	@mkdir -p $(RECOVERY_READINESS_AUDIT_DIR)/scripts $(RECOVERY_READINESS_AUDIT_DIR)/tests $(RECOVERY_READINESS_AUDIT_DIR)/specimen
+	@cp docs/recovery-readiness-audit-guide.md $(RECOVERY_READINESS_AUDIT_DIR)/RECOVERY_READINESS_AUDIT_GUIDE.md
+	@cp scripts/audit_recovery_readiness.py $(RECOVERY_READINESS_AUDIT_DIR)/scripts/audit_recovery_readiness.py
+	@cp tests/test_recovery_readiness_audit.py $(RECOVERY_READINESS_AUDIT_DIR)/tests/test_recovery_readiness_audit.py
+	@cp repro/recovery-readiness/README.md $(RECOVERY_READINESS_AUDIT_DIR)/specimen/README.md
+	@cp repro/recovery-readiness/recovery-contract.json $(RECOVERY_READINESS_AUDIT_DIR)/specimen/recovery-contract.json
+	@printf '%s\n' \
+		'Recovery readiness audit route:' \
+		'  Read RECOVERY_READINESS_AUDIT_GUIDE.md for the cutover decision boundary.' \
+		'  Read summary.tsv to compare all migration and contract cases.' \
+		'  Compare complete-migration with current-only-copy and release-only-copy.' \
+		'  Read revision-evidence.json inside each case for restore, identity, and duration facts.' \
+		'  Read receipts.json only when you need the exact Git and DVC command evidence.' \
+		'  Inspect the specimen contract, audit implementation, and tests last.' > $(RECOVERY_READINESS_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Recovery readiness questions:' \
+		'  Which protected revision is absent when a migration copies only current state?' \
+		'  Why does a successful pull fail to prove the restored content claim?' \
+		'  Why must a cutover check avoid repairing the candidate remote?' \
+		'  Which measurement turns recovery speed from hope into an objective?' > $(RECOVERY_READINESS_AUDIT_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(RECOVERY_READINESS_AUDIT_DIR) --output $(RECOVERY_READINESS_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote recovery readiness audit to $(RECOVERY_READINESS_AUDIT_DIR)"
+
+.PHONY: recovery-readiness-selftest
+recovery-readiness-selftest: install ## Enforce recovery cutover evidence
+	@$(PYTEST) tests/test_recovery_readiness_audit.py
+
+.PHONY: promotion-integrity-audit
+promotion-integrity-audit: verify ## Audit release identity, integrity, provenance, and approval
+	@rm -rf $(PROMOTION_INTEGRITY_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_promotion_integrity.py \
+		--specimen repro/promotion-integrity \
+		--publish publish/v1 \
+		--lock-file dvc.lock \
+		--workspace $(PROMOTION_INTEGRITY_AUDIT_DIR)/workspace \
+		--output $(PROMOTION_INTEGRITY_AUDIT_DIR)/report.json \
+		--check
+	@mkdir -p $(PROMOTION_INTEGRITY_AUDIT_DIR)/scripts $(PROMOTION_INTEGRITY_AUDIT_DIR)/tests
+	@cp docs/promotion-integrity-audit-guide.md $(PROMOTION_INTEGRITY_AUDIT_DIR)/PROMOTION_INTEGRITY_AUDIT_GUIDE.md
+	@cp repro/promotion-integrity/promotion-contract.json $(PROMOTION_INTEGRITY_AUDIT_DIR)/promotion-contract.json
+	@cp repro/promotion-integrity/promotion-decision.json $(PROMOTION_INTEGRITY_AUDIT_DIR)/promotion-decision.json
+	@cp scripts/audit_promotion_integrity.py $(PROMOTION_INTEGRITY_AUDIT_DIR)/scripts/audit_promotion_integrity.py
+	@cp tests/test_promotion_integrity_audit.py $(PROMOTION_INTEGRITY_AUDIT_DIR)/tests/test_promotion_integrity_audit.py
+	@printf '%s\n' \
+		'Promotion integrity audit route:' \
+		'  1. Read PROMOTION_INTEGRITY_AUDIT_GUIDE.md for the trust boundary.' \
+		'  2. Read report.json and explain why only COMPLETE_PROMOTION is accepted.' \
+		'  3. Compare one blocked case with workspace/complete-promotion at a time.' \
+		'  4. Read each case assessment before opening its candidate files.' \
+		'  5. Inspect promotion-contract.json, promotion-decision.json, and publish/manifest.json together.' \
+		'  6. Read the audit script and adversarial tests when reviewing enforcement.' > $(PROMOTION_INTEGRITY_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Promotion review questions:' \
+		'  Which record identifies the exact source that reviewers approved?' \
+		'  Why can a digest-valid candidate still fail its promoted claim?' \
+		'  Which registry references remain safe after another release appears?' \
+		'  What may a consumer use without depending on pipeline internals?' > $(PROMOTION_INTEGRITY_AUDIT_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(PROMOTION_INTEGRITY_AUDIT_DIR) \
+		--output $(PROMOTION_INTEGRITY_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote promotion integrity audit to $(PROMOTION_INTEGRITY_AUDIT_DIR)"
+
+.PHONY: promotion-integrity-selftest
+promotion-integrity-selftest: install ## Enforce promotion integrity decisions
+	@$(PYTEST) tests/test_promotion_integrity_audit.py
+
+.PHONY: boundary-migration-audit
+boundary-migration-audit: verify ## Audit a governed consumer-boundary cutover
+	@rm -rf $(BOUNDARY_MIGRATION_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_boundary_migration.py \
+		--specimen repro/boundary-migration \
+		--publish publish/v1 \
+		--workspace $(BOUNDARY_MIGRATION_AUDIT_DIR)/workspace \
+		--output $(BOUNDARY_MIGRATION_AUDIT_DIR)/report.json \
+		--evaluation-date 2026-07-28 \
+		--check
+	@mkdir -p $(BOUNDARY_MIGRATION_AUDIT_DIR)/scripts $(BOUNDARY_MIGRATION_AUDIT_DIR)/tests
+	@cp docs/boundary-migration-audit-guide.md $(BOUNDARY_MIGRATION_AUDIT_DIR)/BOUNDARY_MIGRATION_AUDIT_GUIDE.md
+	@cp repro/boundary-migration/migration-contract.json $(BOUNDARY_MIGRATION_AUDIT_DIR)/migration-contract.json
+	@cp repro/boundary-migration/migration-decision.json $(BOUNDARY_MIGRATION_AUDIT_DIR)/migration-decision.json
+	@cp scripts/audit_boundary_migration.py $(BOUNDARY_MIGRATION_AUDIT_DIR)/scripts/audit_boundary_migration.py
+	@cp tests/test_boundary_migration_audit.py $(BOUNDARY_MIGRATION_AUDIT_DIR)/tests/test_boundary_migration_audit.py
+	@printf '%s\n' \
+		'Boundary migration audit route:' \
+		'  1. Read BOUNDARY_MIGRATION_AUDIT_GUIDE.md for the cutover argument.' \
+		'  2. Read migration-contract.json and name the one permitted change.' \
+		'  3. Read report.json and explain why only COMPLETE_CUTOVER is approved.' \
+		'  4. Compare workspace/complete-cutover with one blocked case at a time.' \
+		'  5. Read assessment.json before inspecting source and target content.' \
+		'  6. Inspect migration-decision.json for rollback, consumer, owner, and exception evidence.' \
+		'  7. Read the audit script and tests when reviewing enforcement.' > $(BOUNDARY_MIGRATION_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Boundary migration review questions:' \
+		'  Which invariant proves that a location change did not become a release change?' \
+		'  Which receipt proves that a real consumer can retrieve from the target?' \
+		'  What evidence makes rollback executable rather than aspirational?' \
+		'  Why must an exception include both an expiry and a removal condition?' \
+		'  Which responsibilities belong to DVC, the registry, CI, and the release owner?' > $(BOUNDARY_MIGRATION_AUDIT_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(BOUNDARY_MIGRATION_AUDIT_DIR) \
+		--output $(BOUNDARY_MIGRATION_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote boundary migration audit to $(BOUNDARY_MIGRATION_AUDIT_DIR)"
+
+.PHONY: boundary-migration-selftest
+boundary-migration-selftest: install ## Enforce governed boundary cutover decisions
+	@$(PYTEST) tests/test_boundary_migration_audit.py
+
+.PHONY: workflow-evidence-audit
+workflow-evidence-audit: install ## Contrast local reruns with team reproducibility evidence
+	@rm -rf $(WORKFLOW_EVIDENCE_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_workflow_evidence.py \
+		--specimen repro/workflow-evidence \
+		--workspace $(WORKFLOW_EVIDENCE_AUDIT_DIR)/workspace \
+		--output $(WORKFLOW_EVIDENCE_AUDIT_DIR)/report.json \
+		--python $(VENV_PY) \
+		--check
+	@mkdir -p $(WORKFLOW_EVIDENCE_AUDIT_DIR)/scripts $(WORKFLOW_EVIDENCE_AUDIT_DIR)/tests $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen
+	@cp docs/workflow-evidence-audit-guide.md $(WORKFLOW_EVIDENCE_AUDIT_DIR)/WORKFLOW_EVIDENCE_AUDIT_GUIDE.md
+	@cp repro/workflow-evidence/README.md $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/README.md
+	@cp repro/workflow-evidence/workflow-contract.json $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/workflow-contract.json
+	@cp repro/workflow-evidence/params.json $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/params.json
+	@cp repro/workflow-evidence/observations.csv $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/observations.csv
+	@cp repro/workflow-evidence/score_incidents.py $(WORKFLOW_EVIDENCE_AUDIT_DIR)/specimen/score_incidents.py
+	@cp scripts/audit_workflow_evidence.py $(WORKFLOW_EVIDENCE_AUDIT_DIR)/scripts/audit_workflow_evidence.py
+	@cp tests/test_workflow_evidence_audit.py $(WORKFLOW_EVIDENCE_AUDIT_DIR)/tests/test_workflow_evidence_audit.py
+	@printf '%s\n' \
+		'Workflow evidence audit route:' \
+		'  1. Read WORKFLOW_EVIDENCE_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read specimen/workflow-contract.json and name every required evidence surface.' \
+		'  3. Read report.json and notice that all eight cases rerun locally.' \
+		'  4. Compare workspace/complete-evidence with one rejected case at a time.' \
+		'  5. Read workflow-record.json before opening generated results.' \
+		'  6. Inspect the audit script and tests only after reconstructing the decisions.' > $(WORKFLOW_EVIDENCE_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Workflow evidence review questions:' \
+		'  Why does equal local output fail to prove a clean reconstruction?' \
+		'  Which identity distinguishes changed bytes behind an unchanged path?' \
+		'  Why is a stable environment variable still a hidden control?' \
+		'  Which evidence belongs in Git, DVC, runtime records, and shared storage?' \
+		'  What remains outside this mechanical reproducibility claim?' > $(WORKFLOW_EVIDENCE_AUDIT_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(WORKFLOW_EVIDENCE_AUDIT_DIR) \
+		--output $(WORKFLOW_EVIDENCE_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote workflow evidence audit to $(WORKFLOW_EVIDENCE_AUDIT_DIR)"
+
+.PHONY: workflow-evidence-selftest
+workflow-evidence-selftest: install ## Enforce workflow evidence claim decisions
+	@$(PYTEST) tests/test_workflow_evidence_audit.py
 
 .PHONY: experiment-review
 experiment-review: verify ## Build a focused experiment comparison bundle
@@ -284,6 +451,195 @@ experiment-review: verify ## Build a focused experiment comparison bundle
 		'  Which candidate still needs release-boundary evidence before downstream trust?' > $(EXPERIMENT_REVIEW_DIR)/review-questions.txt
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(EXPERIMENT_REVIEW_DIR) --output $(EXPERIMENT_REVIEW_DIR)/manifest.json
 	@echo "✔ wrote experiment review bundle to $(EXPERIMENT_REVIEW_DIR)"
+
+.PHONY: experiment-comparability-audit
+experiment-comparability-audit: install ## Audit experiment comparison and promotion boundaries
+	@rm -rf $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_experiment_comparability.py \
+		--specimen repro/experiment-comparability \
+		--workspace $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/workspace \
+		--output $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/report.json \
+		--dvc $(VENV_BIN)/dvc \
+		--check
+	@mkdir -p $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/scripts $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/tests
+	@cp docs/experiment-comparability-audit-guide.md $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/EXPERIMENT_COMPARABILITY_AUDIT_GUIDE.md
+	@cp scripts/audit_experiment_comparability.py $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/scripts/audit_experiment_comparability.py
+	@cp tests/test_experiment_comparability_audit.py $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/tests/test_experiment_comparability_audit.py
+	@printf '%s\n' \
+		'Experiment comparability audit route:' \
+		'  1. Read EXPERIMENT_COMPARABILITY_AUDIT_GUIDE.md for the decision boundary.' \
+		'  2. Read summary.tsv before inspecting any candidate metric.' \
+		'  3. Compare controlled-threshold against one rejected case at a time.' \
+		'  4. Read baseline-metrics.json, candidate-metrics.json, and candidate-params.json together.' \
+		'  5. Read receipts.json for the real dvc exp run, show, and diff commands.' \
+		'  6. Inspect unsafe-promotion-request last to separate comparison from promotion.' \
+		'  7. Read the audit script and adversarial test when reviewing enforcement.' > $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(EXPERIMENT_COMPARABILITY_AUDIT_DIR) \
+		--output $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote experiment comparability audit to $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)"
+
+.PHONY: experiment-comparability-selftest
+experiment-comparability-selftest: install ## Enforce experiment comparison and promotion evidence
+	@$(PYTEST) tests/test_experiment_comparability_audit.py
+
+.PHONY: stage-contract-audit
+stage-contract-audit: install ## Audit declared and hidden stage influences
+	@rm -rf $(STAGE_CONTRACT_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_stage_contracts.py \
+		--specimen repro/stage-contracts \
+		--workspace $(STAGE_CONTRACT_AUDIT_DIR)/workspace \
+		--output $(STAGE_CONTRACT_AUDIT_DIR)/report.json \
+		--python $(VENV_PY)
+	@mkdir -p $(STAGE_CONTRACT_AUDIT_DIR)/scripts $(STAGE_CONTRACT_AUDIT_DIR)/tests
+	@cp docs/stage-contract-audit-guide.md $(STAGE_CONTRACT_AUDIT_DIR)/STAGE_CONTRACT_AUDIT_GUIDE.md
+	@cp docs/stage-contract-guide.md $(STAGE_CONTRACT_AUDIT_DIR)/CAPSTONE_STAGE_CONTRACT_GUIDE.md
+	@cp scripts/audit_stage_contracts.py $(STAGE_CONTRACT_AUDIT_DIR)/scripts/audit_stage_contracts.py
+	@cp tests/test_stage_contract_audit.py $(STAGE_CONTRACT_AUDIT_DIR)/tests/test_stage_contract_audit.py
+	@printf '%s\n' \
+		'Stage contract audit route:' \
+		'  1. Read STAGE_CONTRACT_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and separate accepted behavior from reproduced defects.' \
+		'  3. Compare the five stages in workspace/baseline/dvc.yaml.' \
+		'  4. Inspect the JSON status receipts under evidence/ before reading outputs.' \
+		'  5. Compare declared and hidden values in workspace/input-change and workspace/param-change.' \
+		'  6. Inspect workspace/output-loss to see why the missing receipt is invisible.' \
+		'  7. Read the audit script and adversarial test when reviewing enforcement.' > $(STAGE_CONTRACT_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(STAGE_CONTRACT_AUDIT_DIR) \
+		--output $(STAGE_CONTRACT_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote stage contract audit to $(STAGE_CONTRACT_AUDIT_DIR)"
+
+.PHONY: stage-contract-selftest
+stage-contract-selftest: install ## Reject dishonest stage contract evidence
+	@$(PYTEST) tests/test_stage_contract_audit.py
+
+.PHONY: data-identity-audit
+data-identity-audit: install ## Audit pointer, cache, workspace, and remote identity boundaries
+	@rm -rf $(DATA_IDENTITY_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_data_identity.py \
+		--specimen repro/data-identity \
+		--workspace $(DATA_IDENTITY_AUDIT_DIR)/workspace \
+		--output $(DATA_IDENTITY_AUDIT_DIR)/report.json \
+		--python $(VENV_PY)
+	@mkdir -p $(DATA_IDENTITY_AUDIT_DIR)/scripts $(DATA_IDENTITY_AUDIT_DIR)/tests
+	@cp docs/data-identity-audit-guide.md $(DATA_IDENTITY_AUDIT_DIR)/DATA_IDENTITY_AUDIT_GUIDE.md
+	@cp scripts/audit_data_identity.py $(DATA_IDENTITY_AUDIT_DIR)/scripts/audit_data_identity.py
+	@cp tests/test_data_identity_audit.py $(DATA_IDENTITY_AUDIT_DIR)/tests/test_data_identity_audit.py
+	@printf '%s\n' \
+		'Data identity audit route:' \
+		'  1. Read DATA_IDENTITY_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and separate accepted behavior from the rejected pointer-only recovery claim.' \
+		'  3. Inspect workspace/pointer-cache/data/observations.csv.dvc and its named cache object.' \
+		'  4. Compare pointer IDs under workspace/same-content and workspace/changed-content.' \
+		'  5. Read cache-recovery-checkout.stdout.txt before inspecting the restored workspace file.' \
+		'  6. Read remote-recovery-push.stdout.txt and remote-recovery-pull.stdout.txt as state-move receipts.' \
+		'  7. Read pointer-only-checkout.stderr.txt as expected negative evidence.' \
+		'  8. Read the audit script and tests when reviewing enforcement.' > $(DATA_IDENTITY_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(DATA_IDENTITY_AUDIT_DIR) \
+		--output $(DATA_IDENTITY_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote data identity audit to $(DATA_IDENTITY_AUDIT_DIR)"
+
+.PHONY: data-identity-selftest
+data-identity-selftest: install ## Enforce data identity and recovery evidence
+	@$(PYTEST) tests/test_data_identity_audit.py
+
+.PHONY: runtime-contract-audit
+runtime-contract-audit: install ## Audit declared and hidden runtime influences
+	@rm -rf $(RUNTIME_CONTRACT_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_runtime_contracts.py \
+		--specimen repro/runtime-contracts \
+		--workspace $(RUNTIME_CONTRACT_AUDIT_DIR)/workspace \
+		--output $(RUNTIME_CONTRACT_AUDIT_DIR)/report.json \
+		--python $(VENV_PY)
+	@mkdir -p $(RUNTIME_CONTRACT_AUDIT_DIR)/scripts $(RUNTIME_CONTRACT_AUDIT_DIR)/tests
+	@cp docs/runtime-contract-audit-guide.md $(RUNTIME_CONTRACT_AUDIT_DIR)/RUNTIME_CONTRACT_AUDIT_GUIDE.md
+	@cp scripts/audit_runtime_contracts.py $(RUNTIME_CONTRACT_AUDIT_DIR)/scripts/audit_runtime_contracts.py
+	@cp tests/test_runtime_contract_audit.py $(RUNTIME_CONTRACT_AUDIT_DIR)/tests/test_runtime_contract_audit.py
+	@printf '%s\n' \
+		'Runtime contract audit route:' \
+		'  1. Read RUNTIME_CONTRACT_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and separate accepted behavior from reproduced hidden-runtime defects.' \
+		'  3. Compare declared_runtime and hidden_runtime in workspace/baseline/dvc.yaml.' \
+		'  4. Compare baseline-fingerprint.json with drift-fingerprint.json.' \
+		'  5. Read declared-change-status.stdout.txt and the rebuilt declared result.' \
+		'  6. Read hidden-change-status.stdout.txt and hidden-change-ordinary-repro.stdout.txt before inspecting stale output.' \
+		'  7. Compare hidden output and dvc.lock before and after the forced run in report.json.' \
+		'  8. Read the audit script and tests when reviewing enforcement.' > $(RUNTIME_CONTRACT_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(RUNTIME_CONTRACT_AUDIT_DIR) \
+		--output $(RUNTIME_CONTRACT_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote runtime contract audit to $(RUNTIME_CONTRACT_AUDIT_DIR)"
+
+.PHONY: runtime-contract-selftest
+runtime-contract-selftest: install ## Enforce declared and hidden runtime evidence
+	@$(PYTEST) tests/test_runtime_contract_audit.py
+
+.PHONY: metric-contract-audit
+metric-contract-audit: install ## Audit metric semantic comparability
+	@rm -rf $(METRIC_CONTRACT_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_metric_contracts.py \
+		--specimen repro/metric-contracts \
+		--workspace $(METRIC_CONTRACT_AUDIT_DIR)/workspace \
+		--output $(METRIC_CONTRACT_AUDIT_DIR)/report.json \
+		--check
+	@mkdir -p $(METRIC_CONTRACT_AUDIT_DIR)/scripts $(METRIC_CONTRACT_AUDIT_DIR)/tests
+	@cp docs/metric-contract-audit-guide.md $(METRIC_CONTRACT_AUDIT_DIR)/METRIC_CONTRACT_AUDIT_GUIDE.md
+	@cp scripts/audit_metric_contracts.py $(METRIC_CONTRACT_AUDIT_DIR)/scripts/audit_metric_contracts.py
+	@cp tests/test_metric_contract_audit.py $(METRIC_CONTRACT_AUDIT_DIR)/tests/test_metric_contract_audit.py
+	@printf '%s\n' \
+		'Metric contract audit route:' \
+		'  1. Read METRIC_CONTRACT_AUDIT_GUIDE.md for the comparability boundary.' \
+		'  2. Read summary.tsv and separate accepted comparisons from reproduced defects.' \
+		'  3. Compare comparable-candidate/evidence/baseline-metrics.json with candidate-metrics.json.' \
+		'  4. Read the matching dvc-metrics-diff.json before reading comparison.json.' \
+		'  5. Join each dvc-metrics-diff.json to its dvc-params-diff.json.' \
+		'  6. Inspect population-drift and note why equal row counts do not preserve identity.' \
+		'  7. Inspect unit-drift and compare the familiar key with the changed unit.' \
+		'  8. Inspect control-drift and identify the threshold change that bounds the claim.' \
+		'  9. Compare additive-metric with schema-version-drift and missing-population-identity.' \
+		' 10. Read the audit script and tests when reviewing enforcement.' > $(METRIC_CONTRACT_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(METRIC_CONTRACT_AUDIT_DIR) \
+		--output $(METRIC_CONTRACT_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote metric contract audit to $(METRIC_CONTRACT_AUDIT_DIR)"
+
+.PHONY: metric-contract-selftest
+metric-contract-selftest: install ## Enforce metric semantic comparability evidence
+	@$(PYTEST) tests/test_metric_contract_audit.py
+
+.PHONY: reviewer-handoff-audit
+reviewer-handoff-audit: install ## Audit clean reviewer handoff evidence
+	@rm -rf $(REVIEWER_HANDOFF_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_reviewer_handoffs.py \
+		--specimen repro/reviewer-handoff \
+		--workspace $(REVIEWER_HANDOFF_AUDIT_DIR)/workspace \
+		--output $(REVIEWER_HANDOFF_AUDIT_DIR)/report.json \
+		--dvc $(VENV_BIN)/dvc \
+		--check
+	@mkdir -p $(REVIEWER_HANDOFF_AUDIT_DIR)/scripts $(REVIEWER_HANDOFF_AUDIT_DIR)/tests
+	@cp docs/reviewer-handoff-audit-guide.md $(REVIEWER_HANDOFF_AUDIT_DIR)/REVIEWER_HANDOFF_AUDIT_GUIDE.md
+	@cp scripts/audit_reviewer_handoffs.py $(REVIEWER_HANDOFF_AUDIT_DIR)/scripts/audit_reviewer_handoffs.py
+	@cp tests/test_reviewer_handoff_audit.py $(REVIEWER_HANDOFF_AUDIT_DIR)/tests/test_reviewer_handoff_audit.py
+	@printf '%s\n' \
+		'Reviewer handoff audit route:' \
+		'  1. Read REVIEWER_HANDOFF_AUDIT_GUIDE.md for the decision boundary.' \
+		'  2. Read summary.tsv and separate audit result from handoff decision.' \
+		'  3. Inspect complete-handoff/evidence/finding.json before its receipts.' \
+		'  4. Compare missing-remote-object with undiscoverable-remote.' \
+		'  5. Read untracked-stage-dependency reviewer status and repro receipts.' \
+		'  6. Read stale-execution-record status before its successful repro receipt.' \
+		'  7. Compare mutating-review-route and missing-result-contract.' \
+		'  8. Read the audit script and adversarial test only when reviewing enforcement.' > $(REVIEWER_HANDOFF_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(REVIEWER_HANDOFF_AUDIT_DIR) \
+		--output $(REVIEWER_HANDOFF_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote reviewer handoff audit to $(REVIEWER_HANDOFF_AUDIT_DIR)"
+
+.PHONY: reviewer-handoff-selftest
+reviewer-handoff-selftest: install ## Enforce clean reviewer handoff evidence
+	@$(PYTEST) tests/test_reviewer_handoff_audit.py
 
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
@@ -366,13 +722,12 @@ walkthrough: ## Build the learner-facing capstone walkthrough bundle
 
 .PHONY: push
 push: repro ## Push tracked artifacts to the local training remote
-	@$(DVC) push
+	@$(DVC) push prepare fit evaluate publish
 
 .PHONY: recovery-drill
 recovery-drill: push ## Rebuild the workspace from the remote after cache loss
 	@rm -rf data/derived metrics models publish state .dvc/cache
-	@$(DVC) pull
-	@$(DVC) checkout
+	@$(DVC) pull prepare fit evaluate publish
 	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1
 
 .PHONY: confirm

@@ -45,6 +45,24 @@ that the same bad combinations keep reappearing under new names.
 
 That is why this page is about patterns, not trivia.
 
+## A smell is a hypothesis, not a diagnosis
+
+A large recipe, recursive Make, a stamp, or a shell helper is not automatically an
+antipattern. The diagnosis requires a causal chain:
+
+```mermaid
+flowchart LR
+  smell["visible shape"] --> challenge["controlled challenge"]
+  challenge --> signature["repeatable failure signature"]
+  signature --> truth["lost truth or blurred owner"]
+  truth --> repair["bounded recovery"]
+  repair --> regression["acceptance and rejection checks"]
+```
+
+For example, “this recipe is long” is a style observation. “The recipe writes the report,
+archive, and remote release record; a retry rebuilds a different archive” is an ownership
+and idempotency diagnosis.
+
 ## The sentence to keep
 
 When you spot a suspicious build habit, ask:
@@ -87,6 +105,15 @@ Smallest honest recovery:
 
 Phony targets are not evil. Using them to hide real data or publication dependencies is.
 
+Prove the diagnosis by requesting `compile` directly in an empty isolated workspace and
+under `-j`. If the directory or generated input is missing, the failure signature
+confirms that `all` was carrying ritual order rather than the graph carrying the
+dependency. After repair:
+
+- direct `make compile` must succeed
+- `make -j8 all` must succeed
+- changing the directory timestamp alone must not rebuild the artifact
+
 ## Antipattern 2: multi-writer outputs hidden behind convenience
 
 This appears in many forms:
@@ -112,6 +139,11 @@ Smallest honest recovery:
 
 Single-writer discipline is not style. It is a survival rule.
 
+Distinguish a multi-writer from legitimate composition. Two phony targets may both
+depend on `build/app` without writing it. The defect exists when two recipes or external
+systems can publish the trusted path. Challenge it by recording the artifact identity,
+running each route separately, and tracing the actual writer.
+
 ## Antipattern 3: opaque orchestration hiding the graph
 
 Some inherited builds are not recursive in the strict GNU Make sense, but they still act
@@ -136,6 +168,11 @@ Smallest honest recovery:
 
 The point is not "never call another tool." The point is "do not bury the ownership
 model."
+
+The recovery does not require flattening every subsystem into one file. Preserve recursive
+boundaries when they have explicit inputs, outputs, and forwarding semantics. Repair the
+case where a wrapper chooses undeclared work from host state or where parent and child
+systems both claim the same artifact.
 
 ## Antipattern 4: stamps and manifests with no clear meaning
 
@@ -169,6 +206,11 @@ Smallest honest recovery:
 - make the stamp or manifest represent only that fact
 - keep consumers depending on real published outputs where direct edges are clearer
 
+A stamp that is always touched creates a second signature: unchanged requests rebuild
+downstream targets forever. Test both relevant change and unchanged convergence. If the
+stamp represents several outputs, document whether it is a transaction commit marker or
+only a completion hint; consumers should not infer more than the file proves.
+
 ## Antipattern 5: release or install routes that do too much
 
 This pattern survives because it often "works" during demos:
@@ -198,6 +240,20 @@ Smallest honest recovery:
 
 When a target means everything, it usually means nothing clearly.
 
+The split must preserve dependency order without preserving accidental side effects:
+
+```mermaid
+flowchart LR
+  validate["release-check\nlocal validation"] --> package["dist\nlocal artifact"]
+  package --> verify["verify-dist\nmanifest and checksum"]
+  verify --> handoff["publish\nsubmit existing artifact"]
+  handoff --> receipt["receiver-owned receipt"]
+```
+
+Rerunning `publish` should not silently regenerate `dist`. If the receiver accepts
+idempotency keys or artifact digests, retry the same handoff object; do not turn a remote
+retry into a local rebuild.
+
 ## Antipattern 6: performance fixes that erase truth
 
 This one often appears late, after the team has already suffered:
@@ -222,6 +278,32 @@ Smallest honest recovery:
 
 Speed is valuable. Truth is more valuable.
 
+Require paired performance evidence:
+
+- workload and baseline route
+- measured cost and intended improvement
+- correctness checks that remain enabled
+- relevant and irrelevant mutation behavior
+- bounded diagnostic route for incidents
+
+A cache that speeds unchanged requests but serves stale outputs after a semantic change is
+not an optimization. It is a truth defect with good benchmark numbers.
+
+## Use failure signatures to choose the pattern
+
+| Observed signature | Likely pattern | Disambiguating challenge |
+| --- | --- | --- |
+| direct target request fails but `make all` works | ritual ordering | request target in empty isolated workspace |
+| artifact identity changes after unrelated target | multi-writer output | trace writers under each route |
+| top-level trace stops before decisive work | opaque orchestration | capture recursive invocations and selected subsystem contract |
+| unchanged request rebuilds every time | meaningless or volatile stamp | inspect stamp content and timestamp across two requests |
+| remote retry changes local checksum | overgrown release route | retry with a fixed prebuilt artifact |
+| benchmark improves while mutation check fails | truth-erasing optimization | challenge a semantic input omitted from the cache key |
+
+Several patterns can coexist. Choose the earliest causal defect. If ritual ordering hides
+a missing generated edge and an overgrown release route happens to trigger the generator,
+repair the edge before treating target naming as the primary cause.
+
 ## Keep proof alive while you recover
 
 Antipattern repair goes wrong when the team fixes the smell and deletes the evidence that
@@ -240,7 +322,7 @@ If you cannot name the proof route, you are not ready to change the build yet.
 
 ## Use one recovery rubric
 
-When you detect an antipattern, classify the first move:
+When you detect an antipattern, classify the first recovery move:
 
 | Antipattern smell | First recovery move |
 | --- | --- |
@@ -252,6 +334,31 @@ When you detect an antipattern, classify the first move:
 | truth-erasing optimization | restore evidence and semantic inputs first |
 
 This keeps the fix proportional to the finding.
+
+## Recover in layers
+
+Use this order when several defects overlap:
+
+1. preserve a reproducer and current failure signature
+2. protect trusted final paths from partial publication
+3. restore missing edges and single-writer ownership
+4. narrow public target and handoff meanings
+5. recover observability and pressure checks
+6. encode the prevention rule in governance
+
+This is a causal order, not a delivery label. A repository may need a different sequence
+when external safety dominates, but do not begin with abstraction while corrupted outputs
+or hidden writers remain possible.
+
+Every recovery needs two proof directions:
+
+| Proof direction | Question |
+| --- | --- |
+| acceptance | Does the previously mishandled relevant change or failure now produce the intended result? |
+| rejection | Does an unrelated change avoid work, and does the former competing writer no longer publish? |
+
+Only the first direction makes a repair look effective. Both directions show that the
+ownership boundary is narrower and truthful.
 
 ## Run a diagnosis pass before you touch the file
 
@@ -287,7 +394,7 @@ For any suspicious build habit, ask:
 3. what is the smallest honest recovery step?
 4. what proof route must stay alive during the repair?
 
-## Exit check
+## Recovery checkpoint
 
 You are ready to move on when you can:
 
@@ -295,7 +402,7 @@ You are ready to move on when you can:
 - explain the specific truth loss or ownership drift it causes
 - propose one bounded repair step instead of a vague cleanup campaign
 - preserve at least one proof route while the change is happening
-5. what governance rule would stop it from returning?
+- name the governance rule and rejection test that would stop it from returning
 
 If those answers are fuzzy, you have recognized the smell but not yet designed the
 recovery.
@@ -318,3 +425,5 @@ Leave this lesson only when you can do all of these:
 - explain one recurring build antipattern in terms of truth loss or ownership drift
 - identify the smallest honest recovery move for it
 - describe one rule or proof surface that would help stop it from coming back
+- distinguish a visual smell from a reproduced failure signature
+- provide acceptance and rejection evidence for the recovery

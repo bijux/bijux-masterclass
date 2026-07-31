@@ -1,0 +1,38 @@
+{
+  "after_evidence": {
+    "consumer-retrieval": "clean-consumer-receipt",
+    "target-manifest": "target-manifest-comparison",
+    "target-verification": "target-contract-report"
+  },
+  "before_evidence": {
+    "source-manifest": "publish-v1-manifest",
+    "source-verification": "source-contract-report"
+  },
+  "boundary": {
+    "changed_surfaces": [
+      "consumer-location"
+    ],
+    "source_reference": "publish/v1",
+    "target_reference": "incident-escalation/2026-07"
+  },
+  "consumer_cutover": {
+    "receipts": [
+      "clean-consumer-receipt"
+    ],
+    "verified": true
+  },
+  "decision": "APPROVE_CUTOVER",
+  "exception": null,
+  "migration_id": "promoted-release-registry-cutover",
+  "owners": {
+    "ci": "shared-verification",
+    "dvc": "artifact-lineage",
+    "registry": "consumer-lifecycle",
+    "release-owner": "cutover-decision"
+  },
+  "rollback": {
+    "ready": true,
+    "reference": "publish/v1",
+    "retained": true
+  }
+}

@@ -106,6 +106,43 @@ Use this when you built a gorgeous pure core and then watched async creep destro
 3. CPU-bound pure code runs efficiently without blocking the event loop.
 4. The entire pipeline is still a pure description — composable, inspectable, and mathematically lawful.
 
+## Runnable lab: locate the sync-to-async boundary
+
+Start with a synchronous `Result` function that records calls and raises for
+invalid input. Lift it, but do not drive the returned plan:
+
+```python
+calls = 0
+
+def parse_positive(value: int) -> Result[int, ErrInfo]:
+    nonlocal calls
+    calls += 1
+    if value < 0:
+        raise ValueError("negative input")
+    return Ok(value)
+
+plan = lift_sync(parse_positive)(-1)
+assert calls == 0
+result = await plan()
+```
+
+Run the complete proof:
+
+```bash
+cd capstone/module-reference-states/module-08
+PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
+  -k sync_lift_defers_work_and_translates_exceptions
+```
+
+Driving the plan calls the synchronous function once and translates its
+exception to an `Err` with code `UNEXPECTED`. The core function contains no
+event-loop dependency; the lift owns deferral and exception normalization.
+
+Do not call the synchronous function while building the plan, and do not allow
+its exception to escape the async result channel. `lift_sync` is appropriate
+for inexpensive work. CPU-heavy pure work belongs behind
+`lift_sync_with_executor` so it does not block the event loop.
+
 ## Tiny Non-Domain Example – Pure Core + Async HTTP
 
 ```python

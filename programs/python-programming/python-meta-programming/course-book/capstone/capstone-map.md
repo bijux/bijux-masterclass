@@ -17,55 +17,170 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  course["Focused course proof"] --> contract["Transfer contract"]
+  contract --> public["Public capstone report"]
+  public --> owner["Owning source"]
+  owner --> test["Focused capstone test"]
+  test --> limit["Recorded non-claim"]
 ```
 <!-- page-maps:end -->
 
-This map keeps the course attached to one executable system. The capstone is a plugin
-runtime for incident delivery adapters, and each major course mechanism has a clearly
-named home inside it.
+This map connects each completed module to one observational application question. The
+flow is strict: focused course proof comes first; the capstone report, owning source,
+focused application test, and non-claim follow.
 
-## Start by question
+The module sections below are the transfer route. They connect each lesson directly to a
+real capstone command and focused application test; there is no transfer generator to
+learn.
 
-| If you need to know... | Start with | Then inspect |
+## Modules 01–03: transfer observation and evidence
+
+### Module 01 — runtime objects
+
+- Course claim: functions, classes, modules, and instances expose distinct runtime
+  identities and relationships.
+- Command: `capstone-manifest`.
+- Owner: manifest helpers in `framework.py`.
+- Ask: which plugin classes, fields, and actions exist on the public surface?
+- Proves: imported runtime structure is published deterministically.
+- Does not prove: plugin construction or action execution succeeds.
+
+### Module 02 — safe observation
+
+- Course claim: the observation route must not quietly become business execution.
+- Command: `capstone-manifest`.
+- Owner: `framework.py` manifest helpers and `cli.py`.
+- Ask: which facts are exported without invoking plugin actions?
+- Proves: manifest inspection remains non-invoking.
+- Does not prove: every possible Python attribute inspection is passive.
+
+Module 01 and Module 02 intentionally reuse a command. The learner question changes from
+“what exists?” to “what executed while I learned it?”
+
+### Module 03 — signatures and evidence
+
+- Course claim: Python signature rules can validate argument shape without invocation.
+- Command: `capstone-bind-action`.
+- Owner: action binding helpers in `framework.py`.
+- Ask: do proposed arguments fit the stored action signature?
+- Proves: required, optional, positional, and keyword rules accept the shape.
+- Does not prove: hint compatibility, plugin configuration, or runtime success.
+
+After each command, open `tests/test_runtime.py` and `tests/test_cli.py` only for the
+focused assertion matching the claim.
+
+## Modules 04–05: transfer wrapper ownership and policy
+
+### Module 04 — transparent wrappers
+
+- Course claim: wrapper transformations preserve explicit metadata and provenance.
+- Command: `capstone-action-wrapper`.
+- Owner: `actions.py` and wrapper inspection in `framework.py`.
+- Ask: which layer owns `ActionSpec`, `__signature__`, and `__wrapped__`?
+- Proves: the wrapper chain remains structurally observable without execution.
+- Does not prove: invoking the wrapped action succeeds.
+
+### Module 05 — callable policy
+
+- Course claim: runtime policy names its supported contract and refused surfaces.
+- Command: `capstone-check-action`.
+- Owner: hint policy in `actions.py` and binding in `framework.py`.
+- Ask: which bound values match the deliberately supported runtime hints?
+- Proves: supported hints are checked and unsupported hints are reported.
+- Does not prove: complete runtime typing or successful invocation.
+
+Do not use `capstone-trace` as the first transfer for either module. Trace crosses into
+construction and execution. It becomes useful later when the question is specifically
+about invocation history.
+
+## Modules 06–08: transfer class and attribute ownership
+
+### Module 06 — lower-power class customization
+
+- Course claim: helpers, properties, descriptors, and class decorators remain preferred
+  when they can own the requirement after class creation.
+- Command: `capstone-class-creation`.
+- Owner: stored provenance in `framework.py`.
+- Ask: which reported requirements could a finished-class mechanism still own?
+- Proves: generated structure and registration owners are separated.
+- Does not prove: `PluginMeta` is automatically the best owner.
+
+### Module 07 — descriptor lookup
+
+- Course claim: descriptor category, lookup precedence, and storage ownership are
+  predictable.
+- Command: `capstone-field-ownership`.
+- Owner: `fields.py` and field collection in `framework.py`.
+- Ask: which descriptor owns `endpoint` lookup and where does the value live?
+- Proves: hook category, class access, collection, and storage key are visible.
+- Does not prove: cache, external storage, or transaction behavior.
+
+### Module 08 — descriptor systems
+
+- Course claim: field-system powers must be accepted or rejected explicitly.
+- Command: `capstone-field-system`.
+- Owner: the collected system spanning `fields.py` and `framework.py`.
+- Ask: which field powers belong in this application?
+- Proves: coercion, validation, and storage owners are named beside rejected wider powers.
+- Does not prove: a production ORM, cache, or external persistence layer.
+
+Module 06 uses a class-creation report to search for lower-power alternatives. Module 07
+then narrows to one descriptor. Module 08 widens only to the field system actually
+required by the application.
+
+## Modules 09–10: transfer class creation and governance
+
+### Module 09 — class creation
+
+- Course claim: namespace preparation, class shaping, and registration have different
+  timing and owners.
+- Command: `capstone-class-creation`.
+- Owner: `PluginMeta` in `framework.py`.
+- Ask: what requires preparation before the class exists, and what waits until the
+  completed class?
+- Proves: stored provenance exposes each hook and generated output.
+- Does not prove: package discovery, I/O, or automatic metaclass conflict repair belongs
+  in class creation.
+
+Module 06 and Module 09 reuse the same report for opposite review directions: Module 06
+tries to move power downward; Module 09 identifies the facts that remain genuinely
+pre-class.
+
+### Module 10 — governance
+
+- Course claim: runtime powers require approve, constrain, or reject decisions.
+- Command: `capstone-governance`.
+- Owner: `governance.py` plus the owner named by each decision.
+- Ask: which powers earned their cost and which remain outside the application?
+- Proves: decisions name observability, rollback, proof, and rejected alternatives.
+- Does not prove: the underlying behavior without its mechanism report and focused tests.
+
+For an approved metaclass decision, compare `governance` with `class-creation`. For a
+constrained registry, compare it with `registry`. A policy record never proves its own
+mechanism.
+
+## Command levels
+
+| Level | Form | Use |
 | --- | --- | --- |
-| what the runtime exposes without execution | `capstone-manifest` and `capstone-registry` | `framework.py`, `manifest.json`, and [Capstone Architecture Guide](capstone-architecture-guide.md) |
-| where wrapper behavior really lives | [Capstone Architecture Guide](capstone-architecture-guide.md) | `actions.py` and `tests/test_runtime.py` |
-| where field ownership and validation live | [Capstone File Guide](capstone-file-guide.md) | `fields.py` and `tests/test_fields.py` |
-| whether class creation is honest | [Capstone Architecture Guide](capstone-architecture-guide.md) | `framework.py` and `tests/test_registry.py` |
-| which route to hand to another reviewer | [Capstone Walkthrough](capstone-walkthrough.md) | `inspect`, `capstone-tour`, or `capstone-verify-report` |
+| repository | `make PROGRAM=python-programming/python-meta-programming capstone-field-system` | published site and program route |
+| course | `make capstone-field-system` | normal learning session |
+| capstone | `make field-system` | local source review |
 
-## Mechanism to file map
+All three forms must resolve to the same JSON claim. Use the course form during normal
+study and the local form only when reviewing the application source.
 
-- introspection and manifest export: `capstone/src/incident_plugins/framework.py`
-- action wrappers and signature preservation: `capstone/src/incident_plugins/actions.py`
-- descriptor-backed field contracts: `capstone/src/incident_plugins/fields.py`
-- concrete plugin classes and realistic behavior: `capstone/src/incident_plugins/plugins.py`
-- proof and regression coverage: `capstone/tests/`
+## Transfer review record
 
-## Module to capstone route
+For one module, retain:
 
-| Module stage | Inspect this file or surface | Why it matters | Prove it with |
-| --- | --- | --- | --- |
-| Modules 01-03 | `framework.py` and manifest output | fields and actions stay inspectable without execution | `inspect` then read `manifest.json` |
-| Modules 04-05 | `actions.py` | wrapper policy, preserved metadata, and action history | `proof` then inspect `trace.json` and `test_runtime.py` |
-| Module 06 | generated constructor behavior in `framework.py` | class customization before metaclasses | `test` then read `test_runtime.py` |
-| Modules 07-08 | `fields.py` | descriptor-backed validation, coercion, and per-instance storage | `test` then read `test_fields.py` |
-| Module 09 | registration logic in `framework.py` and registry output | definition-time registration and duplicate prevention | `inspect` then read `registry.json` and `test_registry.py` |
-| Module 10 | `cli.py` plus saved proof bundles | public review surface stays observational and reviewable | `capstone-verify-report` then read `pytest.txt`, `manifest.json`, and `trace.json` |
+1. completed course claim
+2. focused course test
+3. mapped observational capstone command
+4. capstone JSON output
+5. owning source file
+6. matching focused capstone assertion
+7. one explicit non-claim
 
-## Practical reading order
-
-1. Start with one public surface such as `manifest`, `registry`, or `trace`.
-2. Read the matching page in this capstone shelf so the ownership claim is explicit.
-3. Read the owning file in `framework.py`, `fields.py`, `actions.py`, or `plugins.py`.
-4. Read the matching tests only after you know what the file is claiming to own.
-5. Escalate to saved bundles only when another reviewer needs the route preserved.
-
-## Good stopping point
-
-Stop when you can inspect one surface, explain one owning boundary, and prove one claim
-without widening into the whole repository.
+Stop when that record is complete. Do not widen into a saved bundle or full suite unless
+another claim requires it.

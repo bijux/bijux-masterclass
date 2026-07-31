@@ -1,113 +1,157 @@
 # Module 06: Monadic Flow and Explicit Context
 
-<!-- page-maps:start -->
-## Page Maps
+Module 05 gave the FuncPipe application honest value shapes: success and
+failure are different cases, absence is not `None`, and independent validation
+errors can accumulate. Module 06 asks what happens when those values must move
+through several dependent operations.
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Monadic Flow Explicit Context"]
-  page["Module 06: Monadic Flow and Explicit Context"]
-  capstone["Capstone evidence"]
+The module question is:
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+> Which part of a multi-stage flow should the function own, and which part
+> should the surrounding context own?
+
+A function such as `clean_doc` should own normalization. It should not also
+repeat “return the earlier error,” read a global chunk size, update a global
+counter, append to a hidden log, or decide which exceptions are recoverable.
+Module 06 separates those concerns and makes each one observable.
+
+Start with the [Module 06 Capstone Delta](capstone-delta.md). It identifies the
+small set of new source files in the Module 06 reference state and explains
+what remains unchanged from Module 05.
+
+## What you need before starting
+
+You should be able to:
+
+- distinguish `Ok` from `Err`, and `Some` from `NoneVal`;
+- explain why Module 05 uses `Validation` for independent field checks;
+- trace `RawDoc -> CleanDoc -> Iterator[Chunk] -> EmbeddedChunk`;
+- read a frozen dataclass and a generic callable type; and
+- run one focused pytest test from a module reference state.
+
+If those are not comfortable yet, revisit the Module 05
+[product and sum type lesson](../module-05-algebraic-data-modelling-validation/product-and-sum-types.md)
+and [applicative validation lesson](../module-05-algebraic-data-modelling-validation/applicative-validation.md).
+
+## The progression in one RAG flow
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  raw["RawDoc inside Result"] --> requirement["dependent prerequisite"]
+  requirement -->|Err| stop["preserve first failure"]
+  requirement -->|Ok| clean["clean_doc"]
+  env["RagEnv supplied by caller"] --> chunk["iter_chunk_doc"]
+  clean --> chunk
+  chunk --> state["explicit local progress"]
+  chunk --> trace["inspectable trace entries"]
+  boundary["text configuration boundary"] -->|expected ValueError| typed["ErrInfo"]
+  boundary -->|unexpected RuntimeError| raised["exception remains visible"]
 ```
-<!-- page-maps:end -->
 
-Read the first diagram as a placement map: this module sits between the data modelling
-work from Module 05 and the boundary-focused design work in Module 07. Read the second
-diagram as a study route: start from a concrete propagation or context problem, then
-move through the lessons in a deliberate order instead of treating the pages as isolated
-reference notes.
+The diagram is not a required stack of containers. Each branch answers a
+different question:
 
-Module 06 is about one practical question:
+- `Result.and_then` controls dependent success;
+- Reader supplies shared read-only context;
+- State returns a changing local value;
+- Writer returns ordered side information;
+- an exception bridge classifies one expected boundary failure.
 
-> When several steps depend on each other, which parts of the flow should stay explicit
-> in the code so that failure, configuration, logging, and local state remain easy to
-> review?
+Most FuncPipe functions remain ordinary functions. A context type is useful
+only when it makes a real propagation rule easier to see and test.
 
-## Keep These Pages Open
+## Study route: one decision at a time
 
-Use these pages alongside Module 06 so the new abstractions stay connected to the rest
-of the course:
+### 1. Dependent or independent?
 
-- [Mid-Course Map](../module-00-orientation/mid-course-map.md): where this module fits in the overall progression
-- [Pressure Routes](../guides/pressure-routes.md): review questions for flow, context, and trade-offs
-- [Boundary Review Prompts](../reference/boundary-review-prompts.md): prompts for deciding what belongs in a container and what belongs at a boundary
-- [Capstone Map](../capstone/capstone-map.md): where the same ideas surface in FuncPipe
+Read [and_then and bind](and-then-and-bind.md), then
+[Lifting Plain Functions](lifting-plain-functions.md).
 
-## What Changes In This Module
+The first lesson handles a later operation that needs an earlier successful
+value. The second handles plain transformations and independent inputs. Do not
+continue until you can explain why a function returning `Result` belongs under
+`and_then`, while `clean_doc` belongs under `map`.
 
-Module 05 focused on shaping data honestly. Module 06 keeps that data modelling work,
-but shifts the attention to sequencing:
+### 2. What makes regrouping safe?
 
-- dependent steps should read in the same order they execute
-- failure and absence should propagate without repetitive branching
-- configuration, local state, and log data should stay visible instead of leaking
-  through globals or hidden mutation
+Read [Law-Guided Design](law-guided-design.md). Laws do not prove that a RAG
+policy is correct. They prove that particular structural rewrites preserve the
+container meaning. The distinction matters throughout the rest of the course.
 
-The goal is not to use more container names. The goal is to make flow easier to read,
-change, and test.
+### 3. Is context read-only or changing?
 
-## Learning Outcomes
+Read [Reader Pattern](reader-pattern.md), then
+[Explicit State Threading](explicit-state-threading.md).
 
-By the end of the module, you should be able to:
+Run the same chunk program with two `RagEnv` values. Then run the same progress
+program from an explicit initial value. Compare the signatures:
 
-- explain when `map`, `and_then`, and applicative lifting solve different composition problems
-- choose when Reader, State, or Writer clarifies a pipeline and when ordinary functions are still enough
-- separate expected domain errors from unexpected failures at effect boundaries
-- review nested container shapes without losing track of which effect dominates the flow
-- refactor imperative branching into smaller, law-guided steps without changing the public behavior
+```text
+Reader[RagEnv, A]  behaves like RagEnv -> A
+State[Progress, A] behaves like Progress -> (A, Progress)
+```
 
-## Suggested Reading Order
+### 4. Which outcome dominates?
 
-Use this order if you are reading the module front to back:
+Read [Error-Typed Flows](error-typed-flows.md), then
+[Layered Containers](layered-containers.md).
 
-1. [and_then and bind](and-then-and-bind.md): remove repetitive propagation from dependent steps
-2. [Lifting Plain Functions](lifting-plain-functions.md): decide when to use `map`, `and_then`, `map_err`, or `liftA2`
-3. [Law-Guided Design](law-guided-design.md): understand what makes those refactors safe
-4. [Reader Pattern](reader-pattern.md): make shared configuration explicit
-5. [Explicit State Threading](explicit-state-threading.md): keep local updates pure and reviewable
-6. [Error-Typed Flows](error-typed-flows.md): separate expected errors from bugs
-7. [Layered Containers](layered-containers.md): combine effects without losing track of behavior
-8. [Writer Pattern](writer-pattern.md): accumulate logs and trace data as values
-9. [Refactoring try/except](refactoring-try-except.md): turn the ideas into a repeatable rewrite process
-10. [Configurable Pipelines](configurable-pipelines.md): choose behavior from configuration instead of duplicating pipelines
-11. [Refactoring Guide](refactoring-guide.md): compare the module ideas against the capstone surfaces
+The first lesson separates expected boundary failures from bugs. The second
+forces you to decide whether retrieval failure, successful absence, or a found
+document is the public meaning.
 
-## Exercises
+### 5. Is side information part of the result?
 
-- Rewrite one manual propagation path with `and_then`, and name the branches you no longer have to maintain by hand.
-- Find one hidden dependency and decide whether it should become a Reader input or stay as an ordinary function argument.
-- Review one logging or stateful helper and explain whether Writer or State would clarify the behavior or only add ceremony.
+Read [Writer Pattern](writer-pattern.md). Writer in this module returns string
+trace entries for inspection; it does not write an operational log. Module 07
+will place real emission behind an effect boundary.
 
-## Capstone Checkpoints
+### 6. Can the same behavior survive a rewrite?
 
-- Trace one capstone pipeline and identify where short-circuiting happens.
-- Compare one implicit dependency with an explicit context value carried through the flow.
-- Inspect whether logs, metrics, or counters are treated as ordinary data or as hidden side effects.
+Finish with [Refactoring try/except](refactoring-try-except.md),
+[Configurable Pipelines](configurable-pipelines.md), and the
+[Module 06 Refactoring Guide](refactoring-guide.md).
 
-## Closing Criteria
+These pages characterize the old behavior first, change one control rule, and
+compare complete outputs. They are the bridge into Module 07, where execution
+and resource ownership become the main concern.
 
-Before moving on, you should be able to:
+## How to study independently
 
-- explain why lawful composition matters for refactoring, not just for theory
-- point to the part of a pipeline where context is introduced, transformed, and consumed
-- compare an exception-heavy path with a compositional path and explain which one is easier to review
-- use [Refactoring Guide](refactoring-guide.md) together with
-  `capstone/_history/worktrees/module-06` to check whether the ideas feel concrete in real code
+For each lesson:
 
-## Directory Glossary
+1. predict the success value and the failure, absence, state, or trace value;
+2. run the named learning test;
+3. read the smallest implementation that makes the assertion pass;
+4. change one input and predict the new assertion before running it;
+5. state which earlier FuncPipe behavior must remain true; and
+6. write one sentence about what the focused test does not prove.
 
-Use [Glossary](glossary.md) when you want the recurring terms in this module to stay
-stable while you move between lessons, exercises, and capstone checkpoints.
+The module learning file is:
+
+```text
+capstone/module-reference-states/module-06/
+└── tests/learning/test_module_06_explicit_context.py
+```
+
+Use the exact acceptance commands in the lessons or exercises. The broad
+capstone suite is not the first debugging tool.
+
+## Exercises and completion
+
+The [Module 06 Exercises](exercises.md) form a cumulative review of the same
+reference state. Use the [Exercise Answers](exercise-answers.md) only after
+recording your own design choice and expected evidence.
+
+You are ready for Module 07 when you can:
+
+- choose `map`, `and_then`, or applicative lifting from the dependency shape;
+- explain what identity and associativity allow you to refactor;
+- decide whether an ordinary argument, Reader, State, or Writer earns its cost;
+- keep absence, expected failure, and unexpected exceptions distinct;
+- identify which container is outermost and what that means;
+- compare complete RAG values before and after a control-flow rewrite; and
+- point to the focused test that supports each claim.
+
+Use the [Module 06 Glossary](glossary.md) when terms such as *dependent*,
+*lift*, *outer context*, or *short-circuit* become ambiguous.

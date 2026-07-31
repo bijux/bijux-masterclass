@@ -15,7 +15,7 @@ from funcpipe_rag.domain.effects.async_ import (
     async_with_resilience,
     make_fake_timeout_ctx,
 )
-from funcpipe_rag.result.types import Err, ErrInfo, Ok
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
 
 def test_identity_when_no_retry_no_timeout() -> None:
@@ -130,5 +130,33 @@ def test_non_idempotent_warning() -> None:
 
             assert len(w) == 1
             assert "non-idempotent" in str(w[0].message)
+
+    asyncio.run(run())
+
+
+def test_non_idempotent_warning_is_emitted_before_a_retry_recovers() -> None:
+    async def run() -> None:
+        attempts = 0
+        policy = RetryPolicy(
+            max_attempts=2,
+            retriable_codes=frozenset({"TRANSIENT"}),
+            idempotent=False,
+        )
+
+        async def recovers() -> Result[int, ErrInfo]:
+            nonlocal attempts
+            attempts += 1
+            if attempts == 1:
+                return Err(ErrInfo(code="TRANSIENT", msg="retry me"))
+            return Ok(42)
+
+        with warnings.catch_warnings(record=True) as observed:
+            warnings.simplefilter("always")
+            result = await async_with_resilience(recovers, policy)()
+
+        assert result == Ok(42)
+        assert attempts == 2
+        assert len(observed) == 1
+        assert "non-idempotent" in str(observed[0].message)
 
     asyncio.run(run())

@@ -45,6 +45,10 @@ This module turns lazy pipelines into production-minded pipelines. Once computat
 streaming, failures, retries, cleanup, and error aggregation can no longer be treated as
 afterthoughts.
 
+Start with [Module 04 Capstone Delta](capstone-delta.md). It separates the
+behavioral resilience work from the broad Module 03→04 file split and gives one
+runnable route through the cumulative RAG change.
+
 ## Learning outcomes
 
 - how to turn recursion and reductions into explicit, reviewable pipeline behavior
@@ -54,6 +58,7 @@ afterthoughts.
 
 ## Lesson map
 
+- [Module 04 Capstone Delta](capstone-delta.md)
 - [Structural Recursion and Iteration](structural-recursion-and-iteration.md)
 - [Folds and Reductions](folds-and-reductions.md)
 - [Memoization](memoization.md)
@@ -68,9 +73,11 @@ afterthoughts.
 
 ## Exercises
 
-- Classify one failure path as stream-local, pipeline-fatal, or retryable, then justify the classification.
-- Compare a fail-fast and accumulate-many design for the same input set and explain which evidence each path should emit.
-- Trace one cleanup path and state what proof would show that resources are released under early termination.
+Use [Module 04 Exercises](exercises.md) for cumulative work against the tracked
+reference state. Each exercise requires a predicted demand/output trace, a
+preserved Module 03 contract, executable evidence, and an explicit limit on
+what that evidence proves. Consult [Exercise Answers](exercise-answers.md) only
+after recording your own prediction and review notes.
 
 ## Capstone checkpoints
 

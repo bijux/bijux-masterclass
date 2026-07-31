@@ -343,8 +343,12 @@ def test_full_laziness_bounded_work(tree):
 | iter_flatten_buffered      | O(N)   | O(1)       | O(depth)                                   | O(N×avg_depth)        |
 | fold_tree (iterative)      | O(N)   | O(1)       | user-controlled                            | user-controlled       |
 
-Result metadata inherently costs O(N×avg_depth) path tuples – unavoidable.  
-`iter_flatten_buffered` eliminates all traversal-internal tuple allocation (only one mutable list).
+The current `ChunkWithoutEmbedding` contract stores a path tuple on every
+emitted chunk, so fully materializing this implementation costs
+O(N×average-depth) path elements. That cost is not universal: an API that emits
+only node values, or renders paths only at a diagnostic boundary, can choose a
+different trade-off. `iter_flatten_buffered` removes intermediate traversal
+path tuples while retaining the current output contract.
 
 ---
 
@@ -359,18 +363,91 @@ Result metadata inherently costs O(N×avg_depth) path tuples – unavoidable.
 
 ---
 
+## Trace the FuncPipe hierarchy
+
+Module 03's input was effectively flat: each `RawDoc` became a sequence of
+chunks. Module 04 adds `TreeDoc` because a parsed document can contain sections
+and subsections. The pressure is not “recursion is bad.” The pressure is that
+Python recursion spends one call frame per nesting level, while an ingestion
+boundary must accept depth from data it does not control.
+
+Read these two functions side by side:
+
+- `tree/_traversal.py::recursive_flatten`, the compact specification;
+- `tree/_traversal.py::flatten`, the public stack-safe route.
+
+For this tree:
+
+```text
+root
+├── a
+└── b
+    └── c
+```
+
+both routes must emit the same preorder observations:
+
+| Text | Depth | Path |
+| --- | ---: | --- |
+| `root` | 0 | `()` |
+| `a` | 1 | `(0,)` |
+| `b` | 1 | `(1,)` |
+| `c` | 2 | `(1, 0)` |
+
+The path is application data. It lets a later embedding failure point back to a
+section without retaining the whole tree.
+
+Run the focused proof from the repository root:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k hierarchical_document
+```
+
+Before running it, predict three things:
+
+1. which text is emitted first after building a chain 1,200 nodes deep;
+2. how many nodes `islice(..., 3)` asks the traversal to emit; and
+3. why no recursive call frame is needed.
+
+The test proves stack safety for that constructed depth, prefix demand, and
+preorder path metadata. The property tests in `test_tree_flatten.py` broaden
+the equivalence evidence across generated finite trees. Neither test proves
+behavior for cyclic graphs. `flatten` rejects repeated object identities, so a
+shared subtree is treated as invalid just like a cycle; that is a deliberate
+tree contract, not a general graph traversal.
+
 ## 8. Pre-Core Quiz
 
-1. Well-founded measure? → **Subtree height**  
-2. Python TCO? → **No**  
-3. Public API lazy + stack-safe? → **Yes – always iterative buffered**  
-4. Extra heap overhead on 5000-depth chain with `iter_flatten_buffered`? → **O(depth) total**  
-5. Intrinsic path metadata cost? → **O(N×depth) – unavoidable**
+1. Why is the recursive version retained? → **It is a readable specification
+   for equivalence tests on safe depths.**
+2. What makes `flatten` lazy? → **It yields after visiting one node instead of
+   first constructing the complete output.**
+3. What does taking three chunks prove about a 1,200-node source? → **Only a
+   three-item prefix was emitted; it does not prove every upstream adapter is
+   equally lazy.**
+4. What does path metadata cost? → **The current materialized output stores
+   path elements proportional to node depth.**
+5. Is a shared child accepted as a DAG? → **No. Repeated identity violates the
+   implementation's tree contract.**
 
 ## 9. Post-Core Exercise
 
-1. Find any recursive tree function in your codebase → replace with `iter_flatten_buffered`-style explicit stack + add equivalence property.  
-2. Implement human-readable section id `"1.2.3"` via a second fold pass (no quadratic allocation).  
-3. Wire `flatten` into the public RAG API; verify with `islice(..., 10)` touches exactly 10 nodes.
+Open the Module 04 learning proof and extend the hierarchy with a second child
+under `b`.
+
+- Predict the two new path values before running the test.
+- Preserve preorder, depth-equals-path-length, and three-item prefix demand.
+- Add a cycle or shared subtree and document the observed failure.
+- Do not change the recursive specification to make the production route pass.
+
+Move forward when you can explain why output equivalence and resource
+boundedness are separate claims.
 
 **Continue with:** [Folds and Reductions](../module-04-streaming-resilience-failure-handling/folds-and-reductions.md)

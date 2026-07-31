@@ -440,6 +440,162 @@ flowchart LR
 Read that diagram literally. If one step is missing, the repository may still run, but
 the production story is not yet teachable.
 
+## Execute the scheduler-policy hardening review
+
+The previous repairs describe what a production boundary should look like. This
+lab makes one boundary observable.
+
+Start in the capstone:
+
+```console
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+gmake scheduler-policy-audit
+```
+
+Set a shell variable only to shorten the reading commands:
+
+```console
+AUDIT=../../../../artifacts/audit/reproducible-research/deep-dive-snakemake/scheduler-policy
+```
+
+### Predict before reading
+
+Open `repro/scheduler-policy/job-contract.json`. Write down:
+
+- job name;
+- threads;
+- memory;
+- runtime;
+- semantic threshold;
+- declared output.
+
+Now inspect the four profile files and predict `ACCEPT` or `REJECT` for each.
+Give a reason before opening `summary.tsv`.
+
+Expected decision structure:
+
+```text
+accepted                  ACCEPT
+missing-memory            REJECT
+underprovisioned-memory   REJECT
+semantic-leak             REJECT
+```
+
+The point is not guessing those words. The point is identifying which owner must
+repair each rejection.
+
+### Join the rule to the receipt
+
+Read the dry-run:
+
+```console
+sed -n '1,160p' "$AUDIT/workspace/dry-run/stdout.txt"
+```
+
+Find:
+
+```text
+runtime=30
+mem_mb=8000
+```
+
+Threads appear as part of the rule execution contract and are also checked in
+the audit report. Now inspect:
+
+```console
+cat "$AUDIT/workspace/profiles/accepted/receipt.json"
+```
+
+The receipt should preserve all three resources:
+
+```text
+--cpus-per-task=4
+--mem=8000M
+--time=30
+```
+
+It must also say:
+
+```json
+"executed": false
+```
+
+That field prevents you from writing the false conclusion “Slurm accepted the
+job.” The strongest supported conclusion is that local resource translation is
+correct and reviewable.
+
+### Diagnose each rejection from evidence
+
+Read the rejected receipts:
+
+```console
+cat "$AUDIT/workspace/profiles/missing-memory/receipt.json"
+cat "$AUDIT/workspace/profiles/underprovisioned-memory/receipt.json"
+cat "$AUDIT/workspace/profiles/semantic-leak/receipt.json"
+```
+
+For each one, fill this table:
+
+| Profile | Violated invariant | Correct owner | Repair |
+| --- | --- | --- | --- |
+| missing memory | required resource survives translation | rule/profile maintainer | preserve `mem_mb` |
+| under-provisioned | request is not smaller than declaration | profile maintainer | remove unsafe scale |
+| semantic leak | profile changes context only | workflow owner | move threshold to config |
+
+Notice that none of the repairs is “add retries.” The adapter is reporting
+deterministic contract violations.
+
+### Try to fool the audit
+
+Run:
+
+```console
+gmake scheduler-policy-selftest
+```
+
+One test restores memory to the missing-memory profile. If the audit still
+reported that missing memory was correctly rejected, its evidence would be
+decorative. Instead, the finding fails because the intended cause disappeared.
+
+This is the difference between a demonstration and a discriminating proof
+route.
+
+### Write the site integration handoff
+
+The local lab ends before scheduler contact. Write the next test as an explicit
+handoff:
+
+```text
+Environment:
+  named Slurm deployment and profile revision
+
+Submit:
+  one summarize_records job with the accepted mapping
+
+Capture:
+  job ID, accepted request, scheduler states, worker log, exit status
+
+Verify:
+  worker can read the declared input
+  final output appears at results/summary.tsv
+  output content obeys minimum_score=10
+
+Stop:
+  do not claim production readiness if any evidence surface is missing
+```
+
+```mermaid
+flowchart LR
+    L["local translation audit"] --> H["site handoff"]
+    H --> J["scheduler job ID"]
+    J --> W["worker execution evidence"]
+    W --> O["verified declared output"]
+    O --> A["deployment acceptance"]
+```
+
+The local audit and site integration are complementary. Combining them into one
+vague “cluster test” would make both harder to review.
+
 ## Review questions for the repaired design
 
 When you inspect a repository shaped like this, ask:

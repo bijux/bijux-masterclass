@@ -79,9 +79,14 @@ become durable habits before the later modules start composing them together.
 ### How to use the route
 
 - Read one slice at a time instead of trying to clear a whole module in one sitting.
-- Keep the capstone open, but only inspect the named files and tests for the current slice.
+- Keep the matching tracked reference state open, but only inspect the named files and
+  tests for the current slice.
 - End each slice with a short retrieval check before reading farther.
 - Move on only when you can explain the current contract without rereading examples line by line.
+
+The paths below are deliberately state-specific. Do not substitute similarly named
+files from the live Module 10 endpoint; later architecture can obscure when a concept
+entered the application.
 
 ### Module 01: Purity and substitution
 
@@ -90,8 +95,9 @@ Slice 1: local reasoning
 - Read `imperative-vs-functional.md`
 - Read `pure-functions-and-contracts.md`
 - Read `immutability-and-value-semantics.md`
-- Inspect `capstone/src/funcpipe_rag/fp/core.py`
-- Inspect `capstone/tests/unit/fp/test_core_chunk_roundtrip.py`
+- Inspect `capstone/module-reference-states/module-01/src/funcpipe_rag/rag_types.py`
+- Inspect `capstone/module-reference-states/module-01/src/funcpipe_rag/pipeline_stages.py`
+- Read `capstone/module-reference-states/module-01/tests/learning/test_module_01_purity_foundations.py`
 
 Checkpoint:
 Can you explain which behavior stays locally substitutable and which behavior still leaks hidden state?
@@ -101,8 +107,9 @@ Slice 2: composition
 - Read `higher-order-composition.md`
 - Read `small-combinator-library.md`
 - Read `typed-pipelines.md`
-- Inspect `capstone/src/funcpipe_rag/fp/combinators.py`
-- Inspect `capstone/tests/unit/fp/test_core_state_machine.py`
+- Inspect `capstone/module-reference-states/module-01/src/funcpipe_rag/fp.py`
+- Inspect `capstone/module-reference-states/module-01/src/funcpipe_rag/rag_pipe.py`
+- Run `make PROGRAM=python-programming/python-functional-programming capstone-foundation-proof`
 
 Checkpoint:
 Can you explain why the combinator layer reduces branching instead of only renaming it?
@@ -126,8 +133,9 @@ Slice 1: explicit inputs
 - Read `closures-and-partials.md`
 - Read `expression-oriented-python.md`
 - Read `fp-friendly-apis.md`
-- Inspect `capstone/src/funcpipe_rag/pipelines/specs.py`
-- Inspect `capstone/tests/unit/pipelines/test_specs_roundtrip.py`
+- Inspect `capstone/module-reference-states/module-02/src/funcpipe_rag/api/core.py`
+- Inspect `capstone/module-reference-states/module-02/src/funcpipe_rag/api/types.py`
+- Read `capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py`
 
 Checkpoint:
 Can you explain how the API stays configurable without pulling state from globals?
@@ -137,8 +145,11 @@ Slice 2: boundaries and configuration
 - Read `effect-boundaries.md`
 - Read `configuration-as-data.md`
 - Read `configuration-review-and-validation.md`
-- Inspect `capstone/src/funcpipe_rag/pipelines/configured.py`
-- Inspect `capstone/tests/unit/pipelines/test_configured_pipeline.py`
+- Inspect `capstone/module-reference-states/module-02/src/funcpipe_rag/app_config.py`
+- Inspect `capstone/module-reference-states/module-02/src/funcpipe_rag/shells/rag_main.py`
+- Read `capstone/module-reference-states/module-02/tests/learning/test_module_02_filesystem_boundary.py`
+- Run `make PROGRAM=python-programming/python-functional-programming capstone-data-api-proof`
+- Run `make PROGRAM=python-programming/python-functional-programming capstone-data-shell-proof`
 
 Checkpoint:
 Can you explain where configuration stops being data and starts becoming runtime choice?
@@ -161,8 +172,10 @@ Slice 1: laziness mechanics
 - Read `iterator-protocol-and-generators.md`
 - Read `generators-vs-comprehensions.md`
 - Read `itertools-composition.md`
-- Inspect `capstone/src/funcpipe_rag/streaming/`
-- Inspect `capstone/tests/unit/streaming/test_streaming.py`
+- Inspect `capstone/module-reference-states/module-03/src/funcpipe_rag/streaming/`
+- Inspect `capstone/module-reference-states/module-03/src/funcpipe_rag/api/core.py`
+- Read `capstone/module-reference-states/module-03/tests/learning/test_module_03_streaming_dataflow.py`
+- Run `make PROGRAM=python-programming/python-functional-programming capstone-streaming-rag-proof`
 
 Checkpoint:
 Can you explain when the pipeline computes and what actually triggers materialization?
@@ -172,10 +185,14 @@ Slice 2: shaped traversal
 - Read `chunking-and-windowing.md`
 - Read `reusable-pipeline-stages.md`
 - Read `fan-in-and-fan-out.md`
+- Inspect `capstone/module-reference-states/module-03/src/funcpipe_rag/api/core.py::stream_rag_sources`
+- Inspect `capstone/module-reference-states/module-03/src/funcpipe_rag/streaming/fanin.py`
+- Run `make PROGRAM=python-programming/python-functional-programming capstone-source-scheduling-proof`
 - Read `custom-iterators.md`
 
 Checkpoint:
-Can you explain which traversal shape the code is promising and why that shape matters downstream?
+Can you defend a source schedule, predict its encounter order and source-opening
+behavior, and explain why that shape matters to downstream deduplication?
 
 Slice 3: lifecycle and pressure
 

@@ -62,6 +62,42 @@ How do you treat logging and tracing as **pure data accumulation** using the Wri
 
 You are now four steps away from a complete production-grade functional architecture.
 
+## Runnable lab: inspect logs before emitting them
+
+Compose two structured trace entries and a RAG-facing value with `Writer`:
+
+```python
+program = trace_stage("read docs").and_then(
+    lambda _: trace_value("doc_count", 2).and_then(
+        lambda _: writer_pure(["d1", "d2"])
+    )
+)
+
+doc_ids, entries = run_writer(program)
+logger = CollectingLogger()
+assert logger.entries == []
+
+for entry in entries:
+    logger.log(entry)
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k structured_logs_remain_data_until_the_shell_emits_them
+```
+
+`run_writer` returns both the unchanged document identifiers and an ordered
+tuple of `LogEntry` values. Nothing has been emitted: the collecting logger is
+still empty. The final loop is shell interpretation, where log data crosses
+into an effectful sink.
+
+Printing inside the traced computation is the key wrong turn. It makes tests
+capture process output and prevents the shell from filtering, redirecting, or
+replaying the structured entries.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Law / Invariant            | Description                                                                                  | Enforcement          |

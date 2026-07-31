@@ -276,40 +276,32 @@ def rag_ml_pipeline(config_path: str, docs: Iterator[RawDoc], artifacts: dict[st
 cleaned = map(partial(clean_doc, lower=True), docs)
 chunks = chain.from_iterable(map(partial(chunk_doc, size=512), cleaned))
 embedded = map(partial(embed_chunk, embedder=embed_artifact()), chunks)
-# After: Config-driven
-config = PipelineConfig(steps=[StepConfig(name='clean', params={'lower': True}), StepConfig(name='chunk', params={'size': 512}), StepConfig(name='embed')])
-pipeline = build_pipeline(config, {'embed': {'embedder': embed_artifact()}})
+# After: Config-driven with the shipped API
+config = PipelineConfig(steps=(
+    StepConfig(name='clean'),
+    StepConfig(name='chunk', params={'chunk_size': 512}),
+    StepConfig(name='embed'),
+))
+pipeline = build_rag_pipeline(
+    config,
+    artifacts={'embed': {'embedder': embed_artifact()}},
+)
 result = pipeline(docs)
 ```
 ---
-## 5. Property-Based Proofs (repo tests)
-Runnable tests live in `capstone/tests/unit/pipelines/test_configured_pipeline.py`.
-```python
-from hypothesis import given, assume
-import hypothesis.strategies as st
+## 5. Executable proof
 
-# Structured strategy
-raw_doc_strat = st.builds(RawDoc, content=st.text(), metadata=st.dictionaries(st.text(), st.text()))
+`tests/unit/pipelines/test_configured_pipeline.py` covers successful assembly,
+invalid order, and translation of embedder exceptions. The learning test isolates
+the teaching claim that invalid topology is rejected before data consumption:
 
-@given(st.lists(raw_doc_strat))
-def test_idempotence_clean(docs):
-    def normalize_text(s: str, strip: bool = True, lower: bool = True) -> str:
-        s = s.strip() if strip else s
-        return s.lower() if lower else s
-    cleaned = [normalize_text(d.content) for d in docs]
-    twice = [normalize_text(s) for s in cleaned]
-    assert cleaned == twice
-
-@given(st.text(min_size=1), st.integers(min_value=1, max_value=10), st.integers(min_value=0, max_value=9))
-def test_chunk_reconstruction(text, size, overlap):
-    assume(overlap < size)
-    cd = CleanDoc('id', text)
-    chunks = list(chunk_doc(cd, size=size, overlap=overlap))
-    recon = chunks[0].text
-    for c in chunks[1:]:
-        recon += c.text[overlap:]  # Property: precise reconstruction by dropping overlap
-    assert recon == text
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k configured_pipeline_rejects_invalid_order_before_consumption
 ```
+
+This is build-time proof, not a claim that every possible external artifact is
+safe or deterministic.
 ---
 ## 6. Runtime Preservation Guarantee
 Stateless allows parallelism; config + pinned artifacts enable A/B testing; determinism requires eval mode/seed pinning.
@@ -331,9 +323,12 @@ Stateless allows parallelism; config + pinned artifacts enable A/B testing; dete
 4. ML integration? → **Boundary fit + inject**
 5. Benefit? → **Testable pipelines**
 
-## 9. Post-Core Exercise
-1. Build config-driven RAG pipeline.
-2. Prove idempotence with Hypothesis.
+## 9. Post-core exercise
+
+Complete [Data and ML pipelines: validate topology before consuming
+data](exercises.md#data-and-ml-pipelines-validate-topology-before-consuming-data).
+Explain the difference between invalid stage adjacency and a pipeline that simply
+fails to end at an effect boundary.
 
 **Pipeline Usage (Idiomatic)**
 ```python

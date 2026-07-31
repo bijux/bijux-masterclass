@@ -1,323 +1,208 @@
 # Data and Non-Data Descriptor Precedence
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Meta-Programming"]
-  section["Descriptors Lookup Attribute Control"]
-  page["Data and Non-Data Descriptor Precedence"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+flowchart TD
+  class["Static class value"] --> kind{"Descriptor kind?"}
+  kind -->|data| data["Descriptor wins before instance state"]
+  kind -->|non-data| state{"Same public name in instance dictionary?"}
+  state -->|yes| instance["Instance value wins"]
+  state -->|no| nondata["Descriptor __get__ runs"]
 ```
 <!-- page-maps:end -->
 
-This page answers the question that makes descriptors stop feeling mysterious:
+The protocol core identified which hooks exist. This core uses that classification to
+predict an ordinary instance read before executing it.
 
-why does one descriptor beat instance state while another can be shadowed?
+The storage owners do not change when lookup precedence changes:
 
-The answer is precedence.
+```mermaid
+flowchart TD
+  class["Delivery class"] --> data["shared data descriptor"]
+  class --> nondata["shared non-data descriptor"]
+  first["first Delivery instance"] --> firstdict["first instance dictionary"]
+  second["second Delivery instance"] --> seconddict["second instance dictionary"]
+  data -.reads or writes.-> firstdict
+  data -.reads or writes.-> seconddict
+  firstdict -.may shadow.-> nondata
+  seconddict -.may shadow.-> nondata
+```
 
-This page matters because descriptor protocol knowledge remains weak until a reader can
-predict lookup results without guessing. Precedence is the part that turns "Python did
-something weird" into a reviewable explanation.
+## The claim
 
-## The sentence to keep
+A data descriptor wins over a same-named instance dictionary entry. A non-data descriptor
+yields to that entry.
 
-Data descriptors win over the instance dictionary, while non-data descriptors yield to the
-instance dictionary when the same attribute name exists there.
+The distinction is not based on the value's purpose:
 
-That one rule explains a large share of descriptor behavior.
+- `__set__` or `__delete__` makes it a data descriptor
+- `__get__` without those hooks makes it a non-data descriptor
 
-Keep a second sentence beside it:
+## Build the conflict deliberately
 
-> the difference is mechanical, not emotional; the methods present on the descriptor decide the category and therefore the lookup result.
-
-That sentence matters because many weak explanations smuggle intention into the rule.
-Lookup does not care what the author meant. It cares which hooks actually exist.
-
-## The two categories
-
-The distinction is mechanical:
-
-- a data descriptor defines `__set__`, `__delete__`, or both
-- a non-data descriptor defines only `__get__`
-
-This is why a descriptor's category is not about intention. It is about which methods are
-present.
-
-That is worth slowing down for. A descriptor does not become "data-like" because it feels
-important. It becomes a data descriptor because `__set__`, `__delete__`, or both are
-implemented.
-
-## The default lookup order
-
-For ordinary instance lookup under `object.__getattribute__`, the useful review model
-is:
-
-1. look for the attribute on the class and its MRO
-2. if that class attribute is a data descriptor, use it
-3. otherwise, if the name exists in `obj.__dict__`, return that value
-4. otherwise, if the class attribute is a non-data descriptor, call `__get__`
-5. otherwise, return the plain class attribute or continue lookup
-
-This is the lookup rule that turns many "Python did something weird" moments into a
-reviewable explanation.
-
-## A lookup worksheet to keep nearby
-
-When you need to explain one surprising result, fill these in:
-
-- class attribute found under the public name:
-- hooks present on that class attribute:
-- same-named instance entry present or absent:
-- winning lookup step:
-- rejected alternative explanation:
-
-## Evidence route for precedence reviews
-
-Use this route whenever a lookup result feels surprising:
-
-| Evidence step | What it proves |
-| --- | --- |
-| find the class attribute in the MRO | tells you whether a descriptor is even in play |
-| inspect which descriptor hooks exist | tells you whether it is data or non-data |
-| inspect `obj.__dict__` for the same public name | tells you whether instance state can win |
-| replay the order mechanically | turns the result into a reviewable consequence instead of folklore |
-
-## A compact data-descriptor example
+The lab creates this class:
 
 ```python
-class DataField:
-    def __set_name__(self, owner, name):
-        self.private_name = f"_{name}"
-
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        return obj.__dict__.get(self.private_name, 0)
-
-    def __set__(self, obj, value):
-        obj.__dict__[self.private_name] = value
-
-
-class Sample:
-    value = DataField()
-
-
-s = Sample()
-s.value = 10
-s.__dict__["value"] = 999
-print(s.value)  # 10
+class Delivery:
+    enforced = StoredField()
+    shadowable = ShadowableValue("descriptor-value")
+    category = "class-value"
 ```
 
-The descriptor still wins because it is a data descriptor.
-
-That example is worth narrating aloud: Python finds the class attribute, sees that the
-descriptor defines `__set__`, classifies it as a data descriptor, and therefore resolves
-through the descriptor before the same-named entry in `obj.__dict__` gets a chance.
-
-## A compact non-data example
+Then it places two kinds of state on one instance:
 
 ```python
-class NonDataField:
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        return "computed"
-
-
-class Sample:
-    value = NonDataField()
-
-
-s = Sample()
-print(s.value)  # computed
-s.value = "shadowed"
-print(s.value)  # shadowed
+delivery.enforced = "descriptor-storage"
+vars(delivery)["enforced"] = "same-name-instance-value"
+vars(delivery)["shadowable"] = "instance-value"
 ```
 
-This time the instance dictionary wins because the descriptor defines only `__get__`.
+`StoredField.__set__` wrote the managed value under `_enforced`. The explicit `vars`
+assignment added a conflicting public entry named `enforced`. Both values exist, so the
+read has to reveal the actual precedence rule.
 
-The important repair here is to name the exact public name that gets shadowed. A learner
-who says only "it was overridden somehow" is still missing the lookup rule.
+## Predict without executing
 
-## A trace that stops the result feeling mystical
-
-Use this trace for both examples:
-
-1. identify the public attribute name Python is resolving
-2. inspect the class attribute under that name
-3. classify it as data descriptor or non-data descriptor from the hooks
-4. inspect `obj.__dict__` under the same public name
-5. narrate the winning step without skipping the instance-dictionary check
-
-## Why `property` is important here
-
-Properties are a perfect bridge into the rule.
-
-A `property` object is a data descriptor. Even a read-only property still defines
-descriptor machinery that makes it win over `obj.__dict__`.
-
-That is why this does not bypass a property:
+`explain_lookup` first uses `inspect.getattr_static`:
 
 ```python
-obj.__dict__["name"] = "bypass attempt"
+static_value = inspect.getattr_static(Delivery, "enforced")
 ```
 
-If `name` is a property, the property still owns the boundary.
+Unlike `getattr`, this does not call `__get__`. The helper can therefore inspect the
+owner before producing a prediction:
 
-That detail connects Module 07 back to Module 06 in a concrete way.
-
-It also corrects a persistent beginner misconception: a read-only property is still a data
-descriptor and therefore still owns the attribute boundary during normal lookup.
-
-Use this property translation when the module starts splitting in a learner's head:
-
-| Property claim | Descriptor-precedence translation |
-| --- | --- |
-| read-only property still wins | it is still a data descriptor during normal lookup |
-| same-named `__dict__` entry does not bypass the property | the data descriptor wins before the instance dictionary |
-| property feels friendlier than a custom descriptor | friendly syntax does not change the precedence rule |
-
-## Why methods are different
-
-Plain functions defined on classes are non-data descriptors.
-
-That means they can be shadowed by instance attributes. This is not a footnote. It is one
-of the reasons method binding stays flexible instead of absolutely dominant over instance
-state.
-
-The next core will make that more concrete.
-
-## A comparison table worth keeping open
-
-| Situation | What wins first |
-| --- | --- |
-| data descriptor plus same-named instance entry | data descriptor |
-| non-data descriptor plus same-named instance entry | instance entry |
-| plain class attribute plus instance entry | instance entry |
-| data descriptor with no instance entry | data descriptor |
-
-## A useful diagram to keep in your head
-
-```text
-data descriptor
-  -> wins over obj.__dict__
-
-instance dictionary
-  -> wins over non-data descriptor
-
-non-data descriptor
-  -> runs only if the instance dictionary does not already own the name
+```python
+if protocol.kind == "data":
+    winner = "data-descriptor"
+elif name in vars(instance):
+    winner = "instance-dictionary"
+elif protocol.kind == "non-data":
+    winner = "non-data-descriptor"
+else:
+    winner = "class-attribute"
 ```
 
-That is the picture most people actually need in review and debugging.
+Run:
 
-## Common overclaims to reject
+```bash
+make descriptor-lookup-lab
+```
 
-Reject these descriptions when they appear in review:
+The `precedence.decisions` packet predicts:
 
-| Overclaim | Better replacement |
-| --- | --- |
-| "descriptors always beat instance state" | "data descriptors beat instance state; non-data descriptors do not" |
-| "read-only properties are bypassable because they have no setter" | "properties still participate as data descriptors in normal lookup" |
-| "shadowing means the descriptor stopped working" | "shadowing means a non-data descriptor yielded to a same-named instance entry" |
-| "precedence is too subtle to explain" | "precedence is a mechanical lookup order that can be traced step by step" |
+| Name | Static kind | Same public instance name? | Winner |
+| --- | --- | --- | --- |
+| `enforced` | data descriptor | yes | data descriptor |
+| `shadowable` | non-data descriptor | yes | instance dictionary |
+| `category` | plain class value | no | class attribute |
 
-## Failure modes for precedence reasoning
+The packet then records the actual reads so prediction and execution stay separate.
 
-These are the mistakes this page is trying to prevent:
+## Trace the data-descriptor read
 
-| Failure mode | Why it weakens the design | Repair move |
-| --- | --- | --- |
-| forgetting to inspect `obj.__dict__` under the public name | shadowing behavior looks magical | inspect the exact name that lookup uses |
-| calling a descriptor "data" without checking hooks | category and result get disconnected | point to `__set__` or `__delete__` explicitly |
-| treating property lookup as special syntax instead of precedence | lessons stay isolated instead of connected | explain properties in descriptor-precedence language |
-| using precedence to justify a subtle API | the code becomes harder to review than it needs to be | simplify the boundary rather than relying on lookup cleverness |
+For `delivery.enforced`:
 
-## What this rule is for
+1. Python finds `StoredField` through `Delivery`'s MRO.
+2. `StoredField`'s type defines `__set__`.
+3. The object is therefore a data descriptor.
+4. Its `__get__` runs before Python considers `vars(delivery)["enforced"]`.
+5. `__get__` reads `_enforced` and returns `"descriptor-storage"`.
 
-Use the precedence rule to answer questions like:
+The conflicting public instance entry still exists. It simply does not win ordinary
+lookup.
 
-- why does a property still intercept access even when a same-named entry appears in `__dict__`?
-- why can an instance attribute replace the behavior of a non-data descriptor?
-- why do reusable validators often need to be data descriptors?
+## Trace the non-data read
 
-If the answer depends on "because descriptors are advanced," the rule is not being used
-precisely enough.
+For `delivery.shadowable`:
 
-## A warning about over-clever APIs
+1. Python finds `ShadowableValue` through the MRO.
+2. Its type defines `__get__` but not `__set__` or `__delete__`.
+3. The object is a non-data descriptor.
+4. Python checks the instance dictionary before calling its `__get__`.
+5. The public instance entry returns `"instance-value"`.
 
-Precedence is a real runtime rule, but it is not a good excuse for cleverness.
+Remove that instance entry and `ShadowableValue.__get__` wins again.
 
-If an API is understandable only because its users memorize data-descriptor versus
-non-data-descriptor precedence, the API is probably too subtle.
+## Why a read-only property still wins
 
-The rule is best used for:
+A property without a user-defined setter can feel read-only, but the `property` type
+still supplies descriptor write machinery. Classification depends on the type's hooks,
+not on whether a particular assignment succeeds.
 
-- debugging
-- honest explanation
-- choosing the smallest owner for a field invariant
+This is why:
 
-It is a poor substitute for clear design.
+```python
+vars(obj)["name"] = "attempted shadow"
+```
 
-## Evidence packet for precedence reviews
+does not normally bypass a read-only property. The property is a data descriptor and is
+consulted before the same-named instance entry.
 
-Leave this page with a small packet:
+## Why this does not justify subtle APIs
 
-- one data-descriptor lookup trace
-- one non-data-descriptor shadowing trace
-- one property example rewritten in descriptor-precedence language
-- one sentence rejecting an API that relies on precedence to stay understandable
+Precedence can explain an outcome without making the design kind.
 
-## Review rules for precedence
+If users must know that one class attribute is data and another is non-data merely to
+assign ordinary values safely, the public API may be too surprising. Use the rule for
+prediction and review, not as permission to make shadowing part of an undocumented
+contract.
 
-When reviewing descriptor lookup, keep these questions close:
+## Limits of the lab predictor
 
-- is the class attribute a data descriptor or a non-data descriptor?
-- what value, if any, is stored in `obj.__dict__` under the same name?
-- is the code relying on shadowing intentionally or accidentally?
-- is a property being described incorrectly as bypassable?
-- would a plainer attribute boundary be easier to review than a precedence trick?
-- can another reviewer narrate the exact winning step without saying "magic"?
+`explain_lookup` deliberately claims only ordinary lookup:
 
-## Exit check for this page
+- it assumes the default `object.__getattribute__` model
+- it does not execute `__getattr__`
+- it does not reproduce a custom `__getattribute__`
+- it does not model class lookup controlled by a custom metaclass
 
-Before moving on, make sure you can do all of these:
+The `ordinary_lookup_only` evidence field keeps that limit machine-visible.
 
-- explain why a data descriptor beats a same-named instance entry
-- explain why a non-data descriptor can be shadowed
-- describe one property lookup in data-descriptor language
-- inspect one object and name the exact evidence that decides the result
+## Capstone connection
 
-## What to practice from this page
+Every capstone `Field` defines `__get__` and `__set__`, so it is a data descriptor.
+Generated initialization uses public assignment:
 
-Try these before moving on:
+```python
+setattr(plugin, field.name, raw_value)
+```
 
-1. Build one data descriptor and show that `obj.__dict__` cannot shadow it.
-2. Build one non-data descriptor and show that the instance dictionary can shadow it.
-3. Explain one property example in descriptor-precedence language rather than property-specific language.
+That routes through `Field.__set__`, which coerces and stores under a private name.
+Later `plugin.endpoint` reads cannot be replaced by placing a public `endpoint` entry in
+the instance dictionary. The data descriptor remains the owner.
 
-If those feel ordinary, the next step is method binding: the most common non-data
-descriptor behavior in everyday Python.
+This gives the capstone field system a strong invariant, but not an unlimited one:
+direct mutation of the private storage name or `object.__setattr__` can still bypass
+parts of a public convention.
+
+## Focused proof
+
+Run:
+
+```bash
+python3 -m unittest discover -s tests \
+  -p "test_descriptor_precedence_lab.py" -v
+```
+
+The tests include both sides of the conflict and a no-instance-entry non-data case.
+
+## Exit check
+
+Before continuing, explain all three results without running them:
+
+```python
+delivery.enforced
+delivery.shadowable
+delivery.category
+```
+
+Your explanation must name the static class value, its category, whether the public name
+exists in the instance dictionary, and the winning layer.
 
 ## Continue through Module 07
 
 - Previous: [Descriptor Protocol and `__set_name__`](descriptor-protocol-and-set-name.md)
 - Next: [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md)
-- Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)

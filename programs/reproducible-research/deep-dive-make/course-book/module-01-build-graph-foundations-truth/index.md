@@ -9,6 +9,30 @@ If you can answer that question, the rest of the course has a stable foundation.
 cannot, later topics such as parallelism, multi-output generators, and release
 publication will feel like folklore instead of engineering.
 
+## The module promise
+
+At the end of this session, you will have a graph-truth packet that explains:
+
+1. what request the reader made;
+2. which file targets and action targets belong to that request;
+3. which declared input can make each file target stale;
+4. which recipe owns publication of each output;
+5. which hidden input you exposed and modeled;
+6. how a failed producer avoids poisoning later runs;
+7. why an unchanged successful request converges.
+
+```mermaid
+flowchart LR
+  request["requested target"] --> graph["declared target graph"]
+  graph --> decision["freshness decision"]
+  decision --> recipe["selected recipe"]
+  recipe --> publication["accepted artifact"]
+  publication --> replay["unchanged replay"]
+```
+
+Each arrow is a different reasoning boundary. A recipe can succeed while the graph is
+incomplete; a graph can select the right recipe while publication leaves a broken file.
+
 ## Why this day matters
 
 Most weak Make usage starts with one mistaken mental model: "Make runs commands in order."
@@ -29,6 +53,23 @@ Module 01 gives you a durable mental model for four things:
 
 The goal is not to memorize syntax like a parser. The goal is to look at a Makefile,
 predict the next rebuild decision, and explain it in plain language.
+
+## Entry diagnostic
+
+Begin with a three-file lab, not the C build. Confirm you can:
+
+| Claim | Evidence |
+| --- | --- |
+| the requested file is missing | directory listing before Make |
+| its declared prerequisites exist | named input paths |
+| Make plans one recipe | dry-run output |
+| the recipe publishes the file | exit plus content inspection |
+| unchanged replay needs no work | trace and query exit zero |
+| one changed prerequisite invalidates it | prediction plus bounded trace |
+
+If any row feels mysterious, keep the text-file lab until you can explain it. The C
+example adds compiler and depfile behavior; it should not be the first place you discover
+what a prerequisite means.
 
 ## The classroom demo for this module
 
@@ -101,6 +142,20 @@ you need to recheck the meaning of an edge.
 | Failure safety | Interrupt or fail a recipe before publication | proof that no partial final artifact remains |
 | Practice | Complete all ten exercises | commands, outputs, and short explanations |
 
+### Suggested independent-study timing
+
+| Work | Approximate time | Stop when |
+| --- | ---: | --- |
+| rule reading and graph drawing | 45 minutes | every target, prerequisite, and owner can be named |
+| freshness and hidden inputs | 55 minutes | one stale result is reproduced and repaired without cleaning |
+| rule form and evaluation | 55 minutes | the evaluated target set and values can be predicted |
+| publication and depfiles | 60 minutes | failure and header-change drills both pass |
+| worked example and exercises | 100 minutes | the graph-truth packet supports independent review |
+
+Preserve learning evidence under
+`artifacts/learning/deep-dive-make/module-01-graph-truth/`. Completion depends on the
+evidence, not the clock.
+
 If this is your first day with Make, stop after each command and inspect the files that
 exist. The filesystem is part of Make’s memory.
 
@@ -115,6 +170,21 @@ For the whole day, keep one sheet of paper or one note with four headings:
 
 That note keeps the lesson anchored in graph truth instead of drifting into syntax
 memorization.
+
+## Separate the evidence layers
+
+| Layer | Question | Suitable observation |
+| --- | --- | --- |
+| request | what did the consumer ask Make to establish | command and working directory |
+| declaration | which targets, prerequisites, and recipes exist | Makefile and bounded database |
+| selection | why is an update required or skipped | trace and target state |
+| execution | what command ran and how it exited | recipe log |
+| publication | what accepted path and content now exist | artifact inspection |
+| replay | does unchanged state require more work | no-op trace and query exit |
+| challenge | does a relevant input change wake the right edge | controlled input mutation |
+
+Do not call dry-run output proof of publication. Do not call exit zero proof that every
+input was declared.
 
 ## Read a rule aloud
 
@@ -212,6 +282,36 @@ have:
 - drawn at least one dependency graph by hand
 - explained one rebuild using trace output rather than instinct
 
+Package the work as:
+
+```text
+graph-truth/
+├── graph.md
+├── hidden-input-repro/
+├── repaired-edge/
+├── failed-publication/
+├── header-rebuild/
+└── convergence-note.md
+```
+
+The exact names are flexible. A reviewer must be able to distinguish a graph declaration,
+a selected update, a published artifact, and a replay result.
+
+## Recovery route after a missed class
+
+If you are studying alone:
+
+1. run the text-file missing-edge demo;
+2. draw its broken and repaired graphs;
+3. read the mental-model and convergence lessons;
+4. complete Exercises 1, 2, and 6;
+5. read rule shapes, evaluation, and publication;
+6. build the tiny C example one layer at a time;
+7. complete the remaining exercises before reading their answers.
+
+Do not copy the final reference Makefile first. The learning comes from predicting how
+each added edge changes the next decision.
+
 ## The five commands to keep open
 
 These commands are the evidence loop for the whole module:
@@ -219,13 +319,13 @@ These commands are the evidence loop for the whole module:
 ```sh
 make -n all
 make --trace all
-make -p
-make -q all; echo $?
-make clean && make all && make -q all; echo $?
+make -pRrq all
+set +e; make -q all; query_exit=$?; set -e; printf '%s\n' "$query_exit"
 ```
 
-Use them constantly. Module 01 is not complete until those commands feel explanatory
-rather than mysterious.
+Run destructive or clean-build drills only in the module lab or a harness-owned
+workspace. Use these commands constantly, while stating what each one can and cannot
+prove.
 
 ## Learning outcomes
 

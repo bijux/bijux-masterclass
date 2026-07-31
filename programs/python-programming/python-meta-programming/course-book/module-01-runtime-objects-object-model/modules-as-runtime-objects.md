@@ -198,6 +198,48 @@ Seeing the module as a runtime object helps because the question becomes concret
 
 That is a better review question than "does this file look tidy?"
 
+## Guided lab: read the module packet
+
+Run the module probe:
+
+```console
+$ python3 -m labs.runtime_objects |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["module"])'
+{'cached_import_preserves_identity': True, 'copied_status': 'old', 'copied_value_is_stale': True, 'module_status': 'new'}
+```
+
+The implementation in `module_evidence()` creates a synthetic module, installs it in
+`sys.modules`, imports it by name, copies one value out, and then mutates the live module.
+That sequence gives two independent claims:
+
+| Observation | Claim supported |
+| --- | --- |
+| `imported is module` | import returned the cached module object |
+| module says `"new"` while copied value says `"old"` | copying a value creates a separate binding that does not track later rebinding |
+
+The function also restores the previous `sys.modules` state in `finally`. Cleanup is part
+of the lesson: an introspection experiment that leaks a synthetic module can change later
+tests and teach the wrong habit about global runtime state.
+
+### Failure route
+
+Move the copied-value line until *after* `module.status = "new"`. The stale-value claim
+will fail even though module caching still works. Explain why one failed claim does not
+invalidate the other, then restore the correct event order and run `make lab-test`.
+
+### Transfer to the incident-plugin runtime
+
+Importing `incident_plugins.plugins` creates a real module object and executes three
+concrete class definitions. Those definitions also lead to registration, but Module 01
+should first establish the lower-level facts:
+
+- `sys.modules["incident_plugins.plugins"]` owns the module namespace
+- `ConsoleNotifier` is a class object bound in that namespace
+- functions defined there retain that namespace through `__globals__`
+
+Registration is an import-time consequence that Module 09 will evaluate. Here, record
+that the work happened and identify the module object whose execution triggered it.
+
 ## Review rules for module-object reasoning
 
 When reviewing import-heavy or introspection-heavy code, keep these rules close:

@@ -9,7 +9,7 @@ graph LR
   program["Python Meta-Programming"]
   section["Descriptor Systems Validation Framework Design"]
   page["Module 08: Descriptor Systems, Validation, and Framework Design"]
-  capstone["Capstone evidence"]
+  capstone["Capstone transfer"]
 
   family --> program --> section --> page
   page -.applies in.-> capstone
@@ -17,204 +17,189 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  mechanics["Module 07: one descriptor"] --> cache["Local coordination"]
+  cache --> backend["External authority"]
+  backend --> layers["Composed policy"]
+  layers --> metadata["Hint interpretation"]
+  metadata --> boundary["Architecture decision"]
+  boundary --> transfer["Capstone transfer"]
 ```
 <!-- page-maps:end -->
 
-Module 08 picks up where Module 07 stopped: descriptors are no longer just field-level
-mechanics, but the starting point for framework-shaped systems. The goal is not to make
-descriptor code look more impressive. The goal is to understand how caching, external
-storage, composition, and hint-driven validation widen the design surface, and where that
-wider surface stops being “just one field object.”
+Module 07 taught you to predict one attribute lookup. Module 08 asks what happens when
+several useful field behaviors begin to cooperate:
 
-This is the point in the course where field abstractions start looking powerful enough to
-hide architecture. A reader studying alone needs more than syntax here. They need a way to
-separate what still belongs to one attribute contract from what already wants explicit
-framework services.
+- a source field invalidates a derived cache
+- an attribute maps to an authoritative backend slot
+- wrapper fields normalize, validate, store, and audit in a known order
+- annotations become bounded runtime policy
+- several field-shaped concerns begin asking for model or service ownership
 
-This module now uses the same ten-file learning surface as the deep-dive series so the
-overview, five cores, worked example, practice set, answers, and glossary each have one
-clear job.
+That is the learning problem. The goal is not to build the cleverest descriptor. It is to
+recognize when a field abstraction remains honest and when pleasant attribute syntax has
+started hiding architecture.
 
-The strongest habit to build here is boundary discipline. A descriptor can remain elegant
-while the design behind it becomes much larger than one field. Module 08 exists to make
-that moment visible instead of flattering it.
+The course and its runnable lab are the primary learning surfaces. The incident-plugin
+capstone appears after the mechanism is understood, as evidence of a deliberately smaller
+production-facing choice.
 
-## What this module is for
+## Prerequisites
 
-By the end of Module 08, you should be able to explain five things clearly:
+Before starting, you should be able to:
 
-- when cached descriptors need explicit invalidation instead of hand-waving about freshness
-- how external-storage descriptors differ from ordinary per-instance field storage
-- how descriptor composition layers behavior without multiplying subclasses
-- how hint-driven validation and coercion can stay useful without pretending to be a full framework
-- when a descriptor system is still one-attribute ownership and when it has become framework architecture
+- distinguish data and non-data descriptors
+- predict descriptor and instance-dictionary precedence
+- explain what `__set_name__` records
+- identify where a descriptor stores per-instance state
+- use class access to inspect a descriptor without invoking instance behavior
 
-You should also be able to say what this module does not prove automatically:
+If any of those are uncertain, return to
+[Module 07](../module-07-descriptors-lookup-attribute-control/index.md) and run:
 
-- that caching is safe just because values are reused
-- that backend-backed fields are honest just because the attribute syntax stays pleasant
-- that wrapper composition remains readable at arbitrary depth
-- that hint-aware coercion implies broad runtime typing support
-- that a “smart field” can keep absorbing framework concerns without losing clarity
+```bash
+make descriptor-lookup-lab-test
+make descriptor-lookup-lab
+```
 
-## Keep these pages open
+## The executable learning surface
 
-- [Mid-Course Map](../module-00-orientation/mid-course-map.md)
-- [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md)
-- [Boundary Review Prompts](../reference/boundary-review-prompts.md)
-- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md)
+From the Python Metaprogramming program directory:
 
-## The review route through the module
+```bash
+make descriptor-system-lab-test
+make descriptor-system-lab
+```
 
-Read the module in this order if you are studying without an instructor present:
+The first command runs 38 focused tests. The second prints one JSON packet with six
+top-level evidence sections:
 
-| Read this page when you need to... | Review question to keep active |
+| Evidence section | Question it answers |
 | --- | --- |
-| [Cached Descriptors and Invalidation](cached-descriptors-and-invalidation.md) | when does this value become stale, and who clears it? |
-| [External Storage Descriptors](external-storage-descriptors.md) | where is the real source of truth, and what hidden I/O does attribute access now carry? |
-| [Descriptor Composition and Wrapper Fields](descriptor-composition-and-wrapper-fields.md) | what does the inner field own, and what one concern does the wrapper add? |
-| [Hint-Driven Validation and Coercion](hint-driven-validation-and-coercion.md) | what hint forms and coercions are actually supported, and which ones are refused? |
-| [Descriptor Systems and Framework Boundaries](descriptor-systems-and-framework-boundaries.md) | what still belongs to one field, and what has crossed into architecture? |
-| [Worked Example: Building an Educational Mini Relational Model](worked-example-building-an-educational-mini-relational-model.md) | what does the field layer own here, and what broader ORM-like claims stay rejected? |
-| [Exercises](exercises.md) | can I name source of truth, invalidation, and escalation boundaries plainly? |
-| [Exercise Answers](exercise-answers.md) | is my reasoning explicit about field ownership versus framework ownership? |
-| [Glossary](glossary.md) | am I using framework-descriptor vocabulary consistently and precisely? |
+| `cache_invalidation` | who owns freshness, and when does computation run again? |
+| `external_storage` | where is truth, what I/O is hidden, and when is local state stale? |
+| `composition` | which layer transforms, validates, stores, and audits? |
+| `hint_policy` | which hints and coercions are supported or refused? |
+| `record_model` | what can a bounded field-backed model honestly demonstrate? |
+| `architecture_boundary` | which owner can see the complete invariant? |
 
-## One-day study route for a missed-class learner
+Do not read the packet as a score report. Read one section beside the matching source and
+test:
 
-Treat this module like one long design clinic, not a quick reading pass.
+- `labs/descriptor_systems/cache.py`
+- `labs/descriptor_systems/external.py`
+- `labs/descriptor_systems/composition.py`
+- `labs/descriptor_systems/hints.py`
+- `labs/descriptor_systems/relational.py`
+- `labs/descriptor_systems/boundaries.py`
 
-| Study block | What to produce before moving on |
+The tests under `tests/test_descriptor_system_*.py` are part of the lesson. They state
+what the code proves and, just as importantly, what it refuses to prove.
+
+## The module argument
+
+The module follows one widening design:
+
+```mermaid
+flowchart TD
+  field["One attribute contract"]
+  local["Two local fields coordinate"]
+  external["One field crosses a backend boundary"]
+  composed["Several policies wrap one field"]
+  model["Several fields form a record surface"]
+  service["Records need shared lifecycle coordination"]
+
+  field --> local --> external --> composed --> model --> service
+
+  field -. "descriptor" .-> fieldOwner["field owner"]
+  local -. "named dependencies" .-> systemOwner["descriptor-system owner"]
+  external -. "I/O + serialization" .-> backendOwner["field + explicit backend"]
+  service -. "transactions or identity" .-> serviceOwner["session / unit of work"]
+```
+
+Every move to the right increases review cost. The important question is not whether a
+descriptor *can* participate. It is whether one attribute still sees enough of the
+invariant to own it.
+
+## Core sequence
+
+Study the cores in order:
+
+1. [Cached Descriptors and Invalidation](cached-descriptors-and-invalidation.md) names
+   cache dependencies and makes the freshness owner executable.
+2. [External Storage Descriptors](external-storage-descriptors.md) moves truth outside
+   the instance and exposes backend reads, writes, serialization, and stale local state.
+3. [Descriptor Composition and Wrapper Fields](descriptor-composition-and-wrapper-fields.md)
+   traces a full write through four single-purpose layers.
+4. [Hint-Driven Validation and Coercion](hint-driven-validation-and-coercion.md) publishes
+   a narrow supported subset and an equally visible refusal surface.
+5. [Descriptor Systems and Framework Boundaries](descriptor-systems-and-framework-boundaries.md)
+   selects owners by invariant visibility rather than by mechanism prestige.
+6. [Worked Example: Building an Educational Mini Relational Model](worked-example-building-an-educational-mini-relational-model.md)
+   combines the mechanisms and then refuses the production ORM label.
+
+After the worked example, complete the
+[Descriptor System Review Lab](exercises.md) before reading the
+[review answers](exercise-answers.md). Use the [Module Glossary](glossary.md) when a
+field, model, or service boundary term is unclear.
+
+## What changes from Module 07
+
+| Module 07 question | Module 08 question |
 | --- | --- |
-| overview plus cached-descriptor core | one cache diagram naming dependency, cache slot, invalidation owner, and stale-read risk |
-| external-storage core | one source-of-truth note naming backend key shape, hidden I/O, and local cache policy |
-| composition plus hint-driven cores | one layer ledger and one supported-versus-refused hint table |
-| framework-boundary core plus worked example | one owner ladder showing what stays in the field and what moves into model or framework coordination |
-| exercises plus answer key | one descriptor-system packet another learner could review without guessing |
+| which lookup layer wins? | which component owns truth and freshness? |
+| where does one descriptor store a value? | what happens when state spans a cache or backend? |
+| what does `__set_name__` record? | how is name binding forwarded through composed fields? |
+| is this object a data descriptor? | is this still one field contract or already a system? |
+| what does class access expose? | can a reviewer inspect the entire policy stack and its limits? |
 
-If you cannot produce the artifact for a block, do not move on just because the prose felt
-familiar. Module 08 gets weak exactly when the ideas sound intuitive but the ownership
-proof is still missing.
+Module 08 depends on Module 07; it does not repeat it.
 
-## The ten files in this module
+## Evidence before abstraction
 
-1. Overview (`index.md`)
-2. [Cached Descriptors and Invalidation](cached-descriptors-and-invalidation.md)
-3. [External Storage Descriptors](external-storage-descriptors.md)
-4. [Descriptor Composition and Wrapper Fields](descriptor-composition-and-wrapper-fields.md)
-5. [Hint-Driven Validation and Coercion](hint-driven-validation-and-coercion.md)
-6. [Descriptor Systems and Framework Boundaries](descriptor-systems-and-framework-boundaries.md)
-7. [Worked Example: Building an Educational Mini Relational Model](worked-example-building-an-educational-mini-relational-model.md)
-8. [Exercises](exercises.md)
-9. [Exercise Answers](exercise-answers.md)
-10. [Glossary](glossary.md)
+Use this study loop for every core:
 
-## How to use the file set
+1. Read the pressure and predict the owner.
+2. Open the named lab file.
+3. Run the focused test file for that mechanism.
+4. Run `make descriptor-system-lab`.
+5. Reconcile the JSON evidence with the code path.
+6. Write one claim the mechanism proves and one it does not.
+7. Only then compare the capstone choice.
 
-| If you need to... | Start here |
-| --- | --- |
-| reason about lazy fields, cached values, and explicit invalidation | [Cached Descriptors and Invalidation](cached-descriptors-and-invalidation.md) |
-| review descriptor designs whose source of truth lives outside the instance | [External Storage Descriptors](external-storage-descriptors.md) |
-| layer validation, logging, or policy around an inner field descriptor | [Descriptor Composition and Wrapper Fields](descriptor-composition-and-wrapper-fields.md) |
-| use type hints and `Annotated[...]` metadata as runtime field evidence | [Hint-Driven Validation and Coercion](hint-driven-validation-and-coercion.md) |
-| decide when a descriptor system has crossed into framework architecture | [Descriptor Systems and Framework Boundaries](descriptor-systems-and-framework-boundaries.md) |
-| see those choices combined in one educational model layer | [Worked Example: Building an Educational Mini Relational Model](worked-example-building-an-educational-mini-relational-model.md) |
-| pressure-test your understanding before metaclasses take over | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the framework-descriptor vocabulary used in this directory | [Glossary](glossary.md) |
+A learner who can repeat definitions but cannot trace the evidence has not completed the
+core.
 
-## The running question
+## Capstone transfer
 
-Carry this question through every page:
+The incident-plugin capstone intentionally keeps its field system narrower than this lab:
 
-> When a field system grows more powerful, which responsibilities still belong to one attribute and which ones should move to explicit framework code?
+- values live in each plugin instance
+- validation is expressed by explicit field subclasses
+- field metadata is collected during class creation
+- ordinary field access performs no backend I/O
+- no cached derivations, wrapper stacks, or annotation inference are hidden in fields
 
-Keep a second question beside it:
+That is a design decision, not a missing demonstration. After completing the lab, compare
+those accepted and rejected powers without constructing or executing a plugin:
 
-> what lower-power owner or stronger architectural owner am I refusing here, and what missing condition would have to appear before that choice changed?
+```console
+make PROGRAM=python-programming/python-meta-programming capstone-field-system
+```
 
-Add a third question for the whole day:
+Read the resulting ownership and power report as transfer evidence. The capstone is the
+application of the lesson, not a substitute for working through the course system.
 
-> if I removed the pleasant attribute syntax, would I still be able to explain where truth lives, who invalidates state, and which owner coordinates the wider lifecycle?
+## Exit evidence
 
-Strong Module 08 answers usually mention one or more of these:
+You are ready for Module 09 when you can produce all of the following without classroom
+explanation:
 
-- cached values with real invalidation rules
-- external sources of truth with read-through and write-through behavior
-- composable wrapper fields that do not collapse into subclass sprawl
-- hint-aware validation that stays narrow about what it supports
-- a boundary decision that rejects “clever descriptor” overreach
+- a cache trace naming dependency, storage slot, invalidation owner, and bypass
+- a backend trace naming key, source of truth, serialization, stale state, and outage
+- a composed write trace naming one concern per layer
+- a hint manifest naming supported types, coercions, validators, and refused forms
+- a model review that distinguishes field capabilities from absent framework services
+- an owner decision naming one rejected weaker owner and one rejected stronger owner
 
-Weak answers usually sound like one of these instead:
-
-- "the field just caches it" without naming freshness or invalidation
-- "the descriptor reads from storage" without naming the authoritative source of truth
-- "the wrapper adds flexibility" without naming what the inner field still owns
-- "the annotations define the model" without naming the supported hint subset
-- "it is basically a tiny ORM" without naming which ORM responsibilities are still absent
-
-## Fast diagnostic for architecture hidden inside fields
-
-Use this table before you accept a design as "still just a descriptor system."
-
-| If you notice... | Pause and ask... | Likely outcome |
-| --- | --- | --- |
-| one field read now touches backend state, caches, and deserialization | is this still one field contract, or already a persistence path? | may still fit a field, but only with explicit source-of-truth and invalidation notes |
-| one field write changes related records or shared caches | who owns coordination across those records? | likely needs a service, session, or model-layer owner |
-| wrappers keep stacking to preserve elegance | can I still narrate one write in order without reading multiple helpers twice? | if not, wrapper layering has crossed its clarity limit |
-| type metadata now drives broad model behavior | is this still per-field validation, or already class-wide generation? | may be approaching Module 09 territory |
-| review notes keep saying "the field somehow handles it" | what exact owner is being hidden? | the owner story is currently weak |
-
-## Learning outcomes
-
-By the end of this module, you should be able to:
-
-- explain why cache invalidation is part of descriptor design, not an afterthought
-- compare instance-local storage with backend-backed descriptor state
-- compose descriptor behavior while keeping ownership readable
-- use type hints for scalar validation and coercion without overstating runtime typing support
-- identify when descriptor systems need broader architectural owners such as explicit framework services or metaclasses
-
-## Mid-module warning signs
-
-Pause and repair your understanding if you catch yourself doing any of these:
-
-- describing stale caches without naming what invalidates them
-- talking about backend-backed fields without naming hidden I/O or serialization cost
-- stacking wrappers until field behavior becomes hard to narrate
-- claiming support for hints or coercions the code has not named explicitly
-- calling broader framework responsibilities “just another field feature”
-
-## Evidence packet to build while you learn
-
-Leave yourself a review packet as you move through the module:
-
-- one cached field with an explicit invalidation rule
-- one external-storage field with a named source of truth
-- one wrapper field stack with a clear inner owner and one extra concern
-- one hint-aware field with a named supported subset and refused subset
-- one sentence splitting field-level ownership from framework-level ownership
-
-If you can assemble those five artifacts, the module is becoming standalone instead of
-lecture-dependent.
-
-Use one more quality bar on the packet:
-
-- another learner should be able to point to one refused weaker owner, one refused stronger owner, and one remaining uncertainty without asking you for verbal context
-
-## Exit standard
-
-Do not move on until all of these are true:
-
-- you can explain what makes a cached descriptor safe or stale
-- you can say where an external-storage descriptor gets its source of truth
-- you can distinguish simple descriptor reuse from layered composition
-- you can place one “framework-shaped” field behavior honestly on either the descriptor side or the architecture side of the boundary
-- you can name one rejected lower-power field owner and one rejected broader framework owner for a descriptor-system design
-
-When those feel ordinary, Module 08 has done its job and Module 09 can move one level
-up into class-creation control.
+The exit standard is engineering judgment backed by runnable evidence, not familiarity
+with descriptor vocabulary.

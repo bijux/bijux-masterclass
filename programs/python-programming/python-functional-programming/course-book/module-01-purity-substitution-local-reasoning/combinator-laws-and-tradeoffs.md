@@ -1,140 +1,186 @@
 # Combinator Laws and Trade-Offs
 
+A small helper earns its place when its contract is easier to review than every
+expanded use. Module 01 deliberately offers only three functional helpers:
+`identity`, `fmap`, and `flow`. The RAG pipeline also supplies a domain
+canonicalizer, `structural_dedup_chunks`. They do not share one universal law.
+Each helper needs the law appropriate to its input domain and purpose.
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Purity Substitution Local Reasoning"]
-  page["Combinator Laws and Trade-Offs"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## Read laws at the right boundary
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  xs["list[A]"] -->|"fmap(f)"| ys["list[B]"]
+  raw["list[RawDoc]"] -->|"full_rag"| chunks["canonical list[Chunk]"]
+  arbitrary["list[Chunk]"] -->|"structural_dedup_chunks"| fixed["fixed-point list[Chunk]"]
+
+  identity["identity / composition"] -.reviews.-> xs
+  canonical["idempotence / ordering"] -.reviews.-> fixed
+  equivalence["legacy metadata equivalence"] -.reviews.-> chunks
 ```
-<!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+The first review question is therefore not “is this functional?” Ask:
 
-This lesson exists because building a helper library is not the same thing as justifying
-it. Once you have a small combinator kit, the next question is whether it preserves the
-behavior you care about and whether it stays simpler than the imperative baseline.
+1. What values are admitted by the law?
+2. What observation is expected to remain equal?
+3. Does the implementation preserve order, multiplicity, and representation where
+   the contract requires them?
+4. Which test searches for a counterexample?
 
-## What this lesson proves
+## `fmap`: identity and composition over lists
 
-- the helper surface obeys identity, composition, and idempotence laws where expected
-- property-based tests can falsify bad combinator refactors quickly
-- a combinator library is only worth keeping when it reduces duplication and review cost
-- order preservation and type clarity matter more than functional vocabulary on its own
-
-## Equational review route
-
-Use substitution to check whether a combinator pipeline is still honest:
-
-1. inline the combinator definitions mentally or on paper
-2. confirm the rewritten pipeline still means "data in, data out"
-3. compare the result with the hand-written imperative baseline
-4. stop if the abstraction hides control flow instead of clarifying it
-
-For Module 01, the most important question is not "can I write this point-free?" The
-important question is "can another engineer still substitute the pieces locally and trust
-the result?"
-
-## Property-based review route
-
-Property tests are the fastest way to catch abstractions that look elegant but break
-important guarantees.
-
-Good properties for this lesson include:
-
-- `fmap(identity) == identity`
-- `fmap(f ∘ g) == fmap(f) ∘ fmap(g)`
-- applying the same filter twice is the same as applying it once
-- left folds preserve associativity when the operation itself is associative
-- the combinator pipeline and the hand-written pipeline return the same value
-
-### Bad refactor example
-
-Order-preserving deduplication is a good example because the failure is subtle: a helper
-that converts to `set` looks shorter but silently destroys ordering.
+Module 01 defines:
 
 ```python
-from typing import Callable, Iterable, List, TypeVar
+def fmap(func: Callable[[A], B]) -> Callable[[Iterable[A]], list[B]]:
+    def mapped(items: Iterable[A]) -> list[B]:
+        return [func(item) for item in items]
 
-T = TypeVar("T")
-
-
-def bad_unique() -> Callable[[Iterable[T]], List[T]]:
-    def inner(xs: Iterable[T]) -> List[T]:
-        return list(set(xs))
-
-    return inner
+    return mapped
 ```
 
-That implementation is smaller, but it no longer matches the behavioral contract of a
-stable pipeline helper.
+Its teaching laws are tested with list inputs:
 
-### Better specification
+```text
+fmap(identity)(xs) == xs
+fmap(g_after_f)(xs) == fmap(g)(fmap(f)(xs))
+```
+
+The second equation means the same element transformations occur in the same order
+whether they are composed before lifting or mapped in two passes. It does **not**
+claim equal evaluation cost: the right side allocates an intermediate list.
+
+The input annotation accepts any iterable, but the output is always a list. For a
+generator, `fmap(identity)(generator)` equals `list(generator)`, not the original
+generator object. State the law over list values, as `test_fmap_identity_law` does,
+rather than silently widening it to every iterable representation.
+
+## `flow`: substitution before vocabulary
+
+`flow(f, g, h)(x)` expands to `h(g(f(x)))`. That expansion is its most useful review
+tool. A two-stage example can be checked without special notation:
 
 ```python
-from typing import List, TypeVar
+normalize_length = flow(str.strip, len)
 
-T = TypeVar("T")
-
-
-def stable_unique(xs: List[T]) -> List[T]:
-    seen = set()
-    out: List[T] = []
-    for x in xs:
-        if x not in seen:
-            seen.add(x)
-            out.append(x)
-    return out
+assert normalize_length("  rag  ") == len("rag")
 ```
 
-The point is not only to get the code right. The point is to make the intended contract
-obvious enough that a test can guard it.
+`flow()` with no functions returns its input, and adding `identity` should not change
+a pure pipeline's value. Module 01 does not give `flow` a dedicated property test,
+so treat those as derivable source-review claims, not as evidence already executed
+by `tests/test_laws.py`.
 
-## When the library is worth it
+Do not force the entire RAG workflow through `flow`. `chunk_doc` also needs
+`RagEnv`, and flattening a list of per-document chunk lists is domain orchestration.
+`docs_to_embedded` spells those steps out directly. That is clearer than hiding
+configuration capture and flattening behind point-free vocabulary.
 
-Keep the combinator layer when it gives you these benefits:
+## Canonicalization has three distinct claims
 
-- the same pipeline pieces are reused in multiple places
-- the helpers preserve types and naming clearly enough to review
-- the tests describe stable algebraic expectations, not only examples
-- a new pipeline becomes easier to assemble than a hand-written loop forest
+`structural_dedup_chunks` sorts chunks by `(doc_id, start)` and then removes repeated
+structural keys `(doc_id, text, start, end)`. The property suite separates claims
+that are easy to conflate:
 
-Do not keep it when:
+| Claim | Equation or observation | Executable proof |
+| --- | --- | --- |
+| idempotence | `dedup(dedup(xs)) == dedup(xs)` | `test_structural_dedup_is_idempotent` |
+| canonical order | result equals sorting itself by `(doc_id, start)` | `test_structural_dedup_produces_canonical_order` |
+| uniqueness | result has no repeated structural key | `test_structural_dedup_no_duplicates` |
+| completed fixed point | `dedup(full_rag(docs, env)) == full_rag(docs, env)` | `test_full_rag_reaches_fixed_point_in_one_pass` |
 
-- the helper names are more abstract than the problem
-- the pipeline is so small that direct code is clearer
-- profiling shows the abstraction cost matters and the hot path is simple
-- the team cannot explain the laws the library depends on
+These tests belong separately because idempotence alone says nothing about order. A
+stable first-seen deduplicator can be idempotent while returning different orders for
+reversed inputs.
 
-## Capstone check
+Likewise, `list(set(chunks))` is not a valid shortcut. A set discards input order and
+does not establish the domain's required `(doc_id, start)` order. It also deduplicates
+according to complete object equality, which is not automatically the same as the
+explicit structural key.
 
-Before moving on, compare the combinator helpers in the capstone with the tests that
-justify them:
+The canonicality claim for `full_rag` is deliberately narrower than “all imaginable
+chunk lists have one order.” `test_full_rag_is_canonical` generates unique input
+documents, reverses their order, and expects the same completed output. Review the
+generator precondition before generalizing the result.
 
-1. inspect `capstone/_history/worktrees/module-01/src/funcpipe_rag/fp.py`
-2. inspect `capstone/_history/worktrees/module-01/tests/test_laws.py`
-3. decide whether each helper is buying clarity or just renaming normal Python
+## Refactor equivalence chooses an observation
 
-## Reflection
+The legacy function returns dictionaries and the pure pipeline returns frozen domain
+values. Whole-object equality would reject the refactor even when chunk meaning was
+preserved. `test_refactor_preserves_chunk_structure` therefore compares only:
 
-- Which helper in your own codebase would survive a law-based review?
-- Which helper only exists because earlier code was repetitive?
-- Which helper looks elegant but makes the execution story harder to follow?
+```text
+(doc_id, text, start, end)
+```
 
-**Continue with:** [Typed Pipelines](typed-pipelines.md)
+That is an explicit observation boundary. It proves normalization and chunk
+metadata survived the rewrite. It does not prove representation equality,
+canonical ordering, or embedding equality; other tests own those claims.
+
+This is the useful pattern for behavior-preserving refactors:
+
+```text
+name the observation -> compare old and new under that observation
+                     -> prove new guarantees separately
+```
+
+## Avoid laws that do not apply
+
+Several attractive statements are too broad for this module:
+
+- Applying a filter twice is idempotent only when the predicate is stable for the
+  observed values. Module 01 does not provide a filter combinator.
+- Associativity belongs to the combining operation, not to “left fold” in general.
+  Module 01 intentionally defers folds.
+- Determinism, purity, and idempotence are different. A deterministic function may
+  mutate its argument; a pure function need not be idempotent.
+- Equal output does not prove equal cost or evaluation strategy.
+
+Keeping unsupported laws out of the lesson is part of making the combinator surface
+reviewable.
+
+## Run the evidence
+
+The short foundation proof names the core learning contract:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming \
+  capstone-foundation-proof
+```
+
+The broader property suite lives at:
+
+```text
+programs/python-programming/python-functional-programming/
+  capstone/module-reference-states/module-01/tests/test_laws.py
+```
+
+When running it directly, set `PYTHONPATH` to the matching Module 01 snapshot so the
+tests cannot accidentally import the live Module 10 package. The course verification
+gate performs that snapshot isolation across the full history.
+
+## Trade-off review
+
+Keep a helper when its name exposes a repeated transformation and its law can be
+stated precisely. Prefer direct Python when the helper:
+
+- obscures configuration or flattening;
+- changes collection representation without saying so;
+- hides order or failure timing;
+- saves fewer lines than its contract requires to explain;
+- has no consumer beyond one already-readable expression.
+
+For Module 01, `fmap` is justified as a small law-bearing teaching surface, `flow`
+demonstrates left-to-right composition, and `full_rag` remains explicit where domain
+steps matter more than combinator symmetry.
+
+## Review checkpoint
+
+Explain why these pairs are not interchangeable:
+
+- `fmap(identity)(xs) == xs` for lists versus identity over every iterable object;
+- deduplication idempotence versus canonical ordering;
+- legacy metadata equivalence versus whole-result equivalence;
+- source-level substitution for `flow` versus property evidence already in the suite.
+
+Then continue with [Typed Pipelines](typed-pipelines.md).

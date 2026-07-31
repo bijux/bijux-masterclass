@@ -25,290 +25,247 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Build-performance conversations go bad quickly when nobody distinguishes between these
-different costs:
+A useful performance claim names a workload state, a cost layer, and a comparison:
 
-- the time Make spends parsing and deciding
-- the time recipes spend doing actual work
-- the time the logs spend burying the evidence
-- the time humans waste blaming the wrong layer
+> In a settled workspace, parsing and deciding the `all` goal takes a median 1.8 seconds
+> across seven runs; disabling an unused implicit-rule family reduces that median to 0.6
+> seconds without changing the selected recipes or outputs.
 
-That is why this page is not called "performance tricks." The first job is not to trick
-Make into looking faster. The first job is to identify which part of the build is
-expensive.
+"Make feels slow" names none of those facts.
 
-## The sentence to keep
+## Define the workload before timing
 
-When someone says "Make is slow," ask them:
+The same goal has several legitimate workloads:
 
-> slow in which layer: parse time, rebuild decision time, recipe execution time, or log
-> handling?
+| Workload | Preparation | Question |
+| --- | --- | --- |
+| clean build | remove governed build outputs | total materialization cost |
+| no-op build | complete one build, change nothing | steady-state orchestration and freshness cost |
+| one-input rebuild | change one declared input reproducibly | incremental selectivity and critical path |
+| planning run | use `-n` on a controlled state | parse, graph, expansion, and printing proxy |
+| traced run | enable `--trace` separately | evidence volume and instrumentation overhead |
 
-Without that question, the rest of the discussion is mostly theater.
+Do not average these workloads together. A faster clean build can accompany a slower no-op
+build, and both facts may matter.
 
-## Measure before you optimize
+```mermaid
+flowchart LR
+  workload["Fix workload state"]
+  controls["Pin goal, options, tools, and machine load"]
+  repeat["Warm up and repeat"]
+  summarize["Report median and spread"]
+  change["Change one design variable"]
+  verify["Repeat plus correctness checks"]
 
-This sounds obvious, but many build changes still skip it. Engineers:
+  workload --> controls --> repeat --> summarize --> change --> verify
+```
 
-- add `eval`
-- split files aggressively
-- rewrite rules into generated macros
-- introduce recursion
-- switch tools entirely
+## Separate the cost layers
 
-before they can show where the time went.
+| Layer | Work performed | Useful discriminator |
+| --- | --- | --- |
+| startup and parsing | process startup, includes, immediate expansion, parse-time probes | no-op and planning runs; probe inventory |
+| graph decision | implicit search, prerequisite traversal, freshness checks | explicit-rule or `-rR` controlled comparison |
+| recipe expansion and scheduling | expand selected recipes, coordinate jobserver and recursion | selected recipe count and recursive plan |
+| external tools | compile, test, compress, copy, link | per-tool timing or tool profiler |
+| storage and cache | metadata queries, reads, writes, remote filesystem latency | repeat on controlled storage/cache state |
+| observation | console rendering, trace generation, log synchronization | same run with and without capture |
 
-Module 05 insists on a stricter habit:
+Wall time alone cannot assign a layer. Use a controlled change that affects one layer more
+than the others.
 
-1. measure one baseline
-2. explain what that measurement includes
-3. change one design variable
-4. measure again
+## `-n` is a proxy, not a decision-only timer
 
-That is the minimum standard for believable performance claims.
+`gmake -n` still:
 
-## The main layers to separate
+- reads and may remake makefiles
+- evaluates parse-time `$(shell ...)`, `$(file ...)`, and `!=`
+- constructs and traverses the graph
+- expands recipes selected for printing
+- writes the printed plan
+- may enter declared recursive Make lines
 
-### Parse and evaluation cost
+So a slow dry run suggests orchestration or observation cost, but it does not isolate
+"decision time." Redirecting output removes terminal rendering from the measurement, yet
+recipe expansion and string generation remain.
 
-This is the time Make spends reading files, expanding variables, loading includes, and
-building its internal model of the world.
+Use dry run as a discriminator:
 
-Warning signs:
+| Observation | Supported conclusion | Unsupported leap |
+| --- | --- | --- |
+| no-op `-n` is slow and real no-op is similarly slow | orchestration likely matters | parsing alone is the cause |
+| `-n` is cheap and changed-input rebuild is slow | selected recipes or I/O likely dominate | compiler is definitely at fault |
+| `-n` becomes fast with `-rR` | built-in rule/variable machinery is implicated | keep `-rR` without proving the build contract |
+| traced run is much slower | instrumentation matters | trace line count equals machine cost |
 
-- huge `make -n` time even when no recipes run
-- heavy use of `$(shell ...)`, `eval`, or broad wildcard discovery
-- many included files with expensive parse-time computation
+`-rR` is an experiment first. Retain it only if the build declares all rules and variables
+it needs and the output-equivalence checks pass.
 
-### Decision cost
+## Build a repeatable measurement packet
 
-This is the time Make spends deciding whether targets are up to date.
-
-Warning signs:
-
-- lots of tiny targets with complex prerequisite graphs
-- excessive implicit rule search
-- repeated directory scans or unstable discovery patterns
-
-### Recipe cost
-
-This is the actual time spent compiling, archiving, copying, testing, packaging, and so
-on.
-
-Warning signs:
-
-- `make -n` is fast, but real builds are slow
-- individual tool invocations dominate the wall clock
-- parallelism is available but not being exploited
-
-### Log and trace handling cost
-
-This is not always a machine bottleneck, but it is often a human bottleneck. Logs that are
-too large or unordered turn diagnosis into a performance problem of their own.
-
-Warning signs:
-
-- `--trace` output is unmanageable
-- recursive logs interleave so badly that nobody can follow them
-- the team stops using evidence because the output is too painful
-
-## A tiny baseline loop
-
-Start with something simple:
+Create a repository-owned evidence directory:
 
 ```sh
-/usr/bin/time -p make -n all >/dev/null
-/usr/bin/time -p make all >/dev/null
-make --trace all > build/trace.log
-wc -l build/trace.log
+mkdir -p artifacts/performance/make-module-05
 ```
 
-This already gives you:
+For each workload, preserve:
 
-- a decision-only baseline from `make -n`
-- a full-build baseline from `make all`
-- a rough trace-volume metric
+- exact command and working directory
+- Make version, shell, compiler identity, locale, and job count
+- preparation command or input mutation
+- at least one warm-up excluded from the summary
+- several measured repetitions
+- wall, user, and system time
+- output digest or another correctness assertion
 
-That is not a full profiler. It is enough to stop guessing blindly.
-
-## Why `make -n` is useful here
-
-`make -n` is not only a debugging command. It is also a crude performance lens.
-
-If `make -n all` is already slow, the bottleneck is not the compiler. It is probably one
-of these:
-
-- parse-time shell calls
-- heavy variable expansion
-- too much rule or include complexity
-- expensive graph discovery
-
-That is a very different diagnosis from "the build needs more cores."
-
-## Trace volume is a legitimate metric
-
-Engineers sometimes dismiss log size as cosmetic. It is not.
-
-If the trace output for a normal build is so large that nobody can inspect it, then the
-build's evidence surface has become expensive to use.
-
-This matters because the whole course is built on proof. A build that technically exposes
-evidence but practically buries it is harder to operate.
-
-A simple metric such as line count can still be useful:
+Run timings one command at a time:
 
 ```sh
-make --trace all > build/trace.log
-wc -l build/trace.log
+/usr/bin/time -p gmake -n all \
+  > artifacts/performance/make-module-05/noop-plan.log
+
+/usr/bin/time -p gmake all \
+  > artifacts/performance/make-module-05/noop-build.log
 ```
 
-The goal is not "fewest lines wins." The goal is to notice when changes dramatically
-inflate the explanation surface.
+`time` writes its measurements to standard error on common systems. Capture it according
+to the local implementation and keep Make diagnostics separate; otherwise errors and
+timings become one ambiguous stream.
 
-## Common parse-time performance traps
+Do not report only the fastest run. For small samples, median and range are more honest
+than a many-decimal average. If results vary widely, investigate the uncontrolled source
+before claiming a speedup.
 
-### Repeated `$(shell ...)` calls
+## Diagnose parsing and decision cost
 
-Each shell escape adds cost and often adds hidden inputs too.
+Start with an inventory rather than a rewrite:
 
-This shape is usually a warning sign:
-
-```make
-FILES := $(shell find src -name '*.c')
-TOOLS := $(shell command -v python3)
-STAMP := $(shell date +%s)
+```sh
+rg -n '\\$\\(shell|\\$\\(file|^[A-Za-z_][A-Za-z0-9_]*[[:space:]]*!=' \
+  Makefile mk/
 ```
 
-Especially when repeated across multiple files.
+Then form one hypothesis:
 
-### Overuse of `eval`
+| Suspect | Controlled experiment | Correctness guard |
+| --- | --- | --- |
+| repeated tool probe | cache one read-only result per parse | accepted and rejected capability cases unchanged |
+| broad wildcard discovery | replace with declared manifest in a copy | discovered target set identical |
+| implicit-rule search | compare with `-rR` | same selected recipes and output digests |
+| generated `eval` families | replace one bounded family with static pattern rules | database target/prerequisite entries equivalent |
+| excessive included fragments | combine only generated fragments in a copy | origin, include order, and rebuild behavior unchanged |
 
-`eval` can be legitimate, but it increases mental and performance cost together. If a rule
-set could be expressed clearly without generated makefile text, that simpler shape is often
-easier to maintain and faster to reason about.
+The experiment changes one variable. A wholesale Makefile rewrite cannot tell you which
+change mattered.
 
-### Broad implicit rule search
+## Diagnose recipe and I/O cost
 
-If the build quietly relies on built-in rules and suffix behavior, Make may spend time
-searching for patterns you never intended to use.
+If planning is cheap but real work is slow, inspect the selected tools:
 
-Sometimes adding explicit rules or using `-rR` during audits clarifies both correctness and
-decision cost.
+- time the dominant compiler, linker, test, or archive invocation
+- distinguish CPU time from wall time waiting on storage or network
+- verify whether the recipe repeats work because its output contract is weak
+- check whether one long recipe hides parallelizable file targets
+- keep tool caches either deliberately warm or deliberately cold across comparisons
 
-## Common recipe-time traps
+Do not split one semantically atomic publication merely to create more parallel jobs.
+Performance changes remain subordinate to output ownership and failure safety.
 
-Performance work also gets distorted when Make is blamed for slow tools.
+## Measure parallel scaling without losing correctness
 
-Examples:
+Run the same prepared workload at supported budgets:
 
-- a compiler invocation is expensive because of optimization level or dependency scanning
-- a packaging step recompresses large assets repeatedly
-- a test suite is doing the real work while Make just orchestrates it
-
-In those cases, rewriting Make logic may change almost nothing.
-
-That is why you compare `make -n` and `make all`. They help separate orchestration cost
-from tool cost.
-
-## A simple comparison pattern
-
-Imagine these results:
-
-```text
-/usr/bin/time -p make -n all   -> 2.8s
-/usr/bin/time -p make all      -> 3.0s
+```sh
+gmake -j1 all
+gmake -j2 all
+gmake -j4 all
 ```
 
-That suggests most of the cost is in parse and decision work, not recipes.
+For each budget, record wall time, peak recipe overlap where practical, and output digests.
+Interpret the shape:
 
-Now imagine:
+| Scaling result | Next question |
+| --- | --- |
+| near-linear improvement | does memory or I/O remain safe at the next supported budget? |
+| early plateau | is the critical path serial, the graph missing independence, or the tool internally parallel? |
+| regression at higher `-j` | are CPU, memory, storage, or nested tools oversubscribed? |
+| different output digest | stop; this is a correctness failure, not a performance result |
 
-```text
-/usr/bin/time -p make -n all   -> 0.2s
-/usr/bin/time -p make all      -> 18.0s
+Recursive builds also need jobserver evidence. Never give each child its own `-jN` and call
+the aggregate faster without measuring total concurrency.
+
+## Treat trace volume as an operability measure
+
+Count trace lines only after capturing a comparable workload:
+
+```sh
+gmake --trace all \
+  > artifacts/performance/make-module-05/trace.log
+wc -l artifacts/performance/make-module-05/trace.log
 ```
 
-That suggests Make itself is not the main performance problem.
+Line count is a proxy for evidence volume, not explanatory quality or execution cost.
+Review a sample:
 
-This kind of comparison is basic, but it stops many wrong turns.
+- can each line be attributed to one target and rule?
+- is recursion synchronized enough to follow?
+- does the trace contain repeated noise that hides causal lines?
+- did trace capture materially alter wall time?
 
-## Parallelism is not a universal fix
+Optimize observation separately. `--output-sync=recurse` can improve readability without
+changing graph truth.
 
-When a build is slow, people often reach for `-j` first.
+## A worked interpretation
 
-That can help, but it does not fix:
+Suppose seven settled runs produce:
 
-- heavy parse-time computation
-- needless trace volume
-- recursive boundaries that lose the jobserver
-- serial bottlenecks inside a single expensive recipe
+| Command | Median wall time | Range | Interpretation |
+| --- | ---: | ---: | --- |
+| `gmake -n all` with output discarded | 1.7 s | 1.6–1.9 s | orchestration proxy is material |
+| `gmake all` with output discarded | 1.8 s | 1.7–2.0 s | recipes add little in settled state |
+| `gmake -rR -n all` in a test copy | 0.5 s | 0.5–0.6 s | built-in search is a useful suspect |
+| `gmake -rR all` after one input change | 4.1 s | 4.0–4.3 s | full contract still needs equivalence proof |
 
-Parallelism helps when there is real independent work to schedule. It is not a substitute
-for understanding the cost structure.
+The next action is not yet "add `-rR` everywhere." Compare selected rules, rebuild causes,
+and output hashes under the normal and experimental modes. Performance evidence proposes
+a candidate; correctness evidence licenses it.
 
-## Performance changes need proof too
+## Review checklist
 
-The course has been insisting on proof for correctness. The same standard belongs here.
+Reject a performance change when:
 
-A believable performance change should say:
+- baseline and changed runs use different workload states
+- only one measurement is reported
+- output capture or tracing differs without being named
+- caches, job count, or tool versions changed silently
+- the change improves time by hiding required work
+- the output contract or settled query was not rechecked
 
-- the baseline measurement
-- what changed
-- the after measurement
-- which layer improved
-- any tradeoff in readability or correctness
+Accept the claim only when the report names the layer, controlled variable, result
+distribution, correctness guard, and readability tradeoff.
 
-Without that, a "performance improvement" is often just a preference with a benchmark-shaped story.
+## Practice before moving on
 
-## Failure signatures worth recognizing
+Choose one capstone route and produce:
 
-### "Nothing is compiling, but `make -n` still feels heavy"
+1. clean, no-op, and one-input workload definitions
+2. repeated planning and real-run timings
+3. one trace-volume observation kept separate from timing
+4. one layer hypothesis
+5. one controlled experiment testing that hypothesis
+6. output-equivalence and convergence checks after the experiment
 
-That points at parse, expansion, or discovery cost.
-
-### "The full build is slow, but dry-run is cheap"
-
-That points away from Make orchestration and toward recipe work.
-
-### "The build is technically correct, but nobody can use the trace output anymore"
-
-That means the evidence surface has become operationally expensive.
-
-### "We rewrote the Makefiles and got no measurable speedup"
-
-That usually means the actual bottleneck was elsewhere.
-
-## A review question that improves performance work
-
-Ask anyone proposing a performance fix to answer five things:
-
-1. what exact measurement showed the problem
-2. which layer is expensive
-3. what change addresses that layer
-4. how the new measurement compares
-5. what readability or correctness cost the change introduces
-
-This is a very effective way to filter out cargo-cult optimizations.
-
-## What to practice from this page
-
-Take one build route in the capstone or your own repository and produce a short report:
-
-1. `make -n` time
-2. full build time
-3. trace line count
-4. your best guess about which layer dominates
-5. one next experiment that would test that guess
-
-If you can produce that report cleanly, you are doing performance engineering instead of
-performance folklore.
+If the result is "the recipe tool dominates," that is a useful result. It prevents an
+expensive Make rewrite aimed at the wrong layer.
 
 ## End-of-page checkpoint
 
-Before leaving this lesson, make sure you can explain:
+Before leaving, make sure you can explain:
 
-- why build-performance complaints need layer separation
-- why `make -n` is a useful performance lens
-- why trace volume can be a real operational cost
-- why some performance problems are really recipe problems, not Make problems
-- why every performance fix needs a before-and-after story
+- why workload state must be fixed before timing
+- why `-n` is an orchestration proxy rather than a pure decision timer
+- how repeated measurements and spread prevent fastest-run storytelling
+- how `-rR` can test an implicit-search hypothesis without becoming an automatic fix
+- why parallel speedups require output-equivalence and jobserver evidence
+- why trace volume measures operability, not graph correctness

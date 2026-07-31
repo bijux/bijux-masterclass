@@ -60,6 +60,46 @@ How do you design effect interfaces as **capability protocols** for common depen
 
 You are now two steps away from a complete production-grade functional architecture.
 
+## Runnable lab: grant read authority without write authority
+
+Python protocols are structural: an adapter satisfies `StorageRead` by exposing
+the required method, without inheriting a framework base class.
+
+```python
+class ReadOnlyDocs:
+    def read_docs(self, path: str) -> Iterator[Result[RawDoc, ErrInfo]]:
+        yield Ok(
+            RawDoc(
+                doc_id=path,
+                title="Read only",
+                abstract="",
+                categories="fp",
+            )
+        )
+
+reader: StorageRead = ReadOnlyDocs()
+results = list(reader.read_docs("d1"))
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k read_capability_grants_no_write_authority
+```
+
+The adapter has `read_docs` and deliberately has no `write_chunks`. A function
+typed with `StorageRead` cannot legitimately ask for write authority. This is
+least authority expressed in the function signature.
+
+The runtime assertion makes the narrow surface visible. Static checking adds
+the stronger development-time guarantee: attempting `reader.write_chunks(...)`
+is a type error. Runtime success alone cannot prove that every call site honors
+the protocol, so the focused verification route also checks this learning file
+with strict mypy while imported package internals remain the responsibility of
+the course-wide type gate.
+
 ## 1. Laws & Invariants (machine-checked where possible)
 
 | Law / Invariant            | Description                                                                                  | Enforcement          |

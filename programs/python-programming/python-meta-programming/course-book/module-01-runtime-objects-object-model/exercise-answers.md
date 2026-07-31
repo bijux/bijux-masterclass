@@ -29,6 +29,14 @@ Use this page after you have attempted the exercises yourself. The point is not 
 every example literally. The point is to compare your reasoning against an answer that
 names the runtime object, cites evidence, and stays honest about boundaries.
 
+The supplied lab is one defensible implementation route, not the only acceptable answer.
+Compare your work with:
+
+- `labs/runtime_objects/evidence.py` for the probes
+- `tests/test_runtime_objects_lab.py` for claim-level proof
+- `make lab` for learner-visible evidence
+- `make lab-test` for the focused verification result
+
 ## Answer 1: Tell the truth about one function object
 
 Example answer:
@@ -296,6 +304,48 @@ The packet is strong when another learner can answer:
 
 If readers still need phrases like "Python magic" to follow the packet, the object model
 is not explicit enough yet.
+
+## Review every answer for overclaiming
+
+Use this table after reading the worked answers. It identifies the most common wrong turn
+and the boundary each answer must preserve.
+
+| Answer | Why the route is defensible | Common wrong turn | What the result proves | What it does not prove |
+| --- | --- | --- | --- | --- |
+| 1 function | it combines supported identity metadata, one call result, and a clearly labeled code-object observation | treating every callable as if it had `__code__` and `__closure__` | this Python function carries metadata, code-related evidence, and captured state | that all callables share those internals or that closure inspection is a good application dependency |
+| 2 class | it locates the function in the class namespace and follows lookup into a bound method | saying the method is stored inside the instance | this class object stores the function used by instance method binding | that all class customization is ordinary or that metaclass use is justified |
+| 3 module | it proves cache identity independently from stale copied binding and cleans up global state | confusing module rebinding with automatic refresh of copied names | this import returned the cached object and this copied value became stale | that reload is safe for arbitrary stateful modules |
+| 4 instance | it observes dictionary and slot behavior directly | claiming slots are automatically faster or always use less memory | these two classes expose different storage and assignment contracts | a general performance result or a universal design preference |
+| 5 graph | it follows identity edges from instance to the live defining namespace | drawing a static class diagram that omits runtime timing | this method call uses the shown object relationships and module global | that wrappers or descriptors preserve every edge transparently |
+| 6 brittle helper | it reports supported metadata first and makes source recovery explicitly best effort | reconstructing source from filename and indentation as if it were guaranteed | the tool can provide partial runtime evidence without lying | that runtime objects always retain recoverable original source |
+| 7 method identity | it compares class storage with the object returned by instance lookup | comparing two fresh bound-method objects with `is` and calling that the contract | the bound method points to the expected instance and stored function | that Python must cache one stable bound-method object |
+| 8 import graph | it orders module, class, function, and later instance creation by event | placing every object in the graph at import time | which bindings the chosen module execution actually created | that other modules avoid import-time instance creation or side effects |
+| 9 evidence choice | it answers one question through two routes and limits the conclusion | assuming lower-level detail is automatically stronger | the supported route is sufficient for the stated runtime question | that diagnostic evidence is never useful in debuggers or profilers |
+| 10 packet | it combines saved output, tests, reasoning, and a transfer trace | submitting green commands without explaining the claims | another learner can reproduce and review the Module 01 object model | that the entire capstone architecture is correct |
+
+## Capstone transfer answer
+
+A strong Module 01 capstone note chooses one narrow relationship, usually
+`ConsoleNotifier().deliver`, and records:
+
+```python
+instance = ConsoleNotifier()
+bound = instance.deliver
+stored = ConsoleNotifier.__dict__["deliver"]
+
+assert bound.__self__ is instance
+assert bound.__func__ is stored
+```
+
+The note should also say that `stored` is already a decorated wrapper. That observation
+connects the answer to the application architecture without pretending the learner has
+already completed the decorator modules. The right conclusion is:
+
+> the ordinary function/class/instance binding floor remains observable in the capstone;
+> wrapper provenance is the next design pressure, not a solved Module 01 topic.
+
+Run `make test` only after the focused lab check. A passing integration suite shows the
+course lab and capstone coexist; it does not replace the reasoning above.
 
 ## What strong Module 01 answers have in common
 

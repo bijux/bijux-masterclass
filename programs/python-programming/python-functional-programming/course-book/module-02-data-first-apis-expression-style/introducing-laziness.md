@@ -382,21 +382,86 @@ Rarely, for small/hot paths where full materialization is cheaper, use lists beh
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** In your code, find one eager list on big/streaming data.  
-Apply the recipe:
-1. Replace with generator expression / `yield`.
-2. Chain lazy operations.
-3. Materialize only at edge (e.g., for global ops like dedup).
-4. Prove equivalence with Hypothesis.
-5. Compose with Core 1/2 patterns.
+**Reflect:** Identify one RAG intermediate whose consumer needs only one pass and one
+boundary whose consumer needs a complete, replayable result. Explain both choices
+before changing code.
 
-Did memory usage drop?  
-Did the pipeline handle larger data?
-
-**Project Exercise:** Apply to RAG; run properties on sample data.
+**Project Exercise:** Use a counted source to show when `ffilter`, `fmap`, and
+`flatmap` first execute. Preserve the Module 01 values when fully consumed.
 
 **Continue with:** [FP-Friendly APIs](../module-02-data-first-apis-expression-style/fp-friendly-apis.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 
 **Further Reading:** For more on generators in Python, see 'Fluent Python' by Luciano Ramalho. Explore itertools for advanced lazy tools once comfortable.
+
+## Module 02 introduces stage shape, not streaming policy
+
+The module adds lazy combinators because they compose without intermediate lists:
+
+```python
+stream = flatmap(duplicate)(
+    fmap(lambda value: value + 1)(
+        ffilter(is_even)(source())
+    )
+)
+```
+
+Construction does no work. One `next(stream)` may request several upstream values if
+the filter rejects them, then `fmap` transforms the accepted value, and `flatmap`
+requests the first expanded output.
+
+This lesson deliberately stops short of claiming that the complete RAG API is
+streaming. `full_rag_api_docs` materializes:
+
+- all input documents for `total_docs`;
+- all kept and cleaned documents for stage taps;
+- all embedded chunks before canonical sorting and deduplication;
+- the returned chunk list.
+
+Those are honest Module 02 API promises. Module 03 introduces explicit bounded
+traversal, windowing, fan-out, and demand policy.
+
+## Laziness changes timing, not meaning by itself
+
+The teaching test records events:
+
+```text
+construct stream -> no events
+request first output
+  -> source yields 0
+  -> filter evaluates 0
+  -> map produces 1
+  -> flatmap expands 1
+  -> first 1 returned
+```
+
+Final-list equality cannot prove this timing. Conversely, an event trace does not
+prove final RAG values. Test both when refactoring a stage.
+
+## Retained state still matters
+
+A lazy iterator retains its upstream iterator and suspended frame. A filter can scan
+many values before producing one. `flatmap` can retain its current inner iterable.
+Later stages such as deduplication may retain global state. “Lazy” is not a synonym
+for constant space, bounded time, or replayable output.
+
+Use this decision table:
+
+| Consumer contract | Suitable shape |
+| --- | --- |
+| one pass through a transform chain | iterator |
+| prefix demand | iterator plus an explicit fence |
+| multiple passes or random access | materialized sequence or source factory |
+| global canonical sort/dedup | deliberate complete materialization |
+| complete observations | fold or owned result, depending on API |
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'iterator_combinators'
+```
+
+The proof establishes deferred evaluation and stage order for the tested chain. It
+does not establish a memory measurement or safe handling of infinite input.

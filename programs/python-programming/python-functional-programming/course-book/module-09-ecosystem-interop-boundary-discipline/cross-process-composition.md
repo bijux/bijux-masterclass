@@ -250,11 +250,14 @@ def reconstruct_pipeline(spec_json: str, registry: Dict[str, Callable], registry
 ```
 ---
 ## 4. Reference Implementations
-### 4.1 Spec Serialization (YAML)
+### 4.1 Spec serialization
 ```python
-import yaml
-def serialize_to_yaml(spec: PipelineSpec) -> str:
-    return yaml.safe_dump(spec.model_dump())
+payload = canonical_json({
+    "ops": [
+        {"type": op.type, "func_id": op.func_id, "error_policy": op.error_policy}
+        for op in spec.ops
+    ]
+})
 ```
 ### 4.2 Cross-Process RAG
 ```python
@@ -277,19 +280,19 @@ spec = serialize_pipeline(pipeline, registry_meta)
 reconstructed = reconstruct_pipeline(spec, registry, registry_meta, monoid_factory, sink_registry, sink_meta, allow_list)
 ```
 ---
-## 5. Property-Based Proofs (repo tests)
-Runnable properties live in `capstone/tests/unit/pipelines/test_specs_roundtrip.py`.
-```python
-@given(pipeline_strat())
-def test_round_trip_equiv(pipeline):
-    spec = serialize_pipeline(pipeline, registry_meta)
-    recon_res = reconstruct_pipeline(spec, registry, registry_meta, monoid_factory, sink_registry, sink_meta, allow_list=set(registry.keys()))
-    assert isinstance(recon_res, Ok)
-    recon = recon_res.value
-    data = generate_data()
-    # Use multiset + tolerance from Core 7 for equivalence
-    assert multiset_eq(pipeline.run(data), recon.run(data), tol=1e-6)  # Handles order/float drift
+## 5. Executable proof
+
+`tests/unit/pipelines/test_specs_roundtrip.py` proves that the shipped `Map` and
+`FlatMap` spec reconstructs to equivalent local behavior. The learning proof
+separates identity and authority:
+
+```bash
+pytest -q tests/learning/test_module_09_interop.py \
+  -k pipeline_spec_is_hashed_and_allow_listed_before_execution
 ```
+
+The hash detects a changed description. The allow-list decides whether the local
+process will attach code to that description. A hash is not authorization.
 ---
 ## 6. Runtime Preservation Guarantee
 Serialization adds I/O overhead; reconstruction matches original perf.
@@ -307,9 +310,11 @@ Serialization adds I/O overhead; reconstruction matches original perf.
 3. Benefit? → **Decoupled execution**
 4. Law? → **Reproducibility**
 5. Use for…? → **Multi-process**
-## 9. Post-Core Exercise
-1. Serialize a RAG pipeline spec.
-2. Prove round-trip with Hypothesis.
+## 9. Post-core exercise
+
+Complete [Cross-process composition: reject code identity before
+reconstruction](exercises.md#cross-process-composition-reject-code-identity-before-reconstruction).
+Explain why canonical hashing and allow-listing solve different problems.
 **Pipeline Usage (Idiomatic)**
 ```python
 spec = serialize_pipeline(pipeline, registry_meta)

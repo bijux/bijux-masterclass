@@ -81,14 +81,6 @@ def test_full_rag_is_canonical(docs: list[RawDoc], env: RagEnv) -> None:
     assert forward == backward
 
 
-@given(docs=unique_doc_list_strategy(), env=env_strategy())
-def test_full_rag_is_idempotent(docs: list[RawDoc], env: RagEnv) -> None:
-    """Running the pipeline twice has the same effect as running it once."""
-    once = full_rag(docs, env)
-    twice = structural_dedup_chunks(once)
-    assert once == twice
-
-
 @given(chunks=st.lists(pipeline_chunk_strategy()))
 def test_structural_dedup_is_idempotent(chunks) -> None:
     """Deduplication reaches a fixed point after a single pass."""

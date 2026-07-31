@@ -1,417 +1,316 @@
-# Exercise Answers
-
+# Exercise Answers: Descriptor Evidence Studio Review
 
 <!-- page-maps:start -->
 ## Page Maps
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Meta-Programming"]
-  section["Descriptors Lookup Attribute Control"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  evidence["Observed evidence"] --> reasoning["Mechanism and owner"]
+  reasoning --> limit["What remains unproved"]
+  limit --> transfer["Capstone or design transfer"]
 ```
 <!-- page-maps:end -->
 
-Use this page after attempting the exercises yourself. The point is not to match every
-example literally. The point is to compare your reasoning against answers that keep
-descriptor mechanics, storage, and ownership boundaries honest.
+Use these answers to review reasoning, not to compare prose word for word. A defensible
+answer names timing, owner, public surface, proof, and limitation.
 
-Treat each answer as a review calibration, not as a final form to imitate blindly. A
-strong answer names the winning lookup step, the storage owner, and the rejected
-alternatives in plain language. A weak answer may look technically competent while still
-hiding where the real rule lives.
+The answer review should connect evidence back to ownership:
 
-Use this page actively:
-
-- compare your winning lookup step against the reference answer
-- compare your storage owner against the reference answer
-- compare your rejected lower-power and stronger alternatives against the reference answer
-
-If you only compare final mechanism choices, you will miss the teaching point.
-
-## Answer 1: Build one minimal descriptor on purpose
-
-Example answer:
-
-```python
-class UpperName:
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        return obj.__dict__.get("_name", "").upper()
+```mermaid
+flowchart TD
+  classvalue["Static class attachment"] --> protocol{"Which hooks exist on its type?"}
+  protocol --> prediction["Lookup prediction"]
+  state["Instance dictionary"] --> prediction
+  prediction --> operation["Deliberate read or write"]
+  operation --> judgment["Owner, result, and limitation"]
 ```
 
-Good conclusion:
+## Answer 1: Naming is not descriptor status
 
-This is still a descriptor because `__get__` alone is enough. It does not need `__set__`
-or `__delete__` if the design only cares about reads, and class access returns the
-descriptor itself for inspection.
-
-Weak answer to reject:
-
-- "`__set_name__` would be enough because the object knows its field name"
-
-Why it fails:
-
-- name awareness is not the same thing as descriptor protocol status
-
-Reasoning checkpoint:
-
-- can you name the exact read boundary this hook owns?
-- can you say which extra hook would be the first honest expansion only if the requirement changed?
-
-## Answer 2: Show precedence with two concrete cases
-
-Example answer:
-
-For a data descriptor:
-
-- `obj.__dict__["value"] = 999` does not bypass a descriptor that defines `__set__`
-
-For a non-data descriptor:
-
-- an instance assignment like `obj.value = 999` places a same-named entry in `obj.__dict__`
-- later reads return that instance value instead of calling the descriptor
-
-Good conclusion:
-
-The outcomes differ because data descriptors beat the instance dictionary, while non-data
-descriptors yield to it.
-
-Weak answer to reject:
-
-- "Python preferred the descriptor because descriptors are more powerful"
-
-Why it fails:
-
-- power language replaces the actual precedence rule
-
-Reasoning checkpoint:
-
-- can you point to the exact public name being resolved?
-- can you name the evidence that proves which side won in each case?
-
-## Answer 3: Explain ordinary method binding
-
-Example answer:
-
-- `Class.method` returns the underlying function object
-- `obj.method` returns a bound method object
-- the bound method exposes `__func__` for the original function and `__self__` for the instance
-
-Good conclusion:
-
-Method binding is descriptor behavior, not special syntax magic. Functions on classes are
-non-data descriptors whose `__get__` logic produces bound methods on instance access.
-
-Weak answer to reject:
-
-- "instance access just adds `self` automatically"
-
-Why it fails:
-
-- automatic language hides the binding object and the descriptor step
-
-Reasoning checkpoint:
-
-- can you explain why `Class.method` does not bind?
-- can you say what `__func__` and `__self__` prove about the result?
-
-## Answer 4: Build one reusable validating field
-
-Example answer:
+A protocol inventory can be built from the installed objects:
 
 ```python
-class PositiveInt:
-    def __set_name__(self, owner, name):
-        self.public_name = name
-        self.private_name = f"_{name}"
+marker = vars(Delivery)["marker"]
+field = vars(Delivery)["endpoint"]
 
-    def __get__(self, obj, owner=None):
-        if obj is None:
-            return self
-        return obj.__dict__.get(self.private_name, 0)
-
-    def __set__(self, obj, value):
-        number = int(value)
-        if number < 0:
-            raise ValueError(f"{self.public_name} must be non-negative")
-        obj.__dict__[self.private_name] = number
+marker_protocol = inspect_descriptor_protocol(marker)
+field_protocol = inspect_descriptor_protocol(field)
 ```
 
-Good conclusion:
+Expected conclusion:
 
-`__set_name__` removes hard-coded field names, and the stored values live on the instance,
-not on the descriptor object.
+| Object | `__set_name__` | Access hooks | Classification |
+| --- | --- | --- | --- |
+| `NameAware` | yes | none | not a descriptor |
+| `StoredField` | yes | `__get__`, `__set__` | data descriptor |
 
-Weak answer to reject:
+Reasoning:
 
-- "the descriptor is small, so holding the value there is fine"
+- both objects receive names during owner-class creation
+- only `StoredField` participates in later attribute access
+- `__set_name__` configures installation; access hooks establish protocol status
 
-Why it fails:
+Common wrong turn:
 
-- shared descriptor objects stay shared regardless of size
+> `NameAware` is a non-data descriptor because it does not define `__set__`.
 
-Reasoning checkpoint:
+Why it fails: a non-data descriptor still needs `__get__`.
 
-- can you identify the configuration that stays on the descriptor object?
-- can you explain what would leak if the value moved there too?
+What this proves:
 
-## Answer 5: Reject one bad storage design
+- the hook sets and installation names of these exact objects
 
-Example answer:
+What it does not prove:
 
-Broken design:
+- that name-aware helpers are useless
+- that every descriptor needs `__set_name__`
+
+Capstone transfer:
+
+`Field.__set_name__` records metadata, while `Field.__get__` and `Field.__set__` own
+access.
+
+## Answer 2: Predict lookup before execution
+
+A valid fourth class value is:
 
 ```python
-class BrokenField:
-    def __init__(self):
-        self.value = None
+fallback = ShadowableValue("fallback-descriptor")
 ```
 
-Leak example:
+With no `vars(delivery)["fallback"]`, the prediction is
+`"non-data-descriptor"`. The complete table is:
 
-- assigning through one instance changes what another instance later reads
+| Name | Category | Public instance entry | Winner |
+| --- | --- | --- | --- |
+| `enforced` | data | yes | data descriptor |
+| `shadowable` | non-data | yes | instance dictionary |
+| `fallback` | non-data | no | non-data descriptor |
+| `category` | neither | no | class attribute |
 
-Safer redesign:
+Reasoning:
 
-- store by private name in `obj.__dict__`
-- or use `WeakKeyDictionary` when slotted instances need external storage
+The descriptor category is determined before deciding where a non-data descriptor sits
+relative to instance state. Private `_enforced` storage does not count as a same-named
+public entry.
 
-Good conclusion:
+Common wrong turn:
 
-The descriptor object is shared at the class level, so descriptor-held field values are
-usually shared-state bugs waiting to happen.
+> The instance dictionary wins whenever the name exists there.
 
-Weak answer to reject:
+Why it fails: data descriptors are checked first.
 
-- "`id(obj)` solves the problem completely"
+What this proves:
 
-Why it fails:
+- the lab predictor agrees with ordinary lookup for these cases
 
-- identity reuse and stale mapping state still leave the design fragile
+What it does not prove:
 
-Reasoning checkpoint:
+- custom `__getattribute__` behavior
+- `__getattr__` fallback behavior
 
-- can you name one concrete cross-instance leak scenario?
-- can you explain why `id(obj)` storage is still a weak repair even if it appears to separate instances?
+Capstone transfer:
 
-## Answer 6: Place one field rule on the ownership ladder
+Capstone fields are data descriptors, so a public instance entry cannot shadow their
+normal reads.
 
-Example answer:
+## Answer 3: Binding without action execution
 
-Requirement:
+One review route:
 
-- every `email` field across several model classes should normalize to lowercase and reject blank values
+```python
+plugin = ConsoleNotifier()
+static_value = inspect.getattr_static(ConsoleNotifier, "deliver")
+bound = plugin.deliver
 
-Best owner:
+assert bound.__func__ is static_value
+assert bound.__self__ is plugin
+assert plugin.action_history() == []
+```
 
-- reusable descriptor
+Reasoning:
 
-Rejected stronger option:
+- the action decorator owns the wrapper function and `ActionSpec`
+- the function type's `__get__` owns binding
+- the plugin instance becomes the method receiver
+- retrieving the method does not invoke it
 
-- a metaclass is unnecessary because the problem is field behavior, not class-creation control
+Common wrong turn:
 
-Rejected weaker option:
+> `PluginMeta` binds the method because it collected the action.
 
-- a single property on one class would not scale cleanly across several repeated fields
+Why it fails: collection happens during class creation; binding happens during instance
+attribute access.
 
-Good conclusion:
+What this proves:
 
-Strong answers justify the chosen owner by naming both the repeated field semantics and
-the clearer alternatives that were rejected.
+- function and receiver identities
+- absence of action execution at inspection time
 
-Weak answer to reject:
+What it does not prove:
 
-- "the descriptor is more reusable, so I chose it"
+- successful delivery behavior
+- metadata preservation beyond the inspected identities
 
-Why it fails:
+Capstone transfer:
 
-- reuse has to be present in the actual requirement, not just possible in theory
+Use `action-wrapper` for wrapper ownership and method identity for binding ownership.
+They answer different questions about the same public name.
 
-Reasoning checkpoint:
+## Answer 4: Extend quantity conversion
 
-- can you name one rejected stronger option and one rejected weaker option?
-- can you say what real reuse pressure made the descriptor worth keeping?
+A valid declaration is:
 
-## Answer 7: Trace one attribute lookup from class to instance
+```python
+class DeliveryTiming:
+    timeout = Quantity(
+        "s",
+        {"s": 1.0, "ms": 0.001, "min": 60.0},
+        minimum=0.0,
+        maximum=300.0,
+    )
+```
 
-Example answer:
+Focused proof:
 
-Suppose:
+```python
+first = DeliveryTiming()
+second = DeliveryTiming()
+first.timeout = (2, "min")
+second.timeout = 30
 
-- `Account.balance` is a descriptor
-- `acct.__dict__` may also contain a stored backing name such as `"_balance"`
+assert vars(first) == {"_timeout_canonical": 120.0}
+assert vars(second) == {"_timeout_canonical": 30.0}
+assert first.timeout.in_unit("min") == 2.0
 
-Strong explanation:
+with self.assertRaisesRegex(ValueError, "must be <= 300.0 s"):
+    first.timeout = (6, "min")
+```
 
-- Python starts with the attribute name on the class
-- if the class attribute is a data descriptor, it wins before direct instance-dictionary lookup
-- if it is only a non-data descriptor, a same-named instance entry can shadow it
-- the descriptor may then choose to read or write the backing value stored on the instance
+Reasoning:
 
-Good conclusion:
+Bounds apply after conversion because storage and comparison use canonical seconds.
 
-The lookup result is determined by precedence rules, not by mystery. The key review
-question is always which object owns the name and which rule wins first.
+Common wrong turn:
 
-Weak answer to reject:
+> Compare `6` with `300` before applying the unit.
 
-- "the instance somehow won"
+Why it fails: six minutes is 360 canonical seconds.
 
-Why it fails:
+What this proves:
 
-- "somehow" means the lookup order was never made explicit
+- minutes use the declared factor
+- range checks use canonical values
+- two instances remain independent
 
-Reasoning checkpoint:
+What it does not prove:
 
-- can you narrate the lookup order step by step?
-- can you identify where instance storage participates and where it does not?
+- decimal-exact conversion
+- parsing strings such as `"2 min"`
 
-## Answer 8: Replace one unnecessary descriptor with a lower-power owner
+Application connection:
 
-Example answer:
+The capstone field family similarly coerces before storing, but it does not model units.
 
-Requirement:
+## Answer 5: Schema and ownership are complementary
 
-- one `price` field in one class should reject negative values
+`make capstone-field` answers:
 
-Better owner:
+> What public configuration contract does `endpoint` export?
 
-- a property
+It reports name, kind, description, required/default status, and minimum length.
 
-Strong explanation:
+`make capstone-field-ownership` answers:
 
-- the rule applies to one field in one class
-- reuse pressure is low
-- a descriptor would introduce an extra abstraction layer without making ownership clearer
+> Which runtime objects implement that contract?
 
-Good conclusion:
+It reports:
 
-Descriptors earn their keep when attribute behavior repeats or must be shared. Without
-that reuse pressure, a property keeps the boundary easier to read and teach.
+```json
+{
+  "declaring_class": "WebhookNotifier",
+  "descriptor_kind": "data",
+  "descriptor_type": "StringField",
+  "hooks": ["__get__", "__set__", "__set_name__"],
+  "storage_name": "_endpoint",
+  "storage_owner": "plugin-instance.__dict__",
+  "constructed": false,
+  "executed": false
+}
+```
 
-Weak answer to reject:
+Reasoning:
 
-- "a descriptor would future-proof the class"
+Schema is a public declaration. Ownership evidence explains the mechanism behind it.
+Neither output substitutes for the field tests that execute coercion and rejection.
 
-Why it fails:
+Common wrong turn:
 
-- speculative reuse is not current reuse pressure
+> Because the metaclass collected the field, the metaclass owns validation.
 
-Reasoning checkpoint:
+Why it fails: `PluginMeta` owns collection and constructor generation; `StringField`
+owns coercion, validation, reads, and writes.
 
-- can you name the one-attribute owner that would be clearer here?
-- can you say what descriptor power would add without adding clarity?
+What this proves:
 
-## Answer 9: Compare honest descriptor claims with overstated claims
+- static descriptor ownership without plugin construction
 
-Example answer:
+What it does not prove:
 
-Honest description:
+- that every raw value is accepted or rejected correctly
+- that direct private storage mutation is impossible
 
-- "This descriptor enforces a non-empty string rule whenever the attribute is assigned."
+## Answer 6: Ownership review
 
-Overstated description:
+| Requirement | Chosen owner | Rejected owner | Deciding pressure |
+| --- | --- | --- | --- |
+| one class computes a display label | property | custom descriptor | no reuse or stored-field contract |
+| many plugin classes reuse bounded integers | descriptor | repeated properties | repeated field semantics and metadata |
+| all assignments fail after initialization | `__setattr__` or a bounded freezing policy | one descriptor per field | rule spans the whole object |
+| duplicate fields fail during class-body execution | prepared namespace or metaclass | descriptor | failure must happen before duplicate dictionary state is lost |
+| one method performs delivery I/O | method | descriptor property | effect must remain explicit |
 
-- "This descriptor guarantees clean user data everywhere."
+Reasoning:
 
-Good conclusion:
+Each owner matches the time and width of the requirement. The descriptor row is the only
+one whose rule is both attribute-local and repeated.
 
-The second version is misleading because "guarantees" and "everywhere" imply broader
-system-wide control than an attribute assignment boundary can actually provide.
+Common wrong turn:
 
-Weak answer to reject:
+> Use descriptors for every row because the module is about descriptors.
 
-- "the stronger wording is acceptable if the team knows what I mean"
+Why it fails: mechanism practice without ownership judgment creates over-engineered APIs.
 
-Why it fails:
+What this proves:
 
-- review language has to survive readers who only have the text, not the author's intent
+- the reviewer can place requirements on the power ladder
 
-Reasoning checkpoint:
+What it does not prove:
 
-- can you point to the inflated words in the bad claim?
-- can you replace them with a narrower useful sentence?
+- that the chosen production implementation handles every inheritance or concurrency
+  concern
 
-## Answer 10: Produce a descriptor-boundary packet
+Capstone transfer:
 
-The packet is strong when another learner can answer:
+The capstone uses all three relevant owners deliberately: descriptors for fields,
+wrappers for actions, and a metaclass for class-family creation.
 
-- which attribute rule the descriptor owns
-- which lookup precedence rule explains the result
-- where per-instance state lives
-- when a simpler owner would have been clearer
+## Final review standard
 
-Add one more packet test:
+A complete studio packet should make these statements defensible:
 
-- could a reviewer identify both the winning lookup step and the storage owner without reading the implementation twice?
+- `__set_name__` and descriptor status occur at different boundaries
+- data/non-data precedence predicts a concrete conflict
+- method binding retains inspectable function and receiver identities
+- descriptor configuration is shared while instance values are not
+- the quantity example earns reuse through repeated field semantics
+- capstone field schema and capstone ownership evidence answer different questions
 
-Use one more packet test:
-
-- could a missed-class learner explain why at least three stronger or weaker alternatives were rejected without reopening the whole module?
-
-## Repair moves for weak answer keys
-
-If your answer key still feels shallow, use these repair moves:
-
-| Weak answer habit | Repair move |
-| --- | --- |
-| saying only "the descriptor wins" | name the precedence rule and the evidence step |
-| describing storage vaguely | point to `obj.__dict__`, weak-key storage, or the broken shared object directly |
-| using "magic" to explain binding | point to `__get__`, `__func__`, and `__self__` |
-| choosing descriptors because they are advanced | name the actual reuse pressure and the rejected lower-power owner |
-| describing every field rule as descriptor-worthy | explain when one property would stay clearer |
-
-## Cross-answer habits to inspect
-
-Before you leave the answer key, scan your own work for these:
-
-| If your packet keeps doing this... | Repair it by... |
-| --- | --- |
-| naming mechanisms without naming winners | add the winning lookup step explicitly |
-| naming hooks without naming storage | add one sentence that says where the live value actually resides |
-| naming descriptors without naming rejected alternatives | add one lower-power rejection and one stronger-power rejection where relevant |
-
-## What strong Module 07 answers have in common
-
-Across the whole set, strong answers share the same habits:
-
-- they explain lookup mechanically
-- they distinguish data descriptors from non-data descriptors precisely
-- they keep state ownership explicit
-- they choose descriptor power only when a field-level boundary truly needs it
-- they can narrate lookup order without magical phrasing
-- they leave behind a packet another learner can review without guessing
-
-If an answer still sounds like "descriptors are advanced so they fit here," revise it
-until you can say exactly what attribute rule they own and why.
-
-## Exit check for the answer key
-
-Before leaving this page, make sure you can do all of these:
-
-- identify the winning lookup step in every precedence-focused answer
-- identify the storage owner in every reusable-field answer
-- name one rejected lower-power alternative in every ownership-focused answer
-- explain one case where descriptor power is justified and one where it is not
+If your packet states only results, add the owner and timing. If it states only mechanism,
+add the design judgment and limitation.
 
 ## Continue through Module 07
 
 - Previous: [Exercises](exercises.md)
-- Return: [Overview](index.md)
-- Next module: [Module 08](../module-08-descriptor-systems-validation-framework-design/index.md)
+- Return: [Module 07 Overview](index.md)
 - Terms: [Glossary](glossary.md)

@@ -8,7 +8,15 @@ distributed compiler that preserves the same pipeline contracts.
 from __future__ import annotations
 
 import importlib
-from typing import Any
+from dataclasses import dataclass
+from typing import Any, Literal
+
+
+@dataclass(frozen=True, slots=True)
+class BackendStatus:
+    name: Literal["dask", "beam"]
+    installed: bool
+    compiler_shipped: bool = False
 
 
 def dask_available() -> bool:
@@ -28,6 +36,15 @@ def beam_available() -> bool:
         return False
 
 
+def backend_statuses() -> tuple[BackendStatus, ...]:
+    """Report installation separately from the repository's implementation claim."""
+
+    return (
+        BackendStatus(name="dask", installed=dask_available()),
+        BackendStatus(name="beam", installed=beam_available()),
+    )
+
+
 def compile_to_dask_bag(*_args: Any, **_kwargs: Any) -> Any:
     """Documented Dask attachment point; no backend ships in the default repo."""
 
@@ -44,4 +61,11 @@ def compile_to_beam(*_args: Any, **_kwargs: Any) -> Any:
     raise NotImplementedError("Apache Beam is an optional extension seam here; no Beam backend ships in the default repository")
 
 
-__all__ = ["beam_available", "compile_to_beam", "compile_to_dask_bag", "dask_available"]
+__all__ = [
+    "BackendStatus",
+    "backend_statuses",
+    "beam_available",
+    "compile_to_beam",
+    "compile_to_dask_bag",
+    "dask_available",
+]

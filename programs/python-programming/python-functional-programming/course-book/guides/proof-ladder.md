@@ -99,6 +99,7 @@ Use these when the question sounds like:
 
 ## Escalation rules
 
+- Treat proof levels as alternatives. Do not run every level on the way upward.
 - Do not jump to `capstone-confirm` when [Proof Matrix](proof-matrix.md) or `inspect`
   would settle the question.
 - Do not jump to `proof` when the real question is only whether the raw suite still
@@ -107,6 +108,8 @@ Use these when the question sounds like:
   evidence instead of terminal output.
 - Escalate from `capstone-walkthrough` to `capstone-tour` when you need the fuller
   guided bundle instead of the first-pass route.
+- A single `proof` or `capstone-confirm` invocation reuses one pytest report across
+  its dependent bundles. Starting another overlapping command starts another suite.
 - Use the history routes only when the question is about module-to-module comparison,
   not as a substitute for understanding the current claim first.
 

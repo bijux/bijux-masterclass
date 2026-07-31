@@ -1,0 +1,9 @@
+{
+  "name": "semantic-leak",
+  "scheduler": "slurm",
+  "drop_resources": [],
+  "memory_scale": 1.0,
+  "semantic_overrides": {
+    "minimum_score": 30
+  }
+}

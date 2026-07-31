@@ -1,6 +1,5 @@
 # Paths Are Locators, Not Data Identity
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -10,135 +9,206 @@ graph LR
   program["Deep Dive DVC"]
   section["Data Identity Content Addressing"]
   page["Paths Are Locators, Not Data Identity"]
-  capstone["Capstone evidence"]
+  capstone["Data identity audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.tested in.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["name the bytes required"] --> pointer["inspect recorded content identity"]
+  pointer --> contrast["compare path and byte changes"]
+  contrast --> availability["test which layer supplies content"]
+  availability --> conclusion["write bounded identity claim"]
 ```
 <!-- page-maps:end -->
 
-Most teams start from a habit that feels obvious:
+A path answers “where should I look?” It does not answer “which exact bytes should be
+there?”
 
-> the data is `data/train.csv`
+That distinction matters whenever a dataset can be replaced in place, renamed, copied,
+mounted elsewhere, or restored after loss. A workflow that identifies data only as
+`data/observations.csv` cannot distinguish yesterday's content from today's content at the
+same location.
 
-That sentence is convenient. It is also too weak for reproducibility.
+## Separate three questions
 
-## What a path actually tells you
+| Question | Example answer | Evidence |
+| --- | --- | --- |
+| Where should content appear? | `data/observations.csv` | workspace path |
+| Which content is required? | DVC content ID `be7d…a717` | pointer or lock |
+| Where can those bytes be supplied from? | local cache or configured remote | successful identity-checked recovery |
 
-A path tells you:
+Location, identity, and availability cooperate, but none is a synonym for another.
 
-- where a file is currently expected to live
-- how some part of the workflow refers to it
+## Run the paired contrasts
 
-A path does not tell you:
+Generate the audit:
 
-- whether the bytes changed
-- whether the file was renamed or moved
-- whether another machine has the same content at a different location
-- whether two files with different names are actually identical
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
+audit=artifacts/audit/reproducible-research/deep-dive-dvc/data-identity
+```
 
-That is why Module 02 has to start here.
+Read:
 
-## A practical contrast
+```bash
+column -t -s $'\t' "$audit/summary.tsv"
+jq '.findings[] |
+  select(
+    .finding == "SAME_BYTES_SHARE_IDENTITY" or
+    .finding == "CHANGED_BYTES_CHANGE_IDENTITY"
+  )' "$audit/report.json"
+```
 
-| Claim | What it really means |
-| --- | --- |
-| `data/train.csv` exists | a file is present at that path right now |
-| `data/train.csv` is the dataset | too strong; the path is being mistaken for identity |
-| these exact bytes produced the run | this is an identity claim, not only a path claim |
+The audit performs two controlled changes:
 
-The problem is not that paths are useless.
-
-The problem is that they are often asked to carry more truth than they can.
-
-## Why path-based thinking breaks quickly
-
-The same bytes can live at:
-
-- `data/train.csv`
-- `data/final/train.csv`
-- `/mnt/datasets/train.csv`
-- `~/Downloads/train.csv`
-
-And different bytes can still live at the exact same path over time.
-
-That means path and identity can drift apart in both directions:
-
-- same data, different location
-- same location, different data
-
-## A human way to picture it
+| Case | Path | Bytes | Content identity |
+| --- | --- | --- | --- |
+| original | `data/observations.csv` | baseline | `be7d…a717` |
+| copied | `archive/renamed.csv` | same baseline bytes | `be7d…a717` |
+| replaced | `data/observations.csv` | appended row | `dae5…00ae` |
 
 ```mermaid
 flowchart TD
-  samebytes["same bytes"] --> path1["data/train.csv"]
-  samebytes --> path2["data/final/train.csv"]
-  changedbytes["different bytes later"] --> path1
+  bytesA["baseline bytes"] --> pathA["data/observations.csv"]
+  bytesA --> pathB["archive/renamed.csv"]
+  pathA --> idA["content ID be7d…a717"]
+  pathB --> idA
+  bytesB["changed bytes"] --> pathA2["data/observations.csv"]
+  pathA2 --> idB["content ID dae5…00ae"]
 ```
 
-Once you see this, many later DVC ideas become less mysterious.
+Together, the contrasts defeat path-based identity:
 
-## A small example
+- moving identical bytes does not change their content identity;
+- changing bytes at a stable path does change their content identity.
 
-Imagine a team renames:
+## Inspect the pointer
 
-- `data/train.csv` to `data/archive/2025-02-train.csv`
+```bash
+cat "$audit/workspace/pointer-cache/data/observations.csv.dvc"
+```
 
-If the bytes are unchanged, the data identity has not changed even though the path has.
+The relevant record resembles:
 
-Now imagine the team overwrites `data/train.csv` in place with a newer export.
+```yaml
+outs:
+  - md5: be7d1d8e728323219fd8315dcbfea717
+    size: 40
+    hash: md5
+    path: observations.csv
+```
 
-The path stayed the same, but the data identity changed.
+Read each field narrowly:
 
-This is the exact reason location-based thinking is too weak for reproducibility work.
+| Field | Meaning |
+| --- | --- |
+| `path` | workspace projection relative to the pointer |
+| `md5` | content identifier used to locate DVC-managed content |
+| `size` | recorded byte-size evidence |
+| `hash` | identifier algorithm used by this pointer |
 
-## Why teams still rely on paths
+The path remains useful. It tells DVC where the workspace projection belongs. It simply
+does not identify the bytes alone.
 
-Paths are easy to say out loud, easy to put in scripts, and easy to remember.
+## Follow identity into the cache
 
-That convenience creates a trap:
+The content ID maps to:
 
-- filenames begin to stand in for byte identity
-- directories begin to stand in for versioning
-- "the latest file" begins to stand in for a recoverable historical record
+```text
+.dvc/cache/files/md5/be/7d1d8e728323219fd8315dcbfea717
+```
 
-That is normal beginner behavior. Module 02 is the course correcting it.
+The audit independently hashes workspace and cache bytes with SHA-256:
 
-## What stronger identity needs
+```bash
+jq '.findings[] |
+  select(.finding == "POINTER_NAMES_CACHED_CONTENT")' "$audit/report.json"
+```
 
-A durable identity story needs something the path cannot provide on its own:
+Two algorithms have different evidence roles:
 
-- a content-derived identifier
-- a recorded reference to that identifier
-- a way to restore the content later even if the workspace copy disappears
+- DVC's recorded MD5 selects its cache object.
+- The audit's SHA-256 comparison independently confirms byte equality across layers.
 
-This is where DVC starts to become meaningful.
+Do not turn this teaching contrast into a universal cryptographic policy. The bounded
+claim is that the pointer, cache path, recorded size, and independently compared bytes
+agree for this specimen.
 
-## The right question to ask
+## Understand identity without claiming meaning
 
-Instead of asking:
+Content identity answers:
 
-> where is the file?
+> Are these bytes the bytes named by the recorded state?
 
-start asking:
+It does not answer:
 
-> what exact content is the system claiming, and where is that claim recorded?
+- Is the dataset scientifically valid?
+- Does it have the expected schema?
+- Was it collected ethically?
+- Does it represent the intended population?
+- Can every collaborator retrieve it?
+- Will it remain available next year?
 
-That question prepares you for pointer files, cache objects, remotes, and recovery routes.
+Two files with equal bytes have equal content identity for this audit. They can still be
+mislabelled or unsuitable for the research claim.
 
-## Keep this standard
+## Use identity in review
 
-Whenever a path starts sounding like a version, pause.
+A weak review statement:
 
-Treat the path as a locator.
+> The dataset is still at the same path.
 
-Then ask what the actual identity mechanism is. If that question has no clear answer yet,
-the workflow is still relying on naming convention where it really needs content truth.
+A stronger statement:
+
+> The pointer at the reviewed revision names content ID `be7d…a717`, and the restored
+> workspace bytes independently match the recorded baseline digest. The workspace path is
+> a projection location, not the basis of identity.
+
+For a changed dataset:
+
+> The path is unchanged, but the pointer content ID changed from `be7d…a717` to
+> `dae5…00ae`; this is a new data identity and dependent results need review.
+
+## Diagnose common path illusions
+
+| Observation | Unsupported conclusion | Better next evidence |
+| --- | --- | --- |
+| filename unchanged | data unchanged | compare recorded content identity |
+| filename changed | data changed | compare bytes or content IDs |
+| file exists | correct data available | compare identity and schema |
+| pointer exists | bytes recoverable | test cache or remote restoration |
+| remote contains same filename | correct object stored | verify content identity |
+| copied file opens successfully | exact recovery | compare immutable digest |
+
+## Make datasets addressable by claim
+
+For a result claim, record:
+
+- content identity;
+- schema or format contract;
+- provenance or collection boundary;
+- workspace projection when needed;
+- available recovery layers;
+- result dependencies;
+- retention expectation.
+
+The content ID is one essential coordinate, not the entire dataset contract.
+
+## Review checkpoint
+
+You understand locator versus identity when you can explain:
+
+- why two paths share one identity in the audit;
+- why one path receives a new identity after bytes change;
+- what the pointer path contributes;
+- how the pointer selects a cache object;
+- why byte identity does not establish scientific validity;
+- why pointer identity does not establish availability.
+
+Carry this question through the module:
+
+> Which exact bytes does the recorded state name, and which independent evidence proves
+> that the bytes at this location are those bytes?

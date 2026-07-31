@@ -1,194 +1,227 @@
-# Lifting Plain Functions
+# Lifting Plain Functions into a Context
 
+Most useful FuncPipe functions are ordinary Python functions. `clean_doc`
+accepts a `RawDoc`; the `RagEnv` constructor accepts integers; a projection
+accepts a domain value. You should not rewrite those functions merely because
+their inputs happen to be inside `Result`.
 
-<!-- page-maps:start -->
-## Page Maps
+*Lifting* means applying an ordinary function while preserving a surrounding
+context. The important skill is not memorizing combinator names. It is reading
+the dependency shape before choosing an operation.
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Monadic Flow Explicit Context"]
-  page["Lifting Plain Functions"]
-  capstone["Capstone evidence"]
+## Four questions before choosing an operation
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+Given `current: Result[T, E]` and a next function, ask:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+| Question | Function shape | Operation |
+| --- | --- | --- |
+| Does it transform one successful value without adding failure? | `T -> U` | `current.map(f)` |
+| Does it transform the error while leaving success alone? | `E -> F` | `current.map_err(f)` |
+| Does it perform the next dependent fallible step? | `T -> Result[U, E]` | `current.and_then(f)` |
+| Does it combine independent contextual inputs? | `(T, U) -> V` over `Result[T, E]` and `Result[U, E]` | `liftA2(f, left, right)` |
 
-Lifting should feel like a small practical decision rather than a pile of combinator names. You need a reliable way to look at a plain function and decide whether it belongs under `map`, `and_then`, `map_err`, or applicative lifting.
+The table is a reading aid, not a mandate to keep every value inside a
+container. If no contextual rule is needed, call the plain function directly.
 
-## Start With the Choice Problem
+## Run the FuncPipe configuration example
 
-After learning `and_then`, you often hit a different kind of uncertainty: the function is plain Python, so which operation should carry it into the container flow?
-
-- If the function transforms a successful value without changing the container type, it usually belongs under `map`.
-- If the function itself returns a container, then `and_then` is usually the honest choice.
-- If the function combines independent container values, applicative lifting is often the better fit than sequential chaining.
-
-**Core question**  
-How do you turn any plain Python function into a container-aware version (`map`, `ap`, `and_then`) so that your pipelines become completely linear on the happy path and never require another manual error check again?
-
-This lesson introduces lifting as the bridge between ordinary functions and container-based flow:
-
-- preserve the behavior of plain functions instead of rewriting them around containers
-- choose the smallest combinator that matches the dependency structure
-- keep the resulting pipeline readable by making the lifting rule obvious at the call site
-
-## The First Decision To Make
-
-Before picking a combinator, ask one question about the next piece of work:
-
-- does the next step depend on the previous successful value, or
-- are you combining two independent container values that can be computed separately?
-
-That split removes most of the confusion:
-
-- dependent next step -> usually `.and_then`
-- independent combination -> usually `liftA2` or `v_liftA2`
-
-Use this when you are done writing `if isinstance(x, Err): return x` 47 times and want a small, reliable decision framework for container-aware composition.
-
-**Outcome**
-1. You will reach for `.map`, `.map_err`, `.and_then`, or `liftA2` instinctively.
-2. You will know exactly when to pick fail-fast `Result` vs accumulating `Validation`.
-3. You will have Hypothesis-backed proof that all lifting combinators satisfy functor/applicative/monad laws.
-
-## The Four Operations To Reach For First
-
-| Operation      | Method                  | Use when                                                   | Container     |
-|----------------|-------------------------|------------------------------------------------------------|---------------|
-| Transform success | `.map(f)`             | Independent post-processing                                | All           |
-| Transform error   | `.map_err(g)`         | Error enrichment / normalisation                           | Result        |
-| Chain dependent   | `.and_then(f)`        | Sequential steps, parsing, API calls (fail-fast)           | Result / Option |
-| Parallel independent | `liftA2(f, a, b)`      | Multi-field validation (accumulate or fail-fast)           | Result / Validation |
-
-The only Tier-2 helper you’ll occasionally need is `try_result` (exception bridging). Everything else lives in reference appendices.
-
-## 1. Laws & Invariants (machine-checked in CI)
-
-| Law                           | Formal Statement                                                            | Why it matters                                            |
-|-------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Functor Identity              | `m.map(id) == m`                                                            | Mapping identity is a no-op                               |
-| Functor Composition           | `m.map(f).map(g) == m.map(g ∘ f)`                                           | Mapping composes predictably                              |
-| Applicative Identity          | `Ok(lambda x: x).ap(m) == m`                                                | Pure identity function does nothing                       |
-| Applicative Homomorphism      | `Ok(f).ap(Ok(x)) == Ok(f(x))`                                               | Lifting pure functions preserves meaning                  |
-| Applicative Interchange       | `u.ap(Ok(y)) == Ok(lambda f: f(y)).ap(u)`                                   | Order of pure arguments doesn't matter                    |
-| Applicative Composition       | `Ok(compose).ap(u).ap(v).ap(m) == u.ap(v.ap(m))`                            | Applicative composition is associative                     |
-| Monad Laws                    | Left/right identity, associativity (M06C02)                                  | Refactor-safe chaining                                    |
-| Validation Accumulation       | `v_ap(VFailure(e1), VFailure(e2)) == VFailure(e1 + e2)`                     | All errors are always collected                           |
-
-All laws are verified with Hypothesis. A single counterexample breaks CI.
-
-## 2. Public API – End-of-Module-06 code locations
-
-- `Result` / `Option`: `capstone/src/funcpipe_rag/result/types.py`
-- `Validation` applicative helpers (`v_ap`, `v_liftA2`): `capstone/src/funcpipe_rag/fp/validation.py`
-- Exception bridging (boundary-only): `capstone/src/funcpipe_rag/boundaries/adapters/exception_bridge.py`
+`RagEnv` needs `chunk_size` and `overlap`. Once each field has been parsed,
+neither value depends on the other:
 
 ```python
-from funcpipe_rag.result.types import Err, NoneVal, Ok, Option, Result, Some, liftA2
-from funcpipe_rag.fp.validation import v_ap, v_liftA2
+def make_env(chunk_size: int, overlap: int) -> RagEnv:
+    return RagEnv(chunk_size=chunk_size, overlap=overlap)
+
+chunk_size: Result[int, ErrInfo] = Ok(8)
+overlap: Result[int, ErrInfo] = Ok(2)
+
+combined = liftA2(make_env, chunk_size, overlap)
+
+assert combined == Ok(RagEnv(chunk_size=8, overlap=2))
 ```
 
-## 3. Real-World Examples
+Run the success and failure cases:
 
-### 3.1 Fail-Fast Pipeline (Result)
-```python
-safe_int = try_result(int, lambda e: ErrInfo("PARSE", str(e)))
-
-def parse_port(s: str) -> Result[int, ErrInfo]:
-    return Ok(s).and_then(safe_int).and_then(ensure(in_range(1, 65536)))
-
-parse_port("abc")   # Err(...)
-parse_port("80")    # Ok(80)
+```bash
+cd capstone/module-reference-states/module-06
+PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+  -k liftA2_combines_independent_rag_config_fields
 ```
 
-### 3.2 Parallel Validation (Validation)
+The constructor remains an ordinary function. `liftA2` is responsible for
+opening successful inputs, applying the constructor, and restoring the Result
+context.
+
+## Independence does not imply accumulation
+
+The two configuration fields are independent, but the Module 06 `Result`
+applicative is still fail-fast. If both inputs are `Err`, the left error is
+returned:
+
 ```python
-validate_user = v_liftA2(
-    User,
-    parse_name(data.get("name")),
-    parse_age(data.get("age"))
+failed = liftA2(
+    make_env,
+    Err(ErrInfo(code="CHUNK_SIZE", msg="must be positive")),
+    Err(ErrInfo(code="OVERLAP", msg="must be non-negative")),
 )
 
-# → VFailure(("name missing", "bad age"))
-```
-
-This example is intentionally different from `and_then`: neither validation depends on
-the other. Both feed the same constructor, which is why applicative lifting is the
-honest fit here.
-
-### 3.3 Before → After
-```python
-# BEFORE – manual propagation
-def validate_cfg(cfg: dict) -> Result[Config, ErrInfo]:
-    if "name" not in cfg or not isinstance(cfg["name"], str):
-        return Err(ErrInfo("NAME", "..."))
-    if "port" not in cfg or not isinstance(cfg["port"], int):
-        return Err(ErrInfo("PORT", "..."))
-    return Ok(Config(cfg["name"], cfg["port"]))
-
-# AFTER – linear happy path
-validate_cfg = lambda cfg: (
-    Ok(cfg)
-    .and_then(require("name", ErrInfo("NAME", "missing")))
-    .and_then(ensure(is_str, ErrInfo("NAME", "not str")))
-    .and_then(require("port", ErrInfo("PORT", "missing")))
-    .and_then(ensure(is_int, ErrInfo("PORT", "not int")))
-    .map(lambda _: Config(cfg["name"], cfg["port"]))
+assert failed == Err(
+    ErrInfo(code="CHUNK_SIZE", msg="must be positive")
 )
 ```
 
-This last example stays sequential on purpose: each step depends on the same evolving
-`Result` context. It complements the previous validation example instead of replacing it.
-The key point is that lifting is not one single pattern. The dependency shape tells
-you whether to chain or combine.
+This behavior is deterministic, but it does not report every invalid field.
+If the learner or caller must see all independent field errors, use the
+Module 05 `Validation` applicative instead.
 
-## 4. Property-Based Proofs (selected)
+The decision has two dimensions:
 
-```python
-@given(m=st_result())
-def test_result_applicative_identity(m):
-    assert Ok(lambda x: x).ap(m) == m
-
-@given(e1=st_errors(), e2=st_errors())
-def test_validation_accumulates(e1, e2):
-    # In the codebase: VFailure is in funcpipe_rag.fp.core; v_ap is in funcpipe_rag.fp.validation.
-    assert v_ap(VFailure((e1,)), VFailure((e2,))) == VFailure((e1, e2))
+```text
+dependency:  independent inputs or a later step needing an earlier success?
+failure UX:  first error or every independent error?
 ```
 
-## 5. Anti-Patterns & Immediate Fixes
+Do not infer the second answer from the first.
 
-| Anti-Pattern                        | Symptom                              | Fix                              |
-|-------------------------------------|--------------------------------------|----------------------------------|
-| Manual propagation                  | `if isinstance(x, Err): return x`    | Use `.map` / `.and_then` / `liftA2` |
-| Using `and_then` for parallel validation | Only first error reported            | Use `liftA2` + `Validation`      |
-| Raw exceptions inside pipeline      | Unhandled crashes                    | Wrap with `try_result`           |
+## Cross-field constraints have a different owner
 
-## 6. Pre-Core Quiz
+`chunk_size=4` and `overlap=6` may each be locally valid integers, but the pair
+violates `overlap < chunk_size`. That rule cannot be checked by either field
+parser alone.
 
-1. Use `.map` when…? → **Independent success transform**  
-2. Use `.and_then` when…? → **Dependent/sequential step**  
-3. Use `liftA2` when…? → **Independent parallel validation**  
-4. Validation vs Result? → **Accumulate all vs stop on first**  
-5. The golden rule? → **Never write manual error propagation again**
+A clear sequence is:
 
-## 7. Post-Core Exercise
+1. parse or validate each field independently;
+2. combine the successful values;
+3. validate the relationship at the join;
+4. construct `RagEnv` only from a valid pair.
 
-1. Take the most nested validation function in your codebase and rewrite it with `v_liftA2` — verify all errors are reported.
-2. Convert a real `try/except` chain to `and_then` + `try_result`.
-3. Add a new field to an existing validation — confirm it’s a single-line change.
+For a fail-fast Result route:
 
-**Continue with:** [Reader Pattern](../module-06-monadic-flow-explicit-context/reader-pattern.md)
+```python
+@dataclass(frozen=True)
+class ChunkPolicy:
+    chunk_size: int
+    overlap: int
 
-You have now reached the point where every pipeline you write is **linear on the happy path**, **automatically propagates every error**, and is **mathematically proven correct** by Hypothesis. The remaining cores remove the last bits of friction.
+
+def require_valid_overlap(
+    policy: ChunkPolicy,
+) -> Result[ChunkPolicy, ErrInfo]:
+    if policy.overlap >= policy.chunk_size:
+        return Err(
+            ErrInfo(
+                code="OVERLAP_RANGE",
+                msg="overlap must be smaller than chunk size",
+            )
+        )
+    return Ok(policy)
+
+
+policy = liftA2(ChunkPolicy, chunk_size, overlap)
+env = policy.and_then(require_valid_overlap).map(
+    lambda valid: RagEnv(
+        chunk_size=valid.chunk_size,
+        overlap=valid.overlap,
+    )
+)
+```
+
+Notice the change in operation:
+
+- `liftA2` combines independent inputs;
+- `and_then` runs a dependent cross-field check;
+- `map` constructs the final value from an already valid policy.
+
+## Lifting does not catch constructor exceptions
+
+This is unsafe if `RagEnv` can reject the pair:
+
+```python
+liftA2(RagEnv, Ok(4), Ok(6))
+```
+
+`liftA2` does not convert a constructor’s `ValueError` into `ErrInfo`. Either
+validate before construction or use a narrow exception bridge at the boundary
+where throwing input enters the application. Do not assume that “inside
+Result” means arbitrary Python exceptions are captured.
+
+## `map_err` changes the public error vocabulary
+
+Sometimes an adapter error is too specific for the caller:
+
+```python
+parsed: Result[int, ParseError] = parse_integer(raw)
+public: Result[int, ErrInfo] = parsed.map_err(
+    lambda error: ErrInfo(
+        code="CONFIG_PARSE",
+        msg=error.message,
+    )
+)
+```
+
+This is a semantic conversion. The mapping function should preserve enough
+provenance for the caller to act. Replacing every error with
+`ErrInfo(code="FAILED", msg="failed")` technically changes the type but damages
+the application contract.
+
+## Derive the operation from the shapes
+
+Trace this small RAG route:
+
+```python
+source: Result[RawDoc, ErrInfo]
+```
+
+Then classify:
+
+```python
+source.map(clean_doc)
+```
+
+`clean_doc: RawDoc -> CleanDoc`, so the result is
+`Result[CleanDoc, ErrInfo]`.
+
+```python
+source.and_then(require_abstract)
+```
+
+`require_abstract: RawDoc -> Result[RawDoc, ErrInfo]`, so the result remains
+one `Result[RawDoc, ErrInfo]`.
+
+```python
+liftA2(make_env, parsed_size, parsed_overlap)
+```
+
+`make_env` needs both independent successful integers, so the result is
+`Result[RagEnv, ErrInfo]`.
+
+When the operation is hard to choose, write the function signatures on paper.
+The correct structure is usually visible before any implementation code.
+
+## Common wrong turns
+
+- **Using `and_then` for independent fields.** This invents a dependency and
+  can make error order look like business logic.
+- **Expecting `Result.liftA2` to accumulate.** The shipped Result contract
+  preserves the left failure; Module 05 Validation accumulates.
+- **Placing all validation inside a constructor.** A throwing constructor
+  bypasses typed error values unless the boundary is handled explicitly.
+- **Lifting an impure function and calling the flow pure.** The container does
+  not remove filesystem, clock, network, or mutation effects.
+- **Wrapping a plain local calculation for style.** Lifting earns its place
+  when a real context must be preserved.
+
+## What the focused proof establishes
+
+The learning test proves that:
+
+- two successful values construct the expected `RagEnv`;
+- the declared left error wins when both Results fail; and
+- the plain constructor can be reused without container-aware parameters.
+
+It does not prove that all `RagEnv` pairs are valid, that errors accumulate, or
+that constructor exceptions are caught.
+
+Continue with [Law-Guided Design](law-guided-design.md) to learn which
+structural rewrites these operations permit.

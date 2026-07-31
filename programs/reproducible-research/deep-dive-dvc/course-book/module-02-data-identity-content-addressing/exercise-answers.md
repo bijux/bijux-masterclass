@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -9,212 +8,305 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
   section["Data Identity Content Addressing"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
+  page["Data identity answer reasoning"]
+  capstone["Data identity audit"]
 
   family --> program --> section --> page
-  page -.applies in.-> capstone
+  page -.interprets.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  attempt["complete artifact"] --> compare["compare evidence route"]
+  compare --> challenge["challenge supplier and identity claims"]
+  challenge --> revise["repair overclaims"]
+  revise --> verify["repeat recovery proof"]
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These answers model reasoning. Compare your claim boundaries, evidence, and limits rather
+than copying wording.
 
-## How to use the answer page well
+## Answer: Bound the data identity claim
 
-Do not read a model answer first and then collapse every trust question back into "the
-repo" or "the data."
+A suitable claim:
 
-A better rhythm is:
+> The pointer records baseline content ID `be7d…a717`, size 40, and workspace projection
+> `observations.csv`. The named cache object and workspace independently share SHA-256
+> `9771…2fb4`. Paired contrasts show identity follows bytes rather than path. Recovery
+> claims additionally require an accessible supplier and verified materialization.
 
-1. finish the exercise with your own authority table and notes
-2. write one plain-language explanation of the layer distinction
-3. compare that explanation with the model answer
-4. revise where the model answer exposes weaker layer naming, overclaiming, or missing
-   recovery limits
+Model distinctions:
 
-What matters is whether the reasoning keeps identity, state layers, and recovery claims
-separate.
+| Question | Evidence | Limit |
+| --- | --- | --- |
+| which bytes recorded? | pointer ID and size | does not prove availability |
+| where projected? | pointer path | does not identify bytes |
+| locally available? | named cache object plus digest | not shared durability |
+| remotely recoverable? | cache-cold pull after local loss | time/object bounded |
+| scientifically suitable? | schema, provenance, domain checks | not proved by digest |
 
-Strong Module 02 answers usually do four things:
+Unsupported claims include universal remote completeness, future retention, scientific
+validity, and identical runtime interpretation.
 
-- they explain why paths are weaker than identity
-- they keep pointer, cache, workspace, remote, and publish layers separate
-- they describe commands as state moves instead of magical fixes
-- they treat recovery as strong but bounded evidence
+## Answer: Trace a pointer to matching bytes
 
-The strongest self-study packets also leave behind six concrete artifacts:
+Model trace:
 
-- one path-versus-identity explanation
-- one pointer or cache inspection
-- one authority table
-- one state-move explanation
-- one empty-cache recovery proof
-- one state-authority diagram
+| Surface | Value | Evidence role |
+| --- | --- | --- |
+| pointer path | `observations.csv` | projection location |
+| hash type | `md5` | DVC addressing scheme in specimen |
+| content ID | `be7d1d8e728323219fd8315dcbfea717` | managed identity |
+| size | `40` | recorded size check |
+| cache path | `.dvc/cache/files/md5/be/7d1d8e728323219fd8315dcbfea717` | local object address |
+| workspace SHA-256 | `977190…12fb4` | independent byte evidence |
+| cache SHA-256 | `977190…12fb4` | independent equality evidence |
 
-If your answers rely only on "DVC tracks the data," the reasoning is still too thin.
+The content ID splits after two characters to form the cache path. DVC's MD5 locates its
+managed object; the audit's SHA-256 independently compares workspace and cache bytes.
 
-## Answer 1: Explain why the path is too weak
+The proof is not simply “hashes exist.” It joins pointer ID, derived address, object
+existence, size, and byte equality.
 
-What the path does tell you:
+## Answer: Disprove path-based identity
 
-- where a file is expected to exist in the workspace right now
+The same-content contrast changes location while holding bytes fixed:
 
-What it does not tell you:
+```text
+data/observations.csv -> be7d…a717
+archive/renamed.csv   -> be7d…a717
+```
 
-- whether the bytes changed over time
-- whether the same data exists at a different path elsewhere
-- whether the path now points to a new export or overwrite
+Inference: different paths do not require different content identity.
 
-Why that matters:
+The changed-content contrast holds location fixed while changing bytes:
 
-- reproducibility needs an identity claim that survives rename, move, overwrite, and
-  cross-machine transfer
+```text
+data/observations.csv: be7d…a717 -> dae5…00ae
+```
 
-The main lesson is that location is useful but weaker than identity. The path is still
-useful as a workspace locator and consumer entry point, just not as the whole identity
-story.
+Inference: stable path does not preserve content identity after byte change.
 
-## Answer 2: Separate pointer, cache, and workspace
+Together:
 
-Strong explanation:
+```mermaid
+flowchart TD
+  same["same bytes"] --> p1["path A"]
+  same --> p2["path B"]
+  p1 --> id1["same identity"]
+  p2 --> id1
+  changed["changed bytes"] --> p1b["path A"]
+  p1b --> id2["new identity"]
+```
 
-- the `.dvc` file records the tracked identity reference
-- the cache stores the actual tracked content in DVC's local durable layer
-- the workspace file is the local projection you see and use day to day
+Neither contrast proves semantic equivalence across different dataset roles. Equal bytes
+can be used under different claims.
 
-Why this matters:
+## Answer: Build a state-layer ledger
 
-- the pointer, cache, and workspace participate in one story, but they are not the same
-  layer and should not be treated as interchangeable
+Model ledger:
 
-Calling the pointer "the data" is misleading because the pointer is a reference to tracked
-content, not the content itself.
+| Moment | Pointer | Workspace | Cache | Remote | Supplier | Decision |
+| --- | --- | --- | --- | --- | --- | --- |
+| baseline after add | present | present | present | not configured | cache | local identity recorded |
+| cache case before checkout | present | absent | present | not needed | cache | recoverable |
+| cache case after checkout | present | present | present | not needed | cache | local recovery accepted |
+| remote case after push | present | present | present | present | cache/remote | remote published |
+| remote case after loss | present | absent | absent | present | remote | recoverable |
+| remote case after pull | present | present | present | present | remote | remote recovery accepted |
+| pointer-only before checkout | present | absent | absent | not configured | none | unrecoverable |
+| pointer-only after checkout | present | absent | absent | not configured | none | rejection confirmed |
 
-## Answer 3: Name the authoritative layer
+The ledger prevents pointer presence from being mistaken for supplier availability.
 
-1. what did the pipeline actually record as executed?
-   - recorded execution state, usually `dvc.lock`
-2. what may a downstream reviewer safely trust?
-   - published release state such as `publish/v1/`
-3. what survives local cache loss?
-   - remote-backed recovery durability
-4. what files are visible in the working tree right now?
-   - workspace state
+## Answer: Interpret commands as state moves
 
-The main lesson is to stop answering every question with "the repo." The same answer would
-be wrong for a different question because visibility, recovery, publication, and recorded
-execution are different kinds of authority.
+Model:
 
-## Answer 4: Explain the commands as state moves
+| Command | Before | After | Required verification |
+| --- | --- | --- | --- |
+| add | unmanaged workspace bytes | pointer plus local cache object | pointer/cache/workspace agreement |
+| push | cache object present, remote not yet evidenced | selected object remotely published | receipt plus later clean read |
+| checkout | pointer/cache present, workspace absent | workspace projected | restored digest and identity |
+| pull | pointer present, local cache/workspace absent, remote supplied | cache and workspace restored | supplier isolation and digest |
 
-Strong explanation:
+Command choice:
 
-- `dvc push`
-  - moves tracked content from local cache into remote durability
-- `dvc pull`
-  - restores tracked content from remote into local cache
-- `dvc checkout`
-  - rebuilds the workspace from tracked content already available locally
+- unmanaged workspace: add;
+- workspace absent, cache present: checkout;
+- workspace/cache absent, remote present: pull;
+- pointer only, no supplier: no command can recreate the bytes.
 
-What new trust they add:
+Exit zero is command evidence. Recovery requires after-state and identity comparison.
 
-- `push`
-  - adds durable off-machine recovery
-- `pull`
-  - reestablishes local durable state
-- `checkout`
-  - realigns the workspace, but does not by itself prove remote durability
+## Answer: Prove cache-only recovery
 
-The command that helps recovery most directly is `dvc pull`. The command that does not
-prove durability by itself is `dvc checkout`, because it may succeed entirely from local
-state.
+Model argument:
 
-## Answer 5: Diagnose a recovery claim
+> The pointer retained baseline ID `be7d…a717`. Before checkout, the workspace projection
+> was absent and the named cache object remained. Checkout succeeded, recreated the
+> workspace, preserved pointer identity, and produced baseline SHA-256. Accept local cache
+> recovery for this object.
 
-What the success does prove:
+Why it is causal:
 
-- tracked content was recoverable and the workspace could be rebuilt
+- workspace supplier absent;
+- cache supplier present;
+- remote not needed;
+- restored identity matches.
 
-What it does not prove yet:
+Limit:
 
-- that the full published release contract and the whole repository story are identical
-- that every possible internal or semantic question is settled
+> This does not prove remote availability, cross-machine recovery, future cache retention,
+> or data validity.
 
-What the team may be confusing:
+## Answer: Prove remote recovery after local loss
 
-- remote-backed recovery durability with downstream release trust or full repository
-  meaning
+Model argument:
 
-The main lesson is that recovery is strong evidence, but still a bounded kind of evidence.
-That bounded proof is still valuable because it answers one important recovery question
-cleanly without pretending to answer every other trust question too.
+> Push supplied baseline object `be7d…a717` to the isolated remote. The audit then removed
+> both workspace and named local cache object. Pull repopulated the cache and workspace.
+> Recovered content ID equals baseline, and independent SHA-256 equals `9771…2fb4`.
+> Accept bounded remote recovery for this object and audit time.
 
-## Answer 6: Inspect a pointer by hand
+Removing local cache rules out it as supplier. That makes the remote necessary in the
+tested route.
 
-The `.dvc` file is small Git-tracked metadata. Its hash identifies content stored under
-the cache layout, while the size supports integrity checks. The workspace file is a
-materialized copy or link. None of these locations alone should be confused with the whole
-recovery contract.
+Not proved:
 
-If only the pointer survived, what would still be missing is accessible content storage.
-Metadata can name the object honestly and still fail to provide the bytes.
+- other objects exist;
+- other users are authorized;
+- future retention;
+- remote disaster recovery;
+- scientific suitability.
 
-## Answer 7: Prove checkout changes workspace state
+## Answer: Defend negative recovery evidence
 
-Git changes the pointer revision. `dvc checkout` then materializes the content named by
-that pointer from available cache state. The cache may retain both versions, while only
-one appears at the workspace path. This is why path equality is weaker than content
-identity.
+Model:
 
-Workspace state and cache state are not interchangeable because the cache can preserve
-multiple tracked versions while the workspace exposes only the currently materialized one.
+**Survives**
 
-## Answer 8: Test a remote from an empty cache
+- pointer path, content ID, size, and hash type.
 
-Strong evidence begins from a genuinely empty local cache, runs `dvc pull`, and compares
-the recovered checksum or DVC status with the source revision. A successful recovery
-proves more than a push command that happened to exit zero.
+**Absent**
 
-What this proves about the remote is that it held the required tracked object for the
-recovery route you tested. What it does not prove is that every published artifact or
-workflow interpretation boundary is now automatically correct.
+- workspace projection;
+- matching local cache object;
+- configured remote supplier.
 
-## Answer 9: Diagnose a missing-object failure
+**Intervention**
 
-The pointer can still name a valid object even when no accessible storage currently
-contains it. The failure is availability, not necessarily metadata corruption. Repair
-means restoring the object from a durable copy or revising an invalid recovery claim.
+- checkout returns `255`;
+- stderr identifies unavailable cache-backed content.
 
-The recovery claim that has now failed is the claim that the tracked object is actually
-recoverable from the currently available storage layers.
+**After**
 
-## Answer 10: Draw a state-authority diagram
+- workspace remains absent;
+- cache remains absent.
 
-A sound diagram distinguishes `dvc add`, `push`, `pull`, and `checkout`. Git governs
-pointer history; the cache accelerates local materialization; the remote supports shared
-recovery; published bundles serve consumers. Authority must be stated explicitly rather
-than inferred from whichever copy is nearby.
+The audit result is `PASS` because every expected negative check succeeded. The recovery
+decision is `REJECT` because metadata alone cannot materialize content.
 
-Downstream trust usually begins at the published bundle or another declared consumer
-boundary, not merely at the existence of tracked content in cache. The node many teams
-overtrust is often the workspace, because it is the most visible layer even though it is
-only one local materialization.
+Useful searches include trusted teammate caches, governed remotes, archives, and published
+bundles by exact identity. If no trustworthy matching copy exists, record original
+identity as unrecoverable. Recollected data is a new identity.
 
-## Self-check
+## Answer: Design a recovery manifest
 
-If your answers consistently explain:
+Model shape:
 
-- why paths are weaker than identity
-- how pointer, cache, workspace, remote, and publish layers differ
-- what each major DVC command really moves
-- what recovery proves and what it does not
+```json
+{
+  "schema": "data-recovery-manifest/v1",
+  "recovery_id": "example-recovery-identity",
+  "git_commit": "example-git-sha",
+  "required": {
+    "pointer": "data/observations.csv.dvc",
+    "content_id": "be7d1d8e728323219fd8315dcbfea717",
+    "hash_type": "md5",
+    "size": 40,
+    "baseline_sha256": "977190e4a0791b539f5eb50abc726b8d00195c0f4a0c2b39acfdd92d41512fb4"
+  },
+  "loss": {
+    "workspace": "absent",
+    "local_cache": "absent"
+  },
+  "supplier": {
+    "type": "dvc_remote",
+    "role": "recovery"
+  },
+  "receipts": {
+    "state_move": "example-pull-receipt",
+    "cache_identity": "example-cache-check",
+    "workspace_identity": "example-workspace-check",
+    "semantic_validation": "example-schema-check"
+  },
+  "decision": "ACCEPT_BOUNDED_RECOVERY",
+  "limits": [
+    "future retention not established",
+    "scientific validity reviewed separately"
+  ],
+  "started_at": "2030-01-01T12:00:00Z",
+  "completed_at": "2030-01-01T12:02:00Z",
+  "verifier": "recovery-policy-identity"
+}
+```
 
-then you are using Module 02 correctly.
+The recovery ID joins one loss, supplier, move, and verification. The manifest records a
+remote role rather than credentials.
+
+## Answer: Assemble an independent identity review
+
+A strong opening:
+
+> This packet distinguishes workspace location, recorded content identity, and supplier
+> availability. Paired contrasts show identity follows bytes. Cache and remote cases
+> isolate two recovery suppliers. Pointer-only failure proves metadata cannot replace
+> missing content.
+
+Artifact purposes:
+
+| Artifact | Purpose |
+| --- | --- |
+| `identity-claim.md` | bounds identity and meaning |
+| `pointer-trace.tsv` | connects metadata to bytes |
+| `path-contrasts.md` | disproves locator identity |
+| `state-ledger.tsv` | records surviving layers |
+| `command-receipts.md` | explains bounded moves |
+| `cache-recovery.md` | proves local supplier |
+| `remote-recovery.md` | proves remote supplier |
+| `negative-recovery.md` | preserves rejected claim |
+| `recovery-manifest.json` | joins recovery evidence |
+
+Unresolved risks:
+
+- remote retention and access policy;
+- integrity for unaudited objects;
+- schema/provenance coverage;
+- dependent result currency;
+- published bundle completeness;
+- runtime interpretation.
+
+Verification:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-selftest
+jq empty artifacts/learning/deep-dive-dvc/data-identity/recovery-manifest.json
+```
+
+## Self-review standard
+
+Your packet should distinguish:
+
+- locator from identity;
+- pointer metadata from content;
+- workspace projection from cache object;
+- local cache from shared remote;
+- command success from verified state move;
+- identity recovery from semantic validity;
+- current remote availability from retention;
+- audit `PASS` from recovery `ACCEPT`.
+
+Those distinctions are the practical skill of Module 02.

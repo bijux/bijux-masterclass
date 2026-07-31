@@ -49,6 +49,7 @@ are routing tools, not a substitute for the teaching.
 | I am returning after a break and need to re-enter fast | [Course Guide](course-guide.md) | confirm the stage with [Course Map](../module-00-orientation/course-map.md) |
 | I suspect the capstone, not the lesson, is my next move | [Pressure Routes](pressure-routes.md) | open [Capstone Map](../capstone/capstone-map.md) |
 | I am blocked by environment or command trust | [Platform Setup](platform-setup.md) | verify the smallest supported route |
+| I need to know what the course expects from me | [Learning Contract](learning-contract.md) | choose a study and evidence practice you can sustain |
 
 ## Do not read guides in table-of-contents order
 

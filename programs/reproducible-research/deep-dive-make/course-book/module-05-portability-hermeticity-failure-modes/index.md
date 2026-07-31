@@ -14,16 +14,27 @@ Many build failures are really contract failures in disguise. The machine, shell
 version, locale, or recursive boundary changed, but the build never said which of those
 facts mattered.
 
+Module 05 keeps three claims separate:
+
+| Claim | Question | Evidence |
+| --- | --- | --- |
+| support | can this environment run the build correctly? | accepted and rejected contract cases |
+| semantic identity | which external facts change artifact meaning? | convergent manifest and downstream invalidation |
+| ownership | should Make still model this concern? | file handoff, failure ownership, and retained proof route |
+
+A tool can be present but unsupported. A supported tool can change artifact meaning and
+therefore require attestation. A fully attested process can still be a poor concern for
+Make to own. Treating these as one idea produces confused gates and noisy manifests.
+
 ## Plan for the day
 
-| Time | Activity | Evidence you keep |
-| --- | --- | --- |
-| 45 minutes | Run the environment contract audit | seven paired findings, traces, and workspaces |
-| 75 minutes | Read the portability and recursion lessons | a written support contract |
-| 60 minutes | Build a convergent environment manifest | two identical no-op runs |
-| 60 minutes | Separate Make overhead from recipe cost | timings and a trace-line count |
-| 90 minutes | Harden the inherited-build example | a repaired graph and boundary decision |
-| 90 minutes | Complete the ten exercises | commands, observations, and explanations |
+| Session | Work | Evidence you keep | Stop condition |
+| --- | --- | --- | --- |
+| contract | run the environment audit; read portability and recursion | paired rejection/acceptance and parent/child observations | you can state what the audit proves and does not prove |
+| identity | model one non-file fact | equal-state convergence and changed-state invalidation | manifest identity is stable across repeated and clean-room builds |
+| measurement | separate parse, decision, recipe, and observation costs | repeated timings with workload state recorded | the suspected layer has a controlled comparison |
+| ownership | classify one concern and harden the inherited example | handoff contract or explicit Make repair | one owner, one failure boundary, one retained proof route |
+| practice | complete the ten exercises | cumulative hardening packet | every repair has a negative case and a settled case |
 
 If you have only one hour, run `capstone-environment-contract-audit`, read its guide, and
 explain the three required-tool rows. Return for recursion, non-file state, measurement,
@@ -67,6 +78,18 @@ The three families answer different questions:
 | required tool | does an unavailable capability stop before publication begins? |
 
 Do not collapse those questions into one generic "environment audit."
+
+The audit does not prove:
+
+- that every accepted tool version is semantically compatible
+- that a child never oversubscribes on every supported jobserver transport
+- that an environment manifest is reproducible in two independent workspaces
+- that a performance complaint belongs to Make
+- that a proposed tool handoff preserves the artifact contract
+
+Those claims need their own exercises and evidence. `PASS` on a specimen bundle means the
+specimens matched their declared expected observations; it is not a blanket portability
+certificate.
 
 ## Sort assumptions into three contracts
 
@@ -181,6 +204,16 @@ make all && make -q all
 Use them on purpose. Hardening work becomes sloppy when measurement and proof get replaced
 with suspicion.
 
+Keep measurement output under the repository `artifacts/` tree and label each run with:
+
+- the requested goal and Make options
+- clean, no-op, or changed-input workload state
+- environment facts intentionally held constant
+- repetition count and summary statistic
+- whether output capture or tracing was enabled
+
+A timing with none of that context cannot be compared responsibly.
+
 ## Learning outcomes
 
 By the end of this module, you should be able to:
@@ -202,6 +235,7 @@ Do not move on until all of these are true:
 - you can explain why a late missing-tool failure may leave a zero-byte file
 - you can produce one timing or trace-volume metric and explain what it means
 - you can classify one failure as a Make repair, a tool boundary, or a migration trigger
+- you can state the file-level handoff and failure owner when another tool takes a concern
 - you can complete all ten exercises and defend each decision with observed evidence
 
 When those feel ordinary, Module 05 has done its job.

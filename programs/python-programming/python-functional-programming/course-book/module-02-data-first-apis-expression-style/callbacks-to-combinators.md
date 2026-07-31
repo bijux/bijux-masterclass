@@ -480,21 +480,104 @@ for x in xs: print(x)  # OK for one-off
 1. Nested callbacks? → **Use flow.**  
 2. Eager `list(gen)`? → **Laziness with fmap.**  
 3. Unbound predicate? → **Partial with config.**  
-4. Effect in mapper? → **Seal in stage.**  
+4. Effect in mapper? → **Move it to an explicit boundary or observation hook.**
 5. Prove pipeline? → **Hypothesis over outputs/prefixes.**
 
 ---
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** Find a callback chain or loop. Refactor to combinators with bound functions; add Hypothesis for equivalence/idempotence.  
-**Project Exercise:** Apply to RAG (e.g., pipeline with fmap/ffilter); run properties.  
-- Did linearity improve readability?  
-- Did laziness reduce memory?  
-- Did binding clarify config?
+**Reflect:** Find one callback that transforms values and one callback that observes
+effects. Explain why they should not use the same combinator.
+
+**Project Exercise:** Reconstruct `iter_rag_core` with `ffilter`, `fmap`, and
+`flatmap`. Record the type and cardinality change at each stage.
 
 **Continue with:** [Tiny Function DSLs](../module-02-data-first-apis-expression-style/tiny-function-dsls.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 
 > **Further Reading:** For more on closures in Python, see 'Fluent Python' by Luciano Ramalho. Explore toolz for advanced partials once comfortable.
+
+## Choose a combinator by cardinality
+
+FuncPipe's three iterable combinators express different contracts:
+
+| Combinator | Element function | Cardinality |
+| --- | --- | --- |
+| `fmap` | `A -> B` | exactly one output per input |
+| `ffilter` | `A -> bool` | zero or one output per input |
+| `flatmap` | `A -> Iterable[B]` | zero or more outputs per input |
+
+The RAG pipeline uses all three:
+
+```text
+RawDoc
+  --ffilter keep--> RawDoc
+  --fmap cleaner--> CleanDoc
+  --flatmap chunker--> ChunkWithoutEmbedding
+  --fmap embedder--> Chunk
+```
+
+Calling every stage “map” hides the most important operational difference: a filter
+may scan, and chunking expands one document into many chunks.
+
+## Callbacks and combinators are not interchangeable
+
+A callback API often gives control to another component:
+
+```python
+register_on_chunk(callback)
+```
+
+A combinator returns a new value or iterable:
+
+```python
+embedded = fmap(embedder)(chunks)
+```
+
+The combinator keeps control flow visible to the caller. A `RagTaps.chunks`
+callback is deliberately different: it observes a completed stage and returns
+`None`. Treating it as a mapper would let telemetry accidentally change domain
+values.
+
+## Short-circuiting is visible work
+
+`ffilter` requests until its predicate accepts a value. The first output therefore
+does not imply one input request. In the learning trace, source value `0` is accepted
+immediately:
+
+```text
+source(0) -> filter(0) -> map(1) -> expand(1) -> first output
+```
+
+If `0` were rejected, the source and predicate events would repeat before mapping.
+This becomes important when the predicate is expensive or the input can be
+unbounded.
+
+## Test the right equivalence
+
+For finite replayable input:
+
+```python
+assert list(fmap(f)(values)) == [f(value) for value in values]
+assert list(ffilter(p)(values)) == [value for value in values if p(value)]
+assert list(flatmap(g)(values)) == [
+    item
+    for value in values
+    for item in g(value)
+]
+```
+
+These equations prove values. A counted-source trace separately proves deferred
+execution and request order.
+
+```bash
+PYTHONPATH=capstone/module-reference-states/module-02/src \
+  python -m pytest -q \
+  capstone/module-reference-states/module-02/tests/learning/test_module_02_data_first_apis.py \
+  -k 'iterator_combinators'
+```
+
+The proof does not establish that `f`, `p`, or `g` are pure. Injected functions can
+still mutate globals or perform I/O; combinator syntax cannot prevent that.

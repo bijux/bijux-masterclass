@@ -358,7 +358,8 @@ def test_nested_manager_lifo():
         order.append("enter2")
         yield "b"
         order.append("exit2")
-    with nested_managed([contextlib.contextmanager(m1), contextlib.contextmanager(m2)]) as (a, b):
+    managers = [contextlib.contextmanager(m1)(), contextlib.contextmanager(m2)()]
+    with nested_managed(managers) as (a, b):
         pass
     assert order == ["enter1", "enter2", "exit2", "exit1"]
 
@@ -380,7 +381,11 @@ def test_managed_equivalence():
 | nested_managed       | O(N)          | O(#managers)  | Yes      |
 | auto_close           | O(1)          | O(1)          | Yes      |
 
-Constant overhead; cleanup guaranteed on all paths.
+The wrappers add constant per-stream overhead. Cleanup is requested on every
+context exit path for resources that honor the context or `close()` protocol.
+The Module 04 wrappers intentionally suppress close failures so they do not
+mask an active processing exception; that trade-off requires separate cleanup
+telemetry in a production boundary.
 
 ---
 
@@ -394,21 +399,95 @@ Constant overhead; cleanup guaranteed on all paths.
 
 ---
 
+## Put source ownership around consumption
+
+A generator's `finally` block runs when it is exhausted or closed. That does
+not identify who is responsible for closing it after partial consumption.
+`managed_stream` makes the consumer's context the owner:
+
+```python
+with managed_stream(source_factory) as chunks:
+    first = next(chunks)
+    # leaving the block closes the iterator even though it has more items
+```
+
+The factory is not called when the manager is created. It is called on
+`__enter__`, which keeps acquisition inside the lifetime boundary.
+
+Trace the learning proof:
+
+| Moment | `entered` | `closed` |
+| --- | --- | --- |
+| Manager created | `False` | `False` |
+| Context entered | `True` | `False` |
+| One chunk consumed | `True` | `False` |
+| Context exited | `True` | `True` |
+
+Run:
+
+```bash
+course=programs/python-programming/python-functional-programming
+state="$course/capstone/module-reference-states/module-04"
+venv=artifacts/venv/python-programming/python-functional-programming/capstone
+
+PYTHONPATH="$state/src" \
+  "$venv/bin/pytest" -q \
+  "$state/tests/learning/test_module_04_resilient_streaming.py" \
+  -k managed_stream
+```
+
+The proof demonstrates partial-consumption cleanup for one cooperative
+generator. The focused resource suite adds normal exhaustion, producer
+failure, consumer failure, breaker termination, and LIFO nested cleanup. These
+tests do not prove that an external client releases sockets correctly; that
+client's adapter needs its own observable close test.
+
+Choose the wrapper from ownership:
+
+| Starting point | Route | Ownership implication |
+| --- | --- | --- |
+| You already have an iterator and must close it | `with_resource_stream` | Acquisition may already have happened |
+| You own how the iterator is created | `managed_stream` | Acquisition begins inside `with` |
+| Several context managers form one operation | `nested_managed` | `ExitStack` releases them in reverse entry order |
+| A boundary accepts context-aware or merely closable objects | `auto_close` | Compatibility convenience; type precision is weaker |
+
+Do not hide a context manager inside a function that returns its iterator after
+the `with` block. That returns a value whose resource lifetime has already
+ended. Keep consumption inside the owning context or return a context manager
+to the caller.
+
+Also decide what close failures mean. Module 04 suppresses them to preserve an
+active processing exception. If cleanup failure is itself operationally
+important, observe it in the resource adapter rather than silently assuming the
+wrapper can report both failures.
+
 ## 8. Pre-Core Quiz
 
-1. with_resource_stream for…? → **Auto-close existing generator**  
-2. managed_stream for…? → **Factory-created resource streams**  
-3. nested_managed for…? → **Compose multiple context managers**  
-4. auto_close for…? → **Any object with .close()**  
-5. Cleanup guaranteed on…? → **All exit paths including breakers**
+1. Why pass a factory to `managed_stream`? → **So acquisition begins inside the
+   context that owns cleanup.**
+2. What happens after partial consumption? → **Context exit calls the
+   iterator's close protocol.**
+3. In what order do nested managers exit? → **Reverse entry order.**
+4. Can the wrapper prove an external client released its resource? → **No; the
+   adapter must expose and test that behavior.**
+5. What happens to close exceptions here? → **They are suppressed to avoid
+   masking the active processing failure.**
 
 ## 9. Post-Core Exercise
 
-1. Wrap a file-reading generator with `with_resource_stream` → test cleanup on partial iteration.  
-2. Use `managed_stream` for temporary files → test on early breaker.  
-3. Compose three nested resources → verify LIFO closure order.  
-4. Add `auto_close` to your embedder → verify no leaks on OOM.
+Extend the learning source so its second item raises.
+
+- Prove cleanup after normal exhaustion, partial consumption, and producer
+  failure as separate cases.
+- Add a consumer exception without changing the source and prove the same
+  cleanup observation.
+- Compose two small managers and record their enter/exit order.
+- State how your design would surface a close failure without replacing the
+  original exception.
+
+Move forward when acquisition, consumption, and cleanup have one visible owner.
 
 **Continue with:** [Functional Retries](../module-04-streaming-resilience-failure-handling/functional-retries.md)
 
-You now have the complete toolkit to never leak a resource again — even when everything goes wrong. The rest of Module 4 is about retries and final reporting.
+Resource lifetime is now explicit. The next core decides which failed records
+earn another attempt without turning one bad item into unbounded work.

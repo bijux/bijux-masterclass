@@ -45,8 +45,16 @@ directory. The layers exist so you do not have to guess where a command belongs.
 | If the job is... | Start here | Do not start with |
 | --- | --- | --- |
 | first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
+| local repeatability versus team reconstruction | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-workflow-evidence-audit` | accepting equal local outputs without input, control, runtime, clean rebuild, and recovery evidence |
 | current-state verification | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` |
-| experiment comparison | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
+| pointer, cache, workspace, and remote identity | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit` | inspecting only the final workspace file |
+| stage input, parameter, and output truth | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit` | forcing every stage to rerun |
+| declared and hidden runtime influence | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit` | treating an empty status report as complete runtime proof |
+| metric semantic comparability | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit` | reading a numeric delta without its population, controls, schema, and unit |
+| clean reviewer handoff | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit` | using the author's cache or oral context as review evidence |
+| experiment comparison and promotion gates | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit` | ranking successful runs before continuity checks |
+| protected-history recovery cutover | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-readiness-audit` | treating a successful current pull as proof of retained releases |
+| promotion integrity and authority | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-promotion-integrity-audit` | treating a healthy bundle or matching digest as approval |
 | release-boundary review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | random `make PROGRAM=reproducible-research/deep-dive-dvc ...` exploration |
 | strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` |
 
@@ -55,7 +63,16 @@ directory. The layers exist so you do not have to guess where a command belongs.
 Use root-level commands when you want one entrypoint that works across programs.
 
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-workflow-evidence-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-readiness-audit`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-promotion-integrity-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm`
@@ -67,6 +84,22 @@ surface.
 
 - `make capstone-walkthrough`
 - `make capstone-verify`
+- `make capstone-data-identity-audit`
+- `make capstone-data-identity-selftest`
+- `make capstone-stage-contract-audit`
+- `make capstone-stage-contract-selftest`
+- `make capstone-runtime-contract-audit`
+- `make capstone-runtime-contract-selftest`
+- `make capstone-metric-contract-audit`
+- `make capstone-metric-contract-selftest`
+- `make capstone-experiment-comparability-audit`
+- `make capstone-experiment-comparability-selftest`
+- `make capstone-reviewer-handoff-audit`
+- `make capstone-reviewer-handoff-selftest`
+- `make capstone-recovery-readiness-audit`
+- `make capstone-recovery-readiness-selftest`
+- `make capstone-promotion-integrity-audit`
+- `make capstone-promotion-integrity-selftest`
 - `make capstone-experiment-review`
 - `make capstone-release-review`
 - `make capstone-confirm`
@@ -77,6 +110,22 @@ Use `capstone/` when you want the raw reference repository.
 
 - `make walkthrough`
 - `make verify`
+- `make data-identity-audit`
+- `make data-identity-selftest`
+- `make stage-contract-audit`
+- `make stage-contract-selftest`
+- `make runtime-contract-audit`
+- `make runtime-contract-selftest`
+- `make metric-contract-audit`
+- `make metric-contract-selftest`
+- `make experiment-comparability-audit`
+- `make experiment-comparability-selftest`
+- `make reviewer-handoff-audit`
+- `make reviewer-handoff-selftest`
+- `make recovery-readiness-audit`
+- `make recovery-readiness-selftest`
+- `make promotion-integrity-audit`
+- `make promotion-integrity-selftest`
 - `make experiment-review`
 - `make release-review`
 - `make recovery-review`

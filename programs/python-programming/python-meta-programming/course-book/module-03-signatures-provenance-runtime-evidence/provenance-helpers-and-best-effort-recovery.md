@@ -157,6 +157,44 @@ were impossible edge cases.
 It is better to return an honest partial manifest than to crash while pretending recovery
 was guaranteed.
 
+## Evidence practicum: compare file-backed and generated functions
+
+Run the complete packet once, then isolate the provenance evidence:
+
+```console
+$ make evidence-lab |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["provenance"])'
+{'evidence_strength': 'best-effort-provenance', 'file_backed_source_available': True, 'file_name': 'evidence.py', 'generated_file_label': '<generated-runtime-evidence>', 'generated_source_available': False, 'module': 'labs.runtime_evidence.evidence'}
+```
+
+The lab deliberately controls both sides of the comparison:
+
+- `dispatch_incident` is imported from a normal Python file, so module, file, and source
+  recovery succeed in the course environment
+- `generated_handler` is compiled with the synthetic filename
+  `<generated-runtime-evidence>`, so `getfile` can report the label while `getsource`
+  cannot recover source text
+
+Do not summarize that result as "provenance works for functions." The exact finding is
+narrower:
+
+| Observation | Supported inference | Unsupported inference |
+| --- | --- | --- |
+| source is available for the file-backed function | this environment can recover its current file-backed definition | all deployments retain matching source |
+| generated function reports a synthetic filename | the code object carries that label | a file exists at that path |
+| generated source recovery fails | callers need an honest fallback | the callable is invalid or unsafe |
+
+The focused proof is `make evidence-lab-test`. It asserts the contrast so a future edit
+cannot accidentally turn the generated-code case into an untested anecdote.
+
+### Investigation
+
+Change the filename passed to `compile(...)` from `<generated-runtime-evidence>` to the
+path of an existing Python file. Predict which fields change before running the lab. A
+filename that points somewhere real still does not prove that the recovered file text
+created the current code object. This is why filename metadata must remain context rather
+than identity.
+
 ## `getmodule` is useful but not absolute
 
 `inspect.getmodule(obj)` often gives you the module object that best matches the runtime
@@ -245,7 +283,8 @@ When reviewing provenance-aware code, keep these questions close:
 
 ## Self-study lab
 
-Before leaving this page, write one provenance note in this format:
+Before leaving this page, write one provenance note from the executable packet in this
+format:
 
 - the object under review
 - the module, file, or source context you recovered

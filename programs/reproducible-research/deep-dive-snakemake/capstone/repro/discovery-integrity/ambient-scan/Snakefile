@@ -1,0 +1,32 @@
+from pathlib import Path
+
+
+checkpoint discover:
+    output:
+        manifest="state/discovered.txt"
+    run:
+        raw_dir = Path("data/raw")
+        samples = sorted(path.stem for path in raw_dir.glob("*.fastq"))
+        Path(output.manifest).parent.mkdir(parents=True, exist_ok=True)
+        Path(output.manifest).write_text("\n".join(samples) + "\n", encoding="utf-8")
+
+
+def discovered_outputs(_wildcards):
+    manifest = checkpoints.discover.get().output.manifest
+    samples = Path(manifest).read_text(encoding="utf-8").splitlines()
+    return expand("build/{sample}.txt", sample=samples)
+
+
+rule materialize:
+    input:
+        "data/raw/{sample}.fastq"
+    output:
+        "build/{sample}.txt"
+    shell:
+        "cp {input} {output}"
+
+
+rule all:
+    input:
+        discovered_outputs
+    default_target: True

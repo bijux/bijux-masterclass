@@ -45,6 +45,10 @@ This module is where the course stops talking only about pure internals and star
 how real systems touch files, clocks, databases, logs, and transactions without losing
 clarity. The emphasis is on explicit boundaries rather than wishful purity.
 
+Start with the [Module 07 Capstone Delta](capstone-delta.md). It identifies the
+new `domain/` and `infra/` surfaces, separates meaningful application changes
+from snapshot-label differences, and gives the comparison route from Module 06.
+
 Most of this module is the required production track. One page,
 [Effect Interfaces](effect-interfaces.md), is an optional comparison core: it explains
 the native `IOPlan` representation and compares it with external-library styles without
@@ -59,6 +63,7 @@ changing the main Module 07 architecture route.
 
 ## Lesson map
 
+- [Module 07 Capstone Delta](capstone-delta.md)
 - [Ports and Adapters](ports-and-adapters.md)
 - [Effect Interfaces](effect-interfaces.md) *(optional comparison core)*
 - [Capability Protocols](capability-protocols.md)
@@ -73,9 +78,9 @@ changing the main Module 07 architecture route.
 
 ## Exercises
 
-- Draw one boundary between pure logic and infrastructure, then name the port or capability that keeps it honest.
-- Review one cleanup or transaction path and explain where failure handling must live for the contract to remain explicit.
-- Pick one migration step and justify why it is incremental enough to ship without rewriting the whole system.
+Use [Module 07 Exercises](exercises.md) for cumulative work against the tracked
+reference state. Consult [Exercise Answers](exercise-answers.md) only after
+recording your own expected evidence and failure analysis.
 
 ## Capstone checkpoints
 

@@ -1,0 +1,63 @@
+stages:
+  declared_input:
+    cmd: >-
+      python scripts/render.py input
+      --source data/source.txt
+      --policy policy/threshold.txt
+      --output results/declared-input.txt
+    deps:
+      - data/source.txt
+      - policy/threshold.txt
+      - scripts/render.py
+    outs:
+      - results/declared-input.txt
+
+  hidden_input:
+    cmd: >-
+      python scripts/render.py input
+      --source data/source.txt
+      --policy policy/threshold.txt
+      --output results/hidden-input.txt
+    deps:
+      - data/source.txt
+      - scripts/render.py
+    outs:
+      - results/hidden-input.txt
+
+  declared_param:
+    cmd: >-
+      python scripts/render.py param
+      --source data/source.txt
+      --params params.yaml
+      --output results/declared-param.txt
+    deps:
+      - data/source.txt
+      - scripts/render.py
+    params:
+      - settings.multiplier
+    outs:
+      - results/declared-param.txt
+
+  hidden_param:
+    cmd: >-
+      python scripts/render.py param
+      --source data/source.txt
+      --params params.yaml
+      --output results/hidden-param.txt
+    deps:
+      - data/source.txt
+      - scripts/render.py
+    outs:
+      - results/hidden-param.txt
+
+  undeclared_sidecar:
+    cmd: >-
+      python scripts/render.py sidecar
+      --source data/source.txt
+      --output results/declared-main.txt
+      --sidecar results/undeclared-receipt.txt
+    deps:
+      - data/source.txt
+      - scripts/render.py
+    outs:
+      - results/declared-main.txt

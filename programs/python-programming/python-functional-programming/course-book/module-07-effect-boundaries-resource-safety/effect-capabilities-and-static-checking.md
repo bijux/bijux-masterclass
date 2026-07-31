@@ -62,6 +62,42 @@ How do you use `typing.Protocol` and `mypy --strict` to define and **statically 
 
 You are now five steps away from a complete production-grade functional architecture.
 
+## Runnable lab: inject time into a log boundary
+
+A function that records ingest time needs exactly two capabilities:
+
+```python
+def record_ingest(doc_id: str, *, clock: Clock, logger: Logger) -> None:
+    logger.log(
+        LogEntry(
+            level="INFO",
+            msg=f"ingest {doc_id} at {clock.now().isoformat()}",
+        )
+    )
+
+clock = MonotonicTestClock(datetime(2025, 1, 1, tzinfo=timezone.utc))
+logger = CollectingLogger()
+record_ingest("d1", clock=clock, logger=logger)
+record_ingest("d2", clock=clock, logger=logger)
+```
+
+Run the proof:
+
+```bash
+cd capstone/module-reference-states/module-07
+PYTHONPATH=src pytest -q tests/learning/test_module_07_effect_boundaries.py \
+  -k clock_and_logger_capabilities_make_time_explicit
+```
+
+The deterministic clock advances one microsecond per call, so the exact
+two-entry trace is stable. The signature documents authority: this operation
+can ask for time and emit a log, but it cannot read storage or mutate a cache.
+
+Calling `datetime.now()` inside the function is the wrong turn. It hides a
+nondeterministic dependency from both the type signature and the test. Passing
+one large environment object would also weaken review by granting unrelated
+capabilities.
+
 ## 1. Laws & Invariants (machine-checked where possible)
 
 | Law / Invariant            | Description                                                                                  | Enforcement          |

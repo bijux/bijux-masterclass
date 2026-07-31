@@ -1,6 +1,5 @@
 # Observability, Reversibility, and Monkey-Patching Boundaries
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -17,364 +16,276 @@ graph LR
 ```
 
 ```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+stateDiagram-v2
+  [*] --> Baseline
+  Baseline --> Patched: enter context
+  Patched --> Baseline: normal exit
+  Patched --> Baseline: exceptional exit
+  Patched --> Unknown: process crash
 ```
 <!-- page-maps:end -->
 
-Runtime power becomes expensive when it hides what happened, destroys the trail back to
-the cause, or cannot be turned off cleanly.
+A runtime change is not reviewable merely because it works. Another engineer must be able
+to answer:
 
-Use this page to turn that operational cost into explicit review criteria.
+- which owner changed;
+- when the change is visible;
+- what identity was replaced;
+- how baseline state returns;
+- which failures defeat the rollback story.
 
-This page fails if a reader leaves with only "use `functools.wraps`" and "prefer context
-managers." The real lesson is broader: if a mechanism changes behavior, it owes a visible
-trail, a bounded blast radius, and a believable way back to baseline.
+This core uses an owner-local monkey patch because it makes all five questions observable.
+The lesson is not that context managers make monkey patching generally safe. The lesson is
+how quickly a precise rollback claim reaches its limits.
 
-## The sentence to keep
+## The design pressure
 
-If metaprogramming changes behavior, it must also preserve observability, expose a clean
-reversal path, and keep its patch boundary narrower than its benefit.
+Suppose a focused test must replace `Renderer.render`, and the API does not yet expose
+dependency injection. Compare the choices:
 
-That is the minimum professional bar.
-
-If a team cannot describe the rollback path in one paragraph, the dynamic behavior is
-already too magical.
-
-For self-study, turn that sentence into a runtime audit:
-
-- what exact behavior changed?
-- what surface tells me it changed?
-- what one step restores baseline state if I need to back out now?
-
-## Evidence route for observability and reversibility reviews
-
-Use this route for wrappers, registries, patches, and tracing layers:
-
-| Review step | What to inspect | What strong evidence looks like |
+| Choice | Visibility | Restoration burden |
 | --- | --- | --- |
-| Name the changed runtime fact | What behavior is being altered or intercepted? | One narrow dynamic surface is named clearly |
-| Name the observation surface | How do engineers see what happened afterward? | Metadata, trace output, manifests, logs, or explicit APIs stay available |
-| Name the rollback surface | How is baseline behavior restored? | Reset hook, disable path, or context-managed lifetime is explicit |
-| Audit blast radius | What symbol, module, or process scope is touched? | The patch target is local, named, and deliberately narrow |
-| Audit overhead | Is the mechanism on a hot path? | Measurement or an explicit cold-path claim is present |
+| pass a renderer dependency | explicit to the caller | none |
+| subclass or adapter | explicit in object construction | none |
+| test-fixture patch of the looked-up symbol | scoped but shared while active | fixture cleanup |
+| permanent assignment to a library or global owner | process-wide and indefinite | manual, fragile |
 
-## Observability starts with not lying about callables
+Dependency injection is the first choice when the API permits it. The lab demonstrates the
+third row as a constrained fallback.
 
-Wrappers should preserve identity surfaces whenever possible:
+## The executable patch boundary
 
-- `__name__`
-- `__qualname__`
-- `__doc__`
-- `__wrapped__`
-
-That is why `functools.wraps` belongs in correctness discussions, not style debates.
-
-## Metadata preservation table
-
-| Surface | Why it matters in review |
-| --- | --- |
-| `__name__` / `__qualname__` | Humans and tooling can still identify the callable |
-| `__doc__` | Help and discovery surfaces stay truthful |
-| `__wrapped__` | Introspection tools can recover the underlying function |
-| traceback structure | Failures remain attributable instead of folklore-driven |
+Open `labs/runtime_governance/patching.py`:
 
 ```python
-import functools
-
-
-def trace_safe(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        return func(*args, **kwargs)
-    return wrapper
-```
-
-Without those metadata surfaces, introspection and debugging tools pay the price later.
-
-## Tracebacks are evidence; do not throw them away
-
-One of the fastest ways to make dynamic code hostile is to destroy the original traceback.
-
-Strong wrapper behavior looks like this:
-
-```python
-import functools
-
-
-def preserve_traceback(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception:
-            raise
-    return wrapper
-```
-
-When extra context is genuinely helpful, chain explicitly:
-
-```python
-import functools
-
-
-def add_context(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as exc:
-            raise RuntimeError(f"{func.__name__} failed") from exc
-    return wrapper
-```
-
-The point is not "never wrap errors." The point is "never erase the useful evidence."
-
-## Honest wrapper claims versus overclaims
-
-| Honest claim | Overclaim to reject |
-| --- | --- |
-| "This wrapper adds context while preserving the underlying traceback." | "This wrapper makes failures easier by hiding internal exceptions." |
-| "This decorator records calls and keeps metadata visible." | "This instrumentation is transparent so debugging cost is negligible." |
-
-## Reversibility is part of design, not incident cleanup
-
-Global state and patches need a defined way back to baseline.
-
-For registries, that usually means:
-
-- deterministic ordering
-- an explicit reset hook
-- tests proving cleanup between cases
-
-```python
-from collections import defaultdict
-
-REGISTRY = defaultdict(list)
-
-
-def register(group: str, name: str, obj: object) -> None:
-    REGISTRY[group].append((name, obj))
-    REGISTRY[group].sort(key=lambda item: item[0])
-
-
-def clear_registry(group: str | None = None) -> None:
-    if group is None:
-        REGISTRY.clear()
-    else:
-        REGISTRY.pop(group, None)
-```
-
-Reset hooks are not optional polish. They are what makes a global mechanism reviewable in
-tests and incidents.
-
-That same rule applies even when the registry looks tiny. Global state scales by surprise,
-not by line count.
-
-## Monkey patches must have a boundary you can explain
-
-The word "monkey patch" covers several very different actions. Governance depends on
-which one you mean.
-
-Safer end of the spectrum:
-
-- patching your own module symbol in a test
-- patching a user-defined type inside a reversible context
-
-Higher-risk end of the spectrum:
-
-- patching builtins
-- patching standard-library types in production
-- leaving the patch active outside a clearly owned scope
-
-The point is not that every patch is forbidden. The point is that blast radius matters.
-
-## Patch-boundary comparison
-
-| Patch target | Review posture |
-| --- | --- |
-| local symbol inside the module under test | usually acceptable with explicit lifetime |
-| user-defined object inside a bounded context | acceptable when rollback is automatic |
-| shared library or standard-library symbol | high review bar because unrelated callers may change too |
-| builtins or process-wide default behavior | usually reject outside exceptional tooling or emergency control cases |
-
-## Rollback worksheet
-
-Use this worksheet before you approve a wrapper, patch, or registry change:
-
-| Question | Strong answer shape |
-| --- | --- |
-| what symbol or state changed? | one named callable, attribute, registry, or module surface |
-| how is the change observed? | metadata, trace output, manifest, log line, or explicit inspection API |
-| how is it reversed? | context exit, reset hook, disable flag, or restore function |
-| what scope pays the cost? | one function, one module, one process, or one hot path |
-
-## Context-managed patches are the minimum acceptable pattern
-
-```python
-from contextlib import contextmanager
-
-
 @contextmanager
-def patch_attr(obj, name, new_value):
-    old_value = getattr(obj, name)
-    setattr(obj, name, new_value)
+def scoped_attribute_patch(
+    owner: object,
+    attribute: str,
+    replacement: object,
+) -> Iterator[PatchRecord]:
+    if not attribute or attribute.startswith("__"):
+        raise ValueError("patch attribute must be a non-dunder name")
+    sentinel = object()
+    original = inspect.getattr_static(owner, attribute, sentinel)
+    record = PatchRecord(
+        owner_type=type(owner).__name__,
+        attribute=attribute,
+        had_original=original is not sentinel,
+        original_type=None if original is sentinel else type(original).__name__,
+        replacement_type=type(replacement).__name__,
+    )
+    setattr(owner, attribute, replacement)
     try:
-        yield old_value
+        yield record
     finally:
-        setattr(obj, name, old_value)
+        if original is sentinel:
+            delattr(owner, attribute)
+        else:
+            setattr(owner, attribute, original)
 ```
 
-That pattern is simple, but it keeps the right habit visible:
+The function accepts an explicit owner and one explicit attribute. It refuses dunder
+patches. It records what existed before mutation, then restores in `finally`.
 
-- patches have an owner
-- patches have a lifetime
-- patches revert even on failure
+That scope is materially better than a helper that accepts dotted import strings and
+searches the process for something to replace. The caller can see the mutation target at
+the call site.
 
-Anything wider should raise the review bar immediately.
+## Why static lookup matters
 
-That wider review bar should ask for explicit disable and restore evidence before approval.
+The lab uses `inspect.getattr_static`, not ordinary `getattr`, to capture the original.
+Ordinary attribute access may invoke descriptor binding or dynamic fallback. Static
+lookup retrieves the stored class-dictionary object.
 
-## Patch your symbol before you patch the world
-
-If a module does `from time import time as now`, tests should usually patch that module's
-`now` symbol rather than patching `time.time` globally.
-
-That keeps the patch aligned with the code under review instead of accidentally changing
-unrelated callers elsewhere in the process.
-
-This is one of the clearest examples of low-blast-radius design.
-
-Keep the practical rule visible:
-
-patch the symbol the code reads, not the largest global source you can technically reach.
-
-## Performance claims need measurement, not vibes
-
-Every wrapper, hook, and layer adds some cost. Sometimes that cost is fine. Sometimes it
-lands on a hot path and quietly becomes the real bug.
+For this owner:
 
 ```python
-import timeit
-
-
-def baseline(x):
-    return x + 1
-
-
-def wrapped(x):
-    return baseline(x)
-
-
-print(timeit.timeit("baseline(1)", globals=globals(), number=200000))
-print(timeit.timeit("wrapped(1)", globals=globals(), number=200000))
+class Renderer:
+    @staticmethod
+    def render(message: str) -> str:
+        return f"original:{message}"
 ```
 
-The result does not need to be dramatic to matter. What matters is that the design states
-whether the path is hot and what overhead was observed.
+the stored original is a `staticmethod` descriptor. Saving `Renderer.render` through
+ordinary lookup would save the resolved function instead. Restoring that function would
+produce similar call output in this simple example, but it would not restore the original
+descriptor identity.
 
-## Weak answers to reject early
+Reversibility means restoring the owned object, not merely producing the same sample
+string afterward.
 
-| Weak answer | Why it fails |
+## Trace success and failure
+
+Inside `patching_evidence`, the lab records the original identity, enters the scope, calls
+the replacement, and deliberately raises:
+
+```python
+try:
+    with scoped_attribute_patch(Renderer, "render", replacement) as active:
+        record = active
+        inside_result = Renderer.render("incident")
+        raise RuntimeError("exercise rollback")
+except RuntimeError as error:
+    failure_type = type(error).__name__
+```
+
+The expected evidence is:
+
+```text
+inside_scope.result = "patched:incident"
+inside_scope.replacement_visible = true
+after_scope.result = "original:incident"
+after_scope.original_identity_restored = true
+after_scope.body_failure_type = "RuntimeError"
+```
+
+The exception is not swallowed by the context manager. Cleanup happens, and the caller
+still owns the body failure.
+
+```mermaid
+sequenceDiagram
+  participant Caller
+  participant Scope as scoped_attribute_patch
+  participant Owner as Renderer.render
+  Caller->>Scope: enter(owner, attribute, replacement)
+  Scope->>Owner: save static identity; install replacement
+  Caller->>Owner: call
+  Owner-->>Caller: patched:incident
+  Caller--xScope: RuntimeError
+  Scope->>Owner: restore original descriptor
+  Scope--xCaller: propagate RuntimeError
+```
+
+## Existing and absent attributes are different contracts
+
+If the attribute existed, rollback must restore the exact original object.
+If the attribute did not exist, rollback must remove the newly introduced attribute.
+
+The sentinel distinguishes those states. Storing `None` as a missing marker would be
+incorrect because `None` could be the legitimate original value.
+
+The focused tests cover both branches:
+
+- restore after normal exit;
+- restore after exceptional exit;
+- remove an attribute introduced only for the scope;
+- reject empty and dunder attribute names.
+
+These are not implementation-detail tests. They define what "reversible" means for this
+helper.
+
+## The patch record is evidence, not an audit system
+
+`PatchRecord` publishes:
+
+```text
+owner_type
+attribute
+had_original
+original_type
+replacement_type
+rollback_owner
+```
+
+That lets a test or review packet explain the mutation. The lab intentionally reports
+`automatic_audit_storage = false`: no durable log is written, and the record disappears
+unless the caller stores it.
+
+Do not describe an in-memory record as operational audit history. Durable audit requires a
+separate owner, retention policy, failure behavior, and likely redaction rules.
+
+## Ordinary rollback has hard limits
+
+The `finally` block proves restoration only while Python can run it.
+
+| Situation | Does this helper restore? | Why |
+| --- | --- | --- |
+| context body returns normally | yes | context manager exits through `finally` |
+| context body raises a Python exception | yes | stack unwinding reaches `finally` |
+| another thread reads the attribute during the scope | not applicable | it sees the replacement; there is no isolation |
+| process terminates abruptly | no | Python cleanup may never run |
+| replacement mutates another object | no | that state is outside this patch owner |
+| patch target is also cached elsewhere | not necessarily | restoring one attribute does not invalidate other references |
+
+The evidence packet therefore publishes `concurrency_safe = false`. Context scope is a
+lifetime boundary, not a thread-isolation boundary.
+
+## Patch where lookup happens
+
+Even a correctly restored patch can be ineffective when it targets the definition rather
+than the symbol used by the code under test.
+
+If `service.py` contains:
+
+```python
+from renderer import render
+```
+
+then patching `renderer.render` later does not replace `service.render`; the importing
+module already owns a reference. Patch the symbol at the lookup owner, or redesign the
+dependency to be explicit.
+
+This rule is about Python name ownership, not a testing-library quirk.
+
+## Observation comes before approval
+
+A defensible patch proposal should state:
+
+| Review field | Required answer |
 | --- | --- |
-| "the wrapper is transparent enough" | enough does not name preserved evidence or hidden cost |
-| "the patch is temporary" | temporary does not define a rollback path |
-| "the registry is tiny" | tiny global state still needs reset and inspection surfaces |
-| "performance should be fine" | should is not measurement or a named cold-path claim |
+| owner | exact object whose attribute changes |
+| attribute | exact non-dunder name |
+| timing | setup, active interval, and teardown |
+| visibility | which callers or threads can observe it |
+| original evidence | identity or static descriptor saved before change |
+| rollback | restore existing object or remove introduced attribute |
+| failure limit | crash, concurrency, caches, and secondary mutations |
+| proof | success, exception, and absent-attribute tests |
 
-Before you leave this page, write one sentence beginning:
+If the proposal says only "temporary patch," it has not described a boundary.
 
-- "the observation surface here is..."
-- "the rollback surface here is..."
+## Run the focused evidence
 
-## Failure modes to name explicitly
+From the course root:
 
-Watch for these:
+```console
+make runtime-governance-lab
+python -m unittest discover -s tests -p "test_runtime_governance_patching.py" -v
+```
 
-| Failure mode | What goes wrong |
-| --- | --- |
-| wrapper hides original callable identity | debugging and introspection degrade quietly |
-| registry has no reset path | tests and incidents inherit stale state |
-| patch target is broader than the code under review | unrelated behavior changes and causal analysis gets harder |
-| overhead is assumed negligible | the mechanism becomes the real production bug on a hot path |
-| disable path exists only informally | operations teams cannot safely narrow behavior during incidents |
+Inspect `reversible_patching.inside_scope`, `after_scope`, `boundary`, and
+`claim_limits`. Predict the values before reading them.
 
-## Kill switches are part of operational honesty
+The tests prove ordinary restoration and published non-claims. They do not prove safe
+parallel use or recovery after process termination.
 
-If the design adds global or difficult-to-debug behavior, it should usually come with a
-disable path:
+## Capstone transfer: reject hidden replacement
 
-- feature flag
-- configuration toggle
-- no-magic fallback path
-- test helper that resets state
+The incident-plugin runtime rejects application monkey patching. Its runtime owners are
+explicit modules—descriptors in `fields.py`, callable policy in `actions.py`, and class
+creation in `framework.py`.
 
-This is not fear. It is stewardship.
+Run:
 
-## Operational approval language
+```console
+make capstone-governance
+```
 
-Strong approval notes for dynamic behavior usually say things like:
+The alternative named in the report is an explicit dependency or adapter replacement.
+This keeps application ownership visible. Tests may still use a framework-provided scoped
+patch where necessary, but that testing technique does not become the application's
+extension architecture.
 
-- "the wrapper preserves metadata and tracebacks, and the path is not hot"
-- "the registry remains deterministic because reset and ordering surfaces are explicit"
-- "the patch lifetime is bounded to one context and one symbol"
-- "the feature can be disabled without rewriting application logic"
+## Review checkpoint
 
-## Review rules for observable and reversible metaprogramming
+Review this statement:
 
-When reviewing wrappers, registries, or patches, ask these questions:
+> The patch is safe because a context manager always restores it.
 
-- what runtime fact stays visible after this abstraction is added?
-- how do we restore baseline behavior in tests and incidents?
-- does the traceback stay useful?
-- what is the patch target and why is that blast radius acceptable?
-- do we have measurement for hot-path overhead?
-- can the feature be disabled without rewriting the application?
+Replace it with a claim that names ordinary success and exception rollback, other-thread
+visibility, and crash behavior. Then explain why identical output after the scope is
+weaker evidence than original descriptor identity.
 
-Add one more final question:
-
-- what exact runtime fact would another engineer inspect first during an incident?
-
-If no one can answer those quickly, the mechanism is already too magical.
-
-## What this page makes clear
-
-The point is not "dynamic behavior is bad."
-
-The boundary is:
-
-- dynamic behavior owes an operational explanation
-- debugging evidence is part of correctness
-- reversible systems are easier to trust than clever permanent ones
-
-That is how runtime power stays governable.
-
-## What to practice from this page
-
-Try these before moving on:
-
-1. Rewrite one irreversible patch as a context-managed patch.
-2. Add one explicit reset hook to a registry design.
-3. Explain one wrapper's error behavior in terms of traceback preservation and exception chaining.
-
-## Exit check for this page
-
-Before moving on, make sure you can do all of the following:
-
-- name one observational surface and one rollback surface for a dynamic mechanism
-- explain why a broad patch target should be rejected in favor of a narrower symbol
-- distinguish metadata preservation from semantic transparency
-- state whether the mechanism is on a hot path and what evidence would answer that honestly
-
-If those feel ordinary, the next step is the outer edge of runtime magic: import hooks and
-AST transforms, where global semantics make review costs even steeper.
-
-## Continue through Module 10
-
-- Previous: [Interface Contracts with ABCs, Protocols, and `__subclasshook__`](interface-contracts-with-abcs-protocols-and-subclasshook.md)
-- Next: [Import Hooks, AST Transforms, and Tooling Boundaries](import-hooks-ast-transforms-and-tooling-boundaries.md)
-- Practice: [Exercises](exercises.md)
-- Terms: [Glossary](glossary.md)
+You are ready for the tooling core when "reversible" automatically makes you ask
+"reversible under which failures, and for which owner?"

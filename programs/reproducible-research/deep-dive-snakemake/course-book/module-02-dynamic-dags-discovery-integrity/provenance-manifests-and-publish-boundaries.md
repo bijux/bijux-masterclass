@@ -1,295 +1,314 @@
 # Provenance, Manifests, and Publish Boundaries
 
-Discovery is only half the problem.
+Dynamic discovery changes which jobs exist. If the discovered set disappears after the
+run, a reviewer can see results but cannot explain why those samples—and not others—were
+processed.
 
-Once the workflow has learned a changing set of samples, another question appears:
+This lesson assigns distinct roles to intake, discovery, provenance, and publication
+artifacts. The goal is a compact public packet that preserves membership truth without
+publishing every internal file.
 
-> where does that fact live after the run, and which later consumer is allowed to trust it?
+## Four artifacts, four questions
 
-This page answers that question.
+| Artifact | Question answered |
+| --- | --- |
+| arrival registry | which raw paths were admitted for consideration? |
+| discovery manifest | which candidates were accepted or rejected, and why? |
+| provenance record | under which code, configuration, and software context did the run occur? |
+| publish manifest | which files form the supported downstream contract? |
 
-## How to read this page
-
-Read this page with one pressure in mind:
-
-> after a dynamic run finishes, which files are allowed to explain the run to someone who
-> did not watch it happen?
-
-If you keep that question visible, provenance and manifests stop sounding like bureaucracy
-and start sounding like the final part of discovery honesty.
-
-## Why this lesson belongs in Module 02
-
-Dynamic DAGs create a special review burden. The run is no longer just "here are the
-results." It is also "here is why these exact units became results at all."
-
-That is why this lesson belongs in the same day as discovery and checkpoints:
-
-- discovery decides what the workflow found
-- checkpoints may change which jobs exist
-- provenance and manifests preserve those facts at the public boundary
-
-## Internal execution state is not automatically a public contract
-
-Many workflows create useful files during execution:
-
-- discovered sample registries
-- per-sample summaries
-- logs
-- benchmarks
-- intermediate reports
-
-Those files may be valuable without all being safe to publish as downstream truth.
-
-Module 02 wants a clean separation:
-
-- internal workflow state helps the run remain inspectable
-- published outputs define what downstream users may rely on
-
-If you blur those together, review becomes harder.
-
-## The three artifact roles
-
-### 1. Discovery artifacts
-
-These answer:
-
-- what did the workflow discover
-- from which declared surface
-- in what normalized order
-
-Typical example:
-
-- `results/discovery/accepted_samples.json`
-- `results/discovery/rejected_samples.json`
-
-### 2. Provenance artifacts
-
-These answer:
-
-- what configuration actually ran
-- which software or workflow version produced the outputs
-- which runtime identity matters for review
-
-Typical example:
-
-- `publish/v1/provenance.json`
-
-### 3. Publish artifacts
-
-These answer:
-
-- which outputs are now part of the downstream contract
-- where they live
-- how a reviewer can verify the published bundle
-
-Typical examples:
-
-- `publish/v1/accepted_samples.json`
-- `publish/v1/rejected_samples.json`
-- `publish/v1/manifest.json`
-- `publish/v1/report/index.html`
-
-The names can vary. The separation of roles should not.
-
-## A quick self-check before you keep reading
-
-Imagine a reviewer opens only `publish/v1/`.
-
-Could they answer all of these without rummaging through internal execution state?
-
-- what the workflow discovered
-- what configuration and run identity produced the bundle
-- which files are officially part of the contract
-
-If not, the publish boundary is probably still underspecified.
-
-## Why accepted and rejected discovery evidence deserves special treatment
-
-The discovered sample set is not just one more intermediate file.
-
-In a dynamic workflow it often explains:
-
-- why certain jobs existed at all
-- why some downstream outputs are present
-- why some candidates never became downstream outputs
-- why the publish surface contains the sample families it does
-
-If those artifacts disappear or stay private forever, the run story becomes harder to
-reconstruct.
-
-That is why the capstone carries discovery into the publish boundary instead of treating it
-as disposable setup state.
-
-## A healthy boundary
+Combining these into one “manifest” creates an overloaded schema. Keeping them separate
+lets each evolve under a clear owner.
 
 ```mermaid
 flowchart LR
-  manifest["config/samples.tsv"] --> raw["declared raw evidence"]
-  raw --> accepted["results/discovery/accepted_samples.json"]
-  raw --> rejected["results/discovery/rejected_samples.json"]
-  accepted --> results["results/{sample}/..."]
-  results --> publish["publish/v1/"]
+  arrivals["Arrival registry"] --> discovery["Discovery checkpoint"]
+  discovery --> accepted["Accepted records"]
+  discovery --> rejected["Rejected records"]
+  accepted --> processing["Per-sample processing"]
+  processing --> publish["Published results"]
   accepted --> publish
-  rejected --> publish
-  publish --> manifest["manifest.json"]
-  publish --> provenance["provenance.json"]
+  provenance["Code + config + software context"] --> publish
+  publish --> inventory["Publish manifest with hashes"]
 ```
 
-This design does something subtle but important:
+## Internal state is not automatically public evidence
 
-- dynamic discovery remains visible inside the run
-- both accepted and rejected decisions are preserved at the public boundary
-- manifest and provenance make the publish surface reviewable as a set
+Snakemake metadata, temporary files, benchmarks, and logs are valuable during diagnosis.
+They are not all stable downstream interfaces.
 
-## A strong beginner habit
+Classify every artifact:
 
-Do not wait until the end of a project to think about provenance and manifests.
-
-If the workflow is already dynamic in Module 02, start teaching the habit here:
-
-- discovery should be durable
-- public outputs should be enumerated
-- run identity should be explained while the workflow is still small enough to inspect
-
-## What belongs in accepted and rejected discovery artifacts
-
-A weak registry usually lists only names.
-
-A stronger registry records enough context for later review, for example:
-
-```json
-{
-  "schema_version": 1,
-  "declared_source": "config/samples.tsv",
-  "samples": [
-    {
-      "sample": "sampleA",
-      "path": "data/raw/sampleA.fastq.gz"
-    }
-  ]
-}
-```
-
-When rejection is possible, keep a companion record that explains non-membership too:
-
-```json
-{
-  "schema_version": 1,
-  "declared_source": "config/samples.tsv",
-  "samples": [
-    {
-      "sample": "sampleB",
-      "path": "data/raw/sampleB.fastq.gz",
-      "reason": "empty input file"
-    }
-  ]
-}
-```
-
-The exact schema is up to the workflow. The lesson is that the discovered set should be
-specific enough to answer later review questions without forcing a second raw-data scan.
-
-## What belongs in provenance
-
-Provenance should capture resolved run facts, not vague aspirations.
-
-Typical examples:
-
-- the materialized config used for the run
-- the Snakemake version
-- the workflow commit or repository state
-- the profile or execution context that matters for interpretation
-
-This page is not asking for maximal metadata. It is asking for enough evidence to explain
-what run produced the published boundary.
-
-## The common beginner mistake
-
-A common mistake is to think a timestamp alone counts as provenance.
-
-It does not.
-
-A timestamp may tell you *when* something happened, but not:
-
-- which semantic configuration was resolved
-- which workflow revision produced the output
-- which operating context mattered for interpretation
-
-## Why manifests matter
-
-A manifest gives the publish boundary a durable inventory.
-
-That usually means:
-
-- which files belong to the boundary
-- where they are relative to the publish root
-- an integrity surface such as checksums or hashes
-
-Without a manifest, a publish directory is often just a bag of files someone hopes is
-complete.
-
-With a manifest, the boundary becomes reviewable as a declared set.
-
-## What a good Module 02 explanation sounds like
-
-Strong:
-
-> The run writes accepted and rejected discovery records, one provenance record, and one
-> manifest so the publish bundle explains both its membership decisions and its origin.
-
-Weak:
-
-> We kept some extra JSON files for debugging.
-
-## One useful publication pattern
-
-Use the workflow in two stages:
-
-1. produce internal execution artifacts under `results/`
-2. promote selected artifacts into `publish/v1/`
-
-That pattern makes review easier because it answers two different questions cleanly:
-
-- what did the workflow need to run correctly
-- what may a downstream consumer trust later
-
-Those questions overlap, but they are not identical.
-
-## Common integrity mistakes
-
-| Mistake | Why it hurts | Better repair |
+| Role | Examples | Retention and compatibility |
 | --- | --- | --- |
-| accepted or rejected discovery evidence is overwritten or discarded | later review cannot explain the DAG membership decisions | keep the discovery records as durable run artifacts |
-| publish boundary omits discovery | downstream users cannot tell why sample outputs exist or why others are missing | promote accepted and rejected records into the publish bundle |
-| provenance captures only a timestamp | run identity stays vague | record resolved config and software identity too |
-| publish directory has no inventory | reviewers cannot tell what belongs there | add a manifest with explicit paths and checksums |
-| internal and public files share the same location with no distinction | ownership and review scope blur together | keep `results/` and `publish/` responsibilities separate |
+| workflow input | registry, raw FASTQ, reference | governed by intake or data ownership |
+| internal state | intermediate BAM, temporary chunk list, `.snakemake/` | may change with implementation |
+| review evidence | discovery manifest, rejection ledger, logs, benchmarks | retained to support stated claims |
+| publish contract | summary, report, discovered samples, provenance, inventory | versioned and verified for consumers |
 
-## The explanation a reviewer trusts
+A file may serve more than one role, but the role must be named. “It is in `results/`”
+does not define trust.
 
-Strong explanation:
+## Preserve the discovery decision
 
-> the workflow records accepted candidates in `results/discovery/accepted_samples.json`,
-> records rejected candidates in `results/discovery/rejected_samples.json`, publishes
-> reviewed copies at `publish/v1/accepted_samples.json` and
-> `publish/v1/rejected_samples.json`, records run identity in
-> `publish/v1/provenance.json`, and inventories the bundle in
-> `publish/v1/manifest.json`, so a reviewer can explain both why the DAG changed and what
-> the public contract now contains.
+A useful discovery manifest might contain:
 
-Weak explanation:
+```json
+{
+  "schema_version": 2,
+  "arrival_registry": "data/raw/arrivals.tsv",
+  "arrival_registry_sha256": "…",
+  "accepted": {
+    "alpha": {
+      "mode": "SE",
+      "reads": {"SE": "data/raw/alpha.fastq.gz"}
+    }
+  },
+  "rejected": [
+    {
+      "path": "beta_R1.fastq.gz",
+      "reason": "missing R2 mate"
+    }
+  ]
+}
+```
 
-> we keep a few JSON files around for debugging.
+The capstone’s current published discovery schema records accepted samples and fails
+closed on invalid candidates. In a production intake system where rejection review is
+required, add a governed rejection ledger rather than relying only on stderr.
 
-The strong version names ownership and trust. The weak version treats integrity as
-optional decoration.
+The important boundary is that rejection is observable. Silently skipping bad candidates
+makes the accepted set impossible to audit.
 
-## End-of-page checkpoint
+## Record the governing event, not only the result
 
-Before leaving this page, you should be able to:
+Two runs can produce the same accepted samples from different intake evidence. Record the
+arrival registry path and digest:
 
-- distinguish discovery artifacts from provenance artifacts from publish artifacts
-- explain why accepted and rejected discovery records may belong both inside the run and at the publish boundary
-- describe what a manifest adds that a directory listing does not
-- explain why internal execution state should not automatically become the public contract
+```python
+registry_digest = hashlib.sha256(registry.read_bytes()).hexdigest()
+```
+
+A digest does not prove that the registry was correct. It binds the discovery artifact to
+specific registry bytes so a reviewer can detect substitution.
+
+Use digests for:
+
+- registry and sample-sheet identity;
+- immutable raw inputs when policy requires it;
+- published-file inventories;
+- model or reference bundles.
+
+Do not use a digest as a replacement for schema validation or domain review.
+
+## The publication equality to enforce
+
+Let:
+
+- `A` be accepted sample IDs from discovery;
+- `C` be samples with complete required outputs;
+- `P` be samples represented by the public summary.
+
+For an ordinary successful full publication:
+
+```text
+P = A = C
+```
+
+If partial publication is allowed, encode the policy explicitly and preserve the excluded
+set with reasons. Never let a reporting script quietly summarize whichever files happen
+to exist.
+
+```mermaid
+flowchart TD
+  accepted["Accepted set A"] --> complete{"All required outputs complete?"}
+  complete -->|yes| publish["Published set P"]
+  complete -->|no| fail["Fail publication or apply declared partial policy"]
+  publish --> equality["Verify P = A = C"]
+  equality --> manifest["Write public inventory and hashes"]
+```
+
+The capstone verification checks that summary units match
+`discovered_samples.json`. That turns membership alignment into an executable contract.
+
+## Build publication from named inputs
+
+A publish rule should list its inputs:
+
+```python
+rule publish_manifest:
+    input:
+        discovery="publish/v1/discovered_samples.json",
+        summary="publish/v1/summary.json",
+        table="publish/v1/summary.tsv",
+        report="publish/v1/report/index.html",
+        provenance="publish/v1/provenance.json",
+    output:
+        inventory="publish/v1/manifest.json"
+    script:
+        "workflow/scripts/write_publish_manifest.py"
+```
+
+The script should verify required files, calculate hashes, and write atomically. Globbing
+the publish directory while writing its manifest risks including stale or unintended
+files.
+
+## A public inventory is a contract
+
+Example:
+
+```json
+{
+  "schema_version": 2,
+  "files": [
+    {"path": "discovered_samples.json", "sha256": "…"},
+    {"path": "summary.json", "sha256": "…"},
+    {"path": "summary.tsv", "sha256": "…"},
+    {"path": "report/index.html", "sha256": "…"},
+    {"path": "provenance.json", "sha256": "…"}
+  ]
+}
+```
+
+Canonical path order prevents incidental filesystem ordering from changing the manifest.
+Relative paths keep the bundle movable. A schema version marks semantic compatibility,
+not merely JSON syntax.
+
+## Provenance should explain identity, not narrate everything
+
+Useful provenance fields include:
+
+- repository commit;
+- Snakemake and Python versions;
+- materialized workflow configuration;
+- reference and environment identities;
+- execution timestamp, clearly labeled as non-deterministic;
+- discovery-registry identity;
+- publish schema version.
+
+Avoid dumping all environment variables. That can leak secrets, host-specific noise, and
+irrelevant state. Record governed influences with deliberate names.
+
+Separate reproducible identity from run occurrence:
+
+| Field | Stable identity? | Why retain it |
+| --- | --- | --- |
+| git commit | yes for a source state | connects results to workflow code |
+| config values | yes for a run definition | exposes semantic and policy choices |
+| registry digest | yes for intake bytes | binds membership evidence |
+| timestamp | no | locates the execution event |
+| hostname | usually no | can aid operations but rarely defines analytical meaning |
+
+## Review the capstone packet
+
+Run:
+
+```bash
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+make verify-report
+```
+
+Read in this order:
+
+1. `route.txt`;
+2. `verify.json`;
+3. `discovered_samples.json`;
+4. `summary.json`;
+5. `provenance.json`;
+6. `manifest.json`;
+7. `bundle-manifest.json`.
+
+Ask:
+
+- Do discovery and summary contain the same sample IDs?
+- Does provenance identify the governing configuration?
+- Does the manifest list the exact supported public paths?
+- Do hashes match the copied bundle?
+- Can a reviewer distinguish publish files from supporting guide files?
+
+The route matters. Opening the HTML report first encourages visual plausibility before
+membership verification.
+
+## Accepted and rejected evidence
+
+Rejection evidence needs care because it may contain sensitive filenames, validation
+details, or upstream identifiers. Choose among:
+
+| Policy | Public surface | Internal surface |
+| --- | --- | --- |
+| full transparent intake | accepted and rejected records | raw logs |
+| privacy-constrained intake | accepted records and rejection counts/categories | protected detailed ledger |
+| fail-closed batch | no publication on rejection | complete rejection report |
+| declared partial publication | accepted public records plus excluded IDs/reasons allowed by policy | detailed validation evidence |
+
+The policy must be chosen, not inferred from what a script happened to emit.
+
+## Failure patterns
+
+### Publish whichever files exist
+
+This can omit failed accepted samples and retain stale removed samples. Build publication
+from accepted membership and named required outputs.
+
+### Copy discovery without its governing identity
+
+The sample list is visible, but the intake event cannot be tied to it. Preserve registry
+path and digest.
+
+### Treat logs as the rejection contract
+
+Logs are optimized for diagnosis, can change format, and may be incomplete. Use a
+structured rejection artifact when rejection review is a supported claim.
+
+### Hash after publishing in place
+
+Consumers may observe a mixture of old and new files. Assemble a candidate bundle,
+verify it, then promote atomically or under a versioned immutable path.
+
+### Publish every internal file for “transparency”
+
+This makes unstable implementation details look supported. Publish the smallest set that
+proves the downstream contract; retain richer evidence separately.
+
+## A publish-boundary exercise
+
+Given:
+
+```text
+accepted: alpha, beta
+complete outputs: alpha
+existing old output: gamma
+```
+
+A directory glob finds `alpha` and `gamma`. It is wrong to publish either that pair or
+only `alpha` without a declared partial policy.
+
+Your review should conclude:
+
+- `beta` is accepted but incomplete;
+- `gamma` is stale and outside the accepted set;
+- full publication must fail;
+- partial publication needs an explicit policy and exclusion evidence;
+- cleanup of `gamma` is necessary but does not solve `beta`.
+
+This reasoning is more important than the specific reporting command.
+
+## Review checklist
+
+- [ ] Arrival, discovery, provenance, and publish artifacts have distinct roles.
+- [ ] The discovery artifact identifies its governing registry bytes.
+- [ ] Accepted and rejected decisions are observable under the chosen policy.
+- [ ] Public samples are compared with accepted and complete samples.
+- [ ] Publish inputs are named rather than discovered from ambient output state.
+- [ ] Public paths are relative, canonical, and hashed.
+- [ ] Schema versions reflect semantic compatibility.
+- [ ] Provenance records governed influences without dumping secrets.
+- [ ] Candidate publication is verified before promotion.
+- [ ] Internal implementation files are not accidentally promised as public API.
+
+## What you should carry forward
+
+Dynamic integrity survives publication when another person can connect a public result to
+its accepted membership, governing arrival evidence, run identity, and exact file
+inventory. The next lesson keeps that truth intact while diagnosing software setup and
+scheduler overhead.

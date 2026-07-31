@@ -4,6 +4,7 @@
 entrypoints live here instead.
 """
 
+from .async_rag import AsyncChunkEmbedder, async_rag_chunks
 from .clean_cfg import DEFAULT_CLEAN_CONFIG, CleanConfig, make_cleaner
 from .config import (
     DocsReader,
@@ -16,6 +17,7 @@ from .config import (
     make_rag_fn,
 )
 from .core import (
+    SourceSchedule,
     _trace_iter,
     full_rag_api,
     full_rag_api_docs,
@@ -34,12 +36,22 @@ from .core import (
     safe_rag_pipeline,
     sliding_windows,
     stream_chunks,
+    stream_rag_chunks,
+    stream_rag_sources,
     throttle,
+)
+from .retrieval import (
+    LOCAL_EMBEDDING_MODEL,
+    cosine_similarity,
+    make_query,
+    retrieve,
 )
 from .types import DebugConfig, DocRule, Observations, RagTaps, RagTraceV3, TraceLens
 
 __all__ = [
     "DEFAULT_CLEAN_CONFIG",
+    "LOCAL_EMBEDDING_MODEL",
+    "AsyncChunkEmbedder",
     "CleanConfig",
     "DebugConfig",
     "DocRule",
@@ -50,9 +62,12 @@ __all__ = [
     "RagCoreDeps",
     "RagTaps",
     "RagTraceV3",
+    "SourceSchedule",
     "TraceLens",
     "_trace_iter",
+    "async_rag_chunks",
     "boundary_rag_config",
+    "cosine_similarity",
     "full_rag_api",
     "full_rag_api_docs",
     "full_rag_api_path",
@@ -69,10 +84,14 @@ __all__ = [
     "iter_rag_core",
     "make_cleaner",
     "make_gen_rag_fn",
+    "make_query",
     "make_rag_fn",
     "multicast",
+    "retrieve",
     "safe_rag_pipeline",
     "sliding_windows",
     "stream_chunks",
+    "stream_rag_chunks",
+    "stream_rag_sources",
     "throttle",
 ]

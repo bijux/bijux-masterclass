@@ -1,8 +1,14 @@
 # Python Metaprogramming
 
-Python Metaprogramming is the runtime-judgment course in the `python-programming`
-family. It teaches introspection, decorators, descriptors, and metaclasses as tools
-that must earn their complexity through observability, testability, and clear ownership.
+Python Metaprogramming is a teaching-first masterclass in the `python-programming`
+family. Its primary product is the course website: sequenced lessons, runnable labs,
+worked examples, decision-focused exercises, and reasoned answers for independent study.
+It teaches introspection, decorators, descriptors, and metaclasses as tools that must
+earn their complexity through observability, testability, and clear ownership.
+
+The incident-plugin capstone is the integration project. It lets learners transfer
+course ideas into one realistic runtime, but it does not replace the lessons or define
+the whole learning experience.
 
 ## Core question
 
@@ -43,10 +49,15 @@ By the end of the course, you should be able to:
 ## Course shape
 
 - `course-book/guides/` contains learner routes, question maps, checkpoints, and proof ladders.
-- `course-book/capstone/` contains repository entry pages, architecture routes, walkthroughs, and review checklists.
-- `course-book/reference/` contains durable maps, glossaries, and review standards.
 - `course-book/module-00-orientation/` plus Modules `01` to `10` contain the core teaching arc.
-- `capstone/` contains the executable incident-plugin runtime used to prove the course claims
+- `labs/` contains small executable learning surfaces that isolate the concept currently
+  being taught.
+- `tests/` proves the claims made by those course labs.
+- `course-book/reference/` contains durable maps, glossaries, and review standards.
+- `course-book/capstone/` contains integration-project routes, architecture walkthroughs,
+  and review checklists.
+- `capstone/` contains the executable incident-plugin runtime used for transfer and
+  integration proof.
 - `Makefile` exposes stable program-level commands from the monorepo root
 
 ## Reading contract
@@ -57,7 +68,8 @@ This is not a browse-at-random course. The sequence matters:
 2. Learn wrapper design before descriptor ownership.
 3. Learn descriptor ownership before metaclasses.
 4. Learn the mechanism ladder before governance and red lines.
-5. Keep the capstone open while reading so every hook stays attached to one runnable codebase.
+5. Run the focused lesson or lab before transferring the mechanism into the capstone.
+6. Use the capstone after the concept is clear enough to explain what the larger system adds.
 
 If you skip that order, later modules can still feel readable, but the design trade-offs
 become much harder to judge honestly.
@@ -74,7 +86,8 @@ become much harder to judge honestly.
 8. Use `course-book/module-00-orientation/mid-course-map.md` when you are resuming the course after a break and need to re-enter from the right boundary.
 9. Use `course-book/guides/proof-ladder.md` when you need the smallest honest proof route.
 10. Move through Modules `00` to `10` in order, then close with the mastery review inside Module `10`.
-11. Keep `course-book/capstone/index.md` and `course-book/capstone/capstone-map.md` open while reading.
+11. Use `course-book/capstone/index.md` and `course-book/capstone/capstone-map.md` after
+    each module to locate its smallest integration proof.
 
 ## What this course covers
 
@@ -105,7 +118,7 @@ become much harder to judge honestly.
 ## How the capstone fits
 
 [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/python-programming/python-meta-programming/capstone)
-is the executable proof for the course. It is a plugin runtime for incident-delivery
+is the integration project for the course. It is a plugin runtime for incident-delivery
 adapters that keeps four mechanisms visible in one inspectable system:
 
 - descriptor-backed configuration fields
@@ -119,6 +132,10 @@ Use it to answer questions like:
 - Which work happens at class-definition time instead of runtime invocation?
 - Which exported facts can be inspected without executing user behavior?
 
+Those questions are transfer work. Learn each mechanism first from the core lesson,
+runnable example, worked example, and exercises. Then use the capstone to check whether
+your explanation survives contact with a system where several mechanisms interact.
+
 ## Working locally
 
 From the repository root:
@@ -126,6 +143,38 @@ From the repository root:
 ```bash
 make PROGRAM=python-programming/python-meta-programming docs-serve
 make PROGRAM=python-programming/python-meta-programming docs-build
+make -C programs/python-programming/python-meta-programming lab
+make -C programs/python-programming/python-meta-programming lab-test
+make -C programs/python-programming/python-meta-programming observation-lab
+make -C programs/python-programming/python-meta-programming observation-debug-view
+make -C programs/python-programming/python-meta-programming observation-lab-test
+make -C programs/python-programming/python-meta-programming evidence-lab
+make -C programs/python-programming/python-meta-programming evidence-lab-test
+make -C programs/python-programming/python-meta-programming evidence-repr
+make -C programs/python-programming/python-meta-programming evidence-repr-test
+make -C programs/python-programming/python-meta-programming capstone-bind-action
+make -C programs/python-programming/python-meta-programming wrapper-lab
+make -C programs/python-programming/python-meta-programming wrapper-lab-test
+make -C programs/python-programming/python-meta-programming wrapper-cache
+make -C programs/python-programming/python-meta-programming wrapper-cache-test
+make -C programs/python-programming/python-meta-programming capstone-action-wrapper
+make -C programs/python-programming/python-meta-programming decorator-policy-lab
+make -C programs/python-programming/python-meta-programming decorator-policy-lab-test
+make -C programs/python-programming/python-meta-programming capstone-check-action
+make -C programs/python-programming/python-meta-programming class-customization-lab
+make -C programs/python-programming/python-meta-programming class-customization-lab-test
+make -C programs/python-programming/python-meta-programming descriptor-lookup-lab
+make -C programs/python-programming/python-meta-programming descriptor-lookup-lab-test
+make -C programs/python-programming/python-meta-programming capstone-field-ownership
+make -C programs/python-programming/python-meta-programming descriptor-system-lab
+make -C programs/python-programming/python-meta-programming descriptor-system-lab-test
+make -C programs/python-programming/python-meta-programming capstone-field-system
+make -C programs/python-programming/python-meta-programming class-creation-lab
+make -C programs/python-programming/python-meta-programming class-creation-lab-test
+make -C programs/python-programming/python-meta-programming capstone-class-creation
+make -C programs/python-programming/python-meta-programming runtime-governance-lab
+make -C programs/python-programming/python-meta-programming runtime-governance-lab-test
+make -C programs/python-programming/python-meta-programming capstone-governance
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming capstone-tour
@@ -133,17 +182,121 @@ make PROGRAM=python-programming/python-meta-programming capstone-verify-report
 make PROGRAM=python-programming/python-meta-programming capstone-confirm
 ```
 
-Use `capstone-walkthrough` for the first published learner-facing route, `capstone-tour`
-when you want the same saved bundle in the proof ladder, `capstone-verify-report` when
-you need durable executable evidence, and `capstone-confirm` for the strictest published
-confirmation pass.
+When returning after a break, use the course-book’s module checkpoints to find the last
+claim you can still explain. Rerun that module’s focused lab and test before continuing.
+The course map publishes the exact command pair for every module.
 
-Primary reading route:
+Use `lab` for the Module 01 runtime-object evidence. Use `observation-lab` and
+`observation-debug-view` for Module 02's observation boundaries and worked example.
+Use `evidence-lab` and `evidence-repr` for Module 03's classified evidence packet and
+signature-guided representation. The matching focused targets verify each teaching
+contract. `capstone-bind-action` is the Module 03 transfer: it validates a real action
+call without constructing or invoking the plugin. Use `wrapper-lab` and `wrapper-cache`
+for Module 04's lifecycle evidence and stateful worked example. The matching focused
+targets prove timing, identity, eviction, failure, and reset behavior.
+`capstone-action-wrapper` transfers those ideas into a non-executing audit of the real
+`@action` wrapper. Use `decorator-policy-lab` for Module 05's retry, validation, and
+cache-policy evidence, then `capstone-check-action` for the non-executing application
+transfer. That capstone route distinguishes call binding, checked hints, refused hints,
+and absent annotations without claiming full runtime typing. `lab-test` verifies all
+course labs. Use `capstone-walkthrough` when
+you are ready for the broader integration project,
+`capstone-tour` when you want the same saved bundle in the proof ladder,
+`capstone-verify-report` when you need durable integration evidence, and
+`capstone-confirm` for the strictest capstone confirmation pass.
+
+Use `class-customization-lab` for Module 06's class-decorator, dataclass, property,
+descriptor, and frozen-surface evidence. `capstone-class-creation` transfers the timing
+question into stored `PluginMeta` provenance without constructing or invoking a plugin.
+Use `descriptor-lookup-lab` for Module 07's executable protocol, precedence, method
+binding, and canonical-storage evidence. Its output pairs static predictions with actual
+access so learners can explain why each lookup wins. `capstone-field-ownership` then
+transfers that reasoning into the real field system without constructing or executing a
+plugin.
+Use `descriptor-system-lab` for Module 08's cache freshness, backend authority, wrapper
+order, bounded hint policy, record-model, and owner-selection evidence.
+`capstone-field-system` then compares those powers with the real application's narrower
+field design without constructing or executing a plugin.
+Use `class-creation-lab` for Module 09's explicit construction, metaclass selection,
+hook timing, prepared namespace, registry, and owner-decision evidence. The focused test
+target proves that registration alone stops at `__init_subclass__`, while the later
+`capstone-class-creation` transfer exposes the combined declaration-time and generated
+class contract that earns `PluginMeta`.
+
+The website and course book are the primary learning route. After reading a lesson, use
+this repository source route to inspect the implementation it names:
 
 - `course-book/guides/index.md`
 - `course-book/guides/start-here.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
+- `course-book/module-00-orientation/study-practicum.md`
+- `course-book/module-00-orientation/study-practicum-answers.md`
+- `course-book/module-01-runtime-objects-object-model/index.md`
+- `labs/runtime_objects/evidence.py`
+- `course-book/module-01-runtime-objects-object-model/exercises.md`
+- `course-book/module-01-runtime-objects-object-model/exercise-answers.md`
+- `course-book/module-02-runtime-observation-inspection/index.md`
+- `labs/runtime_observation/evidence.py`
+- `labs/runtime_observation/debug_view.py`
+- `course-book/module-02-runtime-observation-inspection/exercises.md`
+- `course-book/module-02-runtime-observation-inspection/exercise-answers.md`
+- `course-book/module-03-signatures-provenance-runtime-evidence/index.md`
+- `labs/runtime_evidence/evidence.py`
+- `labs/runtime_evidence/safe_repr.py`
+- `course-book/module-03-signatures-provenance-runtime-evidence/exercises.md`
+- `course-book/module-03-signatures-provenance-runtime-evidence/exercise-answers.md`
+- `course-book/module-04-function-wrappers-transparent-decorators/index.md`
+- `labs/wrapper_runtime/evidence.py`
+- `labs/wrapper_runtime/bounded_cache.py`
+- `course-book/module-04-function-wrappers-transparent-decorators/exercises.md`
+- `course-book/module-04-function-wrappers-transparent-decorators/exercise-answers.md`
+- `course-book/module-05-decorator-design-policies-typing/index.md`
+- `labs/decorator_policy/evidence.py`
+- `labs/decorator_policy/retry.py`
+- `labs/decorator_policy/validation.py`
+- `course-book/module-05-decorator-design-policies-typing/exercises.md`
+- `course-book/module-05-decorator-design-policies-typing/exercise-answers.md`
+- `course-book/module-06-class-customization-pre-metaclasses/index.md`
+- `labs/class_customization/evidence.py`
+- `labs/class_customization/transformation.py`
+- `labs/class_customization/attributes.py`
+- `labs/class_customization/frozen_surface.py`
+- `course-book/module-06-class-customization-pre-metaclasses/exercises.md`
+- `course-book/module-06-class-customization-pre-metaclasses/exercise-answers.md`
+- `course-book/module-07-descriptors-lookup-attribute-control/index.md`
+- `labs/descriptor_lookup/protocol.py`
+- `labs/descriptor_lookup/precedence.py`
+- `labs/descriptor_lookup/binding.py`
+- `labs/descriptor_lookup/quantity.py`
+- `course-book/module-07-descriptors-lookup-attribute-control/exercises.md`
+- `course-book/module-07-descriptors-lookup-attribute-control/exercise-answers.md`
+- `course-book/module-08-descriptor-systems-validation-framework-design/index.md`
+- `labs/descriptor_systems/cache.py`
+- `labs/descriptor_systems/external.py`
+- `labs/descriptor_systems/composition.py`
+- `labs/descriptor_systems/hints.py`
+- `labs/descriptor_systems/relational.py`
+- `labs/descriptor_systems/boundaries.py`
+- `course-book/module-08-descriptor-systems-validation-framework-design/exercises.md`
+- `course-book/module-08-descriptor-systems-validation-framework-design/exercise-answers.md`
+- `course-book/module-09-metaclass-design-class-creation/index.md`
+- `labs/class_creation/manual.py`
+- `labs/class_creation/resolution.py`
+- `labs/class_creation/lifecycle.py`
+- `labs/class_creation/namespace.py`
+- `labs/class_creation/registry.py`
+- `labs/class_creation/boundaries.py`
+- `course-book/module-09-metaclass-design-class-creation/exercises.md`
+- `course-book/module-09-metaclass-design-class-creation/exercise-answers.md`
+- `course-book/module-10-runtime-governance-mastery-review/index.md`
+- `labs/runtime_governance/dynamic.py`
+- `labs/runtime_governance/interfaces.py`
+- `labs/runtime_governance/patching.py`
+- `labs/runtime_governance/tooling.py`
+- `labs/runtime_governance/selection.py`
+- `course-book/module-10-runtime-governance-mastery-review/exercises.md`
+- `course-book/module-10-runtime-governance-mastery-review/exercise-answers.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`
