@@ -133,8 +133,9 @@ The prepared stream enters `async_gen_bounded_map`. Confirm that:
 - collection or partial iteration, not construction, drives the work.
 
 The generic async package also teaches queues, fairness, resilience, and
-resource ownership. Those tools are available policies; their existence does
-not imply that `async_rag_chunks` secretly applies all of them.
+resource ownership. Resilience becomes application behavior only when the
+caller wraps the injected embedder with `resilient_mapper`; `async_rag_chunks`
+does not secretly retry work.
 
 ## Run evidence at three scales
 
@@ -144,7 +145,7 @@ First run only the application claim:
 make capstone-async-rag-proof
 ```
 
-Read all four test names. Together they prove:
+Read all seven test names. Together they prove:
 
 1. construction defers embedding and successful values match the synchronous
    RAG core;
@@ -152,7 +153,24 @@ Read all four test names. Together they prove:
    while chunk coordinates stay ordered; and
 3. source and validation failures do not erase later valid work; and
 4. filtering plus source, validation, and embedding failures retain the complete
-   expected application trace.
+   expected application trace;
+5. retry recovers one transient embedding plan without replaying preparation;
+6. exhausted retry emits `MAX_RETRIES` and preserves a later success; and
+7. a logical timeout decision replays from fresh fixtures without erasing the
+   next document.
+
+Isolate the resilience claims when reviewing policy:
+
+```bash
+make capstone-embedding-resilience-proof
+```
+
+For those three tests, inspect both the positive evidence and the boundary:
+
+- attempt counts prove local repetition;
+- the later `Ok` proves continuation;
+- the fake clock proves logical deadline translation; and
+- no fake-time assertion proves production cancellation.
 
 Then run the completed Module 08 state:
 
@@ -217,6 +235,9 @@ Before moving on, write a short review with this evidence:
 | concurrency is genuinely bounded | `maximum_active == max_concurrent` |
 | failures remain values | ordered label sequence |
 | later valid work survives | final `ok:after` assertion |
+| retry remains local | preparation trace once, embedding attempt trace twice |
+| exhaustion remains observable | `MAX_RETRIES` context and later `Ok` |
+| timing fake stays honest | replay equality plus explicit cancellation limitation |
 | downstream continuity holds | Module 09 state proof and live import |
 
 Also record what the evidence does **not** establish: real provider throughput,

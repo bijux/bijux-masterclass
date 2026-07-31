@@ -22,9 +22,9 @@ embedding plan.
 | --- | --- |
 | Previous capability | Module 07 can stream `RawDoc → CleanDoc → ChunkWithoutEmbedding → Chunk` synchronously behind explicit boundaries |
 | New pressure | An embedding adapter may wait, and starting one task per chunk would make concurrency and memory unbounded |
-| Concept introduced now | `AsyncGen` describes a replayable result stream; `AsyncPlan` describes one delayed embedding; `BackpressurePolicy` controls their composition |
-| Source that changes | `src/funcpipe_rag/rag/async_rag.py` and its public export from `funcpipe_rag.rag` |
-| Proof of the teaching claim | Four `async_rag_chunks` tests in `tests/learning/test_module_08_async.py` |
+| Concept introduced now | `AsyncGen` describes a replayable result stream; `AsyncPlan` describes one delayed embedding; backpressure and optional resilience policies control their interpretation |
+| Source that changes | `src/funcpipe_rag/rag/async_rag.py`, its public export from `funcpipe_rag.rag`, and `domain/effects/async_/resilience.py` |
+| Proof of the teaching claim | Seven `async_rag_chunks` tests in `tests/learning/test_module_08_async.py` |
 | Earlier behavior preserved | Cleaning, chunk coordinates, embedding values, typed stream failures, and the synchronous `iter_rag` route |
 | Completed reference state | `capstone/module-reference-states/module-08/` |
 | Learner-visible route | `make capstone-async-rag-proof` from the course root |
@@ -177,6 +177,57 @@ Unexpected programming defects are not broadly swallowed by
 `TypeError`/`ValueError` failures; other exceptions remain defects that should
 fail the run and be repaired.
 
+## Add resilience without adding another pipeline
+
+`async_rag_chunks` accepts an `AsyncChunkEmbedder`. Module 08 can apply retry
+and timeout policy by transforming that injected function:
+
+```python
+resilient_embedder = resilient_mapper(
+    embed_later,
+    RetryPolicy(
+        max_attempts=2,
+        retriable_codes=frozenset({"TRANSIENT"}),
+    ),
+    TimeoutPolicy(timeout_ms=50),
+)
+
+stream = async_rag_chunks(
+    docs,
+    env,
+    clean_doc,
+    resilient_embedder,
+    BackpressurePolicy(max_concurrent=2, ordered=True),
+)
+```
+
+The composition order is observable:
+
+```mermaid
+flowchart LR
+  prepare["prepare chunk once"]
+  slot["one bounded worker slot"]
+  resilient["one resilient plan"]
+  attempts["embedding attempts<br/>within policy"]
+  result["one Result position"]
+
+  prepare --> slot --> resilient --> attempts --> result
+```
+
+Retry repeats the embedding plan, not document preparation. The resilient plan
+keeps its one backpressure slot until it succeeds or exhausts its attempts. A
+typed `MAX_RETRIES` result remains one stream position, and later documents can
+continue.
+
+Timeout is also per attempt. The deterministic learning proof uses
+`FakeClock` and `FakeTimeout` to prove policy translation without wall-clock
+delay. That fake checks a deadline on context exit; it does not claim to cancel
+a real task.
+
+This opt-in composition is why Module 08 does not need an
+`async_rag_pipeline_resilient_bounded` function. The existing application
+boundary and generic mapper already express the behavior.
+
 ## Compare Module 07 and Module 08 without rewriting history
 
 Refresh the generated worktrees:
@@ -207,13 +258,23 @@ From `programs/python-programming/python-functional-programming`:
 make capstone-async-rag-proof
 ```
 
-The command runs only the four Module 08 application proofs:
+The command runs the seven Module 08 application proofs:
 
 - constructing the stream defers embedding and preserves synchronous values;
 - the application respects the declared concurrency ceiling and ordering; and
 - source and validation failures remain visible without erasing later work; and
 - the cumulative filter/source/validation/embedding trace retains every
-  expected position.
+  expected position;
+- one transient embedding failure recovers without replaying preparation;
+- retry exhaustion remains local and preserves a later success; and
+- a logical embedding timeout replays deterministically and preserves a later
+  success.
+
+Use the narrower resilience route while studying those last three claims:
+
+```bash
+make capstone-embedding-resilience-proof
+```
 
 Use the full Module 08 learning route only when a change affects the generic
 async laws:
@@ -230,7 +291,8 @@ The reference state contains no:
 - external vector database;
 - hidden global semaphore;
 - background worker process;
-- automatic retry around every embedding;
+- automatic retry around every embedding—resilience is opt-in at the injected
+  embedder;
 - claim that concurrency improves semantic relevance; or
 - retrieval or generation behavior.
 
@@ -250,11 +312,15 @@ Before accepting a change to this path, verify:
 - source `Err` values do not invoke the embedder;
 - preparation validation failures remain values;
 - later valid inputs can still be processed;
+- retry repeats one embedding plan rather than the source stream;
+- timeout tests state whether they prove policy or real cancellation;
 - Module 09 retains the same contract; and
 - the live Module 10 endpoint still supports retrieval over the resulting
   chunks.
 
 Continue with [async/await as Descriptions](async-await-as-descriptions.md), then
 [Async Generators](async-generators.md), and finally
-[Backpressure](backpressure.md). Those three cores explain the types and
-composition used by this application delta.
+[Backpressure](backpressure.md). Then use
+[Retry and Timeout Policies](retry-and-timeout-policies.md) and
+[Deterministic Async Testing](deterministic-async-testing.md) to decide how one
+bounded embedding plan may be repeated and how that decision can be tested.

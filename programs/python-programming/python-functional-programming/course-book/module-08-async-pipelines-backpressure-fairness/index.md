@@ -53,6 +53,7 @@ that do not smear runtime behavior across the whole codebase.
   synchronous;
 - prove that `BackpressurePolicy` limits in-flight embedding while preserving
   ordered `Result` values; and
+- keep retry and timeout policy local to each injected embedding plan; and
 - use injected clocks, sleepers, and adapters to test coordination without
   depending on wall-clock timing.
 
@@ -102,7 +103,9 @@ focused test in the Module 08 reference state and an earlier contract that must
 remain true. Consult [Exercise Answers](exercise-answers.md) only after producing
 your own execution evidence. Finish with the cumulative indexing-policy lab: it
 requires you to explain filtering, three distinct failure positions, bounded
-overlap, and later-value continuity in one proof.
+overlap, and later-value continuity in one proof. The retry and deterministic
+testing exercises add a second review layer: whether repeating one effect is
+safe and whether a fake proves only the claim assigned to it.
 
 ## Capstone checkpoints
 
@@ -112,10 +115,16 @@ overlap, and later-value continuity in one proof.
   `domain/effects/async_/combinators.py`.
 - Identify the exact boundary between synchronous document preparation and
   asynchronous embedding plans.
-- Run the four application proofs:
+- Run all seven async RAG application proofs:
 
   ```bash
   make capstone-async-rag-proof
+  ```
+
+- Isolate the three retry/timeout application proofs:
+
+  ```bash
+  make capstone-embedding-resilience-proof
   ```
 
 - Compare the Module 07 and Module 08 reference states using the route in the
@@ -125,8 +134,10 @@ overlap, and later-value continuity in one proof.
 
 You should be able to explain how async coordination stays reviewable, what
 protects embedding from runaway fan-out, and why a typed failure does not erase
-later valid work. Use the [Refactoring Guide](refactoring-guide.md) and compare
-the generated Module 07 and Module 08 worktrees before moving forward.
+later valid work. You should also be able to show why retry repeats one chunk
+rather than the stream, and why a logical timeout test does not prove real
+cancellation. Use the [Refactoring Guide](refactoring-guide.md) and compare the
+generated Module 07 and Module 08 worktrees before moving forward.
 
 ## Closing criteria
 
@@ -134,6 +145,8 @@ the generated Module 07 and Module 08 worktrees before moving forward.
 - You can identify which async abstractions describe work and which consumer
   action actually drives execution.
 - You can defend an async design in terms of fairness, backpressure, and testability.
+- You can separate retry permission from the idempotency argument.
+- You can state the exact boundary of a timing fake.
 - You can state which synchronous RAG laws Module 08 preserves and point to the
   executable evidence.
 
