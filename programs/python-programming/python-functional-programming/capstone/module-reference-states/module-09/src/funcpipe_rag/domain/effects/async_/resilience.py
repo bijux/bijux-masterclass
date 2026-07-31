@@ -88,7 +88,7 @@ class ResilienceEnv:
     clock: Clock
 
     @staticmethod
-    def default() -> "ResilienceEnv":
+    def default() -> ResilienceEnv:
         async def _sleep(seconds: float) -> None:
             await asyncio.sleep(seconds)
 
@@ -154,6 +154,14 @@ def async_with_resilience(
         warned_non_idempotent = False
 
         for attempt in range(1, retry.max_attempts + 1):
+            if attempt > 1 and not retry.idempotent and not warned_non_idempotent:
+                warnings.warn(
+                    "Retrying a step marked non-idempotent — potential duplicate side-effects",
+                    category=RuntimeWarning,
+                    stacklevel=2,
+                )
+                warned_non_idempotent = True
+
             try:
                 if timeout is None:
                     res = await step()
@@ -181,20 +189,12 @@ def async_with_resilience(
                     return Err(last_err)
             except asyncio.CancelledError:
                 raise
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001 - resilience must translate arbitrary task failures
                 last_err = ErrInfo.from_exception(exc)
                 if last_err.code not in retry.retriable_codes:
                     return Err(last_err)
                 if retry.max_attempts == 1:
                     return Err(last_err)
-
-            if attempt > 1 and not retry.idempotent and not warned_non_idempotent:
-                warnings.warn(
-                    "Retrying a step marked non-idempotent — potential duplicate side-effects",
-                    category=RuntimeWarning,
-                    stacklevel=2,
-                )
-                warned_non_idempotent = True
 
             if attempt < retry.max_attempts:
                 base_s = min(retry.backoff_base_ms * (2 ** (attempt - 1)), retry.max_backoff_ms) / 1000.0
@@ -233,18 +233,17 @@ def resilient_mapper(
 
 
 __all__ = [
-    "TimeoutCtx",
     "Clock",
-    "SystemClock",
     "FakeClock",
     "FakeTimeout",
-    "make_fake_timeout_ctx",
-    "Sleep",
     "ResilienceEnv",
-    "make_test_resilience_env",
     "RetryPolicy",
+    "Sleep",
+    "SystemClock",
+    "TimeoutCtx",
     "TimeoutPolicy",
     "async_with_resilience",
+    "make_fake_timeout_ctx",
+    "make_test_resilience_env",
     "resilient_mapper",
 ]
-
