@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Generic, Iterable, Literal, Mapping, Sequence, TypeAlias, TypeVar
+from typing import Generic, Literal, Mapping, Sequence, TypeAlias, TypeVar
 
 from .error import ErrorCode
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result, make_errinfo as _make_errinfo
@@ -15,110 +15,7 @@ E = TypeVar("E")
 
 JSONPrimitive: TypeAlias = str | int | float | bool | None
 JSON: TypeAlias = JSONPrimitive | Mapping[str, "JSON"] | Sequence["JSON"]
-Path: TypeAlias = tuple[int, ...]
-
 UTC = timezone.utc
-
-
-def _freeze_metadata(m: Mapping[str, JSON]) -> tuple[tuple[str, JSON], ...]:
-    return tuple(sorted(m.items()))
-
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class Chunk:
-    """Immutable, stable, JSON-roundtrippable chunk record."""
-
-    text: str
-    path: Path
-    metadata: tuple[tuple[str, JSON], ...]
-    version: Literal[1] = 1
-
-
-def make_chunk(*, text: str, path: Path, metadata: Mapping[str, JSON]) -> Chunk:
-    return Chunk(text=text, path=path, metadata=_freeze_metadata(metadata))
-
-
-def chunk_to_dict(c: Chunk) -> dict[str, JSON]:
-    return {
-        "version": c.version,
-        "text": c.text,
-        "path": list(c.path),
-        "metadata": dict(c.metadata),
-    }
-
-
-def chunk_from_dict(d: Mapping[str, JSON]) -> Chunk:
-    if d.get("version") != 1:
-        raise ValueError("unsupported version")
-    text_raw = d.get("text")
-    if not isinstance(text_raw, str):
-        raise ValueError("text must be str")
-
-    path_raw = d.get("path")
-    if not isinstance(path_raw, Sequence) or isinstance(path_raw, (str, bytes)):
-        raise ValueError("path must be a JSON array of ints")
-    path_items: list[int] = []
-    for i in path_raw:
-        if not isinstance(i, int):
-            raise ValueError("path must be a JSON array of ints")
-        path_items.append(i)
-    path = tuple(path_items)
-
-    meta_raw = d.get("metadata")
-    if not isinstance(meta_raw, Mapping):
-        raise ValueError("metadata must be a JSON object")
-    return make_chunk(text=text_raw, path=path, metadata=meta_raw)
-
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class Success:
-    kind: Literal["success"] = "success"
-    embedding: tuple[float, ...]
-    metadata: tuple[tuple[str, JSON], ...]
-
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class Failure:
-    kind: Literal["failure"] = "failure"
-    code: str
-    msg: str
-    attempt: int
-
-
-ChunkState: TypeAlias = Success | Failure
-
-
-def success(*, embedding: Iterable[float], metadata: Mapping[str, JSON]) -> Success:
-    return Success(embedding=tuple(float(x) for x in embedding), metadata=_freeze_metadata(metadata))
-
-
-def failure(*, code: str, msg: str, attempt: int) -> Failure:
-    return Failure(code=code, msg=msg, attempt=attempt)
-
-
-def chunk_state_to_dict(state: ChunkState) -> dict[str, JSON]:
-    base: dict[str, JSON] = {"kind": state.kind, "version": 1}
-    if isinstance(state, Success):
-        return base | {"embedding": list(state.embedding), "metadata": dict(state.metadata)}
-    return base | {"code": state.code, "msg": state.msg, "attempt": state.attempt}
-
-
-def chunk_state_from_dict(d: Mapping[str, JSON]) -> ChunkState:
-    if d.get("version") != 1:
-        raise ValueError("unsupported version")
-    kind = d["kind"]
-    if kind == "success":
-        return success(
-            embedding=d["embedding"],  # type: ignore[arg-type]
-            metadata=dict(d["metadata"]),  # type: ignore[arg-type]
-        )
-    if kind == "failure":
-        return failure(
-            code=str(d["code"]),
-            msg=str(d["msg"]),
-            attempt=int(d["attempt"]),  # type: ignore[arg-type]
-        )
-    raise ValueError(f"unknown kind {kind!r}")
 
 
 @dataclass(frozen=True, slots=True)
@@ -315,21 +212,9 @@ def transition(state: ProcessingState, event: Event) -> ProcessingState:
 
 
 __all__ = [
-    # JSON + chunk ADTs
+    # JSON values
     "JSONPrimitive",
     "JSON",
-    "Path",
-    "Chunk",
-    "make_chunk",
-    "chunk_to_dict",
-    "chunk_from_dict",
-    "Success",
-    "Failure",
-    "ChunkState",
-    "success",
-    "failure",
-    "chunk_state_to_dict",
-    "chunk_state_from_dict",
     # Option + Validation ADTs
     "Option",
     "Some",
