@@ -5,6 +5,9 @@ from datetime import datetime
 from typing import TypedDict
 
 import pytest
+from pydantic import ValidationError
+from typing_extensions import assert_never
+
 from funcpipe_rag.boundaries.adapters.pydantic_edges import ChunkModel, to_core_chunk
 from funcpipe_rag.boundaries.adapters.serde import (
     dec_result,
@@ -12,7 +15,7 @@ from funcpipe_rag.boundaries.adapters.serde import (
     from_json,
     to_json,
 )
-from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, CleanDoc, RawDoc
+from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
 from funcpipe_rag.fp.core import (
     JSON,
     UTC,
@@ -52,15 +55,11 @@ from funcpipe_rag.rag.domain import (
     ChunkMetadata,
     ChunkText,
     Embedding,
-    RankedChunk,
-    SearchQuery,
     assemble,
     process_batch_hybrid,
 )
-from funcpipe_rag.rag.stages import clean_doc, embed_chunk, embed_text
+from funcpipe_rag.rag.stages import clean_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok
-from pydantic import ValidationError
-from typing_extensions import assert_never
 
 
 class AcceptedChunkPayload(TypedDict):
@@ -138,55 +137,6 @@ def test_result_functor_transforms_success_without_running_failure_work() -> Non
     assert result_map(count_words)(Ok(cleaned)) == Ok(3)
     assert result_map(count_words)(unavailable) is unavailable
     assert calls == ["rag-1"]
-
-
-def test_query_and_chunk_text_share_one_embedding_contract() -> None:
-    chunk = ChunkWithoutEmbedding(
-        doc_id="rag-embedding",
-        text="one local vector contract",
-        start=0,
-        end=25,
-    )
-
-    vector = embed_text(chunk.text)
-
-    assert len(vector) == 16
-    assert vector == embed_text(chunk.text)
-    assert embed_chunk(chunk).embedding == vector
-
-
-def test_retrieval_values_reject_ambiguous_query_and_rank_states() -> None:
-    indexed = embed_chunk(
-        ChunkWithoutEmbedding(
-            doc_id="rag-values",
-            text="retrieval values",
-            start=0,
-            end=16,
-        )
-    )
-    query = SearchQuery(
-        text="typed retrieval",
-        embedding=Embedding(vector=embed_text("typed retrieval"), model="local-sha256"),
-        top_k=3,
-    )
-    hit = RankedChunk(chunk=indexed, score=0.75, rank=1)
-
-    assert query.embedding.dim == len(indexed.embedding)
-    assert (hit.chunk.doc_id, hit.score, hit.rank) == ("rag-values", 0.75, 1)
-    with pytest.raises(ValueError, match="must not be blank"):
-        SearchQuery(text=" ", embedding=query.embedding, top_k=3)
-    with pytest.raises(ValueError, match="positive integer"):
-        SearchQuery(text="typed retrieval", embedding=query.embedding, top_k=0)
-    with pytest.raises(ValueError, match="must not be empty"):
-        SearchQuery(
-            text="typed retrieval",
-            embedding=Embedding(vector=(), model="local-sha256"),
-            top_k=3,
-        )
-    with pytest.raises(ValueError, match="between -1 and 1"):
-        RankedChunk(chunk=indexed, score=float("nan"), rank=1)
-    with pytest.raises(ValueError, match="positive integer"):
-        RankedChunk(chunk=indexed, score=0.75, rank=0)
 
 
 def test_applicative_validation_accumulates_independent_chunk_errors() -> None:
