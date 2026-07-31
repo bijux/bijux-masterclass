@@ -50,7 +50,7 @@ def test_build_summary_reports_expected_groups() -> None:
     ]
     assert change_claim["command"] == "pytest -q tests/unit/review/test_change.py"
     assert change_claim["missing_paths"] == []
-    assert all(claim["complete"] for claim in summary["evidence_claims"])
+    assert all(claim["route_available"] for claim in summary["evidence_claims"])
     assert all(group["python_file_count"] > 0 for group in summary["package_groups"])
     assert {group["owner"] for group in summary["package_groups"]} == {
         "boundary-integrations",
@@ -82,8 +82,8 @@ def test_render_text_mentions_review_surfaces() -> None:
     assert "owner=functional-foundations" in rendered
     assert "algebra-and-laws" in rendered
     assert "make proof" in rendered
-    assert "change-acceptance: complete" in rendered
-    assert "regression-equivalence: complete" in rendered
+    assert "change-acceptance: available" in rendered
+    assert "regression-equivalence: available" in rendered
 
 
 def test_main_can_render_json(capsys) -> None:
@@ -97,6 +97,27 @@ def test_main_can_render_json(capsys) -> None:
     assert payload["proof_routes"][0]["name"] == "demo"
 
 
+def test_main_can_render_one_claim_without_implying_execution(capsys) -> None:
+    exit_code = main(
+        [
+            "summary",
+            "--claim",
+            "change-acceptance",
+            "--project-root",
+            str(PROJECT_ROOT),
+        ]
+    )
+
+    rendered = capsys.readouterr().out
+
+    assert exit_code == 0
+    assert "claim: change-acceptance" in rendered
+    assert "route: available" in rendered
+    assert "pytest -q tests/unit/review/test_change.py" in rendered
+    assert "does not mean the verification command passed" in rendered
+    assert "performance-decision" not in rendered
+
+
 def test_check_returns_nonzero_when_evidence_paths_are_missing(
     tmp_path: Path,
     capsys,
@@ -106,5 +127,25 @@ def test_check_returns_nonzero_when_evidence_paths_are_missing(
     payload = json.loads(capsys.readouterr().out)
 
     assert exit_code == 1
-    assert all(not claim["complete"] for claim in payload["evidence_claims"])
+    assert all(not claim["route_available"] for claim in payload["evidence_claims"])
     assert all(claim["missing_paths"] for claim in payload["evidence_claims"])
+
+
+def test_check_can_fail_one_selected_route(tmp_path: Path, capsys) -> None:
+    exit_code = main(
+        [
+            "check",
+            "--claim",
+            "migration-review",
+            "--format",
+            "json",
+            "--project-root",
+            str(tmp_path),
+        ]
+    )
+
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 1
+    assert payload["evidence_claim"]["name"] == "migration-review"
+    assert payload["evidence_claim"]["route_available"] is False

@@ -7,9 +7,6 @@ import json
 from pathlib import Path
 
 import pytest
-from hypothesis import given
-from hypothesis import strategies as st
-
 from funcpipe_rag.boundaries.shells.review_cli import build_summary, main
 from funcpipe_rag.domain.effects.async_ import async_gather, async_pure
 from funcpipe_rag.pipelines.distributed import BackendStatus
@@ -36,6 +33,8 @@ from funcpipe_rag.review.performance import (
     evaluate_budget,
 )
 from funcpipe_rag.review.scaling import REQUIRED_SCALING_PROOFS, assess_scaling
+from hypothesis import given
+from hypothesis import strategies as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -228,7 +227,7 @@ def test_delivery_check_exposes_a_machine_readable_release_gate(
 
     assert exit_code == 0
     assert payload["evidence_claims"]
-    assert all(claim["complete"] for claim in payload["evidence_claims"])
+    assert all(claim["route_available"] for claim in payload["evidence_claims"])
 
 
 def test_change_review_composes_only_applicable_application_evidence() -> None:

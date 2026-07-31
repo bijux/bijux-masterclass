@@ -251,7 +251,7 @@ def build_summary(project_root: Path) -> dict[str, Any]:
                 "statement": claim.statement,
                 "required_paths": list(claim.required_paths),
                 "command": claim.command,
-                "complete": assessment.complete,
+                "route_available": assessment.complete,
                 "missing_paths": list(assessment.missing_paths),
             }
         )
@@ -292,11 +292,30 @@ def render_text(summary: dict[str, Any]) -> str:
     lines.append("")
     lines.append("Evidence claims:")
     for claim in summary["evidence_claims"]:
-        state = "complete" if claim["complete"] else "incomplete"
+        state = "available" if claim["route_available"] else "missing"
         lines.append(f"- {claim['name']}: {state}; {claim['statement']}")
         lines.append(f"  verify: {claim['command']}")
         if claim["missing_paths"]:
             lines.append(f"  missing: {', '.join(claim['missing_paths'])}")
+    return "\n".join(lines) + "\n"
+
+
+def render_claim_text(project_root: str, claim: dict[str, Any]) -> str:
+    """Render one declared route without claiming that its command has run."""
+
+    state = "available" if claim["route_available"] else "missing"
+    lines = [
+        "FuncPipe evidence route",
+        f"project_root: {project_root}",
+        f"claim: {claim['name']}",
+        f"statement: {claim['statement']}",
+        f"route: {state}",
+        f"required_paths: {', '.join(claim['required_paths'])}",
+        f"verify: {claim['command']}",
+        "interpretation: route availability does not mean the verification command passed",
+    ]
+    if claim["missing_paths"]:
+        lines.append(f"missing: {', '.join(claim['missing_paths'])}")
     return "\n".join(lines) + "\n"
 
 
@@ -321,21 +340,58 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=Path.cwd(),
         help="Capstone project root. Defaults to the current working directory.",
     )
+    parser.add_argument(
+        "--claim",
+        choices=tuple(claim.name for claim in EVIDENCE_CLAIMS),
+        help="Show or check only one declared evidence route.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     summary = build_summary(args.project_root)
+    selected_claim = next(
+        (
+            claim
+            for claim in summary["evidence_claims"]
+            if claim["name"] == args.claim
+        ),
+        None,
+    )
     if args.format == "json":
-        print(json.dumps(summary, indent=2, sort_keys=True))
+        payload = (
+            {
+                "project_root": summary["project_root"],
+                "evidence_claim": selected_claim,
+            }
+            if selected_claim is not None
+            else summary
+        )
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    elif selected_claim is not None:
+        print(
+            render_claim_text(summary["project_root"], selected_claim),
+            end="",
+        )
     else:
         print(render_text(summary), end="")
+    checked_claims = (
+        (selected_claim,)
+        if selected_claim is not None
+        else tuple(summary["evidence_claims"])
+    )
     if args.command == "check" and not all(
-        claim["complete"] for claim in summary["evidence_claims"]
+        claim["route_available"] for claim in checked_claims
     ):
         return 1
     return 0
 
 
-__all__ = ["build_summary", "main", "parse_args", "render_text"]
+__all__ = [
+    "build_summary",
+    "main",
+    "parse_args",
+    "render_claim_text",
+    "render_text",
+]
