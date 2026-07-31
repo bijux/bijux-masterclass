@@ -1,5 +1,4 @@
-# Exercise Answers
-
+# Exercise Answers: Runtime Governance Evidence Studio Review
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,8 +8,8 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Runtime Governance Mastery Review"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
+  page["Evidence Studio Review"]
+  capstone["Capstone transfer"]
 
   family --> program --> section --> page
   page -.applies in.-> capstone
@@ -18,327 +17,466 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  prompt["Exercise brief"] --> reasoning["Reasoning"]
+  reasoning --> implementation["Evidence"]
+  implementation --> proof["What it proves"]
+  proof --> limit["What it does not prove"]
+  limit --> transfer["Capstone consequence"]
 ```
 <!-- page-maps:end -->
 
-Use this page after attempting the exercises yourself. The point is not to match one
-phrase perfectly. The point is to compare your reasoning against answers that keep trust
-boundaries, interface claims, operational control, and escalation policy honest.
+Use these answers to review your reasoning, not merely your final outcome. A different
+implementation can be strong when it preserves the same boundary and produces equally
+specific evidence.
 
-Treat these answers as reasoning checkpoints, not as one-line solutions. The strongest
-answers always show where the claim stops, what lower-power owner was considered first, and
-what observation or reset surface keeps the design governable.
+For each brief, this key shows:
 
-Use this page actively:
+- the governing reasoning;
+- one defensible implementation or review route;
+- a common wrong turn;
+- what the result proves;
+- what it does not prove;
+- the capstone consequence.
 
-- compare your named boundary against the reference answer
-- compare your lower-power alternative against the reference answer
-- check whether your answer names one observation, reset, or refusal surface explicitly
+## Review 1: Syntax refusal is not arithmetic failure
 
-## How to review your own answers against this page
+### Reasoning
 
-For each exercise, check whether your answer includes:
+The syntax policy owns which expressions may reach evaluation. Division is allowed
+syntax. `1 / 0` therefore passes validation and fails when the arithmetic executes.
 
-| Checkpoint | What a strong answer shows |
-| --- | --- |
-| Named boundary | Trust, interface, or operational boundary is stated explicitly |
-| Named lower-power comparison | A smaller owner was considered before escalation |
-| Named review surface | Observation, reset, disable, or audit surface is visible |
-| Named overclaim | One sentence that would mislead reviewers is rejected |
-| Named operational cost | Blast radius, overhead, or process-wide effect is not hidden |
+`DynamicExecutionRefused` should represent invalid source or policy refusal. Converting
+every runtime exception into that type would erase the distinction the exercise asks you
+to preserve.
 
-## Answer 1: Reject one unsafe dynamic execution idea
+### Defensible focused test
 
-Example answer:
+```python
+import unittest
 
-- input comes from end users through a configurable formula field
-- that input is untrusted, so in-process `eval` is rejected immediately
-- the replacement is either a tiny explicit expression language or a separate-process execution model
+from labs.runtime_governance.dynamic import (
+    DynamicExecutionRefused,
+    evaluate_arithmetic,
+)
 
-Good conclusion:
 
-Restricted globals do not solve the real problem. The trust boundary requires a stronger
-design boundary than a namespace dictionary.
+class ArithmeticFailureBoundaryTests(unittest.TestCase):
+    def test_policy_and_arithmetic_failures_remain_distinct(self) -> None:
+        self.assertEqual(evaluate_arithmetic("6 * 7 + 1"), 43)
 
-Reasoning checkpoint:
+        with self.assertRaises(DynamicExecutionRefused):
+            evaluate_arithmetic("__import__('os').getcwd()")
 
-- if your answer does not name the false safety claim directly, the rejection is still too soft
+        with self.assertRaises(ZeroDivisionError):
+            evaluate_arithmetic("1 / 0")
+```
 
-Weak answer to reject:
+The prediction should have been written before running: accepted result, policy refusal,
+then arithmetic failure.
 
-- "we can probably lock the globals down enough"
+### Common wrong turn
 
-Why it fails:
+```python
+try:
+    return eval(...)
+except Exception as error:
+    raise DynamicExecutionRefused("unsafe expression") from error
+```
 
-probably and enough both avoid the real in-process trust boundary.
+This makes operational arithmetic errors look like policy decisions and adds the vague
+word "unsafe" without an isolation boundary.
 
-## Answer 2: Compare one ABC and one protocol honestly
+### What it proves
 
-Example answer:
+- calls are rejected before execution;
+- division belongs to the accepted language;
+- a zero denominator can fail during execution;
+- the public error categories remain distinguishable.
 
-- use an ABC when incomplete implementations should fail at instantiation time
-- use a protocol when structural compatibility matters most to static analysis
-- only use `@runtime_checkable` when a shallow runtime filter is actually helpful
+### What it does not prove
 
-Good conclusion:
+- adversarial resource isolation;
+- a total arithmetic function for every accepted expression;
+- that AST validation or empty builtins is a sandbox.
 
-Neither surface proves full behavior. The review story should say exactly whether the
-contract is nominal, structural, static, or shallow runtime-only.
+### Capstone consequence
 
-Reasoning checkpoint:
+The capstone avoids this entire execution category for configuration. Its governance
+report rejects `eval` and `exec` and selects scalar parsing plus descriptor validation.
 
-- your answer should still name one behavioral guarantee that lives outside the interface declaration
+## Review 2: Presence is weaker than call compatibility
 
-Weak answer to reject:
+### Reasoning
 
-- "the protocol makes the resource contract clear"
+The runtime protocol check asks whether a `deliver` attribute exists. Explicit binding
+asks whether arguments fit a callable's signature. Static checking can compare the
+candidate against the structural protocol before runtime. These are three different
+decisions.
 
-Why it fails:
+### Defensible evidence
 
-resource safety and cleanup behavior are larger than structural shape.
+```python
+import inspect
 
-## Answer 3: Add a reversal path to one dynamic mechanism
+from labs.runtime_governance.interfaces import DeliveryProtocol
 
-Example answer:
 
-- a registry gains `clear()` or `clear(group)` support
-- a patch becomes a context-managed patch that restores the original symbol on exit
-- the cleanup prevents test bleed and incident-time confusion about current global state
+class WrongSignature:
+    def deliver(self) -> str:
+        return "delivered"
 
-Good conclusion:
 
-Reversibility is part of the mechanism's design, not an optional improvement for later.
+candidate = WrongSignature()
 
-Reasoning checkpoint:
+assert isinstance(candidate, DeliveryProtocol)
 
-- the best answers also say why the patch or registry blast radius is now acceptable
+signature = inspect.signature(candidate.deliver)
+try:
+    signature.bind("incident")
+except TypeError as error:
+    binding_failure = str(error)
+else:
+    raise AssertionError("wrong-signature candidate unexpectedly accepted a message")
 
-Weak answer to reject:
+assert "too many positional arguments" in binding_failure
+```
 
-- "we added cleanup, so it is fine now"
+The method is never called. `inspect.signature` observes the bound callable's empty
+parameter list, and `bind` proves that the proposed message argument cannot fit.
 
-Why it fails:
+### Common wrong turn
 
-cleanup alone does not name the observation surface or the remaining blast radius.
+Checking `callable(candidate.deliver)` adds only another shallow fact. It still does not
+prove that the callable accepts a message or returns a string.
 
-## Answer 4: Review one import hook or AST transform proposal
+### What it proves
 
-Example answer:
+- runtime protocol presence can accept a wrong signature;
+- explicit binding can reject a particular proposed call without invocation;
+- runtime presence and runtime call validation need different claims.
 
-- the proposal is rejected for application plugin discovery because explicit imports or entry points are clearer
-- if the proposal is kept at all, it must be framed as tooling-grade instrumentation
-- cleanup, ordering, reload, and location preservation become first-class review questions
+### What it does not prove
 
-Good conclusion:
+- that every compatible signature satisfies `DeliveryProtocol` statically;
+- that a bound call would deliver anything correctly;
+- return-value or side-effect behavior.
 
-The strongest import-hook approvals solve global instrumentation problems, not local
-application architecture convenience.
+### Capstone consequence
 
-Reasoning checkpoint:
+The capstone's `bind-action` route uses its stored `inspect.Signature` for this exact
+runtime question. The governance report rejects a runtime-checkable protocol as signature
+enforcement and assigns static compatibility to the type checker.
 
-- a strong answer also explains what "no-hook mode" means and why the system should remain understandable there
+## Review 3: Nested restoration is a stack, not isolation
 
-Weak answer to reject:
+### Reasoning
 
-- "the hook is okay because tooling can remove it later"
+Each context captures the state present at its own entry. The inner context therefore
+captures the outer replacement as its original. Its `finally` restores the outer layer;
+the outer `finally` later restores the real descriptor.
 
-Why it fails:
+### Defensible focused test
 
-later is not a present explanation of no-hook behavior or cleanup.
+```python
+import inspect
+import unittest
 
-## Answer 5: Defend or reject one escalation
+from labs.runtime_governance.patching import scoped_attribute_patch
 
-Example answer:
 
-- a metaclass is approved only because the invariant belongs to class creation for every concrete subclass
-- a decorator or helper is preferred if opt-in registration is enough
-- the approval note must mention observability, reset hooks, and performance evidence where relevant
+class NestedPatchTests(unittest.TestCase):
+    def test_inner_failure_restores_each_owned_layer(self) -> None:
+        class Renderer:
+            @staticmethod
+            def render(message: str) -> str:
+                return f"original:{message}"
 
-Good conclusion:
+        def outer(message: str) -> str:
+            return f"outer:{message}"
 
-Escalation is justified by ownership and timing, not by the desire to reduce visible
-boilerplate.
+        def inner(message: str) -> str:
+            return f"inner:{message}"
 
-Reasoning checkpoint:
+        original = inspect.getattr_static(Renderer, "render")
 
-- if your answer cannot be restated as a real approval or rejection note, the decision is still too vague
+        with scoped_attribute_patch(Renderer, "render", outer):
+            self.assertEqual(Renderer.render("incident"), "outer:incident")
+            outer_identity = inspect.getattr_static(Renderer, "render")
 
-Weak answer to reject:
+            with self.assertRaises(RuntimeError):
+                with scoped_attribute_patch(Renderer, "render", inner):
+                    self.assertEqual(Renderer.render("incident"), "inner:incident")
+                    raise RuntimeError("force inner rollback")
 
-- "this feels like the right level of power"
+            self.assertIs(
+                inspect.getattr_static(Renderer, "render"),
+                outer_identity,
+            )
+            self.assertEqual(Renderer.render("incident"), "outer:incident")
 
-Why it fails:
+        self.assertIs(inspect.getattr_static(Renderer, "render"), original)
+        self.assertEqual(Renderer.render("incident"), "original:incident")
+```
 
-feels right is taste, not ownership or evidence.
+### Decision
 
-## Answer 6: Review the capstone runtime as Module 10 evidence
+`Constrain`: nested use is mechanically reversible in one ordinary control flow, but
+every layer mutates a shared owner visible to other code while active.
 
-Example answer:
+### Common wrong turn
 
-- observational surfaces such as `manifest`, `registry`, and `signatures` earn trust before invocation
-- the metaclass is justified because deterministic registration belongs to class definition time
-- an import-hook-based discovery layer would be rejected as making the runtime less explicit and harder to review
+Passing this test and changing `concurrency_safe` to `True`. Nesting demonstrates
+last-in/first-out restoration, not mutual exclusion or task-local state.
 
-Good conclusion:
+### What it proves
 
-The capstone is defensible because it keeps runtime facts inspectable and rejects extra
-power it does not need.
+- the inner exception restores the outer replacement;
+- the outer exit restores the exact original static descriptor;
+- restoration follows nested context ownership.
 
-Reasoning checkpoint:
+### What it does not prove
 
-- your answer should also explain why observational commands deserve to come before invocation surfaces
+- safe observation by other threads or async tasks;
+- cleanup after process termination;
+- rollback of mutations performed by a replacement;
+- restoration of aliases cached elsewhere.
 
-Weak answer to reject:
+### Capstone consequence
 
-- "the capstone is trustworthy because the CLI exists"
+The application does not adopt monkey patching as an extension mechanism. It selects
+explicit owners and rejects application patching; a focused test helper remains a
+constrained technique, not a runtime architecture.
 
-Why it fails:
+## Review 4: Hook cleanup owns finder and cache state
 
-the CLI matters only when observational commands stay side-effect free and reset surfaces remain public.
+### Reasoning
 
-## Answer 7: Design one audit trail for a dynamic mechanism
+An import is resolved through `sys.meta_path` only when its name is absent from
+`sys.modules`. Complete rollback must therefore restore both integration surfaces.
 
-Example answer:
+### Defensible evidence
 
-Suppose a plugin registry runtime adds:
+```python
+import importlib
+import sys
 
-- a manifest snapshot listing registered plugins
-- registration timestamps or sequence numbers
-- a test-visible counter for load or reset events
+from labs.runtime_governance.tooling import installed_virtual_module
 
-Good conclusion:
 
-An audit trail answers questions such as "what was active at failure time?" and "did a
-test or import path leave hidden global state behind?" Reviewable runtime systems make
-those questions cheap to answer.
+name = "_bijux_studio_virtual"
 
-Reasoning checkpoint:
+assert name not in sys.modules
 
-- the audit surface should stay separate from business behavior instead of silently triggering it
+with installed_virtual_module(name, {"status": "studio"}) as finder:
+    assert finder in sys.meta_path
+    assert name not in sys.modules
+    assert finder.find_spec("_bijux_studio_unrelated") is None
 
-Weak answer to reject:
+    module = importlib.import_module(name)
 
-- "the logs will tell us enough"
+    assert module.status == "studio"
+    assert name in sys.modules
+    assert finder.events == [
+        f"find:{name}",
+        f"create:{name}",
+        f"exec:{name}",
+    ]
 
-Why it fails:
+assert finder not in sys.meta_path
+assert name not in sys.modules
 
-enough does not name the exact incident question the audit trail must answer.
+try:
+    importlib.import_module(name)
+except ModuleNotFoundError:
+    pass
+else:
+    raise AssertionError("virtual module remained available after cleanup")
+```
 
-## Answer 8: Write one explicit rejection rule
+The resulting table is:
 
-Example answer:
+| Moment | Finder | Cache | Evidence |
+| --- | --- | --- | --- |
+| before | absent | absent | unique name has no owner |
+| installed before import | present | absent | exact name can be claimed |
+| installed after import | present | present | ordered `find`, `create`, `exec` |
+| after | absent | absent | import raises `ModuleNotFoundError` |
 
-Mechanism class:
+### Common wrong turn
 
-- import hooks or AST transforms in ordinary application startup
+Asserting only that the finder disappeared from `sys.meta_path`. The cached module could
+still make the feature appear active while bypassing every finder.
 
-Rejection rule:
+### What it proves
 
-- reject unless the problem is truly tooling-grade or infrastructure-grade, and unless reset, ordering, and location-preservation evidence is part of the design review
+- exact-name integration;
+- ignored unrelated name;
+- expected import lifecycle;
+- removal of this finder and the module it owns;
+- restored no-hook behavior.
 
-Good conclusion:
+### What it does not prove
 
-The rejection is triggered by missing ownership and missing operational proof, not by a
-general dislike of powerful mechanisms.
+- safe composition with arbitrary finders;
+- predictable behavior under concurrent imports;
+- application-grade plugin discovery;
+- cleanup after a process crash.
 
-Reasoning checkpoint:
+### Capstone consequence
 
-- strong answers also name the smaller design that should replace the rejected one
+The capstone uses ordinary imports and rejects application hooks and AST rewriting.
+Plugin discovery remains a separate explicit boundary rather than becoming metaclass or
+import machinery.
 
-Weak answer to reject:
+## Review 5: Reload reconciliation has the wrong owner
 
-- "we should reject this unless there is more evidence"
+### Reasoning
 
-Why it fails:
+Reload is not just another class-creation event. Old class objects and instances can remain
+alive while a module creates new class objects. Registry replacement, duplicate policy,
+in-flight references, and migration semantics are process-lifecycle concerns.
 
-more evidence is incomplete unless the next-lower owner is also named.
+### Defensible decision
 
-## Answer 9: Compare honest runtime claims with overstated claims
+```text
+Pressure:
+Developers and long-running processes need an explicit way to replace loaded plugin
+definitions after source or deployment configuration changes.
 
-Example answer:
+Proposed mechanism:
+PluginMeta automatically reconciles registry entries during module reload.
 
-Honest description:
+Decision:
+reject
 
-- "This registry makes plugin membership inspectable and resettable during tests."
+Selected owner:
+explicit development reloader or process lifecycle that clears state, reloads/imports
+known modules, validates the resulting manifest, and replaces the process when identity
+cannot remain coherent
 
-Overstated description:
+Lower-power comparison:
+restart/rebuild is predictable and preserves one class generation per process; an
+explicit tooling reloader can be constrained to development when restart cost matters
 
-- "This runtime manages plugins safely and automatically."
+Blast radius:
+registry identity, old class objects, existing instances, cached constructors, duplicate
+handling, action history, and callers holding direct class references
 
-Good conclusion:
+Observability:
+before/after registry manifests, class identities, source module, reload generation, and
+explicit replacement decisions
 
-The second version is misleading because words such as "safely" and "automatically"
-suggest broader lifecycle, trust, and recovery guarantees than the mechanism actually
-proves.
+Rollback:
+discard the attempted generation and replace the development process; do not pretend that
+putting the old class back in the registry rewinds existing objects
 
-Reasoning checkpoint:
+Proof:
+tests for duplicate names, old/new class identity, existing instances, failed reload,
+manifest differences, registry reset, and process-replacement fallback
 
-- the honest version should be specific enough that another engineer could review scope without guessing
+Escalation signal:
+measured restart cost prevents the development or deployment workflow from meeting its
+requirements, and an explicit reloader protocol has published identity semantics
 
-Weak answer to reject:
+Non-claim:
+metaclass registration alone cannot reconcile arbitrary live object graphs
+```
 
-- "the runtime mostly keeps things under control"
+### Common wrong turn
 
-Why it fails:
+Approving the proposal because `PluginMeta` already owns registration. Registration of a
+new completed class does not imply ownership of old objects, module caches, deployment
+lifecycle, or migration.
 
-mostly and under control overclaim broad lifecycle and safety guarantees.
+### What it proves
 
-## Answer 10: Produce a runtime-governance packet
+This decision record does not prove code behavior by itself. It demonstrates that the
+proposal fails the ownership gate and supplies the proof required if a different owner is
+built.
 
-The packet is strong when another learner can answer:
+### What it does not prove
 
-- which mechanism is under review
-- which trust boundary constrains it
-- which audit, reset, or disable surfaces keep it governable
-- which explicit rule would cause the design to be rejected
+- that restart is acceptable for every deployment;
+- that reload is impossible;
+- that a future explicit reloader could never earn constrained approval.
 
-Repair move if your packet is weak:
+### Capstone consequence
 
-- rewrite each item so it begins with the boundary, lower-power comparison, or review surface instead of with the mechanism name
+The class-creation report already rejects reload reconciliation and keeps
+`PluginMeta.clear_registry` explicit. That reset is test and process-state control, not
+live-instance migration.
 
-Extra packet test:
+## Review 6: Capstone packet connects policy to proof
 
-- could a missed-class learner explain where the claim stops without hearing your verbal caveats?
+### Reasoning
 
-## What strong Module 10 answers have in common
+The packet should make a review repeatable. Start with governance, select one mechanism
+report, inspect registry state, then invoke deliberately. Every conclusion must point to
+source and proof.
 
-Across the whole set, strong answers share the same habits:
+### Defensible route
 
-- they stop security claims at the real enforceable boundary
-- they keep interface promises smaller than the mechanism's aura
-- they demand reset, disable, and cleanup paths for dynamic behavior
-- they distinguish application design from tooling-grade runtime control
-- they justify power with ownership, timing, and proof surfaces
-- they make audit and rejection rules explicit
-- they leave behind a packet another learner can review without guessing
+```console
+make capstone-governance
+make capstone-class-creation
+make inspect
+make capstone-trace
+```
 
-If an answer still sounds impressed by the mechanism itself, revise it until the judgment
-sounds operational instead.
+The inspection bundle should include:
 
-## Cross-answer habits to inspect
+```text
+governance.json
+class-creation.json
+registry.json
+bundle-manifest.json
+route.txt
+```
 
-| Habit to inspect | Strong answer behavior |
-| --- | --- |
-| naming the boundary | always states where the claim stops before praising the mechanism |
-| naming the smaller owner | always identifies the lower-power alternative considered first |
-| naming control surfaces | always points to one reset, disable, observation, or audit path |
-| naming the overclaim | always rejects one sentence that would mislead a reviewer |
+A concise claim-to-proof table could be:
 
-## Exit check for the answer key
+| Decision | Exact evidence | Source | Proof | Non-claim |
+| --- | --- | --- | --- | --- |
+| approve `PluginMeta` | hook trace ends `init:register`; constructed/executed false | `framework.py` | namespace and class-creation tests | no package discovery or reload reconciliation |
+| constrain registry | delivery plugins are sorted; rollback names `PluginMeta.clear_registry` | `framework.py` | ordering, duplicate, and reset tests | no cross-process consistency |
+| reject application import hooks | governance alternative says ordinary imports and external tooling | `governance.py` | governance and CLI tests | does not prohibit bounded tooling experiments |
 
-Before leaving this page, make sure your answers now do all of the following:
+After those facts are recorded, the trace supplies deliberate execution evidence:
+configuration, result, and one action-history entry.
 
-- stop every claim at the real enforceable boundary
-- reject at least one overclaim explicitly
-- name at least one observation or reset surface where relevant
-- leave another reviewer enough evidence to disagree with your judgment for concrete reasons
+### Common wrong turn
 
-## Continue through Module 10
+Running only `make capstone-trace` and concluding that the metaclass, descriptors, and
+registry are well governed because one plugin action succeeded.
 
-- Previous: [Exercises](exercises.md)
-- Next: [Glossary](glossary.md)
-- Return: [Overview](index.md)
+### What it proves
+
+- the governance route is observational;
+- class-creation facts are inspectable without an instance;
+- the registry has a published reset owner;
+- the bundle saves the governance report in its manifest;
+- deliberate execution remains separate from inspection.
+
+### What it does not prove
+
+- production throughput or availability;
+- hostile plugin isolation;
+- distributed discovery;
+- universal correctness of future plugins;
+- governance quality beyond the claims actually inspected.
+
+## Final self-review
+
+Across all six briefs, your evidence should follow this shape:
+
+```mermaid
+flowchart TD
+  claim["Precise claim"] --> observation["Observable fact"]
+  observation --> assertion["Focused assertion"]
+  assertion --> decision["Operational decision"]
+  decision --> nonclaim["Explicit non-claim"]
+  nonclaim --> preserved["Earlier contract preserved"]
+```
+
+If any answer ends at "the test passed," it is incomplete. Name the assertion, the claim
+it supports, and the boundary it leaves unproved.

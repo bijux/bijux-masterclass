@@ -1,5 +1,4 @@
-# Exercises
-
+# Exercises: Runtime Governance Evidence Studio
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,8 +8,8 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Runtime Governance Mastery Review"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+  page["Runtime Governance Evidence Studio"]
+  capstone["Capstone transfer"]
 
   family --> program --> section --> page
   page -.applies in.-> capstone
@@ -18,254 +17,328 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  classify["Classify a claim"] --> test["Build focused proof"]
+  test --> limit["State proof limit"]
+  limit --> decide["Approve / constrain / reject"]
+  decide --> packet["Publish review packet"]
+  packet --> transfer["Audit capstone"]
 ```
 <!-- page-maps:end -->
 
-Use these after reading the five core lessons and the worked example. The goal is not to
-collect more advanced mechanisms. The goal is to make trust boundaries, interface claims,
-observability rules, hook boundaries, and escalation decisions explicit.
+This studio is the assessed learning surface for Module 10. You will not receive credit
+for naming a preferred mechanism without runnable evidence and a statement of what that
+evidence does not prove.
 
-Each exercise asks for three things:
+Complete the briefs in order. Each one preserves an earlier contract and adds a new review
+skill. Work from `programs/python-programming/python-meta-programming`.
 
-- the runtime pressure or design you are reviewing
-- the governance decision you made
-- the evidence or reasoning that makes that decision defensible
+## Studio setup
 
-For every exercise from 2 onward, add one more line:
+Establish the baseline:
 
-- the strongest lower-power owner or refusal rule you checked first before approving any escalation
+```console
+make runtime-governance-lab
+make runtime-governance-lab-test
+make capstone-governance
+```
 
-Treat the ten exercises as one full lab day on runtime governance and review.
+Save your review notes beside your working copy, not inside source code comments. If you
+edit the lab or tests, keep the changes small enough that another learner can review the
+causal link.
 
-Do them in order:
+Every submission must contain:
 
-- Exercises 1-3 establish trust boundaries, interface honesty, and reversibility
-- Exercises 4-6 separate tooling-grade escalation from application defaults and review the capstone runtime
-- Exercises 7-8 extend that discipline into audit trails and rejection criteria
-- Exercises 9-10 package the whole course into a reviewable runtime-governance packet
+```text
+Pressure:
+Mechanism or claim under review:
+Prediction:
+Observed evidence:
+Decision:
+What the evidence proves:
+What the evidence does not prove:
+Preserved contract:
+```
 
-Keep one runtime-governance table while you work:
+## Brief 1: Separate syntax refusal from execution failure
 
-| Runtime pressure or mechanism | Trust boundary | Lowest honest owner | Reset or observation surface | Governance judgment |
-| --- | --- | --- | --- | --- |
+### Starting context
 
-## Evidence discipline for the whole exercise set
+`evaluate_arithmetic` refuses syntax outside its AST policy. Accepted arithmetic can still
+fail during evaluation—for example, division by zero.
 
-Do not hand in answers that stop at "this seems unsafe" or "this seems elegant."
+### Objective
 
-Across the set, your answers should name:
+Produce a test and a review note that distinguish:
 
-- where the real boundary sits
-- what lower-power owner was considered first
-- what observation, reset, or disable surface keeps the design reviewable
-- what sentence would overstate the mechanism if left unchecked
+- policy refusal before `eval`;
+- an arithmetic exception from accepted syntax;
+- hostile-input isolation, which this function does not own.
 
-Use one more discipline across the whole set:
+### Constraints
 
-- every answer should name one explicit boundary
-- every approval should name one observation or reset surface
-- every rejection should name the next-lower owner that stays honest
+- Do not describe the evaluator as a sandbox.
+- Do not catch every `Exception` and convert it into
+  `DynamicExecutionRefused`.
+- Keep `DynamicExecutionRefused` for source or syntax policy failures.
+- Use at least one accepted expression, one forbidden call, and one zero-division case.
 
-## Exercise 1: Reject one unsafe dynamic execution idea
+### Expected evidence
 
-Take one proposed `eval`, `exec`, or code-generation design.
+- `evaluate_arithmetic("6 * 7 + 1") == 43`;
+- the import call raises `DynamicExecutionRefused`;
+- `evaluate_arithmetic("1 / 0")` raises `ZeroDivisionError`;
+- your note explains why the third case crossed the syntax gate but not an isolation
+  boundary.
 
-What to hand in:
+### Acceptance checks
 
-- where the input comes from
-- whether the input is trusted, partially trusted, or untrusted
-- the lower-power or isolated replacement you chose
-- one sentence naming the exact false safety claim you are rejecting
+```console
+python -m unittest discover -s tests -p "test_runtime_governance_dynamic.py" -v
+```
 
-Verification hint:
-write the strongest claim the current process can honestly make before you mention any restriction trick.
+Add your focused test to that route or run it separately and record the exact command.
 
-## Exercise 2: Compare one ABC and one protocol honestly
+### Preserved contract
 
-Choose one interface shape that could be expressed either nominally or structurally.
+All existing syntax, source-length, constant-bound, and non-sandbox evidence must remain
+true.
 
-What to hand in:
+## Brief 2: Demonstrate interface-claim mismatch
 
-- which part of the contract is runtime-enforced and which part is static only
-- whether `@runtime_checkable` adds useful value here or only false confidence
-- one sentence explaining why your chosen surface is the clearest owner
-- one sentence naming which behavioral guarantee still requires tests outside the interface surface
+### Starting context
 
-Verification hint:
-write one line that begins "this surface proves..." and one that begins "this surface still cannot prove..."
+`DeliveryProtocol` is runtime-checkable, while the capstone uses explicit signature
+binding for proposed action calls.
 
-## Exercise 3: Add a reversal path to one dynamic mechanism
+### Objective
 
-Take one registry, wrapper, or patching design and make it operationally reversible.
+Build one small example where a wrong-signature object passes the runtime protocol check
+but fails an explicit `inspect.Signature.bind` attempt.
 
-What to hand in:
+### Constraints
 
-- the reset hook, disable path, or context manager you added
-- one failure mode that cleanup now prevents
-- one explanation of how the runtime fact remains observable after the change
-- one sentence explaining why the patch or registry blast radius is now acceptable
+- Do not invoke the candidate method.
+- Do not use `hasattr` as signature validation.
+- Keep static checking and runtime checking as separate claims.
+- Your review note must choose an owner for development-time compatibility and an owner
+  for runtime argument validation.
 
-Verification hint:
-if you cannot point to the exact reset or rollback call, the design is still under-specified.
+### Expected evidence
 
-## Exercise 4: Review one import hook or AST transform proposal
+- runtime protocol presence check returns `True`;
+- binding a required message argument against the candidate signature fails or exposes
+  the incompatibility;
+- the note says what neither check proves about delivery behavior.
 
-Choose one proposal that changes import behavior or rewrites code.
+### Acceptance checks
 
-What to hand in:
+```console
+python -m unittest discover -s tests -p "test_runtime_governance_interfaces.py" -v
+make capstone-bind-action
+```
 
-- whether the problem is tooling-grade or application-grade
-- one lower-power alternative you considered first
-- one explanation of the cleanup, ordering, or location-preservation risk
-- one sentence explaining what "no-hook mode" should mean for this design
+### Preserved contract
 
-Verification hint:
-state what still works when the hook is disabled before defending any global mechanism.
+ABCs still block incomplete instance construction, and the subclass hook must not execute
+instance fallback.
 
-## Exercise 5: Defend or reject one escalation
+## Brief 3: Prove nested rollback without inflating the claim
 
-Take one design that uses a decorator, descriptor, metaclass, import hook, or dynamic
-execution path and review it against the runtime power ladder.
+### Starting context
 
-What to hand in:
+`scoped_attribute_patch` restores an existing attribute and removes an introduced one. A
+caller may nest two scopes over the same owner.
 
-- the lower-power mechanism you compared first
-- the ownership reason that made you approve or reject escalation
-- one note on observability, reversibility, or performance evidence
-- one approval sentence or rejection sentence you would be willing to leave in a real review
+### Objective
 
-Verification hint:
-if your decision cannot be restated as a real review note, it is still too abstract.
+Write a focused test showing this state sequence:
 
-## Exercise 6: Review the capstone runtime as Module 10 evidence
+```text
+original → outer replacement → inner replacement → outer replacement → original
+```
 
-Use the worked example and the capstone proof route as a case study.
+Then decide whether the result justifies approving nested use.
 
-What to hand in:
+### Constraints
 
-- one observational surface that earns trust before invocation
-- one mechanism the capstone uses responsibly
-- one higher-power change you would reject as making the runtime less reviewable
-- one sentence explaining why inspect-first behavior matters in this runtime
+- Compare stored identities with `inspect.getattr_static` where appropriate.
+- Force the inner scope to exit through an exception.
+- Do not add locking or claim concurrency safety.
+- Do not suppress the inner exception merely to make the test pass; catch it at the
+  deliberate test boundary.
 
-Verification hint:
-name one observational command and one refused stronger power before you praise the design.
+### Expected evidence
 
-## Midday self-check
+- each transition is asserted;
+- the inner exception restores the outer replacement;
+- final exit restores the exact original identity;
+- the review outcome is `constrain`, with shared visibility named as the reason.
 
-Before moving into the final four exercises, make sure you can already answer these
-questions clearly:
+### Acceptance checks
 
-- where the real trust boundary sits for dynamic execution or generated behavior
-- why interface language must stay smaller than what ABCs, protocols, or runtime checks can actually prove
-- what reset, disable, or observation path keeps a dynamic mechanism operationally honest
-- when an escalation belongs to tooling or infrastructure instead of ordinary application design
+```console
+python -m unittest discover -s tests -p "test_runtime_governance_patching.py" -v
+```
 
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the trust boundary, reset surface, and rejected lower-power alternative more explicit
-before continuing.
+### Preserved contract
 
-Do not continue if your notes still rely on words such as "automatic," "clean," or
-"flexible" without naming the runtime cost they hide.
+Normal rollback, exception rollback, absent-attribute removal, and dunder refusal still
+pass.
 
-## Exercise 7: Design one audit trail for a dynamic mechanism
+## Brief 4: Audit complete import-hook cleanup
 
-Choose one registry, patch, plugin runtime, or dynamic dispatch mechanism and make its
-history easier to inspect after the fact.
+### Starting context
 
-What to hand in:
+The virtual-module context mutates both `sys.meta_path` and `sys.modules`. Removing only
+one would leave altered process state.
 
-- the mechanism
-- one audit surface such as logs, counters, manifests, or explicit state snapshots
-- one explanation of what incident or debugging question that audit trail would answer
-- one sentence explaining how the audit trail stays separate from the business behavior itself
+### Objective
 
-Verification hint:
-write the exact post-incident question the audit trail should answer.
+Create an evidence table for four moments:
 
-## Exercise 8: Write one explicit rejection rule
+1. before installation;
+2. inside the context before import;
+3. inside after import;
+4. after cleanup.
 
-Choose one high-power runtime idea and define a concrete review rule for when it should be
-rejected.
+Include finder presence, cache presence, event sequence, and import result.
 
-What to hand in:
+### Constraints
 
-- the mechanism class you are reviewing
-- the rejection rule
-- one explanation of which missing evidence or ownership signal triggers the rejection
-- one sentence naming the smaller design that should be used instead when the rule fires
+- Use a unique exact module name.
+- Prove an unrelated module name is ignored.
+- After cleanup, attempt the virtual import again and record `ModuleNotFoundError`.
+- Do not leave a finder or virtual module in process state after the test.
+- Do not reuse a real installed module name.
 
-Verification hint:
-if the smaller design is not named concretely, the rejection rule is still weak.
+### Expected evidence
 
-## Exercise 9: Compare honest runtime claims with overstated claims
+Your table should make these transitions visible:
 
-Choose one governance-sensitive runtime design and write both an honest description and an
-overstated description of what it guarantees.
+| Moment | Finder | Cached module | Expected behavior |
+| --- | --- | --- | --- |
+| before | absent | absent | virtual import unavailable |
+| installed, not imported | present | absent | next exact import can be claimed |
+| installed, imported | present | present | `find`, `create`, `exec` recorded |
+| after | absent | absent | virtual import unavailable again |
 
-What to hand in:
+### Acceptance checks
 
-- the honest description
-- the overstated description
-- one explanation of which words make the overstated version misleading
-- one sentence rewriting the honest version so a teammate could review the scope without guessing
+```console
+python -m unittest discover -s tests -p "test_runtime_governance_tooling.py" -v
+```
 
-Verification hint:
-underline the words that overclaim safety, automation, or lifecycle power.
+### Preserved contract
 
-## Exercise 10: Produce a runtime-governance packet
+The AST transform still reports exact replacement count and preserves unmatched
+constants.
 
-Assemble:
+## Brief 5: Review a reload proposal
 
-- one runtime-governance table
-- one dynamic mechanism with a reset or disable path
-- one trust-boundary judgment for dynamic execution, import control, or plugin registration
-- one rejection rule explaining when a higher-power design should be refused
+### Starting context
 
-The packet is strong when another learner can use it to answer:
+A teammate proposes adding automatic module reload reconciliation to `PluginMeta` so the
+registry "just stays current" during development and long-running processes.
 
-- what mechanism is being governed
-- what evidence keeps it reviewable
-- when the design should be accepted, constrained, or rejected
-- what lower-power owner was rejected and why
+### Objective
 
-Packet quality bar:
+Write a complete `GovernanceDecision`-shaped review for the proposal. Choose approve,
+constrain, or reject and defend it through all five review gates.
 
-- another learner should be able to name the boundary, the reset or audit surface, and the rejection trigger without asking you follow-up questions
+### Constraints
 
-## Mastery standard for this exercise set
+- The pressure must not say "we need metaclass reload support."
+- Compare at least one explicit process-lifecycle or discovery owner.
+- Name object identity, duplicate registration, and existing instances in the blast
+  radius.
+- Provide a rollback/refusal route and focused proof plan.
+- State the evidence that would justify reopening the decision.
 
-Across all six answers, the module wants the same habits:
+### Expected evidence
 
-- you name trust boundaries honestly
-- you keep interface claims smaller than the mechanism's reputation
-- you require reset and disable paths for dynamic behavior
-- you distinguish tooling-grade escalation from application defaults
-- you justify power with ownership and evidence rather than taste
+A strong submission is likely to reject metaclass-owned reload reconciliation and select
+an explicit process lifecycle or development-tooling boundary. A different outcome must
+show an enforceable scope and stronger proof.
 
-Across all ten answers, add two more habits:
+### Acceptance checks
 
-- you make audit and rejection criteria explicit instead of implied
-- you leave behind a runtime-governance packet another learner could review without guessing
+Validate that your decision contains every field represented by
+`GovernanceDecision`, then run:
 
-## Exit check for the exercise set
+```console
+python -m unittest discover -s tests -p "test_runtime_governance_selection.py" -v
+```
 
-Before leaving this page, make sure your packet does all of the following:
+### Preserved contract
 
-- rejects at least three escalations explicitly
-- names at least one reset, disable, or no-hook surface where relevant
-- stops security, interface, and runtime claims at the real enforceable boundary
-- leaves another learner enough evidence to agree or disagree with your governance call for concrete reasons
+The existing decision packet must still contain one approve, two constrain, and three
+reject outcomes unless you intentionally change the published curriculum and update its
+proof.
 
-If an answer still sounds like "the runtime can do it, so the design is fine," keep going.
+## Brief 6: Publish a capstone governance packet
 
-## Continue through Module 10
+### Starting context
 
-- Previous: [Worked Example: Reviewing a Plugin Runtime for Observability and Control](worked-example-reviewing-a-plugin-runtime-for-observability-and-control.md)
-- Next: [Exercise Answers](exercise-answers.md)
-- Return: [Overview](index.md)
-- Terms: [Glossary](glossary.md)
+The capstone exposes `governance`, `field-system`, `action-wrapper`, `class-creation`,
+`registry`, `bind-action`, and saved inspection bundles.
+
+### Objective
+
+Audit one approved mechanism, the constrained registry, and one rejected power. Produce a
+packet another learner can review without hearing your explanation.
+
+### Constraints
+
+- Begin with non-constructing commands.
+- For each decision, identify source owner, timing, public-surface consequence,
+  observation route, rollback/refusal, focused test, and non-claim.
+- Include at least one exact JSON value from each observation route.
+- Invoke a plugin only after the non-constructing evidence is recorded.
+- Do not claim that passing tests proves production security or performance.
+
+### Expected evidence
+
+At minimum, your packet contains:
+
+```text
+governance.json or governance command output
+one mechanism-specific JSON report
+one registry observation
+one deliberate trace
+one claim-to-proof table
+one final approve/constrain/reject summary
+```
+
+### Acceptance checks
+
+```console
+make capstone-governance
+make inspect
+make capstone-trace
+```
+
+Confirm that the inspection bundle contains `governance.json` and
+`bundle-manifest.json`, and that `governance.json` says `constructed: false` and
+`executed: false`.
+
+### Preserved contract
+
+All inspection commands remain observational. Plugin construction and action execution
+occur only in the deliberate trace route.
+
+## Submission review
+
+Use this matrix before opening the answers:
+
+| Criterion | Not yet | Ready |
+| --- | --- | --- |
+| prediction precedes observation | result is narrated after the fact | prediction is written before execution |
+| code and test align | test checks a nearby implementation detail | assertion proves the review claim |
+| failure is differentiated | every failure becomes one generic error | policy, runtime, and isolation boundaries remain distinct |
+| decision is operational | outcome uses taste words | owner, timing, radius, observation, rollback, and proof are explicit |
+| non-claim is precise | "not production ready" | exact unproved behavior is named |
+| earlier behavior is preserved | only the new case passes | the focused regression route remains green |
+| capstone transfer is earned | capstone is mentioned generically | source, command, JSON fact, and test are connected |
+
+Only then use [Exercise Answers](exercise-answers.md). The answer key is a review model,
+not text to copy into your packet.
