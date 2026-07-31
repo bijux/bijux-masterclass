@@ -1,94 +1,44 @@
-# Error-Typed Flows
+# Error-Typed Flows: Classify Failures at Their Boundary
 
+`Result` makes an expected failure visible in a function signature. It should
+not become a container for every exception the program can raise.
 
-<!-- page-maps:start -->
-## Page Maps
+Module 06 draws a practical boundary:
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Monadic Flow Explicit Context"]
-  page["Error-Typed Flows"]
-  capstone["Capstone evidence"]
+- an expected, recoverable case becomes a typed value;
+- an unexpected defect or broken invariant remains an exception; and
+- conversion happens where throwing behavior enters the application.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+This is a design decision about ownership. It is not a claim that exceptions
+are bad or that all domain errors are recoverable.
+
+## Start with one configuration boundary
+
+Python’s `int` raises `ValueError` for non-numeric text:
+
+```python
+int("eight")
 ```
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
-
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
-
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
-
-**Core question**  
-How do you rigorously separate **expected domain errors** (recoverable, business-level) from **unexpected failures** (bugs, anomalies) in monadic pipelines — using typed containers for the former and raw exceptions for the latter, with try-wrappers only at true boundaries?
-
-This is the core that finally draws the hard line:  
-- Expected errors → `Result` / `Validation` (typed, composable, recoverable).  
-- Unexpected failures → raise immediately (never silently converted).
-
-After this core you will never again scatter ad-hoc `except Exception` blocks through your code or turn a programming bug into a domain `Err`. All catching is centralized in boundary helpers, and bugs are forced to propagate by disciplined `map_exc` functions.
-
-Use this when you are tired of "exception swallowing" bugs and want a provable contract that domain errors stay typed while real anomalies crash early.
-
-**Outcome**
-1. You will know exactly where to place `try_result` / `result_map_try` — only at true effect boundaries.
-2. You will let true bugs raise (never bridge them).
-3. You will have mechanical proof that your try wrappers are total **when used correctly**.
-
-## The Golden Rule of Error Typing
-
-| Error Kind              | Example                              | Handling Strategy                  | Where to Handle                  |
-|-------------------------|--------------------------------------|------------------------------------|----------------------------------|
-| Expected domain         | Invalid input, business rule         | `Result[T, DomainErr]` / `Validation` | Inside pure pipeline             |
-| Unexpected failure      | KeyError from missing dict key, None-deref | Raise immediately                  | Never catch — crash early        |
-
-Try wrappers are **boundary-only** combinators. Using them deep inside pure code is forbidden.
-
-## A Practical Classification Check
-
-Before turning an exception into a typed error, ask three questions:
-
-1. is this a failure the caller can reasonably recover from?
-2. does this case belong to the domain contract, not just to a broken implementation?
-3. would catching it make debugging harder by hiding a bug or broken invariant?
-
-If the first two answers are yes and the third is no, the case is usually a good fit for
-`Result` or `Validation`. If not, letting it raise is often the more honest move.
-
-## Runnable lab: type one expected parse failure
-
-The configuration boundary expects `int` to reject non-numeric text with
-`ValueError`. It converts only that class:
+For a text-based configuration adapter, that is an expected input failure. The
+caller can correct the value, so the adapter converts it into `ErrInfo`:
 
 ```python
 def parse_chunk_size(raw: str) -> Result[int, ErrInfo]:
     return try_result(
         lambda: int(raw),
-        lambda error: ErrInfo(code="CONFIG_PARSE", msg=str(error)),
+        lambda error: ErrInfo(
+            code="CONFIG_PARSE",
+            msg=str(error),
+        ),
         exc_type=ValueError,
     )
 ```
 
-The complete proof also supplies a parser that raises `RuntimeError` and asserts
-that the bug still propagates:
+The exception class is part of the contract. A `RuntimeError` raised by a
+broken parser is not classified as invalid user text and must remain visible.
+
+Run both cases:
 
 ```bash
 cd capstone/module-reference-states/module-06
@@ -96,251 +46,207 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
   -k exception_bridge_types_expected_config_failure_only
 ```
 
-Catching `Exception` here would erase the classification decision. Returning
-`Err` for `ValueError` gives the caller a recoverable configuration failure;
-letting `RuntimeError` escape keeps an unexpected invariant break visible.
-
-## 1. Laws & Invariants (machine-checked in CI)
-
-| Invariant                         | Description                                                                                  | Enforcement          |
-|-----------------------------------|----------------------------------------------------------------------------------------------|----------------------|
-| Try Wrapper Totality              | `try_result(..., exc_type=Expected)` / `result_map_try(..., exc_type=Expected)` / `v_try(..., exc_type=Expected)` / `v_map_try(..., exc_type=Expected)` return `Err`/`VFailure` (never raise) **for exceptions in `exc_type`** | Hypothesis + runtime |
-| No Silent Swallowing              | If `thunk` raises and `map_exc` returns → `Err`/`VFailure`, never `Ok`/`VSuccess`            | Hypothesis           |
-| Unexpected Failures Raise         | Exceptions not in `exc_type` propagate as bugs (never become `Err`/`VFailure`)               | Runtime contract     |
-| Propagation                       | Expected errors short-circuit (Result) or accumulate via applicative ops (Validation)        | Code + tests         |
-
-
-> **Note**: “total” here means “total on the subset of exception types you classify as *expected* via `exc_type`”.  
-> For all other exceptions, the wrapper does not catch — they propagate as bugs instead of becoming `Err`/`VFailure`.
-
-All laws verified with Hypothesis. A single counterexample breaks CI.
-
-## 2. Public API – Try wrappers are free functions (boundary only)
+The test expects:
 
 ```python
-# capstone/src/funcpipe_rag/boundaries/adapters/exception_bridge.py – end-of-Module-06 (mypy --strict clean target)
+parse_chunk_size("8") == Ok(8)
+parse_chunk_size("eight") == Err(
+    ErrInfo(
+        code="CONFIG_PARSE",
+        msg="invalid literal for int() with base 10: 'eight'",
+    )
+)
+```
 
-from __future__ import annotations
-from typing import Callable, TypeVar, NoReturn
+It also uses `pytest.raises` to prove an unrelated `RuntimeError` is not
+swallowed.
 
-from funcpipe_rag.result.types import Result, Ok, Err
-from funcpipe_rag.fp.core import Validation, VSuccess, VFailure
+## Separate parsing from domain validation
 
-T = TypeVar("T")
-U = TypeVar("U")
-E = TypeVar("E")
+Parsing answers:
 
-# Result
+> Can this text be interpreted as an integer?
+
+Domain validation answers:
+
+> Is this integer an allowed chunk size?
+
+Keep those decisions separate:
+
+```python
+def require_positive(
+    value: int,
+) -> Result[int, ErrInfo]:
+    if value <= 0:
+        return Err(
+            ErrInfo(
+                code="CHUNK_SIZE",
+                msg="must be positive",
+            )
+        )
+    return Ok(value)
+
+
+chunk_size = parse_chunk_size(raw).and_then(
+    require_positive
+)
+```
+
+Now the failure codes retain provenance:
+
+```text
+"eight" -> CONFIG_PARSE
+"-2"    -> CHUNK_SIZE
+"8"     -> Ok(8)
+```
+
+Do not catch the constructor exception and label every failure
+`CONFIG_PARSE`; the caller loses whether the text was malformed or the value
+was outside the domain.
+
+## A classification test
+
+Before converting an exception, ask:
+
+1. Which exact operation can raise it?
+2. Which exact exception classes are expected?
+3. Can the caller take a meaningful recovery action?
+4. Is the case stable enough to be part of the public contract?
+5. Would catching it hide a programming defect or broken invariant?
+
+If the answers are vague, do not widen the catch.
+
+Examples:
+
+| Situation | Representation | Reason |
+| --- | --- | --- |
+| `int(raw)` rejects user-supplied text | `Err(CONFIG_PARSE)` | expected input problem |
+| validated overlap is not smaller than chunk size | `Err(OVERLAP_RANGE)` | domain rule, no exception needed |
+| a required dictionary key is absent because an internal invariant broke | `KeyError` remains visible | likely defect, not caller recovery |
+| a valid query finds no document | `Ok(NoneVal())` | successful absence |
+| retrieval storage is unavailable | `Err(RETRIEVAL)` | operation failed |
+
+The final two rows prepare the container-layering lesson.
+
+## Read the exception bridge
+
+The Module 06 adapter is deliberately small:
+
+```python
 def try_result(
     thunk: Callable[[], T],
     map_exc: Callable[[Exception], E],
-    exc_type: type[Exception] | tuple[type[Exception], ...] = Exception,
+    exc_type: ExcTypes = Exception,
 ) -> Result[T, E]:
-    """Bridge an impure thunk into Result. Use ONLY at effect boundaries."""
     try:
         return Ok(thunk())
-    except exc_type as ex:
-        return Err(map_exc(ex))
-
-def result_map_try(
-    r: Result[T, E],
-    f: Callable[[T], U],
-    map_exc: Callable[[Exception], E],
-    exc_type: type[Exception] | tuple[type[Exception], ...] = Exception,
-) -> Result[U, E]:
-    """Apply a possibly-throwing f to a successful Result."""
-    if isinstance(r, Err):
-        return Err(r.error)
-    try:
-        return Ok(f(r.value))
-    except exc_type as ex:
-        return Err(map_exc(ex))
-
-# Validation (accumulating)
-def v_try(
-    thunk: Callable[[], T],
-    map_exc: Callable[[Exception], E],
-    exc_type: type[Exception] | tuple[type[Exception], ...] = Exception,
-) -> Validation[T, E]:
-    """Boundary helper for Validation.
-
-    Note: this yields a single VFailure on exception.
-    Error *accumulation* happens when you combine multiple Validations
-    applicatively (v_ap / v_liftA2), not inside v_try itself.
-    """
-    try:
-        return VSuccess(thunk())
-    except exc_type as ex:
-        return VFailure((map_exc(ex),))
-
-def v_map_try(
-    v: Validation[T, E],
-    f: Callable[[T], U],
-    map_exc: Callable[[Exception], E],
-    exc_type: type[Exception] | tuple[type[Exception], ...] = Exception,
-) -> Validation[U, E]:
-    """Like result_map_try, but for Validation.
-
-    Note: this still short-circuits on the first failure; accumulation
-    happens via applicative combinators, not inside v_map_try itself.
-    """
-    if isinstance(v, VFailure):
-        return v
-    try:
-        return VSuccess(f(v.value))
-    except exc_type as ex:
-        return VFailure((map_exc(ex),))
-
-# Helper for unexpected failures (never bridge these)
-class UnexpectedFailure(RuntimeError):
-    pass
-
-def unexpected_fail(msg: str) -> NoReturn:
-    """Use only at the outermost boundary to turn an unrecoverable state into process exit."""
-    raise UnexpectedFailure(msg)
+    except exc_type as error:
+        return Err(map_exc(error))
 ```
 
-**Contract**: `exc_type` defines what is treated as an expected domain exception.  
-Exceptions outside `exc_type` propagate as bugs (they never become `Result`/`Validation`).
+At a call site, always inspect `exc_type`. The default is broad enough for a
+general helper, but application adapters should normally pass the narrow,
+expected class explicitly as the learning proof does.
 
-Read `exc_type` as a classification boundary, not as a convenience flag. It is the line
-that says “these are the exception shapes we have deliberately decided to model as
-expected.”
+`result_map_try` applies the same boundary conversion to the successful value
+inside an existing Result. `v_try` and `v_map_try` return one `VFailure` for one
+throwing operation. Accumulation occurs only when multiple Validation values
+are later combined applicatively.
 
-## 3. Real-World Example – JSON Parsing at Boundary
+## The bridge must stay narrow in space and time
+
+Catch around the smallest throwing expression:
 
 ```python
-@dataclass(frozen=True)
-class ParseErr:
-    msg: str
-
-safe_parse = try_result(
-    lambda: json.loads(raw_json),
-    lambda ex: ParseErr(f"Invalid JSON: {ex}"),
-    exc_type=(json.JSONDecodeError, ValueError),
+try_result(
+    lambda: int(raw),
+    to_parse_error,
+    exc_type=ValueError,
 )
-
-match safe_parse:
-    case Ok(data): process(data)
-    case Err(e): handle_parse_error(e)   # expected, recoverable
-# Any unexpected exception outside exc_type propagates as a bug (raises).
 ```
 
-## 4. Before → After – Mixed Error Handling vs Typed Flows
+Avoid:
 
 ```python
-# BEFORE – broad except swallows bugs
-try:
-    data = json.loads(raw)
-    user = validate_user(data)
-except Exception as ex:           # catches everything — including KeyError bugs
-    log("something went wrong")
-    return None                   # silent failure
-
-# AFTER – typed flow at boundary
-safe_data = try_result(
-    lambda: json.loads(raw),
-    lambda ex: ParseErr(f"Invalid JSON: {ex}"),
-    exc_type=(json.JSONDecodeError, ValueError),
+try_result(
+    lambda: parse_validate_build_and_store(raw),
+    to_parse_error,
+    exc_type=ValueError,
 )
-
-validated = safe_data.and_then(validate_user)   # domain validation errors stay typed
-
-match validated:
-    case Ok(user): return user
-    case Err(e): return handle_domain_error(e)
-# Any unexpected exception (e.g. bug in validate_user) raises immediately
 ```
 
-Zero broad except. Expected errors typed and composable. Bugs crash early.
+The larger thunk gives every `ValueError` in parsing, validation, construction,
+and storage the same meaning. A bug from a distant operation can be
+misclassified as user input.
 
-## 5. Property-Based Proofs & Key Examples (selected)
+After the throwing boundary returns a typed value, continue with pure
+`map`/`and_then` operations.
+
+## Typed errors require consumption
+
+Returning `ErrInfo` is only useful if an outer boundary handles the variants:
 
 ```python
-from hypothesis import given, strategies as st
-import pytest
-
-@given(st.integers())
-def test_try_result_preserves_success(x: int):
-    r = try_result(lambda: x, lambda ex: ParseErr("impossible"))
-    assert r == Ok(x)
-
-def test_try_result_returns_err_on_expected_exception():
-    def thunk() -> int:
-        raise ValueError("test")
-
-    r = try_result(thunk, lambda ex: ParseErr(str(ex)))
-    assert isinstance(r, Err)
-
-def test_try_result_propagates_unexpected_exceptions():
-    class Boom(Exception):
-        pass
-
-    def thunk() -> int:
-        raise Boom("bug")
-
-    def map_exc(ex: Exception) -> ParseErr:
-        if isinstance(ex, ValueError):
-            return ParseErr("domain")
-        raise ex
-
-    with pytest.raises(Boom):
-        _ = try_result(thunk, map_exc)
-
-def test_v_try_preserves_success():
-    v = v_try(lambda: 42, lambda ex: ParseErr("impossible"))
-    assert v == VSuccess(42)
-
-def test_v_try_returns_failure_on_expected_exception():
-    def thunk() -> int:
-        raise ValueError("test")
-
-    v = v_try(thunk, lambda ex: ParseErr(str(ex)))
-    assert isinstance(v, VFailure)
-
+match parse_chunk_size(raw):
+    case Ok(value):
+        use_chunk_size(value)
+    case Err(error):
+        render_config_error(error)
 ```
 
-## 6. Anti-Patterns & Immediate Fixes
+The boundary may print a message, choose an exit status, or return an HTTP
+response. Those effects do not belong inside the pure parser.
 
-| Anti-Pattern                    | Symptom                              | Fix                                      |
-|---------------------------------|--------------------------------------|------------------------------------------|
-| Broad except Exception          | Bugs become domain errors            | Use try_result only at boundaries + restrict with exc_type |
-| Catching and returning Ok(None) | Silent failures                      | Return a typed Err instead of Ok(None); keep bugs raising |
-| try_result deep in pure code    | Hidden impurity                      | Keep pure functions pure                 |
+Typed errors can still be poorly designed. Review:
 
+- stable, specific codes;
+- messages appropriate for the boundary;
+- retained source or field context;
+- whether callers can distinguish recovery actions; and
+- whether sensitive implementation details leak.
+
+## `Result` does not make a function total
+
+This annotation:
 
 ```python
-# Bad: try_result inside domain logic
-def validate_user(data: dict) -> Result[User, DomainErr]:
-    return try_result(
-        lambda: _validate_user_unsafe(data),
-        map_validate_exc,
-    )
-
-# Good: validate_user stays pure; boundary wraps the effect that produces the input
-def validate_user(data: dict) -> Result[User, DomainErr]:
-    return _validate_user_pure(data)
-
-safe_user = try_result(
-    lambda: read_user_data_from_disk(path),
-    map_io_exc,
-).and_then(validate_user)
+def f(raw: str) -> Result[int, ErrInfo]:
+    ...
 ```
 
-## 7. Pre-Core Quiz
+does not prevent `f` from raising `RuntimeError`, exhausting memory, or calling
+an impure dependency. It documents the expected modeled outcomes. Tests should
+cover both the typed failure and important exceptions that must propagate.
 
-1. Expected errors → ? → **Result/Validation (typed)**  
-2. Unexpected failures → ? → **Raise immediately**  
-3. try_result is used ? → **Only at effect boundaries**  
-4. If map_exc raises → ? → **Exception propagates (bug)**  
-5. The golden rule? → **Never turn a bug into a domain Err**
+The Module 06 proof is honest about this boundary: it proves total behavior
+only for the named `ValueError` route.
 
-## 8. Post-Core Exercise
+## Common wrong turns
 
-1. Find one broad `except Exception` in your codebase and replace it with a typed try_result boundary + re-raising map_exc.
-2. Add a new expected domain error to an existing pipeline — confirm it's a one-line change.
-3. Deliberately introduce a KeyError bug inside a pure function — confirm it crashes (not silently converted).
+- **Catching `Exception` at every layer.** This converts unrelated defects into
+  misleading domain failures.
+- **Using one error code for all failures.** The caller cannot choose a
+  recovery action.
+- **Raising for routine domain invalidity after parsing.** A pure check can
+  return `Err` directly.
+- **Putting try wrappers in the domain core.** Conversion belongs at the
+  throwing adapter.
+- **Assuming Validation automatically accumulates exceptions.** Each bridge
+  creates one value; applicative combination performs accumulation.
+- **Ignoring successful absence.** “No match” is not the same as failed
+  retrieval.
 
-**Continue with:** [Layered Containers](../module-06-monadic-flow-explicit-context/layered-containers.md)
+## What the focused proof establishes
 
-You have now rigorously separated expected domain errors (typed, composable) from unexpected failures (raise early). Your pipelines are pure for all recoverable cases, and real bugs can never be silently swallowed. The remaining cores are architectural patterns and polish.
+The learning test establishes that the configuration adapter:
+
+- parses valid numeric text;
+- maps `ValueError` to the declared `ErrInfo`;
+- preserves the exact error code and message; and
+- lets an unexpected `RuntimeError` propagate.
+
+It does not prove that all `ValueError` instances in FuncPipe are expected, or
+that every boundary should use the same error mapping.
+
+Continue with [Layered Containers](layered-containers.md) to make absence and
+failure coexist without collapsing their meanings.
