@@ -17,78 +17,195 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  class["Class creation<br/>framework.py"] --> attribute["Attribute access<br/>fields.py"]
+  attribute --> call["Call boundary<br/>actions.py"]
+  call --> concrete["Concrete behavior<br/>plugins.py"]
+  class --> observe["Observation<br/>cli.py"]
+  attribute --> observe
+  call --> observe
+  observe --> govern["Decision record<br/>governance.py"]
 ```
 <!-- page-maps:end -->
 
-Use this page when the capstone repository feels busy and you need the ownership model in
-one place before reading more code. The point is not to admire the runtime. The point is
-to understand where each mechanism stops, what it must not absorb, and how a reviewer can
-still see the design clearly.
+Use this page after a transfer report identifies the expected owner. The architecture is
+small enough to trace, but dense enough that reading every file from top to bottom can
+hide the boundary under review.
 
-## Start by architecture question
+## Architecture in one sentence
 
-| If the architecture question is... | Start with | Then inspect |
-| --- | --- | --- |
-| what the public CLI can show without hidden work | public observation | `cli.py`, manifest helpers, and `capstone-manifest` |
-| where wrapper behavior should stop | callable transformation | `actions.py` and `capstone-trace` |
-| where validation really belongs | attribute contracts | `fields.py` and `test_fields.py` |
-| what must happen before the class exists | class-creation rules | `framework.py` and `test_registry.py` |
-| where realistic delivery behavior should stay concrete | concrete domain examples | `plugins.py`, `scenarios.py`, and `capstone-plugin` |
+The incident-plugin capstone uses a metaclass for bounded class-family creation,
+descriptors for configuration attributes, decorators for action call boundaries,
+ordinary classes for delivery behavior, a CLI for observation, and a separate
+governance record for mechanism decisions.
 
-## The capstone architecture in one sentence
+No layer is allowed to absorb all six responsibilities.
 
-The capstone is a small plugin runtime where introspection, wrappers, descriptors, and a
-metaclass each own one narrow boundary and the CLI exposes those boundaries without hiding them.
+## Timing and owner map
 
-## Main ownership slices
-
-| Slice | Owner | What it owns | What it must not own |
+| Timing | Owner | Public report | What must remain outside |
 | --- | --- | --- | --- |
-| public observation | `src/incident_plugins/cli.py` and manifest helpers in `framework.py` | guided inspection routes, manifest export, registry and signature reporting | business policy hidden behind private helper magic |
-| callable transformation | `src/incident_plugins/actions.py` | action wrapping, signature preservation, and action-history recording | field validation, registry design, or class creation |
-| attribute contracts | `src/incident_plugins/fields.py` | field metadata, coercion, validation, and per-instance storage behavior | action invocation semantics or plugin registration |
-| class-creation rules | `src/incident_plugins/framework.py` | plugin registration, generated constructor signatures, and manifest assembly | application-specific delivery behavior |
-| concrete domain examples | `src/incident_plugins/plugins.py` and `src/incident_plugins/scenarios.py` | realistic delivery plugins and demo scenarios that make the abstractions inspectable | framework ownership of every rule in the system |
+| import and class definition | `framework.py` | `class-creation`, `registry`, `manifest` | plugin invocation, package discovery, external I/O |
+| descriptor name binding and attribute access | `fields.py` | `field`, `field-ownership`, `field-system` | action history, registry policy, transaction framework |
+| decorator application and action call | `actions.py` | `action`, `action-wrapper`, `check-action`, `trace` | field storage and class-family construction |
+| concrete delivery invocation | `plugins.py` | `plugin`, `demo`, `trace` | framework-wide policy |
+| observation after facts exist | `cli.py` and public helpers | every JSON command | new hidden behavior that only the CLI implements |
+| application review | `governance.py` | `governance` | implementation of the mechanisms being judged |
 
-## Why this architecture teaches well
+The CLI reports owners; it does not become the owner. Governance records decisions; it
+does not implement or prove the mechanisms.
 
-- The wrapper logic is visible in one file instead of being spread across plugins.
-- The field logic is visible in one file instead of being buried inside plugin constructors.
-- The metaclass stays narrow enough that you can compare it to class decorators and explicit registration.
-- The CLI and saved bundles make the runtime observable before you read internals.
+## Class-creation boundary
 
-## Architecture questions to ask while reading
+`framework.py` owns facts that genuinely involve the class family:
 
-- Which behavior belongs to attribute access instead of function wrapping?
-- Which work must happen before the class exists?
-- Which facts can the CLI expose without invoking business actions?
-- Which part would become clearer if rewritten with a lower-power tool?
+- prepared namespace event capture
+- collection of declared fields and action specs
+- generated constructor signature
+- stable group and plugin names
+- deterministic registration and duplicate refusal
+- manifest assembly from stored contracts
 
-## Best reading order for the architecture
+Inspect with:
 
-1. Read [Capstone Guide](index.md) to understand the public claim of the project.
-2. Run or inspect `capstone-manifest` and `capstone-registry` to see the public runtime shape first.
-3. Read `src/incident_plugins/framework.py` for the class-creation and manifest boundary.
-4. Read `src/incident_plugins/fields.py` for attribute ownership.
-5. Read `src/incident_plugins/actions.py` for wrapper ownership.
-6. Read `src/incident_plugins/plugins.py` for concrete behavior only after the boundaries are clear.
-7. Read the matching tests to confirm the architecture story.
+```bash
+make capstone-class-creation
+make capstone-registry
+make capstone-signatures
+```
 
-## What not to do first
+The first report separates preparation, shaping, and registration. The registry report
+exposes completed-class state. Signatures expose generated public call shapes.
 
-- Do not start in `plugins.py` when the ownership question is still abstract.
-- Do not start in tests when the owning slice is not yet named.
-- Do not compare higher-power mechanisms until the lower-power alternative is explicit.
+Reject additions such as package scanning, network access, action invocation, or
+automatic metaclass conflict repair. Those are not facts required to construct one class.
+
+## Attribute boundary
+
+`fields.py` owns repeated configuration semantics:
+
+- public and private storage names
+- coercion and validation
+- required/default behavior
+- per-instance storage
+- exported field metadata
+
+Inspect the layers separately:
+
+```bash
+make capstone-field
+make capstone-field-ownership
+make capstone-field-system
+```
+
+`field` shows the external schema. `field-ownership` shows descriptor mechanics.
+`field-system` shows accepted and rejected system powers. A learner should not infer
+descriptor storage from schema alone.
+
+The application rejects cache freshness, external storage authority, arbitrary wrapper
+composition, broad annotation inference, and transaction semantics. Those concerns
+would require different owners and proof.
+
+## Callable boundary
+
+`actions.py` owns one action transformation:
+
+- `ActionSpec` metadata
+- preserved names, documentation, and `__wrapped__`
+- explicit action signature
+- call-time history recording
+
+Inspect without execution:
+
+```bash
+make capstone-action
+make capstone-action-wrapper
+make capstone-bind-action
+make capstone-check-action
+```
+
+Only use `capstone-trace` when construction, invocation, result, and history are part of
+the claim.
+
+Retry, cache, and general runtime typing remain course-lab comparisons. The capstone
+action wrapper does not need every policy taught in Module 05.
+
+## Concrete application boundary
+
+`plugins.py` and `scenarios.py` keep the framework honest by supplying ordinary delivery
+behavior. They own concrete configuration use, payload formatting, and adapter results.
+
+Inspect with `capstone-plugin`; execute deliberately with `demo` or `capstone-trace`.
+
+Do not move plugin-specific formatting into the metaclass, field base class, or action
+decorator merely to reduce visible code. Ordinary code is a feature when the behavior is
+ordinary.
+
+## Observation boundary
+
+`cli.py` exposes public commands, but delegates runtime facts to the owning helpers. A
+reviewer should be able to follow:
+
+```text
+CLI parser → handler → public helper → stored/runtime fact → JSON
+```
+
+Warning signs:
+
+- a handler recomputes a fact differently from the framework
+- only the CLI knows a policy rule
+- an observational command constructs a plugin for convenience
+- an error is converted into a misleading successful report
+
+`tests/test_cli.py` pairs public shape with non-construction and non-execution claims.
+
+## Governance boundary
+
+`governance.py` records:
+
+- approved mechanisms and owners
+- the constrained process-global registry
+- rejected powers and lower-power alternatives
+- observability, rollback, and proof routes
+
+Run `capstone-governance`, then follow each decision to the named report and tests.
+
+Do not add a mechanism implementation to `governance.py`. A decision record stays useful
+because it can review the application without becoming another hidden runtime layer.
+
+## Cross-boundary trace
+
+For one `ConsoleNotifier` declaration:
+
+1. Python selects `PluginMeta`.
+2. `PluginMeta.__prepare__` supplies the recording namespace.
+3. field objects receive names and storage keys.
+4. action decorators publish callable contracts.
+5. `PluginMeta` collects those facts and generates the constructor.
+6. the completed class enters the registry.
+7. observational CLI commands report stored facts without an instance.
+8. only `demo` or `trace` constructs the plugin and invokes an action.
+9. governance reviews whether each mechanism earned its place.
+
+This sequence is the integration value of the capstone. Each earlier course lab isolates
+one step so this combined trace remains explainable.
+
+## Ownership review
+
+For any proposed change, ask:
+
+1. What timing does the requirement need?
+2. Is the owner one call, one attribute, one class, or the class family?
+3. Which lower-power owner almost solves it?
+4. Which public report will expose the result?
+5. Which focused assertion should fail first?
+6. What wider responsibility must remain outside?
 
 ## Good stopping point
 
-Stop when you can explain:
+Stop when you can:
 
-- which file owns class-definition-time behavior
-- which file owns attribute ownership
-- which file owns wrapper behavior
-- which public route reveals each of those boundaries first
+- trace a report to its owning source
+- separate class, attribute, callable, concrete, observation, and governance boundaries
+- name construction and invocation timing
+- reject one plausible but wrongly placed extension
+- return to the matching course module when a mechanism itself is unclear
