@@ -52,6 +52,10 @@ capstone-streaming-rag-proof: ## Run the tracked Module 03 streaming RAG laws
 capstone-source-scheduling-proof: ## Run the tracked Module 03 multi-source scheduling laws
 	@$(RUN_CAPSTONE) source-scheduling-proof
 
+.PHONY: capstone-retrieval-proof
+capstone-retrieval-proof: ## Run the live index-to-retrieval learning laws
+	@$(RUN_CAPSTONE) retrieval-proof
+
 .PHONY: capstone-module-state-proof
 capstone-module-state-proof: ## Run cumulative learning proofs for MODULE=01 through MODULE=09
 	@$(RUN_CAPSTONE) module-state-proof MODULE="$(MODULE)"

@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test test-report foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof module-state-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
+.PHONY: install test test-report foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof retrieval-proof module-state-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -39,6 +39,7 @@ DATA_SHELL_PROOF := $(DATA_API_STATE)/tests/learning/test_module_02_filesystem_b
 STREAMING_STATE := module-reference-states/module-03
 STREAMING_RAG_PROOF := $(STREAMING_STATE)/tests/learning/test_module_03_streaming_dataflow.py
 SOURCE_SCHEDULING_PROOF := $(STREAMING_RAG_PROOF)
+RETRIEVAL_PROOF := tests/learning/test_module_10_retrieval.py
 MODULE ?=
 MODULE_STATE = module-reference-states/module-$(MODULE)
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
@@ -105,6 +106,9 @@ streaming-rag-proof: install ## Run the tracked complete streaming RAG laws
 source-scheduling-proof: install ## Run the tracked multi-source RAG scheduling laws
 	PYTHONPATH="$(abspath $(STREAMING_STATE)/src)" $(PYTEST) -q "$(SOURCE_SCHEDULING_PROOF)" \
 		-k "fan_in or source_schedule or later_sequential_source or source_boundaries or index_and_audit"
+
+retrieval-proof: install ## Run the live index-to-retrieval learning laws
+	$(PYTEST) -q "$(RETRIEVAL_PROOF)"
 
 module-state-proof: install ## Run all cumulative learning proofs for MODULE=01 through MODULE=09
 	@case "$(MODULE)" in \
