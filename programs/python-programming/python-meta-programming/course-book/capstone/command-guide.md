@@ -28,14 +28,10 @@ flowchart LR
 Use this guide after the module’s focused lab and tests pass. The command is chosen by
 the claim, not by a desire for the largest output.
 
-Start by rendering the module contract:
-
-```bash
-make transfer-route MODULE=4
-```
-
-The packet names the expected application owner, public command, proof, non-claim, and
-all three Make entrypoints.
+Start by writing down the completed module claim, the expected application owner, the
+first observational command, and one fact that command cannot prove. The
+[Capstone Map](capstone-map.md) supplies the mapping; the learner supplies the
+explanation.
 
 ## Observational transfer commands
 
@@ -59,7 +55,7 @@ plugin instance or invoke an action.
 | `capstone-governance` | `governance` | which powers are approved, constrained, or rejected? |
 
 `plugin`, `field`, `action`, `registry`, and `signatures` are useful supporting views.
-The ten formal module transfers use the narrower set published by `transfer-route`.
+The [Capstone Map](capstone-map.md) names the narrower first command for each module.
 
 ## Three equivalent entry levels
 
@@ -84,14 +80,8 @@ make field-ownership
 The command name changes only because each Makefile owns a different public boundary.
 The JSON claim must not change.
 
-Run:
-
-```bash
-make transfer-route-test
-```
-
-This verifies every repository, course, and capstone Make target referenced by the ten
-transfer contracts. A documentation command that does not resolve is a product defect.
+The three forms are public course interfaces and must stay equivalent. A documented
+command that does not resolve is a product defect.
 
 ## Command claim boundaries
 

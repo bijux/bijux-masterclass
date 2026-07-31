@@ -29,15 +29,9 @@ This map connects each completed module to one observational application questio
 flow is strict: focused course proof comes first; the capstone report, owning source,
 focused application test, and non-claim follow.
 
-Generate the executable version:
-
-```bash
-make transfer-route MODULE=1
-make transfer-route-test
-```
-
-Change `MODULE` from 1 through 10. The target validator checks repository, course, and
-local capstone entrypoints so this page cannot rely on invented commands.
+The module sections below are the transfer route. They connect each lesson directly to a
+real capstone command and focused application test; there is no transfer generator to
+learn.
 
 ## Modules 01–03: transfer observation and evidence
 
@@ -173,8 +167,8 @@ mechanism.
 | course | `make capstone-field-system` | normal learning session |
 | capstone | `make field-system` | local source review |
 
-`make transfer-route-test` proves that all three forms exist for all ten module
-contracts.
+All three forms must resolve to the same JSON claim. Use the course form during normal
+study and the local form only when reviewing the application source.
 
 ## Transfer review record
 
@@ -182,7 +176,7 @@ For one module, retain:
 
 1. completed course claim
 2. focused course test
-3. rendered transfer contract
+3. mapped observational capstone command
 4. capstone JSON output
 5. owning source file
 6. matching focused capstone assertion

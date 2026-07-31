@@ -36,20 +36,16 @@ For every transfer, record:
 
 1. course claim
 2. focused course test
-3. transfer contract
+3. mapped capstone command
 4. capstone report
 5. owning source
 6. focused capstone assertion
 7. non-claim
 8. next escalation condition
 
-Generate items 1, 3, 4, 5, and 7 with:
-
-```bash
-make transfer-route MODULE=7
-```
-
-The learner must still locate and explain the focused assertions.
+Use the [Capstone Map](capstone-map.md) to choose items 1, 3, and 4. Locate the owner and
+focused assertions in the application, then write the non-claim yourself. A generated
+packet cannot supply that reasoning.
 
 ## Module proof map
 

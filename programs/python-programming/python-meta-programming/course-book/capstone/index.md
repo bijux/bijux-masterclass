@@ -57,16 +57,9 @@ Before choosing a capstone command, you must be able to state:
 
 If any item is missing, return to the module rather than browsing the application.
 
-Render the transfer contract from the course directory:
-
-```bash
-make transfer-route MODULE=7
-make transfer-route-test
-```
-
-The JSON identifies the root, course, and local capstone commands; the owning source
-surface; the transfer question; the proof; and the non-claim. The tests verify that all
-30 published Make entrypoints exist.
+Use the matching row in the module transfer table below. It identifies the course claim,
+observational capstone command, and application question without adding a separate tool
+between the learner and the subject.
 
 ## Module transfer route
 
@@ -145,15 +138,15 @@ Stop and return to the course if:
 - the capstone source becomes the first place you encounter a mechanism
 - passing the full suite feels like the only available proof
 
-Use `make study-route LAST_TRUSTED_MODULE=<module>` to rebuild the course boundary, then
-render the matching `transfer-route`.
+Use the module checkpoints to find the last claim you can still explain. Rerun that
+module’s focused lab and test, then use the matching row in the table above.
 
 ## Transfer exit standard
 
 Leave this page when you can:
 
 - name one completed module claim
-- render its transfer contract
+- choose its mapped observational capstone command
 - run the same route from repository, course, and capstone levels
 - identify the application owner before reading all source
 - state what the report proves and does not prove

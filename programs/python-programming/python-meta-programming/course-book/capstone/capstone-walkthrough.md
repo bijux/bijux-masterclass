@@ -35,17 +35,18 @@ command is shown explicitly.
 
 ## Stop 0: establish the course claim
 
-Choose a module and render its transfer:
+Choose a module and re-prove its course claim. For the Module 04 example:
 
 ```bash
-make transfer-route MODULE=4
+make wrapper-lab
+make wrapper-lab-test
 ```
 
 Record:
 
 - course claim
 - expected capstone owner
-- observational command
+- mapped observational capstone command
 - proof
 - non-claim
 
