@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test test-report foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof async-rag-proof retrieval-proof module-state-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
+.PHONY: install test test-report foundation-proof foundation-types shell-proof data-api-proof data-shell-proof streaming-rag-proof source-scheduling-proof async-rag-proof embedding-resilience-proof retrieval-proof module-state-proof build lint clean clean-all venv rebuild-venv demo inspect review-check verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -112,6 +112,10 @@ source-scheduling-proof: install ## Run the tracked multi-source RAG scheduling 
 async-rag-proof: install ## Run the tracked Module 08 async indexing laws
 	PYTHONPATH="$(abspath $(ASYNC_RAG_STATE)/src)" $(PYTEST) -q "$(ASYNC_RAG_PROOF)" \
 		-k "async_rag_chunks"
+
+embedding-resilience-proof: install ## Run the tracked Module 08 embedding resilience laws
+	PYTHONPATH="$(abspath $(ASYNC_RAG_STATE)/src)" $(PYTEST) -q "$(ASYNC_RAG_PROOF)" \
+		-k "retries_only or retry_exhaustion or logical_embedding_timeout"
 
 retrieval-proof: install ## Run the live index-to-retrieval learning laws
 	$(PYTEST) -q "$(RETRIEVAL_PROOF)"

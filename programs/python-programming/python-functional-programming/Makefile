@@ -56,6 +56,10 @@ capstone-source-scheduling-proof: ## Run the tracked Module 03 multi-source sche
 capstone-async-rag-proof: ## Run the tracked Module 08 async indexing laws
 	@$(RUN_CAPSTONE) async-rag-proof
 
+.PHONY: capstone-embedding-resilience-proof
+capstone-embedding-resilience-proof: ## Run the tracked Module 08 embedding resilience laws
+	@$(RUN_CAPSTONE) embedding-resilience-proof
+
 .PHONY: capstone-retrieval-proof
 capstone-retrieval-proof: ## Run the live index-to-retrieval learning laws
 	@$(RUN_CAPSTONE) retrieval-proof
