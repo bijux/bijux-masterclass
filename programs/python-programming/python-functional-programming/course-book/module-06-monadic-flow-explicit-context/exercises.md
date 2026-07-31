@@ -1,349 +1,237 @@
-# Module 06 Exercises
+# Module 06 Exercises: Review One Explicit RAG Flow
 
-These exercises change or inspect the Module 06 FuncPipe RAG reference state.
-Work in the declared core order because each prompt assumes the preceding flow
-rules are already understood.
+These six exercises use the Module 06 FuncPipe reference state. They form one
+review sequence: classify dependencies, justify regrouping, make context
+explicit, preserve outcome meanings, add inspectable policy, and prove a
+refactor.
 
-Before opening an answer:
+Before opening the answers, record:
 
-1. write the expected value or trace;
-2. name the failure or absence branch;
-3. run the named learning test;
-4. state which Module 05 behavior must remain true; and
-5. record what the evidence cannot establish.
+1. the expected complete value;
+2. the operation that must not run on the stopping route;
+3. the Module 05 behavior that must remain true; and
+4. one claim the focused evidence cannot support.
 
-Each exercise supplies a focused acceptance command. Use the broad capstone
-suite only after the complete module slice is ready.
+Work from:
 
-## and_then and bind: preserve the first failure
+```text
+capstone/module-reference-states/module-06/
+```
 
-**Starting context:** run
-`test_result_chain_short_circuits_before_rag_cleaning` and inspect
-`Ok.and_then` and `Err.and_then` in `result/types.py`.
+Use the focused commands below. Do not begin with the broad capstone suite.
 
-**Objective:** add a title prerequisite before the abstract prerequisite and
-prove that a missing title prevents both the abstract check and cleaning.
+## 1. Classify and compose the document flow
 
-**Constraints:**
-
-- return an `ErrInfo` value rather than raising;
-- record entry into each prerequisite and the cleaning stage;
-- keep the checks in declared order;
-- do not inspect `.value` outside the successful branch.
-
-**Expected evidence:** a document with no title records only the title check and
-returns `TITLE_REQUIRED`; a valid document still normalizes through
-`clean_doc`.
-
-**Acceptance check:**
+**Starting context:** inspect `Ok.map`, `Ok.and_then`, `Err.map`, and
+`Err.and_then` in `src/funcpipe_rag/result/types.py`. Run:
 
 ```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+PYTHONPATH=src pytest -q \
+  tests/learning/test_module_06_explicit_context.py \
   -k result_chain_short_circuits_before_rag_cleaning
 ```
 
-Earlier contract preserved: Module 05 typed failure provenance remains visible,
-and valid documents retain the same normalized value.
-
-## Lifting plain functions: keep independent inputs independent
-
-**Starting context:** run
-`test_liftA2_combines_independent_rag_config_fields` and inspect `liftA2` in
-`result/types.py`.
-
-**Objective:** add independently validated `sample_size` and build a frozen
-configuration value without making its validation depend on chunk size.
+**Objective:** add a title prerequisite before the abstract prerequisite, then
+project the successful `CleanDoc` to its normalized abstract.
 
 **Constraints:**
 
-- keep each field parser independent;
-- preserve left-to-right fail-fast order for `Result`;
-- do not catch constructor exceptions inside the pure combiner;
-- explain when accumulating `Validation` would be the better choice.
+- each prerequisite returns `Result[RawDoc, ErrInfo]`;
+- `clean_doc` remains an ordinary pure function;
+- record entry into both prerequisites and cleaning;
+- a missing title stops before the abstract check;
+- a missing abstract stops before cleaning; and
+- use `map` only for the final plain projection.
 
-**Expected evidence:** all valid inputs produce the expected configuration;
-when the leftmost and rightmost inputs fail, the declared leftmost error is
-preserved.
+**Expected evidence:** three input rows—missing title, missing abstract, and
+valid—produce exact Results and exact call traces.
 
-**Acceptance check:**
+**Earlier contract preserved:** valid Module 05 values normalize identically,
+and typed error provenance remains visible.
 
-```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
-  -k liftA2_combines_independent_rag_config_fields
-```
+**Review question:** why would accumulating Validation be a better fit if the
+product required both missing-field errors in one response?
 
-Earlier contract preserved: Module 05 still distinguishes typed failure values
-from successful immutable configuration values.
+## 2. Prove one legal regrouping
 
-## Law-guided design: justify a regrouping
-
-**Starting context:** run
-`test_result_map_composition_preserves_rag_cleaning` and read the functor
-composition law.
-
-**Objective:** add a pure projection from normalized abstract text to word count
-and prove that separate and composed map groupings agree.
-
-**Constraints:**
-
-- keep every mapped function pure;
-- generate mixed-case and whitespace-heavy abstracts;
-- compare complete `Result` values;
-- state which product claim the law does not prove.
-
-**Expected evidence:** the generated examples produce the same typed word-count
-result for both legal groupings.
-
-**Acceptance check:**
+**Starting context:** run:
 
 ```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
+PYTHONPATH=src pytest -q \
+  tests/learning/test_module_06_explicit_context.py \
   -k result_map_composition_preserves_rag_cleaning
 ```
 
-Earlier contract preserved: Module 01 substitution and Module 05 typed values
-remain valid inside the Module 06 composition machinery.
+Then inspect `tests/test_monad_laws.py`.
 
-## Reader pattern: vary overlap at the call site
+**Objective:** add a pure `word_count: str -> int` projection and compare:
 
-**Starting context:** run
-`test_reader_runs_same_rag_chunk_program_with_explicit_env` and inspect `asks`
-in `fp/effects/reader.py`.
+```text
+source.map(clean_doc).map(abstract).map(word_count)
+```
 
-**Objective:** run the same chunking Reader with overlap `0` and overlap `2`,
-then explain the changed chunk boundaries.
+with one `map` containing the same function order.
+
+**Constraints:**
+
+- generate mixed-case and whitespace-heavy abstracts;
+- compare complete Result values;
+- do not reverse or duplicate any function;
+- keep observation out of the mapped functions; and
+- name the exact law supporting the rewrite.
+
+**Expected evidence:** both groupings agree across the generated input domain.
+
+**Earlier contract preserved:** Module 01 substitution and Module 05 Result
+values retain their meanings.
+
+**Review question:** what RAG correctness or performance claims remain
+unproven?
+
+## 3. Make read-only policy and changing progress explicit
+
+**Starting context:** run:
+
+```bash
+PYTHONPATH=src pytest -q \
+  tests/learning/test_module_06_explicit_context.py \
+  -k "reader_runs_same_rag_chunk_program or state_threads_rag_chunk_progress"
+```
+
+**Objective:** use one Reader program to chunk the same document with
+`RagEnv(chunk_size=4, overlap=0)` and
+`RagEnv(chunk_size=4, overlap=2)`. Then account for every emitted chunk with
+State.
 
 **Constraints:**
 
 - construct the Reader once;
-- pass both `RagEnv` values only to `.run`;
-- preserve document identity and text;
-- assert exact chunk text order.
+- supply each environment only at `.run`;
+- give State a caller-created frozen `Progress`;
+- return a new progress value for each chunk;
+- assert exact chunk text order and final character total; and
+- keep the initial progress unchanged.
 
-**Expected evidence:** the no-overlap and overlap runs produce their exact
-declared sequences from one unchanged program.
+**Expected evidence:** the two policies yield their predicted overlapping
+sequences, and State reports progress for each sequence from the same initial
+value.
 
-**Acceptance check:**
+**Earlier contract preserved:** Module 03 demand order and Module 05 immutable
+values remain observable.
+
+**Review question:** identify one simpler implementation using ordinary
+arguments and a fold. Which version would you keep here, and why?
+
+## 4. Preserve parse failure, invalid value, absence, and retrieval failure
+
+**Starting context:** run:
 
 ```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
-  -k reader_runs_same_rag_chunk_program_with_explicit_env
+PYTHONPATH=src pytest -q \
+  tests/learning/test_module_06_explicit_context.py \
+  -k "exception_bridge or layer_order"
 ```
 
-Earlier contract preserved: Module 03 chunk order and bounded traversal remain
-determined by immutable configuration.
-
-## Explicit state threading: add skipped-chunk progress
-
-**Starting context:** run
-`test_state_threads_rag_chunk_progress_without_global_mutation` and inspect
-`State.and_then`.
-
-**Objective:** extend the frozen progress value with `skipped` and add a state
-operation that records an empty chunk without increasing processed characters.
+**Objective:** extend chunk-size parsing with a pure positivity check, then add
+an empty-query case to the retrieval model.
 
 **Constraints:**
 
-- accept the initial state from the caller;
-- return a new frozen progress value;
-- preserve operation order;
-- leave the original initial value unchanged.
-
-**Expected evidence:** the final state distinguishes processed and skipped
-chunks while the result value and starting state remain explicit.
-
-**Acceptance check:**
-
-```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
-  -k state_threads_rag_chunk_progress_without_global_mutation
-```
-
-Earlier contract preserved: Module 01 immutability and Module 03 chunk ordering
-remain observable after local progress is introduced.
-
-## Error-typed flows: narrow the expected exception set
-
-**Starting context:** run
-`test_exception_bridge_types_expected_config_failure_only` and inspect
-`try_result`.
-
-**Objective:** accept decimal chunk sizes but classify a negative value as a
-typed domain error after parsing.
-
-**Constraints:**
-
-- bridge only `ValueError` from `int`;
-- perform the positivity check as a pure `Result` step;
+- catch only `ValueError` around `int(raw)`;
+- return `CONFIG_PARSE` for non-numeric text;
+- return `CHUNK_SIZE` for a parsed non-positive integer;
 - let `RuntimeError` propagate;
-- retain distinct parse and range error codes.
+- classify an empty query before choosing its container;
+- preserve valid no-match as `Ok(NoneVal())`; and
+- round-trip found, missing, failed, and empty-query cases through both
+  transpose helpers.
 
-**Expected evidence:** numeric positive input succeeds, non-numeric input
-returns `CONFIG_PARSE`, negative input returns `CHUNK_SIZE`, and unexpected
-runtime failure is raised.
+**Expected evidence:** every case retains a distinct complete value and
+unexpected failure remains an exception.
 
-**Acceptance check:**
+**Earlier contract preserved:** Module 05 `Option` absence and `Result` failure
+remain different public meanings.
+
+**Review question:** when would a dedicated retrieval sum type communicate the
+four cases better than nested generic containers?
+
+## 5. Add trace and policy without replacing the payload
+
+**Starting context:** run:
 
 ```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
-  -k exception_bridge_types_expected_config_failure_only
+PYTHONPATH=src pytest -q \
+  tests/learning/test_module_06_explicit_context.py \
+  -k "writer_preserves_rag_chunk or validation_toggle"
 ```
 
-Earlier contract preserved: Module 05 typed failures retain provenance while
-unexpected defects remain exceptions.
+Also run `PYTHONPATH=src pytest -q tests/test_configurable.py`.
 
-## Layered containers: choose the dominant outcome
-
-**Starting context:** run
-`test_layer_order_distinguishes_missing_document_from_retrieval_failure` and
-inspect both transpose helpers.
-
-**Objective:** add a fourth case for an empty query and decide whether it is
-absence or a typed input failure before transposing.
+**Objective:** create strict and permissive normalization callables. Wrap the
+selected callable with a Writer trace containing document ID, selected policy,
+and final status.
 
 **Constraints:**
 
-- state the public meaning before choosing the container;
-- keep retrieval failure distinct from no match;
-- round-trip every declared case;
-- do not use `None`.
+- keep one normalization function;
+- choose strictness during callable construction;
+- invalid strict input must skip normalization;
+- permissive input must normalize exactly once;
+- Writer must preserve the complete Result payload;
+- entries must appear in declared order; and
+- do not print or call a logging backend.
 
-**Expected evidence:** each case retains its meaning after two transposes, and
-the chosen empty-query contract is explicit in the type and assertion.
+**Expected evidence:** exact call traces, exact Result payloads, and exact
+Writer entries for strict failure and permissive success.
 
-**Acceptance check:**
+**Earlier contract preserved:** the Module 01 normalizer and Module 05 typed
+failure values do not change.
+
+**Review question:** should rejected input produce trace data in your wrapper
+order? State the policy before implementing it.
+
+## 6. Defend the complete refactor
+
+**Starting context:** run:
 
 ```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
-  -k layer_order_distinguishes_missing_document_from_retrieval_failure
+PYTHONPATH=src pytest -q \
+  tests/learning/test_module_06_explicit_context.py \
+  -k "refactored_config_boundary or explicit_flow_refactor"
 ```
 
-Earlier contract preserved: Module 05 `Option` absence and `Result` failure
-remain separate observable states.
-
-## Writer pattern: preserve payload while extending the trace
-
-**Starting context:** run
-`test_writer_preserves_rag_chunk_while_accumulating_trace` and inspect
-`Writer.and_then`.
-
-**Objective:** append the chunk’s document ID, span, and embedding readiness as
-three ordered entries without changing the chunk.
+**Objective:** expand parser characterization to whitespace and signed
+integers, then extend the RAG equivalence property to valid overlap values.
+Finish a context ledger for Result, Reader, State, Writer, and the policy
+wrapper used in your solution.
 
 **Constraints:**
 
-- use the Module 06 string-entry Writer API;
-- retain the exact original chunk value;
-- append entries in observation order;
-- do not call `print` or a logger.
+- change no parsing policy during the parser rewrite;
+- generate `chunk_size` before constrained overlap;
+- compare complete embedded chunk lists;
+- preserve normalization, offsets, order, and embeddings;
+- prove an unrelated exception still raises; and
+- recommend removing any context that does not improve ownership or review.
 
-**Expected evidence:** `run_writer` returns the original chunk and an exact
-three-entry tuple.
+**Expected evidence:** old and new parsers agree on the expanded table; direct
+and explicit flows agree over generated valid environments; the ledger states
+why each remaining context earns its cost.
 
-**Acceptance check:**
+**Earlier contract preserved:** all observable FuncPipe behavior from Modules
+01–05 remains equal over the exercised domain.
 
-```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
-  -k writer_preserves_rag_chunk_while_accumulating_trace
-```
+**Review question:** why does equivalence support safe change without proving
+that the new design is better?
 
-Earlier contract preserved: Module 05 immutable RAG values are unchanged while
-Module 06 adds inspectable trace data.
+## Completion record
 
-## Refactoring try/except: preserve the boundary contract
+Before Module 07, write a short handoff containing:
 
-**Starting context:** run
-`test_refactored_config_boundary_matches_characterized_behavior` and compare
-the two local parsers.
-
-**Objective:** characterize leading whitespace and signed integer input before
-removing the legacy parser.
-
-**Constraints:**
-
-- compare complete typed results;
-- retain exact error code and message behavior;
-- keep the expected exception class narrow;
-- run the unexpected-exception test from the preceding core.
-
-**Expected evidence:** legacy and refactored parsers agree on the expanded input
-table, and an unrelated runtime defect still raises.
-
-**Acceptance check:**
-
-```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
-  -k "refactored_config_boundary or exception_bridge"
-```
-
-Earlier contract preserved: public Module 05 success and failure values remain
-stable while Module 06 changes internal control flow.
-
-## Configurable pipelines: assemble policy once
-
-**Starting context:** run
-`test_validation_toggle_changes_policy_without_duplicating_rag_pipeline` and
-inspect `toggle_validation`.
-
-**Objective:** add a minimum-title validation toggle while retaining one
-normalization function.
-
-**Constraints:**
-
-- select policy when constructing the callable;
-- do not add a flag argument to `normalize`;
-- prove disabled mode is the original pipeline;
-- record whether normalization executes.
-
-**Expected evidence:** enabled invalid input short-circuits before normalization;
-disabled input follows the unchanged base pipeline exactly once.
-
-**Acceptance check:**
-
-```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
-  -k validation_toggle_changes_policy_without_duplicating_rag_pipeline
-```
-
-Earlier contract preserved: the pure RAG normalizer retains its Module 01
-input-output behavior while Module 06 changes assembly policy.
-
-## Refactoring guide: prove the complete pure output
-
-**Starting context:** run
-`test_explicit_flow_refactor_preserves_rag_chunk_output` and compare the direct
-and `Result` routes.
-
-**Objective:** add overlap to the generated environments and preserve the full
-embedded chunk sequence.
-
-**Constraints:**
-
-- generate only valid `0 <= overlap < chunk_size` pairs;
-- compare complete chunks, including offsets and embeddings;
-- preserve input and output order;
-- state why `Result` is or is not earned in this particular route.
-
-**Expected evidence:** every generated valid environment produces identical
-direct and explicit-flow outputs.
-
-**Acceptance check:**
-
-```bash
-cd capstone/module-reference-states/module-06
-PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
-  -k explicit_flow_refactor_preserves_rag_chunk_output
-```
-
-Earlier contract preserved: cleaning, chunk boundaries, order, and deterministic
-embedding from Modules 01–05 remain unchanged.
+- one dependent operation and its stopping case;
+- one legal law-guided regrouping;
+- one context you kept and one you rejected;
+- the distinction between parse failure, invalid domain value, absence, and
+  retrieval failure;
+- one complete RAG preservation claim; and
+- the focused command supporting each statement.

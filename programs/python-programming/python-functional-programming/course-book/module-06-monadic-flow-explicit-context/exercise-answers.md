@@ -1,229 +1,302 @@
 # Module 06 Exercise Answers
 
-Use these answers to review a completed attempt, not as starting code. Each
-answer explains the decision, identifies common wrong turns, and limits the
-claim supported by the focused evidence.
+Use these answers to review decisions, not to copy one required implementation.
+An alternative is defensible when it preserves the stated FuncPipe behavior,
+makes context ownership clear, and supplies equivalent evidence.
 
-When an alternative implementation preserves the stated observable and the
-earlier RAG contract, compare its trade-offs instead of treating syntax as the
-grading criterion.
+## 1. Classify and compose the document flow
 
-## and_then and bind: preserve the first failure
-
-Make each prerequisite append its own stable name before checking the document.
-Compose them in the required order:
+The dependency order is:
 
 ```python
 result = (
     source
     .and_then(require_title)
     .and_then(require_abstract)
-    .and_then(clean_checked)
+    .map(clean_doc)
+    .map(lambda doc: doc.abstract)
 )
 ```
 
-For a missing title, the expected trace is `["require_title"]`. Neither the
-abstract check nor cleaning should run because `Err.and_then` preserves the
-first error without invoking its function.
+The prerequisites use `and_then` because each returns Result. `clean_doc` and
+the abstract projection use `map` because they return plain values.
+
+A useful call table is:
+
+| Input | Calls | Result |
+| --- | --- | --- |
+| missing title | `["title"]` | `Err(TITLE_REQUIRED)` |
+| missing abstract | `["title", "abstract"]` | `Err(EMPTY_ABSTRACT)` |
+| valid | `["title", "abstract", "clean"]` | `Ok(normalized_abstract)` |
 
 Common wrong turns:
 
-- using `map(require_title)` creates a nested `Result`;
-- checking all fields eagerly loses fail-fast order;
-- asserting only the final error cannot prove later work was skipped;
-- raising `ValueError` discards the Module 05 typed failure contract.
+- `map(require_title)` creates a nested Result;
+- running both prerequisites eagerly loses the declared fail-fast order;
+- wrapping `clean_doc` in `Ok` makes an infallible step appear fallible;
+- checking only the final error cannot prove later work was skipped.
 
-The proof establishes ordered short-circuiting for this chain. It does not prove
-that fail-fast validation is always preferable; independent field validation
-may still require accumulating `Validation`.
+The evidence proves ordered short-circuiting and correct operation selection
+for these cases. It does not prove fail-fast behavior is the desired field
+validation experience. If both missing fields must be reported,
+`Validation` is the better context because the checks are independent.
 
-## Lifting plain functions: keep independent inputs independent
+Architecture connection: Result owns propagation; the prerequisite functions
+own domain rules; `clean_doc` remains unchanged.
 
-Validate `sample_size` separately, then lift a curried three-argument
-constructor or combine two fields first and map the third. Keep the observable
-failure order explicit in the test.
+## 2. Prove one legal regrouping
 
-Common wrong turns:
-
-- using `and_then` implies a dependency between fields that do not depend on
-  one another;
-- expecting `Result.liftA2` to accumulate both errors contradicts its fail-fast
-  contract;
-- placing validation inside the constructor can leak `ValueError`;
-- comparing only successful output ignores error precedence.
-
-The focused proof establishes independent combination and `Result` error order.
-It does not establish cross-field validity for arbitrary values. If learners
-must see every invalid field at once, use the Module 05 `Validation`
-applicative and test the accumulated error tuple.
-
-## Law-guided design: justify a regrouping
-
-Define `word_count` as an ordinary pure function. Compare:
+A plain helper keeps the composition readable:
 
 ```python
-source.map(clean_doc).map(lambda doc: doc.abstract).map(word_count)
+def word_count(text: str) -> int:
+    return len(text.split())
 ```
 
-with one `map` containing the same composed function order. The equality should
-hold for the generated source documents.
+Compare:
+
+```python
+separate = (
+    source
+    .map(clean_doc)
+    .map(lambda doc: doc.abstract)
+    .map(word_count)
+)
+
+composed = source.map(
+    lambda raw: word_count(
+        clean_doc(raw).abstract
+    )
+)
+```
+
+Functor composition supports the rewrite because function order and the
+surrounding Result are unchanged.
 
 Common wrong turns:
 
-- reversing functions tests a different program, not a regrouping;
-- adding logging inside a mapped function invalidates the pure substitution
-  argument;
-- testing only one tidy string misses the useful generated input space;
-- claiming the property proves the normalization policy confuses algebraic and
-  product correctness.
+- composing as `clean_doc(word_count(...))` reverses types and behavior;
+- adding a call trace inside `word_count` changes the observations relevant to
+  substitution;
+- comparing only successful inner integers ignores the Err branch;
+- using tidy examples only weakens the input domain.
 
-The property proves the chosen map composition law for the modeled documents.
-It does not prove every possible `Result` implementation or every RAG business
-rule.
+The property proves equality for the generated strings and these functions. It
+does not prove that whitespace normalization is the right product policy,
+cover all Unicode text, or establish any speed advantage.
 
-## Reader pattern: vary overlap at the call site
+Architecture connection: the container law supports structural refactoring;
+the RAG learning property supports the concrete cleaning projection.
 
-Keep the `asks` expression unchanged and run it with two valid `RagEnv`
-instances. For chunk size `4`, overlap `2` advances by two characters instead
-of four, so the expected text sequence must include the overlapping windows.
+## 3. Make read-only policy and changing progress explicit
 
-Common wrong turns:
+Construct one Reader:
 
-- reconstructing the Reader for each environment hides whether the program
-  itself changed;
-- mutating a shared configuration object contradicts frozen value semantics;
-- asserting only chunk counts can miss wrong boundaries or ordering;
-- wrapping a single ordinary argument in Reader without shared context adds
-  ceremony without visibility.
+```python
+program = asks(
+    lambda env: list(
+        iter_chunk_doc(doc, env)
+    )
+)
+```
 
-The proof establishes explicit environment injection and deterministic chunk
-output for these runs. It does not prove Reader is necessary for every
-configuration-dependent function.
+For abstract `"abcdefghij"` and size `4`:
 
-## Explicit state threading: add skipped-chunk progress
+```text
+overlap 0 -> "abcd", "efgh", "ij"
+overlap 2 -> "abcd", "cdef", "efgh", "ghij", "ij"
+```
 
-Add `skipped` to the frozen dataclass and make the accounting operation choose
-one new `Progress` value from the current state. Chain it in the same location
-where the chunk is observed.
-
-Common wrong turns:
-
-- mutating fields in place hides the state transition;
-- reading a module-global counter removes the caller-supplied initial state;
-- counting skipped text as processed changes the declared metric;
-- asserting only the final integer loses the result value and other state
-  fields.
-
-The proof establishes deterministic local state transitions for the tested
-sequence. It does not establish concurrency safety or justify using State when
-a direct fold would be simpler.
-
-## Error-typed flows: narrow the expected exception set
-
-Keep `try_result` around `int(raw)` only. Then compose a pure
-`require_positive` function with `and_then` so parse and range failures have
-separate owners.
+Account for the returned sequence by chaining an `account(chunk)` State
+operation or by folding it. Each State run must receive the caller’s original
+`Progress()` independently.
 
 Common wrong turns:
 
-- catching `Exception` converts bugs into misleading input failures;
-- raising for a routine negative configuration value bypasses the typed
-  contract;
-- using one generic error code destroys provenance;
-- placing `try_result` throughout the domain confuses boundary conversion with
-  business validation.
+- rebuilding the Reader for each environment does not prove one unchanged
+  description accepts both policies;
+- counting distinct characters instead of emitted characters changes the
+  metric under overlap;
+- reusing the final state from the first run as the second initial state makes
+  the comparisons dependent;
+- mutating a Progress object breaks the immutable-state claim.
 
-The proof establishes the declared exception classification for this adapter
-and domain check. It does not prove that every `ValueError` in the application
-is expected or recoverable.
+The proof establishes explicit environment supply, deterministic chunk order,
+and local progress transitions for the selected policies. It does not prove
+Reader or State is necessary.
 
-## Layered containers: choose the dominant outcome
+A simpler solution is:
 
-An empty query is usually a caller input failure, so a defensible choice is
-`Err(ErrInfo(code="EMPTY_QUERY", ...))`. That keeps it distinct from a valid
-query with no match, represented by `Ok(NoneVal())`.
+```python
+chunks = list(iter_chunk_doc(doc, env))
+progress = reduce(account, chunks, Progress())
+```
 
-Common wrong turns:
+For one local traversal, that version is likely clearer. Reader and State earn
+their cost only if the same context-bearing operations must compose elsewhere.
 
-- converting every non-result into absence hides failed retrieval;
-- using `None` removes the explicit Option contract;
-- transposing without first stating dominance makes the type accidental;
-- checking only one direction misses loss in the reverse mapping.
+Architecture connection: chunk policy remains in immutable `RagEnv`; progress
+is a local observation, not global application state.
 
-The proof establishes the shipped transpose contract and the chosen four-case
-classification. It does not prove that every product should classify empty
-queries the same way.
+## 4. Preserve parse failure, invalid value, absence, and retrieval failure
 
-## Writer pattern: preserve payload while extending the trace
+Keep parsing and validation separate:
 
-Chain `tell(...).map(lambda _: current)` for each observation. This keeps the
-payload in the value channel and the strings in the append-only log channel.
+```python
+parsed = try_result(
+    lambda: int(raw),
+    to_parse_error,
+    exc_type=ValueError,
+)
 
-Common wrong turns:
+valid = parsed.and_then(require_positive)
+```
 
-- returning the message from `map` replaces the RAG value;
-- emitting through `print` makes the trace unavailable for equality checks;
-- building one concatenated string loses entry boundaries;
-- using Module 07 structured `LogEntry` in the Module 06 snapshot introduces a
-  concept before its reference state.
+A defensible empty-query contract is:
 
-The proof establishes payload preservation and trace order for this Writer
-program. It does not prove delivery to an operational logging system or that
-string entries are sufficient beyond Module 06.
+```python
+Err(
+    ErrInfo(
+        code="EMPTY_QUERY",
+        msg="query must not be empty",
+    )
+)
+```
 
-## Refactoring try/except: preserve the boundary contract
+This differs from a valid query with no match:
 
-Add cases such as `" 8"` and `"-1"` to the parameter table without changing
-either implementation first. Python’s `int` accepts both, so both functions
-should return the same `Ok` values unless a separate range rule already belongs
-to the public contract.
+```python
+Ok(NoneVal())
+```
 
-Common wrong turns:
+and failed retrieval:
 
-- changing validation policy during the control-flow refactor makes divergence
-  ambiguous;
-- comparing only success values ignores error provenance;
-- retaining both implementations after equivalence creates duplicate owners;
-- omitting the unexpected-exception proof permits accidental broad catching.
-
-The comparison proves the listed public cases agree. It does not prove
-equivalence for every string; use a constrained property strategy when that
-larger claim is required.
-
-## Configurable pipelines: assemble policy once
-
-Write `require_title` as an endomorphic
-`RawDoc -> Result[RawDoc, ErrInfo]`, then pass it and the unchanged `normalize`
-callable to `toggle_validation`.
+```python
+Err(
+    ErrInfo(
+        code="RETRIEVAL",
+        msg="index unavailable",
+    )
+)
+```
 
 Common wrong turns:
 
-- adding `enabled` to `normalize` infects the core with policy branching;
-- duplicating strict and permissive normalizers creates divergent owners;
-- calling normalization before validation defeats short-circuiting;
-- asserting only the returned error cannot prove skipped work.
+- catching `Exception` converts defects into input errors;
+- calling negative input a parse failure loses domain provenance;
+- mapping retrieval failure to `NoneVal` hides an unavailable index;
+- choosing a nested type before stating the four public meanings makes the
+  container accidental;
+- transposing only one direction cannot prove round-trip preservation.
 
-The proof establishes enabled and disabled behavior for this assembly
-combinator. It does not prove that runtime toggles are preferable to separate
-deployment configuration or that every cross-cutting concern should be
-configurable.
+The tests prove the declared cases remain distinct and the transpose helpers
+preserve them. They do not prove every product should classify empty queries
+as errors.
 
-## Refactoring guide: prove the complete pure output
+A named retrieval sum type may be clearer when these are the only legal cases
+or when nested generic pattern matching obscures the workflow.
 
-Generate `chunk_size` first, then generate overlap from
-`st.integers(min_value=0, max_value=chunk_size - 1)` with a composite strategy
-or `flatmap`. Use the same frozen `RagEnv` for both routes.
+Architecture connection: adapters own exception conversion; pure validation
+owns range rules; the retrieval model owns absence versus failure.
+
+## 5. Add trace and policy without replacing the payload
+
+Build the base callable once, then select validation:
+
+```python
+selected = toggle_validation(
+    strict,
+    require_abstract,
+    normalize,
+)
+```
+
+Wrap that selected callable with one Writer-returning function. A valid policy
+is “trace every attempt,” so the policy entry is created before the selected
+callable runs and the status entry follows its Result:
+
+```text
+document:config
+policy:strict
+status:error
+```
+
+Another defensible policy is “trace only completed normalization.” That order
+would produce no entries for strict rejection. The exercise requires you to
+choose and assert one, not assume wrappers commute.
 
 Common wrong turns:
 
-- generating invalid environments tests constructor rejection instead of
-  refactor equivalence;
-- comparing only chunk counts misses text, offsets, order, or embedding drift;
-- running different normalization inputs on each side invalidates the
-  comparison;
-- claiming the `Result` wrapper is inherently superior ignores abstraction
-  cost when no typed failure exists.
+- duplicating strict and permissive normalizers creates two behavior owners;
+- placing the strict flag inside `normalize` spreads policy into the domain
+  function;
+- evaluating `selected(doc)` once for the payload and again for the status
+  duplicates normalization;
+- returning the trace string as Writer’s payload discards the Result;
+- printing entries destroys the pure returned-data contract.
 
-The property establishes observable equivalence for the generated pure RAG
-route. It does not cover boundary I/O, resource behavior, or the operational
-effects introduced in Module 07.
+The evidence proves call count, selected policy behavior, payload preservation,
+and entry order for the tested cases. It does not prove delivery to an
+operational logging system or that runtime flags are the best deployment
+model.
+
+Architecture connection: the builder owns policy selection, normalization owns
+one transformation, and Writer carries review data without emitting it.
+
+## 6. Defend the complete refactor
+
+Add `" 8"`, `"+8"`, and `"-1"` to both parser implementations before changing
+range policy. Python’s `int` accepts all three, so characterization should
+preserve `Ok(8)`, `Ok(8)`, and `Ok(-1)` respectively.
+
+For the equivalence strategy, generate valid environments dependently:
+
+```python
+@st.composite
+def environments(draw):
+    chunk_size = draw(
+        st.integers(min_value=1, max_value=12)
+    )
+    overlap = draw(
+        st.integers(
+            min_value=0,
+            max_value=chunk_size - 1,
+        )
+    )
+    return RagEnv(
+        chunk_size=chunk_size,
+        overlap=overlap,
+    )
+```
+
+Use the same generated environment and document on both routes. Compare the
+complete embedded chunk sequence.
+
+A defensible ledger may conclude:
+
+| Context | Decision |
+| --- | --- |
+| Result | keep where a typed prerequisite already exists |
+| Reader | reject for one local `RagEnv` argument; ordinary parameter is clearer |
+| State | reject for a final-only aggregate; use a fold |
+| Writer | keep only if several steps compose ordered trace data |
+| policy wrapper | keep because strict/permissive modes share one normalizer and call-count evidence |
+
+Common wrong turns:
+
+- generating invalid overlap tests constructor rejection rather than route
+  equivalence;
+- comparing only chunk counts misses offsets, order, text, and embeddings;
+- changing parser range behavior during the structural rewrite mixes two
+  intents;
+- keeping every context because it exists in the module turns teaching APIs
+  into application requirements;
+- claiming equal outputs prove the new route is clearer.
+
+The property supports preservation over the generated valid environment and
+text domain. The ledger supplies the separate design argument. Neither proves
+boundary I/O or resource behavior, which Module 07 addresses.
+
+Architecture connection: the refactor changes control structure while
+preserving the cumulative FuncPipe application, and it rejects abstractions
+that do not improve ownership.
