@@ -19,6 +19,7 @@ class ReentryPlan:
         packet = asdict(self)
         packet["refresh"] = None if self.refresh is None else self.refresh.evidence()
         packet["continue_with"] = self.continue_with.evidence()
+        packet["order"] = list(self.order)
         return packet
 
 
