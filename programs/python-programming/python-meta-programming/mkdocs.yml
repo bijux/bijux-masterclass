@@ -139,8 +139,8 @@ nav:
   - Import Hooks, AST Transforms, and Tooling Boundaries: module-10-runtime-governance-mastery-review/import-hooks-ast-transforms-and-tooling-boundaries.md
   - Mechanism Selection, Review Gates, and Escalation Boundaries: module-10-runtime-governance-mastery-review/mechanism-selection-review-gates-and-escalation-boundaries.md
   - 'Worked Example: Reviewing a Plugin Runtime for Observability and Control': module-10-runtime-governance-mastery-review/worked-example-reviewing-a-plugin-runtime-for-observability-and-control.md
-  - Exercises: module-10-runtime-governance-mastery-review/exercises.md
-  - Exercise Answers: module-10-runtime-governance-mastery-review/exercise-answers.md
+  - 'Exercises: Runtime Governance Evidence Studio': module-10-runtime-governance-mastery-review/exercises.md
+  - 'Exercise Answers: Runtime Governance Evidence Studio Review': module-10-runtime-governance-mastery-review/exercise-answers.md
   - Module Glossary: module-10-runtime-governance-mastery-review/glossary.md
 - Python Metaprogramming Capstone Guide:
   - Home: capstone/index.md

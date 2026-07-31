@@ -65,9 +65,9 @@ Before starting, you should be able to:
 - read JSON as evidence rather than as application output.
 
 If class creation timing is still uncertain, revisit
-[Module 09](../module-09-class-creation-and-metaclass-architecture/index.md). If descriptor
+[Module 09](../module-09-metaclass-design-class-creation/index.md). If descriptor
 ownership is uncertain, revisit
-[Module 08](../module-08-descriptor-systems-and-framework-design/index.md).
+[Module 08](../module-08-descriptor-systems-validation-framework-design/index.md).
 
 ## Start with executable evidence
 
