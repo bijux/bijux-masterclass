@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from pathlib import Path
+import re
 
 
 @dataclass(frozen=True, slots=True)
@@ -144,3 +146,59 @@ def transfer_for(module: int) -> CapstoneTransfer:
         if transfer.module == module:
             return transfer
     raise ValueError("module must be between 1 and 10")
+
+
+_MAKE_TARGET = re.compile(r"^([A-Za-z0-9_.-]+):")
+
+
+def _make_targets(makefile: Path) -> set[str]:
+    targets: set[str] = set()
+    for line in makefile.read_text(encoding="utf-8").splitlines():
+        match = _MAKE_TARGET.match(line)
+        if match is not None:
+            targets.add(match.group(1))
+    return targets
+
+
+def transfer_target_evidence(course_root: Path | None = None) -> dict[str, object]:
+    """Prove that every published transfer command resolves at all three entry levels."""
+
+    root = (
+        Path(__file__).resolve().parents[2]
+        if course_root is None
+        else course_root.resolve()
+    )
+    repository_root = root.parents[2]
+    target_sets = {
+        "repository": _make_targets(repository_root / "makes" / "program.mk"),
+        "course": _make_targets(root / "Makefile"),
+        "capstone": _make_targets(root / "capstone" / "Makefile"),
+    }
+
+    missing: list[dict[str, object]] = []
+    checked: list[dict[str, object]] = []
+    for transfer in CAPSTONE_TRANSFERS:
+        commands = {
+            "repository": transfer.root_command,
+            "course": transfer.course_command,
+            "capstone": transfer.capstone_command,
+        }
+        for level, command in commands.items():
+            exists = command in target_sets[level]
+            record = {
+                "module": transfer.module,
+                "level": level,
+                "command": command,
+                "exists": exists,
+            }
+            checked.append(record)
+            if not exists:
+                missing.append(record)
+
+    return {
+        "levels": ["repository", "course", "capstone"],
+        "checked_count": len(checked),
+        "checked": checked,
+        "missing": missing,
+        "valid": not missing,
+    }
