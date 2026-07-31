@@ -52,6 +52,10 @@ capstone-streaming-rag-proof: ## Run the tracked Module 03 streaming RAG laws
 capstone-source-scheduling-proof: ## Run the tracked Module 03 multi-source scheduling laws
 	@$(RUN_CAPSTONE) source-scheduling-proof
 
+.PHONY: capstone-async-rag-proof
+capstone-async-rag-proof: ## Run the tracked Module 08 async indexing laws
+	@$(RUN_CAPSTONE) async-rag-proof
+
 .PHONY: capstone-retrieval-proof
 capstone-retrieval-proof: ## Run the live index-to-retrieval learning laws
 	@$(RUN_CAPSTONE) retrieval-proof
