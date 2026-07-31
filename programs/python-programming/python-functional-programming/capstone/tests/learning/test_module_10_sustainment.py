@@ -7,6 +7,9 @@ import json
 from pathlib import Path
 
 import pytest
+from hypothesis import given
+from hypothesis import strategies as st
+
 from funcpipe_rag.boundaries.shells.review_cli import build_summary, main
 from funcpipe_rag.domain.effects.async_ import async_gather, async_pure
 from funcpipe_rag.pipelines.distributed import BackendStatus
@@ -33,8 +36,6 @@ from funcpipe_rag.review.performance import (
     evaluate_budget,
 )
 from funcpipe_rag.review.scaling import REQUIRED_SCALING_PROOFS, assess_scaling
-from hypothesis import given
-from hypothesis import strategies as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
