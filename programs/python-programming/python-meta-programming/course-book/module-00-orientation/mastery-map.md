@@ -17,65 +17,187 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  lower["Prove lower-power limits"] --> create["09<br/>Trace class creation"]
+  create --> decide["10<br/>Approve, constrain, reject"]
+  decide --> transfer["Capstone governance audit"]
+  transfer --> review["Publish proof and non-claims"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the idea
-holds. Read the second diagram as the working rhythm for the page: move from wrappers to
-attributes to class creation and governance, then use the capstone to turn that knowledge
-into a review judgment.
+The first diagram places mastery inside the course and supporting capstone. The second
+shows the required order: prove lower-power limits, trace class creation, make an
+explicit governance decision, then transfer that judgment into the application.
 
-Use this map when you are studying the second half of the course, reviewing a dynamic
-codebase, or deciding whether a higher-power runtime hook is truly justified after the
-middle-course boundaries already feel stable.
+Use this map after Modules 01–08 are stable. Mastery is not the ability to write the
+strongest hook. It is the ability to explain its timing and cost, choose a weaker owner
+when possible, and reject power that does not belong in the application.
 
-## Modules 04 to 05: Wrapper Ownership and Policy Boundaries
+## Mastery entry contract
 
-**Theme:** learn where callable transformation stays honest and where hidden policy starts to sprawl.
+Before Module 09, you should be able to defend these statements with focused evidence:
 
-- transparent decorators and wrapper identity
-- policy-heavy decorator patterns
-- annotation-aware runtime behavior and its limits
+- wrappers own callable transformations, not class-family creation policy
+- properties and descriptors own attribute behavior, not arbitrary orchestration
+- class decorators can transform an existing class but cannot control namespace
+  preparation before the class exists
+- field systems should not silently grow import, transaction, or global registry powers
 
-**Capstone check:** inspect `actions.py`, `make action`, `make signatures`, and `tests/test_runtime.py`.
+If any statement is only familiar rather than provable, return to the matching
+mid-course lab before continuing.
 
-## Modules 06 to 08: Attribute and Class Ownership
+## Module 09: trace class creation before approving metaclasses
 
-**Theme:** decide whether behavior belongs after class creation, in attribute access, or in wider field architecture.
+Run:
 
-- class decorators, properties, and lower-power class customization
-- descriptor lookup, precedence, and per-instance storage
-- richer descriptor systems and where they stop being one-field abstractions
+```bash
+make class-creation-lab
+make class-creation-lab-test
+```
 
-**Capstone check:** inspect `fields.py`, `make field`, and `tests/test_fields.py`.
+The evidence route separates:
 
-## Modules 09 to 10: Class Creation and Runtime Governance
+1. explicit `type(name, bases, namespace)` construction
+2. metaclass candidate selection and conflict
+3. `__prepare__` namespace ownership
+4. class body execution
+5. metaclass `__new__` shaping
+6. metaclass `__init__` registration
+7. the narrower reach of `__init_subclass__`
 
-**Theme:** justify the highest-power hooks narrowly and review them against explicit red lines.
+The tests prove timing and ownership claims. They do not prove that a metaclass is a good
+design choice.
 
-- metaclass scope, timing, and conflicts
-- registration and declaration-time enforcement
-- dynamic execution, monkey-patching, import hooks, and governance boundaries
+Transfer with:
 
-**Capstone check:** inspect `framework.py`, `make registry`, `make verify-report`, and `tests/test_registry.py`.
+```bash
+make capstone-class-creation
+```
 
-## How to know you are using this map well
+The capstone report records why `PluginMeta` exists:
 
-You are using the mastery route well when you can answer:
+- it owns a prepared namespace that records declaration events
+- it collects descriptor and action contracts
+- it generates an initializer before returning the finished class
+- it registers the completed concrete class
 
-- what lower-power tool almost solved the problem
-- what exact boundary now owns the behavior
-- what capstone output or test proves the design stayed observable
-- what change you would still reject as making the runtime more magical than necessary
+The same report also names powers outside that boundary. Package discovery, network
+access, runtime invocation, and automatic conflict repair do not belong in class
+creation.
 
-## What to keep open with this map
+## The class-creation approval test
 
-- [Proof Ladder](../guides/proof-ladder.md)
-- [Review Checklist](../reference/review-checklist.md)
-- [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md)
-- [Capstone Map](../capstone/capstone-map.md)
+Before accepting a metaclass, complete this comparison:
+
+| Question | Evidence required |
+| --- | --- |
+| Why is an explicit helper insufficient? | the rule must apply without caller cooperation |
+| Why is a class decorator insufficient? | a required fact exists before the finished class |
+| Why is `__init_subclass__` insufficient? | namespace preparation or constructor shaping is required |
+| What does the metaclass own? | one named class-family invariant |
+| What remains ordinary Python? | instance behavior and concrete methods remain inspectable |
+| How is the behavior observed? | stored provenance, public report, and focused tests |
+| How is state reset? | deterministic registry cleanup or explicit redeployment |
+
+If the proposal cannot answer the first three questions, stop below the metaclass.
+
+## Module 10: convert fluency into governance
+
+Run the course lab before auditing the application:
+
+```bash
+make runtime-governance-lab
+make runtime-governance-lab-test
+```
+
+The five evidence surfaces cover:
+
+- bounded internal dynamic execution without a sandbox claim
+- ABC, runtime Protocol, and structural subclass-check claim strength
+- scoped patch rollback without concurrency or crash-safety overclaims
+- import-hook and AST-transform lifetimes restricted to trusted tooling
+- six mechanism decisions with approval, constraint, and rejection outcomes
+
+For each mechanism, ask:
+
+1. What pressure exists?
+2. Which object or process owns the behavior?
+3. Which lower-power alternative was considered?
+4. What is the blast radius?
+5. How is it observed?
+6. How is it rolled back?
+7. Which focused proof defends the claim?
+8. What escalation would require a different boundary?
+
+Only then transfer into the capstone:
+
+```bash
+make capstone-governance
+```
+
+The application approves action decorators, field descriptors, `PluginMeta`, and its
+observational CLI; constrains process-global registry state; and rejects configuration
+`eval`/`exec`, application monkey-patching, application import hooks or AST rewriting,
+package discovery during class creation, and automatic metaclass conflict repair.
+
+## One complete mastery review
+
+Suppose a proposal adds package discovery inside `PluginMeta.__new__`.
+
+1. Module 09 identifies the timing: class-definition time during import.
+2. The owner is wrong: deployment discovery is not a fact about constructing one class.
+3. The blast radius includes import latency, filesystem state, and failure during module
+   loading.
+4. The lower-power alternative is an explicit discovery/configuration boundary after
+   import.
+5. `make capstone-class-creation` proves current class creation is observational and
+   bounded.
+6. `make capstone-governance` records package discovery as rejected.
+7. The review rejects the proposal without needing to prototype the stronger hook.
+
+That is mastery: mechanism knowledge supports a defensible “no.”
+
+## Proof escalation
+
+Use the smallest route that answers the review question:
+
+| Claim | First route | Stronger route |
+| --- | --- | --- |
+| class-creation timing | `make class-creation-lab` | `make class-creation-lab-test` |
+| capstone hook ownership | `make capstone-class-creation` | focused capstone class-creation tests |
+| mechanism decision | `make runtime-governance-lab` | `make runtime-governance-lab-test` |
+| application policy | `make capstone-governance` | governance and named mechanism tests |
+| complete release confidence | focused routes above | broad course gate once |
+
+Do not start with the broad gate. Passing every test does not explain whether a proposed
+power belongs in the design.
+
+## Re-entry after a break
+
+If Module 08 remains trustworthy:
+
+```bash
+make study-route LAST_TRUSTED_MODULE=8
+```
+
+The plan re-runs descriptor-system evidence before class creation. If Module 09 remains
+trustworthy, use `LAST_TRUSTED_MODULE=9`; the plan re-proves class creation before
+governance. A learner who completed the course can use `LAST_TRUSTED_MODULE=10` to repeat
+the governance review without pretending mastery is permanent.
+
+## Course completion standard
+
+Complete the course when you can:
+
+- trace class creation without collapsing its hooks into “metaclass magic”
+- prove why a lower-power owner is insufficient
+- distinguish mechanism behavior from mechanism approval
+- publish approve, constrain, and reject decisions
+- name observability, rollback, proof, and non-claims
+- transfer each decision into a focused capstone report
+- reject unjustified runtime power even when you know how to implement it
+
+Keep [Review Checklist](../reference/review-checklist.md),
+[Anti-Pattern Atlas](../reference/anti-pattern-atlas.md), and
+[Proof Ladder](../guides/proof-ladder.md) open during future reviews. The course material
+remains the durable learning surface; the capstone is one application that demonstrates
+the judgment under integration pressure.
