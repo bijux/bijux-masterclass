@@ -1,418 +1,323 @@
 # Async Generators
 
+`AsyncPlan[T]` describes one eventual `Result[T, ErrInfo]`. FuncPipe indexing
+does not produce only one value: a document source can produce many documents,
+each document can produce many chunks, and failures can appear between valid
+items.
 
-<!-- page-maps:start -->
-## Page Maps
+Module 08 therefore needs a second description:
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Async Pipelines Backpressure Fairness"]
-  page["Async Generators"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+```python
+AsyncGen[T] = Callable[
+    [],
+    AsyncIterator[Result[T, ErrInfo]],
+]
 ```
+
+An `AsyncGen` is a factory for a fresh asynchronous result stream.
+
+## Start from the application pressure
+
+The synchronous Module 07 route already streams:
+
+```text
+RawDoc → CleanDoc → ChunkWithoutEmbedding → Chunk
+```
+
+Replacing that route with `async def build_index() -> list[Chunk]` would
+materialize every result and lose demand-driven consumption. Module 08 instead
+preserves the stream shape while allowing selected stages to wait.
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+    docs["AsyncGen[RawDoc]"]
+    expand["async_gen_and_then\none doc → many chunks"]
+    chunks["AsyncGen[ChunkWithoutEmbedding]"]
+    schedule["bounded async embedding"]
+    embedded["AsyncGen[Chunk]"]
+
+    docs --> expand --> chunks --> schedule --> embedded
 ```
-<!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+The stream is asynchronous because pulling an item may wait. The individual
+items still use `Result`, so expected failures remain visible data.
 
-**Module 08 – Main Track Core**  
-> **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
-> This is a **required** core. Every production FuncPipe streaming pipeline treats `async def` + `yield` as a pure description of a lazy async stream — never eager materialisation, never hidden resource leaks.
+## Distinguish a stream factory from an iterator
 
-## Progression Note
-Module 8 is **Async FuncPipe & Backpressure** — the lightweight, production-grade concurrency layer that sits directly on top of Module 7’s effect boundaries.
-
-| Module | Focus                                     | Key Outcomes                                                                      |
-|--------|-------------------------------------------|-----------------------------------------------------------------------------------|
-| 7      | Effect Boundaries & Resource Safety       | Ports & adapters, capability protocols, idempotent effects, explicit sessions    |
-| 8      | Async FuncPipe & Backpressure             | Async FuncPipe, non-blocking pipelines, backpressure, basic fairness             |
-| 9      | FP Across Libraries and Frameworks        | FuncPipe style in Pandas/Polars/Dask, FastAPI, CLI, distributed systems           |
-| 10     | Refactoring, Performance, Future-Proofing | Systematic refactors, performance budgets, governance and long-term evolution    |
-
-**Core question**  
-How do you extend the pure async descriptions from Core 1 to **lazy, composable async streams** — preserving purity, resource safety, per-item Result-based error propagation, and backpressure readiness?
-
-**Symmetry with Module 7 & M08C01**  
-```text
-IOGen[T]      = () -> Iterator[Result[T, ErrInfo]]
-AsyncGen[T]   = () -> AsyncIterator[Result[T, ErrInfo]]
-```
-AsyncGen is exactly the same idea as a lazy sync generator or single-value `AsyncPlan`, only streaming and non-blocking.
-
-**What you now have after M08C01 + this core**
-- Single-value async descriptions (`AsyncPlan`)  
-- Streaming async descriptions (`AsyncGen`)  
-- Full monadic composition over streams (`async_gen_and_then`, `async_gen_map`)  
-- Resource-safe streaming via `async_gen_using`  
-- Pure, replayable, lazy async pipelines — ready for backpressure (Core 3)
-
-**What the rest of Module 8 adds**
-- Bounded concurrency & backpressure (M08C03–C05)  
-- Retry & timeout policies as data  
-- Rate limiting & fairness  
-- Full production async RAG pipeline
-
-## Runnable lab: prove demand-driven transformation
-
-The reference application does not ship the illustrative
-`domain/rag_async.py` shown later on this page. Its concrete learning surface is
-`domain/effects/async_/stream.py`. Use that surface to distinguish a stream
-description from an active iterator:
+This is an async generator function:
 
 ```python
+async def numbers():
+    yield Ok(1)
+    yield Ok(2)
+```
+
+The function `numbers` can create a fresh iterator each time. The value
+`numbers()` is one iterator with mutable traversal state.
+
+FuncPipe stores the factory:
+
+```python
+source: AsyncGen[int] = numbers
+```
+
+This has the same replayability pattern as `AsyncPlan`:
+
+| Description | One execution |
+| --- | --- |
+| `AsyncPlan[T]` | `Awaitable[Result[T, ErrInfo]]` |
+| `AsyncGen[T]` | `AsyncIterator[Result[T, ErrInfo]]` |
+
+Do not cache and reuse the iterator returned by `source()`. Ask the description
+for a fresh one.
+
+## Run a demand-driven example
+
+The following example mirrors the tracked Module 08 proof:
+
+```python
+import asyncio
+from collections.abc import AsyncIterator
+
+from funcpipe_rag.domain.effects.async_ import AsyncGen, async_gen_map
+from funcpipe_rag.result.types import ErrInfo, Ok, Result
+
 pulled: list[int] = []
 
-async def source_items():
+
+async def source_items() -> AsyncIterator[Result[int, ErrInfo]]:
     for value in (1, 2, 3):
         pulled.append(value)
         yield Ok(value)
 
+
 source: AsyncGen[int] = source_items
 doubled = async_gen_map(source, lambda value: value * 2)
 
-assert pulled == []  # construction did not enter source_items
+print(pulled)
 
-iterator = doubled()
-assert await anext(iterator) == Ok(2)
-assert await anext(iterator) == Ok(4)
-await iterator.aclose()
-assert pulled == [1, 2]
+
+async def consume_prefix():
+    iterator = doubled()
+    first = await anext(iterator)
+    second = await anext(iterator)
+    await iterator.aclose()
+    return first, second
+
+
+print(asyncio.run(consume_prefix()))
+print(pulled)
 ```
 
-Run the executable version:
+Expected output:
+
+```text
+[]
+(Ok(value=2), Ok(value=4))
+[1, 2]
+```
+
+Mapping the stream did not pull an item. Consuming two results did not pull the
+third. This is observable laziness, not merely a claim that async generators
+“are efficient.”
+
+## Trace one pull
+
+For `await anext(doubled())`, the control flow is:
+
+```text
+consumer requests one result
+└── mapped stream requests one source result
+    └── source resumes until its next yield
+        └── Ok(1) returns to async_gen_map
+            └── map applies value * 2
+                └── consumer receives Ok(2)
+```
+
+No background producer exists. Demand moves upstream from the consumer.
+
+This distinction becomes important in the next core: bounded mapping
+intentionally introduces tasks, while ordinary `async_gen_map` does not.
+
+## Preserve failures during transformation
+
+`async_gen_map` delegates to `Result.map`:
+
+```python
+async for item in source():
+    yield item.map(transform)
+```
+
+Therefore:
+
+```text
+Ok(value)  → Ok(transform(value))
+Err(error) → Err(error)
+```
+
+The transform is not called for failed items. A learner should prove that with
+a call log instead of relying on intuition.
+
+`async_gen_and_then` supports one-to-many expansion:
+
+```python
+def expand(value: T) -> AsyncGen[U]: ...
+
+expanded = async_gen_and_then(source, expand)
+```
+
+For each `Ok(value)`, the returned inner stream is consumed. An outer `Err`
+passes through without calling `expand`.
+
+## Read the shipped FuncPipe composition
+
+`async_rag_chunks` uses `async_gen_and_then` to prepare chunks:
+
+```python
+def prepare_document(doc: RawDoc) -> AsyncGen[ChunkWithoutEmbedding]:
+    async def generate():
+        try:
+            if keep is not None and not keep(doc):
+                return
+            cleaned = cleaner(doc)
+            for chunk in gen_chunk_doc(cleaned, env):
+                yield Ok(chunk)
+        except (TypeError, ValueError) as exc:
+            yield Err(ErrInfo.from_exception(exc))
+
+    return generate
+
+
+prepared = async_gen_and_then(docs, prepare_document)
+```
+
+This code makes four judgments explicit:
+
+1. each successful document may yield zero or more chunks;
+2. filtering, cleaning, and chunking remain synchronous domain work;
+3. document validation failures become one stream item; and
+4. a failed source item never enters document preparation.
+
+The inner async generator contains no `await`. That is acceptable: it adapts a
+demand-driven synchronous expansion into the `AsyncGen` shape needed by the
+surrounding application. It does not pretend that cleaning is asynchronous.
+
+## Partial consumption is an application behavior
+
+Suppose the consumer stops after the first embedded chunk. A correct design
+should not silently continue embedding the whole corpus.
+
+For ordinary async generators, call `aclose()` when manually consuming a
+prefix:
+
+```python
+iterator = stream()
+try:
+    first = await anext(iterator)
+finally:
+    await iterator.aclose()
+```
+
+An `async for` loop normally handles iterator shutdown when its own generator
+frame exits, but adapters that acquire resources must still place cleanup in
+`finally` or use `async_gen_using`.
+
+The Module 08 proof
+`test_service_stream_releases_resource_after_partial_consumption` records:
+
+```text
+enter
+pull:0
+exit
+```
+
+That trace is stronger than asserting only the returned value. It proves the
+resource boundary closes after a partial pull.
+
+## Counterexamples
+
+### Eager materialization
+
+```python
+async def all_chunks(source):
+    return [item async for item in source()]
+```
+
+This can be correct at a deliberate boundary, but it is not streaming. It
+couples memory use and first-result latency to total input size.
+
+### Hidden task creation
+
+```python
+async def mapped(source, transform):
+    async for item in source():
+        yield await asyncio.create_task(transform(item))
+```
+
+Creating one task and immediately awaiting it adds scheduling machinery without
+concurrency. Creating all tasks up front is worse: it discards backpressure.
+
+### Reusing an iterator
+
+```python
+iterator = source()
+
+
+def broken_source():
+    return iterator
+```
+
+The first traversal consumes state needed by later traversals. Keep the factory,
+not the iterator.
+
+### Swallowing stream failures
+
+```python
+async for item in source():
+    if isinstance(item, Err):
+        continue
+```
+
+Dropping failures may be a boundary policy, but it must not be hidden inside a
+general transform. The caller otherwise cannot distinguish “no item” from “item
+failed.”
+
+## Compare the proof to the claim
+
+Run:
 
 ```bash
-cd capstone/module-reference-states/module-08
-PYTHONPATH=src pytest -q tests/learning/test_module_08_async.py \
-  -k async_stream_pulls_only_what_the_consumer_requests
+make capstone-module-state-proof MODULE=08
 ```
 
-The observation is the `pulled` trace, not elapsed time. Calling
-`async_gen_map` builds another thunk; calling `doubled()` creates an iterator;
-only `anext` asks upstream for a value. Explicitly closing a partially consumed
-iterator also makes the ownership boundary visible.
+Then focus on:
 
-Wrong turns include converting the stream to a list before asserting, which
-proves full materialization rather than laziness, and checking only that
-`doubled` is callable, which proves nothing about demand.
-
-## 1. Algebraic Laws & Architectural Invariants
-
-| Category                  | Name                     | Description                                                                                                                | Enforcement                          |
-|---------------------------|--------------------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| Algebraic Laws            | Left Identity            | `async_gen_and_then(async_gen_return(x), f) == f(x)`                                                                       | Hypothesis                           |
-| Algebraic Laws            | Right Identity           | `async_gen_and_then(g, async_gen_return) == g`                                                                             | Hypothesis                           |
-| Algebraic Laws            | Associativity            | `async_gen_and_then(async_gen_and_then(g, f), h) == async_gen_and_then(g, lambda x: async_gen_and_then(f(x), h))`        | Hypothesis                           |
-| Architectural Invariants | Description Purity       | Constructing an `AsyncGen` performs **zero** side effects. Effects happen only when the stream is **driven** in the shell.| Mock tests + static analysis         |
-| Architectural Invariants | Laziness                 | Items are yielded on demand; early break yields nothing further.                                                          | Property tests                       |
-| Architectural Invariants | Per-item Error Propagation | An `Err` in the outer stream is yielded as-is and processing continues (no short-circuit). Inner streams are not started on `Err`. | Property tests                       |
-| Architectural Invariants | Resource Safety          | Resources are released on normal exit, early break, or exception via `async_gen_using`.                                    | Contextlib + aclose tests            |
-| Architectural Invariants | Replayability            | The same `AsyncGen` thunk can be called multiple times → each call produces a fresh async iterator.                       | Property tests                       |
-
-The algebraic laws treat `AsyncGen` as a monad on the success path (`T` inside `Ok`). Errors are per-item and do not short-circuit the outer stream.
-
-## 2. Decision Table
-
-| Scenario                           | Single Value     | Streaming        | Recommended Pattern                  |
-|------------------------------------|------------------|------------------|--------------------------------------|
-| Known-size async batch             | Yes              | No               | `AsyncPlan` (Core 1)                 |
-| Unbounded or large async input     | No               | Yes              | `AsyncGen` + `async_gen_and_then`    |
-| Needs explicit resource cleanup    | No               | Yes              | `async_gen_using`                    |
-| Parallel independent streams      | No               | Yes              | `async_gen_gather` (M08C03)          |
-
-**Rule**: Use `AsyncGen` exactly when you need lazy, potentially unbounded async streams.
-
-`async_gen_gather` lives in `capstone/src/funcpipe_rag/domain/effects/async_/stream.py` and is re-exported from `funcpipe_rag.domain.effects.async_`.
-
-## 3. Public API – AsyncGen (`capstone/src/funcpipe_rag/domain/effects/async_/stream.py` – mypy --strict clean)
-
-```python
-# funcpipe_rag/domain/effects/async_/stream.py
-from __future__ import annotations
-
-from collections.abc import AsyncIterator, Callable, AsyncContextManager, Awaitable
-from typing import TypeVar
-
-from funcpipe_rag import Result, Ok, Err, ErrInfo, assert_never
-
-T = TypeVar("T")
-U = TypeVar("U")
-R = TypeVar("R")
-
-# AsyncGen[T] = a pure, replayable description of a lazy async stream yielding Result[T, ErrInfo]
-AsyncGen = Callable[[], AsyncIterator[Result[T, ErrInfo]]]
-
-def async_gen_return(value: T) -> AsyncGen[T]:
-    async def _gen() -> AsyncIterator[Result[T, ErrInfo]]:
-        yield Ok(value)
-    return lambda: _gen()
-
-def async_gen_map(
-    gen: AsyncGen[T],
-    f: Callable[[T], U],
-) -> AsyncGen[U]:
-    async def _mapped() -> AsyncIterator[Result[U, ErrInfo]]:
-        async for item in gen():
-            yield item.map(f)
-    return lambda: _mapped()
-
-def async_gen_and_then(
-    gen: AsyncGen[T],
-    f: Callable[[T], AsyncGen[U]],
-) -> AsyncGen[U]:
-    async def _bind() -> AsyncIterator[Result[U, ErrInfo]]:
-        async for item in gen():
-            match item:
-                case Ok(value=v):
-                    async for inner in f(v)():
-                        yield inner
-                case Err(error=e):
-                    yield Err(e)
-                case _:
-                    assert_never(item)
-    return lambda: _bind()
-
-# Lift a per-item async function into a streaming transformer
-def lift_async_item(
-    fn: Callable[[T], Awaitable[Result[U, ErrInfo]]]
-) -> Callable[[T], AsyncGen[U]]:
-    async def _stream_item(x: T) -> AsyncIterator[Result[U, ErrInfo]]:
-        yield await fn(x)
-    return lambda x: (lambda: _stream_item(x))
-
-# Resource-safe streaming
-def async_gen_using(
-    cm_thunk: Callable[[], AsyncContextManager[R]],
-    make_stream: Callable[[R], AsyncGen[T]],
-) -> AsyncGen[T]:
-    async def _using() -> AsyncIterator[Result[T, ErrInfo]]:
-        async with cm_thunk() as resource:
-            async for item in make_stream(resource)():
-                yield item
-    return lambda: _using()
+```text
+test_async_stream_pulls_only_what_the_consumer_requests
+test_service_stream_releases_resource_after_partial_consumption
+test_async_stream_map_preserves_function_composition
+test_async_rag_chunks_keeps_failures_in_the_application_stream
 ```
 
-## 4. Reference Implementations (pure domain code)
+Together these tests establish:
 
-### 4.1 Resource-safe HTTP response streaming
+- demand-driven pulls;
+- cleanup after partial consumption;
+- map composition over replayable streams; and
+- application-level continuation across typed failures.
 
-```python
-def async_stream_http_lines(url: str, client: HttpClientCap) -> AsyncGen[str]:
-    # HttpClientCap.stream returns AsyncContextManager[AsyncResponse]
-    def make_stream(resp: AsyncResponse) -> AsyncGen[str]:
-        async def _lines() -> AsyncIterator[Result[str, ErrInfo]]:
-            async for raw_line in resp.aiter_lines():
-                yield Ok(raw_line.decode())
-        return lambda: _lines()
+They do not establish a concurrency bound. Ordinary `AsyncGen` composition
+creates no scheduling policy. Continue to [Backpressure](backpressure.md) for
+the point where tasks and bounded windows enter the design.
 
-    return async_gen_map(
-        async_gen_using(lambda: client.stream("GET", url), make_stream),
-        lambda line: line.rstrip("\n")
-    )
-```
+## Move-forward criteria
 
-### 4.2 Composing streaming pipeline (canonical factored style)
+You are ready for the next core when you can:
 
-```python
-# Per-item async steps
-_clean_item = lift_async_item(clean_item_async)
-_embed_item = lift_async_item(embed_item_async)
-
-def async_rag_stream(
-    docs: AsyncGen[RawDoc],
-    env: RagEnv,
-    embedder: EmbeddingCap,
-) -> AsyncGen[EmbeddedChunk]:
-    return async_gen_and_then(
-        async_gen_and_then(docs, _clean_item),
-        _embed_item,
-    )
-```
-
-### 4.3 Full RAG async stream (domain/rag_async.py)
-
-```python
-def async_rag_pipeline_stream(
-    storage: StoragePort,
-    input_path: str,
-    env: RagEnv,
-    embedder: EmbeddingCap,
-) -> AsyncGen[EmbeddedChunk]:
-    return async_gen_and_then(
-        async_gen_using(
-            lambda: storage.open_input(input_path),  # returns AsyncContextManager[AsyncIterator[str]]
-            parse_docs_stream,
-        ),
-        lambda docs: async_rag_stream(docs, env, embedder),
-    )
-```
-
-Shell consumption (only place driving happens):
-
-```python
-async def run_rag_stream():
-    stream = async_rag_pipeline_stream(real_storage, "data.csv", env, embedder)
-    processed = 0
-    async for result in stream():
-        match result:
-            case Ok(chunk):
-                await index_chunk(chunk)
-                processed += 1
-            case Err(e):
-                logger.error("Failed chunk: %s", e)
-                break  # or continue
-    logger.info("Processed %d chunks", processed)
-```
-
-## 5. Property-Based Proofs (all pass in CI)
-
-```python
-@given(x=st.integers())
-@pytest.mark.asyncio
-async def test_async_gen_left_identity(x: int):
-    f = lambda y: async_gen_return(y + 1)
-
-    left = [item async for item in async_gen_and_then(async_gen_return(x), f)()]
-    right = [item async for item in f(x)()]
-
-    assert left == right
-
-@given(xs=st.lists(st.integers(), max_size=100))
-@pytest.mark.asyncio
-async def test_async_gen_right_identity(xs):
-    # Laws are defined on the Ok-path only; we generate only Ok here on purpose.
-    def src() -> AsyncGen[int]:
-        async def _src() -> AsyncIterator[Result[int, ErrInfo]]:
-            for v in xs:
-                yield Ok(v)
-        return lambda: _src()
-
-    left = [item async for item in async_gen_and_then(src(), async_gen_return)()]
-    right = [item async for item in src()()]
-
-    assert left == right
-
-@given(xs=st.lists(st.integers(), max_size=100))
-@pytest.mark.asyncio
-async def test_async_gen_associativity(xs):
-    # Laws are defined on the Ok-path only; we generate only Ok here on purpose.
-    def src() -> AsyncGen[int]:
-        async def _src() -> AsyncIterator[Result[int, ErrInfo]]:
-            for v in xs:
-                yield Ok(v)
-        return lambda: _src()
-
-    f = lambda y: async_gen_return(y + 1)
-    g = lambda z: async_gen_return(z * 2)
-
-    a = async_gen_and_then(async_gen_and_then(src(), f), g)
-    b = async_gen_and_then(src(), lambda y: async_gen_and_then(f(y), g))
-
-    a_items = [item.value async for item in a() if isinstance(item, Ok)]
-    b_items = [item.value async for item in b() if isinstance(item, Ok)]
-
-    assert a_items == b_items
-
-@pytest.mark.asyncio
-async def test_async_gen_and_then_per_item_error_propagation():
-    async def _src() -> AsyncIterator[Result[int, ErrInfo]]:
-        yield Ok(1)
-        yield Err(ErrInfo(code="BOOM", msg="test"))
-        yield Ok(2)
-
-    def src() -> AsyncGen[int]:
-        return lambda: _src()
-
-    f = lambda x: async_gen_return(x * 10)
-
-    out = [item async for item in async_gen_and_then(src(), f)()]
-
-    assert isinstance(out[0], Ok) and out[0].value == 10
-    assert isinstance(out[1], Err) and out[1].error.code == "BOOM"
-    assert isinstance(out[2], Ok) and out[2].value == 20
-
-@pytest.mark.asyncio
-async def test_async_gen_replayable():
-    gen = async_gen_return(1)
-
-    first = [item async for item in gen()]
-    second = [item async for item in gen()]
-
-    assert first == second
-```
-
-```python
-from contextlib import asynccontextmanager
-
-@pytest.mark.asyncio
-async def test_resource_cleanup_on_early_break():
-    called = False
-
-    @asynccontextmanager
-    async def fake_resource():
-        nonlocal called
-        try:
-            yield None
-        finally:
-            called = True
-
-    stream = async_gen_using(fake_resource, lambda _: async_gen_return(42))
-
-    async for _ in stream():  # consume one item then break
-        break
-
-    assert called
-```
-
-## 6. Runtime Guarantees
-
-| Operation              | Memory per item | Total memory (full consumption) | Notes                              |
-|------------------------|-----------------|----------------------------------|------------------------------------|
-| async_gen_map          | O(1)            | O(1)                             | Pure transformation                |
-| async_gen_and_then     | O(1)            | O(1)                             | Streams inner only on demand       |
-| async_gen_using        | O(1)            | O(1)                             | Resource released on break/error   |
-
-Full consumption has same asymptotics as batch; partial consumption is O(1).
-
-## 7. Anti-Patterns & Immediate Fixes
-
-| Anti-Pattern                             | Symptom                         | Fix                                      |
-|------------------------------------------|---------------------------------|------------------------------------------|
-| Materialising streams into lists         | OOM on large inputs             | Keep as `AsyncGen`, consume lazily       |
-| Manual `try/finally` with `aclose`       | Leaks on early break            | Use `async_gen_using`                    |
-| Unbounded `async for` without backpressure | Downstream overload             | Add bounded queue (M08C03)               |
-| Yielding raw values instead of `Result`  | Exceptions kill the stream      | Always yield `Result[T, ErrInfo]`        |
-
-## 8. Pre-Core Quiz
-
-1. Async generator returns…? → **AsyncIterator – a lazy stream**  
-2. When is work performed…? → **Only when iterated with `async for` in the shell**  
-3. Compose streaming pipelines with…? → **`async_gen_and_then` / `async_gen_map`**  
-4. Resource safety is guaranteed by…? → **`async_gen_using`**  
-5. Error propagation is…? → **Per-item `Result`; `Err` yields and continues outer stream**
-
-## 9. Post-Core Exercise
-
-1. Convert one real I/O stream in your codebase to an `AsyncGen` description.  
-2. Compose a ≥3-step streaming pipeline using `async_gen_and_then`.  
-3. Wrap a resource (file, HTTP connection) with `async_gen_using`.  
-4. Write a Hypothesis property proving one of the bind laws on a small synthetic stream.  
-5. Celebrate – you now have true async streaming without magic or leaks.
-
-**Continue with:** [Backpressure](../module-08-async-pipelines-backpressure-fairness/backpressure.md)
-
-You now have **lazy, composable, resource-safe async streams** — the foundation for production Async FuncPipe. The remaining cores add backpressure, fairness, retries, and full async RAG — all while keeping the core pure and the shell in full control.
-
-**M08C02 is now frozen.**
+- expand the `AsyncGen` alias without guessing;
+- distinguish a stream factory from one iterator;
+- explain why mapping is lazy;
+- show how `Err` bypasses a successful transform;
+- close a partially consumed iterator;
+- identify where `async_rag_chunks` expands documents into chunks; and
+- state why none of those behaviors alone bounds concurrent embedding.
