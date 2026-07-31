@@ -4,6 +4,9 @@ import json
 from typing import TypedDict
 
 import pytest
+from pydantic import ValidationError
+from typing_extensions import assert_never
+
 from funcpipe_rag.boundaries.adapters.pydantic_edges import ChunkModel, to_core_chunk
 from funcpipe_rag.boundaries.adapters.serde import (
     dec_result,
@@ -18,7 +21,7 @@ from funcpipe_rag.core.rag_types import (
     RagEnv,
     RawDoc,
 )
-from funcpipe_rag.fp.core import JSON, make_chunk
+from funcpipe_rag.fp.core import JSON
 from funcpipe_rag.fp.error import ErrorCode
 from funcpipe_rag.fp.functor import result_map
 from funcpipe_rag.fp.monoid import METRICS, Metrics, fold
@@ -42,13 +45,15 @@ from funcpipe_rag.rag.domain import (
 )
 from funcpipe_rag.rag.stages import chunk_doc, clean_doc, embed_chunk
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
-from pydantic import ValidationError
-from typing_extensions import assert_never
 
 
 class AcceptedChunkPayload(TypedDict):
+    doc_id: str
     text: str
+    start: int
+    end: int
     metadata: dict[str, JSON]
+    embedding: tuple[float, ...]
 
 
 def describe_chunk_outcome(outcome: Result[Chunk, ErrInfo]) -> str:
@@ -143,7 +148,11 @@ def test_applicative_validation_accumulates_independent_chunk_errors() -> None:
         return v_success(raw) if raw.strip() else v_failure(("title required",))
 
     def abstract(raw: str) -> Validation[str, str]:
-        return v_success(raw) if len(raw.split()) >= 2 else v_failure(("abstract too short",))
+        return (
+            v_success(raw)
+            if len(raw.split()) >= 2
+            else v_failure(("abstract too short",))
+        )
 
     def build(good_title: str, good_abstract: str) -> RawDoc:
         return RawDoc("rag-2", good_title, good_abstract, "fp")
@@ -172,16 +181,25 @@ def test_monoid_fold_aggregates_chunk_metrics_with_empty_identity() -> None:
 
 def test_pydantic_adapter_rejects_invalid_embedding_before_core_conversion() -> None:
     model = ChunkModel(
+        doc_id="boundary",
         text="validated boundary",
+        start=0,
+        end=18,
         metadata={"source": "lesson"},
-        embedding=[0.25, 0.75],
+        embedding=(0.25, 0.75) + (0.0,) * 14,
     )
     core = to_core_chunk(model)
 
     assert core.text == "validated boundary"
     assert dict(core.metadata) == {"source": "lesson"}
     with pytest.raises(ValidationError, match="must be finite|not finite"):
-        ChunkModel(text="invalid", embedding=[float("nan")])
+        ChunkModel(
+            doc_id="boundary",
+            text="invalid",
+            start=0,
+            end=7,
+            embedding=(float("nan"),) + (0.0,) * 15,
+        )
 
 
 def test_serialization_preserves_result_failure_provenance() -> None:
@@ -221,7 +239,9 @@ def test_domain_assembly_reports_all_embedding_mismatches() -> None:
 def test_hybrid_embedding_preserves_pure_rag_observables() -> None:
     chunk = ModelChunk(
         text=ChunkText(content="representation proof"),
-        metadata=ChunkMetadata(source="lesson", tags=("typed",), embedding_model="local"),
+        metadata=ChunkMetadata(
+            source="lesson", tags=("typed",), embedding_model="local"
+        ),
     )
     pure = process_batch_hybrid([chunk], mode="pure")
     hybrid = process_batch_hybrid([chunk], mode="hybrid")
@@ -233,17 +253,23 @@ def test_hybrid_embedding_preserves_pure_rag_observables() -> None:
     assert pure[0].value.metadata == hybrid[0].value.metadata
     assert pure[0].value.embedding is not None
     assert hybrid[0].value.embedding is not None
-    assert hybrid[0].value.embedding.vector == pytest.approx(pure[0].value.embedding.vector)
+    assert hybrid[0].value.embedding.vector == pytest.approx(
+        pure[0].value.embedding.vector
+    )
 
 
 def test_boundary_refactor_preserves_accepted_chunk_values() -> None:
     payload: AcceptedChunkPayload = {
+        "doc_id": "accepted",
         "text": "accepted input",
+        "start": 0,
+        "end": 14,
         "metadata": {"source": "lesson", "reviewed": True},
+        "embedding": (0.0,) * 16,
     }
-    legacy = make_chunk(text=payload["text"], path=(), metadata=payload["metadata"])
+    legacy = Chunk(**payload)
     refactored = to_core_chunk(ChunkModel.model_validate(payload))
 
     assert refactored == legacy
     with pytest.raises(ValidationError, match="at least 1 character"):
-        ChunkModel.model_validate({"text": "", "metadata": payload["metadata"]})
+        ChunkModel.model_validate({**payload, "text": "", "end": 0})
