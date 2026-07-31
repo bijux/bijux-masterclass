@@ -73,6 +73,7 @@ From the repository root:
 ```bash
 make PROGRAM=python-programming/python-functional-programming install
 make PROGRAM=python-programming/python-functional-programming capstone-walkthrough
+make PROGRAM=python-programming/python-functional-programming capstone-module-state-proof MODULE=06
 make PROGRAM=python-programming/python-functional-programming inspect
 make PROGRAM=python-programming/python-functional-programming test
 make PROGRAM=python-programming/python-functional-programming capstone-test
@@ -99,12 +100,24 @@ is the strongest published course-level proof route and delegates here to `make 
 Use `capstone-test` when you only want the pytest suite without the extra confirmation
 bundles. Use `capstone-walkthrough` when you want the first published learner-facing
 route before escalating to `capstone-tour`, `capstone-verify-report`, or `capstone-confirm`.
+Use `capstone-module-state-proof MODULE=01` through `MODULE=09` to run the cumulative
+learning tests against the matching tracked source instead of the live endpoint.
+
+To inspect one live sustainment route without implying that its test ran:
+
+```bash
+funcpipe-rag-review summary --claim change-acceptance --project-root .
+```
+
+The output reports `route: available` when the declared source and test paths exist,
+then prints the separate verification command.
 
 ## Choose the smallest command that answers your question
 
 | If you need... | Command |
 | --- | --- |
 | a fast inventory of packages, tests, and guides | `make inspect` |
+| one named evidence route and its command | `funcpipe-rag-review summary --claim NAME --project-root .` |
 | a fail-closed check for declared evidence paths | `make review-check` |
 | the pytest suite only | `make test` |
 | a saved proof bundle with review artifacts | `make verify-report` |

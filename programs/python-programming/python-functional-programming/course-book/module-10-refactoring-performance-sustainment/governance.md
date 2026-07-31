@@ -144,7 +144,7 @@ would let automation and readers treat an incomplete route as trustworthy.
 When every path is present, report only discoverability:
 
 ```text
-change-acceptance: complete
+change-acceptance: available
 verify: pytest -q tests/unit/review/test_change.py
 ```
 
