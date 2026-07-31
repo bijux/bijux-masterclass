@@ -241,18 +241,21 @@ translation, including immutable tags and unchanged provenance.
 **Starting context:** read `review/evidence.py`, `EVIDENCE_CLAIMS`, and
 `test_governance_claim_fails_closed_when_executable_evidence_is_missing`.
 
-**Objective:** add a ranking-stability claim and decide which source, test, and
-focused command make it reviewable.
+**Objective:** define a discoverable claim for the existing cleaning fixed-point
+law and decide which source, test, and focused command make it reviewable.
 
 **Constraints:**
 
 - a claim must name at least one required path;
+- use `rag/stages.py` and the existing cleaning property in
+  `tests/unit/rag/test_stages.py`;
 - missing paths must remain visible and ordered;
 - do not treat file presence as a passing test;
 - keep filesystem discovery outside `assess_evidence`.
 
-**Expected evidence:** omitting either the implementation or proof path makes the
-claim incomplete; supplying both makes it discoverable and names a runnable route.
+**Expected evidence:** omitting the cleaning test path makes the claim incomplete;
+supplying both real paths makes it discoverable and names the narrow
+`clean_doc_is_idempotent` route.
 
 **Acceptance check:**
 

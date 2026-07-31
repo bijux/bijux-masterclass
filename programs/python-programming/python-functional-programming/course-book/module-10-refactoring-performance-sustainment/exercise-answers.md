@@ -175,23 +175,40 @@ renaming classes.
 
 ## Governance: require a claim-to-command route
 
-A useful ranking claim requires the production ranking path, a test that asserts
-stable ordering, and the narrow pytest command for that test. With only the source
-present, `assess_evidence` reports the test path missing.
+A useful cleaning claim is:
+
+```python
+EvidenceClaim(
+    name="cleaning-fixed-point",
+    statement="Repeated document cleaning reaches the same value.",
+    required_paths=(
+        "src/funcpipe_rag/rag/stages.py",
+        "tests/unit/rag/test_stages.py",
+    ),
+    command="pytest -q tests/unit/rag/test_stages.py "
+    "-k clean_doc_is_idempotent",
+)
+```
+
+With only `rag/stages.py` in the observed path set, `assess_evidence` reports
+`tests/unit/rag/test_stages.py` missing. With both paths, the route is
+discoverable but still not executed.
 
 Common wrong turns:
 
 - linking only to prose makes the claim unauditable;
 - calling path presence “passed” confuses discovery with execution;
 - using one broad command for every claim makes failures hard to locate;
+- inventing a ranking path that the application does not contain disconnects the
+  exercise from FuncPipe; and
 - letting the pure assessor walk the filesystem hides the observation boundary.
 
 The test proves fail-closed completeness from a supplied path set. It does not run
 the proof or judge whether the assertion is strong enough.
 
-In FuncPipe, governance routes reviewers to executable RAG evidence. The test
-suite remains the authority for behavior; the claim catalog makes that authority
-findable.
+In FuncPipe, governance routes reviewers to an actual RAG law introduced in
+Module 01 and preserved through the live endpoint. The test suite remains the
+authority for behavior; the claim catalog makes that authority findable.
 
 ## Capstone delivery: compose an honest change dossier
 
