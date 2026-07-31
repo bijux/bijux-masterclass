@@ -14,7 +14,7 @@ from funcpipe_rag.boundaries.shells.review_cli import build_summary, main
 from funcpipe_rag.domain.effects.async_ import async_gather, async_pure
 from funcpipe_rag.pipelines.distributed import BackendStatus
 from funcpipe_rag.rag.domain import (
-    Chunk,
+    AssembledChunk,
     ChunkMetadata,
     ChunkMetadataV1,
     ChunkText,
@@ -98,7 +98,7 @@ def test_optimized_embedding_preserves_the_domain_contract(
     """Generated examples compare semantics, not implementation identity."""
 
     batch = [
-        Chunk(
+        AssembledChunk(
             text=ChunkText(content=text),
             metadata=ChunkMetadata(
                 source="learning",
