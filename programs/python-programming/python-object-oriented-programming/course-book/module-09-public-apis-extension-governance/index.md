@@ -123,6 +123,8 @@ public surface itself is clear.
 - [Third-Party Integration Contracts and Compatibility Suites](third-party-integration-contracts-and-compatibility-suites.md)
 - [Architectural Decision Records and Change Control](architectural-decision-records-and-change-control.md)
 - [Refactor: Public API for Safe Customization](refactor-public-api-for-safe-customization.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Glossary](glossary.md)
 
 ## Keep these support surfaces open

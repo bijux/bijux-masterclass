@@ -57,6 +57,10 @@ to.
 | does a module expose config, paths, and policy at its caller boundary | [module-interface-audit-guide.md](module-interface-audit-guide.md) | `make module-interface-audit` |
 | did a performance change remove work without removing guarantees | [performance-diagnostics-audit-guide.md](performance-diagnostics-audit-guide.md) | `make performance-diagnostics-audit` |
 | does a scheduler profile preserve declared resources and workflow meaning | [scheduler-policy-audit-guide.md](scheduler-policy-audit-guide.md) | `make scheduler-policy-audit` |
+| do local, CI, and scheduler contexts preserve the same workflow meaning | [context-invariance-audit-guide.md](context-invariance-audit-guide.md) | `make context-invariance-audit` |
+| does discovery expose the intended modules without hidden coupling | [discovery-integrity-audit-guide.md](discovery-integrity-audit-guide.md) | `make discovery-integrity-audit` |
+| does a published bundle preserve its downstream compatibility promises | [publish-compatibility-audit-guide.md](publish-compatibility-audit-guide.md) | `make publish-compatibility-audit` |
+| does software identity participate honestly in rebuild decisions | [software-boundary-audit-guide.md](software-boundary-audit-guide.md) | `make software-boundary-audit` |
 | what does this workflow produce and why does the domain matter | [domain-guide.md](domain-guide.md) | [walkthrough-guide.md](walkthrough-guide.md) |
 
 ## Public project-doc set
@@ -69,6 +73,10 @@ to.
 - [module-interface-audit-guide.md](module-interface-audit-guide.md) for reusable rule bindings and hidden coupling
 - [performance-diagnostics-audit-guide.md](performance-diagnostics-audit-guide.md) for baseline, tuning, semantic-drift, and regression decisions
 - [scheduler-policy-audit-guide.md](scheduler-policy-audit-guide.md) for recorded scheduler requests, rejection cases, and site-proof limits
+- [context-invariance-audit-guide.md](context-invariance-audit-guide.md) for preserving meaning across execution contexts
+- [discovery-integrity-audit-guide.md](discovery-integrity-audit-guide.md) for module discovery and hidden-coupling review
+- [publish-compatibility-audit-guide.md](publish-compatibility-audit-guide.md) for downstream bundle compatibility
+- [software-boundary-audit-guide.md](software-boundary-audit-guide.md) for implementation identity and rebuild causality
 - [profile-audit-guide.md](profile-audit-guide.md) for execution-policy review
 - [proof-guide.md](proof-guide.md) for claim-to-evidence routing
 - [publish-review-guide.md](publish-review-guide.md) for downstream trust review

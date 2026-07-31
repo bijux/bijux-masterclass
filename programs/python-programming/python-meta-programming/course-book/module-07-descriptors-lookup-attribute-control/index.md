@@ -125,6 +125,8 @@ Follow the cores in order:
 7. [Exercises](exercises.md) turns the lab and the incident-plugin fields into a design
    studio.
 8. [Exercise Answers](exercise-answers.md) calibrates the evidence and the judgment.
+9. [Module Glossary](glossary.md) keeps lookup, ownership, and storage terms precise
+   during review.
 
 ## What changes in the learner's model
 

@@ -134,6 +134,8 @@ it really is.
 - [Persistence Tests and Backend Swappability](persistence-tests-and-backend-swappability.md)
 - [Migrating Stored Data without Domain Corruption](migrating-stored-data-without-domain-corruption.md)
 - [Refactor: Repositories, Codecs, and Schema Evolution](refactor-repositories-codecs-and-schema-evolution.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Glossary](glossary.md)
 
 ## Run one audit route while you read

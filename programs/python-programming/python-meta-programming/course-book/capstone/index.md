@@ -120,10 +120,13 @@ to a class-creation or field-ownership question; it is a different kind of evide
 | Which exact module claim maps to which command? | [Capstone Map](capstone-map.md) |
 | Which command is smallest for this transfer? | [Command Guide](command-guide.md) |
 | Which file owns the reported behavior? | [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| Which source file should I read next? | [Capstone File Guide](capstone-file-guide.md) |
 | How do I move from output to focused tests? | [Capstone Proof Guide](capstone-proof-guide.md) |
 | How do I conduct a complete public-surface tour? | [Capstone Walkthrough](capstone-walkthrough.md) |
 | How do I record approve, change, or reject reasoning? | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+| How do I calibrate a completed review? | [Capstone Review Answers](capstone-review-answers.md) |
 | Where should a proposed extension land? | [Capstone Extension Guide](capstone-extension-guide.md) |
+| Where is the capstone vocabulary defined? | [Capstone Glossary](glossary.md) |
 
 Do not read every page by default. Choose the page that answers the current learning
 problem.

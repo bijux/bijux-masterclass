@@ -53,6 +53,7 @@ behavior alive.
 | Review a proposed change | [Capstone Review Worksheet](capstone-review-worksheet.md) | an accepted decision or named blockers |
 | Place and prove a new behavior | [Capstone Extension Guide](capstone-extension-guide.md) | a bounded change plan tied to preserved laws |
 | Run a known command correctly | [Command Guide](command-guide.md) | output you can interpret |
+| Resolve unfamiliar capstone language | [FuncPipe Capstone Glossary](glossary.md) | a precise term you can reconnect to its owning lesson |
 
 The pages are not a second linear course. Enter through the job that is blocking you,
 then return to the module lesson.

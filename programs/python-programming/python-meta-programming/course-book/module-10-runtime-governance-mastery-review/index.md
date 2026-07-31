@@ -157,6 +157,9 @@ Use these blocks if you are studying without an instructor.
 | review | use the [answer key](exercise-answers.md) as a review rubric | you can identify both a wrong turn and the exact proof limit |
 | transfer | run `make capstone-governance` | you can defend or challenge each capstone decision from evidence |
 
+Keep the [Module Glossary](glossary.md) beside the review packet when terms such as
+blast radius, observation route, or refusal boundary need a stable meaning.
+
 If you return after a long break, rerun the two lab commands and reconstruct the
 lesson-code-proof triangle for one key. Do not restart by rereading every page passively.
 

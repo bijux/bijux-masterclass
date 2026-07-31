@@ -139,7 +139,8 @@ Study the cores in order:
 
 After the worked example, complete the
 [Descriptor System Review Lab](exercises.md) before reading the
-[review answers](exercise-answers.md).
+[review answers](exercise-answers.md). Use the [Module Glossary](glossary.md) when a
+field, model, or service boundary term is unclear.
 
 ## What changes from Module 07
 

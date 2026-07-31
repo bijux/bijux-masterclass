@@ -125,14 +125,22 @@ inside course source.
 
 Follow the pages in order:
 
-1. **Rule Logic, Scripts, and Software Ownership** establishes the job contract.
-2. **Helper Code, Packages, and Reusable Boundaries** separates adapter from domain API.
-3. **Environments, Containers, and Runtime Contracts** distinguishes compatibility from
-   identity.
-4. **Software Provenance, Drift, and Rebuild Evidence** runs the causal drift experiment.
-5. **Failure Modes at the Software Boundary** diagnoses boundary-specific failures.
-6. **Worked Example** repairs one transformation while preserving graph and evidence.
-7. **Exercises and answers** produce and review the complete packet.
+1. [Rule Logic, Scripts, and Software Ownership](rule-logic-scripts-and-software-ownership.md)
+   establishes the job contract.
+2. [Helper Code, Packages, and Reusable Boundaries](helper-code-packages-and-reusable-boundaries.md)
+   separates adapter from domain API.
+3. [Environments, Containers, and Runtime Contracts](environments-containers-and-runtime-contracts.md)
+   distinguishes compatibility from identity.
+4. [Software Provenance, Drift, and Rebuild Evidence](software-provenance-drift-and-rebuild-evidence.md)
+   runs the causal drift experiment.
+5. [Failure Modes at the Software Boundary](failure-modes-at-the-software-boundary.md)
+   diagnoses boundary-specific failures.
+6. [Worked Example: Moving a Workflow Across the Software Boundary Safely](worked-example-moving-a-workflow-across-the-software-boundary-safely.md)
+   repairs one transformation while preserving graph and evidence.
+7. The [Exercises](exercises.md) produce the complete packet before
+   [Exercise Answers](exercise-answers.md) provides a calibration route.
+8. [Glossary](glossary.md) keeps software identity, runtime identity, and provenance
+   claims precise during review.
 
 Skipping directly to containers will not repair a hidden source dependency. Skipping
 direct tests will not prove the package API. The sequence matters because each boundary
