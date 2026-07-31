@@ -39,10 +39,17 @@ from .core import (
     stream_rag_sources,
     throttle,
 )
+from .retrieval import (
+    LOCAL_EMBEDDING_MODEL,
+    cosine_similarity,
+    make_query,
+    retrieve,
+)
 from .types import DebugConfig, DocRule, Observations, RagTaps, RagTraceV3, TraceLens
 
 __all__ = [
     "DEFAULT_CLEAN_CONFIG",
+    "LOCAL_EMBEDDING_MODEL",
     "CleanConfig",
     "DebugConfig",
     "DocRule",
@@ -57,6 +64,7 @@ __all__ = [
     "TraceLens",
     "_trace_iter",
     "boundary_rag_config",
+    "cosine_similarity",
     "full_rag_api",
     "full_rag_api_docs",
     "full_rag_api_path",
@@ -73,8 +81,10 @@ __all__ = [
     "iter_rag_core",
     "make_cleaner",
     "make_gen_rag_fn",
+    "make_query",
     "make_rag_fn",
     "multicast",
+    "retrieve",
     "safe_rag_pipeline",
     "sliding_windows",
     "stream_chunks",

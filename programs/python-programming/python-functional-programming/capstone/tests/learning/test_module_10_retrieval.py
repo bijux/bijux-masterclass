@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import pytest
 from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, RagEnv, RawDoc
-from funcpipe_rag.rag.domain import Embedding, RankedChunk, SearchQuery
-from funcpipe_rag.rag.rag_api import iter_rag
-from funcpipe_rag.rag.retrieval import (
+from funcpipe_rag.rag import (
     LOCAL_EMBEDDING_MODEL,
     cosine_similarity,
     make_query,
     retrieve,
 )
+from funcpipe_rag.rag.domain import Embedding, RankedChunk, SearchQuery
+from funcpipe_rag.rag.rag_api import iter_rag
 from funcpipe_rag.rag.stages import clean_doc, embed_chunk, embed_text
 
 
