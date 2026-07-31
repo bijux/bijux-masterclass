@@ -28,7 +28,7 @@ flowchart LR
   m07["07<br/>effect plans"]
   m08["08<br/>bounded async"]
   m09["09<br/>interop edges"]
-  m10["10<br/>evidence-led change"]
+  m10["10<br/>local retrieval + evidence-led change"]
 
   m01 --> m02 --> m03 --> m04 --> m05
   m05 --> m06 --> m07 --> m08 --> m09 --> m10
@@ -41,7 +41,7 @@ not mean every file changes or every concept should be generalized.
 
 | Module | Capability before | New pressure and earned change | First source to inspect | Learning proof |
 | --- | --- | --- | --- | --- |
-| 01 — purity | an imperative ingestion idea with no trusted seams | cleaning, chunking, and ranking become substitutable pure functions; the shell owns file I/O | `module-01/src/funcpipe_rag/pipeline_stages.py`, then `full_rag.py` and `rag_shell.py` | `module-01/tests/learning/test_module_01_purity_foundations.py` |
+| 01 — purity | an imperative ingestion idea with no trusted seams | cleaning, chunking, and deterministic embedding become substitutable pure functions; the shell owns file I/O | `module-01/src/funcpipe_rag/pipeline_stages.py`, then `full_rag.py` and `rag_shell.py` | `module-01/tests/learning/test_module_01_purity_foundations.py` |
 | 02 — data-first APIs | a pure pipeline with arguments scattered across calls | configuration and requests become explicit values; filesystem failures cross the shell as `Result` values | `module-02/src/funcpipe_rag/api/config.py`, `api/core.py`, then `shells/rag_api_shell.py` | `module-02/tests/learning/test_module_02_data_first_apis.py` and `test_module_02_filesystem_boundary.py` |
 | 03 — lazy dataflow | one request can be evaluated, but eager collection and multiple sources create memory and scheduling pressure | iterator stages, bounded chunking, fan-in, fan-out, and observation become explicit without changing result order | `module-03/src/funcpipe_rag/api/core.py`, then `streaming/fanin.py` and `streaming/fanout.py` | `module-03/tests/learning/test_module_03_streaming_dataflow.py` |
 | 04 — resilient streaming | lazy values can flow, but failures and resource limits still need policy | `Result` streams, folds, retry reports, circuit breakers, and resource-aware traversal make partial failure reviewable | `module-04/src/funcpipe_rag/result/stream.py`, then `policies/retries.py`, `policies/breakers.py`, and `policies/resources.py` | `module-04/tests/learning/test_module_04_resilient_streaming.py` |
@@ -50,7 +50,7 @@ not mean every file changes or every concept should be generalized.
 | 07 — effect boundaries | context is explicit in values, but the application still needs owned execution, cleanup, and transactions | capabilities describe required effects; plans stay inspectable; adapters execute storage, clock, logging, and transactional behavior | `module-07/src/funcpipe_rag/domain/capabilities.py`, `domain/effects/`, then `boundaries/` and `infra/adapters/` | `module-07/tests/learning/test_module_07_effect_boundaries.py` |
 | 08 — bounded async | effects have owners, but concurrent work introduces pressure, ordering, cancellation, and fairness questions | async plans, bounded gather, queues, timeouts, and backpressure make scheduling policy explicit and testable | `module-08/src/funcpipe_rag/domain/effects/async_/`, then `infra/adapters/async_runtime.py` | `module-08/tests/learning/test_module_08_async.py` |
 | 09 — interop discipline | the internal architecture is coherent, but libraries, dataframe tools, CLI overrides, and distributed backends expose foreign contracts | adapters and compatibility functions translate at named edges; external helpers do not become the domain model | `module-09/src/funcpipe_rag/interop/`, then `pipelines/cli.py`, `pipelines/distributed.py`, and `boundaries/shells/` | `module-09/tests/learning/test_module_09_interop.py` |
-| 10 — sustainment | the application works through explicit seams, but change claims need evidence and ownership | semantic equivalence, budgets, migration shape, observation, and published evidence routes compose into review decisions | live `src/funcpipe_rag/review/`, then `boundaries/shells/review_cli.py` | live `tests/learning/test_module_10_sustainment.py` and `tests/unit/review/` |
+| 10 — retrieval and sustainment | the application builds an index through explicit seams but cannot query or rank it, and change claims still need evidence | explicit query/result values and pure deterministic ranking complete the local retrieval loop; equivalence, budgets, migration, observation, and evidence routes make later changes reviewable | live `src/funcpipe_rag/rag/retrieval.py`, `rag/domain/retrieval.py`, then `review/` and `boundaries/shells/review_cli.py` | live `tests/learning/test_module_10_retrieval.py`, `test_module_10_sustainment.py`, and `tests/unit/review/` |
 
 All paths in the first nine rows are relative to
 `capstone/module-reference-states/`. The Module 10 paths are relative to `capstone/`.

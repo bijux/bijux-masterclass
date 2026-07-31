@@ -69,6 +69,46 @@ The shell must obtain real measurements and available paths. The pure policy rec
 those observations afterward. This separation makes a decision replayable in a unit
 test without pretending the measurement itself was pure.
 
+## Retrieval is application meaning, not an adapter trick
+
+The preserved Module 09 endpoint produces embedded `Chunk` values. The live Module
+10 endpoint adds the missing query-to-ranked-chunks behavior through two inner
+surfaces:
+
+- `rag/domain/retrieval.py` owns legal `SearchQuery` and `RankedChunk` values; and
+- `rag/retrieval.py` owns query construction, cosine scoring, and deterministic
+  ordering.
+
+```mermaid
+flowchart LR
+  input["query text + top_k"]
+  query["SearchQuery"]
+  index["Iterable[Chunk]"]
+  core["retrieve"]
+  results["tuple[RankedChunk, ...]"]
+  shell["future CLI / web / storage adapter"]
+
+  input --> query --> core
+  index --> core --> results --> shell
+```
+
+The shell may obtain query text or load an index. It must not decide cosine
+semantics, discard domain validation, or replace the stable tie-break with
+backend encounter order. A future vector-store adapter would translate its
+response into application-owned ranked values and prove that the observable
+ordering contract remains intact.
+
+The local exact-ranking implementation materializes candidate scores because it
+must establish a global order. That is an honest small-index contract, not a
+claim of streaming or bounded memory. A heap or remote index would be an
+implementation alternative only after it preserves score calculation, coordinate
+tie-breaking, `top_k`, invalid-vector behavior, and result ranks.
+
+The current indexed `Chunk` does not store an embedding-model identifier.
+`SearchQuery.embedding.model` documents the local query model but cannot by
+itself prove compatibility with every supplied chunk. Changing models therefore
+requires a migration decision, not only a same-dimension check.
+
 ## Description versus execution
 
 Module 07 introduces `IOPlan[A]` in `domain/effects/io_plan.py`. The type wraps a delayed
