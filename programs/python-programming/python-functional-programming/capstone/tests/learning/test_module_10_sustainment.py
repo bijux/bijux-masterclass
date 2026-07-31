@@ -6,6 +6,7 @@ import asyncio
 import json
 from pathlib import Path
 
+import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
@@ -22,6 +23,7 @@ from funcpipe_rag.rag.domain import (
     upcast_metadata_v1,
 )
 from funcpipe_rag.result.types import Ok
+from funcpipe_rag.review.change import ChangeEvidence, review_change
 from funcpipe_rag.review.evidence import EvidenceClaim, assess_evidence
 from funcpipe_rag.review.migration import ContractShape, assess_migration
 from funcpipe_rag.review.observability import (
@@ -213,7 +215,9 @@ def test_governance_claim_fails_closed_when_executable_evidence_is_missing() -> 
     assert assessment.missing_paths == ("tests/test_ranking.py",)
 
 
-def test_delivery_check_exposes_a_machine_readable_release_gate(capsys) -> None:
+def test_delivery_check_exposes_a_machine_readable_release_gate(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
     """The endpoint exits successfully only when declared evidence is discoverable."""
 
     exit_code = main(
@@ -225,3 +229,31 @@ def test_delivery_check_exposes_a_machine_readable_release_gate(capsys) -> None:
     assert exit_code == 0
     assert payload["evidence_claims"]
     assert all(claim["complete"] for claim in payload["evidence_claims"])
+
+
+def test_change_review_composes_only_applicable_application_evidence() -> None:
+    """The final decision combines proofs without pretending every check applies."""
+
+    claim = EvidenceClaim(
+        name="cleaning-fixed-point",
+        statement="Repeated document cleaning reaches the same value.",
+        required_paths=(
+            "src/funcpipe_rag/rag/stages.py",
+            "tests/unit/rag/test_stages.py",
+        ),
+        command="pytest -q tests/unit/rag/test_stages.py -k clean_doc_is_idempotent",
+    )
+    assessment = assess_evidence(claim, frozenset(claim.required_paths))
+    budget = PerformanceBudget(80, 32, 25)
+    observation = PerformanceObservation(60, 48, 30)
+
+    decision = review_change(
+        ChangeEvidence(
+            semantic_equivalent=True,
+            claims=(assessment,),
+            budget=evaluate_budget(budget, observation),
+        )
+    )
+
+    assert decision.acceptable is False
+    assert decision.blockers == ("performance:peak_memory",)

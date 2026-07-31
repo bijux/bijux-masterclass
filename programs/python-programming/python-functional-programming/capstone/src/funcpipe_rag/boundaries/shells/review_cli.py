@@ -155,6 +155,15 @@ PROOF_ROUTES: tuple[dict[str, str], ...] = (
 
 EVIDENCE_CLAIMS: tuple[EvidenceClaim, ...] = (
     EvidenceClaim(
+        name="change-acceptance",
+        statement="A proposed change is accepted only when its applicable proofs agree.",
+        required_paths=(
+            "src/funcpipe_rag/review/change.py",
+            "tests/unit/review/test_change.py",
+        ),
+        command="pytest -q tests/unit/review/test_change.py",
+    ),
+    EvidenceClaim(
         name="performance-decision",
         statement="Performance limits are explicit, multidimensional values.",
         required_paths=(
