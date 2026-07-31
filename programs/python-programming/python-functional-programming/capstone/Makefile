@@ -66,13 +66,20 @@ rebuild-venv: ## Recreate the local virtual environment in place
 
 install: venv ## Install development dependencies
 	@set -e; \
-	$(VENV_PIP) install -e '.[dev]' || { \
-		$(MAKE) rebuild-venv; \
+	install_dev_dependencies() { \
 		$(VENV_PIP) install -e '.[dev]'; \
 	}; \
+	rebuild_environment() { \
+		$(PYTHON) -m venv --clear $(VENV); \
+		$(VENV_PIP) install -U pip; \
+	}; \
+	install_dev_dependencies || { \
+		rebuild_environment; \
+		install_dev_dependencies; \
+	}; \
 	test -x $(RUFF) && test -x $(MYPY) && test -x $(PYTEST) && test -x $(HATCH) || { \
-		$(MAKE) rebuild-venv; \
-		$(VENV_PIP) install -e '.[dev]'; \
+		rebuild_environment; \
+		install_dev_dependencies; \
 	}
 
 test: test-report ## Run the test suite once and retain its output
