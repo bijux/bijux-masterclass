@@ -1,89 +1,90 @@
-# Refactoring try/except
+# Refactoring `try`/`except` Without Changing the Contract
 
+Replacing a local `try` block with `try_result` is a control-flow refactor. It
+should not silently change which inputs succeed, which exception classes are
+caught, or which error value the caller receives.
 
-<!-- page-maps:start -->
-## Page Maps
+The safe order is:
 
-```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Monadic Flow Explicit Context"]
-  page["Refactoring try/except"]
-  capstone["Capstone evidence"]
+1. characterize the existing boundary;
+2. name the expected exception;
+3. introduce the typed bridge;
+4. compare complete public results;
+5. prove unexpected exceptions still escape; and
+6. remove the duplicate implementation.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+The order matters. If you change validation policy and control flow together,
+a failing comparison cannot tell you which decision caused the difference.
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+## Characterize the existing parser
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
-
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
-
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
-
-**Core question**  
-How do you systematically refactor the inevitable `try/except` + `if None` spaghetti that accumulates in every real codebase into clean, linear, composable monadic pipelines — without changing public return behaviour and while gaining testability and refactor safety?
-
-This is the core where you finally pay off the promise of the entire module: you take real, ugly, production-grade imperative error handling and turn it into pure, lawful, beautiful FP — with mechanical proof that the public contract is identical.
-
-Use this when you know the theory but still have a codebase full of nested try/except and want a repeatable, safe refactoring process.
-
-**Outcome**
-1. You will have a mechanical 6-step process for turning any try/except mess into a monadic pipeline.
-2. You will prove (with Hypothesis) that the refactored version has identical public return behaviour for all inputs.
-3. You will never again fear “what if I break something?” when cleaning up error handling.
-
-## The 6-Step Refactoring Process (memorise this)
-
-1. Identify every error path (exceptions, None checks, invalid states).
-2. Define typed domain errors (`ParseErr`, `ValidationErr`, `NetworkErr`, etc.).
-3. Extract pure functions for each step.
-4. Bridge impurities at the boundary with `try_result` / `option_from_nullable`.
-5. Chain with `.and_then` / `.map` / applicative combinators (`.ap`, `v_liftA2`).
-6. Add Hypothesis equivalence tests and delete the old code.
-
-Do this once per function and you’ll never go back.
-
-## Keep The Public Contract Stable First
-
-The safest first pass is usually **internal refactor, external contract unchanged**:
-
-- rewrite the internals into `Result`, `Option`, or `Validation`
-- keep a thin boundary adapter that preserves the old return type if callers still depend on it
-- prove equivalence before deciding whether the public API itself should change
-
-That ordering keeps the refactor reviewable. It separates “the flow is now cleaner” from
-“the public contract changed,” which are two different decisions.
-
-## Runnable lab: characterize before replacing try/except
-
-The learning proof keeps a small legacy parser beside its `try_result`
-replacement long enough to compare their public `Result` values:
+The Module 06 learning proof begins with:
 
 ```python
-assert legacy_parse("8") == refactored_parse("8") == Ok(8)
-assert legacy_parse("eight") == refactored_parse("eight") == Err(
-    ErrInfo(code="CONFIG_PARSE", msg=expected_message)
-)
+def legacy_parse(
+    raw: str,
+) -> Result[int, ErrInfo]:
+    try:
+        return Ok(int(raw))
+    except ValueError as error:
+        return Err(
+            ErrInfo(
+                code="CONFIG_PARSE",
+                msg=str(error),
+            )
+        )
 ```
 
-Run both characterized cases:
+Before rewriting, record representative public cases:
+
+```python
+[
+    ("8", Ok(8)),
+    (
+        "eight",
+        Err(
+            ErrInfo(
+                code="CONFIG_PARSE",
+                msg=(
+                    "invalid literal for int() "
+                    "with base 10: 'eight'"
+                ),
+            )
+        ),
+    ),
+]
+```
+
+Characterization is not approval. The error message may later need a
+product-level redesign. For this refactor, it defines the behavior being
+preserved.
+
+## Introduce the narrow bridge
+
+The replacement is:
+
+```python
+def refactored_parse(
+    raw: str,
+) -> Result[int, ErrInfo]:
+    return try_result(
+        lambda: int(raw),
+        lambda error: ErrInfo(
+            code="CONFIG_PARSE",
+            msg=str(error),
+        ),
+        exc_type=ValueError,
+    )
+```
+
+The important decisions are visible:
+
+- the throwing expression is only `int(raw)`;
+- only `ValueError` is expected;
+- the same error code is produced; and
+- the exception message mapping is unchanged.
+
+Run the comparison:
 
 ```bash
 cd capstone/module-reference-states/module-06
@@ -91,262 +92,195 @@ PYTHONPATH=src pytest -q tests/learning/test_module_06_explicit_context.py \
   -k refactored_config_boundary_matches_characterized_behavior
 ```
 
-The temporary side-by-side comparison is a migration aid, not a second
-permanent implementation. Delete the legacy function only after success and
-expected-failure behavior agree and the unexpected-exception proof from the
-previous core still passes.
+The test compares each implementation with the same complete expected Result.
 
-## 1. Laws & Invariants (machine-checked in CI)
+## Expand the input table before deleting the old path
 
-| Invariant                       | Description                                                                                  | Enforcement          |
-|---------------------------------|----------------------------------------------------------------------------------------------|----------------------|
-| Behavioural Equivalence         | Refactored pipeline produces identical public return values for all inputs                  | Hypothesis properties|
-| Totality (expected errors)      | Expected errors always return container (never raise)                                        | Hypothesis + runtime |
-| Unexpected failures still raise | Programming bugs remain exceptions (never silently become domain Err)                       | Runtime contract     |
-| No New Side Effects             | Refactored boundary preserves or reduces side effects (never introduces new kinds of effects) | Code review          |
-| Propagation                     | Errors short-circuit exactly where original would have returned/raised                      | Hypothesis           |
+Python’s integer parser accepts more than digit-only strings:
 
-All equivalence properties run in CI. A single divergence fails the build.
-
-## 2. Decision Table – What to Refactor Into What
-
-| Original Pattern              | Refactor To                                                  | Why                                      |
-|-------------------------------|--------------------------------------------------------------|------------------------------------------|
-| try/except ValueError         | `try_result(..., map_exc, exc_type=ValueError)` + `.and_then` | Typed domain error                       |
-| if value is None              | `option_from_nullable(value).and_then(...)`                  | Explicit absence                         |
-| Nested try/except             | Chained `.and_then`                                          | Linear happy path                        |
-| Multiple independent checks   | Validation + `v_ap` / `v_liftA2`                             | Accumulate all errors                    |
-
-## 3. Public API – No new helpers (use everything from previous cores)
-
-You already have the main building blocks you need:
-
-- `.map`, `.and_then`, `.ap` on `Result`
-- `.map`, `.and_then` on `Option`
-- `v_ap`, `v_liftA2` (Validation applicative helpers; Validation is a sum type, not a methodful class)
-- `try_result` (with `exc_type` below), `result_map_try`
-- `Some` / `NoneVal` / `option_from_nullable`
-
-### Updated try_result (matches the repository implementation)
-
-```python
-def try_result(
-    thunk: Callable[[], T],
-    map_exc: Callable[[Exception], E],
-    exc_type: type[Exception] | tuple[type[Exception], ...] = Exception,
-) -> Result[T, E]:
-    """Bridge an impure thunk into Result. Use ONLY at effect boundaries.
-    
-    exc_type restricts which exceptions are treated as expected domain errors.
-    All others propagate as bugs (never become Err).
-    """
-    try:
-        return Ok(thunk())
-    except exc_type as ex:
-        return Err(map_exc(ex))
+```text
+" 8" -> 8
+"+8" -> 8
+"-1" -> -1
 ```
 
-## 4. The Full Refactoring Cookbook – Three Real Examples
+Add those cases while both implementations exist. If both return `Ok`, the
+control-flow refactor preserves the old parsing contract.
 
-### 4.1 JSON Parsing + Processing (classic nested try/except)
+Whether negative chunk sizes should later become `Err(CHUNK_SIZE)` is a
+separate domain-validation change. Add it after the parser equivalence commit,
+with its own tests and explanation.
+
+## Compare the observation the caller actually sees
+
+Weak comparison:
 
 ```python
-# BEFORE – the spaghetti everyone has
-def load_and_process(path: str) -> dict | None:
-    try:
-        raw = open(path).read()
-    except IOError as e:
-        log.error(f"IO error: {e}")
-        return None
-    try:
-        data = json.loads(raw)
-    except json.JSONDecodeError as e:
-        log.error(f"JSON error: {e}")
-        return None
-    try:
-        return process(data)
-    except ValueError as e:
-        log.error(f"Processing error: {e}")
-        return None
+assert legacy_parse(raw).is_ok() == (
+    refactored_parse(raw).is_ok()
+)
 ```
 
-```python
-# AFTER – pure, linear, testable
-@dataclass(frozen=True)
-class IOErrorErr: msg: str
-@dataclass(frozen=True)
-class JSONErr: msg: str
-@dataclass(frozen=True)
-class ProcessErr: msg: str
-Err = IOErrorErr | JSONErr | ProcessErr
+This can pass while values, error codes, or messages differ.
 
-def load_and_process(path: str) -> Result[dict, Err]:
-    return (
-        try_result(lambda: open(path).read(), lambda e: IOErrorErr(str(e)), exc_type=OSError)
-        .and_then(
-            lambda raw: try_result(
-                lambda: json.loads(raw),
-                lambda e: JSONErr(str(e)),
-                exc_type=json.JSONDecodeError,
-            )
-        )
-        .and_then(
-            lambda data: try_result(
-                lambda: process(data),
-                lambda e: ProcessErr(str(e)),
-                exc_type=ValueError,
-            )
-        )
+Strong comparison:
+
+```python
+assert legacy_parse(raw) == refactored_parse(raw)
+```
+
+For a larger RAG route, compare complete domain values:
+
+- document identifiers;
+- normalized text;
+- chunk text and offsets;
+- output order;
+- embeddings; and
+- typed error provenance.
+
+Choose the public observation first. Internal line-by-line similarity is not
+the preservation goal.
+
+## Prove the catch did not widen
+
+The earlier [Error-Typed Flows](error-typed-flows.md) proof supplies a function
+that raises `RuntimeError`:
+
+```python
+def broken_parser() -> int:
+    raise RuntimeError("parser invariant broken")
+```
+
+The bridge must not convert that exception:
+
+```python
+with pytest.raises(
+    RuntimeError,
+    match="parser invariant broken",
+):
+    try_result(
+        broken_parser,
+        to_config_error,
+        exc_type=ValueError,
     )
-
-# Boundary (if you need to match original None return)
-def load_and_process_legacy(path: str) -> dict | None:
-    match load_and_process(path):
-        case Ok(data): return data
-        case Err(e): log.error(e.msg); return None
 ```
 
-Zero nesting. Happy path is three lines. Every error is typed and testable.
-The thin legacy adapter is part of the refactoring story, not a hack. It is what lets
-you improve the internals without forcing a contract change on every caller at once.
+Without this negative proof, a future edit could widen `exc_type` and hide a
+defect behind `CONFIG_PARSE`.
 
-### 4.2 Multi-field Validation (independent errors)
+## When a property test is warranted
+
+A finite table is enough when the public input space is deliberately small.
+For a parser accepting arbitrary text, a property can compare old and new
+boundary observations:
 
 ```python
-# BEFORE – early returns, only first error visible
-def validate_user(name: str | None, age: int | None, email: str | None) -> dict | str:
-    errors = []
-    if not name:
-        errors.append("name missing")
-    if not age or age < 0:
-        errors.append("invalid age")
-    if not email or "@" not in email:
-        errors.append("invalid email")
-    if errors:
-        return "; ".join(errors)
-    return {"name": name, "age": age, "email": email}
+@given(raw=st.text(max_size=40))
+def test_parser_equivalence(raw: str) -> None:
+    assert legacy_parse(raw) == refactored_parse(raw)
 ```
+
+Bound the strategy to the contract under review and be honest about what it
+omits. If the old implementation depends on platform encoding, locale, or
+external state, value generation alone is not sufficient.
+
+Property-based equivalence supports a larger input domain. It does not prove
+the old behavior is desirable.
+
+## Refactor a dependent route in small boundaries
+
+For a longer function:
 
 ```python
-# AFTER – Validation accumulates all errors
-def validate_user(name: str | None, age: int | None, email: str | None) -> Validation[User, str]:
-    v_name = validate_name(name)
-    v_age = validate_age(age)
-    v_email = validate_email(email)
-
-    partial_user: Validation[Callable[[str], User], str] = v_liftA2(
-        lambda n, a: lambda e: User(n, a, e),
-        v_name,
-        v_age,
-    )
-
-    from funcpipe_rag.fp.validation import v_ap
-
-    return v_ap(partial_user, v_email)
-
-# Boundary – preserve original dict | str contract
-def validate_user_legacy(name: str | None, age: int | None, email: str | None) -> dict | str:
-    match validate_user(name, age, email):
-        case VSuccess(user): return {"name": user.name, "age": user.age, "email": user.email}
-        case VFailure(errors): return "; ".join(errors)
+try:
+    size = int(raw_size)
+    env = RagEnv(chunk_size=size)
+    return run_pipeline(env)
+except ValueError as error:
+    return Err(to_config_error(error))
 ```
 
-All errors always reported. Zero manual error collection.
-
-### 4.3 Optional Chaining (absence checks)
+Do not wrap the entire body in one `try_result`. Separate owners:
 
 ```python
-# BEFORE – pyramid of doom
-def get_user_email(id: int) -> str | None:
-    user = db.get_user(id)
-    if user is None:
-        return None
-    profile = user.get("profile")
-    if profile is None:
-        return None
-    return profile.get("email")
+parsed = try_result(
+    lambda: int(raw_size),
+    to_config_error,
+    exc_type=ValueError,
+)
 
-# AFTER – Option chain
-def get_user_email(id: int) -> Option[str]:
-    return (
-        option_from_nullable(db.get_user(id))
-        .and_then(lambda user: option_from_nullable(user.get("profile")))
-        .and_then(lambda profile: option_from_nullable(profile.get("email")))
-    )
-
-# Boundary – preserve original str | None contract
-def get_user_email_legacy(id: int) -> str | None:
-    return get_user_email(id).unwrap_or(None)
+validated = parsed.and_then(require_positive)
+environment = validated.map(
+    lambda size: RagEnv(chunk_size=size)
+)
 ```
 
-Zero pyramid. Absence propagates automatically.
+Now:
 
-## 5. Proving Equivalence – The Safety Net
+- the adapter owns text parsing;
+- a pure function owns the positivity rule;
+- a plain constructor owns the valid environment shape; and
+- the outer shell owns actual pipeline execution.
 
-```python
-@given(st.text())
-def test_json_refactor_equivalence(raw: str):
-    @dataclass(frozen=True)
-    class ParseErr:
-        msg: str
+Each failure points to the layer that can explain it.
 
-    # Imperative version
-    def imp() -> dict | None:
-        try:
-            return json.loads(raw)
-        except json.JSONDecodeError:
-            return None
+## Do not refactor every `try` block into Result
 
-    # FP version
-    def fp() -> Result[dict, ParseErr]:
-        return try_result(
-            lambda: json.loads(raw),
-            lambda e: ParseErr(str(e)),
-            exc_type=json.JSONDecodeError,
-        )
+Keep ordinary exceptions when:
 
-    # Boundary to match original
-    def fp_boundary() -> dict | None:
-        return fp().unwrap_or(None)
+- the caller cannot recover meaningfully;
+- the failure represents a violated invariant or programming error;
+- the surrounding Python API is idiomatically exception-based;
+- converting the failure would erase traceback context without adding a
+  useful contract; or
+- the code is already at the outermost process boundary that will terminate.
 
-    assert imp() == fp_boundary()
-```
+Result is valuable for expected outcomes that callers should compose. It is
+not a requirement to turn Python into a language without exceptions.
 
-Run this in CI. If it ever fails, you broke the refactor.
+## Review the change in three passes
 
-## Review The Rewrite In Three Passes
+### Contract pass
 
-When reviewing one of these refactors, read it in this order:
+- Which inputs and outputs are public?
+- Are complete success and error values unchanged?
+- Is ordering or evaluation count observable?
 
-1. contract pass: does the boundary still return the old public shape?
-2. classification pass: are expected failures, absence, and bugs now separated more clearly?
-3. composition pass: do the extracted helpers and combinators actually make the flow easier to inspect?
+### Classification pass
 
-That order keeps the review grounded in behavior first and style second.
+- Which exception class is expected?
+- Is the catching expression narrow?
+- Do unexpected exceptions still propagate?
 
-## 6. Anti-Patterns & Immediate Fixes
+### Composition pass
 
-| Anti-Pattern                    | Symptom                              | Fix                                      |
-|---------------------------------|--------------------------------------|------------------------------------------|
-| Nested try/except               | Unreadable indentation              | Chain with `.and_then`                   |
-| Early returns with error strings| Only first error visible             | Use Validation + `.ap` / `v_liftA2`      |
-| if value is None pyramid        | Deep nesting                         | Chain with `.and_then` on Option         |
-| No equivalence tests            | "It works on my machine"             | Add Hypothesis equivalence properties    |
+- Are dependent checks under `and_then`?
+- Are plain transforms under `map`?
+- Are independent validation errors still accumulated where required?
+- Is the new flow easier to review than the direct `try` block?
 
-## 7. Pre-Core Quiz
+If the final answer is no, keep the direct implementation. A combinator is not
+an improvement by definition.
 
-1. First step in refactoring? → **Identify every error path**  
-2. Bridge exceptions with? → **try_result at boundary**  
-3. Chain dependent steps with? → **.and_then**  
-4. Accumulate independent errors with? → **Validation + .ap / v_liftA2**  
-5. Prove safety with? → **Hypothesis equivalence tests**
+## Common wrong turns
 
-## 8. Post-Core Exercise
+- changing range policy during the control-flow refactor;
+- comparing only `is_ok`;
+- retaining old and new implementations indefinitely;
+- catching a broad expression rather than one throwing call;
+- mapping unrelated exceptions to one error code;
+- assuming property equivalence proves the original policy is correct; and
+- replacing a clear local `try` with a less readable abstraction.
 
-1. Take the ugliest try/except function in your codebase and apply the 6-step process.
-2. Add Hypothesis equivalence tests and delete the old imperative version.
-3. Celebrate — you now have one less piece of spaghetti forever.
+## What the focused proof establishes
 
-**Continue with:** [Configurable Pipelines](../module-06-monadic-flow-explicit-context/configurable-pipelines.md)
+The learning test proves that the direct and bridged parsers return the same
+complete Results for the characterized valid and invalid inputs. The companion
+exception test proves `RuntimeError` remains an exception.
 
-You have now refactored imperative error handling into pure, composable, mathematically proven pipelines. Your codebase is dramatically cleaner, safer, and ready for the final architectural patterns.
+It does not prove equivalence for all strings until the exercise expands the
+input domain, and it does not prove the parsing policy is the best product
+contract.
+
+Continue with [Configurable Pipelines](configurable-pipelines.md), where one
+stable normalization function is wrapped with policy chosen at assembly time.
