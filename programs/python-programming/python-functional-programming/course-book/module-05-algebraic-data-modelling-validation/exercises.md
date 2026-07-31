@@ -20,25 +20,29 @@ PYTHONPATH=src pytest -q tests/learning/test_module_05_data_modelling.py \
   -k NAME_FROM_THE_EXERCISE
 ```
 
-## Product and sum types: remove an ambiguous outcome
+## Product and sum types: account for the real chunk values
 
-Run `test_product_and_sum_types_make_chunk_outcomes_explicit`. Add a distinct
-`Skipped` outcome with a reason, update the exhaustive description function,
-and show that a prepared chunk is still immutable and JSON-roundtrippable.
+Run `test_rag_product_types_keep_chunk_fields_together` and
+`test_result_sum_type_separates_embedding_success_from_failure`. Draw the
+product shape of `ChunkWithoutEmbedding`, then write a function that accepts
+`Result[Chunk, ErrInfo]` and reports either the chunk span or the failure stage.
 
-Constraints: do not add a success flag; do not make unrelated fields optional;
-reject an unknown serialized tag; preserve Module 04 chunk order. Evidence must
-include all three exact descriptions and the rejected tag.
+Constraints: use the existing `Ok | Err` sum; do not add a success flag,
+nullable error, or parallel chunk class; match both variants explicitly;
+preserve Module 04 chunk identity and offsets. Evidence must include one
+successful span, one failure stage, and an attempted metadata mutation.
 
-## Domain state ADTs: reject an illegal lifecycle jump
+## Domain states: prove the existing transition
 
-Run `test_processing_state_allows_only_declared_rag_transitions`. Add a
-cancelled terminal state and event, then specify which non-terminal states may
-accept it.
+Run `test_rag_stage_types_make_embedding_transition_explicit`. Starting with
+one `RawDoc`, record the value and type after cleaning, chunking, and embedding.
+Add assertions for every field that embedding must preserve.
 
-Constraints: use aware timestamps; keep terminal states absorbing; reject
-`Pending`→`Done`; do not mutate the old state. Evidence must include one legal
-route, one illegal route, and the unchanged original value.
+Constraints: use `clean_doc`, `chunk_doc`, and `embed_chunk`; do not add
+`Pending`, `Running`, or timestamp events; do not mutate the earlier values;
+use an embedding dimension failure as the illegal final-state example.
+Evidence must show the three stage types, preserved identity/text/offsets, the
+unchanged raw abstract, and the rejected malformed `Chunk`.
 
 ## Functors: transform success without touching failure
 
@@ -67,23 +71,27 @@ Constraints: define an honest empty value; use an associative combine; compare
 left and right regroupings; keep maximum latency distinct from summed latency.
 Evidence must include the empty fold and both regroupings.
 
-## Pydantic smart constructors: stop invalid data at the edge
+## Pydantic at the boundary: preserve a complete indexed chunk
 
 Run `test_pydantic_adapter_rejects_invalid_embedding_before_core_conversion`.
-Add a valid upper-bound example and an invalid non-finite component.
+Validate a complete `ChunkModel`, convert it to the domain `Chunk`, then
+convert, serialize, and deserialize it back to the boundary model.
 
-Constraints: keep Pydantic out of the core dataclass; reject extra fields;
-convert only a validated model; assert the exact core text and metadata.
-Evidence must distinguish schema rejection from domain construction.
+Constraints: keep Pydantic out of the core dataclass; include document ID,
+text, offsets, metadata, and 16 finite values; reject extra fields; compare the
+complete round-trip value. Evidence must also include one offset mismatch and
+one wrong-dimension rejection before domain conversion.
 
-## Pattern matching: consume every declared variant
+## Pattern matching: consume every declared result variant
 
-Run `test_pattern_matching_handles_every_chunk_outcome`. Add the new `Skipped`
-variant from the first exercise to the classifier.
+Reuse the `Result[Chunk, ErrInfo]` reporter from the first exercise. Replace
+any wildcard branch with explicit `Ok` and `Err` patterns followed by
+`assert_never`.
 
-Constraints: destructure fields in each case; keep a final `assert_never`;
-return stable public labels; do not add a catch-all string. Evidence must cover
-every variant.
+Constraints: destructure fields in each case; return stable public labels; do
+not inspect a nonexistent success flag; do not add a catch-all string.
+Evidence must cover both declared variants and include the type-check command
+that would detect a forgotten future variant.
 
 ## Serialization: preserve typed failure provenance
 
