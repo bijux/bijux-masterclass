@@ -47,6 +47,7 @@ A roadmap row, empty file, generated outline, or title-only file never counts as
 - `manifests/modules.csv` and `.jsonl` — machine-readable plan
 - `tools/validate_blueprint.py` — corpus and roadmap structural validator
 - `tools/validate_module.py` — focused chapter-contract validator
+- `tools/verify_snippets.py` — safe extraction and executable-snippet evidence
 - `Makefile` — repository validation entry points
 
 ## Validate
@@ -54,13 +55,15 @@ A roadmap row, empty file, generated outline, or title-only file never counts as
 ```bash
 make validate
 python3 tools/validate_module.py PLS-001 --allow-draft
+python3 tools/verify_snippets.py PLS-001
 python3 tools/validate_module.py PLS-001
 ```
 
-The draft command checks a real chapter while its manifest row remains `planned`.
-The completion command requires the chapter and both module manifests to agree on
-`complete`. Structural validation rejects contract and synchronization defects;
-it does not substitute for technical, mathematical, citation, or pedagogical
-review.
+The draft command checks a real chapter and its annotated snippets while its
+manifest row remains `planned`. The completion command requires the chapter and
+both module manifests to agree on `complete`. Structural and executable
+validation reject contract, synchronization, safety, and observed-behavior
+defects; they do not substitute for broader technical, mathematical, citation,
+or pedagogical review.
 
 Generated: 2026-08-28

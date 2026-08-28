@@ -118,6 +118,38 @@ When code is relevant:
 - test code snippets when a suitable local toolchain exists;
 - state when code is intentionally schematic.
 
+Every fenced block must be preceded immediately by a single-line JSON annotation.
+Executable Python uses this shape:
+
+````markdown
+<!-- bijux-verify: {"id":"sum-values","mode":"run","language":"python","toolchain":"python3","expect":{"exit_code":0,"stdout":"6\n","stderr":""}} -->
+```python
+print(sum([1, 2, 3]))
+```
+````
+
+`mode` is `run` or `compile` for executable code. The `expect` object always
+declares `exit_code` and may declare exact `stdout` or `stderr`, or
+`stdout_contains` or `stderr_contains` checks. Supported execution routes are
+explicitly registered; an unknown language or toolchain is unavailable, not an
+implicit pass.
+
+Intentionally non-executable blocks use `schematic` or `data`, set `toolchain` to
+`none`, and explain why execution is inapplicable:
+
+````markdown
+<!-- bijux-verify: {"id":"ownership-graph","mode":"schematic","language":"text","toolchain":"none","reason":"the diagram describes a relationship rather than a program"} -->
+```text
+owner -> resource -> observer
+```
+````
+
+The verifier extracts executable snippets and writes source files, commands,
+toolchain versions, outputs, expectations, and pass/fail/skipped/unavailable
+status under `artifacts/snippets/<MODULE_ID>/`. A skipped schematic or data block
+is acceptable only because its reason is explicit; an unavailable executable
+route prevents completion.
+
 When mathematics is relevant:
 
 - define notation;

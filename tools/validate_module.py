@@ -6,6 +6,7 @@ from pathlib import Path
 
 from course_validation.blueprint import validate_blueprint
 from course_validation.chapter import validate_chapter
+from course_validation.snippets import verify_chapter_snippets
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -28,6 +29,20 @@ def main() -> None:
     if not result.ok:
         for issue in result.issues:
             print(f"FAIL: {issue}")
+        raise SystemExit(1)
+    snippet_result, report, report_path = verify_chapter_snippets(ROOT, args.module_id)
+    if report is not None:
+        counts = report.counts
+        print(
+            "Snippets: "
+            f"{counts['passed']} passed, {counts['failed']} failed, "
+            f"{counts['skipped']} skipped, {counts['unavailable']} unavailable"
+        )
+    if report_path is not None:
+        print(f"Snippet report: {report_path.relative_to(ROOT)}")
+    if not snippet_result.ok:
+        for issue in snippet_result.issues:
+            print(f"FAIL: snippet: {issue}")
         raise SystemExit(1)
     print(f"PASS: {args.module_id}")
 
