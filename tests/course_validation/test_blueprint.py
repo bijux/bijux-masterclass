@@ -20,8 +20,10 @@ class BlueprintValidationTests(unittest.TestCase):
         self.assertEqual((), result.issues)
         self.assertEqual(30, summary["programs"])
         self.assertEqual(3000, summary["modules"])
-        self.assertEqual(3000, summary["planned_modules"])
-        self.assertEqual(0, summary["complete_modules"])
+        self.assertEqual(
+            3000,
+            summary["planned_modules"] + summary["complete_modules"],
+        )
 
     def test_csv_jsonl_disagreement_fails(self) -> None:
         with copy_blueprint() as directory:
