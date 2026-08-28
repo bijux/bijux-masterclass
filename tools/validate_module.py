@@ -6,6 +6,7 @@ from pathlib import Path
 
 from course_validation.blueprint import validate_blueprint
 from course_validation.chapter import validate_chapter
+from course_validation.review import validate_module_review
 from course_validation.snippets import verify_chapter_snippets
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,6 +44,11 @@ def main() -> None:
     if not snippet_result.ok:
         for issue in snippet_result.issues:
             print(f"FAIL: snippet: {issue}")
+        raise SystemExit(1)
+    review_result = validate_module_review(ROOT, args.module_id)
+    if not review_result.ok:
+        for issue in review_result.issues:
+            print(f"FAIL: review: {issue}")
         raise SystemExit(1)
     print(f"PASS: {args.module_id}")
 

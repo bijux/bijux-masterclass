@@ -12,6 +12,7 @@ from typing import Any
 from .blueprint import validate_blueprint
 from .chapter import validate_chapter
 from .manifest import find_module, read_csv, read_jsonl
+from .review import validate_module_review
 from .snippets import verify_chapter_snippets
 
 FRONT_MATTER = re.compile(r"\A---\n(?P<body>.*?)\n---\n", re.DOTALL)
@@ -52,6 +53,11 @@ def _validated_draft(root: Path, module_id: str) -> dict[str, str]:
     if not snippet_result.ok:
         raise CompletionError(
             "draft snippet validation failed: " + "; ".join(snippet_result.issues)
+        )
+    review_result = validate_module_review(root, module_id)
+    if not review_result.ok:
+        raise CompletionError(
+            "module review validation failed: " + "; ".join(review_result.issues)
         )
     return row
 
@@ -160,6 +166,7 @@ def _write_evidence(root: Path, module_id: str, paths: tuple[Path, ...]) -> Path
         "validation": {
             "draft_chapter": "passed",
             "draft_snippets": "passed",
+            "module_review": "passed",
             "completed_blueprint": "passed",
             "completed_chapter": "passed",
             "completed_snippets": "passed",
@@ -208,10 +215,12 @@ def complete_module(root: Path, module_id: str) -> CompletionOutcome:
         blueprint_result, _ = validate_blueprint(root)
         chapter_result = validate_chapter(root, module_id)
         snippet_result, _, _ = verify_chapter_snippets(root, module_id)
+        review_result = validate_module_review(root, module_id)
         post_issues = (
             list(blueprint_result.issues)
             + list(chapter_result.issues)
             + list(snippet_result.issues)
+            + list(review_result.issues)
         )
         if post_issues:
             raise CompletionError(

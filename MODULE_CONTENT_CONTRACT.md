@@ -156,6 +156,14 @@ When mathematics is relevant:
 - show intermediate steps;
 - distinguish proof, proof sketch, intuition, and empirical evidence.
 
+Before completion, `artifacts/reviews/<MODULE_ID>/review.json` must record an
+outcome and rationale for notation and syntax, numerical recomputation, symbolic
+recomputation, boundary and adversarial cases, invariant checking, proof review,
+proof-sketch labeling, and empirical-evidence labeling. Use `not_applicable` only
+with a topic-specific rationale. The same digest-bound record covers source,
+conceptual, practitioner, and pedagogical review and explicitly disclaims
+external review.
+
 ## Citations and currency
 
 Each module must use:

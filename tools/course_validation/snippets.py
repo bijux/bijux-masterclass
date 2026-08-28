@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import json
 import os
+import platform
 import re
 import subprocess
 import sys
@@ -131,8 +132,17 @@ class SnippetReport:
             "schema_version": 1,
             "module_id": self.module_id,
             "validation_status": "failed" if self.issues else "passed",
+            "environment": {
+                "operating_system": platform.platform(),
+                "python_implementation": platform.python_implementation(),
+            },
             "summary": self.counts,
             "issues": list(self.issues),
+            "limitations": (
+                "Execution establishes observed local behavior only. Static safety checks, "
+                "a five-second timeout, and available POSIX resource limits constrain but do "
+                "not prove universal safety or correctness."
+            ),
             "entries": list(self.entries),
         }
 
@@ -457,6 +467,7 @@ def verify_snippets(
             "mode": snippet.mode,
             "language": snippet.language,
             "toolchain": snippet.toolchain,
+            "dependencies": [],
         }
         if snippet.mode in {"schematic", "data"}:
             entries.append({**base_entry, "status": "skipped", "reason": snippet.reason})

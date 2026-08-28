@@ -48,6 +48,8 @@ A roadmap row, empty file, generated outline, or title-only file never counts as
 - `tools/validate_blueprint.py` — corpus and roadmap structural validator
 - `tools/validate_module.py` — focused chapter-contract validator
 - `tools/verify_snippets.py` — safe extraction and executable-snippet evidence
+- `tools/create_review_record.py` — incomplete source, mathematics, and review record
+- `tools/validate_review.py` — focused review-evidence validator
 - `tools/complete_module.py` — guarded chapter and manifest completion transition
 - `Makefile` — repository validation entry points
 
@@ -55,23 +57,31 @@ A roadmap row, empty file, generated outline, or title-only file never counts as
 
 ```bash
 make validate
-python3 tools/validate_module.py PLS-001 --allow-draft
 python3 tools/verify_snippets.py PLS-001
+python3 tools/create_review_record.py PLS-001
+python3 tools/validate_review.py PLS-001
+python3 tools/validate_module.py PLS-001 --allow-draft
 python3 tools/complete_module.py PLS-001
 python3 tools/validate_module.py PLS-001
 ```
 
-The draft command checks a real chapter and its annotated snippets while its
-manifest row remains `planned`. The completion command requires the chapter and
-both module manifests to agree on `complete`. Structural and executable
-validation reject contract, synchronization, safety, and observed-behavior
-defects; they do not substitute for broader technical, mathematical, citation,
-or pedagogical review.
+The draft command checks a real chapter, its annotated snippets, and its completed
+review record while its manifest row remains `planned`. The completion command
+requires the chapter and both module manifests to agree on `complete`. Structural
+and executable validation reject contract, synchronization, safety, and
+observed-behavior defects; the review record covers the broader technical,
+mathematical, citation, and pedagogical judgments that automation cannot prove.
 
-The completion command first validates the planned draft and its snippets, then
-changes only its front-matter status and its matching CSV and JSONL status fields.
-It reruns blueprint, chapter, and snippet validation and restores the three files
-if a post-transition check fails. The chapter and both manifests belong in the
-same module commit.
+The completion command first validates the planned draft, snippets, and review
+record, then changes only its front-matter status and its matching CSV and JSONL
+status fields. It reruns blueprint, chapter, snippet, and review validation and
+restores the three files if a post-transition check fails. The chapter and both
+manifests belong in the same module commit.
+
+Review records live under `artifacts/reviews/<MODULE_ID>/`. The generated template
+is intentionally incomplete. It becomes valid only after source checking, every
+mathematics category, conceptual review, practitioner review, and pedagogical
+review have an explicit outcome and substantive notes bound to the chapter
+digest. These are internal checks and never constitute external peer review.
 
 Generated: 2026-08-28

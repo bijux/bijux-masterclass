@@ -14,8 +14,10 @@ from course_validation.blueprint import validate_blueprint
 from course_validation.chapter import validate_chapter
 from course_validation.completion import CompletionError, complete_module
 from course_validation.result import ValidationResult
+from course_validation.review import review_path
 from fixtures import copy_blueprint
 from test_chapter import valid_draft
+from test_review import completed_review
 
 
 class CompletionTests(unittest.TestCase):
@@ -27,6 +29,12 @@ class CompletionTests(unittest.TestCase):
         )
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(valid_draft(), encoding="utf-8")
+        evidence = review_path(root, "PLS-001")
+        evidence.parent.mkdir(parents=True, exist_ok=True)
+        evidence.write_text(
+            json.dumps(completed_review(valid_draft()), indent=2) + "\n",
+            encoding="utf-8",
+        )
         return path
 
     def test_validated_draft_transitions_all_owned_files(self) -> None:
@@ -87,6 +95,23 @@ class CompletionTests(unittest.TestCase):
                 chapter.read_text(encoding="utf-8").replace("## Governing Question", "## Missing"),
                 encoding="utf-8",
             )
+            paths = (
+                chapter,
+                root / "manifests/modules.csv",
+                root / "manifests/modules.jsonl",
+            )
+            before = {path: path.read_bytes() for path in paths}
+
+            with self.assertRaises(CompletionError):
+                complete_module(root, "PLS-001")
+
+            self.assertEqual(before, {path: path.read_bytes() for path in paths})
+
+    def test_missing_review_evidence_leaves_owned_files_unchanged(self) -> None:
+        with copy_blueprint() as directory:
+            root = Path(directory)
+            chapter = self._write_draft(root)
+            review_path(root, "PLS-001").unlink()
             paths = (
                 chapter,
                 root / "manifests/modules.csv",

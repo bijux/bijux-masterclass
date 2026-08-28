@@ -78,6 +78,8 @@ class SnippetExecutionTests(unittest.TestCase):
         self.assertEqual("passed", report.entries[0]["status"])
         self.assertTrue(path.is_file())
         self.assertEqual(1, report.counts["passed"])
+        self.assertIn("operating_system", report.as_dict()["environment"])
+        self.assertEqual([], report.entries[0]["dependencies"])
 
     def test_output_mismatch_fails(self) -> None:
         text = annotation(
