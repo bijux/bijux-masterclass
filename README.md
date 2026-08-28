@@ -51,6 +51,7 @@ A roadmap row, empty file, generated outline, or title-only file never counts as
 - `tools/create_review_record.py` — incomplete source, mathematics, and review record
 - `tools/validate_review.py` — focused review-evidence validator
 - `tools/complete_module.py` — guarded chapter and manifest completion transition
+- `tools/audit_modules.py` — horizontal, program, level, and corpus audit runner
 - `Makefile` — repository validation entry points
 
 ## Validate
@@ -63,6 +64,10 @@ python3 tools/validate_review.py PLS-001
 python3 tools/validate_module.py PLS-001 --allow-draft
 python3 tools/complete_module.py PLS-001
 python3 tools/validate_module.py PLS-001
+python3 tools/audit_modules.py --module-number 1 --require-complete
+python3 tools/audit_modules.py --program PLS --level 1 --require-complete
+python3 tools/audit_modules.py --level 1 --require-complete
+python3 tools/audit_modules.py --require-complete
 ```
 
 The draft command checks a real chapter, its annotated snippets, and its completed
