@@ -45,13 +45,22 @@ A roadmap row, empty file, generated outline, or title-only file never counts as
 - `ALL_3000_MODULES.md` — combined table of contents
 - `programs/*/ROADMAP.md` — one complete roadmap per program
 - `manifests/modules.csv` and `.jsonl` — machine-readable plan
-- `tools/validate_blueprint.py` — structural validator
+- `tools/validate_blueprint.py` — corpus and roadmap structural validator
+- `tools/validate_module.py` — focused chapter-contract validator
 - `Makefile` — repository validation entry points
 
 ## Validate
 
 ```bash
-python3 tools/validate_blueprint.py
+make validate
+python3 tools/validate_module.py PLS-001 --allow-draft
+python3 tools/validate_module.py PLS-001
 ```
+
+The draft command checks a real chapter while its manifest row remains `planned`.
+The completion command requires the chapter and both module manifests to agree on
+`complete`. Structural validation rejects contract and synchronization defects;
+it does not substitute for technical, mathematical, citation, or pedagogical
+review.
 
 Generated: 2026-08-28
