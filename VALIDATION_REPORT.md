@@ -45,6 +45,18 @@ Structural validation does not prove that a future chapter is:
 
 Those claims require authoring, teaching, review, exercises, code execution, and external evaluation.
 
+## Semantic correction applied during repository acceptance
+
+The accepted package assigned both `SEME-082` and `SARCH-071` to architectural
+drift and erosion even though the Methods & Evolution boundary explicitly excludes
+architecture ownership. `SEME-082` is therefore scoped to **Socio-Technical Causes
+of Architectural Erosion**, which owns the lifecycle, organizational, and process
+forces behind structural decay. `SARCH-071` retains ownership of architectural
+drift and erosion as an architecture evaluation and governance concern.
+
+The correction affects the Methods & Evolution roadmap, combined index, and both
+module manifests. No module number, level, block, or program boundary changed.
+
 ## Reproduce
 
 ```bash

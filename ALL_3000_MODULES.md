@@ -1537,7 +1537,7 @@ This is the combined table of contents. No module file is created by this bluepr
 | # | ID | Module | Future path |
 |---:|---|---|---|
 | 081 | `SEME-081` | Lehman's Laws of Software Evolution | `programs/10-software-engineering-methods-and-evolution/modules/081-lehman-s-laws-of-software-evolution.md` |
-| 082 | `SEME-082` | Architectural Erosion and Drift | `programs/10-software-engineering-methods-and-evolution/modules/082-architectural-erosion-and-drift.md` |
+| 082 | `SEME-082` | Socio-Technical Causes of Architectural Erosion | `programs/10-software-engineering-methods-and-evolution/modules/082-socio-technical-causes-of-architectural-erosion.md` |
 | 083 | `SEME-083` | API and Schema Evolution | `programs/10-software-engineering-methods-and-evolution/modules/083-api-and-schema-evolution.md` |
 | 084 | `SEME-084` | Dependency Ecosystems and Supply Risk | `programs/10-software-engineering-methods-and-evolution/modules/084-dependency-ecosystems-and-supply-risk.md` |
 | 085 | `SEME-085` | Open-Source Governance and Contribution Models | `programs/10-software-engineering-methods-and-evolution/modules/085-open-source-governance-and-contribution-models.md` |

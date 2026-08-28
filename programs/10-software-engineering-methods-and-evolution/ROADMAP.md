@@ -145,7 +145,7 @@ Modules 051–100 add internals, difficult cases, production constraints, advanc
 | Module | Canonical chapter | Future file |
 |---:|---|---|
 | 081 | **Lehman's Laws of Software Evolution** | `081-lehman-s-laws-of-software-evolution.md` |
-| 082 | **Architectural Erosion and Drift** | `082-architectural-erosion-and-drift.md` |
+| 082 | **Socio-Technical Causes of Architectural Erosion** | `082-socio-technical-causes-of-architectural-erosion.md` |
 | 083 | **API and Schema Evolution** | `083-api-and-schema-evolution.md` |
 | 084 | **Dependency Ecosystems and Supply Risk** | `084-dependency-ecosystems-and-supply-risk.md` |
 | 085 | **Open-Source Governance and Contribution Models** | `085-open-source-governance-and-contribution-models.md` |
