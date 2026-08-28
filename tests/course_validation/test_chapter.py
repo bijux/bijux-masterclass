@@ -123,6 +123,26 @@ class ChapterValidationTests(unittest.TestCase):
             result = validate_chapter_text(text, manifest_row(), allow_draft=True, path=path)
         self.assertTrue(any("missing Markdown reference" in issue for issue in result.issues))
 
+    def test_code_fence_headings_and_links_are_not_chapter_structure(self) -> None:
+        text = valid_draft().replace(
+            substantive("Core Exposition"),
+            substantive("Core Exposition")
+            + "\n\n```text\n## Demonstrated Heading\n[example](missing.md)\n```",
+        )
+        ARTIFACTS.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=ARTIFACTS) as directory:
+            path = Path(directory) / "chapter.md"
+            result = validate_chapter_text(text, manifest_row(), allow_draft=True, path=path)
+        self.assertEqual((), result.issues)
+
+    def test_code_fence_bullets_do_not_count_as_references(self) -> None:
+        text = valid_draft().replace(
+            "- Standards Body. *Current Specification*. Revision 2026.",
+            "```text\n- Not a real reference inside example data.\n```",
+        )
+        result = validate_chapter_text(text, manifest_row(), allow_draft=True)
+        self.assertTrue(any("at least three" in issue for issue in result.issues))
+
 
 if __name__ == "__main__":
     unittest.main()

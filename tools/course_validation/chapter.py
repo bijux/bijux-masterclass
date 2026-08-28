@@ -6,6 +6,7 @@ from datetime import date
 from pathlib import Path
 
 from .manifest import find_module
+from .markdown import headings, prose_only
 from .result import ValidationResult
 
 FRONT_MATTER_FIELDS = (
@@ -47,9 +48,6 @@ REVIEW_SUBSECTIONS = (
 )
 
 FRONT_MATTER = re.compile(r"\A---\n(?P<body>.*?)\n---\n", re.DOTALL)
-H1 = re.compile(r"^# (.+)$", re.MULTILINE)
-H2 = re.compile(r"^## (.+)$", re.MULTILINE)
-H3 = re.compile(r"^### (.+)$", re.MULTILINE)
 INLINE_LINK = re.compile(r"!?\[[^\]]*\]\(([^)\n]+)\)")
 REFERENCE_LINK = re.compile(r"(?<!!)\[([^\]]+)\]\[([^\]]*)\]")
 REFERENCE_DEFINITION = re.compile(r"^\[([^\]]+)\]:\s+(\S+)", re.MULTILINE)
@@ -78,14 +76,14 @@ def _front_matter(text: str, issues: list[str]) -> tuple[dict[str, str], int]:
 
 
 def _section_bodies(text: str, issues: list[str]) -> dict[str, str]:
-    matches = list(H2.finditer(text))
-    names = tuple(match.group(1).strip() for match in matches)
+    matches = headings(text, 2)
+    names = tuple(match.title for match in matches)
     if names != REQUIRED_SECTIONS:
         issues.append("H2 sections do not match the required names and order")
     bodies: dict[str, str] = {}
     for index, match in enumerate(matches):
-        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
-        bodies[match.group(1).strip()] = text[match.end():end].strip()
+        end = matches[index + 1].start if index + 1 < len(matches) else len(text)
+        bodies[match.title] = text[match.end:end].strip()
     for name in REQUIRED_SECTIONS:
         if not bodies.get(name):
             issues.append(f"section is empty or missing: {name}")
@@ -97,16 +95,16 @@ def _normalize_prose(text: str) -> str:
 
 
 def _numbered_entries(section: str, kind: str, expected: int, issues: list[str]) -> None:
-    matches = list(H3.finditer(section))
-    names = [match.group(1).strip() for match in matches]
+    matches = headings(section, 3)
+    names = [match.title for match in matches]
     required = [f"{kind} {number}" for number in range(1, expected + 1)]
     if names != required:
         issues.append(f"{kind.lower()} headings must be exactly numbered 1 through {expected}")
         return
     normalized: list[str] = []
     for index, match in enumerate(matches):
-        end = matches[index + 1].start() if index + 1 < len(matches) else len(section)
-        body = section[match.end():end].strip()
+        end = matches[index + 1].start if index + 1 < len(matches) else len(section)
+        body = section[match.end:end].strip()
         prose = _normalize_prose(body)
         if not prose:
             issues.append(f"{kind} {index + 1} is empty")
@@ -135,6 +133,7 @@ def _local_target(path: Path, raw_target: str, issues: list[str]) -> None:
 
 
 def _links(path: Path, text: str, issues: list[str]) -> None:
+    text = prose_only(text)
     for raw_target in INLINE_LINK.findall(text):
         _local_target(path, raw_target, issues)
 
@@ -189,21 +188,24 @@ def validate_chapter_text(
     except ValueError:
         issues.append("last_verified must be an ISO date")
 
-    h1_matches = H1.findall(body)
-    if h1_matches != [manifest_row["module_title"]]:
+    h1_matches = headings(body, 1)
+    if [match.title for match in h1_matches] != [manifest_row["module_title"]]:
         issues.append("chapter must contain exactly one H1 matching the canonical title")
 
     sections = _section_bodies(body, issues)
-    review_names = [match.group(1).strip() for match in H3.finditer(sections.get("One-Page Review", ""))]
+    review_names = [
+        match.title for match in headings(sections.get("One-Page Review", ""), 3)
+    ]
     if tuple(review_names) != REVIEW_SUBSECTIONS:
         issues.append("One-Page Review subsections do not match the contract")
     _numbered_entries(sections.get("Worked Examples", ""), "Example", 10, issues)
     _numbered_entries(sections.get("Exercises", ""), "Exercise", 5, issues)
     _numbered_entries(sections.get("Answers to the Exercises", ""), "Answer", 5, issues)
 
+    reference_prose = prose_only(sections.get("References", ""))
     references = [
         line
-        for line in sections.get("References", "").splitlines()
+        for line in reference_prose.splitlines()
         if re.match(r"^\s*(?:[-*+] |\d+\. )", line)
     ]
     if len(references) < 3:

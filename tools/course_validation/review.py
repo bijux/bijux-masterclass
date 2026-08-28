@@ -7,8 +7,9 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from .chapter import FRONT_MATTER, H2
+from .chapter import FRONT_MATTER
 from .manifest import find_module
+from .markdown import headings, prose_only
 from .result import ValidationResult
 
 MATHEMATICS_CATEGORIES = (
@@ -95,12 +96,12 @@ def chapter_digest(text: str) -> str:
 
 
 def reference_count(text: str) -> int:
-    matches = list(H2.finditer(text))
+    matches = headings(text, 2)
     for index, match in enumerate(matches):
-        if match.group(1).strip() != "References":
+        if match.title != "References":
             continue
-        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
-        section = text[match.end():end]
+        end = matches[index + 1].start if index + 1 < len(matches) else len(text)
+        section = prose_only(text[match.end:end])
         return sum(
             bool(re.match(r"^\s*(?:[-*+] |\d+\. )", line))
             for line in section.splitlines()
