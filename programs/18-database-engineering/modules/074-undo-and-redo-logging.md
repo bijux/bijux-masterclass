@@ -300,81 +300,81 @@ The proof assumes a verified log prefix, truthful persistence, complete record/p
 
 **Situation.** A no-force/no-steal engine crashes after T commits while its page remains old.
 
-**Reasoning.** No loser page can have escaped, so page undo is unnecessary. Because commit did not force the changed page, durable redo information or equivalent committed version/root is required.
+**Reasoning.** Let page P contain A=10 on disk. T changes A to 15 in the buffer, its durable commit record reaches the log, but P is not forced. No-steal guarantees that an uncommitted page image never reached the durable database, so recovery cannot encounter escaped loser data. No-force permits the committed update to be absent, which is exactly this crash image. Recovery must find T's durable outcome and an after-image or equivalent operation/version, install A=15, and establish the page's recovery position before exposing service. If the redo record were missing, the commit acknowledgement would have promised durability without reconstruction evidence.
 
-**Conclusion.** The policy needs redo, not ordinary loser undo.
+**Conclusion.** Under the stated policy, redo is necessary for durability and ordinary page undo is unnecessary for crash atomicity. The conclusion changes if either force/steal assumption changes.
 
 ### Example 2
 
 **Situation.** A steal/force engine writes T's tentative page, then T aborts; all winner pages were forced at commit.
 
-**Reasoning.** Missing winner pages are excluded by force, but loser state can escape under steal. Before/inverse information or equivalent version visibility is required.
+**Reasoning.** Disk begins with B=40. T changes B to 55, and buffer pressure writes that page before T decides. T then aborts. Steal permits B=55 to escape, so the recovered database cannot trust physical presence as evidence of commitment. Force guarantees every winner's pages reached disk before acknowledgement, so no winner redo is required under this simplified model. To remove T, recovery needs a before-image B=40, a safe logical inverse, or a version/visibility scheme that makes the tentative version non-authoritative. It must also cover indexes and metadata affected by T, not only the row value.
 
-**Conclusion.** The policy needs undo, while ordinary page redo may be unnecessary under the exact model.
+**Conclusion.** Steal creates the undo obligation; force removes the ordinary missing-winner redo case. This matrix result is conditional on complete, untorn writes and the declared metadata policy.
 
 ### Example 3
 
 **Situation.** Redo record 80 says increment counter by 1; pageLSN is 80 after a crash during recovery.
 
-**Reasoning.** Re-executing increment would produce a second effect. Validating the correct page generation and observing `pageLSN>=80` permits skip; alternatively, the operation needs a durable effect ID.
+**Reasoning.** Suppose the durable page initially held C=7. Recovery applied record 80, producing C=8 and pageLSN=80, then crashed after the page write. Blind replay produces C=9. First verify checksum, object identity, page generation, and record applicability; only then may `pageLSN >= 80` show that this physical effect is already represented. If the engine uses logical operation logging instead, it needs an equally strong guard such as a durable unique effect ID and deterministic preconditions. A numeric LSN on corrupt or reused bytes cannot authorize the skip.
 
-**Conclusion.** Redo repeatability comes from a proven guard, not from the verb “redo.”
+**Conclusion.** Restart-safe redo is conditional idempotence: identity and integrity validation plus a durable application guard prevent the increment from being applied twice.
 
 ### Example 4
 
 **Situation.** T inserts key K and triggers a B-tree split. T later aborts after other transactions use the new structure.
 
-**Reasoning.** Restoring old pages would erase later entries. Treat the split as a committed system/nested top action and logically remove T's key/version while preserving tree validity.
+**Reasoning.** Before T, leaf L is full. T's insertion allocates L2, redistributes entries, and installs separator S in the parent. Transaction U then inserts key J into L2 and commits. Restoring a before-image of L and the parent would delete J, orphan L2, or violate search invariants. A recovery design can treat allocation and split as a system transaction or nested top action whose structural effects remain, while T's logical entry K is removed by transaction-specific undo. Latches protect each physical step; log records and page generations make those steps restartable; transaction locks or versions protect logical isolation.
 
-**Conclusion.** Undo ownership and structural actions require semantics beyond whole-page before-images.
+**Conclusion.** User rollback removes K but preserves the valid split and U's committed J. Whole-page restoration is unsound once later independent work depends on the structure.
 
 ### Example 5
 
 **Situation.** Undo of LSN 50 restores B=70 and logs CLR 60 with `undoNextLSN=20`; recovery crashes.
 
-**Reasoning.** On restart, redo repeats CLR 60 if necessary. The CLR is not undone. The undo scan resumes at 20 and restores B's earlier value.
+**Reasoning.** T changed B from 50 to 70 at LSN 20 and from 70 to 65 at LSN 50. Recovery reverses 50, writes a CLR at 60 describing B=70 and setting `undoNextLSN=20`, then the compensated page reaches disk and recovery crashes. On restart, history reconstruction redoes CLR 60 if the page does not already contain it. The CLR is a record of completed compensation, not another user action, so it is never undone. The loser scan follows `undoNextLSN=20`, restores B=50, logs another compensation, and finally records transaction completion under the algorithm.
 
-**Conclusion.** Durable compensation plus `undoNextLSN` makes rollback restartable and bounded.
+**Conclusion.** Every original action is compensated at most once in the logical undo chain despite repeated crashes; redo may repeat the CLR physically under its page guard. DBE-076 derives the complete pass algorithm.
 
 ### Example 6
 
 **Situation.** A transaction updated at 10, created savepoint S, updated at 20 and 30, then rolls back to S.
 
-**Reasoning.** Follow its backward chain from 30 through 20, logging compensation, and stop at the saved target. The transaction remains active and update 10 remains part of its tentative state.
+**Reasoning.** Let LSN 10 debit account A, savepoint S store rollback target 10, LSN 20 create a provisional fee, and LSN 30 update a note. Rollback starts at the transaction's lastLSN=30. It reverses the note, records compensation pointing to 20, reverses the fee, and records compensation pointing to 10. The stop predicate is now satisfied, so debit 10 remains. The transaction stays active and can perform later actions; its transaction chain includes the CLRs so another crash or full abort knows which work is already compensated. Locks and application-visible errors follow the engine's declared partial-rollback policy.
 
-**Conclusion.** Partial rollback has an explicit chain boundary; it is not transaction abort.
+**Conclusion.** A savepoint defines a rollback frontier, not a commit boundary. Earlier tentative work and transaction identity survive while later effects are removed restartably.
 
 ### Example 7
 
 **Situation.** Transaction D has a durable prepare record and updates on disk but no local commit record after crash.
 
-**Reasoning.** The participant promised to preserve the prepared outcome until the coordinator's decision. Classifying D as an ordinary loser and undoing it could violate distributed atomicity.
+**Reasoning.** Participant P has voted yes in a two-phase commit protocol and durably recorded `PREPARE(D)`. Its data pages may contain D's changes, while its coordinator is temporarily unreachable. The absence of a local commit record means “decision not known here,” not “abort.” P has promised that it can commit if instructed, so it must reconstruct D's prepared state, retain the resources or recovery information required by policy, and query/recover the decision. A documented heuristic decision may exist for extreme operations, but it creates an explicit global-consistency hazard and audit obligation.
 
-**Conclusion.** Restore D as prepared/in doubt, retain resources as specified, and resolve through the commit protocol or governed heuristic.
+**Conclusion.** Winner/loser classification is insufficient for prepared transactions. Unilateral ordinary undo after a durable yes vote can violate distributed atomicity.
 
 ### Example 8
 
 **Situation.** A page reports pageLSN 500, so recovery considers skipping record 400, but the checksum and object generation fail.
 
-**Reasoning.** The LSN belongs to untrusted bytes or another incarnation. Skipping could lose the required effect; applying could corrupt the wrong object.
+**Reasoning.** The buffer descriptor says “orders index, page 42, generation 9,” while the durable page header says generation 7 and its checksum fails. The displayed 500 may be torn data, stale media, or a page from a dropped and recreated object. If recovery trusts it and skips record 400, a committed effect can remain absent. If recovery applies record 400, it can write an old-format delta into the wrong object. Stop ordinary redo for this page, preserve evidence, and invoke the declared repair path: valid full-page image, replica/backup reconstruction, media recovery, or fail closed. Only after identity and integrity are re-established may LSN comparison resume.
 
-**Conclusion.** Quarantine and repair from a valid image under the failure model; numeric comparison cannot authorize recovery.
+**Conclusion.** `pageLSN` is meaningful only inside a validated page identity and history. Corruption converts a skip decision into a repair or availability decision.
 
 ### Example 9
 
 **Situation.** A user transaction sends an email, updates the database, then aborts.
 
-**Reasoning.** Undo can remove/hide the database update but cannot unsend email. The operation needed an outbox committed with the database and an idempotent sender, or a separately modeled business compensation.
+**Reasoning.** The email provider accepts message M before the local database writes its commit record. A deadlock then aborts the transaction. Database undo removes the tentative row, but the provider and recipient are outside the recovery domain; a before-image cannot retract M. A transactional outbox instead commits the business state and `MessageRequested(id=M)` atomically, after which a sender retries with a stable idempotency key and records delivery observations. If a sent message becomes semantically wrong, a correction email is a new business action, not storage-engine undo.
 
-**Conclusion.** Engine undo ends at the transaction boundary and never proves exactly-once external effects.
+**Conclusion.** WAL can make the local database atomic. External effects require their own durable protocol, deduplication assumptions, reconciliation, and often explicit compensation.
 
 ### Example 10
 
 **Situation.** A 2 TiB transaction aborts while only 100 GiB of log space remains; undo itself must emit CLRs.
 
-**Reasoning.** The transaction may pin its own earliest records and need new log capacity to release them, creating a circular resource dependency. Reserved rollback capacity, size/admission limits, staged truncation proven safe, or more capacity was required before admission.
+**Reasoning.** The loser pins the earliest 2 TiB of history because rollback still needs it. Undo must scan that history, dirty pages, and emit CLRs before old segments become reclaimable. With only 100 GiB free, forward compensation can exhaust the same log whose head cannot advance until compensation completes: a resource deadlock. Estimate worst-case compensation and metadata volume before admitting the transaction, reserve emergency space inaccessible to normal work, throttle other writers, expose rollback progress and retained frontier, and define which segments become recyclable after durable proof. Repeatedly killing recovery preserves the debt and can worsen availability.
 
-**Conclusion.** Rollback-space and progress policy are correctness design, not post-failure tuning.
+**Conclusion.** Recovery requires a resource invariant: enough durable capacity must remain to complete or safely stage rollback. Capacity admission is therefore part of atomicity engineering.
 
 ## Cross-Program Connections
 
