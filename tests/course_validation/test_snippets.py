@@ -101,6 +101,19 @@ class SnippetExecutionTests(unittest.TestCase):
         self.assertEqual((), result.issues)
         self.assertEqual("passed", report.entries[0]["status"])
 
+    def test_hashlib_digest_is_verified(self) -> None:
+        text = annotation(
+            '{"id":"sha256-digest","mode":"run","language":"python",'
+            '"toolchain":"python3","expect":{"exit_code":0,'
+            '"stdout":"2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881\\n"}}',
+            "import hashlib\nprint(hashlib.sha256(b'x').hexdigest())",
+        )
+
+        result, report, _ = verify_snippets(self.root, "SE-001", text)
+
+        self.assertEqual((), result.issues)
+        self.assertEqual("passed", report.entries[0]["status"])
+
     def test_expected_failure_can_match_stderr(self) -> None:
         text = annotation(
             '{"id":"expected-error","mode":"run","language":"python",'
