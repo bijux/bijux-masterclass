@@ -307,81 +307,81 @@ The correctness argument is conditional: if sources and authorities are credible
 
 **Question:** Are `customer`, `account`, and `person` synonyms in a subscription service?
 
-**Reasoning:** A person is a legal or natural party; an account is a credential and preference container; a customer participates in a commercial relationship. One person may control several accounts, an organization may be the customer, and an account may exist before purchase. Define each relationship rather than sharing one identifier.
+**Reasoning:** Start with three candidate definitions. `Party` is a person or organization capable of holding rights and obligations. `IdentityAccount` is a credential and preference container controlled by one or more parties. `CustomerRelationship` is a time-bounded commercial relationship between a provider and a party. Now test the model: Ana controls a personal and a work account; Acme pays for twenty employees; a visitor creates an account but never buys; Ana closes an account while a statutory retention duty preserves the customer relationship. A single `customer_id` cannot represent those cardinalities or lifecycles. Use stable identifiers for each concept and explicit relations such as `controls(account, party)` and `customerParty(relationship)`.
 
-**Conclusion:** Similar referents do not make concepts synonymous.
+**Conclusion:** The same real-world person may participate in all three concepts, but overlapping referents do not make the concepts synonymous; identity, access, commerce, and retention require separate rules.
 
 ### Example 2
 
 **Question:** Improve the definition “An active policy is a policy that is active.”
 
-**Reasoning:** The definition is circular. Ask which effective interval, cancellation, suspension, payment, and jurisdiction rules matter. A candidate is: “a policy whose coverage interval contains the evaluation time and for which no effective termination or suspension excludes coverage under the governing contract.” Test reinstatement and retroactive cancellation separately.
+**Reasoning:** “Active” appears on both sides, so the sentence supplies no membership test. Establish the broader genus `insurance policy evaluated at time t`, then add distinguishing characteristics: its coverage interval contains `t`, it has taken effect, and no termination or suspension effective at `t` excludes coverage under the governing contract. Test five cases: before inception is false; exactly at an inclusive inception is true; after an exclusive termination is false; late payment is neither true nor false until the contract's grace rule is applied; retroactive cancellation changes a historical evaluation and must preserve decision-time evidence. Record jurisdiction and policy-version authority because those characteristics are not universal.
 
-**Conclusion:** A discriminating definition names characteristics and evaluation context.
+**Conclusion:** A discriminating definition supplies a reproducible, time-indexed decision rule and exposes the governing source; the label alone supplies neither.
 
 ### Example 3
 
 **Question:** Sales and fulfillment both say `order`; should they share one object?
 
-**Reasoning:** Sales owns commercial intent, price, and acceptance. Fulfillment owns allocatable lines, shipment, and delivery. Partial fulfillment and substitution mean cardinalities and lifecycle differ. Translate `SalesOrderAccepted v2` into one or more fulfillment orders under explicit rules.
+**Reasoning:** Construct two concept records. `SalesOrder` records accepted commercial intent, price commitments, buyer, and cancellation rights. `FulfillmentOrder` groups allocatable items for a location and delivery plan. One sales order can create zero fulfillment orders while payment review is pending, one for a simple shipment, or several when stock is split; substitutions can change fulfillment lines without rewriting the agreed sales line. Their state machines also differ: sales may be `accepted` while fulfillment is `backordered`. A boundary policy consumes `SalesOrderAccepted v2`, validates supported line semantics, and creates versioned fulfillment instructions. Unsupported substitutions become explicit exceptions rather than lossy field copies.
 
-**Conclusion:** Equal terms across contexts require semantic analysis, not automatic unification.
+**Conclusion:** Equal terms conceal different identities, cardinalities, owners, and lifecycle rules. Integration needs a semantic translation, not a shared class named `Order`.
 
 ### Example 4
 
 **Question:** A team uses `cancelled` for a booking before service and for a settled payment reversed later. What is wrong?
 
-**Reasoning:** The word hides different events, authorities, accounting effects, and reversibility. Model `BookingCancelled`, `AuthorizationVoided`, and `PaymentRefunded`; define which workflow triggers each and which states remain possible.
+**Reasoning:** Trace three histories. Before service allocation, a customer cancels a booking and releases capacity: `BookingCancelled`. Before capture, a payment authorization is removed: `AuthorizationVoided`. After settlement, money moves back through a new accounting event: `PaymentRefunded`. The first changes entitlement, the second prevents a future transfer, and the third creates a compensating transfer; their actors, deadlines, evidence, and reversibility differ. A single Boolean `cancelled` cannot answer whether capacity is free, funds settled, a receipt is required, or another refund is legal. Model the events and derive context-specific states from their histories.
 
-**Conclusion:** Overloaded status words erase causal and lifecycle distinctions.
+**Conclusion:** Overloaded status words erase causal history. Precise event vocabulary prevents a booking reversal from being mistaken for a financial reversal.
 
 ### Example 5
 
 **Question:** Is “employee” an adequate concept for authorization?
 
-**Reasoning:** Employment status alone may not grant access. Contractors, suspended staff, delegates, and service identities break the shortcut. Authorization needs roles, resources, purpose, organizational relationship, time, and policy evidence.
+**Reasoning:** Evaluate four cases against a payroll export. A newly hired employee lacks production duty; a contractor is on call and needs incident access; a suspended administrator remains an employee but must be denied; a workload identity is not human but needs one bounded operation. The predicate `is_employee(subject)` grants the wrong result in every case except by accident. Define `Principal`, `RoleAssignment`, `Resource`, `Action`, `Purpose`, and an effective policy decision. Employment can be one attribute supporting role eligibility, never the authorization decision itself. Tests must cover expiry, suspension, delegation, emergency access, and audit evidence.
 
-**Conclusion:** A familiar category must not substitute for the rule the decision actually needs.
+**Conclusion:** “Employee” describes an organizational relationship; authorization is a contextual decision over principal, action, resource, purpose, time, and policy.
 
 ### Example 6
 
 **Question:** How should a multilingual team handle `invoice`, `factura`, and `Rechnung`?
 
-**Reasoning:** Do not assume lexical translation proves conceptual equivalence. Compare legal function, tax requirements, issuance event, correction mechanism, and jurisdiction. Keep locale-specific designations and, where concepts differ, separate identifiers with a documented mapping.
+**Reasoning:** Build a comparison matrix for legal function, issuer, recipient, tax content, event of issuance, correction mechanism, and jurisdiction. Suppose one jurisdiction permits a preliminary commercial `invoice`, another reserves `factura` for a tax-authorized document, and a German `Rechnung` requires different mandatory information. A dictionary gives lexical candidates but cannot decide equivalence. Where characteristics match for the application's purpose, attach localized designations to one concept ID. Where legal effects differ, create distinct concept IDs and translate only under stated conditions; preserve the source designation on exchanged records.
 
-**Conclusion:** Translation preserves concepts and differences, not merely words.
+**Conclusion:** Multilingual terminology maps designations through concept and jurisdiction analysis. Word-to-word substitution can create invalid legal and accounting behavior.
 
 ### Example 7
 
 **Question:** The preferred term changes from `master account` to `controlling account`. Is this a rename?
 
-**Reasoning:** If identity, relationships, and rules are unchanged, preserve the concept ID, deprecate the old designation, migrate user-facing and internal artifacts, and support compatibility where promised. If control is now time-bounded or shared, the concept changed and needs new semantics.
+**Reasoning:** Compare the old and proposed concept records, not just labels. If identity, authority, cardinality, lifecycle, and invariants are unchanged, preserve the stable concept ID, add `controlling account` as preferred, mark the old designation deprecated, inventory API/schema/code/UI/test/telemetry uses, and define compatibility deadlines. If the proposal also permits two controllers or time-bounded control, the membership predicate and relationships changed. Introduce a new version or concepts such as `ControlAssignment`; migrate data and consumers with explicit ambiguity handling. A lexical linter can find residue only after this semantic decision.
 
-**Conclusion:** Determine conceptual change before selecting a migration strategy.
+**Conclusion:** A true rename preserves concept identity; changed cardinality or authority is a model migration and must not be smuggled through as inclusive wording alone.
 
 ### Example 8
 
 **Question:** The terminology checker reports no deprecated words. Is the language correct?
 
-**Reasoning:** It proves only that scanned text follows the declared lexical policy. The registry may omit `DataSubject`, define `Customer` incorrectly, or encode a biased eligibility rule. Review sources, counterexamples, affected people, and production cases.
+**Reasoning:** State the evidence precisely: the checker scanned three configured artifact sets, found unique preferred terms within declared contexts, and found no banned tokens. It did not parse dynamic strings, inspect database meanings, discover missing concepts, or validate definitions. Construct countermodels that also pass: omit `DataSubject`; define `Customer` as “any profitable user”; or give two contexts wrongly identical definitions. Human review must trace sources and authority, classify positive and negative production cases, inspect affected groups, and challenge whether the context boundary itself excludes important facts.
 
-**Conclusion:** Lexical conformance is bounded evidence, not semantic validation.
+**Conclusion:** A clean terminology report establishes conformance to the registry over scanned artifacts. It says nothing by itself about the registry's completeness, truth, legitimacy, or operational fitness.
 
 ### Example 9
 
 **Question:** Support says a ticket is resolved when an agent closes it; customers say it is resolved when the problem no longer recurs.
 
-**Reasoning:** Preserve `AgentClosed`, `CustomerConfirmedResolved`, and `Reopened` as events or observations. Define operational targets against the appropriate one and record cases where confirmation is unavailable. Do not force agreement by renaming all three `Resolved`.
+**Reasoning:** Trace ticket 42. At 10:00 the agent supplies a workaround and marks work complete; at 10:05 the system records `AgentClosed`; at 16:00 the customer reproduces the defect and creates `Reopened`; the next day a permanent correction is deployed, and at 14:00 the customer records `CustomerConfirmedResolved`. Each observation answers a different question: queue ownership, recurrence, or experienced outcome. Define measures with denominators and windows—for example, reopen within seven days—then specify how silence is treated. It is unknown, not automatic confirmation. Keep a shared umbrella concept only if its narrower senses remain explicit.
 
-**Conclusion:** Disagreement can reveal distinct observations rather than one bad definition.
+**Conclusion:** The participants were not merely disagreeing about wording; they observed different lifecycle events. Separating them makes operational and outcome measures honest.
 
 ### Example 10
 
 **Question:** A benefits system must distinguish applicant, claimant, recipient, payee, representative, and household member. Is that overmodeling?
 
-**Reasoning:** Each role has different eligibility, authority, payment, privacy, and appeal consequences; one person may hold several roles, and roles change over time. Model role assignments and effective intervals, then test minors, delegated representatives, shared households, and retroactive decisions.
+**Reasoning:** Use `Party` as identity and model time-bounded role assignments: an `Applicant` requests consideration, a `Claimant` asserts entitlement, a `Recipient` receives the benefit, a `Payee` receives money, a `Representative` may act for another party, and a `HouseholdMember` contributes facts under a policy. In one case a parent represents a minor claimant, the household receives a benefit, and a landlord is payee; collapsing roles would disclose the minor's data or pay the wrong party. Test start/end time, delegation scope, shared households, death, appeal, and retroactive eligibility. Each decision cites the effective policy version and evidence.
 
-**Conclusion:** Complexity is justified when distinctions change rights, rules, or evidence.
+**Conclusion:** The richer model is justified because role distinctions alter rights, authority, privacy, payment, and appeal. Complexity should follow consequences, not a desire for more nouns.
 
 ## Cross-Program Connections
 
