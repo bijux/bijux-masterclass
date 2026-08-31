@@ -31,7 +31,7 @@ What does a passing or failing test logically establish, why can ordinary testin
 
 ### Central model, mechanism, or theorem
 
-Let implementation (P), specification/property (S), possible cases (X), environment/schedule set (E), oracle (O), and executed tests (T\subseteq X\times E). A passing run establishes at most
+Let implementation (P), specification/property (S), possible cases (X), environment/schedule set (E), oracle (O), and executed tests $T\subseteq X\times E$. A passing run establishes at most
 
 $$
 \forall t\in T:\ O(P,t)=pass.
@@ -118,9 +118,9 @@ After completing this module, you should be able to:
 
 ### Start with quantifiers
 
-Suppose property (S(x)) says implementation (P) behaves correctly for every admissible case (x\in X). The desired claim is (\forall x\in X.S(x)). A suite executes finite (T\subseteq X). If every test passes, we know (\forall x\in T.S_O(x)) relative to oracle (O) and observations. Unless (T=X) or a justified argument generalizes beyond (T), universal correctness does not follow.
+Suppose property (S(x)) says implementation (P) behaves correctly for every admissible case $x\in X$. The desired claim is $\forall x\in X.S(x)$. A suite executes finite $T\subseteq X$. If every test passes, we know $\forall x\in T.S_O(x)$ relative to oracle (O) and observations. Unless (T=X) or a justified argument generalizes beyond (T), universal correctness does not follow.
 
-A failing case is asymmetric. If (x\in X), environment is valid, observation is faithful, and oracle expectation is correct, (\neg S(x)) refutes the universal claim. But failure initially means a discrepancy in the test system. Root cause may be product code, requirement, test, fixture, stale expected data, dependency, environment or instrumentation. Preserve evidence before classifying.
+A failing case is asymmetric. If $x\in X$, environment is valid, observation is faithful, and oracle expectation is correct, $\neg S(x)$ refutes the universal claim. But failure initially means a discrepancy in the test system. Root cause may be product code, requirement, test, fixture, stale expected data, dependency, environment or instrumentation. Preserve evidence before classifying.
 
 This is the durable meaning behind Dijkstra’s testing aphorism: sampling is effective at showing defects through failures, not establishing their universal absence. It is not a claim that tests are useless or that no bounded exhaustive test can prove a scoped proposition.
 
@@ -265,7 +265,7 @@ The run exhausts exactly 256 integer inputs for two deterministic pure Python fu
 
 ## Definitions and Notation
 
-Let test item (P_v) identify implementation plus version/configuration; input/state/history/environment space (X); specification/property (S); test-selection criterion (C); suite (T_C\subseteq X); observation function (Obs); oracle (O); and outcome (pass/fail/unresolved).
+Let test item (P_v) identify implementation plus version/configuration; input/state/history/environment space (X); specification/property (S); test-selection criterion (C); suite $T_C\subseteq X$; observation function (Obs); oracle (O); and outcome (pass/fail/unresolved).
 
 Detection for defect (d) requires reachability (R_d), activation (A_d), propagation (P_d), observation (V_d), and oracle discrimination (O_d). This conjunction is a reasoning model, not an assumption of statistical independence. Coverage function (cov(T,M)) reports exercised elements of model (M). It has meaning only with the model and criterion named.
 
@@ -454,7 +454,7 @@ Design a test and assurance argument for an unfamiliar autonomous emergency-brak
 
 ### Answer 1
 
-Let item be exact parser binary/configuration, suite (T) the 200 source/environment cases, observations token/AST/diagnostics/resource facts actually checked, and oracle (O). Passing establishes (\forall t\in T.O(P,t)=pass) for that run, subject to runner/report fidelity. It does not establish correctness for untested syntax, encodings, sizes, nesting, recovery contexts, resource limits, concurrency, platforms or future builds; it does not establish oracle/specification correctness; and it may miss side effects not observed. Report selection rationale and coverage—grammar productions, boundaries, malformed classes, differential/property relations—plus limitations. If the 200 cases exhaust a rigorously defined finite subdomain, make only that scoped claim.
+Let item be exact parser binary/configuration, suite (T) the 200 source/environment cases, observations token/AST/diagnostics/resource facts actually checked, and oracle (O). Passing establishes $\forall t\in T.O(P,t)=pass$ for that run, subject to runner/report fidelity. It does not establish correctness for untested syntax, encodings, sizes, nesting, recovery contexts, resource limits, concurrency, platforms or future builds; it does not establish oracle/specification correctness; and it may miss side effects not observed. Report selection rationale and coverage—grammar productions, boundaries, malformed classes, differential/property relations—plus limitations. If the 200 cases exhaust a rigorously defined finite subdomain, make only that scoped claim.
 
 ### Answer 2
 

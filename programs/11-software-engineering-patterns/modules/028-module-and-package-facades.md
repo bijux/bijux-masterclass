@@ -31,13 +31,13 @@ How can a library expose a small, stable, coherent public namespace over evolvin
 
 ### Central model, mechanism, or theorem
 
-Let internal implementation graph be (G=(V,E)), curated public symbols be (A\subset V), and consumer dependency edges be (E_c\subset Consumer\times V). The facade objective is
+Let internal implementation graph be (G=(V,E)), curated public symbols be $A\subset V$, and consumer dependency edges be $E_c\subset Consumer\times V$. The facade objective is
 
 $$
 \forall(c,v)\in E_c:\ v\in A,
 $$
 
-while implementation nodes (V\setminus A) may evolve subject to preserving the semantic contracts of (A). Export syntax can constrain reachability, but only tests, review, and version policy address behavioral compatibility. A stable path is useful only when ownership, types, errors, initialization, and dependencies behind it also remain coherent.
+while implementation nodes $V\setminus A$ may evolve subject to preserving the semantic contracts of (A). Export syntax can constrain reachability, but only tests, review, and version policy address behavioral compatibility. A stable path is useful only when ownership, types, errors, initialization, and dependencies behind it also remain coherent.
 
 ### Critical invariants
 
@@ -168,11 +168,11 @@ Do not split solely to meet a numeric threshold. Cohesion and change ownership m
 
 ## Definitions and Notation
 
-Let (A_t) be the supported API symbol set at release (t), with contract (C_t(a)) for each (a\in A_t). A removal is (A_t\setminus A_{t+1}); an addition is (A_{t+1}\setminus A_t). Compatibility cannot be inferred from set equality because (C_t(a)\ne C_{t+1}(a)) may change behavior without changing names.
+Let (A_t) be the supported API symbol set at release (t), with contract (C_t(a)) for each $a\in A_t$. A removal is $A_t\setminus A_{t+1}$; an addition is $A_{t+1}\setminus A_t$. Compatibility cannot be inferred from set equality because $C_t(a)\ne C_{t+1}(a)$ may change behavior without changing names.
 
-Let implementation graph (G=(V,E)), public facade set (A\subset V), and permitted dependency relation (E_p). An architecture violation is any actual edge (e\in E\setminus E_p), including internal-to-facade cycles and consumer-to-internal deep imports.
+Let implementation graph (G=(V,E)), public facade set $A\subset V$, and permitted dependency relation (E_p). An architecture violation is any actual edge $e\in E\setminus E_p$, including internal-to-facade cycles and consumer-to-internal deep imports.
 
-Define facade fan-out (F=|\{v:(a,v)\in E, a\in A\}|), import time distribution (T_{import}), and public-surface growth (\Delta A=|A_{t+1}|-|A_t|). These are diagnostic measures, not universal quality thresholds.
+Define facade fan-out $F=|\{v:(a,v)\in E, a\in A\}|$, import time distribution (T_{import}), and public-surface growth $\Delta A=|A_{t+1}|-|A_t|$. These are diagnostic measures, not universal quality thresholds.
 
 ## Mechanisms, Invariants, or Proof Structure
 

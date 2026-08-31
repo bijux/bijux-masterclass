@@ -208,7 +208,7 @@ $$
 a=\langle id,f,l,k,m,c,q,h,r,e,v\rangle,
 $$
 
-where (k) is role/contribution kind, (m\subseteq M) applicability, (c) contribution contract, (q) allocated qualities/resources, (h) assumptions, (r) rationale, (e) evidence, and (v) version/provenance.
+where (k) is role/contribution kind, $m\subseteq M$ applicability, (c) contribution contract, (q) allocated qualities/resources, (h) assumptions, (r) rationale, (e) evidence, and (v) version/provenance.
 
 For each function and applicable mode, declared coverage is:
 
@@ -232,7 +232,7 @@ $$
 
 For parallel branches completed before a join, use the maximum branch duration plus fork/join overhead, not their sum. Queueing, retries, scheduling, physical response, and measurement uncertainty must be included when applicable.
 
-For serial success probabilities (p_i), (P=\prod_i p_i) is valid only for the defined mission interval and justified independence. Common-cause, repair, degraded success, detection, switching, and human action require a richer model.
+For serial success probabilities (p_i), $P=\prod_i p_i$ is valid only for the defined mission interval and justified independence. Common-cause, repair, degraded success, detection, switching, and human action require a richer model.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -393,7 +393,7 @@ Defects include ambiguous outcome accountability; two authoritative owners for o
 
 ### Answer 4
 
-One reviewer can process (60/4=15) cases/hour at continuous utilization, below the 24 cases/hour peak. Required utilization is (24/15=1.6), or 160%, so the allocation is infeasible even before breaks, variability, fatigue, rework, or surge recovery. At least two reviewers are needed for mean-rate capacity because (24/(2\times15)=0.8), but queueing and safety analysis may require more or a different policy.
+One reviewer can process (60/4=15) cases/hour at continuous utilization, below the 24 cases/hour peak. Required utilization is (24/15=1.6), or 160%, so the allocation is infeasible even before breaks, variability, fatigue, rework, or surge recovery. At least two reviewers are needed for mean-rate capacity because $24/(2\times15)=0.8$, but queueing and safety analysis may require more or a different policy.
 
 A defensible allocation also needs arrival distributions and burst duration; case complexity distribution; safe service-time distribution rather than its mean; maximum decision deadline; consequences of delay/error; information quality and explanation; reviewer qualifications, training, accessibility, fatigue, and interruption; escalation and authority; queue priorities and overload behavior; automation-confidence calibration; representative-user trials; error/recovery observations; staffing availability; and monitoring evidence. Capacity arithmetic is necessary but not sufficient.
 

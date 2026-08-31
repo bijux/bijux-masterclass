@@ -31,13 +31,13 @@ How does a data structure's access stream interact with cache lines, translation
 
 ### Central model, mechanism, or theorem
 
-For a simplified cache-line model with line size (B), address stream (a_0,\ldots,a_{m-1}) touches modeled line numbers
+For a simplified cache-line model with line size (B), address stream $a_0,\ldots,a_{m-1}$ touches modeled line numbers
 
 $$
 \ell_i=\left\lfloor\frac{a_i}{B}\right\rfloor.
 $$
 
-The distinct-line footprint of a phase is (|\{\ell_i\}|), but actual misses additionally depend on cache capacity, associativity, mapping, replacement, earlier state, prefetching, coherence, translation, and concurrent activity. A latency lower bound for a strict dependent chain differs from the throughput of independent misses:
+The distinct-line footprint of a phase is $|\{\ell_i\}|$, but actual misses additionally depend on cache capacity, associativity, mapping, replacement, earlier state, prefetching, coherence, translation, and concurrent activity. A latency lower bound for a strict dependent chain differs from the throughput of independent misses:
 
 $$
 time_{dependent}\gtrsim hops\times exposed\ latency,
@@ -227,7 +227,7 @@ print("evidence=line_footprint_model_not_cache_measurement")
 
 ## Definitions and Notation
 
-Let access trace (A=\langle(a_i,w_i,d_i)\rangle), where address (a_i), width (w_i), and dependency information (d_i) are relative to one execution. For modeled line size (B), an access can intersect multiple lines; simple aligned slot examples use (lfloor a_i/B\rfloor).
+Let access trace $A=\langle(a_i,w_i,d_i)\rangle$, where address (a_i), width (w_i), and dependency information (d_i) are relative to one execution. For modeled line size (B), an access can intersect multiple lines; simple aligned slot examples use $lfloor a_i/B\rfloor$.
 
 For operation phase (P), useful-byte ratio can be modeled as
 
@@ -235,7 +235,7 @@ $$
 U(P)=\frac{useful\ bytes\ consumed}{modeled\ transferred\ bytes},
 $$
 
-provided numerator/denominator scope is declared. Working set (W(P,\Delta)) is the set of cache/translation units reused within window (Delta); no single universal window exists.
+provided numerator/denominator scope is declared. Working set $W(P,\Delta)$ is the set of cache/translation units reused within window (Delta); no single universal window exists.
 
 Arithmetic intensity is operations per transferred byte under a named hierarchy boundary. MPKI is misses per thousand instructions for named events and instruction denominator; it is not portable without event semantics.
 
@@ -418,7 +418,7 @@ Prepare a production review plan for changing a critical structure from pointer 
 
 ### Answer 1
 
-If the base and every element are aligned so elements do not cross lines and $s$ divides (B), let (q=B/s) elements fit per line. Sequential indices `0..n-1` touch (\lceil n/q\rceil) lines. Stride (k) visits (m=\lceil n/k\rceil) elements and touches the cardinality of ({\lfloor jk/q\rfloor:0\le j<m}); when (k\ge q), usually each access has a distinct line, while smaller strides reuse according to the set. A misaligned base, elements crossing lines, padding, fields rather than whole elements, and virtual/page mapping require interval-based calculation and can add lines.
+If the base and every element are aligned so elements do not cross lines and $s$ divides (B), let (q=B/s) elements fit per line. Sequential indices `0..n-1` touch $\lceil n/q\rceil$ lines. Stride (k) visits $m=\lceil n/k\rceil$ elements and touches the cardinality of ${\lfloor jk/q\rfloor:0\le j<m}$; when $k\ge q$, usually each access has a distinct line, while smaller strides reuse according to the set. A misaligned base, elements crossing lines, padding, fields rather than whole elements, and virtual/page mapping require interval-based calculation and can add lines.
 
 ### Answer 2
 

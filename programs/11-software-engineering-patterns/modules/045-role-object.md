@@ -30,7 +30,7 @@ How can one logical entity acquire, combine, and relinquish context-specific int
 
 ### Central model, mechanism, or theorem
 
-Let core set (C), role types (T), role instances (R), owner map (owner:R\to C), and active-role relation (A\subseteq C\times T\times R). A valid attachment maintains
+Let core set (C), role types (T), role instances (R), owner map $owner:R\to C$, and active-role relation $A\subseteq C\times T\times R$. A valid attachment maintains
 
 $$
 (c,t,r)\in A\Rightarrow owner(r)=c\land type(r)=t\land constraints(c,t,r,A).
@@ -191,7 +191,7 @@ Property-test that every active role has one core and constraints hold after arb
 
 ## Definitions and Notation
 
-Let cores (C), role instances (R), role types (T), contexts (K), time (\tau), and attachment relation (A_\tau\subseteq C\times T\times K\times R). For single-valued type/context:
+Let cores (C), role instances (R), role types (T), contexts (K), time $\tau$, and attachment relation $A_\tau\subseteq C\times T\times K\times R$. For single-valued type/context:
 
 $$
 \forall c,t,k:\ |\{r\mid(c,t,k,r)\in A_\tau\}|\le1.

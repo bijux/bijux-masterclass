@@ -18,7 +18,7 @@ How can a system estimate the number of distinct values with bounded memory whil
 
 ### Essential definitions
 
-For a multiset stream (S), its **cardinality** is (n=|\{x:x\in S\}|). HyperLogLog (HLL) hashes each canonical key to a uniform bit string. With precision (p), the first (p) bits select one of (m=2^p) registers. From the remaining bits, (\rho) is one plus the number of leading zeros. Update is
+For a multiset stream (S), its **cardinality** is $n=|\{x:x\in S\}|$. HyperLogLog (HLL) hashes each canonical key to a uniform bit string. With precision (p), the first (p) bits select one of (m=2^p) registers. From the remaining bits, $\rho$ is one plus the number of leading zeros. Update is
 
 $$
 M[j]\leftarrow\max(M[j],\rho).
@@ -32,7 +32,7 @@ E_{\mathrm{raw}}
 \left(\sum_{j=0}^{m-1}2^{-M[j]}\right)^{-1}.
 $$
 
-Its asymptotic relative standard error is approximately (1.04/\sqrt m) under the ideal-hash model. Small-cardinality regimes need correction; the original algorithm uses linear counting (m\ln(m/V)) when (V), the number of zero registers, remains positive and the raw estimate is small.
+Its asymptotic relative standard error is approximately $1.04/\sqrt m$ under the ideal-hash model. Small-cardinality regimes need correction; the original algorithm uses linear counting $m\ln(m/V)$ when (V), the number of zero registers, remains positive and the raw estimate is small.
 
 ### Central model, mechanism, or theorem
 
@@ -80,14 +80,14 @@ Retrieve:
 - canonical key serialization, hash seeds, versioned envelopes, and distributed lineage;
 - the additive point-estimation contract and merge discipline of [DSE-084](084-count-min-sketch.md).
 
-Recall that (\Pr[\rho(h)=k]=2^{-k}) for (k\ge1) when (\rho) is one plus the leading-zero count of an ideal infinite fair bit string. Equivalently, (\Pr[\rho(h)>k]=2^{-k}). Long zero prefixes are exponentially rare, so their maxima encode logarithmic information about how many distinct hashes were observed.
+Recall that $\Pr[\rho(h)=k]=2^{-k}$ for $k\ge1$ when $\rho$ is one plus the leading-zero count of an ideal infinite fair bit string. Equivalently, $\Pr[\rho(h)>k]=2^{-k}$. Long zero prefixes are exponentially rare, so their maxima encode logarithmic information about how many distinct hashes were observed.
 
 ## Learning Objectives
 
 After this chapter, you should be able to:
 
 1. trace index and rank extraction from a finite hash value;
-2. explain stochastic averaging, harmonic aggregation, and the (1.04/\sqrt m) error scale;
+2. explain stochastic averaging, harmonic aggregation, and the $1.04/\sqrt m$ error scale;
 3. apply and critique raw, small-range, and modern bias-corrected estimators;
 4. prove duplicate idempotence and registerwise-max merge laws;
 5. specify sparse/dense conversion, serialization, compatibility, and upgrade contracts;
@@ -100,13 +100,13 @@ After this chapter, you should be able to:
 
 Let (D) be the set of canonical keys observed in a scope, and (n=|D|). HLL never sees mathematical identities directly; it sees hash values. A canonicalization function (c(x)) produces bytes, and a versioned hash (h(c(x))) produces (L) bits. Two equivalent entities encoded differently are counted separately. Two distinct entities with the same (L)-bit hash are indistinguishable. The operational estimand is therefore distinct canonical hash values, which approximates distinct semantic entities only when normalization and collision risk are acceptable.
 
-The leading-zero statistic follows a geometric tail. Among (n) uniform hashes, the largest observed rank is near (\log_2 n), but one maximum has high variance. LogLog-style algorithms split the hash stream into substreams. HLL uses (p) index bits to assign each hash to one of (m=2^p) registers and records the maximum rank of the remaining (L-p) bits in that register.
+The leading-zero statistic follows a geometric tail. Among (n) uniform hashes, the largest observed rank is near $\log_2 n$, but one maximum has high variance. LogLog-style algorithms split the hash stream into substreams. HLL uses (p) index bits to assign each hash to one of (m=2^p) registers and records the maximum rank of the remaining (L-p) bits in that register.
 
 Use a consistent bit convention. An implementation may take high bits for the index and count zeros in the low suffix, or take low bits and count zeros in the high suffix. Either can work if hash uniformity supports it, rank bounds are correct, and every producer uses exactly the same convention. An all-zero suffix needs a defined maximum rank, normally (L-p+1); reading beyond the finite hash is a bug.
 
 ### Register update and sufficient state
 
-For value (x), compute (j=\operatorname{index}(h(x))) and (r=\rho(\operatorname{suffix}(h(x)))), then set (M[j]=\max(M[j],r)). A duplicate produces the same ((j,r)), hence no change after the first occurrence. Different keys may map to the same register; only the largest rank survives.
+For value (x), compute $j=\operatorname{index}(h(x))$ and $r=\rho(\operatorname{suffix}(h(x)))$, then set $M[j]=\max(M[j],r)$. A duplicate produces the same ((j,r)), hence no change after the first occurrence. Different keys may map to the same register; only the largest rank survives.
 
 The array is deliberately lossy. It cannot enumerate values, answer membership, estimate frequency, or delete one value. Removing an element might require recovering the second-largest rank for its register, information that ordinary HLL discarded. Sliding windows therefore need time-partitioned sketches, expiring auxiliary state, or a different algorithm; decrementing a register is not a valid inverse.
 
@@ -122,7 +122,7 @@ Z=\left(\sum_{j=0}^{m-1}2^{-M[j]}\right)^{-1},
 E_{\mathrm{raw}}=\alpha_m m^2 Z.
 $$
 
-The constant (\alpha_m) corrects asymptotic bias under the idealized model. The original presentation uses special constants for small standard register counts—approximately 0.673, 0.697, and 0.709 for (m=16,32,64)—and (0.7213/(1+1.079/m)) for larger (m). Copying a constant without matching the estimator definition is unsafe: indexing, rank origin, corrections, and register representation must agree.
+The constant $\alpha_m$ corrects asymptotic bias under the idealized model. The original presentation uses special constants for small standard register counts—approximately 0.673, 0.697, and 0.709 for (m=16,32,64)—and (0.7213/(1+1.079/m)) for larger (m). Copying a constant without matching the estimator definition is unsafe: indexing, rank origin, corrections, and register representation must agree.
 
 For sufficiently large (m) away from boundary regimes, relative standard error is approximately
 
@@ -130,7 +130,7 @@ $$
 \operatorname{RSE}\approx\frac{1.04}{\sqrt m}.
 $$
 
-At (p=12), (m=4096), giving about 1.625%. This is a standard-deviation scale under a probability model, not a hard interval that every sketch satisfies. Doubling precision by one bit doubles registers but reduces RSE only by a factor (1/\sqrt2). Achieving half the RSE needs about four times as many registers.
+At (p=12), (m=4096), giving about 1.625%. This is a standard-deviation scale under a probability model, not a hard interval that every sketch satisfies. Doubling precision by one bit doubles registers but reduces RSE only by a factor $1/\sqrt2$. Achieving half the RSE needs about four times as many registers.
 
 ### Small and large regimes
 
@@ -283,12 +283,12 @@ print("evidence=hyperloglog_model")
 
 - (D): set of distinct canonical values; (n=|D|): true cardinality.
 - (L): hash width; (p): precision bits; (m=2^p): register count.
-- (j): register index; (\rho): one plus the leading-zero count in the hash suffix.
+- (j): register index; $\rho$: one plus the leading-zero count in the hash suffix.
 - (M[j]): maximum rank observed for register (j).
 - (V): number of zero registers.
-- (E_{\mathrm{raw}}): classical harmonic raw estimate; (E_{\mathrm{LC}}): linear-counting small-range estimate.
-- (\alpha_m): normalization constant tied to the raw estimator definition.
-- **Relative error**: ((\widehat n-n)/n); **RSE**: its modeled standard deviation divided by the true value.
+- $E_{\mathrm{raw}}$: classical harmonic raw estimate; $E_{\mathrm{LC}}$: linear-counting small-range estimate.
+- $\alpha_m$: normalization constant tied to the raw estimator definition.
+- **Relative error**: $(\widehat n-n)/n$; **RSE**: its modeled standard deviation divided by the true value.
 - **Sparse mode**: a compact early-cardinality representation; **dense mode**: the full register array.
 - **Logical sketch state**: the register maxima independent of a particular packed encoding.
 - **Compatible union**: componentwise maximum between states with identical semantic configuration or an explicitly supported conversion.
@@ -297,11 +297,11 @@ print("evidence=hyperloglog_model")
 
 ### Duplicate and union proof
 
-For a value (x), update applies maximum with a fixed rank at a fixed register. Since (\max(a,r,r)=\max(a,r)), replay is idempotent. For arrays, componentwise maximum inherits associativity, commutativity, and idempotence from scalar maximum. Each register of a union therefore equals the maximum rank produced by any distinct hash assigned to it.
+For a value (x), update applies maximum with a fixed rank at a fixed register. Since $\max(a,r,r)=\max(a,r)$, replay is idempotent. For arrays, componentwise maximum inherits associativity, commutativity, and idempotence from scalar maximum. Each register of a union therefore equals the maximum rank produced by any distinct hash assigned to it.
 
 ### Estimator argument
 
-The rank tail is geometric. Register maxima summarize substream scale; stochastic averaging across hash-selected substreams reduces variance; harmonic aggregation limits domination by extreme registers; (\alpha_m) corrects asymptotic bias. The full theorem in the original analysis depends on an ideal-multiset model and analytic corrections. The short argument supplies mechanism and intuition, not a substitute proof of the constant or error law.
+The rank tail is geometric. Register maxima summarize substream scale; stochastic averaging across hash-selected substreams reduces variance; harmonic aggregation limits domination by extreme registers; $\alpha_m$ corrects asymptotic bias. The full theorem in the original analysis depends on an ideal-multiset model and analytic corrections. The short argument supplies mechanism and intuition, not a substitute proof of the constant or error law.
 
 ### Engineering invariants
 
@@ -340,7 +340,7 @@ Within HLL, greater (p) reduces RSE but increases dense size and union bandwidth
 
 ### Example 1
 
-**Index and rank trace.** Let (p=4) and a 16-bit teaching hash be 1011 000101001011. The index is binary 1011, or register 11. The suffix begins with three zeros then one, so (\rho=4). If (M[11]=2), it becomes 4; if it is already 5, it stays 5. **Conclusion:** one hash deterministically chooses both the register and monotone rank update.
+**Index and rank trace.** Let (p=4) and a 16-bit teaching hash be 1011 000101001011. The index is binary 1011, or register 11. The suffix begins with three zeros then one, so $\rho=4$. If (M[11]=2), it becomes 4; if it is already 5, it stays 5. **Conclusion:** one hash deterministically chooses both the register and monotone rank update.
 
 ### Example 2
 
@@ -348,7 +348,7 @@ Within HLL, greater (p) reduces RSE but increases dense size and union bandwidth
 
 ### Example 3
 
-**Small-range correction.** With (m=32) and (V=3), linear counting is (32\ln(32/3)\approx75.748). The executable raw estimate is 67.672 for truth 80. **Conclusion:** early-cardinality estimator selection materially affects bias; zero-register evidence should not be discarded.
+**Small-range correction.** With (m=32) and (V=3), linear counting is $32\ln(32/3)\approx75.748$. The executable raw estimate is 67.672 for truth 80. **Conclusion:** early-cardinality estimator selection materially affects bias; zero-register evidence should not be discarded.
 
 ### Example 4
 
@@ -364,7 +364,7 @@ Within HLL, greater (p) reduces RSE but increases dense size and union bandwidth
 
 ### Example 7
 
-**Intersection instability.** Suppose estimates are (widehat{|A|}=1{,}000{,}000), (widehat{|B|}=1{,}010{,}000), and (widehat{|A\cup B|}=2{,}020{,}000). Inclusion-exclusion reports (-10{,}000), an impossible intersection caused by estimator noise. **Conclusion:** clamp-to-zero hides rather than solves set-operation uncertainty.
+**Intersection instability.** Suppose estimates are (widehat{|A|}=1{,}000{,}000), (widehat{|B|}=1{,}010{,}000), and $widehat{|A\cup B|}=2{,}020{,}000$. Inclusion-exclusion reports (-10{,}000), an impossible intersection caused by estimator noise. **Conclusion:** clamp-to-zero hides rather than solves set-operation uncertainty.
 
 ### Example 8
 
@@ -427,7 +427,7 @@ At (p=10), (m=1024), RSE is (1.04/32=3.25\%), and byte-per-register storage is 1
 
 ### Answer 2
 
-For each index (j), scalar maximum satisfies (\max(a,\max(b,c))=\max(\max(a,b),c)), (\max(a,b)=\max(b,a)), and (\max(a,a)=a). Applying the identity independently at every register proves the three array laws. Different seeds map a key to different indices and ranks, so corresponding cells no longer summarize the same substream. The algebra still returns an array, but that array has no proved interpretation as the union. Compatibility is a premise of the operation, not a consequence of maximum.
+For each index (j), scalar maximum satisfies $\max(a,\max(b,c))=\max(\max(a,b),c)$, $\max(a,b)=\max(b,a)$, and $\max(a,a)=a$. Applying the identity independently at every register proves the three array laws. Different seeds map a key to different indices and ranks, so corresponding cells no longer summarize the same substream. The algebra still returns an array, but that array has no proved interpretation as the union. Compatibility is a premise of the operation, not a consequence of maximum.
 
 ### Answer 3
 

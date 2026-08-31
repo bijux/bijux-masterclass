@@ -34,7 +34,7 @@ How can two or more independently owned elements establish a precise, jointly co
 
 ### Central model, mechanism, or theorem
 
-Model endpoint (A)'s guarantees as (G_A), endpoint (B)'s acceptable demands as (R_B), and the applicable shared environment as (E). For an (A\rightarrow B) transfer, compatibility requires:
+Model endpoint (A)'s guarantees as (G_A), endpoint (B)'s acceptable demands as (R_B), and the applicable shared environment as (E). For an $A\rightarrow B$ transfer, compatibility requires:
 
 $$
 E\land G_A \Rightarrow R_B.
@@ -218,7 +218,7 @@ Even `ICD-001` could contain an incorrect deadline, mismatched time basis, unsaf
 
 ## Definitions and Notation
 
-Let endpoint (A) provide an item to endpoint (B) across path (P) in configuration (c\in C), mode (m\in M), and environment (e\in E).
+Let endpoint (A) provide an item to endpoint (B) across path (P) in configuration $c\in C$, mode $m\in M$, and environment $e\in E$.
 
 Provider guarantee set:
 
@@ -297,7 +297,7 @@ A version compatibility relation $K_V\subseteq V_A\times V_B\times C$ records ap
 
 ## Mechanisms, Invariants, or Proof Structure
 
-The core reasoning mechanism is assume–guarantee compatibility. Each endpoint specification is locally satisfiable only under assumptions about the other side and the environment. The ICD externalizes those assumptions, assigns them, and checks that the opposite side guarantees them. For (A\rightarrow B):
+The core reasoning mechanism is assume–guarantee compatibility. Each endpoint specification is locally satisfiable only under assumptions about the other side and the environment. The ICD externalizes those assumptions, assigns them, and checks that the opposite side guarantees them. For $A\rightarrow B$:
 
 1. define the exact planes and applicable states;
 2. derive (A)'s guaranteed output envelope from its baseline;

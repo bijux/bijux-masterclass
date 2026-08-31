@@ -30,7 +30,7 @@ How can a designer decide that a pattern is genuinely a candidate for a situatio
 
 ### Central model, mechanism, or theorem
 
-For situation (x) and pattern (\Pi), an applicability screen asks
+For situation (x) and pattern $\Pi$, an applicability screen asks
 
 $$
 ApplicableCandidate(\Pi,x)=Pre(\Pi,x)\land ProblemMatch(\Pi,x)
@@ -171,7 +171,7 @@ This turns “we use Strategy” into a falsifiable statement: “three independ
 
 ## Definitions and Notation
 
-For pattern (\Pi) and situation (x), define evidence-valued predicates
+For pattern $\Pi$ and situation (x), define evidence-valued predicates
 
 $$
 Pre_i(\Pi,x),Problem(\Pi,x),Force_j(\Pi,x),Contra_k(\Pi,x)
@@ -201,7 +201,7 @@ $$
 
 `candidate` means admissible with sufficient current match; `investigate` means a material unknown remains; `reject` means the problem is absent, a required precondition fails, or a hard contraindication holds.
 
-An intent can be represented as a scoped relation (I_\Pi:X_C\rightarrow X_{C'}), mapping a class of problematic contexts to a class of resulting contexts through the pattern mechanism. This notation expresses scope; it does not claim every application succeeds.
+An intent can be represented as a scoped relation $I_\Pi:X_C\rightarrow X_{C'}$, mapping a class of problematic contexts to a class of resulting contexts through the pattern mechanism. This notation expresses scope; it does not claim every application succeeds.
 
 ## Mechanisms, Invariants, or Proof Structure
 

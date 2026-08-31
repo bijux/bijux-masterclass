@@ -34,7 +34,7 @@ How can independently developed elements state, compose, challenge, monitor, and
 
 ### Central model, mechanism, or theorem
 
-Let behaviors be (b\in\mathcal B), contract (C=(A,G)), implementation predicate (M), and environment predicate (E). Under the convention used in this module:
+Let behaviors be $b\in\mathcal B$, contract (C=(A,G)), implementation predicate (M), and environment predicate (E). Under the convention used in this module:
 
 $$
 M\models C\iff \forall b:\ M(b)\land A(b)\Rightarrow G(b),
@@ -44,7 +44,7 @@ $$
 E\sim C\iff \forall b:\ E(b)\Rightarrow A(b).
 $$
 
-If (M\models C) and (E\sim C), then:
+If $M\models C$ and $E\sim C$, then:
 
 $$
 \forall b:\ E(b)\land M(b)\Rightarrow G(b).
@@ -75,7 +75,7 @@ The implication must cover values, semantics, units, timing, state, faults, vers
 
 ### Common failures
 
-Common failures include writing “assume nominal conditions”; assigning assumptions no owner; treating a required property as an assumption to avoid allocating it; confusing an environmental fact with a design choice; using point estimates without ranges or confidence; failing to list assumption consumers; accepting a supplier promise outside its stated configuration; proving (A\Rightarrow G) with an impossible (A); allowing producer and consumer units or time bases to differ; checking each pair but not shared-resource composition; claiming refinement because values are “better”; weakening a guarantee without revisiting consumers; relying on two components to initialize each other; monitoring a condition without safe response; closing an assumption from one favorable test; and updating a spreadsheet without rebaselining the actual interface obligations.
+Common failures include writing “assume nominal conditions”; assigning assumptions no owner; treating a required property as an assumption to avoid allocating it; confusing an environmental fact with a design choice; using point estimates without ranges or confidence; failing to list assumption consumers; accepting a supplier promise outside its stated configuration; proving $A\Rightarrow G$ with an impossible (A); allowing producer and consumer units or time bases to differ; checking each pair but not shared-resource composition; claiming refinement because values are “better”; weakening a guarantee without revisiting consumers; relying on two components to initialize each other; monitoring a condition without safe response; closing an assumption from one favorable test; and updating a spreadsheet without rebaselining the actual interface obligations.
 
 ### Compact example
 
@@ -153,21 +153,21 @@ After completing this module, you should be able to:
 
 **State assumptions and guarantees separately.** Assumptions constrain environment behavior; guarantees constrain component behavior when assumptions hold. Example: assumption $23\le V_{in}\le29$ V and ambient $-10\le T\le50$ °C; guarantee $11.8\le V_{out}\le12.2$ V at load 0–4 A. Include transient, fault, state, and measurement conditions if they matter. A narrative paragraph that mixes both sides impedes blame and composition.
 
-**Check assumption satisfiability and reachability.** A contradiction such as (V<20\land V>25) makes (A\Rightarrow G) true for every implementation. That is vacuity, not success. Use constraint solving, model checking, simulation, review, or witness scenarios to show at least one relevant environment behavior satisfies (A). Also ask whether the intended operational environment can actually reach that domain.
+**Check assumption satisfiability and reachability.** A contradiction such as $V<20\land V>25$ makes $A\Rightarrow G$ true for every implementation. That is vacuity, not success. Use constraint solving, model checking, simulation, review, or witness scenarios to show at least one relevant environment behavior satisfies (A). Also ask whether the intended operational environment can actually reach that domain.
 
-**Check guarantee consistency.** Guarantees such as (x\le3\land x\ge5) cannot be produced together. Conditional guarantees may be consistent only if modes and guards are exclusive or priority is defined. Check requirements, modes, units, time windows, and endpoint baselines together. A syntactically satisfiable contract can still be physically unrealizable.
+**Check guarantee consistency.** Guarantees such as $x\le3\land x\ge5$ cannot be produced together. Conditional guarantees may be consistent only if modes and guards are exclusive or priority is defined. Check requirements, modes, units, time windows, and endpoint baselines together. A syntactically satisfiable contract can still be physically unrealizable.
 
 **Check realizability at the right strength.** Realizability asks whether some strategy can satisfy (G) for every environment behavior allowed by (A), respecting information and causality. A contract requiring output now to equal an unknown future input may be logically consistent as a trace predicate yet unrealizable by a causal component. Formal proof requires a semantics and solver suited to the domain; prototypes and tests demonstrate sampled implementations, not general realizability.
 
-**Check producer–consumer compatibility.** For connected output (y), the producer guarantee plus path effects must entail the consumer assumption. For intervals, the transformed producer interval must be contained in consumer acceptance. For protocols, legal producer traces must be accepted by the consumer state machine. For human or supplier interactions, evidence may be empirical or procedural. Search for a counterexample (G_P\land\neg A_C).
+**Check producer–consumer compatibility.** For connected output (y), the producer guarantee plus path effects must entail the consumer assumption. For intervals, the transformed producer interval must be contained in consumer acceptance. For protocols, legal producer traces must be accepted by the consumer state machine. For human or supplier interactions, evidence may be empirical or procedural. Search for a counterexample $G_P\land\neg A_C$.
 
 **Include path and adapter contracts.** Networks, harnesses, converters, translators, mounting structures, operators, and procedures transform behavior. Do not compare the source connector directly with the final receiver if an intervening path changes voltage, delay, units, frames, errors, or authority. Assign each conversion and its failure behavior to an owner.
 
-**Compose contracts.** When (G_1\Rightarrow A_2), component 1 can discharge the connected portion of component 2's assumption within the joint context. Hide internal variables only after proving internal obligations. Export remaining environmental assumptions and combined guarantees at the assembly boundary. Composition must also account for feedback, shared resources, simultaneous loads, and common causes.
+**Compose contracts.** When $G_1\Rightarrow A_2$, component 1 can discharge the connected portion of component 2's assumption within the joint context. Hide internal variables only after proving internal obligations. Export remaining environmental assumptions and combined guarantees at the assembly boundary. Composition must also account for feedback, shared resources, simultaneous loads, and common causes.
 
 **Do not overclaim pairwise compatibility.** Suppose two loads each assume at least 60 W is available and a supply guarantees 100 W total. Supply-to-load pairwise checks may pass if each is examined alone, but simultaneous composition requires 120 W. Contracts must express shared-resource allocation and concurrency, not only point-to-point envelopes.
 
-**Define refinement explicitly.** This module uses: (C_1=(A_1,G_1)) refines (C_0=(A_0,G_0)) when (A_0\Rightarrow A_1) and (A_0\land G_1\Rightarrow G_0). Thus the replacement accepts at least the original environments and meets at least the original promises there. Exact refinement definitions vary across contract theories, especially after normalization/saturation, variable hiding, and receptiveness. State the chosen semantics before using the word.
+**Define refinement explicitly.** This module uses: (C_1=(A_1,G_1)) refines (C_0=(A_0,G_0)) when $A_0\Rightarrow A_1$ and $A_0\land G_1\Rightarrow G_0$. Thus the replacement accepts at least the original environments and meets at least the original promises there. Exact refinement definitions vary across contract theories, especially after normalization/saturation, variable hiding, and receptiveness. State the chosen semantics before using the word.
 
 **Use counterexamples for refinement.** A replacement that narrows accepted input from 0–10 to 2–8 assumes more and is not a safe refinement even if its output accuracy improves. A replacement that accepts -1–11 and tightens error from ±0.5 to ±0.2 refines the original under the scalar convention if all other conditions remain. Check modes, timing, faults, and versions, not marketing adjectives.
 
@@ -232,7 +232,7 @@ Even `ASM-001` may cite inapplicable evidence, omit consumers, or contain an inc
 
 ## Definitions and Notation
 
-Let (mathcal B) be the behavior universe for a declared interface signature and semantics. Predicates (A,G,M,E:\mathcal B\rightarrow\{true,false\}) denote assumption, guarantee, implementation behavior, and environment behavior.
+Let (mathcal B) be the behavior universe for a declared interface signature and semantics. Predicates $A,G,M,E:\mathcal B\rightarrow\{true,false\}$ denote assumption, guarantee, implementation behavior, and environment behavior.
 
 Contract:
 
@@ -286,7 +286,7 @@ $$
 [g_l+d_l,g_u+d_u]\subseteq[a_l,a_u].
 $$
 
-Under this module's refinement convention, (C_1\preceq C_0) means:
+Under this module's refinement convention, $C_1\preceq C_0$ means:
 
 $$
 A_0\Rightarrow A_1,
@@ -305,7 +305,7 @@ h=\langle id,p,source,owner,domain,consumers,evidence,uncertainty,
 consequence,closure,monitor,contingency,status,version\rangle.
 $$
 
-Dependency relation (Dep\subseteq H\times Artifacts) supports change reachability. If (h) changes, every artifact reachable through (Dep) requires disposition; reachability does not prove the recorded graph is complete.
+Dependency relation $Dep\subseteq H\times Artifacts$ supports change reachability. If (h) changes, every artifact reachable through (Dep) requires disposition; reachability does not prove the recorded graph is complete.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -320,7 +320,7 @@ The core proof pattern is compositional:
 7. validate physical, human, supplier, and operational premises that the formal model abstracts;
 8. retain counterexamples, models, evidence, and applicability limits.
 
-From (M\land A\Rightarrow G) and (E\Rightarrow A), conjunction gives (E\land M\Rightarrow M\land A), then (G). This elementary rule explains assume–guarantee reasoning. It does not by itself prove (E\Rightarrow A), implementation correctness, completeness of (G), or realizability.
+From $M\land A\Rightarrow G$ and $E\Rightarrow A$, conjunction gives $E\land M\Rightarrow M\land A$, then (G). This elementary rule explains assume–guarantee reasoning. It does not by itself prove $E\Rightarrow A$, implementation correctness, completeness of (G), or realizability.
 
 **Classification invariant.** Every controlled claim has one governing role. The same proposition may trace across roles—for example, an environmental assumption motivates a facility requirement—but the records remain distinct.
 
@@ -342,7 +342,7 @@ From (M\land A\Rightarrow G) and (E\Rightarrow A), conjunction gives (E\land M\R
 
 **Change invariant.** No altered assumption or guarantee becomes effective until dependent requirements, architectures, hazards, budgets, tests, suppliers, versions, transitions, monitors, and contingencies are dispositioned.
 
-Adversarial review searches for witnesses to (G_P\land\neg A_C), (A\land\neg G), contradictory assumptions, impossible guarantees, unobservable monitor conditions, future-dependent outputs, simultaneous resource demands, old/new version mixes, initialization deadlock, environmental extremes, stale evidence, and conditions outside the normal domain. Counterexamples are engineering results, not review failures to hide.
+Adversarial review searches for witnesses to $G_P\land\neg A_C$, $A\land\neg G$, contradictory assumptions, impossible guarantees, unobservable monitor conditions, future-dependent outputs, simultaneous resource demands, old/new version mixes, initialization deadlock, environmental extremes, stale evidence, and conditions outside the normal domain. Counterexamples are engineering results, not review failures to hide.
 
 ## Alternatives and Trade-Offs
 
@@ -498,7 +498,7 @@ A producer assumes input supply 20–30 V and guarantees output data age 40–70
 
 ### Exercise 3
 
-Original contract (C_0) accepts input (x\in[0,10]) and guarantees output error (|e|\le1.0). Evaluate two replacements under this module's refinement convention: (C_A) accepts (x\in[-1,11]) and guarantees (|e|\le0.8); (C_B) accepts (x\in[2,9]) and guarantees (|e|\le0.2). State the result and its limits.
+Original contract (C_0) accepts input $x\in[0,10]$ and guarantees output error $|e|\le1.0$. Evaluate two replacements under this module's refinement convention: (C_A) accepts $x\in[-1,11]$ and guarantees $|e|\le0.8$; (C_B) accepts $x\in[2,9]$ and guarantees $|e|\le0.2$. State the result and its limits.
 
 ### Exercise 4
 
@@ -532,15 +532,15 @@ $$
 Age_{arrival}=[40+10,70+25]=[50,95]\text{ ms}.
 $$
 
-The consumer accepts age at most 90 ms. The lower values are acceptable, but the worst case exceeds the assumption by 5 ms. Therefore (G_P\land G_{path}\not\Rightarrow A_C); the counterexample is producer age 70 ms plus path 25 ms. Compatibility fails with upper margin $90-95=-5$ ms.
+The consumer accepts age at most 90 ms. The lower values are acceptable, but the worst case exceeds the assumption by 5 ms. Therefore $G_P\land G_{path}\not\Rightarrow A_C$; the counterexample is producer age 70 ms plus path 25 ms. Compatibility fails with upper margin $90-95=-5$ ms.
 
 Additional premises include producer supply actually within 20–30 V; traffic within 2 Mbit/s; whether producer age and path delay bounds may coincide; occurrence/publication/receipt event definitions; clock synchronization and timestamp uncertainty; data rate measurement window; queue and retransmission coverage; loss/duplicate/restart behavior; normal/degraded modes; versions; path and endpoint configuration; and whether 90 ms is inclusive. Options are tighter producer/path guarantees, a wider justified consumer assumption, a faster architecture, or degraded behavior—never averaging away the violation.
 
 ### Answer 3
 
-For (C_A), original assumption (x\in[0,10]) implies replacement assumption (x\in[-1,11]). Under original contexts, (|e|\le0.8) implies (|e|\le1.0). Therefore (C_A\preceq C_0) under the stated scalar convention.
+For (C_A), original assumption $x\in[0,10]$ implies replacement assumption $x\in[-1,11]$. Under original contexts, $|e|\le0.8$ implies $|e|\le1.0$. Therefore $C_A\preceq C_0$ under the stated scalar convention.
 
-For (C_B), (x\in[0,10]) does not imply (x\in[2,9]); values 1 or 9.5 are counterexamples. Although (|e|\le0.2) is a stronger output guarantee where B operates, B assumes more and is not a safe refinement of (C_0).
+For (C_B), $x\in[0,10]$ does not imply $x\in[2,9]$; values 1 or 9.5 are counterexamples. Although $|e|\le0.2$ is a stronger output guarantee where B operates, B assumes more and is not a safe refinement of (C_0).
 
 The conclusion covers only these input/error predicates. It does not establish timing, faults, initialization, resource use, physical/electrical interface, measurement uncertainty, modes, or implementation conformance. Richer contract theories may define normalization and refinement differently, so the formalism and variable universe must travel with the claim.
 

@@ -31,7 +31,7 @@ How should a language define the boundary between decoded source text and parser
 
 ### Central model, mechanism, or theorem
 
-Let the decoded source be (s\in\Sigma^*), and let ordered token/trivia rules define languages (L_1,\ldots,L_k\subseteq\Sigma^+). At offset (p), form
+Let the decoded source be $s\in\Sigma^*$, and let ordered token/trivia rules define languages $L_1,\ldots,L_k\subseteq\Sigma^+$. At offset (p), form
 
 $$
 C(p)=\{(i,x)\mid x\ne\epsilon\land x\text{ is a prefix of }s[p:]\land x\in L_i\}.
@@ -115,7 +115,7 @@ Not every implementation stores every field inline. The invariant is that consum
 
 **Token languages and progress.** Each rule recognizes a set of nonempty strings. Fixed punctuation has singleton languages: (L_{PLUS}=\{+\}). An identifier rule might start with an identifier-start character and continue with identifier-continue characters. A decimal-integer rule may constrain separators and suffixes. The rule language must distinguish recognition from later meaning: spelling `count` can be an identifier token even before name resolution decides which declaration it denotes.
 
-No ordinary rule may accept (\epsilon). If an empty token wins without advancing, the scanner loops forever. EOF is exceptional: it is a synthetic zero-width observation at the already reached end, emitted once under API state rather than repeatedly recognized by a source regex. Inserted recovery tokens are likewise parser artifacts with explicit synthetic provenance, not ordinary source-consuming tokens.
+No ordinary rule may accept $\epsilon$. If an empty token wins without advancing, the scanner loops forever. EOF is exceptional: it is a synthetic zero-width observation at the already reached end, emitted once under API state rather than repeatedly recognized by a source regex. Inserted recovery tokens are likewise parser artifacts with explicit synthetic provenance, not ordinary source-consuming tokens.
 
 **Longest match and priority.** At a source offset, several rules may match prefixes. The common policy is maximum length, then declaration priority. Thus `==` beats `=` because it consumes more source. If both `IF` and `IDENT` match `if` with equal length, priority can select `IF`; alternatively the scanner can recognize `IDENT` and reclassify it through a reserved-word table. Both are valid if specified consistently.
 
@@ -239,9 +239,9 @@ print("policy=longest_then_rule_order")
 
 ## Definitions and Notation
 
-Let (s=c_0\ldots c_{n-1}\in\Sigma^*) be a decoded source sequence whose boundaries map to COMP-002 byte offsets. A lexeme at position (p) is half-open slice (s[p:q]), (p<q\le n).
+Let $s=c_0\ldots c_{n-1}\in\Sigma^*$ be a decoded source sequence whose boundaries map to COMP-002 byte offsets. A lexeme at position (p) is half-open slice (s[p:q]), $p<q\le n$.
 
-An ordered lexical rule is (R_i=(name_i,L_i,channel_i,action_i)), where (L_i\subseteq\Sigma^+), `channel` distinguishes significant token, trivia, or diagnostic ownership, and `action` computes a kind/value/mode transition without changing the consumed span.
+An ordered lexical rule is (R_i=(name_i,L_i,channel_i,action_i)), where $L_i\subseteq\Sigma^+$, `channel` distinguishes significant token, trivia, or diagnostic ownership, and `action` computes a kind/value/mode transition without changing the consumed span.
 
 The candidate set is
 

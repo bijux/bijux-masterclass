@@ -36,7 +36,7 @@ $$
 A_F=\{a\in A\mid h(a)=true\text{ for every }h\in H\}.
 $$
 
-For minimized consequence vector (c(a)=(c_1,\ldots,c_k)), alternative (a) dominates (b) when
+For minimized consequence vector $c(a)=(c_1,\ldots,c_k)$, alternative (a) dominates (b) when
 
 $$
 c_i(a)\le c_i(b)\ \forall i
@@ -193,7 +193,7 @@ $$
 A_F=\bigcap_{h\in H}\{a\in A:h(a)=true\}.
 $$
 
-For minimized criterion vector (c(a)\in\mathbb{R}^k), define strict Pareto dominance
+For minimized criterion vector $c(a)\in\mathbb{R}^k$, define strict Pareto dominance
 
 $$
 a\prec b
@@ -209,7 +209,7 @@ $$
 P=\{a\in A_F:\nexists b\in A_F\text{ such that }b\prec a\}.
 $$
 
-For scenarios (Q=\{q_1,\ldots,q_m\}), record response measure (r(a,q)) and evidence confidence (e(a,q)). A robust decision remains feasible over a declared uncertainty set (\Omega):
+For scenarios $Q=\{q_1,\ldots,q_m\}$, record response measure (r(a,q)) and evidence confidence (e(a,q)). A robust decision remains feasible over a declared uncertainty set $\Omega$:
 
 $$
 h(a,\omega)=true

@@ -47,6 +47,11 @@ class MarkdownStructureTests(unittest.TestCase):
         normalized = normalize_github_math(text)
         self.assertEqual("$$\nf(x)=(x+1)\\times2\n$$\n", normalized)
 
+    def test_parenthetical_tex_is_normalized_outside_existing_math(self) -> None:
+        text = "Existing $x\\to y$ and raw (obs_B:O\\to A_B); code `f(x)`.\n"
+        normalized = normalize_github_math(text)
+        self.assertEqual("Existing $x\\to y$ and raw $obs_B:O\\to A_B$; code `f(x)`.\n", normalized)
+
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ How can recursive axis-aligned partitions accelerate multidimensional range and 
 
 ### Essential definitions
 
-A **k-d tree** indexes points (x\in\mathbb{R}^k) by recursively choosing an axis (a), a split value (s), and two subregions. A common balanced construction selects the median point on axis (a=\text{depth}\bmod k). The left subtree contains points ordered before the split and the right contains points after it under a declared tie rule.
+A **k-d tree** indexes points $x\in\mathbb{R}^k$ by recursively choosing an axis (a), a split value (s), and two subregions. A common balanced construction selects the median point on axis $a=\text{depth}\bmod k$. The left subtree contains points ordered before the split and the right contains points after it under a declared tie rule.
 
 An orthogonal range query reports points inside an axis-aligned box. A nearest-neighbor query maintains the best distance found, explores the query-side child first, then explores the other child only if its region can beat the incumbent. For a splitting plane under Euclidean distance, the lower bound is ((q_a-s)^2). Bounding boxes give stronger lower bounds:
 
@@ -47,7 +47,7 @@ Correct pruning is branch-and-bound. A subtree may be skipped only when a proven
 
 ### Common failures
 
-Common failures include promising (O(\log n)) worst-case queries, building an unbalanced insertion tree, pruning with distance instead of squared distance, using Euclidean plane bounds for a different metric, ignoring equal-axis points, mutating aliased coordinates, keeping stale boxes after deletion, treating NaN as ordered, and expecting low-dimensional pruning to survive hundreds of dimensions.
+Common failures include promising $O(\log n)$ worst-case queries, building an unbalanced insertion tree, pruning with distance instead of squared distance, using Euclidean plane bounds for a different metric, ignoring equal-axis points, mutating aliased coordinates, keeping stale boxes after deletion, treating NaN as ordered, and expecting low-dimensional pruning to survive hundreds of dimensions.
 
 ### Compact example
 
@@ -101,21 +101,21 @@ After this chapter, you should be able to:
 
 ### Recursive spatial partition
 
-At a node with split axis (a) and split coordinate (s), the left and right children inherit the parent's region intersected with (x_a\le s) and (x_a\ge s), adjusted by the implementation's strict/equal convention. Cycling axes is simple; choosing the axis of greatest spread can adapt to anisotropic data; sliding-midpoint rules can avoid empty cells. These policies produce different shapes but must preserve a provable region for each subtree.
+At a node with split axis (a) and split coordinate (s), the left and right children inherit the parent's region intersected with $x_a\le s$ and $x_a\ge s$, adjusted by the implementation's strict/equal convention. Cycling axes is simple; choosing the axis of greatest spread can adapt to anisotropic data; sliding-midpoint rules can avoid empty cells. These policies produce different shapes but must preserve a provable region for each subtree.
 
 A node may store one point, a bucket of points, or only a split with points in leaves. A leaf size greater than one shortens the tree and improves contiguous brute-force work. Pointer nodes are easy to mutate but incur allocation and cache misses. Flat arrays permit cache-friendly traversal and stable serialization. These are representation choices, not different meanings of k-d partitioning.
 
 ### Balanced construction
 
-Repeated insertion follows a multidimensional comparison and can degenerate to height (n) for ordered data. Offline construction selects a median on the chosen axis and recursively partitions the halves. Full sorting at every level gives a clear (O(n\log^2 n)) implementation; linear-time selection at each level can achieve (O(n\log n)) expected or controlled construction, and presorted strategies offer other bounds and trade-offs.
+Repeated insertion follows a multidimensional comparison and can degenerate to height (n) for ordered data. Offline construction selects a median on the chosen axis and recursively partitions the halves. Full sorting at every level gives a clear $O(n\log^2 n)$ implementation; linear-time selection at each level can achieve $O(n\log n)$ expected or controlled construction, and presorted strategies offer other bounds and trade-offs.
 
 Balance by point count controls height, not spatial quality. A median split may cut through a dense cluster or create elongated cells. Midpoint splitting may produce empty or badly imbalanced children. Modern implementations combine median or sliding-midpoint policies, leaf buckets, and compact bounding boxes. Benchmarks must report build time, memory, height, region aspect, and visited leaves.
 
-Duplicates need a total tie key. Comparing only coordinate (a) leaves equal-axis points unordered. A deterministic build can compare ((x_a,x_0,\ldots,x_{a-1},x_{a+1},\ldots,	ext{id})). If identical points are distinct records, preserve identifiers or multiplicity. If they represent a set, canonicalize before build. The query API must specify ties among equally distant points.
+Duplicates need a total tie key. Comparing only coordinate (a) leaves equal-axis points unordered. A deterministic build can compare $(x_a,x_0,\ldots,x_{a-1},x_{a+1},\ldots,	ext{id})$. If identical points are distinct records, preserve identifiers or multiplicity. If they represent a set, canonicalize before build. The query API must specify ties among equally distant points.
 
 ### Orthogonal range search
 
-For inclusive query box (Q=[l_0,u_0]\times\cdots\times[l_{k-1},u_{k-1}]), test each visited point against all dimensions. At a split on axis (a), the left child can intersect only if (l_a\le s); the right can intersect only if (s\le u_a), subject to the tree's equality convention. With stored subtree boxes, skip a child if its box is disjoint from (Q), and report or scan a compact subtree when its box is fully contained.
+For inclusive query box $Q=[l_0,u_0]\times\cdots\times[l_{k-1},u_{k-1}]$, test each visited point against all dimensions. At a split on axis (a), the left child can intersect only if $l_a\le s$; the right can intersect only if $s\le u_a$, subject to the tree's equality convention. With stored subtree boxes, skip a child if its box is disjoint from (Q), and report or scan a compact subtree when its box is fully contained.
 
 The output itself may be large, so range-query complexity includes (z), the number of reported records. For balanced, well-behaved low-dimensional trees, pruning is effective, but worst-case boxes can intersect many cells. Never advertise a query bound without output size and distribution/dimension premises.
 
@@ -131,7 +131,7 @@ The proof has three parts: the lower bound applies to every descendant; the incu
 
 For (k)-nearest neighbors, keep a max-heap of the best (k) candidates. Until full, no finite pruning radius exists; afterward the worst retained distance is the upper bound. Radius search prunes boxes farther than (r) and reports candidates within (r). Both require deterministic duplicate/tie behavior and careful boundary comparison.
 
-Approximate nearest-neighbor search may prune more aggressively. One common contract returns a neighbor no farther than ((1+\epsilon)) times the true distance. The pruning inequality must be derived in the same distance domain; if using squared distances, the multiplicative factor is squared. Approximation is an API contract, not a timeout that silently returns the current point.
+Approximate nearest-neighbor search may prune more aggressively. One common contract returns a neighbor no farther than $(1+\epsilon)$ times the true distance. The pruning inequality must be derived in the same distance domain; if using squared distances, the multiplicative factor is squared. Approximation is an API contract, not a timeout that silently returns the current point.
 
 ### Metrics and transformations
 
@@ -280,7 +280,7 @@ print("evidence=kd_tree_model")
 
 - (k): coordinate dimension; (n): indexed point count.
 - (a,s): split axis and split coordinate.
-- (B=[\ell,u]): axis-aligned subtree bounding box.
+- $B=[\ell,u]$: axis-aligned subtree bounding box.
 - (d), (d^2): metric distance and squared Euclidean distance.
 - **Incumbent**: best admissible candidate found so far.
 - **Lower bound**: minimum possible distance from the query to every point in a region.
@@ -345,11 +345,11 @@ Median splits favor height; midpoint/sliding-midpoint splits can improve cell ge
 
 ### Example 4
 
-**Range branch.** At x-split 6, inclusive box x-range ([7,10]) cannot intersect the left region (x\le6), so only the right branch is needed. If equality ownership overlaps at 6 and lower bound were 6, both relevant equality paths must be handled. **Conclusion:** range pruning follows interval intersection and tie convention.
+**Range branch.** At x-split 6, inclusive box x-range ([7,10]) cannot intersect the left region $x\le6$, so only the right branch is needed. If equality ownership overlaps at 6 and lower bound were 6, both relevant equality paths must be handled. **Conclusion:** range pruning follows interval intersection and tie convention.
 
 ### Example 5
 
-**Box lower bound.** Query ((9,4)) and box ([0,5]\times[7,10]) have gaps 4 and 3, so squared lower bound is (4^2+3^2=25). An incumbent at squared distance 10 prunes the box. **Conclusion:** box bounds dominate a single-plane bound when multiple axes separate.
+**Box lower bound.** Query ((9,4)) and box $[0,5]\times[7,10]$ have gaps 4 and 3, so squared lower bound is (4^2+3^2=25). An incumbent at squared distance 10 prunes the box. **Conclusion:** box bounds dominate a single-plane bound when multiple axes separate.
 
 ### Example 6
 
@@ -394,7 +394,7 @@ Median splits favor height; midpoint/sliding-midpoint splits can improve cell ge
 
 ### Exercise 1
 
-For query ((4,9)), compute the squared distance lower bound to box ([7,10]\times[2,6]). Decide whether it can be pruned with incumbent squared distance 17 and explain the equality rule.
+For query ((4,9)), compute the squared distance lower bound to box $[7,10]\times[2,6]$. Decide whether it can be pruned with incumbent squared distance 17 and explain the equality rule.
 
 ### Exercise 2
 
@@ -420,7 +420,7 @@ The x-gap is (7-4=3), and the y-gap is (9-6=3). The squared box distance is (3^2
 
 ### Answer 2
 
-Every point (x) in the far half-space lies across split plane (x_a=s), so (|x_a-q_a|\ge|s-q_a|). Euclidean squared distance sums nonnegative coordinate terms, hence (d^2(x,q)\ge(s-q_a)^2). If this bound exceeds squared incumbent (D), no far point improves it. When equality is possible and the required result selects a preferred point among equal distances, equality is not enough to prune; explore or maintain an additional lower bound on the tie key.
+Every point (x) in the far half-space lies across split plane (x_a=s), so $|x_a-q_a|\ge|s-q_a|$. Euclidean squared distance sums nonnegative coordinate terms, hence $d^2(x,q)\ge(s-q_a)^2$. If this bound exceeds squared incumbent (D), no far point improves it. When equality is possible and the required result selects a preferred point among equal distances, equality is not enough to prune; explore or maintain an additional lower bound on the tie key.
 
 ### Answer 3
 

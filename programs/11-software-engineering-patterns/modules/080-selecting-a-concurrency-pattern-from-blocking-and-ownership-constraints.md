@@ -301,7 +301,7 @@ print("checks=ownership,blocking,event,ordering,capacity,effect,shutdown,evidenc
 
 Let ownership graph (O=(R,D)) map mutable resources (R) to owner domains (D). Blocking map β assigns each call/context a worst-case blocking class. Wait graph (G_w=(V,E)) records resource/execution dependencies. Ordering equivalence ∼ partitions operations into domains requiring serialization.
 
-Capacity vector (C=(c_1,\ldots,c_n)) records hard resource bounds and full policies. Stage service rates are μᵢ; accepted rate λ; end-to-end deadline (D_r); lifecycle generation (g); and stable request/effect identity (r,e).
+Capacity vector $C=(c_1,\ldots,c_n)$ records hard resource bounds and full policies. Stage service rates are μᵢ; accepted rate λ; end-to-end deadline (D_r); lifecycle generation (g); and stable request/effect identity (r,e).
 
 A candidate (P) is admissible only if it maps every resource to one ownership policy, respects β, preserves required ∼, has finite C, handles cycles/effects/lifecycle and has testable evidence obligations.
 

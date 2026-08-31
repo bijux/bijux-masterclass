@@ -31,7 +31,7 @@ When should new objects be created by copying configured exemplars, and how can 
 
 ### Central model, mechanism, or theorem
 
-Represent an exemplar as labeled object graph (G=(V,E,\lambda)). Partition edges by copy policy:
+Represent an exemplar as labeled object graph $G=(V,E,\lambda)$. Partition edges by copy policy:
 
 $$
 E=E_{own}\cup E_{share}\cup E_{rebind}\cup E_{reject}.
@@ -192,7 +192,7 @@ Keep Prototype only when exemplar-based creation remains clearer and its copy co
 
 ## Definitions and Notation
 
-Let source graph be (G=(V,E)), source root (r), and clone mapping (f:V'\to V_c) for the cloned subset (V'). The mapping must be a function so one copied source node has one clone node:
+Let source graph be (G=(V,E)), source root (r), and clone mapping $f:V'\to V_c$ for the cloned subset (V'). The mapping must be a function so one copied source node has one clone node:
 
 $$
 u=v\Rightarrow f(u)=f(v).
@@ -216,7 +216,7 @@ $$
 (u,v,\ell)\in E_{copy}\Rightarrow(f(u),f(v),\ell)\in E_c.
 $$
 
-Cycles terminate because (f(v)) is entered in the memo before cloning successors. For mutation set (M) permitted on clone-owned state, independence requires selected prototype observations remain unchanged after (m\in M) is applied to the clone. These conditions do not define policy for omitted nodes; every reachable edge still needs classification.
+Cycles terminate because (f(v)) is entered in the memo before cloning successors. For mutation set (M) permitted on clone-owned state, independence requires selected prototype observations remain unchanged after $m\in M$ is applied to the clone. These conditions do not define policy for omitted nodes; every reachable edge still needs classification.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -435,15 +435,15 @@ An unfamiliar autonomous-vehicle platform clones calibrated driving scenarios fo
 
 ### Answer 1
 
-Source root (w_0) has owned edge to mutable list (s_0) and shared edge to immutable tuple (p). Clone root (w_1) is distinct: (w_1\ne w_0). Its owned steps edge targets (s_1\ne s_0), initially value-equal to (s_0). Its shared policy edge targets the same (p), so both equality and identity hold for policy.
+Source root (w_0) has owned edge to mutable list (s_0) and shared edge to immutable tuple (p). Clone root (w_1) is distinct: $w_1\ne w_0$. Its owned steps edge targets $s_1\ne s_0$, initially value-equal to (s_0). Its shared policy edge targets the same (p), so both equality and identity hold for policy.
 
 Appending `archive` mutates (s_1) only. The printed original remains `read,validate`, while clone becomes `read,validate,archive`; this is bounded mutation evidence for list isolation. It does not prove other fields, concurrent behavior, tuple deep immutability for arbitrary contents, or general graph cloning.
 
 ### Answer 2
 
-Let source parent (a) have edges `left` and `right` to the same child (b), and (b.parent=a). Allocate clone (a') and immediately memoize (a\mapsto a'). Follow `left`: allocate (b'), memoize (b\mapsto b'), then follow `parent`; memo returns (a'). Assign (b'.parent=a'). Assign (a'.left=b'). Follow `right`; memo returns existing (b'), so assign (a'.right=b').
+Let source parent (a) have edges `left` and `right` to the same child (b), and (b.parent=a). Allocate clone (a') and immediately memoize $a\mapsto a'$. Follow `left`: allocate (b'), memoize $b\mapsto b'$, then follow `parent`; memo returns (a'). Assign (b'.parent=a'). Assign (a'.left=b'). Follow `right`; memo returns existing (b'), so assign (a'.right=b').
 
-Thus (a'\ne a), (b'\ne b), (a'.left=a'.right=b'), and (b'.parent=a'). The finite traversal terminates because every recursive revisit finds a memo entry. This proves topology for the declared graph only; per-node state and external edges require additional policy.
+Thus $a'\ne a$, $b'\ne b$, (a'.left=a'.right=b'), and (b'.parent=a'). The finite traversal terminates because every recursive revisit finds a memo entry. This proves topology for the declared graph only; per-node state and external edges require additional policy.
 
 ### Answer 3
 

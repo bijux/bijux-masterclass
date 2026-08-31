@@ -24,7 +24,7 @@ Which uncertain inputs, assumptions, model structures, stakeholder preferences, 
 - A **quantity of interest (QoI)** is the output analyzed, such as mass, lifecycle cost, completion date, reliability, score difference, probability of success, or selected alternative.
 - **Local sensitivity** describes response near a point, often by a partial derivative or finite difference.
 - **One-at-a-time (OAT) analysis** changes one factor while holding others fixed. It supports simple traceability but cannot generally reveal interactions or full-range nonlinear behavior.
-- **Elasticity** is a dimensionless local response: (E_i=(\partial y/\partial x_i)(x_i/y)).
+- **Elasticity** is a dimensionless local response: $E_i=(\partial y/\partial x_i)(x_i/y)$.
 - **Global sensitivity analysis (GSA)** explores factors over declared ranges/distributions, varying them jointly to capture nonlinearities and interactions.
 - A **main effect** is variation attributable to a factor alone; an **interaction effect** occurs when a factor's influence depends on another factor.
 - A **Sobol first-order index** is the fraction of output variance associated with a factor's main effect under stated probabilistic/independence assumptions; a **total-effect index** includes all interactions involving it.
@@ -35,7 +35,7 @@ Which uncertain inputs, assumptions, model structures, stakeholder preferences, 
 
 ### Central model, mechanism, or theorem
 
-For model (Y=f(X_1,\ldots,X_k;M)) with model choice (M), local sensitivity at nominal (x^0) is
+For model $Y=f(X_1,\ldots,X_k;M)$ with model choice (M), local sensitivity at nominal (x^0) is
 
 $$
 c_i=\left.\frac{\partial f}{\partial x_i}\right|_{x^0},
@@ -84,7 +84,7 @@ Common failures include varying only easy numeric inputs; choosing ranges after 
 
 ### Compact example
 
-For (Y=10+2X+3Z+4XZ) with independent equiprobable (X,Z\in\{-1,1\}), the four outputs are 9, 7, 5, and 19; mean is 10 and variance is 29. Orthogonality attributes 4/29 to X's main effect, 9/29 to Z's main effect, and 16/29 to interaction. Total effects are 20/29 and 25/29. At nominal `(0,0)`, local derivatives are 2 and 3 and reveal nothing about the interaction that causes 55.2 percent of variance. Neither analysis is wrong; they answer different questions.
+For (Y=10+2X+3Z+4XZ) with independent equiprobable $X,Z\in\{-1,1\}$, the four outputs are 9, 7, 5, and 19; mean is 10 and variance is 29. Orthogonality attributes 4/29 to X's main effect, 9/29 to Z's main effect, and 16/29 to interaction. Total effects are 20/29 and 25/29. At nominal `(0,0)`, local derivatives are 2 and 3 and reveal nothing about the interaction that causes 55.2 percent of variance. Neither analysis is wrong; they answer different questions.
 
 ### Connections
 
@@ -143,7 +143,7 @@ After completing this module, you should be able to:
 
 **Build a factor registry.** For each factor record ID/name, meaning, units, baseline, lower/upper/support, distribution or discrete cases, evidence/source/date, epistemic versus aleatory interpretation where useful, dependencies, feasibility rules, control authority, measurement/update route, affected model components, and rationale. Include environmental/operational scenarios, human behavior, supplier/resource states, correlations, algorithms, boundary/initial conditions, calibration parameters, discount rates, lifecycle horizons, value-function anchors, and weights.
 
-**Separate factor influence from factor uncertainty.** For a linear local approximation (Y\approx f(x^0)+\sum_i c_i(X_i-x_i^0)), output uncertainty contribution depends on both sensitivity coefficient (c_i) and input uncertainty. A steep derivative with negligible input uncertainty may not drive forecast variance; a moderate derivative with broad uncertainty may. A controllable design factor can remain important even if it contributes little uncertainty.
+**Separate factor influence from factor uncertainty.** For a linear local approximation $Y\approx f(x^0)+\sum_i c_i(X_i-x_i^0)$, output uncertainty contribution depends on both sensitivity coefficient (c_i) and input uncertainty. A steep derivative with negligible input uncertainty may not drive forecast variance; a moderate derivative with broad uncertainty may. A controllable design factor can remain important even if it contributes little uncertainty.
 
 **Select decision-relevant QoIs.** Do not default to mean response. Analyze performance margin, maximum temperature, fifth-percentile reliability, 95th-percentile latency, completion-date exceedance, lifecycle-cost tail, joint success probability, score difference, probability/range of rank, maximum regret, or harmed subgroup when those govern decisions. Vector/time/spatial outputs may require features or functional methods; aggressive scalar reduction can hide when/where failure occurs.
 
@@ -212,7 +212,7 @@ This exact orthogonal decomposition is a teaching case. Real indices need suitab
 
 ## Definitions and Notation
 
-Let (X=(X_1,\ldots,X_k)) be factors with declared joint domain/distribution (D), (M) model structure, (Y=f(X;M)) output, and (q(Y)) the decision-relevant QoI.
+Let $X=(X_1,\ldots,X_k)$ be factors with declared joint domain/distribution (D), (M) model structure, (Y=f(X;M)) output, and (q(Y)) the decision-relevant QoI.
 
 Local coefficient and elasticity:
 
@@ -246,7 +246,7 @@ $$
 \Delta(X,M,W)=V_a-V_b.
 $$
 
-The switch boundary is (\Delta=0); a robustness summary should describe which credible region has (\Delta>0), (=0), or (<0), not merely sensitivity of each score separately.
+The switch boundary is $\Delta=0$; a robustness summary should describe which credible region has $\Delta>0$, (=0), or (<0), not merely sensitivity of each score separately.
 
 For a threshold (L), define failure indicator
 
@@ -328,7 +328,7 @@ The inference remains bounded by model validity and the declared factor domain. 
 
 ### Example 5
 
-**Decision weight break-even.** Alternatives have values A=(0.9,0.4), B=(0.6,0.8) and weights `(w,1-w)`. (\Delta=0.7w-0.4), so tie is (w=4/7). Report which stakeholder-authorized swing-weight interval lies on either side; do not vary one weight without maintaining normalization and scale meaning.
+**Decision weight break-even.** Alternatives have values A=(0.9,0.4), B=(0.6,0.8) and weights `(w,1-w)`. $\Delta=0.7w-0.4$, so tie is (w=4/7). Report which stakeholder-authorized swing-weight interval lies on either side; do not vary one weight without maintaining normalization and scale meaning.
 
 ### Example 6
 
@@ -405,7 +405,7 @@ $$
 \frac{\partial y}{\partial x}=4+3z,\qquad \frac{\partial y}{\partial z}=2+3x.
 $$
 
-At `(0,0)` the derivatives are 4 and 2. At `(1,1)` they are 7 and 5. The derivative for each factor changes with the other factor, which is precisely the interaction. At other corners, slopes can shrink or change sign: at `z=-1`, (\partial y/\partial x=1); at `x=-1`, (\partial y/\partial z=-1). One local ranking is conditional on the nominal point and says nothing by itself about full-range variance, threshold crossing, or feasibility. Use factorial contrasts or a global design over the justified joint domain and select a decision-relevant QoI.
+At `(0,0)` the derivatives are 4 and 2. At `(1,1)` they are 7 and 5. The derivative for each factor changes with the other factor, which is precisely the interaction. At other corners, slopes can shrink or change sign: at `z=-1`, $\partial y/\partial x=1$; at `x=-1`, $\partial y/\partial z=-1$. One local ranking is conditional on the nominal point and says nothing by itself about full-range variance, threshold crossing, or feasibility. Use factorial contrasts or a global design over the justified joint domain and select a decision-relevant QoI.
 
 ### Answer 2
 

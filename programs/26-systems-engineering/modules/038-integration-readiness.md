@@ -56,7 +56,7 @@ Valid(e,c)\Rightarrow Article(e)=Article(c)\land Config(e)\sim Config(c)
 \land Conditions(e)\supseteq Conditions(c)\land Method(e)\text{ is adequate},
 $$
 
-plus intact provenance and no invalidating change. Compatibility ((\sim)) requires an explicit equivalence or impact argument, not name similarity.
+plus intact provenance and no invalidating change. Compatibility $(\sim)$ requires an explicit equivalence or impact argument, not name similarity.
 
 ### Critical invariants
 

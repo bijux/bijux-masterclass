@@ -20,7 +20,7 @@ How can a balanced, page-oriented hierarchy of bounding rectangles index extende
 
 An **R-tree** stores entries ((B,	ext{pointer})), where (B) is a minimum bounding rectangle (MBR). Leaf entries bound data objects; internal entries bound every rectangle in their child. Unlike a k-d split, sibling MBRs may overlap, so a query can descend multiple branches.
 
-For rectangle (B=[l_x,u_x]\times[l_y,u_y]),
+For rectangle $B=[l_x,u_x]\times[l_y,u_y]$,
 
 $$
 \operatorname{area}(B)=(u_x-l_x)(u_y-l_y).
@@ -102,11 +102,11 @@ An R-tree node corresponds naturally to a storage page. A leaf entry contains an
 
 All leaves have equal depth, so height grows and shrinks through root changes as in B-tree families. The keys are not a nonoverlapping scalar partition. Sibling MBRs can overlap, and one object may intersect several siblings even though it is stored in one leaf. Search is therefore a branching traversal.
 
-The minimal enclosing rectangle of rectangles (B_1,\ldots,B_t) has each lower coordinate equal to the minimum child lower coordinate and each upper coordinate equal to the maximum child upper coordinate. Parent MBRs may conservatively exceed this minimum and remain correct, but looser boxes cause extra visits. Under-approximating a child is incorrect.
+The minimal enclosing rectangle of rectangles $B_1,\ldots,B_t$ has each lower coordinate equal to the minimum child lower coordinate and each upper coordinate equal to the maximum child upper coordinate. Parent MBRs may conservatively exceed this minimum and remain correct, but looser boxes cause extra visits. Under-approximating a child is incorrect.
 
 ### Intersection and containment search
 
-For an intersection query (Q), visit an internal entry exactly when (B_i\cap Q\ne\varnothing). At leaves, apply the MBR predicate to produce candidates. If indexed objects are themselves rectangles and the requested predicate is rectangle intersection, this may be exact. For polygons, curves, geography, compressed keys, or other lossy representations, fetch the object and recheck the true predicate.
+For an intersection query (Q), visit an internal entry exactly when $B_i\cap Q\ne\varnothing$. At leaves, apply the MBR predicate to produce candidates. If indexed objects are themselves rectangles and the requested predicate is rectangle intersection, this may be exact. For polygons, curves, geography, compressed keys, or other lossy representations, fetch the object and recheck the true predicate.
 
 Containment predicates have different direction. “Objects contained by Q,” “objects containing Q,” and “objects intersecting Q” use different tests. An operator class or query planner must bind the correct consistent function. A permissive bounding predicate may return extra candidates; it must never exclude a possible exact match.
 
@@ -160,7 +160,7 @@ Updates after packing gradually reduce quality. Use immutable segments plus a mu
 
 ### Numeric and geometric semantics
 
-Validate (l_i\le u_i), dimension, coordinate reference system, and finiteness. Floating conversion can shrink a stored bound and cause false negatives. SQLite documents outward rounding concerns for floating R-tree coordinates. Conservatively round lower bounds downward and upper bounds upward where formats narrow precision.
+Validate $l_i\le u_i$, dimension, coordinate reference system, and finiteness. Floating conversion can shrink a stored bound and cause false negatives. SQLite documents outward rounding concerns for floating R-tree coordinates. Conservatively round lower bounds downward and upper bounds upward where formats narrow precision.
 
 Longitude wrap, spherical distance, dateline-crossing boxes, and projected coordinates cannot be treated as ordinary Cartesian rectangles without a stated transformation. Split wrapping objects, use a periodic representation, or adopt a geometry-aware operator class. MBRs are candidates; exact geographic predicates remain authoritative.
 
@@ -349,7 +349,7 @@ Linear splits minimize update CPU but can create poor overlap. Quadratic splits 
 
 ### Example 1
 
-**MBR construction.** Rectangles ((1,2,4,5)) and ((3,0,8,3)) have enclosing MBR ((1,0,8,5)) with area (7\times5=35). **Conclusion:** parent bounds use coordinatewise minima and maxima.
+**MBR construction.** Rectangles ((1,2,4,5)) and ((3,0,8,3)) have enclosing MBR ((1,0,8,5)) with area $7\times5=35$. **Conclusion:** parent bounds use coordinatewise minima and maxima.
 
 ### Example 2
 
@@ -361,7 +361,7 @@ Linear splits minimize update CPU but can create poor overlap. Quadratic splits 
 
 ### Example 4
 
-**Overlap cost.** Two leaf MBRs overlap on ([7,9]\times[1,9]), area (2\times8=16). Queries in that region visit both leaves. **Conclusion:** overlap converts one logical region into multiple I/Os.
+**Overlap cost.** Two leaf MBRs overlap on $[7,9]\times[1,9]$, area $2\times8=16$. Queries in that region visit both leaves. **Conclusion:** overlap converts one logical region into multiple I/Os.
 
 ### Example 5
 
@@ -436,7 +436,7 @@ The enclosing MBR is ((2,1,10,9)). Original area is ((7-2)(5-1)=20). New area is
 
 ### Answer 2
 
-Every descendant object's MBR (D) lies inside ancestor MBR (B). If (B\cap Q=\varnothing), then no subset (D\subseteq B) intersects (Q); pruning cannot lose a match. If (B\cap Q\ne\varnothing), some or no descendants may intersect, so traversal is required. A polygon can occupy only part of its MBR; intersecting boxes are a necessary but not sufficient condition for polygon intersection, requiring exact recheck.
+Every descendant object's MBR (D) lies inside ancestor MBR (B). If $B\cap Q=\varnothing$, then no subset $D\subseteq B$ intersects (Q); pruning cannot lose a match. If $B\cap Q\ne\varnothing$, some or no descendants may intersect, so traversal is required. A polygon can occupy only part of its MBR; intersecting boxes are a necessary but not sufficient condition for polygon intersection, requiring exact recheck.
 
 ### Answer 3
 

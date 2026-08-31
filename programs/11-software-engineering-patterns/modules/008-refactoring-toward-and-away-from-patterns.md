@@ -30,7 +30,7 @@ How can an existing design move safely toward a pattern when forces emerge—and
 
 ### Central model, mechanism, or theorem
 
-Let program states be (P_0,P_1,\ldots,P_n) and (Obs_C) the observations protected by contract (C). A refactoring sequence requires
+Let program states be $P_0,P_1,\ldots,P_n$ and (Obs_C) the observations protected by contract (C). A refactoring sequence requires
 
 $$
 Obs_C(P_i)=Obs_C(P_{i+1})
@@ -173,9 +173,9 @@ $$
 Pre_r(P)\Rightarrow Obs_C(P)=Obs_C(r(P)).
 $$
 
-A sequence (R=r_n\circ\cdots\circ r_1) is safe only when every intermediate precondition holds and every step preserves the declared observations. Final equality follows by transitivity under the same (C); if the observation boundary or environment changes, the argument must be renewed.
+A sequence $R=r_n\circ\cdots\circ r_1$ is safe only when every intermediate precondition holds and every step preserves the declared observations. Final equality follows by transitivity under the same (C); if the observation boundary or environment changes, the argument must be renewed.
 
-Tests provide finite evidence set (T\subseteq Inputs). Passing establishes
+Tests provide finite evidence set $T\subseteq Inputs$. Passing establishes
 
 $$
 \forall t\in T,\ Obs_C(P,t)=Obs_C(P',t),
@@ -417,7 +417,7 @@ Protect request schema, authorization decision, idempotency-key handling, provid
 
 ### Answer 2
 
-Integer arithmetic gives standard (101), member (101\cdot90//100=90), and clearance (101\cdot70//100=70) in both implementations. The added case exercises truncation differently from 100. Still-uncovered partitions include negative or extremely large amounts, unknown `kind`, noninteger input, mutable/corrupt policy maps, and concurrency around policy registration. Exact domain constraints determine which are admissible.
+Integer arithmetic gives standard (101), member $101\cdot90//100=90$, and clearance $101\cdot70//100=70$ in both implementations. The added case exercises truncation differently from 100. Still-uncovered partitions include negative or extremely large amounts, unknown `kind`, noninteger input, mutable/corrupt policy maps, and concurrency around policy registration. Exact domain constraints determine which are admissible.
 
 ### Answer 3
 

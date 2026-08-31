@@ -43,7 +43,7 @@ $$
 next:I\to Yield(value,I')\mid Done(I')\mid Error(error,I').
 $$
 
-For finite sequence (S=\langle s_0,\ldots,s_{n-1}\rangle), a correct snapshot traversal yields each (s_i) exactly once in promised order, then remains terminal if fused exhaustion is promised. A fail-fast live iterator additionally checks an expected modification version before each access; detecting mismatch is a diagnostic policy, not synchronization or a proof that every mutation is detected.
+For finite sequence $S=\langle s_0,\ldots,s_{n-1}\rangle$, a correct snapshot traversal yields each (s_i) exactly once in promised order, then remains terminal if fused exhaustion is promised. A fail-fast live iterator additionally checks an expected modification version before each access; detecting mismatch is a diagnostic policy, not synchronization or a proof that every mutation is detected.
 
 ### Critical invariants
 

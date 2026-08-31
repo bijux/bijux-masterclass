@@ -30,13 +30,13 @@ When must several product roles vary as one coherent family, and how can a clien
 
 ### Central model, mechanism, or theorem
 
-Let roles be (R=\{r_1,\ldots,r_n\}) and families (G=\{g_1,\ldots,g_m\}). Abstract Factory operations create
+Let roles be $R=\{r_1,\ldots,r_n\}$ and families $G=\{g_1,\ldots,g_m\}$. Abstract Factory operations create
 
 $$
 F_{g_j}(r_i,c)\rightarrow p_{ij}:P_i.
 $$
 
-Individual validity requires (p_{ij}\models P_i). Family validity additionally requires
+Individual validity requires $p_{ij}\models P_i$. Family validity additionally requires
 
 $$
 Compatible_{g_j}(p_{1j},\ldots,p_{nj},c).
@@ -201,7 +201,7 @@ $$
 J_g(p_{1g},\ldots,p_{ng},c)=true.
 $$
 
-A product (p_{ia}) from family (a) and (p_{jb}) from family (b) is not assumed compatible when (a\ne b), even if each satisfies its individual interface. Safe family migration from (a) to (b) requires a boundary at which no live invariant spans both, or an explicit compatibility relation proved for that span.
+A product (p_{ia}) from family (a) and (p_{jb}) from family (b) is not assumed compatible when $a\ne b$, even if each satisfies its individual interface. Safe family migration from (a) to (b) requires a boundary at which no live invariant spans both, or an explicit compatibility relation proved for that span.
 
 ## Mechanisms, Invariants, or Proof Structure
 

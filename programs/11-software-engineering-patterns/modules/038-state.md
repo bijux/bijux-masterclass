@@ -182,9 +182,9 @@ Fault-inject before/after state commit, outbox, publish, effect request/response
 
 ## Definitions and Notation
 
-Machine (M=(S,E,D,\delta,s_0)). For current tuple (x=(id,s,d,v)), event (e=(eid,type,payload,expectedVersion)). A transition plan is (p=(s',d',A)).
+Machine $M=(S,E,D,\delta,s_0)$. For current tuple (x=(id,s,d,v)), event (e=(eid,type,payload,expectedVersion)). A transition plan is (p=(s',d',A)).
 
-Commit condition is (expectedVersion=v\land P(s,d)\land Guard(s,e,d,ctx)). Successful commit yields `(s',d',v+1)`; rejection/conflict preserves `(s,d,v)`.
+Commit condition is $expectedVersion=v\land P(s,d)\land Guard(s,e,d,ctx)$. Successful commit yields `(s',d',v+1)`; rejection/conflict preserves `(s,d,v)`.
 
 Transition coverage is not path coverage: with cycles, paths may be infinite. Reachability (Reach(s_0)) and safety (P) can be checked over a finite abstraction; liveness claims need fairness/environment assumptions.
 

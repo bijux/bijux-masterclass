@@ -45,7 +45,7 @@ $$
 (C_f,T_f,P_f)\sim F(X_t,\Theta,U),
 $$
 
-where (\Theta) contains explicit estimating/model assumptions and (U) represents uncertainties and risk scenarios with preserved dependence. A commitment is credible only if every component refers to compatible scope, configuration, calendar, price basis, and data date.
+where $\Theta$ contains explicit estimating/model assumptions and (U) represents uncertainties and risk scenarios with preserved dependence. A commitment is credible only if every component refers to compatible scope, configuration, calendar, price basis, and data date.
 
 For EVM status:
 
@@ -144,7 +144,7 @@ After completing this module, you should be able to:
 
 **Plan technical performance through time.** Select measures that predict stakeholder outcomes and reveal design maturity: mass, power, latency, accuracy, throughput, availability, defect escape, reliability, maintainability, human workload, emissions, or domain-specific quantities. Each TPM needs unit, direction, requirement/goal, allocation, planned profile by review/date, current estimate and confidence, margin definition, measurement/model source, configuration, owner, tolerance/alert bands, and response. A favorable average can hide unsafe tails or scenario failures.
 
-**Distinguish margin from uncertainty.** For an upper-bound requirement (L), current expected value (\hat x), and deliberate allocation (A), teams may define requirement margin (L-\hat x) or allocation margin (A-\hat x); the sign convention must be declared. Margin is not automatically confidence. If model uncertainty is (\pm 5) and nominal margin is 3, the requirement is not demonstrated merely because the point estimate passes. Preserve model-form, parameter, manufacturing, environmental, and operational uncertainty.
+**Distinguish margin from uncertainty.** For an upper-bound requirement (L), current expected value $\hat x$, and deliberate allocation (A), teams may define requirement margin $L-\hat x$ or allocation margin $A-\hat x$; the sign convention must be declared. Margin is not automatically confidence. If model uncertainty is $\pm 5$ and nominal margin is 3, the requirement is not demonstrated merely because the point estimate passes. Preserve model-form, parameter, manufacturing, environmental, and operational uncertainty.
 
 **Write causal risk scenarios.** A useful statement identifies a present source/condition, a credible future event or scenario, and consequences to named objectives. Record likelihood and consequence basis, affected requirements/WBS/activities, dependent effects, time window, owner, response actions, resources, triggers, residual risk, and retirement evidence. An issue already occurring belongs in issue/change control while its uncertain downstream consequences may remain risks.
 
@@ -274,9 +274,9 @@ $$
 
 Neither EAC is universally correct. Select assumptions from causal evidence and compare with a bottom-up forecast.
 
-For a lower-is-better TPM with limit (L), define margin (M=L-\hat x) under a declared convention. For upper-is-better, (M=\hat x-L). Report uncertainty and configuration with (M).
+For a lower-is-better TPM with limit (L), define margin $M=L-\hat x$ under a declared convention. For upper-is-better, $M=\hat x-L$. Report uncertainty and configuration with (M).
 
-For scenarios (s\in S) with coherent joint probability (p_s):
+For scenarios $s\in S$ with coherent joint probability (p_s):
 
 $$
 E[C_f]=\sum_sp_sC_s,\quad Pr(C_f\le C^*,T_f\le T^*,P_f\ge P^*)

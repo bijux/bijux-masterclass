@@ -35,7 +35,7 @@ $$
 \langle p,i\rangle\Downarrow o.
 $$
 
-The boundary induces an observation function (obs_B:O\to A_B). For deterministic programs considered in isolation,
+The boundary induces an observation function $obs_B:O\to A_B$. For deterministic programs considered in isolation,
 
 $$
 p\approx_B q
@@ -137,7 +137,7 @@ $$
 O=\operatorname{Return}(v)\mid\operatorname{Error}(e)\mid\operatorname{Diverge}.
 $$
 
-An interactive model can pair an outcome with a trace (t=e_1e_2\cdots), where events record externally relevant reads, writes, messages, or emissions. A concurrent model may admit a set of traces. A probabilistic model may assign distributions. Choosing a plain value when the program performs effects silently discards evidence.
+An interactive model can pair an outcome with a trace $t=e_1e_2\cdots$, where events record externally relevant reads, writes, messages, or emissions. A concurrent model may admit a set of traces. A probabilistic model may assign distributions. Choosing a plain value when the program performs effects silently discards evidence.
 
 An **observer** is not necessarily a human. It is the formal projection of an execution that the contract allows a surrounding program, client, test harness, or operator to detect. If the boundary exposes only returned integers, two allocation strategies may be indistinguishable. If memory consumption is contractual, the observer also measures a cost. Resource observations require an explicit cost model and environment; raw wall-clock measurements do not become timeless semantic facts.
 
@@ -164,9 +164,9 @@ Let:
 - (B) be an observation boundary;
 - (A_B) be the observations visible at boundary (B).
 
-For a deterministic terminating model, (\mathcal{E}:P\times I\to O). A relation (\mathcal{R}\subseteq(P\times I)\times O) is more general: it can represent stuck configurations or several permitted outcomes. Write (\langle p,i\rangle\Downarrow o) for a terminating derivation and (\langle p,i\rangle\Uparrow) for divergence.
+For a deterministic terminating model, $\mathcal{E}:P\times I\to O$. A relation $\mathcal{R}\subseteq(P\times I)\times O$ is more general: it can represent stuck configurations or several permitted outcomes. Write $\langle p,i\rangle\Downarrow o$ for a terminating derivation and $\langle p,i\rangle\Uparrow$ for divergence.
 
-The projection (obs_B:O\to A_B) deliberately forgets hidden details. For isolated deterministic programs,
+The projection $obs_B:O\to A_B$ deliberately forgets hidden details. For isolated deterministic programs,
 
 $$
 p\approx_B q
@@ -174,7 +174,7 @@ p\approx_B q
 \forall i\in I,\;obs_B(\mathcal{E}(p,i))=obs_B(\mathcal{E}(q,i)).
 $$
 
-If programs may produce several outcomes, define (Out(p,i)=\{o\mid\langle p,i\rangle\Downarrow o\}) and compare the projected sets, while separately accounting for divergence. Equality of may-outcomes, must-outcomes, and probability distributions are different equivalences.
+If programs may produce several outcomes, define $Out(p,i)=\{o\mid\langle p,i\rangle\Downarrow o\}$ and compare the projected sets, while separately accounting for divergence. Equality of may-outcomes, must-outcomes, and probability distributions are different equivalences.
 
 A context (K[-]) is an admitted program phrase containing one component hole. A contextual relation has the shape
 
@@ -211,7 +211,7 @@ $$
 (x+1)+1=x+(1+1)=x+2.
 $$
 
-Thus (p\approx_B q) for a total final-integer observer over all integer inputs. This is a proof under explicit assumptions, not empirical evidence about overflow, floating-point arithmetic, callbacks, or logging.
+Thus $p\approx_B q$ for a total final-integer observer over all integer inputs. This is a proof under explicit assumptions, not empirical evidence about overflow, floating-point arithmetic, callbacks, or logging.
 
 ## Alternatives and Trade-Offs
 

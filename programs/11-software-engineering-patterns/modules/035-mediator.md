@@ -193,7 +193,7 @@ $$
 
 while a star centered at mediator (mu) has (|E_{star}|=n). Directed request/response interfaces may count differently; the comparison illustrates topology, not total semantic complexity.
 
-Let mediator state be (m=(id,v,q)): collaboration identity, version, and owned policy state. Transition (delta(m,i,ctx)=(m',O)), with ordered outputs (O=[o_1,...,o_k]). Safety invariant (P(m)) should satisfy (P(m)\land Valid(i,ctx)\Rightarrow P(m')), under stated assumptions about output application.
+Let mediator state be (m=(id,v,q)): collaboration identity, version, and owned policy state. Transition (delta(m,i,ctx)=(m',O)), with ordered outputs (O=[o_1,...,o_k]). Safety invariant (P(m)) should satisfy $P(m)\land Valid(i,ctx)\Rightarrow P(m')$, under stated assumptions about output application.
 
 For durable output identity (j=(collaboration,version,outputIndex)), duplicate-safe receivers bind (j) to the same payload digest/outcome. This supports retry of one logical output but does not prove exactly-once external effects.
 
@@ -260,7 +260,7 @@ print(f"transitions={mediator.transitions} commands={button.commands}")
 
 ### Local invariant argument
 
-After every successful `notify`, the mediator normalizes exactly one owned input, computes (eligible=(name\ne\epsilon)\land terms), and commands the button only if its state differs. Therefore on return, `button.enabled == eligible`; three transitions yield two actual button changes. The argument assumes no concurrent/reentrant mutation and that `apply_enabled` terminates without failure.
+After every successful `notify`, the mediator normalizes exactly one owned input, computes $eligible=(name\ne\epsilon)\land terms$, and commands the button only if its state differs. Therefore on return, `button.enabled == eligible`; three transitions yield two actual button changes. The argument assumes no concurrent/reentrant mutation and that `apply_enabled` terminates without failure.
 
 ### Distributed review obligations
 
@@ -298,7 +298,7 @@ When boundaries become durable/distributed, separately review state/output atomi
 
 ### Example 1
 
-Six peers with all possible undirected direct links have (6\cdot5/2=15) links; a star has six. The mediator still understands all six roles. **Conclusion:** Topology shrinks, while semantic complexity moves rather than vanishes.
+Six peers with all possible undirected direct links have $6\cdot5/2=15$ links; a star has six. The mediator still understands all six roles. **Conclusion:** Topology shrinks, while semantic complexity moves rather than vanishes.
 
 ### Example 2
 

@@ -194,7 +194,7 @@ $$
 h(p')=h(p)\Rightarrow return/resume\ same\ logical\ execution,
 $$
 
-while (h(p')\ne h(p)) is conflict. This does not imply every log/metric side effect occurs once.
+while $h(p')\ne h(p)$ is conflict. This does not imply every log/metric side effect occurs once.
 
 For aggregate version (n), command with expected (e) may commit only if (e=n); successful commit advances to (n+1). Let acceptance-to-completion state machine include terminal `rejected`, `completed`, `cancelled`, `expired`, `failed`, or `indeterminate` as supported.
 

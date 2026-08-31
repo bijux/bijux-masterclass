@@ -50,7 +50,7 @@ $$
 \lambda < k\mu.
 $$
 
-For a stable measured interval, Little's Law gives (L=\lambda W), and response time decomposes as (T=W_q+S+W_r): work-queue wait, synchronous service, and result-delivery wait. A queue capacity (K) bounds queued payload memory approximately by (K b_{max}), but total memory also includes in-flight worker state, result backlog, connection state, and allocator/runtime overhead.
+For a stable measured interval, Little's Law gives $L=\lambda W$, and response time decomposes as (T=W_q+S+W_r): work-queue wait, synchronous service, and result-delivery wait. A queue capacity (K) bounds queued payload memory approximately by (K b_{max}), but total memory also includes in-flight worker state, result backlog, connection state, and allocator/runtime overhead.
 
 ### Critical invariants
 
@@ -170,7 +170,7 @@ $$
 
 for the relevant end-to-end response. A worker that reports a 20 ms database call has not met a 100 ms objective if the request waited 300 ms before starting. Record `accepted_at` and monotonic deadline in the envelope. Reject work that lacks enough estimated slack when policy supports that decision, and always discard or reconcile already-expired work before consuming a scarce dependency.
 
-Little's Law relates measured stable averages, (L=\lambda W). It is useful for checking observations: 800 accepted jobs/s with mean 0.25 s in the pipeline implies about 200 jobs on average. It does not bound a percentile, guarantee stability, select queue capacity, or justify admission above dependency capacity.
+Little's Law relates measured stable averages, $L=\lambda W$. It is useful for checking observations: 800 accepted jobs/s with mean 0.25 s in the pipeline implies about 200 jobs on average. It does not bound a percentile, guarantee stability, select queue capacity, or justify admission above dependency capacity.
 
 ### Define overload explicitly
 
@@ -345,7 +345,7 @@ Progress requires available workers, terminating or time-bounded service calls, 
 
 ### Queueing limits
 
-For stable averages Little's Law checks (L=\lambda W). The condition λ < (kμ) expresses offered work below idealized mean service capacity; it is neither a tail-latency proof nor universally sufficient. Service dependence, nonstationarity, burst correlation, priority, failures, and downstream queues require empirical and sometimes formal analysis. Mark model assumptions explicitly.
+For stable averages Little's Law checks $L=\lambda W$. The condition λ < (kμ) expresses offered work below idealized mean service capacity; it is neither a tail-latency proof nor universally sufficient. Service dependence, nonstationarity, burst correlation, priority, failures, and downstream queues require empirical and sometimes formal analysis. Mark model assumptions explicitly.
 
 ### Verification obligations
 

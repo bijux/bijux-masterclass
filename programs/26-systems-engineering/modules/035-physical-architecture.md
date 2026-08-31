@@ -33,7 +33,7 @@ How can a team transform logical responsibilities, interface contracts, and qual
 
 ### Central model, mechanism, or theorem
 
-Let logical elements be (L), physical elements (P), required logical interactions (F\subseteq L\times L), physical connections (E_P\subseteq P\times P), and allocation relation (A\subseteq L\times P). A candidate physical architecture is structurally adequate only if:
+Let logical elements be (L), physical elements (P), required logical interactions $F\subseteq L\times L$, physical connections $E_P\subseteq P\times P$, and allocation relation $A\subseteq L\times P$. A candidate physical architecture is structurally adequate only if:
 
 $$
 \forall l\in L_{required},\ \exists p\in P:\ (l,p)\in A,
@@ -225,7 +225,7 @@ print("evidence=declared_fields_only")
 
 ## Definitions and Notation
 
-Let required logical elements (L), physical elements (P), logical interactions (F_L\subseteq L\times L\times K) by kind (K), physical connections (E_P\subseteq P\times P\times K_P), configurations (C), modes (M), and locations (Z).
+Let required logical elements (L), physical elements (P), logical interactions $F_L\subseteq L\times L\times K$ by kind (K), physical connections $E_P\subseteq P\times P\times K_P$, configurations (C), modes (M), and locations (Z).
 
 Allocation matrix:
 

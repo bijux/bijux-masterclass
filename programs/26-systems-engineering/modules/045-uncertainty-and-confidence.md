@@ -34,7 +34,7 @@ What is unknown or variable about a system claim, what evidence and assumptions 
 
 ### Central model, mechanism, or theorem
 
-For measured/model inputs (X) with covariance matrix (\Sigma) and output (Y=f(X)), first-order uncertainty propagation near (x) is
+For measured/model inputs (X) with covariance matrix $\Sigma$ and output (Y=f(X)), first-order uncertainty propagation near (x) is
 
 $$
 u_c^2(Y)\approx \nabla f(x)^T\Sigma\nabla f(x).
@@ -42,7 +42,7 @@ $$
 
 This is a local approximation and depends on model adequacy, differentiability, input uncertainty, and covariance. Simulation or other methods may be needed for nonlinearity, discontinuity, tails, or non-Gaussian/dependent inputs.
 
-For a binomial proportion with (k) successes in (n) independent representative trials, (\hat p=k/n), the Wilson interval with normal quantile (z) is
+For a binomial proportion with (k) successes in (n) independent representative trials, $\hat p=k/n$, the Wilson interval with normal quantile (z) is
 
 $$
 \frac{\hat p+z^2/(2n)\ \pm\ z\sqrt{\hat p(1-\hat p)/n+z^2/(4n^2)}}{1+z^2/n}.
@@ -136,7 +136,7 @@ After completing this module, you should be able to:
 
 **Know frequentist interval semantics.** A 95-percent confidence procedure is designed so that, under assumptions and repeated sampling, approximately 95 percent of constructed intervals cover the fixed parameter. For the observed interval, frequentist language does not assign a 0.95 probability to that fixed parameter. Coverage may be approximate/discrete and can degrade after optional stopping, selection, misspecification, dependence, or nonrepresentative sampling.
 
-**Use intervals suited to the data.** The simple Wald interval (\hat p\pm z\sqrt{\hat p(1-\hat p)/n}) performs poorly near 0/1 or with small samples and can yield impossible bounds. Wilson or exact methods have different coverage/width properties. State sidedness: reliability acceptance often needs a one-sided lower bound, not a symmetric interval. Predefine the method rather than select the most favorable after observation.
+**Use intervals suited to the data.** The simple Wald interval $\hat p\pm z\sqrt{\hat p(1-\hat p)/n}$ performs poorly near 0/1 or with small samples and can yield impossible bounds. Wilson or exact methods have different coverage/width properties. State sidedness: reliability acceptance often needs a one-sided lower bound, not a symmetric interval. Predefine the method rather than select the most favorable after observation.
 
 **Know Bayesian interval semantics.** A Bayesian posterior follows
 
@@ -164,7 +164,7 @@ $$
 R_L=\alpha^{1/n}
 $$
 
-at confidence (1-\alpha). For 100 tests and (\alpha=0.05), (R_L\approx0.9705), not 1. This says nothing about untested failure modes, dependence, mission duration, severity, or changed configuration. Rare/common-cause claims need stronger evidence and modeling.
+at confidence $1-\alpha$. For 100 tests and $\alpha=0.05$, $R_L\approx0.9705$, not 1. This says nothing about untested failure modes, dependence, mission duration, severity, or changed configuration. Rare/common-cause claims need stronger evidence and modeling.
 
 **Account for selection and multiplicity.** Inspecting many measures and reporting only the most favorable interval biases confidence. Multiple comparisons raise the chance of at least one false signal. Predefine primary claims, adjust or control error where relevant, report all material analyses, and distinguish exploratory from confirmatory evidence.
 
@@ -220,7 +220,7 @@ The one-of-one Wald interval collapses to `[1,1]`, illustrating why an easy form
 
 ## Definitions and Notation
 
-Let claim quantity (Q), data (D), system/configuration (B), operating population/scenario (S), model (M), parameters (\theta), evidence (E), and decision threshold (L).
+Let claim quantity (Q), data (D), system/configuration (B), operating population/scenario (S), model (M), parameters $\theta$, evidence (E), and decision threshold (L).
 
 A complete uncertainty assertion can be represented as
 
@@ -228,7 +228,7 @@ $$
 U_Q=(Q,B,S,D,M,E,\mathcal{I},\gamma,A),
 $$
 
-where (\mathcal{I}) is interval/distribution/scenario representation, (\gamma) its declared probability/coverage semantics if any, and (A) assumptions/applicability. Omitting these fields makes reuse unsafe.
+where $\mathcal{I}$ is interval/distribution/scenario representation, $\gamma$ its declared probability/coverage semantics if any, and (A) assumptions/applicability. Omitting these fields makes reuse unsafe.
 
 For independent standard-uncertainty components, the first-order special case is
 
@@ -324,7 +324,7 @@ Quantification is conditional. More data can reduce sampling or parameter uncert
 
 ### Example 3
 
-**Measurement uncertainty with covariance.** Output (Y=X_1-X_2), standard uncertainties both 2, covariance +3. Then variance is (4+4-2(3)=2), so (u_c=\sqrt2). If covariance were ignored, (u_c=\sqrt8). Dependence and subtraction sign matter; validate covariance evidence.
+**Measurement uncertainty with covariance.** Output (Y=X_1-X_2), standard uncertainties both 2, covariance +3. Then variance is (4+4-2(3)=2), so $u_c=\sqrt2$. If covariance were ignored, $u_c=\sqrt8$. Dependence and subtraction sign matter; validate covariance evidence.
 
 ### Example 4
 
@@ -405,7 +405,7 @@ Design an uncertainty and confidence case for an autonomous ferry operating in f
 
 ### Answer 1
 
-(\hat p=45/50=0.90). Wald standard error is
+$\hat p=45/50=0.90$. Wald standard error is
 
 $$
 \sqrt{0.9(0.1)/50}=0.04243,
@@ -441,17 +441,17 @@ $$
 u_c(Y)=\sqrt{17}\approx4.123.
 $$
 
-Assuming independence removes the cross term, giving (\sqrt{13}\approx3.606). Positive covariance increases uncertainty because both coefficients have the same sign: shared positive movement reinforces (Y). For a subtractive model or negative covariance, the cross contribution can reduce variance. This calculation assumes first-order propagation and credible covariance; it does not validate linearity, distributions, or the measurement model.
+Assuming independence removes the cross term, giving $\sqrt{13}\approx3.606$. Positive covariance increases uncertainty because both coefficients have the same sign: shared positive movement reinforces (Y). For a subtractive model or negative covariance, the cross contribution can reduce variance. This calculation assumes first-order propagation and credible covariance; it does not validate linearity, distributions, or the measurement model.
 
 ### Answer 3
 
-For (n=200) and (\alpha=0.05),
+For (n=200) and $\alpha=0.05$,
 
 $$
 R_L=0.05^{1/200}=\exp(\ln(0.05)/200)\approx0.98513.
 $$
 
-To require (R_L\ge0.99), solve
+To require $R_L\ge0.99$, solve
 
 $$
 0.05^{1/n}\ge0.99.

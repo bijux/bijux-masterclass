@@ -244,13 +244,13 @@ $$
 
 `Supported` is an evidence judgment under named method and authority, not a Boolean truth oracle.
 
-For constraint (c), let (g_c(x)\le0) express a quantitative admissibility condition where appropriate. Margin is:
+For constraint (c), let $g_c(x)\le0$ express a quantitative admissibility condition where appropriate. Margin is:
 
 $$
 m_c=-g_c(x),
 $$
 
-so positive margin is inside the limit under the stated sign convention. For a simple upper limit (x\le L), (m=L-x). Uncertainty in (x), (L), correlation, and model form remains separate.
+so positive margin is inside the limit under the stated sign convention. For a simple upper limit $x\le L$, (m=L-x). Uncertainty in (x), (L), correlation, and model form remains separate.
 
 For dependency (d), an assumption-guarantee contract is:
 

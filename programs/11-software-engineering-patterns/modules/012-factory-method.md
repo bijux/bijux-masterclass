@@ -36,7 +36,7 @@ $$
 T_C(x)=use_P(m_C(x),x).
 $$
 
-Each Concrete Creator (C_i) supplies (m_{C_i}:X\to P_i) with (P_i\preceq P). Correct substitution requires the returned product satisfy every precondition, postcondition, invariant, effect, ownership, and failure assumption used by (T). Variation is localized to creation; if subclasses must replace most of (T), the pattern boundary is misplaced.
+Each Concrete Creator (C_i) supplies $m_{C_i}:X\to P_i$ with $P_i\preceq P$. Correct substitution requires the returned product satisfy every precondition, postcondition, invariant, effect, ownership, and failure assumption used by (T). Variation is localized to creation; if subclasses must replace most of (T), the pattern boundary is misplaced.
 
 ### Critical invariants
 
@@ -171,7 +171,7 @@ Conversely, when a framework already specializes creators and a repeated product
 
 ## Definitions and Notation
 
-Let creator types be (C_i\preceq C), product types (P_i\preceq P), stable workflow (T), and factory method (m). Dynamic dispatch gives
+Let creator types be $C_i\preceq C$, product types $P_i\preceq P$, stable workflow (T), and factory method (m). Dynamic dispatch gives
 
 $$
 m(c_i,x)=m_i(x)\in P_i.

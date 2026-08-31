@@ -33,7 +33,7 @@ In what order should system elements, interfaces, environments, people, data, an
 
 ### Central model, mechanism, or theorem
 
-Let integration activities be vertices (V), with a directed edge ((u,v)\in E) when activity (u) must precede (v). A valid linear sequence (\pi) satisfies:
+Let integration activities be vertices (V), with a directed edge $(u,v)\in E$ when activity (u) must precede (v). A valid linear sequence $\pi$ satisfies:
 
 $$
 \forall(u,v)\in E:\quad \pi(u)<\pi(v).
@@ -45,7 +45,7 @@ $$
 ES(v)=\max_{u\in Pred(v)} EF(u),\qquad EF(v)=ES(v)+d(v),
 $$
 
-with (ES(v)=0) when (Pred(v)=\varnothing). This exposes a modeled longest path, but only if activities, dependencies, calendars, resources, and durations are credible.
+with (ES(v)=0) when $Pred(v)=\varnothing$. This exposes a modeled longest path, but only if activities, dependencies, calendars, resources, and durations are credible.
 
 An activity is executable only when its readiness predicate holds:
 
@@ -239,19 +239,19 @@ The calculated 18 days ignore the missing `ops_ready` activity. The checker expo
 
 ## Definitions and Notation
 
-Let activities be (V), declared directed dependencies (E\subseteq V\times V), configuration set (K), environments (H), integration items (P), and evidence records (D). For activity (v):
+Let activities be (V), declared directed dependencies $E\subseteq V\times V$, configuration set (K), environments (H), integration items (P), and evidence records (D). For activity (v):
 
 $$
 Pred(v)=\{u\in V:(u,v)\in E\},\qquad Succ(v)=\{w\in V:(v,w)\in E\}.
 $$
 
-A sequence (\pi:V\rightarrow\{1,\ldots,|V|\}) is topologically valid when:
+A sequence $\pi:V\rightarrow\{1,\ldots,|V|\}$ is topologically valid when:
 
 $$
 \forall(u,v)\in E:\ \pi(u)<\pi(v).
 $$
 
-The eligible frontier after completed set (X\subseteq V) is:
+The eligible frontier after completed set $X\subseteq V$ is:
 
 $$
 Eligible(X)=\{v\in V\setminus X:Pred(v)\subseteq X\}.
@@ -265,7 +265,7 @@ $$
 ES(v)=\max_{u\in Pred(v)}EF(u),\quad EF(v)=ES(v)+d(v).
 $$
 
-The modeled completion time is (\max_v EF(v)). A path attaining it is a longest path under the declared durations. Resource constraints, calendars, uncertainty, rework, and omitted logic can change the actual result.
+The modeled completion time is $\max_v EF(v)$. A path attaining it is a longest path under the declared durations. Resource constraints, calendars, uncertainty, rework, and omitted logic can change the actual result.
 
 Define the starting state (S^-_v) and ending state (S^+_v) of step (v). The procedure is a controlled transition:
 
@@ -273,7 +273,7 @@ $$
 T_v:S^-_v\times Inputs_v\rightarrow S^+_v\times Evidence_v\times Outcome_v,
 $$
 
-where (Outcome_v\in\{pass,hold,abort\}) and rollback/de-integration rules constrain safe successor states. This notation is descriptive; execution remains a physical, computational, and human process.
+where $Outcome_v\in\{pass,hold,abort\}$ and rollback/de-integration rules constrain safe successor states. This notation is descriptive; execution remains a physical, computational, and human process.
 
 Dependency records should include `edge_id`, predecessor, successor, condition produced/consumed, type, rationale, interface/state/resource, applicability, evidence, owner, criticality, workaround/double, and change authority. Activity records should include the step fields defined in the exposition.
 
@@ -353,7 +353,7 @@ Items 3–5 cannot be proved by a topological sort. They require review and exec
 
 ### Example 1
 
-**Topological order is valid but not unique.** Activities are receipt inspection (R), power precheck (P), actuator precheck (A), controller/time integration (C), closed-loop integration (L), and external demonstration (X). Edges are (R\to P), (R\to A), (P\to C), (A\to L), (C\to L), and (L\to X).
+**Topological order is valid but not unique.** Activities are receipt inspection (R), power precheck (P), actuator precheck (A), controller/time integration (C), closed-loop integration (L), and external demonstration (X). Edges are $R\to P$, $R\to A$, $P\to C$, $A\to L$, $C\to L$, and $L\to X$.
 
 `R,P,C,A,L,X` and `R,A,P,C,L,X` are both valid. `R,P,C,L,A,X` is invalid because (A) must precede (L). Choosing between the valid sequences depends on facility availability, actuator risk, controller emulator fidelity, diagnostic access, and the value of early timing evidence. The graph constrains; engineering selects.
 
@@ -446,7 +446,7 @@ Impact analysis revisits power/thermal activation, harness mating, identity boot
 
 ### Exercise 1
 
-Activities and durations in days are: `R=2`, `P=3`, `D=4`, `C=5`, `E=2`, `X=3`. Edges are (R\to P), (R\to D), (P\to C), (D\to C), (C\to E), and (E\to X). Compute earliest start/finish for every activity and modeled completion time. Give two consequences of an omitted external-operations predecessor for (X).
+Activities and durations in days are: `R=2`, `P=3`, `D=4`, `C=5`, `E=2`, `X=3`. Edges are $R\to P$, $R\to D$, $P\to C$, $D\to C$, $C\to E$, and $E\to X$. Compute earliest start/finish for every activity and modeled completion time. Give two consequences of an omitted external-operations predecessor for (X).
 
 ### Exercise 2
 
@@ -492,7 +492,7 @@ $$
 ES_E=11,\ EF_E=13;\qquad ES_X=13,\ EF_X=16.
 $$
 
-Modeled completion is 16 days, with (R\to D\to C\to E\to X) as the duration-determining path under these assumptions. If external-operations readiness is omitted, (X) may appear eligible before the external environment, accounts, data, approvals, staff, or procedures exist; the 16-day forecast and computed float are then false. Execution could also produce invalid evidence or unsafe effects because the intended operational boundary was absent. Add the activity/condition, credible duration/resources/calendar, and evidence rather than inserting a date constraint.
+Modeled completion is 16 days, with $R\to D\to C\to E\to X$ as the duration-determining path under these assumptions. If external-operations readiness is omitted, (X) may appear eligible before the external environment, accounts, data, approvals, staff, or procedures exist; the 16-day forecast and computed float are then false. Execution could also produce invalid evidence or unsafe effects because the intended operational boundary was absent. Add the activity/condition, credible duration/resources/calendar, and evidence rather than inserting a date constraint.
 
 ### Answer 2
 

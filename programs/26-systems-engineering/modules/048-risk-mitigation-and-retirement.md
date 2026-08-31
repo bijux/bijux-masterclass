@@ -225,7 +225,7 @@ print("evidence=declared_scenario_only")
 
 ## Definitions and Notation
 
-Let scenario (S), response alternative (a\in A), baseline/configuration (B), objectives (O), evidence before/after (E,E'), likelihood (P), consequence vector (C), uncertainty (U), secondary-risk set (Q_a), cost/schedule/resource impact (K_a), and authority (D).
+Let scenario (S), response alternative $a\in A$, baseline/configuration (B), objectives (O), evidence before/after (E,E'), likelihood (P), consequence vector (C), uncertainty (U), secondary-risk set (Q_a), cost/schedule/resource impact (K_a), and authority (D).
 
 Risk state transition:
 

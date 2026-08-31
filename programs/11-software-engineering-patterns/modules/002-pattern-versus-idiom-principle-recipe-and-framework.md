@@ -169,7 +169,7 @@ where:
 
 - (S) is scope, from language expression to system structure;
 - (F) is primary form: proposition, contextual argument, ordered procedure, or executable software;
-- (E\in\{0,1\}) records whether the artifact executes;
+- $E\in\{0,1\}$ records whether the artifact executes;
 - (C) describes control ownership;
 - (V) describes permitted variation and extension points; and
 - (R) records rationale, including context, forces, and consequences.
@@ -186,7 +186,7 @@ $$
 Embodies(w)=\{\Pi_1,\ldots,\Pi_n\},
 $$
 
-but (w\ne\Pi_i). The executable framework has implementation identity, versions, and concrete policy; the pattern is reusable design knowledge.
+but $w\ne\Pi_i$. The executable framework has implementation identity, versions, and concrete policy; the pattern is reusable design knowledge.
 
 For control, write (calls(x,y,t)) when component (x) invokes (y) at time (t). A library interaction is commonly initiated and sequenced by application (A):
 

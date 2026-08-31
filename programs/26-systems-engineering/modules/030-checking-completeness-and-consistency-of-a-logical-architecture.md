@@ -249,7 +249,7 @@ $$
 
 All terms must share units, reference configuration, conditions, and statistical/worst-case basis. The equation cannot detect a missing consumer, common-cause dependency, or incorrect availability model.
 
-For correspondence rules (C_j), automated conformance is (\bigwedge_j C_j(AD)). The conclusion is limited to the encoded rules and loaded baseline.
+For correspondence rules (C_j), automated conformance is $\bigwedge_j C_j(AD)$. The conclusion is limited to the encoded rules and loaded baseline.
 
 ## Mechanisms, Invariants, or Proof Structure
 

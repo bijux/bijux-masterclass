@@ -25,7 +25,7 @@ How can a weighted trade study compare feasible alternatives reproducibly while 
 - A **screening criterion** determines feasibility or admissibility before compensatory scoring.
 - A **performance matrix** contains raw measured or predicted outcomes and uncertainty for every feasible alternative and criterion.
 - A **value matrix** maps raw outcomes through declared value/utility functions to comparable preference scales.
-- A **weighted score** is an aggregation such as (V(a)=\sum_iw_i u_i(x_i(a))) under explicit assumptions; it is not an objective percentage of merit.
+- A **weighted score** is an aggregation such as $V(a)=\sum_iw_i u_i(x_i(a))$ under explicit assumptions; it is not an objective percentage of merit.
 - A **local weight** allocates importance within an objective branch. A **global weight** equals the product of weights along the hierarchy and must reconcile at the leaves.
 - **Rank reversal** is a change in relative ordering after adding/removing alternatives or changing method inputs; it may reveal alternative-dependent normalization or method behavior.
 - A **break-even analysis** finds the input or preference value at which alternatives tie.
@@ -34,7 +34,7 @@ How can a weighted trade study compare feasible alternatives reproducibly while 
 
 ### Central model, mechanism, or theorem
 
-After mandatory screening, let feasible alternatives be (A_F), criteria (i=1,\ldots,n), raw performance (x_i(a)), value functions (u_i), and swing weights (w_i\ge0,\sum_iw_i=1):
+After mandatory screening, let feasible alternatives be (A_F), criteria $i=1,\ldots,n$, raw performance (x_i(a)), value functions (u_i), and swing weights $w_i\ge0,\sum_iw_i=1$:
 
 $$
 V(a)=\sum_{i=1}^{n}w_i u_i(x_i(a)).
@@ -54,7 +54,7 @@ $$
 \Delta V_{ab}=\sum_iw_i\left(u_i(x_i(a))-u_i(x_i(b))\right).
 $$
 
-Solving (\Delta V_{ab}=0) gives a break-even boundary. A nominal positive difference is meaningful only relative to uncertainty in performance, functions, weights, evidence, and model structure.
+Solving $\Delta V_{ab}=0$ gives a break-even boundary. A nominal positive difference is meaningful only relative to uncertainty in performance, functions, weights, evidence, and model structure.
 
 ### Critical invariants
 
@@ -232,7 +232,7 @@ $$
 w_i=\prod_{h\in path(root,i)}w_{h\mid parent(h)}.
 $$
 
-For intervals (v_{ai}\in[\underline v_{ai},\overline v_{ai}]) with fixed nonnegative weights, a conservative independent-envelope bound is:
+For intervals $v_{ai}\in[\underline v_{ai},\overline v_{ai}]$ with fixed nonnegative weights, a conservative independent-envelope bound is:
 
 $$
 V_a\in\left[\sum_iw_i\underline v_{ai},\sum_iw_i\overline v_{ai}\right].
@@ -240,7 +240,7 @@ $$
 
 It is not a probability interval and may be too wide or invalid under coupled feasibility; preserve dependence.
 
-Break-even between (a,b) for parameter (\theta):
+Break-even between (a,b) for parameter $\theta$:
 
 $$
 V_a(\theta)-V_b(\theta)=0.
@@ -324,7 +324,7 @@ The study integrity argument requires comparable alternatives, complete enough o
 
 ### Example 7
 
-**Break-even weight.** A values (0.9,0.4), B (0.6,0.8), weights (w,1-w). As SYSENG-041 derived, tie occurs at (w=4/7\approx0.5714). The authority's credible swing-weight interval determines whether the nominal choice is robust.
+**Break-even weight.** A values (0.9,0.4), B (0.6,0.8), weights (w,1-w). As SYSENG-041 derived, tie occurs at $w=4/7\approx0.5714$. The authority's credible swing-weight interval determines whether the nominal choice is robust.
 
 ### Example 8
 

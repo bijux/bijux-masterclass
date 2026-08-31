@@ -196,7 +196,7 @@ For concurrent/remote sources, test races, snapshot expiry, duplicate/missing bo
 
 ## Definitions and Notation
 
-Let source (A) define logical sequence (L_v=(x_0,...,x_{n-1})) at version (v). A snapshot iterator state is (s=(v,r)), where (0\le r\le n):
+Let source (A) define logical sequence (L_v=(x_0,...,x_{n-1})) at version (v). A snapshot iterator state is (s=(v,r)), where $0\le r\le n$:
 
 $$
 step(v,r)=
@@ -272,7 +272,7 @@ print(f"ended={iterator.position == len(iterator.values)} remaining={iterator.re
 
 ### Finite snapshot argument
 
-Initially (r=0). Each successful step emits (x_r) and changes rank to (r+1), so rank strictly increases and no rank is emitted twice. Since (r\le n), after exactly (n) successful steps rank equals (n) and the next step is `End`. Induction establishes ordered, complete, duplicate-free traversal of this fixed sequence.
+Initially (r=0). Each successful step emits (x_r) and changes rank to (r+1), so rank strictly increases and no rank is emitted twice. Since $r\le n$, after exactly (n) successful steps rank equals (n) and the next step is `End`. Induction establishes ordered, complete, duplicate-free traversal of this fixed sequence.
 
 The argument assumes finite immutable snapshot contents, a private cursor, correct indexed access, no exceptions, and arithmetic capable of representing ranks. It proves neither uniqueness of equal-valued elements nor exactly-once downstream effects.
 

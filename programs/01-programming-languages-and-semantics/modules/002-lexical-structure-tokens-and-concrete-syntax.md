@@ -187,11 +187,11 @@ Execution establishes only the encoded ASCII rules for one input. It does not su
 
 ## Definitions and Notation
 
-Let (C) be source characters, (K) token kinds, and (X=C^*) lexemes. A token is (t=(k,x,s,v)\in K\times X\times Span\times Value_\bot), where (s=[a,b)) and (v) may be absent. A token stream is (\tau=t_1\ldots t_n). Trivia stream (\rho) records non-token source elements when needed.
+Let (C) be source characters, (K) token kinds, and (X=C^*) lexemes. A token is $t=(k,x,s,v)\in K\times X\times Span\times Value_\bot$, where (s=[a,b)) and (v) may be absent. A token stream is $\tau=t_1\ldots t_n$. Trivia stream $\rho$ records non-token source elements when needed.
 
-For lexical rule (R_j\subseteq C^*), define matches at position (p) as legal prefixes of the remaining input. Longest match selects a member with maximum length; priority (j) resolves equal length. The scanner must either advance (p), reach end of input, or report a diagnostic. A zero-length rule in a repetition can violate progress and cause nontermination.
+For lexical rule $R_j\subseteq C^*$, define matches at position (p) as legal prefixes of the remaining input. Longest match selects a member with maximum length; priority (j) resolves equal length. The scanner must either advance (p), reach end of input, or report a diagnostic. A zero-length rule in a repetition can violate progress and cause nontermination.
 
-A source map (M) relates transformed or normalized positions to original storage positions. A lexical mode (m\in Modes) changes the active rule set and transition function. A **token value** is a convenience interpretation, while the lexeme remains authoritative evidence of concrete spelling. An **end marker** is a synthesized token identifying exhaustion and permitting later grammars to close layout or report unexpected end.
+A source map (M) relates transformed or normalized positions to original storage positions. A lexical mode $m\in Modes$ changes the active rule set and transition function. A **token value** is a convenience interpretation, while the lexeme remains authoritative evidence of concrete spelling. An **end marker** is a synthesized token identifying exhaustion and permitting later grammars to close layout or report unexpected end.
 
 ## Mechanisms, Invariants, or Proof Structure
 

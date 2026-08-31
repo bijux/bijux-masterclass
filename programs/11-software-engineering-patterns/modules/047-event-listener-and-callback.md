@@ -31,7 +31,7 @@ How can a source notify zero or more interested collaborators without knowing th
 
 ### Central model, mechanism, or theorem
 
-For source state (q), event (e), and registration-ordered snapshot (L_e=(\ell_1,...,\ell_n)), synchronous dispatch is a trace
+For source state (q), event (e), and registration-ordered snapshot $L_e=(\ell_1,...,\ell_n)$, synchronous dispatch is a trace
 
 $$
 D(q,e,L_e)=invoke(\ell_1,e);\ldots;invoke(\ell_n,e).
@@ -210,7 +210,7 @@ Use deterministic schedulers/fakes for async ordering and model-based transition
 
 ## Definitions and Notation
 
-Let registry at time (t) be (R_t), eligible registration-ordered snapshot for event (e) be (L_e=snapshot(R_t,e)), and invocation outcome for listener (\ell_i) be (o_i\in\{ok,failed,cancelled,skipped\}).
+Let registry at time (t) be (R_t), eligible registration-ordered snapshot for event (e) be (L_e=snapshot(R_t,e)), and invocation outcome for listener $\ell_i$ be $o_i\in\{ok,failed,cancelled,skipped\}$.
 
 Under snapshot semantics, registry mutation during dispatch produces (R_{t+1}) but leaves (L_e) unchanged. For a bounded async queue with capacity (K), invariant is
 

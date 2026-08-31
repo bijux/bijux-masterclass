@@ -180,7 +180,7 @@ $$
 X=(C_x,P_x,F_x,Q_x,E_x),
 $$
 
-where (C_x) is observed context, (P_x) the design problem, (F_x=\{f_1,\ldots,f_n\}) the forces and their local priorities, (Q_x) non-negotiable constraints, and (E_x) current evidence.
+where (C_x) is observed context, (P_x) the design problem, $F_x=\{f_1,\ldots,f_n\}$ the forces and their local priorities, (Q_x) non-negotiable constraints, and (E_x) current evidence.
 
 Let a pattern be
 
@@ -188,13 +188,13 @@ $$
 \Pi=(N,C_\Pi,P_\Pi,F_\Pi,S_\Pi,K_\Pi,R_\Pi,O_\Pi),
 $$
 
-where (O_\Pi) records known occurrences. Applying the pattern constructs an instance (I=adapt(S_\Pi,X)). The resulting situation is
+where $O_\Pi$ records known occurrences. Applying the pattern constructs an instance $I=adapt(S_\Pi,X)$. The resulting situation is
 
 $$
 X'=apply(I,X).
 $$
 
-Fitness is not a scalar theorem. A review may define a partial order (\succeq_X) over candidates: (I_a\succeq_X I_b) means the evidence supports (I_a) as no worse than (I_b) on every mandatory constraint and better on at least one locally prioritized force, without an unacceptable consequence. Incomparable candidates are normal.
+Fitness is not a scalar theorem. A review may define a partial order $\succeq_X$ over candidates: $I_a\succeq_X I_b$ means the evidence supports (I_a) as no worse than (I_b) on every mandatory constraint and better on at least one locally prioritized force, without an unacceptable consequence. Incomparable candidates are normal.
 
 For traceability, define a relation
 
@@ -349,7 +349,7 @@ The model deliberately cannot conclude that Observer is correct. The ratings are
 
 **Question:** What does the force-scoring program actually establish?
 
-**Reasoning:** Given its declared weights and ratings, it recomputes `direct-calls` as (4\cdot0+3\cdot1+2\cdot1=5) and `observer` as (4\cdot2+3\cdot(-1)+2\cdot2=9). This checks arithmetic and exposes assumptions. It does not validate the ratings, independence of forces, or mandatory lifecycle behavior.
+**Reasoning:** Given its declared weights and ratings, it recomputes `direct-calls` as $4\cdot0+3\cdot1+2\cdot1=5$ and `observer` as $4\cdot2+3\cdot(-1)+2\cdot2=9$. This checks arithmetic and exposes assumptions. It does not validate the ratings, independence of forces, or mandatory lifecycle behavior.
 
 **Conclusion:** A decision aid structures discussion; it does not prove design fitness.
 
@@ -444,7 +444,7 @@ This formulation permits Repository, Data Mapper, query services, direct access 
 
 ### Answer 2
 
-`direct-calls` remains (4\cdot0+3\cdot1+2\cdot1=5). The revised `observer` score is
+`direct-calls` remains $4\cdot0+3\cdot1+2\cdot1=5$. The revised `observer` score is
 
 $$
 4\cdot2+3\cdot(-1)+2\cdot(-2)=8-3-4=1.

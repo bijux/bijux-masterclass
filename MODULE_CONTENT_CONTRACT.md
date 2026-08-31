@@ -156,7 +156,8 @@ When mathematics is relevant:
 - show intermediate steps;
 - distinguish proof, proof sketch, intuition, and empirical evidence.
 - use GitHub-renderable inline math as `$...$` and display math as a standalone
-  `$$` block; do not use `\\(...\\)`, `\\[...\\]`, or inline code as a math delimiter;
+  `$$` block; do not use the legacy backslash-parenthesis or backslash-bracket
+  delimiters, or inline code as a math delimiter;
 - keep TeX commands inside a math delimiter so the rendered chapter preserves
   the intended notation.
 

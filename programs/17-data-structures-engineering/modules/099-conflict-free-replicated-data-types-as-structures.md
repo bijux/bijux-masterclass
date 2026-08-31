@@ -83,7 +83,7 @@ After this chapter, you should be able to:
 
 ### State-based semilattices
 
-Let states form partial order (\sqsubseteq) and merge be join (\sqcup), the least state above both inputs. Local update must be inflationary: (s\sqsubseteq update(s)). Join is associative, commutative, and idempotent. If states/deltas eventually reach every replica, arbitrary duplication and reordering still converge to the join of all updates.
+Let states form partial order $\sqsubseteq$ and merge be join $\sqcup$, the least state above both inputs. Local update must be inflationary: $s\sqsubseteq update(s)$. Join is associative, commutative, and idempotent. If states/deltas eventually reach every replica, arbitrary duplication and reordering still converge to the join of all updates.
 
 A G-Counter state maps replica IDs to natural numbers. Increment at replica (r) raises only component (r); merge takes pointwise maximum; query sums components. Component ownership/monotonicity is essential. A PN-Counter pairs two G-Counters for increments/decrements and subtracts sums, growing metadata while the visible value can fall.
 
@@ -233,7 +233,7 @@ The OR-Set retains removed dots forever and therefore demonstrates correctness p
 
 ## Definitions and Notation
 
-- A partial order (\sqsubseteq) relates states by information content; (\sqcup) is least upper bound/join.
+- A partial order $\sqsubseteq$ relates states by information content; $\sqcup$ is least upper bound/join.
 - A **CvRDT** is state-based with inflationary updates and semilattice merge.
 - A **CmRDT** disseminates operations whose concurrent effects commute under its delivery contract.
 - A **delta-state** is a joinable state fragment produced under delta-CRDT anti-entropy conditions.

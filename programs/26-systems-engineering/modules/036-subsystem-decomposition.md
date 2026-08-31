@@ -33,7 +33,7 @@ How can a selected physical architecture be decomposed into subordinate systems 
 
 ### Central model, mechanism, or theorem
 
-For parent (S), let immediate children be (C(S)=\{c_1,\ldots,c_n\}), parent obligations (Q_S), child allocations (Alloc\subseteq Q_S\times C(S)), parent-retained obligations (Q_R), and integration obligations (Q_I). Declaration coverage requires:
+For parent (S), let immediate children be $C(S)=\{c_1,\ldots,c_n\}$, parent obligations (Q_S), child allocations $Alloc\subseteq Q_S\times C(S)$, parent-retained obligations (Q_R), and integration obligations (Q_I). Declaration coverage requires:
 
 $$
 \forall q\in Q_S:\quad q\in Q_R\ \lor\ \exists c\in C(S):(q,c)\in Alloc
@@ -223,7 +223,7 @@ print("evidence=declared_fields_only")
 
 ## Definitions and Notation
 
-Let parent (S), immediate physical child usages (C(S)=\{c_1,\ldots,c_n\}), parent requirements (Q_S), parent external interfaces (I_S), internal child interfaces (I_C), configurations (K), and modes (M).
+Let parent (S), immediate physical child usages $C(S)=\{c_1,\ldots,c_n\}$, parent requirements (Q_S), parent external interfaces (I_S), internal child interfaces (I_C), configurations (K), and modes (M).
 
 Composition ownership relation:
 
@@ -268,7 +268,7 @@ Margin_r(k,m)=B_r(k,m)-Reserve_r(k,m)-Integration_r(k,m)
 -\sum_{c\in C(S)} Allocation_r(c,k,m).
 $$
 
-The invariant requires (Margin_r(k,m)\ge0) for every applicable configuration/mode under the declared composition model.
+The invariant requires $Margin_r(k,m)\ge0$ for every applicable configuration/mode under the declared composition model.
 
 Let child contracts (C_c=(A_c,G_c)) and integration contract (C_I=(A_I,G_I)). Parent contract closure requires internal assumptions be discharged and:
 

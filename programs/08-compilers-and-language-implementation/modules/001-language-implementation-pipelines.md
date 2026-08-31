@@ -282,9 +282,9 @@ This is executable evidence for one ASCII expression under Python's unbounded in
 
 ## Definitions and Notation
 
-Let source representation be (R_0), successive representations (R_1,\ldots,R_n), environment/configuration (C_i), diagnostics (D_i), and phase (P_i). `Result(R,D)` is success plus evidence or failure evidence; implementations may retain partial recovered representation.
+Let source representation be (R_0), successive representations $R_1,\ldots,R_n$, environment/configuration (C_i), diagnostics (D_i), and phase (P_i). `Result(R,D)` is success plus evidence or failure evidence; implementations may retain partial recovered representation.
 
-A verifier (V_i:R_i\to\mathbb B) expresses structural well-formedness. Analysis (A:R\to Facts) should not intentionally mutate (R). Transformation (T:R\to R') changes representation. `invalidate(T)` names facts no longer sound; `preserve(T)` names retained facts. Observation function (Obs_L(program,input,environment)) denotes permitted language-level behavior. Refinement (\preceq) may account for nondeterminism and defined/undefined cases.
+A verifier $V_i:R_i\to\mathbb B$ expresses structural well-formedness. Analysis $A:R\to Facts$ should not intentionally mutate (R). Transformation $T:R\to R'$ changes representation. `invalidate(T)` names facts no longer sound; `preserve(T)` names retained facts. Observation function (Obs_L(program,input,environment)) denotes permitted language-level behavior. Refinement $\preceq$ may account for nondeterminism and defined/undefined cases.
 
 Use **host** for machine that runs implementation, **target** for machine/abstract machine that runs emitted code, and **build** for machine performing the build when distinct. An ABI defines cross-component binary conventions. A runtime supplies dynamic services required by generated/interpreted programs. Provenance maps generated entities and artifacts to origins, transformations, options and dependencies.
 
@@ -303,7 +303,7 @@ Use **host** for machine that runs implementation, **target** for machine/abstra
 11. Preserve minimal replay bundles for miscompilations: source/IR, options, target, versions, dependencies and outputs.
 12. State residual claims: tests, finite checks and verifiers are evidence, while semantic preservation requires stronger reasoning or proof.
 
-For a phase (P_i), review three obligations separately: **well-formedness**, (V_i(r)\land P_i(r)=r'\Rightarrow V_{i+1}(r')); **semantic preservation/refinement**, (Obs(r')\preceq Obs(r)); and **diagnostic fidelity**, failures point to owned origins with stable classification. A structural verifier cannot discharge the second or third.
+For a phase (P_i), review three obligations separately: **well-formedness**, $V_i(r)\land P_i(r)=r'\Rightarrow V_{i+1}(r')$; **semantic preservation/refinement**, $Obs(r')\preceq Obs(r)$; and **diagnostic fidelity**, failures point to owned origins with stable classification. A structural verifier cannot discharge the second or third.
 
 ## Alternatives and Trade-Offs
 

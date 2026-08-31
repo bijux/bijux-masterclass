@@ -35,7 +35,7 @@ $$
 Run(x,c)=(Core(x),c.observe(e_x))
 $$
 
-may use Null (N\in C) if (N.observe) satisfies the declared neutral/no-effect contract, boundedly returns an honest `suppressed` outcome, and does not weaken core postcondition/invariant. Substitutability is scoped: a Null audit sink cannot substitute where durable audit is required, and a Null authorizer must implement deny—not permit—as the fail-safe behavior.
+may use Null $N\in C$ if (N.observe) satisfies the declared neutral/no-effect contract, boundedly returns an honest `suppressed` outcome, and does not weaken core postcondition/invariant. Substitutability is scoped: a Null audit sink cannot substitute where durable audit is required, and a Null authorizer must implement deny—not permit—as the fail-safe behavior.
 
 ### Critical invariants
 
@@ -190,13 +190,13 @@ Test missing required config, explicit optional config, unknown/malformed subtyp
 
 ## Definitions and Notation
 
-Let collaborator role (C) expose operation $op:X\to Outcome$. Null candidate (N\in C) is valid only under context contract (K):
+Let collaborator role (C) expose operation $op:X\to Outcome$. Null candidate $N\in C$ is valid only under context contract (K):
 
 $$
 \forall x\in Dom(K):Pre_C(x)\Rightarrow Post_C(x,N.op(x))\land I_K.
 $$
 
-For an identity-like combination ((M,\otimes,e)), Null may denote (e) only when
+For an identity-like combination $(M,\otimes,e)$, Null may denote (e) only when
 
 $$
 \forall x\in M:x\otimes e=e\otimes x=x.

@@ -31,13 +31,13 @@ How can Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy, package
 
 ### Central model, mechanism, or theorem
 
-Model a realized path as directed graph (G=(V,E)). Each node (v) has responsibility (r(v)), owner (o(v)), cost (c(v)), and possible invocation multiplier (m(v)\ge0). For a path (p=(v_1,\ldots,v_d)), maximum subject attempts are
+Model a realized path as directed graph (G=(V,E)). Each node (v) has responsibility (r(v)), owner (o(v)), cost (c(v)), and possible invocation multiplier $m(v)\ge0$. For a path $p=(v_1,\ldots,v_d)$, maximum subject attempts are
 
 $$
 A(p)=\prod_{i=1}^{d}m(v_i),
 $$
 
-and additive latency estimate is (L(p)=\sum_i c(v_i)) only when execution is sequential and costs are suitably defined. Depth alone is not a quality theorem. A boundary is justified when it protects a durable independent decision or provides measured semantic compression exceeding its cognitive, runtime, failure, and change cost.
+and additive latency estimate is $L(p)=\sum_i c(v_i)$ only when execution is sequential and costs are suitably defined. Depth alone is not a quality theorem. A boundary is justified when it protects a durable independent decision or provides measured semantic compression exceeding its cognitive, runtime, failure, and change cost.
 
 ### Critical invariants
 
@@ -379,7 +379,7 @@ Record for each stable ID/version, owner, before/after/short-circuit behavior, i
 
 ### Answer 3
 
-The independent finite upper bound is (2\times2\times3\times2=24) leaf operations per logical request. Correlation and short circuits change observed distribution but do not make the configured worst-case safe. If effects are non-idempotent, even two can be unacceptable.
+The independent finite upper bound is $2\times2\times3\times2=24$ leaf operations per logical request. Correlation and short circuits change observed distribution but do not make the configured worst-case safe. If effects are non-idempotent, even two can be unacceptable.
 
 Choose one retry authority with operation knowledge, typically the client/application or one controlled gateway—not both. Bind a payload-scoped idempotency key and one deadline. Make fan-out semantics explicit: use only required replicas/quorum, cancel losing safe reads, and never duplicate writes casually. Treat fallback as selection, not another retry tree, with its own remaining budget. Enforce attempt/fan-out bounds in config, expose logical versus attempt metrics, fault-inject each failure point, and load-test saturation/tails.
 

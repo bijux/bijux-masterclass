@@ -196,7 +196,7 @@ $$
 \Sigma_K=\{\sigma\mid\forall x:P(x)\Rightarrow Contract_K(\sigma,x)\}.
 $$
 
-Selection policy (pi:T\to(strategyId,implementationVersion,configVersion)) maps trusted context (T) into an allowlisted compatible member. Execution result records selection provenance (r=(selection,outcome,evidence)).
+Selection policy $pi:T\to(strategyId,implementationVersion,configVersion)$ maps trusted context (T) into an allowlisted compatible member. Execution result records selection provenance (r=(selection,outcome,evidence)).
 
 For optimization objective (f(x,y)), feasibility (Q(x,y)) and optimality differ. A strategy may return feasible (y) without proving (f) minimal; approximation ratio or tolerance needs a separate theorem/evidence.
 
@@ -398,7 +398,7 @@ The trace proves membership/health for two accepted results and rejection of thi
 
 Input is an owned finite sequence of elements with a declared total comparator; duplicates and empty input are allowed. Output has equal length/multiset, is nondecreasing by comparator, and does not mutate input. Stable-family members preserve original relative order of comparator-equal elements; unstable members must not inhabit that narrower family. Comparator must be deterministic/total for supplied domain or return a specified invalid-comparator failure.
 
-Define cancellation checks/work deadline, no partial result on cancellation unless tagged, exception safety, maximum input size, and cost envelope by strategy: e.g. comparison (O(n\log n)) worst case and auxiliary memory limit. Numeric overflow/index limits and adversarial comparator cost are bounded. Contract tests cover empty/singleton, duplicates, all equal, sorted/reverse, randomized/adversarial sizes, multiset/order/stability properties, cancellation, comparator failure, memory and scaling. Algorithm-specific proof establishes bounds beyond tests.
+Define cancellation checks/work deadline, no partial result on cancellation unless tagged, exception safety, maximum input size, and cost envelope by strategy: e.g. comparison $O(n\log n)$ worst case and auxiliary memory limit. Numeric overflow/index limits and adversarial comparator cost are bounded. Contract tests cover empty/singleton, duplicates, all equal, sorted/reverse, randomized/adversarial sizes, multiset/order/stability properties, cancellation, comparator failure, memory and scaling. Algorithm-specific proof establishes bounds beyond tests.
 
 ### Answer 3
 

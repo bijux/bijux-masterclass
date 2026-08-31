@@ -261,7 +261,7 @@ The run proves deterministic counting for five invented edges only. It does not 
 
 Let components/capabilities be vertices (V). Define evidence relations over window (T): static dependency (E_s), co-change (E_c), runtime call (E_r), shared-authority/write (E_d), lockstep release (E_l), failure propagation (E_f), and team dependency (E_o). These relations can differ in direction/weight.
 
-For changes (q\in Q_T), let spread (S(q)=|components(q)|); coordination ratio at boundary (b) can be (CR_b=|\{q:S_b(q)>1\}|/|Q_b|), but component definitions and work-item grouping affect it. Runtime critical-chain reliability under independent failures approximates product of dependency availabilities only under assumptions rarely exact; use observed traces/incidents and conditional behavior.
+For changes $q\in Q_T$, let spread (S(q)=|components(q)|); coordination ratio at boundary (b) can be (CR_b=|\{q:S_b(q)>1\}|/|Q_b|), but component definitions and work-item grouping affect it. Runtime critical-chain reliability under independent failures approximates product of dependency availabilities only under assumptions rarely exact; use observed traces/incidents and conditional behavior.
 
 **Cohesion** is related responsibilities changing/operating together for one reason. **Coupling** is dependence across boundaries. **Independence** is dimensional, not absolute: change, deploy, scale, data, failure and team independence can differ. **Counterevidence** is observation supporting a healthy explanation, such as reliable version skew and cohesive co-change.
 

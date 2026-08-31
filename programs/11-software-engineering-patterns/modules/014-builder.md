@@ -178,13 +178,13 @@ When Product construction simplifies, replace Builder with a constructor or name
 
 ## Definitions and Notation
 
-Let builder state be (B=(q,d)), with protocol state (q\in Q) and accumulated data (d). Each operation (o) is a partial transition
+Let builder state be (B=(q,d)), with protocol state $q\in Q$ and accumulated data (d). Each operation (o) is a partial transition
 
 $$
 \delta_o:Q\times D\rightharpoonup Q\times D.
 $$
 
-Illegal operations are outside the domain and must produce a defined error rather than corrupt state. Completion states are (Q_F\subseteq Q). Finalization is
+Illegal operations are outside the domain and must produce a defined error rather than corrupt state. Completion states are $Q_F\subseteq Q$. Finalization is
 
 $$
 build:B_F\to Result(P,E),\qquad B_F=Q_F\times D_{valid}.
@@ -196,7 +196,7 @@ $$
 mutate(B')\not\Rightarrow mutate(p).
 $$
 
-A Director sequence (s=o_1\cdots o_n) is compatible with a Concrete Builder when every prefix transition is defined and the terminal state belongs to (B_F). This is a protocol claim, not proof that the resulting domain Product is universally correct.
+A Director sequence $s=o_1\cdots o_n$ is compatible with a Concrete Builder when every prefix transition is defined and the terminal state belongs to (B_F). This is a protocol claim, not proof that the resulting domain Product is universally correct.
 
 ## Mechanisms, Invariants, or Proof Structure
 

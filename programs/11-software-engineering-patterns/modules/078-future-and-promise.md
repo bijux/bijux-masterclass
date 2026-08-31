@@ -167,7 +167,7 @@ Long synchronous completion chains can overflow stacks or monopolize a thread. U
 
 ### Compose values, not nested futures
 
-`map/thenApply` transforms (T\to U). When function returns a future (T\to Future<U>), use `flatMap/thenCompose` to flatten; otherwise consumers receive `Future<Future<U>>`, cancellation/failure ownership fragments and completion timing is misleading.
+`map/thenApply` transforms $T\to U$. When function returns a future $T\to Future<U>$, use `flatMap/thenCompose` to flatten; otherwise consumers receive `Future<Future<U>>`, cancellation/failure ownership fragments and completion timing is misleading.
 
 Sequential composition passes success forward and propagates failure/cancel unless recovered. Recovery operators must distinguish expected domain fallbacks from programmer/fatal failures; broad recovery can silently convert outages/corruption into plausible values. Finalization/`whenComplete` must not replace the original failure accidentally unless specified.
 
@@ -289,9 +289,9 @@ print(f"invariant=single_assignment:{single} terminal:{terminal}")
 
 ## Definitions and Notation
 
-Let result state (F_r\in\{pending,success(v),failure(e),cancelled(c)\}); computation state (C_r\in\{not_started,running,stopped,completed\}); client interest (I_r); and external effect state (E_r). Let (W_r) be observers/continuations and (X_r) their executors.
+Let result state $F_r\in\{pending,success(v),failure(e),cancelled(c)\}$; computation state $C_r\in\{not_started,running,stopped,completed\}$; client interest (I_r); and external effect state (E_r). Let (W_r) be observers/continuations and (X_r) their executors.
 
-Dependency graph (G=(V,E)) contains one node per computation/result stage and edge (u\to v) when v requires u. `map` adds value transformation; `flatMap` adds and flattens an asynchronous dependency. Deadline (D) is monotonic; result/computation/effect identities remain stable across retries/reconciliation.
+Dependency graph (G=(V,E)) contains one node per computation/result stage and edge $u\to v$ when v requires u. `map` adds value transformation; `flatMap` adds and flattens an asynchronous dependency. Deadline (D) is monotonic; result/computation/effect identities remain stable across retries/reconciliation.
 
 ## Mechanisms, Invariants, or Proof Structure
 

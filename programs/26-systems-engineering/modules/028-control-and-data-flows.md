@@ -40,7 +40,7 @@ G_F=(L,E),\qquad
 e=\langle id,s,t,k,x,g,m,\tau,o,q,a,f,v\rangle,
 $$
 
-where (L) is logical elements; source (s) and target (t); kind (k\in\{data,control,command,event,query,response\}); item contract (x); guard/trigger (g); mode/configuration (m); timing (\tau); ordering/cardinality (o); quality/provenance (q); authority/security (a); failure/backpressure (f); and version/evidence (v).
+where (L) is logical elements; source (s) and target (t); kind $k\in\{data,control,command,event,query,response\}$; item contract (x); guard/trigger (g); mode/configuration (m); timing $\tau$; ordering/cardinality (o); quality/provenance (q); authority/security (a); failure/backpressure (f); and version/evidence (v).
 
 For an input or control port (p), compatibility requires more than type:
 
@@ -217,7 +217,7 @@ FL-001 can still be wrong: the record does not prove correct sensor provenance, 
 
 ## Definitions and Notation
 
-Let (L) be logical elements, (P) ports, (E) flow edges, (X) flow-item types, (M) modes/configurations, and (S) scenarios. A connection relation (C\subseteq P\times P) states potential interaction; an item-flow relation (E\subseteq P\times P\times X\times M) states what is intended to flow in a usage context. Connection does not imply occurrence, delivery, acceptance, or correct effect.
+Let (L) be logical elements, (P) ports, (E) flow edges, (X) flow-item types, (M) modes/configurations, and (S) scenarios. A connection relation $C\subseteq P\times P$ states potential interaction; an item-flow relation $E\subseteq P\times P\times X\times M$ states what is intended to flow in a usage context. Connection does not imply occurrence, delivery, acceptance, or correct effect.
 
 For an item occurrence (x_i), distinguish:
 
@@ -233,7 +233,7 @@ $$
 T=\sum_i b_i+\sum_j d_j+u+r\leq D.
 $$
 
-For a finite buffer of (B) items, arrival rate (\lambda), and service rate (\mu), sustained (\lambda>\mu) is infeasible: under a deterministic approximation, overflow occurs no later than (B/(\lambda-\mu)) after the overload begins. Real burst and service distributions require stronger queueing or simulation evidence.
+For a finite buffer of (B) items, arrival rate $\lambda$, and service rate $\mu$, sustained $\lambda>\mu$ is infeasible: under a deterministic approximation, overflow occurs no later than $B/(\lambda-\mu)$ after the overload begins. Real burst and service distributions require stronger queueing or simulation evidence.
 
 For duplicate-tolerant effects, define deduplication key (k), scope (s), retention window (w), and atomic relation between effect and recorded key. “Idempotent” without those semantics is incomplete.
 

@@ -30,7 +30,7 @@ How can several pattern instances share participants and responsibilities withou
 
 ### Central model, mechanism, or theorem
 
-Treat each pattern instance as a contract graph (G_i=(V_i,E_i,C_i)), where nodes are roles, edges are collaborations, and (C_i) contains state, control, time, error, lifecycle, and authority constraints. Composition binds roles through a mapping (\mu) and is valid only when all fused contracts are compatible:
+Treat each pattern instance as a contract graph (G_i=(V_i,E_i,C_i)), where nodes are roles, edges are collaborations, and (C_i) contains state, control, time, error, lifecycle, and authority constraints. Composition binds roles through a mapping $\mu$ and is valid only when all fused contracts are compatible:
 
 $$
 G=G_1\oplus_\mu G_2,
@@ -173,7 +173,7 @@ $$
 G_i=(V_i,E_i,C_i),
 $$
 
-where (V_i) is roles, (E_i) collaborations, and (C_i) constraints. A role-binding map (\mu:V_i\rightharpoonup P) assigns roles to concrete participants (P). Role fusion occurs when
+where (V_i) is roles, (E_i) collaborations, and (C_i) constraints. A role-binding map $\mu:V_i\rightharpoonup P$ assigns roles to concrete participants (P). Role fusion occurs when
 
 $$
 \mu(v_a)=\mu(v_b),\quad v_a\in V_1,\ v_b\in V_2.
@@ -187,7 +187,7 @@ $$
 
 This is an engineering obligation; general satisfiability is not claimed to be automated.
 
-Let composition (G_1\oplus_\mu G_2) unify bound roles and add cross-pattern edges. In general,
+Let composition $G_1\oplus_\mu G_2$ unify bound roles and add cross-pattern edges. In general,
 
 $$
 G_1\oplus G_2\ne G_2\oplus G_1
@@ -195,7 +195,7 @@ $$
 
 when composition encodes wrapper or pipeline order. Similarly, regrouping three stateful patterns can change scope and behavior, so associativity must not be assumed.
 
-Define end-to-end invariant (I) over traces (\tau) of the composed system:
+Define end-to-end invariant (I) over traces $\tau$ of the composed system:
 
 $$
 \forall \tau\in Traces(G),\ I(\tau).

@@ -240,7 +240,7 @@ print("evidence=declared_fields_only")
 
 ## Definitions and Notation
 
-Let configuration items be (I), item versions (V_i), baselines (B), realized instances (X), relations (R), changes (\Delta), and applicability contexts (A).
+Let configuration items be (I), item versions (V_i), baselines (B), realized instances (X), relations (R), changes $\Delta$, and applicability contexts (A).
 
 A baseline membership function selects one authorized version/state for each required role under applicability (a):
 
@@ -268,7 +268,7 @@ $$
 Mismatch=\{i\in D\cap O:attrs_D(i)\not\equiv attrs_O(i)\}.
 $$
 
-Equivalence ((\equiv)) must be defined per attribute and decision.
+Equivalence $(\equiv)$ must be defined per attribute and decision.
 
 Change record lifecycle function:
 
@@ -447,7 +447,7 @@ Retirement state records discharged energy, removed assets, destroyed/transferre
 
 ### Exercise 1
 
-Documented baseline set (D) contains 12 item identities; observed configuration (O) contains 13. Ten identities are common. Compute (|D\setminus O|), (|O\setminus D|), and (J(D,O)). Explain at least five things the result cannot establish.
+Documented baseline set (D) contains 12 item identities; observed configuration (O) contains 13. Ten identities are common. Compute $|D\setminus O|$, $|O\setminus D|$, and (J(D,O)). Explain at least five things the result cannot establish.
 
 ### Exercise 2
 

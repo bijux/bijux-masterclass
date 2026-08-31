@@ -35,7 +35,7 @@ How can a team generate, characterize, compare, and select among genuinely diffe
 
 ### Central model, mechanism, or theorem
 
-Let alternatives be (A={a_1,\ldots,a_n}), criteria (C={c_1,\ldots,c_m}), mandatory feasibility predicates (H_j(a)), measures (x_{ij}), normalized value functions (v_j), weights (w_j), and uncertainty state (\theta). First form the feasible set:
+Let alternatives be $A={a_1,\ldots,a_n}$, criteria $C={c_1,\ldots,c_m}$, mandatory feasibility predicates (H_j(a)), measures (x_{ij}), normalized value functions (v_j), weights (w_j), and uncertainty state $\theta$. First form the feasible set:
 
 $$
 A_F=\{a\in A\mid \bigwedge_j H_j(a,\theta)=true\}.
@@ -222,7 +222,7 @@ ALT-001 may still be unacceptable: nonempty declarations do not establish common
 
 ## Definitions and Notation
 
-Let (A) be candidates, (H) mandatory constraints, (C) preference criteria, (X) measures, (V) value functions, (W) weights, (S) scenarios, and (\Theta) uncertain states. Keep natural measures, stakeholder values, evidence quality, and decision authority distinct.
+Let (A) be candidates, (H) mandatory constraints, (C) preference criteria, (X) measures, (V) value functions, (W) weights, (S) scenarios, and $\Theta$ uncertain states. Keep natural measures, stakeholder values, evidence quality, and decision authority distinct.
 
 Alternative (a) dominates (b) for benefit-oriented criteria when:
 
@@ -232,7 +232,7 @@ $$
 
 after directions, uncertainty, and comparability are handled. A Pareto set contains alternatives for which no examined alternative establishes that relation.
 
-For a nominal additive example with value scores (v_j\in[0,100]):
+For a nominal additive example with value scores $v_j\in[0,100]$:
 
 $$
 V(a)=0.35v_{effectiveness}+0.25v_{resilience}+0.20v_{operability}
@@ -414,7 +414,7 @@ $$
 r(82-70)+(1-r)\left[\frac7{15}(78-72)+\frac4{15}(75-88)+\frac4{15}(65-70)\right].
 $$
 
-The bracket equals (-2), so (12r-2(1-r)=0), yielding (r=1/7\approx0.1429). Above that value B leads C under this model; below it C leads. The current 0.25 resilience weight is above the threshold. This is a model sensitivity result, not proof: score uncertainty, value functions, weight elicitation, dependencies, and hard constraints still govern interpretation.
+The bracket equals (-2), so (12r-2(1-r)=0), yielding $r=1/7\approx0.1429$. Above that value B leads C under this model; below it C leads. The current 0.25 resilience weight is above the threshold. This is a model sensitivity result, not proof: score uncertainty, value functions, weight elicitation, dependencies, and hard constraints still govern interpretation.
 
 ### Answer 3
 

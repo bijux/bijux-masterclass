@@ -249,9 +249,9 @@ print("evidence=declared_fields_and_lexical_signals_only")
 
 ## Definitions and Notation
 
-Let stakeholder classes be (G=\{g_1,\ldots,g_m\}), lifecycle contexts (C), raw inputs (I), integrated needs (N), requirements (R), and validation evidence (V).
+Let stakeholder classes be $G=\{g_1,\ldots,g_m\}$, lifecycle contexts (C), raw inputs (I), integrated needs (N), requirements (R), and validation evidence (V).
 
-Define source trace (T_{IN}\subseteq I\times N), coverage trace (T_{NR}\subseteq N\times R), and validation trace (T_{NV}\subseteq N\times V). For baselined need (n):
+Define source trace $T_{IN}\subseteq I\times N$, coverage trace $T_{NR}\subseteq N\times R$, and validation trace $T_{NV}\subseteq N\times V$. For baselined need (n):
 
 $$
 SourceCovered(n)\iff \exists i:(i,n)\in T_{IN},

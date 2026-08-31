@@ -29,7 +29,7 @@ How can one subject announce committed changes to an open set of dependents with
 
 ### Central model, mechanism, or theorem
 
-For committed subject transition (s_v\xrightarrow{a}s_{v+1}), construct immutable event (e=(id,source,type,version,payload)), snapshot active observers (L), then invoke each according to the documented dispatch policy. For observer projection (q), update is
+For committed subject transition $s_v\xrightarrow{a}s_{v+1}$, construct immutable event (e=(id,source,type,version,payload)), snapshot active observers (L), then invoke each according to the documented dispatch policy. For observer projection (q), update is
 
 $$
 q' = U(q,e),\qquad e.version>q.version,
@@ -190,7 +190,7 @@ For async/durable paths, test initial-snapshot races, queue overflow, slow/crash
 
 ## Definitions and Notation
 
-Let subject states be (s_v) with monotonically increasing per-subject version (v). Committed action (a) yields (s_v\xrightarrow{a}s_{v+1}) and event (e_{v+1}). Active observer set at dispatch start is (L_{v+1}=snapshot(L)).
+Let subject states be (s_v) with monotonically increasing per-subject version (v). Committed action (a) yields $s_v\xrightarrow{a}s_{v+1}$ and event (e_{v+1}). Active observer set at dispatch start is (L_{v+1}=snapshot(L)).
 
 For projection state (q=(v_q,data)), apply rule:
 
@@ -202,7 +202,7 @@ $$
 
 This assumes contiguous per-subject versions and events for every relevant transition. If coalescing/invalidation is allowed, use a different explicitly stated rule.
 
-For bounded queue capacity (B), safety requires (0\le |Q|\le B); liveness needs a demand/service assumption or explicit overflow outcome. A bound alone does not guarantee delivery.
+For bounded queue capacity (B), safety requires $0\le |Q|\le B$; liveness needs a demand/service assumption or explicit overflow outcome. A bound alone does not guarantee delivery.
 
 ## Mechanisms, Invariants, or Proof Structure
 

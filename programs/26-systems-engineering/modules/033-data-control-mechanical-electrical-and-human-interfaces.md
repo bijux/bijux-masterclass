@@ -258,7 +258,7 @@ $$
 
 `NotApplicable(k)` is a controlled assertion requiring rationale; absence of a value is not non-applicability.
 
-For data events at frequency $f$ events/s, payload $p$ bytes/event, fixed framing/security overhead $b$ bytes/event, and retransmission/capacity factor (a\ge1):
+For data events at frequency $f$ events/s, payload $p$ bytes/event, fixed framing/security overhead $b$ bytes/event, and retransmission/capacity factor $a\ge1$:
 
 $$
 R_{bit}=8af(p+b).
@@ -266,7 +266,7 @@ $$
 
 If a channel's usable capacity is (C_u), declared utilization is (U=R_{bit}/C_u). Compatibility requires (U) remain within the allocated limit under simultaneous applicable flows; (U<1) alone may not satisfy latency or burst needs.
 
-For a latency path with serial components (L_1,\ldots,L_n), bounded jitter (J), and limit (L_{max}):
+For a latency path with serial components $L_1,\ldots,L_n$, bounded jitter (J), and limit (L_{max}):
 
 $$
 L_{wc}=\sum_{j=1}^{n}L_j+J,\qquad M_L=L_{max}-L_{wc}.
@@ -304,7 +304,7 @@ $$
 X\subseteq K_i\times K_i,
 $$
 
-where ((k_a,k_b)\in X) means changing (k_a) can invalidate an assumption, budget, or evidence for (k_b). Change impact should traverse the reachable dependency set, not stop at the initiating discipline.
+where $(k_a,k_b)\in X$ means changing (k_a) can invalidate an assumption, budget, or evidence for (k_b). Change impact should traverse the reachable dependency set, not stop at the initiating discipline.
 
 ## Mechanisms, Invariants, or Proof Structure
 

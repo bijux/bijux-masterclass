@@ -226,7 +226,7 @@ print("evidence=declared_fields_and_lexical_signals_only")
 
 ## Definitions and Notation
 
-Let stakeholder or affected group (g\in G), outcome measure (y_g(t)), desired condition (y_g^*(t)), and problem gap:
+Let stakeholder or affected group $g\in G$, outcome measure (y_g(t)), desired condition (y_g^*(t)), and problem gap:
 
 $$
 \Delta_g(t)=y_g^*(t)-y_g(t).
@@ -240,9 +240,9 @@ $$
 
 but (Y(0)) is generally unobserved and requires a causal design or bounded assumptions. Before-after difference alone is not the effect.
 
-Let mechanism hypothesis (h_k) have supporting/challenging evidence (E_k), uncertainty (U_k), and predicted observations under action (a). Maintain alternatives (H=\{h_1,\ldots,h_n\}) until evidence or decision scope justifies narrowing.
+Let mechanism hypothesis (h_k) have supporting/challenging evidence (E_k), uncertainty (U_k), and predicted observations under action (a). Maintain alternatives $H=\{h_1,\ldots,h_n\}$ until evidence or decision scope justifies narrowing.
 
-A solution-neutral need (N) specifies outcome/capability (O), context (C), affected group (G), measure/threshold (M), and constraints (K), without specifying realization (R) unless (R\in K) is supported by authorized evidence:
+A solution-neutral need (N) specifies outcome/capability (O), context (C), affected group (G), measure/threshold (M), and constraints (K), without specifying realization (R) unless $R\in K$ is supported by authorized evidence:
 
 $$
 N=\langle O,C,G,M,K\rangle,\quad R\notin N\setminus K.

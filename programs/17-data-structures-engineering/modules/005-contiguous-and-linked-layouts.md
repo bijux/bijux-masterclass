@@ -110,21 +110,21 @@ After completing this module, you should be able to:
 
 ## Core Exposition
 
-**Begin with one abstract sequence.** Let the abstract value be finite sequence (S=\langle e_0,\ldots,e_{n-1}\rangle). Both representations must implement the same observations and updates: length, indexed lookup if promised, iteration, insertion, removal, and element mutation/ownership. Physical differences matter only through the published contract and resource behavior.
+**Begin with one abstract sequence.** Let the abstract value be finite sequence $S=\langle e_0,\ldots,e_{n-1}\rangle$. Both representations must implement the same observations and updates: length, indexed lookup if promised, iteration, insertion, removal, and element mutation/ownership. Physical differences matter only through the published contract and resource behavior.
 
-**Contiguous representation.** A low-level contiguous array owns a region starting at base (B), with capacity (c), element stride (s), and live size (n\le c). Its abstraction function reads live slots $0$ through (n-1) in increasing index. Unused capacity is outside the abstract sequence.
+**Contiguous representation.** A low-level contiguous array owns a region starting at base (B), with capacity (c), element stride (s), and live size $n\le c$. Its abstraction function reads live slots $0$ through (n-1) in increasing index. Unused capacity is outside the abstract sequence.
 
-When the language and ABI guarantee fixed stride, locating index (i) uses checked offset (i\cdot s). The calculation must avoid integer overflow and remain within the same allocated object/region under the language's pointer rules. Bounds checks, provenance, alignment, and lifetime remain required; an arithmetic formula does not authorize arbitrary memory access.
+When the language and ABI guarantee fixed stride, locating index (i) uses checked offset $i\cdot s$. The calculation must avoid integer overflow and remain within the same allocated object/region under the language's pointer rules. Bounds checks, provenance, alignment, and lifetime remain required; an arithmetic formula does not authorize arbitrary memory access.
 
 “Contiguous elements” can still mean contiguous references rather than contiguous pointee objects. A Python list or Java `ArrayList`, for example, holds references in an array-like backing representation; referenced objects can live elsewhere. A packed array of 64-bit values has a different layout and ownership graph. State the element representation.
 
-Capacity enables growth without every append reallocating. The invariant includes (0\le n\le c), initialized live slots, and a valid backing region for capacity. Growth may allocate/copy and invalidate aliases as specified in DSE-003/004. Shrinking can release, retain, or compact storage; logical size alone does not decide.
+Capacity enables growth without every append reallocating. The invariant includes $0\le n\le c$, initialized live slots, and a valid backing region for capacity. Growth may allocate/copy and invalidate aliases as specified in DSE-003/004. Shrinking can release, retain, or compact storage; logical size alone does not decide.
 
 **Insertion and removal in a region.** To insert at index (i), create room and shift live suffix (S[i:n]) one slot right, unless a gap or segmented layout changes the representation. The number of moved elements is (n-i). Remove shifts the suffix left by (n-i-1) and handles the now-unused final slot according to ownership/destruction rules.
 
 Shifts can overlap. Low-level copying must use operations correct for overlap and element move/destruction semantics. If element construction can fail, operation ordering determines failure atomicity. Trivially movable bytes, reference slots, and objects with custom move/destruction are distinct cases.
 
-Appending at the end avoids shifting but can grow. Removing from the end avoids shifts but may destroy/release an element. Clearing (n) owned objects can be (\Theta(n)) even if resetting a size field is constant for trivially managed slots.
+Appending at the end avoids shifting but can grow. Removing from the end avoids shifts but may destroy/release an element. Clearing (n) owned objects can be $\Theta(n)$ even if resetting a size field is constant for trivially managed slots.
 
 **Linked representation.** A singly linked node contains payload and successor. The root identifies the first node; null or sentinel ends traversal. The abstraction function follows links and collects payloads. Validity requires that every followed node is live, owned/shared according to policy, and part of the intended chain.
 
@@ -132,7 +132,7 @@ For an ordinary finite singly linked list, reachable nodes are acyclic and the f
 
 A doubly linked node adds predecessor. Boundary variants store nullable head/tail links or use a sentinel whose `next`/`prev` point to itself when empty. Sentinels reduce special cases, but they need a non-payload identity and cannot leak as an element. Neighbor consistency must hold in both directions.
 
-**Finding versus updating.** Indexed access in a singly linked list traverses from head, taking (i+1) node visits in a simple model. Inserting after an already-valid node can use a constant number of link writes. Inserting at index (i) from only the root still requires (\Theta(i)) traversal.
+**Finding versus updating.** Indexed access in a singly linked list traverses from head, taking (i+1) node visits in a simple model. Inserting after an already-valid node can use a constant number of link writes. Inserting at index (i) from only the root still requires $\Theta(i)$ traversal.
 
 Doubly linked lists support constant link rewrites around a known node and traversal from either end when tail/size are available. They do not make arbitrary index lookup constant. Complexity tables must state whether a cursor/iterator/node handle is an input and what validates it.
 
@@ -160,7 +160,7 @@ Handles add indirection so movement can update a table while stable identities p
 
 A linked subrange view usually needs start/end handles and traversal; splitting/concatenating can be cheap with maintained endpoints but indexing remains traversal-based. Copying either representation produces a new container but may still shallow-share element objects. Deep copy requires a graph/identity policy and can be undefined for resources or cycles.
 
-**Space accounting.** For fixed-width contiguous slots, symbolic steady storage is header (H_a), capacity (c\cdot s), alignment/padding, and allocator overhead. Slack is ((c-n)s). Resize peak can include old and new regions as DSE-004 showed.
+**Space accounting.** For fixed-width contiguous slots, symbolic steady storage is header (H_a), capacity $c\cdot s$, alignment/padding, and allocator overhead. Slack is ((c-n)s). Resize peak can include old and new regions as DSE-004 showed.
 
 For a non-intrusive singly linked sequence, each node adds header, one link, payload/reference, padding, and allocation overhead; a doubly linked node adds another link. Allocator granularity can dominate small nodes. Intrusive hooks move link bytes into elements and may avoid wrapper allocation, but bytes still exist.
 
@@ -238,13 +238,13 @@ print("evidence=modeled_steps_not_machine_timing")
 
 ## Definitions and Notation
 
-Let abstract sequence be (S\in E^*). A contiguous representation is (R_a=(B,n,c,s,slots)), with (0\le n\le c), valid layout/alignment, and
+Let abstract sequence be $S\in E^*$. A contiguous representation is (R_a=(B,n,c,s,slots)), with $0\le n\le c$, valid layout/alignment, and
 
 $$
 AF_a(R_a)=\langle slots[0],\ldots,slots[n-1]\rangle.
 $$
 
-A linked representation is (R_l=(N,h,next,value,owner)). For a null-terminated acyclic list, repeated `next` from (h) visits distinct owned live nodes (v_0,\ldots,v_{n-1}) then null, and
+A linked representation is (R_l=(N,h,next,value,owner)). For a null-terminated acyclic list, repeated `next` from (h) visits distinct owned live nodes $v_0,\ldots,v_{n-1}$ then null, and
 
 $$
 AF_l(R_l)=\langle value(v_0),\ldots,value(v_{n-1})\rangle.

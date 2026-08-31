@@ -33,7 +33,7 @@ How can a review decide whether a pattern is warranted, which variant/compositio
 
 ### Central model, mechanism, or theorem
 
-Do not compute a universal pattern score. For context (K), forces (F=\{f_i\}), candidates (D=\{d_0,\ldots,d_m\}), evaluate each candidate against scenarios, invariants, costs and uncertainty:
+Do not compute a universal pattern score. For context (K), forces (F=\{f_i\}), candidates $D=\{d_0,\ldots,d_m\}$, evaluate each candidate against scenarios, invariants, costs and uncertainty:
 
 $$
 Review(K,F,D,E)\rightarrow\{adopt, bounded\ pilot, defer, reject\}
@@ -259,11 +259,11 @@ The run proves deterministic set-membership/report ordering only. The checklist 
 
 ## Definitions and Notation
 
-Let context (K=(system,domain,workload,teams,lifecycle,constraints)); forces (F=\{f_1,\ldots,f_n\}); candidates (D=\{d_0,\ldots,d_m\}), with (d_0) baseline; assumptions (A_d); claims (C_d); invariants (I_d); evidence items (E=\{e_j\}); residual risks (R_d); and stakeholder/owner set (O).
+Let context (K=(system,domain,workload,teams,lifecycle,constraints)); forces $F=\{f_1,\ldots,f_n\}$; candidates $D=\{d_0,\ldots,d_m\}$, with (d_0) baseline; assumptions (A_d); claims (C_d); invariants (I_d); evidence items (E=\{e_j\}); residual risks (R_d); and stakeholder/owner set (O).
 
 An evidence relation (supports(e,c,K,b)) states evidence (e) supports bounded claim (c) in context (K) to boundary (b); it is not truth outside that boundary. A falsifier (n(c)) is a negative observation that contradicts c's mechanism/premise. **Evidence coverage** means each decisive claim has one or more appropriate items and limitations; it is not count maximization.
 
-A quality scenario is tuple ((source,stimulus,environment,artifact,response,measure)). A decision outcome (J\in\{adopt,pilot,defer,reject\}) is a reasoned governance result, not a pure function of weights. For a pilot, define scope (S), horizon (T), success (P), guardrails (G), stop (X) and rollback/exit (Z).
+A quality scenario is tuple ((source,stimulus,environment,artifact,response,measure)). A decision outcome $J\in\{adopt,pilot,defer,reject\}$ is a reasoned governance result, not a pure function of weights. For a pilot, define scope (S), horizon (T), success (P), guardrails (G), stop (X) and rollback/exit (Z).
 
 **Confidence** should be expressed qualitatively/quantitatively only when calibration supports it. Do not write false probabilities. State known, unknown, assumption, evidence boundary and consequence if wrong.
 

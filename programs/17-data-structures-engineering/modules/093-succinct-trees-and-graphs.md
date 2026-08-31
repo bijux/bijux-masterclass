@@ -18,7 +18,7 @@ How can tree topology and selected graph families be encoded near their informat
 
 ### Essential definitions
 
-An *ordinal tree* is rooted and its children are ordered. The number of such trees on (n) nodes is the Catalan number (C_{n-1}), whose logarithm is (2n-O(\log n)) bits. Balanced-parentheses (BP) encodes a preorder visit with `(` on entry and `)` on exit, using exactly (2n) topology bits. Rank/select, excess, matching, enclosing, and range-minimum/search supports add (o(n)) bits in static word-RAM results.
+An *ordinal tree* is rooted and its children are ordered. The number of such trees on (n) nodes is the Catalan number (C_{n-1}), whose logarithm is $2n-O(\log n)$ bits. Balanced-parentheses (BP) encodes a preorder visit with `(` on entry and `)` on exit, using exactly (2n) topology bits. Rank/select, excess, matching, enclosing, and range-minimum/search supports add (o(n)) bits in static word-RAM results.
 
 LOUDS lists nodes in breadth-first order and writes each node degree in unary, commonly (1^{d(v)}0), again totaling (2n-1) bits for a nonempty tree because degrees sum to (n-1). DFUDS is a depth-first unary-degree alternative. Each encoding favors different formulas/layouts and requires a declared bit convention.
 
@@ -97,15 +97,15 @@ After this chapter, you should be able to:
 
 ### Information baselines
 
-For rooted ordered trees with (n) nodes, Catalan growth yields about (2n) unavoidable topology bits. BP's (2n) bits are therefore near optimal even before auxiliary support. The label array is separate: labels from alphabet (Sigma) can require (n\log\sigma) bits absent compression, and arbitrary payloads may dominate.
+For rooted ordered trees with (n) nodes, Catalan growth yields about (2n) unavoidable topology bits. BP's (2n) bits are therefore near optimal even before auxiliary support. The label array is separate: labels from alphabet (Sigma) can require $n\log\sigma$ bits absent compression, and arbitrary payloads may dominate.
 
 A binary-tree null-marker preorder emits one bit for each real node and one for each null child: (n+(n+1)=2n+1) bits. It preserves left/right distinction. Ordinal-tree BP preserves ordered variable-degree structure. Converting between them changes node semantics and must preserve labels under a declared traversal.
 
-For an undirected labeled simple graph, there are (N=\binom n2) possible edges and (inom Nm) edge sets of size (m). That is only the topology baseline for known vertex labels and exactly (m) edges. Directed graphs have up to (n(n-1)) loop-free arcs; loops and multiedges alter the universe; unlabeled graphs have isomorphism complications. Compression relative to observed regularity is not the same as worst-case succinctness.
+For an undirected labeled simple graph, there are $N=\binom n2$ possible edges and (inom Nm) edge sets of size (m). That is only the topology baseline for known vertex labels and exactly (m) edges. Directed graphs have up to (n(n-1)) loop-free arcs; loops and multiedges alter the universe; unlabeled graphs have isomorphism complications. Compression relative to observed regularity is not the same as worst-case succinctness.
 
 ### Balanced-parentheses encoding
 
-During preorder DFS, emit open at node entry, recursively encode children left-to-right, then emit close. The result is balanced. Define (operatorname{excess}(i)=\operatorname{rank}_{(}(i)-\operatorname{rank}_{)}(i)) before position (i). At a node's open position (p), excess equals its depth; after reading the open it is depth plus one.
+During preorder DFS, emit open at node entry, recursively encode children left-to-right, then emit close. The result is balanced. Define $operatorname{excess}(i)=\operatorname{rank}_{(}(i)-\operatorname{rank}_{)}(i)$ before position (i). At a node's open position (p), excess equals its depth; after reading the open it is depth plus one.
 
 The matching close is the first later position after which excess returns to its value at (p). The subtree interval is the matching parenthesis pair; because each node contributes a pair,
 
@@ -305,7 +305,7 @@ CSR is a durable graph baseline. Gap/reference/run compression favors neighbor s
 
 ### Example 1
 
-**Finite lower bound.** Seven-node ordinal-tree shapes number (C_6=132), requiring at least (lceil\log_2 132\rceil=8) bits for a fixed-length code; BP uses 14. **Conclusion:** (2n+o(n)) is asymptotic, not finite optimality for every (n).
+**Finite lower bound.** Seven-node ordinal-tree shapes number (C_6=132), requiring at least $lceil\log_2 132\rceil=8$ bits for a fixed-length code; BP uses 14. **Conclusion:** (2n+o(n)) is asymptotic, not finite optimality for every (n).
 
 ### Example 2
 
@@ -396,7 +396,7 @@ DFS emits every descendant pair strictly between a node's open and matching clos
 
 ### Answer 3
 
-There are (N=\binom{100}{2}=4{,}950) possible edges and baseline (log_2\binom{4{,}950}{200}) bits, rounded up for fixed-length storage. This assumes known labeled vertices, simple undirected topology, no loops, and exactly 200 edges. A directed multigraph needs ordered endpoints, loop policy, multiplicities, edge identities/order, and attribute rules; the simple-edge binomial universe and (2m) degree law no longer apply. Validators must compare exact neighbor multisets and in/out degrees.
+There are $N=\binom{100}{2}=4{,}950$ possible edges and baseline $log_2\binom{4{,}950}{200}$ bits, rounded up for fixed-length storage. This assumes known labeled vertices, simple undirected topology, no loops, and exactly 200 edges. A directed multigraph needs ordered endpoints, loop policy, multiplicities, edge identities/order, and attribute rules; the simple-edge binomial universe and (2m) degree law no longer apply. Validators must compare exact neighbor multisets and in/out degrees.
 
 ### Answer 4
 

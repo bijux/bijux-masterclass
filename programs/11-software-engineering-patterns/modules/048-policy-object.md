@@ -30,7 +30,7 @@ How can a changeable domain decision be represented by a named, versioned, testa
 
 ### Central model, mechanism, or theorem
 
-For validated facts (x\in X), explicit context (c\in C), and immutable policy version (p_v), evaluation is
+For validated facts $x\in X$, explicit context $c\in C$, and immutable policy version (p_v), evaluation is
 
 $$
 decide(p_v,x,c)\to d\in\{approve,deny,not\_applicable,indeterminate,error\}\times Reasons\times v.
@@ -377,7 +377,7 @@ Review a model-backed high-stakes Policy Object without claiming legal, fairness
 
 ### Answer 1
 
-For unopened day 12, defect/opened are false and (12\le30), so approve/within-window/v3. For opened day 12, defect false and opened true, so deny/opened-item/v3 before checking window. For defective day 45 with opened true, the first rule approves/defect/v3, demonstrating explicit defect precedence.
+For unopened day 12, defect/opened are false and $12\le30$, so approve/within-window/v3. For opened day 12, defect false and opened true, so deny/opened-item/v3 before checking window. For defective day 45 with opened true, the first rule approves/defect/v3, demonstrating explicit defect precedence.
 
 The run establishes three deterministic finite routes, reason/version propagation, boundary operation order, and exact Python output. It does not establish negative/zero/day-30/31 behavior, input validation, applicability, policy selection/approval/effective time, fact provenance, authorization, action freshness, persistence/cache/rollout, any jurisdiction's return law, fairness, or high-stakes suitability.
 

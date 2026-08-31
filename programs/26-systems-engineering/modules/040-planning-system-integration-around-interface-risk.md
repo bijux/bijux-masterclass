@@ -45,7 +45,7 @@ $$
 \Delta R_{i,a}=R_i^{before}-E[R_i^{after}\mid a].
 $$
 
-The ratio (\Delta R/cost) can inform—not decide—selection. Estimates may be sparse, dependent, multi-dimensional, or ethically non-compensatory. Safety, legal, security, or mission constraints may require work regardless of expected-value ranking.
+The ratio $\Delta R/cost$ can inform—not decide—selection. Estimates may be sparse, dependent, multi-dimensional, or ethically non-compensatory. Safety, legal, security, or mission constraints may require work regardless of expected-value ranking.
 
 For interface (j), scenario set (S_j), and evidence set (E_j), risk retirement requires more than declaration coverage:
 

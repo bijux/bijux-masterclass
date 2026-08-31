@@ -190,7 +190,7 @@ For transformations, property-test well-formedness and semantic preservation whe
 
 ## Definitions and Notation
 
-Let element variants (E=\{E_1,...,E_m\}), operations (O=\{O_1,...,O_n\}), and behavior matrix (B:E\times O\to R\cup Error). Visitor (V_j) implements column (O_j).
+Let element variants (E=\{E_1,...,E_m\}), operations (O=\{O_1,...,O_n\}), and behavior matrix $B:E\times O\to R\cup Error$. Visitor (V_j) implements column (O_j).
 
 Double dispatch law:
 
@@ -292,7 +292,7 @@ print(f"format={expression.accept(Formatter())}")
 
 ### Dispatch and evaluation argument
 
-Root Add calls each visitor's `visit_add`; Multiply and Literals call their corresponding cases. Evaluation computes (3\cdot4=12), then (2+12=14). Occurrence count is Add 1 + Literal 1 + Multiply subtree `(1+1+1)=3`, totaling five. Formatter's recursive cases add explicit parentheses/operators.
+Root Add calls each visitor's `visit_add`; Multiply and Literals call their corresponding cases. Evaluation computes $3\cdot4=12$, then (2+12=14). Occurrence count is Add 1 + Literal 1 + Multiply subtree `(1+1+1)=3`, totaling five. Formatter's recursive cases add explicit parentheses/operators.
 
 This proves the shown finite acyclic tree under one language execution. It does not prove dispatch completeness for future classes, integer/domain semantics, termination on arbitrary graphs, or compiler correctness.
 

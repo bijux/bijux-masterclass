@@ -34,7 +34,7 @@ How can decision objectives be translated into measurable criteria and explicit 
 
 ### Central model, mechanism, or theorem
 
-For feasible alternative (a), certain attribute outcomes (x_i(a)), single-attribute value functions (u_i\in[0,1]), and normalized swing weights (w_i\ge0,\sum_i w_i=1), an additive model is:
+For feasible alternative (a), certain attribute outcomes (x_i(a)), single-attribute value functions $u_i\in[0,1]$, and normalized swing weights $w_i\ge0,\sum_i w_i=1$, an additive model is:
 
 $$
 V(a)=\sum_{i=1}^{n}w_i u_i(x_i(a)).
@@ -46,7 +46,7 @@ $$
 Feasible(a)=\bigwedge_{j\in M}g_j(a).
 $$
 
-Under uncertainty with states (\omega) and defensible probabilities:
+Under uncertainty with states $\omega$ and defensible probabilities:
 
 $$
 EU(a)=\sum_{\omega}P(\omega\mid a)\,U(x(a,\omega)).
@@ -217,7 +217,7 @@ The 0.015 lead is smaller than many plausible elicitation and performance uncert
 
 ## Definitions and Notation
 
-Let alternatives be (A), mandatory constraints (M), enhancing criteria (C), attribute vector (x(a)), uncertain state (\omega), evidence (E), and decision authority (d).
+Let alternatives be (A), mandatory constraints (M), enhancing criteria (C), attribute vector (x(a)), uncertain state $\omega$, evidence (E), and decision authority (d).
 
 Feasible set:
 
@@ -256,7 +256,7 @@ $$
 \mathcal R_a=\{\theta:Score(a;\theta)\ge Score(b;\theta),\forall b\in A_F\},
 $$
 
-where (\theta) contains weights, functions, estimates, probabilities, constraints, and scenarios. Mapping (\mathcal R_a) is often more useful than one nominal rank.
+where $\theta$ contains weights, functions, estimates, probabilities, constraints, and scenarios. Mapping $\mathcal R_a$ is often more useful than one nominal rank.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -342,7 +342,7 @@ Build the causal chain and use fundamental mission availability/outcome plus ind
 
 ### Example 6
 
-**Expected utility differs from utility of expectation.** Outcome is 0 or 100 with equal probability and (U(x)=\sqrt{x}). Then:
+**Expected utility differs from utility of expectation.** Outcome is 0 or 100 with equal probability and $U(x)=\sqrt{x}$. Then:
 
 $$
 E[U(X)]=0.5(0)+0.5(10)=5,
@@ -415,7 +415,7 @@ Alternatives A and B have criterion values: A=(0.9,0.4), B=(0.6,0.8). Let weight
 
 ### Exercise 3
 
-An uncertain benefit is 0 with probability 0.25 and 100 with probability 0.75. Compute expected benefit, expected utility for (U(x)=\sqrt{x}), and utility of expected benefit. Explain why they differ and what evidence is required before using the result.
+An uncertain benefit is 0 with probability 0.25 and 100 with probability 0.75. Compute expected benefit, expected utility for $U(x)=\sqrt{x}$, and utility of expected benefit. Explain why they differ and what evidence is required before using the result.
 
 ### Exercise 4
 

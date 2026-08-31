@@ -43,7 +43,7 @@ $$
 L_{peak}(\sigma)=\max_t L(t).
 $$
 
-An amortized bound assigns charges (hat c_i) or potential (Phi_i\ge0) so that every prefix satisfies
+An amortized bound assigns charges (hat c_i) or potential $Phi_i\ge0$ so that every prefix satisfies
 
 $$
 \sum_{i=1}^{j}c_i\le\sum_{i=1}^{j}hat c_i
@@ -70,7 +70,7 @@ Common failures are writing “fast” or `O(1)` without a model; presenting amo
 
 ### Compact example
 
-A dynamic array that doubles capacity has worst-case (\Theta(n)) append when it copies (n) elements, but (\Theta(1)) amortized append across every sequence starting empty. At size just above (n/2), its reserved slots are below (n), yet a resize can temporarily coexist with the old and new buffers, raising peak storage. Exact bytes also include element representation, alignment, allocator metadata, and runtime policy. One label—“constant append”—cannot express all of this.
+A dynamic array that doubles capacity has worst-case $\Theta(n)$ append when it copies (n) elements, but $\Theta(1)$ amortized append across every sequence starting empty. At size just above (n/2), its reserved slots are below (n), yet a resize can temporarily coexist with the old and new buffers, raising peak storage. Exact bytes also include element representation, alignment, allocator metadata, and runtime policy. One label—“constant append”—cannot express all of this.
 
 ### Connections
 
@@ -115,7 +115,7 @@ After completing this module, you should be able to:
 
 ## Core Exposition
 
-**Choose the question before the notation.** Complexity is a property of a specified operation under a size measure and model. For lookup in a map, size may be number of entries (n), key length (ell), table capacity (m), or all three. Hash computation is not constant when keys have variable length. A precise bound might be (O(\ell+1)) expected probes under stated hashing assumptions, not simply `O(1)`.
+**Choose the question before the notation.** Complexity is a property of a specified operation under a size measure and model. For lookup in a map, size may be number of entries (n), key length (ell), table capacity (m), or all three. Hash computation is not constant when keys have variable length. A precise bound might be $O(\ell+1)$ expected probes under stated hashing assumptions, not simply `O(1)`.
 
 For a graph adjacency structure, input size may be vertices (V) and edges (E). For range reporting, output size (k) matters. For a persistent update, path length and number of shared nodes matter. State the parameters rather than hiding them in one (n).
 
@@ -123,7 +123,7 @@ For a graph adjacency structure, input size may be vertices (V) and edges (E). F
 
 A model is useful when its primitives approximate the dominant scarce resource and support proof. It is not a literal processor. Multiplication, hashing, allocation, system calls, cache misses, and arbitrary-precision arithmetic are not universally unit cost. State deviations explicitly.
 
-**Asymptotic bounds.** (T(n)\in O(f(n))) means there exist constants (c,n_0) such that (T(n)\le cf(n)) for all (n\ge n_0). (\Omega) gives a lower bound; (\Theta) gives both. The notation suppresses constants and lower-order terms, so it ranks growth rather than predicting a crossover on a particular machine.
+**Asymptotic bounds.** $T(n)\in O(f(n))$ means there exist constants (c,n_0) such that $T(n)\le cf(n)$ for all $n\ge n_0$. $\Omega$ gives a lower bound; $\Theta$ gives both. The notation suppresses constants and lower-order terms, so it ranks growth rather than predicting a crossover on a particular machine.
 
 Worst-case cost maximizes over valid states and inputs of the declared size. Best case rarely supports a client guarantee but can explain fast paths. Average case needs a probability distribution; “typical” is not a distribution. Expected cost must identify whether randomness belongs to inputs, hash seeds, randomized balancing, or scheduling. An adaptive adversary may observe prior behavior, invalidating independence assumptions.
 
@@ -135,13 +135,13 @@ The aggregate method totals a sequence then divides. For a stack with `multipop(
 
 The accounting method overcharges cheap operations and stores credits. Every prefix must keep the bank nonnegative; borrowing from future operations would not prove a bound for a sequence that stops early. For a binary counter, charge a 0-to-1 flip enough to fund its later 1-to-0 flip.
 
-The potential method defines nonnegative stored work (\Phi(state)). Amortized cost
+The potential method defines nonnegative stored work $\Phi(state)$. Amortized cost
 
 $$
 \hat c_i=c_i+\Phi(D_i)-\Phi(D_{i-1})
 $$
 
-telescopes. If (\Phi(D_0)=0) and (\Phi\ge0), actual total cost is at most total amortized cost. Potential belongs to the analysis, not necessarily a runtime field.
+telescopes. If $\Phi(D_0)=0$ and $\Phi\ge0$, actual total cost is at most total amortized cost. Potential belongs to the analysis, not necessarily a runtime field.
 
 **Dynamic-array growth.** Suppose capacity starts at one and doubles when full. An append without growth writes one element. Growth from capacity (q) allocates (2q) slots, copies (q) elements, then writes the new element. Before reaching capacity (2^k), total copies are
 
@@ -242,7 +242,7 @@ C_{worst}(n)=\max_{x\in I_n}C(x),\qquad
 C_{best}(n)=\min_{x\in I_n}C(x).
 $$
 
-For distribution (P_n), average cost is (E_{x\sim P_n}[C(x)]). For algorithmic random variable (R), expected cost can be (E_R[C(x,R)]) for fixed (x). Name both sources when both vary.
+For distribution (P_n), average cost is $E_{x\sim P_n}[C(x)]$. For algorithmic random variable (R), expected cost can be (E_R[C(x,R)]) for fixed (x). Name both sources when both vary.
 
 For representation (r), decompose modeled bytes as
 
@@ -262,7 +262,7 @@ An amortized charge sequence is valid if every prefix dominates actual cost. Pot
 
 **Accounting proof.** Assign credits to operations or objects; establish nonnegative balance after every prefix; show all actual work is paid. Credits are analytical, not runtime currency.
 
-**Potential proof.** Choose (Phi(state)\ge0), calculate actual plus potential change in every operation case, and telescope. Show starting/ending potential terms rather than omitting them.
+**Potential proof.** Choose $Phi(state)\ge0$, calculate actual plus potential change in every operation case, and telescope. Show starting/ending potential terms rather than omitting them.
 
 **Space accounting.** Draw the ownership graph, count each allocation once, separate shallow payload/metadata from referents, and model maximum simultaneously live states during updates.
 
@@ -317,7 +317,7 @@ An amortized charge sequence is valid if every prefix dominates actual cost. Pot
 
 **Question:** Why is hash lookup not simply constant?
 
-**Reasoning:** Key hashing may cost (O(\ell)); probe count depends on load, hash distribution, collision strategy, and adversary. Expected constant probes needs assumptions; worst case can be linear.
+**Reasoning:** Key hashing may cost $O(\ell)$; probe count depends on load, hash distribution, collision strategy, and adversary. Expected constant probes needs assumptions; worst case can be linear.
 
 **Conclusion:** State key-length and collision assumptions.
 
@@ -433,11 +433,11 @@ Prepare a resource-assurance plan for a data structure used in a hard memory and
 
 ### Answer 1
 
-For (n=0), count is zero. For (n>0), capacities allocated are (1,2,4,\ldots,2^k), where (2^{k-1}<n\le2^k); allocation count is (k+1=\lceil\log_2 n\rceil+1) except exact powers require the same expression (and (n=1) gives one). Copies are (0+1+2+\cdots+2^{k-1}=2^k-1<2n). Each append writes once, so total modeled writes plus copies are (O(n)), yielding (O(1)) amortized cost. An append triggering growth from size (q) copies (q), so worst-case append is (\Theta(n)).
+For (n=0), count is zero. For (n>0), capacities allocated are $1,2,4,\ldots,2^k$, where $2^{k-1}<n\le2^k$; allocation count is $k+1=\lceil\log_2 n\rceil+1$ except exact powers require the same expression (and (n=1) gives one). Copies are $0+1+2+\cdots+2^{k-1}=2^k-1<2n$. Each append writes once, so total modeled writes plus copies are (O(n)), yielding (O(1)) amortized cost. An append triggering growth from size (q) copies (q), so worst-case append is $\Theta(n)$.
 
 ### Answer 2
 
-Let array header be (H_a), per contiguous value eight bytes, capacity (c\ge1000), and total allocator rounding/metadata (R_a(c)). Modeled array bytes are (H_a+8c+R_a(c)), with slack (8(c-1000)). Let node object header be (H_n), two pointer fields of (p) bytes, value eight bytes, padding (P_n), and per-node allocation overhead/rounding (R_n). List plus container header (H_l) is (H_l+1000(H_n+2p+8+P_n+R_n)). This excludes separately allocated values and shared/runtime metadata unless the ownership policy includes them. Substitute measured platform-specific quantities only after pinning ABI, runtime, allocator, and measurement method.
+Let array header be (H_a), per contiguous value eight bytes, capacity $c\ge1000$, and total allocator rounding/metadata (R_a(c)). Modeled array bytes are (H_a+8c+R_a(c)), with slack (8(c-1000)). Let node object header be (H_n), two pointer fields of (p) bytes, value eight bytes, padding (P_n), and per-node allocation overhead/rounding (R_n). List plus container header (H_l) is (H_l+1000(H_n+2p+8+P_n+R_n)). This excludes separately allocated values and shared/runtime metadata unless the ownership policy includes them. Substitute measured platform-specific quantities only after pinning ABI, runtime, allocator, and measurement method.
 
 ### Answer 3
 

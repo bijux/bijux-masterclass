@@ -143,7 +143,7 @@ $$
 
 The ABI additionally specifies field width, signedness, overflow handling, instruction encoding, and when the expression is valid.
 
-Represent a loadable segment by file interval ([o,o+n_f)), virtual interval ([v,v+n_m)), alignment (a), and permissions (p). Often (n_m\ge n_f), allowing zero-filled memory beyond file-backed bytes. Validity requires format-specific alignment and range constraints.
+Represent a loadable segment by file interval ([o,o+n_f)), virtual interval ([v,v+n_m)), alignment (a), and permissions (p). Often $n_m\ge n_f$, allowing zero-filled memory beyond file-backed bytes. Validity requires format-specific alignment and range constraints.
 
 ## Mechanisms, Invariants, or Proof Structure
 

@@ -183,7 +183,7 @@ Cache keys must include every configuration dimension affecting semantics. Pools
 
 ## Definitions and Notation
 
-Let supported keys be (K_S\subseteq K), validated configurations (C_V\subseteq C), product contract (P), and bounded creation errors (E). Define
+Let supported keys be $K_S\subseteq K$, validated configurations $C_V\subseteq C$, product contract (P), and bounded creation errors (E). Define
 
 $$
 F:K\times C\to Result(P,E).

@@ -123,6 +123,49 @@ def _normalize_broken_math_closers(line: str) -> str:
     return re.sub(r"\\?\(([^()\n]*?)\\\)", replace_parenthesis, line)
 
 
+def _normalize_parenthetical_formulae(fragment: str) -> str:
+    """Enclose parenthetical TeX fragments after protected spans are removed."""
+    pairs: list[tuple[int, int, int | None]] = []
+    stack: list[tuple[int, int | None]] = []
+    for index, character in enumerate(fragment):
+        if character == "(":
+            stack.append((index, len(pairs) - 1 if stack else None))
+        elif character == ")" and stack:
+            start, parent = stack.pop()
+            pairs.append((start, index, parent))
+    selected = [
+        (start, end)
+        for start, end, parent in pairs
+        if parent is None and TEX_COMMAND.search(fragment[start + 1 : end])
+    ]
+    for start, end in reversed(selected):
+        fragment = fragment[:start] + "$" + fragment[start + 1 : end] + "$" + fragment[end + 1 :]
+    return fragment
+
+
+def _normalize_unprotected_formulae(line: str) -> str:
+    """Normalize prose fragments while preserving existing inline math and code."""
+    output: list[str] = []
+    cursor = 0
+    plain_start = 0
+    while cursor < len(line):
+        if line[cursor] not in {"$", "`"}:
+            cursor += 1
+            continue
+        if plain_start < cursor:
+            output.append(_normalize_parenthetical_formulae(line[plain_start:cursor]))
+        marker = line[cursor]
+        end = line.find(marker, cursor + 1)
+        if end < 0:
+            output.append(_normalize_parenthetical_formulae(line[cursor:]))
+            return "".join(output)
+        output.append(line[cursor : end + 1])
+        cursor = end + 1
+        plain_start = cursor
+    output.append(_normalize_parenthetical_formulae(line[plain_start:]))
+    return "".join(output)
+
+
 def normalize_github_math(text: str) -> str:
     """Normalize legacy TeX Markdown syntax to GitHub's supported math syntax.
 
@@ -158,7 +201,7 @@ def normalize_github_math(text: str) -> str:
             ),
             line,
         )
-        return line + ending
+        return _normalize_unprotected_formulae(line) + ending
 
     return _map_unfenced_lines(text, normalize_line)
 

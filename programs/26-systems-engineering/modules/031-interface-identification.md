@@ -215,7 +215,7 @@ IF-001 may still omit semantic, timing, quality, security, failure, or physical-
 
 ## Definitions and Notation
 
-Let entities $N=N_{internal}\cup N_{external}\cup N_{environment}$, scenarios (S), modes/configurations (M), and interface candidates (I_C). Directed adjacency matrix (A\in\{0,1\}^{n\times n}) can record discovered interaction from (n_i) to (n_j):
+Let entities $N=N_{internal}\cup N_{external}\cup N_{environment}$, scenarios (S), modes/configurations (M), and interface candidates (I_C). Directed adjacency matrix $A\in\{0,1\}^{n\times n}$ can record discovered interaction from (n_i) to (n_j):
 
 $$
 A_{ij}=1\iff\exists i_c\in I_C:(source(i_c)=n_i\land target(i_c)=n_j).

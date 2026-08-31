@@ -201,7 +201,7 @@ Even if all three inputs were 6 or higher, the gate would remain false until the
 
 ## Definitions and Notation
 
-Let application baseline (B), product tree (P), CTE set (C\subseteq P), environment vector (E), demonstrated article (A_i), evidence set (D_i), applicable criteria for level (l), (K_l), and assessor judgment rule (J).
+Let application baseline (B), product tree (P), CTE set $C\subseteq P$, environment vector (E), demonstrated article (A_i), evidence set (D_i), applicable criteria for level (l), (K_l), and assessor judgment rule (J).
 
 Evidence sufficiency for element (i) at level (l):
 

@@ -196,7 +196,7 @@ Permit experiments without granting indefinite permanence. Credit designers for 
 
 ## Definitions and Notation
 
-Let (A=\{a_0,a_1,\ldots,a_n\}) be alternatives, where (a_0) is the simplest adequate baseline. Let (F=\{f_1,\ldots,f_m\}) be forces with evidence records (E_i). A transparent ordinal model is
+Let $A=\{a_0,a_1,\ldots,a_n\}$ be alternatives, where (a_0) is the simplest adequate baseline. Let $F=\{f_1,\ldots,f_m\}$ be forces with evidence records (E_i). A transparent ordinal model is
 
 $$
 S(a)=\sum_{i=1}^{m} w_i r_{ia}-K(a)-U(a),
@@ -215,7 +215,7 @@ adopt(a)\text{ only if }\Delta(a)>\tau
 \quad\text{and hard constraints hold.}
 $$
 
-Threshold (\tau) reflects migration risk and consequence severity. Scores support comparison and sensitivity analysis; they do not establish causal effects. A pattern claim should also identify
+Threshold $\tau$ reflects migration risk and consequence severity. Scores support comparison and sensitivity analysis; they do not establish causal effects. A pattern claim should also identify
 
 $$
 (F,M,P,D),

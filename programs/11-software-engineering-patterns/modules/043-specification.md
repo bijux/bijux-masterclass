@@ -30,7 +30,7 @@ How can a business rule become a named, composable, testable object that answers
 
 ### Central model, mechanism, or theorem
 
-For candidate domain (D), a total Boolean specification is a predicate (S:D\to\{T,F\}). Composite semantics are
+For candidate domain (D), a total Boolean specification is a predicate $S:D\to\{T,F\}$. Composite semantics are
 
 $$
 (S_1\land S_2)(x)=S_1(x)\wedge S_2(x),\quad
@@ -163,7 +163,7 @@ Differential-test the same fixtures against in-memory and actual target-engine e
 
 ### Split pushdown and remainder safely
 
-If only part of a rule translates, derive a necessary coarse query predicate (Q) such that every true full match is selected by (Q). Then apply remainder (R) in memory: candidate result is (Q\land R). An overly narrow (Q) creates false negatives.
+If only part of a rule translates, derive a necessary coarse query predicate (Q) such that every true full match is selected by (Q). Then apply remainder (R) in memory: candidate result is $Q\land R$. An overly narrow (Q) creates false negatives.
 
 Bound the candidate set, pagination, memory, snapshot, ordering, and tenant scope. Reject a plan that would load unbounded rows. Report whether filtering was full, hybrid, or unsupported.
 
@@ -205,13 +205,13 @@ Test translator allowlists, parameter binding, NULL/collation/decimal/time seman
 
 ## Definitions and Notation
 
-Let candidate space be (D), Boolean specifications (S_i:D\to\mathbb{B}), and richer decisions (\Delta=\{match,no\_match,indeterminate,error\}). For pure total Boolean specifications:
+Let candidate space be (D), Boolean specifications $S_i:D\to\mathbb{B}$, and richer decisions $\Delta=\{match,no\_match,indeterminate,error\}$. For pure total Boolean specifications:
 
 $$
 S\land\top=S,\quad S\lor\bot=S,\quad S\land\neg S=\bot,
 $$
 
-and De Morgan's law gives (\neg(S_1\land S_2)=\neg S_1\lor\neg S_2). These identities do not automatically hold observationally with effects, errors, three-valued logic, or explanation order.
+and De Morgan's law gives $\neg(S_1\land S_2)=\neg S_1\lor\neg S_2$. These identities do not automatically hold observationally with effects, errors, three-valued logic, or explanation order.
 
 For safe hybrid query planning, coarse query (Q) must be necessary for full predicate (S):
 
@@ -304,7 +304,7 @@ print(
 )
 ```
 
-The result follows from (active(Ada)=T) and (spend(Ada)\ge100); Bea fails active despite sufficient spend, and Cy fails spend despite being active. Negation is safe here because the leaf is pure, total, and two-valued.
+The result follows from (active(Ada)=T) and $spend(Ada)\ge100$; Bea fails active despite sufficient spend, and Cy fails spend despite being active. Negation is safe here because the leaf is pure, total, and two-valued.
 
 ## Alternatives and Trade-Offs
 

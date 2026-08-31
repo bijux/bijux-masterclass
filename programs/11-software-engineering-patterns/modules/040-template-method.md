@@ -193,7 +193,7 @@ Run the common contract suite against every production subclass. Mutation testin
 
 Let base invariant (I(z)), input precondition (P(x)), final postcondition (Q(x,y)), and step contracts (K_i=(P_i,Q_i,F_i,R_i)) for pre/post, failure, and resource behavior.
 
-For sequence (f_n\circ...\circ f_1), compositional proof requires (Q_i\Rightarrow P_{i+1}), each step preserves the required invariant, and failure edges satisfy the cleanup relation (C_i). Success is
+For sequence $f_n\circ...\circ f_1$, compositional proof requires $Q_i\Rightarrow P_{i+1}$, each step preserves the required invariant, and failure edges satisfy the cleanup relation (C_i). Success is
 
 $$
 P(x)\Rightarrow Q(x,T(x))\land I(z_{final}).

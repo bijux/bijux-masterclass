@@ -104,13 +104,13 @@ The graph does not change the authoritative similarity. Every navigation compari
 
 ### Hierarchical sampling
 
-HNSW assigns every new vertex to layer zero and samples a maximum layer from an exponential tail. With the common draw (ell=\lfloor-\ln(U)m_L\rfloor),
+HNSW assigns every new vertex to layer zero and samples a maximum layer from an exponential tail. With the common draw $ell=\lfloor-\ln(U)m_L\rfloor$,
 
 $$
 \Pr[\ell\ge t]=\Pr[U\le e^{-t/m_L}]=e^{-t/m_L}
 $$
 
-apart from flooring. Choosing (m_L=1/\ln M) gives approximately (M^{-t}) survival to layer (t). This is a design calibration, not a requirement that every implementation expose the same distribution or parameter mapping.
+apart from flooring. Choosing $m_L=1/\ln M$ gives approximately (M^{-t}) survival to layer (t). This is a design calibration, not a requirement that every implementation expose the same distribution or parameter mapping.
 
 Nested layers separate distance scales. Sparse upper layers provide long routing jumps; dense lower layers refine locally. A single entry point at the current maximum layer is enough for the published algorithm, though systems may add multiple entries or shard routers. Sampling must be reproducible when deterministic rebuilds matter, while evaluation should cover multiple seeds and insertion orders.
 
@@ -133,7 +133,7 @@ Visited state prevents cycles and duplicate distance work. The precise terminati
 
 ### Incremental construction
 
-For a new vertex (x) with sampled level (ell_x), begin at the old entry point. Greedily descend layers above (ell_x). For each layer from (min(\ell_x,L_{max})) through zero, run a width-`efConstruction` search from the current entries, select up to the layer's connection budget, create outgoing and reciprocal edges, and prune any adjacency that exceeds its limit. If (ell_x>L_{max}), publish (x) as the new entry after its layers are complete.
+For a new vertex (x) with sampled level (ell_x), begin at the old entry point. Greedily descend layers above (ell_x). For each layer from $min(\ell_x,L_{max})$ through zero, run a width-`efConstruction` search from the current entries, select up to the layer's connection budget, create outgoing and reciprocal edges, and prune any adjacency that exceeds its limit. If (ell_x>L_{max}), publish (x) as the new entry after its layers are complete.
 
 Choosing only the numerically closest (M) candidates can produce redundant edges aimed into one cluster. HNSW's heuristic selection favors directional diversity: a candidate may be rejected when it is closer to an already selected neighbor than to the new point. The exact heuristic, extension flag, layer-zero budget, and reciprocal pruning rules affect connectivity and recall.
 
@@ -360,7 +360,7 @@ print("evidence=bounded_hnsw_search_model")
 
 ### Exponential-layer derivation
 
-For (ell=\lfloor-\ln(U)m_L\rfloor), survival through layer (t) requires (U\le e^{-t/m_L}), so the expected number among (n) independent insertions is approximately (ne^{-t/m_L}). This derives population thinning only. It does not prove graph connectivity, balanced degree, or query complexity.
+For $ell=\lfloor-\ln(U)m_L\rfloor$, survival through layer (t) requires $U\le e^{-t/m_L}$, so the expected number among (n) independent insertions is approximately (ne^{-t/m_L}). This derives population thinning only. It does not prove graph connectivity, balanced degree, or query complexity.
 
 ### Search-loop argument
 
@@ -402,11 +402,11 @@ HNSW is attractive when memory permits graph plus vectors, latency is important,
 
 ### Example 1
 
-**Layer population.** With (M=16) and (m_L=1/\ln16), survival is approximately (16^{-t}). Among one million vertices, expected counts are 62,500 at layer one and 3,906.25 at layer two. **Conclusion:** upper layers become sparse rapidly; realized counts and connectivity still vary.
+**Layer population.** With (M=16) and $m_L=1/\ln16$, survival is approximately (16^{-t}). Among one million vertices, expected counts are 62,500 at layer one and 3,906.25 at layer two. **Conclusion:** upper layers become sparse rapidly; realized counts and connectivity still vary.
 
 ### Example 2
 
-**Lower-bound capacity.** Ten million 128-dimensional float32 vectors occupy (10^7\cdot128\cdot4=5.12) GB. If layer zero allows 32 four-byte neighbor IDs, those IDs alone add 1.28 GB. **Conclusion:** upper edges, offsets, labels, alignment, tombstones, allocator overhead, and build headroom must be added.
+**Lower-bound capacity.** Ten million 128-dimensional float32 vectors occupy $10^7\cdot128\cdot4=5.12$ GB. If layer zero allows 32 four-byte neighbor IDs, those IDs alone add 1.28 GB. **Conclusion:** upper edges, offsets, labels, alignment, tombstones, allocator overhead, and build headroom must be added.
 
 ### Example 3
 
@@ -463,7 +463,7 @@ HNSW is attractive when memory permits graph plus vectors, latency is important,
 
 ### Exercise 1
 
-For (n=4{,}000{,}000), (M=32), and (m_L=1/\ln32), compute expected counts at layers at least one, two, and three. Explain what the calculation does not prove.
+For (n=4{,}000{,}000), (M=32), and $m_L=1/\ln32$, compute expected counts at layers at least one, two, and three. Explain what the calculation does not prove.
 
 ### Exercise 2
 
@@ -485,11 +485,11 @@ Design a reproducible experiment comparing HNSW, exact scan, LSH, and IVF/PQ. De
 
 ### Answer 1
 
-With (m_L=1/\ln32), survival to layer (t) is approximately (32^{-t}). Expected counts are (4{,}000{,}000/32=125{,}000), (4{,}000{,}000/1024=3{,}906.25), and (4{,}000{,}000/32768\approx122.07). These are expectations under independent level draws. They do not prove realized counts, connectivity, navigability, degree balance, recall, or logarithmic query work.
+With $m_L=1/\ln32$, survival to layer (t) is approximately (32^{-t}). Expected counts are (4{,}000{,}000/32=125{,}000), (4{,}000{,}000/1024=3{,}906.25), and $4{,}000{,}000/32768\approx122.07$. These are expectations under independent level draws. They do not prove realized counts, connectivity, navigability, degree balance, recall, or logarithmic query work.
 
 ### Answer 2
 
-Vectors require (25{,}000{,}000\cdot384\cdot4=38.4) GB. A maximum 48 base-layer IDs per vertex requires (25{,}000{,}000\cdot48\cdot4=4.8) GB. Thus 43.2 GB is only a lower-bound subtotal. Add upper-layer IDs, adjacency offsets/capacity slack, labels and mappings, levels, deletion bits, alignment, allocator overhead, quantizer or authoritative payloads, visited/query workspaces, replicas, checkpoint/delta files, build scratch space, and overlapping rebuild generations.
+Vectors require $25{,}000{,}000\cdot384\cdot4=38.4$ GB. A maximum 48 base-layer IDs per vertex requires $25{,}000{,}000\cdot48\cdot4=4.8$ GB. Thus 43.2 GB is only a lower-bound subtotal. Add upper-layer IDs, adjacency offsets/capacity slack, labels and mappings, levels, deletion bits, alignment, allocator overhead, quantizer or authoritative payloads, visited/query workspaces, replicas, checkpoint/delta files, build scratch space, and overlapping rebuild generations.
 
 ### Answer 3
 

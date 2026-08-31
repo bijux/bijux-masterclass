@@ -36,7 +36,7 @@ $$
 L=(P,R,E),
 $$
 
-where (P) is patterns, (R) is relationship types, and (E\subseteq P\times R\times P) is edges. Design state (x_i) determines which outgoing edge is admissible:
+where (P) is patterns, (R) is relationship types, and $E\subseteq P\times R\times P$ is edges. Design state (x_i) determines which outgoing edge is admissible:
 
 $$
 x_{i+1}=apply(p_i,x_i),\qquad
@@ -181,7 +181,7 @@ $$
 L=(P,R,E,A,S),
 $$
 
-where (P) is patterns, (R) typed relationships, (E\subseteq P\times R\times P) edges, (A) entry conditions, and (S) stopping predicates. A design state (x) contains current context, unresolved forces, decisions, and evidence.
+where (P) is patterns, (R) typed relationships, $E\subseteq P\times R\times P$ edges, (A) entry conditions, and (S) stopping predicates. A design state (x) contains current context, unresolved forces, decisions, and evidence.
 
 An application transition is partial:
 

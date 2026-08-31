@@ -28,7 +28,7 @@ When may a program phrase be replaced by its result without changing the program
 
 ### Central model, mechanism, or theorem
 
-Write (e\Downarrow v) when expression (e) evaluates to value (v), and (Obs(C[e])) for the observation of placing (e) in context (C). The substitution principle desired by functional reasoning is
+Write $e\Downarrow v$ when expression (e) evaluates to value (v), and (Obs(C[e])) for the observation of placing (e) in context (C). The substitution principle desired by functional reasoning is
 
 $$
 e\Downarrow v
@@ -113,7 +113,7 @@ An **expression** is a phrase whose language semantics describes evaluation towa
 
 A **value** is language-relative. Integers, booleans, tuples, and functions may be values; a reducible addition is not yet a value. In a lazy language, a data constructor can count as a value before all of its fields are evaluated. A value is therefore not “anything stored in memory” and not necessarily a fully traversed data structure.
 
-Evaluation can be modeled as (e\Downarrow v) for a terminating computation. The notation deliberately excludes effects at first. A richer model records an outcome such as (\langle v,t\rangle), where (t) is a trace, or distinguishes errors and divergence. Referential transparency must use the richer model whenever the observer can see those facts.
+Evaluation can be modeled as $e\Downarrow v$ for a terminating computation. The notation deliberately excludes effects at first. A richer model records an outcome such as $\langle v,t\rangle$, where (t) is a trace, or distinguishes errors and divergence. Referential transparency must use the richer model whenever the observer can see those facts.
 
 An **evaluation context** (C[-]) represents a surrounding program awaiting an expression. Examples include ([-]+1), `print([-])`, a branch condition, or a larger function application. If every admitted context observes (e) and (v) alike, replacement is behavior-preserving. The quantification prevents a convenient test context from hiding a difference that another legal context exposes.
 
@@ -142,19 +142,19 @@ Referential transparency is also compatible with explicit effects. A program may
 Let:
 
 - (E) be a set of expressions;
-- (V\subseteq E) be values;
+- $V\subseteq E$ be values;
 - (C[-]) be a one-hole program context;
-- (\mathcal{C}) be the admitted contexts;
+- $\mathcal{C}$ be the admitted contexts;
 - (O) be observations;
 - (Obs) map complete executions to (O).
 
-Write (e\Downarrow v) for terminating evaluation and (e\Uparrow) for divergence. Write (e_1\simeq e_2) when
+Write $e\Downarrow v$ for terminating evaluation and $e\Uparrow$ for divergence. Write $e_1\simeq e_2$ when
 
 $$
 \forall C\in\mathcal{C},\;Obs(C[e_1])=Obs(C[e_2]).
 $$
 
-An occurrence of (e) is referentially transparent with value (v) when (e\Downarrow v) and (e\simeq v) under the declared observations. In practice, authors often say a language fragment is referentially transparent when its expressions systematically support this replacement principle.
+An occurrence of (e) is referentially transparent with value (v) when $e\Downarrow v$ and $e\simeq v$ under the declared observations. In practice, authors often say a language fragment is referentially transparent when its expressions systematically support this replacement principle.
 
 For substitution, (b[e/x]) means replace free occurrences of (x) in (b) with (e), avoiding variable capture. Detailed substitution is deferred to FP-052. Here, the critical operational fact is the number and location of occurrences.
 
@@ -170,7 +170,7 @@ Two expressions can be equivalent under (Obs_f) and different under (Obs_c).
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Congruence.** Useful expression equality must survive placement in admitted contexts: from (e_1\simeq e_2), infer (C[e_1]\simeq C[e_2]). Without this property, local replacement cannot support compositional reasoning.
+**Congruence.** Useful expression equality must survive placement in admitted contexts: from $e_1\simeq e_2$, infer $C[e_1]\simeq C[e_2]$. Without this property, local replacement cannot support compositional reasoning.
 
 **Dependency completeness.** Every changing fact that affects a result must appear as an explicit input or an explicitly modeled effect. A function that reads hidden configuration violates this condition even if the configuration happens not to change during one test.
 

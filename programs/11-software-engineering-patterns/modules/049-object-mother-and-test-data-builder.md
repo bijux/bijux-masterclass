@@ -30,7 +30,7 @@ How can tests construct valid, intention-revealing domain examples with minimal 
 
 ### Central model, mechanism, or theorem
 
-Let production constructor (C:P\to D\cup Error), valid default parameters (p_0\in P), and finite overrides (\Delta). A builder computes
+Let production constructor $C:P\to D\cup Error$, valid default parameters $p_0\in P$, and finite overrides $\Delta$. A builder computes
 
 $$
 B(p_0,\Delta)=C(override(p_0,\Delta)).
@@ -203,7 +203,7 @@ Keep builders local to the tests that own them until real reuse appears. Broad c
 
 ## Definitions and Notation
 
-Let production parameter domain (P), valid domain objects (D), public constructor (C:P\to D\cup Error), defaults (p_0), and finite override map (\Delta). Builder operation is
+Let production parameter domain (P), valid domain objects (D), public constructor $C:P\to D\cup Error$, defaults (p_0), and finite override map $\Delta$. Builder operation is
 
 $$
 B(\Delta)=C(p_0\oplus\Delta).

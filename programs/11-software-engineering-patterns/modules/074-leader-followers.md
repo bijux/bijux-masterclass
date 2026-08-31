@@ -288,7 +288,7 @@ print(f"invariants=one_leader={pool.one_leader()} role_partition={pool.role_part
 
 ## Definitions and Notation
 
-Let (T) be a fixed thread set of size (n); (H_g) the handle set owned by pool generation (g); (L_g\subseteq T) current leaders; (F_g) followers; (P_g) processors; and (R_g) retired/stopping threads. The role partition is
+Let (T) be a fixed thread set of size (n); (H_g) the handle set owned by pool generation (g); $L_g\subseteq T$ current leaders; (F_g) followers; (P_g) processors; and (R_g) retired/stopping threads. The role partition is
 
 $$
 T=L_g\uplus F_g\uplus P_g\uplus R_g,

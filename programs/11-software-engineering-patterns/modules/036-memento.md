@@ -29,7 +29,7 @@ How can an object's meaningful state be captured and later restored without expo
 
 ### Central model, mechanism, or theorem
 
-Let capture (C_v:S_v\to M_v), restore (R_{v\to w}:S_w\times M_v\to S_w\cup Error), and observables (Obs). Under ownership, integrity, compatibility, and invariant assumptions,
+Let capture $C_v:S_v\to M_v$, restore $R_{v\to w}:S_w\times M_v\to S_w\cup Error$, and observables (Obs). Under ownership, integrity, compatibility, and invariant assumptions,
 
 $$
 Obs(R(C(s)))=Obs(s).
@@ -190,7 +190,7 @@ For durability, fault-inject every checkpoint/log boundary, corrupt latest gener
 
 ## Definitions and Notation
 
-Let (S_v) be valid originator states under schema (v), and (M_v) the corresponding mementos. Capture (C_v:S_v\to M_v). Restore/migrate (R_{v\to w}:S_w\times M_v\to S_w\cup Error).
+Let (S_v) be valid originator states under schema (v), and (M_v) the corresponding mementos. Capture $C_v:S_v\to M_v$. Restore/migrate $R_{v\to w}:S_w\times M_v\to S_w\cup Error$.
 
 For observable functions (O=\{o_1,...,o_k\}), define
 
@@ -198,9 +198,9 @@ $$
 s\equiv_O s'\iff \forall o\in O:o(s)=o(s').
 $$
 
-The round-trip obligation is (R_{v\to v}(s',C_v(s))\equiv_O s) for compatible owner/base and successful validation, independent of interim state (s').
+The round-trip obligation is $R_{v\to v}(s',C_v(s))\equiv_O s$ for compatible owner/base and successful validation, independent of interim state (s').
 
-History state (H=(U,c,R)) contains undo stack (U), current state (c), and redo stack (R). New edit maps ((U,c,R)\to(U\mathbin{+}[C(c)],edit(c),[])). Undo and redo move captures between stacks without exposing their contents.
+History state (H=(U,c,R)) contains undo stack (U), current state (c), and redo stack (R). New edit maps $(U,c,R)\to(U\mathbin{+}[C(c)],edit(c),[])$. Undo and redo move captures between stacks without exposing their contents.
 
 ## Mechanisms, Invariants, or Proof Structure
 

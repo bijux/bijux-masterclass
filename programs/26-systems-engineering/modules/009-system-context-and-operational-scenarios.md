@@ -219,9 +219,9 @@ print("evidence=declared_scenarios_only")
 
 ## Definitions and Notation
 
-Let system of interest (S) have environment (E), boundary (B), and context entities (X=E\setminus S) relevant to concern (c). A context relation is (r\in R\subseteq(S\times X)\cup(X\times S)\cup(X\times X)) when external-external interaction affects the system outcome.
+Let system of interest (S) have environment (E), boundary (B), and context entities $X=E\setminus S$ relevant to concern (c). A context relation is $r\in R\subseteq(S\times X)\cup(X\times S)\cup(X\times X)$ when external-external interaction affects the system outcome.
 
-For scenario (s), let states (x_0,\ldots,x_n), events/actions (e_1,\ldots,e_n), modes (m_i), and actors (a_i) satisfy:
+For scenario (s), let states $x_0,\ldots,x_n$, events/actions $e_1,\ldots,e_n$, modes (m_i), and actors (a_i) satisfy:
 
 $$
 x_i=Transition(x_{i-1},e_i,m_i,a_i,environment_i).

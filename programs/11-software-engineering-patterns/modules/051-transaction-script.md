@@ -209,7 +209,7 @@ Refactor incrementally: extract value objects/pure policies, then aggregates/dom
 
 ## Definitions and Notation
 
-Let accounts have balances (b_i\in\mathbb{Z}_{\ge0}) in one currency. A fee-free transfer of (a>0) from (i) to (j) requires (b_i\ge a) and preserves
+Let accounts have balances $b_i\in\mathbb{Z}_{\ge0}$ in one currency. A fee-free transfer of (a>0) from (i) to (j) requires $b_i\ge a$ and preserves
 
 $$
 b'_i=b_i-a,\quad b'_j=b_j+a,\quad \sum_k b'_k=\sum_k b_k.

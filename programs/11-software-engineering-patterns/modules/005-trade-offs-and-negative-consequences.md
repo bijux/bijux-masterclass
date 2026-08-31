@@ -174,7 +174,7 @@ Estimate cost at the owner and stakeholder level. The implementing team may gain
 
 ## Definitions and Notation
 
-Let admissible candidates be (S=\{s_1,\ldots,s_m\}) after hard constraints. For objectives (O=\{o_1,\ldots,o_n\}), define consequence vector
+Let admissible candidates be $S=\{s_1,\ldots,s_m\}$ after hard constraints. For objectives $O=\{o_1,\ldots,o_n\}$, define consequence vector
 
 $$
 K_x(s)=(k_1(s),\ldots,k_n(s))
@@ -182,7 +182,7 @@ $$
 
 under context and scenario set (x). Normalize direction so lower is better only when comparing an example; retain original units in evidence.
 
-Candidate (a) Pareto-dominates (b), written (a\prec b), when
+Candidate (a) Pareto-dominates (b), written $a\prec b$, when
 
 $$
 \forall i,\ k_i(a)\le k_i(b)
@@ -190,7 +190,7 @@ $$
 \exists j,\ k_j(a)<k_j(b).
 $$
 
-If neither (a\prec b) nor (b\prec a), they are incomparable under (O). Adding or removing objectives can change this relation, so the objective set must be explicit.
+If neither $a\prec b$ nor $b\prec a$, they are incomparable under (O). Adding or removing objectives can change this relation, so the objective set must be explicit.
 
 For consequence (k), track a claim record
 
@@ -198,7 +198,7 @@ $$
 Claim(k)=(cause,scenario,measure,direction,confidence,owner,evidence).
 $$
 
-A sensitivity point for parameter (p) exists when a small change (\Delta p) causes a material change in at least one (k_i). A trade-off point affects at least two prioritized outcomes in conflicting directions.
+A sensitivity point for parameter (p) exists when a small change $\Delta p$ causes a material change in at least one (k_i). A trade-off point affects at least two prioritized outcomes in conflicting directions.
 
 Expected-loss models, when probabilities are defensible, take form
 

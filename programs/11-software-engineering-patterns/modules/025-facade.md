@@ -31,7 +31,7 @@ How can a subsystem expose a small, stable, task-oriented entry point without hi
 
 ### Central model, mechanism, or theorem
 
-Let a client goal (g) require a protocol over subsystem operations (s_1,\ldots,s_n). A facade defines
+Let a client goal (g) require a protocol over subsystem operations $s_1,\ldots,s_n$. A facade defines
 
 $$
 F(g,c): Context\times Input\to Outcome(Output,State,Error)
@@ -168,9 +168,9 @@ Do not create chains or cycles of facades solely to hide poor boundaries. A usef
 
 ## Definitions and Notation
 
-Let (S=\{s_1,\ldots,s_n\}) be subsystem operations and (g) a client goal. A facade protocol is a state machine (P_g=(Q,q_0,\delta,T)), where (Q) is durable progress state, (q_0) is the initial state, (\delta) selects a participant action and transition from context plus outcome, and (T) contains terminal outcomes.
+Let $S=\{s_1,\ldots,s_n\}$ be subsystem operations and (g) a client goal. A facade protocol is a state machine $P_g=(Q,q_0,\delta,T)$, where (Q) is durable progress state, (q_0) is the initial state, $\delta$ selects a participant action and transition from context plus outcome, and (T) contains terminal outcomes.
 
-Let (D) be an absolute deadline. Before step (i), remaining budget is (r_i=\max(0,D-t_i)). A correct facade passes a budget no greater than (r_i); it does not grant each step the original duration.
+Let (D) be an absolute deadline. Before step (i), remaining budget is $r_i=\max(0,D-t_i)$. A correct facade passes a budget no greater than (r_i); it does not grant each step the original duration.
 
 For idempotency key (k), operation (o), scope (a), and payload digest (h(x)), define identity (I=(a,o,k,h(x))). Reuse with the same tuple returns or resumes the same logical result; reuse with the same ((a,o,k)) but different digest is a conflict.
 

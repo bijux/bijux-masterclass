@@ -18,7 +18,7 @@ How can a streaming system approximate ranks and quantiles with bounded memory w
 
 ### Essential definitions
 
-For sorted observations (x_{(1)}\le\cdots\le x_{(n)}), an **inclusive rank** is (R(v)=|\{i:x_i\le v\}|), with normalized rank (r(v)=R(v)/n). A quantile query (Q(q)) asks for a stream value whose rank is near (qn). An **absolute rank-error** contract permits
+For sorted observations $x_{(1)}\le\cdots\le x_{(n)}$, an **inclusive rank** is $R(v)=|\{i:x_i\le v\}|$, with normalized rank (r(v)=R(v)/n). A quantile query (Q(q)) asks for a stream value whose rank is near (qn). An **absolute rank-error** contract permits
 
 $$
 |R(\widehat Q(q))-qn|\le\varepsilon n
@@ -26,11 +26,11 @@ $$
 
 deterministically or with a stated probability. Rank error is not value error: moving one percent in rank can cross an arbitrarily large value gap.
 
-Greenwald–Khanna (GK) stores ordered tuples ((v,g,\Delta)) that bound each retained value's possible rank. KLL stores weighted items in compaction levels and randomizes which items survive; it achieves near-optimal space for probabilistic additive rank error. REQ reallocates accuracy toward one end of the rank domain. A t-digest clusters numeric values into weighted centroids, emphasizing tails and interpolation, with accuracy characterized differently from GK/KLL guarantees.
+Greenwald–Khanna (GK) stores ordered tuples $(v,g,\Delta)$ that bound each retained value's possible rank. KLL stores weighted items in compaction levels and randomizes which items survive; it achieves near-optimal space for probabilistic additive rank error. REQ reallocates accuracy toward one end of the rank domain. A t-digest clusters numeric values into weighted centroids, emphasizing tails and interpolation, with accuracy characterized differently from GK/KLL guarantees.
 
 ### Central model, mechanism, or theorem
 
-Quantile sketches delete observations while transferring their represented mass to retained values. The invariant is not “sample looks representative” but a bound on rank uncertainty or a weighted-rank approximation. For GK, tuple gaps bound deterministic rank intervals. For compactor sketches, a retained item at level (ell) represents weight (2^\ell), total retained weight remains (n), and randomized parity makes compaction error analyzable.
+Quantile sketches delete observations while transferring their represented mass to retained values. The invariant is not “sample looks representative” but a bound on rank uncertainty or a weighted-rank approximation. For GK, tuple gaps bound deterministic rank intervals. For compactor sketches, a retained item at level (ell) represents weight $2^\ell$, total retained weight remains (n), and randomized parity makes compaction error analyzable.
 
 ### Critical invariants
 
@@ -48,7 +48,7 @@ Teams report “one percent accurate” without saying rank or value, compare p9
 
 ### Compact example
 
-A deterministic GK teaching fixture inserts 200 distinct integers with (\varepsilon=0.05), retains 15 tuples, and preserves total tuple weight 200. Across 101 queries from (q=0) through (1), maximum observed rank error is 10, exactly (\varepsilon n). Its median estimate has true rank 110 versus target 100. This validates one finite execution, not the general GK proof.
+A deterministic GK teaching fixture inserts 200 distinct integers with $\varepsilon=0.05$, retains 15 tuples, and preserves total tuple weight 200. Across 101 queries from (q=0) through (1), maximum observed rank error is 10, exactly $\varepsilon n$. Its median estimate has true rank 110 versus target 100. This validates one finite execution, not the general GK proof.
 
 ### Connections
 
@@ -74,7 +74,7 @@ Retrieve:
 - deterministic and probabilistic invariants from prior approximate structures;
 - [DSE-085](085-hyperloglog.md) on representation compatibility and estimator migration.
 
-For an exact sorted list, define inclusive normalized rank (r(v)=|\{x_i\le v\}|/n). A repository or API may instead use exclusive rank ( |\{x_i<v\}|/n) or interpolate between values. None is universally “the percentile definition.” The query contract must pin one down, especially with duplicates.
+For an exact sorted list, define inclusive normalized rank $r(v)=|\{x_i\le v\}|/n$. A repository or API may instead use exclusive rank ( |\{x_i<v\}|/n) or interpolate between values. None is universally “the percentile definition.” The query contract must pin one down, especially with duplicates.
 
 ## Learning Objectives
 
@@ -92,13 +92,13 @@ After this chapter, you should be able to:
 
 ### Rank is the error domain
 
-Let (S=(x_1,\ldots,x_n)) be values under a total order. The inclusive natural rank is (R(v)=\sum_i\mathbf1[x_i\le v]). A quantile query takes normalized rank (q\in[0,1]) and returns a value. With duplicates, many ranks may correspond to the same value and one value spans a rank interval. An API must state inclusive or exclusive search, endpoint behavior, and whether returned values are retained observations or interpolations.
+Let $S=(x_1,\ldots,x_n)$ be values under a total order. The inclusive natural rank is $R(v)=\sum_i\mathbf1[x_i\le v]$. A quantile query takes normalized rank $q\in[0,1]$ and returns a value. With duplicates, many ranks may correspond to the same value and one value spans a rank interval. An API must state inclusive or exclusive search, endpoint behavior, and whether returned values are retained observations or interpolations.
 
-An additive rank guarantee says the returned value's rank is within (\varepsilon n) of the target. It says nothing about numeric distance. Consider 990 zeros and 10 values equal to one million. Moving from rank 0.989 to 0.991 crosses nearly the entire value range. Conversely, a large rank interval inside a plateau may have zero value error. Validate the decision in rank space and separately measure value impact on relevant distributions.
+An additive rank guarantee says the returned value's rank is within $\varepsilon n$ of the target. It says nothing about numeric distance. Consider 990 zeros and 10 values equal to one million. Moving from rank 0.989 to 0.991 crosses nearly the entire value range. Conversely, a large rank interval inside a plateau may have zero value error. Validate the decision in rank space and separately measure value impact on relevant distributions.
 
 ### Greenwald–Khanna rank intervals
 
-GK is deterministic for insertion-only ordered streams. It retains sorted tuples ((v_i,g_i,\Delta_i)). Let
+GK is deterministic for insertion-only ordered streams. It retains sorted tuples $(v_i,g_i,\Delta_i)$. Let
 
 $$
 r_{\min}(v_i)=\sum_{j\le i}g_j,
@@ -106,15 +106,15 @@ r_{\min}(v_i)=\sum_{j\le i}g_j,
 r_{\max}(v_i)=r_{\min}(v_i)+\Delta_i.
 $$
 
-The tuple asserts that the true rank of (v_i) lies within those bounds. Insert places a new value in order with (g=1) and a permitted uncertainty based on current (n). Compression merges adjacent tuple mass only when the resulting uncertainty stays within the (2\varepsilon n) invariant. A query walks cumulative lower ranks and returns a neighboring retained value whose rank interval satisfies the error rule.
+The tuple asserts that the true rank of (v_i) lies within those bounds. Insert places a new value in order with (g=1) and a permitted uncertainty based on current (n). Compression merges adjacent tuple mass only when the resulting uncertainty stays within the $2\varepsilon n$ invariant. A query walks cumulative lower ranks and returns a neighboring retained value whose rank interval satisfies the error rule.
 
-The published space bound is (O((1/\varepsilon)\log(\varepsilon n))) in the relevant regime, without knowing final (n) in advance. Implementation details matter: off-by-one choices for floor, insertion uncertainty, endpoint tuples, and inclusive query thresholds must be internally consistent. A code fragment that merely “looks like GK” is not evidence.
+The published space bound is $O((1/\varepsilon)\log(\varepsilon n))$ in the relevant regime, without knowing final (n) in advance. Implementation details matter: off-by-one choices for floor, insertion uncertainty, endpoint tuples, and inclusive query thresholds must be internally consistent. A code fragment that merely “looks like GK” is not evidence.
 
 ### KLL weighted compaction
 
 KLL uses randomized compactors arranged in levels. Level zero receives observations with weight one. When a level exceeds capacity, sort its items, choose a parity, discard every other item, and promote survivors to the next level. Each promoted item has twice the weight. If a pair of weight (w) is represented by one randomly selected member of weight (2w), total represented mass remains unchanged and the rank error contribution has controlled expectation.
 
-At query time, sort retained items with their weights and find where cumulative weight crosses the desired rank. Randomized choices across levels yield a probabilistic error bound. KLL's analysis achieves (O((1/\varepsilon)\log\log(1/\delta))) space for failure probability (\delta), matching the stated lower-bound form. Library parameter (k) is not automatically identical to theorem (\varepsilon); use that library's documented error function.
+At query time, sort retained items with their weights and find where cumulative weight crosses the desired rank. Randomized choices across levels yield a probabilistic error bound. KLL's analysis achieves $O((1/\varepsilon)\log\log(1/\delta))$ space for failure probability $\delta$, matching the stated lower-bound form. Library parameter (k) is not automatically identical to theorem $\varepsilon$; use that library's documented error function.
 
 Compaction makes state sensitive to random choices, update order, and merge tree. Two valid sketches over the same multiset need not be byte-identical or return identical values. Correctness is distributional and invariant-based. Reproducible tests may fix a seed, but production confidence requires many independent seeds and adversarial stream orders.
 
@@ -272,8 +272,8 @@ print("evidence=gk_quantile_model")
 - (n): accepted observation count or total positive weight.
 - (R(v)), (r(v)): natural and normalized rank under a declared inclusive/exclusive convention.
 - (Q(q)): quantile value requested at normalized rank (q).
-- (\varepsilon): rank-error parameter; (\delta): failure-probability parameter where applicable.
-- ((v,g,\Delta)): GK retained value, minimum rank gap, and additional rank uncertainty.
+- $\varepsilon$: rank-error parameter; $\delta$: failure-probability parameter where applicable.
+- $(v,g,\Delta)$: GK retained value, minimum rank gap, and additional rank uncertainty.
 - (k): implementation capacity/accuracy parameter whose mapping to error is library-specific.
 - **Compactor level**: retained items of a common power-of-two weight.
 - **Absolute rank error**: error scaled by (n) uniformly across ranks.
@@ -285,7 +285,7 @@ print("evidence=gk_quantile_model")
 
 ### GK proof obligations
 
-Insertion establishes rank bounds for the new tuple. Compression preserves sorted order and transfers a predecessor's gap into its successor only when the successor's maximum rank uncertainty stays within threshold. Query accumulates minimum ranks and chooses a retained neighbor before the target-plus-allowance boundary. A full proof connects these local statements to global (\varepsilon n) error.
+Insertion establishes rank bounds for the new tuple. Compression preserves sorted order and transfers a predecessor's gap into its successor only when the successor's maximum rank uncertainty stays within threshold. Query accumulates minimum ranks and chooses a retained neighbor before the target-plus-allowance boundary. A full proof connects these local statements to global $\varepsilon n$ error.
 
 ### Compactor proof obligations
 
@@ -328,11 +328,11 @@ Exact sorting provides arbitrary exact queries and values but requires retaining
 
 ### Example 2
 
-**GK tuple check.** At (n=200), (\varepsilon=0.05), the uncertainty threshold is (2\varepsilon n=20). A candidate merge with (g_i=7), (g_{i+1}=8), and (\Delta_{i+1}=4) totals 19 and is permitted; total 21 is rejected. **Conclusion:** compression is governed by rank uncertainty, not merely tuple count.
+**GK tuple check.** At (n=200), $\varepsilon=0.05$, the uncertainty threshold is $2\varepsilon n=20$. A candidate merge with (g_i=7), (g_{i+1}=8), and $\Delta_{i+1}=4$ totals 19 and is permitted; total 21 is rejected. **Conclusion:** compression is governed by rank uncertainty, not merely tuple count.
 
 ### Example 3
 
-**Fixture median.** The executable model returns 113 for (q=0.5); its exact inclusive rank is 110, target rank 100, and error 10. The allowance is (0.05\times200=10). **Conclusion:** a boundary result can be valid without equaling the exact median value.
+**Fixture median.** The executable model returns 113 for (q=0.5); its exact inclusive rank is 110, target rank 100, and error 10. The allowance is $0.05\times200=10$. **Conclusion:** a boundary result can be valid without equaling the exact median value.
 
 ### Example 4
 
@@ -386,11 +386,11 @@ Exact sorting provides arbitrary exact queries and values but requires retaining
 
 ### Exercise 1
 
-For (n=50{,}000) and absolute rank error (\varepsilon=0.002), compute the natural-rank allowance. Explain why this does not bound value error at p99.
+For (n=50{,}000) and absolute rank error $\varepsilon=0.002$, compute the natural-rank allowance. Explain why this does not bound value error at p99.
 
 ### Exercise 2
 
-Given consecutive GK tuple data (g_i=12), (g_{i+1}=9), (\Delta_{i+1}=6), determine whether compression is allowed at (n=300) for (\varepsilon=0.05). Show the invariant calculation.
+Given consecutive GK tuple data (g_i=12), (g_{i+1}=9), $\Delta_{i+1}=6$, determine whether compression is allowed at (n=300) for $\varepsilon=0.05$. Show the invariant calculation.
 
 ### Exercise 3
 
@@ -408,11 +408,11 @@ A payments platform needs median transaction value, p99.99 latency, exact minimu
 
 ### Answer 1
 
-The natural-rank allowance is (\varepsilon n=0.002\times50{,}000=100) observations. A valid p99 answer may have true rank between approximately 49,400 and 49,600 under the chosen endpoint convention. If values jump sharply inside that interval, numeric error can be arbitrarily large relative to the p99 value. Calibration must therefore inspect value loss on relevant distributions or require a value-relative structure.
+The natural-rank allowance is $\varepsilon n=0.002\times50{,}000=100$ observations. A valid p99 answer may have true rank between approximately 49,400 and 49,600 under the chosen endpoint convention. If values jump sharply inside that interval, numeric error can be arbitrarily large relative to the p99 value. Calibration must therefore inspect value loss on relevant distributions or require a value-relative structure.
 
 ### Answer 2
 
-The GK compression expression is (g_i+g_{i+1}+\Delta_{i+1}=12+9+6=27). The threshold is (\lfloor2\varepsilon n\rfloor=\lfloor2(0.05)(300)\rfloor=30). Since 27 is at most 30, the local uncertainty condition permits the merge, assuming endpoint and schedule rules also permit that pair. If the sum were 31, it would be rejected.
+The GK compression expression is $g_i+g_{i+1}+\Delta_{i+1}=12+9+6=27$. The threshold is $\lfloor2\varepsilon n\rfloor=\lfloor2(0.05)(300)\rfloor=30$. Since 27 is at most 30, the local uncertainty condition permits the merge, assuming endpoint and schedule rules also permit that pair. If the sum were 31, it would be rejected.
 
 ### Answer 3
 

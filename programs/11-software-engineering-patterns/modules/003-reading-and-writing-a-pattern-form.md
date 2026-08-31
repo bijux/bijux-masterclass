@@ -190,7 +190,7 @@ D=\{name\mapsto N,context\mapsto C,problem\mapsto P,forces\mapsto F,
 solution\mapsto S,consequences\mapsto K,uses\mapsto U,relations\mapsto R\}.
 $$
 
-Let solution decisions be (Q=\{q_1,\ldots,q_m\}). A **rationale trace** is
+Let solution decisions be $Q=\{q_1,\ldots,q_m\}$. A **rationale trace** is
 
 $$
 T\subseteq F\times Q\times K.
@@ -198,7 +198,7 @@ $$
 
 Coverage requires every dominant force to connect to at least one decision and every material decision to at least one anticipated consequence. Coverage detects unexplained claims; it does not prove the decision resolves the force.
 
-Let (U=\{u_1,\ldots,u_n\}) be known uses and (origin(u_i)) identify lineage. Independent recurrence requires diversity beyond repeated deployment of one inherited implementation. There is no universal numeric threshold; the document should state the evidence actually available.
+Let $U=\{u_1,\ldots,u_n\}$ be known uses and (origin(u_i)) identify lineage. Independent recurrence requires diversity beyond repeated deployment of one inherited implementation. There is no universal numeric threshold; the document should state the evidence actually available.
 
 A form validator checks predicates such as (present(field)), (nonempty(field)), and declared trace coverage. Let (StructuralPass(D)) denote those checks. In general,
 

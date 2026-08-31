@@ -90,9 +90,9 @@ After this chapter, you should be able to:
 
 ### Fenwick interval ownership
 
-Use one-based internal index (i) and (lowbit(i)=i\mathbin{\&}(-i)). Cell (tree[i]) owns source interval ((i-lowbit(i),i]). A prefix query for the first (i) values accumulates (tree[i]) and assigns (i\leftarrow i-lowbit(i)) until zero. Each step clears one set bit, so there are at most (\lfloor\log_2n\rfloor+1) steps; owned intervals are adjacent and disjoint, exactly partitioning the prefix.
+Use one-based internal index $i$ and $lowbit(i)=i\mathbin{\&}(-i)$. Cell `tree[i]` owns source interval $(i-lowbit(i),i]$. A prefix query for the first $i$ values accumulates `tree[i]` and assigns $i\leftarrow i-lowbit(i)$ until zero. Each step clears one set bit, so there are at most $\lfloor\log_2n\rfloor+1$ steps; owned intervals are adjacent and disjoint, exactly partitioning the prefix.
 
-A point addition at one-based position (i) updates (tree[i]) and assigns (i\leftarrow i+lowbit(i)). These are precisely the ancestor intervals containing that position. Linear construction can propagate each initialized cell to its next owner, but a simple repeated-add build costs (O(n\log n)); the API and benchmark must state which is used.
+A point addition at one-based position (i) updates (tree[i]) and assigns $i\leftarrow i+lowbit(i)$. These are precisely the ancestor intervals containing that position. Linear construction can propagate each initialized cell to its next owner, but a simple repeated-add build costs $O(n\log n)$; the API and benchmark must state which is used.
 
 External zero-based index (p) maps to internal (p+1). Prefix API names should reveal whether the end is exclusive. This chapter uses (prefix(r)=aggregate([0,r))) and (range(l,r)=prefix(r)-prefix(l)) for sums. Empty ([l,l)) returns zero; (r=n) is valid even though point index (n) is not.
 
@@ -106,7 +106,7 @@ Range-add/point-query uses a Fenwick tree over a difference array. Range-add/ran
 
 ### Segment monoids and canonical decomposition
 
-Let (S) be node-value type, (op:S\times S\to S) associative, and (e) its identity. Leaves represent elements; internal node value is (op(left,right)). A range query selects disjoint nodes whose intervals cover ([l,r)) and combines them in source order. Commutativity is unnecessary: string concatenation and matrix multiplication work if left/right accumulators preserve order.
+Let (S) be node-value type, $op:S\times S\to S$ associative, and (e) its identity. Leaves represent elements; internal node value is (op(left,right)). A range query selects disjoint nodes whose intervals cover ([l,r)) and combines them in source order. Commutativity is unnecessary: string concatenation and matrix multiplication work if left/right accumulators preserve order.
 
 A flat iterative tree rounds capacity to a power of two, stores leaves in the second half, and parents above. It offers dense memory, predictable traversal, and easy rebuild. A pointer tree supports sparse allocation or persistence but pays allocation, pointer, metadata, and locality costs. Report logical (n), padded capacity, node count, element size, and allocator overhead.
 
@@ -114,15 +114,15 @@ Point replacement updates one leaf and recomputes ancestors. Point addition is r
 
 ### Lazy range actions
 
-For range updates, define action type (F), identity (id), mapping (f:S\to S), and composition. Actions must be closed under composition and compatible with aggregation: applying (f) to a parent aggregate must equal aggregating its effects on children. For range-add/range-sum, node value includes sum and length, and mapping is ((sum,len)\mapsto(sum+delta\cdot len,len)).
+For range updates, define action type (F), identity (id), mapping $f:S\to S$, and composition. Actions must be closed under composition and compatible with aggregation: applying (f) to a parent aggregate must equal aggregating its effects on children. For range-add/range-sum, node value includes sum and length, and mapping is $(sum,len)\mapsto(sum+delta\cdot len,len)$.
 
-Composition order is semantic. If stored tag (g) represents older pending work and new action (f) arrives, a convention might store (f\circ g), meaning apply (g) then (f). Assignment followed by addition differs from addition followed by assignment; tests using only additions cannot detect reversal because addition commutes.
+Composition order is semantic. If stored tag (g) represents older pending work and new action (f) arrives, a convention might store $f\circ g$, meaning apply (g) then (f). Assignment followed by addition differs from addition followed by assignment; tests using only additions cannot detect reversal because addition commutes.
 
 When a fully covered node receives an action, update its aggregate immediately and compose its tag. Before partial descent, push the parent tag to both children and reset it to identity. After recursion, pull the parent aggregate from children. The root is always current; descendants may be stale only in the precisely represented way described by ancestor tags.
 
 ### Dynamic domains, coordinates, and versions
 
-If coordinates are known offline, sort/deduplicate them and map to dense ranks. This changes interval semantics: a geometric length aggregate needs coordinate gaps, not merely rank counts. If the universe is huge and points arrive online, an implicit segment tree allocates nodes only on visited paths. Time is (O(log U)) for universe size (U), but memory is proportional to allocated nodes, potentially (O(q\log U)) before sharing or pruning.
+If coordinates are known offline, sort/deduplicate them and map to dense ranks. This changes interval semantics: a geometric length aggregate needs coordinate gaps, not merely rank counts. If the universe is huge and points arrive online, an implicit segment tree allocates nodes only on visited paths. Time is (O(log U)) for universe size (U), but memory is proportional to allocated nodes, potentially $O(q\log U)$ before sharing or pruning.
 
 Path copying creates a new root and copies (O(log n)) nodes per point update, preserving old roots. This is partial persistence when only the newest version is updated and full persistence when any version can branch. Lazy persistent range updates need careful copying before push/mutation. Version IDs, roots, coordinate maps, and node arenas must publish consistently; retention and garbage collection are part of the design.
 
@@ -287,7 +287,7 @@ Every displayed pre-update observation is captured before mutation. The exhausti
 ## Definitions and Notation
 
 - (A[0..n)) is the logical value sequence; all public ranges are half-open ([l,r)).
-- (lowbit(i)=i\mathbin{\&}(-i)) for positive one-based integer (i).
+- $lowbit(i)=i\mathbin{\&}(-i)$ for positive one-based integer (i).
 - A Fenwick cell at (i) owns ((i-lowbit(i),i]) in one-based coordinates.
 - (prefix(r)) aggregates (A[0..r)); a sum range is (prefix(r)-prefix(l)).
 - A **monoid** ((S,op,e)) has associative operation (op) and identity (e); a **group** additionally has inverses.
@@ -329,7 +329,7 @@ The bounded model checks every interval after deterministic updates. Stronger ev
 
 **Dense segment trees.** Support general monoids, ordered aggregation, boundary searches, and lazy range actions. They use more memory and code; flat layouts improve locality. Choose them when the needed algebra exceeds the Fenwick contract.
 
-**Sqrt/block decomposition.** Partition values into blocks with summaries. It is often easier to update, vectorize, and tune for skewed mixes, trading query/update bounds near (O(\sqrt n)) or workload-specific variants for smaller engineering risk.
+**Sqrt/block decomposition.** Partition values into blocks with summaries. It is often easier to update, vectorize, and tune for skewed mixes, trading query/update bounds near $O(\sqrt n)$ or workload-specific variants for smaller engineering risk.
 
 **Balanced search trees and augmented B-trees.** When coordinates are inserted/deleted online or durable storage matters, ordered trees with subtree aggregates may match the domain better. They provide navigation and external-memory page ownership absent from dense index trees.
 
@@ -386,7 +386,7 @@ In a sum tree for eight values, ([2,7)) decomposes into canonical nodes such as 
 
 ### Example 6
 
-A range-add action (+3) on five elements increases the stored sum by (3\cdot5=15), not 3. Applying it to ([1,6)) changes total 31 to 46. The node value therefore needs interval length directly or from traversal boundaries.
+A range-add action (+3) on five elements increases the stored sum by $3\cdot5=15$, not 3. Applying it to ([1,6)) changes total 31 to 46. The node value therefore needs interval length directly or from traversal boundaries.
 
 ### Example 7
 
@@ -437,7 +437,7 @@ Prove the Fenwick prefix partition and logarithmic step bound. Then state exact 
 
 ### Exercise 3
 
-Design a lazy segment algebra supporting range affine updates (x\mapsto ax+b) and range sums. Define node type, identity, mapping, action identity, chronological composition, and law tests that catch reversed composition.
+Design a lazy segment algebra supporting range affine updates $x\mapsto ax+b$ and range sums. Define node type, identity, mapping, action identity, chronological composition, and law tests that catch reversed composition.
 
 ### Exercise 4
 

@@ -31,7 +31,7 @@ When can a system replace many logically distinct objects with references to sha
 
 ### Central model, mechanism, or theorem
 
-For (N) logical objects, suppose each unshared object stores intrinsic bytes (I), extrinsic bytes (E), and per-object overhead (O). If canonicalization yields (K\le N) flyweights and each occurrence stores a reference of (R) bytes, idealized memory is
+For (N) logical objects, suppose each unshared object stores intrinsic bytes (I), extrinsic bytes (E), and per-object overhead (O). If canonicalization yields $K\le N$ flyweights and each occurrence stores a reference of (R) bytes, idealized memory is
 
 $$
 M_{plain}=N(I+E+O),\qquad
@@ -157,19 +157,19 @@ Heap profilers may count shared retained objects differently depending on roots.
 
 ### Know when to remove it
 
-Remove or narrow Flyweight when (K\approx N), intrinsic state is tiny, keys duplicate the saved state, mutation/versioning dominates, contention rises, locality worsens, or the runtime already interns efficiently.
+Remove or narrow Flyweight when $K\approx N$, intrinsic state is tiny, keys duplicate the saved state, mutation/versioning dominates, contention rises, locality worsens, or the runtime already interns efficiently.
 
 An optimization that no longer pays should not survive as architectural folklore.
 
 ## Definitions and Notation
 
-Let occurrences be (o_1,\ldots,o_N). Each has extrinsic state (e_i) and refers to flyweight (f_{k_i}), where canonical key function (k:Intrinsic\to Key). Correct merging requires
+Let occurrences be $o_1,\ldots,o_N$. Each has extrinsic state (e_i) and refers to flyweight (f_{k_i}), where canonical key function $k:Intrinsic\to Key$. Correct merging requires
 
 $$
 k(x)=k(y)\Rightarrow x\equiv_{ops}y,
 $$
 
-where (\equiv_{ops}) means no supported operation can distinguish intrinsic semantics. The reverse implication is desirable for maximal sharing but not required for correctness.
+where $\equiv_{ops}$ means no supported operation can distinguish intrinsic semantics. The reverse implication is desirable for maximal sharing but not required for correctness.
 
 Let empirical hit ratio (h=hits/lookups), unique cardinality (K), pool occupancy (K_t), and saved bytes estimate
 

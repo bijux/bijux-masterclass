@@ -30,7 +30,7 @@ When should a complex function whose interdependent local variables resist extra
 
 ### Central model, mechanism, or theorem
 
-Let original function be (f:I\times C\to R\cup E), where (I) are explicit inputs and (C) collaborators/context. Refactoring constructs object (M(i,c)) and operation `execute` such that
+Let original function be $f:I\times C\to R\cup E$, where (I) are explicit inputs and (C) collaborators/context. Refactoring constructs object (M(i,c)) and operation `execute` such that
 
 $$
 \forall(i,c)\in P:\ observe(f(i,c))=observe(M(i,c).execute()),
@@ -197,7 +197,7 @@ If the object remains a large mutable script with dozens of fields, stop and rev
 
 ## Definitions and Notation
 
-Let original method (f) have inputs (i), context/collaborators (c), local-state trace (\ell_0,...,\ell_k), observable result (r), errors (e), and effect trace (\epsilon). Let Method Object (M) contain immutable inputs and bounded intermediate state (q).
+Let original method (f) have inputs (i), context/collaborators (c), local-state trace $\ell_0,...,\ell_k$, observable result (r), errors (e), and effect trace $\epsilon$. Let Method Object (M) contain immutable inputs and bounded intermediate state (q).
 
 Refactoring target over precondition (P):
 
@@ -205,7 +205,7 @@ $$
 \forall(i,c)\in P:\ (r,e,\epsilon)_f=(r,e,\epsilon)_{M.execute}.
 $$
 
-For phase dependency DAG (G=(V,E)), edge (u\to v) means phase (v) consumes a value defined by (u). A valid execution order is a topological order; cycles indicate hidden iteration/fixed-point/state-machine semantics that need explicit design.
+For phase dependency DAG (G=(V,E)), edge $u\to v$ means phase (v) consumes a value defined by (u). A valid execution order is a topological order; cycles indicate hidden iteration/fixed-point/state-machine semantics that need explicit design.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -382,7 +382,7 @@ Review a Method Object extraction for a high-stakes numerical algorithm without 
 
 ### Answer 1
 
-Subtotal is (2000\times4=8000) cents. Discount is integer (8000\times10//100=800); taxable is (8000-800=7200); tax is (7200\times8//100=576); total is (7200+576=7776). The exact printed line follows in field order.
+Subtotal is $2000\times4=8000$ cents. Discount is integer $8000\times10//100=800$; taxable is (8000-800=7200); tax is $7200\times8//100=576$; total is (7200+576=7776). The exact printed line follows in field order.
 
 The run establishes one deterministic positive-integer trace and that named phases compose in the shown order under one Python toolchain. It does not establish constructor validation, negative/zero/maximum values, currency, arbitrary fractional rates, legally required rounding, overflow, repeat/concurrent execution, effects, performance, tax-law validity, or equivalence to an unstated legacy implementation.
 
