@@ -31,9 +31,9 @@ How can new operations be added across a stable family of element types without 
 
 For element variant (E_i) and visitor (V), dispatch is
 
-\[
+$$
 accept(E_i,V)=V.visit_i(E_i).
-\]
+$$
 
 If the element set is (E=\{E_1,...,E_m\}), an exhaustive visitor defines one compatible case per (E_i). Adding operation (O_{n+1}) requires a new visitor column with (m) cases but no element changes; adding variant (E_{m+1}) requires updating the visitor interface and every exhaustive visitor. This change-axis result does not establish traversal termination, operation correctness, or effect safety.
 
@@ -194,15 +194,15 @@ Let element variants (E=\{E_1,...,E_m\}), operations (O=\{O_1,...,O_n\}), and be
 
 Double dispatch law:
 
-\[
+$$
 accept(e_i,V_j)=V_j.visit_i(e_i)=B(E_i,O_j,e_i).
-\]
+$$
 
 For tree (T=(N,child)), occurrence traversal count satisfies
 
-\[
+$$
 count(n)=1+\sum_{c\in child(n)}count(c).
-\]
+$$
 
 For graphs, unique count uses visited identity set; occurrence and unique counts differ under sharing. Termination needs finite reachable graph and a strictly growing bounded visited set or a decreasing work measure.
 

@@ -33,9 +33,9 @@ How can independently governed systems produce dependable shared capabilities th
 
 Model a federation at time $t$ as
 
-\[
+$$
 \mathcal{F}_t=(D_t,K_t,P_t,T_t,B_t,E_t),
-\]
+$$
 
 where $D_t$ are domains, $K_t$ versioned contracts, $P_t$ policy decision/enforcement relations, $T_t$ trust agreements and cryptographic material, $B_t$ federated baseline/effectivity, and $E_t$ evidence. A cross-domain thread is eligible only if every traversed edge has a compatible contract, authorized policy path, current trust, known effectivity, and applicable evidence. This is necessary, not sufficient: real semantics, behavior, humans, environment, capacity, common cause, and stakeholder outcomes still require validation.
 
@@ -187,10 +187,10 @@ Let $D_t$ be active domains and $K_t\subseteq D_t\times D_t\times C$ typed, vers
 
 For a thread $q$ with edges $path(q)$,
 
-\[
+$$
 eligible(q,t)\Rightarrow\bigwedge_{k\in path(q)}
 compatible(k,t)\land authorized(k,t)\land current\_trust(k,t)\land evidenced(k,t).
-\]
+$$
 
 No converse is claimed. A contract edge can pass declared gates while implementations violate semantics or policies, capacity fails, humans misinterpret data, or a shared root fails.
 
@@ -349,9 +349,9 @@ Evidence must cover actual domains, versions, datasets, policies, researchers, s
 
 For one mapping per unordered pair, the count is
 
-\[
+$$
 \binom{n}{2}=\frac{n(n-1)}{2}.
-\]
+$$
 
 Thus $n=4$ gives $4\times3/2=6$ mappings; $n=10$ gives $10\times9/2=45$; and $n=30$ gives $30\times29/2=435$. A shared canonical profile with one local mapping per domain suggests $n$ mappings: 4, 10, and 30 respectively.
 

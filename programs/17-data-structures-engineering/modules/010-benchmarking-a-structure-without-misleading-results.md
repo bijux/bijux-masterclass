@@ -34,13 +34,13 @@ How can an engineer measure a data structure so that the workload, implementatio
 
 An observed time can be decomposed conceptually as
 
-\[
+$$
 Y_{e,p,r,i}=\mu + E_e + P_{e,p} + R_{e,p,r} + \varepsilon_{e,p,r,i},
-\]
+$$
 
-where \(E\) captures environment or machine/session variation, \(P\) process/runtime variation, \(R\) repetition-level variation, and \(\varepsilon\) within-repetition noise. Thousands of loop iterations in one process do not replace independent process or environment repetitions when inference includes those sources.
+where $E$ captures environment or machine/session variation, $P$ process/runtime variation, $R$ repetition-level variation, and $\varepsilon$ within-repetition noise. Thousands of loop iterations in one process do not replace independent process or environment repetitions when inference includes those sources.
 
-For paired baseline \(B_j\) and candidate \(C_j\) measured in comparable block \(j\), an effect can be reported as \(q_j=C_j/B_j\) or speedup \(s_j=B_j/C_j\), with raw pairs and an interval from an explicitly justified analysis. The ratio direction, aggregation rule, and unit must be stated.
+For paired baseline $B_j$ and candidate $C_j$ measured in comparable block $j$, an effect can be reported as $q_j=C_j/B_j$ or speedup $s_j=B_j/C_j$, with raw pairs and an interval from an explicitly justified analysis. The ratio direction, aggregation rule, and unit must be stated.
 
 ### Critical invariants
 
@@ -111,7 +111,7 @@ After completing this module, you should be able to:
 
 ## Core Exposition
 
-**Write the claim before the harness.** “Structure A is faster than B” is not a testable engineering claim. A usable version is: “On hardware H and runtime R, for maps containing \(10^5\) immutable 16-byte keys at load factors 0.55–0.75, with 90% successful lookup and 10% update drawn from distribution W, candidate C has lower median per-operation elapsed time than baseline B by at least 8%, without increasing peak resident memory by more than 5%.” This statement exposes the subject, comparator, workload, environment, primary metric, practical threshold, and resource constraint. It can be wrong, refined, or reproduced.
+**Write the claim before the harness.** “Structure A is faster than B” is not a testable engineering claim. A usable version is: “On hardware H and runtime R, for maps containing $10^5$ immutable 16-byte keys at load factors 0.55–0.75, with 90% successful lookup and 10% update drawn from distribution W, candidate C has lower median per-operation elapsed time than baseline B by at least 8%, without increasing peak resident memory by more than 5%.” This statement exposes the subject, comparator, workload, environment, primary metric, practical threshold, and resource constraint. It can be wrong, refined, or reproduced.
 
 The decision controls the benchmark level. A microbenchmark isolates a mechanism such as lookup, traversal, or insertion. A component benchmark measures a realistic sequence through an API. An application benchmark includes integration effects. Microbenchmarks diagnose mechanisms but often omit serialization, synchronization, allocation pressure, and surrounding work; application benchmarks are representative but harder to attribute. Use a ladder rather than forcing one benchmark to answer every question.
 
@@ -119,7 +119,7 @@ The decision controls the benchmark level. A microbenchmark isolates a mechanism
 
 **Specify the timed unit.** Let one unit include exactly the operations relevant to the claim. State whether it includes input decoding, allocation, key hashing, structure construction, cache reset, cleanup, and result validation. If a lookup benchmark generates a random key inside the timer, it measures random generation plus lookup. If one candidate reuses a built index and the other rebuilds it, the comparison answers a lifecycle question—not pure lookup. Both can be legitimate if named honestly.
 
-Timer overhead and resolution can dominate tiny operations. Batch \(k\) units between reads, compute per-unit cost only when operations are independent enough and batching does not change the behavior of interest, and choose duration well above timer resolution and scheduler granularity. Do not blindly subtract an “empty loop”: harness overhead may interact with the subject, and subtraction magnifies error when two similar noisy quantities are differenced. Prefer established language/runtime benchmark harnesses that calibrate loops and record metadata.
+Timer overhead and resolution can dominate tiny operations. Batch $k$ units between reads, compute per-unit cost only when operations are independent enough and batching does not change the behavior of interest, and choose duration well above timer resolution and scheduler granularity. Do not blindly subtract an “empty loop”: harness overhead may interact with the subject, and subtraction magnifies error when two similar noisy quantities are differenced. Prefer established language/runtime benchmark harnesses that calibrate loops and record metadata.
 
 **Ensure the work survives optimization.** In compiled and managed environments, unused results can be removed, constant inputs folded, invariant work hoisted, loops vectorized, or calls inlined into a nonrepresentative form. Consume outputs through framework facilities or an observable checksum, vary inputs in a controlled way, inspect generated code or profiles for critical claims, and test that changing the implementation changes observations. Anti-optimization barriers themselves have cost; apply equivalent barriers and understand whether they alter the production path. A professional harness reduces pitfalls but does not make experimental judgment automatic.
 
@@ -135,7 +135,7 @@ Timer overhead and resolution can dominate tiny operations. Batch \(k\) units be
 
 Do not use one “random” dataset as a proxy for all workloads. Uniform random keys can be valuable, but production may be Zipf-skewed, sequential, time-correlated, prefix-sharing, collision-prone, or adversarial. Include named synthetic populations plus sampled and privacy-reviewed production-derived distributions where authorized. Preserve seeds and concrete workload files or generators. Verify that both candidates receive equivalent data without accidental cache priming from always running one first.
 
-**Vary size to reveal regimes.** One \(n\) cannot distinguish constant factors from scaling or expose cache/translation/capacity thresholds. Choose sizes around empty/small fast paths, inline capacity, allocator classes, cache levels, page/translation reach, growth boundaries, and realistic maxima. Plot raw observations and summaries against \(n\); fit complexity only when the theoretical and statistical model justifies it. A straight line on a log plot is not proof of asymptotic complexity, and a microbenchmark range cannot establish behavior beyond measured sizes.
+**Vary size to reveal regimes.** One $n$ cannot distinguish constant factors from scaling or expose cache/translation/capacity thresholds. Choose sizes around empty/small fast paths, inline capacity, allocator classes, cache levels, page/translation reach, growth boundaries, and realistic maxima. Plot raw observations and summaries against $n$; fit complexity only when the theoretical and statistical model justifies it. A straight line on a log plot is not proof of asymptotic complexity, and a microbenchmark range cannot establish behavior beyond measured sizes.
 
 Amortized operations need both aggregate and tail views. For dynamic-array append, report long-run work per append, latency distribution, and individual resize spikes. If the production requirement is a maximum pause, an average hides the decision variable. Pre-sizing changes the workload and should be a separate configuration, not a silent optimization for one candidate.
 
@@ -145,7 +145,7 @@ Never claim that an observed ranking is a hardware invariant. A contiguous trave
 
 **Warm-up must match the runtime and question.** Managed runtimes may interpret, compile, recompile, deoptimize, collect garbage, or change profiles. Native code still experiences page faults, caches, branch predictors, allocator state, dynamic linking, and frequency changes. Define whether cold start, transition behavior, or warmed performance is the target. Inspect time series rather than deleting an arbitrary number of iterations. Use fresh process forks to sample runtime-layout and compilation variation when relevant. If no stable regime is visible, report phases or the entire distribution rather than manufacturing “steady state.”
 
-**Design repetitions at every relevant level.** Inner iterations reduce timer noise but are often correlated. Repetitions within a process capture short-term variation. Fresh processes capture runtime, address-layout, compilation, and allocator variation. Sessions across time or hosts capture environment variation. The experimental unit for a claim is the independently assigned or sampled unit at the relevant level. Reporting ten million loop iterations as \(n=10{,}000{,}000\) is pseudoreplication if only one process/environment was sampled.
+**Design repetitions at every relevant level.** Inner iterations reduce timer noise but are often correlated. Repetitions within a process capture short-term variation. Fresh processes capture runtime, address-layout, compilation, and allocator variation. Sessions across time or hosts capture environment variation. The experimental unit for a claim is the independently assigned or sampled unit at the relevant level. Reporting ten million loop iterations as $n=10{,}000{,}000$ is pseudoreplication if only one process/environment was sampled.
 
 Use blocking and randomized or counterbalanced order. Pair baseline and candidate within comparable process/session blocks where doing so does not cause cross-contamination. Random interleaving helps distribute time drift; alternating order balances simple order effects. When one run warms shared caches or changes thermal state for the next, isolate or model carryover. Store execution order so anomalies can be diagnosed.
 
@@ -201,11 +201,11 @@ These synthetic values imply a ratio of means near 0.911 and reciprocal speedup 
 
 ## Definitions and Notation
 
-Let \(W\) be the workload population, \(H\) the hardware/software environment, \(A\) and \(B\) the implementations, and \(Y(A,W,H)\) a measurement distribution. An **observation** is one recorded value with its experimental-unit identity. The **estimand** \(\theta\) might be \(E[Y]\), a median, a quantile, a throughput, an absolute difference, or a ratio under a specified design.
+Let $W$ be the workload population, $H$ the hardware/software environment, $A$ and $B$ the implementations, and $Y(A,W,H)$ a measurement distribution. An **observation** is one recorded value with its experimental-unit identity. The **estimand** $\theta$ might be $E[Y]$, a median, a quantile, a throughput, an absolute difference, or a ratio under a specified design.
 
-Use \(n\) for logical structure size, \(k\) for batched operations per timer interval, \(i\) for inner iteration, \(r\) for repetition, \(p\) for fresh process, and \(e\) for session/environment. A **factor** is a controlled or observed variable; a **confounder** changes with the candidate and can also change the outcome.
+Use $n$ for logical structure size, $k$ for batched operations per timer interval, $i$ for inner iteration, $r$ for repetition, $p$ for fresh process, and $e$ for session/environment. A **factor** is a controlled or observed variable; a **confounder** changes with the candidate and can also change the outcome.
 
-For paired time observations, define \(q_j=C_j/B_j\) and \(s_j=B_j/C_j=1/q_j\). Values \(q<1\) favor the candidate for lower-is-better time; values \(s>1\) indicate speedup. A **confidence interval** is a procedure with repeated-sampling coverage under a model, not a probability that a fixed parameter lies in one realized interval.
+For paired time observations, define $q_j=C_j/B_j$ and $s_j=B_j/C_j=1/q_j$. Values $q<1$ favor the candidate for lower-is-better time; values $s>1$ indicate speedup. A **confidence interval** is a procedure with repeated-sampling coverage under a model, not a probability that a fixed parameter lies in one realized interval.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -213,7 +213,7 @@ Equivalent-work validation establishes that measured subjects compute the same d
 
 Randomized pairing supports a within-block effect when both candidates share relevant block conditions and carryover is controlled. Hierarchical repetition supports inference only at levels actually sampled: inner iterations estimate within-run behavior, while fresh processes or environments are needed to estimate their variation. Independence is an assumption to defend, not a property conferred by a large row count.
 
-Asymptotic reasoning and benchmarking answer different propositions. A proof may bound abstract operation counts as \(n\to\infty\); a benchmark estimates realized costs over finite regimes. Neither replaces the other. Mechanism attribution proceeds from a predeclared hypothesis through controlled contrasts and corroborating observations; one counter correlation is insufficient.
+Asymptotic reasoning and benchmarking answer different propositions. A proof may bound abstract operation counts as $n\to\infty$; a benchmark estimates realized costs over finite regimes. Neither replaces the other. Mechanism attribution proceeds from a predeclared hypothesis through controlled contrasts and corroborating observations; one counter correlation is insufficient.
 
 ## Alternatives and Trade-Offs
 

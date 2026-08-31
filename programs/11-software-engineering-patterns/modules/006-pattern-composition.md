@@ -32,10 +32,10 @@ How can several pattern instances share participants and responsibilities withou
 
 Treat each pattern instance as a contract graph (G_i=(V_i,E_i,C_i)), where nodes are roles, edges are collaborations, and (C_i) contains state, control, time, error, lifecycle, and authority constraints. Composition binds roles through a mapping (\mu) and is valid only when all fused contracts are compatible:
 
-\[
+$$
 G=G_1\oplus_\mu G_2,
 \qquad Compatible(C_1,C_2,\mu).
-\]
+$$
 
 Composition is generally neither commutative nor freely associative. `Cache(Authorize(Service))` can bypass authorization on a cache hit, whereas `Authorize(Cache(Service))` rechecks authority before every result. Order and boundary placement are part of correctness.
 
@@ -169,37 +169,37 @@ The goal is not the fewest objects or patterns. It is the smallest design whose 
 
 For pattern instance (i), define contract graph
 
-\[
+$$
 G_i=(V_i,E_i,C_i),
-\]
+$$
 
 where (V_i) is roles, (E_i) collaborations, and (C_i) constraints. A role-binding map (\mu:V_i\rightharpoonup P) assigns roles to concrete participants (P). Role fusion occurs when
 
-\[
+$$
 \mu(v_a)=\mu(v_b),\quad v_a\in V_1,\ v_b\in V_2.
-\]
+$$
 
 Fusion is valid only if the conjunction of role contracts is satisfiable for the participant:
 
-\[
+$$
 Sat(C(v_a)\land C(v_b)\land C_{interaction}).
-\]
+$$
 
 This is an engineering obligation; general satisfiability is not claimed to be automated.
 
 Let composition (G_1\oplus_\mu G_2) unify bound roles and add cross-pattern edges. In general,
 
-\[
+$$
 G_1\oplus G_2\ne G_2\oplus G_1
-\]
+$$
 
 when composition encodes wrapper or pipeline order. Similarly, regrouping three stateful patterns can change scope and behavior, so associativity must not be assumed.
 
 Define end-to-end invariant (I) over traces (\tau) of the composed system:
 
-\[
+$$
 \forall \tau\in Traces(G),\ I(\tau).
-\]
+$$
 
 Unit tests for each (G_i) do not imply this property for (G).
 

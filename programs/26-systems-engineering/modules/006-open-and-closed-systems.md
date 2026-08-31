@@ -32,19 +32,19 @@ Which matter, energy, information, control, authority, resources, people, risk, 
 
 ### Central model, mechanism, or theorem
 
-For quantity \(q\) inside boundary \(B\):
+For quantity $q$ inside boundary $B$:
 
-\[
+$$
 q(t_1)-q(t_0)=\int_{t_0}^{t_1}[in_q(t)-out_q(t)+create_q(t)-destroy_q(t)]dt.
-\]
+$$
 
 Define closure as a predicate:
 
-\[
+$$
 Closed(B,q,[t_0,t_1],m,c),
-\]
+$$
 
-where \(m\) is operating mode and \(c\) the concern. A system may be closed to matter during sealed operation, open to energy through heat transfer, open to information through telemetry, and closed to unauthenticated control. Honest analysis names every index and checks the balance or influence paths appropriate to the claim.
+where $m$ is operating mode and $c$ the concern. A system may be closed to matter during sealed operation, open to energy through heat transfer, open to information through telemetry, and closed to unauthenticated control. Honest analysis names every index and checks the balance or influence paths appropriate to the claim.
 
 ### Critical invariants
 
@@ -122,11 +122,11 @@ After completing this module, you should be able to:
 
 Record an exchange tuple:
 
-\[
+$$
 e=(source,destination,q,interface,trigger,rate,quality,authority,mode,evidence).
-\]
+$$
 
-The exchange quantity \(q\) includes more than physical substance. Systems engineering must track information, commands, responsibility, people, resources, risk, and lifecycle obligations where those alter outcomes. Conservation laws apply only to suitable quantities; responsibility and information need semantic rather than mass-balance models.
+The exchange quantity $q$ includes more than physical substance. Systems engineering must track information, commands, responsibility, people, resources, risk, and lifecycle obligations where those alter outcomes. Conservation laws apply only to suitable quantities; responsibility and information need semantic rather than mass-balance models.
 
 **Use thermodynamic terms precisely.** An open thermodynamic system exchanges matter and energy. A closed thermodynamic system exchanges energy but not matter. An isolated ideal exchanges neither. No real engineered isolation is absolute at arbitrary precision and duration. State tolerances and heat, radiation, leakage, or coupling assumptions.
 
@@ -142,11 +142,11 @@ Feedback can cross the system-of-interest boundary. A human observes an output a
 
 Unexplained residuals indicate missing flow, measurement error, unmodeled creation/destruction, wrong timing, or boundary mismatch. They do not identify which explanation is true. Use residual magnitude, uncertainty, and pattern to investigate.
 
-**Audit balances.** For a tank with initial mass \(M_0\), deliveries \(D\), withdrawals \(W\), internal generation \(G\), destruction \(L\), and measured final mass \(M_1\):
+**Audit balances.** For a tank with initial mass $M_0$, deliveries $D$, withdrawals $W$, internal generation $G$, destruction $L$, and measured final mass $M_1$:
 
-\[
+$$
 residual=M_1-[M_0+D-W+G-L].
-\]
+$$
 
 Zero within uncertainty is consistent with the declared balance; it does not prove no hidden equal-and-opposite flows. Nonzero residual disproves at least one assumption if measurements and arithmetic are trusted.
 
@@ -201,22 +201,22 @@ Software boundaries also move. A service in normal mode accepts public requests 
 
 ## Definitions and Notation
 
-Let universe \(U\) and system boundary \(B\subset U\) be selected for concern \(c\). Let \(Q\) be exchange classes. For \(q\in Q\), define boundary flows \(F_q^{in}(t)\) and \(F_q^{out}(t)\). A closure claim is:
+Let universe $U$ and system boundary $B\subset U$ be selected for concern $c$. Let $Q$ be exchange classes. For $q\in Q$, define boundary flows $F_q^{in}(t)$ and $F_q^{out}(t)$. A closure claim is:
 
-\[
+$$
 Closed(B,q,T,m,c;\epsilon)\iff
 |F_q^{in}|+|F_q^{out}|\le\epsilon
-\]
+$$
 
-over interval \(T\) in mode \(m\), under a declared norm/aggregation and tolerance \(\epsilon\). For forbidden discrete events, the rule may be zero accepted events rather than a magnitude.
+over interval $T$ in mode $m$, under a declared norm/aggregation and tolerance $\epsilon$. For forbidden discrete events, the rule may be zero accepted events rather than a magnitude.
 
 An **isolated** thermodynamic ideal is closed to matter and energy. A **sealed** object is a physical design claim with leak rate/tolerance, not automatically isolation. An **air gap** excludes an intended network connection but does not exclude removable media, people, supply chain, power, electromagnetic coupling, acoustics, or every information path.
 
-Let model variables be partitioned into endogenous \(X\), exogenous \(Z\), parameters \(\theta\), and outputs \(Y\):
+Let model variables be partitioned into endogenous $X$, exogenous $Z$, parameters $\theta$, and outputs $Y$:
 
-\[
+$$
 X_{t+1}=f(X_t,Z_t;\theta),\quad Y_t=g(X_t,Z_t).
-\]
+$$
 
 Analytical closure for a question requires rules, initial state, parameter values/ranges, and exogenous inputs sufficient for the requested inference. It does not make the represented physical system closed.
 
@@ -310,7 +310,7 @@ Five invariants guide review.
 
 **Assumptions:** All quantities use the same corrected volume unit, the opening and closing readings refer to the same tank boundary, and deliveries and withdrawals use the same cutoff interval. No internal creation term is physically applicable; temperature correction and line inventory are initially assumed accounted for.
 
-**Reasoning:** The declared transition is \(100+35-90=45\). The observed transition ends at 42, so \(r=42-45=-3\). The negative sign says observed stock is below the declared prediction. It is compatible with an omitted outward flow, overstated input, understated output, biased stock measurement, temperature conversion error, or timing mismatch. It is not uniquely diagnostic of theft or leakage. If the combined expanded uncertainty were 5 units, the discrepancy might be statistically unremarkable; if it were 0.5, investigation would be urgent. Plotting residuals by interval can distinguish persistent bias from event-correlated losses.
+**Reasoning:** The declared transition is $100+35-90=45$. The observed transition ends at 42, so $r=42-45=-3$. The negative sign says observed stock is below the declared prediction. It is compatible with an omitted outward flow, overstated input, understated output, biased stock measurement, temperature conversion error, or timing mismatch. It is not uniquely diagnostic of theft or leakage. If the combined expanded uncertainty were 5 units, the discrepancy might be statistically unremarkable; if it were 0.5, investigation would be urgent. Plotting residuals by interval can distinguish persistent bias from event-correlated losses.
 
 **Evidence limit:** Calibration, raw timestamps, temperature records, transfer tickets, line-fill state, uncertainty propagation, and independent reconciliation determine how strongly the residual challenges closure.
 
@@ -322,7 +322,7 @@ Five invariants guide review.
 
 **Assumptions:** The control boundary contains sensor, thermostat logic, and heater; the thermal boundary contains room air and furnishings. Outdoor weather, occupants, ventilation, and power supply are external. The question concerns temperature regulation over a day.
 
-**Reasoning:** At time \(t\), measured temperature changes the heater command at \(t+1\), so the control topology is closed-loop. Meanwhile, the room receives heater power, solar radiation, occupant/equipment heat, and supply air; it loses heat through envelope and exhaust. A defensible state equation contains these terms, for example \(C\dot T=P_h+Q_{solar}+Q_{people}-UA(T-T_o)-Q_{vent}\). Omitting the environmental terms would predict that heater input accumulates indefinitely or that temperature never changes when the heater is off. Door opening is both a thermal disturbance and a human-system interaction.
+**Reasoning:** At time $t$, measured temperature changes the heater command at $t+1$, so the control topology is closed-loop. Meanwhile, the room receives heater power, solar radiation, occupant/equipment heat, and supply air; it loses heat through envelope and exhaust. A defensible state equation contains these terms, for example $C\dot T=P_h+Q_{solar}+Q_{people}-UA(T-T_o)-Q_{vent}$. Omitting the environmental terms would predict that heater input accumulates indefinitely or that temperature never changes when the heater is off. Door opening is both a thermal disturbance and a human-system interaction.
 
 **Evidence limit:** Loop logs can establish feedback behavior; heat-flow estimates, weather, occupancy, ventilation measurements, and model residuals establish the thermal claim. Evidence for one does not establish the other.
 
@@ -452,7 +452,7 @@ A strong answer states boundary, direction, units/semantics, filters, authoritie
 
 ### Answer 2
 
-Predicted final stock is \(500+80+25-70-12=523\) ML. Measured final is 518 ML, so residual is \(-5\) ML. Explanations include underestimated evaporation/seepage, unrecorded release or abstraction, rainfall/runoff error, transfer/supply metering bias, boundary storage omitted, timing mismatch, or final-level conversion error. Quantify each measurement's uncertainty and covariance before deciding whether 5 ML is significant. A zero corrected residual would be consistent with the balance but would not prove no offsetting missing flows.
+Predicted final stock is $500+80+25-70-12=523$ ML. Measured final is 518 ML, so residual is $-5$ ML. Explanations include underestimated evaporation/seepage, unrecorded release or abstraction, rainfall/runoff error, transfer/supply metering bias, boundary storage omitted, timing mismatch, or final-level conversion error. Quantify each measurement's uncertainty and covariance before deciding whether 5 ML is significant. A zero corrected residual would be consistent with the balance but would not prove no offsetting missing flows.
 
 ### Answer 3
 

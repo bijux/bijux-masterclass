@@ -33,9 +33,9 @@ Does the implemented model faithfully realize its controlled conceptual/mathemat
 
 Separate the transformation chain
 
-\[
+$$
 S \xrightarrow{T_1} C \xrightarrow{T_2} M \xrightarrow{T_3} I \xrightarrow{N(h,\tau,\epsilon)} Y,
-\]
+$$
 
 where $S$ is source intent/requirements, $C$ conceptual model, $M$ mathematical/logical specification, $I$ implementation, and $Y$ computed output under discretization $h$, solver tolerance $\tau$, and finite precision/stochastic error $\epsilon$. Verification checks each transformation and estimates solution error. Validation compares appropriately verified outputs with relevant reality for intended use. Calibration adjusts parameters; it does not prove either transformation correctness or model adequacy outside calibration evidence.
 
@@ -200,9 +200,9 @@ Let the real-world system be $R$, conceptual model $C$, mathematical model $M$, 
 
 For formal order $p$ and characteristic resolution $h$, an asymptotic discretization error may behave $e_h\approx Ch^p$. Refining $h$ by factor two gives $e_h/e_{h/2}\approx2^p$. Observed order
 
-\[
+$$
 p_{obs}=\frac{\log(e_h/e_{h/2})}{\log 2}
-\]
+$$
 
 is meaningful only when errors use a trustworthy reference and calculations lie in an appropriate convergence regime.
 

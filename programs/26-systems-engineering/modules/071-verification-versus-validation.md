@@ -33,9 +33,9 @@ What claim is being evaluated, about which configured object, against which refe
 
 Treat every V&V result as a bounded evidence tuple
 
-\[
+$$
 E=(O,R,C,M,P,D,Q,A,L),
-\]
+$$
 
 where $O$ is the object/configuration, $R$ the reference baseline, $C$ the context/environment, $M$ the method, $P$ the procedure and participants, $D$ the observed data, $Q$ the oracle/decision rule, $A$ anomalies and dispositions, and $L$ limitations. A verification claim is valid only for specified requirements actually traced and exercised under applicable conditions. A validation claim additionally requires credible stakeholder/intended-use references and representative operational context. Passing one does not logically imply the other.
 
@@ -208,15 +208,15 @@ Let $O$ be an evaluation object with configuration $c$, $R_v$ a versioned specif
 
 A bounded verification judgment can be written
 
-\[
+$$
 J_{ver}=Q_v(O_c,R_v,C,D,A,L),
-\]
+$$
 
 and validation as
 
-\[
+$$
 J_{val}=Q_u(O_c,R_u,C,\rho,D,A,L),
-\]
+$$
 
 where $Q_v,Q_u$ are declared decision rules, $A$ anomalies/dispositions, $L$ limitations, and $\rho$ the argument that $C$ and participants/data/article represent intended operation. These expressions are accountability structures, not numeric formulas or proofs.
 

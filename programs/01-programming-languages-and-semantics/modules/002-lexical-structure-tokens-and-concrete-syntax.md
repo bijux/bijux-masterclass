@@ -33,11 +33,11 @@ How does a language turn encoded source text into a reproducible sequence of lex
 
 Let (B) be source bytes, (C^*) decoded source-character sequences, and (T^*) token sequences. A front end begins with a partial decoding function and a partial or diagnostic-producing lexical function:
 
-\[
+$$
 decode_E:B^*\rightharpoonup C^*,
 \qquad
 lex_L:C^*\rightharpoonup T^*.
-\]
+$$
 
 For each token (t_i=(k_i,x_i,[a_i,b_i),v_i)), its kind (k_i), lexeme (x_i), half-open source span, and interpreted value (v_i) serve different consumers. A complete concrete source view may preserve trivia separately so that concatenating source slices in span order reproduces the decoded input. The parser consumes token distinctions; it does not recover discarded spelling automatically.
 

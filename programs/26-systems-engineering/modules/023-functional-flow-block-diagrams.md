@@ -35,26 +35,26 @@ How can a team use Functional Flow Block Diagrams to express the sequence, selec
 
 Model an FFBD as:
 
-\[
+$$
 M=\langle F,N,E,G,J,L,R,\sigma_0,\Omega\rangle,
-\]
+$$
 
-where \(F\) are function blocks, \(N\) control constructs, \(E\) directed execution relations, \(G\) guards, \(J\) join/completion rules, \(L\) loops, \(R\) references, \(\sigma_0\) initial execution state, and \(\Omega\) required outcomes.
+where $F$ are function blocks, $N$ control constructs, $E$ directed execution relations, $G$ guards, $J$ join/completion rules, $L$ loops, $R$ references, $\sigma_0$ initial execution state, and $\Omega$ required outcomes.
 
 A valid scenario path requires more than graph adjacency:
 
-\[
+$$
 Valid(p,s,m,c)\Rightarrow Reachable(p)\land Guards(p,s,m,c)
 \land JoinRules(p)\land LoopBounds(p)\land InterfaceContracts(p),
-\]
+$$
 
-for state \(s\), mode \(m\), and configuration \(c\).
+for state $s$, mode $m$, and configuration $c$.
 
 Under explicitly sequential, non-overlapping execution, path latency may be bounded by:
 
-\[
+$$
 T_p=\sum_{f\in p}T_f+\sum_{e\in p}T_e+T_{queue}+T_{sync}.
-\]
+$$
 
 Other concurrency, retry, scheduling, and physical dynamics need their own composition model.
 
@@ -229,27 +229,27 @@ The checker treats nonempty guard strings as valid and ignores state, modes, fea
 
 ## Definitions and Notation
 
-Let \(Succ_M(f,s,m,c)\) denote functions/control constructs enabled after \(f\) under state, mode, and configuration. Let a run be \(\rho=\sigma_0\xrightarrow{a_1}\sigma_1\cdots\), where actions include function start/complete, event, split, join, timeout, and cancellation. Define \(Outcome(\rho)\) and \(Trace(\rho)\) at the parent boundary.
+Let $Succ_M(f,s,m,c)$ denote functions/control constructs enabled after $f$ under state, mode, and configuration. Let a run be $\rho=\sigma_0\xrightarrow{a_1}\sigma_1\cdots$, where actions include function start/complete, event, split, join, timeout, and cancellation. Define $Outcome(\rho)$ and $Trace(\rho)$ at the parent boundary.
 
-For required cases \(K\), a scenario-coverage claim may be written:
+For required cases $K$, a scenario-coverage claim may be written:
 
-\[
+$$
 \forall k\in K:\exists \rho\in Runs(M,k): RequiredOutcome(k,\rho).
-\]
+$$
 
 This existential property does not rule out unsafe runs. A safety invariant instead seeks:
 
-\[
+$$
 \forall \rho\in Runs(M,K_{assured}): \Box Safe(\rho),
-\]
+$$
 
 within the modeled state space and fairness/environment assumptions. Formal notation clarifies the claim but cannot validate the abstraction by itself.
 
-For concurrent branches \(b_1,\ldots,b_n\) with independent execution and all-branch join, an ideal bound may be:
+For concurrent branches $b_1,\ldots,b_n$ with independent execution and all-branch join, an ideal bound may be:
 
-\[
+$$
 T_{AND}=T_{split}+\max_i T_{b_i}+T_{join}.
-\]
+$$
 
 If branches share resources or one depends on another’s object flow, the independence assumption fails. Resource scheduling or a different functional structure must determine the bound.
 
@@ -389,24 +389,24 @@ Any cutoff event disables energy/flow before final accounting. Normal completion
 
 With independent concurrent branches and all-branch join:
 
-\[
+$$
 T_{ideal}=15+\max(180,260)+20=295\ \text{ms}.
-\]
+$$
 
 The independence assumption is false because branch segments needing the shared resource cannot overlap. If each branch duration includes its respective shared segment, all nonshared work can otherwise overlap, and the two shared segments serialize without extra switching, a conservative construction is split overhead plus the larger nonshared remainder plus both shared segments plus join overhead:
 
-\[
+$$
 15+\max(180-90,260-120)+90+120+20
 =15+140+210+20=385\ \text{ms}.
-\]
+$$
 
 This is conditional, not a universal worst case. Actual ordering, preemption, queues, blocking, resource setup, branch dependencies, jitter, and scheduling policy can increase or reduce it. Validate with a resource-aware schedule/model and integrated timing evidence on named configurations.
 
 ### Answer 3
 
-The first two guards overlap for \(80<T<90\), so an exclusive-choice model has ambiguous eligibility. Values exactly 80 and 90 have only the `<90` and `>80` branches respectively, but the meaning of each branch remains unclear; invalid/missing/stale/uncertain measurements have no route. Define a calibrated measurement \(T\), timestamp/freshness, uncertainty \(u\), mode, and policy thresholds.
+The first two guards overlap for $80<T<90$, so an exclusive-choice model has ambiguous eligibility. Values exactly 80 and 90 have only the `<90` and `>80` branches respectively, but the meaning of each branch remains unclear; invalid/missing/stale/uncertain measurements have no route. Define a calibrated measurement $T$, timestamp/freshness, uncertainty $u$, mode, and policy thresholds.
 
-One exclusive policy might be: `high` if the conservative lower bound \(T-u\ge90\); `normal` if upper bound \(T+u\le80\); `uncertain-band` otherwise; and `invalid` for missing, stale, out-of-range, or failed-quality input. Give each branch an outcome—protective action, nominal continuation, further measurement/human review, or safe degraded response—and define priority if emergency constraints override. Thresholds and conservatism require source authority; a diagram does not decide them.
+One exclusive policy might be: `high` if the conservative lower bound $T-u\ge90$; `normal` if upper bound $T+u\le80$; `uncertain-band` otherwise; and `invalid` for missing, stale, out-of-range, or failed-quality input. Give each branch an outcome—protective action, nominal continuation, further measurement/human review, or safe degraded response—and define priority if emergency constraints override. Thresholds and conservatism require source authority; a diagram does not decide them.
 
 ### Answer 4
 

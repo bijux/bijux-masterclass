@@ -33,15 +33,15 @@ How do accumulations, rates, feedback polarity, gain, delay, nonlinear limits, a
 
 ### Central model, mechanism, or theorem
 
-For stocks \(x(t)\), inflows \(i(t)\), and outflows \(o(t)\):
+For stocks $x(t)$, inflows $i(t)$, and outflows $o(t)$:
 
-\[
+$$
 \frac{dx}{dt}=i(t)-o(t),
 \qquad
 x_{k+1}=x_k+\Delta t\,[i_k-o_k]
-\]
+$$
 
-for a simple discrete approximation. A controller or policy observes \(y(t-\tau_o)\), compares it with reference \(r\), decides after delay \(\tau_d\), and changes flow after actuation delay \(\tau_a\). Even a balancing rule can oscillate or diverge if combined delay and gain make corrections too large for the state being corrected. The whole trajectory—not one snapshot—supports a dynamic claim.
+for a simple discrete approximation. A controller or policy observes $y(t-\tau_o)$, compares it with reference $r$, decides after delay $\tau_d$, and changes flow after actuation delay $\tau_a$. Even a balancing rule can oscillate or diverge if combined delay and gain make corrections too large for the state being corrected. The whole trajectory—not one snapshot—supports a dynamic claim.
 
 ### Critical invariants
 
@@ -62,7 +62,7 @@ Failures include calling any repeated process feedback; drawing causal arrows wi
 
 ### Compact example
 
-A controller wants stock \(x=10\) and applies \(0.6(10-\hat{x})\) per step, but \(\hat{x}\) is two steps old. Starting at zero, it adds 6 while the delayed observation still says zero: states become 6, 12, and 18. When the controller finally sees 6, it still adds 2.4, reaching 20.4. Later negative corrections arrive after the stock has already fallen. The loop is balancing by intent but oscillatory because high response acts on stale state.
+A controller wants stock $x=10$ and applies $0.6(10-\hat{x})$ per step, but $\hat{x}$ is two steps old. Starting at zero, it adds 6 while the delayed observation still says zero: states become 6, 12, and 18. When the controller finally sees 6, it still adds 2.4, reaching 20.4. Later negative corrections arrive after the stock has already fallen. The loop is balancing by intent but oscillatory because high response acts on stale state.
 
 ### Connections
 
@@ -121,15 +121,15 @@ Common trajectory shapes include linear growth, exponential growth/decay, goal s
 
 **Identify stocks.** Stocks persist when flows stop. Inventory, energy, population, queued work, skill, cash, stored data, technical debt under a defined operational measure, and unresolved hazard actions can be modeled as stocks when their units and boundaries are explicit. “Quality” or “trust” may be useful concepts but need careful operationalization before numerical stock treatment.
 
-A stock changes only through flows across its boundary or internal creation/destruction mechanisms included as flows. For backlog \(B\):
+A stock changes only through flows across its boundary or internal creation/destruction mechanisms included as flows. For backlog $B$:
 
-\[
+$$
 B_{k+1}=\max(0,B_k+Arrivals_k-Completions_k).
-\]
+$$
 
 The nonnegative bound matters. Completion capacity is not necessarily actual completion; when backlog is zero, unused capacity does not create negative work.
 
-**Define flow mechanisms.** A flow can depend on stock, external input, capacity, policy, delay, and other state. Completion might be \(\min(B,capacity)\). Failure occurrence may depend on population at risk and hazard rate. Hiring depends on approved positions, candidate supply, and onboarding capacity. Each equation encodes assumptions and must preserve units.
+**Define flow mechanisms.** A flow can depend on stock, external input, capacity, policy, delay, and other state. Completion might be $\min(B,capacity)$. Failure occurrence may depend on population at risk and hazard rate. Hiring depends on approved positions, candidate supply, and onboarding capacity. Each equation encodes assumptions and must preserve units.
 
 **Construct causal links carefully.** A positive link means an increase in source, all else equal, tends to increase target above what it otherwise would be; a negative link tends to decrease it. The sign is local and conditional. “Price +→ revenue” fails when demand changes strongly; specify the regime or intermediate variables.
 
@@ -141,21 +141,21 @@ A loop is reinforcing when the product of link signs is positive—zero or an ev
 
 **Disaggregate delay.** Total delay often includes:
 
-\[
+$$
 \tau=\tau_{observe}+\tau_{transport}+\tau_{interpret}+\tau_{decide}+\tau_{actuate}+\tau_{effect}+\tau_{confirm}.
-\]
+$$
 
 These delays have different controls. Faster telemetry does not fix slow physical replenishment. Faster action can worsen behavior if interpretation uses noisy data. Model delay as a fixed lag only when justified; real delays may be distributed and variable.
 
-**Analyze equilibrium.** In a stock-flow model, equilibrium requires net flow zero under constant inputs: \(i(x^*)=o(x^*)\). It does not necessarily mean desirable, safe, or inactive. A hospital queue can be stable at an unacceptable wait. A system can also have a moving equilibrium or periodic attractor.
+**Analyze equilibrium.** In a stock-flow model, equilibrium requires net flow zero under constant inputs: $i(x^*)=o(x^*)$. It does not necessarily mean desirable, safe, or inactive. A hospital queue can be stable at an unacceptable wait. A system can also have a moving equilibrium or periodic attractor.
 
 **Analyze local stability.** For the simple discrete no-delay rule
 
-\[
+$$
 x_{k+1}=x_k+K(r-x_k),
-\]
+$$
 
-the error \(e_k=r-x_k\) evolves as \(e_{k+1}=(1-K)e_k\). It converges when \(|1-K|<1\), so \(0<K<2\): monotone for \(0<K\le1\), alternating with shrinking magnitude for \(1<K<2\). At \(K=2\) it alternates without decay; beyond 2 it diverges. This result applies only to this linear, discrete, instantaneous model.
+the error $e_k=r-x_k$ evolves as $e_{k+1}=(1-K)e_k$. It converges when $|1-K|<1$, so $0<K<2$: monotone for $0<K\le1$, alternating with shrinking magnitude for $1<K<2$. At $K=2$ it alternates without decay; beyond 2 it diverges. This result applies only to this linear, discrete, instantaneous model.
 
 With delay, the state dimension grows because history matters. Conditions change; applying the no-delay bound is invalid. Simulation can expose trajectories but does not replace formal analysis where safety depends on all reachable states.
 
@@ -208,29 +208,29 @@ print("evidence=linear_discrete_teaching_model_only")
 
 ## Definitions and Notation
 
-Let \(x(t)\) be a stock with unit \([X]\), and \(i(t),o(t)\) flows with unit \([X]/[time]\). Continuous balance is:
+Let $x(t)$ be a stock with unit $[X]$, and $i(t),o(t)$ flows with unit $[X]/[time]$. Continuous balance is:
 
-\[
+$$
 x(t)=x(t_0)+\int_{t_0}^{t}[i(s)-o(s)]\,ds.
-\]
+$$
 
-A discrete Euler approximation with step \(\Delta t\) is:
+A discrete Euler approximation with step $\Delta t$ is:
 
-\[
+$$
 x_{k+1}=x_k+\Delta t(i_k-o_k).
-\]
+$$
 
-Changing \(\Delta t\) without changing rate interpretation can alter behavior or numerical stability. Solver choice and step size are evidence metadata.
+Changing $\Delta t$ without changing rate interpretation can alter behavior or numerical stability. Solver choice and step size are evidence metadata.
 
-Let \(r\) be reference, \(y\) measured output, \(e=r-y\) error, \(u\) control/action, \(K\) gain, \(d\) disturbance, and \(\tau\) delay. A general closed influence model is:
+Let $r$ be reference, $y$ measured output, $e=r-y$ error, $u$ control/action, $K$ gain, $d$ disturbance, and $\tau$ delay. A general closed influence model is:
 
-\[
+$$
 \dot{x}=f(x,u,d),\quad y=h(x),\quad u(t)=\pi(r,y_{history},constraints).
-\]
+$$
 
-The policy \(\pi\) can be automated, human, organizational, or hybrid. SYSENG-006 develops open/closed system boundaries; later modules formalize behavior and control allocation.
+The policy $\pi$ can be automated, human, organizational, or hybrid. SYSENG-006 develops open/closed system boundaries; later modules formalize behavior and control allocation.
 
-A causal-loop link sign \(s_{ij}\in\{-1,+1\}\) is a conditional partial influence. Simple loop polarity is \(\prod s_{ij}\). The product does not specify gain, time constant, delay, saturation, or stability.
+A causal-loop link sign $s_{ij}\in\{-1,+1\}$ is a conditional partial influence. Simple loop polarity is $\prod s_{ij}$. The product does not specify gain, time constant, delay, saturation, or stability.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -296,7 +296,7 @@ Five invariants guide review.
 
 **Question:** A backlog is 40 items, arrivals are 12/day, and completions are 10/day for five days. What happens?
 
-**Reasoning:** Net flow is \(12-10=2\) items/day. With one-day steps and no other flow, \(B_5=40+5\times2=50\). Throughput looks stable at 10, but the stock grows 25%. If reporting shows only completions, deterioration is hidden. If arrivals later fall below completions, the backlog can shrink only while work remains.
+**Reasoning:** Net flow is $12-10=2$ items/day. With one-day steps and no other flow, $B_5=40+5\times2=50$. Throughput looks stable at 10, but the stock grows 25%. If reporting shows only completions, deterioration is hidden. If arrivals later fall below completions, the backlog can shrink only while work remains.
 
 **Conclusion:** Rates can appear steady while an accumulated state moves materially; always connect flow measures to their stock.
 
@@ -320,7 +320,7 @@ Five invariants guide review.
 
 **Question:** Derive stability of the no-delay proportional teaching model.
 
-**Reasoning:** With \(x_{k+1}=x_k+K(r-x_k)\), define \(e_k=r-x_k\). Then \(e_{k+1}=r-x_{k+1}=r-x_k-K(r-x_k)=(1-K)e_k\). Error converges to zero exactly when \(|1-K|<1\), giving \(0<K<2\). For \(K=0.6\), error shrinks by factor 0.4 per step. This proof excludes delay, saturation, noise, and nonlinear plants.
+**Reasoning:** With $x_{k+1}=x_k+K(r-x_k)$, define $e_k=r-x_k$. Then $e_{k+1}=r-x_{k+1}=r-x_k-K(r-x_k)=(1-K)e_k$. Error converges to zero exactly when $|1-K|<1$, giving $0<K<2$. For $K=0.6$, error shrinks by factor 0.4 per step. This proof excludes delay, saturation, noise, and nonlinear plants.
 
 **Conclusion:** Stability is derived for a precise model and parameter range, not transferred automatically to the delayed or real system.
 
@@ -400,7 +400,7 @@ For a repair service, classify reported work, diagnosed work, completed repairs,
 
 ### Exercise 2
 
-For \(x_{k+1}=x_k+K(r-x_k)\), trace \(x_0=0,r=10\) for \(K=0.5,1,2,2.5\) and relate each trajectory to the derived stability condition.
+For $x_{k+1}=x_k+K(r-x_k)$, trace $x_0=0,r=10$ for $K=0.5,1,2,2.5$ and relate each trajectory to the derived stability condition.
 
 ### Exercise 3
 
@@ -422,7 +422,7 @@ Reported-undiganosed work, diagnosed-awaiting-parts work, ready-for-repair work,
 
 ### Answer 2
 
-With \(e_{k+1}=(1-K)e_k\): for \(K=0.5\), states are 5, 7.5, 8.75, ... and converge monotonically. For \(K=1\), the first state is 10 and remains. For \(K=2\), states alternate 20, 0, 20, 0: error factor is -1, so it does not decay. For \(K=2.5\), states 25, -12.5, 43.75, ... have error multiplied by -1.5 and diverge. This matches convergence only for \(0<K<2\). It does not apply unchanged with delay, saturation, or nonlinear response.
+With $e_{k+1}=(1-K)e_k$: for $K=0.5$, states are 5, 7.5, 8.75, ... and converge monotonically. For $K=1$, the first state is 10 and remains. For $K=2$, states alternate 20, 0, 20, 0: error factor is -1, so it does not decay. For $K=2.5$, states 25, -12.5, 43.75, ... have error multiplied by -1.5 and diverge. This matches convergence only for $0<K<2$. It does not apply unchanged with delay, saturation, or nonlinear response.
 
 ### Answer 3
 

@@ -35,25 +35,25 @@ How should an integration strategy concentrate scarce articles, environments, pe
 
 For interface-risk item (i), when defensible quantitative probability (p_i) and commensurate consequence measure (c_i) exist, a simplified exposure is:
 
-\[
+$$
 R_i=p_i c_i.
-\]
+$$
 
 For candidate evidence action (a), estimated reduction is:
 
-\[
+$$
 \Delta R_{i,a}=R_i^{before}-E[R_i^{after}\mid a].
-\]
+$$
 
 The ratio (\Delta R/cost) can inform—not decide—selection. Estimates may be sparse, dependent, multi-dimensional, or ethically non-compensatory. Safety, legal, security, or mission constraints may require work regardless of expected-value ranking.
 
 For interface (j), scenario set (S_j), and evidence set (E_j), risk retirement requires more than declaration coverage:
 
-\[
+$$
 Retired(j)\Rightarrow
 \forall s\in S_j^{critical}:Compatible(j,s)\land EvidenceSupports(E_j,j,s)
 \land ResidualAccepted(j,s).
-\]
+$$
 
 A passed nominal test or complete interface list does not satisfy this implication for omitted modes, faults, environments, versions, humans, or common causes.
 
@@ -226,39 +226,39 @@ Let interfaces be (I), scenarios (S), risk items (Q), evidence actions (A), conf
 
 Risk relation:
 
-\[
+$$
 affects\subseteq Q\times I\times S\times K.
-\]
+$$
 
 Evidence support:
 
-\[
+$$
 supports\subseteq E\times Claim\times K\times S.
-\]
+$$
 
 For quantitative exposure when justified:
 
-\[
+$$
 R(q)=\sum_c P(c\mid q,k,s)\,L(c),
-\]
+$$
 
 where dependence, uncertainty, and incomparable consequence dimensions must be modeled or reported rather than hidden.
 
 Interface-scenario declaration coverage:
 
-\[
+$$
 C_{decl}=
 \frac{|\{(i,s):\exists e\ supports(e,claim(i,s),k,s)\}|}
 {|\{(i,s):applicable(i,s,k)\}|}.
-\]
+$$
 
 This shows which declared cells have linked evidence, not evidence quality or interface completeness.
 
 An integration step transition follows SYSENG-037, augmented with risk objective:
 
-\[
+$$
 T_a:(State^-,Q_{target})\rightarrow(State^+,E,Findings,Q_{residual}).
-\]
+$$
 
 The step has value when evidence changes a decision, control, or justified residual-risk assessment—not simply because (State^+) exists.
 
@@ -341,9 +341,9 @@ Semantic contract tests at endpoints and gateway inject boundary values and veri
 
 **Latency budget with bounded margin.** End-to-end requirement is 250 ms. Contributions are sensing 35, network 40, processing 85, actuation 30, with 40 ms jitter/uncertainty reserve:
 
-\[
+$$
 Margin=250-(35+40+85+30)-40=20\text{ ms}.
-\]
+$$
 
 The plan measures compatible start/end events and correlated tails under load/failover. Twenty milliseconds arithmetic margin does not prove a percentile or worst-case claim.
 
@@ -351,9 +351,9 @@ The plan measures compatible start/end events and correlated tails under load/fa
 
 **Power transient exposes hidden integration load.** Capacity is 600 W with 100 W reserve. Children need 180, 220, and 90 W; conversion/cooling/control overhead is 30 W:
 
-\[
+$$
 Margin=600-100-(180+220+90)-30=-20\text{ W}.
-\]
+$$
 
 The plan tests staged activation/current limiting and captures source/consumer planes, inrush, voltage sag, timing, thermal response, and safe recovery. Local steady-state passes cannot close the system transient.
 
@@ -450,17 +450,17 @@ Develop an interface-risk-driven integration plan for a hospital medication-deli
 
 Declaration coverage is:
 
-\[
+$$
 C=5/6\approx0.8333=83.3\%.
-\]
+$$
 
 Do not call the register 83.3% risk-controlled. For the sixth, identify endpoints/path, exact supplier product/service/version, contract/interface plane, cause or uncertain condition, configuration/scenarios, possible failure, technical/stakeholder consequence, evidence gap, owner and consequence authority, current controls, candidate evidence/mitigation, decision/latest useful date, retirement threshold, residual-risk acceptance, and supplier/change constraints. It may become several risk items or a current issue. The five complete records also need substantive review; field completion does not prove risk discovery or control.
 
 ### Answer 2
 
-\[
+$$
 Margin=400-50-(80+120+95+70)=400-50-365=-15\text{ ms}.
-\]
+$$
 
 The declared allocation already fails. First reconcile measurement events/planes, simultaneity, overlap, overhead, and whether contributions add. The team must reduce demand, change architecture/capacity, or revise requirement/reserve only with authority/evidence.
 
@@ -470,15 +470,15 @@ An experiment pins exact endpoint/intermediary builds/configuration and instrume
 
 Naive exposures:
 
-\[
+$$
 R_A=0.30(100)=30,\qquad R_B=0.10(300)=30.
-\]
+$$
 
 If each experiment eliminated its exposure with certainty, naive reduction per cost is:
 
-\[
+$$
 30/10=3\quad\text{for A},\qquad30/5=6\quad\text{for B}.
-\]
+$$
 
 This arithmetic favors B, but automatic selection is invalid because: probabilities/consequences may have different evidence/uncertainty; `cost units` may omit safety, privacy, environment, mission, and schedule dimensions; the experiment may not eliminate exposure or may fail to discriminate; risks may be correlated/common-cause; evidence may arrive after different decision dates; A may be a mandatory precursor; B may be unsafe/unready to test; consequences may be non-compensatory; mitigations may affect other risks; resource/facility opportunities differ; and residual/tail consequences matter. Compare value of information, constraints, dependence, timing, reversibility, readiness, and authority with sensitivity analysis.
 

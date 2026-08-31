@@ -26,10 +26,10 @@ The principal controls are (M), the connection budget; `efConstruction`, the can
 
 HNSW draws a maximum level, commonly in the form
 
-\[
+$$
 \ell=\left\lfloor-\ln U\;m_L\right\rfloor,
 \qquad U\sim\operatorname{Uniform}(0,1),
-\]
+$$
 
 which produces an exponentially thinning hierarchy. A query descends upper layers greedily, using the closest point found at one layer as the next layer's entry. At layer zero, bounded best-first search keeps a frontier ordered by increasing query distance and a result set bounded by `efSearch`; it stops when the best unexplored candidate cannot improve the current worst retained result.
 
@@ -106,9 +106,9 @@ The graph does not change the authoritative similarity. Every navigation compari
 
 HNSW assigns every new vertex to layer zero and samples a maximum layer from an exponential tail. With the common draw (ell=\lfloor-\ln(U)m_L\rfloor),
 
-\[
+$$
 \Pr[\ell\ge t]=\Pr[U\le e^{-t/m_L}]=e^{-t/m_L}
-\]
+$$
 
 apart from flooring. Choosing (m_L=1/\ln M) gives approximately (M^{-t}) survival to layer (t). This is a design calibration, not a requirement that every implementation expose the same distribution or parameter mapping.
 

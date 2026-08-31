@@ -33,15 +33,15 @@ How does a data structure's access stream interact with cache lines, translation
 
 For a simplified cache-line model with line size (B), address stream (a_0,\ldots,a_{m-1}) touches modeled line numbers
 
-\[
+$$
 \ell_i=\left\lfloor\frac{a_i}{B}\right\rfloor.
-\]
+$$
 
 The distinct-line footprint of a phase is (|\{\ell_i\}|), but actual misses additionally depend on cache capacity, associativity, mapping, replacement, earlier state, prefetching, coherence, translation, and concurrent activity. A latency lower bound for a strict dependent chain differs from the throughput of independent misses:
 
-\[
+$$
 time_{dependent}\gtrsim hops\times exposed\ latency,
-\]
+$$
 
 whereas independent accesses may overlap until constrained by MLP, queues, or bandwidth. This is a reasoning model, not a cycle-accurate theorem.
 
@@ -128,9 +128,9 @@ Cold and warm states answer different questions. Startup or sporadic tasks may b
 
 Average memory-access-time equations can organize hypotheses:
 
-\[
+$$
 T\approx t_{L1}+m_{L1}(t_{L2}+m_{L2}(\cdots)),
-\]
+$$
 
 but miss rates are conditional, latencies overlap, fills queue, and prefetch/coherence complicate the product. Use the equation as a model and validate with counters/experiments.
 
@@ -231,9 +231,9 @@ Let access trace (A=\langle(a_i,w_i,d_i)\rangle), where address (a_i), width (w_
 
 For operation phase (P), useful-byte ratio can be modeled as
 
-\[
+$$
 U(P)=\frac{useful\ bytes\ consumed}{modeled\ transferred\ bytes},
-\]
+$$
 
 provided numerator/denominator scope is declared. Working set (W(P,\Delta)) is the set of cache/translation units reused within window (Delta); no single universal window exists.
 
@@ -418,7 +418,7 @@ Prepare a production review plan for changing a critical structure from pointer 
 
 ### Answer 1
 
-If the base and every element are aligned so elements do not cross lines and (s\) divides (B), let (q=B/s) elements fit per line. Sequential indices `0..n-1` touch (\lceil n/q\rceil) lines. Stride (k) visits (m=\lceil n/k\rceil) elements and touches the cardinality of ({\lfloor jk/q\rfloor:0\le j<m}); when (k\ge q), usually each access has a distinct line, while smaller strides reuse according to the set. A misaligned base, elements crossing lines, padding, fields rather than whole elements, and virtual/page mapping require interval-based calculation and can add lines.
+If the base and every element are aligned so elements do not cross lines and $s$ divides (B), let (q=B/s) elements fit per line. Sequential indices `0..n-1` touch (\lceil n/q\rceil) lines. Stride (k) visits (m=\lceil n/k\rceil) elements and touches the cardinality of ({\lfloor jk/q\rfloor:0\le j<m}); when (k\ge q), usually each access has a distinct line, while smaller strides reuse according to the set. A misaligned base, elements crossing lines, padding, fields rather than whole elements, and virtual/page mapping require interval-based calculation and can add lines.
 
 ### Answer 2
 

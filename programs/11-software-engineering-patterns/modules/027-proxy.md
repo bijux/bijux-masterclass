@@ -33,9 +33,9 @@ How can a surrogate control access to a subject while preserving the subject con
 
 Let subject behavior be (S:C\times X\to Outcome(Y,E)), with operation context (C). A proxy is
 
-\[
+$$
 P(S)(c,x)=pre(c,x);\ choose\{short\ circuit,\ delegate\};\ post(outcome).
-\]
+$$
 
 For declared observation set (O), transparency requires (P(S)\approx_O S). A protection proxy intentionally differs for unauthorized contexts; a cache proxy may differ in freshness and subject-call count; a remote proxy necessarily adds delay and distributed failure. Correctness therefore comes from an explicit proxy contract, not the slogan “same interface.”
 

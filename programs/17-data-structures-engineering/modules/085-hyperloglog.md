@@ -20,17 +20,17 @@ How can a system estimate the number of distinct values with bounded memory whil
 
 For a multiset stream (S), its **cardinality** is (n=|\{x:x\in S\}|). HyperLogLog (HLL) hashes each canonical key to a uniform bit string. With precision (p), the first (p) bits select one of (m=2^p) registers. From the remaining bits, (\rho) is one plus the number of leading zeros. Update is
 
-\[
+$$
 M[j]\leftarrow\max(M[j],\rho).
-\]
+$$
 
 Duplicates are idempotent because repeating the same hash repeats the same maximum. The classical raw estimator is
 
-\[
+$$
 E_{\mathrm{raw}}
 =\alpha_m m^2
 \left(\sum_{j=0}^{m-1}2^{-M[j]}\right)^{-1}.
-\]
+$$
 
 Its asymptotic relative standard error is approximately (1.04/\sqrt m) under the ideal-hash model. Small-cardinality regimes need correction; the original algorithm uses linear counting (m\ln(m/V)) when (V), the number of zero registers, remains positive and the raw estimate is small.
 
@@ -116,19 +116,19 @@ Register width must represent ranks up to (L-p+1), plus any implementation senti
 
 Suppose register (j) summarizes a substream containing about (n/m) distinct hashes. Large (M[j]) suggests a larger substream. Directly averaging (2^{M[j]}) is unstable because extreme registers dominate. HLL instead uses a normalized harmonic form:
 
-\[
+$$
 Z=\left(\sum_{j=0}^{m-1}2^{-M[j]}\right)^{-1},
 \qquad
 E_{\mathrm{raw}}=\alpha_m m^2 Z.
-\]
+$$
 
 The constant (\alpha_m) corrects asymptotic bias under the idealized model. The original presentation uses special constants for small standard register counts—approximately 0.673, 0.697, and 0.709 for (m=16,32,64)—and (0.7213/(1+1.079/m)) for larger (m). Copying a constant without matching the estimator definition is unsafe: indexing, rank origin, corrections, and register representation must agree.
 
 For sufficiently large (m) away from boundary regimes, relative standard error is approximately
 
-\[
+$$
 \operatorname{RSE}\approx\frac{1.04}{\sqrt m}.
-\]
+$$
 
 At (p=12), (m=4096), giving about 1.625%. This is a standard-deviation scale under a probability model, not a hard interval that every sketch satisfies. Doubling precision by one bit doubles registers but reduces RSE only by a factor (1/\sqrt2). Achieving half the RSE needs about four times as many registers.
 
@@ -136,9 +136,9 @@ At (p=12), (m=4096), giving about 1.625%. This is a standard-deviation scale und
 
 At low cardinality, many registers remain zero and the raw estimator has appreciable bias. Let (V=|\{j:M[j]=0\}|). Linear counting estimates
 
-\[
+$$
 E_{\mathrm{LC}}=m\ln(m/V).
-\]
+$$
 
 The original HLL procedure selects this estimate for a small raw range when (V>0). HyperLogLog++ uses sparse representation and empirically calibrated corrections; later work derives estimators that avoid some historical discontinuities and bias tables. “HLL estimate” is therefore incomplete metadata. The estimator name and version belong beside the registers.
 
@@ -154,9 +154,9 @@ Conversion must be representation-preserving: expanding the sparse entries and t
 
 For compatible arrays (A) and (B), define
 
-\[
+$$
 (A\sqcup B)[j]=\max(A[j],B[j]).
-\]
+$$
 
 Maximum is associative, commutative, and idempotent. Therefore union trees may be regrouped and reordered, retries of the identical sketch do not change the logical register state, and overlap between input sets is naturally represented. This is different from Count-Min Sketch, whose ordinary merge adds cells because frequencies from disjoint event partitions should accumulate.
 
@@ -166,9 +166,9 @@ The algebra does not make incompatible sketches compatible. Precision changes re
 
 Registerwise minimum is not an HLL intersection operator. Inclusion-exclusion can form
 
-\[
+$$
 |A\cap B|\approx\widehat{|A|}+\widehat{|B|}-\widehat{|A\cup B|},
-\]
+$$
 
 but subtracting similar noisy estimates can produce large relative error or even an impossible negative result. Joint maximum-likelihood estimators improve some cases, yet they need their own assumptions and evidence. When intersection, difference, or subset estimates are primary requirements, Theta-style sketches or another set-operation-oriented representation may be a better design.
 

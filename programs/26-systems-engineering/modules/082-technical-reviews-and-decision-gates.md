@@ -33,17 +33,17 @@ How can a technical review expose the maturity, evidence, uncertainty, dissent, 
 
 Let decision $d$ at gate $g$ depend on criteria set $K$, evidence $E$, assumptions $A$, uncertainty $U$, risks $R$, open work $L$, and alternatives $X$ under authority $\alpha$:
 
-\[
+$$
 d_g=\alpha\big(K,E,A,U,R,L,X\big).
-\]
+$$
 
 A review produces an assessment and recommendation; it does not mathematically determine $d_g$. A defensible gate requires that every blocking criterion be satisfied or explicitly handled under authorized rules, conditions be enforceable, alternatives remain visible, and the decision record bound the commitment:
 
-\[
+$$
 \operatorname{proceed}\Rightarrow \neg\operatorname{unresolvedBlocker}
 \land \operatorname{authorizedRisk}
 \land \operatorname{credibleNextStagePlan}.
-\]
+$$
 
 ### Critical invariants
 

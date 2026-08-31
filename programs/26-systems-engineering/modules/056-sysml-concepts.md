@@ -35,21 +35,21 @@ How can engineers use SysML 2.0 to express one semantically coherent system mode
 
 Treat a governed model as a versioned typed graph:
 
-\[
+$$
 M_c=(E,R,T,N,L,V,c),
-\]
+$$
 
 where $E$ is a set of identity-bearing elements, $R$ typed relationships, $T$ typing and specialization constraints, $N$ namespaces and memberships, $L$ imported standard/domain libraries, $V$ views/renderings and $c$ the selected commit/configuration. For every usage $u$ typed by definition $d$,
 
-\[
+$$
 instances(u)\subseteq instances(d).
-\]
+$$
 
 For a feature $f_s$ that subsets $f_g$,
 
-\[
+$$
 values(f_s)\subseteq values(f_g).
-\]
+$$
 
 These set interpretations explain why typing, specialization and subsetting constrain meaning rather than merely decorate boxes. A useful model must also satisfy project-specific invariants $I(M_c)$ and have evidence adequate to its intended decision. Syntactic validity is necessary, but it is not semantic consistency, physical feasibility, requirement satisfaction or empirical validity.
 
@@ -248,25 +248,25 @@ This checker would still pass if the two requirements were unnecessary, the port
 
 Let an element record at commit $c$ be
 
-\[
+$$
 e_c=(id,kind,name,qname,owner,type,status,source,applicability,version).
-\]
+$$
 
 `id` supports durable reference; `name` and qualified name `qname` support human navigation; `owner`/namespace membership supplies context; `type` and feature relations constrain semantics. Equality of names does not imply identity, and equality of identity across commits does not imply unchanged meaning.
 
 Let $D$ be definitions and $U$ usages. A typing relation $typedBy(u,d)$ constrains $u\in U$ to instances classified by $d\in D$. Let feature $f:T\rightarrow \mathcal{P}(V)$ map each instance of type $T$ to a set of values. If $f_s$ subsets $f_g$, then for applicable instances $x$,
 
-\[
+$$
 f_s(x)\subseteq f_g(x).
-\]
+$$
 
 Redefinition adds specialization and context rules beyond a coincidental same name. Multiplicity bounds the cardinality $|f(x)|$; it does not establish availability, reliability or simultaneous existence without further semantics.
 
 For connection $k=(ends,item,direction,mode,configuration)$, a project-level compatibility predicate can be written
 
-\[
+$$
 C(k)=C_{type}\land C_{direction}\land C_{multiplicity}\land C_{mode}\land C_{configuration}\land C_{domain}.
-\]
+$$
 
 SysML/KerML semantics support several terms in this predicate, while $C_{domain}$ may require protocol, electrical, mechanical, safety, timing or other engineering evidence.
 

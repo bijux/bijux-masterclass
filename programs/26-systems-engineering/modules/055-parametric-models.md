@@ -37,18 +37,18 @@ How can engineers bind configured system properties to calculations and constrai
 
 Let configured inputs be vector $x$, parameters $\theta$, outputs $y$, constraints $g$, evidence state $E$ and configuration $\gamma$:
 
-\[
+$$
 y=f(x,\theta;\gamma),\qquad g(x,y,\theta;\gamma)\le 0.
-\]
+$$
 
 Every quantity carries dimension $dim(q)$. Addition/subtraction require compatible dimensions; multiplication/division compose them. A result is meaningful only when bindings preserve quantity kind, unit conversion and configuration.
 
 For differentiable $y=f(x_1,\ldots,x_n)$, first-order combined uncertainty includes covariance:
 
-\[
+$$
 u_y^2\approx \sum_i\left(\frac{\partial f}{\partial x_i}\right)^2u_i^2
 +2\sum_{i<j}\frac{\partial f}{\partial x_i}\frac{\partial f}{\partial x_j}u_{ij}.
-\]
+$$
 
 This approximation requires local linearity and credible uncertainty inputs. Simulation or other methods may be needed for nonlinear, discontinuous, bounded, multimodal or tail-sensitive models.
 
@@ -214,15 +214,15 @@ The point energy calculation also assumes constant simultaneous load and usable 
 
 Let quantitative property record be
 
-\[
+$$
 q=(id,kind,value,unit,source,status,\gamma,mode,time,uncertainty,version).
-\]
+$$
 
 Let maximum-type margin $M_{max}=L-E$ and minimum-type margin $M_{min}=E-L$. Percent margin requires declared denominator $d$:
 
-\[
+$$
 M_\%=100\frac{M}{d},\qquad d\ne 0.
-\]
+$$
 
 Constraint residual $r=g(z)$ and solver tolerance $\epsilon$ permit a numerical check $r\le\epsilon$, but engineering acceptance may require physical margin far larger than numerical tolerance.
 

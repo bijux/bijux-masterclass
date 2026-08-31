@@ -33,15 +33,15 @@ How should systems engineering preserve stakeholder value, technical integrity, 
 
 For alternative $a$, define lifecycle value as a vector rather than a single score:
 
-\[
+$$
 L(a)=\big(E(a),C(a),S(a),R(a),X(a)\big),
-\]
+$$
 
 where $E$ is stakeholder effectiveness, $C$ cost/resource commitment, $S$ schedule/availability, $R$ risk and resilience, and $X$ externalities/retirement obligations over the declared lifecycle. A discounted cost view can inform comparison:
 
-\[
+$$
 PV(a)=C_0+\sum_{t=1}^{T}\frac{C_t}{(1+r)^t}+\frac{C_{ret}}{(1+r)^{T+1}},
-\]
+$$
 
 but it cannot collapse mandatory safety, security, legal, environmental, mission, equity, or disposition constraints. Early decisions commit downstream possibilities and burdens; later evidence must update the lifecycle model and may reopen earlier assumptions.
 

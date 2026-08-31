@@ -31,9 +31,9 @@ Which facts describe the world in which a need exists, and which decisions descr
 Let (W) denote relevant domain properties and assumptions, (S) a machine specification, and (R) the required effect in the world. The central adequacy obligation is:
 
 
-\[
+$$
 W \land S \models R.
-\]
+$$
 
 
 The formula is an argument shape, not a promise that every project uses formal logic. It asks reviewers to show why the machine behavior, when composed with credible environmental properties, entails the desired outcome. A solution that satisfies its own tests but relies on a false (W) does not solve the problem.

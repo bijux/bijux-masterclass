@@ -36,27 +36,27 @@ How can decision objectives be translated into measurable criteria and explicit 
 
 For feasible alternative (a), certain attribute outcomes (x_i(a)), single-attribute value functions (u_i\in[0,1]), and normalized swing weights (w_i\ge0,\sum_i w_i=1), an additive model is:
 
-\[
+$$
 V(a)=\sum_{i=1}^{n}w_i u_i(x_i(a)).
-\]
+$$
 
 This model is legitimate only when criteria/scales and independence assumptions support additive compensation. A mandatory-feasibility predicate is evaluated first:
 
-\[
+$$
 Feasible(a)=\bigwedge_{j\in M}g_j(a).
-\]
+$$
 
 Under uncertainty with states (\omega) and defensible probabilities:
 
-\[
+$$
 EU(a)=\sum_{\omega}P(\omega\mid a)\,U(x(a,\omega)).
-\]
+$$
 
 Expected utility differs from applying value to an expected outcome:
 
-\[
+$$
 E[U(X)]\ne U(E[X])
-\]
+$$
 
 for nonlinear (U). Neither expression should be used when probabilities, consequences, or preference assumptions are unsupported.
 
@@ -221,40 +221,40 @@ Let alternatives be (A), mandatory constraints (M), enhancing criteria (C), attr
 
 Feasible set:
 
-\[
+$$
 A_F=\{a\in A:\forall m\in M,\ g_m(a)=true\}.
-\]
+$$
 
 Single-attribute value:
 
-\[
+$$
 u_i:X_i\rightarrow[0,1],
-\]
+$$
 
 with fixed anchor semantics. Additive value:
 
-\[
+$$
 V(a)=\sum_iw_i u_i(x_i(a)),\quad w_i\ge0,\quad\sum_iw_i=1.
-\]
+$$
 
 Dominance for higher-is-better values:
 
-\[
+$$
 a\succeq_D b\iff \forall i:u_i(x_i(a))\ge u_i(x_i(b))
 \land\exists j:u_j(x_j(a))>u_j(x_j(b)).
-\]
+$$
 
 Under state uncertainty:
 
-\[
+$$
 EU(a)=\sum_{\omega\in\Omega}P(\omega\mid a)U(x(a,\omega)).
-\]
+$$
 
 Sensitivity region for alternative (a):
 
-\[
+$$
 \mathcal R_a=\{\theta:Score(a;\theta)\ge Score(b;\theta),\forall b\in A_F\},
-\]
+$$
 
 where (\theta) contains weights, functions, estimates, probabilities, constraints, and scenarios. Mapping (\mathcal R_a) is often more useful than one nominal rank.
 
@@ -316,9 +316,9 @@ The integrity argument requires that criteria represent the decision, measures a
 
 **Fixed-anchor linear value.** Lower latency is better between 100 ms (value 1) and 500 ms (value 0):
 
-\[
+$$
 u(L)=\frac{500-L}{400}.
-\]
+$$
 
 At 220 ms, (u=280/400=0.70). At 80 ms, cap or redefine behavior rather than report 1.05 automatically. Anchors express preference range, not physical impossibility.
 
@@ -344,15 +344,15 @@ Build the causal chain and use fundamental mission availability/outcome plus ind
 
 **Expected utility differs from utility of expectation.** Outcome is 0 or 100 with equal probability and (U(x)=\sqrt{x}). Then:
 
-\[
+$$
 E[U(X)]=0.5(0)+0.5(10)=5,
-\]
+$$
 
 but:
 
-\[
+$$
 U(E[X])=\sqrt{50}\approx7.071.
-\]
+$$
 
 The difference follows from nonlinearity. Whether square-root utility is legitimate requires elicitation and meaningful consequence units.
 
@@ -431,55 +431,55 @@ Frame criteria and preference treatment for choosing a hospital medication-deliv
 
 Mass value:
 
-\[
+$$
 u_m(m)=\frac{100-m}{60}.
-\]
+$$
 
 Thus:
 
-\[
+$$
 u_m(A)=45/60=0.75,\qquad u_m(B)=20/60=0.3333.
-\]
+$$
 
 Energy value:
 
-\[
+$$
 u_e(e)=\frac{600-e}{400},
-\]
+$$
 
 so:
 
-\[
+$$
 u_e(A)=100/400=0.25,\qquad u_e(B)=340/400=0.85.
-\]
+$$
 
 Totals:
 
-\[
+$$
 V_A=0.35(0.75)+0.65(0.25)=0.425,
-\]
+$$
 
-\[
+$$
 V_B=0.35(0.3333)+0.65(0.85)\approx0.6692.
-\]
+$$
 
 B ranks higher. Assumptions include both alternatives satisfy mandatory constraints; lower is preferred; anchors/ranges are authorized and fixed; linear value is appropriate; weights refer to those swings; additive preferential independence/compensation is acceptable; measures use consistent configurations/lifecycle boundaries; estimates are accurate enough; and uncertainty or omitted criteria do not reverse the result. The totals are conditional values, not percentages of quality.
 
 ### Answer 2
 
-\[
+$$
 V_A=0.9w+0.4(1-w)=0.4+0.5w,
-\]
+$$
 
-\[
+$$
 V_B=0.6w+0.8(1-w)=0.8-0.2w.
-\]
+$$
 
 Set equal:
 
-\[
+$$
 0.4+0.5w=0.8-0.2w\Rightarrow0.7w=0.4\Rightarrow w=4/7\approx0.5714.
-\]
+$$
 
 For (w>4/7), A is preferred; for (w<4/7), B; equal at break-even. The elicitation question compares the value of moving criterion 1 from its defined worst anchor to best against the corresponding specified swing on criterion 2, under the additive model and a stated reference—not “which criterion sounds more important?” Changes to anchors or interaction require re-elicitation.
 
@@ -487,21 +487,21 @@ For (w>4/7), A is preferred; for (w<4/7), B; equal at break-even. The elicitatio
 
 Expected benefit:
 
-\[
+$$
 E[X]=0.25(0)+0.75(100)=75.
-\]
+$$
 
 Expected utility:
 
-\[
+$$
 E[U(X)]=0.25\sqrt0+0.75\sqrt{100}=7.5.
-\]
+$$
 
 Utility of expected benefit:
 
-\[
+$$
 U(E[X])=\sqrt{75}\approx8.6603.
-\]
+$$
 
 They differ because square root is nonlinear/concave; averaging before applying it is not the same as applying it before averaging. Use requires a well-defined benefit unit/domain; a legitimately elicited utility function representing the decision authority's risk preference; defensible conditional probabilities; complete consequence states including adverse/tail/distributional effects; and evidence/uncertainty/correlation. Square root chosen for convenience does not establish risk attitude.
 

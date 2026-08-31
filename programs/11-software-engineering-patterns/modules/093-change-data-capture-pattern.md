@@ -243,15 +243,15 @@ Let:
 
 For idempotent application, require
 
-\[
+$$
 A(A(P,r),r)=A(P,r).
-\]
+$$
 
 For gap-free bootstrap, the intended history is
 
-\[
+$$
 P_q=fold(A, snapshot(S,p_0),\{r\in L\mid p_0<p(r)\le q\}).
-\]
+$$
 
 This is a model, not a proof that an engine snapshot corresponds to one (p_0). That correspondence must be established from official engine/connector semantics and tested. A keyed reconciliation claim might be (H_K(S_q)=H_K(P_q)), but only after projecting source fields into exactly the sink's intended representation.
 

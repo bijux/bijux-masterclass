@@ -33,9 +33,9 @@ For every applicable requirement in the controlled baseline, what exact, configu
 
 Represent each baseline requirement $r$ with a closure record
 
-\[
+$$
 C_r=(S_r,B_r,V_r,P_r,E_r,A_r,J_r),
-\]
+$$
 
 where $S$ is source/rationale/applicability, $B$ the requirement and product configuration baseline, $V$ the verification statement/method/conditions/oracle, $P$ the approved procedure and execution pedigree, $E$ raw and analyzed objective evidence, $A$ discrepancies and their dispositions, and $J$ the reviewed status/authority/limitations. The system requirement set is not verified merely because every row has a method or a linked test. Every applicable $C_r$ must be internally consistent, and cross-cutting/emergent requirements need evidence at the level where their property exists.
 

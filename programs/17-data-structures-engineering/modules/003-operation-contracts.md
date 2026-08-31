@@ -31,17 +31,17 @@ How can a data-structure operation state exactly what callers must provide, what
 
 ### Central model, mechanism, or theorem
 
-For abstract state (a\in A), input (x\in X), normal result (y\in Y), and successor (a'\), specify an operation as a relation
+For abstract state (a\in A), input (x\in X), normal result (y\in Y), and successor $a'$, specify an operation as a relation
 
-\[
+$$
 Op\subseteq A\times X\times Outcome(Y)\times A.
-\]
+$$
 
 A normal Hoare-style obligation is
 
-\[
+$$
 \{RI\land Pre(a,x)\}\ op(x)\ \{RI'\land Post(a,x,y,a')\land Frame(a,a')\}.
-\]
+$$
 
 Every documented error outcome needs its own postcondition. If behavior outside `Pre` is unspecified, callers cannot rely on it; when practical, a total API can instead return an explicit result for empty, absent, full, or invalid cases.
 
@@ -116,9 +116,9 @@ Start from abstract state. A sequence operation `append(x)` transforms mathemati
 
 Use old-state notation explicitly. Let (a_0) be state at invocation and (a_1) the state on return. A map update might say:
 
-\[
+$$
 lookup(a_1,k)=v
-\]
+$$
 
 and for all (j\ne k), (lookup(a_1,j)=lookup(a_0,j)). The second clause is a frame condition. Without it, an implementation that deletes every other entry still satisfies the first equation.
 
@@ -130,9 +130,9 @@ Distinguish invalid input from ordinary absence or capacity. An empty pop is par
 
 **Normal postconditions.** State result, abstract successor, preserved observations, and ownership transfer. For set insertion:
 
-\[
+$$
 S_1=S_0\cup\{x\},\qquad result=(x\notin S_0).
-\]
+$$
 
 This defines both idempotent state behavior and a Boolean meaning. “Returns success” is ambiguous: did the call finish, did membership change, or is the element present afterward?
 
@@ -238,9 +238,9 @@ For partial operation (op:A\times X\rightharpoonup A\times Y), `Pre` identifies 
 
 A frame can be written as a modifies set or relational equality. For map update at key (k):
 
-\[
+$$
 \forall j\ne k.\ lookup(a',j)=lookup(a,j).
-\]
+$$
 
 Sequential history (h) is a sequence of invocations/responses. Concurrent specifications relate a history to allowed sequential histories or another consistency model. Resource bound (T(n,k,\alpha)) names input size (n), output size (k), and assumptions (\alpha).
 

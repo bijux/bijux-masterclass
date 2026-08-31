@@ -22,9 +22,9 @@ An **R-tree** stores entries ((B,	ext{pointer})), where (B) is a minimum boundin
 
 For rectangle (B=[l_x,u_x]\times[l_y,u_y]),
 
-\[
+$$
 \operatorname{area}(B)=(u_x-l_x)(u_y-l_y).
-\]
+$$
 
 Insertion usually chooses a child minimizing required area enlargement, with tie rules based on area or occupancy. Overflow splits entries into nodes subject to maximum capacity (M) and minimum fill (m). Search visits every child MBR intersecting the query, then rechecks candidate objects using exact geometry when MBRs are lossy.
 
@@ -76,9 +76,9 @@ Retrieve:
 
 Two closed rectangles intersect exactly when their intervals overlap on every dimension:
 
-\[
+$$
 l_i^A\le u_i^B\quad\land\quad l_i^B\le u_i^A
-\]
+$$
 
 for each axis (i). Touching at an edge counts as intersection under this convention; another API may choose interior-only semantics.
 
@@ -116,9 +116,9 @@ Nearest-neighbor traversal orders nodes by a lower bound such as minimum distanc
 
 To insert rectangle (E), descend from the root. Guttman's area-enlargement heuristic chooses the child minimizing
 
-\[
+$$
 \Delta A=\operatorname{area}(\operatorname{MBR}(B,E))-\operatorname{area}(B),
-\]
+$$
 
 breaking ties by smaller area and then deterministic policy. Near the leaf level, R*-tree variants emphasize overlap enlargement because leaf overlap directly multiplies query paths. Every chosen ancestor must expand to enclose (E).
 

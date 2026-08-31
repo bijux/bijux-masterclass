@@ -33,9 +33,9 @@ How can a subsystem expose a small, stable, task-oriented entry point without hi
 
 Let a client goal (g) require a protocol over subsystem operations (s_1,\ldots,s_n). A facade defines
 
-\[
+$$
 F(g,c): Context\times Input\to Outcome(Output,State,Error)
-\]
+$$
 
 and owns the protocol's ordering, translation, deadline allocation, and progress reporting. It must not falsely strengthen the guarantees of its participants. If participant (s_i) can commit before (s_{i+1}) fails, the facade cannot honestly advertise atomic rollback without a mechanism that supplies it. A good facade reduces client-visible coupling while keeping ownership, failure, and bypass rules explicit.
 

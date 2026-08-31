@@ -33,11 +33,11 @@ When offered work exceeds currently sustainable capacity, which work should be r
 
 For homogeneous offered rate λo and sustainable service rate μ, a necessary ideal admission condition is λa≤μ. If a fraction f is shed uniformly before expensive work,
 
-\[
+$$
 \lambda_a=(1-f)\lambda_o,
 \qquad
 f\ge 1-\frac{\mu}{\lambda_o}
-\]
+$$
 
 when λo>μ. This is a lower-bound planning calculation, not a controller: work costs differ, μ changes with state, signals lag, and rejection itself costs resources. The production objective is not maximum accepted traffic but maximum goodput subject to criticality, fairness, correctness and resource/safety limits. Once work has consumed expensive resources, shedding it may decrease goodput and encourage retries; reject as early as enough information permits and finish bounded useful admitted work where safe.
 
@@ -155,9 +155,9 @@ Do not start irreversible work and then shed it as if nothing happened. Once a m
 
 Raw throughput counts operations processed/rejected or responses emitted; goodput counts correct useful outcomes within contract. Track:
 
-\[
+$$
 G=\frac{\text{useful terminal outcomes completed within contract}}{\text{time}}.
-\]
+$$
 
 A server can report high throughput by quickly returning errors, or consume high CPU completing results after caller deadlines. Neither is desired. Observe offered, admitted, shed, degraded, timed-out, abandoned, effect-uncertain and useful-completed work separately.
 
@@ -167,7 +167,7 @@ Deadline-aware admission estimates whether minimum useful service plus response/
 
 For homogeneous work under a known offered rate λo and sustainable μ, the ideal minimum uniform fraction is f≥1−μ/λo. At λo=1,200/s and μ=750/s, f≥1−750/1,200=0.375, or 37.5%. The real controller needs margin because rejection costs, measurement lag, cost variance and μ degradation are omitted.
 
-For weighted work, compare offered cost rate \(\sum_j \lambda_j c_j\) with sustainable resource-cost rate. Shedding ten cheap requests may free less capacity than one expensive fan-out. Cost estimates must be bounded and resistant to manipulation; unknown streaming/output cost requires incremental admission or hard limits.
+For weighted work, compare offered cost rate $\sum_j \lambda_j c_j$ with sustainable resource-cost rate. Shedding ten cheap requests may free less capacity than one expensive fan-out. Cost estimates must be bounded and resistant to manipulation; unknown streaming/output cost requires incremental admission or hard limits.
 
 Deterministic stable selection by hash/tenant can preserve a consistent served cohort and reduce client flapping, but may repeatedly exclude the same users. Random shedding spreads pain probabilistically but one client may see unstable outcomes. Weighted fair/criticality scheduling provides explicit shares. Choose based on product/fairness and test distributions.
 
@@ -427,9 +427,9 @@ Return stable overload disposition with deadline-aware advice; one immediate ups
 
 The ideal minimum is
 
-\[
+$$
 f\ge1-\frac{1250}{2000}=0.375=37.5\%.
-\]
+$$
 
 Uniform shedding at exactly 37.5% gives admitted rate (1−0.375)2,000=1,250 requests/s under homogeneous negligible-rejection assumptions.
 

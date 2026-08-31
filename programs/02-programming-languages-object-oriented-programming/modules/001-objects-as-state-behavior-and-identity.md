@@ -30,9 +30,9 @@ What makes a software object one continuing thing rather than merely a collectio
 
 Model a heap as (H:I\rightharpoonup S), mapping object identities to states, and an environment as (\rho:Name\rightharpoonup I), mapping names to identities. An operation transition has the form
 
-\[
+$$
 \langle i,H,m,a\rangle\longrightarrow\langle H',r,t\rangle,
-\]
+$$
 
 where object (i) receives operation (m) with arguments (a), produces result (r) and observable trace (t), and may replace (H(i)) with a new state while preserving identity (i). If (\rho(x)=\rho(y)=i), then (x) and (y) alias the same object; an update through either is visible through both.
 
@@ -130,23 +130,23 @@ Let:
 
 The notation (H[i\mapsto s']) means a heap equal to (H) except that identity (i) now maps to state (s'). An operation transition is
 
-\[
+$$
 \langle i,H,m,a\rangle\longrightarrow\langle H[i\mapsto s'],r,t\rangle.
-\]
+$$
 
 An alias relation for names is
 
-\[
+$$
 x\sim_\rho y\quad\Longleftrightarrow\quad\rho(x)=\rho(y).
-\]
+$$
 
 Reference equality compares identities. Structural equality compares selected state recursively or fieldwise. Domain equality compares according to a business relation. These relations can disagree and must not share one unexplained word “same.”
 
 For an invariant predicate (Inv:S\to\{true,false\}), an operation's basic preservation obligation is
 
-\[
+$$
 Inv(s)\land Pre_m(s,a)\land Step_m(s,a,s',r,t)\Longrightarrow Inv(s').
-\]
+$$
 
 Module 005 develops invariants fully. Here the formula clarifies that behavior constrains state transitions rather than merely exposing setters.
 

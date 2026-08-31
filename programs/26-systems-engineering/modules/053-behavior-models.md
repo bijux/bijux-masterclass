@@ -37,17 +37,17 @@ How can engineers model what a system does across scenarios, functions, interact
 
 Represent a labeled transition system as
 
-\[
+$$
 \mathcal{B}=(S,S_0,E,I,O,T,Inv,Time),
-\]
+$$
 
 where $S$ is state, $S_0$ initial states, $E$ events, $I/O$ inputs and outputs, $T\subseteq S\times E\times Guard\times Effect\times S$ transitions, $Inv$ state invariants and $Time$ clock/timing semantics.
 
 A concrete execution trace is
 
-\[
+$$
 \sigma=s_0\xrightarrow{e_1,g_1/o_1}s_1\xrightarrow{e_2,g_2/o_2}\cdots .
-\]
+$$
 
 Structural checks can establish that every declared state is reachable, no state/event pair is accidentally ambiguous, and required safe states have modeled paths. Formal verification can establish $\mathcal{B}\models\varphi$ for property $\varphi$. Neither establishes that $\mathcal{B}$ includes every relevant environmental, human, physical, adversarial or failure behavior, so validation and empirical evidence remain necessary.
 
@@ -222,9 +222,9 @@ Unique state-event pairs are a simplified proxy because real guards may partitio
 
 Let enabled transitions in state $s$ for event $e$ and valuation $x$ be
 
-\[
+$$
 Enabled(s,e,x)=\{t\in T:t.source=s\land t.event=e\land t.guard(x)\}.
-\]
+$$
 
 Determinism for the modeled condition requires $|Enabled|\le 1$; completeness may require $|Enabled|=1$ for every admissible condition. Intentional nondeterminism relaxes uniqueness but properties must hold across permitted choices.
 
@@ -232,9 +232,9 @@ For actions $a\prec b$, $a$ must complete or reach a declared synchronization po
 
 End-to-end latency is not automatically additive under concurrency and queues. A generic composition is
 
-\[
+$$
 L=f(D,Q,C,N,H,U),
-\]
+$$
 
 with action durations $D$, queues $Q$, concurrency/scheduling $C$, network/interface delay $N$, human contribution $H$ and uncertainty $U$.
 

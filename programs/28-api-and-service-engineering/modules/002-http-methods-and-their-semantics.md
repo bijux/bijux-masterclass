@@ -31,14 +31,14 @@ How does an HTTP request method communicate the client's intended interaction wi
 
 ### Central model, mechanism, or theorem
 
-Interpret a request as \(R=(m,u,f,c)\): method \(m\), target URI \(u\), fields \(f\), and optional content \(c\). The method specification supplies a semantic relation
+Interpret a request as $R=(m,u,f,c)$: method $m$, target URI $u$, fields $f$, and optional content $c$. The method specification supplies a semantic relation
 
-\[
+$$
 \llbracket m \rrbracket:(S_u,f,c,\Gamma)\rightarrow
   \mathcal{P}(S'_u,O,E),
-\]
+$$
 
-where \(S_u\) is target-resource state, \(\Gamma\) is request context, \(S'_u\) is resulting state, \(O\) is response outcome, and \(E\) is allowed related effect. Fields may condition or specialize the request without contradicting \(m\). Safety constrains requested state change; idempotency constrains repeated identical intended effects. Neither property alone proves retry success, authorization, concurrency safety, or business correctness.
+where $S_u$ is target-resource state, $\Gamma$ is request context, $S'_u$ is resulting state, $O$ is response outcome, and $E$ is allowed related effect. Fields may condition or specialize the request without contradicting $m$. Safety constrains requested state change; idempotency constrains repeated identical intended effects. Neither property alone proves retry success, authorization, concurrency safety, or business correctness.
 
 ### Critical invariants
 
@@ -207,16 +207,16 @@ The run verifies only the encoded Boolean classifications and implications. It d
 
 ## Definitions and Notation
 
-Let \(M\) be registered methods, \(U\) target resources, \(F\) request-field values, \(C\) optional request content, and \(\Gamma\) actor, intermediary, and representation context. A method defines allowed interpretations rather than one implementation function.
+Let $M$ be registered methods, $U$ target resources, $F$ request-field values, $C$ optional request content, and $\Gamma$ actor, intermediary, and representation context. A method defines allowed interpretations rather than one implementation function.
 
-For method \(m\):
+For method $m$:
 
-- \(Safe(m)\) means the client requests no origin state change;
-- \(Idem(m)\) means repeating identical requests has the same intended server effect as one;
-- \(Cacheable(m)\) means its specification permits response reuse subject to cache rules;
-- \(Allowed(m,u,\Gamma)\) is the origin's current authorization-aware allowance decision;
-- \(Replayable(R)\) means the client can reproduce the same relevant request content and fields; and
-- \(Applied(R)\) is evidence about a particular request occurrence, not a method property.
+- $Safe(m)$ means the client requests no origin state change;
+- $Idem(m)$ means repeating identical requests has the same intended server effect as one;
+- $Cacheable(m)$ means its specification permits response reuse subject to cache rules;
+- $Allowed(m,u,\Gamma)$ is the origin's current authorization-aware allowance decision;
+- $Replayable(R)$ means the client can reproduce the same relevant request content and fields; and
+- $Applied(R)$ is evidence about a particular request occurrence, not a method property.
 
 Safety implies idempotency for the registered core safe methods, but idempotency does not imply safety: PUT and DELETE are counterexamples. Idempotency does not imply commutativity. Two different PUT requests to one resource can overwrite in order-dependent ways even though each request is individually idempotent.
 

@@ -35,26 +35,26 @@ How can an engineering team systematically reason upward from credible ways an i
 
 Represent a row for configuration and operating context $c$ as
 
-\[
+$$
 r=(i,f,m,k,e_L,e_N,e_E,c_0,S,O,D,a,v,\rho),
-\]
+$$
 
 where $i$ is the item/process step, $f$ required function, $m$ failure mode, $k$ causes/mechanisms, $e_L,e_N,e_E$ local/next/end effects, $c_0$ existing controls, $S,O,D$ declared rankings, $a$ recommended actions and owners/dates, $v$ verification evidence, and $\rho$ residual assessment.
 
 For classical quantitative FMECA, one historical form estimates mode criticality as
 
-\[
+$$
 C_m=\beta\alpha\lambda_p t,
 \qquad C_r=\sum_m C_m,
-\]
+$$
 
 where $\lambda_p$ is item failure rate, $\alpha$ the fraction attributed to the mode, $\beta$ the conditional probability that the mode produces the specified severity effect, and $t$ mission/exposure time. This is not a universal probability formula. Constant rates, data applicability, mode partition, exposure, repair, dependency, and conditional-effect assumptions must be justified.
 
 Prioritization is a decision rule, not a ranking ritual:
 
-\[
+$$
 Priority(r)=P(S,O,D,\text{hazard link},\text{single point},\text{uncertainty},\text{control evidence}).
-\]
+$$
 
 High severity and mandatory safety actions cannot be traded away by a low RPN or a detectability claim.
 
@@ -212,9 +212,9 @@ Let $I$ be configured items or process steps and $F(i,c)$ their required functio
 
 Let $C_p,C_d,C_t,C_m,C_r$ denote prevention, detection, containment, mitigation, and recovery controls. A control-credit judgment is
 
-\[
+$$
 Credit(C,c)=Implemented\land Applicable\land Timely\land Independent\land Verified,
-\]
+$$
 
 with strength and uncertainty assessed separately. This conjunction is a review discipline, not proof that controls are perfect.
 
@@ -368,9 +368,9 @@ A transparent policy might require immediate analysis/action for severity 9–10
 
 Under the stated historical constant-rate model,
 
-\[
+$$
 C_m=(0.5)(0.3)(4\times10^{-6}\,h^{-1})(2{,}000\,h)=0.0012.
-\]
+$$
 
 It is a dimensionless criticality contribution for the specified mode/severity classification under the method; it is not automatically an observed failure probability. For a rare constant-rate nonrepairable event, it may approximate a contribution, but exact probability and dependencies require an appropriate model.
 

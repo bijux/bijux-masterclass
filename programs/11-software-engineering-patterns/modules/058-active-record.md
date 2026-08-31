@@ -31,16 +31,16 @@ When is it advantageous for one object to wrap one row, encapsulate its persiste
 
 ### Central model, mechanism, or theorem
 
-For record state \(a=(k,v,p)\)—scoped key \(k\), version \(v\), persistent fields \(p\)—and domain command \(c\) with trusted context \(x\), an Active Record method computes valid candidate \(p'=f(p,c,x)\) or rejection, then performs a guarded write:
+For record state $a=(k,v,p)$—scoped key $k$, version $v$, persistent fields $p$—and domain command $c$ with trusted context $x$, an Active Record method computes valid candidate $p'=f(p,c,x)$ or rejection, then performs a guarded write:
 
-\[
+$$
 \mathrm{UPDATE}\;p',v+1\;\mathrm{WHERE}\;k\land v
 \rightarrow
 \begin{cases}
 1,&\text{committed candidate},\\
 0,&\text{stale/missing under scope}.
 \end{cases}
-\]
+$$
 
 Correctness requires validation/domain rules, database constraints, tenant/action authorization, a real transaction, and post-failure object-state policy. Combining data and persistence in one class supplies none of these automatically.
 
@@ -156,7 +156,7 @@ Keep remote calls and user think time outside locks. Nested transaction APIs may
 
 ### Implement optimistic locking
 
-Load version \(v\); update/delete with tenant/key/version predicate; increment version; require one affected row. Framework lock columns help only when all write paths honor them. Bulk/native updates, direct SQL, imports, and callbacks must preserve version policy.
+Load version $v$; update/delete with tenant/key/version predicate; increment version; require one affected row. Framework lock columns help only when all write paths honor them. Bulk/native updates, direct SQL, imports, and callbacks must preserve version policy.
 
 On stale error, roll back, expire/reload, and re-run the domain decision or return conflict. Never copy current version onto stale fields and retry blindly.
 
@@ -264,23 +264,23 @@ Migrate one use case at a time behind characterization tests. Active Record can 
 
 ## Definitions and Notation
 
-Let a record be \(a=(k,v,p)\), with scoped key \(k\), loaded version \(v\in\mathbb{N}\), and persistent field vector \(p\). Domain transition is partial:
+Let a record be $a=(k,v,p)$, with scoped key $k$, loaded version $v\in\mathbb{N}$, and persistent field vector $p$. Domain transition is partial:
 
-\[
+$$
 f(a,c,x)=a'\in A_v\quad\text{or}\quad r\in R,
-\]
+$$
 
-where \(A_v\) is valid record state and \(R\) typed rejection. Persistence function \(w\) must apply key/tenant/version predicate:
+where $A_v$ is valid record state and $R$ typed rejection. Persistence function $w$ must apply key/tenant/version predicate:
 
-\[
+$$
 w(a',v)=
 \begin{cases}
 (a'[v\leftarrow v+1],1),&\text{exactly one current row matches},\\
 (a',0),&\text{stale or missing under authorized scope}.
 \end{cases}
-\]
+$$
 
-If an operation changes records \(a_1,\ldots,a_n\), per-record correctness does not imply atomic use-case correctness. A transaction must provide all-or-none durability for the governed write set, idempotency, audit, and outbox under its assumptions.
+If an operation changes records $a_1,\ldots,a_n$, per-record correctness does not imply atomic use-case correctness. A transaction must provide all-or-none durability for the governed write set, idempotency, audit, and outbox under its assumptions.
 
 ## Mechanisms, Invariants, or Proof Structure
 

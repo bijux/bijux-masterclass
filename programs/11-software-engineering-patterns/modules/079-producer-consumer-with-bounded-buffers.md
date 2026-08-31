@@ -33,15 +33,15 @@ How can producers and consumers exchange owned items at different rates through 
 
 For capacity (K), FIFO ring state can satisfy
 
-\[
+$$
 0\le count\le K,\qquad tail-head=count
-\]
+$$
 
 when head/tail are logical monotonic sequences (or equivalent modulo invariants). Each successful enqueue consumes one free-slot permit and publishes exactly one owned item; each successful dequeue consumes one item permit and returns one slot. In a correct work-sharing queue,
 
-\[
+$$
 accepted = queued + in\_flight + terminal
-\]
+$$
 
 for a defined audit boundary, with disjoint item identities.
 
@@ -490,15 +490,15 @@ Close is protected generation state: rejects production, wakes all, drains to EO
 
 Maximum declared queued payload is
 
-\[
+$$
 256\times48\text{ KiB}=12{,}288\text{ KiB}=12\text{ MiB}.
-\]
+$$
 
 Little's Law gives average queued items
 
-\[
+$$
 L_q=\lambda W_q=1200\times0.12=144.
-\]
+$$
 
 Aggregate nominal consumer service is (12\times110=1320) items/s, so (1200<1320) satisfies the necessary mean inequality and nominal utilization is (1200/1320\approx0.9091), about 90.9%.
 

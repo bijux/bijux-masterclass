@@ -34,9 +34,9 @@ When should a domain preserve its accepted facts as the authoritative history an
 
 For stream (E_a=\langle e_1,\ldots,e_n\rangle) of aggregate (a), state is
 
-\[
+$$
 s_n=fold(apply,s_0,E_a).
-\]
+$$
 
 A command handler computes (decide(s_n,c)=\langle e_{n+1},\ldots,e_{n+k}\rangle), then atomically appends those events with expected revision (n). If another writer already appended, the store rejects the append; the caller reloads and re-decides or reports conflict. Events are authority only if `apply` is deterministic, order/revision is durable, accepted events cannot be silently changed, every retained representation remains interpretable, and corrections are explicit.
 

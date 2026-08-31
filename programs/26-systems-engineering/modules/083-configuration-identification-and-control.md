@@ -33,15 +33,15 @@ Can the organization uniquely identify what the system is, what defines it, whic
 
 Represent a configuration at time $t$ as a versioned typed graph
 
-\[
+$$
 C_t=(N_t,L_t,B_t,E_t,P_t),
-\]
+$$
 
 where nodes $N$ are CIs/configuration records, links $L$ define composition/interfaces/dependencies, $B$ identifies governing baselines, $E$ effectivity, and $P$ provenance/status. A change $\Delta$ is controlled only if the authorized transition
 
-\[
+$$
 C_t \xrightarrow[\alpha,\,I,\,V]{\Delta} C_{t+1}
-\]
+$$
 
 records authority $\alpha$, impact $I$, verified implementation $V$, and actual effectivity. Updating a document, repository, part, database, or running service alone does not prove the configuration transition is complete.
 

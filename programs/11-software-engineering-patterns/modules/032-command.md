@@ -33,9 +33,9 @@ How can an intent to change state be represented as a first-class value so invoc
 
 Model a command as immutable value (c=(id,type,version,payload,actor,precondition,deadline)). Execution is
 
-\[
+$$
 Execute:S\times Ctx\times c\to (S',Outcome,Events),
-\]
+$$
 
 where validation occurs against current state (S) and trusted context. For scoped command identity (id), an idempotency record maps payload digest and outcome. Reusing the same identity and digest returns/resumes the logical outcome; reusing the identity with a different digest is conflict. Neither serialization nor queue delivery proves authorization, atomicity, exactly-once execution, or successful effect.
 
@@ -190,9 +190,9 @@ Let command (c=(i,k,v,p,a,e,D)): ID (i), type (k), schema version (v), payload (
 
 Idempotency table entry (I[a,k,i]=(h(p),state,outcome)). On repeat:
 
-\[
+$$
 h(p')=h(p)\Rightarrow return/resume\ same\ logical\ execution,
-\]
+$$
 
 while (h(p')\ne h(p)) is conflict. This does not imply every log/metric side effect occurs once.
 

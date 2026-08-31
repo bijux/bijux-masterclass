@@ -35,20 +35,20 @@ How can a team specify control and data flows among logical elements so that cau
 
 Represent the logical flow architecture as a typed directed multigraph:
 
-\[
+$$
 G_F=(L,E),\qquad
 e=\langle id,s,t,k,x,g,m,\tau,o,q,a,f,v\rangle,
-\]
+$$
 
 where (L) is logical elements; source (s) and target (t); kind (k\in\{data,control,command,event,query,response\}); item contract (x); guard/trigger (g); mode/configuration (m); timing (\tau); ordering/cardinality (o); quality/provenance (q); authority/security (a); failure/backpressure (f); and version/evidence (v).
 
 For an input or control port (p), compatibility requires more than type:
 
-\[
+$$
 Compatible(e,p)=Direction\land Meaning\land Type\land Unit\land Range\land
 TimeBasis\land Freshness\land Ordering\land Cardinality\land Quality\land
 Authority\land Security\land Mode\land Version\land FailureSemantics.
-\]
+$$
 
 A flow architecture is acceptable only conditionally when graph well-formedness, semantic compatibility, behavioral closure, temporal/resource feasibility, failure containment, and empirical evidence all hold for the named configurations and scenarios.
 
@@ -221,17 +221,17 @@ Let (L) be logical elements, (P) ports, (E) flow edges, (X) flow-item types, (M)
 
 For an item occurrence (x_i), distinguish:
 
-\[
+$$
 t_o\leq t_d\leq t_p\leq t_r\leq t_c,
-\]
+$$
 
 where (t_o) is occurrence/observation time, (t_d) detection, (t_p) publication, (t_r) receipt, and (t_c) consumption. Freshness at consumption is (A=t_c-t_o), with combined clock uncertainty included. Transport latency (t_r-t_p) alone cannot establish freshness.
 
 For a serial path with stage bounds (b_i), boundary/queue bounds (d_j), clock allowance (u), and reserve (r):
 
-\[
+$$
 T=\sum_i b_i+\sum_j d_j+u+r\leq D.
-\]
+$$
 
 For a finite buffer of (B) items, arrival rate (\lambda), and service rate (\mu), sustained (\lambda>\mu) is infeasible: under a deterministic approximation, overflow occurs no later than (B/(\lambda-\mu)) after the overload begins. Real burst and service distributions require stronger queueing or simulation evidence.
 
@@ -384,9 +384,9 @@ Maintenance override requires local/remote authority rules, interlocks, indicati
 
 Operational stages sum to (20+35+25+40+55+30+70=275) ms. Adding 15 ms clock allowance and 60 ms reserve gives:
 
-\[
+$$
 T=275+15+60=350\text{ ms}.
-\]
+$$
 
 The declared allocation exactly closes the deadline with no extra headroom beyond the required reserve. Acceptance still needs evidence for measurement-point consistency, worst-case sampling alignment, queue and scheduling bounds, clock uncertainty, transport behavior, actuation and physical response, concurrent load, retries, degraded modes, failure detection, and representative tail distributions or deterministic worst-case assumptions. Integrated fault tests must show the required protective outcome, not just message timing.
 
@@ -400,9 +400,9 @@ Use stable event and entity IDs, source epoch/version, event time plus uncertain
 
 The net burst accumulation is (260-200=60) items/s. Over 90 seconds it adds (60(90)=5{,}400) items. With an existing 600 items, demand reaches 6,000 items, exceeding the 5,000-item capacity. Available space is (5000-600=4400) items, so deterministic overflow starts after:
 
-\[
+$$
 t=4400/60\approx73.33\text{ s}.
-\]
+$$
 
 At least 1,000 additional slots would avoid overflow for exactly this bounded burst, but that is not a full design. Item sizes, variable arrivals/service, fan-out, persistence bandwidth, priorities, concurrent recovery, failures, buffer implementation, stale-work value, backpressure latency, drain time, and future bursts require analysis or simulation. A safer design may admit, aggregate, prioritize, or shed rather than only add memory.
 

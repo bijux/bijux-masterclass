@@ -24,11 +24,11 @@ A **query fingerprint** groups statements under declared normalization rules. A 
 
 Diagnose along a causal chain:
 
-\[
+$$
 statement/context \rightarrow binding/rewrite \rightarrow candidates \rightarrow
 estimates \rightarrow costs/search \rightarrow cache/adaptation \rightarrow
 execution/resources \rightarrow client/workload.
-\]
+$$
 
 Hold the reproduction envelope constant and find the first material divergence. A later difference can be an effect, not the cause. A plan change is neither necessary nor sufficient for a performance regression: the same plan can slow under data, cache, locks, spill, or contention, and a new plan can remain within every gate. Establish causation with controlled interventions, alternative-plan execution where safe, repeated matched samples, and a mechanism explaining the observed row/resource flow.
 

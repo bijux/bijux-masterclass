@@ -35,35 +35,35 @@ How can a program establish a coherent, reproducible, auditable reference config
 
 Represent a baseline as:
 
-\[
+$$
 B=(I,R,A,P,T),
-\]
+$$
 
 where (I) is the controlled item/version set, (R) the relations among items, (A) applicability/effectivity, (P) provenance and approval, and (T) the establishment time/event. Baseline coherence requires all referenced items to exist and their versions, interfaces, requirements, procedures, and evidence to be mutually applicable:
 
-\[
+$$
 Coherent(B)\Rightarrow ClosedRefs(B)\land Compatible(B)\land Applicable(B)
 \land Authorized(B)\land Reproducible(B).
-\]
+$$
 
 For documented set (D) and observed realized set (O):
 
-\[
+$$
 Missing=D\setminus O,\qquad Unrecorded=O\setminus D,
-\]
+$$
 
-\[
+$$
 J(D,O)=\frac{|D\cap O|}{|D\cup O|}.
-\]
+$$
 
 The Jaccard index is only a discrepancy-discovery aid. (J=1) for item labels does not prove correct versions, settings, connections, behavior, requirements, or evidence.
 
 A change is not complete at approval. Its controlled progression is:
 
-\[
+$$
 proposed\rightarrow analyzed\rightarrow authorized\rightarrow implemented
 \rightarrow verified\rightarrow incorporated\rightarrow communicated,
-\]
+$$
 
 with rejected, superseded, deferred, failed, rolled-back, and partially effective states preserved.
 
@@ -244,38 +244,38 @@ Let configuration items be (I), item versions (V_i), baselines (B), realized ins
 
 A baseline membership function selects one authorized version/state for each required role under applicability (a):
 
-\[
+$$
 b_a:I_{required}(a)\rightarrow V,
-\]
+$$
 
 subject to allowed combinations and reference closure. Optional/multiple/redundant uses require explicit cardinality and role identity rather than one simplistic version per definition.
 
 For baseline versions (B_1) and (B_2):
 
-\[
+$$
 Added=B_2\setminus B_1,\quad Removed=B_1\setminus B_2,
-\]
+$$
 
-\[
+$$
 Changed=\{i:version_{B_1}(i)\ne version_{B_2}(i)\}.
-\]
+$$
 
 These sets require stable identity and normalized applicability. A textual diff can miss semantic change and can overstate regenerated formatting.
 
 Documented/observed reconciliation uses set difference as in the review, plus attribute comparison:
 
-\[
+$$
 Mismatch=\{i\in D\cap O:attrs_D(i)\not\equiv attrs_O(i)\}.
-\]
+$$
 
 Equivalence ((\equiv)) must be defined per attribute and decision.
 
 Change record lifecycle function:
 
-\[
+$$
 state(\delta,x,t)\in\{proposed,analyzed,authorized,implemented,verified,
 incorporated,rejected,deferred,failed,rolledBack,superseded\},
-\]
+$$
 
 because effectivity may differ by instance (x) and time (t).
 
@@ -374,13 +374,13 @@ The baseline successor is approved, but as-deployed states differ. Status report
 
 **Documented versus observed drift.** Baseline (D) declares eight item identities. Field observation (O) finds nine; seven are common, one declared item is absent, and two observed items are unrecorded.
 
-\[
+$$
 |D\setminus O|=1,\quad |O\setminus D|=2,
-\]
+$$
 
-\[
+$$
 J(D,O)=7/(8+9-7)=7/10=0.70.
-\]
+$$
 
 The 0.70 index directs investigation; it does not grade safety. The team identifies versions/settings/relations, quarantines unauthorized changes if needed, corrects reality or records through authorized change, and reassesses evidence.
 
@@ -471,19 +471,19 @@ Design configuration baselines and status accounting for a hospital medication-d
 
 Common identities are 10, so:
 
-\[
+$$
 |D\setminus O|=12-10=2,
-\]
+$$
 
-\[
+$$
 |O\setminus D|=13-10=3,
-\]
+$$
 
 and union size is (12+13-10=15):
 
-\[
+$$
 J(D,O)=10/15=2/3\approx0.6667.
-\]
+$$
 
 This cannot establish correct versions/revisions; correct settings; correct connections/locations; functional conformance; requirement or interface satisfaction; whether the extra/missing items are consequential; authorized deviations; evidence validity; safety/security; or whether identification tooling saw the full system. Investigate each difference and compare attributes/relations before deciding correction, authorization, quarantine, or evidence impact.
 
@@ -505,17 +505,17 @@ Status accounting records each device/serial/site, predecessor/new version, prer
 
 One expression is:
 
-\[
+$$
 Eligible(x)=((lot(x)\ge L20)\land variant(x)\ne E)
 \lor(500\le serial(x)\le650\land incorporates(x,H7)),
-\]
+$$
 
 provided production and field populations are distinguished so the union does not accidentally include an export field unit if export exclusion is universal. If variant E is always excluded, write:
 
-\[
+$$
 variant(x)\ne E\land((production(x)\land lot(x)\ge L20)
 \lor(field(x)\land500\le serial(x)\le650\land incorporates(x,H7))).
-\]
+$$
 
 Records include unit identity/variant/lot/serial/site; old/new module part/version/supplier/lot; harness H7 design, installed/inspection state, connector/pinout/polarity; power/thermal/mechanical interfaces and budgets; firmware/config compatibility; change approval/effectivity; installation procedure/tools/training; receipt/acceptance; verification/regression; hazard/security impact; deviation/anomaly; as-built/as-maintained update; spares; rollback; and operator/maintenance communication. Review export/regulatory and mixed-fleet constraints explicitly.
 

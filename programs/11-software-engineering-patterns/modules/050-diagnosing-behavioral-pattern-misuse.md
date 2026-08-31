@@ -32,10 +32,10 @@ How can engineers determine whether a behavioral pattern still resolves a real r
 
 For design (d), observed workload/change history (H), required invariants (I), and evidence measures, compare benefit and cost vectors rather than counting pattern names:
 
-\[
+$$
 V(d\mid H,I)=B_{variation}+B_{ownership}+B_{test}+B_{compat}
 -C_{navigation}-C_{state}-C_{lifecycle}-C_{runtime}-C_{operations}.
-\]
+$$
 
 This is a decision framework, not a universal numerical metric. Misuse is supported when the assumed benefit is absent or cheaper alternatives preserve (I) under representative evidence. Low class count, high coverage, or one benchmark alone cannot prove the diagnosis.
 
@@ -224,9 +224,9 @@ Preserve externally required compatibility deliberately, but isolate it at the b
 
 Let candidate designs (D), required invariant/observation set (I), representative cases (W), and observation function (Obs(d,w)). Preservation obligation is
 
-\[
+$$
 \forall w\in W:\ Obs(d_{old},w)=Obs(d_{new},w)
-\]
+$$
 
 except separately approved semantic deltas. Evidence from finite (W) does not prove equality for all possible inputs/states. Benefit/cost vectors are ordinal/contextual decision aids; avoid false precision across incomparable dimensions.
 

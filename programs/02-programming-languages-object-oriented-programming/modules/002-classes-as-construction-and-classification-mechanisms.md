@@ -31,21 +31,21 @@ What does a class contribute when it creates objects, groups them for language a
 
 ### Central model, mechanism, or theorem
 
-Let \(C\) be classes, \(I\) object identities, and \(H\) a heap. Let \(direct:I\rightharpoonup C\) record each live object's direct class, and let \(\preceq\) be the reflexive-transitive declared classification relation where \(c_1\preceq c_2\) means that instances directly classified by \(c_1\) are also classified by \(c_2\). Then
+Let $C$ be classes, $I$ object identities, and $H$ a heap. Let $direct:I\rightharpoonup C$ record each live object's direct class, and let $\preceq$ be the reflexive-transitive declared classification relation where $c_1\preceq c_2$ means that instances directly classified by $c_1$ are also classified by $c_2$. Then
 
-\[
+$$
 i\models c
 \quad\Longleftrightarrow\quad
 direct(i)\preceq c.
-\]
+$$
 
 A successful construction step has the abstract form
 
-\[
+$$
 construct(c,a,H)\Downarrow(i,H')
-\]
+$$
 
-with freshness \(i\notin dom(H)\), direct classification \(direct(i)=c\), initialized representation in \(H'\), and every promised post-construction invariant established before \(i\) becomes externally usable. Classification does not prove those obligations were implemented correctly.
+with freshness $i\notin dom(H)$, direct classification $direct(i)=c$, initialized representation in $H'$, and every promised post-construction invariant established before $i$ becomes externally usable. Classification does not prove those obligations were implemented correctly.
 
 ### Critical invariants
 
@@ -165,54 +165,54 @@ Class evolution requires care. Adding a required construction argument can break
 
 ## Definitions and Notation
 
-Let \(C\) be classes, \(I\) identities, \(S\) instance states, and \(H:I\rightharpoonup S\) the live heap. The partial function \(direct:I\rightharpoonup C\) assigns a direct class to modeled class instances. Let \(\preceq\subseteq C\times C\) be a reflexive-transitive classification relation; \(c_1\preceq c_2\) means direct instances of \(c_1\) are admitted as instances of \(c_2\).
+Let $C$ be classes, $I$ identities, $S$ instance states, and $H:I\rightharpoonup S$ the live heap. The partial function $direct:I\rightharpoonup C$ assigns a direct class to modeled class instances. Let $\preceq\subseteq C\times C$ be a reflexive-transitive classification relation; $c_1\preceq c_2$ means direct instances of $c_1$ are admitted as instances of $c_2$.
 
 Define exact and inherited instance sets:
 
-\[
+$$
 Exact(c)=\{i\in dom(H)\mid direct(i)=c\},
-\]
+$$
 
-\[
+$$
 Instances(c)=\{i\in dom(H)\mid direct(i)\preceq c\}.
-\]
+$$
 
-Thus \(Exact(c)\subseteq Instances(c)\). Equality need not hold when \(c\) has descendants. The relation models nominal inherited membership only; structural protocols and customized runtime tests require different predicates.
+Thus $Exact(c)\subseteq Instances(c)$. Equality need not hold when $c$ has descendants. The relation models nominal inherited membership only; structural protocols and customized runtime tests require different predicates.
 
-Let \(F_i(c)\) and \(M_i(c)\) describe instance-side fields and operations, and \(F_c(c)\) and \(M_c(c)\) class-side fields and operations. The subscripts indicate ownership, not memory layout. A construction judgment
+Let $F_i(c)$ and $M_i(c)$ describe instance-side fields and operations, and $F_c(c)$ and $M_c(c)$ class-side fields and operations. The subscripts indicate ownership, not memory layout. A construction judgment
 
-\[
+$$
 \langle c,a,H\rangle\Downarrow\langle i,H'\rangle
-\]
+$$
 
-is successful when the class is constructible for arguments \(a\), \(i\notin dom(H)\) under a freshness-promising policy, \(direct(i)=c\), \(H'\) extends the heap with initialized state for \(i\), and the promised post-construction predicate \(Ready_c(H'(i))\) holds. A failing construction returns an explicit language-defined failure and must not publish an externally usable invalid \(i\).
+is successful when the class is constructible for arguments $a$, $i\notin dom(H)$ under a freshness-promising policy, $direct(i)=c$, $H'$ extends the heap with initialized state for $i$, and the promised post-construction predicate $Ready_c(H'(i))$ holds. A failing construction returns an explicit language-defined failure and must not publish an externally usable invalid $i$.
 
-A static typing judgment \(\Gamma\vdash e:T\) describes the compile-time type assigned to expression \(e\). A runtime classification judgment \(eval(e,H)\Downarrow i\land i\models c\) describes an evaluated object's membership. Neither judgment alone proves a behavioral contract \(B_c\); that requires implementation reasoning and evidence over admitted interactions.
+A static typing judgment $\Gamma\vdash e:T$ describes the compile-time type assigned to expression $e$. A runtime classification judgment $eval(e,H)\Downarrow i\land i\models c$ describes an evaluated object's membership. Neither judgment alone proves a behavioral contract $B_c$; that requires implementation reasoning and evidence over admitted interactions.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Direct versus inherited classification.** From \(direct(i)=Savings\), reflexivity gives \(i\models Savings\). If \(Savings\preceq Account\), transitivity gives \(i\models Account\). The reverse does not follow: an `Account` instance need not be a `Savings` instance. Exact-class and inherited-membership checks therefore answer different questions.
+**Direct versus inherited classification.** From $direct(i)=Savings$, reflexivity gives $i\models Savings$. If $Savings\preceq Account$, transitivity gives $i\models Account$. The reverse does not follow: an `Account` instance need not be a `Savings` instance. Exact-class and inherited-membership checks therefore answer different questions.
 
 **Fresh construction.** Under an ordinary freshness contract, two successful constructions from the same heap occur sequentially:
 
-\[
+$$
 construct(c,a,H)\Downarrow(i,H_1),\qquad
 construct(c,b,H_1)\Downarrow(j,H_2).
-\]
+$$
 
-Because \(i\in dom(H_1)\) and the second result must be fresh relative to \(H_1\), \(j\ne i\). Equal arguments or equal state do not merge identity. This proof does not apply to an explicitly interning or cached construction policy.
+Because $i\in dom(H_1)$ and the second result must be fresh relative to $H_1$, $j\ne i$. Equal arguments or equal state do not merge identity. This proof does not apply to an explicitly interning or cached construction policy.
 
-**Instance-state independence.** If \(i\ne j\), each has its own instance field location under the abstract heap. Updating \(H(i)\) leaves \(H(j)\) unchanged by functional update. A shared reference inside both states can still alias another object, so “separate instances” does not prove deep isolation.
+**Instance-state independence.** If $i\ne j$, each has its own instance field location under the abstract heap. Updating $H(i)$ leaves $H(j)$ unchanged by functional update. A shared reference inside both states can still alias another object, so “separate instances” does not prove deep isolation.
 
-**Class-side sharing.** A class-side location belongs to \(c\), not to each \(i\in Instances(c)\). Mutating it can affect observations through every instance or class access path. Therefore mutable class state requires synchronization and ownership reasoning; construction count in the executable example is evidence of shared access, not a recommended global metric architecture.
+**Class-side sharing.** A class-side location belongs to $c$, not to each $i\in Instances(c)$. Mutating it can affect observations through every instance or class access path. Therefore mutable class state requires synchronization and ownership reasoning; construction count in the executable example is evidence of shared access, not a recommended global metric architecture.
 
-**Constructibility is separate from membership.** An abstract class \(a\) may have \(Instances(a)\ne\varnothing\) because concrete \(d\preceq a\), while direct construction of \(a\) is prohibited. Consequently, “has instances” does not imply “can create a direct instance.”
+**Constructibility is separate from membership.** An abstract class $a$ may have $Instances(a)\ne\varnothing$ because concrete $d\preceq a$, while direct construction of $a$ is prohibited. Consequently, “has instances” does not imply “can create a direct instance.”
 
-**Type/class separation.** If \(\Gamma\vdash x:Account\) and runtime evaluation yields \(direct(i)=Savings\), both claims can be true. Static admissibility is governed by `Account`; exact runtime classification is `Savings`; inherited membership includes both. Parameterization, erasure, interfaces, structural protocols, and unions create further separations.
+**Type/class separation.** If $\Gamma\vdash x:Account$ and runtime evaluation yields $direct(i)=Savings$, both claims can be true. Static admissibility is governed by `Account`; exact runtime classification is `Savings`; inherited membership includes both. Parameterization, erasure, interfaces, structural protocols, and unions create further separations.
 
-**No behavioral proof from a label.** The implication \(i\models c\Rightarrow B_c(i)\) holds only if the language or verified program establishes that every admitted direct class preserves \(B_c\). Ordinary class declarations do not automatically verify arbitrary semantic predicates. A misleading class name or defective subclass is a counterexample.
+**No behavioral proof from a label.** The implication $i\models c\Rightarrow B_c(i)$ holds only if the language or verified program establishes that every admitted direct class preserves $B_c$. Ordinary class declarations do not automatically verify arbitrary semantic predicates. A misleading class name or defective subclass is a counterexample.
 
-**No publication before readiness.** If a reference to \(i\) escapes while \(Ready_c(H(i))\) is false, another observer can invoke behavior against partial state. The construction proof then cannot assume the class invariant. Avoid callbacks, global registration, thread publication, or overridable external behavior before readiness; OOP-005 and OOP-006 develop the complete discipline.
+**No publication before readiness.** If a reference to $i$ escapes while $Ready_c(H(i))$ is false, another observer can invoke behavior against partial state. The construction proof then cannot assume the class invariant. Avoid callbacks, global registration, thread publication, or overridable external behavior before readiness; OOP-005 and OOP-006 develop the complete discipline.
 
 ## Alternatives and Trade-Offs
 
@@ -251,7 +251,7 @@ Because \(i\in dom(H_1)\) and the second result must be fresh relative to \(H_1\
 
 **Question:** Two calls create `Point(2, 5)`. What is shared and what is distinct?
 
-**Reasoning:** Under an ordinary fresh-construction contract, the calls allocate identities \(p\) and \(q\) with \(p\ne q\). Their direct class is `Point`, their initial coordinate state can be structurally equal, and their methods may resolve to shared class-defined code. Mutating only \(p\)'s instance field does not change \(q\), unless a field references another shared mutable object.
+**Reasoning:** Under an ordinary fresh-construction contract, the calls allocate identities $p$ and $q$ with $p\ne q$. Their direct class is `Point`, their initial coordinate state can be structurally equal, and their methods may resolve to shared class-defined code. Mutating only $p$'s instance field does not change $q$, unless a field references another shared mutable object.
 
 **Conclusion:** One class can classify equal-state but identity-distinct instances while sharing behavior code.
 
@@ -259,7 +259,7 @@ Because \(i\in dom(H_1)\) and the second result must be fresh relative to \(H_1\
 
 **Question:** If `SavingsAccount` extends `Account`, is a savings object an exact `Account` instance?
 
-**Reasoning:** Its direct class is `SavingsAccount`, so it belongs to \(Exact(SavingsAccount)\). The declared relation makes it belong to \(Instances(Account)\), but not to \(Exact(Account)\). A serializer requiring the exact base layout and a client accepting the account protocol therefore need different checks.
+**Reasoning:** Its direct class is `SavingsAccount`, so it belongs to $Exact(SavingsAccount)$. The declared relation makes it belong to $Instances(Account)$, but not to $Exact(Account)$. A serializer requiring the exact base layout and a client accepting the account protocol therefore need different checks.
 
 **Conclusion:** Exact class and inherited membership must not share one ambiguous “is an instance” claim.
 
@@ -275,7 +275,7 @@ Because \(i\in dom(H_1)\) and the second result must be fresh relative to \(H_1\
 
 **Question:** Can abstract class `Shape` have instances if `new Shape()` is illegal?
 
-**Reasoning:** Concrete `Circle` and `Rectangle` classes can extend `Shape`. Their objects satisfy inherited membership in `Shape`, so \(Instances(Shape)\) is nonempty. The language separately rejects direct construction, leaving \(Exact(Shape)\) empty if no other mechanism creates direct instances.
+**Reasoning:** Concrete `Circle` and `Rectangle` classes can extend `Shape`. Their objects satisfy inherited membership in `Shape`, so $Instances(Shape)$ is nonempty. The language separately rejects direct construction, leaving $Exact(Shape)$ empty if no other mechanism creates direct instances.
 
 **Conclusion:** Classification of descendant objects does not imply direct constructibility.
 
@@ -358,7 +358,7 @@ Define class, instance, direct class, inherited membership, class type, class va
 
 ### Exercise 2
 
-Let \(Checking\preceq Account\), \(Savings\preceq Account\), and heap \(H_0\) be empty. Trace successful constructions of `Checking(10)` and `Savings(10)`, giving identities, direct classes, exact/inherited sets, and heap states. Then explain how the proof changes under an interning policy.
+Let $Checking\preceq Account$, $Savings\preceq Account$, and heap $H_0$ be empty. Trace successful constructions of `Checking(10)` and `Savings(10)`, giving identities, direct classes, exact/inherited sets, and heap states. Then explain how the proof changes under an interning policy.
 
 ### Exercise 3
 
@@ -382,9 +382,9 @@ For `class Point { int x; static int count; Point(int x) {...} }`, `Point` intro
 
 ### Answer 2
 
-Choose fresh identities \(i\) and \(j\). The first transition gives \(H_1=H_0[i\mapsto balance(10)]\) and \(direct(i)=Checking\). Thus \(Exact(Checking)=\{i\}\), \(Instances(Checking)=\{i\}\), and \(i\in Instances(Account)\). The second gives \(H_2=H_1[j\mapsto balance(10)]\), \(j\ne i\), and \(direct(j)=Savings\). Now \(Exact(Savings)=\{j\}\), \(Instances(Savings)=\{j\}\), \(Exact(Checking)=\{i\}\), and \(Instances(Account)=\{i,j\}\). Equal balances do not imply equal identity or direct class.
+Choose fresh identities $i$ and $j$. The first transition gives $H_1=H_0[i\mapsto balance(10)]$ and $direct(i)=Checking$. Thus $Exact(Checking)=\{i\}$, $Instances(Checking)=\{i\}$, and $i\in Instances(Account)$. The second gives $H_2=H_1[j\mapsto balance(10)]$, $j\ne i$, and $direct(j)=Savings$. Now $Exact(Savings)=\{j\}$, $Instances(Savings)=\{j\}$, $Exact(Checking)=\{i\}$, and $Instances(Account)=\{i,j\}$. Equal balances do not imply equal identity or direct class.
 
-Under interning, freshness is not an assumed postcondition. A key would have to include enough information to decide whether `Checking(10)` and `Savings(10)` may share; normally their different direct classes forbid one representative. Even two `Checking(10)` requests could return one identity only if `Checking` is immutable, domain equality matches the key, callers cannot rely on distinct identity, loader/tenant scope is defined, and eviction/concurrency are safe. The membership equations still apply to whatever identity is returned, but the \(i\ne j\) proof no longer follows.
+Under interning, freshness is not an assumed postcondition. A key would have to include enough information to decide whether `Checking(10)` and `Savings(10)` may share; normally their different direct classes forbid one representative. Even two `Checking(10)` requests could return one identity only if `Checking` is immutable, domain equality matches the key, callers cannot rely on distinct identity, loader/tenant scope is defined, and eviction/concurrency are safe. The membership equations still apply to whatever identity is returned, but the $i\ne j$ proof no longer follows.
 
 ### Answer 3
 

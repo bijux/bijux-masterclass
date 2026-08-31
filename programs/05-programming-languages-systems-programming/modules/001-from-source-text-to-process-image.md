@@ -31,12 +31,12 @@ Which contracts and transformations turn separately written source modules into 
 
 The durable pipeline is
 
-\[
+$$
 source\xrightarrow{compile}relocatable\ objects
 \xrightarrow{link}executable/shared\ objects
 \xrightarrow{load}process\ image
 \xrightarrow{startup}language\ entry.
-\]
+$$
 
 For a typical relocation, the linker or dynamic loader computes an encoded value from symbol address (S), addend (A), and sometimes relocation place (P): absolute (S+A) or PC-relative (S+A-P). Correct execution requires agreement among compiler, linker, loader, libraries, target ABI, and operating system—not merely successful parsing.
 
@@ -127,19 +127,19 @@ On POSIX systems, a successful `exec` family operation replaces the current proc
 
 For object module (O_i), let (D_i) be its exported definitions and (R_i) its unresolved references. A simplified link succeeds when every required reference has exactly one admissible definition under the platform's binding rules:
 
-\[
+$$
 \forall r\in\bigcup_i R_i,\quad |resolve(r,\bigcup_i D_i)|=1.
-\]
+$$
 
 Real formats include weak definitions, symbol versions, visibility, archive extraction, and interposition, so “exactly one” is the foundational case rather than a complete platform algorithm.
 
 Let (S) be resolved symbol address, (A) an addend, and (P) the address of the relocation place. Two common relocation expressions are
 
-\[
+$$
 V_{abs}=S+A,
 \qquad
 V_{pc}=S+A-P.
-\]
+$$
 
 The ABI additionally specifies field width, signedness, overflow handling, instruction encoding, and when the expression is valid.
 
@@ -151,9 +151,9 @@ Represent a loadable segment by file interval ([o,o+n_f)), virtual interval ([v,
 
 **Relocation correctness.** Suppose a PC-relative target is at (S=0x1200), the relocation place is (P=0x1004), and (A=-4). Then
 
-\[
+$$
 S+A-P=0x1200-4-0x1004=0x1f8.
-\]
+$$
 
 The numerical result is usable only if it fits the relocation field and its architectural interpretation.
 

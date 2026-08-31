@@ -32,18 +32,18 @@ How does a delivery system turn dependency declarations into a complete, repeata
 
 ### Central model, mechanism, or theorem
 
-Let manifest constraints be \(M\), available repository metadata at time \(t\) be \(U_t\), resolver/tool version be \(R_v\), target/configuration be \(X\), and prior lock hints be \(L_0\). Resolution is:
+Let manifest constraints be $M$, available repository metadata at time $t$ be $U_t$, resolver/tool version be $R_v$, target/configuration be $X$, and prior lock hints be $L_0$. Resolution is:
 
-\[
+$$
 G=\operatorname{resolve}(M,U_t,R_v,X,L_0)
-\]
+$$
 
-or a conflict. A lock serializes selected graph \(G\) plus source/integrity and relevant configuration. Frozen installation checks:
+or a conflict. A lock serializes selected graph $G$ plus source/integrity and relevant configuration. Frozen installation checks:
 
-\[
+$$
 \operatorname{consistent}(M,L,R_v,X)\land
 \operatorname{digest}(fetched_i)=L.digest_i
-\]
+$$
 
 for every required node. This improves repeatability of dependency inputs. It does not freeze compilers, operating systems, install scripts, external services, or the final artifact unless those are separately controlled.
 
@@ -119,7 +119,7 @@ After completing this module, you should be able to:
 
 ### Distinguish intent from selection
 
-A manifest should express what the project intends to depend on and which changes it considers compatible. A constraint such as \(1.4\le v<2.0\) denotes a set. Resolution chooses one concrete version after considering constraints from the root and transitive packages, exclusions, replacements, target conditions, features, repository metadata, and resolver policy.
+A manifest should express what the project intends to depend on and which changes it considers compatible. A constraint such as $1.4\le v<2.0$ denotes a set. Resolution chooses one concrete version after considering constraints from the root and transitive packages, exclusions, replacements, target conditions, features, repository metadata, and resolver policy.
 
 This separation lets published libraries describe compatibility to consumers while applications record a tested composition. It also explains why editing one direct constraint can change many transitive nodes. The resolver is not merely downloading what was typed; it computes a graph.
 
@@ -143,7 +143,7 @@ Identity also extends to native/prebuilt variants. One package version may selec
 
 ### Construct the transitive graph
 
-Let a selected component be \(p@v\). Its metadata contributes conditional edges to other constraints. Resolution expands requirements until a fixed point, selects versions according to policy, and rejects unsatisfied conflicts—or sometimes installs multiple versions where permitted.
+Let a selected component be $p@v$. Its metadata contributes conditional edges to other constraints. Resolution expands requirements until a fixed point, selects versions according to policy, and rejects unsatisfied conflicts—or sometimes installs multiple versions where permitted.
 
 The relevant closure may differ by task:
 
@@ -250,31 +250,31 @@ The lock is intended resolution input. An SBOM should describe the artifact or d
 
 Reconcile:
 
-\[
+$$
 manifest\ intent \rightarrow locked\ graph \rightarrow fetched/installed\ graph
 \rightarrow packaged\ artifact \rightarrow deployed/runtime\ graph.
-\]
+$$
 
 Bind each evidence set to identities and timestamps. Scan the graph/artifact actually relevant to release. A lockfile advisory scan is useful early evidence but cannot prove the deployed artifact contains exactly that set or that a vulnerability is exploitable/non-exploitable.
 
 ## Definitions and Notation
 
-Let package coordinate \(p\) identify an ecosystem name plus governed source namespace. Let \(V_p\) be available versions observed in repository universe \(U_t\). Each requirement \(r=(p,C_r,\gamma_r)\) contains version constraint \(C_r\subseteq V_p\) and applicability condition \(\gamma_r(X)\) over target/configuration \(X\).
+Let package coordinate $p$ identify an ecosystem name plus governed source namespace. Let $V_p$ be available versions observed in repository universe $U_t$. Each requirement $r=(p,C_r,\gamma_r)$ contains version constraint $C_r\subseteq V_p$ and applicability condition $\gamma_r(X)$ over target/configuration $X$.
 
-A resolved graph is \(G=(N,E)\), with nodes
+A resolved graph is $G=(N,E)$, with nodes
 
-\[
+$$
 n=(p,v,source,digest,variant,features)
-\]
+$$
 
-and requirement edges. A single-version resolver must choose \(v_p\in\bigcap C_r\) for all applicable requirements on \(p\), subject to its policy; multi-version ecosystems may instead select several compatible node identities and placement rules.
+and requirement edges. A single-version resolver must choose $v_p\in\bigcap C_r$ for all applicable requirements on $p$, subject to its policy; multi-version ecosystems may instead select several compatible node identities and placement rules.
 
-A lock serialization \(L=lock(G,R_v,X,S)\) records graph, resolver version, configuration, and source policy \(S\) to the degree its ecosystem supports. Define a frozen-install predicate:
+A lock serialization $L=lock(G,R_v,X,S)$ records graph, resolver version, configuration, and source policy $S$ to the degree its ecosystem supports. Define a frozen-install predicate:
 
-\[
+$$
 Frozen(M,L)=consistent(M,L)\land closed(L)\land sourcesAllowed(L)
 \land allDigestsMatch(L)\land configMatch(L).
-\]
+$$
 
 This predicate does not imply artifact reproducibility or dependency safety. It establishes selected graph consistency and fetched-content integrity under stated inputs.
 
@@ -519,9 +519,9 @@ Record and reconcile identities across all six. Neither manifest nor lock alone 
 
 The applicable A constraints intersect:
 
-\[
+$$
 [1.0,2.0)\cap[1.6,3.0)=[1.6,2.0).
-\]
+$$
 
 Available 1.8 satisfies the intersection; 1.5 is below it and 2.1 violates the root upper bound. Under the stated newest-satisfying teaching policy, select A 1.8 and B 2.4. A real package manager may have materially different multi-version, pre-release, conflict, feature, or ordering semantics.
 

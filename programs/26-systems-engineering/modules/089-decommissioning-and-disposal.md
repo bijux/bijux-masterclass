@@ -33,15 +33,15 @@ Can the organization deliberately end or transfer a system's services, dependenc
 
 Represent the decommissioning scope as a typed dependency graph $G=(V,E,\tau)$ containing services, users, interfaces, identities, data, physical assets, suppliers, facilities, support resources, records, hazards, and obligations. For every node and relationship in retirement effectivity $R$, define disposition
 
-\[
+$$
 d(v)=(action, owner, authority, evidence, residual, retention, state).
-\]
+$$
 
 Closure requires more than all planned actions marked done:
 
-\[
+$$
 Close(R)\Rightarrow coverage(R)=1\land open_{critical}=0\land transfers_{accepted}=true\land evidence_{retrievable}=true.
-\]
+$$
 
 Even this is bounded by discovery quality. Independent observation must challenge the declared inventory and verify that retired capabilities, access paths, data copies, and physical items cannot silently return.
 

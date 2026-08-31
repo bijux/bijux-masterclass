@@ -31,9 +31,9 @@ How can one subject announce committed changes to an open set of dependents with
 
 For committed subject transition (s_v\xrightarrow{a}s_{v+1}), construct immutable event (e=(id,source,type,version,payload)), snapshot active observers (L), then invoke each according to the documented dispatch policy. For observer projection (q), update is
 
-\[
+$$
 q' = U(q,e),\qquad e.version>q.version,
-\]
+$$
 
 with duplicate/stale handling defined. This provides one-to-many notification structure; it does not by itself provide transactionality, asynchronous capacity, durable delivery, total order, exactly-once effects, or subscriber correctness.
 
@@ -194,11 +194,11 @@ Let subject states be (s_v) with monotonically increasing per-subject version (v
 
 For projection state (q=(v_q,data)), apply rule:
 
-\[
+$$
 v_e\le v_q\Rightarrow duplicate/stale;\quad
 v_e=v_q+1\Rightarrow apply;\quad
 v_e>v_q+1\Rightarrow gap/recover.
-\]
+$$
 
 This assumes contiguous per-subject versions and events for every relevant transition. If coalescing/invalidation is allowed, use a different explicitly stated rule.
 

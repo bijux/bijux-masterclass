@@ -34,13 +34,13 @@ When should an object defer acquiring related data until use, and what explicit 
 
 For a lazy slot with state
 
-\[
+$$
 q\in\{U,L(v),F(e),C\},
-\]
+$$
 
-where \(U\) is unloaded, \(L(v)\) loaded with value \(v\), \(F(e)\) failed, and \(C\) unavailable because its context is closed, forcing performs an effect only from an allowed unloaded state:
+where $U$ is unloaded, $L(v)$ loaded with value $v$, $F(e)$ failed, and $C$ unavailable because its context is closed, forcing performs an effect only from an allowed unloaded state:
 
-\[
+$$
 \operatorname{force}(U,x)=
 \begin{cases}
 L(v),&\operatorname{load}(x)=v,\\
@@ -49,7 +49,7 @@ C,&x\text{ is closed},
 \end{cases}
 \qquad
 \operatorname{force}(L(v),x)=L(v).
-\]
+$$
 
 In a serialized, non-invalidating value holder, successful load count is at most one. That theorem does not extend to concurrent forcing, retry, expiration, refresh, or a mutable context without additional synchronization and version rules.
 
@@ -123,7 +123,7 @@ After completing this module, you should be able to:
 
 ### Decide from access probability and effect cost
 
-Deferral helps when a value is expensive and often unused. Let initial acquisition cost be \(c\), probability of later access be \(p\), and lazy overhead/failure cost be \(h\). A crude expected-work comparison is eager \(c\) versus lazy \(pc+h\). It ignores batching, correlation, tail latency, cache locality, and consistency, but exposes the real premise: low access probability alone is insufficient if later load is impossible or risky.
+Deferral helps when a value is expensive and often unused. Let initial acquisition cost be $c$, probability of later access be $p$, and lazy overhead/failure cost be $h$. A crude expected-work comparison is eager $c$ versus lazy $pc+h$. It ignores batching, correlation, tail latency, cache locality, and consistency, but exposes the real premise: low access probability alone is insufficient if later load is impossible or risky.
 
 Measure by use case, not mapping fashion. The same `Order.customer` may be unnecessary in a write command, mandatory in a detail response, and best represented as a projection in a report.
 
@@ -165,7 +165,7 @@ Identity scope includes tenant and any partition/generation needed to prevent co
 
 ### Define snapshot and freshness
 
-A root loaded at time \(t_0\) and relationship loaded at \(t_1\) may combine versions that never formed one consistent aggregate. Under a stable database snapshot, both reads can align; under read-committed behavior, later load may see newer membership or values.
+A root loaded at time $t_0$ and relationship loaded at $t_1$ may combine versions that never formed one consistent aggregate. Under a stable database snapshot, both reads can align; under read-committed behavior, later load may see newer membership or values.
 
 Choose and state one: same transaction snapshot, version-compatible load, current-at-access navigation, or explicitly stale cache. For invariants and commands, reload/lock/version-check the required state within one transaction instead of trusting an old lazy graph.
 
@@ -177,17 +177,17 @@ Authority can change between proxy creation and force. Caching a prior yes decis
 
 ### Understand the N+1 cost shape
 
-If one root query returns \(N\) objects and each distinct unloaded association is forced separately, query count can be
+If one root query returns $N$ objects and each distinct unloaded association is forced separately, query count can be
 
-\[
+$$
 Q_{\text{naive}}=1+N.
-\]
+$$
 
-Identity-map hits may reduce this when roots share targets. Batch size \(b\) gives an upper shape near
+Identity-map hits may reduce this when roots share targets. Batch size $b$ gives an upper shape near
 
-\[
+$$
 Q_{\text{batch}}=1+\lceil N/b\rceil,
-\]
+$$
 
 subject to parameter limits, composite keys, polymorphism, filters, and cache hits. A joined fetch may use one statement but return repeated root columns and up to the product of to-many cardinalities.
 
@@ -335,13 +335,13 @@ The snippet report is empirical evidence for the stated interpreter execution an
 
 ## Definitions and Notation
 
-Let a lazy reference be \(R=(k,x,q)\), where \(k\) is a scoped persistent key, \(x\) is its loading context, and \(q\) is its local knowledge state. A scoped key includes tenant or partition as well as entity kind and identifier; an unscoped integer is insufficient identity.
+Let a lazy reference be $R=(k,x,q)$, where $k$ is a scoped persistent key, $x$ is its loading context, and $q$ is its local knowledge state. A scoped key includes tenant or partition as well as entity kind and identifier; an unscoped integer is insufficient identity.
 
-The minimal state set is \(q\in\{U,L(v),F(e),C\}\): unloaded, loaded value, failed outcome, and unavailable through a closed context. Rich implementations may add \(I(f)\) for an in-flight shared future, \(E(r)\) for expired knowledge with reason/version, and distinct absent/forbidden outcomes. Loaded \(v\) includes legitimate null, false, zero, and empty values.
+The minimal state set is $q\in\{U,L(v),F(e),C\}$: unloaded, loaded value, failed outcome, and unavailable through a closed context. Rich implementations may add $I(f)$ for an in-flight shared future, $E(r)$ for expired knowledge with reason/version, and distinct absent/forbidden outcomes. Loaded $v$ includes legitimate null, false, zero, and empty values.
 
 `force(R)` requests materialization. **Force** is not necessarily a database select: it can hit an identity map, batch result, cache, or remote service. **Load** names the actual acquisition effect. **Refresh** deliberately obtains a newer representation; **invalidation** marks prior knowledge unusable; **retry** repeats a failed acquisition under an explicit safety/budget policy.
 
-For \(N\) roots and batch size \(b\), \(Q\) denotes database statement count, while \(R_q\), \(B_q\), \(M_q\), and \(T_q\) denote rows, bytes, application memory, and latency attributable to loading. Query efficiency is a vector, not the scalar \(Q\).
+For $N$ roots and batch size $b$, $Q$ denotes database statement count, while $R_q$, $B_q$, $M_q$, and $T_q$ denote rows, bytes, application memory, and latency attributable to loading. Query efficiency is a vector, not the scalar $Q$.
 
 An **authorization snapshot** is a versioned/stated premise under which a prior disclosure decision may be reused. A **data snapshot** is the database consistency view. They are different: stable data does not imply continuing permission, and continuing permission does not make two reads one data snapshot.
 
@@ -349,15 +349,15 @@ An **authorization snapshot** is a versioned/stated premise under which a prior 
 
 The mechanism has five collaborating responsibilities: a reference/proxy holds scoped identity and state; the loading context owns session/transaction, identity map, authority, deadline, and instrumentation; a strategy chooses select/join/batch/projection behavior; the Unit of Work reconciles materialization and dirty state; and the application boundary decides which effects are permitted before serialization or detachment.
 
-For a serialized, non-invalidating reference, establish the at-most-one property by induction over forces. Initially \(q=U\) and successful-load count \(s=0\). The first successful force transitions to \(L(v)\) and \(s=1\). Every subsequent force from \(L(v)\) returns before the loader, preserving \(s=1\). A closed or failed force does not establish this result for later retry. With concurrent callers, the induction fails because both can observe \(U\); a synchronized `U -> I(f)` transition or thread confinement restores a single acquisition owner.
+For a serialized, non-invalidating reference, establish the at-most-one property by induction over forces. Initially $q=U$ and successful-load count $s=0$. The first successful force transitions to $L(v)$ and $s=1$. Every subsequent force from $L(v)$ returns before the loader, preserving $s=1$. A closed or failed force does not establish this result for later retry. With concurrent callers, the induction fails because both can observe $U$; a synchronized `U -> I(f)` transition or thread confinement restores a single acquisition owner.
 
 Correct implementations preserve these invariants:
 
-1. **Knowledge separation:** \(U\neq L(\varnothing)\neq F(e)\neq C\).
+1. **Knowledge separation:** $U\neq L(\varnothing)\neq F(e)\neq C$.
 2. **Scoped identity:** every acquisition predicate includes the trusted partition/entity key, and resolution uses the intended context identity map.
 3. **Context validity:** load begins and publishes only while transaction/session, deadline, cancellation, and ownership rules permit it.
 4. **Authority validity:** disclosure is authorized for current actor/resource/action/purpose or a documented authorization snapshot.
-5. **Stable serialized replay:** without refresh/invalidation, force from \(L(v)\) performs no acquisition and returns the stored value.
+5. **Stable serialized replay:** without refresh/invalidation, force from $L(v)$ performs no acquisition and returns the stored value.
 6. **Snapshot honesty:** later-loaded values are labeled/used according to same-snapshot, version-compatible, current-at-access, or stale-cache policy.
 7. **Collection completeness:** loaded collection state identifies its filter, order, page/completeness, and pending Unit of Work mutations.
 8. **Boundary closure:** external serialization/logging/debugging cannot force undeclared or unbounded relationships.

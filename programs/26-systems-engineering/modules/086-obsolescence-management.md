@@ -33,15 +33,15 @@ Can the organization detect and forecast loss of availability, support, capabili
 
 For item $i$, compare required service horizon $H_r(i)$ with support/availability horizon $H_s(i)$ and resolution lead time $L(i)$:
 
-\[
+$$
 slack(i)=H_s(i)-now-L(i).
-\]
+$$
 
 Negative slack signals that the forecast resolution window is already missed under current assumptions. Positive slack is not proof of low risk because horizon and lead-time estimates may be uncertain. Evaluate an issue record
 
-\[
+$$
 O_i=(identity, usage, population, horizon, uncertainty, consequence, options, evidence, owner, trigger).
-\]
+$$
 
 Prioritization supports attention; competent authority chooses a response using mission consequence, uncertainty, lifecycle cost, technical feasibility, security/safety, effectivity, and strategic value.
 

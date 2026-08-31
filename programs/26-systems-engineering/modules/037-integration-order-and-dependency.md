@@ -35,25 +35,25 @@ In what order should system elements, interfaces, environments, people, data, an
 
 Let integration activities be vertices (V), with a directed edge ((u,v)\in E) when activity (u) must precede (v). A valid linear sequence (\pi) satisfies:
 
-\[
+$$
 \forall(u,v)\in E:\quad \pi(u)<\pi(v).
-\]
+$$
 
 Such a sequence exists exactly when the declared precedence graph is acyclic. For duration (d(v)) and immediate predecessors (Pred(v)), earliest times on a DAG are:
 
-\[
+$$
 ES(v)=\max_{u\in Pred(v)} EF(u),\qquad EF(v)=ES(v)+d(v),
-\]
+$$
 
 with (ES(v)=0) when (Pred(v)=\varnothing). This exposes a modeled longest path, but only if activities, dependencies, calendars, resources, and durations are credible.
 
 An activity is executable only when its readiness predicate holds:
 
-\[
+$$
 Ready(v,k,e,t)=R_{items}\land R_{interfaces}\land R_{configuration}
 \land R_{environment}\land R_{procedure}\land R_{people}
 \land R_{safety}\land R_{evidence},
-\]
+$$
 
 for configuration (k), environment (e), and time (t). Graph order is therefore necessary but insufficient: a topologically eligible step can still be technically unready.
 
@@ -241,37 +241,37 @@ The calculated 18 days ignore the missing `ops_ready` activity. The checker expo
 
 Let activities be (V), declared directed dependencies (E\subseteq V\times V), configuration set (K), environments (H), integration items (P), and evidence records (D). For activity (v):
 
-\[
+$$
 Pred(v)=\{u\in V:(u,v)\in E\},\qquad Succ(v)=\{w\in V:(v,w)\in E\}.
-\]
+$$
 
 A sequence (\pi:V\rightarrow\{1,\ldots,|V|\}) is topologically valid when:
 
-\[
+$$
 \forall(u,v)\in E:\ \pi(u)<\pi(v).
-\]
+$$
 
 The eligible frontier after completed set (X\subseteq V) is:
 
-\[
+$$
 Eligible(X)=\{v\in V\setminus X:Pred(v)\subseteq X\}.
-\]
+$$
 
 Eligibility is graph-theoretic; executability additionally requires (Ready(v,k,h,t)).
 
 For deterministic activity durations on an acyclic network:
 
-\[
+$$
 ES(v)=\max_{u\in Pred(v)}EF(u),\quad EF(v)=ES(v)+d(v).
-\]
+$$
 
 The modeled completion time is (\max_v EF(v)). A path attaining it is a longest path under the declared durations. Resource constraints, calendars, uncertainty, rework, and omitted logic can change the actual result.
 
 Define the starting state (S^-_v) and ending state (S^+_v) of step (v). The procedure is a controlled transition:
 
-\[
+$$
 T_v:S^-_v\times Inputs_v\rightarrow S^+_v\times Evidence_v\times Outcome_v,
-\]
+$$
 
 where (Outcome_v\in\{pass,hold,abort\}) and rollback/de-integration rules constrain safe successor states. This notation is descriptive; execution remains a physical, computational, and human process.
 
@@ -470,27 +470,27 @@ A hospital medication-delivery platform integrates pump hardware, embedded softw
 
 For source (R):
 
-\[
+$$
 ES_R=0,\quad EF_R=2.
-\]
+$$
 
 Then (P) and (D) can proceed:
 
-\[
+$$
 ES_P=2,\ EF_P=5;\qquad ES_D=2,\ EF_D=6.
-\]
+$$
 
 (C) waits for both:
 
-\[
+$$
 ES_C=\max(5,6)=6,\quad EF_C=11.
-\]
+$$
 
 Then:
 
-\[
+$$
 ES_E=11,\ EF_E=13;\qquad ES_X=13,\ EF_X=16.
-\]
+$$
 
 Modeled completion is 16 days, with (R\to D\to C\to E\to X) as the duration-determining path under these assumptions. If external-operations readiness is omitted, (X) may appear eligible before the external environment, accounts, data, approvals, staff, or procedures exist; the 16-day forecast and computed float are then false. Execution could also produce invalid evidence or unsafe effects because the intended operational boundary was absent. Add the activity/condition, credible duration/resources/calendar, and evidence rather than inserting a date constraint.
 

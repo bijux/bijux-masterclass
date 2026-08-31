@@ -33,15 +33,15 @@ When does an assemblage of independently useful and independently governed syste
 
 Represent an SoS at time $t$ as
 
-\[
+$$
 \mathcal{S}_t=(C_t,R_t,G_t,M_t,E_t),
-\]
+$$
 
 where $C_t$ is the participating constituent set, $R_t$ the technical and operational relations, $G_t$ the distributed governance and authorities, $M_t$ the mission and measures, and $E_t$ the environment and evidence. A mission thread $q$ is eligible for a decision only when its required constituents and relations are available, compatible, authorized, and supported by evidence for the actual coalition state:
 
-\[
+$$
 ready(q,t) \Rightarrow required(q)\subseteq C_t \land compatible(q,R_t) \land authorized(q,G_t) \land evidenced(q,E_t).
-\]
+$$
 
 This is a necessary-condition model, not a sufficiency theorem. Declared availability cannot prove semantics, timing, trust, human coordination, resilience, emergence, or mission success.
 
@@ -196,10 +196,10 @@ Let $U$ be the universe of possible constituents and $C_t\subseteq U$ the observ
 
 For thread $q$, $Req_C(q)$ and $Req_R(q)$ are required constituents and relations. Availability $A(c,t)$, conformance $F(r,t)$, authorization $H(q,t)$, and evidence applicability $V(q,t)$ are predicates with stated thresholds and observations. The implication
 
-\[
+$$
 Ready(q,t)\Rightarrow \bigwedge_{c\in Req_C(q)}A(c,t)\land
 \bigwedge_{r\in Req_R(q)}F(r,t)\land H(q,t)\land V(q,t)
-\]
+$$
 
 records necessary gates. The reverse implication is deliberately not asserted. An outcome depends on interaction dynamics, human action, environment, uncertainty, and unmodeled conditions.
 
@@ -360,10 +360,10 @@ Evolutionary evidence includes changing fire behavior, participants, data produc
 
 Under mutual statistical independence and treating each number as the probability that the constituent meets the same defined availability condition during the same mission window, the conjunction is
 
-\[
+$$
 0.99\times0.98\times0.97\times0.95\times0.92\times0.90
 =0.7405508268,
-\]
+$$
 
 or about 74.06%. Show the intermediate interpretation: the thread requires all six, so under the assumption their joint event probability is the product. If substitutes or degraded routes exist, a different reliability model is needed.
 

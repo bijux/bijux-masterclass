@@ -33,15 +33,15 @@ Does the verified system, together with its people, procedures, data, facilities
 
 Represent an operational context as
 
-\[
+$$
 C=(U,G,E,X,D,P,R,L),
-\]
+$$
 
 where $U$ is the user population, $G$ goals/tasks, $E$ environment, $X$ external systems and interfaces, $D$ data and demand, $P$ procedures and policies, $R$ resources/support, and $L$ lifecycle modes. A validation claim is not “the system is valid” in the abstract. It is a bounded statement that evidence set $E_v$ supports system/configuration $S_v$ satisfying stakeholder expectations $B$ and MOE criteria $M$ over declared context envelope $C_v$:
 
-\[
+$$
 E_v \models V(S_v,C_v,B,M).
-\]
+$$
 
 The claim does not automatically transfer outside $S_v$, $C_v$, $B$, or $M$. Scenario coverage, fidelity arguments, user representation, anomaly disposition, and residual gaps determine its credible scope.
 
@@ -397,9 +397,9 @@ Use actual/representative incident teams with documented training, roles, langua
 
 Observed rates are nominal $98/100=98\%$, degraded network $17/20=85\%$, handoff $8/10=80\%$, and restart recovery $4/5=80\%$. The pooled rate is
 
-\[
+$$
 \frac{98+17+8+4}{100+20+10+5}=\frac{127}{135}\approx94.07\%.
-\]
+$$
 
 If there were zero catastrophic outcomes and the rule literally uses observed proportions with “at least,” every class meets the stated criterion, including two exactly at 80%. The pooled number is not needed and must not compensate for a failing class.
 

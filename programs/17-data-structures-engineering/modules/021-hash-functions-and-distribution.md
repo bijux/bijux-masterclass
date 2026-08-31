@@ -33,11 +33,11 @@ What equality contract, key encoding, hash family, seed policy, bucket reduction
 
 For n distinct keys mapped independently and uniformly to m buckets, expected bucket load is `n/m`. For each unordered key pair define indicator `Iij=1` when the pair collides. Then
 
-\[
+$$
 E[C]=E\left[\sum_{i<j} I_{ij}\right]
 =\sum_{i<j}P(h(x_i)=h(x_j))
 =\binom{n}{2}\frac1m.
-\]
+$$
 
 This is an expectation under a model, not a guarantee for a fixed public function or adversarial keys. A universal family restores a per-pair expected bound by selecting h randomly after the key set is fixed. Table operation cost still depends on its collision-resolution scheme, load policy, and independence assumptions.
 
@@ -107,9 +107,9 @@ After completing this module, you should be able to:
 
 **Equality comes first.** A map stores one value per equivalence class under its key predicate. The predicate must be reflexive, symmetric, transitive, and stable while the key is indexed. The hash contract is one-way:
 
-\[
+$$
 x\approx y\Longrightarrow h(x)=h(y).
-\]
+$$
 
 Equal hashes do not imply equal keys. Collision resolution must invoke equality before claiming a match. The ISO C++ unordered-container requirements explicitly require equivalent keys to hash identically; Python and Java express analogous contracts in their data models.
 

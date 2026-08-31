@@ -29,19 +29,19 @@ What must be specified before two executions can be judged to have the same beha
 
 Let (P) be programs, (I) inputs, (O) semantic outcomes, and (B) an observation boundary. A semantic function or relation associates execution with outcomes,
 
-\[
+$$
 \mathcal{E}:P\times I\to O
 \qquad\text{or}\qquad
 \langle p,i\rangle\Downarrow o.
-\]
+$$
 
 The boundary induces an observation function (obs_B:O\to A_B). For deterministic programs considered in isolation,
 
-\[
+$$
 p\approx_B q
 \quad\Longleftrightarrow\quad
 \forall i\in I,\;obs_B(\mathcal{E}(p,i))=obs_B(\mathcal{E}(q,i)).
-\]
+$$
 
 For nondeterministic programs or programs placed in contexts, outcomes become sets or distributions and the quantification must include the allowed contexts. Equality is therefore always relative to a declared semantic model.
 
@@ -123,19 +123,19 @@ A running program is represented abstractly by a **configuration**. A configurat
 
 There are two common presentation styles. An **evaluation semantics** relates a starting configuration directly to an outcome. A **transition semantics** relates one configuration to its next possible configuration. In schematic notation,
 
-\[
+$$
 \langle p,i\rangle\Downarrow o
 \qquad\text{and}\qquad
 c\longrightarrow c'.
-\]
+$$
 
 The first makes completed computations concise. The second exposes intermediate steps, nondeterminism, concurrency, and divergence. Both are models; neither is the literal motion of electrons in hardware.
 
 Outcomes must be rich enough for the intended claims. A minimal deterministic model might use
 
-\[
+$$
 O=\operatorname{Return}(v)\mid\operatorname{Error}(e)\mid\operatorname{Diverge}.
-\]
+$$
 
 An interactive model can pair an outcome with a trace (t=e_1e_2\cdots), where events record externally relevant reads, writes, messages, or emissions. A concurrent model may admit a set of traces. A probabilistic model may assign distributions. Choosing a plain value when the program performs effects silently discards evidence.
 
@@ -168,22 +168,22 @@ For a deterministic terminating model, (\mathcal{E}:P\times I\to O). A relation 
 
 The projection (obs_B:O\to A_B) deliberately forgets hidden details. For isolated deterministic programs,
 
-\[
+$$
 p\approx_B q
 \iff
 \forall i\in I,\;obs_B(\mathcal{E}(p,i))=obs_B(\mathcal{E}(q,i)).
-\]
+$$
 
 If programs may produce several outcomes, define (Out(p,i)=\{o\mid\langle p,i\rangle\Downarrow o\}) and compare the projected sets, while separately accounting for divergence. Equality of may-outcomes, must-outcomes, and probability distributions are different equivalences.
 
 A context (K[-]) is an admitted program phrase containing one component hole. A contextual relation has the shape
 
-\[
+$$
 p\simeq_B q
 \iff
 \forall K\in\mathcal{K},\forall i\in I,
 \;Obs_B(K[p],i)=Obs_B(K[q],i).
-\]
+$$
 
 The notation does not itself prove anything: the sets of contexts, inputs, and observations must be defined.
 
@@ -199,17 +199,17 @@ The notation does not itself prove anything: the sets of contexts, inputs, and o
 
 **Behavior-preservation obligation.** For a translator (T) from source programs to target programs, a basic deterministic obligation is
 
-\[
+$$
 obs_B(\mathcal{E}_S(p,i))=obs_B(\mathcal{E}_T(T(p),i))
-\]
+$$
 
 for every admitted (p) and input (i), under stated source-target correspondence assumptions. Real compiler correctness may permit target stuttering steps, relate memories, or qualify undefined source behavior; those refinements belong to the compiler program.
 
 **A small proof.** Over mathematical integers, let (p(x)=(x+1)+1) and (q(x)=x+2). Associativity of integer addition gives
 
-\[
+$$
 (x+1)+1=x+(1+1)=x+2.
-\]
+$$
 
 Thus (p\approx_B q) for a total final-integer observer over all integer inputs. This is a proof under explicit assumptions, not empirical evidence about overflow, floating-point arithmetic, callbacks, or logging.
 

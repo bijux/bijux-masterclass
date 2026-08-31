@@ -33,28 +33,28 @@ How can a systems team identify, interpret, transform, reconcile, verify, and ma
 
 Represent an external obligation as:
 
-\[
+$$
 o=\langle id,authority,jurisdiction,source,provision,edition,effectiveDate,
 applicability,subject,modality,condition,obligation,exceptions,
 interpretation,rationale,derivedRequirements,evidence,owner,status\rangle.
-\]
+$$
 
 Translation must preserve an auditable chain:
 
-\[
+$$
 AuthoritativeProvision
 \xrightarrow{applicability+interpretation}
 ControlledObligation
 \xrightarrow{allocation+rationale}
 System/Process/EvidenceRequirements.
-\]
+$$
 
-For each derived requirement \(r\):
+For each derived requirement $r$:
 
-\[
+$$
 ValidTrace(r)\Rightarrow Applicable(source(r))\land
 AuthorizedInterpretation(r)\land ScopePreserved(r).
-\]
+$$
 
 The implication is a review obligation, not legal proof. Engineering review cannot replace competent legal, regulatory, certification, or domain authority.
 
@@ -210,18 +210,18 @@ print("evidence=declared_fields_and_lexical_signals_only")
 
 ## Definitions and Notation
 
-Let \(S\) be authoritative sources, \(F\) applicability facts, \(I\) authorized interpretations, \(O\) controlled obligations, \(R\) engineered requirements, and \(E\) compliance evidence.
+Let $S$ be authoritative sources, $F$ applicability facts, $I$ authorized interpretations, $O$ controlled obligations, $R$ engineered requirements, and $E$ compliance evidence.
 
 Define the trace relations:
 
-\[
+$$
 Applicable:S\times F\rightarrow\{true,false,undetermined\},
-\]
+$$
 
-\[
+$$
 Interpret:(s,f)\mapsto i,\quad Allocate:i\mapsto O,\quad Derive:O\mapsto R,
 \quad Demonstrate:(R,E)\mapsto Finding.
-\]
+$$
 
 `Undetermined` is a legitimate controlled state with owner and resolution plan. A **finding** records what evidence shows under a scheme and scope; it is not universal compliance.
 
@@ -233,11 +233,11 @@ The transformation mechanism has eight passes: discover sources; control version
 
 Use a readiness predicate:
 
-\[
+$$
 Ready(o)=Authority(o)\land CurrentSource(o)\land Applicability(o)
 \land ScopePreserved(o)\land CorrectSubject(o)\land EvidencePath(o)
 \land AuthorizedReview(o).
-\]
+$$
 
 This is a governance predicate, not legal proof. `CorrectSubject`, `Applicability`, and `AuthorizedReview` require competent judgment.
 

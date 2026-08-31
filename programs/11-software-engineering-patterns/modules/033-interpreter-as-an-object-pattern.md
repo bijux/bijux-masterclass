@@ -33,9 +33,9 @@ When is it appropriate to represent a small language's grammar as an object stru
 
 Let expression grammar be
 
-\[
+$$
 e ::= literal(v)\mid variable(x)\mid add(e,e)\mid multiply(e,e)\mid less(e,e).
-\]
+$$
 
 Define evaluation judgment (\langle e,\rho\rangle\Downarrow v), where environment (\rho) maps names to typed values. For example, if both operands evaluate to integers (a,b), then (\langle add(e_1,e_2),\rho\rangle\Downarrow a+b). Correctness requires syntax construction and evaluation to match a versioned language specification; object shape alone proves neither. Termination for the finite pure tree follows by structural descent only if evaluation visits proper subexpressions and no node introduces unbounded recursion/effects.
 

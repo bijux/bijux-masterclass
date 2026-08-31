@@ -33,15 +33,15 @@ How do contiguous and linked representations encode the same abstract sequence w
 
 For fixed slot stride (s>0), contiguous element (i) has modeled address
 
-\[
+$$
 addr(i)=B+i\cdot s,\qquad 0\le i<n.
-\]
+$$
 
 A linked sequence begins at root (h) and follows a partial successor function
 
-\[
+$$
 next:N\rightharpoonup N.
-\]
+$$
 
 The abstract value is the ordered payload sequence encountered before the terminator. Correctness requires bounds/alignment and live-region invariants for the contiguous representation, and ownership, acyclicity or declared cyclic-sentinel structure, link consistency, and termination for the linked representation.
 
@@ -112,7 +112,7 @@ After completing this module, you should be able to:
 
 **Begin with one abstract sequence.** Let the abstract value be finite sequence (S=\langle e_0,\ldots,e_{n-1}\rangle). Both representations must implement the same observations and updates: length, indexed lookup if promised, iteration, insertion, removal, and element mutation/ownership. Physical differences matter only through the published contract and resource behavior.
 
-**Contiguous representation.** A low-level contiguous array owns a region starting at base (B), with capacity (c), element stride (s), and live size (n\le c). Its abstraction function reads live slots (0\) through (n-1) in increasing index. Unused capacity is outside the abstract sequence.
+**Contiguous representation.** A low-level contiguous array owns a region starting at base (B), with capacity (c), element stride (s), and live size (n\le c). Its abstraction function reads live slots $0$ through (n-1) in increasing index. Unused capacity is outside the abstract sequence.
 
 When the language and ABI guarantee fixed stride, locating index (i) uses checked offset (i\cdot s). The calculation must avoid integer overflow and remain within the same allocated object/region under the language's pointer rules. Bounds checks, provenance, alignment, and lifetime remain required; an arithmetic formula does not authorize arbitrary memory access.
 
@@ -240,15 +240,15 @@ print("evidence=modeled_steps_not_machine_timing")
 
 Let abstract sequence be (S\in E^*). A contiguous representation is (R_a=(B,n,c,s,slots)), with (0\le n\le c), valid layout/alignment, and
 
-\[
+$$
 AF_a(R_a)=\langle slots[0],\ldots,slots[n-1]\rangle.
-\]
+$$
 
 A linked representation is (R_l=(N,h,next,value,owner)). For a null-terminated acyclic list, repeated `next` from (h) visits distinct owned live nodes (v_0,\ldots,v_{n-1}) then null, and
 
-\[
+$$
 AF_l(R_l)=\langle value(v_0),\ldots,value(v_{n-1})\rangle.
-\]
+$$
 
 For a doubly linked list, `prev(next(x))=x` and `next(prev(x))=x` wherever both sides are applicable. For a sentinel list, replace null termination with a unique sentinel cycle and exclude sentinel payload from (AF_l).
 

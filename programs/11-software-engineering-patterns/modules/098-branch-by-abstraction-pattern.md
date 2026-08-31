@@ -33,13 +33,13 @@ How can a team replace a deeply used implementation continuously on the mainline
 
 Let callers (C) depend on contract (A), and implementations (I_0,I_1\models A). Migration states are
 
-\[
+$$
 C\rightarrow I_0
 \Rightarrow C\rightarrow A\rightarrow I_0
 \Rightarrow C\rightarrow A\rightarrow\{I_0,I_1\}
 \Rightarrow C\rightarrow A\rightarrow I_1
 \Rightarrow C\rightarrow I_1\text{ through durable }A.
-\]
+$$
 
 Each arrow is a small releasable mainline change. Safety requires observational equivalence under the agreed contract for relevant inputs and effects: (obs_A(I_0,x)\equiv obs_A(I_1,x)), except documented intentional corrections. The pattern shortens integration branches; it does not make abstraction, state migration, concurrency or equivalence automatically correct.
 

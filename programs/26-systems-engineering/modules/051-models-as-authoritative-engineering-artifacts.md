@@ -37,21 +37,21 @@ What governance, semantics, configuration, evidence and access make a model auth
 
 Represent an authority assignment for claim $q$ in baseline $b$ and intended use $u$ as
 
-\[
+$$
 \mathcal{A}(q,b,u)=(s,v,o,p,c),
-\]
+$$
 
 where $s$ is the controlling source, $v$ its exact version/configuration, $o$ accountable owner/steward, $p$ applicable policy and $c$ conflict/change procedure. A well-governed baseline requires one resolvable authority for each governed claim:
 
-\[
+$$
 |\operatorname{resolve}(q,b,u)|=1.
-\]
+$$
 
 This uniqueness does not require one physical database. A federated authoritative set can include requirements, system, discipline-analysis, interface, verification, risk and configuration sources, provided identities and transformations are controlled. Credibility is use-specific:
 
-\[
+$$
 Credible(M,u,E)\not\Rightarrow Credible(M,u',E').
-\]
+$$
 
 ### Critical invariants
 
@@ -220,9 +220,9 @@ The registry passes while one view is stale because derived-view detection is wo
 
 Let model artifact
 
-\[
+$$
 M=(id,purpose,scope,semantics,content,provenance,configuration,owner,history).
-\]
+$$
 
 Let $Claims(M)$ be propositions expressed or computed by $M$, and $Use(M)$ its declared intended uses. Authority relation $controls(s,q,b,u)$ means source $s$ governs claim $q$ for baseline $b$ and use $u$; it does not imply that every claim in $s$ is validated.
 
@@ -230,9 +230,9 @@ A derived artifact $d=T(M_b)$ records transformation $T$, source baseline $b$, t
 
 Model-to-reality discrepancy for observable $y$ is
 
-\[
+$$
 e=y_{observed}-y_{predicted},
-\]
+$$
 
 interpreted only with measurement uncertainty, configuration alignment and applicability. A discrepancy can indicate model error, implementation deviation, measurement error or an unmodeled condition.
 

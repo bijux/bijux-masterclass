@@ -24,9 +24,9 @@ A **log sequence number** (LSN) is a coordinate in a named log history. It commo
 
 Represent a position as `P=(namespace, history, offset, boundary_kind)`. A total numeric order exists only when the namespace/history and endpoint convention are compatible. Within one compatible history:
 
-\[
+$$
 flush \le write \le published \le reserved,
-\]
+$$
 
 while consumer relationships such as `replay <= receive <= sender_flush` hold only for a stated observation and protocol. For a record interval `[start,end)`, durable coverage means `flush >= end`; for a captured page image, WAL eligibility means `flush >= pageLSN(image)` under that engine's endpoint convention. Distance is `newer.offset-older.offset`, not elapsed time, transaction count, or universal work.
 
@@ -146,9 +146,9 @@ Options include a larger logical type, an explicit epoch/generation increment, o
 
 **Make retention the minimum of obligations.** Let required frontiers be `C` for crash recovery, `T` for oldest active transaction undo, `R_i` for replicas, `A` for archive, `B` for backup, and `D_j` for decoders. The safe recycle position is no later than:
 
-\[
+$$
 min(C,T,R_1,...,A,B,D_1,...),
-\]
+$$
 
 rounded to the engine's reusable segment/block boundary after durable metadata proves each obligation. A missing or stale frontier is not infinity; policy decides whether to block, invalidate a consumer explicitly, or fail the workload. Silent deletion converts lag into data loss.
 

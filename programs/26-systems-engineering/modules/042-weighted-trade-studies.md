@@ -36,23 +36,23 @@ How can a weighted trade study compare feasible alternatives reproducibly while 
 
 After mandatory screening, let feasible alternatives be (A_F), criteria (i=1,\ldots,n), raw performance (x_i(a)), value functions (u_i), and swing weights (w_i\ge0,\sum_iw_i=1):
 
-\[
+$$
 V(a)=\sum_{i=1}^{n}w_i u_i(x_i(a)).
-\]
+$$
 
 For an objective hierarchy, leaf/global weight is:
 
-\[
+$$
 w_{leaf}=\prod_{h\in path(root,leaf)}w_{h\mid parent(h)}.
-\]
+$$
 
 The leaf weights should sum to one when every sibling set is normalized and the hierarchy is complete.
 
 For two alternatives (a,b), score difference is:
 
-\[
+$$
 \Delta V_{ab}=\sum_iw_i\left(u_i(x_i(a))-u_i(x_i(b))\right).
-\]
+$$
 
 Solving (\Delta V_{ab}=0) gives a break-even boundary. A nominal positive difference is meaningful only relative to uncertainty in performance, functions, weights, evidence, and model structure.
 
@@ -216,35 +216,35 @@ Let alternatives (A), feasible subset (A_F), criteria (C), raw performance (x_{a
 
 Screening:
 
-\[
+$$
 A_F=\{a\in A:\forall m\in M,g_m(a)=true\}.
-\]
+$$
 
 Score and contribution:
 
-\[
+$$
 V_a=\sum_iw_iv_{ai},\qquad contribution_{ai}=w_iv_{ai}.
-\]
+$$
 
 Hierarchical global weight:
 
-\[
+$$
 w_i=\prod_{h\in path(root,i)}w_{h\mid parent(h)}.
-\]
+$$
 
 For intervals (v_{ai}\in[\underline v_{ai},\overline v_{ai}]) with fixed nonnegative weights, a conservative independent-envelope bound is:
 
-\[
+$$
 V_a\in\left[\sum_iw_i\underline v_{ai},\sum_iw_i\overline v_{ai}\right].
-\]
+$$
 
 It is not a probability interval and may be too wide or invalid under coupled feasibility; preserve dependence.
 
 Break-even between (a,b) for parameter (\theta):
 
-\[
+$$
 V_a(\theta)-V_b(\theta)=0.
-\]
+$$
 
 The study baseline (b) identifies every object used to evaluate this equation.
 
@@ -389,21 +389,21 @@ Design an auditable weighted trade study for centralized, distributed, and hybri
 
 ### Answer 1
 
-\[
+$$
 V_A=0.50(0.8)+0.30(0.4)+0.20(0.7)=0.66.
-\]
+$$
 
 Contributions are 0.40, 0.12, 0.14.
 
-\[
+$$
 V_B=0.50(0.6)+0.30(0.9)+0.20(0.5)=0.67,
-\]
+$$
 
 with contributions 0.30, 0.27, 0.10.
 
-\[
+$$
 V_C=0.50(0.7)+0.30(0.6)+0.20(0.8)=0.69,
-\]
+$$
 
 with contributions 0.35, 0.18, 0.16. Nominal rank is C, B, A; margins are C–B 0.02, B–A 0.01, C–A 0.03.
 
@@ -413,33 +413,33 @@ Before recommendation review mandatory feasibility, alternative comparability, r
 
 Mission leaves:
 
-\[
+$$
 w_{effectiveness}=0.55(0.70)=0.385,
-\]
+$$
 
-\[
+$$
 w_{availability}=0.55(0.30)=0.165.
-\]
+$$
 
 Lifecycle leaves:
 
-\[
+$$
 w_{cost}=0.30(0.60)=0.18,
-\]
+$$
 
-\[
+$$
 w_{maintainability}=0.30(0.40)=0.12.
-\]
+$$
 
 Risk leaves:
 
-\[
+$$
 w_{safety}=0.15(0.50)=0.075,
-\]
+$$
 
-\[
+$$
 w_{security}=0.15(0.50)=0.075.
-\]
+$$
 
 Sum is (0.385+0.165+0.18+0.12+0.075+0.075=1.0). Arithmetic reconciliation does not prove independence or that safety/security are compensatory; mandatory minima or separate risk profiles may still be required.
 
@@ -447,33 +447,33 @@ Sum is (0.385+0.165+0.18+0.12+0.075+0.075=1.0). Arithmetic reconciliation does n
 
 With only A=100 and B=200 ms, lower-better min–max gives:
 
-\[
+$$
 u(A)=(200-100)/(200-100)=1,
-\]
+$$
 
-\[
+$$
 u(B)=(200-200)/(200-100)=0.
-\]
+$$
 
 After adding C=500:
 
-\[
+$$
 u(A)=(500-100)/(500-100)=1,
-\]
+$$
 
-\[
+$$
 u(B)=(500-200)/(500-100)=300/400=0.75,
-\]
+$$
 
 and C=0. B improved from 0 to 0.75 without changing latency or stakeholder preference. With fixed 50–500 anchors:
 
-\[
+$$
 u(A)=(500-100)/450=0.8889,
-\]
+$$
 
-\[
+$$
 u(B)=(500-200)/450=0.6667,
-\]
+$$
 
 before and after C is added. Fixed anchors preserve scale meaning; their choice/shape still requires authority and operational rationale.
 

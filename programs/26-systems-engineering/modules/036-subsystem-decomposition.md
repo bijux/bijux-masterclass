@@ -35,25 +35,25 @@ How can a selected physical architecture be decomposed into subordinate systems 
 
 For parent (S), let immediate children be (C(S)=\{c_1,\ldots,c_n\}), parent obligations (Q_S), child allocations (Alloc\subseteq Q_S\times C(S)), parent-retained obligations (Q_R), and integration obligations (Q_I). Declaration coverage requires:
 
-\[
+$$
 \forall q\in Q_S:\quad q\in Q_R\ \lor\ \exists c\in C(S):(q,c)\in Alloc
 \ \lor\ q\text{ is satisfied by a traced set in }Q_I.
-\]
+$$
 
 Coverage marks are necessary but do not prove satisfaction. Compositional correctness requires:
 
-\[
+$$
 \left(\bigwedge_{c\in C(S)} G_c\right)\land G_I\land A_{system}
 \Rightarrow G_S,
-\]
+$$
 
 while child assumptions must be discharged by sibling/integration guarantees or exported environmental constraints.
 
 For a conserved parent budget (B_r) of resource (r):
 
-\[
+$$
 \sum_c b_r(c,k,m)+b_r(integration,k,m)+reserve_r(k,m)\le B_r(k,m)
-\]
+$$
 
 for every applicable configuration (k) and mode (m). Decomposition is not valid merely because each child is locally feasible; the parent must close after interfaces, packaging, conversion, shared services, and integration overhead are included.
 
@@ -227,54 +227,54 @@ Let parent (S), immediate physical child usages (C(S)=\{c_1,\ldots,c_n\}), paren
 
 Composition ownership relation:
 
-\[
+$$
 partOf\subseteq C\times S,
-\]
+$$
 
 with each physical usage having one composition parent in a selected baseline:
 
-\[
+$$
 \forall c:\quad |\{s:(c,s)\in partOf\}|=1.
-\]
+$$
 
 Reusable definitions can be instantiated in several parents; the usages remain distinct.
 
 Requirement allocation relation:
 
-\[
+$$
 Alloc_Q\subseteq Q_S\times(C(S)\cup\{Parent,Integration\}).
-\]
+$$
 
 Declaration coverage:
 
-\[
+$$
 C_Q=\frac{|\{q\in Q_S:\exists x,(q,x)\in Alloc_Q\}|}{|Q_S|}.
-\]
+$$
 
 (C_Q=1) does not prove correct allocation, requirement completeness, child satisfaction, or parent composition.
 
 For (n) children, unordered pair review opportunities are:
 
-\[
+$$
 N_u=\frac{n(n-1)}{2},
-\]
+$$
 
 and directed cells are (N_d=n(n-1)). A pair may host multiple interfaces; omitted children and shared/environmental couplings are outside these counts.
 
 For parent resource budget (B_r(k,m)):
 
-\[
+$$
 Margin_r(k,m)=B_r(k,m)-Reserve_r(k,m)-Integration_r(k,m)
 -\sum_{c\in C(S)} Allocation_r(c,k,m).
-\]
+$$
 
 The invariant requires (Margin_r(k,m)\ge0) for every applicable configuration/mode under the declared composition model.
 
 Let child contracts (C_c=(A_c,G_c)) and integration contract (C_I=(A_I,G_I)). Parent contract closure requires internal assumptions be discharged and:
 
-\[
+$$
 A_S\land\bigwedge_c G_c\land G_I\Rightarrow G_S.
-\]
+$$
 
 This predicate relation is an assurance obligation. Physical realizability, causality, uncertainty, and model completeness need separate evidence.
 
@@ -381,9 +381,9 @@ The revised decomposition retains parent transaction semantics, assigns stable o
 
 **Power budget fails after integration overhead.** Parent capacity is 1,000 W. Controlled reserve is 150 W. Child allocations are 240, 180, 260, and 120 W; conversion, wiring, control, and cooling overhead is 60 W.
 
-\[
+$$
 Margin=1000-150-(240+180+260+120)-60=-10\text{ W}.
-\]
+$$
 
 Every child is within its allocation, yet the parent does not close. The team must reduce allocations/overhead, increase capacity, change reserve with evidence, or sequence loads if the parent requirement permits. Omitting “glue” would falsely report 50 W margin.
 
@@ -391,9 +391,9 @@ Every child is within its allocation, yet the parent does not close. The team mu
 
 **Installed mass allocation.** A parent mass cap is 200 kg with 20 kg reserve. Four children receive installed-mass allocations 45, 50, 55, and 22 kg; parent-level structure, harness, fluids, and fasteners require 12 kg.
 
-\[
+$$
 Margin=200-20-(45+50+55+22)-12=-4\text{ kg}.
-\]
+$$
 
 The hierarchy cannot assign integration mass nowhere. Each child allocation states its interface plane and inclusions. Rebalancing considers center of mass, strength, thermal, supplier uncertainty, and access; reducing a bracket locally might raise harness or integration mass elsewhere.
 
@@ -491,9 +491,9 @@ Design a decomposition-closure review for a hospital medication-delivery system.
 
 Five of six parent requirements have a recorded disposition: child, joint children, parent retained, or integration. Thus:
 
-\[
+$$
 C_Q=5/6\approx0.8333=83.33\%.
-\]
+$$
 
 `Q6` is the structural gap. Review its semantics and parent rationale. It may allocate to one child; derive contributions across several children and an interface; remain a parent-level emergent outcome; become an integration obligation; be invalid/duplicate; or reveal a missing child. The disposition needs authority and trace.
 
@@ -503,15 +503,15 @@ Even 100% declaration coverage would not prove requirements are correct/complete
 
 Operational demand is:
 
-\[
+$$
 D=48+62+55+34+18=217.
-\]
+$$
 
 Available after reserve is (240-30=210), so:
 
-\[
+$$
 Margin=240-30-18-(48+62+55+34)=-7.
-\]
+$$
 
 The operational allocation already fails by seven units and cannot be repaired by saying the diagnostic child runs only in maintenance. First resolve normal/operational closure.
 
@@ -521,15 +521,15 @@ For maintenance, define exactly which children are inactive and what residual de
 
 For (n=7):
 
-\[
+$$
 N_u=7(6)/2=21
-\]
+$$
 
 unordered pairs, and:
 
-\[
+$$
 N_d=7(6)=42
-\]
+$$
 
 directed cells.
 

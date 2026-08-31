@@ -33,15 +33,15 @@ When observed behavior differs from expectation, how can a team preserve trustwo
 
 Treat an anomaly record as an evidence graph
 
-\[
+$$
 G=(O,F,H,T,C,I,A,E),
-\]
+$$
 
 where observations $O$ and preserved artifacts $F$ support or contradict hypotheses $H$ through tests/analyses $T$; bounded causal conclusions $C$ drive impact assessment $I$, actions $A$, and closure evidence $E$. A sound closure argument requires traceable edges, not merely a plausible story:
 
-\[
+$$
 O,F \Rightarrow C_{bounded} \Rightarrow I,A \Rightarrow E_{correction+regression+scope}.
-\]
+$$
 
 The arrows express an assurance argument, not deductive certainty. Alternative explanations, common causes, missing data, changed configurations, and evidence limitations remain explicit.
 

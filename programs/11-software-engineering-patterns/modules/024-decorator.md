@@ -31,13 +31,13 @@ How can responsibilities be attached to one object dynamically while preserving 
 
 ### Central model, mechanism, or theorem
 
-Treat a component behavior as \(B:X\to Outcome(Y,E)\). A decorator is a higher-order transformation \(d:B\to B'\), and a chain is ordered composition
+Treat a component behavior as $B:X\to Outcome(Y,E)$. A decorator is a higher-order transformation $d:B\to B'$, and a chain is ordered composition
 
-\[
+$$
 B'=d_n\circ\cdots\circ d_2\circ d_1(B).
-\]
+$$
 
-In general \(d_i\circ d_j\ne d_j\circ d_i\): authorization before caching differs from caching before authorization; retry outside metrics counts logical calls while metrics inside retry counts attempts. Correct composition requires declared pre/post behavior, allowed order constraints, multiplicity, shared deadline/cancellation, and one owner for effects such as retry, transaction, close, or telemetry.
+In general $d_i\circ d_j\ne d_j\circ d_i$: authorization before caching differs from caching before authorization; retry outside metrics counts logical calls while metrics inside retry counts attempts. Correct composition requires declared pre/post behavior, allowed order constraints, multiplicity, shared deadline/cancellation, and one owner for effects such as retry, transaction, close, or telemetry.
 
 ### Critical invariants
 
@@ -186,13 +186,13 @@ Keep a chain inventory and reject unknown decorator IDs so obsolete or malicious
 
 ## Definitions and Notation
 
-Let base behavior \(B:X\to Outcome(Y,E)\). Decorator \(d_i\) transforms behavior while retaining the component interface. Effective chain
+Let base behavior $B:X\to Outcome(Y,E)$. Decorator $d_i$ transforms behavior while retaining the component interface. Effective chain
 
-\[
+$$
 B_D=(d_n\circ\cdots\circ d_1)(B).
-\]
+$$
 
-Let \(calls_i(x)\) be number of inner invocations. A pure observation decorator normally requires \(calls_i(x)=1\); cache/authorization may allow zero; retry may allow \(0\le calls_i(x)\le k\). Let order relation \(d_i\prec d_j\) mean \(d_i\) must be outer/before \(d_j\) under the documented convention. Let multiplicity \(m_i\) be bounded by policy.
+Let $calls_i(x)$ be number of inner invocations. A pure observation decorator normally requires $calls_i(x)=1$; cache/authorization may allow zero; retry may allow $0\le calls_i(x)\le k$. Let order relation $d_i\prec d_j$ mean $d_i$ must be outer/before $d_j$ under the documented convention. Let multiplicity $m_i$ be bounded by policy.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -202,7 +202,7 @@ For a transparent decorator, every input accepted by the base contract yields an
 
 ### Order analysis
 
-For each pair, compare traces of \(d_i(d_j(B))(x)\) and \(d_j(d_i(B))(x)\) across success, failure, short circuit, cancellation, and side effects. Declare commutativity only if all relevant observations agree.
+For each pair, compare traces of $d_i(d_j(B))(x)$ and $d_j(d_i(B))(x)$ across success, failure, short circuit, cancellation, and side effects. Declare commutativity only if all relevant observations agree.
 
 ### Chain validation
 
@@ -379,7 +379,7 @@ An unfamiliar infusion-device command path proposes authorization, dose validati
 
 ### Answer 1
 
-Let base \(B(x)=x\), discount \(D(B)(x)=\lfloor0.9B(x)\rfloor\) under the toy integer rule, and fee \(F(B)(x)=B(x)+500\). `F(D(B))(10000)=9000+500=9500`; `D(F(B))(10000)=10500*90//100=9450`. They differ by 50, so do not commute for this input.
+Let base $B(x)=x$, discount $D(B)(x)=\lfloor0.9B(x)\rfloor$ under the toy integer rule, and fee $F(B)(x)=B(x)+500$. `F(D(B))(10000)=9000+500=9500`; `D(F(B))(10000)=10500*90//100=9450`. They differ by 50, so do not commute for this input.
 
 They can differ in value, rounding, taxable/discountable base, reporting, audit trace, error order, and which transformation observes limits. Define money currency and minor-unit range, checked intermediate multiplication, whether fee is discountable, exact percentage rational, rounding mode and stage, negative/refund handling, maximum/minimum price, and overflow rejection. The example is not tax or pricing evidence. Property-test boundaries and compare the declared business formula independently.
 
@@ -387,7 +387,7 @@ They can differ in value, rounding, taxable/discountable base, reporting, audit 
 
 One defensible outer-to-inner chain is audit → authentication/authorization → tenant-aware cache → logical metrics → retry coordinator → per-attempt transaction → attempt metrics/trace → transport, but exact placement depends on contracts. Audit surrounds denials/cache hits with redaction. Authorization occurs before cache disclosure. Cache key includes tenant, subject-relevant policy generation, request, and data generation; hits short-circuit everything inside. Logical metrics count one outer miss operation. Retry owns one overall deadline and idempotency key; each safe attempt gets remaining budget and a fresh transaction. Attempt telemetry records physical attempts. Transport never adds an independent retry.
 
-Authorization denial and cache hit call inner zero times. Cache miss without retry calls transport once. Retry calls at most \(k\) times only for classified safe outcomes. An indeterminate side effect is reconciled, not blindly retried. Authentication owns identity error, authorization owns denial, cache owns stale/load errors, retry owns exhaustion, transaction owns commit/rollback/indeterminate state, and transport owns protocol failure; outer mapping preserves causes. Audit/metrics/trace cleanup cannot replace the primary error.
+Authorization denial and cache hit call inner zero times. Cache miss without retry calls transport once. Retry calls at most $k$ times only for classified safe outcomes. An indeterminate side effect is reconciled, not blindly retried. Authentication owns identity error, authorization owns denial, cache owns stale/load errors, retry owns exhaustion, transaction owns commit/rollback/indeterminate state, and transport owns protocol failure; outer mapping preserves causes. Audit/metrics/trace cleanup cannot replace the primary error.
 
 ### Answer 3
 

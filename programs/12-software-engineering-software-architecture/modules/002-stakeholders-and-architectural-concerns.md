@@ -33,19 +33,19 @@ How can architects identify the people and institutions with legitimate interest
 
 Represent a concern record as
 
-\[
+$$
 c=(id,stakeholders,source,statement,rationale,scenario,priority,evidence,owner,status,triggers).
-\]
+$$
 
 The working trace is
 
-\[
+$$
 stakeholder \rightarrow concern \rightarrow scenario/constraint
 \rightarrow viewpoint\ and\ view \rightarrow decision
 \rightarrow evidence \rightarrow consequence.
-\]
+$$
 
-This is a governance mechanism, not a completeness theorem. If \(K\) is the set of known, in-scope concerns and \(A\subseteq K\) the concerns with an accountable response, then \(|A|/|K|\) measures declared-inventory coverage only. It says nothing about legitimate stakeholders or concerns that discovery missed.
+This is a governance mechanism, not a completeness theorem. If $K$ is the set of known, in-scope concerns and $A\subseteq K$ the concerns with an accountable response, then $|A|/|K|$ measures declared-inventory coverage only. It says nothing about legitimate stakeholders or concerns that discovery missed.
 
 ### Critical invariants
 
@@ -189,9 +189,9 @@ Keep raw elicitation notes separate from normalized records so that translation 
 
 For system qualities, a scenario counters adjective-driven design. Let
 
-\[
+$$
 q=(source,stimulus,environment,artifact,response,measure).
-\]
+$$
 
 “Fast” becomes: during the seasonal peak, an authenticated account holder requests the latest statement; the statement service returns a semantically correct response within 800 ms at the 99th percentile over a specified window, under a defined workload and data size. State exclusions openly.
 
@@ -257,29 +257,29 @@ Review triggers include boundary changes, new integration or supplier, jurisdict
 
 ## Definitions and Notation
 
-Let \(E\) be the entity of interest in environment \(\mathcal{E}\). Let \(S_K\) be the set of known in-scope stakeholder roles at time \(t\), and \(K\) the set of known material concerns. The subscript is a reminder that discovery is incomplete in principle; the true set of all legitimate stakeholders is generally not observable.
+Let $E$ be the entity of interest in environment $\mathcal{E}$. Let $S_K$ be the set of known in-scope stakeholder roles at time $t$, and $K$ the set of known material concerns. The subscript is a reminder that discovery is incomplete in principle; the true set of all legitimate stakeholders is generally not observable.
 
 Define relations:
 
-\[
+$$
 H\subseteq S_K\times K
-\]
+$$
 
-for stakeholder-holds-concern, \(F\subseteq K\times V_P\) for concern-framed-by-viewpoint, \(R\subseteq K\times D\) for concern-responded-by-decision, and \(E_v\subseteq K\times X\) for concern-evaluated-by-evidence. \(V_P,D,X\) denote viewpoints, decisions, and evidence items.
+for stakeholder-holds-concern, $F\subseteq K\times V_P$ for concern-framed-by-viewpoint, $R\subseteq K\times D$ for concern-responded-by-decision, and $E_v\subseteq K\times X$ for concern-evaluated-by-evidence. $V_P,D,X$ denote viewpoints, decisions, and evidence items.
 
 For known-inventory response coverage,
 
-\[
+$$
 Cov_K=\frac{|\{c\in K:\operatorname{validResponse}(c)\}|}{|K|}
-\]
+$$
 
-when \(|K|>0\). If \(K=\varnothing\), report “no inventory,” not 100%. A valid response is a policy predicate requiring appropriate disposition, owner, rationale, and evidence or trigger. \(Cov_K=1\) proves only that every registered item satisfies that predicate.
+when $|K|>0$. If $K=\varnothing$, report “no inventory,” not 100%. A valid response is a policy predicate requiring appropriate disposition, owner, rationale, and evidence or trigger. $Cov_K=1$ proves only that every registered item satisfies that predicate.
 
-For a stakeholder category \(s\), a representation record can be
+For a stakeholder category $s$, a representation record can be
 
-\[
+$$
 rep(s)=(method,representative,authority,gaps,followup).
-\]
+$$
 
 This records how a perspective enters the process. It does not assign equal decision authority or assert consent.
 
@@ -414,9 +414,9 @@ The audit intentionally treats an open item without evidence as requiring attent
 
 ### Example 3
 
-**Question:** Does \(Cov_K=12/12=1\) show that every stakeholder concern is addressed?
+**Question:** Does $Cov_K=12/12=1$ show that every stakeholder concern is addressed?
 
-**Reasoning:** It shows that all twelve known registered concerns satisfy the response predicate. If data subjects were never identified, their deletion and transparency concerns are outside \(K\). If a weak predicate accepts any hyperlink, the numerator is also misleading.
+**Reasoning:** It shows that all twelve known registered concerns satisfy the response predicate. If data subjects were never identified, their deletion and transparency concerns are outside $K$. If a weak predicate accepts any hyperlink, the numerator is also misleading.
 
 **Conclusion:** Publish denominator and predicate; known-inventory coverage is not discovery completeness.
 

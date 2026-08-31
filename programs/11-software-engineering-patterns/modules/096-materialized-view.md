@@ -33,9 +33,9 @@ When should a system persist a query result, and how can it keep that derived st
 
 Correct materialization at source boundary (p) requires (V_p=Q(B_p)). Under base transition (B' = B\oplus\Delta B), incremental maintenance seeks
 
-\[
+$$
 Q(B\oplus\Delta B)=Q(B)\oplus\Delta Q(B,\Delta B).
-\]
+$$
 
 The delta generally depends on old state and auxiliary counts/indexes. For a sum, insert (x) adds (x), delete (x) subtracts (x); for minimum, deleting the current minimum requires finding the next candidate; for joins, one base change joins against the other current input. “Consume each change once” is insufficient unless snapshot, ordering, duplicate, delete and transaction semantics preserve the equation.
 
@@ -221,7 +221,7 @@ The run proves only a sequential integer sum/count delta. It does not implement 
 
 Let base relations at boundary (p) be (B_p=(R_{1,p},\ldots,R_{m,p})), defining query be (Q), and materialization version (j) be (V_{j,p}). Correctness is (V_{j,p}=Q_j(B_p)) under declared bag/set, null, collation, time and numeric semantics.
 
-Let (Delta B_p^-\) and (Delta B_p^+) be deletions and insertions; an update can be modeled as one of each. Delta maintenance (D_Q(B,\Delta B)) must satisfy (Q(B\oplus\Delta B)=Q(B)\oplus D_Q(B,\Delta B)). The operator (oplus) includes multiplicity/retractions, not simple set union.
+Let $Delta B_p^-$ and (Delta B_p^+) be deletions and insertions; an update can be modeled as one of each. Delta maintenance (D_Q(B,\Delta B)) must satisfy (Q(B\oplus\Delta B)=Q(B)\oplus D_Q(B,\Delta B)). The operator (oplus) includes multiplicity/retractions, not simple set union.
 
 **Refresh consistency** means output corresponds to a declared source snapshot/boundary. **Freshness** measures distance from that boundary to current authority. **Availability during refresh** describes whether old complete, new complete, partial or blocked results are visible. These are independent properties.
 

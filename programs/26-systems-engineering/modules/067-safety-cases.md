@@ -34,16 +34,16 @@ What precisely is being claimed safe enough, for whom, in which configuration an
 
 Represent an assurance inference as
 
-\[
+$$
 C \Leftarrow (C_1,\ldots,C_n; E_1,\ldots,E_m; X; A; J),
-\]
+$$
 
 where claim $C$ is supported by subclaims $C_i$ and evidence $E_j$ under context $X$, assumptions $A$, and justification $J$. The arrow is not automatically deductive: its strength depends on the strategy and warrants. Each evidence item should satisfy a fitness predicate
 
-\[
+$$
 Fit(E,C)=Credible\land Relevant\land Sufficient\land Current
 \land Configured\land Traceable.
-\]
+$$
 
 A decision-ready case requires more than every claim having an incoming link. It also requires acceptable open-defeater state, applicable evidence, explicit criteria, competent review, and authorized acceptance.
 
@@ -250,9 +250,9 @@ Let a case be a directed, attributed graph $G=(N,E)$ whose nodes include claims 
 
 For evidence item $v$ supporting claim $c$, define a review vector
 
-\[
+$$
 q(v,c)=(p,r,s,i,u,t),
-\]
+$$
 
 representing provenance/credibility, relevance, sufficiency contribution, independence/diversity, uncertainty disclosure, and temporal/configuration applicability. This is not necessarily numeric; it is a checklist of distinct questions that must not collapse into “document exists.”
 
@@ -260,10 +260,10 @@ Let $Impact(\Delta)$ be the transitive set of contexts, assumptions, claims, evi
 
 Let $Open_D(C)$ be material unresolved defeaters for claim $C$. A simplistic structural predicate might verify that every claim has support, but decision readiness additionally requires criteria such as
 
-\[
+$$
 Ready(C) \Rightarrow Supported(C)\land FitEvidence(C)\land
 Acceptable(Open_D(C))\land Reviewed(C)\land Authorized(C).
-\]
+$$
 
 This implication states necessary categories, not a universal sufficient theorem.
 

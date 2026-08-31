@@ -31,14 +31,14 @@ When does business complexity justify a behaviorally rich Domain Model, and how 
 
 ### Central model, mechanism, or theorem
 
-For valid aggregate state \(a\), command \(c\), and explicit decision context \(x\), a root implements a partial transition
+For valid aggregate state $a$, command $c$, and explicit decision context $x$, a root implements a partial transition
 
-\[
+$$
 \delta:A_{\mathrm{valid}}\times C\times X
 \rightarrow (A_{\mathrm{valid}}\times E^*)\;\cup\;R,
-\]
+$$
 
-where \(E^*\) is a finite sequence of domain events and \(R\) is a typed rejection. If invariant \(I(a)\) holds before every public transition, construction admits only valid states, and each successful transition preserves \(I\), then all states reachable through that boundary satisfy \(I\). This is a conditional inductive argument, not proof that requirements, persistence mappings, concurrency control, or distributed effects are correct.
+where $E^*$ is a finite sequence of domain events and $R$ is a typed rejection. If invariant $I(a)$ holds before every public transition, construction admits only valid states, and each successful transition preserves $I$, then all states reachable through that boundary satisfy $I$. This is a conditional inductive argument, not proof that requirements, persistence mappings, concurrency control, or distributed effects are correct.
 
 ### Critical invariants
 
@@ -237,31 +237,31 @@ Avoid a “big DDD rewrite.” Extract a value object or aggregate from the most
 
 ## Definitions and Notation
 
-Let an aggregate state space be \(A\), commands \(C\), explicit contexts \(X\), events \(E\), and typed rejections \(R\). Let predicate \(I:A\to\{\mathrm{true},\mathrm{false}\}\) define validity, so
+Let an aggregate state space be $A$, commands $C$, explicit contexts $X$, events $E$, and typed rejections $R$. Let predicate $I:A\to\{\mathrm{true},\mathrm{false}\}$ define validity, so
 
-\[
+$$
 A_{\mathrm{valid}}=\{a\in A\mid I(a)\}.
-\]
+$$
 
 A command transition is partial because not every command is permitted in every state:
 
-\[
+$$
 \delta(a,c,x)=
 \begin{cases}
 (a',\langle e_1,\ldots,e_n\rangle),&\text{if preconditions hold and }I(a'),\\
 r\in R,&\text{otherwise.}
 \end{cases}
-\]
+$$
 
-Let \(v\in\mathbb{N}\) be aggregate version. A successful persisted transition requires expected version \(\hat v=v\), writes \(v'=v+1\), and atomically stores its event intents. A mismatch is conflict, not permission to overwrite.
+Let $v\in\mathbb{N}$ be aggregate version. A successful persisted transition requires expected version $\hat v=v$, writes $v'=v+1$, and atomically stores its event intents. A mismatch is conflict, not permission to overwrite.
 
-For an order with line quantities \(q_i\in\mathbb{Z}_{>0}\) and unit prices \(p_i\in\mathbb{Z}_{\ge0}\), subtotal in one currency is
+For an order with line quantities $q_i\in\mathbb{Z}_{>0}$ and unit prices $p_i\in\mathbb{Z}_{\ge0}$, subtotal in one currency is
 
-\[
+$$
 T=\sum_{i=1}^{n}q_i p_i.
-\]
+$$
 
-An illustrative invariant is: every line has positive quantity and nonnegative price; draft orders may change; confirmed orders have \(n>0\); version never decreases. Real pricing also needs currency, discounts, tax jurisdiction, rounding, and policy versions.
+An illustrative invariant is: every line has positive quantity and nonnegative price; draft orders may change; confirmed orders have $n>0$; version never decreases. Real pricing also needs currency, discounts, tax jurisdiction, rounding, and policy versions.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -337,7 +337,7 @@ This is a finite proof for transitions reachable through the shown API.
 
 **Base case.** Construction yields draft status, empty lines, version zero, and no events. Every line predicate is vacuously true; version is nonnegative; confirmation constraints do not yet apply.
 
-**Add-line case.** A successful addition requires matching version, draft status, nonempty SKU, \(q>0\), and \(p\ge0\). Existing valid lines remain unchanged, the new line satisfies the line predicate, status remains draft, and version increases by one. Rejection mutates nothing.
+**Add-line case.** A successful addition requires matching version, draft status, nonempty SKU, $q>0$, and $p\ge0$. Existing valid lines remain unchanged, the new line satisfies the line predicate, status remains draft, and version increases by one. Rejection mutates nothing.
 
 **Confirm case.** Success requires matching version, draft status, and at least one valid line. Lines remain unchanged, status becomes confirmed, version increases by one, and the event total equals the post-state total. Rejection mutates nothing.
 

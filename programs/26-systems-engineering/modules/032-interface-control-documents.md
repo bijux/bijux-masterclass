@@ -36,24 +36,24 @@ How can two or more independently owned elements establish a precise, jointly co
 
 Model endpoint (A)'s guarantees as (G_A), endpoint (B)'s acceptable demands as (R_B), and the applicable shared environment as (E). For an (A\rightarrow B) transfer, compatibility requires:
 
-\[
+$$
 E\land G_A \Rightarrow R_B.
-\]
+$$
 
 For a scalar interval, including bounded path loss or uncertainty, a sufficient envelope check is:
 
-\[
+$$
 [g_{min}-\delta_{-},\;g_{max}+\delta_{+}]\subseteq[r_{min},\;r_{max}].
-\]
+$$
 
 Real interfaces require a conjunction across semantics, units, geometry, timing, state/mode, capacity, faults, authority, safety, security, environment, lifecycle, and version. Passing one dimensional check does not establish compatibility.
 
 An ICD record can be represented as:
 
-\[
+$$
 D=\langle id,scope,plane,endpoints,applicability,authority,precedence,
 obligations,assumptions,verification,changes,evidence,version,status\rangle.
-\]
+$$
 
 The document is adequate only when these declarations are mutually consistent with both endpoint baselines and with the authoritative interface data. Signatures establish approval, not physical or behavioral truth.
 
@@ -222,78 +222,78 @@ Let endpoint (A) provide an item to endpoint (B) across path (P) in configuratio
 
 Provider guarantee set:
 
-\[
+$$
 G_A(c,m,e)=\{x\mid A\text{ guarantees item }x\text{ at its declared plane}\}.
-\]
+$$
 
 Path transformation:
 
-\[
+$$
 T_P(x,c,m,e)=\text{item observable at the receiver plane after path effects}.
-\]
+$$
 
 Receiver acceptance set:
 
-\[
+$$
 R_B(c,m,e)=\{y\mid B\text{ accepts }y\text{ while satisfying its obligations}\}.
-\]
+$$
 
 Directional compatibility is:
 
-\[
+$$
 \forall(c,m,e)\in Applicable:\quad T_P(G_A(c,m,e))\subseteq R_B(c,m,e).
-\]
+$$
 
 For scalar guaranteed interval (G=[g_l,g_u]), additive path effect (D=[d_l,d_u]), and receiver interval (R=[r_l,r_u]):
 
-\[
+$$
 T_P(G)=G+D=[g_l+d_l,g_u+d_u],
-\]
+$$
 
-\[
+$$
 Compatible\iff r_l\le g_l+d_l\land g_u+d_u\le r_u.
-\]
+$$
 
 Define lower and upper margins:
 
-\[
+$$
 M_l=(g_l+d_l)-r_l,\qquad M_u=r_u-(g_u+d_u).
-\]
+$$
 
 Both must be nonnegative. Negative margin quantifies an envelope violation on that bound; positive margin is not automatically a reliability margin unless uncertainty and applicable extremes are already included.
 
 For an interface contract with characteristics (K), compatibility is conjunctive:
 
-\[
+$$
 Compatible(D)=\bigwedge_{k\in K} Compatible_k.
-\]
+$$
 
 This formulation exposes why averaging scores is unsafe: excellent documentation for nine characteristics cannot compensate for one incompatible voltage, load, coordinate frame, command authority, or hazardous state transition.
 
 Let normative obligations be (Q), endpoint baselines be (B_A,B_B), and verification records be (V). Useful trace relations include:
 
-\[
+$$
 allocates\subseteq Q\times\{A,B,Joint\},\quad
 implementedBy\subseteq Q\times(B_A\cup B_B),\quad
 verifiedBy\subseteq Q\times V.
-\]
+$$
 
 Trace completeness indicators may identify missing declarations:
 
-\[
+$$
 C_V=\frac{|\{q\in Q:\exists v,(q,v)\in verifiedBy\}|}{|Q|}.
-\]
+$$
 
 (C_V=1) means every listed requirement has a verification mapping. It does not prove that the list is complete, the method is adequate, the evidence passed, or the system is compatible.
 
 A change request can be modeled as:
 
-\[
+$$
 \Delta=\langle id,affected\_ids,old,new,rationale,impact,approvals,
 transition,reverification,disposition\rangle.
-\]
+$$
 
-A version compatibility relation (K_V\subseteq V_A\times V_B\times C\) records approved endpoint-version/configuration triples. Compatibility is a controlled relation, not an inference from version-number ordering.
+A version compatibility relation $K_V\subseteq V_A\times V_B\times C$ records approved endpoint-version/configuration triples. Compatibility is a controlled relation, not an inference from version-number ordering.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -395,17 +395,17 @@ The controlled contract defines: the controller is the command authority in `rea
 
 **Power-envelope incompatibility.**
 
-Source guarantee at plane (P_S): (G=[27,29]\) V for load 0.5–4 A. Harness drop from (P_S) to receiver plane (P_R): (D=[-1.2,0]\) V. Receiver acceptance: (R=[24,28]\) V.
+Source guarantee at plane (P_S): $G=[27,29]$ V for load 0.5–4 A. Harness drop from (P_S) to receiver plane (P_R): $D=[-1.2,0]$ V. Receiver acceptance: $R=[24,28]$ V.
 
-\[
+$$
 T_P(G)=[27-1.2,29+0]=[25.8,29]\text{ V}.
-\]
+$$
 
 Margins are:
 
-\[
+$$
 M_l=25.8-24=1.8\text{ V},\qquad M_u=28-29=-1.0\text{ V}.
-\]
+$$
 
 The negative upper margin is a counterexample. Options include limiting source output to 28 V at the relevant conditions, increasing receiver tolerance to 29 V with verified design impact, adding regulation, or relocating the controlled plane. The ICD must also address transient voltage, ripple, inrush, current limit, polarity, return, grounding, protection, and test uncertainty. Averaging (1.8) and (-1.0) is invalid because both bound invariants must pass.
 
@@ -413,7 +413,7 @@ The negative upper margin is a counterexample. Options include limiting source o
 
 **Mechanical plane and coordinate frame.**
 
-A payload supplier reports center of mass as ((120,20,-5)\) mm, while the carrier computes bolt loads using its own frame. Both use millimetres, but the payload frame origin is the payload centroid and (+z) points outward; the carrier origin is mounting-datum intersection and (+z) points inward. Direct substitution reverses an offset and changes the moment.
+A payload supplier reports center of mass as $(120,20,-5)$ mm, while the carrier computes bolt loads using its own frame. Both use millimetres, but the payload frame origin is the payload centroid and (+z) points outward; the carrier origin is mounting-datum intersection and (+z) points inward. Direct substitution reverses an offset and changes the moment.
 
 The control drawing defines datum planes A/B/C, origin, right-handed axes, direction, transformation matrix, tolerance, payload envelope, hole pattern, fastener class, torque, stiffness, static/dynamic loads, surface finish, keep-out volume, and measurement method. Each endpoint retains internal frames, but values crossing the interface use the controlled frame. A fit check verifies geometry; analysis verifies load compatibility; inspection verifies fastener and torque; integrated modal test addresses coupled dynamics. “Same units” was necessary but insufficient.
 
@@ -529,18 +529,18 @@ Review this verification claim: “ICD compliance passed because 100 requests co
 
 ### Answer 1
 
-The path interval is (D=[-0.20,0]\) V. Therefore:
+The path interval is $D=[-0.20,0]$ V. Therefore:
 
-\[
+$$
 T_P(G)=[4.75-0.20,5.25+0]=[4.55,5.25]\text{ V}.
-\]
+$$
 
-Receiver interval is ([4.60,5.10]\) V. Margins are:
+Receiver interval is $[4.60,5.10]$ V. Margins are:
 
-\[
+$$
 M_l=4.55-4.60=-0.05\text{ V},\qquad
 M_u=5.10-5.25=-0.15\text{ V}.
-\]
+$$
 
 Both are negative, so the declared worst-case envelopes are incompatible. At the low extreme the delivered voltage may be 0.05 V below acceptance; at the high extreme it may be 0.15 V above acceptance. Nominal 5 V agreement does not repair either counterexample.
 

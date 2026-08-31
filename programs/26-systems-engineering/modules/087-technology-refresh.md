@@ -33,15 +33,15 @@ Can the organization renew selected technologies at the right architectural and 
 
 For candidate option $o$ and context $x$, define an evidence record
 
-\[
+$$
 T(o,x)=(capability, maturity, integration, support, security, evidence, transition, uncertainty).
-\]
+$$
 
 A roadmap decision is not $\max$ technology novelty. It selects a bounded path under required capability $C_r$, noncompensable constraints $K$, lifecycle value, and uncertainty:
 
-\[
+$$
 o^*=\arg\max_{o\in O_{feasible}} V(o),\qquad O_{feasible}=\{o:C(o)\succeq C_r\land K(o)=true\}.
-\]
+$$
 
 Scoring can organize evidence but cannot make infeasible safety, security, legal, or mission states acceptable. The transition must then demonstrate the candidate in its integration and operational context and reconcile every affected instance.
 

@@ -31,14 +31,14 @@ How can one persistence scope guarantee a single coherent object representation 
 
 ### Central model, mechanism, or theorem
 
-Let scoped identity key be \(k=(u,t,s,p)\): persistence unit/context discriminator \(u\), mapped identity type \(t\), tenant/shard scope \(s\), and normalized primary-key tuple \(p\). Identity Map is a partial function
+Let scoped identity key be $k=(u,t,s,p)$: persistence unit/context discriminator $u$, mapped identity type $t$, tenant/shard scope $s$, and normalized primary-key tuple $p$. Identity Map is a partial function
 
-\[
+$$
 M:K\rightharpoonup O,
 \quad M(k)=o_1\land M(k)=o_2\Rightarrow o_1=o_2.
-\]
+$$
 
-For materialized row \(r\) with key \(k\), resolution returns existing \(M(k)\) and reconciles only permitted missing/expired state, or constructs/registers one object if absent. This guarantees scoped representation uniqueness. It does not guarantee freshness, cross-context identity, database isolation, optimistic conflict detection, authorization, or global singleton identity.
+For materialized row $r$ with key $k$, resolution returns existing $M(k)$ and reconciles only permitted missing/expired state, or constructs/registers one object if absent. This guarantees scoped representation uniqueness. It does not guarantee freshness, cross-context identity, database isolation, optimistic conflict detection, authorization, or global singleton identity.
 
 ### Critical invariants
 
@@ -238,19 +238,19 @@ Use the actual ORM/version/database for population and isolation semantics. Secu
 
 Let identity key domain
 
-\[
+$$
 K=U\times T\times S\times P,
-\]
+$$
 
-where \(U\) is persistence-unit/mapping discriminator, \(T\) mapped identity root, \(S\) tenant/shard/temporal scope, and \(P\) normalized primary-key tuple. Map \(M:K\rightharpoonup O\) must satisfy functionality:
+where $U$ is persistence-unit/mapping discriminator, $T$ mapped identity root, $S$ tenant/shard/temporal scope, and $P$ normalized primary-key tuple. Map $M:K\rightharpoonup O$ must satisfy functionality:
 
-\[
+$$
 \forall k,o_1,o_2:\;(k,o_1)\in M\land(k,o_2)\in M\Rightarrow o_1=o_2.
-\]
+$$
 
-Each entry additionally tracks loaded attributes \(L_k\), expired attributes \(E_k\), dirty attributes \(D_k\), and revision \(v_k\), with required distinction \(L_k\subseteq A\), \(E_k,D_k\subseteq L_k\), and a policy preventing refresh of \(D_k\) without explicit resolution.
+Each entry additionally tracks loaded attributes $L_k$, expired attributes $E_k$, dirty attributes $D_k$, and revision $v_k$, with required distinction $L_k\subseteq A$, $E_k,D_k\subseteq L_k$, and a policy preventing refresh of $D_k$ without explicit resolution.
 
-Resolution \(\rho(M,r)\) for row \(r\) with \(k=\mathrm{key}(r)\) either constructs/registers one \(o\) if \(k\notin\mathrm{dom}(M)\), or returns existing \(M(k)\) and reconciles allowed attributes. It never adds a second value for \(k\).
+Resolution $\rho(M,r)$ for row $r$ with $k=\mathrm{key}(r)$ either constructs/registers one $o$ if $k\notin\mathrm{dom}(M)$, or returns existing $M(k)$ and reconciles allowed attributes. It never adds a second value for $k$.
 
 ## Mechanisms, Invariants, or Proof Structure
 

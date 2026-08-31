@@ -33,16 +33,16 @@ How can a fixed pool of threads take turns waiting on shared event sources and p
 
 For pool thread (t), use roles
 
-\[
+$$
 follower \rightarrow leader \rightarrow processing \rightarrow
 \begin{cases}leader,&\text{if no leader exists},\\follower,&\text{otherwise.}\end{cases}
-\]
+$$
 
 For each handle set (H), enforce leader cardinality
 
-\[
+$$
 0\le |Leader(H)|\le 1,
-\]
+$$
 
 and ordinarily maintain (|Leader(H)|=1) whenever the pool is running and at least one nonprocessing thread is available. On event (e), the leader atomically claims/deactivates the relevant handle as required, promotes exactly one follower, then becomes a processing thread. After bounded handling it reactivates or retires the handle and rejoins.
 
@@ -290,10 +290,10 @@ print(f"invariants=one_leader={pool.one_leader()} role_partition={pool.role_part
 
 Let (T) be a fixed thread set of size (n); (H_g) the handle set owned by pool generation (g); (L_g\subseteq T) current leaders; (F_g) followers; (P_g) processors; and (R_g) retired/stopping threads. The role partition is
 
-\[
+$$
 T=L_g\uplus F_g\uplus P_g\uplus R_g,
 \qquad |L_g|\in\{0,1\}.
-\]
+$$
 
 For serialized handle (h), `active(h,g)` means exactly one processor in pool generation (g) owns its current handler claim. Registration identity is `(handle_value, handle_generation, pool_generation, event_kind)`.
 

@@ -35,23 +35,23 @@ How can a team transform logical responsibilities, interface contracts, and qual
 
 Let logical elements be (L), physical elements (P), required logical interactions (F\subseteq L\times L), physical connections (E_P\subseteq P\times P), and allocation relation (A\subseteq L\times P). A candidate physical architecture is structurally adequate only if:
 
-\[
+$$
 \forall l\in L_{required},\ \exists p\in P:\ (l,p)\in A,
-\]
+$$
 
 and every required logical interaction has at least one permitted physical path between allocated endpoints:
 
-\[
+$$
 \forall(l_i,l_j)\in F,\ \exists p_i,p_j:\ (l_i,p_i)\in A\land(l_j,p_j)\in A
 \land Path_{E_P}(p_i,p_j).
-\]
+$$
 
 This graph condition is necessary, not sufficient. Each path must also satisfy semantic, timing, capacity, safety, security, physical, human, environmental, and lifecycle contracts. For resource (r) on physical element (p):
 
-\[
+$$
 \sum_{l:(l,p)\in A} demand_r(l,p,c,m) + overhead_r(p,c,m)
 \le capacity_r(p,c,m)-reserve_r(p,c,m)
-\]
+$$
 
 for every applicable configuration (c) and mode (m). Architecture quality is conjunctive; an elegant block diagram cannot compensate for an infeasible load, unowned path, unsafe maintenance action, or unavailable enabling product.
 
@@ -229,55 +229,55 @@ Let required logical elements (L), physical elements (P), logical interactions (
 
 Allocation matrix:
 
-\[
+$$
 A_{lp}=1\iff \text{physical element }p\text{ realizes or supports logical responsibility }l.
-\]
+$$
 
 Coverage indicator:
 
-\[
+$$
 Coverage_L=\frac{|\{l\in L_{required}:\sum_p A_{lp}\ge1\}|}{|L_{required}|}.
-\]
+$$
 
 (Coverage_L=1) proves only that every listed logical row has an allocation mark. It does not prove the logical set is complete, allocation is feasible, responsibility is sufficient, or qualities compose.
 
 For physical element (p), resource (r), configuration (c), and mode (m):
 
-\[
+$$
 D_r(p,c,m)=\sum_l A_{lp}d_r(l,p,c,m)+o_r(p,c,m),
-\]
+$$
 
-\[
+$$
 Margin_r(p,c,m)=Cap_r(p,c,m)-Reserve_r(p,c,m)-D_r(p,c,m).
-\]
+$$
 
 Nonnegative margin is necessary for that modeled budget. Capacity, demand, overhead, and reserve require compatible planes, units, conditions, and simultaneity rules.
 
 For component masses (m_i) at positions (x_i) along one controlled axis:
 
-\[
+$$
 m_{total}=\sum_i m_i,\qquad x_{cm}=\frac{\sum_i m_i x_i}{\sum_i m_i}.
-\]
+$$
 
 Installed masses must include brackets, harness, fluids, fasteners, insulation, and uncertainty if those lie inside the budget plane.
 
 Logical flow (f=(l_s,l_t,k)) is physically realized only if allocated endpoints and a compatible physical path exist:
 
-\[
+$$
 Realized(f)\iff\exists p_s,p_t:\ A_{l_sp_s}=1\land A_{l_tp_t}=1
 \land CompatiblePath_k(p_s,p_t,c,m).
-\]
+$$
 
 Let trace relations include:
 
-\[
+$$
 allocates\subseteq L\times P,\quad deploysTo\subseteq Software\times P,
 \quad locatedAt\subseteq P\times Z,
-\]
+$$
 
-\[
+$$
 connects\subseteq P\times P,\quad verifies\subseteq Evidence\times(P\cup E_P).
-\]
+$$
 
 Architecture consistency requires views to refer to the same identities and applicable configurations. It is not inferred merely because every relation is individually well-typed.
 
@@ -384,10 +384,10 @@ The architecture separates mounting locations and harness routes, assigns indepe
 
 **Mass and center of mass.** Three installed elements lie along axis x: battery 40 kg at 0.5 m, controller assembly 20 kg at 1.5 m, and payload with bracket 60 kg at 2.0 m. Total mass is 120 kg and:
 
-\[
+$$
 x_{cm}=\frac{40(0.5)+20(1.5)+60(2.0)}{120}
 =\frac{170}{120}=1.4167\text{ m}.
-\]
+$$
 
 If the allowable center is 1.2–1.4 m, the candidate exceeds the upper bound by about 0.0167 m despite meeting total mass. Moving the controller is not necessarily sufficient; cable mass, uncertainty, other axes, dynamic fluids, and attachment loads belong in the real model. A scalar budget exposes the architecture issue early.
 
@@ -491,9 +491,9 @@ Design a review strategy for two candidate emergency-notification physical archi
 
 Five of six listed logical responsibilities have at least one allocation:
 
-\[
+$$
 Coverage_L=5/6\approx0.8333=83.33\%.
-\]
+$$
 
 (L_6) recover is unallocated. The matrix also needs flows, qualities, modes, and feasibility; 83.33% is only row declaration coverage.
 
@@ -505,25 +505,25 @@ Another allocation places recovery orchestration in the existing controller with
 
 Initial demand plus overhead is:
 
-\[
+$$
 D=55+42+28+18+10=153.
-\]
+$$
 
 Available capacity after reserve is (160-20=140), so:
 
-\[
+$$
 Margin=160-20-153=-13.
-\]
+$$
 
 The degraded-mode architecture is over capacity by 13 units. After moving the 18-unit function and adding 6 units local overhead:
 
-\[
+$$
 D'=55+42+28+10+6=141,
-\]
+$$
 
-\[
+$$
 Margin'=160-20-141=-1.
-\]
+$$
 
 It still does not close. The arithmetic also does not establish that demands peak simultaneously, capacity is sustained in the degraded environment, units are commensurate, scheduling/latency works, memory/network/power fit, communication failure is handled, remote capacity exists, security is sufficient, or reserve is correctly justified. Moving computation changes paths and contracts.
 
@@ -531,21 +531,21 @@ It still does not close. The arithmetic also does not establish that demands pea
 
 Total mass is:
 
-\[
+$$
 m=30+25+45+10=110\text{ kg}.
-\]
+$$
 
 First moment is:
 
-\[
+$$
 30(0.2)+25(1.0)+45(1.8)+10(2.4)=6+25+81+24=136\text{ kg m}.
-\]
+$$
 
 Thus:
 
-\[
+$$
 x_{cm}=136/110=1.23636\text{ m}.
-\]
+$$
 
 Margin above the 1.0 m lower bound is about 0.23636 m; margin below the 1.3 m upper bound is about 0.06364 m. The nominal one-axis result fits.
 

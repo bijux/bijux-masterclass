@@ -31,9 +31,9 @@ How can a family of algorithms vary independently from the context that uses the
 
 Let common input predicate (P(x)), output relation (Q(x,y)), invariant (I), and cost envelope (B(x)) define contract (K). Strategy (sigma_i) is substitutable only if
 
-\[
+$$
 \forall x:P(x)\Rightarrow \sigma_i(x)\text{ terminates or fails as specified, }Q(x,\sigma_i(x)),I,Cost\le B(x).
-\]
+$$
 
 Selection policy (pi(ctx)=id/version/config) must return an allowed compatible strategy. Interface conformance or matching output types alone does not establish this obligation.
 
@@ -192,9 +192,9 @@ Observe selections, version/config/cohort, contract violations, result quality, 
 
 Let contract (K=(P,Q,I,F,B)): input predicate (P), output relation (Q), invariant (I), failure set/semantics (F), and resource envelope (B). Strategy family
 
-\[
+$$
 \Sigma_K=\{\sigma\mid\forall x:P(x)\Rightarrow Contract_K(\sigma,x)\}.
-\]
+$$
 
 Selection policy (pi:T\to(strategyId,implementationVersion,configVersion)) maps trusted context (T) into an allowlisted compatible member. Execution result records selection provenance (r=(selection,outcome,evidence)).
 

@@ -22,11 +22,11 @@ Let text (T[0..n)) end in a unique sentinel `$` that is lexicographically smalle
 
 For the cyclic sentinel model,
 
-\[
+$$
 \Psi(i)=ISA[(SA[i]+1)\bmod n],
 \qquad
 LF(i)=ISA[(SA[i]-1)\bmod n].
-\]
+$$
 
 (Psi) advances one text position and (LF) moves backward; they are inverses. The Burrows–Wheeler transform is (BWT[i]=T[(SA[i]-1)\bmod n]). Compressed suffix arrays (CSA) are a family of representations using compressible structure in (Psi), BWT, alphabets, and sampled (SA/ISA), rather than storing every (SA) value in (lceil\log_2n\rceil) bits.
 
@@ -107,9 +107,9 @@ Plain SA access is direct; compression introduces navigation/sample work. Plain 
 
 If rank (i) names suffix starting at (p=SA[i]), (Psi(i)) names suffix at (p+1\bmod n). Therefore repeated (Psi) walks forward through text positions in suffix-rank space. (LF) names (p-1\bmod n); each is the other's inverse:
 
-\[
+$$
 LF(\Psi(i))=i=\Psi(LF(i)).
-\]
+$$
 
 BWT stores the character preceding each suffix. LF can be computed from BWT using (C[c]), the count of symbols smaller than (c), and occurrence rank of (c=BWT[i]). Convention details decide whether rank includes position (i); with half-open rank use (LF(i)=C[c]+\operatorname{rank}_c(BWT,i)).
 
@@ -129,9 +129,9 @@ A CSA may search with ordinary suffix comparisons or expose BWT backward search.
 
 Backward search starts with interval ([0,n)) and consumes (P) right to left. For next symbol (c), it maps ([l,r)) to
 
-\[
+$$
 [C[c]+\operatorname{rank}_c(BWT,l),\ C[c]+\operatorname{rank}_c(BWT,r)).
-\]
+$$
 
 The interval is empty exactly when its endpoints meet. Otherwise its length is the occurrence count. Each row represents one matching suffix, but converting rows into original positions is a separate locate operation. A production API should therefore return a typed interval or count, not an unlabelled pair that callers may mistake for positions.
 

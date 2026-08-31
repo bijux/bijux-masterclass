@@ -33,15 +33,15 @@ How can independently authorized organizations make systems, data, processes, pe
 
 For thread $q$, coalition $C$, and time $t$, define the layer vector
 
-\[
+$$
 I(q,C,t)=\langle L,O,S,T,R,A\rangle,
-\]
+$$
 
 where $L$ is legal/policy, $O$ organizational, $S$ semantic, $T$ technical, $R$ operational, and $A$ assurance interoperability. A readiness claim is eligible only if every applicable noncompensable layer meets its defined gate:
 
-\[
+$$
 eligible(q,C,t)\Rightarrow L\land O\land S\land T\land R\land A.
-\]
+$$
 
 The implication is necessary, not sufficient. Layer discovery, evidence truth, interactions, hazards/threats, actual configuration, human action, and stakeholder outcomes remain outside a Boolean ledger.
 
@@ -200,9 +200,9 @@ Let $A$ be authorities, $C_t$ participating coalition, $Q$ threads, $X$ exchange
 
 An interoperability claim is
 
-\[
+$$
 Claim=\langle outcome,q,C_t,V,environment,thresholds,evidence,exceptions,authority,validity\rangle.
-\]
+$$
 
 For obligation $o$, $Auth(o)$ is the authority able to accept it and $Mech(o)$ the funding, contract, statute, admission gate, credential, configuration, or operational mechanism that makes it actionable. $Auth(o)\neq\varnothing$ without $Mech(o)$ can still be a practical authority gap.
 

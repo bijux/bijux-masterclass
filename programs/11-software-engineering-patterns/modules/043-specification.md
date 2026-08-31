@@ -32,11 +32,11 @@ How can a business rule become a named, composable, testable object that answers
 
 For candidate domain (D), a total Boolean specification is a predicate (S:D\to\{T,F\}). Composite semantics are
 
-\[
+$$
 (S_1\land S_2)(x)=S_1(x)\wedge S_2(x),\quad
 (S_1\lor S_2)(x)=S_1(x)\vee S_2(x),\quad
 (\neg S)(x)=\neg S(x).
-\]
+$$
 
 These laws support equivalence tests only when leaves are pure, total, evaluated over the same snapshot/context, and share two-valued semantics. SQL NULL, remote failures, time changes, side effects, or authorization indeterminacy invalidate naive Boolean rewrites.
 
@@ -207,17 +207,17 @@ Test translator allowlists, parameter binding, NULL/collation/decimal/time seman
 
 Let candidate space be (D), Boolean specifications (S_i:D\to\mathbb{B}), and richer decisions (\Delta=\{match,no\_match,indeterminate,error\}). For pure total Boolean specifications:
 
-\[
+$$
 S\land\top=S,\quad S\lor\bot=S,\quad S\land\neg S=\bot,
-\]
+$$
 
 and De Morgan's law gives (\neg(S_1\land S_2)=\neg S_1\lor\neg S_2). These identities do not automatically hold observationally with effects, errors, three-valued logic, or explanation order.
 
 For safe hybrid query planning, coarse query (Q) must be necessary for full predicate (S):
 
-\[
+$$
 \forall x\in D:\ S(x)\Rightarrow Q(x).
-\]
+$$
 
 The remainder evaluates only selected candidates and must restore the full decision.
 

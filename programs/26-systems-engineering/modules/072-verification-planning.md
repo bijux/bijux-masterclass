@@ -33,9 +33,9 @@ How will every applicable specified requirement be converted early enough into f
 
 For every requirement $r$, build a verification claim record
 
-\[
+$$
 V_r=(B_r,M_r,L_r,A_r,C_r,P_r,O_r,E_r,D_r),
-\]
+$$
 
 where $B$ is the requirement/configuration baseline, $M$ method, $L$ level, $A$ article/pedigree, $C$ conditions/environment, $P$ procedure and prerequisites, $O$ oracle/acceptance rule, $E$ evidence record, and $D$ disposition including anomalies. Planning is complete only when these records compose into an executable dependency/resource schedule and every high-consequence claim has a credible inference path. A filled matrix with impossible facilities, unavailable articles, invalid assumptions, or circular evidence is not a plan.
 

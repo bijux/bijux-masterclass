@@ -33,15 +33,15 @@ How can a data structure expose ordered, lazy traversal while specifying state, 
 
 Model iterator state as
 
-\[
+$$
 I=(source\_id,source\_version,position,mode,status,resources).
-\]
+$$
 
 Advancement is a transition
 
-\[
+$$
 next:I\to Yield(value,I')\mid Done(I')\mid Error(error,I').
-\]
+$$
 
 For finite sequence (S=\langle s_0,\ldots,s_{n-1}\rangle), a correct snapshot traversal yields each (s_i) exactly once in promised order, then remains terminal if fused exhaustion is promised. A fail-fast live iterator additionally checks an expected modification version before each access; detecting mismatch is a diagnostic policy, not synchronization or a proof that every mutation is detected.
 
@@ -257,9 +257,9 @@ print("evidence=finite_protocol_trace")
 
 Let source abstract sequence be (S), iterator state space (Q), and transition
 
-\[
+$$
 \delta:Q\to Yield(E,Q)\uplus Done(Q)\uplus Error(X,Q).
-\]
+$$
 
 For snapshot iterator created at version (v), yielded trace is a prefix then all of (S_v) according to consumption. For fail-fast source with modification counter (m), `expected=m` is checked before source access; wraparound, unsynchronized races, and untracked mutations limit detection.
 

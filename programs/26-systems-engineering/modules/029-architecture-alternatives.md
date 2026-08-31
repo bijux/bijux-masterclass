@@ -37,16 +37,16 @@ How can a team generate, characterize, compare, and select among genuinely diffe
 
 Let alternatives be (A={a_1,\ldots,a_n}), criteria (C={c_1,\ldots,c_m}), mandatory feasibility predicates (H_j(a)), measures (x_{ij}), normalized value functions (v_j), weights (w_j), and uncertainty state (\theta). First form the feasible set:
 
-\[
+$$
 A_F=\{a\in A\mid \bigwedge_j H_j(a,\theta)=true\}.
-\]
+$$
 
 Only then may an additive value model be considered, and only when criteria are preferentially independent and scales are valid:
 
-\[
+$$
 V(a\mid\theta,w)=\sum_{j=1}^{m}w_jv_j(x_{aj}\mid\theta),
 \qquad w_j\geq0,\quad\sum_jw_j=1.
-\]
+$$
 
 Selection is defensible only if framing, feasibility, common-basis evidence, model validity, uncertainty, sensitivity, stakeholder authority, and rationale are explicit. A score is decision support—not a proof, fact of nature, or substitute for accountable judgment.
 
@@ -226,26 +226,26 @@ Let (A) be candidates, (H) mandatory constraints, (C) preference criteria, (X) m
 
 Alternative (a) dominates (b) for benefit-oriented criteria when:
 
-\[
+$$
 (\forall j,\ x_{aj}\geq x_{bj})\land(\exists k,\ x_{ak}>x_{bk}),
-\]
+$$
 
 after directions, uncertainty, and comparability are handled. A Pareto set contains alternatives for which no examined alternative establishes that relation.
 
 For a nominal additive example with value scores (v_j\in[0,100]):
 
-\[
+$$
 V(a)=0.35v_{effectiveness}+0.25v_{resilience}+0.20v_{operability}
 +0.20v_{lifecycle\ cost}.
-\]
+$$
 
 Weights have meaning only with those defined ranges and value functions. A score difference is not meaningful without uncertainty and sensitivity.
 
 Expected value of perfect information can be represented as:
 
-\[
+$$
 EVPI=E_{\theta}[\max_a U(a,\theta)]-\max_a E_{\theta}[U(a,\theta)],
-\]
+$$
 
 but its validity depends on probability and utility models. Practical value of a specific imperfect study is lower and must be compared with its full cost and delay.
 
@@ -396,23 +396,23 @@ Alternatives include current manual collection/status quo; centralized interpret
 
 The totals are:
 
-\[
+$$
 V_A=.35(90)+.25(60)+.20(55)+.20(80)=73.5,
-\]
+$$
 
-\[
+$$
 V_B=.35(78)+.25(82)+.20(75)+.20(65)=75.8,
-\]
+$$
 
-\[
+$$
 V_C=.35(72)+.25(70)+.20(88)+.20(70)=74.3.
-\]
+$$
 
 Let resilience weight be (r). Original non-resilience proportions are 0.35:0.20:0.20, so normalized within the remaining weight they are (7/15,4/15,4/15). The B-minus-C value is:
 
-\[
+$$
 r(82-70)+(1-r)\left[\frac7{15}(78-72)+\frac4{15}(75-88)+\frac4{15}(65-70)\right].
-\]
+$$
 
 The bracket equals (-2), so (12r-2(1-r)=0), yielding (r=1/7\approx0.1429). Above that value B leads C under this model; below it C leads. The current 0.25 resilience weight is above the threshold. This is a model sensitivity result, not proof: score uncertainty, value functions, weight elicitation, dependencies, and hard constraints still govern interpretation.
 
@@ -426,15 +426,15 @@ Redesign by framing the decision and authority first. Define mandatory safety/le
 
 With perfect information, expected utility is:
 
-\[
+$$
 0.60(78)+0.40(84)=80.4.
-\]
+$$
 
 Without information, the chosen action has expected utility 72, so:
 
-\[
+$$
 EVPI=80.4-72=8.4\text{ utility points}.
-\]
+$$
 
 This is an upper bound for perfect information, not the value of the proposed prototype. Funding requires the prototype’s likelihood of producing each observation, how those observations change the decision, posterior outcomes, implementation consequences, cost converted into the same value framework, schedule delay, opportunity cost, residual uncertainty, and model validity. A $0.4 million cost cannot be compared directly with 8.4 utility points without a valid multiattribute/value model and decision authority.
 

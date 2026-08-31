@@ -20,10 +20,10 @@ How can a bit vector retain direct bit access while answering prefix counts and 
 
 For (B[0..n)in\{0,1\}^n), this chapter uses half-open, zero-based conventions:
 
-\[
+$$
 \operatorname{rank}_b(i)=|\{j:0\le j<i\land B[j]=b\}|,
 \qquad 0\le i\le n,
-\]
+$$
 
 and (operatorname{select}_b(t)) is the position of the zero-based (t)-th occurrence of bit (b). It is defined only for (0\le t<\operatorname{rank}_b(n)). Thus `rank` counts *before* a position, while `select` returns a position.
 
@@ -99,15 +99,15 @@ Let `access(i)` return (B[i]) for (0\le i<n). This chapter's (operatorname{rank}
 
 The identities become executable specifications:
 
-\[
+$$
 \operatorname{rank}_0(i)=i-operatorname{rank}_1(i),
-\]
+$$
 
-\[
+$$
 \operatorname{rank}_b(\operatorname{select}_b(t))=t,
 \qquad
 \operatorname{rank}_b(\operatorname{select}_b(t)+1)=t+1.
-\]
+$$
 
 Rank increments by (B[i]): (operatorname{rank}_1(i+1)-\operatorname{rank}_1(i)=B[i]). Select results strictly increase with (t). Define out-of-domain behavior—error, option, or sentinel—without colliding with a valid position.
 
@@ -125,16 +125,16 @@ Choose superblock size (s=\Theta(\log^2 n)) and block size (b=\Theta(\log n)). A
 
 For query position (i), add its superblock count, within-superblock block count, and population count in the residual bits from block boundary through (i). With (s=\log^2 n), the first directory costs
 
-\[
+$$
 O\!\left(\frac{n}{\log^2 n}\log n\right)
 =O\!\left(\frac{n}{\log n}\right)=o(n).
-\]
+$$
 
 With (b=\tfrac12\log n), the second costs
 
-\[
+$$
 O\!\left(\frac{n}{\log n}\log\log n\right)=o(n).
-\]
+$$
 
 If the residual fits a word, masked population count is constant time under the word-RAM/instruction model. The classical universal table alternative stores answers for all (2^b=\sqrt n) block patterns and local positions; its polylogarithmic factor times (sqrt n) remains (o(n)). Real implementations normally use word operations because a global table and cache traffic have different constants.
 

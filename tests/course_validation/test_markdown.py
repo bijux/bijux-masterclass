@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 
-from course_validation.markdown import headings, prose_only
+from course_validation.markdown import github_math_issues, headings, normalize_github_math, prose_only
 
 
 class MarkdownStructureTests(unittest.TestCase):
@@ -21,6 +21,32 @@ class MarkdownStructureTests(unittest.TestCase):
         self.assertIn("before", prose)
         self.assertIn("after", prose)
         self.assertNotIn("missing.md", prose)
+
+    def test_legacy_math_is_normalized_without_rewriting_code_fences(self) -> None:
+        text = "\\[\nx^2\n\\]\n\nLet \\(x_i\\in X\\) be valid. `\\eta=x/y`\n\n```text\n\\(not math\\)\n```\n"
+        normalized = normalize_github_math(text)
+        self.assertIn("$$\nx^2\n$$", normalized)
+        self.assertIn("Let $x_i\\in X$ be valid. $\\eta=x/y$", normalized)
+        self.assertIn("\\(not math\\)", normalized)
+        self.assertEqual((), github_math_issues(normalized))
+
+    def test_rendering_lint_rejects_legacy_delimiters_and_math_in_code(self) -> None:
+        issues = github_math_issues("Use \\(x\\) and `\\eta=x/y`; raw \\alpha is invalid.\n")
+        self.assertEqual(2, len(issues))
+
+    def test_inline_code_detection_does_not_span_adjacent_code_spans(self) -> None:
+        text = "Use `left` before $a\\mapsto b$ and then `right`.\n"
+        self.assertEqual((), github_math_issues(text))
+
+    def test_verification_annotation_with_arrow_is_not_math_prose(self) -> None:
+        text = '<!-- bijux-verify: {"stdout":"draft --submit--> published\\n"} -->\n'
+        self.assertEqual((), github_math_issues(text))
+
+    def test_display_math_body_is_not_converted_to_nested_inline_math(self) -> None:
+        text = "\\[\nf(x)=(x+1)\\times2\n\\]\n"
+        normalized = normalize_github_math(text)
+        self.assertEqual("$$\nf(x)=(x+1)\\times2\n$$\n", normalized)
+
 
 
 if __name__ == "__main__":

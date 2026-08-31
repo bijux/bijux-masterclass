@@ -35,23 +35,23 @@ How can a team make models the fastest trustworthy route from engineering uncert
 
 Treat each workflow item $w$ as a decision contract:
 
-\[
+$$
 w=(q,d,o,s,e,g,t),
-\]
+$$
 
 where $q$ is the question/uncertainty, $d$ the decision and decision owner, $o$ the minimum model outputs, $s$ the authoritative sources and configuration, $e$ the required evidence, $g$ the gates/acceptance rule, and $t$ the review-by time.
 
 For a delivered increment, record active modeling/analysis time $A$, waiting and handoff time $W$, rework $R$, and total lead time $L=A+W+R$. Then
 
-\[
+$$
 FE=\frac{A}{L}.
-\]
+$$
 
 Do not optimize $FE$ alone. A useful workflow balances decision value $V_d$, evidence quality $Q_e$, latency $L$, lifecycle cost $C_l$, and change risk $R_c$:
 
-\[
+$$
 U=\frac{V_d\,Q_e}{L+C_l+R_c},
-\]
+$$
 
 with noncompensable gates for safety, security, configuration, and integrity. This is a prioritization model, not a universal economic law. Scores and weights must be local, visible, and accompanied by raw dimensions.
 

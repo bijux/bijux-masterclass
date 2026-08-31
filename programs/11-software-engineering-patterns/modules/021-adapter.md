@@ -31,13 +31,13 @@ How can an existing interface, representation, or protocol satisfy a required co
 
 ### Central model, mechanism, or theorem
 
-Let legacy valid inputs be \(L_v\subseteq L\), target values \(T\), and partial adapter \(f:L\rightharpoonup T\). Correctness requires
+Let legacy valid inputs be $L_v\subseteq L$, target values $T$, and partial adapter $f:L\rightharpoonup T$. Correctness requires
 
-\[
+$$
 \forall x\in L_v,\quad invariant_T(f(x))
-\]
+$$
 
-and each invalid or unrepresentable \(x\) must produce a declared target error rather than silent corruption. If reverse mapping \(g:T\rightharpoonup L\) is claimed lossless over domain \(D\), require an observational round trip \(g(f(x))\equiv_D x\). Interface conformance alone is insufficient: timing, failure, ordering, cancellation, transaction, authority, and side-effect semantics must refine the target contract.
+and each invalid or unrepresentable $x$ must produce a declared target error rather than silent corruption. If reverse mapping $g:T\rightharpoonup L$ is claimed lossless over domain $D$, require an observational round trip $g(f(x))\equiv_D x$. Interface conformance alone is insufficient: timing, failure, ordering, cancellation, transaction, authority, and side-effect semantics must refine the target contract.
 
 ### Critical invariants
 
@@ -174,13 +174,13 @@ Logs should preserve enough safe source context to diagnose mapping without dump
 
 ## Definitions and Notation
 
-Let \(C_T\) be target contract, \(C_L\) legacy/adaptee contract, \(L_v\) source states accepted by policy, and partial mapping \(f:L\rightharpoonup T\). Target refinement requires valid mapped output and compatible observable behavior:
+Let $C_T$ be target contract, $C_L$ legacy/adaptee contract, $L_v$ source states accepted by policy, and partial mapping $f:L\rightharpoonup T$. Target refinement requires valid mapped output and compatible observable behavior:
 
-\[
+$$
 x\in L_v\Rightarrow invariant_T(f(x)),\qquad trace(adapter(x))\preceq C_T.
-\]
+$$
 
-The trace relation covers results, errors, side effects, ordering, and timing guarantees declared by \(C_T\). Let loss function \(\ell(x)\) enumerate information not represented in \(f(x)\). A claimed lossless bidirectional adapter with reverse \(g\) requires defined observational laws such as \(g(f(x))\equiv x\) over a stated domain, not byte equality after canonicalization.
+The trace relation covers results, errors, side effects, ordering, and timing guarantees declared by $C_T$. Let loss function $\ell(x)$ enumerate information not represented in $f(x)$. A claimed lossless bidirectional adapter with reverse $g$ requires defined observational laws such as $g(f(x))\equiv x$ over a stated domain, not byte equality after canonicalization.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -386,7 +386,7 @@ An unfamiliar intensive-care device emits physiological values, quality flags, l
 
 ### Answer 1
 
-The accepted source set contains records whose requested and returned station codes match, quality is exactly `OK`, required fields exist with correct types, timestamp meets target policy, and converted temperature is within target range. For Fahrenheit tenths \(F_{10}\), Celsius millidegrees are \((F_{10}-320)5000/90\). At 770, numerator is \(450\times5000=2{,}250{,}000\); division by 90 gives 25,000 exactly.
+The accepted source set contains records whose requested and returned station codes match, quality is exactly `OK`, required fields exist with correct types, timestamp meets target policy, and converted temperature is within target range. For Fahrenheit tenths $F_{10}$, Celsius millidegrees are $(F_{10}-320)5000/90$. At 770, numerator is $450\times5000=2{,}250{,}000$; division by 90 gives 25,000 exactly.
 
 Implicit assumptions include trustworthy dictionary types, station key presence, known quality vocabulary, integer width, epoch unit and time scale, physical calibration, Fahrenheit definition, target range, and one read being representative. For nonintegral results, define rational conversion first, then an explicit rounding mode such as nearest millidegree with ties-to-even and checked range; retain source value/unit for audit if allowed. Test values around zero, negatives, halfway cases, extrema, overflow, unknown quality, missing fields, mismatched identity, and invalid timestamps. Safety or sensor-accuracy claims require external calibration evidence.
 
@@ -400,7 +400,7 @@ Map definitive business decline separately from authentication failure, capacity
 
 Create explicit source and target DTOs at the boundary and a durable identity map keyed by `(source_system, source_id, lifecycle_generation)`. Address conversion preserves structured components and provenance; a free-form source address cannot losslessly become verified structured fields, so mark unverified/original text or reject based on use. Keep absent, explicit null, empty, and redacted distinct when either model distinguishes them. Map known enums and preserve an `Unknown(source_code)` case rather than choosing a known value. Timestamp conversion records source precision; do not invent subsecond accuracy.
 
-Define loss record \(\ell(x)\) listing discarded order, unrepresentable components, precision reduction, canonicalization, and unknown fields. On the common lossless subset \(D\), require `to_source(to_target(x))` observationally equals `x` for identity, normalized address, semantic enum, null state, and timestamp at source precision. Outside \(D\), return a typed lossy result requiring caller acceptance or reject. Property-test laws, collisions, Unicode/canonical forms, future enums, precision boundaries, and identity reuse.
+Define loss record $\ell(x)$ listing discarded order, unrepresentable components, precision reduction, canonicalization, and unknown fields. On the common lossless subset $D$, require `to_source(to_target(x))` observationally equals `x` for identity, normalized address, semantic enum, null state, and timestamp at source precision. Outside $D$, return a typed lossy result requiring caller acceptance or reject. Property-test laws, collisions, Unicode/canonical forms, future enums, precision boundaries, and identity reuse.
 
 ### Answer 4
 

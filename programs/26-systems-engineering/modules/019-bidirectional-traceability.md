@@ -31,36 +31,36 @@ How can a team maintain trustworthy, bidirectionally navigable relationships fro
 
 ### Central model, mechanism, or theorem
 
-Represent the trace graph as \(G=(V,E)\), where each edge is:
+Represent the trace graph as $G=(V,E)$, where each edge is:
 
-\[
+$$
 e=\langle sourceVersion,targetVersion,type,rationale,conditions,
 authority,evidence,status,created,reviewed\rangle.
-\]
+$$
 
-For requirement \(r\), define bounded closure obligations:
+For requirement $r$, define bounded closure obligations:
 
-\[
+$$
 Upstream(r)=Needs\cup Parents\cup Constraints\cup Hazards\cup Decisions,
-\]
+$$
 
-\[
+$$
 Downstream(r)=Children\cup Allocations\cup Design\cup Realization
 \cup Verification\cup Validation.
-\]
+$$
 
 A navigable path is not a coverage proof. Require semantic review:
 
-\[
+$$
 ValidPath(a,b)\Rightarrow\bigwedge_{e\in path(a,b)} Valid(e)
 \land CompositionRationale(path).
-\]
+$$
 
 Change candidates are a conservative graph reachability result:
 
-\[
+$$
 Candidates(change(x))=Reach_G(x,RelevantEdgeTypes,CurrentBaseline),
-\]
+$$
 
 which may omit undiscovered dependencies and may include unaffected artifacts.
 
@@ -225,15 +225,15 @@ print("evidence=declared_fields_only")
 
 ## Definitions and Notation
 
-Let artifact node \(v=(id,type,version,configuration,status,owner)\). Let edge \(e=(u,v,t,\rho)\), where \(t\) is relation type and \(\rho\) its rationale plus governance attributes.
+Let artifact node $v=(id,type,version,configuration,status,owner)$. Let edge $e=(u,v,t,\rho)$, where $t$ is relation type and $\rho$ its rationale plus governance attributes.
 
-For node set \(X\), define typed forward reachability \(Reach^+_T(X)\) and reverse reachability \(Reach^-_T(X)\) using allowed edge types \(T\). Bidirectional capability means both queries are supported over the same controlled edge semantics.
+For node set $X$, define typed forward reachability $Reach^+_T(X)$ and reverse reachability $Reach^-_T(X)$ using allowed edge types $T$. Bidirectional capability means both queries are supported over the same controlled edge semantics.
 
-Define syntactic edge coverage for required node set \(S\):
+Define syntactic edge coverage for required node set $S$:
 
-\[
+$$
 C_{edge}=\frac{|\{s\in S\mid RequiredEdgePredicate(s)\}|}{|S|}.
-\]
+$$
 
 This ratio says nothing about semantic correctness unless the predicate includes reviewed validity and evidence status. A **digital thread** is a governed lifecycle information flow/relationship network; a large graph alone is not a trustworthy digital thread.
 
@@ -243,11 +243,11 @@ The mechanism has seven passes: define policy/schema; identify/version artifacts
 
 Use a trace readiness predicate:
 
-\[
+$$
 Ready(G)=IdentityIntegrity\land SchemaValidity\land UpstreamJustification
 \land DownstreamCoverage\land SemanticReview\land VersionConsistency
 \land ChangeGovernance.
-\]
+$$
 
 This is a governance predicate. Graph queries can help establish schema and reachability; source fidelity, sufficiency, and completeness require engineering evidence and challenge.
 

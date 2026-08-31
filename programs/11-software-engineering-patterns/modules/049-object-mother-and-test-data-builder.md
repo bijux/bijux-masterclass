@@ -32,9 +32,9 @@ How can tests construct valid, intention-revealing domain examples with minimal 
 
 Let production constructor (C:P\to D\cup Error), valid default parameters (p_0\in P), and finite overrides (\Delta). A builder computes
 
-\[
+$$
 B(p_0,\Delta)=C(override(p_0,\Delta)).
-\]
+$$
 
 For every ordinary build, production invariants should hold because (C), not duplicated test logic, validates construction. Fixture quality is not proven by validity alone: the test must expose every salient override, build fresh independent state, and avoid defaults that determine the assertion invisibly.
 
@@ -205,9 +205,9 @@ Keep builders local to the tests that own them until real reuse appears. Broad c
 
 Let production parameter domain (P), valid domain objects (D), public constructor (C:P\to D\cup Error), defaults (p_0), and finite override map (\Delta). Builder operation is
 
-\[
+$$
 B(\Delta)=C(p_0\oplus\Delta).
-\]
+$$
 
 Freshness requires separate builds (d_1,d_2) not share mutable owned state. For every field (s) salient to assertion (A), test setup should expose (s) rather than rely on (p_0[s]). This is a review discipline, not a theorem automatically enforced by a builder API.
 

@@ -32,13 +32,13 @@ When software persists beyond a delivery date, which product, project, service, 
 
 The categories answer different questions and may overlap:
 
-\[
+$$
 Work = Change_{temporary} + Stewardship_{continuing},
-\]
+$$
 
-\[
+$$
 Value(t)=Outcomes(t)-LifecycleCost(t)-RiskExposure(t).
-\]
+$$
 
 A project can create or change a product, service, or platform; closure transfers accepted results and unresolved obligations to durable owners. A product defines for whom and why to evolve. A service defines how capability is continuously delivered and supported. A platform defines which reusable capabilities and interaction boundaries enable others. The invariant is continuity of ownership across every transition—not preservation of a particular team name or method.
 

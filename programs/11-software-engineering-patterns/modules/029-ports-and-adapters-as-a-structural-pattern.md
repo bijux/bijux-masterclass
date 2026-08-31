@@ -33,10 +33,10 @@ How can an application own semantically meaningful boundaries so that user inter
 
 Let application core (H) own driving ports (P_{in}) and driven ports (P_{out}). Adapters (A_{in}) and (A_{out}) satisfy
 
-\[
+$$
 A_{in}:ExternalInput\to P_{in},\qquad
 A_{out}:P_{out}\to ExternalMechanism.
-\]
+$$
 
 At runtime a use case may call outward through (P_{out}), but its source dependency remains inward: (A_{out}\to P_{out}\leftarrow H). Replaceability follows only when the port captures the application's semantics and each adapter satisfies them; an interface that merely copies one vendor API does not create independence.
 

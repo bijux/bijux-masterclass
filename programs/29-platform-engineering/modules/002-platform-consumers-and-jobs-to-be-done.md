@@ -33,16 +33,16 @@ Who consumes an internal platform, what progress are they trying to make in a sp
 
 Represent a candidate job as
 
-\[
+$$
 J=(C,A,P,O,K,E),
-\]
+$$
 
-where \(C\) is circumstance, \(A\) actor/segment, \(P\) desired progress, \(O\) outcome criteria, \(K\) constraints, and \(E\) current evidence. A platform capability hypothesis is defensible only if evidence shows recurring underserved progress, legitimate commonality across consumers, platform authority to act, and a bounded outcome:
+where $C$ is circumstance, $A$ actor/segment, $P$ desired progress, $O$ outcome criteria, $K$ constraints, and $E$ current evidence. A platform capability hypothesis is defensible only if evidence shows recurring underserved progress, legitimate commonality across consumers, platform authority to act, and a bounded outcome:
 
-\[
+$$
 Eligible(J)=Recurring\land Underserved\land Commonable
 \land Authorized\land Supportable.
-\]
+$$
 
 This is a review gate, not a numerical truth. A frequent job may remain outside platform ownership because its semantics differ by domain or the platform lacks authority.
 
@@ -258,11 +258,11 @@ The run proves only deterministic evaluation of synthetic Boolean inputs. It doe
 
 ## Definitions and Notation
 
-Let \(A\) be actors, \(C\) circumstances, \(P\) desired progress, \(O\) outcome criteria, \(K\) constraints, \(X\) current alternatives, and \(D\) evidence items. A candidate job \(J=(A,C,P,O,K,X)\) is supported by evidence subset \(D_J\), not by the tuple's elegance.
+Let $A$ be actors, $C$ circumstances, $P$ desired progress, $O$ outcome criteria, $K$ constraints, $X$ current alternatives, and $D$ evidence items. A candidate job $J=(A,C,P,O,K,X)$ is supported by evidence subset $D_J$, not by the tuple's elegance.
 
 A **need** is something required for a consumer to achieve an outcome. A **job** organizes needs around progress in context. A **task** is one action in current or proposed work. A **journey** orders interactions and transitions over time. A **feature** is product behavior. A **capability** is a supported outcome the platform offers. These can trace to one another but are not interchangeable.
 
-Let \(source(d)\), \(segment(d)\), \(context(d)\), and \(date(d)\) preserve provenance for evidence item \(d\). **Triangulation** means a claim is examined through meaningfully different evidence sources or methods; repeating one survey question does not create independent evidence.
+Let $source(d)$, $segment(d)$, $context(d)$, and $date(d)$ preserve provenance for evidence item $d$. **Triangulation** means a claim is examined through meaningfully different evidence sources or methods; repeating one survey question does not create independent evidence.
 
 An **outlier** is an observation distant from a cluster, not automatically an error. An **extreme user** experiences constraints that can reveal hidden assumptions. A **non-user** is in scope but does not consume the platform; the reason can be access, fit, awareness, distrust, mandate avoidance, migration cost, or a superior alternative.
 

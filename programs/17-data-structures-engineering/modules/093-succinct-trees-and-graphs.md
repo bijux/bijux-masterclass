@@ -24,9 +24,9 @@ LOUDS lists nodes in breadth-first order and writes each node degree in unary, c
 
 General graphs do not have one universal two-bits-per-vertex representation. An undirected labeled simple graph with (n) vertices and (m) edges has baseline
 
-\[
+$$
 \log_2\binom{\binom n2}{m}
-\]
+$$
 
 bits for its edge set. Directed, labeled, multigraph, planar, web, geometric, and dynamic graph classes have different baselines and supported-operation trade-offs.
 
@@ -109,9 +109,9 @@ During preorder DFS, emit open at node entry, recursively encode children left-t
 
 The matching close is the first later position after which excess returns to its value at (p). The subtree interval is the matching parenthesis pair; because each node contributes a pair,
 
-\[
+$$
 \operatorname{subtree\_size}(p)=\frac{\operatorname{close}(p)-p+1}{2}.
-\]
+$$
 
 The first child exists when (p+1) is open. After child (u), a next sibling exists when (operatorname{close}(u)+1) is open before the parent's close. Parent is the nearest open whose match encloses (p). Succinct supports reduce these scans to rank/select, forward/backward excess search, range min/max, and lowest-excess queries.
 

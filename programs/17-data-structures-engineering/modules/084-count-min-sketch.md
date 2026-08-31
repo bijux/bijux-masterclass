@@ -20,21 +20,21 @@ How can a system estimate per-key frequencies from a stream using fixed memory w
 
 A **frequency vector** (f\in\mathbb{R}^U) maps each key in universe (U) to its accumulated weight. An **insertion-only** stream applies updates ((x,\Delta)) with (\Delta\ge 0). A Count-Min Sketch (CMS) contains (d) rows of (w) counters and one hash function (h_j:U\rightarrow\{0,\ldots,w-1\}) per row. Update ((x,\Delta)) adds (\Delta) to (C[j,h_j(x)]) in every row. The ordinary point estimate is
 
-\[
+$$
 \widehat f_x=\min_{0\le j<d} C[j,h_j(x)].
-\]
+$$
 
 For nonnegative updates, collision mass can only raise a counter, so (f_x\le\widehat f_x). With pairwise-independent hashes, (w=\lceil e/\varepsilon\rceil), and (d=\lceil\ln(1/\delta)\rceil), the standard argument gives
 
-\[
+$$
 \Pr[\widehat f_x>f_x+\varepsilon\lVert f\rVert_1]\le\delta
-\]
+$$
 
 for a fixed query (x). This is an additive, probabilistic, point-query guarantee—not relative error for every key and not a simultaneous guarantee over an unbounded adaptive query sequence.
 
 ### Central model, mechanism, or theorem
 
-In row (j), the queried counter decomposes as (f_x+Z_j), where (Z_j) is collision mass from other keys. Pairwise independence gives (\mathbb{E}[Z_j]\le\lVert f\rVert_1/w\). At width (e/\varepsilon), Markov's inequality bounds (\Pr[Z_j>\varepsilon\lVert f\rVert_1]\le 1/e). If rows are independently chosen, all (d) rows are bad with probability at most (e^{-d}\le\delta). The minimum selects any good row.
+In row (j), the queried counter decomposes as (f_x+Z_j), where (Z_j) is collision mass from other keys. Pairwise independence gives $\mathbb{E}[Z_j]\le\lVert f\rVert_1/w$. At width (e/\varepsilon), Markov's inequality bounds (\Pr[Z_j>\varepsilon\lVert f\rVert_1]\le 1/e). If rows are independently chosen, all (d) rows are bad with probability at most (e^{-d}\le\delta). The minimum selects any good row.
 
 The counter matrix is a linear summary under ordinary updates. Two sketches can be added cell by cell only when their dimensions, hash definitions, seeds, key encoding, counter representation, and update semantics agree. Conservative update often reduces overcount in practice, but it is not the same linear transform and therefore changes the merge story.
 
@@ -99,9 +99,9 @@ After this chapter, you should be able to:
 
 Represent a stream as updates ((x_t,\Delta_t)). After (T) updates,
 
-\[
+$$
 f_x=\sum_{t:x_t=x}\Delta_t.
-\]
+$$
 
 Three stream models must be distinguished. In the **cash-register** or insertion-only model, every (\Delta_t\ge0). In the **strict-turnstile** model, signed updates are allowed but every coordinate remains nonnegative. In the **general-turnstile** model, coordinates may become negative. The familiar CMS minimum estimator has a one-sided proof in the first model: other keys add only nonnegative collision noise. Allowing negative contributions, even when each final coordinate is nonnegative, can make the noise in a bucket negative and destroy the no-underestimate invariant. Linearity of the matrix does not automatically preserve the semantics of the minimum estimator.
 
@@ -111,10 +111,10 @@ The universe may be enormous or implicit. CMS does not allocate by universe size
 
 Choose width (w), depth (d), counter type, and independently selected row hashes (h_0,\ldots,h_{d-1}). Initialize (C\in\mathbb{R}^{d\times w}) to zero. For a standard update:
 
-\[
+$$
 C[j,h_j(x)]\leftarrow C[j,h_j(x)]+\Delta
 \quad\text{for every }j.
-\]
+$$
 
 The work is (O(d)); storage is (O(wd)) counters plus configuration. In an insertion-only integer stream, each row sum should equal total accepted mass. That equality is a useful audit invariant, though concurrent snapshots may require a publication protocol to observe it consistently.
 
@@ -124,29 +124,29 @@ A point query reads one counter per row and returns their minimum. Every selecte
 
 Fix a queried key (x). In row (j), define
 
-\[
+$$
 Z_j=\sum_{y\ne x} f_y\mathbf{1}[h_j(y)=h_j(x)].
-\]
+$$
 
 For an insertion-only stream, (Z_j\ge0) and
 
-\[
+$$
 C[j,h_j(x)]=f_x+Z_j.
-\]
+$$
 
 If the hash family makes a distinct pair collide with probability at most (1/w), linearity of expectation yields
 
-\[
+$$
 \mathbb{E}[Z_j]
 \le\frac{\sum_{y\ne x}f_y}{w}
 \le\frac{\lVert f\rVert_1}{w}.
-\]
+$$
 
 Set (w=\lceil e/\varepsilon\rceil). Then (\mathbb{E}[Z_j]\le\varepsilon\lVert f\rVert_1/e). Markov's inequality gives
 
-\[
+$$
 \Pr[Z_j>\varepsilon\lVert f\rVert_1]\le 1/e.
-\]
+$$
 
 If the row hashes are independently selected, the probability that every row exceeds the allowance is at most ((1/e)^d). Taking (d=\lceil\ln(1/\delta)\rceil) makes that at most (\delta). Since the estimate is the minimum, one good row is sufficient.
 
@@ -168,9 +168,9 @@ But conservative update is state dependent. If two shards apply it independently
 
 For standard updates, cellwise addition is exact at the sketch level:
 
-\[
+$$
 C_{A\cup B}[j,k]=C_A[j,k]+C_B[j,k].
-\]
+$$
 
 This equality requires matching width, depth, row order, hash algorithm and parameters, seed material, key encoding, counter domain, and update interpretation. It also assumes that the represented stream regions are disjoint when union rather than double counting is intended.
 
@@ -335,9 +335,9 @@ The proof has five obligations: nonnegative collision noise; bounded pair collis
 
 For ordinary updates, every cell is a sum of weights selected by a fixed indicator:
 
-\[
+$$
 C_f[j,k]=\sum_x f_x\mathbf{1}[h_j(x)=k].
-\]
+$$
 
 Therefore (C_{f+g}[j,k]=C_f[j,k]+C_g[j,k]). The proof assumes identical indicators, which is why hash and encoding identity are part of correctness rather than metadata decoration. It proves algebraic combination of vectors, not absence of duplicated stream intervals.
 
@@ -463,9 +463,9 @@ A fraud service must find accounts above 0.05% of daily events, but blocking a l
 
 (w=\lceil e/0.005\rceil=544). (d=\lceil\ln 10^7\rceil=17). There are (544\times17=9{,}248) counters, consuming (9{,}248\times4=36{,}992) raw bytes before alignment and metadata. The additive allowance is (0.005\times12{,}000{,}000=60{,}000). For a fixed key under nonnegative updates and the stated independent hash assumptions,
 
-\[
+$$
 f_x\le\widehat f_x\le f_x+60{,}000
-\]
+$$
 
 with probability at least (1-10^{-7}). This is not 0.5% relative error for the key.
 
@@ -473,11 +473,11 @@ with probability at least (1-10^{-7}). This is not 0.5% relative error for the k
 
 For fixed cell ((j,k)),
 
-\[
+$$
 C_{f+g}[j,k]
 =\sum_x(f_x+g_x)\mathbf1[h_j(x)=k]
 =C_f[j,k]+C_g[j,k].
-\]
+$$
 
 Since this holds for every cell, the matrices add. Concrete compatibility requires at least width, depth and row ordering, hash-family/version, per-row seeds, canonical key encoding/schema, counter numeric type and overflow rule, plus standard rather than conservative update semantics. Namespace and epoch lineage do not change the algebraic indicators, but they are necessary to ensure the vectors being added are the intended disjoint populations.
 

@@ -31,17 +31,17 @@ How can one or a small number of threads demultiplex many concurrent I/O sources
 
 ### Central model, mechanism, or theorem
 
-At iteration \(t\), demultiplexer returns ready registrations \(R_t\subseteq I_t\). Dispatcher invokes each corresponding handler with budget \(b_i\). For a single loop with event arrival rate \(\lambda\) and mean loop-thread service time \(E[S]\), a necessary idealized stability condition is
+At iteration $t$, demultiplexer returns ready registrations $R_t\subseteq I_t$. Dispatcher invokes each corresponding handler with budget $b_i$. For a single loop with event arrival rate $\lambda$ and mean loop-thread service time $E[S]$, a necessary idealized stability condition is
 
-\[
+$$
 \rho=\lambda E[S]<1.
-\]
+$$
 
-This excludes kernel work, bursts, timers, retries, cross-thread commands, and offloaded completions; safe capacity requires headroom and measured tails. If a round visits \(n\) continuously ready handlers once, a newly ready handler's cooperative scheduling delay is bounded approximately by
+This excludes kernel work, bursts, timers, retries, cross-thread commands, and offloaded completions; safe capacity requires headroom and measured tails. If a round visits $n$ continuously ready handlers once, a newly ready handler's cooperative scheduling delay is bounded approximately by
 
-\[
+$$
 W\le\sum_{i=1}^{n}b_i+C_{poll}+C_{dispatch},
-\]
+$$
 
 only when budgets are enforced, callbacks do not block, and the ready scheduler is fair. The bound fails if one callback performs unbounded parse, CPU, logging, DNS, file I/O, lock wait, or output flush.
 
@@ -211,14 +211,14 @@ Test with socket pairs/real network: fragmented/coalesced frames, partial writes
 
 | Symbol or term | Meaning |
 | --- | --- |
-| \(I_t\) | Registrations and interest sets installed at iteration \(t\) |
-| \(R_t\) | Ready registrations returned/queued at iteration \(t\) |
-| \(b_i\) | Cooperative work budget for handler \(i\) per turn |
-| \(S\) | Reactor-thread service time per dispatched event/work unit |
-| \(\lambda\) | Arrival rate of reactor-thread work under stated workload |
-| \(\rho\) | Idealized loop utilization \(\lambda E[S]\) |
-| \(L\) | Loop lag from actionable readiness/timer to handler start |
-| \(q_i^{in},q_i^{out}\) | Bounded input and output backlog for connection \(i\) |
+| $I_t$ | Registrations and interest sets installed at iteration $t$ |
+| $R_t$ | Ready registrations returned/queued at iteration $t$ |
+| $b_i$ | Cooperative work budget for handler $i$ per turn |
+| $S$ | Reactor-thread service time per dispatched event/work unit |
+| $\lambda$ | Arrival rate of reactor-thread work under stated workload |
+| $\rho$ | Idealized loop utilization $\lambda E[S]$ |
+| $L$ | Loop lag from actionable readiness/timer to handler start |
+| $q_i^{in},q_i^{out}$ | Bounded input and output backlog for connection $i$ |
 | generation | Monotone lifecycle token invalidating stale asynchronous work |
 | `would block` | Non-error result: no progress currently possible without waiting |
 | high/low watermark | Hysteretic thresholds for pausing and resuming admission/read/production |
@@ -233,11 +233,11 @@ Assume a connection's mutable state is accessed only by its assigned loop. Worke
 
 ### Stale-completion safety
 
-Every registration has identity \(r\) and generation \(g\). Close increments/invalidates \(g\) before resources can be reused. A queued readiness, timer, or worker completion is applied only if its `(r,g,operation)` matches current state. Therefore an old completion cannot mutate a new generation through the guarded path. Unguarded external side effects require separate idempotency/fencing.
+Every registration has identity $r$ and generation $g$. Close increments/invalidates $g$ before resources can be reused. A queued readiness, timer, or worker completion is applied only if its `(r,g,operation)` matches current state. Therefore an old completion cannot mutate a new generation through the guarded path. Unguarded external side effects require separate idempotency/fencing.
 
 ### Fairness argument
 
-Assume a finite ready round, tail requeue, per-handler budget \(b_i\), nonblocking callbacks, and fair selection. No continuously ready handler can consume more than its budget before every peer in that round gets a turn, so a peer's cooperative delay is bounded by the sum of preceding budgets and fixed overhead. Priorities, new arrivals, timer work and scheduler implementation require a refined bound.
+Assume a finite ready round, tail requeue, per-handler budget $b_i$, nonblocking callbacks, and fair selection. No continuously ready handler can consume more than its budget before every peer in that round gets a turn, so a peer's cooperative delay is bounded by the sum of preceding budgets and fixed overhead. Priorities, new arrivals, timer work and scheduler implementation require a refined bound.
 
 ### Executable finite model
 
@@ -457,17 +457,17 @@ The initiator registers a nonblocking handle and interest set with the Reactor; 
 
 The sum of budgets is
 
-\[
+$$
 0.4+0.8+0.3+1.0+0.5=3.0\text{ ms}.
-\]
+$$
 
 Adding 0.2 ms poll/dispatch overhead gives an approximate 3.2 ms one-round bound under finite ready set, fair once-per-round scheduling, nonblocking callbacks, enforced budgets and no higher-priority/new work. Idealized utilization is
 
-\[
+$$
 \rho=8000\times90\times10^{-6}=0.72.
-\]
+$$
 
-It satisfies the necessary \(\rho<1\) condition but does not prove sufficient headroom or tail latency. Bursts, variable service, timers, syscalls, offloaded completions, GC/scheduling, hot connections and downstream pressure require measured distributions; 72% average may still violate a strict tail SLO.
+It satisfies the necessary $\rho<1$ condition but does not prove sufficient headroom or tail latency. Bursts, variable service, timers, syscalls, offloaded completions, GC/scheduling, hot connections and downstream pressure require measured distributions; 72% average may still violate a strict tail SLO.
 
 ### Answer 3
 

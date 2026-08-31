@@ -34,26 +34,26 @@ How can a team discover, analyze, reconcile, validate, and preserve what diverse
 
 Preserve three layers:
 
-\[
+$$
 RawInput \xrightarrow{analysis} CandidateNeed
 \xrightarrow{integration/authority} BaselinedNeed
 \xrightarrow{transformation} Requirements.
-\]
+$$
 
 Record a need as:
 
-\[
+$$
 n=\langle id,source,stakeholder,outcome,context,rationale,measure,
 priority,assumptions,constraints,conflicts,trace,status,evidence\rangle.
-\]
+$$
 
 Trace transformation obligations:
 
-\[
+$$
 Need \Leftarrow Sources+Analysis,
 \quad Requirements \Rightarrow NeedCoverage,
 \quad ValidationEvidence \Rightarrow NeedSatisfaction.
-\]
+$$
 
 The arrows express required justification, not logical proof. A complete-looking register can still omit stakeholders, distort meaning, or validate against an unrepresentative context.
 
@@ -253,25 +253,25 @@ Let stakeholder classes be (G=\{g_1,\ldots,g_m\}), lifecycle contexts (C), raw i
 
 Define source trace (T_{IN}\subseteq I\times N), coverage trace (T_{NR}\subseteq N\times R), and validation trace (T_{NV}\subseteq N\times V). For baselined need (n):
 
-\[
+$$
 SourceCovered(n)\iff \exists i:(i,n)\in T_{IN},
-\]
+$$
 
-\[
+$$
 RequirementCovered(n)\iff \exists r:(n,r)\in T_{NR},
-\]
+$$
 
-\[
+$$
 ValidationPlanned(n)\iff \exists v:(n,v)\in T_{NV}.
-\]
+$$
 
 Existence of a link does not prove semantic adequacy. Coverage reviews must inspect rationale, context, measures, and transformation loss.
 
 For stakeholder group (g), outcome (y_g), context (c), and desired condition (A_g(c)), a need can be modeled as a predicate:
 
-\[
+$$
 NeedSatisfied(n,g,c)\iff y_g(c)\in A_g(c).
-\]
+$$
 
 Some admissible sets are qualitative or partially ordered; forcing a scalar score may erase non-compensable values.
 

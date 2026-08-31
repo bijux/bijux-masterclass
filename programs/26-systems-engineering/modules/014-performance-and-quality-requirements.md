@@ -33,25 +33,25 @@ How can engineers specify how well a system must perform and which qualities it 
 
 Record a quantitative obligation as:
 
-\[
+$$
 q=\langle id,subject,function/quality,conditions,population,measure,
 method,aggregation,operator,threshold,tolerance,window,confidence,
 source,rationale,verification\rangle.
-\]
+$$
 
 Measurement is conditional:
 
-\[
+$$
 Y=M(SoI,workload,population,environment,mode,configuration,method).
-\]
+$$
 
 A statistical requirement may take the form:
 
-\[
+$$
 P(Y\le T\mid C)\ge p,
-\]
+$$
 
-but only if \(Y,T,C,p\), sampling, estimation, and acceptance rules are defined. Passing a finite test supports a bounded acceptance claim; it does not prove universal future behavior.
+but only if $Y,T,C,p$, sampling, estimation, and acceptance rules are defined. Passing a finite test supports a bounded acceptance claim; it does not prove universal future behavior.
 
 ### Critical invariants
 
@@ -137,7 +137,7 @@ After completing this module, you should be able to:
 
 **Select aggregation by consequence.** Mean describes central tendency but can hide a long tail. Median ignores rare severe delay. Quantiles describe a distribution position but require window, estimator, and sample considerations. Maximum observed depends strongly on sample size and is not a universal worst case. Rates obscure clustering. Report distributions and stratified results when consequence is nonlinear or unevenly distributed.
 
-**Write comparison semantics.** Use explicit operator, threshold, tolerance, and boundary inclusion: \(x\le2\,s\) differs from \(x<2\,s\). State whether every event, a proportion, or an aggregate must comply. For a percentile requirement, define eligible population, window, minimum samples, estimator, and low-volume rule. Do not say “p99 average.”
+**Write comparison semantics.** Use explicit operator, threshold, tolerance, and boundary inclusion: $x\le2\,s$ differs from $x<2\,s$. State whether every event, a proportion, or an aggregate must comply. For a percentile requirement, define eligible population, window, minimum samples, estimator, and low-volume rule. Do not say “p99 average.”
 
 **Distinguish latency, throughput, and capacity.** Latency measures duration for an observation. Throughput measures completed work per time. Capacity identifies the workload envelope within which other requirements hold. Increasing concurrency may raise throughput until queues or contention increase latency and failure. Specify these properties together under a workload model rather than optimizing one in isolation.
 
@@ -153,9 +153,9 @@ After completing this module, you should be able to:
 
 **Specify reliability and availability carefully.** Reliability concerns successful performance over a stated mission/time and conditions. Availability concerns readiness for required use at an observation point and depends on failure and restoration. The observed ratio
 
-\[
+$$
 \hat A=\frac{observed\ available\ time}{eligible\ observation\ time}
-\]
+$$
 
 requires rules for partial service, planned maintenance, dependency failure, measurement gaps, and user impact. It is an estimate or accounting result, not proof of future availability.
 
@@ -214,24 +214,24 @@ print("evidence=declared_fields_and_lexical_signals_only")
 
 ## Definitions and Notation
 
-Let \(S\) be the system, \(W\) workload, \(P\) population, \(E\) environment, \(M\) mode, \(K\) configuration, and \(H\) observation horizon. A measure is a function \(m(S,W,P,E,M,K,H)\) with a documented procedure and unit.
+Let $S$ be the system, $W$ workload, $P$ population, $E$ environment, $M$ mode, $K$ configuration, and $H$ observation horizon. A measure is a function $m(S,W,P,E,M,K,H)$ with a documented procedure and unit.
 
-For observations \(x_1,\ldots,x_n\), the arithmetic mean is \(\bar x=n^{-1}\sum x_i\). An empirical \(p\)-quantile is defined by the selected estimator; tools use differing conventions, so name it. A proportion \(\hat p=k/n\) is incomplete without eligibility and treatment of missing/censored cases.
+For observations $x_1,\ldots,x_n$, the arithmetic mean is $\bar x=n^{-1}\sum x_i$. An empirical $p$-quantile is defined by the selected estimator; tools use differing conventions, so name it. A proportion $\hat p=k/n$ is incomplete without eligibility and treatment of missing/censored cases.
 
 **Latency** is duration per operation; **throughput** is completed operations per time; **capacity** is the workload boundary within which linked requirements hold; **utilization** is resource use relative to a defined capacity. **Reliability**, **availability**, **maintainability**, **recoverability**, and **resilience** describe different properties even when their measures interact.
 
-**Accuracy**, **precision**, **resolution**, **bias**, **repeatability**, **calibration**, and **uncertainty** retain discipline-specific definitions. Declare which definition applies. **Margin** \(g=T-Predicted) depends on whether larger or smaller is better; always define sign convention.
+**Accuracy**, **precision**, **resolution**, **bias**, **repeatability**, **calibration**, and **uncertainty** retain discipline-specific definitions. Declare which definition applies. **Margin** $g=T-Predicted$ depends on whether larger or smaller is better; always define sign convention.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 The mechanism has seven steps: trace the outcome; identify the function/quality; define entity and conditions; define measurement method and aggregation; derive threshold/tolerance; plan inference and verification; review interactions and validation. Each step can invalidate the previous wording.
 
-For requirement \(q\), use the readiness predicate:
+For requirement $q$, use the readiness predicate:
 
-\[
+$$
 Ready(q)=Source\land DefinedProperty\land Conditions\land Measure\land
 DecisionRule\land Uncertainty\land Feasible\land Verifiable.
-\]
+$$
 
 The predicate is an audit structure. Several terms require empirical and domain judgment; a nonempty field is not proof.
 
@@ -298,7 +298,7 @@ For composed systems, derive end-to-end budgets only under valid algebra and dep
 
 ### Example 8
 
-**Situation.** No failures occur in 1,000 independent test missions. **Reasoning.** This contradicts neither rare risk nor untested conditions. Under a simple binomial model, the rough 95% upper failure-probability bound is about \(3/1000\), subject to independence and representativeness. Common-cause exposure breaks the model. **Conclusion.** Zero observations bound risk only under explicit statistical assumptions; they do not prove perfect reliability.
+**Situation.** No failures occur in 1,000 independent test missions. **Reasoning.** This contradicts neither rare risk nor untested conditions. Under a simple binomial model, the rough 95% upper failure-probability bound is about $3/1000$, subject to independence and representativeness. Common-cause exposure breaks the model. **Conclusion.** Zero observations bound risk only under explicit statistical assumptions; they do not prove perfect reliability.
 
 ### Example 9
 
@@ -366,7 +366,7 @@ Do not exclude failed requests merely to improve latency. Link correctness, fres
 
 ### Answer 3
 
-No. If all three are required in series and failures are independent with equal availability \(0.999\), a simplified steady-state estimate is \(0.999^3\approx0.997003\), not 0.999. If components are redundant, service availability depends on success logic, failover coverage, repair, state consistency, and shared dependencies. If failures correlate through power, network, configuration, operator, or traffic, independence multiplication is invalid. If the system offers degraded service, binary component uptime may not match stakeholder availability.
+No. If all three are required in series and failures are independent with equal availability $0.999$, a simplified steady-state estimate is $0.999^3\approx0.997003$, not 0.999. If components are redundant, service availability depends on success logic, failover coverage, repair, state consistency, and shared dependencies. If failures correlate through power, network, configuration, operator, or traffic, independence multiplication is invalid. If the system offers degraded service, binary component uptime may not match stakeholder availability.
 
 Define end-to-end required service and observation point; architecture success/failure states; partial-service rules; planned maintenance; dependencies; detection/failover/restoration; data correctness; and window. Use reliability/availability models with sensitivity and common-cause cases, failure-injection and recovery tests, and field evidence. Component objectives are budgets or evidence inputs; the end-to-end requirement needs direct semantics and verification.
 

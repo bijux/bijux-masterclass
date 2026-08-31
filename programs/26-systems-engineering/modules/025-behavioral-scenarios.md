@@ -35,19 +35,19 @@ How can a team construct and govern a portfolio of behavioral scenarios that exp
 
 Represent a scenario as:
 
-\[
+$$
 \Gamma=\langle id,B,A,E,C,S_0,tr,F,O,Q,H,U,V\rangle,
-\]
+$$
 
-where \(B\) is boundary/configuration, \(A\) actors/authority, \(E\) environment, \(C\) constraints/resources, \(S_0\) initial state/mode, \(tr\) trigger, \(F\) ordered/partially ordered flow with branches, \(O\) outcomes/postconditions, \(Q\) quality/timing/oracles, \(H\) assumptions, \(U\) uncertainties, and \(V\) trace/evidence.
+where $B$ is boundary/configuration, $A$ actors/authority, $E$ environment, $C$ constraints/resources, $S_0$ initial state/mode, $tr$ trigger, $F$ ordered/partially ordered flow with branches, $O$ outcomes/postconditions, $Q$ quality/timing/oracles, $H$ assumptions, $U$ uncertainties, and $V$ trace/evidence.
 
-For declared coverage obligations \(D\) and portfolio \(P\):
+For declared coverage obligations $D$ and portfolio $P$:
 
-\[
+$$
 Coverage(P,D)=\frac{|\{d\in D:\exists\Gamma\in P,\ AdequatelyCovers(\Gamma,d)\}|}{|D|}.
-\]
+$$
 
-This ratio is interpretable only with the exact denominator, adequacy criteria, versions, exclusions, and semantic review. Even 100% does not prove that \(D\) itself is complete.
+This ratio is interpretable only with the exact denominator, adequacy criteria, versions, exclusions, and semantic review. Even 100% does not prove that $D$ itself is complete.
 
 ### Critical invariants
 
@@ -217,17 +217,17 @@ Even S-001 may be implausible, unsafe, unrepresentative, or semantically incompl
 
 ## Definitions and Notation
 
-Let \(Events(\Gamma)=\{e_1,\ldots,e_n\}\) and \(\prec_\Gamma\) be a partial order rather than forcing total sequence. Let \(State(e_i^-)\) and \(State(e_i^+)\) denote modeled state before/after an event, and let \(Obs(e_i)\) be expected observable evidence with tolerance and authority.
+Let $Events(\Gamma)=\{e_1,\ldots,e_n\}$ and $\prec_\Gamma$ be a partial order rather than forcing total sequence. Let $State(e_i^-)$ and $State(e_i^+)$ denote modeled state before/after an event, and let $Obs(e_i)$ be expected observable evidence with tolerance and authority.
 
 A scenario consistency obligation is:
 
-\[
+$$
 \forall e_i\prec_\Gamma e_j:\ FeasibleOrder(e_i,e_j,S,E,R,T)
-\]
+$$
 
-with state \(S\), environment \(E\), resources \(R\), and timing \(T\). This does not prove real feasibility; it identifies the dimensions the scenario/model must justify.
+with state $S$, environment $E$, resources $R$, and timing $T$. This does not prove real feasibility; it identifies the dimensions the scenario/model must justify.
 
-For scenario parameter vector \(\theta\in\Theta\), outcomes \(O(\Gamma,\theta)\) can be explored. A sample \(\Theta_s\subset\Theta\) supports conclusions only for its sampling design/model and cannot establish behavior outside \(\Theta_s\) without a justified generalization or bound.
+For scenario parameter vector $\theta\in\Theta$, outcomes $O(\Gamma,\theta)$ can be explored. A sample $\Theta_s\subset\Theta$ supports conclusions only for its sampling design/model and cannot establish behavior outside $\Theta_s$ without a justified generalization or bound.
 
 ## Mechanisms, Invariants, or Proof Structure
 

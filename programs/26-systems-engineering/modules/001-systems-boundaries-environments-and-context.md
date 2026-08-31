@@ -29,13 +29,13 @@ What must be inside the system of interest, what remains outside it, which relat
 
 ### Central model, mechanism, or theorem
 
-Treat boundary selection as a reviewable hypothesis. For a concern \(c\), lifecycle stage \(l\), and viewpoint \(v\), define a bounded context
+Treat boundary selection as a reviewable hypothesis. For a concern $c$, lifecycle stage $l$, and viewpoint $v$, define a bounded context
 
-\[
+$$
 C_{c,l,v}=(S,E,B,I,A,K,O),
-\]
+$$
 
-where \(S\) is the system of interest, \(E\) relevant environment, \(B\) boundary rule, \(I\) crossing interfaces, \(A\) assumptions, \(K\) constraints, and \(O\) owners or authorities. The boundary is adequate only if it permits the intended claims and decisions without hiding a material dependency, consequence, control, lifecycle obligation, or stakeholder.
+where $S$ is the system of interest, $E$ relevant environment, $B$ boundary rule, $I$ crossing interfaces, $A$ assumptions, $K$ constraints, and $O$ owners or authorities. The boundary is adequate only if it permits the intended claims and decisions without hiding a material dependency, consequence, control, lifecycle obligation, or stakeholder.
 
 ### Critical invariants
 
@@ -91,7 +91,7 @@ A system is identified by relationships and outcomes, not merely by physical pro
 
 The **system of interest** focuses lifecycle responsibility. Selection answers: whose outcomes are at issue, which changes are possible, which evidence is required, and which authority accepts the result? It is not synonymous with the thing being purchased. A contract may cover one subsystem while the operational outcome depends on several independently managed systems and human organizations. Procurement boundaries remain relevant, but they cannot substitute for operational context.
 
-A boundary is a rule of membership. A simple set \(S\) lists internal elements; the environment contains relevant nonmembers. In practice, one line rarely answers every concern. A physical boundary can follow an enclosure. A network authorization boundary can follow managed identities and connections. A safety boundary can include independent protection and human response. A legal boundary may follow jurisdiction and data responsibility. A responsibility boundary follows decision authority. Relate these views rather than forcing them into one misleading line.
+A boundary is a rule of membership. A simple set $S$ lists internal elements; the environment contains relevant nonmembers. In practice, one line rarely answers every concern. A physical boundary can follow an enclosure. A network authorization boundary can follow managed identities and connections. A safety boundary can include independent protection and human response. A legal boundary may follow jurisdiction and data responsibility. A responsibility boundary follows decision authority. Relate these views rather than forcing them into one misleading line.
 
 Good boundary statements name inclusion and exclusion criteria. “The payment system includes the checkout service, ledger, settlement orchestration, operator console, and runbooks used to recover committed transactions. It excludes card networks and bank systems, which are external interacting systems governed through named interfaces and assumptions.” This is stronger than a rectangle labeled `Payments` because it explains why operators and procedures are inside while financial networks remain external.
 
@@ -160,9 +160,9 @@ This run establishes only consistency with four declared metadata rules in one s
 
 ## Definitions and Notation
 
-Let \(U\) be the modeled universe for a stated concern and \(S\subset U\) the system-of-interest elements. The relevant environment is \(E\subseteq U\setminus S\), not necessarily every nonmember. A boundary-crossing relation \(I\subseteq(S\times E)\cup(E\times S)\) identifies directed interactions. Internal interactions lie in \(S\times S\); environmental relationships can also exist within \(E\) and still influence the system.
+Let $U$ be the modeled universe for a stated concern and $S\subset U$ the system-of-interest elements. The relevant environment is $E\subseteq U\setminus S$, not necessarily every nonmember. A boundary-crossing relation $I\subseteq(S\times E)\cup(E\times S)$ identifies directed interactions. Internal interactions lie in $S\times S$; environmental relationships can also exist within $E$ and still influence the system.
 
-Let \(c\) denote concern, \(l\) lifecycle stage, \(m\) operating mode, and \(v\) viewpoint. Boundary membership can therefore be written \(B_{c,l,v}(x)\in\{inside,outside\}\). The notation makes an important point: a different legitimate concern can yield another boundary. Differences must be reconciled, not declared errors merely because lines differ.
+Let $c$ denote concern, $l$ lifecycle stage, $m$ operating mode, and $v$ viewpoint. Boundary membership can therefore be written $B_{c,l,v}(x)\in\{inside,outside\}$. The notation makes an important point: a different legitimate concern can yield another boundary. Differences must be reconciled, not declared errors merely because lines differ.
 
 An **operational context** describes use and interaction in intended operation. A **development context** covers creation and qualification. A **business or mission context** covers value, authority, and institutional environment. A **system context** is the relevant external relationship description for the selected system of interest. An **architecture description** expresses architecture for concerns; it is not the architecture or the actual system itself.
 

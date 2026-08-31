@@ -33,15 +33,15 @@ When should construction become an explicit staged protocol so a complex product
 
 Model construction as a state machine
 
-\[
+$$
 B_0\xrightarrow{o_1}B_1\xrightarrow{o_2}\cdots\xrightarrow{o_n}B_n\xrightarrow{build}Result(P,E).
-\]
+$$
 
 Each operation preserves builder-state invariant (I_B). `build` is permitted only when completion predicate (Complete(B_n)) holds; success requires
 
-\[
+$$
 build(B_n)=Ok(p)\implies I_P(p)\land corresponds(p,B_n).
-\]
+$$
 
 Failure returns no partial Product and leaves builder reuse behavior explicit. A Director is correct only if its sequence satisfies the same protocol for every compatible Concrete Builder.
 
@@ -180,21 +180,21 @@ When Product construction simplifies, replace Builder with a constructor or name
 
 Let builder state be (B=(q,d)), with protocol state (q\in Q) and accumulated data (d). Each operation (o) is a partial transition
 
-\[
+$$
 \delta_o:Q\times D\rightharpoonup Q\times D.
-\]
+$$
 
 Illegal operations are outside the domain and must produce a defined error rather than corrupt state. Completion states are (Q_F\subseteq Q). Finalization is
 
-\[
+$$
 build:B_F\to Result(P,E),\qquad B_F=Q_F\times D_{valid}.
-\]
+$$
 
 For immutable Product snapshot (p) and mutable builder state after completion (B'), non-aliasing requires
 
-\[
+$$
 mutate(B')\not\Rightarrow mutate(p).
-\]
+$$
 
 A Director sequence (s=o_1\cdots o_n) is compatible with a Concrete Builder when every prefix transition is defined and the terminal state belongs to (B_F). This is a protocol claim, not proof that the resulting domain Product is universally correct.
 

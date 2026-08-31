@@ -34,25 +34,25 @@ What situation, outcomes, mechanisms, stakeholders, constraints, uncertainties, 
 
 Represent a frame as:
 
-\[
+$$
 F=\langle situation,stakeholders,boundaries,outcomes,evidence,
 mechanisms,measures,constraints,assumptions,uncertainties,authority,
 options,learning,reframe\ triggers\rangle.
-\]
+$$
 
 Separate three claims:
 
-\[
+$$
 ObservedGap = DesiredOutcome-ObservedOutcome,
-\]
+$$
 
-\[
+$$
 MechanismHypothesis: Conditions\rightarrow ObservedGap,
-\]
+$$
 
-\[
+$$
 InterventionHypothesis: Action\rightarrow MechanismChange\rightarrow OutcomeChange.
-\]
+$$
 
 Evidence for the gap does not prove the mechanism; evidence for a mechanism does not prove a preferred intervention; intervention performance does not by itself establish legitimate stakeholder value. Maintain traceability and alternative explanations across all three.
 
@@ -148,11 +148,11 @@ After completing this module, you should be able to:
 
 **Write a provisional frame.** Use:
 
-\[
+$$
 f=(id,situation,evidence,stakeholders,affected\ nonusers,boundary,
 observed\ outcomes,desired\ outcomes,mechanisms,constraints,assumptions,
 uncertainties,measures,authority,learning,triggers).
-\]
+$$
 
 Mark confidence and disagreement. A frame is a versioned decision artifact, not a timeless truth. It should explain why the next analysis or commitment is warranted and what would reopen it.
 
@@ -228,15 +228,15 @@ print("evidence=declared_fields_and_lexical_signals_only")
 
 Let stakeholder or affected group (g\in G), outcome measure (y_g(t)), desired condition (y_g^*(t)), and problem gap:
 
-\[
+$$
 \Delta_g(t)=y_g^*(t)-y_g(t).
-\]
+$$
 
 Direction and acceptability depend on the measure; not all stakeholder values are scalar or compensable. Define baseline (B), candidate action (a), and counterfactual outcome (Y(0)). The intervention effect of interest is conceptually:
 
-\[
+$$
 Effect(a)=Y(a)-Y(0),
-\]
+$$
 
 but (Y(0)) is generally unobserved and requires a causal design or bounded assumptions. Before-after difference alone is not the effect.
 
@@ -244,9 +244,9 @@ Let mechanism hypothesis (h_k) have supporting/challenging evidence (E_k), uncer
 
 A solution-neutral need (N) specifies outcome/capability (O), context (C), affected group (G), measure/threshold (M), and constraints (K), without specifying realization (R) unless (R\in K) is supported by authorized evidence:
 
-\[
+$$
 N=\langle O,C,G,M,K\rangle,\quad R\notin N\setminus K.
-\]
+$$
 
 ## Mechanisms, Invariants, or Proof Structure
 

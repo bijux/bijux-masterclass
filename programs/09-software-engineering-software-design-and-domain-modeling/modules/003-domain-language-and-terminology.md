@@ -31,11 +31,11 @@ How can a team build a precise, shared, context-bound language that expresses th
 
 Treat every important vocabulary entry as a reviewable claim:
 
-\[
+$$
 L=(C,T,D,R,E,A,V),
-\]
+$$
 
-where \(C\) is context, \(T\) the preferred term and accepted aliases, \(D\) the intensional definition, \(R\) concept relationships, \(E\) positive and negative examples, \(A\) source and decision authority, and \(V\) version or validity interval. Language quality is demonstrated when these claims distinguish real cases, support the domain's decisions, and remain traceable into scenarios, model elements, interfaces, code, tests, telemetry, and migration rules.
+where $C$ is context, $T$ the preferred term and accepted aliases, $D$ the intensional definition, $R$ concept relationships, $E$ positive and negative examples, $A$ source and decision authority, and $V$ version or validity interval. Language quality is demonstrated when these claims distinguish real cases, support the domain's decisions, and remain traceable into scenarios, model elements, interfaces, code, tests, telemetry, and migration rules.
 
 ### Critical invariants
 
@@ -89,7 +89,7 @@ Before this chapter, you should be able to:
 4. recognize that every model is selective and purpose-bound;
 5. give positive and negative examples of a category from ordinary programming.
 
-Retrieve a simple set concept. If \(P(x)\) is the membership predicate for concept \(K\), then a useful definition and examples should help reviewers decide whether \(P(x)\) holds for relevant cases. Most domain concepts are not reducible to one timeless predicate, but this framing exposes vague boundaries and hidden context.
+Retrieve a simple set concept. If $P(x)$ is the membership predicate for concept $K$, then a useful definition and examples should help reviewers decide whether $P(x)$ holds for relevant cases. Most domain concepts are not reducible to one timeless predicate, but this framing exposes vague boundaries and hidden context.
 
 ## Learning Objectives
 
@@ -210,32 +210,32 @@ print("evidence=lexical_policy_only")
 
 Let a terminology entry be:
 
-\[
+$$
 e=(i,C,T,S,D,H,R,X,N,A,V),
-\]
+$$
 
 where:
 
-- \(i\) is a stable concept identifier;
-- \(C\) is the context;
-- \(T\) is the preferred term;
-- \(S\) is the set of admitted synonyms or aliases;
-- \(D\) is the definition;
-- \(H\) is the set of defining characteristics;
-- \(R\) is the set of relationships to other concepts;
-- \(X\) and \(N\) are positive examples and negative examples or near misses;
-- \(A\) records sources, authority, and unresolved disagreement;
-- \(V\) records version, effective time, and deprecation state.
+- $i$ is a stable concept identifier;
+- $C$ is the context;
+- $T$ is the preferred term;
+- $S$ is the set of admitted synonyms or aliases;
+- $D$ is the definition;
+- $H$ is the set of defining characteristics;
+- $R$ is the set of relationships to other concepts;
+- $X$ and $N$ are positive examples and negative examples or near misses;
+- $A$ records sources, authority, and unresolved disagreement;
+- $V$ records version, effective time, and deprecation state.
 
-For context \(C\), let \(\mu_C(t)\) map a designation \(t\) to a concept identifier. A useful lexical invariant is:
+For context $C$, let $\mu_C(t)$ map a designation $t$ to a concept identifier. A useful lexical invariant is:
 
-\[
+$$
 \forall t,\; |\mu_C(t)| \le 1,
-\]
+$$
 
 unless ambiguity is explicitly represented and disambiguated. This is not a universal law of natural language. It is an engineering policy for artifacts where silent ambiguity creates defects.
 
-Let \(P_{i,C}(x,t)\) mean that referent \(x\) satisfies concept \(i\)'s defining characteristics in context \(C\) at domain time \(t\). The time parameter matters: a person can be an eligible member today but not yesterday. Recorded time may differ from effective time; Module 071 later develops temporal models.
+Let $P_{i,C}(x,t)$ mean that referent $x$ satisfies concept $i$'s defining characteristics in context $C$ at domain time $t$. The time parameter matters: a person can be an eligible member today but not yesterday. Recorded time may differ from effective time; Module 071 later develops temporal models.
 
 **Synonymy** is a many-designations-to-one-concept relation. **Homonymy** is one designation shared by unrelated concepts. **Polysemy** is one designation with related senses. In engineering, the diagnostic question is less “which linguistic category is philosophically perfect?” than “could a reader, consumer, or operator choose the wrong rule?”
 
@@ -258,7 +258,7 @@ Use this repeatable mechanism:
 
 Four invariants govern the result.
 
-**Concept identity invariant.** A concept's stable identity is not its preferred spelling. Renaming preserves \(i\); splitting or merging changes concept identity and requires explicit mappings.
+**Concept identity invariant.** A concept's stable identity is not its preferred spelling. Renaming preserves $i$; splitting or merging changes concept identity and requires explicit mappings.
 
 **Context invariant.** Every assertion is interpreted within a named context. Cross-context equivalence is a claim with conditions, not an assumption from equal labels.
 
@@ -433,7 +433,7 @@ The concept `Loan` is the temporary, governed assignment of one lendable copy to
 
 ### Answer 2
 
-A candidate definition is: “A priority incident is an incident whose assessed impact and urgency meet the currently effective P1 decision rule and require immediate incident-command activation.” Positive examples are a confirmed safety-control loss and a region-wide outage above the declared impact threshold. At the boundary, exactly the minimum affected population passes only if the rule uses \(\ge\), which must be stated. Near misses include a severe-looking alert disproved before assessment and a small isolated failure below the policy threshold. A strong answer identifies policy owner, effective version, evidence, reassessment, and the distinction between an incident's properties and the assigned response category.
+A candidate definition is: “A priority incident is an incident whose assessed impact and urgency meet the currently effective P1 decision rule and require immediate incident-command activation.” Positive examples are a confirmed safety-control loss and a region-wide outage above the declared impact threshold. At the boundary, exactly the minimum affected population passes only if the rule uses $\ge$, which must be stated. Near misses include a severe-looking alert disproved before assessment and a small isolated failure below the policy threshold. A strong answer identifies policy owner, effective version, evidence, reassessment, and the distinction between an incident's properties and the assigned response category.
 
 ### Answer 3
 

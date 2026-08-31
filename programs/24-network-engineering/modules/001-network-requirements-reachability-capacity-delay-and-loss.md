@@ -31,11 +31,11 @@ How should an engineer turn “the network must connect our systems and be fast 
 
 A usable network requirement is a tuple
 
-\[
+$$
 R=(S,D,P,W,F,M,\theta,E),
-\]
+$$
 
-where \(S,D\) are endpoints or sets, \(P\) is traffic type and direction, \(W\) is workload, \(F\) is failure/maintenance condition, \(M\) is a precisely defined metric and method, \(\theta\) is its threshold and statistical scope, and \(E\) is required evidence. Requirements form a vector, not one “speed”: reachability, sustainable goodput, delay quantiles, delay variation, loss, availability, recovery, and security policy can constrain one another.
+where $S,D$ are endpoints or sets, $P$ is traffic type and direction, $W$ is workload, $F$ is failure/maintenance condition, $M$ is a precisely defined metric and method, $\theta$ is its threshold and statistical scope, and $E$ is required evidence. Requirements form a vector, not one “speed”: reachability, sustainable goodput, delay quantiles, delay variation, loss, availability, recovery, and security policy can constrain one another.
 
 ### Critical invariants
 
@@ -93,13 +93,13 @@ Distinguish **possible reachability** from **permitted reachability**. A route a
 
 Capacity must name a layer and interval. A nominal 1-Gbit/s link is a physical or link technology claim. Headers, framing, inter-packet gaps, retransmissions, encryption overhead, competing traffic, device processing, and endpoint limits reduce what an application observes. RFC 5136 defines capacity and available capacity relative to IP traffic and time. Application goodput counts useful payload accepted by the application per unit time; it excludes protocol overhead and often excludes duplicates or retransmitted bytes.
 
-For a measurement interval \(I\), a simple carried rate is
+For a measurement interval $I$, a simple carried rate is
 
-\[
+$$
 G=\frac{8B_{\text{useful}}}{I}.
-\]
+$$
 
-If offered rate is \(O\) and sustainable service capacity is \(C\), utilization is \(U=O/C\). Headroom is often expressed as \(1-U\), but the calculation is meaningful only when \(O\) and \(C\) use consistent layers, populations, and time scales. A daily average can hide a five-minute saturation window. Bursty arrivals can build queues even when long-run utilization looks moderate.
+If offered rate is $O$ and sustainable service capacity is $C$, utilization is $U=O/C$. Headroom is often expressed as $1-U$, but the calculation is meaningful only when $O$ and $C$ use consistent layers, populations, and time scales. A daily average can hide a five-minute saturation window. Bursty arrivals can build queues even when long-run utilization looks moderate.
 
 Along a series path, the smallest relevant available capacity commonly constrains steady flow, but end-to-end throughput can be lower because of transport dynamics, loss, window limits, server/storage speed, packet processing, and traffic policing. Parallel links do not automatically sum for one flow: hashing, ordering, unequal members, failure, and flow granularity matter. Capacity planning therefore combines topology bounds with representative end-to-end measurement.
 
@@ -107,15 +107,15 @@ Delay must define start and stop events. One-way packet delay measures from a so
 
 Later modules decompose delay into propagation, transmission, queueing, and processing. Here the requirements lesson is that different workloads care about different statistics. Interactive control may care about a high percentile and deadline miss rate. Bulk transfer may care mainly about completion time and sustainable goodput. Voice may care about one-way delay, delay variation, and loss bursts. Report sample count, sampling schedule, packet size/type, path condition, and clock uncertainty with the statistic.
 
-An average is rarely a tail objective. Sort \(n\) observed values and define the quantile convention. A nearest-rank p99 selects rank \(\lceil0.99n\rceil\). With only 100 observations, it is the maximum; that sample gives weak information about rarer events. Long windows can blend incidents with normal periods. Use separate distributions by direction, traffic class, site, route, and operating condition when aggregation would conceal actionable behavior.
+An average is rarely a tail objective. Sort $n$ observed values and define the quantile convention. A nearest-rank p99 selects rank $\lceil0.99n\rceil$. With only 100 observations, it is the maximum; that sample gives weak information about rarer events. Long windows can blend incidents with normal periods. Use separate distributions by direction, traffic class, site, route, and operating condition when aggregation would conceal actionable behavior.
 
 Packet delay variation is not one universal number. It may mean differences between successive packet delays, deviation from minimum delay, a percentile spread, or an application-specific playout measure. Name the metric and reference. Variation can force buffers or deadline misses even when average delay is acceptable. Reordering, duplication, and loss need separate accounting rather than being silently folded into “jitter.”
 
-For sent count \(N_s\) and qualifying received count \(N_r\), a basic sample loss ratio is
+For sent count $N_s$ and qualifying received count $N_r$, a basic sample loss ratio is
 
-\[
+$$
 L=\frac{N_s-N_r}{N_s},\quad N_s>0.
-\]
+$$
 
 But matching packets, duplicates, corruption, reordering, fragmentation, late arrival, capture loss, and timeout determine the counts. Zero observed loss among 1,000 packets does not prove zero true loss. Loss patterns matter: ten consecutive losses can be more damaging than ten isolated losses. Retransmission can hide packet loss from an application while increasing delay and consuming capacity.
 
@@ -185,11 +185,11 @@ Execution verifies arithmetic and threshold comparison for two synthetic samples
 
 ## Definitions and Notation
 
-Let \(S\) and \(D\) be source and destination observation points. **Type-P** denotes a fully described packet population, including relevant protocol fields, size, markings, and addressing. Let \([T,T+I]\) be the observation interval. Direction is always \(S\rightarrow D\); the reverse is a separate path and metric.
+Let $S$ and $D$ be source and destination observation points. **Type-P** denotes a fully described packet population, including relevant protocol fields, size, markings, and addressing. Let $[T,T+I]$ be the observation interval. Direction is always $S\rightarrow D$; the reverse is a separate path and metric.
 
-Let \(N_s\) be packets sent, \(N_r\) qualifying packets received before timeout \(T_{max}\), and \(B_u\) useful application bytes delivered. Offered rate is \(O\), capacity \(C\), utilization \(U=O/C\), available capacity \(A\), and goodput \(G=8B_u/I\). Units use bit/s or byte/s explicitly; `Mb` and `MB` are not interchangeable.
+Let $N_s$ be packets sent, $N_r$ qualifying packets received before timeout $T_{max}$, and $B_u$ useful application bytes delivered. Offered rate is $O$, capacity $C$, utilization $U=O/C$, available capacity $A$, and goodput $G=8B_u/I$. Units use bit/s or byte/s explicitly; `Mb` and `MB` are not interchangeable.
 
-For received packet \(i\), one-way delay is \(d_i=t_{D,i}-t_{S,i}\) under a stated clock-error model. A sample quantile is \(Q_p(d)\) under a named convention. Loss ratio is \(L=(N_s-N_r)/N_s\) for \(N_s>0\). Availability \(A_v\) is qualifying time divided by eligible time under a declared interval and exclusion policy. These symbols describe observations, not causal attribution.
+For received packet $i$, one-way delay is $d_i=t_{D,i}-t_{S,i}$ under a stated clock-error model. A sample quantile is $Q_p(d)$ under a named convention. Loss ratio is $L=(N_s-N_r)/N_s$ for $N_s>0$. Availability $A_v$ is qualifying time divided by eligible time under a declared interval and exclusion policy. These symbols describe observations, not causal attribution.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -206,7 +206,7 @@ Build requirements and evidence in this order:
 
 The primary invariant is metric identity: values are comparable only when their defining tuples are compatible. A p99 delay for 64-byte probes on an idle path is not evidence for p99 delay of maximum-size encrypted packets under peak traffic. A link counter and an application payload counter answer different questions. Before calculating deltas or trends, establish the same units, layer, population, endpoints, direction, and interval.
 
-Capacity feasibility is a necessary-bound argument. For simultaneous flows \(j\) sharing a constrained resource, \(\sum_j O_j\) plus overhead and reserve must fit the resource's sustainable capacity under the required failure condition. This does not prove the targets will be met because queueing, burst synchronization, per-flow hashing, endpoint limits, control traffic, transport behavior, and policy can dominate.
+Capacity feasibility is a necessary-bound argument. For simultaneous flows $j$ sharing a constrained resource, $\sum_j O_j$ plus overhead and reserve must fit the resource's sustainable capacity under the required failure condition. This does not prove the targets will be met because queueing, burst synchronization, per-flow hashing, endpoint limits, control traffic, transport behavior, and policy can dominate.
 
 Loss and delay accounting must partition every sent identifier into received on time, received late, duplicated, corrupted/invalid, or unobserved, with rules preventing double counting. Capture loss and clock uncertainty are evidence-quality fields. Otherwise the measurement can report network loss that occurred in the observer or precise delay that the clocks cannot support.
 
@@ -255,7 +255,7 @@ Loss and delay accounting must partition every sent identifier into received on 
 
 **Question:** A transfer delivers 900 MB of useful data in 12 seconds. What is application goodput?
 
-**Reasoning:** Using decimal units, \(8\times900\text{ MB}/12\text{ s}=600\text{ Mbit/s}\). This excludes headers and retransmitted bytes and says nothing about unused path capacity.
+**Reasoning:** Using decimal units, $8\times900\text{ MB}/12\text{ s}=600\text{ Mbit/s}$. This excludes headers and retransmitted bytes and says nothing about unused path capacity.
 
 **Conclusion:** Useful-byte goodput is 600 Mbit/s under the declared unit convention.
 
@@ -271,7 +271,7 @@ Loss and delay accounting must partition every sent identifier into received on 
 
 **Question:** Delays are `10, 11, 12, 13, 14, 15, 16, 18, 25, 80` ms. What is nearest-rank p95?
 
-**Reasoning:** For ten values, rank is \(\lceil0.95\times10\rceil=10\); p95 is 80 ms. The small sample makes this effectively the maximum and provides weak tail resolution.
+**Reasoning:** For ten values, rank is $\lceil0.95\times10\rceil=10$; p95 is 80 ms. The small sample makes this effectively the maximum and provides weak tail resolution.
 
 **Conclusion:** Quantile convention and sample size are part of the result.
 
@@ -279,7 +279,7 @@ Loss and delay accounting must partition every sent identifier into received on 
 
 **Question:** A sender transmits 200,000 identified packets and 199,900 arrive before the timeout. What is observed loss?
 
-**Reasoning:** Missing count is 100. Ratio is \(100/200000=0.0005\), or 0.05%. Validate capture completeness, duplicates, late packets, and identifier matching before attributing the loss to the path.
+**Reasoning:** Missing count is 100. Ratio is $100/200000=0.0005$, or 0.05%. Validate capture completeness, duplicates, late packets, and identifier matching before attributing the loss to the path.
 
 **Conclusion:** The observed sample loss is 0.05% under the declared accounting rule.
 
@@ -373,11 +373,11 @@ One defensible form is: from each named branch edge to named headquarters servic
 
 ### Answer 2
 
-Using decimal units, \(1.8\text{ TB}=1.8\times10^{12}\) bytes and eight hours is 28,800 seconds. Goodput is \(8\times1.8\times10^{12}/28800=500,000,000\) bit/s, or 500 Mbit/s. Shortfall is 150 Mbit/s, about 23.1% below the 650-Mbit/s target. Possible explanations include source disk read rate, destination write/commit rate, backup software serialization, compression or encryption CPU, small I/O, transport window/implementation, endpoint packet processing, application throttling, competing traffic, retransmissions, path policing, measurement-unit error, or counting only a subset of time. Attribute only after correlated evidence.
+Using decimal units, $1.8\text{ TB}=1.8\times10^{12}$ bytes and eight hours is 28,800 seconds. Goodput is $8\times1.8\times10^{12}/28800=500,000,000$ bit/s, or 500 Mbit/s. Shortfall is 150 Mbit/s, about 23.1% below the 650-Mbit/s target. Possible explanations include source disk read rate, destination write/commit rate, backup software serialization, compression or encryption CPU, small I/O, transport window/implementation, endpoint packet processing, application throttling, competing traffic, retransmissions, path policing, measurement-unit error, or counting only a subset of time. Attribute only after correlated evidence.
 
 ### Answer 3
 
-With 12 sorted values, nearest-rank p50 uses rank \(\lceil6\rceil=6\), giving 15 ms. p90 uses rank \(\lceil10.8\rceil=11\), giving 22 ms. p99 uses rank \(\lceil11.88\rceil=12\), giving 45 ms. Twelve observations make p99 simply the maximum and provide almost no resolution of a one-percent tail. The schedule, workload, path conditions, clock error, and independence are also unknown. Report the sample statistics without extrapolating a strong population objective.
+With 12 sorted values, nearest-rank p50 uses rank $\lceil6\rceil=6$, giving 15 ms. p90 uses rank $\lceil10.8\rceil=11$, giving 22 ms. p99 uses rank $\lceil11.88\rceil=12$, giving 45 ms. Twelve observations make p99 simply the maximum and provide almost no resolution of a one-percent tail. The schedule, workload, path conditions, clock error, and independence are also unknown. Report the sample statistics without extrapolating a strong population objective.
 
 ### Answer 4
 

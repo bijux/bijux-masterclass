@@ -32,9 +32,9 @@ Represent a computation by events (E) and a strict partial order (\prec) contain
 
 An asynchronous operation splits one conceptual action into at least an initiation event and a later completion event:
 
-\[
+$$
 start(op)\prec complete(op)\prec consume(result).
-\]
+$$
 
 Asynchrony changes control flow and waiting; parallelism additionally requires overlapping execution on distinct resources.
 
@@ -131,27 +131,27 @@ Let (E) be events and (\prec\subset E\times E) a strict partial order: irreflexi
 
 A schedule (\sigma=(e_1,\ldots,e_n)) is legal when it contains each selected event once and respects the order:
 
-\[
+$$
 e_i\prec e_j\Longrightarrow i<j.
-\]
+$$
 
 For two chains of lengths (m) and (n) with no cross-dependencies, the number of interleavings is
 
-\[
+$$
 \binom{m+n}{m}=\frac{(m+n)!}{m!n!}.
-\]
+$$
 
 Physical parallelism can be modeled by start and finish times (s(e),f(e)) and resource assignment (r(e)). Two events execute in parallel when their intervals overlap and (r(e_1)\ne r(e_2)).
 
 An asynchronous operation has a handle or continuation (h) linking initiation to a later outcome:
 
-\[
+$$
 init(op)\to h,
 \qquad
 resolve(h,Outcome),
 \qquad
 await(h)\to Outcome.
-\]
+$$
 
 This notation describes a protocol, not a promise that `await` blocks a thread or that work runs elsewhere.
 

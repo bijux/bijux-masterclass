@@ -35,17 +35,17 @@ How can accountable decision makers select an implementable architecture when st
 
 Let alternatives be $A=\{a_1,\ldots,a_n\}$, stakeholders $S$, scenarios $\Omega$, concerns $C$, evidence state $E$, and decision baseline $B$. First define feasibility:
 
-\[
+$$
 F(B,E)=\{a\in A: g_j(a,B,E,\omega)\ge \tau_j
 \text{ for every mandatory constraint }j\text{ and applicable }\omega\}.
-\]
+$$
 
 Only then compare value consequences. For stakeholder $s$, a transparent teaching model is
 
-\[
+$$
 V_s(a,\omega)=\sum_{k=1}^{m} w_{s,k}\,u_{s,k}(x_k(a,\omega)),
 \qquad \sum_k w_{s,k}=1,
-\]
+$$
 
 where $x_k$ is evidence about an outcome, $u_{s,k}$ is a declared preference scale and $w_{s,k}$ is an authorized trade weight. This additive form is valid only when its independence, scale and compensation assumptions are defensible. Selection is a governed judgment over feasibility, stakeholder-specific values, distributions, uncertainty, risk, reversibility and evidence—not simply $\arg\max$ of one averaged score.
 
@@ -228,9 +228,9 @@ The operator model ranks central highest, and that dissent remains relevant to s
 
 Let the decision frame be
 
-\[
+$$
 \mathcal{D}=(Q,B,A,S,C,\Omega,X,E,P,R,H),
-\]
+$$
 
 where $Q$ is the question, $B$ baseline, $A$ authority structure, $S$ stakeholders, $C$ concerns/constraints, $\Omega$ scenarios, $X$ alternatives, $E$ evidence, $P$ preference structures, $R$ risks and $H$ decision history.
 
@@ -240,9 +240,9 @@ The feasible set is $F\subseteq X$. For two feasible alternatives, $a$ dominates
 
 Stakeholder-specific regret in scenario $\omega$ can be inspected as
 
-\[
+$$
 r_s(a,\omega)=\max_{b\in F}V_s(b,\omega)-V_s(a,\omega).
-\]
+$$
 
 Minimizing maximum regret or maximizing minimum stakeholder value can illuminate robustness, but neither is automatically the authorized social-choice rule. Any aggregation rule embeds values and must be justified.
 

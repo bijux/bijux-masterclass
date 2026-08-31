@@ -36,23 +36,23 @@ How can engineers represent the combinations of functions or items required for 
 
 Let each block success indicator be $x_i\in\{0,1\}$ and system success be the structure function $\psi(x)$. For a coherent RBD, $x\le y$ implies $\psi(x)\le\psi(y)$. Under independent block successes with $P(x_i=1)=R_i(t)$:
 
-\[
+$$
 R_{series}(t)=\prod_{i=1}^{n}R_i(t),
 \qquad
 R_{parallel}(t)=1-\prod_{i=1}^{n}[1-R_i(t)].
-\]
+$$
 
 For $n$ identical independent blocks with reliability $R$ and success requiring at least $k$:
 
-\[
+$$
 R_{k|n}=\sum_{j=k}^{n}{n\choose j}R^j(1-R)^{n-j}.
-\]
+$$
 
 For independent nonrepairable exponential lifetimes, $R_i(t)=e^{-\lambda_i t}$ and series hazards add:
 
-\[
+$$
 R_{series}(t)=e^{-t\sum_i\lambda_i}.
-\]
+$$
 
 These formulas are conditional. A general structure is evaluated by enumerating states, minimal paths/cuts, Boolean reduction, binary decision diagrams, factoring, simulation, Markov/Petri/state-space methods or other justified algorithms.
 
@@ -230,9 +230,9 @@ Let $B$ be block identities and $\psi: \{0,1\}^{|B|}\to\{0,1\}$ the success stru
 
 For arbitrary independent block reliabilities, exact success is
 
-\[
+$$
 R_S(t)=\sum_{x:\psi(x)=1}\prod_i R_i(t)^{x_i}[1-R_i(t)]^{1-x_i}.
-\]
+$$
 
 Enumeration is transparent but exponential. The expression is invalid for dependent block states unless replaced by their joint distribution.
 
@@ -379,15 +379,15 @@ Quantification requires compatible mission reliabilities, justified conditional 
 
 Original series reliability is
 
-\[
+$$
 R_0=(0.99)(0.97)(0.96)=0.921888.
-\]
+$$
 
 An independent fully capable active duplicate makes the last stage $1-(0.04)^2=0.9984$, so
 
-\[
+$$
 R_1=(0.99)(0.97)(0.9984)=0.95876352.
-\]
+$$
 
 The modeled absolute gain is $0.03687552$. This assumes the duplicate has reliability 0.96, either unit alone has capacity, failures are independent, selection/combining is perfect, and common support is already represented. Add common power/control/environment, voter/switch, load sharing and new modes before using the gain. Component data and mission/time/environment uncertainty limit precision.
 
@@ -395,9 +395,9 @@ The modeled absolute gain is $0.03687552$. This assumes the duplicate has reliab
 
 At least two successes means exactly two or three:
 
-\[
+$$
 R_{2|3}=3(0.9)^2(0.1)+(0.9)^3=0.243+0.729=0.972.
-\]
+$$
 
 This is the reliability of an ideal identical-independent voting population, not necessarily system correctness. Add a voter/combiner block if required. Represent shared power, common sensor bias/environment/calibration, shared design/software/manufacturing and maintenance as common blocks or dependency/CCF models. Define whether two agreeing wrong outputs count as failure and link measurement validity to the success condition.
 

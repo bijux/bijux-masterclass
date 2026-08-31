@@ -36,23 +36,23 @@ How can a team determine whether a logical architecture is sufficiently complete
 
 Treat the architecture description as a typed attributed graph plus a set of governed views:
 
-\[
+$$
 AD=\langle N,E,V,R,H,Q,B,X\rangle,
-\]
+$$
 
 where nodes (N), relations (E), views (V), trace/rationale (R), assumptions (H), quality/property claims (Q), baselines/configurations (B), and evidence (X) are versioned. Let obligations (O(S,P)) be derived from scope (S) and purpose (P). Declared completeness is:
 
-\[
+$$
 Complete_{S,P}(AD)\Rightarrow\forall o\in O(S,P),\ AdequatelyDischarged(o,AD,X).
-\]
+$$
 
 Let applicable claims be (K(AD,b,m)) for baseline (b) and mode/configuration (m). Consistency requires:
 
-\[
+$$
 Consistent_{b,m}(AD)\Rightarrow SAT(K)\land
 CorrespondencesHold\land BudgetsClose\land InterfacesCompatible\land
 ScenariosExecutable.
-\]
+$$
 
 These predicates require semantic and empirical judgment. A solver can establish satisfiability only for the encoded fragment; it cannot prove that obligations, assumptions, environments, or real-world phenomena were modeled completely.
 
@@ -229,23 +229,23 @@ ARCH-001 may still be semantically wrong, infeasible, stale, or insufficiently e
 
 Let requirements (R), functions (F), scenarios (S), modes (M), states (T), logical elements (L), flows/interfaces (I), qualities (Q), decisions (D), assumptions (H), and evidence (X) remain typed domains. Trace relations must name semantics:
 
-\[
+$$
 Trace\subseteq (R\cup D\cup H)\times(F\cup S\cup L\cup I\cup Q)\times Type\times Version.
-\]
+$$
 
 For obligation set (O), a simple declaration coverage ratio is:
 
-\[
+$$
 C_d=\frac{|\{o\in O:declared(o)\}|}{|O|}.
-\]
+$$
 
 This is a dashboard, not proof: (declared(o)) may be semantically inadequate. A stronger review records (adequate(o,e,a)) under evidence (e) and assumptions (a), with unresolved/waived states kept separate.
 
 For resource (r), allocations (b_i), reserve (m), and available capacity (B):
 
-\[
+$$
 \sum_i b_i+m\leq B.
-\]
+$$
 
 All terms must share units, reference configuration, conditions, and statistical/worst-case basis. The equation cannot detect a missing consumer, common-cause dependency, or incorrect availability model.
 
@@ -398,9 +398,9 @@ Obligations cover community/regulator/operator concerns; warning accuracy/timing
 
 Stage allocations total (90+110+140+80+70=490) ms. Four interfaces contribute (4(15)=60) ms. With 20 ms clock allowance and 40 ms reserve:
 
-\[
+$$
 T=490+60+20+40=610\text{ ms}>600\text{ ms}.
-\]
+$$
 
 The architecture misses the declared deadline by 10 ms. Arithmetic also cannot establish that stages are truly serial; measurement points and clock bases match; values are worst-case or distributionally compatible; queue/load assumptions hold; retries and degraded paths are included; interfaces agree semantically; allocated functions have owners; commands are authorized; physical response is included; or evidence applies to the current configuration. Resolve rather than silently consuming required reserve.
 
@@ -414,15 +414,15 @@ Corrective evidence includes typed trace review, state/authority model, mode-qua
 
 If `declared` includes adequate items, semantically inadequate declarations, and approved waivers, but excludes unaddressed blockers, declared coverage is:
 
-\[
+$$
 C_d=(68+6+3)/80=77/80=96.25\%.
-\]
+$$
 
 If adequate coverage counts only adequately discharged obligations and does not count waivers as adequate, then:
 
-\[
+$$
 C_a=68/80=85\%.
-\]
+$$
 
 An alternative dashboard could report 3.75% waived, 7.5% inadequate, and 3.75% blocked separately. Neither ratio decides readiness because obligation consequence differs: one safety blocker can prevent baseline while many editorial obligations may not. Waiver authority/expiry, evidence quality, dependencies, claim scope, and exit criteria govern the decision. Ratios aid navigation; they do not aggregate risk or semantic adequacy.
 

@@ -31,17 +31,17 @@ Which boundary owns resources, which context executes instructions, which unit e
 
 ### Central model, mechanism, or theorem
 
-Let \(P\) be processes, \(K\) kernel threads, \(R\) runtime-managed contexts, and \(T\) logical tasks. At time \(\tau\), partial mappings describe ownership and placement:
+Let $P$ be processes, $K$ kernel threads, $R$ runtime-managed contexts, and $T$ logical tasks. At time $\tau$, partial mappings describe ownership and placement:
 
-\[
+$$
 owner_K:K\to P,\qquad carrier_\tau:R\rightharpoonup K,\qquad work_\tau:T\rightharpoonup R.
-\]
+$$
 
 Several tasks may successively use one runtime context; many runtime contexts may be multiplexed over fewer kernel threads; and kernel threads are scheduled on processors. Therefore
 
-\[
+$$
 |T|,\ |R|,\ |K|,\ \text{and processor count}
-\]
+$$
 
 are independent quantities. A correctness argument must use actual sharing, suspension, cancellation, and lifecycle rules—not names such as “task” or “thread.”
 
@@ -166,42 +166,42 @@ Mechanism choice follows the boundary. Use processes when address-space/fault se
 
 ## Definitions and Notation
 
-Let \(P\) be processes, \(K\) kernel threads, \(R\) runtime-managed contexts, \(T\) tasks, and \(U\) processors. Ownership functions are
+Let $P$ be processes, $K$ kernel threads, $R$ runtime-managed contexts, $T$ tasks, and $U$ processors. Ownership functions are
 
-\[
+$$
 owner_K:K\to P,\qquad owner_R:R\to P,\qquad owner_T:T\to P.
-\]
+$$
 
-At time \(\tau\), placement is partial:
+At time $\tau$, placement is partial:
 
-\[
+$$
 carrier_\tau:R\rightharpoonup K,\qquad
 work_\tau:T\rightharpoonup R,\qquad
 cpu_\tau:K\rightharpoonup U.
-\]
+$$
 
-Undefined means queued, suspended, blocked, completed, or otherwise not placed; the lifecycle state resolves which. Multiplexing permits many \(R\) over fewer \(K\) across time. Physical parallelism at \(\tau\) is bounded by distinct processors in the range of \(cpu_\tau\), not by \(|T|\) or \(|R|\).
+Undefined means queued, suspended, blocked, completed, or otherwise not placed; the lifecycle state resolves which. Multiplexing permits many $R$ over fewer $K$ across time. Physical parallelism at $\tau$ is bounded by distinct processors in the range of $cpu_\tau$, not by $|T|$ or $|R|$.
 
-Let \(Addr(p)\) be a process address-space domain and \(Resources(p)\) its governed resource set. Threads \(k_1,k_2\) with the same owner normally access shared \(Addr(p)\), subject to language/OS permissions and memory semantics. Cross-process access requires a named IPC or shared-memory relation; different \(p\) alone does not prove absence of shared resources.
+Let $Addr(p)$ be a process address-space domain and $Resources(p)$ its governed resource set. Threads $k_1,k_2$ with the same owner normally access shared $Addr(p)$, subject to language/OS permissions and memory semantics. Cross-process access requires a named IPC or shared-memory relation; different $p$ alone does not prove absence of shared resources.
 
 A task lifecycle can be modeled
 
-\[
+$$
 created\to queued\to running\leftrightarrow suspended\to
 \{completed,failed,cancelled\}.
-\]
+$$
 
 Actual runtimes may merge or add states. Every terminal outcome must be observable by the owner, and every transition must preserve resource and cleanup invariants.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Cardinality independence.** A queue can contain 10,000 tasks while four workers exist; one task can execute inline with no new worker; one virtual context can migrate between carriers; one kernel thread can execute many tasks. Therefore no equality among \(|T|,|R|,|K|,|U|\) follows without a runtime contract.
+**Cardinality independence.** A queue can contain 10,000 tasks while four workers exist; one task can execute inline with no new worker; one virtual context can migrate between carriers; one kernel thread can execute many tasks. Therefore no equality among $|T|,|R|,|K|,|U|$ follows without a runtime contract.
 
 **Sharing follows ownership, not scheduling style.** If two execution contexts belong to one process and access one reachable mutable location, they require synchronization under possible overlap. Cooperative scheduling removes some preemption points but does not establish ownership or protect invariants across explicit suspension.
 
-**Task-local continuity.** Suppose task \(t\) runs first where \(work_{\tau_1}(t)=r_1\) and later where \(work_{\tau_2}(t)=r_2\), with different carriers. State indexed by carrier \(k\) can change between segments; state indexed by \(t\) follows logical identity. Thus worker-thread locals cannot implement migrating task context without runtime propagation.
+**Task-local continuity.** Suppose task $t$ runs first where $work_{\tau_1}(t)=r_1$ and later where $work_{\tau_2}(t)=r_2$, with different carriers. State indexed by carrier $k$ can change between segments; state indexed by $t$ follows logical identity. Thus worker-thread locals cannot implement migrating task context without runtime propagation.
 
-**Blocking amplification.** If \(n\) logical contexts share \(m\) carriers and \(b\) carriers are blocked or pinned, at most \(m-b\) carriers remain for runnable contexts. Lightweight logical count does not prevent starvation when \(b=m\).
+**Blocking amplification.** If $n$ logical contexts share $m$ carriers and $b$ carriers are blocked or pinned, at most $m-b$ carriers remain for runnable contexts. Lightweight logical count does not prevent starvation when $b=m$.
 
 **Isolation qualification.** Separate address spaces prevent ordinary direct pointer access, but shared memory, inherited descriptors, common credentials, files, quotas, kernel bugs, and external services remain channels. Process isolation is one control in a threat/failure model, not a proof of independence.
 

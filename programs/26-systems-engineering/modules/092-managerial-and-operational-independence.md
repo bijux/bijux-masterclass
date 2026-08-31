@@ -33,16 +33,16 @@ How should engineers discover, model, and work with constituent systems that rem
 
 For constituent $c$, mission $q$, time $t$, and decision domain $d$, define
 
-\[
+$$
 OI(c,q,t)=useful\_outside(c,q,t),\qquad
 MI(c,d,t)=retains\_decision\_right(c,d,t).
-\]
+$$
 
 The SoS authority's feasible action set is constrained by actual directive reach and accepted obligations:
 
-\[
+$$
 Feasible(q,t)\subseteq Directed(q,t)\cup Agreed(q,t)\cup Incentivized(q,t).
-\]
+$$
 
 Publication, accountability, or technical desirability alone does not add an action to this set. This is a governance constraint model, not proof that every agreed action will occur or produce the outcome.
 
@@ -200,29 +200,29 @@ print("evidence=declared_metadata_only")
 
 Let $C$ be candidate constituents, $Q$ missions, $D$ decision domains, $T$ times, and $K$ contexts. Define $U(c,k,t)$ as accepted useful behavior for an independent stakeholder, and $P(c,d,t)$ as the legitimate and practical power to decide domain $d$. Then
 
-\[
+$$
 OI(c,q,k,t)=U(c,k,t)\land k\notin contexts\_requiring(q),
-\]
+$$
 
 and
 
-\[
+$$
 MI(c,d,t)=P(c,d,t).
-\]
+$$
 
 The notation does not imply that contexts cleanly separate or that authority is uncontested. Evidence $E_{OI}$ includes observations and acceptance for detached service; $E_{MI}$ includes delegations, contracts, budget/configuration mechanisms, and sampled decisions. An independence profile
 
-\[
+$$
 I_c(t)=\langle OI(c,Q,K,t), MI(c,D,t), dependencies, exceptions, uncertainty\rangle
-\]
+$$
 
 preserves dimensionality.
 
 For a shared obligation $o$, use
 
-\[
+$$
 O(o)=\langle behavior,context,threshold,accepter,funder,evidence,effectivity,change,exception,exit\rangle.
-\]
+$$
 
 An obligation is not credible merely because fields are populated; the accepter must have relevant authority and the resources and mechanism must be real.
 

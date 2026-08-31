@@ -33,9 +33,9 @@ How can a last-in-first-out abstraction expose the smallest useful contract whil
 
 Represent the abstract stack from bottom to top as
 
-\[
+$$
 S=\langle s_0,\ldots,s_{n-1}\rangle.
-\]
+$$
 
 Then `push(x)` maps `S` to `S·<x>`, `pop()` for `n>0` returns `s_(n-1)` and leaves `<s_0,...,s_(n-2)>`, and `peek()` returns `s_(n-1)` without changing `S`. For any successful pushes `x_1,...,x_k` with no intervening removal of them, subsequent successful pops return `x_k,...,x_1`. This follows immediately by induction on `k` from the append/remove-last transitions.
 

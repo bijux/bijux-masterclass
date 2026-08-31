@@ -155,6 +155,10 @@ When mathematics is relevant:
 - define notation;
 - show intermediate steps;
 - distinguish proof, proof sketch, intuition, and empirical evidence.
+- use GitHub-renderable inline math as `$...$` and display math as a standalone
+  `$$` block; do not use `\\(...\\)`, `\\[...\\]`, or inline code as a math delimiter;
+- keep TeX commands inside a math delimiter so the rendered chapter preserves
+  the intended notation.
 
 Before completion, `artifacts/reviews/<MODULE_ID>/review.json` must record an
 outcome and rationale for notation and syntax, numerical recomputation, symbolic

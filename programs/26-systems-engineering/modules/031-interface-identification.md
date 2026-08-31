@@ -36,17 +36,17 @@ How can a team systematically discover and register every consequential interact
 
 Let architecture entities be (N), system boundary (B), scenarios (S), modes/configurations (M), and typed interaction observations (X). Identify candidates as boundary-crossing relations:
 
-\[
+$$
 I_C=\{\langle id,n_s,n_t,k,x,m,s,r,h\rangle\mid n_s\neq n_t,\ CrossesBoundary(x,B),\ Consequential(x)\},
-\]
+$$
 
-where endpoints (n_s,n_t\in N\cup Environment\), kind (k), item/effect (x), applicability (m), discovering scenario/source (s), rationale (r), and assumptions (h) are explicit. Identification is adequate only when:
+where endpoints $n_s,n_t\in N\cup Environment$, kind (k), item/effect (x), applicability (m), discovering scenario/source (s), rationale (r), and assumptions (h) are explicit. Identification is adequate only when:
 
-\[
+$$
 Adequate(I_C)\Rightarrow ScenarioCoverage\land AllocationCrossingCoverage\land
 ContextCoverage\land LifecycleCoverage\land SharedDependencyCoverage\land
 UnintendedCouplingReview\land Ownership\land ControlledDisposition.
-\]
+$$
 
 This is an assurance obligation, not a graph theorem. A complete adjacency matrix for known nodes cannot identify an omitted external actor, environment, failure mode, or enabling system.
 
@@ -139,7 +139,7 @@ After completing this module, you should be able to:
 
 **Derive from hierarchy.** Examine parent–child and peer boundaries at each relevant level. External interfaces of a child may be internal to its parent, but they still need identity and ownership. Avoid flattening every lower-level interaction into the system-level register; use hierarchy and trace while surfacing critical cross-level effects.
 
-**Use N-squared analysis.** Place candidate elements on both axes. For each ordered pair, ask what flows or coupling exists. The diagonal describes element scope, not interfaces. An (n\)-element directed matrix has (n(n-1)) off-diagonal cells; the number is a search space, not an expected interface count. Grouping can manage scale, but cross-group review is essential.
+**Use N-squared analysis.** Place candidate elements on both axes. For each ordered pair, ask what flows or coupling exists. The diagonal describes element scope, not interfaces. An $n$-element directed matrix has (n(n-1)) off-diagonal cells; the number is a search space, not an expected interface count. Grouping can manage scale, but cross-group review is essential.
 
 **Use interaction tables.** For every candidate, record stable ID, names/aliases, source/target endpoints, direction, kind, item/effect, purpose, source requirement/scenario/decision, modes/configurations, criticality, owner, endpoint representatives, assumptions, maturity, status, related candidates, and next evidence. Do not wait for all detailed values before assigning identity.
 
@@ -215,29 +215,29 @@ IF-001 may still omit semantic, timing, quality, security, failure, or physical-
 
 ## Definitions and Notation
 
-Let entities (N=N_{internal}\cup N_{external}\cup N_{environment}\), scenarios (S), modes/configurations (M), and interface candidates (I_C). Directed adjacency matrix (A\in\{0,1\}^{n\times n}) can record discovered interaction from (n_i) to (n_j):
+Let entities $N=N_{internal}\cup N_{external}\cup N_{environment}$, scenarios (S), modes/configurations (M), and interface candidates (I_C). Directed adjacency matrix (A\in\{0,1\}^{n\times n}) can record discovered interaction from (n_i) to (n_j):
 
-\[
+$$
 A_{ij}=1\iff\exists i_c\in I_C:(source(i_c)=n_i\land target(i_c)=n_j).
-\]
+$$
 
 There are (n(n-1)) off-diagonal ordered cells or (n(n-1)/2) unordered pairs. These counts define review opportunities, not expected interface totals; multiple kinds can exist per pair and omitted nodes remain invisible.
 
 For scenario-mode discovery coverage:
 
-\[
+$$
 C_{SM}=\frac{|\{(s,m)\in S\times M:reviewed(s,m)\}|}
 {|\{(s,m)\in S\times M:applicable(s,m)\}|}.
-\]
+$$
 
 A 100% declaration indicates all known applicable cells were reviewed, not that scenarios or modes are complete or review was adequate.
 
 Candidate record:
 
-\[
+$$
 i_c=\langle id,endpoints,direction,kind,item,purpose,source,modes,owner,
 criticality,maturity,assumptions,status,version\rangle.
-\]
+$$
 
 Detailed values and verification methods may mature later, but identity, endpoints, source, ownership, applicability, and disposition should not remain implicit.
 
@@ -388,17 +388,17 @@ Qualify storm, disconnected local control, sensor disagreement, maintenance over
 
 For (n=9), ordered off-diagonal cells are:
 
-\[
+$$
 n(n-1)=9(8)=72.
-\]
+$$
 
 Unordered pairs are:
 
-\[
+$$
 n(n-1)/2=9(8)/2=36.
-\]
+$$
 
-If 18 ordered cells contain at least one discovered interaction, occupancy is (18/72=25\%\). This is not completeness: empty cells may be correct, one cell can contain multiple interfaces, direction and kinds differ, external/environment/enabling nodes may be omitted, hierarchy may hide crossings, and discovery adequacy depends on scenarios, modes, lifecycle, shared resources, and unintended coupling. The matrix organizes questions; it does not prescribe density.
+If 18 ordered cells contain at least one discovered interaction, occupancy is $18/72=25\%$. This is not completeness: empty cells may be correct, one cell can contain multiple interfaces, direction and kinds differ, external/environment/enabling nodes may be omitted, hierarchy may hide crossings, and discovery adequacy depends on scenarios, modes, lifecycle, shared resources, and unintended coupling. The matrix organizes questions; it does not prescribe density.
 
 ### Answer 3
 

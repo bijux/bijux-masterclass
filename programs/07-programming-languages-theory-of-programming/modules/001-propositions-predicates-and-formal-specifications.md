@@ -34,17 +34,17 @@ How can engineers turn informal claims about programs and states into formulas w
 
 For propositional formula (\varphi), valuation (v:Atoms\rightarrow\{\mathsf F,\mathsf T\}) extends compositionally, for example
 
-\[
+$$
 \llbracket\varphi\rightarrow\psi\rrbracket_v=\neg\llbracket\varphi\rrbracket_v\lor\llbracket\psi\rrbracket_v.
-\]
+$$
 
 For first-order predicates, a structure (\mathcal M=(D,I)) supplies a domain and interpretations for symbols, and assignment (\eta) supplies free variables. Quantification changes the assignment:
 
-\[
+$$
 \mathcal M,\eta\models\forall x.\varphi
 \iff
 \text{for every }d\in D,\ \mathcal M,\eta[x\mapsto d]\models\varphi.
-\]
+$$
 
 A function contract can be a relation (Pre(s)\land Exec(s,s',r)\Rightarrow Post(s,s',r)). It proves nothing until `Exec`, domain, arithmetic, failure/termination and observation semantics are connected to the implementation.
 
@@ -122,7 +122,7 @@ After this module, learners can:
 
 ### Build formulas from syntax, then interpret them
 
-Fix atoms (p,q,r\). Propositional formulas are built recursively: each atom is a formula; if (\varphi,\psi) are formulas, then so are (\neg\varphi), (\varphi\land\psi), (\varphi\lor\psi), (\varphi\rightarrow\psi), (\varphi\leftrightarrow\psi). This grammar is syntax.
+Fix atoms $p,q,r$. Propositional formulas are built recursively: each atom is a formula; if (\varphi,\psi) are formulas, then so are (\neg\varphi), (\varphi\land\psi), (\varphi\lor\psi), (\varphi\rightarrow\psi), (\varphi\leftrightarrow\psi). This grammar is syntax.
 
 A valuation assigns each atom true/false. Semantics extends recursively:
 
@@ -156,19 +156,19 @@ Translate “only if”: “A only if B” means (A\rightarrow B). “A if B” 
 
 A predicate is not a proposition until its arguments are supplied/bound. With domain users, `Active(u)` is an open formula in free variable (u); `Active(alice)` is closed if `alice` denotes an element; `∀u.Active(u)` binds it.
 
-A first-order signature supplies predicate/function/constant symbols. A structure (\mathcal M\) supplies domain and interpretations; assignment (\eta) maps free variables. Equality may be logical identity or domain-defined equivalence depending on formalism; state it.
+A first-order signature supplies predicate/function/constant symbols. A structure $\mathcal M$ supplies domain and interpretations; assignment (\eta) maps free variables. Equality may be logical identity or domain-defined equivalence depending on formalism; state it.
 
 Quantifier order matters:
 
-\[
+$$
 \forall tenant.\exists server.\ Handles(server,tenant)
-\]
+$$
 
 allows a different server per tenant, while
 
-\[
+$$
 \exists server.\forall tenant.\ Handles(server,tenant)
-\]
+$$
 
 requires one server for all. The second entails the first for nonempty relevant domains; converse does not.
 
@@ -176,10 +176,10 @@ requires one server for all. The second entails the first for nonempty relevant 
 
 To negate a requirement, move negation through quantifiers/connectives:
 
-\[
+$$
 \neg\forall x.P(x)\equiv\exists x.\neg P(x),\qquad
 \neg\exists x.P(x)\equiv\forall x.\neg P(x).
-\]
+$$
 
 The counterexample to “every completed order has payment” is “some completed order lacks payment,” not “every completed order lacks payment.”
 
@@ -191,16 +191,16 @@ Let (State) map variables/heap abstractions to values. A precondition (Pre(s)) s
 
 For successful withdrawal over mathematical integers:
 
-\[
+$$
 Pre(s,a)\equiv a>0,
-\]
+$$
 
-\[
+$$
 Post(s,a,s',r)\equiv
 (r=success\rightarrow balance(s)\ge a\land balance(s')=balance(s)-a)
 \land
 (r=failure\rightarrow balance(s')=balance(s)).
-\]
+$$
 
 If insufficient funds must fail, add `balance(s)<a → r=failure`; otherwise the contract permits failure even when funds exist and may permit success only through the first implication. If account identity, authorization, overdraft, fees, concurrency and machine overflow matter, add them/model them. Specification strength is inclusion/exclusion of behaviors.
 
@@ -208,9 +208,9 @@ If insufficient funds must fail, add `balance(s)<a → r=failure`; otherwise the
 
 For `max(xs)` over nonempty finite integer sequence, result (m) needs both:
 
-\[
+$$
 m\in xs\quad\land\quad\forall x\in xs.\ x\le m.
-\]
+$$
 
 Only upper-bound clause admits 1,000,000 for `[1,2]`; only membership admits 1. Empty sequence needs precondition `xs ≠ []` or explicit `None/error` result. Duplicate maxima do not alter value but matter if result includes index.
 
@@ -220,9 +220,9 @@ For sorting, state permutation/multiset preservation plus nondecreasing order. S
 
 A contract is useful only after its quantifiers and execution meaning are exposed. For partial correctness, the central obligation is
 
-\[
+$$
 \forall s,i,s',r.\ Pre(s,i)\land Exec(s,i,s',r)\Rightarrow Post(s,i,s',r).
-\]
+$$
 
 This statement ranges over every terminating outcome admitted by `Exec`; it does not assert that an outcome exists. Total correctness adds termination for every covered initial state, usually through a well-founded variant, a liveness argument, or a termination-aware operational semantics. Conflating the two turns a diverging program into a vacuous “correct” implementation.
 
@@ -282,15 +282,15 @@ The run exhausts two-valued valuations for exactly this encoded formula and conf
 
 ## Definitions and Notation
 
-Let propositional atoms be (AP), formulas (Form(AP)), valuations (v:AP\to\mathbb B), with (\mathbb B=\{\mathsf F,\mathsf T\}). Satisfaction (v\models\varphi) means formula evaluates true under (v). Validity (\models\varphi); satisfiability (\exists v.v\models\varphi); entailment (\Gamma\models\varphi\).
+Let propositional atoms be (AP), formulas (Form(AP)), valuations (v:AP\to\mathbb B), with (\mathbb B=\{\mathsf F,\mathsf T\}). Satisfaction (v\models\varphi) means formula evaluates true under (v). Validity (\models\varphi); satisfiability (\exists v.v\models\varphi); entailment $\Gamma\models\varphi$.
 
 First-order signature (\Sigma=(Func,Pred,Const)). Structure (\mathcal M=(D,I)) interprets symbols over domain (D); assignment (\eta:Var\to D). `FV(φ)` denotes free variables. A sentence has no free variables. Substitution (\varphi[t/x]) replaces free (x) capture-avoidably where term is free-for (x).
 
 For programs, initial state (s\in S), input (i\in I), final state (s'\in S), result (r\in R), and transition/execution relation (Exec\subseteq S\times I\times S\times R). A contract is
 
-\[
+$$
 \forall s,i,s',r.\ Pre(s,i)\land Exec(s,i,s',r)\rightarrow Post(s,i,s',r).
-\]
+$$
 
 This resembles partial correctness because it constrains terminating outcomes represented by `Exec`; termination/liveness needs an additional obligation/model. Nondeterministic `Exec` requires every permitted outcome satisfy postcondition for demonic correctness interpretations.
 
@@ -487,21 +487,21 @@ Write a preliminary formal specification/evidence plan for an unfamiliar autonom
 
 Let predicates `Active(t)`, `Healthy(s)`, `Serves(s,t)` over Tenant/Server. First:
 
-\[
+$$
 \forall t:Tenant. Active(t)\rightarrow\exists s:Server. Healthy(s)\land Serves(s,t).
-\]
+$$
 
 Negation:
 
-\[
+$$
 \exists t. Active(t)\land\forall s.\neg(Healthy(s)\land Serves(s,t)).
-\]
+$$
 
 Second:
 
-\[
+$$
 \exists s.Healthy(s)\land\forall t.(Active(t)\rightarrow Serves(s,t)).
-\]
+$$
 
 It requires one healthy server for all active tenants, stronger than possibly different witnesses. If no active tenants, first is vacuously true; second still requires a healthy server due to its existential. Decide whether existence/load/capacity is intended.
 

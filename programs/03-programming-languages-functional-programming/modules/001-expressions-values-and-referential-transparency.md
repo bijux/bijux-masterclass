@@ -30,11 +30,11 @@ When may a program phrase be replaced by its result without changing the program
 
 Write (e\Downarrow v) when expression (e) evaluates to value (v), and (Obs(C[e])) for the observation of placing (e) in context (C). The substitution principle desired by functional reasoning is
 
-\[
+$$
 e\Downarrow v
 \quad\Longrightarrow\quad
 \forall C\in\mathcal{C},\;Obs(C[e])=Obs(C[v]).
-\]
+$$
 
 This implication is not automatic. It depends on the language, evaluation strategy, admitted contexts, termination behavior, effects, and observation boundary. Pure, deterministic, terminating expressions under functional observations provide the simplest reliable setting.
 
@@ -121,17 +121,17 @@ Functional programming aims to make substitution routine by controlling effects.
 
 Consider a let binding:
 
-\[
+$$
 \operatorname{let}\;x=e\;\operatorname{in}\;b.
-\]
+$$
 
 Inlining substitutes (e) for free occurrences of (x) in (b), written (b[e/x]). If (x) occurs twice, inlining may evaluate (e) twice rather than once. If it occurs zero times, inlining may eliminate evaluation. For a pure total expression under value observations, this preserves the result. For effects, exceptions, divergence, or observable cost, it may not.
 
 Equational reasoning proceeds in small justified steps. For mathematical integers,
 
-\[
+$$
 (x+2)+3=x+(2+3)=x+5.
-\]
+$$
 
 Each equality cites associativity and literal evaluation. The same rewrite is not universally valid for bounded overflow, floating point, overloaded operators, or effectful addition. Functional programmers do not get free algebra; they work to design representations whose laws are clear.
 
@@ -150,9 +150,9 @@ Let:
 
 Write (e\Downarrow v) for terminating evaluation and (e\Uparrow) for divergence. Write (e_1\simeq e_2) when
 
-\[
+$$
 \forall C\in\mathcal{C},\;Obs(C[e_1])=Obs(C[e_2]).
-\]
+$$
 
 An occurrence of (e) is referentially transparent with value (v) when (e\Downarrow v) and (e\simeq v) under the declared observations. In practice, authors often say a language fragment is referentially transparent when its expressions systematically support this replacement principle.
 
@@ -160,11 +160,11 @@ For substitution, (b[e/x]) means replace free occurrences of (x) in (b) with (e)
 
 Separate **functional observation** from **cost observation**:
 
-\[
+$$
 Obs_f(e)=\text{returned value, error, and declared effects},
 \qquad
 Obs_c(e)=\text{time, allocations, or other modeled resources}.
-\]
+$$
 
 Two expressions can be equivalent under (Obs_f) and different under (Obs_c).
 
@@ -180,9 +180,9 @@ Two expressions can be equivalent under (Obs_f) and different under (Obs_c).
 
 **A derivation.** Let (f(x)=2(x+3)) over mathematical integers. Then
 
-\[
+$$
 f(x)=2(x+3)=2x+2\cdot3=2x+6
-\]
+$$
 
 by distributivity and multiplication of literals. Therefore replacing `2 * (x + 3)` with `2 * x + 6` preserves integer value for every (x). The conclusion excludes overflow and floating-point rounding unless those domains separately validate the law.
 
@@ -370,9 +370,9 @@ A fraud decision depends on transaction data, a model version, feature configura
 
 For mathematical integers,
 
-\[
+$$
 g(x)=3(x+4)=3x+3\cdot4=3x+12.
-\]
+$$
 
 The first rewrite uses distributivity of multiplication over addition; the second evaluates the integer literal product. The derivation assumes exact, unbounded integer operations. Fixed-width arithmetic may overflow, trap, wrap, or saturate at different intermediate points. Floating-point distribution can change rounding and special-value propagation. Those domains require separate semantics and evidence.
 

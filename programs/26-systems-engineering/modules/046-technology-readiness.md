@@ -36,21 +36,21 @@ What objective evidence shows that every technology critical to a proposed syste
 
 For critical technology set (C), application baseline (B), environment definition (E), and evidence package (D), assess each element:
 
-\[
+$$
 TRL_i=A(c_i,B,E,D_i),\qquad i\in C.
-\]
+$$
 
 The readiness claim is a tuple, not a bare integer:
 
-\[
+$$
 R_i=(c_i,configuration,function,scale,interfaces,environment,evidence,date,TRL_i,limits).
-\]
+$$
 
 For a gate requiring (TRL^*), a conservative weakest-link condition is
 
-\[
+$$
 Ready(C)=\bigwedge_{i\in C}(TRL_i\ge TRL^*)\land I_{adequate},
-\]
+$$
 
 where (I_{adequate}) states that system-relevant integration evidence is adequate. An arithmetic average cannot satisfy a low critical element, and component levels cannot establish integrated-system readiness.
 
@@ -205,32 +205,32 @@ Let application baseline (B), product tree (P), CTE set (C\subseteq P), environm
 
 Evidence sufficiency for element (i) at level (l):
 
-\[
+$$
 S(i,l)=\bigwedge_{k\in K_l}J(D_i,A_i,B,E,k)=true.
-\]
+$$
 
 Assigned level:
 
-\[
+$$
 TRL_i=\max\{l:S(i,l)\},
-\]
+$$
 
 subject to the governing framework's cumulative/level rules. This notation exposes that evidence is evaluated for an application; it does not automate professional judgment.
 
 Application-transfer delta can be organized as
 
-\[
+$$
 \Delta_i=(\Delta function,\Delta performance,\Delta architecture,\Delta interface,
 \Delta scale,\Delta environment,\Delta process,\Delta operations).
-\]
+$$
 
 Zero unexplained material deltas supports reuse of evidence; any delta requires consequence and gap analysis, not an arbitrary TRL subtraction.
 
 For target (l^*), readiness gap set is
 
-\[
+$$
 G_i=K_{l^*}\setminus K_i^{demonstrated},
-\]
+$$
 
 augmented by integration, anomaly, evidence-quality, and application-transfer gaps. The TMP maps every gap to evidence-producing work and decision criteria.
 
@@ -379,9 +379,9 @@ Design a TRA and gate recommendation for a municipal drinking-water treatment te
 
 Minimum is 4. Average is
 
-\[
+$$
 (7+6+4+8)/4=25/4=6.25.
-\]
+$$
 
 Even with representative integration evidence, the target condition fails because one CTE is below 6. The average has no valid compensatory meaning: TRLs are ordinal evidence categories, and the level-4 critical element can prevent the system function. Report every CTE, why it is critical, exact evidence/gap, current/target criteria, advancement difficulty, maturation schedule/resources/risks, and fallback. The gate remains not ready unless governing policy authorizes a bounded exception; such authorization does not change the CTE's level.
 

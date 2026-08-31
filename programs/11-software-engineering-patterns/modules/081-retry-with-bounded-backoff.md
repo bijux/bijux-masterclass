@@ -33,16 +33,16 @@ When can another attempt improve the probability of a correct outcome without du
 
 Retry eligibility is conjunctive:
 
-\[
+$$
 retryable = transient \land replaySafe \land budgetRemaining \land capacityAvailable
 \land \neg cancelled \land policyAllows.
-\]
+$$
 
 For initial attempt plus R retries, maximum attempt count is A = 1 + R. With independent retry owners at layers j, worst-case leaf attempts multiply:
 
-\[
+$$
 A_{leaf}=\prod_j A_j.
-\]
+$$
 
 Backoff changes *when* attempts occur, not whether their effects are safe and not how many owners may multiply them. Full jitter samples Dᵢ uniformly from [0, Wᵢ], giving E[Dᵢ] = Wᵢ/2 under the ideal model. A retry starts only if its delay plus a meaningful attempt timeout fits the same inherited absolute deadline.
 
@@ -143,9 +143,9 @@ Status codes are inputs, not the complete policy. `503` can follow a committed m
 
 Suppose three layers each allow one initial attempt plus two retries. One top-level request can cause
 
-\[
+$$
 3\times3\times3=27
-\]
+$$
 
 leaf attempts. Five such layers yield 243. “Only two retries” is therefore meaningless without total-attempt terminology and ownership mapping. Inventory application loops, generated clients, SDK defaults, load balancers, service meshes, gateways, message redelivery and job schedulers. Assign one layer to retry each dependency operation; other layers either disable repetition or expose it in the same shared budget.
 
@@ -155,9 +155,9 @@ The best owner is usually the layer with enough semantic information to judge re
 
 For base window W₀ > 0, multiplier r > 1, cap Wmax and zero-based retry index i:
 
-\[
+$$
 W_i=\min(W_{max},W_0r^i).
-\]
+$$
 
 Common jitter families include:
 
@@ -174,9 +174,9 @@ A cap bounds a single delay, not total duration. After reaching the cap, synchro
 
 Let absolute deadline be T, monotonic current time t, chosen delay d, minimum useful attempt time a, and reconciliation/cleanup reserve g. Start another attempt only if
 
-\[
+$$
 t+d+a+g\le T.
-\]
+$$
 
 The attempt receives a timeout no greater than the remaining budget after delay and reserve. It does not receive a fresh end-to-end timeout. Wall time is used for protocol timestamps when required; monotonic elapsed time prevents local wall-clock changes from extending budgets. Across machines, propagate an absolute protocol deadline or remaining duration according to the protocol's skew rules, then derive local monotonic budget.
 
@@ -186,9 +186,9 @@ Cancellation stops unnecessary future attempts and should interrupt cancellable 
 
 Let original logical request rate be λ and mean attempts per request be E[A]. The attempt arrival rate is approximately
 
-\[
+$$
 \lambda_{attempt}=\lambda E[A]
-\]
+$$
 
 at a defined boundary. If a dependency is already at capacity, retry raises utilization and waiting, which causes more timeouts and more retry: a positive-feedback loop. Backoff spreads work but does not reduce the total count by itself. Limit retry concurrency and tokens, shed new/retry work by policy, and stop retries when recent failure evidence says success is unlikely.
 
@@ -424,15 +424,15 @@ Webhook: use durable scheduling rather than an interactive sleeping loop. Persis
 
 The capped windows are 50, 100, 200 and 400 ms. Under an ideal independent uniform full-jitter sample, expected delay per window is half its width, so
 
-\[
+$$
 E[D_{total}]=25+50+100+200=375\text{ ms}.
-\]
+$$
 
 Four retries mean five total attempts at each layer. Three independent owners can produce
 
-\[
+$$
 5^3=125
-\]
+$$
 
 leaf attempts for one top-level logical request.
 

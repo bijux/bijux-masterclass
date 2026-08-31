@@ -37,23 +37,23 @@ How can systems be designed, supported, measured, and verified so authorized mai
 
 Represent one corrective restoration in configuration/context $c$ as a chain
 
-\[
+$$
 T_R=T_{detect}+T_{isolate}+T_{safe}+T_{access}+T_{restore}+T_{reassemble}+T_{verify}+T_{return},
-\]
+$$
 
 with explicit overlap rather than blind addition when phases proceed concurrently. Logistics and administrative delay can be modeled separately:
 
-\[
+$$
 T_D=T_R+T_{logistics}+T_{administrative}.
-\]
+$$
 
 Maintainability is the distribution $M(t)=P(T_R\le t)$, so a requirement should usually include a percentile/probability, such as $M(60\text{ min})\ge0.9$, not only $E[T_R]$.
 
 If restoration time is exponentially distributed with rate $\mu$, then $M(t)=1-e^{-\mu t}$ and $E[T_R]=1/\mu$. If lognormal, then
 
-\[
+$$
 M(t)=\Phi\left(\frac{\ln t-\mu_{\ln}}{\sigma_{\ln}}\right).
-\]
+$$
 
 These are candidate statistical models, not design laws. Repair times are often skewed, multimodal, censored, learning-dependent, and conditioned on fault/task/resources.
 
@@ -218,11 +218,11 @@ Let $T_R$ be restoration time under a specific task/fault/maintainer/resource/co
 
 Let fault set $F$, detection result $D$, isolation result $I$ and declared ambiguity group $G(f)$. Useful measures include
 
-\[
+$$
 C_D=P(D=detected\mid f\in F),
 \qquad
 C_I=P(I\in G(f)\mid D=detected,f\in F),
-\]
+$$
 
 with explicit weighting, modes and time limits. False-alarm probability/rate conditions on absence of target faults and observation opportunities; define its denominator.
 

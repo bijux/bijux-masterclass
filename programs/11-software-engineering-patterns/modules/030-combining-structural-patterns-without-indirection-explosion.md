@@ -33,9 +33,9 @@ How can Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy, package
 
 Model a realized path as directed graph (G=(V,E)). Each node (v) has responsibility (r(v)), owner (o(v)), cost (c(v)), and possible invocation multiplier (m(v)\ge0). For a path (p=(v_1,\ldots,v_d)), maximum subject attempts are
 
-\[
+$$
 A(p)=\prod_{i=1}^{d}m(v_i),
-\]
+$$
 
 and additive latency estimate is (L(p)=\sum_i c(v_i)) only when execution is sequential and costs are suitably defined. Depth alone is not a quality theorem. A boundary is justified when it protects a durable independent decision or provides measured semantic compression exceeding its cognitive, runtime, failure, and change cost.
 
@@ -172,9 +172,9 @@ Let graphs be (G_s) for source dependencies, (G_r) for runtime calls, (G_c) for 
 
 For path (p), define depth (d(p)), cost observations (c_i), multipliers (m_i), and fan-out (f_i). Worst-case leaf operations are bounded by
 
-\[
+$$
 W(p)\le\prod_i m_i f_i
-\]
+$$
 
 when bounds are independent and finite. Actual distributions require measurement and correlation analysis.
 

@@ -33,15 +33,15 @@ How does a language implementation preserve meaning while repeatedly changing a 
 
 Model each phase as a partial, diagnostic-producing transformation
 
-\[
+$$
 P_i : (R_i, C_i) \rightarrow Result(R_{i+1}, D_i),
-\]
+$$
 
 where (R_i) is a representation, (C_i) is configuration/environment, and (D_i) is ordered diagnostic evidence. A successful phase must establish the next representation's verifier (V_{i+1}(R_{i+1})); a semantics-changing phase should satisfy a stated preservation or refinement relation such as
 
-\[
+$$
 Obs_{i+1}(P_i(r), e') \preceq Obs_i(r,e).
-\]
+$$
 
 Equality is not always correct: optimization may preserve defined observable behavior while changing timing, debug stepping, undefined cases, or resource use. The observation boundary and source semantics determine the obligation.
 

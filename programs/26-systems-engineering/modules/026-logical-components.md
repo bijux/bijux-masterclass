@@ -35,27 +35,27 @@ How can a team organize system responsibilities, state, policies, provided/requi
 
 Represent the logical architecture as a typed directed multigraph:
 
-\[
+$$
 G_L=(C,I),\qquad
 c=\langle id,R,S,P^+,P^-,Q,A,H,V\rangle,
-\]
+$$
 
-where components \(C\) own responsibilities \(R\), state/policy \(S\), provided interfaces \(P^+\), required interfaces \(P^-\), quality constraints \(Q\), authority/applicability \(A\), assumptions \(H\), and verification rationale \(V\). Edges \(I\) have typed semantics, contracts, direction, version, and failure behavior.
+where components $C$ own responsibilities $R$, state/policy $S$, provided interfaces $P^+$, required interfaces $P^-$, quality constraints $Q$, authority/applicability $A$, assumptions $H$, and verification rationale $V$. Edges $I$ have typed semantics, contracts, direction, version, and failure behavior.
 
-For provided port \(p_i^+\) and required port \(p_j^-\), compatibility requires:
+For provided port $p_i^+$ and required port $p_j^-$, compatibility requires:
 
-\[
+$$
 Compatible(p_i^+,p_j^-)=Semantics\land Type\land Unit\land Range
 \land Timing\land Quality\land Security\land Mode\land Version.
-\]
+$$
 
 A partition is acceptable only conditionally:
 
-\[
+$$
 Accept(P)\Rightarrow Coverage\land CoherentOwnership\land
 CompatibleInteractions\land QualityComposition\land FeasibleAllocation
 \land AcceptedTradeoffs.
-\]
+$$
 
 No graph shape or partition score proves those semantic predicates.
 
@@ -227,24 +227,24 @@ Even LC-001 may be the wrong boundary. Nonempty lists do not establish semantic 
 
 ## Definitions and Notation
 
-Let function set \(F\), logical components \(C\), physical elements \(P\), and organizations \(O\) remain separate domains. Allocation relations are:
+Let function set $F$, logical components $C$, physical elements $P$, and organizations $O$ remain separate domains. Allocation relations are:
 
-\[
+$$
 A_{FC}\subseteq F\times C,\quad A_{CP}\subseteq C\times P,
 \quad A_{CO}\subseteq C\times O.
-\]
+$$
 
 None is assumed one-to-one or identity. Each edge carries contribution/responsibility, configuration, authority, and evidence.
 
-For a logical path \(p=(c_1,i_{12},c_2,\ldots,c_n)\), end-to-end property \(Q_p\) is computed by property-specific composition \(\Phi_Q\):
+For a logical path $p=(c_1,i_{12},c_2,\ldots,c_n)$, end-to-end property $Q_p$ is computed by property-specific composition $\Phi_Q$:
 
-\[
+$$
 Q_p=\Phi_Q(Q_{c_1},Q_{i_{12}},\ldots,Q_{c_n},H,Environment).
-\]
+$$
 
-Latency may add/max; reliability may multiply only under assumptions; security and safety rarely reduce to scalar arithmetic. Always name \(\Phi_Q\) and its evidence.
+Latency may add/max; reliability may multiply only under assumptions; security and safety rarely reduce to scalar arithmetic. Always name $\Phi_Q$ and its evidence.
 
-For candidate partition \(P_k\), a decision vector can record scored/preference criteria, but hard constraints remain noncompensatory. Sensitivity analysis checks whether plausible weights/assumptions reverse preference; the score does not authorize safety, legal, or stakeholder tradeoffs by itself.
+For candidate partition $P_k$, a decision vector can record scored/preference criteria, but hard constraints remain noncompensatory. Sensitivity analysis checks whether plausible weights/assumptions reverse preference; the score does not authorize safety, legal, or stakeholder tradeoffs by itself.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -383,11 +383,11 @@ The mobile app could realize presentation, local evidence collection, and degrad
 
 Under a fully sequential additive bound with no overlap:
 
-\[
+$$
 T=40+15+55+20+35+25=190\text{ ms}.
-\]
+$$
 
-If 10% required margin means the architecture bound must not exceed 90% of the 200 ms deadline, allowed consumption is \(0.9\times200=180\) ms. The 190 ms path therefore misses the margin criterion by 10 ms, although it is 10 ms below the raw deadline.
+If 10% required margin means the architecture bound must not exceed 90% of the 200 ms deadline, allowed consumption is $0.9\times200=180$ ms. The 190 ms path therefore misses the margin criterion by 10 ms, although it is 10 ms below the raw deadline.
 
 This conclusion assumes compatible worst-case bounds, one occurrence of each interface/queue, no retries, no physical response, synchronized observation, fixed configuration/load, and additive sequential execution. Confirm whether margin applies to deadline or estimated path, whether branches overlap, and whether queue/resource contention is bounded. Options include reallocation, architecture change, stronger evidence, or controlled requirement/margin decision. Local component compliance alone cannot establish end-to-end timing.
 

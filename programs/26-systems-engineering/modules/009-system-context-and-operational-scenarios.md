@@ -34,17 +34,17 @@ Who and what surrounds the system of interest, and how do people, systems, resou
 
 Represent scenario (s) as:
 
-\[
+$$
 s=\langle objective,actors,context,preconditions,trigger,modes,steps,
 alternates,failures,recovery,end\ state,measures,observations,trace,evidence\rangle.
-\]
+$$
 
 Represent context relation (r) as:
 
-\[
+$$
 r=(source,target,exchange,direction,interface,authority,condition,
 quality,timing,failure,evidence).
-\]
+$$
 
 A scenario set is adequate for a decision only when it covers relevant objectives, stakeholders, functions, modes, interfaces, environments, lifecycle stages, hazards/failures, human decisions, and recovery obligations at the required depth. Coverage matrices reveal omissions; they do not prove that the axes or scenarios are complete.
 
@@ -223,17 +223,17 @@ Let system of interest (S) have environment (E), boundary (B), and context entit
 
 For scenario (s), let states (x_0,\ldots,x_n), events/actions (e_1,\ldots,e_n), modes (m_i), and actors (a_i) satisfy:
 
-\[
+$$
 x_i=Transition(x_{i-1},e_i,m_i,a_i,environment_i).
-\]
+$$
 
 The notation does not assert determinism; transitions can branch or carry uncertainty. A trace is acceptable only if preconditions hold and the end state meets authorized outcome and safety/obligation predicates.
 
 Let coverage matrix (M_{ij}=1) when scenario (s_i) substantively exercises coverage item (q_j), otherwise 0 or a justified not-applicable mark. A column with no coverage is a gap candidate:
 
-\[
+$$
 Gap(q_j)\iff \sum_i M_{ij}=0.
-\]
+$$
 
 Nonzero coverage establishes presence, not adequacy, realism, independence, or correctness.
 

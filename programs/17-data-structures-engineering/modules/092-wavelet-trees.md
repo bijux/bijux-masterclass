@@ -109,9 +109,9 @@ Conventions matter twice: bit-vector select occurrence numbering and sequence se
 
 For range (S[l..r)), a node's zero count is
 
-\[
+$$
 z=\operatorname{rank}_0(B,r)-\operatorname{rank}_0(B,l).
-\]
+$$
 
 If zero-based desired order (k<z), descend left and map both endpoints with rank-zero. Otherwise set (k\leftarrow k-z), descend right, and map endpoints with rank-one. The leaf is the range quantile. The range must be nonempty and (0\le k<r-l).
 
@@ -123,13 +123,13 @@ These algorithms are order-sensitive. If alphabet codes use UTF-8 bytes, locale 
 
 A pointer wavelet tree stores separate bitmaps per node. A levelwise layout concatenates them. The wavelet matrix instead stores one bitmap per bit level and stably places all zeros before ones for the next level. It records zero count (Z_\ell). Mapping becomes
 
-\[
+$$
 i'=
 \begin{cases}
 \operatorname{rank}_0(B_\ell,i),&b=0,\\
 Z_\ell+\operatorname{rank}_1(B_\ell,i),&b=1.
 \end{cases}
-\]
+$$
 
 Access and rank descend these global level arrays. Select reverses and subtracts (Z_\ell) before select-one. Final stable code groups or per-symbol starts locate a symbol's occurrence interval. Matrix and tree bitmaps may look similar, but node boundaries and offsets differ; formulas are not interchangeable.
 

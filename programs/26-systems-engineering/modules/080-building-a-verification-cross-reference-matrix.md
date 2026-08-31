@@ -33,7 +33,7 @@ How can a verification cross-reference matrix provide a complete, configuration-
 
 Model the VCRM as a typed trace graph rather than a flat checklist. For requirement set $R$, verification activities $V$, evidence artifacts $E$, configurations $C$, anomalies $A$, and authorities $U$, closure of requirement $r$ is admissible only if
 
-\[
+$$
 \operatorname{close}(r) \Rightarrow
 \operatorname{applicable}(r)\land
 \operatorname{atomic}(r)\land
@@ -42,7 +42,7 @@ Model the VCRM as a typed trace graph rather than a flat checklist. For requirem
 \operatorname{supports}(E,r,V,C)\land
 \operatorname{resolved}(A)\land
 \operatorname{approved}(U).
-\]
+$$
 
 Rows are projections of this graph. A green status is valid only when underlying nodes and edges exist, agree on exact baselines/configurations, and satisfy closure rules.
 

@@ -32,16 +32,16 @@ How can a designer decide that a pattern is genuinely a candidate for a situatio
 
 For situation (x) and pattern (\Pi), an applicability screen asks
 
-\[
+$$
 ApplicableCandidate(\Pi,x)=Pre(\Pi,x)\land ProblemMatch(\Pi,x)
 \land ForceMatch(\Pi,x)\land \neg Contra(\Pi,x).
-\]
+$$
 
 Each term requires evidence and can be true, false, or unknown. Passing means “compare this pattern with alternatives,” not “implement it.” Intent guides recognition by specifying the transition the pattern seeks:
 
-\[
+$$
 intent(\Pi): (problematic\ context)\rightarrow(resulting\ design\ effect).
-\]
+$$
 
 ### Critical invariants
 
@@ -173,31 +173,31 @@ This turns “we use Strategy” into a falsifiable statement: “three independ
 
 For pattern (\Pi) and situation (x), define evidence-valued predicates
 
-\[
+$$
 Pre_i(\Pi,x),Problem(\Pi,x),Force_j(\Pi,x),Contra_k(\Pi,x)
 \in\{true,false,unknown\}.
-\]
+$$
 
 A hard admissibility gate is
 
-\[
+$$
 Admissible(\Pi,x)=\bigwedge_i Pre_i(\Pi,x)\land
 \neg\bigvee_{k\in H}Contra_k(\Pi,x),
-\]
+$$
 
 where (H) is the set of hard contraindications. Under three-valued reasoning, any false precondition fails the gate; unknown evidence yields an unresolved gate rather than a pass.
 
 Let (M) be locally material forces. A force match requires not merely mention but evidence that the pattern's solution decisions address them:
 
-\[
+$$
 ForceMatch(\Pi,x)=\forall f\in M,\ \exists q\in Decisions(\Pi):Supports(q,f,x).
-\]
+$$
 
 The final screen result is one of
 
-\[
+$$
 \{reject,investigate,candidate\}.
-\]
+$$
 
 `candidate` means admissible with sufficient current match; `investigate` means a material unknown remains; `reject` means the problem is absent, a required precondition fails, or a hard contraindication holds.
 

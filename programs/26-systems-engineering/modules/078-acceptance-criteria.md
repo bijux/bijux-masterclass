@@ -33,14 +33,14 @@ What exact, pre-agreed evidence, configuration, tolerances, delivery conditions,
 
 For tendered configuration $x$, define criteria $C=\{c_1,\ldots,c_n\}$. Each criterion has predicate $p_i(x,E_i)$ over controlled evidence $E_i$, criticality $k_i$, and permitted disposition set $D_i$. The decision rule is not a simple average:
 
-\[
+$$
 A(x)=
 \begin{cases}
 \text{accept}, & \text{all mandatory }p_i\text{ pass},\\
 \text{conditional}, & \text{only authorized conditions remain and controls are approved},\\
 \text{reject}, & \text{a blocking criterion fails or evidence is insufficient}.
 \end{cases}
-\]
+$$
 
 Authority, contract, safety, and law constrain $D_i$. High performance elsewhere cannot compensate for a mandatory safety, security, legal, configuration, or delivery failure unless the controlling authority explicitly permits and documents that disposition.
 

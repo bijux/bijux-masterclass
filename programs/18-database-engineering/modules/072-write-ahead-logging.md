@@ -24,15 +24,15 @@ A **write-ahead log** (WAL) is an ordered, integrity-protected record of state t
 
 For every page image `I` with `I.pageLSN = L`, the image may cross the durable data boundary only after the WAL prefix through `L` is durable:
 
-\[
+$$
 durableWAL \ge I.pageLSN.
-\]
+$$
 
 For a synchronous durability contract, transaction `T` may be acknowledged committed only after the required durability boundary contains its commit record:
 
-\[
+$$
 ack(T) \Rightarrow durableWAL \ge commitLSN(T).
-\]
+$$
 
 These are ordering implications, not statements that a write system call is durable. If the log has sufficient redo/undo information, intact record boundaries, recoverable transaction/page identity, and idempotent recovery rules, WAL permits the high-performance **steal/no-force** buffer policy: pages may be evicted before commit, and commit need not force random data pages.
 

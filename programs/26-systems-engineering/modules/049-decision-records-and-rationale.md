@@ -36,18 +36,18 @@ What durable record lets a future engineer reconstruct what was decided, by whom
 
 Represent a decision record at time $t$ as
 
-\[
+$$
 D_t=(id,Q,A,B,O,C,X,E,M,U,R,\delta,J,K,I,H),
-\]
+$$
 
 where $Q$ is question, $A$ authority, $B$ baseline, $O$ objectives, $C$ criteria/constraints, $X$ alternatives, $E$ evidence, $M$ evaluation method/model, $U$ uncertainty/sensitivity, $R$ risks, $\delta$ the selected decision, $J$ rationale/dissent, $K$ consequences/conditions, $I$ implementation/monitoring, and $H$ history/supersession.
 
 Traceability forms a directed argument graph:
 
-\[
+$$
 objectives\rightarrow criteria\rightarrow evidence/model\rightarrow alternative\ outcomes
 \rightarrow recommendation\rightarrow authority\ decision\rightarrow implementation/effects.
-\]
+$$
 
 The graph supports reconstruction and challenge; it does not make the decision objectively true. A later decision $D_{t+1}$ may supersede $D_t$, but must preserve the prior node and state the changed premises and resulting delta.
 
@@ -236,32 +236,32 @@ Let record graph $G_D=(V_D,E_D)$ have vertices for decisions, requirements, evid
 
 Decision record identity:
 
-\[
+$$
 D=(id,version,status,scope,baseline,authority,date,content,links,history).
-\]
+$$
 
 Rationale can be represented as claims $c$, evidence $e$, warrants/assumptions $w$, counterarguments $q$, and authority/value premises $v$:
 
-\[
+$$
 J=(c,e,w,q,v,limitations).
-\]
+$$
 
 This structure improves challenge; it does not eliminate judgment.
 
 Supersession:
 
-\[
+$$
 D_j\xrightarrow{supersedes}D_i,qquad date(D_j)>date(D_i),
-\]
+$$
 
 with an acyclic historical relation and explicit premise/configuration delta. Corrections retain version history without changing the original authority event silently.
 
 The decision-validity predicate at current time $t$ is an assessment:
 
-\[
+$$
 Valid_t(D)=baseline\ compatible\land assumptions\ hold\land conditions\ met
 \land no\ reopening\ trigger.
-\]
+$$
 
 It is never inferred from status alone.
 

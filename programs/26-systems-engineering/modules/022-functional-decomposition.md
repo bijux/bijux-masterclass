@@ -31,20 +31,20 @@ How can a team refine a parent function into a coherent set of child functions t
 
 ### Central model, mechanism, or theorem
 
-Let parent contract \(P\) have allowed boundary behavior \(\mathcal{B}_P\). Let child network \(N=\langle C,L,\Sigma\rangle\) contain child contracts \(C\), typed internal flows \(L\), and composition semantics \(\Sigma\) for state, order, concurrency, modes, and failures. Hide internal flows with projection \(\pi_{\partial P}\). A refinement obligation is:
+Let parent contract $P$ have allowed boundary behavior $\mathcal{B}_P$. Let child network $N=\langle C,L,\Sigma\rangle$ contain child contracts $C$, typed internal flows $L$, and composition semantics $\Sigma$ for state, order, concurrency, modes, and failures. Hide internal flows with projection $\pi_{\partial P}$. A refinement obligation is:
 
-\[
+$$
 \pi_{\partial P}(Behavior(N,H))\subseteq \mathcal{B}_P
-\]
+$$
 
-under stated assumptions \(H\), while every required parent outcome remains reachable for the specified operational cases.
+under stated assumptions $H$, while every required parent outcome remains reachable for the specified operational cases.
 
 Structural coverage is necessary but insufficient:
 
-\[
+$$
 Covered(P)=BoundaryFlows\land Scenarios\land Modes\land
 Performance\land Failures\land Lifecycle\land Trace.
-\]
+$$
 
 Each predicate needs semantic evidence. Box count, child links, or an executable graph check cannot prove behavioral preservation.
 
@@ -202,28 +202,28 @@ Even C-001 may be semantically wrong, and the checker cannot determine boundary 
 
 ## Definitions and Notation
 
-Let a decomposition be \(D(P)=\langle C,L,\Sigma,R,A\rangle\): parent \(P\), child set \(C\), internal typed flows \(L\), composition semantics \(\Sigma\), contribution rationales \(R\), and assumptions/applicability \(A\). Define boundary input and output port sets \(I_P,O_P\). A structural accounting predicate may require:
+Let a decomposition be $D(P)=\langle C,L,\Sigma,R,A\rangle$: parent $P$, child set $C$, internal typed flows $L$, composition semantics $\Sigma$, contribution rationales $R$, and assumptions/applicability $A$. Define boundary input and output port sets $I_P,O_P$. A structural accounting predicate may require:
 
-\[
+$$
 \forall i\in I_P:\ Consumer(i)\lor Forward(i),
-\]
+$$
 
-\[
+$$
 \forall o\in O_P:\ ProducerPath(o),
-\]
+$$
 
-plus source/target existence for every \(l\in L\). These are necessary declarations, not proof of correct transformations.
+plus source/target existence for every $l\in L$. These are necessary declarations, not proof of correct transformations.
 
-Let \(Scenarios_P\) be required scenario/mode cases and \(Paths_N(s)\) the admissible child behaviors for case \(s\). A coverage obligation is:
+Let $Scenarios_P$ be required scenario/mode cases and $Paths_N(s)$ the admissible child behaviors for case $s$. A coverage obligation is:
 
-\[
+$$
 \forall s\in Scenarios_P:\exists p\in Paths_N(s):
 ObservedBoundary(p)\models Contract_P(s).
-\]
+$$
 
 Evidence must justify the model, reachability, timing, uncertainty, and observation relation. One successful path does not prove absence of forbidden paths, so safety/security invariants require separate universal or risk-bounded analysis where applicable.
 
-Decomposition depth \(d\) is not a maturity measure. Define a decision-readiness vector \(Q(f)\) over contract clarity, interface definition, risk, estimability, allocability, and verifiability. A branch stops when policy thresholds are met for the intended decision and consequence; the thresholds and evidence are project-specific.
+Decomposition depth $d$ is not a maturity measure. Define a decision-readiness vector $Q(f)$ over contract clarity, interface definition, risk, estimability, allocability, and verifiability. A branch stops when policy thresholds are met for the intended decision and consequence; the thresholds and evidence are project-specific.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -363,9 +363,9 @@ Derived functions include time synchronization, anti-replay, degraded authority 
 
 Under the stated fully sequential additive model:
 
-\[
+$$
 120+90+160+80+70=520\ \text{ms},
-\]
+$$
 
 so the network exceeds the 500 ms deadline by 20 ms. The arithmetic is a useful counterexample to compliance under that model, not a complete system decision. Confirm whether communication is one or several intervals, whether acquisition and validation overlap, whether times are compatible worst cases, which queues and scheduling delays are omitted, whether physical settling or timestamp age matters, and whether uncertainty/margin is required.
 

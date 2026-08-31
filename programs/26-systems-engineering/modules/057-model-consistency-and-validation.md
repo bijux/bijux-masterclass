@@ -39,15 +39,15 @@ How can engineers determine whether a configured system model is internally cohe
 
 Let a controlled model at commit/configuration $c$ be $M_c$, a set of consistency rules be $R=\{r_1,\ldots,r_n\}$ and each rule return pass, fail, unknown or not-applicable:
 
-\[
+$$
 V(M_c,R)=\{(r_i,x,status,evidence): status\ne pass\}.
-\]
+$$
 
 A release policy may require zero unresolved severity-weighted violations, but the policy must preserve `unknown` rather than silently treating it as pass. For intended use $u$ and validation domain $D_u$, compare model response $y_M(x)$ with referent $y_R(x)$ using predeclared metrics $m_j$ and thresholds $\tau_j$:
 
-\[
+$$
 A(M,u,D_u)=\bigwedge_j m_j(y_M,y_R;D_u)\le \tau_j.
-\]
+$$
 
 Even when $A$ is true, the warranted conclusion is bounded: the tested model version was adequate under the sampled conditions, metrics, uncertainty treatment and decision consequences. It does not establish universal validity, correctness outside $D_u$, or validity after model/data/configuration change.
 
@@ -235,9 +235,9 @@ Three hand-selected points and one average-error threshold offer almost no evide
 
 Let each check result be
 
-\[
+$$
 z=(rule,modelCommit,configuration,scope,status,severity,evidence,owner,expiry).
-\]
+$$
 
 The status space is $S=\{pass,fail,unknown,notApplicable,error,notRun\}$. Waiver and suppression are governance dispositions attached to a finding; they should not overwrite the original `fail` or `unknown` observation.
 
@@ -245,17 +245,17 @@ For a consistency graph $G=(E,R)$, project invariants may include identity uniqu
 
 For validation cases $i=1,\ldots,n$, residual $e_i=y_{M,i}-y_{R,i}$. Common metrics include
 
-\[
+$$
 MAE=\frac{1}{n}\sum_i|e_i|,\qquad RMSE=\sqrt{\frac{1}{n}\sum_i e_i^2}.
-\]
+$$
 
 Metrics require units, grouping/weights, uncertainty and sampling context. Neither metric alone exposes sign bias, extreme-region error, correlation, distribution mismatch or decision loss.
 
 Define the validated domain record
 
-\[
+$$
 D_v=(inputs,configurations,modes,environments,time,evidence,metrics,thresholds,uncertainty).
-\]
+$$
 
 Use outside $D_v$ is extrapolation unless justified by additional evidence. Any change to the model, referent or intended use may alter $D_v$.
 
@@ -263,9 +263,9 @@ Use outside $D_v$ is extrapolation unless justified by additional evidence. Any 
 
 **Gate composition.** Let $L$ be language checks, $P$ project/cross-model checks, $I$ implementation verification, $E$ empirical validation and $A$ authority acceptance. A release argument is a conjunction under declared policy, not an average score:
 
-\[
+$$
 release = L\land P\land I\land E\land A.
-\]
+$$
 
 A not-applicable gate needs rationale. An unknown high-consequence gate remains unresolved. Passing later gates does not erase an earlier contradiction.
 

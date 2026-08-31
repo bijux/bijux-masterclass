@@ -33,10 +33,10 @@ How can one producer publish exactly one eventual value, failure, or cancellatio
 
 For result cell (F_r), state machine is
 
-\[
+$$
 pending\xrightarrow{CAS/serialized\ winner}
 \{success(v),failure(e),cancelled(c)\}.
-\]
+$$
 
 Exactly one completion wins locally. Publishing the terminal state must make the stored value/failure safely visible before waking/scheduling all registered observers. Registration races with completion: either registration is included in the waiter set before the winner publishes, or it observes terminal state and schedules itself; no observer can be stranded between check and registration.
 
@@ -492,17 +492,17 @@ Invariants include restricted completion authority; one terminal state; initiali
 
 ### Answer 2
 
-Per future budget is (24+8=32\) KiB, so declared maximum is
+Per future budget is $24+8=32$ KiB, so declared maximum is
 
-\[
+$$
 2000\times32\text{ KiB}=64{,}000\text{ KiB}=62.5\text{ MiB}.
-\]
+$$
 
 Little's Law predicts
 
-\[
+$$
 L=\lambda W=500\times3=1500
-\]
+$$
 
 average resident futures for the stable measured boundary. Two thousand capacity provides 500 above that average, not a tail guarantee. The gap may absorb bursts or reflect overprovisioning; it cannot be judged without distributions/deadlines.
 

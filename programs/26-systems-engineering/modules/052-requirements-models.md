@@ -37,18 +37,18 @@ How can a requirements model preserve normative meaning, stakeholder intent, app
 
 Represent requirement $r$ at baseline $b$ as
 
-\[
+$$
 r_b=(id,subject,modal,action,object,condition,measure,threshold,tolerance,
 unit,applicability,source,rationale,assumptions,status,version).
-\]
+$$
 
 Let the typed requirements graph be $G_R=(V,E_T)$, where vertices include needs, requirements, functions, architecture elements, interfaces, hazards, decisions and verification cases, and edge type $T$ includes `derives`, `decomposes`, `allocates`, `satisfies`, `verifies`, `conflicts-with`, `supersedes` and bounded generic `traces-to`.
 
 For a parent $p$ decomposed into children $C_p$, adequacy requires an engineering argument—not graph shape alone:
 
-\[
+$$
 \bigwedge_{c\in C_p} c \land A \Rightarrow p,
-\]
+$$
 
 where $A$ exposes assumptions and composition rules. The implication must be reviewed and supported for the modeled context. A link count cannot prove completeness, feasibility, satisfaction or verification.
 
@@ -238,17 +238,17 @@ Let requirement state be $state(r,b)\in\{proposed,reviewed,approved,superseded,r
 
 Typed trace matrix $T_{xy}$ records permitted relationships between source class $x$ and target class $y$. Coverage ratio
 
-\[
+$$
 C_{xy}=\frac{|\{x:\exists y,(x,y)\in E_T\}|}{|X|}
-\]
+$$
 
 is a completeness indicator for declared scope, not proof that links or artifacts are correct.
 
 For quantitative budget parent $B$ and child contributions $b_i$, a composition rule may be additive, worst-case, probabilistic or nonlinear:
 
-\[
+$$
 B=f(b_1,\ldots,b_n,A,U),
-\]
+$$
 
 where $A$ is assumptions and $U$ uncertainty/correlation. The model must name $f$ rather than assuming child values sum.
 

@@ -33,31 +33,31 @@ How can engineers transform stakeholder needs and operational concepts into nece
 
 Represent a functional requirement as:
 
-\[
+$$
 r=\langle id,subject,condition,trigger,input,behavior,output,
 postcondition,exceptions,source,rationale,verification,status\rangle.
-\]
+$$
 
 A useful textual pattern is:
 
-\[
+$$
 [Condition],\; SoI\; shall\; Behavior(Object)\; [Qualifier].
-\]
+$$
 
 The transformation obligation is:
 
-\[
+$$
 Need+OperationalEvidence+Analysis
 \xrightarrow{rationale} FunctionalRequirementSet,
-\]
+$$
 
 with bidirectional coverage:
 
-\[
+$$
 \forall r\in R_f:\ Source(r)\neq\varnothing,
 \qquad
 \forall n\in N:\ Covered(n,R_f)\lor JustifiedGap(n).
-\]
+$$
 
 These predicates expose missing evidence; they do not prove necessity, completeness, feasibility, safety, or correct interpretation.
 
@@ -212,17 +212,17 @@ print("evidence=declared_fields_and_lexical_signals_only")
 
 ## Definitions and Notation
 
-Let \(N\) be baselined stakeholder needs, \(O\) operational-concept elements, \(R_f\) functional requirements, \(R_p\) performance requirements, \(R_q\) quality requirements, and \(A\) architecture/design decisions. Keeping these sets distinct does not prohibit links among them.
+Let $N$ be baselined stakeholder needs, $O$ operational-concept elements, $R_f$ functional requirements, $R_p$ performance requirements, $R_q$ quality requirements, and $A$ architecture/design decisions. Keeping these sets distinct does not prohibit links among them.
 
 Model black-box behavior as a conditional state transition:
 
-\[
+$$
 F:(x,s,e)\mapsto(y,s'),
-\]
+$$
 
-where \(x\) is accepted input/event, \(s\) current state, \(e\) relevant environment/mode, \(y\) observable output/action, and \(s'\) post-state. A functional requirement constrains this relation without necessarily prescribing its internal computation.
+where $x$ is accepted input/event, $s$ current state, $e$ relevant environment/mode, $y$ observable output/action, and $s'$ post-state. A functional requirement constrains this relation without necessarily prescribing its internal computation.
 
-Let \(Trace(a,b,\rho)\) mean artifact element \(a\) justifiably transforms into or supports \(b\) with rationale \(\rho\). Let \(Verify(r,v)\) mean method/evidence \(v\) can discriminate whether a realization meets \(r\) under stated conditions. Neither relation alone establishes correctness.
+Let $Trace(a,b,\rho)$ mean artifact element $a$ justifiably transforms into or supports $b$ with rationale $\rho$. Let $Verify(r,v)$ mean method/evidence $v$ can discriminate whether a realization meets $r$ under stated conditions. Neither relation alone establishes correctness.
 
 A **shall statement** is a project convention for a mandatory obligation; the word alone does not make prose a requirement. **Requirement verification** can refer to reviewing requirement quality before baseline and to product verification later; state which meaning is intended. A **functional model** represents transformations and flows, whereas a **functional architecture** may add organization and allocation decisions developed later.
 
@@ -230,18 +230,18 @@ A **shall statement** is a project convention for a mandatory obligation; the wo
 
 The derivation mechanism has six passes. First, map sources and system boundary. Second, extract outcome-relevant transformations from operational threads. Third, model state, events, inputs, outputs, exceptions, and recovery. Fourth, write atomic normative kernels and attributes. Fifth, analyze coverage, consistency, feasibility, and verification. Sixth, validate the set against needs and operations under named authority.
 
-For a requirement \(r\), define a readiness predicate:
+For a requirement $r$, define a readiness predicate:
 
-\[
+$$
 Ready(r)=Subject(r)\land Source(r)\land Necessary(r)\land Observable(r)
 \land Feasible(r)\land Atomic(r)\land Unambiguous(r)\land Verification(r).
-\]
+$$
 
 Most terms require engineering judgment and evidence. A checker can establish only syntactic proxies such as nonempty fields. Consequently, `Ready` is a review claim bounded by reviewers, baseline, and evidence—not a theorem.
 
 Maintain five invariants. **Obligation invariant:** every normative statement has one controlled subject and modal force. **Source invariant:** every function has upward rationale. **Behavior invariant:** the statement constrains observable behavior rather than unjustified internal realization. **Condition invariant:** behavior is defined across relevant state and exception boundaries. **Closure invariant:** the set covers sources downward and provides verification paths without orphans.
 
-Set consistency can be challenged by pairs of requirements over overlapping conditions. If \(r_1\) requires next state \(s_a\) and \(r_2\) requires incompatible \(s_b\) for the same state/event/guard, the set contains a conflict unless priority or mode semantics resolves it. State models, decision tables, model checking, simulation, and review offer evidence; no single method proves correctness for every system.
+Set consistency can be challenged by pairs of requirements over overlapping conditions. If $r_1$ requires next state $s_a$ and $r_2$ requires incompatible $s_b$ for the same state/event/guard, the set contains a conflict unless priority or mode semantics resolves it. State models, decision tables, model checking, simulation, and review offer evidence; no single method proves correctness for every system.
 
 ## Alternatives and Trade-Offs
 

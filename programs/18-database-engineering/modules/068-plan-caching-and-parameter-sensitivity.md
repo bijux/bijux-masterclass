@@ -24,9 +24,9 @@ A **prepared statement** separates parsing and analysis from repeated execution.
 
 Reuse is sound only when the cache identity and dependency generation preserve the statement's binding, authorization, semantics, and physical assumptions. Profitability then balances compilation cost against execution regret. For executions (i=1..n), policy (P) has total cost
 
-\[
+$$
 C(P)=C_{compile}(P)+\sum_i[C_{dispatch}(P,i)+C_{run}(plan(P,i),x_i)].
-\]
+$$
 
 A generic plan amortizes compilation but can pay large regret on skewed parameter classes. Per-execution custom planning adapts but repeatedly compiles. A dispatcher pays classification and variant-management costs to reuse several plans over disjoint, guarded parameter regions.
 
@@ -106,15 +106,15 @@ Snapshot visibility normally remains an executor input rather than making every 
 
 The correct comparison includes compilation. If generic plan `g` is compiled once for `n` executions,
 
-\[
+$$
 C_g=C_{compile}(g)+\sum_{i=1}^{n}C_{run}(g,x_i).
-\]
+$$
 
 If each execution is custom-planned,
 
-\[
+$$
 C_c=\sum_{i=1}^{n}[C_{compile}(p_i)+C_{run}(p_i,x_i)].
-\]
+$$
 
 Custom planning wins only when avoided execution regret exceeds extra planning cost and its operational externalities. A request can tolerate 5 ms compilation and save seconds; a micro-query executing millions of times may not. Compare CPU saturation and queueing as well as per-query latency.
 

@@ -33,17 +33,17 @@ When should new objects be created by copying configured exemplars, and how can 
 
 Represent an exemplar as labeled object graph (G=(V,E,\lambda)). Partition edges by copy policy:
 
-\[
+$$
 E=E_{own}\cup E_{share}\cup E_{rebind}\cup E_{reject}.
-\]
+$$
 
 A clone mapping (f) must create fresh identities for owned mutable nodes, preserve intentional shared nodes, resolve rebound dependencies in the target context, and fail for rejected resources:
 
-\[
+$$
 (u,v)\in E_{own}\Rightarrow f(v)\ne v,
 \qquad
 (u,v)\in E_{share}\Rightarrow f(v)=v.
-\]
+$$
 
 If two source edges alias the same owned node, both clone edges should normally alias one (f(v)), not two independent copies. Value equality alone is insufficient evidence of a correct clone.
 
@@ -194,27 +194,27 @@ Keep Prototype only when exemplar-based creation remains clearer and its copy co
 
 Let source graph be (G=(V,E)), source root (r), and clone mapping (f:V'\to V_c) for the cloned subset (V'). The mapping must be a function so one copied source node has one clone node:
 
-\[
+$$
 u=v\Rightarrow f(u)=f(v).
-\]
+$$
 
 For owned mutable nodes,
 
-\[
+$$
 v\in V_{own}\Rightarrow f(v)\ne v,
-\]
+$$
 
 while intentional shared nodes satisfy
 
-\[
+$$
 v\in V_{share}\Rightarrow f(v)=v.
-\]
+$$
 
 Edge preservation for copied topology requires
 
-\[
+$$
 (u,v,\ell)\in E_{copy}\Rightarrow(f(u),f(v),\ell)\in E_c.
-\]
+$$
 
 Cycles terminate because (f(v)) is entered in the memo before cloning successors. For mutation set (M) permitted on clone-owned state, independence requires selected prototype observations remain unchanged after (m\in M) is applied to the clone. These conditions do not define policy for omitted nodes; every reachable edge still needs classification.
 

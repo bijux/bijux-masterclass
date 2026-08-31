@@ -33,18 +33,18 @@ What combinations of system condition, operating context, exposure, and causal m
 
 For hazard $h$ in configuration and context $c$, reason through an evidence chain
 
-\[
+$$
 h,c \rightarrow \{s_i\} \rightarrow \{C_j\} \rightarrow \{R_j\}
 \rightarrow \{V_j\} \rightarrow r_{residual} \rightarrow A,
-\]
+$$
 
 where $s_i$ are credible scenarios, $C_j$ are controls, $R_j$ are allocated safety requirements, $V_j$ are verification results, $r_{residual}$ is the bounded residual-risk judgment, and $A$ is acceptance by the proper authority. Break any link and the closure claim fails.
 
 Use a matrix only as its policy defines it:
 
-\[
+$$
 r=M(S,L),
-\]
+$$
 
 not $r=S\times L$. $S$ and $L$ are ordered categories; $M$ is a declared lookup. A movement from one cell to another is meaningful only when evidence supports the changed severity, likelihood, exposure, or scenario.
 
@@ -244,26 +244,26 @@ Let $H$ be the identified hazard set for a declared system boundary, configurati
 
 For hazard $h\in H$, let scenarios $s\in S_h$ describe initiating conditions $I_s$, contributing conditions $K_s$, exposure $E_s$, hazardous state/event $Q_s$, controls $C_s$, and mishap consequence $D_s$:
 
-\[
+$$
 s=(I_s,K_s,E_s,Q_s,C_s,D_s).
-\]
+$$
 
 This tuple is a reasoning aid, not a claim that events are independent or linearly ordered. Feedback, concurrency, organizational decisions, and control actions can form loops.
 
 Let severity $S_s\in\{1,\ldots,m\}$ and likelihood $L_s\in\{1,\ldots,n\}$ be ordered categories whose textual definitions come from governing policy. A risk category is
 
-\[
+$$
 R_s=M(S_s,L_s),
-\]
+$$
 
 where $M$ is the approved matrix. Because the inputs are ordinal, $S_sL_s$, category averages, and arithmetic reductions have no general semantic validity.
 
 For control $c$, define traceability relation
 
-\[
+$$
 c\leftrightarrow requirement\leftrightarrow allocation\leftrightarrow implementation
 \leftrightarrow verification\ result\leftrightarrow configuration.
-\]
+$$
 
 Let $A(r,cfg,t)$ denote acceptance of specified residual risk $r$ for configuration `cfg` and operating period/scope $t$ by an authorized role. Acceptance is invalid outside those bounds.
 

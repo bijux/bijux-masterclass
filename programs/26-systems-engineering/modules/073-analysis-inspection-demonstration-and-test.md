@@ -33,9 +33,9 @@ Which verification method—or defensible combination of methods—can generate 
 
 For requirement $r$, choose method set $M_r$ by constructing an inference chain
 
-\[
+$$
 r,B,C \longrightarrow O \longrightarrow M \longrightarrow D \longrightarrow J,
-\]
+$$
 
 where $B$ is the requirement and product baseline, $C$ applicable conditions, $O$ required observables, $M$ selected method/article/environment/procedure, $D$ configuration-bound data or findings with uncertainty, and $J$ the bounded conformance judgment. Method adequacy requires: the observable represents the required property; the activity covers applicable conditions; assumptions and decision error are controlled; anomalies remain visible; and the conclusion is no broader than the evidence.
 

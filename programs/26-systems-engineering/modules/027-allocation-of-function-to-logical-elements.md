@@ -35,17 +35,17 @@ How can a team assign functional responsibility to logical elements so that ever
 
 Let (F) be functions, (L) logical elements, and (A) typed allocation records:
 
-\[
+$$
 A\subseteq F\times L\times K\times M\times C,
-\]
+$$
 
 where (K) is contribution kind, (M) is mode/configuration applicability, and (C) is the contribution contract. For every required function (f), allocation is acceptable only when:
 
-\[
+$$
 Accept(f,A)\Rightarrow SourceTrace(f)\land Coverage(f,A)\land
 UniqueAccountability(f,A)\land CompositionClosure(f,A)\land
 BudgetFeasibility(f,A)\land FailureClosure(f,A)\land Evidence(f,A).
-\]
+$$
 
 This is an assurance obligation, not a theorem supplied by graph structure. A complete matrix can still describe infeasible timing, incompatible interfaces, missing authority, common-cause failure, or unsafe human workload.
 
@@ -204,31 +204,31 @@ Even A-001 may be wrong: its nonempty fields do not show correct inputs, adequat
 
 Let (F) be functions, (L) logical elements, (R) requirements, (S) scenarios, (M) modes/configurations, and (I) logical interfaces. Keep their identities distinct. A typed allocation record is:
 
-\[
+$$
 a=\langle id,f,l,k,m,c,q,h,r,e,v\rangle,
-\]
+$$
 
 where (k) is role/contribution kind, (m\subseteq M) applicability, (c) contribution contract, (q) allocated qualities/resources, (h) assumptions, (r) rationale, (e) evidence, and (v) version/provenance.
 
 For each function and applicable mode, declared coverage is:
 
-\[
+$$
 Coverage(f,m)=\bigvee_{a\in A}(a.f=f\land m\in a.m\land Adequate(a.c)).
-\]
+$$
 
 This predicate requires semantic review; counting edges only approximates it. Define accountable owners:
 
-\[
+$$
 Owners(f,m)=\{a.l\mid a.f=f\land m\in a.m\land a.k=accountable\}.
-\]
+$$
 
 The default invariant is (|Owners(f,m)|=1). An approved joint-decision protocol may replace it with a stronger explicit invariant.
 
 For serial latency allocations (b_i), interface overheads (d_j), and reserve (r):
 
-\[
+$$
 T_{allocated}=\sum_i b_i+\sum_j d_j+r\leq T_{required}.
-\]
+$$
 
 For parallel branches completed before a join, use the maximum branch duration plus fork/join overhead, not their sum. Queueing, retries, scheduling, physical response, and measurement uncertainty must be included when applicable.
 
@@ -381,9 +381,9 @@ Normal, degraded-communications, uncertain-forecast, emergency, maintenance, and
 
 Element time is (120+180+260+90=650) ms. Interface time is (3(25)=75) ms. The uncertainty allowance is 80 ms, and reserve is (0.15(1000)=150) ms. Therefore:
 
-\[
+$$
 T_{allocated}=650+75+80+150=955\text{ ms}\leq1000\text{ ms}.
-\]
+$$
 
 The allocation closes arithmetically with 45 ms unassigned headroom beyond the stated reserve. That result is bounded. It does not establish tail latency under load, queueing and contention, retry behavior, clock/measurement consistency, external dependencies, mode-dependent paths, concurrency or join behavior, or feasibility of each local budget. Those require explicit assumptions, analysis, and measurement.
 

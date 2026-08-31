@@ -33,9 +33,9 @@ Do the realized parties on every side of an interface satisfy the same controlle
 
 For interface $i$ between parties $A$ and $B$, define offered and required contracts $O_A,R_A,O_B,R_B$ over configuration and domain $D_i$. Static compatibility requires
 
-\[
+$$
 O_A\models R_B\quad\text{and}\quad O_B\models R_A,
-\]
+$$
 
 but integrated verification also checks composition $A\parallel B$ against interface requirements $I_i$ for sequences, time, shared state/resources, errors, security, environment, and recovery. Evidence must therefore progress from specification consistency and side-specific conformance through pairwise integration and end-to-end system interaction. Pairwise pass does not prove system-of-systems behavior when other parties or shared resources matter.
 

@@ -33,11 +33,11 @@ Whose conditions make a system valuable or unacceptable, how are their authority
 
 Represent a stakeholder-value claim as:
 
-\[
+$$
 V=(S,C,O,M,T,D,U,A,E),
-\]
+$$
 
-where \(S\) identifies stakeholder roles, \(C\) the system context, \(O\) objectives, \(M\) measures and directions, \(T\) thresholds and time horizon, \(D\) distribution, \(U\) uncertainty, \(A\) authority and conflict rules, and \(E\) evidence. A proposed system alternative is acceptable only if it satisfies noncompensatory constraints and has an adequately evidenced consequence profile. A high aggregate score cannot compensate for a violated safety, legal, rights, or mission threshold unless the governing authority explicitly and lawfully defined it as compensatory.
+where $S$ identifies stakeholder roles, $C$ the system context, $O$ objectives, $M$ measures and directions, $T$ thresholds and time horizon, $D$ distribution, $U$ uncertainty, $A$ authority and conflict rules, and $E$ evidence. A proposed system alternative is acceptable only if it satisfies noncompensatory constraints and has an adequately evidenced consequence profile. A high aggregate score cannot compensate for a violated safety, legal, rights, or mission threshold unless the governing authority explicitly and lawfully defined it as compensatory.
 
 ### Critical invariants
 
@@ -140,7 +140,7 @@ Some thresholds are conditional. An aircraft may accept one performance envelope
 
 A proxy is acceptable only with a stated relationship to the value object. Number of alerts sent is not population warned. Test coverage is not safety. Deployment frequency is not mission value. Cost variance is not lifecycle affordability. Maintain a chain from value object through hypothesized mechanism to observed evidence, and look for counterexamples.
 
-**Model distribution.** For stakeholder \(s\), scenario \(q\), time \(t\), and alternative \(a\), define a consequence profile \(x_{s,q,t}(a)\). Do not aggregate until the profile is visible. Report who benefits, who pays, who performs extra work, who bears residual risk, and who is missing from evidence.
+**Model distribution.** For stakeholder $s$, scenario $q$, time $t$, and alternative $a$, define a consequence profile $x_{s,q,t}(a)$. Do not aggregate until the profile is visible. Report who benefits, who pays, who performs extra work, who bears residual risk, and who is missing from evidence.
 
 Distribution matters even within one stakeholder class. A transport system's average journey time can improve while wheelchair users face longer transfers. A maintenance mean can improve while rare repair actions become impossible in protective equipment. Predeclare relevant subgroups and scenarios based on mechanisms and consequences, not after-the-fact metric mining.
 
@@ -164,11 +164,11 @@ Evidence can resolve factual disagreements. Design alternatives can reduce confl
 
 **Use aggregation cautiously.** A multi-attribute score can make declared preferences reproducible. Normalize measures only over justified ranges. Weights require a stated elicitation method and interpretation. Additive scoring assumes preferential independence and compensation. Correlated criteria can double-count. Thresholds must be checked before scoring.
 
-Suppose normalized values \(v_j(a)\in[0,1]\) and weights \(w_j\ge0\), \(\sum w_j=1\). An illustrative score is:
+Suppose normalized values $v_j(a)\in[0,1]$ and weights $w_j\ge0$, $\sum w_j=1$. An illustrative score is:
 
-\[
+$$
 S(a)=\sum_j w_jv_j(a).
-\]
+$$
 
 The arithmetic proves only the result of the declared model. It does not prove objectives are complete, normalization is valid, weights are legitimate, forecasts are accurate, or the highest score is acceptable. Modules 041–050 develop utility, trade studies, sensitivity, uncertainty, and decision rationale in depth.
 
@@ -221,20 +221,20 @@ print("evidence=declared_toy_model_only")
 
 Let:
 
-- \(S\) be stakeholder roles rather than a set of named meeting attendees;
-- \(A\) be candidate system alternatives;
-- \(Q\) be operational and lifecycle scenarios;
-- \(T\) be relevant times or lifecycle stages;
-- \(O\) be objectives and noncompensatory constraints;
-- \(x_{s,q,t}(a)\) be the consequence profile for stakeholder \(s\), scenario \(q\), time \(t\), and alternative \(a\);
-- \(E\) be evidence supporting predicted or observed consequences;
-- \(U\) represent uncertainty and limitations.
+- $S$ be stakeholder roles rather than a set of named meeting attendees;
+- $A$ be candidate system alternatives;
+- $Q$ be operational and lifecycle scenarios;
+- $T$ be relevant times or lifecycle stages;
+- $O$ be objectives and noncompensatory constraints;
+- $x_{s,q,t}(a)$ be the consequence profile for stakeholder $s$, scenario $q$, time $t$, and alternative $a$;
+- $E$ be evidence supporting predicted or observed consequences;
+- $U$ represent uncertainty and limitations.
 
 An alternative is **feasible** when every applicable mandatory constraint holds:
 
-\[
+$$
 Feasible(a)=\bigwedge_{c\in Constraints} c(a).
-\]
+$$
 
 Only feasible alternatives enter a compensatory comparison. This ordering prevents an attractive score from laundering a forbidden condition.
 

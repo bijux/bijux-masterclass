@@ -215,7 +215,7 @@ This uses only 16 integer members, 128 bits, double-hash-derived positions, k in
 
 ## Definitions and Notation
 
-Let universe U contain represented set S with `n=|S|`; m is allocated bits; k is probe count; `b=m/n` for n>0; `P(x)` is the ordered/multiset probe sequence; J is occupied-bit count; and `rho=J/m`. A false positive occurs for `x in U\S` when every position in `P(x)` is one.
+Let universe U contain represented set S with `n=|S|`; m is allocated bits; k is probe count; `b=m/n` for n>0; `P(x)` is the ordered/multiset probe sequence; J is occupied-bit count; and `rho=J/m`. A false positive occurs for $x in U\S$ when every position in `P(x)` is one.
 
 `p_approx(m,n,k)=(1-exp(-kn/m))^k` is the standard approximation. `p_emp=X/q` is the realized rate for q declared eligible absent queries. These are not interchangeable with a confidence upper bound, a per-filter worst case, or an adaptive-adversary guarantee.
 

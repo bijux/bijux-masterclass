@@ -34,9 +34,9 @@ What kind of difficulty does a system present, what is not known, and which engi
 
 Do not assign one label to the whole system. For decision (d), characterize:
 
-\[
+$$
 D(d)=\langle B,Q,S,T,O,K,U,E\rangle,
-\]
+$$
 
 where (B) is boundary, (Q) question, (S) scale, (T) time horizon, (O) objectives, (K) known structure and evidence, (U) uncertainty profile, and (E) environmental/agent evolution. Then select the response:
 
@@ -134,9 +134,9 @@ After completing this module, you should be able to:
 
 **Build an uncertainty profile.** Record each material uncertainty as:
 
-\[
+$$
 u=(claim,type,source,range,dependence,decision\ impact,evidence,owner,deadline,trigger,response).
-\]
+$$
 
 The type guides action. Repeated sampling may characterize aleatory variation. Better measurement or investigation may reduce epistemic uncertainty. Alternative models and out-of-sample checks address model form. Deliberation and explicit value tradeoffs address ambiguity; more data alone may not. Scenarios and adaptive plans address futures without defensible probabilities.
 
@@ -146,7 +146,7 @@ The type guides action. Repeated sampling may characterize aleatory variation. B
 
 **Represent ambiguity rather than averaging it away.** Stakeholders can use “safe,” “available,” or “fair” differently and can value outcomes differently. A mean score across incompatible frames does not create agreement. Record definitions, affected populations, distributional effects, authority, objections, and non-compensable constraints. Use deliberation, scenario walkthroughs, and separate measures.
 
-**Connect uncertainty to objectives.** A temperature estimate of \(20\pm1\) °C is uncertainty. It becomes a risk concern when deviations affect an objective such as product integrity or occupant safety. State scenario, likelihood evidence or bound, consequence distribution, affected stakeholders, time horizon, and controls. Some domain standards use narrower harm-based definitions of risk; always use the governing domain definition.
+**Connect uncertainty to objectives.** A temperature estimate of $20\pm1$ °C is uncertainty. It becomes a risk concern when deviations affect an objective such as product integrity or occupant safety. State scenario, likelihood evidence or bound, consequence distribution, affected stakeholders, time horizon, and controls. Some domain standards use narrower harm-based definitions of risk; always use the governing domain definition.
 
 **Avoid probability theater.** A number is not justified because software accepts it. Use frequencies where populations and stationarity are defensible, calibrated expert judgment where governed, probability intervals when evidence is partial, and scenarios/orderings when probabilities would be invented. Keep correlated inputs and shared causes. Report sensitivity to distribution and dependence choices.
 
@@ -205,42 +205,42 @@ print("decision_criterion=requires_authority")
 
 ## Definitions and Notation
 
-Let system description be indexed by observer \(o\), boundary \(B\), question \(Q\), scale \(S\), horizon \(T\), and mode \(m\). Write perceived complexity as:
+Let system description be indexed by observer $o$, boundary $B$, question $Q$, scale $S$, horizon $T$, and mode $m$. Write perceived complexity as:
 
-\[
+$$
 C=C(o,B,Q,S,T,m;K,R,A,E),
-\]
+$$
 
-where \(K\) represents available knowledge/models, \(R\) relationships, \(A\) adaptive agents, and \(E\) environmental evolution. This notation prevents “complex” from becoming an intrinsic unqualified label.
+where $K$ represents available knowledge/models, $R$ relationships, $A$ adaptive agents, and $E$ environmental evolution. This notation prevents “complex” from becoming an intrinsic unqualified label.
 
-For alternative \(d\), future/scenario \(s\), and stakeholder-valued outcome vector \(y\):
+For alternative $d$, future/scenario $s$, and stakeholder-valued outcome vector $y$:
 
-\[
+$$
 y=f(d,s,\theta,M),
-\]
+$$
 
-where \(\theta\) are uncertain parameters and \(M\) is model structure. Uncertainty can attach to current state, \(s\), \(\theta\), \(M\), observations, objectives, or valuation of \(y\).
+where $\theta$ are uncertain parameters and $M$ is model structure. Uncertainty can attach to current state, $s$, $\theta$, $M$, observations, objectives, or valuation of $y$.
 
-If a defensible probability model \(P\) and utility \(V\) exist, expected utility is:
+If a defensible probability model $P$ and utility $V$ exist, expected utility is:
 
-\[
+$$
 EU(d)=\mathbb{E}_{P}[V(f(d,s,\theta,M))].
-\]
+$$
 
-Its precision is conditional on \(P,V,M\), dependencies, and scenario coverage. Under a scenario set \(\mathcal{S}\) without agreed probabilities, robust acceptability can be expressed as:
+Its precision is conditional on $P,V,M$, dependencies, and scenario coverage. Under a scenario set $\mathcal{S}$ without agreed probabilities, robust acceptability can be expressed as:
 
-\[
+$$
 Robust(d)\iff V_j(f(d,s))\ge a_j\quad
 \forall s\in\mathcal{S},\ \forall j\in J_{mandatory},
-\]
+$$
 
-where \(a_j\) are authorized acceptance thresholds. Maximum regret is:
+where $a_j$ are authorized acceptance thresholds. Maximum regret is:
 
-\[
+$$
 R_{max}(d)=\max_{s\in\mathcal{S}}[\max_{d'}V(f(d',s))-V(f(d,s))].
-\]
+$$
 
-These formulations do not guarantee that \(\mathcal{S}\) is complete or values are legitimate.
+These formulations do not guarantee that $\mathcal{S}$ is complete or values are legitimate.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -476,7 +476,7 @@ The register should record claim, type, source, range/scenario, dependencies, ob
 
 ### Answer 2
 
-Baseline expected values are optimized \(0.4(100)+0.3(80)+0.2(20)+0.1(-40)=64.0\) and robust \(0.4(75)+0.3(70)+0.2(60)+0.1(45)=67.5\). Optimistic values are optimized \(86.8\) and robust \(72.2\). Worst outcomes are -40 and 45. Scenario-best values are 100, 80, 60, and 45, giving optimized regrets 0, 0, 40, 85 and robust regrets 25, 10, 0, 0; maximum regrets are 85 and 25.
+Baseline expected values are optimized $0.4(100)+0.3(80)+0.2(20)+0.1(-40)=64.0$ and robust $0.4(75)+0.3(70)+0.2(60)+0.1(45)=67.5$. Optimistic values are optimized $86.8$ and robust $72.2$. Worst outcomes are -40 and 45. Scenario-best values are 100, 80, 60, and 45, giving optimized regrets 0, 0, 40, 85 and robust regrets 25, 10, 0, 0; maximum regrets are 85 and 25.
 
 Expected-value choice is robust under baseline and optimized under optimistic probabilities. Maximin and minimax-regret choose robust. If -40 violates an authorized mandatory threshold, optimized is infeasible regardless of expected upside. Missing authority includes valid utility/criteria and risk acceptance; missing evidence includes scenario coverage, payoff validity, probability/dependence support, affected-stakeholder distribution, and sensitivity. Arithmetic cannot supply these judgments.
 

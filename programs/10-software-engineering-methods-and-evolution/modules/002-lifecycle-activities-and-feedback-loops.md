@@ -33,13 +33,13 @@ Which activities must remain connected from conception through retirement, and h
 
 Treat activities as a dependency/feedback network, not one pass:
 
-\[
+$$
 need\leftrightarrow requirements\leftrightarrow design
 \leftrightarrow implementation\leftrightarrow evidence
 \leftrightarrow release\leftrightarrow operation\leftrightarrow evolution.
-\]
+$$
 
-For a loop \(L=(G,O,C,D,A,\delta)\), \(G\) is goal, \(O\) observation, \(C\) comparison/interpretation, \(D\) authorized decision, \(A\) action, and \(\delta\) total delay. If work or risk accrues at rate \(r\), potential exposure before detection is roughly \(r\delta\); the approximation does not establish business harm, but shows why shorter valid loops and bounded batches reduce accumulated uncertainty.
+For a loop $L=(G,O,C,D,A,\delta)$, $G$ is goal, $O$ observation, $C$ comparison/interpretation, $D$ authorized decision, $A$ action, and $\delta$ total delay. If work or risk accrues at rate $r$, potential exposure before detection is roughly $r\delta$; the approximation does not establish business harm, but shows why shorter valid loops and bounded batches reduce accumulated uncertainty.
 
 ### Critical invariants
 
@@ -165,14 +165,14 @@ The same test can contribute to both only with a justified link. Passing accepta
 
 Total loop delay
 
-\[
+$$
 \delta=\delta_{observe}+\delta_{transport}+\delta_{interpret}
 +\delta_{decide}+\delta_{act}.
-\]
+$$
 
-Reducing test runtime but leaving week-long review queues may barely change \(\delta\). Automating deployment while waiting months for outcome evidence improves one loop, not all.
+Reducing test runtime but leaving week-long review queues may barely change $\delta$. Automating deployment while waiting months for outcome evidence improves one loop, not all.
 
-If questionable changes accumulate at rate \(r\), \(r\delta\) approximates how many may enter before one loop responds. This is not a harm formula—changes differ, controls overlap, and effects interact—but it highlights exposure. Smaller batches, WIP limits, rapid integration, staged rollout, and stop authority reduce compounding uncertainty.
+If questionable changes accumulate at rate $r$, $r\delta$ approximates how many may enter before one loop responds. This is not a harm formula—changes differ, controls overlap, and effects interact—but it highlights exposure. Smaller batches, WIP limits, rapid integration, staged rollout, and stop authority reduce compounding uncertainty.
 
 Delay also destabilizes control. Teams may overcorrect using stale data, alternate priorities, or cause oscillation. Label observation windows and data freshness. Prefer reversible bounded actions when signal is weak.
 
@@ -245,11 +245,11 @@ print(f"complete={complete_count} attention={len(loops) - complete_count}")
 
 ## Definitions and Notation
 
-Let lifecycle activity \(A_i=(purpose_i,input_i,output_i,owner_i,evidence_i)\). A dependency edge \(A_i\to A_j\) means \(A_j\) requires an output or decision from \(A_i\). A feedback edge \(A_j\dashrightarrow A_i\) means evidence from \(A_j\) can revise an earlier premise, artifact, or decision.
+Let lifecycle activity $A_i=(purpose_i,input_i,output_i,owner_i,evidence_i)$. A dependency edge $A_i\to A_j$ means $A_j$ requires an output or decision from $A_i$. A feedback edge $A_j\dashrightarrow A_i$ means evidence from $A_j$ can revise an earlier premise, artifact, or decision.
 
-Let loop \(L=(G,O,C,D,A,\delta)\) have goal \(G\), observation \(O\), comparison/interpretation \(C\), decision authority \(D\), response action \(A\), and total latency \(\delta\). Completeness additionally requires re-observation.
+Let loop $L=(G,O,C,D,A,\delta)$ have goal $G$, observation $O$, comparison/interpretation $C$, decision authority $D$, response action $A$, and total latency $\delta$. Completeness additionally requires re-observation.
 
-For WIP items \(w\), age \(age(w)=now-start(w)\). Flow time measures one item's elapsed time; throughput counts completed items per window. These measures require consistent boundary definitions and do not directly measure value.
+For WIP items $w$, age $age(w)=now-start(w)$. Flow time measures one item's elapsed time; throughput counts completed items per window. These measures require consistent boundary definitions and do not directly measure value.
 
 ## Mechanisms, Invariants, or Proof Structure
 

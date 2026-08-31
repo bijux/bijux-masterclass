@@ -36,31 +36,31 @@ How should engineers characterize and verify data, control, mechanical, electric
 
 Represent interface (i) as a set of domain projections:
 
-\[
+$$
 i=\langle D_i,C_i,M_i,E_i,H_i,X_i\rangle,
-\]
+$$
 
 where (D,C,M,E,H) are data, control, mechanical, electrical, and human characteristics, and (X) contains cross-domain constraints and effects. Compatibility is conjunctive:
 
-\[
+$$
 Compatible(i)=Compatible_D\land Compatible_C\land Compatible_M\land
 Compatible_E\land Compatible_H\land Compatible_X.
-\]
+$$
 
 Omitting an apparently irrelevant projection requires evidence. A data cable has mechanical routing and electrical behavior; a human command has data representation and control authority; a mechanical bond may be part of an electrical return or electromagnetic-control strategy.
 
 For common quantitative checks:
 
-\[
+$$
 R=8f(p+b),\qquad
 L_{path}=\sum_j L_j+J,
-\]
+$$
 
 where event rate (f), payload bytes (p), per-event overhead (b), component latencies (L_j), and bounded jitter (J) must use declared bases. Worst-case mechanical clearance for hole interval ([H_l,H_u]) and shaft interval ([S_l,S_u]) is:
 
-\[
+$$
 C_{min}=H_l-S_u,\qquad C_{max}=H_u-S_l.
-\]
+$$
 
 These calculations establish only the modeled characteristic under stated conditions.
 
@@ -246,63 +246,63 @@ print("evidence=declarations_only")
 
 Let an interface have endpoints (A,B), plane (P), configurations (C), modes (M), environments (E), and lifecycle intervals (T). Its characteristic set is:
 
-\[
+$$
 K_i=K_D\cup K_C\cup K_M\cup K_E\cup K_H\cup K_X.
-\]
+$$
 
 For each characteristic (k), provider/path guarantees (G_k) must be contained in receiver acceptance (R_k) over applicable conditions:
 
-\[
+$$
 \forall(c,m,e,t)\in Applicable_i:\quad T_k(G_k(c,m,e,t))\subseteq R_k(c,m,e,t).
-\]
+$$
 
 `NotApplicable(k)` is a controlled assertion requiring rationale; absence of a value is not non-applicability.
 
-For data events at frequency (f\) events/s, payload (p\) bytes/event, fixed framing/security overhead (b\) bytes/event, and retransmission/capacity factor (a\ge1):
+For data events at frequency $f$ events/s, payload $p$ bytes/event, fixed framing/security overhead $b$ bytes/event, and retransmission/capacity factor (a\ge1):
 
-\[
+$$
 R_{bit}=8af(p+b).
-\]
+$$
 
 If a channel's usable capacity is (C_u), declared utilization is (U=R_{bit}/C_u). Compatibility requires (U) remain within the allocated limit under simultaneous applicable flows; (U<1) alone may not satisfy latency or burst needs.
 
 For a latency path with serial components (L_1,\ldots,L_n), bounded jitter (J), and limit (L_{max}):
 
-\[
+$$
 L_{wc}=\sum_{j=1}^{n}L_j+J,\qquad M_L=L_{max}-L_{wc}.
-\]
+$$
 
 Nonnegative (M_L) shows arithmetic budget closure only if component bounds compose and use consistent measurement events.
 
 For mechanical hole and shaft intervals:
 
-\[
+$$
 C_{min}=H_l-S_u,\quad C_{max}=H_u-S_l.
-\]
+$$
 
 (C_{min}>0) guarantees clearance for the stated dimensional model; (C_{max}<0) guarantees interference; an interval spanning zero permits either. Form, orientation, position, finish, deformation, and temperature may require additional terms.
 
 For electrical resource allocation, steady power is (P=VI) for the declared DC operating point, while energy over interval ([t_0,t_1]) is:
 
-\[
+$$
 E=\int_{t_0}^{t_1}P(t)\,dt.
-\]
+$$
 
 Peak-power compatibility and energy/thermal compatibility are distinct. A short inrush can exceed steady allocation without violating energy capacity, yet still trip a protection device or collapse voltage.
 
 For human evaluation, let population (P_H), tasks (T_H), contexts (C_H), and outcome measures (Y) define evidence scope:
 
-\[
+$$
 Evidence_H=\langle P_H,T_H,C_H,Y,n,procedure,results,limitations\rangle.
-\]
+$$
 
 Observed success proportion is descriptive evidence for that study. It is not a universal probability of success without a justified sampling and inference design.
 
 Define cross-domain dependency relation:
 
-\[
+$$
 X\subseteq K_i\times K_i,
-\]
+$$
 
 where ((k_a,k_b)\in X) means changing (k_a) can invalidate an assumption, budget, or evidence for (k_b). Change impact should traverse the reachable dependency set, not stop at the initiating discipline.
 
@@ -397,19 +397,19 @@ The reasoning is disproved by counterexample. One authorized command with ambigu
 
 **Data throughput with overhead.** A sensor publishes 96 payload bytes at 50 events/s. Framing, timestamp, authentication, and integrity data add 24 bytes/event. With no retransmission allowance, the line demand is:
 
-\[
+$$
 R=8(50)(96+24)=48{,}000\text{ bit/s}=48\text{ kbit/s}.
-\]
+$$
 
-Allocating only (8(50)(96)=38.4\) kbit/s omits 9.6 kbit/s, 20% of the actual total. If the usable channel is 80 kbit/s, declared utilization is 60%. That arithmetic does not establish burst latency, competing flows, retry behavior, compression variance, or end-to-end freshness. Those require a traffic model and tests at the declared planes.
+Allocating only $8(50)(96)=38.4$ kbit/s omits 9.6 kbit/s, 20% of the actual total. If the usable channel is 80 kbit/s, declared utilization is 60%. That arithmetic does not establish burst latency, competing flows, retry behavior, compression variance, or end-to-end freshness. Those require a traffic model and tests at the declared planes.
 
 ### Example 2
 
 **Control latency budget.** A protective action must reach the actuator within 120 ms of threshold crossing. Allocated worst-case components are sensing/filtering 20 ms, publication/network 15 ms, controller queue/compute 25 ms, command network 10 ms, actuator acceptance 30 ms, and combined bounded jitter 10 ms:
 
-\[
+$$
 L_{wc}=20+15+25+10+30+10=110\text{ ms},\qquad M_L=10\text{ ms}.
-\]
+$$
 
 The budget closes arithmetically. Review then finds the actuator's 30 ms begins at message parsing while the command-network 10 ms ends at socket receipt, leaving an unallocated 8 ms deserialization queue. Revised total is 118 ms and margin 2 ms. Consistent event definitions were more important than addition.
 
@@ -417,10 +417,10 @@ The budget closes arithmetically. Review then finds the actuator's 30 ms begins 
 
 **Mechanical clearance.** A controlled hole diameter is 10.05–10.15 mm and mating shaft diameter is 9.90–10.00 mm:
 
-\[
+$$
 C_{min}=10.05-10.00=0.05\text{ mm},\qquad
 C_{max}=10.15-9.90=0.25\text{ mm}.
-\]
+$$
 
 The dimensional model guarantees positive diametral clearance. It does not establish position tolerance, circularity, surface finish, thermal growth, contamination, insertion angle, or acceptable play. The interface drawing adds datum-position requirements and the integration plan adds a representative-temperature fit check.
 
@@ -428,7 +428,7 @@ The dimensional model guarantees positive diametral clearance. It does not estab
 
 **Electrical steady and peak power.** A bus can supply 500 W at the controlled plane. Existing simultaneous loads consume 380 W. A motor adds 90 W steady and 240 W during an 80 ms inrush. Steady total is 470 W, leaving 30 W. Peak total is 620 W, exceeding source power by 120 W.
 
-The 80 ms energy above the source rating is (120\times0.08=9.6\) J, but an energy-storage solution is valid only if voltage droop, source impedance, converter control, protective trip curves, repeated starts, wiring current, and temperature remain acceptable. Alternatives include staged startup, local storage, motor soft-start, or source redesign. Steady-state closure did not prove startup compatibility.
+The 80 ms energy above the source rating is $120\times0.08=9.6$ J, but an energy-storage solution is valid only if voltage droop, source impedance, converter control, protective trip curves, repeated starts, wiring current, and temperature remain acceptable. Alternatives include staged startup, local storage, motor soft-start, or source redesign. Steady-state closure did not prove startup compatibility.
 
 ### Example 5
 
@@ -522,17 +522,17 @@ An operator must acknowledge and isolate a leak within 30 s. Draft a multidiscip
 
 ### Answer 1
 
-Payload plus overhead is (140+36=176\) bytes/event. With factor (a=1.15):
+Payload plus overhead is $140+36=176$ bytes/event. With factor (a=1.15):
 
-\[
+$$
 R=8(1.15)(80)(176)=129{,}536\text{ bit/s}=129.536\text{ kbit/s}.
-\]
+$$
 
 Utilization of 160 kbit/s usable capacity is:
 
-\[
+$$
 U=129.536/160=0.8096=80.96\%.
-\]
+$$
 
 The allocated limit is 75%, or 120 kbit/s, so the declaration exceeds allocation by 9.536 kbit/s and does not close. Options include reducing event/payload/overhead, changing retry behavior, increasing usable capacity, or revising the justified utilization limit after latency/burst analysis.
 
@@ -542,26 +542,26 @@ The arithmetic does not establish end-to-end latency or freshness, burst queue b
 
 Assuming all terms are serial, bounded on the same occurrence-to-acceptance path, and jitter is not already included:
 
-\[
+$$
 L_{wc}=25+20+18+30+12+28+12=145\text{ ms}.
-\]
+$$
 
 Margin is:
 
-\[
+$$
 M_L=150-145=5\text{ ms}.
-\]
+$$
 
 The arithmetic closes narrowly. It is invalid if, for example, “first network” ends at socket receipt while controller time begins after a hidden deserialization queue, or actuator time ends at parsing while the requirement ends at durable acceptance. Double-counting can also occur if network bounds already include jitter. Conversely, sensing and filtering may overlap; simply summing them would be conservative but may misrepresent the path. Define exact events, clocks, load/environment, statistical or absolute basis, and composition rule. With only 5 ms margin, measurement uncertainty and unmodeled queues deserve adversarial testing.
 
 ### Answer 3
 
-With slot (H=[20.00,20.10]\) mm and tab (S=[19.92,20.04]\) mm:
+With slot $H=[20.00,20.10]$ mm and tab $S=[19.92,20.04]$ mm:
 
-\[
+$$
 C_{min}=20.00-20.04=-0.04\text{ mm},\qquad
 C_{max}=20.10-19.92=0.18\text{ mm}.
-\]
+$$
 
 The interval spans zero, so this one-dimensional model permits either 0.04 mm interference or 0.18 mm clearance. It does not guarantee assembly or guaranteed interference; it is a transition outcome across allowed extremes.
 
@@ -571,27 +571,27 @@ Additional characteristics include datum and position tolerance, flatness/straig
 
 Continuous total with both pumps running is:
 
-\[
+$$
 P_{steady}=410+70+70=550\text{ W},
-\]
+$$
 
 leaving 50 W steady margin. If both start together:
 
-\[
+$$
 P_{both}=410+190+190=790\text{ W},
-\]
+$$
 
 which exceeds 600 W by 190 W. If one starts while the other runs steadily:
 
-\[
+$$
 P_{one}=410+190+70=670\text{ W},
-\]
+$$
 
 which exceeds the source by 70 W. Under the simplified rectangular simultaneous-start profile, excess energy is:
 
-\[
+$$
 E_{excess}=190\times0.100=19\text{ J}.
-\]
+$$
 
 Merely staggering starts is insufficient if one-start-plus-one-steady still reaches 670 W. Controls could inhibit the second pump, shed other loads, apply soft-start/current limit, provide local storage, or enlarge the source. Missing evidence includes voltage/current waveforms, source impedance and droop, conversion efficiency, motor power factor if AC, protection trip curves, wire/contact ratings, repeated starts, temperature/derating, regeneration, fault current, storage ESR/voltage, and required pump-start timing. Energy arithmetic alone does not prove a storage solution.
 

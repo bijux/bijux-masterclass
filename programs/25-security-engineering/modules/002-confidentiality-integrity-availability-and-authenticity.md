@@ -30,9 +30,9 @@ How can an engineer turn confidentiality, integrity, availability, and authentic
 
 Write each objective as
 
-`G_p=(a,s,o,l,\tau,c,v,e),\qquad p\in\{C,I,A,U\},`
+$G_p=(a,s,o,l,\tau,c,v,e),\qquad p\in\{C,I,A,U\},$
 
-where `a` is the asset, `s` authorized or prohibited subjects, `o` operations, `l` lifecycle/location, `\tau` adversary and fault conditions, `c` operating conditions, `v` observable violation or acceptance criterion, and `e` required evidence. Here `U` denotes authenticity to avoid overloading `A`, which denotes availability.
+where `a` is the asset, `s` authorized or prohibited subjects, `o` operations, `l` lifecycle/location, $\tau$ adversary and fault conditions, `c` operating conditions, `v` observable violation or acceptance criterion, and `e` required evidence. Here `U` denotes authenticity to avoid overloading `A`, which denotes availability.
 
 The four properties are neither mutually exclusive nor interchangeable. A control supports only the properties, scopes, and assumptions its evidence establishes.
 
@@ -241,7 +241,7 @@ Use the following review chain for every property.
 
 For composition, require a traceable implication:
 
-`assumptions \land mechanism\ properties \land integration\ invariants \Rightarrow scoped\ objective.`
+$assumptions \land mechanism\ properties \land integration\ invariants \Rightarrow scoped\ objective.$
 
 Review each premise. “Encrypted,” “signed,” “replicated,” and “authenticated” are not premises precise enough for this implication.
 

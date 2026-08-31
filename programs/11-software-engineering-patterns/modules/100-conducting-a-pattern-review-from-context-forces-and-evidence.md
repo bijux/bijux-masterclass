@@ -35,9 +35,9 @@ How can a review decide whether a pattern is warranted, which variant/compositio
 
 Do not compute a universal pattern score. For context (K), forces (F=\{f_i\}), candidates (D=\{d_0,\ldots,d_m\}), evaluate each candidate against scenarios, invariants, costs and uncertainty:
 
-\[
+$$
 Review(K,F,D,E)\rightarrow\{adopt, bounded\ pilot, defer, reject\}
-\]
+$$
 
 with a rationale, not an algorithmic verdict. (d_0) is the simplest/no-pattern baseline. A decision is defensible when decisive claims have proportionate evidence, negative cases can falsify them, consequences/assumptions/residual risks are visible, affected owners accept obligations, and rollout has guardrails, rollback/exit and review triggers. Missing evidence should reduce commitment, not be replaced by stronger adjectives.
 

@@ -30,9 +30,9 @@ How do finite symbolic encodings turn open-ended computational questions into pr
 
 Choose an alphabet and an encoding (e : X → Σ^*) for instances (X). For a predicate (P : X → \{0,1\}), define
 
-\[
+$$
 L_{P,e}=\{e(x)∣ x∈ X ∧ P(x)=1\}.
-\]
+$$
 
 A decider for the problem is a machine that halts on every input string and answers yes exactly for strings in (L_{P,e}), while also applying a declared policy to malformed encodings.
 
@@ -108,10 +108,10 @@ For strings (x=a_1⋯a_m) and (y=b_1⋯b_n), concatenation is (xy=a_1⋯a_mb_1�
 
 Define powers of an alphabet by length:
 
-\[
+$$
 Σ^0=\{ε\},\qquad
 Σ^n=\{w∣ w\text{ is a string over }Σ\text{ and }|w|=n\}.
-\]
+$$
 
 Then (Σ^*=⋃_{n=0}^{∞}Σ^n) and (Σ^+=⋃_{n=1}^{∞}Σ^n=Σ^*∖\{ε\}). The star contains strings of every finite length, not infinite sequences. If (|Σ|=k), then (|Σ^n|=k^n): each of (n) positions has (k) independent choices.
 
@@ -338,9 +338,9 @@ Define a decision-language formulation for detecting whether a finite schedule c
 
 Base case: (w^0=ε), so (|w^0|=0=0|w|). Inductive hypothesis: assume (|w^n|=n|w|). By the recursive definition (w^{n+1}=w^nw) and length additivity,
 
-\[
+$$
 |w^{n+1}|=|w^nw|=|w^n|+|w|=n|w|+|w|=(n+1)|w|.
-\]
+$$
 
 Therefore the identity holds for all (n∈ℕ). The proof depends on (|xy|=|x|+|y|) and the zero-power definition.
 

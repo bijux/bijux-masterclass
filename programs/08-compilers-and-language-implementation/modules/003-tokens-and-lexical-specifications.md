@@ -33,9 +33,9 @@ How should a language define the boundary between decoded source text and parser
 
 Let the decoded source be (s\in\Sigma^*), and let ordered token/trivia rules define languages (L_1,\ldots,L_k\subseteq\Sigma^+). At offset (p), form
 
-\[
+$$
 C(p)=\{(i,x)\mid x\ne\epsilon\land x\text{ is a prefix of }s[p:]\land x\in L_i\}.
-\]
+$$
 
 Choose a candidate with maximum (|x|); among equal-length candidates choose the smallest declared priority (i). Emit or retain its classified record, advance by (|x|), and repeat. If (C(p)) is empty, report a bounded lexical error and advance only according to the recovery contract. Rules must not accept the empty string, or scanning may fail to progress.
 
@@ -107,9 +107,9 @@ Begin by naming the lexical input alphabet. A byte-oriented language can define 
 
 The output should be richer than a pair of kind and text. A durable token record often contains
 
-\[
+$$
 Token=(kind,span,lexeme,value,trivia,flags,origin).
-\]
+$$
 
 Not every implementation stores every field inline. The invariant is that consumers can recover what their contract promises. `INTEGER` may carry a parsed magnitude while retaining spelling `0xff_ff`; a string may carry decoded contents while diagnostics still point to the raw escape; a macro token may carry an expansion origin chain.
 
@@ -153,9 +153,9 @@ Comments can overlap operator prefixes and can nest in some languages. A block-c
 
 **Lexical modes and feedback.** Pure tokenization is a function of source and language configuration. Real languages sometimes need finite lexical state: string delimiters, template interpolation, indentation stacks, or embedded sublanguages. Model the state explicitly:
 
-\[
+$$
 (tokens,state')=Lex(source,state,configuration).
-\]
+$$
 
 Avoid unconstrained parser-to-lexer feedback because it makes tokenization history-dependent and complicates caching. If the language standard defines lexical goals, expose a finite named goal at token requests and include it in cache keys. JavaScript regular-expression literals versus division are a classic example of lexical interpretation depending on syntactic context.
 
@@ -171,9 +171,9 @@ Recovery state matters. At newline or EOF, a scanner may reset a string mode, pr
 
 A useful coverage invariant is
 
-\[
+$$
 [0,|s|)=\biguplus spans(tokens,trivia,errors),
-\]
+$$
 
 after translating all spans to one coordinate system. Synthetic tokens have empty spans and are excluded from physical coverage. This invariant catches dropped bytes and duplicated ownership but does not prove correct classification.
 
@@ -245,15 +245,15 @@ An ordered lexical rule is (R_i=(name_i,L_i,channel_i,action_i)), where (L_i\sub
 
 The candidate set is
 
-\[
+$$
 C(p,m)=\{(i,q)\mid s[p:q]\in L_i\text{ and }R_i\text{ is active in mode }m\}.
-\]
+$$
 
 Selection orders candidates lexicographically by maximum (q-p), then minimum priority (i). A configuration (K) includes language edition, feature flags, Unicode data, preprocessing policy, limits, and initial mode. Thus tokenization is a partial function
 
-\[
+$$
 Lex_K:(Source,Revision)\to(Token^*,Trivia^*,Diagnostic^*,FinalState).
-\]
+$$
 
 It becomes operationally total when every unmatched position has a progress-preserving error action. This totality does not mean every input is lexically valid.
 
@@ -350,9 +350,9 @@ It becomes operationally total when every unmatched position has a progress-pres
 
 ### Example 6
 
-**Question:** What should happen at `"bad\\q"` if `\q` is not an escape?
+**Question:** What should happen at $"bad\\q"$ if $\q$ is not an escape?
 
-**Reasoning:** The lexer can emit a string/error record while diagnosing the two-character escape span. It should retain raw source and avoid silently converting `\q` to `q`.
+**Reasoning:** The lexer can emit a string/error record while diagnosing the two-character escape span. It should retain raw source and avoid silently converting $\q$ to `q`.
 
 **Conclusion:** Malformed escape policy must preserve causal spelling and progress.
 

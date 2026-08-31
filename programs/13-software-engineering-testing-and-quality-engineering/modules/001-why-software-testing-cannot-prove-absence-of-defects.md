@@ -33,15 +33,15 @@ What does a passing or failing test logically establish, why can ordinary testin
 
 Let implementation (P), specification/property (S), possible cases (X), environment/schedule set (E), oracle (O), and executed tests (T\subseteq X\times E). A passing run establishes at most
 
-\[
+$$
 \forall t\in T:\ O(P,t)=pass.
-\]
+$$
 
 The universal claim requires
 
-\[
+$$
 \forall t\in X\times E:\ P\models_t S.
-\]
+$$
 
 When (T) is only a subset, the first statement does not entail the second. A valid failing test supplies a counterexample to a stated property. Exception: if the relevant domain/environment is finite, completely enumerated, execution faithful, and the oracle/specification correct and complete for the claim, exhaustive testing can establish that scoped property over that model. It still cannot prove absence of unspecified requirements defects, unmodeled environments, tool faults, or different builds.
 
@@ -130,11 +130,11 @@ A defect does not fail on every execution. A faulty expression must be reached; 
 
 Model the chain:
 
-\[
+$$
 defect \xrightarrow{reach/activate} error\ state
 \xrightarrow{propagate} observable\ discrepancy
 \xrightarrow{oracle} detected\ failure.
-\]
+$$
 
 Tests can miss at every arrow. Structural coverage helps with reach, boundary/value selection with activation, observability with propagation, and strong oracles with detection. None alone is sufficient.
 

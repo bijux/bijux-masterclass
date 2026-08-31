@@ -33,15 +33,15 @@ How can one data-structure abstraction support many element, key, allocator, or 
 
 Define a generic ADT family (D[T]) over admissible types
 
-\[
+$$
 \mathcal T_C=\{T\mid T\text{ supplies operations }C_{op}\text{ and satisfies laws }C_{law}\}.
-\]
+$$
 
 For an ordered set, `compare` must do more than type-check. Its induced relation must satisfy the structure's declared ordering laws, and equivalent keys must remain equivalent while resident. For a hash map, equality and hashing must satisfy
 
-\[
+$$
 x\equiv y\implies hash(x)=hash(y),
-\]
+$$
 
 with stability and domain requirements stated. The type system may enforce operation availability; lawfulness generally needs proof, trusted contracts, tests, or restricted constructors.
 

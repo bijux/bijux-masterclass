@@ -33,14 +33,14 @@ How can one sequence support insertion, removal, and observation at both ends wh
 
 Write the abstract deque front-to-back as `D=<d0,...,d(n-1)>`. The four endpoint transitions are:
 
-\[
+$$
 \begin{aligned}
 push_front(x,D)&=\langle x\rangle\cdot D,\\
 push_back(D,x)&=D\cdot\langle x\rangle,\\
 pop_front(D)&=(d_0,\langle d_1,\ldots,d_{n-1}\rangle),\\
 pop_back(D)&=(d_{n-1},\langle d_0,\ldots,d_{n-2}\rangle).
 \end{aligned}
-\]
+$$
 
 For a circular array with capacity `c>0`, head index `h`, and size `n`, logical element i occupies `(h+i) mod c`. Back insertion uses `(h+n) mod c`; front insertion changes `h` to `(h-1) mod c`. Size distinguishes full (`n=c`) from empty (`n=0`). These equations preserve logical order across physical wrap.
 

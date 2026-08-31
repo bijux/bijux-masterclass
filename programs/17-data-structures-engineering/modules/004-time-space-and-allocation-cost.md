@@ -33,21 +33,21 @@ How should an engineer specify and validate the time, space, and allocation cost
 
 For operation trace (sigma=o_1,ldots,o_m), define actual time cost (c_i), allocation events (a_i), requested bytes (b_i), and live-space function (L(t)). Report distinct quantities:
 
-\[
+$$
 C(\sigma)=\sum_{i=1}^{m}c_i,\qquad
 A(\sigma)=\sum_{i=1}^{m}a_i,\qquad
 B(\sigma)=\sum_{i=1}^{m}b_i,
-\]
+$$
 
-\[
+$$
 L_{peak}(\sigma)=\max_t L(t).
-\]
+$$
 
 An amortized bound assigns charges (hat c_i) or potential (Phi_i\ge0) so that every prefix satisfies
 
-\[
+$$
 \sum_{i=1}^{j}c_i\le\sum_{i=1}^{j}hat c_i
-\]
+$$
 
 or (hat c_i=c_i+Phi_i-Phi_{i-1}). Mathematical bounds and empirical measurements answer different questions and must be reported separately.
 
@@ -137,17 +137,17 @@ The accounting method overcharges cheap operations and stores credits. Every pre
 
 The potential method defines nonnegative stored work (\Phi(state)). Amortized cost
 
-\[
+$$
 \hat c_i=c_i+\Phi(D_i)-\Phi(D_{i-1})
-\]
+$$
 
 telescopes. If (\Phi(D_0)=0) and (\Phi\ge0), actual total cost is at most total amortized cost. Potential belongs to the analysis, not necessarily a runtime field.
 
 **Dynamic-array growth.** Suppose capacity starts at one and doubles when full. An append without growth writes one element. Growth from capacity (q) allocates (2q) slots, copies (q) elements, then writes the new element. Before reaching capacity (2^k), total copies are
 
-\[
+$$
 1+2+4+\cdots+2^{k-1}=2^k-1.
-\]
+$$
 
 Thus total copies across (n) appends are below a constant multiple of (n), giving constant amortized writes/copies. The growing append itself is still linear in current size.
 
@@ -179,9 +179,9 @@ Capacity arithmetic must check overflow before multiplication/addition. Maximum-
 
 For a workload (W), total cost can be a vector rather than one score:
 
-\[
+$$
 Cost(W)=(time,tail,peak\ bytes,allocations,bytes\ allocated,IO,contention).
-\]
+$$
 
 Weighting dimensions into one scalar is a product decision and can hide hard limits. Use feasibility constraints first, then compare Pareto trade-offs.
 
@@ -237,18 +237,18 @@ print("evidence=modeled_counts_not_memory_measurement")
 
 Let (I_n) be admitted inputs/states of size (n), and (C(x)) actual primitive count in a declared model. Then
 
-\[
+$$
 C_{worst}(n)=\max_{x\in I_n}C(x),\qquad
 C_{best}(n)=\min_{x\in I_n}C(x).
-\]
+$$
 
 For distribution (P_n), average cost is (E_{x\sim P_n}[C(x)]). For algorithmic random variable (R), expected cost can be (E_R[C(x,R)]) for fixed (x). Name both sources when both vary.
 
 For representation (r), decompose modeled bytes as
 
-\[
+$$
 M(r)=payload+metadata+slack+allocator\ overhead,
-\]
+$$
 
 under a declared ownership/counting policy. Working memory (W(t)) and retained/runtime memory are reported separately. Allocation event (e) has requested size, usable size if observable, time, lifetime, and owner.
 

@@ -37,23 +37,23 @@ How can engineers represent system context, kinds, configured usages, compositio
 
 Represent configured structure as a typed attributed multigraph
 
-\[
+$$
 G_S=(V,E_C,E_R,E_K,E_A,P,\Gamma),
-\]
+$$
 
 where $V$ are elements/usages, $E_C$ containment, $E_R$ references, $E_K$ connections, $E_A$ allocations, $P$ ports/properties and $\Gamma$ configuration/applicability.
 
 For ordinary composition, each non-root owned usage has one owner and containment is acyclic:
 
-\[
+$$
 \forall v\ne root:\ |parent_C(v)|=1,\qquad (V,E_C)\text{ is acyclic}.
-\]
+$$
 
 For connection $k=(p_i,p_j)$, structural compatibility is a predicate over direction, item type, units, protocol, multiplicity, state/mode and configuration:
 
-\[
+$$
 Compatible(k,\Gamma)=D\land T\land U\land Q\land M\land C.
-\]
+$$
 
 Compatibility is necessary for integration but does not prove performance, safety, security, timing, reliability or operational effectiveness.
 
@@ -269,17 +269,17 @@ The checker treats exact type strings as compatibility, which is intentionally w
 
 Let definition $D$ constrain features $F_D$ and usage $u:D$ apply that definition in owner/context $o$, configuration $\gamma$ and multiplicity $m$:
 
-\[
+$$
 u=(id,D,o,role,m,values,\gamma).
-\]
+$$
 
 Containment relation $owns(o,u)$ governs identity/lifecycle. Reference $ref(x,u)$ does not. Allocation $alloc(f,u)$ assigns responsibility for function $f$ but does not imply $owns$, $implements$ or $verifies$.
 
 Boundary cut for system-owned set $V_{sys}$ is
 
-\[
+$$
 \delta(V_{sys})=\{(p_i,p_j)\in E_K:owner(p_i)\in V_{sys}\oplus owner(p_j)\in V_{sys}\},
-\]
+$$
 
 where $\oplus$ is exclusive-or. Every cut connection should correspond to a governed external interface or explicit exception for the declared baseline.
 

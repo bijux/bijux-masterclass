@@ -31,9 +31,9 @@ How can state-dependent behavior and legal transitions be made explicit so an ob
 
 Define deterministic partial transition function
 
-\[
+$$
 \delta:S\times E\times D\times Ctx\to(S\times D\times A^*)\cup Rejected,
-\]
+$$
 
 where (S) is control state, (D) extended data, and (A^*) ordered actions. A valid implementation preserves invariant (P(s,d)): if (P(s,d)) and the selected guard holds, the committed successor satisfies (P(s',d')). State objects organize this function by source state; they do not prove guards, effect atomicity, termination, or distributed consistency.
 

@@ -38,23 +38,23 @@ How can a systems team identify credible future shortfall scenarios early and co
 
 Represent individual risk (r_i) as a scenario family plus evidence and governance:
 
-\[
+$$
 r_i=(O_i,S_i,L_i,C_i,U_i,E_i,T_i,G_i),
-\]
+$$
 
 where (O_i) is the affected objective set, (S_i) credible event sequences, (L_i) likelihood model, (C_i) consequence vector, (U_i) uncertainty, (E_i) evidence/provenance, (T_i) timeframe/triggers, and (G_i) governance/ownership.
 
 A simplified causal sequence is
 
-\[
+$$
 condition\rightarrow departure\rightarrow asset/objective\ shortfall\rightarrow consequences.
-\]
+$$
 
 When likelihoods are calibrated probabilities and consequences are cardinal on a common basis, expected consequence may be
 
-\[
+$$
 E[C]=\sum_sP(s)C(s).
-\]
+$$
 
 This does not justify multiplying ordinal likelihood and consequence categories or aggregating dependent risks independently. Identification precedes quantitative/qualitative analysis and preserves uncertainty.
 
@@ -226,15 +226,15 @@ Let objectives (O), baseline state (B_t), scenario set (S), evidence (E_t), like
 
 Risk identity at time (t):
 
-\[
+$$
 r_t=(id,O,B_t,S,E_t,L,C,U,T,G,status,history).
-\]
+$$
 
 For a statement:
 
-\[
+$$
 condition(B_t,E_t)\Rightarrow possibility(departure)\Rightarrow impact(asset,O)\Rightarrow consequence.
-\]
+$$
 
 The arrow denotes a causal hypothesis requiring analysis; it is not deterministic implication.
 
@@ -242,9 +242,9 @@ Risk dependency graph is (G_R=(V_R,E_R)) where vertices are risks/conditions/eve
 
 If scenarios are mutually exclusive and probabilities/cardinal consequences are valid:
 
-\[
+$$
 E[C]=\sum_sP(s)C_s.
-\]
+$$
 
 For dependent or non-cardinal cases, use appropriate joint models, bounds, scenarios, or ordered decision rules; do not force this formula.
 

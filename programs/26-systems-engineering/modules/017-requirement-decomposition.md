@@ -31,32 +31,32 @@ How can engineers transform a parent obligation into lower-level child requireme
 
 ### Central model, mechanism, or theorem
 
-For parent \(p\), define a decomposition record:
+For parent $p$, define a decomposition record:
 
-\[
+$$
 D(p)=\langle children,assumptions,interfaces,integration,
 budgets,derived,coverageArgument,verification,authority,status\rangle.
-\]
+$$
 
 The sufficiency obligation is:
 
-\[
+$$
 A_p\land I_p\land\bigwedge_{c\in Children(p)} c\Rightarrow p,
-\]
+$$
 
-where \(A_p\) contains explicit assumptions and \(I_p\) contains integration obligations. The reverse implication is not generally true: a parent often does not uniquely determine one child set.
+where $A_p$ contains explicit assumptions and $I_p$ contains integration obligations. The reverse implication is not generally true: a parent often does not uniquely determine one child set.
 
 Every child also needs justification:
 
-\[
+$$
 \forall c:\ ParentRole(c,p)\lor DerivedSource(c),
-\]
+$$
 
 and verification closure:
 
-\[
+$$
 ChildEvidence+IntegrationEvidence\Rightarrow ParentVerificationArgument.
-\]
+$$
 
 These are review obligations, not automatic proofs of completeness or real-system satisfaction.
 
@@ -156,11 +156,11 @@ After completing this module, you should be able to:
 
 **Decompose state and timing.** A response-time parent may span admission, queue, processing, dependencies, transmission, and presentation. Establish a deterministic or statistical composition model and preserve end-to-end measurement. Timing children can be budgets, not independent promises: changing one requires rebalancing siblings and margin.
 
-**Budget additive resources carefully.** For mass, power, energy, storage, or deterministic worst-case time, define system boundary, operating profile, reserves, margin, sign, units, and aggregation. If parent maximum is \(B\), a simple budget may require
+**Budget additive resources carefully.** For mass, power, energy, storage, or deterministic worst-case time, define system boundary, operating profile, reserves, margin, sign, units, and aggregation. If parent maximum is $B$, a simple budget may require
 
-\[
+$$
 \sum_i b_i + reserve \le B.
-\]
+$$
 
 Do not allocate the reserve twice. Predictions and design margin remain separate from mandatory child limits.
 
@@ -219,18 +219,18 @@ print("evidence=declared_fields_only")
 
 ## Definitions and Notation
 
-Let \(P\) be parent requirements, \(C\) child requirements, \(A\) explicit assumptions, \(I\) interface/integration requirements, \(B\) budgets, and \(V\) verification evidence.
+Let $P$ be parent requirements, $C$ child requirements, $A$ explicit assumptions, $I$ interface/integration requirements, $B$ budgets, and $V$ verification evidence.
 
-For parent \(p\), \(Children(p)=\{c\in C\mid Trace(c,p,role)\}\). `Trace` includes a contribution role and rationale. Let \(Derives(c,s)\) identify a non-parent analytical source such as hazard, architecture, interface, regulation, or lifecycle analysis.
+For parent $p$, $Children(p)=\{c\in C\mid Trace(c,p,role)\}$. `Trace` includes a contribution role and rationale. Let $Derives(c,s)$ identify a non-parent analytical source such as hazard, architecture, interface, regulation, or lifecycle analysis.
 
 Define a counterexample set:
 
-\[
+$$
 CE_p=\{x\mid A_p(x)\land I_p(x)\land\bigwedge Children(p)(x)
 \land \neg p(x)\}.
-\]
+$$
 
-Finding a feasible \(x\in CE_p\) refutes the current sufficiency argument. Failure to find one does not prove the set empty.
+Finding a feasible $x\in CE_p$ refutes the current sufficiency argument. Failure to find one does not prove the set empty.
 
 A **requirement tree** is a useful hierarchical view; the authoritative relation is often a graph because children can support multiple parents and integration requirements cross branches. A **budget allocation** is a coupled set whose sum/composition and margin support a parent parameter; it is not simply several unrelated thresholds.
 
@@ -240,11 +240,11 @@ The mechanism has seven passes: validate parent; select analysis viewpoints; ide
 
 Use a decomposition readiness predicate:
 
-\[
+$$
 Ready(D_p)=ParentValid\land ChildJustification\land CoverageArgument
 \land InterfaceClosure\land BudgetConsistency\land CombinedFeasibility
 \land VerificationClosure.
-\]
+$$
 
 The predicate structures expert review. `CoverageArgument` and `CombinedFeasibility` are not established by nonempty fields.
 

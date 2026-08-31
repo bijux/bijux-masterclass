@@ -33,15 +33,15 @@ How can a sender offer a request to an ordered set of potential handlers without
 
 Let ordered handlers be (H=(h_1,\ldots,h_n)), where
 
-\[
+$$
 h_i:C\times X\to Pass\mid Handled(Y)\mid Rejected(R)\mid Failed(E).
-\]
+$$
 
 Dispatch finds the least index (j) whose result is not `Pass` and returns that result; if none exists it returns `Unhandled` unless a total terminal handler is guaranteed. Thus order is semantic. Completeness requires
 
-\[
+$$
 \forall(c,x)\in D,\ \exists i:\ h_i(c,x)\ne Pass
-\]
+$$
 
 for the declared input domain (D), or an explicit `Unhandled` contract.
 
@@ -182,9 +182,9 @@ If handlers are pure predicates mapping to static outcomes, a decision table, pa
 
 For domain (D\subseteq C\times X), define eligibility predicate (q_i(c,x)). In first-match semantics, selected handler is
 
-\[
+$$
 j(c,x)=\min\{i\mid q_i(c,x)\},
-\]
+$$
 
 when the set is nonempty. Overlap (q_i\land q_k) makes order observable; a gap (\neg\bigvee_i q_i) produces `Unhandled` absent a terminal handler.
 

@@ -33,10 +33,10 @@ How can concurrent caller threads share one object through synchronized methods 
 
 For protected state (S) and invariant (I(S)), every public synchronized operation follows
 
-\[
+$$
 acquire\rightarrow while\;\neg P(S):wait\rightarrow mutate/read
 \rightarrow I(S)\rightarrow signal\rightarrow release.
-\]
+$$
 
 The safety argument requires (I(S)) on monitor entry, before every condition wait (because wait releases the lock), and on every exit. A waiter resumes with the lock but must recheck (P): wakeups may be spurious, another thread may consume the enabling state first, timeout/interrupt may race, and Mesa notification transfers no entitlement.
 
@@ -495,15 +495,15 @@ Invariants include private nonescaping representation; stable lock on every acce
 
 Maximum queued payload is
 
-\[
+$$
 64\times24\text{ KiB}=1536\text{ KiB}=1.5\text{ MiB}.
-\]
+$$
 
 Little's Law gives
 
-\[
+$$
 L=\lambda W=500\times0.08=40
-\]
+$$
 
 average items inside the measured buffer boundary.
 

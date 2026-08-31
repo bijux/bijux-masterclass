@@ -36,17 +36,17 @@ What is unknown or variable about a system claim, what evidence and assumptions 
 
 For measured/model inputs (X) with covariance matrix (\Sigma) and output (Y=f(X)), first-order uncertainty propagation near (x) is
 
-\[
+$$
 u_c^2(Y)\approx \nabla f(x)^T\Sigma\nabla f(x).
-\]
+$$
 
 This is a local approximation and depends on model adequacy, differentiability, input uncertainty, and covariance. Simulation or other methods may be needed for nonlinearity, discontinuity, tails, or non-Gaussian/dependent inputs.
 
 For a binomial proportion with (k) successes in (n) independent representative trials, (\hat p=k/n), the Wilson interval with normal quantile (z) is
 
-\[
+$$
 \frac{\hat p+z^2/(2n)\ \pm\ z\sqrt{\hat p(1-\hat p)/n+z^2/(4n^2)}}{1+z^2/n}.
-\]
+$$
 
 Its coverage is a property of the procedure under the sampling model, not a certificate that future operational success lies in the interval. Dependence, nonrepresentative conditions, definition changes, and model discrepancy can dominate sampling uncertainty.
 
@@ -140,9 +140,9 @@ After completing this module, you should be able to:
 
 **Know Bayesian interval semantics.** A Bayesian posterior follows
 
-\[
+$$
 p(\theta\mid D,M)\propto p(D\mid\theta,M)p(\theta\mid M).
-\]
+$$
 
 A 95-percent credible interval contains 95 percent posterior probability conditional on model, prior, data, and computation. Inspect prior sensitivity, likelihood/model discrepancy, identifiability, convergence, and predictive calibration. A posterior can be narrow and wrong under a poor model.
 
@@ -160,9 +160,9 @@ A 95-percent credible interval contains 95 percent posterior probability conditi
 
 **Address sparse and zero-failure evidence.** With zero failures in (n) independent representative Bernoulli demands, a one-sided exact lower confidence bound for success probability is
 
-\[
+$$
 R_L=\alpha^{1/n}
-\]
+$$
 
 at confidence (1-\alpha). For 100 tests and (\alpha=0.05), (R_L\approx0.9705), not 1. This says nothing about untested failure modes, dependence, mission duration, severity, or changed configuration. Rare/common-cause claims need stronger evidence and modeling.
 
@@ -224,39 +224,39 @@ Let claim quantity (Q), data (D), system/configuration (B), operating population
 
 A complete uncertainty assertion can be represented as
 
-\[
+$$
 U_Q=(Q,B,S,D,M,E,\mathcal{I},\gamma,A),
-\]
+$$
 
 where (\mathcal{I}) is interval/distribution/scenario representation, (\gamma) its declared probability/coverage semantics if any, and (A) assumptions/applicability. Omitting these fields makes reuse unsafe.
 
 For independent standard-uncertainty components, the first-order special case is
 
-\[
+$$
 u_c(Y)=\sqrt{\sum_i c_i^2u^2(X_i)},\qquad c_i=\frac{\partial f}{\partial X_i}.
-\]
+$$
 
 With covariance:
 
-\[
+$$
 u_c^2(Y)=\sum_ic_i^2u_i^2+2\sum_{i<j}c_ic_ju_{ij}.
-\]
+$$
 
 Expanded uncertainty is (U=ku_c); (k) alone does not guarantee coverage without distribution/degrees-of-freedom/basis.
 
 For a future outcome (Y_{new}), predictive inference is
 
-\[
+$$
 p(Y_{new}\mid D,M)=\int p(Y_{new}\mid\theta,M)p(\theta\mid D,M)d\theta
-\]
+$$
 
 in a Bayesian representation; it retains outcome variability and parameter uncertainty conditional on model.
 
 For joint commitments:
 
-\[
+$$
 P_J=Pr(C\le C^*,T\le T^*,P\ge P^*\mid B,M,E,A),
-\]
+$$
 
 explicitly conditional on baseline, model, evidence, and assumptions.
 
@@ -407,21 +407,21 @@ Design an uncertainty and confidence case for an autonomous ferry operating in f
 
 (\hat p=45/50=0.90). Wald standard error is
 
-\[
+$$
 \sqrt{0.9(0.1)/50}=0.04243,
-\]
+$$
 
 so the approximate interval is
 
-\[
+$$
 0.90\pm1.96(0.04243)=[0.8168,0.9832].
-\]
+$$
 
 Wilson has denominator (1+1.96^2/50=1.076832), center
 
-\[
+$$
 (0.90+1.96^2/100)/1.076832\approx0.87146,
-\]
+$$
 
 and half-width about 0.08506, giving approximately `[0.7864,0.9565]` (minor last-digit differences can result from rounding intermediate values).
 
@@ -431,15 +431,15 @@ These are intervals from procedures under the binomial independent representativ
 
 Sensitivity coefficients are (c_X=2) and (c_Z=1). Including covariance:
 
-\[
+$$
 u_c^2(Y)=2^2(1.5^2)+1^2(2^2)+2(2)(1)(1)=9+4+4=17,
-\]
+$$
 
 so
 
-\[
+$$
 u_c(Y)=\sqrt{17}\approx4.123.
-\]
+$$
 
 Assuming independence removes the cross term, giving (\sqrt{13}\approx3.606). Positive covariance increases uncertainty because both coefficients have the same sign: shared positive movement reinforces (Y). For a subtractive model or negative covariance, the cross contribution can reduce variance. This calculation assumes first-order propagation and credible covariance; it does not validate linearity, distributions, or the measurement model.
 
@@ -447,21 +447,21 @@ Assuming independence removes the cross term, giving (\sqrt{13}\approx3.606). Po
 
 For (n=200) and (\alpha=0.05),
 
-\[
+$$
 R_L=0.05^{1/200}=\exp(\ln(0.05)/200)\approx0.98513.
-\]
+$$
 
 To require (R_L\ge0.99), solve
 
-\[
+$$
 0.05^{1/n}\ge0.99.
-\]
+$$
 
 Taking logs (both negative) gives
 
-\[
+$$
 n\ge\frac{\ln(0.05)}{\ln(0.99)}\approx298.07.
-\]
+$$
 
 Thus at least 299 zero-failure independent representative demands are required under this model. The bound does not cover dependence, demand heterogeneity, censoring, changed configuration, common causes, untested modes, or mission-duration scaling.
 

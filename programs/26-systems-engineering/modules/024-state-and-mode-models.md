@@ -35,28 +35,28 @@ How can a team model what a system is, knows, permits, and does over time—thro
 
 Represent a transition as:
 
-\[
+$$
 \tau=\langle s,e,g,a,s',t,p,q,r\rangle,
-\]
+$$
 
-where \(s\) is source state, \(e\) event/trigger, \(g\) guard, \(a\) effect, \(s'\) target, \(t\) timing/timeout semantics, \(p\) priority/conflict resolution, \(q\) authority and evidence, and \(r\) failure/rollback behavior.
+where $s$ is source state, $e$ event/trigger, $g$ guard, $a$ effect, $s'$ target, $t$ timing/timeout semantics, $p$ priority/conflict resolution, $q$ authority and evidence, and $r$ failure/rollback behavior.
 
 A transition is eligible only if:
 
-\[
+$$
 Eligible(\tau,\hat{x},m,c)=In(s)\land Occurred(e)\land
 Fresh(\hat{x})\land g(\hat{x},m,c),
-\]
+$$
 
-where \(\hat{x}\) is estimated state, \(m\) mode, and \(c\) configuration. Eligibility does not prove the effect succeeds physically.
+where $\hat{x}$ is estimated state, $m$ mode, and $c$ configuration. Eligibility does not prove the effect succeeds physically.
 
-For initial states \(S_0\), modeled runs \(Runs(M,S_0,H)\), and invariant \(I\):
+For initial states $S_0$, modeled runs $Runs(M,S_0,H)$, and invariant $I$:
 
-\[
+$$
 \forall\rho\in Runs(M,S_0,H):\Box I(\rho)
-\]
+$$
 
-is meaningful only within model assumptions \(H\), event bounds, environmental abstraction, and fairness/scheduling rules.
+is meaningful only within model assumptions $H$, event bounds, environmental abstraction, and fairness/scheduling rules.
 
 ### Critical invariants
 
@@ -135,7 +135,7 @@ After completing this module, you should be able to:
 
 **Inventory state variables.** Identify quantities whose current value/history affects future behavior: physical configuration, energy, thermal condition, position, ownership, authorization, data version, task progress, faults, and resource availability. Record domain, unit/reference, dynamics, valid/unknown representation, owner, persistence, and reset behavior. Avoid duplicating the same state without consistency rules.
 
-**Separate truth from knowledge.** Let \(x\) denote physical state and \(\hat{x}\) the estimated state. Measurements \(y\) relate through a model such as \(y=h(x)+v\), with noise/error \(v\). Commands target change but do not establish \(x\). Record estimator/model version, timestamp, uncertainty, provenance, and validity; state uncertainty is itself decision-relevant.
+**Separate truth from knowledge.** Let $x$ denote physical state and $\hat{x}$ the estimated state. Measurements $y$ relate through a model such as $y=h(x)+v$, with noise/error $v$. Commands target change but do not establish $x$. Record estimator/model version, timestamp, uncertainty, provenance, and validity; state uncertainty is itself decision-relevant.
 
 **Assess observability and diagnosability.** Ask whether the available observation history can distinguish state alternatives that require different action. Two physical states may produce the same sensor reading until a deliberate probe, additional sensor, elapsed time, or changed operating condition separates them. Define which states are directly measured, inferred, or fundamentally ambiguous; what excitation is safe; how quickly ambiguity must resolve; and what degraded behavior applies meanwhile. Diagnostics that merely echo controller variables do not independently observe the plant. Review common sensors, shared clocks, calibration, model bias, and common-cause loss before claiming independent confirmation. Observability in a mathematical model is conditional on that model and operating point; practical diagnosability also depends on noise, sampling, computation, and access. If hazardous state cannot be known reliably within the available time, redesign the sensing, control objective, or physical constraint rather than encoding optimistic guards.
 
@@ -221,22 +221,22 @@ Even T-001 may be semantically unsafe. The checker cannot assess freshness, phys
 
 ## Definitions and Notation
 
-Let a labeled transition system be \(M=(S,E,\rightarrow,S_0)\), with state space \(S\), events \(E\), transition relation \(\rightarrow\subseteq S\times E\times S\), and initial set \(S_0\). Guards/effects enrich the relation. Determinism relative to abstraction requires at most one resolved transition for a given modeled state and event/input valuation, unless intentional nondeterminism is declared.
+Let a labeled transition system be $M=(S,E,\rightarrow,S_0)$, with state space $S$, events $E$, transition relation $\rightarrow\subseteq S\times E\times S$, and initial set $S_0$. Guards/effects enrich the relation. Determinism relative to abstraction requires at most one resolved transition for a given modeled state and event/input valuation, unless intentional nondeterminism is declared.
 
-Let physical state \(x_t\), observation \(y_t\), estimate \(\hat{x}_t\), desired state \(x_t^*\), and command \(u_t\) remain distinct:
+Let physical state $x_t$, observation $y_t$, estimate $\hat{x}_t$, desired state $x_t^*$, and command $u_t$ remain distinct:
 
-\[
+$$
 x_{t+1}=f(x_t,u_t,w_t),\quad y_t=h(x_t,v_t),\quad
 \hat{x}_t=Est(y_{0:t},u_{0:t-1},Model).
-\]
+$$
 
-Disturbance \(w_t\) and measurement error \(v_t\) limit knowledge. These equations are generic structure, not an asserted estimator for every system.
+Disturbance $w_t$ and measurement error $v_t$ limit knowledge. These equations are generic structure, not an asserted estimator for every system.
 
 For a transition-coverage metric, always name eligible population and configuration:
 
-\[
+$$
 Coverage=\frac{|T_{executed\ with\ accepted\ evidence}|}{|T_{required\ in\ scope}|}.
-\]
+$$
 
 One hundred percent does not prove missing transitions absent or state invariants valid.
 
@@ -350,7 +350,7 @@ Design a state/mode model for a battery-backed medical refrigerator. Separate ph
 
 ### Exercise 2
 
-In state `heating`, two transitions share event `sample`: guard A is \(T\ge80\), guard B is \(T\le85\). Diagnose the model and redesign it for exclusive, uncertainty-aware behavior with sensor failure.
+In state `heating`, two transitions share event `sample`: guard A is $T\ge80$, guard B is $T\le85$. Diagnose the model and redesign it for exclusive, uncertainty-aware behavior with sensor failure.
 
 ### Exercise 3
 
@@ -374,9 +374,9 @@ Startup inhibits acceptance until identity/configuration, sensors, clock, stored
 
 ### Answer 2
 
-The guards overlap for \(80\le T\le85\), creating two eligible transitions unless priority or nondeterminism is explicitly safe. They also assume \(T\) is true, current, scalar state. Define measurement \(y\), estimate \(\hat{T}\), uncertainty \(u\), timestamp/freshness, sensor agreement, and thresholds from authorized requirements.
+The guards overlap for $80\le T\le85$, creating two eligible transitions unless priority or nondeterminism is explicitly safe. They also assume $T$ is true, current, scalar state. Define measurement $y$, estimate $\hat{T}$, uncertainty $u$, timestamp/freshness, sensor agreement, and thresholds from authorized requirements.
 
-One exclusive design: `sensor-invalid/stale/disagree` → state-uncertain and inhibit heat; `\hat{T}-u\ge85` → overtemperature response; `\hat{T}+u<80` → continue heating; otherwise → uncertainty band that stops or modulates heat and obtains additional evidence according to hazard policy. Equality semantics are explicit. If hysteresis is needed, encode different enter/exit thresholds and current state to prevent chatter. Verification covers boundaries, uncertainty, delay, stuck/noisy sensors, clock issues, and physical temperature—not merely transition-variable values.
+One exclusive design: `sensor-invalid/stale/disagree` → state-uncertain and inhibit heat; $\hat{T}-u\ge85$ → overtemperature response; $\hat{T}+u<80$ → continue heating; otherwise → uncertainty band that stops or modulates heat and obtains additional evidence according to hazard policy. Equality semantics are explicit. If hysteresis is needed, encode different enter/exit thresholds and current state to prevent chatter. Verification covers boundaries, uncertainty, delay, stuck/noisy sensors, clock issues, and physical temperature—not merely transition-variable values.
 
 ### Answer 3
 

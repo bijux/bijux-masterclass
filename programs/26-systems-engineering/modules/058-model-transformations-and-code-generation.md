@@ -37,21 +37,21 @@ How can engineers transform models into other models, documents, configurations 
 
 Treat transformation as a versioned compilation judgment:
 
-\[
+$$
 (M_s,MM_s,R,L,E)\Downarrow(M_t,\tau,D),
-\]
+$$
 
 where $M_s$ is the controlled source, $MM_s$ the source metamodel/libraries, $R$ transformation rules/templates, $L$ target runtime libraries/adapters, $E$ execution environment, $M_t$ target artifacts, $\tau$ trace and $D$ diagnostics. Acceptance requires:
 
-\[
+$$
 Pre(M_s)\land Conforms(M_t,MM_t)\land Post(M_s,M_t,\tau)\land Tests(M_t)\land D_{critical}=\varnothing.
-\]
+$$
 
 For semantic property set $P$, preservation is never simply “output generated.” It is a family of obligations:
 
-\[
+$$
 \forall p\in P:\quad M_s\models p\Rightarrow M_t\models \alpha(p),
-\]
+$$
 
 where $\alpha$ states how a source property maps or refines into target semantics. Unsupported $p$ must yield explicit loss/unknown evidence.
 
@@ -244,23 +244,23 @@ The structural string check does not establish target-language syntax and does n
 
 Let transformation run record be
 
-\[
+$$
 g=(sourceDigest,sourceMM,rules,generator,libraries,environment,targetDigest,trace,diagnostics,time).
-\]
+$$
 
 Let trace relation $\tau\subseteq E_s\times Rule\times E_t$ support many-to-many mappings. Trace completeness for in-scope source element $s$ means:
 
-\[
+$$
 mapped(s)\lor omittedWithApproval(s)\lor externalized(s)\lor unresolved(s).
-\]
+$$
 
 Unresolved is visible failure/unknown according to criticality, never implicit success.
 
 For full generator $G$ and incremental generator $G_\Delta$, an important regression property is semantic equivalence after change $\Delta$:
 
-\[
+$$
 G(M_s\oplus\Delta)\equiv G_\Delta(G(M_s),\Delta,\tau).
-\]
+$$
 
 Test it periodically with clean regeneration. Equality may be byte equality or a declared normalized semantic comparison; state which.
 
@@ -268,9 +268,9 @@ Test it periodically with clean regeneration. Equality may be byte equality or a
 
 **Commuting evidence.** Where an executable source interpretation $I_s$, generated target $G$, target execution $I_t$ and abstraction $\alpha$ exist, desired correspondence is
 
-\[
+$$
 \alpha(I_s(M_s,x))=I_t(G(M_s),x)
-\]
+$$
 
 for inputs/domain $x$ under assumptions. Finite differential tests sample this relation; formal proof requires complete semantics and proof obligations.
 

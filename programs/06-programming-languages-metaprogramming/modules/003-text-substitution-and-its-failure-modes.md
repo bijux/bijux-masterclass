@@ -31,19 +31,19 @@ When does replacing placeholders with character or token sequences preserve inte
 
 ### Central model, mechanism, or theorem
 
-Let templates and replacements be strings over alphabet \(\Sigma\). A one-pass substituter is
+Let templates and replacements be strings over alphabet $\Sigma$. A one-pass substituter is
 
-\[
+$$
 S:T\times(Name\rightharpoonup\Sigma^*)\to\Sigma^*.
-\]
+$$
 
-Let \(parse_C\) parse the result in host context \(C\). Substitution is safe for a data placeholder only if every admitted value \(v\) satisfies a boundary-preservation obligation such as
+Let $parse_C$ parse the result in host context $C$. Substitution is safe for a data placeholder only if every admitted value $v$ satisfies a boundary-preservation obligation such as
 
-\[
+$$
 parse_C(S(T,p\mapsto E_C(v)))=Expected_C(v),
-\]
+$$
 
-where \(E_C\) is correct for that exact context. Raw identity substitution \(E_C(v)=v\) cannot satisfy this across arbitrary grammars because delimiter and operator characters differ by context. Structure must be preserved by contextual encoding, typed construction, parameterization, or rejection.
+where $E_C$ is correct for that exact context. Raw identity substitution $E_C(v)=v$ cannot satisfy this across arbitrary grammars because delimiter and operator characters differ by context. Structure must be preserved by contextual encoding, typed construction, parameterization, or rejection.
 
 ### Critical invariants
 
@@ -127,7 +127,7 @@ Capture arises because inserted identifiers meet a lexical environment the subst
 
 Expansion order is observable. A one-pass template can insert characters resembling another placeholder and leave them inert. A recursive engine can rescan and expand them, enabling composition but also order dependence, cycles, and unintended interpretation. GNU `m4` rescans output under detailed quoting rules. C/C++ macro replacement rescans resulting preprocessing tokens with specified suppression rules. GNU `make` distinguishes recursive, simple, immediate, deferred, and secondary expansion contexts. An engine must name its rule rather than promise “variables are replaced.”
 
-For recursive expansion, define a dependency graph whose edge \(a\to b\) means expansion of `a` can reference `b`. A cycle can diverge or be stopped by engine-specific rules. Even an acyclic graph can expand exponentially when one replacement duplicates the next repeatedly. Termination therefore needs cycle detection or a formal suppression rule plus hard budgets for depth, steps, bytes, time, and memory.
+For recursive expansion, define a dependency graph whose edge $a\to b$ means expansion of `a` can reference `b`. A cycle can diverge or be stopped by engine-specific rules. Even an acyclic graph can expand exponentially when one replacement duplicates the next repeatedly. Termination therefore needs cycle detection or a formal suppression rule plus hard budgets for depth, steps, bytes, time, and memory.
 
 Unknown placeholders deserve failure by default in governed generation. Leaving `{{region}}` in a deployment manifest may produce a later parser error, or worse, be accepted as an unintended literal. Replacing it with empty text can collapse delimiters or broaden a value. A nullable placeholder must be declared as such and its surrounding syntax designed for absence. Diagnostics should name the template location, placeholder, available source/configuration, and phase without exposing secrets.
 
@@ -180,37 +180,37 @@ The output establishes literal one-pass string behavior for five inputs. It does
 
 ## Definitions and Notation
 
-Let \(T\in\Sigma^*\) be a template, \(N\) a set of placeholder names, and \(\rho:N\rightharpoonup\Sigma^*\) a partial replacement environment. A one-pass, non-rescanning expansion is
+Let $T\in\Sigma^*$ be a template, $N$ a set of placeholder names, and $\rho:N\rightharpoonup\Sigma^*$ a partial replacement environment. A one-pass, non-rescanning expansion is
 
-\[
+$$
 S_1(T,\rho)=\text{the template with each recognized marker }m(n)\text{ replaced once by }\rho(n).
-\]
+$$
 
-The definition still requires a deterministic scan rule for overlapping markers and a policy \(U\in\{error,preserve,empty,default\}\) for \(n\notin dom(\rho)\).
+The definition still requires a deterministic scan rule for overlapping markers and a policy $U\in\{error,preserve,empty,default\}$ for $n\notin dom(\rho)$.
 
 A recursive expansion sequence is
 
-\[
+$$
 T_0=T,\qquad T_{i+1}=S_1(T_i,\rho),
-\]
+$$
 
-and terminates at a fixed point \(T_k=T_{k+1}\) or an engine-defined suppression state. Equality of adjacent strings is insufficient as a safety policy if output size or steps exceed budgets before the fixed point.
+and terminates at a fixed point $T_k=T_{k+1}$ or an engine-defined suppression state. Equality of adjacent strings is insufficient as a safety policy if output size or steps exceed budgets before the fixed point.
 
-Let \(G_C\) be the grammar of receiving context \(C\), \(parse_C:\Sigma^*\rightharpoonup AST_C\), and \(Data_C(v)\) the intended syntax node representing data value \(v\). A contextual encoder owes
+Let $G_C$ be the grammar of receiving context $C$, $parse_C:\Sigma^*\rightharpoonup AST_C$, and $Data_C(v)$ the intended syntax node representing data value $v$. A contextual encoder owes
 
-\[
+$$
 parse_C(E_C(v))=Data_C(v)
-\]
+$$
 
-for every admitted \(v\), when the encoded fragment is parsed in exactly the promised context. In a larger template, the stronger noninterference obligation is that replacing one data node cannot introduce sibling or ancestor directives.
+for every admitted $v$, when the encoded fragment is parsed in exactly the promised context. In a larger template, the stronger noninterference obligation is that replacing one data node cannot introduce sibling or ancestor directives.
 
-For an expression macro parameter \(x\), let \(occ_R(x)\) be the number of evaluated occurrences in replacement \(R\). If an argument expression has observable trace \(t\), substitution can repeat it \(occ_R(x)\) times subject to control flow. Single-evaluation preservation generally requires a binding, not merely parentheses.
+For an expression macro parameter $x$, let $occ_R(x)$ be the number of evaluated occurrences in replacement $R$. If an argument expression has observable trace $t$, substitution can repeat it $occ_R(x)$ times subject to control flow. Single-evaluation preservation generally requires a binding, not merely parentheses.
 
 Let provenance record
 
-\[
+$$
 \Pi=(template\ digest,input\ digests,engine\ version,options,environment\ policy,output\ digest,source\ map).
-\]
+$$
 
 Secrets are represented by redacted identity/digest under policy, not copied into logs.
 
@@ -222,13 +222,13 @@ Secrets are represented by redacted identity/digest under policy, not copied int
 
 **Context impossibility.** Suppose one universal escape function leaves alphanumeric text unchanged and claims safety in all contexts. A quote character must be encoded differently in an HTML attribute, JavaScript string, shell word, SQL literal, and URL component; encodings meaningful to one parser can be literal or control syntax to another. Therefore safety requires at least a named context and grammar, or a structured constructor that avoids textual reparsing.
 
-**Rescan non-idempotence.** If \(\rho(a)=m(b)\) and \(\rho(b)=x\), then one pass over \(m(a)\) yields \(m(b)\), while two yield \(x\). Thus \(S_1(S_1(T,\rho),\rho)\ne S_1(T,\rho)\). Cache keys and tests must include rescan policy and step limits.
+**Rescan non-idempotence.** If $\rho(a)=m(b)$ and $\rho(b)=x$, then one pass over $m(a)$ yields $m(b)$, while two yield $x$. Thus $S_1(S_1(T,\rho),\rho)\ne S_1(T,\rho)$. Cache keys and tests must include rescan policy and step limits.
 
-**Cycle argument.** If \(\rho(a)=m(b)\) and \(\rho(b)=m(a)\), naive recursive replacement alternates forever. A dependency-graph cycle is sufficient to reject expansion unless the engine has a formally specified suppression/quoting semantics that makes the cycle inert.
+**Cycle argument.** If $\rho(a)=m(b)$ and $\rho(b)=m(a)$, naive recursive replacement alternates forever. A dependency-graph cycle is sufficient to reject expansion unless the engine has a formally specified suppression/quoting semantics that makes the cycle inert.
 
 **Data/directive preservation.** Parameterized SQL sends query structure and bound values through separate protocol positions; an argument-vector API sends command and arguments as distinct array elements. These mechanisms establish a structural boundary that an identity string substitution lacks. They do not establish authorization or domain validity.
 
-**Determinism obligation.** If output reads environment variable \(e\), then \(e\) is an input. Two expansions with equal declared inputs but different \(e\) can differ, refuting deterministic derivation. Either include a normalized identity for \(e\) in provenance/cache keys or prohibit the read.
+**Determinism obligation.** If output reads environment variable $e$, then $e$ is an input. Two expansions with equal declared inputs but different $e$ can differ, refuting deterministic derivation. Either include a normalized identity for $e$ in provenance/cache keys or prohibit the read.
 
 ## Alternatives and Trade-Offs
 
@@ -394,7 +394,7 @@ Prepare a verification plan for a generator that produces database migration SQL
 
 ### Answer 1
 
-Blind expansion yields `a+1*a+1*a+1`, parsed as `a + (1*a) + (1*a) + 1`, not \((a+1)^3\). A grouping repair is `#define CUBE(x) ((x)*(x)*(x))`, which expands to `((a+1)*(a+1)*(a+1))`. With `next()`, however, it contains three calls. Parentheses preserve expression grouping but not single evaluation, types, exceptions, or cost. An inline/generic function is the appropriate ordinary abstraction when compile-time token generation is unnecessary.
+Blind expansion yields `a+1*a+1*a+1`, parsed as `a + (1*a) + (1*a) + 1`, not $(a+1)^3$. A grouping repair is `#define CUBE(x) ((x)*(x)*(x))`, which expands to `((a+1)*(a+1)*(a+1))`. With `next()`, however, it contains three calls. Parentheses preserve expression grouping but not single evaluation, types, exceptions, or cost. An inline/generic function is the appropriate ordinary abstraction when compile-time token generation is unnecessary.
 
 ### Answer 2
 

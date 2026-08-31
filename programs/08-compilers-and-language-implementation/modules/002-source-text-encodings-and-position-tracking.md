@@ -24,7 +24,7 @@ How can a language implementation turn source bytes into text while preserving e
 - A **grapheme cluster** approximates a user-perceived character and can contain multiple scalar values.
 - A **source buffer** is an immutable or revision-identified byte sequence plus its decoding and file-identity contract.
 - A **byte offset** identifies a boundary between bytes, usually zero-based in a source buffer.
-- A **span** is a half-open interval \([start,end)\) in one declared coordinate system.
+- A **span** is a half-open interval $[start,end)$ in one declared coordinate system.
 - A **line index** maps line-start byte offsets to line numbers and supports reverse lookup.
 - A **display column** depends on tabs, grapheme segmentation, width policy, fonts, and rendering; it is not a stable storage coordinate.
 - A **position encoding** states whether a protocol column counts UTF-8 code units, UTF-16 code units, Unicode scalar values, or another defined unit.
@@ -33,16 +33,16 @@ How can a language implementation turn source bytes into text while preserving e
 
 Preserve a canonical source identity and byte-coordinate span:
 
-\[
+$$
 SourceId\times Revision\times [b_s,b_e).
-\]
+$$
 
 Decode bytes under an explicit policy to scalar values while retaining boundary maps. Derive consumer positions:
 
-\[
+$$
 byte\ offset\xrightarrow{line\ index}(line,byte\ in\ line)
 \xrightarrow{decode}(line,column_{unit}).
-\]
+$$
 
 Conversions are partial: an offset inside a multibyte encoding sequence is not a scalar boundary; a protocol position can exceed a line or split a UTF-16 surrogate pair. Reject or repair only under an explicit contract.
 
@@ -63,7 +63,7 @@ Common failures include calling bytes, code points, UTF-16 units, graphemes, and
 
 ### Compact example
 
-UTF-8 source `aé\n` has four bytes, three scalar values, and one newline. The line-ending byte offset is 3, while the scalar column before the newline is 2. Offset 2 lies inside `é` and is not a valid scalar boundary. A diagnostic span stored as bytes \([1,3)\) can precisely recover `é`; the rendered column is a derived view.
+UTF-8 source $aé\n$ has four bytes, three scalar values, and one newline. The line-ending byte offset is 3, while the scalar column before the newline is 2. Offset 2 lies inside `é` and is not a valid scalar boundary. A diagnostic span stored as bytes $[1,3)$ can precisely recover `é`; the rendered column is a derived view.
 
 ### Connections
 
@@ -120,7 +120,7 @@ A byte-order mark is data whose treatment is language-specific. UTF-8 does not n
 
 The Unicode codespace contains code points; scalar values exclude the surrogate range. UTF-8 encodes a scalar in one to four 8-bit code units. UTF-16 uses one 16-bit code unit for Basic Multilingual Plane scalars and a surrogate pair for supplementary scalars. Therefore “length” requires a unit.
 
-The string `e\u0301` contains two scalar values—a base letter and combining acute accent—but normally one extended grapheme cluster under Unicode text-segmentation rules. Precomposed `é` contains one scalar. The strings can be canonically equivalent without being byte-identical. An emoji family can contain several scalars joined into one extended grapheme cluster. A font can render multiple graphemes as one glyph or one grapheme with multiple glyphs.
+The string $e\u0301$ contains two scalar values—a base letter and combining acute accent—but normally one extended grapheme cluster under Unicode text-segmentation rules. Precomposed `é` contains one scalar. The strings can be canonically equivalent without being byte-identical. An emoji family can contain several scalars joined into one extended grapheme cluster. A font can render multiple graphemes as one glyph or one grapheme with multiple glyphs.
 
 Compilers commonly use bytes or code units as canonical offsets because slicing and storage are direct. Human-facing cursor motion may use extended grapheme clusters. Terminal or editor display columns additionally depend on tab stops, East Asian width, emoji presentation, control characters, bidi layout, font shaping, and policy. Preserve the stable coordinate and derive the presentation.
 
@@ -128,31 +128,31 @@ Compilers commonly use bytes or code units as canonical offsets because slicing 
 
 A durable span is not merely two integers. Use
 
-\[
+$$
 Span=(source\_id,revision,start,end,unit),
-\]
+$$
 
-with \(0\le start\le end\le length_{unit}(source)\). The unit is often fixed to bytes inside one compiler, but external APIs should still document it. An empty span represents insertion points and zero-width synthetic tokens.
+with $0\le start\le end\le length_{unit}(source)$. The unit is often fixed to bytes inside one compiler, but external APIs should still document it. An empty span represents insertion points and zero-width synthetic tokens.
 
 Source IDs distinguish physical files, virtual editor buffers, generated sources, command-line snippets, macro expansions, and embedded languages. Avoid using a path as the only identity: paths can be renamed, reused, case-folded, or mapped through workspaces. The source manager can associate a stable internal ID with URI/path metadata and content digest.
 
 Immutable snapshots make positions meaningful under edits. An edit creates a new revision; it does not mutate what an old diagnostic span denotes. A client may translate spans through an edit history, but translation is partial when text was deleted or ambiguously replaced. Tag every request and response with the applicable document version where the protocol permits.
 
-Half-open intervals simplify adjacency: tokens \([0,3)\) and \([3,4)\) share a boundary without overlap. Length is \(end-start\). Containment and intersection are well-defined, and an EOF span can be \([n,n)\).
+Half-open intervals simplify adjacency: tokens $[0,3)$ and $[3,4)$ share a boundary without overlap. Length is $end-start$. Containment and intersection are well-defined, and an EOF span can be $[n,n)$.
 
 ### Newlines and line indexes
 
 Define which sequences terminate a source line. Common policies recognize LF, CRLF as one terminator, and possibly lone CR or additional Unicode separators. The lexical grammar may treat newline characters differently inside comments or string literals, but physical line indexing typically scans the whole source independently so diagnostics remain total.
 
-Store `line_starts = [0, ...]` as sorted byte offsets. When a recognized terminator ends, append the next byte offset if it is within or exactly at EOF according to the chosen empty-final-line policy. To locate byte offset \(b\), binary-search the greatest line start \(\le b\). This yields a zero-based line and byte-in-line.
+Store `line_starts = [0, ...]` as sorted byte offsets. When a recognized terminator ends, append the next byte offset if it is within or exactly at EOF according to the chosen empty-final-line policy. To locate byte offset $b$, binary-search the greatest line start $\le b$. This yields a zero-based line and byte-in-line.
 
 Decide whether a file ending in a newline has a final empty line. Many editor protocols model the position after the terminator as the start of another line. Whatever the choice, make round trips and EOF behavior consistent.
 
-Line indexes cost \(O(n)\) to build and \(O(\log L)\) per lookup for \(L\) lines. Sequential lexing can track line state in \(O(1)\) per consumed unit, but random diagnostics and IDE queries still benefit from an index. Incremental indexes can update affected regions, provided clean-rebuild equivalence is tested.
+Line indexes cost $O(n)$ to build and $O(\log L)$ per lookup for $L$ lines. Sequential lexing can track line state in $O(1)$ per consumed unit, but random diagnostics and IDE queries still benefit from an index. Incremental indexes can update affected regions, provided clean-rebuild equivalence is tested.
 
 ### Column conversion
 
-From line start \(s\) to byte offset \(b\), validate that both are encoding boundaries and decode the slice. A UTF-8 protocol column is the count of UTF-8 code units—equivalent to bytes for valid UTF-8. A scalar column counts decoded scalar values. A UTF-16 column sums one for BMP scalars and two for supplementary scalars.
+From line start $s$ to byte offset $b$, validate that both are encoding boundaries and decode the slice. A UTF-8 protocol column is the count of UTF-8 code units—equivalent to bytes for valid UTF-8. A scalar column counts decoded scalar values. A UTF-16 column sums one for BMP scalars and two for supplementary scalars.
 
 Conversion in the opposite direction must reject a requested column that lands inside a multibyte UTF-8 sequence or UTF-16 surrogate pair. Clamping can be appropriate for a rendering convenience, but it must not silently alter a source edit. Protocol ingestion should fail predictably or follow its specified recovery rule.
 
@@ -188,9 +188,9 @@ Multiple edits can be specified relative to the same original document or applie
 
 Property tests should round-trip every valid boundary:
 
-\[
+$$
 byte\to(line,column_u)\to byte.
-\]
+$$
 
 Test ASCII, every UTF-8 length, supplementary UTF-16 pairs, combining sequences, ZWJ emoji, RTL text, tabs, NUL policy, BOM, LF/CRLF/CR, empty source, final newline, very long lines, many lines, and malformed sequences. Mutation tests should reveal off-by-one and CRLF-splitting defects.
 
@@ -238,23 +238,23 @@ except ValueError as error:
 
 ## Definitions and Notation
 
-Let source bytes be \(B=b_0\ldots b_{n-1}\). Byte boundaries are integers \([0,n]\). A span \([i,j)\) denotes bytes \(b_i\ldots b_{j-1}\), with \(0\le i\le j\le n\).
+Let source bytes be $B=b_0\ldots b_{n-1}$. Byte boundaries are integers $[0,n]$. A span $[i,j)$ denotes bytes $b_i\ldots b_{j-1}$, with $0\le i\le j\le n$.
 
-Let \(D_E\) be partial decoder for encoding \(E\). \(D_E(B)\) either yields scalar sequence \(S\) plus boundary information or a decoding error with causal byte span. Let \(L=[\ell_0,\ldots,\ell_{k-1}]\) be strictly increasing line starts with \(\ell_0=0\).
+Let $D_E$ be partial decoder for encoding $E$. $D_E(B)$ either yields scalar sequence $S$ plus boundary information or a decoding error with causal byte span. Let $L=[\ell_0,\ldots,\ell_{k-1}]$ be strictly increasing line starts with $\ell_0=0$.
 
-For valid boundary \(b\), \(line(b)=\max\{q\mid \ell_q\le b\}\). A position under unit \(u\) is \(P_u(b)=(line(b),count_u(B[\ell_{line(b)}:b]))\).
+For valid boundary $b$, $line(b)=\max\{q\mid \ell_q\le b\}$. A position under unit $u$ is $P_u(b)=(line(b),count_u(B[\ell_{line(b)}:b]))$.
 
-An origin relation \(O\subseteq Span_{generated}\times Span_{source}\) permits one-to-many provenance. A function is insufficient when generated content combines or duplicates origins.
+An origin relation $O\subseteq Span_{generated}\times Span_{source}$ permits one-to-many provenance. A function is insufficient when generated content combines or duplicates origins.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 **Boundary proof.** A stored UTF-8 token span is sliceable only if both endpoints are zero, EOF, or not continuation bytes and strict decoding has established well-formedness. Rejecting offset 2 in the model demonstrates one causal case, not a universal decoder proof.
 
-**Line lookup proof.** Since \(L\) is sorted, the predecessor line start exists because \(\ell_0=0\) and is unique. CRLF must be consumed as one terminator before checking single CR or LF.
+**Line lookup proof.** Since $L$ is sorted, the predecessor line start exists because $\ell_0=0$ and is unique. CRLF must be consumed as one terminator before checking single CR or LF.
 
-**Round-trip invariant.** For every canonical valid byte boundary \(b\), conversion \(Q_u(P_u(b))=b\), where \(Q_u\) rejects non-boundary columns. Tests must cover every supported unit.
+**Round-trip invariant.** For every canonical valid byte boundary $b$, conversion $Q_u(P_u(b))=b$, where $Q_u$ rejects non-boundary columns. Tests must cover every supported unit.
 
-**Snapshot invariant.** A span with revision \(r\) may be dereferenced only against content revision \(r\) or after an explicit validated translation.
+**Snapshot invariant.** A span with revision $r$ may be dereferenced only against content revision $r$ or after an explicit validated translation.
 
 **Origin invariant.** Every diagnostic over generated text has a generated span and at least one honest source/transformation origin or is explicitly labeled synthetic/internal.
 
@@ -305,7 +305,7 @@ An origin relation \(O\subseteq Span_{generated}\times Span_{source}\) permits o
 
 ### Example 3
 
-**Question:** Build line starts for bytes representing `a\r\nb\n`.
+**Question:** Build line starts for bytes representing $a\r\nb\n$.
 
 **Reasoning:** Start with 0. Consume CRLF as one terminator and append 3. Consume LF after `b` and append 5. Under a final-empty-line policy the starts are [0,3,5].
 
@@ -321,7 +321,7 @@ An origin relation \(O\subseteq Span_{generated}\times Span_{source}\) permits o
 
 ### Example 5
 
-**Question:** Why store `e\u0301` rather than normalize it before lexing?
+**Question:** Why store $e\u0301$ rather than normalize it before lexing?
 
 **Reasoning:** A language may define normalized identifier comparison, but diagnostics and edits must address original bytes. Normalizing first changes two-scalar spelling and offsets; retain source and derive a comparison key with an origin relation.
 
@@ -391,11 +391,11 @@ An origin relation \(O\subseteq Span_{generated}\times Span_{source}\) permits o
 
 ### Exercise 1
 
-For `é😀\n` in UTF-8, list byte, scalar, UTF-16, and likely extended-grapheme counts before the newline.
+For $é😀\n$ in UTF-8, list byte, scalar, UTF-16, and likely extended-grapheme counts before the newline.
 
 ### Exercise 2
 
-Design a line-start index for `a\r\nb\rc\n` under a policy recognizing CRLF, lone CR, and LF. Include the final empty line.
+Design a line-start index for $a\r\nb\rc\n$ under a policy recognizing CRLF, lone CR, and LF. Include the final empty line.
 
 ### Exercise 3
 

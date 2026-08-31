@@ -165,7 +165,7 @@ Every method is conditional. A formal proof with an unconstrained reset, a timin
 
 ## Definitions and Notation
 
-Let the finite state space be `\mathcal{S}`, input space `\mathcal{X}`, and output space `\mathcal{Y}`. A deterministic sequential model is a tuple `(\mathcal{S},\mathcal{X},\mathcal{Y},F,G,S_0)` with initial state `S_0`, transition `F:\mathcal{S}\times\mathcal{X}\to\mathcal{S}`, and output `G`.
+Let the finite state space be $\mathcal{S}$, input space $\mathcal{X}$, and output space $\mathcal{Y}$. A deterministic sequential model is a tuple $(\mathcal{S},\mathcal{X},\mathcal{Y},F,G,S_0)$ with initial state `S_0`, transition $F:\mathcal{S}\times\mathcal{X}\to\mathcal{S}$, and output `G`.
 
 A state representation is **sufficient** when equal represented state implies equal future observations for every permitted future input sequence. It is **reachable** if some permitted input trace from `S_0` produces it. An **invariant** `I(S)` holds initially and is preserved by every permitted transition:
 

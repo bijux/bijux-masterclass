@@ -33,15 +33,15 @@ How should a decision authority choose among system alternatives when reliabilit
 
 Use constrained decision analysis rather than unconstrained score maximization. For alternative $a$, first test every mandatory requirement and hard constraint:
 
-\[
+$$
 a\in F \iff g_j(a)\le 0\quad\text{for every mandatory constraint }j.
-\]
+$$
 
 Only feasible alternatives $F$ enter value comparison. For cash flow $C_{a,t}$ at year $t$, discounted lifecycle cost is
 
-\[
+$$
 LCC_a=C_{a,0}+\sum_{t=1}^{T}\frac{C_{a,t}}{(1+r)^t}.
-\]
+$$
 
 Keep reliability, safety-risk distribution, availability, maintainability, schedule, stakeholder effects, and evidence confidence visible alongside LCC. Eliminate dominated options, analyze scenarios and sensitivities, document decision reversals, and let the authorized decision maker select from the defensible frontier. A scalar utility may assist only after scales, independence assumptions, constraints, weights, and uncertainty are justified.
 
@@ -230,9 +230,9 @@ Let $A$ be the set of defined alternatives and $F\subseteq A$ the feasible set. 
 
 Let $C_{a,t,k}$ be cost for alternative $a$, time $t$, and cost element $k$. With a consistent rate $r$ and horizon $T$,
 
-\[
+$$
 LCC_a=\sum_k C_{a,0,k}+\sum_{t=1}^{T}\sum_k\frac{C_{a,t,k}}{(1+r)^t}-\frac{V_{a,T}}{(1+r)^T},
-\]
+$$
 
 where $V_{a,T}$ is residual value if it is realizable and consistently treated. Costs may be random variables. Scenario expectation $E[LCC_a]=\sum_s p_sLCC_{a,s}$ requires defensible, mutually coherent scenario probabilities; it is not a safety criterion.
 
@@ -449,17 +449,17 @@ Classification prevents compensation errors and double counting. Gates are check
 
 For A,
 
-\[
+$$
 LCC_A=120+\frac{24}{1.04}+\frac{24}{1.04^2}+\frac{24}{1.04^3}+\frac{24}{1.04^4}
 =207.12.
-\]
+$$
 
 For B,
 
-\[
+$$
 LCC_B=160+\sum_{t=1}^{4}\frac{11}{1.04^t}+\frac{12}{1.04^4}
 =210.19.
-\]
+$$
 
 Thus A is lower by about 3.07 under the declared arithmetic. The margin is small enough that missing elements or uncertainty may reverse it. Limits include: comparable capability and safety are not established; failure/downtime, staffing, spares, verification, renewal, and transition costs may be absent; four years may not match service need; the rate may be policy-specific; amounts may be uncertain/correlated; annual affordability is untested; residual/disposal treatment may be inconsistent; and no stakeholder distribution or tail risk is represented. The conclusion is only that A has lower discounted included cost in this synthetic case.
 

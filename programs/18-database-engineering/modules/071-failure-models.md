@@ -24,10 +24,10 @@ A **fault** is an hypothesized cause such as a bug, bit flip, power loss, operat
 
 Every guarantee has the form:
 
-\[
+$$
 G = (boundary, assumptions, admitted faults, maximum concurrency/correlation,
 detection, response, recovery objective, evidence).
-\]
+$$
 
 Mechanism sufficiency is conditional: redundancy tolerates only the failures outside its shared fate and within its voting/reconstruction assumptions; WAL protects only if ordering, persistence, integrity, and recovery premises hold; timeout-based detection trades completeness against false suspicion. In a fully asynchronous message-passing model, Fischer, Lynch, and Paterson show that deterministic consensus cannot guarantee termination with even one crash failure. Practical systems make additional timing, randomness, quorum, or failure-detector assumptions.
 

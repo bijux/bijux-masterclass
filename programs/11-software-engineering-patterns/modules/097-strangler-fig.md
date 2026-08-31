@@ -34,9 +34,9 @@ How can a system transfer one coherent capability at a time from a legacy implem
 
 Model each capability (k) as a state machine:
 
-\[
+$$
 Legacy \rightarrow Shadow \rightarrow Canary(c) \rightarrow Replacement \rightarrow Retired.
-\]
+$$
 
 Every transition has entry evidence, an invariant set and abort/rollback action. At any instant, exactly one path owns authoritative writes for a given entity/cohort unless a documented transaction/consensus protocol provides one logical authority. Routing must be deterministic and sticky where state/session semantics require it. Retirement is reached only after routes, callers, jobs, data writes, credentials, alerts, runbooks and fallback code for the legacy slice are removed or archived under policy.
 

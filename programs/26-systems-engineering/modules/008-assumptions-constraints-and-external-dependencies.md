@@ -34,19 +34,19 @@ Which propositions, restrictions, and externally supplied capabilities must hold
 
 Represent each objective or requirement as a claim supported by evidence and premises:
 
-\[
+$$
 Claim \Leftarrow Evidence \land Assumptions \land ConstraintsSatisfied
 \land DependencyGuarantees.
-\]
+$$
 
 For decision/release horizon (T), readiness requires:
 
-\[
+$$
 Ready(T) \Rightarrow
 \bigwedge_{a\in A_c} Valid(a,T)
 \land \bigwedge_{c\in C_h} Satisfied(c)
 \land \bigwedge_{d\in D_c}[Guaranteed(d,T)\lor AcceptableFallback(d,T)].
-\]
+$$
 
 This is a necessary governance rule for declared critical records, not proof that the register is complete or the system is safe. Trace objectives transitively through assumptions, constraints, interfaces, suppliers, enabling systems, and shared causes. A change at any node triggers impact analysis and revalidation of affected claims.
 
@@ -126,10 +126,10 @@ After completing this module, you should be able to:
 
 **Write a complete assumption record.** Use:
 
-\[
+$$
 a=(id,proposition,scope,mode,horizon,basis,confidence,owner,claims,
 consequence,trigger,verification,expiry,status).
-\]
+$$
 
 The proposition must be falsifiable enough to observe. “Normal demand” is weak; “five-minute arrivals remain below 4,000 requests except declared campaign events through quarter end” can be checked. Scope names boundary, population, configuration, location, and lifecycle mode. Basis distinguishes measurement, contract, expert judgment, model, precedent, or hope.
 
@@ -151,10 +151,10 @@ The proposition must be falsifiable enough to observe. “Normal demand” is we
 
 **Model external dependencies.** Create a dependency record:
 
-\[
+$$
 d=(provider,capability,consumers,guarantee,interface,authority,
 observation,failure,common\ causes,contingency,exit,owner).
-\]
+$$
 
 Provider can be supplier, regulator, operator, user, natural environment, utility, clock, certificate authority, data source, training organization, repair facility, or another product. External ownership does not remove the internal owner responsible for understanding and treating reliance.
 
@@ -237,34 +237,34 @@ Let (A_c) be critical assumptions, (C_h) hard constraints, and (D_c) critical ex
 
 For assumption (a):
 
-\[
+$$
 Valid(a,T)=Supported(a,E)\land ScopeMatches(a)\land T\le Expiry(a)
 \land \neg Triggered(a).
-\]
+$$
 
 `Supported` is an evidence judgment under named method and authority, not a Boolean truth oracle.
 
 For constraint (c), let (g_c(x)\le0) express a quantitative admissibility condition where appropriate. Margin is:
 
-\[
+$$
 m_c=-g_c(x),
-\]
+$$
 
 so positive margin is inside the limit under the stated sign convention. For a simple upper limit (x\le L), (m=L-x). Uncertainty in (x), (L), correlation, and model form remains separate.
 
 For dependency (d), an assumption-guarantee contract is:
 
-\[
+$$
 EnvironmentAssumption_d \Rightarrow ProviderGuarantee_d.
-\]
+$$
 
 The consumer must verify that its environment satisfies the provider's assumptions and that the provider guarantee is adequate for consumer objectives. Composition fails when contracts are semantically mismatched even if syntax agrees.
 
 Let a directed claim graph (G=(V,E)) connect objectives, requirements, assumptions, constraints, dependencies, decisions, and evidence. The impact set of changed node (v) is the reachable dependent set:
 
-\[
+$$
 Impact(v)=\{u\mid v\leadsto u\}.
-\]
+$$
 
 Graph reachability is only as complete and current as recorded edges.
 

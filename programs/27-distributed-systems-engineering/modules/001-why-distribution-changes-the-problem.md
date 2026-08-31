@@ -29,7 +29,7 @@ Why does placing computation or state in independently executing processes conne
 
 ### Central model, mechanism, or theorem
 
-Model an execution as local events and message edges rather than one global program trace. For process \(p\), decision \(D_p\) can depend only on local history \(H_p\). If executions \(e_1\) and \(e_2\) produce the same \(H_p\) but require different correct actions, no deterministic local rule can always choose correctly without additional communication, assumptions, stable records, identifiers, coordination, or a weakened contract. This epistemic gap—not merely network latency—is the defining change.
+Model an execution as local events and message edges rather than one global program trace. For process $p$, decision $D_p$ can depend only on local history $H_p$. If executions $e_1$ and $e_2$ produce the same $H_p$ but require different correct actions, no deterministic local rule can always choose correctly without additional communication, assumptions, stable records, identifiers, coordination, or a weakened contract. This epistemic gap—not merely network latency—is the defining change.
 
 ### Critical invariants
 
@@ -85,7 +85,7 @@ A local program can often rely on one address space, one memory model, language-
 
 Distribution is not the same as concurrency or parallelism. Concurrent activities overlap logically; parallel activities execute simultaneously; distributed activities execute in independently failing contexts that communicate. A multithreaded process can be concurrent without being distributed. Two sequential services communicating over a network form a distributed interaction. Distribution nearly always introduces concurrency because message arrivals and independent execution interleave.
 
-Represent process \(p\)'s events as a local sequence \(H_p=(e_{p,1},e_{p,2},\ldots)\). A message creates a send event at one process and, if delivered, a receive event at another. Lamport's **happens-before** relation includes local order, send-before-receive, and transitive closure. Concurrent events need not be causally ordered. Physical timestamps can be useful measurements but clock error and lack of causal connection prevent them from serving as automatic truth.
+Represent process $p$'s events as a local sequence $H_p=(e_{p,1},e_{p,2},\ldots)$. A message creates a send event at one process and, if delivered, a receive event at another. Lamport's **happens-before** relation includes local order, send-before-receive, and transitive closure. Concurrent events need not be causally ordered. Physical timestamps can be useful measurements but clock error and lack of causal connection prevent them from serving as automatic truth.
 
 No participant directly reads the global state. It learns through messages whose contents were generated in an earlier local state. By arrival, the sender may have changed, crashed, restarted, or lost leadership. The receiver's view is therefore partial and stale by an unknown amount unless the protocol establishes stronger bounds. A dashboard, registry, cache, or health check is another distributed observer, not omniscience.
 
@@ -137,9 +137,9 @@ Execution establishes only that the encoded local observation maps to several en
 
 ## Definitions and Notation
 
-Let \(P=\{p_1,\ldots,p_n\}\) be processes and \(M\) messages. An execution \(e\) is an interleaving or partial order of local events, sends, receives, failures, recoveries, and external actions allowed by model \(\mathcal{M}\). Process \(p\)'s projection is local history \(H_p(e)\). Executions \(e_1\sim_p e_2\) are indistinguishable to \(p\) when \(H_p(e_1)=H_p(e_2)\).
+Let $P=\{p_1,\ldots,p_n\}$ be processes and $M$ messages. An execution $e$ is an interleaving or partial order of local events, sends, receives, failures, recoveries, and external actions allowed by model $\mathcal{M}$. Process $p$'s projection is local history $H_p(e)$. Executions $e_1\sim_p e_2$ are indistinguishable to $p$ when $H_p(e_1)=H_p(e_2)$.
 
-Write \(a\rightarrow b\) when event \(a\) happens before \(b\): local program order, send-before-corresponding-receive, or transitive consequence. If neither \(a\rightarrow b\) nor \(b\rightarrow a\), the events are concurrent in this relation. The relation captures potential causal influence, not elapsed physical duration.
+Write $a\rightarrow b$ when event $a$ happens before $b$: local program order, send-before-corresponding-receive, or transitive consequence. If neither $a\rightarrow b$ nor $b\rightarrow a$, the events are concurrent in this relation. The relation captures potential causal influence, not elapsed physical duration.
 
 A safety property is commonly prefix-closed: once violated, a finite bad prefix witnesses the failure. A liveness property states that something good eventually occurs and depends on infinite-execution fairness or progress assumptions. **Fault tolerance** means specified properties continue under a declared set and number of faults; it never means tolerance of every failure.
 

@@ -106,9 +106,9 @@ A full permutation is the simplest coverage contract: `p_0,...,p_(m-1)` contains
 
 **Quadratic probing is a family.** A common form is
 
-\[
+$$
 p_i(k)=(h_1(k)+c_1 i+c_2 i^2)\bmod m.
-\]
+$$
 
 The coefficients, arithmetic domain, capacity, and index range determine coverage. For prime `p`, the simple offsets `i^2 mod p` contain only `(p+1)/2` distinct values for `i=0,...,p-1`: nonzero `i` and `p-i` have the same square. If fewer than `(p+1)/2` table slots are occupied, every such probe set must include an EMPTY, so a sub-half load policy can still guarantee insertion. It does not justify probing `p` times as though every slot were covered.
 
@@ -116,9 +116,9 @@ Different coefficients can have different guarantees. Never transplant “prime 
 
 **Triangular offsets give a clean power-of-two construction.** Define `T_i=i(i+1)/2` and let `m=2^r`. The sequence
 
-\[
+$$
 p_i(k)=(h_1(k)+T_i)\bmod 2^r
-\]
+$$
 
 is a permutation for `0<=i<2^r`. Suppose `T_i=T_j mod 2^r`, with `0<=i<j<2^r`. Multiplying by two gives divisibility of `(j-i)(i+j+1)` by `2^(r+1)`. The factors have opposite parity because their sum is `2j+1`. The odd factor contributes no factor two; the even factor would have to be divisible by `2^(r+1)`, but both positive factors are smaller than that. Contradiction. Adding home merely rotates the permutation.
 
@@ -128,9 +128,9 @@ Basic quadratic probing avoids the primary clustering mechanism of one shared un
 
 **Double hashing makes the stride key-dependent.** Define
 
-\[
+$$
 p_i(k)=(h_1(k)+i h_2(k))\bmod m.
-\]
+$$
 
 For fixed key, this is repeated addition on integers modulo `m`. Let `s=h2(k)` and `d=gcd(s,m)`. The sequence repeats when `(i-j)s=0 mod m`. The least positive period is `m/d`, so it visits exactly that many residues. It covers all slots if and only if `s` and `m` are coprime.
 

@@ -33,9 +33,9 @@ How can a library expose a small, stable, coherent public namespace over evolvin
 
 Let internal implementation graph be (G=(V,E)), curated public symbols be (A\subset V), and consumer dependency edges be (E_c\subset Consumer\times V). The facade objective is
 
-\[
+$$
 \forall(c,v)\in E_c:\ v\in A,
-\]
+$$
 
 while implementation nodes (V\setminus A) may evolve subject to preserving the semantic contracts of (A). Export syntax can constrain reachability, but only tests, review, and version policy address behavioral compatibility. A stable path is useful only when ownership, types, errors, initialization, and dependencies behind it also remain coherent.
 

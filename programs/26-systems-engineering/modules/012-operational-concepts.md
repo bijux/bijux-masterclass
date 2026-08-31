@@ -33,26 +33,26 @@ How can stakeholders describe an envisioned way of operating—across people, or
 
 Model the concept as a decision-bounded set:
 
-\[
+$$
 C=\langle purpose,scope,stakeholders,roles,context,current,target,transition,
 modes,threads,interfaces,support,measures,assumptions,constraints,risks,trace,evidence\rangle.
-\]
+$$
 
-For every important operational claim \(c_i\), preserve:
+For every important operational claim $c_i$, preserve:
 
-\[
+$$
 c_i \Leftarrow source_i + rationale_i + authority_i,
 \qquad c_i \Rightarrow needs_i + requirements_i + validation_i.
-\]
+$$
 
 Concept adequacy is conditional:
 
-\[
+$$
 Adequate(C,D) \iff Coverage(C,D) \land Consistency(C)
 \land FeasibilityEvidence(C,D) \land Authorized(C,D),
-\]
+$$
 
-where \(D\) is the named decision. The predicate disciplines review; populated fields do not prove that stakeholders, conditions, or futures are complete.
+where $D$ is the named decision. The predicate disciplines review; populated fields do not prove that stakeholders, conditions, or futures are complete.
 
 ### Critical invariants
 
@@ -201,23 +201,23 @@ print("evidence=declared_fields_only")
 
 ## Definitions and Notation
 
-Let \(C\) be an operational-concept baseline and \(D\) its supported decision. Let \(R_o\) be operational roles, \(M\) modes, \(T\) operational threads, \(E\) external/enabling entities, \(S\) support capabilities, and \(Q\) operational measures.
+Let $C$ be an operational-concept baseline and $D$ its supported decision. Let $R_o$ be operational roles, $M$ modes, $T$ operational threads, $E$ external/enabling entities, $S$ support capabilities, and $Q$ operational measures.
 
-For a role \(r\):
+For a role $r$:
 
-\[
+$$
 r=\langle objectives,responsibilities,authority,information,actions,
 competence,workload,handoffs,escalation,evidence\rangle.
-\]
+$$
 
-For a mode transition \(m_i\rightarrow m_j\):
+For a mode transition $m_i\rightarrow m_j$:
 
-\[
+$$
 \tau=\langle trigger,guard,authority,actions,stateTransfer,observability,
 failure,recovery,endState\rangle.
-\]
+$$
 
-Let \(Trace(x,y,\rho)\) mean artifact element \(x\) supports element \(y\) with recorded rationale \(\rho\). A link without rationale is navigational, not evidence of faithful transformation. Let \(Obs(q,p,t)\) mean measure \(q\) is observed for population/context \(p\) over horizon \(t\); it does not imply causal attribution.
+Let $Trace(x,y,\rho)$ mean artifact element $x$ supports element $y$ with recorded rationale $\rho$. A link without rationale is navigational, not evidence of faithful transformation. Let $Obs(q,p,t)$ mean measure $q$ is observed for population/context $p$ over horizon $t$; it does not imply causal attribution.
 
 Use **ConOps** only with the locally declared meaning. **OpsCon**, **operational concept**, and **operations concept** have community-specific meanings. A **use case** emphasizes actor/system interaction for a goal; a **scenario** is a concrete sequence; a **procedure** directs executable work; an **operations plan** assigns detailed resources and schedules. None substitutes automatically for the whole concept.
 
@@ -225,12 +225,12 @@ Use **ConOps** only with the locally declared meaning. **OpsCon**, **operational
 
 The principal mechanism is iterative translation. Stakeholder outcomes constrain the intended operation; operational walkthroughs expose missing or conflicting needs; the agreed operation motivates requirements and architecture questions; feasibility evidence may revise the concept; validation later evaluates the realized operation against outcomes.
 
-For each critical thread \(t\), require coverage across roles, modes, interfaces, environment, support, hazards, measures, and lifecycle:
+For each critical thread $t$, require coverage across roles, modes, interfaces, environment, support, hazards, measures, and lifecycle:
 
-\[
+$$
 Cover(t)=Roles(t)\land Modes(t)\land Interfaces(t)\land Support(t)
 \land Failure(t)\land Measures(t)\land Trace(t).
-\]
+$$
 
 This is an audit schema, not a completeness theorem. Review must still ask whether the thread set and axes omit unknown or politically excluded concerns.
 

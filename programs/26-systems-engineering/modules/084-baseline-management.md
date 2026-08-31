@@ -33,15 +33,15 @@ Can the organization identify the exact approved technical state used for a deci
 
 Represent baseline $B_k$ as
 
-\[
+$$
 B_k=(p, M_k, R_k, E_k, A_k, T_k, S_k),
-\]
+$$
 
 where $p$ is purpose, $M$ the immutable content manifest, $R$ typed relationships, $E$ effectivity, $A$ authority and approvals, $T$ establishment time, and $S$ authoritative storage/provenance. A successor is legitimate only through a controlled transition
 
-\[
+$$
 B_k \xrightarrow[\alpha,\,I,\,V,\,Q]{\Delta} B_{k+1},
-\]
+$$
 
 where $\Delta$ is the exact change set, $\alpha$ proper authority, $I$ impact analysis, $V$ verified implementation, and $Q$ reconciliation of affected actual configurations. A new tag without this evidence is only a label.
 
@@ -214,9 +214,9 @@ Let actual configuration $\widehat{C}_{t,x}$ be observed at time $t$ for instanc
 
 Define discrepancy set
 
-\[
+$$
 D_{t,x}=compare(C^*_{t,x},\widehat{C}_{t,x}),
-\]
+$$
 
 partitioned into missing, extra, mismatched, unknown, and relationship discrepancies. A naive coverage $c=m/n$ reports matching entries but cannot weight criticality, completeness, semantic correctness, provenance, or observational trust.
 

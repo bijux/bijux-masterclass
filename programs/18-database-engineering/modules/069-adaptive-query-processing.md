@@ -24,10 +24,10 @@ How can a query processor use observations made during or after execution to imp
 
 At decision point (t), switch from incumbent (p) to alternative (q) only if both are semantically interchangeable from the current state and
 
-\[
+$$
 C_{observe}+C_{decide}+C_{transfer}+E[C_{remaining}(q)] + R_{risk}
 < E[C_{remaining}(p)]-H,
-\]
+$$
 
 where already incurred cost is sunk, (H) is hysteresis, and (R_{risk}) prices uncertainty and operational risk. Correctness requires a state relation: every not-yet-produced logical result remains reachable exactly once, every already committed result is excluded from replay, snapshot and authorization remain unchanged, and failure recovery agrees with the engine's execution protocol.
 

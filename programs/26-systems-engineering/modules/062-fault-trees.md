@@ -35,21 +35,21 @@ How can engineers deductively decompose one precisely defined undesirable event 
 
 Let basic event indicators be $x=(x_1,\ldots,x_n)\in\{0,1\}^n$ and top-event structure function $\phi(x)$. For a coherent tree, $x\le y$ componentwise implies $\phi(x)\le\phi(y)$. OR and AND gates implement
 
-\[
+$$
 OR(x_1,\ldots,x_n)=1-\prod_i(1-x_i),\qquad AND(x_1,\ldots,x_n)=\prod_i x_i
-\]
+$$
 
 for binary indicators. After Boolean reduction, a coherent top event can be written as an OR of MCS conjunctions:
 
-\[
+$$
 T=\bigvee_{K\in\mathcal K}\bigwedge_{i\in K}x_i.
-\]
+$$
 
 For independent basic events with probabilities $q_i$, a single AND product is $\prod q_i$, and an OR of mutually independent/disjoint branches can be evaluated by complement. The rare-event approximation
 
-\[
+$$
 P(T)\approx\sum_{K\in\mathcal K}\prod_{i\in K}q_i
-\]
+$$
 
 neglects intersections among cut sets. It can overcount, and independence of basic events is never created by drawing separate symbols.
 
@@ -227,17 +227,17 @@ For event set $B$, a structure function $\phi: \{0,1\}^{|B|}\rightarrow\{0,1\}$ 
 
 For independent Bernoulli basic events, exact probability is
 
-\[
+$$
 P(T)=\sum_{x:\phi(x)=1}\prod_i q_i^{x_i}(1-q_i)^{1-x_i}.
-\]
+$$
 
 This enumerative expression demonstrates semantics but scales exponentially. Solvers use Boolean reduction, inclusion–exclusion, BDDs or other algorithms. Algorithm efficiency does not repair invalid event probability or dependence assumptions.
 
 Define Birnbaum importance for event $i$ as
 
-\[
+$$
 I_B(i)=P(T\mid x_i=1)-P(T\mid x_i=0).
-\]
+$$
 
 It is sensitivity to forcing one event state within the rest of the model, not probability that event $i$ “caused” an observed accident.
 
@@ -382,15 +382,15 @@ Use stable repeated identities for shared fuel/control. House events may select 
 
 The expression is already an OR of products, with MCSs $\{A\},\{B,C\},\{B,D\}$. The latter cut sets overlap whenever $B,C,D$ occur. Factor:
 
-\[
+$$
 T=A\lor[B(C\lor D)].
-\]
+$$
 
 Under declared independence, $P(C\lor D)=0.03+0.04-(0.03)(0.04)=0.0688$, so $P(B(C\lor D))=0.001376$. Then
 
-\[
+$$
 P(T)=0.001+0.001376-(0.001)(0.001376)=0.002374624.
-\]
+$$
 
 The rare sum is $0.001+(0.02)(0.03)+(0.02)(0.04)=0.0024$, high by $0.000025376$, about 1.069% of exact. This arithmetic is conditional on Bernoulli independence and a common mission; it says nothing about data validity.
 

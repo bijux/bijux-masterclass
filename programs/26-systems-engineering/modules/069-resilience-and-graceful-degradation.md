@@ -33,15 +33,15 @@ When adverse conditions exceed prevention or nominal design assumptions, which e
 
 Let normalized stakeholder utility $u(t)\in[0,1]$ represent the weighted, constraint-qualified service delivered after a disturbance begins at $t_0$. Define a minimum acceptable floor $u_{min}(t)$ and an assessment horizon $T$. A simple lost-service measure is
 
-\[
+$$
 L=\int_{t_0}^{T}\max(0,1-u(t))\,dt,
-\]
+$$
 
 while floor violation is
 
-\[
+$$
 V=\int_{t_0}^{T}\mathbf{1}[u(t)<u_{min}(t)]\,dt.
-\]
+$$
 
 Two systems can have the same lost-service area but different safety consequences, minimum depth, recovery trajectory, or stakeholder distribution. Therefore report the trajectory and constraints—not one “resilience score.” A useful claim binds disturbance class, essential services, floor, degradation/recovery metrics, resource assumptions, and evidence.
 
@@ -208,9 +208,9 @@ For disturbance profile $d$, define response trajectory $u_d(t)$, minimum $u_d^{
 
 A degraded mode $m$ is a controlled state tuple
 
-\[
+$$
 m=(services,limits,constraints,resources,authority,entry,exit,monitoring).
-\]
+$$
 
 Leaving any element implicit creates operational ambiguity. Let resilience debt $B$ be a structured inventory rather than one number: depleted resources, bypassed controls, temporary changes, unresolved anomalies, and human/organizational load have different consequences.
 

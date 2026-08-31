@@ -33,26 +33,26 @@ How can a team change a baselined requirement—or resolve requirements that can
 
 Treat a change as a state transition over a controlled baseline, not as an edit:
 
-\[
+$$
 CR=\langle id,B_0,\Delta,R,E,I,A,D,C,B_1,V\rangle,
-\]
+$$
 
-where \(B_0\) is the exact prior baseline, \(\Delta\) the proposed semantic delta, \(R\) rationale, \(E\) supporting evidence, \(I\) impact analysis, \(A\) competent authority, \(D\) disposition, \(C\) decision conditions, \(B_1\) resulting baseline, and \(V\) implementation and outcome evidence.
+where $B_0$ is the exact prior baseline, $\Delta$ the proposed semantic delta, $R$ rationale, $E$ supporting evidence, $I$ impact analysis, $A$ competent authority, $D$ disposition, $C$ decision conditions, $B_1$ resulting baseline, and $V$ implementation and outcome evidence.
 
-For a conflict set \(Q=\{q_1,\ldots,q_n\}\) under assumptions \(H\), a solver finding
+For a conflict set $Q=\{q_1,\ldots,q_n\}$ under assumptions $H$, a solver finding
 
-\[
+$$
 H\land\bigwedge_{q\in Q}q=\bot
-\]
+$$
 
 is evidence that the encoded model is unsatisfiable. It is not proof that stakeholder intent itself is irreconcilable: the encoding, units, scope, versions, and assumptions require review.
 
 An approved decision is ready for closure only if:
 
-\[
+$$
 Ready=Authorized\land Incorporated\land TraceUpdated\land
 ImplementationChecked\land RequiredVVComplete\land ResidualRiskAccepted.
-\]
+$$
 
 ### Critical invariants
 
@@ -141,7 +141,7 @@ After completing this module, you should be able to:
 
 **Triage proportionally.** Classify consequence, reach, reversibility, urgency, maturity, and deployment state. A reversible pre-baseline model experiment differs from a change to a fielded medical alarm. Establish control levels and escalation triggers in advance. Low-impact decisions may have delegated authority; cross-interface, high-cost, irreversible, regulatory, safety, security, or fielded-product effects require broader competence and authority.
 
-**Establish the change hypothesis.** Express the claim: “Changing X from state \(x_0\) to \(x_1\) will address evidence P while preserving obligations O under assumptions H.” This forces reviewers to ask what evidence would refute the claim, which constraints remain fixed, and which outcomes must be re-established. Without a hypothesis, analysis becomes a catalog rather than a decision argument.
+**Establish the change hypothesis.** Express the claim: “Changing X from state $x_0$ to $x_1$ will address evidence P while preserving obligations O under assumptions H.” This forces reviewers to ask what evidence would refute the claim, which constraints remain fixed, and which outcomes must be re-established. Without a hypothesis, analysis becomes a catalog rather than a decision argument.
 
 **Traverse trace relationships.** Starting from the changed node/version, traverse upstream sources and downstream decomposition, allocation, architecture, implementation, verification, validation, and operational artifacts. Traverse horizontal interfaces, budgets, hazards, threats, suppliers, variants, anomalies, waivers, procedures, and training. Filter by edge type and configuration, then inspect relation rationale. The resulting set is a candidate frontier, never an exhaustive proof.
 
@@ -149,7 +149,7 @@ After completing this module, you should be able to:
 
 **Analyze multiple consequence domains.** At minimum ask about stakeholder value, functions, performance, architecture, interfaces, data, modes, timing, resource budgets, reliability, maintainability, safety, security, privacy, human factors, environment, manufacture, supply, integration, verification, validation, operations, training, support, disposal, cost, schedule, contract, regulation, and existing evidence. Mark each as affected, unaffected with rationale, unknown, or not applicable. “No impact” is a claim requiring basis.
 
-**Quantify without manufacturing certainty.** Recompute budgets and margins under named assumptions. Use ranges or distributions when inputs are uncertain. Separate estimate uncertainty from decision thresholds. If a schedule estimate is \(12\pm4\) weeks, do not turn it into a precise 12-week promise. Sensitivity analysis shows which assumptions could reverse the recommendation.
+**Quantify without manufacturing certainty.** Recompute budgets and margins under named assumptions. Use ranges or distributions when inputs are uncertain. Separate estimate uncertainty from decision thresholds. If a schedule estimate is $12\pm4$ weeks, do not turn it into a precise 12-week promise. Sensitivity analysis shows which assumptions could reverse the recommendation.
 
 **Detect conflict precisely.** Lexical conflicts use inconsistent terms. Structural conflicts assign incompatible responsibility or scope. Quantitative conflicts exceed a shared mass, power, latency, capacity, reliability, or cost bound. Behavioral conflicts require mutually exclusive actions under the same condition. Temporal conflicts impose impossible ordering or deadlines. Interface conflicts disagree about units, protocols, ownership, or failure semantics. Authority conflicts arise when sources impose incompatible obligations. Evidence conflicts occur when models, tests, or observations disagree.
 
@@ -181,11 +181,11 @@ After completing this module, you should be able to:
 
 **Manage fielded variants.** Identify every serial number, site, release, option, region, and data schema affected. Avoid marking a request closed because the development baseline changed while deployed assets remain mixed. Maintain as-designed, as-built, as-tested, as-deployed, and as-maintained applicability where required. Evidence from one variant transfers only through an explicit equivalence argument.
 
-**Measure change flow responsibly.** Possible measures include requests by source/severity, age by state, analysis rework, decision latency, implementation lead time, escaped unauthorized change, reopened decisions, post-change defects, impact-prediction precision, and trace debt discovered. Define \(N_B\), the number of requirements in the reference baseline, and \(A+M+D\), accepted additions, modifications, and deletions over interval \(T\):
+**Measure change flow responsibly.** Possible measures include requests by source/severity, age by state, analysis rework, decision latency, implementation lead time, escaped unauthorized change, reopened decisions, post-change defects, impact-prediction precision, and trace debt discovered. Define $N_B$, the number of requirements in the reference baseline, and $A+M+D$, accepted additions, modifications, and deletions over interval $T$:
 
-\[
+$$
 Volatility_T=\frac{A_T+M_T+D_T}{N_B}.
-\]
+$$
 
 This rate depends on counting rules, baseline, and interval. High early volatility may reflect productive discovery; suspiciously low volatility may reflect suppression or unrecorded edits. Never target a raw rate without understanding behavior it incentivizes.
 
@@ -230,22 +230,22 @@ The output establishes only that one in-memory record declares all selected fiel
 
 ## Definitions and Notation
 
-Let \(B_0\) and \(B_1\) denote immutable references to the before and after baselines. Let \(\Delta(B_0,B_1)\) be the authorized semantic difference, not merely textual difference. Let \(G_{B_0}=(V,E)\) be the trace/dependency graph for the prior configuration. For changed artifact set \(S\), define:
+Let $B_0$ and $B_1$ denote immutable references to the before and after baselines. Let $\Delta(B_0,B_1)$ be the authorized semantic difference, not merely textual difference. Let $G_{B_0}=(V,E)$ be the trace/dependency graph for the prior configuration. For changed artifact set $S$, define:
 
-\[
+$$
 Candidates(S)=Reach_{G_{B_0}}(S,E_{relevant})\cup D_{external},
-\]
+$$
 
-where \(D_{external}\) records candidates discovered through expert, interface, operational, supplier, contract, and runtime searches outside the graph.
+where $D_{external}$ records candidates discovered through expert, interface, operational, supplier, contract, and runtime searches outside the graph.
 
-For option \(o\), let \(Feasible(o,H,C)\) mean it satisfies encoded hard constraints \(C\) under assumptions \(H\). Let \(Evidence(o)\) record analysis, test, observation, uncertainty, and applicability. Let \(Authority(o)\) identify the source owners and decision jurisdictions required. Feasibility alone is insufficient:
+For option $o$, let $Feasible(o,H,C)$ mean it satisfies encoded hard constraints $C$ under assumptions $H$. Let $Evidence(o)$ record analysis, test, observation, uncertainty, and applicability. Let $Authority(o)$ identify the source owners and decision jurisdictions required. Feasibility alone is insufficient:
 
-\[
+$$
 Acceptable(o)\Rightarrow Feasible(o,H,C)\land AdequateEvidence(o)
 \land CompetentAuthority(o)\land ResidualRiskAccepted(o).
-\]
+$$
 
-For conflict set \(Q\), a minimal unsatisfiable subset \(U\subseteq Q\) satisfies \(H\land\bigwedge U=\bot\) while removal of any encoded member restores satisfiability. “Minimal” concerns that model, not necessarily the smallest or only real-world conflict. Let \(RACI\) or another assignment model describe participation, but never infer legal or technical authority solely from a matrix cell.
+For conflict set $Q$, a minimal unsatisfiable subset $U\subseteq Q$ satisfies $H\land\bigwedge U=\bot$ while removal of any encoded member restores satisfiability. “Minimal” concerns that model, not necessarily the smallest or only real-world conflict. Let $RACI$ or another assignment model describe participation, but never infer legal or technical authority solely from a matrix cell.
 
 States should distinguish at least `submitted`, `screened`, `analyzing`, `awaiting-authority`, `approved`, `rejected`, `deferred`, `implementing`, `implemented`, `verifying`, `released`, and `closed`. Local workflows may differ, but merging approval, implementation, and closure erases essential evidence boundaries.
 
@@ -261,14 +261,14 @@ The mechanism is a closed control loop:
 6. **Verify and validate:** audit incorporation, rerun affected product evidence, examine representative use, and resolve anomalies.
 7. **Release and monitor:** communicate effective configurations, deploy controllably, observe intended and unintended outcomes, and close only when criteria hold.
 
-The argument is conditional rather than a proof of universal correctness. If identity, trace, analysis, authority, implementation, evidence, and communication invariants hold, the organization has a reviewable basis for the transition from \(B_0\) to \(B_1\). It can reproduce what changed, why, who authorized it, what was checked, and which uncertainty remains. The mechanism cannot guarantee that all dependencies were discovered, every model is faithful, or an unforeseen operational interaction will not occur. Independent challenge, monitoring, and reopening remain part of control.
+The argument is conditional rather than a proof of universal correctness. If identity, trace, analysis, authority, implementation, evidence, and communication invariants hold, the organization has a reviewable basis for the transition from $B_0$ to $B_1$. It can reproduce what changed, why, who authorized it, what was checked, and which uncertainty remains. The mechanism cannot guarantee that all dependencies were discovered, every model is faithful, or an unforeseen operational interaction will not occur. Independent challenge, monitoring, and reopening remain part of control.
 
-Concurrency requires special care. Two individually approved requests against \(B_0\) may interact when combined. Before incorporation, rebase each semantic delta against the actual target baseline, rerun impacted analyses, and identify noncommutative effects:
+Concurrency requires special care. Two individually approved requests against $B_0$ may interact when combined. Before incorporation, rebase each semantic delta against the actual target baseline, rerun impacted analyses, and identify noncommutative effects:
 
-\[
+$$
 Apply(\Delta_2,Apply(\Delta_1,B_0))\neq
 Apply(\Delta_1,Apply(\Delta_2,B_0)).
-\]
+$$
 
 A version-control merge without textual conflict does not show semantic compatibility. Release trains and cumulative change packages need integrated verification and an authority responsible for their combined effect.
 
@@ -405,7 +405,7 @@ Generate options: earlier preventive return, alternate safe landing sites, expan
 
 ### Answer 3
 
-Against the old baseline, CR-A produces an estimated worst case of \(70+18=88\) ms before uncertainty, while CR-B permits 85 ms. Including the stated 8 ms uncertainty yields a conservative 96 ms observation bound under the same interpretation, so the combined package lacks evidence for the new deadline. Textual merging and independent approvals do not resolve the interaction.
+Against the old baseline, CR-A produces an estimated worst case of $70+18=88$ ms before uncertainty, while CR-B permits 85 ms. Including the stated 8 ms uncertainty yields a conservative 96 ms observation bound under the same interpretation, so the combined package lacks evidence for the new deadline. Textual merging and independent approvals do not resolve the interaction.
 
 Rebase both changes onto one candidate configuration; confirm whether encryption latency overlaps or adds, whether 70 ms and 8 ms remain applicable, and which modes, payloads, keys, hardware, failures, and loads define worst case. Options include acceleration, hardware support, selective architecture consistent with security sources, retaining 100 ms, or deferring one change. Security authority must judge any reduced protection, and requirement authority must judge deadline changes. A bounded decision is to withhold combined release unless testing/analysis demonstrates the 85 ms criterion with required margin on named configurations or competent authorities approve a different option and its consequences.
 

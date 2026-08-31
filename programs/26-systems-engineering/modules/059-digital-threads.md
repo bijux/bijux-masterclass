@@ -33,15 +33,15 @@ How can an organization preserve trustworthy, configuration-correct relationship
 
 For configuration and query context $c$, model a thread as
 
-\[
+$$
 T_c=(A,L,I,C,P,H,c),
-\]
+$$
 
 where $A$ is the artifact set, $L$ typed relationships, $I$ stable identity and resolution rules, $C$ configurations and effectivities, $P$ provenance, and $H$ immutable change/history events. A relationship is not merely two URLs. Represent it as
 
-\[
+$$
 \ell=(s,p,o,c_s,c_o,t_v,t_r,a,\pi,q),
-\]
+$$
 
 with subject $s$, predicate $p$, object $o$, endpoint configurations $c_s,c_o$, valid/effective time $t_v$, record time $t_r$, governing authority $a$, provenance $\pi$, and status/quality $q$.
 
@@ -245,17 +245,17 @@ The checker establishes no content semantics beyond its declared vocabulary and 
 
 Let $A$ contain artifact states rather than timeless documents. For $a\in A$, use
 
-\[
+$$
 a=(id,type,version,configuration,effectivity,authority,status,digest,provenance).
-\]
+$$
 
 Let $resolve(id,c,t)$ return the artifact state applicable to query context $c$ and effective/record time $t$, or a structured result such as not-found, ambiguous, unauthorized, unavailable, stale, or incompatible. These outcomes must remain distinct.
 
 For a path $\rho$, define dimensional health evidence:
 
-\[
+$$
 H(\rho,c)=(R,S,K,P,F,X),
-\]
+$$
 
 where $R$ is endpoint resolvability, $S$ semantic-link validity, $K$ configuration/effectivity compatibility, $P$ provenance sufficiency, $F$ freshness/snapshot consistency, and $X$ known query completeness including access exclusions. Do not infer $H=\text{healthy}$ from a mean. For a high-consequence decision, a failed noncompensable dimension blocks the claim.
 

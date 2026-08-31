@@ -37,29 +37,29 @@ Which uncertain inputs, assumptions, model structures, stakeholder preferences, 
 
 For model (Y=f(X_1,\ldots,X_k;M)) with model choice (M), local sensitivity at nominal (x^0) is
 
-\[
+$$
 c_i=\left.\frac{\partial f}{\partial x_i}\right|_{x^0},
-\]
+$$
 
 or central finite difference
 
-\[
+$$
 c_i\approx\frac{f(x^0+h_ie_i)-f(x^0-h_ie_i)}{2h_i}.
-\]
+$$
 
 Magnitude depends on units and step; use scaled changes, elasticity, or decision-relevant ranges for comparison.
 
 For independent uncertain inputs and square-integrable output, variance-based decomposition motivates
 
-\[
+$$
 S_i=\frac{Var_{X_i}(E[Y\mid X_i])}{Var(Y)},
-\]
+$$
 
 and total effect
 
-\[
+$$
 S_{T_i}=1-\frac{Var_{X_{\sim i}}(E[Y\mid X_{\sim i}])}{Var(Y)}.
-\]
+$$
 
 If (S_{T_i}-S_i) is large, interactions involving (X_i) matter. These indices answer a variance-apportionment question under the declared input distribution; they are not universal physical importance or causal effect.
 
@@ -216,43 +216,43 @@ Let (X=(X_1,\ldots,X_k)) be factors with declared joint domain/distribution (D),
 
 Local coefficient and elasticity:
 
-\[
+$$
 c_i=\frac{\partial q}{\partial x_i},\qquad E_i=c_i\frac{x_i}{q},
-\]
+$$
 
 where elasticity is undefined or unstable near (x_i=0) or (q=0) and requires meaningful ratios.
 
 Finite-difference convergence compares several (h_i), not one arbitrary step:
 
-\[
+$$
 c_i(h)=\frac{q(x+h_ie_i)-q(x-h_ie_i)}{2h_i}.
-\]
+$$
 
 For two-level coded factors (-1,+1), main and interaction effects can be estimated by orthogonal contrasts. In the teaching model
 
-\[
+$$
 Y=\beta_0+\beta_1X_1+\beta_2X_2+\beta_{12}X_1X_2,
-\]
+$$
 
 with independent equiprobable coded inputs,
 
-\[
+$$
 Var(Y)=\beta_1^2+\beta_2^2+\beta_{12}^2.
-\]
+$$
 
 For a decision between alternatives (a,b), score/utility difference is
 
-\[
+$$
 \Delta(X,M,W)=V_a-V_b.
-\]
+$$
 
 The switch boundary is (\Delta=0); a robustness summary should describe which credible region has (\Delta>0), (=0), or (<0), not merely sensitivity of each score separately.
 
 For a threshold (L), define failure indicator
 
-\[
+$$
 I_F(X)=\mathbf{1}\{q(f(X))>L\}
-\]
+$$
 
 for upper-bound requirements. Sensitivity of (q) and sensitivity of (Pr(F)) answer different questions.
 
@@ -401,9 +401,9 @@ Design a sensitivity analysis for a regional emergency communications system wit
 
 ### Answer 1
 
-\[
+$$
 \frac{\partial y}{\partial x}=4+3z,\qquad \frac{\partial y}{\partial z}=2+3x.
-\]
+$$
 
 At `(0,0)` the derivatives are 4 and 2. At `(1,1)` they are 7 and 5. The derivative for each factor changes with the other factor, which is precisely the interaction. At other corners, slopes can shrink or change sign: at `z=-1`, (\partial y/\partial x=1); at `x=-1`, (\partial y/\partial z=-1). One local ranking is conditional on the nominal point and says nothing by itself about full-range variance, threshold crossing, or feasibility. Use factorial contrasts or a global design over the justified joint domain and select a decision-relevant QoI.
 
@@ -411,37 +411,37 @@ At `(0,0)` the derivatives are 4 and 2. At `(1,1)` they are 7 and 5. The derivat
 
 The four outputs are 9, 7, 5, and 19, so mean is 10. With orthogonal independent coded factors, variance contributions are coefficient squares: X main 4, Z main 9, and XZ interaction 16; total variance is 29.
 
-\[
+$$
 S_X=4/29=0.1379,\quad S_Z=9/29=0.3103,
-\]
+$$
 
-\[
+$$
 S_{XZ}=16/29=0.5517.
-\]
+$$
 
 First-order sum is (13/29=0.4483); adding interaction gives one. Total effects are
 
-\[
+$$
 S_{T_X}=(4+16)/29=20/29=0.6897,
-\]
+$$
 
-\[
+$$
 S_{T_Z}=(9+16)/29=25/29=0.8621.
-\]
+$$
 
 Their sum is (45/29=1.5517) because shared interaction is counted in both. These are exact variance shares for this declared distribution/model. They do not establish causation, physical importance outside `{-1,1}`, controllability, consequence, or evidence value.
 
 ### Answer 3
 
-\[
+$$
 V_A=0.45+0.40w,qquad V_B=0.80-0.20w.
-\]
+$$
 
 Set equal: (0.45+0.40w=0.80-0.20w), so (0.60w=0.35) and
 
-\[
+$$
 w^*=7/12\approx0.5833.
-\]
+$$
 
 At (w=0.50), A=0.65 and B=0.70, so B leads by 0.05. At (w=0.70), A=0.73 and B=0.66, so A leads by 0.07. The credible interval crosses the boundary: B is preferred below 0.5833 and A above it, with a tie at the boundary.
 

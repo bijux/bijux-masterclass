@@ -19,37 +19,37 @@ How can an algorithm contract state exactly what callers must establish, what ev
 ### Essential definitions
 
 - A **program state** assigns values to variables, memory locations, and abstract resources relevant to the algorithm.
-- A **precondition** \(P\) is a predicate required of the initial state/input for the normal correctness claim.
-- A **postcondition** \(Q\) is a predicate that must hold of initial state, final state, returned value, and observable effects after successful termination.
+- A **precondition** $P$ is a predicate required of the initial state/input for the normal correctness claim.
+- A **postcondition** $Q$ is a predicate that must hold of initial state, final state, returned value, and observable effects after successful termination.
 - A **frame/effect condition** says which state may change and which must remain unchanged.
-- A **Hoare triple** \(\{P\}\ C\ \{Q\}\) expresses partial correctness: if \(P\) holds and command \(C\) terminates normally, then \(Q\) holds.
+- A **Hoare triple** $\{P\}\ C\ \{Q\}$ expresses partial correctness: if $P$ holds and command $C$ terminates normally, then $Q$ holds.
 - **partial correctness** proves the result is correct if termination occurs; it does not prove termination.
-- **total correctness** combines partial correctness with termination for every state satisfying \(P\).
+- **total correctness** combines partial correctness with termination for every state satisfying $P$.
 - A **loop invariant** is preserved across iterations and connects the precondition to the postcondition; it is developed in the next module.
 - A **variant/ranking function** decreases in a well-founded order and supports termination.
 - **refinement** replaces a specification/algorithm with one that accepts at least the required inputs and provides at least the required guarantees.
 
 ### Central model, mechanism, or theorem
 
-For initial state \(\sigma\), input \(x\), command \(C\), final state \(\sigma'\), and result \(r\), partial correctness is
+For initial state $\sigma$, input $x$, command $C$, final state $\sigma'$, and result $r$, partial correctness is
 
-\[
+$$
 \forall \sigma,x,\sigma',r:
 P(\sigma,x)\land
 \langle C,\sigma,x\rangle\Downarrow(\sigma',r)
 \Rightarrow Q(\sigma,x,\sigma',r).
-\]
+$$
 
 Total correctness adds:
 
-\[
+$$
 \forall \sigma,x:
 P(\sigma,x)\Rightarrow
 \exists \sigma',r:
 \langle C,\sigma,x\rangle\Downarrow(\sigma',r).
-\]
+$$
 
-For nondeterministic execution, every permitted terminating outcome must satisfy \(Q\) under the usual demonic correctness reading. Testing supplies selected observations; it does not establish these universal implications.
+For nondeterministic execution, every permitted terminating outcome must satisfy $Q$ under the usual demonic correctness reading. Testing supplies selected observations; it does not establish these universal implications.
 
 ### Critical invariants
 
@@ -70,7 +70,7 @@ Common failures include saying “assume the input is valid” without defining 
 
 ### Compact example
 
-For first occurrence in a sorted integer sequence \(a\), precondition: \(a\) is finite and nondecreasing. Postcondition: return \(-1\) exactly if target \(t\) is absent; otherwise return \(i\) with \(0\le i<|a|\), \(a_i=t\), and \(\forall j<i:a_j\ne t\). Frame: \(a\) is unchanged. A binary-search implementation must prove the index property and termination; returning any matching duplicate satisfies a weaker, different contract.
+For first occurrence in a sorted integer sequence $a$, precondition: $a$ is finite and nondecreasing. Postcondition: return $-1$ exactly if target $t$ is absent; otherwise return $i$ with $0\le i<|a|$, $a_i=t$, and $\forall j<i:a_j\ne t$. Frame: $a$ is unchanged. A binary-search implementation must prove the index property and termination; returning any matching duplicate satisfies a weaker, different contract.
 
 ### Connections
 
@@ -101,7 +101,7 @@ Retrieve:
 - mathematical versus bounded integer, floating-point semantics, alias, mutation, exception, and side effect;
 - proof, counterexample, test oracle, invariant, and well-founded order.
 
-You should be able to explain why \(P\Rightarrow Q\) differs from testing \(P,Q\) on examples, and why “returns a matching index” does not imply “returns the first matching index.”
+You should be able to explain why $P\Rightarrow Q$ differs from testing $P,Q$ on examples, and why “returns a matching index” does not imply “returns the first matching index.”
 
 ## Learning Objectives
 
@@ -124,11 +124,11 @@ After completing this module, you should be able to:
 
 An algorithm transforms an initial abstract state into one or more possible outcomes. The state includes everything relevant to the claim: input sequence, mutable array, heap, graph, random source, external store, and sometimes initial copies used only in specifications.
 
-Write \(a_0\) for the initial sequence and \(a\) for the final sequence. This “old” relation is essential. “Final \(a\) is sorted” does not prove sorting: an implementation that returns an empty sequence is sorted. A sorting postcondition also needs permutation/multiset preservation:
+Write $a_0$ for the initial sequence and $a$ for the final sequence. This “old” relation is essential. “Final $a$ is sorted” does not prove sorting: an implementation that returns an empty sequence is sorted. A sorting postcondition also needs permutation/multiset preservation:
 
-\[
+$$
 sorted(a)\land multiset(a)=multiset(a_0).
-\]
+$$
 
 If stable sorting is required, relate equal-key records’ relative order. If in-place behavior matters, specify identity/space/effects separately. One word—“sort”—contains several contracts.
 
@@ -136,39 +136,39 @@ If stable sorting is required, relate equal-key records’ relative order. If in
 
 A precondition states what the caller or surrounding proof must establish before the algorithm’s normal guarantee applies. Examples:
 
-- a binary-search sequence is nondecreasing under comparator \(cmp\);
+- a binary-search sequence is nondecreasing under comparator $cmp$;
 - graph edge weights are nonnegative for Dijkstra’s algorithm;
 - divisor is nonzero;
 - indices denote a valid half-open range;
 - a buffer has enough writable capacity and does not overlap forbidden memory;
 - arithmetic operations remain within the modeled domain.
 
-Preconditions are not necessarily runtime checks. A proof rule treats \(P\) as an assumption; an API may validate and return an error, a type may make invalid states unrepresentable, or a trusted caller may establish it. Document which mechanism owns the obligation.
+Preconditions are not necessarily runtime checks. A proof rule treats $P$ as an assumption; an API may validate and return an error, a type may make invalid states unrepresentable, or a trusted caller may establish it. Document which mechanism owns the obligation.
 
 Avoid “precondition laundering”: excluding empty input, duplicates, disconnected graphs, negative values, or adversarial distributions merely because an implementation fails there when the problem includes them. Narrowing the domain changes the problem and must be authorized.
 
 ### Postconditions define every permitted successful result
 
-A postcondition can depend on input, old state, final state, result, and effects. For a search returning \(i\):
+A postcondition can depend on input, old state, final state, result, and effects. For a search returning $i$:
 
-\[
+$$
 i=-1\iff \forall j\in[0,n):a_j\ne t,
-\]
+$$
 
 or
 
-\[
+$$
 0\le i<n\land a_i=t
-\]
+$$
 
 for a successful outcome. If duplicates exist, “any,” “first,” and “last” match are different relations.
 
 For optimization, separate feasibility from optimality:
 
-\[
+$$
 F(x,y)\land
 \forall z\,[F(x,z)\Rightarrow c(x,y)\le c(x,z)].
-\]
+$$
 
 A proof of feasibility alone does not establish an optimal solver. Approximation replaces the dominance clause with a stated ratio/additive/error guarantee and required domain conditions.
 
@@ -181,19 +181,19 @@ An algorithm can return the correct number while corrupting another array, consu
 Examples:
 
 - pure search: input sequence and all external state unchanged;
-- in-place partition: only segment \(a[lo:hi)\) may change; elements outside are unchanged;
+- in-place partition: only segment $a[lo:hi)$ may change; elements outside are unchanged;
 - graph traversal: graph unchanged; caller-provided visitation map may change according to contract;
 - randomized selection: random-source state advances, but input mutation follows an explicit rule.
 
-Aliasing complicates frames. If two parameters refer to overlapping storage, modifying one changes the other. Either forbid overlap as a precondition or specify alias-aware effects. “Does not modify parameter \(b\)” is false if \(b\) aliases modified \(a\).
+Aliasing complicates frames. If two parameters refer to overlapping storage, modifying one changes the other. Either forbid overlap as a precondition or specify alias-aware effects. “Does not modify parameter $b$” is false if $b$ aliases modified $a$.
 
 ### Normal and exceptional outcomes form one contract
 
 Real algorithms can return a value, report no solution, reject malformed input, overflow, exhaust resources, be cancelled, or encounter I/O failure. Model an outcome sum:
 
-\[
+$$
 Outcome=Success(y)\mid NoSolution\mid Invalid(e)\mid Failure(e).
-\]
+$$
 
 Give each branch pre/post/effect obligations. A successful result after partial mutation may be acceptable; an exception after partial mutation may violate atomicity. “Throws an exception” is incomplete without type, condition, state after failure, and resource cleanup.
 
@@ -203,68 +203,68 @@ Distinguish domain absence from invalid input. Two-sum returning `None` because 
 
 The Hoare triple
 
-\[
+$$
 \{P\}\ C\ \{Q\}
-\]
+$$
 
-means: for any initial state satisfying \(P\), every normal terminating execution of \(C\) ends in a state satisfying \(Q\). It can be true of `while true do skip` for any \(Q\), because there is no normal terminating execution to falsify the implication. This is not a paradox; it exposes that termination is a separate obligation.
+means: for any initial state satisfying $P$, every normal terminating execution of $C$ ends in a state satisfying $Q$. It can be true of `while true do skip` for any $Q$, because there is no normal terminating execution to falsify the implication. This is not a paradox; it exposes that termination is a separate obligation.
 
-Partial correctness needs soundness over all terminating outcomes. For nondeterministic algorithms under demonic semantics, one good execution is insufficient; every permitted terminating execution must meet \(Q\). Angelic/existential specifications use another convention and must say so.
+Partial correctness needs soundness over all terminating outcomes. For nondeterministic algorithms under demonic semantics, one good execution is insufficient; every permitted terminating execution must meet $Q$. Angelic/existential specifications use another convention and must say so.
 
 ### Total correctness adds termination
 
 Total correctness requires:
 
-1. \(P\) establishes the algorithm’s invariant/proof setup;
+1. $P$ establishes the algorithm’s invariant/proof setup;
 2. every step preserves correctness obligations;
-3. on termination, \(Q\) follows;
-4. every execution from \(P\) terminates.
+3. on termination, $Q$ follows;
+4. every execution from $P$ terminates.
 
-For loops/recursion, termination often uses a variant \(V\) in a well-founded set such as nonnegative integers. Show \(V\ge0\) while continuing and \(V\) strictly decreases each iteration/recursive call. Bounded input consumption or finite unexplored-state count are common measures.
+For loops/recursion, termination often uses a variant $V$ in a well-founded set such as nonnegative integers. Show $V\ge0$ while continuing and $V$ strictly decreases each iteration/recursive call. Bounded input consumption or finite unexplored-state count are common measures.
 
 Termination is relative to semantics. Mathematical unit-cost arithmetic may terminate while a concrete operation traps; blocking I/O may not return; unfair scheduling can starve a thread. State whether correctness covers pure algorithm, sequential implementation, or concurrent/system execution.
 
 ### Basic Hoare rules expose proof structure
 
-For assignment \(x:=E\), work backward from desired \(Q\):
+For assignment $x:=E$, work backward from desired $Q$:
 
-\[
+$$
 \{Q[x\leftarrow E]\}\ x:=E\ \{Q\}.
-\]
+$$
 
-The precondition substitutes expression \(E\) for occurrences of the final \(x\) in \(Q\). To prove final \(x=old(x)+1\), preserve an initial logical name \(x_0\); assignment alone cannot make `old` implicit.
+The precondition substitutes expression $E$ for occurrences of the final $x$ in $Q$. To prove final $x=old(x)+1$, preserve an initial logical name $x_0$; assignment alone cannot make `old` implicit.
 
 For sequencing:
 
-\[
+$$
 \frac{\{P\}C_1\{R\}\quad\{R\}C_2\{Q\}}
 {\{P\}C_1;C_2\{Q\}}.
-\]
+$$
 
-The intermediate assertion \(R\) connects commands.
+The intermediate assertion $R$ connects commands.
 
 For conditional:
 
-\[
+$$
 \frac{\{P\land B\}C_t\{Q\}\quad
 \{P\land\neg B\}C_f\{Q\}}
 {\{P\}\ if\ B\ then\ C_t\ else\ C_f\ \{Q\}}.
-\]
+$$
 
 Both branches must establish the same promised postcondition (or a postcondition implied by branch-specific results).
 
 The consequence rule permits strengthening the proof entry and weakening the proof exit:
 
-\[
+$$
 \frac{P\Rightarrow P'\quad\{P'\}C\{Q'\}\quad Q'\Rightarrow Q}
 {\{P\}C\{Q\}}.
-\]
+$$
 
-Direction matters. If code needs \(x>0\), proving caller has \(x>1\) suffices for that call, but it does not make the algorithm valid for every \(x>0\) if its public precondition became \(x>1\).
+Direction matters. If code needs $x>0$, proving caller has $x>1$ suffices for that call, but it does not make the algorithm valid for every $x>0$ if its public precondition became $x>1$.
 
 ### Contract strength and refinement
 
-A precondition \(P_1\) is weaker than \(P_2\) when \(P_2\Rightarrow P_1\): \(P_1\) accepts at least as many states. A postcondition \(Q_1\) is stronger than \(Q_2\) when \(Q_1\Rightarrow Q_2\): \(Q_1\) promises at least as much.
+A precondition $P_1$ is weaker than $P_2$ when $P_2\Rightarrow P_1$: $P_1$ accepts at least as many states. A postcondition $Q_1$ is stronger than $Q_2$ when $Q_1\Rightarrow Q_2$: $Q_1$ promises at least as much.
 
 A replacement that must honor an existing contract should not require a stronger precondition or provide a weaker postcondition/effect guarantee. It may accept more inputs or guarantee more. This is the contract-level intuition behind substitutability.
 
@@ -272,7 +272,7 @@ Refinement also concerns nondeterminism. If a specification permits any minimum 
 
 ### Weakest preconditions support backward derivation
 
-For command \(C\) and desired postcondition \(Q\), \(wp(C,Q)\) is the weakest predicate on initial states sufficient to guarantee termination in a \(Q\)-state under Dijkstra’s total-correctness interpretation. A liberal variant \(wlp\) captures partial correctness.
+For command $C$ and desired postcondition $Q$, $wp(C,Q)$ is the weakest predicate on initial states sufficient to guarantee termination in a $Q$-state under Dijkstra’s total-correctness interpretation. A liberal variant $wlp$ captures partial correctness.
 
 Backward calculation can derive code and proof together:
 
@@ -285,7 +285,7 @@ Backward calculation can derive code and proof together:
 
 ### Mathematical and executable semantics must correspond
 
-A proof over \(\mathbb Z\) does not cover 32-bit signed overflow. A comparator assumed to be a total order may return inconsistent results for NaN or mutable keys. A mathematical set loses duplicates; an array retains them. A unit-cost multiplication may have size-dependent cost.
+A proof over $\mathbb Z$ does not cover 32-bit signed overflow. A comparator assumed to be a total order may return inconsistent results for NaN or mutable keys. A mathematical set loses duplicates; an array retains them. A unit-cost multiplication may have size-dependent cost.
 
 Choose one:
 
@@ -303,38 +303,38 @@ A deductive proof covers all states in its formal domain if axioms, semantics, p
 
 Use a layered assurance argument:
 
-\[
+$$
 intent\rightarrow problem\ relation\rightarrow contract
 \rightarrow algorithm\ proof\rightarrow implementation\ correspondence
 \rightarrow operational\ evidence.
-\]
+$$
 
 Each arrow can fail. A correct algorithm can be implemented incorrectly; a verified program can solve the wrong problem; operational configuration can violate a precondition.
 
 ## Definitions and Notation
 
-Let \(\Sigma\) be program states. Predicates \(P,Q:\Sigma\to\{true,false\}\). For result-returning commands, model \(Q(\sigma_0,\sigma_1,r)\) so initial/final relation is explicit. Big-step judgment
+Let $\Sigma$ be program states. Predicates $P,Q:\Sigma\to\{true,false\}$. For result-returning commands, model $Q(\sigma_0,\sigma_1,r)$ so initial/final relation is explicit. Big-step judgment
 
-\[
+$$
 \langle C,\sigma_0\rangle\Downarrow(\sigma_1,r)
-\]
+$$
 
-means \(C\) terminates normally from \(\sigma_0\) with final state/result.
+means $C$ terminates normally from $\sigma_0$ with final state/result.
 
 Partial correctness:
 
-\[
+$$
 \models\{P\}C\{Q\}
 \iff
 \forall\sigma_0,\sigma_1,r:
 P(\sigma_0)\land
 \langle C,\sigma_0\rangle\Downarrow(\sigma_1,r)
 \Rightarrow Q(\sigma_0,\sigma_1,r).
-\]
+$$
 
-Total correctness additionally requires termination for every \(P\)-state. If semantics is nondeterministic, quantify over every possible terminating final outcome for partial correctness and require every maximal execution to terminate for demonic total correctness.
+Total correctness additionally requires termination for every $P$-state. If semantics is nondeterministic, quantify over every possible terminating final outcome for partial correctness and require every maximal execution to terminate for demonic total correctness.
 
-Define contract ordering \(K_1\sqsubseteq K_2\) (“\(K_2\) refines \(K_1\)”) when \(K_2\) accepts at least \(K_1\)’s required initial states and every behavior of \(K_2\) on those states satisfies \(K_1\)’s post/frame obligations. Exact relational definitions depend on exceptional outcomes and nondeterminism.
+Define contract ordering $K_1\sqsubseteq K_2$ (“$K_2$ refines $K_1$”) when $K_2$ accepts at least $K_1$’s required initial states and every behavior of $K_2$ on those states satisfies $K_1$’s post/frame obligations. Exact relational definitions depend on exceptional outcomes and nondeterminism.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -436,7 +436,7 @@ For valid inputs, the checker’s expected result is computed by a simpler linea
 
 **Question:** What contract describes integer division?
 
-**Reasoning:** For Euclidean division with \(a\ge0,b>0\), return \(q,r\) such that \(a=bq+r\) and \(0\le r<b\). Without sign/rounding conventions, negative operands admit competing quotient/remainder policies. Division by zero needs invalid/exception behavior.
+**Reasoning:** For Euclidean division with $a\ge0,b>0$, return $q,r$ such that $a=bq+r$ and $0\le r<b$. Without sign/rounding conventions, negative operands admit competing quotient/remainder policies. Division by zero needs invalid/exception behavior.
 
 **Conclusion:** Preconditions and postconditions remove arithmetic-policy ambiguity.
 
@@ -460,7 +460,7 @@ For valid inputs, the checker’s expected result is computed by a simpler linea
 
 **Question:** Apply the assignment rule to prove `{x=4} x:=x+3 {x=7}`.
 
-**Reasoning:** Substitute \(x+3\) for final \(x\) in postcondition \(x=7\), giving precondition \(x+3=7\), equivalent to \(x=4\). The assignment axiom then yields the triple.
+**Reasoning:** Substitute $x+3$ for final $x$ in postcondition $x=7$, giving precondition $x+3=7$, equivalent to $x=4$. The assignment axiom then yields the triple.
 
 **Conclusion:** Assignment proof calculates the required precondition backward.
 
@@ -468,7 +468,7 @@ For valid inputs, the checker’s expected result is computed by a simpler linea
 
 **Question:** A minimum finder returns index 3, whose value is smaller than its neighbors. Is it correct?
 
-**Reasoning:** That proves a local property only. A global-minimum contract requires \(a_3\le a_j\) for every valid index \(j\), plus tie/index and empty-input policy. One counterexample elsewhere refutes correctness.
+**Reasoning:** That proves a local property only. A global-minimum contract requires $a_3\le a_j$ for every valid index $j$, plus tie/index and empty-input policy. One counterexample elsewhere refutes correctness.
 
 **Conclusion:** Match the proof’s quantifier to the required optimization claim.
 
@@ -557,23 +557,23 @@ Specify correctness and assurance for an unfamiliar insulin-dose calculation alg
 
 ### Answer 1
 
-Input \(a\) is a finite nonempty integer sequence; if empty input is legitimate, define a separate `NoSolution` outcome instead of hiding it. Successful result \(i\) satisfies \(0\le i<|a|\), \(\forall j\in[0,|a|):a_i\ge a_j\), and \(\forall j<i:a_j<a_i\) or, more directly, \(i=\min\{j\mid a_j=\max(a)\}\). The input sequence and all unrelated state remain unchanged.
+Input $a$ is a finite nonempty integer sequence; if empty input is legitimate, define a separate `NoSolution` outcome instead of hiding it. Successful result $i$ satisfies $0\le i<|a|$, $\forall j\in[0,|a|):a_i\ge a_j$, and $\forall j<i:a_j<a_i$ or, more directly, $i=\min\{j\mid a_j=\max(a)\}$. The input sequence and all unrelated state remain unchanged.
 
 For bounded implementation integers, comparisons must implement the mathematical order without overflow/conversion errors; values, indexing, aliasing, concurrency, cancellation, and malformed representation need policies. Total correctness requires termination for every admissible finite sequence, commonly by scanning a strictly advancing index.
 
 ### Answer 2
 
-Work backward. Desired final postcondition is \(x=6\land y=3\). For assignment \(x:=2y\), substitute \(2y\) for final \(x\), yielding \(2y=6\land y=3\), equivalent to \(y=3\). Thus:
+Work backward. Desired final postcondition is $x=6\land y=3$. For assignment $x:=2y$, substitute $2y$ for final $x$, yielding $2y=6\land y=3$, equivalent to $y=3$. Thus:
 
-\[
+$$
 \{y=3\}\ x:=2y\ \{x=6\land y=3\}.
-\]
+$$
 
-For \(y:=x+1\), substitute \(x+1\) for final \(y\) in intermediate assertion \(y=3\), giving \(x+1=3\), equivalent to \(x=2\):
+For $y:=x+1$, substitute $x+1$ for final $y$ in intermediate assertion $y=3$, giving $x+1=3$, equivalent to $x=2$:
 
-\[
+$$
 \{x=2\}\ y:=x+1\ \{y=3\}.
-\]
+$$
 
 The sequencing rule composes them. Both assignments terminate under the simple mathematical arithmetic semantics. A machine implementation additionally needs overflow/type semantics, though these constants are safe in ordinary signed representations.
 

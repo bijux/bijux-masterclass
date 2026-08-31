@@ -31,25 +31,25 @@ When should multiple systems integrate through a shared canonical semantic model
 
 ### Central model, mechanism, or theorem
 
-With \(n\) systems that each require directed translation to every other system, pairwise mappings can reach
+With $n$ systems that each require directed translation to every other system, pairwise mappings can reach
 
-\[
+$$
 E_{pair}=n(n-1).
-\]
+$$
 
 If every system has one inbound and one outbound adapter to a canonical model, the edge count is at most
 
-\[
+$$
 E_{canonical}=2n,
-\]
+$$
 
-so \(n(n-1)>2n\) for \(n>3\). This is only a topology count: canonical adapters may be more semantically complex, some pairwise edges may not exist, and governance/evolution costs can dominate.
+so $n(n-1)>2n$ for $n>3$. This is only a topology count: canonical adapters may be more semantically complex, some pairwise edges may not exist, and governance/evolution costs can dominate.
 
-Let local semantic domains be \(L_i\), canonical domain \(C_v\), encoders \(e_i:L_i\rightharpoonup C_v\), and decoders \(d_i:C_v\rightharpoonup L_i\). For a promised lossless local subset \(L_i^*\), require
+Let local semantic domains be $L_i$, canonical domain $C_v$, encoders $e_i:L_i\rightharpoonup C_v$, and decoders $d_i:C_v\rightharpoonup L_i$. For a promised lossless local subset $L_i^*$, require
 
-\[
+$$
 \forall x\in L_i^*,\quad d_i(e_i(x))\equiv_i x.
-\]
+$$
 
 Cross-system success additionally requires that the canonical concept itself has one governed meaning; matching JSON shapes do not imply semantic commutativity.
 
@@ -199,7 +199,7 @@ Adapters are owned jointly enough to avoid “integration team's guess,” but o
 
 ### Reduce edges honestly
 
-The \(n(n-1)\) versus \(2n\) comparison assumes complete directed pairwise connectivity and bidirectional canonical adapters. Real systems form sparse graphs, some flows are one-way, and a canonical adapter may contain per-consumer variants. Count current/prospective mappings, changes, defects, and review cost rather than relying on asymptotics alone.
+The $n(n-1)$ versus $2n$ comparison assumes complete directed pairwise connectivity and bidirectional canonical adapters. Real systems form sparse graphs, some flows are one-way, and a canonical adapter may contain per-consumer variants. Count current/prospective mappings, changes, defects, and review cost rather than relying on asymptotics alone.
 
 Canonicalization wins when concepts recur and remain coherent across many flows. Pairwise translation can be clearer for two systems or specialized semantics.
 
@@ -331,13 +331,13 @@ The snippet report is empirical evidence for two equal finite projections and on
 
 ## Definitions and Notation
 
-Participating local semantic domains are \(L_1,\ldots,L_n\), bounded canonical semantic domain at version \(v\) is \(C_v\), and adapters are partial \(e_{i,v}:L_i\rightharpoonup C_v\) and \(d_{i,v}:C_v\rightharpoonup L_i\). Each result includes provenance/loss or typed rejection.
+Participating local semantic domains are $L_1,\ldots,L_n$, bounded canonical semantic domain at version $v$ is $C_v$, and adapters are partial $e_{i,v}:L_i\rightharpoonup C_v$ and $d_{i,v}:C_v\rightharpoonup L_i$. Each result includes provenance/loss or typed rejection.
 
-Canonical concept \(c\) is tuple \((name,definition,owner,identity,lifecycle,presence,units,codes,time,provenance,classification,invariants,examples)\). Schema \(S_v\) encodes part of \(C_v\); \(S_v\)-valid does not imply \(C_v\)-semantically valid.
+Canonical concept $c$ is tuple $(name,definition,owner,identity,lifecycle,presence,units,codes,time,provenance,classification,invariants,examples)$. Schema $S_v$ encodes part of $C_v$; $S_v$-valid does not imply $C_v$-semantically valid.
 
-Pairwise directed mapping graph has up to \(n(n-1)\) edges under complete connectivity. Canonical star has inbound/outbound adapters up to \(2n\). Total cost \(K\) includes edge implementation plus semantic governance, adapter complexity, release/operations, migration, and incident cost; edge count alone is not \(K\).
+Pairwise directed mapping graph has up to $n(n-1)$ edges under complete connectivity. Canonical star has inbound/outbound adapters up to $2n$. Total cost $K$ includes edge implementation plus semantic governance, adapter complexity, release/operations, migration, and incident cost; edge count alone is not $K$.
 
-Semantic round-trip \(d_i(e_i(x))\equiv_i x\) applies only on declared lossless subset. Cross-context projection equivalence \(e_i(x)\equiv_C e_j(y)\) must state which canonical properties are compared and preserve different provenance.
+Semantic round-trip $d_i(e_i(x))\equiv_i x$ applies only on declared lossless subset. Cross-context projection equivalence $e_i(x)\equiv_C e_j(y)$ must state which canonical properties are compared and preserve different provenance.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -345,7 +345,7 @@ The mechanism has six owned layers: bounded semantic model/modules; machine sche
 
 Core invariants are bounded scope, local autonomy, one definition/owner per canonical concept, stable namespaced identity/provenance, explicit presence/units/time/codes, version accountability, declared edge loss, authorized/minimized disclosure, compatibility across active/retained versions, and one authoritative effect path during migration.
 
-The edge-reduction proof is arithmetic under complete directed connectivity: \(n(n-1)-2n=n(n-3)>0\) for \(n>3\). It does not prove cost reduction; counterexamples include sparse graphs, highly specialized semantics, and expensive governance. Semantic safety requires adapter proofs/tests on subsets plus reviewed canonical definitions. Current-state integration, historical replay, security, and organizational governance require empirical and human evidence.
+The edge-reduction proof is arithmetic under complete directed connectivity: $n(n-1)-2n=n(n-3)>0$ for $n>3$. It does not prove cost reduction; counterexamples include sparse graphs, highly specialized semantics, and expensive governance. Semantic safety requires adapter proofs/tests on subsets plus reviewed canonical definitions. Current-state integration, historical replay, security, and organizational governance require empirical and human evidence.
 
 ## Alternatives and Trade-Offs
 

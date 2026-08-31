@@ -36,27 +36,27 @@ How can engineers model whether a repairable or restorable system is capable whe
 
 Let $X(t)$ be the system state and $U$ the set of states meeting the capability criterion. Then
 
-\[
+$$
 A(t)=P[X(t)\in U],
 \qquad
 \bar A(0,T)=\frac{1}{T}\int_0^T A(t)\,dt.
-\]
+$$
 
 For an alternating renewal process with independent, identically distributed finite uptime $U_k$ and downtime $D_k$, long-run availability is
 
-\[
+$$
 A_{\infty}=\frac{E[U]}{E[U]+E[D]}.
-\]
+$$
 
 The familiar $MTBF/(MTBF+MTTR)$ is a convention-specific instance of this renewal-reward relationship, not a universal point-availability formula.
 
 For a two-state CTMC with failure intensity $\lambda$, restoration intensity $\mu$, and initially up system:
 
-\[
+$$
 A(t)=\frac{\mu}{\lambda+\mu}+\frac{\lambda}{\lambda+\mu}e^{-(\lambda+\mu)t},
 \qquad
 A_\infty=\frac{\mu}{\lambda+\mu}.
-\]
+$$
 
 At equilibrium, failure and restoration flows balance: $\lambda A_\infty=\mu(1-A_\infty)$. Multi-state systems require a generator/state model with valid transitions and capacity mapping.
 
@@ -215,9 +215,9 @@ Let $S$ be states, $U\subseteq S$ acceptable states and reward $r(s)$ the fracti
 
 For a finite homogeneous CTMC generator $Q$, off-diagonal $q_{ij}\ge0$ are transition intensities, $q_{ii}=-\sum_{j\ne i}q_{ij}$, and
 
-\[
+$$
 p'(t)=p(t)Q.
-\]
+$$
 
 A stationary distribution $\pi$ satisfies $\pi Q=0$ and $\sum_s\pi_s=1$ when a suitable unique limiting regime exists. Steady availability is then $\sum_{s\in U}\pi_s$. Not every process is stationary, irreducible or memoryless.
 
@@ -361,15 +361,15 @@ Record timestamps for detection, declaration, diagnosis, safeing, access, part r
 
 Steady availability is
 
-\[
+$$
 A_\infty=\frac{0.2}{0.01+0.2}=0.95238095.
-\]
+$$
 
 Starting up,
 
-\[
+$$
 A(5)=A_\infty+(1-A_\infty)e^{-0.21(5)}.
-\]
+$$
 
 Since $e^{-1.05}\approx0.34994$, $A(5)\approx0.969045$ (rounding depends on retained precision). Equilibrium flow is $\lambda A_\infty=0.00952381$/h and $\mu(1-A_\infty)=0.00952381$/h.
 

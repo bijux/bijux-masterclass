@@ -33,15 +33,15 @@ Before authorizing a change, can the organization identify what may be affected,
 
 Let $G=(V,E,\tau)$ be a typed dependency graph, with nodes for requirements, design, interfaces, products, data, processes, evidence, people, suppliers, instances, and lifecycle obligations. Given change seeds $S\subseteq V$, static candidate closure is
 
-\[
+$$
 R_0=S,\qquad R_{k+1}=R_k\cup\{v\mid (u,v)\in E,\ u\in R_k,\ policy(\tau(u,v))\}.
-\]
+$$
 
 This closure is a search aid, not a completeness proof. For each candidate $v$, evaluate a record
 
-\[
+$$
 I_v=(path, consequence, severity, likelihood, uncertainty, evidence, action, owner, effectivity).
-\]
+$$
 
 Authorization is defensible only when material candidates and unknowns are dispositioned by competent authority, interactions are examined, and the transition/evidence plan matches the bounded conclusion.
 

@@ -32,9 +32,9 @@ When should a complex function whose interdependent local variables resist extra
 
 Let original function be (f:I\times C\to R\cup E), where (I) are explicit inputs and (C) collaborators/context. Refactoring constructs object (M(i,c)) and operation `execute` such that
 
-\[
+$$
 \forall(i,c)\in P:\ observe(f(i,c))=observe(M(i,c).execute()),
-\]
+$$
 
 over stated precondition/domain (P). Moving locals to fields permits decomposition, but does not prove equivalence: tests, types, review, effect traces, and domain-specific evidence must cover boundaries and failure paths.
 
@@ -201,9 +201,9 @@ Let original method (f) have inputs (i), context/collaborators (c), local-state 
 
 Refactoring target over precondition (P):
 
-\[
+$$
 \forall(i,c)\in P:\ (r,e,\epsilon)_f=(r,e,\epsilon)_{M.execute}.
-\]
+$$
 
 For phase dependency DAG (G=(V,E)), edge (u\to v) means phase (v) consumes a value defined by (u). A valid execution order is a topological order; cycles indicate hidden iteration/fixed-point/state-machine semantics that need explicit design.
 

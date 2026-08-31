@@ -22,14 +22,14 @@ A **k-d tree** indexes points (x\in\mathbb{R}^k) by recursively choosing an axis
 
 An orthogonal range query reports points inside an axis-aligned box. A nearest-neighbor query maintains the best distance found, explores the query-side child first, then explores the other child only if its region can beat the incumbent. For a splitting plane under Euclidean distance, the lower bound is ((q_a-s)^2). Bounding boxes give stronger lower bounds:
 
-\[
+$$
 d^2(q,B)=\sum_i
 \begin{cases}
 (\ell_i-q_i)^2,&q_i<\ell_i,\\
 (q_i-u_i)^2,&q_i>u_i,\\
 0,&\ell_i\le q_i\le u_i.
 \end{cases}
-\]
+$$
 
 ### Central model, mechanism, or theorem
 
@@ -79,9 +79,9 @@ Retrieve:
 
 Use squared Euclidean distance for comparisons to avoid unnecessary square roots:
 
-\[
+$$
 d^2(x,q)=\sum_{i=0}^{k-1}(x_i-q_i)^2.
-\]
+$$
 
 This monotone transformation preserves nearest ordering only because all distances are nonnegative and the square root is monotone.
 

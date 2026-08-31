@@ -32,9 +32,9 @@ How can a changeable domain decision be represented by a named, versioned, testa
 
 For validated facts (x\in X), explicit context (c\in C), and immutable policy version (p_v), evaluation is
 
-\[
+$$
 decide(p_v,x,c)\to d\in\{approve,deny,not\_applicable,indeterminate,error\}\times Reasons\times v.
-\]
+$$
 
 Determinism means equal normalized (p_v,x,c) yields the same decision. It holds only when time, data/model/configuration versions, randomness, and external facts are captured. A passing finite evaluator trace does not establish that the underlying policy is lawful, fair, safe, current, or domain-correct.
 
@@ -199,15 +199,15 @@ Property/metamorphic tests require valid assumptions: increasing risk might neve
 
 Let immutable policy version (p_v), validated fact snapshot (x_s), explicit context (c), decision outcomes (O), reasons (R), and evaluation function
 
-\[
+$$
 E(p_v,x_s,c)=(o,r,v),\quad o\in O.
-\]
+$$
 
 For deterministic evaluation,
 
-\[
+$$
 (p_v,x_s,c)=(p'_v,x'_s,c')\Rightarrow E(p_v,x_s,c)=E(p'_v,x'_s,c').
-\]
+$$
 
 This equality requires normalization and captured external inputs. Action correctness additionally requires freshness/authorization/invariant checks that are not implied by (E).
 

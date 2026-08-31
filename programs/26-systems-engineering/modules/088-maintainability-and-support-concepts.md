@@ -33,17 +33,17 @@ Can the system be retained in or restored to its required condition, within the 
 
 Represent a restoration thread as
 
-\[
+$$
 F\rightarrow D\rightarrow I\rightarrow S\rightarrow A\rightarrow R\rightarrow V\rightarrow RTS,
-\]
+$$
 
 where failure/anomaly $F$ is detected $D$, isolated/diagnosed $I$, made safe and supported $S$, accessed $A$, repaired/replaced $R$, verified $V$, and authorized to return to service $RTS$. Total downtime is a composition of active and delay intervals, not a synonym for wrench time.
 
 Under a simple renewal approximation with consistently defined mean up time $U$ and mean down time $D$,
 
-\[
+$$
 A_o=\frac{U}{U+D}.
-\]
+$$
 
 Real fleets need distributions, censored data, dependencies, scheduled downtime rules, partial capability, and operational context. Optimizing one interval can shift burden or risk elsewhere.
 
@@ -353,9 +353,9 @@ Select policy by consequence: condition monitoring for batteries/motors where ac
 
 Under the stated active-only definition, toy MTTR is 55 minutes. MDT is $55+10+65+20=150$ minutes. The simple renewal availability is
 
-\[
+$$
 A_o=\frac{1440}{1440+150}=\frac{1440}{1590}\approx0.90566,
-\]
+$$
 
 or about $90.57\%$.
 

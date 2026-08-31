@@ -32,17 +32,17 @@ How does a software pattern preserve reusable design judgment without turning a 
 
 Represent a pattern as
 
-\[
+$$
 \Pi=(N,C,P,F,S,K,R),
-\]
+$$
 
 where (N) names it, (C) is context, (P) is the recurring problem, (F) is the set of forces, (S) is the solution structure, (K) is the set of consequences, and (R) records relationships to other patterns. Selection is conditional reasoning:
 
-\[
+$$
 ContextMatch(C_s,C_\Pi)\land ProblemMatch(P_s,P_\Pi)
 \land Resolves(S_\Pi,F_s)
 \land Acceptable(K_\Pi,F_s).
-\]
+$$
 
 This is a review model, not an algorithm that proves a pattern is correct. A pattern becomes useful when its form lets a designer trace each important force to a structural decision and then to positive and negative consequences.
 
@@ -176,31 +176,31 @@ This adaptability creates an evaluation burden. A variant must explain which par
 
 Let a situation be
 
-\[
+$$
 X=(C_x,P_x,F_x,Q_x,E_x),
-\]
+$$
 
 where (C_x) is observed context, (P_x) the design problem, (F_x=\{f_1,\ldots,f_n\}) the forces and their local priorities, (Q_x) non-negotiable constraints, and (E_x) current evidence.
 
 Let a pattern be
 
-\[
+$$
 \Pi=(N,C_\Pi,P_\Pi,F_\Pi,S_\Pi,K_\Pi,R_\Pi,O_\Pi),
-\]
+$$
 
 where (O_\Pi) records known occurrences. Applying the pattern constructs an instance (I=adapt(S_\Pi,X)). The resulting situation is
 
-\[
+$$
 X'=apply(I,X).
-\]
+$$
 
 Fitness is not a scalar theorem. A review may define a partial order (\succeq_X) over candidates: (I_a\succeq_X I_b) means the evidence supports (I_a) as no worse than (I_b) on every mandatory constraint and better on at least one locally prioritized force, without an unacceptable consequence. Incomparable candidates are normal.
 
 For traceability, define a relation
 
-\[
+$$
 T\subseteq F_x\times Decisions(I)\times K(I).
-\]
+$$
 
 Each important force should relate to at least one decision, and each important decision should have anticipated consequences. This relation is a review device, not a formal proof of design quality.
 
@@ -446,9 +446,9 @@ This formulation permits Repository, Data Mapper, query services, direct access 
 
 `direct-calls` remains (4\cdot0+3\cdot1+2\cdot1=5). The revised `observer` score is
 
-\[
+$$
 4\cdot2+3\cdot(-1)+2\cdot(-2)=8-3-4=1.
-\]
+$$
 
 The toy rule therefore selects `direct-calls`. The result remains non-decisive because weights and ratings are subjective ordinal judgments, forces may overlap, mandatory constraints are outside the sum, and the model omits implementation evidence. Its value is exposing that lifecycle simplicity changes the recommendation, not manufacturing objectivity.
 

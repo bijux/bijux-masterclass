@@ -33,24 +33,24 @@ How can a team describe what a system must do as a coherent network of purposefu
 
 Represent a function as a contract:
 
-\[
+$$
 f:\langle I,S,C,R,E\rangle\rightarrow\langle O,S',D\rangle,
-\]
+$$
 
-where \(I\) is typed input, \(S\) pre-state, \(C\) control, \(R\) enabling resources, \(E\) environment, \(O\) output, \(S'\) post-state, and \(D\) diagnostics/evidence. A valid execution claim requires a defined domain and behavior:
+where $I$ is typed input, $S$ pre-state, $C$ control, $R$ enabling resources, $E$ environment, $O$ output, $S'$ post-state, and $D$ diagnostics/evidence. A valid execution claim requires a defined domain and behavior:
 
-\[
+$$
 Pre_f(I,S,C,R,E)\Rightarrow Post_f(O,S',D)
-\]
+$$
 
 within stated performance, quality, and uncertainty bounds.
 
-For a connection from function \(f_i\) to \(f_j\), compatibility requires more than matching labels:
+For a connection from function $f_i$ to $f_j$, compatibility requires more than matching labels:
 
-\[
+$$
 Compatible(O_i,I_j) = Type\land Unit\land Semantics\land
 Range\land Timing\land Quality\land Mode\land Authority.
-\]
+$$
 
 If any conjunct is unknown, the interface is unresolved rather than proven compatible.
 
@@ -171,11 +171,11 @@ After completing this module, you should be able to:
 
 **Check graph integrity.** Query required inputs without sources, outputs without consumers or boundary destinations, functions without source rationale, disconnected subgraphs, unintended cycles, dead ends, and paths that bypass required control. Graph checks establish declared structure only. Reviewers must still inspect semantics and missing functions.
 
-**Use balance equations carefully.** For an extensive quantity \(q\) within boundary \(\Omega\) over \([t_0,t_1]\):
+**Use balance equations carefully.** For an extensive quantity $q$ within boundary $\Omega$ over $[t_0,t_1]$:
 
-\[
+$$
 q(t_1)-q(t_0)=\int_{t_0}^{t_1}(in-out+generation-consumption)\,dt.
-\]
+$$
 
 Define sign convention, boundary, storage, loss, measurement location, interval, and uncertainty. Energy, mass, charge, and financial value may support balances under appropriate models. Information is not generally conserved: copying produces another representation without removing the source, and semantic value is context-dependent.
 
@@ -236,19 +236,19 @@ The result checks equality and set inclusion in five in-memory records. It does 
 
 ## Definitions and Notation
 
-Let the functional graph be \(G_F=(F,L)\), where \(F\) is the set of versioned function contracts and \(L\) typed flow relations. A contract is:
+Let the functional graph be $G_F=(F,L)$, where $F$ is the set of versioned function contracts and $L$ typed flow relations. A contract is:
 
-\[
+$$
 F_k=\langle id,purpose,I,O,S,C,R,E,P,Q,M,X,A\rangle,
-\]
+$$
 
-where \(P\) contains pre/postconditions, \(Q\) performance/quality, \(M\) modes, \(X\) exceptions/failure behavior, and \(A\) authority and trace rationale. A flow \(l_{ij}\) includes producer/consumer ports, semantic type, unit/reference, range, timing, quality, security, version, mode, and ownership.
+where $P$ contains pre/postconditions, $Q$ performance/quality, $M$ modes, $X$ exceptions/failure behavior, and $A$ authority and trace rationale. A flow $l_{ij}$ includes producer/consumer ports, semantic type, unit/reference, range, timing, quality, security, version, mode, and ownership.
 
-For a path \(p=(f_1,\ldots,f_n)\), end-to-end latency is not always a simple sum. Under a sequential, no-overlap assumption:
+For a path $p=(f_1,\ldots,f_n)$, end-to-end latency is not always a simple sum. Under a sequential, no-overlap assumption:
 
-\[
+$$
 T_p=\sum_{k=1}^{n}T_{f_k}+\sum_{l\in p}T_l+T_{queue}.
-\]
+$$
 
 Concurrency, pipelining, contention, retry, and physical settling require another composition model. State the assumption before using the equation.
 
@@ -268,10 +268,10 @@ Use an iterative functional-analysis loop:
 
 The preservation obligation for white-box refinement is conditional:
 
-\[
+$$
 Behavior(children,internal\ flows)\upharpoonright Boundary(parent)
 \subseteq AllowedBehavior(parent),
-\]
+$$
 
 and required parent outcomes must remain reachable under specified conditions. The subset expression is an assurance target, not automatically a formal proof. Models may omit timing, continuous physics, human behavior, faults, or environment; evidence must match the consequence and model fidelity.
 
@@ -396,7 +396,7 @@ Outputs include local warning effects, status/fault indications, optional authen
 
 ### Answer 2
 
-The connection is not directly compatible. Units differ: \(v_{m/s}=v_{km/h}/3.6\), and the uncertainty converts to approximately ±0.556 m/s, which is worse than the consumer’s ±0.3 m/s requirement. Rates differ: a 5 Hz producer cannot supply new observations to a 10 Hz consumer; interpolation would create estimates and needs a dynamics/error model. Timestamp reference differs: local monotonic time supports interval ordering but not UTC without a synchronized mapping and uncertainty.
+The connection is not directly compatible. Units differ: $v_{m/s}=v_{km/h}/3.6$, and the uncertainty converts to approximately ±0.556 m/s, which is worse than the consumer’s ±0.3 m/s requirement. Rates differ: a 5 Hz producer cannot supply new observations to a 10 Hz consumer; interpolation would create estimates and needs a dynamics/error model. Timestamp reference differs: local monotonic time supports interval ordering but not UTC without a synchronized mapping and uncertainty.
 
 Required functions may convert units, map time bases with synchronization provenance, buffer/order samples, and estimate intermediate values with declared age and covariance. Yet conversion cannot improve source accuracy by itself. The source, consumer requirement, or estimation architecture must change, or the consumer must accept degraded quality explicitly. Verification uses known-speed inputs, clock disturbance, dropout, boundary values, and end-to-end timestamps on named configurations. Passing record-shape checks would not establish physical accuracy.
 
@@ -404,11 +404,11 @@ Required functions may convert units, map time bases with synchronization proven
 
 Using inflow-positive convention, nominal rate of storage change is
 
-\[
+$$
 12.0-9.5-0.8=1.7\ \text{L/min}.
-\]
+$$
 
-Across 30 minutes, nominal accumulation is \(1.7\times30=51\) L. With a conservative additive bound and treating duration as exact, rate uncertainty is \(0.3+0.2+0.2=0.7\) L/min, giving ±21 L over the interval. Thus the bounded arithmetic result is 51 ± 21 L, or [30, 72] L under those assumptions.
+Across 30 minutes, nominal accumulation is $1.7\times30=51$ L. With a conservative additive bound and treating duration as exact, rate uncertainty is $0.3+0.2+0.2=0.7$ L/min, giving ±21 L over the interval. Thus the bounded arithmetic result is 51 ± 21 L, or [30, 72] L under those assumptions.
 
 This is not a statistical confidence interval. It assumes constant rates, independent meaning of the provided bounds is not used, the loss estimate belongs inside the chosen boundary, no other sources/sinks or overflow exist, storage geometry does not alter flows, and measurement biases are already covered. Evidence should check sensor calibration, temporal variation, boundary definition, initial/final direct level measurements, and whether uncertainty combination should be probabilistic or correlated.
 

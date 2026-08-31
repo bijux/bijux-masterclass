@@ -30,17 +30,17 @@ What becomes possible—and what must an interface promise—when computations c
 
 ### Central model, mechanism, or theorem
 
-For sets or types \(A,B,C\), a first-order function has type \(f:A\to B\). Representative higher-order shapes are
+For sets or types $A,B,C$, a first-order function has type $f:A\to B$. Representative higher-order shapes are
 
-\[
+$$
 H:(A\to B)\times A\to B,
 \qquad
 K:A\to(B\to C),
 \qquad
 T:(A\to B)\to(A\to C).
-\]
+$$
 
-Application obeys the contract of the supplied function, not merely the syntax of the higher-order caller. If \(H\) may invoke its function parameter zero, one, or many times, in an unspecified order, that multiplicity and order are observable whenever the argument function has effects, consumes resources, or is valid for only one call.
+Application obeys the contract of the supplied function, not merely the syntax of the higher-order caller. If $H$ may invoke its function parameter zero, one, or many times, in an unspecified order, that multiplicity and order are observable whenever the argument function has effects, consumes resources, or is valid for only one call.
 
 ### Critical invariants
 
@@ -188,54 +188,54 @@ This execution proves five outputs for this deterministic model under the record
 
 ## Definitions and Notation
 
-Let \(A,B,C\) be sets or types. The function space \(B^A\), also written \(A\to B\), contains mathematical mappings from \(A\) to \(B\). A programming-language function type approximates such a space while adding evaluation, failure, effects, and representation rules.
+Let $A,B,C$ be sets or types. The function space $B^A$, also written $A\to B$, contains mathematical mappings from $A$ to $B$. A programming-language function type approximates such a space while adding evaluation, failure, effects, and representation rules.
 
 A first-order function has no function in an input or output position:
 
-\[
+$$
 f:A\to B.
-\]
+$$
 
 Common higher-order signatures include:
 
-\[
+$$
 apply:(A\to B)\times A\to B,
-\]
+$$
 
-\[
+$$
 map:(A\to B)\times List(A)\to List(B),
-\]
+$$
 
-\[
+$$
 compose:(B\to C)\times(A\to B)\to(A\to C),
-\]
+$$
 
-\[
+$$
 select:K\to(A\to B).
-\]
+$$
 
-For a higher-order operator \(H\), define an invocation trace
+For a higher-order operator $H$, define an invocation trace
 
-\[
+$$
 Calls(H,f,x)=[(a_1,o_1),(a_2,o_2),\ldots,(a_n,o_n)],
-\]
+$$
 
-where each pair records an argument supplied to \(f\) and its outcome. A full operational contract can constrain \(n\), the order of \(a_i\), concurrency, timing relationship, and treatment of abnormal outcomes.
+where each pair records an argument supplied to $f$ and its outcome. A full operational contract can constrain $n$, the order of $a_i$, concurrency, timing relationship, and treatment of abnormal outcomes.
 
-Extensional equivalence under an observation function \(Obs\) is
+Extensional equivalence under an observation function $Obs$ is
 
-\[
+$$
 f\simeq g \quad\Longleftrightarrow\quad
 \forall a\in A,\;Obs(f(a))=Obs(g(a)).
-\]
+$$
 
-For partial or effectful functions, outcomes must include divergence, failure, and trace as admitted observations. Runtime identity \(f\equiv_{id}g\) is a separate relation and generally neither proves nor is required by \(f\simeq g\).
+For partial or effectful functions, outcomes must include divergence, failure, and trace as admitted observations. Runtime identity $f\equiv_{id}g$ is a separate relation and generally neither proves nor is required by $f\simeq g$.
 
-For a strict ordered map over \([a_1,\ldots,a_n]\), the intended functional equation is
+For a strict ordered map over $[a_1,\ldots,a_n]$, the intended functional equation is
 
-\[
+$$
 map(f,[a_1,\ldots,a_n])=[f(a_1),\ldots,f(a_n)].
-\]
+$$
 
 This value equation alone does not state evaluation order for a pure lazy language or a parallel implementation. If callback effects are observable, order and multiplicity need operational specification beyond the list equation.
 
@@ -245,17 +245,17 @@ This value equation alone does not state evaluation order for a pure lazy langua
 
 **Application preservation.** For `apply_once(f,x)`, the expected trace contains exactly one call `(x,outcome)`, and the wrapper returns that outcome unchanged unless its contract says otherwise. Catching, wrapping, retrying, or substituting a default changes the contract even if successful examples match.
 
-**Ordered pipeline.** Let \(run([f_1,\ldots,f_n],x)\) apply left to right. Induction on the function list gives `run([],x)=x` and `run(f:fs,x)=run(fs,f(x))`. For `[increment,square]` and 3, this yields `square(increment(3))=16`. Permuting the list is sound only when the functions commute over admitted inputs; the reverse example gives 10 and refutes a universal reorder rule.
+**Ordered pipeline.** Let $run([f_1,\ldots,f_n],x)$ apply left to right. Induction on the function list gives `run([],x)=x` and `run(f:fs,x)=run(fs,f(x))`. For `[increment,square]` and 3, this yields `square(increment(3))=16`. Permuting the list is sound only when the functions commute over admitted inputs; the reverse example gives 10 and refutes a universal reorder rule.
 
-**Multiplicity preservation.** `apply_twice(f,x)=f(f(x))` calls \(f\) twice for a strict terminating evaluation. Replacing it with one call is not generally equivalent. For pure `increment`, the result differs; for an effectful function, the trace can also differ. A one-shot callable violates the precondition entirely.
+**Multiplicity preservation.** `apply_twice(f,x)=f(f(x))` calls $f$ twice for a strict terminating evaluation. Replacing it with one call is not generally equivalent. For pure `increment`, the result differs; for an effectful function, the trace can also differ. A one-shot callable violates the precondition entirely.
 
-**Map length and position.** For a total strict map that calls once per input, induction yields `length(map(f,xs))=length(xs)` and output position \(i\) corresponds to \(f(xs_i)\). Filtering, flat mapping, exception skipping, cancellation, or infinite/lazy inputs require different statements.
+**Map length and position.** For a total strict map that calls once per input, induction yields `length(map(f,xs))=length(xs)` and output position $i$ corresponds to $f(xs_i)$. Filtering, flat mapping, exception skipping, cancellation, or infinite/lazy inputs require different statements.
 
-**Returned-function lifetime.** If `make(a)` returns function \(f_a\) that depends on environment \(a\), every invocation must occur while the representation of \(a\) remains valid. Garbage-collected closures retain reachable captures; ownership and borrowing systems can reject escaping references; manual representations need explicit lifetime discipline.
+**Returned-function lifetime.** If `make(a)` returns function $f_a$ that depends on environment $a$, every invocation must occur while the representation of $a$ remains valid. Garbage-collected closures retain reachable captures; ownership and borrowing systems can reject escaping references; manual representations need explicit lifetime discipline.
 
-**Effect inclusion.** If wrapper \(H\) invokes \(f\), every observable effect of \(f\) is an effect of evaluating \(H(f,\ldots)\), alongside \(H\)'s own effects. Higher-order abstraction relocates the source text of an effect; it does not erase the effect.
+**Effect inclusion.** If wrapper $H$ invokes $f$, every observable effect of $f$ is an effect of evaluating $H(f,\ldots)$, alongside $H$'s own effects. Higher-order abstraction relocates the source text of an effect; it does not erase the effect.
 
-**No equality from samples.** Testing \(f(a_i)=g(a_i)\) for finite samples establishes agreement on those samples. It proves extensional equality only when the domain is exactly that finite enumerated set and every outcome is checked, or when combined with a valid proof/generalization method.
+**No equality from samples.** Testing $f(a_i)=g(a_i)$ for finite samples establishes agreement on those samples. It proves extensional equality only when the domain is exactly that finite enumerated set and every outcome is checked, or when combined with a valid proof/generalization method.
 
 ## Alternatives and Trade-Offs
 

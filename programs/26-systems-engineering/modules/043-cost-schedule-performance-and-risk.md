@@ -35,23 +35,23 @@ How can a systems team make a defensible commitment when cost, schedule, technic
 
 Represent the controlled program state at assessment time (t) as
 
-\[
+$$
 X_t=(B_t,W_t,S_t,C_t,P_t,R_t,E_t),
-\]
+$$
 
 where (B_t) is the technical/configuration baseline, (W_t) work scope, (S_t) schedule network, (C_t) cost/resource model, (P_t) technical-performance model, (R_t) risk/uncertainty model, and (E_t) evidence/provenance. A forecast is conditional:
 
-\[
+$$
 (C_f,T_f,P_f)\sim F(X_t,\Theta,U),
-\]
+$$
 
 where (\Theta) contains explicit estimating/model assumptions and (U) represents uncertainties and risk scenarios with preserved dependence. A commitment is credible only if every component refers to compatible scope, configuration, calendar, price basis, and data date.
 
 For EVM status:
 
-\[
+$$
 CPI=\frac{EV}{AC},\qquad SPI=\frac{EV}{PV},\qquad EAC_{CPI}=\frac{BAC}{CPI}.
-\]
+$$
 
 These identities describe or extrapolate budgeted work under assumptions. They do not replace a network schedule forecast, technical-performance assessment, risk analysis, or bottom-up EAC.
 
@@ -156,13 +156,13 @@ After completing this module, you should be able to:
 
 **Use EVM as one evidence stream.** Establish an authorized, time-phased performance measurement baseline with objective earning methods. At a status date:
 
-\[
+$$
 CV=EV-AC,\qquad SV=EV-PV,
-\]
+$$
 
-\[
+$$
 CPI=EV/AC,\qquad SPI=EV/PV.
-\]
+$$
 
 Positive/negative variances require causal investigation. A common cost extrapolation is (EAC=BAC/CPI) when cumulative cost efficiency is assumed to continue; another is (EAC=AC+(BAC-EV)) when remaining work is assumed to perform to plan. Bottom-up EAC should incorporate remaining scope, current architecture, resource plan, schedule, risks, and performance evidence. SPI approaches one at completion by construction and does not model activity logic, so use schedule network/risk analysis for dates.
 
@@ -170,15 +170,15 @@ Positive/negative variances require causal investigation. A common cost extrapol
 
 **Forecast jointly.** Generate coherent cost/date/performance outcomes from the linked network, resource/cost behavior, performance model, discrete risks, and uncertainty. For thresholds (C^*,T^*,P^*) define:
 
-\[
+$$
 P_C=Pr(C_f\le C^*),\quad P_T=Pr(T_f\le T^*),\quad P_P=Pr(P_f\ge P^*),
-\]
+$$
 
 and
 
-\[
+$$
 P_J=Pr(C_f\le C^*,T_f\le T^*,P_f\ge P^*).
-\]
+$$
 
 Generally (P_J) is not the minimum, product, or average of marginals without special dependence assumptions. A P50 cost and P50 date selected from separate curves do not constitute 50-percent joint confidence.
 
@@ -242,35 +242,35 @@ Let (B) denote the technical baseline; (W) WBS/work scope; (G=(V,E)) the schedul
 
 Compatibility predicate:
 
-\[
+$$
 K(B,W,G,C,P,R,E,d)=true
-\]
+$$
 
 only when scope, configuration, mappings, units, price basis, calendars, status, and evidence are mutually consistent. Arithmetic on incompatible inputs does not repair (K=false).
 
 For activity (j), duration (D_j), cost behavior (C_j), predecessors (pred(j)), and finish (F_j):
 
-\[
+$$
 ES_j=\max_{k\in pred(j)}F_k,\qquad F_j=ES_j+D_j
-\]
+$$
 
 before calendar/resource effects. Criticality is scenario dependent when durations, logic, or resources vary.
 
 At status date (d), EVM quantities are:
 
-\[
+$$
 PV_d=\text{budgeted work scheduled},\quad EV_d=\text{budgeted work accomplished},\quad AC_d=\text{actual cost incurred}.
-\]
+$$
 
 Common diagnostics:
 
-\[
+$$
 CV=EV-AC,\ SV=EV-PV,\ CPI=EV/AC,\ SPI=EV/PV,
-\]
+$$
 
-\[
+$$
 EAC_1=AC+(BAC-EV),\qquad EAC_2=BAC/CPI.
-\]
+$$
 
 Neither EAC is universally correct. Select assumptions from causal evidence and compare with a bottom-up forecast.
 
@@ -278,10 +278,10 @@ For a lower-is-better TPM with limit (L), define margin (M=L-\hat x) under a dec
 
 For scenarios (s\in S) with coherent joint probability (p_s):
 
-\[
+$$
 E[C_f]=\sum_sp_sC_s,\quad Pr(C_f\le C^*,T_f\le T^*,P_f\ge P^*)
 =\sum_sp_sI_s,
-\]
+$$
 
 where (I_s=1) only if all three conditions hold in scenario (s).
 
@@ -430,29 +430,29 @@ Design an integrated assessment for a hospital diagnostic platform facing a fixe
 
 ### Answer 1
 
-\[
+$$
 CV=EV-AC=72-90=-18,
-\]
+$$
 
-\[
+$$
 SV=EV-PV=72-80=-8,
-\]
+$$
 
-\[
+$$
 CPI=72/90=0.80,\qquad SPI=72/80=0.90.
-\]
+$$
 
 If all remaining work performs at planned cost efficiency,
 
-\[
+$$
 EAC_1=AC+(BAC-EV)=90+(160-72)=178.
-\]
+$$
 
 If cumulative cost efficiency persists,
 
-\[
+$$
 EAC_2=BAC/CPI=160/0.80=200.
-\]
+$$
 
 The 22-million difference is assumption sensitivity, not a rounding problem. Investigate variance causes and build a bottom-up EAC using remaining scope, resources, schedule, technical state, and risks. SPI 0.90 does not mean ten percent late or support dividing baseline duration by 0.90: it is budgeted-work progress. No values establish critical-path completion, resource feasibility, technical requirement satisfaction, quality, or configuration. Reconcile schedule logic, objective earning evidence, TPMs, defects/rework, and risk before action.
 
@@ -460,17 +460,17 @@ The 22-million difference is assumption sensitivity, not a rounding problem. Inv
 
 Expected values are
 
-\[
+$$
 E[C]=0.50(90)+0.30(110)+0.20(130)=104,
-\]
+$$
 
-\[
+$$
 E[T]=0.50(18)+0.30(21)+0.20(24)=20.1,
-\]
+$$
 
-\[
+$$
 E[P]=0.50(102)+0.30(98)+0.20(95)=99.4.
-\]
+$$
 
 The first two outcomes meet cost, so cost confidence is 0.80. Only the first meets duration, so date confidence is 0.50. The first two meet performance, so performance confidence is 0.80. Only the first meets all three; joint confidence is 0.50.
 

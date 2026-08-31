@@ -31,26 +31,26 @@ How can a team determine that individual requirements and the requirement set ar
 
 ### Central model, mechanism, or theorem
 
-For a requirement \(r\), record:
+For a requirement $r$, record:
 
-\[
+$$
 r=\langle id,text,subject,source,rationale,conditions,obligation,
 attributes,relations,qualityFindings,verificationConcept,status\rangle.
-\]
+$$
 
-For verification evidence \(v\):
+For verification evidence $v$:
 
-\[
+$$
 v=\langle requirement,method,level,configuration,preconditions,
 stimulus,observations,oracle,calculation,tolerance,uncertainty,
 coverage,artifacts,authority\rangle.
-\]
+$$
 
 Evidence discriminates only if:
 
-\[
+$$
 Result(v)=Pass \iff Observed(v)\;\models\;AcceptancePredicate(r),
-\]
+$$
 
 where the predicate and evidence scope are fixed before the result. A passing finite observation supports only the stated configurations and conditions; it is not universal proof.
 
@@ -209,45 +209,45 @@ print("evidence=declared_fields_and_lexical_signals_only")
 
 ## Definitions and Notation
 
-Let \(N\) be authorized needs/source obligations, \(R\) requirements, \(D\) designs/realizations, \(V\) verification evidence, and \(O\) stakeholder outcomes.
+Let $N$ be authorized needs/source obligations, $R$ requirements, $D$ designs/realizations, $V$ verification evidence, and $O$ stakeholder outcomes.
 
 Distinguish four relations:
 
-\[
+$$
 ReqVerified(R)\quad\text{(requirements are expressed correctly)},
-\]
+$$
 
-\[
+$$
 ReqValidated(N,R)\quad\text{(requirements faithfully transform sources)},
-\]
+$$
 
-\[
+$$
 ProductVerified(D,R,V)\quad\text{(realization satisfies requirements)},
-\]
+$$
 
-\[
+$$
 SystemValidated(D,O)\quad\text{(realized operation satisfies intended outcomes)}.
-\]
+$$
 
-None implies all others without additional evidence. Let \(A_r(x)\) be the acceptance predicate for requirement \(r\) applied to observation set \(x\). Let \(Scope(V)\) denote the tested/analyzed configuration, conditions, population, and time. A pass supports \(A_r\) only within that scope and inference model.
+None implies all others without additional evidence. Let $A_r(x)$ be the acceptance predicate for requirement $r$ applied to observation set $x$. Let $Scope(V)$ denote the tested/analyzed configuration, conditions, population, and time. A pass supports $A_r$ only within that scope and inference model.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 The review mechanism has six passes: source/necessity; expression/semantics; model/set consistency; feasibility; verification concept; validation against operational intent. Findings and corrections loop through traceability and change control until the named baseline decision is supported.
 
-For individual requirement \(r\), use:
+For individual requirement $r$, use:
 
-\[
+$$
 Quality(r)=Necessary\land CorrectLevel\land Clear\land Singular\land
 Feasible\land Traceable\land Verifiable.
-\]
+$$
 
-For set \(R\), add:
+For set $R$, add:
 
-\[
+$$
 SetQuality(R)=SourceCoverage\land OperationalCoverage\land Consistency
 \land CombinedFeasibility\land VerificationClosure.
-\]
+$$
 
 These are review predicates, not mechanically decidable theorems. Evidence and authority bound every judgment.
 

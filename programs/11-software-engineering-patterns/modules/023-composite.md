@@ -31,16 +31,16 @@ When can individual objects and recursive groups safely share an interface, and 
 
 ### Central model, mechanism, or theorem
 
-For a finite rooted tree \(T=(V,E,r)\), require one root with no parent, exactly one parent for every other node, and no directed cycle. Given leaf evaluator \(b(l)\) and associative combination \(\oplus\) with identity \(e\), an aggregate fold is
+For a finite rooted tree $T=(V,E,r)$, require one root with no parent, exactly one parent for every other node, and no directed cycle. Given leaf evaluator $b(l)$ and associative combination $\oplus$ with identity $e$, an aggregate fold is
 
-\[
+$$
 F(v)=\begin{cases}
 b(v), & v\text{ is a leaf},\\
 e\oplus F(c_1)\oplus\cdots\oplus F(c_k), & v\text{ is a composite}.
 \end{cases}
-\]
+$$
 
-This recursively terminates for a finite acyclic tree. Order matters when \(\oplus\) is not commutative, and shared nodes in a DAG require policy to avoid double counting. Uniform interface is valid only for operations whose leaf and composite meanings satisfy one contract.
+This recursively terminates for a finite acyclic tree. Order matters when $\oplus$ is not commutative, and shared nodes in a DAG require policy to avoid double counting. Uniform interface is valid only for operations whose leaf and composite meanings satisfy one contract.
 
 ### Critical invariants
 
@@ -123,7 +123,7 @@ Represent ownership separately from navigation links. Parent pointers speed upwa
 
 ### Cycle prevention
 
-When adding child \(c\) to parent \(p\), reject if \(c=p\) or \(c\) is an ancestor of \(p\) under tree semantics. For DAGs, test whether \(p\) is reachable from \(c\). Under concurrent mutation, the reachability check and insertion must share a synchronization/transaction boundary.
+When adding child $c$ to parent $p$, reject if $c=p$ or $c$ is an ancestor of $p$ under tree semantics. For DAGs, test whether $p$ is reachable from $c$. Under concurrent mutation, the reachability check and insertion must share a synchronization/transaction boundary.
 
 Defensive traversal may maintain a visited set even when topology promises acyclicity, especially for deserialized or untrusted structures. Decide whether repeats are errors or shared nodes.
 
@@ -183,29 +183,29 @@ Avoid unbounded path labels. Trace a sampled structural path or stable bounded n
 
 ## Definitions and Notation
 
-Let \(T=(V,E,r)\) be a finite rooted ordered tree. Parent function \(p:V\setminus\{r\}\to V\) is total and unique; \(r\) has no parent; no node reaches itself. Let \(children(v)=(c_1,\ldots,c_k)\).
+Let $T=(V,E,r)$ be a finite rooted ordered tree. Parent function $p:V\setminus\{r\}\to V$ is total and unique; $r$ has no parent; no node reaches itself. Let $children(v)=(c_1,\ldots,c_k)$.
 
-For leaf function \(b:L\to M\), monoid \((M,\oplus,e)\), and composites \(V\setminus L\):
+For leaf function $b:L\to M$, monoid $(M,\oplus,e)$, and composites $V\setminus L$:
 
-\[
+$$
 F(v)=b(v)\text{ for }v\in L;\qquad F(v)=\bigoplus_{c\in children(v)}F(c)\text{ otherwise}.
-\]
+$$
 
-In a DAG \(G=(V,E)\), define whether fold is over edge occurrences, paths, or unique node IDs. A visited set changes semantics from occurrence aggregation to unique-node aggregation. Let version \(ver(r)\) identify a snapshot root for concurrent readers.
+In a DAG $G=(V,E)$, define whether fold is over edge occurrences, paths, or unique node IDs. A visited set changes semantics from occurrence aggregation to unique-node aggregation. Let version $ver(r)$ identify a snapshot root for concurrent readers.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 ### Termination proof
 
-For a finite acyclic tree, define height \(h(v)\). Leaves have height zero. Each recursive call from a composite goes to a child with smaller height, so traversal terminates by induction. This proof does not apply to cyclic or lazily unbounded structures.
+For a finite acyclic tree, define height $h(v)$. Leaves have height zero. Each recursive call from a composite goes to a child with smaller height, so traversal terminates by induction. This proof does not apply to cyclic or lazily unbounded structures.
 
 ### Fold correctness
 
-Base case returns the declared leaf value. Inductive step assumes each child fold is correct and combines them in declared order with \(\oplus\). The result is correct for the stated algebra. Side effects, overflow, and failure require additional rules.
+Base case returns the declared leaf value. Inductive step assumes each child fold is correct and combines them in declared order with $\oplus$. The result is correct for the stated algebra. Side effects, overflow, and failure require additional rules.
 
 ### Mutation preservation
 
-Assume a valid tree. Adding unattached \(c\) under \(p\) after proving \(c\ne p\) and \(c\) is not an ancestor of \(p\), then atomically setting both edge and parent, preserves unique parentage and acyclicity. Concurrent checks without atomic insertion invalidate this argument.
+Assume a valid tree. Adding unattached $c$ under $p$ after proving $c\ne p$ and $c$ is not an ancestor of $p$, then atomically setting both edge and parent, preserves unique parentage and acyclicity. Concurrent checks without atomic insertion invalidate this argument.
 
 ### Executable finite tree
 

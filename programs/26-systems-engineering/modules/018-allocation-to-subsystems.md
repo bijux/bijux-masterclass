@@ -33,29 +33,29 @@ How can a team assign requirements, functions, qualities, budgets, and verificat
 
 Represent an allocation edge as:
 
-\[
+$$
 a=\langle requirement,element,role,conditions,inputs,outputs,
 interfaces,budget,rationale,authority,verification,status\rangle.
-\]
+$$
 
-For requirement \(r\), allocation coverage requires:
+For requirement $r$, allocation coverage requires:
 
-\[
+$$
 RequiredRoles(r)\subseteq\bigcup_{a\in Alloc(r)}Roles(a),
-\]
+$$
 
 and element feasibility requires:
 
-\[
+$$
 \forall e:\ Feasible\left(e,\{a\mid Element(a)=e\},constraints_e\right).
-\]
+$$
 
 System satisfaction requires more than element satisfaction:
 
-\[
+$$
 ElementEvidence+InterfaceEvidence+IntegrationEvidence
 \xRightarrow{composition\ argument} SystemRequirementEvidence.
-\]
+$$
 
 The relations structure review; they do not automatically prove correct architecture, complete roles, feasible integration, or system acceptance.
 
@@ -216,17 +216,17 @@ print("evidence=declared_fields_only")
 
 ## Definitions and Notation
 
-Let \(R\) be requirements, \(E\) system elements, \(F\) functions, \(Q\) quality concerns, \(B\) budgets, \(I\) interfaces/integration obligations, and \(V\) evidence.
+Let $R$ be requirements, $E$ system elements, $F$ functions, $Q$ quality concerns, $B$ budgets, $I$ interfaces/integration obligations, and $V$ evidence.
 
 Define an allocation relation:
 
-\[
+$$
 Alloc\subseteq R\times E\times Role.
-\]
+$$
 
-For element \(e\), \(Req(e)=\{r\mid\exists role:(r,e,role)\in Alloc\}\). For requirement \(r\), \(Elements(r)=\{e\mid\exists role:(r,e,role)\in Alloc\}\). These sets express assignment, not satisfaction.
+For element $e$, $Req(e)=\{r\mid\exists role:(r,e,role)\in Alloc\}$. For requirement $r$, $Elements(r)=\{e\mid\exists role:(r,e,role)\in Alloc\}$. These sets express assignment, not satisfaction.
 
-Let \(Controls(e,x)\) mean element \(e\) can observe or change property \(x\) sufficiently for its role. Let \(Assumes(e,p)\) record dependency on peer/environment property \(p\). An allocation is suspect when the role requires \(x\) but neither `Controls` nor a governed interface/assumption supplies it.
+Let $Controls(e,x)$ mean element $e$ can observe or change property $x$ sufficiently for its role. Let $Assumes(e,p)$ record dependency on peer/environment property $p$. An allocation is suspect when the role requires $x$ but neither `Controls` nor a governed interface/assumption supplies it.
 
 An **allocation matrix** is a view of `Alloc`; an **allocated baseline** includes requirement texts, child derivations, architecture identities, interface definitions, budgets, rationale, authority, and verification concepts. A **specification owner** controls an element's obligations; a **system requirement owner** retains parent accountability.
 
@@ -236,11 +236,11 @@ The mechanism has seven passes: select architecture alternative; define elements
 
 Use an allocation readiness predicate:
 
-\[
+$$
 Ready(A)=RoleCoverage\land Controllability\land InterfaceClosure
 \land ElementFeasibility\land SystemFeasibility\land IntegrationAuthority
 \land VerificationClosure.
-\]
+$$
 
 This is a review structure, not an algorithmic proof. Architecture suitability, controllability, and feasibility require evidence and judgment.
 

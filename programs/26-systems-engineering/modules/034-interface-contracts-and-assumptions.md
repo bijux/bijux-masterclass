@@ -36,25 +36,25 @@ How can independently developed elements state, compose, challenge, monitor, and
 
 Let behaviors be (b\in\mathcal B), contract (C=(A,G)), implementation predicate (M), and environment predicate (E). Under the convention used in this module:
 
-\[
+$$
 M\models C\iff \forall b:\ M(b)\land A(b)\Rightarrow G(b),
-\]
+$$
 
-\[
+$$
 E\sim C\iff \forall b:\ E(b)\Rightarrow A(b).
-\]
+$$
 
 If (M\models C) and (E\sim C), then:
 
-\[
+$$
 \forall b:\ E(b)\land M(b)\Rightarrow G(b).
-\]
+$$
 
 For a producer contract (C_P=(A_P,G_P)) connected to consumer contract (C_C=(A_C,G_C)), a central compatibility obligation is:
 
-\[
+$$
 Context\land G_P\Rightarrow A_C.
-\]
+$$
 
 The implication must cover values, semantics, units, timing, state, faults, versions, environments, and lifecycle conditions—not only nominal scalar ranges. False or impossible assumptions can make an implication vacuously true, so assumption satisfiability and reachable compatible environments must be checked separately.
 
@@ -151,7 +151,7 @@ After completing this module, you should be able to:
 
 **Define the contract interface.** Declare inputs, outputs, shared variables, events, physical quantities, ports, observation planes, units, time semantics, modes, and versions. Formal predicates are meaningless without a shared universe of behaviors. Decide whether a behavior is a point, trace, state sequence, trajectory, probability distribution, or hybrid execution. The simple Boolean notation in this chapter hides that semantic choice and must not be overextended.
 
-**State assumptions and guarantees separately.** Assumptions constrain environment behavior; guarantees constrain component behavior when assumptions hold. Example: assumption (23\le V_{in}\le29\) V and ambient (-10\le T\le50\) °C; guarantee (11.8\le V_{out}\le12.2\) V at load 0–4 A. Include transient, fault, state, and measurement conditions if they matter. A narrative paragraph that mixes both sides impedes blame and composition.
+**State assumptions and guarantees separately.** Assumptions constrain environment behavior; guarantees constrain component behavior when assumptions hold. Example: assumption $23\le V_{in}\le29$ V and ambient $-10\le T\le50$ °C; guarantee $11.8\le V_{out}\le12.2$ V at load 0–4 A. Include transient, fault, state, and measurement conditions if they matter. A narrative paragraph that mixes both sides impedes blame and composition.
 
 **Check assumption satisfiability and reachability.** A contradiction such as (V<20\land V>25) makes (A\Rightarrow G) true for every implementation. That is vacuity, not success. Use constraint solving, model checking, simulation, review, or witness scenarios to show at least one relevant environment behavior satisfies (A). Also ask whether the intended operational environment can actually reach that domain.
 
@@ -236,74 +236,74 @@ Let (mathcal B) be the behavior universe for a declared interface signature and 
 
 Contract:
 
-\[
+$$
 C=\langle I,O,S,A,G,D,V\rangle,
-\]
+$$
 
 where inputs (I), outputs (O), shared/observed variables (S), assumptions (A), guarantees (G), applicability domain (D), and contract version (V) are controlled.
 
 Implementation satisfaction:
 
-\[
+$$
 M\models C\iff M\land A\Rightarrow G.
-\]
+$$
 
 Environment compatibility:
 
-\[
+$$
 E\sim C\iff E\Rightarrow A.
-\]
+$$
 
 Non-vacuity requires at minimum:
 
-\[
+$$
 \exists b:\ E(b)\land A(b),
-\]
+$$
 
 for an intended environment (E). Contract consistency requires a behavior satisfying relevant assumptions and guarantees:
 
-\[
+$$
 \exists b:\ A(b)\land G(b),
-\]
+$$
 
 but this is weaker than causal realizability.
 
 For producer (P), path (T), and consumer (C), compatibility over shared variable (y) is:
 
-\[
+$$
 Context\land T(G_P(y))\Rightarrow A_C(y),
-\]
+$$
 
 or equivalently no counterexample is satisfiable:
 
-\[
+$$
 Context\land T(G_P(y))\land\neg A_C(y).
-\]
+$$
 
 For interval guarantee (G_P=[g_l,g_u]), additive path effect ([d_l,d_u]), and consumer assumption (A_C=[a_l,a_u]):
 
-\[
+$$
 [g_l+d_l,g_u+d_u]\subseteq[a_l,a_u].
-\]
+$$
 
 Under this module's refinement convention, (C_1\preceq C_0) means:
 
-\[
+$$
 A_0\Rightarrow A_1,
-\]
+$$
 
-\[
+$$
 A_0\land G_1\Rightarrow G_0.
-\]
+$$
 
 The first condition prevents the replacement from demanding a narrower environment than originally allowed; the second preserves original guarantees in original contexts. Formal contract theories may use saturated forms or different semantic universes, so operators must not be transferred mechanically.
 
 An assumption record is:
 
-\[
+$$
 h=\langle id,p,source,owner,domain,consumers,evidence,uncertainty,
 consequence,closure,monitor,contingency,status,version\rangle.
-\]
+$$
 
 Dependency relation (Dep\subseteq H\times Artifacts) supports change reachability. If (h) changes, every artifact reachable through (Dep) requires disposition; reachability does not prove the recorded graph is complete.
 
@@ -398,9 +398,9 @@ Adversarial review searches for witnesses to (G_P\land\neg A_C), (A\land\neg G),
 
 ### Example 1
 
-**Voltage producer–consumer contract.** A source assumes load current (0\le I\le4\) A and ambient 0–40 °C, then guarantees 24–28 V at plane P1. A harness assumes the same current and guarantees a drop in ([-1.0,0]\) V. A controller assumes 22.5–28.5 V at P2.
+**Voltage producer–consumer contract.** A source assumes load current $0\le I\le4$ A and ambient 0–40 °C, then guarantees 24–28 V at plane P1. A harness assumes the same current and guarantees a drop in $[-1.0,0]$ V. A controller assumes 22.5–28.5 V at P2.
 
-The composed delivered interval is ([24-1,28+0]=[23,28]\) V, contained in ([22.5,28.5]\) V. Margins are 0.5 V at both bounds. Compatibility is conditional on current, ambient, planes, steady/transient basis, return path, and harness configuration. If controller startup draws 5 A, the source/harness assumptions are violated; a degraded guarantee or startup redesign is needed.
+The composed delivered interval is $[24-1,28+0]=[23,28]$ V, contained in $[22.5,28.5]$ V. Margins are 0.5 V at both bounds. Compatibility is conditional on current, ambient, planes, steady/transient basis, return path, and harness configuration. If controller startup draws 5 A, the source/harness assumptions are violated; a degraded guarantee or startup redesign is needed.
 
 ### Example 2
 
@@ -446,7 +446,7 @@ Dependency traversal finds cooling capacity, airflow, acoustic level, room power
 
 ### Example 9
 
-**Runtime assumption monitoring.** An autonomy function assumes localization uncertainty (u\le0.8\) m. A monitor estimates (u), but estimate uncertainty is ±0.1 m and updates every 200 ms. Triggering at displayed (0.8) m can detect actual violation late.
+**Runtime assumption monitoring.** An autonomy function assumes localization uncertainty $u\le0.8$ m. A monitor estimates (u), but estimate uncertainty is ±0.1 m and updates every 200 ms. Triggering at displayed (0.8) m can detect actual violation late.
 
 The operational threshold is set at 0.65 m after allocating estimation uncertainty, sampling, trend, stopping distance, and response latency. Persistence/hysteresis prevents chatter without masking rapid degradation. On trigger, the system limits speed and requests operator disposition; if monitor health is lost, it enters the same conservative mode. Tests inject uncertainty growth, delay, monitor faults, and recovery. The monitor manages domain exit; it does not prove localization remains valid.
 
@@ -528,11 +528,11 @@ Three components form a cycle: detector D guarantees `alarm` if controller C is 
 
 Assuming the path age contribution is additive and the intervals share compatible events and units:
 
-\[
+$$
 Age_{arrival}=[40+10,70+25]=[50,95]\text{ ms}.
-\]
+$$
 
-The consumer accepts age at most 90 ms. The lower values are acceptable, but the worst case exceeds the assumption by 5 ms. Therefore (G_P\land G_{path}\not\Rightarrow A_C); the counterexample is producer age 70 ms plus path 25 ms. Compatibility fails with upper margin (90-95=-5\) ms.
+The consumer accepts age at most 90 ms. The lower values are acceptable, but the worst case exceeds the assumption by 5 ms. Therefore (G_P\land G_{path}\not\Rightarrow A_C); the counterexample is producer age 70 ms plus path 25 ms. Compatibility fails with upper margin $90-95=-5$ ms.
 
 Additional premises include producer supply actually within 20–30 V; traffic within 2 Mbit/s; whether producer age and path delay bounds may coincide; occurrence/publication/receipt event definitions; clock synchronization and timestamp uncertainty; data rate measurement window; queue and retransmission coverage; loss/duplicate/restart behavior; normal/degraded modes; versions; path and endpoint configuration; and whether 90 ms is inclusive. Options are tighter producer/path guarantees, a wider justified consumer assumption, a faster architecture, or degraded behavior—never averaging away the violation.
 

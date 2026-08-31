@@ -33,9 +33,9 @@ When is one instance genuinely required, and why should instance cardinality usu
 
 Separate cardinality from reachability. For scope (S) and service instances (I_S), a one-instance invariant is
 
-\[
+$$
 |I_S|=1.
-\]
+$$
 
 Global access adds a resolver (G:C\times T\to I_S), often available to every caller (C) at time (T). The cardinality equation does not imply that (G) is necessary. A composition root can create one (s\in I_S) and explicitly construct a dependency graph (D) whose required nodes reference (s). Concurrency additionally requires exactly-once initialization and a happens-before relation from completed construction to every published read.
 
@@ -186,21 +186,21 @@ Once all accesses are explicit, construct one instance at the root, delete reset
 
 Let scopes form a relation (belongs(i,S)). The scoped instance set is
 
-\[
+$$
 I_S=\{i\mid belongs(i,S)\}.
-\]
+$$
 
 A cardinality requirement may be exact (|I_S|=1), upper-bounded (|I_S|\le1), or keyed:
 
-\[
+$$
 \forall k\in K:\ |I_{S,k}|\le1.
-\]
+$$
 
 Let construction events be (create(i)) and reads (read_c(i)). Safe publication requires
 
-\[
+$$
 complete(create(i))\ hb\ read_c(i)\quad\forall c,
-\]
+$$
 
 where (hb) is the language-defined happens-before relation. Exactly-once initialization additionally requires only one successful publication for the scope generation.
 

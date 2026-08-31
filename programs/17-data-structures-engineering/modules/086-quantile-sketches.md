@@ -20,9 +20,9 @@ How can a streaming system approximate ranks and quantiles with bounded memory w
 
 For sorted observations (x_{(1)}\le\cdots\le x_{(n)}), an **inclusive rank** is (R(v)=|\{i:x_i\le v\}|), with normalized rank (r(v)=R(v)/n). A quantile query (Q(q)) asks for a stream value whose rank is near (qn). An **absolute rank-error** contract permits
 
-\[
+$$
 |R(\widehat Q(q))-qn|\le\varepsilon n
-\]
+$$
 
 deterministically or with a stated probability. Rank error is not value error: moving one percent in rank can cross an arbitrarily large value gap.
 
@@ -100,11 +100,11 @@ An additive rank guarantee says the returned value's rank is within (\varepsilon
 
 GK is deterministic for insertion-only ordered streams. It retains sorted tuples ((v_i,g_i,\Delta_i)). Let
 
-\[
+$$
 r_{\min}(v_i)=\sum_{j\le i}g_j,
 \qquad
 r_{\max}(v_i)=r_{\min}(v_i)+\Delta_i.
-\]
+$$
 
 The tuple asserts that the true rank of (v_i) lies within those bounds. Insert places a new value in order with (g=1) and a permitted uncertainty based on current (n). Compression merges adjacent tuple mass only when the resulting uncertainty stays within the (2\varepsilon n) invariant. A query walks cumulative lower ranks and returns a neighboring retained value whose rank interval satisfies the error rule.
 

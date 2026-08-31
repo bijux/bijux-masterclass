@@ -33,21 +33,21 @@ Can the organization move a system through a sequence of capability, architectur
 
 Model evolution as a state-transition system
 
-\[
+$$
 \mathcal{E}=(C,\Delta,I,E,A),
-\]
+$$
 
 where $C$ are identified configurations, $\Delta$ authorized transitions, $I$ integrity obligations, $E$ evidence and observations, and $A$ authorities/effectivity. A path
 
-\[
+$$
 C_0\xrightarrow{\delta_1}C_1\xrightarrow{\delta_2}\cdots\xrightarrow{\delta_n}C_n
-\]
+$$
 
 is admissible only if every state—not only $C_n$—meets its applicable obligations or carries an explicitly authorized bounded exception:
 
-\[
+$$
 \forall k,\ \forall i\in I(C_k):\ evidence(i,C_k)\lor accepted\_exception(i,C_k).
-\]
+$$
 
 This condition is necessary, not sufficient: obligation discovery, evidence quality, interactions, actual-state reconciliation, and competent authority remain essential.
 

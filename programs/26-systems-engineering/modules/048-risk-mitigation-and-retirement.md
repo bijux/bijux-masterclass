@@ -36,28 +36,28 @@ How can a systems team choose, implement, verify, and govern risk responses so t
 
 For risk scenario (s), control set (a), evidence (E), and baseline (B), compare conditional pre- and post-response profiles:
 
-\[
+$$
 R_0=(P(s\mid B,E),C(s\mid B,E),U_0),
-\]
+$$
 
-\[
+$$
 R_a=(P(s\mid a,B,E'),C(s\mid a,B,E'),U_a).
-\]
+$$
 
 When probability and consequence are calibrated/cardinal on a common basis, a limited decision aid is
 
-\[
+$$
 NB(a)=E[C_0]-E[C_a]-Cost(a)-Secondary(a).
-\]
+$$
 
 Expected net benefit cannot by itself authorize safety, legal, ethical, security, or noncompensatory tradeoffs, and it must preserve dependence and uncertainty.
 
 A retirement gate is a conjunction:
 
-\[
+$$
 Close(r)=K_{scenario}\land K_{implementation}\land K_{effectiveness}
 \land K_{residual}\land K_{handoff}\land K_{authority}.
-\]
+$$
 
 Completing actions satisfies only part of this gate.
 
@@ -229,34 +229,34 @@ Let scenario (S), response alternative (a\in A), baseline/configuration (B), obj
 
 Risk state transition:
 
-\[
+$$
 R_0=(S,P_0,C_0,U_0,B,E)\xrightarrow{implement(a),verify(E')}
 R_a=(S',P_a,C_a,U_a,B',E').
-\]
+$$
 
 The arrow requires evidence and can change the scenario/configuration, not merely its score.
 
 For scalar cardinal consequences under justified probability:
 
-\[
+$$
 \Delta E=\sum_sP_0(s)C_0(s)-\sum_sP_a(s)C_a(s).
-\]
+$$
 
 Decision comparison includes implementation cost and secondary/portfolio consequences, with noncompensatory constraints separate.
 
 Trigger (g_j) at time (t):
 
-\[
+$$
 g_j(X_t,E_t)\ge h_j\Rightarrow action_j,
-\]
+$$
 
 with observable (X_t), threshold/hysteresis (h_j), data quality, owner, decision lead and tested action.
 
 Retirement record:
 
-\[
+$$
 Retire(r)=(criteria,evidence,residual,aggregate,acceptance,handoff,history,reopen).
-\]
+$$
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -403,21 +403,21 @@ Design mitigation and retirement governance for wildfire smoke risk in public sc
 
 Baseline expected consequence is
 
-\[
+$$
 0.25(40)=10.
-\]
+$$
 
 Response A residual expected consequence is (0.10(25)=2.5). Nominal net expected reduction after action cost is
 
-\[
+$$
 10-2.5-3=4.5.
-\]
+$$
 
 Response B residual expected consequence is (0.05(20)=1.0), with nominal net expected reduction
 
-\[
+$$
 10-1-5=4.0.
-\]
+$$
 
 On this narrow scalar expected-cost model A is larger by 0.5, but it does not select A. Review probability/consequence uncertainty and dependence, tails, technical/safety/security/human/environmental outcomes, implementation time, control reliability, secondary risks, reversibility, affected stakeholders, constraints, information value, aggregate exposure and authority. If consequence units are not cardinal/commensurate or probabilities are not calibrated, the arithmetic is not valid. A response may be mandatory even with negative scalar net benefit.
 

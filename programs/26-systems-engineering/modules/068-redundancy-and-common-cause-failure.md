@@ -34,15 +34,15 @@ Which failures must the system tolerate, which channels are genuinely independen
 
 For $n$ identical independent active channels with success probability $p$, a $k$-out-of-$n$ function has
 
-\[
+$$
 R_{k|n}=\sum_{i=k}^{n}{n\choose i}p^i(1-p)^{n-i}.
-\]
+$$
 
 For a one-out-of-$n$ function with independent channel failure probability $q=1-p$, failure is $q^n$. If a simple shared-failure probability $q_c$ can defeat every channel and otherwise the channels fail independently with conditional probability $q_i$, then
 
-\[
+$$
 Q_{sys}=q_c+(1-q_c)q_i^n.
-\]
+$$
 
 Thus $Q_{sys}\ge q_c$ for every $n$: added identical redundancy cannot cross the common-cause floor. Real models must also account for detection/coverage, switch failure, dormant failure, load sharing, repair, test intervals, mission time, state transitions, and parameter uncertainty.
 

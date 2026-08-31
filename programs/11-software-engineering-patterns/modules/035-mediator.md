@@ -30,9 +30,9 @@ How can interaction policy among a cohesive set of objects be owned explicitly s
 
 For mediator state (m), colleague input (i), trusted context (ctx), define one transition
 
-\[
+$$
 \delta:(m,i,ctx)\rightarrow(m',O),
-\]
+$$
 
 where (O=[o_1,...,o_k]) is an explicitly ordered set of colleague commands and/or domain facts. Direct undirected acquaintance among (n) colleagues can require up to (n(n-1)/2) links; a mediator topology needs (n) colleague-to-mediator links. This graph result concerns communication structure only: the mediator now owns cross-colleague rules, ordering, and failure policy.
 
@@ -187,9 +187,9 @@ Cover invalid inputs, boundary states, repeated/no-op changes, reentrancy, dupli
 
 Let colleagues be (C=\{c_1,...,c_n\}). A fully connected undirected acquaintance graph has
 
-\[
+$$
 |E_{pair}|=\binom{n}{2}=\frac{n(n-1)}{2},
-\]
+$$
 
 while a star centered at mediator (mu) has (|E_{star}|=n). Directed request/response interfaces may count differently; the comparison illustrates topology, not total semantic complexity.
 
@@ -386,7 +386,7 @@ Review a proposed mediator for safety-critical industrial actuation without clai
 
 ### Answer 1
 
-For six colleagues, pairwise undirected acquaintance has \(\binom{6}{2}=6\cdot5/2=15\) links; the mediator star has one link per colleague, six. This counts topology only and ignores direction, interface breadth, and semantic knowledge.
+For six colleagues, pairwise undirected acquaintance has $\binom{6}{2}=6\cdot5/2=15$ links; the mediator star has one link per colleague, six. This counts topology only and ignores direction, interface breadth, and semantic knowledge.
 
 In the executable example, base state has empty name, false terms, and disabled button, so the invariant holds. Each valid input updates exactly one mediator field, increments transition count, derives `eligible = nonempty(normalized name) and terms`, and applies that Boolean. Thus after successful return button state equals the predicate. The trace yields false, false, true, false; only false→true and true→false change the button, so three transitions produce two commands. The proof assumes serialization, accepted event types, terminating nonfailing button application, and no external button mutation; it proves no thread, persistence, security, or distributed property.
 

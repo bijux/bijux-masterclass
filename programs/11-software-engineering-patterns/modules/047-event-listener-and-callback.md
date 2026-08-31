@@ -33,9 +33,9 @@ How can a source notify zero or more interested collaborators without knowing th
 
 For source state (q), event (e), and registration-ordered snapshot (L_e=(\ell_1,...,\ell_n)), synchronous dispatch is a trace
 
-\[
+$$
 D(q,e,L_e)=invoke(\ell_1,e);\ldots;invoke(\ell_n,e).
-\]
+$$
 
 This model is deterministic only if listener selection/order, mutation snapshot, callback effects, and failure/reentrancy rules are fixed. Successful return proves at most that the declared callbacks completed under this process; it does not prove durable receipt, exactly-once external effects, or eventual processing.
 
@@ -214,9 +214,9 @@ Let registry at time (t) be (R_t), eligible registration-ordered snapshot for ev
 
 Under snapshot semantics, registry mutation during dispatch produces (R_{t+1}) but leaves (L_e) unchanged. For a bounded async queue with capacity (K), invariant is
 
-\[
+$$
 0\le queued(t)\le K,
-\]
+$$
 
 and every enqueue at capacity follows the declared block/reject/drop/coalesce rule rather than allocating without bound.
 

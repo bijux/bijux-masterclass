@@ -35,26 +35,26 @@ What evidence justifies authorizing a specific integration step now, with these 
 
 For planned step (s), configuration (k), environment (h), decision time (t), and applicable criteria (C_s), partition criteria into mandatory (M_s) and discretionary/supplementary (D_s). Define (met(c,k,h,t)) only when the criterion is satisfied by valid, fresh evidence. Then ordinary authorization requires:
 
-\[
+$$
 Ready(s,k,h,t)=\bigwedge_{c\in M_s}met(c,k,h,t)
 \land RiskAccepted(s,k,h,t)
 \land AuthorityPresent(s,t).
-\]
+$$
 
 A descriptive completion fraction:
 
-\[
+$$
 F=\frac{|\{c\in C_s:met(c)\}|}{|C_s|}
-\]
+$$
 
 can help locate work but cannot establish readiness. (F=0.95) may still hide one catastrophic mandatory gap. A waiver changes the decision basis by accepting bounded nonconformance; it does not make (met(c)) true.
 
 Evidence applicability can be represented as:
 
-\[
+$$
 Valid(e,c)\Rightarrow Article(e)=Article(c)\land Config(e)\sim Config(c)
 \land Conditions(e)\supseteq Conditions(c)\land Method(e)\text{ is adequate},
-\]
+$$
 
 plus intact provenance and no invalidating change. Compatibility ((\sim)) requires an explicit equivalence or impact argument, not name similarity.
 
@@ -247,37 +247,37 @@ Let planned steps be (S), configurations (K), environments (H), criteria (C), ev
 
 Applicability relation:
 
-\[
+$$
 Applicable\subseteq C\times S\times K\times H.
-\]
+$$
 
 Evidence-support relation:
 
-\[
+$$
 Supports\subseteq E\times C,
-\]
+$$
 
 with support accepted only when provenance, configuration, condition, method, result, freshness, and change impact are adequate.
 
 For applicable mandatory set:
 
-\[
+$$
 M(s,k,h)=\{c\in C:Applicable(c,s,k,h)\land mandatory(c)\}.
-\]
+$$
 
 Ordinary readiness at time (t):
 
-\[
+$$
 Ready(s,k,h,t)\iff
 \left(\forall c\in M(s,k,h):finding(c,t)=met\right)
 \land acceptedRisk(s,k,h,t)\land authorized(a,s,t).
-\]
+$$
 
 If a deviation permits action despite criterion (c) being unmet, preserve:
 
-\[
+$$
 finding(c,t)=unmet,
-\]
+$$
 
 and record separate authorization (deviation(c,scope,limits,expiry,authority)). This prevents decision metadata from corrupting evidence truth.
 
@@ -355,9 +355,9 @@ This is an assurance argument, not a proof that integration will succeed.
 
 **Ninety percent ready is a hold.** Twenty criteria include eighteen met, one mandatory interface-polarity precheck missing, and one mandatory emergency-stop rehearsal failed. The completion fraction is:
 
-\[
+$$
 F=18/20=0.90.
-\]
+$$
 
 Both missing criteria can cause harm and invalidate results; the step holds. Correct wiring/precheck evidence and successful rehearsal restore the relevant findings. Adding two low-consequence checklist items and marking them green would raise the fraction but change nothing technically.
 
@@ -472,9 +472,9 @@ Develop a readiness assessment for integrating a hospital medication pump with p
 
 Met criteria are six mandatory plus four supplementary, so:
 
-\[
+$$
 F=10/12=0.8333\ldots\approx83.3\%.
-\]
+$$
 
 The interface criterion remains `unmet`; its deviation is a separate authorization record defining scope, controls, risk, owner, expiry, and downstream evidence limitations. The safety-observer criterion is `expired`, also not met. Ordinary authorization fails because not every mandatory criterion is met. The gate either holds until both are met or an authority competent for both consequences issues bounded deviations where permitted. If an observer is required by law, safety rule, or risk control and cannot be waived, the only valid decision is hold. The fraction has no authority.
 
