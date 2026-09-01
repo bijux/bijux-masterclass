@@ -179,7 +179,10 @@ def _looks_like_parenthetical_math(content: str) -> bool:
         return False
     if any(token in candidate for token in ("http://", "https://", ";", "?", "!")):
         return False
-    if re.fullmatch(r"[A-Za-z](?:_[A-Za-z0-9{}]+|\^[A-Za-z0-9{}+\-]+)?", candidate):
+    if re.fullmatch(
+        r"[A-Za-z](?:_[A-Za-z0-9{}]+|\^[A-Za-z0-9{}+\-]+)?'*",
+        candidate,
+    ):
         return True
     if BARE_MATH_COMMAND.search(candidate) or MATH_TEX_COMMAND.search(candidate):
         return True

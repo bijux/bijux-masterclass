@@ -97,9 +97,9 @@ class MarkdownStructureTests(unittest.TestCase):
         )
 
     def test_parenthetical_notation_can_be_repaired_explicitly(self) -> None:
-        text = "Let (P) contain programs and (p(x)=(x+1)+1) define behavior.\n"
+        text = "Let (P) contain programs, let (s') be state, and (p(x)=(x+1)+1) define behavior.\n"
         self.assertEqual(
-            "Let $P$ contain programs and $p(x)=(x+1)+1$ define behavior.\n",
+            "Let $P$ contain programs, let $s'$ be state, and $p(x)=(x+1)+1$ define behavior.\n",
             normalize_parenthetical_math(text),
         )
 
