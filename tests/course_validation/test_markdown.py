@@ -91,23 +91,9 @@ class MarkdownStructureTests(unittest.TestCase):
         )
 
     def test_parenthetical_repair_normalizes_lost_tex_commands(self) -> None:
-        text = "Space is (Theta(n)), with (operatorname{rank}_1(i)=i) and $log_2 n$.\n"
+        text = "Space is (Theta(n)), with (operatorname{rank}_1(i)=i).\n"
         self.assertEqual(
-            r"Space is $\Theta(n)$, with $\operatorname{rank}_1(i)=i$ and $\log_2 n$." + "\n",
-            normalize_parenthetical_math(text),
-        )
-
-    def test_parenthetical_repair_handles_arithmetic_and_half_open_ranges(self) -> None:
-        text = "Use (n-1), (B[i]), and (B[0..i)); there are (2^n) cases.\n"
-        self.assertEqual(
-            "Use $n-1$, $B[i]$, and $B[0..i)$; there are $2^n$ cases.\n",
-            normalize_parenthetical_math(text),
-        )
-
-    def test_parenthetical_repair_recovers_backspace_damaged_binomial(self) -> None:
-        text = "There are (\x08inom{n}{m}) choices.\n"
-        self.assertEqual(
-            r"There are $\binom{n}{m}$ choices." + "\n",
+            r"Space is $\Theta(n)$, with $\operatorname{rank}_1(i)=i$." + "\n",
             normalize_parenthetical_math(text),
         )
 

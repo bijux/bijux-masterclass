@@ -26,7 +26,7 @@ BIJUX_VERIFY_COMMENT = re.compile(r"<!-- bijux-verify:.*?-->[ \t]*(?:\n|$)", re.
 MARKDOWN_LINK = re.compile(r"!?\[[^\]\n]*\]\([^\n)]*\)")
 BARE_MATH_COMMAND = re.compile(
     r"(?<![\\A-Za-z])(?:operatorname|Theta|Omega|Delta|Gamma|Lambda|Sigma|Phi|Psi|"
-    r"lceil|rceil|lfloor|rfloor|log|ln|Pr|binom)(?=\b|[_({])"
+    r"lceil|rceil|lfloor|rfloor|log|ln|Pr)(?=\b|[_({])"
 )
 
 
@@ -180,15 +180,9 @@ def _looks_like_parenthetical_math(content: str) -> bool:
         return False
     if re.fullmatch(r"[A-Za-z](?:_[A-Za-z0-9{}]+|\^[A-Za-z0-9{}+\-]+)?", candidate):
         return True
-    if BARE_MATH_COMMAND.search(candidate) or MATH_TEX_COMMAND.search(candidate):
+    if BARE_MATH_COMMAND.search(candidate):
         return True
     if re.search(r"(?:=|!=|<=|>=|<|>|≤|≥|≠|≈|→|←|↔|∈|∉|⊂|⊆|∧|∨|⇒|⇔)", candidate):
-        return True
-    variable = re.search(
-        r"(?<![A-Za-z])[A-Za-z](?:_[A-Za-z0-9{}]+)?(?![A-Za-z])",
-        candidate,
-    )
-    if variable and re.search(r"(?:\+|-|\*|/|\^|\[|\]|\.{2,})", candidate):
         return True
     if re.search(r"(?:^|[^A-Za-z])(?:O|o)\([^()]+\)$", candidate):
         return True
@@ -205,11 +199,6 @@ def _looks_like_parenthetical_math(content: str) -> bool:
 
 def _normalize_parenthetical_math_fragment(fragment: str) -> str:
     """Convert conservative, balanced parenthetical notation to inline math."""
-    fragment = re.sub(
-        r"\((([^()\n]*\[[^()\n]*\)))\)",
-        lambda match: "$" + _normalize_bare_math_commands(match.group(1).strip()) + "$",
-        fragment,
-    )
     pairs: list[tuple[int, int, int]] = []
     stack: list[int] = []
     for index, character in enumerate(fragment):
@@ -245,13 +234,7 @@ def _normalize_parenthetical_math_line(line: str) -> str:
         if match.start() < cursor:
             continue
         output.append(_normalize_parenthetical_math_fragment(line[cursor : match.start()]))
-        protected_text = match.group(0)
-        if protected_text.startswith("$"):
-            if protected_text.startswith("$$"):
-                protected_text = "$$" + _normalize_bare_math_commands(protected_text[2:-2]) + "$$"
-            else:
-                protected_text = "$" + _normalize_bare_math_commands(protected_text[1:-1]) + "$"
-        output.append(protected_text)
+        output.append(match.group(0))
         cursor = match.end()
     output.append(_normalize_parenthetical_math_fragment(line[cursor:]))
     return "".join(output)
@@ -259,7 +242,6 @@ def _normalize_parenthetical_math_line(line: str) -> str:
 
 def normalize_parenthetical_math(text: str) -> str:
     """Normalize conservative legacy parenthetical notation without touching code."""
-    text = text.replace("\x08inom", r"\binom")
     in_display_math = False
 
     def normalize_line(line_with_ending: str) -> str:
