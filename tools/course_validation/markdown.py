@@ -9,6 +9,18 @@ LEGACY_INLINE = re.compile(r"\\\(([^\n]*?)\\\)")
 MATH_SPAN = re.compile(r"\$\$.*?\$\$|\$`.*?`\$|\$(?:\\.|[^$\n])+?\$", re.DOTALL)
 INLINE_CODE = re.compile(r"`[^`\n]*`")
 TEX_COMMAND = re.compile(r"\\[A-Za-z]+")
+MATH_TEX_COMMAND = re.compile(
+    r"\\(?:alpha|beta|gamma|delta|epsilon|eta|theta|lambda|mu|nu|xi|pi|rho|"
+    r"sigma|tau|phi|chi|psi|omega|Gamma|Delta|Theta|Lambda|Pi|Sigma|Phi|Psi|Omega|"
+    r"forall|exists|neg|land|lor|Rightarrow|Leftrightarrow|rightarrow|leftarrow|"
+    r"leftrightarrow|to|mapsto|in|notin|subset|subseteq|supset|supseteq|setminus|"
+    r"cup|cap|times|otimes|oplus|circ|parallel|approx|equiv|sim|simeq|ne|neq|"
+    r"le|leq|ge|geq|prec|preceq|succ|succeq|vdash|models|sum|prod|int|lim|log|"
+    r"ln|exp|min|max|Pr|frac|tfrac|dfrac|sqrt|binom|langle|rangle|lfloor|rfloor|"
+    r"lceil|rceil|mathbb|mathcal|mathrm|mathbf|mathsf|operatorname|text|begin|end|"
+    r"hat|bar|overline|underline|partial|nabla|infty|varnothing|bot|top|Downarrow|"
+    r"Uparrow|rightharpoonup|ldots|cdots|quad|qquad)\b"
+)
 HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
 BIJUX_VERIFY_COMMENT = re.compile(r"<!-- bijux-verify:.*?-->[ \t]*(?:\n|$)", re.DOTALL)
 
@@ -123,55 +135,39 @@ def _normalize_broken_math_closers(line: str) -> str:
     return re.sub(r"\\?\(([^()\n]*?)\\\)", replace_parenthesis, line)
 
 
-def _normalize_parenthetical_formulae(fragment: str) -> str:
-    """Enclose parenthetical TeX fragments after protected spans are removed."""
-    pairs: list[tuple[int, int, int | None]] = []
-    stack: list[tuple[int, int | None]] = []
-    for index, character in enumerate(fragment):
-        if character == "(":
-            stack.append((index, len(pairs) - 1 if stack else None))
-        elif character == ")" and stack:
-            start, parent = stack.pop()
-            pairs.append((start, index, parent))
-    selected = [
-        (start, end)
-        for start, end, parent in pairs
-        if parent is None and TEX_COMMAND.search(fragment[start + 1 : end])
-    ]
-    for start, end in reversed(selected):
-        fragment = fragment[:start] + "$" + fragment[start + 1 : end] + "$" + fragment[end + 1 :]
-    return fragment
-
-
-def _normalize_unprotected_formulae(line: str) -> str:
-    """Normalize prose fragments while preserving existing inline math and code."""
+def _map_outside_inline_code_and_comments(line: str, transform: callable) -> str:
+    """Transform visible prose while preserving code spans and HTML comments."""
     output: list[str] = []
     cursor = 0
-    plain_start = 0
-    while cursor < len(line):
-        if line[cursor] not in {"$", "`"}:
-            cursor += 1
+    protected = sorted(
+        (*INLINE_CODE.finditer(line), *HTML_COMMENT.finditer(line)),
+        key=lambda match: match.start(),
+    )
+    for match in protected:
+        if match.start() < cursor:
             continue
-        if plain_start < cursor:
-            output.append(_normalize_parenthetical_formulae(line[plain_start:cursor]))
-        marker = line[cursor]
-        end = line.find(marker, cursor + 1)
-        if end < 0:
-            output.append(_normalize_parenthetical_formulae(line[cursor:]))
-            return "".join(output)
-        output.append(line[cursor : end + 1])
-        cursor = end + 1
-        plain_start = cursor
-    output.append(_normalize_parenthetical_formulae(line[plain_start:]))
+        output.append(transform(line[cursor : match.start()]))
+        output.append(match.group(0))
+        cursor = match.end()
+    output.append(transform(line[cursor:]))
     return "".join(output)
+
+
+def _without_inline_code_and_comments(text: str) -> str:
+    """Blank protected Markdown spans without changing offsets or line numbers."""
+
+    def blank(match: re.Match[str]) -> str:
+        return "".join("\n" if character == "\n" else " " for character in match.group(0))
+
+    return INLINE_CODE.sub(blank, HTML_COMMENT.sub(blank, text))
 
 
 def normalize_github_math(text: str) -> str:
     """Normalize legacy TeX Markdown syntax to GitHub's supported math syntax.
 
-    The conversion intentionally limits inference to explicit legacy delimiters,
-    malformed close markers, and TeX held in inline code. Fenced examples are
-    never rewritten.
+    The conversion intentionally limits inference to explicit legacy delimiters
+    and malformed close markers. Fenced examples, inline code, and HTML comments
+    are never rewritten.
     """
     in_display_math = False
 
@@ -191,17 +187,14 @@ def normalize_github_math(text: str) -> str:
             return line + ending
         if in_display_math:
             return line + ending
-        line = _normalize_broken_math_closers(line)
-        line = LEGACY_INLINE.sub(lambda match: f"${match.group(1)}$", line)
-        line = INLINE_CODE.sub(
-            lambda match: (
-                f"${match.group(0)[1:-1]}$"
-                if TEX_COMMAND.search(match.group(0))
-                else match.group(0)
-            ),
+        line = _map_outside_inline_code_and_comments(
             line,
+            lambda fragment: LEGACY_INLINE.sub(
+                lambda match: f"${match.group(1)}$",
+                _normalize_broken_math_closers(fragment),
+            ),
         )
-        return _normalize_unprotected_formulae(line) + ending
+        return line + ending
 
     return _map_unfenced_lines(text, normalize_line)
 
@@ -211,13 +204,13 @@ def github_math_issues(text: str) -> tuple[str, ...]:
     issues: list[str] = []
     prose = prose_only(text)
     prose = BIJUX_VERIFY_COMMENT.sub("", prose)
-    prose = HTML_COMMENT.sub("", prose)
-    visible = INLINE_CODE.sub("", prose)
+    code_spans = tuple(INLINE_CODE.finditer(HTML_COMMENT.sub("", prose)))
+    visible = _without_inline_code_and_comments(prose)
     if r"\[" in visible or r"\]" in visible:
         issues.append("use GitHub display math delimiters ($$), not \\[...\\]")
     if r"\(" in visible or r"\)" in visible:
         issues.append("use GitHub inline math delimiters ($...$), not \\(...\\)")
-    if any(TEX_COMMAND.search(match.group(0)[1:-1]) for match in INLINE_CODE.finditer(prose)):
+    if any(MATH_TEX_COMMAND.search(match.group(0)[1:-1]) for match in code_spans):
         issues.append("mathematical TeX must use math delimiters rather than inline code")
     display_delimiters = sum(1 for line in prose.splitlines() if line.strip() == "$$")
     if display_delimiters % 2:
@@ -229,8 +222,8 @@ def github_math_diagnostics(text: str) -> tuple[str, ...]:
     """Report remaining TeX-like prose that requires an authorial rendering review."""
     prose = prose_only(text)
     prose = BIJUX_VERIFY_COMMENT.sub("", prose)
-    prose = HTML_COMMENT.sub("", prose)
-    residual = INLINE_CODE.sub("", MATH_SPAN.sub("", prose))
+    visible = _without_inline_code_and_comments(prose)
+    residual = MATH_SPAN.sub("", visible)
     if TEX_COMMAND.search(residual):
         return ("remaining TeX command outside recognized math delimiters",)
     return ()

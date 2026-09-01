@@ -7,7 +7,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 
-from course_validation.markdown import github_math_issues, headings, normalize_github_math, prose_only
+from course_validation.markdown import (
+    github_math_diagnostics,
+    github_math_issues,
+    headings,
+    normalize_github_math,
+    prose_only,
+)
 
 
 class MarkdownStructureTests(unittest.TestCase):
@@ -26,13 +32,26 @@ class MarkdownStructureTests(unittest.TestCase):
         text = "\\[\nx^2\n\\]\n\nLet \\(x_i\\in X\\) be valid. `\\eta=x/y`\n\n```text\n\\(not math\\)\n```\n"
         normalized = normalize_github_math(text)
         self.assertIn("$$\nx^2\n$$", normalized)
-        self.assertIn("Let $x_i\\in X$ be valid. $\\eta=x/y$", normalized)
+        self.assertIn("Let $x_i\\in X$ be valid. `\\eta=x/y`", normalized)
         self.assertIn("\\(not math\\)", normalized)
-        self.assertEqual((), github_math_issues(normalized))
+        self.assertEqual(
+            ("mathematical TeX must use math delimiters rather than inline code",),
+            github_math_issues(normalized),
+        )
 
     def test_rendering_lint_rejects_legacy_delimiters_and_math_in_code(self) -> None:
         issues = github_math_issues("Use \\(x\\) and `\\eta=x/y`; raw \\alpha is invalid.\n")
         self.assertEqual(2, len(issues))
+
+    def test_programming_escapes_remain_inline_code(self) -> None:
+        text = "Use `a\\r\\nb\\n`, `e\\u0301`, and `\\q` as literal source text.\n"
+        self.assertEqual(text, normalize_github_math(text))
+        self.assertEqual((), github_math_issues(text))
+
+    def test_html_comment_payload_is_not_normalized_as_math(self) -> None:
+        text = '<!-- bijux-verify: {"stdout":"value=(a\\n)\\n"} -->\n'
+        self.assertEqual(text, normalize_github_math(text))
+        self.assertEqual((), github_math_issues(text))
 
     def test_inline_code_detection_does_not_span_adjacent_code_spans(self) -> None:
         text = "Use `left` before $a\\mapsto b$ and then `right`.\n"
@@ -47,10 +66,21 @@ class MarkdownStructureTests(unittest.TestCase):
         normalized = normalize_github_math(text)
         self.assertEqual("$$\nf(x)=(x+1)\\times2\n$$\n", normalized)
 
-    def test_parenthetical_tex_is_normalized_outside_existing_math(self) -> None:
+    def test_parenthetical_tex_requires_authorial_review(self) -> None:
         text = "Existing $x\\to y$ and raw (obs_B:O\\to A_B); code `f(x)`.\n"
         normalized = normalize_github_math(text)
-        self.assertEqual("Existing $x\\to y$ and raw $obs_B:O\\to A_B$; code `f(x)`.\n", normalized)
+        self.assertEqual(text, normalized)
+        self.assertEqual(
+            ("remaining TeX command outside recognized math delimiters",),
+            github_math_diagnostics(normalized),
+        )
+
+    def test_dollar_in_inline_code_does_not_hide_later_raw_tex(self) -> None:
+        text = "The sentinel is `$`; raw \\alpha remains invalid.\n"
+        self.assertEqual(
+            ("remaining TeX command outside recognized math delimiters",),
+            github_math_diagnostics(text),
+        )
 
 
 
