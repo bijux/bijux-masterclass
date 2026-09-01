@@ -12,6 +12,7 @@ from course_validation.markdown import (
     github_math_issues,
     headings,
     normalize_github_math,
+    normalize_parenthetical_math,
     prose_only,
 )
 
@@ -80,6 +81,31 @@ class MarkdownStructureTests(unittest.TestCase):
         self.assertEqual(
             ("remaining TeX command outside recognized math delimiters",),
             github_math_diagnostics(text),
+        )
+
+    def test_parenthetical_notation_can_be_repaired_explicitly(self) -> None:
+        text = "Let (P) contain programs and (p(x)=(x+1)+1) define behavior.\n"
+        self.assertEqual(
+            "Let $P$ contain programs and $p(x)=(x+1)+1$ define behavior.\n",
+            normalize_parenthetical_math(text),
+        )
+
+    def test_parenthetical_repair_normalizes_lost_tex_commands(self) -> None:
+        text = "Space is (Theta(n)), with (operatorname{rank}_1(i)=i).\n"
+        self.assertEqual(
+            r"Space is $\Theta(n)$, with $\operatorname{rank}_1(i)=i$." + "\n",
+            normalize_parenthetical_math(text),
+        )
+
+    def test_parenthetical_repair_preserves_prose_code_links_and_math(self) -> None:
+        text = (
+            "Keep (HTTP), (for example), `f(x)`, [guide](docs/(current).md), "
+            "and $q(x)$; convert (x).\n"
+        )
+        self.assertEqual(
+            "Keep (HTTP), (for example), `f(x)`, [guide](docs/(current).md), "
+            "and $q(x)$; convert $x$.\n",
+            normalize_parenthetical_math(text),
         )
 
 

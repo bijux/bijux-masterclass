@@ -7,7 +7,12 @@ import csv
 import json
 from pathlib import Path
 
-from course_validation.markdown import github_math_diagnostics, github_math_issues, normalize_github_math
+from course_validation.markdown import (
+    github_math_diagnostics,
+    github_math_issues,
+    normalize_github_math,
+    normalize_parenthetical_math,
+)
 from course_validation.review import chapter_digest, review_path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,6 +49,11 @@ def refresh_review_digest(root: Path, module_id: str, chapter_text: str) -> None
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true", help="write safe rendering normalizations")
+    parser.add_argument(
+        "--parenthetical-math",
+        action="store_true",
+        help="normalize conservative legacy parenthetical notation as math",
+    )
     args = parser.parse_args()
 
     complete_paths = complete_module_paths(ROOT)
@@ -53,6 +63,8 @@ def main() -> None:
     for path in markdown_paths(ROOT):
         original = path.read_text(encoding="utf-8")
         normalized = normalize_github_math(original)
+        if args.parenthetical_math:
+            normalized = normalize_parenthetical_math(normalized)
         if normalized != original:
             changed.append(path)
             if args.apply:
