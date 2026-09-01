@@ -350,9 +350,9 @@ It becomes operationally total when every unmatched position has a progress-pres
 
 ### Example 6
 
-**Question:** What should happen at $"bad\\q"$ if $\q$ is not an escape?
+**Question:** What should happen at `"bad\\q"` if `\q` is not an escape?
 
-**Reasoning:** The lexer can emit a string/error record while diagnosing the two-character escape span. It should retain raw source and avoid silently converting $\q$ to `q`.
+**Reasoning:** The lexer can emit a string/error record while diagnosing the two-character escape span. It should retain raw source and avoid silently converting `\q` to `q`.
 
 **Conclusion:** Malformed escape policy must preserve causal spelling and progress.
 

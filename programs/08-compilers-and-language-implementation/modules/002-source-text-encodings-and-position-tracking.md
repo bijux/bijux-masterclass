@@ -63,7 +63,7 @@ Common failures include calling bytes, code points, UTF-16 units, graphemes, and
 
 ### Compact example
 
-UTF-8 source $aé\n$ has four bytes, three scalar values, and one newline. The line-ending byte offset is 3, while the scalar column before the newline is 2. Offset 2 lies inside `é` and is not a valid scalar boundary. A diagnostic span stored as bytes $[1,3)$ can precisely recover `é`; the rendered column is a derived view.
+UTF-8 source `aé\n` has four bytes, three scalar values, and one newline. The line-ending byte offset is 3, while the scalar column before the newline is 2. Offset 2 lies inside `é` and is not a valid scalar boundary. A diagnostic span stored as bytes $[1,3)$ can precisely recover `é`; the rendered column is a derived view.
 
 ### Connections
 
@@ -120,7 +120,7 @@ A byte-order mark is data whose treatment is language-specific. UTF-8 does not n
 
 The Unicode codespace contains code points; scalar values exclude the surrogate range. UTF-8 encodes a scalar in one to four 8-bit code units. UTF-16 uses one 16-bit code unit for Basic Multilingual Plane scalars and a surrogate pair for supplementary scalars. Therefore “length” requires a unit.
 
-The string $e\u0301$ contains two scalar values—a base letter and combining acute accent—but normally one extended grapheme cluster under Unicode text-segmentation rules. Precomposed `é` contains one scalar. The strings can be canonically equivalent without being byte-identical. An emoji family can contain several scalars joined into one extended grapheme cluster. A font can render multiple graphemes as one glyph or one grapheme with multiple glyphs.
+The string `e\u0301` contains two scalar values—a base letter and combining acute accent—but normally one extended grapheme cluster under Unicode text-segmentation rules. Precomposed `é` contains one scalar. The strings can be canonically equivalent without being byte-identical. An emoji family can contain several scalars joined into one extended grapheme cluster. A font can render multiple graphemes as one glyph or one grapheme with multiple glyphs.
 
 Compilers commonly use bytes or code units as canonical offsets because slicing and storage are direct. Human-facing cursor motion may use extended grapheme clusters. Terminal or editor display columns additionally depend on tab stops, East Asian width, emoji presentation, control characters, bidi layout, font shaping, and policy. Preserve the stable coordinate and derive the presentation.
 
@@ -305,7 +305,7 @@ An origin relation $O\subseteq Span_{generated}\times Span_{source}$ permits one
 
 ### Example 3
 
-**Question:** Build line starts for bytes representing $a\r\nb\n$.
+**Question:** Build line starts for bytes representing `a\r\nb\n`.
 
 **Reasoning:** Start with 0. Consume CRLF as one terminator and append 3. Consume LF after `b` and append 5. Under a final-empty-line policy the starts are [0,3,5].
 
@@ -321,7 +321,7 @@ An origin relation $O\subseteq Span_{generated}\times Span_{source}$ permits one
 
 ### Example 5
 
-**Question:** Why store $e\u0301$ rather than normalize it before lexing?
+**Question:** Why store `e\u0301` rather than normalize it before lexing?
 
 **Reasoning:** A language may define normalized identifier comparison, but diagnostics and edits must address original bytes. Normalizing first changes two-scalar spelling and offsets; retain source and derive a comparison key with an origin relation.
 
@@ -391,11 +391,11 @@ An origin relation $O\subseteq Span_{generated}\times Span_{source}$ permits one
 
 ### Exercise 1
 
-For $é😀\n$ in UTF-8, list byte, scalar, UTF-16, and likely extended-grapheme counts before the newline.
+For `é😀\n` in UTF-8, list byte, scalar, UTF-16, and likely extended-grapheme counts before the newline.
 
 ### Exercise 2
 
-Design a line-start index for $a\r\nb\rc\n$ under a policy recognizing CRLF, lone CR, and LF. Include the final empty line.
+Design a line-start index for `a\r\nb\rc\n` under a policy recognizing CRLF, lone CR, and LF. Include the final empty line.
 
 ### Exercise 3
 

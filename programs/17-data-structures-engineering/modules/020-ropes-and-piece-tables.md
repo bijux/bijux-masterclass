@@ -71,7 +71,7 @@ For pieces `P=<p0,...,p(k-1)>`, `flatten(P)` concatenates the referenced half-op
 
 ### Compact example
 
-Original storage is $hello world\n$. Inserting `, durable` at coordinate five appends nine characters to A and splits the original descriptor. Deleting `world` removes one referenced range without altering O. Inserting `editor` appends six more characters to A. The document becomes $hello, durable editor\n$; O is unchanged, A has fifteen characters, and five coalesced pieces describe the result.
+Original storage is `hello world\n`. Inserting `, durable` at coordinate five appends nine characters to A and splits the original descriptor. Deleting `world` removes one referenced range without altering O. Inserting `editor` appends six more characters to A. The document becomes `hello, durable editor\n`; O is unchanged, A has fifteen characters, and five coalesced pieces describe the result.
 
 ### Connections
 
@@ -416,7 +416,7 @@ Prove rope lookup and insertion using flattening, left metrics, split, concat, b
 
 ### Exercise 3
 
-Starting from original $one two\n$, derive piece descriptors for inserting ` bright` after `one`, deleting `two`, undoing the delete, and coalescing. State what bytes and metadata each version retains.
+Starting from original `one two\n`, derive piece descriptors for inserting ` bright` after `one`, deleting `two`, undoing the delete, and coalescing. State what bytes and metadata each version retains.
 
 ### Exercise 4
 
@@ -438,7 +438,7 @@ Inductively, a leaf flattens to its chunk and stores its exact metric. An intern
 
 ### Answer 3
 
-Start `[(O,0,8)]` for $one two\n$. Append ` bright` as `A[0:7]` and insert at three, giving `(O,0,3),(A,0,7),(O,3,5)` and text $one bright two\n$. Delete `two` at logical `[11,14)`: split the last O piece around its leading space and trailing newline, omit O[4:7], producing `(O,0,3),(A,0,7),(O,3,1),(O,7,1)` and $one bright \n$; the two O pieces are not source-contiguous. Undo can restore the prior descriptor root/list without changing O or A. It retains original eight units, added seven units, and descriptor/version metadata for both states. Coalesce only adjacent same-source ranges whose source end/start meet; undo's `(O,3,5)` is already one piece, while no cross-A/O merge is legal.
+Start `[(O,0,8)]` for `one two\n`. Append ` bright` as `A[0:7]` and insert at three, giving `(O,0,3),(A,0,7),(O,3,5)` and text `one bright two\n`. Delete `two` at logical `[11,14)`: split the last O piece around its leading space and trailing newline, omit O[4:7], producing `(O,0,3),(A,0,7),(O,3,1),(O,7,1)` and `one bright \n`; the two O pieces are not source-contiguous. Undo can restore the prior descriptor root/list without changing O or A. It retains original eight units, added seven units, and descriptor/version metadata for both states. Coalesce only adjacent same-source ranges whose source end/start meet; undo's `(O,3,5)` is already one piece, while no cross-A/O merge is legal.
 
 ### Answer 4
 
