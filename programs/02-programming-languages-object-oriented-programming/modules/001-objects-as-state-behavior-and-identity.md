@@ -34,7 +34,7 @@ $$
 \langle i,H,m,a\rangle\longrightarrow\langle H',r,t\rangle,
 $$
 
-where object (i) receives operation (m) with arguments (a), produces result (r) and observable trace (t), and may replace (H(i)) with a new state while preserving identity (i). If $\rho(x)=\rho(y)=i$, then (x) and (y) alias the same object; an update through either is visible through both.
+where object $i$ receives operation $m$ with arguments $a$, produces result $r$ and observable trace $t$, and may replace $H(i)$ with a new state while preserving identity $i$. If $\rho(x)=\rho(y)=i$, then $x$ and $y$ alias the same object; an update through either is visible through both.
 
 ### Critical invariants
 
@@ -119,16 +119,16 @@ Classes are also not required for every object model. Prototype-based languages 
 
 Let:
 
-- (I) be a set of runtime object identities;
-- (S) be a set of object states;
+- $I$ be a set of runtime object identities;
+- $S$ be a set of object states;
 - $H:I\rightharpoonup S$ be a partial heap mapping live identities to states;
 - $\rho:Name\rightharpoonup I$ be an environment mapping names to identities;
-- (M) be operation or message names;
-- (A) be argument tuples;
-- (R) be results;
-- (T) be observable traces.
+- $M$ be operation or message names;
+- $A$ be argument tuples;
+- $R$ be results;
+- $T$ be observable traces.
 
-The notation $H[i\mapsto s']$ means a heap equal to (H) except that identity (i) now maps to state (s'). An operation transition is
+The notation $H[i\mapsto s']$ means a heap equal to $H$ except that identity $i$ now maps to state $s'$. An operation transition is
 
 $$
 \langle i,H,m,a\rangle\longrightarrow\langle H[i\mapsto s'],r,t\rangle.
@@ -152,11 +152,11 @@ Module 005 develops invariants fully. Here the formula clarifies that behavior c
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Identity preservation.** If an admitted operation changes (H(i)=s) to (H'(i)=s'), the identity remains (i). Allocating a replacement (j) with equal state is not the same transition when reference identity is observable.
+**Identity preservation.** If an admitted operation changes $H(i)=s$ to $H'(i)=s'$, the identity remains $i$. Allocating a replacement $j$ with equal state is not the same transition when reference identity is observable.
 
-**Alias visibility.** Suppose $\rho(x)=\rho(y)=i$ and an operation through (x) changes (H(i)=s) to (H'(i)=s'). Looking up either name after the transition reaches (i), so both observe $H'(\rho(x))=H'(\rho(y))=s'$. This is a direct substitution proof. It assumes both observations occur after the same heap update and no intervening transition.
+**Alias visibility.** Suppose $\rho(x)=\rho(y)=i$ and an operation through $x$ changes $H(i)=s$ to $H'(i)=s'$. Looking up either name after the transition reaches $i$, so both observe $H'(\rho(x))=H'(\rho(y))=s'$. This is a direct substitution proof. It assumes both observations occur after the same heap update and no intervening transition.
 
-**Distinct-equal independence.** Suppose $i\ne j$ but (H(i)=H(j)=s). Updating (i) yields $H'=H[i\mapsto s']$. Because $j\ne i$, functional update gives (H'(j)=H(j)=s). Equal initial state therefore does not couple distinct identities.
+**Distinct-equal independence.** Suppose $i\ne j$ but $H(i)=H(j)=s$. Updating $i$ yields $H'=H[i\mapsto s']$. Because $j\ne i$, functional update gives $H'(j)=H(j)=s$. Equal initial state therefore does not couple distinct identities.
 
 **Rebinding isolation.** If only $\rho$ changes to $\rho[x\mapsto j]$, the heap is unchanged and any other name $y\ne x$ retains its old mapping. Rebinding a parameter is therefore different from mutating its target.
 
@@ -237,7 +237,7 @@ print("after alias increment:", primary.read(), peer.read())
 
 **Question:** Does assigning a new object to a parameter replace the caller's object?
 
-**Reasoning:** Let caller name (c) and parameter (p) initially contain the same identity (i). Reassigning (p) to new identity (j) changes only $\rho(p)$. The mapping $\rho(c)=i$ and heap object (H(i)) remain. Mutating (H(i)) through (p) before rebinding would instead be visible through (c).
+**Reasoning:** Let caller name $c$ and parameter $p$ initially contain the same identity $i$. Reassigning $p$ to new identity $j$ changes only $\rho(p)$. The mapping $\rho(c)=i$ and heap object $H(i)$ remain. Mutating $H(i)$ through $p$ before rebinding would instead be visible through $c$.
 
 **Conclusion:** Copying a reference into a parameter permits shared-target mutation but not remote rebinding of the caller's name.
 
@@ -253,7 +253,7 @@ print("after alias increment:", primary.read(), peer.read())
 
 **Question:** What does a shallow copy of an order isolate?
 
-**Reasoning:** Suppose order (o_1) refers to address object (a). A shallow copy creates order (o_2) and copies the reference to (a). Changing an outer scalar field of (o_2) leaves (o_1) unchanged, but mutating (a) is visible from both. Copying the address too creates a new node but may still share deeper country or contact objects.
+**Reasoning:** Suppose order $o_1$ refers to address object $a$. A shallow copy creates order $o_2$ and copies the reference to $a$. Changing an outer scalar field of $o_2$ leaves $o_1$ unchanged, but mutating $a$ is visible from both. Copying the address too creates a new node but may still share deeper country or contact objects.
 
 **Conclusion:** “Copy” is incomplete without a graph-depth, sharing, and identity policy.
 
@@ -277,7 +277,7 @@ print("after alias increment:", primary.read(), peer.read())
 
 **Question:** Why can changing one collaborator affect several owners?
 
-**Reasoning:** An invoice and a shipment both reference customer object (c). If code changes (c.address) in place, both access paths observe the new address. That may be intended shared truth or an error if each needed a historical snapshot. Drawing the graph exposes the decision: one shared node versus two copied address values.
+**Reasoning:** An invoice and a shipment both reference customer object $c$. If code changes `c.address` in place, both access paths observe the new address. That may be intended shared truth or an error if each needed a historical snapshot. Drawing the graph exposes the decision: one shared node versus two copied address values.
 
 **Conclusion:** Shared collaborators create semantic coupling; graph shape must match ownership and history requirements.
 
@@ -324,7 +324,7 @@ Define state, behavior, and identity for each of these objects: a counter, an op
 
 ### Exercise 2
 
-Let $\rho(a)=i$, $\rho(b)=i$, and $\rho(c)=j$, where $i\ne j$, and initially (H(i)=H(j)=5). Trace these steps: increment through (b); rebind (b) to (j); increment through (b). Give the final mappings and heap values after each step.
+Let $\rho(a)=i$, $\rho(b)=i$, and $\rho(c)=j$, where $i\ne j$, and initially $H(i)=H(j)=5$. Trace these steps: increment through $b$; rebind $b$ to $j$; increment through $b$. Give the final mappings and heap values after each step.
 
 ### Exercise 3
 
@@ -346,11 +346,11 @@ For a counter, abstract state is its integer count, behavior includes read and a
 
 ### Answer 2
 
-Initially both (a) and (b) designate (i), while (c) designates (j); both heap states are 5. Incrementing through (b) updates (H(i)) to 6, so (a) and (b) both observe 6 while (c) observes 5. Rebinding (b) to (j) changes the environment to $\rho(a)=i$ and $\rho(b)=\rho(c)=j$; the heap remains (H(i)=6,H(j)=5). Incrementing through the rebound (b) updates (H(j)) to 6. Finally all three names observe the numeric state 6, but (a) still designates (i), whereas (b) and (c) designate (j). Equal final state does not merge identities.
+Initially both $a$ and $b$ designate $i$, while $c$ designates $j$; both heap states are 5. Incrementing through $b$ updates $H(i)$ to 6, so $a$ and $b$ both observe 6 while $c$ observes 5. Rebinding $b$ to $j$ changes the environment to $\rho(a)=i$ and $\rho(b)=\rho(c)=j$; the heap remains $H(i)=6,H(j)=5$. Incrementing through the rebound $b$ updates $H(j)$ to 6. Finally all three names observe the numeric state 6, but $a$ still designates $i$, whereas $b$ and $c$ designate $j$. Equal final state does not merge identities.
 
 ### Answer 3
 
-The initial graph has project nodes (p_1) and (p_2), both pointing to owner (o), which points to address (d). A shallow copy creates project (p_3) but copies its owner edge to (o), so no owner or address isolation exists. To change only the copied project's address, create a new address (d'), a new owner (o') equal to (o) except for its edge to (d'), and redirect only (p_3)'s owner edge to (o'). Nodes (p_1), (p_2), (o), and (d) remain unchanged. Copying only (d) would still require a way to redirect an owner edge without mutating shared (o), which is why the entire changed path needs new identities.
+The initial graph has project nodes $p_1$ and $p_2$, both pointing to owner $o$, which points to address $d$. A shallow copy creates project $p_3$ but copies its owner edge to $o$, so no owner or address isolation exists. To change only the copied project's address, create a new address $d'$, a new owner $o'$ equal to $o$ except for its edge to $d'$, and redirect only $p_3$'s owner edge to $o'$. Nodes $p_1$, $p_2$, $o$, and $d$ remain unchanged. Copying only $d$ would still require a way to redirect an owner edge without mutating shared $o$, which is why the entire changed path needs new identities.
 
 ### Answer 4
 
