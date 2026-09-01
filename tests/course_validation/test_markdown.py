@@ -44,6 +44,19 @@ class MarkdownStructureTests(unittest.TestCase):
         issues = github_math_issues("Use \\(x\\) and `\\eta=x/y`; raw \\alpha is invalid.\n")
         self.assertEqual(2, len(issues))
 
+    def test_rendering_lint_rejects_unbalanced_dollars_and_damaged_commands(self) -> None:
+        issues = github_math_issues("Cost is $5; there are (\x08inom{n}{m}) choices.\n")
+        self.assertEqual(
+            (
+                "damaged TeX binomial command must be repaired",
+                "inline math delimiters must be balanced or literal dollars escaped",
+            ),
+            issues,
+        )
+
+    def test_rendering_lint_accepts_escaped_literal_dollar(self) -> None:
+        self.assertEqual((), github_math_issues(r"Cost is \$5." + "\n"))
+
     def test_programming_escapes_remain_inline_code(self) -> None:
         text = "Use `a\\r\\nb\\n`, `e\\u0301`, and `\\q` as literal source text.\n"
         self.assertEqual(text, normalize_github_math(text))
@@ -95,6 +108,49 @@ class MarkdownStructureTests(unittest.TestCase):
         self.assertEqual(
             r"Space is $\Theta(n)$, with $\operatorname{rank}_1(i)=i$." + "\n",
             normalize_parenthetical_math(text),
+        )
+
+    def test_parenthetical_repair_handles_symbolic_arithmetic_and_ranges(self) -> None:
+        text = "Use (n-1), (B[i]), and (B[0..i)); there are (2^n) cases.\n"
+        self.assertEqual(
+            "Use $n-1$, $B[i]$, and $B[0..i)$; there are $2^n$ cases.\n",
+            normalize_parenthetical_math(text),
+        )
+
+    def test_parenthetical_repair_keeps_subscripted_function_application_together(self) -> None:
+        text = "Utilities include (u_i(x_i)) and (x_i(a)); keep (read-only) prose.\n"
+        self.assertEqual(
+            "Utilities include $u_i(x_i)$ and $x_i(a)$; keep (read-only) prose.\n",
+            normalize_parenthetical_math(text),
+        )
+
+    def test_parenthetical_repair_does_not_split_undelimited_expression(self) -> None:
+        text = r"LOUDS uses 1^{d(v)}0; function f(x) remains for author review." + "\n"
+        self.assertEqual(text, normalize_parenthetical_math(text))
+
+    def test_parenthetical_repair_does_not_split_across_existing_math(self) -> None:
+        text = "Slack is ((c-n)$s); keep it intact for author review.\n"
+        self.assertEqual(text, normalize_parenthetical_math(text))
+
+    def test_parenthetical_repair_handles_formula_after_half_open_interval(self) -> None:
+        text = r"For (B[0..n)\in\{0,1\}^n), inspect (B[0..i))." + "\n"
+        self.assertEqual(
+            r"For $B[0..n)\in\{0,1\}^n$, inspect $B[0..i)$." + "\n",
+            normalize_parenthetical_math(text),
+        )
+
+    def test_parenthetical_repair_recovers_backspace_damaged_binomial(self) -> None:
+        text = "There are (\x08inom{n}{m}) choices; code `\x08inom` stays literal.\n"
+        self.assertEqual(
+            "There are $\\binom{n}{m}$ choices; code `\x08inom` stays literal.\n",
+            normalize_parenthetical_math(text),
+        )
+
+    def test_github_math_normalization_restores_commands_inside_math_only(self) -> None:
+        text = "Use $operatorname{rank}(i)$ and $log_2 n$; prose log remains.\n"
+        self.assertEqual(
+            r"Use $\operatorname{rank}(i)$ and $\log_2 n$; prose log remains." + "\n",
+            normalize_github_math(text),
         )
 
     def test_parenthetical_repair_preserves_prose_code_links_and_math(self) -> None:

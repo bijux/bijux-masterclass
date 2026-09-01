@@ -26,8 +26,9 @@ BIJUX_VERIFY_COMMENT = re.compile(r"<!-- bijux-verify:.*?-->[ \t]*(?:\n|$)", re.
 MARKDOWN_LINK = re.compile(r"!?\[[^\]\n]*\]\([^\n)]*\)")
 BARE_MATH_COMMAND = re.compile(
     r"(?<![\\A-Za-z])(?:operatorname|Theta|Omega|Delta|Gamma|Lambda|Sigma|Phi|Psi|"
-    r"lceil|rceil|lfloor|rfloor|log|ln|Pr)(?=\b|[_({])"
+    r"lceil|rceil|lfloor|rfloor|log|ln|Pr|binom)(?=\b|[_({])"
 )
+SIMPLE_MATH_EXPRESSION = re.compile(r"[A-Za-z0-9_{}.,+*/^'\-\[\] ]+")
 
 
 @dataclass(frozen=True)
@@ -180,15 +181,28 @@ def _looks_like_parenthetical_math(content: str) -> bool:
         return False
     if re.fullmatch(r"[A-Za-z](?:_[A-Za-z0-9{}]+|\^[A-Za-z0-9{}+\-]+)?", candidate):
         return True
-    if BARE_MATH_COMMAND.search(candidate):
+    if BARE_MATH_COMMAND.search(candidate) or MATH_TEX_COMMAND.search(candidate):
         return True
     if re.search(r"(?:=|!=|<=|>=|<|>|≤|≥|≠|≈|→|←|↔|∈|∉|⊂|⊆|∧|∨|⇒|⇔)", candidate):
         return True
     if re.search(r"(?:^|[^A-Za-z])(?:O|o)\([^()]+\)$", candidate):
         return True
     function = re.match(r"([A-Za-z][A-Za-z0-9_']*)\(", candidate)
-    if function and (len(function.group(1)) == 1 or function.group(1)[0].isupper()):
+    if function and (
+        len(function.group(1)) == 1
+        or function.group(1)[0].isupper()
+        or "_" in function.group(1)
+    ):
         return True
+    if re.fullmatch(r"[A-Za-z](?:_[A-Za-z0-9{}]+)?\[[^\]\n]+[\])]", candidate):
+        return True
+    if SIMPLE_MATH_EXPRESSION.fullmatch(candidate) and re.search(
+        r"(?:\.{2,}|\[|\]|\+|-|\*|/|\^)",
+        candidate,
+    ):
+        words = re.findall(r"[A-Za-z]+", candidate)
+        if words and all(len(word) == 1 for word in words):
+            return True
     if re.fullmatch(
         r"[A-Za-z](?:_[A-Za-z0-9{}]+)?(?:\s*,\s*[A-Za-z](?:_[A-Za-z0-9{}]+)?)+",
         candidate,
@@ -199,17 +213,35 @@ def _looks_like_parenthetical_math(content: str) -> bool:
 
 def _normalize_parenthetical_math_fragment(fragment: str) -> str:
     """Convert conservative, balanced parenthetical notation to inline math."""
+    if "$" in fragment:
+        return fragment
     pairs: list[tuple[int, int, int]] = []
-    stack: list[int] = []
+    stack: list[tuple[int, int]] = []
+    square_depth = 0
     for index, character in enumerate(fragment):
-        if character == "(":
-            stack.append(index)
+        if character == "[":
+            square_depth += 1
+        elif character == "]" and square_depth:
+            square_depth -= 1
+        elif character == "(":
+            stack.append((index, square_depth))
+        elif character == ")" and square_depth > (stack[-1][1] if stack else 0):
+            # A half-open interval such as [0,n) consumes this closer.
+            square_depth -= 1
         elif character == ")" and stack:
-            start = stack.pop()
+            start, _start_square_depth = stack.pop()
             pairs.append((start, index, len(stack)))
     selected: list[tuple[int, int]] = []
     for start, end, _depth in sorted(pairs, key=lambda pair: (pair[0], -pair[1])):
         if any(parent_start <= start and end <= parent_end for parent_start, parent_end in selected):
+            continue
+        if any(open_start < start for open_start, _square_depth in stack):
+            # The surrounding group crosses a protected Markdown span. Leave
+            # the nested pair for explicit authorial repair as one unit.
+            continue
+        if start and (fragment[start - 1].isalnum() or fragment[start - 1] in "_}]"):
+            # This pair is an argument inside a larger undelimited expression,
+            # not a prose wrapper around a complete mathematical fragment.
             continue
         if _looks_like_parenthetical_math(fragment[start + 1 : end]):
             selected.append((start, end))
@@ -240,6 +272,18 @@ def _normalize_parenthetical_math_line(line: str) -> str:
     return "".join(output)
 
 
+def _normalize_existing_math_commands(line: str) -> str:
+    """Restore a narrow allowlist of TeX command escapes inside inline math."""
+
+    def replace(match: re.Match[str]) -> str:
+        span = match.group(0)
+        if span.startswith("$$"):
+            return "$$" + _normalize_bare_math_commands(span[2:-2]) + "$$"
+        return "$" + _normalize_bare_math_commands(span[1:-1]) + "$"
+
+    return MATH_SPAN.sub(replace, line)
+
+
 def normalize_parenthetical_math(text: str) -> str:
     """Normalize conservative legacy parenthetical notation without touching code."""
     in_display_math = False
@@ -253,7 +297,12 @@ def normalize_parenthetical_math(text: str) -> str:
             return line_with_ending
         if in_display_math:
             return line_with_ending
-        line = _map_outside_inline_code_and_comments(line, _normalize_parenthetical_math_line)
+        line = _map_outside_inline_code_and_comments(
+            line,
+            lambda fragment: _normalize_parenthetical_math_line(
+                fragment.replace("\x08inom", r"\binom")
+            ),
+        )
         return line + ending
 
     return _map_unfenced_lines(text, normalize_line)
@@ -283,7 +332,7 @@ def normalize_github_math(text: str) -> str:
             in_display_math = not in_display_math
             return line + ending
         if in_display_math:
-            return line + ending
+            return _normalize_bare_math_commands(line) + ending
         line = _map_outside_inline_code_and_comments(
             line,
             lambda fragment: LEGACY_INLINE.sub(
@@ -291,6 +340,7 @@ def normalize_github_math(text: str) -> str:
                 _normalize_broken_math_closers(fragment),
             ),
         )
+        line = _map_outside_inline_code_and_comments(line, _normalize_existing_math_commands)
         return line + ending
 
     return _map_unfenced_lines(text, normalize_line)
@@ -309,6 +359,15 @@ def github_math_issues(text: str) -> tuple[str, ...]:
         issues.append("use GitHub inline math delimiters ($...$), not \\(...\\)")
     if any(MATH_TEX_COMMAND.search(match.group(0)[1:-1]) for match in code_spans):
         issues.append("mathematical TeX must use math delimiters rather than inline code")
+    if "\x08inom" in visible:
+        issues.append("damaged TeX binomial command must be repaired")
+    math_spans = tuple(MATH_SPAN.finditer(visible))
+    if any(BARE_MATH_COMMAND.search(match.group(0)) for match in math_spans):
+        issues.append("TeX command inside math is missing its escape")
+    inline_residual = MATH_SPAN.sub("", visible).replace(r"\$", "")
+    inline_residual = re.sub(r"(?m)^\s*\$\$\s*$", "", inline_residual)
+    if "$" in inline_residual:
+        issues.append("inline math delimiters must be balanced or literal dollars escaped")
     display_delimiters = sum(1 for line in prose.splitlines() if line.strip() == "$$")
     if display_delimiters % 2:
         issues.append("display math delimiters must be balanced")
