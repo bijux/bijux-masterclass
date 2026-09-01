@@ -111,9 +111,9 @@ class MarkdownStructureTests(unittest.TestCase):
         )
 
     def test_parenthetical_repair_handles_symbolic_arithmetic_and_ranges(self) -> None:
-        text = "Use (n-1), (B[i]), and (B[0..i)); there are (2^n) cases.\n"
+        text = "Use (n-1), (B[i]), (B[0..i)), and ([a,b)); there are (2^n) cases.\n"
         self.assertEqual(
-            "Use $n-1$, $B[i]$, and $B[0..i)$; there are $2^n$ cases.\n",
+            "Use $n-1$, $B[i]$, $B[0..i)$, and $[a,b)$; there are $2^n$ cases.\n",
             normalize_parenthetical_math(text),
         )
 

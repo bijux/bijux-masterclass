@@ -196,6 +196,8 @@ def _looks_like_parenthetical_math(content: str) -> bool:
         return True
     if re.fullmatch(r"[A-Za-z](?:_[A-Za-z0-9{}]+)?\[[^\]\n]+[\])]", candidate):
         return True
+    if re.fullmatch(r"\[[^,\]\n]+,[^\]\n]+[\])]", candidate):
+        return True
     if SIMPLE_MATH_EXPRESSION.fullmatch(candidate) and re.search(
         r"(?:\.{2,}|\[|\]|\+|-|\*|/|\^)",
         candidate,
