@@ -31,7 +31,7 @@ How does a language turn encoded source text into a reproducible sequence of lex
 
 ### Central model, mechanism, or theorem
 
-Let (B) be source bytes, (C^*) decoded source-character sequences, and (T^*) token sequences. A front end begins with a partial decoding function and a partial or diagnostic-producing lexical function:
+Let $B$ be source bytes, $C^*$ decoded source-character sequences, and $T^*$ token sequences. A front end begins with a partial decoding function and a partial or diagnostic-producing lexical function:
 
 $$
 decode_E:B^*\rightharpoonup C^*,
@@ -39,7 +39,7 @@ decode_E:B^*\rightharpoonup C^*,
 lex_L:C^*\rightharpoonup T^*.
 $$
 
-For each token (t_i=(k_i,x_i,[a_i,b_i),v_i)), its kind (k_i), lexeme (x_i), half-open source span, and interpreted value (v_i) serve different consumers. A complete concrete source view may preserve trivia separately so that concatenating source slices in span order reproduces the decoded input. The parser consumes token distinctions; it does not recover discarded spelling automatically.
+For each token $t_i=(k_i,x_i,[a_i,b_i),v_i)$, its kind $k_i$, lexeme $x_i$, half-open source span, and interpreted value $v_i$ serve different consumers. A complete concrete source view may preserve trivia separately so that concatenating source slices in span order reproduces the decoded input. The parser consumes token distinctions; it does not recover discarded spelling automatically.
 
 ### Critical invariants
 
@@ -101,7 +101,7 @@ The lexical analyzer scans the decoded source and emits lexical elements. Common
 
 A token is not merely its text. `INTEGER("0010")` preserves spelling, while its semantic numeric value might be ten, eight under a legacy rule, invalid because leading zeros are prohibited, or too large for a later target type. Keeping kind, lexeme, span, and optionally a cautiously decoded value lets later stages issue accurate errors and tools reproduce source. Collapsing everything to the integer ten loses information.
 
-Spans are commonly half-open intervals ([a,b)): a token covers positions starting at (a) up to but not including (b). Adjacent tokens can satisfy (b_i=a_{i+1}) when no trivia intervenes. A complete lossless tokenization includes trivia or gaps so every source position is accounted for. Diagnostics need line/column projections, but the primary offset unit must be declared. “Column 8” is ambiguous under tabs, combining marks, wide characters, and UTF-16-based protocols.
+Spans are commonly half-open intervals $[a,b)$: a token covers positions starting at $a$ up to but not including $b$. Adjacent tokens can satisfy $b_i=a_{i+1}$ when no trivia intervenes. A complete lossless tokenization includes trivia or gaps so every source position is accounted for. Diagnostics need line/column projections, but the primary offset unit must be declared. “Column 8” is ambiguous under tabs, combining marks, wide characters, and UTF-16-based protocols.
 
 Many token classes are regular languages and can be recognized by finite automata. A simplified ASCII identifier might begin with a letter or underscore and continue with letters, digits, or underscores; a decimal integer might contain one or more decimal digits. Scanner generators such as POSIX `lex` compile regular-expression rules into an analyzer. This theory explains fast left-to-right recognition, but a production scanner also handles rule priority, modes, Unicode tables, diagnostics, and constructs that exceed one flat regular language.
 
@@ -187,11 +187,11 @@ Execution establishes only the encoded ASCII rules for one input. It does not su
 
 ## Definitions and Notation
 
-Let (C) be source characters, (K) token kinds, and (X=C^*) lexemes. A token is $t=(k,x,s,v)\in K\times X\times Span\times Value_\bot$, where (s=[a,b)) and (v) may be absent. A token stream is $\tau=t_1\ldots t_n$. Trivia stream $\rho$ records non-token source elements when needed.
+Let $C$ be source characters, $K$ token kinds, and $X=C^*$ lexemes. A token is $t=(k,x,s,v)\in K\times X\times Span\times Value_\bot$, where $s=[a,b)$ and $v$ may be absent. A token stream is $\tau=t_1\ldots t_n$. Trivia stream $\rho$ records non-token source elements when needed.
 
-For lexical rule $R_j\subseteq C^*$, define matches at position (p) as legal prefixes of the remaining input. Longest match selects a member with maximum length; priority (j) resolves equal length. The scanner must either advance (p), reach end of input, or report a diagnostic. A zero-length rule in a repetition can violate progress and cause nontermination.
+For lexical rule $R_j\subseteq C^*$, define matches at position $p$ as legal prefixes of the remaining input. Longest match selects a member with maximum length; priority $j$ resolves equal length. The scanner must either advance $p$, reach end of input, or report a diagnostic. A zero-length rule in a repetition can violate progress and cause nontermination.
 
-A source map (M) relates transformed or normalized positions to original storage positions. A lexical mode $m\in Modes$ changes the active rule set and transition function. A **token value** is a convenience interpretation, while the lexeme remains authoritative evidence of concrete spelling. An **end marker** is a synthesized token identifying exhaustion and permitting later grammars to close layout or report unexpected end.
+A source map $M$ relates transformed or normalized positions to original storage positions. A lexical mode $m\in Modes$ changes the active rule set and transition function. A **token value** is a convenience interpretation, while the lexeme remains authoritative evidence of concrete spelling. An **end marker** is a synthesized token identifying exhaustion and permitting later grammars to close layout or report unexpected end.
 
 ## Mechanisms, Invariants, or Proof Structure
 

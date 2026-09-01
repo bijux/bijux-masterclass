@@ -27,7 +27,7 @@ What must be specified before two executions can be judged to have the same beha
 
 ### Central model, mechanism, or theorem
 
-Let (P) be programs, (I) inputs, (O) semantic outcomes, and (B) an observation boundary. A semantic function or relation associates execution with outcomes,
+Let $P$ be programs, $I$ inputs, $O$ semantic outcomes, and $B$ an observation boundary. A semantic function or relation associates execution with outcomes,
 
 $$
 \mathcal{E}:P\times I\to O
@@ -60,7 +60,7 @@ Typical failures include equating a file with an execution, treating a compiler 
 
 ### Compact example
 
-Suppose (p(x)=(x+1)+1) and (q(x)=x+2). Over mathematical integers, both return (x+2), so a final-value observer cannot distinguish them. If each addition emits its intermediate result, (p) emits two values while (q) emits one. The same texts are equivalent under one boundary and distinguishable under another.
+Suppose $p(x)=(x+1)+1$ and $q(x)=x+2$. Over mathematical integers, both return $x+2$, so a final-value observer cannot distinguish them. If each addition emits its intermediate result, $p$ emits two values while $q$ emits one. The same texts are equivalent under one boundary and distinguishable under another.
 
 ### Connections
 
@@ -156,13 +156,13 @@ The practical workflow is therefore:
 
 Let:
 
-- (P) be a set of admitted programs or program components;
-- (I) be a set of inputs;
-- (C) be machine configurations;
-- (O) be semantic outcomes;
-- (T=E^*) be finite traces over observable event alphabet (E);
-- (B) be an observation boundary;
-- (A_B) be the observations visible at boundary (B).
+- $P$ be a set of admitted programs or program components;
+- $I$ be a set of inputs;
+- $C$ be machine configurations;
+- $O$ be semantic outcomes;
+- $T=E^*$ be finite traces over observable event alphabet $E$;
+- $B$ be an observation boundary;
+- $A_B$ be the observations visible at boundary $B$.
 
 For a deterministic terminating model, $\mathcal{E}:P\times I\to O$. A relation $\mathcal{R}\subseteq(P\times I)\times O$ is more general: it can represent stuck configurations or several permitted outcomes. Write $\langle p,i\rangle\Downarrow o$ for a terminating derivation and $\langle p,i\rangle\Uparrow$ for divergence.
 
@@ -176,7 +176,7 @@ $$
 
 If programs may produce several outcomes, define $Out(p,i)=\{o\mid\langle p,i\rangle\Downarrow o\}$ and compare the projected sets, while separately accounting for divergence. Equality of may-outcomes, must-outcomes, and probability distributions are different equivalences.
 
-A context (K[-]) is an admitted program phrase containing one component hole. A contextual relation has the shape
+A context $K[-]$ is an admitted program phrase containing one component hole. A contextual relation has the shape
 
 $$
 p\simeq_B q
@@ -191,21 +191,21 @@ The notation does not itself prove anything: the sets of contexts, inputs, and o
 
 **Semantic well-formedness.** Every comparison must be typed at the model level. Comparing source bytes with a runtime value is meaningless until a parser and evaluation relation connect them. Comparing a single trace with a set of possible traces is likewise a category error.
 
-**Outcome completeness relative to the boundary.** If exceptions are visible, (O) must distinguish them. If nontermination is visible because a client waits forever, divergence cannot be omitted. Completeness is relative: a model can legitimately ignore allocation addresses when clients cannot inspect them.
+**Outcome completeness relative to the boundary.** If exceptions are visible, $O$ must distinguish them. If nontermination is visible because a client waits forever, divergence cannot be omitted. Completeness is relative: a model can legitimately ignore allocation addresses when clients cannot inspect them.
 
 **Observation stability.** The boundary must remain fixed throughout an equivalence argument. A proof cannot compare final values, encounter a counterexample in output order, and dismiss output as “internal” unless the original contract excluded it.
 
-**Congruence requirement.** A replacement principle needs more than isolated input-output equality. If replacing (p) with (q) inside any allowed context preserves observations, the relation is a congruence for those contexts. Without that property, local reasoning may fail under composition.
+**Congruence requirement.** A replacement principle needs more than isolated input-output equality. If replacing $p$ with $q$ inside any allowed context preserves observations, the relation is a congruence for those contexts. Without that property, local reasoning may fail under composition.
 
-**Behavior-preservation obligation.** For a translator (T) from source programs to target programs, a basic deterministic obligation is
+**Behavior-preservation obligation.** For a translator $T$ from source programs to target programs, a basic deterministic obligation is
 
 $$
 obs_B(\mathcal{E}_S(p,i))=obs_B(\mathcal{E}_T(T(p),i))
 $$
 
-for every admitted (p) and input (i), under stated source-target correspondence assumptions. Real compiler correctness may permit target stuttering steps, relate memories, or qualify undefined source behavior; those refinements belong to the compiler program.
+for every admitted $p$ and input $i$, under stated source-target correspondence assumptions. Real compiler correctness may permit target stuttering steps, relate memories, or qualify undefined source behavior; those refinements belong to the compiler program.
 
-**A small proof.** Over mathematical integers, let (p(x)=(x+1)+1) and (q(x)=x+2). Associativity of integer addition gives
+**A small proof.** Over mathematical integers, let $p(x)=(x+1)+1$ and $q(x)=x+2$. Associativity of integer addition gives
 
 $$
 (x+1)+1=x+(1+1)=x+2.
@@ -307,7 +307,7 @@ print("p~r:", observations["p"] == observations["r"])
 
 **Question:** Does a function that loops forever have the same behavior as one that immediately returns no value?
 
-**Reasoning:** A model containing only returned payloads may map both to “no payload,” but that projection is too coarse for a caller that must regain control. In an outcome domain with (Return(unit)) and (Diverge), the results differ. A timeout can observe the difference operationally, although its duration is an environmental policy.
+**Reasoning:** A model containing only returned payloads may map both to “no payload,” but that projection is too coarse for a caller that must regain control. In an outcome domain with $Return(unit)$ and (Diverge), the results differ. A timeout can observe the difference operationally, although its duration is an environmental policy.
 
 **Conclusion:** Termination behavior must be represented whenever continued control flow is observable.
 
@@ -339,7 +339,7 @@ print("p~r:", observations["p"] == observations["r"])
 
 **Question:** What must be shown to replace `(x + 1) + 1` with `x + 2`?
 
-**Reasoning:** Over mathematical integers, associativity proves equality for every (x). With fixed-width trapping arithmetic, both expressions overflow on the same mathematical threshold if evaluation uses the shown constants, but details such as literal conversion and intermediate precision still require rules. With floating-point values, reassociation is not generally valid. If addition invokes user code or logs operations, call count is observable.
+**Reasoning:** Over mathematical integers, associativity proves equality for every $x$. With fixed-width trapping arithmetic, both expressions overflow on the same mathematical threshold if evaluation uses the shown constants, but details such as literal conversion and intermediate precision still require rules. With floating-point values, reassociation is not generally valid. If addition invokes user code or logs operations, call count is observable.
 
 **Conclusion:** An algebraic rewrite inherits the language's numeric and effect assumptions; surface algebra alone is insufficient.
 
@@ -378,15 +378,15 @@ For each item, classify it as program text, abstract program, configuration, out
 
 ### Exercise 2
 
-A tiny state machine starts with integer (x) and supports `add n`, `emit`, and `fail`. `add` changes the state, `emit` appends the current state to a trace, and `fail` terminates with an error. Derive the complete outcome of `add 3; emit; add -1; emit` from (x=4), including final state and trace. Then derive `add 3; fail; emit` under a rule that no steps occur after failure.
+A tiny state machine starts with integer $x$ and supports `add n`, `emit`, and `fail`. `add` changes the state, `emit` appends the current state to a trace, and `fail` terminates with an error. Derive the complete outcome of `add 3; emit; add -1; emit` from $x=4$, including final state and trace. Then derive `add 3; fail; emit` under a rule that no steps occur after failure.
 
 ### Exercise 3
 
-Let (p(x)=(x+2)+3) and (q(x)=x+5) over mathematical integers. Prove final-value equivalence for all inputs. Then construct one plausible effectful meaning of addition under which they are distinguishable, and identify the distinguishing observation.
+Let $p(x)=(x+2)+3$ and $q(x)=x+5$ over mathematical integers. Prove final-value equivalence for all inputs. Then construct one plausible effectful meaning of addition under which they are distinguishable, and identify the distinguishing observation.
 
 ### Exercise 4
 
-Compare two observation boundaries for a sorting function: (B_1) exposes only the returned sequence; (B_2) also exposes mutation of the input object and the number of comparisons. State when an in-place quicksort and a copying mergesort could be equivalent under each boundary. Do not assume a particular implementation beyond facts you state.
+Compare two observation boundaries for a sorting function: $B_1$ exposes only the returned sequence; $B_2$ also exposes mutation of the input object and the number of comparisons. State when an in-place quicksort and a copying mergesort could be equivalent under each boundary. Do not assume a particular implementation beyond facts you state.
 
 ### Exercise 5
 
@@ -396,7 +396,7 @@ A message-processing component receives one command and may write a database row
 
 ### Answer 1
 
-The UTF-8 file is program text. The abstract syntax tree is an abstract program representation after parsing. The expression-store pair is a configuration because it contains a phrase and execution state. The uncaught exception is an outcome if the model ends execution with (Error(e)); a lower-level model could instead represent unwinding configurations before reaching it. The exit code is an observation projected from process termination. The qualifications matter because models choose their boundaries, but they do not erase the type distinctions within one chosen model.
+The UTF-8 file is program text. The abstract syntax tree is an abstract program representation after parsing. The expression-store pair is a configuration because it contains a phrase and execution state. The uncaught exception is an outcome if the model ends execution with $Error(e)$; a lower-level model could instead represent unwinding configurations before reaching it. The exit code is an observation projected from process termination. The qualifications matter because models choose their boundaries, but they do not erase the type distinctions within one chosen model.
 
 ### Answer 2
 
@@ -404,12 +404,12 @@ Starting from 4, `add 3` produces state 7. The first `emit` appends 7, giving tr
 
 ### Answer 3
 
-For every mathematical integer (x), associativity gives ((x+2)+3=x+(2+3)=x+5), so final returned integers agree. For a distinguishing effectful meaning, let every addition emit its result. Then (p) emits ((x+2,x+5)) while (q) emits only ((x+5)). A trace observer distinguishes them by event count and first event, although a final-value observer does not. This countermodel does not refute the integer proof; it changes the semantic assumptions.
+For every mathematical integer $x$, associativity gives $(x+2)+3=x+(2+3)=x+5$, so final returned integers agree. For a distinguishing effectful meaning, let every addition emit its result. Then $p$ emits ($x+2,x+5$) while $q$ emits only ($x+5$). A trace observer distinguishes them by event count and first event, although a final-value observer does not. This countermodel does not refute the integer proof; it changes the semantic assumptions.
 
 ### Answer 4
 
-Under (B_1), the algorithms can be equivalent if both return a sequence containing exactly the input elements in the required sorted order for every admitted input, including duplicates and boundary values. Whether either mutates the original or uses more comparisons is hidden. Under (B_2), an in-place algorithm and a copying algorithm differ whenever the caller can observe the original object's mutation. Their comparison counts can also differ by input; equivalence would require those counts to match under a shared definition of “comparison.” Algorithm-family names alone do not settle either claim because concrete partitioning, stability, allocation, and comparator behavior must be stated.
+Under $B_1$, the algorithms can be equivalent if both return a sequence containing exactly the input elements in the required sorted order for every admitted input, including duplicates and boundary values. Whether either mutates the original or uses more comparisons is hidden. Under $B_2$, an in-place algorithm and a copying algorithm differ whenever the caller can observe the original object's mutation. Their comparison counts can also differ by input; equivalence would require those counts to match under a shared definition of “comparison.” Algorithm-family names alone do not settle either claim because concrete partitioning, stability, allocation, and comparator behavior must be stated.
 
 ### Answer 5
 
-Use events such as (Write(id,value)), (Publish(id,payload)), (Ack(id)), and (Fail(stage)). A suitable policy observes event order and multiplicity per command identifier, not only final state. For example, trace (Write(c,v),Publish(c,e),Ack(c)) differs from (Write(c,v),Publish(c,e),Fail,Write(c,v),Publish(c,e),Ack(c)): the database may upsert to the same row, but the second trace publishes the event twice. Another bad trace is (Ack(c),Fail,Write(c,v)), which may lose the command after the sender stops retrying. Idempotent database state therefore does not establish protocol equivalence; duplicate external effects and premature acknowledgment remain observable production faults.
+Use events such as $Write(id,value)$, $Publish(id,payload)$, $Ack(id)$, and $Fail(stage)$. A suitable policy observes event order and multiplicity per command identifier, not only final state. For example, trace $Write(c,v),Publish(c,e),Ack(c)$ differs from $Write(c,v),Publish(c,e),Fail,Write(c,v),Publish(c,e),Ack(c)$: the database may upsert to the same row, but the second trace publishes the event twice. Another bad trace is $Ack(c),Fail,Write(c,v)$, which may lose the command after the sender stops retrying. Idempotent database state therefore does not establish protocol equivalence; duplicate external effects and premature acknowledgment remain observable production faults.
