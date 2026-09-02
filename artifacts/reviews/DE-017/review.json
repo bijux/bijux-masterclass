@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "module_id": "DE-017",
+  "chapter_digest": "dc298e0c31013f8ed4bcca1a60f3260873d72383d10adadfce9e0c8f50f26761",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked all seven structured references at their official vendor or project documentation URLs; each returned HTTP 200. Claims about BigQuery nested/repeated denormalization and repeated-query materialization, Snowflake column/micro-partition pruning, Redshift and PostgreSQL materialized-view persistence/refresh, and Iceberg stable field identity match the cited primary sources."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked definitions and uses of F, D, W, K, P, c_i, measure m, drift Delta, allocation weights, workload cost, and dependency watermarks.",
+        "Chapter validation accepted all GitHub-rendered display math and command syntax."
+      ],
+      "notes": "Symbols retain one meaning and formulas state whether they apply to left joins, additive measures, allocations, or empirical cost comparisons."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the executable example: base revenue 100+80+120=300; functional enrichment keeps 3 rows and 300; two history matches for each c1 fact create 5 rows and 520.",
+        "Recomputed Exercise 2: left-join multiplicities 1+2+1+3=7, base sum 200, joined sum 390, and drift 190.",
+        "Checked Example 3: repeating 100 order shipping across four items gives 400, while equal allocation gives 25 per item and reconciles to 100."
+      ],
+      "notes": "All explicit counts, sums, multiplicities, allocation examples, and drift values reproduce."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived left-join measure total as sum_i m_i max(1,c_i) and drift as sum_i m_i(max(1,c_i)-1).",
+        "Confirmed the measure-preservation corollary from the one-to-one base-key mapping under c_i<=1.",
+        "Confirmed allocation reconciliation when nonnegative child weights sum to one."
+      ],
+      "notes": "The algebra consistently distinguishes zero-match null extension, one-match enrichment, positive fanout, and explicitly changed child grain."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero, one, and multiple dimension matches; overlapping Type 2 intervals; exact half-open interval boundaries; missing dimensions; multi-tenant natural keys; empty/null arrays; and signed-measure cancellation.",
+        "Reviewed parent-child and many-to-many fanout, current versus as-of changes, CDC deletes and join-key updates, partial publication, stale materializations, and restricted-column propagation.",
+        "Prerequisite fixture and ten examples cover duplicate keys, late dimensions, retroactive corrections, unused columns, benchmark cache state, and failed refreshes."
+      ],
+      "notes": "Boundary analysis separates grain-changing relationships from invalid fanout and requires key-set evidence even where totals accidentally cancel."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked exact base-key preservation, right-side match multiplicity, additive-measure preservation, nonoverlapping temporal intervals, child allocation reconciliation, and coherent publication versions.",
+        "Executable verification passed and detects both row-count and revenue drift in the nonunique history join.",
+        "Security and lifecycle invariants require materialized copies and old versions to retain access, deletion, and retention controls."
+      ],
+      "notes": "Each invariant names its grain, temporal scope, dependency version, or tolerance and avoids relying on one grand-total check."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the row-preservation argument case by case: a left join emits one null-extended row for zero matches and one enriched row for exactly one match.",
+        "Verified the bijection conclusion under c_i<=1 and the additive-measure corollary when measures are copied unchanged over the same eligible base set.",
+        "Verified the fanout counterexample disproves preservation once a fact has two eligible matches."
+      ],
+      "notes": "The proof is valid under the complete join predicate and explicitly excludes filters, changed grain, allocations, and recomputed measures."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The formal claim is labeled row-preservation theorem and its consequence measure-preservation corollary, with assumptions immediately adjacent.",
+        "Storage and workload equations are presented as estimates/objectives rather than universal performance proofs."
+      ],
+      "notes": "The chapter differentiates logical proof, counterexample, invariant, cost model, and workload-dependent empirical result."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable Python snippet demonstrates one finite cardinality error and does not claim database performance evidence.",
+        "The empirical evidence boundary limits benchmarks to the tested engine, data distribution, query mix, concurrency, cache state, and configuration.",
+        "The benchmark section requires p50/p95, scan, compute, storage, refresh, freshness, and recovery evidence rather than one runtime."
+      ],
+      "notes": "Performance recommendations remain conditional on representative measurement; the only universal claims are relational results under stated assumptions."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed wide table, bounded OBT, read model, flat/nested/aggregate/materialized shapes, grain, fanout, temporal attributes, columnar projection, freshness, incremental maintenance, semantic ownership, and lifecycle. The module treats denormalization as an intentional derived representation rather than a replacement for source truth."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed actionable design for cardinality matrices, many-to-one validation, Type 2 lookup, bridges/arrays/allocation, full and affected-key refresh, CDC, atomic publication, rollback, schema migration, access policy, query telemetry, workload benchmarking, and retirement. Failure fixtures cover common production defects."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The one-page review frames the trade; exposition moves from purpose and grain through correctness, physical economics, operations and governance; notation supports the theorem and counterexample; ten distinct examples make failure modes concrete; and five exercises with complete answers cover design, arithmetic, benchmarking, maintenance and audit."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed. References and local execution were checked on 2026-09-02, but workload-specific database benchmarks, organization-specific privacy controls, and future engine behavior remain outside this review."
+}
