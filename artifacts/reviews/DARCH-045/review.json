@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-045",
+  "chapter_digest": "66091e5c22684f54a19a5eca4357648091bdf0d2f1d3ed0e2aad906ab274c74f",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked Kimball guidance on additive, semi-additive, and non-additive facts and conformed dimensions; dbt semantic-model and metrics documentation; the W3C RDF Data Cube Vocabulary; OpenLineage's lineage dataset facet; Google's SRE chapter on Addressing Cascading Failures; and NIST SP 800-160 Volume 1 Revision 1. All eight primary, official, or methodology-owner destinations returned HTTP 200. Claims remain bounded to the cited modeling concepts, executable semantic mechanisms, multidimensional vocabulary, lineage structure, overload guidance, and trustworthy lifecycle engineering."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the semantic-architecture tuple, ratio-metric expression, subgroup-ratio warning, compilation and cache notation, and fit-semantic predicate.",
+        "Checked distinctions among entities, dimensions, measures, metrics, join paths, time, policy, compilation, lineage, ownership, versions, and lifecycle.",
+        "Verified that numerator, denominator, eligible population, aggregation, semantic release, policy context, and source release vector remain separately named."
+      ],
+      "notes": "Notation supports scoped semantic and metric claims without presenting a shared name, formula, compiled query, or cached result as universal business meaning."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed semantic-metric-population-contract with Python 3.14.4 and reproduced four total sessions, three eligible sessions, three total conversions, and two eligible conversions.",
+        "Manually recomputed all-session conversion as 3/4 = 0.7500 and eligible conversion as 2/3 = 0.6667 under declared rounding.",
+        "Verified the difference is 8.33 percentage points using decimal arithmetic and round-half-up at the declared precision."
+      ],
+      "notes": "The recomputation proves only arithmetic for two declared in-memory populations; it does not establish session identity, eligibility, attribution, time, policy, sources, or which metric fits a decision."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified a ratio metric as aggregate numerator divided by aggregate denominator for an eligible population, subject to denominator policy.",
+        "Checked that an unweighted mean of subgroup ratios generally differs from the ratio of summed components.",
+        "Reviewed cache equivalence as requiring semantic release, source releases, parameters, result-shaping inputs, and authorization context to agree."
+      ],
+      "notes": "The reasoning separates measure algebra, population definition, semantic compilation, physical execution, authorization, and consumer-context fitness."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed glossary, ontology, logical model, semantic layer, metrics layer, mart, materialization, cache, and presentation boundaries.",
+        "Tested ambiguous identity and join paths, many-to-many fan-out, balances through time, averaged ratios, summed distinct counts, zero denominators, empty populations, late conversions, current versus as-of dimensions, and calendar boundaries.",
+        "Reviewed cross-tenant cache keys, underlying storage bypass, inference through small groups, engine disagreement, definition change, local contextual metrics, dual evaluation, aliases, API access, overload, and retirement."
+      ],
+      "notes": "Boundary cases prevent prose definitions, names, formulas, compiler success, one engine result, usage, or central ownership from standing in for semantic correctness and governance."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced identity, purpose, owner, entities, dimensions, measures, metrics, relationships, time, algebra, policy, compilation, releases, evidence, service, change, and lifecycle throughout the chapter.",
+        "Verified stable semantic identities, explicit cardinality, safe fact comparison, component-preserving ratios, context-complete caches, layered authorization, reproducible releases, impact assessment, and consumer closure.",
+        "Checked all ten gates across definition, compilation, serving, operation, federation, migration, deprecation, and retirement."
+      ],
+      "notes": "The invariants keep semantic objects contextual, executable, protected, explainable, reproducible, testable, evolvable, and owned."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the purpose, entity, metric, time, compilation, protection, evidence, ownership, change, and lifecycle gates as one assurance structure.",
+        "Checked counterexamples to glossary-means-semantic-layer, formula-means-metric, same-name-means-same-result, matching-key-means-safe-join, compiler-prevents-fanout, all-numbers-sum, subgroup-ratios-average, and catalog-delete-means-retirement reasoning.",
+        "Verified that FitSemantic requires owned purpose, complete graph and metric contracts, valid algebra and time, safe joins, protection, reproducible compilation, conformance evidence, service, versioning, portability, validation, and lifecycle."
+      ],
+      "notes": "The chapter provides a semantic-architecture assurance framework, not proof that one metric, graph, compiler, ownership model, engine, or tool fits every context."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of semantic, canonical, universal, conformed, additive, exact, approximate, current, historical, safe, authorized, equivalent, reproducible, fit, verified, and retired.",
+        "Confirmed that methodology guidance, product documentation, formal vocabulary, architecture reasoning, executable arithmetic, runtime evidence, consumer validation, and external assurance remain distinct.",
+        "Verified executable evidence is explicitly limited to two declared populations and excludes metric fitness, source validity, identity, attribution, time, policy, release, or consumer decision."
+      ],
+      "notes": "Claims remain bounded to declared decisions, populations, identities, grains, joins, measures, dimensions, time, policies, releases, engines, and lifecycle intervals."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated methodology-owner guidance, product documentation, official vocabulary and lineage specifications, internal architecture reasoning, executable evidence, runtime observations, consumer validation, and independent assurance.",
+        "Confirmed that no production semantic conformance, metric correctness, engine equivalence, authorization effectiveness, performance, adoption value, migration outcome, or external review is claimed.",
+        "Checked that local adoption requires source and semantic releases, contract completeness, fixtures, algebra and graph tests, cross-engine results, protection review, consumer validation, service evidence, cost, and accountable approval."
+      ],
+      "notes": "Published mechanisms, declared semantics, generated checks, runtime state, consumer outcomes, governance judgments, and independent review are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed semantic purposes and artifact boundaries, stable identities, authority, entities, dimensions, measures, complete metric contracts, contexts, graph paths, cardinality, fan-out, additivity, ratios, distinct counts, percentiles, cumulative and conversion metrics, time spines, history, correction, compilation, pushdown, materialization, caching, policy, inference, audit, testing, cross-engine conformance, lineage, interfaces, federation, contribution, discovery, versioning, impact, dual evaluation, service, overload, cost, adoption, portability, migration, and retirement as one coherent semantic architecture discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable semantic IDs, metric contracts, entity and join graphs, cardinality tests, algebra metadata, time spines, compilation gates, full cache keys, policy contexts, fixtures, cross-engine certification, materialization reconciliation, lineage, metric APIs, contribution gates, impact graphs, dual evaluation, cohort migration, aliases, and retirement verification. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from semantic purpose and vocabulary through graph modeling, metric algebra, time, compilation, policy, evidence, ownership, versioning, operations, migration, and lifecycle judgment. Ten differentiated examples, executable evidence, seventeen misconceptions, five progressive exercises, and complete answers cover mechanisms and limitations."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, semantics, ontology, metrics, business-intelligence, data-warehouse, database, distributed-systems, data-architecture, data-engineering, platform, cybersecurity, privacy, legal, records-management, provider, accessibility, operations, audit, statistics, economics, decision-science, or practitioner review is claimed."
+}
