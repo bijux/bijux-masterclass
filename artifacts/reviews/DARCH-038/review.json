@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-038",
+  "chapter_digest": "5545cb918cd6d56476d3ab2d3b631df551385f2003977c531dc79c1ebc90f21f",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked PostgreSQL postgres_fdw documentation, Trino connector documentation, W3C SPARQL 1.1 Federated Query, W3C Data on the Web Best Practices, W3C PROV-O, Google's SRE chapter on Addressing Cascading Failures, NIST SP 800-207 Zero Trust Architecture, and NIST SP 800-160 Volume 1 Revision 1. All eight primary or official destinations returned HTTP 200. Claims remain bounded to connector and federation mechanisms, data and provenance practices, overload control, zero-trust principles, or trustworthy secure-system engineering."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the virtual-product tuple, data-movement estimate, temporal-skew definition, per-source work budget, and justification predicate.",
+        "Checked distinctions among logical model, source product, connector capability, pushdown, source read, intermediate, spill, cache, materialization, and result.",
+        "Verified separate need, semantic, connector, plan, time, protection, source-safety, service, evidence, and lifecycle gates."
+      ],
+      "notes": "Notation declares source, clock, row-width, pushdown, and budget assumptions rather than equating connector reach, result size, or plan estimates with semantic or operational fitness."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed federated-query-movement-estimate with Python 3.14.4 and reproduced 184,000,000 full-scan input bytes, 9,200,000 pushed input bytes, 174,800,000 nominal bytes avoided, and ratio 0.0500.",
+        "Recomputed full movement as one million times 160 plus 200,000 times 120 bytes.",
+        "Recomputed pushed movement as 50,000 times 160 plus 10,000 times 120 bytes and verified the difference and ratio."
+      ],
+      "notes": "The estimate is exact under declared counts and widths; it excludes compression, protocol, source scans, shuffles, spills, results, retries, and semantic correctness."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Reviewed D=sum of selected rows times average bytes plus shuffle as a bounded planning estimate with omitted cost terms made explicit.",
+        "Checked temporal skew as maximum minus minimum compatible source read boundary while rejecting inference of distributed snapshot consistency.",
+        "Verified per-source admitted work within budget as necessary but insufficient because locks, skew, tail latency, cache eviction, and correlated demand remain."
+      ],
+      "notes": "The reasoning separates estimated movement, source work, network transfer, cross-source time, service safety, semantic equivalence, and architectural preference."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed federation versus virtualization, catalog, semantic layer, API, replication, transparent cache, materialized product, and aggregate product boundaries.",
+        "Tested mismatched identity and grain, null and collation pushdown, stale statistics, full source scans, mixed-time reads, retry state change, source failure, orphan cancellation, partial results, and stale caches.",
+        "Reviewed service identities, delegation failure, source-side policy, inference, protected metadata, spills, regions, exports, provider access, unknown consumers, schema and semantic change, and retirement."
+      ],
+      "notes": "Boundary cases prevent linked catalogs, matching names, zero-copy labels, pushdown, engine uptime, rate limits, cancellation requests, or compiling views from standing in for governed cross-source answers."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced sources, connectors, logical model, mappings, planner, execution, time, service, protection, observations, ownership, caches, change, and lifecycle throughout the chapter.",
+        "Verified source authority, capability declarations, semantic plan preservation, explicit temporal consistency, pre-movement authorization, source budgets, end-to-end service, actual-plan lineage, compatibility, and closure.",
+        "Checked all ten gates across design, planning, execution, overload, partial failure, caching, correction, materialization, migration, and retirement."
+      ],
+      "notes": "The invariants preserve autonomous source ownership while making cross-source meaning, runtime dependence, movement, protection, service, and consumer accountability explicit."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the need, semantic, connector, plan, time, protection, source-safety, service, evidence, and lifecycle gates as one assurance structure.",
+        "Checked counterexamples to connected-means-semantic, same-name-means-same-concept, virtualization-means-no-copy, pushdown-is-always-faster, one-query-means-one-time, and result-size-means-cost reasoning.",
+        "Verified that justified virtualization requires coherent meaning, explicit time, capable connectors, semantically safe plans, bounded movement and source work, effective protection, observable service, accountable ownership, materialization comparison, and funded lifecycle."
+      ],
+      "notes": "The chapter provides an assurance framework, not proof that one federation engine, connector, pushdown plan, identity model, cache, or materialization threshold fits every product."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of live, current, zero copy, equivalent, consistent, complete, secure, authorized, canceled, available, correct, retired, justified, proven, and verified.",
+        "Confirmed that connector documentation, declared capabilities, plan estimates, runtime observations, semantic tests, consumer outcomes, control decisions, and external assurance remain distinct.",
+        "Verified executable evidence is labeled as nominal input-byte estimation and excludes source scans, actual network, compression, join correctness, predicate equivalence, source cost, latency, or protection."
+      ],
+      "notes": "Claims remain bounded to declared source products, connector versions, mappings, query plans, time meanings, identities, workload classes, policy, caches, evidence, and effective intervals."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated official engine documentation and normative recommendations, internal architecture reasoning, executable arithmetic, illustrative examples, runtime plans, source metrics, consumer outcomes, and independent review.",
+        "Confirmed that no production federation, achieved pushdown savings, correct join, protected workload, source safety, measured service, complete migration, legal compliance, or external review is claimed.",
+        "Checked that local adoption requires source and consumer inventories, connector capability tests, semantic fixtures, actual plans and movement, source metrics, protection assessment, service evidence, costs, and accountable approval."
+      ],
+      "notes": "Documentation, design intent, plan estimates, generated checks, runtime work, semantic and protection conclusions, economic choices, and independent assurance are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed consumer questions, source and logical products, identity, grain, meaning, time, connector capabilities, types, predicate/projection/aggregation/join pushdown, statistics, movement, source safety, admission, cancellation, retries, partial failure, service, identity propagation, policy and inference, metadata, intermediates, caches, materialization, limits, reproducibility, provenance, execution evidence, cost, change, ownership, alternatives, migration, retirement, and value measures as one coherent discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable product contracts, identity crosswalks, grain tests, capability matrices, pushdown fixtures, physical-plan evidence, source budgets, workload classes, statement timeouts, cancellation confirmation, delegated and scoped service identities, pre-movement policy, protected spills, cache keys, dynamic lineage, materialization criteria, consumer cohorts, grant revocation, source-load verification, and closure. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from source and logical semantics through connectors, planning, movement, time, source safety, distributed service, protection, caching, evidence, materialization, migration, and lifecycle judgment. Ten differentiated examples, executable evidence, seventeen misconceptions, five progressive exercises, and complete answers cover mechanisms and limitations."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, query-planning, database, federation, virtualization, distributed-systems, data-architecture, data-engineering, platform, cybersecurity, privacy, legal, records-management, provider, accessibility, operations, audit, risk, economics, or practitioner review is claimed."
+}
