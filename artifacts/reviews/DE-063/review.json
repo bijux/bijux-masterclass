@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "DE-063",
+  "chapter_digest": "81e4c8537732920bfab9869d7a1fcdac194355c815c0f3a7fe8feefc7be0043d",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked all 12 structured references against current Apache Iceberg specifications/documentation, the Delta transaction protocol/documentation, and Apache Hudi documentation. Verified snapshot, manifest, log, checkpoint, timeline, concurrency, delete, branch/tag, maintenance, and table-type claims in their format-specific scopes; every final URL returned HTTP 200."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked definitions for snapshot s, file/delete sets A_s and D_s, schema/spec/order/properties, base B, protected set P, reachability, and inventory U.", "Checked every displayed expression for balanced syntax and defined set, time, and state symbols."],
+      "notes": "Notation consistently separates current references, immutable snapshots, logical file membership, row-delete artifacts, and physical inventory."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Executed snapshot-file-set-commit and matched snapshots 1 through 3, both commit outcomes, pinned/current reads, reachability, orphan candidate, and history reconciliation.", "Recomputed Worked Example 4 retention boundary: a one-hour cleanup horizon is below the four-hour pinned query duration and is unsafe."],
+      "notes": "All concrete version/file-set results and duration comparisons were independently checked."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Derived A_s' = (A_s minus R) union I for file-set transitions and checked append, replacement, and rewrite cases.", "Verified pure rewrite row equality is independent of physical file equality.", "Verified the compare-and-swap cases and orphan-candidate reachability/age predicate."],
+      "notes": "The algebra models a format-neutral core and does not substitute for format-specific row-delete or conflict rules."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Reviewed empty and stale bases, invalid removals, missing candidate files, concurrent append/overwrite/rewrite, lost commit responses, and long pinned readers.", "Reviewed missing/truncated stats, null/NaN/collation/time semantics, incomplete checkpoints, delete applicability, reference retention, short orphan age, path aliasing, unsupported features, direct-storage bypass, and key/catalog loss."],
+      "notes": "Adversarial cases emphasize fail-closed compatibility, unknown outcomes, and the distinction between current absence and proven garbage."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Traced table membership exclusively through committed metadata and pinned snapshot reachability across exposition, model, examples, and answers.", "Confirmed one atomic commit point, stale-writer detection, logical-versus-physical deletion, conservative pruning, compatibility gating, and complete recovery-graph invariants.", "Verified retained snapshots keep file a reachable while only loser is an orphan candidate in the executable."],
+      "notes": "The chapter consistently distinguishes the format-neutral protocol pattern from Iceberg, Delta, and Hudi implementation details."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed the eight-step reader-isolation proof from one resolved snapshot through immutable reachability, concurrent atomic publication, and cleanup protection.", "Checked that every conclusion follows only for conforming readers and protected artifacts, without claiming a particular write-isolation level."],
+      "notes": "The proof is valid under its explicit atomic-reference, immutability, pinning, and retention assumptions."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["The reader-isolation argument is explicitly labeled a proof sketch.", "The following paragraph explicitly disclaims write-isolation guarantees and clients that bypass metadata."],
+      "notes": "No vendor behavior, maintenance recommendation, or executable observation is mislabeled as a universal theorem."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Iceberg, Delta, and Hudi structures and guarantees are attributed to dated primary specifications/documentation and remain format-scoped.", "The executable explicitly disclaims schemas, row deletes, manifests, catalog failures, object versions, security, and real-format conformance.", "Retention and orphan guidance requires measured local horizons and compatible-cut evidence rather than relying on defaults."],
+      "notes": "Specification facts, format-neutral abstractions, symbolic models, and local operational choices are clearly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the chapter end to end. It defines the table as a committed metadata-derived snapshot, explains format-specific representations without conflation, and carries snapshot identity through reads, writes, deletes, planning, history, compatibility, security, cleanup, and recovery."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed the metadata contract, commit/retry process, reader plan, maintenance, retention, orphan workflow, feature gate, authorization, backup, observability, and fault tests for implementability. Dangerous cleanup and direct-read paths include explicit evidence and fencing requirements."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Reviewed progression from compact recall through metadata structures, formal transitions, proof sketch, executable model, trade-offs, 24 misconceptions, ten examples, cross-program links, and five distinct exercises with worked answers. Connections accurately bridge DE-061/062 to DE-064–070."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}
