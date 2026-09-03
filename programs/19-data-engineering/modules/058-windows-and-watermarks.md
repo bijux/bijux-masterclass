@@ -80,7 +80,7 @@ A ten-second tumbling window `[0,10)` accepts values 5 and 4, then emits on-time
 
 ### Connections
 
-[DE-051](051-streams-logs-and-unbounded-data.md) established unbounded input and explicit cuts. [DE-052](052-topics-partitions-and-offsets.md) supplies partition progress, [DE-053](053-producer-keys-and-ordering.md) supplies key/order contracts, and [DE-057](057-event-time-and-processing-time.md) supplies timestamp authority and uncertainty. DE-059 develops stateful stream transformations; DE-060 develops late, duplicate, and out-of-order handling; DE-061 develops stream joins.
+[DE-051](051-streams-logs-and-unbounded-data.md) established unbounded input and explicit cuts. [DE-052](052-topics-partitions-and-offsets.md) supplies partition progress, [DE-053](053-producer-keys-and-ordering.md) supplies key/order contracts, and [DE-057](057-event-time-and-processing-time.md) supplies timestamp authority and uncertainty. DE-059 develops stateful stream transformations; DE-060 develops late, duplicate, and out-of-order handling; DE-061 begins lakehouse and analytical storage practice with object storage.
 
 ## Governing Question
 
