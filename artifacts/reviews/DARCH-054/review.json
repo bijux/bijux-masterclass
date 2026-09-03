@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-054",
+  "chapter_digest": "ef18dd575ef6fe4567541bbd0b5acb2e3d9e794bdf51e231872d75785326da23",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked U.S. Census Bureau Statistical Quality Standard C4 and Overview of Record Linkage and Current Research Directions; IBM Matching Algorithms in Master Data Management, Survivorship, Deciding on Criteria for Data Survivorship, and Merging Records; W3C PROV-O; the NIST Privacy Framework and AI Risk Management Framework; and NIST SP 800-160 Volume 1 Revision 1. All ten official or primary destinations returned HTTP 200. Claims remain bounded to cited linkage, matching, merge, survivorship, provenance, privacy, AI-risk, and trustworthy-lifecycle mechanisms."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the capability tuple, typed match decision, merge-transition tuple, attribute survivorship expression, expected-loss expression, and FitMerge predicate.",
+        "Checked distinctions among candidate evidence, match state, entity versions, merge operation, alias mapping, retained assertions, eligibility, selection, and golden-view result.",
+        "Verified that scope, purpose, policy, expected versions, operation identity, effective time, provenance, and lifecycle remain explicit."
+      ],
+      "notes": "Notation keeps matching, merging, and survivorship separate without treating a score, threshold, surviving identifier, latest value, or golden output as universal truth."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed match-merge-survivorship-separation with Python 3.14.4 and reproduced the declared ten-line output for two records.",
+        "Verified scoped identifier weight 6 plus email evidence weight 3 produces score 9 and auto_link at threshold 8.",
+        "Confirmed two source identifiers and assertions remain, while Boolean verification before observed-day recency selects CRM email under survivorship policy 3."
+      ],
+      "notes": "The recomputation proves only arithmetic, branching, set cardinality, tuple ordering, and list preservation for in-memory data; it does not establish identity, authority, calibration, consent, atomicity, or production safety."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified Match maps evidence to five typed outcomes rather than directly mutating entity state.",
+        "Checked the merge tuple requires expected prior entity versions and binds resulting version, aliases, history, and effective time.",
+        "Verified Survive operates only over eligible assertions and can return a selected assertion, set, composed value with lineage, or unresolved state while expected loss separates false links, missed links, reviews, and delay."
+      ],
+      "notes": "The reasoning separates pair evidence from cluster validity, match authorization from merge transition, and assertion eligibility from survivorship ranking."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed candidate versus match, match versus merge, logical versus physical merge, identifier survival versus record deletion, identity versus survivorship, and source authority versus storage boundaries.",
+        "Tested tied candidates, threshold margins, negative evidence, glue records, transitive contradiction, large components, stale approvals, duplicate commands, alias chains, split ambiguity, and unknown operation outcomes.",
+        "Reviewed clock skew, replayed older values, invalid completeness, multiple valid values, prohibited and disputed assertions, feedback loops, out-of-order work, policy replay, bad-merge incidents, queue overload, source outage, recovery, and resurrection after retirement."
+      ],
+      "notes": "Boundary cases prevent score, pairwise precision, review, merge completion, field completeness, recency, or publisher success from standing in for safe end-to-end decisions."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced outcomes, scope, sources, candidates, comparisons, match decisions, merge transitions, assertions, survivorship, publication, protection, service, ownership, evidence, and lifecycle throughout the chapter.",
+        "Verified typed decisions, reconstructable evidence, expected-version transitions, stable operation IDs, nonrecycled identifiers, bounded aliases, retained assertions, attribute-level eligibility, versioned views, correction, and acknowledgement.",
+        "Checked all ten architecture gates across automation, review, merge, split, survivorship, propagation, incident response, recovery, migration, and retirement."
+      ],
+      "notes": "The invariants keep the capability scoped, evidence-preserving, concurrency-safe, reversible, provenance-rich, purpose-qualified, protected, recoverable, and owned."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the outcome, match, cluster, merge, reversal, survivorship, evidence, publication, protection and service, and lifecycle gates as one assurance structure.",
+        "Checked counterexamples to score-proves-sameness, one-threshold-fits-all, pairwise-links-guarantee-cluster, review-means-safe, merge-means-delete, latest-means-best, golden-means-true, and replay-reproduces-master reasoning.",
+        "Verified FitMerge requires evaluated matching, authorized reversible transitions, stable identities, assertion-preserving survivorship, protected publication, reliable correction, accountable outcomes, and closure."
+      ],
+      "notes": "The chapter provides a scoped assurance framework, not proof that one algorithm, threshold, merge style, survivor rule, platform, or organization fits every domain."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of match, duplicate, exact, probable, calibrated, approved, merged, surviving, authoritative, verified, current, golden, complete, corrected, recovered, fit, and retired.",
+        "Confirmed that official documentation, source evidence, model outputs, policy decisions, executable checks, runtime telemetry, reviewer judgment, consumer outcomes, accountable acceptance, and external assurance remain distinct.",
+        "Verified executable evidence is explicitly limited to two in-memory records and excludes real identity, identifier validity, score calibration, authority, consent, distributed atomicity, and downstream safety."
+      ],
+      "notes": "Claims remain bounded to named entity scopes, populations, sources, policies, attributes, purposes, versions, consumers, consequences, and lifecycle states."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated official linkage, matching, survivorship, provenance, privacy, AI-risk, and lifecycle sources from internal architecture reasoning and executable evidence.",
+        "Confirmed that no production candidate recall, match accuracy, calibration, merge correctness, survivorship fitness, queue capacity, slice fairness, correction propagation, protection, recovery, value, or external review is claimed.",
+        "Checked that local adoption requires domain research, source and label review, decision evaluation, cluster tests, protection assessment, workload and failure testing, recovery exercises, consumer validation, outcome measurement, cost, and accountable approval."
+      ],
+      "notes": "Published mechanisms, source assertions, computed evidence, policy decisions, runtime observations, review outcomes, consumer effects, governance acceptance, and independent assurance are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed pipeline separation, identity scope, decision states, scores, thresholds, margins, deterministic and probabilistic policy, candidate and decision evaluation, negative evidence, cluster constraints, glue records, review, overrides, link and merge semantics, surviving IDs, aliases, concurrency, operations, source coordination, source preservation, unmerge, split, survivorship eligibility and ranking, authority, time, quality, multiplicity, exceptional states, composition, versioned views, publication, consumer writes, feedback, replay, reconciliation, incidents, protection, threats, service, recovery, ownership, value, migration, and retirement as one coherent discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable upper and lower thresholds, score margins, cluster constraints, component-growth controls, review service levels, versioned overrides, logical merge, expected-version checks, stable operation IDs, idempotency, staged source states, surviving-ID and alias policy, split correction, attribute eligibility, verification-before-recency policy, origin tagging, event contracts, keyed reconciliation, bad-merge containment, protected reviewer surfaces, service objectives, full-state recovery, and retirement inventories. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from pipeline separation and match policy through cluster validation, review, merge state, reversal, survivorship, publication, operations, protection, recovery, ownership, value, and lifecycle judgment. Ten differentiated examples, executable evidence, nineteen misconceptions, five progressive exercises, and complete answers cover mechanisms and limitations while preparing DARCH-055 implementation-style comparison."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, entity-resolution, record-linkage, master-data-management, data-architecture, data-engineering, platform, API, reliability, machine-learning, cybersecurity, privacy, legal, records-management, provider, accessibility, operations, audit, economics, organizational-governance, or practitioner review is claimed."
+}
