@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-011",
+  "chapter_digest": "79138c47627896374078709078d4d2ef6a491da48f14325cd05b6c1460f9bb02",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked Chen's ACM entity-relationship paper, ISO/IEC 11179-3:2023 and 21838-1:2021 records, OMG UML 2.5.1, and the W3C SKOS, OWL 2, SHACL, and RDF 1.1 Recommendations. The five OMG/W3C destinations returned HTTP 200; the ACM DOI and two official ISO records were retrievable through source review but rejected the command-line client with HTTP 403. Claims are limited to each source's stated semantics and scope."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the conceptual-model tuple, contextual type-extension predicate, n-ary relationship occurrence, and context-mapping tuple.",
+        "Checked type, instance, entity, value, role, event, relationship, identity, context, authority, time, and evidence notation for distinct semantics."
+      ],
+      "notes": "Notation remains technology-independent and makes contextual, temporal, and evidential qualification explicit."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed conceptual-model-integrity with Python 3.14.4 and reproduced 4 items, 0 valid items, 4 sorted findings, and ready=false.",
+        "Independently traced physical leakage, missing scope, overloaded category, and missing relationship cardinality to the four fixture records.",
+        "Checked every example cardinality and temporal qualification as an illustrative domain claim rather than an empirical population statistic."
+      ],
+      "notes": "Fixture counts are exact; domain cardinalities require authoritative examples, counterexamples, and evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived model adequacy as preserving every material distinction needed by a bounded decision while excluding irrelevant commitments.",
+        "Checked contextual and temporal classification, n-ary relationship participation, identity-versus-identifier separation, and directional mappings with loss.",
+        "Verified that exact equivalence is stronger than usable transformation and that logical consistency is conditional on encoded axioms and semantics."
+      ],
+      "notes": "The formalism supports semantic reasoning without claiming a context-free or physically prescriptive model."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed type versus instance, entity versus role, event versus state, concept versus label, value versus identifier, and conceptual versus physical boundaries.",
+        "Tested joint, anonymous, historical, overlapping-role, multilingual, cross-jurisdiction, unknown, ambiguous-identity, merge/split, and retroactive-correction cases.",
+        "Reviewed open-world inference, missing versus optional, same-label homonyms, false exact mappings, n-ary situations, and nonexhaustive subtype structures."
+      ],
+      "notes": "Boundary cases prevent application records, familiar labels, current snapshots, or formal satisfiability from standing in for domain meaning."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced stable identity, term, definition, scope, examples, counterexamples, authority, status, and effective period through concept records.",
+        "Verified relationship roles, direction, arity, cardinality, optionality, time, constraints, and evidence plus identity issuer and merge/split authority.",
+        "Confirmed subtype disjointness/completeness, valid and recorded time, assertion provenance, context mapping, versioning, and change-impact obligations."
+      ],
+      "notes": "The nine-gate mechanism preserves meaning and governance from purpose through logical-model transition."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the purpose, concept, identity, relationship, classification, time-and-assertion, context, challenge, and governance gates.",
+        "Checked counterexamples for record-as-concept, label-as-definition, role-as-type, identifier-as-identity, missing-as-optional, foreign-key-as-domain-relation, and reasoner-as-truth claims.",
+        "Verified that adequacy conclusions require competency-question coverage, authoritative definitions, edge cases, stakeholder review, and bounded evidence."
+      ],
+      "notes": "The chapter provides a semantic argument and review method, not proof that one notation, ontology, or enterprise vocabulary fits every domain."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of concept, entity, role, event, state, identity, identifier, authoritative, invariant, equivalence, exact, valid, consistent, complete, prove, and required.",
+        "Confirmed that definitions, policy rules, source assertions, adjudicated conclusions, assumptions, logical consequences, and empirical facts are not conflated.",
+        "Verified that the executable checker is labeled as four registry predicates and excludes semantic accuracy, stakeholder agreement, real cardinality, or production-fitness proof."
+      ],
+      "notes": "Claims are bounded to declared purposes, contexts, time, authorities, decisions, logical assumptions, and evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed source currency, standards semantics, hypothetical domain examples, identity confidence, cardinality claims, reasoner limits, fixture output, and stakeholder validation needs.",
+        "Confirmed that no domain approval, ontology conformance, logical-model fitness, production data property, legal/privacy interpretation, stakeholder consensus, or external review is claimed.",
+        "Checked that local conclusions require authoritative sources, representative cases, affected-stakeholder participation, formal-tool configuration, and empirical validation."
+      ],
+      "notes": "Historical research, normative specifications, modeling proposals, logical entailments, examples, and empirical claims are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed purpose, concepts, labels, types, instances, entities, values, roles, events, state, identity, relationships, classifications, time, assertions, invariants, contexts, mappings, model layers, validation, and governance as one coherent conceptual-modeling discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable concept-register fields, competency questions, identity and relationship records, context mappings, scenario and counterexample tests, machine checks, decision records, logical trace, versioning, migration, and deprecation. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from purpose and definition through identity, relationships, classification, time, context, layers, validation, and governance. Ten examples, an executable checker, failure cases, five exercises, and full answers cover both basic distinctions and adversarial semantic cases."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, conceptual-modeling, ontology, domain-semantic, legal, privacy, identity, affected-stakeholder, formal-method, or practitioner review is claimed."
+}
