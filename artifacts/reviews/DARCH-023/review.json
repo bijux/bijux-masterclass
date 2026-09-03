@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-023",
+  "chapter_digest": "43e127ca0a8745897bed296baa66c122ff80c06eb302d58fc492c137db512e07",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked ISO/IEC 38505-1:2026, ISO 8000-150:2022, NIST CSF 2.0, NIST Privacy Framework 1.0, the EU GDPR official text, W3C PROV-O, W3C DCAT 3, and OMB M-19-23. Five destinations returned HTTP 200, and EUR-Lex returned HTTP 202. Both official ISO records were retrievable through source review but rejected the command-line client with HTTP 403. Claims remain bounded to data governance, data-quality roles, cybersecurity governance, privacy accountability, controller obligations, provenance, catalog metadata, or federal data-role scope."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the accountability-assignment tuple, decision-record tuple, capability predicates, delegation tuple, and accountability-coverage audit.",
+        "Checked distinct accountability, responsibility, authority, ownership, stewardship, custody, processing, production, consumption, source, product, and legal roles.",
+        "Verified that subject, decisions, outcomes, scope, authority, obligations, resources, evidence, escalation, and effective time remain explicit."
+      ],
+      "notes": "Notation preserves role and decision distinctions without treating attribution, an owner label, or one responsibility matrix as proof of accountability."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed data-accountability-integrity with Python 3.14.4 and reproduced 4 assignments, 0 valid assignments, 4 sorted findings, and ready=false.",
+        "Recomputed each fixture as exactly one failed predicate: zero accountable roles, missing authority, two accountable roles, or missing evidence duty.",
+        "Checked the coverage rule of exactly one final accountable role per defined decision scope and interval."
+      ],
+      "notes": "The executable counts are exact under the fixture; correct authority, resource sufficiency, and organizational outcomes require local evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived credible assignment as requiring mandate, knowledge, and capacity to act for the declared decision class.",
+        "Verified that delegation can transfer work or bounded authority while retained organizational or legal accountability remains a separate policy question.",
+        "Checked that overlapping final authorities require scope partition or an explicit adjudicator rather than an additional accountable label."
+      ],
+      "notes": "The reasoning separates decision rights, execution, delegation, attribution, evidence, answerability, and legal responsibility."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed role versus incumbent, one versus overlapping accountability, source versus product responsibility, semantic authority versus custody, governance versus management, and internal versus legal roles.",
+        "Tested absence, vacancy, delegation limits, conflict of interest, segregation, emergency approval, cross-domain products, providers, automated decisions, and purpose-specific access.",
+        "Reviewed incidents, quality exceptions, source corrections, retention, deletion, legal hold, evidence minimization, reorganization, succession, transfer, archive, and retirement."
+      ],
+      "notes": "Boundary cases prevent role names, seniority, storage control, meeting attendance, provider contracts, or completed RACI cells from standing in for implemented accountability."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced accountable role, decisions, outcomes, scope, authority, obligations, resources, evidence, escalation, and effectivity through assignments.",
+        "Verified definition, quality, access, use, protection, change, incident, correction, provider, product, lifecycle, delegation, and succession responsibilities.",
+        "Checked decision, role, authority, capability, responsibility, protection, evidence, escalation, exercise, and lifecycle obligations across all ten gates."
+      ],
+      "notes": "The invariants preserve singular scoped answerability and distributed execution through ordinary decisions, exceptions, incidents, and organizational change."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the decision, role, authority, capability, responsibility, protection, evidence, escalation, exercise, and lifecycle gates as one assurance argument.",
+        "Checked counterexamples to ownership-is-property, executive-owns-all, team-mailbox-is-accountable, two-owners-collaborate, custodian-owns-data, internal-owner-is-controller, outsourcing-transfers-accountability, and RACI-proves-implementation reasoning.",
+        "Verified that acceptance requires mandate, competence, resources, decision evidence, operational exercise, legal/risk mapping, escalation, succession, and outcome monitoring."
+      ],
+      "notes": "The chapter provides an accountability assurance structure, not proof that one role taxonomy, matrix method, governance body, or legal-role mapping fits every organization and jurisdiction."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of owner, accountable, responsible, authoritative, controller, processor, approved, adequate, implemented, lawful, singular, complete, and proof.",
+        "Confirmed that internal accountability, property, legal role, semantic authority, technical custody, provenance attribution, responsibility, and risk acceptance remain distinct.",
+        "Verified that the executable checker is labeled as four assignment predicates and excludes lawful mandate, competence, resources, protection, decision quality, implementation, or outcome proof."
+      ],
+      "notes": "Claims remain bounded to named decision types, subjects, products, purposes, jurisdictions, roles, mandates, intervals, evidence, and escalation structures."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated standards and legal text, governance guidance, role assignments, decision records, executable fixtures, exercises, incident evidence, and outcome observations.",
+        "Confirmed that no legal advice, controller determination, production accountability fitness, adequate resources, incident readiness, lawful access, provider assurance, organizational outcome, or external review is claimed.",
+        "Checked that local adoption requires executive and domain mandates, legal/privacy/security/records review, exact organization facts, operating exercises, decision samples, provider evidence, audits, and accountable approval."
+      ],
+      "notes": "Normative sources, internal reasoning, generated checks, organizational assertions, operational results, and independent assurance are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed decisions, singular accountability, durable roles, governance and management, semantic authority and custody, source and product roles, stewardship, producers and consumers, legal roles, matrices, authority, resources, delegation, segregation, conflicts, quality, access, privacy, protection, lifecycle, incidents, evidence, catalogs, exceptions, escalation, providers, federation, automation, exercise, measurement, audit, succession, and retirement as one coherent discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable decision inventories, role/incumbent records, authority matrices, delegation, deputies, segregation, access paths, exception records, incident playbooks, provider contracts, catalog metadata, exercise scenarios, accountability measures, evidence sampling, transfers, and closure. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from decision decomposition through role distinctions, authority and resources, protection, evidence, escalation, exercises, and lifecycle. Ten examples, executable evidence, seventeen misconceptions, five exercises, and complete answers cover mechanics and limitations."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, organizational-governance, data-quality, cybersecurity, privacy, legal, records-management, human-resources, provider, audit, risk, operational, accessibility, domain, or practitioner review is claimed."
+}
