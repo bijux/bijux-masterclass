@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-073",
+  "chapter_digest": "5c43f89bcbec5c93cc12dcbc525af80e13feea6882fc63173436073bc0986cae",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 11,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked NIST FIPS 199, SP 800-60 Volume I Revision 1, SP 800-122, and the CUI program FAQ; FIRST Traffic Light Protocol 2.0; the UK Government Security Classifications Policy; and W3C SKOS, PROV-O, DQV, ODRL 2.2, and SHACL. All eleven primary or official destinations returned HTTP 200. Claims remain bounded to documented security categorization, information-type mapping, contextual PII protection, CUI handling, dissemination, government classification, concept-scheme, provenance, quality, usage-policy, and shape-validation semantics; multidimensional enterprise classification and derivation recommendations are architectural synthesis."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the classification tuple C and its schemes, objects, axes, basis, evidence, propagation, handling, versions, review, and lifecycle components.",
+        "Checked notation for schemes, objects, assertions, classification vectors, handling decisions, derivation, aggregation, inference records, coverage, accuracy, reclassification, decontrol, and closure.",
+        "Verified scheme, class, label, marking, assertion, information object, handling rule, policy decision, control receipt, and outcome remain distinct types."
+      ],
+      "notes": "Notation supports scoped multidimensional classification without claiming that a display label, high-water mark, scanner result, lineage edge, encrypted representation, or policy activation proves correct class or handling."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed multidimensional-source-and-derived-classifications with Python 3.14.4 and reproduced the declared thirteen-line output.",
+        "Confirmed six source fields use five axes and contain one direct identifier, three retention classes, two high-integrity sources, and one high-availability source.",
+        "Confirmed five derived assets comprise one public, two internal, and two restricted declarations, with two pseudonymous assets, two manual-review flags, and one unresolved result."
+      ],
+      "notes": "The recomputation proves deterministic counts over invented declarations only; it establishes no object identity, class authority, transformation, privacy risk, output safety, handling control, compliance, or outcome."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified every assertion contains object, axis, class, basis, evidence, issuer, method, confidence, review state, scope, effective time, and limitations.",
+        "Checked handling resolves from the current classification vector plus use, action, environment, and time rather than from label text alone.",
+        "Verified derived classification is an axis- and transformation-specific function of input assertions, operation, output evidence, purpose, and environment rather than unconditional maximum propagation."
+      ],
+      "notes": "The symbolic review separates information type from impact, source assertion from aggregate class, confidentiality from other axes, provenance from truth, and inference confidence from verification authority."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed scheme, class, axis, object, field, record, dataset, product, system, media, copy, consumer, purpose, environment, jurisdiction, valid-time, and record-time boundaries.",
+        "Tested mixed content, instance anomalies, small samples, indirect identity, pseudonymity, joins, filters, encryption, hashing, tokenization, masking, redaction, aggregation, differencing, and repeated release.",
+        "Reviewed unsupported formats, adversarial content, classifier drift, missing markings, scheme conflict, downgrade authority, decontrol residue, copied data, operational metadata, backup restore, and obsolete-policy reactivation."
+      ],
+      "notes": "Boundary cases prevent one sensitivity ladder, `PII` Boolean, label equality, high-water propagation, cryptographic method names, model scores, or catalog coverage from standing in for classification."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced separate identities, attributable assertions, independent axes, explicit unknown and conflict, governable granularity, transformation-specific derivation, marking limits, bounded automation, contextual handling, immutable reclassification, authorized decontrol, and metric denominators throughout the chapter.",
+        "Verified schemes, classes, mappings, objects, assertions, scanner findings, reviewer decisions, policies, controls, copies, events, exceptions, decontrol, and recovery retain versions and authority context.",
+        "Checked all decision, scheme, object, assertion, information-type, impact, protected-category, marking, derivation, automation, handling, interoperability, evidence, operations, reclassification, recovery, and closure gates."
+      ],
+      "notes": "The invariants keep classifications multidimensional, attributable, contextual, evidence-backed, transform-aware, enforceable, correctable, recoverable, and historically interpretable."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the seventeen assurance gates as a trace from decisions and scheme authority through object granularity, impact, derivation, automation, handling, operations, reclassification, recovery, and closure.",
+        "Checked counterexamples to classification-is-confidentiality, non-PII-is-anonymous, marking-is-authority, finer-is-better, schema-is-instance, maximum-always-propagates, encryption-downgrades, aggregation-is-safe, and declassification-removes-all-duty claims.",
+        "Verified effective controls require current scoped assertions plus purpose, operation, actor, environment, jurisdiction, consumer, uncertainty, policy, and enforcement evidence."
+      ],
+      "notes": "The chapter supplies a scoped classification assurance framework and counterexamples, not a formal proof of legal coverage, reidentification risk, model accuracy, output safety, policy correctness, or beneficial outcomes."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of classification, categorization, type, scheme, class, label, marking, impact, privacy, identifier, pseudonymous, anonymous, dissemination, assertion, inference, verification, propagation, reclassification, declassification, decontrol, and closure.",
+        "Confirmed federal and UK government schemes, FIRST dissemination guidance, W3C representation semantics, internal synthesis, invented examples, and toy evidence remain separately labeled and scoped.",
+        "Verified executable evidence is explicitly limited to invented dictionaries, strings, Boolean review and resolution flags, and counts and excludes authority, content, transformation, attackers, policy, controls, copies, and outcomes."
+      ],
+      "notes": "Claims remain bounded to named schemes, classes, axes, objects, sources, authorities, evidence, transformations, purposes, environments, jurisdictions, versions, effective times, and decision profiles."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated primary publication and standard semantics from internal architectural synthesis, invented scenarios, and executable declarations.",
+        "Confirmed no production classification coverage, scanner accuracy, model calibration, legal applicability, anonymity, reidentification resistance, marking correctness, policy enforcement, incident reduction, cost savings, or stakeholder benefit is claimed.",
+        "Checked that local adoption requires authorized schemes, representative content and formats, legal and domain review, output and reidentification tests, classifier evaluation, human review, lineage and copy inventory, policy integration, enforcement receipts, incidents, correction, and recovery exercises."
+      ],
+      "notes": "Source basis, automated finding, model score, reviewer assertion, policy decision, control activation, technical observation, incident evidence, affected-party report, and governance conclusion are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed decision and harm orientation, classification versus categorization, independent axes, schemes and definitions, labels and markings, assertions and states, object granularity, schema and instance, aggregation and mixed content, information type and impact, CIA, privacy and identifiability, protected categories, dissemination, criticality, handling, derivation, encryption and tokenization and masking and aggregation, lineage, copies, operational and unstructured metadata, automation, evaluation, abstention, review, drift, interfaces, protection, metrics, reclassification, decontrol, correction, recovery, migration, and retirement as one coherent discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable scheme, class, object, assertion, marking, derivation-rule, inference, review, handling-profile, reclassification, decontrol, and closure records. Registry, catalog, scanner, model, workflow, policy, lineage, copy, API, event, metric, incident, migration, and recovery mechanisms have explicit authority, identity, versions, time, evidence, and failure behavior. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from multidimensional consequence and authoritative examples through schemes, objects, assertions, aggregation, privacy, dissemination, transformation, automation, handling, operations, correction, decontrol, recovery, and migration. Ten differentiated examples, one executable multidimensional inventory with explicit limitations, fifty misconceptions, five progressive exercises, and complete answers prepare consent and purpose limitation in DARCH-074."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, legal, regulatory, NIST, National Archives, FIRST, UK-government, W3C, security-classification, privacy, records, export-control, data-protection, machine-learning, adversarial, reidentification, affected-stakeholder, accessibility, independent-assurance, audit, compliance, or practitioner review is claimed."
+}
