@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-025",
+  "chapter_digest": "755194e0d7b39a118edbb9ed64db26f13f0363f8f5992bc32780d848264026e9",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 13, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked the primary OSTEP concurrency chapter and current POSIX, Linux man-pages, Linux-kernel, and xv6 documentation for mutex deadlock, timed waits, file locks, lockdep, mutex and RT mutex internals, wound/wait, locking contexts, watchdogs, and emergency diagnostics. All 13 cited URLs returned HTTP 200; model sufficiency and implementation scope are stated."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked task set T, resource types R, wait-for graph G=(T,E), available V, allocation A_i, maximum M_i, remaining need N_i, and recovery cost C_i.", "Reviewed deadlock, resource-allocation graph, wait-for graph, four necessary conditions, prevention, avoidance, safe state, detection, recovery, livelock, starvation, inversion, and fencing terminology."],
+      "notes": "Notation separates dependency topology, resource multiplicity, safe-state claims, and recovery policy."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the two-task wait-for model and confirmed cycle A->B->A.", "Confirmed rank policy R1<R2 rejects acquisition of R1 while holding R2."],
+      "notes": "The deterministic model assumes two single-instance resources, stable complete edges, and universal rank compliance."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived circular-wait prevention from strictly increasing acquisition ranks and global acyclicity.", "Checked safe-sequence algorithm N_i=M_i-A_i, componentwise availability test, returned allocations, and tentative-request rollback conditions."],
+      "notes": "Cycle sufficiency and avoidance safety are explicitly conditioned on resource instance, ownership, snapshot, and maximum-claim assumptions."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed multiple instances, external producers, stale IDs and edges, missing events, longer cycles, dynamic lock sets, callbacks, conditions, executor exhaustion, reclaim, I/O, record locks, fork, exec, and network filesystems.", "Reviewed trylock livelock, starvation, timeout storms, cancellation leaks, priority inheritance cycles, unsafe-but-not-deadlocked states, dishonest maxima, victim repetition, irreversible side effects, watchdog resource dependence, partition, lease, and fencing failures."],
+      "notes": "Graph, state, timing, progress, recovery, process, kernel, distributed, security, operational, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced edge identity, acyclic class order, coherent avoidance snapshots, exactly-once cleanup, evidence validation, recovery consistency, and independent watchdog capacity through ten examples and five answers.", "Verified the toy detects its repeated graph node and evaluates rank direction without mutating resource state."],
+      "notes": "The chapter does not conflate long wait, deadlock, livelock, starvation, inversion, unsafe state, timeout, detection, or recovery correctness."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed resource inventory, global dependency graph, strategy selection, ordering or safe-state proof, progress distinctions, recovery cleanup, diagnostic independence, and scoped validation.", "Constructed counterexamples for pairwise-only review, multiple-instance cycle claims, trylock synchrony, priority donation on a cycle, unknown maximum claims, kill-without-rollback, executor self-wait, stale record-lock scope, and replacement without fencing."],
+      "notes": "The chapter supplies reusable deadlock-management obligations, not a formal proof of a kernel, lock manager, transaction system, watchdog, or distributed controller."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of deadlocked, safe, unsafe, avoided, detected, recovered, rolled back, bounded, independent, and certification.", "Confirmed classic-model claims, API behavior, toy graph results, empirical detection, analytical safe sequences, recovery policy, distributed assumptions, and human assurance remain separately scoped."],
+      "notes": "No timeout, cycle detector, clean lockdep run, watchdog, or observed recovery is presented as universal deadlock freedom."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-025/report.json records the exact wait-for cycle, rank order, and rejected reverse request for toy-deadlock-cycle under Python 3.", "Reviewed lockdep path coverage, watchdog thresholds, SysRq diagnostics, trace generations and loss, stacks, ownership, progress counters, faults, partitions, recovery drills, workload, configuration, and false-result limitations."],
+      "notes": "The passing toy excludes actual tasks, locks, multiple resource instances, time, retries, stale evidence, callbacks, rollback, watchdogs, and distributed failure."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed dependency graphs, necessary conditions, prevention choices, avoidance, detection, victim recovery, timeouts, livelock, starvation, inversion, lockdep, wound/wait, file locks, executors, reclaim, watchdogs, distributed deadlock, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed POSIX mutex and timeout semantics, Linux record and flock behavior, lockdep, wound/wait, watchdogs, SysRq evidence, callback and executor cycles, allocation dependencies, victim cleanup, idempotence, and fencing as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from dependency graphs through the four conditions, management strategies, progress distinctions, kernel and distributed diagnosis, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux locking or watchdog maintainer, concurrency or transaction researcher, distributed-systems engineer, real-time analyst, security or safety authority, independent verifier, or certification review is claimed."
+}
