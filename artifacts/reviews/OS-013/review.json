@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-013",
+  "chapter_digest": "9527d94c08af34ca7b853f78787ece77ca27283fe46e72cb67bcc3b3280513fa",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 13,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary documentation for POSIX threads, creation, join, detach, cancellation, signal masks, thread-specific data, Linux clone, futexes, affinity, signals, kernel execution contexts, and MIT's 2025 xv6 text. All 13 cited URLs returned HTTP 200; POSIX, Linux user-space, Linux kernel, and abstract concurrency claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked thread identifiers T_i, private states P_i, shared state S, abstract increments a and b, happens-before relation arrow-hb, lifecycle states, and context capability set C(ctx) for definition before use.",
+        "Reviewed thread, execution context, TCB, TLS, joinability, cancellation, data race, synchronization, signal, affinity, and kernel-context terminology against the cited sources."
+      ],
+      "notes": "The notation separates a thread's private execution state, shared process domains, language-level ordering, lifecycle ownership, and context-dependent admissibility."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed the two-schedule model and confirmed the serial read-write schedule ends at 2.",
+        "Confirmed the overlapping-read schedule ends at 1 and reports lost-update=yes."
+      ],
+      "notes": "The deterministic arithmetic illustrates one lost-update mechanism; it is not an execution of real parallel threads or a language memory model."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Enumerated all six order-preserving interleavings of two read-then-write increments: the two serial schedules yield 2 and the four schedules with both reads before both writes yield 1.",
+        "Rechecked that conflicting ordinary accesses need a cross-thread happens-before relation and that mutex serialization or an atomic read-modify-write repairs the abstract counter invariant under their stated contracts."
+      ],
+      "notes": "The interleaving derivation is explicitly abstract; a C-like data race may make an unsynchronized program undefined rather than granting these six executions as its semantics."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed thread-ID reuse, expired stack arguments, undersized stacks, TLS pointer escape, partial creation failure, leaked joinable state, detach-join conflicts, cancellation inside invariant updates, and teardown with in-flight callbacks.",
+        "Reviewed asynchronous-signal safety, spurious wakeups, affinity-mask intersection, oversubscription, priority inversion, hard interrupt and soft-interrupt restrictions, sleeping in atomic context, and local interrupt masking on SMP."
+      ],
+      "notes": "Identity, stack, sharing, lifecycle, signal, scheduling, cancellation, context, multicore, overload, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced identity, initialized publication, sharing and visibility, context admissibility, lifecycle ownership, scheduling, failure containment, and evidence integrity through exposition, ten examples, and five answers.",
+        "Verified the executable model preserves each thread's read-before-write order while exposing the counter invariant violation caused by overlapping reads."
+      ],
+      "notes": "The chapter does not conflate process and thread state, TLS and synchronization, thread safety and signal safety, local interrupt exclusion and SMP exclusion, or observed behavior and proof."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the initialize-before-publication, protect-shared-invariants, close-admission, signal-stop, join-or-synchronize, then-reclaim argument for user threads and callbacks.",
+        "Constructed counterexamples for stack-argument lifetime, lost updates, missed condition predicates, identifier reuse, cancellation while holding a lock, signal-handler lock reentry, hard-interrupt sleeping, and callback teardown without a grace point."
+      ],
+      "notes": "The chapter provides reusable reasoning obligations, not a formal proof of a particular runtime, kernel subsystem, real-time schedule, or deployed controller."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of safe, atomic, ordered, race-free, live, exactly once, bounded, real-time, and certification.",
+        "Confirmed POSIX and Linux API semantics, abstract interleavings, language memory-model qualifications, scheduler assumptions, measured behavior, and human assurance remain separately scoped."
+      ],
+      "notes": "Safety claims name the protected invariant and admissible context; the chapter does not infer correctness from a race-free observed run."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/OS-013/report.json records serial-final=2, interleaved-final=1, and lost-update=yes for toy-thread-interleaving under Python 3.",
+        "Reviewed stress, tracing, stack high-water, scheduling latency, affinity, load, fault injection, callback teardown, and deployed-hardware passages for workload and coverage limitations."
+      ],
+      "notes": "The passing sequential toy excludes actual threads, compiler and hardware memory models, atomics, locks, signals, cancellation, scheduling, interrupts, and kernel behavior."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed private execution state, shared resource domains, ordering, lifecycle, signals, cancellation, scheduling, affinity, user and kernel contexts, and teardown as distinct but coupled concepts."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed POSIX thread creation and reclamation, stacks, TLS, synchronization, futexes, signals, cancellation, pools, affinity, priorities, kernel callbacks, interrupt contexts, diagnostics, and shutdown as implementable concerns. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from private-versus-shared state through creation, ordering, lifecycle, signals, scheduling, and kernel contexts, followed by trade-offs, fourteen misconceptions, ten examples, and five complete exercises."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, POSIX or runtime implementer, Linux kernel maintainer, concurrency specialist, real-time analyst, safety authority, independent verifier, or certification review is claimed."
+}
