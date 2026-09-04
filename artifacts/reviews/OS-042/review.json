@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-042",
+  "chapter_digest": "89bddf8889d30a24578f1b8d228337f209852743fd7203e57f4364a5571d5c11",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux kernel VFS, ext4 inode-format, idmapping, and filesystem-locking documentation, plus current Linux inode, statx, xattr, ACL, mount, and fsync man-pages. All ten cited URLs returned HTTP 200 after normal redirects; generic inode invariants, Linux-specific interfaces, ext4 format details, illustrative execution, and assurance guidance remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked filesystem instance F, inode number n, generation g, identity I=(F,n,g), directory relation D_t, logical state M_t, cached state C_t, persistent state P_t, link count h_t, preserving references r_t, size s, allocation a, quota charge Q, observation masks, versions, and visibility, dirty, and durability predicates.", "Reviewed inode, disk inode, VFS inode, directory entry, dentry, generation, link count, logical size, allocated space, extended attribute, ACL, dirty metadata, and reclamation terminology."],
+      "notes": "Notation separates filesystem-scoped identity, time-varying names and metadata, cached observations, persistence, lifetime references, storage measures, and returned-field availability."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the illustrative model and confirmed identity fs7:42:3, logical size 1,048,576 bytes, allocation 8,192 bytes, and sparse classification.", "Confirmed unlink changes links from one to zero while one open reference prevents reclamation, and final close changes open references to zero and makes the simplified object reclaimable."],
+      "notes": "The deterministic model is an intentionally simplified dictionary; it excludes real path resolution, permissions, ACLs, mappings, concurrency, writeback, crashes, and filesystem recovery."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived object identity as filesystem instance, inode number, and generation rather than pathname or inode number alone.", "Checked the simplified reclamation predicate h_t(I)=0 and r_t(I)=0 with recovery obligations discharged, and verified that logical size, allocation, exclusive physical bytes, and quota charge need not be equal."],
+      "notes": "The chapter does not infer durability from visibility, permanent identity from a reusable number, or physical storage from logical size."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed multiple names, no names, open-unlinked files, zero and saturated link counts, sparse and inline data, compression and reflinks, truncation, identifier reuse, generation wrap concerns, unavailable statx fields, concurrent mixed-field observations, timestamp policies and range, idmapped ownership, ACL masks, xattr namespaces and limits, immutable flags, quotas, and writeback races.", "Reviewed malformed inode sizes, unknown features, checksum failures, invalid mappings, quota exhaustion, I/O errors, lost remote replies, stale leases, server reboot, directory-sync requirements, crash points, orphan replay, sensitive labels, and path-substitution attacks."],
+      "notes": "Identity, representation, authorization, cross-field state, concurrency, caching, lifetime, persistence, recovery, compatibility, resource, distributed, and adversarial boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced identity validation, representation checks, contextual authorization, lock order, cross-field preservation, publication, lifetime tracking, persistence ordering, recovery, defensive reuse, bounds, and evidence through twelve obligations, ten examples, and five answers.", "Verified link and namespace balance, zero-link live-object preservation, size and mapping agreement, mode and ACL agreement, mapped identity interpretation, dirty-generation handling, journal or copy-on-write recovery, and stale-handle rejection are separate invariants."],
+      "notes": "The chapter does not conflate pathnames with inodes, disk records with VFS objects, link counts with all references, ctime with birth time, size with allocation, field availability with zero, cached visibility with durability, or checksum validity with semantic correctness."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed representation, authorization, serialization, cross-field consistency, publication, reference lifetime, writeback, recovery, reuse, bounded-resource, and evidence obligations.", "Constructed counterexamples for pathname-as-identity, inode-number-only handles, early zero-link reclamation, mode-only authorization, raw-ID comparison under mappings, assumed atomic stat snapshots, clearing dirty state across a newer mutation, file-only synchronization, checksum-only validation, and indefinite remote attribute trust."],
+      "notes": "The chapter supplies reusable metadata proof obligations, not a formal proof of Linux VFS, ext4, another filesystem, a storage device, remote server, or crash-recovery implementation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of identity, stable, current, authoritative, atomic, consistent, visible, dirty, persistent, durable, recoverable, safe, and certified.", "Confirmed generic abstractions, current Linux interface semantics, documented kernel mechanisms, ext4 format facts, illustrative execution, empirical observations, and assurance claims remain separately scoped."],
+      "notes": "A stat result is not presented as a transaction snapshot, fsync as universal name durability, checksum as semantic proof, idmapping as raw disk rewrite, or local testing as certification."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-042/report.json records source, identity, logical and allocated sizes, sparse comparison, link and open-reference transitions, and reclamation results under Python 3.", "Reviewed required collection of filesystem and mount identity, inode and generation, requested and returned masks, cache source, versions, mappings, credentials, dirty state, writeback, journal, errors, synchronization, crash points, recovery results, raw traces, and limitations."],
+      "notes": "The passing toy establishes only arithmetic and simplified lifetime transitions; it provides no evidence for real kernel authorization, locking, metadata atomicity, writeback, remote freshness, or crash durability."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed names and identity, VFS and disk inodes, cache lifecycle, type and mode, ownership mappings, permissions and ACLs, xattrs, labels and capabilities, links and open-unlinked objects, reuse, size, allocation, mappings, timestamps, stat observations, stable handles, mutation, locks, writeback, journaling and copy-on-write, synchronization, checksums, format evolution, quotas, remote caching, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed inode and generation scoping, ext4 field and checksum examples, VFS cache and operations, statx masks and mixed-moment fields, st_blocks units, sparse and shared storage, lazytime, ACL masks, xattr namespaces, idmapped ownership, orphan lifetime, dirty-generation races, file and directory synchronization, format feature gating, quota reservations, and remote attribute revalidation as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from identity and representations through fields, authorization, lifetimes and reuse, observations and mutation, then writeback, recovery, format evolution, remote caching, security, and assurance, followed by twelve trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux VFS or filesystem maintainer, ext4 format specialist, POSIX or API authority, security, storage, distributed-filesystem, recovery, or quota specialist, independent verifier, or certification review is claimed."
+}
