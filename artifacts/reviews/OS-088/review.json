@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-088",
+  "chapter_digest": "4645620f795e2a529777a32a8150868f2cba5e109d55e5fa0adc427aaf5d62fb",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current OCI image and runtime specifications, Linux kernel and man-pages documentation, and containerd content-flow and snapshotter documentation for descriptors, layer application, whiteouts, OverlayFS, mounts, pivoting, idmapping, content stores and snapshot lifecycles. All ten cited URLs returned HTTP 200 after normal redirects; specification rules, kernel behavior, abstract models, operational guidance and assurance claims remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked ordered-state, changeset, path, upper, lower, visible-entry, logical-byte, copied-byte, amplification, reachable-object and live-root notation.", "Reviewed recursive changeset application, piecewise overlay resolution, copy-up amplification and reachability-based collection with stated domains and limitations."],
+      "notes": "Notation separates portable layer semantics, runtime lookup, physical write cost and lifecycle reachability."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed three ordered states containing four base paths, one deletion, one opaque-directory replacement, three update additions and one runtime addition.", "Confirmed state sizes 4, 3 and 4; updated app value v2; absent base configuration; sole cache index; unchanged lower app v1; independently recomputed copy-up amplification 524,288."],
+      "notes": "The deterministic computation validates changeset arithmetic only; it implements no tar extraction, OCI encoding, OverlayFS, VFS lookup, metadata, link, mount, snapshotter or kernel behavior."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived filesystem state as ordered application of each changeset from an empty base and checked that application is noncommutative.", "Checked overlay precedence for whiteout, upper, first visible lower and absent cases; copy-up amplification units; and garbage-collection exclusion for objects reachable from live roots."],
+      "notes": "The expressions are filesystem-reasoning tools and do not claim complete formalizations of OCI application, OverlayFS, VFS path resolution, copy-up, mounts, leases or concurrent garbage collection."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed digest-valid malicious archives, absolute and parent paths, link traversal, malformed whiteouts, opaque ordering, special files, metadata loss and shared-parent mutation.", "Reviewed copy-up amplification, rename EXDEV, unsupported backing stores, propagation leaks, bind-source races, nested writable mounts, hidden seed data, ID mappings, inode exhaustion, lazy fetch failure and retained handles."],
+      "notes": "Integrity, extraction, layer, overlay, mount, identity, capacity, durability, remote-access and teardown boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced verified content through ordered layer application, immutable snapshot parentage, active upper creation, namespace-local mount assembly and root transition.", "Verified authorized mount sources, recursive attributes, explicit writable paths, ownership interpretation, persistent-volume separation and reference-safe teardown."],
+      "notes": "The chapter treats a container filesystem as a verified content-to-mount pipeline whose representations, mutation targets, identities and lifetimes remain explicit."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed byte provenance from descriptor through changeset and snapshot to runtime view, then traced every mutable path, mount source and teardown reference.", "Constructed counterexamples for layer-as-snapshot, digest-as-safe-extraction, whiteout-as-deletion, tiny-write-as-tiny-I/O, mount-namespace-as-copy, read-only-root-as-read-only-tree and unmount-as-reclamation."],
+      "notes": "The chapter supplies reusable container-filesystem obligations, not a formal proof of OCI content, Linux VFS or OverlayFS, a runtime, snapshotter, storage backend, image, workload or security boundary."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of verified, trusted, safe, immutable, visible, hidden, read-only, isolated, persistent, durable, atomic and reclaimed.", "Confirmed specification requirements, kernel behavior, simplified equations, examples, operational recommendations and assurance limits remain separately labeled."],
+      "notes": "A digest is not labeled safe extraction, a whiteout is not labeled lower deletion, read-only root is not labeled recursively read-only, idmapping is not labeled permission bypass and unmount is not labeled completed reclamation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-088/report.json records source, expected and actual output, stderr, exit status, toolchain and environment for ordered layer application.", "Reviewed required manifest, descriptor, layer, snapshot, backing-store, kernel-feature, mountinfo, propagation, ID-map, xattr, LSM, volume, lease, byte, inode and reference evidence."],
+      "notes": "The passing toy establishes seven state outputs only; it provides no evidence for OCI conformance, extraction safety, OverlayFS, mount isolation, snapshot durability, runtime security, performance or reclamation."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed container filesystems as a pipeline from verified portable changesets through immutable and active snapshots to a namespace-specific runtime mount tree with explicit persistence."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including extraction safety, whiteouts, copy-up, snapshotter choice, propagation, pivoting, bind sources, recursive read-only attributes, tmpfs, volumes, idmapping, security metadata, capacity and teardown. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from image and layer representations through OverlayFS and snapshotters to mount-tree assembly, identity, persistent state, security, observability and teardown, followed by twelve obligations, sixteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux VFS or OverlayFS maintainer, OCI or containerd maintainer, storage engineer, security reviewer, independent-verification or certification review is claimed."
+}
