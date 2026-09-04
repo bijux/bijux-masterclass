@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-008",
+  "chapter_digest": "4b200473089785d3a140470b541a8da61d34e4359a86e7fc8b00b5ad7fe209cc",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 14,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux documentation for allocation selection, memory-management APIs, physical memory, slabs, page ownership and migration, NUMA policy, KASAN, KMSAN, kmemleak, and DMA, plus Bonwick's primary slab paper and MIT's 2025 xv6 text. All 14 cited URLs returned HTTP 200; Linux-specific names and behavior are attributed rather than presented as universal kernel guarantees."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked P, k, n, b, F_k, s, c, and the allocation-contract tuple C for definition before use and consistent page, byte, index, set, or policy domains.",
+        "Reviewed page frame, buddy, slab, object cache, internal and external fragmentation, allocation context, contiguity, reserve, watermark, reclaim, compaction, NUMA, DMA, and lifetime terminology against cited sources."
+      ],
+      "notes": "The notation distinguishes byte size, page count, block order, allocator representation, address spaces, placement, execution context, initialization, lifetime, and failure policy."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed the 16-page buddy model and confirmed allocation of order 2 at page 0 and order 1 at page 4 leaves free blocks 1:6 and 3:8.",
+        "Confirmed releasing order 2 first leaves 1:6, 2:0, and 3:8, then releasing order 1 coalesces the entire arena to 4:0; independently recomputed the 32-page exercise sequence."
+      ],
+      "notes": "Order arithmetic uses 2^k pages, correct power-of-two alignment, and explicit page-index coverage rather than treating order as a page count."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived bytes(k) = P times 2^k, the smallest covering order ceil(log2(n)), buddy candidate b xor 2^k, and internal page waste 2^k - n.",
+        "Checked that split replaces one order-(k+1) block with two disjoint aligned order-k children and coalescing applies the inverse only for two free admissible buddies."
+      ],
+      "notes": "The algebra establishes an abstract buddy representation; arena boundaries, holes, zones, mobility, metadata, and concurrency remain additional proof obligations."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero and overflowed sizes, high orders, misalignment, zone and NUMA exhaustion, physical versus virtual and DMA addresses, pinned pages, reserve depletion, and partial initialization.",
+        "Reviewed interrupt context, reclaim recursion, indefinite retry, remote fallback, padding disclosure, stale asynchronous access, allocator mismatch, double release, untrusted amplification, metadata corruption, and overload."
+      ],
+      "notes": "Shape, topology, context, progress, lifetime, security, accounting, device, and safety boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced shape, partition, context, lifetime, progress, locality, security, and evidence integrity through exposition, ten examples, and five answers.",
+        "The executable model expands every owned and free block and asserts that pages 0 through 15 appear exactly once after each allocation and release."
+      ],
+      "notes": "The chapter never equates available bytes with admissible capacity, virtual layout with physical layout, allocation return with initialized ownership, or release with completed access."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the allocation-contract argument across size, alignment, shape, addressability, placement, context, initialization, lifetime, and failure behavior.",
+        "Constructed counterexamples for cross-boundary buddy merging, sleepable allocation under a spinlock, device access after CPU release, unbounded reserve use, stale padding, and retry without progress."
+      ],
+      "notes": "The chapter supplies reusable review obligations and counterexamples, not a formal proof of Linux allocators, hardware DMA behavior, or any deployed system."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of correct, safe, invariant, prove, success, no-fail, admissible, bounded, and certification.",
+        "Confirmed abstract partition claims, Linux API statements, executable observations, benchmark evidence, and human safety acceptance remain differently scoped."
+      ],
+      "notes": "The XOR buddy relation is explicitly conditional on arena and state checks, while the passing toy result is explicitly narrower than production allocator correctness."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/OS-008/report.json records the exact six-line output for toy-buddy-allocation under Python 3.",
+        "Reviewed latency, throughput, cache, fragmentation, NUMA, pressure, sanitizer, profiling, and fault-injection passages for workload, configuration, topology, overhead, and coverage limits."
+      ],
+      "notes": "The sequential toy excludes zones, holes, per-CPU state, concurrency, corruption, reclaim, compaction, NUMA, DMA, and kernel implementation behavior."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed allocator layers, address spaces, shape, placement, execution context, fragmentation, pressure, lifetime, security, accounting, and evidence as separate but coupled concepts."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed boot handoff, buddy allocation, object caches, per-CPU paths, virtual mappings, GFP context, reclaim, compaction, NUMA, DMA, zeroing, hardening, ownership, failure unwind, and instrumentation as implementable concerns. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from request contract through allocator layers, pressure and topology, hardening and evidence, followed by seven trade-offs, fourteen misconceptions, ten distinct examples, and five complete exercises."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, kernel-maintainer, memory-management-practitioner, hardware, DMA, real-time, security, safety, or certification review is claimed."
+}
