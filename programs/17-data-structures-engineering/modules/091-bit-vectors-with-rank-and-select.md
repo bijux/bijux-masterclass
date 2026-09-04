@@ -5,7 +5,7 @@ level: 2
 module_number: 91
 title: Bit Vectors with Rank and Select
 status: complete
-last_verified: 2026-08-30
+last_verified: 2026-09-04
 ---
 
 # Bit Vectors with Rank and Select
@@ -27,7 +27,7 @@ $$
 
 and (operatorname{select}_b(t)) is the position of the zero-based (t)-th occurrence of bit (b). It is defined only for $0\le t<\operatorname{rank}_b(n)$. Thus `rank` counts *before* a position, while `select` returns a position.
 
-A plain bit vector takes (n) bits. A succinct static rank/select representation targets (n+o(n)) total bits while supporting `access`, `rank`, and `select` in constant time on a stated word-RAM model. A compressed bit vector instead targets space related to density or entropy, such as $log_2\binom{n}{m}$ for (m) one-bits, with its own time/space contract.
+A plain bit vector takes (n) bits. A succinct static rank/select representation targets (n+o(n)) total bits while supporting `access`, `rank`, and `select` in constant time on a stated word-RAM model. A compressed bit vector instead targets space related to density or entropy, such as $\log_2\binom{n}{m}$ for (m) one-bits, with its own time/space contract.
 
 ### Central model, mechanism, or theorem
 
@@ -40,7 +40,7 @@ Select is harder because occurrence spacing is irregular. Designs sample selecte
 - Length, bit order within bytes/words, endianness, padding, and rank/select convention are versioned.
 - (operatorname{rank}_1(0)=0), (operatorname{rank}_1(n)) equals total one-bits, and rank is nondecreasing with unit increments.
 - (operatorname{rank}_0(i)=i-operatorname{rank}_1(i)) under the half-open convention.
-- For valid (t), $B[\operatorname{select}_b(t)]=b$ and $operatorname{rank}_b(\operatorname{select}_b(t))=t$.
+- For valid (t), $B[\operatorname{select}_b(t)]=b$ and $\operatorname{rank}_b(\operatorname{select}_b(t))=t$.
 - Directory counters equal recomputed prefixes and fit their serialized widths.
 - Padding bits never contribute to logical rank/select.
 - Static supports are rebuilt or atomically versioned when bits change; dynamic supports update every affected summary.
@@ -100,7 +100,7 @@ Let `access(i)` return (B[i]) for $0\le i<n$. This chapter's (operatorname{rank}
 The identities become executable specifications:
 
 $$
-\operatorname{rank}_0(i)=i-operatorname{rank}_1(i),
+\operatorname{rank}_0(i)=i-\operatorname{rank}_1(i),
 $$
 
 $$
@@ -109,19 +109,19 @@ $$
 \operatorname{rank}_b(\operatorname{select}_b(t)+1)=t+1.
 $$
 
-Rank increments by (B[i]): $operatorname{rank}_1(i+1)-\operatorname{rank}_1(i)=B[i]$. Select results strictly increase with (t). Define out-of-domain behavior—error, option, or sentinel—without colliding with a valid position.
+Rank increments by (B[i]): $\operatorname{rank}_1(i+1)-\operatorname{rank}_1(i)=B[i]$. Select results strictly increase with (t). Define out-of-domain behavior—error, option, or sentinel—without colliding with a valid position.
 
 ### Succinct, compact, and compressed space
 
 There are (2^n) arbitrary length-(n) bit vectors, so any injective representation needs (n) bits in the worst case. A structure using (n+o(n)) bits is succinct relative to that baseline. Saying “linear space” is weaker: (n) 64-bit counters use (64n) bits.
 
-When exactly (m) bits are one, there are (inom{n}{m}) possible sets, giving information bound $log_2\binom{n}{m}$ bits. Compressed rank/select structures aim near this density-sensitive bound plus redundancy. The bound excludes external labels, allocator metadata, process overhead, and sometimes construction workspace. State what is counted.
+When exactly (m) bits are one, there are $\binom{n}{m}$ possible sets, giving information bound $\log_2\binom{n}{m}$ bits. Compressed rank/select structures aim near this density-sensitive bound plus redundancy. The bound excludes external labels, allocator metadata, process overhead, and sometimes construction workspace. State what is counted.
 
 An implicit representation uses the baseline plus (O(1)) bits; a succinct representation permits lower-order redundancy; a compact implementation may simply use much less space in practice without attaining a formal bound. Do not exchange these terms casually.
 
 ### Two-level rank directory
 
-Choose superblock size $s=\Theta(\log^2 n)$ and block size $b=\Theta(\log n)$. At each superblock boundary store the total ones before it, requiring $lceil\log_2(n+1)\rceil$ bits. At each block boundary store ones since its superblock start, requiring $lceil\log_2(s+1)\rceil$ bits.
+Choose superblock size $s=\Theta(\log^2 n)$ and block size $b=\Theta(\log n)$. At each superblock boundary store the total ones before it, requiring $\lceil\log_2(n+1)\rceil$ bits. At each block boundary store ones since its superblock start, requiring $\lceil\log_2(s+1)\rceil$ bits.
 
 For query position (i), add its superblock count, within-superblock block count, and population count in the residual bits from block boundary through (i). With $s=\log^2 n$, the first directory costs
 
@@ -158,9 +158,9 @@ Layout directories near query data when locality helps, or separate them for str
 
 ### Compressed representations
 
-RRR-style bit vectors partition bits into fixed-size blocks. A block's *class* is its number of ones; its *offset* identifies the block among all patterns in that class. Encoding offsets near $log_2\binom{b}{c}$ bits approaches zero-order entropy while rank/select directories navigate class and offset streams. Decoding tables and variable offsets add cost and implementation complexity.
+RRR-style bit vectors partition bits into fixed-size blocks. A block's *class* is its number of ones; its *offset* identifies the block among all patterns in that class. Encoding offsets near $\log_2\binom{b}{c}$ bits approaches zero-order entropy while rank/select directories navigate class and offset streams. Decoding tables and variable offsets add cost and implementation complexity.
 
-Sparse bit vectors can store sorted one positions or their gaps. Elias–Fano-style representations split monotone values into high and low parts; a unary high-part bit vector itself uses select. Sparse dictionaries can approach $log\binom{n}{m}$ space and support position/ordinal mapping efficiently. For density near one, represent zeros sparsely or choose adaptively.
+Sparse bit vectors can store sorted one positions or their gaps. Elias–Fano-style representations split monotone values into high and low parts; a unary high-part bit vector itself uses select. Sparse dictionaries can approach $\log\binom{n}{m}$ space and support position/ordinal mapping efficiently. For density near one, represent zeros sparsely or choose adaptively.
 
 Run-length compression is strong when bits form long runs even if density is near one half. Roaring-like chunked bitmaps trade formal succinctness for practical intersections and updates. No representation dominates: density, clustering, operations, construction, updates, SIMD, and downstream composition decide.
 
@@ -313,7 +313,7 @@ Superblock counters use $O((n/s)\log n)=O(n/\log n)$ bits for $s=\Theta(\log^2n)
 
 ### Semantic inverses
 
-If $p=\operatorname{select}_b(t)$, exactly (t) occurrences precede (p), (B[p]=b), and exactly (t+1) occur before (p+1). Conversely, if (B[i]=b), then $operatorname{select}_b(\operatorname{rank}_b(i))=i$. These statements depend on half-open rank and zero-based select.
+If $p=\operatorname{select}_b(t)$, exactly (t) occurrences precede (p), (B[p]=b), and exactly (t+1) occur before (p+1). Conversely, if (B[i]=b), then $\operatorname{select}_b(\operatorname{rank}_b(i))=i$. These statements depend on half-open rank and zero-based select.
 
 ### Systems invariants
 
@@ -415,7 +415,7 @@ For `B=011010011`, compute (operatorname{rank}_1(i)) for (i=0,4,9), all (operato
 
 ### Exercise 2
 
-Derive why superblocks of $Theta(\log^2n)$, blocks of $Theta(\log n)$, and residual tables for half-logarithmic blocks add (o(n)) bits. State the computational-model assumptions.
+Derive why superblocks of $\Theta(\log^2n)$, blocks of $\Theta(\log n)$, and residual tables for half-logarithmic blocks add (o(n)) bits. State the computational-model assumptions.
 
 ### Exercise 3
 
@@ -437,7 +437,7 @@ Prefixes give (operatorname{rank}_1(0)=0), (operatorname{rank}_1(4)=2) for `0110
 
 ### Answer 2
 
-There are $n/\Theta(\log^2n)$ global counters of $Theta(\log n)$ bits, totaling $O(n/\log n)$. There are $n/\Theta(\log n)$ local counters of $O(\log\log n)$ bits, totaling $O(n\log\log n/\log n)$. With residual length $b=\tfrac12\log n$, $2^b=\sqrt n$; storing polylogarithmic answers per pattern remains (o(n)). All ratios to (n) tend to zero. Constant query time assumes a word RAM with $w=\Omega(\log n)$, constant-time indexed word access/arithmetic/masking and either population count or a shared addressable table whose space is included.
+There are $n/\Theta(\log^2n)$ global counters of $\Theta(\log n)$ bits, totaling $O(n/\log n)$. There are $n/\Theta(\log n)$ local counters of $O(\log\log n)$ bits, totaling $O(n\log\log n/\log n)$. With residual length $b=\tfrac12\log n$, $2^b=\sqrt n$; storing polylogarithmic answers per pattern remains (o(n)). All ratios to (n) tend to zero. Constant query time assumes a word RAM with $w=\Omega(\log n)$, constant-time indexed word access/arithmetic/masking and either population count or a shared addressable table whose space is included.
 
 ### Answer 3
 

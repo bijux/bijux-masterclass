@@ -5,7 +5,7 @@ level: 1
 module_number: 6
 title: Memory Locality and Cache Behavior
 status: complete
-last_verified: 2026-08-29
+last_verified: 2026-09-04
 ---
 
 # Memory Locality and Cache Behavior
@@ -227,7 +227,7 @@ print("evidence=line_footprint_model_not_cache_measurement")
 
 ## Definitions and Notation
 
-Let access trace $A=\langle(a_i,w_i,d_i)\rangle$, where address (a_i), width (w_i), and dependency information (d_i) are relative to one execution. For modeled line size (B), an access can intersect multiple lines; simple aligned slot examples use $lfloor a_i/B\rfloor$.
+Let access trace $A=\langle(a_i,w_i,d_i)\rangle$, where address (a_i), width (w_i), and dependency information (d_i) are relative to one execution. For modeled line size (B), an access can intersect multiple lines; simple aligned slot examples use $\lfloor a_i/B\rfloor$.
 
 For operation phase (P), useful-byte ratio can be modeled as
 

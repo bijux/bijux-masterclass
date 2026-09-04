@@ -5,7 +5,7 @@ level: 2
 module_number: 92
 title: Wavelet Trees
 status: complete
-last_verified: 2026-08-30
+last_verified: 2026-09-04
 ---
 
 # Wavelet Trees
@@ -26,7 +26,7 @@ This chapter inherits [DSE-091](091-bit-vectors-with-rank-and-select.md): (opera
 
 For access at position (i), read the node bit (b=B[i]), append that branch to the symbol code, and map $i\leftarrow\operatorname{rank}_b(B,i)$. For rank of known symbol (c), follow (c)'s branches and map prefix endpoint the same way. Select reverses from leaf to root via bit select.
 
-A balanced binary shape has height $lceil\log_2\sigma\rceil$, stores about $n\lceil\log_2\sigma\rceil$ routing bits, and supports basic operations in $O(\log\sigma)$ bit-vector queries. Entropy-shaped or compressed bit vectors can reduce space under stated models. Wavelet matrices store one bitmap per level with stable zero/one partitions and offsets, improving layout while changing navigation formulas.
+A balanced binary shape has height $\lceil\log_2\sigma\rceil$, stores about $n\lceil\log_2\sigma\rceil$ routing bits, and supports basic operations in $O(\log\sigma)$ bit-vector queries. Entropy-shaped or compressed bit vectors can reduce space under stated models. Wavelet matrices store one bitmap per level with stable zero/one partitions and offsets, improving layout while changing navigation formulas.
 
 ### Critical invariants
 
@@ -93,7 +93,7 @@ At a node owning alphabet interval (A), split it into ordered subsets (A_0,A_1).
 
 Stability is the key invariant. If the first (i) parent symbols contain (z) zeros, those symbols become exactly the first (z) items of the left child. Therefore the parent prefix endpoint maps to (operatorname{rank}_0(B,i)). Reordering equal-branch symbols may preserve counts at one node but destroys their coordinate identity downstream.
 
-Balanced splitting by alphabet cardinality gives height $lceil\log_2\sigma\rceil$; if (sigma) is not a power of two, some codes or leaves are unused/shallower. Splitting by value midpoint supports ordered queries naturally. Splitting by frequency/Huffman codes reduces average depth but complicates range-by-value traversal and requires a persisted code/tree.
+Balanced splitting by alphabet cardinality gives height $\lceil\log_2\sigma\rceil$; if (sigma) is not a power of two, some codes or leaves are unused/shallower. Splitting by value midpoint supports ordered queries naturally. Splitting by frequency/Huffman codes reduces average depth but complicates range-by-value traversal and requires a persisted code/tree.
 
 ### Access, rank, and select
 
@@ -115,7 +115,7 @@ $$
 
 If zero-based desired order (k<z), descend left and map both endpoints with rank-zero. Otherwise set $k\leftarrow k-z$, descend right, and map endpoints with rank-one. The leaf is the range quantile. The range must be nonempty and $0\le k<r-l$.
 
-Range frequency of symbol (c) is $operatorname{rank}_c(S,r)-\operatorname{rank}_c(S,l)$. Counting values in an alphabet interval recursively accepts fully covered nodes, rejects disjoint nodes, and maps endpoints for partial children. Predecessor/successor and report operations similarly prune by value interval while maintaining sequence ranges.
+Range frequency of symbol (c) is $\operatorname{rank}_c(S,r)-\operatorname{rank}_c(S,l)$. Counting values in an alphabet interval recursively accepts fully covered nodes, rejects disjoint nodes, and maps endpoints for partial children. Predecessor/successor and report operations similarly prune by value interval while maintaining sequence ranges.
 
 These algorithms are order-sensitive. If alphabet codes use UTF-8 bytes, locale collation or numeric order is not implied. Persist a canonical domain order and normalization version.
 
@@ -389,7 +389,7 @@ Use exact arrays for small alphabets/data, inverted lists for posting-centric wo
 
 ### Example 6
 
-**Range frequency.** A in `[1,6)` is $operatorname{rank}_A(6)-\operatorname{rank}_A(1)=3$. **Conclusion:** two prefix mappings answer a range count.
+**Range frequency.** A in `[1,6)` is $\operatorname{rank}_A(6)-\operatorname{rank}_A(1)=3$. **Conclusion:** two prefix mappings answer a range count.
 
 ### Example 7
 
@@ -460,7 +460,7 @@ Induct on depth. Stability makes the first (i) parent items taking branch (b) ex
 
 ### Answer 3
 
-The subrange is `ANANA`, sorted `AAANN`; order 3 is N. A appears three times. Equivalently, $operatorname{rank}_A(6)-\operatorname{rank}_A(1)=3-0=3$. Each quantile step counts zeros between mapped endpoints, chooses left if the order is smaller, otherwise subtracts and chooses right.
+The subrange is `ANANA`, sorted `AAANN`; order 3 is N. A appears three times. Equivalently, $\operatorname{rank}_A(6)-\operatorname{rank}_A(1)=3-0=3$. Each quantile step counts zeros between mapped endpoints, chooses left if the order is smaller, otherwise subtracts and chooses right.
 
 ### Answer 4
 
