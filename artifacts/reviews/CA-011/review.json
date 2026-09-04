@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "CA-011",
+  "chapter_digest": "8168f8e1b70ffc1ed3a1ba9653f895b848ad2de8f0b823e9b141cffbe0857d37",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 9, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current RISC-V unprivileged and privileged specifications, the Sail RISC-V model, RISC-V architectural tests and psABI, Intel and Arm architecture manuals, the WebAssembly core specification, and current digital-design teaching material. All nine authoritative URLs returned HTTP 200. Normative architecture, executable semantics, conformance tests, ABI requirements and pedagogical explanation remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked architectural state S, instruction I, ISA execution relation, program counter, commit and trace notation.", "Verified instruction syntax, binary encoding and state-transition semantics are distinguished throughout."],
+      "notes": "Notation treats an ISA as a versioned relation over visible state and environment observations without fixing a processor implementation."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Recomputed add-immediate results x1=5 and x2=3 and register addition x3=8.", "Recomputed instruction addresses 0, 4 and 8, final PC 12, and preservation of constant register x0=0."],
+      "notes": "The deterministic Python snippet reproduced the complete expected four-line architectural trace."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived instruction execution as S transitioning under I to an allowed successor S-prime with explicit unchanged state.", "Checked ordinary completion and trap completion as distinct permitted outcomes and commit traces as an implementation-refinement boundary."],
+      "notes": "The symbolic argument is a refinement framework, not a complete formal semantics or implementation proof for any named ISA."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed illegal and reserved encodings, integer widths, alignment, memory ordering, atomicity, faults, interrupts, privilege and optional-extension discovery.", "Reviewed reset, virtualization, debug, self-modifying code, counters, speculative execution, versioning and silicon errata boundaries."],
+      "notes": "ISA, privileged architecture, platform, firmware, ABI, operating-system API and microarchitecture boundaries receive explicit separate treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Checked preservation of constant state, declared write sets, PC outcomes, legal instruction behavior, precise traps and unsupported-extension behavior.", "Checked composition, memory, privilege, discovery, refinement, compatibility and evidence invariants across the fifteen obligations."],
+      "notes": "The invariant set prevents instruction mnemonics or passing examples from substituting for complete encoding, exception, memory or privilege contracts."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed fifteen contract, decoding, transition, unchanged-state, control-flow, arithmetic, memory, atomic, exception, interrupt, privilege, extension, refinement, compatibility and evidence obligations.", "Constructed counterexamples for ISA-equals-assembly, same-output-implies-conformance, passing-tests-prove-conformance, microarchitecture-is-architectural and performance-is-an-ISA-guarantee claims."],
+      "notes": "The chapter supplies proof obligations and evidence architecture, not formal verification of RISC-V, Arm, Intel, WebAssembly, a compiler, operating system or processor."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of legal, reserved, unspecified, undefined, precise, atomic, privileged, compatible, conformant and verified.", "Confirmed normative requirements, implementation choices, platform assumptions, ABI conventions, proof hypotheses and empirical checks remain separate."],
+      "notes": "The executable trace is explicitly labeled as a toy architectural model rather than encoding, concurrency, privilege or hardware evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/CA-011/report.json records source, expected and actual output, stderr, exit status, Python toolchain and environment for the toy trace.", "Reviewed required specification, executable-model, architecture-test, differential, formal-refinement, compatibility, errata and review evidence."],
+      "notes": "The passing snippet establishes three arithmetic state transitions only; it provides no evidence for binary decoding, memory, traps, privilege, concurrency or hardware conformance."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed the ISA as a versioned hardware-software state-transition contract with explicit architectural state, permitted observations and layered boundaries."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including encodings, registers, arithmetic, memory ordering, atomics, exceptions, interrupts, privilege, extensions, discovery, reset, virtualization, debug, executable models, architecture tests, formal refinement, compatibility and errata. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from contract boundaries and architectural state through semantics, memory, traps, privilege and extensibility to implementation refinement, evidence, fifteen obligations, fifteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external ISA academic, RISC-V, Arm, Intel or WebAssembly maintainer, processor designer, compiler or operating-system engineer, formal-verification specialist, standards body, safety assessor, independent-verification or certification review is claimed."
+}
