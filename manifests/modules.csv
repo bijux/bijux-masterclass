@@ -2132,7 +2132,7 @@ program_number,program_code,program_name,program_slug,level,level_name,level_mod
 22,OS,Operating Systems,22-operating-systems,1,Level I — Undergraduate Core,31,4,4,Virtual Memory,31,OS-031,Address Translation,programs/22-operating-systems/modules/031-address-translation.md,complete
 22,OS,Operating Systems,22-operating-systems,1,Level I — Undergraduate Core,32,4,4,Virtual Memory,32,OS-032,Page Tables,programs/22-operating-systems/modules/032-page-tables.md,complete
 22,OS,Operating Systems,22-operating-systems,1,Level I — Undergraduate Core,33,4,4,Virtual Memory,33,OS-033,Translation Lookaside Buffers,programs/22-operating-systems/modules/033-translation-lookaside-buffers.md,complete
-22,OS,Operating Systems,22-operating-systems,1,Level I — Undergraduate Core,34,4,4,Virtual Memory,34,OS-034,Demand Paging,programs/22-operating-systems/modules/034-demand-paging.md,planned
+22,OS,Operating Systems,22-operating-systems,1,Level I — Undergraduate Core,34,4,4,Virtual Memory,34,OS-034,Demand Paging,programs/22-operating-systems/modules/034-demand-paging.md,complete
 22,OS,Operating Systems,22-operating-systems,1,Level I — Undergraduate Core,35,4,4,Virtual Memory,35,OS-035,Page Faults,programs/22-operating-systems/modules/035-page-faults.md,planned
 22,OS,Operating Systems,22-operating-systems,1,Level I — Undergraduate Core,36,4,4,Virtual Memory,36,OS-036,Virtual-Memory Page Replacement,programs/22-operating-systems/modules/036-virtual-memory-page-replacement.md,planned
 22,OS,Operating Systems,22-operating-systems,1,Level I — Undergraduate Core,37,4,4,Virtual Memory,37,OS-037,Copy-on-Write,programs/22-operating-systems/modules/037-copy-on-write.md,planned
