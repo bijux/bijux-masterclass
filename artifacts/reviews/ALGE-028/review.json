@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-028",
+  "chapter_digest": "93806dab9b6d51972cd4cbbe5404c7f600b5043743a2faeed30262d5573f968e",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked Pearson's current third-edition Levitin record; the official MIT Press fourth-edition CLRS record; the MathNet primary AVL record; Springer metadata for Bayer and McCreight; IBM and AMS metadata for Cooley and Tukey; the Turing archive and OUP DOI record; the SIAM Higham record; Springer and DBLP records for Karp; ACM metadata for Aggarwal and Vitter; and the official CS2023 Algorithmic Foundations scope. Historical results, textbook foundations, current curricular scope, bounded reproduction, and original engineering guidance remain distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked source and target domains, transform tau, target solver B, lift lambda, answer sets, objectives, lifecycle costs, ranks, heap heights, norms, convolution, and graph notation for consistent declared meanings.",
+        "Checked every inline and display expression; GitHub math validation covers delimiters, commands, implications, quantifiers, sums, ceilings, logarithms, norms, matrices, and the discrete Fourier transform.",
+        "Checked that source-level integers, sets, witnesses, and mathematical maps remain distinct from machine representations, indexes, snapshots, and publication records."
+      ],
+      "notes": "Notation is scoped before use, and overloaded terms such as transform, reduction, rank, equality, and error are qualified by contract."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the executable's stable transformed order, witness (1,3), source values (-2,7), sum 5, unchanged source, and absent-target result.",
+        "Compared transformed two-sum with direct source enumeration in 878,904 cases, duplicate grouping in 97,656 cases, and compressed rank order and equality in 8,959,960 relations.",
+        "Checked bottom-up heaps in 29,524 states, matching-to-flow reductions in 4,608 graphs, and exact rational elimination in 15,625 systems.",
+        "Compared direct convolution with a naive discrete Fourier transform in 131,769 cases with maximum observed absolute error 8.388e-15, and checked 81 Unicode canonical-signature pairs.",
+        "Recomputed every displayed arithmetic result, including the eleven internal heap nodes, 18/19 break-even boundary, convolution coefficients, 36-query threshold, and 475/605/950/700 lifecycle totals."
+      ],
+      "notes": "All displayed numeric claims were independently recomputed; bounded cases support their stated domains rather than arbitrary production workloads."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived transform composition soundness and all-witness completeness from the transform, target-solver, and lift obligations.",
+        "Re-derived optimization preservation for a strictly increasing objective map, including the contradiction argument and the separate treatment required for ties.",
+        "Re-derived presorted adjacency for duplicates, two-pointer monotonic elimination, and the linear bottom-up heap bound from the height-weighted geometric series.",
+        "Re-derived rank equality and order preservation while confirming that rank subtraction is not source distance.",
+        "Re-derived the matching-to-unit-capacity-flow correspondence and integrality, and separated exact elimination identities from floating-point residual and forward-error claims."
+      ],
+      "notes": "Instance simplification, representation change, and problem reduction are kept distinct, including the direction of every source-to-target and target-to-source map."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked empty and singleton inputs, repeated and signed values, absent answers, multiple witnesses, deterministic tie policies, and find-one versus all-witness contracts.",
+        "Checked coordinate duplicates, unseen values, intentional rank gaps, empty heaps, equal keys, and adversarial heap layouts.",
+        "Checked singular, zero-pivot, tiny-pivot, ill-conditioned, NaN, and infinite numeric inputs plus convolution padding, coefficient growth, and modulus constraints.",
+        "Checked lossy canonicalization, hash collisions, Unicode normalization, updates, stale indexes, partial publication, lost shards, memory exhaustion, and incompatible artifact revisions."
+      ],
+      "notes": "A transformed artifact cannot support an exact absence or completeness claim unless coverage, revision, numeric, and lift preconditions all hold."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced contract, transform family, target preconditions, solver, lift, tie policy, costs, arithmetic, ownership, versioning, validation, and publication through the sixteen-step worksheet.",
+        "Checked source-index replay and deterministic witness selection for every bounded two-sum transform case and equality/order preservation for every compressed-rank case.",
+        "Checked heap shape, parent-child order, source multiset preservation, and maximum-at-root behavior for every bounded heap state.",
+        "Checked flow capacity and conservation against direct matching, exact equation replay after elimination, and coefficient-wise convolution correspondence.",
+        "Checked the publication protocol keeps build revision, source snapshot, completeness state, validation evidence, and consumer activation mutually consistent."
+      ],
+      "notes": "Finite invariant checks support the implementations; arbitrary correctness still depends on the separately reviewed transform, solver, and lift obligations."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the source-to-target mapping and target-to-source lift separately for decision, one-witness, all-witness, and optimization contracts.",
+        "Reviewed that each target algorithm receives its required sortedness, uniqueness, capacity, algebraic, padding, and numeric-domain preconditions.",
+        "Reviewed presort adjacency, two-pointer elimination, bottom-up heap construction, rank preservation, and the limits of representation-only transforms.",
+        "Reviewed both directions of the matching-flow correspondence, including extraction from integral unit-capacity flow.",
+        "Reviewed exact algebraic conclusions separately from condition-dependent floating-point conclusions, residual tests, and backward/forward error."
+      ],
+      "notes": "No preprocessing shortcut, compact representation, numeric approximation, or published index is accepted beyond the contract established for its lift."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Distinguished exact algebraic transforms from finite-precision implementations and bounded empirical reproduction.",
+        "Distinguished asymptotic solve cost from transformation, lifting, storage, update, validation, and publication lifecycle costs.",
+        "Distinguished decision, find-one, deterministic witness, count, and all-witness guarantees, especially under duplicate collapse.",
+        "Distinguished instance simplification, representation change, and problem reduction, and stated reduction direction explicitly.",
+        "Distinguished the observed discrete-Fourier-transform error bound from any universal floating-point accuracy guarantee."
+      ],
+      "notes": "Universal derivations, textbook theorems, finite exhaustive evidence, operational estimates, and engineering recommendations retain explicit scopes."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-028/report.json records isolated CPython 3.14.4 execution, zero exit status, empty stderr, and exact expected and actual output.",
+        "The executable establishes one finite deterministic presort-and-lift policy, duplicate handling, source immutability, witness replay, and absent-target result.",
+        "A separate bounded run records 878,904 two-sum cases, 97,656 duplicate cases, 8,959,960 rank relations, 29,524 heaps, 4,608 graph reductions, 15,625 exact systems, 131,769 convolutions, and 81 Unicode pairs.",
+        "Production guidance requires transform, solve, lift, update, validation, storage, publication, hit-rate, fallback, stale-read, numeric-error, and revision telemetry."
+      ],
+      "notes": "Local execution does not establish arbitrary-instance scalability, cache benefit, distributed completeness, Unicode policy suitability, numeric stability, or production workload performance."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the progression from transform-solve-lift contracts through simplification, representations, reductions, presorting, compression, heap construction, balanced indexes, flow, elimination, convolution, canonicalization, offline processing, lifecycle economics, publication, and paradigm selection."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed stable identities, deterministic ties, checked arithmetic, numeric guards, canonical encodings, versioned artifacts, update and rebuild policy, resource accounting, partial-publication safety, consumer activation, security limits, telemetry, bounded oracles, and rollback triggers. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified a first-principles transform-solve-lift theorem, explicit soundness and completeness obligations, a reusable sixteen-step worksheet, formal cost and proof derivations, one passing executable, exactly ten varied worked examples, and five exercises progressing from trace through proof and defect diagnosis to quantitative comparison and unfamiliar transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}
