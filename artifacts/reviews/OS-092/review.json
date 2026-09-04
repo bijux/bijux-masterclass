@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-092",
+  "chapter_digest": "e3aab9b3a4ad6ebd1f4bd8ace0ef7d7c0cec80fadf2caeba51c61da9ad838496",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux man-pages, kernel LSM, SELinux and AppArmor documentation, systemd service controls, and the OCI runtime specification for capability sets, exec transformations, namespace scope, xattrs, active contexts, enforcement and container translation. All ten cited URLs returned HTTP 200 after normal redirects; kernel contracts, simplified models, operational guidance and assurance claims remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked permitted, effective, inheritable, bounding, ambient, file-permitted, file-inheritable, file-effective, subject, object and operation notation.", "Reviewed subset invariants, union/intersection exec transformation, piecewise effective result and composed authorization conjunction."],
+      "notes": "Notation separates process capability state, executable contribution and independent authorization mechanisms."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed simplified exec transformation with three pre-exec permitted bits, one inheritable bit, two bounding bits, two file-permitted bits and one file-inheritable bit.", "Confirmed permitted and effective outputs chown and net-bind-service, empty ambient, unchanged inheritable/bounding rendering and excluded setuid; independently recomputed the exercise set result."],
+      "notes": "The deterministic computation validates set arithmetic only; it implements no Linux UID, namespace, file-xattr, securebits, mount, LSM or exec behavior."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived effective as a permitted subset and ambient as a permitted-and-inheritable subset.", "Checked ordinary post-exec contributions from inheritable/file agreement, bounded file-permitted state and surviving ambient state, then overlaid DAC, capability, LSM and mount checks."],
+      "notes": "The formulas deliberately exclude root special handling, privileged-file ambient clearing, no-new-privileges, securebits, namespace-rooted file capabilities and mount suppression until separately evaluated."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed effective-only drops, ambient helper inheritance, bounding exclusions, capability-dumb binaries, UID fixups, no-new-privileges and user-namespace scope.", "Reviewed lost xattrs, unconfined tasks, permissive policy, mount aliases, mislabeled bind volumes, audit-generated grants, descriptor bypasses and control-plane mutation."],
+      "notes": "Credential, execution, namespace, handle, activation, label, transition, translation, resource and recovery boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced all five capability sets through setup, ID changes, exec, helpers and descendants.", "Verified governing user namespace, descriptor closure, active enforcing LSM state, process/object labels, deny-by-default relations and protected policy administration."],
+      "notes": "The chapter treats authorization as intersected credential, DAC, capability, LSM and mount state across every transition."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed credentials and contexts through each process and executable transition, then evaluated each operation under every applicable policy layer.", "Constructed counterexamples for nonroot-as-unprivileged, effective-clear-as-permanent, inheritable-as-automatic, signed-file-as-trusted, container-root-as-host-root and loaded-policy-as-enforcement."],
+      "notes": "The chapter supplies reusable authorization obligations, not a formal proof of Linux capabilities, SELinux, AppArmor, systemd, OCI, a policy, service, container or host boundary."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of permitted, effective, bounded, inherited, ambient, privileged, scoped, enforced, permissive, confined, allowed and denied.", "Confirmed kernel guarantees, simplified transformations, examples, operational recommendations and assurance limits remain separately labeled."],
+      "notes": "Nonzero UID is not labeled unprivileged, capability bits are not labeled global, permissive is not labeled enforcement, MAC is not labeled resource control and one successful start is not labeled least privilege."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-092/report.json records source, expected and actual output, stderr, exit status, toolchain and environment for simplified capability transformation.", "Reviewed required kernel, capability, securebits, no-new-privileges, ID, namespace, executable-xattr, mount, LSM, enforcement, policy, context, runtime, unit and audit evidence."],
+      "notes": "The passing toy establishes six set-rendering outputs only; it provides no evidence for Linux exec semantics, privilege dropping, capability scope, MAC enforcement, container confinement or host security."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed capabilities as five-set, namespace-scoped privilege state and MAC as independent subject-object policy composed with DAC, mounts and other controls."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including durable drops, ambient and file privilege, UID transitions, user namespaces, descriptors, active LSMs, SELinux, AppArmor, labels, service/runtime translation, audit diagnosis and negative tests. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from capability sets and exec transitions through namespace scope to DAC/MAC, LSM models, deployment translation and evidence, followed by twelve obligations, sixteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux capabilities or LSM maintainer, SELinux or AppArmor policy expert, container-runtime maintainer, security reviewer, independent-verification or certification review is claimed."
+}
