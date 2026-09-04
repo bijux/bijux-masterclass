@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "LSDS-085",
+  "chapter_digest": "ac2a25ea9dd0b5e639b56c8667c8d299709c18cd166153b9506395cfa166f7d4",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 13,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked the primary Chandy-Lamport distributed-snapshot paper; current or explicitly versioned official Apache Flink fault-tolerance, state, checkpointing, monitoring, and savepoint documentation; current Apache Spark Structured Streaming checkpoint/state documentation; current Apache Kafka Streams restoration and state-store documentation; the RocksDB checkpoint documentation; and Google Cloud Dataflow exactly-once guidance. All thirteen final references returned HTTP 200. Runtime-specific semantics are attributed."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed checkpoint tuple C_k, source/operator/channel/coordinator/sink/digest components, checkpoint IDs, state handles, byte categories, checkpoint times, replay distance, incremental dependency graph, and RPO/RTO notation.",
+        "Checked consistent-cut, completion, compatibility, restore-selection, and replay predicates with explicit scopes and units.",
+        "Checked that working state, durable checkpoint storage, local recovery copies, automatic checkpoints, externalized checkpoints, and savepoints remain distinct."
+      ],
+      "notes": "The model treats checkpoint completion, integrity, compatibility, and recoverability as separate predicates rather than inferring them from file presence."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed the Python 3 fixture and reproduced selected checkpoint 40, source offset 1200, state size 640 MiB, replay distance 350, and rejection reasons for checkpoints 41 through 43.",
+        "Recomputed replay distance as 1550 - 1200 = 350 records and verified the selection scan rejects incomplete, incompatible, and missing-handle candidates before choosing the newest admissible point.",
+        "Checked the 12 GiB unaligned-channel example, shared-base retention example, and 99-of-100 acknowledgement example preserve their stated units and completion implications."
+      ],
+      "notes": "No universal checkpoint interval, timeout, concurrency, state-size, replay-distance, retention count, RPO, or RTO threshold is prescribed."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified aligned barriers exclude overtaking post-barrier records while unaligned checkpoints account for required in-flight records in channel state.",
+        "Verified atomic completion makes pre-publication partial state unselectable and post-publication state a durable recovery root under the stated durability assumptions.",
+        "Verified restore equivalence pairs all checkpoint components from one epoch with source replay, and reference-counted incremental retention preserves every live transitive dependency."
+      ],
+      "notes": "End-to-end exactly-once remains conditional on deterministic processing plus transactional or idempotent external-effect handling."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty and very large state, one and many inputs, skew, sustained backpressure, large channel buffers, concurrent checkpoints, and checkpoint timeouts.",
+        "Reviewed crashes during trigger, barrier, snapshot, upload, acknowledgement, completion, notification, and restore; duplicate/lost acknowledgements; partial/corrupt handles; missing incremental bases; and retention gaps.",
+        "Reviewed unknown sink outcomes, source-retention loss, topology/serializer/runtime changes, rescaling and key-group redistribution, cleanup races, cancellation, encryption-key expiry, fallback, and rollback."
+      ],
+      "notes": "A candidate that cannot prove completeness, integrity, compatibility, source availability, and sink resolution is rejected rather than repaired by mixing epochs."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced one checkpoint ID through source positions, operator/keyed state, in-flight channels, coordinator/timers, sink preparations, and compatibility digests.",
+        "Checked completion only after all mandatory durable handles, attempt-private partial state, idempotent acknowledgements, aligned/unaligned record accounting, and stable operator/state identities.",
+        "Checked source-state pairing, sink transaction identity, key-group mapping, serializer compatibility, shared-dependency reachability, retention leases, and fenced recovery epochs."
+      ],
+      "notes": "Recovery always selects one completed checkpoint root and never advances offsets independently of the restored state cut."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed consistent-cut, atomic-completion, restore-equivalence, and incremental-retention arguments with their reliability, determinism, durability, and compatibility premises.",
+        "Checked counterexamples for mixed checkpoint IDs, directory-based completion, omitted channel buffers, lost shared bases, incompatible serializers, stale task messages, and newly identified sink transactions.",
+        "Checked fault injection covers each protocol boundary and compares recovered state/output/effects with a reference while measuring fallback and RPO/RTO."
+      ],
+      "notes": "Checkpoint success, restore success, state equivalence, sink-effect equivalence, and objective attainment require separate evidence."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited checkpoint, consistent cut, barrier, aligned/unaligned mode, state handle, completion record, restore compatibility, and replay-distance terminology.",
+        "Confirmed full, incremental, and changelog state; working state and durable snapshots; and automatic, externalized, and manual recovery points are distinguished.",
+        "Confirmed checkpoint duration, restore duration, replay/catch-up time, RPO, RTO, managed-state exactly-once, invocation count, and external-effect semantics are not conflated."
+      ],
+      "notes": "Flink, Spark, Kafka Streams, RocksDB, and Dataflow mechanisms are not presented as interchangeable runtime contracts."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed trigger/completion/failure/timeout counts, start delay, alignment, synchronous/asynchronous duration, state/channel bytes, throughput, dependency depth, checkpoint age, and replay distance.",
+        "Reviewed restore resource wait, download/open/deserialization, channel initialization, source seek, replay, first output, steady progress, sink resolution, fallback count, and achieved RPO/RTO.",
+        "Confirmed segmentation by checkpoint mode, backend/storage, operator/subtask, job/graph/code version, input/load cohort, failure domain, and observation window."
+      ],
+      "notes": "A low checkpoint duration or successful completion is not mislabeled as low restore time, bounded replay, valid compatibility, or end-to-end exactly-once."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed consistent distributed cuts, aligned and unaligned barriers, state handles, full/incremental/changelog snapshots, atomic completion, restore selection, recovery sequencing, compatibility, tuning, retention, security, and verification."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable checkpoint identities and handles, private uploads, durable completion, idempotent acknowledgements, shared-state reference graphs, source/sink reconciliation, stable UIDs, serializer gates, rescaling, cleanup leases, observability, restore drills, and fault injection. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from consistent cuts and barriers through storage/completion to recovery, compatibility, tuning, and operations. Ten examples and five answered exercises cover selection, aligned/unaligned behavior, atomic completion, incremental cleanup, rescaling, serializer evolution, sink ambiguity, and restore drills."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external Chandy-Lamport paper author, Flink/Spark/Kafka/RocksDB/Dataflow maintainer, distributed-systems/database/streaming/storage/platform/SRE/security specialist, production workload operator, affected user, governance or accessibility specialist, or certification review is claimed."
+}
