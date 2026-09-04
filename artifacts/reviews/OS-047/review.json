@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-047",
+  "chapter_digest": "b7ae9956ec5079e0820ecc054a96678935fc94a5fc79e1490a0676e9b893cef3",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux kernel ext4 journal, block write-back cache, ext4 administration, and orphan-file documentation; current fsync, sync and syncfs, and rename man-pages; the OSDI 2018 bounded black-box crash-testing paper; and the FSCQ and DFSCQ peer-reviewed project materials. All ten cited URLs returned HTTP 200 after normal redirects; abstract failure models, Linux and ext4 behavior, research results, illustrative execution, application protocols, and assurance remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked persistence events E, partial order prec, downward-closed cut C, persistent image P(C), recovery function R, history H, failure model F, Allowed(H,F), structural invariants Inv_FS, and explicit test bound B.", "Reviewed crash state, failure model, persistence dependency, invariant, recovery, durability point, oracle, bounded crash testing, atomicity, tear, flush, stable storage, and idempotence terminology."],
+      "notes": "Notation separates execution history, permitted persistence, reconstructed bytes, recovery transformation, structural validity, application outcomes, and empirical coverage."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the illustrative three-event dependency model and confirmed exactly four downward-closed cuts for data before rename before directory synchronization.", "Confirmed the cuts map deterministically to old, old, new-visible-not-guaranteed, and new-durable outcomes in dependency order."],
+      "notes": "The model omits actual files, system calls, devices, concurrency, errors, recovery writes, and filesystem-specific guarantees."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived legal cuts as downward-closed subsets of the persistence dependency relation and noted that a relaxed failure model can enlarge them.", "Checked crash consistency as universal membership R(P(C)) in Allowed(H,F) together with Inv_FS, including safe refusal, termination, and cuts during recovery."],
+      "notes": "The chapter does not infer recovered correctness from clean shutdown, source-order prefixes, mountability, checksums, or one successful fault test."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed clean shutdown, kernel panic and power loss, volatile state, reordering, atomic-unit alignment and size, torn, lost and misdirected writes, data initialization, logs, copy-on-write roots, shadow paging, log structuring, dependency ordering, synchronous update, scan and repair, and repeated recovery.", "Reviewed create, replace, append, truncate, delete, rename, file and directory sync, multiple devices, virtualization, network storage, forged checksums, malformed logs, replay bombs, bounded generation, weak oracles, and physical fault injection."],
+      "notes": "Layer, atomicity, ordering, integrity, structural, application, recovery, testing, formal-assurance, resource, and adversarial boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced failure declaration, allowed outcomes, dependency derivation, recovery implementation, bounds, repeatability, error propagation, application composition, legal crash-state generation, precise oracle, assurance triangulation, and evidence through twelve obligations, ten examples, and five answers.", "Verified namespace validity, exclusive storage ownership, initialized reachability, commit or root validation, bounded repeated recovery, exact synchronization scope, and alignment between implementation and test assumptions."],
+      "notes": "The chapter does not conflate memory atomicity with persistence, journal consistency with content durability, rename visibility with durable publication, file sync with directory sync, or bounded tests with proof."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed layer model, allowed-state specification, persistence graph, mechanism, recovery safety and liveness, error semantics, application composition, crash-state construction, oracle, combined assurance, and trace preservation.", "Constructed counterexamples for volatile completion, prefix-only tests, universal sector atomicity, reachability-before-initialization, checksum-as-ordering, non-idempotent replay, rename-only replacement, file-only publication sync, mount-only oracle, and proof assumptions disconnected from devices."],
+      "notes": "The chapter supplies reusable crash-consistency proof obligations, not a formal proof of Linux, ext4, a device, an application, CrashMonkey, FSCQ, or DFSCQ."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of atomic, completed, persistent, stable, valid, consistent, recovered, idempotent, verified, exhaustive, durable, safe, and certified.", "Confirmed generic models, current Linux interfaces, ext4 examples, peer-reviewed findings, illustrative execution, empirical bounds, formal claims, and assurance remain separately scoped."],
+      "notes": "I/O completion is not presented as persistence, mountability as correctness, checksums as ordering, journaling as application atomicity, bounded exploration as exhaustive proof, or formal verification as hardware certification."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-047/report.json records source, event order, dependency edges, legal-cut count, each cut, modeled outcome, stdout, stderr, and Python version.", "Reviewed required collection of calls, returns, persistence events, ranges, hashes, dependencies, flushes, completions, cuts, images, recovery writes, recovered states, oracle decisions, environments, raw traces, and limitations."],
+      "notes": "The passing toy establishes only powerset filtering under one dependency chain; it provides no evidence for actual filesystem, device, recovery, application durability, or universal crash behavior."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed failure layers, volatile state, persistence events and cuts, atomicity, reorder, caches, tears, lost and misdirected writes, cross-structure and initialization invariants, journaling, copy-on-write, shadowing, log structuring, dependency ordering, synchronous update, repair, recovery specification and idempotence, application protocols, sync boundaries, multi-layer storage, checksums, testing, oracles, formal reasoning, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed Linux flush and force-unit-access behavior, ext4 data modes and replay, journal and orphan idempotence, fsync and syncfs errors, rename atomicity, file-plus-directory publication, virtual storage propagation, legal image reconstruction, bounded workload generation, content-aware oracles, and proof assumptions as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from layered failure and persistence cuts through filesystem mechanisms and recovery properties, application protocols, storage stacks, testing and formal assurance, followed by twelve trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux VFS or ext4 maintainer, storage-device or virtualization specialist, CrashMonkey, FSCQ or DFSCQ author, application-recovery, security, formal-methods, testing, independent-verification, or certification review is claimed."
+}
