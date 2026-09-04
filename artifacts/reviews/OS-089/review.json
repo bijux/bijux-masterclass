@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-089",
+  "chapter_digest": "3413e8d316c9c884f77cebffdf84660e584d4e945387498a6d6ecbb7149ebc30",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux kernel, Linux man-pages, libseccomp, OCI runtime and systemd documentation for filter inputs, architectures, actions, stacking, no-new-privileges, thread synchronization, notification brokers, Landlock, capabilities and high-level profiles. All ten cited URLs returned HTTP 200 after normal redirects; kernel contracts, abstract models, operational guidance and sandbox-assurance claims remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked syscall-event, architecture, number, instruction-pointer, scalar-argument, filter, action, precedence, admitted-event, reachable-object, credential-policy, quota, target-memory and time notation.", "Reviewed total filter functions, maximum-by-precedence composition, conceptual authority intersection and explicit rejection of pointer-memory stability assumptions."],
+      "notes": "Notation separates numeric syscall admission, action composition, object and resource authority, and broker race reasoning."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed four two-filter action combinations through an eight-level abstract precedence table.", "Confirmed ALLOW over two allows, ERRNO over user notification, LOG over allow and process kill over errno; independently recomputed both exercise combinations."],
+      "notes": "The deterministic computation validates table selection only; it implements no kernel constants, classic BPF, syscall dispatch, action data, installed filters, notification or sandbox behavior."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived effective action as the highest-precedence result across all installed total filter functions, independent of newest-filter override semantics.", "Checked the conceptual intersection of admitted syscall events, reachable objects, credential/object policy and quotas, and showed pathname authorization cannot assume equal target memory across observation and execution times."],
+      "notes": "The expressions are sandbox-reasoning tools and do not claim complete formalizations of seccomp, BPF, ABI dispatch, LSM authorization, notification races, credentials or resource enforcement."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed unexpected architectures, aliases, multiplexors, new syscalls, action support, errno fallback, incomplete thread synchronization, inherited filters, argument truncation and opaque pointers.", "Reviewed powerful descriptors, SIGSYS recursion, tracer behavior, stale notifications, target-memory races, broker death, unsupported Landlock rights, stacked-layer limits, capability sets, log floods and upgrade drift."],
+      "notes": "ABI, filter, lifecycle, argument, handle, broker, object, identity, resource, observability and compatibility boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced architecture validation, number dispatch, scalar comparisons and action precedence across every installed filter and intended thread.", "Verified setup ordering, no-new-privileges, monotonic inheritance, bounded broker authority, object-aware controls, capability reduction, namespaces, quotas and fail-closed lifecycle."],
+      "notes": "The chapter treats a sandbox as composed syscall, handle, identity, object, namespace, resource and supervisor boundaries rather than one seccomp profile."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed filter coverage for each ABI and execution thread, effective action through all layers, then overlaid descriptor, credential, namespace, object and quota authority.", "Constructed counterexamples for seccomp-as-sandbox, number-without-architecture, denylist-as-complete, errno-as-neutral, newest-filter-wins, pointer-as-path, notification-as-race-free and absent-logs-as-enforcement."],
+      "notes": "The chapter supplies reusable sandbox obligations, not a formal proof of Linux, seccomp or Landlock, libseccomp, an OCI runtime, systemd, a broker, workload, exploit or containment boundary."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of allowed, denied, killed, filtered, inherited, synchronized, restricted, privileged, safe, stable, trusted, isolated and contained.", "Confirmed kernel guarantees, simplified functions, examples, operational recommendations, attack-surface reduction and assurance limits remain separately labeled."],
+      "notes": "Seccomp is not labeled complete sandboxing, no-new-privileges is not labeled full privilege removal, scalar pointer values are not labeled object identity, user notification is not labeled race-free and namespaces are not labeled resource limits."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-089/report.json records source, expected and actual output, stderr, exit status, toolchain and environment for abstract action precedence.", "Reviewed required kernel, ABI, action-support, filter-tree, thread, no-new-privileges, capability, descriptor, namespace, mount, LSM, Landlock, cgroup, broker, denial and policy-version evidence."],
+      "notes": "The passing toy establishes four table outputs only; it provides no evidence for kernel seccomp precedence, BPF correctness, installed coverage, notification safety, Landlock enforcement, compatibility or containment."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed seccomp as ABI-specific admission over syscall metadata within a broader sandbox composed from object, identity, namespace, resource and lifecycle controls."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including architecture dispatch, allowlists, return actions, stacking, TSYNC, no-new-privileges, arguments, descriptors, multiplexors, notification brokers, Landlock, capabilities, namespaces, cgroups, profiles and negative tests. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from filter data and ABI dispatch through composition and lifecycle to brokered decisions, Landlock and layered sandbox controls, followed by twelve obligations, sixteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux seccomp or Landlock maintainer, libseccomp, OCI or systemd maintainer, sandbox engineer, security reviewer, independent-verification or certification review is claimed."
+}
