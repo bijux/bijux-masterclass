@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "module_id": "SARCH-006",
+  "chapter_digest": "c3db754fb86510e8a67cdd1be66c33a6cdf2000e18c3c30e78af713c71d4d7f0",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked current official metadata for ISO/IEC/IEEE 29148:2018 and ISO/IEC/IEEE 42010:2022; current CMU SEI material on business-goal pedigree and architecturally significant requirements, QAW, and ATAM; and the current NASA Systems Engineering Handbook pages on requirements, allocation, verification, and validation. Durable requirements guidance was reviewed against the cited textbooks."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the ASR subset relation, significance profile, scenario-to-decision-to-evidence relations, derived-requirement record, and serial availability model.",
+        "Confirmed that all sets, mappings, tuple fields, probability terms, and applicability assumptions are introduced before use."
+      ],
+      "notes": "The notation treats ASR as a governed projection over the authoritative requirement set rather than a duplicate authority."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Independently recomputed 0.999 cubed as 0.997002999, approximately 99.7003 percent.",
+        "Checked that the illustrative two-second budget allocations sum to 2,000 milliseconds: 300+100+350+500+500+250."
+      ],
+      "notes": "Both calculations are illustrative models; the chapter states that real dependency and latency composition requires stronger assumptions and evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived the required-all serial availability product from independent component success events.",
+        "Checked direction and domains of motivates, allocatedTo, verifiedBy, and derive relations."
+      ],
+      "notes": "The product model is explicitly conditioned on independence, stationarity, binary success, and all-required composition."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed local versus architectural changes, offline behavior, serial availability, technology mandates, retention derivation, load-test scope, privacy/audit conflict, platform boundary change, workload invalidation, and medical-transport transfer.",
+        "Checked shared-cause failure, degraded response, unselected but binding requirements, conflicting authority, and provisional allocation."
+      ],
+      "notes": "The chapter includes functional, quality, interface, data, operational, migration, retirement, organizational, and high-consequence boundaries."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced authoritative pedigree, explicit significance rationale, no discarded requirement, end-to-end ownership, justified allocation, traceable derivation, visible conflict, claim-specific evidence, separate verification and validation, and lifecycle revision through exposition, examples, and answers."
+      ],
+      "notes": "Trace completeness is consistently separated from requirement truth, discovery completeness, evidence validity, and stakeholder acceptance."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the availability-product premises, arithmetic, and conclusion that equal component targets do not preserve the same end-to-end target under the simplified model.",
+        "Confirmed that classification and trace predicates are not presented as proofs of architecture fitness or requirement correctness."
+      ],
+      "notes": "All conclusions remain within stated model assumptions and distinguish formal composition from empirical validation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of proof, complete, binding, verified, validation, significance, authority, model, and evidence."
+      ],
+      "notes": "No proof sketch is offered; completeness-like and conformance claims are explicitly bounded."
+    },
+    "empirical_evidence_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No new experiment, benchmark, executable snippet, or measured effectiveness claim is presented. Load tests and operational observations are described as bounded evidence types, not performed results."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed ASR definition, significance dimensions, discovery domains, pedigree, normalization, selection, allocation, derivation, conflict, evidence, and lifecycle reclassification for conceptual coherence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed offline operation, service objectives, dependency composition, data retention, technology constraints, load evidence, platform boundaries, workload changes, migration, operations, and qualified acceptance. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from first-principles significance through selection, allocation, derivation, trade-offs, failure modes, ten distinct examples, and five complete answers culminating in unfamiliar emergency-call transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}
