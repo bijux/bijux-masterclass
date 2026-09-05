@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-096",
+  "chapter_digest": "408fd5b2c0fc60e44ce35f20a8a4b7decb0cdd92f05f1b18b387107d14f1e466",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked current openCypher resources, W3C RDF 1.1, SPARQL 1.1 and SHACL Recommendations, current Apache TinkerPop reference documentation, current Neo4j graph-concept, constraint, and index manuals, the current LDBC Social Network Benchmark site, and the Pregel primary publication. Model and product claims are kept source-specific."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Defined graph G=(V,E), attributed directed edge tuple (e,u,r,v,p), degree, reachability, branching b, depth d, cut-edge set E_c, and graph snapshot before formal use."
+      ],
+      "notes": "Walk, trail, simple path, reachability, shortest unweighted path, all-path enumeration, model identity, and physical adjacency remain distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed 1 + 20 + 400 + 8,000 + 160,000 = 168,421 tree-like visits through depth four.",
+        "Recomputed effective branching two through depth four as 31 visits.",
+        "Recomputed 1 + 6 + 36 + 216 + 1,296 + 7,776 = 9,331 through depth five.",
+        "artifacts/snippets/DBE-096/report.json"
+      ],
+      "notes": "Expansion values are explicitly risk estimates for tree-like shape, not exact graph-database work."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked geometric expansion sum 1 + b + ... + b^d = (b^(d+1)-1)/(b-1) for b not equal to 1.",
+        "Reviewed BFS layer ordering and minimum-hop result under unweighted directed edges.",
+        "Checked acyclic insertion condition no path v reaches u before adding u to v, with serialization covering concurrent inserts.",
+        "Checked cut ratio, endpoint-integrity, authorization-closure, movement, and restore obligations."
+      ],
+      "notes": "The chapter distinguishes a risk estimate, proof argument, protocol obligation, and empirical observation."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty and cyclic graphs, parallel edges, self-loops, duplicate times, supernodes, reconvergent paths, unbounded walks, negative weights, Cartesian patterns, concurrent cycle/cardinality inserts, partial inverse adjacency, cut-edge-heavy placement, stale routing, cascade deletion, derived-edge staleness, authorization side channels, and count-preserving wrong restores.",
+        "Reviewed RDF/property-graph mapping loss, batch versus transactional workloads, analytical interference, disk full, corrupt indexes, cancellation, and partial shard failure."
+      ],
+      "notes": "Logical, algorithmic, concurrency, distributed, security, and recovery edge cases are covered."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked stable vertex/edge identity, permitted endpoints and multiplicity, snapshot-compatible traversal, explicit path repetition/length/direction, index completeness, routing epochs, path-closed authorization, and coherent restore.",
+        "The finite executable fixture checks reachability, three-hop shortest path, deterministic path, visited bound, cycle termination, and directed-edge interpretation."
+      ],
+      "notes": "The fixture is finite evidence; database transaction, distributed placement, authorization, and restore invariants received manual premise review."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed BFS shortest-hop, geometric expansion, endpoint integrity, acyclic insertion, traversal authorization closure, partition movement, and restore-equivalence arguments premise by premise."
+      ],
+      "notes": "The review states where weighted edges, all-path semantics, snapshot races, post-filtering, unfenced movement, or count-only validation invalidates conclusions."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited explicit separation among property graph, RDF, graph processing, query language, algorithm, implementation locality, transaction guarantee, analytical estimate, and finite executable evidence."
+      ],
+      "notes": "No performance or general graph correctness claim is inferred from BFS on one finite graph."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/DBE-096/report.json",
+        "CPython 3.14.4 reproduced the exact finite directed BFS output on Darwin 22.6.0 x86_64."
+      ],
+      "notes": "Execution establishes only the declared in-memory graph and algorithm under deterministic neighbor ordering."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed graph-model variants, identity, edge meaning, time/provenance, constraints, adjacency, start indexes, pattern/path semantics, algorithms, supernodes, snapshots, mutations, partitioning, planning, analytics, relational/RDF alternatives, security, and recovery as distinct concerns."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed cycle/cardinality races, high-degree controls, path and memory budgets, half-edge repair, distributed cuts and movement, resumable deletion, analytical isolation, derived-edge lifecycle, path-closed authorization, topology-shaped benchmarks, and semantic restore tests."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter starts by separating graph models, derives traversal and transaction obligations, provides ten varied worked examples, and progresses five exercises to an online repartitioning, analytics, security, and restore design."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, executable-snippet, conceptual, practitioner, and pedagogical review only; no external graph database/query-language maintainer, W3C editor, algorithm researcher, distributed-systems specialist, security/privacy reviewer, or production operator review is claimed. Conclusions remain conditional on graph model, query/path semantics, engine/version, topology and workload, transaction/isolation, placement, policy, and finite evidence."
+}
