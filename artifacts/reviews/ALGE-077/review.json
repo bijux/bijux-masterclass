@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-077",
+  "chapter_digest": "ae5ee3fcbcb402b5f7f7170937fb90195dd88a62151760dd12563b6ff7c6656f",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked ACM, Oxford Academic, Elsevier, SIAM, JASA publisher, author-manuscript, institutional, and proceedings records for Vitter and Li reservoir algorithms, Chao unequal-probability sampling, Efraimidis-Spirakis weighted keys, Duffield-Lund-Thorup priority sampling, Horvitz-Thompson estimation, mergeable summaries, and sliding-window streams. The chapter makes no current vendor-default, RNG-security certification, performance-leader, or deployment-scale claim."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked population, occurrence, final and prefix sizes, capacity, reservoir, subset, marginal and joint inclusion, harmonic number, priority, selection weight, finite-population total, mean, variance, and estimator notation before use.",
+        "Checked domains k from zero through N, t at least k, positive weighted keys, continuous ideal priorities, fixed finite populations, and displayed equations with balanced GitHub math delimiters."
+      ],
+      "notes": "The chapter distinguishes occurrence, entity, payload, admission, design randomness, model randomness, selection weights, and analysis weights."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the k=2 trace, one-unit survival, harmonic replacement estimate, unequal-shard inclusion, bottom-k merge, duplicate probabilities, Horvitz-Thompson estimate and variance, weighted first-winner probabilities, and window loss examples.",
+        "Recomputed expected replacements for N=1,000,000 and k=1,000 as 6907.2558623154 and corrected the independent fixture before accepting it."
+      ],
+      "notes": "The chapter rounds the exact harmonic computation to 6907.3 and separately labels 6907.8 as the leading logarithmic approximation."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived both cases of the uniform-subset induction, old and new marginal inclusion, pair inclusion, expected replacement sum, bottom-k dominance, and Horvitz-Thompson expectation.",
+        "Re-derived SRSWOR finite-population variance and the exponential-race first-winner probability from scaled exponential rates."
+      ],
+      "notes": "Equal marginals are explicitly not used as a substitute for the uniform joint subset design."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked k zero, k below prefix size, k equal to N, negative k, empty shards, duplicate payloads, distinct occurrences, counter and priority collisions, huge counters, zero uniform variates, and floating-point skip boundaries.",
+        "Checked retry, crash, re-keying, unequal shards, missing partitions, chosen identifiers, public hashes, seed rotation, positive and invalid weights, increasing capacity, deletion, expiry, late data, privacy, and threshold authority."
+      ],
+      "notes": "Cumulative reservoir, keyed bottom-k, weighted PPS, priority estimation, stratification, and sliding windows retain separate contracts."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Exhaustively checked 1,022 Algorithm R state distributions for exact uniform subset probability and 1,035 marginal and joint inclusion cases through N=9.",
+        "Exhaustively checked 589,824 bottom-k subset-pair and capacity cases for merge equivalence, plus capacity, counter, stable-key, metadata, population, persistence, and estimator invariants."
+      ],
+      "notes": "Stable keys make set union idempotent only for the same immutable occurrence identity; they do not silently deduplicate different logical occurrences."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the Algorithm R induction base, contain-new and omit-new cases, combinatorial identity, marginal corollary, and replacement-work expectation.",
+        "Reviewed exchangeable priorities, discarded-item dominance, design-based total expectation, joint-inclusion variance premise, and exponential-race derivation."
+      ],
+      "notes": "Vitter and Li skip bounds, Chao inclusion design, and priority-sampling estimation remain attributed to their exact primary constructions rather than inferred from Algorithm R."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited exact, uniform, marginal, joint, expected, asymptotic, unbiased, finite-population, continuous-priority, empirical, adversarial, and implementation language.",
+        "Separated theorem and proof, derivations, executable trace, bounded exhaustive evidence, statistical diagnostics, systems policy, and consequential-use judgment."
+      ],
+      "notes": "One seeded output and many-seed testing are explicitly not presented as proofs of uniformity or security."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-077/report.json",
+        "The CPython 3.14.4 snippet exited zero with exact seeded Algorithm R sample, capacity, uniqueness, zero-capacity, and invalid-capacity outputs on macOS 13.7.8 x86_64.",
+        "artifacts/checks/ALGE-077/reservoir-sampling-checks.txt"
+      ],
+      "notes": "Execution supports the recorded mechanics and bounded enumerations only; it does not establish production entropy, cryptographic unpredictability, external population coverage, estimator fitness, privacy, or universal performance."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed SRSWOR population semantics, Algorithm R, subset and marginal proofs, work, skip algorithms, priority equivalence, distributed merge, design-based estimation, weighted designs, priority sampling, windows, and evidence limits."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed admission, identity, counter persistence, bounded RNG, stable keyed priorities, collisions, shard imbalance, replay, checkpoints, resharding, windows, resizing, version envelopes, observability, privacy, poisoning, exact audit, and fallback."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter proves the complete joint sampling invariant, connects it to merging and estimation, distinguishes four weighted concepts, supplies ten nonredundant examples, and ends with five progressive exercises and complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external academic, probability, survey-statistical, data-platform, distributed-systems, security, privacy, public-policy, clinical, performance, or operational review is claimed. Formal guarantees remain limited to their declared population, update, randomness, identity, key, weight, estimator, merge, and window models; production conclusions remain conditional on admission, coverage, implementation, persistence, workload, adversary, resource, and downstream-decision assumptions."
+}
