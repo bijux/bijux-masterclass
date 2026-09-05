@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-089",
+  "chapter_digest": "2be3d5e4c321bba1a261d85c18a44157c8e22fc6b637b9d13d90917027d25a00",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked current Apache Kafka delivery/transaction scope documentation, current AWS Lambda retry/idempotency guidance, current Azure Service Bus duplicate-processing guidance, the canonical Microservices.io Idempotent Consumer pattern, and cited transaction/distributed-systems foundations. Product-specific offset, settlement and duplicate windows remain qualified."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked algebraic f(f(x))=f(x) statement and messaging-specific observable-effect qualification.",
+        "Checked producer/tenant/consumer/effect-version/event key, fingerprint, delivery, inbox, effect, acknowledgement and downstream identity notation."
+      ],
+      "notes": "Handler invocation, broker delivery and committed business effect are consistently distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed deterministic trace: initial 100, unique debit -7 and unique credit +3 yield 96; repeated evt-1 deliveries do not add deltas.",
+        "Recomputed Example 1 unsafe no-inbox path 100 to 93 to 86 to 79 for three repeated debits."
+      ],
+      "notes": "Numbers illustrate fixed categorical duplicate behavior; no rate, probability or production capacity is inferred."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified inbox-first/effect-second admits suppression after crash and effect-first/inbox-second admits repetition.",
+        "Verified one local transaction plus unique key permits one committed local winner per effect identity under stated isolation assumptions.",
+        "Verified effect-before-acknowledgement converts the crash window to redelivery handled by inbox, while acknowledgement-first permits loss.",
+        "Verified idempotency does not imply commutativity/order independence for distinct events."
+      ],
+      "notes": "External effects and expired deduplication evidence require additional premises/mechanisms."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed crash before/after inbox/effect commit and broker acknowledgement, simultaneous duplicates, racy pre-check, conflicting payload, batch partial commit and partition rebalance.",
+        "Reviewed semantic duplicates, external-call ambiguity, provider key retention, order gaps, poison redrive, effect-version replay, TTL boundary and backup restore.",
+        "Reviewed tenant/producer spoofing, pre-seeded keys, oversized identity storage and high-stakes device acknowledgement loss."
+      ],
+      "notes": "Deployed target isolation, broker settlement and provider idempotency/query behavior require integration evidence."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced stable scoped identity, fingerprint conflict, atomic inbox/effect, after-commit acknowledgement, unique arbitration, lifecycle distinction, downstream boundary, retention and replay policy throughout exposition/examples/answers.",
+        "Confirmed naturally idempotent local updates do not silently cover external or audit effects."
+      ],
+      "notes": "Every observable effect must be included in the claimed surface."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed atomic-local-effect, conflict, acknowledgement, concurrency, external composition, ordering and liveness arguments against explicit premises.",
+        "Confirmed counterexamples for attempt IDs, global event-ID scope, read-then-insert, separate transactions, inbox-only external proof and TTL cleanup."
+      ],
+      "notes": "No formal proof of universal exactly-once delivery/effect, global order, provider behavior or physical outcome is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited idempotent, exactly-once, once, duplicate, applied, acknowledged, completed, safe, permanent and replay language.",
+        "Confirmed exactly-once claims name their local/broker scope and empirical limitations are explicit."
+      ],
+      "notes": "The chapter claims one defined logical effect per stable key, not one handler invocation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-089/report.json",
+        "Reproduced applied,duplicate,applied,duplicate results, balance 96 and two effect-scoped inbox keys using Python 3.",
+        "Confirmed the set is in-memory and no transaction, broker, concurrency, crash, security, external effect or replay was executed."
+      ],
+      "notes": "Execution establishes exact sequential set/delta behavior only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter defines idempotence over an explicit observable effect surface and separates delivery, invocation, identity, local effect, external effect and replay version."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers inbox/effect transactions, uniqueness, lifecycle/fencing, natural idempotence, downstream outbox/keys, failure classification, ordering, replay, retention, restore, security and reconciliation."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives align with derivation, executable duplicate trace, ten distinct examples and five exercises progressing from key design through crash tracing, diagnosis, replay and high-stakes transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

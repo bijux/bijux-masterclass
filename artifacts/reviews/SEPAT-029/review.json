@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-029",
+  "chapter_digest": "574882e680f9fdde0ddeb72480e0e1d15d99bbb35cecf484ea2b8e118f61b5da",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked Cockburn's original 2005 article, the original Parnas paper record, bibliographic records for Martin, Evans, and Vernon, and current AWS Prescriptive Guidance and Microsoft architecture guidance. Actor symmetry, dependency inversion, domain ownership, applicability, and maintenance-cost claims are scoped explicitly."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked driving/driven adapter mappings, inward source dependency graph, port contract tuple, observation-relative conformance, remaining deadline, and scoped message identity notation."
+      ],
+      "notes": "Runtime call direction, source dependency direction, interface ownership, and semantic substitutability are kept distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Traced two initial seats, first removal to one remaining, second duplicate leaving one remaining, and one event append.",
+        "Reproduced all three exact output lines."
+      ],
+      "notes": "Counts establish only a sequential in-memory trace, not concurrent, transactional, durable, or delivered behavior."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Traced driving use-case coordination through two driven ports for success and unavailable outcomes.",
+        "Checked core-to-adapter/provider imports are forbidden while runtime core-to-port-dispatched-adapter calls remain possible.",
+        "Checked contract components cover values, errors, guarantees, time, and resources.",
+        "Checked duplicate message identity semantics distinguish same payload replay from conflict."
+      ],
+      "notes": "The example uses structural duck typing and does not prove compile-time module enforcement or adapter equivalence."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed no/multiple drivers and adapters, wrong interface ownership, provider type leakage, generic CRUD, controller policy, service location, cycles, validation/error translation, and adapter-specific guarantees.",
+        "Reviewed concurrent reservations, transaction/outbox failure, acknowledgement timing, duplicate/conflicting messages, timeout/indeterminate effects, cancellation, retry multiplicity, schema/provider migration, load budgets, device actuation, and common-mode safety."
+      ],
+      "notes": "Real SQL/broker/framework, concurrency, migration, load, hardware, and functional-safety evidence remains outside the snippet."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked application-owned semantics, inward dependencies, thin driving translation, honest driven translation, explicit transaction/message/time authority, layered adapter evidence, external composition, and nonceremonial port granularity against exposition and answers."
+      ],
+      "notes": "The chapter defines replaceability relative to explicit contracts and does not claim technology changes become costless."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the finite sequential reservation/event trace line by line.",
+        "Reviewed source-graph and adapter-conformance claims as obligations requiring complete dependency and mechanism-specific evidence."
+      ],
+      "notes": "No concurrency, atomicity, durability, delivery, complete dependency graph, universal adapter substitutability, or functional-safety proof is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited owns, replaceable, same, atomic, durable, idempotent, exact, enforce, guarantee, prove, safe, and conclusion language."
+      ],
+      "notes": "All strong claims are tied to declared semantics/mechanisms and future evidence; high-stakes suitability is explicitly denied."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-029/report.json",
+        "Reproduced deterministic reservation, duplicate rejection, remaining inventory, and event count.",
+        "Architecture-graph, database, broker, concurrency, fault, migration, load, hardware, and safety evidence remains prescribed future work."
+      ],
+      "notes": "No production replaceability, external academic/practitioner review, distributed correctness, or functional safety is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter derives Ports and Adapters from actor conversations and application ownership, integrating dependency/call direction, semantic contracts, driver/driven translation, transactions, messaging, time, composition, evidence levels, and ceremony control."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers capability-specific ports, owned values/errors, automatic dependency rules, thin controllers, honest provider adapters, transaction/outbox boundaries, acknowledgement/idempotency, remaining deadlines, explicit composition, shared contracts, real integration, and incremental migration."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review starts with the source/runtime direction model, supplies a runnable two-port use case, broadens through ten distinct cases, and includes five complete exercises spanning tracing, design, adapter contracts, migration, and high-stakes transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

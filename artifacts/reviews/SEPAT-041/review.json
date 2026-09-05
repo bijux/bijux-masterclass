@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-041",
+  "chapter_digest": "43698f31113107a1ea2f15b290206afa481b5feb1f13e009706c615c39f40ead",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked the Pearson GoF catalog, Wadler expression-problem record, Felleisen/Friedman and Dragon Book bibliographic records, Python 3.14.7 AST visitor documentation, current LLVM pass-manager documentation, Java SE 25 method-invocation specification, and Liskov/Wing primary paper. Dispatch, AST, pass, evolution, and contract claims are scoped explicitly."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked element/operation matrix, accept/visit double-dispatch law, occurrence tree-count recurrence, graph unique-count distinction, visited-set progress, and result/error/context terminology."
+      ],
+      "notes": "Dispatch, traversal, operation semantics, transformation, effect application, and pass scheduling remain distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed Multiply as 3·4=12 and Add as 2+12=14.",
+        "Counted Add one, left Literal one, Multiply one, and two nested Literals for five occurrences.",
+        "Confirmed three element rows by three visitor columns gives nine behaviors and reproduced all three exact output lines."
+      ],
+      "notes": "The finite expression trace is not evidence for arbitrary ASTs, graphs, or compiler semantics."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Traced each concrete accept to exactly its corresponding visitor method for Literal, Add, and Multiply.",
+        "Derived occurrence count recurrence and distinguished it from identity-memoized unique count under DAG sharing.",
+        "Checked graph termination when a finite reachable node becomes active/visited before descent and the bounded visited/work measure grows monotonically."
+      ],
+      "notes": "Termination and completeness depend on finite/bounded structure, correct identity, traversal ownership, and explicit unknown-variant semantics."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero/one/new/unknown element variants, wrong accept target, generic fallback/cast, missing/incompatible result case, visitor/element double traversal, preorder/postorder/pruning/stop, and call-order dependence.",
+        "Reviewed very deep/wide trees, shared DAG occurrence/unique semantics, self/two-node cycles, invalid identity, work/depth/node limits, mutable global accumulator, visitor reuse/races, memo retention/context keys, cancellation/error, and partial diagnostics.",
+        "Reviewed in-place rewrite invalidation/partial failure, identity/metadata loss, repeated external effects, retry, plugin schema/version skew, silent security-scan skips, capability/data exposure, compiler analysis invalidation, and high-stakes semantic misuse."
+      ],
+      "notes": "Real large IRs, concurrency, transformations, plugin boundaries, pass pipelines, effect systems, compiler correctness, and domain validation remain outside the snippet."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked exact type-specific dispatch, coherent typed result/error/context, explicit exhaustive/fallback policy, singular traversal ownership, bounded sharing/cycle handling, read-only versus validated transforming behavior, per-run visitor state, and narrow authorized plugin capabilities against exposition and answers."
+      ],
+      "notes": "The chapter explicitly rejects reaching every node or successful dispatch as proof of semantic pass correctness."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed concrete dispatch/evaluation/count/format derivation line by line.",
+        "Reviewed operation-matrix change-axis argument for new columns versus new rows.",
+        "Reviewed graph termination and immutable-transform commit claims with finiteness, identity, progress, validation, and resource assumptions exposed."
+      ],
+      "notes": "No future-variant exhaustiveness, arbitrary visitor correctness, compiler semantic preservation, effect exactly-once behavior, plugin security, clinical/domain validity, or regulatory proof is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited prove, exhaustive, complete, terminate, safe, preserve, correct, valid, secure, current, guarantee, and conclusion language."
+      ],
+      "notes": "Strong claims state element/traversal/graph/pass boundaries and distinguish formal, empirical, compatibility, and high-stakes evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-041/report.json",
+        "Reproduced all three type-specific dispatch paths, evaluation 14, occurrence count five, and exact formatting under the recorded Python toolchain.",
+        "Deep/shared/cyclic structures, state races, transformations, external effects, schema/plugin compatibility, IR analysis invalidation, compiler semantics, and high-stakes domain evidence remain prescribed future work."
+      ],
+      "notes": "The run establishes only the annotated finite expression visitors; no external academic/practitioner review or compiler/domain guarantee is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter derives Visitor from the element-operation matrix, explains double dispatch precisely, and integrates typed results, traversal ownership, deep/shared/cyclic graphs, state, transformations, effects, exhaustive compatibility, language alternatives, and pass managers without conflating them."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers minimal invariant-owning elements, explicit accept/case mapping, coherent result/error/context, one traversal owner, identity-aware budgets, per-run state, immutable validated rewrites, effect plans, fail-closed unknown variants, version negotiation, narrow plugin capabilities, and matrix/structure/property/fault tests."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet gives a compact matrix/dispatch model, the runnable tree grounds three independent operations, ten examples vary from extension cost to medical-rule transfer, and five complete answers support derivation, API design, graph transformation, architecture comparison, and high-stakes review."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

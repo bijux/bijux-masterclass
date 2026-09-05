@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-008",
+  "chapter_digest": "24c386d3c4c3d24d600d95a8011cd0c8e4bdeae439adbd62cac8498e11ff6145",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked Fowler's refactoring definition and boundary discussion against his official site and Pearson second-edition record; checked Feathers' seam, sensing, separation, and legacy-change scope against Pearson; verified Mens-Tourwé DOI, journal, volume, issue, year, and pages; checked database-refactoring scope against the maintained Fowler/Ambler article."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked program-state, observation contract, partial refactoring transformation, precondition, stepwise preservation, finite test-set qualification, composition order, and parallel-change state notation."
+      ],
+      "notes": "Transitivity is limited explicitly to a stable observation boundary and environment assumptions."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed all three amount-100 comparisons and independently recomputed Exercise 2 at amount 101: standard 101, member 90, clearance 70 for both structures."
+      ],
+      "notes": "Integer truncation and input-domain limitations are explicit."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked stepwise observation equality yields final equality only under unchanged contract C; verified finite test equality does not imply universal input or schedule equivalence; checked expand-old+new-contract state transitions."
+      ],
+      "notes": "Published interfaces, timing, persistence, concurrency, and security can enlarge C beyond output equality."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed unknown kinds, integer partitions, published callers, reflective/dynamic access, singleton lifecycle, fixed observer order, provider semantics, one-use factories, subclass hooks, schema compatibility, concurrent booking, dual paths, rollback, and contraction."
+      ],
+      "notes": "Structural, behavioral, data, deployment, concurrency, security, and operational boundaries are distinguished."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked explicit observations, coherent intermediate states, behavior-facing tests, evidence-led role introduction, dual-path authority, safe pattern removal, and non-inference from unit tests to performance/concurrency/security equivalence."
+      ],
+      "notes": "Every toward/away example admits an earlier stopping point when the force is resolved."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the selected-case equivalence line by line and the transitivity argument under fixed C; confirmed the chapter labels the evidence as finite rather than proof for all values."
+      ],
+      "notes": "No universal semantic equivalence claim is made."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of refactoring, rewrite, preserve, observable, characterization, seam, preparatory, parallel change, proof, equivalence, behavior change, result, and conclusion."
+      ],
+      "notes": "Behavior additions and bug corrections are consistently separated from structural preservation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Ran the Python before/after comparison and reproduced exact outputs; checked that proposed tests and telemetry elsewhere are framed as future evidence rather than completed production results."
+      ],
+      "notes": "No external practitioner, migration, performance, or production equivalence review is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter defines observation-relative preservation, feedback, preparatory changes, evidence-led movement toward patterns, expand-migrate-contract, separate behavior work, safe removal, distributed/data boundaries, and principled stopping."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Strategy, Adapter, Factory, Observer, Singleton, Template Method, schema evolution, Facade, service locator, plugin compatibility, and hospital transactions provide realistic incremental migration and contraction cases."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet supplies a safe-change model; executable differential evidence has explicit limits; ten examples cover toward, away, public/data boundaries, and stopping; five exercises progress from observation definition through arithmetic, migration, compatibility, and high-stakes transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}
