@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-062",
+  "chapter_digest": "9d1b79b6b6c3a14020c3197667061f9d8ba6550e8037a345b621c24b2c07d037",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 11,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Retrieved and reviewed the Starburst foundation; current Calcite algebra/adapter, PostgreSQL 18 expression, partition-pruning and FDW documentation; current Arrow Dataset, Parquet Bloom-filter, and DuckDB internals documentation; and the primary Dremel paper. Checked logical/source pushdown, residuals, planning/execution pruning, FDW outer-join rechecks, necessary filter columns, one-sided Bloom guarantees, sensitive metadata, and nested columnar execution."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked Req(v), Refs(e), exact/inexact pushdown, residual, barrier, pruning, selection vector, and false-positive/negative definitions.",
+        "Checked row, width, logical bytes, physical bytes, decode, transfer, and time remain different quantities."
+      ],
+      "notes": "Bindings, schema, bags/order, nulls, effects, policies, capabilities, and physical properties are explicit."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed 289-byte full and 25-byte required widths.",
+        "Recomputed 28.900 MB, 2.500 MB, 91.35% width opportunity, 2,000 survivors, and 98.00% row opportunity.",
+        "Recomputed 10,000 late-materialization survivors and illustrative payload volumes."
+      ],
+      "notes": "Independent arithmetic is retained in artifacts/reviews/DBE-062/independent-recomputation.txt."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Reviewed monotone backward-demand fixed point and shared-subplan union.",
+        "Reviewed per-occurrence inner-join pushdown proof and matched/unmatched outer-join counterexample.",
+        "Reviewed conservative metadata, residual, position, security, and evidence invariants."
+      ],
+      "notes": "Eligibility proofs are separated from cost-based placement."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/duplicate/null bags, multiple/unmatched joins, UNKNOWN, volatile/throwing expressions, correlation, aggregation, grouping sets, windows, limit, recursion, and shared plans.",
+        "Reviewed nested offsets/validity, deletes, sparse/dense selection, NaN/collation/truncated metadata, Bloom false positives, corruption, late dynamic filters, retries, cancellation, and capability drift.",
+        "Reviewed policies, masks, tenants, sensitive literals/metadata, remote principals, snapshots, and version mismatch."
+      ],
+      "notes": "Unknown or invalid pruning evidence falls back conservatively to scan and exact recheck."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked demanded output/local/hidden columns reach each scan.",
+        "Checked pushed predicates are binding-safe and exact or retain a conservative residual.",
+        "Checked metadata skips only proven-impossible regions and late materialization preserves row-position alignment."
+      ],
+      "notes": "Security dependencies and source semantic capability are part of correctness, not optional optimization metadata."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed operator demand equations and finite-set termination.",
+        "Reviewed inner/outer join, group-key, window/limit barrier, metadata-superset, and residual proofs.",
+        "Reviewed exactness versus conservative candidate generation."
+      ],
+      "notes": "No physical I/O or performance conclusion is derived from logical reduction alone."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable is labeled a logical opportunity model rather than a storage engine.",
+        "Product/version behavior is attributed to current official documentation.",
+        "Proof obligations, heuristics, cost choices, and empirical claims are labeled separately."
+      ],
+      "notes": "Source guarantees are treated as versioned contracts and evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Repository verification passed one standard-library Python snippet with exact eleven-line stdout, empty stderr, zero exit status, and recorded Python 3.14.4 toolchain.",
+        "Independent recomputation reproduced width, volume, selectivity, and late-materialization arithmetic.",
+        "All eleven source artifacts were retained under artifacts/references/DBE-062 and local links were checked."
+      ],
+      "notes": "No live SQL/file/FDW query, physical-byte measurement, dynamic filter, metadata corruption, remote source, policy system, concurrency workload, or production canary was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed backward demand, predicate decomposition/placement, operator barriers, sargability, pruning layers, conservative metadata, late materialization, federation/security, evidence, and operations."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed exact/inexact/unsupported capability states, residual enforcement, source/version contracts, privacy-safe counters, metadata integrity, planning/runtime budgets, canaries, result reconciliation, fallback, and kill switches."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter derives whole-plan analysis from first principles, executes an opportunity model, presents fourteen failure modes and ten distinct examples, and advances five exercises to a multitenant dynamic-filter/late-materialization release gate with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/official-source, mathematical, executable-snippet, conceptual, practitioner, and pedagogical evidence only; no external optimizer, SQL-semantics, storage-format, connector, security/privacy, distributed-systems, reliability, or educator review is claimed. The chapter and finite model prove neither full SQL equivalence, correctness of a production rule/reader/connector, metadata integrity, remote semantic compatibility, physical I/O savings, representative performance, policy compliance, certification, nor deployment fitness."
+}

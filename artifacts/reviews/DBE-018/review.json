@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-018",
+  "chapter_digest": "771bc3765a5d02b2e192e0ef87bbe6ca7c4d5ef0924d5f17bed8015807bca7aa",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed PostgreSQL 18 logical, comparison, constraint, and aggregate documentation; SQLite expression and null-handling documentation; and MySQL 8.4 null and comparison documentation. All eight official destinations returned HTTP 200. Truth, comparison, constraint, uniqueness, aggregate, IN, and null-safe-operator claims are scoped by context, dialect, and version."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked truth domain L={T,F,U}, NOT, AND, OR, nullable equality, filter acceptance, CHECK acceptance, and null-safe not-distinct definitions.",
+        "Checked that stored null, UNKNOWN truth, false, missing row, null-extended row, and matched nullable payload remain distinct."
+      ],
+      "notes": "Truth algebra is explicitly separated from grouping, uniqueness, foreign keys, aggregate rules, and physical execution."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed all nine AND and nine OR entries and all three NOT entries over T,F,U.",
+        "Recomputed score>7 as T,U,F,F and WHERE survivors as id 1; negated survivors as ids 3 and 4; explicit-null inclusion as ids 1 and 2.",
+        "Recomputed IN/NOT IN against (5,NULL) as U/U, U/U, T/F, U/U.",
+        "Recomputed positive CHECK acceptance as true,true,true,false and null-safe equality to null as id 2."
+      ],
+      "notes": "Every modeled context is derived from the same four-row fixture."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived strong three-valued conjunction and disjunction from forced truth/falsehood under incomplete information.",
+        "Verified double negation and De Morgan laws while showing excluded middle and noncontradiction yield U for U.",
+        "Re-derived IN as equality disjunction and NOT IN as its negation, including a null candidate.",
+        "Re-derived filter versus CHECK action maps and operation-specific null-safe equality."
+      ],
+      "notes": "No claim is made that all SQL functions/operators are strict or share one null-equivalence relation."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed nonnull match, nonmatch, null operands, empty/null-containing candidate sets, and all T/F/U Boolean pairs.",
+        "Reviewed inner/outer matches, unmatched extension, stored nullable payload, predicate placement, and nullable composite keys.",
+        "Reviewed empty/all-null aggregates, grouping/DISTINCT nulls, CHECK/NOT NULL, unique null options, and foreign-key partial nulls.",
+        "Reviewed omitted/null/value API states, migrations, correlated null skew, parameter nulls, indexes, statistics, plans, concurrency, and upgrades."
+      ],
+      "notes": "Unknown security and eligibility outcomes require explicit fail-closed, quarantine, escalation, or waiting policy."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Validated WHERE retains only T and therefore p and NOT p omit unknown rows.",
+        "Validated CHECK-style acceptance includes T/U and rejects only F.",
+        "Validated a true IN comparison dominates a null comparison, while absent match plus null candidate yields U.",
+        "The verifier matched exact ten-line stdout, empty stderr, and zero exit status."
+      ],
+      "notes": "The Python oracle does not certify SQL types, nulls, constraints, joins, grouping, indexes, or plans."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed each truth-table row directly from the stated definitions.",
+        "Reviewed every score comparison and context action for all four fixture rows.",
+        "Reviewed membership comparisons against both 5 and null before disjunction and negation.",
+        "Reviewed left-join predicate-placement and CHECK partial-null arguments by exhaustive cases."
+      ],
+      "notes": "No proof of universal dialect behavior, optimizer rewrites, or production plan stability is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated null marker from domain cause, UNKNOWN from false, ordinary equality from not-distinct equality, and filter exclusion from logical negation.",
+        "Separated outer-join absence from stored null, grouping/DISTINCT equivalence from predicate equality, and CHECK acceptance from NOT NULL.",
+        "Separated storage null from JSON omission/explicit null and semantic proof from index/plan evidence."
+      ],
+      "notes": "Missing, equal, distinct, unmatched, positive, unique, safe, and complete claims require their named context and assumptions."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library finite three-valued-logic and context model executed successfully through the repository verifier.",
+        "All eight final official reference destinations returned HTTP 200 on 2026-08-30.",
+        "Front matter, exact section order, local links, ten examples, five exercises, five answers, and snippet expectations passed draft validation."
+      ],
+      "notes": "No live SQL truth expression, join, subquery, constraint, aggregate, collation, index, statistics, parameter, migration, or performance workload was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently derives null behavior from primitive T/F/U truth, then applies an explicitly named SQL context and domain policy."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed nullable-domain ownership, filters, joins, anti-membership, null-safe comparison, aggregates, grouping, constraints, FKs, migrations, APIs, indexes, statistics, security, and upgrades."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet, complete truth tables, four-row fixture, ten distinct examples, and five derivation/design exercises progress from logic to production migration evidence."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter and model do not certify any live SQL dialect's null, type, collation, join, subquery, aggregate, grouping, constraint, uniqueness, foreign-key, index, statistics, plan, API, migration, concurrency, performance, upgrade, or production behavior."
+}
