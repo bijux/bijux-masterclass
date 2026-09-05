@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-037",
+  "chapter_digest": "aba18ccc18887daf5d9dd4e769e55c30c62be626360e686bed05461e35e4bca5",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked Bellman's 1958 primary publication record, Ford's official 1956 RAND P-923 record, four authoritative algorithm and network-flow texts, and current official Boost.Graph 1.92.0 and SciPy 1.18.0 documentation. Library behavior is explicitly version-scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked directed multigraph, walk, path, cycle, D_k recurrence, mutable-label, predecessor, affected-set, and extended-infinity notation.",
+        "Confirmed balanced GitHub math delimiters and explicit separation of mathematical infinities from finite machine sentinels."
+      ],
+      "notes": "All signed-weight inequalities state their direction and every cycle-sum argument uses one pinned logical edge set."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the finite executable graph: a=4, b=2, c=5, x unreachable, with path s-a-b-c of weight 5.",
+        "Recomputed cycle a-b-c-a as 1+1-4=-2 and its affected descendants as a,b,c,d while source s remains finite.",
+        "Recomputed signed 32-bit underflow example: -2,147,483,640 + -20 = -2,147,483,660, below -2,147,483,648.",
+        "Recomputed every pass and final path sum in Exercise 1."
+      ],
+      "notes": "All chapter calculations use exact integers; no floating tolerance is used as cycle evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived D_k(v) from the keep-old case and every incoming one-edge extension of D_(k-1).",
+        "Re-derived the one-sided in-place pass invariant without incorrectly claiming exact hop-bounded equality.",
+        "Summed cycle edge inequalities and confirmed cancellation gives the contradiction 0 <= W(C) < 0 for a negative cycle.",
+        "Re-derived the negative-infinity classification by repeating a negative cycle before a downstream suffix."
+      ],
+      "notes": "Synchronous recurrence equality, in-place coverage, finite optimum, and extended shortest-walk status are kept distinct."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked zero and negative edges without cycles, zero and positive cycles, reachable and disconnected negative cycles, downstream but not upstream affected vertices, and a cycle that cannot return to the source.",
+        "Checked worst-order n-1 propagation, favorable in-pass propagation, parallel edges, isolated and unreachable vertices, and multiple valid witnesses.",
+        "Checked overflow, underflow, saturation, sentinel collision, NaN, floating tolerance, cancellation, mixed snapshots, hostile graph size, and in-flight parallel updates."
+      ],
+      "notes": "Target-only, global super-source, DAG, nonnegative, all-pairs, and distributed boundaries are explicitly scoped."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked initialization and strict relaxation preserve actual source-walk witnesses and monotone nonincreasing labels.",
+        "Checked complete-pass coverage for every path using at most the pass count in edges.",
+        "Checked early exit only after a complete unchanged pass establishes all reachable edge inequalities.",
+        "Checked atomic predecessor-edge replacement, n-step cycle entry, forward affected propagation, and snapshot binding."
+      ],
+      "notes": "The executable's finite validator checks source state, tight predecessor edges, rooted acyclic paths, and every edge inequality."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed bounded-edge coverage by induction on path length.",
+        "Reviewed cycle removal and the n-1 simple-path bound under absence of a relevant negative cycle.",
+        "Reviewed both directions of the extra-pass negative-cycle theorem, including reachability and completed-pass premises.",
+        "Reviewed finite certificates and negative-cycle/affected-set certificates as separate proof obligations."
+      ],
+      "notes": "Proofs are conditional on finite graph size, exact coherent arithmetic, complete logical-edge passes, and one immutable graph snapshot."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of proof, exact, optimum, unbounded, fixed point, valid, detects, and certifies against the surrounding assumptions.",
+        "Confirmed queue, parallel, distributed, all-pairs, time-varying, currency, and constraint-service discussions enumerate additional obligations rather than claiming universal guarantees."
+      ],
+      "notes": "The chapter does not promote a local execution trace, library behavior, or a very negative label into mathematical negative-cycle proof."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-037/report.json",
+        "The deterministic Python snippet completed with zero exit status, exact expected seven-line stdout, and empty stderr.",
+        "The run reproduced finite labels and path validation, a canonical a-b-c-a cycle of checked weight -2, affected set a,b,c,d, and finite source status."
+      ],
+      "notes": "The run is bounded evidence for one exact-integer implementation and two graphs in the recorded local environment; it does not prove arbitrary graphs, representations, performance, parallel execution, or deployment fitness."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the progression from a three-valued result domain through bounded-edge dynamic programming, in-place relaxation, finite correctness, cycle detection, witness extraction, affected propagation, validation, and operational lifecycle. Negative edges, negative cycles, and affected descendants remain distinct."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed stable edge order and identity, checked signed arithmetic, tagged infinities, full-pass termination, cycle evidence, descendant classification, immutable revisions, resumable checkpoints, cancellation, adversarial quotas, and atomic publication."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter contrasts ALGE-036, derives rather than announces the pass and detection theorems, includes ten distinct examples across traces, proofs, boundaries, arithmetic, concurrency, and transfer, and ends with five progressive exercises and complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source-retrieval, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external academic, independent implementation, security, performance, finance, distributed-systems, legal, or practitioner review is claimed. Finite local runs prove neither universal Bellman-Ford implementation correctness nor constraint, trading, or deployment fitness."
+}
