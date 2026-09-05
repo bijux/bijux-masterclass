@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-040",
+  "chapter_digest": "30fb2190d54011b0a81bc2d0b262290a7aaf5b2bf45acebfb90961df53f163ae",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 6,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked the Beamer-Asanovic-Patterson direction-optimizing BFS paper, Ligra and Combinatorial BLAS primary sources, current Boost.Graph 1.92.0 data-structure documentation, GraphBLAS C API 2.1.0, and Graph500 materials. Interface claims are version-scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked vertex/logical-edge/stored-arc counts, degree, density denominators, CSR half-open slices, matrix dimensions, frontier, push/pull, and measurement notation; checked balanced math delimiters."],
+      "notes": "Directed/undirected logical edges, physical arcs, and possible-pair denominators are separated."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Recomputed executable density 5/25=0.200, list probes 5, matrix probes 25, and identical order a,b,c,d,e.", "Recomputed 10^6-square byte matrix as 10^12 bytes and CSR example as 8,000,008 offset bytes plus 20,000,000 neighbor bytes.", "Recomputed Exercise 1 offsets (0,2,2,5,6,6,8), eight arcs, and 36 full matrix probes."],
+      "notes": "Storage figures are raw-array estimates and explicitly exclude properties, alignment, allocators, and runtime state."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Derived list traversal work from sum of out-degrees equals m.", "Derived matrix traversal as n potential-neighbor probes per reached row.", "Reconstructed CSR offsets from exclusive degree prefix sums and verified slice lengths."],
+      "notes": "Asymptotic work, observed probes, memory bytes, and wall-clock claims are treated as different evidence types."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Checked empty/singleton graphs, isolates, loops, parallel and reciprocal edges, disconnected graphs, chains, hubs, complete graphs, malformed offsets, unknown endpoints, and allocation failure.", "Checked direction mismatch, zero-as-absence, offset overflow, descriptor invalidation, parallel discovery races, mixed snapshots, cancellation, unfair measurement, and infeasible quadratic output."],
+      "notes": "Sparse/dense crossover is not stated as a universal percentage; conclusions require a named graph population and environment."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Checked stable-ID/index bijection and canonical logical-edge preservation across list, matrix, CSR, and reverse representations.", "Checked CSR offset monotonicity, terminal length, endpoint range, and aligned-property obligations.", "Checked atomic unseen-to-seen discovery, frontier ownership, snapshot binding, and complete-output publication."],
+      "notes": "Cross-representation correctness compares normalized graph semantics and declared traversal outputs, not raw bytes or incidental tie choices."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed O(n+m) list traversal and O(n^2) matrix-row scanning arguments.", "Reviewed CSR construction from counts and exclusive prefix sums.", "Reviewed BFS single-discovery requirements under parallel ownership.", "Reviewed why empirical crossover evidence cannot establish a universal representation theorem."],
+      "notes": "Proof claims state constant-time iteration and fixed-snapshot assumptions; performance claims remain empirical and bounded."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Audited uses of correct, equivalent, faster, dense, sparse, scalable, deterministic, atomic, fair, and validated.", "Confirmed current Boost/GraphBLAS interfaces, direction optimization, cache blocking, and parallel schedules carry explicit assumptions and additional obligations."],
+      "notes": "The chapter does not promote asymptotics, one Python run, or one graph family into universal performance proof."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/ALGE-040/report.json", "The deterministic Python snippet completed with zero exit status, exact five-line stdout, empty stderr, density 0.200, matching BFS orders, list probes 5, matrix probes 25, and same=True."],
+      "notes": "The run demonstrates one representation pair and graph under the recorded interpreter; it does not benchmark production layouts, parallelism, hardware counters, or universal crossover."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed semantic graph contracts, list/CSR/matrix/edge-list capabilities, frontier direction, skew/locality, parallel discovery, measurement, validation, and lifecycle as one coherent engineering chapter."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed identity maps, logical-versus-physical counts, offset validation, property alignment, update/compaction behavior, atomics, benchmarks, checkpoints, cancellation, hostile input, and atomic publication."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter connects traversal proofs to representation and evidence, provides ten distinct worked examples, and closes with five progressive exercises and complete corresponding answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source-retrieval, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external academic, independent implementation, performance-laboratory, concurrency, security, hardware-vendor, or practitioner review is claimed. The local run proves neither universal performance nor deployment fitness."
+}
