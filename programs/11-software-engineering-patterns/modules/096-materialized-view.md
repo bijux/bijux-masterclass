@@ -140,7 +140,7 @@ For group count and sum maintain `(count,sum)`. Insert (x): `count+1,sum+x`; del
 
 For minimum/maximum, inserting compares one value; deleting the extremum needs an ordered multiset/index or recomputation of that group. Top-k similarly needs candidates beyond k to replace retractions. Median/quantiles require richer exact structures or declared approximation.
 
-For join $R\bowtie S$, insertion (Delta R^+) adds $Delta R^+\bowtie S$; deletion removes matches against the applicable S snapshot. If both change in a transaction, delta expansion must avoid omitting/double-counting cross-terms and preserve desired atomic visibility. Outer joins require retractions/additions when match count crosses zero.
+For join $R\bowtie S$, insertion $\Delta R^+$ adds $\Delta R^+\bowtie S$; deletion removes matches against the applicable $S$ snapshot. If both change in a transaction, delta expansion must avoid omitting/double-counting cross-terms and preserve desired atomic visibility. Outer joins require retractions/additions when match count crosses zero.
 
 Incremental SQL engines automate some rules, but operators/functions may be unsupported or expensive. Validate actual plan/state/correctness; “incremental” does not imply bounded memory or cheap updates.
 
@@ -221,7 +221,7 @@ The run proves only a sequential integer sum/count delta. It does not implement 
 
 Let base relations at boundary (p) be $B_p=(R_{1,p},\ldots,R_{m,p})$, defining query be (Q), and materialization version (j) be (V_{j,p}). Correctness is (V_{j,p}=Q_j(B_p)) under declared bag/set, null, collation, time and numeric semantics.
 
-Let $Delta B_p^-$ and (Delta B_p^+) be deletions and insertions; an update can be modeled as one of each. Delta maintenance $D_Q(B,\Delta B)$ must satisfy $Q(B\oplus\Delta B)=Q(B)\oplus D_Q(B,\Delta B)$. The operator (oplus) includes multiplicity/retractions, not simple set union.
+Let $\Delta B_p^-$ and $\Delta B_p^+$ be deletions and insertions; an update can be modeled as one of each. Delta maintenance $D_Q(B,\Delta B)$ must satisfy $Q(B\oplus\Delta B)=Q(B)\oplus D_Q(B,\Delta B)$. The operator $\oplus$ includes multiplicity/retractions, not simple set union.
 
 **Refresh consistency** means output corresponds to a declared source snapshot/boundary. **Freshness** measures distance from that boundary to current authority. **Availability during refresh** describes whether old complete, new complete, partial or blocked results are visible. These are independent properties.
 

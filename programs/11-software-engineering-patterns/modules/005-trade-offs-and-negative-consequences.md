@@ -203,7 +203,7 @@ A sensitivity point for parameter (p) exists when a small change $\Delta p$ caus
 Expected-loss models, when probabilities are defensible, take form
 
 $$
-E[L(s)]=\sum_r Pr(r\mid s,x)\cdot Impact(r\mid s,x).
+E[L(s)]=\sum_r \Pr(r\mid s,x)\cdot \operatorname{Impact}(r\mid s,x).
 $$
 
 Do not fabricate probabilities for rare or adversarial events; scenario bounds and worst-case constraints may be more appropriate.
