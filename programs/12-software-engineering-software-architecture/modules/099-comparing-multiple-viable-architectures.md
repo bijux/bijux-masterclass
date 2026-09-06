@@ -304,7 +304,7 @@ print(f"availability-heavy={best((0.7, 0.2, 0.1))}")
 ## References
 
 1. ISO/IEC/IEEE, *42010:2022 — Architecture Description*, edition 2, November 2022. [ISO record](https://www.iso.org/standard/74393.html). Published status checked 2026-09-06.
-2. ISO/IEC/IEEE, *42030:2019 — Architecture Evaluation Framework*, 2019. [ISO record](https://www.iso.org/standard/72193.html).
+2. ISO/IEC/IEEE, *42030:2019 — Architecture Evaluation Framework*, edition 1, July 2019. [ISO record](https://www.iso.org/standard/73436.html). ISO confirmed the standard in 2025; it remains published while a revision is under development, status checked 2026-09-06.
 3. Rick Kazman et al., *The Architecture Tradeoff Analysis Method*, CMU/SEI-98-TR-008, 1998. [SEI record](https://www.sei.cmu.edu/library/the-architecture-tradeoff-analysis-method/).
 4. Software Engineering Institute, “Cost Benefit Analysis Method (CBAM),” 2018. [SEI record](https://www.sei.cmu.edu/library/cost-benefit-analysis-method-cbam/).
 5. Len Bass, Paul Clements, and Rick Kazman, *Software Architecture in Practice*, 4th ed., Addison-Wesley, 2021.

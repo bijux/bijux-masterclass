@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "module_id": "SARCH-099",
-  "chapter_digest": "3f6686aded1e8958429cc6abfb0e218c8efc2364373411eacecacb6576f9739c",
+  "chapter_digest": "f6224b79949ef1d93199839ea0244c69da5bd515eb9c00ffce91a28a42894d76",
   "review_date": "2026-09-06",
   "source_review": {
     "status": "passed",
     "checked_references": 12,
     "current_claims": "passed",
     "retrieval_date": "2026-09-06",
-    "notes": "Checked all twelve references for identity, authorship, date, edition, publisher or venue, and relevant scope. Official ISO records support the 2022 architecture-description standard and 2019 architecture-evaluation standard; current official SEI records support ATAM and CBAM; the publisher record supports the February 2026 second edition of Designing Data-Intensive Applications; and the DOI record supports the Parnas paper. Textbook and decision-analysis references are used for durable foundations. Current-status claims are dated, and no source is represented as certification, a context-free ranking rule, or universal architectural evidence."
+    "notes": "Checked all twelve references for identity, authorship, date, edition, publisher or venue, and relevant scope. Official ISO records support the 2022 architecture-description standard and the July 2019 architecture-evaluation standard; ISO confirmed the latter in 2025 and records a revision under development. Current official SEI records support ATAM and CBAM; the publisher record supports the February 2026 second edition of Designing Data-Intensive Applications; and the DOI record supports the Parnas paper. Textbook and decision-analysis references are used for durable foundations. Current-status claims are dated, and no source is represented as certification, a context-free ranking rule, or universal architectural evidence."
   },
   "mathematics": {
     "notation_and_syntax": {
