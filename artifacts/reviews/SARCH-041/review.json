@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "module_id": "SARCH-041",
+  "chapter_digest": "9136ae253f3f8c26e76cea1c0271dbb847955d88ba06997a5199d1f913528195",
+  "review_date": "2026-09-06",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-06",
+    "notes": "Reviewed eight references for authoritative and derived data, bitemporal modeling, provenance, transaction processing, distributed ordering, enterprise data patterns, and domain boundaries. The Snodgrass book and W3C PROV-O endpoints returned HTTP 200; Lamport's DOI resolved to the ACM landing page, which returned access-control HTTP 403. Sources support durable concepts and dated standards; the chapter makes no claim that an edition or recommendation is the newest available."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed fact, operation, population, jurisdiction, time, system, authority-function, version, command, projection, lag, and authority-epoch notation.",
+        "Confirmed partial-function scope, expected version, monotonic successor, source position, transformation version, compatible-clock premise, and fencing semantics are defined before use."
+      ],
+      "notes": "Operation identity, entity version, event position, wall time, valid time, transaction time, and authority epoch remain distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed Example 3 projection lag from 10:00:00 to 10:00:12 as 12 seconds and retained the stated roughly one-second clock uncertainty.",
+        "Recomputed Exercise 2 version gap as 847 - 820 = 27 commits and the mean-rate estimate as 27 divided by 3 = 9 seconds."
+      ],
+      "notes": "Both results retain clock, rate, batching, scope, ordering, and purpose limitations; neither is presented as an exact universal freshness guarantee."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified the authority assignment is a partial function over fact, operation, population, jurisdiction, and time, with explicit allowance for a separately specified joint protocol.",
+        "Verified atomic compare-and-advance means two commands based on the same version cannot both become its immediate successor when every writer uses the one authority.",
+        "Verified projection lag subtraction requires compatible clock semantics and logical positions are recommended otherwise."
+      ],
+      "notes": "The version argument is explicitly limited to one atomic authority and does not claim protection from bypassing or independent writers."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed compound customer authority, concurrent updates, projection lag, commit-publication crash, retroactive correction, offline legal approval, failover split brain, derived-data deletion, migration dual writes, and disputed medical identifiers.",
+        "Checked external authorities, latest-timestamp conflict, stale replicas, lost response, outbox duplicates, direct SQL repair, leader fencing, restored backups, partitions, legal hold, rollback after target writes, and hidden writers."
+      ],
+      "notes": "Examples span ordinary CRUD, temporal correction, privacy, offline work, distributed failover, migration, legal authority, and high-consequence dispute."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced scoped authority, write path, version, publication, copy, temporal, recovery, migration, lifecycle, and evidence invariants through exposition and exercises.",
+        "Confirmed every accepted transition has one accountable authority while replicas, projections, archives, and systems of entry retain their distinct roles."
+      ],
+      "notes": "The chapter never equates physical storage, completeness, recency, availability, or legal preservation with business write authority."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the optimistic-version argument under atomic comparison and complete writer participation.",
+        "Confirmed the first successful command advances the version, making the same expected version false for the second command.",
+        "Confirmed bypass writers and cross-system state are explicitly excluded and require another coordination design."
+      ],
+      "notes": "No claim is made that version numbers alone establish idempotency, distributed serializability, or real-world truth."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of authoritative, true, synchronized, atomic, accepted, current, accurate, preserved, secure, complete, proof, and evidence.",
+        "Verified writes, primary roles, cache hits, event acknowledgments, outbox commits, health checks, backup restoration, and reconciliation metrics retain explicit limitations."
+      ],
+      "notes": "No database role, data copy, message, archive, calculation, or test is presented as universal truth or compliance."
+    },
+    "empirical_evidence_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter prescribes concurrency, publication, projection, partition, recovery, migration, and lifecycle testing but presents no executed code, live data, benchmark, or reproduced empirical study."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed scoped authority, accepted versus real-world truth, entry/engagement/insight/archive roles, invariants, commands, operation identity, queries, projections, freshness, outbox publication, authoritative events, bitemporal history, disputes, external authorities, security, retention, replication, failover, restore, offline work, hidden writers, authority transfer, cross-system invariants, observation, testing, governance, and term limitations for coherence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed shared writes, database primaries, command versioning, idempotency retention, stale projections, CDC/outbox gaps, schema and event versions, leader fencing, restored-log positions, offline pending intent, break-glass SQL, dual-write cutover, post-cutover rollback, deletion across derivations, and disputed high-consequence facts. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles authority vocabulary, four formal scope/version/freshness/epoch models, sixteen misconceptions, ten distinct worked examples, and five progressive exercises with complete answers ending in cross-border cargo authority transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}
