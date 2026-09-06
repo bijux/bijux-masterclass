@@ -74,7 +74,7 @@ An object-created event invokes an image processor. Delivery is repeated after a
 
 ### Connections
 
-[SARCH-044](044-asynchronous-messaging-integration.md) supplies delivery semantics, [SARCH-055](055-control-plane-and-data-plane-architecture.md) supplies managed control boundaries, and [SARCH-057](057-queue-based-load-leveling.md) supplies load leveling. [SARCH-059](../ROADMAP.md) next examines service meshes and traffic policy. Cloud Engineering owns provider-specific services; this module owns architectural contracts and consequences.
+[SARCH-044](044-asynchronous-messaging-integration.md) supplies delivery semantics, [SARCH-055](055-control-plane-and-data-plane-architecture.md) supplies managed control boundaries, and [SARCH-057](057-queue-based-load-leveling.md) supplies load leveling. [SARCH-059](../ROADMAP.md) next examines edge and hybrid architectures. Cloud Engineering owns provider-specific services; this module owns architectural contracts and consequences.
 
 ## Governing Question
 
