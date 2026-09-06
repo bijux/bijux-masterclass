@@ -68,7 +68,7 @@ A refrigerated depot samples 500 measurements/s at 200 bytes. Six disconnected h
 
 ### Connections
 
-[SARCH-053](053-partitioning-and-data-placement.md) supplies placement, [SARCH-054](054-multi-region-topologies.md) supplies regional authority, and [SARCH-058](058-serverless-and-event-native-architecture.md) supplies event-driven execution. [SARCH-060](../ROADMAP.md) next examines service meshes and traffic policy. Systems Engineering owns physical-system integration; this module owns architectural distribution and hybrid consequences.
+[SARCH-053](053-partitioning-and-data-placement.md) supplies placement, [SARCH-054](054-multi-region-topologies.md) supplies regional authority, and [SARCH-058](058-serverless-and-event-native-architecture.md) supplies event-driven execution. [SARCH-060](../ROADMAP.md) next evaluates a distributed architecture under failure. Systems Engineering owns physical-system integration; this module owns architectural distribution and hybrid consequences.
 
 ## Governing Question
 
