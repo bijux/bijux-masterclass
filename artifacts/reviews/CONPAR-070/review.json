@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-070",
+  "chapter_digest": "4c81b495639afb9da08f6e70d8d806a92c1b6c9f2cf0f57aca919158f5d27f9e",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Crossref independently confirmed exact records for Instant Replay, multiprocessor VM replay, PRES, ODR, DoublePlay, and Lamport event ordering. The official USENIX ReVirt record, primary rr paper archive, current Microsoft Coyote replay documentation, and official rr GitHub project resolved directly. The initially cited rr-project.org host did not resolve during review and was replaced before completion with the directly resolving official project repository. Sources support the scoped distinctions among faithful, synchronization, output-equivalent, probabilistic, VM, and user-space replay; claims are paraphrased and no inaccessible quotation is used."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation consistently defines checkpoint, ordered trace, deterministic transition, context, observation equivalence, happens-before, compatibility manifest, landmarks, and first divergence.",
+        "Faithful state/history equality remains distinct from equality under an output projection O and from probabilistic search success."
+      ],
+      "notes": "Checked induction indices, event/context resolution, equivalence notation, trace offsets, happens-before versus total time, durable-prefix language, and compatibility/fidelity quantifiers."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the four-event lost-update trace: both reads observe zero, each private value is zero, and both writes publish one, so recorded and replayed final state is one.",
+        "At choice 2 after A:R and B:R, both A:W and B:W are enabled; the corrupted expected singleton A:W therefore diverges exactly there.",
+        "artifacts/snippets/CONPAR-070/report.json records four choices, matched replay, final one, exact choice-2 expected/actual diagnostic, empty stderr, and zero exit code."
+      ],
+      "notes": "The finite arithmetic validates the teaching state machine and context check only. It does not implement threads, syscalls, signals, weak memory, checkpoints, compression, or secure logging."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Replay induction was rechecked from compatible checkpoint through unique event resolution, recorded injection, and deterministic transition; any missing premise yields divergence rather than continued equality.",
+        "Synchronization replay requires all cross-thread conflicts to be mediated by reproduced synchronization under the same memory model; one unsynchronized conflict invalidates this premise.",
+        "Output equivalence proves equality only under O and therefore cannot justify unrecorded internal causality."
+      ],
+      "notes": "Proof obligations are for a specified machine model and trace implementation, not mechanized proofs of ReVirt, PRES, ODR, DoublePlay, Coyote, rr, a kernel, runtime, or hardware."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed application/runtime/process/kernel/VM boundaries, native and unmanaged threads, shared memory, unsafe foreign code, data races, undefined behavior, weak memory, JIT/GC/finalizers, allocation identity, and unsupported instructions.",
+        "Reviewed syscall values/buffers/errors/partial operations, mmap, async I/O, sockets/files/devices, signals/interrupts/masks, clocks/timers, randomness, process IDs, checkpoints, crash tails, buffering/backpressure, and external write suppression.",
+        "Reviewed changed binaries/schemas, identity reuse, corruption, decoder hostility, diagnostic branches, output/probabilistic replay, distributed causal order, log privacy/secrets, integrity versus completeness, deletion/retention, chain of custody, and physical high-stakes boundaries."
+      ],
+      "notes": "Boundary analysis covers semantic fidelity, language/runtime, OS/hardware, external I/O, lifecycle/crash, compatibility, storage, security/privacy, distributed, forensic, operational, and safety cases."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every result-affecting nondeterministic event crosses the declared boundary or is reported as an escape; stable event identity and compatible context prevent wrong-event substitution.",
+        "Every trace/checkpoint binds build, runtime, configuration, inputs, schema, architecture, fidelity, integrity, and completeness; external effects are suppressed or modeled during replay.",
+        "Every mismatch stops at the first divergent event, and every diagnostic mutation/output-equivalent/probabilistic reconstruction is labeled as a branch or weaker fidelity."
+      ],
+      "notes": "Checked invariants across recorder startup, task creation, event capture, buffer/frame durability, checkpoint linkage, restore, event resolution, injection, side-effect handling, divergence, branching, retention, deletion, and analysis shutdown."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "The replay induction explicitly includes compatible initial state, deterministic semantics, complete nondeterminism capture, unique event/context resolution, and immediate divergence on premise failure.",
+        "The synchronization replay proof explicitly depends on data-race freedom and identical language/memory semantics rather than assuming lock-order logging is universal.",
+        "Checkpoint/log consistency and output-equivalence proofs separately cover durable cuts and projected observations without conflating them with full history."
+      ],
+      "notes": "No proof converts hash equality into universal fidelity, authenticated frames into capture completeness, output-equivalent reconstruction into forensic causality, or one replayed witness into repair completeness."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable fence is explicitly a finite sequential model and disclaims thread runtime, recorder, memory model, and security-log implementation.",
+        "Faithful, synchronization, application, output-equivalent, probabilistic, VM, and test-scheduler evidence remain labeled separately.",
+        "The transport example names required external reviewers and states that none is claimed."
+      ],
+      "notes": "No source, matched toy trace, checksum, timestamp, internal review, replay success, or output match is claimed as universal original-history proof, security custody, physical causality, certification, or safety."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-070 passed under recorded Python 3.14.4 with exact stdout, empty stderr, zero exit code, and retained command/toolchain artifacts.",
+        "The verification plan separately requires syscall/signal/thread/race/mmap/async/process/clock/random/JIT/GC/crash/hardware cases, repeated landmarks, deliberate corruption and incompatibility, hostile parser fuzzing, and checkpoint/log recovery matrices.",
+        "Operational evidence names record slowdown, log rate, tail-loss window, checkpoint pause, replay speed, divergence rate, and workload replay coverage while keeping privacy and integrity reviews separate."
+      ],
+      "notes": "Empirical output establishes the teaching context check only and proves no production recorder completeness, race/weak-memory replay, forensic integrity, privacy, distributed fidelity, repair, transport causality, or safety claim."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed fidelity targets, deterministic/nondeterministic machine, boundary selection, event schema, checkpoints, synchronization/races, syscalls, signals/time, executable replay, overhead, divergence, output/probabilistic replay, reverse debugging, compatibility/retention, privacy/integrity, distributed replay, repair, and high-stakes use."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed build-bound trace headers, stable task/event IDs, context landmarks, syscall buffer and partial-I/O capture, safe write suppression, signal coordinates, race modes, durable watermarks, frame integrity, explicit overflow/backpressure, first-divergence diagnostics, branch provenance, restoration tests, hostile parsing, privacy minimization, key separation, access audit, and retention."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter starts by defining replay fidelity, derives a machine/event model, includes one exact matched-and-divergent executable trace, contrasts seven architectures, supplies ten distinct examples through transport forensics, and ends with five progressive exercises and complete scoped answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external replay-system, OS/kernel/VM, language/runtime, rr/Coyote/ReVirt/PRES/ODR/DoublePlay, hardware/memory-model, distributed-systems, forensic, security/privacy, legal/custody, transport, medical, regulatory, operations, human-factors, or safety review is claimed. The chapter and executable model establish neither a named recorder's completeness/fidelity, race or weak-memory replay, trace integrity/privacy, original causality, repair completeness, certification, physical incident reconstruction, nor deployment safety."
+}

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "API-075",
+  "chapter_digest": "254958566a946028dd4503d291ce48549083df88773f8cedf2caf90d84f1a31e",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 6,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked six official/primary sources. Reactive Streams supports receiver demand preceding delivery, nonblocking asynchronous backpressure, bounded subscriber-controlled queues, and publisher delivery not exceeding requested elements. RFC 9113 supports directional hop-local stream/connection byte windows, DATA-only flow control, receiver authority, and prompt control-frame reading. gRPC supports streaming flow control, local buffering caveats, cancellation, and duplex deadlock warning. RabbitMQ supports acknowledgement/prefetch window semantics and consumer-overload cautions. Kafka design supports consumer pull."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked cumulative demand D, delivery N, revoked unused credit X, outstanding O, window W, buffer B_j/K_j, producer lambda, consumer mu, feedback R, prefetch P, service S, concurrency I, and fan-out F for consistent units and scopes.", "Confirmed cumulative quantities and instantaneous occupancy are not conflated.", "Confirmed the lambda<mu stability statement is qualified by effective admission and a terminal policy when the source cannot slow."],
+      "notes": "Credit equations bind the credited unit only, not decoded size or downstream cost."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Recomputed 200 messages/s times 0.1 s as 20 pipeline-fill items and 400/s times 0.05 s as 20.", "Recomputed 50 upstream items times fan-out 20 as 1,000 downstream calls.", "Recomputed unslowable-source backlog growth as 1,000-100=900 events/s.", "Recomputed ten consumers times 1,000 prefetch as 10,000 and one hundred as 100,000; summed buffers 100+200+50+150=500 and added 50 in-service plus 30 transport for 580; counted ten examples and five answer pairs."],
+      "notes": "Prefetch/window figures are starting scenarios requiring measured latency, variability, cost, and protocol-race evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Derived N<=D and 0<=O<=W from demand-before-delivery, atomic spend, bounded grant, and unused-credit revocation.", "Derived total explicit buffer bound as the sum of hop bounds plus separately bounded in-service/transport work.", "Constructed fan-out counterexample proving upstream concurrency does not bound downstream calls.", "Derived linear backlog growth lambda-mu when source rate permanently exceeds consumer service and cannot respond to pressure."],
+      "notes": "Each argument names the hidden queue, unit-expansion, bypass, or rate assumption that can invalidate it."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Reviewed zero/one/unlimited/overflow credit, small/large windows, delayed/duplicate controls, cancellation, expiry, generation change, reconnect, and restart.", "Reviewed encoded-to-decoded expansion, heterogeneous cost, batching, fan-out, merge/join/broadcast, slow subscriber, impossible-to-slow sources, drops, coalescing, and durable spill.", "Reviewed acknowledgement before/after receipt/durable handoff/effect, redelivery, lease expiry, partition pause, rebalance, ordering, idempotency, and retention-sized recovery.", "Reviewed duplex zero-window deadlock, blocked control, lock cycles, hostile producers, forged priority, autoscaling window multiplication, unfair shared credit, and synchronized resume."],
+      "notes": "Coverage spans protocol, resource, semantic, temporal, topology, recovery, fairness, and hostile behavior."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Confirmed demand precedes delivery and credit unit/scope/lifetime are explicit.", "Confirmed every named buffer has a count/byte/age bound and cancellation removes future interest.", "Confirmed acknowledgement never implies a later milestone than the documented ownership transfer.", "Confirmed fan-out branches acquire downstream capacity and retries cannot bypass it.", "Confirmed control progress remains possible under data pressure and recovery grants credit gradually."],
+      "notes": "Transport flow control is never presented as an end-to-end application-capacity guarantee."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed credit proof and confirmed element credit alone cannot bound bytes or resource cost.", "Reviewed pipeline sum and confirmed one hidden unbounded buffer invalidates it.", "Reviewed fan-out example and confirmed downstream cap can increase upstream residence, requiring deadline/admission adjustment.", "Reviewed rate mismatch and confirmed pressure cannot stabilize an exogenous source without terminal loss/storage/rejection policy."],
+      "notes": "Arguments are conditional resource bounds, not delivery/exactly-once guarantees."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Confirmed four arguments are labeled and separated from protocol-specific behavior.", "Confirmed HTTP/2, gRPC, Reactive Streams, RabbitMQ, and Kafka semantics are attributed to their own scopes.", "Confirmed sizing equations and policies are presented as estimates to test, not normative defaults."],
+      "notes": "Protocol conformance, design policy, and empirical capacity claims remain distinct."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["All six official/primary references were checked on 2026-09-02 where current guidance applies.", "All rates, latencies, windows, expansion ratios, fan-out, buffer sizes, and fleet counts are labeled scenarios.", "Safe prefetch, bandwidth-delay needs, decoded cost, service variance, races, lease behavior, broker retention, fair allocation, autoscaling, and recovery remain explicit integration/load/fault evidence obligations."],
+      "notes": "No production transport, broker, consumer fleet, stream library, or workload was empirically assessed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed credit protocol, units/expansion, hidden buffers, synchronous and streaming translation, acknowledgements/prefetch, leases/rebalance, fan-out/merge, unslowable sources, stability/deadlock, fairness, observability, and recovery verification as an end-to-end control model."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Checked implementability through a complete buffer inventory, explicit demand contracts, dual byte/count/cost gates, deadline-aware admission, ack milestone tables, downstream permits, control/read loops, lease-safe pause, bounded terminal policies, fleet-aware windows, and invariant tests."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The module progresses from demand semantics through transport/application boundaries, brokers and call graphs, then instability, fairness, observability, and verification. Ten examples and five integrative exercises have complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

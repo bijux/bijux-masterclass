@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "PLAT-017",
+  "chapter_digest": "23f3811d4fec18f393c0cc0f3e6768a03168e48e9331845b9c75bf0bf0256b99",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked all twelve structured references. Current Diátaxis guidance supports the distinct tutorial, how-to, reference, and explanation needs without being treated as a required site hierarchy. Current Backstage TechDocs and catalog documentation supports docs-like-code, source layout, preview/build/publish, search, catalog ownership, system/API/resource models, human mental models, and projection boundaries. OpenAPI 3.2.0 is the current published OpenAPI specification and supports human and machine interface discovery plus reference-cycle and rich-text-sanitization cautions. WCAG 2.2 is the current W3C Recommendation dated December 12, 2024; current WAI navigation guidance supports finding, location, headings, labels, links, multiple ways, focus, and bypass claims. Current Google guidance supports accessible, direct, structured, global documentation. DORA's January 12, 2026 guidance supports task-outcome feedback and balanced platform measurement."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked D=(U,J,C,S,A,F,O,E), discovery chain q to r to e to a to v, freshness predicate F(d,t), result score s(d,q), and implication cautions against first use and Definitions and Notation.",
+        "Checked tuple, function, predicate, arrow, time parameter, equality, and logical prose with the repository GitHub-math validator."
+      ],
+      "notes": "All symbols are defined; task evidence E remains distinct from document freshness F and search arrival r remains distinct from verified outcome v."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed documentation-discovery-ranking under Python 3.14.4 and reproduced four candidates, payments-deploy-howto as top, team-payments as top owner, one stale result, one orphan result, and unsafe top false.",
+        "Recomputed scores as deprecated exact match 4, current how-to 13, current API reference 9, and ownerless notes 3 before deterministic descending sort."
+      ],
+      "notes": "The four-record corpus and weights are synthetic; they demonstrate lifecycle and ownership penalties rather than production ranking quality."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Expanded the eight-element documentation tuple against audience, job, content contract, source/version, authorization, freshness, owner, and task evidence prose.",
+        "Traced the five-link discovery chain and checked that reaching or clicking a recognized result does not imply successful verified action.",
+        "Checked freshness as a governed source/version/owner/risk predicate rather than document age and ranking as multi-signal behavior under an authorization filter."
+      ],
+      "notes": "The notation models contracts and evaluation boundaries; it does not prove search optimality or documentation effectiveness."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed novice, expert, automation, incident, assistive-technology, multilingual, unauthorized, revoked, and older-version consumer contexts.",
+        "Checked zero results, vocabulary mismatch, obsolete exact match, orphan page, duplicate mirror, broken redirect, stale cache, archived content, version skew, and localization lag.",
+        "Checked restricted title/snippet/facet/relationship/embedding leakage, malicious Markdown, remote includes, script content, reference cycles, prompt injection, secret indexing, and analytics privacy.",
+        "Checked unsafe copy-paste, production deletion, missing prerequisites, partial failure, asynchronous unknown outcome, emergency updates, owner dissolution, and assistant fabrication."
+      ],
+      "notes": "The chapter preserves authorization, source provenance, visible applicability, safe examples, accessibility, and recovery across normal and adversarial information paths."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced canonical capability identity, source, owner, lifecycle, access, documentation, support, and operations across catalog, search, portal, CLI, API reference, and incidents.",
+        "Checked tutorial/how-to/reference/explanation separation and linked composition without duplicating structured interface truth.",
+        "Checked authorization before retrieval and presentation, with version, lifecycle, freshness, and ownership signals preserved in ranking and results.",
+        "Checked tested examples, complete-task accessibility, redirects, feedback ownership, deprecation, archive, and outcome-based measurement."
+      ],
+      "notes": "Authority, applicability, authorization, accessibility, example, outcome, and lifecycle invariants hold across exposition, examples, and answers."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter states no theorem and contains no deductive proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No proof sketch is claimed; discovery, freshness, and score expressions are explicitly teaching models."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable search corpus and weights are labeled synthetic and are not presented as production relevance evidence.",
+        "Documentation framework guidance, project documentation, interface specification, accessibility Recommendation/guidance, maintained style guidance, and DORA empirical/product guidance remain distinguishable.",
+        "Narrative examples are designs rather than measured search, accessibility, security, localization, or task-success results."
+      ],
+      "notes": "No external accessibility conformance, search evaluation, penetration test, user study, or production documentation audit is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently treats documentation and discoverability as an information journey from consumer need to verified action, separates content types and source authority, and integrates catalog, search, access, version, freshness, ownership, accessibility, examples, and lifecycle."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "A practitioner can apply the information-journey map, content-type test, documentation contract, canonical catalog model, access-aware index and ranking design, generated-reference boundary, example checklist, docs build controls, accessibility plan, version/deprecation workflow, feedback system, and findability scorecard."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The sequence progresses from journeys and content types through contracts, catalog, search, reference, examples, docs-as-code, accessibility, lifecycle, feedback, AI retrieval, and measurement. Ten examples remain distinct; five exercises progress from system design through ranking, API journey completion, portfolio freshness, and safety-critical transfer, with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

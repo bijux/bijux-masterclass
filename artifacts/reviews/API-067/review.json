@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "module_id": "API-067",
+  "chapter_digest": "7f831cbb9292ca605e80204530f16000eec174c28a8ca195ce8b84f581d90453",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked all seven primary/official sources. Microsoft Architecture Center supports the idempotent-consumer pattern and duplicate-resistant processing. Apache Kafka 4.2 design supports at-least-once redelivery, process-before-offset duplicate windows, transactional Kafka scope, and the limitation for external destinations. Current PostgreSQL 18 INSERT, constraints, and isolation documentation supports composite uniqueness, ON CONFLICT, concurrent conflicting inserts, deterministic conflict handling, and whole-transaction retry after serialization failure. Google Pub/Sub documentation supports the scoped delivery/message-ID discussion and warns that publish-side duplicates can remain distinct. Stripe documents same-key result reuse, parameter comparison, key scope/limits, and pruning behavior. Provider-specific behavior is explicitly illustrative and not generalized."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked logical message m, delivery attempts a_i, consumer c, tenant t, fingerprint f(m), effect IDs e_k(m), inbox I(c,t,m), outcome o, fencing epoch q, state S, transition F, rates lambda/mu, duplicate fraction d, bytes b, and horizon T for consistent domains.",
+        "Confirmed the idempotence equation applies the same scoped operation twice and uses semantic rather than byte-for-byte state equality.",
+        "Confirmed storage and rate formulas declare first-order assumptions and exclude indexes, replicas, backups, and headroom until explicitly added."
+      ],
+      "notes": "Identity, attempt, consumer, tenant, effect, and outcome scopes remain distinct throughout."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed unique rate as 12,000*(1-0.25)=9,000 records/s.",
+        "Recomputed 21 days as 21*86,400=1,814,400 seconds.",
+        "Recomputed logical bytes as 9,000*420*1,814,400=6,858,432,000,000 bytes, approximately 6.86 TB decimal.",
+        "Recomputed three replicas as 20,575,296,000,000 bytes, approximately 20.58 TB decimal; confirmed total admission load remains 12,000 deliveries/s.",
+        "Counted ten worked examples and five exercise-answer pairs."
+      ],
+      "notes": "Capacity figures are scenario estimates; production sizing still requires measured record/index/replication and duplicate-path costs."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Constructed two-concurrent-attempt trace and confirmed authoritative uniqueness admits at most one local transition transaction.",
+        "Constructed crash-before-commit and crash-after-commit-before-ack traces and confirmed atomic inbox+domain+outbox makes retry respectively execute or return prior outcome.",
+        "Constructed same-ID/different-fingerprint trace and confirmed returning a cached result would violate identity-content binding.",
+        "Constructed timeout-after-external-success trace and confirmed the local proof cannot cross the network without stable effect ID/provider lookup or equivalent reconciliation."
+      ],
+      "notes": "The proof is intentionally local unless the external system participates through a specified idempotency/outcome protocol."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed absent/live/expired in-progress, succeeded, terminally rejected, and uncertain inbox states; concurrent duplicates; lease takeover; stale owner; deadlock/serialization retry; and ack loss.",
+        "Reviewed wrong attempt ID, omitted consumer/tenant/version scope, canonicalization change, same-ID content conflict, stale/out-of-order versions, batch holes, retry/DLQ/replay identity, and TTL boundary.",
+        "Reviewed external timeout-after-success, provider key retention, unqueryable outcome, multi-effect handlers, outbox publication, active-active regions, failover/restore inconsistency, and duplicate storms.",
+        "Reviewed cross-tenant enumeration, forged/replayed IDs, oversized/high-cardinality keys, protected outcomes, privacy deletion, and operator replay authorization."
+      ],
+      "notes": "Coverage includes local, transport, ordering, external, lifecycle, regional, capacity, privacy, and hostile-input boundaries."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Confirmed every retry/redelivery/replay path preserves logical message identity and the consumer key includes durable consumer, tenant, and semantic-version scope.",
+        "Confirmed same key requires same fingerprint and authoritative uniqueness, not process-local timing or cache state, selects a claim.",
+        "Confirmed local inbox, domain outcome, and derived outbox are atomic, while long/external work uses recoverable states and fencing.",
+        "Confirmed external retries preserve effect identity and dedup/effect retention covers the claimed replay/redrive/failover horizon or declares an isolated replay policy.",
+        "Confirmed deduplication does not replace subject-version ordering, authorization, capacity control, or reconciliation."
+      ],
+      "notes": "The chapter consistently distinguishes observational idempotency from exactly-once transport marketing."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the uniqueness-plus-transaction proof and confirmed one committed local transition follows only under a non-null correctly scoped key and authoritative constraint/conditional write.",
+        "Reviewed natural-idempotency examples: complete-state versioned assignment, set union, and maximum; confirmed increment remains commutative but non-idempotent.",
+        "Reviewed the retention argument and confirmed TTL deletion reopens identity eligibility, so guarantee horizon is semantically bounded.",
+        "Reviewed active-active counterexample and confirmed eventual replication cannot prevent two noncommutative effects during partition."
+      ],
+      "notes": "Necessary assumptions and counterexamples are explicit; no global/external exactly-once theorem is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Confirmed the proof sketch is labeled and scoped to a transactional local store.",
+        "Confirmed PostgreSQL, Kafka, Pub/Sub, Microsoft, and Stripe product semantics are attributed rather than presented as universal laws.",
+        "Confirmed design recommendations, algebraic properties, provider guarantees, and empirical verification obligations use distinct language."
+      ],
+      "notes": "Normative provider claims and application design inferences remain distinguishable."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "All seven official references were retrieved or checked on 2026-09-02; Kafka documentation is pinned to 4.2 and PostgreSQL to 18/current URLs.",
+        "The 12,000/s, 25%, 420-byte, 21-day, and three-replica values are explicitly an exercise scenario.",
+        "Actual uniqueness latency, index bytes, transaction retries, provider behavior, replay age, regional authority, duplicate storms, and SLOs remain explicit integration/load/fault evidence obligations."
+      ],
+      "notes": "No production broker, database, payment provider, region topology, or workload was empirically assessed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed scope and observed effects, logical identity and fingerprinting, natural versus constructed idempotency, authoritative claim concurrency, atomic local effects, processing state recovery, external effects, ordering/batches, retention/replay, multi-region authority, security/operations, and verification as one end-to-end model."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Checked implementability through composite unique keys, insert-first transactions, stored outcomes, inbox/outbox, lease epochs, provider effect ledgers and same-key queries, subject versions, contiguous checkpoints, governed TTL/replay scopes, home-region fencing, bounded admission, observability, and reconciliation."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The module starts from the business observer, builds identity and atomic concurrency mechanisms, extends cautiously to long and external work, then treats ordering, retention, regions, security, and verification. Ten examples isolate different failure surfaces; five exercises progress from classification through schema, arithmetic, payment, and multi-region replay design with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

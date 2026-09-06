@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "module_id": "API-042",
+  "chapter_digest": "474dba5c334a2fc21c7dc994c9f3a2805af3448360fa20db80513edc7c8f52a4",
+  "review_date": "2026-09-01",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-01",
+    "notes": "Checked all seven structured references at official RFC Editor or OWASP locations. RFC 9700 is the January 2025 OAuth 2.0 Security BCP and recommends end-to-end TLS and sender-constrained access tokens; RFC 6750 defines bearer-token usage; RFC 8725 covers algorithm, issuer, audience, typing, and mutually exclusive JWT validation; RFCs 9449 and 8705 define DPoP and mTLS sender constraint; RFC 9068 defines the JWT access-token profile; OWASP guidance supports lifecycle secrets management."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+        "status": "passed",
+        "method": "manual_review",
+        "evidence": [
+          "Reviewed lifecycle tuple L=(G,I,D,S,T,V,U,R,X,E), acceptance conjunction, and claim functions iss, aud, exp, nbf, typ, alg, and cnf for consistent definition and use.",
+          "Confirmed the acceptance predicate is explicitly parameterized by token, resource server, and time and uses GitHub-compatible math delimiters."
+        ],
+        "notes": "Notation distinguishes untrusted claim values from the resource-server-owned validation profile and never treats claim decoding as verification."
+    },
+    "numerical_recomputation": {
+        "status": "not_applicable",
+        "method": "not_applicable",
+        "evidence": [],
+        "notes": "No quantitative entropy estimate, cryptographic security bound, probability, performance benchmark, or loss calculation is claimed. Example timestamps exercise deterministic boundary predicates only."
+    },
+    "symbolic_recomputation": {
+        "status": "passed",
+        "method": "symbolic_recomputation",
+        "evidence": [
+          "Expanded the acceptance conjunction into format/type, configured algorithm/key, issuer, audience, time, sender binding, and token-state predicates and matched each to the numbered validation profile.",
+          "Mapped all ten lifecycle symbols to the mechanism steps and verified that authorization follows rather than belongs to token acceptance."
+        ],
+        "notes": "The formalism accurately represents all-predicate acceptance while the prose states its dependencies and separates local token validity from object/action authority."
+    },
+    "boundary_and_adversarial_cases": {
+        "status": "passed",
+        "method": "boundary_analysis",
+        "evidence": [
+          "Reviewed substitution among access, refresh, ID, session, API-key, client-secret, and one-time artifacts; cross-audience/issuer/environment use; algorithm/key confusion; hostile key IDs/URLs; time edges; sender replay; and stale authorization.",
+          "Traced leakage through URLs, redirects, browser/native/server stores, environment variables, shell/process state, proxies, every TLS hop, logs/traces/APM/analytics, CI, tickets, backups, support tools, and crash dumps.",
+          "Reviewed scheduled and emergency rotation, partial rollout/cache staleness, introspection/key-service outage, logout/revocation divergence, and issuer-signing-key compromise."
+        ],
+        "notes": "Adversarial coverage includes both stolen bearers and compromised authorized clients and does not claim sender constraint or TLS protects unsafe endpoints or authorization logic."
+    },
+    "invariant_checking": {
+        "status": "passed",
+        "method": "invariant_analysis",
+        "evidence": [
+          "Executed access-token-acceptance-profile: the configured token was accepted; wrong audience, expiry boundary, disallowed algorithm, and sender mismatch were rejected with the expected predicate.",
+          "Checked exact time semantics nbf <= now < exp, configured ES256 allowlist, exact issuer/orders audience, explicit at+jwt type, and confirmation-thumbprint match."
+        ],
+        "notes": "The executable model deliberately assumes cryptographic verification and is labeled non-production; the chapter requires maintained libraries and real key/issuer verification."
+    },
+    "proof_review": {
+        "status": "not_applicable",
+        "method": "not_applicable",
+        "evidence": [],
+        "notes": "No cryptographic proof, security reduction, or completeness theorem is claimed. The chapter cites standards and gives an engineering assurance structure with explicit limitations."
+    },
+    "proof_sketch_labeling": {
+        "status": "passed",
+        "method": "label_audit",
+        "evidence": [
+          "Confirmed the mechanism section limits the acceptance conjunction to configured trust, library, clock, key distribution, sender proof, and calling coverage.",
+          "Confirmed the executable model disclaims cryptographic parsing, OAuth-flow validation, and production proof, and alternatives state residual trade-offs."
+        ],
+        "notes": "Normative protocol claims, design recommendations, finite examples, and operational verification duties are presented as distinct evidence classes."
+    },
+    "empirical_evidence_labeling": {
+        "status": "passed",
+        "method": "label_audit",
+        "evidence": [
+          "Snippet report artifacts/snippets/API-042/report.json records one passing deterministic local acceptance-profile execution.",
+          "Rotation, revocation latency, fuzzing, secret scanning, canary, key-service failure, and incident-exercise recommendations are identified as required future evidence, not claimed measurements."
+        ],
+        "notes": "No real issuer, cryptographic key, client store, revocation service, penetration test, or production incident response was empirically assessed by the chapter."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the lifecycle from artifact classification through authority minimization, generation, delivery, storage, transport, explicit validation, authorization handoff, rotation, revocation, observability, compromise response, and verification. Token classes and trust decisions remain distinct across all sections."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Checked operational feasibility for browser/native/server/public/confidential clients, managed secrets and workload identity, gateway hops, JWKS/introspection caches, two-slot credential rotation, signing-key rollout, revocation expectations, early redaction, inventory, break glass, and incident containment. Product-specific lifetimes, stores, and outage policies are left as explicit decisions rather than universal constants."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The module begins with artifact taxonomy and lifecycle, builds a resource-server validation profile, then expands into rotation, revocation, leakage, and response. Ten examples isolate common failures; five exercises progress from inventory through validator testing, incident response, architectural comparison, and key rotation, with detailed answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

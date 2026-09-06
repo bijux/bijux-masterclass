@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "module_id": "DSE-020",
+  "chapter_digest": "2343ba6b944ae0b1571f1541ea488390bd2921e828a84337093f2a3c73c822d4",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed the original rope paper and Crowley text-sequence study; current VS Code piece-tree account/source, Xi metrics/text-engine notes, Ropey API, Unicode UAX #29/#14, and the current GNU Emacs manual-source mirror. All ten final destinations returned HTTP 200. The legacy archive contained no rope or piece-table chapter suitable for reuse."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked D/N/k, half-open ranges, flatten, rope leaf/internal node, left/total metrics, monoid composition, O/A buffers, pieces, versions, anchors, and fragmentation terminology.",
+        "Qualified every length/index claim by bytes, Unicode scalars, UTF-16 units, graphemes, lines, or the declared abstract metric."
+      ],
+      "notes": "The text explicitly separates storage coordinates from user-perceived graphemes and display columns."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Replayed hello-world insertion at five, deletion [15,20), and insertion at 15.",
+        "Confirmed final escaped text hello, durable editor\\n, five pieces, 15 add units, original unchanged, two lines, and invariant true.",
+        "Recomputed the exercise one/two descriptor ranges: O length 8, A insertion length 7, delete [11,14), retained O[0:3], O[3:4], and O[7:8].",
+        "Checked binary-rope navigation with left metric eight maps index eleven to right-local index three."
+      ],
+      "notes": "ASCII fixtures make Python scalar and byte offsets coincide only in the finite executable evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified flatten recursively preserves left-before-right sequence and that metric composition follows the same order.",
+        "Derived rope lookup, split, concat, insertion, and deletion from flattening and left metrics.",
+        "Derived piece insertion/deletion as source-range partitions and omission; verified legal coalescing preserves flattening.",
+        "Checked that logarithmic claims explicitly require O(log N) height plus bounded leaf work and restoration of balance/chunk rules."
+      ],
+      "notes": "No generic tree node, balance scheme, or deferred normalization policy is assumed to have the same worst-case bound."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty, one-past-end insertion, empty range, entire deletion/replacement, every piece/leaf boundary, zero-length removal, checked start+length, and maximum metrics.",
+        "Reviewed unbalanced chains, oversized/tiny chunks, alternating distant edits, repeated same-point inserts, piece explosion, coalescing, allocation failure, and compaction.",
+        "Reviewed UTF-8 interior offsets, scalar/UTF-16/grapheme differences, malformed input policy, CR/LF/CRLF split across chunks, mixed endings, trailing breaks, and enormous lines.",
+        "Reviewed stale versions, anchor bias, simultaneous edits, retained snapshots/undo, save partial failure/external conflict, and recovery nonclaims."
+      ],
+      "notes": "Boundary-sensitive metrics are required to carry enough cross-child state rather than treating all counts as independent sums."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked executable pieces use known sources, positive lengths, in-bounds half-open ranges, no adjacent coalescible same-source ranges, and flattened/logical length agreement.",
+        "Checked each trace edit preserves the original buffer and appends rather than rewrites added storage.",
+        "Reviewed rope child order, summary equality, balance, leaf bounds, and version immutability obligations."
+      ],
+      "notes": "The executable list representation intentionally provides no balanced-tree complexity evidence."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed rope structural-induction argument from leaves through internal concatenation and ordered metric composition.",
+        "Reviewed lookup coordinate subtraction and split/concat preservation, including one-past-end distinction.",
+        "Reviewed descriptor partition proofs for insertion/deletion and the source-contiguity premise for coalescing.",
+        "Reviewed version/compaction obligation to preserve flattening/metrics and migrate or invalidate dependent identities."
+      ],
+      "notes": "CRLF/grapheme summaries are presented as proof obligations with examples, not as a complete implementation of Unicode segmentation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Rope complexity is conditional on named height, chunk, and operation-restoration premises.",
+        "Library/project implementation and performance observations are source/version scoped.",
+        "Undo, crash recovery, saving, persistence, concurrency, compaction, and deployment remain separate mechanisms/evidence boundaries."
+      ],
+      "notes": "Neither append-only storage nor structural sharing is mislabeled as automatic durability or bounded memory."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library Python snippet passed exact seven-line stdout, empty stderr, and zero exit status under recorded Python 3.14.4.",
+        "It emits evidence=finite_piece_table_trace and is immediately limited against balanced complexity, Unicode, persistence, durability, and editor performance.",
+        "All ten final reference destinations and all repository-local links were directly checked."
+      ],
+      "notes": "No production rope/piece tree, Unicode conformance suite, multi-version engine, filesystem failure path, editor corpus benchmark, or compaction migration was empirically evaluated."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the text-buffer contract, coordinate units, rope flattening/balance/chunks/metrics, piece sources/descriptors/tree organization, hybrid boundaries, versions/anchors, lines, saving, compaction, alternatives, and evidence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed checked source ranges, leaf normalization, relative metrics, CRLF composition, descriptor fragmentation, snapshot retention, undo budgets, stale coordinates, multicursor ordering, encoding/BOM/newlines, external conflicts, atomic-write policy, compaction dependencies, real workloads, memory, and tail latency."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Starts with the text ADT and coordinate ambiguity, derives rope and piece-table mechanisms separately, then explains piece-tree composition and lifecycle issues. Provides a reproduced descriptor trace, thirteen causal misconceptions, ten varied examples, and five progressive exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable-snippet, conceptual, practitioner, and pedagogical evidence only; no external editor, Unicode, compiler, runtime, allocator, filesystem, database, concurrency, security, reliability, accessibility, localization, operations, architecture, or independent academic review is claimed. The chapter and finite trace prove neither a generic rope/piece-tree implementation, logarithmic complexity without maintained balance/chunk bounds, full Unicode/grapheme/line conformance, iterator/anchor correctness, bounded retention, thread safety, crash recovery, save durability, compaction safety, benchmark superiority, certification, nor deployment fitness."
+}

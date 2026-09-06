@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-018",
+  "chapter_digest": "f301a865edf494eb9eb7c9adf5ac46493c6075240d473edc5432907c7cf21507",
+  "review_date": "2026-08-31",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked current ISO/IEC/IEEE 29148:2018 and 15288:2023 metadata; NASA Logical Decomposition, System Design Processes, and Software Requirements allocation guidance; and SEBoK 2.14 System Requirements Definition, Physical Architecture, and Configuration Baselines. NASA and SEBoK links returned HTTP 200. Both ISO pages returned HTTP 403 to the command-line client; current official metadata was independently inspected during authoring, but command-line reachability is not claimed."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the allocation-edge tuple, role-coverage relation, element-feasibility quantification, system evidence composition, allocation relation and projections, controllability/assumption predicates, and allocation-readiness predicate."
+      ],
+      "notes": "Every symbol is introduced before use. Decomposition, direct/partitioned allocation, function/requirement/budget/evidence allocation, organization assignment, local verification, integration evidence, and parent acceptance remain distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed subsystem-allocation-record-check under Python 3.14.4 and independently recomputed five allocation edges, one well-formed declared edge, missing requirement AL-002, missing element and verification AL-003, missing role and integrator AL-004, and missing rationale AL-005."
+      ],
+      "notes": "The checker establishes declared field presence only; it cannot determine controllability, correct architecture, complete role coverage, element/system feasibility, or evidence adequacy."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived many-to-many allocation projections and confirmed that assignment does not imply element or system satisfaction.",
+        "Checked that required-role coverage and per-element feasibility are necessary review conditions while system evidence still requires interface/integration evidence and a composition argument."
+      ],
+      "notes": "The relations structure allocation review; they are not proofs of architecture optimality, complete roles, safe integration, or acceptance."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed unallocated/overallocated/misallocated roles, wrong controllability, shared requirements, common cause, shared infrastructure, human workload/authority, external and enabling systems, supplier evidence/change/exit, variants, dynamic allocation, degraded operation, interface failure, maintenance, retirement, organization boundaries, safety hazards, clinical decision support, and rail public safety.",
+        "Challenged all ten examples and five answers for matrix-only ownership, software-default allocation, equal budgets, supplier accountability transfer, child-pass overclaiming, architecture/org-chart conflation, and unsupported external authority."
+      ],
+      "notes": "High-consequence allocations remain conditional on applicable safety, security, clinical, human-factors, regulatory, supplier, and affected-stakeholder review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced system-parent ownership, controllable typed roles, interface closure, shared-behavior integration authority, and configuration/evidence coherence through exposition, ten worked examples, and five complete answers.",
+        "Verified allocation decision rationale, element-loss/substitution challenge, local/cross-element feasibility, and parent verification closure."
+      ],
+      "notes": "Every consequential edge retains architecture identity, role, boundary, interface, rationale, authority, budget where applicable, evidence responsibility, and change triggers."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents conditional relations and review predicates but no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed uses of prove, satisfy, verify, validate, own, control, feasible, complete, safe, secure, clinical, compliant, and evidence.",
+        "artifacts/snippets/SYSENG-018/report.json records exact local execution evidence for declared allocation fields."
+      ],
+      "notes": "Execution establishes record-shape observations only. It cannot establish correct ownership, architecture suitability, system safety, clinical validity, regulatory conformity, supplier assurance, or external review."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Professor-style review checked system element, subsystem, allocation, direct/partitioned allocation, typed role, responsibility boundary, shared requirement, integration owner, enabling system, allocated baseline, budget, controllability, composition, and evidence ownership for conceptual consistency."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Practitioner-style review checked emergency shutdown, timing budgets, data protection, clinical triage, availability dependencies, supplier navigation, record retention, platform sharing, robot resources, rail crossings, public warnings, account revocation, industrial collision avoidance, payment fraud, and home medical monitoring. Each example exposes assumptions, intermediate reasoning, evidence limits, and bounded conclusions. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Pedagogical review confirmed progression from architecture/objects/level through element control, typed roles, parent retention, child/interface/integration allocation, budgets, qualities, safety, humans, suppliers, feasibility, ownership, verification closure, baselines, variants, and bounded tooling. Ten examples and five complete answers require distinction, matrix/graph construction, architecture comparison, supplier analysis, and high-consequence synthesis."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

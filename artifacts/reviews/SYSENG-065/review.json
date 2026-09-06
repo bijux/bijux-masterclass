@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-065",
+  "chapter_digest": "11a461f7f254c9bd703fea8a5f4cedbe675e23979035f67c09ebe8d11aef1f3b",
+  "review_date": "2026-08-31",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked current IEC 60300-3-10:2025 and IEC 60300-3-14:2024; stable IEC 60706-2, -3 and -5 records; authoritative DLA ASSIST MIL-HDBK-470 record; NASA maintainability engineering case, NESC human-exploration report, maintainability allocation paper and current R&M resources. All ten final URLs returned HTTP 200. Standard status, guidance scope and engineering synthesis are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed restoration phase decomposition and separate logistics/administrative delay expression.",
+        "Reviewed maintainability CDF requirement and exponential/lognormal candidate models.",
+        "Reviewed detection/isolation conditional coverage expressions and denominators.",
+        "Reviewed right-censoring warning and empirical nearest-rank percentile definition."
+      ],
+      "notes": "Clock phases may overlap, and the chapter explicitly rejects blind addition when they do."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed maintainability-task-fixture under python3 with exact output recorded in artifacts/snippets/SYSENG-065/report.json.",
+        "Recomputed seven phase totals as 35, 43, 30, 65, 52, 38 and 120 minutes.",
+        "Recomputed mean 54.7143, median 43 and empirical nearest-rank p90 120 minutes.",
+        "Confirmed five tasks within 60 minutes and six within 90 minutes.",
+        "Confirmed correct-isolation fraction 17/20 = 0.8500 and false-removal fraction 3/20 = 0.1500.",
+        "Recomputed exercise mean 55.7143, median 35, nearest-rank p90 180 and within-threshold proportions 5/7 and 6/7."
+      ],
+      "notes": "Small selected samples are explicitly denied status as population estimates or requirement demonstrations."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Confirmed M(t) is a CDF and a probability-by-time requirement is not equivalent to a mean target.",
+        "Confirmed exponential mean and CDF relation only under constant memoryless restoration rate.",
+        "Confirmed lognormal expression uses log-time parameters rather than arithmetic mean/standard deviation.",
+        "Confirmed diagnostic detection and conditional isolation require distinct numerators/denominators.",
+        "Confirmed censored incomplete tasks cannot be entered as completed at censor time."
+      ],
+      "notes": "No repair-time distribution is assumed universal; skew, mixtures, learning and task/resource conditioning remain explicit."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Challenged maintenance concept, repair/discard/site, LRU/SRU, access, modularity, interchangeability and configuration mismatch.",
+        "Reviewed detect/isolate/safe/access/restore/reassemble/verify/authorize clocks and overlapping work.",
+        "Reviewed missed/false detection, ambiguity groups, false isolation/removal, NFF and intermittent/contextual faults.",
+        "Reviewed human reach/posture/PPE/lighting/workload, stored energy, contamination and maintenance-induced failure.",
+        "Reviewed software rollback/data/schema/credentials, remote support, cyber authorization and tool obsolescence.",
+        "Reviewed representative sampling, rehearsed experts, learning, retries, censoring, exclusions, long tails and confidence.",
+        "Reviewed spares, crew, tools, facilities, queues, supplier turnaround and common support dependencies.",
+        "Reviewed all ten examples and five complete answers for assumptions, reasoning, limitations and bounded conclusions."
+      ],
+      "notes": "Production claims require domain maintainer/operator, human-factors, safety, reliability/statistical, diagnostics/software/cybersecurity, logistics/supply, configuration, demonstration and acceptance-authority review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Confirmed every requirement binds task/fault population, configuration, maintenance level, resources, clock and probability target.",
+        "Confirmed diagnosis, repair and verification remain distinct success gates.",
+        "Confirmed credited tools/data/spares/skills are configuration controlled and available at the maintenance level.",
+        "Confirmed means never substitute for tail/percentile evidence.",
+        "Confirmed restoration includes end-to-end function, configuration, safety/security and induced-fault checks.",
+        "Confirmed field changes update affected evidence while preserving historical baselines."
+      ],
+      "notes": "A quick swap or green built-in test is never presented as sufficient restoration evidence."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents distribution identities and an evidence chain but no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable result is labeled synthetic_task_observations_only.",
+        "The empirical p90 is labeled an order statistic, not a fitted guarantee.",
+        "IEC, DoD and NASA source status is attributed without claiming local conformance.",
+        "Demonstration and field evidence are bounded by sampling, learning, configuration and confidence.",
+        "No external review, diagnostic coverage, safe repair, population maintainability, operational availability or acceptance is claimed."
+      ],
+      "notes": "Observed task arithmetic and population inference remain explicitly separate."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Internal conceptual review checked maintainability/maintenance/repairability/diagnosability/testability, maintenance concepts and levels, LRU/SRU, detection/isolation/identification, coverage, false alarm/NFF, active time/downtime/MTTR, MTA, induced failure and LORA."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Internal practitioner-oriented review checked concepts, requirements/allocation, repair levels, accessibility/modularity, safe states, testability/diagnostics, intermittent/NFF, software restoration, task analysis, distributions/clocks, checkout/induced faults, demonstrations/learning, observations, logistics/workforce, remote/predictive support and lifecycle feedback."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Internal pedagogical review confirmed progression from restoration semantics through design, diagnostics, support and verification. Ten examples isolate recurring defects; five complete solutions cover requirement construction, skewed arithmetic, diagnostic design, LORA and defensible demonstration/feedback."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external IEC/DoD/NASA expert, maintainer/operator, human-factors/safety specialist, reliability statistician, diagnostic/testability engineer, software/data/cybersecurity recovery owner, logistics/supply/workforce authority, supplier/depot, independent V&V, demonstration authority, technical authority or support-policy acceptance review is claimed."
+}

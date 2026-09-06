@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DSE-036",
+  "chapter_digest": "96b35deed4c889f286dbeb2e7d046fd8d09af20dbf1da701616255d7989366e2",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed MIT augmentation lectures, CMU and Stanford augmented-BST material, Princeton rank/select implementation and checks, current GCC policy/implementation sources, current Linux augmented-rbtree callbacks, and current ISO C++ associative requirements. All ten final destinations returned HTTP 200; one stale indexed CMU URL was replaced before review."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked zero-based select, strict lower-bound rank, upper rank, half-open range, subtree size/weight, height, and monoid terminology.",
+        "Checked unique-key, physical-occurrence, multiplicity, and arbitrary-weight conventions are not mixed."
+      ],
+      "notes": "Other sources use one-based or inclusive rank; the chapter declares and consistently uses its own convention."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Reproduced sorted insertion 1 through 9 yielding root 4, height four, size nine, and five AVL rotations.",
+        "Reproduced all selections and ranks 0:0,1:0,4:3,5:4,9:8,10:9 plus [3,8) count five.",
+        "Reproduced deletion of 4 returning FOUR and yielding root 5, size eight, height four, six cumulative rotations.",
+        "Recomputed post-delete select(4)=6, rank(6)=4, and [3,8) count four."
+      ],
+      "notes": "Counts describe the finite unique-integer AVL history only."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified select's residual-index invariant and rank's skipped-prefix invariant for present and absent keys.",
+        "Verified rank/select inversion and half-open range difference under strict lower-bound rank.",
+        "Verified left/right rotation size algebra and demoted-before-promoted dependency order.",
+        "Verified complexity is O(h) and logarithmic only under the separately maintained base-tree guarantee."
+      ],
+      "notes": "Database snapshot-visible rank and arbitrary signed-weight selection are explicitly not inferred from physical node counts."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/singleton/out-of-range select, absent extreme/interior rank, equal/reversed ranges, duplicate updates, root/two-child/absent deletion, and split/join boundaries.",
+        "Reviewed physical duplicates, multiplicity zero, nonnegative weighted selection, narrow-counter overflow, saturation, hostile serialization, and deep unbalanced bases.",
+        "Reviewed callback ordering, exception paths, iterator identity, coherent concurrent link/count publication, reclamation, B-tree pages, and MVCC visibility."
+      ],
+      "notes": "Capacity and exactness are part of the ADT; overflow or relaxed counts cannot silently degrade selection."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Independently checked global BST bounds, acyclic unique reachability, true/stored heights, AVL balance, every subtree size, and total count.",
+        "Checked rank(select(i)) for all legal indices before and after deletion and compared all printed ranks/ranges with sorted order."
+      ],
+      "notes": "The trace does not implement parents, multiplicities, checked fixed-width counters, persistence, B-tree pages, or concurrency."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed query path invariants, termination, inversion, and range identities.",
+        "Reviewed insertion ancestors, AVL height-stop versus size propagation, physical successor deletion paths, rotations, and transplant/callback variants.",
+        "Reviewed weighted algebra preconditions, overflow/capacity, split/join/persistence/bulk build, high fanout, publication, and recovery obligations."
+      ],
+      "notes": "Red-black, B-tree, persistent, multiset, and concurrent implementations retain their base-algorithm-specific proofs."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Base balance is separated from augmentation; abstract O(h) is separated from worst-case, expected, and amortized bases.",
+        "Unique-key node counts, occurrence weights, arbitrary measures, page counts, and snapshot-visible rows are scoped separately.",
+        "MIT/CMU/Stanford theory, Princeton/GCC/Linux implementation contracts, and ISO observable semantics are not blended into one implementation."
+      ],
+      "notes": "The executable AVL is not presented as GCC, Linux, Princeton, B-tree, database, or concurrent code."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The Python trace passed exact eighteen-line stdout, empty stderr, and zero exit status under the recorded toolchain.",
+        "It emits evidence=finite_avl_order_statistic_trace and verifies inserts, deletion, rotations, ranks, selections, ranges, heights, sizes, balance, order, and reachability.",
+        "All ten final source destinations and repository-local links were checked directly."
+      ],
+      "notes": "No overflow/fault/lifetime/concurrency/MVCC path, high-fanout layout, cache profile, or production benchmark was empirically evaluated."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed conventions, size augmentation, rank/select proofs, insert/delete/rotation maintenance, duplicates/weights, overflow, split/join/persistence/bulk build, B-trees/MVCC, concurrency, serialization, testing, and alternatives."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed explicit API indexing/ranges, comparator equivalence, checked capacity, physical removal paths, callback order, failure atomicity, iterator identity, coherent publication/reclamation, bounded rebuild, snapshot semantics, independent telemetry, and workload-tail benchmarks."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Derives rank/select from sorted-prefix accounting, separates augmentation from balance, extends carefully to weights and systems, includes a reproduced full trace, twelve misconceptions, ten examples, and five progressive exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary-source, mathematical, executable-snippet, conceptual, practitioner, and pedagogical evidence only; no external academic, MIT, CMU, Stanford, Princeton, GCC, Linux, ISO, database, security, performance, reliability, operations, architecture, or independent practitioner review is claimed. The chapter and finite trace prove neither generic comparator/duplicate/weight/overflow/exception/lifetime safety, red-black/B-tree/persistent correctness, stable handles, thread safety, linearizability, safe reclamation, MVCC-visible rank, crash recovery, production memory/cache/tail behavior, workload-independent superiority, certification, nor deployment fitness."
+}

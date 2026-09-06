@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-020",
+  "chapter_digest": "067320ab709fb33334f9360609c07040cde6c91a9a557aff21f9de0d9a0792e5",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked the Pearson GoF catalog record, Parnas publication metadata/DOI, current SEI ATAM material, Fowler's DI/Service Locator article, and bibliographic records for Software Architecture in Practice, Release It!, and Building Evolutionary Architectures. Pattern intents and evaluation claims remain bounded to stated sources and assumptions."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked alternative/scenario/criterion sets, feasibility predicate, weighted consequence model, Pareto dominance definition, regret/minimax expression, and evidence-class set."
+      ],
+      "notes": "The chapter conditions aggregation on defined comparable scales and filters hard constraints before scoring."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed baseline scores: direct 58, factory 26, builder 32.",
+        "Recomputed configuration-heavy scores: direct 45, factory 26, builder 18.",
+        "Recomputed direct-friendly illustrative profile: direct 20, factory 21, builder 37.",
+        "Reproduced exact executable output."
+      ],
+      "notes": "All consequence ratings and weights are labeled invented ordinal inputs and are not treated as measured architecture evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked dominance, feasibility filtering, conditional weighted-minimum statement, and regret definition.",
+        "Traced the selection reversal solely to changed weight profiles with unchanged alternatives/consequences."
+      ],
+      "notes": "The conditional-correctness section explicitly lists candidate completeness, scale validity, weight validity, and interaction coverage as premises."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/incomplete candidate sets, infeasible options, unknown evidence, incomparable units, ordinal arithmetic, correlated scenarios, stakeholder omission, arbitrary weights, ties, reversals, interaction effects, migration/removal, and contraction.",
+        "Reviewed behavior incompatibility, process-vs-distributed uniqueness, pool/lazy/DI lifecycle overlap, resource outage, plugin security, rail-signaling authority, timing, and fail-safe constraints."
+      ],
+      "notes": "Hard safety/security/correctness constraints cannot be compensated by convenience scores, and unknown feasibility triggers evidence work."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked direct baseline, problem-mechanism mapping, hard-constraint filtering, full lifecycle cost, one owner per combined concern, evidence classification, sensitivity/adversarial analysis, and fitness/expiry/contraction requirements."
+      ],
+      "notes": "Each worked example states the creation dimension and conclusion; combinations assign creation, configuration, lending, publication, invalidation, and closure ownership."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the weighted-minimum argument against its explicit premises.",
+        "Reviewed every matrix multiplication and deterministic tie-breaking operation.",
+        "Confirmed the railway answer makes no proof from pattern choice or scoring."
+      ],
+      "notes": "The matrix proves arithmetic only; it does not prove input validity, completeness, production behavior, or safety."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited expected, loss, probability, objective, empirical, proof, hard constraint, dominates, universal, safe, winner, fitness, and conclusion language."
+      ],
+      "notes": "Ratings are consistently called illustrative/invented, and future experiments or named expert reviews are not presented as completed evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-020/report.json",
+        "Reproduced both winning scores and the reversal flag.",
+        "Benchmarks, graph tests, mutation, fault injection, timing, plugin, database, and railway evidence remain proposed work."
+      ],
+      "notes": "No production pattern recommendation, external academic/practitioner review, or safety certification is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter compares the complete creational block by decision dimension, grounds selection in change scenarios and information hiding, and integrates feasibility, Pareto, regret, interaction, behavioral contracts, option value, and contraction."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "The decision process includes baseline implementation, natural-unit evidence, transparent matrices, sensitivity, targeted experiments, ownership diagrams, fitness functions, decision records, expiry, migration, and removal."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review starts with a compact decision model, explains each candidate's distinct responsibility, uses a runnable sensitivity example, supplies ten varied comparisons, and provides five exercises with complete analytical answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

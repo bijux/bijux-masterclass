@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-091",
+  "chapter_digest": "fea7663d1ef959005eaf45f6fda6648f0451ffb2148a3cc5181b354a3083ef65",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked the original Fowler/Hieatt/Mee Repository catalog entry, Evans' DDD Reference, related Fowler Data Mapper/Unit of Work/Identity Map material, Specification paper and current Microsoft DDD persistence guidance. ORM/provider behaviors remain explicitly version/configuration qualified."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked aggregate/repository/specification/unit-of-work/identity-map/page/version notation.",
+        "Checked collection-like operation signatures and conditional version transition notation."
+      ],
+      "notes": "The collection metaphor is consistently qualified as observational rather than complexity/failure equivalence."
+    },
+    "numerical_recomputation": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter contains no quantitative claim whose validity depends on numerical calculation; the executable trace demonstrates categorical filtering/order/version behavior."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified conditional version update permits one conflicting writer to advance from a shared expected version under adequate local isolation.",
+        "Verified separate authorization pre-check plus unconstrained lookup admits disclosure/TOCTOU while a scoped predicate closes that path.",
+        "Verified per-method auto-commit counterexample breaks application-owned multi-operation/outbox atomicity.",
+        "Verified Identity Map premise supports one logical instance per scoped identity within one unit."
+      ],
+      "notes": "Query efficiency, isolation and substitution require implementation evidence beyond interface form."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed absent/forbidden concealment, tenant scope, authority change, version conflict, uniqueness/collation, empty/max page, deterministic ties and stale reads.",
+        "Reviewed lazy loading/N+1, unbounded queries, identity-map/no-tracking behavior, transaction rollback/outbox, cache scope, migration/restore and vendor error translation.",
+        "Reviewed fake/production divergence and regulated record break-glass/privacy cases."
+      ],
+      "notes": "Actual query plans, mapping, isolation, ORM tracking and database errors require real-adapter tests."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced inward interface ownership, aggregate-root mutation, scoped authorization, stable identity, concurrency control, query semantics, error translation and test parity throughout exposition/examples/answers.",
+        "Confirmed external APIs and read projections are not mislabeled aggregate repositories."
+      ],
+      "notes": "Repository cannot guarantee interchangeability across stores with different consistency/query capabilities."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed dependency-direction, aggregate, authorization, concurrency, identity, bounded-query and fake-substitution arguments against stated premises.",
+        "Confirmed counterexamples for repository-per-table, generic CRUD, arbitrary predicates, authorization pre-check, last-write-wins, lazy loading and weak in-memory fakes."
+      ],
+      "notes": "No formal proof of database serializability, query cost, legal authorization adequacy or universal adapter substitutability is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited collection-like, atomic, authorized, isolated, consistent, interchangeable, bounded, substitute and safe language.",
+        "Confirmed conceptual interface properties, implementation evidence and named review are separated."
+      ],
+      "notes": "The chapter rejects Repository as mandatory ceremony or universal storage abstraction."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-091/report.json",
+        "Reproduced tenant-a/t-b filtering, deterministic ID ordering and expected-1/actual-2 version conflict using Python 3.",
+        "Confirmed no database, transaction, concurrency, authorization, paging, mapper, identity map, failure or latency was executed."
+      ],
+      "notes": "Execution establishes fixed dictionary/filter/branch behavior only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter preserves Repository's original domain collection/mapping intent while making aggregate, transaction, query, authorization, concurrency and cost boundaries explicit."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers ownership, aggregate methods, query contracts, authorization predicates, Unit of Work/Identity Map, concurrency/error translation, CQRS, testing, performance and removal criteria."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives align with deterministic repository model, ten distinct cases and five exercises progressing from contract design through concurrency, diagnosis, boundary classification and regulated transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

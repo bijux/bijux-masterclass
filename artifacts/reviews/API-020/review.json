@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "module_id": "API-020",
+  "chapter_digest": "087b1d96f20e735d9d55e3aec5578512b898de709df5fb4c9a5ddf42b54e5017",
+  "review_date": "2026-09-01",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 5,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-01",
+    "notes": "Checked RFC 9110 for resource and method semantics, current Google AIP-121 and AIP-136 pages for resource-oriented and custom-method guidance, the current Microsoft Azure REST API guidelines for action patterns, and Evans for durable domain-boundary foundations. Organizational guides are labeled as guidance rather than HTTP standards."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed definitions and uses of C, T, R, O, actor, pre, goal, recover, path, I_o, E_o, F_o, A_o, and D_o."
+      ],
+      "notes": "All mathematical notation is defined, GitHub-delimited, and used consistently with the prose."
+    },
+    "numerical_recomputation": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter makes no numerical claim requiring recomputation; counts in the bounded executable model are direct collection cardinalities."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked that task completeness quantifies over every admitted task and requires a nonempty operation path without claiming implementation success."
+      ],
+      "notes": "The formal statement is a specification obligation and its limitation is explicit."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed duplicate commands, stale versions, unknown provider outcomes, forbidden fields, privacy-preserving uniqueness, asynchronous completion, schema splits, and client-side workflow leakage."
+      ],
+      "notes": "Boundary and adversarial cases appear in the exposition, examples, and model answers."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked traceability, authority, transition, recovery, and encapsulation invariants against all ten examples."
+      ],
+      "notes": "No example requires a table-level public contract or contradicts the declared task boundary."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No formal theorem or proof is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No proof sketch is claimed."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable task-operation matrix is labeled as evidence only for its declared bounded data and explicitly excludes usability, authorization correctness, and production fitness."
+      ],
+      "notes": "No external empirical effectiveness claim is inferred from the executable example."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the distinction among consumer task, domain resource, standard method, command, operation resource, projection, and persistence implementation."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed authorization, overposting, idempotency, concurrency, asynchronous outcomes, error translation, privacy, observability, and internal schema migration concerns."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Reviewed first-principles progression, distinct purposes across ten worked examples, and five exercises progressing from classification through unfamiliar logistics transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

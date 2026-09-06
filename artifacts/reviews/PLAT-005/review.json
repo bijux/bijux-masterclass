@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "module_id": "PLAT-005",
+  "chapter_digest": "9bb44004291b5892d4b23452d83039ba177babf20bf562d4b9061effe626f1ed",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked CNCF's current Platforms White Paper, DORA's corrected 2024 report record, Google's SRE workbook guidance on self-service and automation safety, NIST SP 800-53 Rev. 5 Release 5.2.0 issued in 2025, NIST SP 800-207 and 800-207A, RFC 9110, and RFC 9457. The chapter distinguishes platform practice, security control guidance, zero-trust architecture, HTTP protocol semantics, and error representation without treating any one source as a complete self-service architecture."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked request tuple X=(p,i,c,k), principal/intent/context/key sets P/I/C/K, and all symbols before operational use.",
+        "Checked operation-state set S, allowed transition relation T⊆S×S, policy decisions D, enforcement actions F, and evidence E.",
+        "Checked predicates V(X), A(X), and G(X) plus the ordinary acceptance conjunction for consistent meanings.",
+        "Confirmed GitHub-compatible math delimiters and distinct notation for context set C versus individual context c."
+      ],
+      "notes": "The model abstracts implementation topology and does not claim that the three Boolean predicates capture all real policy or risk."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Confirmed dev-db satisfies all three synthetic predicates and returns accepted.",
+        "Confirmed bad-region fails validity before authorization and returns invalid.",
+        "Confirmed foreign-owner passes validity but fails authorization and returns denied.",
+        "Confirmed restricted-data is valid and authorized but unsupported and returns exception, leaving exactly one accepted request.",
+        "Confirmed all five stdout lines exactly match the snippet annotation and generated report."
+      ],
+      "notes": "The four requests are synthetic classification inputs, not measurements of production control effectiveness or risk."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived ordinary acceptance as validity AND authorization AND supportability while preserving acceptance versus completion.",
+        "Checked that authentication evidence about p cannot entail A(X) without target and context policy.",
+        "Checked that a state transition outside T remains invalid even when a provider exposes a superficially similar state.",
+        "Checked that handler-level deduplication cannot entail end-to-end idempotency when provider effects may repeat."
+      ],
+      "notes": "Relations specify contract obligations and non-entailments rather than proving a concrete control plane correct."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed malformed, valid-but-forbidden, authorized-but-unsupported, duplicate, concurrent, stale, partially committed, cancelled, deleted, expired, and malicious requests.",
+        "Reviewed identity, policy, provider, clock, network, decision-service, and reconciliation failures plus fail-open, fail-closed, fail-static, cached, degraded, and break-glass modes.",
+        "Reviewed portal/CLI semantic drift, hidden queues, ignored warnings, quota exceptions, corrective oscillation, retained credentials, backups, and information-disclosing denials.",
+        "Reviewed clinical research and emergency shelter cases with ethics, privacy, legal, incident-command, accessibility, data-governance, operator, and affected-person authorities."
+      ],
+      "notes": "Legal, ethical, clinical, emergency-policy, and affected-community acceptance remain human and institutional decisions outside repository validation."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked authentication, validation, authorization, supportability, acceptance, execution, and readiness remain separate meanings.",
+        "Checked portal, CLI, API, and automation preserve one capability and guardrail contract.",
+        "Checked retry safety, state honesty, durable operation identity, and observable ambiguous-commitment resolution.",
+        "Checked authority preservation through defaults, exceptions, break glass, correction, revocation, and high-consequence examples.",
+        "Checked lifecycle completeness includes ownership, observation, change, cancellation, cleanup, retention, deletion, and retirement."
+      ],
+      "notes": "Concrete capabilities still require implementation-specific conformance, security, load, fault-injection, accessibility, and operational evidence."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the automated-but-unrecoverable counterexample disproving that no human touch is sufficient for self-service.",
+        "Reviewed the authenticated foreign-owner case disproving that authentication entails authorization.",
+        "Reviewed asynchronous acceptance and provider creation cases disproving that accepted or created entails ready.",
+        "Reviewed decision-service outage cases disproving that one global fail-open or fail-closed posture is universally safe.",
+        "Confirmed the executable model establishes deterministic decision order only."
+      ],
+      "notes": "The chapter offers contract arguments and counterexamples, not a formal proof of safety, liveness, policy completeness, or production independence."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of self-service, safe, valid, authorized, accepted, ready, guarantee, idempotent, secure, control, evidence, and prove.",
+        "Confirmed strong claims are bounded by eligibility, declared intent, context, supported envelope, authority, state, and evidence.",
+        "Confirmed standards citations, deterministic execution, control presence, and internal review are not represented as proof of complete risk treatment."
+      ],
+      "notes": "The chapter labels prevention, detection, correction, compensation, and rollback according to their actual guarantees."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/PLAT-005/report.json records exact execution of self-service-decision-model under the captured Python 3 toolchain.",
+        "Reproduced accepted, invalid, denied, and exception decisions in the declared order with exactly one accepted request.",
+        "Confirmed the chapter denies authentication, real authorization, policy correctness, safe defaults, side effects, or exception legitimacy from the artifact.",
+        "Confirmed measurement guidance requires task, decision, exception, lifecycle, incident, support, and qualitative evidence and protects telemetry from performance surveillance."
+      ],
+      "notes": "Execution verifies only the tiny pure decision function over declared synthetic inputs."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed four-dimensional self-service, capability contracts, request and operation models, authentication/validation/authorization separation, preventive/detective/corrective controls, defaults, diagnostics, dependency failure, exceptions, break glass, lifecycle, and measurement. The chapter avoids collapsing automation, interface, access, validity, acceptance, readiness, and self-service."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed tickets, retries, operation identity, production secrets, decision outages, ownership warnings, quotas, interface drift, reconciliation conflicts, deletion residue, policy explanations, cached decisions, degraded modes, credential rotation, image controls, and sensitive-data access. Each pattern names authority, evidence, failure, recovery, and lifecycle consequences."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The objectives align with ten distinct examples and five exercises progressing from workflow classification through state derivation, failure-policy design, control comparison, and unfamiliar emergency-shelter transfer. Corresponding answers are complete and preserve risk and authority boundaries."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

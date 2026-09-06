@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-087",
+  "chapter_digest": "20218bef527db5ca3682d23ad31fb8e19e195d6545aae2249791a684f524b66c",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked the original Garcia-Molina and Salem Saga paper, current AWS Saga Orchestration guidance, current Microsoft Saga and Compensating Transaction guidance, and the cited transaction, integration and distributed-systems foundations. Current platform terminology is explicitly qualified; no runtime-specific delivery guarantee is inferred."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked sequential saga T_i/C_i notation, dependency DAG G=(V,E), identity symbols, state, fencing generation and deadline notation.",
+        "Checked forward and reverse-recovery expressions and distinguished protocol notation from an atomicity theorem."
+      ],
+      "notes": "Compensation indices, dependency order and local-transaction scope are used consistently."
+    },
+    "numerical_recomputation": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No production probability, latency, retry count or availability figure is claimed."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified that a sequential known-committed prefix permits compensation in reverse dependency order under the stated compensatability assumptions.",
+        "Verified that a reverse topological order preserves a prerequisite until all represented dependents are compensated.",
+        "Verified that stable effect identity plus atomic participant deduplication supports at-most-one logical effect despite at-least-once delivery, subject to retention and local isolation assumptions."
+      ],
+      "notes": "These are conditional protocol arguments, not global atomicity, isolation or unconditional liveness proofs."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed definite rejection versus commit-response loss, duplicate/conflicting identities, compensation timeout/failure, permanent rejection, expired authority and irreversibility.",
+        "Reviewed parallel dependencies, concurrent saga isolation anomalies, stale lease/workflow versions, outbox crash windows, delayed/reordered messages and dead-letter non-resolution.",
+        "Reviewed financial, physical, medical-device and manual-review cases where automatic compensation is incomplete or unsafe."
+      ],
+      "notes": "Provider queryability, idempotency retention, legal authority and domain compensation adequacy remain system-specific."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced participant ownership, distinct identities, atomic transition/outgoing intent, explicit ambiguity, compensation evidence, concurrency countermeasures, fencing and owned escalation through exposition and examples.",
+        "Checked that no timeout/cancellation path is presented as proof that an issued effect did not commit.",
+        "Checked that compensation targets semantic effects rather than overwriting later entity snapshots."
+      ],
+      "notes": "Global business invariants require domain-specific local mechanisms; the Saga pattern alone does not supply isolation."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed local-safety, durable-progress, backward-recovery, isolation, ambiguity, fencing and residual-state arguments against their stated assumptions.",
+        "Confirmed counterexamples for outcome guessing, per-attempt effect IDs, reverse wall-clock compensation, snapshot restoration and coordinator-only fencing.",
+        "Confirmed liveness terminates in explicit escalation when automation cannot legally or technically progress."
+      ],
+      "notes": "No formal proof of external participant behavior, fair scheduling, business compensation, global serializability or eventual provider recovery is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited atomicity, rollback, isolation, exactly-once, idempotency, safety, liveness, terminal and compensation language.",
+        "Confirmed the deterministic trace is explicitly limited and protocol arguments are stated conditionally."
+      ],
+      "notes": "The chapter never equates compensated with historical restoration or transport delivery with one logical effect."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-087/report.json",
+        "Reproduced reserve/charge commits, definite shipment failure, reverse dependency compensation and compensated terminal output using Python 3.",
+        "Confirmed the executable model performs no I/O, concurrency, durability, messaging or external effect."
+      ],
+      "notes": "Execution establishes one deterministic list/state trace only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently treats Saga as a durable protocol over local transactions, not distributed rollback, and separates compensation, forward recovery, ambiguity, isolation countermeasures and escalation."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers identity, durable state/outbox boundaries, orchestration/choreography, compensation semantics, dependency order, versioning, reconciliation, security, observability, repair ownership and boundary fault injection."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives align with a first-principles model, deterministic trace, ten distinct worked cases and five exercises progressing from identity retrieval through graph reasoning, diagnosis, architecture comparison and high-stakes transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

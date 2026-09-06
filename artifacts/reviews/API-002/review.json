@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "API-002",
+  "chapter_digest": "e2069d420b26849c28afb3a0e68b26575e28e25abf50b930fe10fb3920474448",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked current RFC 9110 core method semantics, the IANA HTTP Method Registry last updated 2026-06-17, RFC 5789 PATCH, RFC 9111 caching, Fielding's primary dissertation, current BCP guidance in RFC 9205, WebDAV extension methods, and RFC 9114 transport mapping. The chapter treats the registry as extensible and does not freeze an obsolete core-only list."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked request tuple R, method/resource/field/content/context domains, semantic relation, state/outcome/effect codomain, and method-property predicates for definition before use.",
+        "Verified separation of Safe, Idem, Cacheable, Allowed, Replayable, and Applied predicates.",
+        "Checked that identical-request reasoning preserves target, semantic fields, content, actor context, and declared replay boundaries."
+      ],
+      "notes": "The semantic relation allows resource-specific outcomes without permitting contradiction of registered method semantics."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed selected registry pairs as GET=(true,true), POST=(false,false), PUT=(false,true), DELETE=(false,true), and PATCH=(false,false) for safe/idempotent.",
+        "Confirmed all selected safe methods are idempotent.",
+        "Confirmed PUT and DELETE falsify the converse implication that every idempotent method is safe."
+      ],
+      "notes": "The executable table is deliberately selected, not a claim to reproduce the complete live IANA registry."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived safety as a constraint on client-requested origin-state change and idempotency as equality of intended effect under repeated identical requests.",
+        "Checked that idempotency does not entail response equality, commutativity, replayability, deduplication, authorization, or retry prudence.",
+        "Checked POST-versus-PUT and PUT-versus-PATCH distinctions against target selection, representation intent, and patch-document semantics."
+      ],
+      "notes": "Boolean method properties are protocol classifications, not proofs of a particular handler or business workflow."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed safe-method query actions, prefetch/crawlers, GET/HEAD/DELETE request content, request smuggling, TRACE disclosure, CONNECT tunnel abuse, method override, gateway allowlists, and extension methods.",
+        "Reviewed response loss, non-replayable streams, expired credentials, precondition drift, redirects, concurrent different requests, multiplicative retries, overload, cache invalidation, and downstream partial effects.",
+        "Reviewed deletion-versus-erasure, PUT transformation/validator rules, PATCH base collision and atomicity, dynamic Allow, 405 versus 501, and authorization-aware disclosure.",
+        "Reviewed infusion and grid-control examples for units, identity, authority, stale state, physical effects, named human review, and operational acceptance."
+      ],
+      "notes": "Method semantics, transport attempts, origin effects, downstream effects, and real-world outcomes remain separate evidence boundaries."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced semantic conformance, safe action, PUT replacement, retry identity, and evidence-separation invariants through examples and answers.",
+        "Confirmed no query parameter, handler convention, framework route, or private content agreement redefines a standard method.",
+        "Confirmed every retry discussion preserves method semantics while adding content replayability, conditions, identity, deadline, load, and authoritative-effect evidence."
+      ],
+      "notes": "Later modules deepen conditional requests, caching, idempotency, retries, and authorization without changing these method invariants."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed safe-implies-idempotent for the selected registered methods and the PUT/DELETE counterexamples to its converse.",
+        "Reviewed repeated PUT and DELETE examples to confirm intended effect can remain equal while status, validators, logs, or current observations differ.",
+        "Reviewed why method idempotency alone cannot prove exactly-once delivery, application-effect deduplication, commutativity, or safe physical operation."
+      ],
+      "notes": "The chapter supplies semantic deductions and counterexamples, not formal verification of an API implementation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of safe, idempotent, identical, retry, atomic, complete, replace, delete, validate, authorize, and prove.",
+        "Confirmed protocol semantics, implementation conformance, operation evidence, domain validation, legal erasure, clinical/grid safety, and external authorization remain distinct."
+      ],
+      "notes": "No registered property, status code, test, or internal review is promoted beyond its stated scope."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "artifacts/snippets/API-002/report.json records deterministic output for method-property-table.",
+        "The chapter explicitly limits the run to encoded Boolean classifications and denies handler, retry, deduplication, authorization, or business-outcome proof.",
+        "Operational guidance requires method matrices across client, proxy, gateway, origin, cache, downstream effect, timeout, duplicates, concurrency, and recovery."
+      ],
+      "notes": "No production API, clinical, energy-grid, safety, regulatory, erasure, or external-review claim is made."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed method token, target semantics, safety, idempotency, cacheability, replayability, deduplication, condition, GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE, CONNECT, PATCH, Allow, 405, 501, and extension method as distinct concepts."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed method selection, content contracts, target and related effects, preconditions, validators, retries, recovery queries, cache invalidation, gateways, authorization, observability, abuse resistance, deletion governance, and extension deployment. Internal API-practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from common method properties through every core method, PATCH, extensions, formal predicates, design workflow, and operational evidence. Ten examples and five complete exercises cover classification, interface design, retry audit, conformance testing, and high-consequence unfamiliar transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, API-practitioner, IETF, standards-body, clinical, energy-grid, safety, regulatory, accessibility, legal-erasure, or certification review is claimed."
+}

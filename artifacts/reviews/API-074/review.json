@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "API-074",
+  "chapter_digest": "88d894a05219cfcdad939422a6e87a94df1df64de016b2eea4deb88c6cfdfb23",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 6,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked six official/primary sources. AWS supports layered protection, the overload/goodput feedback model, cheap rejection, bounded work, prioritization, queue caution, local server knowledge, and testing beyond the plateau. Google SRE supports graceful shedding, criticality, deadline-aware work removal, degradation, queue/load controls, and realistic overload testing. RFC 9110 supports 503 for temporary overload and optional Retry-After. Envoy documents overload actions/load-shed points. Product-specific behavior remains attributed."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked offered/admitted rates lambda_i/x_i, class costs c_i, safe capacity B, total lambda/a, shed fraction S, goodput G, deadline D, current time t, queue wait W_q, and minimum service W_s for consistent units.", "Confirmed weighted capacity sums use requests per unit time times resource units per request.", "Confirmed the lambda>0 condition prevents division by zero in shed fraction."],
+      "notes": "Capacity units are deliberately generic and require a named limiting resource in implementation."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Recomputed (1,200-900)/1,200 as 25% and confirmed the goodput counterexample rises from 500 to 900 timely completions/s.", "Recomputed 600 one-unit reads plus 30 twenty-unit reports as 1,200 units/s; after 600 reads, 400 units admit 20 reports and shed 10/s.", "Recomputed 35+40+10 ms as 85 ms, exceeding the 80 ms remaining deadline.", "Recomputed exercise offered cost as 1,200+1,200+100=2,500 units/s; after 100 control and 1,200 interactive, 700 units admit 175 four-unit background requests/s and shed 125/s; counted ten examples and five answer pairs."],
+      "notes": "All rates, costs, limits, and allocations are explicitly scenarios rather than universal thresholds."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Derived the capacity bound from atomic token charging and identified underestimated cost, bypasses, burst windows, and bottleneck shifts as counterexamples.", "Confirmed the deadline inequality makes timely completion infeasible under its stated estimates.", "Confirmed reserved capacity excludes other tenants only when borrowing/bypass is prohibited.", "Constructed accept-all versus shedding traces showing raw acceptance does not imply maximum goodput."],
+      "notes": "Admission arguments are conditional bounds, not guarantees of availability or correct cost prediction."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Reviewed idle, expected peak, knee, severe/sustained overload, recovery, zero offered rate, burst, and fleet-loss states.", "Reviewed cache mix and payload/fan-out cost shifts, CPU versus database/memory/event-loop bottlenecks, queue expiry, cancellation, stuck work, and rejection-path cost.", "Reviewed forged criticality, noisy tenants, high-cardinality labels, attacks, internal bypass, health-check paradox, fallback saturation, telemetry/control-plane loss, autoscaling lag, and synchronized adaptive controllers.", "Reviewed pre-admission rejection, effect-after-admission, timeout-after-commit, retry amplification, fixed pushback herd, and cross-layer status translation."],
+      "notes": "Coverage spans resource, timing, semantic, topology, recovery, fairness, protocol, and hostile-input cases."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Confirmed rejection precedes scarce work when the security/protocol contract permits and remains bounded itself.", "Confirmed priority is authenticated/server-derived and cannot increase across fan-out without explicit policy.", "Confirmed expired/cancelled work leaves queues and does not begin expensive execution.", "Confirmed admitted writes preserve idempotency/outcome truth and are not relabeled as pre-admission shedding.", "Confirmed retries, health probes, internal traffic, and fallbacks do not bypass bounded admission."],
+      "notes": "Quota, rate, overload, circuit, deadline, validation, and authorization outcomes remain separately observable."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed cost-capacity proof and confirmed it binds only represented resources and credible estimates.", "Reviewed goodput counterexample and confirmed the conclusion concerns timely useful completion, not raw success among admitted calls.", "Reviewed deadline rejection and confirmed estimate/clock trust is explicitly empirical.", "Reviewed fairness reserve and confirmed shared ungated dependencies remain a counterexample."],
+      "notes": "Every formal claim includes its operational assumptions and failure conditions."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Confirmed arguments are labeled and separated from product guidance and candidate policy.", "Confirmed HTTP semantics are attributed to RFC 9110 and overload mechanisms to their official sources.", "Confirmed example thresholds, priorities, and allocations are not presented as standards."],
+      "notes": "The chapter distinguishes mathematical bounds, design policy, and empirical capacity evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["All six official/primary references were checked on 2026-09-02 where current guidance applies.", "All demand, cost, deadline, fleet, queue, priority, and capacity values are labeled examples.", "Safe envelope, goodput knee, request costs, tail behavior, rejection cost, fairness, controller stability, autoscaling, fallback capacity, and recovery remain explicit load/fault/integration evidence obligations."],
+      "notes": "No production service, tenant population, gateway, load balancer, or client fleet was empirically assessed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed goodput, capacity discovery, layered cheap rejection, deadline usefulness, cost modeling, trusted criticality, fairness, queues/concurrency, signals, API semantics, retries, degradation, health behavior, observability, and recovery testing as one overload-control model."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Checked implementability through operation/cost inventory, resource gates, authenticated priority, bounded queues and rejection paths, stable 429/503 codes, original-deadline checks, retry budgets, reserve/fair allocation, layered envelopes, goodput dashboards, and overload tests through recovery."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The module develops shedding from the goodput cliff through admission placement, deadline and cost, criticality/fairness, signals and protocol, layered recovery, and verification. Ten examples and five increasingly integrative exercises have complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

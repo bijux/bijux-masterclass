@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "module_id": "DSE-090",
+  "chapter_digest": "af4a96e3300817380143f1a5c71771e436927ed19740018b624e004308a59dd7",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed the original HNSW and NSW papers, the maintained hnswlib repository and parameter guide, the maintained Faiss index documentation and HNSW source, and the ANN-Benchmarks paper. All seven final destinations returned HTTP 200. Algorithm, parameter, deletion, and implementation claims remain scoped to the cited paper or named implementation rather than generalized across all HNSW systems."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked level l, level multiplier mL, uniform draw U, M, efConstruction, efSearch, k, candidate recall, and generation terminology.",
+        "Checked squared Euclidean examples preserve distance ordering and distinguish navigation scores from authoritative reranking.",
+        "Checked candidate, retained, visited, frontier, eligible, live, and exact-oracle sets remain distinct."
+      ],
+      "notes": "Implementation-specific maximum degrees and parameter semantics are not collapsed into one universal HNSW definition."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed one-million-point M=16 expected upper populations as 62,500 and 3,906.25.",
+        "Recomputed ten-million 128-dimensional float32 payload as 5.12 GB and 32 four-byte base IDs per vector as 1.28 GB.",
+        "Recomputed four-million-point M=32 expected populations as 125,000, 3,906.25, and 122.0703125.",
+        "Recomputed 25-million 384-dimensional float32 payload as 38.4 GB and 48 four-byte base IDs per vector as 4.8 GB."
+      ],
+      "notes": "All byte figures use decimal GB and are explicitly identified as lower-bound components rather than process resident-memory estimates."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived P[l>=t] = exp(-t/mL) from l=floor(-ln(U)mL) and U uniform on (0,1).",
+        "Substituted mL=1/ln(M) to obtain approximate M^-t layer survival.",
+        "Reviewed the bounded best-first termination condition against the nearest frontier and worst retained distances.",
+        "Verified exact top-three ordering L/K/I from squared distances 1/5/9 in the executable fixture."
+      ],
+      "notes": "Population thinning and bounded-loop invariants are not represented as a universal logarithmic search or exact-recall proof."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/singleton indexes, duplicate vectors, distance ties, zero vectors, NaN/infinity, invalid dimension, overflow, and nonmetric inner product.",
+        "Reviewed local minima, disconnected/unreachable vertices, redundant edges, hubs, adversarial insertion order, clustered data, and hostile exploration widths.",
+        "Reviewed selective filters, traversal through ineligible vertices, deleted hubs, slot reuse, vector/model updates, stale edges, and rebuild thresholds.",
+        "Reviewed partial reciprocal updates, entry publication crashes, mixed generations, corrupt adjacency, concurrent operations, shard loss, and security leakage."
+      ],
+      "notes": "The executable fixture excludes construction, random sampling, mutation, filtering, persistence, concurrency, sharding, compression, and adversarial workloads."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "The static graph contains twelve valid two-dimensional integer points across three nested teaching layers with a live entry A.",
+        "Greedy upper traversal deterministically follows A-F and F-J under squared distance and name tie ordering.",
+        "Width-four base search marks before scheduling, avoids duplicate expansion, visits eight vertices, and retains L/K/I/J.",
+        "Approximate top three exactly matches exhaustive top three and exact seventeen-line output passes the repository verifier."
+      ],
+      "notes": "Handwritten adjacency demonstrates query invariants only and is not evidence that an insertion heuristic would construct the same graph."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed exponential layer survival from the uniform transformation and flooring boundary.",
+        "Reviewed greedy descent as monotone improvement to a local minimum, not a global-nearest proof.",
+        "Reviewed base-search frontier, visited, retained-set, trimming, and stopping invariants.",
+        "Reviewed generation publication ordering required to exclude vector/adjacency/entry mixtures after recovery."
+      ],
+      "notes": "No universal graph connectivity, optimal neighbor selection, exact search, logarithmic work, concurrent correctness, crash recovery, or distributed recall proof is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Expected layer counts are separated from navigability and complexity claims.",
+        "Paper mechanisms are separated from hnswlib and Faiss implementation-specific behavior.",
+        "Benchmark recall and the bounded model are explicitly labeled empirical/local evidence rather than general guarantees."
+      ],
+      "notes": "Operational recommendations are presented as validation obligations and design choices, not as consequences of the HNSW paper."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library Python model passed exact seventeen-line stdout, empty stderr, and zero exit status under the safe repository verifier.",
+        "Independent calculations reproduced all layer-population, memory, path, candidate-distance, visited-count, and oracle values.",
+        "All seven final external destinations returned HTTP 200 and local structure, links, examples, exercises, answers, and snippet checks passed before review."
+      ],
+      "notes": "No real HNSW library build, random graph construction, dataset recall benchmark, concurrency race test, mutation campaign, persistence fault injection, filtered workload, shard experiment, security test, or production deployment was run."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter separates proximity-graph intuition, randomized hierarchy, bounded query search, incremental construction, metric semantics, lifecycle, and exact-oracle evaluation with explicit approximation boundaries."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed M/ef trade-offs, memory accounting, representation and quantization, filters, updates/deletes, graph health, library concurrency matrices, atomic persistence/recovery, sharding, capacity, security, observability, and reproducible benchmarks."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet establishes the HNSW mental model; the executable fixture exposes upper descent and bounded base search; ten examples cover populations, capacity, width, local minima, diversity, filters, deletes, drift, crashes, and shards; five exercises combine calculation, tracing, architecture, and experimental design."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic, Malkov, Yashunin, Ponomarenko, Logvinov, Krylov, nmslib, Meta/Faiss, ANN-Benchmarks, database, distributed-systems, security, performance, or independent practitioner review is claimed. The chapter and model prove neither a production HNSW implementation, graph-construction quality, exact recall, universal logarithmic complexity, implementation concurrency, persistent recovery, filtered or distributed correctness, adversarial robustness, certification, nor deployment fitness."
+}

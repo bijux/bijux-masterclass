@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "PLAT-013",
+  "chapter_digest": "dfd78bd2e8598a0896579390b69fefb894649e7b07e36f2fd166ef106688766d",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked all ten structured references. Official POSIX Issue 8 search records, normative utility pages, and rationale support the option, operand, delimiter, and portability discussion; the main rationale URL intermittently returned 403 to direct automated opening, so no claim depends on inaccessible wording. Current GNU standards support long-option consistency and successful --help/--version behavior. Current Git documentation, updated for the 2026 release line, explicitly distinguishes changeable human status from stable porcelain output and documents NUL termination. Current Kubernetes guidance supports machine-oriented output, fully qualified resource versions, and avoidance of implicit state in scripts. MITRE CWE 4.20 supports visible argument/environment secret risk. RFC 8259, SemVer 2.0.0, the current XDG specification, current CLI Guidelines, and DORA platform guidance support their narrowly described roles. The practitioner CLI Guidelines are labeled synthesis rather than a formal standard."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked I=(G,A,S,E,C,T,L), R=(O,D,X,M,K), contract Gamma_v, invocation class i, bulk set B, outcomes o_b, and unresolved subset U against first use and Definitions and Notation.",
+        "Checked tuple, function, membership, subset, and version-subscript syntax with the repository GitHub-math validator."
+      ],
+      "notes": "Symbols are defined without overloading. Standard input S is distinct from exit status X and contract version v."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed cli-contract-matrix under Python 3 and reproduced cases=8, passed=8, mutations=1, prompts=0, secrets_exposed=0.",
+        "Checked each synthetic exit class lies in range 0 through 8 and that only delete-confirmed carries a mutation.",
+        "Checked every non-terminal interaction-required case performs no mutation and the aggregate booleans sum to eight passing cases."
+      ],
+      "notes": "The matrix validates its stated synthetic invariants only; exit values are documented product examples, not asserted POSIX universal assignments."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Expanded both invocation and result tuples against the grammar, stream, configuration, terminal, mutation, and continuation prose.",
+        "Checked the compatibility relation requires observable semantics to remain within Gamma_v guarantees for supported invocation class i rather than byte equality for human presentation.",
+        "Expanded the bulk completeness statement and confirmed that every target has a terminal outcome or belongs to explicit unresolved subset U."
+      ],
+      "notes": "The relations are contract definitions, not proofs that a particular CLI implementation conforms."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed TTY/non-TTY, stdin open/closed/redirected, stdout/stderr separate/merged, color, pager, locale, terminal width, and assistive-technology cases.",
+        "Checked spaces, newlines, leading hyphens, Unicode, terminal controls, repeated options, -- delimiter, empty versus absent values, and shell quoting.",
+        "Checked pre-submit/post-submit interrupt, timeout, duplicate retry, partial provider result, unknown outcome, cancellation ambiguity, expired identity, denial, conflict, plan drift, and fan-out.",
+        "Checked old schema consumers, strict unknown-field consumers, deprecated aliases, plugins, visible secrets, debug/support output, and individual telemetry misuse."
+      ],
+      "notes": "The chapter does not infer consent from a TTY, success from acceptance, cancellation from Ctrl-C, secrecy from environment variables, or completeness from a partial subset."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced shared capability semantics across CLI, API, portal, provider state, operation identity, and support correlation.",
+        "Checked requested-result stdout, diagnostic stderr, secret redaction, non-interactive determinism, and machine-schema stability throughout examples and answers.",
+        "Checked configuration provenance, explicit destructive scope, authorization, plan binding, recovery, per-target outcomes, and unknown-state preservation.",
+        "Checked retries retain request identity and that local interruption never claims remote rollback without evidence."
+      ],
+      "notes": "Semantic, stream, non-interaction, context, identity, safety, and secrecy invariants hold across design, failure, evolution, and safety-critical transfer."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter states no theorem and contains no deductive proof. Its notation describes interface contracts and completeness conditions."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No proof sketch is claimed; the executable matrix is explicitly synthetic."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable contract matrix is labeled synthetic and not presented as implementation evidence.",
+        "Formal specifications, project documentation, practitioner synthesis, security classification, and DORA empirical/product guidance remain distinguishable.",
+        "Narrative examples are designs rather than measured field results, and command telemetry is explicitly rejected as developer-productivity evidence."
+      ],
+      "notes": "No external conformance, usability study, or implementation security audit is claimed. Source access limitations are recorded without overstating verification."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently treats the CLI as a process, stream, grammar, configuration, operation, and evolution contract over shared platform capabilities. Human presentation, machine schema, remote operation state, application authorization, and provider diagnostics remain distinct."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "A practitioner can apply the invocation/result model, grammar checklist, stream allocation, exit-class map, TTY controls, configuration provenance, secret channels, asynchronous continuation, destructive plan binding, help/error schema, compatibility tests, and deprecation process. Examples cover parsing, CI, timeouts, partial results, auth, deletion, accessibility, schema evolution, and plugins."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The sequence progresses from vocabulary and grammar through formal result semantics, output and exits, interaction, configuration, authentication, distributed state, destructive safety, help, and evolution. Ten examples are distinct; five exercises progress from a complete command contract through critique, destructive design, test design, and safety-critical transfer, with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}
