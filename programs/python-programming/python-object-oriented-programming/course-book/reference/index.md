@@ -1,4 +1,6 @@
-# Reference
+# Python Object-Oriented Programming Reference {#reference}
+
+Use this course reference shelf for Python Object-Oriented Programming terminology, review prompts, and routes to the detailed reference pages.
 
 
 <!-- page-maps:start -->

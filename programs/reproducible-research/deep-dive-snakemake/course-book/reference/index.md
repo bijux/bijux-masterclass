@@ -1,4 +1,6 @@
-# Reference
+# Deep Dive Snakemake Reference {#reference}
+
+Use this course reference shelf for Deep Dive Snakemake terminology, review prompts, and routes to the detailed reference pages.
 
 Use the reference shelf when the lesson itself is already recognizable and you need a
 durable review surface. This shelf is not the course’s first teaching layer. It is the
