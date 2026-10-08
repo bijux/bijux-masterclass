@@ -12,6 +12,7 @@ series-docs-build: series-docs-install bijux-docs-sync ## Build the series docum
 	@$(SYNC_SERIES_DOCS)
 	@$(RENDER_ROOT_MKDOCS)
 	@$(DOCS_ENV) $(MKDOCS) build -f $(ROOT_MKDOCS_FILE) --strict
+	@$(DOCS_ENV) $(VENV_PY) scripts/verify_catalog_site.py --config $(ROOT_MKDOCS_FILE) --output artifacts/docs/catalog-links.json
 
 .PHONY: series-docs-serve
 series-docs-serve: series-docs-install bijux-docs-sync ## Serve the series documentation site locally
