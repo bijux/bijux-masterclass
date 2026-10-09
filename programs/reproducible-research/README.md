@@ -2,7 +2,7 @@
 
 <section class="bijux-hero">
   <div class="bijux-hero__eyebrow">Program Family</div>
-  <h1 class="bijux-hero__title">Choose the workflow model that matches the failure you need to fix.</h1>
+  <p class="bijux-hero__title">Choose the workflow model that matches the failure you need to fix.</p>
   <p class="bijux-hero__lede">This family collects programs about reproducibility, workflow truth, data state, and publication boundaries. The goal is not to organize tools by popularity. The goal is to help a reader choose the system model that matches the failure mode they need to fix.</p>
   <div class="bijux-topic-row">
     <span class="bijux-topic-pill">Build graphs</span>

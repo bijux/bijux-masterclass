@@ -2,7 +2,7 @@
 
 <section class="bijux-hero">
   <div class="bijux-hero__eyebrow">Catalog Handbook</div>
-  <h1 class="bijux-hero__title">Choose the right program family before you choose the course.</h1>
+  <p class="bijux-hero__title">Choose the right program family before you choose the course.</p>
   <p class="bijux-hero__lede">Bijux Masterclass is the root catalog for the full program collection. Start here when you need to choose a family first, then narrow down to the course that matches the real design or reproducibility pressure in front of you.</p>
   <div class="bijux-topic-row">
     <span class="bijux-topic-pill">Python design</span>
@@ -12,17 +12,17 @@
   </div>
 </section>
 
+<div class="bijux-quicklinks">
+  <a class="md-button md-button--primary" href="python-programming/README.md">Open Python Programming</a>
+  <a class="md-button" href="reproducible-research/README.md">Open Reproducible Research</a>
+</div>
+
 <div class="bijux-callout"><strong>The catalog should route by pressure, not by tool branding.</strong> Use the family pages to decide which system model you need first. Drop into one course only after the boundary is clear enough that the course home is the honest next page.</div>
 
 <div class="bijux-panel-grid">
   <div class="bijux-panel"><h3>Python Programming</h3><p>Open this family when the pressure is about object boundaries, functional composition, runtime hooks, or long-lived API behavior.</p></div>
   <div class="bijux-panel"><h3>Reproducible Research</h3><p>Open this family when the pressure is about build graphs, workflow orchestration, state identity, publication, and recoverable change.</p></div>
   <div class="bijux-panel"><h3>Stable Routing</h3><p>Use the root catalog to compare families first, then use family pages to choose one course home with the right learner entry and capstone route.</p></div>
-</div>
-
-<div class="bijux-quicklinks">
-  <a class="md-button md-button--primary" href="python-programming/README.md">Open Python Programming</a>
-  <a class="md-button" href="reproducible-research/README.md">Open Reproducible Research</a>
 </div>
 
 This README is the maintained source for the root catalog page, and the family
