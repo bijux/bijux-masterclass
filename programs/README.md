@@ -1,9 +1,15 @@
 # Bijux Masterclass
 
+<p class="bijux-hero__lede">Bijux Masterclass is the root catalog for the full program collection. Start here when you need to choose a family first, then narrow down to the course that matches the real design or reproducibility pressure in front of you.</p>
+
+<div class="bijux-quicklinks">
+  <a class="md-button md-button--primary" href="python-programming/README.md">Open Python Programming</a>
+  <a class="md-button" href="reproducible-research/README.md">Open Reproducible Research</a>
+</div>
+
 <section class="bijux-hero">
   <div class="bijux-hero__eyebrow">Catalog Handbook</div>
   <p class="bijux-hero__title">Choose the right program family before you choose the course.</p>
-  <p class="bijux-hero__lede">Bijux Masterclass is the root catalog for the full program collection. Start here when you need to choose a family first, then narrow down to the course that matches the real design or reproducibility pressure in front of you.</p>
   <div class="bijux-topic-row">
     <span class="bijux-topic-pill">Python design</span>
     <span class="bijux-topic-pill">Workflow truth</span>
@@ -11,11 +17,6 @@
     <span class="bijux-topic-pill">Long-form courses</span>
   </div>
 </section>
-
-<div class="bijux-quicklinks">
-  <a class="md-button md-button--primary" href="python-programming/README.md">Open Python Programming</a>
-  <a class="md-button" href="reproducible-research/README.md">Open Reproducible Research</a>
-</div>
 
 <div class="bijux-callout"><strong>The catalog should route by pressure, not by tool branding.</strong> Use the family pages to decide which system model you need first. Drop into one course only after the boundary is clear enough that the course home is the honest next page.</div>
 
