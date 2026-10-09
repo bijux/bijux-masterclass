@@ -109,6 +109,7 @@ SERIES_SITE_PATHS = {
     "scripts/sync_series_docs.py",
 }
 SERIES_SITE_PREFIXES = (
+    "scripts/catalogue/",
     ".bijux/shared/bijux-docs/",
     "docs/",
 )

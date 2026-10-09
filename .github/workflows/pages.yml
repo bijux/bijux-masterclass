@@ -17,6 +17,7 @@ on:
       - "makes/docs.mk"
       - "makes/series-docs.mk"
       - "makes/bijux-docs.mk"
+      - "scripts/catalogue/**"
       - "scripts/render_root_mkdocs.py"
       - "scripts/sync_series_docs.py"
       - "Makefile"

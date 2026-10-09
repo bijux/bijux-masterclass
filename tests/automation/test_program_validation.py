@@ -31,6 +31,9 @@ class ProgramValidationSelectionTests(unittest.TestCase):
         )
         self.assertEqual(names, ["deep-dive-snakemake"])
 
+    def test_catalogue_planning_domain_selects_only_series_integration(self) -> None:
+        self.assertEqual(self.names(["scripts/catalogue/source_plan.py"]), ["series-site"])
+
     def test_course_book_change_adds_series_integration(self) -> None:
         names = self.names(
             [
@@ -169,6 +172,7 @@ class WorkflowEconomyTests(unittest.TestCase):
         self.assertIn('"programs/*/*/course-book/**"', workflow)
         self.assertIn('"programs/*/*/capstone/docs/**"', workflow)
         self.assertIn('".bijux/shared/bijux-docs/**"', workflow)
+        self.assertIn('"scripts/catalogue/**"', workflow)
         self.assertNotIn('"programs/**"', workflow)
 
     def test_pages_does_not_install_dependencies_twice(self) -> None:
