@@ -164,17 +164,24 @@ class WorkflowEconomyTests(unittest.TestCase):
         self.assertIn("fromJSON(needs.select.outputs.matrix)", workflow)
         self.assertNotIn("matrix:\n        include:", workflow)
 
-    def test_pages_only_runs_for_publication_inputs(self) -> None:
-        workflow = self.workflow_text("pages.yml")
-        self.assertIn('"programs/*/*/course-book/**"', workflow)
-        self.assertIn('"programs/*/*/capstone/docs/**"', workflow)
-        self.assertIn('".bijux/shared/bijux-docs/**"', workflow)
-        self.assertNotIn('"programs/**"', workflow)
+    def test_documentation_publication_requires_manual_admission(self) -> None:
+        workflow = self.workflow_text("deploy-docs.yml")
+        self.assertIn('"workflow_dispatch":', workflow)
+        for event in ("push", "pull_request", "workflow_call"):
+            self.assertNotIn(f'  "{event}":', workflow)
+        self.assertIn("publication_admission.py", workflow)
+        self.assertFalse(
+            (self.repository_root / ".github" / "workflows" / "pages.yml").exists()
+        )
 
-    def test_pages_does_not_install_dependencies_twice(self) -> None:
-        workflow = self.workflow_text("pages.yml")
+    def test_documentation_publication_builds_the_series_once(self) -> None:
+        workflow = self.workflow_text("deploy-docs.yml")
+        adapter = (self.repository_root / ".github" / "docs-deploy.env").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("BIJUX_DOCS_BUILD_COMMAND='make series-docs-build'", adapter)
         self.assertNotIn("Install documentation dependencies", workflow)
-        self.assertEqual(workflow.count("make series-docs-build"), 1)
+        self.assertEqual(adapter.count("make series-docs-build"), 1)
 
     def test_functional_confirmation_executes_pytest_once(self) -> None:
         capstone = (
@@ -196,7 +203,7 @@ class WorkflowEconomyTests(unittest.TestCase):
     def test_repository_owned_workflows_pin_action_revisions(self) -> None:
         workflows = (
             self.workflow_text("program-validation.yml"),
-            self.workflow_text("pages.yml"),
+            self.workflow_text("deploy-docs.yml"),
         )
         for workflow in workflows:
             self.assertNotIn("uses: actions/checkout@v", workflow)
