@@ -27,3 +27,6 @@ nav:
   - Home: index.md
   - Reproducible Research: reproducible-research/index.md
   - Python Programming: python-programming/index.md
+
+extra_javascript:
+  - assets/javascripts/navigation/offsite-targets.js
