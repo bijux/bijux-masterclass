@@ -88,6 +88,24 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Admit accepted standards source
+        shell: bash
+        run: |
+          set -euo pipefail
+          accepted_ref="$(cat .github/standards/bijux-std.sha)"
+          [[ "$accepted_ref" =~ ^[0-9a-f]{40}$ ]]
+          source_root="$PWD/artifacts/accepted-standard"
+          mkdir -p "$source_root"
+          git -C "$source_root" init --quiet
+          git -C "$source_root" remote add origin https://github.com/bijux/bijux-std.git
+          git -C "$source_root" fetch --quiet --depth 1 origin "$accepted_ref"
+          git -C "$source_root" checkout --quiet --detach FETCH_HEAD
+          [[ "$(git -C "$source_root" rev-parse HEAD)" == "$accepted_ref" ]]
+          printf 'BIJUX_STD_ROOT=%s\n' "$source_root" >> "$GITHUB_ENV"
+          printf 'BIJUX_STD_REF=%s\n' "$accepted_ref" >> "$GITHUB_ENV"
 
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0

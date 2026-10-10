@@ -22,7 +22,7 @@ class ValidationTarget:
 
 SERIES_SITE = ValidationTarget(
     name="series-site",
-    command="make series-docs-build",
+    command="make docs-nav-check",
 )
 
 ROOT_CONTRACT = ValidationTarget(
