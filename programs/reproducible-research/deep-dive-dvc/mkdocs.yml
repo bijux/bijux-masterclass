@@ -203,3 +203,4 @@ plugins:
   - search
   - macros:
       include_dir: .
+      render_by_default: false

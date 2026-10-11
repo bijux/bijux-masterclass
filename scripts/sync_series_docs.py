@@ -13,8 +13,19 @@ from scripts.catalogue.links import (
     split_anchor, normalize_catalog_path, rewrite_link_target,
     rewrite_html_hyperlinks, rewrite_markdown_links,
 )
-from scripts.catalogue.files import capture_sources, write_documents
-from scripts.catalogue.source_plan import build_plan
+from scripts.catalogue.files import capture_sources, write_documents, write_program_documents
+from scripts.catalogue.source_plan import build_plan, PlanError
+
+
+def sync_program_docs(program_dir: Path, target_dir: Path) -> None:
+    """Stage one captured course for the shared standalone documentation hook."""
+    try:
+        program_relative = program_dir.absolute().relative_to(REPO_ROOT).as_posix()
+        target_relative = target_dir.absolute().relative_to(REPO_ROOT).as_posix()
+    except ValueError as error:
+        raise PlanError("program documentation must remain inside its owning repository") from error
+    plan = build_plan(capture_sources(REPO_ROOT))
+    write_program_documents(plan, REPO_ROOT, program_relative, target_relative)
 
 
 def main() -> int:

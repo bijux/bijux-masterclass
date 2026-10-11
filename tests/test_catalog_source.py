@@ -1,14 +1,21 @@
 """Verify original-source planning and reject unsafe or unbound derived catalogue data."""
-from pathlib import Path
 import os
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 import yaml
 
-from scripts.catalogue.files import capture_sources, verify_sources, verify_outputs, write_documents, write_configuration
-from scripts.catalogue.source_plan import build_plan, PlanError
+from scripts.catalogue.files import (
+    capture_sources,
+    verify_outputs,
+    verify_sources,
+    write_configuration,
+    write_documents,
+    write_program_documents,
+)
+from scripts.catalogue.source_plan import PlanError, build_plan
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -201,9 +208,8 @@ class CatalogueSourceTests(unittest.TestCase):
         output = self.root / 'artifacts/mkdocs.root.yml'
         before = output.read_bytes()
         original = (self.root / 'mkdocs.yml').read_bytes()
-        with patch('scripts.catalogue.files.os.replace', side_effect=OSError('replace unavailable')):
-            with self.assertRaisesRegex(OSError, 'replace unavailable'):
-                write_configuration(self.plan, self.root)
+        with patch('scripts.catalogue.files.os.replace', side_effect=OSError('replace unavailable')), self.assertRaisesRegex(OSError, 'replace unavailable'):
+            write_configuration(self.plan, self.root)
         self.assertEqual(output.read_bytes(), before)
         self.assertEqual((self.root / 'mkdocs.yml').read_bytes(), original)
         self.assertEqual(list(output.parent.glob('.catalogue-*')), [])
@@ -341,9 +347,8 @@ class CatalogueSourceTests(unittest.TestCase):
         index.unlink()
         os.link(original, index)
         before = capture_sources(self.root)
-        with patch('scripts.catalogue.files.os.replace', side_effect=OSError('document replace unavailable')):
-            with self.assertRaisesRegex(OSError, 'document replace unavailable'):
-                write_documents(self.plan, self.root)
+        with patch('scripts.catalogue.files.os.replace', side_effect=OSError('document replace unavailable')), self.assertRaisesRegex(OSError, 'document replace unavailable'):
+            write_documents(self.plan, self.root)
         self.assertEqual(capture_sources(self.root), before)
         self.assertEqual(list((self.root / 'docs').rglob('.catalogue-*')), [])
 
@@ -355,6 +360,60 @@ class CatalogueSourceTests(unittest.TestCase):
         write_configuration(self.plan, self.root)
         self.assertEqual(output.stat().st_mode & 0o777, 0o640)
         verify_outputs(self.plan, self.root)
+
+
+    def test_program_staging_uses_exact_planned_bytes_without_series_outputs(self):
+        target = 'artifacts/program-docs/family/course'
+        write_program_documents(self.plan, self.root, 'programs/family/course', target)
+        expected = {item.destination.removeprefix('docs/family/course/'): item.content
+                    for item in self.plan.documents if item.destination.startswith('docs/family/course/')}
+        actual = {path.relative_to(self.root / target).as_posix(): path.read_bytes()
+                  for path in (self.root / target).rglob('*') if path.is_file()}
+        self.assertEqual(actual, expected)
+        self.assertFalse((self.root / 'docs').exists())
+        self.assertEqual(capture_sources(self.root), self.originals)
+
+    def test_program_staging_refuses_unknown_courses_and_wrong_targets(self):
+        for program, target in [('programs/family/missing', 'artifacts/program-docs/family/missing'),
+                                ('programs/family/course', 'docs/family/course'),
+                                ('programs/family/course', 'artifacts/program-docs/family/other'),
+                                ('programs/family/course/course-book', 'artifacts/program-docs/family/course')]:
+            with self.subTest(program=program, target=target), self.assertRaises(PlanError):
+                write_program_documents(self.plan, self.root, program, target)
+        self.assertFalse((self.root / 'artifacts').exists())
+
+    def test_program_staging_checks_sources_before_and_after_materialization(self):
+        target = 'artifacts/program-docs/family/course'
+        (self.root / 'programs/README.md').write_bytes(b'# Changed source')
+        with self.assertRaisesRegex(PlanError, 'inputs changed'):
+            write_program_documents(self.plan, self.root, 'programs/family/course', target)
+        self.assertFalse((self.root / target).exists())
+        (self.root / 'programs/README.md').write_bytes(self.originals['programs/README.md'])
+        from scripts.catalogue.files import _atomic_write
+        def changed_write(root, relative, content):
+            _atomic_write(root, relative, content)
+            (root / 'programs/README.md').write_bytes(b'# Concurrent source change')
+        with patch('scripts.catalogue.files._atomic_write', side_effect=changed_write), self.assertRaisesRegex(PlanError, 'inputs changed'):
+            write_program_documents(self.plan, self.root, 'programs/family/course', target)
+
+    def test_program_staging_preserves_unowned_bytes_and_refuses_aliases(self):
+        target = self.root / 'artifacts/program-docs/family/course'
+        target.mkdir(parents=True)
+        unknown = target / 'unreviewed.md'
+        unknown.write_bytes(b'# User work')
+        with self.assertRaisesRegex(PlanError, 'unowned program staging output'):
+            write_program_documents(self.plan, self.root, 'programs/family/course', target.relative_to(self.root).as_posix())
+        self.assertEqual(unknown.read_bytes(), b'# User work')
+        unknown.unlink()
+        original = self.root / 'programs/family/course/course-book/index.md'
+        alias = target / 'index.md'
+        for kind in ['symlink', 'hardlink']:
+            if kind == 'symlink': alias.symlink_to(original)
+            else: os.link(original, alias)
+            with self.subTest(kind=kind), self.assertRaises(PlanError):
+                write_program_documents(self.plan, self.root, 'programs/family/course', target.relative_to(self.root).as_posix())
+            self.assertEqual(original.read_bytes(), self.originals['programs/family/course/course-book/index.md'])
+            alias.unlink()
 
 
 if __name__ == '__main__':

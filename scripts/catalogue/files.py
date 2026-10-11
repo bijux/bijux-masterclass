@@ -1,12 +1,14 @@
 """Capture original catalogue inputs and verify/materialize a pure source plan."""
 from __future__ import annotations
-from collections.abc import Mapping
-from hashlib import sha256
+
 import os
-from pathlib import Path
 import shutil
 import stat
 import tempfile
+from collections.abc import Mapping
+from hashlib import sha256
+from pathlib import Path
+
 from scripts.catalogue.source_plan import CataloguePlan, PlanError, safe_path
 
 SKIP_PARTS = {".pytest_cache", "__pycache__", ".mypy_cache", ".ruff_cache", ".venv"}
@@ -170,6 +172,52 @@ def write_documents(plan: CataloguePlan, root: Path, *,
     verify_sources(plan, root)
     verify_outputs(plan, root, configuration=False)
 
+
+
+def write_program_documents(plan: CataloguePlan, root: Path,
+                            program_relative: str, target_relative: str) -> None:
+    """Stage one declared course from its exact captured catalogue projection."""
+    safe_path(program_relative)
+    safe_path(target_relative)
+    parts = program_relative.split("/")
+    if len(parts) != 3 or parts[0] != "programs":
+        raise PlanError("program staging requires a declared family and course")
+    family, course = parts[1:]
+    expected_target = f"artifacts/program-docs/{family}/{course}"
+    if target_relative != expected_target:
+        raise PlanError("program staging target must be its owned artifact route")
+    owner = f"{program_relative}/mkdocs.yml"
+    if owner not in plan.configuration.navigation_configs:
+        raise PlanError("program staging requires a declared course configuration")
+    verify_sources(plan, root)
+    prefix = f"docs/{family}/{course}/"
+    documents = {f"{target_relative}/{item.destination.removeprefix(prefix)}": item.content
+                 for item in plan.documents if item.destination.startswith(prefix)}
+    if not documents:
+        raise PlanError("program staging has no planned course documents")
+    target = regular_path(root, target_relative)
+    if target.exists() and not target.is_dir():
+        raise PlanError("program staging target must be a directory")
+    for path in sorted(target.rglob("*")) if target.exists() else []:
+        relative = path.relative_to(root).as_posix()
+        regular_path(root, relative)
+        if path.is_file():
+            if path.stat().st_nlink != 1:
+                raise PlanError(f"program staging cannot use a hardlink: {relative}")
+            if relative not in documents:
+                raise PlanError(f"unowned program staging output: {relative}")
+        elif not path.is_dir():
+            raise PlanError(f"unsupported program staging output: {relative}")
+    for relative in documents:
+        path = regular_path(root, relative)
+        if path.exists() and (not path.is_file() or path.stat().st_nlink != 1):
+            raise PlanError(f"program staging requires an unaliased regular output: {relative}")
+    for relative, content in documents.items():
+        _atomic_write(root, relative, content)
+    verify_sources(plan, root)
+    for relative, content in documents.items():
+        if regular_path(root, relative).read_bytes() != content:
+            raise PlanError("staged course bytes differ from their captured projection")
 
 def write_configuration(plan: CataloguePlan, root: Path) -> None:
     verify_sources(plan, root)
