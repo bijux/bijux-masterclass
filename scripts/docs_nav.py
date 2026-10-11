@@ -8,8 +8,6 @@ import re
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 
 CAPSTONE_DOCS_DIRNAMES = {"capstone-docs"}
 MODULE_DIR_PATTERN = re.compile(r"module-(\d+)")
@@ -150,6 +148,8 @@ def _prefix_nav_item(item: Any, prefix: str) -> Any:
 
 @lru_cache(maxsize=None)
 def _course_config(program_root: Path) -> dict[str, Any]:
+    import yaml
+
     config_path = program_root / "mkdocs.yml"
     if not config_path.exists():
         return {}
