@@ -1,3 +1,10 @@
+PROGRAM_VALIDATION_PROFILE ?= fast
+PROGRAM_VALIDATION_OUTPUT ?= $(abspath $(ARTIFACTS_DIR))/program-validation/$(notdir $(PROGRAM))-$(PROGRAM_VALIDATION_PROFILE)/qualification.json
+
+.PHONY: program-validation
+program-validation: ## Execute representative PR contracts or complete manual qualification
+	@$(PYTHON) -m scripts.program_qualification.execute --program "$(PROGRAM)" --profile "$(PROGRAM_VALIDATION_PROFILE)" --output "$(PROGRAM_VALIDATION_OUTPUT)"
+
 .PHONY: program-help
 program-help: ## Show the selected program's Make targets
 	@$(RUN_PROGRAM) help
