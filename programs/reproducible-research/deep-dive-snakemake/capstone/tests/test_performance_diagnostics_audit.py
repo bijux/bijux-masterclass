@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+import runpy
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
+import pytest
 import yaml
 
 
@@ -159,3 +161,50 @@ def test_equal_artifact_bytes_remain_part_of_rejection_proof(tmp_path: Path) -> 
     assert completed.returncode != 0
     checks = finding(report, "VALIDATION_BYPASS_REJECTED")["checks"]
     assert checks["artifact_bytes_match"] is False
+
+
+@pytest.mark.parametrize("sampled", ["NA", "0", "1.25"])
+def test_benchmark_retains_sampled_measurements_and_missing_observations(
+    tmp_path: Path, sampled: str
+) -> None:
+    read_benchmark = runpy.run_path(
+        str(source_root() / "scripts" / "audit_performance_diagnostics.py")
+    )["read_benchmark"]
+    benchmark = tmp_path / "benchmark.tsv"
+    benchmark.write_text(
+        f"s\tmax_rss\tio_in\tio_out\n0.5\t{sampled}\t{sampled}\t{sampled}\n", encoding="utf-8"
+    )
+    report = read_benchmark(benchmark)
+    assert report["seconds"] == 0.5
+    expected = None if sampled == "NA" else float(sampled)
+    assert report["max_rss_mb"] == expected
+    assert report["io_in_mb"] == expected
+    assert report["io_out_mb"] == expected
+
+
+@pytest.mark.parametrize("field", ["s", "max_rss", "io_in", "io_out"])
+@pytest.mark.parametrize("invalid", ["nan", "inf", "-1", "", "unavailable"])
+def test_benchmark_rejects_malformed_or_nonfinite_measurements(
+    tmp_path: Path, field: str, invalid: str
+) -> None:
+    read_benchmark = runpy.run_path(
+        str(source_root() / "scripts" / "audit_performance_diagnostics.py")
+    )["read_benchmark"]
+    benchmark = tmp_path / "benchmark.tsv"
+    values = dict(s="0.5", max_rss="1", io_in="0", io_out="0")
+    values[field] = invalid
+    benchmark.write_text(
+        "\t".join(values) + "\n" + "\t".join(values.values()) + "\n", encoding="utf-8"
+    )
+    with pytest.raises(ValueError):
+        read_benchmark(benchmark)
+
+
+def test_benchmark_requires_an_observed_duration(tmp_path: Path) -> None:
+    read_benchmark = runpy.run_path(
+        str(source_root() / "scripts" / "audit_performance_diagnostics.py")
+    )["read_benchmark"]
+    benchmark = tmp_path / "benchmark.tsv"
+    benchmark.write_text("s\tmax_rss\tio_in\tio_out\nNA\tNA\tNA\tNA\n", encoding="utf-8")
+    with pytest.raises(ValueError):
+        read_benchmark(benchmark)

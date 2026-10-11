@@ -7,6 +7,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 import shutil
 import subprocess
 import time
@@ -81,17 +82,28 @@ def load_mapping(path: Path) -> dict[str, Any]:
     return payload
 
 
-def read_benchmark(path: Path) -> dict[str, float]:
+def read_benchmark(path: Path) -> dict[str, float | None]:
+    """Retain unavailable sampled telemetry without fabricating measured zeroes."""
     with path.open(encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle, delimiter="\t"))
     if len(rows) != 1:
         raise ValueError(f"expected one benchmark row in {path}, found {len(rows)}")
     row = rows[0]
+
+    def measurement(field: str, *, sampled: bool = False) -> float | None:
+        raw = row[field]
+        if sampled and raw == "NA":
+            return None
+        value = float(raw)
+        if not math.isfinite(value) or value < 0:
+            raise ValueError(f"invalid benchmark measurement {field} in {path}: {raw}")
+        return value
+
     return {
-        "seconds": float(row["s"]),
-        "max_rss_mb": float(row["max_rss"]),
-        "io_in_mb": float(row["io_in"]),
-        "io_out_mb": float(row["io_out"]),
+        "seconds": measurement("s"),
+        "max_rss_mb": measurement("max_rss", sampled=True),
+        "io_in_mb": measurement("io_in", sampled=True),
+        "io_out_mb": measurement("io_out", sampled=True),
     }
 
 
