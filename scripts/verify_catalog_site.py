@@ -38,12 +38,18 @@ def inspect_catalog(site: Path, site_url: str) -> dict:
     if base.scheme not in ("https", "http") or not base.netloc or not base.path.endswith("/"):
         raise ValueError("catalog site_url must be an absolute directory URL")
     pages = {}
+    page_hashes = {}
+    initial_paths = tuple(sorted(site.rglob("*")))
+    initial_kinds = {path: (path.is_dir(), path.is_file(), path.is_symlink()) for path in initial_paths}
     for path in sorted(site.rglob("*.html")):
+        content = path.read_bytes()
         parser = Article()
-        parser.feed(path.read_text(encoding="utf-8"))
+        parser.feed(content.decode("utf-8"))
         pages[path.resolve()] = parser
+        page_hashes[path] = hashlib.sha256(content).hexdigest()
     errors = []
     references = 0
+    destinations = {}
     for path, page in pages.items():
         relative = path.relative_to(site).as_posix()
         route = "" if relative == "index.html" else relative[:-10] if relative.endswith("/index.html") else relative
@@ -52,17 +58,33 @@ def inspect_catalog(site: Path, site_url: str) -> dict:
             destination = urlsplit(urljoin(site_url + route, href))
             if destination.scheme not in ("http", "https") or destination.netloc != base.netloc or not destination.path.startswith(base.path):
                 continue
-            target = (site / unquote(destination.path[len(base.path):])).resolve()
+            destination_path = unquote(destination.path[len(base.path):])
+            if destination_path not in destinations:
+                target = (site / destination_path).resolve()
+                if destination.path.endswith("/") or target.is_dir():
+                    target /= "index.html"
+                destinations[destination_path] = (target, target.is_relative_to(site) and target.is_file())
+            target, exists = destinations[destination_path]
             if not target.is_relative_to(site):
                 errors.append({"page": relative, "href": href, "reason": "destination escapes selected catalog"})
                 continue
-            if destination.path.endswith("/") or target.is_dir():
-                target /= "index.html"
-            if not target.is_file():
+            if not exists:
                 errors.append({"page": relative, "href": href, "reason": "missing public destination"})
             elif destination.fragment and target in pages and unquote(destination.fragment) not in pages[target].ids:
                 errors.append({"page": relative, "href": href, "reason": "missing public anchor"})
-    files = [{"path": path.relative_to(site).as_posix(), "bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in sorted(site.rglob("*")) if path.is_file()]
+    final_paths = tuple(sorted(site.rglob("*")))
+    final_kinds = {path: (path.is_dir(), path.is_file(), path.is_symlink()) for path in final_paths}
+    if final_paths != initial_paths or final_kinds != initial_kinds:
+        raise ValueError("selected catalog layout changed during verification")
+    files = []
+    for path in final_paths:
+        if not path.is_file():
+            continue
+        content = path.read_bytes()
+        content_sha256 = hashlib.sha256(content).hexdigest()
+        if path in page_hashes and content_sha256 != page_hashes[path]:
+            raise ValueError("selected catalog page changed during verification")
+        files.append({"path": path.relative_to(site).as_posix(), "bytes": len(content), "sha256": content_sha256})
     digest = hashlib.sha256(json.dumps(files, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     return {"schema": 1, "scope": "catalog authored article destinations and anchors only", "site_url": site_url, "pages": len(pages), "references": references, "errors": errors, "passed": not errors, "bundle_sha256": digest}
 

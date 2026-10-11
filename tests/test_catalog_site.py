@@ -2,6 +2,7 @@ import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('catalog_site',ROOT/'scripts/verify_catalog_site.py')
@@ -28,5 +29,29 @@ class CatalogSite(unittest.TestCase):
   with self.assertRaisesRegex(ValueError,'root page'):self.report()
  def test_artifact_identity_changes_with_modified_payload(self):
   (self.catalog/'index.html').write_text('<article><h1 id="topic">First</h1></article>');before=self.report()['bundle_sha256'];(self.catalog/'index.html').write_text('<article><h1 id="topic">Changed</h1></article>');self.assertNotEqual(before,self.report()['bundle_sha256'])
+ def test_repeated_destination_is_resolved_once_without_losing_references(self):
+  (self.catalog/'index.html').write_text('<article>'+('<a href="chapter/#topic">Read</a>'*100)+'</article>');(self.catalog/'chapter').mkdir();(self.catalog/'chapter/index.html').write_text('<article><h1 id="topic">Topic</h1></article>')
+  original=Path.resolve;observed=[]
+  def resolve(path,*args,**kwargs):
+   if path==self.catalog/'chapter':observed.append(path)
+   return original(path,*args,**kwargs)
+  with patch.object(Path,'resolve',resolve):report=self.report()
+  self.assertTrue(report['passed']);self.assertEqual(report['references'],100);self.assertEqual(len(observed),1)
+ def test_page_change_during_verification_is_refused(self):
+  page=self.catalog/'index.html';page.write_text('<article><a href="chapter/#topic">Read</a></article>');(self.catalog/'chapter').mkdir();(self.catalog/'chapter/index.html').write_text('<article><h1 id="topic">Topic</h1></article>')
+  original=Path.resolve
+  def resolve(path,*args,**kwargs):
+   if path==self.catalog/'chapter':page.write_text('<article>Changed</article>')
+   return original(path,*args,**kwargs)
+  with patch.object(Path,'resolve',resolve),self.assertRaisesRegex(ValueError,'page changed'):
+   self.report()
+ def test_layout_change_during_verification_is_refused(self):
+  (self.catalog/'index.html').write_text('<article><a href="chapter/">Read</a></article>');(self.catalog/'chapter').mkdir();(self.catalog/'chapter/index.html').write_text('<article>Topic</article>')
+  original=Path.resolve
+  def resolve(path,*args,**kwargs):
+   if path==self.catalog/'chapter':(self.catalog/'new.html').write_text('<article>New</article>')
+   return original(path,*args,**kwargs)
+  with patch.object(Path,'resolve',resolve),self.assertRaisesRegex(ValueError,'layout changed'):
+   self.report()
 
 if __name__=='__main__':unittest.main()
