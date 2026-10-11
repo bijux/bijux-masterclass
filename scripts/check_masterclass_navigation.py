@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 from html.parser import HTMLParser
@@ -206,14 +207,20 @@ def main() -> int:
     checked_courses = check_explicit_course_navigation(PROGRAMS_ROOT)
     checked_directories = check_authored_source_navigation(PROGRAMS_ROOT)
     sys.path.insert(0, str(REPO_ROOT))
-    from scripts.render_root_mkdocs import SOURCE_CONFIG, load_yaml, root_nav
+    import yaml
 
-    expected = authored_entries(root_nav(load_yaml(SOURCE_CONFIG)["nav"]))
+    from scripts.catalogue.files import capture_sources, verify_outputs, verify_sources
+    from scripts.catalogue.source_plan import build_plan
+
+    plan = build_plan(capture_sources(REPO_ROOT), environment=os.environ)
+    verify_outputs(plan, REPO_ROOT)
+    expected = authored_entries(yaml.safe_load(plan.configuration.content)["nav"])
     for page in REPRESENTATIVE_PAGES:
         path = args.site_dir / page
         if not path.is_file():
             fail(f"missing rendered page: {page}")
         check_rendered_navigation(path.read_text(encoding="utf-8"), page, expected)
+    verify_sources(plan, REPO_ROOT)
     print(f"navigation checks passed for {checked_courses} course configs, "
           f"{checked_directories} source directories, {len(expected)} catalog entries "
           f"and {len(REPRESENTATIVE_PAGES)} rendered pages")

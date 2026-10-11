@@ -26,7 +26,7 @@ nav:
   - Module Promise Map: guides/module-promise-map.md
   - Module Checkpoints: guides/module-checkpoints.md
   - Proof Matrix: guides/proof-matrix.md
-  - Platform Setup: guides/platform-setup.md
+  - GNU Make 4 Platform Setup: guides/platform-setup.md
 - 'Module 00: Orientation and Study Practice':
   - Home: module-00-orientation/index.md
   - Course Map: module-00-orientation/course-map.md

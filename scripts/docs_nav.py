@@ -21,7 +21,7 @@ PROGRAMS_ROOT = REPO_ROOT / "programs"
 def first_h1(path: Path) -> str:
     for line in path.read_text(encoding="utf-8").splitlines():
         if line.startswith("# "):
-            return line[2:].strip()
+            return re.sub(r"\s+\{[^{}]*\}\s*$", "", line[2:]).strip()
     return path.stem.replace("_", " ").replace("-", " ").title()
 
 
@@ -121,6 +121,8 @@ def child_sort_key(
 def directory_title(path: Path) -> str:
     if path.name in CAPSTONE_DOCS_DIRNAMES:
         return "Capstone Docs"
+    if path.name == "reference":
+        return "Reference"
 
     index_path = path / "index.md"
     if index_path.exists():
