@@ -26,8 +26,8 @@ concurrency:
 
 jobs:
   select:
-    name: select affected programs
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]' }}
+    name: "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}select affected programs"
+    if: "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]') }}"
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.targets.outputs.matrix }}
@@ -75,9 +75,9 @@ jobs:
           printf 'Selected matrix: %s\n' "${matrix}"
 
   validate:
-    name: ${{ matrix.name }}
+    name: "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}${{ matrix.name }}"
     needs: select
-    if: ${{ needs.select.outputs.has_targets == 'true' }}
+    if: "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (needs.select.outputs.has_targets == 'true') }}"
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:

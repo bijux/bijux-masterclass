@@ -17,8 +17,8 @@
   "contents": "read"
 "jobs":
   "checks":
-    "name": "std / ${{ matrix.check }}"
-    "if": "${{ github.repository == 'bijux/bijux-std' || github.repository == 'bijux/bijux.github.io' || github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]' }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / ${{ matrix.check }}"
+    "if": "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (github.repository == 'bijux/bijux-std' || github.repository == 'bijux/bijux.github.io' || github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]') }}"
     "runs-on": "ubuntu-latest"
     "timeout-minutes": 10
     "strategy":
@@ -54,8 +54,8 @@
           "path": "artifacts/docs/readers/"
           "if-no-files-found": "error"
   "report":
-    "name": "std / report"
-    "if": "${{ always() && (github.repository == 'bijux/bijux-std' || github.repository == 'bijux/bijux.github.io' || github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]') }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / report"
+    "if": "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always() && (github.repository == 'bijux/bijux-std' || github.repository == 'bijux/bijux.github.io' || github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]')) }}"
     "needs":
       - "checks"
       - "navigation"
@@ -99,8 +99,8 @@
           "path": "artifacts/checks\nartifacts/bijux-checks\nartifacts/bijux-docs/job-budget\n"
           "if-no-files-found": "error"
   "catalogue-renderer":
-    "name": "std / catalogue ${{ matrix.group }}"
-    "if": "${{ github.repository == 'bijux/bijux-std' }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / catalogue ${{ matrix.group }}"
+    "if": "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (github.repository == 'bijux/bijux-std') }}"
     "runs-on": "ubuntu-latest"
     "timeout-minutes": 3
     "strategy":
@@ -142,8 +142,8 @@
           "compression-level": 0
           "retention-days": 14
   "publication-commands":
-    "name": "std / publication commands"
-    "if": "${{ github.repository == 'bijux/bijux-std' }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / publication commands"
+    "if": "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (github.repository == 'bijux/bijux-std') }}"
     "runs-on": "ubuntu-latest"
     "timeout-minutes": 3
     "steps":
@@ -165,8 +165,8 @@
           "compression-level": 0
           "retention-days": 14
   "renderer-controls":
-    "name": "std / renderer controls / ${{ matrix.group }}"
-    "if": "${{ github.repository == 'bijux/bijux-std' }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / renderer controls / ${{ matrix.group }}"
+    "if": "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (github.repository == 'bijux/bijux-std') }}"
     "runs-on": "ubuntu-latest"
     "timeout-minutes": 3
     "strategy":
@@ -206,8 +206,8 @@
   "navigation-fixtures":
     "outputs":
       "fixture-attempt": "${{ steps.fixture-identity.outputs.attempt }}"
-    "name": "std / navigation fixtures"
-    "if": "${{ github.repository == 'bijux/bijux-std' }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / navigation fixtures"
+    "if": "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (github.repository == 'bijux/bijux-std') }}"
     "runs-on": "ubuntu-latest"
     "timeout-minutes": 3
     "steps":
@@ -233,7 +233,7 @@
           "compression-level": 0
           "retention-days": 14
   "navigation-browsers":
-    "name": "std / navigation ${{ matrix.group }} / ${{ matrix.engine }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / navigation ${{ matrix.group }} / ${{ matrix.engine }}"
     "needs": "navigation-fixtures"
     "permissions":
       "contents": "read"
@@ -317,9 +317,10 @@
           "path": "artifacts/bijux-docs/collection"
           "if-no-files-found": "warn"
           "retention-days": 14
+    "if": "${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}"
   "persisted-native-reader":
-    "name": "std / persisted native reader / chromium"
-    "if": "${{ github.repository == 'bijux/bijux-std' }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / persisted native reader / chromium"
+    "if": "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (github.repository == 'bijux/bijux-std') }}"
     "needs": "navigation-fixtures"
     "permissions":
       "contents": "read"
@@ -368,7 +369,7 @@
           "if-no-files-found": "warn"
           "retention-days": 14
   "frontend-browser-faults":
-    "name": "std / frontend fault controls / ${{ matrix.engine }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / frontend fault controls / ${{ matrix.engine }}"
     "needs": "navigation-fixtures"
     "permissions":
       "contents": "read"
@@ -423,9 +424,10 @@
           "path": "artifacts/bijux-docs/collection"
           "if-no-files-found": "warn"
           "retention-days": 14
+    "if": "${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}"
   "frontend-public-faults":
-    "name": "std / frontend public artifact fault controls"
-    "if": "${{ github.repository == 'bijux/bijux-std' }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / frontend public artifact fault controls"
+    "if": "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (github.repository == 'bijux/bijux-std') }}"
     "runs-on": "ubuntu-latest"
     "timeout-minutes": 3
     "steps":
@@ -445,8 +447,8 @@
           "compression-level": 1
           "retention-days": 14
   "navigation":
-    "name": "std / navigation"
-    "if": "${{ always() && github.repository == 'bijux/bijux-std' }}"
+    "name": "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}std / navigation"
+    "if": "${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always() && github.repository == 'bijux/bijux-std') }}"
     "needs":
       - "navigation-fixtures"
       - "navigation-browsers"
