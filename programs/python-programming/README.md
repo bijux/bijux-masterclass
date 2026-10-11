@@ -2,7 +2,7 @@
 
 <section class="bijux-hero">
   <div class="bijux-hero__eyebrow">Program Family</div>
-  <h1 class="bijux-hero__title">Route by design pressure, not by favorite syntax.</h1>
+  <p class="bijux-hero__title">Route by design pressure, not by favorite syntax.</p>
   <p class="bijux-hero__lede">This family collects long-form Python courses about semantics, architecture, and runtime power. The goal is not to sort by syntax feature. The goal is to help a reader choose the program that matches the design pressure they are actually under.</p>
   <div class="bijux-topic-row">
     <span class="bijux-topic-pill">Object boundaries</span>

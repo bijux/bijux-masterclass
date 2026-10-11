@@ -18,6 +18,10 @@ dev = [
     "pytest >= 7.0",
     "ruff >= 0.5",
     "mypy >= 1.10",
+    "pyyaml >= 6.0",
+    "jsonschema >= 4.0",
+    "setuptools >= 83, < 84",
+    "wheel >= 0.45",
 ]
 
 [tool.ruff]

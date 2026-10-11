@@ -1,4 +1,6 @@
-# Reference
+# Python Meta Programming Reference {#reference}
+
+Use this course reference shelf for Python Meta Programming terminology, review prompts, and routes to the detailed reference pages.
 
 
 <!-- page-maps:start -->

@@ -8,6 +8,7 @@ from types import SimpleNamespace
 
 from docs.hooks.publish_site_assets import on_post_build
 from scripts.program_validation import (
+    PROGRAM_DOCUMENTATION_TARGETS,
     PROGRAM_TARGETS,
     ROOT_CONTRACT,
     SERIES_SITE,
@@ -25,29 +26,42 @@ class ProgramValidationSelectionTests(unittest.TestCase):
     def test_isolated_capstone_change_selects_only_its_program(self) -> None:
         names = self.names(
             [
-                "programs/reproducible-research/deep-dive-snakemake/"
-                "capstone/scripts/audit_scheduler_policy.py"
+                (
+                    "programs/reproducible-research/deep-dive-snakemake/"
+                    "capstone/scripts/audit_scheduler_policy.py"
+                )
             ]
         )
-        self.assertEqual(names, ["deep-dive-snakemake"])
+        self.assertEqual(
+            names, ["deep-dive-snakemake-documentation", "deep-dive-snakemake-fast"]
+        )
+
+    def test_catalogue_planning_domain_selects_only_series_integration(self) -> None:
+        self.assertEqual(
+            self.names(["scripts/catalogue/source_plan.py"]), ["series-site"]
+        )
 
     def test_course_book_change_adds_series_integration(self) -> None:
         names = self.names(
             [
-                "programs/reproducible-research/deep-dive-snakemake/"
-                "course-book/module-03-production-operations-policy-boundaries/index.md"
+                (
+                    "programs/reproducible-research/deep-dive-snakemake/"
+                    "course-book/module-03-production-operations-policy-boundaries/index.md"
+                )
             ]
         )
-        self.assertEqual(names, ["series-site", "deep-dive-snakemake"])
+        self.assertEqual(names, ["series-site", "deep-dive-snakemake-documentation"])
 
     def test_capstone_documentation_change_adds_series_integration(self) -> None:
         names = self.names(
             [
-                "programs/reproducible-research/deep-dive-make/"
-                "capstone/docs/proof-guide.md"
+                (
+                    "programs/reproducible-research/deep-dive-make/"
+                    "capstone/docs/proof-guide.md"
+                )
             ]
         )
-        self.assertEqual(names, ["series-site", "deep-dive-make"])
+        self.assertEqual(names, ["series-site", "deep-dive-make-documentation"])
 
     def test_root_make_change_selects_every_target(self) -> None:
         names = self.names(["makes/root.mk"])
@@ -56,23 +70,44 @@ class ProgramValidationSelectionTests(unittest.TestCase):
             [
                 ROOT_CONTRACT.name,
                 SERIES_SITE.name,
-                *(target.name for target in PROGRAM_TARGETS),
+                *(target.name for target in PROGRAM_DOCUMENTATION_TARGETS),
+                *(target.name + "-fast" for target in PROGRAM_TARGETS),
             ],
         )
 
-    def test_dispatcher_change_uses_root_contract_not_every_program(self) -> None:
+    def test_dispatcher_recipe_change_selects_native_and_documentation_obligations(
+        self,
+    ) -> None:
         names = self.names(["makes/program.mk"])
-        self.assertEqual(names, [ROOT_CONTRACT.name])
+        self.assertEqual(
+            names,
+            [
+                ROOT_CONTRACT.name,
+                SERIES_SITE.name,
+                *(target.name for target in PROGRAM_DOCUMENTATION_TARGETS),
+                *(target.name + "-fast" for target in PROGRAM_TARGETS),
+            ],
+        )
 
     def test_dispatcher_change_retains_explicitly_affected_program(self) -> None:
         names = self.names(
             [
                 "makes/program.mk",
-                "programs/reproducible-research/deep-dive-snakemake/"
-                "capstone/Makefile",
+                (
+                    "programs/reproducible-research/deep-dive-snakemake/"
+                    "capstone/Makefile"
+                ),
             ]
         )
-        self.assertEqual(names, [ROOT_CONTRACT.name, "deep-dive-snakemake"])
+        self.assertEqual(
+            names,
+            [
+                ROOT_CONTRACT.name,
+                SERIES_SITE.name,
+                *(target.name for target in PROGRAM_DOCUMENTATION_TARGETS),
+                *(target.name + "-fast" for target in PROGRAM_TARGETS),
+            ],
+        )
 
     def test_shared_docs_make_change_selects_every_target(self) -> None:
         names = self.names(["makes/docs.mk"])
@@ -81,7 +116,7 @@ class ProgramValidationSelectionTests(unittest.TestCase):
             [
                 ROOT_CONTRACT.name,
                 SERIES_SITE.name,
-                *(target.name for target in PROGRAM_TARGETS),
+                *(target.name for target in PROGRAM_DOCUMENTATION_TARGETS),
             ],
         )
 
@@ -92,7 +127,7 @@ class ProgramValidationSelectionTests(unittest.TestCase):
             [
                 ROOT_CONTRACT.name,
                 SERIES_SITE.name,
-                *(target.name for target in PROGRAM_TARGETS),
+                *(target.name for target in PROGRAM_DOCUMENTATION_TARGETS),
             ],
         )
 
@@ -103,7 +138,8 @@ class ProgramValidationSelectionTests(unittest.TestCase):
             [
                 ROOT_CONTRACT.name,
                 SERIES_SITE.name,
-                *(target.name for target in PROGRAM_TARGETS),
+                *(target.name for target in PROGRAM_DOCUMENTATION_TARGETS),
+                *(target.name + "-fast" for target in PROGRAM_TARGETS),
             ],
         )
 
@@ -115,7 +151,14 @@ class ProgramValidationSelectionTests(unittest.TestCase):
         names = self.names(
             [".bijux/shared/bijux-docs/tooling/templates/overrides/main.html"]
         )
-        self.assertEqual(names, ["series-site"])
+        self.assertEqual(
+            names,
+            [
+                ROOT_CONTRACT.name,
+                SERIES_SITE.name,
+                *(target.name for target in PROGRAM_DOCUMENTATION_TARGETS),
+            ],
+        )
 
     def test_unrelated_governance_change_selects_no_heavy_target(self) -> None:
         names = self.names([".github/labeler.yml"])
@@ -128,29 +171,41 @@ class ProgramValidationSelectionTests(unittest.TestCase):
             [
                 ROOT_CONTRACT.name,
                 SERIES_SITE.name,
-                *(target.name for target in PROGRAM_TARGETS),
+                *(target.name for target in PROGRAM_DOCUMENTATION_TARGETS),
+                *(target.name + "-full" for target in PROGRAM_TARGETS),
             ],
         )
 
     def test_path_normalization_deduplicates_selected_targets(self) -> None:
         names = self.names(
             [
-                "./programs/python-programming/python-meta-programming/"
-                "capstone/src/metacap/runtime.py",
-                "programs/python-programming/python-meta-programming/"
-                "course-book/module-01/index.md",
+                (
+                    "./programs/python-programming/python-meta-programming/"
+                    "capstone/src/metacap/runtime.py"
+                ),
+                (
+                    "programs/python-programming/python-meta-programming/"
+                    "course-book/module-01/index.md"
+                ),
             ]
         )
-        self.assertEqual(names, ["series-site", "python-meta-programming"])
+        self.assertEqual(
+            names,
+            [
+                "series-site",
+                "python-meta-programming-documentation",
+                "python-meta-programming-fast",
+            ],
+        )
 
 
 class WorkflowEconomyTests(unittest.TestCase):
     repository_root = Path(__file__).resolve().parents[2]
 
     def workflow_text(self, name: str) -> str:
-        return (
-            self.repository_root / ".github" / "workflows" / name
-        ).read_text(encoding="utf-8")
+        return (self.repository_root / ".github" / "workflows" / name).read_text(
+            encoding="utf-8"
+        )
 
     def test_program_validation_does_not_repeat_after_merge(self) -> None:
         workflow = self.workflow_text("program-validation.yml")

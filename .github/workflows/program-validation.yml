@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: program-validation-${{ github.event.pull_request.number || github.ref }}
@@ -113,5 +114,23 @@ jobs:
           python-version: "3.11"
           cache: pip
 
+      - name: Setup reviewed program installer
+        if: ${{ matrix.program == 'reproducible-research/deep-dive-snakemake' }}
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+        with:
+          version: "0.11.17"
+          enable-cache: false
+
       - name: Run validation
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: ${{ matrix.command }}
+
+      - name: Persist successful program qualification
+        if: ${{ success() && matrix.qualification == 'true' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.0
+        with:
+          name: program-qualification-${{ matrix.name }}
+          path: artifacts/program-validation/${{ matrix.name }}/qualification.json
+          if-no-files-found: error
+          retention-days: 30

@@ -1,4 +1,6 @@
-# Platform Setup
+# GNU Make 4 Platform Setup {#platform-setup}
+
+Set up GNU Make 4.3 or newer before following Deep Dive Make. This guide covers the required version, platform installation, and command layers.
 
 
 <!-- page-maps:start -->
