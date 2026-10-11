@@ -43,5 +43,10 @@ bash "${source_root}/shared/bijux-checks/scripts/verify-accepted-source.sh" \
   "${source_root}" "${source_sha}"
 python3 "${source_root}/.github/scripts/check_workflow_projection.py" \
   --target "${repo_root}" --repo bijux-masterclass --source-sha "${source_sha}"
-BIJUX_STD_ROOT="${source_root}" BIJUX_STD_REF="${source_sha}" \
-  bash .bijux/shared/bijux-docs/tooling/scripts/verify_bijux_docs_source_of_truth.sh
+export BIJUX_STD_ROOT="${source_root}"
+source .bijux/shared/bijux-docs/tooling/scripts/docs_source_authority.sh
+verify_docs_authority "${repo_root}" "${repo_root}/.bijux/shared/bijux-docs"
+python3 .bijux/shared/bijux-docs/tooling/scripts/project_bijux_docs.py \
+  "${repo_root}" "${repo_root}/.bijux/shared/bijux-docs" --check
+python3 .bijux/shared/bijux-docs/tooling/scripts/sync_mkdocs_hub.py \
+  "${repo_root}" "${repo_root}/.bijux/shared/bijux-docs" --check
