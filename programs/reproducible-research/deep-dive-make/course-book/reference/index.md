@@ -1,4 +1,6 @@
-# Reference
+# Deep Dive Make Reference {#reference}
+
+Use this course reference shelf for Deep Dive Make terminology, review prompts, and routes to the detailed reference pages.
 
 
 <!-- page-maps:start -->

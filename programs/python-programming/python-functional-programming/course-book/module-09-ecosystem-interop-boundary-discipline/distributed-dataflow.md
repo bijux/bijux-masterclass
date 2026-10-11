@@ -479,6 +479,7 @@ def compile_to_beam(ir: List[Operator], data: List[RawDoc], config: PipelineConf
 
     return build_composite_transform()
 ```
+
 ---
 ## What comes next
 

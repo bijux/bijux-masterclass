@@ -1,5 +1,25 @@
 INHERIT: mkdocs.shared.yml
 
+theme:
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.path
+    - navigation.instant
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.action.edit
+    - content.action.view
+
 site_name: Bijux Masterclass
 site_description: Unified catalog for the Bijux Masterclass program collection.
 site_author: Bijan Mousavi <bijan@bijux.io>
