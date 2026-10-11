@@ -4,6 +4,8 @@ import importlib.util
 import json
 import shutil
 import tempfile
+import subprocess
+import sys
 import unittest
 from unittest import mock
 
@@ -24,6 +26,9 @@ class DocsEnvironmentTests(unittest.TestCase):
         self.requirements = self.root / 'requirements.txt'
         shutil.copy2(ROOT / 'configs/docs/requirements-docs.lock', self.lock)
         shutil.copy2(ROOT / 'configs/docs/requirements-docs.txt', self.requirements)
+        for relative in (installer.PROFILE_PATH, 'scripts/docs_environment.py', 'makes/series-docs.mk'):
+            destination=self.root/relative;destination.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copy2(ROOT/relative,destination)
         self.packages = installer.locked_packages(self.lock)
         self.target = self.root / 'artifacts/docs/environment'
         self.receipt = self.root / 'artifacts/docs/receipt.json'
@@ -34,6 +39,7 @@ class DocsEnvironmentTests(unittest.TestCase):
         self.runtime = {**installer.VERIFICATION_RUNTIME, 'prefix': str(self.root / 'base'), 'base_prefix': str(self.root / 'base')}
         self.rows = list(self.packages.items())
         self.calls = []
+        self.site_files = {'site-package.py': {'sha256': 'a' * 64, 'size': 3}}
         self.fail_sync = False
         self.wrong_venv = False
         self.uv_version = 'uv 0.11.17 (reviewed build metadata)'
@@ -50,6 +56,8 @@ class DocsEnvironmentTests(unittest.TestCase):
             if args[0] == str(self.python):
                 return json.dumps(self.runtime)
             return json.dumps({**self.runtime, 'prefix': str(self.root / 'wrong' if self.wrong_venv else self.target)})
+        if installer.FILES in args:
+            return json.dumps({'stdlib.py': {'sha256': 'b' * 64, 'size': 5}} if args[-1] == 'stdlib' else self.site_files)
         if args[-1] == '--version':
             return self.uv_version
         if 'venv' in args:
@@ -76,7 +84,7 @@ class DocsEnvironmentTests(unittest.TestCase):
     def test_new_environment_uses_stdlib_without_pip_and_hashed_sync(self):
         receipt = self.prepare()
         self.assertEqual(receipt['status'], 'ready')
-        self.assertEqual(receipt['package_count'], 43)
+        self.assertEqual(receipt['package_count'], 44)
         self.assertFalse(receipt['publication_approved'])
         self.assertEqual(sum('venv' in args for args in self.calls), 1)
         self.assertEqual(sum('sync' in args for args in self.calls), 1)
@@ -123,7 +131,7 @@ class DocsEnvironmentTests(unittest.TestCase):
         for path in (self.lock, self.requirements):
             before = path.read_bytes();path.write_bytes(before + b'\n# changed source\n')
             self.calls.clear()
-            with self.subTest(path=path), self.assertRaisesRegex(RuntimeError, 'stale documentation environment'):
+            with self.subTest(path=path), self.assertRaisesRegex(RuntimeError, 'stale documentation environment|exact source contract'):
                 self.prepare()
             self.assertFalse(any('venv' in args or 'sync' in args for args in self.calls))
             path.write_bytes(before)
@@ -135,6 +143,61 @@ class DocsEnvironmentTests(unittest.TestCase):
             with self.subTest(changes=changes), self.assertRaisesRegex(RuntimeError, 'base CPython'):
                 self.prepare()
             self.assertFalse(self.target.exists())
+
+    def test_unknown_or_production_profile_refuses_before_creation(self):
+        for name in ('production-linux', 'unknown'):
+            with self.subTest(profile=name), self.assertRaisesRegex(RuntimeError, 'explicitly reviewed'):
+                installer.prepare(self.root, 'python-selected', self.target, self.lock,
+                                  self.requirements, 'uv-selected', self.receipt, profile_name=name)
+            self.assertFalse(self.target.exists())
+
+    def test_changed_or_missing_owning_source_preserves_ready_environment(self):
+        self.prepare()
+        marker=(self.target/installer.MARKER).read_bytes()
+        source=self.root/'scripts/docs_environment.py'
+        source.write_bytes(source.read_bytes()+b'\n# source drift\n')
+        with self.assertRaisesRegex(RuntimeError, 'stale documentation environment'):
+            self.prepare()
+        self.assertEqual((self.target/installer.MARKER).read_bytes(),marker)
+        source.unlink()
+        with self.assertRaisesRegex(RuntimeError, 'regular documentation source'):
+            self.prepare()
+        self.assertEqual((self.target/installer.MARKER).read_bytes(),marker)
+
+    def test_unchanged_count_transitive_replacement_is_refused(self):
+        profile=self.root/installer.PROFILE_PATH
+        document=json.loads(profile.read_text())
+        selected=document['profiles'][installer.DEFAULT_PROFILE]
+        version=selected['packages'].pop('babel');selected['packages']['author-package']=version
+        profile.write_text(json.dumps(document))
+        with self.assertRaisesRegex(RuntimeError, 'exact source contract'):
+            self.prepare()
+        self.assertFalse(self.target.exists())
+
+    def test_package_file_tamper_with_unchanged_versions_is_refused(self):
+        self.prepare()
+        marker=(self.target/installer.MARKER).read_bytes()
+        self.site_files['site-package.py']['sha256']='c'*64
+        self.calls.clear()
+        with self.assertRaisesRegex(RuntimeError, 'changed installed file bytes'):
+            self.prepare()
+        self.assertFalse(any('sync' in args for args in self.calls))
+        self.assertEqual((self.target/installer.MARKER).read_bytes(),marker)
+
+    def test_actual_file_probe_accepts_only_runtime_interpreter_aliases(self):
+        self.target.mkdir(parents=True)
+        directory=self.target/'bin';directory.mkdir()
+        alias=directory/'𝜋thon';alias.symlink_to(Path(sys.executable).resolve())
+        code='import sys;sys.prefix='+repr(str(self.target))+';sys.argv=["probe","installed-files"];'+installer.FILES
+        result=subprocess.run([sys.executable,'-I','-B','-c',code],capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertIn('bin/𝜋thon',json.loads(result.stdout))
+        unexpected=self.root/'unexpected-module.py';unexpected.write_text('owner bytes')
+        (directory/'module.py').symlink_to(unexpected)
+        result=subprocess.run([sys.executable,'-I','-B','-c',code],capture_output=True,text=True)
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('Unexpected environment file alias',result.stderr)
+        self.assertEqual(unexpected.read_text(),'owner bytes')
 
     def test_uv_version_mismatch_rejects_before_environment_creation(self):
         self.uv_version = 'uv 0.11.18'

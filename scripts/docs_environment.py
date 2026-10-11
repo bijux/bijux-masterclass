@@ -12,9 +12,11 @@ import shutil
 import subprocess
 import sys
 
+DEFAULT_PROFILE = 'darwin-arm64-cpython-314'
+PROFILE_PATH = 'configs/docs/environment-profiles.json'
 VERIFICATION_RUNTIME = {'implementation': 'CPython', 'version': '3.14.4', 'system': 'Darwin', 'machine': 'arm64'}
 DIRECT_PACKAGES = frozenset({'mkdocs', 'mkdocs-material', 'mkdocs-autorefs', 'pymdown-extensions',
-                            'mkdocs-macros-plugin', 'mkdocs-git-revision-date-localized-plugin', 'mkdocs-minify-plugin'})
+                            'mkdocs-macros-plugin', 'mkdocs-git-revision-date-localized-plugin', 'mkdocs-minify-plugin', 'setuptools'})
 MARKER = 'bijux-docs-environment.json'
 PROBE = '''import json,platform,sys
 print(json.dumps(dict(implementation=platform.python_implementation(),version=platform.python_version(),
@@ -22,6 +24,26 @@ system=platform.system(),machine=platform.machine(),prefix=sys.prefix,base_prefi
 PACKAGES = '''import importlib.metadata,json,re
 rows=[(re.sub(r"[-_.]+","-",d.metadata["Name"]).lower(),d.version) for d in importlib.metadata.distributions()]
 print(json.dumps(rows))'''
+
+FILES = r'''import hashlib,json,os,sys,sysconfig
+from pathlib import Path
+scope=sys.argv[1]
+root=Path(sysconfig.get_path("stdlib")) if scope=="stdlib" else Path(sys.prefix)
+rows={}
+for directory,children,names in os.walk(root):
+ children[:]=sorted(name for name in children if name!="__pycache__" and
+                   not(scope=="stdlib" and name=="site-packages"))
+ for name in sorted(names):
+  path=Path(directory)/name
+  relative=path.relative_to(root).as_posix()
+  if name.endswith((".pyc",".pyo")) or name=="bijux-docs-environment.json":continue
+  if relative.startswith("bin/python"):continue
+  if scope!="stdlib" and path.is_symlink() and not (relative.startswith("bin/") and
+       path.resolve()==Path(sys.executable).resolve()):
+   raise SystemExit("Unexpected environment file alias")
+  rows[relative]={"sha256":hashlib.sha256(path.read_bytes()).hexdigest(),"size":path.stat().st_size,
+                  "link":str(path.readlink()) if path.is_symlink() else None}
+print(json.dumps(rows,sort_keys=True))'''
 
 
 def digest(data: bytes) -> str:
@@ -63,8 +85,8 @@ def locked_packages(path: Path) -> dict[str, str]:
         if name in packages:
             raise RuntimeError('Documentation lock duplicates package ' + name)
         packages[name] = match[2]
-    if len(packages) != 43 or not DIRECT_PACKAGES.issubset(packages):
-        raise RuntimeError('Documentation lock must preserve the reviewed 43-package dependency inventory')
+    if not packages or not DIRECT_PACKAGES.issubset(packages):
+        raise RuntimeError('Documentation lock must preserve the reviewed direct dependency inventory')
     return packages
 
 
@@ -116,8 +138,57 @@ def write_json(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, indent=2, sort_keys=True) + '\n')
 
 
+def source_bytes(root: Path, relative: str) -> bytes:
+    candidate = Path(relative)
+    if candidate.is_absolute() or '..' in candidate.parts or not candidate.parts:
+        raise RuntimeError('Documentation source input must remain inside its owning repository')
+    current = root
+    for part in candidate.parts:
+        current = current / part
+        if current.is_symlink():
+            raise RuntimeError('A regular documentation source input is required: ' + relative)
+    if not current.is_file():
+        raise RuntimeError('A regular documentation source input is required: ' + relative)
+    return current.read_bytes()
+
+
+def unique_object(pairs: list[tuple[str, object]]) -> dict:
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise RuntimeError('Duplicate documentation admission key: ' + key)
+        result[key] = value
+    return result
+
+
+def reviewed_profile(root: Path, name: str, lock: Path, packages: dict[str, str]) -> tuple[dict, dict]:
+    body = source_bytes(root, PROFILE_PATH)
+    document = json.loads(body, object_pairs_hook=unique_object)
+    if (not isinstance(document, dict) or set(document) != {'schema', 'profiles'}
+            or type(document['schema']) is not int or document['schema'] != 1
+            or not isinstance(document['profiles'], dict) or name not in document['profiles']):
+        raise RuntimeError('Select an explicitly reviewed documentation verification profile; production requires its own admission')
+    profile = document['profiles'][name]
+    keys = {'purpose', 'runtime', 'packages', 'direct_packages', 'lock_sha256', 'uv_version', 'source_inputs'}
+    if (not isinstance(profile, dict) or set(profile) != keys
+            or profile['purpose'] != 'verification-only'
+            or profile['runtime'] != VERIFICATION_RUNTIME
+            or profile['uv_version'] != '0.11.17'
+            or not isinstance(profile['direct_packages'], list)
+            or len(profile['direct_packages']) != len(DIRECT_PACKAGES)
+            or set(profile['direct_packages']) != DIRECT_PACKAGES
+            or not isinstance(profile['packages'], dict)
+            or len(profile['packages']) != 44 or profile['packages'] != packages
+            or profile['lock_sha256'] != digest(lock.read_bytes())
+            or profile['source_inputs'] != ['scripts/docs_environment.py', 'makes/series-docs.mk']):
+        raise RuntimeError('Documentation profile must preserve the reviewed 44-package dependency inventory and exact source contract')
+    sources = {PROFILE_PATH: digest(body)}
+    sources.update({relative: digest(source_bytes(root, relative)) for relative in profile['source_inputs']})
+    return profile, sources
+
+
 def prepare(root: Path, python: str, environment_path: Path, lock: Path,
-            requirements: Path, uv: str, receipt: Path, *, install: bool = True) -> dict:
+            requirements: Path, uv: str, receipt: Path, *, install: bool = True, profile_name: str = DEFAULT_PROFILE) -> dict:
     root = root.resolve()
     target = artifact_path(root, environment_path)
     receipt = artifact_path(root, receipt)
@@ -125,8 +196,16 @@ def prepare(root: Path, python: str, environment_path: Path, lock: Path,
         raise RuntimeError('Documentation receipt must not overwrite environment content')
     lock = lock if lock.is_absolute() else root / lock
     requirements = requirements if requirements.is_absolute() else root / requirements
+    for original in (lock, requirements):
+        try:
+            relative = str(original.relative_to(root))
+        except ValueError as error:
+            raise RuntimeError('Documentation source input must remain inside its owning repository') from error
+        source_bytes(root, relative)
     packages = locked_packages(lock)
     declared_ranges(requirements, packages)
+    profile, sources = reviewed_profile(root, profile_name, lock, packages)
+    sources.update({str(path.relative_to(root)): digest(path.read_bytes()) for path in (lock, requirements)})
     executable = shutil.which(python)
     uv_executable = shutil.which(uv)
     if not executable or not uv_executable:
@@ -141,7 +220,8 @@ def prepare(root: Path, python: str, environment_path: Path, lock: Path,
     uv_version = run([uv_executable, '--version'], environment=command_environment)
     if not re.fullmatch(r'uv 0[.]11[.]17(?: \([^\r\n]*\))?', uv_version):
         raise RuntimeError('This documentation installer requires uv 0.11.17')
-    identity = dict(schema=1, purpose='verification-only', runtime=runtime, base_executable=executable,
+    base_files = json.loads(run([executable, '-I', '-B', '-c', FILES, 'stdlib'], environment=command_environment))
+    identity = dict(schema=1, base_files_sha256=base_files, purpose='verification-only', profile=profile_name, source_sha256=sources, runtime=runtime, base_executable=executable,
                     base_executable_sha256=digest(Path(executable).read_bytes()), lock_sha256=digest(lock.read_bytes()),
                     requirements_sha256=digest(requirements.read_bytes()), uv_version=uv_version)
     marker = target / MARKER
@@ -149,10 +229,10 @@ def prepare(root: Path, python: str, environment_path: Path, lock: Path,
         if not target.is_dir() or marker.is_symlink() or not marker.is_file():
             raise RuntimeError('Preserve the existing unowned environment; select a new artifacts/ environment path')
         try:
-            owned = json.loads(marker.read_text())
+            owned = json.loads(marker.read_text(), object_pairs_hook=unique_object)
         except (ValueError, OSError) as error:
             raise RuntimeError('Preserve the invalid environment ownership marker') from error
-        if set(owned) != {*identity, 'status'} or any(owned.get(key) != value for key, value in identity.items()) or owned.get('status') not in ('preparing', 'ready'):
+        if set(owned) != ({*identity, 'status', 'site_files_sha256'} if owned.get('status') == 'ready' else {*identity, 'status'}) or any(owned.get(key) != value for key, value in identity.items()) or owned.get('status') not in ('preparing', 'ready'):
             raise RuntimeError('Preserve the stale documentation environment; select a new artifacts/ environment path')
     else:
         target.mkdir(parents=True)
@@ -184,8 +264,16 @@ def prepare(root: Path, python: str, environment_path: Path, lock: Path,
         if len(rows) != len(dict(rows)) or dict(rows) != packages:
             raise RuntimeError('Preserve the documentation environment with missing, changed or unexpected installed packages')
         run([uv_executable, '--no-config', 'pip', 'check', '--python', str(venv_python)], environment=command_environment)
+        site_files = json.loads(run([str(venv_python), '-I', '-B', '-c', FILES, 'installed-files'], environment=command_environment))
+        if owned['status'] == 'ready' and owned.get('site_files_sha256') != site_files:
+            raise RuntimeError('Preserve the documentation environment with changed installed file bytes')
+        owned['site_files_sha256'] = site_files
         owned['status'] = 'ready'
         write_json(marker, owned)
+    if base_files != json.loads(run([executable, '-I', '-B', '-c', FILES, 'stdlib'], environment=command_environment)):
+        raise RuntimeError('Documentation base runtime changed during environment admission')
+    if sources != {relative: digest(source_bytes(root, relative)) for relative in sources}:
+        raise RuntimeError('Documentation source changed during environment admission')
     result = dict(schema=1, purpose='verification-only', publication_approved=False, environment=str(target),
                   python=str(venv_python), status=owned['status'], package_count=len(packages), identity=identity)
     write_json(receipt, result)
@@ -201,10 +289,11 @@ def main() -> int:
     parser.add_argument('--requirements', type=Path, default=Path('configs/docs/requirements-docs.txt'))
     parser.add_argument('--uv', default='uv')
     parser.add_argument('--receipt', type=Path, default=Path('artifacts/docs/environment.json'))
+    parser.add_argument('--profile', default=DEFAULT_PROFILE)
     parser.add_argument('--prepare-only', action='store_true')
     args = parser.parse_args()
     try:
-        result = prepare(args.root, args.python, args.environment, args.lock, args.requirements, args.uv, args.receipt, install=not args.prepare_only)
+        result = prepare(args.root, args.python, args.environment, args.lock, args.requirements, args.uv, args.receipt, install=not args.prepare_only, profile_name=args.profile)
     except (RuntimeError, ValueError, OSError) as error:
         parser.exit(1, str(error) + '\n')
     print(json.dumps(result, sort_keys=True))
