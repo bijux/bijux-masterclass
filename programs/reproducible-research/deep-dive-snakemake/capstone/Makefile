@@ -60,6 +60,9 @@ TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
 TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
 TOOLS_PY := $(TOOLS_BIN)/python
 TOOLS_PIP := $(TOOLS_PY) -m pip
+TOOLS_UV ?= uv
+PYTEST_ARGS ?=
+TOOLS_FRESH ?=
 REPO_ROOT := $(abspath ../../../..)
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-snakemake
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-snakemake-capstone.tar.gz
@@ -90,16 +93,13 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 help: ## Show available targets
 	@awk 'BEGIN {FS=":.*##"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "\033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-bootstrap: ## Create the supported local toolchain and print the resolved versions
-	@$(SYSTEM_PYTHON) -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' || { echo "✘ bootstrap requires Python 3.11+ via SYSTEM_PYTHON=$(SYSTEM_PYTHON)"; exit 1; }
-	@rm -rf "$(TOOLS_VENV_DIR_ABS)"
-	@$(SYSTEM_PYTHON) -m venv "$(TOOLS_VENV_DIR_ABS)"
-	@$(TOOLS_PIP) install -U pip
-	@$(TOOLS_PIP) install "snakemake>=9.14,<9.24" pytest ruff pyyaml jsonschema
+bootstrap: ## Admit the exact metadata-owned toolchain and print its versions
+	@$(SYSTEM_PYTHON) -B scripts/bootstrap_tools.py --root "$(REPO_ROOT)" --capstone "$(CURDIR)" --python "$(SYSTEM_PYTHON)" --uv "$(TOOLS_UV)" --environment "$(TOOLS_VENV_DIR_ABS)" --receipt "$(ARTIFACTS_DIR_ABS)/proof/reproducible-research/deep-dive-snakemake/toolchain.json" $(TOOLS_FRESH)
 	@$(MAKE) info SNAKEMAKE="$(TOOLS_BIN)/snakemake" PYTHON="$(TOOLS_PY)" PYTEST="$(TOOLS_BIN)/pytest" RUFF="$(TOOLS_BIN)/ruff"
 
-bootstrap-confirm: bootstrap ## Create the supported toolchain and run clean-room confirmation
-	@$(MAKE) confirm SNAKEMAKE="$(TOOLS_BIN)/snakemake" PYTHON="$(TOOLS_PY)" PYTEST="$(TOOLS_BIN)/pytest" RUFF="$(TOOLS_BIN)/ruff"
+bootstrap-confirm: TOOLS_FRESH=--fresh
+bootstrap-confirm: bootstrap ## Admit a fresh toolchain and run clean-room confirmation
+	@PATH="$(TOOLS_BIN):$$PATH" $(MAKE) confirm SNAKEMAKE="$(TOOLS_BIN)/snakemake" PYTHON="$(TOOLS_PY)" PYTEST="$(TOOLS_BIN)/pytest" RUFF="$(TOOLS_BIN)/ruff"
 
 info: ## Print tool versions and key settings
 	@echo "SNAKEMAKE = $(SNAKEMAKE)"
@@ -165,7 +165,7 @@ lint: ## Static checks (does NOT enforce formatting)
 test: ## Run unit tests
 	@mkdir -p "$(TEST_DIR_ABS)"
 	@command -v $(PYTEST) >/dev/null || { echo "✘ pytest not found"; exit 1; }
-	$(PYTEST) -q
+	$(PYTEST) -q $(PYTEST_ARGS)
 
 wf-lint: ## Snakemake lint
 	@command -v $(SNAKEMAKE) >/dev/null || { echo "✘ snakemake not found"; exit 1; }
