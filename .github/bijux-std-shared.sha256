@@ -30,7 +30,7 @@ a166fcb75c5cc00cf03d32961bc0a907f6602a63f5cdd35edbf77f9fd2d487f3  .github/standa
 d9595c922cf3f18b9276b5b585071f65bb4d71780122bb21956a99a3b3dde6b6  .github/standards/workflow-inventory.json
 6a406ea3f222d2c36243bea74b7fdf1416052213a20312f13cd5d5caee113e12  .github/standards/workflow-sources/automerge-pr.yml
 1fdabe0d1754c12426b5322f9d7faac218f7a806c11eb356465f9f667cd1680b  .github/standards/workflow-sources/bijux-std.yml
-85daf93845afbc0548305d2fe27f2de271b148a62430e8bfb9cf8601c35c27f5  .github/standards/workflow-sources/source-manifest.json
+32e0d256329997e53867dac902419602945d07370a5402f59dc08fc720b53687  .github/standards/workflow-sources/source-manifest.json
 6a406ea3f222d2c36243bea74b7fdf1416052213a20312f13cd5d5caee113e12  .github/workflows/automerge-pr.yml
 1fdabe0d1754c12426b5322f9d7faac218f7a806c11eb356465f9f667cd1680b  .github/workflows/bijux-std.yml
 28e2716ee1f43d3211cede9fad4251044b12b643dc728e2038b69152841d4561  .bijux/shared/bijux-gh/scripts/publication_admission.py
@@ -49,7 +49,7 @@ db46939788d12e7d26c66d61847d0b08778397abb1c5657ab89cc40c35cafe01  .github/script
 de6eebb76c73703a427e42ee1ec130d8e906b7e083e8f1a7387aa0b1c41ec53b  .github/workflows/deploy-docs.yml
 0180b129bd16d4b36a7a11252842dc76c33b3434e0fa46bd99ff27c24ddeb8a8  .github/workflows/github-policy.yml
 e0ea5c89bd6b1003bdbba8b886108cf57ee21b5537dd7a72ce2d4887c8061b6f  .github/workflows/pr-approval-policy.yml
-d0a706d9d5e77a273079b3e737ea787b287ff144aa4629430996d7e11ca2b0af  .github/standards/dependency-notification-source.json
+00a4352bddeeb9561f95d2ec1de3e329d0fb44b44c17449f5fe6782846b45ba4  .github/standards/dependency-notification-source.json
 079215c07133737bf18b68549054d38aa1c786fc961192a4c4861967a945799d  .github/scripts/workflow_execution/docs_routing.py
 b4ed9343cc00c1e9b8af142ba0b6e5265dc2dd4f56299e882ca68fae9d2a04ef  .bijux/shared/bijux-docs/CONTRACT.md
 1471392bc3f84416a52e7974927c64a31962321427b5209f75bd33247103d281  .bijux/shared/bijux-docs/README.md
@@ -85,7 +85,7 @@ bb84852011ed775a285b6489993dc75448db14a5401d4a5623b94c1e744203b7  .bijux/shared/
 59477074ab9975592f45a8cbd772d6da3a850f8247befbf901d9201a46bb7631  .bijux/shared/bijux-docs/scripts/bootstrap.js
 7baa024ef0fc5b6d6e6583265ab34b2a2222ecfe7644c90c32bca50fea8c48b3  .bijux/shared/bijux-docs/scripts/content-reflow.js
 e4236b86d44b9a745734a32591edb8f393e1af0ae18f864dda3f1dbb3b8f504c  .bijux/shared/bijux-docs/scripts/detail-tabs.js
-051fec9ad5e5488b47ec1ae18b108750d19a5faed105965fb3cb743cf94a008f  .bijux/shared/bijux-docs/scripts/external-links.js
+047550188d0c242ad8b0e749d9b4d2f5b215435530aa531c9a6467a18bb48954  .bijux/shared/bijux-docs/scripts/external-links.js
 6208b08cf51a2b0ef7ec8a86d0b9598c66f33993ecb40d291bbf779d55ce13ed  .bijux/shared/bijux-docs/scripts/mermaid-init.js
 465b42a2e85bc00965f681dc74256122fd5723e30acba4430789b9b7e8c64843  .bijux/shared/bijux-docs/scripts/nav-reveal.js
 f4e7f5761a3f56a14d7bc8a69d6aac78cd9921ea84b8c03d7c2a32009f3aa8d1  .bijux/shared/bijux-docs/scripts/nav-state.js
@@ -97,7 +97,7 @@ a7accdb42aa97d177538b8e2a90d0c8edfa40a79d7d7d6f669c19c7874afe118  .bijux/shared/
 ccee017b3e7e2dba9f48a4a98769d03fc90ab0e4c1e85da6fe778fbccf6db86d  .bijux/shared/bijux-docs/security/PRIVACY.md
 9a0da8dea307930a63b0b01c4d9a7f990ae2ca549425878762ba2e07a6148760  .bijux/shared/bijux-docs/security/SECURITY.md
 1c1c7a5005a3c26c5740fb55fb662a3d3150d96364dda5753e4328c06206c57c  .bijux/shared/bijux-docs/security/build_identity.py
-00f1f7d7ca7f5c1e6f34e65fa9ebde338f662102333e060ca80467ab051dbd21  .bijux/shared/bijux-docs/security/catalogue_recipe.py
+4bdf3a440675e2a48d51da3f32efad4a2a33f22bc2ed4f180796a5becc1099c9  .bijux/shared/bijux-docs/security/catalogue_recipe.py
 28a97a07df184c70da98d2052105cc0bcabdd4e9d50acfe66ebe1390e3ef3983  .bijux/shared/bijux-docs/security/catalogue_sources.py
 c7cac9af748c9589445f8d89689df4f43e6479de7c5feb700e49ec8cf187db27  .bijux/shared/bijux-docs/security/csp.py
 e670b3256fd672ff3720184d8f2019fc3e43dc8f9bcdc6344b229cebe3d566e2  .bijux/shared/bijux-docs/security/embedded_reports/__init__.py
@@ -216,5 +216,5 @@ a194664f7530191d4f0fb239ee5e58cf5fd9648a7ab013030e6d84c5f4bc9585  .bijux/shared/
 a628730005b2e94178c4ea4f7c29bd9ff73773703dfd38413474849154268192  .bijux/shared/bijux-gh/workflows/deploy-docs.env.example
 906914ba1c6b868b64cc874add6d12eb661963e69e94e21a958ad5f67b048370  .github/dependabot.yml
 62215ef3f9cc88ea2d705ab26201e35d4ae3843d1b632849a8dc204b1a0a56aa  .github/release.env
-4fdc7883d2f5015d2155e2461da8bbf36b63c9cba2a37971be3370c65f0b9b74  .github/standards/bijux-docs.sha
+4eedfa9b485e8d1ba92490d3a6f7cef68e1d2a0c5934cc6be115d0f9482481b0  .github/standards/bijux-docs.sha
 2099ed26cd68c5efbe231238b275c774c6461154c74197974f66f793fabb627c  .bijux/shared/bijux-docs/security/embedded_reports/native_presentations.py

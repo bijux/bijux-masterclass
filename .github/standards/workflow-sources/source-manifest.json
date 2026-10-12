@@ -1,7 +1,7 @@
 {
   "authority": {
     "baseline_sha": "1ad55aafdb44e2d47890632653e7d9c312cc7968",
-    "execution_policy_sha": "266e9623957b3ed8cafec561e7cd835d7b4938e1",
+    "execution_policy_sha": "8c2b9d6d69614a6a6e66bd772c9d22edeec47579",
     "repository": "bijux-masterclass",
     "schema": 1
   },
@@ -40,7 +40,7 @@
     ".bijux/shared/bijux-docs/scripts/bootstrap.js": "59477074ab9975592f45a8cbd772d6da3a850f8247befbf901d9201a46bb7631",
     ".bijux/shared/bijux-docs/scripts/content-reflow.js": "7baa024ef0fc5b6d6e6583265ab34b2a2222ecfe7644c90c32bca50fea8c48b3",
     ".bijux/shared/bijux-docs/scripts/detail-tabs.js": "e4236b86d44b9a745734a32591edb8f393e1af0ae18f864dda3f1dbb3b8f504c",
-    ".bijux/shared/bijux-docs/scripts/external-links.js": "051fec9ad5e5488b47ec1ae18b108750d19a5faed105965fb3cb743cf94a008f",
+    ".bijux/shared/bijux-docs/scripts/external-links.js": "047550188d0c242ad8b0e749d9b4d2f5b215435530aa531c9a6467a18bb48954",
     ".bijux/shared/bijux-docs/scripts/mermaid-init.js": "6208b08cf51a2b0ef7ec8a86d0b9598c66f33993ecb40d291bbf779d55ce13ed",
     ".bijux/shared/bijux-docs/scripts/nav-reveal.js": "465b42a2e85bc00965f681dc74256122fd5723e30acba4430789b9b7e8c64843",
     ".bijux/shared/bijux-docs/scripts/nav-state.js": "f4e7f5761a3f56a14d7bc8a69d6aac78cd9921ea84b8c03d7c2a32009f3aa8d1",
@@ -52,7 +52,7 @@
     ".bijux/shared/bijux-docs/security/PRIVACY.md": "ccee017b3e7e2dba9f48a4a98769d03fc90ab0e4c1e85da6fe778fbccf6db86d",
     ".bijux/shared/bijux-docs/security/SECURITY.md": "9a0da8dea307930a63b0b01c4d9a7f990ae2ca549425878762ba2e07a6148760",
     ".bijux/shared/bijux-docs/security/build_identity.py": "1c1c7a5005a3c26c5740fb55fb662a3d3150d96364dda5753e4328c06206c57c",
-    ".bijux/shared/bijux-docs/security/catalogue_recipe.py": "00f1f7d7ca7f5c1e6f34e65fa9ebde338f662102333e060ca80467ab051dbd21",
+    ".bijux/shared/bijux-docs/security/catalogue_recipe.py": "4bdf3a440675e2a48d51da3f32efad4a2a33f22bc2ed4f180796a5becc1099c9",
     ".bijux/shared/bijux-docs/security/catalogue_sources.py": "28a97a07df184c70da98d2052105cc0bcabdd4e9d50acfe66ebe1390e3ef3983",
     ".bijux/shared/bijux-docs/security/csp.py": "c7cac9af748c9589445f8d89689df4f43e6479de7c5feb700e49ec8cf187db27",
     ".bijux/shared/bijux-docs/security/embedded_reports/__init__.py": "e670b3256fd672ff3720184d8f2019fc3e43dc8f9bcdc6344b229cebe3d566e2",
@@ -213,8 +213,8 @@
     ".github/scripts/workflow_execution/source_loading.py": "ac3ba8d1ae14c69b96b1b68e70b897da1434a6b2732b95c3e72c2b29cbc90956",
     ".github/scripts/workflow_execution/verification.py": "246a01ece2562f34f73386ca2399e0de332034bb302d9521e5429b1c84b1fff9",
     ".github/scripts/workflow_execution/yaml_io.py": "0ce0b2dcda55b4a1764b2e73dba510d44ff3af40961b142f91e91fed9fde68aa",
-    ".github/standards/bijux-docs.sha": "4fdc7883d2f5015d2155e2461da8bbf36b63c9cba2a37971be3370c65f0b9b74",
-    ".github/standards/dependency-notification-source.json": "d0a706d9d5e77a273079b3e737ea787b287ff144aa4629430996d7e11ca2b0af",
+    ".github/standards/bijux-docs.sha": "4eedfa9b485e8d1ba92490d3a6f7cef68e1d2a0c5934cc6be115d0f9482481b0",
+    ".github/standards/dependency-notification-source.json": "00a4352bddeeb9561f95d2ec1de3e329d0fb44b44c17449f5fe6782846b45ba4",
     ".github/standards/repo-config.manifest.json": "a166fcb75c5cc00cf03d32961bc0a907f6602a63f5cdd35edbf77f9fd2d487f3",
     ".github/standards/workflow-inventory.json": "d9595c922cf3f18b9276b5b585071f65bb4d71780122bb21956a99a3b3dde6b6",
     ".github/workflows/automerge-pr.yml": "6a406ea3f222d2c36243bea74b7fdf1416052213a20312f13cd5d5caee113e12",
