@@ -3,6 +3,12 @@
 set -euo pipefail
 export PYTHONDONTWRITEBYTECODE=1
 
+mode="${1:-check}"
+[[ "$#" -le 1 ]] && [[ "${mode}" == check || "${mode}" == sync ]] || {
+  echo 'ERROR: documentation source mode must be check or sync' >&2
+  exit 1
+}
+
 repo_root="$(git rev-parse --show-toplevel)"
 cd "${repo_root}"
 pin_path='.github/standards/bijux-docs.sha'
@@ -15,6 +21,11 @@ source_sha="$(cat "${pin_path}")"
   echo 'ERROR: documentation source requires a full commit SHA' >&2
   exit 1
 }
+
+if [[ -n "${BIJUX_STD_REF:-}" && "${BIJUX_STD_REF}" != "${source_sha}" ]]; then
+  echo 'ERROR: documentation source override differs from the declared source pin' >&2
+  exit 1
+fi
 
 source_root="${BIJUX_STD_ROOT:-}"
 if [[ -z "${source_root}" ]]; then
@@ -47,7 +58,11 @@ export BIJUX_STD_ROOT="${source_root}"
 export BIJUX_STD_REF="${source_sha}"
 source .bijux/shared/bijux-docs/tooling/scripts/docs_source_authority.sh
 verify_docs_authority "${repo_root}" "${repo_root}/.bijux/shared/bijux-docs"
+if [[ "${mode}" == sync ]]; then
+  bash .bijux/shared/bijux-docs/tooling/scripts/sync_bijux_docs.sh
+fi
 python3 .bijux/shared/bijux-docs/tooling/scripts/project_bijux_docs.py \
   "${repo_root}" "${repo_root}/.bijux/shared/bijux-docs" --check
 python3 .bijux/shared/bijux-docs/tooling/scripts/sync_mkdocs_hub.py \
   "${repo_root}" "${repo_root}/.bijux/shared/bijux-docs" --check
+python3 .bijux/shared/bijux-docs/tooling/quality/validate_source_layout.py "${repo_root}"

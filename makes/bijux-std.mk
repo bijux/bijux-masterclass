@@ -14,7 +14,7 @@ BIJUX_STD_PYCACHE_DIR ?= artifacts/bijux-std/pycache
 .PHONY: docs-source-check bijux-std-checks bijux-std-update bijux-std
 
 docs-source-check: ## Verify the independently pinned documentation source and projection
-	@bash scripts/verify_docs_source.sh
+	@env -u BIJUX_STD_ROOT -u BIJUX_STD_REF bash scripts/verify_docs_source.sh
 
 bijux-std-checks: docs-source-check ## Verify documentation authority and the pinned Python runtime
 	@mkdir -p "$(BIJUX_STD_PYCACHE_DIR)"
