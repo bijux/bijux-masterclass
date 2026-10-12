@@ -44,6 +44,7 @@ bash "${source_root}/shared/bijux-checks/scripts/verify-accepted-source.sh" \
 python3 "${source_root}/.github/scripts/check_workflow_projection.py" \
   --target "${repo_root}" --repo bijux-masterclass --source-sha "${source_sha}"
 export BIJUX_STD_ROOT="${source_root}"
+export BIJUX_STD_REF="${source_sha}"
 source .bijux/shared/bijux-docs/tooling/scripts/docs_source_authority.sh
 verify_docs_authority "${repo_root}" "${repo_root}/.bijux/shared/bijux-docs"
 python3 .bijux/shared/bijux-docs/tooling/scripts/project_bijux_docs.py \
