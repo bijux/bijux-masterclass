@@ -481,7 +481,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux-atlas",
+              "path": "/bijux-atlas/"
+            }
           },
           "release-crates": {
             "mode": "manual-only",
@@ -1222,7 +1226,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux-canon",
+              "path": "/bijux-canon/"
+            }
           },
           "release-ghcr": {
             "mode": "manual-only",
@@ -1639,7 +1647,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux-core",
+              "path": "/bijux-core/"
+            }
           },
           "release-crates": {
             "mode": "manual-only",
@@ -2346,7 +2358,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux-genomics",
+              "path": "/bijux-genomics/"
+            }
           }
         }
       }
@@ -2355,6 +2371,7 @@
       "name": "bijux-iac",
       "release_env": [],
       "workflow_allowlist": [
+        "deploy-docs",
         "github-policy",
         "pr-approval-policy"
       ],
@@ -2374,7 +2391,17 @@
       ],
       "workflow_execution_policy": {
         "schema": 1,
-        "publication_entrypoints": {}
+        "publication_entrypoints": {
+          "deploy-docs": {
+            "mode": "manual-only",
+            "controller": "iac",
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux.github.io",
+              "path": "/infrastructure/"
+            }
+          }
+        }
       }
     },
     {
@@ -2482,7 +2509,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux-masterclass",
+              "path": "/bijux-masterclass/"
+            }
           }
         },
         "dependency_pull_requests": "notification-only",
@@ -3016,7 +3047,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux-phylogenetics",
+              "path": "/bijux-phylogenetics/"
+            }
           },
           "release-ghcr": {
             "mode": "manual-only",
@@ -3538,7 +3573,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux-pollenomics",
+              "path": "/bijux-pollenomics/"
+            }
           },
           "release-ghcr": {
             "mode": "manual-only",
@@ -4169,7 +4208,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux-proteomics",
+              "path": "/bijux-proteomics/"
+            }
           },
           "release-ghcr": {
             "mode": "manual-only",
@@ -4233,13 +4276,24 @@
         ]
       },
       "workflow_allowlist": [
+        "deploy-docs",
         "github-policy",
         "pr-approval-policy"
       ],
       "pinned_std_sha": "5da4225aedcfc2af92bb431875243fa2db2b0ce9",
       "workflow_execution_policy": {
         "schema": 1,
-        "publication_entrypoints": {}
+        "publication_entrypoints": {
+          "deploy-docs": {
+            "mode": "manual-only",
+            "controller": "iac",
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux.github.io",
+              "path": "/standards/"
+            }
+          }
+        }
       }
     },
     {
@@ -4613,7 +4667,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux-gnss",
+              "path": "/bijux-gnss/"
+            }
           },
           "release-crates": {
             "mode": "manual-only",
@@ -4674,7 +4732,11 @@
           "deploy-docs": {
             "mode": "manual-only",
             "controller": "iac",
-            "refs": "main-only"
+            "refs": "main-only",
+            "destination": {
+              "repository": "bijux.github.io",
+              "path": "/"
+            }
           }
         }
       }

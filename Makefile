@@ -4,3 +4,5 @@ include makes/bijux-docs.mk
 include makes/docs.mk
 include makes/series-docs.mk
 include makes/program.mk
+
+include makes/docs-publication.mk

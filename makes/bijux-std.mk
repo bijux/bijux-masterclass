@@ -1,20 +1,25 @@
 # Shared Bijux standard source-of-truth checks and updates.
 
+BIJUX_STD_CONFIG ?= configs/standards/program-runtime.yml
 BIJUX_STD_CHECK_SCRIPT ?= .bijux/shared/bijux-checks/check-bijux-std.sh
 BIJUX_STD_UPDATE_SCRIPT ?= .bijux/shared/bijux-checks/update-bijux-std.sh
 BIJUX_STD_PIN_FILE ?= .github/standards/bijux-std.sha
 BIJUX_STD_REF ?= $(strip $(shell cat "$(BIJUX_STD_PIN_FILE)"))
 BIJUX_STD_GIT_URL ?= https://github.com/bijux/bijux-std.git
-BIJUX_STD_CAPABILITIES ?= docs python
+BIJUX_STD_CAPABILITIES ?= python
 BIJUX_STD_UPDATE_CHANNEL ?= branch
 BIJUX_STD_TAG_PATTERN ?= v*
 BIJUX_STD_PYCACHE_DIR ?= artifacts/bijux-std/pycache
 
-.PHONY: bijux-std-checks bijux-std-update bijux-std
+.PHONY: docs-source-check bijux-std-checks bijux-std-update bijux-std
 
-bijux-std-checks: ## Verify shared directories match bijux-std (set BIJUX_STD_REF for pinning)
+docs-source-check: ## Verify the independently pinned documentation source and projection
+	@env -u BIJUX_STD_ROOT -u BIJUX_STD_REF bash scripts/verify_docs_source.sh
+
+bijux-std-checks: docs-source-check ## Verify documentation authority and the pinned Python runtime
 	@mkdir -p "$(BIJUX_STD_PYCACHE_DIR)"
 	@PYTHONPYCACHEPREFIX="$(abspath $(BIJUX_STD_PYCACHE_DIR))" \
+		BIJUX_STD_CONFIG="$(BIJUX_STD_CONFIG)" \
 		BIJUX_STD_CAPABILITIES="$(BIJUX_STD_CAPABILITIES)" \
 		BIJUX_STD_REF="$(BIJUX_STD_REF)" \
 		BIJUX_STD_GIT_URL="$(BIJUX_STD_GIT_URL)" \
@@ -25,6 +30,7 @@ bijux-std-checks: ## Verify shared directories match bijux-std (set BIJUX_STD_RE
 bijux-std-update: ## Update shared directories from bijux-std (set BIJUX_STD_UPDATE_CHANNEL=branch|tag)
 	@mkdir -p "$(BIJUX_STD_PYCACHE_DIR)"
 	@PYTHONPYCACHEPREFIX="$(abspath $(BIJUX_STD_PYCACHE_DIR))" \
+		BIJUX_STD_CONFIG="$(BIJUX_STD_CONFIG)" \
 		BIJUX_STD_CAPABILITIES="$(BIJUX_STD_CAPABILITIES)" \
 		BIJUX_STD_REF="$(BIJUX_STD_REF)" \
 		BIJUX_STD_GIT_URL="$(BIJUX_STD_GIT_URL)" \

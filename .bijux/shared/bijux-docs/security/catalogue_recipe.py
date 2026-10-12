@@ -23,6 +23,13 @@ GENERATOR = {
     'scripts/render_root_mkdocs.py': '05ce8d0ca82b005b91a92d167aecadd21f366a78c899b38d66e3c89ba674f11d',
     'scripts/sync_series_docs.py': '65f43a155a0a64ab492d9a2fa7bbfdfce0c44663f4f9ad04a8ce96a0c4834d06',
 }
+# Exact owned generator variants preserve the pure root catalogue plan. Course
+# staging is not executed by reconstruction; optional YAML uses the fixed loader.
+GENERATOR_VARIANTS = {
+    'scripts/catalogue/files.py': {'8ba6a6f3107410adca141b80c8d1a5e25d97319515dfc68383f8672fbcee6b57'},
+    'scripts/docs_nav.py': {'8d77d22553f0a868f96ac52461998e8ab444cb75b8502914a7ea8de4419e0998'},
+    'scripts/sync_series_docs.py': {'84221a438172349a5b7eb1291606045a3ab202636a3e0ad18d6f6a726c87940c'},
+}
 MODULES = {'scripts.catalogue.links': 'scripts/catalogue/links.py',
            'scripts.docs_nav': 'scripts/docs_nav.py',
            'scripts.catalogue.source_plan': 'scripts/catalogue/source_plan.py'}
@@ -71,10 +78,20 @@ def shared_module(path):
         sys.modules.pop(name, None)
 
 
+def generator_identity(originals):
+    observed = {}
+    for name, expected in GENERATOR.items():
+        require(name in originals, 'generator source differs from reviewed recipe')
+        fingerprint = digest(originals[name])
+        require(fingerprint in {expected, *GENERATOR_VARIANTS.get(name, set())},
+                'generator source differs from reviewed recipe')
+        observed[name] = fingerprint
+    return observed
+
+
 def captured_generator(root, originals):
     """Compile only the exact reviewed source set with fixed dependency routing."""
-    require(all(name in originals and digest(originals[name]) == expected
-                for name, expected in GENERATOR.items()), 'generator source differs from reviewed recipe')
+    generator_identity(originals)
     modules = {}
     registered = []
 
@@ -139,7 +156,7 @@ class CatalogueDerivation:
         self.record = {'schema': 1, 'recipe': RECIPE,
                        'owner': {'path': OWNER, 'sha256': digest(inputs[OWNER])},
                        'configuration': {'path': CONFIGURATION, 'sha256': digest(plan.configuration.content)},
-                       'generator': dict(GENERATOR), 'environment': dict(environment),
+                       'generator': generator_identity(inputs), 'environment': dict(environment),
                        'source_inputs_sha256': json_digest(dict(plan.source_hashes)),
                        'documents': len(self.map), 'document_map_sha256': json_digest(self.map),
                        'native_history_sha256': digest(history.encode())}
@@ -202,9 +219,12 @@ class CatalogueDerivation:
                 require(values == {name: data for name, data in self.inputs.items()
                                    if name.startswith(directory.relative_to(self.root).as_posix() + '/')},
                         'custom renderer input differs from committed source')
+            # Receipt and admission use the same component-ordered tree identity.
+            # Prefix siblings such as navigation.js and navigation/module.js must
+            # not acquire a different identity through string ordering.
+            identity = shared_module(self.shared / 'security/build_identity.py')
             records.append({'path': directory.relative_to(self.root).as_posix(),
-                            'sha256': json_digest({'files': [{'path': Path(name).relative_to(directory.relative_to(self.root)).as_posix(),
-                                                               'sha256': digest(data)} for name, data in sorted(values.items())]})})
+                            'sha256': identity.tree_identity(directory)})
         return records
 
 

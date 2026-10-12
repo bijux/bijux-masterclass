@@ -234,9 +234,18 @@ class WorkflowEconomyTests(unittest.TestCase):
         adapter = (self.repository_root / ".github" / "docs-deploy.env").read_text(
             encoding="utf-8"
         )
-        self.assertIn("BIJUX_DOCS_BUILD_COMMAND='make series-docs-build'", adapter)
+        self.assertIn("BIJUX_DOCS_BUILD_COMMAND='make gh-docs-build'", adapter)
+        self.assertIn("BIJUX_DOCS_VERIFY_COMMAND='make gh-docs-verify'", adapter)
         self.assertNotIn("Install documentation dependencies", workflow)
-        self.assertEqual(adapter.count("make series-docs-build"), 1)
+        self.assertEqual(adapter.count("make gh-docs-build"), 1)
+        publication = (self.repository_root / "makes" / "docs-publication.mk").read_text(
+            encoding="utf-8"
+        )
+        self.assertEqual(publication.count("scripts/sync_series_docs.py"), 1)
+        self.assertEqual(publication.count("scripts/render_root_mkdocs.py"), 1)
+        self.assertIn("--source-recipe masterclass-catalogue", publication)
+        self.assertIn('"$(DOCS_PUBLICATION_BUILDER)" admit', publication)
+        self.assertIn('"$(DOCS_PUBLICATION_BUILDER)" verify', publication)
 
     def test_functional_confirmation_executes_pytest_once(self) -> None:
         capstone = (
