@@ -1,7 +1,7 @@
 {
   "authority": {
     "baseline_sha": "1ad55aafdb44e2d47890632653e7d9c312cc7968",
-    "execution_policy_sha": "8c2b9d6d69614a6a6e66bd772c9d22edeec47579",
+    "execution_policy_sha": "337a3e5b31a55714033827b3286f111dd4378a1b",
     "repository": "bijux-masterclass",
     "schema": 1
   },
@@ -172,7 +172,7 @@
     ".bijux/shared/bijux-gh/workflows/codecov.yml": "0a70c2b53298218538de363fb6c2bfd05358a4a35aad0ed29eeaed8cc5eaf2c7",
     ".bijux/shared/bijux-gh/workflows/deploy-docs-adoption.md": "190a0ba8955db9c7b90738ea6465939de0dbdd5dd3c331fa5277bd4ec0614e7c",
     ".bijux/shared/bijux-gh/workflows/deploy-docs.env.example": "a628730005b2e94178c4ea4f7c29bd9ff73773703dfd38413474849154268192",
-    ".bijux/shared/bijux-gh/workflows/deploy-docs.yml": "e577230c3742c2be940619283ac47aa7bd1150362cc7bac42153c919215ac7a1",
+    ".bijux/shared/bijux-gh/workflows/deploy-docs.yml": "2b87fddef6ee1de83a23608a3631a160e1aebc309524c2390eb3bb8cdfba75a6",
     ".bijux/shared/bijux-gh/workflows/github-policy.yml": "c622136ae14cc9e83a1f433a7edafb715543538a9052c3665ec83f1aad011b09",
     ".bijux/shared/bijux-gh/workflows/labeler.yml": "ac100ff08c80696e280adf06a99d5f4029d4b5223f1e6fec9565c909c119434f",
     ".bijux/shared/bijux-gh/workflows/pr-approval-policy.yml": "2b078d61f8d12a89d594bbc801683c68304b670e29bda656d8af5a20ab1db5fd",
@@ -205,7 +205,7 @@
     ".github/scripts/workflow_execution/dependency_prs.py": "d5777ac09e6e16aa331d5c3d8c45689bb14dff80df046ba37ffd7a7cde10bb2a",
     ".github/scripts/workflow_execution/docs_routing.py": "079215c07133737bf18b68549054d38aa1c786fc961192a4c4861967a945799d",
     ".github/scripts/workflow_execution/events.py": "7dca84056f081a4279d41a2ce1e1419d9db6bf5fc8e8f79a9cdfcde15d0ec968",
-    ".github/scripts/workflow_execution/masterclass.py": "db46939788d12e7d26c66d61847d0b08778397abb1c5657ab89cc40c35cafe01",
+    ".github/scripts/workflow_execution/masterclass.py": "51419b19661487f6e64ac1be31f525bd01addc99112268cb746f904f074b718d",
     ".github/scripts/workflow_execution/publication.py": "9684990264a192cd13762f1a46c16ab4ce18abc135fd72440ea4ead474a5f6a4",
     ".github/scripts/workflow_execution/refs.py": "a45960789d4a6a6faea92bd811ad407eb8e9d4bef391e8fde01ae423915386db",
     ".github/scripts/workflow_execution/schema.py": "15e2f68e75ff60c8c61b1013155fc51e676a2ca896fb2fe4f0fe447d839634d4",
@@ -214,13 +214,13 @@
     ".github/scripts/workflow_execution/verification.py": "246a01ece2562f34f73386ca2399e0de332034bb302d9521e5429b1c84b1fff9",
     ".github/scripts/workflow_execution/yaml_io.py": "0ce0b2dcda55b4a1764b2e73dba510d44ff3af40961b142f91e91fed9fde68aa",
     ".github/standards/bijux-docs.sha": "4eedfa9b485e8d1ba92490d3a6f7cef68e1d2a0c5934cc6be115d0f9482481b0",
-    ".github/standards/dependency-notification-source.json": "00a4352bddeeb9561f95d2ec1de3e329d0fb44b44c17449f5fe6782846b45ba4",
+    ".github/standards/dependency-notification-source.json": "9ee3927c1b0b5c953a9cc56edbc00ebd69dde190ecea3bd460f352318474c4c7",
     ".github/standards/repo-config.manifest.json": "a166fcb75c5cc00cf03d32961bc0a907f6602a63f5cdd35edbf77f9fd2d487f3",
     ".github/standards/workflow-inventory.json": "d9595c922cf3f18b9276b5b585071f65bb4d71780122bb21956a99a3b3dde6b6",
     ".github/workflows/automerge-pr.yml": "6a406ea3f222d2c36243bea74b7fdf1416052213a20312f13cd5d5caee113e12",
     ".github/workflows/bijux-std.yml": "1fdabe0d1754c12426b5322f9d7faac218f7a806c11eb356465f9f667cd1680b",
     ".github/workflows/dependency-notice.yml": "44ca50743bb37869660ca0d125cae7a0f7767d0afdafce401da3f4379e2e2aac",
-    ".github/workflows/deploy-docs.yml": "de6eebb76c73703a427e42ee1ec130d8e906b7e083e8f1a7387aa0b1c41ec53b",
+    ".github/workflows/deploy-docs.yml": "de812769f23009752c01f1fd7da29bd171a8c58d04ff673ba8b7c3eda9cfce9c",
     ".github/workflows/github-policy.yml": "0180b129bd16d4b36a7a11252842dc76c33b3434e0fa46bd99ff27c24ddeb8a8",
     ".github/workflows/pr-approval-policy.yml": "e0ea5c89bd6b1003bdbba8b886108cf57ee21b5537dd7a72ce2d4887c8061b6f"
   },
