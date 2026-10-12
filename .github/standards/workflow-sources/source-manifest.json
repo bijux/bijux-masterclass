@@ -1,7 +1,7 @@
 {
   "authority": {
     "baseline_sha": "1ad55aafdb44e2d47890632653e7d9c312cc7968",
-    "execution_policy_sha": "a61ecda82c688c7400e2a42efec8eb7d25e322de",
+    "execution_policy_sha": "4443f7876626623817363b24d25495196db3cffc",
     "repository": "bijux-masterclass",
     "schema": 1
   },
@@ -72,7 +72,7 @@
     ".bijux/shared/bijux-docs/security/monitor.py": "7b7897831ae2cd1c15b55f987163001b8e81dd68d80a0bd614546b69ddbf4d2d",
     ".bijux/shared/bijux-docs/security/policy.json": "3e79b67578c5d057abebb92d14f5591de7f8a9aaa0cbce8fa50f261d10e79294",
     ".bijux/shared/bijux-docs/security/producer_authority.py": "021c234da6fa9678978f3ff63e29805f5606304cb04a25f6086fc4c677cb27d6",
-    ".bijux/shared/bijux-docs/security/producer_capabilities.py": "77890e74f1cb90c3608c955bbf7a231b5df9a0d568516c773434baf8abbf8b99",
+    ".bijux/shared/bijux-docs/security/producer_capabilities.py": "ec396a3a9db775861b52a6f6f6a230cd3804c830afe2181cd06006eabb39492e",
     ".bijux/shared/bijux-docs/security/publication.py": "bed91ec15b02952da3d671935ac3849803424493e139881543d15c6906d5b61d",
     ".bijux/shared/bijux-docs/security/redirects.py": "afd2771307b0d06aeb84445269b930bdf5f53bd26a0d32dbacd449000d7b174e",
     ".bijux/shared/bijux-docs/security/render_publication.py": "128c7c9e947b3347b81a0196eb7acf60a1242058150575861e58db5d55b6e615",
@@ -213,8 +213,8 @@
     ".github/scripts/workflow_execution/source_loading.py": "ac3ba8d1ae14c69b96b1b68e70b897da1434a6b2732b95c3e72c2b29cbc90956",
     ".github/scripts/workflow_execution/verification.py": "246a01ece2562f34f73386ca2399e0de332034bb302d9521e5429b1c84b1fff9",
     ".github/scripts/workflow_execution/yaml_io.py": "0ce0b2dcda55b4a1764b2e73dba510d44ff3af40961b142f91e91fed9fde68aa",
-    ".github/standards/bijux-docs.sha": "2976a0d93b76cf5a04662a64d932a44440ed99db7d5df4c70bbd60e396d0f660",
-    ".github/standards/dependency-notification-source.json": "2c8c67efd46a57b83f40ff73d65b99435116b5a0170eea03ccc56b51413f8b59",
+    ".github/standards/bijux-docs.sha": "625fe14ed4b4cb5a09c8c0f28ac2180b6213f6c794f824ac63f91f5291b4204c",
+    ".github/standards/dependency-notification-source.json": "c85242fbb8d2b435d368d3967383480127dfb3229fd910c23a8a8cab29928794",
     ".github/standards/repo-config.manifest.json": "a166fcb75c5cc00cf03d32961bc0a907f6602a63f5cdd35edbf77f9fd2d487f3",
     ".github/standards/workflow-inventory.json": "d9595c922cf3f18b9276b5b585071f65bb4d71780122bb21956a99a3b3dde6b6",
     ".github/workflows/automerge-pr.yml": "6a406ea3f222d2c36243bea74b7fdf1416052213a20312f13cd5d5caee113e12",
