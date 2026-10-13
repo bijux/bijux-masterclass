@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Adopt accepted reader security and complete documentation source authority while preserving the independent program runtime ([#81](https://github.com/bijux/bijux-masterclass/pull/81)).
+- Adopt accepted reader security and complete documentation source authority, preserving the independent program runtime and preventing documentation checks from writing bytecode into the managed namespace ([#81](https://github.com/bijux/bijux-masterclass/pull/81)).
 
 - Preserve the independent documentation and Program source authorities while adopting the bounded manual publication workflow and current execution-policy verification ([#80](https://github.com/bijux/bijux-masterclass/pull/80)).
 

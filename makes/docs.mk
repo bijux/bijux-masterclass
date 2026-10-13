@@ -1,3 +1,6 @@
+# Documentation imports must preserve the complete accepted shared namespace.
+docs-build docs-serve docs-nav-check bijux-docs-check series-docs-build series-docs-serve: export PYTHONDONTWRITEBYTECODE := 1
+
 .PHONY: docs-build
 docs-build: series-docs-install bijux-docs-sync ## Build the full catalog, or one program if PROGRAM is set explicitly
 ifeq ($(PROGRAM_IS_EXPLICIT),)
