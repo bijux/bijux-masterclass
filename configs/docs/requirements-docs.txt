@@ -1,7 +1,7 @@
 mkdocs>=1.6.1,<2
 mkdocs-material>=9.7.7,<10
 mkdocs-autorefs>=1.4.4,<2
-pymdown-extensions>=12.1,<13
+pymdown-extensions>=12.3,<13
 mkdocs-macros-plugin>=1.5.0,<2
 mkdocs-git-revision-date-localized-plugin>=1.6.0,<2
 mkdocs-minify-plugin>=0.8,<1
