@@ -39,7 +39,7 @@
           "node-version": "24.21.0"
       - "name": "Prepare hub documentation builder"
         "if": "${{ matrix.check == 'contracts' && github.repository == 'bijux/bijux.github.io' }}"
-        "uses": "astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7"
+        "uses": "astral-sh/setup-uv@18d369b23da25a81e9458561248e1aafff6a70fa"
         "with":
           "version": "0.11.17"
           "enable-cache": false
@@ -115,7 +115,7 @@
       - "name": "Checkout"
         "uses": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"
       - "name": "Prepare the pinned dependency installer"
-        "uses": "astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7"
+        "uses": "astral-sh/setup-uv@18d369b23da25a81e9458561248e1aafff6a70fa"
         "with":
           "version": "0.11.17"
           "enable-cache": false
