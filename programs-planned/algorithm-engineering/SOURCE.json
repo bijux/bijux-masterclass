@@ -1,0 +1,885 @@
+{
+  "schema_version": 1,
+  "collection": "algorithm-engineering",
+  "state": "planned",
+  "base_commit": "30265cfc10a0875d49504cf12c169f7e92e7c3cd",
+  "qualified_for_course_ci": false,
+  "qualified_for_publication": false,
+  "selected_snapshot": "dbbdc624c04137832eb8ebfd64bc405be501a9a0",
+  "source_snapshots": [
+    {
+      "content_id": "d30a3aeaa2cac736be97fa3970589f5b44bab1973e24574a7d2498e467345f14",
+      "commit": "dbbdc624c04137832eb8ebfd64bc405be501a9a0",
+      "files": [
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C01.md",
+          "destination": "foundations/hash-collections/cores/M03C01.md",
+          "sha256": "5abc9a94dffab06bbbe096616a408b13b8bad21f0e975554673bdb97ab3837a4",
+          "bytes": 15650,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C02.md",
+          "destination": "foundations/hash-collections/cores/M03C02.md",
+          "sha256": "4a18102ffa332200c14d6d3e425010dd563979d9d419572a3d22068d42c26fa4",
+          "bytes": 9423,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C03.md",
+          "destination": "foundations/hash-collections/cores/M03C03.md",
+          "sha256": "3a6f9c70aee273cce082642d996fdbee2275457e63b6240fa93617bdbd8f8426",
+          "bytes": 11806,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C04.md",
+          "destination": "foundations/hash-collections/cores/M03C04.md",
+          "sha256": "8aedb61ecd92c60f937c1f979d12bd791bc8b345bf006665e59c98ce9f4080e1",
+          "bytes": 8821,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C05.md",
+          "destination": "foundations/hash-collections/cores/M03C05.md",
+          "sha256": "e254d46e41662441615e1c4c3063d2b7106b978a7d2c86b7ea3b23de89295bcf",
+          "bytes": 8463,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C06.md",
+          "destination": "foundations/hash-collections/cores/M03C06.md",
+          "sha256": "8044ec09a8b16478461be9431c2521040cc8989261361431916429df0989e4aa",
+          "bytes": 11085,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C07.md",
+          "destination": "foundations/hash-collections/cores/M03C07.md",
+          "sha256": "8e9e164359eecc2068e5e1882926199b0ee3c23bba4f56f57b1a00292d0bb099",
+          "bytes": 12750,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C08.md",
+          "destination": "foundations/hash-collections/cores/M03C08.md",
+          "sha256": "5bd5cf98f53799fe7e184928d399809e235d0e13a732499535ad44e42f4a38b7",
+          "bytes": 13672,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C09.md",
+          "destination": "foundations/hash-collections/cores/M03C09.md",
+          "sha256": "9b512ef2f1a30b809e49972fb014767275d06b0ce50b52925622aa626d6bf6a0",
+          "bytes": 8843,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C10.md",
+          "destination": "foundations/hash-collections/cores/M03C10.md",
+          "sha256": "9da11aed8257eb584adee5705694da73b38db6038da00aaf324885af4ff75c02",
+          "bytes": 5515,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C01.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C01.md",
+          "sha256": "8d0d7e9e0649e22d97036e65e266ebc988183c5346b6269d82ad6b3104958b61",
+          "bytes": 10019,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C02.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C02.md",
+          "sha256": "a8015cd70386f26a00ac8583d3de0da886e2d46af6ab402806db9c9e6f8bcfa4",
+          "bytes": 7599,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C03.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C03.md",
+          "sha256": "eca01bdc5ddfa20a284bdd398266708ffca12af34ef973cd9036dffc8aa6cc5a",
+          "bytes": 9325,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C04.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C04.md",
+          "sha256": "601637dfaf2ab7a431e080c76d9c56bbafc6f34ffc8d01828da27f5c8b41b1ea",
+          "bytes": 6587,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C05.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C05.md",
+          "sha256": "c8e41d65b84eac27ce2d6ddcae512437ebd8c99e3738c93b8d75bf81c59588d7",
+          "bytes": 9774,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C06.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C06.md",
+          "sha256": "68a2b63175cf09cf19c1a7e50fbf67ce879d99ae07a20c7198d3a7ce69864360",
+          "bytes": 11436,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C07.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C07.md",
+          "sha256": "f363d9a8b3cf4de48ccd92b0bf36fd66d845baea32c92c58b12e6224af896a2f",
+          "bytes": 9985,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C08.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C08.md",
+          "sha256": "d5dd4d762e4e5dc43ea0296182706e917cea83e3e8c8b8e79c6d5bc71a6bacf0",
+          "bytes": 11508,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C09.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C09.md",
+          "sha256": "5f12b278c5220d3e5599840a6dfea5b59fc07ff4a31d1e60b4f298cbd64cdf60",
+          "bytes": 7636,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C10.md",
+          "destination": "foundations/asymptotic-analysis/cores/M04C10.md",
+          "sha256": "276bdda0dbb1608474af69872ee713da1bf21bbad1956b660ebb8e918b77baff",
+          "bytes": 8038,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C01.md",
+          "destination": "foundations/invariants-testing/cores/M05C01.md",
+          "sha256": "04259eb73f3f57ee4c4bcdc11a3d21c36ceb23e4ce3aed59100a820f15c3aa1b",
+          "bytes": 9499,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C02.md",
+          "destination": "foundations/invariants-testing/cores/M05C02.md",
+          "sha256": "9d595f0e989b06ef9d49c5438323d3d38e2888f6008ac738d5edd1cd62e74c93",
+          "bytes": 11126,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C03.md",
+          "destination": "foundations/invariants-testing/cores/M05C03.md",
+          "sha256": "9d47de3f159aefdf222f090c6c5c74faaa7e70869d48b7cf323512f5c3d9dbc1",
+          "bytes": 12251,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C04.md",
+          "destination": "foundations/invariants-testing/cores/M05C04.md",
+          "sha256": "f64eaca01ef789ca05a38ea464e1166d05d187e18c775d90c0119de83ce20631",
+          "bytes": 9694,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C05.md",
+          "destination": "foundations/invariants-testing/cores/M05C05.md",
+          "sha256": "1b17b2eb6b104a6081433d535690ececbc9c451ab4070660998258d55c0a23e8",
+          "bytes": 9344,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C06.md",
+          "destination": "foundations/invariants-testing/cores/M05C06.md",
+          "sha256": "42ccdf83fb97e9cdbd5b2caf2129abc12c15cfc1893f056427cbf765003c80fe",
+          "bytes": 12266,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C07.md",
+          "destination": "foundations/invariants-testing/cores/M05C07.md",
+          "sha256": "a6b85467abf4b35ccc7d827d7dd21fe51305ee48dbecfc57cdadf2ff2551909b",
+          "bytes": 9360,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C08.md",
+          "destination": "foundations/invariants-testing/cores/M05C08.md",
+          "sha256": "b8852ed96d4121d32e8f2b21a6daa450ab3387e22f92d4f5a13ca8feb51d26ba",
+          "bytes": 12503,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C09.md",
+          "destination": "foundations/invariants-testing/cores/M05C09.md",
+          "sha256": "a6020fa059da721e7bcb41488449b380142c5275254293ca8e23ace362f0cc05",
+          "bytes": 13913,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C10.md",
+          "destination": "foundations/invariants-testing/cores/M05C10.md",
+          "sha256": "b5f9a4c9229f69edfa489384a11849854d197d32118364af7752eed4cbd10795",
+          "bytes": 13959,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/ToC.md",
+          "destination": "foundations/outline.md",
+          "sha256": "6446423c4b9518db65f0ca2f9316caba26b80eb317fe2313e1c91aeca342c1d3",
+          "bytes": 23327,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01.docx",
+          "destination": "foundations/outline.docx",
+          "sha256": "9bf05d47b022f5c4f2ce08c1805d21d88e2e31a8905ed2a14f791995636edd09",
+          "bytes": 18930,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/TODO-M03.md",
+          "destination": "foundations/hash-collections/reviews/source-audit.md",
+          "sha256": "658d05d2d011755eae88bf19e503d7b97ef028d6f5d74ce59525fef0bc89fd93",
+          "bytes": 26645,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03.md",
+          "destination": "foundations/hash-collections/combined-guide.md",
+          "sha256": "d21babe8d037896a10dfb46d613ad2f45e848510a661e1b0be4530e27e421777",
+          "bytes": 106028,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04.md",
+          "destination": "foundations/asymptotic-analysis/combined-guide.md",
+          "sha256": "869c935f9d10d5ccc32a54812af2d926e683320717b0e156da8fbdb4d3b0499b",
+          "bytes": 91907,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05.md",
+          "destination": "foundations/invariants-testing/combined-guide.md",
+          "sha256": "86d4446ed87cd57de6b2c541d9ce5e13a3af11c81ef4026b831006eb340786b2",
+          "bytes": 113915,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-02-[classical-algorithms-randomisation-and-design]/M06C01.md",
+          "destination": "classical-algorithms/M06C01.md",
+          "sha256": "1e8f7929e3d20cce3ed80a2afecf767d7f60f69a24eb384e229bb3ff8db85a82",
+          "bytes": 12562,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-02-[classical-algorithms-randomisation-and-design]/M06C02.md",
+          "destination": "classical-algorithms/M06C02.md",
+          "sha256": "bdc142fa7a332bcc37495d6011e8728ac6fa21292a7abdd4397d3bb11861f309",
+          "bytes": 10036,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-02-[classical-algorithms-randomisation-and-design]/M06C03.md",
+          "destination": "classical-algorithms/M06C03.md",
+          "sha256": "8de83293222a72b7363a091f365ca96217714ed4292afd02f755c749d9e9f3c9",
+          "bytes": 13912,
+          "mode": "100755"
+        }
+      ]
+    }
+  ],
+  "current_source_files": [
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C01.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C01.md",
+      "sha256": "5abc9a94dffab06bbbe096616a408b13b8bad21f0e975554673bdb97ab3837a4",
+      "bytes": 15650,
+      "mode": "100755",
+      "sha256_after": "5abc9a94dffab06bbbe096616a408b13b8bad21f0e975554673bdb97ab3837a4",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C02.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C02.md",
+      "sha256": "4a18102ffa332200c14d6d3e425010dd563979d9d419572a3d22068d42c26fa4",
+      "bytes": 9423,
+      "mode": "100755",
+      "sha256_after": "4a18102ffa332200c14d6d3e425010dd563979d9d419572a3d22068d42c26fa4",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C03.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C03.md",
+      "sha256": "3a6f9c70aee273cce082642d996fdbee2275457e63b6240fa93617bdbd8f8426",
+      "bytes": 11806,
+      "mode": "100755",
+      "sha256_after": "3a6f9c70aee273cce082642d996fdbee2275457e63b6240fa93617bdbd8f8426",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C04.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C04.md",
+      "sha256": "8aedb61ecd92c60f937c1f979d12bd791bc8b345bf006665e59c98ce9f4080e1",
+      "bytes": 8821,
+      "mode": "100755",
+      "sha256_after": "8aedb61ecd92c60f937c1f979d12bd791bc8b345bf006665e59c98ce9f4080e1",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C05.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C05.md",
+      "sha256": "e254d46e41662441615e1c4c3063d2b7106b978a7d2c86b7ea3b23de89295bcf",
+      "bytes": 8463,
+      "mode": "100755",
+      "sha256_after": "e254d46e41662441615e1c4c3063d2b7106b978a7d2c86b7ea3b23de89295bcf",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C06.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C06.md",
+      "sha256": "8044ec09a8b16478461be9431c2521040cc8989261361431916429df0989e4aa",
+      "bytes": 11085,
+      "mode": "100755",
+      "sha256_after": "8044ec09a8b16478461be9431c2521040cc8989261361431916429df0989e4aa",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C07.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C07.md",
+      "sha256": "8e9e164359eecc2068e5e1882926199b0ee3c23bba4f56f57b1a00292d0bb099",
+      "bytes": 12750,
+      "mode": "100755",
+      "sha256_after": "8e9e164359eecc2068e5e1882926199b0ee3c23bba4f56f57b1a00292d0bb099",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C08.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C08.md",
+      "sha256": "5bd5cf98f53799fe7e184928d399809e235d0e13a732499535ad44e42f4a38b7",
+      "bytes": 13672,
+      "mode": "100755",
+      "sha256_after": "5bd5cf98f53799fe7e184928d399809e235d0e13a732499535ad44e42f4a38b7",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C09.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C09.md",
+      "sha256": "9b512ef2f1a30b809e49972fb014767275d06b0ce50b52925622aa626d6bf6a0",
+      "bytes": 8843,
+      "mode": "100755",
+      "sha256_after": "9b512ef2f1a30b809e49972fb014767275d06b0ce50b52925622aa626d6bf6a0",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M03 - Hash Tables, Maps and Sets/M03C10.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/cores/M03C10.md",
+      "sha256": "9da11aed8257eb584adee5705694da73b38db6038da00aaf324885af4ff75c02",
+      "bytes": 5515,
+      "mode": "100755",
+      "sha256_after": "9da11aed8257eb584adee5705694da73b38db6038da00aaf324885af4ff75c02",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C01.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C01.md",
+      "sha256": "8d0d7e9e0649e22d97036e65e266ebc988183c5346b6269d82ad6b3104958b61",
+      "bytes": 10019,
+      "mode": "100755",
+      "sha256_after": "8d0d7e9e0649e22d97036e65e266ebc988183c5346b6269d82ad6b3104958b61",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C02.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C02.md",
+      "sha256": "a8015cd70386f26a00ac8583d3de0da886e2d46af6ab402806db9c9e6f8bcfa4",
+      "bytes": 7599,
+      "mode": "100755",
+      "sha256_after": "a8015cd70386f26a00ac8583d3de0da886e2d46af6ab402806db9c9e6f8bcfa4",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C03.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C03.md",
+      "sha256": "eca01bdc5ddfa20a284bdd398266708ffca12af34ef973cd9036dffc8aa6cc5a",
+      "bytes": 9325,
+      "mode": "100755",
+      "sha256_after": "eca01bdc5ddfa20a284bdd398266708ffca12af34ef973cd9036dffc8aa6cc5a",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C04.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C04.md",
+      "sha256": "601637dfaf2ab7a431e080c76d9c56bbafc6f34ffc8d01828da27f5c8b41b1ea",
+      "bytes": 6587,
+      "mode": "100755",
+      "sha256_after": "601637dfaf2ab7a431e080c76d9c56bbafc6f34ffc8d01828da27f5c8b41b1ea",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C05.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C05.md",
+      "sha256": "c8e41d65b84eac27ce2d6ddcae512437ebd8c99e3738c93b8d75bf81c59588d7",
+      "bytes": 9774,
+      "mode": "100755",
+      "sha256_after": "c8e41d65b84eac27ce2d6ddcae512437ebd8c99e3738c93b8d75bf81c59588d7",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C06.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C06.md",
+      "sha256": "68a2b63175cf09cf19c1a7e50fbf67ce879d99ae07a20c7198d3a7ce69864360",
+      "bytes": 11436,
+      "mode": "100755",
+      "sha256_after": "68a2b63175cf09cf19c1a7e50fbf67ce879d99ae07a20c7198d3a7ce69864360",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C07.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C07.md",
+      "sha256": "f363d9a8b3cf4de48ccd92b0bf36fd66d845baea32c92c58b12e6224af896a2f",
+      "bytes": 9985,
+      "mode": "100755",
+      "sha256_after": "f363d9a8b3cf4de48ccd92b0bf36fd66d845baea32c92c58b12e6224af896a2f",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C08.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C08.md",
+      "sha256": "d5dd4d762e4e5dc43ea0296182706e917cea83e3e8c8b8e79c6d5bc71a6bacf0",
+      "bytes": 11508,
+      "mode": "100755",
+      "sha256_after": "d5dd4d762e4e5dc43ea0296182706e917cea83e3e8c8b8e79c6d5bc71a6bacf0",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C09.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C09.md",
+      "sha256": "5f12b278c5220d3e5599840a6dfea5b59fc07ff4a31d1e60b4f298cbd64cdf60",
+      "bytes": 7636,
+      "mode": "100755",
+      "sha256_after": "5f12b278c5220d3e5599840a6dfea5b59fc07ff4a31d1e60b4f298cbd64cdf60",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C10.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/cores/M04C10.md",
+      "sha256": "276bdda0dbb1608474af69872ee713da1bf21bbad1956b660ebb8e918b77baff",
+      "bytes": 8038,
+      "mode": "100755",
+      "sha256_after": "276bdda0dbb1608474af69872ee713da1bf21bbad1956b660ebb8e918b77baff",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C01.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C01.md",
+      "sha256": "04259eb73f3f57ee4c4bcdc11a3d21c36ceb23e4ce3aed59100a820f15c3aa1b",
+      "bytes": 9499,
+      "mode": "100755",
+      "sha256_after": "04259eb73f3f57ee4c4bcdc11a3d21c36ceb23e4ce3aed59100a820f15c3aa1b",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C02.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C02.md",
+      "sha256": "9d595f0e989b06ef9d49c5438323d3d38e2888f6008ac738d5edd1cd62e74c93",
+      "bytes": 11126,
+      "mode": "100755",
+      "sha256_after": "9d595f0e989b06ef9d49c5438323d3d38e2888f6008ac738d5edd1cd62e74c93",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C03.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C03.md",
+      "sha256": "9d47de3f159aefdf222f090c6c5c74faaa7e70869d48b7cf323512f5c3d9dbc1",
+      "bytes": 12251,
+      "mode": "100755",
+      "sha256_after": "9d47de3f159aefdf222f090c6c5c74faaa7e70869d48b7cf323512f5c3d9dbc1",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C04.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C04.md",
+      "sha256": "f64eaca01ef789ca05a38ea464e1166d05d187e18c775d90c0119de83ce20631",
+      "bytes": 9694,
+      "mode": "100755",
+      "sha256_after": "f64eaca01ef789ca05a38ea464e1166d05d187e18c775d90c0119de83ce20631",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C05.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C05.md",
+      "sha256": "1b17b2eb6b104a6081433d535690ececbc9c451ab4070660998258d55c0a23e8",
+      "bytes": 9344,
+      "mode": "100755",
+      "sha256_after": "1b17b2eb6b104a6081433d535690ececbc9c451ab4070660998258d55c0a23e8",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C06.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C06.md",
+      "sha256": "42ccdf83fb97e9cdbd5b2caf2129abc12c15cfc1893f056427cbf765003c80fe",
+      "bytes": 12266,
+      "mode": "100755",
+      "sha256_after": "42ccdf83fb97e9cdbd5b2caf2129abc12c15cfc1893f056427cbf765003c80fe",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C07.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C07.md",
+      "sha256": "a6b85467abf4b35ccc7d827d7dd21fe51305ee48dbecfc57cdadf2ff2551909b",
+      "bytes": 9360,
+      "mode": "100755",
+      "sha256_after": "a6b85467abf4b35ccc7d827d7dd21fe51305ee48dbecfc57cdadf2ff2551909b",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C08.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C08.md",
+      "sha256": "b8852ed96d4121d32e8f2b21a6daa450ab3387e22f92d4f5a13ca8feb51d26ba",
+      "bytes": 12503,
+      "mode": "100755",
+      "sha256_after": "b8852ed96d4121d32e8f2b21a6daa450ab3387e22f92d4f5a13ca8feb51d26ba",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C09.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C09.md",
+      "sha256": "a6020fa059da721e7bcb41488449b380142c5275254293ca8e23ace362f0cc05",
+      "bytes": 13913,
+      "mode": "100755",
+      "sha256_after": "a6020fa059da721e7bcb41488449b380142c5275254293ca8e23ace362f0cc05",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M05 - Proofs, Invariants and Property-Based Testing/M05C10.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/cores/M05C10.md",
+      "sha256": "b5f9a4c9229f69edfa489384a11849854d197d32118364af7752eed4cbd10795",
+      "bytes": 13959,
+      "mode": "100755",
+      "sha256_after": "b5f9a4c9229f69edfa489384a11849854d197d32118364af7752eed4cbd10795",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/ToC.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/outline.md",
+      "sha256": "6446423c4b9518db65f0ca2f9316caba26b80eb317fe2313e1c91aeca342c1d3",
+      "bytes": 23327,
+      "mode": "100755",
+      "sha256_after": "6446423c4b9518db65f0ca2f9316caba26b80eb317fe2313e1c91aeca342c1d3",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01.docx",
+      "destination": "programs-planned/algorithm-engineering/foundations/outline.docx",
+      "sha256": "9bf05d47b022f5c4f2ce08c1805d21d88e2e31a8905ed2a14f791995636edd09",
+      "bytes": 18930,
+      "mode": "100755",
+      "sha256_after": "9bf05d47b022f5c4f2ce08c1805d21d88e2e31a8905ed2a14f791995636edd09",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/TODO-M03.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/reviews/source-audit.md",
+      "sha256": "658d05d2d011755eae88bf19e503d7b97ef028d6f5d74ce59525fef0bc89fd93",
+      "bytes": 26645,
+      "mode": "100755",
+      "sha256_after": "658d05d2d011755eae88bf19e503d7b97ef028d6f5d74ce59525fef0bc89fd93",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/hash-collections/combined-guide.md",
+      "sha256": "d21babe8d037896a10dfb46d613ad2f45e848510a661e1b0be4530e27e421777",
+      "bytes": 106028,
+      "mode": "100755",
+      "sha256_after": "d21babe8d037896a10dfb46d613ad2f45e848510a661e1b0be4530e27e421777",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/asymptotic-analysis/combined-guide.md",
+      "sha256": "869c935f9d10d5ccc32a54812af2d926e683320717b0e156da8fbdb4d3b0499b",
+      "bytes": 91907,
+      "mode": "100755",
+      "sha256_after": "869c935f9d10d5ccc32a54812af2d926e683320717b0e156da8fbdb4d3b0499b",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05.md",
+      "destination": "programs-planned/algorithm-engineering/foundations/invariants-testing/combined-guide.md",
+      "sha256": "86d4446ed87cd57de6b2c541d9ce5e13a3af11c81ef4026b831006eb340786b2",
+      "bytes": 113915,
+      "mode": "100755",
+      "sha256_after": "86d4446ed87cd57de6b2c541d9ce5e13a3af11c81ef4026b831006eb340786b2",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-02-[classical-algorithms-randomisation-and-design]/M06C01.md",
+      "destination": "programs-planned/algorithm-engineering/classical-algorithms/M06C01.md",
+      "sha256": "1e8f7929e3d20cce3ed80a2afecf767d7f60f69a24eb384e229bb3ff8db85a82",
+      "bytes": 12562,
+      "mode": "100755",
+      "sha256_after": "1e8f7929e3d20cce3ed80a2afecf767d7f60f69a24eb384e229bb3ff8db85a82",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-02-[classical-algorithms-randomisation-and-design]/M06C02.md",
+      "destination": "programs-planned/algorithm-engineering/classical-algorithms/M06C02.md",
+      "sha256": "bdc142fa7a332bcc37495d6011e8728ac6fa21292a7abdd4397d3bb11861f309",
+      "bytes": 10036,
+      "mode": "100755",
+      "sha256_after": "bdc142fa7a332bcc37495d6011e8728ac6fa21292a7abdd4397d3bb11861f309",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-02-[classical-algorithms-randomisation-and-design]/M06C03.md",
+      "destination": "programs-planned/algorithm-engineering/classical-algorithms/M06C03.md",
+      "sha256": "8de83293222a72b7363a091f365ca96217714ed4292afd02f755c749d9e9f3c9",
+      "bytes": 13912,
+      "mode": "100755",
+      "sha256_after": "8de83293222a72b7363a091f365ca96217714ed4292afd02f755c749d9e9f3c9",
+      "transformation": null
+    }
+  ],
+  "duplicate_source_aliases": [
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C01.md",
+      "sha256": "5abc9a94dffab06bbbe096616a408b13b8bad21f0e975554673bdb97ab3837a4",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C01.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C02.md",
+      "sha256": "4a18102ffa332200c14d6d3e425010dd563979d9d419572a3d22068d42c26fa4",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C02.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C03.md",
+      "sha256": "3a6f9c70aee273cce082642d996fdbee2275457e63b6240fa93617bdbd8f8426",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C03.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C04.md",
+      "sha256": "8aedb61ecd92c60f937c1f979d12bd791bc8b345bf006665e59c98ce9f4080e1",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C04.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C05.md",
+      "sha256": "e254d46e41662441615e1c4c3063d2b7106b978a7d2c86b7ea3b23de89295bcf",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C05.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C06.md",
+      "sha256": "8044ec09a8b16478461be9431c2521040cc8989261361431916429df0989e4aa",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C06.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C07.md",
+      "sha256": "8e9e164359eecc2068e5e1882926199b0ee3c23bba4f56f57b1a00292d0bb099",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C07.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C08.md",
+      "sha256": "5bd5cf98f53799fe7e184928d399809e235d0e13a732499535ad44e42f4a38b7",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C08.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C09.md",
+      "sha256": "9b512ef2f1a30b809e49972fb014767275d06b0ce50b52925622aa626d6bf6a0",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C09.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M03 - Hash Tables, Maps and Sets/M03C10.md",
+      "sha256": "9da11aed8257eb584adee5705694da73b38db6038da00aaf324885af4ff75c02",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/hash-collections/cores/M03C10.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C01.md",
+      "sha256": "8d0d7e9e0649e22d97036e65e266ebc988183c5346b6269d82ad6b3104958b61",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C01.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C02.md",
+      "sha256": "a8015cd70386f26a00ac8583d3de0da886e2d46af6ab402806db9c9e6f8bcfa4",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C02.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C03.md",
+      "sha256": "eca01bdc5ddfa20a284bdd398266708ffca12af34ef973cd9036dffc8aa6cc5a",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C03.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C04.md",
+      "sha256": "601637dfaf2ab7a431e080c76d9c56bbafc6f34ffc8d01828da27f5c8b41b1ea",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C04.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C05.md",
+      "sha256": "c8e41d65b84eac27ce2d6ddcae512437ebd8c99e3738c93b8d75bf81c59588d7",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C05.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C06.md",
+      "sha256": "68a2b63175cf09cf19c1a7e50fbf67ce879d99ae07a20c7198d3a7ce69864360",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C06.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C07.md",
+      "sha256": "f363d9a8b3cf4de48ccd92b0bf36fd66d845baea32c92c58b12e6224af896a2f",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C07.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C08.md",
+      "sha256": "d5dd4d762e4e5dc43ea0296182706e917cea83e3e8c8b8e79c6d5bc71a6bacf0",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C08.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C09.md",
+      "sha256": "5f12b278c5220d3e5599840a6dfea5b59fc07ff4a31d1e60b4f298cbd64cdf60",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C09.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M04 - Asymptotics, Recurrences and Amortised Analysis/M04C10.md",
+      "sha256": "276bdda0dbb1608474af69872ee713da1bf21bbad1956b660ebb8e918b77baff",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/asymptotic-analysis/cores/M04C10.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C01.md",
+      "sha256": "04259eb73f3f57ee4c4bcdc11a3d21c36ceb23e4ce3aed59100a820f15c3aa1b",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C01.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C02.md",
+      "sha256": "9d595f0e989b06ef9d49c5438323d3d38e2888f6008ac738d5edd1cd62e74c93",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C02.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C03.md",
+      "sha256": "9d47de3f159aefdf222f090c6c5c74faaa7e70869d48b7cf323512f5c3d9dbc1",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C03.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C04.md",
+      "sha256": "f64eaca01ef789ca05a38ea464e1166d05d187e18c775d90c0119de83ce20631",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C04.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C05.md",
+      "sha256": "1b17b2eb6b104a6081433d535690ececbc9c451ab4070660998258d55c0a23e8",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C05.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C06.md",
+      "sha256": "42ccdf83fb97e9cdbd5b2caf2129abc12c15cfc1893f056427cbf765003c80fe",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C06.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C07.md",
+      "sha256": "a6b85467abf4b35ccc7d827d7dd21fe51305ee48dbecfc57cdadf2ff2551909b",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C07.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C08.md",
+      "sha256": "b8852ed96d4121d32e8f2b21a6daa450ab3387e22f92d4f5a13ca8feb51d26ba",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C08.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C09.md",
+      "sha256": "a6020fa059da721e7bcb41488449b380142c5275254293ca8e23ace362f0cc05",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C09.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M05 - Proofs, Invariants and Property-Based Testing/M05C10.md",
+      "sha256": "b5f9a4c9229f69edfa489384a11849854d197d32118364af7752eed4cbd10795",
+      "owner": {
+        "collection": "algorithm-engineering",
+        "destination": "foundations/invariants-testing/cores/M05C10.md"
+      }
+    }
+  ]
+}
