@@ -1,0 +1,8 @@
+{
+  "id": "EVT-06",
+  "slug": "EVT-06-required-field-in-minor",
+  "summary": "Minor event release adds a required field",
+  "mustBeRejected": true,
+  "expectedOracle": "compatibility engine returns rejected",
+  "proofFamily": "evolution"
+}

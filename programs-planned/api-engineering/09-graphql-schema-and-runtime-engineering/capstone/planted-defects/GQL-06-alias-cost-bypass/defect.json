@@ -1,0 +1,7 @@
+{
+  "description": "cost counts field names but ignores aliases",
+  "expectedProof": "demand-proof",
+  "failure": "Repeated aliased occurrences evade the operation budget.",
+  "id": "GQL-06-alias-cost-bypass",
+  "mustBeRejected": true
+}

@@ -1,0 +1,140 @@
+site_name: Container, OCI, and Software Supply Chain Engineering
+site_description: Platform Engineering Course 3 — reader-first OCI, container runtime, and software supply-chain engineering
+docs_dir: course-book
+site_dir: site
+strict: true
+use_directory_urls: false
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+nav:
+  - Course:
+      - Home: index.md
+      - Start Here: start-here.md
+      - Study Plan: study-plan.md
+      - Capstone: capstone.md
+      - Evidence Model: evidence-model.md
+      - Language and Tool Strategy: language-strategy.md
+      - Standards: standards.md
+      - Glossary: glossary.md
+  - Study Guides:
+      - Overview: guides/index.md
+      - "Containerfile review method": guides/containerfile-review-method.md
+      - "Debugging container releases": guides/debugging-container-releases.md
+      - "Laboratory safety and cleanup discipline": guides/laboratory-safety.md
+      - "Native-tool lanes": guides/native-tool-lanes.md
+      - "How to read OCI specifications without getting lost": guides/reading-oci-specifications.md
+      - "Release evidence journal": guides/release-evidence-journal.md
+      - "Self-learning method — learn the object, then the tool": guides/self-learning-method.md
+      - "Worked walkthrough — Atlas Workload Release 1.0": guides/worked-atlas-release-walkthrough.md
+  - Incident Casebook:
+      - Overview: casebook/index.md
+      - "Incident case — the multi-platform index lied": casebook/multiarch-index-lied.md
+      - "Incident case — the secret deleted from the final layer": casebook/secret-deleted-from-final-layer.md
+      - "Incident case — signed by the wrong builder": casebook/signed-by-the-wrong-builder.md
+      - "Incident case — the tag moved after approval": casebook/tag-moved-after-approval.md
+      - "Incident case — the image that was not the container": casebook/the-image-that-was-not-the-container.md
+  - Reference Atlas:
+      - Overview: reference/index.md
+      - "Build cache key map": reference/build-cache-key-map.md
+      - "Command field guide": reference/command-field-guide.md
+      - "Containerfile semantics": reference/containerfile-semantics.md
+      - "Course 4 handoff map": reference/course4-handoff-map.md
+      - "Layers, DiffIDs, and whiteouts": reference/layers-diffids-and-whiteouts.md
+      - "Media types and descriptor roles": reference/media-types.md
+      - "OCI object map": reference/oci-object-map.md
+      - "Provenance verification": reference/provenance-verification.md
+      - "OCI Distribution API map": reference/registry-api-map.md
+      - "Release gate checklist": reference/release-gate-checklist.md
+      - "OCI runtime configuration map": reference/runtime-config-map.md
+      - "Runtime hardening checklist": reference/runtime-hardening-checklist.md
+      - "SBOM comparison and completeness": reference/sbom-comparison.md
+  - "Orientation — From a cloud workload contract to an OCI release":
+      - "Chapter": module-00-orientation/index.md
+      - "Orientation laboratory — Trace one release from source to runtime": module-00-orientation/lab.md
+      - "Orientation checkpoint": module-00-orientation/checkpoint.md
+  - "Module 1 — Containers as Linux process isolation":
+      - "Chapter": module-01-containers-as-linux-process-isolation/index.md
+      - "Exercises — Containers as Linux process isolation": module-01-containers-as-linux-process-isolation/exercises.md
+      - "Worked answers — Containers as Linux process isolation": module-01-containers-as-linux-process-isolation/exercise-answers.md
+      - "Laboratory — Observe the boundary instead of trusting the command": module-01-containers-as-linux-process-isolation/lab.md
+      - "Checkpoint — Container boundary": module-01-containers-as-linux-process-isolation/checkpoint.md
+  - "Module 2 — OCI runtime bundles, lifecycle, and rootless execution":
+      - "Chapter": module-02-oci-runtime-bundles-lifecycle-and-rootless-execution/index.md
+      - "Exercises — OCI runtime bundles and lifecycle": module-02-oci-runtime-bundles-lifecycle-and-rootless-execution/exercises.md
+      - "Worked answers — OCI runtime bundles and lifecycle": module-02-oci-runtime-bundles-lifecycle-and-rootless-execution/exercise-answers.md
+      - "Laboratory — Build and break an OCI runtime bundle": module-02-oci-runtime-bundles-lifecycle-and-rootless-execution/lab.md
+      - "Checkpoint — Runtime bundle and lifecycle": module-02-oci-runtime-bundles-lifecycle-and-rootless-execution/checkpoint.md
+  - "Module 3 — OCI images, layers, content addressability, and whiteouts":
+      - "Chapter": module-03-oci-images-layers-content-addressability-and-whiteouts/index.md
+      - "Exercises — OCI images and content addressability": module-03-oci-images-layers-content-addressability-and-whiteouts/exercises.md
+      - "Worked answers — OCI images and content addressability": module-03-oci-images-layers-content-addressability-and-whiteouts/exercise-answers.md
+      - "Laboratory — Build, corrupt, and reconstruct an OCI image graph": module-03-oci-images-layers-content-addressability-and-whiteouts/lab.md
+      - "Checkpoint — OCI image graph": module-03-oci-images-layers-content-addressability-and-whiteouts/checkpoint.md
+  - "Module 4 — Build graphs, cache correctness, reproducibility, and secret hygiene":
+      - "Chapter": module-04-build-graphs-cache-reproducibility-and-secret-hygiene/index.md
+      - "Exercises — Build graphs and secret hygiene": module-04-build-graphs-cache-reproducibility-and-secret-hygiene/exercises.md
+      - "Worked answers — Build graphs and secret hygiene": module-04-build-graphs-cache-reproducibility-and-secret-hygiene/exercise-answers.md
+      - "Laboratory — Make the build graph confess its inputs": module-04-build-graphs-cache-reproducibility-and-secret-hygiene/lab.md
+      - "Checkpoint — Build graph and reproducibility": module-04-build-graphs-cache-reproducibility-and-secret-hygiene/checkpoint.md
+  - "Module 5 — Multi-platform images, ABI compatibility, and architecture truth":
+      - "Chapter": module-05-multi-platform-images-abi-and-architecture-truth/index.md
+      - "Exercises — Multi-platform images": module-05-multi-platform-images-abi-and-architecture-truth/exercises.md
+      - "Worked answers — Multi-platform images": module-05-multi-platform-images-abi-and-architecture-truth/exercise-answers.md
+      - "Laboratory — Publish an index that tells the truth": module-05-multi-platform-images-abi-and-architecture-truth/lab.md
+      - "Checkpoint — Multi-platform truth": module-05-multi-platform-images-abi-and-architecture-truth/checkpoint.md
+  - "Module 6 — Registries, distribution, digests, tags, and referrers":
+      - "Chapter": module-06-registries-distribution-digests-tags-and-referrers/index.md
+      - "Exercises — OCI distribution and registries": module-06-registries-distribution-digests-tags-and-referrers/exercises.md
+      - "Worked answers — OCI distribution and registries": module-06-registries-distribution-digests-tags-and-referrers/exercise-answers.md
+      - "Laboratory — Move a tag without moving the release": module-06-registries-distribution-digests-tags-and-referrers/lab.md
+      - "Checkpoint — Distribution and registry": module-06-registries-distribution-digests-tags-and-referrers/checkpoint.md
+  - "Module 7 — Runtime hardening, resource control, and operational contracts":
+      - "Chapter": module-07-runtime-hardening-resource-control-and-operational-contracts/index.md
+      - "Exercises — Runtime hardening": module-07-runtime-hardening-resource-control-and-operational-contracts/exercises.md
+      - "Worked answers — Runtime hardening": module-07-runtime-hardening-resource-control-and-operational-contracts/exercise-answers.md
+      - "Laboratory — Break the approved runtime profile": module-07-runtime-hardening-resource-control-and-operational-contracts/lab.md
+      - "Checkpoint — Runtime hardening": module-07-runtime-hardening-resource-control-and-operational-contracts/checkpoint.md
+  - "Module 8 — SBOMs, vulnerabilities, licenses, and VEX":
+      - "Chapter": module-08-sboms-vulnerabilities-licenses-and-vex/index.md
+      - "Exercises — SBOM, vulnerabilities, licenses, and VEX": module-08-sboms-vulnerabilities-licenses-and-vex/exercises.md
+      - "Worked answers — SBOM, vulnerabilities, licenses, and VEX": module-08-sboms-vulnerabilities-licenses-and-vex/exercise-answers.md
+      - "Laboratory — Turn scanner findings into release decisions": module-08-sboms-vulnerabilities-licenses-and-vex/lab.md
+      - "Checkpoint — Inventory and vulnerability evidence": module-08-sboms-vulnerabilities-licenses-and-vex/checkpoint.md
+  - "Module 9 — Provenance, signatures, attestations, and verification policy":
+      - "Chapter": module-09-provenance-signatures-attestations-and-verification-policy/index.md
+      - "Exercises — Provenance and signatures": module-09-provenance-signatures-attestations-and-verification-policy/exercises.md
+      - "Worked answers — Provenance and signatures": module-09-provenance-signatures-attestations-and-verification-policy/exercise-answers.md
+      - "Laboratory — Verify the signer, then distrust the claim": module-09-provenance-signatures-attestations-and-verification-policy/lab.md
+      - "Checkpoint — Provenance and verification policy": module-09-provenance-signatures-attestations-and-verification-policy/checkpoint.md
+  - "Module 10 — Release promotion, revocation, rollback, and Kubernetes handoff":
+      - "Chapter": module-10-release-promotion-revocation-and-kubernetes-handoff/index.md
+      - "Exercises — Release promotion and handoff": module-10-release-promotion-revocation-and-kubernetes-handoff/exercises.md
+      - "Worked answers — Release promotion and handoff": module-10-release-promotion-revocation-and-kubernetes-handoff/exercise-answers.md
+      - "Laboratory — Promote one digest and revoke the right thing": module-10-release-promotion-revocation-and-kubernetes-handoff/lab.md
+      - "Checkpoint — Atlas Workload Release 1.0": module-10-release-promotion-revocation-and-kubernetes-handoff/checkpoint.md
+  - Assessment:
+      - Overview: assessment/index.md
+      - "Final defense — Atlas Workload Release 1.0": assessment/final-defense.md
+      - "Knowledge check": assessment/knowledge-check.md
+      - "Practical assessment — repair an inconsistent workload release": assessment/practical-assessment.md
+      - "Assessment rubric": assessment/rubric.md
+  - Instructor Notes:
+      - Overview: instructor/index.md
+      - "Accessibility and self-study support": instructor/accessibility-and-self-study.md
+      - "Lab oracle guide": instructor/lab-oracles.md
+      - "Misconception interventions": instructor/misconceptions.md
+      - "Instructor delivery notes": instructor/teaching-notes.md

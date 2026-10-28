@@ -1,0 +1,7 @@
+{
+  "description": "A candidate from another CPU/runtime profile is reported as an improvement.",
+  "expectedOracle": "comparability-gate",
+  "id": "PERF-03",
+  "mustBeRejected": true,
+  "slug": "compare-different-environments"
+}

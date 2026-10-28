@@ -1,0 +1,14 @@
+{
+  "cases": [
+    {
+      "consistency": "crash",
+      "name": "crash",
+      "recoveryPoint": "uncoordinated"
+    },
+    {
+      "consistency": "application",
+      "name": "application",
+      "recoveryPoint": "checkpoint-42"
+    }
+  ]
+}

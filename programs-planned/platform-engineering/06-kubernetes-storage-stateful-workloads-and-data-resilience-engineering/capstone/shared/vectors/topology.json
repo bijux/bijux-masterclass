@@ -1,0 +1,17 @@
+{
+  "cases": [
+    {
+      "claims": 1,
+      "existing": 1,
+      "name": "attach-limit",
+      "nodeLimit": 1,
+      "schedulable": false
+    },
+    {
+      "availableGiB": 100,
+      "name": "capacity-fit",
+      "requestedGiB": 20,
+      "schedulable": true
+    }
+  ]
+}

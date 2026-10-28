@@ -1,0 +1,5 @@
+{
+  "defect": "Platform success is claimed from page views while first-success time worsens",
+  "expectedRejectingProof": "analytics-proof",
+  "id": "PLAT-10-vanity-adoption"
+}

@@ -1,0 +1,26 @@
+profile: analysis-rpc-compatibility-1.0
+dimensions:
+  - wire
+  - source
+  - protojson
+  - behavior
+rules:
+  field_numbers:
+    reuse: forbidden
+    removed_numbers: reserve
+    removed_names: reserve
+  enums:
+    zero_value: UNSPECIFIED
+    renumber: forbidden
+    additive_value: review-required
+  methods:
+    remove_or_rename: breaking
+    change_streaming_shape: breaking
+  packages:
+    incompatible_change: new_versioned_package
+evidence:
+  - local-schema-check
+  - golden-wire-fixtures
+  - generated-client-builds
+  - consumer-declarations
+  - buf-breaking-when-available

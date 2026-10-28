@@ -1,0 +1,21 @@
+{
+  "name": "@bijux-masterclass/flowledger",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "flowledger": "./dist/src/main.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build --silent && node --test dist/tests/*.test.js",
+    "demo": "npm run build --silent && bash scripts/demo.sh"
+  }
+}

@@ -1,0 +1,1 @@
+const listeners=new Set<(v:string)=>void>();let off=()=>{};off=()=>listeners.delete(first);const first=(v:string)=>{console.log(v);off();};listeners.add(first);for(const listener of [...listeners])listener('one');for(const listener of [...listeners])listener('two');

@@ -1,0 +1,8 @@
+{
+  "name": "production-overclaim-candidate",
+  "expected": "rejected",
+  "gates": [
+    {"name": "dependency-light-proof", "state": "pass"},
+    {"name": "managed-cloud-proof", "state": "fail", "blocker": true}
+  ]
+}

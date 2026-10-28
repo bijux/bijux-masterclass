@@ -1,0 +1,38 @@
+groups:
+- name: analysis-runs-sli-recording
+  interval: 30s
+  rules:
+  - record: analysis:sli_api_availability:bad_ratio_rate5m
+    expr: 'sum(rate(analysis_http_server_requests_total{eligibility="eligible",outcome="bad"}[5m]))
+
+      /
+
+      clamp_min(sum(rate(analysis_http_server_requests_total{eligibility="eligible"}[5m])),
+      1e-12)
+
+      '
+  - record: analysis:sli_api_availability:bad_ratio_rate1h
+    expr: 'sum(rate(analysis_http_server_requests_total{eligibility="eligible",outcome="bad"}[1h]))
+
+      /
+
+      clamp_min(sum(rate(analysis_http_server_requests_total{eligibility="eligible"}[1h])),
+      1e-12)
+
+      '
+  - record: analysis:sli_run_start_freshness:bad_ratio_rate5m
+    expr: 'sum(rate(analysis_run_start_total{outcome="bad"}[5m]))
+
+      /
+
+      clamp_min(sum(rate(analysis_run_start_total[5m])), 1e-12)
+
+      '
+  - record: analysis:sli_run_start_freshness:bad_ratio_rate1h
+    expr: 'sum(rate(analysis_run_start_total{outcome="bad"}[1h]))
+
+      /
+
+      clamp_min(sum(rate(analysis_run_start_total[1h])), 1e-12)
+
+      '

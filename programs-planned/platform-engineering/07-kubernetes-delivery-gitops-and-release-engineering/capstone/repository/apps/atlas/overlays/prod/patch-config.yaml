@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atlas-runtime
+data:
+  LOG_LEVEL: info
+  DATA_RELEASE_PHASE: writer-cutover

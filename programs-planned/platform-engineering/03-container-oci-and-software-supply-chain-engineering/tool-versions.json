@@ -1,0 +1,23 @@
+{
+  "executedBuildEnvironment": {
+    "go": "1.23.2",
+    "openssl": "3.5.5",
+    "python": "3.13.5"
+  },
+  "optionalNativeTools": {
+    "buildkit": "environment-backed",
+    "cosign": "environment-backed",
+    "dockerOrPodman": "environment-backed",
+    "oras": "environment-backed",
+    "runcOrCrun": "environment-backed",
+    "syftOrEquivalent": "environment-backed"
+  },
+  "specifications": {
+    "cycloneDX": "1.7",
+    "ociDistribution": "1.1.1",
+    "ociImage": "1.1.1",
+    "ociRuntime": "1.3.0",
+    "slsa": "1.2",
+    "spdx": "3.0.1"
+  }
+}

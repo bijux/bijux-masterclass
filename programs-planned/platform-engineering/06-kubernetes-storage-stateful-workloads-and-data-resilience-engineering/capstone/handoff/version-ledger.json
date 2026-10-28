@@ -1,0 +1,6 @@
+{
+  "atlasDataPlane": "1.0.0",
+  "course7Target": "atlas-delivery-plane-1.0.0",
+  "csiSpec": "1.13.0",
+  "kubernetes": "1.36.2"
+}

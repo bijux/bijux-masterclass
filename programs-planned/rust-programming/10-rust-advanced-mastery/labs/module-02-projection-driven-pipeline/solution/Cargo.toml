@@ -1,0 +1,11 @@
+[package]
+name = "advanced-lab-02-solution"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[dependencies]
+
+[lints]
+workspace = true

@@ -1,0 +1,8 @@
+{
+  "risks": [
+    "native CSI and snapshot controller evidence may be unexecuted",
+    "single-replica teaching database is not highly available",
+    "regional and account-level restore is environment-backed",
+    "storage performance fixtures are not production benchmarks"
+  ]
+}

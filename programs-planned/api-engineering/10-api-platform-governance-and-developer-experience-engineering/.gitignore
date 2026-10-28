@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+node_modules/
+dist/
+site/
+reports/generated/
+capstone/sandbox/runtime/
+.DS_Store

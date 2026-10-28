@@ -1,0 +1,46 @@
+version: '1.0'
+consumers:
+  - name: analysis-workers
+    owner: analysis-runtime
+    channels: [analysis.commands.start.v1]
+    acceptedTypes: [com.bijux.analysis.command.start.v1]
+    effectVersion: v1
+    effect: start or reconcile one durable run execution
+    deduplication: tenant + consumer + effectVersion + eventId
+    replay: workflow-review
+  - name: analytics-v1
+    owner: data-products
+    channels: [analysis.events.run.lifecycle.v1]
+    acceptedTypes:
+      - org.bijux.analysis.run.completed.v1
+      - org.bijux.analysis.run.failed.v1
+    effectVersion: v1
+    effect: update tenant-scoped completion windows
+    deduplication: tenant + consumer + effectVersion + eventId
+    replay: projection-safe
+  - name: notification-v1
+    owner: customer-platform
+    channels: [analysis.events.run.lifecycle.v1]
+    acceptedTypes:
+      - org.bijux.analysis.run.completed.v1
+      - org.bijux.analysis.run.failed.v1
+    effectVersion: v1
+    effect: create one notification intent; delivery remains separately idempotent
+    deduplication: tenant + consumer + effectVersion + eventId
+    replay: dry-run-only unless a new notification effect version is approved
+  - name: artifact-index-v1
+    owner: artifact-platform
+    channels: [analysis.events.artifact.v1]
+    acceptedTypes: [org.bijux.analysis.artifact.published.v1]
+    effectVersion: v1
+    effect: materialize an artifact search projection
+    deduplication: tenant + consumer + effectVersion + eventId
+    replay: projection-safe
+  - name: audit-v1
+    owner: security-operations
+    channels: [analysis.events.run.lifecycle.v1, analysis.events.artifact.v1]
+    acceptedTypes: ['*']
+    effectVersion: v1
+    effect: append a bounded, redacted evidence record
+    deduplication: tenant + consumer + effectVersion + eventId
+    replay: projection-safe

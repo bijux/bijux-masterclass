@@ -1,0 +1,35 @@
+{
+  "cases": [
+    {
+      "current": 3,
+      "expected": "apply",
+      "id": "C-01",
+      "incoming": 4
+    },
+    {
+      "current": 4,
+      "expected": "duplicate",
+      "id": "C-02",
+      "incoming": 4
+    },
+    {
+      "current": 4,
+      "expected": "stale",
+      "id": "C-03",
+      "incoming": 3
+    },
+    {
+      "current": 4,
+      "expected": "gap",
+      "id": "C-04",
+      "incoming": 6
+    },
+    {
+      "current": 0,
+      "expected": "apply",
+      "id": "C-05",
+      "incoming": 1
+    }
+  ],
+  "profile": "projection-1.0"
+}

@@ -1,0 +1,14 @@
+{
+  "cases": [
+    {
+      "domainAuthz": "owner-service",
+      "expected": "allowed",
+      "name": "edge coarse policy"
+    },
+    {
+      "domainAuthz": "gateway-project-owner",
+      "error": "domain-policy-at-edge",
+      "name": "gateway owns project policy"
+    }
+  ]
+}

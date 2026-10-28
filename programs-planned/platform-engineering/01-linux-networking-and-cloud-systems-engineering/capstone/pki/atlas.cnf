@@ -1,0 +1,24 @@
+[req]
+distinguished_name = dn
+prompt = no
+req_extensions = req_ext
+[dn]
+CN = atlas.test
+[req_ext]
+basicConstraints = critical,CA:FALSE
+keyUsage = critical,digitalSignature,keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+subjectKeyIdentifier = hash
+[server_ext]
+basicConstraints = critical,CA:FALSE
+keyUsage = critical,digitalSignature,keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+[alt_names]
+DNS.1 = atlas.test
+DNS.2 = localhost
+IP.1 = 127.0.0.1
+IP.2 = ::1

@@ -1,0 +1,8 @@
+HELLO	1
+WELCOME	1
+SUBMIT	r-1	key-1	uppercase	hello async rust
+OK	r-1	HELLO ASYNC RUST
+STATS	r-2
+STATS-OK	r-2	0	0	1	1	0
+QUIT
+BYE

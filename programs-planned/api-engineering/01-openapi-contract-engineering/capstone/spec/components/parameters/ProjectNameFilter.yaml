@@ -1,0 +1,9 @@
+name: name
+in: query
+required: false
+description: Case-insensitive project-name substring.
+schema:
+  type: string
+  minLength: 1
+  maxLength: 80
+example: summer

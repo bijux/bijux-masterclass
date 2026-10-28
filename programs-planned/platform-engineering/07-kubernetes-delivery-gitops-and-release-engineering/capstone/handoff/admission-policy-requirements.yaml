@@ -1,0 +1,6 @@
+requirements:
+- reject mutable image tags
+- reject privileged or root workloads without bounded exception
+- require ownership and data-retention annotations where applicable
+- verify approved artifact evidence for production namespaces
+- prevent unapproved cross-namespace references

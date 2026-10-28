@@ -1,0 +1,8 @@
+{
+  "apiRef": "api:default/analysis-http",
+  "contractVersion": "1.2.0",
+  "environment": "sandbox",
+  "expectedOutcome": "202 Accepted with status monitor",
+  "id": "submit-analysis-http-python",
+  "language": "python"
+}

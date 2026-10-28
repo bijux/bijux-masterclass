@@ -1,0 +1,20 @@
+{
+  "name": "analysis-rpc-course",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test test-js/*.test.mjs",
+    "build:network": "tsc -p tsconfig.network.json",
+    "test:network": "npm run build:network"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3"
+  },
+  "optionalDependencies": {
+    "@grpc/grpc-js": "1.14.4",
+    "@grpc/proto-loader": "0.8.1",
+    "protobufjs": "8.7.1"
+  }
+}

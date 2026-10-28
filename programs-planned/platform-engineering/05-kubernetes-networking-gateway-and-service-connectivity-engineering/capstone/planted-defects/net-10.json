@@ -1,0 +1,6 @@
+{
+  "id": "NET-10",
+  "title": "A kind+Cilium run is presented as production conformance",
+  "description": "Local topology evidence is promoted beyond its environment class.",
+  "expectedProof": "release-evidence-classification"
+}

@@ -1,0 +1,11 @@
+{
+  "candidate": "atlas-data-plane-1.0-local-only",
+  "evidence": {
+    "migration_compatibility": "pass",
+    "native_csi": "not-executed",
+    "predecessor": "pass",
+    "restore_drill": "pass",
+    "single_writer": "pass"
+  },
+  "expected": "review-required"
+}

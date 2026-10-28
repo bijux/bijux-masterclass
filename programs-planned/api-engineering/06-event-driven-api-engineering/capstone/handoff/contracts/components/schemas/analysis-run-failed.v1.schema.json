@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bijux.dev/events/analysis-run-failed.v1",
+  "title": "Analysis run failed data",
+  "type": "object",
+  "properties": {
+    "runId": {
+      "type": "string"
+    },
+    "failureCode": {
+      "type": "string",
+      "enum": [
+        "INPUT_INVALID",
+        "COMPUTE_FAILED",
+        "STORAGE_FAILED",
+        "CANCELLED"
+      ]
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "runId",
+    "failureCode",
+    "retryable",
+    "occurredAt"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,36 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "reliability",
+  "cases": [
+    {
+      "id": "REL-001",
+      "description": "permanent failure dead-letters immediately",
+      "expected": "accepted"
+    },
+    {
+      "id": "REL-002",
+      "description": "transient failure retries within budget",
+      "expected": "accepted"
+    },
+    {
+      "id": "REL-003",
+      "description": "exhausted transient failure dead-letters",
+      "expected": "accepted"
+    },
+    {
+      "id": "REL-004",
+      "description": "lag health includes oldest age",
+      "expected": "accepted"
+    },
+    {
+      "id": "REL-005",
+      "description": "dead-letter replay requires operator decision",
+      "expected": "accepted"
+    },
+    {
+      "id": "REL-006",
+      "description": "replay storm without admission bound is rejected",
+      "expected": "rejected"
+    }
+  ]
+}

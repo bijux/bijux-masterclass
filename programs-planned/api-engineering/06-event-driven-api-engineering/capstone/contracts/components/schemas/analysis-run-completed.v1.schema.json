@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bijux.dev/events/analysis-run-completed.v1",
+  "title": "Analysis run completed data",
+  "type": "object",
+  "properties": {
+    "runId": {
+      "type": "string"
+    },
+    "durationMs": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "artifactCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "resultSummary": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "runId",
+    "durationMs",
+    "artifactCount",
+    "occurredAt"
+  ],
+  "additionalProperties": false
+}

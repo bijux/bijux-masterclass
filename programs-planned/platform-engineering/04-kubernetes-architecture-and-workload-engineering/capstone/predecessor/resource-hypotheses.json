@@ -1,0 +1,14 @@
+{
+  "capacityClaim": "not production evidence",
+  "cpu": {
+    "evidence": "course-lab-hypothesis",
+    "limit": "500m",
+    "request": "100m"
+  },
+  "memory": {
+    "evidence": "course-lab-hypothesis",
+    "limit": "128Mi",
+    "request": "64Mi"
+  },
+  "pids": 64
+}

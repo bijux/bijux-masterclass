@@ -1,0 +1,38 @@
+{
+  "expected": "unschedulable",
+  "nodes": [
+    {
+      "cpu": 2000,
+      "labels": {
+        "pool": "general",
+        "zone": "a"
+      },
+      "name": "n1"
+    },
+    {
+      "cpu": 2000,
+      "labels": {
+        "pool": "general",
+        "zone": "b"
+      },
+      "name": "n2"
+    },
+    {
+      "cpu": 4000,
+      "labels": {
+        "pool": "batch",
+        "zone": "a"
+      },
+      "name": "n3",
+      "taint": "dedicated=batch:NoSchedule"
+    }
+  ],
+  "pod": {
+    "cpu": 1500,
+    "prohibitedHosts": [
+      "n1",
+      "n2"
+    ],
+    "requiredPool": "general"
+  }
+}

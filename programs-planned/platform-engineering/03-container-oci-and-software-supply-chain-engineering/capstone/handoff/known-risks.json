@@ -1,0 +1,10 @@
+{
+  "risks": [
+    "the checked mini-runtime is root-managed and is not proof of a fully rootless runtime architecture",
+    "runtime default seccomp behavior remains platform dependent",
+    "resource values require Course 4 and later representative measurement",
+    "registry availability, authentication, retention, replication, and credential rotation remain environment-backed",
+    "multi-platform indexes do not prove every target kernel or CPU feature",
+    "fixture signing keys are public course material and provide no production trust"
+  ]
+}

@@ -1,0 +1,109 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: analysis-platform
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns
+  namespace: analysis-platform
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - {protocol: UDP, port: 53}
+        - {protocol: TCP, port: 53}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: analysis-control-ingress
+  namespace: analysis-platform
+spec:
+  podSelector: {matchLabels: {app: analysis-control}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: {matchLabels: {app: edge-gateway}}
+        - podSelector: {matchLabels: {app: worker-plane}}
+      ports: [{protocol: TCP, port: 8081}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: artifact-service-ingress
+  namespace: analysis-platform
+spec:
+  podSelector: {matchLabels: {app: artifact-service}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: {matchLabels: {app: edge-gateway}}
+        - podSelector: {matchLabels: {app: worker-plane}}
+      ports: [{protocol: TCP, port: 8082}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: notification-service-ingress
+  namespace: analysis-platform
+spec:
+  podSelector: {matchLabels: {app: notification-service}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: {matchLabels: {app: event-broker}}
+      ports: [{protocol: TCP, port: 8083}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: edge-gateway-egress
+  namespace: analysis-platform
+spec:
+  podSelector: {matchLabels: {app: edge-gateway}}
+  policyTypes: [Egress]
+  egress:
+    - to: [{podSelector: {matchLabels: {app: analysis-control}}}]
+      ports: [{protocol: TCP, port: 8081}]
+    - to: [{podSelector: {matchLabels: {app: artifact-service}}}]
+      ports: [{protocol: TCP, port: 8082}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: worker-plane-egress
+  namespace: analysis-platform
+spec:
+  podSelector: {matchLabels: {app: worker-plane}}
+  policyTypes: [Egress]
+  egress:
+    - to: [{podSelector: {matchLabels: {app: analysis-control}}}]
+      ports: [{protocol: TCP, port: 8081}]
+    - to: [{podSelector: {matchLabels: {app: artifact-service}}}]
+      ports: [{protocol: TCP, port: 8082}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: event-broker-ingress
+  namespace: analysis-platform
+spec:
+  podSelector: {matchLabels: {app: event-broker}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: {matchLabels: {app: analysis-control}}
+        - podSelector: {matchLabels: {app: artifact-service}}
+        - podSelector: {matchLabels: {app: notification-service}}
+      ports: [{protocol: TCP, port: 4222}]

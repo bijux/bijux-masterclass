@@ -1,0 +1,61 @@
+{
+  "files": [
+    {
+      "bytes": 401,
+      "path": "README.md",
+      "sha256": "f86d6725eaf7d8a414e1ee72e2fe27560e8aa48013c4453c9cc623f12afc5720"
+    },
+    {
+      "bytes": 284,
+      "path": "admission-policy-requirements.yaml",
+      "sha256": "e1c5dc0c77e77eb2133d8cb87cc508fd5be97ef27cc31e333a7a6e247f0c363a"
+    },
+    {
+      "bytes": 318,
+      "path": "artifact-trust.yaml",
+      "sha256": "6a527b05e16ed038e65347d31d2323657d82fc3b7917e94c21affe32a7c51c6e"
+    },
+    {
+      "bytes": 371,
+      "path": "cluster-and-repository-authority.yaml",
+      "sha256": "097aa3afe2bd4d236eaef293928699749a27f531de4630c8e0cc24ff0d6cec2f"
+    },
+    {
+      "bytes": 365,
+      "path": "delivery-architecture.yaml",
+      "sha256": "6273fd33efe3e3485f1f99359355ca94295179aa9cb65efc55fc39d066c2fff5"
+    },
+    {
+      "bytes": 313,
+      "path": "identity-and-access-obligations.yaml",
+      "sha256": "621e0c6a9399922b2230859c1033d93d60f05ffd17ed1eea9cd55228fb0ed0fb"
+    },
+    {
+      "bytes": 474,
+      "path": "known-risks.json",
+      "sha256": "169444ea93b67e2ae4677ca7f24f5e3d68c5d3da8723baac24d8e6946aea24a4"
+    },
+    {
+      "bytes": 340,
+      "path": "policy-boundaries.yaml",
+      "sha256": "008dbc412783ec16073cb7e80c6a3a7959ffa823a3b712d9f5420c431a3da74c"
+    },
+    {
+      "bytes": 285,
+      "path": "secret-delivery-contract.yaml",
+      "sha256": "0c1136a1c631d236ad4e7df91df818a2136e3e65365a43d48efd3e664987db52"
+    },
+    {
+      "bytes": 360,
+      "path": "tenant-and-environment-boundaries.yaml",
+      "sha256": "c51eda2b1deb791ae5c3d76dc3053d5bcd8502d9e639be1651f0c39f9cfdc700"
+    },
+    {
+      "bytes": 240,
+      "path": "version-ledger.json",
+      "sha256": "45dcdb5c958dbe6f91f28e80cc5241fcfeee29437a55982608e91fee5e9c7187"
+    }
+  ],
+  "handoff": "platform-course-07-to-08",
+  "schemaVersion": "1.0"
+}

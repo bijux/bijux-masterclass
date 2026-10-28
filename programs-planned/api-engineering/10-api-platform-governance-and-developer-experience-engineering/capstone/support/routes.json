@@ -1,0 +1,25 @@
+{
+  "routes": [
+    {
+      "category": "contract-semantics",
+      "initialResponseHours": 8,
+      "ownerSource": "api catalog entity owner"
+    },
+    {
+      "category": "portal-registry-template",
+      "initialResponseHours": 4,
+      "owner": "group:default/api-platform-team"
+    },
+    {
+      "category": "security-incident",
+      "initialResponseMinutes": 30,
+      "owner": "group:default/analysis-leadership"
+    },
+    {
+      "category": "runtime-outage",
+      "initialResponseMinutes": 15,
+      "ownerSource": "component catalog entity owner"
+    }
+  ],
+  "version": "1.0"
+}

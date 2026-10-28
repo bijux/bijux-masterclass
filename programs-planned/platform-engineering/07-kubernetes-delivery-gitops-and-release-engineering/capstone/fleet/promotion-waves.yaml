@@ -1,0 +1,26 @@
+waves:
+- name: dev
+  targets:
+  - atlas-dev-eu1
+  requiredEvidence:
+  - render
+  - smoke
+- name: staging
+  targets:
+  - atlas-stage-eu1
+  requiredEvidence:
+  - render
+  - integration
+  - restore-gate
+- name: prod-canary
+  targets:
+  - atlas-prod-eu1
+  requiredEvidence:
+  - all-blocker-gates
+  - progressive-analysis
+- name: prod-followers
+  targets:
+  - atlas-prod-eu2
+  requiredEvidence:
+  - version-compatibility
+  - progressive-analysis

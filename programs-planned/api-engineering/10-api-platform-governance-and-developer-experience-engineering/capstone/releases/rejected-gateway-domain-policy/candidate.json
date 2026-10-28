@@ -1,0 +1,5 @@
+{
+  "expectedDecision": "rejected",
+  "id": "rejected-gateway-domain-policy",
+  "reason": "The gateway attempts to decide project ownership."
+}

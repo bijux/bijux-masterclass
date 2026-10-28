@@ -1,0 +1,53 @@
+parameters:
+- $ref: ../components/parameters/RunId.yaml
+get:
+  tags:
+  - Analysis Runs
+  summary: Stream analysis progress
+  description: OpenAPI 3.2 stream description. itemSchema applies independently to each progress event.
+  operationId: streamAnalysisRunEvents
+  security:
+  - OAuth2:
+    - runs:read
+  - ApiKey: []
+  responses:
+    '200':
+      description: A finite training stream ending in a terminal run state.
+      headers:
+        Cache-Control:
+          description: Prevents intermediary caching.
+          schema:
+            type: string
+            const: no-cache
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        text/event-stream:
+          schema:
+            type: string
+          example: 'id: evt_0001
+
+            event: progress
+
+            data: {"eventId":"evt_0001","runId":"run_0001","status":"running","progress":50,"occurredAt":"2026-08-05T10:11:00Z"}
+
+
+            '
+          itemSchema:
+            $ref: ../components/schemas/RunProgressEvent.yaml
+        application/x-ndjson:
+          schema:
+            type: string
+          example: '{"eventId":"evt_0001","runId":"run_0001","status":"running","progress":50,"occurredAt":"2026-08-05T10:11:00Z"}
+
+            '
+          itemSchema:
+            $ref: ../components/schemas/RunProgressEvent.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '404':
+      $ref: ../components/responses/NotFoundProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml

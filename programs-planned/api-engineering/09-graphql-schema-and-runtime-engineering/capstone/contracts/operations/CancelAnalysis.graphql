@@ -1,0 +1,6 @@
+mutation CancelAnalysis($input: CancelAnalysisInput!) {
+  cancelAnalysis(input: $input) {
+    ... on CancelAnalysisSuccess { clientMutationId run { id status version } }
+    ... on MutationProblem { clientMutationId code message field }
+  }
+}

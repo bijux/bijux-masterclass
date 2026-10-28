@@ -1,0 +1,36 @@
+[project]
+name = "bijux-openapi-contract-engineering"
+version = "1.0.0"
+description = "Course-level tooling for the OpenAPI Contract Engineering program"
+requires-python = ">=3.11"
+dependencies = [
+  "PyYAML==6.0.3",
+  "jsonschema==4.26.0",
+  "httpx==0.28.1",
+  "pytest==9.0.2",
+  "fastapi==0.128.2",
+  "pydantic==2.13.4",
+  "python-multipart==0.0.32",
+  "uvicorn==0.48.0",
+  "mkdocs==1.6.1",
+  "mkdocs-material==9.7.0",
+  "schemathesis==4.24.3",
+  "openapi-python-client==0.29.0",
+  "ruff==0.14.13",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["capstone/tests", "capstone/services/python-fastapi/tests", "capstone/clients/python/tests"]
+pythonpath = ["capstone", "capstone/scripts", "capstone/services/python-fastapi/src", "capstone/clients/python/src"]
+addopts = "-q --strict-markers"
+markers = [
+  "live: requires a running provider",
+  "full_toolchain: requires optional external command-line tools",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.uv]
+package = false

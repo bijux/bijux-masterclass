@@ -1,0 +1,10 @@
+{
+  "dataVolume": "separate",
+  "integrity": "sha256",
+  "keyAuthority": "recovery-role",
+  "objectBackupIntervalHours": 1,
+  "restoreIntoEmpty": true,
+  "snapshotIntervalHours": 24,
+  "targetRpoMinutes": 60,
+  "targetRtoMinutes": 45
+}

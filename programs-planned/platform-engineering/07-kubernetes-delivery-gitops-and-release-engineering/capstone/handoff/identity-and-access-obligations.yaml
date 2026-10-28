@@ -1,0 +1,6 @@
+requirements:
+- workload identities are distinct from controller identities
+- repository read and write credentials are separate
+- decryption identity is scoped to named secret subjects
+- break-glass access is short-lived, incident-bound, and audited
+- production promotion requires an environment-owner decision

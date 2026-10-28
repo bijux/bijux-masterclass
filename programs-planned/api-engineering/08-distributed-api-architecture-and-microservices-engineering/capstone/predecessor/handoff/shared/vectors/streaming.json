@@ -1,0 +1,70 @@
+{
+  "profile": "grpc-streaming-1.0",
+  "cases": [
+    {
+      "id": "STR-01",
+      "protocol": "upload",
+      "frames": [
+        "metadata",
+        "chunk",
+        "chunk"
+      ],
+      "expected": "accept"
+    },
+    {
+      "id": "STR-02",
+      "protocol": "upload",
+      "frames": [
+        "chunk"
+      ],
+      "expected": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "STR-03",
+      "protocol": "upload",
+      "frames": [
+        "metadata",
+        "metadata"
+      ],
+      "expected": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "STR-04",
+      "protocol": "watch",
+      "resume_after": "3",
+      "received": [
+        "4",
+        "5"
+      ],
+      "expected": "accept"
+    },
+    {
+      "id": "STR-05",
+      "protocol": "watch",
+      "resume_after": "3",
+      "received": [
+        "5"
+      ],
+      "expected": "gap"
+    },
+    {
+      "id": "STR-06",
+      "protocol": "worker",
+      "frames": [
+        "hello",
+        "ready",
+        "progress",
+        "result"
+      ],
+      "expected": "accept"
+    },
+    {
+      "id": "STR-07",
+      "protocol": "worker",
+      "frames": [
+        "ready"
+      ],
+      "expected": "INVALID_ARGUMENT"
+    }
+  ]
+}

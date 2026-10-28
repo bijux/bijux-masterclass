@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 2,
+  "program": "api-engineering",
+  "number": 10,
+  "id": "api-platform-governance-and-developer-experience-engineering",
+  "directory": "10-api-platform-governance-and-developer-experience-engineering",
+  "title": "API Platform, Governance, and Developer Experience Engineering",
+  "stage": "Operate APIs as an organizational platform",
+  "centralQuestion": "How can an organization make trustworthy API work easier to discover, create, publish, consume, evolve, support, and retire without centralizing domain ownership?",
+  "responsibility": "Turn the interfaces, evidence, and ownership model from Courses 1–9 into a product-oriented API platform with governed self-service and measurable consumer outcomes.",
+  "duration": {
+    "calendarWeeks": 2,
+    "teachingDays": 10,
+    "orientationCounted": false
+  },
+  "incomingBoundary": "The Course 9 handoff containing HTTP, event, RPC, distributed-service, and GraphQL contracts with explicit ownership and release evidence.",
+  "outgoingBoundary": "Analysis API Platform 1.0, a governed catalog and registry, lifecycle and policy engine, golden path, documentation and sandbox, SDK and provenance publication, runtime reconciliation, support model, and a ten-course graduation dossier.",
+  "versionState": "All earlier interface and engineering profiles preserved; Analysis API Platform 1.0 and platform-catalog metadata migrations 001–004 introduced.",
+  "predecessor": "09-graphql-schema-and-runtime-engineering",
+  "successor": null,
+  "primaryProduct": "course-book",
+  "languageStrategy": "one primary implementation track plus one comparative reference track",
+  "modules": [
+    {
+      "number": 1,
+      "directory": "module-01-platform-product-model",
+      "title": "Platform Product Model and Operating Boundaries",
+      "centralQuestion": "Which recurring problems should an API platform own, and which decisions must stay with domain teams?",
+      "capstoneIncrement": "Publish the platform product charter, user journeys, ownership boundary, and initial outcome model.",
+      "learningOutcomes": [
+        "define the platform as a product with distinct users",
+        "separate essential domain decisions from accidental repeated work",
+        "establish platform, domain, and governance ownership",
+        "evaluate paved roads and justified exceptions",
+        "choose outcome metrics instead of feature counts"
+      ]
+    },
+    {
+      "number": 2,
+      "directory": "module-02-catalog-ownership-and-topology",
+      "title": "Catalog, Ownership Graph, and Metadata Authority",
+      "centralQuestion": "How can a central catalog be useful without pretending to own every fact it displays?",
+      "capstoneIncrement": "Publish the Analysis Platform catalog and ownership graph.",
+      "learningOutcomes": [
+        "model components, APIs, resources, systems, domains, and groups",
+        "assign canonical identity and accountable ownership",
+        "separate authoritative, derived, and observed metadata",
+        "validate relations and detect orphans",
+        "use the graph for impact and support analysis"
+      ]
+    },
+    {
+      "number": 3,
+      "directory": "module-03-contract-registry-and-publication",
+      "title": "Contract Registry and Multi-Protocol Publication",
+      "centralQuestion": "What makes an API contract a trustworthy published release across HTTP, events, RPC, and GraphQL?",
+      "capstoneIncrement": "Register the four inherited interface releases by digest and publication evidence.",
+      "learningOutcomes": [
+        "distinguish drafts, releases, channels, and promotions",
+        "bind releases to exact bytes and owners",
+        "preserve protocol-native contracts",
+        "attach protocol-appropriate compatibility evidence",
+        "reject mutable release identities"
+      ]
+    },
+    {
+      "number": 4,
+      "directory": "module-04-governance-as-code",
+      "title": "Governance as Code, Evidence, Scorecards, and Exceptions",
+      "centralQuestion": "How can governance scale without becoming either a rubber stamp or a centralized release bottleneck?",
+      "capstoneIncrement": "Publish the policy pack, evidence ledger, exception register, and release scorecards.",
+      "learningOutcomes": [
+        "design deterministic policy rules around authoritative evidence",
+        "preserve pass, review, and fail semantics",
+        "build evidence-backed scorecards without vanity averages",
+        "model temporary exceptions and compensating controls",
+        "federate policy ownership across platform and domain teams"
+      ]
+    },
+    {
+      "number": 5,
+      "directory": "module-05-lifecycle-deprecation-and-retirement",
+      "title": "Lifecycle, Compatibility, Deprecation, and Retirement",
+      "centralQuestion": "How can an API evolve and eventually disappear without transferring hidden cost to consumers?",
+      "capstoneIncrement": "Publish the lifecycle policy, consumer inventory, deprecation impact report, and retirement decision.",
+      "learningOutcomes": [
+        "model lifecycle as evidence-gated transitions",
+        "build a multi-source consumer inventory",
+        "design migration and notice workflows",
+        "block unsafe retirement",
+        "preserve historical contract truth"
+      ]
+    },
+    {
+      "number": 6,
+      "directory": "module-06-golden-paths-and-self-service",
+      "title": "Golden Paths, Templates, and Self-Service Provisioning",
+      "centralQuestion": "How can a platform reduce repeated setup work without hiding essential engineering decisions or creating clone-and-forget debt?",
+      "capstoneIncrement": "Publish and verify the `api-capability-v1` golden path and generated reference fixture.",
+      "learningOutcomes": [
+        "design a golden path as a maintained product",
+        "choose safe defaults and essential parameters",
+        "render deterministically and atomically",
+        "include ownership, tests, docs, and governance hooks",
+        "govern upgrades and supported escape hatches"
+      ]
+    },
+    {
+      "number": 7,
+      "directory": "module-07-documentation-discovery-and-sandbox",
+      "title": "Documentation, Discovery, Sandboxes, and Consumer Onboarding",
+      "centralQuestion": "Can a new consumer find the right interface, trust it, and complete a useful workflow safely without private organizational knowledge?",
+      "capstoneIncrement": "Publish the task-oriented portal source, search index, sandbox profile, and first-success evidence.",
+      "learningOutcomes": [
+        "organize documentation around tasks and interface choice",
+        "publish trustworthy discovery metadata",
+        "build executable version-bound examples",
+        "design isolated synthetic sandboxes",
+        "measure onboarding outcomes and route support"
+      ]
+    },
+    {
+      "number": 8,
+      "directory": "module-08-sdks-artifacts-and-supply-chain",
+      "title": "SDKs, CLIs, Artifacts, SBOMs, and Provenance",
+      "centralQuestion": "How can developer artifacts remain convenient, idiomatic, reproducible, and traceable to the contracts that produced them?",
+      "capstoneIncrement": "Publish Python and TypeScript client artifacts with contract identity, SBOM, and bounded provenance evidence.",
+      "learningOutcomes": [
+        "design SDKs as supported products rather than raw generated code",
+        "link packages to exact contract releases",
+        "distinguish SBOM, provenance, checksum, and signature evidence",
+        "govern package versioning and retention",
+        "reject untraceable or misleading publication claims"
+      ]
+    },
+    {
+      "number": 9,
+      "directory": "module-09-runtime-analytics-and-support",
+      "title": "Runtime Control Plane, Usage Intelligence, and Support Operations",
+      "centralQuestion": "How can platform metadata remain connected to the running system and to consumer outcomes without becoming a new domain owner or surveillance system?",
+      "capstoneIncrement": "Publish runtime desired state, drift proof, product metrics, and support routing evidence.",
+      "learningOutcomes": [
+        "reconcile approved releases with runtime routes",
+        "keep edge and domain policy boundaries explicit",
+        "measure onboarding, adoption, migration, and support outcomes",
+        "route support through authoritative ownership",
+        "apply privacy and cardinality limits to platform analytics"
+      ]
+    },
+    {
+      "number": 10,
+      "directory": "module-10-federated-governance-and-final-defense",
+      "title": "Federated Governance, Platform Operations, and Final Defense",
+      "centralQuestion": "How can the platform scale across an organization while remaining useful, operable, accountable, and subordinate to domain ownership?",
+      "capstoneIncrement": "Complete and defend Analysis API Platform 1.0 and the ten-course API Engineering program.",
+      "learningOutcomes": [
+        "design a federated platform operating model",
+        "apply SLO and lifecycle discipline to the platform itself",
+        "focus central review on novel risk",
+        "drive adoption through measurable value",
+        "defend Analysis API Platform 1.0 across all user perspectives"
+      ]
+    }
+  ]
+}

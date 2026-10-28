@@ -1,0 +1,27 @@
+profileVersion: "1.0"
+budgets:
+  api:
+    activeRequests: 256
+    waiters: 256
+    waitTimeoutMs: 250
+  database:
+    apiPoolPerInstance: 12
+    workerPoolPerProcess: 4
+    operationalReserve: 10
+    targetActiveFraction: 0.70
+  analysisWorkers:
+    activePerProcess: 8
+    claimBatch: 8
+    leaseSeconds: 60
+  artifactStreams:
+    globalActive: 100
+    perTenantActive: 10
+    chunkBytes: 65536
+    buffersPerStream: 2
+  webhookDeliveries:
+    globalActive: 32
+    perDestinationActive: 2
+rationale:
+  - values are instructional defaults, not universal production settings
+  - every deployment must recompute aggregate database connections
+  - accepted work must remain bounded during downstream slowdown

@@ -1,0 +1,16 @@
+{
+  "data": {
+    "project": {
+      "analysisRuns": {
+        "edges": [],
+        "pageInfo": {
+          "endCursor": null,
+          "hasNextPage": false
+        }
+      },
+      "id": "UHJvamVjdDpwcm9qLTE",
+      "name": "Genome Study",
+      "version": "3"
+    }
+  }
+}

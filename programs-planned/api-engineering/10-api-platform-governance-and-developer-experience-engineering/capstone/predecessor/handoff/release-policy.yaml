@@ -1,0 +1,22 @@
+version: '1.0'
+classifications:
+  breaking:
+    - remove field or type used by an active operation
+    - add required input field or argument without default
+    - change output from non-null to nullable
+    - remove enum value
+  review_required:
+    - add enum value
+    - add union or interface possible type
+    - change nullable output to non-null
+    - increase resolver fanout
+  additive:
+    - add optional field
+    - add optional argument with default-compatible behavior
+    - deprecate while retaining behavior
+required_evidence:
+  - schema diff
+  - active operation validation
+  - resolver ownership
+  - demand-budget proof
+  - old-client execution

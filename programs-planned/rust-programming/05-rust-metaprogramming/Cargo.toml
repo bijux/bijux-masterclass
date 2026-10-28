@@ -1,0 +1,48 @@
+[workspace]
+resolver = "3"
+members = [
+    "capstone",
+    "capstone/commandforge-macros",
+    "labs/module-01-decision-table-generator/solution",
+    "labs/module-02-typed-map-macro/solution",
+    "labs/module-03-state-machine-dsl/solution",
+    "labs/module-04-exported-registry-macro/solution",
+    "labs/module-04-exported-registry-macro/solution/tests/renamed-consumer",
+    "labs/module-05-diagnostic-enum-macro/solution",
+    "labs/module-06-token-stream-inspector/solution",
+    "labs/module-07-field-names-derive/solution",
+    "labs/module-08-checked-handler-attribute/solution",
+    "labs/module-09-route-table-dsl/solution",
+    "labs/module-10-generated-code-build/solution",
+]
+exclude = [
+    "labs/module-01-decision-table-generator/starter",
+    "labs/module-02-typed-map-macro/starter",
+    "labs/module-03-state-machine-dsl/starter",
+    "labs/module-04-exported-registry-macro/starter",
+    "labs/module-05-diagnostic-enum-macro/starter",
+    "labs/module-06-token-stream-inspector/starter",
+    "labs/module-07-field-names-derive/starter",
+    "labs/module-08-checked-handler-attribute/starter",
+    "labs/module-09-route-table-dsl/starter",
+    "labs/module-10-generated-code-build/starter",
+]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.97"
+license = "Apache-2.0"
+publish = false
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "allow"
+
+[workspace.lints.clippy]
+correctness = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"

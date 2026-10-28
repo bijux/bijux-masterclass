@@ -1,0 +1,7 @@
+{
+  "expectedProof": "scheduler-proof",
+  "id": "KUBE-05-impossible-topology",
+  "slug": "impossible-topology",
+  "status": "must-be-rejected",
+  "summary": "joint placement constraints have no feasible Node"
+}

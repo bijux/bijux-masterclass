@@ -1,0 +1,6 @@
+{
+  "candidate": "ownerless-service",
+  "expected": "reject",
+  "issue": "notification service has no accountable owner",
+  "rejecting_gate": "operability"
+}

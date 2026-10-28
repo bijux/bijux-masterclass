@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 2,
+  "program": "api-engineering",
+  "number": 1,
+  "id": "openapi-contract-engineering",
+  "directory": "01-openapi-contract-engineering",
+  "title": "OpenAPI Contract Engineering",
+  "stage": "Specify the public promise",
+  "centralQuestion": "What exactly does the API promise, and how can providers and consumers verify that promise?",
+  "responsibility": "Define a precise, reviewable, executable HTTP API contract without confusing a description, a framework, and a running provider.",
+  "duration": {
+    "calendarWeeks": 2,
+    "teachingDays": 10,
+    "orientationCounted": false
+  },
+  "incomingBoundary": "Basic programming ability, command-line familiarity, and no assumed OpenAPI experience.",
+  "outgoingBoundary": "A frozen API 1.1 contract, operation ledger, schema fixtures, security decisions, workflow description, compatibility policy, and provider-neutral behavioral scenarios.",
+  "versionState": "Public API 1.1; OpenAPI 3.1.2 executable baseline; OpenAPI 3.2.0 standards frontier; no durable database yet.",
+  "predecessor": null,
+  "successor": "02-contract-driven-api-service-engineering",
+  "primaryProduct": "course-book",
+  "languageStrategy": "symmetric Python/TypeScript providers",
+  "modules": [
+    {
+      "number": 1,
+      "directory": "module-01-http-openapi-foundations",
+      "title": "HTTP and OpenAPI Foundations",
+      "centralQuestion": "How do raw HTTP exchanges become a public contract without confusing documentation with runtime behavior?",
+      "capstoneIncrement": "Establish health and project operations as raw messages, OpenAPI operations, and equivalent provider behavior.",
+      "learningOutcomes": [
+        "Read requests and responses as protocol messages",
+        "Separate API behavior, OpenAPI description, implementation, and documentation rendering",
+        "Choose methods and status codes from HTTP semantics",
+        "Write a minimal valid OpenAPI description",
+        "Prove that the two reference providers expose the same public behavior"
+      ]
+    },
+    {
+      "number": 2,
+      "directory": "module-02-operations-parameters-messages",
+      "title": "Operations, Parameters, and Messages",
+      "centralQuestion": "How are parameters, request bodies, media types, status codes, and headers modeled without ambiguity?",
+      "capstoneIncrement": "Complete project and dataset messages, including pagination inputs, creation responses, and problem representations.",
+      "learningOutcomes": [
+        "Model path, query, header, cookie, and body input deliberately",
+        "Use request bodies and media types correctly",
+        "Describe response codes, headers, and representations as a complete outcome",
+        "Choose stable operation identifiers",
+        "Validate examples against their schemas"
+      ]
+    },
+    {
+      "number": 3,
+      "directory": "module-03-json-schema-contract-modeling",
+      "title": "JSON Schema Contract Modeling",
+      "centralQuestion": "How do schemas reject invalid states while remaining usable for providers, clients, and future evolution?",
+      "capstoneIncrement": "Define precise project, dataset, run, artifact, and problem schemas with a shared valid/invalid fixture corpus.",
+      "learningOutcomes": [
+        "Distinguish missing, null, empty, and default",
+        "Constrain objects, arrays, strings, and numbers precisely",
+        "Use composition as logic rather than inheritance",
+        "Design tagged unions and separate input/output models",
+        "Verify a shared corpus of valid and invalid instances"
+      ]
+    },
+    {
+      "number": 4,
+      "directory": "module-04-references-multi-document-architecture",
+      "title": "References and Multi-Document Architecture",
+      "centralQuestion": "How can a multi-document contract remain understandable, relocatable, and deterministically buildable?",
+      "capstoneIncrement": "Split the contract into owned documents, resolve every reference offline, and produce deterministic bundles.",
+      "learningOutcomes": [
+        "Resolve relative references from the correct document base",
+        "Use components where identity or reuse justifies them",
+        "Distinguish schema recursion from file-reference cycles",
+        "Bundle deterministically and work offline",
+        "Relocate the source tree without breaking resolution"
+      ]
+    },
+    {
+      "number": 5,
+      "directory": "module-05-production-http-api-design",
+      "title": "Production HTTP API Design",
+      "centralQuestion": "How should an HTTP API express asynchronous work, retries, conflicts, conditional updates, and machine-readable failures?",
+      "capstoneIncrement": "Add the analysis-run workflow, idempotency key, status resource, ETags, cancellation, and Problem Details.",
+      "learningOutcomes": [
+        "Use `202 Accepted` with a status resource",
+        "Define idempotency-key behavior precisely",
+        "Use ETags and preconditions for optimistic concurrency",
+        "Design stable pagination and lifecycle-aware errors",
+        "Use RFC 9457 Problem Details as a public error vocabulary"
+      ]
+    },
+    {
+      "number": 6,
+      "directory": "module-06-contract-first-code-first-runtime",
+      "title": "Contract-First and Code-First Runtimes",
+      "centralQuestion": "How do design-first and code-first descriptions relate, and how is semantic drift detected?",
+      "capstoneIncrement": "Map every operation to both providers and compare generated observations with the canonical contract.",
+      "learningOutcomes": [
+        "Keep the canonical contract authoritative",
+        "Translate framework validation errors into the public problem model",
+        "Validate responses as well as requests",
+        "Classify generated-description drift",
+        "Preserve equivalent observable behavior across FastAPI and Fastify"
+      ]
+    },
+    {
+      "number": 7,
+      "directory": "module-07-mocking-clients-contract-testing",
+      "title": "Mocks, Clients, and Contract Testing",
+      "centralQuestion": "How do mocks, generated clients, examples, property tests, and stateful tests provide different evidence?",
+      "capstoneIncrement": "Build the consumer and contract-test ladder against the mock and both real providers.",
+      "learningOutcomes": [
+        "Distinguish syntax, semantic linting, conformance, and consumer tests",
+        "Develop consumers against a mock without mistaking examples for complete behavior",
+        "Generate and review clients in Python and TypeScript",
+        "Use generated and property-based tests to explore boundaries",
+        "Record tool capability limits instead of hiding them"
+      ]
+    },
+    {
+      "number": 8,
+      "directory": "module-08-security-authentication-authorization",
+      "title": "Security in the Public Contract",
+      "centralQuestion": "What can the public contract say about authentication and authorization, and what remains a runtime responsibility?",
+      "capstoneIncrement": "Describe API-key and OAuth-style schemes, scopes, anonymous overrides, and documented security failures.",
+      "learningOutcomes": [
+        "Model API-key and bearer security schemes",
+        "Read AND/OR semantics in security requirements correctly",
+        "Use global security and operation overrides deliberately",
+        "Separate authentication, authorization, and ownership",
+        "Document security failures without leaking implementation details"
+      ]
+    },
+    {
+      "number": 9,
+      "directory": "module-09-evolution-compatibility-overlays-ci",
+      "title": "Evolution, Compatibility, and Audience Views",
+      "centralQuestion": "How can a published API evolve without silently breaking request writers or response readers?",
+      "capstoneIncrement": "Create compatible and rejected release candidates, compatibility gates, and public/partner audience views.",
+      "learningOutcomes": [
+        "Analyze compatibility in the correct message direction",
+        "Treat requiredness, enums, media types, statuses, and operation IDs as consumer commitments",
+        "Design deprecation and major-version migration",
+        "Apply Overlay documents deterministically",
+        "Block incompatible minor releases in CI"
+      ]
+    },
+    {
+      "number": 10,
+      "directory": "module-10-openapi-32-workflows-advanced",
+      "title": "OpenAPI 3.2, Streaming, Webhooks, and Workflows",
+      "centralQuestion": "How do current OpenAPI features express streaming, webhooks, links, query methods, and multi-step workflows?",
+      "capstoneIncrement": "Publish the OpenAPI 3.2 frontier, streaming and webhook contracts, links, and an Arazzo workflow.",
+      "learningOutcomes": [
+        "Maintain a broadly executable OpenAPI 3.1 baseline",
+        "Use OpenAPI 3.2 features where they add real meaning",
+        "Model SSE and JSON Lines streams",
+        "Connect operations with links, callbacks, webhooks, and runtime expressions",
+        "Describe a multi-step outcome with Arazzo and record tool support honestly"
+      ]
+    }
+  ]
+}

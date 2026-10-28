@@ -1,0 +1,15 @@
+# Observation-only fragment. Replacing a cluster Corefile is an operator-owned
+# action and is not performed by the accepted course release.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atlas-coredns-observation
+  namespace: kube-system
+  annotations:
+    platform.bijux.dev/example-only: "true"
+data:
+  Corefile.fragment: |
+    log
+    errors
+    prometheus :9153
+    cache 30

@@ -1,0 +1,10 @@
+{
+  "module": 8,
+  "status": "passed",
+  "claim": "channel and server lifecycle states are bounded",
+  "evidence": {
+    "lifecycle_cases": 5,
+    "python_lifecycle_tests": 1,
+    "multi_instance_live": "not-executed"
+  }
+}

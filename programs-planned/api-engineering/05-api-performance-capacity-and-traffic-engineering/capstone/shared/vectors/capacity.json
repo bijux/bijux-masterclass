@@ -1,0 +1,37 @@
+{
+  "profile": "1.0",
+  "cpuDemand": [
+    {
+      "id": "four-core",
+      "cores": "4",
+      "utilization": "0.60",
+      "intervalSeconds": "60",
+      "completions": "12000",
+      "expected": "0.012"
+    },
+    {
+      "id": "eight-core",
+      "cores": "8",
+      "utilization": "0.70",
+      "intervalSeconds": "60",
+      "completions": "33600",
+      "expected": "0.01"
+    }
+  ],
+  "backlogDrain": [
+    {
+      "id": "drains",
+      "backlog": "18000",
+      "completionRate": "140",
+      "arrivalRate": "100",
+      "expectedSeconds": "450"
+    },
+    {
+      "id": "no-surplus",
+      "backlog": "100",
+      "completionRate": "10",
+      "arrivalRate": "10",
+      "expectedError": "completion <= arrival"
+    }
+  ]
+}

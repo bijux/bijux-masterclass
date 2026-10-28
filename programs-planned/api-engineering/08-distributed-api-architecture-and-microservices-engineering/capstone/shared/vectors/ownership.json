@@ -1,0 +1,47 @@
+{
+  "cases": [
+    {
+      "fact": "analysis-run",
+      "id": "O-01",
+      "valid": true,
+      "writers": [
+        "analysis-control"
+      ]
+    },
+    {
+      "fact": "artifact",
+      "id": "O-02",
+      "valid": true,
+      "writers": [
+        "artifact-service"
+      ]
+    },
+    {
+      "fact": "webhook-delivery",
+      "id": "O-03",
+      "valid": true,
+      "writers": [
+        "notification-service"
+      ]
+    },
+    {
+      "fact": "artifact",
+      "id": "O-04",
+      "valid": false,
+      "writers": [
+        "analysis-control",
+        "artifact-service"
+      ]
+    },
+    {
+      "fact": "idempotency-record",
+      "id": "O-05",
+      "valid": false,
+      "writers": [
+        "idempotency-service",
+        "analysis-control"
+      ]
+    }
+  ],
+  "profile": "data-ownership-1.0"
+}

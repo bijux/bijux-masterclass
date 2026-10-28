@@ -1,0 +1,6 @@
+{
+  "provenance": "application/vnd.in-toto+json",
+  "sbom": "application/vnd.cyclonedx+json",
+  "signature": "application/vnd.dev.sigstore.bundle+json",
+  "vex": "application/vnd.cyclonedx+json;type=vex"
+}

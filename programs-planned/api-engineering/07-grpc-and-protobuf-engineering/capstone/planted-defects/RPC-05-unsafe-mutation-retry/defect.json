@@ -1,0 +1,5 @@
+{
+  "id": "RPC-05",
+  "title": "Retry CreateRun after UNAVAILABLE without idempotency",
+  "expected_rejection": "deadline-proof"
+}

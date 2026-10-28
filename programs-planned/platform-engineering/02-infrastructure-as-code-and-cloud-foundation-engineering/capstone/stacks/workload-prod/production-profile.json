@@ -1,0 +1,11 @@
+{
+  "environment": "prod",
+  "stateKey": "atlas/prod/workload.tfstate",
+  "applyRoleClass": "production-apply",
+  "requiredNatMode": "per-az",
+  "requiresIndependentAuditArchive": true,
+  "requiresDeletionProtection": true,
+  "requiresLiveRestoreDrill": true,
+  "requiresTwoPersonApproval": true,
+  "courseExecution": "design-only-unless-dedicated-production-lab-exists"
+}

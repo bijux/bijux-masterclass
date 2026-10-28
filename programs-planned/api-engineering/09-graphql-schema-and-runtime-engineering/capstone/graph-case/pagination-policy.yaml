@@ -1,0 +1,22 @@
+version: '1.0'
+profile: graph-connection-1.0
+ordering: descending stable keyset with traversal high-water
+required:
+- first between 1 and 100 after variable coercion
+- opaque HMAC-authenticated cursor
+- stable total ordering with unique tie-breaker
+- tenant, audience, field scope, and normalized-filter binding
+- high-water key captured on the first page
+- expiry and cursor format version
+- authorization filtering before page construction
+- pageInfo.hasNextPage and edges.cursor
+semantics:
+- rows above the captured high-water are excluded until a new traversal
+- rows below the high-water may appear if they fall after the current continuation
+  key
+- cursor does not provide a database snapshot
+forbidden:
+- offset exposed as cursor
+- cursor treated as authorization
+- unbounded list fields
+- post-filtering foreign rows

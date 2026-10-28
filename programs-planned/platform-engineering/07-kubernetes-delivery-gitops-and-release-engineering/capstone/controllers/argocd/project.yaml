@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: atlas
+  namespace: argocd
+spec:
+  description: Atlas application delivery boundary
+  sourceRepos:
+    - https://git.example.invalid/atlas/environment.git
+  destinations:
+    - namespace: atlas-dev
+      server: https://kubernetes.default.svc
+    - namespace: atlas-staging
+      server: https://kubernetes.default.svc
+    - namespace: atlas-prod
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceBlacklist:
+    - group: ""
+      kind: PersistentVolumeClaim
+    - group: snapshot.storage.k8s.io
+      kind: VolumeSnapshot
+  roles:
+    - name: release-reviewer
+      policies:
+        - p, proj:atlas:release-reviewer, applications, get, atlas/*, allow
+        - p, proj:atlas:release-reviewer, applications, sync, atlas/atlas-staging, allow

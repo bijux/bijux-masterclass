@@ -1,0 +1,51 @@
+type: object
+additionalProperties: false
+required:
+- id
+- runId
+- ownerId
+- name
+- mediaType
+- size
+- checksumSha256
+- createdAt
+properties:
+  id:
+    type: string
+    pattern: ^art_[0-9]{4,18}$
+    readOnly: true
+  runId:
+    type: string
+    pattern: ^run_[0-9]{4,18}$
+    readOnly: true
+  ownerId:
+    type: string
+    pattern: ^[a-z][a-z0-9-]{2,31}$
+    readOnly: true
+  name:
+    type: string
+    minLength: 1
+    maxLength: 120
+  mediaType:
+    type: string
+    enum:
+    - application/json
+    - text/plain
+  size:
+    type: integer
+    minimum: 1
+  checksumSha256:
+    type: string
+    pattern: ^[a-f0-9]{64}$
+  createdAt:
+    type: string
+    format: date-time
+examples:
+- id: art_0001
+  runId: run_0001
+  ownerId: learner
+  name: quality-summary.json
+  mediaType: application/json
+  size: 87
+  checksumSha256: cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  createdAt: '2026-08-05T10:12:00Z'

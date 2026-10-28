@@ -1,0 +1,5 @@
+{
+  "id": "RPC-10",
+  "title": "Expose an uncatalogued admin method through reflection",
+  "expected_rejection": "governance-proof"
+}

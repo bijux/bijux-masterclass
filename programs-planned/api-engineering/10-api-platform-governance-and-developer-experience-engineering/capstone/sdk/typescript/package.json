@@ -1,0 +1,7 @@
+{
+  "description": "Course reference client for Analysis HTTP API 1.2",
+  "exports": "./src/index.js",
+  "name": "@analysis-platform/api-client",
+  "type": "module",
+  "version": "1.2.0"
+}

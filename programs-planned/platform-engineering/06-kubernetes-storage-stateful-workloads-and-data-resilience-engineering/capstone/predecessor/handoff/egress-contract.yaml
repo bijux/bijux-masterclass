@@ -1,0 +1,12 @@
+version: atlas-egress-contract-1.0
+principles:
+  - DNS allowlisting alone is insufficient; the connected peer must match an approved resolution set
+  - private, loopback, link-local, metadata, and reserved destinations are denied by default
+  - redirects require complete destination re-evaluation
+  - proxy identity and network policy are separate controls
+course6DestinationsToClassify:
+  - CSI control endpoints
+  - object storage
+  - snapshot and backup targets
+  - managed database endpoints
+  - KMS and secret services

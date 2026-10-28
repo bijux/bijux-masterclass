@@ -1,0 +1,5 @@
+{
+  "expectedDecision": "rejected",
+  "id": "rejected-mutable-release",
+  "reason": "A registry version is reused with different bytes."
+}

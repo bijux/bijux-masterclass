@@ -1,0 +1,120 @@
+services:
+  postgres:
+    image: postgres:18.1
+    environment:
+      POSTGRES_USER: analysis
+      POSTGRES_PASSWORD: analysis
+      POSTGRES_DB: postgres
+    volumes:
+      - ./postgres-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U analysis -d postgres]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    ports: ["55432:5432"]
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.136.0
+    command: [--config=/etc/otelcol/config.yaml]
+    volumes:
+      - ./otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    ports: ["4317:4317", "4318:4318", "8888:8888", "8889:8889"]
+
+  prometheus:
+    image: prom/prometheus:v3.6.0
+    command: [--config.file=/etc/prometheus/prometheus.yaml]
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - ./rules/recording-rules.yaml:/etc/prometheus/recording-rules.yaml:ro
+      - ./rules/alerts.yaml:/etc/prometheus/alerts.yaml:ro
+    ports: ["59090:9090"]
+
+  jaeger:
+    image: jaegertracing/jaeger:2.9.0
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports: ["16686:16686", "14318:4318"]
+
+  fault-injector:
+    build: ../fault-injector
+    environment:
+      FAULT_PROFILE: healthy
+      FAULT_CONTROL_ENABLED: "false"
+    ports: ["58090:8090"]
+
+  python-migrate:
+    profiles: [python]
+    build: ../tracks/python-fastapi
+    command: [analysis-migrate, migrate, --migrations, /app/migrations]
+    environment: &python-environment
+      DATABASE_URL: postgresql://analysis:analysis@postgres:5432/analysis_python
+      SERVICE_RELEASE: "1.1"
+      APP_ENV: development
+      ARTIFACT_ROOT: /data/artifacts
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  python-api:
+    profiles: [python]
+    build: ../tracks/python-fastapi
+    environment: *python-environment
+    volumes:
+      - python-artifacts:/data/artifacts
+    depends_on:
+      python-migrate:
+        condition: service_completed_successfully
+    ports: ["58000:8000"]
+
+  python-worker:
+    profiles: [python]
+    build: ../tracks/python-fastapi
+    command: [analysis-worker]
+    environment: *python-environment
+    volumes:
+      - python-artifacts:/data/artifacts
+    depends_on:
+      python-migrate:
+        condition: service_completed_successfully
+
+  typescript-migrate:
+    profiles: [typescript]
+    build: ../tracks/typescript-fastify
+    command: [node, dist/src/migrate.js]
+    environment: &typescript-environment
+      DATABASE_URL: postgresql://analysis:analysis@postgres:5432/analysis_typescript
+      SERVICE_RELEASE: "1.1"
+      APP_ENV: development
+      ARTIFACT_ROOT: /data/artifacts
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  typescript-api:
+    profiles: [typescript]
+    build: ../tracks/typescript-fastify
+    environment: *typescript-environment
+    volumes:
+      - typescript-artifacts:/data/artifacts
+    depends_on:
+      typescript-migrate:
+        condition: service_completed_successfully
+    ports: ["58001:8001"]
+
+  typescript-worker:
+    profiles: [typescript]
+    build: ../tracks/typescript-fastify
+    command: [node, dist/src/worker.js]
+    environment: *typescript-environment
+    volumes:
+      - typescript-artifacts:/data/artifacts
+    depends_on:
+      typescript-migrate:
+        condition: service_completed_successfully
+
+volumes:
+  python-artifacts:
+  typescript-artifacts:

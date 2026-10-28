@@ -1,0 +1,25 @@
+type: object
+additionalProperties: false
+required:
+- name
+- source
+properties:
+  name:
+    type: string
+    minLength: 1
+    maxLength: 100
+  source:
+    oneOf:
+    - $ref: ./LocalFileSource.yaml
+    - $ref: ./RemoteObjectSource.yaml
+    discriminator:
+      propertyName: kind
+      mapping:
+        local-file: ./LocalFileSource.yaml
+        remote-object: ./RemoteObjectSource.yaml
+examples:
+- name: reads
+  source:
+    kind: local-file
+    fileName: reads.csv
+    mediaType: text/csv

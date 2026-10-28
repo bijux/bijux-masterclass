@@ -1,0 +1,1 @@
+interface Schema<T>{parse(input:unknown):T}type Infer<S extends Schema<unknown>>=S extends Schema<infer T>?T:never;declare const count:Schema<number>;const value:Infer<typeof count>='2';console.log(value);

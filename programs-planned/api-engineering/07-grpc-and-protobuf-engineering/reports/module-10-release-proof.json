@@ -1,0 +1,10 @@
+{
+  "module": 10,
+  "status": "passed",
+  "claim": "RPC 1.0 preserves public HTTP and Event API boundaries in the course profile",
+  "evidence": {
+    "release_gates": 11,
+    "rollback_model": "passed",
+    "service_extraction": "deferred"
+  }
+}

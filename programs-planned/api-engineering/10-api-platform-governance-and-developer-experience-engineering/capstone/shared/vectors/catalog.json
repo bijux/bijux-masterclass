@@ -1,0 +1,22 @@
+{
+  "cases": [
+    {
+      "expected": "api:default/analysis-http",
+      "input": {
+        "kind": "API",
+        "name": "analysis-http",
+        "namespace": "default"
+      },
+      "name": "canonical ref"
+    },
+    {
+      "error": "invalid-name",
+      "input": {
+        "kind": "API",
+        "name": "AnalysisHTTP",
+        "namespace": "default"
+      },
+      "name": "reject uppercase name"
+    }
+  ]
+}

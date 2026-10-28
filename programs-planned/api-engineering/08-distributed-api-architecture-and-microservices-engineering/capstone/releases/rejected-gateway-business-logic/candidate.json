@@ -1,0 +1,6 @@
+{
+  "candidate": "gateway-business-logic",
+  "expected": "reject",
+  "issue": "gateway decides run state transition",
+  "rejecting_gate": "boundary-evidence"
+}

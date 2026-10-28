@@ -1,0 +1,7 @@
+{
+  "expectedProof": "steady-state-proof",
+  "id": "KUBE-09-status-churn",
+  "slug": "status-churn",
+  "status": "must-be-rejected",
+  "summary": "controller writes semantically unchanged status every reconcile"
+}

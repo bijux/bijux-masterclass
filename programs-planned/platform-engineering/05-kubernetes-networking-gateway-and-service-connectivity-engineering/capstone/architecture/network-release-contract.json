@@ -1,0 +1,13 @@
+{
+  "addressFamilies": [
+    "IPv4",
+    "IPv6"
+  ],
+  "cniSpec": "1.1.0",
+  "gatewayAPI": "1.6.1",
+  "name": "Atlas Connectivity Plane",
+  "networkPolicy": "default-deny with explicit allows",
+  "publicHost": "atlas.example.invalid",
+  "service": "atlas-api",
+  "version": "1.0.0"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@bijux-masterclass/encapsulated-esm-library-reference",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    },
+    "./testing": {
+      "types": "./dist/src/testing.d.ts",
+      "import": "./dist/src/testing.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build --silent && node --test dist/tests/*.test.js"
+  }
+}

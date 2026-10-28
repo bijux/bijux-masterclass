@@ -1,0 +1,11 @@
+{
+  "costEvidence": "pending",
+  "destructiveCriticalChange": false,
+  "imdsTokens": "required",
+  "liveCloudEvidence": "not-executed",
+  "longLivedCiKey": false,
+  "name": "review-nat-cost",
+  "natArchitecture": "per-az",
+  "publicSsh": false,
+  "stateProtection": "verified"
+}

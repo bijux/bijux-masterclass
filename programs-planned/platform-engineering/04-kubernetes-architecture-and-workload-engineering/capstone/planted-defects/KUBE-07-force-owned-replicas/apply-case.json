@@ -1,0 +1,8 @@
+{
+  "authorOwner": "atlas-author",
+  "authorValue": 3,
+  "controllerAttempt": 2,
+  "expected": "reject-unreviewed-ownership-transfer",
+  "force": true,
+  "path": "spec.replicas"
+}

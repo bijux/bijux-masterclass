@@ -1,0 +1,8 @@
+{
+  "activeOperationsValid": false,
+  "budgetsPass": true,
+  "change": "remove AnalysisRun.status",
+  "expected": "breaking",
+  "oldClientPasses": false,
+  "ownershipComplete": true
+}

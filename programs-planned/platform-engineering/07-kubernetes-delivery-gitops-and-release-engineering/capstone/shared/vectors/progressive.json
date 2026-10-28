@@ -1,0 +1,20 @@
+{
+  "cases": [
+    {
+      "expected": "pass",
+      "name": "adequate-pass"
+    },
+    {
+      "expected": "inconclusive",
+      "name": "insufficient-samples"
+    },
+    {
+      "expected": "unavailable",
+      "name": "required-metric-missing"
+    },
+    {
+      "expected": "fail",
+      "name": "segment-failure"
+    }
+  ]
+}

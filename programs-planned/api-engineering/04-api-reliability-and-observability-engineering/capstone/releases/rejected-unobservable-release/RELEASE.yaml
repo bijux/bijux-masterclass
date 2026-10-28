@@ -1,0 +1,9 @@
+serviceRelease: reliability-1.0.0-rejected
+publicApi: 1.2.0
+securityProfile: '1.0'
+reliabilityProfile: invalid
+rejectedBecause:
+- removes run-start freshness metric
+- adds run.id as a metric label
+- marks collector availability as API liveness
+- retries unsafe submissions without idempotency evidence

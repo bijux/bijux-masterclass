@@ -1,0 +1,1 @@
+declare const userBrand:unique symbol;declare const orderBrand:unique symbol;type UserId=string&{readonly[userBrand]:'UserId'};type OrderId=string&{readonly[orderBrand]:'OrderId'};declare const order:OrderId;const user:UserId=order;console.log(user);

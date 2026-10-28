@@ -1,0 +1,16 @@
+profile: performance-1.0
+id: WL-RUN-LIST
+model: open
+executor: constant-arrival-rate
+ratePerSecond: 120
+durationSeconds: 300
+preallocatedClients: 40
+maximumClients: 240
+dataset: DS-RUNS-1M
+operationMix:
+  listAnalysisRuns: 1.0
+correctnessOracle:
+  - response-conforms
+  - owner-isolation
+  - cursor-stability
+  - all-outcomes-accounted

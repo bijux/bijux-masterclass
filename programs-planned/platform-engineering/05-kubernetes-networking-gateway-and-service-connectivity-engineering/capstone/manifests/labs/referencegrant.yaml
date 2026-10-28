@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-atlas-route
+  namespace: atlas-system
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: tenant-a
+  to:
+    - group: ""
+      kind: Service
+      name: atlas-api

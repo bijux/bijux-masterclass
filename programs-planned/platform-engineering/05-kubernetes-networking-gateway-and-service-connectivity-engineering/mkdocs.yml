@@ -1,0 +1,132 @@
+site_name: Kubernetes Networking, Gateway, and Service Connectivity Engineering
+docs_dir: course-book
+site_dir: site
+strict: true
+theme:
+  name: material
+nav:
+- Home: index.md
+- Start here: start-here.md
+- Study plan: study-plan.md
+- Capstone: capstone.md
+- Evidence model: evidence-model.md
+- Language strategy: language-strategy.md
+- Standards: standards.md
+- Glossary: glossary.md
+- Guides:
+  - Dns Diagnosis: guides/dns-diagnosis.md
+  - Gateway Status Review: guides/gateway-status-review.md
+  - Local Cluster Lane: guides/local-cluster-lane.md
+  - Native Evidence Commands: guides/native-evidence-commands.md
+  - Networkpolicy Review And Rollout: guides/networkpolicy-review-and-rollout.md
+  - Packet Path Analysis: guides/packet-path-analysis.md
+  - Tcpdump Safely: guides/tcpdump-safely.md
+  - Tls Evidence: guides/tls-evidence.md
+- Casebook:
+  - Case 01 The Running Pod With No Route: casebook/case-01-the-running-pod-with-no-route.md
+  - Case 02 The Service With Zero Usable Endpoints: casebook/case-02-the-service-with-zero-usable-endpoints.md
+  - Case 03 The Negative Dns Cache: casebook/case-03-the-negative-dns-cache.md
+  - Case 04 The Default Deny That Broke Dns: casebook/case-04-the-default-deny-that-broke-dns.md
+  - Case 05 The Programmed Gateway With A Bad Backend: casebook/case-05-the-programmed-gateway-with-a-bad-backend.md
+  - Case 06 The Helpful Mesh Retry Storm: casebook/case-06-the-helpful-mesh-retry-storm.md
+- Reference:
+  - Address Domain Inventory: reference/address-domain-inventory.md
+  - Cni Command Matrix: reference/cni-command-matrix.md
+  - Conformance Evidence: reference/conformance-evidence.md
+  - Course 6 Network Handoff: reference/course-6-network-handoff.md
+  - Dns Query And Cache Map: reference/dns-query-and-cache-map.md
+  - Dual Stack Checklist: reference/dual-stack-checklist.md
+  - Egress Destination Classification: reference/egress-destination-classification.md
+  - Endpoint Condition Map: reference/endpoint-condition-map.md
+  - Forwarded Header Contract: reference/forwarded-header-contract.md
+  - Gateway Role Map: reference/gateway-role-map.md
+  - Gateway Routing Precedence: reference/gateway-routing-precedence.md
+  - Incident Evidence Template: reference/incident-evidence-template.md
+  - Ipam Ownership: reference/ipam-ownership.md
+  - Mesh Decision Record: reference/mesh-decision-record.md
+  - Mtu Budget: reference/mtu-budget.md
+  - Network Investigation Command Map: reference/network-investigation-command-map.md
+  - Networkpolicy Truth Table: reference/networkpolicy-truth-table.md
+  - Pod Network Contract: reference/pod-network-contract.md
+  - Referencegrant Review: reference/referencegrant-review.md
+  - Route And Return Path: reference/route-and-return-path.md
+  - Service Data Plane Comparison: reference/service-data-plane-comparison.md
+  - Tls Decision Table: reference/tls-decision-table.md
+  - Traffic Policy Matrix: reference/traffic-policy-matrix.md
+- Capstone manual:
+  - Architecture: capstone/architecture.md
+  - Evidence Dossier: capstone/evidence-dossier.md
+  - Implementation Map: capstone/implementation-map.md
+  - Release Process: capstone/release-process.md
+- Assessment:
+  - Final Defense: assessment/final-defense.md
+  - Rubric: assessment/rubric.md
+- Instructor:
+  - Facilitation Guide: instructor/facilitation-guide.md
+  - Planted Defect Map: instructor/planted-defect-map.md
+  - Review Questions: instructor/review-questions.md
+- Modules:
+  - Module 00 Orientation:
+    - Index: module-00-orientation/index.md
+    - Lab: module-00-orientation/lab.md
+    - Checkpoint: module-00-orientation/checkpoint.md
+  - Module 01 Kubernetes Network Model Address Domains And Packet Paths:
+    - Index: module-01-kubernetes-network-model-address-domains-and-packet-paths/index.md
+    - Exercises: module-01-kubernetes-network-model-address-domains-and-packet-paths/exercises.md
+    - Exercise Answers: module-01-kubernetes-network-model-address-domains-and-packet-paths/exercise-answers.md
+    - Lab: module-01-kubernetes-network-model-address-domains-and-packet-paths/lab.md
+    - Checkpoint: module-01-kubernetes-network-model-address-domains-and-packet-paths/checkpoint.md
+  - Module 02 Cni Lifecycle Ipam Routes And Node Integration:
+    - Index: module-02-cni-lifecycle-ipam-routes-and-node-integration/index.md
+    - Exercises: module-02-cni-lifecycle-ipam-routes-and-node-integration/exercises.md
+    - Exercise Answers: module-02-cni-lifecycle-ipam-routes-and-node-integration/exercise-answers.md
+    - Lab: module-02-cni-lifecycle-ipam-routes-and-node-integration/lab.md
+    - Checkpoint: module-02-cni-lifecycle-ipam-routes-and-node-integration/checkpoint.md
+  - Module 03 Services Endpointslices And Service Data Planes:
+    - Index: module-03-services-endpointslices-and-service-data-planes/index.md
+    - Exercises: module-03-services-endpointslices-and-service-data-planes/exercises.md
+    - Exercise Answers: module-03-services-endpointslices-and-service-data-planes/exercise-answers.md
+    - Lab: module-03-services-endpointslices-and-service-data-planes/lab.md
+    - Checkpoint: module-03-services-endpointslices-and-service-data-planes/checkpoint.md
+  - Module 04 Dns And Service Discovery:
+    - Index: module-04-dns-and-service-discovery/index.md
+    - Exercises: module-04-dns-and-service-discovery/exercises.md
+    - Exercise Answers: module-04-dns-and-service-discovery/exercise-answers.md
+    - Lab: module-04-dns-and-service-discovery/lab.md
+    - Checkpoint: module-04-dns-and-service-discovery/checkpoint.md
+  - Module 05 Networkpolicy And L3 L4 Segmentation:
+    - Index: module-05-networkpolicy-and-l3-l4-segmentation/index.md
+    - Exercises: module-05-networkpolicy-and-l3-l4-segmentation/exercises.md
+    - Exercise Answers: module-05-networkpolicy-and-l3-l4-segmentation/exercise-answers.md
+    - Lab: module-05-networkpolicy-and-l3-l4-segmentation/lab.md
+    - Checkpoint: module-05-networkpolicy-and-l3-l4-segmentation/checkpoint.md
+  - Module 06 Traffic Locality Source Identity And Dual Stack:
+    - Index: module-06-traffic-locality-source-identity-and-dual-stack/index.md
+    - Exercises: module-06-traffic-locality-source-identity-and-dual-stack/exercises.md
+    - Exercise Answers: module-06-traffic-locality-source-identity-and-dual-stack/exercise-answers.md
+    - Lab: module-06-traffic-locality-source-identity-and-dual-stack/lab.md
+    - Checkpoint: module-06-traffic-locality-source-identity-and-dual-stack/checkpoint.md
+  - Module 07 Gateway Api Architecture And Route Ownership:
+    - Index: module-07-gateway-api-architecture-and-route-ownership/index.md
+    - Exercises: module-07-gateway-api-architecture-and-route-ownership/exercises.md
+    - Exercise Answers: module-07-gateway-api-architecture-and-route-ownership/exercise-answers.md
+    - Lab: module-07-gateway-api-architecture-and-route-ownership/lab.md
+    - Checkpoint: module-07-gateway-api-architecture-and-route-ownership/checkpoint.md
+  - Module 08 Tls Http Semantics And Backend Protocol Integrity:
+    - Index: module-08-tls-http-semantics-and-backend-protocol-integrity/index.md
+    - Exercises: module-08-tls-http-semantics-and-backend-protocol-integrity/exercises.md
+    - Exercise Answers: module-08-tls-http-semantics-and-backend-protocol-integrity/exercise-answers.md
+    - Lab: module-08-tls-http-semantics-and-backend-protocol-integrity/lab.md
+    - Checkpoint: module-08-tls-http-semantics-and-backend-protocol-integrity/checkpoint.md
+  - Module 09 Egress External Services And Service Mesh Boundaries:
+    - Index: module-09-egress-external-services-and-service-mesh-boundaries/index.md
+    - Exercises: module-09-egress-external-services-and-service-mesh-boundaries/exercises.md
+    - Exercise Answers: module-09-egress-external-services-and-service-mesh-boundaries/exercise-answers.md
+    - Lab: module-09-egress-external-services-and-service-mesh-boundaries/lab.md
+    - Checkpoint: module-09-egress-external-services-and-service-mesh-boundaries/checkpoint.md
+  - Module 10 Network Operations Conformance And Release:
+    - Index: module-10-network-operations-conformance-and-release/index.md
+    - Exercises: module-10-network-operations-conformance-and-release/exercises.md
+    - Exercise Answers: module-10-network-operations-conformance-and-release/exercise-answers.md
+    - Lab: module-10-network-operations-conformance-and-release/lab.md
+    - Checkpoint: module-10-network-operations-conformance-and-release/checkpoint.md

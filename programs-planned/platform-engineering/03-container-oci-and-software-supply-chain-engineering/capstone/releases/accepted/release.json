@@ -1,0 +1,121 @@
+{
+  "decision": "accepted-for-course-4-handoff",
+  "decisionScope": "Dependency-light release-mechanism evidence. Native builders, target runtimes, production registry controls, operated identity, and capacity remain separate environment-backed proofs.",
+  "evidence": {
+    "images": {
+      "atlas-api": {
+        "policyDecision": "accepted",
+        "provenanceEnvelope": {
+          "digest": "sha256:850520a74d7fe78420e163cd70e616e167abbbb162c664c0a5fb44729bc24cbc",
+          "mediaType": "application/vnd.dsse.envelope.v1+json",
+          "predicate": "https://slsa.dev/provenance/v1"
+        },
+        "sbom": {
+          "digest": "sha256:90d808d139444d1b3ab57b5b08e0562d0faa3a6b2fd2517866fc8d3926633a7a",
+          "mediaType": "application/vnd.cyclonedx+json",
+          "profile": "CycloneDX 1.7 course fixture"
+        },
+        "subject": "sha256:6e3b38e88f6ef4252b635b6d199095db46233d7b6f85f3be4384d746386317a7"
+      },
+      "atlas-worker": {
+        "policyDecision": "accepted",
+        "provenanceEnvelope": {
+          "digest": "sha256:a61f27a5c1d363f3232917e3a513c9d93166809bc24928de3b3162f17a9306f0",
+          "mediaType": "application/vnd.dsse.envelope.v1+json",
+          "predicate": "https://slsa.dev/provenance/v1"
+        },
+        "sbom": {
+          "digest": "sha256:e30e93d486d6c24b14e66e79c457d8cc4d0c0f258fd6df9552ffc1a400e7178b",
+          "mediaType": "application/vnd.cyclonedx+json",
+          "profile": "CycloneDX 1.7 course fixture"
+        },
+        "subject": "sha256:bbd52b30969ebb6fb3568d2ce5c1ebfb420c7bd7a80001f2a1014feaa4d7a036"
+      }
+    },
+    "policy": "atlas-workload-release-policy-1.0",
+    "signer": {
+      "fingerprint": "sha256:711514246ce619753f737f8603f1de281aad15149c45b3ebe885ffc2ba2a8e94",
+      "trust": "public deterministic course fixture; no production authority"
+    },
+    "vulnerabilityDecision": {
+      "findings": 2,
+      "profile": "deterministic course database; not current public vulnerability intelligence",
+      "vexStatements": 1
+    }
+  },
+  "evidenceClass": "dependency-light-local",
+  "imageDigest": "sha256:6e3b38e88f6ef4252b635b6d199095db46233d7b6f85f3be4384d746386317a7",
+  "images": [
+    {
+      "digest": "sha256:6e3b38e88f6ef4252b635b6d199095db46233d7b6f85f3be4384d746386317a7",
+      "entrypoint": [
+        "/usr/local/bin/atlas-api"
+      ],
+      "name": "atlas-api",
+      "platforms": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ],
+      "repository": "platform/atlas-api",
+      "runtimeUser": "65532:65532"
+    },
+    {
+      "digest": "sha256:bbd52b30969ebb6fb3568d2ce5c1ebfb420c7bd7a80001f2a1014feaa4d7a036",
+      "entrypoint": [
+        "/usr/local/bin/atlas-worker"
+      ],
+      "name": "atlas-worker",
+      "platforms": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ],
+      "repository": "platform/atlas-worker",
+      "runtimeUser": "65532:65532"
+    }
+  ],
+  "platforms": [
+    {
+      "architecture": "amd64",
+      "os": "linux"
+    },
+    {
+      "architecture": "arm64",
+      "os": "linux"
+    }
+  ],
+  "release": "atlas-workload-release-1.0.0",
+  "repository": "platform/atlas-api",
+  "sourceDigest": "sha256:250ff3122870302db3bec42e284f8bd8bea8905638472ac64eee0d4c70aab4b3",
+  "tag": "1.0.0",
+  "tagOnlyReference": false,
+  "verificationImages": [
+    {
+      "deployByDefault": false,
+      "digest": "sha256:7e0649ee963175daed1b6acece2fbc7543f05cd23cd5348d2502150caa0b6e4e",
+      "name": "atlas-probe",
+      "platforms": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ],
+      "repository": "platform/atlas-probe"
+    }
+  ]
+}

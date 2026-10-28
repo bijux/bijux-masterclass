@@ -1,0 +1,46 @@
+{
+  "configuresProvider": false,
+  "name": "atlas-network",
+  "outputs": [
+    {
+      "description": "VPC identifier consumed by workload roots",
+      "name": "vpc_id"
+    },
+    {
+      "description": "Private subnet IDs keyed by stable availability-zone ID",
+      "name": "private_subnet_ids"
+    },
+    {
+      "description": "Endpoint identity for audit and policy",
+      "name": "s3_endpoint_id"
+    }
+  ],
+  "readsRemoteState": false,
+  "variables": [
+    {
+      "description": "Address boundary owned by the foundation root",
+      "name": "vpc_cidr",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "Stable subnet identities owned by the network module",
+      "name": "subnets",
+      "required": true,
+      "type": "map(object)"
+    },
+    {
+      "description": "Governed tags",
+      "name": "tags",
+      "required": true,
+      "type": "map(string)"
+    },
+    {
+      "default": true,
+      "description": "Create an S3 gateway endpoint",
+      "name": "enable_s3_endpoint",
+      "required": false,
+      "type": "bool"
+    }
+  ]
+}

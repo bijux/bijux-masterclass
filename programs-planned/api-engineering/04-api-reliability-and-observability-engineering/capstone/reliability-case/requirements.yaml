@@ -1,0 +1,144 @@
+requirements:
+- id: REL-001
+  statement: Every critical journey has defined good, bad, and excluded events.
+  source: JRN-001
+  status: active
+- id: REL-002
+  statement: External and internal calls carry an absolute deadline or an explicitly
+    bounded local timeout.
+  source: FAIL-001
+  status: active
+- id: REL-003
+  statement: A child operation cannot extend its parent deadline.
+  source: FAIL-001
+  status: active
+- id: REL-004
+  statement: Retries occur only when the operation is safe and the failure is classified
+    as transient.
+  source: FAIL-009
+  status: active
+- id: REL-005
+  statement: Retry delay uses bounded exponential backoff with jitter and respects
+    Retry-After without exceeding the deadline.
+  source: FAIL-009
+  status: active
+- id: REL-006
+  statement: Each dependency has one documented retry owner and a maximum attempt
+    budget.
+  source: FAIL-009
+  status: active
+- id: REL-007
+  statement: Circuit breakers and bulkheads are applied only to named dependencies
+    with measurable failure modes.
+  source: FAIL-004
+  status: active
+- id: REL-008
+  statement: Fallbacks never report successful mutation or durable completion without
+    the corresponding durable effect.
+  source: FAIL-004
+  status: active
+- id: REL-009
+  statement: Startup, liveness, and readiness answer distinct operational questions.
+  source: FAIL-008
+  status: active
+- id: REL-010
+  statement: Draining instances stop accepting new work before terminating in-flight
+    work.
+  source: FAIL-008
+  status: active
+- id: REL-011
+  statement: Workers release or expire claims safely and stale workers cannot publish
+    terminal effects.
+  source: FAIL-003
+  status: active
+- id: REL-012
+  statement: Telemetry export failure cannot block or fail customer requests.
+  source: FAIL-006
+  status: active
+- id: REL-013
+  statement: Every telemetry record identifies service name, service version, environment,
+    and signal schema version.
+  source: FAIL-006
+  status: active
+- id: REL-014
+  statement: Logs are structured, correlated, and redacted using the Course 3 security
+    profile.
+  source: FAIL-006
+  status: active
+- id: REL-015
+  statement: Metric labels are bounded and exclude user, resource, trace, and request
+    identifiers.
+  source: FAIL-011
+  status: active
+- id: REL-016
+  statement: Latency is recorded as a distribution with documented units and bucket
+    rationale.
+  source: FAIL-002
+  status: active
+- id: REL-017
+  statement: Counters distinguish eligible, good, bad, excluded, retried, and dropped
+    events where required.
+  source: FAIL-012
+  status: active
+- id: REL-018
+  statement: Trace Context is propagated across HTTP boundaries using the W3C version-00
+    profile.
+  source: FAIL-006
+  status: active
+- id: REL-019
+  statement: Asynchronous work uses trace links or durable correlation rather than
+    pretending one long synchronous parent span.
+  source: FAIL-003
+  status: active
+- id: REL-020
+  statement: Baggage is allowlisted, bounded, and never carries credentials or sensitive
+    resource identifiers.
+  source: FAIL-006
+  status: active
+- id: REL-021
+  statement: Sampling decisions and dropped telemetry are observable and do not redefine
+    correctness.
+  source: FAIL-006
+  status: active
+- id: REL-022
+  statement: Each paging alert represents rapid error-budget consumption and includes
+    a tested runbook.
+  source: FAIL-012
+  status: active
+- id: REL-023
+  statement: Low-traffic objectives define an explicit insufficient-data policy.
+  source: FAIL-012
+  status: active
+- id: REL-024
+  statement: Fault experiments state hypothesis, steady state, blast radius, abort
+    condition, oracle, and cleanup.
+  source: FAIL-003
+  status: active
+- id: REL-025
+  statement: Fault injection cannot be enabled in an unapproved environment.
+  source: FAIL-003
+  status: active
+- id: REL-026
+  statement: Incident timelines distinguish observation, inference, action, and confirmed
+    fact.
+  source: FAIL-012
+  status: active
+- id: REL-027
+  statement: Mitigation, recovery, and root-cause repair are recorded as different
+    activities.
+  source: FAIL-010
+  status: active
+- id: REL-028
+  statement: Reconciliation detects cross-table divergence without mutating state
+    by default.
+  source: FAIL-010
+  status: active
+- id: REL-029
+  statement: Every repair action has a stable idempotency key and before/after evidence.
+  source: FAIL-010
+  status: active
+- id: REL-030
+  statement: Operational readiness claims identify which environment-backed proofs
+    were executed.
+  source: FAIL-008
+  status: active

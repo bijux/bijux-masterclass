@@ -1,0 +1,13 @@
+{
+  "argoCD": "3.5.0",
+  "argoRollouts": "1.9.1",
+  "externalSecrets": "2.9.0",
+  "flux": "2.9.4",
+  "git": "2.47",
+  "go": "1.23",
+  "helm": "4.2.3",
+  "kubernetes": "1.36.2",
+  "kustomize": "5.8.1",
+  "python": "3.13",
+  "sops": "3.13.3"
+}

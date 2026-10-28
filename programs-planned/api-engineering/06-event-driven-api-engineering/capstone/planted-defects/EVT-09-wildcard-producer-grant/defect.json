@@ -1,0 +1,8 @@
+{
+  "id": "EVT-09",
+  "slug": "EVT-09-wildcard-producer-grant",
+  "summary": "Worker can publish any tenant and event type",
+  "mustBeRejected": true,
+  "expectedOracle": "producer authorization test rejects unbound source/channel/type/tenant",
+  "proofFamily": "security"
+}

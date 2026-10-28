@@ -1,0 +1,66 @@
+[workspace]
+resolver = "3"
+members = [
+    "capstone",
+    "labs/module-01-benchmark-integrity-clinic/solution",
+    "labs/module-02-profile-guided-query-engine/solution",
+    "labs/module-03-allocation-budgeted-batch-parser/solution",
+    "labs/module-04-borrowed-record-window/solution",
+    "labs/module-05-bounded-throughput-tuner/solution",
+    "labs/module-06-structured-observability-harness/solution",
+    "labs/module-07-overload-control-simulator/solution",
+    "labs/module-08-attack-surface-and-supply-chain-audit/solution",
+    "labs/module-09-release-matrix-and-artifact-manifest/solution",
+    "labs/module-10-production-readiness-review/solution",
+]
+exclude = [
+    "labs/module-01-benchmark-integrity-clinic/starter",
+    "labs/module-02-profile-guided-query-engine/starter",
+    "labs/module-03-allocation-budgeted-batch-parser/starter",
+    "labs/module-04-borrowed-record-window/starter",
+    "labs/module-05-bounded-throughput-tuner/starter",
+    "labs/module-06-structured-observability-harness/starter",
+    "labs/module-07-overload-control-simulator/starter",
+    "labs/module-08-attack-surface-and-supply-chain-audit/starter",
+    "labs/module-09-release-matrix-and-artifact-manifest/starter",
+    "labs/module-10-production-readiness-review/starter",
+]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.97"
+license = "Apache-2.0"
+publish = false
+
+[workspace.dependencies]
+bytes = "=1.12.1"
+criterion = "=0.8.2"
+tokio = { version = "=1.53.1", features = ["rt-multi-thread", "macros", "net", "io-util", "sync", "time", "signal", "test-util"] }
+tracing = { version = "=0.1.44", features = ["attributes"] }
+tracing-subscriber = { version = "=0.3.23", features = ["env-filter", "fmt", "json"] }
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+missing_docs = "allow"
+
+[workspace.lints.clippy]
+correctness = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+undocumented_unsafe_blocks = "deny"
+missing_safety_doc = "deny"
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"
+
+[profile.profiling]
+inherits = "release"
+debug = 1
+strip = "none"
+
+[profile.dist]
+inherits = "release"
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

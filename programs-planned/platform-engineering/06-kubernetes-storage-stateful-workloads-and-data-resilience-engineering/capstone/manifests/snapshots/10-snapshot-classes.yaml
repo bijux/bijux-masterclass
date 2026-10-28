@@ -1,0 +1,17 @@
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: atlas-retained
+driver: csi.atlas.example.invalid
+deletionPolicy: Retain
+parameters:
+  encrypted: "true"
+---
+apiVersion: groupsnapshot.storage.k8s.io/v1beta2
+kind: VolumeGroupSnapshotClass
+metadata:
+  name: atlas-retained-group
+driver: csi.atlas.example.invalid
+deletionPolicy: Retain
+parameters:
+  encrypted: "true"

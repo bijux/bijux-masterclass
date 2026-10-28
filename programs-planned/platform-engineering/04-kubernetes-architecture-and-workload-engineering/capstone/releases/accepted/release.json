@@ -1,0 +1,14 @@
+{
+  "decision": "accepted",
+  "name": "atlas-kubernetes-runtime-1.0.0",
+  "networking": "handoff-to-course5",
+  "proofs": [
+    "predecessor-integrity",
+    "manifest-policy",
+    "semantic-controller",
+    "go-controller",
+    "handoff-integrity"
+  ],
+  "publicImages": "digest-pinned",
+  "workerDurability": "interface-only-deferred-course6"
+}

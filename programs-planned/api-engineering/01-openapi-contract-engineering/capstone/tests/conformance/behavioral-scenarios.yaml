@@ -1,0 +1,31 @@
+scenarios:
+  - id: health-is-anonymous
+    operationId: getHealth
+    evidence: GET /health succeeds without credentials and returns the canonical service identity.
+  - id: protected-route-requires-credentials
+    operationId: listProjects
+    evidence: GET /projects without credentials returns RFC 9457 Problem Details with 401.
+  - id: create-project-emits-resource-controls
+    operationId: createProject
+    evidence: 201 carries Location, ETag, and X-Request-Id.
+  - id: conditional-update-is-mandatory
+    operationId: updateProject
+    evidence: missing If-Match is 428, stale If-Match is 412, current If-Match succeeds.
+  - id: multipart-upload-is-bounded
+    operationId: uploadDatasetContent
+    evidence: a valid file succeeds; empty, oversized, and unsupported media types are rejected by documented responses.
+  - id: run-submission-is-idempotent
+    operationId: createAnalysisRun
+    evidence: same key plus same body replays the run; same key plus changed body returns 409.
+  - id: asynchronous-run-has-observable-progress
+    operationId: getAnalysisRun
+    evidence: deterministic polling moves queued to running to completed and exposes artifacts only after completion.
+  - id: ownership-is-not-a-scope
+    operationId: getArtifact
+    evidence: another principal with the right scope receives 404 for the learner's artifact.
+  - id: sequential-representations-are-real
+    operationId: streamAnalysisRunEvents
+    evidence: both text/event-stream and application/x-ndjson are consumable.
+  - id: outbound-destinations-are-constrained
+    operationId: createWebhookSubscription
+    evidence: only the training hook host is accepted and the shared secret is never returned.

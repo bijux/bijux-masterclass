@@ -1,0 +1,5 @@
+{
+  "decision": "rejected",
+  "name": "atlas-kubernetes-runtime-controller-fight",
+  "reason": "replica field has multiple forceful managers"
+}

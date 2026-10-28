@@ -1,0 +1,36 @@
+{
+  "comparison": {
+    "requireCorrectness": true,
+    "requireFullScheduleCoverage": true,
+    "requireNoMissingOutcomes": true,
+    "requiredEqual": [
+      "workloadHash",
+      "environmentHash",
+      "profileVersion"
+    ]
+  },
+  "metrics": [
+    {
+      "absoluteRegression": "8",
+      "direction": "lower",
+      "hardMaximum": "220",
+      "name": "p95LatencyMs",
+      "relativeRegression": "0.08"
+    },
+    {
+      "absoluteRegression": "5",
+      "direction": "higher",
+      "hardMinimum": "95",
+      "name": "throughputPerSecond",
+      "relativeRegression": "0.05"
+    },
+    {
+      "absoluteRegression": "16777216",
+      "direction": "lower",
+      "hardMaximum": "536870912",
+      "name": "peakResidentBytes",
+      "relativeRegression": "0.12"
+    }
+  ],
+  "profileVersion": "1.0"
+}

@@ -1,0 +1,5 @@
+{
+  "expectedDecision": "rejected",
+  "id": "rejected-score-average",
+  "reason": "A numeric average hides a blocker security failure."
+}

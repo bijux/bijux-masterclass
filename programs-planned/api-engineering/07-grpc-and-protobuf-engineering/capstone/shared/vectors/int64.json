@@ -1,0 +1,35 @@
+{
+  "profile": "protobuf-int64-1.0",
+  "cases": [
+    {
+      "id": "I64-01",
+      "decimal": "9007199254740991",
+      "valid": true,
+      "typescript": "bigint"
+    },
+    {
+      "id": "I64-02",
+      "decimal": "9007199254740992",
+      "valid": true,
+      "typescript": "bigint-not-number"
+    },
+    {
+      "id": "I64-03",
+      "decimal": "9223372036854775807",
+      "valid": true,
+      "typescript": "bigint"
+    },
+    {
+      "id": "I64-04",
+      "decimal": "9223372036854775808",
+      "valid": false,
+      "reason": "overflow"
+    },
+    {
+      "id": "I64-05",
+      "decimal": "01",
+      "valid": false,
+      "reason": "non-canonical"
+    }
+  ]
+}

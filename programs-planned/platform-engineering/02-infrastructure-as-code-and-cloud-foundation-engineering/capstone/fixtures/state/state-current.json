@@ -1,0 +1,49 @@
+{
+  "lineage": "atlas-lineage-1",
+  "resources": [
+    {
+      "address": "module.network.aws_vpc.this",
+      "attributes": {
+        "cidr": "10.64.0.0/16",
+        "dns": true,
+        "tags": {
+          "Name": "atlas-dev"
+        }
+      },
+      "remote_id": "vpc-001",
+      "replace_on_change": [
+        "cidr"
+      ],
+      "type": "aws_vpc"
+    },
+    {
+      "address": "module.network.aws_subnet.private[\"euc1-az1\"]",
+      "attributes": {
+        "azId": "euc1-az1",
+        "cidr": "10.64.16.0/20",
+        "public": false
+      },
+      "remote_id": "subnet-001",
+      "replace_on_change": [
+        "cidr",
+        "azId"
+      ],
+      "type": "aws_subnet"
+    },
+    {
+      "address": "module.network.aws_subnet.private[\"euc1-az2\"]",
+      "attributes": {
+        "azId": "euc1-az2",
+        "cidr": "10.64.32.0/20",
+        "public": false
+      },
+      "remote_id": "subnet-002",
+      "replace_on_change": [
+        "cidr",
+        "azId"
+      ],
+      "type": "aws_subnet"
+    }
+  ],
+  "serial": 7
+}

@@ -1,0 +1,10 @@
+{
+  "module": 1,
+  "status": "passed",
+  "claim": "RPC boundaries follow ownership and interaction semantics",
+  "evidence": {
+    "approved_interactions": 5,
+    "rejected_proposals": 2,
+    "services": 3
+  }
+}

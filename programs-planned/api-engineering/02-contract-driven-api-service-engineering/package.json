@@ -1,0 +1,10 @@
+{
+  "name": "contract-driven-api-service-engineering-course",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {"node": ">=24"},
+  "scripts": {
+    "core:test": "npm --prefix capstone/tracks/typescript-fastify run core:test",
+    "typecheck": "npm --prefix capstone/tracks/typescript-fastify run typecheck"
+  }
+}

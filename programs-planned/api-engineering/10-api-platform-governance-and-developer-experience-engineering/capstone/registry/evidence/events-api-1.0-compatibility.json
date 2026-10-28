@@ -1,0 +1,12 @@
+{
+  "apiRef": "api:default/analysis-events",
+  "checks": [
+    "syntax",
+    "ownership",
+    "backward-compatibility",
+    "active-consumer-surface"
+  ],
+  "decision": "pass",
+  "evidenceClass": "course-executed",
+  "version": "1.0.0"
+}

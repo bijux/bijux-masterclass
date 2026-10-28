@@ -1,0 +1,8 @@
+{
+  "name": "unenforced-default-deny-candidate",
+  "expected": "rejected",
+  "gates": [
+    {"name": "policy-yaml", "state": "pass"},
+    {"name": "installed-policy-enforcement", "state": "fail", "blocker": true}
+  ]
+}

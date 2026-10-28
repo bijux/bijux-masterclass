@@ -1,0 +1,46 @@
+{
+  "profile": "grpc-security-1.0",
+  "cases": [
+    {
+      "id": "SEC-01",
+      "tokens": [],
+      "method": "GetRun",
+      "expected": "UNAUTHENTICATED"
+    },
+    {
+      "id": "SEC-02",
+      "tokens": [
+        "learner-read",
+        "learner-write"
+      ],
+      "method": "GetRun",
+      "expected": "UNAUTHENTICATED"
+    },
+    {
+      "id": "SEC-03",
+      "token": "learner-read",
+      "method": "CreateRun",
+      "expected": "PERMISSION_DENIED"
+    },
+    {
+      "id": "SEC-04",
+      "token": "learner-write",
+      "resource": "projects/p-b-1/runs/r-1",
+      "expected": "PERMISSION_DENIED"
+    },
+    {
+      "id": "SEC-05",
+      "token": "worker-1",
+      "worker_id": "worker-2",
+      "method": "Work",
+      "expected": "PERMISSION_DENIED"
+    },
+    {
+      "id": "SEC-06",
+      "token": "worker-1",
+      "assignment_generation": "1",
+      "current_generation": "2",
+      "expected": "FAILED_PRECONDITION"
+    }
+  ]
+}

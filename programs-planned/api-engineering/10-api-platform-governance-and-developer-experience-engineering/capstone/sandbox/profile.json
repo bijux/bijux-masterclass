@@ -1,0 +1,15 @@
+{
+  "credentialTtlSeconds": 1800,
+  "dataClass": "synthetic-only",
+  "networkEgress": "deny-by-default",
+  "productionDataAllowed": false,
+  "rateLimits": {
+    "artifactBytes": 10485760,
+    "concurrentAnalyses": 2,
+    "requestsPerMinute": 120
+  },
+  "reset": "destroy tenant-scoped state and revoke credentials",
+  "sessionTtlSeconds": 3600,
+  "tenantPrefix": "sandbox-",
+  "version": "1.0"
+}

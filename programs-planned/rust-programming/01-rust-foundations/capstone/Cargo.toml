@@ -1,0 +1,15 @@
+[package]
+name = "taskboard"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "Persistent standard-library-only task board for Rust Foundations"
+
+[[bin]]
+name = "taskboard"
+path = "src/main.rs"
+
+[lints]
+workspace = true

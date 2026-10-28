@@ -1,0 +1,6 @@
+bucket       = "REPLACE_WITH_STATE_BUCKET"
+key          = "atlas/dev/workload.tfstate"
+region       = "eu-central-1"
+use_lockfile = true
+encrypt      = true
+kms_key_id   = "REPLACE_WITH_STATE_KMS_KEY_ARN"

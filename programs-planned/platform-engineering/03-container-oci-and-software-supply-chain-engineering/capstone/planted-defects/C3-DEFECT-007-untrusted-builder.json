@@ -1,0 +1,10 @@
+{
+  "defect": "provenance names an untrusted builder",
+  "expectedDecision": "rejected",
+  "expectedGate": "provenance-proof",
+  "expectedProof": "provenance-proof",
+  "id": "C3-DEFECT-007",
+  "learnerTask": "Identify the violated invariant, run the named proof, and explain why a superficial green check would miss the defect.",
+  "scenario": "A correctly signed statement names a builder outside the release policy.",
+  "title": "Untrusted builder provenance"
+}
