@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "deep-dive-snakemake"
+version = "0.1.0"
+description = "Deep Dive Snakemake course book + executable capstone."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Bijan Mousavi"}]
+dependencies = []
+
+[project.optional-dependencies]
+capstone = [
+  "snakemake>=8.0",
+]
+docs = [
+  "mkdocs-material>=9.5",
+  "mkdocs-git-revision-date-localized-plugin>=1.2",
+  "pymdown-extensions>=10.8",
+]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.5",
+  "mypy>=1.10",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["snakemake-capstone/tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E203", "E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unreachable = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
