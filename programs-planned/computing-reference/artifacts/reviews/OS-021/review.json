@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-021",
+  "chapter_digest": "0169919adba9653203d3765d63601a11462f2ce8bc85450e86085856efd0d604",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 13, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux-kernel documentation for locking contexts, lock types, memory barriers, spinlocks, atomic types, lockdep, lockstat, KCSAN, RCU, sequence counters, reference counting, mutexes, plus MIT's 2025 xv6 text. All 13 cited URLs returned HTTP 200; configuration-specific and PREEMPT_RT semantics are attributed and bounded."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked object O, invariant I(O), contexts C(O), access protocol P(O), lifetime protocol L(O), lock vertices V, edges E, graph G, hold H(l), wait W(l), and references R(O).", "Reviewed critical section, concurrency domain, mutual exclusion, ordering, spinlock, mutex, preemption, interrupt masking, lock class, RCU, seqlock, and lifetime terminology."],
+      "notes": "Notation separates invariant protection, caller context, memory ordering, dependency graph, performance observations, and object lifetime."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the graph model and confirmed A-to-B and B-to-C form an acyclic base order.", "Confirmed adding C-to-A produces the reported cycle A->B->C->A."],
+      "notes": "The deterministic graph has three static classes and omits runtime lock semantics, timing, IRQ state, and conditional acquisition."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived that a simple global-order proof requires the directed lock-class graph to be acyclic.", "Traced enter, exclusive access, temporary invariant opening, restoration, publication, exit, and separate lifetime closure for shared object O."],
+      "notes": "Acyclic class order addresses one deadlock condition; it does not prove progress, context admissibility, ordering, or lifetime."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed process, preemption, hard IRQ, soft IRQ, NMI-like, work-queue, timer, callback, remote-CPU, tracing, error, and teardown access paths.", "Reviewed self-deadlock, AB-BA and longer cycles, sleeping in atomic context, partial initialization, early return, publication mismatch, reader retry, pointer escape, refcount reacquisition, grace periods, hotplug, real-time variants, and diagnostics."],
+      "notes": "Context, order, memory, progress, lifecycle, configuration, scalability, security, real-time, and assurance boundaries receive separate treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced documented ownership, complete access-path coverage, context admissibility, acyclic acquisition, publication, lifetime, and configuration invariants through ten examples and five answers.", "Verified the cycle detector preserves visit state and reports only a back edge into the current recursion stack."],
+      "notes": "The chapter does not conflate data-race freedom, compound invariants, ordering, progress, reclamation, local masking, and inter-CPU exclusion."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed invariant definition, accessor enumeration, protocol selection, publication, global dependency order, progress, lifetime closure, and multi-tool evidence.", "Constructed counterexamples for writer-only locking, IRQ self-deadlock, local-only exclusion, atomic-field compound races, list removal before grace, refcount without admission closure, and clean-tool-run overclaiming."],
+      "notes": "The chapter provides reusable proof obligations, not a formal proof of Linux locking, RCU, an architecture memory model, a driver, or a real-time path."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of atomic, exclusive, ordered, safe, valid, acyclic, lock-free, bounded, real-time, and certification.", "Confirmed documented kernel semantics, abstract graph results, observed contention, sampled race detection, analytical timing, security policy, and human assurance remain separately scoped."],
+      "notes": "A clean lockdep or KCSAN run and an observed maximum are explicitly not presented as proofs of absence or timing bounds."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-021/report.json records base-order=acyclic, candidate-order=cycle, and cycle=A->B->C->A for toy-lock-order-cycle under Python 3.", "Reviewed lockdep path coverage, KCSAN sampling, lockstat and tracing overhead, assertions, stress, faults, configuration variants, raw logs, versions, seeds, and negative-result limits."],
+      "notes": "The passing graph toy excludes kernel tasks, interrupts, locks, trylocks, recursion, memory ordering, contention, object lifetime, and runtime instances."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed invariants, concurrency domains, context admissibility, local controls, locks, atomics, ordering, dependency graphs, read-mostly techniques, lifetime, teardown, contention, tools, security, and assurance as distinct but coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed spin and mutex selection, IRQ-safe state, PREEMPT_RT differences, atomic and refcount APIs, lockdep, KCSAN, lockstat, seqlocks, RCU grace periods, callback synchronization, fault injection, and teardown as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from invariants and contexts through primitive semantics, lock order, lifetime, performance, and verification, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux locking, RCU, scheduler, or driver maintainer, memory-model specialist, real-time analyst, security or safety authority, independent verifier, or certification review is claimed."
+}

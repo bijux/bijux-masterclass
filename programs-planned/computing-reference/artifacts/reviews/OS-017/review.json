@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-017",
+  "chapter_digest": "1cb8b551da84c1c2c5650f3098ffcdb87b2ccf7e0f49279bde50e1bc18ebfe4d",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 13, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary documentation for Linux scheduling policies, RR intervals, static-priority ranges, scheduling attributes, nice values, resource limits, pthread policy, futex PI, real-time group bandwidth, RT mutexes, CFS, cgroup v2, and MIT's 2025 xv6 text. All 13 cited URLs returned HTTP 200; abstract, POSIX, Linux normal, Linux real-time, and assurance claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked queues Q_p, priority p, quantum q, base b_i, effective e_i, remaining service r_i, remaining slice z_i, holds and waits edges, response, and completion notation.", "Reviewed RR, FIFO, fixed priority, preemption, starvation, inversion, inheritance, ceiling, aging, bandwidth, and throttling terminology."],
+      "notes": "Notation separates base and effective urgency, queue ownership, runtime charge, dependency donation, and capacity containment."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the priority-RR model and confirmed timeline A:2,B:2,A:2,B:1,A:1,C:2.", "Confirmed completions B=7, A=8, C=10 and low-priority C first runs at time 8."],
+      "notes": "The deterministic arithmetic assumes one CPU, simultaneous arrivals, no blocking or overhead, exact service, and no later arrivals."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived highest-nonempty-class selection and FIFO tail rotation after a q-bounded peer slice.", "Traced donation H to L to V to W and dependency-scoped priority removal after release or timeout."],
+      "notes": "Strict-priority service and priority inheritance are separated: donation resolves resource blocking but cannot create processor capacity."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed q extremes, simultaneous arrivals and expiration, timer accounting, wake placement, slice reset gaming, priority mutation, continual high-priority arrivals, and finite-test blindness.", "Reviewed nested inversion, donation leakage, deadlock cycles, cancellation, group throttling, runaway RT work, affinity, per-CPU imbalance, migration, hotplug, interrupts, and device failure."],
+      "notes": "Queue, accounting, starvation, resource, hierarchy, privilege, multicore, operational, real-time, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced unique placement, highest eligible selection, bounded charge, atomic relocation, dependency-scoped donation, and capacity containment through exposition, ten examples, and five answers.", "Verified the simulator preserves FIFO peer order and never runs lower priority while a higher queue is nonempty."],
+      "notes": "The chapter does not conflate RR fairness with cross-class service, nice with static RT priority, high priority with reservation, or wake with execution."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed state ownership, event ordering, debit, transitions, continuing-arrival analysis, resource donation, hierarchy, capacity, and evidence labeling.", "Constructed counterexamples for low-priority starvation, fresh-slice gaming, nontransitive donation, unconditional priority reset, unthrottled runaway FIFO, affinity-limited global claims, and mean-only quantum selection."],
+      "notes": "The chapter provides reusable policy obligations, not a formal proof of Linux, an RT mutex implementation, a task set, or a controller."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of fair, bounded, immediate, highest, guaranteed, starvation-free, safe, real-time, worst-case, and certification.", "Confirmed abstract queue rules, documented Linux semantics, finite simulation, empirical timing, analytical blocking, privilege policy, and human assurance remain separately scoped."],
+      "notes": "All response bounds name assumptions; finite batches and observed maxima are not used to deny starvation or prove deadlines."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-017/report.json records the exact timeline, completion order, and low-priority first-run value for toy-priority-round-robin under Python 3.", "Reviewed release, enqueue, dispatch, debit, preemption, block, wake, donation, throttle, migration, response, switch, inversion, deadline, trace, workload, topology, and observer limitations."],
+      "notes": "The passing toy excludes real tasks, timers, blocking, arrivals, locks, overhead, hierarchy, privileges, multicore placement, and Linux code."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed RR, fixed-priority FIFO, fixed-priority RR, quanta, wake placement, starvation, aging, inversion, inheritance, ceilings, bandwidth, multicore scope, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed Linux policy distinctions, RR intervals, priority bounds, pthread controls, limits, group bandwidth, RT mutex chains, cgroups, tracing, overload, affinity, and shutdown as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from queue and quantum mechanics through starvation, inversion, Linux controls, overload, multicore, and evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux scheduler or RT-mutex maintainer, concurrency specialist, real-time analyst, platform or security engineer, safety authority, independent verifier, or certification review is claimed."
+}

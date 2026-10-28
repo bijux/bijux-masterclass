@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "LSDS-003",
+  "chapter_digest": "52a1c038220cf81239655f7137e101d5e3c0088878a8cf325a6bdb02a45d2ad2",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked the Karger consistent-hashing paper, Dynamo paper, jump consistent hash paper, and original rendezvous report; checked current official Cassandra, Redis Cluster, PostgreSQL, Spanner, DynamoDB, and Ceph documentation. All twelve referenced URLs returned HTTP 200 on the retrieval date."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the key domain, canonicalization, partition function, logical unit, ownership epoch, replica placement, range-boundary, fixed-hash, token-ring, churn, balance, and full design-tuple notation.",
+        "Checked half-open endpoint semantics, wraparound selection, denominator conditions, and separation of versioned logical assignment from physical placement."
+      ],
+      "notes": "The notation distinguishes keys, logical ranges or buckets, primary owners, replicas, map versions, workload weights, and evidence."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed partition-movement-comparison with Python 3.14.4 and reproduced modulo movement 8,917/10,000, jump movement 1,135/10,000, and explicit range-split movement 1,250/10,000.",
+        "Recomputed nine-bucket load vectors, boundary lookups 6200->r2 and 6800->r4, exercise maximum-to-mean 700/250=2.8, and the ideal new-destination share 1/9."
+      ],
+      "notes": "All fixture counts are exact for the declared finite keys and functions; expected consistent-hash shares remain probabilistic, not universal guarantees."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived range membership from strictly ordered half-open boundaries and checked unique assignment at each boundary.",
+        "Derived why direct modulo couples assignment to the divisor and why stable slots preserve the hash-to-slot function when physical membership changes.",
+        "Checked the ideal equal-capacity consistent-mapping argument that a new destination receives approximately 1/(n+1) of the key space in expectation."
+      ],
+      "notes": "Movement, balance, replication, availability, and migration correctness are kept as separate claims."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed exact range endpoints, unbounded sentinels, null and invalid keys, monotonic keys, popular prefixes, low cardinality, large values, hot keys, collisions, inconsistent serialization, integer-width differences, and arbitrary membership removal.",
+        "Reviewed stale routers, redirect loops, dual-write partial success, missed deletes, reordered retries, source rejoin, replica co-location, rebalance overload, split-merge oscillation, rollback, offline medical devices, and degraded networks."
+      ],
+      "notes": "Adversarial key distributions and transition failures are evaluated separately from uniform finite fixtures."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced canonicalization, total single-valued assignment, range coverage, exclusivity, stable bucket identity, epoch-compatible routing, distinct replica placement, and one authoritative owner through exposition and exercises.",
+        "Checked that hot-key lower bounds, weighted churn, transfer capacity, rollback evidence, and source retirement conditions are explicit."
+      ],
+      "notes": "The chapter does not infer replication, topology safety, or authority transfer from a partition function alone."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed all eight selection and transition obligations from key contract through retained evidence.",
+        "Checked counterexamples for balanced ranges, hash-equals-balance, modulo scale-out, zero-movement consistency, token-equals-node, next-token replicas, free hash tags, copy-only validation, and dual-write safety.",
+        "Reviewed range split identity and the staged copy, catch-up, validation, cutover, drain, recovery, and retirement argument."
+      ],
+      "notes": "Steady-state mapping correctness, probabilistic distribution quality, and online transition safety are treated as distinct proof obligations."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of correct, proof, expected, ideal, stable, safe, authoritative, balanced, direct, and minimal.",
+        "Confirmed the 1/(n+1) statement is labeled as an ideal equal-capacity expectation and fixture movement is labeled as finite observation."
+      ],
+      "notes": "No deterministic algorithm or local result is presented as a universal distribution, availability, or migration guarantee."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed current-system examples, retrieval dates, executable output, fixture scope, non-benchmark disclaimer, and production validation requirements.",
+        "Confirmed no production, clinical-safety, certification, performance, availability, or external-review claim is made."
+      ],
+      "notes": "Real selection requires retained workload distributions, exact implementation conformance, target-system fault tests, and consequence-appropriate review."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed range, fixed hash, ring consistency, virtual nodes, slots, rendezvous, jump, directory placement, composite keys, churn, balance, replication, and epoch transition as one coherent selection model."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed portable hash contracts, boundary indexes, hot-key diagnosis, topology-aware replica choice, membership caching, capacity-weighted movement, online transfer states, reconciliation, rollback, observability, and source retirement. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from ordered ranges through hashing and low-churn mappings to migration; ten worked examples and five complete answers cover retrieval, calculation, comparison, design, and unfamiliar clinical transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, large-scale data practitioner, database vendor, clinical, safety, or certification review is claimed."
+}

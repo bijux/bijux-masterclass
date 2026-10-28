@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-044",
+  "chapter_digest": "19c926b6c16df4a0ad0c0f8cfb765f298757e2389488dbbed9678f89c28d2ab0",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux kernel ext4 block-group, bitmap, descriptor, allocator, and cluster-allocation documentation; current XFS online-repair and iomap design documentation; and current statvfs, fstrim, and mount man-pages. All ten cited URLs returned HTTP 200 after normal redirects; abstract free-space models, Linux interfaces, filesystem-specific examples, illustrative execution, and assurance guidance remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked allocatable universe U, partition into free F_t, reserved R_t and owned A_t, ownership O_t(u), bitmap B_t, extent index E_t, counters C_t, quota Q_t, request (k,a,g,p), interval [s,s+k), and capacity conservation.", "Reviewed allocation unit, bitmap, free-space extent, summary, reservation, allocation region, discard, trim, leak, cross-link, thin provisioning, zone, reverse map, and repair terminology."],
+      "notes": "Notation separates eligibility, exact ownership, search indexes, summaries, reservations, accounting, placement constraints, and persistence."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the illustrative sixteen-unit bitmap model and confirmed ten free units and a largest run of seven before allocation.", "Confirmed first fit allocates four units starting at index nine, leaving six total free units with largest run three, so a second contiguous four-unit request fails."],
+      "notes": "The deterministic model is intentionally simplified; it excludes alignment, reservations, metadata, concurrency, persistence, quotas, devices, and real filesystem behavior."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived the pairwise-disjoint partition U=F_t disjoint_union R_t disjoint_union A_t after permanent exclusions and checked that numeric capacity conservation alone is insufficient.", "Checked candidate eligibility for bounded interval, free ownership, alignment, boundaries, profile, and metadata-credit reservation, and verified release is safe only after all owner and recovery references disappear."],
+      "notes": "The chapter does not infer allocatability from a counter, physical backing from logical free space, or sanitization from filesystem release or discard."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed zero and overflowing requests, group and device ends, padding bits, fixed metadata, small and large units, fragmented runs, alignment, exhausted metadata, root reserves, quota, copy-on-write, snapshots, deferred frees, lazy initialization, online resize, multiple-device profiles, thin provisioning, discard, secure deletion, zones, and per-CPU caches.", "Reviewed stale summaries, duplicate free, cancel races, cache hoarding, checksum mismatch, malformed trees and lists, cross-links, leaks, nearly full search, journal interruption, device failure, ambiguous repair authority, concurrent scrub, and crashes."],
+      "notes": "Geometry, representation, search, policy, accounting, concurrency, ownership, storage-layer, persistence, recovery, repair, capacity, and adversarial boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced universe definition, request validation, reservation, bounded search, authoritative revalidation, initialization and transfer, release, view synchronization, persistence, recovery, reporting, and evidence through twelve obligations, ten examples, and five answers.", "Verified exclusive state, live-owner exclusion, index and counter reconciliation, exactly-once reservation handling, release ordering, zero-disclosure recovery, and qualified capacity reporting."],
+      "notes": "The chapter does not conflate free counters with ownership, reservation with placement, logical free space with device capacity, discard with deallocation, snapshots with unowned blocks, or checksum validity with repair authority."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed geometry, eligibility, reservation, search, revalidation, initialization, transfer, release, synchronization, persistence, bidirectional recovery, reporting, and evidence obligations.", "Constructed counterexamples for padding-bit allocation, stale-counter authorization, fragmented aggregate capacity, double reservation cancellation, premature reuse, missing metadata credit, snapshot-blind free, thin-pool blindness, discard-as-erase, and bitmap-only repair."],
+      "notes": "The chapter supplies reusable free-space proof obligations, not a formal proof of ext4, XFS, iomap, a storage pool, device firmware, or recovery implementation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of free, eligible, reserved, owned, authoritative, approximate, exact, available, allocated, durable, recoverable, secure, and certified.", "Confirmed generic structures, current Linux interfaces, ext4 and XFS examples, illustrative execution, empirical performance, and assurance claims remain separately scoped."],
+      "notes": "A counter is not presented as allocation authority, discard as secure erase, logical thin space as physical guarantee, checksums as semantic proof, or one benchmark as certification."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-044/report.json records source, bitmap strings, free counts, largest runs, allocation start and length, and failed second request under Python 3.", "Reviewed required collection of geometry, request, alignment, policy, region, search iterations, run histograms, counters, reservations, quota, caches, transactions, discard, failures, crash points, recovery, raw traces, and limitations."],
+      "notes": "The passing toy establishes only bitmap scanning and counts; it provides no evidence for filesystem allocation, concurrency, quotas, persistence, discard, devices, performance, or repair."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed free-space state, granularity, bitmaps, lists, run indexes, buddy and hierarchical summaries, regions, search policies, alignment, locality, fragmentation, reservations, data and metadata reserves, quotas, copy-on-write, release, deferred work, journals and copy-on-write trees, counters, lazy initialization, checksums, resize, multiple devices, thin provisioning, discard, sanitization, zones, concurrency, caches, fullness, scrub, repair, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed ext4 bitmap and group layouts, descriptor counters and checksums, cluster and multiblock allocation, XFS free-space and reverse-map repair, statvfs availability, batch trim, mount context, iomap mapping states, alignment, metadata credits, reserve policies, profile-specific capacity, deferred frees, and bidirectional reconciliation as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from exact free-space state and classic structures through search, fragmentation, reservations and quotas, release and persistence, then device layers, concurrency, repair, security, and assurance, followed by twelve trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux VFS, ext4, XFS or iomap maintainer, allocator, storage-device, thin-provisioning, zoned-storage, security, recovery, capacity, performance, independent-verification, or certification review is claimed."
+}

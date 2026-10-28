@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-078",
+  "chapter_digest": "3e84bd77bd85ad5c3260e3bf72e2250894890c90f18ab6856c122d271c926702",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux nftables-netlink, eBPF-verifier and socket-filter documentation, the current Netfilter nft manual, and RFC Editor publications covering ingress filtering, ICMPv6, IPv6 gateway security, first-fragment header chains, IPv6 operational security and firewall behavior. All ten cited URLs returned HTTP 200 after normal redirects; kernel interfaces, normative protocol guidance, abstract policy models and assurance remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked ruleset generation, hook, packet view, context, state, budget, verdict, transformation and diagnostic notation.", "Reviewed first-terminal evaluation, graph validity, scoped tracking keys, dynamic-state bounds and software/offload equivalence."],
+      "notes": "Notation separates packet-view validity, deterministic policy, mutable state, generation lifetime and offload semantics."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed an ordered first-match chain over established traffic, a blocked source and unmatched new traffic.", "Confirmed one accept, two drops, earlier blocked-source precedence over HTTPS allowance, and explicit default attribution."],
+      "notes": "The deterministic computation validates one abstract rule-order example only; it implements no parser, tracker, namespace, kernel, transaction, NAT, offload or packet."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived hook-scoped packet views and least-index first-terminal rule selection with default fallthrough.", "Checked graph-reference validity, direction-specific flow keys, hierarchical state bounds and generation-matched software/offload verdicts."],
+      "notes": "The relations are subsystem reasoning tools and do not claim a complete formalization of nftables, Netfilter, BPF, connection tracking, NAT or hardware."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed truncation, nonlinear data, fragments, extension chains, tunnels, control-flow cycles, set intervals, default policy and dual-stack behavior.", "Reviewed unique-flow floods, helper expectations, NAT exhaustion, userspace queue timeout, logging pressure, transaction failure, offload reset and namespace teardown."],
+      "notes": "Hook, parser, control-flow, transaction, state, transformation, deferral, offload, observability and teardown boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced enforcement objective through hook choice, validated match, chains, sets, transactions, tracking, NAT, fragments, control traffic, userspace and offload.", "Verified one generation, scoped state, precharged allocation, bounded traversal, transformation invalidation, authenticated continuation and attributable verdict."],
+      "notes": "The chapter treats packets, rules, sets, trackers, mappings, queues, programs and offload instances as coupled but independently owned resources."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed hook semantics, parsing, chain control flow, sets, atomic publication, namespaces, tracking, helpers, NAT, fragments, ICMP, source validation and offload.", "Constructed counterexamples for accept-as-delivery, tracked-as-authenticated, NAT-as-policy, verifier-as-intent-proof and hardware-rule-as-software-counter."],
+      "notes": "The chapter supplies reusable filtering obligations, not a formal proof of a ruleset, Linux, Netfilter, BPF program, hardware pipeline or organizational policy."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of parsed, matched, tracked, related, accepted, dropped, rejected, queued, translated, offloaded, published and retired.", "Confirmed kernel behavior, RFC guidance, abstract models, recommendations, tests and assurance claims remain separately scoped."],
+      "notes": "Hook acceptance is not labeled endpoint delivery, tracking is not labeled authentication, verifier acceptance is not labeled policy correctness and offload installation is not labeled universal equivalence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-078/report.json records source, expected and actual output, stderr, exit status, toolchain and environment for the ordered-filter model.", "Reviewed required generation, hook, parser, tracking, NAT, namespace, program, device, packet, fault and observer evidence."],
+      "notes": "The passing toy establishes one abstract order only; it provides no evidence for ruleset completeness, kernel memory safety, offload equivalence, attack resistance or performance."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed packet filtering as composition of a hook-valid packet view, immutable deterministic ruleset generation, bounded optional state and explicit packet ownership."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed current filtering mechanisms as implementable concerns, including nftables transactions, sets, tracking, NAT, BPF bounds, userspace verdicts, offload fallback and rate-limited evidence. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from objectives and hooks through parsing, chains, sets, generations, tracking, NAT, fragments, control traffic, userspace, offload and testing, followed by twelve obligations, sixteen trade-offs, twenty-five misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux/Netfilter maintainer, IETF, firewall vendor, network operator, security, independent-verification or certification review is claimed."
+}

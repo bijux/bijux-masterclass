@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "LSDS-087",
+  "chapter_digest": "9b206d9f8d198900ef5e8038eb2222ab3b404e7c3983d812275451cb8a934870",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked current official Apache Flink sink, fault-tolerance, Kafka, filesystem, JDBC, and connector-guarantee documentation; versioned official Apache Kafka producer/consumer configuration; current Apache Spark Structured Streaming documentation; and current Apache Iceberg write/reliability documentation. All twelve final references returned HTTP 200. Connector-specific constraints and development-documentation status are attributed."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed checkpoint, logical subtask, physical attempt, fencing generation, private output, committable tuple, complete set, global decision, visible output, timing, timeout, and record-count notation.",
+        "Checked identity, digest, completeness, checkpoint-decision, publication, visibility, timeout, and recovery predicates with explicit scopes.",
+        "Checked that prepare, flush, durable decision, destination commit, acknowledgement, and reader visibility remain distinct events."
+      ],
+      "notes": "The model supports transactional databases/logs and manifest-based file/table publication without pretending their mechanisms are identical."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed the Python 3 fixture and reproduced checkpoint 24, 100 records, three committables, one duplicate acknowledgement, commit decision, two commit calls, one visible commit, and committed status.",
+        "Recomputed 40 + 35 + 25 = 100 records and verified repeated acknowledgement for subtask 1 matches the original digest/count.",
+        "Verified two calls using one stable transaction identity create one stored/visible outcome, and checked the 18-minute recovery example makes a 15-minute timeout unsafe."
+      ],
+      "notes": "No universal checkpoint interval, transaction timeout, committable size, concurrency, visibility latency, or cleanup horizon is prescribed."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified private preparation plus committed-only reading excludes failed/losing attempt output before global publication.",
+        "Verified complete committable-set validation and one atomic transaction/manifest pointer yields all-or-none epoch visibility under stated isolation.",
+        "Verified stable transaction identity plus outcome lookup makes lost-reply commit retry idempotent, while enforced generations exclude stale jobs."
+      ],
+      "notes": "The proof ends at the named destination and promised readers; downstream exports or uncommitted readers are separate boundaries."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty and nonempty epochs, no/one/many writers, missing/duplicate/conflicting committables, speculative attempts, rescaling, and schema/partition changes.",
+        "Reviewed writer/coordinator/committer crashes before and after prepare, checkpoint completion, durable decision, destination commit, acknowledgement, and reader observation.",
+        "Reviewed lost responses, destination failover, transaction expiry, stale jobs, uncommitted readers, corrupted/missing staging, multipart lifetime, cleanup races, and old-checkpoint restore."
+      ],
+      "notes": "Unknown outcomes retain evidence and trigger status reconciliation rather than guessed abort, duplicate publication, or age-only deletion."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced job/checkpoint/subtask/attempt/generation/transaction identities, destination, content digest/count/bytes, preparation, decision, publication, and outcome.",
+        "Checked private attempt output, one content-consistent committable per logical writer, complete durable set, checkpoint-before-commit order, and idempotent prepare/commit/abort/status.",
+        "Checked destination fencing, committed reader isolation, timeout headroom, recovery leases, and reachability-based staging/orphan cleanup."
+      ],
+      "notes": "Flush success, file presence, connector branding, and count equality cannot substitute for global decision, isolation, content identity, and reconciliation."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed no-early-visibility, atomic-epoch, retry/ambiguity, and fencing arguments with durability, completeness, linearization, and isolation premises.",
+        "Checked counterexamples for early subtask commit, new retry transaction, conflicting handle, unknown-as-abort, lease-only ownership, short timeout, final-name races, and object-store rename assumptions.",
+        "Checked fault injection crosses each writer/coordinator/destination boundary and reads through the promised isolation while reconciling stable identities/content to source/state."
+      ],
+      "notes": "Exactly-once state, sink preparation, destination publication, and reader-visible exactly-once output require separately verified links."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited sink transaction, committable, prepare, global decision, commit point, ambiguous outcome, fencing, read-committed visibility, timeout, idempotent commit, and manifest commit terminology.",
+        "Confirmed writer, committer, coordinator, destination, catalog, and reader responsibilities are distinguished.",
+        "Confirmed database/XA, transactional log, immutable file/manifest table, idempotent upsert, and shadow-swap guarantees are scoped separately."
+      ],
+      "notes": "Flink, Kafka, Spark, and Iceberg semantics are attributed and not generalized beyond documented configurations/read paths."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed staged/prepared/committed/aborted/expired/unknown transactions, committables/records/bytes, retry/fencing counts, orphan bytes, and reconciliation disposition.",
+        "Reviewed prepare/decision/commit/checkpoint/reader latency, open transaction age, timeout headroom, cleanup, and source-state-sink identity/content comparison.",
+        "Confirmed segmentation by job/graph/checkpoint/subtask/attempt/generation, destination/table/topic/partition/schema, connector/mode/version, reader isolation, failure cohort, and time window."
+      ],
+      "notes": "Successful flush, equal counts, low median commit time, or one connector setting is not mislabeled as end-to-end exactly-once visibility."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed visibility contracts, writer/committer separation, durable preparation, complete committable sets, checkpoint-bound decisions, idempotent recovery, fencing, reader isolation, database/log/file/table/upsert mechanisms, timeouts, cleanup, and evidence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable transaction namespaces, committable schemas, content validation, durable coordinator decisions, status lookup, destination fencing, isolation configuration, XA/log/table operational constraints, timeout budgets, reconciliation, and crash tests. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from effect/visibility definition through preparation and coordination to destination-specific mechanisms and operations. Ten examples and five answered exercises cover complete sets, duplicate/conflicting handles, lost replies, isolation, timeout, fencing, manifests, upserts, cleanup, and fault injection."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external Flink/Kafka/Spark/Iceberg maintainer, database/XA/log/storage/table/platform/SRE/security specialist, production sink operator, downstream reader, affected user, governance or accessibility specialist, or certification review is claimed."
+}

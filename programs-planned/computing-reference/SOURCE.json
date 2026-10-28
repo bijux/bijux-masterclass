@@ -2,16 +2,16 @@
   "schema_version": 1,
   "source_repository": "bijux/bijux-courses",
   "source_branch": "master",
-  "source_commit": "858ed48f3fcc026f6fda4e2a5c4acbf77b766df3",
+  "source_commit": "54f99514e1953a06f8cebc4dd583354c3a52375d",
   "captured_source_tip": "71f14e0a9ff959e0dbd5ef87720ce3d0b8e6ee7c",
   "captured_source_commit_count": 1486,
   "history_complete": false,
-  "destination_base": "3d125588b22352b07bc2dc073ca51fcaca399576",
+  "destination_base": "4ae79a06d6a7b43da695692b680ce6c9d876953d",
   "original_destination_base": "3c776dde16320dc85e4c5f223d77a6abc510ded5",
   "status": "planned",
   "publication_qualification": "not-assessed",
-  "original_commit_count": 950,
-  "history_access": "git show 858ed48f3fcc026f6fda4e2a5c4acbf77b766df3:<source_path>",
+  "original_commit_count": 1140,
+  "history_access": "git show 54f99514e1953a06f8cebc4dd583354c3a52375d:<source_path>",
   "meta_boundary": "The production backlog TODO.md remains recoverable in the original Git history; it is not a product backlog.",
   "files": [
     {
@@ -1499,6 +1499,1336 @@
       "disposition": "imported-unchanged"
     },
     {
+      "source_path": "artifacts/reviews/LSDS-003/review.json",
+      "source_blob": "c8d8df51aa21441ab3eb198af1f988f3111e9872",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-003/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-004/review.json",
+      "source_blob": "4213ff2be3ccfc7b24c33e2994b02f26c16011fa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-004/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-005/review.json",
+      "source_blob": "269638aec1ee3299b676075c651fffc49082bec6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-005/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-006/review.json",
+      "source_blob": "c15d999001ddaabfdf11ac5316327872e5ffd466",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-006/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-007/review.json",
+      "source_blob": "e55b29fafa2cae5da746b34bc45138bac4e7fff4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-007/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-008/review.json",
+      "source_blob": "fc02d52017aeee3b6f94777dfe3d410dfc3ea807",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-008/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-009/review.json",
+      "source_blob": "05ac9ae39ac0df5e64f40761f9743b4ca57fdf6d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-009/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-010/review.json",
+      "source_blob": "7b1e3999f4b34cc8d8dc90906445fdecb6004e7e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-010/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-011/review.json",
+      "source_blob": "099d5a3ee7e017e79e15dfa8ac424d04fc1a008e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-011/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-012/review.json",
+      "source_blob": "757b2030dc98cef78163a8b4a243d53e88092018",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-012/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-013/review.json",
+      "source_blob": "b890fbadbd6440881f8065738cf8730da79f4887",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-013/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-014/review.json",
+      "source_blob": "c50d8bd368e77da38b51d668a8f2b7e7a33881f2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-014/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-015/review.json",
+      "source_blob": "60bcf77595eeb4fb90f2845752c2fcf7c5e7f59d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-015/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-016/review.json",
+      "source_blob": "36942bce8b216039ae7544c958156798bc0a3e31",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-016/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-017/review.json",
+      "source_blob": "00bd1266b5018ac01482ba61d13e9c30cac404ed",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-017/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-018/review.json",
+      "source_blob": "c7b398b25d0501b747b98b52f161f160896797ad",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-018/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-019/review.json",
+      "source_blob": "79555b2638280e42e4751ff2540e0c2dcf894789",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-019/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-020/review.json",
+      "source_blob": "7bd55971037387f220929a4ec57a1c4bfaf6b8a9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-020/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-021/review.json",
+      "source_blob": "aaf0fc89a963ead318e1abbb096dec6b65584cd6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-021/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-022/review.json",
+      "source_blob": "8a477fea86386fac534949d4aeff8f242c21d0cb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-022/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-023/review.json",
+      "source_blob": "adf352fb19c326145b5c8937b058ca6642c18789",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-023/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-024/review.json",
+      "source_blob": "0237160fe00ad4bc7ce767ca36a0b31229dd552e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-024/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-025/review.json",
+      "source_blob": "7229e3db2a8ee9b235c63c1c27993922d847f0b8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-025/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-026/review.json",
+      "source_blob": "a6147212a3e1fd99a172c30277e19197be3400b4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-026/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-027/review.json",
+      "source_blob": "c9b0db7ba1c41c93c696114fdb467aa92ebc75f5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-027/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-028/review.json",
+      "source_blob": "bb741d0e35f5fa978238602d0fd6cc6d9c9512e4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-028/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-029/review.json",
+      "source_blob": "f54878a15698b17d80d007ce29a715ec74cac5c5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-029/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-030/review.json",
+      "source_blob": "c1caf0827c327ea7e78b3e18ab0451031a0f643f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-030/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-031/review.json",
+      "source_blob": "00cb54312221a967a7bb26fd8ac512997e04e82c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-031/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-032/review.json",
+      "source_blob": "8bfc7dfbe71290070b89eb02ca2f31b40c07d07f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-032/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-033/review.json",
+      "source_blob": "fda5e4e2ec53e915991191312e2be6d519dc37a1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-033/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-034/review.json",
+      "source_blob": "a39026d7c7263717e3105cd190fa36384a55b024",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-034/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-035/review.json",
+      "source_blob": "8bd9ff3c58d1a86ccce19b3bc892e4ffd083b79f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-035/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-036/review.json",
+      "source_blob": "0a734846de36dc21e6239eca466c56bace56160b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-036/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-037/review.json",
+      "source_blob": "c102a3374bc068673c40224607f1356c3b91bc89",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-037/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-038/review.json",
+      "source_blob": "5e223e0f4fb271787cbfe12985f226bb3c1758e2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-038/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-039/review.json",
+      "source_blob": "d91aa46cc7faf2ff7861987bd39d3ebd584086cb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-039/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-040/review.json",
+      "source_blob": "e0f0a5939fc050d1ae46930de58b8613639a08e5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-040/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-041/review.json",
+      "source_blob": "c1e2158e44a416125b1f7beafffcd0e49f78a35d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-041/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-042/review.json",
+      "source_blob": "db4709bff550355cbb2e073a2349a69efb2471ea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-042/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-043/review.json",
+      "source_blob": "7d6383da460cb5523e36cd438604a151c9623c1c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-043/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-044/review.json",
+      "source_blob": "97964de55e86d280daf9cfded3ed98196b1f8960",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-044/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-045/review.json",
+      "source_blob": "cc85f6a2e44b2c3ea4840864dea34afcb144f5e8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-045/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-046/review.json",
+      "source_blob": "f14f419cd1402a0fb85f5c711a2c7972b73447ff",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-046/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-047/review.json",
+      "source_blob": "dbf50894857672d7271e9925fc000ddb73696146",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-047/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-048/review.json",
+      "source_blob": "58cd72b94e70f59f71cc845367153cff7bf48b71",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-048/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-049/review.json",
+      "source_blob": "f5575254ca7d62c8397fa88b757ed9ceddd54c50",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-049/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-050/review.json",
+      "source_blob": "a4521252a56ecc876c1fa39a859f95a674174821",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-050/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-051/review.json",
+      "source_blob": "42e9748cfeb472c7220e47aa03a44732934fd0e8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-051/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-052/review.json",
+      "source_blob": "3fb443e91b5e3febff47f0b72fe53150976e27e0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-052/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-053/review.json",
+      "source_blob": "d766a1a896aceefb1e4ece422aef6d6265e77368",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-053/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-054/review.json",
+      "source_blob": "bfa9679789f29149f6ca2ab0cc664e538fa179e5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-054/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-055/review.json",
+      "source_blob": "aaa287d87e090fa0b95c25e8d78fb64025c5ad5f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-055/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-056/review.json",
+      "source_blob": "1abcc87712b6ee2bcde441ef03fe5b10baedaa34",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-056/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-057/review.json",
+      "source_blob": "3784b2660024125da7b19f5a9eaea3858e34b40b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-057/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-058/review.json",
+      "source_blob": "e2da9c64d2554f028847c1036679af2f6a53facb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-058/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-059/review.json",
+      "source_blob": "965b97b257e3812577255f5e6d15dbd3fad04bc5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-059/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-060/review.json",
+      "source_blob": "5d8ad0172d0a73dae3d02a5e316b92c33dda46ea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-060/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-061/review.json",
+      "source_blob": "7e37a4c13c5179541541c91695afea43d55f6ab4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-061/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-062/review.json",
+      "source_blob": "45c0c28862e745960198446fdfa1834045f85253",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-062/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-063/review.json",
+      "source_blob": "f2b072bc6502803b3aac82f989b8d1221ec88c3a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-063/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-064/review.json",
+      "source_blob": "4cf5e5d51ca1355a9003339044053ee454935202",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-064/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-065/review.json",
+      "source_blob": "7505e8d560ffc1d893c626ab1fad5a4791648608",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-065/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-066/review.json",
+      "source_blob": "b96cde425763e6d5bb52d92a19ec502987c3d2e6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-066/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-067/review.json",
+      "source_blob": "009f5c2ff038751f67671c0d865290437d3d6739",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-067/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-068/review.json",
+      "source_blob": "c11da9045f11e1dbe6097ffb79fdf5a3a3ebaf43",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-068/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-069/review.json",
+      "source_blob": "98ded3a9cd40306b2e2792e414d6c27efd48cefd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-069/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-070/review.json",
+      "source_blob": "36cba46c1a6c5501aee426a7cdbd00019765b82f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-070/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-071/review.json",
+      "source_blob": "bb66c1e284e3473c28c13dab460417515bbbe68d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-071/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-072/review.json",
+      "source_blob": "ce8cecf4381f9b5437eace2162503d172bcb5c1e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-072/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-073/review.json",
+      "source_blob": "0c4c8ec48770d55cd138c68bc22ad82ce506dd15",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-073/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-074/review.json",
+      "source_blob": "7eadd965bb9cd55384cb8b9377ccad520744cbb5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-074/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-075/review.json",
+      "source_blob": "eef0c053fbc080c7a9db3d5fd11becfb42ea1603",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-075/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-076/review.json",
+      "source_blob": "29ca2122d84d552a05e7330e75025741d756cbd3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-076/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-077/review.json",
+      "source_blob": "46c92ed1e97c3108257f1a9d827a858dc090b2a5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-077/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-078/review.json",
+      "source_blob": "03d1c740df6dea7a2ad402c7f3e663f9fadcff98",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-078/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-079/review.json",
+      "source_blob": "02398d8eb490d3c0dc584bd1bc8cb19732d9df2b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-079/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-080/review.json",
+      "source_blob": "0572a1707f700654bc865cc94200efcad652ec07",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-080/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-081/review.json",
+      "source_blob": "27ae368cf755847893de56cfbe75118cf00e9012",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-081/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-082/review.json",
+      "source_blob": "891e374f8c2877be5c297f959b02f090d3f26682",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-082/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-083/review.json",
+      "source_blob": "0305038475bcdc7a8a1360c648d8a0fa68644c9e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-083/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-084/review.json",
+      "source_blob": "4bfff22e45b84b076f3edd29cbc5acf4526c785c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-084/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-085/review.json",
+      "source_blob": "37a555d7c038c9dde83879e495bf57c1f36dc8db",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-085/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-086/review.json",
+      "source_blob": "40a489e9ba9d086eb03efb3948df37f681f6e0f7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-086/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-087/review.json",
+      "source_blob": "c9836f165f8bb76b97bb1b3827008ce0265cc375",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-087/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-088/review.json",
+      "source_blob": "0545c7cb8f1684b4a703eaa4cb7759b383211f01",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-088/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-089/review.json",
+      "source_blob": "7a2e59956e42ae663821b96aaf41172af1fbe16a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-089/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-090/review.json",
+      "source_blob": "94eb10cc7e12aec52f578980b9229e13e278aacc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-090/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-091/review.json",
+      "source_blob": "a2411d2e6939da0e3f4262176f4f444787814703",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-091/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-092/review.json",
+      "source_blob": "b5189468ecb5b002af9e44acdb77cc577300472d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-092/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-093/review.json",
+      "source_blob": "382457a3eb55d5ae173a206eda2ef8c8aa7b849d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-093/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-094/review.json",
+      "source_blob": "4392f94b97ce38e2fbba8db8ad263be2fef35721",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-094/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-095/review.json",
+      "source_blob": "a084f2622fc9e50e6afca446ec5d3b1d4eefccbb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-095/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-096/review.json",
+      "source_blob": "248974765039e0fc49c0cd9be3c787245f509da1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-096/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-097/review.json",
+      "source_blob": "28c21031c3a9c9eeb3b862b91efe7095349c01b6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-097/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-098/review.json",
+      "source_blob": "d49b515b50ff4853397abf4286485c889d0f55b8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-098/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-099/review.json",
+      "source_blob": "c66bd2f758ad817eeb1c5515e8c9851024674f83",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-099/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/LSDS-100/review.json",
+      "source_blob": "8822f1ffee86adb87826ad69400f1fae6dfc0851",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/LSDS-100/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-003/review.json",
+      "source_blob": "2749b95a009cb0c3708022714606da958a505976",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-003/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-004/review.json",
+      "source_blob": "a7bdd6db40a2087188c2f5eac93d1520eccc3bf6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-004/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-005/review.json",
+      "source_blob": "73e7fb73d56babcd527efb5e849b7742f6e95ea1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-005/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-006/review.json",
+      "source_blob": "35a5c074325db7c2518146575c19010137f973c8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-006/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-007/review.json",
+      "source_blob": "5839dda94f07f9286cbd899c46b0dad429e6532d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-007/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-008/review.json",
+      "source_blob": "050e430aa12a3f133a2081949fc61c266b49e582",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-008/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-009/review.json",
+      "source_blob": "c242bf26c871093f914d5c301fdcb1ec7d52ac8c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-009/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-010/review.json",
+      "source_blob": "5fcb9a48b78f7de82869789c654915dc0dfd537c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-010/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-011/review.json",
+      "source_blob": "ac5dd4971a26f371158ed232347ff95e5eece779",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-011/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-012/review.json",
+      "source_blob": "33439b81d5a24ca36335fc49379044263bfaa616",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-012/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-013/review.json",
+      "source_blob": "c6bf760c97535bee5f21ea4c087eff6cf10584b8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-013/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-014/review.json",
+      "source_blob": "f2617d7e076a4b81da753c74edad5204f49a274b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-014/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-015/review.json",
+      "source_blob": "dfbb9c1e24df6da721638cf9437d5b2d327059fc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-015/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-016/review.json",
+      "source_blob": "c02abeba65d112e71cfc9b4df605e915bba5a7b8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-016/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-017/review.json",
+      "source_blob": "a1bae4cca5f4c45463bc1618a9aaac3db9c04477",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-017/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-018/review.json",
+      "source_blob": "c7f63b0f7e59729dde5abd53c0ff79f6d79d918b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-018/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-019/review.json",
+      "source_blob": "3ab0ee70792de5c0057eba985686fa758ddb590c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-019/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-020/review.json",
+      "source_blob": "006eac92fc9b7a1ceb9263bbace5757b75737ae9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-020/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-021/review.json",
+      "source_blob": "8cc8748eb3ce17b07a57bca988dca3f180b88a6c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-021/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-022/review.json",
+      "source_blob": "5d2a0488ed10f2c4ec221c0ed78bfda7e38cc4d8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-022/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-023/review.json",
+      "source_blob": "d8b5053302f9f9e1407acde9fc7da7f8155947d9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-023/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-024/review.json",
+      "source_blob": "d46cc255a625394b89eb01989dd2a8aa2eb72b78",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-024/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-025/review.json",
+      "source_blob": "af57b208304e2a94721fc3ba9a7ec18757a4e2a7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-025/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-026/review.json",
+      "source_blob": "52adfeb532f0305f9246c37e1a30c9304e0d35b9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-026/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-027/review.json",
+      "source_blob": "5fdf9d10e6f3f8974397647bc3a30ede85c8ca23",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-027/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-028/review.json",
+      "source_blob": "704a6deef69ac6473c1f942b47e92b85f8cf2c5c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-028/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-029/review.json",
+      "source_blob": "8eba37fd5f5001e1dd34ab421ddbfe24983d94f4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-029/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-030/review.json",
+      "source_blob": "2674c9525b3b0efbd9d5c164744c72fc7053d667",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-030/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-031/review.json",
+      "source_blob": "41d7813ec0331dd72206201620e677545cabe272",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-031/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-032/review.json",
+      "source_blob": "90a047a82837b5671e7b9d7f5559e0020c3b6f6d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-032/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-033/review.json",
+      "source_blob": "55c98fcfe9725c44be7b9e543eff24565cf6d499",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-033/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-034/review.json",
+      "source_blob": "46154528776dc295c052c7644eae3ebc843e73d4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-034/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-035/review.json",
+      "source_blob": "925f00cede4b11618653a9c8f4136d092880a409",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-035/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-036/review.json",
+      "source_blob": "39919113f0e60b7ea0b974e7934828a0af33c3c3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-036/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-037/review.json",
+      "source_blob": "582872ceffcb920fc2efd8c9580af723bde5811d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-037/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-038/review.json",
+      "source_blob": "22fec45b57fb2a77606281c66df57b7436245b82",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-038/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-039/review.json",
+      "source_blob": "59e6935972f26d118af39312c0ed705224470efb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-039/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-040/review.json",
+      "source_blob": "111147b7d24ed97ff21b383622602703d34e65da",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-040/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-041/review.json",
+      "source_blob": "7ccbd402be60de8437377ab511475be35ab059ff",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-041/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-042/review.json",
+      "source_blob": "bde8516b26c356b7f314883ca5bff909342fa088",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-042/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-043/review.json",
+      "source_blob": "595111c2abfb7114f21c5425f59017bff3cd3c24",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-043/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-044/review.json",
+      "source_blob": "f78d561758f74a91ba80f669ac7bf169701ef916",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-044/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-045/review.json",
+      "source_blob": "6669b3a0377603bc4a316f671e0a6a6fc59f11ef",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-045/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-046/review.json",
+      "source_blob": "0c95aa779ff14dfe995f74ce89bc6ac2a99dbfd6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-046/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-047/review.json",
+      "source_blob": "506a229aa7359be8cdcd79ff05cdd0ba5f0b9a12",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-047/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-048/review.json",
+      "source_blob": "b2637ef5d12a49c13379ab629515ad6f680947a0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-048/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-049/review.json",
+      "source_blob": "bca6ee27f7b246df44affe4f08d23132e545a1a6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-049/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-050/review.json",
+      "source_blob": "31b0c2551f421f89b7704c3469b3427fda4e36ea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-050/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-051/review.json",
+      "source_blob": "f25e9075b0a09ed4057cbb47e3808416296fb740",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-051/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-052/review.json",
+      "source_blob": "7f9db6de500709fc8271d69d43faf8da0f070127",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-052/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-053/review.json",
+      "source_blob": "4ae2a4df5f147e57faeaec4890f6f09b5130290d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-053/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-054/review.json",
+      "source_blob": "c0dfec37c0de4d0eb266638173abd9847048b4db",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-054/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-055/review.json",
+      "source_blob": "0ccb800ef4ea4331d405a206177a9348851f7a77",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-055/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-056/review.json",
+      "source_blob": "04b18721ca674f86cec9ad45ad0846a0892cb3a9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-056/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-057/review.json",
+      "source_blob": "806d51f66ad9b2f8c338d6e797d66c0ac7c85f4e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-057/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-058/review.json",
+      "source_blob": "0dbb3db59949c9ad3cada55ae343ff2324ffc711",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-058/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-059/review.json",
+      "source_blob": "c68edd6b30ed43c6d3267ac549bc0bdba7efb5b1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-059/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-060/review.json",
+      "source_blob": "eb8fabd0e35cbdcd5745863dd6fc6c4518ad0d6d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-060/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-061/review.json",
+      "source_blob": "f65c6536650fca347447daa7117f335bf23e9cff",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-061/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-062/review.json",
+      "source_blob": "50918ed3baf44ddffd9fdb94ffa0f9ee50fce821",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-062/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-063/review.json",
+      "source_blob": "84233511566e475d44b854922c80207825bcc5fe",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-063/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-064/review.json",
+      "source_blob": "ee40004927abb1b51681de6fa8f7ba6266781853",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-064/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-065/review.json",
+      "source_blob": "f331728e07dd5ca58956b74fc10e6566744a6d80",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-065/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-066/review.json",
+      "source_blob": "ced4d43b1074b3c5b62b183947a37594ce203bea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-066/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-067/review.json",
+      "source_blob": "2e4c142f7faee16367a7c9ec115db8821384b5fb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-067/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-068/review.json",
+      "source_blob": "fe562f0e08ad17668566f54e6b1e6124ca0bddcb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-068/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-069/review.json",
+      "source_blob": "2300439677ab5b440d001feffd1714cf98b147ee",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-069/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-070/review.json",
+      "source_blob": "6b1773c753266a593280062aa8fdf4bb740ceadb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-070/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-071/review.json",
+      "source_blob": "cd2150465a6c5fd9e69c30e539e073748fd5257f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-071/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-072/review.json",
+      "source_blob": "ca728b092e35ce216456f2a06a0c2aeec67e1cf3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-072/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-073/review.json",
+      "source_blob": "105d68fa766c0e49f55c6c121968a8d7bcc6862e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-073/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-074/review.json",
+      "source_blob": "e725319318390c974a1d851f5f63aa8ecab45ab8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-074/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-075/review.json",
+      "source_blob": "bf3c426ef812d5cdcb96f37beca4ca3a1df56f2b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-075/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-076/review.json",
+      "source_blob": "f9a63c0fcd1b0e798401b71a3d479be7e8d6ac41",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-076/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-077/review.json",
+      "source_blob": "1f42909b5ae7db19e8cad62ec43b5cfd3da2c055",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-077/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-078/review.json",
+      "source_blob": "0c76d9b39a8ab436b4fb03771c9625164ccaad17",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-078/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-079/review.json",
+      "source_blob": "aaa704b0650d2ee139ed48c2e89acd80344af34f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-079/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-080/review.json",
+      "source_blob": "839899987e96330dcd6f907c29b24d36da0e5630",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-080/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-081/review.json",
+      "source_blob": "fc58f707372cdbc1cb4f1d5724cbd661458d53ed",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-081/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-082/review.json",
+      "source_blob": "20331e7468dfc0e3ec6dd167653c71a5655d9b17",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-082/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-083/review.json",
+      "source_blob": "c42008e5cb9fb85c4bedd51e28186c9bdb1ebc93",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-083/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-084/review.json",
+      "source_blob": "7cecbc5629b2f00cc4b7e3c5f1048efa6c21a1cb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-084/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-085/review.json",
+      "source_blob": "10ec7ce205c2ac2ca6c7e762749b668ba6a0fa3d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-085/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-086/review.json",
+      "source_blob": "674bd3663bf46adcecabb978b8778411f8e62228",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-086/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-087/review.json",
+      "source_blob": "93ce5a1f0378cc2309ff16b07e8df5991aae1032",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-087/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-088/review.json",
+      "source_blob": "090ae052a43132316a54ca6297b25dc0b88e22e4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-088/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-089/review.json",
+      "source_blob": "1d0e8b60d019a9c9f6fdaadca34adbe8b096ff7b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-089/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-090/review.json",
+      "source_blob": "c434adeac933ee4d2d11ca10c0993c7b0e1e1826",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-090/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-091/review.json",
+      "source_blob": "83159ca14df58deb1adf02088243211de72c649b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-091/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-092/review.json",
+      "source_blob": "d51254d5ca0f7e4a4182ba167da514984ddcc79c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-092/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-093/review.json",
+      "source_blob": "74c20f2343d8e419ee5d4ea70a91bb987bbcbeaa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-093/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/OS-094/review.json",
+      "source_blob": "188f04f76fb92c3b3c003bd427fba256742b70c9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/OS-094/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
       "source_path": "artifacts/reviews/PLAT-020/review.json",
       "source_blob": "cf77712bcb0e4ebd4654887bb68c7b9920ac1fe5",
       "mode": "100644",
@@ -2067,14 +3397,14 @@
     },
     {
       "source_path": "manifests/modules.csv",
-      "source_blob": "14be20b3c0aa7e62174cd92ea82473b9e86cb2f6",
+      "source_blob": "b4f20d7508ff7f41d80221e4ed4af658a0d6b44e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/manifests/modules.csv",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "manifests/modules.jsonl",
-      "source_blob": "63618f240017f283044e48dd93917f7f68d42f7e",
+      "source_blob": "01fd5fb9549c9349751a528650b4f922da600ace",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/manifests/modules.jsonl",
       "disposition": "imported-unchanged"
@@ -6518,6 +7848,692 @@
       "disposition": "imported-unchanged"
     },
     {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/003-range-hash-and-consistent-partitioning.md",
+      "source_blob": "993d46c3d1d64a37a4160b22c27b4ee24cc5a2ab",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/003-range-hash-and-consistent-partitioning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/004-data-locality.md",
+      "source_blob": "9ccc96e143150f1bd9bb9cf23982a305b54fb1b6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/004-data-locality.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/005-distributed-task-graphs.md",
+      "source_blob": "91f2b9aebc9f9eedcb18316a31fb04207e49ad76",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/005-distributed-task-graphs.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/006-stages-tasks-and-dependencies.md",
+      "source_blob": "55105232f39e6bb5051445d1f1e63117b2e9ab19",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/006-stages-tasks-and-dependencies.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/007-narrow-and-wide-transformations.md",
+      "source_blob": "ed713239efe9bd586689807b12edfe5b1d64f8f4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/007-narrow-and-wide-transformations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/008-serialization-across-workers.md",
+      "source_blob": "cbd0f777548e9d1bb18ce2a13e58510a5ab1ae2a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/008-serialization-across-workers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/009-cluster-failure-assumptions.md",
+      "source_blob": "4343e65a01ced67ec26a378def7db2b56c13cbba",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/009-cluster-failure-assumptions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/010-reasoning-about-work-movement-and-state-at-scale.md",
+      "source_blob": "fbafc05e376408fd3611ba22adc944b2def36f23",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/010-reasoning-about-work-movement-and-state-at-scale.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/011-distributed-block-storage.md",
+      "source_blob": "74ae48d263acd3d7621b2f6eee6f8109dd1f757e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/011-distributed-block-storage.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/012-metadata-servers-and-namespace.md",
+      "source_blob": "f06d87cf31c909b2e93d9f479da2dc8631041a46",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/012-metadata-servers-and-namespace.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/013-replication-and-erasure-coding.md",
+      "source_blob": "d6824e1ee0c57b414b5131286b2a09757cf37ea5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/013-replication-and-erasure-coding.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/014-read-and-write-pipelines.md",
+      "source_blob": "73720195e81139ea2ff9ce7fe590332534d7ed55",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/014-read-and-write-pipelines.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/015-failure-detection-and-re-replication.md",
+      "source_blob": "3122d6314113a5268a162cb016405b021e110a51",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/015-failure-detection-and-re-replication.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/016-object-storage-semantics.md",
+      "source_blob": "edafae354043e9b6c3a4e9a74ffbb621453d2de1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/016-object-storage-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/017-multipart-upload-and-commit.md",
+      "source_blob": "c559ed2176d27d17790b589e2442bebbdd04f800",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/017-multipart-upload-and-commit.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/018-consistency-of-listings-and-metadata.md",
+      "source_blob": "1653bad546de66d26bd90f1ef39fc79eaf8e7449",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/018-consistency-of-listings-and-metadata.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/019-small-file-pathologies.md",
+      "source_blob": "b6fd3b1ea6382683c8c336d9eda22e26d64840db",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/019-small-file-pathologies.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/020-selecting-storage-layouts-for-large-analytical-workloads.md",
+      "source_blob": "bb489b97a396a5f2c5cdd5d322c4d50216ea4f02",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/020-selecting-storage-layouts-for-large-analytical-workloads.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/021-mapreduce-execution-model.md",
+      "source_blob": "97e8dee4ea43020156ae019e2843866aa748886c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/021-mapreduce-execution-model.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/022-map-side-and-reduce-side-processing.md",
+      "source_blob": "0654978c368fdce1d1728c0f9de14155797cc094",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/022-map-side-and-reduce-side-processing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/023-partitioners-and-combiners.md",
+      "source_blob": "0c0280b5738f0963110a24058974e6c54e1b80a7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/023-partitioners-and-combiners.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/024-directed-acyclic-graph-execution.md",
+      "source_blob": "14d9ee050939b101866e25e1456d778ec25d5018",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/024-directed-acyclic-graph-execution.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/025-lazy-evaluation-and-plan-construction.md",
+      "source_blob": "f3c800931d45b6841bd4aa7a01b58ae4c9c79b1c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/025-lazy-evaluation-and-plan-construction.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/026-stage-scheduling.md",
+      "source_blob": "359440ef21e921549a276b1e5d4d50cabc014e58",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/026-stage-scheduling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/027-task-retry-and-speculation.md",
+      "source_blob": "0ad010766d980e9349c1b36c5e73b93877230df5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/027-task-retry-and-speculation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/028-intermediate-data-materialization.md",
+      "source_blob": "ecf89a23b7702a3d518fe603300a9c8bd13e66db",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/028-intermediate-data-materialization.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/029-checkpointing-long-computations.md",
+      "source_blob": "01481031fd97675ad92c885be50c62e81c7c4024",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/029-checkpointing-long-computations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/030-tracing-a-batch-job-through-a-cluster-engine.md",
+      "source_blob": "4d77600b6355505f61bd49317406fad9132e6b93",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/030-tracing-a-batch-job-through-a-cluster-engine.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/031-shuffle-architecture.md",
+      "source_blob": "b6f568cb71e9f9e2a3b96fcad8ab1ec79fa6f70f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/031-shuffle-architecture.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/032-map-side-buffering-and-spill.md",
+      "source_blob": "f319ae2d876f7bfeec2f017e1fad85958dfbf33f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/032-map-side-buffering-and-spill.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/033-sort-based-shuffle.md",
+      "source_blob": "ebd7bd98ae3c414e102032b0024b49a9c8e0d463",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/033-sort-based-shuffle.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/034-hash-based-shuffle.md",
+      "source_blob": "23e8f3a5f712c7b578a6347fe257d1aaa35a127e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/034-hash-based-shuffle.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/035-broadcast-joins.md",
+      "source_blob": "0c863b730ae9e57e0d89d9745ffd50a08d294362",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/035-broadcast-joins.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/036-repartition-joins.md",
+      "source_blob": "7c241548476a32bb0ba6cc3d77bc1c1e946d3049",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/036-repartition-joins.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/037-distributed-sort-merge-joins.md",
+      "source_blob": "e6f9d3fa3acd6989531c9a6ee3e55df8ef9bf38d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/037-distributed-sort-merge-joins.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/038-distributed-aggregation.md",
+      "source_blob": "85aa8a32fff808bf9844fd7ea0bfd2f2563367a3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/038-distributed-aggregation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/039-skewed-keys-and-heavy-hitters.md",
+      "source_blob": "a63f7dbf330be8da8b6614d8d0ceeeb0e86adb29",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/039-skewed-keys-and-heavy-hitters.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/040-reducing-network-and-disk-cost-in-a-wide-transformation.md",
+      "source_blob": "65c711a2b8d343ea1c4ad31c9ca7b68b8230ff6b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/040-reducing-network-and-disk-cost-in-a-wide-transformation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/041-logs-as-distributed-input.md",
+      "source_blob": "cfe2f6e9f8845c6610766e2071e925636080a026",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/041-logs-as-distributed-input.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/042-partitioned-consumption.md",
+      "source_blob": "9ec18240cd854d37eaa25858b2a0c5c269e0e121",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/042-partitioned-consumption.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/043-stateful-operators.md",
+      "source_blob": "8e0631fa5702063827fe9643d1a08bca544d7a55",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/043-stateful-operators.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/044-event-time-processing.md",
+      "source_blob": "3c73c8538f782ca4952a309fdcf9b3339faa7064",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/044-event-time-processing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/045-watermarks.md",
+      "source_blob": "e7c52ff014575113575a9bede9933df62356e6b0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/045-watermarks.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/046-window-assignment-and-triggers.md",
+      "source_blob": "c0d4ee8c837253bfaa448d3a4489d92d0836cdd4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/046-window-assignment-and-triggers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/047-checkpoint-barriers.md",
+      "source_blob": "759ab9115e324ecc8847bf936f7cc990571d60b5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/047-checkpoint-barriers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/048-state-snapshots-and-recovery.md",
+      "source_blob": "1ed1444ec5354dd2230fc2f4d48c7abf2c47a46d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/048-state-snapshots-and-recovery.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/049-backpressure-across-operators.md",
+      "source_blob": "c00fe6803c427df5a0a39a19de780b222908b1d4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/049-backpressure-across-operators.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/050-reprocessing-a-stream-without-double-applying-effects.md",
+      "source_blob": "248c04ae964243ad82340b09d9648409cd64c4f0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/050-reprocessing-a-stream-without-double-applying-effects.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/051-cluster-resource-models.md",
+      "source_blob": "18c57ac8361a35337904478508b66bf6e9c777e5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/051-cluster-resource-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/052-static-and-dynamic-allocation.md",
+      "source_blob": "2ea6be4533e73dae9f4dfd2f4632887b6331e46a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/052-static-and-dynamic-allocation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/053-fair-and-capacity-scheduling.md",
+      "source_blob": "a13dd25510f3225fedae6c25c8cf5fa6bc432c6e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/053-fair-and-capacity-scheduling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/054-data-local-task-placement.md",
+      "source_blob": "7a50ab65f1b651b5980c452abc1f74b83a599f55",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/054-data-local-task-placement.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/055-work-stealing-and-speculation.md",
+      "source_blob": "b19ba67adde6538130b84de16634147d3229081e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/055-work-stealing-and-speculation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/056-preemption.md",
+      "source_blob": "a19aeacb71e0689c0bb0eff0d8c623927cfa4e6f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/056-preemption.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/057-memory-cpu-and-i-o-isolation.md",
+      "source_blob": "ffefc90396b273e75ebf70df1ef8b123686132f2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/057-memory-cpu-and-i-o-isolation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/058-multi-tenant-queueing.md",
+      "source_blob": "bf77538192801a721995330b008267007ddb6cdb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/058-multi-tenant-queueing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/059-autoscaling-data-clusters.md",
+      "source_blob": "4e1cc4c1cbd87b665e9b41971277628a2f764720",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/059-autoscaling-data-clusters.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/060-diagnosing-scheduler-delay-and-resource-fragmentation.md",
+      "source_blob": "24b2a2166cc0d4449417f95f63f2e3bba6fb49f0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/060-diagnosing-scheduler-delay-and-resource-fragmentation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/061-distributed-logical-and-physical-plans.md",
+      "source_blob": "e512f49c64abe7ba4bda2619f2d5e9563c322444",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/061-distributed-logical-and-physical-plans.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/062-coordinator-and-worker-architecture.md",
+      "source_blob": "34ec2eb7e479e7f561e18bae0f77ef61d5655dcd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/062-coordinator-and-worker-architecture.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/063-exchange-operators.md",
+      "source_blob": "80a2aefd9df8afd37cf98dfa33b32d1db576bfef",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/063-exchange-operators.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/064-distributed-hash-and-merge-joins.md",
+      "source_blob": "4aaa3f464de21058853f880f1c1b74aa9a4811df",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/064-distributed-hash-and-merge-joins.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/065-partial-and-final-aggregation.md",
+      "source_blob": "f8a64478b1b5dfcd51dd8081a1c24540d02deeaa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/065-partial-and-final-aggregation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/066-vectorized-execution-at-cluster-scale.md",
+      "source_blob": "a5cc1e2fa5e606ffb2d444d78d96a1a49a9f86b1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/066-vectorized-execution-at-cluster-scale.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/067-runtime-filtering-and-dynamic-pruning.md",
+      "source_blob": "79cb03ab86b869333ba5b1a7369ec8e8ef03be05",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/067-runtime-filtering-and-dynamic-pruning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/068-adaptive-query-execution.md",
+      "source_blob": "389481b0082f511b8c17debe5203f61057226d52",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/068-adaptive-query-execution.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/069-federated-query.md",
+      "source_blob": "1408e7c22b32d5522e477923ac48f8e596a7e370",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/069-federated-query.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/070-diagnosing-a-distributed-query-from-plan-to-network.md",
+      "source_blob": "1706ce2a495d1a9a9752c1130453e419e253edff",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/070-diagnosing-a-distributed-query-from-plan-to-network.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/071-table-snapshots-and-atomic-commit.md",
+      "source_blob": "3c860ef6ea5522682b4a68e2df35a4ec2be48877",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/071-table-snapshots-and-atomic-commit.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/072-manifest-and-metadata-trees.md",
+      "source_blob": "e394f38eb3583edf2295b54c3ba5bcea45c1d76c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/072-manifest-and-metadata-trees.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/073-optimistic-concurrency.md",
+      "source_blob": "11340d1688746359aa90a5569cbcd46ef348ce85",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/073-optimistic-concurrency.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/074-schema-evolution-at-scale.md",
+      "source_blob": "0d156de8eb9569fdffaa4653ceab053b750c3d63",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/074-schema-evolution-at-scale.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/075-metadata-mechanics-of-partition-evolution.md",
+      "source_blob": "98acfb12942b359d981e9ddd9ad9a87405921c7f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/075-metadata-mechanics-of-partition-evolution.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/076-compaction-planning.md",
+      "source_blob": "25fe8b44b132558877e225caac16990593fad326",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/076-compaction-planning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/077-file-clustering-and-ordering.md",
+      "source_blob": "36cb6e4391172f3fcfea113e916a7908f38fdd26",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/077-file-clustering-and-ordering.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/078-deletion-vectors-and-row-level-changes.md",
+      "source_blob": "55dcda56c7791c163b83929a1e217036f81e56e8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/078-deletion-vectors-and-row-level-changes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/079-catalog-and-transaction-coordination.md",
+      "source_blob": "a1f2ba565137445c6ba0a3350b9dad94869ceebd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/079-catalog-and-transaction-coordination.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/080-operating-table-metadata-under-millions-of-files.md",
+      "source_blob": "a1277065365c09ca8ec1138926ed6430b1580dc2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/080-operating-table-metadata-under-millions-of-files.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/081-task-level-failure-recovery.md",
+      "source_blob": "3a6e431d0fff955c35c8920de0ac6ca2e9cd3a38",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/081-task-level-failure-recovery.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/082-worker-and-executor-loss.md",
+      "source_blob": "5d40f59cebcb2d04976632110d06e91bd1827e33",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/082-worker-and-executor-loss.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/083-coordinator-failure.md",
+      "source_blob": "386ce80278a15739c1aa3653fc20d3c5bc2ed673",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/083-coordinator-failure.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/084-lineage-based-recompute.md",
+      "source_blob": "5e3f87782a805bf991080e2ef50ae187c453b46a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/084-lineage-based-recompute.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/085-checkpoint-based-recovery.md",
+      "source_blob": "4cb4349793fb31b32be55266dd95e0f36006d00d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/085-checkpoint-based-recovery.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/086-exactly-once-state-updates.md",
+      "source_blob": "21865672d8d06aa0bc5a9a831688f11016210bcb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/086-exactly-once-state-updates.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/087-transactional-sinks.md",
+      "source_blob": "c4c5dbbae0aaeb4675ee4faade3467b9941ca3b6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/087-transactional-sinks.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/088-backfill-isolation.md",
+      "source_blob": "f1837cb915f86eb5e8d3f0287831196a3c13905d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/088-backfill-isolation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/089-schema-and-code-changes-during-reprocessing.md",
+      "source_blob": "ee04d4c6a70e216ba3a86e5a85eddfa094779e43",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/089-schema-and-code-changes-during-reprocessing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/090-designing-recovery-for-multi-hour-and-multi-day-jobs.md",
+      "source_blob": "d560a9c0801895a879743c80fd6bc68c80111ee5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/090-designing-recovery-for-multi-hour-and-multi-day-jobs.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/091-partition-count-and-task-granularity.md",
+      "source_blob": "73aa99c5c11eb9185b3da041bca68c5d9f439908",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/091-partition-count-and-task-granularity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/092-memory-pressure-spill-and-garbage-collection.md",
+      "source_blob": "2ff2628d706f2c151d0b412d2c71d9d99379ac2a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/092-memory-pressure-spill-and-garbage-collection.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/093-serialization-and-compression-trade-offs.md",
+      "source_blob": "8f6448bf69aab930df6aaf79493fb9ab626f352e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/093-serialization-and-compression-trade-offs.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/094-network-saturation.md",
+      "source_blob": "7ddc95e90005dbb1a43f82b17920b3c55a97a7aa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/094-network-saturation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/095-storage-throughput-and-request-limits.md",
+      "source_blob": "46b1bd83eaf6775ab3c8ce5173c5101632f1c0cc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/095-storage-throughput-and-request-limits.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/096-skew-detection-and-mitigation.md",
+      "source_blob": "c94d1aeba233bff36e8f5bfe2382af5edf634a8b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/096-skew-detection-and-mitigation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/097-cluster-benchmarking.md",
+      "source_blob": "0e5641377cb0d9de85e1b6bdb021d3fe87f7500b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/097-cluster-benchmarking.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/098-capacity-planning-for-batch-and-streaming.md",
+      "source_blob": "57a143bbb16d89c35a438882742a7e929da8d052",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/098-capacity-planning-for-batch-and-streaming.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/099-cost-attribution-and-workload-governance.md",
+      "source_blob": "0b0b25b17285df5a02ee17c090f0a0dca1846e92",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/099-cost-attribution-and-workload-governance.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/100-conducting-an-end-to-end-large-scale-data-performance-review.md",
+      "source_blob": "61b8f4cbaf58d4d83aa6dfc0b86e7138280c885e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/100-conducting-an-end-to-end-large-scale-data-performance-review.md",
+      "disposition": "imported-unchanged"
+    },
+    {
       "source_path": "programs/22-operating-systems/ROADMAP.md",
       "source_blob": "27f7017344d1993d87bd6e5a599bc86ada605d1c",
       "mode": "100644",
@@ -6536,6 +8552,650 @@
       "source_blob": "b9feed7d60d642a944ad2dca65938667c1e3c8b3",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/002-privilege-levels-and-protection-rings.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/003-system-calls-and-user-kernel-transitions.md",
+      "source_blob": "00e1b0b163ef9b9c437aaaa068cf17992f213473",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/003-system-calls-and-user-kernel-transitions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/004-interrupts-and-exceptions.md",
+      "source_blob": "af3560b4a11b37b0f49c704c271a9e67af1f7b30",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/004-interrupts-and-exceptions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/005-kernel-architectures-monolithic-microkernel-and-hybrid.md",
+      "source_blob": "c2062ad25c8e9f43c08f0c3dcfe837866b7c1204",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/005-kernel-architectures-monolithic-microkernel-and-hybrid.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/006-boot-process-and-kernel-initialization.md",
+      "source_blob": "eaca10f6098650630608f9a9c6b7cd9a50d4ced2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/006-boot-process-and-kernel-initialization.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/007-kernel-data-structures.md",
+      "source_blob": "4efa9126caa610b15761e67c826b7de63c18a6e4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/007-kernel-data-structures.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/008-kernel-memory-allocation.md",
+      "source_blob": "567b616eca09dd4617203a25567407ed6d03ce7d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/008-kernel-memory-allocation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/009-kernel-modules-and-drivers.md",
+      "source_blob": "17c6d65350d72e95d1ee6aa25adfa5bb9542e804",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/009-kernel-modules-and-drivers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/010-tracing-a-request-across-user-and-kernel-space.md",
+      "source_blob": "7007e72bbd56c9da4d36cd718f2982aec184c4c5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/010-tracing-a-request-across-user-and-kernel-space.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/011-processes-and-address-spaces.md",
+      "source_blob": "c05edff54895b197805e8412fc04ee969c3c4964",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/011-processes-and-address-spaces.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/012-process-creation-and-program-loading.md",
+      "source_blob": "5c0334fa124391ac25a65ba5634e7b0beab2973d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/012-process-creation-and-program-loading.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/013-threads-and-execution-contexts.md",
+      "source_blob": "c1f27ce424ae58426edfd00c90c623683b6a92d3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/013-threads-and-execution-contexts.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/014-context-switching.md",
+      "source_blob": "9ed6e36d311521783d70b46438d9ecd42c1c0cb7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/014-context-switching.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/015-process-states-and-wait-queues.md",
+      "source_blob": "1aedf052f82b61a93ab1f28761fc028f7eda82de",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/015-process-states-and-wait-queues.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/016-scheduling-objectives.md",
+      "source_blob": "f4634e48e2252076588099a3033c4f03c4164153",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/016-scheduling-objectives.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/017-round-robin-and-priority-scheduling.md",
+      "source_blob": "022669bcd7945db566f978020b195740a33dd10d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/017-round-robin-and-priority-scheduling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/018-multilevel-feedback-queues.md",
+      "source_blob": "0672468734cd8a6667ae463c4a4afa5e3089818a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/018-multilevel-feedback-queues.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/019-fair-scheduling.md",
+      "source_blob": "1959ede550d66acf868f9cdae137ddbe6754598b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/019-fair-scheduling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/020-measuring-scheduler-latency-and-throughput.md",
+      "source_blob": "52f75464fce636284a344f858dc93fa5c0b3503b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/020-measuring-scheduler-latency-and-throughput.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/021-critical-sections-in-the-kernel.md",
+      "source_blob": "6214e3ccc2e66ee0f608c99d5eac0705e31fcfde",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/021-critical-sections-in-the-kernel.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/022-spinlocks-and-interrupt-context.md",
+      "source_blob": "9c6cbbd1ca31ef91f0680f6353e7a7986d3783fb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/022-spinlocks-and-interrupt-context.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/023-mutexes-semaphores-and-condition-variables.md",
+      "source_blob": "6287c3acceaf6ffed9c66e77d6e4c040af5917a7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/023-mutexes-semaphores-and-condition-variables.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/024-atomic-operations.md",
+      "source_blob": "b80842964aace825f72a5e0d56cafa9c76c89e3a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/024-atomic-operations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/025-deadlock-conditions-and-avoidance.md",
+      "source_blob": "6f38ae1ad24dffe5a09b94874a747e53be9b5e12",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/025-deadlock-conditions-and-avoidance.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/026-pipes-and-byte-streams.md",
+      "source_blob": "71915126b835bd1a7325fb00bad1e719c3a9d1bb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/026-pipes-and-byte-streams.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/027-shared-memory.md",
+      "source_blob": "da7e17080464f5abedc7633826b4bcc816b367a5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/027-shared-memory.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/028-signals-and-notifications.md",
+      "source_blob": "c8c703e3bc89d6a7b18439d4efd4f142729f0d77",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/028-signals-and-notifications.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/029-local-sockets-and-message-queues.md",
+      "source_blob": "8853e696527af00737e8073e4ae7eb93fd978b18",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/029-local-sockets-and-message-queues.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/030-designing-an-ipc-mechanism-from-semantics-and-cost.md",
+      "source_blob": "515d0d638c6439f17b022d7129cb1840a14f1d81",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/030-designing-an-ipc-mechanism-from-semantics-and-cost.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/031-address-translation.md",
+      "source_blob": "916d1583b5336ab96e7e3e374c60f39dc57f6dbc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/031-address-translation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/032-page-tables.md",
+      "source_blob": "afc574f27255e0287932d6743e845fd8da83fbcd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/032-page-tables.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/033-translation-lookaside-buffers.md",
+      "source_blob": "b0ceb1230a8c9c6e78c943f97cf1e5f3db7ed4a6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/033-translation-lookaside-buffers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/034-demand-paging.md",
+      "source_blob": "a2a07356c72fabe3d492cf029a7857f36f7aaaaa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/034-demand-paging.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/035-page-faults.md",
+      "source_blob": "eff63c7f727a100bf7a8c052862f9b697c7e0bb5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/035-page-faults.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/036-virtual-memory-page-replacement.md",
+      "source_blob": "b4744f769e745fc87cb85f782333763669c832f1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/036-virtual-memory-page-replacement.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/037-copy-on-write.md",
+      "source_blob": "0cd5757470817b4426f57bf5d6bc8c59c85caf0b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/037-copy-on-write.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/038-memory-mapped-files.md",
+      "source_blob": "445f7d2f1e647a3c44db6eef214cd125f3b5cdd0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/038-memory-mapped-files.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/039-shared-pages-and-page-cache.md",
+      "source_blob": "77b45647d2b69b35a40beacf767636f293e58417",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/039-shared-pages-and-page-cache.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/040-diagnosing-memory-pressure-and-thrashing.md",
+      "source_blob": "bf75d3f2e8ad32a4e9560833a0453597d23bdb18",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/040-diagnosing-memory-pressure-and-thrashing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/041-files-directories-and-namespaces.md",
+      "source_blob": "0189eb69d6d77a366b356d86e17b55756468e557",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/041-files-directories-and-namespaces.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/042-inodes-and-metadata.md",
+      "source_blob": "9acde08d679d59d4ba9769c7948e88f163fd4468",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/042-inodes-and-metadata.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/043-file-allocation.md",
+      "source_blob": "d4b08aeef12717ba884329f85406477eaef73794",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/043-file-allocation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/044-filesystem-free-space-management.md",
+      "source_blob": "23c498ce64bbb67c47fb9a34259e57fe34e4e2e2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/044-filesystem-free-space-management.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/045-buffer-cache-and-page-cache.md",
+      "source_blob": "fa7c51aa9a264e95e6634bdc4edd7746d53d0d30",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/045-buffer-cache-and-page-cache.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/046-journaling.md",
+      "source_blob": "3dcd917bef23d0e43d55dbe178b9387614521329",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/046-journaling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/047-crash-consistency.md",
+      "source_blob": "c3208194e0dc67378afb897d10213440f566c523",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/047-crash-consistency.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/048-filesystem-permissions.md",
+      "source_blob": "a3cb3b340d1f2113da9ad0136bbfb31d82436db4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/048-filesystem-permissions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/049-virtual-filesystem-layers.md",
+      "source_blob": "0b6e3b8dedcd370844e002b8c4dd6b07a484a6a2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/049-virtual-filesystem-layers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/050-tracing-file-creation-to-stable-storage.md",
+      "source_blob": "628f2e75ec278c622b4c5c00e963c30fbdad735e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/050-tracing-file-creation-to-stable-storage.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/051-per-cpu-state.md",
+      "source_blob": "76550b17cec453da3d25ae17612af417ef884369",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/051-per-cpu-state.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/052-smp-kernel-synchronization.md",
+      "source_blob": "1b0b2cddba4d95b12d6406a2f6fb16b6eeeb1119",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/052-smp-kernel-synchronization.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/053-scalable-locking.md",
+      "source_blob": "87437467da50e9a3743c355811999447862ff5ef",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/053-scalable-locking.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/054-kernel-read-copy-update.md",
+      "source_blob": "04a9891f5bf45318827240fae7bcd68e55987730",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/054-kernel-read-copy-update.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/055-numa-memory-placement.md",
+      "source_blob": "aaca8097af06a37d2d574456b01943c9ffc60558",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/055-numa-memory-placement.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/056-processor-affinity.md",
+      "source_blob": "0dccd1a62f80b1dddf7efdc34c7051eac7dc529b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/056-processor-affinity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/057-load-balancing-across-cores.md",
+      "source_blob": "90a2df3a0c66ec4eb73f0a9aff739a401d37c434",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/057-load-balancing-across-cores.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/058-timer-and-interrupt-scalability.md",
+      "source_blob": "d401a00f699a86ffb3cab00db562c24757dcd2b6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/058-timer-and-interrupt-scalability.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/059-tlb-shootdowns.md",
+      "source_blob": "ab4eaff65c410c177d5f9b2767607e774c1a82f8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/059-tlb-shootdowns.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/060-diagnosing-multiprocessor-kernel-contention.md",
+      "source_blob": "9ff5e2d533367f9f65ad2e5171534ae7c270d161",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/060-diagnosing-multiprocessor-kernel-contention.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/061-device-discovery-and-driver-models.md",
+      "source_blob": "e493687c12d870651a45b77a8b3d5a0e7d053bb0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/061-device-discovery-and-driver-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/062-memory-mapped-and-port-mapped-i-o.md",
+      "source_blob": "36edcd9399b7634d6aecb9c4bbb73e8373e549fb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/062-memory-mapped-and-port-mapped-i-o.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/063-direct-memory-access.md",
+      "source_blob": "be9cf21ee1ba0f1e25c27e357ead87d107e8b548",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/063-direct-memory-access.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/064-block-and-character-devices.md",
+      "source_blob": "bead30ff8bd525451b24b9e2df0c048a42f33247",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/064-block-and-character-devices.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/065-i-o-schedulers.md",
+      "source_blob": "5f8181665a44c061e2be33f940e784dd8814ff61",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/065-i-o-schedulers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/066-asynchronous-i-o.md",
+      "source_blob": "6f09ebfe97adc5589797f0674b5b772dc1b703fa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/066-asynchronous-i-o.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/067-zero-copy-and-kernel-bypass.md",
+      "source_blob": "62569431ea4ec7fad6d194d0204b1bf395b849de",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/067-zero-copy-and-kernel-bypass.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/068-storage-queues-and-nvme.md",
+      "source_blob": "c2cd6cf3f0d7955d72e1f554dac674a0b66fb828",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/068-storage-queues-and-nvme.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/069-operating-system-support-for-persistent-memory.md",
+      "source_blob": "dab2bd75f91e7c4e7433a76fba3caf8c95c86088",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/069-operating-system-support-for-persistent-memory.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/070-designing-an-i-o-path-for-latency-or-throughput.md",
+      "source_blob": "11314c56ec8d4f795d496b11e1319c52955ba715",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/070-designing-an-i-o-path-for-latency-or-throughput.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/071-socket-layer-architecture.md",
+      "source_blob": "844072e2920295d402d4f0cca242df5c408faf8a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/071-socket-layer-architecture.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/072-packet-reception-and-transmission.md",
+      "source_blob": "a429070d492056b34daf5b0af5f5a6dce0843ad2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/072-packet-reception-and-transmission.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/073-network-buffers.md",
+      "source_blob": "1a49d99f4a2e12ccb2a72620c0751486b4e6e9cb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/073-network-buffers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/074-protocol-processing.md",
+      "source_blob": "285e3e065ccb56de5ff1974dfba76ae5b2b34a12",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/074-protocol-processing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/075-routing-and-neighbor-tables.md",
+      "source_blob": "19fd0a919e1c86ed0c0831a587243e71812d3ea6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/075-routing-and-neighbor-tables.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/076-connection-state-management.md",
+      "source_blob": "cf48981c4a8a76ae185183fc1dddc400157d023e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/076-connection-state-management.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/077-congestion-control-hooks.md",
+      "source_blob": "3ab4938655009f7d325ee14e29c77a49f0b2faaa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/077-congestion-control-hooks.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/078-packet-filtering.md",
+      "source_blob": "014afba59b71b7d3e33f8e5a4ec7bfe85b899171",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/078-packet-filtering.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/079-offload-and-receive-side-scaling.md",
+      "source_blob": "7406066f71d7442b005260b6977a7c276ba51e7f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/079-offload-and-receive-side-scaling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/080-profiling-the-kernel-network-path.md",
+      "source_blob": "c44dde7fa626d1f246d5bdc8fa910dbf7305f190",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/080-profiling-the-kernel-network-path.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/081-trap-and-emulate-virtualization.md",
+      "source_blob": "284e902cbdcacfde818c82eb9de0964a94f26439",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/081-trap-and-emulate-virtualization.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/082-hardware-assisted-virtualization.md",
+      "source_blob": "c02b9b6fd28c3214c8bebdf40b45ce19bcf244ee",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/082-hardware-assisted-virtualization.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/083-hypervisor-architectures.md",
+      "source_blob": "b32f515f88db4dedbc0343b56311c9fff309efee",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/083-hypervisor-architectures.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/084-virtual-memory-for-guests.md",
+      "source_blob": "f852b927a1ba7cd85cf50529535cb38a0f43f393",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/084-virtual-memory-for-guests.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/085-virtual-devices-and-virtio.md",
+      "source_blob": "beb729829d920ef798a0f76bc2a48dfc67b3eb0a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/085-virtual-devices-and-virtio.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/086-namespaces.md",
+      "source_blob": "3e6f4aaba7808d74bc4598af7c71e313879b1ece",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/086-namespaces.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/087-control-groups.md",
+      "source_blob": "070db5a6caa94c3572a6071815f6edbadb961580",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/087-control-groups.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/088-container-filesystems.md",
+      "source_blob": "f62216c5b7ec2f19155a61850917fab1ff206b87",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/088-container-filesystems.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/089-system-call-filtering-and-sandboxing.md",
+      "source_blob": "ef3c582e912ab80251d81f73d62818eccf161dfb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/089-system-call-filtering-and-sandboxing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/090-comparing-virtual-machines-containers-and-process-isolation.md",
+      "source_blob": "24b9a906be19e8a8a7ac3c7d3977918e4506d3b2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/090-comparing-virtual-machines-containers-and-process-isolation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/091-kernel-attack-surfaces.md",
+      "source_blob": "a4aa831bbb8902cca099076fe17ae6d373a48c48",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/091-kernel-attack-surfaces.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/092-capabilities-and-mandatory-access-control.md",
+      "source_blob": "7501abf76b5e9f71d382141b96935daddcec239c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/092-capabilities-and-mandatory-access-control.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/093-secure-boot-and-measured-boot.md",
+      "source_blob": "4e8fc175fa2395fd929291a1e9ed85a5cad20b33",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/093-secure-boot-and-measured-boot.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/094-kernel-memory-safety-strategies.md",
+      "source_blob": "6e4dec23084196f92e794841956c2a3241be19ca",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/094-kernel-memory-safety-strategies.md",
       "disposition": "imported-unchanged"
     },
     {

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-032",
+  "chapter_digest": "09aa2cc891e75ef896cf2bc6d233f3d192ee4867593912942defa897a3d0c5b1",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 9, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux kernel documentation for page tables, process addresses, architecture helpers, runtime page-table checking, and pagemap; current RISC-V, Intel, and Arm architecture documentation; and MIT's 2025 xv6 text. All nine cited URLs returned HTTP 200 after normal redirects; generic hierarchy, architecture-specific encoding, Linux implementation, hardening, and empirical claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked offset width p, index width b, levels L, virtual address v, level leaf size M_i, table page size P_t, allocated count n_t, and disjoint entry states I, N, L_i, and S.", "Reviewed page table, table and leaf entry, root, page walk, folded level, huge-page leaf, break-before-make, canonicality, hierarchy, and deferred reclamation terminology."],
+      "notes": "Notation separates address fields, hierarchy shape, entry state, leaf coverage, table footprint, and reclamation reachability."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed Sv39 decomposition of 0x123456789 and confirmed root-to-leaf indices 4,282,86 with offset 0x789.", "Confirmed leaf sizes 4096,2097152,1073741824 and 512 entries per table; corrected an initial manual low-index value before completion."],
+      "notes": "The deterministic arithmetic omits canonicality, entry encodings, permissions, physical memory reads, caches, faults, concurrency, and lifecycle."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived a uniform-radix level-i leaf size as 2^(p+b*i) and alignment at the same size.", "Checked flat table cost V*E and hierarchical physical footprint as whole allocated table pages n_t*P_t plus metadata, not merely used entry bytes."],
+      "notes": "Leaf legality and exact address formats remain explicitly architecture- and mode-specific beyond the generic arithmetic."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed invalid, table, leaf, reserved, swap, migration and special states; illegal leaf levels; misalignment; physical-width overflow; unknown extensions; upper permissions; duplicate child allocation; zeroing; publication; and allocation failure.", "Reviewed permission revoke, break-before-make, stale translations, address-space identity reuse, concurrent faults and walkers, empty-table races, sparse exhaustion, huge collapse and split, shared roots, nested tables, IOMMU and DMA lifetime, introspection, and mixed-generation diagnostics."],
+      "notes": "Encoding, arithmetic, hierarchy, permission, concurrency, invalidation, reclamation, resource, virtualization, device, security, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced disjoint entry states, pointer and leaf alignment, effective permissions, level-sized mappings, initialization-before-publication, delayed reclamation, and complete accounting through ten examples and five answers.", "Verified the corrected toy extracts every index from the defined bit positions and derives every leaf size from the same p and b values."],
+      "notes": "The chapter does not conflate validity with leaf mapping, generic helpers with machine encoding, entry visibility with completed invalidation, empty tables with reclaimable tables, or used entries with physical table cost."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed translation mode, state decoding, width and alignment, permissions, publication, concurrent transitions, replacement, invalidation, reclamation, accounting, and test obligations.", "Constructed counterexamples for illegal huge alignment, duplicate allocation, early parent publication, stale permissive translation, concurrent empty-table free, sparse table exhaustion, collapse races, guest-host address confusion, and unsafe diagnostic walks."],
+      "notes": "The chapter supplies reusable page-table obligations, not a formal proof of an architecture, kernel helper set, lock scheme, huge-page implementation, IOMMU, or hypervisor."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of valid, present, leaf, atomic, ordered, visible, safe, empty, current, compatible, verified, and certified.", "Confirmed architecture guarantees, Linux abstractions, abstract radix arithmetic, toy recomputation, runtime hardening, performance evidence, and human assurance remain separately scoped."],
+      "notes": "Runtime page-table checking is presented as defense in depth and the Sv39 toy as arithmetic rather than hardware-walk evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-032/report.json records exact indices, offset, leaf sizes, and entries per table for toy-sv39-indices under Python 3.", "Reviewed table pages, occupancy, allocations, walk depth, huge leaves, splits, collapses, permission changes, invalidation, shootdowns, deferred frees, faults, workload phases, architecture, configuration, and raw results."],
+      "notes": "The passing toy excludes page-table memory, hardware, operating-system helpers, concurrent mutation, and resource behavior."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed hierarchy motivation, address fields, walk states, leaf sizes, Sv39, permissions, nonpresent software state, allocation, publication, locks, permission transitions, break-before-make, removal, huge collapse and split, sparse regions, shared roots, table access, translation caches, accounting, nesting, IOMMUs, hardening, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed entry constructors, checked bit extraction, zeroed table allocation, compare-and-install, page-table locks, transition classification, architecture helper use, invalidation scope, reverse mappings, delayed frees, table accounting, huge-page rollback, diagnostic walker stability, helper tests, and runtime checks as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from hierarchy and address arithmetic through entry semantics, concurrent construction and teardown, large mappings, virtualization and devices, hardening, and evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux memory maintainer, Intel, Arm or RISC-V architect, kernel, hypervisor or IOMMU implementer, security or performance specialist, safety authority, independent verifier, or certification review is claimed."
+}

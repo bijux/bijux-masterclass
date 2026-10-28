@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-091",
+  "chapter_digest": "fff0122d7a779338397899bda6c5e5642265be4c39377ca748066f5e58eda105",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux kernel, Linux man-pages and syzkaller documentation for threat models, self-protection, capabilities, seccomp, LSMs, module signing, CVE applicability, security reporting and isolated fuzzing. All ten cited URLs returned HTTP 200 after normal redirects; kernel contracts, abstract reachability models, operational guidance and assurance claims remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked principal, interface, subsystem, asset, reachability-edge, attack-path, handler-set, configuration, applicability-time, deployment-time and mitigation notation.", "Reviewed set-builder paths, unioned handler coverage, elapsed exposure and explicit non-independence of defense probabilities."],
+      "notes": "Notation separates reachability, coverage, remediation time and correlated mitigation assumptions."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed handler unions for minimal, server and development feature configurations.", "Confirmed reachable counts 2, 4 and 8 and a six-handler set difference; independently recomputed the exercise's 75% count reduction."],
+      "notes": "The deterministic computation validates set arithmetic only; it models no source size, complexity, defects, exploitability, privilege, consequence or risk."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived principal-to-interface-to-subsystem-to-asset paths and per-principal handler unions under exact configuration.", "Checked remediation exposure units and rejected multiplication of mitigation bypass probabilities without independence evidence."],
+      "notes": "The expressions are review tools and do not claim exhaustive path discovery, quantitative risk, exploit probability or independent defenses."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed compatibility ABIs, autoload, descriptors, filesystems, protocols, physical and virtual devices, passthrough, BPF, perf and debug interfaces.", "Reviewed signed vulnerable modules, runtime drift, information leaks, sanitizer limits, fuzz isolation, ambiguous CVEs, partial fixes, compromised telemetry and host recovery."],
+      "notes": "Principal, entry, configuration, privilege, device, mutation, mitigation, testing, applicability and incident boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced each principal through deployed entry families, enabled implementations and protected assets.", "Verified reduction enforcement, runtime state, provenance, resource bounds, exact reproduction, coherent updates and boundary-scoped recovery."],
+      "notes": "The chapter treats kernel security as a maintained reachability and response case, not a feature checklist or vulnerability count."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed path removal first, then prevention, exploit resistance, detection, applicability and recovery for remaining code.", "Constructed counterexamples for syscall-count-as-surface, unloaded-as-unreachable, signed-as-safe, KASLR-as-memory-safety, sanitizer-as-proof and CVE-as-universal-applicability."],
+      "notes": "The chapter supplies reusable kernel-surface obligations, not a formal proof of Linux, a kernel build, driver, module, mitigation, workload, host or absence of exploitable defects."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of reachable, exposed, trusted, verified, safe, secure, deterministic, probabilistic, applicable, fixed and recovered.", "Confirmed kernel documentation, simplified graphs, examples, operational recommendations and assurance limitations remain separately labeled."],
+      "notes": "Handler count is not labeled risk, module signatures are not labeled correctness, randomization is not labeled prevention, fuzzing is not labeled completeness and container restart is not labeled host recovery."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-091/report.json records source, expected and actual output, stderr, exit status, toolchain and environment for abstract handler reachability.", "Reviewed required kernel, config, command-line, module, firmware, ABI, capability, namespace, descriptor, device, BPF, LSM, mitigation, crash, reproducer, update and runtime evidence."],
+      "notes": "The passing toy establishes four set-cardinality outputs only; it provides no evidence for actual kernel reachability, vulnerability, exploitability, risk reduction or remediation."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed kernel attack surface as principal-specific reachability through configured syscall, descriptor, packet, storage, device, guest and management paths."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including configuration, autoload, capabilities, descriptors, parsers, devices, BPF, tracing, module signing, hardening, fuzzing, CVE applicability, supported updates, telemetry and recovery. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from principals and entry families through reduction and exploit resistance to testing, applicability, remediation and recovery, followed by twelve obligations, sixteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux kernel or subsystem maintainer, distribution security team, fuzzing researcher, incident responder, independent-verification or certification review is claimed."
+}

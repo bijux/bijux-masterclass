@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-040",
+  "chapter_digest": "d7766cd92bf5226a95b46a67f90988cd58b7d9eb69fd2394cbc56d3eb6b94c0c",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux kernel documentation for PSI, cgroup v2 memory controls, memory-management concepts, Multi-Gen LRU, zswap, VM sysctls, and delay accounting, plus current Linux proc_vmstat, proc_meminfo, and proc_pid_smaps man-pages. All ten cited URLs returned HTTP 200 after normal redirects; interface semantics, diagnostic heuristics, causal inferences, empirical thresholds, and assurance guidance remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked interval Delta=t_1-t_0, counter rate r_X, scan Q, reclaimed K, eviction V, refault J, full-stall S_f, useful output U, efficiency eta=K/Q, refault ratio rho=J/V, stall fraction sigma=S_f/Delta, and evidence D=(C,W,R,E,S,U,G).", "Reviewed utilization, pressure, direct reclaim, refault, swap churn, PSI, thrashing, working set, compaction, allocation order, and OOM terminology."],
+      "notes": "Notation separates raw time-bounded observations, derived diagnostic features, useful output, scope and configuration, and a falsifiable causal hypothesis."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the ten-second illustrative window and confirmed 1800/6000=0.30 scan efficiency, 900/1200=0.75 refault per eviction, 40.0 and 60.0 pages per second swap directions, and 2,500,000/10,000,000=25.0% full stall.", "Confirmed throughput decline from 1000 to 420 equals 58.0% and that the declared thresholds classify the supplied feature vector as thrashing-likely."],
+      "notes": "The deterministic model receives validated deltas and hand-selected thresholds; it omits resets, wraps, scope mismatch, latency distributions, sampling error, workload phase, and proof of causation."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived r_X=(X_1-X_0)/Delta and checked the preconditions of compatible monotonic counter identity and positive elapsed time.", "Checked eta and rho require nonzero denominators and that sigma requires conversion of stall totals and interval to common units."],
+      "notes": "Derived ratios are diagnostic features only; the chapter explicitly rejects universal thresholds and suppresses inference when denominator, scope, time, or semantic compatibility is missing."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed healthy high utilization, low free memory, global and background reclaim, direct reclaim, file and anonymous pressure, swap and compressed swap, dirty writeback, slab, page tables, huge pages, pins, fragmentation, compaction, NUMA, cgroups, zones, allocation orders, and OOM.", "Reviewed counter reset and wrap, missing fields, tiny denominators, cadence gaps, startup and phase changes, storage and CPU coupling, sequential cache pollution, incompressible data, pin leaks, restart loops, hostile dirtying and faulting, transferred harm, unsafe tunings, and sensitive evidence."],
+      "notes": "Measurement, capacity, locality, reclaim, backing, allocator, topology, containment, workload, overload, intervention, security, and recovery boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced validated deltas, aligned clocks and phases, memory-class attribution, scope separation, mechanism-specific activity, reversible mitigation, and protected evidence through twelve obligations, ten examples, and five answers.", "Verified a thrashing conclusion requires eviction-return or swap cycling, reclaim or fault work, sustained stalls, and lost useful output while explicitly testing alternative explanations."],
+      "notes": "The chapter does not conflate utilization with pressure, RSS with unique ownership, cumulative values with rates, allocated swap with churn, scanning with freeing, cgroup with host state, correlation with causation, or reduced usage with recovery."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed symptom and baseline, scopes, inventory, counter calculations, cross-signal correlation, differential diagnosis, causal timeline, mitigation match, integrity and headroom, recovery, reproduction, and evidence obligations.", "Constructed counterexamples for low-free alarms, additive RSS, disk inference from major faults, high-efficiency refault, idle swap blame, global diagnosis of cgroup throttling, reclaim treatment of fragmentation, blind cache drop, and restart-as-recovery."],
+      "notes": "The chapter supplies reusable diagnostic and response obligations, not a formal proof of a kernel, dashboard, workload model, OOM decision, capacity plan, or causal claim from observational data alone."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of available, reclaimable, current, usable, productive, harmful, efficient, likely, strong, safe, recovered, causal, durable, and proved.", "Confirmed documented Linux metric semantics, abstract diagnostic ratios, illustrative thresholds, observed correlations, intervention-based inference, operational recommendations, and assurance remain separately labeled."],
+      "notes": "PSI is not presented as owner identity, one counter as proof, correlation as causation, swap as inherently harmful, limit increase as free capacity, lower memory as service recovery, or load tests as certification."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-040/report.json records code and six recomputed diagnostic outputs for pressure-window-analysis under Python 3.", "Reviewed required collection of service latency and output, memory gauges, counter deltas, reclaim duration, refault, faults, swap, zswap, writeback, compaction, allocation order, PSI, OOM, topology, cgroups, configuration, raw timelines, and interventions."],
+      "notes": "The passing toy establishes arithmetic for one supplied window only and provides no evidence that a real workload is thrashing or that any production mitigation is safe."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed service-first diagnosis, utilization, memory classes, gauges and counters, reserves, background and direct reclaim, scan efficiency, refaults, faults, swap and compression, cache and anonymous pressure, slab, pins, fragmentation, NUMA, cgroups, PSI, I/O and CPU coupling, thrashing, OOM, causal timelines, mitigation, capacity, experiments, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed MemAvailable context, per-zone and node constraints, vmstat deltas, direct-reclaim latency, refault ratios, directional swap, zswap rejection, dirty writeback, smaps PSS and RSS, pin balance, allocation orders, compaction, memory.high and memory.max events, local versus hierarchical cgroup metrics, PSI totals and triggers, load shedding, rollback, and capacity-knee testing as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from service impact and measurement discipline through reclaim and backing mechanisms, scoped differential diagnosis, thrashing and OOM, then safe response, validation, security, and assurance, followed by twelve trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux memory-management, reclaim, cgroup, PSI, swap, allocator or OOM maintainer, platform or capacity engineer, performance or reliability specialist, incident commander, security reviewer, independent verifier, or certification review is claimed."
+}

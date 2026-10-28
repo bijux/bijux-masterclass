@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-016",
+  "chapter_digest": "8be30d180d6d3d85d43dc8cf91e37dc0f1d4b08c7fd323f3183689d80e675557",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 13,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary documentation for Linux policies and attributes, affinity, accounting, CFS, EEVDF, deadline scheduling, capacity, energy, cgroup v2, pressure metrics, core scheduling, and MIT's 2025 xv6 text. All 13 cited URLs returned HTTP 200; abstract objectives, Linux mechanisms, empirical metrics, and assurance claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked arrival a_i, first service s_i, completion c_i, service p_i, deadline d_i, weight w_i, allocation x_i, response R_i, turnaround F_i, tardiness L_i, throughput X, utilization U, normalized allocation y_i, Jain index J, objective O, and constraints H.", "Reviewed response, waiting, turnaround, throughput, utilization, fairness, work conservation, isolation, quota, reservation, deadline, and admission terminology."],
+      "notes": "The notation separates timing populations, resource denominators, weighted allocations, soft objectives, and hard feasibility constraints."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the finite-batch model and confirmed FCFS A,B,C completes at 6,8,12 with mean turnaround 8.67.", "Confirmed SJF B,C,A completes at 2,6,12 with mean turnaround 6.67; recomputed mean responses as 4.67 and 2.67."],
+      "notes": "The arithmetic assumes simultaneous arrivals, known exact service, one CPU, no preemption, and no overhead."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived response, turnaround, tardiness, throughput, utilization, normalized-share, and Jain-index formulas with their declared domains.", "Derived hierarchical shares G1=25%, G2=75%, and equal G2 children X=37.5% and Y=37.5% under full contention."],
+      "notes": "The review distinguishes equality from weighted entitlement and long-window share from quota, reservation, and latency."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed zero and overload demand, unfinished and shed requests, continual short-job arrivals, priority inversion, strategic sleeping, quota exhaustion, hierarchy flattening, and insufficient deadline admission.", "Reviewed heterogeneous capacity, SMT trust, NUMA locality, migration, thermal throttling, energy-model error, feedback oscillation, CPU loss, interrupts, kernel work, and safety degradation."],
+      "notes": "Workload, statistical, hierarchy, feasibility, topology, energy, security, operational, real-time, and assurance boundaries receive separate treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced eligibility, accounting, units, scope, inheritance, admitted guarantees, overload behavior, fairness windows, and measurement classification through exposition, ten examples, and five answers.", "Verified the toy compares only mean turnaround and explicitly withholds claims about online behavior, fairness, deadlines, and Linux."],
+      "notes": "The chapter does not conflate priority, weight, quota, budget, reservation, admission, utilization, useful throughput, or observed bounds."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed the stakeholder, hard-constraint, metric-definition, hierarchical-control, platform-assumption, adversarial-test, and evidence-labeling argument.", "Constructed counterexamples for mean-only optimization, SJF starvation, equal-share entitlement mismatch, idle despite quota, nominal-utilization deadline overload, remote placement, censored latency, and inadmissible SMT sharing."],
+      "notes": "The chapter supplies evaluation obligations, not a formal proof of a scheduler, workload forecast, energy model, deadline task set, or safety case."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of optimal, fair, equal, guaranteed, reserved, admitted, feasible, bounded, worst-case, secure, and certification.", "Confirmed finite-batch arithmetic, Linux interfaces, proportional-share intent, empirical observations, analytical feasibility, security constraints, and human judgment remain separately scoped."],
+      "notes": "No universal best schedule, capacity constant, deadline guarantee, or worst-case claim is inferred from one metric or benchmark."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-016/report.json records both orders and mean turnarounds for toy-scheduling-objectives under Python 3.", "Reviewed offered, admitted, completed, failed, shed, and unfinished populations; latency distributions; fairness; migrations; energy; thermal state; observer overhead; baselines; raw artifacts; and configuration limits."],
+      "notes": "The passing toy excludes online arrivals, threads, blocking, preemption, overhead, topology, energy, quotas, deadlines, failures, and real scheduler code."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed latency, completion, throughput, utilization, fairness, priority, hierarchy, isolation, deadlines, admission, placement, energy, security, feedback, and assurance as distinct but coupled objectives."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed Linux policy attributes, weights, quotas, affinity, deadline parameters, heterogeneous capacity, energy models, cgroups, pressure, SMT security, overload, metrics, and experiments as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from measurable contracts through objective conflicts, hierarchy, multicore placement, and evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux scheduler maintainer, performance scientist, real-time analyst, energy or platform engineer, security reviewer, safety authority, independent verifier, or certification review is claimed."
+}

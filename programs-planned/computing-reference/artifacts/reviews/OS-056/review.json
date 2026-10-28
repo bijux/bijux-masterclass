@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-056",
+  "chapter_digest": "e3e3bfe134d38939659c601b9f653da895c0c2ac0d615be30af090c95d72df3e",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux sched_setaffinity, pthread affinity, CPU-set, cpuset and scheduler man-pages plus current kernel IRQ-affinity, per-CPU-kthread, cgroup-v2 cpuset, capacity-aware-scheduling and CPU-hotplug documentation. All ten cited URLs returned HTTP 200 after normal redirects; generic placement models, Linux-specific semantics, deterministic set arithmetic, operational guidance and assurance remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked represented CPUs U, online CPUs O, requested affinity R, cpuset allowance C, effective eligibility E, queueing q, migration cost m, distance d, interference i, capacity h and objective J.", "Reviewed affinity, requested and effective masks, hard and soft placement, logical CPU, SMT sibling, scheduling domain, cpuset, partition, isolation, IRQ affinity, housekeeping and CPU-capacity terminology."],
+      "notes": "Notation distinguishes logical topology, administrative allowance, per-thread intent, effective eligibility, scheduling choice, processor time, exclusivity and measured service."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed requested set {0,1,2,3}, cpuset allowance {1,2,3,4} and online set {2,3,4,5}.", "Confirmed the three-way intersection is exactly {2,3} and that the output explicitly denies a placement guarantee."],
+      "notes": "The deterministic computation validates set intersection only; it does not invoke Linux affinity, observe scheduling, reserve capacity, exercise cgroups or hotplug, or measure locality and performance."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived effective eligibility as requested affinity intersected with cpuset allowance, online CPUs and represented platform CPUs.", "Checked candidate placement as a constrained objective over queueing, migration and warming, NUMA and device distance, interference and capacity penalty, with candidates restricted to the effective set."],
+      "notes": "The model is deliberately diagnostic: an effective set does not determine which member runs next, and the scalar objective is not asserted to reproduce a production scheduler."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed per-thread identity, inherited masks, sparse identifiers, dynamically sized masks, SMT, caches, NUMA, heterogeneous capacity, scheduler domains, cpuset hierarchy, exclusive and isolated partitions, quotas, priorities and virtualization.", "Reviewed empty intersections, permissions, thread-creation races, managed IRQ limits, deferred work, kernel threads, workqueues, housekeeping exhaustion, skew, throttling, thermal pressure, hotplug, partial rollout, rollback and teardown."],
+      "notes": "Application, runtime, scheduler, cgroup, hardware, device, kernel-work, memory, lifecycle and evidence boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced topology discovery, authority, thread classification, constraints, topology groups, end-to-end path coordination, per-thread application, readback, forward progress, measurement, adaptation and retained evidence through twelve obligations, ten examples and five answers.", "Verified execution within effective eligibility, post-set readback, per-thread coverage, sparse dynamic identifiers, compute and device coordination, hotplug fallback, housekeeping reserve and evidence-complete performance claims."],
+      "notes": "The chapter treats eligibility, time allocation, isolation, exclusivity, topology, device routing, memory placement and performance as coupled but independently observable invariants."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed logical processors, requested and effective masks, per-thread semantics, inheritance, hard and soft affinity, mask sizing, topology, SMT, cache and NUMA locality, capacity, balancing, cpusets, isolation, interrupts, workers, runtimes, real-time scheduling, virtualization, quotas, hotplug and assurance.", "Constructed counterexamples for affinity-as-reservation, leader-only changes, dense identifiers, adjacent-number topology, migration-count optimization, CPU-only locality, IRQ-only placement, silent isolation, equal-capacity masks, configured-as-effective cpusets and pinning-as-deadline-guarantee."],
+      "notes": "The chapter supplies reusable affinity reasoning obligations, not a formal proof of Linux scheduling, cgroups, isolation, a runtime, device stack, hypervisor, workload, real-time system or hardware platform."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of allowed, requested, effective, hard, soft, isolated, exclusive, reserved, dedicated, guaranteed, local, stable, exact, safe, optimal and measured.", "Confirmed generic set models, Linux-specific interfaces, illustrative examples, empirical experiments, operational recommendations and assurance claims remain separately scoped."],
+      "notes": "Eligibility is not labeled reservation, accepted configuration is not labeled unchanged reality, logical CPUs are not labeled physical cores, isolation is not labeled silence, and a measured speedup is not labeled universal."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-056/report.json records source, requested, cpuset-allowed, online and effective sets, stdout, stderr and Python version.", "Reviewed required collection of topology generation, per-thread effective masks, current CPUs, migrations, run-queue delay, context switches, throttling, capacity, frequency, thermal state, caches, NUMA, interrupts, deferred work, latency, throughput and failures."],
+      "notes": "The passing toy establishes only deterministic set output; it provides no evidence for Linux affinity calls, scheduler behavior, cgroup partitions, hotplug, IRQ routing, workload locality, isolation or performance."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed eligibility, per-thread identity, mask composition, logical topology, hard and soft affinity, SMT, cache and NUMA locality, capacity, scheduler domains, cpusets, partitions, isolation, housekeeping, IRQs, deferred work, runtimes, real-time policy, virtualization, quotas, power, hotplug, adaptation, observation and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed Linux thread-affinity and CPU-set APIs, silent intersection, dynamic mask sizing, inheritance, cgroup-v2 effective CPUs and partitions, IRQ affinity, per-CPU kernel work, capacity awareness and hotplug as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from eligibility and thread identity through topology and scheduler composition, then cgroups, isolation, complete device and kernel paths, runtimes, timing, virtualization, lifecycle and evidence, followed by twelve obligations, fourteen trade-offs, fifteen misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux scheduler, cgroup, real-time, IRQ, device, runtime, virtualization, NUMA, performance, hardware, independent-verification or certification review is claimed."
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-034",
+  "chapter_digest": "c9ba3d60aa3c310a4ba2e71563b7dacedee37ddd3fed91f14198a8fd982a1532",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux kernel documentation for memory concepts, page tables, memory APIs, and userfaultfd; current Linux man-pages for userfaultfd, mmap, madvise, mincore, and mlock; and MIT's 2025 xv6 text. All 10 cited URLs returned HTTP 200; Linux-specific accounting and interfaces, general demand-paging mechanisms, empirical performance, and assurance claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked page and generation state S(v,g), demanded set D, populated set P, resident set R, fault count F, total fault time T_f, demanded bytes B_d, readahead bytes B_r, and useful bytes B_u.", "Reviewed demand paging, resident page, anonymous and file-backed page, minor and major fault, readahead, page cache, first touch, prefault, residency, overcommit, and userfault terminology."],
+      "notes": "Notation separates state-machine identity, time-varying demand and residence, fault totals, and speculative-I/O usefulness."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed touches 0,3,3,9,15 within a sixteen-page reservation and confirmed four distinct first-touch faults.", "Confirmed resident indices 0,3,9,15 and twelve untouched reserved pages."],
+      "notes": "The deterministic model omits frames, zeroing, mappings, I/O, concurrent faults, eviction, pressure, errors, and timing."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived publication eligibility from equality of current mapping generation and backing identity with the fault's captured state.", "Checked that B_u/B_r is defined only for B_r>0 and cannot alone establish latency improvement or absence of cache pollution."],
+      "notes": "The chapter explicitly avoids permanent subset claims among demand, population, and residency without a time index."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed zero first touch, repeated touch, read zero page, first write, short final file page, hole, truncation, cache hit, storage read, minor and major accounting, concurrent owners, spurious wake, allocation and I/O failure, and stale mapping completion.", "Reviewed readahead pollution, advice limits, prefault bursts, stale residency probes, locked-memory limits, huge allocation and fallback, NUMA first touch, copy-on-write, swap and compression, direct reclaim, writeback, overcommit, OOM, userfault monitor failure, fault recursion, sparse attacks, and timing disclosure."],
+      "notes": "Content, concurrency, identity, resource, latency, pressure, lifecycle, delegated handling, security, measurement, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced zero-before-exposure, backing identity, single authoritative publication, bounded fault resources, stale-completion rejection, ordered PTE publication, and cause-specific metrics through ten examples and five answers.", "Verified the toy counts one fault for each previously unseen page and leaves all untouched pages unpopulated."],
+      "notes": "The chapter does not conflate reservation with commitment, cache residency with a process PTE, minor with cheap, major with one disk read, residency observation with reservation, or page population with durability."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed state definition, fault classification, zero and file validation, concurrent ownership, resource bounds, revalidation, publication, lifecycle and pressure, platform interfaces, and evidence obligations.", "Constructed counterexamples for duplicate first fault, stale post-I/O mapping, hostile readahead, warm-only benchmarks, direct reclaim latency, remote NUMA placement, huge-page tail cost, failed userfault monitor, and sparse fault storms."],
+      "notes": "The chapter supplies reusable demand-paging obligations, not a formal proof of a kernel fault path, filesystem cache, readahead policy, reclaim system, userfault monitor, or real-time bound."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of resident, committed, minor, major, valid, initialized, stable, locked, safe, useful, bounded, and certified.", "Confirmed OS accounting, interface guarantees, abstract state claims, toy demand counts, measured latency, security policy, and human assurance remain separately scoped."],
+      "notes": "Minor faults are not presented as free, mlock as automatic population, advice as guarantee, or a warm benchmark as demand-paging evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-034/report.json records reservation, touch sequence, distinct faults, resident indices, and untouched count for toy-demand-population under Python 3.", "Reviewed fault cause and duration, cache hits, storage, decompression, zeroing, allocation, reclaim, compaction, readahead usefulness, coalesced waiters, stale completions, page size, NUMA, OOM, filesystem, device, pressure, and raw samples."],
+      "notes": "The passing toy excludes operating-system demand paging, physical resources, faults, I/O, concurrency, eviction, and uncertainty."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed reservation, anonymous and file first touch, page cache, fault accounting, handler path, concurrent faults, stale completion, PTE publication, readahead, advice, prefaulting, residency, locking, huge pages, NUMA, copy-on-write, swap, reclaim, overcommit, userfault delegation, reentrancy, security, observability, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed zero-page and private allocation, cache lookup, per-page loading state, generation checks, bounded readahead, madvise-style hints, mincore limits, mlock resource controls, huge fallback, NUMA initialization, direct reclaim telemetry, OOM policy, userfault feature negotiation and events, and cold-test preparation as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from reservation and first touch through cache and I/O, concurrent completion, speculative policy, pressure and delegated paging, security, and evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux memory or filesystem maintainer, storage, NUMA, runtime or migration specialist, security or performance expert, safety authority, independent verifier, or certification review is claimed."
+}
