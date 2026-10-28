@@ -1,5 +1,0 @@
-*.csv text eol=lf
-*.jsonl text eol=lf
-*.md text eol=lf
-*.py text eol=lf
-Makefile text eol=lf
