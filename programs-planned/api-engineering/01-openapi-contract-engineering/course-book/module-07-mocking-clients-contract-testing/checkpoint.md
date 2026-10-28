@@ -1,5 +1,11 @@
 # Checkpoint — Module 07: Mocks, Clients, and Contract Testing
 
+Prism is excluded from the installable toolchain because its dependency chain
+has unresolved security advisories. Mock/proxy lessons and fixtures remain as
+reference material. `make prism-mock` and `make prism-smoke` stop with an explicit
+error; `npm run mock` and `npm run proxy:python` are unavailable. Full course
+qualification remains blocked until a maintained replacement is qualified.
+
 ## Required result
 
 Build the consumer and contract-test ladder against the mock and both real providers.

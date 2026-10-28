@@ -9,15 +9,12 @@
   "scripts": {
     "lint:openapi": "redocly lint capstone/spec/openapi.yaml && spectral lint capstone/spec/openapi.yaml",
     "bundle": "redocly bundle capstone/spec/openapi.yaml -o capstone/spec/dist/redocly.bundle.yaml",
-    "mock": "prism mock capstone/spec/dist/openapi.bundle.yaml -p 4010",
-    "proxy:python": "prism proxy capstone/spec/dist/openapi.bundle.yaml http://127.0.0.1:8000 -p 4011",
     "generate:types": "openapi-typescript capstone/spec/dist/openapi.bundle.yaml -o capstone/clients/typescript/generated/schema.generated.d.ts",
     "typecheck": "npm --prefix capstone/services/typescript-fastify run typecheck && npm --prefix capstone/clients/typescript run typecheck",
     "test": "npm --prefix capstone/services/typescript-fastify test && npm --prefix capstone/clients/typescript test"
   },
   "devDependencies": {
     "@redocly/cli": "2.43.2",
-    "@stoplight/prism-cli": "5.16.0",
     "@stoplight/spectral-cli": "6.16.0",
     "openapi-typescript": "7.13.0"
   }

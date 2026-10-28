@@ -49702,8 +49702,8 @@
       "sha256": "1b034d37154cc003de7702558ac07cdbff4b2a66cb47c1ed17bd7c1a5544bac4",
       "bytes": 1036,
       "mode": "100644",
-      "sha256_after": "1b034d37154cc003de7702558ac07cdbff4b2a66cb47c1ed17bd7c1a5544bac4",
-      "transformation": null
+      "sha256_after": "ca5322636d7c30461d180fb6e187f3fe99562f6455f39e68084a65fd131d291c",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/course.json",
@@ -49729,8 +49729,8 @@
       "sha256": "0791ba7361504cd70c0f8025741b9d03101eb1a5f6d0040fc12e4b089e575cad",
       "bytes": 1195,
       "mode": "100644",
-      "sha256_after": "0791ba7361504cd70c0f8025741b9d03101eb1a5f6d0040fc12e4b089e575cad",
-      "transformation": null
+      "sha256_after": "e0612c315f1cd6ee0386d78ea3f36ab1361e487207abdb648b326ef0e6d66951",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/pyproject.toml",
@@ -49774,8 +49774,8 @@
       "sha256": "a74c9e1bdb55407d781c2696d89dae8c7bf3f844d9bf5546e55b8a6196bc91fd",
       "bytes": 1106,
       "mode": "100644",
-      "sha256_after": "a74c9e1bdb55407d781c2696d89dae8c7bf3f844d9bf5546e55b8a6196bc91fd",
-      "transformation": null
+      "sha256_after": "eea32743d7d24f0f4796751921dcedaf90c6257adc1a52d8f6855185340b0bec",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/.env.example",
@@ -49792,8 +49792,8 @@
       "sha256": "433cf44c561ebdce077ed36dea0140edfa7b6e6906057c2abe359e14dae4f8a5",
       "bytes": 12675,
       "mode": "100644",
-      "sha256_after": "433cf44c561ebdce077ed36dea0140edfa7b6e6906057c2abe359e14dae4f8a5",
-      "transformation": null
+      "sha256_after": "52d44f1c2eba75bbfde84787917b277334956d31ab3bf40b8b706037e03b9cbb",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/README.md",
@@ -49801,8 +49801,8 @@
       "sha256": "cb5363c41ff1e2d07af93706cefad681b6a7984f3f05f9c79ac4bcea2166038b",
       "bytes": 5303,
       "mode": "100644",
-      "sha256_after": "cb5363c41ff1e2d07af93706cefad681b6a7984f3f05f9c79ac4bcea2166038b",
-      "transformation": null
+      "sha256_after": "e6b8f7c3a03678b4176414715f830a8070cca1e2171a18f818a599c13f4d9866",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/compose.yaml",
@@ -51016,8 +51016,8 @@
       "sha256": "3dab3b7858c7b4dccc4d0d5a1af2b949124870a18fd6f767faafd8e862c7f115",
       "bytes": 18815,
       "mode": "100755",
-      "sha256_after": "3dab3b7858c7b4dccc4d0d5a1af2b949124870a18fd6f767faafd8e862c7f115",
-      "transformation": null
+      "sha256_after": "d6cf1fe2701bbcc6d0303dc04f1b2c9d8d2c437ea579917d70549e8d6f879e71",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/scripts/doctor.py",
@@ -53176,8 +53176,8 @@
       "sha256": "e96699e196e1a9ec17d0ac86ad9f644bfc0477b013e9db320f1cbf2cbcff78bb",
       "bytes": 2499,
       "mode": "100644",
-      "sha256_after": "e96699e196e1a9ec17d0ac86ad9f644bfc0477b013e9db320f1cbf2cbcff78bb",
-      "transformation": null
+      "sha256_after": "67d011b840b76d42175469005aacb98f83a55becb49de340947d7a109f3d3105",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/exercise-answers.md",
@@ -53203,8 +53203,8 @@
       "sha256": "4b4cd1c679dba052bd4db7aa9be2c105acbfb596b91d4c9820d1115e67dcda58",
       "bytes": 22355,
       "mode": "100644",
-      "sha256_after": "4b4cd1c679dba052bd4db7aa9be2c105acbfb596b91d4c9820d1115e67dcda58",
-      "transformation": null
+      "sha256_after": "6877ffd924cbba7d509b3ce78f819735c2ce8128766c49132e30c386215d1627",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/lab.md",
@@ -81918,6 +81918,57 @@
         {
           "path": "programs-planned/api-engineering/07-grpc-and-protobuf-engineering/capstone/tracks/typescript-grpc/package-lock.json",
           "sha256": "04c24a8dcfd1c09c80f48b31f224db013f6a28e0692543e76cf4610ad55965ea"
+        }
+      ]
+    },
+    {
+      "intent": "Exclude Prism from installable tooling while retaining its lessons and explicitly blocking unavailable mock/proxy qualification.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/README.md",
+          "sha256_before": "1b034d37154cc003de7702558ac07cdbff4b2a66cb47c1ed17bd7c1a5544bac4",
+          "sha256_after": "ca5322636d7c30461d180fb6e187f3fe99562f6455f39e68084a65fd131d291c"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/package.json",
+          "sha256_before": "0791ba7361504cd70c0f8025741b9d03101eb1a5f6d0040fc12e4b089e575cad",
+          "sha256_after": "e0612c315f1cd6ee0386d78ea3f36ab1361e487207abdb648b326ef0e6d66951"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/tool-versions.json",
+          "sha256_before": "a74c9e1bdb55407d781c2696d89dae8c7bf3f844d9bf5546e55b8a6196bc91fd",
+          "sha256_after": "eea32743d7d24f0f4796751921dcedaf90c6257adc1a52d8f6855185340b0bec"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/Makefile",
+          "sha256_before": "433cf44c561ebdce077ed36dea0140edfa7b6e6906057c2abe359e14dae4f8a5",
+          "sha256_after": "52d44f1c2eba75bbfde84787917b277334956d31ab3bf40b8b706037e03b9cbb"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/README.md",
+          "sha256_before": "cb5363c41ff1e2d07af93706cefad681b6a7984f3f05f9c79ac4bcea2166038b",
+          "sha256_after": "e6b8f7c3a03678b4176414715f830a8070cca1e2171a18f818a599c13f4d9866"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/scripts/course_tool.py",
+          "sha256_before": "3dab3b7858c7b4dccc4d0d5a1af2b949124870a18fd6f767faafd8e862c7f115",
+          "sha256_after": "d6cf1fe2701bbcc6d0303dc04f1b2c9d8d2c437ea579917d70549e8d6f879e71"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/checkpoint.md",
+          "sha256_before": "e96699e196e1a9ec17d0ac86ad9f644bfc0477b013e9db320f1cbf2cbcff78bb",
+          "sha256_after": "67d011b840b76d42175469005aacb98f83a55becb49de340947d7a109f3d3105"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/index.md",
+          "sha256_before": "4b4cd1c679dba052bd4db7aa9be2c105acbfb596b91d4c9820d1115e67dcda58",
+          "sha256_after": "6877ffd924cbba7d509b3ce78f819735c2ce8128766c49132e30c386215d1627"
+        }
+      ],
+      "added_dependency_locks": [
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/package-lock.json",
+          "sha256": "48cac01c627d16a77d97992b34c65e6dc3262732d884401c253961378dbd6b08"
         }
       ]
     }
